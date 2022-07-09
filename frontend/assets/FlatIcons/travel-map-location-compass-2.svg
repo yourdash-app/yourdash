@@ -1,0 +1,8 @@
+<!-- Copyright © Ewsgit 2022. -->
+<!-- Licensed under the MIT License - https://ewsgit.github.io/devdash/copyright -->
+
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle r="20" transform="matrix(-1 0 0 1 24 24)" fill="#ACB4C9"/>
+<path d="M29.6564 29.6566C26.1209 33.1921 15.5143 35.3134 14.1001 33.8992C12.6858 32.485 15.1607 21.5248 18.3427 18.3429C21.5247 15.1609 32.4848 12.686 33.899 14.1002C35.3133 15.5144 33.1919 26.121 29.6564 29.6566Z" fill="#576684"/>
+<circle r="4" transform="matrix(-0.707107 -0.707107 -0.707107 0.707107 23.9994 24)" fill="#ACB4C9"/>
+</svg>
