@@ -30,3 +30,23 @@ echo "coming soon"
 [//]: # (curl "https://raw.githubusercontent.com/devdash-app/devdash/meta/personal_server_setup_guide.sh" | bash)
 
 [//]: # (```)
+
+## Development
+
+### Installing dependencies
+
+```bash
+meta/install_dependencies.sh
+```
+
+### Starting web client dev server
+
+```bash
+meta/start_dev_web_client.sh
+```
+
+### Starting the desktop client dev server
+
+```bash
+meta/start_dev_desktop_client.sh
+```
