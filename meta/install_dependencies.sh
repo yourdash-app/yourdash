@@ -61,7 +61,7 @@ npm i
 
 cd ../desktop-client/
 
-# Work in progress
+npm i
 
 cd ../backend/personal/
 
