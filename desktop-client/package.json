@@ -1,0 +1,10 @@
+{
+  "name": "desktop-client",
+  "version": "1.0.0",
+  "dependencies": {
+    "tauri": "^0.14.1"
+  },
+  "scripts": {
+    "tauri": "tauri"
+  }
+}
