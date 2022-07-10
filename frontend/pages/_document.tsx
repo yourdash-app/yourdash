@@ -22,27 +22,20 @@
  */
 
 import React from "react";
-import { Html, Head, Main, NextScript } from "next/document";
+import {Head, Html, Main, NextScript} from "next/document";
 
 export default function Document() {
-  return (
-    <Html lang="en">
-      <Head>
-        <link rel="manifest" href="/manifest.json" />
-        <link rel="apple-touch-icon" href="/DevDash@2x.png" />
-        <meta name="apple-mobile-web-app-status-bar" content="#363636" />
-        <style>{`
-          @import url(https://fonts.googleapis.com/icon?family=Material+Icons+Round);
-          @import url(https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap);
-          html, body {
-            background-color: #363636;
-          }
-        `}</style>
-      </Head>
-      <body>
-        <Main />
-        <NextScript />
-      </body>
-    </Html>
-  );
+    return (
+        <Html lang="en">
+            <Head>
+                <link rel="manifest" href="/manifest.json"/>
+                <link rel="apple-touch-icon" href="/DevDash@2x.png"/>
+                <meta name="apple-mobile-web-app-status-bar" content="#363636"/>
+            </Head>
+            <body>
+            <Main/>
+            <NextScript/>
+            </body>
+        </Html>
+    );
 }
