@@ -21,13 +21,28 @@
  *   SOFTWARE.
  */
 
-export default function getCharacterWidth(text: string, font: string): number {
-  let canvas = document.createElement('canvas');
-  let ctx = canvas.getContext('2d');
-  if (!ctx) {
-    return 0;
-  } else {
-    ctx.font = font;
-    return ctx.measureText(text).width
-  }
+export default function getCharacterWidth(fontFamily: string, fontSize: string): number {
+    if (!document.getElementById("get_character_width_measurement_element")) {
+        let element = document.createElement('p');
+        element.id = "get_character_width_measurement_element"
+        element.style.top = "0"
+        element.style.left = "0"
+        element.innerText = "0"
+        element.style.position = "fixed"
+        element.style.fontFamily = fontFamily
+        element.style.fontSize = fontSize
+        document.body.appendChild(element)
+        let width = element.offsetWidth
+        return width
+    } else {
+        let element = document.getElementById("get_character_width_measurement_element") as HTMLParagraphElement
+        element.style.top = "0"
+        element.style.left = "0"
+        element.innerText = "0"
+        element.style.position = "fixed"
+        element.style.fontFamily = fontFamily
+        element.style.fontSize = fontSize
+        let width = element.offsetWidth
+        return width
+    }
 }
