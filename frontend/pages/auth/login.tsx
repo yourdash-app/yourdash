@@ -21,11 +21,11 @@
  *   SOFTWARE.
  */
 
-import { NextRouter, withRouter } from "next/router";
+import {NextRouter, withRouter} from "next/router";
 import React from "react";
 import Head from "next/head";
 import localforage from "localforage";
-import { IconTypings } from "../../lib/materialIconTypings";
+import {IconTypings} from "../../lib/materialIconTypings";
 
 class Component extends React.Component<{ router: NextRouter }> {
   state: {
@@ -74,15 +74,11 @@ class Component extends React.Component<{ router: NextRouter }> {
               onClick={() => {
                 if (typeof window !== "undefined") {
                   this.props.router.push(
-                    `${
-                      window.location.host === "devdash.vercel.app"
-                        ? "https://devdash.ewsgit.repl.co"
-                        : "http://" + window.location.hostname + ":3001"
-                    }/auth/github?url=${
-                      window.location.host === "devdash.vercel.app"
-                        ? "https://devdash.vercel.app/auth/githubcallback"
-                        : "http://" + window.location.hostname + ":3000/auth/githubcallback"
-                    }`
+                      `https://devdash.ewsgit.repl.co/auth/github?url=${
+                          window.location.host === ("devdash.vercel.app" || "ddsh.vercel.app")
+                              ? "https://devdash.vercel.app/auth/githubcallback"
+                              : "http://" + window.location.hostname + ":3000/auth/githubcallback"
+                      }`
                   );
                 }
               }}
