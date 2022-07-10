@@ -1,6 +1,6 @@
 # The DevDash Project
 
-The home for open-sourced development
+[//]: # (The home for open-sourced development)
 
 -----
 
