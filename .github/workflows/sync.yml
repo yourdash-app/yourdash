@@ -11,5 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: test
+        run: ls
       - name: Run a one-line script
         run: git push --mirror git@github.com/ewsgit/devdash
