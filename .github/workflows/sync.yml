@@ -15,8 +15,8 @@ jobs:
         with:
           name: devdash-app/devdash
 
-      - name: list
-        run: ls -la
+      - name: Unset conflicting git data
+        run: git config -l | grep 'http\..*\.extraheader' | cut -d= -f1 | xargs -L1 git config --unset-all
 
       - name: Push repo state
         run: git push --mirror git@github.com:ewsgit/devdash
