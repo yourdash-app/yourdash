@@ -1,0 +1,15 @@
+name: Sync
+
+on:
+  push:
+    branches: [ "main" ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Run a one-line script
+        run: git push --mirror git@github.com/ewsgit/devdash
