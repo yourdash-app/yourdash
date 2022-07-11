@@ -11,8 +11,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: clone repo state
-        run: git clone --mirror git@github.com:devdash-app/devdash
+      - uses: actions/checkout@master
+        with:
+          name: devdash-app/devdash
 
       - name: list
         run: ls -la
