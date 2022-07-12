@@ -26,6 +26,7 @@
 
 @import url(https://fonts.googleapis.com/icon?family=Material+Icons+Round);
 @import url(https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap);
+@import url(https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap);
 
 @tailwind base;
 @tailwind components;
