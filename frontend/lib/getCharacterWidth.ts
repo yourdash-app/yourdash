@@ -25,24 +25,18 @@ export default function getCharacterWidth(fontFamily: string, fontSize: string):
     if (!document.getElementById("get_character_width_measurement_element")) {
         let element = document.createElement('p');
         element.id = "get_character_width_measurement_element"
-        element.style.top = "0"
-        element.style.left = "0"
+        element.style.top = "-100vh"
+        element.style.left = "-100vw"
         element.innerText = "0"
         element.style.position = "fixed"
         element.style.fontFamily = fontFamily
         element.style.fontSize = fontSize
         document.body.appendChild(element)
-        let width = element.offsetWidth
-        return width
+        return element.getBoundingClientRect().width
     } else {
         let element = document.getElementById("get_character_width_measurement_element") as HTMLParagraphElement
-        element.style.top = "0"
-        element.style.left = "0"
-        element.innerText = "0"
-        element.style.position = "fixed"
         element.style.fontFamily = fontFamily
         element.style.fontSize = fontSize
-        let width = element.offsetWidth
-        return width
+        return element.getBoundingClientRect().width
     }
 }
