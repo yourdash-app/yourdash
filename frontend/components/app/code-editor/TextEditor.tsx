@@ -79,8 +79,8 @@ export default function TextEditor() {
             }
         });
     };
-    return (<div className={`w-full h-full grid grid-cols-[auto,1fr] relative`}>
-        <div className={`pr-2 pl-2 pt-2 bg-content-normal shadow-md z-10 text-text-secondary select-none`}>
+    return (<div className={`w-full h-full grid grid-cols-[auto,1fr] relative select-none`}>
+        <div className={`pr-2 pl-2 pt-2 bg-content-normal shadow-md z-10 text-text-secondary`}>
             {linesOfCode.map(line => {
                 return <div style={{
                     fontSize: fontConfig.fontSize + "px",
@@ -120,7 +120,7 @@ export default function TextEditor() {
                         fontFamily: fontConfig.fontFamily
                     }}>
                       {token.value}
-                    </span>);
+                     </span>);
                 })}
               </span>);
           })}
