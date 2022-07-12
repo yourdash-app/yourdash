@@ -15,21 +15,15 @@ the [webclient](https://devdash.vercel.app)
 
 The personal server will be automatically run while you are using DevDash if you are using the desktop client.
 
-If you are not using the desktop client or would like to set up a team server you can run the script below.
+If you are not using the desktop client or would like to set up a team / personal server you can run the script below.
+
+The personal server requires to be run on linux or WSL
+
+(The script is does not fully yet exist... the following command is a work-in-progress)
 
 ```bash
-echo "coming soon"
+curl "https://raw.githubusercontent.com/devdash-app/devdash/meta/personal_server_setup_guide.sh" | bash
 ```
-
-[//]: # ()
-
-[//]: # (&#40;The personal server requires to be run on linux or WSL&#41;)
-
-[//]: # (```bash)
-
-[//]: # (curl "https://raw.githubusercontent.com/devdash-app/devdash/meta/personal_server_setup_guide.sh" | bash)
-
-[//]: # (```)
 
 ## Development
 
@@ -42,11 +36,11 @@ meta/install_dependencies.sh
 ### Starting web client dev server
 
 ```bash
-meta/start_dev_web_client.sh
+meta/start_web_client.sh
 ```
 
 ### Starting the desktop client dev server
 
 ```bash
-meta/start_dev_desktop_client.sh
+meta/start_desktop_client.sh
 ```
