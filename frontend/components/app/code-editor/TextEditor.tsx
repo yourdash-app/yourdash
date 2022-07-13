@@ -59,21 +59,21 @@ export default function TextEditor() {
         pressedKeys.map(key => {
             switch (key) {
                 case "ArrowUp":
-                    setCursorPosition({...cursorPosition, y: cursorPosition.y - fontConfig.lineHeight});
+                    setCursorPosition({...cursorPosition, y: cursorPosition.y - 1});
                     break;
                 case "ArrowDown":
-                    setCursorPosition({...cursorPosition, y: cursorPosition.y + fontConfig.lineHeight});
+                    setCursorPosition({...cursorPosition, y: cursorPosition.y + 1});
                     break;
                 case "ArrowLeft":
                     setCursorPosition({
                         ...cursorPosition,
-                        x: cursorPosition.x - getCharacterWidth(fontConfig.fontFamily, fontConfig.fontSize + "px")
+                        x: cursorPosition.x - 1
                     });
                     break;
                 case "ArrowRight":
                     setCursorPosition({
                         ...cursorPosition,
-                        x: cursorPosition.x + getCharacterWidth(fontConfig.fontFamily, fontConfig.fontSize + "px")
+                        x: cursorPosition.x + 1
                     });
                     break;
             }
@@ -104,8 +104,8 @@ export default function TextEditor() {
             onClick={e => {
                 e.preventDefault();
                 setCursorPosition({
-                    x: Math.round((e.clientX - e.currentTarget.getClientRects()[0].x) / getCharacterWidth(fontConfig.fontFamily, fontConfig.fontSize + "px")) * getCharacterWidth(fontConfig.fontFamily, fontConfig.fontSize + "px"),
-                    y: Math.floor((e.clientY - e.currentTarget.getClientRects()[0].y) / fontConfig.lineHeight) * fontConfig.lineHeight,
+                    x: Math.round((e.clientX - e.currentTarget.getClientRects()[0].x) / getCharacterWidth(fontConfig.fontFamily, fontConfig.fontSize + "px")),
+                    y: Math.floor((e.clientY - e.currentTarget.getClientRects()[0].y) / fontConfig.lineHeight),
                 });
             }}
         >
@@ -128,7 +128,8 @@ export default function TextEditor() {
                 className={`w-0.5 bg-branding-primary absolute top-0 left-0 animate-pulse`}
                 style={{
                     height: fontConfig.lineHeight + "px",
-                    left: `${cursorPosition.x}px`, top: `${cursorPosition.y}px`,
+                    left: cursorPosition.x * getCharacterWidth(fontConfig.fontFamily, fontConfig.fontSize + "px") + "px",
+                    top: cursorPosition.y * fontConfig.lineHeight
                 }}></div>
         </pre>
         </div>
