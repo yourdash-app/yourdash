@@ -14,6 +14,7 @@ import Git from "./_git";
 import localforage from "localforage";
 import PageContainer from "../../components/app/PageContainer";
 import UnderConstruction from "./_under-construction";
+import Notifications from "./_notifications";
 
 // the code below is a custom router for /app/*
 // it might seem unnecessary, but it's required to stop re-rendering the navigation bar
@@ -53,7 +54,7 @@ export default function AppRouting() {
             </PageContainer>);
         case "notifications":
             return (<PageContainer pageId={"notifications"}>
-                <UnderConstruction/>
+                <Notifications/>
             </PageContainer>);
         case "todo":
             return (<PageContainer pageId={"todo"}>
