@@ -1,10 +1,14 @@
 {
   "name": "desktop-client",
   "version": "1.0.0",
-  "dependencies": {
-    "tauri": "^0.14.1"
-  },
+  "description": "",
+  "main": "main.js",
   "scripts": {
-    "tauri": "tauri"
+    "start": "electron ."
+  },
+  "author": "ewsgit",
+  "license": "MIT",
+  "dependencies": {
+    "electron": "^19.0.8"
   }
 }
