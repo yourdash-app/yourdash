@@ -1,3 +1,5 @@
+import createUuid from "./libUuid";
+
 export class PushNotification {
     notification: {
         title: string; content: string; urgency: 1 | 2 | 3;
@@ -27,7 +29,10 @@ export class PushNotification {
     public push() {
         window.dispatchEvent(new CustomEvent("DEVDASH_push_notification", {
             detail: {
-                title: this.notification.title, content: this.notification.content, urgency: this.notification.urgency,
+                title: this.notification.title,
+                content: this.notification.content,
+                urgency: this.notification.urgency,
+                id: createUuid()
             },
         }))
     }
