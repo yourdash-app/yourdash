@@ -21,77 +21,82 @@
  *   SOFTWARE.
  */
 
-import { TOKEN } from "./../Typings";
+import {TOKEN} from "../Typings";
 
 export default function TokenizeJs(code: string[]): TOKEN[][] {
-  let output: TOKEN[][] = [[]];
-  let lines: string[] = code;
-  let bracket_level: number = 0;
+    let output: TOKEN[][] = [[]];
+    let lines: string[] = code;
 
-  let assign_variable_keywords = ["let", "var", "const"];
-  let generic_keywords = ["this", "else", "break", "continue", "return"];
-  let default_global_variables = ["window", "document", "bota", "dota"];
+    lines.forEach((currentLine, index) => {
+        let outputCurrentLine: TOKEN[] = [];
+        let words: string[] = [];
+        words = currentLine.split(/\s+/).map(word => word + " ");
 
-  lines.forEach((currentLine, index) => {
-    let outputCurrentLine: TOKEN[] = [];
-    let words: string[] = [];
-    words = currentLine.split(/\s+/).map(word => word + " ");
+        // if words start or end with a bracket, make the bracket into a separate word
 
-    let is_inside_string: boolean = false;
-    for (let i = 0; i < words.length; i++) {
-      let word = words[i];
-      if (word.indexOf('"') !== -1 || word.indexOf("'") !== -1 || word.indexOf("`") !== -1)
-        is_inside_string = !is_inside_string;
-      if (word.indexOf('" ') !== -1 || word.indexOf("' ") !== -1 || word.indexOf("` ") !== -1) {
-        is_inside_string = false;
-        outputCurrentLine.push({
-          type: "string",
-          value: word,
-          color: "#ff0000",
-        });
-        continue;
-      }
-      if (is_inside_string) {
-        outputCurrentLine.push({
-          type: "string",
-          value: word,
-          color: "#ff0000",
-        });
-        continue;
-      }
-      if (word === "function ") {
-        outputCurrentLine.push({
-          type: "keyword",
-          value: word,
-          color: "#ff0000",
-        });
-        i++;
-        word = words[i];
-        outputCurrentLine.push({
-          type: "function",
-          value: word,
-          color: "#ff0000",
-        });
-        continue;
-      }
-      generic_keywords.map(keyword => {
-        if (word === keyword + " ") {
-          outputCurrentLine.push({
-            type: "keyword",
-            value: word,
-            color: "#ff0000",
-            bold: true,
-          });
+
+        let is_inside_string: boolean = false;
+        for (let i = 0; i < words.length; i++) {
+            let word = words[i];
+            if (word.indexOf('"') !== -1 || word.indexOf("'") !== -1 || word.indexOf("`") !== -1)
+                is_inside_string = !is_inside_string;
+            if (word.indexOf('" ') !== -1 || word.indexOf("' ") !== -1 || word.indexOf("` ") !== -1) {
+                is_inside_string = false;
+                outputCurrentLine.push({
+                    type: "string",
+                    value: word,
+                    color: "#ff0000",
+                });
+                continue;
+            }
+            if (is_inside_string) {
+                outputCurrentLine.push({
+                    type: "string",
+                    value: word,
+                    color: "#ff0000",
+                });
+                continue;
+            }
+            if (word === "function ") {
+                outputCurrentLine.push({
+                    type: "keyword",
+                    value: word,
+                    color: "#ff0000",
+                });
+                i++;
+                word = words[i];
+                outputCurrentLine.push({
+                    type: "function",
+                    value: word,
+                    color: "#ff0000",
+                });
+                continue;
+            }
+            if (word === "this ") {
+                outputCurrentLine.push({
+                    type: "keyword",
+                    value: word,
+                    color: "#ff0000",
+                    bold: true,
+                });
+                continue
+            }
+            if (word === "(" || word === ")" || word === "{" || word === "}" || word === "[" || word === "]") {
+                outputCurrentLine.push({
+                    type: "bracket",
+                    value: word,
+                    color: "#ff0000"
+                })
+                continue
+            }
+            outputCurrentLine.push({
+                type: "unknown",
+                value: word,
+                color: "#ff0000",
+            });
         }
-      });
-      outputCurrentLine.push({
-        type: "unknown",
-        value: word,
-        color: "#ff0000",
-      });
-    }
-    output.push(outputCurrentLine);
-  });
+        output.push(outputCurrentLine);
+    });
 
-  return output;
+    return output;
 }
