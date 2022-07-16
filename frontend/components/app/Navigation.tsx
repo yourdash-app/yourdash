@@ -21,21 +21,21 @@
  *   SOFTWARE.
  */
 
-import {NextRouter, withRouter} from "next/router";
-import React, {useState} from "react";
+import {NextRouter, useRouter, withRouter} from "next/router";
+import React from "react";
 import * as localforage from "localforage";
 import CommandPallet from "./CommandPallet";
+import createUuid from "../../lib/libUuid";
 
 class Navigation extends React.Component<{
     router: NextRouter; pageId: string;
 }> {
     state: {
-        githubUserData: any; notifications: { title: string; urgency: 1 | 2 | 3; content: "" }[]; expanded: boolean; willAnimate: boolean; isDisabled: boolean; isRemindedToLogin: boolean;
+        githubUserData: any; notifications: { title: string; urgency: 1 | 2 | 3; content: "", id: string }[]; expanded: boolean; isDisabled: boolean; isRemindedToLogin: boolean;
     } = {
         githubUserData: {},
         notifications: [],
         expanded: false,
-        willAnimate: false,
         isDisabled: false,
         isRemindedToLogin: true,
     };
@@ -79,160 +79,155 @@ class Navigation extends React.Component<{
     }
 
     render() {
-        return (<div
-            className={`${this.state.expanded ? "w-20" : "w-12"} h-screen bg-content-normal ${this.state.expanded ? "pt-2" : "pt-1"} relative shadow-xl ${this.state.willAnimate ? "transition-all" : null}`}>
-            <CommandPallet/>
-            <NavigationUser userData={this.state.githubUserData} expanded={this.state.expanded}/>
-            <NavigationButton
-                isDisabled={!this.state.isDisabled}
-                expanded={this.state.expanded}
-                hoverTag={`Login`}
-                activePage={"login"}
-                currentPageId={this.props.pageId}
-                onClick={() => {
-                    this.props.router.push("/auth/login");
-                }}
-                icon="login"
-            />
-            <NavigationButton
-                isDisabled={this.state.isDisabled}
-                expanded={this.state.expanded}
-                hoverTag={`Home`}
-                activePage={"home"}
-                currentPageId={this.props.pageId}
-                onClick={() => {
-                    this.props.router.push("/app/home");
-                }}
-                icon="home"
-            />
-            <NavigationButton
-                isDisabled={this.state.isDisabled}
-                expanded={this.state.expanded}
-                hoverTag={`Code Editor`}
-                currentPageId={this.props.pageId}
-                activePage={"code-editor"}
-                onClick={() => {
-                    this.props.router.push("/app/code-editor");
-                }}
-                icon="code"
-            />
-            <NavigationButton
-                isDisabled={this.state.isDisabled}
-                expanded={this.state.expanded}
-                hoverTag={`Manage server`}
-                currentPageId={this.props.pageId}
-                activePage={"manage-server"}
-                onClick={() => {
-                    this.props.router.push("/app/manage-server");
-                }}
-                icon="build"
-            />
-            <NavigationButton
-                isDisabled={this.state.isDisabled}
-                expanded={this.state.expanded}
-                hoverTag={`Git`}
-                currentPageId={this.props.pageId}
-                activePage={"git"}
-                onClick={() => {
-                    this.props.router.push("/app/git");
-                }}
-                icon="wysiwyg"
-            />
-            <NavigationButton
-                isDisabled={this.state.isDisabled}
-                expanded={this.state.expanded}
-                hoverTag={`Todo`}
-                currentPageId={this.props.pageId}
-                activePage={"todo-list"}
-                icon="pending_actions"
-            />
-            <div className={`absolute bottom-0 w-full`}>
-                {!this.state.isRemindedToLogin ? (<Notification
-                    expanded={this.state.expanded}
-                    title={`Login?`}
-                    content={`login to your github account to begin editing.`}
-                    inputs={[{
-                        type: "button", label: "Login", onClick: () => {
-                            this.props.router.push("/auth/login");
-                        },
-                    }, {
-                        type: "button", label: "Remind me later", onClick: () => {
-                            this.setState({
-                                isRemindedToLogin: true,
-                            });
-                        },
-                    },]}
-                    notifications={[]}
-                    noClose={true}
-                    setNotifications={() => {
-                    }}
-                    urgencyLevel={1}/>) : null}
-                {this.state.notifications.map((notification, ind) => {
-                    return <Notification key={ind} expanded={this.state.expanded} title={notification.title}
-                                         notifications={this.state.notifications}
-                                         setNotifications={(notifications => {
-                                             this.setState({
-                                                 notifications: notifications
-                                             })
-                                         })}
-                                         content={notification.content} urgencyLevel={notification.urgency}/>
-                })}
-                <NavigationButton
-                    isDisabled={false}
-                    expanded={this.state.expanded}
-                    hoverTag={this.state.expanded ? "Collapse Navigation" : "Expand Navigation"}
-                    currentPageId={this.props.pageId}
-                    activePage={"toggle"}
-                    icon="switch_right"
-                    onClick={() => {
-                        this.setState({
-                            expanded: !this.state.expanded, willAnimate: true,
-                        });
-                        localforage.getItem("settings").then((data: any) => {
-                            // check if data contains collapseNavigationBar
-                            if (data?.collapseNavigationBar !== null && data?.collapseNavigationBar !== undefined) {
-                                // if it does, update it
-                                data.collapseNavigationBar = !data.collapseNavigationBar;
-                                localforage.setItem("settings", data);
-                            } else {
-                                // if it doesn't, create it
-                                localforage.setItem("settings", {
-                                    collapseNavigationBar: !this.state.expanded,
+        return (
+            <>
+                <CommandPallet/>
+                <div
+                    className={`${this.state.expanded ? "w-20" : "w-14"} h-screen bg-content-normal relative shadow-xl transition-all grid grid-rows-[1fr,auto]`}>
+                    <div className={"w-full"}>
+                        <NavigationUser userData={this.state.githubUserData} expanded={this.state.expanded}/>
+                        <NavigationButton
+                            isDisabled={!this.state.isDisabled}
+                            expanded={this.state.expanded}
+                            hoverTag={`Login`}
+                            activePage={"login"}
+                            currentPageId={this.props.pageId}
+                            onClick={() => {
+                                this.props.router.push("/auth/login");
+                            }}
+                            icon="login"
+                        />
+                        <NavigationButton
+                            isDisabled={this.state.isDisabled}
+                            expanded={this.state.expanded}
+                            hoverTag={`Home`}
+                            activePage={"home"}
+                            currentPageId={this.props.pageId}
+                            onClick={() => {
+                                this.props.router.push("/app/home");
+                            }}
+                            icon="home"
+                        />
+                        <NavigationButton
+                            isDisabled={this.state.isDisabled}
+                            expanded={this.state.expanded}
+                            hoverTag={`Code Editor`}
+                            currentPageId={this.props.pageId}
+                            activePage={"code-editor"}
+                            onClick={() => {
+                                this.props.router.push("/app/code-editor");
+                            }}
+                            icon="code"
+                        />
+                        <NavigationButton
+                            isDisabled={this.state.isDisabled}
+                            expanded={this.state.expanded}
+                            hoverTag={`Manage server`}
+                            currentPageId={this.props.pageId}
+                            activePage={"manage-server"}
+                            onClick={() => {
+                                this.props.router.push("/app/manage-server");
+                            }}
+                            icon="build"
+                        />
+                        <NavigationButton
+                            isDisabled={this.state.isDisabled}
+                            expanded={this.state.expanded}
+                            hoverTag={`Git`}
+                            currentPageId={this.props.pageId}
+                            activePage={"git"}
+                            onClick={() => {
+                                this.props.router.push("/app/git");
+                            }}
+                            icon="wysiwyg"
+                        />
+                        <NavigationButton
+                            isDisabled={this.state.isDisabled}
+                            expanded={this.state.expanded}
+                            hoverTag={`Todo`}
+                            currentPageId={this.props.pageId}
+                            activePage={"todo-list"}
+                            icon="pending_actions"
+                        />
+                    </div>
+                    <div className={`w-full shadow-inner pt-2`}>
+                        {!this.state.isRemindedToLogin ? (<Notification
+                            id={createUuid()}
+                            expanded={this.state.expanded}
+                            title={`Login?`}
+                            content={`login to your github account to begin editing.`}
+                            inputs={[{
+                                type: "button", label: "Login", onClick: () => {
+                                    this.props.router.push("/auth/login");
+                                },
+                            }, {
+                                type: "button", label: "Remind me later", onClick: () => {
+                                    this.setState({
+                                        isRemindedToLogin: true,
+                                    });
+                                },
+                            },]}
+                            notifications={[]}
+                            noClose={true}
+                            setNotifications={() => {
+                            }}
+                            urgencyLevel={1}/>) : null}
+                        {this.state.notifications.map((notification, ind) => {
+                            return <Notification key={ind} expanded={this.state.expanded} title={notification.title}
+                                                 notifications={this.state.notifications}
+                                                 setNotifications={(notifications => {
+                                                     this.setState({
+                                                         notifications: notifications
+                                                     })
+                                                 })}
+                                                 id={notification.id}
+                                                 content={notification.content} urgencyLevel={notification.urgency}/>
+                        })}
+                        <NavigationButton
+                            isDisabled={false}
+                            expanded={this.state.expanded}
+                            hoverTag={this.state.expanded ? "Collapse Navigation" : "Expand Navigation"}
+                            currentPageId={this.props.pageId}
+                            activePage={"toggle"}
+                            icon="switch_right"
+                            onClick={() => {
+                                this.setState({
+                                    expanded: !this.state.expanded, willAnimate: true,
                                 });
-                            }
-                        });
-                    }}
-                />
-                <NavigationButton
-                    isDisabled={this.state.isDisabled}
-                    expanded={this.state.expanded}
-                    hoverTag={`Settings`}
-                    currentPageId={this.props.pageId}
-                    activePage={"settings"}
-                    icon="settings"
-                    onClick={() => {
-                        this.props.router.push("/app/settings");
-                    }}
-                />
-                <NavigationButton
-                    isDisabled={this.state.isDisabled}
-                    expanded={this.state.expanded}
-                    hoverTag={`Logout`}
-                    currentPageId={this.props.pageId}
-                    activePage={"null"}
-                    onClick={() => {
-                        localforage.removeItem("githubUser");
-                        localforage.removeItem("githubToken");
-                        this.props.router.push("/");
-                    }}
-                    icon="logout"
-                />
-                <NavigationNotificationButton notificationsCount={this.state.notifications.length}
-                                              expanded={this.state.expanded} onClick={() => {
-                    this.props.router.push("/app/notifications")
-                }}/>
-            </div>
-        </div>);
+                                localforage.getItem("settings").then((data: any) => {
+                                    // check if data contains collapseNavigationBar
+                                    if (data?.collapseNavigationBar !== null && data?.collapseNavigationBar !== undefined) {
+                                        // if it does, update it
+                                        data.collapseNavigationBar = !data.collapseNavigationBar;
+                                        localforage.setItem("settings", data);
+                                    } else {
+                                        // if it doesn't, create it
+                                        localforage.setItem("settings", {
+                                            collapseNavigationBar: !this.state.expanded,
+                                        });
+                                    }
+                                });
+                            }}
+                        />
+                        <NavigationButton
+                            isDisabled={this.state.isDisabled}
+                            expanded={this.state.expanded}
+                            hoverTag={`Settings`}
+                            currentPageId={this.props.pageId}
+                            activePage={"settings"}
+                            icon="settings"
+                            onClick={() => {
+                                this.props.router.push("/app/settings");
+                            }}
+                        />
+                        <NavigationNotificationButton notificationsCount={this.state.notifications.length}
+                                                      expanded={this.state.expanded} onClick={() => {
+                            this.props.router.push("/app/notifications")
+                        }}/>
+                    </div>
+                </div>
+            </>
+        );
     }
 }
 
@@ -257,13 +252,13 @@ function NavigationButton(props: {
 }
 
 function NavigationUser(props: { userData: any; expanded: boolean }) {
-    let [toggleState, setToggleState] = useState(false);
+    const router = useRouter()
     return (<div
         className={`bg-none relative group select-none cursor-pointer ${props.expanded ? "ml-2" : "ml-1"} mb-2 flex`}>
         <div
-            className={`absolute z-50 ml-2 left-full origin-top-left ${toggleState ? "scale-100 opacity-100 shadow-2xl rounded-xl" : "scale-0 opacity-0 pointer-events-none"} group-hover:scale-100 group-hover:opacity-100 transition-all`}>
+            className={`absolute z-50 left-full group-hover:shadow-2xl rounded-br-xl opacity-0 group-hover:opacity-100 group-hover:w-80 overflow-hidden w-0 transition-all bg-content-normal border-b-2 border-r-2 border-0 border-content-light`}>
             <div
-                className={`bg-content-normal w-80 h-24 rounded-xl cursor-auto ${toggleState ? "border-4 border-content-border p-1" : "p-2"} transition-border duration-75 grid grid-cols-[auto,1fr] gap-1`}>
+                className={`h-24 cursor-auto p-2 transition-border duration-75 grid grid-cols-[auto,1fr] gap-1`}>
                 <img
                     className={`aspect-square rounded-lg h-20`}
                     src={props.userData?.avatar_url ? props.userData.avatar_url + "&s=80" : require("./../../assets/default_user_profile.svg").default.src}
@@ -278,12 +273,23 @@ function NavigationUser(props: { userData: any; expanded: boolean }) {
                     </h2>
                 </div>
             </div>
+            {
+                props.userData?.name ?
+                    <div className={"flex w-full p-2 shadow-inner"}>
+                        <button
+                            className={"flex items-center shadow-md justify-center bg-content-normal hover:bg-content-light active:bg-content-dark w-full h-full p-1 rounded-lg text-text-primary"}
+                            onClick={() => {
+                                localforage.removeItem("githubUser");
+                                localforage.removeItem("githubToken");
+                                router.push("/");
+                            }}><span className={"material-icons-round"}>logout</span>Logout
+                        </button>
+                    </div>
+                    : null
+            }
         </div>
         <div
-            className={`w-full aspect-square overflow-hidden ${props.expanded ? "mr-2" : "mr-1"}`}
-            onClick={() => {
-                setToggleState(!toggleState);
-            }}>
+            className={`w-full aspect-square overflow-hidden ${props.expanded ? "mr-2 mt-2" : "mr-1 mt-1"}`}>
             <img
                 className={`w-full aspect-square rounded-lg`}
                 src={props.userData?.avatar_url ? props.userData.avatar_url + (props.expanded ? "&s=64" : "&s=40") : require("./../../assets/default_user_profile.svg").default.src}
@@ -296,7 +302,7 @@ function NavigationUser(props: { userData: any; expanded: boolean }) {
 function Notification(props: {
     title: string; content: string; urgencyLevel: 1 | 2 | 3; expanded: boolean; inputs?: {
         type: "button"; label: string; onClick: () => void;
-    }[]; notifications: any[]; noClose?: boolean; setNotifications: (setValue: any[]) => void;
+    }[]; notifications: any[]; noClose?: boolean; setNotifications: (setValue: any[]) => void; id: string
 }) {
     return (<div
         className={`w-max max-w-7xl h-max max-h-4xl select-none ${props.urgencyLevel === 3 ? "bg-red-400" : props.urgencyLevel === 2 ? "bg-amber-400" : "bg-blue-400"} fixed ${props.expanded ? "left-24" : "left-16"} bottom-4 rounded-lg transition-all overflow-hidden shadow-2xl z-50`}>
@@ -307,7 +313,7 @@ function Notification(props: {
                     className={"material-icons-round text-white ml-auto mr-3 p-1 hover:bg-content-light active:bg-content-dark cursor-pointer rounded-md transition-colors"}
                     onClick={() => {
                         props.setNotifications([...props.notifications.filter(value => {
-                            return value.content !== props.content
+                            return value.id !== props.id
                         })])
                     }}>close</span> : null}
             </div>
