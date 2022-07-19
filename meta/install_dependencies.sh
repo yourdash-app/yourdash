@@ -1,5 +1,11 @@
 #!/bin/bash
 
+#
+# Copyright © 2022 Ewsgit
+# All rights reserved.
+# Licensed under the MIT License - https://ewsgit.github.io/devdash/copyright
+#
+
 echo "#####################################"
 echo "  DevDash | Installing dependencies  "
 echo "#####################################"
@@ -66,6 +72,8 @@ npm i
 cd ../backend/personal/
 
 # Work in progress
+
+pip install sanic
 
 cd ../../
 

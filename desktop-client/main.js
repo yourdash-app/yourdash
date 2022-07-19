@@ -1,3 +1,9 @@
+/*
+ * Copyright © 2022 Ewsgit
+ * All rights reserved.
+ * Licensed under the MIT License - https://ewsgit.github.io/devdash/copyright
+ */
+
 const {app, BrowserWindow} = require('electron')
 
 const createWindow = () => {
@@ -7,7 +13,8 @@ const createWindow = () => {
         autoHideMenuBar: true,
         darkTheme: true,
         roundedCorners: true,
-        title: "DevDash Desktop"
+        title: "DevDash Desktop",
+        icon: "./DevDash.png"
     })
 
     win.loadURL("http://localhost:3000")
