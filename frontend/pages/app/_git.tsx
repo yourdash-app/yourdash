@@ -4,7 +4,7 @@
  * Licensed under the MIT License - https://ewsgit.github.io/devdash/copyright
  */
 
-import React from "react";
+import React, {useEffect} from "react";
 import {useRouter} from "next/router";
 import Index from "./git/_index";
 import Favourites from "./git/_favourites";
@@ -13,11 +13,13 @@ import User from "./git/_user";
 
 export default function Git() {
     const router = useRouter();
-    if (!router.query.path) {
-        router.push("/app/home");
-    }
+    useEffect(() => {
+        if (!router.query.path) {
+            router.push("/app/home");
+        }
+    })
     // @ts-ignore
-    switch (router.query.path[1]) {
+    switch (router.query?.path?.[1]) {
         case "u":
         case "user":
             // user

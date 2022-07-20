@@ -22,21 +22,25 @@
  */
 
 export default function getCharacterWidth(fontFamily: string, fontSize: string): number {
-    if (!document.getElementById("get_character_width_measurement_element")) {
-        let element = document.createElement('p');
-        element.id = "get_character_width_measurement_element"
-        element.style.top = "-100vh"
-        element.style.left = "-100vw"
-        element.innerText = "0"
-        element.style.position = "fixed"
-        element.style.fontFamily = fontFamily
-        element.style.fontSize = fontSize
-        document.body.appendChild(element)
-        return element.getBoundingClientRect().width
+    if (typeof window !== "undefined") {
+        if (!document.getElementById("get_character_width_measurement_element")) {
+            let element = document.createElement('p');
+            element.id = "get_character_width_measurement_element"
+            element.style.top = "-100vh"
+            element.style.left = "-100vw"
+            element.innerText = "0"
+            element.style.position = "fixed"
+            element.style.fontFamily = fontFamily
+            element.style.fontSize = fontSize
+            document.body.appendChild(element)
+            return element.getBoundingClientRect().width
+        } else {
+            let element = document.getElementById("get_character_width_measurement_element") as HTMLParagraphElement
+            element.style.fontFamily = fontFamily
+            element.style.fontSize = fontSize
+            return element.getBoundingClientRect().width
+        }
     } else {
-        let element = document.getElementById("get_character_width_measurement_element") as HTMLParagraphElement
-        element.style.fontFamily = fontFamily
-        element.style.fontSize = fontSize
-        return element.getBoundingClientRect().width
+        return 0
     }
 }
