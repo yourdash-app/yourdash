@@ -5,6 +5,10 @@
     "tauri": "^0.14.1"
   },
   "scripts": {
-    "tauri": "../node_modules/.bin/tauri"
-  }
+    "tauri": "./node_modules/.bin/tauri"
+  },
+  "main": "index.js",
+  "author": "Ewsgit",
+  "license": "MIT",
+  "description": ""
 }

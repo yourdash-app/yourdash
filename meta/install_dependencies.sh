@@ -69,7 +69,11 @@ cd ../desktop-client/
 
 npm i
 
-cd ../backend/personal/
+cd ./tauri-remake/
+
+npm i
+
+cd ../../backend/personal/
 
 # Work in progress
 
