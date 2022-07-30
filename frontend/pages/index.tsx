@@ -50,11 +50,13 @@ export default class ComponentName extends React.Component {
             src={require("./../assets/homescreenWave.svg").default.src}
             className={`w-full max-h-screen min-h-[75vh] select-none`}
             alt="wave background"
+            draggable={false}
           />
           <div className={`absolute top-0 pt-20 left-0 w-full h-full flex items-center justify-center`}>
             <div
               className={`sm:w-5/6 w-full sm:rounded-2xl overflow-hidden bg-content-light md:h-7/8 h-5/6 rounded-none shadow-2xl flex items-center justify-center transition-all`}>
               <img
+                draggable={false}
                 className="h-48 select-none"
                 src={require("./../assets/FlatIcons/interface-file-alert-warning.svg").default.src}
                 alt="Content Error"
