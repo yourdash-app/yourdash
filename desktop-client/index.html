@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DevDash Desktop</title>
+  <style>
+    @import url(https://fonts.googleapis.com/icon?family=Material+Icons+Round);
+
+    body {
+      margin: 0;
+      padding: 0;
+      border-radius: 0.5rem;
+    }
+
+    .desktop_window__frame {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      padding: 0;
+      margin: 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 2;
+      user-select: none;
+    }
+
+    .desktop_window__header {
+      height: 2rem;
+      width: 100vw;
+      background: #222;
+      display: flex;
+      align-items: center;
+      justify-content: end;
+      font-family: 'Segoe UI', 'dejavu sans', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .desktop_window__header>span:not([class]) {
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-app-region: drag;
+      width: 100%;
+      text-align: left;
+      padding-left: 0.5rem;
+      color: #eee;
+      font-size: 1rem;
+    }
+
+    .desktop_window__header>span[class] {
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      aspect-ratio: 1/1;
+      user-select: none;
+    }
+
+    .desktop_window__frame_container {
+      height: calc(100vh - 2rem);
+      width: 100vw;
+      overflow: hidden;
+      position: relative;
+      background-color: #333;
+    }
+
+    .desktop_window__loading_message {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #aaa;
+    }
+
+    .desktop_window__header_close:hover {
+      background-color: #d00;
+    }
+
+    .desktop_window__header_generic:hover {
+      background-color: #555;
+    }
+  </style>
+  <script src="./renderer.js" defer></script>
+</head>
+
+<body>
+  <header class="desktop_window__header">
+    <span>DevDash Desktop</span>
+    <span class="material-icons-round desktop_window__header_generic" id="min-button">minimize</span>
+    <span class="material-icons-round desktop_window__header_generic" id="max-button">maximize</span>
+    <span class="material-icons-round desktop_window__header_close" id="close-button">close</span>
+  </header>
+  <div class="desktop_window__frame_container">
+    <iframe src="http://localhost:3000/auth/login" frameborder="0" class="desktop_window__frame"></iframe>
+    <h1 class="desktop_window__loading_message">Loading...</h1>
+  </div>
+  <script>
+    localStorage.setItem("is_desktop", "true")
+  </script>
+</body>
+
+</html>
