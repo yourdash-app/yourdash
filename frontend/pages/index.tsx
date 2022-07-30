@@ -45,7 +45,7 @@ export default class ComponentName extends React.Component {
           <title>DevDash - Home</title>
         </Head>
         <NavBar />
-        <div className={`relative`}>
+        <div className={`relative select-none`}>
           <img
             src={require("./../assets/homescreenWave.svg").default.src}
             className={`w-full max-h-screen min-h-[75vh] select-none`}
@@ -74,6 +74,7 @@ export default class ComponentName extends React.Component {
               <img
                 width={80}
                 height={80}
+                draggable={false}
                 className={`h-20 select-none`}
                 src={
                   // @ts-ignore
@@ -94,6 +95,7 @@ export default class ComponentName extends React.Component {
               <img
                 width={80}
                 height={80}
+                draggable={false}
                 className={`h-20 select-none`}
                 src={
                   // @ts-ignore
@@ -115,6 +117,7 @@ export default class ComponentName extends React.Component {
               <img
                 width={80}
                 height={80}
+                draggable={false}
                 className={`h-20 select-none`}
                 src={
                   // @ts-ignore
