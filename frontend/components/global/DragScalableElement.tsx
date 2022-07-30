@@ -70,28 +70,28 @@ export default function DragScalableElement(props: {
       {props.children}
       {props.dragConfig.scaleRight ? (
         <div
-          className={`w-2 h-full bg-transparent hover:bg-branding-primary active:bg-branding-active transition-colors cursor-col-resize absolute -right-1 top-0 z-50`}
+          className={`w-2 h-full bg-transparent hover:bg-branding-primary active:bg-branding-active transition-colors cursor-col-resize absolute -right-1 top-0 z-40`}
           onMouseDown={e => {
             handler(e, true, false, false);
           }}></div>
       ) : null}
       {props.dragConfig.scaleLeft ? (
         <div
-          className={`w-2 h-full bg-transparent hover:bg-branding-primary active:bg-branding-active transition-colors cursor-col-resize absolute -left-1 top-0 z-50`}
+          className={`w-2 h-full bg-transparent hover:bg-branding-primary active:bg-branding-active transition-colors cursor-col-resize absolute -left-1 top-0 z-40`}
           onMouseDown={e => {
             handler(e, true, false, true);
           }}></div>
       ) : null}
       {props.dragConfig.scaleTop ? (
         <div
-          className={`h-2 w-full bg-transparent hover:bg-branding-primary active:bg-branding-active transition-colors cursor-row-resize absolute left-0 -top-1 z-50`}
+          className={`h-2 w-full bg-transparent hover:bg-branding-primary active:bg-branding-active transition-colors cursor-row-resize absolute left-0 -top-1 z-40`}
           onMouseDown={e => {
             handler(e, false, true, true);
           }}></div>
       ) : null}
       {props.dragConfig.scaleBottom ? (
         <div
-          className={`h-2 w-full bg-transparent hover:bg-branding-primary active:bg-branding-active transition-colors cursor-row-resize absolute left-0 -bottom-1 z-50`}
+          className={`h-2 w-full bg-transparent hover:bg-branding-primary active:bg-branding-active transition-colors cursor-row-resize absolute left-0 -bottom-1 z-40`}
           onMouseDown={e => {
             handler(e, false, true, false);
           }}></div>
