@@ -4,18 +4,18 @@
  * Licensed under the MIT License - https://ewsgit.github.io/devdash/copyright
  */
 
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import Tokenize from "./codesense/Tokenizer";
 import Colorize from "./codesense/Colorizer";
-import {TOKEN} from "./codesense/Typings";
+import { TOKEN } from "./codesense/Typings";
 import getCharacterWidth from "../../../lib/getCharacterWidth";
 
 export default function TextEditor() {
-    const [code, setCode] = useState(['(this is a test) === "aaa" "ass sss aaa" `hmmm mmmm mmmm mmm`  bbb this is a test', "and this is a function aaa() r",]);
-    const [tokenizedCode, setTokenizedCode] = useState([] as TOKEN[][]);
-    const [linesOfCode, setLinesOfCode] = useState([] as number[]);
-    const [cursorPosition, setCursorPosition] = useState({x: 0, y: 0} as { x: number; y: number });
-    const [fontConfig, setFontConfig] = useState({
+    const [ code, setCode ] = useState([ '(this is a test) === "aaa" "ass sss aaa" `hmmm mmmm mmmm mmm`  bbb this is a test', "and this is a function aaa() r" ]);
+    const [ tokenizedCode, setTokenizedCode ] = useState([] as TOKEN[][]);
+    const [ linesOfCode, setLinesOfCode ] = useState([] as number[]);
+    const [ cursorPosition, setCursorPosition ] = useState({ x: 0, y: 0 } as { x: number; y: number });
+    const [ fontConfig, setFontConfig ] = useState({
         fontSize: 18,
         lineHeight: 18 * 1.2,
         fontFamily: "Jetbrains Mono"
@@ -24,7 +24,7 @@ export default function TextEditor() {
     useEffect(() => {
         setTokenizedCode(Colorize(Tokenize(code, "js")));
         setLinesOfCode(code.map((str, ind) => ind));
-    }, [code]);
+    }, [ code ]);
     let onKeyDownEvent = (e: KeyboardEvent) => {
         e.preventDefault()
         if (pressedKeys.indexOf(e.key) === -1) {
@@ -42,10 +42,10 @@ export default function TextEditor() {
         pressedKeys.map(key => {
             switch (key) {
                 case "ArrowUp":
-                    setCursorPosition({...cursorPosition, y: cursorPosition.y - 1});
+                    setCursorPosition({ ...cursorPosition, y: cursorPosition.y - 1 });
                     break;
                 case "ArrowDown":
-                    setCursorPosition({...cursorPosition, y: cursorPosition.y + 1});
+                    setCursorPosition({ ...cursorPosition, y: cursorPosition.y + 1 });
                     break;
                 case "ArrowLeft":
                     setCursorPosition({
@@ -73,48 +73,48 @@ export default function TextEditor() {
             })}
         </div>
         <div className="bg-content-light pt-2 pl-2 w-full h-full overflow-scroll overflow-scroll">
-        <pre
-            className={`relative cursor-text w-full h-full`}
-            tabIndex={0}
-            onFocus={e => {
-                e.target.addEventListener("keydown", onKeyDownEvent);
-                e.target.addEventListener("keyup", onKeyUpEvent);
-            }}
-            onBlur={e => {
-                e.target.removeEventListener("keydown", onKeyDownEvent);
-                e.target.removeEventListener("keyup", onKeyUpEvent);
-            }}
-            onClick={e => {
-                e.preventDefault();
-                setCursorPosition({
-                    x: Math.round((e.clientX - e.currentTarget.getClientRects()[0].x) / getCharacterWidth(fontConfig.fontFamily, fontConfig.fontSize + "px")),
-                    y: Math.floor((e.clientY - e.currentTarget.getClientRects()[0].y) / fontConfig.lineHeight),
-                });
-            }}
-        >
-          {tokenizedCode.map((line, ind) => {
-              return (<span key={ind} className={`flex`}>
-                {line.map((token, tokenInd) => {
-                    return (<span key={tokenInd} style={{
-                        color: token.color,
-                        fontWeight: token.bold ? "bold" : "normal",
-                        fontSize: fontConfig.fontSize + "px",
-                        lineHeight: fontConfig.lineHeight + "px",
-                        fontFamily: fontConfig.fontFamily
-                    }}>
-                      {token.value}
-                     </span>);
+            <pre
+                className={`relative cursor-text w-full h-full`}
+                tabIndex={0}
+                onFocus={e => {
+                    e.target.addEventListener("keydown", onKeyDownEvent);
+                    e.target.addEventListener("keyup", onKeyUpEvent);
+                }}
+                onBlur={e => {
+                    e.target.removeEventListener("keydown", onKeyDownEvent);
+                    e.target.removeEventListener("keyup", onKeyUpEvent);
+                }}
+                onClick={e => {
+                    e.preventDefault();
+                    setCursorPosition({
+                        x: Math.round((e.clientX - e.currentTarget.getClientRects()[ 0 ].x) / getCharacterWidth(fontConfig.fontFamily, fontConfig.fontSize + "px")),
+                        y: Math.floor((e.clientY - e.currentTarget.getClientRects()[ 0 ].y) / fontConfig.lineHeight),
+                    });
+                }}
+            >
+                {tokenizedCode.map((line, ind) => {
+                    return (<span key={ind} className={`flex`}>
+                        {line.map((token, tokenInd) => {
+                            return (<span key={tokenInd} style={{
+                                color: token.color,
+                                fontWeight: token.bold ? "bold" : "normal",
+                                fontSize: fontConfig.fontSize + "px",
+                                lineHeight: fontConfig.lineHeight + "px",
+                                fontFamily: fontConfig.fontFamily
+                            }}>
+                                {token.value}
+                            </span>);
+                        })}
+                    </span>);
                 })}
-              </span>);
-          })}
-            <div
-                className={`w-0.5 bg-branding-primary absolute top-0 left-0 animate-pulse`}
-                style={{
-                    height: fontConfig.lineHeight + "px",
-                    left: cursorPosition.x * getCharacterWidth(fontConfig.fontFamily, fontConfig.fontSize + "px") + "px",
-                    top: cursorPosition.y * fontConfig.lineHeight
-                }}></div>
-        </pre>
+                <div
+                    className={`w-0.5 bg-branding-primary absolute top-0 left-0 animate-pulse`}
+                    style={{
+                        height: fontConfig.lineHeight + "px",
+                        left: cursorPosition.x * getCharacterWidth(fontConfig.fontFamily, fontConfig.fontSize + "px") + "px",
+                        top: cursorPosition.y * fontConfig.lineHeight
+                    }}></div>
+            </pre>
         </div>
     </div>);
 }
