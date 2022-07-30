@@ -25,8 +25,9 @@ import * as React from "react";
 import NavBar from "../components/home/NavBar";
 import Head from "next/head";
 import Link from "next/link";
+import { Router, withRouter } from "next/router";
 
-export default class ComponentName extends React.Component {
+class IndexPage extends React.Component<{ router: Router }> {
   state: {
     fullscreenPreview: boolean;
   };
@@ -36,6 +37,12 @@ export default class ComponentName extends React.Component {
     this.state = {
       fullscreenPreview: false,
     };
+  }
+
+  componentDidMount() {
+    if (localStorage.getItem("is_desktop") === "true") {
+      this.props.router.push("/auth/login")
+    }
   }
 
   render() {
@@ -255,3 +262,5 @@ export default class ComponentName extends React.Component {
     );
   }
 }
+
+export default withRouter(IndexPage)
