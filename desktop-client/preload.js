@@ -9,7 +9,22 @@ window.addEventListener('DOMContentLoaded', () => {
     ipcRenderer.send("is_window_maximized", "")
   })
 
-  document.getElementById("close-button").addEventListener("click", () => {
-    ipcRenderer.send("window_close", "")
-  })
+
+  let root_window_devtools_count = 0;
+  document.getElementById("close-button").onmousedown = (e) => {
+    console.log(e.button)
+    if (e.button === 0) {
+      ipcRenderer.send("window_close", "")
+    }
+    if (e.button === 2) {
+      root_window_devtools_count++
+      console.log(root_window_devtools_count)
+      if (root_window_devtools_count === 5) {
+        ipcRenderer.send("open_devtools", "")
+        root_window_devtools_count = 0
+      } else {
+        ipcRenderer.send("close_devtools", "")
+      }
+    }
+  }
 })

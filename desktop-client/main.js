@@ -1,8 +1,8 @@
 /*
- * Copyright © 2022 Ewsgit
- * All rights reserved.
- * Licensed under the MIT License - https://ewsgit.github.io/devdash/copyright
- */
+* Copyright © 2022 Ewsgit
+* All rights reserved.
+* Licensed under the MIT License - https://ewsgit.github.io/devdash/copyright
+*/
 
 const { app, BrowserWindow, ipcMain } = require('electron')
 const path = require('path')
@@ -22,18 +22,26 @@ const createWindow = () => {
         frame: false,
         webPreferences: {
             nodeIntegration: true,
-            preload: path.join(__dirname, "./preload.js")
+            preload: path.join(__dirname, "./preload.js"),
+            webviewTag: true
         }
     })
+    ipcMain.on("open_devtools", () => {
+        win.openDevTools()
+    })
 
+    ipcMain.on("close_devtools", () => {
+        win.closeDevTools()
+    })
+    
     ipcMain.on("window_close", () => {
         win.close()
     })
-
+    
     ipcMain.on("window_minimize", () => {
         win.minimize()
     })
-
+    
     ipcMain.on("is_window_maximized", () => {
         win.webContents.send("is_window_maximized", "" + win.isMaximized())
         if (win.isMaximized()) {
@@ -42,13 +50,13 @@ const createWindow = () => {
             win.maximize()
         }
     })
-
+    
     win.loadFile(path.join(__dirname, "index.html"))
 }
 
-app.whenReady().then(() => {
-    createWindow()
 
+app.whenReady().then(() => {
+    createWindow()    
     app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0) createWindow()
     })
