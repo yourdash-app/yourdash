@@ -73,7 +73,7 @@ class Navigation extends React.Component<{
         return (<>
             <CommandPallet/>
             <div
-                className={`${this.state.expanded ? "w-20" : "w-14"} h-screen bg-content-normal relative shadow-xl transition-all grid grid-rows-[1fr,auto]`}>
+                className={`${this.state.expanded ? "max-w-[5rem]" : "max-w-[3.5rem]"} overflow-x-hidden overflow-y-auto h-screen bg-content-normal relative shadow-xl transition-all grid grid-rows-[1fr,auto]`}>
                 <div className={"w-full"}>
                     <NavigationUser userData={this.state.githubUserData} expanded={this.state.expanded}/>
                     <NavigationButton
