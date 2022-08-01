@@ -12,7 +12,6 @@
     body {
       margin: 0;
       padding: 0;
-      border-radius: 0.5rem;
     }
 
     .desktop_window__frame {
@@ -92,6 +91,14 @@
     .desktop_window__header_generic:hover {
       background-color: #555;
     }
+
+    #reload-button {
+      height: 100%;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
   </style>
   <script src="./renderer.js" defer></script>
 </head>
@@ -101,6 +108,9 @@
     <div>
       <span>DevDash Desktop</span>
     </div>
+    <span class="desktop_window__header_generic">
+      <span class="material-icons-round" id="reload-button">refresh</span>
+    </span>
     <span class="material-icons-round desktop_window__header_generic" id="devtools-button">code</span>
     <span class="material-icons-round desktop_window__header_generic" id="min-button">minimize</span>
     <span class="material-icons-round desktop_window__header_generic" id="max-button">check_box_outline_blank</span>
