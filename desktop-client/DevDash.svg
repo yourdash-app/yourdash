@@ -1,0 +1,4 @@
+<!-- Copyright © Ewsgit 2022. -->
+<!-- Licensed under the MIT License - https://ewsgit.github.io/devdash/copyright -->
+
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" fill="none" viewBox="0 0 256 256"><g clip-path="url(#clip0_50_2)"><circle cx="128" cy="128" r="100" fill="#5C8FDB"/><circle cx="128.5" cy="128.5" r="87.5" fill="#466F8C"/><path fill="#94CFF0" d="M64.25 132.027L99.9922 144.098V162.086L48.1367 140.992V127.633L64.25 132.027ZM99.9922 122.242L64.1914 134.547L48.1367 138.766V125.406L99.9922 104.312V122.242ZM148.273 83.6875L119.094 176.324H105.031L134.211 83.6875H148.273ZM191.047 134.371L155.422 122.301V104.371L206.984 125.465V138.883L191.047 134.371ZM155.422 144.215L191.047 131.852L206.984 127.691V141.051L155.422 162.145V144.215Z"/></g><defs><clipPath id="clip0_50_2"><rect width="256" height="256" fill="#fff"/></clipPath></defs></svg>

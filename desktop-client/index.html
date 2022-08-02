@@ -28,9 +28,9 @@
     }
 
     .desktop_window__header {
-      height: 2rem;
+      height: 1.75rem;
       width: 100vw;
-      background: #222;
+      background: #333;
       display: flex;
       align-items: center;
       justify-content: end;
@@ -42,8 +42,6 @@
       -webkit-user-select: none;
       -webkit-app-region: drag;
       width: 100%;
-      text-align: left;
-      padding-left: 0.5rem;
       color: #eee;
       font-size: 1rem;
       height: 100%;
@@ -51,10 +49,14 @@
       align-items: center;
       text-overflow: ellipsis;
     }
+
     .desktop_window__header>div>span {
       text-overflow: ellipsis;
       flex-wrap: nowrap;
       word-wrap: normal;
+      padding: 0;
+      margin: 0;
+      text-align: center;
     }
 
     .desktop_window__header>span[class] {
@@ -67,8 +69,21 @@
       color: #eee;
     }
 
+    .desktop_window__header>span[class]>* {
+      transition: transform 100ms linear;
+      transform: scale(1);
+    }
+
+    .desktop_window__header>span[class]:hover>* {
+      transform: scale(1.1);
+    }
+
+    .desktop_window__header>span[class]:active>* {
+      transform: scale(0.9);
+    }
+
     .desktop_window__frame_container {
-      height: calc(100vh - 2rem);
+      height: calc(100vh - 1.75rem);
       width: 100vw;
       overflow: hidden;
       position: relative;
@@ -99,6 +114,11 @@
       justify-content: center;
       align-items: center;
     }
+
+    .desktop_window__header>div>img {
+      height: calc(100% - 0.1rem);
+      padding: 0.1rem;
+    }
   </style>
   <script src="./renderer.js" defer></script>
 </head>
@@ -106,15 +126,24 @@
 <body>
   <header class="desktop_window__header">
     <div>
+      <img src="./DevDash.svg" alt="">
       <span>DevDash Desktop</span>
     </div>
     <span class="desktop_window__header_generic">
       <span class="material-icons-round" id="reload-button">refresh</span>
     </span>
-    <span class="material-icons-round desktop_window__header_generic" id="devtools-button">code</span>
-    <span class="material-icons-round desktop_window__header_generic" id="min-button">minimize</span>
-    <span class="material-icons-round desktop_window__header_generic" id="max-button">check_box_outline_blank</span>
-    <span class="material-icons-round desktop_window__header_close" id="close-button">close</span>
+    <span class="desktop_window__header_generic">
+      <span class="material-icons-round" id="devtools-button">code</span>
+    </span>
+    <span class="desktop_window__header_generic">
+      <span class="material-icons-round" id="min-button">minimize</span>
+    </span>
+    <span class="desktop_window__header_generic">
+      <span class="material-icons-round" id="max-button">check_box_outline_blank</span>
+    </span>
+    <span class="desktop_window__header_close">
+      <span class="material-icons-round" id="close-button">close</span>
+    </span>
   </header>
   <div class="desktop_window__frame_container">
     <webview src="http://localhost:3000/auth/login" id="webviewframe" enablecontextisolation class="desktop_window__frame"></webview>
