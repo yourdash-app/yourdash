@@ -26,11 +26,11 @@ import { triggerResizeEvent } from "../../../lib/elementResize";
 import DragScalableElement from "./../../global/DragScalableElement";
 
 export default function SideBar() {
-  const [willResetTabSize, setWillResetTabSize] = React.useState(false);
-  const [tabSize, setTabSize] = React.useState(100);
-  const [openedTab, setOpenedTab] = React.useState("Explorer");
+  const [ willResetTabSize, setWillResetTabSize ] = React.useState(false);
+  const [ tabSize, setTabSize ] = React.useState(100);
+  const [ openedTab, setOpenedTab ] = React.useState("Explorer");
   return (
-    <div className={`min-w-[1.5rem] max-w-[90%] h-full bg-purple-400 grid grid-cols-[auto,1fr]`}>
+    <div className={`h-full bg-purple-400 flex`}>
       <div className={`w-6 h-full bg-content-dark overflow-hidden`}>
         <SideBarTab
           name="Explorer"

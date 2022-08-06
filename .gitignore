@@ -1,1 +1,5 @@
-/out/
+desktop-client/node_modules/
+desktop-client/tauri-remake/node_modules/
+desktop-client/tauri-remake/src-tauri/target/
+frontend/.next/
+frontend/node_modules/

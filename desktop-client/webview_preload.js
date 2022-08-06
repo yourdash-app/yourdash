@@ -17,36 +17,8 @@
  *   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  *   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- *   OUT OF OR IN CONNECTION WITH THE SOFTWARE R THE USE OR OTHER DEALINGS IN THE
+ *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *   SOFTWARE.
  */
 
-import React from "react";
-import SideBar from "./SideBar";
-import MenuBar from "./MenuBar";
-import TextEditor from "./TextEditor";
-import StatusBar from "./StatusBar";
-
-export default function Editor() {
-  return (
-    <div className={`w-full h-full bg-red-900 grid grid-rows-[auto,1fr,auto]`}>
-      {/* MenuBar */}
-      <MenuBar />
-      {/* Center Content */}
-      <div className={`grid w-full h-full grid-cols-[auto,1fr] overflow-hidden`}>
-        {/* SideBar */}
-        <SideBar />
-        {/* Editor */}
-        <TextEditor />
-      </div>
-      {/* StatusBar */}
-      <StatusBar
-        statusItems={{
-          left: [],
-          center: [],
-          right: [],
-        }}
-      />
-    </div>
-  );
-}
+localStorage.setItem("is_desktop", "true")

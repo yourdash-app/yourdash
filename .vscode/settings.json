@@ -1,3 +1,4 @@
 {
-  "conventionalCommits.scopes": ["Frontend", "Desktop Client"]
+  "conventionalCommits.scopes": ["Frontend", "Desktop Client"],
+  "cSpell.words": ["codesense", "DEVDASH", "TEXTEDITOR"]
 }
