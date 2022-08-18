@@ -18,8 +18,7 @@ const createWindow = () => {
         titleBarStyle: "hidden",
         roundedCorners: true,
         title: "DevDash Desktop",
-        icon: "./DevDash.png",
-        icons: ["./DevDash.svg", "./DevDash.png"],
+        icon: "./DevDash.svg",
         frame: false,
         webPreferences: {
             nodeIntegration: true,

@@ -73,7 +73,7 @@ class Navigation extends React.Component<{
         return (<>
             <CommandPallet/>
             <div
-                className={`${this.state.expanded ? "max-w-[5rem]" : "max-w-[3.5rem]"} overflow-y-auto h-screen bg-content-normal relative shadow-xl grid grid-rows-[1fr,auto]`}>
+                className={`${this.state.expanded ? "w-[5rem]" : "w-[3.5rem]"} h-screen bg-content-normal relative shadow-xl grid grid-rows-[1fr,auto]`}>
                 <div className={"w-full"}>
                     <NavigationUser userData={this.state.githubUserData} expanded={this.state.expanded}/>
                     <NavigationButton
@@ -261,7 +261,7 @@ function NavigationButton(props: {
         className={`relative group select-none ${props.isDisabled ? "pointer-events-none hidden" : null} cursor-pointer ${props.expanded ? "ml-2 mr-2 mb-1" : "ml-1 mr-1 mb-1"} flex`}
         onClick={props.onClick}>
         <div
-            className={`absolute left-full top-1/2 pointer-events-none -translate-y-1/2 origin-left opacity-0 bg-content-normal group-hover:opacity-100 group-hover:scale-100 scale-0 transition-all w-max ml-3 pl-2 pr-2 rounded-lg text-text-primary group-hover:shadow-lg z-50`}>
+            className={`absolute left-full top-1/2 pointer-events-none -translate-y-1/2 origin-left opacity-0 bg-content-normal group-hover:opacity-100 motion-reduce:scale-x-100 group-hover:scale-x-100 scale-x-0 transition-all w-max ml-3 pl-2 pr-2 pt-1 pb-1 rounded-lg text-text-primary group-hover:shadow-lg z-50`}>
             {props.hoverTag}
         </div>
         <span

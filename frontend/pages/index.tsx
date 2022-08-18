@@ -245,13 +245,7 @@ class IndexPage extends React.Component<{ router: Router }> {
               <span>
                 <Link href="https://github.com/ewsgit/devdash">
                   <a className="hover:text-branding-hover transition-all relative before:absolute before:left-0 before:-bottom-0.5 before:h-0.5 before:scale-0 before:origin-left before:w-full before:bg-branding-hover before:hover:scale-100 before:transition-all">
-                    The DevDash Project
-                  </a>
-                </Link>
-                {" - By "}
-                <Link href="https://github.com/ewsgit">
-                  <a className="hover:text-branding-hover transition-all relative before:absolute before:left-0 before:-bottom-0.5 before:h-0.5 before:scale-0 before:origin-left before:w-full before:bg-branding-hover before:hover:scale-100 before:transition-all">
-                    Ewsgit
+                    The DevDash Project ©️ 2022 Ewsgit
                   </a>
                 </Link>
               </span>

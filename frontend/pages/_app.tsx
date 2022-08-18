@@ -57,7 +57,7 @@ function NEXT_APP({ Component, pageProps }: AppProps) {
         <Head>
             <link
                 rel="shortcut icon"
-                href={require("./../assets/icons/DevDashAlt.svg").default.src}
+                href={require("./../assets/icons/DevDash.svg").default.src}
                 type="image/x-icon"
             />
         </Head>

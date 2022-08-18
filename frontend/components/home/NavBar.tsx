@@ -74,7 +74,7 @@ class Component extends React.Component<{ router: NextRouter }> {
           <img
             width={64}
             height={64}
-            className="h-16 cursor-pointer"
+            className="h-16 aspect-square pr-2 pl-2 cursor-pointer"
             // @ts-ignore
             src={require("./../../assets/icons/DevDash.svg").default.src}
             alt="devdash icon"
