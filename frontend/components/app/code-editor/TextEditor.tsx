@@ -22,64 +22,80 @@
  */
 
 import React, { useEffect } from "react";
+import COLOR from "../../../lib/color";
 import { addResizeCallback } from "../../../lib/elementResize";
 import createUuid from "../../../lib/libUuid";
+import renderScrollBar from "./TextEditor/horizontalScrollBar";
+
+let lines = [
+  "Lorem, ipsum, dolor sit amet consectetur adipisicing elit.Iure, excepturi.",
+  "Lorem, ipsum dolor, sit amet consectetur adipisicing elit.Ex obcaecati, asperiores nobis rem eius aliquam, nesciunt, velit dolores officiis voluptates dolore ?",
+  "Lorem, ipsum dolor sit amet consectetur adipisicing elit.",
+  "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.",
+  "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.",
+  "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.",
+  "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.",
+  "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.",
+  "Lorem, ipsum dolor sit amet conjhkag sdfhkjuasdfuiasdhgfsectetur adipisicing elit. Non, consequatur.",
+  "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.",
+  "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.",
+  "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.",
+  "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.",
+  "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.",
+  "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.",
+  "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.",
+  "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.",
+  "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.",
+  "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.",
+  "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.",
+  "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.",
+  "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.",
+  "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.",
+  "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.",
+  "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.",
+  "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequaturhgjklasdffhjklasdhjkl.",
+]
 
 export default function TextEditor(props: {
 
 }) {
   const editor_uuid = createUuid()
-  let lines = [
-    "Lorem, ipsum, dolor sit amet consectetur adipisicing elit.Iure, excepturi.",
-    "Lorem, ipsum dolor, sit amet consectetur adipisicing elit.Ex obcaecati, asperiores nobis rem eius aliquam, nesciunt, velit dolores officiis voluptates dolore ?",
-    "Lorem, ipsum dolor sit amet consectetur adipisicing elit.",
-    "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.",
-    "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.",
-    "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.",
-    "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.",
-    "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.",
-    "Lorem, ipsum dolor sit amet conjhkag sdfhkjuasdfuiasdhgfsectetur adipisicing elit. Non, consequatur.",
-    "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.",
-    "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.",
-    "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.",
-    "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.",
-    "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.",
-    "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.",
-    "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.",
-    "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.",
-    "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.",
-    "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.",
-    "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.",
-    "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.",
-    "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.",
-    "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.",
-    "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.",
-    "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.",
-    "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequaturhgjklasdffhjklasdhjkl.",
-  ]
   useEffect(() => {
     const canvasContainer = document.getElementById("DEVDASH_TEXTEDITOR_CANVAS_CONTAINER_" + editor_uuid) as any as HTMLDivElement
     const canvas = document.getElementById("DEVDASH_TEXTEDITOR_CANVAS_" + editor_uuid) as any as HTMLCanvasElement
     const ctx = canvas.getContext("2d") as CanvasRenderingContext2D
+    let caretPos = {
+      x: 0,
+      y: 0
+    }
     let PRESSED_KEYS: string[] = []
-    canvas.addEventListener("keydown", (e) => {
+    window.addEventListener("keydown", (e) => {
       if (PRESSED_KEYS.indexOf(e.key) === -1) {
         PRESSED_KEYS.push(e.key)
       }
-    })
-    canvas.addEventListener("keyup", (e) => {
-      // @ts-ignore
-      PRESSED_KEYS = PRESSED_KEYS.map(key => {
-        if (e.key !== key) {
-          return key
+      if (PRESSED_KEYS.length === 1) {
+        switch (PRESSED_KEYS[0]) {
+          case "ArrowUp":
+            caretPos.y++
+            break;
+          case "ArrowDown":
+            caretPos.y--
+            break;
+          case "ArrowLeft":
+            caretPos.x--
+            break;
+          case "ArrowRight":
+            caretPos.x++
+            break;
         }
-      })
+        console.log(PRESSED_KEYS)
+      }
     })
-    let renderingOptions: CanvasRenderingOptions = {
-      cursorPosition: {
-        x: 10,
-        y: 6
-      },
+    window.addEventListener("keyup", (e) => {
+      
+    })
+    let renderingOptions: TextEditorRenderingOptions = {
+      caret: { ...caretPos, color: "#387" },
       topPadding: 10,
       leftPadding: 10,
       fontSize: 20,
@@ -93,6 +109,16 @@ export default function TextEditor(props: {
           background: "#222428",
           foreground: "#fff"
         }
+      },
+      scrollbar: {
+        horizontal: {
+          background: "#666",
+          size: 20,
+        },
+        vertical: {
+          background: "#f66",
+          size: 10
+        }
       }
     }
     canvas.width = canvasContainer.getBoundingClientRect().width
@@ -100,37 +126,47 @@ export default function TextEditor(props: {
     addResizeCallback(() => {
       canvas.width = canvasContainer.getBoundingClientRect().width
       canvas.height = canvasContainer.getBoundingClientRect().height
-      renderLoop(ctx, canvas, lines, renderingOptions)
     })
     renderLoop(ctx, canvas, lines, renderingOptions)
-  }, [ editor_uuid, lines ]);
+  }, [ editor_uuid ]);
   return <div id={"DEVDASH_TEXTEDITOR_CANVAS_CONTAINER_" + editor_uuid}>
-    <canvas id={"DEVDASH_TEXTEDITOR_CANVAS_" + editor_uuid}></canvas>
+    <canvas tabIndex={0} id={"DEVDASH_TEXTEDITOR_CANVAS_" + editor_uuid}></canvas>
   </div>
 }
 
-interface CanvasRenderingOptions {
-  cursorPosition: {
+export interface TextEditorRenderingOptions {
+  caret: {
     x: number,
-    y: number
+    y: number,
+    color: COLOR
   },
   topPadding: number,
   leftPadding: number,
   fontSize: number,
   lineHeight: number,
+  scrollbar: {
+    horizontal: {
+      size: number,
+      background: COLOR
+    },
+    vertical: {
+      size: number,
+      background: COLOR
+    }
+  }
   theme: {
     line_number: {
-      background: string,
-      foreground: string
+      background: COLOR,
+      foreground: COLOR
     },
     editor: {
-      background: string,
-      foreground: string
+      background: COLOR,
+      foreground: COLOR
     }
   }
 }
 
-function renderLoop(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, lines: string[], options: CanvasRenderingOptions) {
+function renderLoop(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, lines: string[], options: TextEditorRenderingOptions) {
   ctx.font = options.fontSize + "px JetBrains Mono"
   let lineCountWidth = 16;
   lineCountWidth += ctx.measureText("0").width
@@ -163,13 +199,15 @@ function renderLoop(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, li
     ctx.fillText(line, ORIGIN.x, ORIGIN.y + (options.lineHeight * lineInd))
   })
 
-  let cursorPos = options.cursorPosition
+  let caretPos = options.caret
 
-  ctx.fillStyle = "#f00"
+  ctx.fillStyle = options.caret.color
   ctx.fillRect(
-    ORIGIN.x + ctx.measureText(lines[ cursorPos.y - 1 ].substring(0, cursorPos.x)).width,
-    ORIGIN.y + (options.lineHeight * (cursorPos.y - 1)) + (options.lineHeight / 4),
+    ORIGIN.x + ctx.measureText(lines[ caretPos.y ].substring(0, caretPos.x)).width,
+    ORIGIN.y + (options.lineHeight * (caretPos.y )) + (options.lineHeight / 4),
     ctx.measureText("0").width / 4,
     options.lineHeight
   )
+  renderScrollBar(canvas, ctx, options, lines)
+  window.requestAnimationFrame(() => renderLoop(ctx, canvas, lines, options))
 }
