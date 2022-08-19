@@ -128,7 +128,10 @@ export default function TextEditor(props: {
       canvas.height = canvasContainer.getBoundingClientRect().height
     })
     renderLoop(ctx, canvas, lines, renderingOptions)
-  }, [ editor_uuid ]);
+    return () => {
+      stopRenderLoop()
+    }
+  });
   return <div id={"DEVDASH_TEXTEDITOR_CANVAS_CONTAINER_" + editor_uuid}>
     <canvas tabIndex={0} id={"DEVDASH_TEXTEDITOR_CANVAS_" + editor_uuid}></canvas>
   </div>
@@ -164,6 +167,12 @@ export interface TextEditorRenderingOptions {
       foreground: COLOR
     }
   }
+}
+
+let should_run = 1
+
+function stopRenderLoop() {
+  should_run = 0
 }
 
 function renderLoop(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, lines: string[], options: TextEditorRenderingOptions) {
@@ -204,10 +213,13 @@ function renderLoop(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, li
   ctx.fillStyle = options.caret.color
   ctx.fillRect(
     ORIGIN.x + ctx.measureText(lines[ caretPos.y ].substring(0, caretPos.x)).width,
-    ORIGIN.y + (options.lineHeight * (caretPos.y )) + (options.lineHeight / 4),
+    ORIGIN.y + (options.lineHeight * (caretPos.y)) + (options.lineHeight / 4),
     ctx.measureText("0").width / 4,
     options.lineHeight
   )
   renderScrollBar(canvas, ctx, options, lines)
-  window.requestAnimationFrame(() => renderLoop(ctx, canvas, lines, options))
+  console.log(should_run)
+  if (should_run === 1) {
+    window.requestAnimationFrame(() => renderLoop(ctx, canvas, lines, options))
+  }
 }

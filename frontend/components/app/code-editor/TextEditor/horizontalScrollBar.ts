@@ -37,9 +37,6 @@ export default function renderScrollBar(canvas: HTMLCanvasElement, ctx: CanvasRe
 
   console.log(document_width)
 
-  let scrollbar_value = 0
-  let scrollbar_
-
   if (canvas.width < document_width) {
     c.fillStyle = options.scrollbar.horizontal.background;
     c.fillRect(0, canvas.height - options.scrollbar.horizontal.size, canvas.width, options.scrollbar.horizontal.size)

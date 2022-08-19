@@ -45,10 +45,10 @@ module.exports = {
                 },
 
                 bg: {
-                    "light-primary": withOpacityHardcoded("238 238 238"),
-                    "light-secondary": withOpacityHardcoded("207 207 207"),
-                    "dark-primary": withOpacityHardcoded("170 170 170"),
-                    "dark-secondary": withOpacityHardcoded("111 111 111"),
+                    "light-primary": withOpacityHardcoded("228 228 228"),
+                    "light-secondary": withOpacityHardcoded("197 197 197"),
+                    "dark-primary": withOpacityHardcoded("140 140 140"),
+                    "dark-secondary": withOpacityHardcoded("81 81 81"),
                 },
 
                 // content (navbar, cards, general ui)

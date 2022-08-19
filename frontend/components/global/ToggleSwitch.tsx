@@ -35,8 +35,10 @@ export default function ToggleSwitch(props: {
   return (
     <div
       onClick={() => {
-        props.onChange(!toggleState);
-        setToggleState(!toggleState);
+        if (!props.disabled) {
+          props.onChange(!toggleState);
+          setToggleState(!toggleState);
+        }
       }}
       className={`flex relative ${
         props?.disabled ? "cursor-not-allowed" : null

@@ -40,6 +40,7 @@ function NEXT_APP({ Component, pageProps }: AppProps) {
 
     const [ Errors, setErrors ] = useState([] as any[]);
     const [ isDesktop, setIsDesktop ] = useState(false)
+    const [ latestBuildId, setLatestBuildId ] = useState("Internal Error")
 
     useEffect(() => {
         window.addEventListener("error", (e) => {
@@ -48,10 +49,21 @@ function NEXT_APP({ Component, pageProps }: AppProps) {
                 setErrors([ ...Errors, e ]);
             }
         })
+        // get the lastest github
+        // if (sessionStorage.getItem("github_commit_id")) {
+        //     setLatestBuildId(sessionStorage.getItem("github_commit_id") as string)
+        // } else {
+        //     console.log("fetched github lastest build id!")
+        //     fetch("https://api.github.com/repos/ewsgit/devdash/commits/main")
+        //         .then(res => res.json())
+        //         .then(res => {
+        //             setLatestBuildId(res.sha)
+        //             sessionStorage.setItem("github_commit_id", res.sha)
+        //         })
+        // }
         if (localStorage.getItem("is_desktop") === "true") {
             setIsDesktop(true)
         }
-        // @ts-ignore
     }, [])
     return (<React.StrictMode>
         <Head>
@@ -64,7 +76,7 @@ function NEXT_APP({ Component, pageProps }: AppProps) {
         {
             !isDesktop ?
                 <div
-                    className={`fixed z-50 top-0 text-xl right-0 pl-2 pr-2 bg-content-light backdrop-blur-lg text-text-primary rounded-bl-2xl pointer-events-none border-2 bg-opacity-50 border-branding-primary`}>DevDash Alpha
+                    className={`fixed z-50 top-0 text-xl left-1/2 pl-2 pr-2 bg-content-light text-text-secondary rounded-b-xl pointer-events-none border-4 border-branding-primary border-t-0 -translate-x-1/2`}>DevDash Rolling [{latestBuildId}]
                 </div>
                 : null
         }
