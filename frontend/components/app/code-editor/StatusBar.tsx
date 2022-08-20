@@ -22,13 +22,7 @@
  */
 
 import * as React from "react";
-import {IconTypings} from "../../../lib/materialIconTypings"
-
-interface StatusItem {
-  label: string,
-  icon?: IconTypings,
-  text?: "string"
-}
+import { StatusItem } from "../../../lib/code-editor/statusItem";
 
 export default function StatusBar(props: {statusItems: {left: StatusItem[], center: StatusItem[], right: StatusItem[]}}) {
   return <div className="w-full h-5 bg-content-normal">
