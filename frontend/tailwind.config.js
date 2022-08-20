@@ -63,6 +63,8 @@ module.exports = {
                 "pulse-spin": "pulse infinite linear 4s, spin infinite linear 2s",
                 "top-bottom": "top-bottom 2s 0.5s infinite linear",
                 "spin-slower": "spin 2s infinite linear",
+                "expand-in-horizontal": "expand-horizontal 0.5s linear",
+                "fade-in": "fade-in 0.5s 0.25s linear forwards"
             },
             keyframes: {
                 "top-bottom": {
@@ -79,6 +81,22 @@ module.exports = {
                         transform: "translateY(0)",
                     },
                 },
+                "expand-horizontal": {
+                    "0%": {
+                        width: "0",
+                    },
+                    "100%": {
+                        width: "100%"
+                    }
+                },
+                "fade-in": {
+                    "0%": {
+                        opacity: "0"
+                    },
+                    "100%": {
+                        opacity: "1"
+                    }
+                }
             },
         },
     },
