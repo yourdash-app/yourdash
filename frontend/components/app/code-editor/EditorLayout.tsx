@@ -33,7 +33,7 @@ export default function Editor() {
       {/* MenuBar */}
       <MenuBar />
       {/* Center Content */}
-      <div className={`grid w-full h-full grid-cols-[auto,1fr] overflow-hidden`}>
+      <div className={`grid w-full h-full grid-cols-[auto,1fr] overflow-hidden bg-cyan-700`}>
         {/* SideBar */}
         <SideBar />
         {/* Editor */}
