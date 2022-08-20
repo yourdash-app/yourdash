@@ -21,20 +21,20 @@
  *   SOFTWARE.
  */
 
-import {NextRouter, withRouter} from "next/router";
+import { NextRouter, Router, withRouter } from "next/router";
 import React from "react";
 import Head from "next/head";
 import localforage from "localforage";
-import {IconTypings} from "../../lib/materialIconTypings";
+import { IconTypings } from "../../lib/materialIconTypings";
 
 class Component extends React.Component<{ router: NextRouter }> {
   state: {
     token: string;
     activePage: string;
   } = {
-    token: "",
-    activePage: "default",
-  };
+      token: "",
+      activePage: "default",
+    };
 
   componentDidMount() {
     localforage.getItem("githubToken").then(token => {
@@ -47,54 +47,43 @@ class Component extends React.Component<{ router: NextRouter }> {
   render() {
     return (
       <div
-        className={`dark:bg-bg-dark-primary bg-bg-light-primary w-full h-screen overflow-hidden grid md:grid-cols-[auto_1fr] md:grid-rows-1 grid-rows-[auto_1fr_auto] grid-cols-1 select-none`}>
+        className={`dark:bg-bg-dark-primary bg-bg-light-primary w-full h-screen overflow-hidden grid lg:grid-cols-[auto,1fr] grid-rows-[auto,1fr,auto] grid-cols-1 select-none`}>
         <Head>
           <title>DevDash - Login</title>
         </Head>
         <div
-          className={`md:w-80 w-full md:h-screen h-20 bg-content-normal flex flex-col items-center justify-center shadow-lg`}>
+          className={`lg:w-72 w-full lg:h-screen h-20 bg-content-normal flex flex-col items-center justify-center shadow-lg`}>
           <div
-            className={`flex md:w-80 md:fixed top-0 left-1 md:left-0 h-20 cursor-pointer items-center md:justify-center`}
+            className={`flex lg:w-72 lg:fixed top-0 left-1 lg:left-0 h-20 cursor-pointer items-center lg:justify-center`}
             onClick={() => {
               this.props.router.push("/");
             }}>
             <img
-              className={`h-16`}
+              className={`h-14 pr-2`}
               src={require("./../../assets/icons/DevDash.svg").default.src}
               alt=""
               draggable="false"
             />
             <h1 className={`text-text-primary font-semibold tracking-widest text-2xl`}>DevDash</h1>
           </div>
-          <div className={`w-full h-full md:flex hidden flex-col items-center justify-center`}>
-            <LoginOptionButton
-              icon="verified_user"
-              name="Github Oauth"
-              activePage={this.state.activePage}
-              onClick={() => {
+        </div>
+        <div className={`w-full h-full flex items-center justify-center`}>
+          <div className="md:w-3/4 w-full h-3/4 bg-content-normal md:rounded-2xl relative flex flex-col items-center transition-all child:max-w-xl">
+            <h2 className="text-5xl text-text-secondary mt-10 mb-10">Login</h2>
+            <div className={"w-full h-full flex flex-col items-center"}>
+              <button className="w-[calc(100%-2rem)] p-6 m-2 text-text-primary bg-content-normal border-2 rounded-xl border-content-border hover:bg-content-light active:bg-content-dark transition-all" onClick={() => {
                 if (typeof window !== "undefined") {
                   this.props.router.push(
-                      `https://devdash.ewsgit.repl.co/auth/github?url=${
-                          window.location.host === ("devdash.vercel.app" || "ddsh.vercel.app")
-                              ? "https://devdash.vercel.app/auth/githubcallback"
-                              : "http://" + window.location.hostname + ":3000/auth/githubcallback"
-                      }`
+                    `https://devdash.ewsgit.repl.co/auth/github?url=${window.location.host === ("devdash.vercel.app" || "ddsh.vercel.app")
+                      ? "https://devdash.vercel.app/auth/githubcallback"
+                      : "http://" + window.location.hostname + ":3000/auth/githubcallback"
+                    }`
                   );
                 }
-              }}
-              setActivePage={(page: string) => {
-                this.setState({activePage: page});
-              }}
-            />
+              }}>Login with Github</button>
+              <button className={"w-[calc(100%-1.5rem)] p-4 m-2 mt-auto text-text-primary bg-content-normal border-2 rounded-xl border-content-border hover:bg-content-light active:bg-content-dark transition-all"} onClick={() => { this.props.router.push("/") }}>Go Back</button>
+            </div>
           </div>
-        </div>
-        <div className={`w-auto h-full flex items-center justify-center`}>
-          {this.state.activePage === "default" ? (
-            <p
-              className={`text-2xl text-text-secondary font-semibold tracking-wider p-4 shadow-2xl bg-content-normal rounded-xl`}>
-              Please select a login method from the side of the page.
-            </p>
-          ) : null}
         </div>
       </div>
     );
@@ -102,28 +91,3 @@ class Component extends React.Component<{ router: NextRouter }> {
 }
 
 export default withRouter(Component);
-
-function LoginOptionButton(props: {
-  icon: IconTypings;
-  name: string;
-  activePage: string;
-  onClick?: () => void;
-  setActivePage?: (page: string) => void;
-}) {
-  return (
-    <div
-      className={`w-72 rounded-md pt-4 pb-4 flex items-center justify-center text-text-primary cursor-pointer hover:bg-content-light active:bg-content-dark active:shadow-inner transition-colors`}
-      onClick={() => {
-        if (props.onClick) {
-          props.onClick();
-        } else {
-          // @ts-ignore
-          props.setActivePage(props.name);
-        }
-      }}>
-      {props.activePage === props.name ? <div className={`w-4 h-full bg-branding-primary`}></div> : null}
-      <span className={`material-icons-round pr-2 text-4xl`}>{props.icon}</span>
-      <p className="text-xl">{props.name}</p>
-    </div>
-  );
-}

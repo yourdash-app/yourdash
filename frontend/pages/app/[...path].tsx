@@ -15,6 +15,7 @@ import localforage from "localforage";
 import PageContainer from "../../components/app/PageContainer";
 import UnderConstruction from "./_under-construction";
 import Notifications from "./_notifications";
+import IntroductionPage from "./_introduction";
 
 // the code below is a custom router for /app/*
 // it might seem unnecessary, but it's required to stop re-rendering the navigation bar
@@ -60,6 +61,8 @@ export default function AppRouting() {
             return (<PageContainer pageId={"todo"}>
                 <UnderConstruction/>
             </PageContainer>)
+        case "introduction":
+            return <IntroductionPage />
         default:
             router.push("/app/home/");
     }
