@@ -28,7 +28,6 @@ module.exports = {
     theme: {
         extend: {
             colors: {
-                //homepage brand colors
                 branding: {
                     hover: withOpacityHardcoded("251 122 91"),
                     primary: withOpacityHardcoded("235 106 75"),
@@ -43,15 +42,12 @@ module.exports = {
                     "inverted-primary": withOpacityHardcoded("0 0 0"),
                     "inverted-secondary": withOpacityHardcoded("34 34 34"),
                 },
-
                 bg: {
                     "light-primary": withOpacityHardcoded("228 228 228"),
                     "light-secondary": withOpacityHardcoded("197 197 197"),
                     "dark-primary": withOpacityHardcoded("140 140 140"),
                     "dark-secondary": withOpacityHardcoded("81 81 81"),
                 },
-
-                // content (navbar, cards, general ui)
                 content: {
                     light: withOpacityHardcoded("70 70 70"),
                     normal: withOpacityHardcoded("54 54 54"),
