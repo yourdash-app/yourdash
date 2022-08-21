@@ -33,7 +33,7 @@
 @tailwind utilities;
 
 :root {
-    color-scheme: only light;
+    color-scheme: only normal;
 }
 
 html,
