@@ -2,4 +2,5 @@ desktop-client/node_modules/
 desktop-client/tauri-remake/node_modules/
 desktop-client/tauri-remake/src-tauri/target/
 frontend/.next/
+frontend/out/
 frontend/node_modules/
