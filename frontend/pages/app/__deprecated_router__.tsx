@@ -4,18 +4,18 @@
  *   Licensed under the MIT License - https://ewsgit.github.io/devdash/copyright
  */
 
-import {useRouter} from "next/router";
-import React, {useEffect} from "react";
+import { useRouter } from "next/router";
+import React, { useEffect } from "react";
 
-import CodeEditor from "./_code-editor";
-import Index from "./_index";
-import Settings from "./_settings";
-import Git from "./_git";
+import CodeEditor from "./code-editor";
+import Index from "./home";
+import Settings from "./settings";
+import Git from "./git";
 import localforage from "localforage";
 import PageContainer from "../../components/app/PageContainer";
-import UnderConstruction from "./_under-construction";
-import Notifications from "./_notifications";
-import IntroductionPage from "./_introduction";
+import UnderConstruction from "../../components/app/UnderConstruction";
+import Notifications from "./notifications";
+import EmptyPage from "./empty";
 
 // the code below is a custom router for /app/*
 // it might seem unnecessary, but it's required to stop re-rendering the navigation bar
@@ -32,37 +32,39 @@ export default function AppRouting() {
     }, []);
     const router: any = useRouter();
     if (!router.query.path) return <></>
-    switch (router.query.path[0]) {
+    switch (router.query.path[ 0 ]) {
         case "home":
             return (<PageContainer pageId={"home"}>
-                <Index/>
+                <Index />
             </PageContainer>);
         case "code-editor":
             return (<PageContainer pageId={"code-editor"}>
-                <CodeEditor/>
+                <CodeEditor />
             </PageContainer>);
         case "git":
             return (<PageContainer pageId={"git"}>
-                <Git/>
+                <Git />
             </PageContainer>);
         case "manage-server":
             return (<PageContainer pageId={"manage-server"}>
-                <UnderConstruction/>
+                <UnderConstruction />
             </PageContainer>)
         case "settings":
             return (<PageContainer pageId={"settings"}>
-                <Settings path={router.query.path[1]}/>
+                <Settings path={router.query.path[ 1 ]} />
             </PageContainer>);
         case "notifications":
             return (<PageContainer pageId={"notifications"}>
-                <Notifications/>
+                <Notifications />
             </PageContainer>);
         case "todo":
             return (<PageContainer pageId={"todo"}>
-                <UnderConstruction/>
+                <UnderConstruction />
             </PageContainer>)
-        case "introduction":
-            return <IntroductionPage />
+        case "empty":
+            return (<PageContainer pageId={"empty"}>
+                <EmptyPage />
+            </PageContainer>)
         default:
             router.push("/app/home/");
     }

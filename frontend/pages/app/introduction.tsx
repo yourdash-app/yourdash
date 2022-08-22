@@ -29,7 +29,12 @@ export default function IntroductionPage() {
     {
       currentPage === 0
         ? <SubPage>
-          <h1></h1>
+          <h1 className={"text-text-primary text-5xl text-center mb-4 mt-4 select-none"}>Choose a theme</h1>
+          <div className={"w-[calc(100%-2rem)] grid grid-cols-3 h-[calc(100%-6rem)] gap-2 ml-4 mr-4 place-items-center"}>
+            <ThemeSelectionCard theme="light" image={require("./../../assets/homescreenWave.svg").default.src} />
+            <ThemeSelectionCard theme="auto" image={require("./../../assets/homescreenWave.svg").default.src} />
+            <ThemeSelectionCard theme="dark" image={require("./../../assets/homescreenWave.svg").default.src} />
+          </div>
         </SubPage>
         : null
     }
@@ -48,6 +53,7 @@ function PageIndicatorContainer(props: { currentPage: number, pageCount: number,
   for (let i = 0; i < props.pageCount; i++) {
     out.push(
       <div
+        key={i}
         className={`p-1.5 pl-2.5 pr-2.5 rounded-full last:mr-0 first:ml-0 mr-1.5 ml-1.5 ${props.currentPage === i ? "bg-branding-primary" : "bg-content-dark"} hover:scale-150 hover:outline-content-border outline-2 hover:outline transition-all cursor-pointer animate-fade-in opacity-0`}
         onClick={() => {
           props.setCurrentPage(i)
@@ -63,3 +69,14 @@ function PageIndicatorContainer(props: { currentPage: number, pageCount: number,
     </div>
   </div>
 }
+
+function ThemeSelectionCard(props: { theme: "light" | "auto" | "dark", image: string }) {
+  return <div className={"flex items-center justify-center w-full bg-red-400 overflow-hidden relative h-full max-h-96 max-w-lg rounded-xl child:select-none"}>
+    <img draggable={false} src={props.image} alt="" className="w-full h-full absolute top-0 left-0" />
+    <div className={"flex items-center justify-center w-full absolute bottom-0 left-0 bg-content-normal bg-opacity-75 pt-2 pb-2"}>
+      <h3 className={"m-0 text-text-secondary text-2xl text-center"}>{props.theme}</h3>
+    </div>
+  </div>
+}
+
+IntroductionPage.ignoreTemplate = true
