@@ -156,6 +156,9 @@ class Navigation extends React.Component<{
                         hoverTag={`Todo`}
                         currentPageId={this.props.pageId}
                         activePage={"todo-list"}
+                        onClick={() => {
+                            this.props.router.push("/app/todo-list");
+                        }}
                         icon="pending_actions"
                     />
                 </div>
