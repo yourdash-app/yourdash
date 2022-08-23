@@ -62,7 +62,7 @@ function NEXT_APP({ Component, pageProps }: AppProps) {
 
     // @ts-ignore
     if (Component?.ignoreTemplate) return <Component {...pageProps } />
-
+    
     switch (true) {
         case route.startsWith("/app/"):
 
