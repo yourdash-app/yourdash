@@ -30,14 +30,14 @@ class Navigation extends React.Component<{
     theme: 'dark' | 'light' | 'system';
     isRightAligned: boolean;
   } = {
-    githubUserData: {},
-    notifications: [],
-    expanded: false,
-    isDisabled: false,
-    isRemindedToLogin: true,
-    theme: 'system',
-    isRightAligned: false
-  };
+      githubUserData: {},
+      notifications: [],
+      expanded: false,
+      isDisabled: false,
+      isRemindedToLogin: true,
+      theme: 'system',
+      isRightAligned: false
+    };
 
   notificationListener = (e: CustomEvent) => {
     localforage.getItem('DEVDASH_notifications', (notifications) => {
@@ -69,20 +69,21 @@ class Navigation extends React.Component<{
         });
       }
     });
-    localforage.getItem('settings').then((data: any) => {
+    localforage.getItem('settings').then((res: any) => {
+      if (res === undefined) return
       if (
-        data?.collapseNavigationBar !== null &&
-        data?.collapseNavigationBar !== undefined
+        res?.collapseNavigationBar !== null &&
+        res?.collapseNavigationBar !== undefined
       ) {
         this.setState({
-          expanded: !data?.collapseNavigationBar
+          expanded: !res?.collapseNavigationBar
         });
       } else {
         this.setState({
           expanded: true
         });
       }
-      if (data.isNavigationBarRightAligned) {
+      if (res?.isNavigationBarRightAligned) {
         this.setState({
           isRightAligned: true
         });
@@ -107,9 +108,8 @@ class Navigation extends React.Component<{
       <>
         <CommandPallet />
         <div
-          className={`${
-            this.state.expanded ? 'w-[5rem]' : 'w-[3.5rem]'
-          } h-screen bg-content-normal relative shadow-xl grid grid-rows-[1fr,auto]`}>
+          className={`${this.state.expanded ? 'w-[5rem]' : 'w-[3.5rem]'
+            } h-screen bg-content-normal relative shadow-xl grid grid-rows-[1fr,auto]`}>
           <div className={'w-full'}>
             <NavigationUser
               isRightAligned={this.state.isRightAligned}
@@ -216,7 +216,7 @@ class Navigation extends React.Component<{
                 ]}
                 notifications={[]}
                 noClose={true}
-                setNotifications={() => {}}
+                setNotifications={() => { }}
                 urgencyLevel={1}
               />
             ) : null}
@@ -242,21 +242,20 @@ class Navigation extends React.Component<{
               isRightAligned={this.state.isRightAligned}
               isDisabled={this.state.isDisabled}
               expanded={this.state.expanded}
-              hoverTag={`Toggle Color Theme ${
-                this.state.theme === 'light'
-                  ? '(Light Mode)'
-                  : this.state.theme === 'dark'
+              hoverTag={`Toggle Color Theme ${this.state.theme === 'light'
+                ? '(Light Mode)'
+                : this.state.theme === 'dark'
                   ? '(Dark Mode)'
                   : '(System)'
-              }`}
+                }`}
               currentPageId={this.props.pageId}
               activePage={''}
               icon={
                 this.state.theme === 'light'
                   ? 'light_mode'
                   : this.state.theme === 'dark'
-                  ? 'dark_mode'
-                  : 'brightness_auto'
+                    ? 'dark_mode'
+                    : 'brightness_auto'
               }
               onClick={() => {
                 if (this.state.theme === 'dark') {
@@ -360,26 +359,21 @@ function NavigationButton(props: {
   let isActive = props.activePage === props.currentPageId;
   return (
     <div
-      className={`relative group select-none ${
-        props.isDisabled ? 'pointer-events-none hidden' : null
-      } cursor-pointer ${
-        props.expanded ? 'ml-2 mr-2 mb-1' : 'ml-1 mr-1 mb-1'
-      } flex`}
+      className={`relative group select-none ${props.isDisabled ? 'pointer-events-none hidden' : null
+        } cursor-pointer ${props.expanded ? 'ml-2 mr-2 mb-1' : 'ml-1 mr-1 mb-1'
+        } flex`}
       onClick={props.onClick}>
       <div
-        className={`absolute ${
-          props.isRightAligned
-            ? 'right-full origin-right mr-3'
-            : 'left-full origin-left ml-3'
-        } top-1/2 pointer-events-none -translate-y-1/2 opacity-0 bg-content-normal group-hover:opacity-100 motion-reduce:scale-x-100 group-hover:scale-x-100 scale-x-0 transition-all w-max pl-2 pr-2 pt-1 pb-1 rounded-lg text-text-primary group-hover:shadow-lg z-50`}>
+        className={`absolute ${props.isRightAligned
+          ? 'right-full origin-right mr-3'
+          : 'left-full origin-left ml-3'
+          } top-1/2 pointer-events-none -translate-y-1/2 opacity-0 bg-content-normal group-hover:opacity-100 motion-reduce:scale-x-100 group-hover:scale-x-100 scale-x-0 transition-all w-max pl-2 pr-2 pt-1 pb-1 rounded-lg text-text-primary group-hover:shadow-lg z-50`}>
         {props.hoverTag}
       </div>
       <span
-        className={`${
-          props.expanded ? 'w-16 p-2 pt-1 pb-1' : 'w-12 p-1'
-        } rounded-lg hover:bg-content-light active:bg-content-dark flex items-center justify-center content-center transition-colors material-icons-round ${
-          !isActive ? 'text-text-inverted-secondary' : 'text-text-secondary'
-        } text-3xl hover:text-text-secondary active:text-text-primary`}>
+        className={`${props.expanded ? 'w-16 p-2 pt-1 pb-1' : 'w-12 p-1'
+          } rounded-lg hover:bg-content-light active:bg-content-dark flex items-center justify-center content-center transition-colors material-icons-round ${!isActive ? 'text-text-inverted-secondary' : 'text-text-secondary'
+          } text-3xl hover:text-text-secondary active:text-text-primary`}>
         {props.icon}
       </span>
     </div>
@@ -394,15 +388,13 @@ function NavigationUser(props: {
   const router = useRouter();
   return (
     <div
-      className={`bg-none relative group select-none cursor-pointer ${
-        props.expanded ? 'pl-2' : 'pl-1'
-      } mb-2 flex`}>
+      className={`bg-none relative group select-none cursor-pointer ${props.expanded ? 'pl-2' : 'pl-1'
+        } mb-2 flex`}>
       <div
-        className={`${
-          props.isRightAligned
-            ? 'right-full origin-right border-l-2 rounded-bl-xl'
-            : 'left-full origin-left border-r-2 rounded-br-xl'
-        } absolute z-50 group-hover:shadow-2xl opacity-0 group-hover:opacity-100 group-hover:w-80 overflow-hidden w-0 transition-all bg-content-normal border-b-2 border-0 border-content-light`}>
+        className={`${props.isRightAligned
+          ? 'right-full origin-right border-l-2 rounded-bl-xl'
+          : 'left-full origin-left border-r-2 rounded-br-xl'
+          } absolute z-50 group-hover:shadow-2xl opacity-0 group-hover:opacity-100 group-hover:w-80 overflow-hidden w-0 transition-all bg-content-normal border-b-2 border-0 border-content-light`}>
         <div
           className={`h-24 cursor-auto p-2 transition-border duration-75 grid grid-cols-[auto,1fr] gap-1`}>
           <img
@@ -443,9 +435,8 @@ function NavigationUser(props: {
         ) : null}
       </div>
       <div
-        className={`w-full aspect-square overflow-hidden ${
-          props.expanded ? 'mr-2 mt-2' : 'mr-1 mt-1'
-        }`}>
+        className={`w-full aspect-square overflow-hidden ${props.expanded ? 'mr-2 mt-2' : 'mr-1 mt-1'
+          }`}>
         <img
           className={`w-full aspect-square rounded-lg`}
           src={
@@ -478,15 +469,13 @@ function Notification(props: {
 }) {
   return (
     <div
-      className={`w-max max-w-7xl h-max max-h-4xl select-none ${
-        props.urgencyLevel === 3
-          ? 'bg-red-400'
-          : props.urgencyLevel === 2
+      className={`w-max max-w-7xl h-max max-h-4xl select-none ${props.urgencyLevel === 3
+        ? 'bg-red-400'
+        : props.urgencyLevel === 2
           ? 'bg-amber-400'
           : 'bg-blue-400'
-      } fixed ${
-        props.expanded ? 'left-24' : 'left-16'
-      } bottom-4 rounded-lg transition-all overflow-hidden shadow-2xl z-50`}>
+        } fixed ${props.expanded ? 'left-24' : 'left-16'
+        } bottom-4 rounded-lg transition-all overflow-hidden shadow-2xl z-50`}>
       <div
         className={`bg-content-normal ml-2 w-auto h-full text-lg text-text-primary`}>
         <div className='flex items-center'>
@@ -539,23 +528,19 @@ function NavigationNotificationButton(props: {
   return (
     <div
       onClick={props.onClick}
-      className={`bg-none relative group select-none cursor-pointer ${
-        props.expanded ? 'ml-2 mr-2' : 'ml-1 mr-1'
-      } flex flex-col items-center justify-center group`}>
+      className={`bg-none relative group select-none cursor-pointer ${props.expanded ? 'ml-2 mr-2' : 'ml-1 mr-1'
+        } flex flex-col items-center justify-center group`}>
       <div
-        className={`${
-          props.isRightAligned
-            ? 'right-full origin-right mr-3'
-            : 'left-full origin-left ml-3'
-        } absolute top-1/2 pointer-events-none -translate-y-1/2 opacity-0 bg-content-normal group-hover:opacity-100 group-hover:scale-100 scale-0 transition-all w-max p-1 pl-2 pr-2 rounded-lg text-text-primary group-hover:shadow-lg z-[50]`}>
+        className={`${props.isRightAligned
+          ? 'right-full origin-right mr-3'
+          : 'left-full origin-left ml-3'
+          } absolute top-1/2 pointer-events-none -translate-y-1/2 opacity-0 bg-content-normal group-hover:opacity-100 group-hover:scale-100 scale-0 transition-all w-max p-1 pl-2 pr-2 rounded-lg text-text-primary group-hover:shadow-lg z-[50]`}>
         Notifications
       </div>
       <span
-        className={`${
-          props.expanded ? 'w-16 p-2' : 'w-10 p-1'
-        } rounded-lg aspect-square group-hover:bg-content-light group-active:bg-content-dark flex items-center justify-center transition-all material-icons-round text-text-inverted-secondary text-3xl group-hover:text-text-secondary group-active:text-text-primary ${
-          props.notificationsCount < 1 ? 'mb-2' : null
-        }`}>
+        className={`${props.expanded ? 'w-16 p-2' : 'w-10 p-1'
+          } rounded-lg aspect-square group-hover:bg-content-light group-active:bg-content-dark flex items-center justify-center transition-all material-icons-round text-text-inverted-secondary text-3xl group-hover:text-text-secondary group-active:text-text-primary ${props.notificationsCount < 1 ? 'mb-2' : null
+          }`}>
         feedback
       </span>
       <NotificationCounter
@@ -569,16 +554,15 @@ function NavigationNotificationButton(props: {
 function NotificationCounter(props: { count: number; expanded: boolean }) {
   return (
     <p
-      className={`text-text-primary bg-red-400 rounded-lg w-full flex items-center justify-center transition-all ${
-        props.count > 0 ? 'scale-100 mb-2 mt-1 h-6' : 'scale-0 h-0'
-      }`}>
+      className={`text-text-primary bg-red-400 rounded-lg w-full flex items-center justify-center transition-all ${props.count > 0 ? 'scale-100 mb-2 mt-1 h-6' : 'scale-0 h-0'
+        }`}>
       {props.expanded
         ? props.count < 1000
           ? props.count
           : '+999'
         : props.count < 100
-        ? props.count
-        : '+99'}
+          ? props.count
+          : '+99'}
     </p>
   );
 }
