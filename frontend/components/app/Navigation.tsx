@@ -394,9 +394,9 @@ function NavigationUser(props: {
         className={`${props.isRightAligned
           ? 'right-full origin-right border-l-2 rounded-bl-xl'
           : 'left-full origin-left border-r-2 rounded-br-xl'
-          } absolute z-50 group-hover:shadow-2xl opacity-0 group-hover:opacity-100 group-hover:w-80 overflow-hidden w-0 transition-all bg-content-normal border-b-2 border-0 border-content-light`}>
+          } absolute z-50 group-hover:shadow-2xl opacity-0 group-hover:opacity-100 group-hover:w-80 group-hover:pointer-events-auto overflow-hidden w-48 pointer-events-none transition-all bg-content-normal border-b-2 border-0 border-content-light`}>
         <div
-          className={`h-24 cursor-auto p-2 transition-border duration-75 grid grid-cols-[auto,1fr] gap-1`}>
+          className={`h-24 cursor-auto p-2 duration-75 grid grid-cols-[auto,1fr] gap-1`}>
           <img
             className={`aspect-square rounded-lg h-20`}
             src={
