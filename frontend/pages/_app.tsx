@@ -70,6 +70,9 @@ function NEXT_APP({ Component, pageProps }: AppProps) {
             console.log("%c[TemplateRouter]%c pageId: " + pageId, "color: green;", "")
 
             return <AppPageContainer pageId={pageId}>
+                <Head>
+                    <title>DevDash | App</title>
+                </Head>
                 <Component {...pageProps} />
             </AppPageContainer>
         default:
