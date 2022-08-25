@@ -21,8 +21,17 @@
  *   SOFTWARE.
  */
 
-import UnderConstruction from "../../components/app/UnderConstruction";
+import SideBar from "../../components/app/SideBar";
 
 export default function ManageServerPage() {
-  return <UnderConstruction />
+  return (
+    <SideBar header="This is a test" buttons={[ {
+      title: "breh",
+      onClick: () => {
+        console.log("[manage-server] click")
+      }
+    }]}>
+      <h1>This is test content</h1>
+    </SideBar>
+  );
 }
