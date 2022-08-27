@@ -21,16 +21,41 @@
  *   SOFTWARE.
  */
 
-import SideBar from "../../components/app/SideBar";
+import SideBar, { singularSelectionHelper } from '../../components/app/SideBar';
+import { useState } from 'react';
 
 export default function ManageServerPage() {
+  const [ serverData, setServerData ] = useState(
+    {
+      name: 'Name ERROR'
+    } as {
+      name: string;
+    }
+  );
   return (
-    <SideBar header="This is a test" buttons={[ {
-      title: "breh",
-      onClick: () => {
-        console.log("[manage-server] click")
-      }
-    }]}>
+    <SideBar
+      header={serverData.name}
+      buttons={[
+        {
+          title: 'This is a test title',
+          onClick: (button, buttons) => {
+            singularSelectionHelper(button, buttons);
+          }
+        },
+        {
+          title: 'breh',
+          onClick: (button, buttons) => {
+            singularSelectionHelper(button, buttons);
+          }
+        },
+        {
+          title: 'breh',
+          onClick: (button, buttons) => {
+            singularSelectionHelper(button, buttons);
+          }
+        }
+      ]}
+    >
       <h1>This is test content</h1>
     </SideBar>
   );
