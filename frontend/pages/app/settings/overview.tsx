@@ -21,17 +21,39 @@
  *   SOFTWARE.
  */
 
-import SideBar from "../../components/app/SideBar";
+import { useState } from "react";
+import SettingsPageTemplate from "../../../components/app/settings/PageTemplate";
+import { ToggleSetting, StringSetting } from "../../../components/app/settings/SettingComponents";
 
-export default function ManageServerPage() {
+export default function SettingsOverviewPage() {
+  const [settingsData, setSettingsData] = useState({})
   return (
-    <SideBar header="This is a test" buttons={[ {
-      title: "breh",
-      onClick: () => {
-        console.log("[manage-server] click")
-      }
-    }]}>
-      <h1>This is test content</h1>
-    </SideBar>
+    <SettingsPageTemplate>
+      <ToggleSetting
+        description={'Collapse navigation bar'}
+        settingsKey={`collapseNavigationBar`}
+        defaultValue={false}
+        settingsData={settingsData}
+      />
+      <ToggleSetting
+        disabled
+        description={'Enable high-contrast mode'}
+        settingsKey={`isHightContrast`}
+        defaultValue={false}
+        settingsData={settingsData}
+      />
+      <StringSetting
+        description={'Test string'}
+        settingsKey={`testString`}
+        defaultValue={'Hello World'}
+        settingsData={settingsData}
+      />
+      <ToggleSetting
+        description={'Enable right-aligned navigation bar'}
+        settingsKey={`isNavigationBarRightAligned`}
+        defaultValue={false}
+        settingsData={settingsData}
+      />
+    </SettingsPageTemplate>
   );
 }

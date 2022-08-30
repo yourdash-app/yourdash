@@ -21,18 +21,21 @@
  *   SOFTWARE.
  */
 
-import { ReactChild, useState, useCallback } from 'react';
+import { ReactChild, useState } from 'react';
+
+interface SideBarButton {
+  title: string;
+  active?: boolean;
+  onClick: (
+    button: SideBarButton,
+    buttons: SideBarButton[],
+    update: Function
+  ) => void;
+}
 
 interface SideBarProps {
   header?: string;
-  buttons?: {
-    title: string;
-    active?: boolean;
-    onClick: (
-      button: { title: string; active?: boolean },
-      buttons: { title: string; active?: boolean }[]
-    ) => void;
-  }[];
+  buttons: SideBarButton[];
 }
 
 interface WithSideBarProps extends SideBarProps {
@@ -42,7 +45,10 @@ interface WithSideBarProps extends SideBarProps {
 export default function WithSideBar(props: WithSideBarProps) {
   return (
     <div className='grid grid-cols-[auto,1fr]'>
-      <SideBar header={props.header} buttons={props.buttons} />
+      <SideBar
+        header={props.header}
+        buttons={props.buttons}
+      />
       <main>{props.children}</main>
     </div>
   );
@@ -50,43 +56,31 @@ export default function WithSideBar(props: WithSideBarProps) {
 
 function SideBar(props: SideBarProps) {
   const [buttons, setButtons] = useState(props.buttons);
-  const [, updateState] = useState({});
-  const forceUpdate = useCallback(() => updateState({}), []);
+  const [, forceUpdate] = useState({});
   return (
     <div className='min-w-[5rem] bg-content-normal shadow-xl max-w-md'>
       {props.header ? (
         <div
           className={
             'flex items-center justify-center pt-4 pb-4 shadow-lg w-full pl-6 pr-6'
-          }
-        >
+          }>
           <h2 className='text-2xl text-text-primary'>{props.header}</h2>
         </div>
       ) : null}
       {buttons
-        ? buttons.map((button, ind) => {
+        ? buttons.map((button) => {
             return (
               <div
-                key={ind}
                 className={
-                  'w-[calc(100%-1rem)] ml-2 mr-2 mt-2 text-center rounded-md hover:bg-content-light active:bg-content-dark text-text-primary transition-colors bg-content-normal shadow-md pr-2 flex cursor-pointer overflow-hidden items-center group select-none'
+                  'w-[calc(100%-1rem)] overflow-hidden cursor-pointer ml-2 mr-2 mt-2 rounded-lg hover:bg-content-light active:bg-content-dark text-text-primary transition-colors bg-content-normal shadow-md pr-2 flex relative select-none'
                 }
-                onClick={() => {
-                  button.onClick(
-                    button,
-                    buttons as { title: string; active?: boolean }[]
-                  );
-                  forceUpdate();
-                }}
-              >
-                <div
-                  className={`w-2 h-9 ${
-                    button.active
-                      ? 'bg-branding-primary group-hover:bg-branding-hover'
-                      : 'bg-content-light group-hover:bg-content-border'
-                  } mr-2 transition-colors`}
-                ></div>
-                {button.title}
+                onClick={() =>
+                  button.onClick(button, buttons, () => {
+                    forceUpdate({});
+                  })
+                }>
+                <div className={`w-2 h-full ${button.active ? "bg-branding-primary" : "bg-content-border"} absolute top-0 left-0 transition-colors`} />
+                <span className='pl-4 pt-2 pb-2'>{button.title}</span>
               </div>
             );
           })
@@ -95,19 +89,12 @@ function SideBar(props: SideBarProps) {
   );
 }
 
-export function singularSelectionHelper(
-  button: { title: string; active?: boolean },
-  buttons: { title: string; active?: boolean }[]
+export function singleSelectionHelper(
+  button: SideBarButton,
+  buttons: SideBarButton[]
 ) {
   buttons.forEach((btn) => {
     btn.active = false;
   });
   button.active = true;
-}
-
-export function toggleSelectionHelper(
-  button: { title: string; active?: boolean },
-  buttons: { title: string; active?: boolean }[]
-) {
-  button.active = !button.active;
 }
