@@ -21,9 +21,9 @@
  *   SOFTWARE.
  */
 
-import localforage from "localforage";
-import React, { useState, useEffect } from "react";
-import ToggleSwitch from "../../global/ToggleSwitch";
+import localforage from 'localforage';
+import React, { useState, useEffect } from 'react';
+import ToggleSwitch from '../../global/ToggleSwitch';
 
 export function ToggleSetting(props: {
   description: string;
@@ -35,22 +35,25 @@ export function ToggleSetting(props: {
   return (
     <>
       <p
-        className={`m-0 flex items-center justify-center ${props?.disabled ? "text-text-secondary line-through" : "text-text-primary"} text-xl p-1 bg-content-normal rounded-xl`}>
+        className={`m-0 flex items-center justify-center ${
+          props?.disabled
+            ? 'text-text-secondary line-through'
+            : 'text-text-primary'
+        } text-xl p-1 bg-content-normal rounded-xl`}
+      >
         {props.description}
       </p>
-      <div className={"md:pl-2"}>
+      <div className={'md:pl-2'}>
         <ToggleSwitch
           disabled={props?.disabled}
           initialValue={
-            props.settingsData[ props.settingsKey ]
-              ? props.settingsData[ props.settingsKey ]
+            props.settingsData[props.settingsKey]
+              ? props.settingsData[props.settingsKey]
               : props.defaultValue
           }
-          onChange={newValue => {
-            localforage.getItem("settings").then((data: any) => {
-              data[ props.settingsKey ] = newValue;
-              localforage.setItem("settings", data);
-            });
+          onChange={(newValue) => {
+            props.settingsData[props.settingsKey] = newValue;
+            localforage.setItem('settings', props.settingsData);
           }}
         />
       </div>
@@ -68,24 +71,27 @@ export function StringSetting(props: {
   return (
     <>
       <p
-        className={`m-0 flex items-center justify-center ${props?.disabled ? "text-text-secondary line-through" : "text-text-primary"} text-xl p-1 bg-content-normal rounded-xl`}>
+        className={`m-0 flex items-center justify-center ${
+          props?.disabled
+            ? 'text-text-secondary line-through'
+            : 'text-text-primary'
+        } text-xl p-1 bg-content-normal rounded-xl`}
+      >
         {props.description}
       </p>
-      <div className={"md:pl-2 w-full"}>
+      <div className={'md:pl-2 w-full'}>
         <input
           className={`pl-2 pr-2 p-1 rounded-xl h-full w-full`}
-          type="text"
+          type='text'
           disabled={props?.disabled}
           defaultValue={
-            props.settingsData[ props.settingsKey ]
-              ? props.settingsData[ props.settingsKey ]
+            props.settingsData[props.settingsKey]
+              ? props.settingsData[props.settingsKey]
               : props.defaultValue
           }
-          onChange={e => {
-            localforage.getItem("settings").then((data: any) => {
-              data[ props.settingsKey ] = e.target.value;
-              localforage.setItem("settings", data);
-            });
+          onChange={(e) => {
+            props.settingsData[props.settingsKey] = e.target.value;
+            localforage.setItem('settings', props.settingsData);
           }}
         />
       </div>

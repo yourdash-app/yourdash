@@ -21,12 +21,24 @@
  *   SOFTWARE.
  */
 
-import { useState } from "react";
-import SettingsPageTemplate from "../../../components/app/settings/PageTemplate";
-import { ToggleSetting, StringSetting } from "../../../components/app/settings/SettingComponents";
+import localforage from 'localforage';
+import { useEffect, useState } from 'react';
+import SettingsPageTemplate from '../../../components/app/settings/PageTemplate';
+import {
+  ToggleSetting,
+  StringSetting
+} from '../../../components/app/settings/SettingComponents';
 
 export default function SettingsOverviewPage() {
-  const [settingsData, setSettingsData] = useState({})
+  const [settingsData, setSettingsData] = useState({});
+  const [loaded, setLoaded] = useState(false);
+  useEffect(() => {
+    localforage.getItem('settings').then((settings: any) => {
+      setSettingsData(settings);
+      setLoaded(true)
+    });
+  }, []);
+  if (!loaded) return <></>;
   return (
     <SettingsPageTemplate>
       <ToggleSetting

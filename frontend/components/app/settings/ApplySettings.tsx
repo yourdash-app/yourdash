@@ -21,12 +21,18 @@
  *   SOFTWARE.
  */
 
-import React from "react";
+import { useRouter } from 'next/router';
 
-export default function Header(props: { title: string }) {
+export function ApplySettings() {
+  const router = useRouter();
   return (
-    <div className={`w-full font-extrabold text-5xl flex h-56 items-center justify-center text-text-primary shadow-2xl bg-content-normal`}>
-      <h1>{props.title}</h1>
-    </div>
+    <button
+      onClick={() => {
+        router.reload();
+      }}
+      className='w-full bg-content-normal rounded-lg p-2 text-text-primary text-xl hover:bg-content-light active:bg-content-dark transition-all'
+    >
+      Apply
+    </button>
   );
 }
