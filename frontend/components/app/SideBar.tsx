@@ -68,12 +68,13 @@ function SideBar(props: SideBarProps) {
         </div>
       ) : null}
       {buttons
-        ? buttons.map((button) => {
+        ? buttons.map((button, ind) => {
             return (
               <div
                 className={
                   'w-[calc(100%-1rem)] overflow-hidden cursor-pointer ml-2 mr-2 mt-2 rounded-lg hover:bg-content-light active:bg-content-dark text-text-primary transition-colors bg-content-normal shadow-md pr-2 flex relative select-none'
                 }
+                key={ind}
                 onClick={() =>
                   button.onClick(button, buttons, () => {
                     forceUpdate({});
