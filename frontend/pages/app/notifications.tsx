@@ -32,7 +32,7 @@ export default function Notifications() {
         <Head>
             <title>DevDash | Notifications</title>
         </Head>
-        <div className={"grid grid-cols-[1fr,auto] h-screen w-full bg-bg-light-secondary"}>
+        <div className={"grid grid-cols-[1fr,auto] h-screen w-full bg-bg-light-secondary dark:bg-bg-dark-secondary"}>
             <div className={"p-4"}>
                 {/* @ts-ignore */}
                 {notifications !== [] ? (notifications.map(notification => {
