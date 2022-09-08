@@ -21,8 +21,75 @@
  *   SOFTWARE.
  */
 
-import * as React from "react";
-import { NextRouter, withRouter } from "next/router";
+import * as React from 'react';
+import { NextRouter, Router, useRouter, withRouter } from 'next/router';
+import Link from 'next/link';
+
+export default function NavigationBar() {
+  let listener = (e: Event) => {
+    if (window.scrollY !== 0) {
+      setCompact(true)
+    } else {
+      setCompact(false)
+    }
+  } 
+  React.useEffect(() => {
+    window.addEventListener("scroll", listener)
+    return (() => {
+      window.removeEventListener("scroll", listener)
+    })
+  })
+  const [compact, setCompact] = React.useState(false);
+  return (
+    <div
+      className={`flex items-center justify-center bg-content-normal z-50 sticky top-0 shadow-lg transition-all ${
+        compact ? 'h-12' : 'h-20'
+      } pt-2 pb-2`}>
+      <img
+        className={`h-full transition-all drop-shadow-md ${compact ? "" : "pt-1 pb-1"} select-none`}
+        draggable={false}
+        src={require('./../../assets/icons/DevDash.svg').default.src}
+      />
+      <h1 className='text-text-primary transition-all select-none font-semibold sm:w-auto w-0 overflow-hidden text-3xl drop-shadow-md pl-2 sm:mr-20 md:mr-32 lg:mr-48 mr-10'>
+        DevDash
+      </h1>
+      <NavigationButton
+        title='Home'
+        href={'/'}
+      />
+      <NavigationButton
+        title='Projects'
+        href={'/projects'}
+      />
+      <NavigationButton
+        title='Login'
+        href={'/auth/login'}
+        vibrant={true}
+      />
+    </div>
+  );
+}
+
+function NavigationButton(props: {
+  title: string;
+  href: string;
+  vibrant?: boolean;
+}) {
+  const router = useRouter();
+  return (
+    <div
+      onClick={() => {
+        router.push(props.href);
+      }}
+      className={`pl-3 pr-3 pt-1 pb-1 transition-colors rounded-lg cursor-pointer text-lg mr-2 shadow-md last:mr-0 select-none child:w-full child:h-full ${
+        props.vibrant
+          ? 'bg-branding-primary hover:bg-branding-hover active:bg-branding-active text-text-primary'
+          : 'bg-content-normal hover:bg-content-light active:bg-content-dark text-text-secondary'
+      }`}>
+      {props.title}
+    </div>
+  );
+}
 
 class Component extends React.Component<{ router: NextRouter }> {
   state: {
@@ -38,30 +105,30 @@ class Component extends React.Component<{ router: NextRouter }> {
     this.state = {
       navButtons: [
         {
-          name: "Home",
-          path: "/",
+          name: 'Home',
+          path: '/'
         },
         {
-          name: "Github",
-          path: "https://github.com/ewsgit/devdash",
-          cn: "md:block hidden",
+          name: 'Github',
+          path: 'https://github.com/ewsgit/devdash',
+          cn: 'md:block hidden'
         },
         {
-          name: "Projects",
-          path: "/projects",
-          cn: "md:block hidden",
+          name: 'Projects',
+          path: '/projects',
+          cn: 'md:block hidden'
         },
         {
-          name: "Login",
-          path: "/auth/login",
+          name: 'Login',
+          path: '/auth/login'
         },
         {
-          name: "Ewsgit",
-          path: "https://github.com/ewsgit",
-          cn: "hidden",
-        },
+          name: 'Ewsgit',
+          path: 'https://github.com/ewsgit',
+          cn: 'hidden'
+        }
       ],
-      compactMenu: false,
+      compactMenu: false
     };
   }
   render() {
@@ -69,24 +136,24 @@ class Component extends React.Component<{ router: NextRouter }> {
       <>
         <div
           className={`select-none transition-all bg-content-normal h-20 bg-opacity-80 w-full fixed top-0 left-0 z-20 flex items-center justify-center backdrop-blur-md ${
-            this.state.compactMenu === false ? "shadow-xl" : null
+            this.state.compactMenu === false ? 'shadow-xl' : null
           }`}>
           <img
             width={64}
             height={64}
-            className="h-16 aspect-square pr-2 pl-2 cursor-pointer"
+            className='h-16 aspect-square pr-2 pl-2 cursor-pointer'
             // @ts-ignore
-            src={require("./../../assets/icons/DevDash.svg").default.src}
-            alt="devdash icon"
+            src={require('./../../assets/icons/DevDash.svg').default.src}
+            alt='devdash icon'
             onClick={() => {
-              this.props.router.push("/");
+              this.props.router.push('/');
             }}
-            draggable="false"
+            draggable='false'
           />
           <h2
-            className="text-text-primary font-semibold tracking-widest text-2xl sm:mr-32 md:mr-48 mr-8 cursor-pointer transition-all"
+            className='text-text-primary font-semibold tracking-widest text-2xl sm:mr-32 md:mr-48 mr-8 cursor-pointer transition-all'
             onClick={() => {
-              this.props.router.push("/");
+              this.props.router.push('/');
             }}>
             DevDash
           </h2>
@@ -94,9 +161,11 @@ class Component extends React.Component<{ router: NextRouter }> {
           <div className={`flex items-center justify-center`}>
             {this.state.navButtons.map((button: any, index) => {
               return (
-                <div className={`relative mr-2 ${button.cn}`} key={index}>
+                <div
+                  className={`relative mr-2 ${button.cn}`}
+                  key={index}>
                   <p
-                    className="text-text-primary cursor-pointer text-lg after:-bottom-2 after:rounded-md after:transition-all after:absolute after:w-full after:h-1 after:left-0 after:scale-0 hover:after:scale-100 font-medium after:bg-branding-primary hover:bg-content-light active:bg-content-dark transition-colors rounded-md pl-2 pr-2"
+                    className='text-text-primary cursor-pointer text-lg after:-bottom-2 after:rounded-md after:transition-all after:absolute after:w-full after:h-1 after:left-0 after:scale-0 hover:after:scale-100 font-medium after:bg-branding-primary hover:bg-content-light active:bg-content-dark transition-colors rounded-md pl-2 pr-2'
                     tabIndex={0}
                     onClick={() => {
                       this.props.router.push(button.path);
@@ -107,26 +176,29 @@ class Component extends React.Component<{ router: NextRouter }> {
               );
             })}
             <img
-              aria-label="Ewsgit"
-              src={require("./../../assets/ewsgit_plain.svg").default.src}
-              alt="Ewsgit"
+              aria-label='Ewsgit'
+              src={require('./../../assets/ewsgit_plain.svg').default.src}
+              alt='Ewsgit'
               onClick={() => {
-                this.props.router.push("https://ewsgit.github.io");
+                this.props.router.push('https://ewsgit.github.io');
               }}
               className={`aspect-square h-6 grayscale hover:grayscale-0 transition-all cursor-pointer hidden md:block`}
             />
           </div>
           <div className={`block relative md:hidden`}>
             <img
-              src={require("./../../assets/FlatIcons/interface-setting-menu-burger.svg").default.src}
+              src={
+                require('./../../assets/FlatIcons/interface-setting-menu-burger.svg')
+                  .default.src
+              }
               tabIndex={0}
               width={24}
               height={24}
               className={`h-6 cursor-pointer`}
-              alt="navigation links menu"
+              alt='navigation links menu'
               onClick={() => {
                 this.setState({
-                  compactMenu: !this.state.compactMenu,
+                  compactMenu: !this.state.compactMenu
                 });
               }}
             />
@@ -135,15 +207,17 @@ class Component extends React.Component<{ router: NextRouter }> {
         <div
           className={`fixed left-0 z-10 h-max w-full duration-200 ease-in-out bg-content-normal border-b-2 border-branding-primary transition-all shadow-2xl grid grid-cols-5 gap-2 p-2 pt-20 md:hidden`}
           style={{
-            top: this.state.compactMenu === true ? "0" : "-100%",
+            top: this.state.compactMenu === true ? '0' : '-100%'
           }}>
           {this.state.navButtons.map((button: any, index) => {
             if (button.cn) {
-              if (button.cn.includes("hidden")) {
+              if (button.cn.includes('hidden')) {
                 return (
-                  <div key={index} className={`text-center relative mb-2`}>
+                  <div
+                    key={index}
+                    className={`text-center relative mb-2`}>
                     <p
-                      className="text-text-primary cursor-pointer text-lg after:-bottom-2 after:rounded-md after:transition-all after:absolute after:w-full after:h-1 after:left-0 after:scale-0 hover:after:scale-100 font-medium after:bg-branding-primary hover:bg-content-light active:bg-content-dark transition-colors rounded-md pl-2 pr-2"
+                      className='text-text-primary cursor-pointer text-lg after:-bottom-2 after:rounded-md after:transition-all after:absolute after:w-full after:h-1 after:left-0 after:scale-0 hover:after:scale-100 font-medium after:bg-branding-primary hover:bg-content-light active:bg-content-dark transition-colors rounded-md pl-2 pr-2'
                       tabIndex={0}
                       onClick={() => {
                         window.location.href = button.path;
@@ -164,5 +238,3 @@ class Component extends React.Component<{ router: NextRouter }> {
     );
   }
 }
-
-export default withRouter(Component);
