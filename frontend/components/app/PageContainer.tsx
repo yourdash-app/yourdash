@@ -24,6 +24,5 @@ export default function PageContainer(props: { pageId: string, children: React.R
         ? <>{props.children}<Navigation pageId={props.pageId} /></>
         : <><Navigation pageId={props.pageId} />{props.children}</>
     }
-
   </div>
 }
