@@ -23,6 +23,7 @@
 
 import * as React from "react";
 import { NextRouter, withRouter } from "next/router";
+import NavigationBar from "../components/home/NavBar";
 
 class FourZeroFour extends React.Component<{ router: NextRouter }> {
   state: {
@@ -61,11 +62,7 @@ class FourZeroFour extends React.Component<{ router: NextRouter }> {
   render() {
     return (
       <div className="bg-content-normal transition-colors w-full h-screen flex items-center justify-center flex-col">
-        <div
-          className={`fixed top-0 left-0 w-full h-20 bg-content-dark bg-opacity-30 flex items-center justify-center`}>
-          <img className={`h-16`} src={require("./../assets/icons/DevDash.svg").default.src} alt="devdash icon" />
-          <h2 className={`text-text-primary font-semibold tracking-widest text-2xl`}>DevDash</h2>
-        </div>
+        <NavigationBar />
         <h1 className="text-9xl text-text-primary">404</h1>
         <p className="text-4xl text-text-primary">Page not found</p>
         <button

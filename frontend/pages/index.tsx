@@ -23,9 +23,11 @@
 
 import * as React from 'react';
 import NavBar from '../components/home/NavBar';
+import Footer from './../components/home/Footer';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import Slides from '../components/home/Slides';
 
 export default function HomePage() {
   const router = useRouter();
@@ -44,13 +46,24 @@ export default function HomePage() {
       </Head>
       <NavBar />
       <main className='w-full h-full grid grid-cols-1 gap-4 pb-20 place-items-center'>
-        <div className='w-full grid grid-cols-2 h-96 mb-10'>
-          <p>insert slide component</p>
-          <div className='flex flex-col justify-center relative select-none'>
+        <section className='w-full flex items-center justify-center h-[30rem] mb-10 max-w-screen-xl pl-8 pr-8'>
+          <div className='flex-col justify-end items-end select-none pt-[5rem] h-full w-[50%] hidden md:flex'>
+            <Slides
+              slides={[
+                <div>This is a placeholder</div>,
+                <div>
+                  Much placeholder.
+                  <br />
+                  Such need images.
+                </div>
+              ]}
+            />
+          </div>
+          <div className='flex flex-col justify-center relative h-full w-full items-center md:items-start md:w-auto select-none pl-8'>
             <h1 className='text-6xl text-text-primary'>DevDash</h1>
-            <h2 className='text-2xl text-text-secondary'>Insert Moto</h2>
+            <h2 className='text-2xl text-text-secondary'>Simply create.</h2>
             <div className='absolute bottom-4 select-none'>
-              <button className='rounded-full bg-branding-primary pt-2 pb-2 pl-4 pr-4 text-xl mr-4'>
+              <button className='pl-4 duration-75 pr-4 pt-2 pb-2 transition-all text-text-secondary hover:text-text-primary outline-0 bg-branding-primary hover:bg-transparent active:bg-transparent hover:outline-2 outline-branding-primary active:outline-branding-active outline rounded-full text-xl mr-4'>
                 Sign Up
               </button>
               <button
@@ -62,28 +75,41 @@ export default function HomePage() {
               </button>
             </div>
           </div>
-        </div>
-        <div className='grid grid-cols-3 grid-rows-2 max-w-screen-xl h-[40rem] child:rounded-3xl child:relative child:shadow-lg child:bg-content-dark pl-8 pr-8 gap-4'>
-          <div className='col-span-2 row-span-2'>
-            <h1 className='pl-6 pt-6 text-5xl text-text-primary'>Edit code seamlessly</h1>
-            <button className='pl-4 duration-75 pr-4 pt-2 pb-2 transition-all text-text-secondary hover:text-text-primary hover:outline-0 active:outline-none hover:bg-branding-hover active:bg-branding-active outline-2 outline-branding-primary outline rounded-full text-xl absolute bottom-4 left-4'>
-              Learn more
-            </button>
+        </section>
+        <section className='bg-bg-light-secondary dark:bg-bg-dark-secondary w-full flex items-center justify-center min-h-[40rem] pt-8 pl-8 pr-8 pb-8'>
+          <div className='grid grid-cols-1 md:grid-cols-3 max-w-screen-xl h-full w-full child:rounded-3xl child:relative child:shadow-lg child:bg-content-dark gap-4 child:overflow-hidden select-none'>
+            <div className='md:col-span-2 md:row-span-2 w-full h-full'>
+              <h1 className='pl-6 pr-6 pt-6 text-5xl text-text-primary relative'>
+                Edit code seamlessly
+              </h1>
+              <div className='opacity-0 pt-2 pb-2 mt-8 text-xl'>abc</div>
+              <button className='pl-4 duration-75 pr-4 pt-2 pb-2 transition-all text-text-secondary hover:text-text-primary hover:outline-0 active:outline-none hover:bg-branding-hover active:bg-branding-active outline-2 outline-branding-primary outline rounded-full text-xl absolute bottom-4 left-4'>
+                Learn more
+              </button>
+            </div>
+            <div>
+              {/* <img src={require("./../assets/brandedBackgrounds/manageServer.svg").default.src} className='h-full w-full absolute top-0 left-0 opacity-30' alt="" /> */}
+              <h1 className='pl-6 pr-6 pt-6 text-5xl md:text-4xl text-text-primary z-10 relative'>
+                Manage deployment servers
+              </h1>
+              <div className='opacity-0 pt-2 pb-2 mt-8 text-xl'>abc</div>
+              <button className='pl-4 duration-75 pr-4 pt-2 pb-2 transition-all text-text-secondary hover:text-text-primary hover:outline-0 active:outline-none hover:bg-branding-hover active:bg-branding-active outline-2 outline-branding-primary outline rounded-full text-xl absolute bottom-4 left-4'>
+                Learn more
+              </button>
+            </div>
+            <div>
+              <h1 className='pl-6 pr-6 pt-6 text-5xl md:text-4xl text-text-primary relative'>
+                Share code with the whole team whenever and wherever
+              </h1>
+              <div className='opacity-0 pt-2 pb-2 mt-8 text-xl'>abc</div>
+              <button className='pl-4 duration-75 pr-4 pt-2 pb-2 transition-all text-text-secondary hover:text-text-primary hover:outline-0 active:outline-none hover:bg-branding-hover active:bg-branding-active outline-2 outline-branding-primary outline rounded-full text-xl absolute bottom-4 left-4'>
+                Learn more
+              </button>
+            </div>
           </div>
-          <div>
-            <h1>Manage deployment servers</h1>
-            <button className='pl-4 duration-75 pr-4 pt-2 pb-2 transition-all text-text-secondary hover:text-text-primary hover:outline-0 active:outline-none hover:bg-branding-hover active:bg-branding-active outline-2 outline-branding-primary outline rounded-full text-xl absolute bottom-4 left-4'>
-              Learn more
-            </button>
-          </div>
-          <div>
-            <h1>Share code with the whole team whenever and wherever</h1>
-            <button className='pl-4 duration-75 pr-4 pt-2 pb-2 transition-all text-text-secondary hover:text-text-primary hover:outline-0 active:outline-none hover:bg-branding-hover active:bg-branding-active outline-2 outline-branding-primary outline rounded-full text-xl absolute bottom-4 left-4'>
-              Learn more
-            </button>
-          </div>
-        </div>
+        </section>
       </main>
+      <Footer />
     </>
   );
 }

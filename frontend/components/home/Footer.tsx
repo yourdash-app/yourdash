@@ -21,13 +21,24 @@
  *   SOFTWARE.
  */
 
+import { useRouter } from "next/router";
+
 export default function Footer() {
+  const router = useRouter()
   return (
-    <footer>
-      <div>
-        <p>Copyright © 2021-2022 Ewsgit</p>
+    <footer className='w-full flex flex-col pl-6 pr-6 bg-content-normal pt-5 border-t-2 border-solid border-content-border select-none'>
+      <section className='child:rounded-full child:pl-4 child:transition-all child:pr-4 child:pt-2 child:pb-2 child:mr-2 pb-3 active:child:bg-content-border hover:child:bg-content-light child:text-text-secondary flex child:h-12 child:flex child:items-center child:justify-center'>
+        <button onClick={() => {window.location.href = "https://github.com/ewsgit/devdash"}}>
+          <span>Contribute</span>
+        </button>
+        <button onClick={() => {window.location.href = "https://github.com/ewsgit"}}>
+          <span>Ewsgit</span>
+        </button>
+      </section>
+      <section className='w-full text-text-primary flex pt-2 pb-4'>
+        <p className='mr-auto'>Copyright © 2021-2022 Ewsgit</p>
         <p>Created By Ewsgit</p>
-      </div>
+      </section>
     </footer>
   );
 }
