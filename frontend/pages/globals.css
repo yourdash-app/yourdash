@@ -32,21 +32,60 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+  .animation-duration-50 {
+    --animation-duration: 50ms;
+  }
+  .animation-duration-100 {
+    --animation-duration: 100ms;
+  }
+  .animation-duration-200 {
+    --animation-duration: 200ms;
+  }
+  .animation-duration-500 {
+    --animation-duration: 500ms;
+  }
+  .animation-duration-1000 {
+    --animation-duration: 1000ms;
+  }
+  .animation-duration-2000 {
+    --animation-duration: 2000ms;
+  }
+  .animation-pause-duration-50 {
+    --animation-duration: 50ms;
+  }
+  .animation-pause-duration-100 {
+    --animation-duration: 100ms;
+  }
+  .animation-pause-duration-200 {
+    --animation-duration: 200ms;
+  }
+  .animation-pause-duration-500 {
+    --animation-duration: 500ms;
+  }
+  .animation-pause-duration-1000 {
+    --animation-duration: 1000ms;
+  }
+  .animation-pause-duration-2000 {
+    --animation-duration: 2000ms;
+  }
+}
+
 :root {
-    color-scheme: only normal;
+  color-scheme: only normal;
 }
 
 html,
 body {
-    background-color: #363636;
-    padding: 0;
-    margin: 0;
-    font-family: "Roboto Condensed", -apple-system, BlinkMacSystemFont, Segoe UI,
+  background-color: #363636;
+  padding: 0;
+  margin: 0;
+  font-family: 'Roboto Condensed', -apple-system, BlinkMacSystemFont, Segoe UI,
     Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
     sans-serif;
-    scrollbar-color: #ee6c4dff #363636;
-    scrollbar-width: auto;
-    min-height: 100vh;
+  scrollbar-color: #ee6c4dff #363636;
+  scrollbar-width: auto;
+  min-height: 100vh;
 }
 
 input,
@@ -54,43 +93,43 @@ textarea,
 button,
 select,
 a {
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 a {
-    color: inherit;
-    text-decoration: none;
+  color: inherit;
+  text-decoration: none;
 }
 
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 :focus-visible {
-    outline: 3px solid #ee6c4dff;
+  outline: 3px solid #ee6c4dff;
 }
 
 ::selection {
-    background: #ee6c4dff;
+  background: #ee6c4dff;
 }
 
 ::-webkit-scrollbar {
-    width: 0.5rem;
-    height: 0.5rem;
+  width: 0.5rem;
+  height: 0.5rem;
 }
 
 ::-webkit-scrollbar-corner {
-    background: #363636;
+  background: #363636;
 }
 
 ::-webkit-scrollbar-track {
-    background: #363636;
+  background: #363636;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #ee6c4dff;
+  background: #ee6c4dff;
 }
 
 pre {
-    font-family: "JetBrains Mono";
+  font-family: 'JetBrains Mono';
 }
