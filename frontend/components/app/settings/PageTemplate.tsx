@@ -43,34 +43,26 @@ export default function SettingsPageTemplate(props: {
           {
             title: 'Overview',
             onClick: (button, buttons, update) => {
-              singleSelectionHelper(button, buttons);
               router.push('/app/settings/overview');
-              update();
             },
             active: true
           },
           {
             title: 'Test',
             onClick: (button, buttons, update) => {
-              singleSelectionHelper(button, buttons);
               router.push('/app/settings/test');
-              update();
             }
           },
           {
             title: 'Overview',
             onClick: (button, buttons, update) => {
-              singleSelectionHelper(button, buttons);
               router.push('/app/settings/overview');
-              update();
             }
           },
           {
             title: 'Overview',
             onClick: (button, buttons, update) => {
-              singleSelectionHelper(button, buttons);
               router.push('/app/settings/overview');
-              update();
             }
           }
         ]}
