@@ -21,7 +21,7 @@
  *   SOFTWARE.
  */
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import setTheme from '../../lib/setTheme';
 
 export default function IntroductionPage() {
@@ -29,10 +29,15 @@ export default function IntroductionPage() {
   const [themeSelected, setThemeSelected] = useState(
     'auto' as 'light' | 'auto' | 'dark'
   );
+  useEffect(() => {
+    setThemeSelected(
+      localStorage.getItem('themeMode') as 'light' | 'auto' | 'dark'
+    );
+  });
   return (
     <div
       className={
-        'w-screen h-screen transition-[background-color] bg-bg-light-secondary flex items-center justify-center'
+        'w-screen h-screen transition-[background-color] bg-bg-light-secondary dark:bg-bg-dark-secondary flex items-center justify-center'
       }>
       {currentPage === 0 ? (
         <SubPage>
@@ -47,6 +52,7 @@ export default function IntroductionPage() {
               'w-[calc(100%-2rem)] grid grid-cols-1 h-[calc(100%-6rem)] gap-2 ml-4 mr-4 place-items-center sm:grid-cols-3'
             }>
             <ThemeSelectionCard
+              displayName='Light'
               currentlySelectedTheme={themeSelected}
               theme='light'
               onClick={() => {
@@ -54,9 +60,15 @@ export default function IntroductionPage() {
                 localStorage.setItem('themeMode', 'light');
                 setTheme();
               }}
-              image={require('./../../assets/homescreenWave.svg').default.src}
+              section={
+                <div className='flex w-full h-full pl-2 pr-2 pt-2 pb-2'>
+                  <div className='w-1/2 h-full bg-content-normal rounded-l-xl'></div>
+                  <div className='w-1/2 h-full bg-bg-light-primary rounded-r-xl'></div>
+                </div>
+              }
             />
             <ThemeSelectionCard
+              displayName='Adaptive'
               currentlySelectedTheme={themeSelected}
               theme='auto'
               onClick={() => {
@@ -64,9 +76,19 @@ export default function IntroductionPage() {
                 localStorage.setItem('themeMode', 'system');
                 setTheme();
               }}
-              image={require('./../../assets/homescreenWave.svg').default.src}
+              section={
+                <div className='flex w-full h-full pl-2 pr-2 pt-2 pb-2'>
+                  <div className='w-1/2 h-full bg-content-normal rounded-l-xl'></div>
+                  {window.matchMedia('(prefers-color-scheme: dark)').matches ? (
+                    <div className='w-1/2 h-full bg-bg-dark-primary rounded-r-xl'></div>
+                  ) : (
+                    <div className='w-1/2 h-full bg-bg-light-primary rounded-r-xl'></div>
+                  )}
+                </div>
+              }
             />
             <ThemeSelectionCard
+              displayName='Dark'
               currentlySelectedTheme={themeSelected}
               theme='dark'
               onClick={() => {
@@ -74,7 +96,12 @@ export default function IntroductionPage() {
                 localStorage.setItem('themeMode', 'dark');
                 setTheme();
               }}
-              image={require('./../../assets/homescreenWave.svg').default.src}
+              section={
+                <div className='flex w-full h-full pl-2 pr-2 pt-2 pb-2'>
+                  <div className='w-1/2 h-full bg-content-normal rounded-l-xl'></div>
+                  <div className='w-1/2 h-full bg-bg-dark-primary rounded-r-xl'></div>
+                </div>
+              }
             />
           </div>
         </SubPage>
@@ -95,7 +122,7 @@ function SubPage(props: {
   return (
     <div
       className={
-        'w-full md:rounded-3xl md:w-5/6 h-full max-h-[calc(100vh-6rem)] bg-content-normal child:animate-fade-in child:opacity-0 transition-[width] ' +
+        'w-full lg:rounded-3xl lg:w-5/6 h-full max-h-[calc(100vh-6rem)] bg-content-normal child:animate-fade-in child:opacity-0 transition-[width] ' +
         props.className
       }>
       {props.children}
@@ -137,31 +164,27 @@ function PageIndicatorContainer(props: {
 }
 
 function ThemeSelectionCard(props: {
-  theme: 'light' | 'auto' | 'dark';
-  image: string;
-  onClick: () => void;
-  currentlySelectedTheme: 'light' | 'auto' | 'dark';
+  displayName: string,
+  theme: 'light' | 'auto' | 'dark',
+  section: React.ReactChild[] | React.ReactChild,
+  onClick: () => void,
+  currentlySelectedTheme: 'light' | 'auto' | 'dark',
 }) {
   return (
     <div
       onClick={props.onClick}
-      className={`flex items-center justify-center transition-all w-full bg-red-400 overflow-hidden relative h-full max-h-96 max-w-lg rounded-xl child:select-none ${
+      className={`flex items-center justify-center transition-all w-full bg-content-border overflow-hidden relative h-full max-h-96 max-w-lg rounded-2xl child:select-none cursor-pointer ${
         props.theme === props.currentlySelectedTheme
           ? 'outline-4 outline outline-branding-primary'
           : 'outline-0'
       }`}>
-      <img
-        draggable={false}
-        src={props.image}
-        alt=''
-        className='w-full h-full absolute top-0 left-0'
-      />
+      <div className='w-full h-full absolute top-0 left-0'>{props.section}</div>
       <div
         className={
           'flex items-center justify-center w-full absolute bottom-0 left-0 bg-content-normal bg-opacity-75 pt-2 pb-2'
         }>
         <h3 className={'m-0 text-text-secondary text-2xl text-center'}>
-          {props.theme}
+          {props.displayName}
         </h3>
       </div>
     </div>
