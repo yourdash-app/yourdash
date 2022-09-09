@@ -32,7 +32,8 @@ export default function Navigation(props: { pageId: string }) {
   const [alignedToRight, setAlignedToRight] = useState(false as boolean);
   const [navigationButtonTagState, setNavigationButtonTagState] = useState({
     topOffset: 0,
-    text: 'Text Error (If you see this please report it!)'
+    text: 'Text Error (If you see this please report it!)',
+    hidden: true
   });
   const router = useRouter();
 
@@ -54,6 +55,10 @@ export default function Navigation(props: { pageId: string }) {
     localforage.getItem('githubUser').then((data) => {
       if (data) {
         setGithubUserData(data);
+        setLoginState({
+          shouldRemindToLogin: false,
+          isNavigationDisabled: false
+        });
       } else {
         setLoginState({
           shouldRemindToLogin: true,
@@ -95,11 +100,12 @@ export default function Navigation(props: { pageId: string }) {
         text={navigationButtonTagState.text}
         isRightAligned={alignedToRight}
         isExpanded={isExpanded}
+        isHidden={navigationButtonTagState.hidden}
       />
       <div
         className={`${
           isExpanded ? 'w-[5rem]' : 'w-[3.5rem]'
-        } h-screen bg-content-normal rel\ative shadow-xl grid grid-rows-[auto,1fr,auto]`}>
+        } h-screen bg-content-normal shadow-xl grid grid-rows-[auto,1fr,auto]`}>
         <NavigationUser
           isRightAligned={alignedToRight}
           userData={githubUserData}
@@ -109,18 +115,6 @@ export default function Navigation(props: { pageId: string }) {
           buttons={
             <>
               <NavigationButton
-                onMouseEnter={(text: string, topOffset: number) => {
-                  setNavigationButtonTagState({
-                    text: text,
-                    topOffset: topOffset
-                  });
-                }}
-                onMouseLeave={() => {
-                  setNavigationButtonTagState({
-                    topOffset: 0,
-                    text: 'Text Error (If you see this please report it!)'
-                  });
-                }}
                 isRightAligned={alignedToRight}
                 isDisabled={!loginState.isNavigationDisabled}
                 expanded={isExpanded}
@@ -129,6 +123,20 @@ export default function Navigation(props: { pageId: string }) {
                 currentPageId={props.pageId}
                 onClick={() => {
                   router.push('/auth/login');
+                }}
+                onMouseEnter={(text: string, topOffset: number) => {
+                  setNavigationButtonTagState({
+                    text: text,
+                    topOffset: topOffset,
+                    hidden: false
+                  });
+                }}
+                onMouseLeave={() => {
+                  setNavigationButtonTagState({
+                    topOffset: navigationButtonTagState.topOffset,
+                    text: navigationButtonTagState.text,
+                    hidden: true
+                  });
                 }}
                 icon='login'
               />
@@ -143,6 +151,20 @@ export default function Navigation(props: { pageId: string }) {
                   router.push('/app/home');
                 }}
                 icon='home'
+                onMouseEnter={(text: string, topOffset: number) => {
+                  setNavigationButtonTagState({
+                    text: text,
+                    topOffset: topOffset,
+                    hidden: false
+                  });
+                }}
+                onMouseLeave={() => {
+                  setNavigationButtonTagState({
+                    topOffset: navigationButtonTagState.topOffset,
+                    text: navigationButtonTagState.text,
+                    hidden: true
+                  });
+                }}
               />
               <NavigationButton
                 isRightAligned={alignedToRight}
@@ -155,6 +177,20 @@ export default function Navigation(props: { pageId: string }) {
                   router.push('/app/code-editor');
                 }}
                 icon='code'
+                onMouseEnter={(text: string, topOffset: number) => {
+                  setNavigationButtonTagState({
+                    text: text,
+                    topOffset: topOffset,
+                    hidden: false
+                  });
+                }}
+                onMouseLeave={() => {
+                  setNavigationButtonTagState({
+                    topOffset: navigationButtonTagState.topOffset,
+                    text: navigationButtonTagState.text,
+                    hidden: true
+                  });
+                }}
               />
               <NavigationButton
                 isRightAligned={alignedToRight}
@@ -167,6 +203,20 @@ export default function Navigation(props: { pageId: string }) {
                   router.push('/app/manage-server');
                 }}
                 icon='build'
+                onMouseEnter={(text: string, topOffset: number) => {
+                  setNavigationButtonTagState({
+                    text: text,
+                    topOffset: topOffset,
+                    hidden: false
+                  });
+                }}
+                onMouseLeave={() => {
+                  setNavigationButtonTagState({
+                    topOffset: navigationButtonTagState.topOffset,
+                    text: navigationButtonTagState.text,
+                    hidden: true
+                  });
+                }}
               />
               <NavigationButton
                 isRightAligned={alignedToRight}
@@ -179,6 +229,20 @@ export default function Navigation(props: { pageId: string }) {
                   router.push('/app/git');
                 }}
                 icon='wysiwyg'
+                onMouseEnter={(text: string, topOffset: number) => {
+                  setNavigationButtonTagState({
+                    text: text,
+                    topOffset: topOffset,
+                    hidden: false
+                  });
+                }}
+                onMouseLeave={() => {
+                  setNavigationButtonTagState({
+                    topOffset: navigationButtonTagState.topOffset,
+                    text: navigationButtonTagState.text,
+                    hidden: true
+                  });
+                }}
               />
               <NavigationButton
                 isRightAligned={alignedToRight}
@@ -191,12 +255,26 @@ export default function Navigation(props: { pageId: string }) {
                   router.push('/app/todo-list');
                 }}
                 icon='pending_actions'
+                onMouseEnter={(text: string, topOffset: number) => {
+                  setNavigationButtonTagState({
+                    text: text,
+                    topOffset: topOffset,
+                    hidden: false
+                  });
+                }}
+                onMouseLeave={() => {
+                  setNavigationButtonTagState({
+                    topOffset: navigationButtonTagState.topOffset,
+                    text: navigationButtonTagState.text,
+                    hidden: true
+                  });
+                }}
               />
             </>
           }
         />
         <div className={`w-full shadow-inner pt-2`}>
-          {!loginState.shouldRemindToLogin ? (
+          {loginState.shouldRemindToLogin ? (
             <Notification
               id={createUuid()}
               expanded={isExpanded}
@@ -214,7 +292,10 @@ export default function Navigation(props: { pageId: string }) {
                   type: 'button',
                   label: 'Remind me later',
                   onClick: () => {
-                    setLoginState({ ...loginState, shouldRemindToLogin: true });
+                    setLoginState({
+                      ...loginState,
+                      shouldRemindToLogin: false
+                    });
                   }
                 }
               ]}
@@ -277,6 +358,20 @@ export default function Navigation(props: { pageId: string }) {
                 setTheme();
               }
             }}
+            onMouseEnter={(text: string, topOffset: number) => {
+              setNavigationButtonTagState({
+                text: text,
+                topOffset: topOffset,
+                hidden: false
+              });
+            }}
+            onMouseLeave={() => {
+              setNavigationButtonTagState({
+                topOffset: navigationButtonTagState.topOffset,
+                text: navigationButtonTagState.text,
+                hidden: true
+              });
+            }}
           />
           <NavigationButton
             isRightAligned={alignedToRight}
@@ -305,6 +400,20 @@ export default function Navigation(props: { pageId: string }) {
                 }
               });
             }}
+            onMouseEnter={(text: string, topOffset: number) => {
+              setNavigationButtonTagState({
+                text: text,
+                topOffset: topOffset,
+                hidden: false
+              });
+            }}
+            onMouseLeave={() => {
+              setNavigationButtonTagState({
+                topOffset: navigationButtonTagState.topOffset,
+                text: navigationButtonTagState.text,
+                hidden: true
+              });
+            }}
           />
           <NavigationButton
             isRightAligned={alignedToRight}
@@ -316,6 +425,20 @@ export default function Navigation(props: { pageId: string }) {
             icon='settings'
             onClick={() => {
               router.push('/app/settings');
+            }}
+            onMouseEnter={(text: string, topOffset: number) => {
+              setNavigationButtonTagState({
+                text: text,
+                topOffset: topOffset,
+                hidden: false
+              });
+            }}
+            onMouseLeave={() => {
+              setNavigationButtonTagState({
+                topOffset: navigationButtonTagState.topOffset,
+                text: navigationButtonTagState.text,
+                hidden: true
+              });
             }}
           />
           <NavigationNotificationButton
@@ -333,7 +456,7 @@ export default function Navigation(props: { pageId: string }) {
 }
 
 function ScrollableButtonSegment(props: { buttons: ReactChild }) {
-  return <div>{props.buttons}</div>;
+  return <div className='overflow-y-auto max-h-full'>{props.buttons}</div>;
 }
 
 function NavigationButtonTag(props: {
@@ -341,11 +464,17 @@ function NavigationButtonTag(props: {
   isExpanded: boolean;
   topOffset: number;
   text: string;
+  isHidden: boolean;
 }) {
   return (
     <div
+      style={{
+        top: props.topOffset + 2 + 'px',
+        transform: props.isHidden ? 'scale(0)' : 'scale(1)',
+        left: props.isExpanded ? '5.5rem' : '4rem'
+      }}
       className={
-        'bg-content-normal rounded-lg text-text-primary absolute p-2 top-0 left-0 z-50'
+        'bg-content-normal rounded-lg text-text-primary transition-all absolute p-2 top-0 z-50 origin-left'
       }>
       {props.text}
     </div>
@@ -353,22 +482,25 @@ function NavigationButtonTag(props: {
 }
 
 function NavigationButton(props: {
-  icon: IconTypings,
-  hoverTag: string,
-  onClick?: () => void,
-  activePage?: string,
-  currentPageId?: string,
-  href?: string,
-  expanded: boolean,
-  isDisabled: boolean,
-  isRightAligned: boolean,
-  onMouseEnter: (text: string, topOffset: number) => void,
-  onMouseLeave: () => void,
+  icon: IconTypings;
+  hoverTag: string;
+  onClick?: () => void;
+  activePage?: string;
+  currentPageId?: string;
+  href?: string;
+  expanded: boolean;
+  isDisabled: boolean;
+  isRightAligned: boolean;
+  onMouseEnter: (text: string, topOffset: number) => void;
+  onMouseLeave: () => void;
 }) {
   let isActive = props.activePage === props.currentPageId;
   return (
     <div
-      onMouseEnter={() => props.onMouseEnter ?? props.onMouseEnter(props.hoverTag, 0) }
+      onMouseEnter={(e) =>
+        props.onMouseEnter(props.hoverTag, e.currentTarget.offsetTop)
+      }
+      onMouseLeave={props.onMouseLeave}
       className={`relative group select-none ${
         props.isDisabled ? 'pointer-events-none hidden' : null
       } cursor-pointer ${
