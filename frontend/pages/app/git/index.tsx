@@ -27,83 +27,95 @@
  * Licensed under the MIT License - https://ewsgit.github.io/devdash/copyright
  */
 
-import React, { useState } from "react";
-import Head from "next/head";
-import PillButton from "../../../components/global/PillButton";
-import GitHeader from "../../../components/app/git/Header";
+import React, { useState } from 'react';
+import Head from 'next/head';
+import PillButton from '../../../components/global/PillButton';
+import GitHeader from '../../../components/app/git/Header';
+import LoadingHourglass from '../../../components/global/LoadingHourglass';
 
-
-export default function _index() {
-    const [ tab, setTab ] = useState("all")
-    return (
-      <>
-        <Head>
-          <title>DevDash | Github</title>
-        </Head>
+export default function GitIndexPage() {
+  const [tab, setTab] = useState('all');
+  const [isHeaderCompact, setIsHeaderCompact] = useState(false)
+  return (
+    <>
+      <Head>
+        <title>DevDash | Github</title>
+      </Head>
+      <div
+        className={`w-full grid grid-rows-[auto,1fr] min-h-screen bg-bg-light-secondary dark:bg-bg-dark-secondary`}>
         <div
-          className={`w-full grid grid-rows-[auto,1fr] min-h-screen bg-bg-light-secondary dark:bg-bg-dark-secondary overflow-y-auto`}>
-          <GitHeader />
-          <div className={'grid grid-rows-[auto,1fr]'}>
-            <div
-              className={'flex w-full items-center justify-center pt-2 pb-2'}>
-              <PillButton
-                title={'All'}
-                onClick={() => {
-                  setTab('all');
-                }}
-                toggled={tab === 'all'}
-              />
-              {}
-            </div>
-            <div>
-              <h1>test</h1>
-              <h1>test</h1>
-              <h1>test</h1>
-              <h1>test</h1>
-              <h1>test</h1>
-              <h1>test</h1>
-              <h1>test</h1>
-              <h1>test</h1>
-              <h1>test</h1>
-              <h1>test</h1>
-              <h1>test</h1>
-              <h1>test</h1>
-              <h1>test</h1>
-              <h1>test</h1>
-              <h1>test</h1>
-              <h1>test</h1>
-              <h1>test</h1>
-              <h1>test</h1>
-              <h1>test</h1>
-              <h1>test</h1>
-              <h1>test</h1>
-              <h1>test</h1>
-              <h1>test</h1>
-              <h1>test</h1>
-              <h1>test</h1>
-              <h1>test</h1>
-              <h1>test</h1>
-              <h1>test</h1>
-              <h1>test</h1>
-              <h1>test</h1>
-              <h1>test</h1>
-              <h1>test</h1>
-              <h1>test</h1>
-              <h1>test</h1>
-              <h1>test</h1>
-              <h1>test</h1>
-              <h1>test</h1>
-              <h1>test</h1>
-              <h1>test</h1>
-              <h1>test</h1>
-              <h1>test</h1>
-              <h1>test</h1>
-              <h1>test</h1>
-              <h1>test</h1>
-              <h1>test</h1>
-            </div>
+          className={
+            'grid grid-rows-[auto,1fr] overflow-hidden max-h-screen overflow-y-auto'
+          }
+          onScroll={(e) => {
+            if (e.currentTarget.scrollTop >= 96) {
+              setIsHeaderCompact(true)
+            } else {
+              setIsHeaderCompact(false)
+            }
+          }}
+        >
+          <GitHeader isCompact={isHeaderCompact} />
+          <div className={'flex w-full items-center justify-center pt-2 pb-2'}>
+            <PillButton
+              title={'All'}
+              onClick={() => {
+                setTab('all');
+              }}
+              toggled={tab === 'all'}
+            />
+            {}
+          </div>
+          <div>
+            <LoadingHourglass />
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
           </div>
         </div>
-      </>
-    );
+      </div>
+    </>
+  );
 }

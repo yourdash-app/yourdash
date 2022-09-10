@@ -21,32 +21,36 @@
  *   SOFTWARE.
  */
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Octokit } from '@octokit/rest';
 
-export default function GitHeader() {
+export default function GitHeader(props: { isCompact: boolean }) {
   const [results, setResults] = useState([]);
-  const [isCompact, setIsCompact] = useState(false);
   return (
-    <div
-      className={`w-full h-64 flex items-center justify-center relative bg-content-normal shadow-2xl`}>
-      <img
-        className={
-          'w-full h-full absolute top-0 left-0 opacity-75 pointer-events-none'
-        }
-        src={require('./../../../assets/git.svg').default.src}
-        alt=''
-      />
-      <input
-        className={`w-1/2 p-3 z-10 text-2xl text-center rounded-2xl`}
-        placeholder={`Search Github`}
-        type='text'
-      />
-      <div>
-        {results.map((result, ind) => {
-          return <div></div>;
-        })}
+    <>
+      <div className='h-64'></div>
+      <div
+        className={`w-full ${
+          props.isCompact ? 'h-20 fixed' : 'h-64'
+        } flex top-0 items-center justify-center fixed bg-content-normal shadow-2xl transition-all`}>
+        <img
+          className={
+            'w-full h-full absolute top-0 left-0 opacity-75 pointer-events-none'
+          }
+          src={require('./../../../assets/git.svg').default.src}
+          alt=''
+        />
+        <input
+          className={`lg:w-4/6 md:w-3/4 w-5/6 p-3 z-10 text-2xl text-center rounded-2xl transition-all`}
+          placeholder={`Search Github`}
+          type='text'
+        />
+        <div>
+          {results.map((result, ind) => {
+            return <div></div>;
+          })}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
