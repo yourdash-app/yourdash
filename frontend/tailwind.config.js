@@ -61,7 +61,7 @@ module.exports = {
       animation: {
         'pulse-spin': 'pulse infinite linear 4s, spin infinite linear 2s',
         'top-bottom': 'top-bottom 2s 0.5s infinite linear',
-        'spin-slower': 'spin var(--animation-duration) infinite linear',
+        'spin': 'spin var(--animation-duration) infinite linear',
         'expand-in-horizontal':
           'expand-horizontal var(--animation-duration) linear',
         'expand-in-horizontal-loop':
