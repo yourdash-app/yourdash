@@ -56,7 +56,7 @@ let lines = [
   "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequaturhgjklasdffhjklasdhjkl.",
 ]
 
-export default function TextEditor(props: {
+export default function  TextEditor(props: {
 
 }) {
   const editor_uuid = createUuid()
