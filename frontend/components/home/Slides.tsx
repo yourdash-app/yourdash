@@ -27,7 +27,7 @@ export default function Slides(props: { slides: React.ReactChild[] }) {
   useEffect(() => {
     let interval = setInterval(() => {
       console.log(currentSlideInd);
-      console.log(props.slides)
+      console.log(props.slides);
       if (currentSlideInd + 1 < props.slides.length)
         return setCurrentSlideInd(currentSlideInd + 1);
       setCurrentSlideInd(0);
@@ -39,21 +39,29 @@ export default function Slides(props: { slides: React.ReactChild[] }) {
   return (
     <div className='overflow-hidden h-full w-full bg-content-dark rounded-2xl relative flex items-center justify-center text-text-primary text-3xl'>
       {props.slides[currentSlideInd]}
-      <div className='w-max pl-2 pt-2 pb-2 pr-2 outline outline-2 outline-content-border bg-content-dark bottom-2 rounded-full absolute flex left-1/2 -translate-x-1/2'>
-        {props.slides.map((slide, ind) => {
-          return (
-            <div
-              key={ind}
-              onClick={() => {
-                setCurrentSlideInd(ind);
-              }}
-              className={`w-2 h-2 rounded-full mr-1 last:mr-0 cursor-pointer transition-colors ${
-                currentSlideInd === ind
-                  ? 'bg-text-primary'
-                  : 'bg-text-inverted-secondary'
-              }`}></div>
-          );
-        })}
+      <div
+        className={
+          '-translate-x-1/2 absolute bottom-2 left-1/2 flex items-center justify-center'
+        }>
+        <div
+          className={
+            'rounded-full bg-content-normal animate-expand-in-horizontal p-2.5 pl-3 pr-3 flex items-center justify-center overflow-hidden'
+          }>
+          {props.slides.map((slide, ind) => {
+            return (
+              <div
+                key={ind}
+                className={`p-1.5 pl-2.5 pr-2.5 rounded-full last:mr-0 first:ml-0 mr-1.5 ml-1.5 ${
+                  currentSlideInd === ind
+                    ? 'bg-branding-primary'
+                    : 'bg-content-dark'
+                } hover:scale-150 hover:outline-content-border outline-2 hover:outline transition-all cursor-pointer animate-fade-in opacity-0`}
+                onClick={() => {
+                  setCurrentSlideInd(ind);
+                }}></div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
