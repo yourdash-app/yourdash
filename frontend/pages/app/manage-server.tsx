@@ -35,3 +35,5 @@ export default function ManageServerPage() {
     </SideBar>
   );
 }
+
+ManageServerPage.underConstruction = true

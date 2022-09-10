@@ -21,63 +21,75 @@
  *   SOFTWARE.
 */
 
-import "./globals.css";
-import type { AppProps } from "next/app";
-import setTheme from "./../lib/setTheme";
-import Head from "next/head";
-import React, { useEffect, useState } from "react";
-import AppPageContainer from "./../components/app/PageContainer"
-import { useRouter } from "next/router";
+import './globals.css';
+import type { AppProps } from 'next/app';
+import setTheme from './../lib/setTheme';
+import Head from 'next/head';
+import React, { useEffect, useState } from 'react';
+import AppPageContainer from './../components/app/PageContainer';
+import { useRouter } from 'next/router';
+import UnderConstruction from '../components/app/UnderConstruction';
 
 let hasEffectRun = false;
 
 function NEXT_APP({ Component, pageProps }: AppProps) {
-    // define _app state
-    const [ Errors, setErrors ] = useState([] as any[]);
-    const router = useRouter()
-    const route = router.route
+  // define _app state
+  const [Errors, setErrors] = useState([] as any[]);
+  const router = useRouter();
+  const route = router.route;
 
-    useEffect(() => {
-        // if the effect is run more than once return
-        if (hasEffectRun) return
-        // assign current theme mode (light | dark)
-        // also listen for when the os default theme changes and react accordingly
-        if (typeof window !== "undefined") {
-            if (!window.document.body.style.getPropertyValue("--devdash-setTheme")) setTheme();
-            window
-                .matchMedia("(prefers-color-scheme: dark)")
-                .addEventListener("change", () => {
-                    setTheme();
-                });
-        }
-        // add listener for console errors and add them to the Errors state
-        window.addEventListener("error", (e) => {
-            if (window.location.hostname !== "localhost") {
-                e.preventDefault();
-                setErrors([ ...Errors, e ]);
-            }
-        })
-        hasEffectRun = true
-    })
-
-    // @ts-ignore
-    if (Component?.ignoreTemplate) return <Component {...pageProps } />
-    
-    switch (true) {
-        case route.startsWith("/app/"):
-
-            let pageId = route.split("/")[ 2 ]
-            console.log("%c[TemplateRouter]%c pageId: " + pageId, "color: green;", "")
-
-            return <AppPageContainer pageId={pageId}>
-                <Head>
-                    <title>DevDash | App</title>
-                </Head>
-                <Component {...pageProps} />
-            </AppPageContainer>
-        default:
-            return <Component {...pageProps} />
+  useEffect(() => {
+    // if the effect is run more than once return
+    if (hasEffectRun) return;
+    // assign current theme mode (light | dark)
+    // also listen for when the os default theme changes and react accordingly
+    if (typeof window !== 'undefined') {
+      if (!window.document.body.style.getPropertyValue('--devdash-setTheme'))
+        setTheme();
+      window
+        .matchMedia('(prefers-color-scheme: dark)')
+        .addEventListener('change', () => {
+          setTheme();
+        });
     }
+    // add listener for console errors and add them to the Errors state
+    window.addEventListener('error', (e) => {
+      if (window.location.hostname !== 'localhost') {
+        e.preventDefault();
+        setErrors([...Errors, e]);
+      }
+    });
+    hasEffectRun = true;
+  });
+
+  // @ts-ignore
+  if (Component?.ignoreTemplate) return <Component {...pageProps} />;
+
+  switch (true) {
+    case route.startsWith('/app/'):
+      // @ts-ignore
+      if (Component?.underConstruction && window.location.port !== '3000')
+        return <UnderConstruction />;
+
+      let pageId = route.split('/')[2];
+      console.log(
+        '%c[TemplateRouter]%c pageId: ' + pageId,
+        'color: green;',
+        ''
+      );
+
+      return (
+        <AppPageContainer pageId={pageId}>
+          <Head>
+            <title>DevDash | App</title>
+          </Head>
+          <Component {...pageProps} />
+          {Component.underConstruction ? <div className="fixed top-4 right-4 border-2 border-yellow-500 pt-2 pb-2 pl-2 pr-2 rounded-xl bg-content-dark text-text-primary pointer-events-none bg-opacity-50 z-50 backdrop-blur-md">Under Construction</div> : null}
+        </AppPageContainer>
+      );
+    default:
+      return <Component {...pageProps} />;
+  }
 }
 
 // return (<React.StrictMode>

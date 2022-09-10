@@ -21,8 +21,8 @@
  *   SOFTWARE.
  */
 
-import UnderConstruction from "../../components/app/UnderConstruction";
-
 export default function TodoListPage() {
-  return <UnderConstruction />
+  return <div></div>
 }
+
+TodoListPage.underConstruction = true

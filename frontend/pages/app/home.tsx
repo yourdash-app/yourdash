@@ -15,7 +15,7 @@ export default class Component extends React.Component {
                     <title>DevDash | App</title>
                 </Head>
                 <div
-                    className={`w-full dark:bg-bg-dark-secondary bg-bg-light-secondary grid grid-cols-1 sm:grid-cols-[1fr,1fr] md:grid-cols-[1fr,1fr,1fr] lg:grid-cols-[1fr,1fr,1fr,1fr] p-2 gap-2`}>
+                    className={`w-full min-h-full dark:bg-bg-dark-secondary bg-bg-light-secondary grid grid-cols-1 sm:grid-cols-[1fr,1fr] md:grid-cols-[1fr,1fr,1fr] lg:grid-cols-[1fr,1fr,1fr,1fr] p-2 gap-2`}>
                     <div
                         className={`dark:bg-bg-dark-primary bg-bg-light-primary flex items-center justify-center rounded-lg text-text-inverted-primary`}>
                         This is a test
