@@ -23,10 +23,10 @@
 
 import './globals.css';
 import type { AppProps } from 'next/app';
-import setTheme from './../lib/setTheme';
+import setTheme from '../lib/setTheme';
 import Head from 'next/head';
 import React, { useEffect, useState } from 'react';
-import AppPageContainer from './../components/app/PageContainer';
+import AppPageContainer from '../components/app/PageContainer';
 import { useRouter } from 'next/router';
 import UnderConstruction from '../components/app/UnderConstruction';
 
@@ -67,10 +67,11 @@ function NEXT_APP({ Component, pageProps }: AppProps) {
 
   switch (true) {
     case route.startsWith('/app/'):
-      // @ts-ignore
-      if (Component?.underConstruction && window.location.port !== '3000')
-        return <UnderConstruction />;
-
+      if (typeof window !== 'undefined')
+        // @ts-ignore
+        if (Component?.underConstruction && window.location.port !== '3000')
+          // @ts-ignore
+          return <UnderConstruction />;
       let pageId = route.split('/')[2];
       console.log(
         '%c[TemplateRouter]%c pageId: ' + pageId,
@@ -84,7 +85,14 @@ function NEXT_APP({ Component, pageProps }: AppProps) {
             <title>DevDash | App</title>
           </Head>
           <Component {...pageProps} />
-          {Component.underConstruction ? <div className="fixed top-4 right-4 border-2 border-yellow-500 pt-2 pb-2 pl-2 pr-2 rounded-xl bg-content-dark text-text-primary pointer-events-none bg-opacity-50 z-50 backdrop-blur-md">Under Construction</div> : null}
+          <>
+            {/* @ts-ignore */}
+            {Component.underConstruction ? (
+              <div className='fixed top-1/2 -translate-y-1/2 -left-1 border-r-0 rounded-r-none [writing-mode:vertical-lr;] rotate-180 border-2 border-yellow-500 pt-2 pb-2 pl-2 pr-2 rounded-xl bg-content-dark text-text-primary pointer-events-none bg-opacity-50 z-50 backdrop-blur-md'>
+                Under Construction
+              </div>
+            ) : null}
+          </>
         </AppPageContainer>
       );
     default:

@@ -21,24 +21,12 @@
  *   SOFTWARE.
  */
 
-import {TextEditorRenderingOptions} from "./../TextEditor"
+import DevDashUser from "./DevDashUser"
 
-export default function renderScrollBar(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, options: TextEditorRenderingOptions, lines: string[]) {
-  let c = ctx
-
-  let longest_line: string = "";
-  lines.forEach(line => {
-    if (line.length > longest_line.length) {
-      longest_line = line
-    }
-  })
-
-  let document_width = c.measureText(longest_line).width
-
-  console.log(document_width)
-
-  if (canvas.width < document_width) {
-    c.fillStyle = options.scrollbar.horizontal.background;
-    c.fillRect(0, canvas.height - options.scrollbar.horizontal.size, canvas.width, options.scrollbar.horizontal.size)
-  }
+export default interface DevDashTeam {
+  members: DevDashUser[],
+  teamName: string,
+  name: string,
+  profileImage: string,
+  projects: DevDashProject[]
 }

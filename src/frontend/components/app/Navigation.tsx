@@ -54,7 +54,7 @@ export default function Navigation(props: { pageId: string }) {
     window.addEventListener('DEVDASH_push_notification', notificationListener);
     localforage.getItem('githubUser').then((data) => {
       if (data) {
-        setGithubUserData(data);
+        setGithubUserData(data as any);
         setLoginState({
           shouldRemindToLogin: false,
           isNavigationDisabled: false
@@ -471,10 +471,16 @@ function NavigationButtonTag(props: {
       style={{
         top: props.topOffset + 2 + 'px',
         transform: props.isHidden ? 'scale(0)' : 'scale(1)',
-        left: props.isExpanded ? '5.5rem' : '4rem'
+        ...(props.isRightAligned
+          ? ''
+          : { left: props.isExpanded ? '5.5rem' : '4rem' }),
+        ...(props.isRightAligned
+          ? { right: props.isExpanded ? '5.5rem' : '4rem' }
+          : ''),
+        transformOrigin: props.isRightAligned ? 'right' : 'left'
       }}
       className={
-        'bg-content-normal rounded-lg text-text-primary transition-all absolute p-2 top-0 z-50 origin-left'
+        'bg-content-normal rounded-lg text-text-primary transition-all shadow-lg absolute p-2 top-0 z-50'
       }>
       {props.text}
     </div>
@@ -559,8 +565,17 @@ function NavigationUser(props: {
             </h2>
           </div>
         </div>
+        <section
+          className={
+            'grid grid-cols-2 w-full child:w-full child:rounded-md child:bg-content-normal hover:child:bg-content-light active:child:bg-content-dark child:transition-all child:shadow-md gap-2 child:p-2 p-2 text-text-primary text-xl'
+          }>
+          <div>a</div>
+          <div>b</div>
+          <div>c</div>
+          <div>d</div>
+        </section>
         {props.userData?.name ? (
-          <div className={'flex w-full p-2 shadow-inner'}>
+          <div className={'flex w-full p-2 pt-0'}>
             <button
               className={
                 'flex items-center transition-colors shadow-md justify-center bg-content-normal hover:bg-content-light active:bg-content-dark w-full h-full p-1 rounded-lg text-text-primary'

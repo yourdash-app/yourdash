@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd ./frontend/
+cd ./src/frontend/
 
 npm run build
 npm run export

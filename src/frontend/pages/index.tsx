@@ -23,7 +23,7 @@
 
 import * as React from 'react';
 import NavBar from '../components/home/NavBar';
-import Footer from './../components/home/Footer';
+import Footer from '../components/home/Footer';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import Slides from '../components/home/Slides';
@@ -43,7 +43,7 @@ export default function HomePage() {
         <title>DevDash</title>
       </Head>
       <NavBar />
-      <main className='w-full h-full grid grid-cols-1 gap-4 pb-20 place-items-center'>
+      <main className='w-full h-full grid grid-cols-1 gap-4 place-items-center'>
         <section className='w-full flex items-center justify-center h-[30rem] mb-10 max-w-screen-xl pl-8 pr-8'>
           <div className='flex-col justify-end items-end select-none pt-[5rem] h-full w-[50%] hidden md:flex'>
             <Slides

@@ -23,7 +23,7 @@
 
 import Head from 'next/head';
 import React from 'react';
-import SideBar, { singleSelectionHelper } from './../SideBar';
+import SideBar, { singleSelectionHelper } from '../SideBar';
 import { useRouter } from 'next/router';
 import Header from './Header';
 import { ApplySettings } from './ApplySettings';
@@ -32,10 +32,11 @@ export default function SettingsPageTemplate(props: {
   children: React.ReactChild | React.ReactChild[];
 }) {
   const router = useRouter();
+  let route = router.route
   return (
     <>
       <Head>
-        <title>DevDash | Settings - Overview</title>
+        <title>DevDash | Settings</title>
       </Head>
       <SideBar
         header='Settings'
@@ -45,26 +46,15 @@ export default function SettingsPageTemplate(props: {
             onClick: (button, buttons, update) => {
               router.push('/app/settings/overview');
             },
-            active: true
+            active: route.substring(route.lastIndexOf("/") + 1) === "overview" 
           },
           {
             title: 'Test',
             onClick: (button, buttons, update) => {
               router.push('/app/settings/test');
-            }
+            },
+            active: route.substring(route.lastIndexOf("/") + 1) === "test" 
           },
-          {
-            title: 'Overview',
-            onClick: (button, buttons, update) => {
-              router.push('/app/settings/overview');
-            }
-          },
-          {
-            title: 'Overview',
-            onClick: (button, buttons, update) => {
-              router.push('/app/settings/overview');
-            }
-          }
         ]}
       >
         <Header title={router.pathname.split('/')[3]} />

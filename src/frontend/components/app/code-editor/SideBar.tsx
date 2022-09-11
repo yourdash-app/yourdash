@@ -23,7 +23,7 @@
 
 import React from "react";
 import { triggerResizeEvent } from "../../../lib/elementResize";
-import DragScalableElement from "./../../global/DragScalableElement";
+import DragScalableElement from "../../global/DragScalableElement";
 
 export default function SideBar() {
   const [ willResetTabSize, setWillResetTabSize ] = React.useState(false);

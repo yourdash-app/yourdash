@@ -79,11 +79,14 @@ export default function IntroductionPage() {
               section={
                 <div className='flex w-full h-full pl-2 pr-2 pt-2 pb-2'>
                   <div className='w-1/2 h-full bg-content-normal rounded-l-xl'></div>
-                  {window.matchMedia('(prefers-color-scheme: dark)').matches ? (
-                    <div className='w-1/2 h-full bg-bg-dark-primary rounded-r-xl'></div>
-                  ) : (
-                    <div className='w-1/2 h-full bg-bg-light-primary rounded-r-xl'></div>
-                  )}
+                  {typeof window !== 'undefined' ? (
+                    window.matchMedia('(prefers-color-scheme: dark)')
+                      .matches ? (
+                      <div className='w-1/2 h-full bg-bg-dark-primary rounded-r-xl'></div>
+                    ) : (
+                      <div className='w-1/2 h-full bg-bg-light-primary rounded-r-xl'></div>
+                    )
+                  ) : null}
                 </div>
               }
             />
@@ -164,11 +167,11 @@ function PageIndicatorContainer(props: {
 }
 
 function ThemeSelectionCard(props: {
-  displayName: string,
-  theme: 'light' | 'auto' | 'dark',
-  section: React.ReactChild[] | React.ReactChild,
-  onClick: () => void,
-  currentlySelectedTheme: 'light' | 'auto' | 'dark',
+  displayName: string;
+  theme: 'light' | 'auto' | 'dark';
+  section: React.ReactChild[] | React.ReactChild;
+  onClick: () => void;
+  currentlySelectedTheme: 'light' | 'auto' | 'dark';
 }) {
   return (
     <div

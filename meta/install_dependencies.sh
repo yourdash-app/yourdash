@@ -61,11 +61,13 @@ echo "#####################################"
 
 curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh
 
+cd ./src
+
 cd ./frontend/
 
 npm i
 
-cd ../desktop-client/
+cd ../desktop_client/
 
 npm i
 
@@ -75,11 +77,9 @@ npm i
 
 cd ../../backend/personal/
 
-# Work in progress
+npm i
 
-pip install sanic
-
-cd ../../
+cd ../../../
 
 echo "#####################################"
 echo "               Done :D               "

@@ -6,4 +6,4 @@
 # Licensed under the MIT License - https://ewsgit.github.io/devdash/copyright
 #
 
-python3 ./backend/personal/main.py
+node ./src/backend/

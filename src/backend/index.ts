@@ -21,13 +21,32 @@
  *   SOFTWARE.
  */
 
-export interface Tasktypings {
+import chalk from "chalk"
+import express from "express"
+
+interface DevDashUser {
+  username: string,
   name: string,
-  subTasks: Tasktypings[],
-  checked: boolean,
-  assignedTo: DevDashUser[]
+  profile_image: string,
+  profile_banner: string,
+  profile_banner_type: "color" | "image"
 }
 
-export default function TodoTask(props: { name: string, setCheckState: (state: boolean) => void }) {
-  return <></>
+let current_users: DevDashUser[] = []
+
+function main() {
+  console.log("--- DevDash Personal Server ---")
+  console.log("Starting Up...")
+
+  const app = express()
+
+  app.get("/active_users", (req, res) => { 
+    return res.json(current_users)
+  })
+
+  app.listen(3000, () => {
+    console.log("Server Online :D")
+  })
 }
+
+main()
