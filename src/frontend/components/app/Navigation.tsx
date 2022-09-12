@@ -569,10 +569,10 @@ function NavigationUser(props: {
           className={
             'grid grid-cols-2 w-full child:w-full child:rounded-md child:bg-content-normal hover:child:bg-content-light active:child:bg-content-dark child:transition-all child:shadow-md gap-2 child:p-2 p-2 text-text-primary text-xl'
           }>
-          <div>a</div>
-          <div>b</div>
-          <div>c</div>
-          <div>d</div>
+          <div>Stars</div>
+          <div>Followers</div>
+          <div>Repo Stars</div>
+          <div>Repo Forks</div>
         </section>
         {props.userData?.name ? (
           <div className={'flex w-full p-2 pt-0'}>

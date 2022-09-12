@@ -26,8 +26,6 @@ export default function Slides(props: { slides: React.ReactChild[] }) {
   const [currentSlideInd, setCurrentSlideInd] = useState(0);
   useEffect(() => {
     let interval = setInterval(() => {
-      console.log(currentSlideInd);
-      console.log(props.slides);
       if (currentSlideInd + 1 < props.slides.length)
         return setCurrentSlideInd(currentSlideInd + 1);
       setCurrentSlideInd(0);

@@ -21,14 +21,8 @@
  *   SOFTWARE.
  */
 
-import DevDashProject from "./DevDashProject";
+import renderLine from "./RenderLine";
 
-export default interface DevDashUser {
-  username: string,
-  name: string,
-  email: string,
-  projects: DevDashProject[],
-  creationDate: Date,
-  userId: string,
-  universalDevDashId: string
+export default function RenderVisibleLines() {
+  
 }

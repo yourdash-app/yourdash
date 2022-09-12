@@ -21,14 +21,32 @@
  *   SOFTWARE.
  */
 
-import DevDashProject from "./DevDashProject";
+import { TOKEN } from './Typings';
+import TextEditorOptions from '../../../../../shared_types/TextEditorOptions';
 
-export default interface DevDashUser {
-  username: string,
-  name: string,
-  email: string,
-  projects: DevDashProject[],
-  creationDate: Date,
-  userId: string,
-  universalDevDashId: string
+export default function renderLine(
+  tokens: TOKEN[],
+  topOffset: number,
+  canvas: HTMLCanvasElement,
+  options: TextEditorOptions
+) {
+  let c = canvas.getContext('2d');
+  if (c === null || undefined) return;
+  if (tokens.map((token) => token.value).join('').length > 1000) {
+    c.fillStyle = options.theme.editor.foreground;
+    c.fillText(
+      tokens.map((token) => token.value).join(''),
+      options.leftPadding,
+      topOffset
+    );
+  }
+  let lastX = options.leftPadding;
+  tokens.map((token) => {
+    let c = canvas.getContext('2d') as CanvasRenderingContext2D;
+    lastX += c.measureText(token.value).width
+    c.fillStyle = token.color;
+    c.font = options.fontSize + 'px MonoCraft';
+    c.textBaseline = 'top';
+    c.fillText(token.value, lastX, topOffset);
+  });
 }

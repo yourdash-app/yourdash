@@ -22,6 +22,7 @@
  */
 
 import DevDashUser from "./DevDashUser"
+import DevDashProject from "./DevDashProject"
 
 export default interface DevDashTeam {
   members: DevDashUser[],
