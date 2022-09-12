@@ -5,9 +5,9 @@
  */
 
 import React, { useEffect, useState } from "react";
-import Tokenize from "./codesense/Tokenizer";
-import Colorize from "./codesense/Colorizer";
-import { TOKEN } from "./codesense/Typings";
+import Tokenize from "./TextEditor/Tokenizer";
+import Colorize from "./TextEditor/Colorizer";
+import { TOKEN } from "./TextEditor/Typings";
 import getCharacterWidth from "../../../lib/getCharacterWidth";
 
 export default function TextEditor() {

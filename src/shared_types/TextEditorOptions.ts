@@ -21,14 +21,36 @@
  *   SOFTWARE.
  */
 
-import DevDashProject from "./DevDashProject";
+import COLOR from "./Color"
 
-export default interface DevDashUser {
-  username: string,
-  name: string,
-  email: string,
-  projects: DevDashProject[],
-  creationDate: Date,
-  userId: string,
-  universalDevDashId: string
+export default interface TextEditorOptions {
+  caret: {
+    x: number;
+    y: number;
+    color: COLOR;
+  };
+  topPadding: number;
+  leftPadding: number;
+  fontSize: number;
+  lineHeight: number;
+  scrollbar: {
+    horizontal: {
+      size: number;
+      background: COLOR;
+    };
+    vertical: {
+      size: number;
+      background: COLOR;
+    };
+  };
+  theme: {
+    line_number: {
+      background: COLOR;
+      foreground: COLOR;
+    };
+    editor: {
+      background: COLOR;
+      foreground: COLOR;
+    };
+  };
 }

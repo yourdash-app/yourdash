@@ -20,11 +20,13 @@
 *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 *   SOFTWARE.
 */
+
+import DevDashTeam from './DevDashTeam';
 import DevDashUser from './DevDashUser';
 
 export default interface DevDashProject {
   name: string,
-  owner: DevDashUser,
+  owner: DevDashUser | DevDashTeam,
   isOpenSourced: boolean,
   githubOwner: string
 }

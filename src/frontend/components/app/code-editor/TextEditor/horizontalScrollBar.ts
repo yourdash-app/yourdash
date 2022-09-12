@@ -21,9 +21,10 @@
  *   SOFTWARE.
  */
 
-import {TextEditorRenderingOptions} from "../TextEditor"
+import TextEditorOptions from "./../../../../../shared_types/TextEditorOptions"
 
-export default function renderScrollBar(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, options: TextEditorRenderingOptions, lines: string[]) {
+export default function renderScrollBar(canvas: HTMLCanvasElement, options: TextEditorOptions, lines: string[]) {
+  let ctx = canvas.getContext("2d") as CanvasRenderingContext2D
   let c = ctx
 
   let longest_line: string = "";
