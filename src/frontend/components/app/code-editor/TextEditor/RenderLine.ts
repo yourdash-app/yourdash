@@ -30,6 +30,7 @@ export default function renderLine(
   canvas: HTMLCanvasElement,
   options: TextEditorOptions
 ) {
+  if (!tokens) return
   let c = canvas.getContext('2d');
   if (c === null || undefined) return;
   if (tokens.map((token) => token.value).join('').length > 1000) {
@@ -39,14 +40,15 @@ export default function renderLine(
       options.leftPadding,
       topOffset
     );
+    return
   }
   let lastX = options.leftPadding;
-  tokens.map((token) => {
+  tokens.map((token, ind) => {
     let c = canvas.getContext('2d') as CanvasRenderingContext2D;
-    lastX += c.measureText(token.value).width
     c.fillStyle = token.color;
     c.font = options.fontSize + 'px MonoCraft';
     c.textBaseline = 'top';
     c.fillText(token.value, lastX, topOffset);
+    lastX += c.measureText(token.value).width
   });
 }

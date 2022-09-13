@@ -33,6 +33,7 @@ export default interface TextEditorOptions {
   leftPadding: number;
   fontSize: number;
   lineHeight: number;
+  font: string;
   scrollbar: {
     horizontal: {
       size: number;

@@ -21,8 +21,19 @@
  *   SOFTWARE.
  */
 
+import TextEditorOptions from "../../../../../shared_types/TextEditorOptions";
 import renderLine from "./RenderLine";
+import { TOKEN } from "./Typings";
 
-export default function RenderVisibleLines() {
-  
+export default function RenderVisibleLines(canvas: HTMLCanvasElement, lines: TOKEN[][], options: TextEditorOptions) {
+  let c = canvas.getContext("2d");
+  function linesPerScreen(): number {
+    let canavsHeight = canvas.height
+    let lineHeight = options.lineHeight
+    return 1
+  }
+  for (let i = 0; i < linesPerScreen(); i++) {
+    let line = lines[i]
+    renderLine(line, (i * options.lineHeight) + options.topPadding, canvas, options)
+  }
 }

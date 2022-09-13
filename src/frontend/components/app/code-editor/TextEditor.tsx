@@ -21,48 +21,17 @@
  *   SOFTWARE.
  */
 
-import React, { useEffect, useRef } from 'react';
-import COLOR from '../../../../shared_types/Color';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   addResizeCallback,
   removeResizeCallback
 } from '../../../lib/elementResize';
-import createUuid from '../../../lib/libUuid';
-import renderScrollBar from './TextEditor/horizontalScrollBar';
 import TextEditorOptions from './../../../../shared_types/TextEditorOptions';
-import renderLine from './TextEditor/RenderLine';
-
-let lines = [
-  'Lorem, ipsum, dolor sit amet consectetur adipisicing elit.Iure, excepturi.',
-  'Lorem, ipsum dolor, sit amet consectetur adipisicing elit.Ex obcaecati, asperiores nobis rem eius aliquam, nesciunt, velit dolores officiis voluptates dolore ?',
-  'Lorem, ipsum dolor sit amet consectetur adipisicing elit.',
-  'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.',
-  'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.',
-  'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.',
-  'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.',
-  'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.',
-  'Lorem, ipsum dolor sit amet conjhkag sdfhkjuasdfuiasdhgfsectetur adipisicing elit. Non, consequatur.',
-  'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.',
-  'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.',
-  'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.',
-  'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.',
-  'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.',
-  'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.',
-  'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.',
-  'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.',
-  'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.',
-  'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.',
-  'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.',
-  'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.',
-  'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.',
-  'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.',
-  'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.',
-  'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequatur.',
-  'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, consequaturhgjklasdffhjklasdhjkl.'
-];
+import RenderVisibleLines from './TextEditor/RenderVisibleLines';
+import { TOKEN } from './TextEditor/Typings';
 
 export default function TextEditor(props: {}) {
-  const editor_uuid = createUuid();
+  const [ fileLines, setFileLines ] = useState([ [ {color: "red", type: "function", value: "this is a test"} ]] as TOKEN[][]);
   const canvasRef = useRef(null);
   const canvasContainerRef = useRef(null);
   useEffect(() => {
@@ -78,8 +47,9 @@ export default function TextEditor(props: {}) {
       caret: { ...caretPos, color: '#387' },
       topPadding: 10,
       leftPadding: 10,
-      fontSize: 30,
-      lineHeight: 25,
+      fontSize: 14,
+      lineHeight: 16,
+      font: 'Jetbrains Mono',
       theme: {
         line_number: {
           background: '#22428',
@@ -106,18 +76,7 @@ export default function TextEditor(props: {}) {
       canvas.height = canvasContainer.getBoundingClientRect().height;
       ctx.fillStyle = renderingOptions.theme.editor.background;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-      console.log(canvasContainer.getBoundingClientRect().width);
-      renderLine(
-        [
-          { value: 'This', type: 'keyword', color: '#ff00ff' },
-          { value: 'is', type: 'keyword', color: '##00ff00' },
-          { value: 'a', type: 'keyword', color: '#0000ff' },
-          { value: 'test', type: 'keyword', color: '#ff0000' }
-        ],
-        50,
-        canvas,
-        renderingOptions
-      );
+      RenderVisibleLines(canvas, fileLines, renderingOptions);
     };
     canvasUpdateSize();
     window.addEventListener('resize', canvasUpdateSize);
