@@ -25,9 +25,8 @@ import COLOR from "./Color"
 
 export default interface TextEditorOptions {
   caret: {
-    x: number;
-    y: number;
     color: COLOR;
+    width: number;
   };
   topPadding: number;
   leftPadding: number;

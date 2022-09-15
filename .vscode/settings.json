@@ -1,4 +1,11 @@
 {
   "conventionalCommits.scopes": ["Frontend", "Desktop Client"],
-  "cSpell.words": ["codesense", "DEVDASH", "localforage", "renderable", "TEXTEDITOR"]
+  "cSpell.words": [
+    "codesense",
+    "DEVDASH",
+    "localforage",
+    "renderable",
+    "TEXTEDITOR"
+  ],
+  "git.ignoreLimitWarning": true
 }

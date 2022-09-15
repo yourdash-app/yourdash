@@ -46,7 +46,7 @@ export default function renderLine(
   tokens.map((token, ind) => {
     let c = canvas.getContext('2d') as CanvasRenderingContext2D;
     c.fillStyle = token.color;
-    c.font = options.fontSize + 'px MonoCraft';
+    c.font = options.fontSize + 'px Jetbrains Mono';
     c.textBaseline = 'top';
     c.fillText(token.value, lastX, topOffset);
     lastX += c.measureText(token.value).width

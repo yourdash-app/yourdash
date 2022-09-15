@@ -21,9 +21,11 @@
  *   SOFTWARE.
  */
 
+import COLOR from "../../../../../shared_types/Color";
+
 export type TOKEN = {
   type: "bracket" | "keyword" | "operator" | "unknown" | "string" | "escape-token" | "space" | "function";
   value: string;
-  color: string;
+  color: COLOR;
   bold?: boolean;
 };

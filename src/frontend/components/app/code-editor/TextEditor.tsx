@@ -31,46 +31,51 @@ import RenderVisibleLines from './TextEditor/RenderVisibleLines';
 import { TOKEN } from './TextEditor/Typings';
 
 export default function TextEditor(props: {}) {
-  const [ fileLines, setFileLines ] = useState([ [ {color: "red", type: "function", value: "this is a test"} ]] as TOKEN[][]);
+  const [fileLines, setFileLines] = useState([
+    [{ color: '#fff', type: 'function', value: 'this is a test' }]
+  ] as TOKEN[][]);
+  const [cursorPosition, setCursorPosition] = useState({ x: 10, y: 10 } as {
+    x: number;
+    y: number;
+  });
   const canvasRef = useRef(null);
   const canvasContainerRef = useRef(null);
+  let renderingOptions: TextEditorOptions = {
+    caret: { color: '#387', width: 20 },
+    topPadding: 20,
+    leftPadding: 10,
+    fontSize: 26,
+    lineHeight: 30,
+    font: 'JetBrains Mono',
+    theme: {
+      line_number: {
+        background: '#22428',
+        foreground: '#747b82'
+      },
+      editor: {
+        background: '#222428',
+        foreground: '#fff'
+      }
+    },
+    scrollbar: {
+      horizontal: {
+        background: '#666',
+        size: 20
+      },
+      vertical: {
+        background: '#f66',
+        size: 10
+      }
+    }
+  };
   useEffect(() => {
     if (!canvasRef) return;
     const canvasContainer = canvasContainerRef.current as any as HTMLDivElement;
     const canvas = canvasRef.current as any as HTMLCanvasElement;
     const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
-    let caretPos = {
-      x: 0,
-      y: 0
-    };
-    let renderingOptions: TextEditorOptions = {
-      caret: { ...caretPos, color: '#387' },
-      topPadding: 10,
-      leftPadding: 10,
-      fontSize: 14,
-      lineHeight: 16,
-      font: 'Jetbrains Mono',
-      theme: {
-        line_number: {
-          background: '#22428',
-          foreground: '#747b82'
-        },
-        editor: {
-          background: '#222428',
-          foreground: '#fff'
-        }
-      },
-      scrollbar: {
-        horizontal: {
-          background: '#666',
-          size: 20
-        },
-        vertical: {
-          background: '#f66',
-          size: 10
-        }
-      }
-    };
+    ctx.font = `${renderingOptions.font} ${renderingOptions.fontSize}px`;
+    let charWidth = ctx.measureText('0').width;
+    renderingOptions.leftPadding += charWidth;
     let canvasUpdateSize = () => {
       canvas.width = canvasContainer.getBoundingClientRect().width;
       canvas.height = canvasContainer.getBoundingClientRect().height;
@@ -78,11 +83,19 @@ export default function TextEditor(props: {}) {
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       RenderVisibleLines(canvas, fileLines, renderingOptions);
     };
-    canvasUpdateSize();
     window.addEventListener('resize', canvasUpdateSize);
     addResizeCallback(canvasUpdateSize);
     ctx.fillStyle = renderingOptions.theme.editor.background;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
+    canvasUpdateSize();
+    canvasContainer.addEventListener('click', (e) => {
+      setCursorPosition({
+        x: Math.floor(e.clientX / charWidth) * charWidth,
+        y:
+          Math.floor(e.clientY / renderingOptions.lineHeight) *
+          renderingOptions.lineHeight
+      });
+    });
     return () => {
       window.removeEventListener('resize', canvasUpdateSize);
       removeResizeCallback(canvasUpdateSize);
@@ -90,12 +103,21 @@ export default function TextEditor(props: {}) {
   }, []);
   return (
     <div
-      className='w-full h-full'
+      className='w-full h-full relative'
       ref={canvasContainerRef}>
       <canvas
         tabIndex={0}
         ref={canvasRef}
       />
+      <div
+        className='absolute'
+        style={{
+          left: cursorPosition.x + renderingOptions.leftPadding + 'px',
+          top: cursorPosition.y + renderingOptions.topPadding + 'px',
+          width: renderingOptions.caret.width / 8 + 'px',
+          height: renderingOptions.lineHeight + 'px',
+          backgroundColor: renderingOptions.theme.editor.foreground
+        }}></div>
     </div>
   );
 }

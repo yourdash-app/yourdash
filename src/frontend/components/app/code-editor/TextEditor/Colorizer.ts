@@ -21,10 +21,11 @@
  *   SOFTWARE.
  */
 
+import COLOR from "../../../../../shared_types/Color";
 import { TOKEN } from "./Typings";
 
 export default function Colorize(tokens: TOKEN[][]) {
-  let colors: { [key: string]: string } = {
+  let colors: { [key: string]: COLOR } = {
     bracket: "#1696f0",
     unknown: "#c0bfbc",
     keyword: "#ffa348",
