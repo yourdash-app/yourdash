@@ -21,8 +21,49 @@
  *   SOFTWARE.
  */
 
+import { useState } from 'react';
+import TodoSideBar from '../../components/app/todo-list/Sidebar';
+import TodoTask from '../../components/app/todo-list/Task';
+
 export default function TodoListPage() {
-  return <div></div>
+  const [currentPage, setCurrentPage] = useState([] as boolean[][]);
+  return (
+    <div className='bg-bg-light-secondary dark:bg-bg-dark-secondary min-h-screen'>
+      <main className='w-full h-full min-h-screen grid grid-cols-[1fr,auto]'>
+        <section>
+          <TodoTask
+            name='this is a test task'
+            setCheckState={(state) => {}}
+            checkState={false}
+          />
+          <TodoTask
+            name='this is a test task'
+            setCheckState={(state) => {}}
+            checkState={false}
+          />
+          <TodoTask
+            name='this is a test task'
+            setCheckState={(state) => {}}
+            checkState={false}
+          />
+          <TodoTask
+            name='this is a test task'
+            setCheckState={(state) => {}}
+            checkState={false}
+          />
+          <TodoTask
+            name='this is a test task'
+            setCheckState={(state) => {}}
+            checkState={false}
+          />
+        </section>
+        <TodoSideBar hidden={false}>
+          <h1>Sidebar</h1>
+
+        </TodoSideBar>
+      </main>
+    </div>
+  );
 }
 
-TodoListPage.underConstruction = true
+TodoListPage.underConstruction = true;

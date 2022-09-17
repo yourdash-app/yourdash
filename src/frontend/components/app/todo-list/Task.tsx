@@ -21,15 +21,48 @@
  *   SOFTWARE.
  */
 
-import DevDashUser from "../../../../shared_types/DevDashUser"
+import React from 'react';
+import DevDashUser from '../../../../shared_types/DevDashUser';
 
-export interface Tasktypings {
-  name: string,
-  subTasks: Tasktypings[],
-  checked: boolean,
-  assignedTo: DevDashUser[]
+export interface TaskTypings {
+  name: string;
+  subTasks: TaskTypings[];
+  checked: boolean;
+  assignedTo: DevDashUser[];
 }
 
-export default function TodoTask(props: { name: string, setCheckState: (state: boolean) => void }) {
-  return <></>
+export default function TodoTask(props: {
+  name: string;
+  setCheckState: (state: boolean) => void;
+  checkState: boolean;
+}) {
+  return (
+    <>
+      <div className='w-full pt-2 pb-2 bg-content-normal flex items-center text-text-primary border-b-2 border-content-border last:border-b-0'>
+        <input
+          className='mr-3 ml-2'
+          type='checkbox'
+          checked={props.checkState}
+          onChange={(e) => {
+            props.setCheckState(e.target.checked);
+          }}
+        />
+        {props.name}
+        <div className='flex ml-auto pr-2'>
+          <TodoTaskButton>😊</TodoTaskButton>
+          <TodoTaskButton>😊</TodoTaskButton>
+        </div>
+      </div>
+    </>
+  );
+}
+
+function TodoTaskButton(props: {
+  children: React.ReactChild | React.ReactChild[];
+}) {
+  return (
+    <button className='rounded-md bg-content-normal hover:bg-content-light active:bg-content-dark aspect-square p-2 duration-75 transition-colors mr-1 last:mr-0'>
+      {props.children}
+    </button>
+  );
 }

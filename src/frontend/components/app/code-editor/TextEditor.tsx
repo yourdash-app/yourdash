@@ -34,16 +34,16 @@ export default function TextEditor(props: {}) {
   const [fileLines, setFileLines] = useState([
     [{ color: '#fff', type: 'function', value: 'this is a test' }]
   ] as TOKEN[][]);
-  const [cursorPosition, setCursorPosition] = useState({ x: 10, y: 10 } as {
+  const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 } as {
     x: number;
     y: number;
   });
   const canvasRef = useRef(null);
   const canvasContainerRef = useRef(null);
   let renderingOptions: TextEditorOptions = {
-    caret: { color: '#387', width: 20 },
+    caret: { color: '#387', width: 8 },
     topPadding: 20,
-    leftPadding: 10,
+    leftPadding: 100,
     fontSize: 26,
     lineHeight: 30,
     font: 'JetBrains Mono',
@@ -88,12 +88,12 @@ export default function TextEditor(props: {}) {
     ctx.fillStyle = renderingOptions.theme.editor.background;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     canvasUpdateSize();
-    canvasContainer.addEventListener('click', (e) => {
+    canvasContainer.addEventListener('mousemove', (e) => {
       setCursorPosition({
-        x: Math.floor(e.clientX / charWidth) * charWidth,
+        x: (Math.floor(e.offsetX / charWidth) * charWidth),
         y:
-          Math.floor(e.clientY / renderingOptions.lineHeight) *
-          renderingOptions.lineHeight
+          (Math.floor(e.offsetY / renderingOptions.lineHeight) *
+          renderingOptions.lineHeight)
       });
     });
     return () => {
@@ -110,11 +110,11 @@ export default function TextEditor(props: {}) {
         ref={canvasRef}
       />
       <div
-        className='absolute'
+        className='absolute transition-all duration-75'
         style={{
           left: cursorPosition.x + renderingOptions.leftPadding + 'px',
           top: cursorPosition.y + renderingOptions.topPadding + 'px',
-          width: renderingOptions.caret.width / 8 + 'px',
+          width: renderingOptions.caret.width / renderingOptions.caret.width + 'px',
           height: renderingOptions.lineHeight + 'px',
           backgroundColor: renderingOptions.theme.editor.foreground
         }}></div>
