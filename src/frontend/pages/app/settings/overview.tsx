@@ -34,8 +34,13 @@ export default function SettingsOverviewPage() {
   const [loaded, setLoaded] = useState(false);
   useEffect(() => {
     localforage.getItem('settings').then((settings: any) => {
-      setSettingsData(settings);
-      setLoaded(true)
+      if (settings) {
+        setSettingsData(settings);
+        setLoaded(true)
+      } else {
+        setSettingsData({});
+        setLoaded(true)
+      }
     });
   }, []);
   if (!loaded) return <></>;
