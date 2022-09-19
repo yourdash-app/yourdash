@@ -1,15 +1,12 @@
 # The DevDash Project
 
-[//]: # (The home for open-sourced development)
-
------
+---
 
 ## Instructions
 
 ### How to use the application?
 
-you can choose between the desktop client [(Download Here)](https://github.com/devdash-app/devdash/releases/) or
-the [webclient](https://devdash.vercel.app)
+you can choose between the desktop client [(Download Here)](https://github.com/devdash-app/devdash/releases/) or the [webclient](https://devdash.vercel.app)
 
 ### How to set up the personal server?
 
@@ -21,7 +18,7 @@ The personal server requires to be run on linux or WSL
 
 (The script is does not fully yet exist... the following command is a work-in-progress)
 
-```bash
+```
 curl "https://raw.githubusercontent.com/devdash-app/devdash/meta/personal_server_setup_guide.sh" | bash
 ```
 
@@ -29,18 +26,18 @@ curl "https://raw.githubusercontent.com/devdash-app/devdash/meta/personal_server
 
 ### Installing dependencies
 
-```bash
+```
 meta/install_dependencies.sh
 ```
 
 ### Starting web client dev server
 
-```bash
+```
 meta/start_web_client.sh
 ```
 
 ### Starting the desktop client dev server
 
-```bash
+```
 meta/start_desktop_client.sh
 ```
