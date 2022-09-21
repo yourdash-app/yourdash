@@ -24,6 +24,7 @@
 import * as React from 'react';
 import { NextRouter, Router, useRouter, withRouter } from 'next/router';
 import Link from 'next/link';
+import Icon from '../global/Icon';
 
 export default function NavigationBar() {
   let listener = () => {
@@ -47,12 +48,11 @@ export default function NavigationBar() {
         className={`flex items-center justify-center bg-content-normal z-50 fixed w-full top-0 shadow-lg transition-all ${
           compact ? 'h-12' : 'h-20'
         } pt-2 pb-2`}>
-        <img
+        <Icon
+          name='devdash'
           className={`h-full transition-all drop-shadow-md ${
             compact ? '' : 'pt-1 pb-1'
           } select-none`}
-          draggable={false}
-          src={require('./../../assets/icons/DevDash.svg').default.src}
         />
         <h1 className='text-text-primary transition-all select-none font-semibold sm:w-auto w-0 overflow-hidden text-3xl drop-shadow-md pl-2 sm:mr-20 md:mr-32 lg:mr-48 mr-10'>
           DevDash

@@ -25,7 +25,6 @@ import { NextRouter, Router, withRouter } from "next/router";
 import React from "react";
 import Head from "next/head";
 import localforage from "localforage";
-import { IconTypings } from "../../lib/materialIconTypings";
 
 class Component extends React.Component<{ router: NextRouter }> {
   state: {
@@ -60,7 +59,7 @@ class Component extends React.Component<{ router: NextRouter }> {
             }}>
             <img
               className={`h-14 pr-2`}
-              src={require("./../../assets/icons/DevDash.svg").default.src}
+              src={""}
               alt=""
               draggable="false"
             />

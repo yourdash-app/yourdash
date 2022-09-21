@@ -1,8 +1,0 @@
-<!-- Copyright © Ewsgit 2022. -->
-<!-- Licensed under the MIT License - https://ewsgit.github.io/devdash/copyright -->
-
-<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M15 12.9218C15 11.0413 16.0485 9.30149 17.7724 8.55015C26.8578 4.59049 36.329 3.45578 41.0112 3.13061C42.6641 3.01582 44 4.34315 44 6V15.1429C44 15.1429 30.5357 15 15 22V12.9218Z" fill="#ACB4C9"/>
-<path fill-rule="evenodd" clip-rule="evenodd" d="M21 16H15V28.3736C14.2096 28.1307 13.3701 28 12.5 28C7.80558 28 4 31.8056 4 36.5C4 41.1944 7.80558 45 12.5 45C17.0266 45 20.7267 41.4617 20.9855 37H21V36.5V16Z" fill="#ACB4C9"/>
-<path fill-rule="evenodd" clip-rule="evenodd" d="M44 11H38V23.3736C37.2096 23.1307 36.3701 23 35.5 23C30.8056 23 27 26.8056 27 31.5C27 36.1944 30.8056 40 35.5 40C40.0266 40 43.7267 36.4617 43.9855 32H44V31.5V11Z" fill="#ACB4C9"/>
-</svg>

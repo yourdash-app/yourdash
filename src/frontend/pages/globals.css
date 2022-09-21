@@ -24,7 +24,6 @@
 /* Copyright © Ewsgit 2022. */
 /* Licensed under the MIT License - https://ewsgit.github.io/devdash/copyright */
 
-@import url(https://fonts.googleapis.com/icon?family=Material+Icons+Round);
 @import url(https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap);
 @import url(https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap);
 
@@ -106,11 +105,11 @@ a {
 }
 
 :focus-visible {
-  outline: 3px solid #ee6c4dff;
+  @apply outline-2 outline outline-branding-primary;
 }
 
 ::selection {
-  background: #ee6c4dff;
+  @apply bg-branding-primary;
 }
 
 ::-webkit-scrollbar {
@@ -127,7 +126,7 @@ a {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #ee6c4dff;
+  @apply bg-branding-primary;
 }
 
 pre {
