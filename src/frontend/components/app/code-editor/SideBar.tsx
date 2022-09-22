@@ -24,6 +24,7 @@
 import React from "react";
 import { triggerResizeEvent } from "../../../lib/elementResize";
 import DragScalableElement from "../../global/DragScalableElement";
+import Icon, { DevDashIcon } from "../../global/Icon";
 
 export default function SideBar() {
   const [ willResetTabSize, setWillResetTabSize ] = React.useState(false);
@@ -34,7 +35,7 @@ export default function SideBar() {
       <div className={`w-6 h-full bg-content-dark overflow-hidden`}>
         <SideBarTab
           name="Explorer"
-          icon="folder"
+          icon="file-directory-fill-16"
           onClick={() => {
             if (openedTab !== "Explorer") {
               console.log("click");
@@ -51,7 +52,7 @@ export default function SideBar() {
         />
         <SideBarTab
           name="Git"
-          icon="timeline"
+          icon="commit-24"
           onClick={() => {
             if (openedTab !== "Git") {
               console.log("click");
@@ -81,7 +82,7 @@ export default function SideBar() {
   );
 }
 
-function SideBarTab(props: { name: string; icon: string; onClick: () => void }) {
+function SideBarTab(props: { name: string; icon: DevDashIcon; onClick: () => void }) {
   return (
     <div
       onClick={() => {
@@ -92,7 +93,8 @@ function SideBarTab(props: { name: string; icon: string; onClick: () => void }) 
       }}
       className={`pt-2 pb-2 bg-content-normal hover:bg-content-light active:bg-content-dark transition-colors flex flex-col items-center justify-center text-text-primary cursor-pointer select-none shadow-xl`}>
       <div className={`[writing-mode:vertical-lr;] rotate-180`}>{props.name}</div>
-      <span className={`material-icons-round pb-2 text-lg [writing-mode:vertical-lr;] rotate-180`}>{props.icon}</span>
+      <Icon name={props.icon} className={"h-4 aspect-square mt-1 -rotate-90"} color={"rgb(225,255,255)"} />
+      {/* <span className={`material-icons-round pb-2 text-lg [writing-mode:vertical-lr;] rotate-180`}>{props.icon}</span> */}
     </div>
   );
 }

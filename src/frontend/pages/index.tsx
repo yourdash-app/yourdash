@@ -32,9 +32,9 @@ export default function HomePage() {
   const router = useRouter();
 
   React.useEffect(() => {
-    if (localStorage.getItem('is_desktop') === 'true') {
-      router.push('/auth/login');
-    }
+    // if (localStorage.getItem('is_desktop') === 'true') {
+    //   router.push('/auth/login');
+    // }
   }, []);
 
   return (

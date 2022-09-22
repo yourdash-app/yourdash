@@ -9,8 +9,8 @@ import React, { ReactChild, useEffect, useState } from 'react';
 import * as localforage from 'localforage';
 import CommandPallet from './CommandPallet';
 import createUuid from '../../lib/libUuid';
-import { IconTypings } from '../../lib/materialIconTypings';
 import setTheme from '../../lib/setTheme';
+import Icon, { DevDashIcon } from '../global/Icon';
 
 export default function Navigation(props: { pageId: string }) {
   const [githubUserData, setGithubUserData] = useState({});
@@ -138,7 +138,7 @@ export default function Navigation(props: { pageId: string }) {
                     hidden: true
                   });
                 }}
-                icon='login'
+                icon='unlock-16'
               />
               <NavigationButton
                 isRightAligned={alignedToRight}
@@ -150,7 +150,7 @@ export default function Navigation(props: { pageId: string }) {
                 onClick={() => {
                   router.push('/app/home');
                 }}
-                icon='home'
+                icon='home-16'
                 onMouseEnter={(text: string, topOffset: number) => {
                   setNavigationButtonTagState({
                     text: text,
@@ -176,7 +176,7 @@ export default function Navigation(props: { pageId: string }) {
                 onClick={() => {
                   router.push('/app/code-editor');
                 }}
-                icon='code'
+                icon='code-16'
                 onMouseEnter={(text: string, topOffset: number) => {
                   setNavigationButtonTagState({
                     text: text,
@@ -202,7 +202,7 @@ export default function Navigation(props: { pageId: string }) {
                 onClick={() => {
                   router.push('/app/manage-server');
                 }}
-                icon='build'
+                icon='server-16'
                 onMouseEnter={(text: string, topOffset: number) => {
                   setNavigationButtonTagState({
                     text: text,
@@ -228,7 +228,7 @@ export default function Navigation(props: { pageId: string }) {
                 onClick={() => {
                   router.push('/app/git');
                 }}
-                icon='wysiwyg'
+                icon='mark-github-16'
                 onMouseEnter={(text: string, topOffset: number) => {
                   setNavigationButtonTagState({
                     text: text,
@@ -254,7 +254,7 @@ export default function Navigation(props: { pageId: string }) {
                 onClick={() => {
                   router.push('/app/todo-list');
                 }}
-                icon='pending_actions'
+                icon='project-16'
                 onMouseEnter={(text: string, topOffset: number) => {
                   setNavigationButtonTagState({
                     text: text,
@@ -336,10 +336,10 @@ export default function Navigation(props: { pageId: string }) {
             activePage={''}
             icon={
               themeState === 'light'
-                ? 'light_mode'
+                ? 'light-bulb-16'
                 : themeState === 'dark'
-                ? 'dark_mode'
-                : 'brightness_auto'
+                ? 'moon-16'
+                : 'sync-16'
             }
             onClick={() => {
               if (themeState === 'dark') {
@@ -380,7 +380,7 @@ export default function Navigation(props: { pageId: string }) {
             hoverTag={isExpanded ? 'Collapse Navigation' : 'Expand Navigation'}
             currentPageId={props.pageId}
             activePage={'toggle'}
-            icon='switch_right'
+            icon={!isExpanded ? 'sidebar-collapse-16' : 'sidebar-expand-16'}
             onClick={() => {
               setIsExpanded(!isExpanded);
               localforage.getItem('settings').then((data: any) => {
@@ -422,7 +422,7 @@ export default function Navigation(props: { pageId: string }) {
             hoverTag={`Settings`}
             currentPageId={props.pageId}
             activePage={'settings'}
-            icon='settings'
+            icon='gear-16'
             onClick={() => {
               router.push('/app/settings');
             }}
@@ -469,8 +469,9 @@ function NavigationButtonTag(props: {
   return (
     <div
       style={{
-        top: props.topOffset + 2 + 'px',
+        top: props.topOffset + 'px',
         transform: props.isHidden ? 'scale(0)' : 'scale(1)',
+        opacity: props.isHidden ? '0' : '1',
         ...(props.isRightAligned
           ? ''
           : { left: props.isExpanded ? '5.5rem' : '4rem' }),
@@ -480,7 +481,7 @@ function NavigationButtonTag(props: {
         transformOrigin: props.isRightAligned ? 'right' : 'left'
       }}
       className={
-        'bg-content-normal rounded-lg text-text-primary transition-all shadow-lg absolute p-2 top-0 z-50'
+        'bg-content-normal rounded-lg text-text-primary transition-all shadow-xl absolute p-2 top-0 z-50 h-10'
       }>
       {props.text}
     </div>
@@ -488,7 +489,7 @@ function NavigationButtonTag(props: {
 }
 
 function NavigationButton(props: {
-  icon: IconTypings;
+  icon: DevDashIcon;
   hoverTag: string;
   onClick?: () => void;
   activePage?: string;
@@ -498,6 +499,7 @@ function NavigationButton(props: {
   isDisabled: boolean;
   isRightAligned: boolean;
   onMouseEnter: (text: string, topOffset: number) => void;
+  onMouseClick?: (text: string, topOffset: number) => void;
   onMouseLeave: () => void;
 }) {
   let isActive = props.activePage === props.currentPageId;
@@ -506,21 +508,28 @@ function NavigationButton(props: {
       onMouseEnter={(e) =>
         props.onMouseEnter(props.hoverTag, e.currentTarget.offsetTop)
       }
+      onClick={(e) => {
+        props.onClick?.();
+        props.onMouseClick?.(props.hoverTag, e.currentTarget.offsetTop);
+      }}
       onMouseLeave={props.onMouseLeave}
       className={`relative group select-none ${
         props.isDisabled ? 'pointer-events-none hidden' : null
       } cursor-pointer ${
         props.expanded ? 'ml-2 mr-2 mb-1' : 'ml-1 mr-1 mb-1'
-      } flex`}
-      onClick={props.onClick}>
-      <span
+      } flex`}>
+      <div
         className={`${
           props.expanded ? 'w-16 p-2 pt-1 pb-1' : 'w-12 p-1'
-        } rounded-lg hover:bg-content-light active:bg-content-dark flex items-center justify-center content-center transition-colors material-icons-round ${
+        } rounded-lg hover:bg-content-light active:bg-content-dark flex items-center justify-center content-center transition-colors ${
           !isActive ? 'text-text-inverted-secondary' : 'text-text-secondary'
-        } text-3xl hover:text-text-secondary active:text-text-primary`}>
-        {props.icon}
-      </span>
+        } text-3xl hover:text-text-secondary active:text-text-primary h-10 flex items-center justify-center`}>
+        <Icon
+          name={props.icon}
+          color={isActive ? 'rgb(221,221,221)' : 'rgb(34,34,34)'}
+          className={`aspect-square h-8`}
+        />
+      </div>
     </div>
   );
 }
@@ -698,14 +707,17 @@ function NavigationNotificationButton(props: {
         } absolute top-1/2 pointer-events-none -translate-y-1/2 opacity-0 bg-content-normal group-hover:opacity-100 group-hover:scale-100 scale-0 transition-all w-max p-1 pl-2 pr-2 rounded-lg text-text-primary group-hover:shadow-lg z-[50]`}>
         Notifications
       </div>
-      <span
+      <div
         className={`${
           props.expanded ? 'w-16 p-2' : 'w-10 p-1'
         } rounded-lg aspect-square group-hover:bg-content-light group-active:bg-content-dark flex items-center justify-center transition-all material-icons-round text-text-inverted-secondary text-3xl group-hover:text-text-secondary group-active:text-text-primary ${
           props.notificationsCount < 1 ? 'mb-2' : null
         }`}>
-        feedback
-      </span>
+        <Icon
+          className='w-8 h-8'
+          name='comment-16'
+          color={'rgb(34,34,34)'}></Icon>
+      </div>
       <NotificationCounter
         count={props.notificationsCount}
         expanded={props.expanded}

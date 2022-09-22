@@ -22,19 +22,14 @@
  */
 
 import * as React from "react";
-import { StatusItem } from "../../../lib/code-editor/statusItem";
 
-export default function StatusBar(props: {statusItems: {left: StatusItem[], center: StatusItem[], right: StatusItem[]}}) {
-  return <div className="w-full h-5 bg-content-normal">
-      {/*Left aligned statusbar items*/}
-      <div className="flex w-auto"></div>
-      {/*Center aligned statusbar items*/}
-      <div className="flex w-auto flex-grow"></div>
-      {/*Right aligned statusbar items*/}
-      <div className="flex w-auto"></div>
-    </div>
-}
-
-function StatusItem() {
-  return <div></div>
+export default function StatusBar(props: { statusItems: { left: React.ReactChild[], center: React.ReactChild[], right: React.ReactChild[] } }) {
+  return <div className="w-full h-5 bg-content-normal flex">
+    {/*Left aligned statusbar items*/}
+    <div className="flex w-auto mr-auto">{props.statusItems.left}</div>
+    {/*Center aligned statusbar items*/}
+    <div className="flex w-auto flex-grow">{props.statusItems.center}</div>
+    {/*Right aligned statusbar items*/}
+    <div className="flex w-auto">{props.statusItems.right}</div>
+  </div>
 }

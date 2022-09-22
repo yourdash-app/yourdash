@@ -21,15 +21,61 @@
  *   SOFTWARE.
  */
 
-import DevDashUser from "../../../../shared_types/DevDashUser"
+import React from 'react';
+import DevDashUser from '../../../../shared_types/DevDashUser';
+import Icon from '../../global/Icon';
 
-export interface Tasktypings {
-  name: string,
-  subTasks: Tasktypings[],
-  checked: boolean,
-  assignedTo: DevDashUser[]
+export interface TaskTypings {
+  name: string;
+  subTasks: TaskTypings[];
+  checked: boolean;
+  assignedTo: DevDashUser[];
 }
 
-export default function TodoTask(props: { name: string, setCheckState: (state: boolean) => void }) {
-  return <></>
+export default function TodoTask(props: {
+  name: string;
+  setCheckState: (state: boolean) => void;
+  checkState: boolean;
+}) {
+  return (
+    <>
+      <div className='w-full bg-content-normal flex items-center h-12 pt-2 pb-2 text-text-primary border-b-2 border-content-border last:border-b-0'>
+        <input
+          className='mr-3 ml-2'
+          type='checkbox'
+          checked={props.checkState}
+          onChange={(e) => {
+            props.setCheckState(e.target.checked);
+          }}
+        />
+        {props.name}
+        <div className='flex ml-auto pr-2 h-full'>
+          <TodoTaskButton>
+            <Icon
+              name={'fold-16'}
+              className='aspect-square h-full'
+              color={'#f00'}
+            />
+          </TodoTaskButton>
+          <TodoTaskButton>
+            <Icon
+              name={'organization-16'}
+              className='aspect-square h-full'
+              color={'#f00'}
+            />
+          </TodoTaskButton>
+        </div>
+      </div>
+    </>
+  );
+}
+
+function TodoTaskButton(props: {
+  children: React.ReactChild | React.ReactChild[];
+}) {
+  return (
+    <button className='rounded-md bg-content-normal hover:bg-content-light active:bg-content-dark aspect-square p-2 duration-75 transition-colors mr-1 last:mr-0'>
+      {props.children}
+    </button>
+  );
 }

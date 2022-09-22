@@ -14,30 +14,58 @@ The personal server will be automatically run while you are using DevDash if you
 
 If you are not using the desktop client or would like to set up a team / personal server you can run the script below.
 
-The personal server requires to be run on linux or WSL
-
-(The script is does not fully yet exist... the following command is a work-in-progress)
-
-```
-curl "https://raw.githubusercontent.com/devdash-app/devdash/meta/personal_server_setup_guide.sh" | bash
-```
+***SCRIPT COMING SOON…***
 
 ## Development
 
-### Installing dependencies
+### Windows ( PowerShell )
+
+#### Installing dependencies
 
 ```
-meta/install_dependencies.sh
+meta\install_dependencies.ps1
 ```
 
-### Starting web client dev server
+#### Starting the web client dev server
+
+```
+meta\start_web_client.ps1
+```
+
+#### Starting the desktop client dev server
+
+```
+meta\start_desktop_client.ps1
+```
+
+#### Starting the desktop client dev server (tauri remake)
+
+```
+meta\start_desktop_client_remake.ps1
+```
+
+### Linux / Mac ( Bash / Zsh )
+
+#### Installing dependencies
+
+```
+meta/start_dependencies.sh
+```
+
+#### Starting the web client dev server
 
 ```
 meta/start_web_client.sh
 ```
 
-### Starting the desktop client dev server
+#### Starting the desktop client dev server
 
 ```
 meta/start_desktop_client.sh
+```
+
+#### Starting the desktop client dev server (tauri remake)
+
+```
+meta/start_desktop_client_remake.sh
 ```
