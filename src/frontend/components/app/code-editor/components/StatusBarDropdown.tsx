@@ -21,26 +21,24 @@
  *   SOFTWARE.
  */
 
-import React, { useEffect, useRef, useState } from 'react';
-import { githubDark } from '@ddietr/codemirror-themes/theme/github-dark';
-import ReactCodeMirror from '@uiw/react-codemirror';
-import { langs } from '@uiw/codemirror-extensions-langs';
+import { useState } from "react"
 
-export default function TextEditor(props: { language: string }) {
-  return (      
-    <ReactCodeMirror
-      theme={githubDark}
-      height={'100%'}
-      lang={props.language}
-      extensions={[
-        langs.css(),
-        langs.javascript(),
-        langs.typescript(),
-        langs.html(),
-        langs.python(),
-        langs.tsx(),
-        langs.jsx()
-      ]}
-    />
-  );
+export default function StatusBarDropdown(props: { title: string, options: string[], callback: (option: string) => void }) {
+  const [ shown, setShown ] = useState(false)
+  return <main className="relative h-full">
+    {
+      shown ?
+        <div className="absolute bottom-7 left-1/2 -translate-x-1/2 bg-content-normal text-text-secondary flex flex-col">
+          {
+            props.options.map((name: string) => {
+              return <span className="w-full pt-1 pb-1 pl-4 pr-4 text-center bg-content-normal cursor-pointer select-none hover:bg-content-light active:bg-content-dark" onClick={() => props.callback(name)}>{name}</span>
+            })
+          }
+        </div>
+        : null
+    }
+    <div className={"h-full cursor-pointer text-text-secondary pl-2 pr-2 hover:bg-content-light active:bg-content-dark select-none"} onClick={() => { setShown(!shown) }}>
+      {props.title}
+    </div>
+  </main>
 }

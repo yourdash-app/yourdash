@@ -21,15 +21,17 @@
  *   SOFTWARE.
  */
 
-import React from "react";
+import React, { useState } from "react";
 import SideBar from "./SideBar";
 import MenuBar from "./MenuBar";
 import TextEditor from "./TextEditor";
 import StatusBar from "./StatusBar";
+import StatusBarDropdown from "./components/StatusBarDropdown";
 
 export default function Editor() {
+  const [currentLanguage, setCurrentLanguage] = useState("python")
   return (
-    <div className={`w-full h-full bg-red-900 grid grid-rows-[auto,1fr,auto]`}>
+    <div className={`w-full h-full bg-red-900 grid grid-rows-[auto,1fr,auto] overflow-hidden`}>
       {/* MenuBar */}
       <MenuBar />
       {/* Center Content */}
@@ -37,14 +39,24 @@ export default function Editor() {
         {/* SideBar */}
         <SideBar />
         {/* Editor */}
-        <TextEditor />
+        <TextEditor language={currentLanguage} />
       </div>
       {/* StatusBar */}
       <StatusBar
         statusItems={{
           left: [],
           center: [],
-          right: [],
+          right: [
+            <StatusBarDropdown options={[
+              "jsx",
+              "javascript",
+              "tsx",
+              "typescript",
+              "python",
+              "css",
+              "html"
+            ]} title={"Select Language"} callback={(lang) => {setCurrentLanguage(lang)}} />
+          ],
         }}
       />
     </div>
