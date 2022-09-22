@@ -21,11 +21,11 @@
  *   SOFTWARE.
  */
 
-import { IconTypings } from "../materialIconTypings";
+import { DevDashIcon } from "../../components/global/Icon";
 
 export interface StatusItem {
   title: string,
-  icon: IconTypings,
+  icon: DevDashIcon,
   uuid: string,
   hoverLabel: string | null
 }

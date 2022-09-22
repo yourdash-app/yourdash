@@ -25,6 +25,7 @@ import { NextRouter, Router, withRouter } from "next/router";
 import React from "react";
 import Head from "next/head";
 import localforage from "localforage";
+import Icon from "../../components/global/Icon";
 
 class Component extends React.Component<{ router: NextRouter }> {
   state: {
@@ -55,32 +56,50 @@ class Component extends React.Component<{ router: NextRouter }> {
           <div
             className={`flex lg:w-72 lg:fixed top-0 left-1 lg:left-0 h-20 cursor-pointer items-center lg:justify-center`}
             onClick={() => {
-              this.props.router.push("/");
+              this.props.router.push('/');
             }}>
-            <img
-              className={`h-14 pr-2`}
-              src={""}
-              alt=""
-              draggable="false"
+            <Icon
+              className={`h-14 aspect-square mr-2`}
+              name='devdash'
+              useDefaultColor
             />
-            <h1 className={`text-text-primary font-semibold tracking-widest text-2xl`}>DevDash</h1>
+            <h1
+              className={`text-text-primary font-semibold tracking-widest text-2xl`}>
+              DevDash
+            </h1>
           </div>
         </div>
         <div className={`w-full h-full flex items-center justify-center`}>
-          <div className="md:w-3/4 w-full h-3/4 bg-content-normal md:rounded-2xl relative flex flex-col items-center transition-all child:max-w-xl">
-            <h2 className="text-5xl text-text-secondary mt-10 mb-10">Login</h2>
-            <div className={"w-full h-full flex flex-col items-center"}>
-              <button className="w-[calc(100%-2rem)] p-6 m-2 text-text-primary bg-content-normal border-2 rounded-xl border-content-border hover:bg-content-light active:bg-content-dark transition-all" onClick={() => {
-                if (typeof window !== "undefined") {
-                  this.props.router.push(
-                    `https://devdash.ewsgit.repl.co/auth/github?url=${window.location.host === ("devdash.vercel.app" || "ddsh.vercel.app")
-                      ? "https://devdash.vercel.app/auth/githubcallback"
-                      : "http://" + window.location.hostname + ":3000/auth/githubcallback"
-                    }`
-                  );
+          <div className='md:w-3/4 w-full h-3/4 bg-content-normal md:rounded-2xl relative flex flex-col items-center transition-all child:max-w-xl'>
+            <h2 className='text-5xl text-text-secondary mt-10 mb-10'>Login</h2>
+            <div className={'w-full h-full flex flex-col items-center'}>
+              <button
+                className='w-[calc(100%-2rem)] p-6 m-2 text-text-primary bg-content-normal border-2 rounded-xl border-content-border hover:bg-content-light active:bg-content-dark transition-all'
+                onClick={() => {
+                  if (typeof window !== 'undefined') {
+                    this.props.router.push(
+                      `https://devdash.ewsgit.repl.co/auth/github?url=${
+                        window.location.host ===
+                        ('devdash.vercel.app' || 'ddsh.vercel.app')
+                          ? 'https://devdash.vercel.app/auth/githubcallback'
+                          : 'http://' +
+                            window.location.hostname +
+                            ':3000/auth/githubcallback'
+                      }`
+                    );
+                  }
+                }}>
+                Login with Github
+              </button>
+              <button
+                className={
+                  'w-[calc(100%-1.5rem)] p-4 m-2 mt-auto text-text-primary bg-content-normal border-2 rounded-xl border-content-border hover:bg-content-light active:bg-content-dark transition-all'
                 }
-              }}>Login with Github</button>
-              <button className={"w-[calc(100%-1.5rem)] p-4 m-2 mt-auto text-text-primary bg-content-normal border-2 rounded-xl border-content-border hover:bg-content-light active:bg-content-dark transition-all"} onClick={() => { this.props.router.push("/") }}>Go Back</button>
+                onClick={() => {
+                  this.props.router.push('/');
+                }}>
+                Go Back
+              </button>
             </div>
           </div>
         </div>

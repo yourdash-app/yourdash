@@ -914,23 +914,30 @@ export default function Icon(props: {
   style?: CSSProperties;
   className?: string;
   color?: COLOR;
+  useDefaultColor?: boolean;
 }) {
   return (
     <div
       style={{
         ...props.style,
-        maskImage: `url(${DevDashIconInternal[props.name]})`,
-        WebkitMaskImage: `url(${DevDashIconInternal[props.name]})`,
-        backgroundColor: props.color,
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: 'cover',
-        maskPosition: 'center',
-        maskRepeat: 'no-repeat',
-        maskSize: 'cover',
-        WebkitMaskPosition: 'center',
-        WebkitMaskRepeat: 'no-repeat',
-        WebkitMaskSize: "cover"
+        ...(props.useDefaultColor
+          ? {
+              backgroundImage: `url(${DevDashIconInternal[props.name]})`,
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
+              backgroundSize: 'cover'
+            }
+          : {
+              maskImage: `url(${DevDashIconInternal[props.name]})`,
+              WebkitMaskImage: `url(${DevDashIconInternal[props.name]})`,
+              backgroundColor: props.color,
+              maskPosition: 'center',
+              maskRepeat: 'no-repeat',
+              maskSize: 'cover',
+              WebkitMaskPosition: 'center',
+              WebkitMaskRepeat: 'no-repeat',
+              WebkitMaskSize: 'cover'
+            })
       }}
       className={props.className}
     />

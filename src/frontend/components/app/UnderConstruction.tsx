@@ -7,7 +7,7 @@
 import React from 'react';
 import Head from 'next/head';
 
-export default function UnderConstruction() {
+export default function UnderConstruction(props: { setBypass: () => void }) {
   return (
     <>
       <Head>
@@ -23,7 +23,9 @@ export default function UnderConstruction() {
           className={`text-center text-white text-2xl bg-content-normal p-2 rounded-md z-10 shadow-2xl`}>
           The current page is coming soon...
         </h2>
-        <div className='w-full h-full bg-slate-600 bg-opacity-60 absolute top-0 left-0'></div>
+        <div className='w-full h-full bg-slate-600 bg-opacity-60 absolute top-0 left-0'>
+          <button onClick={props.setBypass}>Bypass Warning</button>
+        </div>
       </div>
     </>
   );

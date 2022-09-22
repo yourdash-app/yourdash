@@ -23,6 +23,7 @@
 
 import React from 'react';
 import DevDashUser from '../../../../shared_types/DevDashUser';
+import Icon from '../../global/Icon';
 
 export interface TaskTypings {
   name: string;
@@ -38,7 +39,7 @@ export default function TodoTask(props: {
 }) {
   return (
     <>
-      <div className='w-full pt-2 pb-2 bg-content-normal flex items-center text-text-primary border-b-2 border-content-border last:border-b-0'>
+      <div className='w-full bg-content-normal flex items-center h-12 pt-2 pb-2 text-text-primary border-b-2 border-content-border last:border-b-0'>
         <input
           className='mr-3 ml-2'
           type='checkbox'
@@ -48,9 +49,21 @@ export default function TodoTask(props: {
           }}
         />
         {props.name}
-        <div className='flex ml-auto pr-2'>
-          <TodoTaskButton>😊</TodoTaskButton>
-          <TodoTaskButton>😊</TodoTaskButton>
+        <div className='flex ml-auto pr-2 h-full'>
+          <TodoTaskButton>
+            <Icon
+              name={'fold-16'}
+              className='aspect-square h-full'
+              color={'#f00'}
+            />
+          </TodoTaskButton>
+          <TodoTaskButton>
+            <Icon
+              name={'organization-16'}
+              className='aspect-square h-full'
+              color={'#f00'}
+            />
+          </TodoTaskButton>
         </div>
       </div>
     </>

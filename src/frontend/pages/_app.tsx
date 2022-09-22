@@ -79,6 +79,8 @@ function NEXT_APP({ Component, pageProps }: AppProps) {
         ''
       );
 
+      
+
       return (
         <AppPageContainer pageId={pageId}>
           <Head>

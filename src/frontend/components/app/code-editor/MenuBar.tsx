@@ -22,12 +22,13 @@
  */
 
 import React from "react";
+import Icon from "../../global/Icon";
 import RightClickMenu from "../../global/rightClickMenu";
 
 export default function MenuBar() {
   return (
     <div className={`h-6 w-full bg-content-normal flex select-none shadow-md z-10`}>
-      <img src={require("./../../../assets/icons/DevDash.svg").default.src} className={`p-0.5`} alt="" />
+      <Icon name="devdash" useDefaultColor className={"h-[90%] m-0.5 aspect-square"} />
       <div className={`flex h-full ml-1`}>
         <MenuItem
           name="File"

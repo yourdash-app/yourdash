@@ -707,14 +707,17 @@ function NavigationNotificationButton(props: {
         } absolute top-1/2 pointer-events-none -translate-y-1/2 opacity-0 bg-content-normal group-hover:opacity-100 group-hover:scale-100 scale-0 transition-all w-max p-1 pl-2 pr-2 rounded-lg text-text-primary group-hover:shadow-lg z-[50]`}>
         Notifications
       </div>
-      <span
+      <div
         className={`${
           props.expanded ? 'w-16 p-2' : 'w-10 p-1'
         } rounded-lg aspect-square group-hover:bg-content-light group-active:bg-content-dark flex items-center justify-center transition-all material-icons-round text-text-inverted-secondary text-3xl group-hover:text-text-secondary group-active:text-text-primary ${
           props.notificationsCount < 1 ? 'mb-2' : null
         }`}>
-        feedback
-      </span>
+        <Icon
+          className='w-8 h-8'
+          name='comment-16'
+          color={'rgb(34,34,34)'}></Icon>
+      </div>
       <NotificationCounter
         count={props.notificationsCount}
         expanded={props.expanded}
