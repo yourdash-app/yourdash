@@ -133,6 +133,30 @@ pre {
   font-family: 'JetBrains Mono';
 }
 
-.ͼ1 .cm-scroller {
+.cm-scroller {
   font-family: "JetBrains Mono"
+}
+
+.cm-cursor {
+  border-left: 3px solid !important;
+  padding-bottom: 0.5px !important;
+  padding-top: 0.5px !important;
+  opacity: 0.8;
+  transition: 0.05s linear;
+}
+
+/* .cm-selectionBackground:last-of-type {
+  border-radius: 0 0 0.5rem 0.5rem !important;
+}
+
+.cm-selectionBackground:first-of-type {
+  border-radius: 0.5rem 0.5rem 0 0 !important;
+} */
+
+.cm-matchingBracket {
+  height: 100% !important;
+}
+
+.cm-selectionLayer {
+  z-index: 2 !important;
 }

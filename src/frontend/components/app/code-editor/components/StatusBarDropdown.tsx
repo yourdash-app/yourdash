@@ -28,16 +28,20 @@ export default function StatusBarDropdown(props: { title: string, options: strin
   return <main className="relative h-full">
     {
       shown ?
-        <div className="absolute bottom-7 left-1/2 -translate-x-1/2 bg-content-normal text-text-secondary flex flex-col">
+        <div className={`absolute bottom-7 left-1/2 -translate-x-1/2 bg-content-normal text-text-secondary flex flex-col animate-fade-in opacity-0 rounded-lg overflow-hidden`}>
           {
             props.options.map((name: string) => {
-              return <span className="w-full pt-1 pb-1 pl-4 pr-4 text-center bg-content-normal cursor-pointer select-none hover:bg-content-light active:bg-content-dark" onClick={() => props.callback(name)}>{name}</span>
+              return <span className="w-full pt-1 pb-1 pl-4 pr-4 text-center transition-colors bg-content-normal cursor-pointer select-none hover:bg-content-light active:bg-content-dark" onClick={() => {
+                props.callback(name)
+                setShown(false)
+              }
+              }>{name}</span>
             })
           }
         </div>
         : null
     }
-    <div className={"h-full cursor-pointer text-text-secondary pl-2 pr-2 hover:bg-content-light active:bg-content-dark select-none"} onClick={() => { setShown(!shown) }}>
+    <div className={"h-full cursor-pointer text-center m-0 text-text-secondary pl-2 pr-2 hover:bg-content-light active:bg-content-dark select-none min-w-[8rem]"} onClick={() => { setShown(!shown) }}>
       {props.title}
     </div>
   </main>

@@ -29,7 +29,7 @@ import StatusBar from "./StatusBar";
 import StatusBarDropdown from "./components/StatusBarDropdown";
 
 export default function Editor() {
-  const [currentLanguage, setCurrentLanguage] = useState("python")
+  const [currentLanguage, setCurrentLanguage] = useState("typescript")
   return (
     <div className={`w-full h-full bg-red-900 grid grid-rows-[auto,1fr,auto] overflow-hidden`}>
       {/* MenuBar */}
@@ -55,7 +55,7 @@ export default function Editor() {
               "python",
               "css",
               "html"
-            ]} title={"Select Language"} callback={(lang) => {setCurrentLanguage(lang)}} />
+            ]} title={currentLanguage} callback={(lang) => {setCurrentLanguage(lang)}} />
           ],
         }}
       />

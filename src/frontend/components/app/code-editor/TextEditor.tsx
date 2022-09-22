@@ -27,19 +27,43 @@ import ReactCodeMirror from '@uiw/react-codemirror';
 import { langs } from '@uiw/codemirror-extensions-langs';
 
 export default function TextEditor(props: { language: string }) {
+  const [ currentLanguage, setCurrentLanguage ] = useState(langs.typescript())
+  useEffect(() => {
+    switch (props.language) {
+      case "tsx":
+        setCurrentLanguage(langs.tsx())
+        break
+      case "jsx":
+        setCurrentLanguage(langs.jsx())
+        break
+      case "javascript":
+        setCurrentLanguage(langs.javascript())
+        break
+      case "typescript":
+        setCurrentLanguage(langs.typescript())
+        break
+      case "css":
+        setCurrentLanguage(langs.css())
+        break
+      case "html":
+        setCurrentLanguage(langs.html())
+        break
+      case "python":
+        setCurrentLanguage(langs.python())
+        break
+    }
+  }, [props.language])
   return (      
     <ReactCodeMirror
       theme={githubDark}
       height={'100%'}
       lang={props.language}
+      autoCapitalize={"yes"}
+      autoCorrect={"yes"}
+      indentWithTab={true}
+      translate={"yes"}
       extensions={[
-        langs.css(),
-        langs.javascript(),
-        langs.typescript(),
-        langs.html(),
-        langs.python(),
-        langs.tsx(),
-        langs.jsx()
+        currentLanguage
       ]}
     />
   );
