@@ -86,10 +86,10 @@ function NavigationButton(props: {
       onClick={() => {
         router.push(props.href);
       }}
-      className={`pl-3 pr-3 pt-1 pb-1 transition-colors rounded-lg cursor-pointer text-lg mr-2 shadow-md last:mr-0 select-none child:w-full child:h-full ${
+      className={`pt-1 pb-1 transition-colors cursor-pointer text-lg mr-2 last:mr-0 select-none child:w-full child:h-full ${
         props.vibrant
-          ? 'bg-branding-primary hover:bg-branding-hover active:bg-branding-active text-text-primary'
-          : 'bg-content-normal hover:bg-content-light active:bg-content-dark text-text-secondary'
+          ? 'bg-branding-primary hover:bg-branding-hover active:bg-branding-active text-text-primary pl-4 pr-4 rounded-full'
+          : 'text-text-secondary pl-3 pr-3 rounded-lg'
       }`}>
       {props.title}
     </div>

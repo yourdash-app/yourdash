@@ -74,7 +74,7 @@ export default function HomePage() {
             </div>
           </div>
         </section>
-        <section className='bg-bg-light-secondary dark:bg-bg-dark-secondary w-full flex items-center justify-center min-h-[40rem] pt-8 pl-8 pr-8 pb-8'>
+        <section className='bg-bg-light-secondary dark:bg-bg-dark-secondary w-full flex items-center justify-center pt-8 pl-8 pr-8 pb-8'>
           <div className='grid grid-cols-1 md:grid-cols-3 max-w-screen-xl h-full w-full child:rounded-3xl child:relative child:shadow-lg child:bg-content-dark gap-4 child:overflow-hidden select-none'>
             <div className='md:col-span-2 md:row-span-2 w-full h-full'>
               <h1 className='pl-6 pr-6 pt-6 text-5xl text-text-primary relative'>

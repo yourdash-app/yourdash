@@ -7,18 +7,21 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "export": "next export"
+    "export": "next export",
+    "preinstall": "npx npm-force-resolutions"
+  },
+  "resolutions": {
+    "monaco-editor": "^0.25.0"
   },
   "dependencies": {
+    "@monaco-editor/react": "^4.4.6",
     "@octokit/rest": "^19.0.4",
     "babel": "^6.23.0",
     "localforage": "^1.10.0",
     "next": "^12.1.6",
     "next-pwa": "^5.5.2",
-    "next-transpile-modules": "^9.0.0",
     "react": "18.0.0",
     "react-dom": "18.0.0",
-    "react-monaco-editor": "^0.50.1",
     "request": "^2.79.0",
     "tailwindcss-image-rendering": "^1.0.2"
   },

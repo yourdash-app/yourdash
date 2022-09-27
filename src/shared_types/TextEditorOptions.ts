@@ -8,10 +8,10 @@
  *   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  *   copies of the Software, and to permit persons to whom the Software is
  *   furnished to do so, subject to the following conditions:
- 
+
  *   The above copyright notice and this permission notice shall be included in all
  *   copies or substantial portions of the Software.
- 
+
  *   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  *   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  *   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -22,35 +22,7 @@
  */
 
 import COLOR from "./Color"
+import Editor from "@monaco-editor/react"
 
 export default interface TextEditorOptions {
-  caret: {
-    color: COLOR;
-    width: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8; // 8 will be the smallest size of caret
-  };
-  topPadding: number;
-  leftPadding: number;
-  fontSize: number;
-  lineHeight: number;
-  font: string;
-  scrollbar: {
-    horizontal: {
-      size: number;
-      background: COLOR;
-    };
-    vertical: {
-      size: number;
-      background: COLOR;
-    };
-  };
-  theme: {
-    line_number: {
-      background: COLOR;
-      foreground: COLOR;
-    };
-    editor: {
-      background: COLOR;
-      foreground: COLOR;
-    };
-  };
 }

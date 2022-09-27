@@ -150,15 +150,29 @@ pre {
 }
 
 .monaco-editor.no-user-select .lines-content, .monaco-editor.no-user-select .view-line, .monaco-editor.no-user-select .view-lines {
-    padding-left: 0.1rem;
+    padding-left: 0.1rem !important;
 }
 
 .monaco-editor .suggest-details, .monaco-editor .suggest-widget {
-    border-radius: 0.5rem;
-    overflow: hidden;
+    border-radius: 0.5rem !important;
+    overflow: hidden !important;
+}
+
+.monaco-hover {
+    border-radius: 0.5rem !important;
+    overflow: hidden !important;
+}
+
+.monaco-menu, .context-view.monaco-menu-container {
+    border-radius: 0.5rem !important;
+    overflow: hidden !important;
 }
 
 div.monaco-action-bar.animated.vertical {
-    border-radius: 0.5rem !important;
-    overflow: hidden !important;
+    padding: 0 0 !important;
+}
+
+.monaco-editor .margin-view-overlays .line-numbers {
+    text-align: left !important;
+    padding-left: 0.5rem;
 }
