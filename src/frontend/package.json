@@ -11,7 +11,7 @@
     "preinstall": "npx npm-force-resolutions"
   },
   "resolutions": {
-    "monaco-editor": "^0.25.0"
+    "monaco-editor": "0.34.0"
   },
   "dependencies": {
     "@monaco-editor/react": "^4.4.6",
