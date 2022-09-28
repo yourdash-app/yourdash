@@ -39,7 +39,7 @@ export default function Editor() {
         {/* SideBar */}
         <SideBar />
         {/* Editor */}
-        <TextEditor language={currentLanguage} />
+        <TextEditor language={currentLanguage} options={{}} />
       </div>
       {/* StatusBar */}
       <StatusBar
