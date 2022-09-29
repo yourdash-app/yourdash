@@ -13,9 +13,9 @@ export default function Document() {
             <Head>
                 <meta name="google-site-verification" content="7cX4pphIkO6E0BneERfoBUoG9q9noi3z-1e8G6XZ3BI"/>
                 <link rel="manifest" href="/manifest.json"/>
-                <link rel="apple-touch-icon" href="/DevDash@2x.png"/>
+                <link rel="apple-touch-icon" href="/yourdash-logo2048.png"/>
                 <meta name="apple-mobile-web-app-status-bar" content="#363636" />
-                <link rel="shortcut icon" href="/DevDash.png" type="image/x-icon" />
+                <link rel="shortcut icon" href="/yourdash-logo256.png" type="image/png" />
             </Head>
             <body>
             <Main/>
