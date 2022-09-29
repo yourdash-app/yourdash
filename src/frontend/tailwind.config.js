@@ -108,7 +108,6 @@ module.exports = {
       addVariant('child', '& > *');
       addVariant('child-hover', '& > *:hover');
       addVariant('child-active', '& > *:active');
-      addVariant('body', 'body');
     }
   ]
 };

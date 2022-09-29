@@ -21,22 +21,10 @@
  *   SOFTWARE.
  */
 
-const withPwa = require("next-pwa");
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   basePath: process.env.NEXT_PUBLIC_BASE_PATH,
   assetPrefix: process.env.NEXT_PUBLIC_BASE_PATH,
-  pwa: {
-    dest: "public",
-    register: true,
-    skipWaiting: true,
-    disable: process.env.NODE_ENV === "development",
-  },
-  webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
-    devtool: process.env["NODE_ENV"] === "development" ? "cheapmodule-source-map" : "source-map";
-    return config;
-  },
 };
 
-module.exports = withPwa(nextConfig)
+module.exports = nextConfig
