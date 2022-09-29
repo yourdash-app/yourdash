@@ -149,10 +149,6 @@ pre {
     margin-right: 1px !important;
 }
 
-.monaco-editor.no-user-select .lines-content, .monaco-editor.no-user-select .view-line, .monaco-editor.no-user-select .view-lines {
-    padding-left: 0.1rem !important;
-}
-
 .monaco-editor .suggest-details, .monaco-editor .suggest-widget {
     border-radius: 0.5rem !important;
     overflow: hidden !important;
