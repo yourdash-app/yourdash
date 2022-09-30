@@ -97,7 +97,7 @@ export default function HomePage() {
             </div>
             <div>
               <h1 className='pl-6 pr-6 pt-6 text-5xl md:text-4xl text-text-primary relative'>
-                Manage your data your own way.
+                Manage your data your way.
               </h1>
               <div className='opacity-0 pt-2 pb-2 mt-8 text-xl'>abc</div>
               <button className='pl-4 duration-75 pr-4 pt-2 pb-2 transition-all text-text-secondary hover:text-text-primary hover:outline-0 active:outline-none hover:bg-branding-hover active:bg-branding-active outline-2 outline-branding-primary outline rounded-full text-xl absolute bottom-4 left-4'>

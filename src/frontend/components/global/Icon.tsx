@@ -902,7 +902,7 @@ const DevDashIconInternal = {
     require('./../../assets/DashIcons/x-circle-fill-24.svg').default.src,
   'zap-16': require('./../../assets/DashIcons/zap-16.svg').default.src,
   'zap-24': require('./../../assets/DashIcons/zap-24.svg').default.src,
-  'dash-logo': require('./../../assets/DashIcons/dash-logo.svg').default.src
+  'devdash-logo': require('../../assets/DashIcons/devdash-logo.svg').default.src
 };
 
 export type DevDashIcon = keyof typeof DevDashIconInternal;
