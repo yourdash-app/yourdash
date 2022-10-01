@@ -21,9 +21,6 @@
  *   SOFTWARE.
  */
 
-/* Copyright © Ewsgit 2022. */
-/* Licensed under the MIT License - https://ewsgit.github.io/devdash/copyright */
-
 @import url(https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap);
 @import url(https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap);
 
@@ -31,57 +28,27 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer utilities {
-    .animation-duration-50 {
-        --animation-duration: 50ms;
-    }
-
-    .animation-duration-100 {
-        --animation-duration: 100ms;
-    }
-
-    .animation-duration-200 {
-        --animation-duration: 200ms;
-    }
-
-    .animation-duration-500 {
-        --animation-duration: 500ms;
-    }
-
-    .animation-duration-1000 {
-        --animation-duration: 1000ms;
-    }
-
-    .animation-duration-2000 {
-        --animation-duration: 2000ms;
-    }
-
-    .animation-pause-duration-50 {
-        --animation-duration: 50ms;
-    }
-
-    .animation-pause-duration-100 {
-        --animation-duration: 100ms;
-    }
-
-    .animation-pause-duration-200 {
-        --animation-duration: 200ms;
-    }
-
-    .animation-pause-duration-500 {
-        --animation-duration: 500ms;
-    }
-
-    .animation-pause-duration-1000 {
-        --animation-duration: 1000ms;
-    }
-
-    .animation-pause-duration-2000 {
-        --animation-duration: 2000ms;
-    }
-}
 
 :root {
+    --branding-hover: '251 122 91';
+    --branding-primary: '235 106 75';
+    --branding-active: '219 90 59';
+    --branding-disabled-hover: '59 59 59';
+    --branding-disabled: '75 75 75';
+
+    --text-primary: 255 255 255;
+    --text-secondary: 221 221 221;
+    --text-inverted-primary: 0 0 0;
+    --text-inverted-secondary: 34 34 34;
+
+    --bg-light-primary: 228 228 228;
+    --bg-light-secondary: 197 197 197;
+    --bg-dark-primary: 140 140 140;
+    --bg-dark-secondary: 81 81 81;
+    --content-light: 70 70 70;
+    --content-normal: 54 54 54;
+    --content-dark: 38 38 38;
+    --content-border: 80 80 80;
     color-scheme: only normal;
 }
 
@@ -170,5 +137,7 @@ div.monaco-action-bar.animated.vertical {
 
 .monaco-editor .margin-view-overlays .line-numbers {
     text-align: left !important;
-    padding-left: 0.5rem;
+    padding-left: 1rem;
+    margin-right: 1.5rem;
+    user-select: none;
 }

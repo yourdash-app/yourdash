@@ -47,7 +47,7 @@ export default function Editor() {
           left: [],
           center: [],
           right: [
-            <StatusBarDropdown options={[
+            <StatusBarDropdown key={1} options={[
               "jsx",
               "javascript",
               "tsx",

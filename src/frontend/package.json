@@ -7,11 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "export": "next export",
-    "preinstall": "npx npm-force-resolutions"
-  },
-  "resolutions": {
-    "monaco-editor": "0.34.0"
+    "export": "next export"
   },
   "dependencies": {
     "@monaco-editor/react": "^4.4.6",
@@ -23,6 +19,7 @@
     "react": "18.0.0",
     "react-dom": "18.0.0",
     "request": "^2.79.0",
+    "styled-components": "^5.3.6",
     "tailwindcss-image-rendering": "^1.0.2"
   },
   "devDependencies": {

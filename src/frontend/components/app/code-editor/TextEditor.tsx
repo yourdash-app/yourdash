@@ -574,7 +574,7 @@ export default function TextEditor(props: { language: string, options: TextEdito
     fontFamily: "JetBrains Mono",
     fontSize: 16,
     folding: true,
-    fontLigatures: true,
+    fontLigatures: false,
     showFoldingControls: "always",
     minimap: {
       enabled: false

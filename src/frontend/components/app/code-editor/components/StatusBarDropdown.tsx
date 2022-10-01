@@ -22,16 +22,22 @@
  */
 
 import { useState } from "react"
+import styled from "styled-components"
+
+const STYLE = styled.main`
+  position: relative;
+  height: 100%;
+`
 
 export default function StatusBarDropdown(props: { title: string, options: string[], callback: (option: string) => void }) {
   const [ shown, setShown ] = useState(false)
   return <main className="relative h-full">
     {
       shown ?
-          <div className={`absolute bottom-7 left-1/2 -translate-x-1/2 bg-content-normal text-text-secondary flex flex-col animate-fade-in opacity-0 rounded-lg overflow-hidden`}>
+          <div className={`absolute bottom-full p-1 border-2 border border-content-border border-b-0 left-1/2 -translate-x-1/2 bg-content-normal text-text-secondary flex flex-col animate-fade-in animation-duration-100 opacity-0 rounded-t-lg overflow-hidden`}>
             {
               props.options.map((name: string, ind: number) => {
-                return <span key={ind} className="w-full pt-1 pb-1 pl-4 pr-4 text-center transition-colors bg-content-normal cursor-pointer select-none hover:bg-content-light active:bg-content-dark" onClick={() => {
+                return <span key={ind} className="w-full rounded-md pt-1 pb-1 pl-4 pr-4 text-center transition-colors bg-content-normal cursor-pointer select-none hover:bg-content-light active:bg-content-dark" onClick={() => {
                   props.callback(name)
                   setShown(false)
                 }
@@ -41,7 +47,7 @@ export default function StatusBarDropdown(props: { title: string, options: strin
           </div>
           : null
     }
-    <div className={"h-full cursor-pointer text-center m-0 text-text-secondary pl-2 pr-2 hover:bg-content-light active:bg-content-dark select-none min-w-[8rem]"} onClick={() => { setShown(!shown) }}>
+    <div className={"h-full cursor-pointer flex items-center justify-center m-0 text-text-secondary pl-2 pr-2 hover:bg-content-light active:bg-content-dark select-none min-w-[8rem]"} onClick={() => { setShown(!shown) }}>
       {props.title}
     </div>
   </main>

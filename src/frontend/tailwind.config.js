@@ -60,13 +60,13 @@ module.exports = {
       },
       animation: {
         'pulse-spin': 'pulse infinite linear 4s, spin infinite linear 2s',
-        'top-bottom': 'top-bottom 2s 0.5s infinite linear',
+        'top-bottom': 'top-bottom var(--animation-duration) 0.5s infinite linear',
         'spin': 'spin var(--animation-duration) infinite linear',
         'expand-in-horizontal':
           'expand-horizontal var(--animation-duration) linear',
         'expand-in-horizontal-loop':
           'expand-horizontal var(--animation-duration) linear infinite',
-        'fade-in': 'fade-in 0.5s 0.25s linear forwards'
+        'fade-in': 'fade-in var(--animation-duration) linear forwards'
       },
       keyframes: {
         'top-bottom': {

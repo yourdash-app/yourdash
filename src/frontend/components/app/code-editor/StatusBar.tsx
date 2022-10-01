@@ -24,12 +24,12 @@
 import * as React from "react";
 
 export default function StatusBar(props: { statusItems: { left: React.ReactChild[], center: React.ReactChild[], right: React.ReactChild[] } }) {
-  return <div className="w-full h-5 bg-content-normal flex">
+  return <div className="w-full h-7 bg-content-normal flex items-center">
     {/*Left aligned statusbar items*/}
-    <div className="flex w-auto mr-auto">{props.statusItems.left}</div>
+    <div className="flex w-auto mr-auto h-full items-center">{props.statusItems.left}</div>
     {/*Center aligned statusbar items*/}
-    <div className="flex w-auto flex-grow">{props.statusItems.center}</div>
+    <div className="flex w-auto flex-grow h-full items-center">{props.statusItems.center}</div>
     {/*Right aligned statusbar items*/}
-    <div className="flex w-auto">{props.statusItems.right}</div>
+    <div className="flex w-auto h-full items-center">{props.statusItems.right}</div>
   </div>
 }
