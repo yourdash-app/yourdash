@@ -48,14 +48,14 @@ export default function NavigationBar() {
           compact ? 'h-12' : 'h-20'
         } pt-2 pb-2`}>
         <Icon
-          name='devdash'
+          name='devdash-logo'
           useDefaultColor={true}
-          className={`h-full transition-all drop-shadow-md ${
+          className={`h-5/6 transition-all drop-shadow-md ${
             compact ? '' : 'pt-2 pb-2'
           } select-none aspect-square`}
         />
         <h1 className='text-text-primary transition-all select-none font-semibold sm:w-auto w-0 overflow-hidden text-3xl drop-shadow-md pl-2 sm:mr-20 md:mr-32 lg:mr-48 mr-10'>
-          DevDash
+           DevDash
         </h1>
         <NavigationButton
           title='Home'

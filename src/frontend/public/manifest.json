@@ -1,19 +1,19 @@
 {
-  "short_name": "DevDash",
-  "name": "DevDash",
+  "short_name": "YourDash",
+  "name": "YourDash",
   "icons": [
     {
-      "src": "DevDash.png",
+      "src": "yourdash-logo256.png",
       "type": "image/png",
       "sizes": "256x256"
     },
     {
-      "src": "DevDash@2x.png",
+      "src": "yourdash-logo512.png",
       "type": "image/png",
       "sizes": "512x512"
     },
     {
-      "src": "DevDash@3x.png",
+      "src": "yourdash-logo768.png",
       "type": "image/png",
       "sizes": "768x768"
     }

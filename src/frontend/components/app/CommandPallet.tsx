@@ -24,7 +24,7 @@
 import { useRouter } from "next/router";
 import React, { useEffect, createRef } from "react";
 
-export default function CommandPallet() {
+export default function CommandPallet(props: {}) {
   const router = useRouter();
   let [visible, toggleVisibility] = React.useState(false);
   let [options, setOptions] = React.useState([

@@ -84,7 +84,7 @@ function NEXT_APP({ Component, pageProps }: AppProps) {
       return (
         <AppPageContainer pageId={pageId}>
           <Head>
-            <title>DevDash | App</title>
+            <title>YourDash | App</title>
           </Head>
           <Component {...pageProps} />
           <>

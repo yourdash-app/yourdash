@@ -78,7 +78,7 @@ export default function HomePage() {
           <div className='grid grid-cols-1 md:grid-cols-3 max-w-screen-xl h-full w-full child:rounded-3xl child:relative child:shadow-lg child:bg-content-dark gap-4 child:overflow-hidden select-none'>
             <div className='md:col-span-2 md:row-span-2 w-full h-full'>
               <h1 className='pl-6 pr-6 pt-6 text-5xl text-text-primary relative'>
-                Edit code seamlessly
+                Edit files seamlessly.
               </h1>
               <div className='opacity-0 pt-2 pb-2 mt-8 text-xl'>abc</div>
               <button className='pl-4 duration-75 pr-4 pt-2 pb-2 transition-all text-text-secondary hover:text-text-primary hover:outline-0 active:outline-none hover:bg-branding-hover active:bg-branding-active outline-2 outline-branding-primary outline rounded-full text-xl absolute bottom-4 left-4'>
@@ -88,7 +88,7 @@ export default function HomePage() {
             <div>
               {/* <img src={require("./../assets/brandedBackgrounds/manageServer.svg").default.src} className='h-full w-full absolute top-0 left-0 opacity-30' alt="" /> */}
               <h1 className='pl-6 pr-6 pt-6 text-5xl md:text-4xl text-text-primary z-10 relative'>
-                Manage deployment servers
+                Sync everything between devices.
               </h1>
               <div className='opacity-0 pt-2 pb-2 mt-8 text-xl'>abc</div>
               <button className='pl-4 duration-75 pr-4 pt-2 pb-2 transition-all text-text-secondary hover:text-text-primary hover:outline-0 active:outline-none hover:bg-branding-hover active:bg-branding-active outline-2 outline-branding-primary outline rounded-full text-xl absolute bottom-4 left-4'>
@@ -97,7 +97,7 @@ export default function HomePage() {
             </div>
             <div>
               <h1 className='pl-6 pr-6 pt-6 text-5xl md:text-4xl text-text-primary relative'>
-                Share code with the whole team whenever and wherever
+                Manage your data your way.
               </h1>
               <div className='opacity-0 pt-2 pb-2 mt-8 text-xl'>abc</div>
               <button className='pl-4 duration-75 pr-4 pt-2 pb-2 transition-all text-text-secondary hover:text-text-primary hover:outline-0 active:outline-none hover:bg-branding-hover active:bg-branding-active outline-2 outline-branding-primary outline rounded-full text-xl absolute bottom-4 left-4'>
