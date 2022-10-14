@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "monaco-editor-webpack-plugin": "^7.0.1"
+  }
+}

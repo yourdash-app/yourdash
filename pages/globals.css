@@ -1,0 +1,72 @@
+/*
+ *   Copyright (c) 2022 Ewsgit
+ *   All rights reserved.
+
+ *   Permission is hereby granted, free of charge, to any person obtaining a copy
+ *   of this software and associated documentation files (the "Software"), to deal
+ *   in the Software without restriction, including without limitation the rights
+ *   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *   copies of the Software, and to permit persons to whom the Software is
+ *   furnished to do so, subject to the following conditions:
+ 
+ *   The above copyright notice and this permission notice shall be included in all
+ *   copies or substantial portions of the Software.
+ 
+ *   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ *   SOFTWARE.
+ */
+
+:root {
+  --app-background: url(./../public/time-cat.jpg);
+  --transition: all 100ms ease-in-out;
+
+  --card-bg: #000;
+  --card-fg: #fff;
+
+  --header-bg: #000;
+  --header-fg: #fff;
+
+  --container-bg: #000;
+  --container-fg: #fff;
+
+  --button-bg: #000;
+  --button-fg: #fff;
+  --button-outline: 0 solid #000;
+  --button-rounded: 0.5rem;
+  --button-hover-bg: #111;
+  --button-hover-fg: #fff;
+  --button-hover-outline: 0 solid #000;
+  --button-hover-rounded: 0.5rem;
+  --button-active-bg: #000;
+  --button-active-fg: #fff;
+  --button-active-outline: 0 solid #000;
+  --button-active-rounded: 0.5rem;
+
+  --button-vibrant-bg: rgb(235 106 75);
+  --button-vibrant-fg: #fff;
+  --button-vibrant-outline: 0 solid #000;
+  --button-vibrant-rounded: 100rem;
+  --button-vibrant-hover-bg: rgb(251 122 91);
+  --button-vibrant-hover-fg: #fff;
+  --button-vibrant-hover-outline: 0 solid #000;
+  --button-vibrant-hover-rounded: 100rem;
+  --button-vibrant-active-bg: rgb(219 90 59);
+  --button-vibrant-active-fg: #fff;
+  --button-vibrant-active-outline: 0 solid #000;
+  --button-vibrant-active-rounded: 100rem;
+}
+
+html, body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #222;
+  margin: 0;
+  padding: 0;
+  font-family: "roboto";
+}
