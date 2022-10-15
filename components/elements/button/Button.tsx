@@ -26,10 +26,11 @@ import styles from './Button.module.css';
 export interface IButton {
   children: React.ReactChild | React.ReactChild[];
   vibrant?: boolean;
+  onClick: () => void;
 }
 
-const Button: React.FC<IButton> = ({ children, vibrant }) => {
-  return <button className={`${styles.component} ${vibrant ? styles.vibrant : ""}`}>{children}</button>;
+const Button: React.FC<IButton> = ({ children, vibrant, onClick }) => {
+  return <button onClick={onClick} className={`${styles.component} ${vibrant ? styles.vibrant : ""}`}>{children}</button>;
 };
 
 export default Button;
