@@ -21,23 +21,32 @@
  *   SOFTWARE.
  */
 
-import Image from 'next/image';
 import Link from 'next/link'
 import styles from "./index.module.css"
 import HomeLayout from '../components/layouts/homeLayout/HomeLayout';
 import { NextPageWithLayout } from './page';
+import Button from '../components/elements/button/Button';
+import Slides from '../components/elements/slides/Slides';
 
 const Home: NextPageWithLayout = () => {
   return (
     <div className={styles.root}>
       <section className={styles.section1}>
-        <div></div>
+        <div>
+          <Slides slides={[
+            <h1 key={0}>This is coming soon.</h1>,
+            <h1 key={1}>This is coming soon..</h1>,
+            <h1 key={2}>This is coming soon...</h1>,
+            <h1 key={3}>This is coming soon....</h1>,
+            <h1 key={4}>This is coming soon.....</h1>
+          ]} changeDuration={500} />
+        </div>
         <div>
           <h1>Your Dash</h1>
-          <p>The home for files and creativity.</p>
+          <p>The home for your files.</p>
           <div>
-            <button></button>
-            <Link href="#"></Link>
+            <Button vibrant>Sign Up</Button>
+            <Link href="#">Login</Link>
           </div>
         </div>
       </section>
@@ -48,5 +57,5 @@ const Home: NextPageWithLayout = () => {
 export default Home;
 
 Home.getLayout = (page) => {
-  return <HomeLayout></HomeLayout>
+  return <HomeLayout>{page}</HomeLayout>
 }
