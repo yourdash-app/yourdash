@@ -25,17 +25,22 @@ import styles from './NavigationBar.module.css';
 import Link from "next/link"
 import Button from "./../../../elements/button/Button"
 
-export interface IHomeLayout extends React.ComponentPropsWithoutRef<'div'> {}
+export interface IHomeLayout extends React.ComponentPropsWithoutRef<'div'> { }
 
 const HomeLayout: React.FC<IHomeLayout> = ({ ..._divProps }) => {
-  return <div className={styles.component}>
-    <img className={styles.logo} src={"/assets/productLogos/yourdash1024.png"} alt="" draggable={false} />
-    <h1>YourDash</h1>
-    <Link href="#">Home</Link>
-    <Link href="#">Projects</Link>
-    <Link href="#">Git</Link>
-    <Button vibrant>Login</Button>
-  </div>;
+  return <>
+    <div className={styles.spacer}>
+      {/* Empty Spacer for fixed positioning */}
+    </div>
+    <div className={styles.component}>
+      <img className={styles.logo} src={"/assets/productLogos/yourdash1024.png"} alt="" draggable={false} />
+      <h1>YourDash</h1>
+      <Link href="#">Home</Link>
+      <Link href="#">Projects</Link>
+      <Link href="#">Git</Link>
+      <Button vibrant>Login</Button>
+    </div>
+  </>
 };
 
 export default HomeLayout;
