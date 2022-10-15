@@ -20,14 +20,12 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *   SOFTWARE.
  */
-
-import styles from './HomeLayout.module.css';
 import NavigationBar from "./navigationBar/NavigationBar"
 
-export interface IHomeLayout extends React.ComponentPropsWithoutRef<'div'> {}
+export interface IHomeLayout extends React.ComponentPropsWithoutRef<'div'> { }
 
 const HomeLayout: React.FC<IHomeLayout> = ({ children, ..._divProps }) => {
-  return <div className={styles.container}>
+  return <div>
     <NavigationBar />
     {children}
   </div>;
