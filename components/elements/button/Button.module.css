@@ -31,6 +31,9 @@
   font-family: 'Roboto';
   cursor: pointer;
   transition: var(--transition);
+  border-radius: var(--button-rounded);
+  background-color: var(--button-bg);
+  color: var(--button-fg);
 }
 
 .vibrant {
