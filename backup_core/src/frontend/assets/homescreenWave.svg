@@ -1,4 +1,0 @@
-<!-- Copyright © Ewsgit 2022. -->
-<!-- Licensed under the MIT License - https://ewsgit.github.io/devdash/copyright -->
-
-<svg preserveAspectRatio="none" id="visual" viewBox="0 0 3840 2160" width="3840" height="2160" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"><path d="M0 1460L128 1383.3C256 1306.7 512 1153.3 768 1093C1024 1032.7 1280 1065.3 1536 1119C1792 1172.7 2048 1247.3 2304 1241.5C2560 1235.7 2816 1149.3 3072 1164C3328 1178.7 3584 1294.3 3712 1352.2L3840 1410L3840 0L3712 0C3584 0 3328 0 3072 0C2816 0 2560 0 2304 0C2048 0 1792 0 1536 0C1280 0 1024 0 768 0C512 0 256 0 128 0L0 0Z" fill="#363636" stroke-linecap="round" stroke-linejoin="miter"></path></svg>

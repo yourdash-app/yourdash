@@ -1,7 +1,0 @@
-{
-  "name": "shared_types",
-  "version": "1.0.0",
-  "dependencies": {
-    "@monaco-editor/react": "^4.4.6"
-  }
-}
