@@ -36,19 +36,32 @@
   padding-bottom: 2.5rem;
   padding-top: 2.5rem;
   width: auto;
-  max-height: 15rem;
+  max-height: 20rem;
 }
 
 .section1 > div:first-child {
   display: flex;
   align-items: center;
   justify-content: right;
-  width: auto;
+  width: 100%;
+  max-height: 20rem;
+}
+
+.section1 > div:first-child > div {
+  height: 100%;
   aspect-ratio: 16 / 9;
+  width: 75%;
   background-color: aqua;
-  border-radius: 2rem;
-  margin-left: 3rem;
-  max-height: 15rem;
+  border-radius: 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  transition: var(--transition);
+}
+
+@media (min-width: 1900px) {
+  .section1 > div:first-child > div {
+    width: 50%;
+  }
 }
 
 .section1 > div:last-child {
@@ -56,7 +69,24 @@
   flex-direction: column;
   color: var(--header-fg);
   width: auto;
-  margin-right: 3rem;
+  margin: 0;
+  justify-content: center;
+}
+
+.section1 > div:last-child > h1 {
+  margin: 0;
+  font-size: 3rem;
+}
+
+.section1 > div:last-child > div {
+  display: flex;
+  align-items: center;
+}
+
+.section1 > div:last-child > div > a {
+  margin-left: 1rem;
+  color: var(--button-vibrant-bg);
+  text-decoration: none;
 }
 
 @media (max-width: 750px) {
@@ -68,11 +98,9 @@
 
   .section1 > div:first-child {
     display: none;
-    margin-left: 0;
   }
 
   .section1 > div:last-child {
-    margin-right: 0;
     display: flex;
     align-items: center;
     justify-content: center;

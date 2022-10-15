@@ -25,13 +25,13 @@
   --app-background: url(./../public/time-cat.jpg);
   --transition: all 100ms ease-in-out;
 
-  --card-bg: #000;
+  --card-bg: rgb(70 70 70);
   --card-fg: #fff;
 
-  --header-bg: #000;
+  --header-bg: rgb(54 54 54);
   --header-fg: #fff;
 
-  --container-bg: #000;
+  --container-bg: rgb(54 54 54);
   --container-fg: #fff;
 
   --button-bg: #000;

@@ -33,13 +33,19 @@ const Home: NextPageWithLayout = () => {
     <div className={styles.root}>
       <section className={styles.section1}>
         <div>
-          <Slides slides={[
-            <h1 key={0}>This is coming soon.</h1>,
-            <h1 key={1}>This is coming soon..</h1>,
-            <h1 key={2}>This is coming soon...</h1>,
-            <h1 key={3}>This is coming soon....</h1>,
-            <h1 key={4}>This is coming soon.....</h1>
-          ]} changeDuration={500} />
+          <div>
+            <Slides slides={[
+              <h1 key={0}>This is coming soon.</h1>,
+              <h1 key={1}>This is coming soon..</h1>,
+              <h1 key={2}>This is coming soon...</h1>,
+              <h1 key={3}>This is coming soon....</h1>,
+              <h1 key={4}>This is coming soon.....</h1>,
+              <h1 key={5}>This is coming soon.....</h1>,
+              <h1 key={6}>This is coming soon.....</h1>,
+              <h1 key={7}>This is coming soon.....</h1>,
+              <h1 key={8}>This is coming soon.....</h1>
+            ]} changeDuration={500} />
+          </div>
         </div>
         <div>
           <h1>Your Dash</h1>
