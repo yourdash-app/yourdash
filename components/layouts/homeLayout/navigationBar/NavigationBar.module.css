@@ -55,8 +55,9 @@
   height: 0.25rem;
   top: calc(100% + 0.1rem);
   left: 0;
-  transform: scaleX(0);
+  transform: scale(0);
   transition: var(--transition);
+  transform-origin: center;
 }
 
 .component > a[href]:hover {
@@ -64,7 +65,7 @@
 }
 
 .component > a[href]:hover:after {
-  transform: scaleX(1);
+  transform: scale(1);
 }
 
 .component > a[href]:active {
@@ -72,7 +73,7 @@
 }
 
 .component > a[href]:active:after {
-  transform: scaleX(1.2);
+  transform: scale(1.2);
   background-color: var(--button-vibrant-active-bg);
 }
 

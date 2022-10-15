@@ -23,7 +23,7 @@
 
 import styles from './NavigationBar.module.css';
 import Link from "next/link"
-import Button from "./../../elements/button/Button"
+import Button from "./../../../elements/button/Button"
 
 export interface IHomeLayout extends React.ComponentPropsWithoutRef<'div'> {}
 
