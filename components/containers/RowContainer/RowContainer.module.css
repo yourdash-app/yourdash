@@ -27,7 +27,7 @@
 }
 
 .component > * {
-  margin-right: 0.25rem;
+  margin-right: 0.5rem;
 }
 
 .component > *:last-child {
