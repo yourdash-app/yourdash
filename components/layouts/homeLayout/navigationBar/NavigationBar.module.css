@@ -84,7 +84,7 @@
 }
 
 .component > a[href]:active:after {
-  transform: scale(1.2);
+  transform: scaleX(1.2);
   background-color: var(--button-vibrant-active-bg);
 }
 
