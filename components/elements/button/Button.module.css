@@ -31,25 +31,25 @@
   font-family: 'Roboto';
   cursor: pointer;
   transition: var(--transition);
-  border-radius: var(--button-rounded);
+  border-radius: var(--button-rounding);
   background-color: var(--button-bg);
   color: var(--button-fg);
 }
 
 .vibrant {
-  border-radius: var(--button-vibrant-rounded);
+  border-radius: var(--button-vibrant-rounding);
   background-color: var(--button-vibrant-bg);
   color: var(--button-vibrant-fg);
 }
 
 .vibrant:hover {
-  border-radius: var(--button-vibrant-hover-rounded);
+  border-radius: var(--button-vibrant-hover-rounding);
   background-color: var(--button-vibrant-hover-bg);
   color: var(--button-hover-vibrant-fg);
 }
 
 .vibrant:active {
-  border-radius: var(--button-vibrant-active-rounded);
+  border-radius: var(--button-vibrant-active-rounding);
   background-color: var(--button-vibrant-active-bg);
   color: var(--button-vibrant-active-fg);
 }
