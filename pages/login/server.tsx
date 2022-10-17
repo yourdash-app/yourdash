@@ -22,34 +22,21 @@
  */
 
 import React from "react"
-import ColContainer from "../../components/containers/ColContainer/ColContainer";
-import CardButton from "../../components/elements/cardButton/CardButton";
-import Card from "../../components/elements/card/Card";
-import { NextPageWithLayout } from "../page";
-import styles from "./options.module.css"
-import { useRouter } from "next/router";
-import HomeLayout from "../../components/layouts/homeLayout/HomeLayout";
+import ColContainer from "../../components/containers/ColContainer/ColContainer"
+import Card from "../../components/elements/card/Card"
+import HomeLayout from "../../components/layouts/homeLayout/navigationBar/NavigationBar"
+import { NextPageWithLayout } from "../page"
 
-const LoginOptions: NextPageWithLayout = () => {
-  const router = useRouter()
-  return (
-    <div className={styles.root}>
-      <Card>
-        <ColContainer>
-          <h1 className={styles.title}>Please choose a login option to continue.</h1>
-          <CardButton icon="mark-github-16" onClick={() => {
-            router.push("https://devdash.ewsgit.repl.co/auth/github?url=" + window.location.href.replace("options", "github"))
-          }}>Github</CardButton>
-          <CardButton icon="key-16" onClick={() => { router.push("/login/ghtoken") }}>Github Auth Token</CardButton>
-          <CardButton icon="arrow-left-16" onClick={() => { router.push("/") }}>Go Back</CardButton>
-        </ColContainer>
-      </Card>
-    </div>
-  );
-};
+const ServerLogin: NextPageWithLayout = () => {
+  return <Card>
+    <ColContainer>
+      
+    </ColContainer>
+  </Card>
+}
 
-export default LoginOptions;
+export default ServerLogin
 
-LoginOptions.getLayout = (page) => {
+ServerLogin.getLayout = (page) => {
   return <HomeLayout>{page}</HomeLayout>
 }
