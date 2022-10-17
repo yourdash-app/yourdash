@@ -24,21 +24,26 @@
 import styles from './NavigationBar.module.css';
 import Link from "next/link"
 import Button from "./../../../elements/button/Button"
+import { useRouter } from 'next/router';
+import Icon from '../../../elements/icon/Icon';
 
 export interface IHomeLayout extends React.ComponentPropsWithoutRef<'div'> { }
 
 const HomeLayout: React.FC<IHomeLayout> = ({ ..._divProps }) => {
+  const router = useRouter()
   return <>
     <div className={styles.spacer}>
       {/* Empty Spacer for fixed positioning */}
     </div>
     <div className={styles.component}>
-      <img className={styles.logo} src={"/assets/productLogos/yourdash1024.png"} alt="" draggable={false} />
+      <Icon useDefaultColor className={styles.logo} name="yourdash-logo" />
       <h1>YourDash</h1>
-      <Link href="#">Home</Link>
-      <Link href="#">Projects</Link>
-      <Link href="#">Git</Link>
-      <Button vibrant>Login</Button>
+      <Link href="/">Home</Link>
+      <Link href="/projects">Projects</Link>
+      <Link href="https://github.com/ewsgit/yourdash">Git</Link>
+      <Button onClick={() => {
+        router.push("/login/server")
+      }} vibrant>Login</Button>
     </div>
   </>
 };
