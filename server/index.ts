@@ -40,7 +40,7 @@ export const SERVER_CONFIG: {
   themeColor: `#${string}`;
   activeModules: string[];
   version: string;
-} = await JSON.parse(
+} = JSON.parse(
   readFileSync(
     path.join(ENVIRONMENT_VARS.FS_ORIGIN, './yourdash.config.json')
   ).toString()

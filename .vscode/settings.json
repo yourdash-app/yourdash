@@ -38,5 +38,6 @@
     "Viewports",
     "WEBP",
     "yourdash"
-  ]
+  ],
+  "git.ignoreLimitWarning": true
 }
