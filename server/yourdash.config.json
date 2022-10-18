@@ -1,0 +1,9 @@
+{
+  "name": "string",
+  "defaultBackground": "string",
+  "favicon": "string",
+  "logo": "string",
+  "themeColor": "#ffffff",
+  "activeModules": [],
+  "version": "0.1.0"
+}
