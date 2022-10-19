@@ -20,27 +20,18 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *   SOFTWARE.
  */
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
 
-export default function ServerSelectionLink() {
-  const router = useRouter();
-  useEffect(() => {
-    let hostname = router.query.hostname as string
-    if (!hostname) {
-      router.push("/login/server")
-      return
-    }
-    // the hostname has been set and now can be used to set the current server if one doesn't already exist.
-    // @ts-ignore
-    if (!hostname.startsWith("https://") && !hostname.startsWith("http://")) {
-      return
-    }
-    if (!hostname.includes(".")) {
-      return
-    }
-    localStorage.setItem("currentServer", hostname)
-    router.push("/login/options")
-  })
-  return <h1>Redirecting</h1>
+.root {
+  width: 100%;
+  height: calc(100vh - 5rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.title {
+  color: var(--card-fg);
+  margin: 0;
+  padding: 2rem;
+  padding-top: 1rem;
 }
