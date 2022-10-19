@@ -12,14 +12,15 @@
     "npm": "please-use-yarn"
   },
   "scripts": {
-    "dev": "next dev",
+    "dev": "concurrently \"next dev\" \"yarn --cwd ./server dev\"",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "prettier": "prettier --write .",
-    "prepare": "husky install"
+    "prepare": "husky install && yarn --cwd ./server"
   },
   "dependencies": {
+    "concurrently": "^7.4.0",
     "next": "12.1.4",
     "react": "18.0.0",
     "react-dom": "18.0.0"
