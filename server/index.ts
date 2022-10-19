@@ -25,6 +25,8 @@ import express from 'express';
 import chalk from 'chalk';
 import { readFileSync } from 'fs';
 import path from 'path';
+import cors from "cors";
+
 
 export const ENVIRONMENT_VARS: {
   FS_ORIGIN: string;
@@ -43,45 +45,60 @@ export const SERVER_CONFIG: {
 } = JSON.parse(
   readFileSync(
     path.join(ENVIRONMENT_VARS.FS_ORIGIN, './yourdash.config.json')
-  ).toString()
-);
-
-const app = express();
-
-console.log(
+    ).toString()
+    );
+    
+    const app = express();
+    
+    console.log(
   JSON.parse(
     readFileSync(
       path.join(ENVIRONMENT_VARS.FS_ORIGIN, './yourdash.config.json')
-    ).toString()
+      ).toString()
   )
-);
+  );
+  
+  if (
+    SERVER_CONFIG.name === undefined ||
+    SERVER_CONFIG.defaultBackground === undefined ||
+    SERVER_CONFIG.favicon === undefined ||
+    SERVER_CONFIG.logo === undefined ||
+    SERVER_CONFIG.themeColor === undefined ||
+    SERVER_CONFIG.activeModules === undefined ||
+    SERVER_CONFIG.version === undefined
+    ) {
+      console.log(chalk.redBright('Missing configuration!'));
+      process.exit(1);
+    }
+    
+    SERVER_CONFIG.activeModules.forEach(module => {
+      import("./modules/" + module + "/index.js").then(mod => {
+        mod.load(app)
+      })
+    })
 
-if (
-  SERVER_CONFIG.name === undefined ||
-  SERVER_CONFIG.defaultBackground === undefined ||
-  SERVER_CONFIG.favicon === undefined ||
-  SERVER_CONFIG.logo === undefined ||
-  SERVER_CONFIG.themeColor === undefined ||
-  SERVER_CONFIG.activeModules === undefined ||
-  SERVER_CONFIG.version === undefined
-) {
-  console.log(chalk.redBright('Missing configuration!'));
-  process.exit(1);
-}
-
-SERVER_CONFIG.activeModules.forEach(module => {
-  import("./modules/" + module + "/index.js").then(mod => {
-    mod.load(app)
-  })
-})
-
-app.get('/', (req, res) => {
-  res.redirect(`https://yourdash.vercel.app/login/server/${req.url}`);
-});
-
-app.get('/dav/version', (req, res) => {
-  res.send(SERVER_CONFIG.version)
-});
+    app.use(
+      cors({
+        origin: [
+          'http://localhost:3000',
+          'https://yourdash.vercel.app',
+          'https://ddsh.vercel.app',
+        ],
+      })
+    );
+    
+    app.get('/', (req, res) => {
+      res.redirect(`https://yourdash.vercel.app/login/server/${req.url}`);
+    });
+    
+    app.get('/test', (req, res) => {
+      res.send("yourdash instance")
+    });
+    
+    
+    app.get('/dav/version', (req, res) => {
+      res.send(SERVER_CONFIG.version)
+    });
 
 app.listen(80, () => {
   console.log('YourDash Server instance live on 127.0.0.1');

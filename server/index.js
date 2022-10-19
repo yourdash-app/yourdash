@@ -24,10 +24,11 @@ import express from 'express';
 import chalk from 'chalk';
 import { readFileSync } from 'fs';
 import path from 'path';
+import cors from "cors";
 export const ENVIRONMENT_VARS = {
     FS_ORIGIN: process.env.FS_ORIGIN,
 };
-export const SERVER_CONFIG = await JSON.parse(readFileSync(path.join(ENVIRONMENT_VARS.FS_ORIGIN, './yourdash.config.json')).toString());
+export const SERVER_CONFIG = JSON.parse(readFileSync(path.join(ENVIRONMENT_VARS.FS_ORIGIN, './yourdash.config.json')).toString());
 const app = express();
 console.log(JSON.parse(readFileSync(path.join(ENVIRONMENT_VARS.FS_ORIGIN, './yourdash.config.json')).toString()));
 if (SERVER_CONFIG.name === undefined ||
@@ -45,8 +46,18 @@ SERVER_CONFIG.activeModules.forEach(module => {
         mod.load(app);
     });
 });
+app.use(cors({
+    origin: [
+        'http://localhost:3000',
+        'https://yourdash.vercel.app',
+        'https://ddsh.vercel.app',
+    ],
+}));
 app.get('/', (req, res) => {
     res.redirect(`https://yourdash.vercel.app/login/server/${req.url}`);
+});
+app.get('/test', (req, res) => {
+    res.send("yourdash instance");
 });
 app.get('/dav/version', (req, res) => {
     res.send(SERVER_CONFIG.version);
