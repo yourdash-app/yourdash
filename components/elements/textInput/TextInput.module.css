@@ -21,7 +21,7 @@
  *   SOFTWARE.
  */
 
-.component {
+.input {
   border: none;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
@@ -29,17 +29,26 @@
   padding-right: 1rem;
   font-size: 1rem;
   font-family: 'Roboto';
-  cursor: pointer;
   transition: var(--transition);
   border-radius: var(--button-rounding);
   background-color: var(--button-bg);
   color: var(--button-fg);
 }
 
+.input:focus-visible {
+  outline: var(--text-input-focused-outline);
+}
+
 .invalid {
-  color: var(--color-error);
+  color: var(--color-error-bg);
 }
 
 .valid {
-  color: var(--color-success);
+  color: var(--color-success-bg);
+}
+
+.component {
+  width: max-content;
+  height: max-content;
+  position: relative;
 }
