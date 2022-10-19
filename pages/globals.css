@@ -24,6 +24,9 @@
 :root {
   --app-background: url(./../public/time-cat.jpg);
   --transition: all 100ms ease-in-out;
+  --color-warn: #ffaa00;
+  --color-error: #ff4400;
+  --color-success: #50dd7a;
 
   --card-bg: rgb(70 70 70);
   --card-fg: #fff;
@@ -91,7 +94,6 @@ h1 {
 h2 {
   font-weight: 400;
 }
-
 
 h3 {
   font-weight: 400;
