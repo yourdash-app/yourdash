@@ -20,23 +20,19 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *   SOFTWARE.
  */
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
-import React from "react"
-import ColContainer from "../../components/containers/ColContainer/ColContainer"
-import Card from "../../components/elements/card/Card"
-import HomeLayout from "../../components/layouts/homeLayout/navigationBar/NavigationBar"
-import { NextPageWithLayout } from "../page"
+export default function ServerSelectionLink() {
+  const router = useRouter();
+  useEffect(() => {
+    let hostname = router.query.hostname as string | undefined
+    if (!hostname) router.push("/login/server")
 
-const ServerLogin: NextPageWithLayout = () => {
-  return <Card>
-    <ColContainer>
-      
-    </ColContainer>
-  </Card>
-}
-
-export default ServerLogin
-
-ServerLogin.getLayout = (page) => {
-  return <HomeLayout>{page}</HomeLayout>
+    // the hostname has been set and now can be used to set the current server if one doesn't already exist.
+    // @ts-ignore
+    localStorage.setItem("currentServer", hostname)
+    router.push("/login/options")
+  })
+  return <h1>Redirecting</h1>
 }
