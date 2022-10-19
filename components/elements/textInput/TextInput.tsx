@@ -23,10 +23,13 @@
 
 import styles from './TextInput.module.css';
 
-export interface ITextInput { }
+export interface ITextInput extends React.ComponentPropsWithoutRef<'input'> {
+  isValid?: boolean;
+  defaultValue?: string;
+}
 
-const TextInput: React.FC<ITextInput> = ({ children }) => {
-  return <input type="text" className={styles.component}>{children}</input>;
+const TextInput: React.FC<ITextInput> = ({ children, isValid, defaultValue, ...inputProps }) => {
+  return <input {...inputProps} type="text" defaultValue={defaultValue ? defaultValue : ""} className={`${styles.component} ${isValid ? styles.valid : styles.invalid}`}>{children}</input>;
 };
 
 export default TextInput;

@@ -35,3 +35,11 @@
   background-color: var(--button-bg);
   color: var(--button-fg);
 }
+
+.invalid {
+  color: var(--color-error);
+}
+
+.valid {
+  color: var(--color-success);
+}
