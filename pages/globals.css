@@ -24,9 +24,24 @@
 :root {
   --app-background: url(./../public/time-cat.jpg);
   --transition: all 100ms ease-in-out;
-  --color-warn: #ffaa00;
-  --color-error: #ff4400;
-  --color-success: #50dd7a;
+
+  --color-warn-bg: #ffaa00;
+  --color-warn-fg: #ffffff;
+  --color-warn-outline: #ef9a00;
+
+  --color-error-bg: #ff4400;
+  --color-error-fg: #ffffff;
+  --color-error-outline: #ef3400;
+
+  --color-success-bg: #50dd7a;
+  --color-success-fg: #ffffff;
+  --color-success-outline: #40cd6a;
+
+  --color-info-bg: #229cec;
+  --color-info-fg: #ffffff;
+  --color-info-outline: #128cdc;
+
+  --focused-outline: 0.25rem solid var(--button-vibrant-bg);
 
   --card-bg: rgb(70 70 70);
   --card-fg: #fff;
@@ -38,7 +53,7 @@
   --container-bg: rgb(54 54 54);
   --container-fg: #fff;
 
-  --button-bg: #000;
+  --button-bg: #444;
   --button-fg: #fff;
   --button-outline: 0 solid #000;
   --button-rounding: 0.5rem;
@@ -70,7 +85,7 @@
   --text-input-rounding: 0.5rem;
   --text-input-focused-bg: #000;
   --text-input-focused-fg: #fff;
-  --text-input-focused-outline: 0 solid #000;
+  --text-input-focused-outline: 0.25rem solid var(--button-vibrant-bg);
   --text-input-focused-rounding: 0.5rem;
 }
 
@@ -97,4 +112,8 @@ h2 {
 
 h3 {
   font-weight: 400;
+}
+
+*:focus-visible {
+  outline: var(--focused-outline);
 }
