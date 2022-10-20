@@ -5,7 +5,7 @@
 
 import express from 'express';
 import chalk from 'chalk';
-import { readFileSync } from 'fs';
+import fs from 'fs';
 import path from 'path';
 import cors from 'cors';
 
@@ -24,7 +24,7 @@ export const SERVER_CONFIG: {
   activeModules: string[];
   version: string;
 } = JSON.parse(
-  readFileSync(
+  fs.readFileSync(
     path.join(ENVIRONMENT_VARS.FS_ORIGIN, './yourdash.config.json')
   ).toString()
 );
@@ -54,15 +54,30 @@ SERVER_CONFIG.activeModules.forEach((module) => {
   });
 });
 
-app.use(
-  cors({
+app.use( cors({
     origin: [
       'http://localhost:3000',
       'https://yourdash.vercel.app',
       'https://ddsh.vercel.app',
     ],
-  })
-);
+  }));
+  
+function verifyGithubUserToken() {
+  
+}
+  
+  // app.use((req, res, next) => {
+  //   if (req.url.startsWith('/api') || req.url.startsWith('/dav')) {
+  //     let userName = req.header('userName')
+  //     let userToken = req.header('userToken')
+  
+  //     fs.readFile(`${ENVIRONMENT_VARS.FS_ORIGIN}/data/users/${userName}/`, (err, data) => {
+        
+  //     })  
+  //   } else {
+  //     next();
+  //   }
+  // });
 
 app.get('/', (req, res) => {
   res.redirect(`https://yourdash.vercel.app/login/server/${req.url}`);
@@ -73,16 +88,9 @@ app.get('/test', (req, res) => {
   res.send('yourdash instance');
 });
 
-app.use((req, res, next) => {
-  if (req.url.startsWith('/api') || req.url.startsWith('/dav')) {
-    let userName = req.header('userName')
-    let userToken = req.header('userToken')
-
-    fs.readFile(`${ENVIRONMENT_VARS.FS_ORIGIN}/`)
-  } else {
-    next();
-  }
-});
+app.get('/api/get/server/config', (req, res) => {
+  res.sendFile(path.resolve(`${ENVIRONMENT_VARS.FS_ORIGIN}/yourdash.config.json`))
+})
 
 app.get('/login/user/:username', (req, res) => {
   if (!req.params.username) return;

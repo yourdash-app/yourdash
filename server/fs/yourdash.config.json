@@ -1,8 +1,8 @@
 {
-  "name": "string",
-  "defaultBackground": "string",
-  "favicon": "string",
-  "logo": "string",
+  "name": "YourDash Instance",
+  "defaultBackground": "./",
+  "favicon": "png",
+  "logo": "svg",
   "themeColor": "#ffffff",
   "activeModules": [
     "test@ewsgit.github.io"
