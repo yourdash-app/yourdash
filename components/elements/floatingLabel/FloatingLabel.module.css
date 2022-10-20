@@ -35,6 +35,7 @@
   color: var(--button-fg);
   transform: scale(1);
   transform-origin: center;
+  position: absolute;
 }
 
 .noContent {
