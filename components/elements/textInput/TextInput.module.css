@@ -33,6 +33,8 @@
   border-radius: var(--button-rounding);
   background-color: var(--button-bg);
   color: var(--button-fg);
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .input:focus-visible {
@@ -48,7 +50,13 @@
 }
 
 .component {
-  width: max-content;
+  width: 100%;
   height: max-content;
   position: relative;
+}
+
+.label {
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
 }

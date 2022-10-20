@@ -33,7 +33,7 @@ export interface ITextInput extends React.ComponentPropsWithoutRef<'input'> {
 const TextInput: React.FC<ITextInput> = ({ children, isValid, defaultValue, invalidReason, ...inputProps }) => {
   return <div className={styles.component}>
     <input {...inputProps} type="text" defaultValue={defaultValue ? defaultValue : ""} className={`${styles.input} ${isValid ? styles.valid : styles.invalid}`}>{children}</input>
-    <FloatingLabel>
+    <FloatingLabel className={styles.label}>
       {invalidReason}
     </FloatingLabel>
   </div>
