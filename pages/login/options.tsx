@@ -41,7 +41,10 @@ const LoginOptions: NextPageWithLayout = () => {
             router.push("https://devdash.ewsgit.repl.co/auth/github?url=" + window.location.href.replace("options", "github"))
           }}>Github</CardButton>
           <CardButton icon="key-16" onClick={() => { router.push("/login/ghtoken") }}>Github Auth Token</CardButton>
-          <CardButton icon="arrow-left-16" onClick={() => { router.push("/") }}>Go Back</CardButton>
+          <CardButton icon="arrow-left-16" onClick={() => {
+            localStorage.removeItem("currentServer")
+            router.push("/login/server")
+          }}>Go Back</CardButton>
         </ColContainer>
       </Card>
     </div>

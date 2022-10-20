@@ -27,6 +27,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
 }
 
 .title {
@@ -34,4 +35,11 @@
   margin: 0;
   padding: 2rem;
   padding-top: 1rem;
+}
+
+.link {
+  position: absolute;
+  bottom: 1rem;
+  text-decoration: none;
+  color: var(--header-fg);
 }

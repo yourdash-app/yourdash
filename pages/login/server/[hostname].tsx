@@ -32,15 +32,43 @@ export default function ServerSelectionLink() {
       return
     }
     // the hostname has been set and now can be used to set the current server if one doesn't already exist.
-    // @ts-ignore
+    if (hostname === "") {
+      router.push("/login/server")
+      return
+    }
+
     if (!hostname.startsWith("https://") && !hostname.startsWith("http://")) {
+      router.push("/login/server")
+      return
+    }
+    if (hostname.startsWith("https://.") || hostname.startsWith("http://.")) {
+      router.push("/login/server")
       return
     }
     if (!hostname.includes(".")) {
+      router.push("/login/server")
       return
     }
-    localStorage.setItem("currentServer", hostname)
-    router.push("/login/options")
+    if (hostname.endsWith(".")) {
+      router.push("/login/server")
+      return
+    }
+
+    fetch(hostname + "/test")
+      .then(res => res.text())
+      .then(text => {
+        if (text === "yourdash instance") {
+          localStorage.setItem("currentServer", hostname)
+          router.push("/login/options")
+        } else {
+          router.push("/login/server")
+          return
+        }
+      })
+      .catch(() => {
+        router.push("/login/server")
+        return
+      })
   })
   return <h1>Redirecting</h1>
 }

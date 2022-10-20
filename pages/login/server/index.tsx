@@ -21,9 +21,11 @@
  *   SOFTWARE.
  */
 
+import Link from "next/link"
 import { useRouter } from "next/router"
 import React, { useEffect, useState } from "react"
 import ColContainer from "../../../components/containers/ColContainer/ColContainer"
+import Button from "../../../components/elements/button/Button"
 import Card from "../../../components/elements/card/Card"
 import TextInput from "../../../components/elements/textInput/TextInput"
 import HomeLayout from "../../../components/layouts/homeLayout/HomeLayout"
@@ -45,7 +47,7 @@ const ServerLogin: NextPageWithLayout = () => {
   useEffect(() => {
     if (url === "") {
       setMessage("")
-      return setUrlIsValid(false) 
+      return setUrlIsValid(false)
     }
 
     if (!url.startsWith("https://") && !url.startsWith("http://")) {
@@ -87,9 +89,19 @@ const ServerLogin: NextPageWithLayout = () => {
   return <div className={styles.root}>
     <Card>
       <ColContainer>
-        <TextInput invalidReason={message} isValid={urlIsValid} onChange={(e) => { setUrl(e.target.value) }} />
+        <h1 className={styles.title}>Please enter the url of your server.</h1>
+        <TextInput onBlur={() => { setMessage("") }} invalidReason={message} isValid={urlIsValid} onChange={(e) => { setUrl(e.target.value) }} />
+        <Button disabled={!urlIsValid} onClick={() => {
+          localStorage.setItem("currentServer", url)
+          router.push("/login/options")
+        }}>Continue</Button>
       </ColContainer>
     </Card>
+    <Link href="/docs/" passHref>
+      <a className={styles.link}>
+        Setup your own server.
+      </a>
+    </Link>
   </div>
 }
 

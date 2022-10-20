@@ -23,9 +23,19 @@
 import LoginWaitingLayout from '../../components/layouts/loginWaitingLayout/LoginWaitingLayout';
 import { NextPageWithLayout } from './../page';
 import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 const LoginGithub: NextPageWithLayout = () => {
+  const router = useRouter()
   useEffect(() => {
+    let urlParams = new URLSearchParams(window.location.search);
+    let token = urlParams.get("token")
+    if (token) { 
+      localStorage.setItem("githubToken", token)
+      router.push("/app/")
+    } else {
+      router.push("/login/options")
+    }
   })
   return (
     <span>
