@@ -7,7 +7,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"tsc\" \"cross-env FS_ORIGIN=. nodemon .\"",
+    "dev": "concurrently \"tsc\" \"cross-env FS_ORIGIN=./fs nodemon .\"",
     "tsc": "tsc"
   },
   "dependencies": {

@@ -4,6 +4,8 @@
   "favicon": "string",
   "logo": "string",
   "themeColor": "#ffffff",
-  "activeModules": [],
+  "activeModules": [
+    "test@ewsgit.github.io"
+  ],
   "version": "0.1.0"
 }
