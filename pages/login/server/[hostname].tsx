@@ -69,6 +69,6 @@ export default function ServerSelectionLink() {
         router.push("/login/server")
         return
       })
-  })
+  }, [router])
   return <h1>Redirecting</h1>
 }

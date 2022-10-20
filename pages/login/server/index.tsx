@@ -42,7 +42,7 @@ const ServerLogin: NextPageWithLayout = () => {
     if (localStorage.getItem("currentServer")) {
       router.push("/login/options")
     }
-  })
+  }, [router])
 
   useEffect(() => {
     if (url === "") {

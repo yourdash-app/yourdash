@@ -36,7 +36,7 @@ const LoginGithub: NextPageWithLayout = () => {
     } else {
       router.push("/login/options")
     }
-  })
+  }, [router])
   return (
     <span>
       Waiting for github login server...
