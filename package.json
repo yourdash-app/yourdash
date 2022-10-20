@@ -1,5 +1,5 @@
 {
-  "name": "YourDash",
+  "name": "yourdash",
   "author": "ewsgit",
   "description": "Your Dash",
   "version": "0.1.0",
@@ -12,7 +12,7 @@
     "npm": "please-use-yarn"
   },
   "scripts": {
-    "dev": "concurrently \"next dev\" \"yarn --cwd ./server dev\"",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -20,7 +20,6 @@
     "prepare": "husky install && yarn --cwd ./server"
   },
   "dependencies": {
-    "concurrently": "^7.4.0",
     "next": "12.1.4",
     "react": "18.0.0",
     "react-dom": "18.0.0"
