@@ -22,7 +22,8 @@
  */
 
 :root {
-  --app-background: url(./../public/time-cat.jpg);
+  --app-background: url(./../public/background.jpg);
+  --background-color: #111111;
   --transition: all 100ms ease-in-out;
 
   --color-warn-bg: #ffaa00;
@@ -52,6 +53,9 @@
 
   --container-bg: rgb(54 54 54);
   --container-fg: #fff;
+
+  --panel-fg: #fff;
+  --panel-bg: #444444;
 
   --button-bg: #444;
   --button-fg: #fff;
@@ -94,7 +98,7 @@ body {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  background-color: #222;
+  background-color: var(--background-color);
   margin: 0;
   padding: 0;
   font-family: 'roboto';

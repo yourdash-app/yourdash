@@ -24,7 +24,7 @@
 .root {
   height: 100vh;
   width: 100%;
-  background-color: var(--header-bg);
+  background-color: var(--background-color);
   display: grid;
   grid-template-rows: auto 1fr;
 }

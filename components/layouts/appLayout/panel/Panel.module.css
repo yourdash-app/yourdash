@@ -23,12 +23,19 @@
 
 .component {
   height: 3rem;
-  background-color: red;
+  background: var(--panel-bg);
   display: grid;
   grid-template-columns: auto auto 1fr auto auto;
+  place-content: center;
+  color: var(--panel-fg);
 }
 
 .component > img {
-  height: 90%;
+  height: 2.5rem;
   aspect-ratio: 1/1;
+}
+
+.component > h1 {
+  margin: 0;
+  padding-left: 0.5rem;
 }

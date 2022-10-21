@@ -21,3 +21,12 @@
  *   SOFTWARE.
  */
 
+.root {
+  background: var(--app-background);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100%;
+  overflow-y: auto;
+  width: 100%;
+}
