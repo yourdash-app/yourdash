@@ -21,7 +21,7 @@
  *   SOFTWARE.
  */
 
-import React from "react"
+import React, { useEffect } from "react"
 import ColContainer from "../../components/containers/ColContainer/ColContainer";
 import CardButton from "../../components/elements/cardButton/CardButton";
 import Card from "../../components/elements/card/Card";
@@ -32,6 +32,12 @@ import HomeLayout from "../../components/layouts/homeLayout/HomeLayout";
 
 const LoginOptions: NextPageWithLayout = () => {
   const router = useRouter()
+  useEffect(() => {
+    if (localStorage.getItem("githubToken")) {
+      router.push("/app")
+      return
+    }
+  })
   return (
     <div className={styles.root}>
       <Card>
