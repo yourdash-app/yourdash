@@ -42,7 +42,8 @@ export default function Icon(props: {
             backgroundImage: `url(${YourDashIconRawDictionary[ props.name ]})`,
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
-            backgroundSize: 'cover'
+            backgroundSize: 'cover',
+            userSelect: "none"
           }
           : {
             maskImage: `url(${YourDashIconRawDictionary[ props.name ]})`,
@@ -53,7 +54,8 @@ export default function Icon(props: {
             maskSize: 'cover',
             WebkitMaskPosition: 'center',
             WebkitMaskRepeat: 'no-repeat',
-            WebkitMaskSize: 'cover'
+            WebkitMaskSize: 'cover',
+            userSelect: "none"
           })
       }}
       className={props.className}

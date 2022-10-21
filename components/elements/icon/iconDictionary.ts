@@ -32,6 +32,8 @@ const YourDashIconDictionary = {
     .src,
   'alert-fill-12': require('./../../../public/assets/icons/alert-fill-12.svg')
     .default.src,
+  'app-launcher-16':
+    require('./../../../public/assets/icons/app-launcher-16.svg').default.src,
   'apps-16': require('./../../../public/assets/icons/apps-16.svg').default.src,
   'archive-16': require('./../../../public/assets/icons/archive-16.svg').default
     .src,
@@ -1015,8 +1017,8 @@ const YourDashIconDictionary = {
     .default.src,
 };
 
-export const YourDashIconRawDictionary = YourDashIconDictionary
+export const YourDashIconRawDictionary = YourDashIconDictionary;
 
 type YourDashIcon = keyof typeof YourDashIconDictionary;
 
-export default YourDashIcon
+export default YourDashIcon;
