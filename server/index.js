@@ -86,6 +86,9 @@ app.get('/api/get/server/favicon', (req, res) => {
 app.get('/api/get/logo', (req, res) => {
     res.sendFile(path.resolve(`${ENV.FS_ORIGIN}/${SERVER_CONFIG.logo}`));
 });
+app.get('/api/server/version', (req, res) => {
+    res.send(SERVER_CONFIG.version);
+});
 app.get('/login/user/:username', (req, res) => {
     if (!req.params.username)
         return;
