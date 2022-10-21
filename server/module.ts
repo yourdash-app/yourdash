@@ -25,7 +25,7 @@ import Express from "express"
 
 export default interface YourDashModule {
   name: string;
-  id: `${string}@${string}.${string}`;
+  id: string;
   load: (app: Express.Application) => void;
   unload: () => void;
   install: () => void;
