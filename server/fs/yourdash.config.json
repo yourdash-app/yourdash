@@ -2,7 +2,7 @@
   "name": "YourDash Instance",
   "defaultBackground": "./",
   "favicon": "png",
-  "logo": "svg",
+  "logo": "./yourdash.svg",
   "themeColor": "#ffffff",
   "activeModules": [
     "test@ewsgit.github.io"
