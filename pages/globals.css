@@ -56,6 +56,24 @@
 
   --panel-fg: #fff;
   --panel-bg: #444444;
+  --panel-item-fg: #fff;
+  --panel-item-bg: #333333;
+  --panel-item-rounding: 0.5rem;
+  --panel-item-hover-fg: #fff;
+  --panel-item-hover-bg: #444444;
+  --panel-item-hover-rounding: 0.5rem;
+  --panel-item-active-fg: #fff;
+  --panel-item-active-bg: #222222;
+  --panel-item-active-rounding: 0.5rem;
+  --panel-launcher-fg: #fff;
+  --panel-launcher-bg: #333333;
+  --panel-launcher-rounding: 0;
+  --panel-launcher-hover-fg: #fff;
+  --panel-launcher-hover-bg: #444444;
+  --panel-launcher-hover-rounding: 0;
+  --panel-launcher-active-fg: #fff;
+  --panel-launcher-active-bg: #222222;
+  --panel-launcher-active-rounding: 0;
 
   --button-bg: #444;
   --button-fg: #fff;

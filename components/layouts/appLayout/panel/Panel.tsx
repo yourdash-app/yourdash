@@ -22,6 +22,7 @@
  */
 
 import { useEffect, useState } from 'react';
+import Icon from '../../../elements/icon/Icon';
 import styles from './Panel.module.css';
 
 export interface IPanel { }
@@ -36,9 +37,10 @@ const Panel: React.FC<IPanel> = () => {
       })
   }, [])
   return <div className={styles.component}>
-    <img src={require("./../../../../public/assets/productLogos/yourdash.svg").default.src} alt="" />
+    <div className={styles.launcher}>
+      <Icon name='app-launcher-16' style={{ height: "100%", aspectRatio: "1/1" }} color={"#ffffff"} />
+    </div>
     <img src={serverConfig.logo} alt="" />
-    <h1>{serverConfig.name}</h1>
   </div>;
 };
 

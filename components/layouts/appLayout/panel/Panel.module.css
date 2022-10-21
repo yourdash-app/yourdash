@@ -26,7 +26,7 @@
   background: var(--panel-bg);
   display: grid;
   grid-template-columns: auto auto 1fr auto auto;
-  place-content: center;
+  align-items: center;
   color: var(--panel-fg);
 }
 
@@ -35,7 +35,18 @@
   aspect-ratio: 1/1;
 }
 
-.component > h1 {
-  margin: 0;
-  padding-left: 0.5rem;
+.launcher {
+  padding: 0.5rem;
+  background-color: var(--panel-launcher-bg);
+  height: 2rem;
+  aspect-ratio: 1/1;
+  transition: var(--transition);
+}
+
+.launcher:hover {
+  background-color: var(--panel-launcher-hover-bg);
+}
+
+.launcher:active {
+  background-color: var(--panel-launcher-active-bg);
 }
