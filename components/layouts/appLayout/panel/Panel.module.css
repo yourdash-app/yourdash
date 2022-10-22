@@ -1,46 +1,32 @@
 /*
- *   Copyright (c) 2022 Ewsgit
- *   All rights reserved.
-
- *   Permission is hereby granted, free of charge, to any person obtaining a copy
- *   of this software and associated documentation files (the "Software"), to deal
- *   in the Software without restriction, including without limitation the rights
- *   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- *   copies of the Software, and to permit persons to whom the Software is
- *   furnished to do so, subject to the following conditions:
- 
- *   The above copyright notice and this permission notice shall be included in all
- *   copies or substantial portions of the Software.
- 
- *   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- *   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- *   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- *   SOFTWARE.
+ * Created on Fri Oct 21 2022
+ *
+ * Copyright © 2022 Ewsgit
  */
 
 .component {
-  height: 3rem;
+  --panel-height: 3rem;
+  height: var(--panel-height);
   background: var(--panel-bg);
   display: grid;
-  grid-template-columns: auto auto 1fr auto auto;
+  grid-template-columns: auto 1fr auto auto;
   align-items: center;
   color: var(--panel-fg);
 }
 
-.component > img {
-  height: 2.5rem;
-  aspect-ratio: 1/1;
+.serverLogo {
+  height: 2rem;
+  padding-left: 0.5rem;
+  margin-right: 50%;
 }
 
 .launcher {
   padding: 0.5rem;
   background-color: var(--panel-launcher-bg);
-  height: 2rem;
+  height: calc(var(--panel-height) - 1rem);
   aspect-ratio: 1/1;
   transition: var(--transition);
+  cursor: pointer;
 }
 
 .launcher:hover {
@@ -49,4 +35,31 @@
 
 .launcher:active {
   background-color: var(--panel-launcher-active-bg);
+}
+
+.launcherSlideOut {
+  position: fixed;
+  top: var(--panel-height);
+  left: -20rem;
+  height: calc(100vh - var(--panel-height));
+  width: 20rem;
+  background-color: var(--panel-bg);
+  transition: var(--transition);
+}
+
+.launcherSlideOutVisible {
+  left: 0;
+}
+
+.tray {
+  outline: 1px solid blue;
+  width: 50%;
+}
+
+.account {
+  height: calc(var(--panel-height) - 1rem);
+  margin-right: 0.5rem;
+  aspect-ratio: 1 / 1;
+  outline: 1px solid red;
+  border-radius: 0.5rem;
 }

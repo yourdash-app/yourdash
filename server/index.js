@@ -44,25 +44,27 @@ app.use(cors({
     ],
 }));
 function verifyGithubUserToken() {
-    fetch("https://api.github.com/")
-        .then(res => res.json())
-        .then(res => {
+    fetch('https://api.github.com/')
+        .then((res) => res.json())
+        .then((res) => {
         if (res) {
             return true;
         }
         return false;
     })
-        .catch(err => {
+        .catch((err) => {
         console.log(err);
         return false;
     });
 }
 // app.use((req, res, next) => {
-//   if (req.url.startsWith('/api') || req.url.startsWith('/dav')) {
-//     let userName = req.header('userName')
-//     let userToken = req.header('userToken')
-//     fs.readFile(`${ENVIRONMENT_VARS.FS_ORIGIN}/data/users/${userName}/`, (err, data) => {
-//     })
+//   if (req.url.startsWith('/api')) {
+//     let userName = req.header('userName');
+//     let userToken = req.header('userToken');
+//     fs.readFile(
+//       `${ENVIRONMENT_VARS.FS_ORIGIN}/data/users/${userName}/`,
+//       (err, data) => {}
+//     );
 //   } else {
 //     next();
 //   }
