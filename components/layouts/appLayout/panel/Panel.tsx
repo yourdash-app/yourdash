@@ -25,6 +25,7 @@ import { useEffect, useState } from 'react';
 import Icon from '../../../elements/icon/Icon';
 import styles from './Panel.module.css';
 import Server from "./../../../../lib/server"
+import YourDashUser from '../../../../lib/user';
 
 export interface IPanel { }
 
@@ -32,6 +33,7 @@ const Panel: React.FC<IPanel> = () => {
   const [ serverConfig, setServerConfig ] = useState({} as { [ key: string ]: any | undefined })
   const [ serverLogo, setServerLogo ] = useState(require("./../../../../public/assets/productLogos/yourdash.svg"))
   const [ launcherSlideOutVisible, setLauncherSlideOutVisible ] = useState(false)
+  const [ userData, setUserData ] = useState(undefined as YourDashUser | undefined)
   useEffect(() => {
     setServerLogo(`${localStorage.getItem("currentServer")}/api/get/logo`)
     Server.get(`/get/server/config`)
@@ -39,6 +41,9 @@ const Panel: React.FC<IPanel> = () => {
       .then(res => {
         setServerConfig(res)
       })
+    Server.get(`/get/current/user`)
+      .then(res => res.json())
+    // TODO: set userData to the result and add the endpoint to the server backend.
   }, [])
   useEffect(() => {
     Server.get("/get/server/default/background")
@@ -50,7 +55,11 @@ const Panel: React.FC<IPanel> = () => {
     <div className={`${styles.launcherSlideOut} ${launcherSlideOutVisible ? styles.launcherSlideOutVisible : ""}`}></div>
     <img src={serverLogo} className={styles.serverLogo} alt="" />
     <div className={styles.tray}></div>
-    <div className={styles.account}></div>
+    <div className={styles.account}>
+      <img src={
+        userData?.profile.image
+      } alt="" />
+    </div>
   </div>;
 };
 
