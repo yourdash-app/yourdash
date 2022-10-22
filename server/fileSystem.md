@@ -18,14 +18,16 @@ FS_ORIGIN
       [extension config files]
   data/
     users/
-      [user name]/
+      [user uuid]/
+        user.json
         settings.json
         files/
           [user files root]
         temp/
           [temporary files]
     groups/
-      [group name]/
+      [group uuid]/
+        group.json
         settings.json
         files/
           [group files root]
