@@ -59,6 +59,30 @@ SERVER_CONFIG.activeModules.forEach((module) => {
   });
 });
 
+app.use((req, res, next) => {
+  let date = new Date();
+  switch (req.method) {
+    case 'GET':
+      log(
+        `${date.getUTCMilliseconds()} ${chalk.bgGrey(chalk.green(' GET '))} ${
+          req.path
+        }`
+      );
+    case 'POST':
+      log(
+        `${date.getUTCMilliseconds()} ${chalk.bgGrey(chalk.blue(' GET '))} ${
+          req.path
+        }`
+      );
+    case 'DELETE':
+      log(
+        `${date.getUTCMilliseconds()} ${chalk.bgGrey(chalk.red(' DELETE '))} ${
+          req.path
+        }`
+      );
+  }
+});
+
 app.use(
   cors({
     origin: [
@@ -84,19 +108,16 @@ function verifyGithubUserToken() {
     });
 }
 
-// app.use((req, res, next) => {
-//   if (req.url.startsWith('/api')) {
-//     let userName = req.header('userName');
-//     let userToken = req.header('userToken');
+app.use((req, res, next) => {
+  if (req.url.startsWith('/api')) {
+    let userName = req.header('userName');
+    let userToken = req.header('userToken');
 
-//     fs.readFile(
-//       `${ENVIRONMENT_VARS.FS_ORIGIN}/data/users/${userName}/`,
-//       (err, data) => {}
-//     );
-//   } else {
-//     next();
-//   }
-// });
+    fs.readFile(`${ENV.FS_ORIGIN}/data/users/${userName}/`, (err, data) => {});
+  } else {
+    next();
+  }
+});
 
 app.get('/', (req, res) => {
   res.redirect(`https://yourdash.vercel.app/login/server/${req.url}`);
@@ -123,6 +144,28 @@ app.get('/api/get/server/favicon', (req, res) => {
 
 app.get('/api/get/logo', (req, res) => {
   res.sendFile(path.resolve(`${ENV.FS_ORIGIN}/${SERVER_CONFIG.logo}`));
+});
+
+app.get('/api/get/current/user', (req, res) => {
+  let user = JSON.parse(
+    fs
+      .readFileSync(
+        `${ENV.FS_ORIGIN}/data/users/${req.header('userName')}/user.json`
+      )
+      .toString()
+  );
+
+  res.json({
+    name: user.name,
+    userName: user.userName,
+    email: user.email,
+    uuid: 'asdfsd-1213dsd-12jdfhw-4qlej49njf',
+    profile: {
+      banner: '',
+      picture: '',
+      discription: '',
+    },
+  });
 });
 
 app.get('/api/server/version', (req, res) => {
