@@ -9,6 +9,7 @@ import Icon from '../../../elements/icon/Icon';
 import styles from './Panel.module.css';
 import Server from "./../../../../lib/server"
 import YourDashUser from '../../../../lib/user';
+import AuthedImg from "./../../../elements/authedImg/AuthedImg"
 
 export interface IPanel { }
 
@@ -36,7 +37,7 @@ const Panel: React.FC<IPanel> = () => {
       <Icon name='app-launcher-16' style={{ height: "100%", aspectRatio: "1/1" }} color={"var(--panel-fg)"} />
     </div>
     <div className={`${styles.launcherSlideOut} ${launcherSlideOutVisible ? styles.launcherSlideOutVisible : ""}`}></div>
-    <img src={serverLogo} className={styles.serverLogo} alt="" />
+    <AuthedImg src={serverLogo} className={styles.serverLogo} />
     <div className={styles.tray}></div>
     <div className={styles.account}>
       <img src={

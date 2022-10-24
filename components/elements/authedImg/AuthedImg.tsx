@@ -21,17 +21,31 @@
  *   SOFTWARE.
  */
 
-import styles from './Button.module.css';
+import { useEffect, useState } from "react";
+import { YourDashIconRawDictionary } from "../icon/iconDictionary";
 
-export interface IButton {
-  children: React.ReactChild | React.ReactChild[];
-  vibrant?: boolean;
-  onClick: () => void;
-  disabled?: boolean;
+export interface IButton extends React.ComponentPropsWithoutRef<'img'> {
+  src: string
 }
 
-const Button: React.FC<IButton> = ({ children, vibrant, onClick, disabled }) => {
-  return <button onClick={() => { if (!disabled) onClick() }} className={`${styles.component} ${vibrant ? styles.vibrant : ""}`}>{children}</button>;
+const Button: React.FC<IButton> = ({ src, ...imgElementProps }) => {
+  const [ imgSrc, setImgSrc ] = useState(YourDashIconRawDictionary["server-error"])
+  useEffect(() => {
+    const options = {
+      headers: {
+        userName: "",
+        userToken: ""
+      }
+    };
+
+    fetch(src, options)
+      .then(res => res.blob())
+      .then(blob => {
+        setImgSrc(URL.createObjectURL(blob))
+      });
+  })
+
+  return <img src={imgSrc} alt="" {...imgElementProps} />
 };
 
 export default Button;

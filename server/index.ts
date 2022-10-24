@@ -117,7 +117,9 @@ app.use((req, res, next) => {
     let userName = req.header('userName');
     let userToken = req.header('userToken');
 
-    fs.readFile(`${ENV.FS_ORIGIN}/data/users/${userName}/`, (err, data) => {});
+    // check if the userToken for the userName supplied matches the one on the server
+    // fs.readFile(`${ENV.FS_ORIGIN}/data/users/${userName}/`, (err, data) => {});
+    next()
   } else {
     next();
   }
