@@ -68,19 +68,23 @@ app.use((req, res, next) => {
           req.path
         }`
       );
+      break;
     case 'POST':
       log(
         `${date.getUTCMilliseconds()} ${chalk.bgGrey(chalk.blue(' GET '))} ${
           req.path
         }`
       );
+      break;
     case 'DELETE':
       log(
         `${date.getUTCMilliseconds()} ${chalk.bgGrey(chalk.red(' DELETE '))} ${
           req.path
         }`
       );
+      break;
   }
+  next()
 });
 
 app.use(

@@ -10,7 +10,8 @@ const Server = {
       userToken: localStorage.getItem('githubToken') as string,
       userName: localStorage.getItem('githubUsername') as string,
     };
-    return fetch(`${localStorage.getItem('currentServer')}/api${path}`, {
+    let url = localStorage.getItem('currentServer')
+    return fetch(`${url}/api${path}`, {
       headers: { ...defaultHeaders },
       method: 'GET',
     });
@@ -20,7 +21,8 @@ const Server = {
       userToken: localStorage.getItem('githubToken') as string,
       userName: localStorage.getItem('githubUsername') as string,
     };
-    return fetch(`${localStorage.getItem('currentServer')}/api${path}`, {
+    let url = localStorage.getItem('currentServer')
+    return fetch(`${url}/api${path}`, {
       headers: { ...defaultHeaders },
       method: 'POST',
     });
@@ -30,7 +32,8 @@ const Server = {
       userToken: localStorage.getItem('githubToken') as string,
       userName: localStorage.getItem('githubUsername') as string,
     };
-    return fetch(`${localStorage.getItem('currentServer')}/api${path}`, {
+    let url = localStorage.getItem('currentServer');
+    return fetch(`${url}/api${path}`, {
       headers: { ...defaultHeaders },
       method: 'DELETE',
     });

@@ -41,11 +41,15 @@ app.use((req, res, next) => {
     switch (req.method) {
         case 'GET':
             log(`${date.getUTCMilliseconds()} ${chalk.bgGrey(chalk.green(' GET '))} ${req.path}`);
+            break;
         case 'POST':
             log(`${date.getUTCMilliseconds()} ${chalk.bgGrey(chalk.blue(' GET '))} ${req.path}`);
+            break;
         case 'DELETE':
             log(`${date.getUTCMilliseconds()} ${chalk.bgGrey(chalk.red(' DELETE '))} ${req.path}`);
+            break;
     }
+    next();
 });
 app.use(cors({
     origin: [
