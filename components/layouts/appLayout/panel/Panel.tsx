@@ -27,6 +27,9 @@ const Panel: React.FC<IPanel> = () => {
       })
     Server.get(`/get/current/user`)
       .then(res => res.json())
+      .then(res => { 
+        setUserData(res)
+      })
     // TODO: set userData to the result and add the endpoint to the server backend.
   }, [])
   useEffect(() => {
