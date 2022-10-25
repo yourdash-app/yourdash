@@ -40,7 +40,7 @@ app.use((req, res, next) => {
     let date = new Date();
     switch (req.method) {
         case 'GET':
-            log(`${date.getUTCMilliseconds()} ${chalk.bgGrey(chalk.green(' GET '))} ${req.path}`);
+            log(`${date.getHours()}:${date.getMinutes()}:${date.getSeconds()} ${chalk.bgGrey(chalk.green(' GET '))} ${req.path}`);
             break;
         case 'POST':
             log(`${date.getUTCMilliseconds()} ${chalk.bgGrey(chalk.blue(' GET '))} ${req.path}`);
@@ -104,9 +104,18 @@ app.get('/api/get/logo', (req, res) => {
     res.sendFile(path.resolve(`${ENV.FS_ORIGIN}/${SERVER_CONFIG.logo}`));
 });
 app.get('/api/get/current/user', (req, res) => {
-    let user = JSON.parse(fs
-        .readFileSync(`${ENV.FS_ORIGIN}/data/users/${req.header('userName')}/user.json`)
-        .toString());
+    // let user = JSON.parse(
+    //   fs
+    //     .readFileSync(
+    //       `${ENV.FS_ORIGIN}/data/users/${req.header('userName')}/user.json`
+    //     )
+    //     .toString()
+    // )
+    let user = {
+        name: "error",
+        userName: "error",
+        email: "error@example.com"
+    };
     res.json({
         name: user.name,
         userName: user.userName,

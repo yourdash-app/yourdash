@@ -7,10 +7,11 @@
 const Server = {
   get: (path: string) => {
     let defaultHeaders = {
-      userToken: localStorage.getItem('githubToken') as string,
-      userName: localStorage.getItem('githubUsername') as string,
+      userToken: localStorage.getItem('token') as string,
+      userName: localStorage.getItem('userName') as string,
     };
-    let url = localStorage.getItem('currentServer')
+    let url = localStorage.getItem('currentServer');
+    console.log("[Server Request]: GET " + path)
     return fetch(`${url}/api${path}`, {
       headers: { ...defaultHeaders },
       method: 'GET',
@@ -18,10 +19,11 @@ const Server = {
   },
   post: (path: string) => {
     let defaultHeaders = {
-      userToken: localStorage.getItem('githubToken') as string,
-      userName: localStorage.getItem('githubUsername') as string,
+      userToken: localStorage.getItem('token') as string,
+      userName: localStorage.getItem('userName') as string,
     };
-    let url = localStorage.getItem('currentServer')
+    let url = localStorage.getItem('currentServer');
+    console.log('[Server Request]: POST ' + path);
     return fetch(`${url}/api${path}`, {
       headers: { ...defaultHeaders },
       method: 'POST',
@@ -29,10 +31,11 @@ const Server = {
   },
   delete: (path: string) => {
     let defaultHeaders = {
-      userToken: localStorage.getItem('githubToken') as string,
-      userName: localStorage.getItem('githubUsername') as string,
+      userToken: localStorage.getItem('token') as string,
+      userName: localStorage.getItem('userName') as string,
     };
     let url = localStorage.getItem('currentServer');
+    console.log('[Server Request]: DELETE ' + path);
     return fetch(`${url}/api${path}`, {
       headers: { ...defaultHeaders },
       method: 'DELETE',

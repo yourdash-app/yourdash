@@ -64,9 +64,9 @@ app.use((req, res, next) => {
   switch (req.method) {
     case 'GET':
       log(
-        `${date.getUTCMilliseconds()} ${chalk.bgGrey(chalk.green(' GET '))} ${
-          req.path
-        }`
+        `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()} ${chalk.bgGrey(
+          chalk.green(' GET ')
+        )} ${req.path}`
       );
       break;
     case 'POST':
@@ -153,13 +153,19 @@ app.get('/api/get/logo', (req, res) => {
 });
 
 app.get('/api/get/current/user', (req, res) => {
-  let user = JSON.parse(
-    fs
-      .readFileSync(
-        `${ENV.FS_ORIGIN}/data/users/${req.header('userName')}/user.json`
-      )
-      .toString()
-  );
+  // let user = JSON.parse(
+  //   fs
+  //     .readFileSync(
+  //       `${ENV.FS_ORIGIN}/data/users/${req.header('userName')}/user.json`
+  //     )
+  //     .toString()
+  // )
+
+  let user = {
+    name: "error",
+    userName: "error",
+    email: "error@example.com"
+  }
 
   res.json({
     name: user.name,

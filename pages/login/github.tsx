@@ -31,7 +31,12 @@ const LoginGithub: NextPageWithLayout = () => {
     let urlParams = new URLSearchParams(window.location.search);
     let token = urlParams.get("token")
     if (token) { 
-      localStorage.setItem("githubToken", token)
+      localStorage.setItem("token", token)
+      fetch("https://api.github.com/user", { headers: { Authorization: "token " + token } })
+        .then(res => res.json())
+        .then(res => {
+          localStorage.setItem("userName", res.login)
+        })
       router.push("/app/")
     } else {
       router.push("/login/options")
