@@ -23,10 +23,10 @@
 
 .component {
   border: none;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
   font-size: 1rem;
   font-family: 'Roboto';
   transition: var(--transition);
@@ -36,6 +36,10 @@
   transform: scale(1);
   transform-origin: center;
   position: absolute;
+  outline: var(--floating-label-outline);
+  background-color: var(--floating-label-bg);
+  color: var(--floating-label-fg);
+  user-select: none;
 }
 
 .noContent {
@@ -43,19 +47,19 @@
 }
 
 .info {
-  outline: 0.25rem solid var(--color-info-outline);
+  outline: 0.2rem solid var(--color-info-outline);
   background-color: var(--color-info-bg);
   color: var(--color-info-fg);
 }
 
 .warn {
-  outline: 0.25rem solid var(--color-warn-outline);
+  outline: 0.2rem solid var(--color-warn-outline);
   background-color: var(--color-warn-bg);
   color: var(--color-warn-fg);
 }
 
 .error {
-  outline: 0.25rem solid var(--color-error-outline);
+  outline: 0.2rem solid var(--color-error-outline);
   background-color: var(--color-error-bg);
   color: var(--color-error-fg);
 }

@@ -24,12 +24,12 @@
 import styles from './FloatingLabel.module.css';
 
 export interface IFloatingLabel extends React.ComponentPropsWithoutRef<'div'> {
-  children?: string;
-  type?: "info" | "error" | "warn"
+  children: string;
+  type?: "info" | "error" | "warn" | "regular";
 }
 
 const FloatingLabel: React.FC<IFloatingLabel> = ({ children, type }) => {
-  return <div className={`${styles.component} ${children === "" ? styles.noContent : ""} ${styles.info} ${type === "error" ? styles.error : ""} ${type === "warn" ? styles.warn : ""}`}>{children}</div>;
+  return <div className={`${styles.component} ${children === "" ? styles.noContent : ""} ${type === "info" ? styles.info : ""} ${type === "error" ? styles.error : ""} ${type === "warn" ? styles.warn : ""}`}>{children}</div>;
 };
 
 export default FloatingLabel;
