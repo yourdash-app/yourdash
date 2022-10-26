@@ -34,7 +34,7 @@ const TextInput: React.FC<ITextInput> = ({ children, isValid, defaultValue, inva
   return <div className={styles.component}>
     <input {...inputProps} type="text" defaultValue={defaultValue ? defaultValue : ""} className={`${styles.input} ${isValid ? styles.valid : styles.invalid}`}>{children}</input>
     <FloatingLabel className={styles.label}>
-      {invalidReason}
+      {invalidReason || ""}
     </FloatingLabel>
   </div>
 }
