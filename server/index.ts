@@ -162,8 +162,8 @@ app.get('/api/get/current/user', (req, res) => {
   // )
 
   let user = {
-    name: "error",
-    userName: "error",
+    name: "current user",
+    userName: "currentuser123",
     email: "error@example.com"
   }
 
@@ -175,7 +175,7 @@ app.get('/api/get/current/user', (req, res) => {
     profile: {
       banner: '',
       picture: '',
-      discription: '',
+      description: '',
     },
   });
 });

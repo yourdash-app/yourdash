@@ -112,8 +112,8 @@ app.get('/api/get/current/user', (req, res) => {
     //     .toString()
     // )
     let user = {
-        name: "error",
-        userName: "error",
+        name: "current user",
+        userName: "currentuser123",
         email: "error@example.com"
     };
     res.json({
@@ -124,7 +124,7 @@ app.get('/api/get/current/user', (req, res) => {
         profile: {
             banner: '',
             picture: '',
-            discription: '',
+            description: '',
         },
     });
 });
