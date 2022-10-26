@@ -11,7 +11,7 @@ const Server = {
       userName: localStorage.getItem('userName') as string,
     };
     let url = localStorage.getItem('currentServer');
-    console.log("[Server Request]: GET " + path)
+    console.log('[Server Request]: GET ' + path);
     return fetch(`${url}/api${path}`, {
       headers: { ...defaultHeaders },
       method: 'GET',
