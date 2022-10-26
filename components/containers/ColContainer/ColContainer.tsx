@@ -24,11 +24,12 @@
 import styles from './ColContainer.module.css';
 
 export interface IColContainer {
-  children: React.ReactChild | React.ReactChild[]
+  children: React.ReactChild | React.ReactChild[];
+  className?: string;
 }
 
-const ColContainer: React.FC<IColContainer> = ({ children }) => {
-  return <div className={styles.component}>{children}</div>;
+const ColContainer: React.FC<IColContainer> = ({ children, className }) => {
+  return <div className={`${styles.component} ${className}`}>{children}</div>;
 };
 
 export default ColContainer;

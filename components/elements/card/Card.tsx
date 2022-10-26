@@ -26,10 +26,11 @@ import styles from './Card.module.css';
 export interface ICard {
   children: React.ReactChild | React.ReactChild[];
   compact?: boolean;
+  className?: string;
 }
 
-const Card: React.FC<ICard> = ({ children, compact }) => {
-  return <div className={`${styles.component} ${compact ? styles.compact : ""}`}>{children}</div>;
+const Card: React.FC<ICard> = ({ children, compact, className }) => {
+  return <div className={`${styles.component} ${compact ? styles.compact : ""} ${className}`}>{children}</div>;
 };
 
 export default Card;
