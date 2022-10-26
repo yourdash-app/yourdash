@@ -34,6 +34,7 @@
   border-radius: var(--button-rounding);
   background-color: var(--button-bg);
   color: var(--button-fg);
+  user-select: none;
 }
 
 .vibrant {
