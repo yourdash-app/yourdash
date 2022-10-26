@@ -45,8 +45,8 @@
   --focused-outline: 0.25rem solid var(--button-vibrant-bg);
 
   --card-bg: rgb(70 70 70);
-  --card-fg: #fff;
   --card-rounding: 1rem;
+  --card-compact-rounding: 0.5rem;
 
   --header-bg: rgb(54 54 54);
   --header-fg: #fff;
@@ -75,7 +75,7 @@
   --panel-launcher-active-bg: #222222;
   --panel-launcher-active-rounding: 0;
 
-  --button-bg: #444;
+  --button-bg: #5a5a5a;
   --button-fg: #fff;
   --button-outline: 0 solid #000;
   --button-rounding: 0.5rem;
@@ -109,6 +109,11 @@
   --text-input-focused-fg: #fff;
   --text-input-focused-outline: 0.25rem solid var(--button-vibrant-bg);
   --text-input-focused-rounding: 0.5rem;
+
+  --floating-label-bg: rgb(54 54 54);
+  --floating-label-fg: #fff;
+  --floating-label-outline: 0.2rem solid rgb(34 34 34);
+  --floating-label-rounding: 0.25rem;
 }
 
 html,

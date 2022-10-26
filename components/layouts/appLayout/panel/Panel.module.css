@@ -14,6 +14,33 @@
   color: var(--panel-fg);
 }
 
+.tray {
+  outline: 1px solid blue;
+  width: 50%;
+}
+
+.account {
+  position: relative;
+  margin-right: 0.5rem;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.account > img {
+  height: calc(var(--panel-height) - 1rem);
+  aspect-ratio: 1 / 1;
+  outline: 1px solid red;
+  border-radius: 0.5rem;
+}
+
+.accountDropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+}
+
 .serverLogo {
   height: 2rem;
   padding-left: 0.5rem;
@@ -40,9 +67,9 @@
 .launcherSlideOut {
   position: fixed;
   top: var(--panel-height);
-  left: -20rem;
+  left: -30rem;
   height: calc(100vh - var(--panel-height));
-  width: 20rem;
+  width: 30rem;
   background-color: var(--panel-bg);
   transition: var(--transition);
 }
@@ -51,15 +78,59 @@
   left: 0;
 }
 
-.tray {
-  outline: 1px solid blue;
-  width: 50%;
+.launcherSlideOut > div[data-title] {
+  font-size: 2rem;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  text-align: center;
 }
 
-.account > img {
-  height: calc(var(--panel-height) - 1rem);
-  margin-right: 0.5rem;
-  aspect-ratio: 1 / 1;
-  outline: 1px solid red;
-  border-radius: 0.5rem;
+.launcherGrid {
+  height: auto;
+  max-height: 100%;
+  overflow-y: auto;
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(var(--panel-launcher-grid-columns), 1fr);
+  box-sizing: border-box;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  gap: 0.5rem;
+}
+
+.launcherGrid > * {
+  overflow: hidden;
+  height: 10rem;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  border-radius: var(--card-compact-rounding);
+  box-shadow: inset 0 0 0.5rem #00000055;
+  transition: var(--transition);
+}
+
+.launcherGrid > * > img {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  scale: 0.9;
+  transition: var(--transition);
+  padding: 0.5rem;
+  box-sizing: border-box;
+}
+
+.launcherGrid > *:hover > img {
+  scale: 1;
+}
+
+.launcherGrid > *:active > img {
+  scale: 0.95;
+}
+
+.launcherGrid > * > span {
+  width: 100%;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  background-color: var(--container-bg);
+  text-align: center;
+  transition: var(--transition);
 }
