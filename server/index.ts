@@ -8,6 +8,7 @@ import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
 import cors from 'cors';
+import YourDashUser from './../lib/user.js';
 
 export const ENV: {
   FS_ORIGIN: string;
@@ -84,7 +85,7 @@ app.use((req, res, next) => {
       );
       break;
   }
-  next()
+  next();
 });
 
 app.use(
@@ -119,7 +120,7 @@ app.use((req, res, next) => {
 
     // check if the userToken for the userName supplied matches the one on the server
     // fs.readFile(`${ENV.FS_ORIGIN}/data/users/${userName}/`, (err, data) => {});
-    next()
+    next();
   } else {
     next();
   }
@@ -162,10 +163,10 @@ app.get('/api/get/current/user', (req, res) => {
   // )
 
   let user = {
-    name: "current user",
-    userName: "currentuser123",
-    email: "error@example.com"
-  }
+    name: 'current user',
+    userName: 'currentuser123',
+    email: 'error@example.com',
+  };
 
   res.json({
     name: user.name,
@@ -173,11 +174,18 @@ app.get('/api/get/current/user', (req, res) => {
     email: user.email,
     uuid: 'asdfsd-1213dsd-12jdfhw-4qlej49njf',
     profile: {
+      image: '',
+      location: '',
+      status: '',
       banner: '',
       picture: '',
       description: '',
+      externalLinks: {
+        twitter: '',
+      },
     },
-  });
+    settings: {},
+  } as YourDashUser);
 });
 
 app.get('/api/server/version', (req, res) => {

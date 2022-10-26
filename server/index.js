@@ -112,9 +112,9 @@ app.get('/api/get/current/user', (req, res) => {
     //     .toString()
     // )
     let user = {
-        name: "current user",
-        userName: "currentuser123",
-        email: "error@example.com"
+        name: 'current user',
+        userName: 'currentuser123',
+        email: 'error@example.com',
     };
     res.json({
         name: user.name,
@@ -122,10 +122,17 @@ app.get('/api/get/current/user', (req, res) => {
         email: user.email,
         uuid: 'asdfsd-1213dsd-12jdfhw-4qlej49njf',
         profile: {
+            image: '',
+            location: '',
+            status: '',
             banner: '',
             picture: '',
             description: '',
+            externalLinks: {
+                twitter: '',
+            },
         },
+        settings: {},
     });
 });
 app.get('/api/server/version', (req, res) => {
