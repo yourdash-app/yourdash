@@ -24,6 +24,7 @@ const Panel: React.FC<IPanel> = () => {
   const [ serverConfig, setServerConfig ] = useState({} as { [ key: string ]: any | undefined })
   const [ launcherSlideOutVisible, setLauncherSlideOutVisible ] = useState(false)
   const [ userData, setUserData ] = useState(undefined as YourDashUser | undefined)
+  const [ searchQuery, setSearchQuery ] = useState("")
   useEffect(() => {
     Server.get(`/get/server/config`)
       .then(res => res.json())
@@ -42,21 +43,28 @@ const Panel: React.FC<IPanel> = () => {
       <Icon name='app-launcher-16' style={{ height: "100%", aspectRatio: "1/1" }} color={"var(--panel-fg)"} />
     </div>
     <div className={`${styles.launcherSlideOut} ${launcherSlideOutVisible ? styles.launcherSlideOutVisible : ""}`}>
-      <div data-title>Hello, {userData?.name}</div>
-      <TextInput className={styles.launcherSlideOutSearch} placeholder="Search" />
+      <div data-header>
+        <div data-title>Hello, {userData?.name}</div>
+        <TextInput className={styles.launcherSlideOutSearch} onChange={(e) => {
+          setSearchQuery(e.currentTarget.value)
+        }} placeholder="Search" />
+      </div>
       <div className={styles.launcherGrid}>
         {
           IncludedApps.map((app, ind) => {
-            return <div key={ind}>
-              <img src={app.icon} draggable={false} alt="" />
-              <span>{app.name}</span>
-            </div>
+            if (app.name.includes(searchQuery) || app.path.includes(searchQuery) || app.description.includes(searchQuery))
+              return <div key={ind}>
+                <img src={app.icon} draggable={false} alt="" />
+                <span>{app.name}</span>
+              </div>
           })
         }
       </div>
     </div>
     <AuthedImg src={"/get/logo"} className={styles.serverLogo} />
-    <div className={styles.tray}></div>
+    <div className={styles.tray}>
+      <Icon name="browser-16" className={styles.trayIcon} color={"#ffffff"} />
+    </div>
     <div className={styles.account}>
       <img src={
         userData?.profile.image

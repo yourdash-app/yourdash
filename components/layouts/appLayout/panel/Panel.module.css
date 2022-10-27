@@ -15,8 +15,15 @@
 }
 
 .tray {
-  outline: 1px solid blue;
-  width: 50%;
+  height: var(--panel-height);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.trayIcon {
+  height: calc(var(--panel-height) - 1.5rem);
+  aspect-ratio: 1/1;
 }
 
 .account {
@@ -31,7 +38,6 @@
 .account > img {
   height: calc(var(--panel-height) - 1rem);
   aspect-ratio: 1 / 1;
-  outline: 1px solid red;
   border-radius: 0.5rem;
 }
 
@@ -45,6 +51,7 @@
   height: 2rem;
   padding-left: 0.5rem;
   margin-right: 50%;
+  user-select: none;
 }
 
 .launcher {
@@ -73,7 +80,7 @@
   background-color: var(--panel-bg);
   transition: var(--transition);
   display: grid;
-  grid-template-rows: auto auto 1fr;
+  grid-template-rows: auto 1fr;
 }
 
 .launcherSlideOutVisible {
@@ -81,16 +88,27 @@
 }
 
 .launcherSlideOutSearch {
-  margin: 0.5rem;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
   width: calc(100% - 1rem);
+  margin-bottom: 0.5rem;
 }
 
-.launcherSlideOut > div[data-title] {
+.launcherSlideOut > div[data-header] {
+  background: var(--app-background);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+}
+
+.launcherSlideOut > div[data-header] > div[data-title] {
   font-size: 2rem;
   padding-top: 3rem;
   padding-bottom: 3rem;
   text-align: center;
   user-select: none;
+  text-shadow: 0 0 0.5rem #000000, 0 0 0.75rem #000000, 0 0 1rem #000000, 0 0 1.5rem #000000;
 }
 
 .launcherGrid {
@@ -114,6 +132,7 @@
   box-shadow: inset 0 0 0.5rem #00000055;
   transition: var(--transition);
   user-select: none;
+  cursor: pointer;
 }
 
 .launcherGrid > * > img {

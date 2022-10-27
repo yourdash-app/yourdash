@@ -132,7 +132,9 @@ app.get('/api/get/current/user', (req, res) => {
                 twitter: '',
             },
         },
-        settings: {},
+        settings: {
+            panel: {}
+        },
     });
 });
 app.get('/api/server/version', (req, res) => {

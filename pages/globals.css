@@ -23,7 +23,7 @@
 
 :root {
   --app-background: url(./../public/background.jpg);
-  --background-color: #111111;
+  --background-color: #272727;
   --transition: all 100ms ease-in-out;
 
   --color-warn-bg: #ffaa00;
@@ -44,6 +44,7 @@
 
   --focused-outline: 0.25rem solid var(--button-vibrant-bg);
 
+  --card-fg: #ffffff;
   --card-bg: rgb(70 70 70);
   --card-rounding: 1rem;
   --card-compact-rounding: 0.5rem;

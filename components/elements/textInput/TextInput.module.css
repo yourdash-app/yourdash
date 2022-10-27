@@ -52,7 +52,6 @@
 .component {
   width: 100%;
   height: max-content;
-  position: relative;
 }
 
 .label {
