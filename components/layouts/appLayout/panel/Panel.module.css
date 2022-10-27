@@ -72,10 +72,17 @@
   width: 30rem;
   background-color: var(--panel-bg);
   transition: var(--transition);
+  display: grid;
+  grid-template-rows: auto auto 1fr;
 }
 
 .launcherSlideOutVisible {
   left: 0;
+}
+
+.launcherSlideOutSearch {
+  margin: 0.5rem;
+  width: calc(100% - 1rem);
 }
 
 .launcherSlideOut > div[data-title] {
@@ -83,18 +90,18 @@
   padding-top: 3rem;
   padding-bottom: 3rem;
   text-align: center;
+  user-select: none;
 }
 
 .launcherGrid {
-  height: auto;
   max-height: 100%;
-  overflow-y: auto;
-  display: grid;
   width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: grid;
   grid-template-columns: repeat(var(--panel-launcher-grid-columns), 1fr);
   box-sizing: border-box;
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
+  padding: 0.5rem;
   gap: 0.5rem;
 }
 
@@ -106,6 +113,7 @@
   border-radius: var(--card-compact-rounding);
   box-shadow: inset 0 0 0.5rem #00000055;
   transition: var(--transition);
+  user-select: none;
 }
 
 .launcherGrid > * > img {

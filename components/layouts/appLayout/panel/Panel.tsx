@@ -4,13 +4,15 @@
  * Copyright © 2022 Ewsgit
  */
 
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import IncludedApps from '../../../../data/includedApps';
 import YourDashUser from '../../../../lib/user';
 import ColContainer from '../../../containers/ColContainer/ColContainer';
 import Button from '../../../elements/button/Button';
 import Card from '../../../elements/card/Card';
-import FloatingLabel from '../../../elements/floatingLabel/FloatingLabel';
 import Icon from '../../../elements/icon/Icon';
+import TextInput from '../../../elements/textInput/TextInput';
 import Server from "./../../../../lib/server";
 import AuthedImg from "./../../../elements/authedImg/AuthedImg";
 import styles from './Panel.module.css';
@@ -18,6 +20,7 @@ import styles from './Panel.module.css';
 export interface IPanel { }
 
 const Panel: React.FC<IPanel> = () => {
+  const router = useRouter()
   const [ serverConfig, setServerConfig ] = useState({} as { [ key: string ]: any | undefined })
   const [ launcherSlideOutVisible, setLauncherSlideOutVisible ] = useState(false)
   const [ userData, setUserData ] = useState(undefined as YourDashUser | undefined)
@@ -40,32 +43,16 @@ const Panel: React.FC<IPanel> = () => {
     </div>
     <div className={`${styles.launcherSlideOut} ${launcherSlideOutVisible ? styles.launcherSlideOutVisible : ""}`}>
       <div data-title>Hello, {userData?.name}</div>
+      <TextInput className={styles.launcherSlideOutSearch} placeholder="Search" />
       <div className={styles.launcherGrid}>
-        {/* for loop this on load */}
-        <div>
-          <img src={require("./../../../../public/assets/productLogos/yourdash.svg").default.src} draggable={false} alt="" />
-          <span>App 1 Name</span>
-        </div>
-        <div>
-          <img src={require("./../../../../public/assets/productLogos/yourdash.svg").default.src} alt="" />
-          <span>App 2 Name</span>
-        </div>
-        <div>
-          <img src={require("./../../../../public/assets/productLogos/yourdash.svg").default.src} alt="" />
-          <span>App 3 Name</span>
-        </div>
-        <div>
-          <img src={require("./../../../../public/assets/productLogos/yourdash.svg").default.src} alt="" />
-          <span>App 4 Name</span>
-        </div>
-        <div>
-          <img src={require("./../../../../public/assets/productLogos/yourdash.svg").default.src} alt="" />
-          <span>App 5 Name</span>
-        </div>
-        <div>
-          <img src={require("./../../../../public/assets/productLogos/yourdash.svg").default.src} alt="" />
-          <span>App 6 Name</span>
-        </div>
+        {
+          IncludedApps.map((app, ind) => {
+            return <div key={ind}>
+              <img src={app.icon} draggable={false} alt="" />
+              <span>{app.name}</span>
+            </div>
+          })
+        }
       </div>
     </div>
     <AuthedImg src={"/get/logo"} className={styles.serverLogo} />
@@ -74,7 +61,6 @@ const Panel: React.FC<IPanel> = () => {
       <img src={
         userData?.profile.image
       } alt="" />
-      <FloatingLabel>{"${username}"}</FloatingLabel>
       <Card compact={true} className={styles.accountDropdown}>
         <ColContainer>
           <Button onClick={() => {
@@ -84,7 +70,9 @@ const Panel: React.FC<IPanel> = () => {
             console.log("Settings")
           }}>Settings</Button>
           <Button onClick={() => {
-            console.log("Logout")
+            localStorage.removeItem("currentServer")
+            localStorage.removeItem("githubToken")
+            router.push("/login/server")
           }}>Logout</Button>
         </ColContainer>
       </Card>

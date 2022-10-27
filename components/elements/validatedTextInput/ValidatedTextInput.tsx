@@ -21,16 +21,22 @@
  *   SOFTWARE.
  */
 
-import styles from './FloatingLabel.module.css';
+import FloatingLabel from '../floatingLabel/FloatingLabel';
+import styles from './ValidatedTextInput.module.css';
 
-export interface IFloatingLabel {
-  children: string;
-  type?: "info" | "error" | "warn" | "regular";
-  className?: string;
+export interface IValidatedTextInput extends React.ComponentPropsWithoutRef<'input'> {
+  isValid?: boolean;
+  invalidReason?: string;
+  defaultValue?: string;
 }
 
-const FloatingLabel: React.FC<IFloatingLabel> = ({ children, type, className }) => {
-  return <div className={`${styles.component} ${children === "" ? styles.noContent : ""} ${type === "info" ? styles.info : ""} ${type === "error" ? styles.error : ""} ${type === "warn" ? styles.warn : ""} ${className}`}>{children}</div>;
-};
+const ValidatedTextInput: React.FC<IValidatedTextInput> = ({ children, isValid, defaultValue, invalidReason, ...inputProps }) => {
+  return <div className={styles.component}>
+    <input {...inputProps} type="text" defaultValue={defaultValue ? defaultValue : ""} className={`${styles.input} ${isValid ? styles.valid : styles.invalid}`}>{children}</input>
+    <FloatingLabel className={styles.label}>
+      {invalidReason || ""}
+    </FloatingLabel>
+  </div>
+}
 
-export default FloatingLabel;
+export default ValidatedTextInput;

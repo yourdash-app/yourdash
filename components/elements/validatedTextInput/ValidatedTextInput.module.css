@@ -21,16 +21,42 @@
  *   SOFTWARE.
  */
 
-import styles from './FloatingLabel.module.css';
-
-export interface IFloatingLabel {
-  children: string;
-  type?: "info" | "error" | "warn" | "regular";
-  className?: string;
+.input {
+  border: none;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  font-size: 1rem;
+  font-family: 'Roboto';
+  transition: var(--transition);
+  border-radius: var(--button-rounding);
+  background-color: var(--button-bg);
+  color: var(--button-fg);
+  width: 100%;
+  box-sizing: border-box;
 }
 
-const FloatingLabel: React.FC<IFloatingLabel> = ({ children, type, className }) => {
-  return <div className={`${styles.component} ${children === "" ? styles.noContent : ""} ${type === "info" ? styles.info : ""} ${type === "error" ? styles.error : ""} ${type === "warn" ? styles.warn : ""} ${className}`}>{children}</div>;
-};
+.input:focus-visible {
+  outline: var(--text-input-focused-outline);
+}
 
-export default FloatingLabel;
+.invalid {
+  color: var(--color-error-bg);
+}
+
+.valid {
+  color: var(--color-success-bg);
+}
+
+.component {
+  width: 100%;
+  height: max-content;
+  position: relative;
+}
+
+.label {
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+}
