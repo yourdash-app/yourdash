@@ -52,8 +52,10 @@ const Panel: React.FC<IPanel> = () => {
       <div className={styles.launcherGrid}>
         {
           IncludedApps.map((app, ind) => {
-            if (app.name.includes(searchQuery) || app.path.includes(searchQuery) || app.description.includes(searchQuery))
-              return <div key={ind}>
+            if (app.name.includes(searchQuery) || app.path.includes(searchQuery))
+              return <div key={ind} onClick={() => {
+                router.push(app.path)
+              }}>
                 <img src={app.icon} draggable={false} alt="" />
                 <span>{app.name}</span>
               </div>

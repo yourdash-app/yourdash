@@ -27,9 +27,9 @@ import Button from "./../../../elements/button/Button"
 import { useRouter } from 'next/router';
 import Icon from '../../../elements/icon/Icon';
 
-export interface IHomeLayout extends React.ComponentPropsWithoutRef<'div'> { }
+export interface INavigationBar extends React.ComponentPropsWithoutRef<'div'> { }
 
-const HomeLayout: React.FC<IHomeLayout> = ({ ..._divProps }) => {
+const NavigationBar: React.FC<INavigationBar> = ({ ..._divProps }) => {
   const router = useRouter()
   return <>
     <div className={styles.spacer}>
@@ -48,4 +48,4 @@ const HomeLayout: React.FC<IHomeLayout> = ({ ..._divProps }) => {
   </>
 };
 
-export default HomeLayout;
+export default NavigationBar;

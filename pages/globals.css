@@ -130,6 +130,10 @@ body {
   font-size: normal;
 }
 
+#__next {
+  height: 100%;  
+}
+
 h1 {
   font-weight: 500;
 }

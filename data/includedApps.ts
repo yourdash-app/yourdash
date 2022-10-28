@@ -6,11 +6,11 @@ const IncludedApps = [
     icon: require('./../public/assets/icons/cloud-16.svg').default.src,
   },
   {
-    name: 'this',
-    path: '/app/this',
-    description: 'The description',
-    icon: require('./../public/assets/icons/key-16.svg').default.src,
-  }
+    name: 'files',
+    path: '/app/files',
+    description: 'Manage your files',
+    icon: require('./../public/assets/icons/file-16.svg').default.src,
+  },
 ];
 
 export default IncludedApps
