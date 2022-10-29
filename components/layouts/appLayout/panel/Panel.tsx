@@ -7,7 +7,7 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import IncludedApps from '../../../../data/includedApps';
-import YourDashUser from '../../../../lib/user';
+import {AuthorizedYourDashUser} from '../../../../lib/user';
 import ColContainer from '../../../containers/ColContainer/ColContainer';
 import Button from '../../../elements/button/Button';
 import Card from '../../../elements/card/Card';
@@ -24,7 +24,7 @@ const Panel: React.FC<IPanel> = () => {
   const [ serverConfig, setServerConfig ] = useState({} as { [ key: string ]: any | undefined })
   const [ launcherSlideOutVisible, setLauncherSlideOutVisible ] = useState(false)
   const [ accountDropdownVisible, setAccountDropdownVisible ] = useState(false)
-  const [ userData, setUserData ] = useState(undefined as YourDashUser | undefined)
+  const [ userData, setUserData ] = useState(undefined as AuthorizedYourDashUser | undefined)
   const [ searchQuery, setSearchQuery ] = useState("")
   useEffect(() => {
     Server.get(`/get/server/config`)
@@ -33,7 +33,7 @@ const Panel: React.FC<IPanel> = () => {
         setServerConfig(res)
       })
     Server.get(`/get/current/user`)
-      .then(res => res.json() as Promise<YourDashUser>)
+      .then(res => res.json() as Promise<AuthorizedYourDashUser>)
       .then(res => {
         setUserData(res)
         document.body.style.setProperty("--panel-launcher-grid-columns", res.settings.panel?.launcher?.slideOut?.gridColumns.toString() || "3")
