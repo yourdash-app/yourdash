@@ -5,7 +5,7 @@
  */
 
 const Server = {
-  get: (path: string) => {
+  get: (path: string): Promise<Response> => {
     let defaultHeaders = {
       userToken: localStorage.getItem('token') as string,
       userName: localStorage.getItem('userName') as string,
@@ -23,7 +23,7 @@ const Server = {
         });
     });
   },
-  post: (path: string) => {
+  post: (path: string): Promise<Response> => {
     let defaultHeaders = {
       userToken: localStorage.getItem('token') as string,
       userName: localStorage.getItem('userName') as string,
@@ -35,7 +35,7 @@ const Server = {
       method: 'POST',
     });
   },
-  delete: (path: string) => {
+  delete: (path: string): Promise<Response> => {
     let defaultHeaders = {
       userToken: localStorage.getItem('token') as string,
       userName: localStorage.getItem('userName') as string,
