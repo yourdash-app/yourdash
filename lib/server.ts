@@ -12,9 +12,15 @@ const Server = {
     };
     let url = localStorage.getItem('currentServer');
     console.log('[Server Request]: GET ' + path);
-    return fetch(`${url}/api${path}`, {
-      headers: { ...defaultHeaders },
-      method: 'GET',
+    return new Promise((resolve, reject) => {
+      fetch(`${url}/api${path}`, {
+        headers: { ...defaultHeaders },
+        method: 'GET',
+      })
+        .then((res) => resolve(res))
+        .catch((err) => {
+          reject(err);
+        });
     });
   },
   post: (path: string) => {

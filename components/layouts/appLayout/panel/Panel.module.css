@@ -29,6 +29,7 @@
 .account {
   position: relative;
   margin-right: 0.5rem;
+  margin-left: 0.5rem;
   height: 100%;
   display: flex;
   align-items: center;
@@ -43,7 +44,7 @@
 
 .accountDropdown {
   position: absolute;
-  top: 100%;
+  top: calc(100% + 0.5rem);
   right: 0;
 }
 
@@ -108,7 +109,7 @@
   padding-bottom: 3rem;
   text-align: center;
   user-select: none;
-  text-shadow: 0 0 0.5rem #000000, 0 0 0.75rem #000000, 0 0 1rem #000000, 0 0 1.5rem #000000;
+  text-shadow: 0 0 0.5rem #000000, 0 0 0.75rem #000000, 0 0 1rem #000000, 0 0 1.5rem #000000, 0 0 2rem #000000;
 }
 
 .launcherGrid {

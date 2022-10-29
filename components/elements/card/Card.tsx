@@ -27,10 +27,11 @@ export interface ICard {
   children: React.ReactChild | React.ReactChild[];
   compact?: boolean;
   className?: string;
+  style?: React.CSSProperties;
 }
 
-const Card: React.FC<ICard> = ({ children, compact, className }) => {
-  return <div className={`${styles.component} ${compact ? styles.compact : ""} ${className}`}>{children}</div>;
+const Card: React.FC<ICard> = ({ children, compact, className, style }) => {
+  return <div style={style} className={`${styles.component} ${compact ? styles.compact : ""} ${className}`}>{children}</div>;
 };
 
 export default Card;

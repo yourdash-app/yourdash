@@ -5,7 +5,7 @@
   "logo": "./yourdash.svg",
   "themeColor": "#ffffff",
   "activeModules": [
-    "test@ewsgit.github.io"
+    "core"
   ],
   "version": "0.1.0"
 }

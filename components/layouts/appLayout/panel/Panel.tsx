@@ -23,6 +23,7 @@ const Panel: React.FC<IPanel> = () => {
   const router = useRouter()
   const [ serverConfig, setServerConfig ] = useState({} as { [ key: string ]: any | undefined })
   const [ launcherSlideOutVisible, setLauncherSlideOutVisible ] = useState(false)
+  const [ accountDropdownVisible, setAccountDropdownVisible ] = useState(false)
   const [ userData, setUserData ] = useState(undefined as YourDashUser | undefined)
   const [ searchQuery, setSearchQuery ] = useState("")
   useEffect(() => {
@@ -70,8 +71,11 @@ const Panel: React.FC<IPanel> = () => {
     <div className={styles.account}>
       <img src={
         userData?.profile.image
-      } alt="" />
-      <Card compact={true} className={styles.accountDropdown}>
+      } alt="" onClick={() => { setAccountDropdownVisible(!accountDropdownVisible) }} />
+      <Card style={{
+        opacity: !accountDropdownVisible ? "0" : "1",
+        pointerEvents: !accountDropdownVisible ? "none" : "auto"
+      }} compact={true} className={styles.accountDropdown}>
         <ColContainer>
           <Button onClick={() => {
             console.log("Profile")
@@ -79,6 +83,10 @@ const Panel: React.FC<IPanel> = () => {
           <Button onClick={() => {
             console.log("Settings")
           }}>Settings</Button>
+          <Button onClick={() => {
+            localStorage.removeItem("currentServer")
+            router.push("/login/server")
+          }}>Switch instance</Button>
           <Button onClick={() => {
             localStorage.removeItem("currentServer")
             localStorage.removeItem("githubToken")
