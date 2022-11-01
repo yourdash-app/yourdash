@@ -24,10 +24,15 @@
 import styles from "./dash.module.css"
 import AppLayout from '../../components/layouts/appLayout/AppLayout';
 import { NextPageWithLayout } from '../page';
+import { useState } from "react";
 
 const Dash: NextPageWithLayout = () => {
+  const [userName, setUserName] = useState("")
+
+
   return (
     <div className={styles.root}>
+      <h2>Hello, </h2>
     </div>
   );
 };

@@ -1015,6 +1015,8 @@ const YourDashIconDictionary = {
   'zap-24': require('./../../../public/assets/icons/zap-24.svg').default.src,
   'yourdash-logo': require('./../../../public/assets/productLogos/yourdash.svg')
     .default.src,
+  'server-error': require('./../../../public/assets/icons/server-error.svg')
+    .default.src,
 };
 
 export const YourDashIconRawDictionary = YourDashIconDictionary;

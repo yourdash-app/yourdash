@@ -33,11 +33,12 @@ import HomeLayout from "../../components/layouts/homeLayout/HomeLayout";
 const LoginOptions: NextPageWithLayout = () => {
   const router = useRouter()
   useEffect(() => {
-    if (localStorage.getItem("githubToken")) {
+    if (localStorage.getItem("token")) {
       router.push("/app")
       return
     }
   })
+
   return (
     <div className={styles.root}>
       <Card>

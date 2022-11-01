@@ -1,3 +1,4 @@
+import { AuthorizedYourDashUser } from './../lib/user';
 /*
  *   Copyright (c) 2022 Ewsgit
  *   https://ewsgit.mit-license.org
@@ -8,12 +9,15 @@ import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
 import cors from 'cors';
+import { log } from './libServer.js';
 
 export const ENV: {
   FS_ORIGIN: string;
 } = {
   FS_ORIGIN: process.env.FS_ORIGIN as string,
 };
+
+if (!ENV.FS_ORIGIN) console.error('FS_ORIGIN was not defined.');
 
 export const SERVER_CONFIG: {
   name: string;
@@ -27,16 +31,7 @@ export const SERVER_CONFIG: {
   fs.readFileSync(path.join(ENV.FS_ORIGIN, './yourdash.config.json')).toString()
 );
 
-export function log(string: string) {
-  console.log(string);
-  // this will also add the log to a separate file with
-  // timestamps, a gui extension will also display this data
-  // if the user has permissions.
-}
-
-console.log(SERVER_CONFIG);
-
-const app = express();
+log(JSON.stringify(SERVER_CONFIG));
 
 if (
   SERVER_CONFIG.name === undefined ||
@@ -47,15 +42,30 @@ if (
   SERVER_CONFIG.activeModules === undefined ||
   SERVER_CONFIG.version === undefined
 ) {
-  console.log(chalk.redBright('Missing configuration!'));
+  log(
+    chalk.redBright(
+      'Missing configuration!, the configuration requires at least the properties: \nname,\ndefaultBackground,\nfavicon,\nlogo,\nthemeColor,\nactiveModules,\nversion'
+    )
+  );
   process.exit(1);
 }
+
+if (!SERVER_CONFIG.activeModules.includes('core'))
+  console.error(
+    chalk.redBright(
+      `[ERROR] the 'core' module is not enabled, this ${chalk.bold(
+        'WILL'
+      )} lead to missing features and crashes.`
+    )
+  );
+
+const app = express();
 
 SERVER_CONFIG.activeModules.forEach((module) => {
   import('./modules/' + module + '/index.js').then((mod) => {
     let currentModule = new mod.default();
     currentModule.load(app);
-    console.log('loaded module: ' + module);
+    log('loaded module: ' + module);
   });
 });
 
@@ -64,23 +74,27 @@ app.use((req, res, next) => {
   switch (req.method) {
     case 'GET':
       log(
-        `${date.getUTCMilliseconds()} ${chalk.bgGrey(chalk.green(' GET '))} ${
-          req.path
-        }`
+        `${date.getHours()}:${date.getMinutes()}:${
+          date.getSeconds() < 10 ? date.getSeconds() + '0' : date.getSeconds()
+        } ${chalk.bgGrey(chalk.green(' GET '))} ${req.path}`
       );
+      break;
     case 'POST':
       log(
-        `${date.getUTCMilliseconds()} ${chalk.bgGrey(chalk.blue(' GET '))} ${
-          req.path
-        }`
+        `${date.getHours()}:${date.getMinutes()}:${
+          date.getSeconds() < 10 ? date.getSeconds() + '0' : date.getSeconds()
+        } ${chalk.bgGrey(chalk.blue(' GET '))} ${req.path}`
       );
+      break;
     case 'DELETE':
       log(
-        `${date.getUTCMilliseconds()} ${chalk.bgGrey(chalk.red(' DELETE '))} ${
-          req.path
-        }`
+        `${date.getHours()}:${date.getMinutes()}:${
+          date.getSeconds() < 10 ? date.getSeconds() + '0' : date.getSeconds()
+        } ${chalk.bgGrey(chalk.red(' DELETE '))} ${req.path}`
       );
+      break;
   }
+  next();
 });
 
 app.use(
@@ -93,56 +107,58 @@ app.use(
   })
 );
 
-function verifyGithubUserToken() {
-  fetch('https://api.github.com/')
-    .then((res) => res.json())
-    .then((res) => {
-      if (res) {
-        return true;
-      }
-      return false;
-    })
-    .catch((err) => {
-      console.log(err);
-      return false;
-    });
-}
+// function verifyGithubUserToken() {
+//   fetch('https://api.github.com/')
+//     .then((res) => res.json())
+//     .then((res) => {
+//       if (res) {
+//         return true;
+//       }
+//       return false;
+//     })
+//     .catch((err) => {
+//       log(err);
+//       return false;
+//     });
+// }
 
-app.use((req, res, next) => {
-  if (req.url.startsWith('/api')) {
-    let userName = req.header('userName');
-    let userToken = req.header('userToken');
+// app.use((req, _res, next) => {
+//   if (req.url.startsWith('/api')) {
+//     // let userName = req.header('userName');
+//     // let userToken = req.header('userToken');
 
-    fs.readFile(`${ENV.FS_ORIGIN}/data/users/${userName}/`, (err, data) => {});
-  } else {
-    next();
-  }
-});
+//     // check if the userToken for the userName supplied matches the one on the server
+//     // fs.readFile(`${ENV.FS_ORIGIN}/data/users/${userName}/`, (err, data) => {});
+//     next();
+//   } else {
+//     next();
+//   }
+// });
 
 app.get('/', (req, res) => {
   res.redirect(`https://yourdash.vercel.app/login/server/${req.url}`);
 });
 
 // this is used during the login page to check if the provided url is a yourdash instance
-app.get('/test', (req, res) => {
+app.get('/test', (_req, res) => {
   res.send('yourdash instance');
 });
 
-app.get('/api/get/server/config', (req, res) => {
+app.get('/api/get/server/config', (_req, res) => {
   res.sendFile(path.resolve(`${ENV.FS_ORIGIN}/yourdash.config.json`));
 });
 
-app.get('/api/get/server/default/background', (req, res) => {
+app.get('/api/get/server/default/background', (_req, res) => {
   res.sendFile(
     path.resolve(`${ENV.FS_ORIGIN}/${SERVER_CONFIG.defaultBackground}`)
   );
 });
 
-app.get('/api/get/server/favicon', (req, res) => {
+app.get('/api/get/server/favicon', (_req, res) => {
   res.sendFile(path.resolve(`${ENV.FS_ORIGIN}/${SERVER_CONFIG.favicon}`));
 });
 
-app.get('/api/get/logo', (req, res) => {
+app.get('/api/get/logo', (_req, res) => {
   res.sendFile(path.resolve(`${ENV.FS_ORIGIN}/${SERVER_CONFIG.logo}`));
 });
 
@@ -153,33 +169,22 @@ app.get('/api/get/current/user', (req, res) => {
         `${ENV.FS_ORIGIN}/data/users/${req.header('userName')}/user.json`
       )
       .toString()
-  );
-
-  res.json({
-    name: user.name,
-    userName: user.userName,
-    email: user.email,
-    uuid: 'asdfsd-1213dsd-12jdfhw-4qlej49njf',
-    profile: {
-      banner: '',
-      picture: '',
-      discription: '',
-    },
-  });
+  ) as AuthorizedYourDashUser;
+  res.json(user);
 });
 
-app.get('/api/server/version', (req, res) => {
+app.get('/api/server/version', (_req, res) => {
   res.send(SERVER_CONFIG.version);
 });
 
-app.get('/login/user/:username', (req, res) => {
+app.get('/login/user/:username', (req, _res) => {
   if (!req.params.username) return;
 });
 
-// the following section of code is for nextcloud application compatability.
+// the following section of code is for nextcloud application compatibility.
 
-app.get('/nextcloud/remote.php/dav/files/:username', (req, res) => {});
+app.get('/nextcloud/remote.php/dav/files/:username', (_req, _res) => {});
 
 app.listen(80, () => {
-  console.log('YourDash Server instance live on 127.0.0.1');
+  log('Server online :D');
 });

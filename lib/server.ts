@@ -5,32 +5,44 @@
  */
 
 const Server = {
-  get: (path: string) => {
+  get: (path: string): Promise<Response> => {
     let defaultHeaders = {
-      userToken: localStorage.getItem('githubToken') as string,
-      userName: localStorage.getItem('githubUsername') as string,
+      userToken: localStorage.getItem('token') as string,
+      userName: localStorage.getItem('userName') as string,
     };
-    return fetch(`${localStorage.getItem('currentServer')}/api${path}`, {
-      headers: { ...defaultHeaders },
-      method: 'GET',
+    let url = localStorage.getItem('currentServer');
+    console.log('[Server Request]: GET ' + path);
+    return new Promise((resolve, reject) => {
+      fetch(`${url}/api${path}`, {
+        headers: { ...defaultHeaders },
+        method: 'GET',
+      })
+        .then((res) => resolve(res))
+        .catch((err) => {
+          reject(err);
+        });
     });
   },
-  post: (path: string) => {
+  post: (path: string): Promise<Response> => {
     let defaultHeaders = {
-      userToken: localStorage.getItem('githubToken') as string,
-      userName: localStorage.getItem('githubUsername') as string,
+      userToken: localStorage.getItem('token') as string,
+      userName: localStorage.getItem('userName') as string,
     };
-    return fetch(`${localStorage.getItem('currentServer')}/api${path}`, {
+    let url = localStorage.getItem('currentServer');
+    console.log('[Server Request]: POST ' + path);
+    return fetch(`${url}/api${path}`, {
       headers: { ...defaultHeaders },
       method: 'POST',
     });
   },
-  delete: (path: string) => {
+  delete: (path: string): Promise<Response> => {
     let defaultHeaders = {
-      userToken: localStorage.getItem('githubToken') as string,
-      userName: localStorage.getItem('githubUsername') as string,
+      userToken: localStorage.getItem('token') as string,
+      userName: localStorage.getItem('userName') as string,
     };
-    return fetch(`${localStorage.getItem('currentServer')}/api${path}`, {
+    let url = localStorage.getItem('currentServer');
+    console.log('[Server Request]: DELETE ' + path);
+    return fetch(`${url}/api${path}`, {
       headers: { ...defaultHeaders },
       method: 'DELETE',
     });

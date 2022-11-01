@@ -1,0 +1,4 @@
+----- [YOURDASH SERVER LOG] -----
+{"name":"YourDash Instance","defaultBackground":"./","favicon":"png","logo":"./yourdash.svg","themeColor":"#ffffff","activeModules":["core"],"version":"0.1.0"}
+Server online :D
+loaded module: core

@@ -21,7 +21,7 @@
  *   SOFTWARE.
  */
 
-.component {
+.input {
   border: none;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
@@ -29,28 +29,40 @@
   padding-right: 1rem;
   font-size: 1rem;
   font-family: 'Roboto';
-  cursor: pointer;
   transition: var(--transition);
   border-radius: var(--button-rounding);
   background-color: var(--button-bg);
   color: var(--button-fg);
-  user-select: none;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.vibrant {
-  border-radius: var(--button-vibrant-rounding);
-  background-color: var(--button-vibrant-bg);
-  color: var(--button-vibrant-fg);
+.input:focus-visible {
+  outline: var(--text-input-focused-outline);
 }
 
-.vibrant:hover {
-  border-radius: var(--button-vibrant-hover-rounding);
-  background-color: var(--button-vibrant-hover-bg);
-  color: var(--button-hover-vibrant-fg);
+.invalid {
+  color: var(--color-error-bg);
 }
 
-.vibrant:active {
-  border-radius: var(--button-vibrant-active-rounding);
-  background-color: var(--button-vibrant-active-bg);
-  color: var(--button-vibrant-active-fg);
+.valid {
+  color: var(--color-success-bg);
+}
+
+.component {
+  width: 100%;
+  height: max-content;
+  position: relative;
+}
+
+.labelContainer {
+  top: 100%;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  width: 100%;
+  height: 3rem;
+  pointer-events: none;
 }

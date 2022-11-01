@@ -23,11 +23,11 @@
 
 import Link from "next/link"
 import { useRouter } from "next/router"
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import ColContainer from "../../../components/containers/ColContainer/ColContainer"
 import Button from "../../../components/elements/button/Button"
 import Card from "../../../components/elements/card/Card"
-import TextInput from "../../../components/elements/textInput/TextInput"
+import TextInput from "../../../components/elements/validatedTextInput/ValidatedTextInput"
 import HomeLayout from "../../../components/layouts/homeLayout/HomeLayout"
 import { NextPageWithLayout } from "../../page"
 import styles from "./index.module.css"
@@ -42,7 +42,7 @@ const ServerLogin: NextPageWithLayout = () => {
     if (localStorage.getItem("currentServer")) {
       router.push("/login/options")
     }
-  }, [router])
+  }, [ router ])
 
   useEffect(() => {
     if (url === "") {
