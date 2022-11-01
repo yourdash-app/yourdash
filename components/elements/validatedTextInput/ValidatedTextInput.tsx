@@ -21,36 +21,24 @@
  *   SOFTWARE.
  */
 
-.component {
-  border: none;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  font-size: 1rem;
-  font-family: 'Roboto';
-  cursor: pointer;
-  transition: var(--transition);
-  border-radius: var(--button-rounding);
-  background-color: var(--button-bg);
-  color: var(--button-fg);
-  user-select: none;
+import FloatingLabel from '../floatingLabel/FloatingLabel';
+import styles from './ValidatedTextInput.module.css';
+
+export interface IValidatedTextInput extends React.ComponentPropsWithoutRef<'input'> {
+  isValid?: boolean;
+  invalidReason?: string;
+  defaultValue?: string;
 }
 
-.vibrant {
-  border-radius: var(--button-vibrant-rounding);
-  background-color: var(--button-vibrant-bg);
-  color: var(--button-vibrant-fg);
+const ValidatedTextInput: React.FC<IValidatedTextInput> = ({ children, isValid, defaultValue, invalidReason, ...inputProps }) => {
+  return <div className={styles.component}>
+    <input {...inputProps} type="text" defaultValue={defaultValue ? defaultValue : ""} className={`${styles.input} ${isValid ? styles.valid : styles.invalid}`}>{children}</input>
+    <div className={styles.labelContainer}>
+      <FloatingLabel>
+        {invalidReason || ""}
+      </FloatingLabel>
+    </div>
+  </div>
 }
 
-.vibrant:hover {
-  border-radius: var(--button-vibrant-hover-rounding);
-  background-color: var(--button-vibrant-hover-bg);
-  color: var(--button-hover-vibrant-fg);
-}
-
-.vibrant:active {
-  border-radius: var(--button-vibrant-active-rounding);
-  background-color: var(--button-vibrant-active-bg);
-  color: var(--button-vibrant-active-fg);
-}
+export default ValidatedTextInput;

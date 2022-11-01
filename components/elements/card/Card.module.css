@@ -31,7 +31,8 @@
   font-family: 'Roboto';
   transition: var(--transition);
   box-shadow: 0 0 1rem #00000055;
-  border-radius: 1rem;
+  border-radius: var(--card-rounding);
+  background-color: var(--card-bg);
 }
 
 .compact {
@@ -40,5 +41,5 @@
   padding-left: 0.5rem;
   padding-right: 0.5rem;
   box-shadow: 0 0 0.5rem #00000055;
-  border-radius: 0.5rem;
+  border-radius: var(--card-compact-rounding);
 }

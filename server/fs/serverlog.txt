@@ -1,0 +1,10 @@
+----- [YOURDASH SERVER LOG] -----
+{"name":"YourDash Instance","defaultBackground":"./","favicon":"png","logo":"./yourdash.svg","themeColor":"#ffffff","activeModules":["core"],"version":"0.1.0"}
+Server online :D
+loaded module: core
+19:4:90 [100m[32m GET [39m[49m /api/get/logo
+19:4:90 [100m[32m GET [39m[49m /api/get/server/config
+19:4:90 [100m[32m GET [39m[49m /api/get/current/user
+19:4:90 [100m[32m GET [39m[49m /api/get/current/user
+19:4:90 [100m[32m GET [39m[49m /api/get/logo
+19:4:90 [100m[32m GET [39m[49m /api/get/server/config

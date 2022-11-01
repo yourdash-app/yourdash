@@ -21,21 +21,16 @@
  *   SOFTWARE.
  */
 
-import FloatingLabel from '../floatingLabel/FloatingLabel';
 import styles from './TextInput.module.css';
 
 export interface ITextInput extends React.ComponentPropsWithoutRef<'input'> {
-  isValid?: boolean;
-  invalidReason?: string;
   defaultValue?: string;
+  className?: string;
 }
 
-const TextInput: React.FC<ITextInput> = ({ children, isValid, defaultValue, invalidReason, ...inputProps }) => {
-  return <div className={styles.component}>
-    <input {...inputProps} type="text" defaultValue={defaultValue ? defaultValue : ""} className={`${styles.input} ${isValid ? styles.valid : styles.invalid}`}>{children}</input>
-    <FloatingLabel className={styles.label}>
-      {invalidReason}
-    </FloatingLabel>
+const TextInput: React.FC<ITextInput> = ({ children, defaultValue, className, ...inputProps }) => {
+  return <div className={`${styles.component} ${className}`}>
+    <input {...inputProps} type="text" defaultValue={defaultValue ? defaultValue : ""} className={styles.input}>{children}</input>
   </div>
 }
 
