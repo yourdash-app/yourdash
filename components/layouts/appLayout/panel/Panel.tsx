@@ -7,6 +7,7 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import IncludedApps from '../../../../data/includedApps';
+import generateHelloVariant from '../../../../lib/helloGenerator';
 import {AuthorizedYourDashUser} from '../../../../lib/user';
 import ColContainer from '../../../containers/ColContainer/ColContainer';
 import Button from '../../../elements/button/Button';
@@ -26,6 +27,7 @@ const Panel: React.FC<IPanel> = () => {
   const [ accountDropdownVisible, setAccountDropdownVisible ] = useState(false)
   const [ userData, setUserData ] = useState(undefined as AuthorizedYourDashUser | undefined)
   const [ searchQuery, setSearchQuery ] = useState("")
+  const [ helloVariant, setHelloVariant ] = useState("Hello")
   useEffect(() => {
     Server.get(`/get/server/config`)
       .then(res => res.json())
@@ -38,14 +40,15 @@ const Panel: React.FC<IPanel> = () => {
         setUserData(res)
         document.body.style.setProperty("--panel-launcher-grid-columns", res.settings.panel?.launcher?.slideOut?.gridColumns.toString() || "3")
       })
+    setHelloVariant(generateHelloVariant())
   }, [])
   return <div className={styles.component}>
     <div className={styles.launcher} onClick={() => { setLauncherSlideOutVisible(!launcherSlideOutVisible) }}>
-      <Icon name='app-launcher-16' style={{ height: "100%", aspectRatio: "1/1" }} color={"var(--panel-fg)"} />
+      <Icon name='app-launcher-16' style={{ height: "100%", aspectRatio: "1/1" }} color={"var(--app-panel-fg)"} />
     </div>
     <div className={`${styles.launcherSlideOut} ${launcherSlideOutVisible ? styles.launcherSlideOutVisible : ""}`}>
       <div data-header>
-        <div data-title>Hello, {userData?.name}</div>
+        <div data-title>{helloVariant}, {userData?.userName}</div>
         <TextInput className={styles.launcherSlideOutSearch} onChange={(e) => {
           setSearchQuery(e.currentTarget.value)
         }} placeholder="Search" />

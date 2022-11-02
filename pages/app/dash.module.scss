@@ -1,0 +1,75 @@
+@keyframes loadedSlideUp {
+  0% {
+    top: calc(50% + var(--app-panel-height));
+  }
+  20% {
+    top: calc(50% + var(--app-panel-height));
+  }
+  100% {
+    top: calc(2rem + var(--app-panel-height));
+  }
+}
+
+@keyframes loadedFadeIn {
+  0% {
+    overflow-y: hidden;
+    scale: 0;
+    height: 0;
+  }
+  99% {
+    overflow-y: auto;
+    scale: 1;
+    height: auto;
+  }
+  100% {
+    overflow-y: auto;
+    scale: 1;
+  }
+}
+
+.root {
+  background: var(--app-background);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100%;
+  overflow-y: auto;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  transition: var(--transition);
+}
+
+// --app-dash-clock-font-weight: 800;
+// --app-dash-clock-shadow-color: #000;
+// --app-dash-clock-shadow-spread: 1rem;
+// --app-dash-clock-shadow-offset-x: 0;
+// --app-dash-clock-shadow-offset-y: 0;
+
+.welcome {
+  font-weight: 700;
+  font-size: 5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  transition: var(--transition);
+  position: absolute;
+  animation: 2s loadedSlideUp ease-in-out forwards;
+  > * {
+    text-shadow: var(--app-dash-clock-shadow-offset-x) var(--app-dash-clock-shadow-offset-y)
+      var(--app-dash-clock-shadow-spread) var(--app-dash-clock-shadow-color);
+  }
+  > .clock {
+    font-size: 8rem;
+  }
+}
+
+.main {
+  background: red;
+  animation: 1s loadedFadeIn linear forwards;
+  transform-origin: top;
+}

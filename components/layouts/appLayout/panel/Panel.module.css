@@ -5,24 +5,23 @@
  */
 
 .component {
-  --panel-height: 3rem;
-  height: var(--panel-height);
-  background: var(--panel-bg);
+  height: var(--app-panel-height);
+  background: var(--app-panel-bg);
   display: grid;
   grid-template-columns: auto 1fr auto auto;
   align-items: center;
-  color: var(--panel-fg);
+  color: var(--app-panel-fg);
 }
 
 .tray {
-  height: var(--panel-height);
+  height: var(--app-panel-height);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .trayIcon {
-  height: calc(var(--panel-height) - 1.5rem);
+  height: calc(var(--app-panel-height) - 1.5rem);
   aspect-ratio: 1/1;
 }
 
@@ -37,7 +36,7 @@
 }
 
 .account > img {
-  height: calc(var(--panel-height) - 1rem);
+  height: calc(var(--app-panel-height) - 1rem);
   aspect-ratio: 1 / 1;
   border-radius: 0.5rem;
 }
@@ -57,28 +56,28 @@
 
 .launcher {
   padding: 0.5rem;
-  background-color: var(--panel-launcher-bg);
-  height: calc(var(--panel-height) - 1rem);
+  background-color: var(--app-panel-launcher-bg);
+  height: calc(var(--app-panel-height) - 1rem);
   aspect-ratio: 1/1;
   transition: var(--transition);
   cursor: pointer;
 }
 
 .launcher:hover {
-  background-color: var(--panel-launcher-hover-bg);
+  background-color: var(--app-panel-launcher-hover-bg);
 }
 
 .launcher:active {
-  background-color: var(--panel-launcher-active-bg);
+  background-color: var(--app-panel-launcher-active-bg);
 }
 
 .launcherSlideOut {
   position: fixed;
-  top: var(--panel-height);
+  top: var(--app-panel-height);
   left: -30rem;
-  height: calc(100vh - var(--panel-height));
+  height: calc(100vh - var(--app-panel-height));
   width: 30rem;
-  background-color: var(--panel-bg);
+  background-color: var(--app-panel-bg);
   transition: var(--transition);
   display: grid;
   grid-template-rows: auto 1fr;
@@ -118,7 +117,7 @@
   overflow-y: auto;
   overflow-x: hidden;
   display: grid;
-  grid-template-columns: repeat(var(--panel-launcher-grid-columns), 1fr);
+  grid-template-columns: repeat(var(--app-panel-launcher-grid-columns), 1fr);
   box-sizing: border-box;
   padding: 0.5rem;
   gap: 0.5rem;

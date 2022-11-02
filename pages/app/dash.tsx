@@ -21,18 +21,30 @@
  *   SOFTWARE.
  */
 
-import styles from "./dash.module.css"
+import styles from "./dash.module.scss"
 import AppLayout from '../../components/layouts/appLayout/AppLayout';
 import { NextPageWithLayout } from '../page';
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import generateHelloVariant from "./../../lib/helloGenerator"
 
 const Dash: NextPageWithLayout = () => {
-  const [userName, setUserName] = useState("")
+  const [ userName, setUserName ] = useState("")
+  const [ helloVariant, setHelloVariant ] = useState("Hello")
 
+  useEffect(() => {
+    setHelloVariant(generateHelloVariant())
+  }, [])
 
   return (
     <div className={styles.root}>
-      <h2>Hello, </h2>
+      <div className={styles.welcome}>
+        <span className={styles.clock}>10:14</span>
+        <span>{helloVariant}, {userName}</span>
+      </div>
+      <div>chips</div>
+      <div className={styles.main}>
+      </div>
+        <h1>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tempora, hic.</h1>
     </div>
   );
 };
