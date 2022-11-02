@@ -23,6 +23,8 @@ if (SERVER_CONFIG.name === undefined ||
 }
 if (!SERVER_CONFIG.activeModules.includes('core'))
     console.error(chalk.redBright(`[ERROR] the 'core' module is not enabled, this ${chalk.bold('WILL')} lead to missing features and crashes.`));
+if (!SERVER_CONFIG.activeModules.includes('userManagement'))
+    console.error(chalk.redBright(`[ERROR] the 'userManagement' module is not enabled, this ${chalk.bold('WILL')} lead to missing features and crashes.`));
 const app = express();
 SERVER_CONFIG.activeModules.forEach((module) => {
     import('./modules/' + module + '/index.js').then((mod) => {
@@ -47,11 +49,7 @@ app.use((req, res, next) => {
     next();
 });
 app.use(cors({
-    origin: [
-        'http://localhost:3000',
-        'https://yourdash.vercel.app',
-        'https://ddsh.vercel.app',
-    ],
+    origin: ['http://localhost:3000', 'https://yourdash.vercel.app', 'https://ddsh.vercel.app'],
 }));
 app.get('/', (req, res) => {
     res.redirect(`https://yourdash.vercel.app/login/server/${req.url}`);
@@ -72,9 +70,7 @@ app.get('/api/get/logo', (_req, res) => {
     res.sendFile(path.resolve(`${ENV.FS_ORIGIN}/${SERVER_CONFIG.logo}`));
 });
 app.get('/api/get/current/user', (req, res) => {
-    let user = JSON.parse(fs
-        .readFileSync(`${ENV.FS_ORIGIN}/data/users/${req.header('userName')}/user.json`)
-        .toString());
+    let user = JSON.parse(fs.readFileSync(`${ENV.FS_ORIGIN}/data/users/${req.header('userName')}/user.json`).toString());
     res.json(user);
 });
 app.get('/api/server/version', (_req, res) => {
