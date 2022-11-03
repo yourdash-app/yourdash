@@ -3,5 +3,3 @@
 Server online :D
 loaded module: core
 loaded module: userManagement
-20:40:50 [100m[32m GET [39m[49m /api/user/create/a
-20:40:50 [100m[32m GET [39m[49m /favicon.ico

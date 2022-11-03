@@ -3,13 +3,13 @@
  *   https://ewsgit.mit-license.org
  */
 
-import express from 'express';
 import chalk from 'chalk';
+import cors from 'cors';
+import express from 'express';
 import fs from 'fs';
 import path from 'path';
-import cors from 'cors';
+import YourDashUser from '../lib/user.js';
 import { log } from './libServer.js';
-import { AuthorizedYourDashUser } from './../lib/user';
 
 export const ENV: {
   FS_ORIGIN: string;
@@ -164,7 +164,7 @@ app.get('/api/get/logo', (_req, res) => {
 app.get('/api/get/current/user', (req, res) => {
   let user = JSON.parse(
     fs.readFileSync(`${ENV.FS_ORIGIN}/data/users/${req.header('userName')}/user.json`).toString()
-  ) as AuthorizedYourDashUser;
+  ) as YourDashUser;
   res.json(user);
 });
 
