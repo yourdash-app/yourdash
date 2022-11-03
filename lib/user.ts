@@ -15,22 +15,20 @@ export default interface YourDashUser {
   };
 }
 
-export interface AuthorizedYourDashUser extends YourDashUser {
-  settings: {
-    panel: {
-      launcher: {
-        slideOut: {
-          gridColumns: number;
-        };
-        shortcuts: {
-          name: string;
-          icon: string;
-          url: string;
-        }[];
+export interface YourDashUserSettings {
+  panel: {
+    launcher: {
+      slideOut: {
+        gridColumns: number;
       };
-      tray: {
-        visibleIcons: {}[];
-      };
+      shortcuts: {
+        name: string;
+        icon: string;
+        url: string;
+      }[];
+    };
+    tray: {
+      visibleIcons: {}[];
     };
   };
 }

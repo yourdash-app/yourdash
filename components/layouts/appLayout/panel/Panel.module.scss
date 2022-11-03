@@ -33,12 +33,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.account > img {
-  height: calc(var(--app-panel-height) - 1rem);
-  aspect-ratio: 1 / 1;
-  border-radius: 0.5rem;
+  > img {
+    height: calc(var(--app-panel-height) - 1rem);
+    aspect-ratio: 1 / 1;
+    border-radius: 0.5rem;
+  }
 }
 
 .accountDropdown {
@@ -61,14 +60,13 @@
   aspect-ratio: 1/1;
   transition: var(--transition);
   cursor: pointer;
-}
-
-.launcher:hover {
-  background-color: var(--app-panel-launcher-hover-bg);
-}
-
-.launcher:active {
-  background-color: var(--app-panel-launcher-active-bg);
+  &:hover {
+    background-color: var(--app-panel-launcher-hover-bg);
+  }
+  
+  &:active {
+    background-color: var(--app-panel-launcher-active-bg);
+  }
 }
 
 .launcherSlideOut {
@@ -81,6 +79,21 @@
   transition: var(--transition);
   display: grid;
   grid-template-rows: auto 1fr;
+  > div[data-header] {
+    background: var(--app-background);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    > div[data-title] {
+      font-size: 2rem;
+      padding-top: 3rem;
+      padding-bottom: 3rem;
+      text-align: center;
+      user-select: none;
+      text-shadow: 0 0 0.5rem #000000, 0 0 0.75rem #000000, 0 0 1rem #000000, 0 0 1.5rem #000000, 0 0 2rem #000000;
+    }
+  }
 }
 
 .launcherSlideOutVisible {
@@ -94,23 +107,6 @@
   margin-bottom: 0.5rem;
 }
 
-.launcherSlideOut > div[data-header] {
-  background: var(--app-background);
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  position: relative;
-}
-
-.launcherSlideOut > div[data-header] > div[data-title] {
-  font-size: 2rem;
-  padding-top: 3rem;
-  padding-bottom: 3rem;
-  text-align: center;
-  user-select: none;
-  text-shadow: 0 0 0.5rem #000000, 0 0 0.75rem #000000, 0 0 1rem #000000, 0 0 1.5rem #000000, 0 0 2rem #000000;
-}
-
 .launcherGrid {
   max-height: 100%;
   width: 100%;
@@ -121,43 +117,50 @@
   box-sizing: border-box;
   padding: 0.5rem;
   gap: 0.5rem;
+  > * {
+    overflow: hidden;
+    height: 10rem;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    border-radius: var(--card-compact-rounding);
+    box-shadow: inset 0 0 0.5rem #00000055;
+    transition: var(--transition);
+    user-select: none;
+    cursor: pointer;
+    > img {
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      scale: 0.9;
+      transition: var(--transition);
+      padding: 0.5rem;
+      box-sizing: border-box;
+    }
+  
+    &:hover > img {
+      scale: 1;
+    }
+  
+    &:active > img {
+      scale: 0.95;
+    }
+  
+    > span {
+      width: 100%;
+      padding-top: 0.25rem;
+      padding-bottom: 0.25rem;
+      background-color: var(--container-bg);
+      text-align: center;
+      transition: var(--transition);
+    }
+  }
 }
 
-.launcherGrid > * {
-  overflow: hidden;
-  height: 10rem;
-  display: grid;
-  grid-template-rows: 1fr auto;
-  border-radius: var(--card-compact-rounding);
-  box-shadow: inset 0 0 0.5rem #00000055;
-  transition: var(--transition);
-  user-select: none;
-  cursor: pointer;
-}
 
-.launcherGrid > * > img {
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
-  scale: 0.9;
-  transition: var(--transition);
-  padding: 0.5rem;
-  box-sizing: border-box;
-}
-
-.launcherGrid > *:hover > img {
-  scale: 1;
-}
-
-.launcherGrid > *:active > img {
-  scale: 0.95;
-}
-
-.launcherGrid > * > span {
-  width: 100%;
-  padding-top: 0.25rem;
-  padding-bottom: 0.25rem;
-  background-color: var(--container-bg);
-  text-align: center;
-  transition: var(--transition);
+.accountDropdownQuickActions {
+  padding-bottom: 0.5rem;
+  > * {
+    background-color: var(--button-bg);
+    padding: 0.5rem;
+  }
 }
