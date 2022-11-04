@@ -89,11 +89,11 @@
   --button-fg: #fff;
   --button-outline: 0 solid #000;
   --button-rounding: 0.5rem;
-  --button-hover-bg: #111;
+  --button-hover-bg: #6a6a6a;
   --button-hover-fg: #fff;
   --button-hover-outline: 0 solid #000;
   --button-hover-rounding: 0.5rem;
-  --button-active-bg: #000;
+  --button-active-bg: #4a4a4a;
   --button-active-fg: #fff;
   --button-active-outline: 0 solid #000;
   --button-active-rounding: 0.5rem;
@@ -124,6 +124,16 @@
   --floating-label-fg: #fff;
   --floating-label-outline: 0.2rem solid rgb(34 34 34);
   --floating-label-rounding: 0.25rem;
+
+  --chip-bg: #5a5a5a;
+  --chip-fg: #ffffff;
+  --chip-rounding: 10rem;
+  --chip-hover-bg: #6a6a6a;
+  --chip-hover-fg: #ffffff;
+  --chip-hover-rounding: 10rem;
+  --chip-active-bg: #4a4a4a;
+  --chip-active-fg: #ffffff;
+  --chip-active-rounding: 10rem;
 }
 
 html,

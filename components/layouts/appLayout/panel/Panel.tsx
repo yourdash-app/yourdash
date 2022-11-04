@@ -52,7 +52,7 @@ const Panel: React.FC<IPanel> = () => {
     </div>
     <div className={`${styles.launcherSlideOut} ${launcherSlideOutVisible ? styles.launcherSlideOutVisible : ""}`}>
       <div data-header>
-        <div data-title>Hiya, {userData?.userName}</div>
+        <div data-title>Hiya, {userData?.name}</div>
         <TextInput className={styles.launcherSlideOutSearch} onChange={(e) => {
           setSearchQuery(e.currentTarget.value)
         }} placeholder="Search" />

@@ -1,0 +1,26 @@
+.component {
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  margin-right: 0.5rem;
+  border-radius: var(--chip-rounding);
+  background-color: var(--chip-bg);
+  color: var(--chip-fg);
+  transition: var(--transition);
+  user-select: none;
+  cursor: pointer;
+  &:last-child {
+    margin-right: 0;
+  }
+  &:hover {
+    border-radius: var(--chip-hover-rounding);
+    background-color: var(--chip-hover-bg);
+    color: var(--chip-hover-fg);
+  }
+  &:active {
+    border-radius: var(--chip-active-rounding);
+    background-color: var(--chip-active-bg);
+    color: var(--chip-active-fg);
+  }
+}

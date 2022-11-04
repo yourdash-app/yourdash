@@ -28,6 +28,7 @@
   justify-content: center;
   color: #fff;
   transition: var(--transition);
+  margin-bottom: 1rem;
   > * {
     text-shadow: var(--app-dash-clock-shadow-offset-x) var(--app-dash-clock-shadow-offset-y)
       var(--app-dash-clock-shadow-spread) var(--app-dash-clock-shadow-color);
@@ -40,4 +41,10 @@
 .main {
   background: red;
   transform-origin: top;
+  margin-left: 3rem,;
+  margin-right: 3rem;
+}
+
+.chips {
+  margin-bottom: 1rem;
 }
