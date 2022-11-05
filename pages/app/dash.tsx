@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import RowContainer from "../../components/containers/RowContainer/RowContainer";
+import Card from "../../components/elements/card/Card";
 import Chip from "../../components/elements/chip/Chip";
 import AppLayout from '../../components/layouts/appLayout/AppLayout';
 import Server from "../../lib/server";
@@ -41,7 +42,15 @@ const Dash: NextPageWithLayout = () => {
         <Chip label="this is a chip"></Chip>
       </RowContainer>
       <div className={styles.main}>
-        <h1>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tempora, hic.</h1>
+        <Card>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tempora, hic.</Card>
+        <Card>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tempora, hic.</Card>
+        <Card>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tempora, hic.</Card>
+        <Card>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tempora, hic.</Card>
+        <Card>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tempora, hic.</Card>
+        <Card>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tempora, hic.</Card>
+        <Card>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tempora, hic.</Card>
+        <Card>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tempora, hic.</Card>
+        <Card>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tempora, hic.</Card>
       </div>
     </div>
   );

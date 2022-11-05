@@ -10,8 +10,8 @@ export default class YourDashModule {
                 if (err)
                     return res.sendStatus(500);
                 fs.writeFile(`${ENV.FS_ORIGIN}/data/users/${username}/user.json`, JSON.stringify({
-                    name: 'Ethan',
-                    userName: 'ewsgit',
+                    name: 'name',
+                    userName: 'username',
                     profile: {
                         banner: '',
                         description: '',
