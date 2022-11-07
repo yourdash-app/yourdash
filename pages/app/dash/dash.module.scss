@@ -40,12 +40,12 @@
 
 .main {
   display: grid;
-  padding-left: 3rem;
-  padding-right: 3rem;
   overflow-y: auto;
   max-height: 30rem;
   max-width: 80rem;
   width: 80%;
+  padding: 1rem;
+  border-radius: var(--card-rounding);
   grid-template-columns: repeat(5, 1fr);
   gap: 0.5rem;
   @media screen and (max-width: 1800px) {
