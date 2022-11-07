@@ -6,7 +6,7 @@
 
 import { useEffect, useState } from "react";
 import { YourDashIconRawDictionary } from "../icon/iconDictionary";
-import Server from "./../../../lib/server"
+import { getServer } from "./../../../lib/server"
 
 export interface IAuthedImg extends React.ComponentPropsWithoutRef<'img'> {
   src: string
@@ -15,7 +15,7 @@ export interface IAuthedImg extends React.ComponentPropsWithoutRef<'img'> {
 const AuthedImg: React.FC<IAuthedImg> = ({ src, ...imgElementProps }) => {
   const [ imgSrc, setImgSrc ] = useState(YourDashIconRawDictionary["server-error"])
   useEffect(() => {
-    Server.get(src)
+    getServer(src)
       .then(res => res.blob())
       .then(blob => {
         setImgSrc(URL.createObjectURL(blob))

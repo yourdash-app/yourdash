@@ -43,20 +43,21 @@ export default function Icon(props: {
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
             backgroundSize: 'cover',
-            userSelect: "none"
           }
           : {
             maskImage: `url(${YourDashIconRawDictionary[ props.name ]})`,
             WebkitMaskImage: `url(${YourDashIconRawDictionary[ props.name ]})`,
-            backgroundColor: props.color,
+            backgroundColor: props.color || "#ff0000",
             maskPosition: 'center',
             maskRepeat: 'no-repeat',
             maskSize: 'cover',
             WebkitMaskPosition: 'center',
             WebkitMaskRepeat: 'no-repeat',
             WebkitMaskSize: 'cover',
-            userSelect: "none"
-          })
+          }),
+        ...{
+          userSelect: "none"
+        }
       }}
       className={props.className}
     />
