@@ -63,7 +63,7 @@
   &:hover {
     background-color: var(--app-panel-launcher-hover-bg);
   }
-  
+
   &:active {
     background-color: var(--app-panel-launcher-active-bg);
   }
@@ -91,7 +91,8 @@
       padding-bottom: 3rem;
       text-align: center;
       user-select: none;
-      text-shadow: 0 0 0.5rem #000000, 0 0 0.75rem #000000, 0 0 1rem #000000, 0 0 1.5rem #000000, 0 0 2rem #000000;
+      text-shadow: 0 0 0.5rem #000000, 0 0 0.75rem #000000, 0 0 1rem #000000, 0 0 1.5rem #000000,
+        0 0 2rem #000000;
     }
   }
 }
@@ -136,15 +137,15 @@
       padding: 0.5rem;
       box-sizing: border-box;
     }
-  
+
     &:hover > img {
       scale: 1;
     }
-  
+
     &:active > img {
       scale: 0.95;
     }
-  
+
     > span {
       width: 100%;
       padding-top: 0.25rem;
@@ -156,11 +157,34 @@
   }
 }
 
-
 .accountDropdownQuickActions {
   padding-bottom: 0.5rem;
   > * {
+    height: 1.5rem;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    cursor: pointer;
+    border-radius: var(--button-rounding);
     background-color: var(--button-bg);
+    color: var(--button-fg);
+    transition: var(--transition);
     padding: 0.5rem;
+    &:hover {
+      border-radius: var(--button-hover-rounding);
+      background-color: var(--button-hover-bg);
+      color: var(--button-hover-fg);
+    }
+    &:active {
+      border-radius: var(--button-active-rounding);
+      background-color: var(--button-active-bg);
+      color: var(--button-active-fg);
+    }
+    > * {
+      width: 100%;
+      height: 100%;
+    }
   }
 }

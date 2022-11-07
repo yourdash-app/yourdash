@@ -14,7 +14,7 @@ import Button from '../../../elements/button/Button';
 import Card from '../../../elements/card/Card';
 import Icon from '../../../elements/icon/Icon';
 import TextInput from '../../../elements/textInput/TextInput';
-import Server from "./../../../../lib/server";
+import {getServer} from "./../../../../lib/server";
 import AuthedImg from "./../../../elements/authedImg/AuthedImg";
 import styles from './Panel.module.scss';
 
@@ -29,18 +29,18 @@ const Panel: React.FC<IPanel> = () => {
   const [ userSettings, setUserSettings ] = useState(undefined as YourDashUserSettings | undefined)
   const [ searchQuery, setSearchQuery ] = useState("")
   useEffect(() => {
-    Server.get(`/get/server/config`)
+    getServer(`/get/server/config`)
       .then(res => res.json())
       .then(res => {
         setServerConfig(res)
       })
-    Server.get(`/get/current/user/settings`)
+    getServer(`/get/current/user/settings`)
       .then(res => res.json() as Promise<YourDashUserSettings>)
       .then(res => {
         setUserSettings(res)
         document.body.style.setProperty("--panel-launcher-grid-columns", res.panel?.launcher?.slideOut?.gridColumns.toString() || "3")
       })
-    Server.get(`/get/current/user`)
+    getServer(`/get/current/user`)
       .then(res => res.json() as Promise<YourDashUser>)
       .then(res => {
         setUserData(res)
@@ -76,34 +76,45 @@ const Panel: React.FC<IPanel> = () => {
       <Icon name="browser-16" className={styles.trayIcon} color={"#ffffff"} />
     </div>
     <div className={styles.account}>
-      <img src={
+      <img onClick={() => { setAccountDropdownVisible(!accountDropdownVisible) }} tabIndex={0} src={
         userData?.profile.image
-      } alt="" onClick={() => { setAccountDropdownVisible(!accountDropdownVisible) }} />
+      } alt="" />
+      <div style={{ width: "100vw", transition: "var(--transition)", height: "100vh", background: "#00000040", position: "fixed", top: 0, left: 0, pointerEvents: accountDropdownVisible ? "all" : "none", opacity: accountDropdownVisible ? 1 : 0 }} onClick={() => { setAccountDropdownVisible(false) }}></div>
       <Card style={{
         opacity: !accountDropdownVisible ? "0" : "1",
         pointerEvents: !accountDropdownVisible ? "none" : "auto"
       }} compact={true} className={styles.accountDropdown}>
         <RowContainer className={styles.accountDropdownQuickActions}>
-          <div>a</div>
-          <div>a</div>
-          <div>a</div>
+          <div onClick={() => {
+            setAccountDropdownVisible(false)
+          }}>
+            <Icon name='logout' color="var(--button-fg)" />
+          </div>
+          <div onClick={() => {
+            setAccountDropdownVisible(false)
+          }}>
+            <Icon name='info-16' color="var(--button-fg)" />
+          </div>
+          <div onClick={() => {
+            setAccountDropdownVisible(false)
+          }}>
+            <Icon name='gear-16' color="var(--button-fg)" />
+          </div>
         </RowContainer>
         <ColContainer>
           <Button onClick={() => {
             console.log("Profile")
+            setAccountDropdownVisible(false)
           }}>Profile</Button>
           <Button onClick={() => {
             console.log("Settings")
+            setAccountDropdownVisible(false)
           }}>Settings</Button>
           <Button onClick={() => {
             localStorage.removeItem("currentServer")
             router.push("/login/server")
+            setAccountDropdownVisible(false)
           }}>Switch instance</Button>
-          <Button onClick={() => {
-            localStorage.removeItem("currentServer")
-            localStorage.removeItem("githubToken")
-            router.push("/login/server")
-          }}>Logout</Button>
         </ColContainer>
       </Card>
     </div>
