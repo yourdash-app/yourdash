@@ -8,7 +8,8 @@
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: center;
+  box-sizing: border-box;
+  padding-top: 5rem;
   flex-direction: column;
   transition: var(--transition);
 }
@@ -39,15 +40,14 @@
 }
 
 .main {
-  display: grid;
+  display: flex;
   overflow-y: auto;
-  max-height: 30rem;
   max-width: 80rem;
   width: 80%;
   padding: 1rem;
   border-radius: var(--card-rounding);
-  grid-template-columns: repeat(5, 1fr);
   gap: 0.5rem;
+  justify-content: center;
   @media screen and (max-width: 1800px) {
     grid-template-columns: repeat(4, 1fr);
   }

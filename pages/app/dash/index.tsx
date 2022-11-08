@@ -1,9 +1,11 @@
+import Head from "next/head";
 import React, { useEffect, useState } from "react";
+import ColContainer from "../../../components/containers/ColContainer/ColContainer";
 import RowContainer from "../../../components/containers/RowContainer/RowContainer";
 import Card from "../../../components/elements/card/Card";
 import Chip from "../../../components/elements/chip/Chip";
 import AppLayout from '../../../components/layouts/appLayout/AppLayout';
-import { getServer } from "../../../lib/server";
+import SERVER from "../../../lib/server";
 import { NextPageWithLayout } from '../../page';
 import styles from "./dash.module.scss";
 
@@ -12,10 +14,10 @@ const Dash: NextPageWithLayout = () => {
   const [ currentTime, setCurrentTime ] = useState("00:01")
   // const [ currentContentPage, setCurrentContentPage ] = useState("home")
   const [ currentContentPage, setCurrentContentPage ] = useState("rss")
-  const [ visibleChips, setVisibleChips ] = useState(["home", "git_status", "rss"])
+  const [ visibleChips, setVisibleChips ] = useState([ { name: "Home", id: "home" }, { name: "Git Status", id: "git_status" }, { name: "Rss Feed", id: "rss" } ])
 
   useEffect(() => {
-    getServer("/get/current/user")
+    SERVER.get("/get/current/user")
       .then(res => res.json())
       .then(res => {
         setUserName(res.name)
@@ -33,27 +35,53 @@ const Dash: NextPageWithLayout = () => {
 
   if (userName === "") return <></>
   return (
-    <div className={styles.root}>
-      <div className={styles.welcome}>
-        <span className={styles.clock}>{currentTime}</span>
-        <span>Hiya, {userName}</span>
-      </div>
-      <RowContainer className={styles.chips}>
-        <Chip label="Git Status"></Chip>
-        <Chip label="Rss Feed"></Chip>
-      </RowContainer>
-      <div className={styles.main}>
-        {returnDashCards(
-          currentContentPage,
+    <>
+      <Head>
+        <title>YourDash | Dashboard</title>
+      </Head>
+      <div className={styles.root}>
+        <div className={styles.welcome}>
+          <span className={styles.clock}>{currentTime}</span>
+          <span>Hiya, {userName}</span>
+        </div>
+        <RowContainer className={styles.chips}>
           <>
-            <Card>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Debitis animi voluptatem aut nisi distinctio nesciunt repellat et sequi amet soluta.</Card>
-            <Card>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Debitis animi voluptatem aut nisi distinctio nesciunt repellat et sequi amet soluta.</Card>
-            <Card>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Debitis animi voluptatem aut nisi distinctio nesciunt repellat et sequi amet soluta.</Card>
-            <Card>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Debitis animi voluptatem aut nisi distinctio nesciunt repellat et sequi amet soluta.</Card>
+            {
+              visibleChips.map((chip, ind) => {
+                return <Chip key={ind} label={chip.name} onClick={() => { setCurrentContentPage(chip.id) }} toggled={currentContentPage === chip.id} />
+              })
+            }
           </>
-        )}
+        </RowContainer>
+        <div className={styles.main}>
+          {returnDashCards(
+            currentContentPage,
+            <>
+              <ColContainer>
+                <Card>abcjdasjdfjhajksdhfd</Card>
+                <Card>abcjdasjdfjhajksdhfd</Card>
+                <Card>abcjdasjdfjhajksdhfd</Card>
+                <Card>abcjdasjdfjhajksdhfd</Card>
+              </ColContainer>
+              <ColContainer>
+                <Card>abcjdasjdfjhajksdhfd</Card>
+                <Card>abc</Card>
+              </ColContainer>
+              <ColContainer>
+                <Card>abc</Card>
+                <Card>abc</Card>
+                <Card>abcjdasjdfjhajksdhfd</Card>
+                <Card>abc</Card>
+              </ColContainer>
+              <ColContainer>
+                <Card>abcjdasjdfjhajksdhfd</Card>
+                <Card>abc</Card>
+              </ColContainer>
+            </>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
@@ -69,6 +97,6 @@ function returnDashCards(currentContentPage: string, homeCards: React.ReactChild
       return homeCards
     case "rss":
       fetch("")
-      return
+      return <h1>This is a test</h1>
   }
 }
