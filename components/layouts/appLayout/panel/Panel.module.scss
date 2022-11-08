@@ -8,7 +8,7 @@
   height: var(--app-panel-height);
   background: var(--app-panel-bg);
   display: grid;
-  grid-template-columns: auto 1fr auto auto;
+  grid-template-columns: auto auto 1fr auto auto;
   align-items: center;
   color: var(--app-panel-fg);
 }
@@ -187,4 +187,11 @@
       height: 100%;
     }
   }
+}
+
+.shortcuts > * {
+  margin: 0.25rem;
+  margin-right: 0;
+  height: calc(var(--app-panel-height) - 0.5rem);
+  background-color: #000000;
 }

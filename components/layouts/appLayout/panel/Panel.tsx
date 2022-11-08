@@ -14,7 +14,7 @@ import Button from '../../../elements/button/Button';
 import Card from '../../../elements/card/Card';
 import Icon from '../../../elements/icon/Icon';
 import TextInput from '../../../elements/textInput/TextInput';
-import {getServer} from "./../../../../lib/server";
+import SERVER from "./../../../../lib/server";
 import AuthedImg from "./../../../elements/authedImg/AuthedImg";
 import styles from './Panel.module.scss';
 
@@ -22,25 +22,19 @@ export interface IPanel { }
 
 const Panel: React.FC<IPanel> = () => {
   const router = useRouter()
-  const [ serverConfig, setServerConfig ] = useState({} as { [ key: string ]: any | undefined })
   const [ launcherSlideOutVisible, setLauncherSlideOutVisible ] = useState(false)
   const [ accountDropdownVisible, setAccountDropdownVisible ] = useState(false)
   const [ userData, setUserData ] = useState(undefined as YourDashUser | undefined)
   const [ userSettings, setUserSettings ] = useState(undefined as YourDashUserSettings | undefined)
   const [ searchQuery, setSearchQuery ] = useState("")
   useEffect(() => {
-    getServer(`/get/server/config`)
-      .then(res => res.json())
-      .then(res => {
-        setServerConfig(res)
-      })
-    getServer(`/get/current/user/settings`)
+    SERVER.get(`/get/current/user/settings`)
       .then(res => res.json() as Promise<YourDashUserSettings>)
       .then(res => {
         setUserSettings(res)
         document.body.style.setProperty("--panel-launcher-grid-columns", res.panel?.launcher?.slideOut?.gridColumns.toString() || "3")
       })
-    getServer(`/get/current/user`)
+    SERVER.get(`/get/current/user`)
       .then(res => res.json() as Promise<YourDashUser>)
       .then(res => {
         setUserData(res)
@@ -72,6 +66,14 @@ const Panel: React.FC<IPanel> = () => {
       </div>
     </div>
     <AuthedImg src={"/get/logo"} className={styles.serverLogo} />
+    <div className={styles.shortcuts}>
+      {userSettings?.panel.launcher.shortcuts.map((shortcut, ind) => {
+        return <div key={ind} onClick={() => { router.push(shortcut.url) }}>
+          <img src={shortcut.icon} alt="" />
+          <div></div>
+        </div>
+      })}
+    </div>
     <div className={styles.tray}>
       <Icon name="browser-16" className={styles.trayIcon} color={"#ffffff"} />
     </div>
