@@ -81,21 +81,21 @@ app.use((req, res, next) => {
       log(
         `${date.getHours()}:${date.getMinutes()}:${
           date.getSeconds() < 10 ? date.getSeconds() + '0' : date.getSeconds()
-        } ${chalk.bgGrey(chalk.green(' GET '))} ${req.path}`
+        } ${chalk.bgGreen(chalk.whiteBright(' GET '))} ${req.path}`
       );
       break;
     case 'POST':
       log(
         `${date.getHours()}:${date.getMinutes()}:${
           date.getSeconds() < 10 ? date.getSeconds() + '0' : date.getSeconds()
-        } ${chalk.bgGrey(chalk.blue(' GET '))} ${req.path}`
+        } ${chalk.bgBlue(chalk.whiteBright(' POST '))} ${req.path}`
       );
       break;
     case 'DELETE':
       log(
         `${date.getHours()}:${date.getMinutes()}:${
           date.getSeconds() < 10 ? date.getSeconds() + '0' : date.getSeconds()
-        } ${chalk.bgGrey(chalk.red(' DELETE '))} ${req.path}`
+        } ${chalk.bgRed(chalk.whiteBright(' DELETE '))} ${req.path}`
       );
       break;
   }
@@ -161,19 +161,8 @@ app.get('/api/get/logo', (_req, res) => {
   res.sendFile(path.resolve(`${ENV.FS_ORIGIN}/${SERVER_CONFIG.logo}`));
 });
 
-app.get('/api/get/current/user', (req, res) => {
-  let user = JSON.parse(
-    fs.readFileSync(`${ENV.FS_ORIGIN}/data/users/${req.header('userName')}/user.json`).toString()
-  ) as YourDashUser;
-  res.json(user);
-});
-
 app.get('/api/server/version', (_req, res) => {
   res.send(SERVER_CONFIG.version);
-});
-
-app.get('/login/user/:username', (req, _res) => {
-  if (!req.params.username) return;
 });
 
 // the following section of code is for nextcloud application compatibility.

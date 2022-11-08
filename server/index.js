@@ -37,13 +37,13 @@ app.use((req, res, next) => {
     let date = new Date();
     switch (req.method) {
         case 'GET':
-            log(`${date.getHours()}:${date.getMinutes()}:${date.getSeconds() < 10 ? date.getSeconds() + '0' : date.getSeconds()} ${chalk.bgGrey(chalk.green(' GET '))} ${req.path}`);
+            log(`${date.getHours()}:${date.getMinutes()}:${date.getSeconds() < 10 ? date.getSeconds() + '0' : date.getSeconds()} ${chalk.bgGreen(chalk.whiteBright(' GET '))} ${req.path}`);
             break;
         case 'POST':
-            log(`${date.getHours()}:${date.getMinutes()}:${date.getSeconds() < 10 ? date.getSeconds() + '0' : date.getSeconds()} ${chalk.bgGrey(chalk.blue(' GET '))} ${req.path}`);
+            log(`${date.getHours()}:${date.getMinutes()}:${date.getSeconds() < 10 ? date.getSeconds() + '0' : date.getSeconds()} ${chalk.bgBlue(chalk.whiteBright(' POST '))} ${req.path}`);
             break;
         case 'DELETE':
-            log(`${date.getHours()}:${date.getMinutes()}:${date.getSeconds() < 10 ? date.getSeconds() + '0' : date.getSeconds()} ${chalk.bgGrey(chalk.red(' DELETE '))} ${req.path}`);
+            log(`${date.getHours()}:${date.getMinutes()}:${date.getSeconds() < 10 ? date.getSeconds() + '0' : date.getSeconds()} ${chalk.bgRed(chalk.whiteBright(' DELETE '))} ${req.path}`);
             break;
     }
     next();
@@ -69,16 +69,8 @@ app.get('/api/get/server/favicon', (_req, res) => {
 app.get('/api/get/logo', (_req, res) => {
     res.sendFile(path.resolve(`${ENV.FS_ORIGIN}/${SERVER_CONFIG.logo}`));
 });
-app.get('/api/get/current/user', (req, res) => {
-    let user = JSON.parse(fs.readFileSync(`${ENV.FS_ORIGIN}/data/users/${req.header('userName')}/user.json`).toString());
-    res.json(user);
-});
 app.get('/api/server/version', (_req, res) => {
     res.send(SERVER_CONFIG.version);
-});
-app.get('/login/user/:username', (req, _res) => {
-    if (!req.params.username)
-        return;
 });
 app.get('/nextcloud/remote.php/dav/files/:username', (_req, _res) => { });
 app.listen(80, () => {

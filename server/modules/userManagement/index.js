@@ -25,17 +25,31 @@ export default class YourDashModule {
                     if (err)
                         return res.sendStatus(500);
                     fs.writeFile(`${ENV.FS_ORIGIN}/data/users/${username}/keys.json`, JSON.stringify({
-                        hashedKey: "2193890134",
-                        currentKey: ""
+                        hashedKey: '2193890134',
+                        currentKey: '',
                     }), (err) => {
                         if (err)
                             return res.sendStatus(500);
-                        return res.send(`hello new user ${req.params.username}`);
+                        fs.writeFile(`${ENV.FS_ORIGIN}/data/users/${username}/config.json`, JSON.stringify({
+                            panel: {
+                                launcher: {
+                                    shortcuts: [
+                                        {
+                                            icon: URL.createObjectURL(new Blob([fs.readFileSync(`${ENV.FS_ORIGIN}/yourdash.svg`)])),
+                                        },
+                                    ],
+                                },
+                            },
+                        }), (err) => {
+                            if (err)
+                                return res.sendStatus(500);
+                            return res.send(`hello new user ${req.params.username}`);
+                        });
                     });
                 });
             });
         });
-        app.get("/api/user/login", (req, res) => {
+        app.get('/api/user/login', (req, res) => {
             let { userName, userToken } = req.headers;
             if (!userName || !userToken)
                 return res.send(401);
@@ -47,6 +61,12 @@ export default class YourDashModule {
                     return res.sendStatus(403);
                 return res.send;
             });
+        });
+        app.get('/api/get/current/user', (req, res) => {
+            let user = JSON.parse(fs
+                .readFileSync(`${ENV.FS_ORIGIN}/data/users/${req.header('userName')}/user.json`)
+                .toString());
+            res.json(user);
         });
     }
     unload() { }
