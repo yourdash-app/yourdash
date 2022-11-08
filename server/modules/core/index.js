@@ -1,8 +1,7 @@
 export default class YourDashModule {
-    constructor() {
-        this.name = "test module";
-        this.id = "test@ewsgit.github.io";
-    }
+    name = "test module";
+    id = "test@ewsgit.github.io";
+    constructor() { }
     load(app) {
         app.get("/abc-xyz", (req, res) => {
             res.send(`hello from ${this.id}`);

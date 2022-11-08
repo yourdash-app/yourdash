@@ -4,14 +4,15 @@
  * Copyright © 2022 Ewsgit
  */
 
-const Server = {
-  get: (path: string): Promise<Response> => {
+const SERVER = {
+  get(path: string): Promise<Response> {
+    console.log('[Server Request]: GET ' + path);
+    console.trace();
     let defaultHeaders = {
       userToken: localStorage.getItem('token') as string,
       userName: localStorage.getItem('userName') as string,
     };
     let url = localStorage.getItem('currentServer');
-    console.log('[Server Request]: GET ' + path);
     return new Promise((resolve, reject) => {
       fetch(`${url}/api${path}`, {
         headers: { ...defaultHeaders },
@@ -23,7 +24,7 @@ const Server = {
         });
     });
   },
-  post: (path: string): Promise<Response> => {
+  post(path: string): Promise<Response> {
     let defaultHeaders = {
       userToken: localStorage.getItem('token') as string,
       userName: localStorage.getItem('userName') as string,
@@ -35,7 +36,7 @@ const Server = {
       method: 'POST',
     });
   },
-  delete: (path: string): Promise<Response> => {
+  delete(path: string): Promise<Response> {
     let defaultHeaders = {
       userToken: localStorage.getItem('token') as string,
       userName: localStorage.getItem('userName') as string,
@@ -49,4 +50,4 @@ const Server = {
   },
 };
 
-export default Server;
+export default SERVER;

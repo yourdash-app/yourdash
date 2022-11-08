@@ -6,8 +6,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "dev": "concurrently \"tsc\" \"cross-env FS_ORIGIN=./fs nodemon .\"",
-    "tsc": "tsc"
+    "dev": "concurrently \"tsc\" \"cross-env FS_ORIGIN=./fs nodemon .\""
   },
   "dependencies": {
     "@types/cors": "^2.8.12",

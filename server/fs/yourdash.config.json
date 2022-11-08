@@ -5,7 +5,8 @@
   "logo": "./yourdash.svg",
   "themeColor": "#ffffff",
   "activeModules": [
-    "core"
+    "core",
+    "userManagement"
   ],
   "version": "0.1.0"
 }

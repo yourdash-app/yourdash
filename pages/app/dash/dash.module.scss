@@ -1,0 +1,71 @@
+.root {
+  background: var(--app-background);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100%;
+  overflow-y: auto;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  padding-top: 5rem;
+  flex-direction: column;
+  transition: var(--transition);
+}
+
+// --app-dash-clock-font-weight: 800;
+// --app-dash-clock-shadow-color: #000;
+// --app-dash-clock-shadow-spread: 1rem;
+// --app-dash-clock-shadow-offset-x: 0;
+// --app-dash-clock-shadow-offset-y: 0;
+
+.welcome {
+  font-weight: 700;
+  font-size: 5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  transition: var(--transition);
+  margin-bottom: 1rem;
+  > * {
+    text-shadow: var(--app-dash-clock-shadow-offset-x) var(--app-dash-clock-shadow-offset-y)
+      var(--app-dash-clock-shadow-spread) var(--app-dash-clock-shadow-color);
+  }
+  > .clock {
+    font-size: 8rem;
+  }
+}
+
+.main {
+  display: flex;
+  overflow-y: auto;
+  max-width: 80rem;
+  width: 80%;
+  padding: 1rem;
+  border-radius: var(--card-rounding);
+  gap: 0.5rem;
+  justify-content: center;
+  @media screen and (max-width: 1800px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  @media screen and (max-width: 1400px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  @media screen and (max-width: 1000px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media screen and (max-width: 750px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+.chips {
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

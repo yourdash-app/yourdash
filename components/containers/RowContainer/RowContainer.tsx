@@ -25,10 +25,11 @@ import styles from './RowContainer.module.css';
 
 export interface IRowContainer {
   children: React.ReactChild | React.ReactChild[];
+  className?: string;
 }
 
-const RowContainer: React.FC<IRowContainer> = ({ children }) => {
-  return <div className={styles.component}>{children}</div>;
+const RowContainer: React.FC<IRowContainer> = ({ children, className }) => {
+  return <div className={`${styles.component} ${className}`}>{children}</div>;
 };
 
 export default RowContainer;

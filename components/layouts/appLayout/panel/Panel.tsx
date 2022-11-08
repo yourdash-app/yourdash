@@ -7,45 +7,46 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import IncludedApps from '../../../../data/includedApps';
-import {AuthorizedYourDashUser} from '../../../../lib/user';
+import YourDashUser, { YourDashUserSettings } from '../../../../lib/user';
 import ColContainer from '../../../containers/ColContainer/ColContainer';
+import RowContainer from '../../../containers/RowContainer/RowContainer';
 import Button from '../../../elements/button/Button';
 import Card from '../../../elements/card/Card';
 import Icon from '../../../elements/icon/Icon';
 import TextInput from '../../../elements/textInput/TextInput';
-import Server from "./../../../../lib/server";
+import SERVER from "./../../../../lib/server";
 import AuthedImg from "./../../../elements/authedImg/AuthedImg";
-import styles from './Panel.module.css';
+import styles from './Panel.module.scss';
 
 export interface IPanel { }
 
 const Panel: React.FC<IPanel> = () => {
   const router = useRouter()
-  const [ serverConfig, setServerConfig ] = useState({} as { [ key: string ]: any | undefined })
   const [ launcherSlideOutVisible, setLauncherSlideOutVisible ] = useState(false)
   const [ accountDropdownVisible, setAccountDropdownVisible ] = useState(false)
-  const [ userData, setUserData ] = useState(undefined as AuthorizedYourDashUser | undefined)
+  const [ userData, setUserData ] = useState(undefined as YourDashUser | undefined)
+  const [ userSettings, setUserSettings ] = useState(undefined as YourDashUserSettings | undefined)
   const [ searchQuery, setSearchQuery ] = useState("")
   useEffect(() => {
-    Server.get(`/get/server/config`)
-      .then(res => res.json())
+    SERVER.get(`/get/current/user/settings`)
+      .then(res => res.json() as Promise<YourDashUserSettings>)
       .then(res => {
-        setServerConfig(res)
+        setUserSettings(res)
+        document.body.style.setProperty("--panel-launcher-grid-columns", res.panel?.launcher?.slideOut?.gridColumns.toString() || "3")
       })
-    Server.get(`/get/current/user`)
-      .then(res => res.json() as Promise<AuthorizedYourDashUser>)
+    SERVER.get(`/get/current/user`)
+      .then(res => res.json() as Promise<YourDashUser>)
       .then(res => {
         setUserData(res)
-        document.body.style.setProperty("--panel-launcher-grid-columns", res.settings.panel?.launcher?.slideOut?.gridColumns.toString() || "3")
       })
   }, [])
   return <div className={styles.component}>
     <div className={styles.launcher} onClick={() => { setLauncherSlideOutVisible(!launcherSlideOutVisible) }}>
-      <Icon name='app-launcher-16' style={{ height: "100%", aspectRatio: "1/1" }} color={"var(--panel-fg)"} />
+      <Icon name='app-launcher-16' style={{ height: "100%", aspectRatio: "1/1" }} color={"var(--app-panel-fg)"} />
     </div>
     <div className={`${styles.launcherSlideOut} ${launcherSlideOutVisible ? styles.launcherSlideOutVisible : ""}`}>
       <div data-header>
-        <div data-title>Hello, {userData?.name}</div>
+        <div data-title>Hiya, {userData?.name}</div>
         <TextInput className={styles.launcherSlideOutSearch} onChange={(e) => {
           setSearchQuery(e.currentTarget.value)
         }} placeholder="Search" />
@@ -65,33 +66,57 @@ const Panel: React.FC<IPanel> = () => {
       </div>
     </div>
     <AuthedImg src={"/get/logo"} className={styles.serverLogo} />
+    <div className={styles.shortcuts}>
+      {userSettings?.panel.launcher.shortcuts.map((shortcut, ind) => {
+        return <div key={ind} onClick={() => { router.push(shortcut.url) }}>
+          <img src={shortcut.icon} alt="" />
+          <div></div>
+        </div>
+      })}
+    </div>
     <div className={styles.tray}>
       <Icon name="browser-16" className={styles.trayIcon} color={"#ffffff"} />
     </div>
     <div className={styles.account}>
-      <img src={
+      <img onClick={() => { setAccountDropdownVisible(!accountDropdownVisible) }} tabIndex={0} src={
         userData?.profile.image
-      } alt="" onClick={() => { setAccountDropdownVisible(!accountDropdownVisible) }} />
+      } alt="" />
+      <div style={{ width: "100vw", transition: "var(--transition)", height: "100vh", background: "#00000040", position: "fixed", top: 0, left: 0, pointerEvents: accountDropdownVisible ? "all" : "none", opacity: accountDropdownVisible ? 1 : 0 }} onClick={() => { setAccountDropdownVisible(false) }}></div>
       <Card style={{
         opacity: !accountDropdownVisible ? "0" : "1",
         pointerEvents: !accountDropdownVisible ? "none" : "auto"
       }} compact={true} className={styles.accountDropdown}>
+        <RowContainer className={styles.accountDropdownQuickActions}>
+          <div onClick={() => {
+            setAccountDropdownVisible(false)
+          }}>
+            <Icon name='logout' color="var(--button-fg)" />
+          </div>
+          <div onClick={() => {
+            setAccountDropdownVisible(false)
+          }}>
+            <Icon name='info-16' color="var(--button-fg)" />
+          </div>
+          <div onClick={() => {
+            setAccountDropdownVisible(false)
+          }}>
+            <Icon name='gear-16' color="var(--button-fg)" />
+          </div>
+        </RowContainer>
         <ColContainer>
           <Button onClick={() => {
             console.log("Profile")
+            setAccountDropdownVisible(false)
           }}>Profile</Button>
           <Button onClick={() => {
             console.log("Settings")
+            setAccountDropdownVisible(false)
           }}>Settings</Button>
           <Button onClick={() => {
             localStorage.removeItem("currentServer")
             router.push("/login/server")
+            setAccountDropdownVisible(false)
           }}>Switch instance</Button>
-          <Button onClick={() => {
-            localStorage.removeItem("currentServer")
-            localStorage.removeItem("githubToken")
-            router.push("/login/server")
-          }}>Logout</Button>
         </ColContainer>
       </Card>
     </div>
