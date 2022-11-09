@@ -12,7 +12,8 @@ export default class YourDashModule implements Module {
   load(app: Express.Application) {
     app.post('/api/user/create/:username', (req, res) => {
       let { username } = req.params;
-      let { password } = req.headers
+      let password = req.headers.password as string
+      if (!password) return res.sendStatus(500);
       fs.mkdir(`${ENV.FS_ORIGIN}/data/users/${username}/`, { recursive: true }, (err) => {
         if (err) return res.sendStatus(500);
         fs.writeFile(
