@@ -69,3 +69,13 @@
   align-items: center;
   justify-content: center;
 }
+
+.gitStatusMain {
+  display: flex;
+  overflow-y: auto;
+  max-width: 80rem;
+  width: 80%;
+  padding: 1rem;
+  border-radius: var(--card-rounding);
+  justify-content: center;
+}
