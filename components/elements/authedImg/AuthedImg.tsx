@@ -16,11 +16,11 @@ const AuthedImg: React.FC<IAuthedImg> = ({ src, ...imgElementProps }) => {
   const [ imgSrc, setImgSrc ] = useState(YourDashIconRawDictionary[ "server-error" ])
   useEffect(() => {
     SERVER.get(src)
-      .then(res => { if (res.status === 200) return res })
       .then(res => res.blob())
       .then(blob => {
         setImgSrc(URL.createObjectURL(blob))
-      });
+      })
+      .catch(err => console.error(err))
   }, [ src ])
 
   return <img src={imgSrc} alt="" {...imgElementProps} />

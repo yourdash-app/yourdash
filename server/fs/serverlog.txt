@@ -1,22 +1,5 @@
 ----- [YOURDASH SERVER LOG] -----
 {"name":"YourDash Instance","defaultBackground":"./","favicon":"png","logo":"./yourdash.svg","themeColor":"#ffffff","activeModules":["core","userManagement"],"version":"0.1.0"}
 Server online :D
-loaded module: userManagement
 loaded module: core
-19:3:32 [42m[97m GET [39m[49m /api/user/create/ewsgit
-19:5:22 [42m[97m GET [39m[49m /api/get/logo
-19:5:23 [42m[97m GET [39m[49m /api/get/current/user
-19:5:23 [42m[97m GET [39m[49m /api/get/current/user/settings
-19:5:23 [42m[97m GET [39m[49m /api/get/logo
-19:5:23 [42m[97m GET [39m[49m /api/get/current/user
-19:5:23 [42m[97m GET [39m[49m /api/get/current/user/settings
-19:5:23 [42m[97m GET [39m[49m /api/get/current/user
-19:5:23 [42m[97m GET [39m[49m /api/get/current/user
-19:5:31 [42m[97m GET [39m[49m /api/get/logo
-19:5:31 [42m[97m GET [39m[49m /api/get/current/user/settings
-19:5:31 [42m[97m GET [39m[49m /api/get/current/user
-19:5:31 [42m[97m GET [39m[49m /api/get/logo
-19:5:31 [42m[97m GET [39m[49m /api/get/current/user/settings
-19:5:31 [42m[97m GET [39m[49m /api/get/current/user
-19:5:31 [42m[97m GET [39m[49m /api/get/current/user
-19:5:31 [42m[97m GET [39m[49m /api/get/current/user
+loaded module: userManagement

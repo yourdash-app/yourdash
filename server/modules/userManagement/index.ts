@@ -1,8 +1,9 @@
 import Module from '../../module.js';
 import Express from 'express';
 import fs from 'fs';
-import { ENV } from '../../index.js';
+import { ENV, SERVER_CONFIG } from '../../index.js';
 import YourDashUser, { YourDashUserSettings } from '../../../lib/user.js';
+import crypto from "crypto"
 
 export default class YourDashModule implements Module {
   name = 'userManagement';
@@ -11,6 +12,7 @@ export default class YourDashModule implements Module {
   load(app: Express.Application) {
     app.post('/api/user/create/:username', (req, res) => {
       let { username } = req.params;
+      let { password } = req.headers
       fs.mkdir(`${ENV.FS_ORIGIN}/data/users/${username}/`, { recursive: true }, (err) => {
         if (err) return res.sendStatus(500);
         fs.writeFile(
@@ -30,10 +32,11 @@ export default class YourDashModule implements Module {
           } as YourDashUser),
           (err) => {
             if (err) return res.sendStatus(500);
+            let key = crypto.createCipheriv("aes-256-ocb", SERVER_CONFIG.instanceEncryptionKey, null)
             fs.writeFile(
               `${ENV.FS_ORIGIN}/data/users/${username}/keys.json`,
               JSON.stringify({
-                hashedKey: '2193890134',
+                hashedKey: key.update(password, "utf-8", "hex"),
                 currentKey: '',
               }),
               (err) => {

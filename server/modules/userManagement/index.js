@@ -1,11 +1,13 @@
 import fs from 'fs';
-import { ENV } from '../../index.js';
+import { ENV, SERVER_CONFIG } from '../../index.js';
+import crypto from "crypto";
 export default class YourDashModule {
     name = 'userManagement';
     id = 'test@ewsgit.github.io';
     load(app) {
         app.post('/api/user/create/:username', (req, res) => {
             let { username } = req.params;
+            let { password } = req.headers;
             fs.mkdir(`${ENV.FS_ORIGIN}/data/users/${username}/`, { recursive: true }, (err) => {
                 if (err)
                     return res.sendStatus(500);
@@ -24,8 +26,9 @@ export default class YourDashModule {
                 }), (err) => {
                     if (err)
                         return res.sendStatus(500);
+                    let key = crypto.createCipheriv("aes-256-ocb", SERVER_CONFIG.instanceEncryptionKey, null);
                     fs.writeFile(`${ENV.FS_ORIGIN}/data/users/${username}/keys.json`, JSON.stringify({
-                        hashedKey: '2193890134',
+                        hashedKey: key.update(password, "utf-8", "hex"),
                         currentKey: '',
                     }), (err) => {
                         if (err)
@@ -63,10 +66,11 @@ export default class YourDashModule {
             });
         });
         app.get('/api/get/current/user', (req, res) => {
-            let user = JSON.parse(fs
-                .readFileSync(`${ENV.FS_ORIGIN}/data/users/${req.header('userName')}/user.json`)
-                .toString());
-            res.json(user);
+            fs.readFile(`${ENV.FS_ORIGIN}/data/users/${req.header('userName')}/user.json`, (err, data) => {
+                if (err)
+                    return res.sendStatus(404);
+                return res.send(data);
+            });
         });
     }
     unload() { }

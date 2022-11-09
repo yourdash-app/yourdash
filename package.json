@@ -17,9 +17,11 @@
     "start": "next start",
     "lint": "next lint",
     "prettier": "prettier --write .",
-    "prepare": "husky install && yarn --cwd ./server"
+    "prepare": "husky install && yarn --cwd ./server",
+    "dev:fs": "concurrently \"cd server && yarn dev\" \"yarn dev\""
   },
   "dependencies": {
+    "concurrently": "^7.5.0",
     "next": "12.1.4",
     "react": "18.0.0",
     "react-dom": "18.0.0",

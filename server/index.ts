@@ -27,6 +27,7 @@ export const SERVER_CONFIG: {
   themeColor: `#${string}`;
   activeModules: string[];
   version: string;
+  instanceEncryptionKey: string;
 } = JSON.parse(fs.readFileSync(path.join(ENV.FS_ORIGIN, './yourdash.config.json')).toString());
 
 log(JSON.stringify(SERVER_CONFIG));

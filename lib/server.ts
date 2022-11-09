@@ -4,8 +4,12 @@
  * Copyright © 2022 Ewsgit
  */
 
+interface extraHeaders {
+  [string: string]: any
+}
+
 const SERVER = {
-  get(path: string): Promise<Response> {
+  get(path: string, headers?: extraHeaders): Promise<Response> {
     console.log('[Server Request]: GET ' + path);
     console.trace();
     let defaultHeaders = {
@@ -15,7 +19,7 @@ const SERVER = {
     let url = localStorage.getItem('currentServer');
     return new Promise((resolve, reject) => {
       fetch(`${url}/api${path}`, {
-        headers: { ...defaultHeaders },
+        headers: { ...defaultHeaders, ...headers },
         method: 'GET',
       })
         .then((res) => resolve(res))
