@@ -29,7 +29,7 @@ const LoginOptions: NextPageWithLayout = () => {
           <TextInput placeholder="Username" onChange={(e) => { setUserName(e.currentTarget.value)}} />
           <TextInput placeholder="Password" type="password" onChange={(e) => { setPassword(e.currentTarget.value)}} />
           <Button onClick={() => { 
-            SERVER.get("/user/login")
+            SERVER.get("/user/login", {userName: userName, password: password})
           }} vibrant>
             Login
           </Button>
