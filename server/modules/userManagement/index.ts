@@ -1,18 +1,46 @@
-import Module from '../../module.js';
-import Express from 'express';
 import fs from 'fs';
-import { ENV, SERVER_CONFIG } from '../../index.js';
+import { ENV } from '../../index.js';
 import YourDashUser, { YourDashUserSettings } from '../../../lib/user.js';
-import crypto from "crypto"
+import crypto from 'crypto';
+import YourDashModule from './../../module.js';
+import path from 'path';
 
-export default class YourDashModule implements Module {
-  name = 'userManagement';
-  id = 'test@ewsgit.github.io' as `${string}@${string}.${string}`;
+let USER_CACHE: { [key: string]: string } = {};
 
-  load(app: Express.Application) {
+const Module: YourDashModule = {
+  name: 'userManagement',
+  id: 'userManagement',
+
+  load(app, api) {
+    app.use((req, res, next) => {
+      if (req.headers?.userName) {
+        let userName = req.headers.userName as string;
+        let sessionToken = req.headers.sessionToken as string;
+        if (USER_CACHE[userName]) {
+          if (USER_CACHE[userName] === sessionToken) {
+            next();
+          } else {
+            return res.sendStatus(401);
+          }
+        } else {
+          fs.readFile(
+            path.resolve(`${ENV.FS_ORIGIN}/data/users/${userName}/keys.json`),
+            (err, data) => {
+              if (err) return res.sendStatus(404);
+              USER_CACHE[userName] = JSON.parse(data.toString()).sessionKey;
+              if (USER_CACHE[userName] === sessionToken) {
+                next();
+              }
+            }
+          );
+        }
+      }
+    });
+
     app.post('/api/user/create/:username', (req, res) => {
       let { username } = req.params;
-      let password = req.headers.password as string
+      let password = req.headers.password as string;
+      console.log(password);
       if (!password) return res.sendStatus(500);
       fs.mkdir(`${ENV.FS_ORIGIN}/data/users/${username}/`, { recursive: true }, (err) => {
         if (err) return res.sendStatus(500);
@@ -33,12 +61,16 @@ export default class YourDashModule implements Module {
           } as YourDashUser),
           (err) => {
             if (err) return res.sendStatus(500);
-            let key = crypto.createCipheriv("aes-256-ocb", SERVER_CONFIG.instanceEncryptionKey, null)
+            let key = crypto.createCipheriv(
+              'aes-256-ocb',
+              api.SERVER_CONFIG.instanceEncryptionKey,
+              null
+            );
             fs.writeFile(
               `${ENV.FS_ORIGIN}/data/users/${username}/keys.json`,
               JSON.stringify({
-                hashedKey: key.update(password, "utf-8", "hex"),
-                currentKey: '',
+                hashedKey: key.update(password, 'utf-8', 'hex'),
+                sessionKey: '',
               }),
               (err) => {
                 if (err) return res.sendStatus(500);
@@ -70,13 +102,20 @@ export default class YourDashModule implements Module {
     });
 
     app.get('/api/user/login', (req, res) => {
-      let { userName, userToken } = req.headers;
-      if (!userName || !userToken) return res.send(401);
+      let { userName, password } = req.headers;
+      console.log({ userName, password });
+      if (!userName || !password) return res.sendStatus(401);
       fs.readFile(`${ENV.FS_ORIGIN}/data/users/${userName}/keys.json`, (err, data) => {
         if (err) return res.sendStatus(404);
-        let correctUserToken = JSON.parse(data.toString());
-        if (userToken !== correctUserToken) return res.sendStatus(403);
-        return res.send;
+        let sessionToken = JSON.parse(data.toString());
+        let decipher = crypto.createDecipheriv(
+          'aes-256-ocb',
+          api.SERVER_CONFIG.instanceEncryptionKey,
+          null
+        );
+        let userToken = decipher.update(password as string, 'utf-8', 'hex');
+        if (userToken !== sessionToken) return res.sendStatus(403);
+        return res.send();
       });
     });
 
@@ -84,14 +123,16 @@ export default class YourDashModule implements Module {
       fs.readFile(
         `${ENV.FS_ORIGIN}/data/users/${req.header('userName')}/user.json`,
         (err, data) => {
-          if (err) return res.sendStatus(404)
-          return res.send(data)
+          if (err) return res.sendStatus(404);
+          return res.send(data);
         }
       );
     });
-  }
+  },
 
-  unload() {}
+  unload() {},
 
-  install() {}
-}
+  install() {},
+};
+
+export default Module;

@@ -1,28 +1,41 @@
 import fs from 'fs';
 import { ENV } from './index.js';
 import { log } from './libServer.js';
-export default function main() {
-    if (!fs.readFileSync(`${ENV.FS_ORIGIN}/yourdash.config.json`)) {
-        let chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+import path from 'path';
+let stepCount = 2;
+let currentStep = 0;
+function increaseStep(cb) {
+    if (currentStep >= stepCount) {
+        cb();
+    }
+    currentStep++;
+}
+export default async function main(cb) {
+    if (!fs.existsSync(path.resolve(`${ENV.FS_ORIGIN}/yourdash.config.json`))) {
+        let chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_=+[{]};:@#~>.<,/?)(*&^%$£!¬`"\\|';
         let keyString = '';
-        for (let i = 0; i < length; i++) {
+        for (let i = 0; i < 64; i++) {
             keyString += chars.charAt(Math.floor(Math.random() * chars.length));
         }
-        fs.writeFile(`${ENV.FS_ORIGIN}/yourdash.config.json`, JSON.stringify({
+        fs.writeFile(path.resolve(`${ENV.FS_ORIGIN}/yourdash.config.json`), JSON.stringify({
             activeModules: ['userManagement', 'core'],
             defaultBackground: '',
             favicon: '',
             instanceEncryptionKey: keyString,
-            logo: "",
-            name: "YourDash Instance",
-            themeColor: "#a46",
-            version: "0.1.0"
+            logo: '',
+            name: 'YourDash Instance',
+            themeColor: '#a46',
+            version: '0.1.0',
         }), () => {
             log(`config file was created in the data origin directory.`);
+            increaseStep(cb);
         });
     }
-    if (!fs.readFileSync(`${ENV.FS_ORIGIN}/data/users/admin/user.json`)) {
-        fs.mkdir(`${ENV.FS_ORIGIN}/data/users/admin/`, { recursive: true }, (err) => {
+    else {
+        increaseStep(cb);
+    }
+    if (!fs.existsSync(path.resolve(`${ENV.FS_ORIGIN}/data/users/admin/user.json`))) {
+        fs.mkdir(path.resolve(`${ENV.FS_ORIGIN}/data/users/admin/`), { recursive: true }, (err) => {
             if (err)
                 return log(`${err}`);
             fs.writeFile(`${ENV.FS_ORIGIN}/data/users/admin/user.json`, JSON.stringify({
@@ -40,13 +53,18 @@ export default function main() {
             }), (err) => {
                 if (err)
                     return log(`${err}`);
-                fs.writeFile(`${ENV.FS_ORIGIN}/data/users/admin/keys.json`, JSON.stringify({
+                fs.writeFile(path.resolve(`${ENV.FS_ORIGIN}/data/users/admin/keys.json`), JSON.stringify({
                     hashedPass: '11235',
                 }), (err) => {
                     if (err)
                         return log(`${err}`);
+                    increaseStep(cb);
                 });
             });
         });
     }
+    else {
+        increaseStep(cb);
+    }
+    increaseStep(cb);
 }

@@ -1,13 +1,42 @@
 import fs from 'fs';
-import { ENV, SERVER_CONFIG } from '../../index.js';
-import crypto from "crypto";
-export default class YourDashModule {
-    name = 'userManagement';
-    id = 'test@ewsgit.github.io';
-    load(app) {
+import { ENV } from '../../index.js';
+import crypto from 'crypto';
+import path from 'path';
+let USER_CACHE = {};
+const Module = {
+    name: 'userManagement',
+    id: 'userManagement',
+    load(app, api) {
+        app.use((req, res, next) => {
+            if (req.headers?.userName) {
+                let userName = req.headers.userName;
+                let sessionToken = req.headers.sessionToken;
+                if (USER_CACHE[userName]) {
+                    if (USER_CACHE[userName] === sessionToken) {
+                        next();
+                    }
+                    else {
+                        return res.sendStatus(401);
+                    }
+                }
+                else {
+                    fs.readFile(path.resolve(`${ENV.FS_ORIGIN}/data/users/${userName}/keys.json`), (err, data) => {
+                        if (err)
+                            return res.sendStatus(404);
+                        USER_CACHE[userName] = JSON.parse(data.toString()).sessionKey;
+                        if (USER_CACHE[userName] === sessionToken) {
+                            next();
+                        }
+                    });
+                }
+            }
+        });
         app.post('/api/user/create/:username', (req, res) => {
             let { username } = req.params;
-            let { password } = req.headers;
+            let password = req.headers.password;
+            console.log(password);
+            if (!password)
+                return res.sendStatus(500);
             fs.mkdir(`${ENV.FS_ORIGIN}/data/users/${username}/`, { recursive: true }, (err) => {
                 if (err)
                     return res.sendStatus(500);
@@ -26,10 +55,10 @@ export default class YourDashModule {
                 }), (err) => {
                     if (err)
                         return res.sendStatus(500);
-                    let key = crypto.createCipheriv("aes-256-ocb", SERVER_CONFIG.instanceEncryptionKey, null);
+                    let key = crypto.createCipheriv('aes-256-ocb', api.SERVER_CONFIG.instanceEncryptionKey, null);
                     fs.writeFile(`${ENV.FS_ORIGIN}/data/users/${username}/keys.json`, JSON.stringify({
-                        hashedKey: key.update(password, "utf-8", "hex"),
-                        currentKey: '',
+                        hashedKey: key.update(password, 'utf-8', 'hex'),
+                        sessionKey: '',
                     }), (err) => {
                         if (err)
                             return res.sendStatus(500);
@@ -53,16 +82,19 @@ export default class YourDashModule {
             });
         });
         app.get('/api/user/login', (req, res) => {
-            let { userName, userToken } = req.headers;
-            if (!userName || !userToken)
-                return res.send(401);
+            let { userName, password } = req.headers;
+            console.log({ userName, password });
+            if (!userName || !password)
+                return res.sendStatus(401);
             fs.readFile(`${ENV.FS_ORIGIN}/data/users/${userName}/keys.json`, (err, data) => {
                 if (err)
                     return res.sendStatus(404);
-                let correctUserToken = JSON.parse(data.toString());
-                if (userToken !== correctUserToken)
+                let sessionToken = JSON.parse(data.toString());
+                let decipher = crypto.createDecipheriv('aes-256-ocb', api.SERVER_CONFIG.instanceEncryptionKey, null);
+                let userToken = decipher.update(password, 'utf-8', 'hex');
+                if (userToken !== sessionToken)
                     return res.sendStatus(403);
-                return res.send;
+                return res.send();
             });
         });
         app.get('/api/get/current/user', (req, res) => {
@@ -72,7 +104,8 @@ export default class YourDashModule {
                 return res.send(data);
             });
         });
-    }
-    unload() { }
-    install() { }
-}
+    },
+    unload() { },
+    install() { },
+};
+export default Module;

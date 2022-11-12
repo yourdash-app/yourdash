@@ -1,14 +1,12 @@
-export default class YourDashModule {
-    name = "test module";
-    id = "test@ewsgit.github.io";
-    constructor() { }
-    load(app) {
-        app.get("/abc-xyz", (req, res) => {
+const Module = {
+    name: 'core',
+    id: 'core',
+    load(app, _api) {
+        app.get('/abc-xyz', (req, res) => {
             res.send(`hello from ${this.id}`);
         });
-    }
-    unload() {
-    }
-    install() {
-    }
-}
+    },
+    unload() { },
+    install() { },
+};
+export default Module;
