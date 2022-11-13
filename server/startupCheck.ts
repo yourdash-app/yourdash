@@ -5,7 +5,7 @@ import { log } from './libServer.js';
 import path from 'path';
 import { encrypt } from './encryption.js';
 
-let stepCount = 2;
+let stepCount = 3;
 let currentStep = 0;
 
 function increaseStep(cb: () => void) {
@@ -22,6 +22,14 @@ export default async function main(cb: () => void) {
     groups
     admin user exists
   */
+  if (!fs.existsSync(path.resolve(ENV.FS_ORIGIN))) {
+    fs.mkdir(ENV.FS_ORIGIN, { recursive: true }, (err) => { 
+      if (err) return console.error(err)
+      increaseStep(cb)
+    })
+  } else {
+    increaseStep(cb)
+  }
   if (!fs.existsSync(path.resolve(`${ENV.FS_ORIGIN}/yourdash.config.json`))) {
     let chars = 'ABCDEF0123456789';
 

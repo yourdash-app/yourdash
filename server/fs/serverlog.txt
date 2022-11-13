@@ -1,9 +1,0 @@
------ [YOURDASH SERVER LOG] -----
-All modules loaded
-Server online :D
-loaded module: userManagement
-loaded module: core
-12:38:60 [42m[97m GET [39m[49m /test
-12:38:19 [42m[97m GET [39m[49m /api/user/login
-12:39:24 [42m[97m GET [39m[49m /api/user/login
-12:39:28 [42m[97m GET [39m[49m /api/user/login

@@ -2,7 +2,7 @@ import fs from 'fs';
 import { ENV } from './index.js';
 import { log } from './libServer.js';
 import path from 'path';
-let stepCount = 2;
+let stepCount = 3;
 let currentStep = 0;
 function increaseStep(cb) {
     if (currentStep >= stepCount) {
@@ -11,6 +11,16 @@ function increaseStep(cb) {
     currentStep++;
 }
 export default async function main(cb) {
+    if (!fs.existsSync(path.resolve(ENV.FS_ORIGIN))) {
+        fs.mkdir(ENV.FS_ORIGIN, { recursive: true }, (err) => {
+            if (err)
+                return console.error(err);
+            increaseStep(cb);
+        });
+    }
+    else {
+        increaseStep(cb);
+    }
     if (!fs.existsSync(path.resolve(`${ENV.FS_ORIGIN}/yourdash.config.json`))) {
         let chars = 'ABCDEF0123456789';
         let keyString = '';
