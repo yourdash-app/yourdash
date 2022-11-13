@@ -34,7 +34,7 @@ export interface YourDashServerConfig {
 
 startupCheck(async () => {
   const SERVER_CONFIG: YourDashServerConfig = JSON.parse(
-    await fs.readFileSync(path.resolve(`${ENV.FS_ORIGIN}/yourdash.config.json`))?.toString()
+    fs.readFileSync(path.resolve(`${ENV.FS_ORIGIN}/yourdash.config.json`))?.toString()
   );
 
   if (
@@ -122,34 +122,6 @@ startupCheck(async () => {
     })
   );
 
-  // function verifyGithubUserToken() {
-  //   fetch('https://api.github.com/')
-  //     .then((res) => res.json())
-  //     .then((res) => {
-  //       if (res) {
-  //         return true;
-  //       }
-  //       return false;
-  //     })
-  //     .catch((err) => {
-  //       log(err);
-  //       return false;
-  //     });
-  // }
-
-  // app.use((req, _res, next) => {
-  //   if (req.url.startsWith('/api')) {
-  //     // let userName = req.header('userName');
-  //     // let userToken = req.header('userToken');
-
-  //     // check if the userToken for the userName supplied matches the one on the server
-  //     // fs.readFile(`${ENV.FS_ORIGIN}/data/users/${userName}/`, (err, data) => {});
-  //     next();
-  //   } else {
-  //     next();
-  //   }
-  // });
-
   setInterval(() => {
     console.log('update');
     exec("git pull")
@@ -166,7 +138,19 @@ startupCheck(async () => {
   });
 
   app.get('/api/get/server/config', (_req, res) => {
-    res.sendFile(path.resolve(`${ENV.FS_ORIGIN}/yourdash.config.json`));
+    fs.readFile(path.resolve(`${ENV.FS_ORIGIN}/yourdash.config.json`), (err, data) => {
+      let parsedFile = JSON.parse(data.toString()) as YourDashServerConfig
+      let serverConfig = {
+        activeModules: parsedFile.activeModules,
+        defaultBackground: parsedFile.defaultBackground,
+        favicon: parsedFile.favicon,
+        logo: parsedFile.logo,
+        name: parsedFile.name,
+        themeColor: parsedFile.themeColor,
+        version: parsedFile.version
+      } as Omit<YourDashServerConfig, "instanceEncryptionKey">;
+      res.json(serverConfig)
+    })
   });
 
   app.get('/api/get/server/default/background', (_req, res) => {
@@ -177,7 +161,7 @@ startupCheck(async () => {
     res.sendFile(path.resolve(`${ENV.FS_ORIGIN}/${SERVER_CONFIG.favicon}`));
   });
 
-  app.get('/api/get/logo', (_req, res) => {
+  app.get('/api/get/server/logo', (_req, res) => {
     res.sendFile(path.resolve(`${ENV.FS_ORIGIN}/${SERVER_CONFIG.logo}`));
   });
 

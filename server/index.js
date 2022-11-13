@@ -12,7 +12,7 @@ export const ENV = {
 if (!ENV.FS_ORIGIN)
     console.error('FS_ORIGIN was not defined.');
 startupCheck(async () => {
-    const SERVER_CONFIG = JSON.parse(await fs.readFileSync(path.resolve(`${ENV.FS_ORIGIN}/yourdash.config.json`))?.toString());
+    const SERVER_CONFIG = JSON.parse(fs.readFileSync(path.resolve(`${ENV.FS_ORIGIN}/yourdash.config.json`))?.toString());
     if (SERVER_CONFIG.name === undefined ||
         SERVER_CONFIG.defaultBackground === undefined ||
         SERVER_CONFIG.favicon === undefined ||
@@ -68,7 +68,19 @@ startupCheck(async () => {
         res.send('yourdash instance');
     });
     app.get('/api/get/server/config', (_req, res) => {
-        res.sendFile(path.resolve(`${ENV.FS_ORIGIN}/yourdash.config.json`));
+        fs.readFile(path.resolve(`${ENV.FS_ORIGIN}/yourdash.config.json`), (err, data) => {
+            let parsedFile = JSON.parse(data.toString());
+            let serverConfig = {
+                activeModules: parsedFile.activeModules,
+                defaultBackground: parsedFile.defaultBackground,
+                favicon: parsedFile.favicon,
+                logo: parsedFile.logo,
+                name: parsedFile.name,
+                themeColor: parsedFile.themeColor,
+                version: parsedFile.version
+            };
+            res.json(serverConfig);
+        });
     });
     app.get('/api/get/server/default/background', (_req, res) => {
         res.sendFile(path.resolve(`${ENV.FS_ORIGIN}/${SERVER_CONFIG.defaultBackground}`));
@@ -76,7 +88,7 @@ startupCheck(async () => {
     app.get('/api/get/server/favicon', (_req, res) => {
         res.sendFile(path.resolve(`${ENV.FS_ORIGIN}/${SERVER_CONFIG.favicon}`));
     });
-    app.get('/api/get/logo', (_req, res) => {
+    app.get('/api/get/server/logo', (_req, res) => {
         res.sendFile(path.resolve(`${ENV.FS_ORIGIN}/${SERVER_CONFIG.logo}`));
     });
     app.get('/api/server/version', (_req, res) => {
