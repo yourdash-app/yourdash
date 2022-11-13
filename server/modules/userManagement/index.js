@@ -1,21 +1,29 @@
 import fs from 'fs';
 import { ENV } from '../../index.js';
-import crypto from 'crypto';
 import path from 'path';
+import { decrypt, encrypt, generateRandomStringOfLength } from '../../encryption.js';
+import chalk from 'chalk';
 let USER_CACHE = {};
 const Module = {
     name: 'userManagement',
     id: 'userManagement',
-    load(app, api) {
+    load(app, _api) {
         app.use((req, res, next) => {
-            if (req.headers?.userName) {
-                let userName = req.headers.userName;
-                let sessionToken = req.headers.sessionToken;
+            if (req.path.startsWith('/test'))
+                return next();
+            if (req.path.startsWith('/api/get/server'))
+                return next();
+            if (req.path.startsWith('/api/user/login'))
+                return next();
+            if (req.headers?.username) {
+                let userName = req.headers.username;
+                let sessionToken = req.headers.sessiontoken;
                 if (USER_CACHE[userName]) {
                     if (USER_CACHE[userName] === sessionToken) {
                         next();
                     }
                     else {
+                        console.log(chalk.bgRed(' Unauthorized '));
                         return res.sendStatus(401);
                     }
                 }
@@ -23,12 +31,16 @@ const Module = {
                     fs.readFile(path.resolve(`${ENV.FS_ORIGIN}/data/users/${userName}/keys.json`), (err, data) => {
                         if (err)
                             return res.sendStatus(404);
-                        USER_CACHE[userName] = JSON.parse(data.toString()).sessionKey;
-                        if (USER_CACHE[userName] === sessionToken) {
+                        let sessionKey = JSON.parse(data.toString()).sessionToken;
+                        if (sessionKey === sessionToken) {
+                            USER_CACHE[userName] = sessionKey;
                             next();
                         }
                     });
                 }
+            }
+            else {
+                res.sendStatus(401);
             }
         });
         app.post('/api/user/create/:username', (req, res) => {
@@ -37,12 +49,14 @@ const Module = {
             console.log(password);
             if (!password)
                 return res.sendStatus(500);
+            if (fs.existsSync(path.resolve(`${ENV.FS_ORIGIN}/data/users/${username}`)))
+                return res.sendStatus(403);
             fs.mkdir(`${ENV.FS_ORIGIN}/data/users/${username}/`, { recursive: true }, (err) => {
                 if (err)
                     return res.sendStatus(500);
                 fs.writeFile(`${ENV.FS_ORIGIN}/data/users/${username}/user.json`, JSON.stringify({
                     name: 'name',
-                    userName: 'username',
+                    userName: username,
                     profile: {
                         banner: '',
                         description: '',
@@ -55,10 +69,8 @@ const Module = {
                 }), (err) => {
                     if (err)
                         return res.sendStatus(500);
-                    let key = crypto.createCipheriv('aes-256-ocb', api.SERVER_CONFIG.instanceEncryptionKey, null);
                     fs.writeFile(`${ENV.FS_ORIGIN}/data/users/${username}/keys.json`, JSON.stringify({
-                        hashedKey: key.update(password, 'utf-8', 'hex'),
-                        sessionKey: '',
+                        hashedKey: encrypt(password),
                     }), (err) => {
                         if (err)
                             return res.sendStatus(500);
@@ -82,23 +94,31 @@ const Module = {
             });
         });
         app.get('/api/user/login', (req, res) => {
-            let { userName, password } = req.headers;
-            console.log({ userName, password });
+            let userName = req.headers.username;
+            let password = req.headers.password;
             if (!userName || !password)
                 return res.sendStatus(401);
-            fs.readFile(`${ENV.FS_ORIGIN}/data/users/${userName}/keys.json`, (err, data) => {
+            fs.readFile(path.resolve(`${ENV.FS_ORIGIN}/data/users/${userName}/keys.json`), (err, data) => {
                 if (err)
                     return res.sendStatus(404);
-                let sessionToken = JSON.parse(data.toString());
-                let decipher = crypto.createDecipheriv('aes-256-ocb', api.SERVER_CONFIG.instanceEncryptionKey, null);
-                let userToken = decipher.update(password, 'utf-8', 'hex');
-                if (userToken !== sessionToken)
+                let parsedKeysFile = JSON.parse(data.toString());
+                if (password === decrypt(parsedKeysFile.hashedKey)) {
+                    let sessionToken = generateRandomStringOfLength(256);
+                    fs.writeFile(path.resolve(`${ENV.FS_ORIGIN}/data/users/${userName}/keys.json`), JSON.stringify({ ...parsedKeysFile, sessionToken: sessionToken }), (err) => {
+                        if (err) {
+                            console.log('ERROR: ', err);
+                            return res.sendStatus(404);
+                        }
+                    });
+                    return res.send(sessionToken);
+                }
+                else {
                     return res.sendStatus(403);
-                return res.send();
+                }
             });
         });
         app.get('/api/get/current/user', (req, res) => {
-            fs.readFile(`${ENV.FS_ORIGIN}/data/users/${req.header('userName')}/user.json`, (err, data) => {
+            fs.readFile(`${ENV.FS_ORIGIN}/data/users/${req.header('username')}/user.json`, (err, data) => {
                 if (err)
                     return res.sendStatus(404);
                 return res.send(data);

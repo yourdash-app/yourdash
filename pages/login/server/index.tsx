@@ -26,10 +26,16 @@ const LoginOptions: NextPageWithLayout = () => {
     <div className={styles.root}>
       <Card>
         <ColContainer>
-          <TextInput placeholder="Username" onChange={(e) => { setUserName(e.currentTarget.value)}} />
-          <TextInput placeholder="Password" type="password" onChange={(e) => { setPassword(e.currentTarget.value)}} />
-          <Button onClick={() => { 
-            SERVER.get("/user/login", {userName: userName, password: password})
+          <TextInput placeholder="Username" onChange={(e) => { setUserName(e.currentTarget.value) }} />
+          <TextInput placeholder="Password" type="password" onChange={(e) => { setPassword(e.currentTarget.value) }} />
+          <Button onClick={() => {
+          localStorage.setItem("username", userName)
+            SERVER.get("/user/login", { password: password }).then(res => res.text()).then(res => {
+              console.log(userName)
+              console.log(password)
+              console.log(res)
+              localStorage.setItem("sessiontoken", res)
+            }).catch(err => { if (err) console.error(err) })
           }} vibrant>
             Login
           </Button>

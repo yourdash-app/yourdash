@@ -3,6 +3,7 @@ import YourDashUser from '../lib/user.js';
 import { ENV, YourDashServerConfig } from './index.js';
 import { log } from './libServer.js';
 import path from 'path';
+import { encrypt } from './encryption.js';
 
 let stepCount = 2;
 let currentStep = 0;
@@ -11,7 +12,7 @@ function increaseStep(cb: () => void) {
   if (currentStep >= stepCount) {
     cb();
   }
-    currentStep++;
+  currentStep++;
 }
 
 export default async function main(cb: () => void) {
@@ -22,8 +23,7 @@ export default async function main(cb: () => void) {
     admin user exists
   */
   if (!fs.existsSync(path.resolve(`${ENV.FS_ORIGIN}/yourdash.config.json`))) {
-    let chars =
-      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_=+[{]};:@#~>.<,/?)(*&^%$£!¬`"\\|';
+    let chars = 'ABCDEF0123456789';
 
     let keyString = '';
     for (let i = 0; i < 64; i++) {
@@ -72,7 +72,8 @@ export default async function main(cb: () => void) {
           fs.writeFile(
             path.resolve(`${ENV.FS_ORIGIN}/data/users/admin/keys.json`),
             JSON.stringify({
-              hashedPass: '11235',
+              hashedKey:
+                '36259f5ab7f984597388f4ff85fb058f:dea9e66af42874e4ed60556af78b5ee0:10f922b14de42afb9489564875a1e33b',
             }),
             (err) => {
               if (err) return log(`${err}`);

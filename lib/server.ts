@@ -5,16 +5,15 @@
  */
 
 interface extraHeaders {
-  [string: string]: any
+  [string: string]: any;
 }
 
 const SERVER = {
   get(path: string, headers?: extraHeaders): Promise<Response> {
     console.log('[Server Request]: GET ' + path);
-    console.trace();
     let defaultHeaders = {
-      userToken: localStorage.getItem('token') as string,
-      userName: localStorage.getItem('userName') as string,
+      sessiontoken: localStorage.getItem('sessiontoken') as string,
+      username: localStorage.getItem('username') as string,
     };
     let url = localStorage.getItem('currentServer');
     return new Promise((resolve, reject) => {
@@ -28,27 +27,29 @@ const SERVER = {
         });
     });
   },
-  post(path: string): Promise<Response> {
+  post(path: string, headers?: extraHeaders): Promise<Response> {
+    console.log('[Server Request]: POST ' + path);
     let defaultHeaders = {
-      userToken: localStorage.getItem('token') as string,
-      userName: localStorage.getItem('userName') as string,
+      sessiontoken: localStorage.getItem('sessiontoken') as string,
+      username: localStorage.getItem('username') as string,
     };
     let url = localStorage.getItem('currentServer');
     console.log('[Server Request]: POST ' + path);
     return fetch(`${url}/api${path}`, {
-      headers: { ...defaultHeaders },
+      headers: { ...defaultHeaders, ...headers },
       method: 'POST',
     });
   },
-  delete(path: string): Promise<Response> {
+  delete(path: string, headers?: extraHeaders): Promise<Response> {
+    console.log('[Server Request]: DELETE ' + path);
     let defaultHeaders = {
-      userToken: localStorage.getItem('token') as string,
-      userName: localStorage.getItem('userName') as string,
+      sessiontoken: localStorage.getItem('sessiontoken') as string,
+      username: localStorage.getItem('username') as string,
     };
     let url = localStorage.getItem('currentServer');
     console.log('[Server Request]: DELETE ' + path);
     return fetch(`${url}/api${path}`, {
-      headers: { ...defaultHeaders },
+      headers: { ...defaultHeaders, ...headers },
       method: 'DELETE',
     });
   },

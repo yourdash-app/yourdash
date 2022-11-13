@@ -12,7 +12,7 @@ function increaseStep(cb) {
 }
 export default async function main(cb) {
     if (!fs.existsSync(path.resolve(`${ENV.FS_ORIGIN}/yourdash.config.json`))) {
-        let chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_=+[{]};:@#~>.<,/?)(*&^%$£!¬`"\\|';
+        let chars = 'ABCDEF0123456789';
         let keyString = '';
         for (let i = 0; i < 64; i++) {
             keyString += chars.charAt(Math.floor(Math.random() * chars.length));
@@ -54,7 +54,7 @@ export default async function main(cb) {
                 if (err)
                     return log(`${err}`);
                 fs.writeFile(path.resolve(`${ENV.FS_ORIGIN}/data/users/admin/keys.json`), JSON.stringify({
-                    hashedPass: '11235',
+                    hashedKey: '36259f5ab7f984597388f4ff85fb058f:dea9e66af42874e4ed60556af78b5ee0:10f922b14de42afb9489564875a1e33b',
                 }), (err) => {
                     if (err)
                         return log(`${err}`);
