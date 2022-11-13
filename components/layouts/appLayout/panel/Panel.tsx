@@ -65,7 +65,7 @@ const Panel: React.FC<IPanel> = () => {
         }
       </div>
     </div>
-    <AuthedImg src={"/get/logo"} className={styles.serverLogo} />
+    <AuthedImg src={"/get/server/logo"} className={styles.serverLogo} />
     <div className={styles.shortcuts}>
       {userSettings?.panel.launcher.shortcuts.map((shortcut, ind) => {
         return <div key={ind} onClick={() => { router.push(shortcut.url) }}>

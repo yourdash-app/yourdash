@@ -28,6 +28,7 @@
     "requestable",
     "rgba",
     "scaleable",
+    "sessiontoken",
     "signin",
     "Supabase",
     "superpowered",
