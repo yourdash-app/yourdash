@@ -17,6 +17,7 @@ const NavigationBar: React.FC<INavigationBar> = ({ ..._divProps }) => {
       <h1>YourDash</h1>
       <Link href="/">Home</Link>
       <Link href="/projects">Projects</Link>
+      <Link href="/docs">Docs</Link>
       <Link href="https://github.com/ewsgit/yourdash">Git</Link>
       <Button onClick={() => {
         router.push("/login/")

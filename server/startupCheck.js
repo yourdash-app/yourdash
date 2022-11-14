@@ -15,7 +15,11 @@ export default async function main(cb) {
         fs.mkdir(ENV.FS_ORIGIN, { recursive: true }, (err) => {
             if (err)
                 return console.error(err);
-            increaseStep(cb);
+            fs.writeFile(path.resolve(`${ENV.FS_ORIGIN}/yourdash.svg`), '', (err) => {
+                if (err)
+                    console.error(err);
+                increaseStep(cb);
+            });
         });
     }
     else {
@@ -36,6 +40,29 @@ export default async function main(cb) {
             name: 'YourDash Instance',
             themeColor: '#a46',
             version: '0.1.0',
+            loginPageConfig: {
+                background: {
+                    src: '',
+                },
+                logo: {
+                    src: '',
+                    position: {
+                        bottom: null,
+                        left: null,
+                        right: null,
+                        top: null,
+                    },
+                },
+                message: {
+                    content: '',
+                    position: {
+                        bottom: null,
+                        left: null,
+                        right: null,
+                        top: null,
+                    },
+                },
+            },
         }), () => {
             log(`config file was created in the data origin directory.`);
             increaseStep(cb);

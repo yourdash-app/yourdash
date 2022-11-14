@@ -30,6 +30,29 @@ export interface YourDashServerConfig {
   activeModules: string[];
   version: string;
   instanceEncryptionKey: string;
+  loginPageConfig: {
+    logo: {
+      src: string;
+      position: {
+        top: number | null;
+        left: number | null;
+        bottom: number | null;
+        right: number | null;
+      };
+    };
+    background: {
+      src: string;
+    };
+    message: {
+      content: string;
+      position: {
+        top: number | null;
+        left: number | null;
+        bottom: number | null;
+        right: number | null;
+      };
+    };
+  };
 }
 
 startupCheck(async () => {
@@ -124,8 +147,8 @@ startupCheck(async () => {
 
   setInterval(() => {
     console.log('update');
-    exec("git pull")
-    process.exit()
+    exec('git pull');
+    process.exit();
   }, 43200000);
 
   app.get('/', (req, res) => {
@@ -139,7 +162,7 @@ startupCheck(async () => {
 
   app.get('/api/get/server/config', (_req, res) => {
     fs.readFile(path.resolve(`${ENV.FS_ORIGIN}/yourdash.config.json`), (err, data) => {
-      let parsedFile = JSON.parse(data.toString()) as YourDashServerConfig
+      let parsedFile = JSON.parse(data.toString()) as YourDashServerConfig;
       let serverConfig = {
         activeModules: parsedFile.activeModules,
         defaultBackground: parsedFile.defaultBackground,
@@ -147,10 +170,10 @@ startupCheck(async () => {
         logo: parsedFile.logo,
         name: parsedFile.name,
         themeColor: parsedFile.themeColor,
-        version: parsedFile.version
-      } as Omit<YourDashServerConfig, "instanceEncryptionKey">;
-      res.json(serverConfig)
-    })
+        version: parsedFile.version,
+      } as Omit<YourDashServerConfig, 'instanceEncryptionKey'>;
+      res.json(serverConfig);
+    });
   });
 
   app.get('/api/get/server/default/background', (_req, res) => {

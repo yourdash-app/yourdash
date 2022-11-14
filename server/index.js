@@ -58,7 +58,7 @@ startupCheck(async () => {
     }));
     setInterval(() => {
         console.log('update');
-        exec("git pull");
+        exec('git pull');
         process.exit();
     }, 43200000);
     app.get('/', (req, res) => {
@@ -77,7 +77,7 @@ startupCheck(async () => {
                 logo: parsedFile.logo,
                 name: parsedFile.name,
                 themeColor: parsedFile.themeColor,
-                version: parsedFile.version
+                version: parsedFile.version,
             };
             res.json(serverConfig);
         });

@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import styles from "./index.module.css"
+import styles from "./index.module.scss"
 import HomeLayout from '../components/layouts/homeLayout/HomeLayout';
 import { NextPageWithLayout } from './page';
 import Button from '../components/elements/button/Button';
@@ -47,6 +47,28 @@ const Home: NextPageWithLayout = () => {
                 <div>
                     <h2>Placeholder Text</h2>
                     <button>Learn more</button>
+                </div>
+            </section>
+            <section className={styles.section3}>
+                <div>
+                    <span>Title</span>
+                    <span>Content</span>
+                </div>
+                <div>
+                    <span>Title</span>
+                    <span>Content</span>
+                </div>
+                <div>
+                    <span>Title</span>
+                    <span>Content</span>
+                </div>
+                <div>
+                    <span>Title</span>
+                    <span>Content</span>
+                </div>
+                <div>
+                    <span>Title</span>
+                    <span>Content</span>
                 </div>
             </section>
         </div>
