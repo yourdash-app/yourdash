@@ -22,7 +22,8 @@ const Dash: NextPageWithLayout = () => {
       .then(res => {
         setUserName(res.name)
       })
-
+  }, [])
+  useEffect(() => {
     setCurrentTime((new Date().getHours() < 10 ? `0${new Date().getHours()}` : `${new Date().getHours()}`) + ":" + (new Date().getMinutes() < 10 ? `0${new Date().getMinutes()}` : `${new Date().getMinutes()}`))
 
     let interval = setInterval(() => {

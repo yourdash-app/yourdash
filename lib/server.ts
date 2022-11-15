@@ -11,6 +11,7 @@ interface extraHeaders {
 const SERVER = {
   get(path: string, headers?: extraHeaders): Promise<Response> {
     console.log('[Server Request]: GET ' + path);
+    console.trace()
     let defaultHeaders = {
       sessiontoken: localStorage.getItem('sessiontoken') as string,
       username: localStorage.getItem('username') as string,
@@ -29,6 +30,7 @@ const SERVER = {
   },
   post(path: string, headers?: extraHeaders): Promise<Response> {
     console.log('[Server Request]: POST ' + path);
+    console.trace();
     let defaultHeaders = {
       sessiontoken: localStorage.getItem('sessiontoken') as string,
       username: localStorage.getItem('username') as string,
@@ -48,6 +50,7 @@ const SERVER = {
     };
     let url = localStorage.getItem('currentServer');
     console.log('[Server Request]: DELETE ' + path);
+    console.trace();
     return fetch(`${url}/api${path}`, {
       headers: { ...defaultHeaders, ...headers },
       method: 'DELETE',

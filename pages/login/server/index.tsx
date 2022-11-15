@@ -29,12 +29,12 @@ const LoginOptions: NextPageWithLayout = () => {
           <TextInput placeholder="Username" onChange={(e) => { setUserName(e.currentTarget.value) }} />
           <TextInput placeholder="Password" type="password" onChange={(e) => { setPassword(e.currentTarget.value) }} />
           <Button onClick={() => {
-          localStorage.setItem("username", userName)
+            localStorage.setItem("username", userName)
             SERVER.get("/user/login", { password: password }).then(res => res.text()).then(res => {
-              console.log(userName)
-              console.log(password)
-              console.log(res)
-              localStorage.setItem("sessiontoken", res)
+              if (res !== "Forbidden") {
+                localStorage.setItem("sessiontoken", res)
+                router.push("/app/dash")
+              }
             }).catch(err => { if (err) console.error(err) })
           }} vibrant>
             Login
