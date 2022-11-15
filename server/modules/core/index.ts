@@ -1,20 +1,18 @@
-import Module from "../../module.js"
-import Express from "express"
+import YourDashModule from './../../module.js';
 
-export default class YourDashModule implements Module {
-  name = "test module"
-  id = "test@ewsgit.github.io" as `${string}@${string}.${string}`
-  constructor() {}
+const Module: YourDashModule = {
+  name: 'core',
+  id: 'core',
 
-  load(app: Express.Application) {
-    app.get("/abc-xyz", (req, res) => {
-      res.send(`hello from ${this.id}`)
-    })
-  }
+  load(app, _api) {
+    app.get('/abc-xyz', (req, res) => {
+      res.send(`hello from ${this.id}`);
+    });
+  },
 
-  unload() {
-  }
+  unload() {},
 
-  install() {
-  }
-}
+  install() {},
+};
+
+export default Module;

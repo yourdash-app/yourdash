@@ -1,4 +1,4 @@
-import NavigationBar from "./navigationBar/NavigationBar"
+import NavigationBar from "./../homeLayout/navigationBar/NavigationBar"
 import styles from "./HomeLayout.module.css"
 
 export interface IHomeLayout extends React.ComponentPropsWithoutRef<'div'> { }

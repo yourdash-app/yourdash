@@ -20,37 +20,8 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *   SOFTWARE.
  */
-import LoginWaitingLayout from '../../components/layouts/loginWaitingLayout/LoginWaitingLayout';
-import { NextPageWithLayout } from './../page';
-import { useEffect } from 'react';
-import { useRouter } from 'next/router';
 
-const LoginGithub: NextPageWithLayout = () => {
-  const router = useRouter()
-  useEffect(() => {
-    let urlParams = new URLSearchParams(window.location.search);
-    let token = urlParams.get("token")
-    if (token) { 
-      localStorage.setItem("token", token)
-      fetch("https://api.github.com/user", { headers: { Authorization: "token " + token } })
-        .then(res => res.json())
-        .then(res => {
-          localStorage.setItem("userName", res.login)
-        })
-      router.push("/app/")
-    } else {
-      router.push("/login/options")
-    }
-  })
-  return (
-    <span>
-      Waiting for github login server...
-    </span>
-  );
-};
-
-export default LoginGithub;
-
-LoginGithub.getLayout = (page) => {
-  return <LoginWaitingLayout>{page}</LoginWaitingLayout>
+.root {
+  overflow-y: auto;
+  height: calc(100vh - 5rem);
 }

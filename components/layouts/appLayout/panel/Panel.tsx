@@ -65,7 +65,7 @@ const Panel: React.FC<IPanel> = () => {
         }
       </div>
     </div>
-    <AuthedImg src={"/get/logo"} className={styles.serverLogo} />
+    <AuthedImg src={"/get/server/logo"} className={styles.serverLogo} />
     <div className={styles.shortcuts}>
       {userSettings?.panel.launcher.shortcuts.map((shortcut, ind) => {
         return <div key={ind} onClick={() => { router.push(shortcut.url) }}>
@@ -89,16 +89,19 @@ const Panel: React.FC<IPanel> = () => {
         <RowContainer className={styles.accountDropdownQuickActions}>
           <div onClick={() => {
             setAccountDropdownVisible(false)
+            router.push("/")
           }}>
             <Icon name='logout' color="var(--button-fg)" />
           </div>
           <div onClick={() => {
             setAccountDropdownVisible(false)
+            router.push("/about")
           }}>
             <Icon name='info-16' color="var(--button-fg)" />
           </div>
           <div onClick={() => {
             setAccountDropdownVisible(false)
+            router.push("/app/settings")
           }}>
             <Icon name='gear-16' color="var(--button-fg)" />
           </div>

@@ -1,0 +1,14 @@
+.root {
+  width: 100%;
+  height: calc(100vh - 5rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.title {
+  color: var(--card-fg);
+  margin: 0;
+  padding: 2rem;
+  padding-top: 1rem;
+}

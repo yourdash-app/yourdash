@@ -22,7 +22,8 @@ const Dash: NextPageWithLayout = () => {
       .then(res => {
         setUserName(res.name)
       })
-
+  }, [])
+  useEffect(() => {
     setCurrentTime((new Date().getHours() < 10 ? `0${new Date().getHours()}` : `${new Date().getHours()}`) + ":" + (new Date().getMinutes() < 10 ? `0${new Date().getMinutes()}` : `${new Date().getMinutes()}`))
 
     let interval = setInterval(() => {
@@ -60,15 +61,12 @@ const Dash: NextPageWithLayout = () => {
               <ColContainer>
                 <Card>abcjdasjdfjhajksdhfd</Card>
                 <Card>abcjdasjdfjhajksdhfd</Card>
-                <Card>abcjdasjdfjhajksdhfd</Card>
-                <Card>abcjdasjdfjhajksdhfd</Card>
               </ColContainer>
               <ColContainer>
                 <Card>abcjdasjdfjhajksdhfd</Card>
                 <Card>abc</Card>
               </ColContainer>
               <ColContainer>
-                <Card>abc</Card>
                 <Card>abc</Card>
                 <Card>abcjdasjdfjhajksdhfd</Card>
                 <Card>abc</Card>
@@ -95,8 +93,11 @@ function returnDashCards(currentContentPage: string, homeCards: React.ReactChild
   switch (currentContentPage) {
     case "home":
       return homeCards
+    case "git_status":
+      return <div className={styles.gitStatusMain}>
+        <h1>coming soon...</h1>
+      </div>
     case "rss":
-      fetch("")
-      return <h1>This is a test</h1>
+      return <h1>RSS / ATOM feed coming soon...</h1>
   }
 }

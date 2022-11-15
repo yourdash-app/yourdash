@@ -1,5 +1,5 @@
 import fs from 'fs';
-import {ENV} from "./index.js"
+import { ENV } from './index.js';
 
 let currentSessionLog = '----- [YOURDASH SERVER LOG] -----\n';
 

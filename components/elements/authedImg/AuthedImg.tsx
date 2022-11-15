@@ -13,14 +13,15 @@ export interface IAuthedImg extends React.ComponentPropsWithoutRef<'img'> {
 }
 
 const AuthedImg: React.FC<IAuthedImg> = ({ src, ...imgElementProps }) => {
-  const [ imgSrc, setImgSrc ] = useState(YourDashIconRawDictionary["server-error"])
+  const [ imgSrc, setImgSrc ] = useState(YourDashIconRawDictionary[ "server-error" ])
   useEffect(() => {
     SERVER.get(src)
       .then(res => res.blob())
       .then(blob => {
         setImgSrc(URL.createObjectURL(blob))
-      });
-  }, [src])
+      })
+      .catch(err => console.error(err))
+  }, [ src ])
 
   return <img src={imgSrc} alt="" {...imgElementProps} />
 };
