@@ -1,13 +1,7 @@
 import crypto from 'crypto';
-import path from 'path';
-import { ENV, YourDashServerConfig } from './index.js';
-import fs from 'fs';
+import { YourDashServerConfig } from '.';
 
-const SERVER_CONFIG: YourDashServerConfig = JSON.parse(
-  fs.readFileSync(path.resolve(`${ENV.FS_ORIGIN}/yourdash.config.json`))?.toString()
-);
-
-export function encrypt(text: string) {
+export function encrypt(text: string, SERVER_CONFIG: YourDashServerConfig) {
   let iv = crypto.randomBytes(16);
   let salt = crypto.randomBytes(16);
   let key = crypto.scryptSync(SERVER_CONFIG.instanceEncryptionKey, salt, 32);
@@ -19,7 +13,7 @@ export function encrypt(text: string) {
   return `${iv.toString('hex')}:${salt.toString('hex')}:${encrypted}`;
 }
 
-export function decrypt(text: string) {
+export function decrypt(text: string, SERVER_CONFIG: YourDashServerConfig) {
   let [ivs, salts, data] = text.split(':');
   let iv = Buffer.from(ivs, 'hex');
   let salt = Buffer.from(salts, 'hex');
@@ -36,7 +30,7 @@ export function generateRandomStringOfLength(len: number) {
   const chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
   const randomArray = Array.from(
     { length: len },
-    (v, k) => chars[Math.floor(Math.random() * chars.length)]
+    (_v, _k) => chars[Math.floor(Math.random() * chars.length)]
   );
 
   const randomString = randomArray.join('');

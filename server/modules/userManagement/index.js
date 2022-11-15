@@ -70,7 +70,7 @@ const Module = {
                     if (err)
                         return res.sendStatus(500);
                     fs.writeFile(`${ENV.FS_ORIGIN}/data/users/${username}/keys.json`, JSON.stringify({
-                        hashedKey: encrypt(password),
+                        hashedKey: encrypt(password, _api.SERVER_CONFIG),
                     }), (err) => {
                         if (err)
                             return res.sendStatus(500);
@@ -102,7 +102,7 @@ const Module = {
                 if (err)
                     return res.sendStatus(404);
                 let parsedKeysFile = JSON.parse(data.toString());
-                if (password === decrypt(parsedKeysFile.hashedKey)) {
+                if (password === decrypt(parsedKeysFile.hashedKey, _api.SERVER_CONFIG)) {
                     let sessionToken = generateRandomStringOfLength(256);
                     fs.writeFile(path.resolve(`${ENV.FS_ORIGIN}/data/users/${userName}/keys.json`), JSON.stringify({ ...parsedKeysFile, sessionToken: sessionToken }), (err) => {
                         if (err) {

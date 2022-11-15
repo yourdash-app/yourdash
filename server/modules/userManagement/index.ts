@@ -75,7 +75,7 @@ const Module: YourDashModule = {
             fs.writeFile(
               `${ENV.FS_ORIGIN}/data/users/${username}/keys.json`,
               JSON.stringify({
-                hashedKey: encrypt(password),
+                hashedKey: encrypt(password, _api.SERVER_CONFIG),
               }),
               (err) => {
                 if (err) return res.sendStatus(500);
@@ -115,7 +115,7 @@ const Module: YourDashModule = {
         (err, data) => {
           if (err) return res.sendStatus(404);
           let parsedKeysFile = JSON.parse(data.toString());
-          if (password === decrypt(parsedKeysFile.hashedKey)) {
+          if (password === decrypt(parsedKeysFile.hashedKey, _api.SERVER_CONFIG)) {
             // user is now authorized :D
             let sessionToken = generateRandomStringOfLength(256);
             fs.writeFile(

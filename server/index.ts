@@ -9,6 +9,8 @@ import cors from 'cors';
 import express from 'express';
 import fs from 'fs';
 import path from 'path';
+import YourDashUser from '../lib/user.js';
+import { encrypt } from './encryption.js';
 import { log } from './libServer.js';
 import YourDashModule from './module.js';
 import startupCheck from './startupCheck.js';
