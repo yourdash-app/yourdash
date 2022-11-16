@@ -9,10 +9,10 @@ let stepCount = 3;
 let currentStep = 0;
 
 function increaseStep(cb: () => void) {
+  currentStep++;
   if (currentStep >= stepCount) {
     cb();
   }
-  currentStep++;
 }
 
 export default async function main(cb: () => void) {
@@ -25,10 +25,7 @@ export default async function main(cb: () => void) {
   if (!fs.existsSync(path.resolve(ENV.FS_ORIGIN))) {
     fs.mkdir(ENV.FS_ORIGIN, { recursive: true }, (err) => {
       if (err) return console.error(err);
-      fs.writeFile(path.resolve(`${ENV.FS_ORIGIN}/yourdash.svg`), '', (err) => {
-        if (err) console.error(err);
-        increaseStep(cb);
-      });
+      increaseStep(cb);
     });
   } else {
     increaseStep(cb);
@@ -83,9 +80,6 @@ export default async function main(cb: () => void) {
   } else {
     increaseStep(cb);
   }
-  const SERVER_CONFIG: YourDashServerConfig = JSON.parse(
-    fs.readFileSync(path.resolve(`${ENV.FS_ORIGIN}/yourdash.config.json`))?.toString()
-  );
   if (!fs.existsSync(path.resolve(`${ENV.FS_ORIGIN}/data/users/admin/user.json`))) {
     fs.mkdir(path.resolve(`${ENV.FS_ORIGIN}/data/users/admin/`), { recursive: true }, (err) => {
       if (err) return log(`${err}`);
@@ -106,6 +100,9 @@ export default async function main(cb: () => void) {
         } as YourDashUser),
         (err) => {
           if (err) return log(`${err}`);
+          const SERVER_CONFIG: YourDashServerConfig = JSON.parse(
+            fs.readFileSync(path.resolve(`${ENV.FS_ORIGIN}/yourdash.config.json`))?.toString()
+          );
           fs.writeFile(
             path.resolve(`${ENV.FS_ORIGIN}/data/users/admin/keys.json`),
             JSON.stringify({
@@ -122,5 +119,4 @@ export default async function main(cb: () => void) {
   } else {
     increaseStep(cb);
   }
-  increaseStep(cb);
 }
