@@ -33,7 +33,7 @@ export default async function main(cb) {
             defaultBackground: '',
             favicon: '',
             instanceEncryptionKey: keyString,
-            logo: '',
+            logo: `../yourdash.svg`,
             name: 'YourDash Instance',
             themeColor: '#a46',
             version: '0.1.0',
@@ -93,7 +93,21 @@ export default async function main(cb) {
                 }), (err) => {
                     if (err)
                         return log(`${err}`);
-                    increaseStep(cb);
+                    fs.writeFile(`${ENV.FS_ORIGIN}/data/users/admin/config.json`, JSON.stringify({
+                        panel: {
+                            launcher: {
+                                shortcuts: [
+                                    {
+                                        icon: fs.readFileSync(path.resolve(`${ENV.FS_ORIGIN}/../yourdash.svg`)).toString('base64'),
+                                    },
+                                ],
+                            },
+                        },
+                    }), (err) => {
+                        if (err)
+                            return log(`${err}`);
+                        increaseStep(cb);
+                    });
                 });
             });
         });

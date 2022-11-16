@@ -13,7 +13,7 @@ const Dash: NextPageWithLayout = () => {
   const [ userName, setUserName ] = useState("")
   const [ currentTime, setCurrentTime ] = useState("00:01")
   // const [ currentContentPage, setCurrentContentPage ] = useState("home")
-  const [ currentContentPage, setCurrentContentPage ] = useState("rss")
+  const [ currentContentPage, setCurrentContentPage ] = useState("home")
   const [ visibleChips, setVisibleChips ] = useState([ { name: "Home", id: "home" }, { name: "Git Status", id: "git_status" }, { name: "Rss Feed", id: "rss" } ])
 
   useEffect(() => {
@@ -22,6 +22,7 @@ const Dash: NextPageWithLayout = () => {
       .then(res => {
         setUserName(res.name)
       })
+      .catch(err => {setUserName(err)})
   }, [])
   useEffect(() => {
     setCurrentTime((new Date().getHours() < 10 ? `0${new Date().getHours()}` : `${new Date().getHours()}`) + ":" + (new Date().getMinutes() < 10 ? `0${new Date().getMinutes()}` : `${new Date().getMinutes()}`))
@@ -95,7 +96,7 @@ function returnDashCards(currentContentPage: string, homeCards: React.ReactChild
       return homeCards
     case "git_status":
       return <div className={styles.gitStatusMain}>
-        <h1>coming soon...</h1>
+        <h1>Git Status coming soon...</h1>
       </div>
     case "rss":
       return <h1>RSS / ATOM feed coming soon...</h1>

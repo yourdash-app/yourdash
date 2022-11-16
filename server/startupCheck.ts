@@ -1,5 +1,5 @@
 import fs from 'fs';
-import YourDashUser from '../lib/user.js';
+import YourDashUser, { YourDashUserSettings } from '../lib/user.js';
 import { ENV, YourDashServerConfig } from './index.js';
 import { log } from './libServer.js';
 import path from 'path';
@@ -44,7 +44,7 @@ export default async function main(cb: () => void) {
         defaultBackground: '',
         favicon: '',
         instanceEncryptionKey: keyString,
-        logo: '',
+        logo: `../yourdash.svg`,
         name: 'YourDash Instance',
         themeColor: '#a46',
         version: '0.1.0',
@@ -110,7 +110,24 @@ export default async function main(cb: () => void) {
             }),
             (err) => {
               if (err) return log(`${err}`);
-              increaseStep(cb);
+              fs.writeFile(
+                `${ENV.FS_ORIGIN}/data/users/admin/config.json`,
+                JSON.stringify({
+                  panel: {
+                    launcher: {
+                      shortcuts: [
+                        {
+                          icon: fs.readFileSync(path.resolve(`${ENV.FS_ORIGIN}/../yourdash.svg`)).toString('base64'),
+                        },
+                      ],
+                    },
+                  },
+                } as YourDashUserSettings),
+                (err) => {
+                  if (err) return log(`${err}`);
+                  increaseStep(cb);
+                }
+              );
             }
           );
         }
