@@ -57,7 +57,7 @@ export interface YourDashServerConfig {
 
 startupCheck(async () => {
   const SERVER_CONFIG: YourDashServerConfig = JSON.parse(
-    fs.readFileSync(path.resolve(`${ENV.FS_ORIGIN}/yourdash.config.json`))?.toString()
+    fs.readFileSync(path.resolve(`${ENV.FS_ORIGIN}/yourdash.config.json`)).toString()
   );
 
   if (

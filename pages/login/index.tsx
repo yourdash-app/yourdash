@@ -72,10 +72,8 @@ const ServerLogin: NextPageWithLayout = () => {
         }}>Continue</Button>
       </ColContainer>
     </Card>
-    <Link href="/docs/" passHref>
-      <a className={styles.link}>
-        Setup your own server.
-      </a>
+    <Link href="/docs/" className={styles.link}>
+      Setup your own server.
     </Link>
   </div>
 }

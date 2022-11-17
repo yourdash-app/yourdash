@@ -12,7 +12,7 @@ export const ENV = {
 if (!ENV.FS_ORIGIN)
     console.error('FS_ORIGIN was not defined.');
 startupCheck(async () => {
-    const SERVER_CONFIG = JSON.parse(fs.readFileSync(path.resolve(`${ENV.FS_ORIGIN}/yourdash.config.json`))?.toString());
+    const SERVER_CONFIG = JSON.parse(fs.readFileSync(path.resolve(`${ENV.FS_ORIGIN}/yourdash.config.json`)).toString());
     if (SERVER_CONFIG.name === undefined ||
         SERVER_CONFIG.defaultBackground === undefined ||
         SERVER_CONFIG.favicon === undefined ||

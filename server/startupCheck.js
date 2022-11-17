@@ -87,7 +87,7 @@ export default async function main(cb) {
             }), (err) => {
                 if (err)
                     return log(`${err}`);
-                const SERVER_CONFIG = JSON.parse(fs.readFileSync(path.resolve(`${ENV.FS_ORIGIN}/yourdash.config.json`))?.toString());
+                const SERVER_CONFIG = JSON.parse(fs.readFileSync(path.resolve(`${ENV.FS_ORIGIN}/yourdash.config.json`)).toString());
                 fs.writeFile(path.resolve(`${ENV.FS_ORIGIN}/data/users/admin/keys.json`), JSON.stringify({
                     hashedKey: encrypt('admin', SERVER_CONFIG),
                 }), (err) => {

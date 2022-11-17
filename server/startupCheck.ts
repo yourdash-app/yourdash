@@ -101,7 +101,7 @@ export default async function main(cb: () => void) {
         (err) => {
           if (err) return log(`${err}`);
           const SERVER_CONFIG: YourDashServerConfig = JSON.parse(
-            fs.readFileSync(path.resolve(`${ENV.FS_ORIGIN}/yourdash.config.json`))?.toString()
+            fs.readFileSync(path.resolve(`${ENV.FS_ORIGIN}/yourdash.config.json`)).toString()
           );
           fs.writeFile(
             path.resolve(`${ENV.FS_ORIGIN}/data/users/admin/keys.json`),

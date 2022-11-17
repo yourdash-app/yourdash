@@ -15,7 +15,7 @@ const Module = {
                 return next();
             if (req.path.startsWith('/api/user/login'))
                 return next();
-            if (req.headers?.username) {
+            if (req.headers.username) {
                 let userName = req.headers.username;
                 let sessionToken = req.headers.sessiontoken;
                 if (USER_CACHE[userName]) {
