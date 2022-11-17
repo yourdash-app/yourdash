@@ -27,8 +27,8 @@ const ServerLogin: NextPageWithLayout = () => {
       return setUrlIsValid(false)
     }
 
-    if (!url.startsWith("https://") && !url.startsWith("http://")) {
-      setMessage("Valid urls begin with 'https://' or 'http://'")
+    if (!url.startsWith("https://")) {
+      setMessage("Valid urls begin with 'https://'")
       return setUrlIsValid(false)
     }
     setMessage("")
