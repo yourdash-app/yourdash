@@ -99,7 +99,7 @@ startupCheck(async () => {
         res.send(SERVER_CONFIG.version);
     });
     app.get('/nextcloud/remote.php/dav/files/:username', (_req, _res) => { });
-    app.listen(80, () => {
+    app.listen(3560, () => {
         log('Server online :D');
     });
 });

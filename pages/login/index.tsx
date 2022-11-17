@@ -41,21 +41,26 @@ const ServerLogin: NextPageWithLayout = () => {
         setMessage("Valid urls can't end with a '.'")
         return setUrlIsValid(false)
       }
+      if (url.endsWith("/")) {
+        setMessage("Valid urls can't end with a '/'")
+        return setUrlIsValid(false)
+      }
     }
     setMessage("Checking if this url is valid...")
 
-    fetch(url + "/test")
+    fetch(`${url}:3560/test`)
       .then(res => res.text())
       .then(text => {
         if (text === "yourdash instance") {
           setMessage("This url is a valid yourdash server 🥳")
-          setUrlIsValid(true)
+          return setUrlIsValid(true)
         } else {
           setMessage("This url is not a valid yourdash server")
           return setUrlIsValid(false)
         }
       })
-      .catch(() => {
+      .catch((err) => {
+        if (urlIsValid) return
         setMessage("This url did not respond")
         return setUrlIsValid(false)
       })
@@ -67,7 +72,7 @@ const ServerLogin: NextPageWithLayout = () => {
         <h1 className={styles.title}>Please enter the url of your server.</h1>
         <TextInput onBlur={() => { setMessage("") }} invalidReason={message} isValid={urlIsValid} onChange={(e) => { setUrl(e.target.value) }} />
         <Button disabled={!urlIsValid} onClick={() => {
-          localStorage.setItem("currentServer", url)
+          localStorage.setItem("currentServer", `${url}:3560`)
           router.push("/login/server")
         }}>Continue</Button>
       </ColContainer>

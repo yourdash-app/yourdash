@@ -79,7 +79,9 @@ const Module = {
                                 launcher: {
                                     shortcuts: [
                                         {
-                                            icon: URL.createObjectURL(new Blob([fs.readFileSync(path.resolve(`${ENV.FS_ORIGIN}./../yourdash.svg`))])),
+                                            icon: URL.createObjectURL(new Blob([
+                                                fs.readFileSync(path.resolve(`${ENV.FS_ORIGIN}./../yourdash.svg`)),
+                                            ])),
                                         },
                                     ],
                                 },
