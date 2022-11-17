@@ -87,7 +87,7 @@ const Module: YourDashModule = {
                         shortcuts: [
                           {
                             icon: URL.createObjectURL(
-                              new Blob([fs.readFileSync(`./yourdash.svg`)])
+                              new Blob([fs.readFileSync(path.resolve(`${ENV.FS_ORIGIN}./../yourdash.svg`))])
                             ),
                           },
                         ],
