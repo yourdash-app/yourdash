@@ -1,8 +1,9 @@
-import styles from './NavigationBar.module.css';
-import Link from "next/link"
-import Button from "./../../../elements/button/Button"
-import { useRouter } from 'next/router';
+import Link from "next/link";
+import { useRouter } from 'next/navigation';
+import ButtonLink from "../../../elements/buttonLink/ButtonLink";
 import Icon from '../../../elements/icon/Icon';
+import Button from "./../../../elements/button/Button";
+import styles from './NavigationBar.module.css';
 
 export interface INavigationBar extends React.ComponentPropsWithoutRef<'div'> { }
 
@@ -19,9 +20,7 @@ const NavigationBar: React.FC<INavigationBar> = ({ ..._divProps }) => {
       <Link href="/projects">Projects</Link>
       <Link href="/docs">Docs</Link>
       <Link href="https://github.com/ewsgit/yourdash">Git</Link>
-      <Button onClick={() => {
-        router.push("/login/")
-      }} vibrant>Login</Button>
+      <ButtonLink href="/login/" vibrant>Login</ButtonLink>
     </div>
   </>
 };

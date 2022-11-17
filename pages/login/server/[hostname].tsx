@@ -1,10 +1,11 @@
-import { useRouter } from 'next/router';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 
 export default function ServerSelectionLink() {
+  const searchParams = useSearchParams();
   const router = useRouter();
   useEffect(() => {
-    let hostname = router.query.hostname as string
+    let hostname = searchParams.get("hostname") as string
     if (!hostname) {
       router.push("/login/")
       return

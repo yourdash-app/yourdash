@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from "react"
-import ColContainer from "../../../components/containers/ColContainer/ColContainer";
-import CardButton from "../../../components/elements/cardButton/CardButton";
-import Card from "../../../components/elements/card/Card";
-import { NextPageWithLayout } from "../../page";
-import styles from "./index.module.scss"
 import { useRouter } from "next/router";
-import HomeLayout from "../../../components/layouts/homeLayout/HomeLayout";
-import TextInput from "../../../components/elements/textInput/TextInput";
+import { useEffect, useState } from "react";
+import ColContainer from "../../../components/containers/ColContainer/ColContainer";
 import Button from "../../../components/elements/button/Button";
+import Card from "../../../components/elements/card/Card";
+import TextInput from "../../../components/elements/textInput/TextInput";
+import HomeLayout from "../../../components/layouts/homeLayout/HomeLayout";
 import SERVER from "../../../lib/server";
+import { NextPageWithLayout } from "../../page";
+import styles from "./index.module.scss";
 
 const LoginOptions: NextPageWithLayout = () => {
   const router = useRouter()
