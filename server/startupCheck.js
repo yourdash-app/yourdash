@@ -6,21 +6,17 @@ import { encrypt } from './encryption.js';
 let stepCount = 3;
 let currentStep = 0;
 function increaseStep(cb) {
+    currentStep++;
     if (currentStep >= stepCount) {
         cb();
     }
-    currentStep++;
 }
 export default async function main(cb) {
     if (!fs.existsSync(path.resolve(ENV.FS_ORIGIN))) {
         fs.mkdir(ENV.FS_ORIGIN, { recursive: true }, (err) => {
             if (err)
                 return console.error(err);
-            fs.writeFile(path.resolve(`${ENV.FS_ORIGIN}/yourdash.svg`), '', (err) => {
-                if (err)
-                    console.error(err);
-                increaseStep(cb);
-            });
+            increaseStep(cb);
         });
     }
     else {
@@ -37,7 +33,7 @@ export default async function main(cb) {
             defaultBackground: '',
             favicon: '',
             instanceEncryptionKey: keyString,
-            logo: '',
+            logo: `../yourdash.svg`,
             name: 'YourDash Instance',
             themeColor: '#a46',
             version: '0.1.0',
@@ -72,7 +68,6 @@ export default async function main(cb) {
     else {
         increaseStep(cb);
     }
-    const SERVER_CONFIG = JSON.parse(fs.readFileSync(path.resolve(`${ENV.FS_ORIGIN}/yourdash.config.json`))?.toString());
     if (!fs.existsSync(path.resolve(`${ENV.FS_ORIGIN}/data/users/admin/user.json`))) {
         fs.mkdir(path.resolve(`${ENV.FS_ORIGIN}/data/users/admin/`), { recursive: true }, (err) => {
             if (err)
@@ -92,12 +87,27 @@ export default async function main(cb) {
             }), (err) => {
                 if (err)
                     return log(`${err}`);
+                const SERVER_CONFIG = JSON.parse(fs.readFileSync(path.resolve(`${ENV.FS_ORIGIN}/yourdash.config.json`))?.toString());
                 fs.writeFile(path.resolve(`${ENV.FS_ORIGIN}/data/users/admin/keys.json`), JSON.stringify({
                     hashedKey: encrypt('admin', SERVER_CONFIG),
                 }), (err) => {
                     if (err)
                         return log(`${err}`);
-                    increaseStep(cb);
+                    fs.writeFile(`${ENV.FS_ORIGIN}/data/users/admin/config.json`, JSON.stringify({
+                        panel: {
+                            launcher: {
+                                shortcuts: [
+                                    {
+                                        icon: fs.readFileSync(path.resolve(`${ENV.FS_ORIGIN}/../yourdash.svg`)).toString('base64'),
+                                    },
+                                ],
+                            },
+                        },
+                    }), (err) => {
+                        if (err)
+                            return log(`${err}`);
+                        increaseStep(cb);
+                    });
                 });
             });
         });
@@ -105,5 +115,4 @@ export default async function main(cb) {
     else {
         increaseStep(cb);
     }
-    increaseStep(cb);
 }

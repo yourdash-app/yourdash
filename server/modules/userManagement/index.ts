@@ -35,7 +35,7 @@ const Module: YourDashModule = {
               if (err) return res.sendStatus(404);
               let sessionKey = JSON.parse(data.toString()).sessionToken;
               if (sessionKey === sessionToken) {
-                USER_CACHE[ userName ] = sessionKey;
+                USER_CACHE[userName] = sessionKey;
                 next();
               }
             }
@@ -87,7 +87,7 @@ const Module: YourDashModule = {
                         shortcuts: [
                           {
                             icon: URL.createObjectURL(
-                              new Blob([fs.readFileSync(`${ENV.FS_ORIGIN}/yourdash.svg`)])
+                              new Blob([fs.readFileSync(`./yourdash.svg`)])
                             ),
                           },
                         ],
@@ -139,6 +139,16 @@ const Module: YourDashModule = {
     app.get('/api/get/current/user', (req, res) => {
       fs.readFile(
         `${ENV.FS_ORIGIN}/data/users/${req.header('username')}/user.json`,
+        (err, data) => {
+          if (err) return res.sendStatus(404);
+          return res.send(data);
+        }
+      );
+    });
+
+    app.get('/api/get/current/user/settings', (req, res) => {
+      fs.readFile(
+        `${ENV.FS_ORIGIN}/data/users/${req.header('username')}/config.json`,
         (err, data) => {
           if (err) return res.sendStatus(404);
           return res.send(data);

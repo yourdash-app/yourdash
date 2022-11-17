@@ -79,7 +79,7 @@ const Module = {
                                 launcher: {
                                     shortcuts: [
                                         {
-                                            icon: URL.createObjectURL(new Blob([fs.readFileSync(`${ENV.FS_ORIGIN}/yourdash.svg`)])),
+                                            icon: URL.createObjectURL(new Blob([fs.readFileSync(`./yourdash.svg`)])),
                                         },
                                     ],
                                 },
@@ -119,6 +119,13 @@ const Module = {
         });
         app.get('/api/get/current/user', (req, res) => {
             fs.readFile(`${ENV.FS_ORIGIN}/data/users/${req.header('username')}/user.json`, (err, data) => {
+                if (err)
+                    return res.sendStatus(404);
+                return res.send(data);
+            });
+        });
+        app.get('/api/get/current/user/settings', (req, res) => {
+            fs.readFile(`${ENV.FS_ORIGIN}/data/users/${req.header('username')}/config.json`, (err, data) => {
                 if (err)
                     return res.sendStatus(404);
                 return res.send(data);
