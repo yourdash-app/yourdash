@@ -27,7 +27,7 @@ const ServerLogin: NextPageWithLayout = () => {
       return setUrlIsValid(false)
     }
 
-    if (!url.startsWith("https://")) {
+    if (!url.startsWith("https://") && window.location.port !== "3000") {
       setMessage("Valid urls begin with 'https://'")
       return setUrlIsValid(false)
     }

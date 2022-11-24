@@ -11,6 +11,7 @@
   grid-template-columns: auto auto 1fr auto auto;
   align-items: center;
   color: var(--app-panel-fg);
+  animation: slideInAnimation 1s ease-in-out forwards;
 }
 
 .tray {
@@ -18,6 +19,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  animation: fadeInAnimation 2s ease-in-out forwards;
 }
 
 .trayIcon {
@@ -189,9 +191,63 @@
   }
 }
 
-.shortcuts > * {
-  margin: 0.25rem;
-  margin-right: 0;
+.shortcuts {
+  margin-left: 1.25rem;
+  margin-right: 0.5rem;
   height: calc(var(--app-panel-height) - 0.5rem);
-  background-color: #000000;
+  background-color: red;
+  box-sizing: border-box;
+  animation: slideUpAnimation 2s ease-in-out forwards;
+  position: relative;
+  &:before {
+    content: '';
+    height: calc(var(--app-panel-height) - 1rem);
+    width: 0.25rem;
+    border-radius: 1rem;
+    background-color: var(--app-panel-separator);
+    position: absolute;
+    left: -0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  > * {
+    position: relative;
+    display: flex;
+    > img {
+      padding: 0.25rem;
+      box-sizing: border-box;
+      height: calc(var(--app-panel-height) - 0.5rem);
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      border-radius: 0.25rem;
+    }
+  }
+}
+
+@keyframes slideInAnimation {
+  0% {
+    transform: translateY(-200%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUpAnimation {
+  0% {
+    transform: translateY(200%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInAnimation {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }

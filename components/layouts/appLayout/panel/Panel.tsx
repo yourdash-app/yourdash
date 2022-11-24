@@ -70,7 +70,7 @@ const Panel: React.FC<IPanel> = () => {
       {userSettings?.panel.launcher.shortcuts.map((shortcut, ind) => {
         return <div key={ind} onClick={() => { router.push(shortcut.url) }}>
           <img src={shortcut.icon} alt="" />
-          <div></div>
+          <span>{shortcut.name}</span>
         </div>
       })}
     </div>
