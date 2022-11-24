@@ -18,7 +18,7 @@ const Module: YourDashModule = {
       if (req.path.startsWith('/test')) return next();
       if (req.path.startsWith('/api/get/server')) return next();
       if (req.path.startsWith('/api/user/login')) return next();
-      if (req.headers?.username) {
+      if (req.headers.username) {
         let userName = req.headers.username as string;
         let sessionToken = req.headers.sessiontoken as string;
         if (USER_CACHE[userName]) {
@@ -87,7 +87,9 @@ const Module: YourDashModule = {
                         shortcuts: [
                           {
                             icon: URL.createObjectURL(
-                              new Blob([fs.readFileSync(`./yourdash.svg`)])
+                              new Blob([
+                                fs.readFileSync(path.resolve(`${ENV.FS_ORIGIN}./../yourdash.svg`)),
+                              ])
                             ),
                           },
                         ],

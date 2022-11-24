@@ -1,7 +1,7 @@
 import fs from 'fs';
 import YourDashUser, { YourDashUserSettings } from '../lib/user.js';
 import { ENV, YourDashServerConfig } from './index.js';
-import { log } from './libServer.js';
+import { log, returnBase64Image } from './libServer.js';
 import path from 'path';
 import { encrypt } from './encryption.js';
 
@@ -101,7 +101,7 @@ export default async function main(cb: () => void) {
         (err) => {
           if (err) return log(`${err}`);
           const SERVER_CONFIG: YourDashServerConfig = JSON.parse(
-            fs.readFileSync(path.resolve(`${ENV.FS_ORIGIN}/yourdash.config.json`))?.toString()
+            fs.readFileSync(path.resolve(`${ENV.FS_ORIGIN}/yourdash.config.json`)).toString()
           );
           fs.writeFile(
             path.resolve(`${ENV.FS_ORIGIN}/data/users/admin/keys.json`),
@@ -117,8 +117,10 @@ export default async function main(cb: () => void) {
                     launcher: {
                       shortcuts: [
                         {
-                          icon: fs.readFileSync(path.resolve(`${ENV.FS_ORIGIN}/../yourdash.svg`)).toString('base64'),
-                        },
+                          icon: returnBase64Image(path.resolve(`${ENV.FS_ORIGIN}/../yourdash256.png`)),
+                          name: "Dashboard",
+                          url: "/app/dash"
+                        }
                       ],
                     },
                   },

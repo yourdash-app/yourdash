@@ -57,7 +57,7 @@ export interface YourDashServerConfig {
 
 startupCheck(async () => {
   const SERVER_CONFIG: YourDashServerConfig = JSON.parse(
-    fs.readFileSync(path.resolve(`${ENV.FS_ORIGIN}/yourdash.config.json`))?.toString()
+    fs.readFileSync(path.resolve(`${ENV.FS_ORIGIN}/yourdash.config.json`)).toString()
   );
 
   if (
@@ -200,7 +200,7 @@ startupCheck(async () => {
 
   app.get('/nextcloud/remote.php/dav/files/:username', (_req, _res) => {});
 
-  app.listen(80, () => {
+  app.listen(3560, () => {
     log('Server online :D');
   });
 });

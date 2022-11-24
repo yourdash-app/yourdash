@@ -13,3 +13,7 @@ export function log(input: string) {
     }
   });
 }
+
+export function returnBase64Image(path: string) {
+  return 'data:image/gif;base64,' + fs.readFileSync(path, 'base64');
+}

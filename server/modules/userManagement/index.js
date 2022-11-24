@@ -15,7 +15,7 @@ const Module = {
                 return next();
             if (req.path.startsWith('/api/user/login'))
                 return next();
-            if (req.headers?.username) {
+            if (req.headers.username) {
                 let userName = req.headers.username;
                 let sessionToken = req.headers.sessiontoken;
                 if (USER_CACHE[userName]) {
@@ -79,7 +79,9 @@ const Module = {
                                 launcher: {
                                     shortcuts: [
                                         {
-                                            icon: URL.createObjectURL(new Blob([fs.readFileSync(`./yourdash.svg`)])),
+                                            icon: URL.createObjectURL(new Blob([
+                                                fs.readFileSync(path.resolve(`${ENV.FS_ORIGIN}./../yourdash.svg`)),
+                                            ])),
                                         },
                                     ],
                                 },
