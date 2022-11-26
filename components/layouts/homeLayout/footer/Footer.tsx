@@ -20,7 +20,7 @@ const Footer: React.FC<IFooter> = ({ ..._divProps }) => {
       </section>
       <footer>
         <section>
-          <span>YourDash ©️ 2022 Ewsgit</span>
+          <span>YourDash © 2022 Ewsgit</span>
         </section>
         <section>
           <span></span>

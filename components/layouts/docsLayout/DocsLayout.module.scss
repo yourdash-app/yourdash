@@ -1,0 +1,10 @@
+.root {
+  overflow-y: auto;
+  height: calc(100vh - 5rem);
+  > section {
+    height: 100%;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1rem;
+  }
+}

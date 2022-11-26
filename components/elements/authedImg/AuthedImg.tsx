@@ -23,7 +23,7 @@ const AuthedImg: React.FC<IAuthedImg> = ({ src, ...imgElementProps }) => {
       .catch(err => console.error(err))
   }, [ src ])
 
-  return <img src={imgSrc} alt="" {...imgElementProps} />
+  return <img draggable={false} src={imgSrc} alt="" {...imgElementProps} />
 };
 
 export default AuthedImg;

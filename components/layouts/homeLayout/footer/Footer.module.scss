@@ -12,8 +12,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding-left: 3rem;
+    padding-left: 1rem;
     padding-right: 3rem;
+    > h1 {
+      padding-left: 0.5rem;
+    }
   }
 
   > footer {
@@ -24,9 +27,37 @@
     grid-column-end: 3;
     display: flex;
     align-items: center;
-    > section {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    box-sizing: border-box;
+  }
+  > section {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    display: flex;
+    align-items: center;
+    > a {
       padding-left: 1rem;
       padding-right: 1rem;
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+      border-radius: 100rem;
+      margin-right: 0.5rem;
+      text-decoration: none;
+      transition: var(--transition);
+      background-color: var(--chip-bg);
+      color: var(--chip-fg);
+      &:hover {
+        background-color: var(--chip-hover-bg);
+        color: var(--chip-hover-fg);
+      }
+      &:active {
+        background-color: var(--chip-active-bg);
+        color: var(--chip-active-fg);
+      }
+      &:last-child {
+        margin-right: 0;
+      }
     }
   }
 }

@@ -1,0 +1,9 @@
+.component {
+  background: var(--container-bg);
+  width: 15rem;
+  transition: var(--transition);
+}
+
+.expanded {
+  width: 25rem;
+}

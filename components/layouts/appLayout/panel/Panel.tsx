@@ -39,6 +39,9 @@ const Panel: React.FC<IPanel> = () => {
       .then(res => {
         setUserData(res)
       })
+      .catch(err => {
+        router.push("/")
+      })
   }, [])
   return <div className={styles.component}>
     <div className={styles.launcher} onClick={() => { setLauncherSlideOutVisible(!launcherSlideOutVisible) }}>
@@ -66,16 +69,23 @@ const Panel: React.FC<IPanel> = () => {
       </div>
     </div>
     <AuthedImg src={"/get/server/logo"} className={styles.serverLogo} />
+    {/* <h2 className={styles.serverName}>YourDash</h2> */}
     <div className={styles.shortcuts}>
       {userSettings?.panel.launcher.shortcuts.map((shortcut, ind) => {
         return <div key={ind} onClick={() => { router.push(shortcut.url) }}>
-          <img src={shortcut.icon} alt="" />
+          <div>
+            <img draggable={false} src={shortcut.icon} alt="" />
+            {
+              router.pathname === shortcut.url ?
+                <div data-active-indicator></div> : <div></div>
+            }
+          </div>
           <span>{shortcut.name}</span>
         </div>
       })}
     </div>
     <div className={styles.tray}>
-      <Icon name="browser-16" className={styles.trayIcon} color={"#ffffff"} />
+      <Icon name="browser-16" className={styles.trayIcon} color={"var(--app-panel-fg)"} />
     </div>
     <div className={styles.account}>
       <img onClick={() => { setAccountDropdownVisible(!accountDropdownVisible) }} tabIndex={0} src={

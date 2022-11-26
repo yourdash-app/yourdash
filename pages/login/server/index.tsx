@@ -12,7 +12,7 @@ import styles from "./index.module.scss";
 const LoginOptions: NextPageWithLayout = () => {
   const router = useRouter()
   useEffect(() => {
-    if (localStorage.getItem("token")) {
+    if (localStorage.getItem("sessiontoken")) {
       router.push("/app")
       return
     }

@@ -1,11 +1,8 @@
-import Link from 'next/link'
 import { NextPageWithLayout } from './../page';
 import { useRouter } from 'next/router';
-import HomeLayout from '../../components/layouts/homeLayout/HomeLayout';
-import Icon from '../../components/elements/icon/Icon';
+import DocsLayout from '../../components/layouts/docsLayout/DocsLayout';
 
 const Docs: NextPageWithLayout = () => {
-  const router = useRouter()
   return (
     <>
       <h1>Docs</h1>
@@ -17,5 +14,5 @@ const Docs: NextPageWithLayout = () => {
 export default Docs;
 
 Docs.getLayout = (page) => {
-  return <HomeLayout>{page}</HomeLayout>
+  return <DocsLayout>{page}</DocsLayout>
 }

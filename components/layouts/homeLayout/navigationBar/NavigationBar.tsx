@@ -1,14 +1,11 @@
 import Link from "next/link";
-import { useRouter } from 'next/navigation';
 import ButtonLink from "../../../elements/buttonLink/ButtonLink";
 import Icon from '../../../elements/icon/Icon';
-import Button from "./../../../elements/button/Button";
-import styles from './NavigationBar.module.css';
+import styles from './NavigationBar.module.scss';
 
 export interface INavigationBar extends React.ComponentPropsWithoutRef<'div'> { }
 
 const NavigationBar: React.FC<INavigationBar> = ({ ..._divProps }) => {
-  const router = useRouter()
   return <>
     <div className={styles.spacer}>
       {/* Empty Spacer for fixed positioning */}

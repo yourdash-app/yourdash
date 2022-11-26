@@ -11,7 +11,8 @@
   grid-template-columns: auto auto 1fr auto auto;
   align-items: center;
   color: var(--app-panel-fg);
-  animation: slideInAnimation 1s ease-in-out forwards;
+  // animation: slideInAnimation 1s ease-in-out forwards;
+  box-shadow: 0 0 1rem #00000055;
 }
 
 .tray {
@@ -74,13 +75,15 @@
 .launcherSlideOut {
   position: fixed;
   top: var(--app-panel-height);
-  left: -30rem;
+  transform: translateX(-100%);
   height: calc(100vh - var(--app-panel-height));
   width: 30rem;
   background-color: var(--app-panel-bg);
-  transition: var(--transition);
+  transition: transform 0.5s ease-in-out;
   display: grid;
   grid-template-rows: auto 1fr;
+  box-shadow: 0 0 1rem inset #00000088;
+  border-right: 0.25rem solid var(--app-panel-bg);
   > div[data-header] {
     background: var(--app-background);
     background-position: center;
@@ -94,16 +97,17 @@
       text-align: center;
       user-select: none;
       text-shadow: 0 0 0.5rem #000000, 0 0 0.75rem #000000, 0 0 1rem #000000, 0 0 1.5rem #000000,
-        0 0 2rem #000000;
+      0 0 2rem #000000;
     }
   }
 }
 
 .launcherSlideOutVisible {
-  left: 0;
+  transform: translateX(0);
 }
 
 .launcherSlideOutSearch {
+  opacity: 80%;
   margin-left: 0.5rem;
   margin-right: 0.5rem;
   width: calc(100% - 1rem);
@@ -195,10 +199,10 @@
   margin-left: 1.25rem;
   margin-right: 0.5rem;
   height: calc(var(--app-panel-height) - 0.5rem);
-  background-color: red;
   box-sizing: border-box;
-  animation: slideUpAnimation 2s ease-in-out forwards;
   position: relative;
+  display: flex;
+
   &:before {
     content: '';
     height: calc(var(--app-panel-height) - 1rem);
@@ -212,17 +216,75 @@
   }
 
   > * {
+    animation: slideInAnimation 2s ease-in-out forwards;
     position: relative;
     display: flex;
-    > img {
-      padding: 0.25rem;
-      box-sizing: border-box;
+    transition: var(--transition);
+    > div {
+      transition: var(--transition);
       height: calc(var(--app-panel-height) - 0.5rem);
       aspect-ratio: 1 / 1;
       overflow: hidden;
       border-radius: 0.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #00000000;
+      cursor: pointer;
+      &:hover {
+        background-color: #ffffff22;
+      }
+      &:active {
+        > img {
+          scale: 0.9;
+        }
+      }
+      > img {
+        transition: var(--transition);
+        height: 75%;
+        aspect-ratio: 1 / 1;
+        padding: 0.75rem;
+      }
+      > div {
+        background-color: orangered;
+        height: 0.25rem;
+        width: 0rem;
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 0.5rem;
+        transition: var(--transition);
+        &[data-active-indicator] {
+          width: 1rem;
+        }
+      }
+    }
+    &:hover {
+      > span {
+        opacity: 1;
+        pointer-events: all;
+      }
+    }
+    > span {
+      transition: var(--transition);
+      pointer-events: none;
+      opacity: 0;
+      top: var(--app-panel-height);
+      position: absolute;
+      padding: 0.25rem 0.5rem;
+      background: #00000088;
+      border-radius: 0.5rem;
+      left: 50%;
+      transform: translateX(-50%);
     }
   }
+}
+
+.serverName {
+  margin: 0;
+  padding-left: 0.5rem;
+  padding-right: 0.25rem;
 }
 
 @keyframes slideInAnimation {
