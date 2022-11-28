@@ -1,8 +1,8 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import Card from "../../../components/containers/card/Card";
 import ColContainer from "../../../components/containers/ColContainer/ColContainer";
 import Button from "../../../components/elements/button/Button";
-import Card from "../../../components/elements/card/Card";
 import TextInput from "../../../components/elements/textInput/TextInput";
 import HomeLayout from "../../../components/layouts/homeLayout/HomeLayout";
 import SERVER from "../../../lib/server";

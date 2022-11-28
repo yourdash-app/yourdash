@@ -1,10 +1,10 @@
+import chalk from 'chalk';
 import fs from 'fs';
-import { ENV } from '../../index.js';
-import YourDashUser, { YourDashUserSettings } from '../../../lib/user.js';
-import YourDashModule from './../../module.js';
 import path from 'path';
 import { decrypt, encrypt, generateRandomStringOfLength } from '../../encryption.js';
-import chalk from 'chalk';
+import { ENV } from '../../index.js';
+import YourDashModule from './../../module.js';
+import YourDashUser, { YourDashUserSettings } from './../../../lib/user';
 
 let USER_CACHE: { [key: string]: string } = {};
 
@@ -49,6 +49,7 @@ const Module: YourDashModule = {
     app.post('/api/user/create/:username', (req, res) => {
       let { username } = req.params;
       let password = req.headers.password as string;
+      let { name } = req.headers;
       console.log(password);
       if (!password) return res.sendStatus(500);
       if (fs.existsSync(path.resolve(`${ENV.FS_ORIGIN}/data/users/${username}`)))
@@ -58,15 +59,60 @@ const Module: YourDashModule = {
         fs.writeFile(
           `${ENV.FS_ORIGIN}/data/users/${username}/user.json`,
           JSON.stringify({
-            name: 'name',
+            name: {
+              first: name,
+              last: '',
+            },
             userName: username,
+            version: '1',
             profile: {
               banner: '',
               description: '',
               externalLinks: {
-                git: '',
-                twitter: '',
-                youtube: '',
+                custom: {
+                  public: false,
+                  value: '',
+                },
+                facebook: {
+                  public: false,
+                  value: '',
+                },
+                git: {
+                  personal: {
+                    public: false,
+                    value: '',
+                  },
+                  org: [],
+                },
+                instagram: {
+                  public: false,
+                  value: '',
+                },
+                mastodon: {
+                  public: false,
+                  value: '',
+                },
+                tiktok: {
+                  public: false,
+                  value: '',
+                },
+                twitter: {
+                  public: false,
+                  value: '',
+                },
+                youtube: {
+                  public: false,
+                  value: '',
+                },
+              },
+              image: '',
+              location: {
+                public: false,
+                value: '',
+              },
+              status: {
+                public: true,
+                value: '',
               },
             },
           } as YourDashUser),

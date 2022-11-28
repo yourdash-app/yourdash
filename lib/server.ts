@@ -11,7 +11,7 @@ interface extraHeaders {
 const SERVER = {
   get(path: string, headers?: extraHeaders): Promise<Response> {
     console.log('[Server Request]: GET ' + path);
-    // console.trace()
+    // console.trace();
     let defaultHeaders = {
       sessiontoken: localStorage.getItem('sessiontoken') as string,
       username: localStorage.getItem('username') as string,

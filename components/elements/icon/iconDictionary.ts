@@ -518,8 +518,9 @@ const YourDashIconDictionary = {
   'zap-24': '/assets/icons/zap-24.svg',
   'yourdash-logo': '/assets/productLogos/yourdash.svg',
   'server-error': '/assets/icons/server-error.svg',
-  'login': '/assets/icons/login.svg',
-  'logout': '/assets/icons/logout.svg',
+  login: '/assets/icons/login.svg',
+  logout: '/assets/icons/logout.svg',
+  store: '/assets/icons/store.svg',
 };
 
 export const YourDashIconRawDictionary = YourDashIconDictionary;

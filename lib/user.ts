@@ -1,16 +1,61 @@
 export default interface YourDashUser {
-  name: string;
+  version: '1';
+  name: {
+    first: string;
+    last: string;
+  };
   userName: string;
   profile: {
     image: string;
     banner: string;
     description: string;
-    location: string;
-    status: string;
+    location: {
+      value: string;
+      public: boolean;
+    };
+    status: {
+      value: string;
+      public: boolean;
+    };
     externalLinks: {
-      twitter: string;
-      youtube: string;
-      git: string; // this links to the internal git ui
+      custom: {
+        value: string;
+        public: boolean;
+      };
+      twitter: {
+        value: string;
+        public: boolean;
+      };
+      youtube: {
+        value: string;
+        public: boolean;
+      };
+      tiktok: {
+        value: string;
+        public: boolean;
+      };
+      instagram: {
+        value: string;
+        public: boolean;
+      };
+      facebook: {
+        value: string;
+        public: boolean;
+      };
+      mastodon: {
+        value: string;
+        public: boolean;
+      };
+      git: {
+        personal: {
+          value: string;
+          public: boolean;
+        };
+        org: {
+          value: string;
+          public: boolean;
+        }[];
+      }; // this links to the internal git ui
     };
   };
 }

@@ -1,9 +1,9 @@
 import fs from 'fs';
+import path from 'path';
 import YourDashUser, { YourDashUserSettings } from '../lib/user.js';
+import { encrypt } from './encryption.js';
 import { ENV, YourDashServerConfig } from './index.js';
 import { log, returnBase64Image } from './libServer.js';
-import path from 'path';
-import { encrypt } from './encryption.js';
 
 let stepCount = 3;
 let currentStep = 0;
@@ -117,10 +117,12 @@ export default async function main(cb: () => void) {
                     launcher: {
                       shortcuts: [
                         {
-                          icon: returnBase64Image(path.resolve(`${ENV.FS_ORIGIN}/../yourdash256.png`)),
-                          name: "Dashboard",
-                          url: "/app/dash"
-                        }
+                          icon: returnBase64Image(
+                            path.resolve(`${ENV.FS_ORIGIN}/../yourdash256.png`)
+                          ),
+                          name: 'Dashboard',
+                          url: '/app/dash',
+                        },
                       ],
                     },
                   },

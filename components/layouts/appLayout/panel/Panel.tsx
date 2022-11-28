@@ -5,20 +5,37 @@
  */
 
 import { useRouter } from 'next/router';
+import React from 'react';
 import { useEffect, useState } from 'react';
 import IncludedApps from '../../../../data/includedApps';
+import SERVER from "../../../../lib/server";
 import YourDashUser, { YourDashUserSettings } from '../../../../lib/user';
+import Card from '../../../containers/card/Card';
 import ColContainer from '../../../containers/ColContainer/ColContainer';
 import RowContainer from '../../../containers/RowContainer/RowContainer';
 import Button from '../../../elements/button/Button';
-import Card from '../../../elements/card/Card';
 import Icon from '../../../elements/icon/Icon';
 import TextInput from '../../../elements/textInput/TextInput';
-import SERVER from "./../../../../lib/server";
 import AuthedImg from "./../../../elements/authedImg/AuthedImg";
 import styles from './Panel.module.scss';
 
 export interface IPanel { }
+
+function useTraceUpdate(props: any) {
+  const prev = React.useRef(props);
+  React.useEffect(() => {
+    const changedProps = Object.entries(props).reduce((ps: any, [ k, v ]) => {
+      if (prev.current[ k ] !== v) {
+        ps[ k ] = [ prev.current[ k ], v ];
+      }
+      return ps;
+    }, {});
+    if (Object.keys(changedProps).length > 0) {
+      console.log('Changed props:', changedProps);
+    }
+    prev.current = props;
+  });
+}
 
 const Panel: React.FC<IPanel> = () => {
   const router = useRouter()
@@ -27,20 +44,31 @@ const Panel: React.FC<IPanel> = () => {
   const [ userData, setUserData ] = useState(undefined as YourDashUser | undefined)
   const [ userSettings, setUserSettings ] = useState(undefined as YourDashUserSettings | undefined)
   const [ searchQuery, setSearchQuery ] = useState("")
+
   useEffect(() => {
+    console.log(Panel.name)
     SERVER.get(`/get/current/user/settings`)
-      .then(res => res.json() as Promise<YourDashUserSettings>)
+      .then(res => {
+        if (res.status !== 200) throw new Error("Error while fetching data")
+        return res.json() as Promise<YourDashUserSettings>
+      })
       .then(res => {
         setUserSettings(res)
         document.body.style.setProperty("--panel-launcher-grid-columns", res.panel?.launcher?.slideOut?.gridColumns.toString() || "3")
       })
+      .catch(_err => {
+        router.push("/login")
+      })
     SERVER.get(`/get/current/user`)
-      .then(res => res.json() as Promise<YourDashUser>)
+      .then(res => {
+        if (res.status !== 200) throw new Error("Error while fetching data")
+        return res.json() as Promise<YourDashUser>
+      })
       .then(res => {
         setUserData(res)
       })
-      .catch(err => {
-        router.push("/")
+      .catch(_err => {
+        router.push("/login")
       })
   }, [])
   return <div className={styles.component}>
@@ -50,7 +78,7 @@ const Panel: React.FC<IPanel> = () => {
     <div className={`${styles.launcherSlideOut} ${launcherSlideOutVisible ? styles.launcherSlideOutVisible : ""}`}>
       <div data-header>
         <div data-title>Hiya, {userData?.name}</div>
-        <TextInput className={styles.launcherSlideOutSearch} onChange={(e) => {
+        <TextInput data-search onChange={(e) => {
           setSearchQuery(e.currentTarget.value)
         }} placeholder="Search" />
       </div>
@@ -59,14 +87,29 @@ const Panel: React.FC<IPanel> = () => {
           IncludedApps.map((app, ind) => {
             if (app.name.includes(searchQuery) || app.path.includes(searchQuery))
               return <div key={ind} onClick={() => {
+                setLauncherSlideOutVisible(false)
                 router.push(app.path)
               }}>
                 <img src={app.icon} draggable={false} alt="" />
                 <span>{app.name}</span>
+                <div onClick={() => {
+                  // show a dropdown
+                }}><Icon name='three-bars-16' color={"var(--button-fg)"} /></div>
               </div>
           })
         }
       </div>
+      <footer data-footer>
+        <img tabIndex={0} src={
+          userData?.profile.image
+        } alt="" />
+        <span>{userData?.name}</span>
+        <div onClick={() => { 
+          router.push("/app/settings")
+        }} data-settings>
+          <Icon name='gear-16' color={"var(--container-fg)"}></Icon>
+        </div>
+      </footer>
     </div>
     <AuthedImg src={"/get/server/logo"} className={styles.serverLogo} />
     {/* <h2 className={styles.serverName}>YourDash</h2> */}
@@ -121,10 +164,6 @@ const Panel: React.FC<IPanel> = () => {
             console.log("Profile")
             setAccountDropdownVisible(false)
           }}>Profile</Button>
-          <Button onClick={() => {
-            console.log("Settings")
-            setAccountDropdownVisible(false)
-          }}>Settings</Button>
           <Button onClick={() => {
             localStorage.removeItem("currentServer")
             router.push("/login/server")

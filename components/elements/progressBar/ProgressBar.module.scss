@@ -1,0 +1,26 @@
+.component {
+  background-color: var(--progress-bar-bg);
+  height: 1.5rem;
+  width: 100%;
+  position: relative;
+  border-radius: 0.5rem;
+}
+
+.progress {
+  position: absolute;
+  top: 0.25rem;
+  left: 0.25rem;
+  width: 0;
+  height: calc(100% - 0.5rem);
+  border-radius: 0.25rem;
+  background-color: var(--progress-bar-fg);
+  transition: var(--transition);
+}
+
+.percentage {
+  color: var(--progress-bar-bg);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

@@ -23,14 +23,14 @@
   --focused-outline: 0.25rem solid var(--button-vibrant-bg);
 
   --card-fg: #ffffff;
-  --card-bg: rgb(70 70 70);
+  --card-bg: #464646;
   --card-rounding: 1rem;
   --card-compact-rounding: 0.5rem;
 
-  --header-bg: rgb(54 54 54);
+  --header-bg: #363636;
   --header-fg: #fff;
 
-  --container-bg: rgb(54 54 54);
+  --container-bg: #363636;
   --container-fg: #fff;
 
   --app-panel-height: 3rem;
@@ -121,6 +121,9 @@
   --chip-toggled-active-bg: #6a6a6a;
   --chip-toggled-active-fg: #ffffff;
   --chip-toggled-active-rounding: 10rem;
+
+  --progress-bar-bg: #5a5a5a;
+  --progress-bar-fg: #ffffff;
 }
 
 html,

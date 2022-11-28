@@ -1,8 +1,8 @@
 import Head from "next/head";
 import React, { useEffect, useState } from "react";
+import Card from "../../../components/containers/card/Card";
 import ColContainer from "../../../components/containers/ColContainer/ColContainer";
 import RowContainer from "../../../components/containers/RowContainer/RowContainer";
-import Card from "../../../components/elements/card/Card";
 import Chip from "../../../components/elements/chip/Chip";
 import AppLayout from '../../../components/layouts/appLayout/AppLayout';
 import SERVER from "../../../lib/server";

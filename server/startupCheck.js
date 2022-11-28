@@ -1,8 +1,8 @@
 import fs from 'fs';
-import { ENV } from './index.js';
-import { log, returnBase64Image } from './libServer.js';
 import path from 'path';
 import { encrypt } from './encryption.js';
+import { ENV } from './index.js';
+import { log, returnBase64Image } from './libServer.js';
 let stepCount = 3;
 let currentStep = 0;
 function increaseStep(cb) {
@@ -99,9 +99,9 @@ export default async function main(cb) {
                                 shortcuts: [
                                     {
                                         icon: returnBase64Image(path.resolve(`${ENV.FS_ORIGIN}/../yourdash256.png`)),
-                                        name: "Dashboard",
-                                        url: "/app/dash"
-                                    }
+                                        name: 'Dashboard',
+                                        url: '/app/dash',
+                                    },
                                 ],
                             },
                         },

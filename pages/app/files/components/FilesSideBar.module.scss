@@ -1,0 +1,37 @@
+.component {
+  width: 20rem;
+  height: calc(100vh - var(--app-panel-height));
+  background-color: red;
+  position: relative;
+  > .dirName {
+    margin: 0;
+    padding-left: 1rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-right: 1rem;
+  }
+  > .footer {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    background-color: var(--container-bg);
+    > .usageIcons {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      place-items: center;
+      padding: 0.5rem;
+      > * {
+        height: 1.5rem;
+        width: 1.5rem;
+      }
+    }
+    > .quota {
+      padding: 0.5rem;
+      > .header {
+        color: var(--container-fg);
+        margin-bottom: 0.25rem;
+      }
+    }
+  }
+}

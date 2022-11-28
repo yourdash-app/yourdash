@@ -1,10 +1,11 @@
-import { CSSProperties } from 'react';
-import YourDashIcon, { YourDashIconRawDictionary } from './iconDictionary';
-import COLOR from '../../../lib/color';
-import CSSVariable from '../../../lib/cssVariable';
+import { CSSProperties } from "react";
+import COLOR from "../../../lib/color";
+import CSSVariable from "../../../lib/cssVariable";
+import YourDashIcon, { YourDashIconRawDictionary } from "./iconDictionary";
 
 export default function Icon(props: {
   name: YourDashIcon;
+  // eslint-disable-next-line no-undef
   style?: CSSProperties;
   className?: string;
   color?: COLOR | CSSVariable;
@@ -12,6 +13,7 @@ export default function Icon(props: {
 }) {
   return (
     <div
+      data-component-type-icon
       style={{
         ...props.style,
         ...(props.useDefaultColor
