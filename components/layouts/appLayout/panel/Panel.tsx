@@ -77,7 +77,7 @@ const Panel: React.FC<IPanel> = () => {
     </div>
     <div className={`${styles.launcherSlideOut} ${launcherSlideOutVisible ? styles.launcherSlideOutVisible : ""}`}>
       <div data-header>
-        <div data-title>Hiya, {userData?.name}</div>
+        <div data-title>Hiya, {userData?.name?.first}</div>
         <TextInput data-search onChange={(e) => {
           setSearchQuery(e.currentTarget.value)
         }} placeholder="Search" />
@@ -92,19 +92,19 @@ const Panel: React.FC<IPanel> = () => {
               }}>
                 <img src={app.icon} draggable={false} alt="" />
                 <span>{app.name}</span>
-                <div onClick={() => {
+                {/* <div onClick={() => {
                   // show a dropdown
-                }}><Icon name='three-bars-16' color={"var(--button-fg)"} /></div>
+                }}><Icon name='three-bars-16' color={"var(--button-fg)"} /></div> */}
               </div>
           })
         }
       </div>
       <footer data-footer>
-        <img tabIndex={0} src={
+        <img onClick={() => { router.push(`/app/user/profile/${userData?.userName}`) }} tabIndex={0} src={
           userData?.profile.image
         } alt="" />
-        <span>{userData?.name}</span>
-        <div onClick={() => { 
+        <span>{userData?.name?.first}</span>
+        <div onClick={() => {
           router.push("/app/settings")
         }} data-settings>
           <Icon name='gear-16' color={"var(--container-fg)"}></Icon>
@@ -161,7 +161,7 @@ const Panel: React.FC<IPanel> = () => {
         </RowContainer>
         <ColContainer>
           <Button onClick={() => {
-            console.log("Profile")
+            router.push(`/app/user/profile/${userData?.userName}`)
             setAccountDropdownVisible(false)
           }}>Profile</Button>
           <Button onClick={() => {

@@ -15,7 +15,7 @@ const IncludedApps = [
     name: 'Store',
     path: '/app/store',
     description: 'Install new apps',
-    icon: require('./../public/assets/icons/').default.src,
+    icon: require('./../public/assets/icons/store.svg').default.src,
   },
 ];
 

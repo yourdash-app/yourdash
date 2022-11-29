@@ -18,35 +18,35 @@ export default interface YourDashUser {
       public: boolean;
     };
     externalLinks: {
-      custom: {
+      custom?: {
         value: string;
         public: boolean;
       };
-      twitter: {
+      twitter?: {
         value: string;
         public: boolean;
       };
-      youtube: {
+      youtube?: {
         value: string;
         public: boolean;
       };
-      tiktok: {
+      tiktok?: {
         value: string;
         public: boolean;
       };
-      instagram: {
+      instagram?: {
         value: string;
         public: boolean;
       };
-      facebook: {
+      facebook?: {
         value: string;
         public: boolean;
       };
-      mastodon: {
+      mastodon?: {
         value: string;
         public: boolean;
       };
-      git: {
+      git?: {
         personal: {
           value: string;
           public: boolean;

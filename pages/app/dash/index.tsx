@@ -6,11 +6,12 @@ import RowContainer from "../../../components/containers/RowContainer/RowContain
 import Chip from "../../../components/elements/chip/Chip";
 import AppLayout from '../../../components/layouts/appLayout/AppLayout';
 import SERVER from "../../../lib/server";
+import YourDashUser from "../../../lib/user";
 import { NextPageWithLayout } from '../../page';
 import styles from "./dash.module.scss";
 
 const Dash: NextPageWithLayout = () => {
-  const [ userName, setUserName ] = useState("")
+  const [ name, setName ] = useState("")
   const [ currentTime, setCurrentTime ] = useState("00:01")
   // const [ currentContentPage, setCurrentContentPage ] = useState("home")
   const [ currentContentPage, setCurrentContentPage ] = useState("home")
@@ -19,10 +20,10 @@ const Dash: NextPageWithLayout = () => {
   useEffect(() => {
     SERVER.get("/get/current/user")
       .then(res => res.json())
-      .then(res => {
-        setUserName(res.name)
+      .then((res: YourDashUser) => {
+        setName(res?.name?.first + " " + res?.name?.last)
       })
-      .catch(err => { setUserName(err) })
+      .catch(err => { setName(err) })
   }, [])
 
   useEffect(() => {
@@ -36,7 +37,7 @@ const Dash: NextPageWithLayout = () => {
     }
   }, [])
 
-  if (userName === "") return <></>
+  if (name === "") return <></>
   return (
     <>
       <Head>
@@ -45,7 +46,7 @@ const Dash: NextPageWithLayout = () => {
       <div className={styles.root}>
         <div className={styles.welcome}>
           <span className={styles.clock}>{currentTime}</span>
-          <span>Hiya, {userName}</span>
+          <span>Hiya, {name}</span>
         </div>
         <RowContainer className={styles.chips}>
           <>

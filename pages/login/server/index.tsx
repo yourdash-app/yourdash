@@ -12,11 +12,16 @@ import styles from "./index.module.scss";
 const LoginOptions: NextPageWithLayout = () => {
   const router = useRouter()
   useEffect(() => {
+    if (!localStorage.getItem("currentServer")) router.push("/login")
     if (localStorage.getItem("sessiontoken")) {
-      router.push("/app")
+      SERVER.get("/get/current/user")
+        .then(res => { if (res.status === 200) { return res.json() } else { return localStorage.removeItem("sessionToken") } })
+        .catch(err => {
+          console.error(err)
+        })
       return
     }
-  })
+  }, [ router ])
 
   const [ userName, setUserName ] = useState("")
   const [ password, setPassword ] = useState("")
@@ -29,12 +34,12 @@ const LoginOptions: NextPageWithLayout = () => {
           <TextInput placeholder="Password" type="password" onChange={(e) => { setPassword(e.currentTarget.value) }} />
           <Button onClick={() => {
             localStorage.setItem("username", userName)
-            SERVER.get("/user/login", { password: password }).then(res => res.text()).then(res => {
+            SERVER.get("/user/login", { password: password }).then(res => { if (res.status === 200) { return res.text() } else { throw new Error("Login Error, the server responded with a non 200 status.") } }).then(res => {
               if (res !== "Forbidden") {
                 localStorage.setItem("sessiontoken", res)
                 router.push("/app/dash")
               }
-            }).catch(err => { if (err) console.error(err) })
+            }).catch(err => { if (err) console.error("ERROR CAUGHT: /user/login: " + err) })
           }} vibrant>
             Login
           </Button>

@@ -73,16 +73,19 @@ export default async function main(cb) {
             if (err)
                 return log(`${err}`);
             fs.writeFile(`${ENV.FS_ORIGIN}/data/users/admin/user.json`, JSON.stringify({
-                name: 'Administrator',
+                version: '1',
+                name: { first: 'Admin', last: 'istrator' },
                 userName: 'admin',
                 profile: {
                     banner: '',
                     description: '',
-                    externalLinks: {
-                        git: '',
-                        twitter: '',
-                        youtube: '',
+                    image: returnBase64Image(path.resolve(`${ENV.FS_ORIGIN}/../default_user_profile.png`)),
+                    location: {
+                        public: false,
+                        value: '',
                     },
+                    status: { public: false, value: '' },
+                    externalLinks: {},
                 },
             }), (err) => {
                 if (err)
