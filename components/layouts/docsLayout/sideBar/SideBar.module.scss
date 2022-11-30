@@ -2,6 +2,22 @@
   background: var(--container-bg);
   width: 15rem;
   transition: var(--transition);
+  > header {
+    width: 100%;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    > :first-child {
+      margin-right: auto;
+      margin-left: 1rem;
+      color: var(--container-fg);
+      font-size: 1.5rem;
+    }
+    > :last-child {
+      margin-right: 1rem;
+    }
+  }
 }
 
 .expanded {

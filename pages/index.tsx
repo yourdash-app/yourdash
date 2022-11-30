@@ -46,25 +46,28 @@ const Home: NextPageWithLayout = () => {
                 </div>
             </section>
             <section className={styles.section3}>
+                <h3>Built using</h3>
                 <div>
-                    <span>Title</span>
-                    <span>Content</span>
-                </div>
-                <div>
-                    <span>Title</span>
-                    <span>Content</span>
-                </div>
-                <div>
-                    <span>Title</span>
-                    <span>Content</span>
-                </div>
-                <div>
-                    <span>Title</span>
-                    <span>Content</span>
-                </div>
-                <div>
-                    <span>Title</span>
-                    <span>Content</span>
+                    <div>
+                        <span>NodeJS</span>
+                        <span>Content</span>
+                    </div>
+                    <div>
+                        <span>NextJS</span>
+                        <span>Content</span>
+                    </div>
+                    <div>
+                        <span>Sass</span>
+                        <span>Content</span>
+                    </div>
+                    <div>
+                        <span>Typescript</span>
+                        <span>Content</span>
+                    </div>
+                    <div>
+                        <span>VSCode</span>
+                        <span>Content</span>
+                    </div>
                 </div>
             </section>
         </div>

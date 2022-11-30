@@ -1,15 +1,13 @@
 import { useState } from "react"
-import Button from "../../../elements/button/Button"
+import IconButton from "../../../elements/iconButton/IconButton"
 import styles from "./SideBar.module.scss"
 
 export default function DocsSideBar() {
   const [ isExpanded, setIsExpanded ] = useState(true)
   return <div className={`${styles.component} ${isExpanded ? styles.expanded : ""}`}>
-    <div>
+    <header>
       <span>Docs</span>
-      <Button onClick={() => { setIsExpanded(!isExpanded) }}>
-        =
-      </Button>
-    </div>
+      <IconButton icon="three-bars-16" color="#ff0000" onClick={() => { setIsExpanded(!isExpanded) }} />
+    </header>
   </div>
 }

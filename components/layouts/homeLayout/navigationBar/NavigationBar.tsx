@@ -5,7 +5,7 @@ import styles from './NavigationBar.module.scss';
 
 export interface INavigationBar extends React.ComponentPropsWithoutRef<'div'> { }
 
-const NavigationBar: React.FC<INavigationBar> = ({ ..._divProps }) => {
+const NavigationBar: React.FC<INavigationBar> = () => {
   return <>
     <div className={styles.spacer}>
       {/* Empty Spacer for fixed positioning */}
