@@ -17,7 +17,7 @@
     margin-right: 20rem;
     transition: var(--transition);
   }
-  
+
   > a[href] {
     font-size: 1rem;
     text-decoration: none;
@@ -26,7 +26,7 @@
     transition: var(--transition);
     position: relative;
   }
-  
+
   > a[href]:after {
     content: '';
     position: absolute;
@@ -40,25 +40,24 @@
     transition: var(--transition);
     transform-origin: center;
   }
-  
+
   > a[href]:hover {
     color: var(--button-vibrant-hover-bg);
   }
-  
+
   > a[href]:hover:after {
     transform: scale(1);
   }
-  
+
   > a[href]:active {
     color: var(--button-vibrant-active-bg);
   }
-  
+
   > a[href]:active:after {
     transform: scaleX(1.2);
     background-color: var(--button-vibrant-active-bg);
   }
 }
-
 
 .logo {
   height: 4rem;
@@ -72,24 +71,34 @@
 }
 
 @media (max-width: 850px) {
-  .component > h1 {
-    font-size: 2rem;
-    margin-right: 10rem;
+  .component {
+    > h1 {
+      font-size: 2rem;
+      margin-right: 10rem;
+    }
   }
 }
 
 @media (max-width: 650px) {
-  .component > h1 {
-    font-size: 2rem;
-    margin-right: 5rem;
+  .component {
+    > h1 {
+      font-size: 2rem;
+      margin-right: 5rem;
+    }
+    > a:nth-child(6) {
+      display: none;
+    }
   }
 }
 
 @media (max-width: 575px) {
-  .component > h1 {
-    font-size: 2rem;
-    margin-right: 2rem;
+  .component {
+    > h1 {
+      font-size: 2rem;
+      margin-right: 2rem;
+    }
   }
+
   .logo {
     display: none;
   }

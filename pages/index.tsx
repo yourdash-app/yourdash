@@ -19,10 +19,6 @@ const Home: NextPageWithLayout = () => {
                             <h1 key={2}>This is coming soon...</h1>,
                             <h1 key={3}>This is coming soon....</h1>,
                             <h1 key={4}>This is coming soon.....</h1>,
-                            <h1 key={5}>This is coming soon.....</h1>,
-                            <h1 key={6}>This is coming soon.....</h1>,
-                            <h1 key={7}>This is coming soon.....</h1>,
-                            <h1 key={8}>This is coming soon.....</h1>
                         ]} changeDuration={1000} />
                     </div>
                 </div>
@@ -37,15 +33,15 @@ const Home: NextPageWithLayout = () => {
             </section>
             <section className={styles.section2}>
                 <div>
-                    <h2>Placeholder Text</h2>
+                    <h2>Store your files</h2>
                     <button>Learn more</button>
                 </div>
                 <div>
-                    <h2>Placeholder Text</h2>
+                    <h2>Collaborate with others</h2>
                     <button>Learn more</button>
                 </div>
                 <div>
-                    <h2>Placeholder Text</h2>
+                    <h2>Make it your own</h2>
                     <button>Learn more</button>
                 </div>
             </section>
