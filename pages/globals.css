@@ -124,6 +124,9 @@
 
   --progress-bar-bg: #5a5a5a;
   --progress-bar-fg: #ffffff;
+
+  --scrollbar-bg: #222;
+  --scrollbar-fg: rgb(235 106 75);
 }
 
 html,
@@ -156,4 +159,16 @@ h3 {
 
 *:focus-visible {
   outline: var(--focused-outline);
+}
+
+::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-fg);
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--scrollbar-bg);
 }

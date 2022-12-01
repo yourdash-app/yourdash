@@ -98,23 +98,15 @@
       margin: 1rem;
     }
 
+    > p {
+      margin: 1rem;
+      text-align: left;
+    }
+
     > button {
       position: absolute;
       bottom: 1rem;
       right: 1rem;
-      padding: 0.5rem 1rem;
-      border-radius: var(--button-vibrant-rounding);
-      outline: 0.25rem solid var(--button-vibrant-bg);
-      background-color: #00000000;
-      border: none;
-      color: var(--card-fg);
-      &:hover {
-        outline: 0.25rem solid var(--button-vibrant-hover-bg);
-      }
-
-      &:active {
-        outline: 0.2rem solid var(--button-vibrant-active-bg);
-      }
     }
 
     &:nth-child(1) {
@@ -125,6 +117,10 @@
 }
 
 .section3 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
   > div {
     height: 8rem;
     padding: 2rem;
@@ -161,6 +157,8 @@
     margin: 0;
     color: var(--container-fg);
     padding-left: 3rem;
+    width: 100%;
+    max-width: 80rem;
   }
 }
 

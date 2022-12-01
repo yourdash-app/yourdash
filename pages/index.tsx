@@ -33,16 +33,19 @@ const Home: NextPageWithLayout = () => {
             </section>
             <section className={styles.section2}>
                 <div>
-                    <h2>Store your files</h2>
-                    <button>Learn more</button>
+                    <h2>Safely store your files</h2>
+                    <p>Save, share and backup your files across all devices.</p>
+                    <Button onClick={() => { }}>Learn more</Button>
                 </div>
                 <div>
                     <h2>Collaborate with others</h2>
-                    <button>Learn more</button>
+                    <p>Create and share documents in real time.</p>
+                    <Button onClick={() => { }}>Learn more</Button>
                 </div>
                 <div>
                     <h2>Make it your own</h2>
-                    <button>Learn more</button>
+                    <p>Customize your dashboard with themes and extensions.</p>
+                    <Button onClick={() => { }}>Learn more</Button>
                 </div>
             </section>
             <section className={styles.section3}>

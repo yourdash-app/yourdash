@@ -21,22 +21,6 @@ import styles from './Panel.module.scss';
 
 export interface IPanel { }
 
-function useTraceUpdate(props: any) {
-  const prev = React.useRef(props);
-  React.useEffect(() => {
-    const changedProps = Object.entries(props).reduce((ps: any, [ k, v ]) => {
-      if (prev.current[ k ] !== v) {
-        ps[ k ] = [ prev.current[ k ], v ];
-      }
-      return ps;
-    }, {});
-    if (Object.keys(changedProps).length > 0) {
-      console.log('Changed props:', changedProps);
-    }
-    prev.current = props;
-  });
-}
-
 const Panel: React.FC<IPanel> = () => {
   const router = useRouter()
   const [ launcherSlideOutVisible, setLauncherSlideOutVisible ] = useState(false)
@@ -46,7 +30,6 @@ const Panel: React.FC<IPanel> = () => {
   const [ searchQuery, setSearchQuery ] = useState("")
 
   useEffect(() => {
-    console.log(Panel.name)
     SERVER.get(`/get/current/user/settings`)
       .then(res => {
         if (res.status !== 200) throw new Error("Error while fetching data")
@@ -61,16 +44,18 @@ const Panel: React.FC<IPanel> = () => {
       })
     SERVER.get(`/get/current/user`)
       .then(res => {
-        if (res.status !== 200) throw new Error("Error while fetching data")
+        if (res.status !== 200) throw new Error("Error while fetching data, " + res)
         return res.json() as Promise<YourDashUser>
       })
       .then(res => {
         setUserData(res)
       })
       .catch(_err => {
+        localStorage.removeItem("sessionToken")
         router.push("/login")
       })
   }, [])
+
   return <div className={styles.component}>
     <div className={styles.launcher} onClick={() => { setLauncherSlideOutVisible(!launcherSlideOutVisible) }}>
       <Icon name='app-launcher-16' style={{ height: "100%", aspectRatio: "1/1" }} color={"var(--app-panel-fg)"} />
