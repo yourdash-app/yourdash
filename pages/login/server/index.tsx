@@ -15,7 +15,14 @@ const LoginOptions: NextPageWithLayout = () => {
     if (!localStorage.getItem("currentServer")) router.push("/login")
     if (localStorage.getItem("sessiontoken")) {
       SERVER.get("/get/current/user")
-        .then(res => { if (res.status === 200) { return res.json() } else { return localStorage.removeItem("sessionToken") } })
+        .then(res => {
+          if (res.status === 200) {
+            router.push("/app/dash")
+          }
+          else {
+            localStorage.removeItem("sessionToken")
+          }
+        })
         .catch(err => {
           console.error(err)
         })
@@ -34,11 +41,17 @@ const LoginOptions: NextPageWithLayout = () => {
           <TextInput placeholder="Password" type="password" onChange={(e) => { setPassword(e.currentTarget.value) }} />
           <Button onClick={() => {
             localStorage.setItem("username", userName)
-            SERVER.get("/user/login", { password: password }).then(res => { if (res.status === 200) { return res.text() } else { throw new Error("Login Error, the server responded with a non 200 status.") } }).then(res => {
-              if (res !== "Forbidden") {
-                localStorage.setItem("sessiontoken", res)
-                router.push("/app/dash")
-              }
+            SERVER.get("/user/login", {
+              password: password
+            }).then(res => {
+              res.text().then(res => {
+                if (res !== "Forbidden" && res !== "Internal Server Error") {
+                  localStorage.setItem("sessiontoken", res)
+                  return router.push("/app/dash")
+                }
+              }).catch(() => {
+                throw new Error("Login Error, the server responded with an invalid response.")
+              })
             }).catch(err => { if (err) console.error("ERROR CAUGHT: /user/login: " + err) })
           }} vibrant>
             Login

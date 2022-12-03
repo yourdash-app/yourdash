@@ -112,7 +112,12 @@ export default async function main(cb: () => void) {
               hashedKey: encrypt('admin', SERVER_CONFIG),
             }),
             (err) => {
-              if (err) return log(`${err}`);
+              if (err) {
+                log(`${err}`);
+                throw new Error(
+                  `ERROR in startupCheck (during admin credential generation): ${err}`
+                );
+              }
               fs.writeFile(
                 `${ENV.FS_ORIGIN}/data/users/admin/config.json`,
                 JSON.stringify({
@@ -131,7 +136,12 @@ export default async function main(cb: () => void) {
                   },
                 } as YourDashUserSettings),
                 (err) => {
-                  if (err) return log(`${err}`);
+                  if (err) {
+                    log(`${err}`);
+                    throw new Error(
+                      `ERROR in startupCheck (during admin default configuration generation): ${err}`
+                    );
+                  }
                   increaseStep(cb);
                 }
               );

@@ -19,9 +19,10 @@ const Dash: NextPageWithLayout = () => {
 
   useEffect(() => {
     SERVER.get("/get/current/user")
-      .then(res => res.json())
-      .then((res: YourDashUser) => {
-        setName(res?.name?.first + " " + res?.name?.last)
+      .then((response) => {
+        response.json().then((res: YourDashUser) => {
+          setName(res?.name?.first + " " + res?.name?.last)
+        }).catch(err => setName("ERROR: Not valid JSON"))
       })
       .catch(err => { setName(err) })
   }, [])

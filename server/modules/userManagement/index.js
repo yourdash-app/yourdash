@@ -3,6 +3,8 @@ import fs from 'fs';
 import path from 'path';
 import { decrypt, encrypt, generateRandomStringOfLength } from '../../encryption.js';
 import { ENV } from '../../index.js';
+import { log } from './../../libServer.js';
+import console from 'console';
 let USER_CACHE = {};
 const Module = {
     name: 'userManagement',
@@ -23,7 +25,7 @@ const Module = {
                         next();
                     }
                     else {
-                        console.log(chalk.bgRed(' Unauthorized '));
+                        process.stdout.write(chalk.bgRed(' Unauthorized '));
                         return res.sendStatus(401);
                     }
                 }
@@ -142,30 +144,44 @@ const Module = {
             });
         });
         app.get('/api/user/login', (req, res) => {
-            let userName = req.headers.username;
+            let username = req.headers.username;
             let password = req.headers.password;
-            if (!userName || !password)
-                return res.sendStatus(401);
-            fs.readFile(path.resolve(`${ENV.FS_ORIGIN}/data/users/${userName}/keys.json`), (err, data) => {
-                if (err)
-                    return res.sendStatus(404);
-                let parsedKeysFile = JSON.parse(data.toString());
-                if (password === decrypt(parsedKeysFile.hashedKey, _api.SERVER_CONFIG)) {
-                    let sessionToken = generateRandomStringOfLength(256);
-                    fs.writeFile(path.resolve(`${ENV.FS_ORIGIN}/data/users/${userName}/keys.json`), JSON.stringify({ ...parsedKeysFile, sessionToken: sessionToken }), (err) => {
-                        if (err) {
-                            console.log('ERROR: ', err);
-                            return res.sendStatus(404);
-                        }
-                    });
-                    return res.send(sessionToken);
+            if (!(username && password)) {
+                res.json({ error: `A username or password was not provided!` });
+                return log(`ERROR a username or password was not provided in the headers for /user/login!`);
+            }
+            if (!fs.existsSync(`${ENV.FS_ORIGIN}/data/users/${username}`)) {
+                res.json({ error: `Unknown user` });
+                return log(`ERROR unknown user: ${username}`);
+            }
+            fs.readFile(`${ENV.FS_ORIGIN}/data/users/${username}/keys.json`, (err, data) => {
+                if (err) {
+                    res.json({ error: `An issue occured reading saved user data.` });
+                    return log(`ERROR an error occured reading ${username}'s keys.json`);
                 }
-                else {
-                    return res.sendStatus(403);
+                let keysJson = JSON.parse(data.toString());
+                if (password === decrypt(keysJson.hashedKey, _api.SERVER_CONFIG)) {
+                    let newSessionToken = generateRandomStringOfLength(256);
+                    fs.writeFile(`${ENV.FS_ORIGIN}/data/users/${username}/keys.json`, JSON.stringify({
+                        hashedKey: keysJson.hashedKey,
+                        sessionToken: newSessionToken,
+                    }), (err) => {
+                        if (err) {
+                            res.json({ error: `There was an issue with starting a new session.` });
+                            return log(`ERROR ${username}'s keys.json could not be overwritten during the login process!`);
+                        }
+                        res.json({
+                            sessionToken: newSessionToken,
+                            error: false,
+                        });
+                    });
                 }
             });
         });
         app.get('/api/get/current/user', (req, res) => {
+            if (!fs.existsSync(`${ENV.FS_ORIGIN}/data/users/${req.header('username')}`)) {
+                return res.sendStatus(403);
+            }
             fs.readFile(`${ENV.FS_ORIGIN}/data/users/${req.header('username')}/user.json`, (err, data) => {
                 if (err)
                     return res.sendStatus(404);
@@ -173,6 +189,9 @@ const Module = {
             });
         });
         app.get('/api/get/current/user/settings', (req, res) => {
+            if (!fs.existsSync(`${ENV.FS_ORIGIN}/data/users/${req.header('username')}`)) {
+                return res.sendStatus(403);
+            }
             fs.readFile(`${ENV.FS_ORIGIN}/data/users/${req.header('username')}/config.json`, (err, data) => {
                 if (err)
                     return res.sendStatus(404);

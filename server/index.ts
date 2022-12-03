@@ -55,6 +55,7 @@ export interface YourDashServerConfig {
   };
 }
 
+
 startupCheck(async () => {
   const SERVER_CONFIG: YourDashServerConfig = JSON.parse(
     fs.readFileSync(path.resolve(`${ENV.FS_ORIGIN}/yourdash.config.json`)).toString()
@@ -141,11 +142,7 @@ startupCheck(async () => {
 
   app.use(
     cors({
-      origin: [
-        'http://localhost:3000',
-        'https://yourdash.vercel.app',
-        'https://ddsh.vercel.app',
-      ],
+      origin: ['http://localhost:3000', 'https://yourdash.vercel.app', 'https://ddsh.vercel.app'],
     })
   );
 

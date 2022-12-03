@@ -5,6 +5,8 @@ import { decrypt, encrypt, generateRandomStringOfLength } from '../../encryption
 import { ENV } from '../../index.js';
 import YourDashModule from './../../module.js';
 import YourDashUser, { YourDashUserSettings } from './../../../lib/user';
+import { log } from './../../libServer.js';
+import console from 'console';
 
 let USER_CACHE: { [key: string]: string } = {};
 
@@ -13,7 +15,6 @@ const Module: YourDashModule = {
   id: 'userManagement',
 
   load(app, _api) {
-    // login checker
     app.use((req, res, next) => {
       if (req.path.startsWith('/test')) return next();
       if (req.path.startsWith('/api/get/server')) return next();
@@ -25,7 +26,7 @@ const Module: YourDashModule = {
           if (USER_CACHE[userName] === sessionToken) {
             next();
           } else {
-            console.log(chalk.bgRed(' Unauthorized '));
+            process.stdout.write(chalk.bgRed(' Unauthorized '));
             return res.sendStatus(401);
           }
         } else {
@@ -155,36 +156,88 @@ const Module: YourDashModule = {
     });
 
     app.get('/api/user/login', (req, res) => {
-      let userName = req.headers.username as string;
+      // let userName = req.headers.username as string;
+      // let password = req.headers.password as string;
+      // if (!userName || !password) return res.sendStatus(401);
+      // fs.readFile(
+      //   path.resolve(`${ENV.FS_ORIGIN}/data/users/${userName}/keys.json`),
+      //   (err, data) => {
+      //     if (err) return res.sendStatus(404);
+      //     try {
+      //       JSON.parse(data.toString());
+      //     } catch (err) {
+      //       console.log(data.toString());
+      //       return log(`ERROR failed to parse keys.json for user: ${userName}, ${err}`);
+      //     }
+      //     let parsedKeysFile = JSON.parse(data.toString());
+      //     if (password === decrypt(parsedKeysFile.hashedKey, _api.SERVER_CONFIG)) {
+      //       // user is now authorized :D
+      //       let sessionToken = generateRandomStringOfLength(256);
+      //       fs.writeFile(
+      //         path.resolve(`${ENV.FS_ORIGIN}/data/users/${userName}/keys.json`),
+      //         JSON.stringify({ ...parsedKeysFile, sessionToken: sessionToken }),
+      //         (err) => {
+      //           if (err) {
+      //             log(`ERROR: ${err}`);
+      //             return res.sendStatus(404);
+      //           }
+      //           return res.send(sessionToken);
+      //         }
+      //       );
+      //     } else {
+      //       return res.sendStatus(403);
+      //     }
+      //   }
+      // );
+      let username = req.headers.username as string;
       let password = req.headers.password as string;
-      if (!userName || !password) return res.sendStatus(401);
-      fs.readFile(
-        path.resolve(`${ENV.FS_ORIGIN}/data/users/${userName}/keys.json`),
-        (err, data) => {
-          if (err) return res.sendStatus(404);
-          let parsedKeysFile = JSON.parse(data.toString());
-          if (password === decrypt(parsedKeysFile.hashedKey, _api.SERVER_CONFIG)) {
-            // user is now authorized :D
-            let sessionToken = generateRandomStringOfLength(256);
-            fs.writeFile(
-              path.resolve(`${ENV.FS_ORIGIN}/data/users/${userName}/keys.json`),
-              JSON.stringify({ ...parsedKeysFile, sessionToken: sessionToken }),
-              (err) => {
-                if (err) {
-                  console.log('ERROR: ', err);
-                  return res.sendStatus(404);
-                }
-              }
-            );
-            return res.send(sessionToken);
-          } else {
-            return res.sendStatus(403);
-          }
+      // check that the username and password was supplied
+      if (!(username && password)) {
+        res.json({ error: `A username or password was not provided!` });
+        return log(`ERROR a username or password was not provided in the headers for /user/login!`);
+      }
+      // check that the user actually exists
+      if (!fs.existsSync(`${ENV.FS_ORIGIN}/data/users/${username}`)) {
+        res.json({ error: `Unknown user` });
+        return log(`ERROR unknown user: ${username}`);
+      }
+      // fetch the user's password from the fs
+      fs.readFile(`${ENV.FS_ORIGIN}/data/users/${username}/keys.json`, (err, data) => {
+        if (err) {
+          res.json({ error: `An issue occured reading saved user data.` });
+          return log(`ERROR an error occured reading ${username}'s keys.json`);
         }
-      );
+        let keysJson = JSON.parse(data.toString());
+        // check if the password is correct
+        if (password === decrypt(keysJson.hashedKey, _api.SERVER_CONFIG)) {
+          let newSessionToken = generateRandomStringOfLength(256);
+          fs.writeFile(
+            `${ENV.FS_ORIGIN}/data/users/${username}/keys.json`,
+            JSON.stringify({
+              hashedKey: keysJson.hashedKey,
+              sessionToken: newSessionToken,
+            }),
+            (err) => {
+              if (err) {
+                res.json({ error: `There was an issue with starting a new session.` });
+                return log(
+                  `ERROR ${username}'s keys.json could not be overwritten during the login process!`
+                );
+              }
+              res.json({
+                sessionToken: newSessionToken,
+                error: false,
+              });
+            }
+          );
+        }
+      });
     });
 
     app.get('/api/get/current/user', (req, res) => {
+      if (!fs.existsSync(`${ENV.FS_ORIGIN}/data/users/${req.header('username')}`)) {
+        return res.sendStatus(403);
+      }
       fs.readFile(
         `${ENV.FS_ORIGIN}/data/users/${req.header('username')}/user.json`,
         (err, data) => {
@@ -195,6 +248,9 @@ const Module: YourDashModule = {
     });
 
     app.get('/api/get/current/user/settings', (req, res) => {
+      if (!fs.existsSync(`${ENV.FS_ORIGIN}/data/users/${req.header('username')}`)) {
+        return res.sendStatus(403);
+      }
       fs.readFile(
         `${ENV.FS_ORIGIN}/data/users/${req.header('username')}/config.json`,
         (err, data) => {

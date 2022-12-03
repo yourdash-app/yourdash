@@ -32,7 +32,7 @@ const Panel: React.FC<IPanel> = () => {
   useEffect(() => {
     SERVER.get(`/get/current/user/settings`)
       .then(res => {
-        if (res.status !== 200) throw new Error("Error while fetching data")
+        // if (res.status !== 200) throw new Error("Error while fetching data")
         return res.json() as Promise<YourDashUserSettings>
       })
       .then(res => {
@@ -40,19 +40,24 @@ const Panel: React.FC<IPanel> = () => {
         document.body.style.setProperty("--panel-launcher-grid-columns", res.panel?.launcher?.slideOut?.gridColumns.toString() || "3")
       })
       .catch(_err => {
-        router.push("/login")
+        console.warn("Should not reach 1")
+        localStorage.removeItem("sessionToken")
+        return router.push("/login")
       })
     SERVER.get(`/get/current/user`)
       .then(res => {
-        if (res.status !== 200) throw new Error("Error while fetching data, " + res)
+        console.log(res)
+        // if (res.status !== 200) throw new Error("Error while fetching data, " + res)
         return res.json() as Promise<YourDashUser>
       })
       .then(res => {
         setUserData(res)
       })
       .catch(_err => {
+        console.warn("Should not reach")
+        console.warn(_err)
         localStorage.removeItem("sessionToken")
-        router.push("/login")
+        return router.push("/login")
       })
   }, [])
 
@@ -88,7 +93,7 @@ const Panel: React.FC<IPanel> = () => {
         <img onClick={() => { router.push(`/app/user/profile/${userData?.userName}`) }} tabIndex={0} src={
           userData?.profile.image
         } alt="" />
-        <span>{userData?.name?.first}</span>
+        <span>{userData?.name?.first} {userData?.name?.last}</span>
         <div onClick={() => {
           router.push("/app/settings")
         }} data-settings>
@@ -127,6 +132,8 @@ const Panel: React.FC<IPanel> = () => {
         <RowContainer className={styles.accountDropdownQuickActions}>
           <div onClick={() => {
             setAccountDropdownVisible(false)
+            localStorage.removeItem("sessiontoken")
+            localStorage.removeItem("username")
             router.push("/")
           }}>
             <Icon name='logout' color="var(--button-fg)" />
