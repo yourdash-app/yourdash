@@ -130,6 +130,7 @@
     max-width: 80rem;
     display: flex;
     gap: 1rem;
+    overflow-x: auto;
 
     > div {
       flex-grow: 1;
@@ -159,6 +160,7 @@
     padding-left: 3rem;
     width: 100%;
     max-width: 80rem;
+    box-sizing: border-box;
   }
 }
 

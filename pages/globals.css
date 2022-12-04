@@ -89,11 +89,11 @@
   --button-vibrant-active-outline: 0 solid #000;
   --button-vibrant-active-rounding: 100rem;
 
-  --text-input-bg: #000;
+  --text-input-bg: #5a5a5a;
   --text-input-fg: #fff;
   --text-input-outline: 0 solid #000;
   --text-input-rounding: 0.5rem;
-  --text-input-focused-bg: #000;
+  --text-input-focused-bg: #4a4a4a;
   --text-input-focused-fg: #fff;
   --text-input-focused-outline: 0.25rem solid var(--button-vibrant-bg);
   --text-input-focused-rounding: 0.5rem;
@@ -163,12 +163,19 @@ h3 {
 
 ::-webkit-scrollbar {
   width: 0.5rem;
+  height: 0.5rem;
 }
 
 ::-webkit-scrollbar-thumb {
+  border-radius: 0.5rem;
   background-color: var(--scrollbar-fg);
 }
 
 ::-webkit-scrollbar-track {
   background-color: var(--scrollbar-bg);
+}
+
+::-webkit-scrollbar-button {
+  padding: 0.5rem;
+  border: transparent solid 0.2rem;
 }

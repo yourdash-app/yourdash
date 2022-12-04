@@ -107,7 +107,7 @@ const Panel: React.FC<IPanel> = () => {
     <AuthedImg src={"/get/server/logo"} className={styles.serverLogo} />
     {/* <h2 className={styles.serverName}>YourDash</h2> */}
     <div className={styles.shortcuts}>
-      {userSettings?.panel.launcher.shortcuts.map((shortcut, ind) => {
+      {userSettings?.panel?.launcher?.shortcuts?.map((shortcut, ind) => {
         return <div key={ind} onClick={() => { router.push(shortcut.url) }}>
           <div>
             <img draggable={false} src={shortcut.icon} alt="" />
@@ -137,7 +137,7 @@ const Panel: React.FC<IPanel> = () => {
             setAccountDropdownVisible(false)
             localStorage.removeItem("sessiontoken")
             localStorage.removeItem("username")
-            router.push("/")
+            router.push("/login/")
           }}>
             <Icon name='logout' color="var(--button-fg)" />
           </div>
