@@ -26,13 +26,13 @@ const Module = {
                     }
                     else {
                         process.stdout.write(chalk.bgRed(' Unauthorized '));
-                        return res.sendStatus(401);
+                        return res.json({ error: true });
                     }
                 }
                 else {
                     fs.readFile(path.resolve(`${ENV.FS_ORIGIN}/data/users/${userName}/keys.json`), (err, data) => {
                         if (err)
-                            return res.sendStatus(404);
+                            return res.json({ error: true });
                         let sessionKey = JSON.parse(data.toString()).sessionToken;
                         if (sessionKey === sessionToken) {
                             USER_CACHE[userName] = sessionKey;
@@ -42,7 +42,7 @@ const Module = {
                 }
             }
             else {
-                res.sendStatus(401);
+                return res.json({ error: true });
             }
         });
         app.post('/api/user/create/:username', (req, res) => {
@@ -51,12 +51,12 @@ const Module = {
             let { name } = req.headers;
             console.log(password);
             if (!password)
-                return res.sendStatus(500);
+                return res.json({ error: true });
             if (fs.existsSync(path.resolve(`${ENV.FS_ORIGIN}/data/users/${username}`)))
                 return res.sendStatus(403);
             fs.mkdir(`${ENV.FS_ORIGIN}/data/users/${username}/`, { recursive: true }, (err) => {
                 if (err)
-                    return res.sendStatus(500);
+                    return res.json({ error: true });
                 fs.writeFile(`${ENV.FS_ORIGIN}/data/users/${username}/user.json`, JSON.stringify({
                     name: {
                         first: name,
@@ -180,12 +180,12 @@ const Module = {
         });
         app.get('/api/get/current/user', (req, res) => {
             if (!fs.existsSync(`${ENV.FS_ORIGIN}/data/users/${req.header('username')}`)) {
-                return res.sendStatus(403);
+                return res.json({ error: true });
             }
             fs.readFile(`${ENV.FS_ORIGIN}/data/users/${req.header('username')}/user.json`, (err, data) => {
                 if (err)
-                    return res.sendStatus(404);
-                return res.send(data);
+                    return res.json({ error: true });
+                return res.send({ user: JSON.parse(data.toString()) });
             });
         });
         app.get('/api/get/current/user/settings', (req, res) => {

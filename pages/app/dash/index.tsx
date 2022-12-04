@@ -20,9 +20,11 @@ const Dash: NextPageWithLayout = () => {
   useEffect(() => {
     SERVER.get("/get/current/user")
       .then((response) => {
-        response.json().then((res: YourDashUser) => {
-          setName(res?.name?.first + " " + res?.name?.last)
-        }).catch(err => setName("ERROR: Not valid JSON"))
+        response.json().then((res: { error?: boolean; user: YourDashUser }) => {
+          if (res.error) return console.error(`failed fetching the current user`)
+          let user = res.user
+          setName(user?.name?.first + " " + user?.name?.last)
+        }).catch(() => setName("ERROR: Not valid JSON"))
       })
       .catch(err => { setName(err) })
   }, [])
@@ -63,20 +65,20 @@ const Dash: NextPageWithLayout = () => {
             currentContentPage,
             <>
               <ColContainer>
-                <Card>abcjdasjdfjhajksdhfd</Card>
-                <Card>abcjdasjdfjhajksdhfd</Card>
-              </ColContainer>
-              <ColContainer>
-                <Card>abcjdasjdfjhajksdhfd</Card>
+                <Card>abc</Card>
                 <Card>abc</Card>
               </ColContainer>
               <ColContainer>
                 <Card>abc</Card>
-                <Card>abcjdasjdfjhajksdhfd</Card>
                 <Card>abc</Card>
               </ColContainer>
               <ColContainer>
-                <Card>abcjdasjdfjhajksdhfd</Card>
+                <Card>abc</Card>
+                <Card>abc</Card>
+                <Card>abc</Card>
+              </ColContainer>
+              <ColContainer>
+                <Card>abc</Card>
                 <Card>abc</Card>
               </ColContainer>
             </>

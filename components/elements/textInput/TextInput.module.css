@@ -7,23 +7,15 @@
   font-size: 1rem;
   font-family: 'Roboto';
   transition: var(--transition);
-  border-radius: var(--button-rounding);
-  background-color: var(--button-bg);
-  color: var(--button-fg);
+  border-radius: var(--text-input-rounding);
+  background-color: var(--text-input-bg);
+  color: var(--text-input-fg);
   width: 100%;
   box-sizing: border-box;
 }
 
 .input:focus-visible {
   outline: var(--text-input-focused-outline);
-}
-
-.invalid {
-  color: var(--color-error-bg);
-}
-
-.valid {
-  color: var(--color-success-bg);
 }
 
 .label {

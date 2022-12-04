@@ -33,29 +33,32 @@ const Panel: React.FC<IPanel> = () => {
     SERVER.get(`/get/current/user/settings`)
       .then(res => {
         // if (res.status !== 200) throw new Error("Error while fetching data")
-        return res.json() as Promise<YourDashUserSettings>
-      })
-      .then(res => {
-        setUserSettings(res)
-        document.body.style.setProperty("--panel-launcher-grid-columns", res.panel?.launcher?.slideOut?.gridColumns.toString() || "3")
+        // return res.json() as Promise<YourDashUserSettings>
+        res.json().then((json: YourDashUserSettings) => {
+          setUserSettings(json)
+          document.body.style.setProperty("--panel-launcher-grid-columns", json.panel?.launcher?.slideOut?.gridColumns.toString() || "3")
+        })
+          .catch(err => {
+            console.error(err)
+          })
       })
       .catch(_err => {
-        console.warn("Should not reach 1")
         localStorage.removeItem("sessionToken")
         return router.push("/login")
       })
     SERVER.get(`/get/current/user`)
       .then(res => {
-        console.log(res)
         // if (res.status !== 200) throw new Error("Error while fetching data, " + res)
-        return res.json() as Promise<YourDashUser>
-      })
-      .then(res => {
-        setUserData(res)
+        res.json()
+          .then((res: { error?: boolean; user: YourDashUser}) => {
+            if (res.error) return router.push("/login")
+            setUserData(res.user)
+          })
+          .catch(err => {
+            console.error(err)
+          })
       })
       .catch(_err => {
-        console.warn("Should not reach")
-        console.warn(_err)
         localStorage.removeItem("sessionToken")
         return router.push("/login")
       })
@@ -69,13 +72,13 @@ const Panel: React.FC<IPanel> = () => {
       <div data-header>
         <div data-title>Hiya, {userData?.name?.first}</div>
         <TextInput data-search onChange={(e) => {
-          setSearchQuery(e.currentTarget.value)
+          setSearchQuery(e.currentTarget.value.toLowerCase())
         }} placeholder="Search" />
       </div>
       <div className={styles.launcherGrid}>
         {
           IncludedApps.map((app, ind) => {
-            if (app.name.includes(searchQuery) || app.path.includes(searchQuery))
+            if (app.name.toLowerCase().includes(searchQuery) || app.description.toLowerCase().includes(searchQuery))
               return <div key={ind} onClick={() => {
                 setLauncherSlideOutVisible(false)
                 router.push(app.path)
@@ -91,7 +94,7 @@ const Panel: React.FC<IPanel> = () => {
       </div>
       <footer data-footer>
         <img onClick={() => { router.push(`/app/user/profile/${userData?.userName}`) }} tabIndex={0} src={
-          userData?.profile.image
+          userData?.profile?.image
         } alt="" />
         <span>{userData?.name?.first} {userData?.name?.last}</span>
         <div onClick={() => {
@@ -122,7 +125,7 @@ const Panel: React.FC<IPanel> = () => {
     </div>
     <div className={styles.account}>
       <img onClick={() => { setAccountDropdownVisible(!accountDropdownVisible) }} tabIndex={0} src={
-        userData?.profile.image
+        userData?.profile?.image
       } alt="" />
       <div style={{ width: "100vw", transition: "var(--transition)", height: "100vh", background: "#00000040", position: "fixed", top: 0, left: 0, pointerEvents: accountDropdownVisible ? "all" : "none", opacity: accountDropdownVisible ? 1 : 0 }} onClick={() => { setAccountDropdownVisible(false) }}></div>
       <Card style={{

@@ -16,17 +16,18 @@ const LoginOptions: NextPageWithLayout = () => {
     if (localStorage.getItem("sessiontoken")) {
       SERVER.get("/get/current/user")
         .then(res => {
-          if (res.status === 200) {
-            router.push("/app/dash")
-          }
-          else {
-            localStorage.removeItem("sessionToken")
-          }
+          res.json()
+            .then(() => {
+              router.push("/app/dash")
+            })
+            .catch(err => {
+              console.error(err)
+              localStorage.removeItem("sessionToken")
+            })
         })
         .catch(err => {
           console.error(err)
         })
-      return
     }
   }, [ router ])
 
@@ -44,9 +45,9 @@ const LoginOptions: NextPageWithLayout = () => {
             SERVER.get("/user/login", {
               password: password
             }).then(res => {
-              res.text().then(res => {
-                if (res !== "Forbidden" && res !== "Internal Server Error") {
-                  localStorage.setItem("sessiontoken", res)
+              res.json().then(res => {
+                if (!res?.error) {
+                  localStorage.setItem("sessiontoken", res.sessionToken)
                   return router.push("/app/dash")
                 }
               }).catch(() => {

@@ -76,4 +76,25 @@ export interface YourDashUserSettings {
       visibleIcons: {}[];
     };
   };
+  applications: {
+    dash: {
+      chips: {
+        name: string;
+        id: string;
+      }[];
+      background: {
+        src: string,
+        blur: number
+      }
+    };
+    files: {
+      sidebar: {},
+      items: {
+        display: {
+          size: number,
+          type: "" | ""
+        } 
+      }
+    }
+  };
 }
