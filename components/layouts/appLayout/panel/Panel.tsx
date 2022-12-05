@@ -15,6 +15,7 @@ import ColContainer from '../../../containers/ColContainer/ColContainer';
 import RowContainer from '../../../containers/RowContainer/RowContainer';
 import Button from '../../../elements/button/Button';
 import Icon from '../../../elements/icon/Icon';
+import RightClickMenu from '../../../elements/rightClickMenu/RightClickMenu';
 import TextInput from '../../../elements/textInput/TextInput';
 import AuthedImg from "./../../../elements/authedImg/AuthedImg";
 import styles from './Panel.module.scss';
@@ -36,7 +37,7 @@ const Panel: React.FC<IPanel> = () => {
         // return res.json() as Promise<YourDashUserSettings>
         res.json().then((json: YourDashUserSettings) => {
           setUserSettings(json)
-          document.body.style.setProperty("--panel-launcher-grid-columns", json.panel?.launcher?.slideOut?.gridColumns.toString() || "3")
+          document.body.style.setProperty("--app-panel-launcher-grid-columns", json.panel?.launcher?.slideOut?.gridColumns.toString() || "3")
         })
           .catch(err => {
             console.error(err)
@@ -50,7 +51,7 @@ const Panel: React.FC<IPanel> = () => {
       .then(res => {
         // if (res.status !== 200) throw new Error("Error while fetching data, " + res)
         res.json()
-          .then((res: { error?: boolean; user: YourDashUser}) => {
+          .then((res: { error?: boolean; user: YourDashUser }) => {
             if (res.error) return router.push("/login")
             setUserData(res.user)
           })
@@ -79,16 +80,31 @@ const Panel: React.FC<IPanel> = () => {
         {
           IncludedApps.map((app, ind) => {
             if (app.name.toLowerCase().includes(searchQuery) || app.description.toLowerCase().includes(searchQuery))
-              return <div key={ind} onClick={() => {
-                setLauncherSlideOutVisible(false)
-                router.push(app.path)
-              }}>
-                <img src={app.icon} draggable={false} alt="" />
-                <span>{app.name}</span>
-                {/* <div onClick={() => {
+              return <RightClickMenu offset={{y: "- var(--app-panel-height)"}} items={[
+                {
+                  name: "Pin to quick shortcuts"
+                },
+                {
+                  name: "Pin to quick shortcuts"
+                },
+                {
+                  name: "Pin to quick shortcuts"
+                },
+                {
+                  name: "Pin to quick shortcuts"
+                },
+              ]}>
+                <div key={ind} className={styles.launcherGridItem} onClick={() => {
+                  setLauncherSlideOutVisible(false)
+                  router.push(app.path)
+                }}>
+                  <img src={app.icon} draggable={false} alt="" />
+                  <span>{app.name}</span>
+                  {/* <div onClick={() => {
                   // show a dropdown
                 }}><Icon name='three-bars-16' color={"var(--button-fg)"} /></div> */}
-              </div>
+                </div>
+              </RightClickMenu>
           })
         }
       </div>
@@ -108,16 +124,22 @@ const Panel: React.FC<IPanel> = () => {
     {/* <h2 className={styles.serverName}>YourDash</h2> */}
     <div className={styles.shortcuts}>
       {userSettings?.panel?.launcher?.shortcuts?.map((shortcut, ind) => {
-        return <div key={ind} onClick={() => { router.push(shortcut.url) }}>
-          <div>
-            <img draggable={false} src={shortcut.icon} alt="" />
-            {
-              router.pathname === shortcut.url ?
-                <div data-active-indicator></div> : <div></div>
-            }
+        return <RightClickMenu key={ind} items={[
+          {
+            name: "a"
+          }
+        ]}>
+          <div key={ind} className={styles.shortcut} onClick={() => { router.push(shortcut.url) }}>
+            <div>
+              <img draggable={false} src={shortcut.icon} alt="" />
+              {
+                router.pathname === shortcut.url ?
+                  <div data-active-indicator></div> : <div></div>
+              }
+            </div>
+            <span>{shortcut.name}</span>
           </div>
-          <span>{shortcut.name}</span>
-        </div>
+        </RightClickMenu>
       })}
     </div>
     <div className={styles.tray}>

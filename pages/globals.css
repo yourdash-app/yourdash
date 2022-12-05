@@ -127,6 +127,12 @@
 
   --scrollbar-bg: #222;
   --scrollbar-fg: rgb(235 106 75);
+
+  --right-click-menu-bg: #333333;
+  --right-click-menu-fg: #ffffff;
+  --right-click-menu-rounding: 1rem;
+  --right-click-menu-item-bg: #5a5a5a;
+  --right-click-menu-item-fg: #ffffff;
 }
 
 html,

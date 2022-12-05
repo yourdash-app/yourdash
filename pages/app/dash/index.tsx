@@ -4,6 +4,7 @@ import Card from "../../../components/containers/card/Card";
 import ColContainer from "../../../components/containers/ColContainer/ColContainer";
 import RowContainer from "../../../components/containers/RowContainer/RowContainer";
 import Chip from "../../../components/elements/chip/Chip";
+import RightClickMenu from "../../../components/elements/rightClickMenu/RightClickMenu";
 import AppLayout from '../../../components/layouts/appLayout/AppLayout';
 import SERVER from "../../../lib/server";
 import YourDashUser from "../../../lib/user";
@@ -64,10 +65,12 @@ const Dash: NextPageWithLayout = () => {
           {returnDashCards(
             currentContentPage,
             <>
-              <ColContainer>
-                <Card>abc</Card>
-                <Card>abc</Card>
-              </ColContainer>
+              <RightClickMenu items={[ {name: "a"} ]}>
+                <ColContainer>
+                  <Card>abc</Card>
+                  <Card>abc</Card>
+                </ColContainer>
+              </RightClickMenu>
               <ColContainer>
                 <Card>abc</Card>
                 <Card>abc</Card>
