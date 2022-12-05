@@ -26,7 +26,9 @@ const Module: YourDashModule = {
           if (USER_CACHE[userName] === sessionToken) {
             next();
           } else {
-            process.stdout.write(chalk.bgRed(' Unauthorized '));
+            process.stdout.write(
+              `${chalk.black(chalk.bgYellow('Cached data was used!'))} ${chalk.bgRed(' Unauthorized ')}`
+            );
             return res.json({ error: true });
           }
         } else {
@@ -38,6 +40,9 @@ const Module: YourDashModule = {
               if (sessionKey === sessionToken) {
                 USER_CACHE[userName] = sessionKey;
                 next();
+              } else {
+                process.stdout.write(chalk.bgRed(' Unauthorized '));
+                return res.json({ error: true });
               }
             }
           );
@@ -228,6 +233,7 @@ const Module: YourDashModule = {
                 sessionToken: newSessionToken,
                 error: false,
               });
+              USER_CACHE[username] = newSessionToken;
             }
           );
         }

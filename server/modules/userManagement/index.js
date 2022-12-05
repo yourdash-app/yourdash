@@ -25,7 +25,7 @@ const Module = {
                         next();
                     }
                     else {
-                        process.stdout.write(chalk.bgRed(' Unauthorized '));
+                        process.stdout.write(`${chalk.black(chalk.bgYellow('Cached data was used!'))} ${chalk.bgRed(' Unauthorized ')}`);
                         return res.json({ error: true });
                     }
                 }
@@ -37,6 +37,10 @@ const Module = {
                         if (sessionKey === sessionToken) {
                             USER_CACHE[userName] = sessionKey;
                             next();
+                        }
+                        else {
+                            process.stdout.write(chalk.bgRed(' Unauthorized '));
+                            return res.json({ error: true });
                         }
                     });
                 }
@@ -174,6 +178,7 @@ const Module = {
                             sessionToken: newSessionToken,
                             error: false,
                         });
+                        USER_CACHE[username] = newSessionToken;
                     });
                 }
             });
