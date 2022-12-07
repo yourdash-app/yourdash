@@ -65,7 +65,7 @@ const Dash: NextPageWithLayout = () => {
           {returnDashCards(
             currentContentPage,
             <>
-              <RightClickMenu items={[ {name: "a"} ]}>
+              <RightClickMenu items={[ { name: "a" }, { name: "a" } ]}>
                 <ColContainer>
                   <Card>abc</Card>
                   <Card>abc</Card>

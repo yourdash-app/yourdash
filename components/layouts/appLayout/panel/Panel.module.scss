@@ -278,76 +278,77 @@
     top: 50%;
     transform: translateY(-50%);
   }
+  
+  @for $index from 0 to 25 {
+    > :nth-child(#{$index + 1}) {
+      opacity: 0;
+      animation: slideInAnimation 2s $index * 0.2s ease-in-out forwards;
+    }
+  }
 }
 
 .shortcut {
-  @for $index from 0 through 25 {
-      &:nth-child(#{$index + 1}) {
-        opacity: 0;
-        animation: slideInAnimation 2s $index * 0.2s ease-in-out forwards;
-      }
-    }
-    position: relative;
-    display: flex;
+  position: relative;
+  display: flex;
+  transition: var(--transition);
+  > div {
     transition: var(--transition);
-    > div {
-      transition: var(--transition);
-      height: calc(var(--app-panel-height) - 0.5rem);
-      aspect-ratio: 1 / 1;
-      overflow: hidden;
-      border-radius: 0.25rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-color: #00000000;
-      cursor: pointer;
-      &:hover {
-        background-color: #ffffff22;
-      }
-      &:active {
-        > img {
-          scale: 0.9;
-        }
-      }
-      > img {
-        transition: var(--transition);
-        height: 75%;
-        aspect-ratio: 1 / 1;
-        padding: 0.75rem;
-      }
-      > div {
-        background-color: orangered;
-        height: 0.25rem;
-        width: 0rem;
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        border-radius: 0.5rem;
-        transition: var(--transition);
-        &[data-active-indicator] {
-          width: 1rem;
-        }
-      }
-    }
+    height: calc(var(--app-panel-height) - 0.5rem);
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #00000000;
+    cursor: pointer;
     &:hover {
-      > span {
-        opacity: 1;
-        pointer-events: all;
+      background-color: #ffffff22;
+    }
+    &:active {
+      > img {
+        scale: 0.9;
       }
     }
-    > span {
+    > img {
       transition: var(--transition);
-      pointer-events: none;
-      opacity: 0;
-      top: var(--app-panel-height);
+      height: 75%;
+      aspect-ratio: 1 / 1;
+      padding: 0.75rem;
+    }
+    > div {
+      background-color: orangered;
+      height: 0.25rem;
+      width: 0rem;
       position: absolute;
-      padding: 0.25rem 0.5rem;
-      background: #00000088;
-      border-radius: 0.5rem;
+      bottom: 0;
       left: 50%;
       transform: translateX(-50%);
+      border-radius: 0.5rem;
+      transition: var(--transition);
+      &[data-active-indicator] {
+        width: 1rem;
+      }
     }
+  }
+  &:hover {
+    > span {
+      opacity: 1;
+      pointer-events: all;
+    }
+  }
+  > span {
+    transition: var(--transition);
+    pointer-events: none;
+    opacity: 0;
+    top: var(--app-panel-height);
+    position: absolute;
+    padding: 0.25rem 0.5rem;
+    background: #00000088;
+    border-radius: 0.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+  }
 }
 
 .serverName {

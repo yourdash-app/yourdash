@@ -80,7 +80,7 @@ const Panel: React.FC<IPanel> = () => {
         {
           IncludedApps.map((app, ind) => {
             if (app.name.toLowerCase().includes(searchQuery) || app.description.toLowerCase().includes(searchQuery))
-              return <RightClickMenu offset={{y: "- var(--app-panel-height)"}} items={[
+              return <RightClickMenu offset={{ y: "- var(--app-panel-height)" }} items={[
                 {
                   name: "Pin to quick shortcuts"
                 },
@@ -93,8 +93,8 @@ const Panel: React.FC<IPanel> = () => {
                 {
                   name: "Pin to quick shortcuts"
                 },
-              ]}>
-                <div key={ind} className={styles.launcherGridItem} onClick={() => {
+              ]} key={ind}>
+                <div className={styles.launcherGridItem} onClick={() => {
                   setLauncherSlideOutVisible(false)
                   router.push(app.path)
                 }}>
@@ -129,7 +129,7 @@ const Panel: React.FC<IPanel> = () => {
             name: "a"
           }
         ]}>
-          <div key={ind} className={styles.shortcut} onClick={() => { router.push(shortcut.url) }}>
+          <div className={styles.shortcut} onClick={() => { router.push(shortcut.url) }}>
             <div>
               <img draggable={false} src={shortcut.icon} alt="" />
               {
