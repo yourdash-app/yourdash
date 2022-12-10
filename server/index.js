@@ -1,3 +1,4 @@
+import bodyParser from 'body-parser';
 import chalk from 'chalk';
 import { exec } from 'child_process';
 import cors from 'cors';
@@ -7,12 +8,14 @@ import path from 'path';
 import { log } from './libServer.js';
 import startupCheck from './startupCheck.js';
 export const ENV = {
-    FS_ORIGIN: process.env.FS_ORIGIN,
+    FsOrigin: process.env.FsOrigin,
+    UserFs: (req) => `${ENV.FsOrigin}/data/users/${req.headers.username}`,
+    UserAppData: (req) => `${ENV.FsOrigin}/data/users/${req.headers.username}/AppData`,
 };
-if (!ENV.FS_ORIGIN)
-    console.error('FS_ORIGIN was not defined.');
+if (!ENV.FsOrigin)
+    console.error('FsOrigin was not defined.');
 startupCheck(async () => {
-    const SERVER_CONFIG = JSON.parse(fs.readFileSync(path.resolve(`${ENV.FS_ORIGIN}/yourdash.config.json`)).toString());
+    const SERVER_CONFIG = JSON.parse(fs.readFileSync(path.resolve(`${ENV.FsOrigin}/yourdash.config.json`)).toString());
     if (SERVER_CONFIG.name === undefined ||
         SERVER_CONFIG.defaultBackground === undefined ||
         SERVER_CONFIG.favicon === undefined ||
@@ -28,6 +31,7 @@ startupCheck(async () => {
     if (!SERVER_CONFIG.activeModules.includes('userManagement'))
         console.error(chalk.redBright(`[ERROR] the 'userManagement' module is not enabled, this ${chalk.bold('WILL')} lead to missing features and crashes.`));
     const app = express();
+    app.use(bodyParser.json());
     let loadedModules = [];
     SERVER_CONFIG.activeModules.forEach((module) => {
         import('./modules/' + module + '/index.js').then((mod) => {
@@ -68,7 +72,7 @@ startupCheck(async () => {
         res.send('yourdash instance');
     });
     app.get('/api/get/server/config', (_req, res) => {
-        fs.readFile(path.resolve(`${ENV.FS_ORIGIN}/yourdash.config.json`), (err, data) => {
+        fs.readFile(path.resolve(`${ENV.FsOrigin}/yourdash.config.json`), (err, data) => {
             let parsedFile = JSON.parse(data.toString());
             let serverConfig = {
                 activeModules: parsedFile.activeModules,
@@ -83,13 +87,13 @@ startupCheck(async () => {
         });
     });
     app.get('/api/get/server/default/background', (_req, res) => {
-        res.sendFile(path.resolve(`${ENV.FS_ORIGIN}/${SERVER_CONFIG.defaultBackground}`));
+        res.sendFile(path.resolve(`${ENV.FsOrigin}/${SERVER_CONFIG.defaultBackground}`));
     });
     app.get('/api/get/server/favicon', (_req, res) => {
-        res.sendFile(path.resolve(`${ENV.FS_ORIGIN}/${SERVER_CONFIG.favicon}`));
+        res.sendFile(path.resolve(`${ENV.FsOrigin}/${SERVER_CONFIG.favicon}`));
     });
     app.get('/api/get/server/logo', (_req, res) => {
-        res.sendFile(path.resolve(`${ENV.FS_ORIGIN}/${SERVER_CONFIG.logo}`));
+        res.sendFile(path.resolve(`${ENV.FsOrigin}/${SERVER_CONFIG.logo}`));
     });
     app.get('/api/server/version', (_req, res) => {
         res.send(SERVER_CONFIG.version);

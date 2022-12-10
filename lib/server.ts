@@ -28,7 +28,7 @@ const SERVER = {
         });
     });
   },
-  post(path: string, headers?: extraHeaders): Promise<Response> {
+  post(path: string, extras: {headers?: extraHeaders, body?: string}): Promise<Response> {
     console.log('[Server Request]: POST ' + path);
     // console.trace();
     let defaultHeaders = {
@@ -36,9 +36,9 @@ const SERVER = {
       username: localStorage.getItem('username') as string,
     };
     let url = localStorage.getItem('currentServer');
-    console.log('[Server Request]: POST ' + path);
     return fetch(`${url}/api${path}`, {
-      headers: { ...defaultHeaders, ...headers },
+      headers: { ...defaultHeaders, ...extras?.headers },
+      body: extras?.body,
       method: 'POST',
     });
   },

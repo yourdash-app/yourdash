@@ -3,6 +3,7 @@
  *   https://ewsgit.mit-license.org
  */
 
+import bodyParser from 'body-parser';
 import chalk from 'chalk';
 import { exec } from 'child_process';
 import cors from 'cors';
@@ -14,12 +15,16 @@ import YourDashModule from './module.js';
 import startupCheck from './startupCheck.js';
 
 export const ENV: {
-  FS_ORIGIN: string;
+  FsOrigin: string;
+  UserFs: (_req: express.Request) => string;
+  UserAppData: (_req: express.Request) => string;
 } = {
-  FS_ORIGIN: process.env.FS_ORIGIN as string,
+  FsOrigin: process.env.FsOrigin as string,
+  UserFs: (req) => `${ENV.FsOrigin}/data/users/${req.headers.username}`,
+  UserAppData: (req) => `${ENV.FsOrigin}/data/users/${req.headers.username}/AppData`,
 };
 
-if (!ENV.FS_ORIGIN) console.error('FS_ORIGIN was not defined.');
+if (!ENV.FsOrigin) console.error('FsOrigin was not defined.');
 
 export interface YourDashServerConfig {
   name: string;
@@ -58,7 +63,7 @@ export interface YourDashServerConfig {
 
 startupCheck(async () => {
   const SERVER_CONFIG: YourDashServerConfig = JSON.parse(
-    fs.readFileSync(path.resolve(`${ENV.FS_ORIGIN}/yourdash.config.json`)).toString()
+    fs.readFileSync(path.resolve(`${ENV.FsOrigin}/yourdash.config.json`)).toString()
   );
 
   if (
@@ -97,6 +102,8 @@ startupCheck(async () => {
     );
 
   const app = express();
+
+  app.use(bodyParser.json());
 
   let loadedModules: YourDashModule[] = [];
 
@@ -162,7 +169,7 @@ startupCheck(async () => {
   });
 
   app.get('/api/get/server/config', (_req, res) => {
-    fs.readFile(path.resolve(`${ENV.FS_ORIGIN}/yourdash.config.json`), (err, data) => {
+    fs.readFile(path.resolve(`${ENV.FsOrigin}/yourdash.config.json`), (err, data) => {
       let parsedFile = JSON.parse(data.toString()) as YourDashServerConfig;
       let serverConfig = {
         activeModules: parsedFile.activeModules,
@@ -178,15 +185,15 @@ startupCheck(async () => {
   });
 
   app.get('/api/get/server/default/background', (_req, res) => {
-    res.sendFile(path.resolve(`${ENV.FS_ORIGIN}/${SERVER_CONFIG.defaultBackground}`));
+    res.sendFile(path.resolve(`${ENV.FsOrigin}/${SERVER_CONFIG.defaultBackground}`));
   });
 
   app.get('/api/get/server/favicon', (_req, res) => {
-    res.sendFile(path.resolve(`${ENV.FS_ORIGIN}/${SERVER_CONFIG.favicon}`));
+    res.sendFile(path.resolve(`${ENV.FsOrigin}/${SERVER_CONFIG.favicon}`));
   });
 
   app.get('/api/get/server/logo', (_req, res) => {
-    res.sendFile(path.resolve(`${ENV.FS_ORIGIN}/${SERVER_CONFIG.logo}`));
+    res.sendFile(path.resolve(`${ENV.FsOrigin}/${SERVER_CONFIG.logo}`));
   });
 
   app.get('/api/server/version', (_req, res) => {

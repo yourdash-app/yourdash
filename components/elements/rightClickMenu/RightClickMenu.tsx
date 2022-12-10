@@ -4,7 +4,8 @@ import styles from './RightClickMenu.module.scss';
 export interface IRightClickMenu {
   items: {
     name: string,
-    shortcut?: string
+    shortcut?: string,
+    onClick: () => void,
   }[],
   children: React.ReactChild | React.ReactChild[],
   offset?: {
@@ -42,7 +43,7 @@ const RightClickMenu: React.FC<IRightClickMenu> = ({ items, children, offset }) 
       }}>
         {
           items.map((item, ind) => {
-            return <li key={ind}>
+            return <li key={ind} onClick={item.onClick}>
               <span>{item.name}</span>
               {
                 item?.shortcut ? <span>{item.shortcut}</span> : null

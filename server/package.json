@@ -6,12 +6,13 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "dev": "concurrently \"tsc\" \"cross-env FS_ORIGIN=./fs DEV=true nodemon . --ignore ./fs/*\"",
-    "production": "cross-env FS_ORIGIN=./fs DEV=true node ."
+    "dev": "concurrently \"tsc\" \"cross-env FsOrigin=./fs DEV=true nodemon . --ignore ./fs/*\"",
+    "production": "cross-env FsOrigin=./fs DEV=true node ."
   },
   "dependencies": {
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.14",
+    "body-parser": "^1.20.1",
     "chalk": "^5.1.2",
     "cheerio": "^1.0.0-rc.12",
     "concurrently": "^7.4.0",

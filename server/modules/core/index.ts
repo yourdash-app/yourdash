@@ -6,11 +6,11 @@ const Module: YourDashModule = {
 
   load(app, _api) {
     app.get('/api/create/shortcut', (req, res) => {
-      res.send(`hello from ${this.id}`);
+      res.json({ text: `hello from ${this.id}` });
     });
 
     app.get('/api/delete/shortcut', (req, res) => {
-      res.send(`hello from ${this.id}`);
+      res.json({ text: `hello from ${this.id}` });
     });
   },
 

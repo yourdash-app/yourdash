@@ -22,15 +22,15 @@ export default async function main(cb: () => void) {
     groups
     admin user exists
   */
-  if (!fs.existsSync(path.resolve(ENV.FS_ORIGIN))) {
-    fs.mkdir(ENV.FS_ORIGIN, { recursive: true }, (err) => {
+  if (!fs.existsSync(path.resolve(ENV.FsOrigin))) {
+    fs.mkdir(ENV.FsOrigin, { recursive: true }, (err) => {
       if (err) return console.error(err);
       increaseStep(cb);
     });
   } else {
     increaseStep(cb);
   }
-  if (!fs.existsSync(path.resolve(`${ENV.FS_ORIGIN}/yourdash.config.json`))) {
+  if (!fs.existsSync(path.resolve(`${ENV.FsOrigin}/yourdash.config.json`))) {
     let chars = 'ABCDEF0123456789';
 
     let keyString = '';
@@ -38,7 +38,7 @@ export default async function main(cb: () => void) {
       keyString += chars.charAt(Math.floor(Math.random() * chars.length));
     }
     fs.writeFile(
-      path.resolve(`${ENV.FS_ORIGIN}/yourdash.config.json`),
+      path.resolve(`${ENV.FsOrigin}/yourdash.config.json`),
       JSON.stringify({
         activeModules: ['userManagement', 'core'],
         defaultBackground: '',
@@ -80,11 +80,11 @@ export default async function main(cb: () => void) {
   } else {
     increaseStep(cb);
   }
-  if (!fs.existsSync(path.resolve(`${ENV.FS_ORIGIN}/data/users/admin/user.json`))) {
-    fs.mkdir(path.resolve(`${ENV.FS_ORIGIN}/data/users/admin/`), { recursive: true }, (err) => {
+  if (!fs.existsSync(path.resolve(`${ENV.FsOrigin}/data/users/admin/user.json`))) {
+    fs.mkdir(path.resolve(`${ENV.FsOrigin}/data/users/admin/`), { recursive: true }, (err) => {
       if (err) return log(`${err}`);
       fs.writeFile(
-        `${ENV.FS_ORIGIN}/data/users/admin/user.json`,
+        `${ENV.FsOrigin}/data/users/admin/user.json`,
         JSON.stringify({
           version: '1',
           name: { first: 'Admin', last: 'istrator' },
@@ -92,7 +92,7 @@ export default async function main(cb: () => void) {
           profile: {
             banner: '',
             description: '',
-            image: returnBase64Image(path.resolve(`${ENV.FS_ORIGIN}/../default_user_profile.png`)),
+            image: returnBase64Image(path.resolve(`${ENV.FsOrigin}/../default_user_profile.png`)),
             location: {
               public: false,
               value: '',
@@ -104,10 +104,10 @@ export default async function main(cb: () => void) {
         (err) => {
           if (err) return log(`${err}`);
           const SERVER_CONFIG: YourDashServerConfig = JSON.parse(
-            fs.readFileSync(path.resolve(`${ENV.FS_ORIGIN}/yourdash.config.json`)).toString()
+            fs.readFileSync(path.resolve(`${ENV.FsOrigin}/yourdash.config.json`)).toString()
           );
           fs.writeFile(
-            path.resolve(`${ENV.FS_ORIGIN}/data/users/admin/keys.json`),
+            path.resolve(`${ENV.FsOrigin}/data/users/admin/keys.json`),
             JSON.stringify({
               hashedKey: encrypt('admin', SERVER_CONFIG),
             }),
@@ -119,14 +119,14 @@ export default async function main(cb: () => void) {
                 );
               }
               fs.writeFile(
-                `${ENV.FS_ORIGIN}/data/users/admin/config.json`,
+                `${ENV.FsOrigin}/data/users/admin/config.json`,
                 JSON.stringify({
                   panel: {
                     launcher: {
                       shortcuts: [
                         {
                           icon: returnBase64Image(
-                            path.resolve(`${ENV.FS_ORIGIN}/../yourdash256.png`)
+                            path.resolve(`${ENV.FsOrigin}/../yourdash256.png`)
                           ),
                           name: 'Dashboard',
                           url: '/app/dash',

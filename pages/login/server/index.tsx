@@ -2,7 +2,9 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import Card from "../../../components/containers/card/Card";
 import ColContainer from "../../../components/containers/ColContainer/ColContainer";
+import RowContainer from "../../../components/containers/RowContainer/RowContainer";
 import Button from "../../../components/elements/button/Button";
+import ButtonLink from "../../../components/elements/buttonLink/ButtonLink";
 import TextInput from "../../../components/elements/textInput/TextInput";
 import HomeLayout from "../../../components/layouts/homeLayout/HomeLayout";
 import SERVER from "../../../lib/server";
@@ -30,30 +32,37 @@ const LoginOptions: NextPageWithLayout = () => {
               setPassword(e.currentTarget.value);
               setErrorHasOccured(false)
             }} />
-            <Button onClick={() => {
-              localStorage.setItem("username", userName)
-              SERVER.get("/user/login", {
-                password: password
-              }).then(res => {
-                res.json().then(res => {
-                  if (!res?.error) {
-                    localStorage.setItem("sessiontoken", res.sessionToken)
-                    return router.push("/app/dash")
+            <RowContainer style={{
+              width: "100%"
+            }}>
+              <Button style={{ flexGrow: 1 }} onClick={() => {
+                localStorage.setItem("username", userName)
+                SERVER.get("/user/login", {
+                  password: password
+                }).then(res => {
+                  res.json().then(res => {
+                    if (!res?.error) {
+                      localStorage.setItem("sessiontoken", res.sessionToken)
+                      return router.push("/app/dash")
+                    }
+                    setErrorHasOccured(true)
+                  }).catch(() => {
+                    setErrorHasOccured(true)
+                    throw new Error("Login Error, the server responded with an invalid response.")
+                  })
+                }).catch(err => {
+                  if (err) {
+                    console.error("ERROR CAUGHT: /user/login: " + err)
+                    setErrorHasOccured(true)
                   }
-                  setErrorHasOccured(true)
-                }).catch(() => {
-                  setErrorHasOccured(true)
-                  throw new Error("Login Error, the server responded with an invalid response.")
                 })
-              }).catch(err => {
-                if (err) {
-                  console.error("ERROR CAUGHT: /user/login: " + err)
-                  setErrorHasOccured(true)
-                }
-              })
-            }} vibrant>
-              Login
-            </Button>
+              }} vibrant>
+                Login
+              </Button>
+              <ButtonLink style={{ flexGrow: 1 }} href="/login/server/signup">
+                Sign up
+              </ButtonLink>
+            </RowContainer>
           </ColContainer>
         </Card>
       </div>

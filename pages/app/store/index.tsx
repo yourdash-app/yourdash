@@ -18,6 +18,24 @@ const StoreIndex: NextPageWithLayout = () => {
           backgroundSize: "cover"
         }}>
         </div>
+        <div style={{
+          backgroundImage: `url('/favicon.png')`,
+          backgroundPosition: "center",
+          backgroundSize: "cover"
+        }}>
+        </div>
+        <div style={{
+          backgroundImage: `url('/favicon.png')`,
+          backgroundPosition: "center",
+          backgroundSize: "cover"
+        }}>
+        </div>
+        <div style={{
+          backgroundImage: `url('/favicon.png')`,
+          backgroundPosition: "center",
+          backgroundSize: "cover"
+        }}>
+        </div>
       </Carousel>
     </>
   );

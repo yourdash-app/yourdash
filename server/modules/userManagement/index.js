@@ -9,7 +9,7 @@ let USER_CACHE = {};
 const Module = {
     name: 'userManagement',
     id: 'userManagement',
-    load(app, _api) {
+    load(app, api) {
         app.use((req, res, next) => {
             if (req.path.startsWith('/test'))
                 return next();
@@ -30,7 +30,7 @@ const Module = {
                     }
                 }
                 else {
-                    fs.readFile(path.resolve(`${ENV.FS_ORIGIN}/data/users/${userName}/keys.json`), (err, data) => {
+                    fs.readFile(path.resolve(`${ENV.FsOrigin}/data/users/${userName}/keys.json`), (err, data) => {
                         if (err)
                             return res.json({ error: true });
                         let sessionKey = JSON.parse(data.toString()).sessionToken;
@@ -56,12 +56,12 @@ const Module = {
             console.log(password);
             if (!password)
                 return res.json({ error: true });
-            if (fs.existsSync(path.resolve(`${ENV.FS_ORIGIN}/data/users/${username}`)))
+            if (fs.existsSync(path.resolve(`${ENV.FsOrigin}/data/users/${username}`)))
                 return res.sendStatus(403);
-            fs.mkdir(`${ENV.FS_ORIGIN}/data/users/${username}/`, { recursive: true }, (err) => {
+            fs.mkdir(`${ENV.FsOrigin}/data/users/${username}/`, { recursive: true }, (err) => {
                 if (err)
                     return res.json({ error: true });
-                fs.writeFile(`${ENV.FS_ORIGIN}/data/users/${username}/user.json`, JSON.stringify({
+                fs.writeFile(`${ENV.FsOrigin}/data/users/${username}/user.json`, JSON.stringify({
                     name: {
                         first: name,
                         last: '',
@@ -121,18 +121,18 @@ const Module = {
                 }), (err) => {
                     if (err)
                         return res.sendStatus(500);
-                    fs.writeFile(`${ENV.FS_ORIGIN}/data/users/${username}/keys.json`, JSON.stringify({
-                        hashedKey: encrypt(password, _api.SERVER_CONFIG),
+                    fs.writeFile(`${ENV.FsOrigin}/data/users/${username}/keys.json`, JSON.stringify({
+                        hashedKey: encrypt(password, api.SERVER_CONFIG),
                     }), (err) => {
                         if (err)
                             return res.sendStatus(500);
-                        fs.writeFile(`${ENV.FS_ORIGIN}/data/users/${username}/config.json`, JSON.stringify({
+                        fs.writeFile(`${ENV.FsOrigin}/data/users/${username}/config.json`, JSON.stringify({
                             panel: {
                                 launcher: {
                                     shortcuts: [
                                         {
                                             icon: URL.createObjectURL(new Blob([
-                                                fs.readFileSync(path.resolve(`${ENV.FS_ORIGIN}./../yourdash.svg`)),
+                                                fs.readFileSync(path.resolve(`${ENV.FsOrigin}./../yourdash.svg`)),
                                             ])),
                                         },
                                     ],
@@ -141,7 +141,11 @@ const Module = {
                         }), (err) => {
                             if (err)
                                 return res.sendStatus(500);
-                            return res.send(`hello new user ${req.params.username}`);
+                            fs.mkdir(`${ENV.UserFs(req)}/AppData/`, { recursive: true }, (err) => {
+                                if (err)
+                                    return res.sendStatus(500);
+                                return res.send(`hello new user ${req.params.username}`);
+                            });
                         });
                     });
                 });
@@ -154,19 +158,19 @@ const Module = {
                 res.json({ error: `A username or password was not provided!` });
                 return log(`ERROR a username or password was not provided in the headers for /user/login!`);
             }
-            if (!fs.existsSync(`${ENV.FS_ORIGIN}/data/users/${username}`)) {
+            if (!fs.existsSync(`${ENV.FsOrigin}/data/users/${username}`)) {
                 res.json({ error: `Unknown user` });
                 return log(`ERROR unknown user: ${username}`);
             }
-            fs.readFile(`${ENV.FS_ORIGIN}/data/users/${username}/keys.json`, (err, data) => {
+            fs.readFile(`${ENV.FsOrigin}/data/users/${username}/keys.json`, (err, data) => {
                 if (err) {
                     res.json({ error: `An issue occured reading saved user data.` });
                     return log(`ERROR an error occured reading ${username}'s keys.json`);
                 }
                 let keysJson = JSON.parse(data.toString());
-                if (password === decrypt(keysJson.hashedKey, _api.SERVER_CONFIG)) {
+                if (password === decrypt(keysJson.hashedKey, api.SERVER_CONFIG)) {
                     let newSessionToken = generateRandomStringOfLength(256);
-                    fs.writeFile(`${ENV.FS_ORIGIN}/data/users/${username}/keys.json`, JSON.stringify({
+                    fs.writeFile(`${ENV.FsOrigin}/data/users/${username}/keys.json`, JSON.stringify({
                         hashedKey: keysJson.hashedKey,
                         sessionToken: newSessionToken,
                     }), (err) => {
@@ -184,20 +188,20 @@ const Module = {
             });
         });
         app.get('/api/get/current/user', (req, res) => {
-            if (!fs.existsSync(`${ENV.FS_ORIGIN}/data/users/${req.header('username')}`)) {
+            if (!fs.existsSync(`${ENV.FsOrigin}/data/users/${req.header('username')}`)) {
                 return res.json({ error: true });
             }
-            fs.readFile(`${ENV.FS_ORIGIN}/data/users/${req.header('username')}/user.json`, (err, data) => {
+            fs.readFile(`${ENV.FsOrigin}/data/users/${req.header('username')}/user.json`, (err, data) => {
                 if (err)
                     return res.json({ error: true });
                 return res.send({ user: JSON.parse(data.toString()) });
             });
         });
         app.get('/api/get/current/user/settings', (req, res) => {
-            if (!fs.existsSync(`${ENV.FS_ORIGIN}/data/users/${req.header('username')}`)) {
+            if (!fs.existsSync(`${ENV.FsOrigin}/data/users/${req.header('username')}`)) {
                 return res.sendStatus(403);
             }
-            fs.readFile(`${ENV.FS_ORIGIN}/data/users/${req.header('username')}/config.json`, (err, data) => {
+            fs.readFile(`${ENV.FsOrigin}/data/users/${req.header('username')}/config.json`, (err, data) => {
                 if (err)
                     return res.sendStatus(404);
                 return res.send(data);

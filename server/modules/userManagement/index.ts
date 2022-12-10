@@ -14,7 +14,7 @@ const Module: YourDashModule = {
   name: 'userManagement',
   id: 'userManagement',
 
-  load(app, _api) {
+  load(app, api) {
     app.use((req, res, next) => {
       if (req.path.startsWith('/test')) return next();
       if (req.path.startsWith('/api/get/server')) return next();
@@ -27,13 +27,15 @@ const Module: YourDashModule = {
             next();
           } else {
             process.stdout.write(
-              `${chalk.black(chalk.bgYellow('Cached data was used!'))} ${chalk.bgRed(' Unauthorized ')}`
+              `${chalk.black(chalk.bgYellow('Cached data was used!'))} ${chalk.bgRed(
+                ' Unauthorized '
+              )}`
             );
             return res.json({ error: true });
           }
         } else {
           fs.readFile(
-            path.resolve(`${ENV.FS_ORIGIN}/data/users/${userName}/keys.json`),
+            path.resolve(`${ENV.FsOrigin}/data/users/${userName}/keys.json`),
             (err, data) => {
               if (err) return res.json({ error: true });
               let sessionKey = JSON.parse(data.toString()).sessionToken;
@@ -58,12 +60,12 @@ const Module: YourDashModule = {
       let { name } = req.headers;
       console.log(password);
       if (!password) return res.json({ error: true });
-      if (fs.existsSync(path.resolve(`${ENV.FS_ORIGIN}/data/users/${username}`)))
+      if (fs.existsSync(path.resolve(`${ENV.FsOrigin}/data/users/${username}`)))
         return res.sendStatus(403);
-      fs.mkdir(`${ENV.FS_ORIGIN}/data/users/${username}/`, { recursive: true }, (err) => {
+      fs.mkdir(`${ENV.FsOrigin}/data/users/${username}/`, { recursive: true }, (err) => {
         if (err) return res.json({ error: true });
         fs.writeFile(
-          `${ENV.FS_ORIGIN}/data/users/${username}/user.json`,
+          `${ENV.FsOrigin}/data/users/${username}/user.json`,
           JSON.stringify({
             name: {
               first: name,
@@ -125,14 +127,14 @@ const Module: YourDashModule = {
           (err) => {
             if (err) return res.sendStatus(500);
             fs.writeFile(
-              `${ENV.FS_ORIGIN}/data/users/${username}/keys.json`,
+              `${ENV.FsOrigin}/data/users/${username}/keys.json`,
               JSON.stringify({
-                hashedKey: encrypt(password, _api.SERVER_CONFIG),
+                hashedKey: encrypt(password, api.SERVER_CONFIG),
               }),
               (err) => {
                 if (err) return res.sendStatus(500);
                 fs.writeFile(
-                  `${ENV.FS_ORIGIN}/data/users/${username}/config.json`,
+                  `${ENV.FsOrigin}/data/users/${username}/config.json`,
                   JSON.stringify({
                     panel: {
                       launcher: {
@@ -140,7 +142,7 @@ const Module: YourDashModule = {
                           {
                             icon: URL.createObjectURL(
                               new Blob([
-                                fs.readFileSync(path.resolve(`${ENV.FS_ORIGIN}./../yourdash.svg`)),
+                                fs.readFileSync(path.resolve(`${ENV.FsOrigin}./../yourdash.svg`)),
                               ])
                             ),
                           },
@@ -150,7 +152,10 @@ const Module: YourDashModule = {
                   } as YourDashUserSettings),
                   (err) => {
                     if (err) return res.sendStatus(500);
-                    return res.send(`hello new user ${req.params.username}`);
+                    fs.mkdir(`${ENV.UserFs(req)}/AppData/`, { recursive: true }, (err) => {
+                      if (err) return res.sendStatus(500);
+                      return res.send(`hello new user ${req.params.username}`);
+                    });
                   }
                 );
               }
@@ -165,7 +170,7 @@ const Module: YourDashModule = {
       // let password = req.headers.password as string;
       // if (!userName || !password) return res.sendStatus(401);
       // fs.readFile(
-      //   path.resolve(`${ENV.FS_ORIGIN}/data/users/${userName}/keys.json`),
+      //   path.resolve(`${ENV.FsOrigin}/data/users/${userName}/keys.json`),
       //   (err, data) => {
       //     if (err) return res.sendStatus(404);
       //     try {
@@ -175,11 +180,11 @@ const Module: YourDashModule = {
       //       return log(`ERROR failed to parse keys.json for user: ${userName}, ${err}`);
       //     }
       //     let parsedKeysFile = JSON.parse(data.toString());
-      //     if (password === decrypt(parsedKeysFile.hashedKey, _api.SERVER_CONFIG)) {
+      //     if (password === decrypt(parsedKeysFile.hashedKey, api.SERVER_CONFIG)) {
       //       // user is now authorized :D
       //       let sessionToken = generateRandomStringOfLength(256);
       //       fs.writeFile(
-      //         path.resolve(`${ENV.FS_ORIGIN}/data/users/${userName}/keys.json`),
+      //         path.resolve(`${ENV.FsOrigin}/data/users/${userName}/keys.json`),
       //         JSON.stringify({ ...parsedKeysFile, sessionToken: sessionToken }),
       //         (err) => {
       //           if (err) {
@@ -202,22 +207,22 @@ const Module: YourDashModule = {
         return log(`ERROR a username or password was not provided in the headers for /user/login!`);
       }
       // check that the user actually exists
-      if (!fs.existsSync(`${ENV.FS_ORIGIN}/data/users/${username}`)) {
+      if (!fs.existsSync(`${ENV.FsOrigin}/data/users/${username}`)) {
         res.json({ error: `Unknown user` });
         return log(`ERROR unknown user: ${username}`);
       }
       // fetch the user's password from the fs
-      fs.readFile(`${ENV.FS_ORIGIN}/data/users/${username}/keys.json`, (err, data) => {
+      fs.readFile(`${ENV.FsOrigin}/data/users/${username}/keys.json`, (err, data) => {
         if (err) {
           res.json({ error: `An issue occured reading saved user data.` });
           return log(`ERROR an error occured reading ${username}'s keys.json`);
         }
         let keysJson = JSON.parse(data.toString());
         // check if the password is correct
-        if (password === decrypt(keysJson.hashedKey, _api.SERVER_CONFIG)) {
+        if (password === decrypt(keysJson.hashedKey, api.SERVER_CONFIG)) {
           let newSessionToken = generateRandomStringOfLength(256);
           fs.writeFile(
-            `${ENV.FS_ORIGIN}/data/users/${username}/keys.json`,
+            `${ENV.FsOrigin}/data/users/${username}/keys.json`,
             JSON.stringify({
               hashedKey: keysJson.hashedKey,
               sessionToken: newSessionToken,
@@ -241,24 +246,21 @@ const Module: YourDashModule = {
     });
 
     app.get('/api/get/current/user', (req, res) => {
-      if (!fs.existsSync(`${ENV.FS_ORIGIN}/data/users/${req.header('username')}`)) {
+      if (!fs.existsSync(`${ENV.FsOrigin}/data/users/${req.header('username')}`)) {
         return res.json({ error: true });
       }
-      fs.readFile(
-        `${ENV.FS_ORIGIN}/data/users/${req.header('username')}/user.json`,
-        (err, data) => {
-          if (err) return res.json({ error: true });
-          return res.send({ user: JSON.parse(data.toString()) });
-        }
-      );
+      fs.readFile(`${ENV.FsOrigin}/data/users/${req.header('username')}/user.json`, (err, data) => {
+        if (err) return res.json({ error: true });
+        return res.send({ user: JSON.parse(data.toString()) });
+      });
     });
 
     app.get('/api/get/current/user/settings', (req, res) => {
-      if (!fs.existsSync(`${ENV.FS_ORIGIN}/data/users/${req.header('username')}`)) {
+      if (!fs.existsSync(`${ENV.FsOrigin}/data/users/${req.header('username')}`)) {
         return res.sendStatus(403);
       }
       fs.readFile(
-        `${ENV.FS_ORIGIN}/data/users/${req.header('username')}/config.json`,
+        `${ENV.FsOrigin}/data/users/${req.header('username')}/config.json`,
         (err, data) => {
           if (err) return res.sendStatus(404);
           return res.send(data);

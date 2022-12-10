@@ -21,7 +21,7 @@ const Carousel: React.FC<ICarousel> = ({ children }) => {
           let container = ref.current as HTMLDivElement
           console.log((container.scrollLeft / container.scrollWidth));
           return <div key={ind} style={{
-            color: (container.scrollLeft / container.scrollWidth) === ind ? "var(--container-fg)" : "var(--container-bg)"
+            backgroundColor: (container.scrollLeft / container.scrollWidth) === ind ? "var(--container-fg)" : "var(--container-bg)"
           }}></div>
         })
         }

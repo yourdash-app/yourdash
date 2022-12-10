@@ -1,11 +1,11 @@
 import Footer from "../homeLayout/footer/Footer";
-import NavigationBar from "./../homeLayout/navigationBar/NavigationBar"
+import NavigationBar from "../homeLayout/navigationBar/NavigationBar"
 import styles from "./DocsLayout.module.scss"
 import DocsSideBar from "./sideBar/SideBar";
 
-export interface IHomeLayout extends React.ComponentPropsWithoutRef<'div'> { }
+export interface IDocsLayout extends React.ComponentPropsWithoutRef<'div'> { }
 
-const HomeLayout: React.FC<IHomeLayout> = ({ children, ..._divProps }) => {
+const DocsLayout: React.FC<IDocsLayout> = ({ children, ..._divProps }) => {
   return <>
     <NavigationBar />
     <div className={styles.root}>
@@ -20,4 +20,4 @@ const HomeLayout: React.FC<IHomeLayout> = ({ children, ..._divProps }) => {
   </>;
 };
 
-export default HomeLayout;
+export default DocsLayout;
