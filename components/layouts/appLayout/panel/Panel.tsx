@@ -82,16 +82,8 @@ const Panel: React.FC<IPanel> = () => {
             if (app.name.toLowerCase().includes(searchQuery) || app.description.toLowerCase().includes(searchQuery))
               return <RightClickMenu offset={{ y: "- var(--app-panel-height)" }} items={[
                 {
-                  name: "Pin to quick shortcuts"
-                },
-                {
-                  name: "Pin to quick shortcuts"
-                },
-                {
-                  name: "Pin to quick shortcuts"
-                },
-                {
-                  name: "Pin to quick shortcuts"
+                  name: "Pin to quick shortcuts",
+                  onClick: () => { console.log("IMPLEMENT ME!") }
                 },
               ]} key={ind}>
                 <div className={styles.launcherGridItem} onClick={() => {
@@ -126,7 +118,8 @@ const Panel: React.FC<IPanel> = () => {
       {userSettings?.panel?.launcher?.shortcuts?.map((shortcut, ind) => {
         return <RightClickMenu key={ind} items={[
           {
-            name: "a"
+            name: "a",
+            onClick: () => { console.log("IMPLEMENT ME!") }
           }
         ]}>
           <div className={styles.shortcut} onClick={() => { router.push(shortcut.url) }}>
