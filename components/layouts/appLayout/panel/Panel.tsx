@@ -65,7 +65,7 @@ const Panel: React.FC<IPanel> = () => {
         localStorage.removeItem("sessionToken")
         return router.push("/login")
       })
-  }, [ router ])
+  }, [])
 
   return <div className={styles.component}>
     <div className={styles.launcher} onClick={() => {
@@ -125,7 +125,7 @@ const Panel: React.FC<IPanel> = () => {
         </div>
       </footer>
     </div>
-    <AuthedImg src={"/get/server/logo"} className={styles.serverLogo} />
+    <AuthedImg src={"/core/instance/logo"} className={styles.serverLogo} />
     {/* <h2 className={styles.serverName}>YourDash</h2> */}
     <div className={styles.shortcuts}>
       {userSettings?.panel?.launcher?.shortcuts?.map((shortcut, ind) => {

@@ -11,25 +11,98 @@ export const ENV = {
     FsOrigin: process.env.FsOrigin,
     UserFs: (req) => `${ENV.FsOrigin}/data/users/${req.headers.username}`,
     UserAppData: (req) => `${ENV.FsOrigin}/data/users/${req.headers.username}/AppData`,
+    DevMode: process.env.DEV === "true",
 };
 if (!ENV.FsOrigin)
     console.error('FsOrigin was not defined.');
 startupCheck(async () => {
     const SERVER_CONFIG = JSON.parse(fs.readFileSync(path.resolve(`${ENV.FsOrigin}/yourdash.config.json`)).toString());
-    if (SERVER_CONFIG.name === undefined ||
-        SERVER_CONFIG.defaultBackground === undefined ||
-        SERVER_CONFIG.favicon === undefined ||
-        SERVER_CONFIG.logo === undefined ||
-        SERVER_CONFIG.themeColor === undefined ||
-        SERVER_CONFIG.activeModules === undefined ||
-        SERVER_CONFIG.version === undefined) {
-        log(chalk.redBright('Missing configuration!, the configuration requires at least the properties: \nname,\ndefaultBackground,\nfavicon,\nlogo,\nthemeColor,\nactiveModules,\nversion'));
-        process.exit(1);
+    switch (true) {
+        case !(SERVER_CONFIG?.activeModules instanceof Array):
+            console.log(SERVER_CONFIG?.activeModules);
+            log("(Start up) ERROR: yourdash.config.json is missing the 'activeModules' property!");
+            process.exit(1);
+        case !(typeof SERVER_CONFIG?.defaultBackground === "string"):
+            log("(Start up) ERROR: yourdash.config.json is missing the 'defaultBackground' property!");
+            process.exit(1);
+        case !(typeof SERVER_CONFIG?.favicon === "string"):
+            log("(Start up) ERROR: yourdash.config.json is missing the 'favicon' property!");
+            process.exit(1);
+        case !(typeof SERVER_CONFIG?.instanceEncryptionKey === "string"):
+            log("(Start up) ERROR: yourdash.config.json is missing the 'instanceEncryptionKey' property!");
+            process.exit(1);
+        case !(typeof SERVER_CONFIG?.logo === "string"):
+            log("(Start up) ERROR: yourdash.config.json is missing the 'logo' property!");
+            process.exit(1);
+        case !(typeof SERVER_CONFIG?.name === "string"):
+            log("(Start up) ERROR: yourdash.config.json is missing the 'name' property!");
+            process.exit(1);
+        case !(typeof SERVER_CONFIG?.themeColor === "string"):
+            log("(Start up) ERROR: yourdash.config.json is missing the 'themeColor' property!");
+            process.exit(1);
+        case !(typeof SERVER_CONFIG?.version === "string"):
+            log("(Start up) ERROR: yourdash.config.json is missing the 'version' property!");
+            process.exit(1);
+        case !(SERVER_CONFIG?.loginPageConfig instanceof Object):
+            log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig' property!");
+            process.exit(1);
+        case !(SERVER_CONFIG?.loginPageConfig?.background instanceof Object):
+            log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.background' property!");
+            process.exit(1);
+        case !(typeof SERVER_CONFIG?.loginPageConfig?.background.src === "string"):
+            log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.background.src' property!");
+            process.exit(1);
+        case !(SERVER_CONFIG?.loginPageConfig?.logo instanceof Object):
+            log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.logo' property!");
+            process.exit(1);
+        case !(typeof SERVER_CONFIG?.loginPageConfig?.logo?.src === "string"):
+            log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.logo.src' property!");
+            process.exit(1);
+        case !(SERVER_CONFIG?.loginPageConfig?.logo?.position instanceof Object):
+            log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.logo.position' property!");
+            process.exit(1);
+        case !(typeof SERVER_CONFIG?.loginPageConfig?.logo?.position?.left === "string" || typeof SERVER_CONFIG?.loginPageConfig?.logo?.position?.left === typeof null):
+            log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.logo.position.left' property!");
+            process.exit(1);
+        case !(typeof SERVER_CONFIG?.loginPageConfig?.logo?.position?.top === "string" || typeof SERVER_CONFIG?.loginPageConfig?.logo?.position?.top === typeof null):
+            log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.logo.position.top' property!");
+            process.exit(1);
+        case !(typeof SERVER_CONFIG?.loginPageConfig?.logo?.position?.right === "string" || typeof SERVER_CONFIG?.loginPageConfig?.logo?.position?.right === typeof null):
+            log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.logo.position.right' property!");
+            process.exit(1);
+        case !(typeof SERVER_CONFIG?.loginPageConfig?.logo?.position?.bottom === "string" || typeof SERVER_CONFIG?.loginPageConfig?.logo?.position?.bottom === typeof null):
+            log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.logo.position.bottom' property!");
+            process.exit(1);
+        case !(SERVER_CONFIG?.loginPageConfig?.message instanceof Object):
+            log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.message' property!");
+            process.exit(1);
+        case !(typeof SERVER_CONFIG?.loginPageConfig?.message?.content === "string"):
+            log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.message.content' property!");
+            process.exit(1);
+        case !(SERVER_CONFIG?.loginPageConfig?.message?.position instanceof Object):
+            log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.message.position' property!");
+            process.exit(1);
+        case !(typeof SERVER_CONFIG?.loginPageConfig?.message?.position?.left === "string" || typeof SERVER_CONFIG?.loginPageConfig?.message?.position?.left === typeof null):
+            log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.message.position.left' property!");
+            process.exit(1);
+        case !(typeof SERVER_CONFIG?.loginPageConfig?.message?.position?.top === "string" || typeof SERVER_CONFIG?.loginPageConfig?.message?.position?.top === typeof null):
+            log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.message.position.top' property!");
+            process.exit(1);
+        case !(typeof SERVER_CONFIG?.loginPageConfig?.message?.position?.right === "string" || typeof SERVER_CONFIG?.loginPageConfig?.message?.position?.right === typeof null):
+            log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.message.position.right' property!");
+            process.exit(1);
+        case !(typeof SERVER_CONFIG?.loginPageConfig?.message?.position?.bottom === "string" || typeof SERVER_CONFIG?.loginPageConfig?.message?.position?.bottom === typeof null):
+            log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.message.position.bottom' property!");
+            process.exit(1);
+        case !SERVER_CONFIG.activeModules.includes('core'):
+            console.error(chalk.redBright(`(Start up) ERROR: the 'core' module is not enabled in yourdash.config.json`));
+            process.exit(1);
+        case !SERVER_CONFIG.activeModules.includes('userManagement'):
+            console.error(chalk.redBright(`(Start up) ERROR: the 'userManagement' module is not enabled in yourdash.config.json`));
+            process.exit(1);
+        default:
+            log("(Start up) yourdash.config.json has the required properties!");
     }
-    if (!SERVER_CONFIG.activeModules.includes('core'))
-        console.error(chalk.redBright(`[ERROR] the 'core' module is not enabled, this ${chalk.bold('WILL')} lead to missing features and crashes.`));
-    if (!SERVER_CONFIG.activeModules.includes('userManagement'))
-        console.error(chalk.redBright(`[ERROR] the 'userManagement' module is not enabled, this ${chalk.bold('WILL')} lead to missing features and crashes.`));
     const app = express();
     app.use(bodyParser.json());
     app.use((req, res, next) => {
@@ -37,18 +110,42 @@ startupCheck(async () => {
         next();
     });
     let loadedModules = [];
-    SERVER_CONFIG.activeModules.forEach((module) => {
-        if (!fs.existsSync(path.resolve(`./modules/${module}/index.js`)))
-            return log('no such module: ' + module + ", non-existent modules should not be listed in the activeModules found in yourdash.config.json");
-        import('./modules/' + module + '/index.js').then((mod) => {
-            let currentModule = mod.default;
-            currentModule.load(app, { SERVER_CONFIG: SERVER_CONFIG, ...ENV });
-            log('loaded module: ' + module);
-            loadedModules.push(currentModule);
+    if (ENV.DevMode) {
+        log("(Start up) starting with all modules loaded due to the DEV environment variable being set to true.");
+        fs.readdir(path.resolve(`./modules/`), (err, data) => {
+            if (err) {
+                log(`(Start up) error reading the './modules/' directory.`);
+                process.exit(1);
+            }
+            data.forEach((module) => {
+                if (!fs.existsSync(path.resolve(`./modules/${module}/index.js`)))
+                    return log(`(Start up) no such module: ${module}! modules require an index.js file!`);
+                import('./modules/' + module + '/index.js').then((mod) => {
+                    let currentModule = mod.default;
+                    currentModule.load(app, {
+                        SERVER_CONFIG: SERVER_CONFIG, ...ENV
+                    });
+                    log('(Start up) loaded module: ' + module);
+                    loadedModules.push(currentModule);
+                });
+            });
         });
-    });
-    log('All modules loaded');
-    app.use((req, res, next) => {
+    }
+    else {
+        SERVER_CONFIG.activeModules.forEach((module) => {
+            if (!fs.existsSync(path.resolve(`./modules/${module}/index.js`)))
+                return log('(Start up) no such module: ' + module + ", non-existent modules should not be listed in the activeModules found in yourdash.config.json");
+            import('./modules/' + module + '/index.js').then((mod) => {
+                let currentModule = mod.default;
+                currentModule.load(app, {
+                    SERVER_CONFIG: SERVER_CONFIG, ...ENV
+                });
+                log('(Start up) loaded module: ' + module);
+                loadedModules.push(currentModule);
+            });
+        });
+    }
+    app.use((req, _res, next) => {
         let date = new Date();
         switch (req.method) {
             case 'GET':
@@ -67,45 +164,11 @@ startupCheck(async () => {
         origin: ['http://localhost:3000', 'https://yourdash.vercel.app', 'https://ddsh.vercel.app'],
     }));
     setInterval(() => {
-        console.log('update');
+        console.log('attempting update');
         exec('git pull');
         process.exit();
     }, 43200000);
-    app.get('/', (req, res) => {
-        res.redirect(`https://yourdash.vercel.app/login/server/${req.url}`);
-    });
-    app.get('/test', (_req, res) => {
-        res.send('yourdash instance');
-    });
-    app.get('/api/get/server/config', (_req, res) => {
-        fs.readFile(path.resolve(`${ENV.FsOrigin}/yourdash.config.json`), (err, data) => {
-            let parsedFile = JSON.parse(data.toString());
-            let serverConfig = {
-                activeModules: parsedFile.activeModules,
-                defaultBackground: parsedFile.defaultBackground,
-                favicon: parsedFile.favicon,
-                logo: parsedFile.logo,
-                name: parsedFile.name,
-                themeColor: parsedFile.themeColor,
-                version: parsedFile.version,
-            };
-            res.json(serverConfig);
-        });
-    });
-    app.get('/api/get/server/default/background', (_req, res) => {
-        res.sendFile(path.resolve(`${ENV.FsOrigin}/${SERVER_CONFIG.defaultBackground}`));
-    });
-    app.get('/api/get/server/favicon', (_req, res) => {
-        res.sendFile(path.resolve(`${ENV.FsOrigin}/${SERVER_CONFIG.favicon}`));
-    });
-    app.get('/api/get/server/logo', (_req, res) => {
-        res.sendFile(path.resolve(`${ENV.FsOrigin}/${SERVER_CONFIG.logo}`));
-    });
-    app.get('/api/server/version', (_req, res) => {
-        res.send(SERVER_CONFIG.version);
-    });
-    app.get('/nextcloud/remote.php/dav/files/:username', (_req, _res) => { });
     app.listen(3560, () => {
-        log('Server online :D');
+        log('(Start up) Web server now online :D');
     });
 });

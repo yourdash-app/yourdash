@@ -17,9 +17,9 @@ const AuthedImg: React.FC<IAuthedImg> = ({ src, ...imgElementProps }) => {
   useEffect(() => {
 
     SERVER.get(src)
-      .then((res) => res.blob())
-      .then((blob) => {
-        setImgSrc(URL.createObjectURL(blob))
+      .then((res) => res.json())
+      .then((json) => {
+        setImgSrc(json.image)
       })
       .catch((err) => {
         console.error(err); setImgSrc(YourDashIconRawDictionary[ "server-error" ])

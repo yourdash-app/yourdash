@@ -52,51 +52,62 @@ const EndpointTester: NextPageWithLayout = () => {
               boxSizing: "border-box"
             }}>{queryMethod}</p>
             <TextInput placeholder='server request path' style={{
-              color: responseDidError ? "var(--color-error-bg)" : "var(--text-input-fg)"
+              color: responseDidError ? "var(--color-error-bg)" : "var(--text-input-fg)",
+              marginRight: "0.25rem",
+              marginLeft: "0.25rem",
+              width: "calc(100% - 0.5rem)"
             }} onChange={(e) => {
               setQueryUrl(e.target.value);
               setResponseDidError(false)
             }} />
-            <Button onClick={() => {
-              switch (queryMethod) {
-                case "GET":
-                  SERVER.get(queryUrl, queryHeaders)
-                    .then((res) => {
-                      if (res.status === 404)
-                        return setResponseDidError(true)
-                      res.json()
-                        .then((json) => {
-                          if (json.error)
-                            return setResponseDidError(true)
-                          setResponse(JSON.stringify(json))
-                        })
+            <Button
+              style={{
+                marginRight: "0.25rem",
+                marginLeft: "0.25rem",
+                width: "calc(100% - 0.5rem)"
+              }}
+              onClick={() => {
+                switch (queryMethod) {
+                  case "GET":
+                    SERVER.get(queryUrl, queryHeaders)
+                      .then((res) => {
+                        if (res.status === 404)
+                          return setResponseDidError(true)
+                        res.json()
+                          .then((json) => {
+                            if (json.error)
+                              return setResponseDidError(true)
+                            setResponse(JSON.stringify(json, null, 2))
+                          })
+                      })
+                    break;
+                  case "POST":
+                    console.log(queryBody)
+                    SERVER.post(queryUrl, {
+                      headers: queryHeaders,
+                      body: JSON.stringify(queryBody)
                     })
-                  break;
-                case "POST":
-                  console.log(queryBody)
-                  SERVER.post(queryUrl, {
-                    headers: queryHeaders,
-                    body: JSON.stringify(queryBody)
-                  })
-                    .then((res) => {
-                      if (res.status === 404)
-                        return setResponseDidError(true)
-                      res.json()
-                        .then((json) => {
-                          if (json.error)
-                            return setResponseDidError(true)
-                          setResponse(JSON.stringify(json))
-                        })
-                    })
-                  break;
-              }
-              setResponse("")
-              setResponseDidError(false)
-            }}>Send Request</Button>
+                      .then((res) => {
+                        if (res.status === 404)
+                          return setResponseDidError(true)
+                        res.json()
+                          .then((json) => {
+                            if (json.error)
+                              return setResponseDidError(true)
+                            setResponse(JSON.stringify(json, null, 2))
+                          })
+                      })
+                    break;
+                }
+                setResponse("")
+                setResponseDidError(false)
+              }}>Send Request</Button>
           </ColContainer>
         </RightClickMenu>
         <RowContainer style={{
-          height: "100%"
+          height: "100%",
+          overflow: "auto",
+          backgroundColor: "var(--container-bg)",
         }}>
           {
             queryMethod === "POST" ? <textarea onKeyDown={(e) => {
@@ -129,21 +140,21 @@ const EndpointTester: NextPageWithLayout = () => {
               }
             }}></textarea> : <></>
           }
-          <pre style={
-            {
-              backgroundColor: "var(--container-bg)",
-              color: "var(--container-fg)",
-              height: "100%",
-              flexGrow: 1,
-              flexShrink: 1,
-              margin: 0,
-              padding: "0.5rem",
-              fontFamily: "monospace",
-              fontSize: "1.25rem"
-            }
-          }>
-            {response}
-          </pre>
+          <code>
+            <pre style={
+              {
+                color: "var(--container-fg)",
+                flexGrow: 1,
+                flexShrink: 1,
+                margin: 0,
+                padding: "1rem",
+                fontFamily: "monospace",
+                fontSize: "1.25rem"
+              }
+            }>
+              {response}
+            </pre>
+          </code>
         </RowContainer>
       </ColContainer>
     </div>

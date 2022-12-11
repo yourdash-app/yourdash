@@ -26,13 +26,17 @@ const Module = {
                     }
                     else {
                         process.stdout.write(`${chalk.black(chalk.bgYellow('Cached data was used!'))} ${chalk.bgRed(' Unauthorized ')}`);
-                        return res.json({ error: true });
+                        return res.json({
+                            error: true
+                        });
                     }
                 }
                 else {
                     fs.readFile(path.resolve(`${ENV.FsOrigin}/data/users/${userName}/keys.json`), (err, data) => {
                         if (err)
-                            return res.json({ error: true });
+                            return res.json({
+                                error: true
+                            });
                         let sessionKey = JSON.parse(data.toString()).sessionToken;
                         if (sessionKey === sessionToken) {
                             USER_CACHE[userName] = sessionKey;
@@ -40,13 +44,17 @@ const Module = {
                         }
                         else {
                             process.stdout.write(chalk.bgRed(' Unauthorized '));
-                            return res.json({ error: true });
+                            return res.json({
+                                error: true
+                            });
                         }
                     });
                 }
             }
             else {
-                return res.json({ error: true });
+                return res.json({
+                    error: true
+                });
             }
         });
         app.post('/api/user/create/:username', (req, res) => {
@@ -55,12 +63,18 @@ const Module = {
             let { name } = req.headers;
             console.log(password);
             if (!password)
-                return res.json({ error: true });
+                return res.json({
+                    error: true
+                });
             if (fs.existsSync(path.resolve(`${ENV.FsOrigin}/data/users/${username}`)))
                 return res.sendStatus(403);
-            fs.mkdir(`${ENV.FsOrigin}/data/users/${username}/`, { recursive: true }, (err) => {
+            fs.mkdir(`${ENV.FsOrigin}/data/users/${username}/`, {
+                recursive: true
+            }, (err) => {
                 if (err)
-                    return res.json({ error: true });
+                    return res.json({
+                        error: true
+                    });
                 fs.writeFile(`${ENV.FsOrigin}/data/users/${username}/user.json`, JSON.stringify({
                     name: {
                         first: name,
@@ -141,7 +155,9 @@ const Module = {
                         }), (err) => {
                             if (err)
                                 return res.sendStatus(500);
-                            fs.mkdir(`${ENV.UserFs(req)}/AppData/`, { recursive: true }, (err) => {
+                            fs.mkdir(`${ENV.UserFs(req)}/AppData/`, {
+                                recursive: true
+                            }, (err) => {
                                 if (err)
                                     return res.sendStatus(500);
                                 return res.send(`hello new user ${req.params.username}`);
@@ -155,16 +171,22 @@ const Module = {
             let username = req.headers.username;
             let password = req.headers.password;
             if (!(username && password)) {
-                res.json({ error: `A username or password was not provided!` });
+                res.json({
+                    error: `A username or password was not provided!`
+                });
                 return log(`ERROR a username or password was not provided in the headers for /user/login!`);
             }
             if (!fs.existsSync(`${ENV.FsOrigin}/data/users/${username}`)) {
-                res.json({ error: `Unknown user` });
+                res.json({
+                    error: `Unknown user`
+                });
                 return log(`ERROR unknown user: ${username}`);
             }
             fs.readFile(`${ENV.FsOrigin}/data/users/${username}/keys.json`, (err, data) => {
                 if (err) {
-                    res.json({ error: `An issue occured reading saved user data.` });
+                    res.json({
+                        error: `An issue occured reading saved user data.`
+                    });
                     return log(`ERROR an error occured reading ${username}'s keys.json`);
                 }
                 let keysJson = JSON.parse(data.toString());
@@ -175,7 +197,9 @@ const Module = {
                         sessionToken: newSessionToken,
                     }), (err) => {
                         if (err) {
-                            res.json({ error: `There was an issue with starting a new session.` });
+                            res.json({
+                                error: `There was an issue with starting a new session.`
+                            });
                             return log(`ERROR ${username}'s keys.json could not be overwritten during the login process!`);
                         }
                         res.json({
@@ -189,12 +213,18 @@ const Module = {
         });
         app.get('/api/get/current/user', (req, res) => {
             if (!fs.existsSync(`${ENV.FsOrigin}/data/users/${req.header('username')}`)) {
-                return res.json({ error: true });
+                return res.json({
+                    error: true
+                });
             }
             fs.readFile(`${ENV.FsOrigin}/data/users/${req.header('username')}/user.json`, (err, data) => {
                 if (err)
-                    return res.json({ error: true });
-                return res.send({ user: JSON.parse(data.toString()) });
+                    return res.json({
+                        error: true
+                    });
+                return res.send({
+                    user: JSON.parse(data.toString())
+                });
             });
         });
         app.get('/api/get/current/user/settings', (req, res) => {

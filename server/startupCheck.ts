@@ -16,14 +16,18 @@ function increaseStep(cb: () => void) {
 }
 
 export default async function main(cb: () => void) {
+  
   /*
     config file
     users
     groups
     admin user exists
   */
+
   if (!fs.existsSync(path.resolve(ENV.FsOrigin))) {
-    fs.mkdir(ENV.FsOrigin, { recursive: true }, (err) => {
+    fs.mkdir(ENV.FsOrigin, {
+      recursive: true 
+    }, (err) => {
       if (err) return console.error(err);
       increaseStep(cb);
     });
@@ -40,34 +44,34 @@ export default async function main(cb: () => void) {
     fs.writeFile(
       path.resolve(`${ENV.FsOrigin}/yourdash.config.json`),
       JSON.stringify({
-        activeModules: ['userManagement', 'core'],
-        defaultBackground: '',
-        favicon: '',
+        activeModules: [ 'userManagement', 'core' ],
+        defaultBackground: returnBase64Image(path.resolve(`${ENV.FsOrigin}/../background.jpg`)),
+        favicon: returnBase64Image(path.resolve(`${ENV.FsOrigin}/../yourdash256.png`)),
         instanceEncryptionKey: keyString,
-        logo: `../yourdash.svg`,
+        logo: returnBase64Image(path.resolve(`${ENV.FsOrigin}/../yourdash256.png`)),
         name: 'YourDash Instance',
         themeColor: '#a46',
         version: '0.1.0',
         loginPageConfig: {
           background: {
-            src: '',
+            src: returnBase64Image(path.resolve(`${ENV.FsOrigin}/../background.jpg`)),
           },
           logo: {
-            src: '',
+            src: returnBase64Image(path.resolve(`${ENV.FsOrigin}/../yourdash256.png`)),
             position: {
-              bottom: null,
               left: null,
-              right: null,
               top: null,
+              right: null,
+              bottom: null,
             },
           },
           message: {
             content: '',
             position: {
-              bottom: null,
               left: null,
-              right: null,
               top: null,
+              right: null,
+              bottom: null,
             },
           },
         },
@@ -81,13 +85,18 @@ export default async function main(cb: () => void) {
     increaseStep(cb);
   }
   if (!fs.existsSync(path.resolve(`${ENV.FsOrigin}/data/users/admin/user.json`))) {
-    fs.mkdir(path.resolve(`${ENV.FsOrigin}/data/users/admin/`), { recursive: true }, (err) => {
+    fs.mkdir(path.resolve(`${ENV.FsOrigin}/data/users/admin/`), {
+      recursive: true 
+    }, (err) => {
       if (err) return log(`${err}`);
       fs.writeFile(
         `${ENV.FsOrigin}/data/users/admin/user.json`,
         JSON.stringify({
           version: '1',
-          name: { first: 'Admin', last: 'istrator' },
+          name: {
+            first: 'Admin',
+            last: 'istrator' 
+          },
           userName: 'admin',
           profile: {
             banner: '',
@@ -97,8 +106,11 @@ export default async function main(cb: () => void) {
               public: false,
               value: '',
             },
-            status: { public: false, value: '' },
-            externalLinks: {},
+            status: {
+              public: false, value: '' 
+            },
+            externalLinks: {
+            },
           },
         } as YourDashUser),
         (err) => {
