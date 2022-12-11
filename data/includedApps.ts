@@ -17,6 +17,12 @@ const IncludedApps = [
     description: 'Install new apps',
     icon: require('./../public/assets/icons/store.svg').default.src,
   },
+  {
+    name: 'Endpoint tester',
+    path: '/app/endpoint-tester',
+    description: 'Test server endpoints',
+    icon: require('./../public/assets/icons/server-16.svg').default.src,
+  },
 ];
 
 export default IncludedApps

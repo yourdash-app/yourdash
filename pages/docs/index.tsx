@@ -1,5 +1,4 @@
 import { NextPageWithLayout } from './../page';
-import { useRouter } from 'next/router';
 import DocsLayout from '../../components/layouts/docsLayout/DocsLayout';
 
 const Docs: NextPageWithLayout = () => {

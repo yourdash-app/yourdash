@@ -43,8 +43,8 @@ const ServerLogin: NextPageWithLayout = () => {
     setMessage("Checking if this url is valid...")
 
     fetch(`${url}:3560/test`)
-      .then(res => res.text())
-      .then(text => {
+      .then((res) => res.text())
+      .then((text) => {
         if (text === "yourdash instance") {
           return setMessage("")
         } else {
@@ -61,7 +61,11 @@ const ServerLogin: NextPageWithLayout = () => {
     <Card>
       <ColContainer>
         <h1 className={styles.title}>Please enter the url of your server.</h1>
-        <ValidatedTextInput invalidReason={message} onChange={(e) => { setUrl(e.target.value) }} />
+        <ValidatedTextInput
+          invalidReason={message}
+          onChange={(e) => {
+            setUrl(e.target.value)
+          }} />
         <Button disabled={!!message} onClick={() => {
           localStorage.setItem("currentServer", `${url}:3560`)
           router.push("/login/server")

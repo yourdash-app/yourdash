@@ -13,12 +13,22 @@ const EndpointTester: NextPageWithLayout = () => {
   const [ responseDidError, setResponseDidError ] = useState(false)
   const [ queryUrl, setQueryUrl ] = useState("")
   const [ queryMethod, setQueryMethod ] = useState("GET")
-  const [ queryHeaders, setQueryHeaders ] = useState({})
-  const [ queryBody, setQueryBody ] = useState("")
+  const [ queryHeaders, /* setQueryHeaders */ ] = useState({
+  })
+  const [ queryBody, setQueryBody ] = useState({
+  })
 
   return (
-    <div>
-      <ColContainer>
+    <div style={{
+      boxSizing: "border-box",
+      margin: "1rem",
+      borderRadius: "1rem",
+      overflow: "hidden",
+      height: "calc(100vh - calc(var(--app-panel-height) + 2rem))"
+    }}>
+      <ColContainer style={{
+        height: "100%"
+      }}>
         <RightClickMenu items={[
           {
             name: "GET", onClick: () => {
@@ -32,19 +42,30 @@ const EndpointTester: NextPageWithLayout = () => {
           }
         ]}>
           <ColContainer>
-            <p style={{ width: "100%", textAlign: "center", color: "var(--container-fg)", backgroundColor: "var(--container-bg)", marginTop: 0, padding: "0.5rem", boxSizing: "border-box" }}>{queryMethod}</p>
-            <TextInput style={{
+            <p style={{
+              width: "100%",
+              textAlign: "center",
+              color: "var(--container-fg)",
+              backgroundColor: "var(--container-bg)",
+              marginTop: 0,
+              padding: "0.5rem",
+              boxSizing: "border-box"
+            }}>{queryMethod}</p>
+            <TextInput placeholder='server request path' style={{
               color: responseDidError ? "var(--color-error-bg)" : "var(--text-input-fg)"
-            }} onChange={(e) => { setQueryUrl(e.target.value); setResponseDidError(false) }} />
+            }} onChange={(e) => {
+              setQueryUrl(e.target.value);
+              setResponseDidError(false)
+            }} />
             <Button onClick={() => {
               switch (queryMethod) {
                 case "GET":
                   SERVER.get(queryUrl, queryHeaders)
-                    .then(res => {
+                    .then((res) => {
                       if (res.status === 404)
                         return setResponseDidError(true)
                       res.json()
-                        .then(json => {
+                        .then((json) => {
                           if (json.error)
                             return setResponseDidError(true)
                           setResponse(JSON.stringify(json))
@@ -53,12 +74,15 @@ const EndpointTester: NextPageWithLayout = () => {
                   break;
                 case "POST":
                   console.log(queryBody)
-                  SERVER.post(queryUrl, { headers: queryHeaders, body: queryBody })
-                    .then(res => {
+                  SERVER.post(queryUrl, {
+                    headers: queryHeaders,
+                    body: JSON.stringify(queryBody)
+                  })
+                    .then((res) => {
                       if (res.status === 404)
                         return setResponseDidError(true)
                       res.json()
-                        .then(json => {
+                        .then((json) => {
                           if (json.error)
                             return setResponseDidError(true)
                           setResponse(JSON.stringify(json))
@@ -67,10 +91,13 @@ const EndpointTester: NextPageWithLayout = () => {
                   break;
               }
               setResponse("")
+              setResponseDidError(false)
             }}>Send Request</Button>
           </ColContainer>
         </RightClickMenu>
-        <RowContainer>
+        <RowContainer style={{
+          height: "100%"
+        }}>
           {
             queryMethod === "POST" ? <textarea onKeyDown={(e) => {
               if (e.key === "Tab") {
@@ -82,22 +109,37 @@ const EndpointTester: NextPageWithLayout = () => {
                 e.preventDefault();
               }
             }} style={{
-              height: "50rem",
+              height: "100%",
               margin: 0,
               flexGrow: 1,
-              padding: 0,
+              padding: "0.5rem",
               border: "none",
               flexShrink: 1,
-            }} onChange={(e) => { setQueryBody(e.target.value) }}></textarea> : <></>
+              resize: 'none',
+              fontFamily: "monospace",
+              fontSize: "1.25rem"
+            }} onChange={(e) => {
+              try {
+                let json = JSON.parse(e.target.value);
+                setQueryBody(json)
+              } catch (e) {
+                setQueryBody({
+                  error: "endpoint tester invalid json"
+                })
+              }
+            }}></textarea> : <></>
           }
           <pre style={
             {
               backgroundColor: "var(--container-bg)",
               color: "var(--container-fg)",
-              height: "50rem",
+              height: "100%",
               flexGrow: 1,
               flexShrink: 1,
-              margin: 0
+              margin: 0,
+              padding: "0.5rem",
+              fontFamily: "monospace",
+              fontSize: "1.25rem"
             }
           }>
             {response}

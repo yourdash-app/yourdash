@@ -32,42 +32,49 @@ const Panel: React.FC<IPanel> = () => {
 
   useEffect(() => {
     SERVER.get(`/get/current/user/settings`)
-      .then(res => {
+      .then((res) => {
+
         // if (res.status !== 200) throw new Error("Error while fetching data")
         // return res.json() as Promise<YourDashUserSettings>
         res.json().then((json: YourDashUserSettings) => {
           setUserSettings(json)
           document.body.style.setProperty("--app-panel-launcher-grid-columns", json.panel?.launcher?.slideOut?.gridColumns.toString() || "3")
         })
-          .catch(err => {
+          .catch((err) => {
             console.error(err)
           })
       })
-      .catch(_err => {
+      .catch((_err) => {
         localStorage.removeItem("sessionToken")
         return router.push("/login")
       })
     SERVER.get(`/get/current/user`)
-      .then(res => {
+      .then((res) => {
+
         // if (res.status !== 200) throw new Error("Error while fetching data, " + res)
         res.json()
           .then((res: { error?: boolean; user: YourDashUser }) => {
             if (res.error) return router.push("/login")
             setUserData(res.user)
           })
-          .catch(err => {
+          .catch((err) => {
             console.error(err)
           })
       })
-      .catch(_err => {
+      .catch((_err) => {
         localStorage.removeItem("sessionToken")
         return router.push("/login")
       })
-  }, [])
+  }, [ router ])
 
   return <div className={styles.component}>
-    <div className={styles.launcher} onClick={() => { setLauncherSlideOutVisible(!launcherSlideOutVisible) }}>
-      <Icon name='app-launcher-16' style={{ height: "100%", aspectRatio: "1/1" }} color={"var(--app-panel-fg)"} />
+    <div className={styles.launcher} onClick={() => {
+      setLauncherSlideOutVisible(!launcherSlideOutVisible)
+    }}>
+      <Icon name='app-launcher-16' style={{
+        height: "100%",
+        aspectRatio: "1/1"
+      }} color={"var(--app-panel-fg)"} />
     </div>
     <div className={`${styles.launcherSlideOut} ${launcherSlideOutVisible ? styles.launcherSlideOutVisible : ""}`}>
       <div data-header>
@@ -80,10 +87,14 @@ const Panel: React.FC<IPanel> = () => {
         {
           IncludedApps.map((app, ind) => {
             if (app.name.toLowerCase().includes(searchQuery) || app.description.toLowerCase().includes(searchQuery))
-              return <RightClickMenu offset={{ y: "- var(--app-panel-height)" }} items={[
+              return <RightClickMenu offset={{
+                y: "- var(--app-panel-height)"
+              }} items={[
                 {
                   name: "Pin to quick shortcuts",
-                  onClick: () => { console.log("IMPLEMENT ME!") }
+                  onClick: () => {
+                    console.log("IMPLEMENT ME!")
+                  }
                 },
               ]} key={ind}>
                 <div className={styles.launcherGridItem} onClick={() => {
@@ -101,7 +112,9 @@ const Panel: React.FC<IPanel> = () => {
         }
       </div>
       <footer data-footer>
-        <img onClick={() => { router.push(`/app/user/profile/${userData?.userName}`) }} tabIndex={0} src={
+        <img onClick={() => {
+          router.push(`/app/user/profile/${userData?.userName}`)
+        }} tabIndex={0} src={
           userData?.profile?.image
         } alt="" />
         <span>{userData?.name?.first} {userData?.name?.last}</span>
@@ -119,10 +132,14 @@ const Panel: React.FC<IPanel> = () => {
         return <RightClickMenu key={ind} items={[
           {
             name: "a",
-            onClick: () => { console.log("IMPLEMENT ME!") }
+            onClick: () => {
+              console.log("IMPLEMENT ME!")
+            }
           }
         ]}>
-          <div className={styles.shortcut} onClick={() => { router.push(shortcut.url) }}>
+          <div className={styles.shortcut} onClick={() => {
+            router.push(shortcut.url)
+          }}>
             <div>
               <img draggable={false} src={shortcut.icon} alt="" />
               {
@@ -139,12 +156,27 @@ const Panel: React.FC<IPanel> = () => {
       <Icon name="browser-16" className={styles.trayIcon} color={"var(--app-panel-fg)"} />
     </div>
     <div className={styles.account}>
-      <img onClick={() => { setAccountDropdownVisible(!accountDropdownVisible) }} tabIndex={0} src={
+      <img onClick={() => {
+        setAccountDropdownVisible(!accountDropdownVisible)
+      }} tabIndex={0} src={
         userData?.profile?.image
       } alt="" />
-      <div style={{ width: "100vw", transition: "var(--transition)", height: "100vh", background: "#00000040", position: "fixed", top: 0, left: 0, pointerEvents: accountDropdownVisible ? "all" : "none", opacity: accountDropdownVisible ? 1 : 0 }} onClick={() => { setAccountDropdownVisible(false) }}></div>
+      <div style={{
+        width: "100vw",
+        transition: "var(--transition)",
+        height: "100vh",
+        background: "#00000040",
+        position: "fixed",
+        top: 0,
+        left: 0,
+        pointerEvents: accountDropdownVisible ? "all" : "none",
+        opacity: accountDropdownVisible ? 1 : 0
+      }} onClick={() => {
+        setAccountDropdownVisible(false)
+      }}></div>
       <Card style={{
         opacity: !accountDropdownVisible ? "0" : "1",
+        transform: !accountDropdownVisible ? "scale(0.9)" : "scale(1)",
         pointerEvents: !accountDropdownVisible ? "none" : "auto"
       }} compact={true} className={styles.accountDropdown}>
         <RowContainer className={styles.accountDropdownQuickActions}>

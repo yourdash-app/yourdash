@@ -9,10 +9,11 @@ import { NextPageWithLayout } from "../../../page";
 import styles from "./index.module.scss";
 
 const LoginOptions: NextPageWithLayout = () => {
-  const [ userName, setUserName ] = useState("")
-  const [ password, setPassword ] = useState("")
-  const [ errorHasOccured, setErrorHasOccured ] = useState(false)
-  const [ allowsSignUp, setAllowsSignup ] = useState(false)
+
+  // const [ userName, setUserName ] = useState("")
+  // const [ password, setPassword ] = useState("")
+  // const [ errorHasOccurred, setErrorHasOccurred ] = useState(false)
+  const [ allowsSignUp, /* setAllowsSignUp */ ] = useState(false)
 
   const router = useRouter()
 
@@ -22,20 +23,28 @@ const LoginOptions: NextPageWithLayout = () => {
         <Card>
           <ColContainer style={{
             alignItems: "center",
-            ...(!allowsSignUp ? {
-              padding: "1.5rem"
-            } : {})
+            ...(
+              !allowsSignUp ? {
+                padding: "1.5rem"
+              } : {
+
+              }
+            )
 
           }}>
             {
               !allowsSignUp ?
                 <>
-                  <h2 style={{ margin: 0 }}>We&apos;re sorry</h2>
+                  <h2 style={{
+                    margin: 0
+                  }}>We&apos;re sorry</h2>
                   <p>This server isn&apos;t currently allowing users to sign up.</p>
                   <Button onClick={() => {
                     localStorage.removeItem("currentServer")
                     router.push("/login")
-                  }} vibrant style={{ marginTop: "1rem" }}>
+                  }} vibrant style={{
+                    marginTop: "1rem"
+                  }}>
                     Select a different instance
                   </Button>
                 </>

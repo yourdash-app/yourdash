@@ -7,46 +7,51 @@ export interface ICarousel {
 }
 
 const Carousel: React.FC<ICarousel> = ({ children }) => {
-  const ref = useRef(null)
+  const pageRef = useRef<HTMLDivElement>(null)
   const [ indicator, setIndicator ] = useState(<></>)
+  const [ scrollEvents, setScrollEvents ] = useState(0)
 
   useEffect(() => {
+    if (!pageRef) return
     setIndicator(
       <div className={styles.indicator}>
-        {children.map((_child, ind) => {
-          console.log(ref)
-          if (!ref.current) {
-            return <i></i>
-          }
-          let container = ref.current as HTMLDivElement
-          console.log((container.scrollLeft / container.scrollWidth));
-          return <div key={ind} style={{
-            backgroundColor: (container.scrollLeft / container.scrollWidth) === ind ? "var(--container-fg)" : "var(--container-bg)"
-          }}></div>
-        })
+        {
+          children.map((_child, ind) => {
+            if (!pageRef.current) {
+              return <i key={ind}></i>
+            }
+            let container = pageRef.current as HTMLDivElement
+            return <div key={ind} style={{
+              backgroundColor: Math.round(container.scrollLeft / window.innerWidth) === ind ? "var(--container-fg)" : "var(--container-bg)"
+            }}></div>
+          })
         }
       </div>
     )
-  }, [ ref ])
+  }, [ pageRef, children, scrollEvents ])
 
   return <div className={styles.component}>
-    <div className={styles.main} ref={ref}>
+    <div className={styles.main} ref={pageRef} onScroll={() => setScrollEvents(scrollEvents + 1)}>
       {
         children
       }
     </div>
     <div className={styles.controls}>
       <button onClick={() => {
-        if (!ref.current) return
-        let container = ref.current as HTMLDivElement
-        container.scrollBy({ left: - window.innerWidth })
+        if (!pageRef.current) return
+        let container = pageRef.current as HTMLDivElement
+        container.scrollBy({
+          left: - window.innerWidth
+        })
       }}>
         <Icon name="chevron-left-16" color="var(--button-fg)" />
       </button>
       <button onClick={() => {
-        if (!ref.current) return
-        let container = ref.current as HTMLDivElement
-        container.scrollBy({ left: window.innerWidth })
+        if (!pageRef.current) return
+        let container = pageRef.current as HTMLDivElement
+        container.scrollBy({
+          left: window.innerWidth
+        })
       }}>
         <Icon name="chevron-right-16" color="var(--button-fg)" />
       </button>

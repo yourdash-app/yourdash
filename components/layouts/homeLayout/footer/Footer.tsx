@@ -18,7 +18,7 @@ const Footer: React.FC<IFooter> = ({ ..._divProps }) => {
         <Link href="/docs">Docs</Link>
         <Link href="https://github.com/ewsgit/yourdash">Git Repository</Link>
       </section>
-        <span>YourDash © 2022 Ewsgit</span>
+      <span>YourDash © 2022 Ewsgit</span>
     </div>
   </>
 };

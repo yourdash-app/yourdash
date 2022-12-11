@@ -9,6 +9,7 @@
   width: 20rem;
   border-radius: var(--right-click-menu-rounding);
   padding: 0.3rem;
+  box-shadow: 0 0 1rem #00000088;
   > li {
     border-radius: calc(calc(var(--right-click-menu-rounding) - 0.3rem) / 2);
     display: flex;

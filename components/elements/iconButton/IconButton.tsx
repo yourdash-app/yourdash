@@ -13,7 +13,11 @@ export interface IIconButton {
 }
 
 const IconButton: React.FC<IIconButton> = ({ icon, vibrant, onClick, disabled, useDefaultColor, color }) => {
-  return <button onClick={() => { if (!disabled) onClick() }} className={`${styles.component} ${vibrant ? styles.vibrant : ""}`}>
+  return <button
+    onClick={() => {
+      if (!disabled) onClick()
+    }}
+    className={`${styles.component} ${vibrant ? styles.vibrant : ""}`}>
     <Icon useDefaultColor={useDefaultColor} color={color} name={icon}></Icon>
   </button>;
 };

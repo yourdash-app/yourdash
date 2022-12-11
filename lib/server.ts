@@ -11,15 +11,19 @@ interface extraHeaders {
 const SERVER = {
   get(path: string, headers?: extraHeaders): Promise<Response> {
     console.log('[Server Request]: GET ' + path);
+
     // console.trace();
     let defaultHeaders = {
       sessiontoken: localStorage.getItem('sessiontoken') as string,
       username: localStorage.getItem('username') as string,
+      'content-type': 'application/json',
     };
     let url = localStorage.getItem('currentServer');
     return new Promise((resolve, reject) => {
       fetch(`${url}/api${path}`, {
-        headers: { ...defaultHeaders, ...headers },
+        headers: {
+          ...defaultHeaders, ...headers 
+        },
         method: 'GET',
       })
         .then((res) => resolve(res))
@@ -30,14 +34,18 @@ const SERVER = {
   },
   post(path: string, extras: {headers?: extraHeaders, body?: string}): Promise<Response> {
     console.log('[Server Request]: POST ' + path);
+
     // console.trace();
     let defaultHeaders = {
       sessiontoken: localStorage.getItem('sessiontoken') as string,
       username: localStorage.getItem('username') as string,
+      "content-type": "application/json"
     };
     let url = localStorage.getItem('currentServer');
     return fetch(`${url}/api${path}`, {
-      headers: { ...defaultHeaders, ...extras?.headers },
+      headers: {
+        ...defaultHeaders, ...extras?.headers 
+      },
       body: extras?.body,
       method: 'POST',
     });
@@ -47,12 +55,16 @@ const SERVER = {
     let defaultHeaders = {
       sessiontoken: localStorage.getItem('sessiontoken') as string,
       username: localStorage.getItem('username') as string,
+      'content-type': 'application/json',
     };
     let url = localStorage.getItem('currentServer');
     console.log('[Server Request]: DELETE ' + path);
+
     // console.trace();
     return fetch(`${url}/api${path}`, {
-      headers: { ...defaultHeaders, ...headers },
+      headers: {
+        ...defaultHeaders, ...headers 
+      },
       method: 'DELETE',
     });
   },

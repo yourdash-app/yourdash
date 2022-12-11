@@ -7,7 +7,9 @@ export default function DocsSideBar() {
   return <div className={`${styles.component} ${isExpanded ? styles.expanded : ""}`}>
     <header>
       <span>Docs</span>
-      <IconButton icon="three-bars-16" color="#ff0000" onClick={() => { setIsExpanded(!isExpanded) }} />
+      <IconButton icon="three-bars-16" color="#ff0000" onClick={() => {
+        setIsExpanded(!isExpanded)
+      }} />
     </header>
   </div>
 }

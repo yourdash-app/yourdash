@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import styles from './RightClickMenu.module.scss';
 
 export interface IRightClickMenu {
@@ -19,19 +19,20 @@ const RightClickMenu: React.FC<IRightClickMenu> = ({ items, children, offset }) 
   const [ posX, setPosX ] = useState(0)
   const [ posY, setPosY ] = useState(0)
 
-  return <div onContextMenu={(e) => {
-    e.preventDefault()
-    e.stopPropagation()
-    let listener = () => {
-      setShown(false)
-      document.body.removeEventListener("click", listener)
-    }
-    document.body.addEventListener("click", listener)
-    document.body.addEventListener("auxclick", listener)
-    setShown(!shown)
-    setPosX(e.pageX)
-    setPosY(e.pageY)
-  }}
+  return <div
+    onContextMenu={(e) => {
+      e.preventDefault()
+      e.stopPropagation()
+      let listener = () => {
+        setShown(false)
+        document.body.removeEventListener("click", listener)
+      }
+      document.body.addEventListener("click", listener)
+      document.body.addEventListener("auxclick", listener)
+      setShown(!shown)
+      setPosX(e.pageX)
+      setPosY(e.pageY)
+    }}
     style={{
       position: "relative"
     }}>

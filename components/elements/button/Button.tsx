@@ -10,7 +10,12 @@ export interface IButton {
 }
 
 const Button: React.FC<IButton> = ({ children, vibrant, onClick, disabled, style }) => {
-  return <button style={style} onClick={() => { if (!disabled) onClick() }} className={`${styles.component} ${vibrant ? styles.vibrant : ""}`}>{children}</button>;
+  return <button
+    style={style}
+    onClick={() => {
+      if (!disabled) onClick()
+    }}
+    className={`${styles.component} ${vibrant ? styles.vibrant : ""}`}>{children}</button>;
 };
 
 export default Button;

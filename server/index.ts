@@ -14,11 +14,13 @@ import { log } from './libServer.js';
 import YourDashModule from './module.js';
 import startupCheck from './startupCheck.js';
 
-export const ENV: {
+export interface TENV {
   FsOrigin: string;
   UserFs: (_req: express.Request) => string;
   UserAppData: (_req: express.Request) => string;
-} = {
+}
+
+export const ENV: TENV = {
   FsOrigin: process.env.FsOrigin as string,
   UserFs: (req) => `${ENV.FsOrigin}/data/users/${req.headers.username}`,
   UserAppData: (req) => `${ENV.FsOrigin}/data/users/${req.headers.username}/AppData`,
@@ -59,7 +61,6 @@ export interface YourDashServerConfig {
     };
   };
 }
-
 
 startupCheck(async () => {
   const SERVER_CONFIG: YourDashServerConfig = JSON.parse(
@@ -105,13 +106,19 @@ startupCheck(async () => {
 
   app.use(bodyParser.json());
 
+  app.use((req, res, next) => {
+    res.setHeader('X-Powered-By', "YourDash Instance Server");
+    next()
+  })
+
   let loadedModules: YourDashModule[] = [];
 
   // TODO: implement the server module unload and install methods
   SERVER_CONFIG.activeModules.forEach((module) => {
+    if (!fs.existsSync(path.resolve(`./modules/${module}/index.js`))) return log('no such module: ' + module + ", non-existent modules should not be listed in the activeModules found in yourdash.config.json");
     import('./modules/' + module + '/index.js').then((mod) => {
       let currentModule = mod.default;
-      currentModule.load(app, { SERVER_CONFIG: SERVER_CONFIG });
+      currentModule.load(app, { SERVER_CONFIG: SERVER_CONFIG, ...ENV });
       log('loaded module: ' + module);
       loadedModules.push(currentModule);
     });

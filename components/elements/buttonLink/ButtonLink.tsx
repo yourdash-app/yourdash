@@ -12,7 +12,12 @@ export interface IButtonLink {
 
 const ButtonLink: React.FC<IButtonLink> = ({ children, vibrant, href, disabled, style }) => {
   const router = useRouter()
-  return <button style={style} onClick={() => { if (!disabled) router.push(href) }} className={`${styles.component} ${vibrant ? styles.vibrant : ""}`}>{children}</button>;
+  return <button
+    style={style}
+    onClick={() => {
+      if (!disabled) router.push(href)
+    }}
+    className={`${styles.component} ${vibrant ? styles.vibrant : ""}`}>{children}</button>;
 };
 
 export default ButtonLink;

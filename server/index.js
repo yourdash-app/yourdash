@@ -32,11 +32,17 @@ startupCheck(async () => {
         console.error(chalk.redBright(`[ERROR] the 'userManagement' module is not enabled, this ${chalk.bold('WILL')} lead to missing features and crashes.`));
     const app = express();
     app.use(bodyParser.json());
+    app.use((req, res, next) => {
+        res.setHeader('X-Powered-By', "YourDash Instance Server");
+        next();
+    });
     let loadedModules = [];
     SERVER_CONFIG.activeModules.forEach((module) => {
+        if (!fs.existsSync(path.resolve(`./modules/${module}/index.js`)))
+            return log('no such module: ' + module + ", non-existent modules should not be listed in the activeModules found in yourdash.config.json");
         import('./modules/' + module + '/index.js').then((mod) => {
             let currentModule = mod.default;
-            currentModule.load(app, { SERVER_CONFIG: SERVER_CONFIG });
+            currentModule.load(app, { SERVER_CONFIG: SERVER_CONFIG, ...ENV });
             log('loaded module: ' + module);
             loadedModules.push(currentModule);
         });

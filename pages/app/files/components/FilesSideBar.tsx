@@ -1,5 +1,4 @@
 import React from "react"
-import Icon from "../../../../components/elements/icon/Icon"
 import ProgressBar from "../../../../components/elements/progressBar/ProgressBar"
 import styles from "./FilesSideBar.module.scss"
 

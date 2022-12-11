@@ -17,11 +17,13 @@ const AuthedImg: React.FC<IAuthedImg> = ({ src, ...imgElementProps }) => {
   useEffect(() => {
 
     SERVER.get(src)
-      .then(res => res.blob())
-      .then(blob => {
+      .then((res) => res.blob())
+      .then((blob) => {
         setImgSrc(URL.createObjectURL(blob))
       })
-      .catch(err => { console.error(err); setImgSrc(YourDashIconRawDictionary[ "server-error" ]) })
+      .catch((err) => {
+        console.error(err); setImgSrc(YourDashIconRawDictionary[ "server-error" ])
+      })
   }, [ src ])
 
   return <img draggable={false} src={imgSrc} alt="" {...imgElementProps} />

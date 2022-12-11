@@ -35,12 +35,14 @@ const LoginOptions: NextPageWithLayout = () => {
             <RowContainer style={{
               width: "100%"
             }}>
-              <Button style={{ flexGrow: 1 }} onClick={() => {
+              <Button style={{
+                flexGrow: 1
+              }} onClick={() => {
                 localStorage.setItem("username", userName)
                 SERVER.get("/user/login", {
                   password: password
-                }).then(res => {
-                  res.json().then(res => {
+                }).then((res) => {
+                  res.json().then((res) => {
                     if (!res?.error) {
                       localStorage.setItem("sessiontoken", res.sessionToken)
                       return router.push("/app/dash")
@@ -50,7 +52,7 @@ const LoginOptions: NextPageWithLayout = () => {
                     setErrorHasOccured(true)
                     throw new Error("Login Error, the server responded with an invalid response.")
                   })
-                }).catch(err => {
+                }).catch((err) => {
                   if (err) {
                     console.error("ERROR CAUGHT: /user/login: " + err)
                     setErrorHasOccured(true)
@@ -59,7 +61,9 @@ const LoginOptions: NextPageWithLayout = () => {
               }} vibrant>
                 Login
               </Button>
-              <ButtonLink style={{ flexGrow: 1 }} href="/login/server/signup">
+              <ButtonLink style={{
+                flexGrow: 1
+              }} href="/login/server/signup">
                 Sign up
               </ButtonLink>
             </RowContainer>
