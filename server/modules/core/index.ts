@@ -81,7 +81,7 @@ const Module: YourDashModule = {
       return res.json({
         image: api.SERVER_CONFIG.defaultBackground
       })
-    }) 
+    })
 
     app.get(`/api/${this.name}/instance/favicon`, (_req, res) => {
       return res.send(api.SERVER_CONFIG.favicon)

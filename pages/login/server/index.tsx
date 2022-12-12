@@ -39,7 +39,7 @@ const LoginOptions: NextPageWithLayout = () => {
                 flexGrow: 1
               }} onClick={() => {
                 localStorage.setItem("username", userName)
-                SERVER.get("/user/login", {
+                SERVER.get("/userManagement/login", {
                   password: password
                 }).then((res) => {
                   res.json().then((res) => {

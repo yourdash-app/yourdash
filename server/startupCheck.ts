@@ -1,53 +1,43 @@
 import fs from 'fs';
 import path from 'path';
 import YourDashUser, { YourDashUserSettings } from '../lib/user.js';
-import { encrypt } from './encryption.js';
+import { encrypt, generateRandomStringOfLength } from './encryption.js';
 import { ENV, YourDashServerConfig } from './index.js';
 import { log, returnBase64Image } from './libServer.js';
 
-let stepCount = 3;
-let currentStep = 0;
+export default function main(cb: () => void) {
+  checkEnvironmentVariables()
+  checkYourDashConfigJson()
+  checkIfAdministratorUserExists()
+  checkConfigurationVersion()
 
-function increaseStep(cb: () => void) {
-  currentStep++;
-  if (currentStep >= stepCount) {
-    cb();
-  }
+  // begin to startup the server
+  return cb()
 }
 
-export default async function main(cb: () => void) {
-  
-  /*
-    config file
-    users
-    groups
-    admin user exists
-  */
-
+function checkEnvironmentVariables() {
   if (!fs.existsSync(path.resolve(ENV.FsOrigin))) {
     fs.mkdir(ENV.FsOrigin, {
       recursive: true 
     }, (err) => {
-      if (err) return console.error(err);
-      increaseStep(cb);
-    });
-  } else {
-    increaseStep(cb);
+      if (err) {
+        log(`(Start up) ERROR: the 'FsOrigin' environment variable is invalid`)
+        return process.exit(1)
+      }
+      log(`(Start up) a folder has been created at the location of the 'FsOrigin' environment variable`)
+    })
   }
-  if (!fs.existsSync(path.resolve(`${ENV.FsOrigin}/yourdash.config.json`))) {
-    let chars = 'ABCDEF0123456789';
+}
 
-    let keyString = '';
-    for (let i = 0; i < 64; i++) {
-      keyString += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
+function checkYourDashConfigJson() {
+  if (!fs.existsSync(path.resolve(`${ENV.FsOrigin}/yourdash.config.json`))) {
     fs.writeFile(
       path.resolve(`${ENV.FsOrigin}/yourdash.config.json`),
       JSON.stringify({
         activeModules: [ 'userManagement', 'core' ],
         defaultBackground: returnBase64Image(path.resolve(`${ENV.FsOrigin}/../background.jpg`)),
         favicon: returnBase64Image(path.resolve(`${ENV.FsOrigin}/../yourdash256.png`)),
-        instanceEncryptionKey: keyString,
+        instanceEncryptionKey: generateRandomStringOfLength(32),
         logo: returnBase64Image(path.resolve(`${ENV.FsOrigin}/../yourdash256.png`)),
         name: 'YourDash Instance',
         themeColor: '#a46',
@@ -76,19 +66,29 @@ export default async function main(cb: () => void) {
           },
         },
       } as YourDashServerConfig),
-      () => {
+      (err) => {
+        if (err) {
+          log(`(Start up) ERROR: a yourdash.config.json file could not be created!`)
+          process.exit(1)
+        }
         log(`config file was created in the data origin directory.`);
-        increaseStep(cb);
       }
     );
-  } else {
-    increaseStep(cb);
   }
+}
+
+function checkConfigurationVersion() {
+}
+
+function checkIfAdministratorUserExists() {
   if (!fs.existsSync(path.resolve(`${ENV.FsOrigin}/data/users/admin/user.json`))) {
     fs.mkdir(path.resolve(`${ENV.FsOrigin}/data/users/admin/`), {
       recursive: true 
     }, (err) => {
-      if (err) return log(`${err}`);
+      if (err) {
+        log(`${err}`);
+        process.exit(1)
+      }
       fs.writeFile(
         `${ENV.FsOrigin}/data/users/admin/user.json`,
         JSON.stringify({
@@ -125,10 +125,10 @@ export default async function main(cb: () => void) {
             }),
             (err) => {
               if (err) {
-                log(`${err}`);
-                throw new Error(
-                  `ERROR in startupCheck (during admin credential generation): ${err}`
+                log(
+                  `(Start up) ERROR: could not encrypt (during administrator default credential generation): ${err}`
                 );
+                process.exit(1)
               }
               fs.writeFile(
                 `${ENV.FsOrigin}/data/users/admin/config.json`,
@@ -149,12 +149,12 @@ export default async function main(cb: () => void) {
                 } as YourDashUserSettings),
                 (err) => {
                   if (err) {
-                    log(`${err}`);
-                    throw new Error(
-                      `ERROR in startupCheck (during admin default configuration generation): ${err}`
+                    log(
+                      `(Start up) ERROR: could not write configuration (during administrator default configuration generation): ${err}`
                     );
+                    process.exit(1)
                   }
-                  increaseStep(cb);
+                  return
                 }
               );
             }
@@ -162,7 +162,5 @@ export default async function main(cb: () => void) {
         }
       );
     });
-  } else {
-    increaseStep(cb);
   }
 }

@@ -15,8 +15,11 @@ export const ENV = {
 };
 if (!ENV.FsOrigin)
     console.error('FsOrigin was not defined.');
-startupCheck(async () => {
+startupCheck(() => {
     const SERVER_CONFIG = JSON.parse(fs.readFileSync(path.resolve(`${ENV.FsOrigin}/yourdash.config.json`)).toString());
+    log(`(Start up) EnvironmentVariable FsOrigin detected as: ${path.resolve(ENV.FsOrigin)}`);
+    if (ENV.DevMode)
+        log(`(Start up) EnvironmentVariable Dev detected as: ${ENV.DevMode}`);
     switch (true) {
         case !(SERVER_CONFIG?.activeModules instanceof Array):
             console.log(SERVER_CONFIG?.activeModules);

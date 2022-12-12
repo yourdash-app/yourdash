@@ -31,7 +31,7 @@ const Panel: React.FC<IPanel> = () => {
   const [ searchQuery, setSearchQuery ] = useState("")
 
   useEffect(() => {
-    SERVER.get(`/get/current/user/settings`)
+    SERVER.get(`/userManagement/current/user/settings`)
       .then((res) => {
 
         // if (res.status !== 200) throw new Error("Error while fetching data")
@@ -48,7 +48,7 @@ const Panel: React.FC<IPanel> = () => {
         localStorage.removeItem("sessionToken")
         return router.push("/login")
       })
-    SERVER.get(`/get/current/user`)
+    SERVER.get(`/userManagement/current/user`)
       .then((res) => {
 
         // if (res.status !== 200) throw new Error("Error while fetching data, " + res)

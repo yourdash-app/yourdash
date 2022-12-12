@@ -98,3 +98,13 @@ export interface YourDashUserSettings {
     }
   };
 }
+
+export enum YourDashUserPermissions {
+  AddUsers,
+  RemoveUsers,
+  InstallApplications,
+  RemoveApplications,
+  ManageRoles,
+  ManageStorageQuotas,
+  
+}

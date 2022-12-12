@@ -13,9 +13,7 @@ const Module = {
         app.use((req, res, next) => {
             if (req.path.startsWith('/test'))
                 return next();
-            if (req.path.startsWith('/api/get/server'))
-                return next();
-            if (req.path.startsWith('/api/user/login'))
+            if (req.path.startsWith(`/api/${this.name}/login`))
                 return next();
             if (req.headers.username) {
                 let userName = req.headers.username;
@@ -57,7 +55,7 @@ const Module = {
                 });
             }
         });
-        app.post('/api/user/create/:username', (req, res) => {
+        app.post(`/api/${this.name}/create/:username`, (req, res) => {
             let { username } = req.params;
             let password = req.headers.password;
             let { name } = req.headers;
@@ -167,7 +165,7 @@ const Module = {
                 });
             });
         });
-        app.get('/api/user/login', (req, res) => {
+        app.get(`/api/${this.name}/login`, (req, res) => {
             let username = req.headers.username;
             let password = req.headers.password;
             if (!(username && password)) {
@@ -176,13 +174,13 @@ const Module = {
                 });
                 return log(`ERROR a username or password was not provided in the headers for /user/login!`);
             }
-            if (!fs.existsSync(`${ENV.FsOrigin}/data/users/${username}`)) {
+            if (!fs.existsSync(`${ENV.UserFs(req)}`)) {
                 res.json({
                     error: `Unknown user`
                 });
                 return log(`ERROR unknown user: ${username}`);
             }
-            fs.readFile(`${ENV.FsOrigin}/data/users/${username}/keys.json`, (err, data) => {
+            fs.readFile(`${ENV.UserFs(req)}/keys.json`, (err, data) => {
                 if (err) {
                     res.json({
                         error: `An issue occured reading saved user data.`
@@ -192,7 +190,7 @@ const Module = {
                 let keysJson = JSON.parse(data.toString());
                 if (password === decrypt(keysJson.hashedKey, api.SERVER_CONFIG)) {
                     let newSessionToken = generateRandomStringOfLength(256);
-                    fs.writeFile(`${ENV.FsOrigin}/data/users/${username}/keys.json`, JSON.stringify({
+                    fs.writeFile(`${ENV.UserFs(req)}/keys.json`, JSON.stringify({
                         hashedKey: keysJson.hashedKey,
                         sessionToken: newSessionToken,
                     }), (err) => {
@@ -211,13 +209,13 @@ const Module = {
                 }
             });
         });
-        app.get('/api/get/current/user', (req, res) => {
-            if (!fs.existsSync(`${ENV.FsOrigin}/data/users/${req.header('username')}`)) {
+        app.get(`/api/${this.name}/current/user`, (req, res) => {
+            if (!fs.existsSync(`${ENV.UserFs(req)}`)) {
                 return res.json({
                     error: true
                 });
             }
-            fs.readFile(`${ENV.FsOrigin}/data/users/${req.header('username')}/user.json`, (err, data) => {
+            fs.readFile(`${ENV.UserFs(req)}/user.json`, (err, data) => {
                 if (err)
                     return res.json({
                         error: true
@@ -227,11 +225,21 @@ const Module = {
                 });
             });
         });
-        app.get('/api/get/current/user/settings', (req, res) => {
-            if (!fs.existsSync(`${ENV.FsOrigin}/data/users/${req.header('username')}`)) {
+        app.get(`/api/${this.name}/current/user/settings`, (req, res) => {
+            if (!fs.existsSync(`${ENV.UserFs(req)}`)) {
                 return res.sendStatus(403);
             }
-            fs.readFile(`${ENV.FsOrigin}/data/users/${req.header('username')}/config.json`, (err, data) => {
+            fs.readFile(`${ENV.UserFs(req)}/config.json`, (err, data) => {
+                if (err)
+                    return res.sendStatus(404);
+                return res.send(data);
+            });
+        });
+        app.get(`/api/${this.name}/current/user/permissions`, (req, res) => {
+            if (!fs.existsSync(`${ENV.UserFs(req)}`)) {
+                return res.sendStatus(403);
+            }
+            fs.readFile(`${ENV.UserFs(req)}/permissions.json`, (err, data) => {
                 if (err)
                     return res.sendStatus(404);
                 return res.send(data);

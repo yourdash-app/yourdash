@@ -8,7 +8,7 @@ import YourDashUser, { YourDashUserSettings } from './../../../lib/user';
 import { log } from './../../libServer.js';
 import console from 'console';
 
-let USER_CACHE: { [key: string]: string } = {
+let USER_CACHE: { [ key: string ]: string } = {
 };
 
 const Module: YourDashModule = {
@@ -18,8 +18,7 @@ const Module: YourDashModule = {
   load(app, api) {
     app.use((req, res, next) => {
       if (req.path.startsWith('/test')) return next();
-      if (req.path.startsWith('/api/get/server')) return next();
-      if (req.path.startsWith('/api/user/login')) return next();
+      if (req.path.startsWith(`/api/${this.name}/login`)) return next();
       if (req.headers.username) {
         let userName = req.headers.username as string;
         let sessionToken = req.headers.sessiontoken as string;
@@ -63,7 +62,7 @@ const Module: YourDashModule = {
       }
     });
 
-    app.post('/api/user/create/:username', (req, res) => {
+    app.post(`/api/${this.name}/create/:username`, (req, res) => {
       let { username } = req.params;
       let password = req.headers.password as string;
       let { name } = req.headers;
@@ -182,7 +181,7 @@ const Module: YourDashModule = {
       });
     });
 
-    app.get('/api/user/login', (req, res) => {
+    app.get(`/api/${this.name}/login`, (req, res) => {
       let username = req.headers.username as string;
       let password = req.headers.password as string;
 
@@ -195,7 +194,7 @@ const Module: YourDashModule = {
       }
 
       // check that the user actually exists
-      if (!fs.existsSync(`${ENV.FsOrigin}/data/users/${username}`)) {
+      if (!fs.existsSync(`${ENV.UserFs(req)}`)) {
         res.json({
           error: `Unknown user` 
         });
@@ -203,7 +202,7 @@ const Module: YourDashModule = {
       }
 
       // fetch the user's password from the fs
-      fs.readFile(`${ENV.FsOrigin}/data/users/${username}/keys.json`, (err, data) => {
+      fs.readFile(`${ENV.UserFs(req)}/keys.json`, (err, data) => {
         if (err) {
           res.json({
             error: `An issue occured reading saved user data.` 
@@ -216,7 +215,7 @@ const Module: YourDashModule = {
         if (password === decrypt(keysJson.hashedKey, api.SERVER_CONFIG)) {
           let newSessionToken = generateRandomStringOfLength(256);
           fs.writeFile(
-            `${ENV.FsOrigin}/data/users/${username}/keys.json`,
+            `${ENV.UserFs(req)}/keys.json`,
             JSON.stringify({
               hashedKey: keysJson.hashedKey,
               sessionToken: newSessionToken,
@@ -241,13 +240,13 @@ const Module: YourDashModule = {
       });
     });
 
-    app.get('/api/get/current/user', (req, res) => {
-      if (!fs.existsSync(`${ENV.FsOrigin}/data/users/${req.header('username')}`)) {
+    app.get(`/api/${this.name}/current/user`, (req, res) => {
+      if (!fs.existsSync(`${ENV.UserFs(req)}`)) {
         return res.json({
           error: true 
         });
       }
-      fs.readFile(`${ENV.FsOrigin}/data/users/${req.header('username')}/user.json`, (err, data) => {
+      fs.readFile(`${ENV.UserFs(req)}/user.json`, (err, data) => {
         if (err) return res.json({
           error: true 
         });
@@ -257,12 +256,25 @@ const Module: YourDashModule = {
       });
     });
 
-    app.get('/api/get/current/user/settings', (req, res) => {
-      if (!fs.existsSync(`${ENV.FsOrigin}/data/users/${req.header('username')}`)) {
+    app.get(`/api/${this.name}/current/user/settings`, (req, res) => {
+      if (!fs.existsSync(`${ENV.UserFs(req)}`)) {
         return res.sendStatus(403);
       }
       fs.readFile(
-        `${ENV.FsOrigin}/data/users/${req.header('username')}/config.json`,
+        `${ENV.UserFs(req)}/config.json`,
+        (err, data) => {
+          if (err) return res.sendStatus(404);
+          return res.send(data);
+        }
+      );
+    });
+
+    app.get(`/api/${this.name}/current/user/permissions`, (req, res) => {
+      if (!fs.existsSync(`${ENV.UserFs(req)}`)) {
+        return res.sendStatus(403);
+      }
+      fs.readFile(
+        `${ENV.UserFs(req)}/permissions.json`,
         (err, data) => {
           if (err) return res.sendStatus(404);
           return res.send(data);

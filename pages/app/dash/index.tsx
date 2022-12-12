@@ -12,7 +12,7 @@ const Dash: NextPageWithLayout = () => {
   const [ currentTime, setCurrentTime ] = useState("00:01")
 
   useEffect(() => {
-    SERVER.get("/get/current/user")
+    SERVER.get("/userManagement/current/user")
       .then((response) => {
         response.json().then((res: { error?: boolean; user: YourDashUser }) => {
           if (res.error) return console.error(`failed fetching the current user`)
