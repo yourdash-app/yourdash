@@ -1,3 +1,8 @@
+/*
+ *   Copyright (c) 2022 Ewsgit
+ *   https://ewsgit.mit-license.org
+ */
+
 import fs from 'fs';
 import path from 'path';
 import YourDashUser, { YourDashUserSettings } from '../lib/user.js';
@@ -6,6 +11,8 @@ import { ENV, YourDashServerConfig } from './index.js';
 import { log, returnBase64Image } from './libServer.js';
 
 export default function main(cb: () => void) {
+
+  // run all checks
   checkEnvironmentVariables()
   checkYourDashConfigJson()
   checkIfAdministratorUserExists()
