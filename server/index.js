@@ -7,11 +7,15 @@ import fs from 'fs';
 import path from 'path';
 import { log } from './libServer.js';
 import startupCheck from './startupCheck.js';
+export const RELEASE_CONFIGURATION = {
+    CURRENT_VERSION: 1,
+};
 export const ENV = {
     FsOrigin: process.env.FsOrigin,
     UserFs: (req) => `${ENV.FsOrigin}/data/users/${req.headers.username}`,
     UserAppData: (req) => `${ENV.FsOrigin}/data/users/${req.headers.username}/AppData`,
     DevMode: process.env.DEV === "true",
+    ModulePath: (module) => `/api/${module.name}`
 };
 if (!ENV.FsOrigin)
     console.error('FsOrigin was not defined.');
@@ -43,7 +47,7 @@ startupCheck(() => {
         case !(typeof SERVER_CONFIG?.themeColor === "string"):
             log("(Start up) ERROR: yourdash.config.json is missing the 'themeColor' property!");
             process.exit(1);
-        case !(typeof SERVER_CONFIG?.version === "string"):
+        case !(typeof SERVER_CONFIG?.version === "number"):
             log("(Start up) ERROR: yourdash.config.json is missing the 'version' property!");
             process.exit(1);
         case !(SERVER_CONFIG?.loginPageConfig instanceof Object):

@@ -18,7 +18,7 @@ const IconButton: React.FC<IIconButton> = ({ icon, vibrant, onClick, disabled, u
       if (!disabled) onClick()
     }}
     className={`${styles.component} ${vibrant ? styles.vibrant : ""}`}>
-    <Icon useDefaultColor={useDefaultColor} color={color} name={icon}></Icon>
+    <Icon useDefaultColor={useDefaultColor} color={color || `var(--button-fg)`} name={icon}></Icon>
   </button>;
 };
 

@@ -87,16 +87,15 @@ const Panel: React.FC<IPanel> = () => {
         {
           IncludedApps.map((app, ind) => {
             if (app.name.toLowerCase().includes(searchQuery) || app.description.toLowerCase().includes(searchQuery))
-              return <RightClickMenu offset={{
-                y: "- var(--app-panel-height)"
-              }} items={[
-                {
-                  name: "Pin to quick shortcuts",
-                  onClick: () => {
-                    console.log("IMPLEMENT ME!")
-                  }
-                },
-              ]} key={ind}>
+              return <RightClickMenu
+                items={[
+                  {
+                    name: "Pin to quick shortcuts",
+                    onClick: () => {
+                      console.log("IMPLEMENT ME!")
+                    }
+                  },
+                ]} key={ind}>
                 <div className={styles.launcherGridItem} onClick={() => {
                   setLauncherSlideOutVisible(false)
                   router.push(app.path)

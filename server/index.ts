@@ -14,11 +14,16 @@ import { log } from './libServer.js';
 import YourDashModule from './module.js';
 import startupCheck from './startupCheck.js';
 
+export const RELEASE_CONFIGURATION = {
+  CURRENT_VERSION: 1,
+}
+
 export interface TENV {
   FsOrigin: string;
   UserFs: (_req: express.Request) => string;
   UserAppData: (_req: express.Request) => string;
   DevMode: boolean;
+  ModulePath: (_module: { name: string }) => string
 }
 
 export const ENV: TENV = {
@@ -26,6 +31,7 @@ export const ENV: TENV = {
   UserFs: (req) => `${ENV.FsOrigin}/data/users/${req.headers.username}`,
   UserAppData: (req) => `${ENV.FsOrigin}/data/users/${req.headers.username}/AppData`,
   DevMode: process.env.DEV === "true",
+  ModulePath: (module) => `/api/${module.name}`
 };
 
 if (!ENV.FsOrigin) console.error('FsOrigin was not defined.');
@@ -37,7 +43,7 @@ export interface YourDashServerConfig {
   logo: string;
   themeColor: `#${string}`;
   activeModules: string[];
-  version: string;
+  version: number;
   instanceEncryptionKey: string;
   loginPageConfig: {
     logo: {
@@ -65,7 +71,7 @@ export interface YourDashServerConfig {
 }
 
 startupCheck(() => {
-  const SERVER_CONFIG: YourDashServerConfig = JSON.parse(
+  const SERVER_CONFIG = JSON.parse(
     fs.readFileSync(path.resolve(`${ENV.FsOrigin}/yourdash.config.json`)).toString()
   );
 
@@ -77,103 +83,103 @@ startupCheck(() => {
     // eslint-disable-next-line no-fallthrough
     case !(SERVER_CONFIG?.activeModules instanceof Array):
       console.log(SERVER_CONFIG?.activeModules)
-      log("(Start up) ERROR: yourdash.config.json is missing the 'activeModules' property!")  
+      log("(Start up) ERROR: yourdash.config.json is missing the 'activeModules' property!")
       process.exit(1);
     // eslint-disable-next-line no-fallthrough
     case !(typeof SERVER_CONFIG?.defaultBackground === "string"):
-      log("(Start up) ERROR: yourdash.config.json is missing the 'defaultBackground' property!")  
+      log("(Start up) ERROR: yourdash.config.json is missing the 'defaultBackground' property!")
       process.exit(1);
     // eslint-disable-next-line no-fallthrough
     case !(typeof SERVER_CONFIG?.favicon === "string"):
-      log("(Start up) ERROR: yourdash.config.json is missing the 'favicon' property!")  
+      log("(Start up) ERROR: yourdash.config.json is missing the 'favicon' property!")
       process.exit(1);
     // eslint-disable-next-line no-fallthrough
     case !(typeof SERVER_CONFIG?.instanceEncryptionKey === "string"):
-      log("(Start up) ERROR: yourdash.config.json is missing the 'instanceEncryptionKey' property!")  
+      log("(Start up) ERROR: yourdash.config.json is missing the 'instanceEncryptionKey' property!")
       process.exit(1);
     // eslint-disable-next-line no-fallthrough
     case !(typeof SERVER_CONFIG?.logo === "string"):
-      log("(Start up) ERROR: yourdash.config.json is missing the 'logo' property!")  
+      log("(Start up) ERROR: yourdash.config.json is missing the 'logo' property!")
       process.exit(1);
     // eslint-disable-next-line no-fallthrough
     case !(typeof SERVER_CONFIG?.name === "string"):
-      log("(Start up) ERROR: yourdash.config.json is missing the 'name' property!")  
+      log("(Start up) ERROR: yourdash.config.json is missing the 'name' property!")
       process.exit(1);
     // eslint-disable-next-line no-fallthrough
     case !(typeof SERVER_CONFIG?.themeColor === "string"):
-      log("(Start up) ERROR: yourdash.config.json is missing the 'themeColor' property!")  
+      log("(Start up) ERROR: yourdash.config.json is missing the 'themeColor' property!")
       process.exit(1);
     // eslint-disable-next-line no-fallthrough
-    case !(typeof SERVER_CONFIG?.version === "string"):
-      log("(Start up) ERROR: yourdash.config.json is missing the 'version' property!")  
+    case !(typeof SERVER_CONFIG?.version === "number"):
+      log("(Start up) ERROR: yourdash.config.json is missing the 'version' property!")
       process.exit(1);
     // eslint-disable-next-line no-fallthrough
     case !(SERVER_CONFIG?.loginPageConfig instanceof Object):
-      log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig' property!")  
+      log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig' property!")
       process.exit(1);
     // eslint-disable-next-line no-fallthrough
     case !(SERVER_CONFIG?.loginPageConfig?.background instanceof Object):
-      log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.background' property!")  
+      log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.background' property!")
       process.exit(1);
-      // eslint-disable-next-line no-fallthrough
+    // eslint-disable-next-line no-fallthrough
     case !(typeof SERVER_CONFIG?.loginPageConfig?.background.src === "string"):
-      log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.background.src' property!")  
+      log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.background.src' property!")
       process.exit(1);
-      // eslint-disable-next-line no-fallthrough
+    // eslint-disable-next-line no-fallthrough
     case !(SERVER_CONFIG?.loginPageConfig?.logo instanceof Object):
-      log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.logo' property!")  
+      log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.logo' property!")
       process.exit(1);
-      // eslint-disable-next-line no-fallthrough
+    // eslint-disable-next-line no-fallthrough
     case !(typeof SERVER_CONFIG?.loginPageConfig?.logo?.src === "string"):
-      log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.logo.src' property!")  
+      log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.logo.src' property!")
       process.exit(1);
     // eslint-disable-next-line no-fallthrough
     case !(SERVER_CONFIG?.loginPageConfig?.logo?.position instanceof Object):
-      log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.logo.position' property!")  
+      log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.logo.position' property!")
       process.exit(1);
     // eslint-disable-next-line no-fallthrough
     case !(typeof SERVER_CONFIG?.loginPageConfig?.logo?.position?.left === "string" || typeof SERVER_CONFIG?.loginPageConfig?.logo?.position?.left === typeof null):
-      log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.logo.position.left' property!")  
+      log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.logo.position.left' property!")
       process.exit(1);
     // eslint-disable-next-line no-fallthrough
     case !(typeof SERVER_CONFIG?.loginPageConfig?.logo?.position?.top === "string" || typeof SERVER_CONFIG?.loginPageConfig?.logo?.position?.top === typeof null):
-      log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.logo.position.top' property!")  
+      log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.logo.position.top' property!")
       process.exit(1);
     // eslint-disable-next-line no-fallthrough
     case !(typeof SERVER_CONFIG?.loginPageConfig?.logo?.position?.right === "string" || typeof SERVER_CONFIG?.loginPageConfig?.logo?.position?.right === typeof null):
-      log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.logo.position.right' property!")  
+      log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.logo.position.right' property!")
       process.exit(1);
     // eslint-disable-next-line no-fallthrough
     case !(typeof SERVER_CONFIG?.loginPageConfig?.logo?.position?.bottom === "string" || typeof SERVER_CONFIG?.loginPageConfig?.logo?.position?.bottom === typeof null):
-      log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.logo.position.bottom' property!")  
+      log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.logo.position.bottom' property!")
       process.exit(1);
-      // eslint-disable-next-line no-fallthrough
+    // eslint-disable-next-line no-fallthrough
     case !(SERVER_CONFIG?.loginPageConfig?.message instanceof Object):
-      log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.message' property!")  
+      log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.message' property!")
       process.exit(1);
     // eslint-disable-next-line no-fallthrough
     case !(typeof SERVER_CONFIG?.loginPageConfig?.message?.content === "string"):
-      log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.message.content' property!")  
+      log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.message.content' property!")
       process.exit(1);
     // eslint-disable-next-line no-fallthrough
     case !(SERVER_CONFIG?.loginPageConfig?.message?.position instanceof Object):
-      log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.message.position' property!")  
+      log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.message.position' property!")
       process.exit(1);
     // eslint-disable-next-line no-fallthrough
     case !(typeof SERVER_CONFIG?.loginPageConfig?.message?.position?.left === "string" || typeof SERVER_CONFIG?.loginPageConfig?.message?.position?.left === typeof null):
-      log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.message.position.left' property!")  
+      log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.message.position.left' property!")
       process.exit(1)
-      // eslint-disable-next-line no-fallthrough
+    // eslint-disable-next-line no-fallthrough
     case !(typeof SERVER_CONFIG?.loginPageConfig?.message?.position?.top === "string" || typeof SERVER_CONFIG?.loginPageConfig?.message?.position?.top === typeof null):
-      log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.message.position.top' property!")  
+      log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.message.position.top' property!")
       process.exit(1);
     // eslint-disable-next-line no-fallthrough
     case !(typeof SERVER_CONFIG?.loginPageConfig?.message?.position?.right === "string" || typeof SERVER_CONFIG?.loginPageConfig?.message?.position?.right === typeof null):
-      log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.message.position.right' property!")  
+      log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.message.position.right' property!")
       process.exit(1);
     // eslint-disable-next-line no-fallthrough
     case !(typeof SERVER_CONFIG?.loginPageConfig?.message?.position?.bottom === "string" || typeof SERVER_CONFIG?.loginPageConfig?.message?.position?.bottom === typeof null):
-      log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.message.position.bottom' property!")  
+      log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.message.position.bottom' property!")
       process.exit(1);
     // eslint-disable-next-line no-fallthrough
     case !SERVER_CONFIG.activeModules.includes('core'):
@@ -220,7 +226,7 @@ startupCheck(() => {
         import('./modules/' + module + '/index.js').then((mod) => {
           let currentModule = mod.default;
           currentModule.load(app, {
-            SERVER_CONFIG: SERVER_CONFIG, ...ENV 
+            SERVER_CONFIG: SERVER_CONFIG, ...ENV
           });
           log('(Start up) loaded module: ' + module);
           loadedModules.push(currentModule);
@@ -228,12 +234,12 @@ startupCheck(() => {
       });
     })
   } else {
-    SERVER_CONFIG.activeModules.forEach((module) => {
+    SERVER_CONFIG.activeModules.forEach((module: YourDashModule) => {
       if (!fs.existsSync(path.resolve(`./modules/${module}/index.js`))) return log('(Start up) no such module: ' + module + ", non-existent modules should not be listed in the activeModules found in yourdash.config.json");
       import('./modules/' + module + '/index.js').then((mod) => {
         let currentModule = mod.default;
         currentModule.load(app, {
-          SERVER_CONFIG: SERVER_CONFIG, ...ENV 
+          SERVER_CONFIG: SERVER_CONFIG, ...ENV
         });
         log('(Start up) loaded module: ' + module);
         loadedModules.push(currentModule);
@@ -247,22 +253,19 @@ startupCheck(() => {
     switch (req.method) {
       case 'GET':
         log(
-          `${date.getHours()}:${date.getMinutes()}:${
-            date.getSeconds() < 10 ? date.getSeconds() + '0' : date.getSeconds()
+          `${date.getHours()}:${date.getMinutes()}:${date.getSeconds() < 10 ? date.getSeconds() + '0' : date.getSeconds()
           } ${chalk.bgGreen(chalk.whiteBright(' GET '))} ${req.path}`
         );
         break;
       case 'POST':
         log(
-          `${date.getHours()}:${date.getMinutes()}:${
-            date.getSeconds() < 10 ? date.getSeconds() + '0' : date.getSeconds()
+          `${date.getHours()}:${date.getMinutes()}:${date.getSeconds() < 10 ? date.getSeconds() + '0' : date.getSeconds()
           } ${chalk.bgBlue(chalk.whiteBright(' POST '))} ${req.path}`
         );
         break;
       case 'DELETE':
         log(
-          `${date.getHours()}:${date.getMinutes()}:${
-            date.getSeconds() < 10 ? date.getSeconds() + '0' : date.getSeconds()
+          `${date.getHours()}:${date.getMinutes()}:${date.getSeconds() < 10 ? date.getSeconds() + '0' : date.getSeconds()
           } ${chalk.bgRed(chalk.whiteBright(' DELETE '))} ${req.path}`
         );
         break;
@@ -281,7 +284,7 @@ startupCheck(() => {
     exec('git pull');
     process.exit();
   }, 43200000);
-  
+
   app.listen(3560, () => {
     log('(Start up) Web server now online :D');
   });

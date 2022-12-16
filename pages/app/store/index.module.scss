@@ -1,0 +1,38 @@
+.root {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  padding: 1rem;
+  gap: 1rem;
+  user-select: none;
+}
+
+.card {
+  border: solid 0.125rem var(--card-bg);
+  cursor: pointer;
+
+  &:hover {
+    border: solid 0.125rem #ffffff55;
+  }
+  display: flex;
+  align-items: center;
+  > div {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.cardImg {
+  height: 5rem;
+  aspect-ratio: 1 / 1;
+  padding-right: 1rem;
+}
+
+.cardName {
+  font-size: 1.75rem;
+  margin: 0;
+}
+
+.cardDescription {
+  margin: 0;
+  font-size: 1.25rem;
+}

@@ -111,6 +111,5 @@ export enum YourDashUserPermissions {
   // eslint-disable-next-line no-unused-vars
   ManageRoles,
   // eslint-disable-next-line no-unused-vars
-  ManageStorageQuotas,
-
+  ManageStorageQuotas
 }

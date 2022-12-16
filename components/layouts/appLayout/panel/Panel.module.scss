@@ -105,8 +105,8 @@
       padding-bottom: 2rem;
       text-align: center;
       user-select: none;
-      text-shadow: 0 0 0.5rem #000000, 0 0 0.75rem #000000, 0 0 1rem #000000, 0 0 1.5rem #000000,
-        0 0 2rem #000000;
+      text-shadow: 0 0 0.5rem #000000, 0 0 0.75rem #000000, 0 0 1rem #000000,
+        0 0 1.5rem #000000, 0 0 2rem #000000;
     }
     > input[data-search] {
       opacity: 80%;
@@ -167,7 +167,7 @@
   height: fit-content;
   width: 100%;
   overflow-y: auto;
-  overflow-x: hidden;
+  overflow-x: visible;
   display: grid;
   grid-template-columns: repeat(var(--app-panel-launcher-grid-columns), 1fr);
   box-sizing: border-box;
@@ -270,7 +270,7 @@
   display: flex;
 
   &:before {
-    content: '';
+    content: "";
     height: calc(var(--app-panel-height) - 1rem);
     width: 0.25rem;
     border-radius: 1rem;
@@ -280,7 +280,7 @@
     top: 50%;
     transform: translateY(-50%);
   }
-  
+
   @for $index from 0 to 25 {
     > :nth-child(#{$index + 1}) {
       opacity: 0;

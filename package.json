@@ -16,8 +16,11 @@
     "> 0.15%, not dead"
   ],
   "scripts": {
-    "dev:fs": "concurrently \"cd server && yarn dev\" \"yarn dev\"",
-    "dev": "next dev",
+    "dev:fs": "concurrently \"yarn dev:client\" \"yarn dev:server\"",
+    "dev:client": "next dev",
+    "dev:server": "yarn --cwd ./server dev",
+    "dev:server-no-nodemon": "yarn --cwd ./server dev-no-nodemon",
+    "dev:server-no-tsc-or-nodemon" : "yarn --cwd ./server dev-no-tsc-or-nodemon",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",

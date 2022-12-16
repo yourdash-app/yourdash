@@ -1,16 +1,12 @@
 import fs from 'fs';
 import path from 'path';
 import { encrypt, generateRandomStringOfLength } from './encryption.js';
-import { ENV } from './index.js';
+import { ENV, RELEASE_CONFIGURATION } from './index.js';
 import { log, returnBase64Image } from './libServer.js';
 export default function main(cb) {
-    checkEnvironmentVariables();
-    checkYourDashConfigJson();
-    checkIfAdministratorUserExists();
-    checkConfigurationVersion();
-    return cb();
+    checkEnvironmentVariables(() => checkYourDashConfigJson(() => checkIfAdministratorUserExists(() => checkConfigurationVersion(() => cb()))));
 }
-function checkEnvironmentVariables() {
+function checkEnvironmentVariables(cb) {
     if (!fs.existsSync(path.resolve(ENV.FsOrigin))) {
         fs.mkdir(ENV.FsOrigin, {
             recursive: true
@@ -20,10 +16,14 @@ function checkEnvironmentVariables() {
                 return process.exit(1);
             }
             log(`(Start up) a folder has been created at the location of the 'FsOrigin' environment variable`);
+            cb();
         });
     }
+    else {
+        cb();
+    }
 }
-function checkYourDashConfigJson() {
+function checkYourDashConfigJson(cb) {
     if (!fs.existsSync(path.resolve(`${ENV.FsOrigin}/yourdash.config.json`))) {
         fs.writeFile(path.resolve(`${ENV.FsOrigin}/yourdash.config.json`), JSON.stringify({
             activeModules: ['userManagement', 'core'],
@@ -33,7 +33,7 @@ function checkYourDashConfigJson() {
             logo: returnBase64Image(path.resolve(`${ENV.FsOrigin}/../yourdash256.png`)),
             name: 'YourDash Instance',
             themeColor: '#a46',
-            version: '0.1.0',
+            version: 1,
             loginPageConfig: {
                 background: {
                     src: returnBase64Image(path.resolve(`${ENV.FsOrigin}/../background.jpg`)),
@@ -63,12 +63,39 @@ function checkYourDashConfigJson() {
                 process.exit(1);
             }
             log(`config file was created in the data origin directory.`);
+            cb();
         });
     }
+    else {
+        cb();
+    }
 }
-function checkConfigurationVersion() {
+function checkConfigurationVersion(cb) {
+    const SERVER_CONFIG = JSON.parse(fs.readFileSync(path.resolve(`${ENV.FsOrigin}/yourdash.config.json`)).toString());
+    if (SERVER_CONFIG.version === RELEASE_CONFIGURATION.CURRENT_VERSION)
+        return cb();
+    switch (SERVER_CONFIG.version) {
+        case 1:
+            fs.readFile(path.resolve(`${ENV.FsOrigin}/yourdash.config.json`), (err, data) => {
+                if (err) {
+                    log(`(Start up) [Configuration Updater] ERROR: unable to read yourdash.config.json`);
+                    return process.exit(1);
+                }
+                let jsonData = JSON.parse(data.toString());
+                jsonData.version = 2;
+                fs.writeFile(path.resolve(`${ENV.FsOrigin}/yourdash.config.json`), JSON.stringify(jsonData), (err) => {
+                    if (err) {
+                        log(`(Start up) [Configuration Updater] ERROR: unable to write to yourdash.config.json`);
+                        return process.exit(1);
+                    }
+                    checkConfigurationVersion(cb);
+                });
+            });
+        default:
+            cb();
+    }
 }
-function checkIfAdministratorUserExists() {
+function checkIfAdministratorUserExists(cb) {
     if (!fs.existsSync(path.resolve(`${ENV.FsOrigin}/data/users/admin/user.json`))) {
         fs.mkdir(path.resolve(`${ENV.FsOrigin}/data/users/admin/`), {
             recursive: true
@@ -125,10 +152,13 @@ function checkIfAdministratorUserExists() {
                             log(`(Start up) ERROR: could not write configuration (during administrator default configuration generation): ${err}`);
                             process.exit(1);
                         }
-                        return;
+                        return cb();
                     });
                 });
             });
         });
+    }
+    else {
+        cb();
     }
 }

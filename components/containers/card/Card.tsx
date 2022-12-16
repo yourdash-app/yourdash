@@ -1,15 +1,14 @@
 import styles from './Card.module.css';
 
-export interface ICard {
+export interface ICard extends React.ComponentPropsWithoutRef<'div'> {
   children: React.ReactChild | React.ReactChild[];
   compact?: boolean;
   className?: string;
   style?: React.CSSProperties;
-  onBlur?: () => void
 }
 
-const Card: React.FC<ICard> = ({ children, compact, className, style, onBlur }) => {
-  return <div style={style} onBlur={onBlur} className={`${styles.component} ${compact ? styles.compact : ""} ${className}`}>{children}</div>;
+const Card: React.FC<ICard> = ({ children, compact, className, style, ...extraProps }) => {
+  return <div style={style} {...extraProps} className={`${styles.component} ${compact ? styles.compact : ""} ${className}`}>{children}</div>;
 };
 
 export default Card;
