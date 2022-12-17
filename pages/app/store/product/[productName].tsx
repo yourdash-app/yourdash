@@ -63,7 +63,7 @@ const StoreProduct: NextPageWithLayout = () => {
       </Carousel>
       <section className={styles.productHeader}>
         <img src="/favicon.png" alt="" />
-        <h2>{product}</h2>
+        <h2>{product.name}</h2>
         <DropdownMenu items={[
           {
             name: "report",

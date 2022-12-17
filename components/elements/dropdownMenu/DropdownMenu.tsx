@@ -27,7 +27,7 @@ const DropdownMenu: React.FC<IDropdownMenu> = ({ items, children }) => {
       }
       document.body.addEventListener("click", listener)
       document.body.addEventListener("auxclick", listener)
-      setShown(true)
+      setShown(!shown)
     }}>
       {children}
     </div>

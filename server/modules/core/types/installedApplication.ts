@@ -3,5 +3,7 @@ export default interface InstalledApplication {
   moduleRequirements: string[],
   icon: string,
   author: string,
-  copyright: string
+  copyright: string,
+  description: string,
+  displayName: string
 }

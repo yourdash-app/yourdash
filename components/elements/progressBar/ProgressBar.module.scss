@@ -2,19 +2,19 @@
   background-color: var(--progress-bar-bg);
   height: 1.5rem;
   width: 100%;
-  position: relative;
   border-radius: 0.5rem;
+  box-sizing: border-box;
+  padding: 0.25rem;
+  position: relative;
 }
 
 .progress {
-  position: absolute;
-  top: 0.25rem;
-  left: 0.25rem;
   width: 0;
-  height: calc(100% - 0.5rem);
+  height: 100%;
   border-radius: 0.25rem;
   background-color: var(--progress-bar-fg);
   transition: var(--transition);
+  box-sizing: border-box;
 }
 
 .percentage {
@@ -23,4 +23,5 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  transition: var(--transition);
 }

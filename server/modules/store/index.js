@@ -1,8 +1,8 @@
 let module = {
-    id: 'todo-app',
-    name: 'todo',
-    load(app, _api) {
-        app.get(`/api/store`, (req, res) => {
+    id: "todo-app",
+    name: "todo",
+    load(app, api) {
+        app.get(`${api.ModulePath(this)}/application/:applicationId`, (req, res) => {
             res.send(req.hostname);
         });
     },

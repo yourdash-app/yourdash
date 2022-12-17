@@ -152,6 +152,11 @@ startupCheck(() => {
             });
         });
     }
+    process.on("exit", () => {
+        loadedModules.forEach((module) => {
+            module.unload();
+        });
+    });
     app.use((req, _res, next) => {
         let date = new Date();
         switch (req.method) {

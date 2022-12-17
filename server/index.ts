@@ -247,6 +247,12 @@ startupCheck(() => {
     });
   }
 
+  process.on("exit", () => {
+    loadedModules.forEach((module) => {
+      module.unload()
+    })
+  })
+
   // log all received requests
   app.use((req, _res, next) => {
     let date = new Date();
@@ -289,3 +295,4 @@ startupCheck(() => {
     log('(Start up) Web server now online :D');
   });
 });
+

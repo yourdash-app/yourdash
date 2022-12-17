@@ -5,7 +5,7 @@
  */
 
 interface extraHeaders {
-  [string: string]: any;
+  [ string: string ]: any;
 }
 
 const SERVER = {
@@ -22,7 +22,7 @@ const SERVER = {
     return new Promise((resolve, reject) => {
       fetch(`${url}/api${path}`, {
         headers: {
-          ...defaultHeaders, ...headers 
+          ...defaultHeaders, ...headers
         },
         method: 'GET',
       })
@@ -32,7 +32,7 @@ const SERVER = {
         });
     });
   },
-  post(path: string, extras: {headers?: extraHeaders, body?: string}): Promise<Response> {
+  post(path: string, extras: { headers?: extraHeaders, body?: string }): Promise<Response> {
     console.log('[Server Request]: POST ' + path);
 
     // console.trace();
@@ -44,7 +44,7 @@ const SERVER = {
     let url = localStorage.getItem('currentServer');
     return fetch(`${url}/api${path}`, {
       headers: {
-        ...defaultHeaders, ...extras?.headers 
+        ...defaultHeaders, ...extras?.headers
       },
       body: extras?.body,
       method: 'POST',
@@ -63,7 +63,7 @@ const SERVER = {
     // console.trace();
     return fetch(`${url}/api${path}`, {
       headers: {
-        ...defaultHeaders, ...headers 
+        ...defaultHeaders, ...headers
       },
       method: 'DELETE',
     });
@@ -71,3 +71,21 @@ const SERVER = {
 };
 
 export default SERVER;
+
+export function handleErrorsAndReturnJson(req: Promise<Response>, res: (_res: any) => void, error: () => void) {
+  req
+    .then((resp) => {
+      resp.json()
+        .then((json) => {
+          if (!json.error)
+            return res(json)
+          error()
+        })
+        .catch(() => {
+          error()
+        })
+    })
+    .catch(() => {
+      error()
+    })
+}

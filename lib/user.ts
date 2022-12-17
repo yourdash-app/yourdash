@@ -58,6 +58,8 @@ export default interface YourDashUser {
       }; // this links to the internal git ui
     };
   };
+  quota: number,
+  permissions: YourDashUserPermissions[]
 }
 
 export interface YourDashUserSettings {
@@ -93,7 +95,7 @@ export interface YourDashUserSettings {
         display: {
           size: number,
           type: "" | ""
-        } 
+        }
       }
     }
   };

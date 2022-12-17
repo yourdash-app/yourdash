@@ -15,7 +15,6 @@ export interface IAuthedImg extends React.ComponentPropsWithoutRef<'img'> {
 const AuthedImg: React.FC<IAuthedImg> = ({ src, ...imgElementProps }) => {
   const [ imgSrc, setImgSrc ] = useState("")
   useEffect(() => {
-
     SERVER.get(src)
       .then((res) => res.json())
       .then((json) => {

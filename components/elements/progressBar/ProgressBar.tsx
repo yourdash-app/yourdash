@@ -8,13 +8,27 @@ export interface IProgressBar {
 const ProgressBar: React.FC<IProgressBar> = ({ value, displayPercentage }) => {
   return <div className={styles.component}>
     <div className={styles.progress} style={{
-      width: `${value}%`
+      width: value > 0 ? `${value}%` : "100%",
+      ...value > 0 ? {
+        backgroundColor: "var(--progress-bar-bg)"
+      } : {
+
+      },
+      position: value > 11 ? "relative" : "unset"
     }}>
       {
-        displayPercentage ? <span className={styles.percentage}>{value}%</span> : null
+        displayPercentage
+          ? <span className={styles.percentage} style={
+            value > 11 ? {
+              color: "var(--progress-bar-fg)"
+            } : {
+
+            }
+          }>{value}%</span>
+          : null
       }
     </div>
-  </div>;
+  </div >;
 };
 
 export default ProgressBar;
