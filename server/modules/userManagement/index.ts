@@ -22,8 +22,8 @@ const Module: YourDashModule = {
       if (req.headers.username) {
         let userName = req.headers.username as string;
         let sessionToken = req.headers.sessiontoken as string;
-        if (USER_CACHE[userName]) {
-          if (USER_CACHE[userName] === sessionToken) {
+        if (USER_CACHE[ userName ]) {
+          if (USER_CACHE[ userName ] === sessionToken) {
             next();
           } else {
             process.stdout.write(
@@ -32,7 +32,7 @@ const Module: YourDashModule = {
               )}`
             );
             return res.json({
-              error: true 
+              error: true
             });
           }
         } else {
@@ -40,16 +40,16 @@ const Module: YourDashModule = {
             path.resolve(`${ENV.FsOrigin}/data/users/${userName}/keys.json`),
             (err, data) => {
               if (err) return res.json({
-                error: true 
+                error: true
               });
               let sessionKey = JSON.parse(data.toString()).sessionToken;
               if (sessionKey === sessionToken) {
-                USER_CACHE[userName] = sessionKey;
+                USER_CACHE[ userName ] = sessionKey;
                 next();
               } else {
                 process.stdout.write(chalk.bgRed(' Unauthorized '));
                 return res.json({
-                  error: true 
+                  error: true
                 });
               }
             }
@@ -57,7 +57,7 @@ const Module: YourDashModule = {
         }
       } else {
         return res.json({
-          error: true 
+          error: true
         });
       }
     });
@@ -68,15 +68,15 @@ const Module: YourDashModule = {
       let { name } = req.headers;
       console.log(password);
       if (!password) return res.json({
-        error: true 
+        error: true
       });
       if (fs.existsSync(path.resolve(`${ENV.FsOrigin}/data/users/${username}`)))
         return res.sendStatus(403);
       fs.mkdir(`${ENV.FsOrigin}/data/users/${username}/`, {
-        recursive: true 
+        recursive: true
       }, (err) => {
         if (err) return res.json({
-          error: true 
+          error: true
         });
         fs.writeFile(
           `${ENV.FsOrigin}/data/users/${username}/user.json`,
@@ -137,6 +137,8 @@ const Module: YourDashModule = {
                 value: '',
               },
             },
+            permissions: [],
+            quota: 0,
           } as YourDashUser),
           (err) => {
             if (err) return res.sendStatus(500);
@@ -167,7 +169,7 @@ const Module: YourDashModule = {
                   (err) => {
                     if (err) return res.sendStatus(500);
                     fs.mkdir(`${ENV.UserFs(req)}/AppData/`, {
-                      recursive: true 
+                      recursive: true
                     }, (err) => {
                       if (err) return res.sendStatus(500);
                       return res.send(`hello new user ${req.params.username}`);
@@ -188,7 +190,7 @@ const Module: YourDashModule = {
       // check that the username and password was supplied
       if (!(username && password)) {
         res.json({
-          error: `A username or password was not provided!` 
+          error: `A username or password was not provided!`
         });
         return log(`ERROR a username or password was not provided in the headers for /user/login!`);
       }
@@ -196,7 +198,7 @@ const Module: YourDashModule = {
       // check that the user actually exists
       if (!fs.existsSync(`${ENV.UserFs(req)}`)) {
         res.json({
-          error: `Unknown user` 
+          error: `Unknown user`
         });
         return log(`ERROR unknown user: ${username}`);
       }
@@ -205,7 +207,7 @@ const Module: YourDashModule = {
       fs.readFile(`${ENV.UserFs(req)}/keys.json`, (err, data) => {
         if (err) {
           res.json({
-            error: `An issue occured reading saved user data.` 
+            error: `An issue occured reading saved user data.`
           });
           return log(`ERROR an error occured reading ${username}'s keys.json`);
         }
@@ -223,7 +225,7 @@ const Module: YourDashModule = {
             (err) => {
               if (err) {
                 res.json({
-                  error: `There was an issue with starting a new session.` 
+                  error: `There was an issue with starting a new session.`
                 });
                 return log(
                   `ERROR ${username}'s keys.json could not be overwritten during the login process!`
@@ -233,7 +235,7 @@ const Module: YourDashModule = {
                 sessionToken: newSessionToken,
                 error: false,
               });
-              USER_CACHE[username] = newSessionToken;
+              USER_CACHE[ username ] = newSessionToken;
             }
           );
         }
@@ -243,15 +245,15 @@ const Module: YourDashModule = {
     app.get(`/api/${this.name}/current/user`, (req, res) => {
       if (!fs.existsSync(`${ENV.UserFs(req)}`)) {
         return res.json({
-          error: true 
+          error: true
         });
       }
       fs.readFile(`${ENV.UserFs(req)}/user.json`, (err, data) => {
         if (err) return res.json({
-          error: true 
+          error: true
         });
         return res.send({
-          user: JSON.parse(data.toString()) 
+          user: JSON.parse(data.toString())
         });
       });
     });
@@ -283,9 +285,9 @@ const Module: YourDashModule = {
     });
   },
 
-  unload() {},
+  unload() { },
 
-  install() {},
+  install() { },
 };
 
 export default Module;
