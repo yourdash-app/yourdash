@@ -1,46 +1,21 @@
 {
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+  "editor.formatOnPaste": false,
+  "editor.formatOnType": false,
   "editor.formatOnSave": true,
-  "editor.codeActionsOnSave": {
-    "source.fixAll": true,
-    "source.organizeImports": true
+  "editor.formatOnSaveMode": "file",
+  "files.autoSave": "onFocusChange",
+  "cSpell.words": ["yourdash"],
+  "git.ignoreLimitWarning": true,
+  "eslint.enable": true,
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "cSpell.words": [
-    "Authed",
-    "codenames",
-    "colour",
-    "commitlint",
-    "datacentres",
-    "devs",
-    "Eagleson",
-    "esbenp",
-    "Etyo",
-    "Kasper",
-    "leerob",
-    "nextauth",
-    "nextjs",
-    "npmrc",
-    "pravatar",
-    "preload",
-    "prettierignore",
-    "prettierrc",
-    "regexes",
-    "requestable",
-    "rgba",
-    "scaleable",
-    "sessiontoken",
-    "signin",
-    "Supabase",
-    "superpowered",
-    "tailwindcss",
-    "typeof",
-    "typesafe",
-    "unoptimized",
-    "userinfo",
-    "Vercel",
-    "Viewports",
-    "WEBP",
-    "yourdash"
-  ],
-  "git.ignoreLimitWarning": true
+  "[typescript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "[scss]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "cSpell.ignoreWords": ["sessiontoken"]
 }

@@ -16,16 +16,9 @@ const Footer: React.FC<IFooter> = ({ ..._divProps }) => {
         <Link href="/">Home</Link>
         <Link href="/projects">Projects</Link>
         <Link href="/docs">Docs</Link>
-        <Link href="https://github.com/ewsgit/yourdash">Git</Link>
+        <Link href="https://github.com/ewsgit/yourdash">Git Repository</Link>
       </section>
-      <footer>
-        <section>
-          <span>YourDash ©️ 2022 Ewsgit</span>
-        </section>
-        <section>
-          <span></span>
-        </section>
-      </footer>
+      <span>YourDash © 2022 Ewsgit</span>
     </div>
   </>
 };

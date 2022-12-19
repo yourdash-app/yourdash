@@ -28,7 +28,9 @@ const Slides: React.FC<ISlides> = ({ slides, changeDuration }) => {
     {currentSlide}
     <div className={styles.statusIndicator}>
       {slides.map((_slide, ind) => {
-        return <div key={ind} className={currentSlideInd === ind ? styles.active : ""} onClick={() => { setCurrentSlideInd(ind); setCurrentSlide(slides[ ind ]) }}></div>
+        return <div key={ind} className={currentSlideInd === ind ? styles.active : ""} onClick={() => {
+          setCurrentSlideInd(ind); setCurrentSlide(slides[ ind ])
+        }}></div>
       })}
     </div>
   </div>;

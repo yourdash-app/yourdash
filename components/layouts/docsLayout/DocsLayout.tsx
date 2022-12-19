@@ -1,15 +1,35 @@
-import NavigationBar from "./../homeLayout/navigationBar/NavigationBar"
-import styles from "./HomeLayout.module.css"
+import SideBar from "../../elements/sideBar/SideBar";
+import Footer from "../homeLayout/footer/Footer";
+import NavigationBar from "../homeLayout/navigationBar/NavigationBar"
+import styles from "./DocsLayout.module.scss"
 
-export interface IHomeLayout extends React.ComponentPropsWithoutRef<'div'> { }
+export interface IDocsLayout extends React.ComponentPropsWithoutRef<'div'> { }
 
-const HomeLayout: React.FC<IHomeLayout> = ({ children, ..._divProps }) => {
+const DocsLayout: React.FC<IDocsLayout> = ({ children, ..._divProps }) => {
   return <>
     <NavigationBar />
     <div className={styles.root}>
-    {children}
+      <section>
+        <SideBar title="Docs" sections={[ {
+          title: "test",
+          buttons: [
+            {
+              title: "Hello",
+              onClick: () => { },
+            },
+            {
+              title: "World",
+              onClick: () => { },
+            }
+          ]
+        } ]} />
+        <div>
+          {children}
+        </div>
+      </section>
+      <Footer />
     </div>
   </>;
 };
 
-export default HomeLayout;
+export default DocsLayout;

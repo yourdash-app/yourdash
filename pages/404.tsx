@@ -8,13 +8,14 @@ const FourZeroFourPage: NextPageWithLayout = () => {
       width: "100%",
       height: "100%",
       alignItems: "center",
-      justifyContent: "center"
+      justifyContent: "center",
+      minHeight: "84vh"
     }}>
       <h1 style={{
         color: "var(--card-fg)",
         background: "var(--card-bg)",
         padding: "1rem 2rem",
-        borderRadius: "var(--card-rounding)"
+        borderRadius: "var(--card-rounding)",
       }}>404 | Page not found</h1>
     </div>
   )

@@ -1,0 +1,21 @@
+.root {
+}
+
+.productHeader {
+  transform: translateY(-25%);
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding-left: 5rem;
+  > img {
+    height: 10rem;
+    margin-right: 0.5rem;
+    padding: 0.5rem;
+    background-color: var(--card-bg);
+    border-radius: var(--card-rounding);
+  }
+  > h2 {
+    color: var(--container-fg);
+    padding-right: 1rem;
+  }
+}

@@ -1,4 +1,5 @@
 import { useRouter } from 'next/navigation';
+import { CSSProperties } from 'react';
 import styles from './ButtonLink.module.scss';
 
 export interface IButtonLink {
@@ -6,11 +7,17 @@ export interface IButtonLink {
   vibrant?: boolean;
   href: string;
   disabled?: boolean;
+  style?: CSSProperties;
 }
 
-const ButtonLink: React.FC<IButtonLink> = ({ children, vibrant, href, disabled }) => {
+const ButtonLink: React.FC<IButtonLink> = ({ children, vibrant, href, disabled, style }) => {
   const router = useRouter()
-  return <button onClick={() => { if (!disabled) router.push(href) }} className={`${styles.component} ${vibrant ? styles.vibrant : ""}`}>{children}</button>;
+  return <button
+    style={style}
+    onClick={() => {
+      if (!disabled) router.push(href)
+    }}
+    className={`${styles.component} ${vibrant ? styles.vibrant : ""}`}>{children}</button>;
 };
 
 export default ButtonLink;

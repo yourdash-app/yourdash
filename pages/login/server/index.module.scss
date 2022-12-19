@@ -4,6 +4,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  > div {
+    max-width: 40rem;
+    width: 90%;
+    @media (max-width: 400px) {
+      border-radius: 0;
+      width: 100%;
+      > div > div {
+        flex-direction: column;
+      }
+    }
+  }
 }
 
 .title {
@@ -11,4 +22,23 @@
   margin: 0;
   padding: 2rem;
   padding-top: 1rem;
+}
+
+.error {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: auto;
+  background-color: var(--container-bg);
+  color: var(--container-fg);
+  height: auto;
+  border-radius: 1rem;
+  border: var(--container-outline);
+  padding: 0.5rem;
+  box-shadow: 0 0 1rem #00000055;
+  > p {
+    margin: 0;
+    padding: 0.5rem;
+    font-size: 1.25rem;
+  }
 }

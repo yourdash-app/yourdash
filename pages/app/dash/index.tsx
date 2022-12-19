@@ -1,29 +1,30 @@
 import Head from "next/head";
 import React, { useEffect, useState } from "react";
-import ColContainer from "../../../components/containers/ColContainer/ColContainer";
-import RowContainer from "../../../components/containers/RowContainer/RowContainer";
-import Card from "../../../components/elements/card/Card";
-import Chip from "../../../components/elements/chip/Chip";
+import Button from "../../../components/elements/button/Button";
 import AppLayout from '../../../components/layouts/appLayout/AppLayout';
 import SERVER from "../../../lib/server";
+import YourDashUser from "../../../lib/user";
 import { NextPageWithLayout } from '../../page';
 import styles from "./dash.module.scss";
 
 const Dash: NextPageWithLayout = () => {
-  const [ userName, setUserName ] = useState("")
+  const [ name, setName ] = useState("")
   const [ currentTime, setCurrentTime ] = useState("00:01")
-  // const [ currentContentPage, setCurrentContentPage ] = useState("home")
-  const [ currentContentPage, setCurrentContentPage ] = useState("home")
-  const [ visibleChips, setVisibleChips ] = useState([ { name: "Home", id: "home" }, { name: "Git Status", id: "git_status" }, { name: "Rss Feed", id: "rss" } ])
 
   useEffect(() => {
-    SERVER.get("/get/current/user")
-      .then(res => res.json())
-      .then(res => {
-        setUserName(res.name)
+    SERVER.get("/userManagement/current/user")
+      .then((response) => {
+        response.json().then((res: { error?: boolean; user: YourDashUser }) => {
+          if (res.error) return console.error(`failed fetching the current user`)
+          let user = res.user
+          setName(user?.name?.first + " " + user?.name?.last)
+        }).catch(() => setName("ERROR: Not valid JSON"))
       })
-      .catch(err => {setUserName(err)})
+      .catch((err) => {
+        setName(err)
+      })
   }, [])
+
   useEffect(() => {
     setCurrentTime((new Date().getHours() < 10 ? `0${new Date().getHours()}` : `${new Date().getHours()}`) + ":" + (new Date().getMinutes() < 10 ? `0${new Date().getMinutes()}` : `${new Date().getMinutes()}`))
 
@@ -35,7 +36,7 @@ const Dash: NextPageWithLayout = () => {
     }
   }, [])
 
-  if (userName === "") return <></>
+  if (name === "") return <></>
   return (
     <>
       <Head>
@@ -44,40 +45,17 @@ const Dash: NextPageWithLayout = () => {
       <div className={styles.root}>
         <div className={styles.welcome}>
           <span className={styles.clock}>{currentTime}</span>
-          <span>Hiya, {userName}</span>
+          <span>Hiya, {name}</span>
         </div>
-        <RowContainer className={styles.chips}>
-          <>
-            {
-              visibleChips.map((chip, ind) => {
-                return <Chip key={ind} label={chip.name} onClick={() => { setCurrentContentPage(chip.id) }} toggled={currentContentPage === chip.id} />
-              })
-            }
-          </>
-        </RowContainer>
         <div className={styles.main}>
-          {returnDashCards(
-            currentContentPage,
-            <>
-              <ColContainer>
-                <Card>abcjdasjdfjhajksdhfd</Card>
-                <Card>abcjdasjdfjhajksdhfd</Card>
-              </ColContainer>
-              <ColContainer>
-                <Card>abcjdasjdfjhajksdhfd</Card>
-                <Card>abc</Card>
-              </ColContainer>
-              <ColContainer>
-                <Card>abc</Card>
-                <Card>abcjdasjdfjhajksdhfd</Card>
-                <Card>abc</Card>
-              </ColContainer>
-              <ColContainer>
-                <Card>abcjdasjdfjhajksdhfd</Card>
-                <Card>abc</Card>
-              </ColContainer>
-            </>
-          )}
+          <div className={styles.homeMessage}>
+            <div>
+              <h1>Oh no!</h1>
+              <p>It appears that you have no dash widgets installed.</p>
+              <Button onClick={() => {
+              }} vibrant>Explore dash widgets</Button>
+            </div>
+          </div>
         </div>
       </div>
     </>
@@ -88,17 +66,4 @@ export default Dash;
 
 Dash.getLayout = (page) => {
   return <AppLayout>{page}</AppLayout>
-}
-
-function returnDashCards(currentContentPage: string, homeCards: React.ReactChild | React.ReactChild[]) {
-  switch (currentContentPage) {
-    case "home":
-      return homeCards
-    case "git_status":
-      return <div className={styles.gitStatusMain}>
-        <h1>Git Status coming soon...</h1>
-      </div>
-    case "rss":
-      return <h1>RSS / ATOM feed coming soon...</h1>
-  }
 }

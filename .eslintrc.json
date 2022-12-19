@@ -5,15 +5,50 @@
   },
   "overrides": [
     {
-      "files": ["*.@(ts|tsx|js|jsx|mjs|cjs)"],
+      "files": ["*.@(ts|tsx)"],
       "rules": {
         // Other rules
-        "@next/next/no-img-element": "off"
+        "@next/next/no-img-element": "off",
+        "no-unused-vars": [
+          "error",
+          { "args": "after-used", "argsIgnorePattern": "^_" }
+        ],
+        "camelcase": "error",
+        "brace-style": ["error", "1tbs"],
+        "space-in-parens": ["error", "never"],
+        "array-bracket-spacing": [
+          "error",
+          "always",
+          {
+            "objectsInArrays": true,
+            "arraysInArrays": true,
+            "singleValue": true
+          }
+        ],
+        "object-curly-spacing": ["error", "always"],
+        "object-curly-newline": [
+          "error",
+          {
+            "ObjectExpression": "always",
+            "ObjectPattern": { "multiline": true },
+            "ImportDeclaration": "never",
+            "ExportDeclaration": { "multiline": true, "minProperties": 3 }
+          }
+        ],
+        "dot-location": ["error", "property"],
+        "indent": ["error", 2, { "SwitchCase": 1 }],
+        "lines-between-class-members": ["error", "always"],
+        "lines-around-comment": [
+          "error",
+          {
+            "beforeLineComment": true,
+            "allowClassStart": false,
+            "beforeBlockComment": true
+          }
+        ],
+        "arrow-parens": ["error", "always"],
+        "keyword-spacing": ["error", { "before": true, "after": true }]
       }
     }
-  ],
-  "rules": {
-    "no-unused-vars": [1, { "args": "after-used", "argsIgnorePattern": "^_" }],
-    "camelcase": "error"
-  }
+  ]
 }

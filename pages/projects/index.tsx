@@ -1,11 +1,11 @@
-import Link from 'next/link'
 import { NextPageWithLayout } from './../page';
-import { useRouter } from 'next/router';
 import HomeLayout from '../../components/layouts/homeLayout/HomeLayout';
 import Icon from '../../components/elements/icon/Icon';
 
 const Projects: NextPageWithLayout = () => {
-  const router = useRouter()
+
+  // const router = useRouter()
+
   return (
     <>
       <h1>Projects</h1>
@@ -15,7 +15,12 @@ const Projects: NextPageWithLayout = () => {
           <img src="" alt="" />
           <h1>Code Engine</h1>
           <section>
-            <Icon name='heart-16' style={{ width: "1rem", aspectRatio: "1/1" }} color={"#ffffff"} />
+            <Icon
+              name='heart-16'
+              style={{
+                width: "1rem", aspectRatio: "1/1"
+              }}
+              color={"#ffffff"} />
             <span>1234</span>
           </section>
         </div>

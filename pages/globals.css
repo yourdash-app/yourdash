@@ -1,6 +1,6 @@
 :root {
-  /* --app-background: url(./../public/background.jpg); */
-  --app-background: url(https://picsum.photos/3840/2160?random);
+  --app-background: url(./../public/background.jpg);
+  /* --app-background: url(https://picsum.photos/3840/2160?random); */
   --background-color: #272727;
   --transition: all 100ms ease-in-out;
 
@@ -23,14 +23,14 @@
   --focused-outline: 0.25rem solid var(--button-vibrant-bg);
 
   --card-fg: #ffffff;
-  --card-bg: rgb(70 70 70);
+  --card-bg: #464646;
   --card-rounding: 1rem;
   --card-compact-rounding: 0.5rem;
 
-  --header-bg: rgb(54 54 54);
+  --header-bg: #363636;
   --header-fg: #fff;
 
-  --container-bg: rgb(54 54 54);
+  --container-bg: #363636;
   --container-fg: #fff;
 
   --app-panel-height: 3rem;
@@ -76,31 +76,34 @@
   --button-active-outline: 0 solid #000;
   --button-active-rounding: 0.5rem;
 
-  --button-vibrant-bg: rgb(235 106 75);
+  --button-vibrant-bg: #eb6a4b;
   --button-vibrant-fg: #fff;
   --button-vibrant-outline: 0 solid #000;
   --button-vibrant-rounding: 100rem;
-  --button-vibrant-hover-bg: rgb(251 122 91);
+  --button-vibrant-hover-bg: #fb7a5b;
   --button-vibrant-hover-fg: #fff;
   --button-vibrant-hover-outline: 0 solid #000;
   --button-vibrant-hover-rounding: 100rem;
-  --button-vibrant-active-bg: rgb(219 90 59);
+  --button-vibrant-active-bg: #db5a3b;
   --button-vibrant-active-fg: #fff;
   --button-vibrant-active-outline: 0 solid #000;
   --button-vibrant-active-rounding: 100rem;
 
-  --text-input-bg: #000;
+  --link-fg: #f8ad9b;
+  --link-bg: #eb6a4b;
+
+  --text-input-bg: #5a5a5a;
   --text-input-fg: #fff;
   --text-input-outline: 0 solid #000;
   --text-input-rounding: 0.5rem;
-  --text-input-focused-bg: #000;
+  --text-input-focused-bg: #4a4a4a;
   --text-input-focused-fg: #fff;
   --text-input-focused-outline: 0.25rem solid var(--button-vibrant-bg);
   --text-input-focused-rounding: 0.5rem;
 
-  --floating-label-bg: rgb(54 54 54);
+  --floating-label-bg: #363636;
   --floating-label-fg: #fff;
-  --floating-label-outline: 0.2rem solid rgb(34 34 34);
+  --floating-label-outline: 0.2rem solid #222222;
   --floating-label-rounding: 0.25rem;
 
   --chip-bg: #5a5a5a;
@@ -121,6 +124,18 @@
   --chip-toggled-active-bg: #6a6a6a;
   --chip-toggled-active-fg: #ffffff;
   --chip-toggled-active-rounding: 10rem;
+
+  --progress-bar-bg: #5a5a5a;
+  --progress-bar-fg: #ffffff;
+
+  --scrollbar-bg: #222;
+  --scrollbar-fg: rgb(235 106 75);
+
+  --right-click-menu-bg: #333333;
+  --right-click-menu-fg: #ffffff;
+  --right-click-menu-rounding: 1rem;
+  --right-click-menu-item-bg: #5a5a5a;
+  --right-click-menu-item-fg: #ffffff;
 }
 
 html,
@@ -133,7 +148,6 @@ body {
   padding: 0;
   font-family: 'roboto';
   font-weight: 400;
-  font-size: normal;
 }
 
 #__next {
@@ -154,4 +168,23 @@ h3 {
 
 *:focus-visible {
   outline: var(--focused-outline);
+}
+
+::-webkit-scrollbar {
+  width: 0.5rem;
+  height: 0.5rem;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 0.5rem;
+  background-color: var(--scrollbar-fg);
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--scrollbar-bg);
+}
+
+::-webkit-scrollbar-button {
+  padding: 0.5rem;
+  border: transparent solid 0.2rem;
 }

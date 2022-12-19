@@ -1,0 +1,109 @@
+.component {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5rem;
+  background-color: var(--header-bg);
+  color: var(--header-fg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  transition: var(--transition);
+  > h1 {
+    font-size: 2rem;
+    margin-right: 20rem;
+    transition: var(--transition);
+  }
+
+  > a[href] {
+    font-size: 1rem;
+    text-decoration: none;
+    color: var(--button-fg);
+    padding: 0.5rem;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    transition: var(--transition);
+    position: relative;
+    &:last-of-type {
+      margin-right: 0.5rem;
+    }
+  }
+
+  > a[href]:after {
+    content: '';
+    position: absolute;
+    background-color: var(--button-vibrant-hover-bg);
+    border-radius: 100rem;
+    width: 100%;
+    height: 0.25rem;
+    top: calc(100% + 0.1rem);
+    left: 0;
+    transform: scale(0);
+    transition: var(--transition);
+    transform-origin: center;
+  }
+
+  > a[href]:hover {
+    color: var(--button-vibrant-hover-bg);
+  }
+
+  > a[href]:hover:after {
+    transform: scale(1);
+  }
+
+  > a[href]:active {
+    color: var(--button-vibrant-active-bg);
+  }
+
+  > a[href]:active:after {
+    transform: scaleX(1.2);
+    background-color: var(--button-vibrant-active-bg);
+  }
+}
+
+.logo {
+  height: 4rem;
+  width: 4rem;
+  margin-right: 1rem;
+}
+
+.spacer {
+  height: 5rem;
+  width: 100%;
+}
+
+@media (max-width: 850px) {
+  .component {
+    > h1 {
+      font-size: 2rem;
+      margin-right: 10rem;
+    }
+  }
+}
+
+@media (max-width: 650px) {
+  .component {
+    > h1 {
+      font-size: 2rem;
+      margin-right: 5rem;
+    }
+    > a:nth-child(6) {
+      display: none;
+    }
+  }
+}
+
+@media (max-width: 575px) {
+  .component {
+    > h1 {
+      font-size: 2rem;
+      margin-right: 2rem;
+    }
+  }
+
+  .logo {
+    display: none;
+  }
+}

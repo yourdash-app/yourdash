@@ -1,3 +1,8 @@
+/*
+ *   Copyright (c) 2022 Ewsgit
+ *   https://ewsgit.mit-license.org
+ */
+
 import crypto from 'crypto';
 import { YourDashServerConfig } from '.';
 
