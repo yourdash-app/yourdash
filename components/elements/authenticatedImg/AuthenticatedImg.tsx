@@ -8,11 +8,11 @@ import { useEffect, useState } from "react";
 import SERVER from "../../../lib/server";
 import { YourDashIconRawDictionary } from "../icon/iconDictionary";
 
-export interface IAuthedImg extends React.ComponentPropsWithoutRef<'img'> {
+export interface IAuthenticatedImg extends React.ComponentPropsWithoutRef<'img'> {
   src: string
 }
 
-const AuthedImg: React.FC<IAuthedImg> = ({ src, ...imgElementProps }) => {
+const AuthenticatedImg: React.FC<IAuthenticatedImg> = ({ src, ...imgElementProps }) => {
   const [ imgSrc, setImgSrc ] = useState("")
   useEffect(() => {
     SERVER.get(src)
@@ -28,4 +28,4 @@ const AuthedImg: React.FC<IAuthedImg> = ({ src, ...imgElementProps }) => {
   return <img draggable={false} src={imgSrc} alt="" {...imgElementProps} />
 };
 
-export default AuthedImg;
+export default AuthenticatedImg;

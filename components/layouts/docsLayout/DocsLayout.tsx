@@ -1,7 +1,7 @@
+import SideBar from "../../elements/sideBar/SideBar";
 import Footer from "../homeLayout/footer/Footer";
 import NavigationBar from "../homeLayout/navigationBar/NavigationBar"
 import styles from "./DocsLayout.module.scss"
-import DocsSideBar from "./sideBar/SideBar";
 
 export interface IDocsLayout extends React.ComponentPropsWithoutRef<'div'> { }
 
@@ -10,7 +10,19 @@ const DocsLayout: React.FC<IDocsLayout> = ({ children, ..._divProps }) => {
     <NavigationBar />
     <div className={styles.root}>
       <section>
-        <DocsSideBar />
+        <SideBar title="Docs" sections={[ {
+          title: "test",
+          buttons: [
+            {
+              title: "Hello",
+              onClick: () => { },
+            },
+            {
+              title: "World",
+              onClick: () => { },
+            }
+          ]
+        } ]} />
         <div>
           {children}
         </div>

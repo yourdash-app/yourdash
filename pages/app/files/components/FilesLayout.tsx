@@ -1,4 +1,4 @@
-import FilesSideBar from "./components/FilesSideBar";
+import FilesSideBar from "./FilesSideBar";
 import styles from "./FilesLayout.module.scss"
 
 export interface IFilesLayout extends React.ComponentPropsWithoutRef<'div'> { }

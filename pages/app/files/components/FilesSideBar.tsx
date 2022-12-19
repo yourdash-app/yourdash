@@ -3,7 +3,7 @@ import ProgressBar from "../../../../components/elements/progressBar/ProgressBar
 import styles from "./FilesSideBar.module.scss"
 import IconButton from "../../../../components/elements/iconButton/IconButton"
 import DropdownMenu from "../../../../components/elements/dropdownMenu/DropdownMenu"
-import SERVER, { handleErrorsAndReturnJson } from "../../../../lib/server"
+import SERVER, { verifyAndReturnJson } from "../../../../lib/server"
 import { SideBarCategory } from "../../../../types/files/SideBar"
 import { useRouter } from "next/navigation"
 import Button from "../../../../components/elements/button/Button"
@@ -18,7 +18,7 @@ const FilesSideBar: React.FC<IFilesSideBar> = () => {
   const [ categories, setCategories ] = useState([] as SideBarCategory[])
 
   useEffect(() => {
-    handleErrorsAndReturnJson(
+    verifyAndReturnJson(
       SERVER.get(`/files/sidebar/categories`),
       (data: SideBarCategory[]) => {
         setCategories(data)
@@ -76,7 +76,7 @@ const FilesSideBar: React.FC<IFilesSideBar> = () => {
         <div className={styles.header}>
           Quota percentage full
         </div>
-        <ProgressBar value={100} displayPercentage></ProgressBar>
+        <ProgressBar value={10} displayPercentage></ProgressBar>
       </div>
     </section>
   </div >

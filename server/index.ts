@@ -18,7 +18,7 @@ export const RELEASE_CONFIGURATION = {
   CURRENT_VERSION: 1,
 }
 
-export interface TENV {
+export interface IEnv {
   FsOrigin: string;
   UserFs: (_req: express.Request) => string;
   UserAppData: (_req: express.Request) => string;
@@ -26,13 +26,15 @@ export interface TENV {
   ModulePath: (_module: { name: string }) => string
 }
 
-export const ENV: TENV = {
+export const ENV: IEnv = {
   FsOrigin: process.env.FsOrigin as string,
   UserFs: (req) => `${ENV.FsOrigin}/data/users/${req.headers.username}`,
   UserAppData: (req) => `${ENV.FsOrigin}/data/users/${req.headers.username}/AppData`,
   DevMode: process.env.DEV === "true",
   ModulePath: (module) => `/api/${module.name}`
 };
+
+console.log(ENV)
 
 if (!ENV.FsOrigin) console.error('FsOrigin was not defined.');
 

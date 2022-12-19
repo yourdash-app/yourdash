@@ -17,6 +17,7 @@ export const ENV = {
     DevMode: process.env.DEV === "true",
     ModulePath: (module) => `/api/${module.name}`
 };
+console.log(ENV);
 if (!ENV.FsOrigin)
     console.error('FsOrigin was not defined.');
 startupCheck(() => {

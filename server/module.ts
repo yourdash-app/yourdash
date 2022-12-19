@@ -3,13 +3,13 @@
  *   https://ewsgit.mit-license.org
  */
 
-import { YourDashServerConfig, ENV, TENV } from './index.js';
+import { IEnv, YourDashServerConfig } from './index.js';
 import Express from 'express';
 
 export default interface YourDashModule {
   name: string;
   id: string;
-  load: (_app: Express.Application, _api: { SERVER_CONFIG: YourDashServerConfig } & TENV) => void;
+  load: (_app: Express.Application, _api: { SERVER_CONFIG: YourDashServerConfig } & IEnv) => void;
   unload: () => void;
   install: () => void;
 }

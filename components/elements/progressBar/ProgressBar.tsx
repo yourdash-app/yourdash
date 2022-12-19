@@ -10,7 +10,7 @@ const ProgressBar: React.FC<IProgressBar> = ({ value, displayPercentage }) => {
     <div className={styles.progress} style={{
       width: value > 0 ? `${value}%` : "100%",
       ...value > 0 ? {
-        backgroundColor: "var(--progress-bar-bg)"
+        backgroundColor: "var(--progress-bar-fg)"
       } : {
 
       },
@@ -20,7 +20,7 @@ const ProgressBar: React.FC<IProgressBar> = ({ value, displayPercentage }) => {
         displayPercentage
           ? <span className={styles.percentage} style={
             value > 11 ? {
-              color: "var(--progress-bar-fg)"
+              color: "var(--progress-bar-bg)"
             } : {
 
             }

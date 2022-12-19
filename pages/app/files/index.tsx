@@ -2,7 +2,7 @@ import Head from "next/head";
 import React from "react";
 import AppLayout from '../../../components/layouts/appLayout/AppLayout';
 import { NextPageWithLayout } from '../../page';
-import FilesLayout from "./FilesLayout";
+import FilesLayout from "./components/FilesLayout";
 
 const Files: NextPageWithLayout = () => {
   return (

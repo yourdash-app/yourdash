@@ -4,8 +4,10 @@ import DocsLayout from '../../components/layouts/docsLayout/DocsLayout';
 const Docs: NextPageWithLayout = () => {
   return (
     <>
-      <h1>Docs</h1>
-      <p>Not Coming Soon...</p>
+      <div data-hero>
+        <h1>YourDash Docs</h1>
+        <p>Overview</p>
+      </div>
     </>
   );
 };

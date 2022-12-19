@@ -5,14 +5,14 @@ import Button from '../../../components/elements/button/Button';
 import RightClickMenu from '../../../components/elements/rightClickMenu/RightClickMenu';
 import TextInput from '../../../components/elements/textInput/TextInput';
 import AppLayout from '../../../components/layouts/appLayout/AppLayout';
-import SERVER from '../../../lib/server';
+import SERVER, { verifyAndReturnJson } from '../../../lib/server';
 import { NextPageWithLayout } from '../../page';
 
 const EndpointTester: NextPageWithLayout = () => {
   const [ response, setResponse ] = useState("")
   const [ responseDidError, setResponseDidError ] = useState(false)
   const [ queryUrl, setQueryUrl ] = useState("")
-  const [ queryMethod, setQueryMethod ] = useState("GET")
+  const [ queryMethod, setQueryMethod ] = useState("GET" as "GET" | "POST" | "DELETE")
   const [ queryHeaders, /* setQueryHeaders */ ] = useState({
   })
   const [ queryBody, setQueryBody ] = useState({
@@ -38,6 +38,11 @@ const EndpointTester: NextPageWithLayout = () => {
           {
             name: "POST", onClick: () => {
               setQueryMethod("POST")
+            }
+          },
+          {
+            name: "DELETE", onClick: () => {
+              setQueryMethod("DELETE")
             }
           }
         ]}>
@@ -69,35 +74,40 @@ const EndpointTester: NextPageWithLayout = () => {
               onClick={() => {
                 switch (queryMethod) {
                   case "GET":
-                    SERVER.get(queryUrl, queryHeaders)
-                      .then((res) => {
-                        if (res.status === 404)
-                          return setResponseDidError(true)
-                        res.json()
-                          .then((json) => {
-                            if (json.error)
-                              return setResponseDidError(true)
-                            setResponse(JSON.stringify(json, null, 2))
-                          })
-                      })
+                    verifyAndReturnJson(
+                      SERVER.get(queryUrl, queryHeaders),
+                      (res) => {
+                        setResponse(JSON.stringify(res, null, 2))
+                      },
+                      () => {
+                        return setResponseDidError(true)
+                      }
+                    )
                     break;
                   case "POST":
-                    console.log(queryBody)
-                    SERVER.post(queryUrl, {
-                      headers: queryHeaders,
-                      body: JSON.stringify(queryBody)
-                    })
-                      .then((res) => {
-                        if (res.status === 404)
-                          return setResponseDidError(true)
-                        res.json()
-                          .then((json) => {
-                            if (json.error)
-                              return setResponseDidError(true)
-                            setResponse(JSON.stringify(json, null, 2))
-                          })
-                      })
+                    verifyAndReturnJson(
+                      SERVER.post(queryUrl, {
+                        headers: queryHeaders,
+                        body: JSON.stringify(queryBody)
+                      }),
+                      (res) => {
+                        setResponse(JSON.stringify(res, null, 2))
+                      },
+                      () => {
+                        return setResponseDidError(true)
+                      }
+                    )
                     break;
+                  case "DELETE":
+                    verifyAndReturnJson(
+                      SERVER.delete(queryUrl),
+                      (res) => {
+                        setResponse(JSON.stringify(res, null, 2))
+                      },
+                      () => {
+                        return setResponseDidError(true)
+                      }
+                    )
                 }
                 setResponse("")
                 setResponseDidError(false)
@@ -107,6 +117,8 @@ const EndpointTester: NextPageWithLayout = () => {
         <RowContainer style={{
           height: "100%",
           overflow: "auto",
+          display: "grid",
+          gridTemplateColumns: "1fr",
           backgroundColor: "var(--container-bg)",
         }}>
           {
@@ -122,10 +134,8 @@ const EndpointTester: NextPageWithLayout = () => {
             }} style={{
               height: "100%",
               margin: 0,
-              flexGrow: 1,
               padding: "0.5rem",
               border: "none",
-              flexShrink: 1,
               resize: 'none',
               fontFamily: "monospace",
               fontSize: "1.25rem"
@@ -144,8 +154,6 @@ const EndpointTester: NextPageWithLayout = () => {
             <pre style={
               {
                 color: "var(--container-fg)",
-                flexGrow: 1,
-                flexShrink: 1,
                 margin: 0,
                 padding: "1rem",
                 fontFamily: "monospace",

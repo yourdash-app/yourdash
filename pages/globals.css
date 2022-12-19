@@ -76,18 +76,21 @@
   --button-active-outline: 0 solid #000;
   --button-active-rounding: 0.5rem;
 
-  --button-vibrant-bg: rgb(235 106 75);
+  --button-vibrant-bg: #eb6a4b;
   --button-vibrant-fg: #fff;
   --button-vibrant-outline: 0 solid #000;
   --button-vibrant-rounding: 100rem;
-  --button-vibrant-hover-bg: rgb(251 122 91);
+  --button-vibrant-hover-bg: #fb7a5b;
   --button-vibrant-hover-fg: #fff;
   --button-vibrant-hover-outline: 0 solid #000;
   --button-vibrant-hover-rounding: 100rem;
-  --button-vibrant-active-bg: rgb(219 90 59);
+  --button-vibrant-active-bg: #db5a3b;
   --button-vibrant-active-fg: #fff;
   --button-vibrant-active-outline: 0 solid #000;
   --button-vibrant-active-rounding: 100rem;
+
+  --link-fg: #f8ad9b;
+  --link-bg: #eb6a4b;
 
   --text-input-bg: #5a5a5a;
   --text-input-fg: #fff;
@@ -98,9 +101,9 @@
   --text-input-focused-outline: 0.25rem solid var(--button-vibrant-bg);
   --text-input-focused-rounding: 0.5rem;
 
-  --floating-label-bg: rgb(54 54 54);
+  --floating-label-bg: #363636;
   --floating-label-fg: #fff;
-  --floating-label-outline: 0.2rem solid rgb(34 34 34);
+  --floating-label-outline: 0.2rem solid #222222;
   --floating-label-rounding: 0.25rem;
 
   --chip-bg: #5a5a5a;

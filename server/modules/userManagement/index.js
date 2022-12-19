@@ -130,6 +130,8 @@ const Module = {
                             value: '',
                         },
                     },
+                    permissions: [],
+                    quota: 0,
                 }), (err) => {
                     if (err)
                         return res.sendStatus(500);

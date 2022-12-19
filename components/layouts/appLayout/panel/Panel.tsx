@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import { useEffect, useState } from 'react';
 import IncludedApps from '../../../../data/includedApps';
-import SERVER from "../../../../lib/server";
+import SERVER, { verifyAndReturnJson } from "../../../../lib/server";
 import YourDashUser, { YourDashUserSettings } from '../../../../lib/user';
 import Card from '../../../containers/card/Card';
 import ColContainer from '../../../containers/ColContainer/ColContainer';
@@ -17,8 +17,9 @@ import Button from '../../../elements/button/Button';
 import Icon from '../../../elements/icon/Icon';
 import RightClickMenu from '../../../elements/rightClickMenu/RightClickMenu';
 import TextInput from '../../../elements/textInput/TextInput';
-import AuthedImg from "./../../../elements/authedImg/AuthedImg";
 import styles from './Panel.module.scss';
+import QuickShortcut from '../../../../types/core/panel/quickShortcut';
+import AuthenticatedImg from '../../../elements/authenticatedImg/AuthenticatedImg';
 
 export interface IPanel { }
 
@@ -27,8 +28,8 @@ const Panel: React.FC<IPanel> = () => {
   const [ launcherSlideOutVisible, setLauncherSlideOutVisible ] = useState(false)
   const [ accountDropdownVisible, setAccountDropdownVisible ] = useState(false)
   const [ userData, setUserData ] = useState(undefined as YourDashUser | undefined)
-  const [ userSettings, setUserSettings ] = useState(undefined as YourDashUserSettings | undefined)
   const [ searchQuery, setSearchQuery ] = useState("")
+  const [ quickShortcuts, setQuickShortcuts ] = useState([] as QuickShortcut[])
 
   useEffect(() => {
     SERVER.get(`/userManagement/current/user/settings`)
@@ -37,7 +38,6 @@ const Panel: React.FC<IPanel> = () => {
         // if (res.status !== 200) throw new Error("Error while fetching data")
         // return res.json() as Promise<YourDashUserSettings>
         res.json().then((json: YourDashUserSettings) => {
-          setUserSettings(json)
           document.body.style.setProperty("--app-panel-launcher-grid-columns", json.panel?.launcher?.slideOut?.gridColumns.toString() || "3")
         })
           .catch((err) => {
@@ -65,6 +65,18 @@ const Panel: React.FC<IPanel> = () => {
         localStorage.removeItem("sessionToken")
         return router.push("/login")
       })
+
+    verifyAndReturnJson(
+      SERVER.get(`/core/panel/quick-shortcuts/`),
+      (res) => {
+        console.log(res)
+        setQuickShortcuts(res)
+      },
+      () => {
+        console.error(`error fetching user's quick-shortcuts`)
+      })
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return <div className={styles.component}>
@@ -92,7 +104,21 @@ const Panel: React.FC<IPanel> = () => {
                   {
                     name: "Pin to quick shortcuts",
                     onClick: () => {
-                      console.log("IMPLEMENT ME!")
+                      verifyAndReturnJson(
+                        SERVER.post(`/core/panel/quick-shortcut/create`, {
+                          body: JSON.stringify({
+                            name: app.name,
+                            url: app.path,
+                            icon: app.icon
+                          })
+                        }),
+                        () => {
+                          router.reload()
+                        },
+                        () => {
+                          console.error(`unable to create quick shortcut with name: ${app.name}`)
+                        }
+                      )
                     }
                   },
                 ]} key={ind}>
@@ -124,15 +150,23 @@ const Panel: React.FC<IPanel> = () => {
         </div>
       </footer>
     </div>
-    <AuthedImg src={"/core/instance/logo"} className={styles.serverLogo} />
+    <AuthenticatedImg src={"/core/instance/logo"} className={styles.serverLogo} />
     {/* <h2 className={styles.serverName}>YourDash</h2> */}
     <div className={styles.shortcuts}>
-      {userSettings?.panel?.launcher?.shortcuts?.map((shortcut, ind) => {
+      {quickShortcuts.map((shortcut, ind) => {
         return <RightClickMenu key={ind} items={[
           {
-            name: "a",
+            name: "Remove quick shortcut",
             onClick: () => {
-              console.log("IMPLEMENT ME!")
+              verifyAndReturnJson(
+                SERVER.delete(`/core/panel/quick-shortcut/${shortcut.id}`),
+                () => {
+                  router.reload()
+                },
+                () => {
+                  console.error(`unable to delete quick shortcut ${shortcut.id}`)
+                }
+              )
             }
           }
         ]}>
