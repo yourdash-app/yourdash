@@ -57,23 +57,48 @@ const Home: NextPageWithLayout = () => {
         <div>
           <div>
             <span>NodeJS</span>
-            <span>Content</span>
+            <span>Runs the YourDash Server software</span>
+            <Button onClick={() => { }}>Learn more</Button>
           </div>
           <div>
             <span>NextJS</span>
-            <span>Content</span>
+            <span>Powers and builds the website</span>
+            <Button onClick={() => { }}>Learn more</Button>
           </div>
           <div>
             <span>Sass</span>
-            <span>Content</span>
+            <span>Simplify writing css</span>
+            <Button onClick={() => { }}>Learn more</Button>
           </div>
           <div>
             <span>Typescript</span>
-            <span>Content</span>
+            <span>Add static typing to javascript</span>
+            <Button onClick={() => { }}>Learn more</Button>
+          </div>
+        </div>
+      </section>
+      <section className={styles.section4}>
+        <h3>Update Logs</h3>
+        <div>
+          <div>
+            <span>Version 1</span>
+            <span>The start of the YourDash project</span>
           </div>
           <div>
-            <span>VSCode</span>
-            <span>Content</span>
+            <span>Coming Soon</span>
+            <span>Update not yet released</span>
+          </div>
+          <div>
+            <span>Coming Soon</span>
+            <span>Update not yet released</span>
+          </div>
+          <div>
+            <span>Coming Soon</span>
+            <span>Update not yet released</span>
+          </div>
+          <div>
+            <span>Coming Soon</span>
+            <span>Update not yet released</span>
           </div>
         </div>
       </section>
