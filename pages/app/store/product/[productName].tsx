@@ -7,16 +7,17 @@ import Carousel from '../components/carousel/Carousel';
 import styles from "./index.module.scss"
 import { useEffect, useState } from 'react';
 import SERVER from '../../../../lib/server';
+import InstalledApplication from '../../../../types/store/installedApplication';
 
 const StoreProduct: NextPageWithLayout = () => {
   const router = useRouter()
   let productId = router.query.productName
 
   const [ product, setProduct ] = useState({
-    name: null, icon: null, description: null
-  })
+  } as InstalledApplication)
 
   useEffect(() => {
+    if (!productId) return
     SERVER.get(`/store/application/${productId}`)
       .then((res) => {
         res.json().then((json) => {
@@ -36,33 +37,9 @@ const StoreProduct: NextPageWithLayout = () => {
           backgroundSize: "cover"
         }}>
         </div>
-        <div style={{
-          backgroundImage: `url('/favicon.png')`,
-          backgroundPosition: "center",
-          backgroundSize: "cover"
-        }}>
-        </div>
-        <div style={{
-          backgroundImage: `url('/favicon.png')`,
-          backgroundPosition: "center",
-          backgroundSize: "cover"
-        }}>
-        </div>
-        <div style={{
-          backgroundImage: `url('/favicon.png')`,
-          backgroundPosition: "center",
-          backgroundSize: "cover"
-        }}>
-        </div>
-        <div style={{
-          backgroundImage: `url('/favicon.png')`,
-          backgroundPosition: "center",
-          backgroundSize: "cover"
-        }}>
-        </div>
       </Carousel>
       <section className={styles.productHeader}>
-        <img src="/favicon.png" alt="" />
+        <img src={product.icon} alt="" />
         <h2>{product.name}</h2>
         <DropdownMenu items={[
           {

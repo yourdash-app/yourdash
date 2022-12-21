@@ -17,7 +17,6 @@ export const ENV = {
     DevMode: process.env.DEV === "true",
     ModulePath: (module) => `/api/${module.name}`
 };
-console.log(ENV);
 if (!ENV.FsOrigin)
     console.error('FsOrigin was not defined.');
 startupCheck(() => {
@@ -106,6 +105,12 @@ startupCheck(() => {
             console.error(chalk.redBright(`(Start up) ERROR: the 'core' module is not enabled in yourdash.config.json`));
             process.exit(1);
         case !SERVER_CONFIG.activeModules.includes('userManagement'):
+            console.error(chalk.redBright(`(Start up) ERROR: the 'userManagement' module is not enabled in yourdash.config.json`));
+            process.exit(1);
+        case !SERVER_CONFIG.activeModules.includes('files'):
+            console.error(chalk.redBright(`(Start up) ERROR: the 'userManagement' module is not enabled in yourdash.config.json`));
+            process.exit(1);
+        case !SERVER_CONFIG.activeModules.includes('store'):
             console.error(chalk.redBright(`(Start up) ERROR: the 'userManagement' module is not enabled in yourdash.config.json`));
             process.exit(1);
         default:

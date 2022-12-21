@@ -13,7 +13,6 @@ let USER_CACHE: { [ key: string ]: string } = {
 
 const Module: YourDashModule = {
   name: 'userManagement',
-  id: 'userManagement',
 
   load(app, api) {
     app.use((req, res, next) => {

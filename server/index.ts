@@ -34,8 +34,6 @@ export const ENV: IEnv = {
   ModulePath: (module) => `/api/${module.name}`
 };
 
-console.log(ENV)
-
 if (!ENV.FsOrigin) console.error('FsOrigin was not defined.');
 
 export interface YourDashServerConfig {
@@ -193,6 +191,22 @@ startupCheck(() => {
       process.exit(1)
     // eslint-disable-next-line no-fallthrough
     case !SERVER_CONFIG.activeModules.includes('userManagement'):
+      console.error(
+        chalk.redBright(
+          `(Start up) ERROR: the 'userManagement' module is not enabled in yourdash.config.json`
+        )
+      )
+      process.exit(1)
+    // eslint-disable-next-line no-fallthrough
+    case !SERVER_CONFIG.activeModules.includes('files'):
+      console.error(
+        chalk.redBright(
+          `(Start up) ERROR: the 'userManagement' module is not enabled in yourdash.config.json`
+        )
+      )
+      process.exit(1)
+    // eslint-disable-next-line no-fallthrough
+    case !SERVER_CONFIG.activeModules.includes('store'):
       console.error(
         chalk.redBright(
           `(Start up) ERROR: the 'userManagement' module is not enabled in yourdash.config.json`

@@ -1,7 +1,6 @@
 import { log } from "../../libServer.js";
 import fs from "fs";
 let module = {
-    id: "files",
     name: "files",
     load(app, api) {
         app.get(`${api.ModulePath(this)}/user/quota`, (req, res) => {
@@ -18,6 +17,11 @@ let module = {
                 res.send({
                     quota: json.quota
                 });
+            });
+        });
+        app.get(`${api.ModulePath(this)}/sidebar/categories`, (req, res) => {
+            return res.json({
+                error: true
             });
         });
     },

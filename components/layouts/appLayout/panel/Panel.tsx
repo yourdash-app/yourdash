@@ -7,7 +7,6 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 import { useEffect, useState } from 'react';
-import IncludedApps from '../../../../data/includedApps';
 import SERVER, { verifyAndReturnJson } from "../../../../lib/server";
 import YourDashUser, { YourDashUserSettings } from '../../../../lib/user';
 import Card from '../../../containers/card/Card';
@@ -20,6 +19,7 @@ import TextInput from '../../../elements/textInput/TextInput';
 import styles from './Panel.module.scss';
 import QuickShortcut from '../../../../types/core/panel/quickShortcut';
 import AuthenticatedImg from '../../../elements/authenticatedImg/AuthenticatedImg';
+import InstalledApplication from '../../../../types/store/installedApplication';
 
 export interface IPanel { }
 
@@ -30,50 +30,47 @@ const Panel: React.FC<IPanel> = () => {
   const [ userData, setUserData ] = useState(undefined as YourDashUser | undefined)
   const [ searchQuery, setSearchQuery ] = useState("")
   const [ quickShortcuts, setQuickShortcuts ] = useState([] as QuickShortcut[])
+  const [ installedApps, setInstalledApps ] = useState([] as InstalledApplication[])
 
   useEffect(() => {
-    SERVER.get(`/userManagement/current/user/settings`)
-      .then((res) => {
-
-        // if (res.status !== 200) throw new Error("Error while fetching data")
-        // return res.json() as Promise<YourDashUserSettings>
-        res.json().then((json: YourDashUserSettings) => {
-          document.body.style.setProperty("--app-panel-launcher-grid-columns", json.panel?.launcher?.slideOut?.gridColumns.toString() || "3")
-        })
-          .catch((err) => {
-            console.error(err)
-          })
-      })
-      .catch((_err) => {
+    verifyAndReturnJson(
+      SERVER.get(`/userManagement/current/user/settings`),
+      (res: YourDashUserSettings) => {
+        document.body.style.setProperty("--app-panel-launcher-grid-columns", res.panel?.launcher?.slideOut?.gridColumns.toString() || "3")
+      },
+      () => {
         localStorage.removeItem("sessionToken")
         return router.push("/login")
-      })
-    SERVER.get(`/userManagement/current/user`)
-      .then((res) => {
+      }
+    )
 
-        // if (res.status !== 200) throw new Error("Error while fetching data, " + res)
-        res.json()
-          .then((res: { error?: boolean; user: YourDashUser }) => {
-            if (res.error) return router.push("/login")
-            setUserData(res.user)
-          })
-          .catch((err) => {
-            console.error(err)
-          })
-      })
-      .catch((_err) => {
+    verifyAndReturnJson(
+      SERVER.get(`/userManagement/current/user`),
+      (res) => {
+        setUserData(res.user)
+      },
+      () => {
         localStorage.removeItem("sessionToken")
         return router.push("/login")
-      })
+      }
+    )
 
     verifyAndReturnJson(
       SERVER.get(`/core/panel/quick-shortcuts/`),
       (res) => {
-        console.log(res)
         setQuickShortcuts(res)
       },
       () => {
         console.error(`error fetching user's quick-shortcuts`)
+      })
+
+    verifyAndReturnJson(
+      SERVER.get(`/store/installed/apps`),
+      (res) => {
+        setInstalledApps(res)
+      },
+      () => {
+        console.error(`error fetching the instance's installed apps`)
       })
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -83,10 +80,14 @@ const Panel: React.FC<IPanel> = () => {
     <div className={styles.launcher} onClick={() => {
       setLauncherSlideOutVisible(!launcherSlideOutVisible)
     }}>
-      <Icon name='app-launcher-16' style={{
-        height: "100%",
-        aspectRatio: "1/1"
-      }} color={"var(--app-panel-fg)"} />
+      <Icon
+        name='app-launcher-16'
+        style={{
+          height: "100%",
+          aspectRatio: "1/1"
+        }}
+        color={"var(--app-panel-fg)"}
+      />
     </div>
     <div className={`${styles.launcherSlideOut} ${launcherSlideOutVisible ? styles.launcherSlideOutVisible : ""}`}>
       <div data-header>
@@ -97,7 +98,7 @@ const Panel: React.FC<IPanel> = () => {
       </div>
       <div className={styles.launcherGrid}>
         {
-          IncludedApps.map((app, ind) => {
+          installedApps.map((app, ind) => {
             if (app.name.toLowerCase().includes(searchQuery) || app.description.toLowerCase().includes(searchQuery))
               return <RightClickMenu
                 items={[
@@ -144,13 +145,20 @@ const Panel: React.FC<IPanel> = () => {
         } alt="" />
         <span>{userData?.name?.first} {userData?.name?.last}</span>
         <div onClick={() => {
+          setLauncherSlideOutVisible(false)
           router.push("/app/settings")
         }} data-settings>
           <Icon name='gear-16' color={"var(--container-fg)"}></Icon>
         </div>
       </footer>
     </div>
-    <AuthenticatedImg src={"/core/instance/logo"} className={styles.serverLogo} />
+    <AuthenticatedImg
+      onClick={() => {
+        router.push(`/app/dash`)
+      }}
+      src={"/core/instance/logo"}
+      className={styles.serverLogo}
+    />
     {/* <h2 className={styles.serverName}>YourDash</h2> */}
     <div className={styles.shortcuts}>
       {quickShortcuts.map((shortcut, ind) => {

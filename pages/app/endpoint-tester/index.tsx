@@ -56,15 +56,26 @@ const EndpointTester: NextPageWithLayout = () => {
               padding: "0.5rem",
               boxSizing: "border-box"
             }}>{queryMethod}</p>
-            <TextInput placeholder='server request path' style={{
-              color: responseDidError ? "var(--color-error-bg)" : "var(--text-input-fg)",
-              marginRight: "0.25rem",
-              marginLeft: "0.25rem",
-              width: "calc(100% - 0.5rem)"
-            }} onChange={(e) => {
-              setQueryUrl(e.target.value);
-              setResponseDidError(false)
-            }} />
+            <TextInput
+              placeholder='server request path'
+              style={{
+                color: responseDidError ? "var(--color-error-bg)" : "var(--text-input-fg)",
+                marginRight: "0.25rem",
+                marginLeft: "0.25rem",
+                width: "calc(100% - 0.5rem)"
+              }}
+              onChange={(e) => {
+                setQueryUrl(e.target.value);
+                setResponseDidError(false)
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  let sibling = e.currentTarget.nextElementSibling as HTMLButtonElement | null
+                  if (!sibling) return
+                  sibling.click()
+                }
+              }}
+            />
             <Button
               style={{
                 marginRight: "0.25rem",

@@ -7,7 +7,6 @@ import quickShortcut from "./../../../types/core/panel/quickShortcut.js"
 
 const Module: YourDashModule = {
   name: 'core',
-  id: 'core',
 
   load(app, api) {
 

@@ -3,7 +3,6 @@ import fs from 'fs';
 import { ENV } from '../../index.js';
 import { generateRandomStringOfLength } from '../../encryption.js';
 let module = {
-    id: 'todo-app',
     name: 'todo',
     load(app, _api) {
         app.get(`/api/${this.name}/list/create`, (req, res) => {

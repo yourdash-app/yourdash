@@ -8,7 +8,6 @@ import console from 'console';
 let USER_CACHE = {};
 const Module = {
     name: 'userManagement',
-    id: 'userManagement',
     load(app, api) {
         app.use((req, res, next) => {
             if (req.path.startsWith('/test'))

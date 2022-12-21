@@ -23,7 +23,9 @@ const FilesSideBar: React.FC<IFilesSideBar> = () => {
       (data: SideBarCategory[]) => {
         setCategories(data)
       },
-      () => console.error("Error requesting data")
+      () => {
+        return console.error("unable to fetch sidebar categories")
+      }
     )
   }, [])
 

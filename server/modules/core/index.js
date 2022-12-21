@@ -4,7 +4,6 @@ import { generateRandomStringOfLength } from '../../encryption.js';
 import { log, returnBase64Image } from '../../libServer.js';
 const Module = {
     name: 'core',
-    id: 'core',
     load(app, api) {
         app.get(`${api.ModulePath(this)}/panel/quick-shortcuts/`, (req, res) => {
             if (!fs.existsSync(path.resolve(`${api.UserAppData(req)}/${this.name}/panel/quick-shortcuts/`))) {

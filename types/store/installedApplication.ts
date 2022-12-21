@@ -5,5 +5,7 @@ export default interface InstalledApplication {
   author: string,
   copyright: string,
   description: string,
-  displayName: string
+  displayName: string,
+  previewImages: string[],
+  path: `/app/${string}`,
 }
