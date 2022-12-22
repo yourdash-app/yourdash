@@ -1,5 +1,4 @@
 import { useRouter } from 'next/router';
-import DropdownMenu from '../../../../components/elements/dropdownMenu/DropdownMenu';
 import IconButton from '../../../../components/elements/iconButton/IconButton';
 import AppLayout from '../../../../components/layouts/appLayout/AppLayout';
 import { NextPageWithLayout } from '../../../page';
@@ -8,13 +7,15 @@ import styles from "./index.module.scss"
 import { useEffect, useState } from 'react';
 import SERVER from '../../../../lib/server';
 import InstalledApplication from '../../../../types/store/installedApplication';
+import Button from '../../../../components/elements/button/Button';
+import Card from '../../../../components/containers/card/Card';
 
 const StoreProduct: NextPageWithLayout = () => {
   const router = useRouter()
   let productId = router.query.productName
 
   const [ product, setProduct ] = useState({
-  } as InstalledApplication)
+  } as InstalledApplication & { uninstallable: boolean, installed: boolean })
 
   useEffect(() => {
     if (!productId) return
@@ -28,8 +29,10 @@ const StoreProduct: NextPageWithLayout = () => {
         })
       })
   }, [ productId ])
+
+  if (!product) return <></>
   return (
-    <>
+    <div className={styles.root}>
       <Carousel>
         <div style={{
           backgroundImage: `url('/background.jpg')`,
@@ -39,20 +42,24 @@ const StoreProduct: NextPageWithLayout = () => {
         </div>
       </Carousel>
       <section className={styles.productHeader}>
+        <IconButton
+          icon='arrow-left-16'
+          color="var(--container-fg)"
+          onClick={() => {
+            router.push("/app/store")
+          }} />
         <img src={product.icon} alt="" />
         <h2>{product.name}</h2>
-        <DropdownMenu items={[
-          {
-            name: "report",
-            onClick: () => {
-              console.log('Function not implemented.');
-            }
-          }
-        ]}>
-          <IconButton icon={'three-bars-16'} onClick={() => { }} />
-        </DropdownMenu>
+        <Button onClick={() => { }}>
+          {product.installed ? product.uninstallable ? "Uninstall" : "Forcefully installed by the server" : "Install"}
+        </Button>
       </section>
-    </>
+      <section className={styles.description}>
+        <Card>
+          {product.description}
+        </Card>
+      </section>
+    </div>
   );
 };
 
