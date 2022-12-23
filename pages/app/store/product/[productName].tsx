@@ -48,7 +48,7 @@ const StoreProduct: NextPageWithLayout = () => {
           onClick={() => {
             router.push("/app/store")
           }} />
-        <img src={product.icon} alt="" />
+        <img src={product?.icon?.store} alt="" />
         <h2>{product.name}</h2>
         <Button onClick={() => { }}>
           {product.installed ? product.uninstallable ? "Uninstall" : "Forcefully installed by the server" : "Install"}

@@ -127,7 +127,7 @@ const Panel: React.FC<IPanel> = () => {
                   setLauncherSlideOutVisible(false)
                   router.push(app.path)
                 }}>
-                  <img src={app.icon} draggable={false} alt="" />
+                  <img src={app.icon.launcher} draggable={false} alt="" />
                   <span>{app.name}</span>
                   {/* <div onClick={() => {
                   // show a dropdown

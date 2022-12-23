@@ -1,6 +1,6 @@
 import path from "path";
 import fs from "fs";
-import includedApps from "./../../data/includedApps.js";
+import includedApps from "./../../releaseData/includedApps.js";
 import { log } from "../../libServer.js";
 let module = {
     name: "store",
@@ -18,9 +18,7 @@ let module = {
                         return res.json({
                             error: true
                         });
-                    return res.json([
-                        ...defaultApps
-                    ]);
+                    return res.json(defaultApps);
                 });
             }
             fs.readFile(path.resolve(`${api.FsOrigin}/installed_apps.json`), (err, data) => {

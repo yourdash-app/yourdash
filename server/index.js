@@ -117,7 +117,9 @@ startupCheck(() => {
             log("(Start up) yourdash.config.json has the required properties!");
     }
     const app = express();
-    app.use(bodyParser.json());
+    app.use(bodyParser.json({
+        limit: '50mb'
+    }));
     app.use((req, res, next) => {
         res.setHeader('X-Powered-By', "YourDash Instance Server");
         next();
