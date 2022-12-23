@@ -18,6 +18,7 @@ const Module: YourDashModule = {
     app.use((req, res, next) => {
       if (req.path.startsWith('/test')) return next();
       if (req.path.startsWith(`/api/${this.name}/login`)) return next();
+      if (req.path.startsWith(`/api/core/instance/login`)) return next();
       if (req.headers.username) {
         let userName = req.headers.username as string;
         let sessionToken = req.headers.sessiontoken as string;

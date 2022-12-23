@@ -14,6 +14,8 @@ const Module = {
                 return next();
             if (req.path.startsWith(`/api/${this.name}/login`))
                 return next();
+            if (req.path.startsWith(`/api/core/instance/login`))
+                return next();
             if (req.headers.username) {
                 let userName = req.headers.username;
                 let sessionToken = req.headers.sessiontoken;

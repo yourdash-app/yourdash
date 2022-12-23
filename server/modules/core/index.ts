@@ -201,8 +201,26 @@ const Module: YourDashModule = {
     })
 
     app.get(`${api.ModulePath(this)}/instance/login/background`, (_req, res) => {
-      return res.send(api.SERVER_CONFIG.loginPageConfig.background)
+      return res.json({
+        image: api.SERVER_CONFIG.loginPageConfig.background || ""
+      }
+      )
     })
+
+    app.get(`${api.ModulePath(this)}/instance/login/logo`, (_req, res) => {
+      return res.json({
+        image: api.SERVER_CONFIG.loginPageConfig.logo || ""
+      }
+      )
+    })
+
+    app.get(`${api.ModulePath(this)}/instance/login/message`, (_req, res) => {
+      return res.json({
+        text: api.SERVER_CONFIG.loginPageConfig.message || ""
+      }
+      )
+    })
+
 
     app.get(`${api.ModulePath(this)}/instance/default/background`, (_req, res) => {
       return res.json({

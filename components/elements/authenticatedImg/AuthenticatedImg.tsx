@@ -5,7 +5,7 @@
  */
 
 import { useEffect, useState } from "react";
-import SERVER from "../../../lib/server";
+import SERVER, { verifyAndReturnJson } from "../../../lib/server";
 import { YourDashIconRawDictionary } from "../icon/iconDictionary";
 
 export interface IAuthenticatedImg extends React.ComponentPropsWithoutRef<'img'> {
@@ -15,17 +15,20 @@ export interface IAuthenticatedImg extends React.ComponentPropsWithoutRef<'img'>
 const AuthenticatedImg: React.FC<IAuthenticatedImg> = ({ src, ...imgElementProps }) => {
   const [ imgSrc, setImgSrc ] = useState("")
   useEffect(() => {
-    SERVER.get(src)
-      .then((res) => res.json())
-      .then((json) => {
-        setImgSrc(json.image)
-      })
-      .catch((err) => {
-        console.error(err); setImgSrc(YourDashIconRawDictionary[ "server-error" ])
+    verifyAndReturnJson(
+      SERVER.get(src),
+      (json) => {
+        setImgSrc(json?.image || YourDashIconRawDictionary[ "server-error" ])
+      },
+      () => {
+        setImgSrc(YourDashIconRawDictionary[ "server-error" ])
       })
   }, [ src ])
 
-  return <img draggable={false} src={imgSrc} alt="" {...imgElementProps} />
+  return <img draggable={false} src={imgSrc} onError={() => {
+    console.log("Failed to load image")
+    setImgSrc(YourDashIconRawDictionary[ "server-error" ])
+  }} alt="" {...imgElementProps} />
 };
 
 export default AuthenticatedImg;
