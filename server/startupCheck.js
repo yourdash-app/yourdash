@@ -48,7 +48,7 @@ function checkYourDashConfigJson(cb) {
                     },
                 },
                 message: {
-                    content: '',
+                    content: 'Server not yet fully configured',
                     position: {
                         left: null,
                         top: null,

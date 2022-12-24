@@ -181,7 +181,7 @@ const Module = {
         });
         app.get(`${api.ModulePath(this)}/instance/login/message`, (_req, res) => {
             return res.json({
-                text: api.SERVER_CONFIG.loginPageConfig.message || ""
+                text: api.SERVER_CONFIG.loginPageConfig.message.content || ""
             });
         });
         app.get(`${api.ModulePath(this)}/instance/default/background`, (_req, res) => {

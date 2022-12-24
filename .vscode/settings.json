@@ -17,5 +17,8 @@
   "[scss]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "cSpell.ignoreWords": ["sessiontoken"]
+  "cSpell.ignoreWords": ["sessiontoken"],
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }

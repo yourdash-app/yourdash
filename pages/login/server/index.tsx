@@ -18,6 +18,7 @@ const LoginOptions: NextPageWithLayout = () => {
   const [ errorHasOccurred, setErrorHasOccurred ] = useState(false)
   const [ currentServerBackground, setCurrentServerBackground ] = useState("")
   const [ currentServerLogo, setCurrentServerLogo ] = useState("")
+  const [ currentServerMessage, setCurrentServerMessage ] = useState("")
 
   useEffect(() => {
     verifyAndReturnJson(
@@ -36,6 +37,14 @@ const LoginOptions: NextPageWithLayout = () => {
       () => {
         setCurrentServerLogo(YourDashIconRawDictionary[ "server-error" ])
       })
+    verifyAndReturnJson(
+      SERVER.get(`/core/instance/login/message`),
+      (json) => {
+        setCurrentServerMessage(json?.text || "")
+      },
+      () => {
+        console.error("Error reading login message")
+      })
   }, [])
 
   const router = useRouter()
@@ -45,9 +54,7 @@ const LoginOptions: NextPageWithLayout = () => {
       {errorHasOccurred ? <div className={styles.error}><p>An Error Has Occured</p></div> : null}
       <div className={styles.root}>
         <img className={styles.background} src={currentServerBackground} alt="" />
-        <img style={{
-          marginBottom: "0.5rem"
-        }} src={currentServerLogo} alt="" />
+        <img className={styles.logo} src={currentServerLogo} alt="" />
         <Card>
           <ColContainer>
             <TextInput placeholder="Username" onChange={(e) => {
@@ -66,7 +73,8 @@ const LoginOptions: NextPageWithLayout = () => {
               }} onClick={() => {
                 localStorage.setItem("username", userName)
                 SERVER.get("/userManagement/login", {
-                  password: password
+                  password: password,
+                  username: userName
                 }).then((res) => {
                   res.json().then((res) => {
                     if (!res?.error) {
@@ -81,7 +89,7 @@ const LoginOptions: NextPageWithLayout = () => {
                 }).catch((err) => {
                   if (err) {
                     console.error("ERROR CAUGHT: /user/login: " + err)
-                    setErrorHasOccurred(true)
+                    return setErrorHasOccurred(true)
                   }
                 })
               }} vibrant>
@@ -95,13 +103,17 @@ const LoginOptions: NextPageWithLayout = () => {
             </RowContainer>
           </ColContainer>
         </Card>
-        <Card style={{
-          marginTop: "0.5rem"
-        }}>
-          <p style={{
-            margin: 0,
-          }}>This is a test message</p>
-        </Card>
+        {
+          currentServerMessage !== "" ?
+            <Card style={{
+              marginTop: "0.5rem"
+            }}>
+              <p style={{
+                margin: 0,
+              }}>{currentServerMessage}</p>
+            </Card>
+            : null
+        }
       </div>
     </>
   );

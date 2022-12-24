@@ -244,14 +244,18 @@ const Module: YourDashModule = {
 
     app.get(`/api/${this.name}/current/user`, (req, res) => {
       if (!fs.existsSync(`${ENV.UserFs(req)}`)) {
+        log(`ERROR: no user directory for ${req.headers.username}`)
         return res.json({
           error: true
         });
       }
       fs.readFile(`${ENV.UserFs(req)}/user.json`, (err, data) => {
-        if (err) return res.json({
-          error: true
-        });
+        if (err) {
+          log(`ERROR: unable to read ${req.headers.username}/user.json`)
+          return res.json({
+            error: true
+          });
+        }
         return res.send({
           user: JSON.parse(data.toString())
         });
