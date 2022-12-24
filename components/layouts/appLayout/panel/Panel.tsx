@@ -193,9 +193,9 @@ const Panel: React.FC<IPanel> = () => {
         </RightClickMenu>
       })}
     </div>
-    <div className={styles.tray}>
+    {/* <div className={styles.tray}>
       <Icon name="browser-16" className={styles.trayIcon} color={"var(--app-panel-fg)"} />
-    </div>
+    </div> */}
     <div className={styles.account}>
       <img onClick={() => {
         setAccountDropdownVisible(!accountDropdownVisible)
@@ -215,47 +215,63 @@ const Panel: React.FC<IPanel> = () => {
       }} onClick={() => {
         setAccountDropdownVisible(false)
       }}></div>
-      <Card style={{
-        opacity: !accountDropdownVisible ? "0" : "1",
-        transform: !accountDropdownVisible ? "scale(0.9)" : "scale(1)",
-        pointerEvents: !accountDropdownVisible ? "none" : "auto"
-      }} compact={true} className={styles.accountDropdown}>
-        <RowContainer className={styles.accountDropdownQuickActions}>
-          <div onClick={() => {
-            setAccountDropdownVisible(false)
-            localStorage.removeItem("sessiontoken")
-            localStorage.removeItem("username")
-            router.push("/login/")
+      <div>
+        <Card
+          style={{
+            opacity: !accountDropdownVisible ? "0" : "1",
+            transform: !accountDropdownVisible ? "scale(0.9)" : "scale(1)",
+            pointerEvents: accountDropdownVisible ? "all" : "none",
+          }}
+          compact={true}
+          className={styles.accountDropdown}>
+          <RowContainer className={styles.accountDropdownQuickActions} >
+            <div onClick={() => {
+              setAccountDropdownVisible(false)
+              localStorage.removeItem("sessiontoken")
+              localStorage.removeItem("username")
+              router.push("/login/")
+            }}>
+              <Icon name='logout' color="var(--button-fg)" />
+            </div>
+            <div onClick={() => {
+              setAccountDropdownVisible(false)
+              router.push("/about")
+            }}>
+              <Icon name='info-16' color="var(--button-fg)" />
+            </div>
+            <div onClick={() => {
+              setAccountDropdownVisible(false)
+              router.push("/app/settings")
+            }}>
+              <Icon name='gear-16' color="var(--button-fg)" />
+            </div>
+          </RowContainer>
+          <ColContainer>
+            <Button onClick={() => {
+              router.push(`/app/user/profile/${userData?.userName}`)
+              setAccountDropdownVisible(false)
+            }}>Profile</Button>
+            <Button onClick={() => {
+              localStorage.removeItem("currentServer")
+              router.push("/login/server")
+              setAccountDropdownVisible(false)
+            }}>Switch instance</Button>
+          </ColContainer>
+        </Card>
+        <ColContainer
+          className={styles.accountNotificationList}
+          style={{
+            opacity: !accountDropdownVisible ? "0" : "1",
+            transform: !accountDropdownVisible ? "scale(0.9)" : "scale(1)",
+            pointerEvents: accountDropdownVisible ? "all" : "none",
           }}>
-            <Icon name='logout' color="var(--button-fg)" />
-          </div>
-          <div onClick={() => {
-            setAccountDropdownVisible(false)
-            router.push("/about")
-          }}>
-            <Icon name='info-16' color="var(--button-fg)" />
-          </div>
-          <div onClick={() => {
-            setAccountDropdownVisible(false)
-            router.push("/app/settings")
-          }}>
-            <Icon name='gear-16' color="var(--button-fg)" />
-          </div>
-        </RowContainer>
-        <ColContainer>
-          <Button onClick={() => {
-            router.push(`/app/user/profile/${userData?.userName}`)
-            setAccountDropdownVisible(false)
-          }}>Profile</Button>
-          <Button onClick={() => {
-            localStorage.removeItem("currentServer")
-            router.push("/login/server")
-            setAccountDropdownVisible(false)
-          }}>Switch instance</Button>
+          <Card>
+            test
+          </Card>
         </ColContainer>
-      </Card>
+      </div>
     </div>
-  </div>;
+  </div >;
 };
 
 export default Panel;

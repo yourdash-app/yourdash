@@ -1,3 +1,4 @@
+import path from "path";
 import { log } from "../../libServer.js";
 import fs from "fs";
 let module = {
@@ -20,6 +21,17 @@ let module = {
             });
         });
         app.get(`${api.ModulePath(this)}/sidebar/categories`, (req, res) => {
+            if (!fs.existsSync(path.resolve(`${api.UserAppData(req)}/files/`))) {
+                fs.mkdir(path.resolve(`${api.UserAppData(req)}/files/`), { recursive: true }, (err) => {
+                    if (err) {
+                        log(`ERROR: unable to make directory: ${api.UserAppData(req)}/files/`);
+                        return res.json({
+                            error: true
+                        });
+                    }
+                    res.json([]);
+                });
+            }
             return res.json({
                 error: true
             });

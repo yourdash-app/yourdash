@@ -2,14 +2,29 @@
   > section {
     padding-left: 15rem;
     padding-right: 15rem;
+    transition: var(--transition);
+
+    @media (max-width: 1300px) {
+      padding-left: 10rem;
+      padding-right: 10rem;
+    }
+    @media (max-width: 1000px) {
+      padding-left: 5rem;
+      padding-right: 5rem;
+    }
+    @media (max-width: 700px) {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
   }
 }
 
 .productHeader {
   transform: translateY(-25%);
   position: relative;
-  display: flex;
+  display: grid;
   align-items: center;
+  grid-template-columns: auto auto 1fr auto;
   > img {
     height: 10rem;
     margin-right: 1rem;
@@ -26,5 +41,9 @@
   > button:last-child {
     padding-left: 2rem;
     padding-right: 2rem;
+    @media (max-width: 700px) {
+      margin-top: 1rem;
+      grid-column: 1 / 4;
+    }
   }
 }

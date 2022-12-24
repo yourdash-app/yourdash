@@ -5,7 +5,7 @@ import styles from "./settingsLayout.module.scss"
 export interface ISettingsLayout {
 }
 
-const SettingsLayout: React.FC<ISettingsLayout> = () => {
+const SettingsLayout: React.FC<ISettingsLayout> = ({ children }) => {
   return <div className={styles.root}>
     <SideBar title="Settings" sections={[
       {
@@ -136,6 +136,9 @@ const SettingsLayout: React.FC<ISettingsLayout> = () => {
         ]
       }
     ]} />
+    <div>
+      {children}
+    </div>
   </div>
 }
 

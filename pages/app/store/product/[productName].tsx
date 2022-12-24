@@ -5,7 +5,7 @@ import { NextPageWithLayout } from '../../../page';
 import Carousel from '../components/carousel/Carousel';
 import styles from "./index.module.scss"
 import { useEffect, useState } from 'react';
-import SERVER from '../../../../lib/server';
+import SERVER, { verifyAndReturnJson } from '../../../../lib/server';
 import InstalledApplication from '../../../../types/store/installedApplication';
 import Button from '../../../../components/elements/button/Button';
 import Card from '../../../../components/containers/card/Card';
@@ -19,15 +19,16 @@ const StoreProduct: NextPageWithLayout = () => {
 
   useEffect(() => {
     if (!productId) return
-    SERVER.get(`/store/application/${productId}`)
-      .then((res) => {
-        res.json().then((json) => {
-          if (json.error) return console.error("an error occurred fetching product data!")
-          setProduct(json)
-        }).catch((err) => {
-          console.error(err)
-        })
-      })
+    verifyAndReturnJson(
+      SERVER.get(`/store/application/${productId}`),
+      (json) => {
+        if (json.error) return console.error("an error occurred fetching product data!")
+        setProduct(json)
+      },
+      () => {
+        console.error(`ERROR: couldn't fetch product infomation`)
+      }
+    )
   }, [ productId ])
 
   if (!product) return <></>
@@ -50,7 +51,29 @@ const StoreProduct: NextPageWithLayout = () => {
           }} />
         <img src={product?.icon?.store} alt="" />
         <h2>{product.name}</h2>
-        <Button onClick={() => { }}>
+        <Button onClick={() => {
+          if (!product.installed) {
+            verifyAndReturnJson(
+              SERVER.post(`/store/application/install`, {
+                body: JSON.stringify({
+                  product: productId
+                })
+              }),
+              (data) => {
+                if (data.installed)
+                  return setProduct(
+                    {
+                      ...product,
+                      installed: true
+                    }
+                  )
+              },
+              () => {
+                console.error(`ERROR: couldn't install product`)
+              }
+            )
+          }
+        }}>
           {product.installed ? product.uninstallable ? "Uninstall" : "Forcefully installed by the server" : "Install"}
         </Button>
       </section>

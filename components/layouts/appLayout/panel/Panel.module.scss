@@ -36,7 +36,6 @@
 }
 
 .account {
-  position: relative;
   margin-right: 0.5rem;
   margin-left: 0.5rem;
   height: 100%;
@@ -53,9 +52,50 @@
 
 .accountDropdown {
   position: absolute;
-  top: calc(100% + 0.5rem);
-  right: 0;
+  top: calc(var(--app-panel-height) + 0.5rem);
+  right: 0.5rem;
   transform-origin: top right;
+  transition: var(--transition);
+}
+
+.accountDropdownQuickActions {
+  padding-bottom: 0.5rem;
+  > * {
+    flex-grow: 1;
+    height: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    cursor: pointer;
+    border-radius: var(--button-rounding);
+    background-color: var(--button-bg);
+    color: var(--button-fg);
+    transition: var(--transition);
+    padding: 0.5rem;
+    &:hover {
+      border-radius: var(--button-hover-rounding);
+      background-color: var(--button-hover-bg);
+      color: var(--button-hover-fg);
+    }
+    &:active {
+      border-radius: var(--button-active-rounding);
+      background-color: var(--button-active-bg);
+      color: var(--button-active-fg);
+    }
+    > * {
+      height: 100%;
+      aspect-ratio: 1 / 1;
+    }
+  }
+}
+
+.accountNotificationList {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  transform-origin: bottom right;
+  transition: var(--transition);
 }
 
 .serverLogo {
@@ -214,38 +254,6 @@
   }
 }
 
-.accountDropdownQuickActions {
-  padding-bottom: 0.5rem;
-  > * {
-    height: 1.5rem;
-    aspect-ratio: 1 / 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    user-select: none;
-    cursor: pointer;
-    border-radius: var(--button-rounding);
-    background-color: var(--button-bg);
-    color: var(--button-fg);
-    transition: var(--transition);
-    padding: 0.5rem;
-    &:hover {
-      border-radius: var(--button-hover-rounding);
-      background-color: var(--button-hover-bg);
-      color: var(--button-hover-fg);
-    }
-    &:active {
-      border-radius: var(--button-active-rounding);
-      background-color: var(--button-active-bg);
-      color: var(--button-active-fg);
-    }
-    > * {
-      width: 100%;
-      height: 100%;
-    }
-  }
-}
-
 .shortcuts {
   margin-left: 1.25rem;
   margin-right: 0.5rem;
@@ -283,7 +291,7 @@
     height: calc(var(--app-panel-height) - 0.5rem);
     aspect-ratio: 1 / 1;
     overflow: hidden;
-    border-radius: 0.25rem;
+    border-radius: 0.75rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -291,6 +299,9 @@
     cursor: pointer;
     &:hover {
       background-color: #ffffff22;
+      > img {
+        scale: 1.1;
+      }
     }
     &:active {
       > img {
@@ -299,13 +310,14 @@
     }
     > img {
       transition: var(--transition);
-      height: 75%;
+      height: 100%;
+      box-sizing: border-box;
+      padding: 0.35rem;
       aspect-ratio: 1 / 1;
-      padding: 0.75rem;
     }
     > div {
       background-color: var(--button-vibrant-bg);
-      height: 0.25rem;
+      height: 0.2rem;
       width: 0rem;
       position: absolute;
       bottom: 0;
@@ -313,8 +325,9 @@
       transform: translateX(-50%);
       border-radius: 0.5rem;
       transition: var(--transition);
+      z-index: 2;
       &[data-active-indicator] {
-        width: 1rem;
+        width: 1.25rem;
       }
     }
   }

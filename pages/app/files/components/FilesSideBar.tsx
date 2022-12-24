@@ -61,7 +61,23 @@ const FilesSideBar: React.FC<IFilesSideBar> = () => {
             <h1>Oh no!</h1>
             <p>You have no categories added to the Sidebar</p>
             <Button onClick={() => {
-              console.log("IMPLEMENT ME!!!")
+              verifyAndReturnJson(
+                SERVER.get(`/files/sidebar/set/default`),
+                () => {
+                  verifyAndReturnJson(
+                    SERVER.get(`/files/sidebar/categories`),
+                    (data: SideBarCategory[]) => {
+                      setCategories(data)
+                    },
+                    () => {
+                      return console.error("unable to fetch sidebar categories")
+                    }
+                  )
+                },
+                () => {
+                  return console.error("unable to reset sidebar categories")
+                }
+              )
             }} vibrant>Add default categories</Button>
           </Card>
       }

@@ -1,3 +1,4 @@
+import path from "path";
 import YourDashUser from "../../../lib/user.js";
 import { log } from "../../libServer.js";
 import YourDashModule from "../../module.js";
@@ -20,14 +21,30 @@ let module: YourDashModule = {
           quota: json.quota
         })
       })
-    }
-    );
+    });
     app.get(`${api.ModulePath(this)}/sidebar/categories`, (req, res) => {
+      if (!fs.existsSync(path.resolve(`${api.UserAppData(req)}/files/`))) {
+        fs.mkdir(path.resolve(`${api.UserAppData(req)}/files/`), {
+          recursive: true
+        }, (err) => {
+          if (err) {
+            log(`ERROR: unable to make directory: ${api.UserAppData(req)}/files/`)
+            return res.json({
+              error: true
+            })
+          }
+          res.json([])
+        })
+      }
+
+      // todo: fetch categories from file and respond with them
       return res.json({
         error: true
       })
-    }
-    );
+    });
+    app.get(`${api.ModulePath(this)}/sidebar/set/default`, (req, res) => {
+
+    })
   },
   install() { },
   unload() { },

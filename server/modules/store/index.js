@@ -66,6 +66,35 @@ let module = {
                 });
             }
         });
+        app.get(`${api.ModulePath(this)}/application/:applicationId/install`, (req, res) => {
+            if (!fs.existsSync(path.resolve(`${api.FsOrigin}/installed_apps.json`))) {
+                let defaultApps = ["dash", "store", "settings", "files"];
+                fs.writeFile(path.resolve(`${api.FsOrigin}/installed_apps.json`), JSON.stringify([
+                    ...defaultApps
+                ]), (err) => {
+                    if (err)
+                        return res.json({
+                            error: true
+                        });
+                    return res.json(defaultApps);
+                });
+            }
+            fs.readFile(path.resolve(`${api.FsOrigin}/installed_apps.json`), (err, data) => {
+                if (err) {
+                    log("ERROR: couldn't read installed_apps.json");
+                    return res.json({
+                        error: true
+                    });
+                }
+                let json = JSON.parse(data.toString());
+                let result = includedApps.find((obj) => obj.name === req.params.applicationId);
+                return res.json({
+                    ...result,
+                    installed: includedApps.filter((app) => json.includes(app.name)).find((obj) => obj.name === req.params.applicationId) !== undefined,
+                    uninstallable: (result?.name !== "dash") && (result?.name !== "store") && (result?.name !== "settings") && (result?.name !== "files")
+                });
+            });
+        });
     },
     install() { },
     unload() { },
