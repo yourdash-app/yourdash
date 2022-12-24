@@ -98,8 +98,8 @@ const Panel: React.FC<IPanel> = () => {
       </div>
       <div className={styles.launcherGrid}>
         {
-          installedApps.map((app, ind) => {
-            if (app.name.toLowerCase().includes(searchQuery) || app.description.toLowerCase().includes(searchQuery))
+          installedApps?.map((app, ind) => {
+            if (app?.name?.toLowerCase()?.includes(searchQuery) || app?.description?.toLowerCase()?.includes(searchQuery))
               return <RightClickMenu
                 items={[
                   {
@@ -110,7 +110,7 @@ const Panel: React.FC<IPanel> = () => {
                           body: JSON.stringify({
                             name: app.name,
                             url: app.path,
-                            icon: app.icon
+                            icon: app.icon.quickShortcut
                           })
                         }),
                         () => {
@@ -161,7 +161,7 @@ const Panel: React.FC<IPanel> = () => {
     />
     {/* <h2 className={styles.serverName}>YourDash</h2> */}
     <div className={styles.shortcuts}>
-      {quickShortcuts.map((shortcut, ind) => {
+      {quickShortcuts?.map((shortcut, ind) => {
         return <RightClickMenu key={ind} items={[
           {
             name: "Remove quick shortcut",
