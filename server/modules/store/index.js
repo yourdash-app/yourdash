@@ -43,26 +43,28 @@ let module = {
                 fs.writeFile(path.resolve(`${api.FsOrigin}/installed_apps.json`), JSON.stringify([
                     ...defaultApps
                 ]), (err) => {
-                    if (err)
+                    if (err) {
+                        log(`ERROR: cannot write installed_apps.json`);
                         return res.json({
                             error: true
                         });
-                    return res.json([
-                        ...defaultApps
-                    ]);
+                    }
+                    res.json(defaultApps);
                 });
             }
-            fs.readFile(path.resolve(`${api.FsOrigin}/installed_apps.json`), (err, data) => {
-                if (err) {
-                    log("ERROR: couldn't read installed_apps.json");
-                    return res.json({
-                        error: true
-                    });
-                }
-                let json = JSON.parse(data.toString());
-                var result = includedApps.filter((app) => json.includes(app.name));
-                return res.json(result);
-            });
+            else {
+                fs.readFile(path.resolve(`${api.FsOrigin}/installed_apps.json`), (err, data) => {
+                    if (err) {
+                        log("ERROR: couldn't read installed_apps.json");
+                        return res.json({
+                            error: true
+                        });
+                    }
+                    let json = JSON.parse(data.toString());
+                    var result = includedApps.filter((app) => json.includes(app.name)) || [];
+                    return res.json(result);
+                });
+            }
         });
     },
     install() { },

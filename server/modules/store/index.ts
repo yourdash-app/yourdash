@@ -55,28 +55,30 @@ let module: YourDashModule = {
             ...defaultApps
           ]),
           (err) => {
-            if (err) return res.json({
-              error: true
-            });
-            return res.json([
-              ...defaultApps
-            ]);
+            if (err) {
+              log(`ERROR: cannot write installed_apps.json`)
+              return res.json({
+                error: true
+              });
+            }
+            res.json(defaultApps);
           }
         );
+      } else {
+        fs.readFile(path.resolve(`${api.FsOrigin}/installed_apps.json`), (err, data) => {
+          if (err) {
+            log("ERROR: couldn't read installed_apps.json")
+            return res.json({
+              error: true
+            })
+          }
+          let json = JSON.parse(data.toString()) as string[]
+          var result = includedApps.filter((app) => json.includes(app.name)) || []
+          return res.json(
+            result
+          )
+        })
       }
-      fs.readFile(path.resolve(`${api.FsOrigin}/installed_apps.json`), (err, data) => {
-        if (err) {
-          log("ERROR: couldn't read installed_apps.json")
-          return res.json({
-            error: true
-          })
-        }
-        let json = JSON.parse(data.toString()) as string[]
-        var result = includedApps.filter((app) => json.includes(app.name));
-        return res.json(
-          result
-        )
-      })
     })
   },
   install() { },
