@@ -136,6 +136,9 @@
   --right-click-menu-rounding: 1rem;
   --right-click-menu-item-bg: #5a5a5a;
   --right-click-menu-item-fg: #ffffff;
+
+  --toggle-switch-bg: #333333;
+  --toggle-switch-fg: var(--button-bg);
 }
 
 html,

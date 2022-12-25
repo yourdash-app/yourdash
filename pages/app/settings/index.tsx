@@ -3,7 +3,7 @@ import ColContainer from '../../../components/containers/ColContainer/ColContain
 import CardButton from '../../../components/elements/cardButton/CardButton';
 import AppLayout from '../../../components/layouts/appLayout/AppLayout';
 import { NextPageWithLayout } from '../../page';
-import SettingsLayout from './components/settingsLayout';
+import SettingsLayout from './components/SettingsLayout';
 import styles from "./index.module.scss"
 
 const SettingsIndex: NextPageWithLayout = () => {
@@ -31,23 +31,16 @@ const SettingsIndex: NextPageWithLayout = () => {
         <CardButton
           className={styles.card}
           onClick={() => {
-            router.push(`/app/settings/user/profile`)
+            router.push(`/app/settings/user/notifications`)
           }}>
-          Profile
+          Notifications
         </CardButton>
         <CardButton
           className={styles.card}
           onClick={() => {
             router.push(`/app/settings/user/profile`)
           }}>
-          Profile
-        </CardButton>
-        <CardButton
-          className={styles.card}
-          onClick={() => {
-            router.push(`/app/settings/user/profile`)
-          }}>
-          Profile
+          Personal Theme
         </CardButton>
       </ColContainer>
     </>

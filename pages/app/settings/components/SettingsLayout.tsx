@@ -1,6 +1,6 @@
 import React from "react"
 import SideBar from "../../../../components/elements/sideBar/SideBar"
-import styles from "./settingsLayout.module.scss"
+import styles from "./SettingsLayout.module.scss"
 
 export interface ISettingsLayout {
 }

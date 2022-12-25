@@ -98,43 +98,49 @@ const Panel: React.FC<IPanel> = () => {
       </div>
       <div className={styles.launcherGrid}>
         {
-          installedApps?.map((app, ind) => {
-            if (app?.name?.toLowerCase()?.includes(searchQuery) || app?.description?.toLowerCase()?.includes(searchQuery))
-              return <RightClickMenu
-                items={[
-                  {
-                    name: "Pin to quick shortcuts",
-                    onClick: () => {
-                      verifyAndReturnJson(
-                        SERVER.post(`/core/panel/quick-shortcut/create`, {
-                          body: JSON.stringify({
-                            name: app.name,
-                            url: app.path,
-                            icon: app.icon.quickShortcut
-                          })
-                        }),
-                        () => {
-                          router.reload()
-                        },
-                        () => {
-                          console.error(`unable to create quick shortcut with name: ${app.name}`)
-                        }
-                      )
-                    }
-                  },
-                ]} key={ind}>
-                <div className={styles.launcherGridItem} onClick={() => {
-                  setLauncherSlideOutVisible(false)
-                  router.push(app.path)
-                }}>
-                  <img src={app.icon.launcher} draggable={false} alt="" />
-                  <span>{app.name}</span>
-                  {/* <div onClick={() => {
+          installedApps ?
+            installedApps.map((app, ind) => {
+              if (app?.name?.toLowerCase()?.includes(searchQuery) || app?.description?.toLowerCase()?.includes(searchQuery))
+                return <RightClickMenu
+                  items={[
+                    {
+                      name: "Pin to quick shortcuts",
+                      onClick: () => {
+                        verifyAndReturnJson(
+                          SERVER.post(`/core/panel/quick-shortcut/create`, {
+                            body: JSON.stringify({
+                              name: app.name,
+                              url: app.path,
+                              icon: app.icon.quickShortcut
+                            })
+                          }),
+                          () => {
+                            router.reload()
+                          },
+                          () => {
+                            console.error(`unable to create quick shortcut with name: ${app.name}`)
+                          }
+                        )
+                      }
+                    },
+                  ]} key={ind}>
+                  <div className={styles.launcherGridItem} onClick={() => {
+                    setLauncherSlideOutVisible(false)
+                    router.push(app.path)
+                  }}>
+                    <img src={app.icon.launcher} draggable={false} alt="" />
+                    <span>{app.name}</span>
+                    {/* <div onClick={() => {
                   // show a dropdown
                 }}><Icon name='three-bars-16' color={"var(--button-fg)"} /></div> */}
-                </div>
-              </RightClickMenu>
-          })
+                  </div>
+                </RightClickMenu>
+            })
+            : <Button onClick={() => {
+              router.reload()
+            }}>
+              Reload Launcher Items
+            </Button>
         }
       </div>
       <footer data-footer>

@@ -1,6 +1,6 @@
 import AppLayout from './../../../../components/layouts/appLayout/AppLayout';
 import { NextPageWithLayout } from './../../../page';
-import SettingsLayout from './../components/settingsLayout';
+import SettingsLayout from '../components/SettingsLayout';
 
 const Server: NextPageWithLayout = () => {
   return (

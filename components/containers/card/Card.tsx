@@ -1,7 +1,6 @@
 import styles from './Card.module.css';
 
 export interface ICard extends React.ComponentPropsWithoutRef<'div'> {
-  children: React.ReactChild | React.ReactChild[];
   compact?: boolean;
   className?: string;
   style?: React.CSSProperties;

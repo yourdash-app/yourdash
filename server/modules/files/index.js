@@ -22,7 +22,9 @@ let module = {
         });
         app.get(`${api.ModulePath(this)}/sidebar/categories`, (req, res) => {
             if (!fs.existsSync(path.resolve(`${api.UserAppData(req)}/files/`))) {
-                fs.mkdir(path.resolve(`${api.UserAppData(req)}/files/`), { recursive: true }, (err) => {
+                fs.mkdir(path.resolve(`${api.UserAppData(req)}/files/`), {
+                    recursive: true
+                }, (err) => {
                     if (err) {
                         log(`ERROR: unable to make directory: ${api.UserAppData(req)}/files/`);
                         return res.json({
@@ -35,6 +37,8 @@ let module = {
             return res.json({
                 error: true
             });
+        });
+        app.get(`${api.ModulePath(this)}/sidebar/set/default`, (req, res) => {
         });
     },
     install() { },
