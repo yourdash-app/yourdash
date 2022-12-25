@@ -5,7 +5,7 @@ import BlankSetting from "./BlankSetting"
 export interface IBooleanSetting {
   title: string,
   description: string,
-  setValue: (value: boolean) => void,
+  setValue: (_value: boolean) => void,
   defaultValue: boolean
 }
 

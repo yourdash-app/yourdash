@@ -2,10 +2,10 @@ import { useState } from 'react';
 import styles from './ToggleSwitch.module.scss';
 
 export interface IToggleSwitch extends React.ComponentPropsWithoutRef<"input"> {
-  onValueChange: (value: boolean) => void
+  onValueChange: (_value: boolean) => void
 }
 
-const ToggleSwitch: React.FC<IToggleSwitch> = ({ children, onValueChange, ...inputProps }) => {
+const ToggleSwitch: React.FC<IToggleSwitch> = ({ onValueChange, ...inputProps }) => {
   const [ value, setValue ] = useState(false)
 
   return <div className={styles.component}>
