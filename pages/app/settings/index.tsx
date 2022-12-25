@@ -38,7 +38,7 @@ const SettingsIndex: NextPageWithLayout = () => {
         <CardButton
           className={styles.card}
           onClick={() => {
-            router.push(`/app/settings/user/profile`)
+            router.push(`/app/settings/user/theme`)
           }}>
           Personal Theme
         </CardButton>

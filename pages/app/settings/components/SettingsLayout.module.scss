@@ -2,4 +2,44 @@
   display: grid;
   grid-template-columns: auto 1fr;
   min-height: 100%;
+
+  @media (max-width: 750px) {
+    grid-template-columns: 1fr;
+  }
+
+  >.page {
+    max-height: calc(100vh - var(--app-panel-height));
+    overflow-y: auto;
+
+    >h1 {
+      margin: 0;
+      padding-left: 1rem;
+      padding-top: 1.5rem;
+      padding-bottom: 0rem;
+      color: var(--container-fg);
+    }
+  }
+
+  >.sidebar {
+    max-height: calc(100vh - var(--app-panel-height));
+    overflow-y: auto;
+    background-color: var(--container-bg);
+    height: 100%;
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+
+    >*:nth-child(1) {
+      margin: 0.5rem;
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+      font-size: 1.75rem;
+      color: var(--container-fg);
+    }
+
+    >*:nth-child(2) {
+      margin: 0.5rem;
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+  }
 }
