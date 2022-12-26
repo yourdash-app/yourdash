@@ -14,6 +14,7 @@ const RightClickMenu: React.FC<IRightClickMenu> = ({ items, children }) => {
   const [ shown, setShown ] = useState(false)
   const [ posX, setPosX ] = useState(0)
   const [ posY, setPosY ] = useState(0)
+  const [ alignLeft, setAlignLeft ] = useState(false)
 
   return <div
     onContextMenu={(e) => {
@@ -30,6 +31,7 @@ const RightClickMenu: React.FC<IRightClickMenu> = ({ items, children }) => {
       if (!rect) return
       setPosX(e.pageX - rect.left)
       setPosY(e.pageY - rect.top)
+      setAlignLeft((e.pageX - rect.left) + 320 > rect.width)
     }}
     style={{
       position: "relative"
@@ -39,8 +41,11 @@ const RightClickMenu: React.FC<IRightClickMenu> = ({ items, children }) => {
       shown ?
         <div className={styles.menu} style={{
           top: `${posY}px`,
-          left: `${posX}px`,
-          position: "absolute"
+          ...alignLeft ? {
+            left: `${posX}px`,
+          } : {
+            right: `${posX}px`,
+          }
         }}>
           {
             items.map((item, ind) => {
@@ -55,7 +60,7 @@ const RightClickMenu: React.FC<IRightClickMenu> = ({ items, children }) => {
         </div>
         : null
     }
-  </div>
+  </div >
 };
 
 export default RightClickMenu;

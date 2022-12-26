@@ -8,12 +8,13 @@ import console from 'console';
 let USER_CACHE = {};
 const Module = {
     name: 'userManagement',
-    id: 'userManagement',
     load(app, api) {
         app.use((req, res, next) => {
             if (req.path.startsWith('/test'))
                 return next();
             if (req.path.startsWith(`/api/${this.name}/login`))
+                return next();
+            if (req.path.startsWith(`/api/core/instance/login`))
                 return next();
             if (req.headers.username) {
                 let userName = req.headers.username;
@@ -213,15 +214,18 @@ const Module = {
         });
         app.get(`/api/${this.name}/current/user`, (req, res) => {
             if (!fs.existsSync(`${ENV.UserFs(req)}`)) {
+                log(`ERROR: no user directory for ${req.headers.username}`);
                 return res.json({
                     error: true
                 });
             }
             fs.readFile(`${ENV.UserFs(req)}/user.json`, (err, data) => {
-                if (err)
+                if (err) {
+                    log(`ERROR: unable to read ${req.headers.username}/user.json`);
                     return res.json({
                         error: true
                     });
+                }
                 return res.send({
                     user: JSON.parse(data.toString())
                 });

@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Card from "../../../components/containers/card/Card";
 import ColContainer from "../../../components/containers/ColContainer/ColContainer";
 import RowContainer from "../../../components/containers/RowContainer/RowContainer";
@@ -7,30 +7,63 @@ import Button from "../../../components/elements/button/Button";
 import ButtonLink from "../../../components/elements/buttonLink/ButtonLink";
 import TextInput from "../../../components/elements/textInput/TextInput";
 import HomeLayout from "../../../components/layouts/homeLayout/HomeLayout";
-import SERVER from "../../../lib/server";
+import SERVER, { verifyAndReturnJson } from "../../../lib/server";
 import { NextPageWithLayout } from "../../page";
 import styles from "./index.module.scss";
+import { YourDashIconRawDictionary } from "../../../components/elements/icon/iconDictionary";
 
 const LoginOptions: NextPageWithLayout = () => {
   const [ userName, setUserName ] = useState("")
   const [ password, setPassword ] = useState("")
-  const [ errorHasOccured, setErrorHasOccured ] = useState(false)
+  const [ errorHasOccurred, setErrorHasOccurred ] = useState(false)
+  const [ currentServerBackground, setCurrentServerBackground ] = useState("")
+  const [ currentServerLogo, setCurrentServerLogo ] = useState("")
+  const [ currentServerMessage, setCurrentServerMessage ] = useState("")
+
+  useEffect(() => {
+    verifyAndReturnJson(
+      SERVER.get(`/core/instance/login/background`),
+      (json) => {
+        setCurrentServerBackground(json?.image?.src || YourDashIconRawDictionary[ "server-error" ])
+      },
+      () => {
+        setCurrentServerBackground(YourDashIconRawDictionary[ "server-error" ])
+      })
+    verifyAndReturnJson(
+      SERVER.get(`/core/instance/login/logo`),
+      (json) => {
+        setCurrentServerLogo(json?.image?.src || YourDashIconRawDictionary[ "server-error" ])
+      },
+      () => {
+        setCurrentServerLogo(YourDashIconRawDictionary[ "server-error" ])
+      })
+    verifyAndReturnJson(
+      SERVER.get(`/core/instance/login/message`),
+      (json) => {
+        setCurrentServerMessage(json?.text || "")
+      },
+      () => {
+        console.error("Error reading login message")
+      })
+  }, [])
 
   const router = useRouter()
 
   return (
     <>
-      {errorHasOccured ? <div className={styles.error}><p>An Error Has Occured</p></div> : null}
+      {errorHasOccurred ? <div className={styles.error}><p>An Error Has Occured</p></div> : null}
       <div className={styles.root}>
+        <img className={styles.background} src={currentServerBackground} alt="" />
+        <img className={styles.logo} src={currentServerLogo} alt="" />
         <Card>
           <ColContainer>
             <TextInput placeholder="Username" onChange={(e) => {
               setUserName(e.currentTarget.value);
-              setErrorHasOccured(false)
+              setErrorHasOccurred(false)
             }} />
             <TextInput placeholder="Password" type="password" onChange={(e) => {
               setPassword(e.currentTarget.value);
-              setErrorHasOccured(false)
+              setErrorHasOccurred(false)
             }} />
             <RowContainer style={{
               width: "100%"
@@ -40,22 +73,23 @@ const LoginOptions: NextPageWithLayout = () => {
               }} onClick={() => {
                 localStorage.setItem("username", userName)
                 SERVER.get("/userManagement/login", {
-                  password: password
+                  password: password,
+                  username: userName
                 }).then((res) => {
                   res.json().then((res) => {
                     if (!res?.error) {
                       localStorage.setItem("sessiontoken", res.sessionToken)
                       return router.push("/app/dash")
                     }
-                    setErrorHasOccured(true)
+                    setErrorHasOccurred(true)
                   }).catch(() => {
-                    setErrorHasOccured(true)
+                    setErrorHasOccurred(true)
                     throw new Error("Login Error, the server responded with an invalid response.")
                   })
                 }).catch((err) => {
                   if (err) {
                     console.error("ERROR CAUGHT: /user/login: " + err)
-                    setErrorHasOccured(true)
+                    return setErrorHasOccurred(true)
                   }
                 })
               }} vibrant>
@@ -69,6 +103,17 @@ const LoginOptions: NextPageWithLayout = () => {
             </RowContainer>
           </ColContainer>
         </Card>
+        {
+          currentServerMessage !== "" ?
+            <Card style={{
+              marginTop: "0.5rem"
+            }}>
+              <p style={{
+                margin: 0,
+              }}>{currentServerMessage}</p>
+            </Card>
+            : null
+        }
       </div>
     </>
   );

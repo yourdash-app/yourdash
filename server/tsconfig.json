@@ -1,7 +1,10 @@
 {
-  "include": ["./*", "./modules/**/*", "../types/core/installedApplication.ts"],
+  "include": [
+    "./*",
+    "./modules/**/*",
+    "../types/store/installedApplication.ts"
+  ],
   "compilerOptions": {
-    "watch": true,
     "removeComments": true,
     /* Visit https://aka.ms/tsconfig to read more about this file */
 

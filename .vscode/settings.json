@@ -15,7 +15,13 @@
     "editor.defaultFormatter": "vscode.typescript-language-features"
   },
   "[scss]": {
+    "editor.defaultFormatter": "vscode.css-language-features"
+  },
+  "cSpell.ignoreWords": ["sessiontoken"],
+  "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "cSpell.ignoreWords": ["sessiontoken"]
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }

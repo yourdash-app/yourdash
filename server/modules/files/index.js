@@ -1,7 +1,7 @@
+import path from "path";
 import { log } from "../../libServer.js";
 import fs from "fs";
 let module = {
-    id: "files",
     name: "files",
     load(app, api) {
         app.get(`${api.ModulePath(this)}/user/quota`, (req, res) => {
@@ -19,6 +19,26 @@ let module = {
                     quota: json.quota
                 });
             });
+        });
+        app.get(`${api.ModulePath(this)}/sidebar/categories`, (req, res) => {
+            if (!fs.existsSync(path.resolve(`${api.UserAppData(req)}/files/`))) {
+                fs.mkdir(path.resolve(`${api.UserAppData(req)}/files/`), {
+                    recursive: true
+                }, (err) => {
+                    if (err) {
+                        log(`ERROR: unable to make directory: ${api.UserAppData(req)}/files/`);
+                        return res.json({
+                            error: true
+                        });
+                    }
+                    res.json([]);
+                });
+            }
+            return res.json({
+                error: true
+            });
+        });
+        app.get(`${api.ModulePath(this)}/sidebar/set/default`, (req, res) => {
         });
     },
     install() { },

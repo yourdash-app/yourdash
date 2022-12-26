@@ -9,7 +9,7 @@ interface IButton {
   onClick: () => void
 }
 
-export interface ISideBar {
+export interface ISideBar extends React.ComponentPropsWithoutRef<"div"> {
   title: string,
   sections: {
     title: string,
@@ -17,12 +17,16 @@ export interface ISideBar {
   }[]
 }
 
-const SideBar: React.FC<ISideBar> = ({ title, sections }) => {
+const SideBar: React.FC<ISideBar> = ({ title, sections, ...extraProps }) => {
 
   const [ toggledSections, setToggledSections ] = useState([] as string[])
 
-  return <div className={styles.component}>
-    <h2>{title}</h2>
+  return <div className={styles.component} {...extraProps}>
+    {
+      title
+        ? <h2>{title}</h2>
+        : null
+    }
     {
       sections.map((section, ind) => {
         return <Card className={styles.card} key={ind} data-toggled={toggledSections.indexOf(section.title) !== -1}>

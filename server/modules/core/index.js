@@ -4,7 +4,6 @@ import { generateRandomStringOfLength } from '../../encryption.js';
 import { log, returnBase64Image } from '../../libServer.js';
 const Module = {
     name: 'core',
-    id: 'core',
     load(app, api) {
         app.get(`${api.ModulePath(this)}/panel/quick-shortcuts/`, (req, res) => {
             if (!fs.existsSync(path.resolve(`${api.UserAppData(req)}/${this.name}/panel/quick-shortcuts/`))) {
@@ -171,7 +170,19 @@ const Module = {
             });
         });
         app.get(`${api.ModulePath(this)}/instance/login/background`, (_req, res) => {
-            return res.send(api.SERVER_CONFIG.loginPageConfig.background);
+            return res.json({
+                image: api.SERVER_CONFIG.loginPageConfig.background || ""
+            });
+        });
+        app.get(`${api.ModulePath(this)}/instance/login/logo`, (_req, res) => {
+            return res.json({
+                image: api.SERVER_CONFIG.loginPageConfig.logo || ""
+            });
+        });
+        app.get(`${api.ModulePath(this)}/instance/login/message`, (_req, res) => {
+            return res.json({
+                text: api.SERVER_CONFIG.loginPageConfig.message.content || ""
+            });
         });
         app.get(`${api.ModulePath(this)}/instance/default/background`, (_req, res) => {
             return res.json({

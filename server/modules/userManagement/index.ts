@@ -13,12 +13,12 @@ let USER_CACHE: { [ key: string ]: string } = {
 
 const Module: YourDashModule = {
   name: 'userManagement',
-  id: 'userManagement',
 
   load(app, api) {
     app.use((req, res, next) => {
       if (req.path.startsWith('/test')) return next();
       if (req.path.startsWith(`/api/${this.name}/login`)) return next();
+      if (req.path.startsWith(`/api/core/instance/login`)) return next();
       if (req.headers.username) {
         let userName = req.headers.username as string;
         let sessionToken = req.headers.sessiontoken as string;
@@ -244,14 +244,18 @@ const Module: YourDashModule = {
 
     app.get(`/api/${this.name}/current/user`, (req, res) => {
       if (!fs.existsSync(`${ENV.UserFs(req)}`)) {
+        log(`ERROR: no user directory for ${req.headers.username}`)
         return res.json({
           error: true
         });
       }
       fs.readFile(`${ENV.UserFs(req)}/user.json`, (err, data) => {
-        if (err) return res.json({
-          error: true
-        });
+        if (err) {
+          log(`ERROR: unable to read ${req.headers.username}/user.json`)
+          return res.json({
+            error: true
+          });
+        }
         return res.send({
           user: JSON.parse(data.toString())
         });

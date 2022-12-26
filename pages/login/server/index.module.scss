@@ -2,8 +2,11 @@
   width: 100%;
   height: calc(100vh - 5rem);
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  position: relative;
+  z-index: 1;
   > div {
     max-width: 40rem;
     width: 90%;
@@ -41,4 +44,22 @@
     padding: 0.5rem;
     font-size: 1.25rem;
   }
+}
+
+.background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+.logo {
+  width: 16rem;
+  aspect-ratio: 1 / 1;
+  background-color: #00000088;
+  border-radius: 1.5rem;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
 }

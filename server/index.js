@@ -6,6 +6,7 @@ import express from 'express';
 import fs from 'fs';
 import path from 'path';
 import { log } from './libServer.js';
+import https from "https";
 import startupCheck from './startupCheck.js';
 export const RELEASE_CONFIGURATION = {
     CURRENT_VERSION: 1,
@@ -17,7 +18,10 @@ export const ENV = {
     DevMode: process.env.DEV === "true",
     ModulePath: (module) => `/api/${module.name}`
 };
-console.log(ENV);
+if (!process.geteuid) {
+    log(`(Start up) ERROR: not running under a linux platform`);
+    process.exit(1);
+}
 if (!ENV.FsOrigin)
     console.error('FsOrigin was not defined.');
 startupCheck(() => {
@@ -108,11 +112,19 @@ startupCheck(() => {
         case !SERVER_CONFIG.activeModules.includes('userManagement'):
             console.error(chalk.redBright(`(Start up) ERROR: the 'userManagement' module is not enabled in yourdash.config.json`));
             process.exit(1);
+        case !SERVER_CONFIG.activeModules.includes('files'):
+            console.error(chalk.redBright(`(Start up) ERROR: the 'userManagement' module is not enabled in yourdash.config.json`));
+            process.exit(1);
+        case !SERVER_CONFIG.activeModules.includes('store'):
+            console.error(chalk.redBright(`(Start up) ERROR: the 'userManagement' module is not enabled in yourdash.config.json`));
+            process.exit(1);
         default:
             log("(Start up) yourdash.config.json has the required properties!");
     }
     const app = express();
-    app.use(bodyParser.json());
+    app.use(bodyParser.json({
+        limit: '50mb'
+    }));
     app.use((req, res, next) => {
         res.setHeader('X-Powered-By', "YourDash Instance Server");
         next();
@@ -181,7 +193,39 @@ startupCheck(() => {
         exec('git pull');
         process.exit();
     }, 43200000);
-    app.listen(3560, () => {
-        log('(Start up) Web server now online :D');
-    });
+    if (ENV.DevMode) {
+        app.listen(3560, () => {
+            log('(Start up) Web server now online :D');
+        });
+    }
+    else {
+        if (!fs.existsSync(path.resolve(`/etc/letsencrypt/live`))) {
+            log(`(Start up) CRITICAL ERROR: no lets encrypt certificate found, terminating server software`);
+            return process.exit(1);
+        }
+        fs.readdir(path.resolve(`/etc/letsencrypt/live`), (err, files) => {
+            if (err) {
+                log(`(Start up) CRITICAL ERROR: no lets encrypt certificate found, terminating server software`);
+                return process.exit(1);
+            }
+            fs.readFile(path.resolve(`/etc/letsencrypt/live/${files[0]}/privkey.pem`), (err, data) => {
+                if (err) {
+                    log(`(Start up) CRITICAL ERROR: no lets encrypt certificate found, terminating server software`);
+                    return process.exit(1);
+                }
+                let TLSKey = data.toString();
+                fs.readFile(path.resolve(`/etc/letsencrypt/live/${files[0]}/fullchain.pem`), (err, data) => {
+                    if (err) {
+                        log(`(Start up) CRITICAL ERROR: no lets encrypt certificate found, terminating server software`);
+                        return process.exit(1);
+                    }
+                    let TLSCert = data.toString();
+                    https.createServer({
+                        key: TLSKey,
+                        cert: TLSCert
+                    }, app).listen(3560);
+                });
+            });
+        });
+    }
 });

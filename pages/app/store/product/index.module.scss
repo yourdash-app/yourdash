@@ -1,21 +1,148 @@
 .root {
+  >section {
+    padding-left: 15rem;
+    padding-right: 15rem;
+    transition: var(--transition);
+
+    @media (max-width: 1300px) {
+      padding-left: 10rem;
+      padding-right: 10rem;
+    }
+
+    @media (max-width: 1000px) {
+      padding-left: 5rem;
+      padding-right: 5rem;
+    }
+
+    @media (max-width: 700px) {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+  }
 }
 
 .productHeader {
   transform: translateY(-25%);
   position: relative;
-  display: flex;
+  display: grid;
   align-items: center;
-  padding-left: 5rem;
-  > img {
+  grid-template-columns: auto auto 1fr auto;
+
+  >img {
     height: 10rem;
-    margin-right: 0.5rem;
+    margin-right: 1rem;
+    margin-left: 1rem;
     padding: 0.5rem;
     background-color: var(--card-bg);
-    border-radius: var(--card-rounding);
+    border-radius: 3rem;
   }
-  > h2 {
+
+  >h2 {
     color: var(--container-fg);
     padding-right: 1rem;
+    margin-right: auto;
+  }
+
+  >button:last-child {
+    padding-left: 2rem;
+    padding-right: 2rem;
+
+    @media (max-width: 700px) {
+      margin-top: 1rem;
+      grid-column: 1 / 4;
+    }
+  }
+}
+
+.installationPopup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  height: 60vh;
+  width: calc(100% - 10rem);
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  background-color: var(--card-bg);
+  box-sizing: border-box;
+  border-radius: 1.5rem;
+  box-shadow: 0 0 1rem #00000088;
+
+  >div {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    height: 100%;
+    width: 100%;
+    place-content: center;
+    position: relative;
+    gap: 2rem;
+    padding-left: 3rem;
+    padding-right: 3rem;
+
+    >.installationPopupImgContainer {
+      display: flex;
+
+      >img {
+        height: 30vh;
+        padding: 2rem;
+        position: relative;
+        padding-left: 0;
+      }
+
+      >div {
+        width: 0.25rem;
+        height: 100%;
+        background-color: var(--container-separator);
+        border-radius: 10rem;
+      }
+    }
+
+    >.installationPopupContent {
+      >button {
+        margin-top: auto;
+      }
+
+      >div {
+        >h1 {
+          color: var(--card-fg);
+          margin: 0;
+          font-size: 2.5rem;
+          padding-bottom: 0.25rem;
+        }
+
+        >p {
+          color: var(--card-fg);
+          margin: 0;
+        }
+
+        >ul {
+          padding-top: 0.5rem;
+          padding-left: 0.5rem;
+
+          >h3 {
+            color: var(--card-fg);
+            padding-bottom: 0.25rem;
+            text-decoration: underline;
+            margin: 0;
+          }
+
+          >p {
+            color: var(--card-fg);
+            margin: 0;
+            padding-left: 0.5rem;
+          }
+        }
+      }
+    }
+
+    > :last-child {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 2rem;
+      aspect-ratio: 1 / 1;
+      margin: 1.5rem;
+    }
   }
 }

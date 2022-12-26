@@ -11,6 +11,7 @@ import express from 'express';
 import fs from 'fs';
 import path from 'path';
 import { log } from './libServer.js';
+import https from "https"
 import YourDashModule from './module.js';
 import startupCheck from './startupCheck.js';
 
@@ -34,7 +35,10 @@ export const ENV: IEnv = {
   ModulePath: (module) => `/api/${module.name}`
 };
 
-console.log(ENV)
+if (!process.geteuid) {
+  log(`(Start up) ERROR: not running under a linux platform`)
+  process.exit(1)
+}
 
 if (!ENV.FsOrigin) console.error('FsOrigin was not defined.');
 
@@ -200,13 +204,31 @@ startupCheck(() => {
       )
       process.exit(1)
     // eslint-disable-next-line no-fallthrough
+    case !SERVER_CONFIG.activeModules.includes('files'):
+      console.error(
+        chalk.redBright(
+          `(Start up) ERROR: the 'userManagement' module is not enabled in yourdash.config.json`
+        )
+      )
+      process.exit(1)
+    // eslint-disable-next-line no-fallthrough
+    case !SERVER_CONFIG.activeModules.includes('store'):
+      console.error(
+        chalk.redBright(
+          `(Start up) ERROR: the 'userManagement' module is not enabled in yourdash.config.json`
+        )
+      )
+      process.exit(1)
+    // eslint-disable-next-line no-fallthrough
     default:
       log("(Start up) yourdash.config.json has the required properties!")
   }
 
   const app = express();
 
-  app.use(bodyParser.json());
+  app.use(bodyParser.json({
+    limit: '50mb'
+  }));
 
   app.use((req, res, next) => {
     res.setHeader('X-Powered-By', "YourDash Instance Server");
@@ -293,8 +315,50 @@ startupCheck(() => {
     process.exit();
   }, 43200000);
 
-  app.listen(3560, () => {
-    log('(Start up) Web server now online :D');
-  });
+  if (ENV.DevMode) {
+    app.listen(3560, () => {
+      log('(Start up) Web server now online :D');
+    });
+  } else {
+    if (!fs.existsSync(`/etc/letsencrypt/live`)) {
+      log(`(Start up) CRITICAL ERROR: /etc/letsencrypt/live not found, terminating server software`)
+      return process.exit(1)
+    }
+
+    fs.readdir(`/etc/letsencrypt/live`, (err, files) => {
+      if (err) {
+        log(`(Start up) CRITICAL ERROR: /etc/letsencrypt/live couldn't be read, terminating server software`)
+        return process.exit(1)
+      }
+
+      let indToRead = 0
+
+      if (files[ 0 ] === "README")
+        indToRead = 1
+
+      fs.readFile(`/etc/letsencrypt/live/${files[ indToRead ]}/privkey.pem`, (err, data) => {
+        if (err) {
+          log(`(Start up) CRITICAL ERROR: /etc/letsencrypt/live/${files[ 1 ]}/privkey.pem not found or couldn't be read, terminating server software`)
+          return process.exit(1)
+        }
+        let TLSKey = data.toString()
+        fs.readFile(`/etc/letsencrypt/live/${files[ indToRead ]}/fullchain.pem`, (err, data) => {
+          if (err) {
+            log(`(Start up) CRITICAL ERROR: CRITICAL ERROR: /etc/letsencrypt/live/${files[ indToRead ]}/fullchain.pem not found or couldn't be read, terminating server software`)
+            return process.exit(1)
+          }
+          let TLSCert = data.toString()
+          https.createServer(
+            {
+              key: TLSKey,
+              cert: TLSCert
+            },
+            app
+          ).listen(3560)
+        })
+      })
+    })
+  }
 });
+
 

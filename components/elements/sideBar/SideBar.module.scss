@@ -1,82 +1,95 @@
 .component {
   min-width: 20rem;
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
+  padding: 0.5rem;
+  padding-top: 0.75rem;
   box-sizing: border-box;
   background-color: var(--container-bg);
   overflow-y: auto;
   overflow-x: visible;
-  > h2 {
+
+  >h2 {
     color: var(--container-fg);
     padding-left: 0.5rem;
     box-sizing: border-box;
   }
-  > div {
+
+  >.card {
     padding: 0.5rem;
     border-radius: calc(var(--card-rounding) / 2);
     margin-bottom: 0.25rem;
-    > section {
+
+    >section {
       display: flex;
       margin-bottom: 0;
-      > h3 {
+      cursor: pointer;
+
+      >h3 {
         margin: 0;
         color: var(--container-fg);
         padding: 0.5rem;
         margin-right: auto;
       }
-      > div {
+
+      >div {
         height: 2rem;
         margin: 3.5px;
         aspect-ratio: 1 / 1;
         transition: transform 200ms ease-in-out;
+
         &[data-toggled="true"] {
           transform: rotate(180deg);
         }
       }
     }
-    &[data-toggled="true"] > section {
+
+    &[data-toggled="true"]>section {
       margin-bottom: 0.25rem;
     }
-    > button {
+
+    >button {
       width: 100%;
       margin-bottom: 0.25rem;
+
       &:last-child {
         margin-bottom: 0;
       }
     }
+
     &:first-of-type {
-      border-radius: var(--card-rounding) var(--card-rounding)
-        calc(var(--card-rounding) / 2) calc(var(--card-rounding) / 2);
+      border-radius: var(--card-rounding) var(--card-rounding) calc(var(--card-rounding) / 2) calc(var(--card-rounding) / 2);
     }
+
     &:last-of-type {
       margin-bottom: 0;
-      border-radius: calc(var(--card-rounding) / 2)
-        calc(var(--card-rounding) / 2) var(--card-rounding) var(--card-rounding);
+      border-radius: calc(var(--card-rounding) / 2) calc(var(--card-rounding) / 2) var(--card-rounding) var(--card-rounding);
     }
-    &[data-toggled="true"] + [data-toggled="false"] {
-      border-radius: var(--card-rounding) var(--card-rounding)
-        calc(var(--card-rounding) / 2) calc(var(--card-rounding) / 2);
+
+    &[data-toggled="true"]+[data-toggled="false"] {
+      border-radius: var(--card-rounding) var(--card-rounding) calc(var(--card-rounding) / 2) calc(var(--card-rounding) / 2);
+
       &:last-of-type {
         border-radius: var(--card-rounding);
       }
     }
+
     &:has(+ .card[data-toggled="true"])[data-toggled="false"] {
-      border-radius: calc(var(--card-rounding) / 2)
-        calc(var(--card-rounding) / 2) var(--card-rounding) var(--card-rounding);
+      border-radius: calc(var(--card-rounding) / 2) calc(var(--card-rounding) / 2) var(--card-rounding) var(--card-rounding);
       margin-bottom: 0.5rem;
+
       &:first-of-type {
         border-radius: var(--card-rounding);
       }
     }
-    &:has(+ .card[data-toggled="true"])[data-toggled="false"]
-      &[data-toggled="true"]
-      + [data-toggled="false"] {
+
+    &:has(+ .card[data-toggled="true"])[data-toggled="false"] &[data-toggled="true"]+[data-toggled="false"] {
       border-radius: var(--card-rounding);
     }
+
     &[data-toggled="true"] {
       margin-bottom: 0.5rem;
       border-radius: var(--card-rounding);
     }
+
     &:first-of-type:last-of-type {
       border-radius: var(--card-rounding) var(--card-rounding);
     }

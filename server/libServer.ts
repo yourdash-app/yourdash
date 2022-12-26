@@ -22,3 +22,7 @@ export function log(input: string) {
 export function returnBase64Image(path: string) {
   return 'data:image/gif;base64,' + fs.readFileSync(path, 'base64');
 }
+
+export function returnBase64Svg(path: string) {
+  return 'data:image/svg+xml;base64,' + fs.readFileSync(path, 'base64');
+}

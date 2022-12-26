@@ -44,7 +44,7 @@ function checkYourDashConfigJson(cb: () => void) {
     fs.writeFile(
       path.resolve(`${ENV.FsOrigin}/yourdash.config.json`),
       JSON.stringify({
-        activeModules: [ 'userManagement', 'core' ],
+        activeModules: [ 'userManagement', 'core', 'files', 'store' ],
         defaultBackground: returnBase64Image(path.resolve(`${ENV.FsOrigin}/../background.jpg`)),
         favicon: returnBase64Image(path.resolve(`${ENV.FsOrigin}/../yourdash256.png`)),
         instanceEncryptionKey: generateRandomStringOfLength(32),
@@ -66,7 +66,7 @@ function checkYourDashConfigJson(cb: () => void) {
             },
           },
           message: {
-            content: '',
+            content: 'Server not yet fully configured',
             position: {
               left: null,
               top: null,

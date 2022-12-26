@@ -1,4 +1,5 @@
 import COLOR from '../../../lib/color';
+import CSSVariable from '../../../lib/cssVariable';
 import Icon from '../icon/Icon';
 import YourDashIcon from '../icon/iconDictionary';
 import styles from './IconButton.module.scss';
@@ -9,7 +10,7 @@ export interface IIconButton {
   onClick: () => void;
   disabled?: boolean;
   useDefaultColor?: boolean;
-  color?: COLOR;
+  color?: COLOR | CSSVariable;
 }
 
 const IconButton: React.FC<IIconButton> = ({ icon, vibrant, onClick, disabled, useDefaultColor, color }) => {
