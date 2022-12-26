@@ -6,10 +6,10 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "dev": "concurrently \"tsc\" \"cross-env FsOrigin=./fs DEV=true nodemon . --ignore ./fs/*\"",
-    "dev-no-nodemon": "concurrently \"tsc\" \"cross-env FsOrigin=./fs DEV=true node .\"",
-    "dev-no-tsc-or-nodemon": "cross-env FsOrigin=./fs DEV=true node .",
-    "production": "cross-env FsOrigin=./fs DEV=false node ."
+    "dev": "concurrently \"tsc --watch\" \"cross-env FsOrigin=./fs DEV=true nodemon . --ignore ./fs/*\"",
+    "dev-no-nodemon": "concurrently \"tsc --watch\" \"cross-env FsOrigin=./fs DEV=true node .\"",
+    "dev-no-tsc-or-nodemon": "tsc && cross-env FsOrigin=./fs DEV=true node .",
+    "production": "tsc && cross-env FsOrigin=./fs DEV=false node ."
   },
   "dependencies": {
     "@types/cors": "^2.8.12",

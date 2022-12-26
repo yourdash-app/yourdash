@@ -39,3 +39,6 @@ yarn-error.log*
 /.stash
 
 README-*.md
+
+/server/*.js
+/server/**/*.js
