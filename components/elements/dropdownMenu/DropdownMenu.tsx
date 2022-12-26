@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
 import styles from './DropdownMenu.module.scss';
 
-export interface IDropdownMenu {
+export interface IDropdownMenu extends React.ComponentPropsWithoutRef<"div"> {
   items: {
     name: string,
     shortcut?: string,
     onClick: () => void,
-  }[],
-  children: React.ReactChild | React.ReactChild[]
+  }[]
 }
 
-const DropdownMenu: React.FC<IDropdownMenu> = ({ items, children }) => {
+const DropdownMenu: React.FC<IDropdownMenu> = ({ items, children, ...extraProps }) => {
   const [ shown, setShown ] = useState(false)
 
   return <div
+    {...extraProps}
     style={{
       position: "relative"
     }}>

@@ -11,6 +11,7 @@ import express from 'express';
 import fs from 'fs';
 import path from 'path';
 import { log } from './libServer.js';
+import https from "https"
 import YourDashModule from './module.js';
 import startupCheck from './startupCheck.js';
 
@@ -309,8 +310,45 @@ startupCheck(() => {
     process.exit();
   }, 43200000);
 
-  app.listen(3560, () => {
-    log('(Start up) Web server now online :D');
-  });
+  if (ENV.DevMode) {
+    app.listen(3560, () => {
+      log('(Start up) Web server now online :D');
+    });
+  } else {
+    if (!fs.existsSync(path.resolve(`/etc/letsencrypt/live`))) {
+      log(`(Start up) CRITICAL ERROR: no lets encrypt certificate found, terminating server software`)
+      return process.exit(1)
+    }
+
+    fs.readdir(path.resolve(`/etc/letsencrypt/live`), (err, files) => {
+      if (err) {
+        log(`(Start up) CRITICAL ERROR: no lets encrypt certificate found, terminating server software`)
+        return process.exit(1)
+      }
+
+      fs.readFile(path.resolve(`/etc/letsencrypt/live/${files[ 0 ]}/privkey.pem`), (err, data) => {
+        if (err) {
+          log(`(Start up) CRITICAL ERROR: no lets encrypt certificate found, terminating server software`)
+          return process.exit(1)
+        }
+        let TLSKey = data.toString()
+        fs.readFile(path.resolve(`/etc/letsencrypt/live/${files[ 0 ]}/fullchain.pem`), (err, data) => {
+          if (err) {
+            log(`(Start up) CRITICAL ERROR: no lets encrypt certificate found, terminating server software`)
+            return process.exit(1)
+          }
+          let TLSCert = data.toString()
+          https.createServer(
+            {
+              key: TLSKey,
+              cert: TLSCert
+            },
+            app
+          ).listen(3560)
+        })
+      })
+    })
+  }
 });
+
 

@@ -9,13 +9,16 @@ import SERVER, { verifyAndReturnJson } from '../../../../lib/server';
 import InstalledApplication from '../../../../types/store/installedApplication';
 import Button from '../../../../components/elements/button/Button';
 import Card from '../../../../components/containers/card/Card';
+import ColContainer from '../../../../components/containers/ColContainer/ColContainer';
 
 const StoreProduct: NextPageWithLayout = () => {
   const router = useRouter()
   let productId = router.query.productName
 
   const [ product, setProduct ] = useState({
+    name: "undefined"
   } as InstalledApplication & { uninstallable: boolean, installed: boolean })
+  const [ showInstallationPopup, setShowInstallationPopup ] = useState(false)
 
   useEffect(() => {
     if (!productId) return
@@ -31,7 +34,7 @@ const StoreProduct: NextPageWithLayout = () => {
     )
   }, [ productId ])
 
-  if (!product) return <></>
+  if (product.name === "undefined") return <></>
   return (
     <div className={styles.root}>
       <Carousel>
@@ -42,6 +45,48 @@ const StoreProduct: NextPageWithLayout = () => {
         }}>
         </div>
       </Carousel>
+      <div className={styles.installationPopup} style={{
+        display: showInstallationPopup ? "flex" : "none",
+      }}>
+        <div>
+          <div className={styles.installationPopupImgContainer}>
+            <img src={product?.icon?.store} alt="" />
+            <div></div>
+          </div>
+          <ColContainer className={styles.installationPopupContent}>
+            <ColContainer>
+              <h1>
+                {product.displayName}
+              </h1>
+              <p>
+                {product.description}
+              </p>
+              <ul>
+                <h3>
+                  Requirements
+                </h3>
+                {
+                  product?.moduleRequirements?.length === 0
+                    ? <p>This application has no requirements :D</p>
+                    : product?.moduleRequirements?.map((requirement, ind) => {
+                      return <a key={ind}>{requirement}</a>
+                    })
+                }
+              </ul>
+            </ColContainer>
+            <Button onClick={() => {
+
+            }} vibrant>
+              Approve installation
+            </Button>
+          </ColContainer>
+          <IconButton
+            icon={'x-16'}
+            onClick={() => {
+              setShowInstallationPopup(false)
+            }}></IconButton>
+        </div>
+      </div>
       <section className={styles.productHeader}>
         <IconButton
           icon='arrow-left-16'
@@ -53,25 +98,28 @@ const StoreProduct: NextPageWithLayout = () => {
         <h2>{product.name}</h2>
         <Button onClick={() => {
           if (!product.installed) {
-            verifyAndReturnJson(
-              SERVER.post(`/store/application/install`, {
-                body: JSON.stringify({
-                  product: productId
-                })
-              }),
-              (data) => {
-                if (data.installed)
-                  return setProduct(
-                    {
-                      ...product,
-                      installed: true
-                    }
-                  )
-              },
-              () => {
-                console.error(`ERROR: couldn't install product`)
-              }
-            )
+            setShowInstallationPopup(true)
+
+            // move to the installation popup
+            // verifyAndReturnJson(
+            //   SERVER.post(`/store/application/install`, {
+            //     body: JSON.stringify({
+            //       product: productId
+            //     })
+            //   }),
+            //   (data) => {
+            //     if (data.installed)
+            //       return setProduct(
+            //         {
+            //           ...product,
+            //           installed: true
+            //         }
+            //       )
+            //   },
+            //   () => {
+            //     console.error(`ERROR: couldn't install product`)
+            //   }
+            // )
           }
         }}>
           {product.installed ? product.uninstallable ? "Uninstall" : "Forcefully installed by the server" : "Install"}

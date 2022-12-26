@@ -1,40 +1,12 @@
-.accentColorPicker {
-  --spacing: 0;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 5rem;
-
-  @media (max-width: 800px) {
-    gap: 4rem;
-  }
-
-  @media (max-width: 700px) {
-    gap: 3rem;
-  }
-
-  @media (max-width: 600px) {
-    gap: 2rem;
-  }
-
-  @media (max-width: 550px) {
-    gap: 1rem;
-  }
-
-  row-gap: 1rem !important;
-
+.themeSelector {
   >div {
-    aspect-ratio: 1 / 1;
-    height: 2.5rem;
-    border-radius: 100%;
-    border: 0.25rem solid #ffffff44;
-    transition: var(--transition);
-    margin-right: var(--spacing);
+    >h3 {
+      margin: 0;
+    }
 
-    &:hover {
-      border: 0.25rem solid #00000044;
+    >.themeSelectorDropdown {
+      height: max-content;
+      width: max-content;
     }
   }
 }
