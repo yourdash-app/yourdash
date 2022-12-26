@@ -320,10 +320,6 @@ startupCheck(() => {
       log('(Start up) Web server now online :D');
     });
   } else {
-    fs.readdir(`/etc/letsencrypt/live`, (err) => {
-      console.log(err)
-    })
-
     if (!fs.existsSync(`/etc/letsencrypt/live`)) {
       log(`(Start up) CRITICAL ERROR: /etc/letsencrypt/live not found, terminating server software`)
       return process.exit(1)
@@ -335,15 +331,20 @@ startupCheck(() => {
         return process.exit(1)
       }
 
-      fs.readFile(`/etc/letsencrypt/live/${files[ 0 ]}/privkey.pem`, (err, data) => {
+      let indToRead = 0
+
+      if (files[ 0 ] === "README")
+        indToRead = 1
+
+      fs.readFile(`/etc/letsencrypt/live/${files[ indToRead ]}/privkey.pem`, (err, data) => {
         if (err) {
-          log(`(Start up) CRITICAL ERROR: /etc/letsencrypt/live/${files[ 0 ]}/privkey.pem not found or couldn't be read, terminating server software`)
+          log(`(Start up) CRITICAL ERROR: /etc/letsencrypt/live/${files[ 1 ]}/privkey.pem not found or couldn't be read, terminating server software`)
           return process.exit(1)
         }
         let TLSKey = data.toString()
-        fs.readFile(`/etc/letsencrypt/live/${files[ 0 ]}/fullchain.pem`, (err, data) => {
+        fs.readFile(`/etc/letsencrypt/live/${files[ indToRead ]}/fullchain.pem`, (err, data) => {
           if (err) {
-            log(`(Start up) CRITICAL ERROR: CRITICAL ERROR: /etc/letsencrypt/live/${files[ 0 ]}/fullchain.pem not found or couldn't be read, terminating server software`)
+            log(`(Start up) CRITICAL ERROR: CRITICAL ERROR: /etc/letsencrypt/live/${files[ indToRead ]}/fullchain.pem not found or couldn't be read, terminating server software`)
             return process.exit(1)
           }
           let TLSCert = data.toString()
