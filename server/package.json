@@ -9,7 +9,7 @@
     "dev": "concurrently \"tsc\" \"cross-env FsOrigin=./fs DEV=true nodemon . --ignore ./fs/*\"",
     "dev-no-nodemon": "concurrently \"tsc\" \"cross-env FsOrigin=./fs DEV=true node .\"",
     "dev-no-tsc-or-nodemon": "cross-env FsOrigin=./fs DEV=true node .",
-    "production": "cross-env FsOrigin=./fs DEV=false node ."
+    "production": "sudo cross-env FsOrigin=./fs DEV=false node ."
   },
   "dependencies": {
     "@types/cors": "^2.8.12",
