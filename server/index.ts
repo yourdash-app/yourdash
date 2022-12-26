@@ -35,6 +35,11 @@ export const ENV: IEnv = {
   ModulePath: (module) => `/api/${module.name}`
 };
 
+if (!process.geteuid) {
+  log(`(Start up) ERROR: not running under a linux platform`)
+  process.exit(1)
+}
+
 if (!ENV.FsOrigin) console.error('FsOrigin was not defined.');
 
 export interface YourDashServerConfig {
@@ -316,25 +321,25 @@ startupCheck(() => {
     });
   } else {
     if (!fs.existsSync(path.resolve(`/etc/letsencrypt/live`))) {
-      log(`(Start up) CRITICAL ERROR: no lets encrypt certificate found, terminating server software`)
+      log(`(Start up) CRITICAL ERROR: /etc/letsencrypt/live not found, terminating server software`)
       return process.exit(1)
     }
 
     fs.readdir(path.resolve(`/etc/letsencrypt/live`), (err, files) => {
       if (err) {
-        log(`(Start up) CRITICAL ERROR: no lets encrypt certificate found, terminating server software`)
+        log(`(Start up) CRITICAL ERROR: /etc/letsencrypt/live couldn't be read, terminating server software`)
         return process.exit(1)
       }
 
       fs.readFile(path.resolve(`/etc/letsencrypt/live/${files[ 0 ]}/privkey.pem`), (err, data) => {
         if (err) {
-          log(`(Start up) CRITICAL ERROR: no lets encrypt certificate found, terminating server software`)
+          log(`(Start up) CRITICAL ERROR: /etc/letsencrypt/live/${files[ 0 ]}/privkey.pem not found or couldn't be read, terminating server software`)
           return process.exit(1)
         }
         let TLSKey = data.toString()
         fs.readFile(path.resolve(`/etc/letsencrypt/live/${files[ 0 ]}/fullchain.pem`), (err, data) => {
           if (err) {
-            log(`(Start up) CRITICAL ERROR: no lets encrypt certificate found, terminating server software`)
+            log(`(Start up) CRITICAL ERROR: CRITICAL ERROR: /etc/letsencrypt/live/${files[ 0 ]}/fullchain.pem not found or couldn't be read, terminating server software`)
             return process.exit(1)
           }
           let TLSCert = data.toString()

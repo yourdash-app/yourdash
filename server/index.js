@@ -18,6 +18,10 @@ export const ENV = {
     DevMode: process.env.DEV === "true",
     ModulePath: (module) => `/api/${module.name}`
 };
+if (!process.geteuid) {
+    log(`(Start up) ERROR: not running under a linux platform`);
+    process.exit(1);
+}
 if (!ENV.FsOrigin)
     console.error('FsOrigin was not defined.');
 startupCheck(() => {
