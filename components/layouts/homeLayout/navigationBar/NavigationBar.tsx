@@ -2,10 +2,19 @@ import Link from "next/link";
 import ButtonLink from "../../../elements/buttonLink/ButtonLink";
 import Icon from '../../../elements/icon/Icon';
 import styles from './NavigationBar.module.scss';
+import { useEffect, useState } from "react";
+import AuthenticatedImg from "../../../elements/authenticatedImg/AuthenticatedImg";
 
 export interface INavigationBar extends React.ComponentPropsWithoutRef<'div'> { }
 
 const NavigationBar: React.FC<INavigationBar> = () => {
+  const [ loggedIn, setLoggedIn ] = useState(false)
+
+  useEffect(() => {
+    if (localStorage.getItem("sessiontoken"))
+      setLoggedIn(true)
+  }, [])
+
   return <>
     <div className={styles.spacer}>
       {/* Empty Spacer for fixed positioning */}
@@ -17,7 +26,10 @@ const NavigationBar: React.FC<INavigationBar> = () => {
       <Link href="/projects">Projects</Link>
       <Link href="/docs">Docs</Link>
       <Link href="https://github.com/ewsgit/yourdash">Git</Link>
-      <ButtonLink href="/login/" vibrant>Login</ButtonLink>
+      {!loggedIn
+        ? <ButtonLink href="/login/" vibrant>Login</ButtonLink>
+        : <AuthenticatedImg src="" />
+      }
     </div>
   </>
 };

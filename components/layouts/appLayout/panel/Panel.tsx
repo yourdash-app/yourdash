@@ -65,7 +65,7 @@ const Panel: React.FC<IPanel> = () => {
       })
 
     verifyAndReturnJson(
-      SERVER.get(`/store/installed/apps`),
+      SERVER.get(`/core/panel/launcher/apps`),
       (res) => {
         setInstalledApps(res)
       },

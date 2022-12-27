@@ -56,7 +56,7 @@ const Module = {
                 });
             }
         });
-        app.post(`/api/${this.name}/create/:username`, (req, res) => {
+        app.post(`${api.ModulePath(this)}/create/:username`, (req, res) => {
             let { username } = req.params;
             let password = req.headers.password;
             let { name } = req.headers;
@@ -168,7 +168,7 @@ const Module = {
                 });
             });
         });
-        app.get(`/api/${this.name}/login`, (req, res) => {
+        app.get(`${api.ModulePath(this)}/login`, (req, res) => {
             let username = req.headers.username;
             let password = req.headers.password;
             if (!(username && password)) {
@@ -212,7 +212,7 @@ const Module = {
                 }
             });
         });
-        app.get(`/api/${this.name}/current/user`, (req, res) => {
+        app.get(`${api.ModulePath(this)}/current/user`, (req, res) => {
             if (!fs.existsSync(`${ENV.UserFs(req)}`)) {
                 log(`ERROR: no user directory for ${req.headers.username}`);
                 return res.json({
@@ -226,12 +226,34 @@ const Module = {
                         error: true
                     });
                 }
+                let user = JSON.parse(data.toString());
+                delete user.profile;
                 return res.send({
-                    user: JSON.parse(data.toString())
+                    user: user
                 });
             });
         });
-        app.get(`/api/${this.name}/current/user/settings`, (req, res) => {
+        app.get(`${api.ModulePath(this)}/current/user/profile`, (req, res) => {
+            if (!fs.existsSync(`${ENV.UserFs(req)}`)) {
+                log(`ERROR: no user directory for ${req.headers.username}`);
+                return res.json({
+                    error: true
+                });
+            }
+            fs.readFile(`${ENV.UserFs(req)}/user.json`, (err, data) => {
+                if (err) {
+                    log(`ERROR: unable to read ${req.headers.username}/user.json`);
+                    return res.json({
+                        error: true
+                    });
+                }
+                let user = JSON.parse(data.toString());
+                return res.send({
+                    profile: user.profile
+                });
+            });
+        });
+        app.get(`${api.ModulePath(this)}/current/user/settings`, (req, res) => {
             if (!fs.existsSync(`${ENV.UserFs(req)}`)) {
                 return res.sendStatus(403);
             }
@@ -241,7 +263,7 @@ const Module = {
                 return res.send(data);
             });
         });
-        app.get(`/api/${this.name}/current/user/permissions`, (req, res) => {
+        app.get(`${api.ModulePath(this)}/current/user/permissions`, (req, res) => {
             if (!fs.existsSync(`${ENV.UserFs(req)}`)) {
                 return res.sendStatus(403);
             }

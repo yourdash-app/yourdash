@@ -62,7 +62,17 @@ let module = {
                     }
                     let json = JSON.parse(data.toString());
                     var result = includedApps.filter((app) => json.includes(app.name)) || [];
-                    return res.json(result);
+                    return res.json(result.map((item) => {
+                        return {
+                            name: item.name,
+                            description: item.description,
+                            displayName: item.displayName,
+                            icon: {
+                                store: item.icon.store
+                            },
+                            path: item.path
+                        };
+                    }));
                 });
             }
         });

@@ -4,6 +4,8 @@ import { generateRandomStringOfLength } from '../../encryption.js';
 import { log, returnBase64Image } from '../../libServer.js';
 import YourDashModule from './../../module.js';
 import quickShortcut from "./../../../types/core/panel/quickShortcut.js"
+import includedApps from '../../releaseData/includedApps.js';
+import LauncherApplication from "./../../../types/core/panel/launcherApplication.js"
 
 const Module: YourDashModule = {
   name: 'core',
@@ -160,6 +162,51 @@ const Module: YourDashModule = {
         return res.json(json)
       })
     });
+
+    app.get(`${api.ModulePath(this)}/panel/launcher/apps`, (req, res) => {
+      if (!fs.existsSync(path.resolve(`${api.FsOrigin}/installed_apps.json`))) {
+        let defaultApps = [ "dash", "store", "settings", "files" ]
+        fs.writeFile(
+          path.resolve(`${api.FsOrigin}/installed_apps.json`),
+          JSON.stringify([
+            ...defaultApps
+          ]),
+          (err) => {
+            if (err) {
+              log(`ERROR: cannot write installed_apps.json`)
+              return res.json({
+                error: true
+              });
+            }
+            res.json(defaultApps);
+          }
+        );
+      } else {
+        fs.readFile(path.resolve(`${api.FsOrigin}/installed_apps.json`), (err, data) => {
+          if (err) {
+            log("ERROR: couldn't read installed_apps.json")
+            return res.json({
+              error: true
+            })
+          }
+          let json = JSON.parse(data.toString()) as string[]
+          var result = includedApps.filter((app) => json.includes(app.name)) || []
+          return res.json(
+            result.map((item) => {
+              return {
+                name: item.name,
+                icon: {
+                  launcher: item.icon.launcher,
+                  quickShortcut: item.icon.quickShortcut
+                },
+                displayName: item.displayName,
+                path: item.path
+              } as LauncherApplication
+            })
+          )
+        })
+      }
+    })
 
     // #endregion
 

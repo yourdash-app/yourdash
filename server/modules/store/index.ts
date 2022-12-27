@@ -3,6 +3,7 @@ import YourDashModule from "./../../module.js";
 import fs from "fs"
 import includedApps from "./../../releaseData/includedApps.js"
 import { log } from "../../libServer.js";
+import InstalledApplicationList from "../../../types/store/applicationList.js";
 
 let module: YourDashModule = {
   name: "store",
@@ -75,7 +76,17 @@ let module: YourDashModule = {
           let json = JSON.parse(data.toString()) as string[]
           var result = includedApps.filter((app) => json.includes(app.name)) || []
           return res.json(
-            result
+            result.map((item) => {
+              return {
+                name: item.name,
+                description: item.description,
+                displayName: item.displayName,
+                icon: {
+                  store: item.icon.store
+                },
+                path: item.path
+              } as InstalledApplicationList
+            })
           )
         })
       }
