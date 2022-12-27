@@ -66,10 +66,10 @@ const StoreIndex: NextPageWithLayout = () => {
               router.push(`/app/store/product/${item.name}`)
             }} className={styles.card}>
               <RowContainer>
-                <img className={styles.cardImg} src={item.icon.store} alt="" />
+                <img className={styles.cardImg} src={item?.icon?.store} alt="" />
                 <ColContainer>
-                  <a className={styles.cardName}>{item.name}</a>
-                  <p className={styles.cardDescription}>{item.description}</p>
+                  <a className={styles.cardName}>{item?.name}</a>
+                  <p className={styles.cardDescription}>{item?.description}</p>
                 </ColContainer>
               </RowContainer>
             </Card>

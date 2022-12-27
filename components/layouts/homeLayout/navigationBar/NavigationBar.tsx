@@ -28,7 +28,10 @@ const NavigationBar: React.FC<INavigationBar> = () => {
       <Link href="https://github.com/ewsgit/yourdash">Git</Link>
       {!loggedIn
         ? <ButtonLink href="/login/" vibrant>Login</ButtonLink>
-        : <AuthenticatedImg src="" />
+        : <>
+          <ButtonLink href="/app/dash" vibrant>Open</ButtonLink>
+          <AuthenticatedImg src="" />
+        </>
       }
     </div>
   </>

@@ -2,14 +2,30 @@ import path from "path";
 import YourDashModule from "./../../module.js";
 import fs from "fs"
 import includedApps from "./../../releaseData/includedApps.js"
-import { log } from "../../libServer.js";
+import { log, resizeBase64Image } from "../../libServer.js";
 import InstalledApplicationList from "../../../types/store/applicationList.js";
 
 let module: YourDashModule = {
   name: "store",
   load(app, api) {
     app.get(`${api.ModulePath(this)}/included/apps`, (req, res) => {
-      return res.json(includedApps)
+      let output = includedApps.map((app) => {
+
+        // @ts-ignore
+        delete app.icon.launcher
+
+        // @ts-ignore
+        delete app.icon.quickShortcut
+
+        return resizeBase64Image(96, 96, app.icon.store).then((image) => {
+          app.icon.store = image
+          return app
+        })
+      })
+      Promise.all(output)
+        .then((resp) => {
+          res.json(resp)
+        })
     })
 
     app.get(`${api.ModulePath(this)}/application/:applicationId`, (req, res) => {

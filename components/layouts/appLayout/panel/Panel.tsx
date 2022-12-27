@@ -144,11 +144,9 @@ const Panel: React.FC<IPanel> = () => {
         }
       </div>
       <footer data-footer>
-        <img onClick={() => {
+        <AuthenticatedImg onClick={() => {
           router.push(`/app/user/profile/${userData?.userName}`)
-        }} tabIndex={0} src={
-          userData?.profile?.image
-        } alt="" />
+        }} tabIndex={0} src={"/core/panel/user/profile/picture"} alt="" />
         <span>{userData?.name?.first} {userData?.name?.last}</span>
         <div onClick={() => {
           setLauncherSlideOutVisible(false)
@@ -203,11 +201,9 @@ const Panel: React.FC<IPanel> = () => {
       <Icon name="browser-16" className={styles.trayIcon} color={"var(--app-panel-fg)"} />
     </div> */}
     <div className={styles.account}>
-      <img onClick={() => {
+      <AuthenticatedImg onClick={() => {
         setAccountDropdownVisible(!accountDropdownVisible)
-      }} tabIndex={0} src={
-        userData?.profile?.image
-      } alt="" />
+      }} tabIndex={0} src={"/core/panel/user/profile/picture"} alt="" />
       <div style={{
         width: "100vw",
         transition: "var(--transition)",

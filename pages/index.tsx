@@ -23,7 +23,7 @@ const Home: NextPageWithLayout = () => {
           </div>
         </div>
         <div>
-          <h1>Your Dash</h1>
+          <h1>YourDash</h1>
           <p>The home for your files.</p>
           <div>
             <Button

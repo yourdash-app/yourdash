@@ -1,12 +1,23 @@
 import path from "path";
 import fs from "fs";
 import includedApps from "./../../releaseData/includedApps.js";
-import { log } from "../../libServer.js";
+import { log, resizeBase64Image } from "../../libServer.js";
 let module = {
     name: "store",
     load(app, api) {
         app.get(`${api.ModulePath(this)}/included/apps`, (req, res) => {
-            return res.json(includedApps);
+            let output = includedApps.map((app) => {
+                delete app.icon.launcher;
+                delete app.icon.quickShortcut;
+                return resizeBase64Image(96, 96, app.icon.store).then((image) => {
+                    app.icon.store = image;
+                    return app;
+                });
+            });
+            Promise.all(output)
+                .then((resp) => {
+                res.json(resp);
+            });
         });
         app.get(`${api.ModulePath(this)}/application/:applicationId`, (req, res) => {
             if (!fs.existsSync(path.resolve(`${api.FsOrigin}/installed_apps.json`))) {

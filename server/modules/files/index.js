@@ -21,8 +21,8 @@ let module = {
             });
         });
         app.get(`${api.ModulePath(this)}/sidebar/categories`, (req, res) => {
-            if (!fs.existsSync(path.resolve(`${api.UserAppData(req)}/files/`))) {
-                fs.mkdir(path.resolve(`${api.UserAppData(req)}/files/`), {
+            if (!fs.existsSync(path.resolve(`${api.UserAppData(req)}/files/`)))
+                return fs.mkdir(path.resolve(`${api.UserAppData(req)}/files/`), {
                     recursive: true
                 }, (err) => {
                     if (err) {
@@ -31,14 +31,16 @@ let module = {
                             error: true
                         });
                     }
-                    res.json([]);
+                    return res.json([]);
                 });
-            }
             return res.json({
                 error: true
             });
         });
         app.get(`${api.ModulePath(this)}/sidebar/set/default`, (req, res) => {
+            res.json({
+                error: true
+            });
         });
     },
     install() { },

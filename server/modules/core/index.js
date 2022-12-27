@@ -1,8 +1,9 @@
 import fs from 'fs';
 import path from 'path';
 import { generateRandomStringOfLength } from '../../encryption.js';
-import { log, returnBase64Image } from '../../libServer.js';
+import { base64FromBufferImage, bufferFromBase64Image, log, returnBase64Image } from '../../libServer.js';
 import includedApps from '../../releaseData/includedApps.js';
+import sharp from 'sharp';
 const Module = {
     name: 'core',
     load(app, api) {
@@ -179,6 +180,31 @@ const Module = {
                     }));
                 });
             }
+        });
+        app.get(`${api.ModulePath(this)}/panel/user/profile/picture`, (req, res) => {
+            fs.readFile(`${api.UserFs(req)}/user.json`, (err, data) => {
+                if (err) {
+                    log(`ERROR: unable to read user.json`);
+                    return res.json({
+                        error: true
+                    });
+                }
+                let json = JSON.parse(data.toString());
+                let originalProfileImage = json.profile.image;
+                let resizedImage = sharp(bufferFromBase64Image(originalProfileImage));
+                resizedImage.resize(64, 64).toBuffer((err, buf) => {
+                    if (err) {
+                        console.log(err);
+                        log(`ERROR: unable to resize image`);
+                        return res.json({
+                            error: true
+                        });
+                    }
+                    return res.json({
+                        image: base64FromBufferImage(buf)
+                    });
+                });
+            });
         });
         app.get(`${api.ModulePath(this)}/instance/installed/apps`, (_req, res) => {
             if (!fs.existsSync(path.resolve(`${api.FsOrigin}/installed_apps.json`))) {
