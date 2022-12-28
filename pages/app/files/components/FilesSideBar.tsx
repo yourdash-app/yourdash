@@ -20,8 +20,9 @@ const FilesSideBar: React.FC<IFilesSideBar> = () => {
   useEffect(() => {
     verifyAndReturnJson(
       SERVER.get(`/files/sidebar/categories`),
-      (data: SideBarCategory[]) => {
-        setCategories(data)
+      (data: { categories: SideBarCategory[] }) => {
+        console.log(data)
+        setCategories(data.categories)
       },
       () => {
         return console.error("unable to fetch sidebar categories")
@@ -33,29 +34,32 @@ const FilesSideBar: React.FC<IFilesSideBar> = () => {
     <div className={styles.dirShortcuts}>
       {
         categories.length !== 0 ?
-          categories.map((category) => {
-            return <>
+          categories.map((category: SideBarCategory, ind) => {
+            return <React.Fragment key={ind}>
               <h3>{category.title}</h3>
               <ul>
                 {
-                  category.children.map((child) => {
-                    <li onClick={() => {
-                      router.push(`/app/files/p/${child.path}`)
-                    }}>
+                  category.children.map((child, ind) => {
+                    return <li
+                      key={ind}
+                      onClick={() => {
+                        router.push(`/app/files/p/${child.path}`)
+                      }}>
                       <span>{child.title}</span>
-                      <DropdownMenu items={[ {
-                        name: "Remove from 'Quick actions'",
-                        onClick: () => {
-                          console.log(`IMPLEMENT ME!!!!`)
-                        }
-                      } ]}>
+                      <DropdownMenu
+                        items={[ {
+                          name: "Remove from 'Quick actions'",
+                          onClick: () => {
+                            console.log(`IMPLEMENT ME!!!!`)
+                          }
+                        } ]}>
                         <IconButton icon="three-bars-16" onClick={() => { }} />
                       </DropdownMenu>
                     </li>
                   })
                 }
               </ul>
-            </>
+            </React.Fragment>
           })
           : <Card className={styles.dirShortcutsMessage}>
             <h1>Oh no!</h1>
@@ -63,16 +67,8 @@ const FilesSideBar: React.FC<IFilesSideBar> = () => {
             <Button onClick={() => {
               verifyAndReturnJson(
                 SERVER.get(`/files/sidebar/set/default`),
-                () => {
-                  verifyAndReturnJson(
-                    SERVER.get(`/files/sidebar/categories`),
-                    (data: SideBarCategory[]) => {
-                      setCategories(data)
-                    },
-                    () => {
-                      return console.error("unable to fetch sidebar categories")
-                    }
-                  )
+                (res) => {
+                  setCategories(res.categories)
                 },
                 () => {
                   return console.error("unable to reset sidebar categories")

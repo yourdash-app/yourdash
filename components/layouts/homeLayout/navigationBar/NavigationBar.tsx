@@ -30,7 +30,7 @@ const NavigationBar: React.FC<INavigationBar> = () => {
         ? <ButtonLink href="/login/" vibrant>Login</ButtonLink>
         : <>
           <ButtonLink href="/app/dash" vibrant>Open</ButtonLink>
-          <AuthenticatedImg src="" />
+          <AuthenticatedImg src="/core/panel/user/profile/picture" />
         </>
       }
     </div>

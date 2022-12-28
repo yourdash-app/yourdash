@@ -21,8 +21,8 @@ let module = {
             });
         });
         app.get(`${api.ModulePath(this)}/sidebar/categories`, (req, res) => {
-            if (!fs.existsSync(path.resolve(`${api.UserAppData(req)}/files/`)))
-                return fs.mkdir(path.resolve(`${api.UserAppData(req)}/files/`), {
+            if (!fs.existsSync(path.resolve(`${api.UserAppData(req)}/files/sidebar`)))
+                return fs.mkdir(path.resolve(`${api.UserAppData(req)}/files/sidebar`), {
                     recursive: true
                 }, (err) => {
                     if (err) {
@@ -33,13 +33,53 @@ let module = {
                     }
                     return res.json([]);
                 });
-            return res.json({
-                error: true
+            fs.readFile(path.resolve(`${api.UserAppData(req)}/files/sidebar/categories.json`), (err, data) => {
+                if (err) {
+                    log(`ERROR: couldn't read ${api.UserAppData(req)}/files/sidebar/categories.json`);
+                    return res.json({
+                        error: true
+                    });
+                }
+                let json = JSON.parse(data.toString());
+                return res.json({
+                    categories: json
+                });
             });
         });
         app.get(`${api.ModulePath(this)}/sidebar/set/default`, (req, res) => {
-            res.json({
-                error: true
+            const defaultCategories = [
+                {
+                    title: "Quick Access",
+                    children: [
+                        {
+                            title: "Home",
+                            path: "/"
+                        }
+                    ]
+                }
+            ];
+            if (!fs.existsSync(path.resolve(`${api.UserAppData(req)}/files/sidebar`)))
+                return fs.mkdir(path.resolve(`${api.UserAppData(req)}/files/sidebar`), {
+                    recursive: true
+                }, (err) => {
+                    if (err) {
+                        log(`ERROR: unable to make directory: ${api.UserAppData(req)}/files/`);
+                        return res.json({
+                            error: true
+                        });
+                    }
+                    return res.json([]);
+                });
+            fs.writeFile(path.resolve(`${api.UserAppData(req)}/files/sidebar/categories.json`), JSON.stringify(defaultCategories), (err) => {
+                if (err) {
+                    log(`ERROR: unable to write the defaults to ${path.resolve(`${api.UserAppData(req)}/files/sidebar/categories.json`)}`);
+                    return res.json({
+                        error: true
+                    });
+                }
+                return res.json({
+                    categories: defaultCategories
+                });
             });
         });
     },

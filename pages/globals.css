@@ -1,6 +1,6 @@
 :root {
-  --app-background: url(./../public/background.jpg);
-  /* --app-background: url(https://picsum.photos/3840/2160?random); */
+  /* --app-background: url(./../public/background.jpg); */
+  --app-background: url(https://picsum.photos/3840/2160?random);
   --background-color: #272727;
   --transition: all 100ms ease-in-out;
 

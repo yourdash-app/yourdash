@@ -1,5 +1,7 @@
 .root {
   transition: all 500ms ease-in-out;
+  position: absolute;
+  width: 100%;
 
   >section {
     @keyframes fadeIn {

@@ -39,7 +39,7 @@ const StoreProduct: NextPageWithLayout = () => {
   return (
     <div className={styles.root} style={
       {
-        translate: pageChanging ? "100%" : "0",
+        left: pageChanging ? "100%" : "0",
         opacity: pageChanging ? "0" : "1"
       }
     }>
