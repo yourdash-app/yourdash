@@ -7,14 +7,29 @@
 }
 
 .card {
+  @keyframes fadeIn {
+    from {
+      opacity: 0%;
+    }
+
+    to {
+      opacity: 100%;
+    }
+  }
+
+  opacity: 0%;
+  animation: 500ms 100ms ease-in-out fadeIn forwards;
   border: solid 0.125rem var(--card-bg);
   cursor: pointer;
+
   &:hover {
     border: solid 0.125rem #ffffff55;
   }
+
   display: flex;
   align-items: center;
-  > div {
+
+  >div {
     display: flex;
     align-items: center;
   }
@@ -34,4 +49,19 @@
 .cardDescription {
   margin: 0;
   font-size: 1.25rem;
+}
+
+.carousel {
+  @keyframes fadeIn {
+    from {
+      opacity: 0%;
+    }
+
+    to {
+      opacity: 100%;
+    }
+  }
+
+  opacity: 0%;
+  animation: 500ms 100ms ease-in-out fadeIn forwards;
 }

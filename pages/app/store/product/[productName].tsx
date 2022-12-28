@@ -19,6 +19,7 @@ const StoreProduct: NextPageWithLayout = () => {
     name: "undefined"
   } as InstalledApplication & { uninstallable: boolean, installed: boolean })
   const [ showInstallationPopup, setShowInstallationPopup ] = useState(false)
+  const [ pageChanging, setPageChanging ] = useState(false)
 
   useEffect(() => {
     if (!productId) return
@@ -29,15 +30,20 @@ const StoreProduct: NextPageWithLayout = () => {
         setProduct(json)
       },
       () => {
-        console.error(`ERROR: couldn't fetch product infomation`)
+        console.error(`ERROR: couldn't fetch product information`)
       }
     )
   }, [ productId ])
 
   if (product.name === "undefined") return <></>
   return (
-    <div className={styles.root}>
-      <Carousel>
+    <div className={styles.root} style={
+      {
+        translate: pageChanging ? "100%" : "0",
+        opacity: pageChanging ? "0" : "1"
+      }
+    }>
+      <Carousel className={styles.carousel}>
         <div style={{
           backgroundImage: `url('/background.jpg')`,
           backgroundPosition: "center",
@@ -46,11 +52,13 @@ const StoreProduct: NextPageWithLayout = () => {
         </div>
       </Carousel>
       <div className={styles.installationPopup} style={{
-        display: showInstallationPopup ? "flex" : "none",
+        opacity: showInstallationPopup ? "1" : "0",
+        pointerEvents: showInstallationPopup ? "all" : "none",
+        scale: showInstallationPopup ? "1" : "0.75"
       }}>
         <div>
           <div className={styles.installationPopupImgContainer}>
-            <img src={product?.icon?.store} alt="" />
+            <img src={product?.icon} alt="" />
             <div></div>
           </div>
           <ColContainer className={styles.installationPopupContent}>
@@ -75,7 +83,7 @@ const StoreProduct: NextPageWithLayout = () => {
               </ul>
             </ColContainer>
             <Button onClick={() => {
-
+              console.log(`IMPLEMENT ME!!!!`)
             }} vibrant>
               Approve installation
             </Button>
@@ -92,9 +100,13 @@ const StoreProduct: NextPageWithLayout = () => {
           icon='arrow-left-16'
           color="var(--container-fg)"
           onClick={() => {
-            router.push("/app/store")
+            setPageChanging(true)
+            router.prefetch("/app/store")
+            setTimeout(() => {
+              router.push("/app/store")
+            }, 600)
           }} />
-        <img src={product?.icon?.store} alt="" />
+        <img src={product?.icon} alt="" />
         <h2>{product.name}</h2>
         <Button onClick={() => {
           if (!product.installed) {

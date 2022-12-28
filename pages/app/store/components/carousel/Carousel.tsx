@@ -2,11 +2,12 @@ import React, { useEffect, useRef, useState } from "react"
 import Icon from "../../../../../components/elements/icon/Icon"
 import styles from "./Carousel.module.scss"
 
-export interface ICarousel {
-  children: React.ReactChild[] | React.ReactChild
+export interface ICarousel extends React.ComponentPropsWithoutRef<"div"> {
+  children: React.ReactChild[] | React.ReactChild,
+  className?: string,
 }
 
-const Carousel: React.FC<ICarousel> = ({ children }) => {
+const Carousel: React.FC<ICarousel> = ({ children, className, ...extraProps }) => {
   const pageRef = useRef<HTMLDivElement>(null)
   const [ indicator, setIndicator ] = useState(<></>)
   const [ scrollEvents, setScrollEvents ] = useState(0)
@@ -36,7 +37,7 @@ const Carousel: React.FC<ICarousel> = ({ children }) => {
     )
   }, [ pageRef, children, scrollEvents ])
 
-  return <div className={styles.component}>
+  return <div {...extraProps} className={`${styles.component} ${className}`}>
     <div className={styles.main} ref={pageRef} onScroll={() => setScrollEvents(scrollEvents + 1)}>
       {
         children

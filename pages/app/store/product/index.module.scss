@@ -1,5 +1,19 @@
 .root {
+  transition: all 500ms ease-in-out;
+
   >section {
+    @keyframes fadeIn {
+      from {
+        opacity: 0%;
+      }
+
+      to {
+        opacity: 100%;
+      }
+    }
+
+    opacity: 0%;
+    animation: 500ms 100ms ease-in-out fadeIn forwards;
     padding-left: 15rem;
     padding-right: 15rem;
     transition: var(--transition);
@@ -61,33 +75,68 @@
   translate: -50% -50%;
   height: 60vh;
   width: calc(100% - 10rem);
-  align-items: center;
-  justify-content: center;
   z-index: 2;
   background-color: var(--card-bg);
   box-sizing: border-box;
   border-radius: 1.5rem;
   box-shadow: 0 0 1rem #00000088;
+  transition: var(--transition);
+
+  @media (max-width: 1000px) {
+    width: calc(75% - 10rem);
+    height: 75vh;
+  }
+
+  @media (max-width: 700px) {
+    width: calc(85% - 8rem);
+    height: 70vh;
+  }
+
+  @media (max-width: 500px) {
+    width: calc(95% - 5rem);
+    height: 85vh;
+  }
 
   >div {
     display: grid;
     grid-template-columns: auto 1fr;
     height: 100%;
     width: 100%;
-    place-content: center;
     position: relative;
     gap: 2rem;
-    padding-left: 3rem;
-    padding-right: 3rem;
+    padding: 3rem;
+    box-sizing: border-box;
+
+    @media (max-width: 1000px) {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto 1fr;
+      padding: 2rem;
+    }
 
     >.installationPopupImgContainer {
+      padding: 2rem;
+      padding-left: 0;
       display: flex;
+      position: relative;
+      align-items: center;
+      justify-content: center;
+
+      @media (max-width: 1000px) {
+        padding-left: 2rem;
+      }
 
       >img {
+        aspect-ratio: 1 / 1;
         height: 30vh;
-        padding: 2rem;
-        position: relative;
-        padding-left: 0;
+
+        @media (max-width: 1000px) {
+          height: 20vh;
+        }
+
+        @media (max-width: 700px) {
+          height: auto;
+          width: 75%;
+        }
       }
 
       >div {
@@ -95,6 +144,15 @@
         height: 100%;
         background-color: var(--container-separator);
         border-radius: 10rem;
+        position: absolute;
+        top: 0;
+        right: 0;
+
+        @media (max-width: 1000px) {
+          top: 100%;
+          height: 0.25rem;
+          width: 100%;
+        }
       }
     }
 
@@ -131,6 +189,7 @@
             color: var(--card-fg);
             margin: 0;
             padding-left: 0.5rem;
+            margin-bottom: 0.25rem;
           }
         }
       }
@@ -145,4 +204,20 @@
       margin: 1.5rem;
     }
   }
+}
+
+
+.carousel {
+  @keyframes fadeIn {
+    from {
+      opacity: 0%;
+    }
+
+    to {
+      opacity: 100%;
+    }
+  }
+
+  opacity: 0%;
+  animation: 500ms 100ms ease-in-out fadeIn forwards;
 }
