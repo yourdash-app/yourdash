@@ -10,7 +10,8 @@
   border-radius: var(--right-click-menu-rounding);
   padding: 0.3rem;
   box-shadow: 0 0 1rem #00000088;
-  > li {
+
+  >div {
     border-radius: calc(calc(var(--right-click-menu-rounding) - 0.3rem) / 2);
     display: flex;
     margin-bottom: 0.2rem;
@@ -20,31 +21,32 @@
     color: var(--button-fg);
     width: 100%;
     box-sizing: border-box;
+
     &:hover {
       background-color: var(--button-hover-bg);
       color: var(--button-hover-fg);
     }
+
     &:active {
       background-color: var(--button-active-bg);
       color: var(--button-active-fg);
     }
+
     cursor: pointer;
-    > span:first-child {
+
+    >span:first-child {
       margin-right: auto;
     }
+
     &:first-child {
-      border-radius: calc(var(--right-click-menu-rounding) - 0.3rem)
-        calc(var(--right-click-menu-rounding) - 0.3rem)
-        calc(calc(var(--right-click-menu-rounding) - 0.3rem) / 2)
-        calc(calc(var(--right-click-menu-rounding) - 0.3rem) / 2);
+      border-radius: calc(var(--right-click-menu-rounding) - 0.3rem) calc(var(--right-click-menu-rounding) - 0.3rem) calc(calc(var(--right-click-menu-rounding) - 0.3rem) / 2) calc(calc(var(--right-click-menu-rounding) - 0.3rem) / 2);
     }
+
     &:last-child {
-      border-radius: calc(calc(var(--right-click-menu-rounding) - 0.3rem) / 2)
-        calc(calc(var(--right-click-menu-rounding) - 0.3rem) / 2)
-        calc(var(--right-click-menu-rounding) - 0.3rem)
-        calc(var(--right-click-menu-rounding) - 0.3rem);
+      border-radius: calc(calc(var(--right-click-menu-rounding) - 0.3rem) / 2) calc(calc(var(--right-click-menu-rounding) - 0.3rem) / 2) calc(var(--right-click-menu-rounding) - 0.3rem) calc(var(--right-click-menu-rounding) - 0.3rem);
       margin-bottom: 0rem;
     }
+
     &:first-child:last-child {
       border-radius: calc(var(--right-click-menu-rounding) - 0.3rem);
     }

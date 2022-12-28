@@ -5,6 +5,18 @@ import { log } from "../../libServer.js";
 import YourDashModule from "../../module.js";
 import fs from "fs"
 
+const defaultCategories: SideBarCategory[] = [
+  {
+    title: "Quick Access",
+    children: [
+      {
+        title: "Home",
+        path: "/"
+      }
+    ]
+  }
+]
+
 let module: YourDashModule = {
   name: "files",
   load(app, api) {
@@ -23,6 +35,7 @@ let module: YourDashModule = {
         })
       })
     });
+
     app.get(`${api.ModulePath(this)}/sidebar/categories`, (req, res) => {
       if (!fs.existsSync(path.resolve(`${api.UserAppData(req)}/files/sidebar`)))
         return fs.mkdir(
@@ -37,9 +50,16 @@ let module: YourDashModule = {
                 error: true
               })
             }
-            return res.json([])
+            return res.json({
+              categories: []
+            })
           }
         )
+
+      if (!fs.existsSync(path.resolve(`${api.UserAppData(req)}/files/sidebar/categories.json`)))
+        return res.json({
+          categories: []
+        })
 
       fs.readFile(path.resolve(`${api.UserAppData(req)}/files/sidebar/categories.json`), (err, data) => {
         if (err) {
@@ -56,17 +76,6 @@ let module: YourDashModule = {
     });
 
     app.get(`${api.ModulePath(this)}/sidebar/set/default`, (req, res) => {
-      const defaultCategories: SideBarCategory[] = [
-        {
-          title: "Quick Access",
-          children: [
-            {
-              title: "Home",
-              path: "/"
-            }
-          ]
-        }
-      ]
       if (!fs.existsSync(path.resolve(`${api.UserAppData(req)}/files/sidebar`)))
         return fs.mkdir(
           path.resolve(`${api.UserAppData(req)}/files/sidebar`),

@@ -21,7 +21,6 @@ const FilesSideBar: React.FC<IFilesSideBar> = () => {
     verifyAndReturnJson(
       SERVER.get(`/files/sidebar/categories`),
       (data: { categories: SideBarCategory[] }) => {
-        console.log(data)
         setCategories(data.categories)
       },
       () => {
@@ -43,14 +42,22 @@ const FilesSideBar: React.FC<IFilesSideBar> = () => {
                     return <li
                       key={ind}
                       onClick={() => {
-                        router.push(`/app/files/p/${child.path}`)
+                        router.push(`/app/files/p${child.path}`)
                       }}>
                       <span>{child.title}</span>
                       <DropdownMenu
                         items={[ {
                           name: "Remove from 'Quick actions'",
                           onClick: () => {
-                            console.log(`IMPLEMENT ME!!!!`)
+                            verifyAndReturnJson(
+                              SERVER.delete(`/files/sidebar/category/${ind}`),
+                              (res) => {
+                                setCategories(res)
+                              },
+                              () => {
+                                return console.error(`unable to delete sidebar category ${ind}`)
+                              }
+                            )
                           }
                         } ]}>
                         <IconButton icon="three-bars-16" onClick={() => { }} />

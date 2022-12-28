@@ -43,7 +43,9 @@ export function base64FromBufferImage(img: Buffer): string {
 export function resizeBase64Image(width: number, height: number, image: string): Promise<string> {
   return new Promise((resolve, reject) => {
     let resizedImage = sharp(bufferFromBase64Image(image))
-    resizedImage.resize(width, height).toBuffer((err, buf) => {
+    resizedImage.resize(width, height, {
+      kernel: "mitchell",
+    }).toBuffer((err, buf) => {
       if (err) {
         console.log(err)
         log(`ERROR: unable to resize image`)

@@ -1,6 +1,17 @@
 import path from "path";
 import { log } from "../../libServer.js";
 import fs from "fs";
+const defaultCategories = [
+    {
+        title: "Quick Access",
+        children: [
+            {
+                title: "Home",
+                path: "/"
+            }
+        ]
+    }
+];
 let module = {
     name: "files",
     load(app, api) {
@@ -31,7 +42,13 @@ let module = {
                             error: true
                         });
                     }
-                    return res.json([]);
+                    return res.json({
+                        categories: []
+                    });
+                });
+            if (!fs.existsSync(path.resolve(`${api.UserAppData(req)}/files/sidebar/categories.json`)))
+                return res.json({
+                    categories: []
                 });
             fs.readFile(path.resolve(`${api.UserAppData(req)}/files/sidebar/categories.json`), (err, data) => {
                 if (err) {
@@ -47,17 +64,6 @@ let module = {
             });
         });
         app.get(`${api.ModulePath(this)}/sidebar/set/default`, (req, res) => {
-            const defaultCategories = [
-                {
-                    title: "Quick Access",
-                    children: [
-                        {
-                            title: "Home",
-                            path: "/"
-                        }
-                    ]
-                }
-            ];
             if (!fs.existsSync(path.resolve(`${api.UserAppData(req)}/files/sidebar`)))
                 return fs.mkdir(path.resolve(`${api.UserAppData(req)}/files/sidebar`), {
                     recursive: true

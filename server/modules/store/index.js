@@ -31,10 +31,19 @@ let module = {
                         });
                     let json = defaultApps;
                     let result = includedApps.find((obj) => obj.name === req.params.applicationId);
-                    return res.json({
-                        ...result,
-                        installed: includedApps.filter((app) => json.includes(app.name)).find((obj) => obj.name === req.params.applicationId) !== undefined,
-                        uninstallable: (result?.name !== "dash") && (result?.name !== "store") && (result?.name !== "settings") && (result?.name !== "files")
+                    if (!result) {
+                        log(`ERROR: no store product found named: ${req.params.applicationId}`);
+                        return res.json({
+                            error: true
+                        });
+                    }
+                    resizeBase64Image(352, 352, result.icon).then((icon) => {
+                        return res.json({
+                            ...result,
+                            installed: includedApps.filter((app) => json.includes(app.name)).find((obj) => obj.name === req.params.applicationId) !== undefined,
+                            icon: icon,
+                            uninstallable: (result?.name !== "dash") && (result?.name !== "store") && (result?.name !== "settings") && (result?.name !== "files")
+                        });
                     });
                 });
             }
@@ -48,7 +57,7 @@ let module = {
                 let json = JSON.parse(data.toString());
                 let result = includedApps.find((obj) => obj.name === req.params.applicationId);
                 if (!result) {
-                    log(`ERROR: no store product found for ${req.params.applicationId}`);
+                    log(`ERROR: no store product found named: ${req.params.applicationId}`);
                     return res.json({
                         error: true
                     });
