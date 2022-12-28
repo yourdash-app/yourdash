@@ -10,6 +10,7 @@ import InstalledApplication from '../../../../types/store/installedApplication';
 import Button from '../../../../components/elements/button/Button';
 import Card from '../../../../components/containers/card/Card';
 import ColContainer from '../../../../components/containers/ColContainer/ColContainer';
+import Icon from '../../../../components/elements/icon/Icon';
 
 const StoreProduct: NextPageWithLayout = () => {
   const router = useRouter()
@@ -20,6 +21,7 @@ const StoreProduct: NextPageWithLayout = () => {
   } as InstalledApplication & { uninstallable: boolean, installed: boolean })
   const [ showInstallationPopup, setShowInstallationPopup ] = useState(false)
   const [ pageChanging, setPageChanging ] = useState(false)
+  const [ installationError, setInstallationError ] = useState(false)
 
   useEffect(() => {
     if (!productId) return
@@ -51,6 +53,25 @@ const StoreProduct: NextPageWithLayout = () => {
         }}>
         </div>
       </Carousel>
+      {
+        installationError
+          ? <Card className={styles.installationError}>
+            <ColContainer>
+              <Icon color="var(--card-fg)" name="server-error"></Icon>
+              <h3>Error</h3>
+              <p>
+                The application was not installed!
+              </p>
+              <Button
+                onClick={() => {
+                  setInstallationError(false)
+                }}>
+                Ok
+              </Button>
+            </ColContainer>
+          </Card>
+          : null
+      }
       <div className={styles.installationPopup} style={{
         opacity: showInstallationPopup ? "1" : "0",
         pointerEvents: showInstallationPopup ? "all" : "none",
@@ -83,25 +104,35 @@ const StoreProduct: NextPageWithLayout = () => {
               </ul>
             </ColContainer>
             <Button onClick={() => {
-              verifyAndReturnJson(
-                SERVER.post(`/store/application/${productId}/install`, {
-                  body: JSON.stringify({
-                    product: productId
-                  })
-                }),
-                (data) => {
-                  if (data.installed)
-                    return setProduct(
-                      {
-                        ...product,
-                        installed: true
-                      }
-                    )
-                },
-                () => {
-                  console.error(`ERROR: couldn't install product`)
-                }
-              )
+              if (product.installed) {
+                return
+              } else {
+                verifyAndReturnJson(
+                  SERVER.post(`/store/application/${productId}/install`, {
+                    body: JSON.stringify({
+                      product: productId
+                    })
+                  }),
+                  (data) => {
+                    if (data.installed) {
+                      setProduct(
+                        {
+                          ...product,
+                          installed: true
+                        }
+                      )
+                      setShowInstallationPopup(false)
+                      router.reload()
+                    } else {
+                      setInstallationError(true)
+                      setShowInstallationPopup(false)
+                    }
+                  },
+                  () => {
+                    console.error(`ERROR: couldn't install product`)
+                  }
+                )
+              }
             }} vibrant>
               Approve installation
             </Button>
@@ -129,6 +160,30 @@ const StoreProduct: NextPageWithLayout = () => {
         <Button onClick={() => {
           if (!product.installed) {
             setShowInstallationPopup(true)
+          } else {
+            verifyAndReturnJson(
+              SERVER.delete(`/store/application/${productId}`),
+              (data) => {
+                if (data.installed) {
+                  setInstallationError(true)
+                  setProduct({
+                    ...product,
+                    installed: data.installed
+                  })
+                } else {
+                  setInstallationError(false)
+                  setProduct({
+                    ...product,
+                    installed: data.installed
+                  })
+                  router.reload()
+                }
+              },
+              () => {
+                return setInstallationError(false)
+              }
+            )
+
           }
         }}>
           {product.installed ? product.uninstallable ? "Uninstall" : "Forcefully installed by the server" : "Install"}

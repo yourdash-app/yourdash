@@ -133,6 +133,23 @@ let module: YourDashModule = {
     app.post(`${api.ModulePath(this)}/application/:applicationId/install`, (req, res) => {
       if (!fs.existsSync(path.resolve(`${api.FsOrigin}/installed_apps.json`))) {
         let defaultApps = [ "dash", "store", "settings", "files" ]
+
+        let json = defaultApps as string[]
+        json.push(req.params.applicationId)
+        fs.writeFile(path.resolve(`${api.FsOrigin}/installed_apps.json`), JSON.stringify(json), (err) => {
+          if (err) {
+            log(`ERROR: couldn't write installed_apps.json`)
+            return res.json(
+              {
+                error: true
+              }
+            )
+          }
+          return res.json({
+            installed: includedApps.filter((app) => json.includes(app.name)).find((obj) => obj.name === req.params.applicationId) !== undefined
+          })
+        })
+
         fs.writeFile(
           path.resolve(`${api.FsOrigin}/installed_apps.json`),
           JSON.stringify([
@@ -142,9 +159,6 @@ let module: YourDashModule = {
             if (err) return res.json({
               error: true
             });
-            return res.json(
-              defaultApps
-            );
           }
         );
       }
@@ -166,9 +180,42 @@ let module: YourDashModule = {
               }
             )
           }
+          return res.json({
+            installed: includedApps.filter((app) => json.includes(app.name)).find((obj) => obj.name === req.params.applicationId) !== undefined
+          })
         })
+      })
+    })
+
+    app.delete(`${api.ModulePath(this)}/application/:applicationId`, (req, res) => {
+      if (!fs.existsSync(path.resolve(`${api.FsOrigin}/installed_apps.json`))) {
+        log(`ERROR: unable to uninstall an application which was not already installed`)
         return res.json({
-          installed: includedApps.filter((app) => json.includes(app.name)).find((obj) => obj.name === req.params.applicationId) !== undefined
+          error: true
+        })
+      }
+      fs.readFile(path.resolve(`${api.FsOrigin}/installed_apps.json`), (err, data) => {
+        if (err) {
+          log("ERROR: couldn't read installed_apps.json")
+          return res.json({
+            error: true
+          })
+        }
+
+        let json = JSON.parse(data.toString()) as string[]
+        json = json.filter((app) => app !== req.params.applicationId)
+        fs.writeFile(path.resolve(`${api.FsOrigin}/installed_apps.json`), JSON.stringify(json), (err) => {
+          if (err) {
+            log(`ERROR: couldn't write installed_apps.json`)
+            return res.json(
+              {
+                error: true
+              }
+            )
+          }
+          return res.json({
+            installed: includedApps.filter((app) => json.includes(app.name)).find((obj) => obj.name === req.params.applicationId) !== undefined
+          })
         })
       })
     })
