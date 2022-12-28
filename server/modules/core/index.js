@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { generateRandomStringOfLength } from '../../encryption.js';
-import { base64FromBufferImage, bufferFromBase64Image, log, returnBase64Image } from '../../libServer.js';
+import { base64FromBufferImage, bufferFromBase64Image, log, resizeBase64Image, returnBase64Image } from '../../libServer.js';
 import includedApps from '../../includedApps.js';
 import sharp from 'sharp';
 const Module = {
@@ -38,20 +38,30 @@ const Module = {
                         }
                         let json = [];
                         let id = generateRandomStringOfLength(32);
-                        json.push({
-                            name: req.body.name || "undefined",
-                            icon: req.body.icon || returnBase64Image(path.resolve(`${api.FsOrigin}/../yourdash256.png`)),
-                            id: id,
-                            url: req.body.url || '/app/dash'
-                        });
-                        fs.writeFile(path.resolve(`${api.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`), JSON.stringify(json), (err) => {
-                            if (err) {
-                                log(`ERROR ${err}`);
-                                return res.json({
-                                    error: true
-                                });
-                            }
-                            return res.json(json.filter((shortcut) => shortcut.id === id));
+                        let includedApplication = includedApps.find((app) => app.name === req.body.name);
+                        if (!includedApplication) {
+                            log(`Can't create quick shortcut for unknown application: ${req.body.name}`);
+                            return res.json({
+                                error: true
+                            });
+                        }
+                        resizeBase64Image(32, 32, includedApplication?.icon || returnBase64Image(path.resolve(`${api.FsOrigin}/../yourdash256.png`)))
+                            .then((image) => {
+                            json.push({
+                                name: req.body.name || "undefined",
+                                icon: image,
+                                id: id,
+                                url: req.body.url || '/app/dash'
+                            });
+                            fs.writeFile(path.resolve(`${api.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`), JSON.stringify(json), (err) => {
+                                if (err) {
+                                    log(`ERROR ${err}`);
+                                    return res.json({
+                                        error: true
+                                    });
+                                }
+                                return res.json(json.filter((shortcut) => shortcut.id === id));
+                            });
                         });
                     });
                 });
@@ -63,20 +73,26 @@ const Module = {
                     }
                     let json = JSON.parse(data.toString());
                     let id = generateRandomStringOfLength(32);
-                    json.push({
-                        name: req.body.name || "undefined",
-                        icon: req.body.icon || returnBase64Image(path.resolve(`${api.FsOrigin}/../yourdash256.png`)),
-                        id: id,
-                        url: req.body.url || '/app/dash'
-                    });
-                    fs.writeFile(path.resolve(`${api.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`), JSON.stringify(json), (err) => {
-                        if (err) {
-                            log(`ERROR ${err}`);
-                            return res.json({
-                                error: true
-                            });
-                        }
-                        res.json(json.filter((shortcut) => shortcut.id === id));
+                    let includedApplication = includedApps.find((app) => app.name === req.body.name);
+                    if (!includedApplication)
+                        return log(`Can't create quick shortcut for unknown application: ${req.body.name}`);
+                    resizeBase64Image(32, 32, includedApplication?.icon || returnBase64Image(path.resolve(`${api.FsOrigin}/../yourdash256.png`)))
+                        .then((image) => {
+                        json.push({
+                            name: req.body.name || "undefined",
+                            icon: image,
+                            id: id,
+                            url: req.body.url || '/app/dash'
+                        });
+                        fs.writeFile(path.resolve(`${api.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`), JSON.stringify(json), (err) => {
+                            if (err) {
+                                log(`ERROR ${err}`);
+                                return res.json({
+                                    error: true
+                                });
+                            }
+                            res.json(json.filter((shortcut) => shortcut.id === id));
+                        });
                     });
                 });
             }
@@ -167,14 +183,20 @@ const Module = {
                     }
                     let json = JSON.parse(data.toString());
                     var result = includedApps.filter((app) => json.includes(app.name)) || [];
-                    return res.json(result.map((item) => {
-                        return {
-                            name: item.name,
-                            icon: item.icon,
-                            displayName: item.displayName,
-                            path: item.path
-                        };
-                    }));
+                    let promises = result.map((item) => {
+                        return resizeBase64Image(128, 128, item.icon)
+                            .then((image) => {
+                            return {
+                                name: item.name,
+                                icon: image,
+                                displayName: item.displayName,
+                                path: item.path
+                            };
+                        });
+                    });
+                    Promise.all(promises).then((resp) => {
+                        res.json(resp);
+                    });
                 });
             }
         });

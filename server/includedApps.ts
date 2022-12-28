@@ -55,6 +55,16 @@ const includedApps: InstalledApplication[] = [
     moduleRequirements: [],
     previewImages: [],
     path: "/app/settings"
+  }, {
+    name: "mastodon",
+    displayName: "Mastodon Client",
+    description: "The YourDash built-in mastodon client",
+    icon: returnBase64Image(path.resolve("./assets/apps/mastodon.png")),
+    author: "Ewsgit",
+    copyright: "MIT",
+    moduleRequirements: [],
+    previewImages: [],
+    path: "/app/mastodon"
   }
 ]
 

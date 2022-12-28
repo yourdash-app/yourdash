@@ -7,8 +7,7 @@
 }
 
 .content {
-  overflow-y: auto;
-  height: 100%;
+  overflow: auto;
+  height: calc(100vh - var(--app-panel-height));
   width: 100%;
-  overflow: hidden;
 }

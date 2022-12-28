@@ -1,9 +1,41 @@
 .root {
   display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+.cardContainer {
+  display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   padding: 1rem;
   gap: 1rem;
   user-select: none;
+  overflow-y: auto;
+  box-sizing: border-box;
+  transition: var(--transition);
+  margin-left: auto;
+  margin-right: auto;
+
+  width: 75%;
+
+  @media (max-width: 1600px) {
+    width: 82.5%;
+  }
+
+  @media (max-width: 1400px) {
+    width: 90%;
+  }
+
+  @media (max-width: 1200px) {
+    width: 100%;
+  }
+
+  @media (max-width: 975px) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media (max-width: 725px) {
+    grid-template-columns: 1fr;
+  }
 }
 
 .card {

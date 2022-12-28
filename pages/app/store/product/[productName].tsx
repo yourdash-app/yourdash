@@ -83,7 +83,25 @@ const StoreProduct: NextPageWithLayout = () => {
               </ul>
             </ColContainer>
             <Button onClick={() => {
-              console.log(`IMPLEMENT ME!!!!`)
+              verifyAndReturnJson(
+                SERVER.post(`/store/application/${productId}/install`, {
+                  body: JSON.stringify({
+                    product: productId
+                  })
+                }),
+                (data) => {
+                  if (data.installed)
+                    return setProduct(
+                      {
+                        ...product,
+                        installed: true
+                      }
+                    )
+                },
+                () => {
+                  console.error(`ERROR: couldn't install product`)
+                }
+              )
             }} vibrant>
               Approve installation
             </Button>
@@ -111,27 +129,6 @@ const StoreProduct: NextPageWithLayout = () => {
         <Button onClick={() => {
           if (!product.installed) {
             setShowInstallationPopup(true)
-
-            // move to the installation popup
-            // verifyAndReturnJson(
-            //   SERVER.post(`/store/application/install`, {
-            //     body: JSON.stringify({
-            //       product: productId
-            //     })
-            //   }),
-            //   (data) => {
-            //     if (data.installed)
-            //       return setProduct(
-            //         {
-            //           ...product,
-            //           installed: true
-            //         }
-            //       )
-            //   },
-            //   () => {
-            //     console.error(`ERROR: couldn't install product`)
-            //   }
-            // )
           }
         }}>
           {product.installed ? product.uninstallable ? "Uninstall" : "Forcefully installed by the server" : "Install"}

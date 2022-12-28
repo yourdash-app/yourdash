@@ -21,11 +21,11 @@ export function log(input: string) {
 }
 
 export function returnBase64Image(path: string) {
-  return "data:image;base64," + fs.readFileSync(path, 'base64');
+  return "data:image/png;base64," + fs.readFileSync(path, 'base64');
 }
 
 export function returnBase64Svg(path: string) {
-  return "data:image;base64," + fs.readFileSync(path, 'base64');
+  return "data:image/svg;base64," + fs.readFileSync(path, 'base64');
 }
 
 export function bufferFromBase64Image(img: string): Buffer | undefined {
@@ -36,20 +36,20 @@ export function bufferFromBase64Image(img: string): Buffer | undefined {
 }
 
 export function base64FromBufferImage(img: Buffer): string {
-  let base64 = "data:image;base64," + img.toString("base64")
+  let base64 = "data:image/png;base64," + img.toString("base64")
   return base64
 }
 
 export function resizeBase64Image(width: number, height: number, image: string): Promise<string> {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     let resizedImage = sharp(bufferFromBase64Image(image))
     resizedImage.resize(width, height, {
-      kernel: "mitchell",
+      kernel: "lanczos3",
     }).toBuffer((err, buf) => {
       if (err) {
         console.log(err)
         log(`ERROR: unable to resize image`)
-        return reject("unable to resize image")
+        return resolve(image)
       }
       return resolve(base64FromBufferImage(buf))
     })

@@ -1,40 +1,33 @@
 # YourDash - The home for your files
 
-[description coming soon]
+Collaborate on projects and sync your files easily using a yourdash instance.
+yourdash instances can be easily setup within a few minutes and require a low level of maintenance while providing fast loading times.
 
-<!-- Collaborate on projects and sync your files easily using a yourdash instance.
-yourdash instances can be easily setup within a few minutes and require a low level of maintenance while providing fast loading times. -->
-
-## Development guide
+## 🧑‍💻 Development guide
 
 during development you will need the latest nodejs LTS release and the yarn package manager.
 
-### Installing dependencies
+ - ### 💾 Installing dependencies
+    - to install the dependencies use this command in the project root folder
+      `
+        yarn
+      `
 
-to install the client dependencies use this command in the project root folder
-`
-yarn
-`
+ - ### 💻 Starting the development servers
+    - to start the web client development server use this command in the project root folder
+      `
+        yarn dev
+      `
 
-to install the instance / server dependencies use this command in the /server/ folder
-`
-yarn
-`
+    - to start the instance / server development server use this command in the /server/ folder
+      `
+        yarn dev
+      `
 
-### Starting the development servers
+## ℹ️ other information
 
-to start the client development server use this command in the project root folder
-`
-yarn dev
-`
+<!-- YourDash is planned to be compatible with the nextcloud dav protocol. (this means that the nextcloud mobile and desktop apps should work with any yourdash server) -->
 
-to start the instance / server development server use this command in the /server/ folder
-`
-yarn dev
-`
+YourDash allows custom theming for each user ( this can be found in the user's settings )
 
-## other information
-
-YourDash is planned to be compatible with the nextcloud dav protocol. (this means that the nextcloud mobile and desktop apps should work with any yourdash server)
-
-Eventually users will be able to load in custom css variable themes, the default theme can be found in globals.css and can be changed with css variables
+YourDash Instance setup scripts will be added here in the future

@@ -1,54 +1,49 @@
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
 export default function ServerSelectionLink() {
-  const searchParams = useSearchParams();
   const router = useRouter();
   useEffect(() => {
-    let hostname = searchParams.get("hostname") as string
+    if (!router.query.hostname) return
+    console.log(router.query.hostname)
+    let hostname = decodeURIComponent(router.query.hostname as string)
     if (!hostname) {
-      router.push("/login/")
-      return
+      router.push("/login")
     }
 
-    // the hostname has been set and now can be used to set the current server if one doesn't already exist.
     if (hostname === "") {
-      router.push("/login/")
-      return
+      router.push("/login")
     }
 
-    if (!hostname.startsWith("https://") && !hostname.startsWith("http://")) {
-      router.push("/login/")
-      return
-    }
-    if (hostname.startsWith("https://.") || hostname.startsWith("http://.")) {
-      router.push("/login/")
-      return
-    }
-    if (!hostname.includes(".")) {
-      router.push("/login/")
-      return
-    }
-    if (hostname.endsWith(".")) {
-      router.push("/login/")
-      return
+    if (!hostname.startsWith("https://") && window.location.port !== "3000") {
+      router.push("/login")
     }
 
-    fetch(hostname + "/test")
+    if (hostname !== "http://localhost") {
+      if (!hostname.includes(".")) {
+        router.push("/login")
+      }
+      if (hostname.endsWith(".")) {
+        router.push("/login")
+      }
+      if (hostname.endsWith("/")) {
+        hostname = hostname.split("/")[ 0 ]
+      }
+    }
+
+    fetch(`${hostname}:3560/test`)
       .then((res) => res.text())
       .then((text) => {
         if (text === "yourdash instance") {
-          localStorage.setItem("currentServer", hostname)
-          router.push("/login/instance")
+          localStorage.setItem("currentServer", `${hostname}:3560`)
+          router.push("/login/server")
         } else {
-          router.push("/login/")
-          return
+          router.push("/login")
         }
       })
       .catch(() => {
-        router.push("/login/")
-        return
+        router.push("/login/server")
       })
-  }, [ router, searchParams ])
+  }, [ router.query ])
   return <h1>Redirecting</h1>
 }

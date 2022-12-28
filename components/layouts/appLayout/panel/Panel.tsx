@@ -35,8 +35,10 @@ const Panel: React.FC<IPanel> = () => {
   useEffect(() => {
     verifyAndReturnJson(
       SERVER.get(`/userManagement/current/user/settings`),
-      (res: YourDashUserSettings) => {
-        document.body.style.setProperty("--app-panel-launcher-grid-columns", res.panel?.launcher?.slideOut?.gridColumns.toString() || "3")
+      (_res: YourDashUserSettings) => {
+
+        // the following is no longer supported
+        // document.body.style.setProperty("--app-panel-launcher-grid-columns", res.panel?.launcher?.slideOut?.gridColumns.toString() || "3")
       },
       () => {
         localStorage.removeItem("sessionToken")
@@ -110,8 +112,7 @@ const Panel: React.FC<IPanel> = () => {
                           SERVER.post(`/core/panel/quick-shortcut/create`, {
                             body: JSON.stringify({
                               name: app.name,
-                              url: app.path,
-                              icon: app.icon
+                              url: app.path
                             })
                           }),
                           () => {
@@ -199,7 +200,20 @@ const Panel: React.FC<IPanel> = () => {
             </RightClickMenu>
           })
           : <Button onClick={() => {
-
+            verifyAndReturnJson(
+              SERVER.post(`/core/panel/quick-shortcut/create`, {
+                body: JSON.stringify({
+                  name: "files",
+                  url: "/app/files"
+                })
+              }),
+              () => {
+                router.reload()
+              },
+              () => {
+                console.error(`unable to create quick shortcut with name: files`)
+              }
+            )
           }}>Add Quick Shortcuts</Button>
       }
     </div>

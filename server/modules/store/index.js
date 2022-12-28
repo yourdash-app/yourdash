@@ -62,7 +62,7 @@ let module = {
                         error: true
                     });
                 }
-                resizeBase64Image(352, 352, result.icon).then((icon) => {
+                resizeBase64Image(284, 284, result.icon).then((icon) => {
                     return res.json({
                         ...result,
                         installed: includedApps.filter((app) => json.includes(app.name)).find((obj) => obj.name === req.params.applicationId) !== undefined,
@@ -111,7 +111,7 @@ let module = {
                 });
             }
         });
-        app.get(`${api.ModulePath(this)}/application/:applicationId/install`, (req, res) => {
+        app.post(`${api.ModulePath(this)}/application/:applicationId/install`, (req, res) => {
             if (!fs.existsSync(path.resolve(`${api.FsOrigin}/installed_apps.json`))) {
                 let defaultApps = ["dash", "store", "settings", "files"];
                 fs.writeFile(path.resolve(`${api.FsOrigin}/installed_apps.json`), JSON.stringify([
@@ -132,11 +132,17 @@ let module = {
                     });
                 }
                 let json = JSON.parse(data.toString());
-                let result = includedApps.find((obj) => obj.name === req.params.applicationId);
+                json.push(req.params.applicationId);
+                fs.writeFile(path.resolve(`${api.FsOrigin}/installed_apps.json`), JSON.stringify(json), (err) => {
+                    if (err) {
+                        log(`ERROR: couldn't write installed_apps.json`);
+                        return res.json({
+                            error: true
+                        });
+                    }
+                });
                 return res.json({
-                    ...result,
-                    installed: includedApps.filter((app) => json.includes(app.name)).find((obj) => obj.name === req.params.applicationId) !== undefined,
-                    uninstallable: (result?.name !== "dash") && (result?.name !== "store") && (result?.name !== "settings") && (result?.name !== "files")
+                    installed: includedApps.filter((app) => json.includes(app.name)).find((obj) => obj.name === req.params.applicationId) !== undefined
                 });
             });
         });

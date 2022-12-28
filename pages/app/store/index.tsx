@@ -26,7 +26,7 @@ const StoreIndex: NextPageWithLayout = () => {
   }, [])
 
   return (
-    <>
+    <div className={styles.root}>
       <Carousel className={styles.carousel}>
         <div style={{
           backgroundImage: `url('/background.jpg')`,
@@ -59,7 +59,7 @@ const StoreIndex: NextPageWithLayout = () => {
         }}>
         </div>
       </Carousel>
-      <main className={styles.root}>
+      <main className={styles.cardContainer}>
         {
           includedApps.map((item, ind) => {
             return <Card key={ind} onClick={() => {
@@ -76,7 +76,7 @@ const StoreIndex: NextPageWithLayout = () => {
           })
         }
       </main>
-    </>
+    </div>
   );
 };
 

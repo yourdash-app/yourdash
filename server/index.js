@@ -186,7 +186,7 @@ startupCheck(() => {
         next();
     });
     app.use(cors({
-        origin: ['http://localhost:3000', 'https://yourdash.vercel.app', 'https://ddsh.vercel.app'],
+        origin: ['http://localhost:3000', 'https://yourdash.vercel.app', 'https://ddsh.vercel.app', '*ewsgit-github.vercel.app'],
     }));
     setInterval(() => {
         console.log('attempting update');

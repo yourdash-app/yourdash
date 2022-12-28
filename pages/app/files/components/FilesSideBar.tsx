@@ -15,7 +15,7 @@ export interface IFilesSideBar {
 
 const FilesSideBar: React.FC<IFilesSideBar> = () => {
   const router = useRouter()
-  const [ categories, setCategories ] = useState([] as SideBarCategory[])
+  const [ categories, setCategories ] = useState(undefined as SideBarCategory[] | undefined)
 
   useEffect(() => {
     verifyAndReturnJson(
@@ -28,6 +28,9 @@ const FilesSideBar: React.FC<IFilesSideBar> = () => {
       }
     )
   }, [])
+
+  if (categories === undefined)
+    return <div className={styles.component}></div>
 
   return <div className={styles.component}>
     <div className={styles.dirShortcuts}>
