@@ -1,6 +1,6 @@
 import path from "path";
 import fs from "fs";
-import includedApps from "./../../releaseData/includedApps.js";
+import includedApps from "../../includedApps.js";
 import { log, resizeBase64Image } from "../../libServer.js";
 let module = {
     name: "store",
@@ -9,8 +9,8 @@ let module = {
             let output = includedApps.map((app) => {
                 delete app.icon.launcher;
                 delete app.icon.quickShortcut;
-                return resizeBase64Image(96, 96, app.icon.store).then((image) => {
-                    app.icon.store = image;
+                return resizeBase64Image(96, 96, app.icon).then((image) => {
+                    app.icon = image;
                     return app;
                 });
             });
@@ -29,7 +29,13 @@ let module = {
                         return res.json({
                             error: true
                         });
-                    return res.json(defaultApps);
+                    let json = defaultApps;
+                    let result = includedApps.find((obj) => obj.name === req.params.applicationId);
+                    return res.json({
+                        ...result,
+                        installed: includedApps.filter((app) => json.includes(app.name)).find((obj) => obj.name === req.params.applicationId) !== undefined,
+                        uninstallable: (result?.name !== "dash") && (result?.name !== "store") && (result?.name !== "settings") && (result?.name !== "files")
+                    });
                 });
             }
             fs.readFile(path.resolve(`${api.FsOrigin}/installed_apps.json`), (err, data) => {
@@ -41,10 +47,19 @@ let module = {
                 }
                 let json = JSON.parse(data.toString());
                 let result = includedApps.find((obj) => obj.name === req.params.applicationId);
-                return res.json({
-                    ...result,
-                    installed: includedApps.filter((app) => json.includes(app.name)).find((obj) => obj.name === req.params.applicationId) !== undefined,
-                    uninstallable: (result?.name !== "dash") && (result?.name !== "store") && (result?.name !== "settings") && (result?.name !== "files")
+                if (!result) {
+                    log(`ERROR: no store product found for ${req.params.applicationId}`);
+                    return res.json({
+                        error: true
+                    });
+                }
+                resizeBase64Image(352, 352, result.icon).then((icon) => {
+                    return res.json({
+                        ...result,
+                        installed: includedApps.filter((app) => json.includes(app.name)).find((obj) => obj.name === req.params.applicationId) !== undefined,
+                        icon: icon,
+                        uninstallable: (result?.name !== "dash") && (result?.name !== "store") && (result?.name !== "settings") && (result?.name !== "files")
+                    });
                 });
             });
         });
@@ -79,7 +94,7 @@ let module = {
                             description: item.description,
                             displayName: item.displayName,
                             icon: {
-                                store: item.icon.store
+                                store: item.icon
                             },
                             path: item.path
                         };

@@ -1,7 +1,7 @@
 import path from "path";
 import YourDashModule from "./../../module.js";
 import fs from "fs"
-import includedApps from "./../../releaseData/includedApps.js"
+import includedApps from "../../includedApps.js"
 import { log, resizeBase64Image } from "../../libServer.js";
 import InstalledApplicationList from "../../../types/store/applicationList.js";
 
@@ -17,8 +17,8 @@ let module: YourDashModule = {
         // @ts-ignore
         delete app.icon.quickShortcut
 
-        return resizeBase64Image(96, 96, app.icon.store).then((image) => {
-          app.icon.store = image
+        return resizeBase64Image(96, 96, app.icon).then((image) => {
+          app.icon = image
           return app
         })
       })
@@ -40,9 +40,13 @@ let module: YourDashModule = {
             if (err) return res.json({
               error: true
             });
-            return res.json(
-              defaultApps
-            );
+            let json = defaultApps
+            let result = includedApps.find((obj) => obj.name === req.params.applicationId)
+            return res.json({
+              ...result,
+              installed: includedApps.filter((app) => json.includes(app.name)).find((obj) => obj.name === req.params.applicationId) !== undefined,
+              uninstallable: (result?.name !== "dash") && (result?.name !== "store") && (result?.name !== "settings") && (result?.name !== "files")
+            })
           }
         );
       }
@@ -55,10 +59,19 @@ let module: YourDashModule = {
         }
         let json = JSON.parse(data.toString()) as string[]
         let result = includedApps.find((obj) => obj.name === req.params.applicationId)
-        return res.json({
-          ...result,
-          installed: includedApps.filter((app) => json.includes(app.name)).find((obj) => obj.name === req.params.applicationId) !== undefined,
-          uninstallable: (result?.name !== "dash") && (result?.name !== "store") && (result?.name !== "settings") && (result?.name !== "files")
+        if (!result) {
+          log(`ERROR: no store product found for ${req.params.applicationId}`)
+          return res.json({
+            error: true
+          })
+        }
+        resizeBase64Image(352, 352, result.icon).then((icon) => {
+          return res.json({
+            ...result,
+            installed: includedApps.filter((app) => json.includes(app.name)).find((obj) => obj.name === req.params.applicationId) !== undefined,
+            icon: icon,
+            uninstallable: (result?.name !== "dash") && (result?.name !== "store") && (result?.name !== "settings") && (result?.name !== "files")
+          })
         })
       })
     })
@@ -98,7 +111,7 @@ let module: YourDashModule = {
                 description: item.description,
                 displayName: item.displayName,
                 icon: {
-                  store: item.icon.store
+                  store: item.icon
                 },
                 path: item.path
               } as InstalledApplicationList

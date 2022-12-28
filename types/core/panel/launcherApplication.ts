@@ -1,9 +1,6 @@
 export default interface LauncherApplication {
   name: string,
-  icon: {
-    quickShortcut: string,
-    launcher: string
-  },
+  icon: string,
   displayName: string,
   path: `/app/${string}`,
 }

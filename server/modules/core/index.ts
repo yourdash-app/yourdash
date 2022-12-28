@@ -4,7 +4,7 @@ import { generateRandomStringOfLength } from '../../encryption.js';
 import { base64FromBufferImage, bufferFromBase64Image, log, returnBase64Image } from '../../libServer.js';
 import YourDashModule from './../../module.js';
 import quickShortcut from "./../../../types/core/panel/quickShortcut.js"
-import includedApps from '../../releaseData/includedApps.js';
+import includedApps from '../../includedApps.js';
 import LauncherApplication from "./../../../types/core/panel/launcherApplication.js"
 import YourDashUser from '../../../lib/user.js';
 import sharp from 'sharp';
@@ -197,10 +197,7 @@ const Module: YourDashModule = {
             result.map((item) => {
               return {
                 name: item.name,
-                icon: {
-                  launcher: item.icon.launcher,
-                  quickShortcut: item.icon.quickShortcut
-                },
+                icon: item.icon,
                 displayName: item.displayName,
                 path: item.path
               } as LauncherApplication

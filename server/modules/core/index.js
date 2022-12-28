@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { generateRandomStringOfLength } from '../../encryption.js';
 import { base64FromBufferImage, bufferFromBase64Image, log, returnBase64Image } from '../../libServer.js';
-import includedApps from '../../releaseData/includedApps.js';
+import includedApps from '../../includedApps.js';
 import sharp from 'sharp';
 const Module = {
     name: 'core',
@@ -170,10 +170,7 @@ const Module = {
                     return res.json(result.map((item) => {
                         return {
                             name: item.name,
-                            icon: {
-                                launcher: item.icon.launcher,
-                                quickShortcut: item.icon.quickShortcut
-                            },
+                            icon: item.icon,
                             displayName: item.displayName,
                             path: item.path
                         };

@@ -111,7 +111,7 @@ const Panel: React.FC<IPanel> = () => {
                             body: JSON.stringify({
                               name: app.name,
                               url: app.path,
-                              icon: app.icon.quickShortcut
+                              icon: app.icon
                             })
                           }),
                           () => {
@@ -128,7 +128,7 @@ const Panel: React.FC<IPanel> = () => {
                     setLauncherSlideOutVisible(false)
                     router.push(app.path)
                   }}>
-                    <img src={app.icon.launcher} draggable={false} alt="" />
+                    <img src={app.icon} draggable={false} alt="" />
                     <span>{app.name}</span>
                     {/* <div onClick={() => {
                   // show a dropdown
@@ -165,37 +165,43 @@ const Panel: React.FC<IPanel> = () => {
     />
     {/* <h2 className={styles.serverName}>YourDash</h2> */}
     <div className={styles.shortcuts}>
-      {quickShortcuts?.map((shortcut, ind) => {
-        return <RightClickMenu key={ind} items={[
-          {
-            name: "Remove quick shortcut",
-            onClick: () => {
-              verifyAndReturnJson(
-                SERVER.delete(`/core/panel/quick-shortcut/${shortcut.id}`),
-                () => {
-                  router.reload()
-                },
-                () => {
-                  console.error(`unable to delete quick shortcut ${shortcut.id}`)
-                }
-              )
-            }
-          }
-        ]}>
-          <div className={styles.shortcut} onClick={() => {
-            router.push(shortcut.url)
-          }}>
-            <div>
-              <img draggable={false} src={shortcut.icon} alt="" />
+      {
+        quickShortcuts?.length !== 0
+          ? quickShortcuts?.map((shortcut, ind) => {
+            return <RightClickMenu key={ind} items={[
               {
-                router.pathname === shortcut.url ?
-                  <div data-active-indicator></div> : <div></div>
+                name: "Remove quick shortcut",
+                onClick: () => {
+                  verifyAndReturnJson(
+                    SERVER.delete(`/core/panel/quick-shortcut/${shortcut.id}`),
+                    () => {
+                      router.reload()
+                    },
+                    () => {
+                      console.error(`unable to delete quick shortcut ${shortcut.id}`)
+                    }
+                  )
+                }
               }
-            </div>
-            <span>{shortcut.name}</span>
-          </div>
-        </RightClickMenu>
-      })}
+            ]}>
+              <div className={styles.shortcut} onClick={() => {
+                router.push(shortcut.url)
+              }}>
+                <div>
+                  <img draggable={false} src={shortcut.icon} alt="" />
+                  {
+                    router.pathname === shortcut.url ?
+                      <div data-active-indicator></div> : <div></div>
+                  }
+                </div>
+                <span>{shortcut.name}</span>
+              </div>
+            </RightClickMenu>
+          })
+          : <Button onClick={() => {
+
+          }}>Add Quick Shortcuts</Button>
+      }
     </div>
     {/* <div className={styles.tray}>
       <Icon name="browser-16" className={styles.trayIcon} color={"var(--app-panel-fg)"} />
