@@ -103,6 +103,35 @@
   right: 0.5rem;
   transform-origin: bottom right;
   transition: var(--transition);
+
+  >div {
+    padding: 0.5rem;
+
+    >div {
+      &:first-child {
+        display: flex;
+        align-items: center;
+        background-color: var(--header-bg);
+        padding: 0.5rem;
+        border-radius: 0.5rem;
+
+        >img {
+          aspect-ratio: 1 / 1;
+          height: 2rem;
+        }
+      }
+
+      >&:nth-child(2) {
+        >p {
+          margin-top: 1rem;
+          margin-bottom: 1rem;
+          text-align: center;
+          padding-left: 0.5rem;
+          padding-right: 0.5rem;
+        }
+      }
+    }
+  }
 }
 
 .serverLogo {

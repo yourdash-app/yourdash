@@ -288,7 +288,18 @@ const Panel: React.FC<IPanel> = () => {
             pointerEvents: accountDropdownVisible ? "all" : "none",
           }}>
           <Card>
-            test
+            <RowContainer data-header={true}>
+              <img src={require(`./../../../../public/assets/productLogos/yourdash.svg`).default.src} alt=""></img>
+              <span>Notification Test</span>
+            </RowContainer>
+            <ColContainer>
+              <p>
+                This is some sample text for a notification
+              </p>
+              <Button onClick={() => { }}>
+                Ok
+              </Button>
+            </ColContainer>
           </Card>
         </ColContainer>
       </div>
