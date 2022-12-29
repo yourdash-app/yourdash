@@ -25,9 +25,14 @@ const ServerLogin: NextPageWithLayout = () => {
       return setMessage("Urls can't be empty")
     }
 
-    if (!url.startsWith("https://") && window.location.port !== "3000") {
-      return setMessage("Valid urls begin with 'https://'")
+    if (!(url.startsWith("https://") || url.startsWith("http://"))) {
+      setUrl(`https://${url}`)
     }
+
+    if (url.startsWith("http://") && window.location.port !== "3000") {
+      return setMessage("Sorry, http:// urls are not supported by yourdash due to browser-imposed restrictions.")
+    }
+
     setMessage("")
     if (url !== "http://localhost") {
       if (!url.includes(".")) {
