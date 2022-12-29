@@ -1,3 +1,11 @@
 .component {
   width: 100%;
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  gap: 1rem;
+  place-items: flex-start;
+
+  > div {
+    height: 1rem;
+  }
 }

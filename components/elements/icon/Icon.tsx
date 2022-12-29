@@ -39,7 +39,10 @@ const Icon: React.FC<IIcon> = ({
             WebkitMaskRepeat: 'no-repeat',
             WebkitMaskSize: 'cover',
           }),
-        ...{ userSelect: "none" }
+        ...{
+          userSelect: "none",
+          aspectRatio: "1 / 1" 
+        }
       }}
       className={className}
     />

@@ -1,18 +1,18 @@
 import CardButton from "../../../../components/elements/cardButton/CardButton";
+import Icon from "../../../../components/elements/icon/Icon";
 import styles from "./File.module.scss"
 
 export interface IFile {
   name: string,
   path: string,
   type: "file" | "folder",
-  icon: string | undefined
 }
 
 const File: React.FC<IFile> = ({
-  name, path, type, icon 
+  name, path, type 
 }) => {
   return <CardButton onClick={() => {}} className={styles.component}>
-    <img src={icon} alt="" />
+    <Icon color={"var(--card-fg)"} name={type === "file" ? "file-16" : "file-directory-16"} />
     <span>{name}</span>
     <span>{path}</span>
     <span>{type}</span>

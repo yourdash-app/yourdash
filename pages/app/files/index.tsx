@@ -11,11 +11,14 @@ const Files: NextPageWithLayout = () => {
       <Head>
         <title>YourDash | Files</title>
       </Head>
-      <File icon="" name="FileName" path="/file/path" type="file" />
-      <File icon="" name="FileName" path="/file/path" type="file" />
-      <File icon="" name="FileName" path="/file/path" type="file" />
-      <File icon="" name="FileName" path="/file/path" type="file" />
-      <File icon="" name="FileName" path="/file/path" type="file" />
+      <File name="FileName" path="/file/path" type="file" />
+      <File name="FileName" path="/file/path" type="folder" />
+      <File name="FileName" path="/file/path" type="file" />
+      <File name="FileName" path="/file/path" type="file" />
+      <File name="FileName" path="/file/path" type="folder" />
+      <File name="FileName" path="/file/path" type="file" />
+      <File name="FileName" path="/file/path" type="file" />
+      <File name="FileName" path="/file/path" type="file" />
     </>
   );
 };
