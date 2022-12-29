@@ -5,8 +5,6 @@ import { NextPageWithLayout } from '../../../../page';
 import SettingsLayout from '../../components/SettingsLayout';
 import Card from '../../../../../components/containers/card/Card';
 import styles from "./index.module.scss"
-
-// import { useState } from 'react';
 import RowContainer from '../../../../../components/containers/RowContainer/RowContainer';
 import DropdownButton from '../../../../../components/elements/dropdownButton/DropdownButton';
 import CenteredContainer from '../../../../../components/containers/CenteredContainer/CenteredContainer';
