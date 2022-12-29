@@ -7,44 +7,33 @@
   font-size: 1rem;
   font-family: 'Roboto';
   height: 2.25rem;
+  width: 2.25rem;
   aspect-ratio: 1 / 1;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
   cursor: pointer;
   transition: var(--transition);
   border-radius: var(--button-rounding);
   background-color: var(--button-bg);
   color: var(--button-fg);
   user-select: none;
+
   &:hover {
     border-radius: var(--button-hover-rounding);
     background-color: var(--button-hover-bg);
     color: var(--button-hover-fg);
   }
+
   &:active {
     border-radius: var(--button-active-rounding);
     background-color: var(--button-active-bg);
     color: var(--button-active-fg);
   }
-  > * {
-    width: 100%;
-    aspect-ratio: 1 / 1;
-  }
-}
 
-.vibrant {
-  border-radius: var(--button-vibrant-rounding);
-  background-color: var(--button-vibrant-bg);
-  color: var(--button-vibrant-fg);
-  &:hover {
-    border-radius: var(--button-vibrant-hover-rounding);
-    background-color: var(--button-vibrant-hover-bg);
-    color: var(--button-hover-vibrant-fg);
-  }
-  &:active {
-    border-radius: var(--button-vibrant-active-rounding);
-    background-color: var(--button-vibrant-active-bg);
-    color: var(--button-vibrant-active-fg);
+  >* {
+    height: 100%;
+    aspect-ratio: 1 / 1;
   }
 }
