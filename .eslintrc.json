@@ -10,7 +10,7 @@
         // Other rules
         "@next/next/no-img-element": "off",
         "no-unused-vars": [
-          "error",
+          "warn",
           { "args": "after-used", "argsIgnorePattern": "^_" }
         ],
         "camelcase": "error",
