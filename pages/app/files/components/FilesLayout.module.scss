@@ -4,3 +4,25 @@
   height: 100%;
   overflow: hidden;
 }
+
+.pane {
+  padding: 1rem;
+  box-sizing: border-box;
+
+  > * {
+    margin-bottom: 0.25rem;
+    border-radius: calc(var(--card-rounding) / 2) !important;
+    &:first-child {
+      border-radius: var(--card-rounding) var(--card-rounding)
+        calc(var(--card-rounding) / 2) calc(var(--card-rounding) / 2) !important;
+    }
+    &:last-child {
+      border-radius: calc(var(--card-rounding) / 2)
+        calc(var(--card-rounding) / 2) var(--card-rounding) var(--card-rounding) !important;
+    }
+  }
+
+  > *:last-child {
+    margin-bottom: 0;
+  }
+}

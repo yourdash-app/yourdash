@@ -73,8 +73,8 @@ const SettingsPanel: NextPageWithLayout = () => {
               <RowContainer>
                 <Chip label="Chip"/>
                 <Chip label="Chip"/>
-                <Chip label="Chip"/>
-                <Chip label="Chip"/>
+                <Chip active label="Chip"/>
+                <Chip active label="Chip"/>
               </RowContainer>
               <DropdownButton items={[
                 {

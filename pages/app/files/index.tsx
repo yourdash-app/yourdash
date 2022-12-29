@@ -3,6 +3,7 @@ import React from "react";
 import AppLayout from '../../../components/layouts/appLayout/AppLayout';
 import { NextPageWithLayout } from '../../page';
 import FilesLayout from "./components/FilesLayout";
+import File from "./components/File"
 
 const Files: NextPageWithLayout = () => {
   return (
@@ -10,7 +11,11 @@ const Files: NextPageWithLayout = () => {
       <Head>
         <title>YourDash | Files</title>
       </Head>
-
+      <File icon="" name="FileName" path="/file/path" type="file" />
+      <File icon="" name="FileName" path="/file/path" type="file" />
+      <File icon="" name="FileName" path="/file/path" type="file" />
+      <File icon="" name="FileName" path="/file/path" type="file" />
+      <File icon="" name="FileName" path="/file/path" type="file" />
     </>
   );
 };

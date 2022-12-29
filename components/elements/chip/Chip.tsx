@@ -3,14 +3,14 @@ import style from "./Chip.module.scss"
 
 export interface IChip {
   label: string,
-  toggled?: boolean,
-  onClick?: () => void
+  active?: boolean,
+  onClick?: () => void,
 }
 
 const Chip: React.FC<IChip> = ({
-  label, toggled, onClick 
+  label, active, onClick 
 }) => {
-  return <div className={`${style.component} ${toggled ? style.toggled : ""}`} onClick={onClick}>
+  return <div className={`${style.component} ${active ? style.toggled : ""}`} onClick={onClick}>
     {label}
   </div>
 }

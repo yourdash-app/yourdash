@@ -44,7 +44,7 @@
   align-items: center;
   justify-content: center;
 
-  >img {
+  > img {
     height: calc(var(--app-panel-height) - 1rem);
     aspect-ratio: 1 / 1;
     border-radius: 0.5rem;
@@ -64,7 +64,7 @@
 .accountDropdownQuickActions {
   padding-bottom: 0.5rem;
 
-  >* {
+  > * {
     flex-grow: 1;
     height: 1.5rem;
     display: flex;
@@ -90,7 +90,7 @@
       color: var(--button-active-fg);
     }
 
-    >* {
+    > * {
       height: 100%;
       aspect-ratio: 1 / 1;
     }
@@ -104,10 +104,10 @@
   transform-origin: bottom right;
   transition: var(--transition);
 
-  >div {
+  > div {
     padding: 0.5rem;
 
-    >div {
+    > div {
       &:first-child {
         display: flex;
         align-items: center;
@@ -115,14 +115,14 @@
         padding: 0.5rem;
         border-radius: 0.5rem;
 
-        >img {
+        > img {
           aspect-ratio: 1 / 1;
           height: 2rem;
         }
       }
 
-      >&:nth-child(2) {
-        >p {
+      > &:nth-child(2) {
+        > p {
           margin-top: 1rem;
           margin-bottom: 1rem;
           text-align: center;
@@ -177,7 +177,7 @@
     width: 100vw;
   }
 
-  >div[data-header] {
+  > div[data-header] {
     background: var(--app-background);
     background-position: center;
     background-repeat: no-repeat;
@@ -186,7 +186,7 @@
     box-shadow: 0rem -1.5rem 1rem inset var(--container-bg);
     width: calc(2rem + 100%);
 
-    >div[data-title] {
+    > div[data-title] {
       font-size: 2rem;
       padding-top: 3rem;
       padding-bottom: 2rem;
@@ -196,7 +196,7 @@
         0 0 1.5rem #000000, 0 0 2rem #000000;
     }
 
-    >input[data-search] {
+    > input[data-search] {
       opacity: 80%;
       margin-left: 2rem;
       width: calc(100% - 4rem);
@@ -205,25 +205,25 @@
     }
   }
 
-  >footer[data-footer] {
+  > footer[data-footer] {
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: var(--app-panel-bg);
     width: 100%;
 
-    >img {
+    > img {
       margin-left: 0.5rem;
       height: 2rem;
       aspect-ratio: 1 / 1;
       border-radius: 0.5rem;
     }
 
-    >span {
+    > span {
       margin-left: 0.75rem;
     }
 
-    >div[data-settings] {
+    > div[data-settings] {
       padding: 0.5rem;
       margin-right: 0.5rem;
       margin-top: 0.5rem;
@@ -245,7 +245,7 @@
         color: var(--button-active-fg);
       }
 
-      >[data-component-type-icon] {
+      > [data-component-type-icon] {
         height: 1.5rem;
         aspect-ratio: 1 / 1;
       }
@@ -274,12 +274,12 @@
     grid-template-columns: 1fr 1fr;
   }
 
-  >div {
+  > div {
     display: flex;
     width: 100%;
     height: 100%;
 
-    >.launcherGridItem {
+    > .launcherGridItem {
       display: flex;
       flex-direction: column;
       width: 100%;
@@ -306,14 +306,14 @@
         outline: 0.125rem solid var(--container-outline);
       }
 
-      >img {
+      > img {
         width: 75%;
         aspect-ratio: 1 / 1;
         box-sizing: border-box;
         padding: 0.5rem;
       }
 
-      >span {
+      > span {
         width: 100%;
         padding-top: 0.25em;
         padding-bottom: 0.25em;
@@ -357,7 +357,7 @@
   display: flex;
   transition: var(--transition);
 
-  >div {
+  > div {
     transition: var(--transition);
     height: calc(var(--app-panel-height) - 0.5rem);
     aspect-ratio: 1 / 1;
@@ -372,18 +372,18 @@
     &:hover {
       background-color: #ffffff22;
 
-      >img {
+      > img {
         scale: 1.1;
       }
     }
 
     &:active {
-      >img {
+      > img {
         scale: 0.9;
       }
     }
 
-    >img {
+    > img {
       transition: var(--transition);
       height: 100%;
       box-sizing: border-box;
@@ -391,7 +391,7 @@
       aspect-ratio: 1 / 1;
     }
 
-    >div {
+    > div {
       background-color: var(--button-vibrant-bg);
       height: 0.2rem;
       width: 0rem;
@@ -410,13 +410,13 @@
   }
 
   &:hover {
-    >span {
+    > span {
       opacity: 1;
       pointer-events: all;
     }
   }
 
-  >span {
+  > span {
     transition: var(--transition);
     pointer-events: none;
     opacity: 0;

@@ -25,8 +25,20 @@
 
 .toggled {
   border-radius: var(--chip-toggled-rounding);
-  background-color: var(--chip-toggled-bg);
   color: var(--chip-toggled-fg);
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    bottom: 0.05rem;
+    left: 50%;
+    translate: -50%;
+    background-color: var(--accent-color);
+    border-radius: 100rem;
+    height: 0.25rem;
+    width: 2rem;
+  }
 
   &:hover {
     border-radius: var(--chip-toggled-hover-rounding);
