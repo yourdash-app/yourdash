@@ -35,8 +35,10 @@ const Panel: React.FC<IPanel> = () => {
   useEffect(() => {
     verifyAndReturnJson(
       SERVER.get(`/userManagement/current/user/settings`),
-      (res: YourDashUserSettings) => {
-        document.body.style.setProperty("--app-panel-launcher-grid-columns", res.panel?.launcher?.slideOut?.gridColumns.toString() || "3")
+      (_res: YourDashUserSettings) => {
+
+        // the following is no longer supported
+        // document.body.style.setProperty("--app-panel-launcher-grid-columns", res.panel?.launcher?.slideOut?.gridColumns.toString() || "3")
       },
       () => {
         localStorage.removeItem("sessionToken")
@@ -65,7 +67,7 @@ const Panel: React.FC<IPanel> = () => {
       })
 
     verifyAndReturnJson(
-      SERVER.get(`/store/installed/apps`),
+      SERVER.get(`/core/panel/launcher/apps`),
       (res) => {
         setInstalledApps(res)
       },
@@ -110,8 +112,7 @@ const Panel: React.FC<IPanel> = () => {
                           SERVER.post(`/core/panel/quick-shortcut/create`, {
                             body: JSON.stringify({
                               name: app.name,
-                              url: app.path,
-                              icon: app.icon.quickShortcut
+                              url: app.path
                             })
                           }),
                           () => {
@@ -128,7 +129,7 @@ const Panel: React.FC<IPanel> = () => {
                     setLauncherSlideOutVisible(false)
                     router.push(app.path)
                   }}>
-                    <img src={app.icon.launcher} draggable={false} alt="" />
+                    <img src={app.icon} draggable={false} alt="" />
                     <span>{app.name}</span>
                     {/* <div onClick={() => {
                   // show a dropdown
@@ -144,11 +145,9 @@ const Panel: React.FC<IPanel> = () => {
         }
       </div>
       <footer data-footer>
-        <img onClick={() => {
+        <AuthenticatedImg onClick={() => {
           router.push(`/app/user/profile/${userData?.userName}`)
-        }} tabIndex={0} src={
-          userData?.profile?.image
-        } alt="" />
+        }} tabIndex={0} src={"/core/panel/user/profile/picture"} alt="" />
         <span>{userData?.name?.first} {userData?.name?.last}</span>
         <div onClick={() => {
           setLauncherSlideOutVisible(false)
@@ -167,47 +166,64 @@ const Panel: React.FC<IPanel> = () => {
     />
     {/* <h2 className={styles.serverName}>YourDash</h2> */}
     <div className={styles.shortcuts}>
-      {quickShortcuts?.map((shortcut, ind) => {
-        return <RightClickMenu key={ind} items={[
-          {
-            name: "Remove quick shortcut",
-            onClick: () => {
-              verifyAndReturnJson(
-                SERVER.delete(`/core/panel/quick-shortcut/${shortcut.id}`),
-                () => {
-                  router.reload()
-                },
-                () => {
-                  console.error(`unable to delete quick shortcut ${shortcut.id}`)
-                }
-              )
-            }
-          }
-        ]}>
-          <div className={styles.shortcut} onClick={() => {
-            router.push(shortcut.url)
-          }}>
-            <div>
-              <img draggable={false} src={shortcut.icon} alt="" />
+      {
+        quickShortcuts?.length !== 0
+          ? quickShortcuts?.map((shortcut, ind) => {
+            return <RightClickMenu key={ind} items={[
               {
-                router.pathname === shortcut.url ?
-                  <div data-active-indicator></div> : <div></div>
+                name: "Remove quick shortcut",
+                onClick: () => {
+                  verifyAndReturnJson(
+                    SERVER.delete(`/core/panel/quick-shortcut/${shortcut.id}`),
+                    () => {
+                      router.reload()
+                    },
+                    () => {
+                      console.error(`unable to delete quick shortcut ${shortcut.id}`)
+                    }
+                  )
+                }
               }
-            </div>
-            <span>{shortcut.name}</span>
-          </div>
-        </RightClickMenu>
-      })}
+            ]}>
+              <div className={styles.shortcut} onClick={() => {
+                router.push(shortcut.url)
+              }}>
+                <div>
+                  <img draggable={false} src={shortcut.icon} alt="" />
+                  {
+                    router.pathname === shortcut.url ?
+                      <div data-active-indicator></div> : <div></div>
+                  }
+                </div>
+                <span>{shortcut.name}</span>
+              </div>
+            </RightClickMenu>
+          })
+          : <Button onClick={() => {
+            verifyAndReturnJson(
+              SERVER.post(`/core/panel/quick-shortcut/create`, {
+                body: JSON.stringify({
+                  name: "files",
+                  url: "/app/files"
+                })
+              }),
+              () => {
+                router.reload()
+              },
+              () => {
+                console.error(`unable to create quick shortcut with name: files`)
+              }
+            )
+          }}>Add Quick Shortcuts</Button>
+      }
     </div>
     {/* <div className={styles.tray}>
       <Icon name="browser-16" className={styles.trayIcon} color={"var(--app-panel-fg)"} />
     </div> */}
     <div className={styles.account}>
-      <img onClick={() => {
+      <AuthenticatedImg onClick={() => {
         setAccountDropdownVisible(!accountDropdownVisible)
-      }} tabIndex={0} src={
-        userData?.profile?.image
-      } alt="" />
+      }} tabIndex={0} src={"/core/panel/user/profile/picture"} alt="" />
       <div style={{
         width: "100vw",
         transition: "var(--transition)",
@@ -272,7 +288,18 @@ const Panel: React.FC<IPanel> = () => {
             pointerEvents: accountDropdownVisible ? "all" : "none",
           }}>
           <Card>
-            test
+            <RowContainer data-header={true}>
+              <img src={require(`./../../../../public/assets/productLogos/yourdash.svg`).default.src} alt=""></img>
+              <span>Notification Test</span>
+            </RowContainer>
+            <ColContainer>
+              <p>
+                This is some sample text for a notification
+              </p>
+              <Button onClick={() => { }}>
+                Ok
+              </Button>
+            </ColContainer>
           </Card>
         </ColContainer>
       </div>

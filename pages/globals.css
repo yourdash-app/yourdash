@@ -1,6 +1,6 @@
 :root {
-  --app-background: url(./../public/background.jpg);
-  /* --app-background: url(https://picsum.photos/3840/2160?random); */
+  /* --app-background: url(./../public/background.jpg); */
+  --app-background: url(https://picsum.photos/3840/2160?random);
   --background-color: #272727;
   --transition: all 100ms ease-in-out;
 
@@ -35,6 +35,7 @@
   --container-bg: #363636;
   --container-fg: #fff;
   --container-separator: #222222;
+  --container-outline: #ffffff88;
 
   --app-panel-height: 3rem;
   --app-panel-fg: #fff;

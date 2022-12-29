@@ -1,9 +1,13 @@
 import fs from 'fs';
 import path from 'path';
 import { generateRandomStringOfLength } from '../../encryption.js';
-import { log, returnBase64Image } from '../../libServer.js';
+import { base64FromBufferImage, bufferFromBase64Image, log, resizeBase64Image, returnBase64Image } from '../../libServer.js';
 import YourDashModule from './../../module.js';
 import quickShortcut from "./../../../types/core/panel/quickShortcut.js"
+import includedApps from '../../includedApps.js';
+import LauncherApplication from "./../../../types/core/panel/launcherApplication.js"
+import YourDashUser from '../../../lib/user.js';
+import sharp from 'sharp';
 
 const Module: YourDashModule = {
   name: 'core',
@@ -29,7 +33,11 @@ const Module: YourDashModule = {
     });
 
     app.post(`${api.ModulePath(this)}/panel/quick-shortcut/create`, (req, res) => {
+
+      // check if the quick-shortcuts directory doesn't exist
       if (!fs.existsSync(path.resolve(`${api.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`))) {
+
+        // create the directory
         fs.mkdir(`${api.UserAppData(req)}/${this.name}/panel/quick-shortcuts/`, {
           recursive: true
         }, (err) => {
@@ -37,28 +45,49 @@ const Module: YourDashModule = {
             log(`[${this.name}] ERROR: ${err}`)
             return process.exit(1)
           }
+
+          // write a blank array to the shortcuts.json file
           fs.writeFile(path.resolve(`${api.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`), "[]", (err) => {
             if (err) {
               log(`[${this.name}] ERROR: ${err}`)
               return process.exit(1)
             }
+
+            // set json to a blank array as we already know the contents of the shortcuts file
             let json = [] as quickShortcut[]
+
+            // generate an id for referencing this shortcut
             let id = generateRandomStringOfLength(32)
-            json.push({
-              name: req.body.name || "undefined",
-              icon: req.body.icon || returnBase64Image(path.resolve(`${api.FsOrigin}/../yourdash256.png`)),
-              id: id,
-              url: req.body.url || '/app/dash'
-            })
-            fs.writeFile(path.resolve(`${api.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`), JSON.stringify(json), (err) => {
-              if (err) {
-                log(`ERROR ${err}`)
-                return res.json({
-                  error: true
+
+            // find the referenced application in the included applications list
+            let includedApplication = includedApps.find((app) => app.name === req.body.name)
+
+            // if the application doesn't exist return
+            if (!includedApplication) {
+              log(`Can't create quick shortcut for unknown application: ${req.body.name}`)
+              return res.json({
+                error: true
+              })
+            }
+
+            resizeBase64Image(32, 32, includedApplication?.icon || returnBase64Image(path.resolve(`${api.FsOrigin}/../yourdash256.png`)))
+              .then((image) => {
+                json.push({
+                  name: req.body.name || "undefined",
+                  icon: image,
+                  id: id,
+                  url: req.body.url || '/app/dash'
                 })
-              }
-              return res.json(json.filter((shortcut) => shortcut.id === id))
-            })
+                fs.writeFile(path.resolve(`${api.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`), JSON.stringify(json), (err) => {
+                  if (err) {
+                    log(`ERROR ${err}`)
+                    return res.json({
+                      error: true
+                    })
+                  }
+                  return res.json(json.filter((shortcut) => shortcut.id === id))
+                })
+              })
           })
         })
       } else {
@@ -68,21 +97,28 @@ const Module: YourDashModule = {
           }
           let json = JSON.parse(data.toString()) as quickShortcut[]
           let id = generateRandomStringOfLength(32)
-          json.push({
-            name: req.body.name || "undefined",
-            icon: req.body.icon || returnBase64Image(path.resolve(`${api.FsOrigin}/../yourdash256.png`)),
-            id: id,
-            url: req.body.url || '/app/dash'
-          })
-          fs.writeFile(path.resolve(`${api.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`), JSON.stringify(json), (err) => {
-            if (err) {
-              log(`ERROR ${err}`)
-              return res.json({
-                error: true
+          let includedApplication = includedApps.find((app) => app.name === req.body.name)
+
+          if (!includedApplication) return log(`Can't create quick shortcut for unknown application: ${req.body.name}`)
+
+          resizeBase64Image(32, 32, includedApplication?.icon || returnBase64Image(path.resolve(`${api.FsOrigin}/../yourdash256.png`)))
+            .then((image) => {
+              json.push({
+                name: req.body.name || "undefined",
+                icon: image,
+                id: id,
+                url: req.body.url || '/app/dash'
               })
-            }
-            res.json(json.filter((shortcut) => shortcut.id === id))
-          })
+              fs.writeFile(path.resolve(`${api.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`), JSON.stringify(json), (err) => {
+                if (err) {
+                  log(`ERROR ${err}`)
+                  return res.json({
+                    error: true
+                  })
+                }
+                res.json(json.filter((shortcut) => shortcut.id === id))
+              })
+            })
         })
       }
     })
@@ -160,6 +196,79 @@ const Module: YourDashModule = {
         return res.json(json)
       })
     });
+
+    app.get(`${api.ModulePath(this)}/panel/launcher/apps`, (req, res) => {
+      if (!fs.existsSync(path.resolve(`${api.FsOrigin}/installed_apps.json`))) {
+        let defaultApps = [ "dash", "store", "settings", "files" ]
+        fs.writeFile(
+          path.resolve(`${api.FsOrigin}/installed_apps.json`),
+          JSON.stringify([
+            ...defaultApps
+          ]),
+          (err) => {
+            if (err) {
+              log(`ERROR: cannot write installed_apps.json`)
+              return res.json({
+                error: true
+              });
+            }
+            res.json(defaultApps);
+          }
+        );
+      } else {
+        fs.readFile(path.resolve(`${api.FsOrigin}/installed_apps.json`), (err, data) => {
+          if (err) {
+            log("ERROR: couldn't read installed_apps.json")
+            return res.json({
+              error: true
+            })
+          }
+          let json = JSON.parse(data.toString()) as string[]
+          var result = includedApps.filter((app) => json.includes(app.name)) || []
+
+          let promises = result.map((item) => {
+            return resizeBase64Image(128, 128, item.icon)
+              .then((image) => {
+                return {
+                  name: item.name,
+                  icon: image,
+                  displayName: item.displayName,
+                  path: item.path
+                } as LauncherApplication
+              })
+          })
+          Promise.all(promises).then((resp) => {
+            res.json(resp)
+          })
+        })
+      }
+    })
+
+    app.get(`${api.ModulePath(this)}/panel/user/profile/picture`, (req, res) => {
+      fs.readFile(`${api.UserFs(req)}/user.json`, (err, data) => {
+        if (err) {
+          log(`ERROR: unable to read user.json`)
+          return res.json({
+            error: true
+          })
+        }
+        let json: YourDashUser = JSON.parse(data.toString())
+        let originalProfileImage = json.profile.image
+        let resizedImage = sharp(bufferFromBase64Image(originalProfileImage))
+        resizedImage.resize(64, 64).toBuffer((err, buf) => {
+          if (err) {
+            console.log(err)
+            log(`ERROR: unable to resize image`)
+            return res.json({
+              error: true
+            })
+          }
+          return res.json({
+            image: base64FromBufferImage(buf)
+          })
+        })
+      })
+    })
 
     // #endregion
 

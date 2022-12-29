@@ -32,19 +32,30 @@ const DropdownMenu: React.FC<IDropdownMenu> = ({ items, children, ...extraProps 
       {children}
     </div>
     {shown ?
-      <div className={styles.menu} style={{
-        top: "100%",
-        left: 0,
-        position: "absolute"
-      }}>
+      <div
+        className={styles.menu}
+        onClick={(e) => {
+          e.stopPropagation()
+        }}
+        style={{
+          top: "100%",
+          left: 0,
+          position: "absolute"
+        }}>
         {
           items.map((item, ind) => {
-            return <li key={ind} onClick={item.onClick}>
+            return <div
+              key={ind}
+              onClick={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                item.onClick()
+              }}>
               <span>{item.name}</span>
               {
                 item?.shortcut ? <span>{item.shortcut}</span> : null
               }
-            </li>
+            </div>
           })
         }
       </div>

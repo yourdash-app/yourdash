@@ -10,6 +10,7 @@ import InstalledApplication from '../../../../types/store/installedApplication';
 import Button from '../../../../components/elements/button/Button';
 import Card from '../../../../components/containers/card/Card';
 import ColContainer from '../../../../components/containers/ColContainer/ColContainer';
+import Icon from '../../../../components/elements/icon/Icon';
 
 const StoreProduct: NextPageWithLayout = () => {
   const router = useRouter()
@@ -19,6 +20,8 @@ const StoreProduct: NextPageWithLayout = () => {
     name: "undefined"
   } as InstalledApplication & { uninstallable: boolean, installed: boolean })
   const [ showInstallationPopup, setShowInstallationPopup ] = useState(false)
+  const [ pageChanging, setPageChanging ] = useState(false)
+  const [ installationError, setInstallationError ] = useState(false)
 
   useEffect(() => {
     if (!productId) return
@@ -29,15 +32,20 @@ const StoreProduct: NextPageWithLayout = () => {
         setProduct(json)
       },
       () => {
-        console.error(`ERROR: couldn't fetch product infomation`)
+        console.error(`ERROR: couldn't fetch product information`)
       }
     )
   }, [ productId ])
 
   if (product.name === "undefined") return <></>
   return (
-    <div className={styles.root}>
-      <Carousel>
+    <div className={styles.root} style={
+      {
+        left: pageChanging ? "100%" : "0",
+        opacity: pageChanging ? "0" : "1"
+      }
+    }>
+      <Carousel className={styles.carousel}>
         <div style={{
           backgroundImage: `url('/background.jpg')`,
           backgroundPosition: "center",
@@ -45,12 +53,33 @@ const StoreProduct: NextPageWithLayout = () => {
         }}>
         </div>
       </Carousel>
+      {
+        installationError
+          ? <Card className={styles.installationError}>
+            <ColContainer>
+              <Icon color="var(--card-fg)" name="server-error"></Icon>
+              <h3>Error</h3>
+              <p>
+                The application was not installed!
+              </p>
+              <Button
+                onClick={() => {
+                  setInstallationError(false)
+                }}>
+                Ok
+              </Button>
+            </ColContainer>
+          </Card>
+          : null
+      }
       <div className={styles.installationPopup} style={{
-        display: showInstallationPopup ? "flex" : "none",
+        opacity: showInstallationPopup ? "1" : "0",
+        pointerEvents: showInstallationPopup ? "all" : "none",
+        scale: showInstallationPopup ? "1" : "0.75"
       }}>
         <div>
           <div className={styles.installationPopupImgContainer}>
-            <img src={product?.icon?.store} alt="" />
+            <img src={product?.icon} alt="" />
             <div></div>
           </div>
           <ColContainer className={styles.installationPopupContent}>
@@ -75,7 +104,35 @@ const StoreProduct: NextPageWithLayout = () => {
               </ul>
             </ColContainer>
             <Button onClick={() => {
-
+              if (product.installed) {
+                return
+              } else {
+                verifyAndReturnJson(
+                  SERVER.post(`/store/application/${productId}/install`, {
+                    body: JSON.stringify({
+                      product: productId
+                    })
+                  }),
+                  (data) => {
+                    if (data.installed) {
+                      setProduct(
+                        {
+                          ...product,
+                          installed: true
+                        }
+                      )
+                      setShowInstallationPopup(false)
+                      router.reload()
+                    } else {
+                      setInstallationError(true)
+                      setShowInstallationPopup(false)
+                    }
+                  },
+                  () => {
+                    console.error(`ERROR: couldn't install product`)
+                  }
+                )
+              }
             }} vibrant>
               Approve installation
             </Button>
@@ -92,34 +149,41 @@ const StoreProduct: NextPageWithLayout = () => {
           icon='arrow-left-16'
           color="var(--container-fg)"
           onClick={() => {
-            router.push("/app/store")
+            setPageChanging(true)
+            router.prefetch("/app/store")
+            setTimeout(() => {
+              router.push("/app/store")
+            }, 600)
           }} />
-        <img src={product?.icon?.store} alt="" />
+        <img src={product?.icon} alt="" />
         <h2>{product.name}</h2>
         <Button onClick={() => {
           if (!product.installed) {
             setShowInstallationPopup(true)
+          } else {
+            verifyAndReturnJson(
+              SERVER.delete(`/store/application/${productId}`),
+              (data) => {
+                if (data.installed) {
+                  setInstallationError(true)
+                  setProduct({
+                    ...product,
+                    installed: data.installed
+                  })
+                } else {
+                  setInstallationError(false)
+                  setProduct({
+                    ...product,
+                    installed: data.installed
+                  })
+                  router.reload()
+                }
+              },
+              () => {
+                return setInstallationError(false)
+              }
+            )
 
-            // move to the installation popup
-            // verifyAndReturnJson(
-            //   SERVER.post(`/store/application/install`, {
-            //     body: JSON.stringify({
-            //       product: productId
-            //     })
-            //   }),
-            //   (data) => {
-            //     if (data.installed)
-            //       return setProduct(
-            //         {
-            //           ...product,
-            //           installed: true
-            //         }
-            //       )
-            //   },
-            //   () => {
-            //     console.error(`ERROR: couldn't install product`)
-            //   }
-            // )
           }
         }}>
           {product.installed ? product.uninstallable ? "Uninstall" : "Forcefully installed by the server" : "Install"}

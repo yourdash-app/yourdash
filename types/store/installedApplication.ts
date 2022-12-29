@@ -1,11 +1,7 @@
 export default interface InstalledApplication {
   name: string,
   moduleRequirements: string[],
-  icon: {
-    store: string,
-    quickShortcut: string,
-    launcher: string
-  },
+  icon: string,
   author: string,
   copyright: string,
   description: string,

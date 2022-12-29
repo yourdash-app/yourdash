@@ -2,8 +2,7 @@ import Head from "next/head";
 import React, { useEffect, useState } from "react";
 import Button from "../../../components/elements/button/Button";
 import AppLayout from '../../../components/layouts/appLayout/AppLayout';
-import SERVER from "../../../lib/server";
-import YourDashUser from "../../../lib/user";
+import SERVER, { verifyAndReturnJson } from "../../../lib/server";
 import { NextPageWithLayout } from '../../page';
 import styles from "./dash.module.scss";
 
@@ -12,16 +11,14 @@ const Dash: NextPageWithLayout = () => {
   const [ currentTime, setCurrentTime ] = useState("00:01")
 
   useEffect(() => {
-    SERVER.get("/userManagement/current/user")
-      .then((response) => {
-        response.json().then((res: { error?: boolean; user: YourDashUser }) => {
-          if (res.error) return console.error(`failed fetching the current user`)
-          let user = res.user
-          setName(user?.name?.first + " " + user?.name?.last)
-        }).catch(() => setName("ERROR: Not valid JSON"))
-      })
-      .catch((err) => {
-        setName(err)
+    verifyAndReturnJson(
+      SERVER.get("/userManagement/current/user"),
+      (response) => {
+        let user = response.user
+        setName(user?.name?.first + " " + user?.name?.last)
+      },
+      () => {
+        setName("ERROR")
       })
   }, [])
 
