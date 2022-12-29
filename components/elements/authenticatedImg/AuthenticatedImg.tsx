@@ -12,7 +12,9 @@ export interface IAuthenticatedImg extends React.ComponentPropsWithoutRef<'img'>
   src: string
 }
 
-const AuthenticatedImg: React.FC<IAuthenticatedImg> = ({ src, ...imgElementProps }) => {
+const AuthenticatedImg: React.FC<IAuthenticatedImg> = ({
+  src, ...imgElementProps 
+}) => {
   const [ imgSrc, setImgSrc ] = useState(YourDashIconRawDictionary[ "server-error" ])
   useEffect(() => {
     verifyAndReturnJson(

@@ -7,7 +7,9 @@ export interface IChip {
   onClick?: () => void
 }
 
-const Chip: React.FC<IChip> = ({ label, toggled, onClick }) => {
+const Chip: React.FC<IChip> = ({
+  label, toggled, onClick 
+}) => {
   return <div className={`${style.component} ${toggled ? style.toggled : ""}`} onClick={onClick}>
     {label}
   </div>

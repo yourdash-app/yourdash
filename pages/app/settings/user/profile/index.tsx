@@ -8,9 +8,7 @@ const SettingsPanel: NextPageWithLayout = () => {
   return (
     <>
       <h1>This is a test</h1>
-      <ColContainer style={{
-        padding: "1rem"
-      }}>
+      <ColContainer style={{ padding: "1rem" }}>
         <BooleanSetting title='Title' description='Description' defaultValue={false} setValue={(value) => {
           console.log(value)
         }} />

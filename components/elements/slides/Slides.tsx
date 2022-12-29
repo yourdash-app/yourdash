@@ -6,7 +6,9 @@ export interface ISlides {
   changeDuration: number;
 }
 
-const Slides: React.FC<ISlides> = ({ slides, changeDuration }) => {
+const Slides: React.FC<ISlides> = ({
+  slides, changeDuration 
+}) => {
   const [ currentSlideInd, setCurrentSlideInd ] = React.useState(0)
   const [ currentSlide, setCurrentSlide ] = React.useState(slides[ 0 ])
 

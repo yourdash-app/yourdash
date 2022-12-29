@@ -13,7 +13,9 @@ export interface IIconButton {
   color?: COLOR | CSSVariable;
 }
 
-const IconButton: React.FC<IIconButton> = ({ icon, vibrant, onClick, disabled, useDefaultColor, color }) => {
+const IconButton: React.FC<IIconButton> = ({
+  icon, vibrant, onClick, disabled, useDefaultColor, color 
+}) => {
   return <button
     onClick={() => {
       if (!disabled) onClick()

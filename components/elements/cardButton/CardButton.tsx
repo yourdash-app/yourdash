@@ -9,7 +9,9 @@ export interface ICardButton {
   className?: string
 }
 
-const CardButton: React.FC<ICardButton> = ({ children, onClick, icon, className }) => {
+const CardButton: React.FC<ICardButton> = ({
+  children, onClick, icon, className 
+}) => {
   return <div className={`${styles.component} ${!icon ? styles.no_image : ""} ${className}`} onClick={onClick}>
     {icon ? <Icon name={icon} color="var(--card-fg)" style={{
       width: "2.5rem",

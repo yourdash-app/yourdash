@@ -13,10 +13,8 @@ const EndpointTester: NextPageWithLayout = () => {
   const [ responseDidError, setResponseDidError ] = useState(false)
   const [ queryUrl, setQueryUrl ] = useState("")
   const [ queryMethod, setQueryMethod ] = useState("GET" as "GET" | "POST" | "DELETE")
-  const [ queryHeaders, /* setQueryHeaders */ ] = useState({
-  })
-  const [ queryBody, setQueryBody ] = useState({
-  })
+  const [ queryHeaders, /* setQueryHeaders */ ] = useState({})
+  const [ queryBody, setQueryBody ] = useState({})
 
   return (
     <div style={{
@@ -26,9 +24,7 @@ const EndpointTester: NextPageWithLayout = () => {
       overflow: "hidden",
       height: "calc(100vh - calc(var(--app-panel-height) + 2rem))"
     }}>
-      <ColContainer style={{
-        height: "100%"
-      }}>
+      <ColContainer style={{ height: "100%" }}>
         <RightClickMenu items={[
           {
             name: "GET", onClick: () => {
@@ -155,9 +151,7 @@ const EndpointTester: NextPageWithLayout = () => {
                 let json = JSON.parse(e.target.value);
                 setQueryBody(json)
               } catch (e) {
-                setQueryBody({
-                  error: "endpoint tester invalid json"
-                })
+                setQueryBody({ error: "endpoint tester invalid json" })
               }
             }}></textarea> : <></>
           }

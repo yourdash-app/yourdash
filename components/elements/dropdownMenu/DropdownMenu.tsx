@@ -9,14 +9,14 @@ export interface IDropdownMenu extends React.ComponentPropsWithoutRef<"div"> {
   }[]
 }
 
-const DropdownMenu: React.FC<IDropdownMenu> = ({ items, children, ...extraProps }) => {
+const DropdownMenu: React.FC<IDropdownMenu> = ({
+  items, children, ...extraProps 
+}) => {
   const [ shown, setShown ] = useState(false)
 
   return <div
     {...extraProps}
-    style={{
-      position: "relative"
-    }}>
+    style={{ position: "relative" }}>
     <div onClick={(e) => {
       e.preventDefault()
       e.stopPropagation()

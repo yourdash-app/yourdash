@@ -44,6 +44,6 @@ export default function ServerSelectionLink() {
       .catch(() => {
         router.push("/login/server")
       })
-  }, [ router.query ])
+  }, [ router ])
   return <h1>Redirecting</h1>
 }

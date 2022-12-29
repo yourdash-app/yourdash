@@ -12,7 +12,9 @@ export interface IIcon extends React.ComponentPropsWithoutRef<'div'> {
   useDefaultColor?: boolean;
 }
 
-const Icon: React.FC<IIcon> = ({ name, style, className, color, useDefaultColor, ...genericProps }) => {
+const Icon: React.FC<IIcon> = ({
+  name, style, className, color, useDefaultColor, ...genericProps 
+}) => {
   return (
     <div
       {...genericProps}
@@ -37,9 +39,7 @@ const Icon: React.FC<IIcon> = ({ name, style, className, color, useDefaultColor,
             WebkitMaskRepeat: 'no-repeat',
             WebkitMaskSize: 'cover',
           }),
-        ...{
-          userSelect: "none"
-        }
+        ...{ userSelect: "none" }
       }}
       className={className}
     />

@@ -18,9 +18,7 @@ const SettingsLayout: React.FC<ISettingsLayout> = ({ children }) => {
       }}>
         Overview
       </Button>
-      <SideBar style={{
-        height: "100%"
-      }} title="" sections={[
+      <SideBar style={{ height: "100%" }} title="" sections={[
         {
           title: "User",
           buttons: [

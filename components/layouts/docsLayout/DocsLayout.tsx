@@ -3,7 +3,10 @@ import styles from "./DocsLayout.module.scss"
 
 export interface IDocsLayout extends React.ComponentPropsWithoutRef<'div'> { }
 
-const DocsLayout: React.FC<IDocsLayout> = ({ children, ..._divProps }) => {
+const DocsLayout: React.FC<IDocsLayout> = ({
+  children,
+  ..._divProps
+}) => {
   return <>
     <div className={styles.root}>
       <section>

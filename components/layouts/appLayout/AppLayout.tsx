@@ -4,7 +4,9 @@ import React from "react";
 
 export interface IAppLayout extends React.ComponentPropsWithoutRef<'div'> { }
 
-const AppLayout: React.FC<IAppLayout> = ({ children, ..._divProps }) => {
+const AppLayout: React.FC<IAppLayout> = ({
+  children, ..._divProps 
+}) => {
   return <div className={styles.root}>
     <Panel />
     <div className={styles.content}>

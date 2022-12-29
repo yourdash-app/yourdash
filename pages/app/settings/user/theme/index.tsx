@@ -25,23 +25,17 @@ const SettingsPanel: NextPageWithLayout = () => {
   return (
     <>
       <h1>Personal Color Theme</h1>
-      <ColContainer style={{
-        padding: "1rem"
-      }}>
+      <ColContainer style={{ padding: "1rem" }}>
         <Card className={styles.themeSelector}>
           <RowContainer>
             <ColContainer>
-              <h3 style={{
-                marginTop: 0
-              }}>
+              <h3 style={{ marginTop: 0 }}>
                 Select or create a theme
               </h3>
               <p>Select a theme to to use or to use as a template for your own.</p>
             </ColContainer>
             <CenteredContainer
-              style={{
-                marginLeft: "auto"
-              }}
+              style={{ marginLeft: "auto" }}
             >
               <DropdownButton items={[
                 {

@@ -109,12 +109,9 @@ const Panel: React.FC<IPanel> = () => {
                       name: "Pin to quick shortcuts",
                       onClick: () => {
                         verifyAndReturnJson(
-                          SERVER.post(`/core/panel/quick-shortcut/create`, {
-                            body: JSON.stringify({
-                              name: app.name,
-                              url: app.path
-                            })
-                          }),
+                          SERVER.post(`/core/panel/quick-shortcut/create`, { body: JSON.stringify({
+                            name: app.name, url: app.path
+                          }) }),
                           () => {
                             router.reload()
                           },
@@ -201,12 +198,10 @@ const Panel: React.FC<IPanel> = () => {
           })
           : <Button onClick={() => {
             verifyAndReturnJson(
-              SERVER.post(`/core/panel/quick-shortcut/create`, {
-                body: JSON.stringify({
-                  name: "files",
-                  url: "/app/files"
-                })
-              }),
+              SERVER.post(`/core/panel/quick-shortcut/create`, { body: JSON.stringify({
+                name: "files",
+                url: "/app/files"
+              }) }),
               () => {
                 router.reload()
               },
@@ -287,6 +282,34 @@ const Panel: React.FC<IPanel> = () => {
             transform: !accountDropdownVisible ? "scale(0.9)" : "scale(1)",
             pointerEvents: accountDropdownVisible ? "all" : "none",
           }}>
+          <Card>
+            <RowContainer data-header={true}>
+              <img src={require(`./../../../../public/assets/productLogos/yourdash.svg`).default.src} alt=""></img>
+              <span>Notification Test</span>
+            </RowContainer>
+            <ColContainer>
+              <p>
+                This is some sample text for a notification
+              </p>
+              <Button onClick={() => { }}>
+                Ok
+              </Button>
+            </ColContainer>
+          </Card>
+          <Card>
+            <RowContainer data-header={true}>
+              <img src={require(`./../../../../public/assets/productLogos/yourdash.svg`).default.src} alt=""></img>
+              <span>Notification Test</span>
+            </RowContainer>
+            <ColContainer>
+              <p>
+                This is some sample text for a notification
+              </p>
+              <Button onClick={() => { }}>
+                Ok
+              </Button>
+            </ColContainer>
+          </Card>
           <Card>
             <RowContainer data-header={true}>
               <img src={require(`./../../../../public/assets/productLogos/yourdash.svg`).default.src} alt=""></img>

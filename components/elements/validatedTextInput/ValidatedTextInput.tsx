@@ -6,7 +6,9 @@ export interface IValidatedTextInput extends React.ComponentPropsWithoutRef<'inp
   defaultValue?: string;
 }
 
-const ValidatedTextInput: React.FC<IValidatedTextInput> = ({ children, defaultValue, invalidReason, ...inputProps }) => {
+const ValidatedTextInput: React.FC<IValidatedTextInput> = ({
+  children, defaultValue, invalidReason, ...inputProps 
+}) => {
   return <div className={styles.component}>
     <input {...inputProps} type="text" defaultValue={defaultValue ? defaultValue : ""}  className={`${styles.input} ${invalidReason ? styles.invalid : styles.valid}`}>{children}</input>
     <div className={styles.labelContainer}>

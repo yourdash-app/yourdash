@@ -8,7 +8,9 @@ export interface IBlankSetting {
   description: string
 }
 
-const BlankSetting: React.FC<IBlankSetting> = ({ children, title, description }) => {
+const BlankSetting: React.FC<IBlankSetting> = ({
+  children, title, description 
+}) => {
   return <div className={styles.component}>
     <Card>
       <ColContainer>

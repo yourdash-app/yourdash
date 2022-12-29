@@ -10,7 +10,9 @@ export interface IDropdownButton extends React.ComponentPropsWithoutRef<"button"
   }[]
 }
 
-const DropdownButton: React.FC<IDropdownButton> = ({ children, items, ...extraProps }) => {
+const DropdownButton: React.FC<IDropdownButton> = ({
+  children, items, ...extraProps 
+}) => {
   const [ selectedOption, setSelectedOption ] = useState("")
   const [ dropdownShown, setDropdownShown ] = useState(false)
   const [ willOverflowScreen, setWillOverflowScreen ] = useState(false)
@@ -21,9 +23,7 @@ const DropdownButton: React.FC<IDropdownButton> = ({ children, items, ...extraPr
       height: "max-content"
     }}>
     <div
-      style={{
-        height: "max-content"
-      }}
+      style={{ height: "max-content" }}
       onClick={(e) => {
         e.preventDefault()
         e.stopPropagation()
@@ -49,11 +49,7 @@ const DropdownButton: React.FC<IDropdownButton> = ({ children, items, ...extraPr
     {dropdownShown ?
       <div className={styles.menu} style={{
         top: "100%",
-        ...willOverflowScreen ? {
-          right: 0,
-        } : {
-          left: 0
-        },
+        ...willOverflowScreen ? { right: 0, } : { left: 0 },
         position: "absolute"
       }}>
         {

@@ -17,7 +17,9 @@ export interface ISideBar extends React.ComponentPropsWithoutRef<"div"> {
   }[]
 }
 
-const SideBar: React.FC<ISideBar> = ({ title, sections, ...extraProps }) => {
+const SideBar: React.FC<ISideBar> = ({
+  title, sections, ...extraProps 
+}) => {
 
   const [ toggledSections, setToggledSections ] = useState([] as string[])
 

@@ -9,7 +9,9 @@ export interface IBooleanSetting {
   defaultValue: boolean
 }
 
-const BooleanSetting: React.FC<IBooleanSetting> = ({ title, description, setValue, defaultValue }) => {
+const BooleanSetting: React.FC<IBooleanSetting> = ({
+  title, description, setValue, defaultValue 
+}) => {
   return <BlankSetting title={title} description={description}>
     <ToggleSwitch onValueChange={(value) => setValue(value)} defaultValue={defaultValue ? "true" : "false"} />
   </BlankSetting>

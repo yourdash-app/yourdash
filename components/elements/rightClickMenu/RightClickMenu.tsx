@@ -10,7 +10,9 @@ export interface IRightClickMenu {
   children: React.ReactChild | React.ReactChild[]
 }
 
-const RightClickMenu: React.FC<IRightClickMenu> = ({ items, children }) => {
+const RightClickMenu: React.FC<IRightClickMenu> = ({
+  items, children 
+}) => {
   const [ shown, setShown ] = useState(false)
   const [ posX, setPosX ] = useState(0)
   const [ posY, setPosY ] = useState(0)
@@ -33,19 +35,13 @@ const RightClickMenu: React.FC<IRightClickMenu> = ({ items, children }) => {
       setPosY(e.pageY - rect.top)
       setAlignLeft((e.pageX - rect.left) + 320 > rect.width)
     }}
-    style={{
-      position: "relative"
-    }}>
+    style={{ position: "relative" }}>
     {children}
     {
       shown ?
         <div className={styles.menu} style={{
           top: `${posY}px`,
-          ...alignLeft ? {
-            left: `${posX}px`,
-          } : {
-            right: `${posX}px`,
-          }
+          ...alignLeft ? { left: `${posX}px`, } : { right: `${posX}px`, }
         }}>
           {
             items.map((item, ind) => {

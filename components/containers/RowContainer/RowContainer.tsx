@@ -7,7 +7,9 @@ export interface IRowContainer {
   style?: CSSProperties
 }
 
-const RowContainer: React.FC<IRowContainer> = ({ children, className, style }) => {
+const RowContainer: React.FC<IRowContainer> = ({
+  children, className, style 
+}) => {
   return <div style={style} className={`${styles.component} ${className}`}>{children}</div>;
 };
 

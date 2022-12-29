@@ -16,12 +16,17 @@ during development you will need the latest nodejs LTS release and the yarn pack
  - ### 💻 Starting the development servers
     - to start the web client development server use this command in the project root folder
       `
-        yarn dev
+        yarn dev:client
       `
 
-    - to start the instance / server development server use this command in the /server/ folder
+    - to start the instance(server) development server use this command in the project root folder
       `
-        yarn dev
+        yarn dev:server
+      `
+
+    - to start the client and instance development server use this command in the project root folder
+      `
+        yarn dev:fs
       `
 
 ## ℹ️ other information

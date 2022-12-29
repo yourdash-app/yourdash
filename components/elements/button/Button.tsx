@@ -9,7 +9,9 @@ export interface IButton {
   style?: CSSProperties;
 }
 
-const Button: React.FC<IButton> = ({ children, vibrant, onClick, disabled, style }) => {
+const Button: React.FC<IButton> = ({
+  children, vibrant, onClick, disabled, style 
+}) => {
   return <button
     style={style}
     onClick={() => {

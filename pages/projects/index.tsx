@@ -14,9 +14,7 @@ const Projects: NextPageWithLayout = () => {
         <p>Other projects part of YourDash</p>
       </section>
       <main>
-        <div style={{
-          backgroundImage: "url(/background.jpg)"
-        }}>
+        <div style={{ backgroundImage: "url(/background.jpg)" }}>
           <h2>Code Engine</h2>
           <section>
             <Icon

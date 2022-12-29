@@ -16,9 +16,7 @@ const StoreProduct: NextPageWithLayout = () => {
   const router = useRouter()
   let productId = router.query.productName
 
-  const [ product, setProduct ] = useState({
-    name: "undefined"
-  } as InstalledApplication & { uninstallable: boolean, installed: boolean })
+  const [ product, setProduct ] = useState({ name: "undefined" } as InstalledApplication & { uninstallable: boolean, installed: boolean })
   const [ showInstallationPopup, setShowInstallationPopup ] = useState(false)
   const [ pageChanging, setPageChanging ] = useState(false)
   const [ installationError, setInstallationError ] = useState(false)
@@ -108,11 +106,7 @@ const StoreProduct: NextPageWithLayout = () => {
                 return
               } else {
                 verifyAndReturnJson(
-                  SERVER.post(`/store/application/${productId}/install`, {
-                    body: JSON.stringify({
-                      product: productId
-                    })
-                  }),
+                  SERVER.post(`/store/application/${productId}/install`, { body: JSON.stringify({ product: productId }) }),
                   (data) => {
                     if (data.installed) {
                       setProduct(

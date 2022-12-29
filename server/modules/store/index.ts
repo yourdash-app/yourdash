@@ -37,16 +37,12 @@ let module: YourDashModule = {
             ...defaultApps
           ]),
           (err) => {
-            if (err) return res.json({
-              error: true
-            });
+            if (err) return res.json({ error: true });
             let json = defaultApps
             let result = includedApps.find((obj) => obj.name === req.params.applicationId)
             if (!result) {
               log(`ERROR: no store product found named: ${req.params.applicationId}`)
-              return res.json({
-                error: true
-              })
+              return res.json({ error: true })
             }
             resizeBase64Image(352, 352, result.icon).then((icon) => {
               return res.json({
@@ -62,17 +58,13 @@ let module: YourDashModule = {
       fs.readFile(path.resolve(`${api.FsOrigin}/installed_apps.json`), (err, data) => {
         if (err) {
           log("ERROR: couldn't read installed_apps.json")
-          return res.json({
-            error: true
-          })
+          return res.json({ error: true })
         }
         let json = JSON.parse(data.toString()) as string[]
         let result = includedApps.find((obj) => obj.name === req.params.applicationId)
         if (!result) {
           log(`ERROR: no store product found named: ${req.params.applicationId}`)
-          return res.json({
-            error: true
-          })
+          return res.json({ error: true })
         }
         resizeBase64Image(284, 284, result.icon).then((icon) => {
           return res.json({
@@ -96,9 +88,7 @@ let module: YourDashModule = {
           (err) => {
             if (err) {
               log(`ERROR: cannot write installed_apps.json`)
-              return res.json({
-                error: true
-              });
+              return res.json({ error: true });
             }
             res.json(defaultApps);
           }
@@ -107,9 +97,7 @@ let module: YourDashModule = {
         fs.readFile(path.resolve(`${api.FsOrigin}/installed_apps.json`), (err, data) => {
           if (err) {
             log("ERROR: couldn't read installed_apps.json")
-            return res.json({
-              error: true
-            })
+            return res.json({ error: true })
           }
           let json = JSON.parse(data.toString()) as string[]
           var result = includedApps.filter((app) => json.includes(app.name)) || []
@@ -119,9 +107,7 @@ let module: YourDashModule = {
                 name: item.name,
                 description: item.description,
                 displayName: item.displayName,
-                icon: {
-                  store: item.icon
-                },
+                icon: { store: item.icon },
                 path: item.path
               } as InstalledApplicationList
             })
@@ -139,15 +125,9 @@ let module: YourDashModule = {
         fs.writeFile(path.resolve(`${api.FsOrigin}/installed_apps.json`), JSON.stringify(json), (err) => {
           if (err) {
             log(`ERROR: couldn't write installed_apps.json`)
-            return res.json(
-              {
-                error: true
-              }
-            )
+            return res.json({ error: true })
           }
-          return res.json({
-            installed: includedApps.filter((app) => json.includes(app.name)).find((obj) => obj.name === req.params.applicationId) !== undefined
-          })
+          return res.json({ installed: includedApps.filter((app) => json.includes(app.name)).find((obj) => obj.name === req.params.applicationId) !== undefined })
         })
 
         fs.writeFile(
@@ -156,33 +136,23 @@ let module: YourDashModule = {
             ...defaultApps
           ]),
           (err) => {
-            if (err) return res.json({
-              error: true
-            });
+            if (err) return res.json({ error: true });
           }
         );
       }
       fs.readFile(path.resolve(`${api.FsOrigin}/installed_apps.json`), (err, data) => {
         if (err) {
           log("ERROR: couldn't read installed_apps.json")
-          return res.json({
-            error: true
-          })
+          return res.json({ error: true })
         }
         let json = JSON.parse(data.toString()) as string[]
         json.push(req.params.applicationId)
         fs.writeFile(path.resolve(`${api.FsOrigin}/installed_apps.json`), JSON.stringify(json), (err) => {
           if (err) {
             log(`ERROR: couldn't write installed_apps.json`)
-            return res.json(
-              {
-                error: true
-              }
-            )
+            return res.json({ error: true })
           }
-          return res.json({
-            installed: includedApps.filter((app) => json.includes(app.name)).find((obj) => obj.name === req.params.applicationId) !== undefined
-          })
+          return res.json({ installed: includedApps.filter((app) => json.includes(app.name)).find((obj) => obj.name === req.params.applicationId) !== undefined })
         })
       })
     })
@@ -190,32 +160,32 @@ let module: YourDashModule = {
     app.delete(`${api.ModulePath(this)}/application/:applicationId`, (req, res) => {
       if (!fs.existsSync(path.resolve(`${api.FsOrigin}/installed_apps.json`))) {
         log(`ERROR: unable to uninstall an application which was not already installed`)
-        return res.json({
-          error: true
-        })
+        return res.json({ error: true })
       }
       fs.readFile(path.resolve(`${api.FsOrigin}/installed_apps.json`), (err, data) => {
         if (err) {
           log("ERROR: couldn't read installed_apps.json")
-          return res.json({
-            error: true
-          })
+          return res.json({ error: true })
         }
 
         let json = JSON.parse(data.toString()) as string[]
         json = json.filter((app) => app !== req.params.applicationId)
+        fs.readdir(`${api.FsOrigin}/data/users`, (err, users) => {
+          if (err) {
+            log(`ERROR: unable to read the users directory`)
+            return
+          }
+          users.forEach((user) => {
+            if (!fs.existsSync(`${api.FsOrigin}/data/users/${user}/AppData/core/panel/quick-shortcuts/shortcuts.json`))
+              return
+          })
+        })
         fs.writeFile(path.resolve(`${api.FsOrigin}/installed_apps.json`), JSON.stringify(json), (err) => {
           if (err) {
             log(`ERROR: couldn't write installed_apps.json`)
-            return res.json(
-              {
-                error: true
-              }
-            )
+            return res.json({ error: true })
           }
-          return res.json({
-            installed: includedApps.filter((app) => json.includes(app.name)).find((obj) => obj.name === req.params.applicationId) !== undefined
-          })
+          return res.json({ installed: includedApps.filter((app) => json.includes(app.name)).find((obj) => obj.name === req.params.applicationId) !== undefined })
         })
       })
     })

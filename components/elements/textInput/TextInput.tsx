@@ -5,7 +5,9 @@ export interface ITextInput extends React.ComponentPropsWithoutRef<'input'> {
   className?: string;
 }
 
-const TextInput: React.FC<ITextInput> = ({ children, defaultValue, className, ...inputProps }) => {
+const TextInput: React.FC<ITextInput> = ({
+  children, defaultValue, className, ...inputProps 
+}) => {
   return <input {...inputProps} type={inputProps.type ? inputProps.type : "text"} defaultValue={defaultValue ? defaultValue : ""} className={`${styles.input} ${className}`}>{children}</input>
 }
 
