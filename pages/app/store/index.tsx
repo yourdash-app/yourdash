@@ -9,6 +9,7 @@ import styles from "./index.module.scss"
 import { useEffect, useState } from 'react';
 import InstalledApplication from '../../../types/store/installedApplication';
 import SERVER, { verifyAndReturnJson } from '../../../lib/server';
+import TextInput from '../../../components/elements/textInput/TextInput';
 
 const StoreIndex: NextPageWithLayout = () => {
   const router = useRouter()
@@ -60,6 +61,7 @@ const StoreIndex: NextPageWithLayout = () => {
         </div>
       </Carousel>
       <main className={styles.cardContainer}>
+        {/* <TextInput placeholder='Search' className={styles.cardSearch} /> */}
         {
           includedApps.map((item, ind) => {
             return <Card key={ind} onClick={() => {

@@ -134,6 +134,10 @@
 
   --scrollbar-bg: #222;
   --scrollbar-fg: var(--accent-color);
+  --scrollbar-hover-bg: #222;
+  --scrollbar-hover-fg: #fb7a5b;
+  --scrollbar-active-bg: #222;
+  --scrollbar-active-fg: #db5a3b;
 
   --right-click-menu-bg: #333333;
   --right-click-menu-fg: #ffffff;
@@ -179,20 +183,41 @@ h3 {
 }
 
 ::-webkit-scrollbar {
-  width: 0.5rem;
-  height: 0.5rem;
+  width: 18px;
+  height: 18px;
 }
 
 ::-webkit-scrollbar-thumb {
-  border-radius: 0.5rem;
+  border-radius: 0.4rem;
   background-color: var(--scrollbar-fg);
+  border: transparent solid 0.25rem;
+  background-clip: content-box;
+  transition: var(--transition);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  border-radius: 1rem;
+  background-color: var(--scrollbar-hover-fg);
+}
+::-webkit-scrollbar-thumb:active {
+  background-color: var(--scrollbar-active-fg);
 }
 
 ::-webkit-scrollbar-track {
   background-color: var(--scrollbar-bg);
 }
 
-::-webkit-scrollbar-button {
-  padding: 0.5rem;
-  border: transparent solid 0.2rem;
+/* ::-webkit-scrollbar-button:single-button {
+  background-color: var(--button-bg);
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
 }
+
+::-webkit-scrollbar-button:single-button:hover {
+  background-color: var(--button-hover-bg);
+}
+
+::-webkit-scrollbar-button:single-button:active {
+  background-color: var(--button-active-bg);
+} */

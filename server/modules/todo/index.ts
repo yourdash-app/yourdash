@@ -9,22 +9,16 @@ let module: YourDashModule = {
   load(app, _api) {
     app.get(`/api/${this.name}/list/create`, (req, res) => {
       let { username } = req.headers;
-      if (!username) return res.json({
-        error: true
-      });
+      if (!username) return res.json({ error: true });
       if (!fs.existsSync(`${ENV.UserAppData(req)}/${this.name}`))
         fs.mkdir(`${ENV.UserAppData}/${this.name}`, (err) => {
-          if (err) return res.json({
-            error: true
-          });
+          if (err) return res.json({ error: true });
         });
       let listId = generateRandomStringOfLength(32);
       if (fs.existsSync(`${ENV.UserAppData(req)}/${this.name}/lists/${listId}`)) {
         listId = generateRandomStringOfLength(32);
         if (fs.existsSync(`${ENV.UserAppData(req)}/${this.name}/lists/${listId}`))
-          return res.json({
-            error: true
-          });
+          return res.json({ error: true });
       }
       fs.writeFile(
         `${ENV.UserAppData(req)}/${this.name}/lists/${listId}/`,
@@ -55,12 +49,8 @@ let module: YourDashModule = {
           ],
         }),
         (err) => {
-          if (err) return res.json({
-            error: true
-          });
-          return res.json({
-            id: listId
-          });
+          if (err) return res.json({ error: true });
+          return res.json({ id: listId });
         }
       );
     });

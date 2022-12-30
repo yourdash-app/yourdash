@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import { useEffect, useState } from 'react';
 import SERVER, { verifyAndReturnJson } from "../../../../lib/server";
-import YourDashUser, { YourDashUserSettings } from '../../../../types/core/user';
+import YourDashUser from '../../../../types/core/user';
 import Card from '../../../containers/card/Card';
 import ColContainer from '../../../containers/ColContainer/ColContainer';
 import RowContainer from '../../../containers/RowContainer/RowContainer';
@@ -38,24 +38,8 @@ const Panel: React.FC<IPanel> = ({
   const [ installedApps, setInstalledApps ] = useState([] as InstalledApplication[])
 
   useEffect(() => {
-    verifyAndReturnJson(
-      SERVER.get(`/userManagement/current/user/settings`),
-      (res: YourDashUserSettings) => {
-
-        setApplicationWindowMode(res?.panel?.applicationContainer?.windowMode || false)
-
-        // setTimeout(() => setApplicationWindowMode(true), 5000)
-        
-        // the following is no longer supported
-        // document.body.style.setProperty("--app-panel-launcher-grid-columns", res.panel?.launcher?.slideOut?.gridColumns.toString() || "3")
-      },
-      () => {
-        console.error(`error fetching user's settings`)
-        localStorage.removeItem("sessionToken")
-        return router.push("/login")
-      }
-    )
-
+    setApplicationWindowMode(true)
+    
     verifyAndReturnJson(
       SERVER.get(`/userManagement/current/user`),
       (res) => {

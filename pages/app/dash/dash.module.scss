@@ -1,4 +1,5 @@
 .root {
+  --app-application-transparent-background-blur: 5px;
   background: transparent;
   &[data-background="true"] {
     background: var(--app-background);
@@ -15,6 +16,7 @@
   box-sizing: border-box;
   flex-direction: column;
   transition: var(--transition);
+  backdrop-filter: blur(var(--app-application-transparent-background-blur));
 }
 
 // --app-dash-clock-font-weight: 800;
@@ -42,6 +44,18 @@
   > .clock {
     font-size: 8rem;
   }
+  @keyframes fadeIn {
+    from {
+      opacity: 0%;
+    }
+
+    to {
+      opacity: 100%;
+    }
+  }
+
+  opacity: 0%;
+  animation: 500ms 100ms ease-in-out fadeIn forwards;
 }
 
 .main {
@@ -71,6 +85,19 @@
   @media screen and (min-width: 1800px) {
     grid-template-columns: repeat(4, 1fr);
   }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0%;
+    }
+
+    to {
+      opacity: 100%;
+    }
+  }
+
+  opacity: 0%;
+  animation: 500ms 100ms ease-in-out fadeIn forwards;
 }
 
 .homeMessage {
@@ -83,6 +110,7 @@
   flex-direction: column;
   grid-column: 1/-1;
   grid-row: 1/-1;
+  padding: 2rem;
   > div {
     padding: 1.5rem;
     display: flex;

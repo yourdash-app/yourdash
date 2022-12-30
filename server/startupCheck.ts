@@ -24,9 +24,7 @@ export default function main(cb: () => void) {
 
 function checkEnvironmentVariables(cb: () => void) {
   if (!fs.existsSync(path.resolve(ENV.FsOrigin))) {
-    fs.mkdir(ENV.FsOrigin, {
-      recursive: true
-    }, (err) => {
+    fs.mkdir(ENV.FsOrigin, { recursive: true }, (err) => {
       if (err) {
         log(`(Start up) ERROR: the 'FsOrigin' environment variable is invalid`)
         return process.exit(1)
@@ -53,9 +51,7 @@ function checkYourDashConfigJson(cb: () => void) {
         themeColor: '#a46',
         version: 1,
         loginPageConfig: {
-          background: {
-            src: returnBase64Image(path.resolve(`${ENV.FsOrigin}/../background.jpg`)),
-          },
+          background: { src: returnBase64Image(path.resolve(`${ENV.FsOrigin}/../background.jpg`)), },
           logo: {
             src: returnBase64Image(path.resolve(`${ENV.FsOrigin}/../yourdash256.png`)),
             position: {
@@ -129,9 +125,7 @@ function checkConfigurationVersion(cb: () => void) {
 
 function checkIfAdministratorUserExists(cb: () => void) {
   if (!fs.existsSync(path.resolve(`${ENV.FsOrigin}/data/users/admin/user.json`))) {
-    fs.mkdir(path.resolve(`${ENV.FsOrigin}/data/users/admin/`), {
-      recursive: true
-    }, (err) => {
+    fs.mkdir(path.resolve(`${ENV.FsOrigin}/data/users/admin/`), { recursive: true }, (err) => {
       if (err) {
         log(`${err}`);
         process.exit(1)
@@ -156,8 +150,7 @@ function checkIfAdministratorUserExists(cb: () => void) {
             status: {
               public: false, value: ''
             },
-            externalLinks: {
-            },
+            externalLinks: {},
           },
         } as YourDashUser),
         (err) => {
@@ -167,9 +160,7 @@ function checkIfAdministratorUserExists(cb: () => void) {
           );
           fs.writeFile(
             path.resolve(`${ENV.FsOrigin}/data/users/admin/keys.json`),
-            JSON.stringify({
-              hashedKey: encrypt('admin', SERVER_CONFIG),
-            }),
+            JSON.stringify({ hashedKey: encrypt('admin', SERVER_CONFIG), }),
             (err) => {
               if (err) {
                 log(
@@ -179,21 +170,15 @@ function checkIfAdministratorUserExists(cb: () => void) {
               }
               fs.writeFile(
                 `${ENV.FsOrigin}/data/users/admin/config.json`,
-                JSON.stringify({
-                  panel: {
-                    launcher: {
-                      shortcuts: [
-                        {
-                          icon: returnBase64Image(
-                            path.resolve(`${ENV.FsOrigin}/../yourdash256.png`)
-                          ),
-                          name: 'Dashboard',
-                          url: '/app/dash',
-                        },
-                      ],
-                    },
+                JSON.stringify({ panel: { launcher: { shortcuts: [
+                  {
+                    icon: returnBase64Image(
+                      path.resolve(`${ENV.FsOrigin}/../yourdash256.png`)
+                    ),
+                    name: 'Dashboard',
+                    url: '/app/dash',
                   },
-                } as YourDashUserSettings),
+                ], }, }, } as YourDashUserSettings),
                 (err) => {
                   if (err) {
                     log(
