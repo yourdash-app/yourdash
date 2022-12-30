@@ -90,7 +90,8 @@ export function verifyAndReturnJson(req: Promise<Response>, res: (_res: any) => 
           error()
         })
     })
-    .catch(() => {
+    .catch((err) => {
+      console.error(err)
       error()
     })
 }

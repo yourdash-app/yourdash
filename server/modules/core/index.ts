@@ -6,7 +6,7 @@ import YourDashModule from './../../module.js';
 import quickShortcut from "./../../../types/core/panel/quickShortcut.js"
 import includedApps from '../../includedApps.js';
 import LauncherApplication from "./../../../types/core/panel/launcherApplication.js"
-import YourDashUser from '../../../lib/user.js';
+import YourDashUser from '../../../types/core/user.js';
 import sharp from 'sharp';
 
 const Module: YourDashModule = {

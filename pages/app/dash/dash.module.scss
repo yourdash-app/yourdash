@@ -1,8 +1,11 @@
 .root {
-  background: var(--app-background);
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
+  background: transparent;
+  &[data-background="true"] {
+    background: var(--app-background);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
   height: 100%;
   overflow-y: auto;
   width: 100%;
@@ -32,8 +35,9 @@
   transition: var(--transition);
   margin-bottom: 1rem;
   > * {
-    text-shadow: var(--app-dash-clock-shadow-offset-x) var(--app-dash-clock-shadow-offset-y)
-      var(--app-dash-clock-shadow-spread) var(--app-dash-clock-shadow-color);
+    text-shadow: var(--app-dash-clock-shadow-offset-x)
+      var(--app-dash-clock-shadow-offset-y) var(--app-dash-clock-shadow-spread)
+      var(--app-dash-clock-shadow-color);
   }
   > .clock {
     font-size: 8rem;

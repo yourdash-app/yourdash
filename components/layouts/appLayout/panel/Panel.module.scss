@@ -185,23 +185,32 @@
     position: relative;
     box-shadow: 0rem -1.5rem 1rem inset var(--container-bg);
     width: calc(2rem + 100%);
+    height: 12rem;
 
     > div[data-title] {
-      font-size: 2rem;
-      padding-top: 3rem;
-      padding-bottom: 2rem;
+      font-size: 3rem;
       text-align: center;
       user-select: none;
-      text-shadow: 0 0 0.5rem #000000, 0 0 0.75rem #000000, 0 0 1rem #000000,
-        0 0 1.5rem #000000, 0 0 2rem #000000;
+      background: inherit;
+      background-clip: text;
+      font-weight: 700;
+      letter-spacing: 0.15rem;
+      position: absolute;
+      top: 2.5rem;
+      left: 50%;
+      translate: -50%;
+      white-space: nowrap;
+      color: white;
+      text-shadow: 0 0 1rem #000000, 0 0 0.5rem #000000;
     }
 
     > input[data-search] {
-      opacity: 80%;
       margin-left: 2rem;
       width: calc(100% - 4rem);
       margin-bottom: 2.5rem;
       color: #ffffff;
+      position: absolute;
+      bottom: 0rem;
     }
   }
 

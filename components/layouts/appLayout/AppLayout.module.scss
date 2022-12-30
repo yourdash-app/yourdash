@@ -1,0 +1,33 @@
+.root {
+  height: 100vh;
+  width: 100vw;
+  background: var(--app-background);
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+.content {
+  --app-application-margin: 0rem;
+  --app-application-rounding: 0rem;
+  overflow: hidden;
+  position: fixed;
+  top: calc(var(--app-panel-height) + var(--app-application-margin));
+  left: var(--app-application-margin);
+  height: calc(
+    calc(100vh - var(--app-panel-height)) -
+      calc(var(--app-application-margin) * 2)
+  );
+  width: calc(100vw - calc(var(--app-application-margin) * 2));
+  transition: all 0.5s linear;
+  border-radius: var(--app-application-rounding);
+  box-shadow: 0 0 1rem #00000033;
+  background-color: var(--background-color);
+  &[data-app-window="true"] {
+    --app-application-margin: 1rem;
+    --app-application-rounding: 1rem;
+  }
+  &[data-app-transparent-background="true"] {
+    background: transparent;
+    box-shadow: 0 0 0rem #00000000;
+  }
+}

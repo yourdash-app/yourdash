@@ -4,7 +4,7 @@ import path from 'path';
 import { decrypt, encrypt, generateRandomStringOfLength } from '../../encryption.js';
 import { ENV } from '../../index.js';
 import YourDashModule from './../../module.js';
-import YourDashUser, { YourDashUserSettings } from './../../../lib/user';
+import YourDashUser, { YourDashUserSettings } from '../../../types/core/user.js';
 import { log } from './../../libServer.js';
 import console from 'console';
 

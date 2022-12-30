@@ -5,7 +5,7 @@
 
 import fs from 'fs';
 import path from 'path';
-import YourDashUser, { YourDashUserSettings } from '../lib/user.js';
+import YourDashUser, { YourDashUserSettings } from '../types/core/user.js';
 import { encrypt, generateRandomStringOfLength } from './encryption.js';
 import { ENV, RELEASE_CONFIGURATION, YourDashServerConfig } from './index.js';
 import { log, returnBase64Image } from './libServer.js';

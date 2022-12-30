@@ -77,6 +77,9 @@ export interface YourDashUserSettings {
     tray: {
       visibleIcons: {}[];
     };
+    applicationContainer: {
+      windowMode: true;
+    }
   };
   applications: {
     dash: {

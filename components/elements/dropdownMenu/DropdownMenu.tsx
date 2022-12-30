@@ -13,6 +13,7 @@ const DropdownMenu: React.FC<IDropdownMenu> = ({
   items, children, ...extraProps 
 }) => {
   const [ shown, setShown ] = useState(false)
+  const [ willOverflowScreen, setWillOverflowScreen ] = useState(false)
 
   return <div
     {...extraProps}
@@ -28,6 +29,10 @@ const DropdownMenu: React.FC<IDropdownMenu> = ({
       document.body.addEventListener("click", listener)
       document.body.addEventListener("auxclick", listener)
       setShown(!shown)
+      let rect = e.currentTarget.getBoundingClientRect()
+      setWillOverflowScreen(
+        (rect.left + 320) > window.innerWidth
+      )
     }}>
       {children}
     </div>
@@ -39,7 +44,7 @@ const DropdownMenu: React.FC<IDropdownMenu> = ({
         }}
         style={{
           top: "100%",
-          left: 0,
+          ...willOverflowScreen ? { right: 0, } : { left: 0 },
           position: "absolute"
         }}>
         {

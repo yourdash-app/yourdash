@@ -1,6 +1,6 @@
 import { SideBarCategory } from './../../../types/files/SideBar';
 import path from "path";
-import YourDashUser from "../../../lib/user.js";
+import YourDashUser from "../../../types/core/user.js";
 import { log } from "../../libServer.js";
 import YourDashModule from "../../module.js";
 import fs from "fs"

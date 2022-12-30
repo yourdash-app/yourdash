@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import { useEffect, useState } from 'react';
 import SERVER, { verifyAndReturnJson } from "../../../../lib/server";
-import YourDashUser, { YourDashUserSettings } from '../../../../lib/user';
+import YourDashUser, { YourDashUserSettings } from '../../../../types/core/user';
 import Card from '../../../containers/card/Card';
 import ColContainer from '../../../containers/ColContainer/ColContainer';
 import RowContainer from '../../../containers/RowContainer/RowContainer';
@@ -21,9 +21,14 @@ import QuickShortcut from '../../../../types/core/panel/quickShortcut';
 import AuthenticatedImg from '../../../elements/authenticatedImg/AuthenticatedImg';
 import InstalledApplication from '../../../../types/store/installedApplication';
 
-export interface IPanel { }
+export interface IPanel {
+  appIsOpening: (_value: boolean) => void,
+  setApplicationWindowMode: (_value: boolean) => void
+}
 
-const Panel: React.FC<IPanel> = () => {
+const Panel: React.FC<IPanel> = ({
+  appIsOpening, setApplicationWindowMode 
+}) => {
   const router = useRouter()
   const [ launcherSlideOutVisible, setLauncherSlideOutVisible ] = useState(false)
   const [ accountDropdownVisible, setAccountDropdownVisible ] = useState(false)
@@ -35,12 +40,17 @@ const Panel: React.FC<IPanel> = () => {
   useEffect(() => {
     verifyAndReturnJson(
       SERVER.get(`/userManagement/current/user/settings`),
-      (_res: YourDashUserSettings) => {
+      (res: YourDashUserSettings) => {
 
+        setApplicationWindowMode(res?.panel?.applicationContainer?.windowMode || false)
+
+        // setTimeout(() => setApplicationWindowMode(true), 5000)
+        
         // the following is no longer supported
         // document.body.style.setProperty("--app-panel-launcher-grid-columns", res.panel?.launcher?.slideOut?.gridColumns.toString() || "3")
       },
       () => {
+        console.error(`error fetching user's settings`)
         localStorage.removeItem("sessionToken")
         return router.push("/login")
       }
@@ -52,6 +62,7 @@ const Panel: React.FC<IPanel> = () => {
         setUserData(res.user)
       },
       () => {
+        console.error(`error fetching user`)
         localStorage.removeItem("sessionToken")
         return router.push("/login")
       }
@@ -123,8 +134,14 @@ const Panel: React.FC<IPanel> = () => {
                     },
                   ]} key={ind}>
                   <div className={styles.launcherGridItem} onClick={() => {
+                    if (app.path === router.pathname) return
                     setLauncherSlideOutVisible(false)
-                    router.push(app.path)
+                    router.prefetch(app.path)
+                    appIsOpening(true)
+                    setTimeout(() => {
+                      router.push(app.path)
+                      appIsOpening(false)
+                    }, 500)
                   }}>
                     <img src={app.icon} draggable={false} alt="" />
                     <span>{app.name}</span>
@@ -183,7 +200,13 @@ const Panel: React.FC<IPanel> = () => {
               }
             ]}>
               <div className={styles.shortcut} onClick={() => {
-                router.push(shortcut.url)
+                if (shortcut.url === router.pathname) return
+                router.prefetch(shortcut.url)
+                appIsOpening(true)
+                setTimeout(() => {
+                  router.push(shortcut.url)
+                  appIsOpening(false)
+                }, 500)
               }}>
                 <div>
                   <img draggable={false} src={shortcut.icon} alt="" />

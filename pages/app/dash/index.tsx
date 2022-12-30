@@ -62,5 +62,5 @@ const Dash: NextPageWithLayout = () => {
 export default Dash;
 
 Dash.getLayout = (page) => {
-  return <AppLayout>{page}</AppLayout>
+  return <AppLayout transparentBackground={true}>{page}</AppLayout>
 }

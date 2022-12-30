@@ -1,5 +1,7 @@
 import CardButton from "../../../../components/elements/cardButton/CardButton";
+import DropdownMenu from "../../../../components/elements/dropdownMenu/DropdownMenu";
 import Icon from "../../../../components/elements/icon/Icon";
+import IconButton from "../../../../components/elements/iconButton/IconButton";
 import styles from "./File.module.scss"
 
 export interface IFile {
@@ -16,6 +18,14 @@ const File: React.FC<IFile> = ({
     <span>{name}</span>
     <span>{path}</span>
     <span>{type}</span>
+    <DropdownMenu items={[
+      {
+        name: "Delete",
+        onClick: () => {}
+      }
+    ]}>
+      <IconButton onClick={() => {}} icon="three-bars-16"></IconButton>
+    </DropdownMenu>
   </CardButton>
 };
 
