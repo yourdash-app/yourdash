@@ -16,7 +16,8 @@
   box-sizing: border-box;
   flex-direction: column;
   transition: var(--transition);
-  backdrop-filter: blur(var(--app-application-transparent-background-blur));
+  backdrop-filter: blur(var(--app-application-transparent-background-blur))
+    brightness(1.25);
 }
 
 // --app-dash-clock-font-weight: 800;

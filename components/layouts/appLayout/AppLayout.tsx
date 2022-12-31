@@ -1,6 +1,6 @@
 import styles from "./AppLayout.module.scss"
 import Panel from "./panel/Panel";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export interface IAppLayout extends React.ComponentPropsWithoutRef<'div'> {
   transparentBackground?: boolean;
@@ -13,8 +13,16 @@ const AppLayout: React.FC<IAppLayout> = ({
 }) => {
   const [ appOpenAnimation, setAppOpenAnimation ] = useState(false)
   const [ applicationWindowMode, setApplicationWindowMode ] = useState(false)
+  const [ standaloneInterface, setStandaloneInterface ] = useState(false)
 
-  return <div className={styles.root}>
+  useEffect(() => {
+    let paramString = window.location.search
+    let queryString = new URLSearchParams(paramString)
+
+    setStandaloneInterface(queryString.get("standalone") === "true")
+  }, [])
+
+  return standaloneInterface ? <>{children}</> : <div className={styles.root}>
     <Panel
       appIsOpening={(value) => {
         setAppOpenAnimation(value)
