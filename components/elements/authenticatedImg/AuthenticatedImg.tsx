@@ -19,7 +19,7 @@ const AuthenticatedImg: React.FC<IAuthenticatedImg> = ({
   useEffect(() => {
     verifyAndReturnJson(
       SERVER.get(src),
-      (json) => {
+      (json: { image: string }) => {
         setImgSrc(json?.image || YourDashIconRawDictionary[ "server-error" ])
       },
       () => {

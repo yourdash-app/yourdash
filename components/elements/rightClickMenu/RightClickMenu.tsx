@@ -22,14 +22,14 @@ const RightClickMenu: React.FC<IRightClickMenu> = ({
     onContextMenu={(e) => {
       e.preventDefault()
       e.stopPropagation()
-      let listener = () => {
+      const listener = () => {
         setShown(false)
         document.body.removeEventListener("click", listener)
       }
       document.body.addEventListener("click", listener)
       document.body.addEventListener("auxclick", listener)
       setShown(!shown)
-      let rect = e.currentTarget?.getBoundingClientRect()
+      const rect = e.currentTarget?.getBoundingClientRect()
       if (!rect) return
       setPosX(e.pageX - rect.left)
       setPosY(e.pageY - rect.top)

@@ -1,9 +1,21 @@
 import { useEffect, useState } from 'react';
 import { NextPageWithLayout } from '../../../page';
 import SERVER, { verifyAndReturnJson } from '../../../../lib/server';
+import styles from "./[username].module.scss"
+import { useRouter } from 'next/router';
+import ColContainer from '../../../../components/containers/ColContainer/ColContainer';
+import Card from '../../../../components/containers/card/Card';
+import Button from '../../../../components/elements/button/Button';
+import Icon from '../../../../components/elements/icon/Icon';
+import AppLayout from '../../../../components/layouts/appLayout/AppLayout';
 
-const AppIndex: NextPageWithLayout = () => {
+const Username: NextPageWithLayout = () => {
+  const router = useRouter()
+
+  const username = router.query.username
+
   const [ user, setUser ] = useState(undefined)
+  const [ profileError, setProfileError ] = useState(false)
   
   useEffect(() => {
     verifyAndReturnJson(
@@ -13,11 +25,30 @@ const AppIndex: NextPageWithLayout = () => {
       },
       () => {
         console.error("unable to fetch user profile")
+        setProfileError(true)
       }
     )
   }, [])
 
-  if (!user) return <></>
+  if (profileError)
+    return <Card className={styles.errorPopup}>
+      <ColContainer>
+        <Icon color="var(--card-fg)" name="server-error"></Icon>
+        <h3>Error</h3>
+        <p>
+        The user &quot;{username}&quot; was not found
+        </p>
+        <Button
+          onClick={() => {
+            router.push(`/app/dash`)
+          }}>
+        Go back
+        </Button>
+      </ColContainer>
+    </Card>
+
+  if (!user)
+    return <></>
 
   return (
     <>
@@ -54,4 +85,10 @@ const AppIndex: NextPageWithLayout = () => {
   );
 };
 
-export default AppIndex;
+export default Username;
+
+Username.getLayout = (page) => <>
+  <AppLayout>
+    {page}
+  </AppLayout>
+</>

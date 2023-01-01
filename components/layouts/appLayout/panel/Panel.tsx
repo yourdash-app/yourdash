@@ -80,8 +80,8 @@ const Panel: React.FC<IPanel> = ({
       <Icon
         name='app-launcher-16'
         style={{
+          aspectRatio: "1/1",
           height: "100%",
-          aspectRatio: "1/1"
         }}
         color={"var(--app-panel-fg)"}
       />
@@ -227,15 +227,15 @@ const Panel: React.FC<IPanel> = ({
         setAccountDropdownVisible(!accountDropdownVisible)
       }} tabIndex={0} src={"/core/panel/user/profile/picture"} alt="" />
       <div style={{
-        width: "100vw",
-        transition: "var(--transition)",
-        height: "100vh",
         background: "#00000040",
+        height: "100vh",
+        left: 0,
+        opacity: accountDropdownVisible ? 1 : 0,
+        pointerEvents: accountDropdownVisible ? "all" : "none",
         position: "fixed",
         top: 0,
-        left: 0,
-        pointerEvents: accountDropdownVisible ? "all" : "none",
-        opacity: accountDropdownVisible ? 1 : 0
+        transition: "var(--transition)",
+        width: "100vw",
       }} onClick={() => {
         setAccountDropdownVisible(false)
       }}></div>
@@ -243,8 +243,8 @@ const Panel: React.FC<IPanel> = ({
         <Card
           style={{
             opacity: !accountDropdownVisible ? "0" : "1",
-            transform: !accountDropdownVisible ? "scale(0.9)" : "scale(1)",
             pointerEvents: accountDropdownVisible ? "all" : "none",
+            transform: !accountDropdownVisible ? "scale(0.9)" : "scale(1)",
           }}
           compact={true}
           className={styles.accountDropdown}>
@@ -286,8 +286,8 @@ const Panel: React.FC<IPanel> = ({
           className={styles.accountNotificationList}
           style={{
             opacity: !accountDropdownVisible ? "0" : "1",
-            transform: !accountDropdownVisible ? "scale(0.9)" : "scale(1)",
             pointerEvents: accountDropdownVisible ? "all" : "none",
+            transform: !accountDropdownVisible ? "scale(0.9)" : "scale(1)",
           }}>
           <Card>
             <RowContainer data-header={true}>
@@ -298,7 +298,9 @@ const Panel: React.FC<IPanel> = ({
               <p>
                 This is some sample text for a notification
               </p>
-              <Button onClick={() => { }}>
+              <Button onClick={() => {
+                console.log("Implenment me!")
+              }}>
                 Ok
               </Button>
             </ColContainer>
@@ -312,7 +314,9 @@ const Panel: React.FC<IPanel> = ({
               <p>
                 This is some sample text for a notification
               </p>
-              <Button onClick={() => { }}>
+              <Button onClick={() => {
+                console.log("Implenment me!")
+              }}>
                 Ok
               </Button>
             </ColContainer>
@@ -326,7 +330,9 @@ const Panel: React.FC<IPanel> = ({
               <p>
                 This is some sample text for a notification
               </p>
-              <Button onClick={() => { }}>
+              <Button onClick={() => {
+                console.log("Implenment me!")
+              }}>
                 Ok
               </Button>
             </ColContainer>

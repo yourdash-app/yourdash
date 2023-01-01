@@ -13,7 +13,7 @@ const Slides: React.FC<ISlides> = ({
   const [ currentSlide, setCurrentSlide ] = React.useState(slides[ 0 ])
 
   React.useEffect(() => {
-    let intervalTimer = setInterval(() => {
+    const intervalTimer = setInterval(() => {
       setCurrentSlideInd(currentSlideInd + 1)
       setCurrentSlide(slides[ currentSlideInd + 1 ])
       if (currentSlideInd >= slides.length - 1) {

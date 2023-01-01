@@ -19,15 +19,15 @@ const DropdownButton: React.FC<IDropdownButton> = ({
 
   return <div
     style={{
+      height: "max-content",
       position: "relative",
-      height: "max-content"
     }}>
     <div
       style={{ height: "max-content" }}
       onClick={(e) => {
         e.preventDefault()
         e.stopPropagation()
-        let listener = () => {
+        const listener = () => {
           setDropdownShown(false)
           document.body.removeEventListener("auxclick", listener)
           document.body.addEventListener("click", listener)
@@ -35,7 +35,7 @@ const DropdownButton: React.FC<IDropdownButton> = ({
         document.body.addEventListener("click", listener)
         document.body.addEventListener("auxclick", listener)
         setDropdownShown(!dropdownShown)
-        let rect = e.currentTarget.getBoundingClientRect()
+        const rect = e.currentTarget.getBoundingClientRect()
         setWillOverflowScreen(
           (rect.left + 320) > window.innerWidth
         )

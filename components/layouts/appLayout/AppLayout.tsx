@@ -2,14 +2,13 @@ import styles from "./AppLayout.module.scss"
 import Panel from "./panel/Panel";
 import React, { useEffect, useState } from "react";
 
-export interface IAppLayout extends React.ComponentPropsWithoutRef<'div'> {
+export interface IAppLayout {
   transparentBackground?: boolean;
 }
 
 const AppLayout: React.FC<IAppLayout> = ({
   children,
-  transparentBackground,
-  ..._divProps 
+  transparentBackground
 }) => {
   const [ appOpenAnimation, setAppOpenAnimation ] = useState(false)
   const [ applicationWindowMode, setApplicationWindowMode ] = useState(false)
@@ -17,8 +16,8 @@ const AppLayout: React.FC<IAppLayout> = ({
   const [ hasLoaded, setHasLoaded ] = useState(false)
 
   useEffect(() => {
-    let paramString = window.location.search
-    let queryString = new URLSearchParams(paramString)
+    const paramString = window.location.search
+    const queryString = new URLSearchParams(paramString)
 
     setStandaloneInterface(queryString.get("standalone") === "true")
     setHasLoaded(true)

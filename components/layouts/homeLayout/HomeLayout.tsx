@@ -2,12 +2,7 @@ import NavigationBar from "./navigationBar/NavigationBar"
 import Footer from "./footer/Footer"
 import styles from "./HomeLayout.module.css"
 
-export interface IHomeLayout extends React.ComponentPropsWithoutRef<'div'> { }
-
-const HomeLayout: React.FC<IHomeLayout> = ({
-  children,
-  ..._divProps
-}) => {
+const HomeLayout: React.FC = ({ children }) => {
   return <>
     <NavigationBar />
     <div className={styles.root}>

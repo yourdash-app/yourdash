@@ -2,10 +2,10 @@ import { CSSProperties } from "react";
 import COLOR from "../../../lib/color";
 import CSSVariable from "../../../lib/cssVariable";
 import YourDashIcon, { YourDashIconRawDictionary } from "./iconDictionary";
+import styles from "./Icon.module.scss"
 
 export interface IIcon extends React.ComponentPropsWithoutRef<'div'> {
   name: YourDashIcon;
-  // eslint-disable-next-line no-undef
   style?: CSSProperties;
   className?: string;
   color?: COLOR | CSSVariable;
@@ -20,7 +20,6 @@ const Icon: React.FC<IIcon> = ({
       {...genericProps}
       data-component-type-icon
       style={{
-        ...style,
         ...(useDefaultColor
           ? {
             backgroundImage: `url(${YourDashIconRawDictionary[ name ]})`,
@@ -29,22 +28,19 @@ const Icon: React.FC<IIcon> = ({
             backgroundSize: 'cover',
           }
           : {
-            maskImage: `url(${YourDashIconRawDictionary[ name ]})`,
             WebkitMaskImage: `url(${YourDashIconRawDictionary[ name ]})`,
-            backgroundColor: color || "#ff0000",
-            maskPosition: 'center',
-            maskRepeat: 'no-repeat',
-            maskSize: 'cover',
             WebkitMaskPosition: 'center',
             WebkitMaskRepeat: 'no-repeat',
             WebkitMaskSize: 'cover',
+            backgroundColor: color || "#ff0000",
+            maskImage: `url(${YourDashIconRawDictionary[ name ]})`,
+            maskPosition: 'center',
+            maskRepeat: 'no-repeat',
+            maskSize: 'cover',
           }),
-        ...{
-          userSelect: "none",
-          aspectRatio: "1 / 1" 
-        }
+        ...style
       }}
-      className={className}
+      className={`${styles.component} ${className}`}
     />
   );
 }

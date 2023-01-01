@@ -37,8 +37,8 @@ const StoreProduct: NextPageWithLayout = () => {
     )
   }, [ productId ])
 
-  if (unableToLoadPopup) return <>
-    <Card className={styles.errorPopup}>
+  if (unableToLoadPopup)
+    return <Card className={styles.errorPopup}>
       <ColContainer>
         <Icon color="var(--card-fg)" name="server-error"></Icon>
         <h3>Error</h3>
@@ -53,8 +53,10 @@ const StoreProduct: NextPageWithLayout = () => {
         </Button>
       </ColContainer>
     </Card>
-  </>
-  if (product.name === "undefined") return <></>
+
+  if (product.name === "undefined")
+    return <></>
+  
   return (
     <div className={styles.root} style={
       {
