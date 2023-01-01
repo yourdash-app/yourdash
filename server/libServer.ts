@@ -6,6 +6,7 @@
 import fs from 'fs';
 import { ENV } from './index.js';
 import sharp from 'sharp';
+import { application } from 'express';
 
 let currentSessionLog = '----- [YOURDASH SERVER LOG] -----\n';
 
@@ -43,9 +44,7 @@ export function base64FromBufferImage(img: Buffer): string {
 export function resizeBase64Image(width: number, height: number, image: string): Promise<string> {
   return new Promise((resolve) => {
     let resizedImage = sharp(bufferFromBase64Image(image))
-    resizedImage.resize(width, height, {
-      kernel: "lanczos3",
-    }).toBuffer((err, buf) => {
+    resizedImage.resize(width, height, { kernel: "lanczos3" }).toBuffer((err, buf) => {
       if (err) {
         console.log(err)
         log(`ERROR: unable to resize image`)
@@ -54,4 +53,10 @@ export function resizeBase64Image(width: number, height: number, image: string):
       return resolve(base64FromBufferImage(buf))
     })
   })
+}
+
+export default class RequestManager {
+  constructor() {
+    
+  }
 }

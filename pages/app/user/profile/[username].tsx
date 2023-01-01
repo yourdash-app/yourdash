@@ -1,8 +1,27 @@
+import { useEffect, useState } from 'react';
 import { NextPageWithLayout } from '../../../page';
+import SERVER, { verifyAndReturnJson } from '../../../../lib/server';
 
 const AppIndex: NextPageWithLayout = () => {
+  const [ user, setUser ] = useState(undefined)
+  
+  useEffect(() => {
+    verifyAndReturnJson(
+      SERVER.get(`/core/`),
+      (data) => {
+        setUser(data)
+      },
+      () => {
+        console.error("unable to fetch user profile")
+      }
+    )
+  }, [])
+
+  if (!user) return <></>
+
   return (
     <>
+      <section data-hero style={{ backgroundImage: "" }}></section>
       <section data-header>
         <img src="" alt="" />
         <div data-name-container>
@@ -22,12 +41,13 @@ const AppIndex: NextPageWithLayout = () => {
       <section data-badges>
         <div>
           <img src="" alt="" />
-          <span></span>
+          <span>user achievement badge</span>
         </div>
       </section>
       <section data-organizations>
         <div>
           <img src="" alt="" />
+          <span>organization name</span>
         </div>
       </section>
     </>
