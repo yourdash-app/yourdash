@@ -33,6 +33,7 @@ const FilesSideBar: React.FC<IFilesSideBar> = () => {
     return <div className={styles.component}></div>
 
   return <div className={styles.component}>
+    <h1 className={styles.title}>Files</h1>
     <div className={styles.dirShortcuts}>
       {
         categories.length !== 0 ?

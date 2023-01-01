@@ -65,6 +65,16 @@ const includedApps: InstalledApplication[] = [
     moduleRequirements: [],
     previewImages: [],
     path: "/app/mastodon"
+  }, {
+    name: "tasks",
+    displayName: "Tasks",
+    description: "The todo list / task organization application for YourDash",
+    icon: returnBase64Image(path.resolve("./assets/apps/placeholder-icon.png")),
+    author: "Ewsgit",
+    copyright: "MIT",
+    moduleRequirements: [],
+    previewImages: [],
+    path: "/app/tasks"
   }
 ]
 

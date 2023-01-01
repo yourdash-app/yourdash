@@ -14,13 +14,17 @@ const AppLayout: React.FC<IAppLayout> = ({
   const [ appOpenAnimation, setAppOpenAnimation ] = useState(false)
   const [ applicationWindowMode, setApplicationWindowMode ] = useState(false)
   const [ standaloneInterface, setStandaloneInterface ] = useState(false)
+  const [ hasLoaded, setHasLoaded ] = useState(false)
 
   useEffect(() => {
     let paramString = window.location.search
     let queryString = new URLSearchParams(paramString)
 
     setStandaloneInterface(queryString.get("standalone") === "true")
+    setHasLoaded(true)
   }, [])
+  
+  if (!hasLoaded) return <></>
 
   return standaloneInterface ? <>{children}</> : <div className={styles.root}>
     <Panel

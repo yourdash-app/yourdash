@@ -5,7 +5,13 @@
   color: var(--container-fg);
   position: relative;
   display: grid;
-  grid-template-rows: 1fr auto;
+  grid-template-rows: auto 1fr auto;
+
+  > .title {
+    padding-left: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+  }
 
   > .dirName {
     margin: 0;

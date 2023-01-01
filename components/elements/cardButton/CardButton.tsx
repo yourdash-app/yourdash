@@ -1,7 +1,6 @@
 import styles from './CardButton.module.scss';
 
 export interface ICardButton {
-  children: React.ReactChild | React.ReactChild[];
   onClick: () => void;
   className?: string
 }

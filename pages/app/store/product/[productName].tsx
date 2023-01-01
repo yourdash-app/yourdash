@@ -20,6 +20,7 @@ const StoreProduct: NextPageWithLayout = () => {
   const [ showInstallationPopup, setShowInstallationPopup ] = useState(false)
   const [ pageChanging, setPageChanging ] = useState(false)
   const [ installationError, setInstallationError ] = useState(false)
+  const [ unableToLoadPopup, setUnableToLoadPopup ] = useState(false)
 
   useEffect(() => {
     if (!productId) return
@@ -31,10 +32,28 @@ const StoreProduct: NextPageWithLayout = () => {
       },
       () => {
         console.error(`ERROR: couldn't fetch product information`)
+        setUnableToLoadPopup(true)
       }
     )
   }, [ productId ])
 
+  if (unableToLoadPopup) return <>
+    <Card className={styles.errorPopup}>
+      <ColContainer>
+        <Icon color="var(--card-fg)" name="server-error"></Icon>
+        <h3>Error</h3>
+        <p>
+          The application &quot;{productId}&quot; was not found
+        </p>
+        <Button
+          onClick={() => {
+            router.push(`/app/store`)
+          }}>
+          Go back
+        </Button>
+      </ColContainer>
+    </Card>
+  </>
   if (product.name === "undefined") return <></>
   return (
     <div className={styles.root} style={
@@ -53,7 +72,7 @@ const StoreProduct: NextPageWithLayout = () => {
       </Carousel>
       {
         installationError
-          ? <Card className={styles.installationError}>
+          ? <Card className={styles.errorPopup}>
             <ColContainer>
               <Icon color="var(--card-fg)" name="server-error"></Icon>
               <h3>Error</h3>
