@@ -19,7 +19,7 @@ import TextInput from '../../../../../components/elements/textInput/TextInput';
 import ToggleSwitch from '../../../../../components/elements/toggleSwitch/ToggleSwitch';
 
 const SettingsPanel: NextPageWithLayout = () => {
-  let routeChange = () => {
+  const routeChange = () => {
     console.log("Attempting to save new values")
     Router.events.off("routeChangeStart", routeChange)
   }
@@ -47,7 +47,9 @@ const SettingsPanel: NextPageWithLayout = () => {
               <DropdownButton items={[
                 {
                   name: "One Half Dark",
-                  onClick: () => { }
+                  onClick: () => {
+                    console.log(`Implement Me!!!`)
+                  }
                 }
               ]}>
                 Select a theme
@@ -59,15 +61,25 @@ const SettingsPanel: NextPageWithLayout = () => {
           <RowContainer>
             <ColContainer>
               <h1>Theme Preview</h1>
-              <Button onClick={() => {}}>Button</Button>
-              <Button onClick={() => {}} vibrant>Vibrant Button</Button>
+              <Button onClick={() => {
+                console.log(`Implement Me!!!`)
+              }}>Button</Button>
+              <Button onClick={() => {
+                console.log(`Implement Me!!!`)
+              }} vibrant>Vibrant Button</Button>
               <Card>
                 <RowContainer>
-                  <Button onClick={() => {}}>Button</Button>
-                  <Button onClick={() => {}} vibrant>Vibrant Button</Button>
+                  <Button onClick={() => {
+                    console.log(`Implement Me!!!`)
+                  }}>Button</Button>
+                  <Button onClick={() => {
+                    console.log(`Implement Me!!!`)
+                  }} vibrant>Vibrant Button</Button>
                 </RowContainer>
               </Card>
-              <CardButton onClick={() => {}}>
+              <CardButton onClick={() => {
+                console.log(`Implement Me!!!`)
+              }}>
                 Card Button
               </CardButton>
               <RowContainer>
@@ -79,23 +91,39 @@ const SettingsPanel: NextPageWithLayout = () => {
               <DropdownButton items={[
                 {
                   name: "option",
-                  onClick: () => {}
+                  onClick: () => {
+                    console.log(`Implement Me!!!`)
+                  }
                 },
                 {
                   name: "option",
-                  onClick: () => {}
+                  onClick: () => {
+                    console.log(`Implement Me!!!`)
+                  }
                 }
               ]}>
                 Dropdown Button
               </DropdownButton>
               <p>Icon Buttons</p>
               <RowContainer>
-                <IconButton icon="bug-16" onClick={() => {}} />
-                <IconButton icon="x-16" onClick={() => {}} />
-                <IconButton icon="circle-16" onClick={() => {}} />
-                <IconButton icon="server-error" onClick={() => {}} />
-                <IconButton icon="yourdash-logo" onClick={() => {}} />
-                <IconButton useDefaultColor icon="yourdash-logo" onClick={() => {}} />
+                <IconButton icon="bug-16" onClick={() => {
+                  console.log(`Implement Me!!!`)
+                }} />
+                <IconButton icon="x-16" onClick={() => {
+                  console.log(`Implement Me!!!`)
+                }} />
+                <IconButton icon="circle-16" onClick={() => {
+                  console.log(`Implement Me!!!`)
+                }} />
+                <IconButton icon="server-error" onClick={() => {
+                  console.log(`Implement Me!!!`)
+                }} />
+                <IconButton icon="yourdash-logo" onClick={() => {
+                  console.log(`Implement Me!!!`)
+                }} />
+                <IconButton useDefaultColor icon="yourdash-logo" onClick={() => {
+                  console.log(`Implement Me!!!`)
+                }} />
               </RowContainer>
               <ProgressBar value={20} />
               <ProgressBar displayPercentage value={50} />
@@ -105,9 +133,15 @@ const SettingsPanel: NextPageWithLayout = () => {
               <TextInput placeholder='Text input' />
               <p>Toggle Switches</p>
               <RowContainer>
-                <ToggleSwitch onValueChange={() => {}}></ToggleSwitch>
-                <ToggleSwitch onValueChange={() => {}}></ToggleSwitch>
-                <ToggleSwitch onValueChange={() => {}}></ToggleSwitch>
+                <ToggleSwitch onValueChange={() => {
+                  console.log(`Implement Me!!!`)
+                }}></ToggleSwitch>
+                <ToggleSwitch onValueChange={() => {
+                  console.log(`Implement Me!!!`)
+                }}></ToggleSwitch>
+                <ToggleSwitch onValueChange={() => {
+                  console.log(`Implement Me!!!`)
+                }}></ToggleSwitch>
               </RowContainer>
             </ColContainer>
             <ColContainer>
@@ -118,7 +152,9 @@ const SettingsPanel: NextPageWithLayout = () => {
         </Card>
         <Card>
           <h3>Background image</h3>
-          <Button onClick={() => {}}>Select an image</Button>
+          <Button onClick={() => {
+            console.log(`Implement Me!!!`)
+          }}>Select an image</Button>
         </Card>
       </ColContainer>
     </>

@@ -18,11 +18,11 @@ const EndpointTester: NextPageWithLayout = () => {
 
   return (
     <div style={{
-      boxSizing: "border-box",
-      margin: "1rem",
       borderRadius: "1rem",
+      boxSizing: "border-box",
+      height: "calc(100vh - calc(var(--app-panel-height) + 2rem))",
+      margin: "1rem",
       overflow: "hidden",
-      height: "calc(100vh - calc(var(--app-panel-height) + 2rem))"
     }}>
       <ColContainer style={{ height: "100%" }}>
         <RightClickMenu items={[
@@ -44,21 +44,21 @@ const EndpointTester: NextPageWithLayout = () => {
         ]}>
           <ColContainer>
             <p style={{
-              width: "100%",
-              textAlign: "center",
-              color: "var(--container-fg)",
               backgroundColor: "var(--container-bg)",
+              boxSizing: "border-box",
+              color: "var(--container-fg)",
               marginTop: 0,
               padding: "0.5rem",
-              boxSizing: "border-box"
+              textAlign: "center",
+              width: "100%",
             }}>{queryMethod}</p>
             <TextInput
               placeholder='server request path'
               style={{
                 color: responseDidError ? "var(--color-error-bg)" : "var(--text-input-fg)",
-                marginRight: "0.25rem",
                 marginLeft: "0.25rem",
-                width: "calc(100% - 0.5rem)"
+                marginRight: "0.25rem",
+                width: "calc(100% - 0.5rem)",
               }}
               onChange={(e) => {
                 setQueryUrl(e.target.value);
@@ -66,7 +66,7 @@ const EndpointTester: NextPageWithLayout = () => {
               }}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
-                  let sibling = e.currentTarget.nextElementSibling as HTMLButtonElement | null
+                  const sibling = e.currentTarget.nextElementSibling as HTMLButtonElement | null
                   if (!sibling) return
                   sibling.click()
                 }
@@ -74,8 +74,8 @@ const EndpointTester: NextPageWithLayout = () => {
             />
             <Button
               style={{
-                marginRight: "0.25rem",
                 marginLeft: "0.25rem",
+                marginRight: "0.25rem",
                 width: "calc(100% - 0.5rem)"
               }}
               onClick={() => {
@@ -94,8 +94,8 @@ const EndpointTester: NextPageWithLayout = () => {
                   case "POST":
                     verifyAndReturnJson(
                       SERVER.post(queryUrl, {
+                        body: JSON.stringify(queryBody),
                         headers: queryHeaders,
-                        body: JSON.stringify(queryBody)
                       }),
                       (res) => {
                         setResponse(JSON.stringify(res, null, 2))
@@ -122,33 +122,33 @@ const EndpointTester: NextPageWithLayout = () => {
           </ColContainer>
         </RightClickMenu>
         <RowContainer style={{
-          height: "100%",
-          overflow: "auto",
+          backgroundColor: "var(--container-bg)",
           display: "grid",
           gridTemplateColumns: "1fr",
-          backgroundColor: "var(--container-bg)",
+          height: "100%",
+          overflow: "auto",
         }}>
           {
             queryMethod === "POST" ? <textarea onKeyDown={(e) => {
               if (e.key === "Tab") {
-                var start = e.currentTarget.selectionStart;
-                var end = e.currentTarget.selectionEnd;
-                var value = e.currentTarget.value;
+                const start = e.currentTarget.selectionStart;
+                const end = e.currentTarget.selectionEnd;
+                const value = e.currentTarget.value;
                 e.currentTarget.value = value.substring(0, start) + "\t" + value.substring(end)
                 e.currentTarget.selectionStart = e.currentTarget.selectionEnd = start + 1;
                 e.preventDefault();
               }
             }} style={{
+              border: "none",
+              fontFamily: "monospace",
+              fontSize: "1.25rem",
               height: "100%",
               margin: 0,
               padding: "0.5rem",
-              border: "none",
               resize: 'none',
-              fontFamily: "monospace",
-              fontSize: "1.25rem"
             }} onChange={(e) => {
               try {
-                let json = JSON.parse(e.target.value);
+                const json = JSON.parse(e.target.value);
                 setQueryBody(json)
               } catch (e) {
                 setQueryBody({ error: "endpoint tester invalid json" })
@@ -159,10 +159,10 @@ const EndpointTester: NextPageWithLayout = () => {
             <pre style={
               {
                 color: "var(--container-fg)",
+                fontFamily: "monospace",
+                fontSize: "1.25rem",
                 margin: 0,
                 padding: "1rem",
-                fontFamily: "monospace",
-                fontSize: "1.25rem"
               }
             }>
               {response}

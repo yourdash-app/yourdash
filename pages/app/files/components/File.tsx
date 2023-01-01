@@ -13,7 +13,9 @@ export interface IFile {
 const File: React.FC<IFile> = ({
   name, path, type 
 }) => {
-  return <CardButton onClick={() => {}} className={styles.component}>
+  return <CardButton onClick={() => {
+    console.log(`Implement Me!!!`)
+  }} className={styles.component}>
     <Icon color={"var(--card-fg)"} name={type === "file" ? "file-16" : "file-directory-16"} />
     <span>{name}</span>
     <span>{path}</span>
@@ -21,10 +23,14 @@ const File: React.FC<IFile> = ({
     <DropdownMenu items={[
       {
         name: "Delete",
-        onClick: () => {}
+        onClick: () => {
+          console.log(`Implement Me!!!`)
+        }
       }
     ]}>
-      <IconButton onClick={() => {}} icon="three-bars-16"></IconButton>
+      <IconButton onClick={() => {
+        console.log(`Implement Me!!!`)
+      }} icon="three-bars-16"></IconButton>
     </DropdownMenu>
   </CardButton>
 };

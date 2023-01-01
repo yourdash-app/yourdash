@@ -14,7 +14,7 @@ import Icon from '../../../../components/elements/icon/Icon';
 
 const StoreProduct: NextPageWithLayout = () => {
   const router = useRouter()
-  let productId = router.query.productName
+  const productId = router.query.productName
 
   const [ product, setProduct ] = useState({ name: "undefined" } as InstalledApplication & { uninstallable: boolean, installed: boolean })
   const [ showInstallationPopup, setShowInstallationPopup ] = useState(false)

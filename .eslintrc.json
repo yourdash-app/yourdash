@@ -37,6 +37,7 @@
         "sort-vars": ["warn"],
         "sort-keys": ["warn", "asc", { "natural": true }],
         "@typescript-eslint/no-unused-vars": ["warn"],
+        "@typescript-eslint/ban-ts-comment": "off",
         "camelcase": "error",
         "brace-style": ["error", "1tbs"],
         "space-in-parens": ["error", "never"],

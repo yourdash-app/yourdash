@@ -39,17 +39,23 @@ const Home: NextPageWithLayout = () => {
         <div>
           <h2>Safely store your files</h2>
           <p>Save, share and backup your files across all devices.</p>
-          <Button onClick={() => { }}>Learn more</Button>
+          <Button onClick={() => { 
+            console.log(`Implement ME!!!`)
+          }}>Learn more</Button>
         </div>
         <div>
           <h2>Collaborate with others</h2>
           <p>Create and share documents in real time.</p>
-          <Button onClick={() => { }}>Learn more</Button>
+          <Button onClick={() => {
+            console.log(`Implement ME!!!`) 
+          }}>Learn more</Button>
         </div>
         <div>
           <h2>Make it your own</h2>
           <p>Customize your dashboard with themes and extensions.</p>
-          <Button onClick={() => { }}>Learn more</Button>
+          <Button onClick={() => {
+            console.log(`Implement ME!!!`) 
+          }}>Learn more</Button>
         </div>
       </section>
       <section className={styles.section3}>
@@ -58,22 +64,30 @@ const Home: NextPageWithLayout = () => {
           <div>
             <span>NodeJS</span>
             <span>Runs the YourDash Server software</span>
-            <Button onClick={() => { }}>Learn more</Button>
+            <Button onClick={() => {
+              console.log(`Implement ME!!!`) 
+            }}>Learn more</Button>
           </div>
           <div>
             <span>NextJS</span>
             <span>Powers and builds the website</span>
-            <Button onClick={() => { }}>Learn more</Button>
+            <Button onClick={() => {
+              console.log(`Implement ME!!!`) 
+            }}>Learn more</Button>
           </div>
           <div>
             <span>Sass</span>
             <span>Simplify writing css</span>
-            <Button onClick={() => { }}>Learn more</Button>
+            <Button onClick={() => {
+              console.log(`Implement ME!!!`) 
+            }}>Learn more</Button>
           </div>
           <div>
             <span>Typescript</span>
             <span>Add static typing to javascript</span>
-            <Button onClick={() => { }}>Learn more</Button>
+            <Button onClick={() => {
+              console.log(`Implement ME!!!`) 
+            }}>Learn more</Button>
           </div>
         </div>
       </section>

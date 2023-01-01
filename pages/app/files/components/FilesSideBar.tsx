@@ -64,7 +64,9 @@ const FilesSideBar: React.FC<IFilesSideBar> = () => {
                             )
                           }
                         } ]}>
-                        <IconButton icon="three-bars-16" onClick={() => { }} />
+                        <IconButton icon="three-bars-16" onClick={() => {
+                          console.log(`Implement Me!!!`)
+                        }} />
                       </DropdownMenu>
                     </li>
                   })

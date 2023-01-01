@@ -1,7 +1,5 @@
-import CenteredContainer from '../../../components/containers/CenteredContainer/CenteredContainer';
 import ColContainer from '../../../components/containers/ColContainer/ColContainer';
 import RowContainer from '../../../components/containers/RowContainer/RowContainer';
-import Card from '../../../components/containers/card/Card';
 import CardButton from '../../../components/elements/cardButton/CardButton';
 import Icon from '../../../components/elements/icon/Icon';
 import AppLayout from '../../../components/layouts/appLayout/AppLayout';
@@ -17,7 +15,9 @@ const TasksIndex: NextPageWithLayout = () => {
       </RowContainer>
       <section className={styles.section}>
         <h3>Personal lists</h3>
-        <CardButton onClick={() => {}}>
+        <CardButton onClick={() => {
+          console.log(`Implement Me!!!`)
+        }}>
           <RowContainer>
             <span>Name</span>
           </RowContainer>
@@ -29,19 +29,25 @@ const TasksIndex: NextPageWithLayout = () => {
           {
             [
               {
-                name: "test", icon: "" 
+                icon: "", 
+                name: "test",
               },
               {
-                name: "test", icon: "" 
+                icon: "", 
+                name: "test",
               },
               {
-                name: "test", icon: "" 
+                icon: "", 
+                name: "test",
               },
               {
-                name: "test", icon: "" 
+                icon: "", 
+                name: "test",
               }
             ].map((org, ind) => {
-              return <CardButton key={ind} onClick={() => {}}>
+              return <CardButton key={ind} onClick={() => {
+                console.log(`Implement Me!!!`)
+              }}>
                 <RowContainer>
                   <img src={org.icon} alt="" />
                   <span>{org.name}</span>

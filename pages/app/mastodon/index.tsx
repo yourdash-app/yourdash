@@ -16,7 +16,9 @@ const StoreIndex: NextPageWithLayout = () => {
             <TextInput placeholder="Instance address e.g: mastodon.social"></TextInput>
             <TextInput placeholder=""></TextInput>
             <TextInput placeholder="" type="password"></TextInput>
-            <Button onClick={() => { }}>Submit</Button>
+            <Button onClick={() => {
+              console.log(`Implement Me!!!`)
+            }}>Submit</Button>
           </ColContainer>
         </Card>
       </CenteredContainer>

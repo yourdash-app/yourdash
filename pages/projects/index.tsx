@@ -20,7 +20,8 @@ const Projects: NextPageWithLayout = () => {
             <Icon
               name='heart-fill-16'
               style={{
-                width: "1rem", aspectRatio: "1/1"
+                aspectRatio: "1/1",
+                width: "1rem",
               }}
               color={"#f02434"} />
             <span>1234</span>

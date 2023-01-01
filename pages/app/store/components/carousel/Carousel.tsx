@@ -24,7 +24,7 @@ const Carousel: React.FC<ICarousel> = ({
               if (!pageRef.current) {
                 return <i key={ind}></i>
               }
-              let container = pageRef.current as HTMLDivElement
+              const container = pageRef.current as HTMLDivElement
               return <div key={ind} style={{ backgroundColor: Math.round(container.scrollLeft / window.innerWidth) === ind ? "var(--container-fg)" : "var(--container-bg)" }}></div>
             })
             : <div style={{ backgroundColor: Math.round((pageRef?.current?.scrollLeft || 0) / window.innerWidth) === 0 ?
@@ -47,14 +47,14 @@ const Carousel: React.FC<ICarousel> = ({
           <>
             <button onClick={() => {
               if (!pageRef.current) return
-              let container = pageRef.current as HTMLDivElement
+              const container = pageRef.current as HTMLDivElement
               container.scrollBy({ left: - window.innerWidth })
             }}>
               <Icon name="chevron-left-16" color="var(--button-fg)" />
             </button>
             <button onClick={() => {
               if (!pageRef.current) return
-              let container = pageRef.current as HTMLDivElement
+              const container = pageRef.current as HTMLDivElement
               container.scrollBy({ left: window.innerWidth })
             }}>
               <Icon name="chevron-right-16" color="var(--button-fg)" />

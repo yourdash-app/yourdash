@@ -4,10 +4,7 @@ import Button from "../../../../components/elements/button/Button"
 import SideBar from "../../../../components/elements/sideBar/SideBar"
 import styles from "./SettingsLayout.module.scss"
 
-export interface ISettingsLayout {
-}
-
-const SettingsLayout: React.FC<ISettingsLayout> = ({ children }) => {
+const SettingsLayout: React.FC = ({ children }) => {
   const router = useRouter()
 
   return <div className={styles.root}>
@@ -20,132 +17,45 @@ const SettingsLayout: React.FC<ISettingsLayout> = ({ children }) => {
       </Button>
       <SideBar style={{ height: "100%" }} title="" sections={[
         {
+          buttons: [
+            {
+              onClick: () => {
+                console.log(`Implement Me!!!`)
+              },
+              title: "Panel",
+            }
+          ],
           title: "User",
-          buttons: [
-            {
-              title: "Panel",
-              onClick: () => {
-
-              }
-            }
-          ]
         },
         {
+          buttons: [
+            {
+              onClick: () => {
+                console.log(`Implement Me!!!`)
+              },
+              title: "Panel",
+            },
+            {
+              onClick: () => {
+                console.log(`Implement Me!!!`)
+              },
+              title: "Hello",
+            },
+            {
+              onClick: () => {
+                console.log(`Implement Me!!!`)
+              },
+              title: "World",
+            },
+            {
+              onClick: () => {
+                console.log(`Implement Me!!!`)
+              },
+              title: ":D",
+            }
+          ],
           title: "Administrator",
-          buttons: [
-            {
-              title: "Panel",
-              onClick: () => {
-
-              }
-            },
-            {
-              title: "Hello",
-              onClick: () => {
-
-              }
-            },
-            {
-              title: "World",
-              onClick: () => {
-
-              }
-            },
-            {
-              title: ":D",
-              onClick: () => {
-
-              }
-            }
-          ]
         },
-        {
-          title: "Adminisdfstrator",
-          buttons: [
-            {
-              title: "Panel",
-              onClick: () => {
-
-              }
-            },
-            {
-              title: "Hello",
-              onClick: () => {
-
-              }
-            },
-            {
-              title: "World",
-              onClick: () => {
-
-              }
-            },
-            {
-              title: ":D",
-              onClick: () => {
-
-              }
-            }
-          ]
-        },
-        {
-          title: "Adminsdfgfistrator",
-          buttons: [
-            {
-              title: "Panel",
-              onClick: () => {
-
-              }
-            },
-            {
-              title: "Hello",
-              onClick: () => {
-
-              }
-            },
-            {
-              title: "World",
-              onClick: () => {
-
-              }
-            },
-            {
-              title: ":D",
-              onClick: () => {
-
-              }
-            }
-          ]
-        },
-        {
-          title: "Adminishgjtraator",
-          buttons: [
-            {
-              title: "Panel",
-              onClick: () => {
-
-              }
-            },
-            {
-              title: "Hello",
-              onClick: () => {
-
-              }
-            },
-            {
-              title: "World",
-              onClick: () => {
-
-              }
-            },
-            {
-              title: ":D",
-              onClick: () => {
-
-              }
-            }
-          ]
-        }
       ]} />
     </div>
     <div className={styles.page}>
