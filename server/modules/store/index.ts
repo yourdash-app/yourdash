@@ -5,32 +5,26 @@ import includedApps from "../../includedApps.js"
 import { log, resizeBase64Image } from "../../libServer.js";
 import InstalledApplicationList from "../../../types/store/applicationList.js";
 
-let module: YourDashModule = {
-  name: "store",
+const module: YourDashModule = {
+  install() {
+    log(`Store module was installed`)
+  },
   load(app, api) {
-    app.get(`${api.ModulePath(this)}/included/apps`, (req, res) => {
-      let output = includedApps.map((app) => {
-
-        // @ts-ignore
-        delete app.icon.launcher
-
-        // @ts-ignore
-        delete app.icon.quickShortcut
-
-        return resizeBase64Image(96, 96, app.icon).then((image) => {
-          app.icon = image
-          return app
-        })
+    app.get(`${api.ModulePath(this)}/included/apps`, (_req, res) => {
+      const output = includedApps.map(async (app) => {
+        const image = await resizeBase64Image(96, 96, app.icon);
+        app.icon = image;
+        return app;
       })
       Promise.all(output)
         .then((resp) => {
           res.json(resp)
         })
     })
-
+    
     app.get(`${api.ModulePath(this)}/application/:applicationId`, (req, res) => {
       if (!fs.existsSync(path.resolve(`${api.FsOrigin}/installed_apps.json`))) {
-        let defaultApps = [ "dash", "store", "settings", "files" ]
+        const defaultApps = [ "dash", "store", "settings", "files" ]
         fs.writeFile(
           path.resolve(`${api.FsOrigin}/installed_apps.json`),
           JSON.stringify([
@@ -38,8 +32,8 @@ let module: YourDashModule = {
           ]),
           (err) => {
             if (err) return res.json({ error: true });
-            let json = defaultApps
-            let result = includedApps.find((obj) => obj.name === req.params.applicationId)
+            const json = defaultApps
+            const result = includedApps.find((obj) => obj.name === req.params.applicationId)
             if (!result) {
               log(`ERROR: no store product found named: ${req.params.applicationId}`)
               return res.json({ error: true })
@@ -47,8 +41,8 @@ let module: YourDashModule = {
             resizeBase64Image(352, 352, result.icon).then((icon) => {
               return res.json({
                 ...result,
-                installed: includedApps.filter((app) => json.includes(app.name)).find((obj) => obj.name === req.params.applicationId) !== undefined,
                 icon: icon,
+                installed: includedApps.filter((app) => json.includes(app.name)).find((obj) => obj.name === req.params.applicationId) !== undefined,
                 uninstallable: (result?.name !== "dash") && (result?.name !== "store") && (result?.name !== "settings") && (result?.name !== "files")
               })
             })
@@ -60,8 +54,8 @@ let module: YourDashModule = {
           log("ERROR: couldn't read installed_apps.json")
           return res.json({ error: true })
         }
-        let json = JSON.parse(data.toString()) as string[]
-        let result = includedApps.find((obj) => obj.name === req.params.applicationId)
+        const json = JSON.parse(data.toString()) as string[]
+        const result = includedApps.find((obj) => obj.name === req.params.applicationId)
         if (!result) {
           log(`ERROR: no store product found named: ${req.params.applicationId}`)
           return res.json({ error: true })
@@ -69,8 +63,8 @@ let module: YourDashModule = {
         resizeBase64Image(284, 284, result.icon).then((icon) => {
           return res.json({
             ...result,
-            installed: includedApps.filter((app) => json.includes(app.name)).find((obj) => obj.name === req.params.applicationId) !== undefined,
             icon: icon,
+            installed: includedApps.filter((app) => json.includes(app.name)).find((obj) => obj.name === req.params.applicationId) !== undefined,
             uninstallable: (result?.name !== "dash") && (result?.name !== "store") && (result?.name !== "settings") && (result?.name !== "files")
           })
         })
@@ -79,7 +73,7 @@ let module: YourDashModule = {
 
     app.get(`${api.ModulePath(this)}/installed/apps`, (req, res) => {
       if (!fs.existsSync(path.resolve(`${api.FsOrigin}/installed_apps.json`))) {
-        let defaultApps = [ "dash", "store", "settings", "files" ]
+        const defaultApps = [ "dash", "store", "settings", "files" ]
         fs.writeFile(
           path.resolve(`${api.FsOrigin}/installed_apps.json`),
           JSON.stringify([
@@ -99,15 +93,15 @@ let module: YourDashModule = {
             log("ERROR: couldn't read installed_apps.json")
             return res.json({ error: true })
           }
-          let json = JSON.parse(data.toString()) as string[]
-          var result = includedApps.filter((app) => json.includes(app.name)) || []
+          const json = JSON.parse(data.toString()) as string[]
+          const result = includedApps.filter((app) => json.includes(app.name)) || []
           return res.json(
             result.map((item) => {
               return {
-                name: item.name,
                 description: item.description,
                 displayName: item.displayName,
                 icon: { store: item.icon },
+                name: item.name,
                 path: item.path
               } as InstalledApplicationList
             })
@@ -115,12 +109,12 @@ let module: YourDashModule = {
         })
       }
     })
-
+    
     app.post(`${api.ModulePath(this)}/application/:applicationId/install`, (req, res) => {
       if (!fs.existsSync(path.resolve(`${api.FsOrigin}/installed_apps.json`))) {
-        let defaultApps = [ "dash", "store", "settings", "files" ]
+        const defaultApps = [ "dash", "store", "settings", "files" ]
 
-        let json = defaultApps as string[]
+        const json = defaultApps as string[]
         json.push(req.params.applicationId)
         fs.writeFile(path.resolve(`${api.FsOrigin}/installed_apps.json`), JSON.stringify(json), (err) => {
           if (err) {
@@ -129,7 +123,7 @@ let module: YourDashModule = {
           }
           return res.json({ installed: includedApps.filter((app) => json.includes(app.name)).find((obj) => obj.name === req.params.applicationId) !== undefined })
         })
-
+        
         fs.writeFile(
           path.resolve(`${api.FsOrigin}/installed_apps.json`),
           JSON.stringify([
@@ -145,7 +139,7 @@ let module: YourDashModule = {
           log("ERROR: couldn't read installed_apps.json")
           return res.json({ error: true })
         }
-        let json = JSON.parse(data.toString()) as string[]
+        const json = JSON.parse(data.toString()) as string[]
         json.push(req.params.applicationId)
         fs.writeFile(path.resolve(`${api.FsOrigin}/installed_apps.json`), JSON.stringify(json), (err) => {
           if (err) {
@@ -166,10 +160,20 @@ let module: YourDashModule = {
         if (err) {
           log("ERROR: couldn't read installed_apps.json")
           return res.json({ error: true })
+        }        
+        const defaultApps = [ "dash", "store", "settings", "files" ]
+        let json = JSON.parse(data.toString()) as string[]
+        
+        const application = includedApps.find((app) => app.name === req.params.applicationId)
+
+        if (!application) {
+          log(`ERROR: unable to uninstall the application ${req.params.applicationId} which was not installed.`)
+          return res.json({ error: true })
         }
 
-        let json = JSON.parse(data.toString()) as string[]
-        json = json.filter((app) => app !== req.params.applicationId)
+        if (defaultApps.find((app) => app === application.name))
+
+          json = json.filter((app) => app !== req.params.applicationId)
         fs.readdir(`${api.FsOrigin}/data/users`, (err, users) => {
           if (err) {
             log(`ERROR: unable to read the users directory`)
@@ -190,8 +194,10 @@ let module: YourDashModule = {
       })
     })
   },
-  install() { },
-  unload() { },
+  name: "store",
+  unload() {
+    log(`Store module unloaded`)
+  },
 };
 
 export default module;

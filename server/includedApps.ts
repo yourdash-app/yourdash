@@ -4,77 +4,77 @@ import * as path from "path"
 
 const includedApps: InstalledApplication[] = [
   {
-    name: "endpoint-tester",
-    displayName: "Endpoint Tester",
+    author: "Ewsgit",
+    copyright: "MIT",
     description: "Test yourdash server endpoints",
+    displayName: "Endpoint Tester",
     icon: returnBase64Image(path.resolve("./assets/apps/endpoint-tester.png")),
-    author: "Ewsgit",
-    copyright: "MIT",
     moduleRequirements: [],
+    name: "endpoint-tester",
+    path: "/app/endpoint-tester",
     previewImages: [],
-    path: "/app/endpoint-tester"
   },
   {
-    name: "dash",
-    displayName: "Dashboard",
+    author: "Ewsgit",
+    copyright: "MIT",
     description: "The YourDash dashboard",
+    displayName: "Dashboard",
     icon: returnBase64Image(path.resolve("./assets/apps/dash.png")),
-    author: "Ewsgit",
-    copyright: "MIT",
     moduleRequirements: [],
+    name: "dash",
+    path: "/app/dash",
     previewImages: [],
-    path: "/app/dash"
   },
   {
-    name: "files",
-    displayName: "Files",
+    author: "Ewsgit",
+    copyright: "MIT",
     description: "The YourDash file manager",
+    displayName: "Files",
     icon: returnBase64Image(path.resolve("./assets/apps/files.png")),
+    moduleRequirements: [],
+    name: "files",
+    path: "/app/files",
+    previewImages: [],
+  }, {
     author: "Ewsgit",
     copyright: "MIT",
-    moduleRequirements: [],
-    previewImages: [],
-    path: "/app/files"
-  }, {
-    name: "store",
-    displayName: "Store",
     description: "The YourDash application and extension manager",
+    displayName: "Store",
     icon: returnBase64Image(path.resolve("./assets/apps/store.png")),
+    moduleRequirements: [],
+    name: "store",
+    path: "/app/store",
+    previewImages: [],
+  }, {
     author: "Ewsgit",
     copyright: "MIT",
-    moduleRequirements: [],
-    previewImages: [],
-    path: "/app/store"
-  }, {
-    name: "settings",
-    displayName: "Settings",
     description: "The YourDash settings manager",
+    displayName: "Settings",
     icon: returnBase64Image(path.resolve("./assets/apps/settings.png")),
+    moduleRequirements: [],
+    name: "settings",
+    path: "/app/settings",
+    previewImages: [],
+  }, {
     author: "Ewsgit",
     copyright: "MIT",
-    moduleRequirements: [],
-    previewImages: [],
-    path: "/app/settings"
-  }, {
-    name: "mastodon",
-    displayName: "Mastodon Client",
     description: "The YourDash built-in mastodon client",
+    displayName: "Mastodon Client",
     icon: returnBase64Image(path.resolve("./assets/apps/mastodon.png")),
-    author: "Ewsgit",
-    copyright: "MIT",
     moduleRequirements: [],
+    name: "mastodon",
+    path: "/app/mastodon",
     previewImages: [],
-    path: "/app/mastodon"
   }, {
-    name: "tasks",
-    displayName: "Tasks",
-    description: "The todo list / task organization application for YourDash",
-    icon: returnBase64Image(path.resolve("./assets/apps/placeholder-icon.png")),
     author: "Ewsgit",
     copyright: "MIT",
+    description: "The todo list / task organization application for YourDash",
+    displayName: "Tasks",
+    icon: returnBase64Image(path.resolve("./assets/apps/placeholder-icon.png")),
     moduleRequirements: [],
+    name: "tasks",
+    path: "/app/tasks",
     previewImages: [],
-    path: "/app/tasks"
   }
 ]
 

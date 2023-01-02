@@ -6,7 +6,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "dev": "concurrently \"tsc --watch\" \"cross-env FsOrigin=./fs DEV=true nodemon . --ignore ./fs/*\"",
+    "dev": "concurrently \"tsc --watch\" \"cross-env FsOrigin=./fs DEV=true nodemon .\"",
     "dev-no-nodemon": "concurrently \"tsc --watch\" \"cross-env FsOrigin=./fs DEV=true node .\"",
     "dev-no-tsc-or-nodemon": "tsc && cross-env FsOrigin=./fs DEV=true node .",
     "production": "tsc && cross-env FsOrigin=./fs DEV=false node ."
@@ -28,5 +28,11 @@
     "sharp": "^0.31.2",
     "typescript": "^4.8.4"
   },
-  "type": "module"
+  "type": "module",
+  "nodemonConfig": {
+    "ignore": [
+      "fs/*",
+      "fs/**/*"
+    ]
+  }
 }
