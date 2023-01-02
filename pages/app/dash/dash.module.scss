@@ -7,17 +7,19 @@
     background-size: cover;
     background-repeat: no-repeat;
   }
-  height: 100%;
+  height: calc(100% - 0.25rem);
   overflow-y: auto;
-  width: 100%;
+  width: calc(100% - 0.25rem);
   display: flex;
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
   flex-direction: column;
   transition: var(--transition);
-  backdrop-filter: blur(var(--app-application-transparent-background-blur))
-    brightness(1.25);
+  backdrop-filter: blur(var(--app-application-transparent-background-blur));
+  outline: 0.125rem solid #00000011;
+  margin: 0.125rem;
+  border-radius: var(--app-application-rounding);
 }
 
 // --app-dash-clock-font-weight: 800;

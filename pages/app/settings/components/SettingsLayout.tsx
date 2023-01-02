@@ -15,48 +15,55 @@ const SettingsLayout: React.FC = ({ children }) => {
       }}>
         Overview
       </Button>
-      <SideBar style={{ height: "100%" }} title="" sections={[
-        {
-          buttons: [
-            {
-              onClick: () => {
-                console.log(`Implement Me!!!`)
+      <SideBar
+        style={{ height: "100%" }}
+        title=""
+        sectionsToggledByDefault={[
+          "User",
+          "Administrator"
+        ]}
+        sections={[
+          {
+            buttons: [
+              {
+                onClick: () => {
+                  console.log(`Implement Me!!!`)
+                },
+                title: "Panel",
+              }
+            ],
+            title: "User",
+          },
+          {
+            buttons: [
+              {
+                onClick: () => {
+                  console.log(`Implement Me!!!`)
+                },
+                title: "Panel",
               },
-              title: "Panel",
-            }
-          ],
-          title: "User",
-        },
-        {
-          buttons: [
-            {
-              onClick: () => {
-                console.log(`Implement Me!!!`)
+              {
+                onClick: () => {
+                  console.log(`Implement Me!!!`)
+                },
+                title: "Hello",
               },
-              title: "Panel",
-            },
-            {
-              onClick: () => {
-                console.log(`Implement Me!!!`)
+              {
+                onClick: () => {
+                  console.log(`Implement Me!!!`)
+                },
+                title: "World",
               },
-              title: "Hello",
-            },
-            {
-              onClick: () => {
-                console.log(`Implement Me!!!`)
-              },
-              title: "World",
-            },
-            {
-              onClick: () => {
-                console.log(`Implement Me!!!`)
-              },
-              title: ":D",
-            }
-          ],
-          title: "Administrator",
-        },
-      ]} />
+              {
+                onClick: () => {
+                  console.log(`Implement Me!!!`)
+                },
+                title: ":D",
+              }
+            ],
+            title: "Administrator",
+          },
+        ]} />
     </div>
     <div className={styles.page}>
       {children}

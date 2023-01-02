@@ -7,30 +7,31 @@
   overflow-y: auto;
   overflow-x: visible;
 
-  >h2 {
+  > h2 {
     color: var(--container-fg);
     padding-left: 0.5rem;
     box-sizing: border-box;
   }
 
-  >.card {
-    padding: 0.5rem;
+  > .section {
     border-radius: calc(var(--card-rounding) / 2);
     margin-bottom: 0.25rem;
 
-    >section {
+    > div {
       display: flex;
-      margin-bottom: 0;
+      margin-bottom: 0.25rem;
       cursor: pointer;
+      background-color: var(--card-bg);
+      border-radius: calc(var(--card-rounding) / 2);
 
-      >h3 {
+      > h3 {
         margin: 0;
         color: var(--container-fg);
         padding: 0.5rem;
         margin-right: auto;
       }
 
-      >div {
+      > div {
         height: 2rem;
         margin: 3.5px;
         aspect-ratio: 1 / 1;
@@ -42,56 +43,33 @@
       }
     }
 
-    &[data-toggled="true"]>section {
+    &[data-toggled="true"] > section {
       margin-bottom: 0.25rem;
     }
 
-    >button {
-      width: 100%;
+    > button {
+      width: calc(100% - 0.5rem);
       margin-bottom: 0.25rem;
-
-      &:last-child {
-        margin-bottom: 0;
-      }
-    }
-
-    &:first-of-type {
-      border-radius: var(--card-rounding) var(--card-rounding) calc(var(--card-rounding) / 2) calc(var(--card-rounding) / 2);
-    }
-
-    &:last-of-type {
-      margin-bottom: 0;
-      border-radius: calc(var(--card-rounding) / 2) calc(var(--card-rounding) / 2) var(--card-rounding) var(--card-rounding);
-    }
-
-    &[data-toggled="true"]+[data-toggled="false"] {
-      border-radius: var(--card-rounding) var(--card-rounding) calc(var(--card-rounding) / 2) calc(var(--card-rounding) / 2);
-
-      &:last-of-type {
-        border-radius: var(--card-rounding);
-      }
-    }
-
-    &:has(+ .card[data-toggled="true"])[data-toggled="false"] {
-      border-radius: calc(var(--card-rounding) / 2) calc(var(--card-rounding) / 2) var(--card-rounding) var(--card-rounding);
-      margin-bottom: 0.5rem;
+      display: none;
+      margin-left: 0.5rem;
+      border-radius: calc(var(--button-rounding) / 2);
 
       &:first-of-type {
-        border-radius: var(--card-rounding);
+        border-radius: var(--button-rounding) var(--button-rounding)
+          calc(var(--button-rounding) / 2) calc(var(--button-rounding) / 2);
+      }
+      &:last-of-type {
+        margin-bottom: 0;
+        border-radius: calc(var(--button-rounding) / 2)
+          calc(var(--button-rounding) / 2) var(--button-rounding)
+          var(--button-rounding);
       }
     }
+  }
 
-    &:has(+ .card[data-toggled="true"])[data-toggled="false"] &[data-toggled="true"]+[data-toggled="false"] {
-      border-radius: var(--card-rounding);
-    }
-
-    &[data-toggled="true"] {
-      margin-bottom: 0.5rem;
-      border-radius: var(--card-rounding);
-    }
-
-    &:first-of-type:last-of-type {
-      border-radius: var(--card-rounding) var(--card-rounding);
+  .section[data-toggled="true"] {
+    > button {
+      display: block;
     }
   }
 }

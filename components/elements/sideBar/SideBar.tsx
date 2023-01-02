@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import Card from '../../containers/card/Card';
 import Button from '../button/Button';
 import styles from './SideBar.module.scss';
 import Icon from '../icon/Icon';
@@ -14,14 +13,15 @@ export interface ISideBar extends React.ComponentPropsWithoutRef<"div"> {
   sections: {
     title: string,
     buttons: IButton[];
-  }[]
+  }[],
+  sectionsToggledByDefault?: string[]
 }
 
 const SideBar: React.FC<ISideBar> = ({
-  title, sections, ...extraProps 
+  title, sections, sectionsToggledByDefault, ...extraProps 
 }) => {
 
-  const [ toggledSections, setToggledSections ] = useState([] as string[])
+  const [ toggledSections, setToggledSections ] = useState(sectionsToggledByDefault || [] as string[])
 
   return <div className={styles.component} {...extraProps}>
     {
@@ -31,9 +31,9 @@ const SideBar: React.FC<ISideBar> = ({
     }
     {
       sections.map((section, ind) => {
-        return <Card className={styles.card} key={ind} data-toggled={toggledSections.indexOf(section.title) !== -1}>
+        return <section className={styles.section} key={ind} data-toggled={toggledSections.indexOf(section.title) !== -1}>
           <>
-            <section onClick={() => {
+            <div onClick={() => {
               if (toggledSections.indexOf(section.title) === -1) {
                 setToggledSections([ ...toggledSections, section.title ])
               } else {
@@ -44,16 +44,14 @@ const SideBar: React.FC<ISideBar> = ({
                 section.title ? <h3>{section.title}</h3> : null
               }
               <Icon data-toggled={toggledSections.indexOf(section.title) !== -1} name='chevron-up-16' color="var(--card-fg)" />
-            </section>
+            </div>
             {
-              toggledSections.indexOf(section.title) !== -1 ?
-                section.buttons.map((button, ind) => {
-                  return <Button onClick={() => button.onClick} key={ind}>{button.title}</Button>
-                })
-                : null
+              section.buttons.map((button, ind) => {
+                return <Button onClick={() => button.onClick} key={ind}>{button.title}</Button>
+              })
             }
           </>
-        </Card>
+        </section>
       })
     }
   </div>;
