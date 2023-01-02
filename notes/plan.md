@@ -26,3 +26,13 @@
 ### Card view
 
 ### List view
+
+
+
+Sidebar
+
+- icons
+- groups
+- separators
+- items
+- active indicator

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { NextPageWithLayout } from '../../../page';
 import SERVER, { verifyAndReturnJson } from '../../../../lib/server';
-import styles from "./[username].module.scss"
+import styles from "./zusername.module.scss"
 import { useRouter } from 'next/router';
 import ColContainer from '../../../../components/containers/ColContainer/ColContainer';
 import Card from '../../../../components/containers/card/Card';

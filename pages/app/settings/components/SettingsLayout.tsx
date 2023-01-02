@@ -1,70 +1,61 @@
-import { useRouter } from "next/router"
 import React from "react"
-import Button from "../../../../components/elements/button/Button"
 import SideBar from "../../../../components/elements/sideBar/SideBar"
 import styles from "./SettingsLayout.module.scss"
+import { useRouter } from "next/router"
 
 const SettingsLayout: React.FC = ({ children }) => {
   const router = useRouter()
 
   return <div className={styles.root}>
-    <div className={styles.sidebar}>
-      <h2>Settings</h2>
-      <Button onClick={() => {
-        router.push(`/app/settings`)
-      }}>
-        Overview
-      </Button>
-      <SideBar
-        style={{ height: "100%" }}
-        title=""
-        sectionsToggledByDefault={[
-          "User",
-          "Administrator"
-        ]}
-        sections={[
+    <SideBar
+      style={{ height: "100%" }}
+      title="Settings"
+      items={
+        [
           {
-            buttons: [
-              {
-                onClick: () => {
-                  console.log(`Implement Me!!!`)
-                },
-                title: "Panel",
-              }
-            ],
-            title: "User",
+            icon: "apps-16",
+            name: "Overview",
+            onClick: () => {
+              router.push(`/app/settings/`)
+            },
+            type: "button",
+          },
+          { type: "separator", },
+          {
+            icon: "apps-16",
+            name: "Overview",
+            onClick: () => {
+              console.log("Implement Me!!!")
+            },
+            type: "button",
           },
           {
-            buttons: [
+            icon: "apps-16",
+            items: [
               {
+                icon: "apps-16",
+                name: "Overview",
                 onClick: () => {
-                  console.log(`Implement Me!!!`)
+                  console.log("Implement Me!!!")
                 },
-                title: "Panel",
+                type: "button",
               },
+              { type: "separator", },
               {
+                icon: "apps-16",
+                name: "Overview",
                 onClick: () => {
-                  console.log(`Implement Me!!!`)
+                  console.log("Implement Me!!!")
                 },
-                title: "Hello",
+                type: "button",
               },
-              {
-                onClick: () => {
-                  console.log(`Implement Me!!!`)
-                },
-                title: "World",
-              },
-              {
-                onClick: () => {
-                  console.log(`Implement Me!!!`)
-                },
-                title: ":D",
-              }
             ],
-            title: "Administrator",
-          },
-        ]} />
-    </div>
+            name: "Items",
+            type: "category",
+          }
+        ]
+      }
+    />
     <div className={styles.page}>
       {children}
     </div>
