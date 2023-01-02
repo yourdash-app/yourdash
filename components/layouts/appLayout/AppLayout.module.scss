@@ -33,4 +33,18 @@
     background: transparent;
     box-shadow: 0 0 0rem #00000055;
   }
+
+  ::-webkit-scrollbar {
+    width: 24px;
+    height: 24px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 8px var(--app-application-rounding)
+      var(--app-application-rounding) 8px;
+    background-color: var(--scrollbar-fg);
+    border: transparent solid 6px;
+    background-clip: content-box;
+    transition: var(--transition);
+  }
 }

@@ -146,8 +146,13 @@
   --right-click-menu-item-fg: #ffffff;
 
   --toggle-switch-bg: #333333;
-  --toggle-switch-fg: var(--button-bg);
   --toggle-switch-bg-enabled: #008800;
+  --toggle-switch-thumb-bg: var(--button-bg);
+  --toggle-switch-thumb-hover-bg: var(--button-hover-bg);
+  --toggle-switch-thumb-active-bg: var(--button-active-bg);
+  --toggle-switch-thumb-rounding: 100rem;
+  --toggle-switch-thumb-hover-rounding: 100rem;
+  --toggle-switch-thumb-active-rounding: 100rem;
 }
 
 html,
@@ -206,18 +211,3 @@ h3 {
 ::-webkit-scrollbar-track {
   background-color: var(--scrollbar-bg);
 }
-
-/* ::-webkit-scrollbar-button:single-button {
-  background-color: var(--button-bg);
-  cursor: pointer;
-  width: 18px;
-  height: 18px;
-}
-
-::-webkit-scrollbar-button:single-button:hover {
-  background-color: var(--button-hover-bg);
-}
-
-::-webkit-scrollbar-button:single-button:active {
-  background-color: var(--button-active-bg);
-} */

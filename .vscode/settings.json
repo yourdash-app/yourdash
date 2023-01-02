@@ -5,7 +5,7 @@
   "editor.formatOnSave": true,
   "editor.formatOnSaveMode": "file",
   "files.autoSave": "onFocusChange",
-  "cSpell.words": ["yourdash"],
+  "cSpell.words": ["Uninstallation", "yourdash"],
   "git.ignoreLimitWarning": true,
   "eslint.enable": true,
   "[jsonc]": {

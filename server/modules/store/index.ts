@@ -171,9 +171,12 @@ const module: YourDashModule = {
           return res.json({ error: true })
         }
 
-        if (defaultApps.find((app) => app === application.name))
+        if (defaultApps.find((app) => app === application.name)) {
+          log(`ERROR: unable to uninstall a default application`)
+          return res.json({ error: true })
+        }
 
-          json = json.filter((app) => app !== req.params.applicationId)
+        json = json.filter((app) => app !== req.params.applicationId)
         fs.readdir(`${api.FsOrigin}/data/users`, (err, users) => {
           if (err) {
             log(`ERROR: unable to read the users directory`)
