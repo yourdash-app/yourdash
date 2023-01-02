@@ -1,9 +1,9 @@
 import React from "react"
 import SideBar from "../../../../components/elements/sideBar/SideBar"
-import styles from "./SettingsLayout.module.scss"
+import styles from "./TasksLayout.module.scss"
 import { useRouter } from "next/router"
 
-const SettingsLayout: React.FC = ({ children }) => {
+const TasksLayout: React.FC = ({ children }) => {
   const router = useRouter()
 
   return <div className={styles.root}>
@@ -62,4 +62,4 @@ const SettingsLayout: React.FC = ({ children }) => {
   </div>
 }
 
-export default SettingsLayout
+export default TasksLayout

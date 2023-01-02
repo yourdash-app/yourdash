@@ -7,23 +7,24 @@ const DocsLayout: React.FC<IDocsLayout> = ({ children }) => {
   return <>
     <div className={styles.root}>
       <section>
-        <SideBar title="Docs" sections={[ {
-          buttons: [
-            {
-              onClick: () => {
-                console.log("Hello")
-              },
-              title: "Hello",
+        <SideBar title="Docs" items={[
+          {
+            icon: "server-16",
+            name: "Hello",
+            onClick: () => {
+              console.log("Hello")
             },
-            {
-              onClick: () => {
-                console.log("Hello")
-              },
-              title: "World",
-            }
-          ],
-          title: "test",
-        } ]} />
+            type: "button"
+          },
+          {
+            icon: "server-16",
+            name: "World",
+            onClick: () => {
+              console.log("Hello")
+            },
+            type: "button"
+          }
+        ]} />
         <div>
           {children}
         </div>

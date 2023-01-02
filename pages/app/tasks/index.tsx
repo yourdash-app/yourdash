@@ -4,6 +4,7 @@ import CardButton from '../../../components/elements/cardButton/CardButton';
 import Icon from '../../../components/elements/icon/Icon';
 import AppLayout from '../../../components/layouts/appLayout/AppLayout';
 import { NextPageWithLayout } from '../../page';
+import TasksLayout from './components/TasksLayout';
 import styles from "./index.module.scss"
 
 const TasksIndex: NextPageWithLayout = () => {
@@ -65,6 +66,8 @@ export default TasksIndex;
 
 TasksIndex.getLayout = (page) => {
   return <AppLayout>
-    {page}
+    <TasksLayout>
+      {page}
+    </TasksLayout>
   </AppLayout>
 }
