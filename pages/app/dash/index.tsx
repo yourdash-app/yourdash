@@ -14,7 +14,7 @@ const Dash: NextPageWithLayout = () => {
     verifyAndReturnJson(
       SERVER.get("/userManagement/current/user"),
       (response) => {
-        let user = response.user
+        const user = response.user
         setName(user?.name?.first + " " + user?.name?.last)
       },
       () => {
@@ -25,7 +25,7 @@ const Dash: NextPageWithLayout = () => {
   useEffect(() => {
     setCurrentTime((new Date().getHours() < 10 ? `0${new Date().getHours()}` : `${new Date().getHours()}`) + ":" + (new Date().getMinutes() < 10 ? `0${new Date().getMinutes()}` : `${new Date().getMinutes()}`))
 
-    let interval = setInterval(() => {
+    const interval = setInterval(() => {
       setCurrentTime((new Date().getHours() < 10 ? `0${new Date().getHours()}` : `${new Date().getHours()}`) + ":" + (new Date().getMinutes() < 10 ? `0${new Date().getMinutes()}` : `${new Date().getMinutes()}`))
     }, 5000)
     return () => {
@@ -50,6 +50,7 @@ const Dash: NextPageWithLayout = () => {
               <h1>Oh no!</h1>
               <p>It appears that you have no dash widgets installed.</p>
               <Button onClick={() => {
+                console.log(`Implement Me!!!`)
               }} vibrant>Explore dash widgets</Button>
             </div>
           </div>
@@ -62,5 +63,5 @@ const Dash: NextPageWithLayout = () => {
 export default Dash;
 
 Dash.getLayout = (page) => {
-  return <AppLayout>{page}</AppLayout>
+  return <AppLayout transparentBackground={true}>{page}</AppLayout>
 }

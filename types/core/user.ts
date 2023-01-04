@@ -75,8 +75,11 @@ export interface YourDashUserSettings {
       }[];
     };
     tray: {
-      visibleIcons: {}[];
+      visibleIcons: object[];
     };
+    applicationContainer: {
+      windowMode: true;
+    }
   };
   applications: {
     dash: {
@@ -90,7 +93,7 @@ export interface YourDashUserSettings {
       }
     };
     files: {
-      sidebar: {},
+      sidebar: object,
       items: {
         display: {
           size: number,
@@ -102,16 +105,11 @@ export interface YourDashUserSettings {
 }
 
 export enum YourDashUserPermissions {
-  // eslint-disable-next-line no-unused-vars
   AddUsers,
-  // eslint-disable-next-line no-unused-vars
   RemoveUsers,
-  // eslint-disable-next-line no-unused-vars
   InstallApplications,
-  // eslint-disable-next-line no-unused-vars
   RemoveApplications,
-  // eslint-disable-next-line no-unused-vars
   ManageRoles,
-  // eslint-disable-next-line no-unused-vars
-  ManageStorageQuotas
+  ManageStorageQuotas,
+  ChangeUserName
 }

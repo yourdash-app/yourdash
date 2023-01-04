@@ -1,25 +1,30 @@
 import SideBar from "../../elements/sideBar/SideBar";
 import styles from "./DocsLayout.module.scss"
 
-export interface IDocsLayout extends React.ComponentPropsWithoutRef<'div'> { }
+export type IDocsLayout = React.ComponentPropsWithoutRef<'div'>
 
-const DocsLayout: React.FC<IDocsLayout> = ({ children, ..._divProps }) => {
+const DocsLayout: React.FC<IDocsLayout> = ({ children }) => {
   return <>
     <div className={styles.root}>
       <section>
-        <SideBar title="Docs" sections={[ {
-          title: "test",
-          buttons: [
-            {
-              title: "Hello",
-              onClick: () => { },
+        <SideBar title="Docs" items={[
+          {
+            icon: "server-16",
+            name: "Hello",
+            onClick: () => {
+              console.log("Hello")
             },
-            {
-              title: "World",
-              onClick: () => { },
-            }
-          ]
-        } ]} />
+            type: "button"
+          },
+          {
+            icon: "server-16",
+            name: "World",
+            onClick: () => {
+              console.log("Hello")
+            },
+            type: "button"
+          }
+        ]} />
         <div>
           {children}
         </div>

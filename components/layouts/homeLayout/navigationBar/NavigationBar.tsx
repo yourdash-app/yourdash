@@ -5,9 +5,7 @@ import styles from './NavigationBar.module.scss';
 import { useEffect, useState } from "react";
 import AuthenticatedImg from "../../../elements/authenticatedImg/AuthenticatedImg";
 
-export interface INavigationBar extends React.ComponentPropsWithoutRef<'div'> { }
-
-const NavigationBar: React.FC<INavigationBar> = () => {
+const NavigationBar: React.FC = () => {
   const [ loggedIn, setLoggedIn ] = useState(false)
 
   useEffect(() => {

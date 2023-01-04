@@ -60,6 +60,7 @@ const StoreIndex: NextPageWithLayout = () => {
         </div>
       </Carousel>
       <main className={styles.cardContainer}>
+        {/* <TextInput placeholder='Search' className={styles.cardSearch} /> */}
         {
           includedApps.map((item, ind) => {
             return <Card key={ind} onClick={() => {

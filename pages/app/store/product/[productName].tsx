@@ -14,14 +14,14 @@ import Icon from '../../../../components/elements/icon/Icon';
 
 const StoreProduct: NextPageWithLayout = () => {
   const router = useRouter()
-  let productId = router.query.productName
+  const productId = router.query.productName
 
-  const [ product, setProduct ] = useState({
-    name: "undefined"
-  } as InstalledApplication & { uninstallable: boolean, installed: boolean })
+  const [ product, setProduct ] = useState({ name: "undefined" } as InstalledApplication & { uninstallable: boolean, installed: boolean })
   const [ showInstallationPopup, setShowInstallationPopup ] = useState(false)
   const [ pageChanging, setPageChanging ] = useState(false)
   const [ installationError, setInstallationError ] = useState(false)
+  const [ uninstallationError, setUninstallationError ] = useState(false)
+  const [ unableToLoadPopup, setUnableToLoadPopup ] = useState(false)
 
   useEffect(() => {
     if (!productId) return
@@ -33,11 +33,31 @@ const StoreProduct: NextPageWithLayout = () => {
       },
       () => {
         console.error(`ERROR: couldn't fetch product information`)
+        setUnableToLoadPopup(true)
       }
     )
   }, [ productId ])
 
-  if (product.name === "undefined") return <></>
+  if (unableToLoadPopup)
+    return <Card className={styles.errorPopup}>
+      <ColContainer>
+        <Icon color="var(--card-fg)" name="server-error"></Icon>
+        <h3>Error</h3>
+        <p>
+          The application &quot;{productId}&quot; was not found
+        </p>
+        <Button
+          onClick={() => {
+            router.push(`/app/store`)
+          }}>
+          Go back
+        </Button>
+      </ColContainer>
+    </Card>
+
+  if (product.name === "undefined")
+    return <></>
+  
   return (
     <div className={styles.root} style={
       {
@@ -55,7 +75,7 @@ const StoreProduct: NextPageWithLayout = () => {
       </Carousel>
       {
         installationError
-          ? <Card className={styles.installationError}>
+          ? <Card className={styles.errorPopup}>
             <ColContainer>
               <Icon color="var(--card-fg)" name="server-error"></Icon>
               <h3>Error</h3>
@@ -65,6 +85,25 @@ const StoreProduct: NextPageWithLayout = () => {
               <Button
                 onClick={() => {
                   setInstallationError(false)
+                }}>
+                Ok
+              </Button>
+            </ColContainer>
+          </Card>
+          : null
+      }
+      {
+        uninstallationError
+          ? <Card className={styles.errorPopup}>
+            <ColContainer>
+              <Icon color="var(--card-fg)" name="server-error"></Icon>
+              <h3>Error</h3>
+              <p>
+                The application was not uninstalled!
+              </p>
+              <Button
+                onClick={() => {
+                  setUninstallationError(false)
                 }}>
                 Ok
               </Button>
@@ -108,11 +147,7 @@ const StoreProduct: NextPageWithLayout = () => {
                 return
               } else {
                 verifyAndReturnJson(
-                  SERVER.post(`/store/application/${productId}/install`, {
-                    body: JSON.stringify({
-                      product: productId
-                    })
-                  }),
+                  SERVER.post(`/store/application/${productId}/install`, { body: JSON.stringify({ product: productId }) }),
                   (data) => {
                     if (data.installed) {
                       setProduct(
@@ -165,13 +200,13 @@ const StoreProduct: NextPageWithLayout = () => {
               SERVER.delete(`/store/application/${productId}`),
               (data) => {
                 if (data.installed) {
-                  setInstallationError(true)
+                  setUninstallationError(false)
                   setProduct({
                     ...product,
                     installed: data.installed
                   })
                 } else {
-                  setInstallationError(false)
+                  setUninstallationError(true)
                   setProduct({
                     ...product,
                     installed: data.installed
@@ -180,7 +215,7 @@ const StoreProduct: NextPageWithLayout = () => {
                 }
               },
               () => {
-                return setInstallationError(false)
+                return setUninstallationError(true)
               }
             )
 

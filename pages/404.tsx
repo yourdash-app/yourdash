@@ -4,18 +4,18 @@ import { NextPageWithLayout } from "./page"
 const FourZeroFourPage: NextPageWithLayout = () => {
   return (
     <div style={{
-      display: "flex",
-      width: "100%",
-      height: "100%",
       alignItems: "center",
+      display: "flex",
+      height: "100%",
       justifyContent: "center",
-      minHeight: "84vh"
+      minHeight: "84vh",
+      width: "100%",
     }}>
       <h1 style={{
-        color: "var(--card-fg)",
         background: "var(--card-bg)",
-        padding: "1rem 2rem",
         borderRadius: "var(--card-rounding)",
+        color: "var(--card-fg)",
+        padding: "1rem 2rem",
       }}>404 | Page not found</h1>
     </div>
   )

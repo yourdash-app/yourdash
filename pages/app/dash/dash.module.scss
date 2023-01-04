@@ -1,17 +1,25 @@
 .root {
-  background: var(--app-background);
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  height: 100%;
+  --app-application-transparent-background-blur: 5px;
+  background: transparent;
+  &[data-background="true"] {
+    background: var(--app-background);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+  height: calc(100% - 0.25rem);
   overflow-y: auto;
-  width: 100%;
+  width: calc(100% - 0.25rem);
   display: flex;
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
   flex-direction: column;
   transition: var(--transition);
+  backdrop-filter: blur(var(--app-application-transparent-background-blur));
+  outline: 0.125rem solid #00000055;
+  margin: 0.125rem;
+  border-radius: var(--app-application-rounding);
 }
 
 // --app-dash-clock-font-weight: 800;
@@ -32,12 +40,25 @@
   transition: var(--transition);
   margin-bottom: 1rem;
   > * {
-    text-shadow: var(--app-dash-clock-shadow-offset-x) var(--app-dash-clock-shadow-offset-y)
-      var(--app-dash-clock-shadow-spread) var(--app-dash-clock-shadow-color);
+    text-shadow: var(--app-dash-clock-shadow-offset-x)
+      var(--app-dash-clock-shadow-offset-y) var(--app-dash-clock-shadow-spread)
+      var(--app-dash-clock-shadow-color);
   }
   > .clock {
     font-size: 8rem;
   }
+  @keyframes fadeIn {
+    from {
+      opacity: 0%;
+    }
+
+    to {
+      opacity: 100%;
+    }
+  }
+
+  opacity: 0%;
+  animation: 500ms 100ms ease-in-out fadeIn forwards;
 }
 
 .main {
@@ -67,6 +88,19 @@
   @media screen and (min-width: 1800px) {
     grid-template-columns: repeat(4, 1fr);
   }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0%;
+    }
+
+    to {
+      opacity: 100%;
+    }
+  }
+
+  opacity: 0%;
+  animation: 500ms 100ms ease-in-out fadeIn forwards;
 }
 
 .homeMessage {
@@ -79,6 +113,7 @@
   flex-direction: column;
   grid-column: 1/-1;
   grid-row: 1/-1;
+  padding: 2rem;
   > div {
     padding: 1.5rem;
     display: flex;

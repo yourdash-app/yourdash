@@ -14,15 +14,14 @@ const Projects: NextPageWithLayout = () => {
         <p>Other projects part of YourDash</p>
       </section>
       <main>
-        <div style={{
-          backgroundImage: "url(/background.jpg)"
-        }}>
+        <div style={{ backgroundImage: "url(/background.jpg)" }}>
           <h2>Code Engine</h2>
           <section>
             <Icon
               name='heart-fill-16'
               style={{
-                width: "1rem", aspectRatio: "1/1"
+                aspectRatio: "1/1",
+                width: "1rem",
               }}
               color={"#f02434"} />
             <span>1234</span>

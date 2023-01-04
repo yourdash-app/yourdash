@@ -9,18 +9,19 @@ export interface IDropdownMenu extends React.ComponentPropsWithoutRef<"div"> {
   }[]
 }
 
-const DropdownMenu: React.FC<IDropdownMenu> = ({ items, children, ...extraProps }) => {
+const DropdownMenu: React.FC<IDropdownMenu> = ({
+  items, children, ...extraProps 
+}) => {
   const [ shown, setShown ] = useState(false)
+  const [ willOverflowScreen, setWillOverflowScreen ] = useState(false)
 
   return <div
     {...extraProps}
-    style={{
-      position: "relative"
-    }}>
+    style={{ position: "relative" }}>
     <div onClick={(e) => {
       e.preventDefault()
       e.stopPropagation()
-      let listener = () => {
+      const listener = () => {
         setShown(false)
         document.body.removeEventListener("auxclick", listener)
         document.body.addEventListener("click", listener)
@@ -28,6 +29,10 @@ const DropdownMenu: React.FC<IDropdownMenu> = ({ items, children, ...extraProps 
       document.body.addEventListener("click", listener)
       document.body.addEventListener("auxclick", listener)
       setShown(!shown)
+      const rect = e.currentTarget.getBoundingClientRect()
+      setWillOverflowScreen(
+        (rect.left + 320) > window.innerWidth
+      )
     }}>
       {children}
     </div>
@@ -39,7 +44,7 @@ const DropdownMenu: React.FC<IDropdownMenu> = ({ items, children, ...extraProps 
         }}
         style={{
           top: "100%",
-          left: 0,
+          ...willOverflowScreen ? { right: 0, } : { left: 0 },
           position: "absolute"
         }}>
         {

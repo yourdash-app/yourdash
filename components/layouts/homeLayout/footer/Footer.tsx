@@ -2,11 +2,11 @@ import styles from './Footer.module.scss';
 import Link from "next/link"
 import Icon from '../../../elements/icon/Icon';
 
-export interface IFooter extends React.ComponentPropsWithoutRef<'div'> { }
+export type IFooter = React.ComponentPropsWithoutRef<'div'>
 
 const Footer: React.FC<IFooter> = ({ ..._divProps }) => {
   return <>
-    <div className={styles.component}>
+    <div {..._divProps} className={styles.component}>
       <div data-branding>
         <Icon useDefaultColor className={styles.logo} name="yourdash-logo" />
         <h1>YourDash</h1>

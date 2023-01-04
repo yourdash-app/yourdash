@@ -10,7 +10,9 @@ export interface IButtonLink {
   style?: CSSProperties;
 }
 
-const ButtonLink: React.FC<IButtonLink> = ({ children, vibrant, href, disabled, style }) => {
+const ButtonLink: React.FC<IButtonLink> = ({
+  children, vibrant, href, disabled, style 
+}) => {
   const router = useRouter()
   return <button
     style={style}

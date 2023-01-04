@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import { useEffect, useState } from 'react';
 import SERVER, { verifyAndReturnJson } from "../../../../lib/server";
-import YourDashUser, { YourDashUserSettings } from '../../../../lib/user';
+import YourDashUser from '../../../../types/core/user';
 import Card from '../../../containers/card/Card';
 import ColContainer from '../../../containers/ColContainer/ColContainer';
 import RowContainer from '../../../containers/RowContainer/RowContainer';
@@ -21,9 +21,14 @@ import QuickShortcut from '../../../../types/core/panel/quickShortcut';
 import AuthenticatedImg from '../../../elements/authenticatedImg/AuthenticatedImg';
 import InstalledApplication from '../../../../types/store/installedApplication';
 
-export interface IPanel { }
+export interface IPanel {
+  appIsOpening: (_value: boolean) => void,
+  setApplicationWindowMode: (_value: boolean) => void
+}
 
-const Panel: React.FC<IPanel> = () => {
+const Panel: React.FC<IPanel> = ({
+  appIsOpening, setApplicationWindowMode 
+}) => {
   const router = useRouter()
   const [ launcherSlideOutVisible, setLauncherSlideOutVisible ] = useState(false)
   const [ accountDropdownVisible, setAccountDropdownVisible ] = useState(false)
@@ -33,25 +38,15 @@ const Panel: React.FC<IPanel> = () => {
   const [ installedApps, setInstalledApps ] = useState([] as InstalledApplication[])
 
   useEffect(() => {
-    verifyAndReturnJson(
-      SERVER.get(`/userManagement/current/user/settings`),
-      (_res: YourDashUserSettings) => {
-
-        // the following is no longer supported
-        // document.body.style.setProperty("--app-panel-launcher-grid-columns", res.panel?.launcher?.slideOut?.gridColumns.toString() || "3")
-      },
-      () => {
-        localStorage.removeItem("sessionToken")
-        return router.push("/login")
-      }
-    )
-
+    setApplicationWindowMode(true)
+    
     verifyAndReturnJson(
       SERVER.get(`/userManagement/current/user`),
       (res) => {
         setUserData(res.user)
       },
       () => {
+        console.error(`error fetching user`)
         localStorage.removeItem("sessionToken")
         return router.push("/login")
       }
@@ -85,8 +80,8 @@ const Panel: React.FC<IPanel> = () => {
       <Icon
         name='app-launcher-16'
         style={{
+          aspectRatio: "1/1",
           height: "100%",
-          aspectRatio: "1/1"
         }}
         color={"var(--app-panel-fg)"}
       />
@@ -109,12 +104,9 @@ const Panel: React.FC<IPanel> = () => {
                       name: "Pin to quick shortcuts",
                       onClick: () => {
                         verifyAndReturnJson(
-                          SERVER.post(`/core/panel/quick-shortcut/create`, {
-                            body: JSON.stringify({
-                              name: app.name,
-                              url: app.path
-                            })
-                          }),
+                          SERVER.post(`/core/panel/quick-shortcut/create`, { body: JSON.stringify({
+                            name: app.name, url: app.path
+                          }) }),
                           () => {
                             router.reload()
                           },
@@ -126,8 +118,14 @@ const Panel: React.FC<IPanel> = () => {
                     },
                   ]} key={ind}>
                   <div className={styles.launcherGridItem} onClick={() => {
+                    if (app.path === router.pathname) return
                     setLauncherSlideOutVisible(false)
-                    router.push(app.path)
+                    router.prefetch(app.path)
+                    appIsOpening(true)
+                    setTimeout(() => {
+                      router.push(app.path)
+                      appIsOpening(false)
+                    }, 500)
                   }}>
                     <img src={app.icon} draggable={false} alt="" />
                     <span>{app.name}</span>
@@ -186,7 +184,13 @@ const Panel: React.FC<IPanel> = () => {
               }
             ]}>
               <div className={styles.shortcut} onClick={() => {
-                router.push(shortcut.url)
+                if (shortcut.url === router.pathname) return
+                router.prefetch(shortcut.url)
+                appIsOpening(true)
+                setTimeout(() => {
+                  router.push(shortcut.url)
+                  appIsOpening(false)
+                }, 500)
               }}>
                 <div>
                   <img draggable={false} src={shortcut.icon} alt="" />
@@ -201,12 +205,10 @@ const Panel: React.FC<IPanel> = () => {
           })
           : <Button onClick={() => {
             verifyAndReturnJson(
-              SERVER.post(`/core/panel/quick-shortcut/create`, {
-                body: JSON.stringify({
-                  name: "files",
-                  url: "/app/files"
-                })
-              }),
+              SERVER.post(`/core/panel/quick-shortcut/create`, { body: JSON.stringify({
+                name: "files",
+                url: "/app/files"
+              }) }),
               () => {
                 router.reload()
               },
@@ -225,15 +227,15 @@ const Panel: React.FC<IPanel> = () => {
         setAccountDropdownVisible(!accountDropdownVisible)
       }} tabIndex={0} src={"/core/panel/user/profile/picture"} alt="" />
       <div style={{
-        width: "100vw",
-        transition: "var(--transition)",
-        height: "100vh",
         background: "#00000040",
+        height: "100vh",
+        left: 0,
+        opacity: accountDropdownVisible ? 1 : 0,
+        pointerEvents: accountDropdownVisible ? "all" : "none",
         position: "fixed",
         top: 0,
-        left: 0,
-        pointerEvents: accountDropdownVisible ? "all" : "none",
-        opacity: accountDropdownVisible ? 1 : 0
+        transition: "var(--transition)",
+        width: "100vw",
       }} onClick={() => {
         setAccountDropdownVisible(false)
       }}></div>
@@ -241,8 +243,8 @@ const Panel: React.FC<IPanel> = () => {
         <Card
           style={{
             opacity: !accountDropdownVisible ? "0" : "1",
-            transform: !accountDropdownVisible ? "scale(0.9)" : "scale(1)",
             pointerEvents: accountDropdownVisible ? "all" : "none",
+            transform: !accountDropdownVisible ? "scale(0.9)" : "scale(1)",
           }}
           compact={true}
           className={styles.accountDropdown}>
@@ -284,8 +286,8 @@ const Panel: React.FC<IPanel> = () => {
           className={styles.accountNotificationList}
           style={{
             opacity: !accountDropdownVisible ? "0" : "1",
-            transform: !accountDropdownVisible ? "scale(0.9)" : "scale(1)",
             pointerEvents: accountDropdownVisible ? "all" : "none",
+            transform: !accountDropdownVisible ? "scale(0.9)" : "scale(1)",
           }}>
           <Card>
             <RowContainer data-header={true}>
@@ -296,7 +298,41 @@ const Panel: React.FC<IPanel> = () => {
               <p>
                 This is some sample text for a notification
               </p>
-              <Button onClick={() => { }}>
+              <Button onClick={() => {
+                console.log("Implenment me!")
+              }}>
+                Ok
+              </Button>
+            </ColContainer>
+          </Card>
+          <Card>
+            <RowContainer data-header={true}>
+              <img src={require(`./../../../../public/assets/productLogos/yourdash.svg`).default.src} alt=""></img>
+              <span>Notification Test</span>
+            </RowContainer>
+            <ColContainer>
+              <p>
+                This is some sample text for a notification
+              </p>
+              <Button onClick={() => {
+                console.log("Implenment me!")
+              }}>
+                Ok
+              </Button>
+            </ColContainer>
+          </Card>
+          <Card>
+            <RowContainer data-header={true}>
+              <img src={require(`./../../../../public/assets/productLogos/yourdash.svg`).default.src} alt=""></img>
+              <span>Notification Test</span>
+            </RowContainer>
+            <ColContainer>
+              <p>
+                This is some sample text for a notification
+              </p>
+              <Button onClick={() => {
+                console.log("Implenment me!")
+              }}>
                 Ok
               </Button>
             </ColContainer>

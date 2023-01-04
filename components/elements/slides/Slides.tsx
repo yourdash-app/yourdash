@@ -6,12 +6,14 @@ export interface ISlides {
   changeDuration: number;
 }
 
-const Slides: React.FC<ISlides> = ({ slides, changeDuration }) => {
+const Slides: React.FC<ISlides> = ({
+  slides, changeDuration 
+}) => {
   const [ currentSlideInd, setCurrentSlideInd ] = React.useState(0)
   const [ currentSlide, setCurrentSlide ] = React.useState(slides[ 0 ])
 
   React.useEffect(() => {
-    let intervalTimer = setInterval(() => {
+    const intervalTimer = setInterval(() => {
       setCurrentSlideInd(currentSlideInd + 1)
       setCurrentSlide(slides[ currentSlideInd + 1 ])
       if (currentSlideInd >= slides.length - 1) {

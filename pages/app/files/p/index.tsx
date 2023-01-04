@@ -10,6 +10,8 @@ const Files: NextPageWithLayout = () => {
 
   useEffect(() => {
     router.push(`/app/files/`)
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

@@ -7,7 +7,8 @@ import { useRouter } from "next/router";
 
 const Files: NextPageWithLayout = () => {
   const router = useRouter()
-  let filePath = router.query.path || "/"
+  const filePath = router.query.path || "/"
+  
   return (
     <>
       <Head>

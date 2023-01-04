@@ -24,27 +24,19 @@ const LoginOptions: NextPageWithLayout = () => {
           <ColContainer style={{
             alignItems: "center",
             ...(
-              !allowsSignUp ? {
-                padding: "1.5rem"
-              } : {
-
-              }
+              !allowsSignUp ? { padding: "1.5rem" } : {}
             )
 
           }}>
             {
               !allowsSignUp ?
                 <>
-                  <h2 style={{
-                    margin: 0
-                  }}>We&apos;re sorry</h2>
+                  <h2 style={{ margin: 0 }}>We&apos;re sorry</h2>
                   <p>This server isn&apos;t currently allowing users to sign up.</p>
                   <Button onClick={() => {
                     localStorage.removeItem("currentServer")
                     router.push("/login")
-                  }} vibrant style={{
-                    marginTop: "1rem"
-                  }}>
+                  }} vibrant style={{ marginTop: "1rem" }}>
                     Select a different instance
                   </Button>
                 </>

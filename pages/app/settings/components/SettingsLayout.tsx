@@ -1,155 +1,61 @@
-import { useRouter } from "next/router"
 import React from "react"
-import Button from "../../../../components/elements/button/Button"
 import SideBar from "../../../../components/elements/sideBar/SideBar"
 import styles from "./SettingsLayout.module.scss"
+import { useRouter } from "next/router"
 
-export interface ISettingsLayout {
-}
-
-const SettingsLayout: React.FC<ISettingsLayout> = ({ children }) => {
+const SettingsLayout: React.FC = ({ children }) => {
   const router = useRouter()
 
   return <div className={styles.root}>
-    <div className={styles.sidebar}>
-      <h2>Settings</h2>
-      <Button onClick={() => {
-        router.push(`/app/settings`)
-      }}>
-        Overview
-      </Button>
-      <SideBar style={{
-        height: "100%"
-      }} title="" sections={[
-        {
-          title: "User",
-          buttons: [
-            {
-              title: "Panel",
-              onClick: () => {
-
-              }
-            }
-          ]
-        },
-        {
-          title: "Administrator",
-          buttons: [
-            {
-              title: "Panel",
-              onClick: () => {
-
-              }
+    <SideBar
+      style={{ height: "100%" }}
+      title="Settings"
+      items={
+        [
+          {
+            icon: "apps-16",
+            name: "Overview",
+            onClick: () => {
+              router.push(`/app/settings/`)
             },
-            {
-              title: "Hello",
-              onClick: () => {
-
-              }
+            type: "button",
+          },
+          { type: "separator", },
+          {
+            icon: "person-16",
+            name: "Profile",
+            onClick: () => {
+              router.push(`/app/settings/user/profile`)
             },
-            {
-              title: "World",
-              onClick: () => {
-
-              }
+            type: "button",
+          },
+          {
+            icon: "app-launcher-16",
+            name: "Panel",
+            onClick: () => {
+              router.push(`/app/settings/user/panel`)
             },
-            {
-              title: ":D",
-              onClick: () => {
-
-              }
-            }
-          ]
-        },
-        {
-          title: "Adminisdfstrator",
-          buttons: [
-            {
-              title: "Panel",
-              onClick: () => {
-
-              }
+            type: "button",
+          },
+          {
+            icon: "mail-16",
+            name: "Notifications",
+            onClick: () => {
+              router.push(`/app/settings/user/notifications`)
             },
-            {
-              title: "Hello",
-              onClick: () => {
-
-              }
+            type: "button",
+          },
+          {
+            icon: "paintbrush-16",
+            name: "Theme",
+            onClick: () => {
+              router.push(`/app/settings/user/theme`)
             },
-            {
-              title: "World",
-              onClick: () => {
-
-              }
-            },
-            {
-              title: ":D",
-              onClick: () => {
-
-              }
-            }
-          ]
-        },
-        {
-          title: "Adminsdfgfistrator",
-          buttons: [
-            {
-              title: "Panel",
-              onClick: () => {
-
-              }
-            },
-            {
-              title: "Hello",
-              onClick: () => {
-
-              }
-            },
-            {
-              title: "World",
-              onClick: () => {
-
-              }
-            },
-            {
-              title: ":D",
-              onClick: () => {
-
-              }
-            }
-          ]
-        },
-        {
-          title: "Adminishgjtraator",
-          buttons: [
-            {
-              title: "Panel",
-              onClick: () => {
-
-              }
-            },
-            {
-              title: "Hello",
-              onClick: () => {
-
-              }
-            },
-            {
-              title: "World",
-              onClick: () => {
-
-              }
-            },
-            {
-              title: ":D",
-              onClick: () => {
-
-              }
-            }
-          ]
-        }
-      ]} />
-    </div>
+            type: "button",
+          }
+        ]
+      }
+    />
     <div className={styles.page}>
       {children}
     </div>

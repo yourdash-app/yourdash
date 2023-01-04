@@ -65,12 +65,8 @@ const LoginOptions: NextPageWithLayout = () => {
               setPassword(e.currentTarget.value);
               setErrorHasOccurred(false)
             }} />
-            <RowContainer style={{
-              width: "100%"
-            }}>
-              <Button style={{
-                flexGrow: 1
-              }} onClick={() => {
+            <RowContainer style={{ width: "100%" }}>
+              <Button style={{ flexGrow: 1 }} onClick={() => {
                 localStorage.setItem("username", userName)
                 SERVER.get("/userManagement/login", {
                   password: password,
@@ -95,9 +91,7 @@ const LoginOptions: NextPageWithLayout = () => {
               }} vibrant>
                 Login
               </Button>
-              <ButtonLink style={{
-                flexGrow: 1
-              }} href="/login/server/signup">
+              <ButtonLink style={{ flexGrow: 1 }} href="/login/server/signup">
                 Sign up
               </ButtonLink>
             </RowContainer>
@@ -105,12 +99,8 @@ const LoginOptions: NextPageWithLayout = () => {
         </Card>
         {
           currentServerMessage !== "" ?
-            <Card style={{
-              marginTop: "0.5rem"
-            }}>
-              <p style={{
-                margin: 0,
-              }}>{currentServerMessage}</p>
+            <Card style={{ marginTop: "0.5rem" }}>
+              <p style={{ margin: 0, }}>{currentServerMessage}</p>
             </Card>
             : null
         }

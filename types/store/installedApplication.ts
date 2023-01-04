@@ -7,5 +7,5 @@ export default interface InstalledApplication {
   description: string,
   displayName: string,
   previewImages: string[],
-  path: `/app/${string}`,
+  path: `/app/${string}`
 }

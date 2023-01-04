@@ -20,19 +20,22 @@
     "dev:client": "next dev",
     "dev:server": "yarn --cwd ./server dev",
     "dev:server-no-nodemon": "yarn --cwd ./server dev-no-nodemon",
-    "dev:server-no-tsc-or-nodemon" : "yarn --cwd ./server dev-no-tsc-or-nodemon",
+    "dev:server-no-tsc-or-nodemon": "yarn --cwd ./server dev-no-tsc-or-nodemon",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "prepare": "husky install && yarn --cwd ./server"
   },
   "dependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.47.1",
     "concurrently": "^7.5.0",
+    "eslint-plugin-unused-imports": "^2.0.0",
     "next": "^13.0.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "sass": "^1.55.0",
     "typescript": "^4.4.4",
+    "typescript-eslint": "^0.0.1-alpha.0",
     "webpack": "^5"
   },
   "devDependencies": {

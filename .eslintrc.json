@@ -1,5 +1,12 @@
 {
-  "extends": ["next", "next/core-web-vitals", "eslint:recommended"],
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+    "next",
+    "next/core-web-vitals",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "plugins": ["@typescript-eslint", "unused-imports"],
   "globals": {
     "React": "readonly"
   },
@@ -9,10 +16,28 @@
       "rules": {
         // Other rules
         "@next/next/no-img-element": "off",
-        "no-unused-vars": [
-          "error",
-          { "args": "after-used", "argsIgnorePattern": "^_" }
+        "unused-imports/no-unused-imports": "warn",
+        "@typescript-eslint/no-var-requires": "off",
+        "unused-imports/no-unused-vars": [
+          "warn",
+          {
+            "vars": "all",
+            "varsIgnorePattern": "^_",
+            "args": "after-used",
+            "argsIgnorePattern": "^_"
+          }
         ],
+        "no-unused-vars": "off",
+        "sort-imports": [
+          "warn",
+          {
+            "ignoreDeclarationSort": true
+          }
+        ],
+        "sort-vars": ["warn"],
+        "sort-keys": ["warn", "asc", { "natural": true }],
+        "@typescript-eslint/no-unused-vars": ["warn"],
+        "@typescript-eslint/ban-ts-comment": "off",
         "camelcase": "error",
         "brace-style": ["error", "1tbs"],
         "space-in-parens": ["error", "never"],
@@ -29,8 +54,8 @@
         "object-curly-newline": [
           "error",
           {
-            "ObjectExpression": "always",
-            "ObjectPattern": { "multiline": true },
+            "ObjectExpression": { "minProperties": 2 },
+            "ObjectPattern": { "multiline": true, "minProperties": 2 },
             "ImportDeclaration": "never",
             "ExportDeclaration": { "multiline": true, "minProperties": 3 }
           }

@@ -3,7 +3,7 @@
   position: absolute;
   width: 100%;
 
-  >section {
+  > section {
     @keyframes fadeIn {
       from {
         opacity: 0%;
@@ -44,7 +44,7 @@
   align-items: center;
   grid-template-columns: auto auto 1fr auto;
 
-  >img {
+  > img {
     height: 10rem;
     margin-right: 1rem;
     margin-left: 1rem;
@@ -53,13 +53,13 @@
     border-radius: 3rem;
   }
 
-  >h2 {
+  > h2 {
     color: var(--container-fg);
     padding-right: 1rem;
     margin-right: auto;
   }
 
-  >button:last-child {
+  > button:last-child {
     padding-left: 2rem;
     padding-right: 2rem;
 
@@ -99,7 +99,7 @@
     height: 85vh;
   }
 
-  >div {
+  > div {
     display: grid;
     grid-template-columns: auto 1fr;
     height: 100%;
@@ -115,7 +115,7 @@
       padding: 2rem;
     }
 
-    >.installationPopupImgContainer {
+    > .installationPopupImgContainer {
       padding: 2rem;
       padding-left: 0;
       display: flex;
@@ -127,7 +127,7 @@
         padding-left: 2rem;
       }
 
-      >img {
+      > img {
         aspect-ratio: 1 / 1;
         height: 30vh;
 
@@ -141,7 +141,7 @@
         }
       }
 
-      >div {
+      > div {
         width: 0.25rem;
         height: 100%;
         background-color: var(--container-separator);
@@ -158,36 +158,36 @@
       }
     }
 
-    >.installationPopupContent {
-      >button {
+    > .installationPopupContent {
+      > button {
         margin-top: auto;
       }
 
-      >div {
-        >h1 {
+      > div {
+        > h1 {
           color: var(--card-fg);
           margin: 0;
           font-size: 2.5rem;
           padding-bottom: 0.25rem;
         }
 
-        >p {
+        > p {
           color: var(--card-fg);
           margin: 0;
         }
 
-        >ul {
+        > ul {
           padding-top: 0.5rem;
           padding-left: 0.5rem;
 
-          >h3 {
+          > h3 {
             color: var(--card-fg);
             padding-bottom: 0.25rem;
             text-decoration: underline;
             margin: 0;
           }
 
-          >p {
+          > p {
             color: var(--card-fg);
             margin: 0;
             padding-left: 0.5rem;
@@ -208,7 +208,6 @@
   }
 }
 
-
 .carousel {
   @keyframes fadeIn {
     from {
@@ -224,7 +223,7 @@
   animation: 500ms 100ms ease-in-out fadeIn forwards;
 }
 
-.installationError {
+.errorPopup {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -233,22 +232,22 @@
   z-index: 10;
   border-radius: 1.5rem;
 
-  >div {
+  > div {
     padding: 0.5rem;
     text-align: center;
 
-    >h3 {
+    > h3 {
       font-size: 3rem;
       margin-top: 0;
     }
 
-    >p {
+    > p {
       margin-bottom: 1.5rem;
       padding-left: 1.5rem;
       padding-right: 1.5rem;
     }
 
-    >[data-component-type-icon] {
+    > [data-component-type-icon] {
       width: 100%;
       aspect-ratio: 3 / 2;
     }

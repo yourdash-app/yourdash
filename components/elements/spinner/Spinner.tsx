@@ -1,8 +1,6 @@
 import styles from './Spinner.module.css';
 
-export interface ISpinner {}
-
-const Spinner: React.FC<ISpinner> = ({ children }) => {
+const Spinner: React.FC = ({ children }) => {
   return <div className={styles.component}>{children}</div>;
 };
 

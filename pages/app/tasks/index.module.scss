@@ -1,0 +1,24 @@
+.title {
+  align-items: center;
+  padding-left: 1.25rem;
+  width: 100%;
+  background-color: var(--container-bg);
+  > div {
+    height: 2.5rem;
+  }
+  > h1 {
+    color: var(--container-fg);
+    padding-left: 0.25rem;
+  }
+}
+
+.section {
+  margin-bottom: 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  color: var(--container-fg);
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}

@@ -1,14 +1,13 @@
-import { CSSProperties } from 'react';
 import styles from './RowContainer.module.css';
 
-export interface IRowContainer {
-  children: React.ReactChild | React.ReactChild[];
+export interface IRowContainer extends React.ComponentPropsWithoutRef<"div"> {
   className?: string;
-  style?: CSSProperties
 }
 
-const RowContainer: React.FC<IRowContainer> = ({ children, className, style }) => {
-  return <div style={style} className={`${styles.component} ${className}`}>{children}</div>;
+const RowContainer: React.FC<IRowContainer> = ({
+  children, className, ...extraProps
+}) => {
+  return <div {...extraProps} className={`${styles.component} ${className}`}>{children}</div>;
 };
 
 export default RowContainer;

@@ -10,7 +10,7 @@
   position: relative;
   transition: var(--transition);
 
-  >input {
+  > input {
     cursor: pointer;
     width: 100%;
     height: 100%;
@@ -18,14 +18,27 @@
     opacity: 0;
   }
 
-  >div {
+  > div {
     position: absolute;
     top: -0.25rem;
     height: calc(100% + 0.5rem);
-    border-radius: 100rem;
-    background-color: var(--toggle-switch-fg);
+    border-radius: var(--toggle-switch-thumb-rounding);
     aspect-ratio: 1 / 1;
     transition: var(--transition);
     pointer-events: none;
+    background-color: var(--toggle-switch-thumb-bg);
+  }
+
+  &:hover {
+    > div {
+      background-color: var(--toggle-switch-thumb-hover-bg);
+      border-radius: var(--toggle-switch-thumb-hover-rounding);
+    }
+  }
+  &:active {
+    > div {
+      background-color: var(--toggle-switch-thumb-active-bg);
+      border-radius: var(--toggle-switch-thumb-active-rounding);
+    }
   }
 }
