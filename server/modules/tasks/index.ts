@@ -57,8 +57,6 @@ const module: YourDashModule = {
         }
       );
     });
-
-    request.get(`/`)
   },
   name: 'todo',
   unload() {
