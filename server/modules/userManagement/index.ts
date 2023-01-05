@@ -8,19 +8,21 @@ import YourDashUser, { YourDashUserSettings } from '../../../types/core/user.js'
 import { log } from './../../libServer.js';
 import console from 'console';
 
-let USER_CACHE: { [ key: string ]: string } = {};
+const USER_CACHE: { [ key: string ]: string } = {};
 
 const Module: YourDashModule = {
-  name: 'userManagement',
+  install() {
+    log(`installed the ${this.name} module`)
+  },
 
   load(app, api) {
-    app.use((req, res, next) => {
+    app.legacy().use((req, res, next) => {
       if (req.path.startsWith('/test')) return next();
       if (req.path.startsWith(`/api/${this.name}/login`)) return next();
       if (req.path.startsWith(`/api/core/instance/login`)) return next();
       if (req.headers.username) {
-        let userName = req.headers.username as string;
-        let sessionToken = req.headers.sessiontoken as string;
+        const userName = req.headers.username as string;
+        const sessionToken = req.headers.sessiontoken as string;
         if (USER_CACHE[ userName ]) {
           if (USER_CACHE[ userName ] === sessionToken) {
             next();
@@ -37,7 +39,7 @@ const Module: YourDashModule = {
             path.resolve(`${ENV.FsOrigin}/data/users/${userName}/keys.json`),
             (err, data) => {
               if (err) return res.json({ error: true });
-              let sessionKey = JSON.parse(data.toString()).sessionToken;
+              const sessionKey = JSON.parse(data.toString()).sessionToken;
               if (sessionKey === sessionToken) {
                 USER_CACHE[ userName ] = sessionKey;
                 next();
@@ -52,11 +54,11 @@ const Module: YourDashModule = {
         return res.json({ error: true });
       }
     });
-
-    app.post(`${api.ModulePath(this)}/create/:username`, (req, res) => {
-      let { username } = req.params;
-      let password = req.headers.password as string;
-      let { name } = req.headers;
+    
+    app.post(`/create/:username`, (req, res) => {
+      const { username } = req.params;
+      const password = req.headers.password as string;
+      const { name } = req.headers;
       console.log(password);
       if (!password) return res.json({ error: true });
       if (fs.existsSync(path.resolve(`${ENV.FsOrigin}/data/users/${username}`)))
@@ -70,8 +72,7 @@ const Module: YourDashModule = {
               first: name,
               last: '',
             },
-            userName: username,
-            version: '1',
+            permissions: [],
             profile: {
               banner: '',
               description: '',
@@ -85,11 +86,11 @@ const Module: YourDashModule = {
                   value: '',
                 },
                 git: {
+                  org: [],
                   personal: {
                     public: false,
                     value: '',
                   },
-                  org: [],
                 },
                 instagram: {
                   public: false,
@@ -122,8 +123,9 @@ const Module: YourDashModule = {
                 value: '',
               },
             },
-            permissions: [],
             quota: 0,
+            userName: username,
+            version: '1',
           } as YourDashUser),
           (err) => {
             if (err) return res.sendStatus(500);
@@ -156,16 +158,16 @@ const Module: YourDashModule = {
       });
     });
 
-    app.get(`${api.ModulePath(this)}/login`, (req, res) => {
-      let username = req.headers.username as string;
-      let password = req.headers.password as string;
-
+    app.get(`/login`, (req, res) => {
+      const username = req.headers.username as string;
+      const password = req.headers.password as string;
+      
       // check that the username and password was supplied
       if (!(username && password)) {
         res.json({ error: `A username or password was not provided!` });
         return log(`ERROR a username or password was not provided in the headers for /user/login!`);
       }
-
+      
       // check that the user actually exists
       if (!fs.existsSync(`${ENV.UserFs(req)}`)) {
         res.json({ error: `Unknown user` });
@@ -178,11 +180,11 @@ const Module: YourDashModule = {
           res.json({ error: `An issue occured reading saved user data.` });
           return log(`ERROR an error occured reading ${username}'s keys.json`);
         }
-        let keysJson = JSON.parse(data.toString());
+        const keysJson = JSON.parse(data.toString());
 
         // check if the password is correct
         if (password === decrypt(keysJson.hashedKey, api.SERVER_CONFIG)) {
-          let newSessionToken = generateRandomStringOfLength(256);
+          const newSessionToken = generateRandomStringOfLength(256);
           fs.writeFile(
             `${ENV.UserFs(req)}/keys.json`,
             JSON.stringify({
@@ -197,8 +199,8 @@ const Module: YourDashModule = {
                 );
               }
               res.json({
-                sessionToken: newSessionToken,
                 error: false,
+                sessionToken: newSessionToken,
               });
               USER_CACHE[ username ] = newSessionToken;
             }
@@ -206,8 +208,8 @@ const Module: YourDashModule = {
         }
       });
     });
-
-    app.get(`${api.ModulePath(this)}/current/user`, (req, res) => {
+    
+    app.get(`/current/user`, (req, res) => {
       if (!fs.existsSync(`${ENV.UserFs(req)}`)) {
         log(`ERROR: no user directory for ${req.headers.username}`)
         return res.json({ error: true });
@@ -217,15 +219,15 @@ const Module: YourDashModule = {
           log(`ERROR: unable to read ${req.headers.username}/user.json`)
           return res.json({ error: true });
         }
-        let user: YourDashUser = JSON.parse(data.toString())
-
+        const user: YourDashUser = JSON.parse(data.toString())
+        
         // @ts-ignore
         delete user.profile
         return res.send({ user: user });
       });
     });
-
-    app.get(`${api.ModulePath(this)}/current/user/profile`, (req, res) => {
+    
+    app.get(`/current/user/profile`, (req, res) => {
       if (!fs.existsSync(`${ENV.UserFs(req)}`)) {
         log(`ERROR: no user directory for ${req.headers.username}`)
         return res.json({ error: true });
@@ -235,41 +237,43 @@ const Module: YourDashModule = {
           log(`ERROR: unable to read ${req.headers.username}/user.json`)
           return res.json({ error: true });
         }
-        let user: YourDashUser = JSON.parse(data.toString())
+        const user: YourDashUser = JSON.parse(data.toString())
         return res.send({ profile: user.profile });
       });
     });
-
-    app.get(`${api.ModulePath(this)}/current/user/settings`, (req, res) => {
+    
+    app.get(`/current/user/settings`, (req, res) => {
       if (!fs.existsSync(`${ENV.UserFs(req)}`)) {
         return res.sendStatus(403);
       }
       fs.readFile(
         `${ENV.UserFs(req)}/config.json`,
         (err, data) => {
-          if (err) return res.sendStatus(404);
+          if (err) return res.json({ error: true });
           return res.send(data);
         }
       );
     });
-
-    app.get(`${api.ModulePath(this)}/current/user/permissions`, (req, res) => {
+      
+    app.get(`/current/user/permissions`, (req, res) => {
       if (!fs.existsSync(`${ENV.UserFs(req)}`)) {
         return res.sendStatus(403);
       }
       fs.readFile(
         `${ENV.UserFs(req)}/permissions.json`,
         (err, data) => {
-          if (err) return res.sendStatus(404);
+          if (err) return res.json({ error: true });
           return res.send(data);
         }
       );
     });
   },
 
-  unload() { },
+  name: 'userManagement',  
 
-  install() { },
+  unload() {
+    log(`unloaded the ${this.name} module`)
+  },
 };
-
+  
 export default Module;

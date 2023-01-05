@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import ColContainer from '../../../components/containers/ColContainer/ColContainer';
 import RowContainer from '../../../components/containers/RowContainer/RowContainer';
 import CardButton from '../../../components/elements/cardButton/CardButton';
@@ -6,8 +7,24 @@ import AppLayout from '../../../components/layouts/appLayout/AppLayout';
 import { NextPageWithLayout } from '../../page';
 import TasksLayout from './components/TasksLayout';
 import styles from "./index.module.scss"
+import TasksList from '../../../types/tasks/list';
+import SERVER, { verifyAndReturnJson } from '../../../lib/server';
 
 const TasksIndex: NextPageWithLayout = () => {
+  const [ personalLists, setPersonalLists ] = useState([] as TasksList[])
+
+  useEffect(() => {
+    verifyAndReturnJson(
+      SERVER.get(`/tasks/lists/personal`),
+      (data) => {
+        setPersonalLists(data)
+      },
+      () => {
+        console.error(`unable to fetch the user's personal lists`)
+      }
+    )
+  }, [])
+
   return (
     <ColContainer>
       <RowContainer className={styles.title}>

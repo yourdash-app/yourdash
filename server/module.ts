@@ -4,11 +4,11 @@
  */
 
 import { IEnv, YourDashServerConfig } from './index.js';
-import Express from 'express';
+import { RequestManager } from './libServer.js';
 
 export default interface YourDashModule {
   name: string;
-  load: (_app: Express.Application, _api: { SERVER_CONFIG: YourDashServerConfig } & IEnv) => void;
+  load: (_request: RequestManager, _api: { SERVER_CONFIG: YourDashServerConfig } & IEnv) => void;
   unload: () => void;
   install: () => void;
 }

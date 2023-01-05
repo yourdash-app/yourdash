@@ -1,7 +1,8 @@
+
 /*
- *   Copyright (c) 2022 Ewsgit
- *   https://ewsgit.mit-license.org
- */
+*   Copyright (c) 2022 Ewsgit
+*   https://ewsgit.mit-license.org
+*/
 
 import bodyParser from 'body-parser';
 import chalk from 'chalk';
@@ -10,14 +11,12 @@ import cors from 'cors';
 import express from 'express';
 import fs from 'fs';
 import path from 'path';
-import { log } from './libServer.js';
+import { RequestManager, log } from './libServer.js';
 import https from "https"
 import YourDashModule from './module.js';
 import startupCheck from './startupCheck.js';
 
-export const RELEASE_CONFIGURATION = {
-  CURRENT_VERSION: 1,
-}
+export const RELEASE_CONFIGURATION = { CURRENT_VERSION: 1, }
 
 export interface IEnv {
   FsOrigin: string;
@@ -28,11 +27,11 @@ export interface IEnv {
 }
 
 export const ENV: IEnv = {
-  FsOrigin: process.env.FsOrigin as string,
-  UserFs: (req) => `${ENV.FsOrigin}/data/users/${req.headers.username}`,
-  UserAppData: (req) => `${ENV.FsOrigin}/data/users/${req.headers.username}/AppData`,
   DevMode: process.env.DEV === "true",
-  ModulePath: (module) => `/api/${module.name}`
+  FsOrigin: process.env.FsOrigin as string,
+  ModulePath: (module) => `/api/${module.name}`,
+  UserAppData: (req) => `${ENV.FsOrigin}/data/users/${req.headers.username}/AppData`,
+  UserFs: (req) => `${ENV.FsOrigin}/data/users/${req.headers.username}`,
 };
 
 if (!process.geteuid) {
@@ -226,9 +225,7 @@ startupCheck(() => {
 
   const app = express();
 
-  app.use(bodyParser.json({
-    limit: '50mb'
-  }));
+  app.use(bodyParser.json({ limit: '50mb' }));
 
   app.use((req, res, next) => {
     res.setHeader('X-Powered-By', "YourDash Instance Server");
@@ -236,67 +233,60 @@ startupCheck(() => {
   })
 
   let loadedModules: YourDashModule[] = [];
+  let modulesToLoad: string[] = []
 
   // TODO: implement the server module unload and install methods
+  // if in DevMode add all modules to modulesToLoad
+  // else add only the modules found in the yourdash.config.json file
   if (ENV.DevMode) {
     log("(Start up) starting with all modules loaded due to the DEV environment variable being set to true.")
-    fs.readdir(path.resolve(`./modules/`), (err, data) => {
-      if (err) {
-        log(`(Start up) error reading the './modules/' directory.`)
-        process.exit(1)
-      }
-      data.forEach((module) => {
-        if (!fs.existsSync(path.resolve(`./modules/${module}/index.js`))) return log(`(Start up) no such module: ${module}! modules require an index.js file!`);
-        import('./modules/' + module + '/index.js').then((mod) => {
-          let currentModule = mod.default;
-          currentModule.load(app, {
-            SERVER_CONFIG: SERVER_CONFIG, ...ENV
-          });
-          log('(Start up) loaded module: ' + module);
-          loadedModules.push(currentModule);
-        });
-      });
-    })
+    modulesToLoad = fs.readdirSync(path.resolve(`./modules/`))
   } else {
-    SERVER_CONFIG.activeModules.forEach((module: YourDashModule) => {
-      if (!fs.existsSync(path.resolve(`./modules/${module}/index.js`))) return log('(Start up) no such module: ' + module + ", non-existent modules should not be listed in the activeModules found in yourdash.config.json");
-      import('./modules/' + module + '/index.js').then((mod) => {
-        let currentModule = mod.default;
-        currentModule.load(app, {
-          SERVER_CONFIG: SERVER_CONFIG, ...ENV
-        });
-        log('(Start up) loaded module: ' + module);
-        loadedModules.push(currentModule);
-      });
-    });
+    modulesToLoad = SERVER_CONFIG.activeModules
   }
+
+  console.log(modulesToLoad)
+
+  // load all modules found in modulesToLoad
+  modulesToLoad.forEach((module) => {
+    if (!fs.existsSync(path.resolve(`./modules/${module}/index.js`))) return log('(Start up) no such module: ' + module + ", non-existent modules should not be listed in the activeModules found in yourdash.config.json");
+    import('./modules/' + module + '/index.js').then((mod) => {
+      const currentModule = mod.default;
+      currentModule.load(new RequestManager(app, currentModule), {
+        SERVER_CONFIG: SERVER_CONFIG, ...ENV
+      });
+      log('(Start up) loaded module: ' + module);
+      loadedModules.push(currentModule);
+    });
+  });
 
   process.on("exit", () => {
     loadedModules.forEach((module) => {
       module.unload()
     })
+    loadedModules = []
   })
 
   // log all received requests
-  app.use((req, _res, next) => {
-    let date = new Date();
+  app.use((req, res, next) => {
+    const date = new Date();
     switch (req.method) {
       case 'GET':
         log(
           `${date.getHours()}:${date.getMinutes()}:${date.getSeconds() < 10 ? date.getSeconds() + '0' : date.getSeconds()
-          } ${chalk.bgGreen(chalk.whiteBright(' GET '))} ${req.path}`
+          } ${chalk.bgGreen(chalk.whiteBright(' GET '))} ${res.statusCode} ${req.path}`
         );
         break;
       case 'POST':
         log(
           `${date.getHours()}:${date.getMinutes()}:${date.getSeconds() < 10 ? date.getSeconds() + '0' : date.getSeconds()
-          } ${chalk.bgBlue(chalk.whiteBright(' POST '))} ${req.path}`
+          } ${chalk.bgBlue(chalk.whiteBright(' POST '))} ${res.statusCode} ${req.path}`
         );
         break;
       case 'DELETE':
         log(
           `${date.getHours()}:${date.getMinutes()}:${date.getSeconds() < 10 ? date.getSeconds() + '0' : date.getSeconds()
-          } ${chalk.bgRed(chalk.whiteBright(' DELETE '))} ${req.path}`
+          } ${chalk.bgRed(chalk.whiteBright(' DELETE '))} ${res.statusCode} ${req.path}`
         );
         break;
     }
@@ -304,9 +294,7 @@ startupCheck(() => {
   });
 
   app.use(
-    cors({
-      origin: [ 'http://localhost:3000', 'https://yourdash.vercel.app', 'https://ddsh.vercel.app', '*ewsgit-github.vercel.app' ],
-    })
+    cors({ origin: [ 'http://localhost:3000', 'https://yourdash.vercel.app', 'https://ddsh.vercel.app', '*ewsgit-github.vercel.app' ], })
   );
 
   setInterval(() => {
@@ -341,17 +329,17 @@ startupCheck(() => {
           log(`(Start up) CRITICAL ERROR: /etc/letsencrypt/live/${files[ 1 ]}/privkey.pem not found or couldn't be read, terminating server software`)
           return process.exit(1)
         }
-        let TLSKey = data.toString()
+        const TLSKey = data.toString()
         fs.readFile(`/etc/letsencrypt/live/${files[ indToRead ]}/fullchain.pem`, (err, data) => {
           if (err) {
             log(`(Start up) CRITICAL ERROR: CRITICAL ERROR: /etc/letsencrypt/live/${files[ indToRead ]}/fullchain.pem not found or couldn't be read, terminating server software`)
             return process.exit(1)
           }
-          let TLSCert = data.toString()
+          const TLSCert = data.toString()
           https.createServer(
             {
+              cert: TLSCert,
               key: TLSKey,
-              cert: TLSCert
             },
             app
           ).listen(3560)

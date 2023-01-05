@@ -20,7 +20,7 @@ const defaultCategories: SideBarCategory[] = [
 let module: YourDashModule = {
   name: "files",
   load(app, api) {
-    app.get(`${api.ModulePath(this)}/user/quota`, (req, res) => {
+    app.get(`/user/quota`, (req, res) => {
       if (!fs.existsSync(`${api.UserFs}/user.json`)) return res.send({ error: true })
       fs.readFile(`${api.UserFs}/user.json`, (err, data) => {
         if (err) {
@@ -32,7 +32,7 @@ let module: YourDashModule = {
       })
     });
 
-    app.get(`${api.ModulePath(this)}/sidebar/categories`, (req, res) => {
+    app.get(`/sidebar/categories`, (req, res) => {
       if (!fs.existsSync(path.resolve(`${api.UserAppData(req)}/files/sidebar`)))
         return fs.mkdir(
           path.resolve(`${api.UserAppData(req)}/files/sidebar`),
@@ -59,7 +59,7 @@ let module: YourDashModule = {
       })
     });
 
-    app.get(`${api.ModulePath(this)}/sidebar/set/default`, (req, res) => {
+    app.get(`/sidebar/set/default`, (req, res) => {
       if (!fs.existsSync(path.resolve(`${api.UserAppData(req)}/files/sidebar`)))
         return fs.mkdir(
           path.resolve(`${api.UserAppData(req)}/files/sidebar`),
