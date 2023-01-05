@@ -81,3 +81,10 @@ const includedApps: InstalledApplication[] = [
 ]
 
 export default includedApps
+
+export const DEFAULT_APPS = [
+  "dash", 
+  "files",
+  "store",
+  "settings"
+]
