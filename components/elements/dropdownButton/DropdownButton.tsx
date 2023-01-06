@@ -1,27 +1,27 @@
 import { useState } from 'react';
 import styles from './DropdownButton.module.scss';
 
-export interface IDropdownButton extends React.ComponentPropsWithoutRef<"button"> {
+export interface IDropdownButton extends React.ComponentPropsWithoutRef<"div"> {
   children: string;
   items: {
     name: string,
     shortcut?: string,
     onClick: () => void
-  }[]
+  }[];
+  className?: string;
 }
 
 const DropdownButton: React.FC<IDropdownButton> = ({
-  children, items, ...extraProps 
+  children, items, className, ...extraProps 
 }) => {
   const [ selectedOption, setSelectedOption ] = useState("")
   const [ dropdownShown, setDropdownShown ] = useState(false)
   const [ willOverflowScreen, setWillOverflowScreen ] = useState(false)
 
   return <div
-    style={{
-      height: "max-content",
-      position: "relative",
-    }}>
+    {...extraProps}
+    className={`${styles.componentRoot} ${className}`}
+    style={{ height: "max-content", }}>
     <div
       style={{ height: "max-content" }}
       onClick={(e) => {
@@ -41,7 +41,6 @@ const DropdownButton: React.FC<IDropdownButton> = ({
         )
       }}>
       <button
-        {...extraProps}
         className={`${styles.component}`}>
         {selectedOption || children}
       </button>

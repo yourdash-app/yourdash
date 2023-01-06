@@ -5,9 +5,17 @@ import { NextPageWithLayout } from './page';
 import Button from '../components/elements/button/Button';
 import Slides from '../components/elements/slides/Slides';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
 const Home: NextPageWithLayout = () => {
   const router = useRouter()
+  
+  const [ isLoggedIn, setIsLoggedIn ] = useState(false)
+
+  useEffect(() => {
+    setIsLoggedIn(localStorage.getItem("currentServer") !== undefined)
+  }, [])
+
   return (
     <div className={styles.root}>
       <section className={styles.section1}>
@@ -26,12 +34,18 @@ const Home: NextPageWithLayout = () => {
           <h1>YourDash</h1>
           <p>The home for your files.</p>
           <div>
-            <Button
-              onClick={() => {
-                router.push("/login/server")
-              }}
-              vibrant>Sign Up</Button>
-            <Link href="/login/">Login</Link>
+            {
+              isLoggedIn ? <Button onClick={() => {
+                router.push(`/login/`)
+              }} vibrant>Open</Button> : <>
+                <Button
+                  onClick={() => {
+                    router.push("/login/server")
+                  }}
+                  vibrant>Sign Up</Button>
+                <Link href="/login/">Login</Link>
+              </>
+            }
           </div>
         </div>
       </section>

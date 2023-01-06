@@ -270,8 +270,11 @@ const Module: YourDashModule = {
     })
 
     request.get(`/instance/login/background`, (_req, res) => {
-      console.log("hmmm")
       return res.json({ image: api.SERVER_CONFIG.loginPageConfig.background || "" })
+    })
+
+    request.get(`/instance/login/name`, (req, res) => {
+      return res.json({ name: api.SERVER_CONFIG.name })
     })
 
     request.get(`/instance/login/logo`, (_req, res) => {

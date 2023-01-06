@@ -91,7 +91,7 @@ function checkYourDashConfigJson(cb: () => void) {
             src: returnBase64Image(path.resolve(`${ENV.FsOrigin}/../yourdash256.png`)),
           },
           message: {
-            content: 'Server not yet fully configured',
+            content: 'This server is new. Welcome to YourDash!',
             position: {
               bottom: null,
               left: null,
