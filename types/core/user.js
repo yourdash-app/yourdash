@@ -7,4 +7,5 @@ export var YourDashUserPermissions;
     YourDashUserPermissions[YourDashUserPermissions["ManageRoles"] = 4] = "ManageRoles";
     YourDashUserPermissions[YourDashUserPermissions["ManageStorageQuotas"] = 5] = "ManageStorageQuotas";
     YourDashUserPermissions[YourDashUserPermissions["ChangeUserName"] = 6] = "ChangeUserName";
+    YourDashUserPermissions[YourDashUserPermissions["Administrator"] = 7] = "Administrator";
 })(YourDashUserPermissions || (YourDashUserPermissions = {}));

@@ -111,5 +111,6 @@ export enum YourDashUserPermissions {
   RemoveApplications,
   ManageRoles,
   ManageStorageQuotas,
-  ChangeUserName
+  ChangeUserName,
+  Administrator
 }

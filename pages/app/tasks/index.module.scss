@@ -22,4 +22,29 @@
   &:last-child {
     margin-bottom: 0;
   }
+
+  > div {
+    > div {
+      padding: 0.25rem;
+      > span {
+        margin-right: auto;
+        padding-left: 0.5rem;
+      }
+      > button {
+        margin-right: 0.25rem;
+        &:last-child {
+          margin-right: 0;
+        }
+      }
+    }
+  }
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+
+  > :first-child {
+    margin-right: auto;
+  }
 }

@@ -16,7 +16,8 @@ const DropdownButton: React.FC<IDropdownButton> = ({
 }) => {
   const [ selectedOption, setSelectedOption ] = useState("")
   const [ dropdownShown, setDropdownShown ] = useState(false)
-  const [ willOverflowScreen, setWillOverflowScreen ] = useState(false)
+  const [ willOverflowScreenHorizontally, setWillOverflowScreenHorizontally ] = useState(false)
+  const [ willOverflowScreenVertically, setWillOverflowScreenVertically ] = useState(false)
 
   return <div
     {...extraProps}
@@ -36,8 +37,11 @@ const DropdownButton: React.FC<IDropdownButton> = ({
         document.body.addEventListener("auxclick", listener)
         setDropdownShown(!dropdownShown)
         const rect = e.currentTarget.getBoundingClientRect()
-        setWillOverflowScreen(
+        setWillOverflowScreenHorizontally(
           (rect.left + 320) > window.innerWidth
+        )
+        setWillOverflowScreenVertically(
+          (rect.top + 100) > window.innerHeight
         )
       }}>
       <button
@@ -47,8 +51,8 @@ const DropdownButton: React.FC<IDropdownButton> = ({
     </div>
     {dropdownShown ?
       <div className={styles.menu} style={{
-        top: "100%",
-        ...willOverflowScreen ? { right: 0, } : { left: 0 },
+        ...willOverflowScreenHorizontally ? { right: 0, } : { left: 0 },
+        ...willOverflowScreenVertically ? { bottom: "100%" } : { top: "100%" },
         position: "absolute"
       }}>
         {

@@ -32,7 +32,7 @@ const TasksLayout: React.FC = ({ children }) => {
                 icon: "person-16",
                 name: "Untitled",
                 onClick: () => {
-                  router.push(`/app/tasks/personal/list/Untitled`)
+                  router.push(`/app/tasks/personal/list/(tasklistid)`)
                 },
                 type: "button",
               }

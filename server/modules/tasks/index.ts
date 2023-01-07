@@ -4,27 +4,26 @@ import fs from 'fs';
 import { ENV } from '../../index.js';
 import { generateRandomStringOfLength } from '../../encryption.js';
 import { log } from "./../../libServer.js"
+import path from 'path';
 
 const module: YourDashModule = {
   install() {
     log(`the ${this.name} module was installed`)
   },
   load(request, _api) {
-    request.get(`/list/create`, (req, res) => {
-      const { username } = req.headers;
-      if (!username) return res.json({ error: true });
-      if (!fs.existsSync(`${ENV.UserAppData(req)}/${this.name}`))
-        fs.mkdir(`${ENV.UserAppData}/${this.name}`, (err) => {
+    request.post(`/list/create`, (req, res) => {
+      if (!fs.existsSync(`${ENV.UserAppData(req)}/${this.name}/lists`))
+        fs.mkdir(`${ENV.UserAppData(req)}/${this.name}/lists`, { recursive: true }, (err) => {
           if (err) return res.json({ error: true });
         });
-      let listId = generateRandomStringOfLength(32);
-      if (fs.existsSync(`${ENV.UserAppData(req)}/${this.name}/lists/${listId}`)) {
-        listId = generateRandomStringOfLength(32);
-        if (fs.existsSync(`${ENV.UserAppData(req)}/${this.name}/lists/${listId}`))
-          return res.json({ error: true });
-      }
+
+      const listId = generateRandomStringOfLength(32);
+
+      if (fs.existsSync(`${ENV.UserAppData(req)}/${this.name}/lists/${listId}`))
+        return res.json({ error: true });
+      
       fs.writeFile(
-        `${ENV.UserAppData(req)}/${this.name}/lists/${listId}/`,
+        `${ENV.UserAppData(req)}/${this.name}/lists/${listId}.json`,
         JSON.stringify({
           categories: [
             {
@@ -57,8 +56,34 @@ const module: YourDashModule = {
         }
       );
     });
+
+    request.get(`/personal/lists`, (req, res) => {
+      if (!fs.existsSync(`${ENV.UserAppData(req)}/${this.name}/lists`)) {
+        fs.mkdir(`${ENV.UserAppData(req)}/${this.name}/lists`, { recursive: true }, (err) => {
+          if (err) return res.json({ error: true });
+        });
+
+        return res.json({ lists: [] })
+      }
+      
+      fs.readdir(path.resolve(`${ENV.UserAppData(req)}/${this.name}/lists`), (err, data) => {
+        if (err) {
+          log(`(${this.name}) ERROR: unable to read '${ENV.UserAppData(req)}/${this.name}'`)
+        }
+
+        const listsData = data.map((listName) => {
+          try {
+            return JSON.parse(fs.readFileSync(path.resolve(`${ENV.UserAppData(req)}/${this.name}/lists/${listName}`)).toString()).name
+          } catch (e) {
+            return
+          }
+        })
+
+        res.json({ lists: listsData })
+      })
+    })
   },
-  name: 'todo',
+  name: 'tasks',
   unload() {
     log(`The ${this.name} module was unloaded`)
   },
