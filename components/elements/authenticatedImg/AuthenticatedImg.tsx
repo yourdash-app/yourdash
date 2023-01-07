@@ -28,7 +28,7 @@ const AuthenticatedImg: React.FC<IAuthenticatedImg> = ({
   }, [ src ])
 
   return <img draggable={false} src={imgSrc} onError={() => {
-    console.log("Failed to load image")
+    console.error("Failed to load image")
     setImgSrc(YourDashIconRawDictionary[ "server-error" ])
   }} alt="" {...imgElementProps} />
 };

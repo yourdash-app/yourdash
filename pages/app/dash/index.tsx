@@ -5,8 +5,11 @@ import AppLayout from '../../../components/layouts/appLayout/AppLayout';
 import SERVER, { verifyAndReturnJson } from "../../../lib/server";
 import { NextPageWithLayout } from '../../page';
 import styles from "./dash.module.scss";
+import { useRouter } from "next/router";
 
 const Dash: NextPageWithLayout = () => {
+  const router = useRouter()
+
   const [ name, setName ] = useState("")
   const [ currentTime, setCurrentTime ] = useState("00:01")
 
@@ -50,7 +53,7 @@ const Dash: NextPageWithLayout = () => {
               <h1>Oh no!</h1>
               <p>It appears that you have no dash widgets installed.</p>
               <Button onClick={() => {
-                console.log(`Implement Me!!!`)
+                router.push(`/app/store`)
               }} vibrant>Explore dash widgets</Button>
             </div>
           </div>

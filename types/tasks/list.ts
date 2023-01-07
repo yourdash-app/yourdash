@@ -1,8 +1,8 @@
 import TasksListItem from "./listItem";
 
 export default interface TasksList {
-  type: "public" | "private",
-  id: number,
+  id: string,
   name: string,
-  items: TasksListItem[]
+  tasks: TasksListItem[],
+  description: string
 }

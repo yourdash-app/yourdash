@@ -1,0 +1,69 @@
+.root {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  position: relative;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.listSettings {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 50%;
+  height: 50%;
+  translate: -50% -50%;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+
+  > .header {
+    display: flex;
+    align-items: center;
+    padding: 0;
+    padding-bottom: 0.5rem;
+    > h2 {
+      margin: 0;
+      margin-right: auto;
+    }
+  }
+
+  > .main {
+    padding-top: 1rem;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 1rem;
+    place-items: center start;
+    height: max-content;
+    max-height: 100%;
+
+    > p {
+      margin: 0;
+    }
+  }
+}
+
+.listSettingsBackdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #00000055;
+  cursor: pointer;
+}
+
+.header {
+  align-items: center;
+  padding: 1rem;
+  > h1 {
+    margin: 0;
+    margin-right: auto;
+    padding-left: 0.5rem;
+    color: var(--container-fg);
+  }
+}
+
+.tasksView {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}

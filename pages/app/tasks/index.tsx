@@ -9,20 +9,29 @@ import TasksLayout from './components/TasksLayout';
 import styles from "./index.module.scss"
 import SERVER, { verifyAndReturnJson } from '../../../lib/server';
 import IconButton from '../../../components/elements/iconButton/IconButton';
+import Button from '../../../components/elements/button/Button';
+import Card from '../../../components/containers/card/Card';
+import { useRouter } from 'next/navigation';
+
+function LoadPersonalLists(setPersonalLists: (_value: {name: string, id: string}[]) => void) {
+  verifyAndReturnJson(
+    SERVER.get(`/tasks/personal/lists`),
+    (data) => {
+      setPersonalLists(data.lists || [])
+    },
+    () => {
+      console.error(`unable to fetch the user's personal lists`)
+    }
+  )
+}
 
 const TasksIndex: NextPageWithLayout = () => {
-  const [ personalLists, setPersonalLists ] = useState([] as string[])
+  const router = useRouter()
+
+  const [ personalLists, setPersonalLists ] = useState([] as {name: string, id: string}[])
 
   useEffect(() => {
-    verifyAndReturnJson(
-      SERVER.get(`/tasks/personal/lists`),
-      (data) => {
-        setPersonalLists(data.lists || [])
-      },
-      () => {
-        console.error(`unable to fetch the user's personal lists`)
-      }
-    )
+    LoadPersonalLists((lists) => setPersonalLists(lists))
   }, [])
 
   return (
@@ -36,9 +45,9 @@ const TasksIndex: NextPageWithLayout = () => {
           <h3>Personal lists</h3>
           <IconButton onClick={() => {
             verifyAndReturnJson(
-              SERVER.post("/tasks/list/create", { body: "" }),
-              (data) => {
-                console.log(data)
+              SERVER.post("/tasks/personal/list/create", { body: "" }),
+              () => {
+                LoadPersonalLists((lists) => setPersonalLists(lists))
               },
               () => {
                 console.error("unable to create a new list")
@@ -48,19 +57,53 @@ const TasksIndex: NextPageWithLayout = () => {
         </section>
         <ColContainer>
           {
-            personalLists.map((list, ind) => {
-              return <CardButton key={ind} onClick={() => {
-                console.log(`Implement Me!!!`)
-              }}>
-                <span>{list}</span>
-                <IconButton onClick={() => {
-                  console.log(`Implement Me!!!`)
-                }} icon="pencil-16" />
-                <IconButton onClick={() => {
-                  console.log(`Implement Me!!!`)
-                }} icon="trash-16" />
-              </CardButton>
-            })
+            personalLists.length !== 0 ?
+              personalLists.map((list, ind) => {
+                return <CardButton className={styles.list} key={ind} onClick={() => {
+                  router.push(`/app/tasks/personal/list/${list.id}`)
+                }}>
+                  <span>{list.name}</span>
+                  <IconButton onClick={(e) => {
+                    e.stopPropagation()
+                    console.log(`Implement Me!!!`)
+                  }} icon="pencil-16" />
+                  <IconButton onClick={(e) => {
+                    e.stopPropagation()
+                    verifyAndReturnJson(
+                      SERVER.delete(`/tasks/personal/list/delete/${list.id}`),
+                      () => {
+                        LoadPersonalLists((lists) => setPersonalLists(lists))
+                      },
+                      () => {
+                        console.error(`unable to delete list`)
+                      }
+                    )
+                  }} icon="trash-16" />
+                </CardButton>
+              })
+              : <Card className={styles.message}>
+                <ColContainer>
+                  <h2>
+                    Oh no!
+                  </h2>
+                  <p>
+                    You have no personal lists :(
+                  </p>
+                  <Button onClick={() => {
+                    verifyAndReturnJson(
+                      SERVER.post("/tasks/personal/list/create", { body: "" }),
+                      () => {
+                        LoadPersonalLists((lists) => setPersonalLists(lists))
+                      },
+                      () => {
+                        console.error("unable to create a new list")
+                      }
+                    )
+                  }} vibrant>
+                  Create a list
+                  </Button>
+                </ColContainer>
+              </Card> 
           }
         </ColContainer>
       </section>

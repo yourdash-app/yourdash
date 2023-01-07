@@ -21,7 +21,9 @@
       calc(var(--app-application-margin) * 2)
   );
   width: calc(100vw - calc(var(--app-application-margin) * 2));
-  transition: opacity 0.5s ease-in-out;
+  transition-property: opacity, height, width, top, left;
+  transition-duration: 250ms;
+  transition-timing-function: ease-in-out;
   border-radius: var(--app-application-rounding);
   box-shadow: 0 0 1rem #00000055;
   background-color: var(--background-color);
@@ -29,6 +31,12 @@
     --app-application-margin: 1rem;
     --app-application-rounding: 1rem;
   }
+
+  @media (max-width: 750px) {
+    --app-application-margin: 0rem !important;
+    --app-application-rounding: 0rem !important;
+  }
+
   &[data-app-transparent-background="true"] {
     background: transparent;
     box-shadow: 0 0 0rem #00000055;

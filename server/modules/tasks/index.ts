@@ -1,55 +1,42 @@
-import { YourDashIconRawDictionary } from '../../../components/elements/icon/iconDictionary.js';
 import YourDashModule from '../../module.js';
 import fs from 'fs';
-import { ENV } from '../../index.js';
 import { generateRandomStringOfLength } from '../../encryption.js';
 import { log } from "./../../libServer.js"
 import path from 'path';
+import TasksList from "./../../../types/tasks/list.js"
 
 const module: YourDashModule = {
   install() {
     log(`the ${this.name} module was installed`)
   },
-  load(request, _api) {
-    request.post(`/list/create`, (req, res) => {
-      if (!fs.existsSync(`${ENV.UserAppData(req)}/${this.name}/lists`))
-        fs.mkdir(`${ENV.UserAppData(req)}/${this.name}/lists`, { recursive: true }, (err) => {
+  load(request, api) {
+    request.post(`/personal/list/create`, (req, res) => {
+      if (!fs.existsSync(`${api.UserAppData(req)}/${this.name}/lists`))
+        fs.mkdir(`${api.UserAppData(req)}/${this.name}/lists`, { recursive: true }, (err) => {
           if (err) return res.json({ error: true });
         });
 
       const listId = generateRandomStringOfLength(32);
 
-      if (fs.existsSync(`${ENV.UserAppData(req)}/${this.name}/lists/${listId}`))
+      if (fs.existsSync(`${api.UserAppData(req)}/${this.name}/lists/${listId}`))
         return res.json({ error: true });
       
       fs.writeFile(
-        `${ENV.UserAppData(req)}/${this.name}/lists/${listId}.json`,
+        `${api.UserAppData(req)}/${this.name}/lists/${listId}.json`,
         JSON.stringify({
-          categories: [
+          description: "Unknown description",
+          id: `${listId}`,
+          name: 'Unnamed list',
+          tasks: [
             {
-              id: 0,
-              name: 'general',
-              tasks: [
-                {
-                  description: '',
-                  id: 0,
-                  subTasks: [
-                    {
-                      description: '',
-                      id: 0,
-                      subTasks: [],
-                      title: 'sample sub task',
-                    },
-                  ],
-                  title: 'sample task',
-                },
-              ],
+              assignees: [],
+              description: "test description",
+              subTasks: [],
+              tags: [],
+              title: 'general',
             },
           ],
-          icon: YourDashIconRawDictionary[ 'alert-16' ],
-          id: listId,
-          name: 'Unnamed list',
-        }),
+        } as TasksList),
         (err) => {
           if (err) return res.json({ error: true });
           return res.json({ id: listId });
@@ -58,28 +45,88 @@ const module: YourDashModule = {
     });
 
     request.get(`/personal/lists`, (req, res) => {
-      if (!fs.existsSync(`${ENV.UserAppData(req)}/${this.name}/lists`)) {
-        fs.mkdir(`${ENV.UserAppData(req)}/${this.name}/lists`, { recursive: true }, (err) => {
+      if (!fs.existsSync(`${api.UserAppData(req)}/${this.name}/lists`)) {
+        fs.mkdir(`${api.UserAppData(req)}/${this.name}/lists`, { recursive: true }, (err) => {
           if (err) return res.json({ error: true });
         });
 
         return res.json({ lists: [] })
       }
       
-      fs.readdir(path.resolve(`${ENV.UserAppData(req)}/${this.name}/lists`), (err, data) => {
+      fs.readdir(path.resolve(`${api.UserAppData(req)}/${this.name}/lists`), (err, data) => {
         if (err) {
-          log(`(${this.name}) ERROR: unable to read '${ENV.UserAppData(req)}/${this.name}'`)
+          log(`(${this.name}) ERROR: unable to read '${api.UserAppData(req)}/${this.name}'`)
         }
 
         const listsData = data.map((listName) => {
           try {
-            return JSON.parse(fs.readFileSync(path.resolve(`${ENV.UserAppData(req)}/${this.name}/lists/${listName}`)).toString()).name
+            const listData = JSON.parse(fs.readFileSync(path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${listName}`)).toString())
+            return {
+              id: listData.id,
+              name: listData.name,
+            }
           } catch (e) {
             return
           }
         })
 
         res.json({ lists: listsData })
+      })
+    })
+
+    request.delete(`/personal/list/delete/:listId`, (req, res) => {
+      if (!req.params.listId) {
+        return res.json({ error: true })
+      }
+
+      if (!fs.existsSync(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`)) {
+        return res.json({ error: true })
+      }
+
+      fs.rm(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`, (err) => {
+        if (err) {
+          return res.json({ error: true })
+        }
+
+        res.json({ success: true })
+      })
+    })
+
+    request.get(`/personal/list/:listId`, (req, res) => {
+      if (!req.params.listId) {
+        return res.json({ error: true })
+      }
+
+      if (!fs.existsSync(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`)) {
+        return res.json({ error: true })
+      }
+
+      fs.readFile(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`, (err, data) => {
+        if (err) {
+          return res.json({ error: true })
+        }
+
+        const json = JSON.parse(data.toString())
+
+        res.json(json)
+      })
+    })
+
+    request.post(`/personal/list/:listId`, (req, res) => {
+      if (!req.params.listId) {
+        res.json({ error: true })
+      }
+
+      if (!fs.existsSync(path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`))) {
+        return res.json({ error: true })
+      }
+
+      fs.writeFile(path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`), JSON.stringify(req.body), (err) => {
+        if (err) {
+          res.json({ error: true })        
+        }
+
+        res.json({ success: true })
       })
     })
   },

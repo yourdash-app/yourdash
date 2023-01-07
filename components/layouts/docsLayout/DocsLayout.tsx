@@ -12,7 +12,7 @@ const DocsLayout: React.FC<IDocsLayout> = ({ children }) => {
             icon: "server-16",
             name: "Hello",
             onClick: () => {
-              console.log("Hello")
+              console.log("Implement Me!!!")
             },
             type: "button"
           },
@@ -20,7 +20,7 @@ const DocsLayout: React.FC<IDocsLayout> = ({ children }) => {
             icon: "server-16",
             name: "World",
             onClick: () => {
-              console.log("Hello")
+              console.log("Implement Me!!!")
             },
             type: "button"
           }

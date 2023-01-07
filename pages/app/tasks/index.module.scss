@@ -24,7 +24,7 @@
   }
 
   > div {
-    > div {
+    > .list {
       padding: 0.25rem;
       > span {
         margin-right: auto;
@@ -34,6 +34,19 @@
         margin-right: 0.25rem;
         &:last-child {
           margin-right: 0;
+        }
+      }
+    }
+    > .message {
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+
+      > div {
+        padding-left: 1rem;
+        padding-right: 1rem;
+        > :last-child {
+          margin-top: 0.5rem;
         }
       }
     }

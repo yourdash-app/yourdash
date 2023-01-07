@@ -13,7 +13,7 @@ const TasksLayout: React.FC = ({ children }) => {
   return <div className={styles.root}>
     <SideBar
       style={{ height: "100%" }}
-      title="Settings"
+      title="Tasks"
       items={
         [
           {

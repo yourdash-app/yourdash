@@ -4,5 +4,10 @@ export default interface TasksListItem {
   title: string,
   description: string,
   tags: TasksTag[],
-  assignees: string[]
+  assignees: string[],
+  subTasks: {
+    title: string,
+    description: string,
+    tags: string
+  }[]
 }
