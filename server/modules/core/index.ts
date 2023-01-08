@@ -302,11 +302,6 @@ const Module: YourDashModule = {
       return res.json({ version: api.SERVER_CONFIG.version })
     })
 
-    // this is used during the login page to check if the provided url is a yourdash instance
-    request.get('/test', (_req, res) => {
-      res.send('yourdash instance');
-    });
-
     request.get('/', (req, res) => {
       res.redirect(`https://yourdash.vercel.app/login/server/${req.url}`);
     });
