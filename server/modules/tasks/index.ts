@@ -36,6 +36,7 @@ const module: YourDashModule = {
               title: 'general',
             },
           ],
+          tags: []
         } as TasksList),
         (err) => {
           if (err) return res.json({ error: true });

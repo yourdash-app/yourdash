@@ -24,19 +24,10 @@ const TasksLayout: React.FC = ({ children }) => {
             },
             type: "button",
           },
-          { type: "separator", },
+          /* { type: "separator", },
           {
             icon: "person-16",
-            items: [
-              {
-                icon: "person-16",
-                name: "Untitled",
-                onClick: () => {
-                  router.push(`/app/tasks/personal/list/(tasklistid)`)
-                },
-                type: "button",
-              }
-            ],
+            items: [],
             name: "Personal",
             type: "category",
           },
@@ -55,6 +46,7 @@ const TasksLayout: React.FC = ({ children }) => {
             name: "Organizations",
             type: "category",
           }
+          */
         ]
       }
     />

@@ -28,11 +28,13 @@ function LoadPersonalLists(setPersonalLists: (_value: {name: string, id: string}
 const TasksIndex: NextPageWithLayout = () => {
   const router = useRouter()
 
-  const [ personalLists, setPersonalLists ] = useState([] as {name: string, id: string}[])
+  const [ personalLists, setPersonalLists ] = useState(null as {name: string, id: string}[] | null)
 
   useEffect(() => {
     LoadPersonalLists((lists) => setPersonalLists(lists))
   }, [])
+
+  if (personalLists === null) return <></>
 
   return (
     <ColContainer>

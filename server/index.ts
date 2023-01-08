@@ -75,7 +75,7 @@ export interface YourDashServerConfig {
   };
 }
 
-startupCheck(() => {
+function applicationStartup() {
   const SERVER_CONFIG = JSON.parse(
     fs.readFileSync(path.resolve(`${ENV.FsOrigin}/yourdash.config.json`)).toString()
   );
@@ -250,15 +250,21 @@ startupCheck(() => {
       case 'POST':
         log(
           `${date.getHours()}:${date.getMinutes()}:${date.getSeconds() < 10 ? date.getSeconds() + '0' : date.getSeconds()
-          } ${chalk.bgBlue(chalk.whiteBright(' POST '))} ${res.statusCode} ${req.path}`
+          } ${chalk.bgBlue(chalk.whiteBright(' POS '))} ${res.statusCode} ${req.path}`
         );
         break;
       case 'DELETE':
         log(
           `${date.getHours()}:${date.getMinutes()}:${date.getSeconds() < 10 ? date.getSeconds() + '0' : date.getSeconds()
-          } ${chalk.bgRed(chalk.whiteBright(' DELETE '))} ${res.statusCode} ${req.path}`
+          } ${chalk.bgRed(chalk.whiteBright(' DEL '))} ${res.statusCode} ${req.path}`
         );
         break;
+      case 'OPTIONS':
+        log(
+          `${date.getHours()}:${date.getMinutes()}:${date.getSeconds() < 10 ? date.getSeconds() + '0' : date.getSeconds()
+          } ${chalk.bgMagenta(chalk.whiteBright(' OPT '))} ${res.statusCode} ${req.path}`
+      )
+      break;
     }
     next();
   });
@@ -274,9 +280,17 @@ startupCheck(() => {
   }, 43200000);
 
   if (ENV.DevMode) {
-    app.listen(3560, () => {
-      log('(Start up) Web server now online :D');
-    });
+    app.listen(
+      3560,
+      () => {
+        log('(Start up) Web server now online :D');
+      }
+    ).on(
+      "error",
+      (err) => {
+        log(`(Start up) CRITICAL ERROR: (${err.name}) ${err.message}`)
+      }
+    )
   } else {
     if (!fs.existsSync(`/etc/letsencrypt/live`)) {
       log(`(Start up) CRITICAL ERROR: /etc/letsencrypt/live not found, terminating server software`)
@@ -317,6 +331,6 @@ startupCheck(() => {
       })
     })
   }
-});
+};
 
-
+startupCheck(() => applicationStartup())

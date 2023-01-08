@@ -1,9 +1,9 @@
-import TasksTag from "./tag";
+import Tag from "../core/tag"
 
 export default interface TasksListItem {
   title: string,
   description: string,
-  tags: TasksTag[],
+  tags: Tag[],
   assignees: string[],
   subTasks: {
     title: string,

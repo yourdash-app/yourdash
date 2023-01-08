@@ -17,7 +17,7 @@ const defaultCategories: SideBarCategory[] = [
   }
 ]
 
-let module: YourDashModule = {
+const module: YourDashModule = {
   name: "files",
   load(app, api) {
     app.get(`/user/quota`, (req, res) => {
@@ -31,6 +31,19 @@ let module: YourDashModule = {
         res.send({ quota: json.quota })
       })
     });
+
+    app.get(`/user/quota/usage`, (req, res) => {
+      fs.fstat(fs.openSync(`${api.UserFs(req)}`, "r"), (err, stats) => {
+        if (err) {
+          log(`(${this.name}) ERROR: unable to fetch directory stats for user ${req.headers.username}`)
+          res.json({ error: true })
+        }
+
+        res.json({
+          usage: stats.size
+        })
+      })
+    })
 
     app.get(`/sidebar/categories`, (req, res) => {
       if (!fs.existsSync(path.resolve(`${api.UserAppData(req)}/files/sidebar`)))

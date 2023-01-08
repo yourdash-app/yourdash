@@ -15,9 +15,9 @@ const Module: YourDashModule = {
     log(`installed the ${this.name} module`)
   },
 
-  load(app, api) {
-    app.legacy().use((req, res, next) => {
-      if (req.path.startsWith('/test')) return next();
+  load(request, api) {
+    request.legacy().use((req, res, next) => {
+      if (req.path.startsWith('/test')) return res.send('yourdash instance');
       if (req.path.startsWith(`/api/${this.name}/login`)) return next();
       if (req.path.startsWith(`/api/core/instance/login`)) return next();
       if (req.headers.username) {
@@ -55,7 +55,7 @@ const Module: YourDashModule = {
       }
     });
     
-    app.post(`/create/:username`, (req, res) => {
+    request.post(`/create/:username`, (req, res) => {
       const { username } = req.params;
       const password = req.headers.password as string;
       const { name } = req.headers;
@@ -158,7 +158,7 @@ const Module: YourDashModule = {
       });
     });
 
-    app.get(`/login`, (req, res) => {
+    request.get(`/login`, (req, res) => {
       const username = req.headers.username as string;
       const password = req.headers.password as string;
       
@@ -209,7 +209,7 @@ const Module: YourDashModule = {
       });
     });
     
-    app.get(`/current/user`, (req, res) => {
+    request.get(`/current/user`, (req, res) => {
       if (!fs.existsSync(`${ENV.UserFs(req)}`)) {
         log(`ERROR: no user directory for ${req.headers.username}`)
         return res.json({ error: true });
@@ -227,7 +227,7 @@ const Module: YourDashModule = {
       });
     });
     
-    app.get(`/current/user/profile`, (req, res) => {
+    request.get(`/current/user/profile`, (req, res) => {
       if (!fs.existsSync(`${ENV.UserFs(req)}`)) {
         log(`ERROR: no user directory for ${req.headers.username}`)
         return res.json({ error: true });
@@ -242,7 +242,7 @@ const Module: YourDashModule = {
       });
     });
     
-    app.get(`/current/user/settings`, (req, res) => {
+    request.get(`/current/user/settings`, (req, res) => {
       if (!fs.existsSync(`${ENV.UserFs(req)}`)) {
         return res.sendStatus(403);
       }
@@ -255,7 +255,7 @@ const Module: YourDashModule = {
       );
     });
       
-    app.get(`/current/user/permissions`, (req, res) => {
+    request.get(`/current/user/permissions`, (req, res) => {
       if (!fs.existsSync(`${ENV.UserFs(req)}`)) {
         return res.sendStatus(403);
       }

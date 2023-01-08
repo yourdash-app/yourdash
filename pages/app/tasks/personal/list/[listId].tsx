@@ -20,7 +20,7 @@ function loadList(listId: string, setList: (_value: TasksList) => void) {
     SERVER.get(`/tasks/personal/list/${listId}`),
     (data) => {
       setList(data)
-    }, 
+    },
     () => {
       console.error(`unable to fetch tasks`)
     }
@@ -84,6 +84,7 @@ const TasksPersonalList: NextPageWithLayout = () => {
                       id: unsavedListData.id,
                       name: e.currentTarget.value,
                       tasks: unsavedListData.tasks,
+                      tags: unsavedListData.tags
                     })
                   }}
                 />
@@ -92,8 +93,8 @@ const TasksPersonalList: NextPageWithLayout = () => {
                 </p>
                 <TextBox
                   style={{
-                    resize: "vertical", 
-                    transition: "none" 
+                    resize: "vertical",
+                    transition: "none"
                   }}
                   defaultValue={unsavedListData.description}
                   onChange={(e) => {
@@ -103,10 +104,17 @@ const TasksPersonalList: NextPageWithLayout = () => {
                       description: e.currentTarget.value,
                       id: unsavedListData.id,
                       name: unsavedListData.name,
-                      tasks: unsavedListData.tasks 
+                      tasks: unsavedListData.tasks,
+                      tags: unsavedListData.tags
                     })
                   }}
                 />
+                <p>
+                  Tags
+                </p>
+                <div>
+
+                </div>
               </main>
               <Button onClick={() => {
                 verifyAndReturnJson(
