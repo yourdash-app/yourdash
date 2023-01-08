@@ -17,6 +17,7 @@ import Spinner from '../../../../../components/elements/spinner/Spinner';
 import TextBox from '../../../../../components/elements/textBox/TextBox';
 import TextInput from '../../../../../components/elements/textInput/TextInput';
 import ToggleSwitch from '../../../../../components/elements/toggleSwitch/ToggleSwitch';
+import Tags from '../../../../../components/elements/tags/Tags';
 
 const SettingsPanel: NextPageWithLayout = () => {
   const routeChange = () => {
@@ -83,10 +84,10 @@ const SettingsPanel: NextPageWithLayout = () => {
                 Card Button
               </CardButton>
               <RowContainer>
-                <Chip label="Chip"/>
-                <Chip label="Chip"/>
-                <Chip active label="Chip"/>
-                <Chip active label="Chip"/>
+                <Chip label="Chip" />
+                <Chip label="Chip" />
+                <Chip active label="Chip" />
+                <Chip active label="Chip" />
               </RowContainer>
               <DropdownButton items={[
                 {
@@ -143,6 +144,50 @@ const SettingsPanel: NextPageWithLayout = () => {
                   console.log(`Implement Me!!!`)
                 }}></ToggleSwitch>
               </RowContainer>
+              <Tags tags={[
+                {
+                  color: "#337733",
+                  displayName: "Administrator",
+                  name: "administrator"
+                },
+                {
+                  color: "#434883",
+                  displayName: "Administrator",
+                  name: "administrator"
+                },
+                {
+                  color: "#884466",
+                  displayName: "Administrator",
+                  name: "administrator"
+                },
+                {
+                  color: "#938263",
+                  displayName: "Administrator",
+                  name: "administrator"
+                }
+              ]} />
+              <Tags compact tags={[
+                {
+                  color: "#337733",
+                  displayName: "Administrator",
+                  name: "administrator"
+                },
+                {
+                  color: "#434883",
+                  displayName: "Administrator",
+                  name: "administrator"
+                },
+                {
+                  color: "#884466",
+                  displayName: "Administrator",
+                  name: "administrator"
+                },
+                {
+                  color: "#938263",
+                  displayName: "Administrator",
+                  name: "administrator"
+                }
+              ]} />
             </ColContainer>
             <ColContainer>
               <h1>Theme Editor</h1>
