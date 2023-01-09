@@ -12,6 +12,8 @@ import styles from "./index.module.scss"
 const ServerLogin: NextPageWithLayout = () => {
   const [ url, setUrl ] = useState("")
   const [ message, setMessage ] = useState("This is a message")
+  const [ allowed, setAllowed ] = useState(false)
+
   const router = useRouter()
 
   useEffect(() => {
@@ -21,27 +23,35 @@ const ServerLogin: NextPageWithLayout = () => {
   }, [ router ])
 
   useEffect(() => {
+    setAllowed(false)
+
     if (url === "") {
+      setAllowed(false)
       return setMessage("Urls can't be empty")
     }
 
     if (!(url.startsWith("https://") || url.startsWith("http://"))) {
+      setAllowed(false)
       setUrl(`https://${url}`)
     }
 
     if (url.startsWith("http://") && window.location.port !== "3000") {
+      setAllowed(false)
       return setMessage("Sorry, http:// urls are not supported by yourdash due to browser-imposed restrictions.")
     }
 
     setMessage("")
     if (url !== "http://localhost") {
       if (!url.includes(".")) {
+        setAllowed(false)
         return setMessage("Invalid url")
       }
       if (url.endsWith(".")) {
+        setAllowed(false)
         return setMessage("Valid urls can't end with a '.'")
       }
       if (url.endsWith("/")) {
+        setAllowed(false)
         return setMessage("Valid urls can't end with a '/'")
       }
     }
@@ -51,12 +61,15 @@ const ServerLogin: NextPageWithLayout = () => {
       .then((res) => res.text())
       .then((text) => {
         if (text === "yourdash instance") {
+          setAllowed(true)
           return setMessage("")
         } else {
+          setAllowed(false)
           return setMessage("This url is not a valid yourdash server")
         }
       })
       .catch((err) => {
+        setAllowed(false)
         if (err) return setMessage("This url is not a valid yourdash server")
         return setMessage("This url did not respond")
       })
@@ -71,7 +84,7 @@ const ServerLogin: NextPageWithLayout = () => {
           onChange={(e) => {
             setUrl(e.target.value)
           }} />
-        <Button disabled={!!message} onClick={() => {
+        <Button disabled={!allowed} onClick={() => {
           localStorage.setItem("currentServer", `${url}:3560`)
           router.push("/login/server")
         }}>Continue</Button>

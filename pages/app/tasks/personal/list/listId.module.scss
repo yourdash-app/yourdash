@@ -1,9 +1,37 @@
 .root {
   display: grid;
-  grid-template-rows: auto 1fr;
   position: relative;
   height: 100%;
   overflow-y: auto;
+  overflow-x: hidden;
+  grid-template-columns: 1fr auto;
+  transition: all 500ms ease-in-out;
+  animation: fadeIn ease-in-out 500ms forwards;
+  transform: translateX(0);
+
+  &.slideOut {
+    animation: fadeOut ease-in-out 500ms forwards;
+  }
+
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+      transform: translateX(0%);
+    }
+    to {
+      opacity: 0;
+      transform: translateX(100%);
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
 }
 
 .listSettings {
@@ -15,6 +43,13 @@
   translate: -50% -50%;
   display: grid;
   grid-template-rows: auto 1fr auto;
+  opacity: 0;
+  pointer-events: none;
+
+  &.visible {
+    opacity: 1;
+    pointer-events: all;
+  }
 
   > .header {
     display: flex;
@@ -28,6 +63,7 @@
   }
 
   > .main {
+    padding-bottom: 1rem;
     padding-top: 1rem;
     display: grid;
     grid-template-columns: 1fr auto;
@@ -35,6 +71,8 @@
     place-items: center start;
     height: max-content;
     max-height: 100%;
+    overflow-y: auto;
+    box-sizing: border-box;
 
     > p {
       margin: 0;
@@ -50,6 +88,13 @@
   height: 100%;
   background-color: #00000055;
   cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+
+  &.visible {
+    opacity: 1;
+    pointer-events: all;
+  }
 }
 
 .header {
@@ -66,4 +111,45 @@
 .tasksView {
   padding-left: 1rem;
   padding-right: 1rem;
+}
+
+.tasksViewTask {
+  padding: 0.25rem;
+
+  > div {
+    width: 100%;
+    align-items: center;
+    > span {
+      padding-left: 0.5rem;
+      margin-right: auto;
+    }
+
+    > button:last-of-type {
+      border-top-right-radius: 0.75rem;
+      border-bottom-right-radius: 0.75rem;
+    }
+  }
+}
+
+.taskProperties {
+  background-color: var(--container-bg);
+  transition: all 500ms ease-in-out;
+  overflow-x: hidden;
+  overflow-y: auto;
+  box-sizing: border-box;
+  opacity: 0;
+  width: 0rem;
+
+  > div {
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.5rem;
+    overflow-y: auto;
+  }
+}
+
+.taskPropertiesOpen {
+  opacity: 1;
+  width: 24rem;
 }

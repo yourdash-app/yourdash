@@ -1,22 +1,17 @@
 import { CSSProperties } from 'react';
 import styles from './Button.module.scss';
 
-export interface IButton {
-  children: React.ReactChild | React.ReactChild[];
+export interface IButton extends React.ComponentPropsWithoutRef<"button"> {
   vibrant?: boolean;
-  onClick: () => void;
-  disabled?: boolean;
   style?: CSSProperties;
 }
 
 const Button: React.FC<IButton> = ({
-  children, vibrant, onClick, disabled, style 
+  children, vibrant, style, ...extraProps
 }) => {
   return <button
+    {...extraProps}
     style={style}
-    onClick={() => {
-      if (!disabled) onClick()
-    }}
     className={`${styles.component} ${vibrant ? styles.vibrant : ""}`}>{children}</button>;
 };
 

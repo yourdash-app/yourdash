@@ -241,19 +241,6 @@ const Module: YourDashModule = {
         return res.send({ profile: user.profile });
       });
     });
-    
-    request.get(`/current/user/settings`, (req, res) => {
-      if (!fs.existsSync(`${ENV.UserFs(req)}`)) {
-        return res.sendStatus(403);
-      }
-      fs.readFile(
-        `${ENV.UserFs(req)}/config.json`,
-        (err, data) => {
-          if (err) return res.json({ error: true });
-          return res.send(data);
-        }
-      );
-    });
       
     request.get(`/current/user/permissions`, (req, res) => {
       if (!fs.existsSync(`${ENV.UserFs(req)}`)) {

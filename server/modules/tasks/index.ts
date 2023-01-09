@@ -20,7 +20,7 @@ const module: YourDashModule = {
 
       if (fs.existsSync(`${api.UserAppData(req)}/${this.name}/lists/${listId}`))
         return res.json({ error: true });
-      
+
       fs.writeFile(
         `${api.UserAppData(req)}/${this.name}/lists/${listId}.json`,
         JSON.stringify({
@@ -53,10 +53,11 @@ const module: YourDashModule = {
 
         return res.json({ lists: [] })
       }
-      
+
       fs.readdir(path.resolve(`${api.UserAppData(req)}/${this.name}/lists`), (err, data) => {
         if (err) {
           log(`(${this.name}) ERROR: unable to read '${api.UserAppData(req)}/${this.name}'`)
+          return res.json({ error: true })
         }
 
         const listsData = data.map((listName) => {
@@ -71,7 +72,7 @@ const module: YourDashModule = {
           }
         })
 
-        res.json({ lists: listsData })
+        return res.json({ lists: listsData })
       })
     })
 
@@ -89,7 +90,7 @@ const module: YourDashModule = {
           return res.json({ error: true })
         }
 
-        res.json({ success: true })
+        return res.json({ success: true })
       })
     })
 
@@ -107,15 +108,15 @@ const module: YourDashModule = {
           return res.json({ error: true })
         }
 
-        const json = JSON.parse(data.toString())
+        const json = JSON.parse(data.toString()) as TasksList
 
-        res.json(json)
+        return res.json(json)
       })
     })
 
     request.post(`/personal/list/:listId`, (req, res) => {
       if (!req.params.listId) {
-        res.json({ error: true })
+        return res.json({ error: true })
       }
 
       if (!fs.existsSync(path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`))) {
@@ -124,10 +125,30 @@ const module: YourDashModule = {
 
       fs.writeFile(path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`), JSON.stringify(req.body), (err) => {
         if (err) {
-          res.json({ error: true })        
+          return res.json({ error: true })
         }
 
-        res.json({ success: true })
+        return res.json({ success: true })
+      })
+    })
+
+    request.get(`/personal/list/:listId/task/:taskId`, (req, res) => {
+      if (!req.params.listId) {
+        return res.json({ error: true })
+      }
+
+      if (!fs.existsSync(path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`))) {
+        return res.json({ error: true })
+      }
+
+      fs.readFile(path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`), (err, data) => {
+        if (err) {
+          return res.json({ error: true })
+        }
+
+        const json = JSON.parse(data.toString()) as TasksList
+
+        return res.json(json.tasks[ parseInt(req.params.taskId) ])
       })
     })
   },

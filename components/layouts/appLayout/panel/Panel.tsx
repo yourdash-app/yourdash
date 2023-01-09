@@ -23,11 +23,12 @@ import InstalledApplication from '../../../../types/store/installedApplication';
 
 export interface IPanel {
   appIsOpening: (_value: boolean) => void,
-  setApplicationWindowMode: (_value: boolean) => void
+  backgroundImage: string
 }
 
 const Panel: React.FC<IPanel> = ({
-  appIsOpening, setApplicationWindowMode 
+  appIsOpening,
+  backgroundImage
 }) => {
   const router = useRouter()
   const [ launcherSlideOutVisible, setLauncherSlideOutVisible ] = useState(false)
@@ -38,11 +39,9 @@ const Panel: React.FC<IPanel> = ({
   const [ installedApps, setInstalledApps ] = useState([] as InstalledApplication[])
 
   useEffect(() => {
-    setApplicationWindowMode(true)
-    
     verifyAndReturnJson(
       SERVER.get(`/userManagement/current/user`),
-      (res) => {
+      (res: { user: YourDashUser }) => {
         setUserData(res.user)
       },
       () => {
@@ -87,7 +86,9 @@ const Panel: React.FC<IPanel> = ({
       />
     </div>
     <div className={`${styles.launcherSlideOut} ${launcherSlideOutVisible ? styles.launcherSlideOutVisible : ""}`}>
-      <div data-header>
+      <div data-header style={{
+        backgroundImage: backgroundImage
+      }}>
         <div data-title>Hiya, {userData?.name?.first}</div>
         <TextInput data-search onChange={(e) => {
           setSearchQuery(e.currentTarget.value.toLowerCase())
@@ -104,9 +105,11 @@ const Panel: React.FC<IPanel> = ({
                       name: "Pin to quick shortcuts",
                       onClick: () => {
                         verifyAndReturnJson(
-                          SERVER.post(`/core/panel/quick-shortcut/create`, { body: JSON.stringify({
-                            name: app.name, url: app.path
-                          }) }),
+                          SERVER.post(`/core/panel/quick-shortcut/create`, {
+                            body: JSON.stringify({
+                              name: app.name, url: app.path
+                            })
+                          }),
                           () => {
                             router.reload()
                           },
@@ -205,10 +208,12 @@ const Panel: React.FC<IPanel> = ({
           })
           : <Button onClick={() => {
             verifyAndReturnJson(
-              SERVER.post(`/core/panel/quick-shortcut/create`, { body: JSON.stringify({
-                name: "files",
-                url: "/app/files"
-              }) }),
+              SERVER.post(`/core/panel/quick-shortcut/create`, {
+                body: JSON.stringify({
+                  name: "files",
+                  url: "/app/files"
+                })
+              }),
               () => {
                 router.reload()
               },

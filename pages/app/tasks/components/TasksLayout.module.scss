@@ -9,6 +9,7 @@
 
   > .page {
     max-height: calc(100vh - var(--app-panel-height));
+    overflow-x: hidden;
     overflow-y: auto;
 
     > h1 {
