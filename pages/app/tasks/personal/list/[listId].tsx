@@ -16,6 +16,7 @@ import Button from '../../../../../components/elements/button/Button';
 import TextBox from '../../../../../components/elements/textBox/TextBox';
 import Tags from '../../../../../components/elements/tags/Tags';
 import TasksListItem from '../../../../../types/tasks/listItem';
+import Assignees from '../../components/Assignees/Assignees';
 
 function loadList(listId: string, setList: (_value: TasksList) => void) {
   verifyAndReturnJson(
@@ -203,10 +204,15 @@ const TasksPersonalList: NextPageWithLayout = () => {
               setSelectedTask(null)
             }} />
           </RowContainer>
+          <p>Description</p>
           <TextBox style={{
             flexDirection: 'row',
             flex: 1
           }} defaultValue={selectedTaskData?.description}></TextBox>
+          <p>Tags</p>
+          <Tags tags={[]} />
+          <p>Assignees</p>
+          <Assignees assignees={selectedTaskData?.assignees || [ "admin" ]} />
           <Button>Apply</Button>
         </ColContainer>
       </section>

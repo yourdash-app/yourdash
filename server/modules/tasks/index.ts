@@ -151,6 +151,17 @@ const module: YourDashModule = {
         return res.json(json.tasks[ parseInt(req.params.taskId) ])
       })
     })
+
+    request.get(`/assignee/:userName`, (req, res) => {
+      if (!req.params.userName) return res.json({ error: true })
+
+      if (!fs.existsSync(`${api.FsOrigin}/data/users/${req.params.userName}`))
+        return res.json({ error: true })
+
+      // TODO: fetch the user's profile data and return { userName: string, name: string (combination of first and last name), profile: { picture: string } }
+
+      res.json({ error: "implement me!" })
+    })
   },
   name: 'tasks',
   unload() {
