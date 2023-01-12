@@ -54,7 +54,7 @@ const Module: YourDashModule = {
         return res.json({ error: true });
       }
     });
-    
+
     request.post(`/create/:username`, (req, res) => {
       const { username } = req.params;
       const password = req.headers.password as string;
@@ -136,13 +136,21 @@ const Module: YourDashModule = {
                 if (err) return res.sendStatus(500);
                 fs.writeFile(
                   `${ENV.FsOrigin}/data/users/${username}/config.json`,
-                  JSON.stringify({ panel: { launcher: { shortcuts: [
-                    { icon: URL.createObjectURL(
-                      new Blob([
-                        fs.readFileSync(path.resolve(`${ENV.FsOrigin}./../yourdash.svg`)),
-                      ])
-                    ), },
-                  ], }, }, } as YourDashUserSettings),
+                  JSON.stringify({
+                    panel: {
+                      launcher: {
+                        shortcuts: [
+                          {
+                            icon: URL.createObjectURL(
+                              new Blob([
+                                fs.readFileSync(path.resolve(`${ENV.FsOrigin}./../yourdash.svg`)),
+                              ])
+                            ),
+                          },
+                        ],
+                      },
+                    },
+                  } as YourDashUserSettings),
                   (err) => {
                     if (err) return res.sendStatus(500);
                     fs.mkdir(`${ENV.UserFs(req)}/AppData/`, { recursive: true }, (err) => {
@@ -161,13 +169,13 @@ const Module: YourDashModule = {
     request.get(`/login`, (req, res) => {
       const username = req.headers.username as string;
       const password = req.headers.password as string;
-      
+
       // check that the username and password was supplied
       if (!(username && password)) {
         res.json({ error: `A username or password was not provided!` });
         return log(`ERROR a username or password was not provided in the headers for /user/login!`);
       }
-      
+
       // check that the user actually exists
       if (!fs.existsSync(`${ENV.UserFs(req)}`)) {
         res.json({ error: `Unknown user` });
@@ -177,14 +185,16 @@ const Module: YourDashModule = {
       // fetch the user's password from the fs
       fs.readFile(`${ENV.UserFs(req)}/keys.json`, (err, data) => {
         if (err) {
-          res.json({ error: `An issue occured reading saved user data.` });
-          return log(`ERROR an error occured reading ${username}'s keys.json`);
+          res.json({ error: `An issue occurred reading saved user data.` });
+          return log(`ERROR an error occurred reading ${username}'s keys.json`);
         }
         const keysJson = JSON.parse(data.toString());
 
         // check if the password is correct
         if (password === decrypt(keysJson.hashedKey, api.SERVER_CONFIG)) {
           const newSessionToken = generateRandomStringOfLength(256);
+
+          // write the user's new session token
           fs.writeFile(
             `${ENV.UserFs(req)}/keys.json`,
             JSON.stringify({
@@ -198,6 +208,8 @@ const Module: YourDashModule = {
                   `ERROR ${username}'s keys.json could not be overwritten during the login process!`
                 );
               }
+
+              // the password was correct and the user is now authenticated successfully!
               res.json({
                 error: false,
                 sessionToken: newSessionToken,
@@ -208,7 +220,7 @@ const Module: YourDashModule = {
         }
       });
     });
-    
+
     request.get(`/current/user`, (req, res) => {
       if (!fs.existsSync(`${ENV.UserFs(req)}`)) {
         log(`ERROR: no user directory for ${req.headers.username}`)
@@ -220,13 +232,13 @@ const Module: YourDashModule = {
           return res.json({ error: true });
         }
         const user: YourDashUser = JSON.parse(data.toString())
-        
+
         // @ts-ignore
         delete user.profile
         return res.send({ user: user });
       });
     });
-    
+
     request.get(`/current/user/profile`, (req, res) => {
       if (!fs.existsSync(`${ENV.UserFs(req)}`)) {
         log(`ERROR: no user directory for ${req.headers.username}`)
@@ -241,7 +253,7 @@ const Module: YourDashModule = {
         return res.send({ profile: user.profile });
       });
     });
-      
+
     request.get(`/current/user/permissions`, (req, res) => {
       if (!fs.existsSync(`${ENV.UserFs(req)}`)) {
         return res.sendStatus(403);
@@ -256,11 +268,11 @@ const Module: YourDashModule = {
     });
   },
 
-  name: 'userManagement',  
+  name: 'userManagement',
 
   unload() {
     log(`unloaded the ${this.name} module`)
   },
 };
-  
+
 export default Module;

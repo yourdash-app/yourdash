@@ -1,0 +1,25 @@
+.root {
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+.header {
+  > h2 {
+    margin: 0;
+    margin-right: auto;
+    padding-left: 0.25rem;
+  }
+  align-items: center;
+  margin: 0;
+  padding: 0.5rem;
+  background: var(--container-bg);
+  color: var(--container-fg);
+}
+
+.urlSection {
+  padding: 0.5rem;
+
+  > button {
+    white-space: nowrap;
+  }
+}
