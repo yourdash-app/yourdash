@@ -6,12 +6,16 @@ import DropdownButton from '../../../components/elements/dropdownButton/Dropdown
 import styles from "./index.module.scss"
 import TextInput from '../../../components/elements/textInput/TextInput';
 import Button from '../../../components/elements/button/Button';
+import SERVER, { verifyAndReturnJson } from '../../../lib/server';
+import Card from '../../../components/containers/card/Card';
+import TextBox from '../../../components/elements/textBox/TextBox';
 
 const EndpointTester: NextPageWithLayout = () => {
   const [ response, setResponse ] = useState("")
   const [ responseDidError, setResponseDidError ] = useState(false)
   const [ queryUrl, setQueryUrl ] = useState("")
   const [ queryMethod, setQueryMethod ] = useState("GET" as "GET" | "POST" | "DELETE")
+  const [ queryType, setQueryType ] = useState("json" as "json" | "text")
   const [ queryHeaders, /* setQueryHeaders */ ] = useState({})
   const [ queryBody, setQueryBody ] = useState({})
   const [ serverUrl, setServerUrl ] = useState("")
@@ -53,13 +57,13 @@ const EndpointTester: NextPageWithLayout = () => {
             {
               name: "JSON",
               onClick: () => {
-                setQueryMethod("GET")
+                setQueryType("json")
               }
             },
             {
               name: "Plain Text",
               onClick: () => {
-                setQueryMethod("POST")
+                setQueryType("text")
               }
             },
           ]}
@@ -67,24 +71,88 @@ const EndpointTester: NextPageWithLayout = () => {
           Expected response
         </DropdownButton>
       </RowContainer>
-      <main>
+      <section>
         <RowContainer className={styles.urlSection}>
-          <Button>
+          <Button disabled>
             {serverUrl}/api
           </Button>
-          <DropdownButton items={[]}>
-            Select a module
-          </DropdownButton>
           <TextInput
             placeholder='path'
             onChange={(e) => {
               setQueryUrl(e.currentTarget.value)
             }} />
-          <Button>
+          <Button onClick={() => {
+            switch (queryMethod) {
+              case "GET":
+                switch (queryType) {
+                  case "json":
+                    verifyAndReturnJson(
+                      SERVER.get(queryUrl), (data) => {
+                        setResponseDidError(false)
+                        setResponse(JSON.stringify(data, null, 2))
+                      },
+                      () => {
+                        setResponseDidError(true)
+                      }
+                    )
+                    break;
+                  case "text":
+
+                    break;
+                }
+                break;
+              case "POST":
+                switch (queryType) {
+                  case "json":
+                    verifyAndReturnJson(
+                      SERVER.post(queryUrl, {}), (data) => {
+                        setResponseDidError(false)
+                        setResponse(JSON.stringify(data, null, 2))
+                      },
+                      () => {
+                        setResponseDidError(true)
+                      }
+                    )
+                    break;
+                  case "text":
+
+                    break;
+                }
+                break;
+              case "DELETE":
+                switch (queryType) {
+                  case "json":
+                    verifyAndReturnJson(
+                      SERVER.delete(queryUrl), (data) => {
+                        setResponseDidError(false)
+                        setResponse(JSON.stringify(data, null, 2))
+                      },
+                      () => {
+                        setResponseDidError(true)
+                      }
+                    )
+                    break;
+                  case "text":
+
+                    break;
+                }
+                break;
+            }
+          }}>
             Submit request
           </Button>
         </RowContainer>
-      </main>
+        {
+          queryMethod === "POST" && <TextBox style={{ resize: "vertical" }}></TextBox>
+        }
+        <Card>
+          <pre style={{ margin: 0, overflow: "auto", paddingBottom: "0.5rem" }}>
+            <code>
+              {response}
+            </code>
+          </pre>
+        </Card>
+      </section>
     </main>
   );
 };

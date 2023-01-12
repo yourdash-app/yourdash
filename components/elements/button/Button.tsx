@@ -1,18 +1,14 @@
-import { CSSProperties } from 'react';
 import styles from './Button.module.scss';
 
 export interface IButton extends React.ComponentPropsWithoutRef<"button"> {
   vibrant?: boolean;
-  style?: CSSProperties;
+  className?: string;
 }
 
 const Button: React.FC<IButton> = ({
-  children, vibrant, style, ...extraProps
+  children, vibrant, className, ...extraProps
 }) => {
-  return <button
-    {...extraProps}
-    style={style}
-    className={`${styles.component} ${vibrant ? styles.vibrant : ""}`}>{children}</button>;
+  return <button {...extraProps} className={`${styles.component} ${vibrant ? styles.vibrant : ""} ${className}`}>{children}</button>;
 };
 
 export default Button;

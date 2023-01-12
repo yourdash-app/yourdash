@@ -10,17 +10,18 @@ export interface IDropdownButton extends React.ComponentPropsWithoutRef<"button"
     shortcut?: string,
     onClick: () => void
   }[];
+  className?: string;
 }
 
 const DropdownButton: React.FC<IDropdownButton> = ({
-  children, items, ...extraProps
+  children, items, className, ...extraProps
 }) => {
   const RootContainerContext = useContext(RightClickMenuContext)
 
   const [ selectedOption, setSelectedOption ] = useState("")
   const [ dropdownShown, setDropdownShown ] = useState(false)
 
-  return <Button {...extraProps} onClick={(e) => {
+  return <Button {...extraProps} className={className} onClick={(e) => {
     e.stopPropagation()
     e.preventDefault()
 

@@ -12,6 +12,7 @@ import { NextPageWithLayout } from "../../page";
 import styles from "./index.module.scss";
 import { YourDashIconRawDictionary } from "../../../components/elements/icon/iconDictionary";
 import DropdownButton from "../../../components/elements/dropdownButton/DropdownButton";
+import RightClickMenuRootContainer from "../../../components/elements/rightClickMenu/RightClickMenuRootContainer";
 
 const LoginOptions: NextPageWithLayout = () => {
   const [ userName, setUserName ] = useState("")
@@ -99,10 +100,10 @@ const LoginOptions: NextPageWithLayout = () => {
                 }
               })
             }} vibrant>
-                Login
+              Login
             </Button>
             <ButtonLink style={{ flexGrow: 1 }} href="/login/server/signup">
-                Sign up
+              Sign up
             </ButtonLink>
           </RowContainer>
         </ColContainer>
@@ -131,5 +132,7 @@ const LoginOptions: NextPageWithLayout = () => {
 export default LoginOptions;
 
 LoginOptions.getLayout = (page) => {
-  return <HomeLayout>{page}</HomeLayout>
+  return <RightClickMenuRootContainer>
+    <HomeLayout>{page}</HomeLayout>
+  </RightClickMenuRootContainer>
 }
