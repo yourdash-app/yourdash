@@ -11,9 +11,9 @@ const Tags: React.FC<ITags> = ({ tags, compact }) => {
   return (
     <main className={`${styles.component} ${compact ? styles.compact : ""}`}>
       {
-        tags.map((tag) => {
+        tags.map((tag, ind) => {
           return (
-            <section className={styles.tag}>
+            <section key={ind} className={styles.tag}>
               <div style={{ backgroundColor: tag.color }}></div>
               <span>{tag.displayName}</span>
             </section>

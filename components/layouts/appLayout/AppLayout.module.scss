@@ -12,17 +12,12 @@
   --app-application-margin: 0rem;
   --app-application-rounding: 0rem;
   overflow: hidden;
-  position: fixed;
-  top: calc(var(--app-panel-height) + var(--app-application-margin));
-  left: var(--app-application-margin);
-  height: calc(
-    calc(100vh - var(--app-panel-height)) -
-      calc(var(--app-application-margin) * 2)
-  );
-  width: calc(100vw - calc(var(--app-application-margin) * 2));
-  transition-property: opacity, height, width, top, left;
+  height: calc(100% - calc(var(--app-application-margin) * 2));
+  width: calc(100% - calc(var(--app-application-margin) * 2));
+  transition-property: opacity, height, width, margin;
   transition-duration: 250ms;
   transition-timing-function: ease-in-out;
+  margin: var(--app-application-margin);
   border-radius: var(--app-application-rounding);
   box-shadow: 0 0 1rem #00000055;
   background-color: var(--background-color);

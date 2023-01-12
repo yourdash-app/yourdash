@@ -1,4 +1,5 @@
 import SERVER, { verifyAndReturnJson } from "../../../lib/server";
+import RightClickMenuRootContainer from "../../elements/rightClickMenu/RightClickMenuRootContainer";
 import styles from "./AppLayout.module.scss"
 import Panel from "./panel/Panel";
 import React, { useEffect, useState } from "react";
@@ -38,20 +39,26 @@ const AppLayout: React.FC<IAppLayout> = ({
 
   if (!hasLoaded) return <></>
 
-  return standaloneInterface ? <>{children}</> : <div className={styles.root} style={{
-    backgroundImage: `url(${backgroundImage})`
-  }}>
-    <Panel
-      backgroundImage={`url(${backgroundImage})`}
-      appIsOpening={(value) => {
-        setAppOpenAnimation(value)
-      }}
-    />
-    <div data-app-window={applicationWindowMode} data-app-transparent-background={transparentBackground} data-app-root-container style={{ opacity: appOpenAnimation ? "0" : "1", }}
-      className={styles.content}>
+  return standaloneInterface
+    ? <RightClickMenuRootContainer>
       {children}
-    </div>
-  </div>
+    </RightClickMenuRootContainer>
+    : <RightClickMenuRootContainer>
+      <div className={styles.root} style={{
+        backgroundImage: `url(${backgroundImage})`
+      }}>
+        <Panel
+          backgroundImage={`url(${backgroundImage})`}
+          appIsOpening={(value) => {
+            setAppOpenAnimation(value)
+          }}
+        />
+        <div data-app-window={applicationWindowMode} data-app-transparent-background={transparentBackground} data-app-root-container style={{ opacity: appOpenAnimation ? "0" : "1" }}
+          className={styles.content}>
+          {children}
+        </div>
+      </div>
+    </RightClickMenuRootContainer>
 };
 
 export default AppLayout;

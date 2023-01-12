@@ -110,8 +110,8 @@ const Panel: React.FC<IPanel> = ({
                               name: app.name, url: app.path
                             })
                           }),
-                          () => {
-                            router.reload()
+                          (data) => {
+                            setQuickShortcuts([ ...quickShortcuts, data[ 0 ] ])
                           },
                           () => {
                             console.error(`unable to create quick shortcut with name: ${app.name}`)
@@ -177,7 +177,7 @@ const Panel: React.FC<IPanel> = ({
                   verifyAndReturnJson(
                     SERVER.delete(`/core/panel/quick-shortcut/${shortcut.id}`),
                     () => {
-                      router.reload()
+                      setQuickShortcuts(quickShortcuts.filter((sc) => sc.id !== shortcut.id))
                     },
                     () => {
                       console.error(`unable to delete quick shortcut ${shortcut.id}`)
@@ -214,14 +214,14 @@ const Panel: React.FC<IPanel> = ({
                   url: "/app/files"
                 })
               }),
-              () => {
-                router.reload()
+              (data) => {
+                setQuickShortcuts([ ...quickShortcuts, data[ 0 ] ])
               },
               () => {
                 console.error(`unable to create quick shortcut with name: files`)
               }
             )
-          }}>Add Quick Shortcuts</Button>
+          }}>Add default quick shortcuts</Button>
       }
     </div>
     {/* <div className={styles.tray}>

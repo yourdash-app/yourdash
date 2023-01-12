@@ -146,6 +146,9 @@
     box-sizing: border-box;
     padding: 0.5rem;
     overflow-y: auto;
+    > p {
+      color: var(--container-fg);
+    }
   }
 }
 

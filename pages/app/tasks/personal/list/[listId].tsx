@@ -185,9 +185,6 @@ const TasksPersonalList: NextPageWithLayout = () => {
                     <span>{task.title}</span>
                     <IconButton onClick={() => {
                       console.log(`Implement Me!!!`)
-                    }} icon={'pencil-16'} />
-                    <IconButton onClick={() => {
-                      console.log(`Implement Me!!!`)
                     }} icon={'trash-16'} />
                   </RowContainer>
                 </CardButton>
@@ -197,24 +194,39 @@ const TasksPersonalList: NextPageWithLayout = () => {
         </main>
       </ColContainer>
       <section className={`${styles.taskProperties} ${selectedTask !== null && styles.taskPropertiesOpen}`}>
-        <ColContainer>
-          <RowContainer>
-            <TextInput style={{ flex: 1 }} defaultValue={selectedTaskData?.title} />
-            <IconButton style={{ aspectRatio: "1 / 1" }} icon='x-16' onClick={() => {
-              setSelectedTask(null)
-            }} />
-          </RowContainer>
-          <p>Description</p>
-          <TextBox style={{
-            flexDirection: 'row',
-            flex: 1
-          }} defaultValue={selectedTaskData?.description}></TextBox>
-          <p>Tags</p>
-          <Tags tags={[]} />
-          <p>Assignees</p>
-          <Assignees assignees={selectedTaskData?.assignees || [ "admin" ]} />
-          <Button>Apply</Button>
-        </ColContainer>
+        {
+          selectedTaskData && <ColContainer>
+            <RowContainer>
+              <TextInput style={{ flex: 1 }} defaultValue={selectedTaskData?.title} />
+              <IconButton style={{ aspectRatio: "1 / 1" }} icon='x-16' onClick={() => {
+                setSelectedTask(null)
+              }} />
+            </RowContainer>
+            <p>Description</p>
+            <TextBox style={{
+              flexDirection: 'row',
+              flex: 1
+            }} defaultValue={selectedTaskData?.description}></TextBox>
+            <p>Tags</p>
+            <Tags compact tags={selectedTaskData.tags} />
+            <p>Assignees</p>
+            <Card style={{ padding: "0.5rem", gap: "0.5rem", display: "flex", flexDirection: "column", transition: "var(--transition)" }}>
+              <Assignees assignees={selectedTaskData?.assignees || []} />
+              <Button onClick={() => {
+                verifyAndReturnJson(
+                  SERVER.post(`/tasks/personal/list/${listData.id}/task/${selectedTask}/assignees/`, { body: JSON.stringify([ ...selectedTaskData.assignees, "bob" ]) }),
+                  () => {
+                    console.log(`new user added successfully`)
+                  },
+                  () => {
+                    console.error(`unable to add new assignee`)
+                  }
+                )
+              }}>Add Assignee</Button>
+            </Card>
+            <Button>Apply</Button>
+          </ColContainer>
+        }
       </section>
     </div>
   );

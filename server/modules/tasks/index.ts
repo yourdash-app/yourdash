@@ -1,9 +1,11 @@
 import YourDashModule from '../../module.js';
 import fs from 'fs';
 import { generateRandomStringOfLength } from '../../encryption.js';
-import { log } from "./../../libServer.js"
+import { base64FromBufferImage, bufferFromBase64Image, log } from "./../../libServer.js"
 import path from 'path';
 import TasksList from "./../../../types/tasks/list.js"
+import YourDashUser from '../../../types/core/user.js';
+import sharp from 'sharp';
 
 const module: YourDashModule = {
   install() {
@@ -152,15 +154,35 @@ const module: YourDashModule = {
       })
     })
 
+    request.post(`/personal/list/:listId/task/:taskId/assignees`, (req, res) => {
+      res.json({ error: true })
+    })
+
     request.get(`/assignee/:userName`, (req, res) => {
       if (!req.params.userName) return res.json({ error: true })
 
-      if (!fs.existsSync(`${api.FsOrigin}/data/users/${req.params.userName}`))
+      if (!fs.existsSync(path.resolve(`${api.FsOrigin}/data/users/${req.params.userName}/user.json`)))
         return res.json({ error: true })
 
-      // TODO: fetch the user's profile data and return { userName: string, name: string (combination of first and last name), profile: { picture: string } }
+      fs.readFile(path.resolve(`${api.FsOrigin}/data/users/${req.params.userName}/user.json`), (err, data) => {
+        if (err) {
+          log(`(${this.name}) ERROR: no user named '${req.params.userName}'`)
+          return res.json({ error: true })
+        }
 
-      res.json({ error: "implement me!" })
+        let json = JSON.parse(data.toString()) as YourDashUser
+
+        const profileImage = sharp(bufferFromBase64Image(json.profile.image))
+        profileImage.resize(48, 48).toBuffer((err, buf) => {
+          if (err) {
+            console.log(err)
+            log(`ERROR: unable to resize image`)
+            return res.json({ error: true })
+          }
+
+          return res.json({ name: `${json.name.first} ${json.name.last}`, userName: json.userName, profile: { image: base64FromBufferImage(buf) } })
+        })
+      })
     })
   },
   name: 'tasks',

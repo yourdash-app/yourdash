@@ -1,4 +1,5 @@
 import Document, { Head, Html, Main, NextScript } from 'next/document';
+import RightClickMenuRootContainer from '../components/elements/rightClickMenu/RightClickMenuRootContainer';
 
 class MyDocument extends Document {
   render() {
