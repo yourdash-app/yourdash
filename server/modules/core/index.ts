@@ -330,6 +330,10 @@ const Module: YourDashModule = {
       return res.json({ version: api.SERVER_CONFIG.version })
     })
 
+    request.post(`/test/echo`, (req, res) => {
+      res.json(req.body)
+    })
+
     request.get('/', (req, res) => {
       res.redirect(`https://yourdash.vercel.app/login/server/${req.url}`);
     });

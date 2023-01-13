@@ -22,6 +22,8 @@ export function log(input: string) {
   });
 }
 
+export type extend<T, E> = T & E
+
 export function returnBase64Image(path: string) {
   return "data:image/png;base64," + fs.readFileSync(path, 'base64');
 }
@@ -59,7 +61,7 @@ export function resizeBase64Image(width: number, height: number, image: string):
 export class RequestManager {
 
   private express: Application
-  
+
   private module: YourDashModule
 
   constructor(app: Application, module: YourDashModule) {
