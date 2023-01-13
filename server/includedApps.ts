@@ -71,7 +71,9 @@ const includedApps: InstalledApplication[] = [
     description: "The todo list / task organization application for YourDash",
     displayName: "Tasks",
     icon: returnBase64Image(path.resolve("./assets/apps/placeholder-icon.png")),
-    moduleRequirements: [],
+    moduleRequirements: [
+      "tasks"
+    ],
     name: "tasks",
     path: "/app/tasks",
     previewImages: [],
@@ -79,3 +81,10 @@ const includedApps: InstalledApplication[] = [
 ]
 
 export default includedApps
+
+export const DEFAULT_APPS = [
+  "dash", 
+  "files",
+  "store",
+  "settings"
+]

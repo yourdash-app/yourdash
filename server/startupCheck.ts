@@ -17,12 +17,53 @@ export default function main(cb: () => void) {
       () => checkIfAdministratorUserExists(
         () => checkConfigurationVersion(
           () => checkIfAllInstalledAppsStillExist(
-            () => cb()
+            () => checkIfAllUsersHaveTheLatestConfig(
+              () => cb()
+            )
           )
         )
       )
     )
   )
+}
+
+function checkIfAllUsersHaveTheLatestConfig(cb: () => void) {
+  cb()
+  fs.readdir(`${ENV.FsOrigin}/data/users/`, (err, users) => {
+    if (err) {
+      log(`(Start up) ERROR: unable to read '${ENV.FsOrigin}/data/users/'`)
+      return process.exit(1)
+    }
+
+    users.forEach((user) => {
+      fs.readFile(path.resolve(`${ENV.FsOrigin}/data/users/${user}/user.json`), (err, data) => {
+        if (err) {
+          log(`(Start up): unable to read ${user}/user.json`)
+          return process.exit(1)
+        }
+
+        const json = JSON.parse(data.toString()) as YourDashUser
+
+        if (!json.permissions) {
+          json.permissions = []
+        }
+
+        if (!json.name.first) {
+          json.name.first = "Unknown"
+        }
+        
+        if (!json.name.last) {
+          json.name.last = "user"
+        }
+
+        fs.writeFile(path.resolve(`${ENV.FsOrigin}/data/users/${user}/user.json`), JSON.stringify(json), (err) => {
+          if (err) {
+            log(`(Start up) ERROR: unable to write ${path.resolve(`${ENV.FsOrigin}/data/users/${user}/user.json`)}`)
+          }
+        })
+      })
+    })
+  })
 }
 
 function checkIfAllInstalledAppsStillExist(cb: () => void) {
@@ -91,7 +132,7 @@ function checkYourDashConfigJson(cb: () => void) {
             src: returnBase64Image(path.resolve(`${ENV.FsOrigin}/../yourdash256.png`)),
           },
           message: {
-            content: 'Server not yet fully configured',
+            content: 'This server is new. Welcome to YourDash!',
             position: {
               bottom: null,
               left: null,

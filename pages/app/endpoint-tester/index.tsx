@@ -1,176 +1,159 @@
-import { useState } from 'react';
-import ColContainer from '../../../components/containers/ColContainer/ColContainer';
+import { useEffect, useState } from 'react';
 import RowContainer from '../../../components/containers/RowContainer/RowContainer';
-import Button from '../../../components/elements/button/Button';
-import RightClickMenu from '../../../components/elements/rightClickMenu/RightClickMenu';
-import TextInput from '../../../components/elements/textInput/TextInput';
 import AppLayout from '../../../components/layouts/appLayout/AppLayout';
-import SERVER, { verifyAndReturnJson } from '../../../lib/server';
 import { NextPageWithLayout } from '../../page';
+import DropdownButton from '../../../components/elements/dropdownButton/DropdownButton';
+import styles from "./index.module.scss"
+import TextInput from '../../../components/elements/textInput/TextInput';
+import Button from '../../../components/elements/button/Button';
+import SERVER, { verifyAndReturnJson } from '../../../lib/server';
+import Card from '../../../components/containers/card/Card';
+import TextBox from '../../../components/elements/textBox/TextBox';
 
 const EndpointTester: NextPageWithLayout = () => {
   const [ response, setResponse ] = useState("")
   const [ responseDidError, setResponseDidError ] = useState(false)
   const [ queryUrl, setQueryUrl ] = useState("")
   const [ queryMethod, setQueryMethod ] = useState("GET" as "GET" | "POST" | "DELETE")
+  const [ queryType, setQueryType ] = useState("json" as "json" | "text")
   const [ queryHeaders, /* setQueryHeaders */ ] = useState({})
   const [ queryBody, setQueryBody ] = useState({})
+  const [ serverUrl, setServerUrl ] = useState("")
+
+  useEffect(() => {
+    setServerUrl(localStorage.getItem("currentServer") || "")
+  }, [])
 
   return (
-    <div style={{
-      borderRadius: "1rem",
-      boxSizing: "border-box",
-      height: "calc(100vh - calc(var(--app-panel-height) + 2rem))",
-      margin: "1rem",
-      overflow: "hidden",
-    }}>
-      <ColContainer style={{ height: "100%" }}>
-        <RightClickMenu items={[
-          {
-            name: "GET", onClick: () => {
-              setQueryMethod("GET")
+    <main className={styles.root}>
+      <RowContainer className={styles.header}>
+        <h2>YourDash Server Endpoint Debugger</h2>
+        <DropdownButton
+          items={[
+            {
+              name: "GET",
+              onClick: () => {
+                setQueryMethod("GET")
+              }
+            },
+            {
+              name: "POST",
+              onClick: () => {
+                setQueryMethod("POST")
+              }
+            },
+            {
+              name: "DELETE",
+              onClick: () => {
+                setQueryMethod("DELETE")
+              }
             }
-          },
-          {
-            name: "POST", onClick: () => {
-              setQueryMethod("POST")
-            }
-          },
-          {
-            name: "DELETE", onClick: () => {
-              setQueryMethod("DELETE")
-            }
-          }
-        ]}>
-          <ColContainer>
-            <p style={{
-              backgroundColor: "var(--container-bg)",
-              boxSizing: "border-box",
-              color: "var(--container-fg)",
-              marginTop: 0,
-              padding: "0.5rem",
-              textAlign: "center",
-              width: "100%",
-            }}>{queryMethod}</p>
-            <TextInput
-              placeholder='server request path'
-              style={{
-                color: responseDidError ? "var(--color-error-bg)" : "var(--text-input-fg)",
-                marginLeft: "0.25rem",
-                marginRight: "0.25rem",
-                width: "calc(100% - 0.5rem)",
-              }}
-              onChange={(e) => {
-                setQueryUrl(e.target.value);
-                setResponseDidError(false)
-              }}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  const sibling = e.currentTarget.nextElementSibling as HTMLButtonElement | null
-                  if (!sibling) return
-                  sibling.click()
-                }
-              }}
-            />
-            <Button
-              style={{
-                marginLeft: "0.25rem",
-                marginRight: "0.25rem",
-                width: "calc(100% - 0.5rem)"
-              }}
-              onClick={() => {
-                switch (queryMethod) {
-                  case "GET":
+          ]}
+        >
+          Select method
+        </DropdownButton>
+        <DropdownButton
+          items={[
+            {
+              name: "JSON",
+              onClick: () => {
+                setQueryType("json")
+              }
+            },
+            {
+              name: "Plain Text",
+              onClick: () => {
+                setQueryType("text")
+              }
+            },
+          ]}
+        >
+          Expected response
+        </DropdownButton>
+      </RowContainer>
+      <section>
+        <RowContainer className={styles.urlSection}>
+          <Button disabled>
+            {serverUrl}/api
+          </Button>
+          <TextInput
+            placeholder='path'
+            onChange={(e) => {
+              setQueryUrl(e.currentTarget.value)
+            }} />
+          <Button onClick={() => {
+            switch (queryMethod) {
+              case "GET":
+                switch (queryType) {
+                  case "json":
                     verifyAndReturnJson(
-                      SERVER.get(queryUrl, queryHeaders),
-                      (res) => {
-                        setResponse(JSON.stringify(res, null, 2))
+                      SERVER.get(queryUrl), (data) => {
+                        setResponseDidError(false)
+                        setResponse(JSON.stringify(data, null, 2))
                       },
                       () => {
-                        return setResponseDidError(true)
+                        setResponseDidError(true)
                       }
                     )
                     break;
-                  case "POST":
+                  case "text":
+
+                    break;
+                }
+                break;
+              case "POST":
+                switch (queryType) {
+                  case "json":
                     verifyAndReturnJson(
-                      SERVER.post(queryUrl, {
-                        body: JSON.stringify(queryBody),
-                        headers: queryHeaders,
-                      }),
-                      (res) => {
-                        setResponse(JSON.stringify(res, null, 2))
+                      SERVER.post(queryUrl, {}), (data) => {
+                        setResponseDidError(false)
+                        setResponse(JSON.stringify(data, null, 2))
                       },
                       () => {
-                        return setResponseDidError(true)
+                        setResponseDidError(true)
                       }
                     )
                     break;
-                  case "DELETE":
+                  case "text":
+
+                    break;
+                }
+                break;
+              case "DELETE":
+                switch (queryType) {
+                  case "json":
                     verifyAndReturnJson(
-                      SERVER.delete(queryUrl),
-                      (res) => {
-                        setResponse(JSON.stringify(res, null, 2))
+                      SERVER.delete(queryUrl), (data) => {
+                        setResponseDidError(false)
+                        setResponse(JSON.stringify(data, null, 2))
                       },
                       () => {
-                        return setResponseDidError(true)
+                        setResponseDidError(true)
                       }
                     )
+                    break;
+                  case "text":
+
+                    break;
                 }
-                setResponse("")
-                setResponseDidError(false)
-              }}>Send Request</Button>
-          </ColContainer>
-        </RightClickMenu>
-        <RowContainer style={{
-          backgroundColor: "var(--container-bg)",
-          display: "grid",
-          gridTemplateColumns: "1fr",
-          height: "100%",
-          overflow: "auto",
-        }}>
-          {
-            queryMethod === "POST" ? <textarea onKeyDown={(e) => {
-              if (e.key === "Tab") {
-                const start = e.currentTarget.selectionStart;
-                const end = e.currentTarget.selectionEnd;
-                const value = e.currentTarget.value;
-                e.currentTarget.value = value.substring(0, start) + "\t" + value.substring(end)
-                e.currentTarget.selectionStart = e.currentTarget.selectionEnd = start + 1;
-                e.preventDefault();
-              }
-            }} style={{
-              border: "none",
-              fontFamily: "monospace",
-              fontSize: "1.25rem",
-              height: "100%",
-              margin: 0,
-              padding: "0.5rem",
-              resize: 'none',
-            }} onChange={(e) => {
-              try {
-                const json = JSON.parse(e.target.value);
-                setQueryBody(json)
-              } catch (e) {
-                setQueryBody({ error: "endpoint tester invalid json" })
-              }
-            }}></textarea> : <></>
-          }
-          <code>
-            <pre style={
-              {
-                color: "var(--container-fg)",
-                fontFamily: "monospace",
-                fontSize: "1.25rem",
-                margin: 0,
-                padding: "1rem",
-              }
-            }>
-              {response}
-            </pre>
-          </code>
+                break;
+            }
+          }}>
+            Submit request
+          </Button>
         </RowContainer>
-      </ColContainer>
-    </div>
+        {
+          queryMethod === "POST" && <TextBox style={{ resize: "vertical" }}></TextBox>
+        }
+        <Card>
+          <pre style={{ margin: 0, overflow: "auto", paddingBottom: "0.5rem" }}>
+            <code>
+              {response}
+            </code>
+          </pre>
+        </Card>
+      </section>
+    </main>
   );
 };
 

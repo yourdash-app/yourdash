@@ -4,7 +4,8 @@
     "next",
     "next/core-web-vitals",
     "eslint:recommended",
-    "plugin:@typescript-eslint/recommended"
+    "plugin:@typescript-eslint/recommended",
+    "sort-keys-fix"
   ],
   "plugins": ["@typescript-eslint", "unused-imports"],
   "globals": {
@@ -34,7 +35,9 @@
             "ignoreDeclarationSort": true
           }
         ],
+        "no-fallthrough": "off",
         "sort-vars": ["warn"],
+        "sort-keys-fix/sort-keys-fix": "warn",
         "sort-keys": ["warn", "asc", { "natural": true }],
         "@typescript-eslint/no-unused-vars": ["warn"],
         "@typescript-eslint/ban-ts-comment": "off",

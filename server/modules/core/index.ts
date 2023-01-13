@@ -10,13 +10,43 @@ import YourDashUser from '../../../types/core/user.js';
 import sharp from 'sharp';
 
 const Module: YourDashModule = {
-  name: 'core',
+  install() {
+    log("Core module installed")
+  },
 
-  load(app, api) {
+  load(request, api) {
 
     // #region /app panel
 
-    app.get(`${api.ModulePath(this)}/panel/quick-shortcuts/`, (req, res) => {
+    request.get(`/panel/background-image`, (req, res) => {
+      if (!fs.existsSync(`${api.UserAppData(req)}/${this.name}/background.json`)) {
+        const defaultImage = returnBase64Image(`${api.FsOrigin}/../background.jpg`)
+
+        fs.writeFile(
+          `${api.UserAppData(req)}/${this.name}/background.json`,
+          JSON.stringify({ image: defaultImage }),
+          (err) => {
+            if (err) {
+              return res.json({ error: true })
+            }
+
+            return res.json({ image: defaultImage })
+          })
+        return
+      }
+
+      fs.readFile(`${api.UserAppData(req)}/${this.name}/background.json`, (err, data) => {
+        if (err) {
+          return res.json({ error: true })
+        }
+
+        let json = JSON.parse(data.toString())
+
+        res.json(json)
+      })
+    })
+
+    request.get(`/panel/quick-shortcuts/`, (req, res) => {
       if (!fs.existsSync(path.resolve(`${api.UserAppData(req)}/${this.name}/panel/quick-shortcuts/`))) {
         return res.json([]);
       }
@@ -25,12 +55,12 @@ const Module: YourDashModule = {
           log(`[${this.name}] ERROR: ${err}`)
           return res.json({ error: true });
         }
-        let json = JSON.parse(data.toString()) as quickShortcut[]
+        const json = JSON.parse(data.toString()) as quickShortcut[]
         return res.json(json)
       })
     });
 
-    app.post(`${api.ModulePath(this)}/panel/quick-shortcut/create`, (req, res) => {
+    request.post(`/panel/quick-shortcut/create`, (req, res) => {
 
       // check if the quick-shortcuts directory doesn't exist
       if (!fs.existsSync(path.resolve(`${api.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`))) {
@@ -50,13 +80,13 @@ const Module: YourDashModule = {
             }
 
             // set json to a blank array as we already know the contents of the shortcuts file
-            let json = [] as quickShortcut[]
+            const json = [] as quickShortcut[]
 
             // generate an id for referencing this shortcut
-            let id = generateRandomStringOfLength(32)
+            const id = generateRandomStringOfLength(32)
 
             // find the referenced application in the included applications list
-            let includedApplication = includedApps.find((app) => app.name === req.body.name)
+            const includedApplication = includedApps.find((app) => app.name === req.body.name)
 
             // if the application doesn't exist return
             if (!includedApplication) {
@@ -67,9 +97,9 @@ const Module: YourDashModule = {
             resizeBase64Image(32, 32, includedApplication?.icon || returnBase64Image(path.resolve(`${api.FsOrigin}/../yourdash256.png`)))
               .then((image) => {
                 json.push({
-                  name: req.body.name || "undefined",
                   icon: image,
                   id: id,
+                  name: req.body.name || "undefined",
                   url: req.body.url || '/app/dash'
                 })
                 fs.writeFile(path.resolve(`${api.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`), JSON.stringify(json), (err) => {
@@ -87,18 +117,18 @@ const Module: YourDashModule = {
           if (err) {
             data = Buffer.from("[]")
           }
-          let json = JSON.parse(data.toString()) as quickShortcut[]
-          let id = generateRandomStringOfLength(32)
-          let includedApplication = includedApps.find((app) => app.name === req.body.name)
+          const json = JSON.parse(data.toString()) as quickShortcut[]
+          const id = generateRandomStringOfLength(32)
+          const includedApplication = includedApps.find((app) => app.name === req.body.name)
 
           if (!includedApplication) return log(`Can't create quick shortcut for unknown application: ${req.body.name}`)
 
           resizeBase64Image(32, 32, includedApplication?.icon || returnBase64Image(path.resolve(`${api.FsOrigin}/../yourdash256.png`)))
             .then((image) => {
               json.push({
-                name: req.body.name || "undefined",
                 icon: image,
                 id: id,
+                name: req.body.name || "undefined",
                 url: req.body.url || '/app/dash'
               })
               fs.writeFile(path.resolve(`${api.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`), JSON.stringify(json), (err) => {
@@ -113,7 +143,7 @@ const Module: YourDashModule = {
       }
     })
 
-    app.post(`${api.ModulePath(this)}/panel/quick-shortcut/:id`, (req, res) => {
+    request.post(`/panel/quick-shortcut/:id`, (req, res) => {
       if (!fs.existsSync(path.resolve(`${api.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`)))
         return res.json({ error: true })
 
@@ -123,12 +153,12 @@ const Module: YourDashModule = {
           return res.json({ error: true })
         }
 
-        let json = JSON.parse(data.toString()) as quickShortcut[]
-        let shortcut = json.find((shortcut) => shortcut.id === req.params.id)
+        const json = JSON.parse(data.toString()) as quickShortcut[]
+        const shortcut = json.find((shortcut) => shortcut.id === req.params.id)
 
         if (shortcut === undefined) return res.json({ error: true })
 
-        let shortcutInd = json.indexOf(shortcut)
+        const shortcutInd = json.indexOf(shortcut)
 
         if (req.body.name)
           json[ shortcutInd ].name = req.body.name
@@ -148,7 +178,7 @@ const Module: YourDashModule = {
       })
     });
 
-    app.delete(`${api.ModulePath(this)}/panel/quick-shortcut/:id`, (req, res) => {
+    request.delete(`/panel/quick-shortcut/:id`, (req, res) => {
       if (!fs.existsSync(path.resolve(`${api.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`)))
         return res.json({ error: true })
 
@@ -173,9 +203,9 @@ const Module: YourDashModule = {
       })
     });
 
-    app.get(`${api.ModulePath(this)}/panel/launcher/apps`, (req, res) => {
+    request.get(`/panel/launcher/apps`, (req, res) => {
       if (!fs.existsSync(path.resolve(`${api.FsOrigin}/installed_apps.json`))) {
-        let defaultApps = [ "dash", "store", "settings", "files" ]
+        const defaultApps = [ "dash", "store", "settings", "files" ]
         fs.writeFile(
           path.resolve(`${api.FsOrigin}/installed_apps.json`),
           JSON.stringify([
@@ -195,17 +225,17 @@ const Module: YourDashModule = {
             log("ERROR: couldn't read installed_apps.json")
             return res.json({ error: true })
           }
-          let json = JSON.parse(data.toString()) as string[]
-          var result = includedApps.filter((app) => json.includes(app.name)) || []
+          const json = JSON.parse(data.toString()) as string[]
+          const result = includedApps.filter((app) => json.includes(app.name)) || []
 
-          let promises = result.map((item) => {
+          const promises = result.map((item) => {
             return resizeBase64Image(128, 128, item.icon)
               .then((image) => {
                 return {
-                  name: item.name,
-                  icon: image,
                   displayName: item.displayName,
-                  path: item.path
+                  icon: image,
+                  name: item.name,
+                  path: item.path,
                 } as LauncherApplication
               })
           })
@@ -216,15 +246,15 @@ const Module: YourDashModule = {
       }
     })
 
-    app.get(`${api.ModulePath(this)}/panel/user/profile/picture`, (req, res) => {
+    request.get(`/panel/user/profile/picture`, (req, res) => {
       fs.readFile(`${api.UserFs(req)}/user.json`, (err, data) => {
         if (err) {
           log(`ERROR: unable to read user.json`)
           return res.json({ error: true })
         }
-        let json: YourDashUser = JSON.parse(data.toString())
-        let originalProfileImage = json.profile.image
-        let resizedImage = sharp(bufferFromBase64Image(originalProfileImage))
+        const json: YourDashUser = JSON.parse(data.toString())
+        const originalProfileImage = json.profile.image
+        const resizedImage = sharp(bufferFromBase64Image(originalProfileImage))
         resizedImage.resize(64, 64).toBuffer((err, buf) => {
           if (err) {
             console.log(err)
@@ -240,7 +270,7 @@ const Module: YourDashModule = {
 
     // #region general
 
-    app.get(`${api.ModulePath(this)}/instance/installed/apps`, (_req, res) => {
+    request.get(`/instance/installed/apps`, (_req, res) => {
       if (!fs.existsSync(path.resolve(`${api.FsOrigin}/installed_apps.json`))) {
         fs.writeFile(
           path.resolve(`${api.FsOrigin}/installed_apps.json`),
@@ -255,64 +285,64 @@ const Module: YourDashModule = {
       fs.readFile(path.resolve(`${api.FsOrigin}/installed_apps.json`), (err, data) => {
         if (err)
           return res.json({ error: true });
-        let json = JSON.parse(data.toString()) || [];
+        const json = JSON.parse(data.toString()) || [];
         return res.json(json);
       })
     })
 
-    app.get(`${api.ModulePath(this)}/instance/config`, (_req, res) => {
+    request.get(`/instance/config`, (_req, res) => {
       return res.json({
         ...api.SERVER_CONFIG,
         instanceEncryptionKey: "REDACTED"
       })
     })
 
-    app.get(`${api.ModulePath(this)}/instance/login/background`, (_req, res) => {
+    request.get(`/instance/login/background`, (_req, res) => {
       return res.json({ image: api.SERVER_CONFIG.loginPageConfig.background || "" })
     })
 
-    app.get(`${api.ModulePath(this)}/instance/login/logo`, (_req, res) => {
+    request.get(`/instance/login/name`, (req, res) => {
+      return res.json({ name: api.SERVER_CONFIG.name })
+    })
+
+    request.get(`/instance/login/logo`, (_req, res) => {
       return res.json({ image: api.SERVER_CONFIG.loginPageConfig.logo || "" })
     })
 
-    app.get(`${api.ModulePath(this)}/instance/login/message`, (_req, res) => {
+    request.get(`/instance/login/message`, (_req, res) => {
       return res.json({ text: api.SERVER_CONFIG.loginPageConfig.message.content || "" })
     })
 
 
-    app.get(`${api.ModulePath(this)}/instance/default/background`, (_req, res) => {
+    request.get(`/instance/default/background`, (_req, res) => {
       return res.json({ image: api.SERVER_CONFIG.defaultBackground })
     })
 
-    app.get(`${api.ModulePath(this)}/instance/favicon`, (_req, res) => {
+    request.get(`/instance/favicon`, (_req, res) => {
       return res.send(api.SERVER_CONFIG.favicon)
     })
 
-    app.get(`${api.ModulePath(this)}/instance/logo`, (_req, res) => {
+    request.get(`/instance/logo`, (_req, res) => {
       return res.json({ image: api.SERVER_CONFIG.logo })
     })
 
-    app.get(`${api.ModulePath(this)}/instance/version`, (_req, res) => {
+    request.get(`/instance/version`, (_req, res) => {
       return res.json({ version: api.SERVER_CONFIG.version })
     })
 
-    // this is used during the login page to check if the provided url is a yourdash instance
-    app.get('/test', (_req, res) => {
-      res.send('yourdash instance');
-    });
-
-    app.get('/', (req, res) => {
+    request.get('/', (req, res) => {
       res.redirect(`https://yourdash.vercel.app/login/server/${req.url}`);
     });
 
     // #endregion
   },
 
+  name: 'core',
+
   unload() {
     log("WARNING: if the server hasn't been requested to shutdown a fatal problem has occurred! (the core module has been unloaded so expect core features to break)")
   },
 
-  install() { },
 };
 
 export default Module;

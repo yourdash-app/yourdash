@@ -55,7 +55,7 @@ const SideBar: React.FC<ISideBar> = ({
                 </span>
               </button>
             case "category":
-              return <div className={styles.category} data-expanded={toggledSections.indexOf(ind) !== -1}>
+              return <div key={ind} className={styles.category} data-expanded={toggledSections.indexOf(ind) !== -1}>
                 <header onClick={() => {
                   if (toggledSections.indexOf(ind) !== -1) {
                     setToggledSections(toggledSections.filter((toggled) => toggled !== ind))
@@ -71,19 +71,23 @@ const SideBar: React.FC<ISideBar> = ({
                 </header>
                 <section>
                   {
-                    item.items.map((item, ind) => {
-                      switch (item.type) {
-                        case "button":
-                          return <button key={ind} className={styles.button} onClick={item.onClick}>
-                            <Icon color={"var(--button-fg)"} name={item.icon} />
-                            <span>
-                              {item.name}
-                            </span>
-                          </button>
-                        default: 
-                          return <div key={ind}>Unknown item type</div>
-                      }
-                    })
+                    item.items.length !== 0
+                      ? item.items.map((item, ind) => {
+                        switch (item.type) {
+                          case "button":
+                            return <button key={ind} className={styles.button} onClick={item.onClick}>
+                              <Icon color={"var(--button-fg)"} name={item.icon} />
+                              <span>
+                                {item.name}
+                              </span>
+                            </button>
+                          default: 
+                            return <div key={ind}>Unknown item type</div>
+                        }
+                      })
+                      : <span className={styles.emptyCategory}>
+                        Empty category
+                      </span>
                   }
                 </section>
               </div>

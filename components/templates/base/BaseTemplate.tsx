@@ -23,7 +23,7 @@
 
 import styles from './BaseTemplate.module.css';
 
-export interface IBaseTemplate {
+export interface IBaseTemplate extends React.ComponentPropsWithoutRef<"div"> {
   sampleTextProp: string;
 }
 

@@ -3,7 +3,6 @@
   width: 100vw;
   display: grid;
   grid-template-rows: auto 1fr;
-  background: var(--app-background);
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -13,15 +12,12 @@
   --app-application-margin: 0rem;
   --app-application-rounding: 0rem;
   overflow: hidden;
-  position: fixed;
-  top: calc(var(--app-panel-height) + var(--app-application-margin));
-  left: var(--app-application-margin);
-  height: calc(
-    calc(100vh - var(--app-panel-height)) -
-      calc(var(--app-application-margin) * 2)
-  );
-  width: calc(100vw - calc(var(--app-application-margin) * 2));
-  transition: opacity 0.5s ease-in-out;
+  height: calc(100% - calc(var(--app-application-margin) * 2));
+  width: calc(100% - calc(var(--app-application-margin) * 2));
+  transition-property: opacity, height, width, margin, border-radius;
+  transition-duration: 250ms;
+  transition-timing-function: ease-in-out;
+  margin: var(--app-application-margin);
   border-radius: var(--app-application-rounding);
   box-shadow: 0 0 1rem #00000055;
   background-color: var(--background-color);
@@ -29,6 +25,12 @@
     --app-application-margin: 1rem;
     --app-application-rounding: 1rem;
   }
+
+  @media (max-width: 750px) {
+    --app-application-margin: 0rem !important;
+    --app-application-rounding: 0rem !important;
+  }
+
   &[data-app-transparent-background="true"] {
     background: transparent;
     box-shadow: 0 0 0rem #00000055;

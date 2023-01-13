@@ -6,7 +6,8 @@
 import fs from 'fs';
 import { ENV } from './index.js';
 import sharp from 'sharp';
-import { application } from 'express';
+import { Application, Request, Response } from 'express';
+import YourDashModule from './module.js';
 
 let currentSessionLog = '----- [YOURDASH SERVER LOG] -----\n';
 
@@ -30,20 +31,20 @@ export function returnBase64Svg(path: string) {
 }
 
 export function bufferFromBase64Image(img: string): Buffer | undefined {
-  let uri = img.split(";base64,").pop()
+  const uri = img.split(";base64,").pop()
   if (!uri) return
-  let buf = Buffer.from(uri, "base64")
+  const buf = Buffer.from(uri, "base64")
   return buf
 }
 
 export function base64FromBufferImage(img: Buffer): string {
-  let base64 = "data:image/png;base64," + img.toString("base64")
+  const base64 = "data:image/png;base64," + img.toString("base64")
   return base64
 }
 
 export function resizeBase64Image(width: number, height: number, image: string): Promise<string> {
   return new Promise((resolve) => {
-    let resizedImage = sharp(bufferFromBase64Image(image))
+    const resizedImage = sharp(bufferFromBase64Image(image))
     resizedImage.resize(width, height, { kernel: "lanczos3" }).toBuffer((err, buf) => {
       if (err) {
         console.log(err)
@@ -55,8 +56,28 @@ export function resizeBase64Image(width: number, height: number, image: string):
   })
 }
 
-export default class RequestManager {
-  constructor() {
-    
+export class RequestManager {
+
+  private express: Application
+  
+  private module: YourDashModule
+
+  constructor(app: Application, module: YourDashModule) {
+    this.express = app
+    this.module = module
   }
+
+  get = (path: string, cb: (req: Request, res: Response) => void) => {
+    this.express.get(`/api/${this.module.name}${path}`, (req, res) => cb(req, res))
+  }
+
+  post = (path: string, cb: (req: Request, res: Response) => void) => {
+    this.express.post(`/api/${this.module.name}${path}`, (req, res) => cb(req, res))
+  }
+
+  delete = (path: string, cb: (req: Request, res: Response) => void) => {
+    this.express.delete(`/api/${this.module.name}${path}`, (req, res) => cb(req, res))
+  }
+
+  legacy = () => this.express
 }

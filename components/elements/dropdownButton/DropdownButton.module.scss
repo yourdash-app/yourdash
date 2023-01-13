@@ -5,7 +5,7 @@
   padding-left: 1rem;
   padding-right: 1rem;
   font-size: 1rem;
-  font-family: 'Roboto';
+  font-family: "Roboto";
   cursor: pointer;
   transition: var(--transition);
   border-radius: var(--button-rounding);
@@ -39,7 +39,7 @@
   padding: 0.3rem;
   box-shadow: 0 0 1rem #00000088;
 
-  >li {
+  > li {
     border-radius: calc(calc(var(--right-click-menu-rounding) - 0.3rem) / 2);
     display: flex;
     margin-bottom: 0.2rem;
@@ -62,16 +62,22 @@
 
     cursor: pointer;
 
-    >span:first-child {
+    > span:first-child {
       margin-right: auto;
     }
 
     &:first-child {
-      border-radius: calc(var(--right-click-menu-rounding) - 0.3rem) calc(var(--right-click-menu-rounding) - 0.3rem) calc(calc(var(--right-click-menu-rounding) - 0.3rem) / 2) calc(calc(var(--right-click-menu-rounding) - 0.3rem) / 2);
+      border-radius: calc(var(--right-click-menu-rounding) - 0.3rem)
+        calc(var(--right-click-menu-rounding) - 0.3rem)
+        calc(calc(var(--right-click-menu-rounding) - 0.3rem) / 2)
+        calc(calc(var(--right-click-menu-rounding) - 0.3rem) / 2);
     }
 
     &:last-child {
-      border-radius: calc(calc(var(--right-click-menu-rounding) - 0.3rem) / 2) calc(calc(var(--right-click-menu-rounding) - 0.3rem) / 2) calc(var(--right-click-menu-rounding) - 0.3rem) calc(var(--right-click-menu-rounding) - 0.3rem);
+      border-radius: calc(calc(var(--right-click-menu-rounding) - 0.3rem) / 2)
+        calc(calc(var(--right-click-menu-rounding) - 0.3rem) / 2)
+        calc(var(--right-click-menu-rounding) - 0.3rem)
+        calc(var(--right-click-menu-rounding) - 0.3rem);
       margin-bottom: 0rem;
     }
 
@@ -79,4 +85,8 @@
       border-radius: calc(var(--right-click-menu-rounding) - 0.3rem);
     }
   }
+}
+
+.componentRoot {
+  position: relative;
 }

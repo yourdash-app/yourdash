@@ -83,6 +83,7 @@
   border-radius: 1.5rem;
   box-shadow: 0 0 1rem #00000088;
   transition: var(--transition);
+  color: var(--card-fg);
 
   @media (max-width: 1000px) {
     width: calc(75% - 10rem);

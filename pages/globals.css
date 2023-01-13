@@ -1,6 +1,4 @@
 :root {
-  /* --app-background: url(./../public/background.jpg); */
-  --app-background: url(https://picsum.photos/3840/2160?random);
   --background-color: #272727;
   --transition: all 100ms ease-in-out;
 
@@ -139,11 +137,16 @@
   --scrollbar-active-bg: #222;
   --scrollbar-active-fg: #db5a3b;
 
-  --right-click-menu-bg: #333333;
+  --right-click-menu-bg: #444444;
   --right-click-menu-fg: #ffffff;
+  --right-click-menu-border: #777777;
   --right-click-menu-rounding: 1rem;
-  --right-click-menu-item-bg: #5a5a5a;
+  --right-click-menu-item-bg: #00000000;
   --right-click-menu-item-fg: #ffffff;
+  --right-click-menu-item-hover-bg: #666666;
+  --right-click-menu-item-hover-fg: #ffffff;
+  --right-click-menu-item-active-bg: #555555;
+  --right-click-menu-item-active-fg: #ffffff;
 
   --toggle-switch-bg: #333333;
   --toggle-switch-bg-enabled: #008800;

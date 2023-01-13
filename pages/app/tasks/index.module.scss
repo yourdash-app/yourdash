@@ -3,6 +3,7 @@
   padding-left: 1.25rem;
   width: 100%;
   background-color: var(--container-bg);
+  box-sizing: border-box;
   > div {
     height: 2.5rem;
   }
@@ -20,5 +21,43 @@
 
   &:last-child {
     margin-bottom: 0;
+  }
+
+  > div {
+    > .list {
+      padding: 0.25rem;
+      > span {
+        margin-right: auto;
+        padding-left: 0.5rem;
+      }
+      > button {
+        margin-right: 0.25rem;
+        &:last-child {
+          margin-right: 0;
+        }
+      }
+    }
+    > .message {
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+
+      > div {
+        padding-left: 1rem;
+        padding-right: 1rem;
+        > :last-child {
+          margin-top: 0.5rem;
+        }
+      }
+    }
+  }
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+
+  > :first-child {
+    margin-right: auto;
   }
 }

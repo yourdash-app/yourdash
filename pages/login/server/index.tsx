@@ -11,6 +11,8 @@ import SERVER, { verifyAndReturnJson } from "../../../lib/server";
 import { NextPageWithLayout } from "../../page";
 import styles from "./index.module.scss";
 import { YourDashIconRawDictionary } from "../../../components/elements/icon/iconDictionary";
+import DropdownButton from "../../../components/elements/dropdownButton/DropdownButton";
+import RightClickMenuRootContainer from "../../../components/elements/rightClickMenu/RightClickMenuRootContainer";
 
 const LoginOptions: NextPageWithLayout = () => {
   const [ userName, setUserName ] = useState("")
@@ -19,6 +21,7 @@ const LoginOptions: NextPageWithLayout = () => {
   const [ currentServerBackground, setCurrentServerBackground ] = useState("")
   const [ currentServerLogo, setCurrentServerLogo ] = useState("")
   const [ currentServerMessage, setCurrentServerMessage ] = useState("")
+  const [ serverDisplayName, setServerDisplayName ] = useState("")
 
   useEffect(() => {
     verifyAndReturnJson(
@@ -28,6 +31,14 @@ const LoginOptions: NextPageWithLayout = () => {
       },
       () => {
         setCurrentServerBackground(YourDashIconRawDictionary[ "server-error" ])
+      })
+    verifyAndReturnJson(
+      SERVER.get(`/core/instance/login/name`),
+      (json) => {
+        setServerDisplayName(json?.name || "ERROR")
+      },
+      () => {
+        setServerDisplayName("ERROR")
       })
     verifyAndReturnJson(
       SERVER.get(`/core/instance/login/logo`),
@@ -50,67 +61,78 @@ const LoginOptions: NextPageWithLayout = () => {
   const router = useRouter()
 
   return (
-    <>
-      {errorHasOccurred ? <div className={styles.error}><p>An Error Has Occured</p></div> : null}
-      <div className={styles.root}>
-        <img className={styles.background} src={currentServerBackground} alt="" />
-        <img className={styles.logo} src={currentServerLogo} alt="" />
-        <Card>
-          <ColContainer>
-            <TextInput placeholder="Username" onChange={(e) => {
-              setUserName(e.currentTarget.value);
-              setErrorHasOccurred(false)
-            }} />
-            <TextInput placeholder="Password" type="password" onChange={(e) => {
-              setPassword(e.currentTarget.value);
-              setErrorHasOccurred(false)
-            }} />
-            <RowContainer style={{ width: "100%" }}>
-              <Button style={{ flexGrow: 1 }} onClick={() => {
-                localStorage.setItem("username", userName)
-                SERVER.get("/userManagement/login", {
-                  password: password,
-                  username: userName
-                }).then((res) => {
-                  res.json().then((res) => {
-                    if (!res?.error) {
-                      localStorage.setItem("sessiontoken", res.sessionToken)
-                      return router.push("/app/dash")
-                    }
-                    setErrorHasOccurred(true)
-                  }).catch(() => {
-                    setErrorHasOccurred(true)
-                    throw new Error("Login Error, the server responded with an invalid response.")
-                  })
-                }).catch((err) => {
-                  if (err) {
-                    console.error("ERROR CAUGHT: /user/login: " + err)
-                    return setErrorHasOccurred(true)
+    <div className={styles.root}>
+      {errorHasOccurred ? <div className={styles.error}><p>An Error Has Occurred</p></div> : null}
+      <img className={styles.background} src={currentServerBackground} alt="" />
+      <img className={styles.logo} src={currentServerLogo} alt="" />
+      <h1>{serverDisplayName}</h1>
+      <Card className={styles.content}>
+        <ColContainer>
+          <TextInput placeholder="Username" onChange={(e) => {
+            setUserName(e.currentTarget.value);
+            setErrorHasOccurred(false)
+          }} />
+          <TextInput placeholder="Password" type="password" onChange={(e) => {
+            setPassword(e.currentTarget.value);
+            setErrorHasOccurred(false)
+          }} />
+          <RowContainer style={{ width: "100%" }}>
+            <Button style={{ flexGrow: 1 }} onClick={() => {
+              localStorage.setItem("username", userName)
+              SERVER.get("/userManagement/login", {
+                password: password,
+                username: userName
+              }).then((res) => {
+                res.json().then((res) => {
+                  if (!res?.error) {
+                    localStorage.setItem("sessiontoken", res.sessionToken)
+                    return router.push("/app/dash")
                   }
+                  setErrorHasOccurred(true)
+                }).catch(() => {
+                  setErrorHasOccurred(true)
+                  throw new Error("Login Error, the server responded with an invalid response.")
                 })
-              }} vibrant>
-                Login
-              </Button>
-              <ButtonLink style={{ flexGrow: 1 }} href="/login/server/signup">
-                Sign up
-              </ButtonLink>
-            </RowContainer>
-          </ColContainer>
-        </Card>
-        {
-          currentServerMessage !== "" ?
-            <Card style={{ marginTop: "0.5rem" }}>
-              <p style={{ margin: 0, }}>{currentServerMessage}</p>
-            </Card>
-            : null
-        }
-      </div>
-    </>
+              }).catch((err) => {
+                if (err) {
+                  console.error("ERROR CAUGHT: /user/login: " + err)
+                  return setErrorHasOccurred(true)
+                }
+              })
+            }} vibrant>
+              Login
+            </Button>
+            <ButtonLink style={{ flexGrow: 1 }} href="/login/server/signup">
+              Sign up
+            </ButtonLink>
+          </RowContainer>
+        </ColContainer>
+      </Card>
+      {
+        currentServerMessage !== "" ?
+          <Card style={{ marginTop: "0.5rem" }}>
+            <p style={{ margin: 0, }}>{currentServerMessage}</p>
+          </Card>
+          : null
+      }
+      <DropdownButton
+        className={styles.switchInstance}
+        items={[
+          {
+            name: "test1",
+            onClick: () => {
+              router.push(`/login/server/test1`)
+            }
+          }
+        ]}>Switch instance</DropdownButton>
+    </div>
   );
 };
 
 export default LoginOptions;
 
 LoginOptions.getLayout = (page) => {
-  return <HomeLayout>{page}</HomeLayout>
+  return <RightClickMenuRootContainer>
+    <HomeLayout>{page}</HomeLayout>
+  </RightClickMenuRootContainer>
 }

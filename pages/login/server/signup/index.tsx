@@ -7,6 +7,7 @@ import TextInput from "../../../../components/elements/textInput/TextInput";
 import HomeLayout from "../../../../components/layouts/homeLayout/HomeLayout";
 import { NextPageWithLayout } from "../../../page";
 import styles from "./index.module.scss";
+import RowContainer from "../../../../components/containers/RowContainer/RowContainer";
 
 const LoginOptions: NextPageWithLayout = () => {
 
@@ -23,22 +24,25 @@ const LoginOptions: NextPageWithLayout = () => {
         <Card>
           <ColContainer style={{
             alignItems: "center",
-            ...(
-              !allowsSignUp ? { padding: "1.5rem" } : {}
-            )
-
           }}>
             {
               !allowsSignUp ?
                 <>
                   <h2 style={{ margin: 0 }}>We&apos;re sorry</h2>
                   <p>This server isn&apos;t currently allowing users to sign up.</p>
-                  <Button onClick={() => {
-                    localStorage.removeItem("currentServer")
-                    router.push("/login")
-                  }} vibrant style={{ marginTop: "1rem" }}>
-                    Select a different instance
-                  </Button>
+                  <RowContainer style={{ marginTop: "0.5rem" }}>
+                    <Button onClick={() => {
+                      localStorage.removeItem("currentServer")
+                      router.push("/login")
+                    }} vibrant>
+                      Select a different instance
+                    </Button>
+                    <Button onClick={() => {
+                      router.push(`/login/server`)
+                    }}>
+                      Go back
+                    </Button>
+                  </RowContainer>
                 </>
                 :
                 <>

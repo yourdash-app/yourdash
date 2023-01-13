@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import styles from './DropdownButton.module.scss';
+import Button from '../button/Button';
+import RightClickMenuContext from '../rightClickMenu/RightClickMenuContext';
 
 export interface IDropdownButton extends React.ComponentPropsWithoutRef<"button"> {
   children: string;
@@ -7,67 +9,76 @@ export interface IDropdownButton extends React.ComponentPropsWithoutRef<"button"
     name: string,
     shortcut?: string,
     onClick: () => void
-  }[]
+  }[];
+  className?: string;
 }
 
 const DropdownButton: React.FC<IDropdownButton> = ({
-  children, items, ...extraProps 
+  children, items, className, ...extraProps
 }) => {
+  const RootContainerContext = useContext(RightClickMenuContext)
+
   const [ selectedOption, setSelectedOption ] = useState("")
   const [ dropdownShown, setDropdownShown ] = useState(false)
-  const [ willOverflowScreen, setWillOverflowScreen ] = useState(false)
 
-  return <div
-    style={{
-      height: "max-content",
-      position: "relative",
-    }}>
-    <div
-      style={{ height: "max-content" }}
-      onClick={(e) => {
-        e.preventDefault()
-        e.stopPropagation()
-        const listener = () => {
-          setDropdownShown(false)
-          document.body.removeEventListener("auxclick", listener)
-          document.body.addEventListener("click", listener)
+  return <Button {...extraProps} className={className} onClick={(e) => {
+    e.stopPropagation()
+    e.preventDefault()
+
+    if (dropdownShown) {
+      RootContainerContext(
+        0,
+        0,
+        false,
+        []
+      )
+
+      setDropdownShown(false)
+
+      return
+    }
+
+    const clientRect = e.currentTarget.getBoundingClientRect()
+
+    RootContainerContext(
+      clientRect.left,
+      clientRect.bottom,
+      true,
+      items.map((item) => {
+        return {
+          name: item.name,
+          onClick: () => {
+            setSelectedOption(item.name)
+            item.onClick()
+          },
+          shortcut: item.shortcut
         }
-        document.body.addEventListener("click", listener)
-        document.body.addEventListener("auxclick", listener)
-        setDropdownShown(!dropdownShown)
-        const rect = e.currentTarget.getBoundingClientRect()
-        setWillOverflowScreen(
-          (rect.left + 320) > window.innerWidth
-        )
-      }}>
-      <button
-        {...extraProps}
-        className={`${styles.component}`}>
-        {selectedOption || children}
-      </button>
-    </div>
-    {dropdownShown ?
-      <div className={styles.menu} style={{
-        top: "100%",
-        ...willOverflowScreen ? { right: 0, } : { left: 0 },
-        position: "absolute"
-      }}>
-        {
-          items.map((item, ind) => {
-            return <li key={ind} onClick={() => {
-              setSelectedOption(item.name)
-              item.onClick()
-            }}>
-              <span>{item.name}</span>
-              {
-                item?.shortcut ? <span>{item.shortcut}</span> : null
-              }
-            </li>
-          })
-        }
-      </div>
-      : null}
-  </div>
+      })
+    )
+
+    setDropdownShown(true)
+
+    let listener = (e: MouseEvent) => {
+      e.preventDefault()
+
+      RootContainerContext(
+        0,
+        0,
+        false,
+        []
+      )
+
+      setDropdownShown(false)
+
+      window.removeEventListener("click", listener)
+      window.removeEventListener("contextmenu", listener)
+    }
+
+    window.addEventListener("click", listener)
+    window.addEventListener("contextmenu", listener)
+  }}>
+    {selectedOption || children}
+  </Button>
 };
 
 export default DropdownButton;

@@ -1,62 +1,46 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import styles from './RightClickMenu.module.scss';
+import RightClickMenuContext from './RightClickMenuContext';
+import RightClickMenuItem from './RightClickMenuItem';
 
-export interface IRightClickMenu {
-  items: {
-    name: string,
-    shortcut?: string,
-    onClick: () => void,
-  }[],
-  children: React.ReactChild | React.ReactChild[]
+export interface IRightClickMenu extends React.ComponentPropsWithoutRef<"section"> {
+  items: RightClickMenuItem[]
 }
 
 const RightClickMenu: React.FC<IRightClickMenu> = ({
-  items, children 
+  items, children
 }) => {
-  const [ shown, setShown ] = useState(false)
-  const [ posX, setPosX ] = useState(0)
-  const [ posY, setPosY ] = useState(0)
-  const [ alignLeft, setAlignLeft ] = useState(false)
+  const RootContainerContext = useContext(RightClickMenuContext)
 
-  return <div
-    onContextMenu={(e) => {
+  return <section onContextMenu={(e) => {
+    e.stopPropagation()
+    e.preventDefault()
+    RootContainerContext(
+      e.pageX,
+      e.pageY,
+      true,
+      items
+    )
+
+    let listener = (e: MouseEvent) => {
       e.preventDefault()
-      e.stopPropagation()
-      const listener = () => {
-        setShown(false)
-        document.body.removeEventListener("click", listener)
-      }
-      document.body.addEventListener("click", listener)
-      document.body.addEventListener("auxclick", listener)
-      setShown(!shown)
-      const rect = e.currentTarget?.getBoundingClientRect()
-      if (!rect) return
-      setPosX(e.pageX - rect.left)
-      setPosY(e.pageY - rect.top)
-      setAlignLeft((e.pageX - rect.left) + 320 > rect.width)
-    }}
-    style={{ position: "relative" }}>
-    {children}
-    {
-      shown ?
-        <div className={styles.menu} style={{
-          top: `${posY}px`,
-          ...alignLeft ? { left: `${posX}px`, } : { right: `${posX}px`, }
-        }}>
-          {
-            items.map((item, ind) => {
-              return <li key={ind} onClick={item.onClick}>
-                <span>{item.name}</span>
-                {
-                  item?.shortcut ? <span>{item.shortcut}</span> : null
-                }
-              </li>
-            })
-          }
-        </div>
-        : null
+
+      RootContainerContext(
+        0,
+        0,
+        false,
+        []
+      )
+
+      window.removeEventListener("click", listener)
+      window.removeEventListener("contextmenu", listener)
     }
-  </div >
+
+    window.addEventListener("click", listener)
+    window.addEventListener("contextmenu", listener)
+  }}>
+    {children}
+  </section>
 };
 
 export default RightClickMenu;
