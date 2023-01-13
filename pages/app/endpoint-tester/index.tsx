@@ -17,7 +17,7 @@ const EndpointTester: NextPageWithLayout = () => {
   const [ queryMethod, setQueryMethod ] = useState("GET" as "GET" | "POST" | "DELETE")
   const [ queryType, setQueryType ] = useState("json" as "json" | "text")
   const [ queryHeaders, /* setQueryHeaders */ ] = useState({})
-  const [ queryBody, setQueryBody ] = useState({})
+  const [ queryBody, setQueryBody ] = useState("")
   const [ serverUrl, setServerUrl ] = useState("")
 
   useEffect(() => {
@@ -105,7 +105,7 @@ const EndpointTester: NextPageWithLayout = () => {
                 switch (queryType) {
                   case "json":
                     verifyAndReturnJson(
-                      SERVER.post(queryUrl, {}), (data) => {
+                      SERVER.post(queryUrl, { body: queryBody}), (data) => {
                         setResponseDidError(false)
                         setResponse(JSON.stringify(data, null, 2))
                       },
