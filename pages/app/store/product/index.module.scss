@@ -42,7 +42,7 @@
   position: relative;
   display: grid;
   align-items: center;
-  grid-template-columns: auto auto 1fr auto;
+  grid-template-columns: auto auto 1fr auto auto;
 
   > img {
     height: 10rem;
