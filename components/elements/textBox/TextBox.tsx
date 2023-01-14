@@ -6,7 +6,7 @@ export interface ITextBox extends React.ComponentPropsWithoutRef<'textarea'> {
 }
 
 const TextBox: React.FC<ITextBox> = ({
-  children, defaultValue, className, ...inputProps 
+  children, defaultValue, className, ...inputProps
 }) => {
   return <textarea {...inputProps} defaultValue={defaultValue ? defaultValue : ""} className={`${styles.textarea} ${className}`}>{children}</textarea>
 }

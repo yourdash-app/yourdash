@@ -32,7 +32,7 @@ const module: YourDashModule = {
           res.json(resp)
         })
     })
-    
+
     request.get(`/application/:applicationId`, (req, res) => {
       fs.readFile(path.resolve(`${api.FsOrigin}/installed_apps.json`), (err, data) => {
         if (err) {
@@ -77,7 +77,7 @@ const module: YourDashModule = {
         )
       })
     })
-    
+
     request.post(`/application/:applicationId/install`, (req, res) => {
       if (!fs.existsSync(path.resolve(`${api.FsOrigin}/installed_apps.json`))) {
         const json = DEFAULT_APPS as string[]
@@ -89,7 +89,7 @@ const module: YourDashModule = {
           }
           return res.json({ installed: includedApps.filter((app) => json.includes(app.name)).find((obj) => obj.name === req.params.applicationId) !== undefined })
         })
-        
+
         fs.writeFile(
           path.resolve(`${api.FsOrigin}/installed_apps.json`),
           JSON.stringify([
@@ -152,12 +152,12 @@ const module: YourDashModule = {
         }
 
         const user = JSON.parse(data.toString()) as YourDashUser
-        
+
         if (user.permissions.indexOf(YourDashUserPermissions.RemoveApplications) === -1 && user.permissions.indexOf(YourDashUserPermissions.Administrator) === -1) {
-          log(`user "${req.headers.username}" has tried to uninstall application ${req.params.applicationId}`)
-          return res.json({ installed: false })
-        } 
-        
+          log(`user "${req.headers.username}" has tried to uninstall application ${req.params.applicationId} but failed due to not having the RemoveApplications permission`)
+          return res.json({ installed: true })
+        }
+
         fs.readFile(`${api.FsOrigin}/installed_apps.json`, (err, data) => {
           if (err) {
             log(`(${this.name}) ERROR: unable to read installed_apps.json`)
@@ -167,20 +167,20 @@ const module: YourDashModule = {
           let json = JSON.parse(data.toString()) as string[]
 
           const application = includedApps.find((application) => application.name === req.params.applicationId)
-        
+
           if (!application) {
             log(`(${this.name}) ERROR: no application with the name ${req.params.applicationId} exists`)
             return res.json({ error: true })
           }
 
           json = json.filter((app) => app !== req.params.applicationId)
-        
+
           fs.writeFile(`${api.FsOrigin}/installed_apps.json`, JSON.stringify(json), (err) => {
             if (err) {
               log(`(${this.name}) ERROR: unable to write installed_apps.json`)
               return res.json({ error: true })
             }
-          
+
             res.json({ installed: false })
           })
         })

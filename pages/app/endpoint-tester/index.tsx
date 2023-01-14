@@ -14,6 +14,7 @@ const EndpointTester: NextPageWithLayout = () => {
   const [ response, setResponse ] = useState("")
   const [ responseDidError, setResponseDidError ] = useState(false)
   const [ queryUrl, setQueryUrl ] = useState("")
+  const [ queryModule, setQueryModule ] = useState("")
   const [ queryMethod, setQueryMethod ] = useState("GET" as "GET" | "POST" | "DELETE")
   const [ queryType, setQueryType ] = useState("json" as "json" | "text")
   const [ queryHeaders, /* setQueryHeaders */ ] = useState({})
@@ -77,6 +78,12 @@ const EndpointTester: NextPageWithLayout = () => {
             {serverUrl}/api
           </Button>
           <TextInput
+            style={{ maxWidth: "10rem" }}
+            placeholder='module name'
+            onChange={(e) => {
+              setQueryModule(e.currentTarget.value)
+            }} />
+          <TextInput
             placeholder='path'
             onChange={(e) => {
               setQueryUrl(e.currentTarget.value)
@@ -87,7 +94,7 @@ const EndpointTester: NextPageWithLayout = () => {
                 switch (queryType) {
                   case "json":
                     verifyAndReturnJson(
-                      SERVER.get(queryUrl), (data) => {
+                      SERVER.get(`/${queryModule}${queryUrl}`), (data) => {
                         setResponseDidError(false)
                         setResponse(JSON.stringify(data, null, 2))
                       },
@@ -105,7 +112,7 @@ const EndpointTester: NextPageWithLayout = () => {
                 switch (queryType) {
                   case "json":
                     verifyAndReturnJson(
-                      SERVER.post(queryUrl, { body: queryBody}), (data) => {
+                      SERVER.post(`/${queryModule}${queryUrl}`, { body: queryBody }), (data) => {
                         setResponseDidError(false)
                         setResponse(JSON.stringify(data, null, 2))
                       },
@@ -123,7 +130,7 @@ const EndpointTester: NextPageWithLayout = () => {
                 switch (queryType) {
                   case "json":
                     verifyAndReturnJson(
-                      SERVER.delete(queryUrl), (data) => {
+                      SERVER.delete(`/${queryModule}${queryUrl}`), (data) => {
                         setResponseDidError(false)
                         setResponse(JSON.stringify(data, null, 2))
                       },
@@ -143,7 +150,7 @@ const EndpointTester: NextPageWithLayout = () => {
           </Button>
         </RowContainer>
         {
-          queryMethod === "POST" && <TextBox style={{ resize: "vertical" }}></TextBox>
+          queryMethod === "POST" && <TextBox style={{ resize: "vertical" }} onChange={(e) => { setQueryBody(e.currentTarget.value) }}></TextBox>
         }
         <Card>
           <pre style={{ margin: 0, overflow: "auto", paddingBottom: "0.5rem" }}>

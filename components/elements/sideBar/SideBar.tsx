@@ -4,9 +4,9 @@ import YourDashIcon from '../icon/iconDictionary';
 import IconButton from '../iconButton/IconButton'
 import Icon from '../icon/Icon';
 
-export interface ISideBar extends React.ComponentPropsWithoutRef<"div"> {
+export interface ISideBar extends React.ComponentPropsWithoutRef<"main"> {
   items: (
-      {
+    {
       name: string,
       icon: YourDashIcon,
       onClick: () => void,
@@ -26,20 +26,21 @@ export interface ISideBar extends React.ComponentPropsWithoutRef<"div"> {
     }
   )[]
   title: string,
+  className?: string,
 }
 
 const SideBar: React.FC<ISideBar> = ({
-  title, items, ...extraProps 
+  title, items, className, ...extraProps
 }) => {
   const [ toggledSections, setToggledSections ] = useState([] as number[])
   const [ expanded, setExpanded ] = useState(true)
 
-  return <main className={`${styles.component} ${expanded ? styles.expanded : ""}`} {...extraProps}>
+  return <main className={`${styles.component} ${expanded ? styles.expanded : ""} ${className}`} {...extraProps}>
     <header className={styles.header}>
       <IconButton icon={expanded ? 'x-16' : 'three-bars-16'} onClick={() => {
         setExpanded(!expanded)
       }} />
-      <h1>{title}</h1>  
+      <h1>{title}</h1>
     </header>
     <section className={styles.items}>
       {
@@ -81,7 +82,7 @@ const SideBar: React.FC<ISideBar> = ({
                                 {item.name}
                               </span>
                             </button>
-                          default: 
+                          default:
                             return <div key={ind}>Unknown item type</div>
                         }
                       })
@@ -91,7 +92,7 @@ const SideBar: React.FC<ISideBar> = ({
                   }
                 </section>
               </div>
-            default: 
+            default:
               return <div key={ind}>Unknown item type</div>
           }
         })

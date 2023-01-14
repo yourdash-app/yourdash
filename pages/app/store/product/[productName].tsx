@@ -57,7 +57,7 @@ const StoreProduct: NextPageWithLayout = () => {
 
   if (product.name === "undefined")
     return <></>
-  
+
   return (
     <div className={styles.root} style={
       {
@@ -192,6 +192,18 @@ const StoreProduct: NextPageWithLayout = () => {
           }} />
         <img src={product?.icon} alt="" />
         <h2>{product.name}</h2>
+        {
+          product.installed && <Button
+            onClick={() => {
+              router.push(`${product.path}`)
+            }}
+            style={{
+              marginRight: "0.5rem"
+            }}
+          >
+            Open
+          </Button>
+        }
         <Button onClick={() => {
           if (!product.installed) {
             setShowInstallationPopup(true)
@@ -199,26 +211,25 @@ const StoreProduct: NextPageWithLayout = () => {
             verifyAndReturnJson(
               SERVER.delete(`/store/application/${productId}`),
               (data) => {
+                console.log(data)
                 if (data.installed) {
-                  setUninstallationError(false)
-                  setProduct({
-                    ...product,
-                    installed: data.installed
-                  })
-                } else {
                   setUninstallationError(true)
                   setProduct({
                     ...product,
                     installed: data.installed
                   })
-                  router.reload()
+                } else {
+                  setUninstallationError(false)
+                  setProduct({
+                    ...product,
+                    installed: data.installed
+                  })
                 }
               },
               () => {
                 return setUninstallationError(true)
               }
             )
-
           }
         }}>
           {product.installed ? product.uninstallable ? "Uninstall" : "Forcefully installed by the server" : "Install"}

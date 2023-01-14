@@ -268,6 +268,90 @@ const Module: YourDashModule = {
 
     // #endregion
 
+    // #region settings
+
+    request.get(`/settings/user/profile/image`, (req, res) => {
+      fs.readFile(`${api.UserFs(req)}/user.json`, (err, data) => {
+        if (err) {
+          log(`ERROR: unable to read user.json`)
+          return res.json({ error: true })
+        }
+        const json: YourDashUser = JSON.parse(data.toString())
+        const originalProfileImage = json.profile.image
+        const resizedImage = sharp(bufferFromBase64Image(originalProfileImage))
+        resizedImage.resize(256, 256).toBuffer((err, buf) => {
+          if (err) {
+            console.log(err)
+            log(`ERROR: unable to resize image`)
+            return res.json({ error: true })
+          }
+          return res.json({ image: base64FromBufferImage(buf) })
+        })
+      })
+    })
+
+    request.get(`/settings/user/profile`, (req, res) => {
+      fs.readFile(`${api.UserFs(req)}/user.json`, (err, data) => {
+        if (err) {
+          log(`ERROR: unable to read user.json`)
+          return res.json({ error: true })
+        }
+        const json: YourDashUser = JSON.parse(data.toString())
+
+
+        return res.json({
+          name: json.name,
+          profile: {
+            description: json.profile.description,
+            externalLinks: json.profile.externalLinks,
+            location: json.profile.location,
+            status: json.profile.status
+          },
+          userName: json.userName
+        })
+      })
+    })
+
+    request.post(`/settings/user/profile`, (req, res) => {
+
+      const { firstName, lastName, userName, description } = req.body
+
+      console.log(req.body)
+
+      if (!firstName)
+        return res.json({ error: "no firstName supplied" })
+      if (!lastName)
+        return res.json({ error: "no lastName supplied" })
+      if (!userName)
+        return res.json({ error: "no userName supplied" })
+      if (!description)
+        return res.json({ error: "no description supplied" })
+
+      fs.readFile(`${api.UserFs(req)}/user.json`, (err, data) => {
+        if (err) {
+          log(`ERROR: unable to read user.json`)
+          return res.json({ error: true })
+        }
+        let json: YourDashUser = JSON.parse(data.toString())
+
+        json.name.first = firstName
+        json.name.last = lastName
+        json.userName = userName
+        json.profile.description = description
+
+        fs.writeFile(`${api.UserFs(req)}/user.json`, JSON.stringify(json), (err) => {
+          if (err) {
+            log(`(${this.name}) ERROR: unable to write to user.json`)
+            return res.json({ error: true })
+          }
+
+          res.json({ success: true })
+        })
+      })
+    })
+
+    // #endregion
+
     // #region general
 
     request.get(`/instance/installed/apps`, (_req, res) => {

@@ -1,6 +1,8 @@
 .root {
   display: grid;
   grid-template-rows: auto 1fr;
+  overflow-y: auto;
+  max-height: 100%;
 
   > section {
     display: flex;
