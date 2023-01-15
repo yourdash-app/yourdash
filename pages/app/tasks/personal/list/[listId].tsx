@@ -16,7 +16,6 @@ import Button from '../../../../../components/elements/button/Button';
 import TextBox from '../../../../../components/elements/textBox/TextBox';
 import Tags from '../../../../../components/elements/tags/Tags';
 import TasksListItem from '../../../../../types/tasks/listItem';
-import Assignees from '../../components/Assignees/Assignees';
 
 function loadList(listId: string, setList: (_value: TasksList) => void) {
   verifyAndReturnJson(
@@ -65,7 +64,7 @@ const TasksPersonalList: NextPageWithLayout = () => {
         console.error(`unable to fetch task data`)
       }
     )
-  }, [ selectedTask ])
+  }, [ selectedTask, router.query.listId ])
 
   if (!listData) return <></>
   if (!unsavedListData) return <></>
@@ -99,8 +98,8 @@ const TasksPersonalList: NextPageWithLayout = () => {
                 description: unsavedListData.description,
                 id: unsavedListData.id,
                 name: e.currentTarget.value,
+                tags: unsavedListData.tags,
                 tasks: unsavedListData.tasks,
-                tags: unsavedListData.tags
               })
             }}
           />
@@ -120,8 +119,8 @@ const TasksPersonalList: NextPageWithLayout = () => {
                 description: e.currentTarget.value,
                 id: unsavedListData.id,
                 name: unsavedListData.name,
+                tags: unsavedListData.tags,
                 tasks: unsavedListData.tasks,
-                tags: unsavedListData.tags
               })
             }}
           />
@@ -161,7 +160,25 @@ const TasksPersonalList: NextPageWithLayout = () => {
           <IconButton
             icon='plus-16'
             onClick={() => {
-              console.log(`Implement Me!!! this should add a new task`)
+              setSelectedTask(null)
+              verifyAndReturnJson(
+                SERVER.get(`/tasks/personal/list/${listData.id}/create/task`),
+                () => {
+                  if (!router.query.listId) return
+
+                  if (typeof router.query.listId === "string") {
+                    loadList(router.query.listId, (list) => {
+                      setListData(list)
+                      setUnsavedListData(list)
+                    })
+                  } else {
+                    router.push(`/app/tasks`)
+                  }
+                },
+                () => {
+                  console.error("unable to create task")
+                }
+              )
             }}
           />
           <IconButton
@@ -171,9 +188,9 @@ const TasksPersonalList: NextPageWithLayout = () => {
             }}
           />
         </RowContainer>
-        <main className={styles.tasksView}>
+        <ColContainer className={styles.tasksView}>
           {
-            listData.tasks.length !== 0 ?
+            listData.tasks ?
               listData.tasks.map((task, ind) => {
                 return <CardButton
                   key={ind}
@@ -183,48 +200,106 @@ const TasksPersonalList: NextPageWithLayout = () => {
                   }}>
                   <RowContainer>
                     <span>{task.title}</span>
-                    <IconButton onClick={() => {
-                      console.log(`Implement Me!!!`)
+                    <IconButton onClick={(e) => {
+                      e.stopPropagation()
+
+                      verifyAndReturnJson(
+                        SERVER.delete(`/tasks/personal/list/${listData.id}/task/${ind}`),
+                        () => {
+                          if (ind === selectedTask)
+                            setSelectedTask(null)
+
+                          const listDataTasks = listData.tasks
+                          console.log(listDataTasks)
+                          listDataTasks.splice(ind, 1)
+                          setListData({
+                            ...listData, tasks: listDataTasks
+                          })
+                        },
+                        () => {
+                          console.error(`unable to delete task ${task}`)
+                        }
+                      )
                     }} icon={'trash-16'} />
                   </RowContainer>
                 </CardButton>
               })
-              : null
+              : <h1>No tasks</h1>
           }
-        </main>
+        </ColContainer>
       </ColContainer>
       <section className={`${styles.taskProperties} ${selectedTask !== null && styles.taskPropertiesOpen}`}>
         {
           selectedTaskData && <ColContainer>
             <RowContainer>
-              <TextInput style={{ flex: 1 }} defaultValue={selectedTaskData?.title} />
+              <TextInput style={{ flex: 1 }} defaultValue={selectedTaskData?.title} onChange={(e) => {
+                setSelectedTaskData({
+                  ...selectedTaskData, title: e.currentTarget.value
+                })
+              }} />
               <IconButton style={{ aspectRatio: "1 / 1" }} icon='x-16' onClick={() => {
                 setSelectedTask(null)
               }} />
             </RowContainer>
             <p>Description</p>
-            <TextBox style={{
-              flexDirection: 'row',
-              flex: 1
-            }} defaultValue={selectedTaskData?.description}></TextBox>
+            <TextBox
+              style={{
+                flex: 1,
+                flexDirection: 'row',
+              }}
+              defaultValue={selectedTaskData?.description}
+              onChange={(e) => {
+                setSelectedTaskData({
+                  ...selectedTaskData, description: e.currentTarget.value
+                })
+              }}
+            ></TextBox>
             <p>Tags</p>
             <Tags compact tags={selectedTaskData.tags} />
             <p>Assignees</p>
-            <Card style={{ padding: "0.5rem", gap: "0.5rem", display: "flex", flexDirection: "column", transition: "var(--transition)" }}>
-              <Assignees assignees={selectedTaskData?.assignees || []} />
-              <Button onClick={() => {
-                verifyAndReturnJson(
-                  SERVER.post(`/tasks/personal/list/${listData.id}/task/${selectedTask}/assignees/`, { body: JSON.stringify([ ...selectedTaskData.assignees, "bob" ]) }),
-                  () => {
-                    console.log(`new user added successfully`)
-                  },
-                  () => {
-                    console.error(`unable to add new assignee`)
+            {/*
+              <Card style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.5rem",
+                padding: "0.5rem",
+                transition: "var(--transition)",
+              }}>
+                <Assignees assignees={selectedTaskData?.assignees || []} />
+                <Button onClick={() => {
+                  verifyAndReturnJson(
+                    SERVER.post(`/tasks/personal/list/${listData.id}/task/${selectedTask}/assignees/`, { body: JSON.stringify([ ... selectedTaskData.assignees, "bob" ]) }),
+                    () => {
+                      console.log(`new user added successfully`)
+                    },
+                    () => {
+                      console.error(`unable to add new assignee`)
+                    }
+                  )
+                }}>Add Assignee</Button>
+              </Card>
+            */}
+            <Button onClick={() => {
+              setSelectedTask(null)
+              verifyAndReturnJson(
+                SERVER.post(`/tasks/personal/list/${router.query.listId}/task/${selectedTask}`, { body: JSON.stringify(selectedTaskData) }),
+                () => {
+                  if (!router.query.listId) return
+
+                  if (typeof router.query.listId === "string") {
+                    loadList(router.query.listId, (list) => {
+                      setListData(list)
+                      setUnsavedListData(list)
+                    })
+                  } else {
+                    router.push(`/app/tasks`)
                   }
-                )
-              }}>Add Assignee</Button>
-            </Card>
-            <Button>Apply</Button>
+                },
+                () =>{
+                  console.error(`unable to save new task data`)
+                }
+              )
+            }}>Apply</Button>
           </ColContainer>
         }
       </section>

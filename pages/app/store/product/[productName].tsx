@@ -197,9 +197,7 @@ const StoreProduct: NextPageWithLayout = () => {
             onClick={() => {
               router.push(`${product.path}`)
             }}
-            style={{
-              marginRight: "0.5rem"
-            }}
+            style={{ marginRight: "0.5rem" }}
           >
             Open
           </Button>

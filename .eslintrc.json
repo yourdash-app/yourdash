@@ -4,8 +4,7 @@
     "next",
     "next/core-web-vitals",
     "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
-    "sort-keys-fix"
+    "plugin:@typescript-eslint/recommended"
   ],
   "plugins": ["@typescript-eslint", "unused-imports"],
   "globals": {
@@ -19,15 +18,6 @@
         "@next/next/no-img-element": "off",
         "unused-imports/no-unused-imports": "warn",
         "@typescript-eslint/no-var-requires": "off",
-        "unused-imports/no-unused-vars": [
-          "warn",
-          {
-            "vars": "all",
-            "varsIgnorePattern": "^_",
-            "args": "after-used",
-            "argsIgnorePattern": "^_"
-          }
-        ],
         "no-unused-vars": "off",
         "sort-imports": [
           "warn",
@@ -37,9 +27,16 @@
         ],
         "no-fallthrough": "off",
         "sort-vars": ["warn"],
-        "sort-keys-fix/sort-keys-fix": "warn",
         "sort-keys": ["warn", "asc", { "natural": true }],
-        "@typescript-eslint/no-unused-vars": ["warn"],
+        "@typescript-eslint/no-unused-vars": [
+          "warn",
+          {
+            "vars": "all",
+            "varsIgnorePattern": "^_",
+            "args": "after-used",
+            "argsIgnorePattern": "^_"
+          }
+        ],
         "@typescript-eslint/ban-ts-comment": "off",
         "camelcase": "error",
         "brace-style": ["error", "1tbs"],

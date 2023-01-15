@@ -12,7 +12,7 @@ const Assignees: React.FC<IAssignees> = ({ assignees }) => {
 
   useEffect(() => {
     setAssigneesData([])
-    let result: TaskAssignee[] = []
+    const result: TaskAssignee[] = []
     assignees.map((assignee, ind) => {
       verifyAndReturnJson(SERVER.get(`/tasks/assignee/${assignee}`),
         (data: TaskAssignee) => {
@@ -50,7 +50,7 @@ const Assignees: React.FC<IAssignees> = ({ assignees }) => {
   return <div className={styles.component}>
     {assigneesData.map((assignee, ind) => {
       return <div key={ind} className={styles.assignee}>
-        <img src={assignee.profile.image} />
+        <img src={assignee.profile.image} alt="" />
         <span>{assignee.name}</span>
       </div>
     })}

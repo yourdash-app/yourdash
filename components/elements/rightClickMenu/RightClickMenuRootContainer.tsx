@@ -3,23 +3,25 @@ import RightClickMenuContext from "./RightClickMenuContext"
 import styles from "./RightClickMenuRootContainer.module.scss"
 import RightClickMenuItem from "./RightClickMenuItem"
 
-export interface IRightClickMenuRootContainer { }
-
-const RightClickMenuRootContainer: React.FC<IRightClickMenuRootContainer> = ({ children }) => {
-  const [ position, setPosition ] = React.useState({ x: 0, y: 0 })
+const RightClickMenuRootContainer: React.FC = ({ children }) => {
+  const [ position, setPosition ] = React.useState({
+    x: 0, y: 0
+  })
   const [ visible, setVisible ] = React.useState(false)
   const [ items, setItems ] = React.useState([] as RightClickMenuItem[])
 
   return <RightClickMenuContext.Provider value={(x, y, visible, items) => {
-    setPosition({ x: x, y: y });
+    setPosition({
+      x: x, y: y
+    });
     setVisible(visible);
     setItems(items)
   }}>
     <div
       style={{
-        top: position.y,
+        display: visible ? "flex" : "none",
         left: position.x,
-        display: visible ? "flex" : "none"
+        top: position.y,
       }}
       className={styles.component}
     >

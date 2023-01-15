@@ -1,14 +1,13 @@
-import React, { useState } from "react"
+import React from "react"
 import SideBar from "../../../../components/elements/sideBar/SideBar"
 import styles from "./TasksLayout.module.scss"
 import { useRouter } from "next/router"
-import YourDashOrganization from "../../../../types/core/organization"
 
 const TasksLayout: React.FC = ({ children }) => {
   const router = useRouter()
 
-  const [ personalLists, setPersonalLists ] = useState([])
-  const [ organizations, setOrganizations ] = useState([] as YourDashOrganization[])
+  // const [ personalLists, setPersonalLists ] = useState([])
+  // const [ organizations, setOrganizations ] = useState([] as YourDashOrganization[])
 
   return <div className={styles.root}>
     <SideBar
@@ -25,6 +24,7 @@ const TasksLayout: React.FC = ({ children }) => {
             },
             type: "button",
           },
+
           /* { type: "separator", },
           {
             icon: "person-16",

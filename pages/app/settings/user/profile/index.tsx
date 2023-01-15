@@ -9,7 +9,6 @@ import BooleanSetting from '../../components/BooleanSetting';
 import SettingsLayout from '../../components/SettingsLayout';
 import styles from "./index.module.scss"
 import SERVER, { verifyAndReturnJson } from '../../../../../lib/server';
-import YourDashUser from '../../../../../types/core/user';
 import Button from '../../../../../components/elements/button/Button';
 
 const SettingsPanel: NextPageWithLayout = () => {
@@ -66,17 +65,16 @@ const SettingsPanel: NextPageWithLayout = () => {
               setDescription(e.currentTarget.value)
             }} />
             <Button vibrant onClick={() => {
+
               // TODO: send the new data to the server
 
               verifyAndReturnJson(
-                SERVER.post(`/core/settings/user/profile`, {
-                  body: JSON.stringify({
-                    firstName: firstName,
-                    lastName: lastName,
-                    userName: userName,
-                    description: description
-                  })
-                }),
+                SERVER.post(`/core/settings/user/profile`, { body: JSON.stringify({
+                  description: description,
+                  firstName: firstName,
+                  lastName: lastName,
+                  userName: userName,
+                }) }),
                 () => {
                   console.log(`user profile updated successfully`)
                 },

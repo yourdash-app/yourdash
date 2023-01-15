@@ -7,15 +7,12 @@ import SettingsLayout from '../../components/SettingsLayout';
 const SettingsPanel: NextPageWithLayout = () => {
   return (
     <>
-      <h1>This is a test</h1>
+      <h1>Panel</h1>
       <ColContainer style={{ padding: "1rem" }}>
-        <BooleanSetting title='Title' description='Description' defaultValue={false} setValue={(value) => {
+        <BooleanSetting title='Rounded Application Windows' description='Make applications have a rounded border' defaultValue={false} setValue={(value) => {
           console.log(value)
         }} />
-        <BooleanSetting title='Title' description='Description' defaultValue={false} setValue={(value) => {
-          console.log(value)
-        }} />
-        <BooleanSetting title='Title' description='Description' defaultValue={false} setValue={(value) => {
+        <BooleanSetting title='Floating Application Windows' description='Add a margin around applications and show your background image' defaultValue={false} setValue={(value) => {
           console.log(value)
         }} />
       </ColContainer>

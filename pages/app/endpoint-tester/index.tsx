@@ -12,12 +12,12 @@ import TextBox from '../../../components/elements/textBox/TextBox';
 
 const EndpointTester: NextPageWithLayout = () => {
   const [ response, setResponse ] = useState("")
-  const [ responseDidError, setResponseDidError ] = useState(false)
+  const [ _responseDidError, setResponseDidError ] = useState(false)
   const [ queryUrl, setQueryUrl ] = useState("")
   const [ queryModule, setQueryModule ] = useState("")
   const [ queryMethod, setQueryMethod ] = useState("GET" as "GET" | "POST" | "DELETE")
   const [ queryType, setQueryType ] = useState("json" as "json" | "text")
-  const [ queryHeaders, /* setQueryHeaders */ ] = useState({})
+  const [ _queryHeaders, /* setQueryHeaders */ ] = useState({})
   const [ queryBody, setQueryBody ] = useState("")
   const [ serverUrl, setServerUrl ] = useState("")
 
@@ -150,10 +150,14 @@ const EndpointTester: NextPageWithLayout = () => {
           </Button>
         </RowContainer>
         {
-          queryMethod === "POST" && <TextBox style={{ resize: "vertical" }} onChange={(e) => { setQueryBody(e.currentTarget.value) }}></TextBox>
+          queryMethod === "POST" && <TextBox style={{ resize: "vertical" }} onChange={(e) => {
+            setQueryBody(e.currentTarget.value)
+          }}></TextBox>
         }
         <Card>
-          <pre style={{ margin: 0, overflow: "auto", paddingBottom: "0.5rem" }}>
+          <pre style={{
+            margin: 0, overflow: "auto", paddingBottom: "0.5rem"
+          }}>
             <code>
               {response}
             </code>

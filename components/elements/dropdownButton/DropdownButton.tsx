@@ -1,5 +1,4 @@
 import { useContext, useState } from 'react';
-import styles from './DropdownButton.module.scss';
 import Button from '../button/Button';
 import RightClickMenuContext from '../rightClickMenu/RightClickMenuContext';
 
@@ -58,7 +57,7 @@ const DropdownButton: React.FC<IDropdownButton> = ({
 
     setDropdownShown(true)
 
-    let listener = (e: MouseEvent) => {
+    const listener = (e: MouseEvent) => {
       e.preventDefault()
 
       RootContainerContext(

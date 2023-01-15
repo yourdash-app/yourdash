@@ -64,22 +64,30 @@ export class RequestManager {
 
   private module: YourDashModule
 
+  private endpoints: string[];
+
   constructor(app: Application, module: YourDashModule) {
     this.express = app
     this.module = module
+    this.endpoints = []
   }
 
   get = (path: string, cb: (req: Request, res: Response) => void) => {
+    this.endpoints.push(`GET ${path}`)
     this.express.get(`/api/${this.module.name}${path}`, (req, res) => cb(req, res))
   }
 
   post = (path: string, cb: (req: Request, res: Response) => void) => {
+    this.endpoints.push(`POS ${path}`)
     this.express.post(`/api/${this.module.name}${path}`, (req, res) => cb(req, res))
   }
 
   delete = (path: string, cb: (req: Request, res: Response) => void) => {
+    this.endpoints.push(`DEL ${path}`)
     this.express.delete(`/api/${this.module.name}${path}`, (req, res) => cb(req, res))
   }
 
   legacy = () => this.express
+
+  getEndpoints = () => this.endpoints
 }

@@ -11,9 +11,12 @@
 .content {
   --app-application-margin: 0rem;
   --app-application-rounding: 0rem;
-  overflow: hidden;
-  height: calc(100% - calc(var(--app-application-margin) * 2));
-  width: calc(100% - calc(var(--app-application-margin) * 2));
+  overflow: auto;
+  height: calc(
+    100vh -
+      calc(calc(var(--app-application-margin) * 2) + var(--app-panel-height))
+  );
+  width: calc(100vw - calc(var(--app-application-margin) * 2));
   transition-property: opacity, height, width, margin, border-radius;
   transition-duration: 250ms;
   transition-timing-function: ease-in-out;

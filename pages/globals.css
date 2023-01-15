@@ -20,7 +20,7 @@
 
   --accent-color: #eb6a4b;
 
-  --focused-outline: 0.25rem solid var(--button-vibrant-bg);
+  --focused-outline: 0.2rem solid var(--button-vibrant-bg);
 
   --card-fg: #ffffff;
   --card-bg: #464646;
@@ -100,7 +100,7 @@
   --text-input-rounding: 0.5rem;
   --text-input-focused-bg: #4a4a4a;
   --text-input-focused-fg: #fff;
-  --text-input-focused-outline: 0.25rem solid var(--button-vibrant-bg);
+  --text-input-focused-outline: 0.2rem solid var(--button-vibrant-bg);
   --text-input-focused-rounding: 0.5rem;
 
   --floating-label-bg: #363636;

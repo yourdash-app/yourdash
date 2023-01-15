@@ -83,7 +83,16 @@ const ServerLogin: NextPageWithLayout = () => {
           invalidReason={message}
           onChange={(e) => {
             setUrl(e.target.value)
-          }} />
+          }}
+          onKeyDown={(e) => {
+            if (!allowed) return
+
+            if (e.key === "Enter") {
+              localStorage.setItem("currentServer", `${url}:3560`)
+              router.push("/login/server")
+            }
+          }}
+        />
         <Button disabled={!allowed} onClick={() => {
           localStorage.setItem("currentServer", `${url}:3560`)
           router.push("/login/server")
