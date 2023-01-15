@@ -206,8 +206,8 @@ function applicationStartup() {
   let modulesToLoad: string[] = []
 
   // TODO: implement the server module unload and install methods
-  // if in DevMode add all modules to modulesToLoad
-  // else add only the modules found in the yourdash.config.json file
+  //       if in DevMode add all modules to modulesToLoad
+  //       else add only the modules found in the yourdash.config.json file
   if (ENV.DevMode) {
     log("(Start up) starting with all modules loaded due to the DEV environment variable being set to true.")
     modulesToLoad = fs.readdirSync(path.resolve(`./modules/`))
@@ -222,10 +222,16 @@ function applicationStartup() {
     if (!fs.existsSync(path.resolve(`./modules/${module}/index.js`))) return log('(Start up) no such module: ' + module + ", non-existent modules should not be listed in the activeModules found in yourdash.config.json");
     import('./modules/' + module + '/index.js').then((mod) => {
       const currentModule = mod.default;
-      currentModule.load(new RequestManager(app, currentModule), {
+      const requestManager = new RequestManager(app, currentModule)
+      currentModule.load(requestManager, {
         SERVER_CONFIG: SERVER_CONFIG, ...ENV
       });
       log('(Start up) loaded module: ' + module);
+
+      // log(`(RequestManager): loaded endpoints:`)
+      // requestManager.getEndpoints().forEach((endpoint) => {
+      //   log(endpoint)
+      // })
       loadedModules.push(currentModule);
     });
   });
@@ -270,8 +276,12 @@ function applicationStartup() {
   });
 
   app.use(
-    cors({ origin: [ 'http://localhost:3000', 'https://yourdash.vercel.app', 'https://ddsh.vercel.app', '*ewsgit-github.vercel.app' ], })
+    cors({ origin: [ ENV.DevMode ? true : 'http://localhost:3000', 'https://yourdash.vercel.app', 'https://ddsh.vercel.app', 'https://*ewsgit-github.vercel.app' ], })
   );
+
+  app.get(`/`, (req, res) => {
+    return res.redirect(`https://yourdash.vercel.app/server/${req.url}`)
+  })
 
   setInterval(() => {
     console.log('attempting update');
@@ -331,6 +341,6 @@ function applicationStartup() {
       })
     })
   }
-};
+}
 
 startupCheck(() => applicationStartup())

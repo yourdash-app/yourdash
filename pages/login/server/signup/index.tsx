@@ -22,9 +22,7 @@ const LoginOptions: NextPageWithLayout = () => {
     <>
       <div className={styles.root}>
         <Card>
-          <ColContainer style={{
-            alignItems: "center",
-          }}>
+          <ColContainer style={{ alignItems: "center", }}>
             {
               !allowsSignUp ?
                 <>

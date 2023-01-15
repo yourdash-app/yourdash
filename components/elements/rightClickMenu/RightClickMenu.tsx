@@ -1,5 +1,4 @@
-import React, { useContext, useState } from 'react';
-import styles from './RightClickMenu.module.scss';
+import React, { useContext } from 'react';
 import RightClickMenuContext from './RightClickMenuContext';
 import RightClickMenuItem from './RightClickMenuItem';
 
@@ -22,7 +21,7 @@ const RightClickMenu: React.FC<IRightClickMenu> = ({
       items
     )
 
-    let listener = (e: MouseEvent) => {
+    const listener = (e: MouseEvent) => {
       e.preventDefault()
 
       RootContainerContext(

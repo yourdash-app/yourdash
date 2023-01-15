@@ -44,9 +44,7 @@ const AppLayout: React.FC<IAppLayout> = ({
       {children}
     </RightClickMenuRootContainer>
     : <RightClickMenuRootContainer>
-      <div className={styles.root} style={{
-        backgroundImage: `url(${backgroundImage})`
-      }}>
+      <div className={styles.root} style={{ backgroundImage: `url(${backgroundImage})` }}>
         <Panel
           backgroundImage={`url(${backgroundImage})`}
           appIsOpening={(value) => {

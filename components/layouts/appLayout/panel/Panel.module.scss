@@ -162,6 +162,7 @@
 .launcherSlideOut {
   position: fixed;
   top: var(--app-panel-height);
+  left: 0;
   translate: -100%;
   height: calc(100vh - var(--app-panel-height));
   width: 30rem;

@@ -147,14 +147,118 @@ const module: YourDashModule = {
         if (err) {
           return res.json({ error: true })
         }
-
         const json = JSON.parse(data.toString()) as TasksList
 
         return res.json(json.tasks[ parseInt(req.params.taskId) ])
       })
     })
 
+    request.delete(`/personal/list/:listId/task/:taskId`, (req, res) => {
+      if (!req.params.listId) {
+        return res.json({ error: true })
+      }
+
+      if (!fs.existsSync(path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`))) {
+        return res.json({ error: true })
+      }
+
+      try {
+        parseInt(req.params.taskId)
+      } catch (err) {
+        return res.json({ error: "taskId was not a valid integer" })
+      }
+
+      fs.readFile(path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`), (err, data) => {
+        if (err) {
+          return res.json({ error: true })
+        }
+        const json = JSON.parse(data.toString()) as TasksList
+        json.tasks.splice(parseInt(req.params.taskId), 1)
+
+        fs.writeFile(path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`), JSON.stringify(json), (err) => {
+          if (err) return res.json({ error: true })
+
+          return res.json({ success: true })
+        })
+      })
+    })
+
+    request.get(`/personal/list/:listId/create/task`, (req, res) => {
+      if (!fs.existsSync(path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`))) {
+        log(`no such file: ${path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`)}`)
+        return res.json({ error: true })
+      }
+
+      fs.readFile(path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`), (err, data) => {
+        if (err) {
+          log(`unable to read file: ${path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`)}`)
+          return res.json({ error: true })
+        }
+
+        const json = JSON.parse(data.toString()) as TasksList
+
+        json.tasks.push({
+          assignees: [],
+          description: "Why not give your task a description?",
+          subTasks: [],
+          tags: [],
+          title: "Untitled Task",
+        })
+
+        fs.writeFile(path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`), JSON.stringify(json), (err) => {
+          if (err) {
+            log(`unable to write to file: ${path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`)}`)
+            return res.json({ error: true })
+          }
+
+          return res.json({ id: json.tasks.length + 1 })
+        })
+      })
+    })
+
+    request.post(`/personal/list/:listId/task/:taskId`, (req, res) => {
+      const {
+        listId, taskId
+      } = req.params
+
+      if (!listId || !taskId) {
+        log(`(${this.name}) ERROR: listId or taskId were not found in the request`)
+        return res.json({ error: true })
+      }
+
+      if (!fs.existsSync(path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${listId}.json`))) {
+        log(`(${this.name}) no such list: ${listId}`)
+        return res.json({ error: true })
+      }
+
+      fs.readFile(path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${listId}.json`), (err, data) => {
+        if (err) {
+          log(`(${this.name}) unable to read ${listId}.json`)
+          return res.json({ error: true })
+        }
+
+        const json = JSON.parse(data.toString()) as TasksList
+
+        json.tasks[parseInt(taskId)] = req.body
+
+        fs.writeFile(path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${listId}.json`), JSON.stringify(json), (err) => {
+          if (err) {
+            log(`(${this.name}) ERROR: unable to write to ${listId}.json`)
+            return res.json({ error: true })
+          }
+
+          return res.json({ success: true })
+        })
+      })
+    })
+
     request.post(`/personal/list/:listId/task/:taskId/assignees`, (req, res) => {
+
+      // todo: set the assignees to the received list
+
+      const assignees = req.body.assignees
+
+
       res.json({ error: true })
     })
 
@@ -170,7 +274,7 @@ const module: YourDashModule = {
           return res.json({ error: true })
         }
 
-        let json = JSON.parse(data.toString()) as YourDashUser
+        const json = JSON.parse(data.toString()) as YourDashUser
 
         const profileImage = sharp(bufferFromBase64Image(json.profile.image))
         profileImage.resize(48, 48).toBuffer((err, buf) => {
@@ -180,7 +284,9 @@ const module: YourDashModule = {
             return res.json({ error: true })
           }
 
-          return res.json({ name: `${json.name.first} ${json.name.last}`, userName: json.userName, profile: { image: base64FromBufferImage(buf) } })
+          return res.json({
+            name: `${json.name.first} ${json.name.last}`, userName: json.userName, profile: { image: base64FromBufferImage(buf) }
+          })
         })
       })
     })

@@ -13,7 +13,7 @@ import Button from '../../../components/elements/button/Button';
 import Card from '../../../components/containers/card/Card';
 import { useRouter } from 'next/navigation';
 
-function LoadPersonalLists(setPersonalLists: (_value: {name: string, id: string}[]) => void) {
+function LoadPersonalLists(setPersonalLists: (_value: { name: string, id: string }[]) => void) {
   verifyAndReturnJson(
     SERVER.get(`/tasks/personal/lists`),
     (data) => {
@@ -28,7 +28,7 @@ function LoadPersonalLists(setPersonalLists: (_value: {name: string, id: string}
 const TasksIndex: NextPageWithLayout = () => {
   const router = useRouter()
 
-  const [ personalLists, setPersonalLists ] = useState(null as {name: string, id: string}[] | null)
+  const [ personalLists, setPersonalLists ] = useState(null as { name: string, id: string }[] | null)
 
   useEffect(() => {
     LoadPersonalLists((lists) => setPersonalLists(lists))
@@ -67,10 +67,6 @@ const TasksIndex: NextPageWithLayout = () => {
                   <span>{list.name}</span>
                   <IconButton onClick={(e) => {
                     e.stopPropagation()
-                    console.log(`Implement Me!!!`)
-                  }} icon="pencil-16" />
-                  <IconButton onClick={(e) => {
-                    e.stopPropagation()
                     verifyAndReturnJson(
                       SERVER.delete(`/tasks/personal/list/delete/${list.id}`),
                       () => {
@@ -102,10 +98,10 @@ const TasksIndex: NextPageWithLayout = () => {
                       }
                     )
                   }} vibrant>
-                  Create a list
+                    Create a list
                   </Button>
                 </ColContainer>
-              </Card> 
+              </Card>
           }
         </ColContainer>
       </section>
@@ -115,19 +111,19 @@ const TasksIndex: NextPageWithLayout = () => {
           {
             [
               {
-                icon: "", 
+                icon: "",
                 name: "test",
               },
               {
-                icon: "", 
+                icon: "",
                 name: "test",
               },
               {
-                icon: "", 
+                icon: "",
                 name: "test",
               },
               {
-                icon: "", 
+                icon: "",
                 name: "test",
               }
             ].map((org, ind) => {

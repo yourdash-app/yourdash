@@ -1,4 +1,3 @@
-import { CSSProperties } from "react";
 import styles from "./Tags.module.scss";
 import Tag from "../../../types/core/tag";
 
@@ -7,7 +6,9 @@ export interface ITags {
   compact?: boolean;
 }
 
-const Tags: React.FC<ITags> = ({ tags, compact }) => {
+const Tags: React.FC<ITags> = ({
+  tags, compact
+}) => {
   return (
     <main className={`${styles.component} ${compact ? styles.compact : ""}`}>
       {
