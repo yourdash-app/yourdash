@@ -69,7 +69,7 @@ const StoreIndex: NextPageWithLayout = () => {
               <RowContainer>
                 <img className={styles.cardImg} src={item?.icon} alt="" />
                 <ColContainer>
-                  <a className={styles.cardName}>{item?.name}</a>
+                  <a className={styles.cardName}>{item?.displayName}</a>
                   <p className={styles.cardDescription}>{item?.description}</p>
                 </ColContainer>
               </RowContainer>

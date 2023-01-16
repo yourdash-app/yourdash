@@ -77,13 +77,23 @@ const includedApps: InstalledApplication[] = [
     name: "tasks",
     path: "/app/tasks",
     previewImages: [],
+  }, {
+    author: "Ewsgit",
+    copyright: "MIT",
+    description: "The YourDash code editor, edit files seamlessly with others.",
+    displayName: "Code Studio",
+    icon: returnBase64Image(path.resolve("./assets/apps/code-studio.png")),
+    moduleRequirements: [],
+    name: "code-studio",
+    path: "/app/code-studio",
+    previewImages: [],
   }
 ]
 
 export default includedApps
 
 export const DEFAULT_APPS = [
-  "dash", 
+  "dash",
   "files",
   "store",
   "settings"

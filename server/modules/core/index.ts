@@ -40,7 +40,7 @@ const Module: YourDashModule = {
           return res.json({ error: true })
         }
 
-        let json = JSON.parse(data.toString())
+        const json = JSON.parse(data.toString())
 
         res.json(json)
       })
@@ -314,7 +314,12 @@ const Module: YourDashModule = {
 
     request.post(`/settings/user/profile`, (req, res) => {
 
-      const { firstName, lastName, userName, description } = req.body
+      const {
+        firstName,
+        lastName,
+        userName,
+        description
+      } = req.body
 
       console.log(req.body)
 
@@ -332,7 +337,7 @@ const Module: YourDashModule = {
           log(`ERROR: unable to read user.json`)
           return res.json({ error: true })
         }
-        let json: YourDashUser = JSON.parse(data.toString())
+        const json: YourDashUser = JSON.parse(data.toString())
 
         json.name.first = firstName
         json.name.last = lastName

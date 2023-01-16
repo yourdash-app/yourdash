@@ -136,21 +136,13 @@ const Module: YourDashModule = {
                 if (err) return res.sendStatus(500);
                 fs.writeFile(
                   `${ENV.FsOrigin}/data/users/${username}/config.json`,
-                  JSON.stringify({
-                    panel: {
-                      launcher: {
-                        shortcuts: [
-                          {
-                            icon: URL.createObjectURL(
-                              new Blob([
-                                fs.readFileSync(path.resolve(`${ENV.FsOrigin}./../yourdash.svg`)),
-                              ])
-                            ),
-                          },
-                        ],
-                      },
-                    },
-                  } as YourDashUserSettings),
+                  JSON.stringify({ panel: { launcher: { shortcuts: [
+                    { icon: URL.createObjectURL(
+                      new Blob([
+                        fs.readFileSync(path.resolve(`${ENV.FsOrigin}./../yourdash.svg`)),
+                      ])
+                    ), },
+                  ], }, }, } as YourDashUserSettings),
                   (err) => {
                     if (err) return res.sendStatus(500);
                     fs.mkdir(`${ENV.UserFs(req)}/AppData/`, { recursive: true }, (err) => {

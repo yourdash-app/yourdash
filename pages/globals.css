@@ -172,6 +172,7 @@ body {
 
 #__next {
   height: 100%;
+  image-rendering: -webkit-optimize-contrast;
 }
 
 h1 {
