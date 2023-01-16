@@ -191,7 +191,7 @@ const StoreProduct: NextPageWithLayout = () => {
             }, 600)
           }} />
         <img src={product?.icon} alt="" />
-        <h2>{product.name}</h2>
+        <h2>{product.displayName}</h2>
         {
           product.installed && <Button
             onClick={() => {
