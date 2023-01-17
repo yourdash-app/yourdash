@@ -1,7 +1,7 @@
 /*
- *   Copyright (c) 2022 Ewsgit
- *   https://ewsgit.mit-license.org
- */
+*   Copyright (c) 2022 Ewsgit
+*   https://ewsgit.mit-license.org
+*/
 
 import fs from 'fs';
 import { ENV } from './index.js';
@@ -32,30 +32,27 @@ export function returnBase64Svg(path: string) {
   return "data:image/svg;base64," + fs.readFileSync(path, 'base64');
 }
 
-export function bufferFromBase64Image(img: string): Buffer | undefined {
-  const uri = img.split(";base64,").pop()
-  if (!uri) return
-  const buf = Buffer.from(uri, "base64")
-  return buf
-}
-
 export function base64FromBufferImage(img: Buffer): string {
   const base64 = "data:image/png;base64," + img.toString("base64")
   return base64
 }
 
-export function resizeBase64Image(width: number, height: number, image: string): Promise<string> {
-  return new Promise((resolve) => {
-    const resizedImage = sharp(bufferFromBase64Image(image))
-    resizedImage.resize(width, height, { kernel: "lanczos3" }).toBuffer((err, buf) => {
+export function resizeBase64Image(width: number, height: number, image: string, callback: (err: boolean, image: string) => void) {
+  sharp(image)
+    .resize(width, height, {
+      kernel: "lanczos3",
+      withoutEnlargement: true
+    })
+    .png()
+    .toBuffer((err, buf) => {
       if (err) {
         console.log(err)
         log(`ERROR: unable to resize image`)
-        return resolve(image)
+        return callback(true, "")
       }
-      return resolve(base64FromBufferImage(buf))
+      log(`Triggered Sharp, width: ${width}, height: ${height}`)
+      return callback(false, base64FromBufferImage(buf))
     })
-  })
 }
 
 export class RequestManager {

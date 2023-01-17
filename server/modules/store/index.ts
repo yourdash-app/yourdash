@@ -22,10 +22,15 @@ const module: YourDashModule = {
     }
 
     request.get(`/included/apps`, (_req, res) => {
-      const output = includedApps.map(async (app) => {
-        const image = await resizeBase64Image(96, 96, app.icon);
-        app.icon = image;
-        return app;
+      const output = includedApps.map((app) => {
+        resizeBase64Image(96, 96, app.icon, (err, image) => {
+          if (err) {
+            return res.json({ error: true })
+          }
+
+          app.icon = image;
+          return app;
+        });
       })
       Promise.all(output)
         .then((resp) => {
@@ -39,16 +44,23 @@ const module: YourDashModule = {
           log("ERROR: couldn't read installed_apps.json")
           return res.json({ error: true })
         }
+
         const json = JSON.parse(data.toString()) as string[]
         const result = includedApps.find((obj) => obj.name === req.params.applicationId)
+
         if (!result) {
           log(`ERROR: no store product found named: ${req.params.applicationId}`)
           return res.json({ error: true })
         }
-        resizeBase64Image(284, 284, result.icon).then((icon) => {
+
+        resizeBase64Image(284, 284, result.icon, (err, image) => {
+          if (err) {
+            return res.json({ error: true })
+          }
+
           return res.json({
             ...result,
-            icon: icon,
+            icon: image,
             installed: includedApps.filter((app) => json.includes(app.name)).find((obj) => obj.name === req.params.applicationId) !== undefined,
             uninstallable: (result?.name !== "dash") && (result?.name !== "store") && (result?.name !== "settings") && (result?.name !== "files")
           })

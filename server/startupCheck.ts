@@ -29,6 +29,7 @@ export default function main(cb: () => void) {
 
 function checkIfAllUsersHaveTheLatestConfig(cb: () => void) {
   cb()
+
   fs.readdir(`${ENV.FsOrigin}/data/users/`, (err, users) => {
     if (err) {
       log(`(Start up) ERROR: unable to read '${ENV.FsOrigin}/data/users/'`)
@@ -51,7 +52,7 @@ function checkIfAllUsersHaveTheLatestConfig(cb: () => void) {
         if (!json.name.first) {
           json.name.first = "Unknown"
         }
-        
+
         if (!json.name.last) {
           json.name.last = "user"
         }
