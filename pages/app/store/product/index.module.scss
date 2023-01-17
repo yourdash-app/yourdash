@@ -1,7 +1,8 @@
 .root {
   transition: all 500ms ease-in-out;
   position: absolute;
-  width: 100%;
+  width: calc(100% - calc(var(--app-application-margin) * 2));
+  top: calc(var(--app-application-margin) + var(--app-panel-height) + 1rem);
 
   > section {
     @keyframes fadeIn {

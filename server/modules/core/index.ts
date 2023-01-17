@@ -1,13 +1,12 @@
 import fs from 'fs';
 import path from 'path';
 import { generateRandomStringOfLength } from '../../encryption.js';
-import { base64FromBufferImage, bufferFromBase64Image, log, resizeBase64Image, returnBase64Image } from '../../libServer.js';
+import { log, resizeBase64Image, returnBase64Image } from '../../libServer.js';
 import YourDashModule from './../../module.js';
 import quickShortcut from "./../../../types/core/panel/quickShortcut.js"
 import includedApps from '../../includedApps.js';
 import LauncherApplication from "./../../../types/core/panel/launcherApplication.js"
 import YourDashUser from '../../../types/core/user.js';
-import sharp from 'sharp';
 
 const Module: YourDashModule = {
   install() {
@@ -42,7 +41,7 @@ const Module: YourDashModule = {
 
         const json = JSON.parse(data.toString())
 
-        res.json(json)
+        return res.json(json)
       })
     })
 
@@ -94,22 +93,26 @@ const Module: YourDashModule = {
               return res.json({ error: true })
             }
 
-            resizeBase64Image(32, 32, includedApplication?.icon || returnBase64Image(path.resolve(`${api.FsOrigin}/../yourdash256.png`)))
-              .then((image) => {
-                json.push({
-                  icon: image,
-                  id: id,
-                  name: req.body.name || "undefined",
-                  url: req.body.url || '/app/dash'
-                })
-                fs.writeFile(path.resolve(`${api.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`), JSON.stringify(json), (err) => {
-                  if (err) {
-                    log(`ERROR ${err}`)
-                    return res.json({ error: true })
-                  }
-                  return res.json(json.filter((shortcut) => shortcut.id === id))
-                })
+            resizeBase64Image(32, 32, includedApplication?.icon, (err, image) => {
+              if (err) {
+                return res.json({ error: true })
+              }
+
+              json.push({
+                icon: image,
+                id: id,
+                name: req.body.name || "undefined",
+                url: req.body.url || '/app/dash'
               })
+
+              fs.writeFile(path.resolve(`${api.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`), JSON.stringify(json), (err) => {
+                if (err) {
+                  log(`ERROR ${err}`)
+                  return res.json({ error: true })
+                }
+                return res.json(json.filter((shortcut) => shortcut.id === id))
+              })
+            })
           })
         })
       } else {
@@ -123,22 +126,27 @@ const Module: YourDashModule = {
 
           if (!includedApplication) return log(`Can't create quick shortcut for unknown application: ${req.body.name}`)
 
-          resizeBase64Image(32, 32, includedApplication?.icon || returnBase64Image(path.resolve(`${api.FsOrigin}/../yourdash256.png`)))
-            .then((image) => {
-              json.push({
-                icon: image,
-                id: id,
-                name: req.body.name || "undefined",
-                url: req.body.url || '/app/dash'
-              })
-              fs.writeFile(path.resolve(`${api.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`), JSON.stringify(json), (err) => {
-                if (err) {
-                  log(`ERROR ${err}`)
-                  return res.json({ error: true })
-                }
-                res.json(json.filter((shortcut) => shortcut.id === id))
-              })
+          resizeBase64Image(32, 32, includedApplication?.icon, (err, image) => {
+            if (err) {
+              return res.json({ error: true })
+            }
+
+            json.push({
+              icon: image,
+              id: id,
+              name: req.body.name || "undefined",
+              url: req.body.url || '/app/dash'
             })
+
+            fs.writeFile(path.resolve(`${api.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`), JSON.stringify(json), (err) => {
+              if (err) {
+                log(`ERROR ${err}`)
+                return res.json({ error: true })
+              }
+
+              return res.json(json.filter((shortcut) => shortcut.id === id))
+            })
+          })
         })
       }
     })
@@ -228,19 +236,27 @@ const Module: YourDashModule = {
           const json = JSON.parse(data.toString()) as string[]
           const result = includedApps.filter((app) => json.includes(app.name)) || []
 
-          const promises = result.map((item) => {
-            return resizeBase64Image(128, 128, item.icon)
-              .then((image) => {
-                return {
+          const response: LauncherApplication[] = []
+
+          result.map((item) => {
+            return resizeBase64Image(128, 128, item.icon, (err, image) => {
+              if (err) {
+                return res.json({ error: true })
+              }
+
+              response.push(
+                {
                   displayName: item.displayName,
                   icon: image,
                   name: item.name,
                   path: item.path,
                 } as LauncherApplication
-              })
-          })
-          Promise.all(promises).then((resp) => {
-            res.json(resp)
+              )
+
+              if (response.length === result.length - 1) {
+                return res.json(response)
+              }
+            })
           })
         })
       }
@@ -252,16 +268,16 @@ const Module: YourDashModule = {
           log(`ERROR: unable to read user.json`)
           return res.json({ error: true })
         }
+
         const json: YourDashUser = JSON.parse(data.toString())
-        const originalProfileImage = json.profile.image
-        const resizedImage = sharp(bufferFromBase64Image(originalProfileImage))
-        resizedImage.resize(64, 64).toBuffer((err, buf) => {
+        const originalProfileImage = json.profile.image || returnBase64Image(path.resolve(`${api.FsOrigin}/../yourdash256.png`))
+
+
+        resizeBase64Image(64, 64, originalProfileImage, (err, image) => {
           if (err) {
-            console.log(err)
-            log(`ERROR: unable to resize image`)
             return res.json({ error: true })
           }
-          return res.json({ image: base64FromBufferImage(buf) })
+          return res.json({ image: image })
         })
       })
     })
@@ -277,15 +293,15 @@ const Module: YourDashModule = {
           return res.json({ error: true })
         }
         const json: YourDashUser = JSON.parse(data.toString())
-        const originalProfileImage = json.profile.image
-        const resizedImage = sharp(bufferFromBase64Image(originalProfileImage))
-        resizedImage.resize(256, 256).toBuffer((err, buf) => {
+        const originalProfileImage = json.profile.image || returnBase64Image(path.resolve(`${api.FsOrigin}/../yourdash256.png`))
+
+
+        resizeBase64Image(256, 256, originalProfileImage, (err, image) => {
           if (err) {
-            console.log(err)
-            log(`ERROR: unable to resize image`)
             return res.json({ error: true })
           }
-          return res.json({ image: base64FromBufferImage(buf) })
+
+          return res.json({ image: image })
         })
       })
     })

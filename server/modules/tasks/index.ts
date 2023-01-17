@@ -1,11 +1,10 @@
 import YourDashModule from '../../module.js';
 import fs from 'fs';
 import { generateRandomStringOfLength } from '../../encryption.js';
-import { base64FromBufferImage, bufferFromBase64Image, log } from "./../../libServer.js"
+import { log, resizeBase64Image } from "./../../libServer.js"
 import path from 'path';
 import TasksList from "./../../../types/tasks/list.js"
 import YourDashUser from '../../../types/core/user.js';
-import sharp from 'sharp';
 
 const module: YourDashModule = {
   install() {
@@ -276,16 +275,15 @@ const module: YourDashModule = {
 
         const json = JSON.parse(data.toString()) as YourDashUser
 
-        const profileImage = sharp(bufferFromBase64Image(json.profile.image))
-        profileImage.resize(48, 48).toBuffer((err, buf) => {
+        resizeBase64Image(48, 48, json.profile.image, (err, image) => {
           if (err) {
-            console.log(err)
-            log(`ERROR: unable to resize image`)
             return res.json({ error: true })
           }
 
           return res.json({
-            name: `${json.name.first} ${json.name.last}`, userName: json.userName, profile: { image: base64FromBufferImage(buf) }
+            name: `${json.name.first} ${json.name.last}`,
+            profile: { image: image },
+            userName: json.userName,
           })
         })
       })
