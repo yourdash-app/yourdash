@@ -40,5 +40,4 @@ yarn-error.log*
 
 README-*.md
 
-server/*.js
-server/**/*.js
+**/*.js

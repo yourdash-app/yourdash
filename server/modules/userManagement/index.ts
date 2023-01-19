@@ -7,8 +7,9 @@ import YourDashModule from './../../module.js';
 import YourDashUser, { YourDashUserSettings } from '../../../types/core/user.js';
 import { log } from './../../libServer.js';
 import console from 'console';
+import CurrentUser from "../../../types/userManagement/currentUser";
 
-const USER_CACHE: { [ key: string ]: string } = {};
+const USER_CACHE: { [key: string]: string } = {};
 
 const Module: YourDashModule = {
   install() {
@@ -23,8 +24,8 @@ const Module: YourDashModule = {
       if (req.headers.username) {
         const userName = req.headers.username as string;
         const sessionToken = req.headers.sessiontoken as string;
-        if (USER_CACHE[ userName ]) {
-          if (USER_CACHE[ userName ] === sessionToken) {
+        if (USER_CACHE[userName]) {
+          if (USER_CACHE[userName] === sessionToken) {
             next();
           } else {
             process.stdout.write(
@@ -41,7 +42,7 @@ const Module: YourDashModule = {
               if (err) return res.json({ error: true });
               const sessionKey = JSON.parse(data.toString()).sessionToken;
               if (sessionKey === sessionToken) {
-                USER_CACHE[ userName ] = sessionKey;
+                USER_CACHE[userName] = sessionKey;
                 next();
               } else {
                 process.stdout.write(chalk.bgRed(' Unauthorized '));
@@ -206,7 +207,7 @@ const Module: YourDashModule = {
                 error: false,
                 sessionToken: newSessionToken,
               });
-              USER_CACHE[ username ] = newSessionToken;
+              USER_CACHE[username] = newSessionToken;
             }
           );
         }
@@ -224,10 +225,11 @@ const Module: YourDashModule = {
           return res.json({ error: true });
         }
         const user: YourDashUser = JSON.parse(data.toString())
+        return res.send({
+          name: user.name,
+          userName: user.userName,
 
-        // @ts-ignore
-        delete user.profile
-        return res.send({ user: user });
+        } as CurrentUser);
       });
     });
 
