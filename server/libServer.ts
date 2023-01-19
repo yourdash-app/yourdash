@@ -37,7 +37,7 @@ export function base64FromBufferImage(img: Buffer): string {
   return base64
 }
 
-export function resizeBase64Image(width: number, height: number, image: string, callback: (err: boolean, image: string) => void) {
+export function resizeImage(width: number, height: number, image: string, callback: (image: string) => void, error: () => void) {
   sharp(image)
     .resize(width, height, {
       kernel: "lanczos3",
@@ -48,10 +48,10 @@ export function resizeBase64Image(width: number, height: number, image: string, 
       if (err) {
         console.log(err)
         log(`ERROR: unable to resize image`)
-        return callback(true, "")
+        return error()
       }
       log(`Triggered Sharp, width: ${width}, height: ${height}`)
-      return callback(false, base64FromBufferImage(buf))
+      return callback(base64FromBufferImage(buf))
     })
 }
 

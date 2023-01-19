@@ -34,11 +34,6 @@ export const ENV: IEnv = {
   UserFs: (req) => `${ENV.FsOrigin}/data/users/${req.headers.username}`,
 };
 
-if (!process.geteuid) {
-  log(`(Start up) ERROR: not running under a linux platform`)
-  process.exit(1)
-}
-
 if (!ENV.FsOrigin) console.error('FsOrigin was not defined.');
 
 export interface YourDashServerConfig {

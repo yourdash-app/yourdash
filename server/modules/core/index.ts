@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { generateRandomStringOfLength } from '../../encryption.js';
-import { log, resizeBase64Image, returnBase64Image } from '../../libServer.js';
+import { log, resizeImage, returnBase64Image } from '../../libServer.js';
 import YourDashModule from './../../module.js';
 import quickShortcut from "./../../../types/core/panel/quickShortcut.js"
 import includedApps from '../../includedApps.js';
@@ -13,28 +13,25 @@ const Module: YourDashModule = {
     log("Core module installed")
   },
 
-  load(request, api) {
+  load(request, moduleApi) {
 
     // #region /app panel
 
     request.get(`/panel/background-image`, (req, res) => {
-      if (!fs.existsSync(`${api.UserAppData(req)}/${this.name}/background.json`)) {
-        const defaultImage = returnBase64Image(`${api.FsOrigin}/../background.jpg`)
+      if (!fs.existsSync(`${moduleApi.UserAppData(req)}/${this.name}/background.json`)) {
+        const defaultImage = returnBase64Image(`${moduleApi.FsOrigin}/../background.jpg`)
 
-        fs.writeFile(
-          `${api.UserAppData(req)}/${this.name}/background.json`,
-          JSON.stringify({ image: defaultImage }),
-          (err) => {
-            if (err) {
-              return res.json({ error: true })
-            }
+        fs.writeFile(`${moduleApi.UserAppData(req)}/${this.name}/background.json`, JSON.stringify({ image: defaultImage }), (err) => {
+          if (err) {
+            return res.json({ error: true })
+          }
 
-            return res.json({ image: defaultImage })
-          })
+          return res.json({ image: defaultImage })
+        })
         return
       }
 
-      fs.readFile(`${api.UserAppData(req)}/${this.name}/background.json`, (err, data) => {
+      fs.readFile(`${moduleApi.UserAppData(req)}/${this.name}/background.json`, (err, data) => {
         if (err) {
           return res.json({ error: true })
         }
@@ -46,10 +43,10 @@ const Module: YourDashModule = {
     })
 
     request.get(`/panel/quick-shortcuts/`, (req, res) => {
-      if (!fs.existsSync(path.resolve(`${api.UserAppData(req)}/${this.name}/panel/quick-shortcuts/`))) {
+      if (!fs.existsSync(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/panel/quick-shortcuts/`))) {
         return res.json([]);
       }
-      fs.readFile(path.resolve(`${api.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`), (err, data) => {
+      fs.readFile(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`), (err, data) => {
         if (err) {
           log(`[${this.name}] ERROR: ${err}`)
           return res.json({ error: true });
@@ -62,17 +59,17 @@ const Module: YourDashModule = {
     request.post(`/panel/quick-shortcut/create`, (req, res) => {
 
       // check if the quick-shortcuts directory doesn't exist
-      if (!fs.existsSync(path.resolve(`${api.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`))) {
+      if (!fs.existsSync(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`))) {
 
         // create the directory
-        fs.mkdir(`${api.UserAppData(req)}/${this.name}/panel/quick-shortcuts/`, { recursive: true }, (err) => {
+        fs.mkdir(`${moduleApi.UserAppData(req)}/${this.name}/panel/quick-shortcuts/`, { recursive: true }, (err) => {
           if (err) {
             log(`[${this.name}] ERROR: ${err}`)
             return process.exit(1)
           }
 
           // write a blank array to the shortcuts.json file
-          fs.writeFile(path.resolve(`${api.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`), "[]", (err) => {
+          fs.writeFile(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`), "[]", (err) => {
             if (err) {
               log(`[${this.name}] ERROR: ${err}`)
               return process.exit(1)
@@ -93,30 +90,25 @@ const Module: YourDashModule = {
               return res.json({ error: true })
             }
 
-            resizeBase64Image(32, 32, includedApplication?.icon, (err, image) => {
-              if (err) {
-                return res.json({ error: true })
-              }
-
+            resizeImage(32, 32, path.resolve(`${moduleApi.FsOrigin}/../assets/apps/${includedApplication.name}.png`), (image) => {
               json.push({
-                icon: image,
-                id: id,
-                name: req.body.name || "undefined",
-                url: req.body.url || '/app/dash'
+                icon: image, id: id, name: req.body.name || "undefined", url: req.body.url || '/app/dash'
               })
 
-              fs.writeFile(path.resolve(`${api.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`), JSON.stringify(json), (err) => {
+              fs.writeFile(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`), JSON.stringify(json), (err) => {
                 if (err) {
                   log(`ERROR ${err}`)
                   return res.json({ error: true })
                 }
                 return res.json(json.filter((shortcut) => shortcut.id === id))
               })
+            }, () => {
+              return res.json({ error: true })
             })
           })
         })
       } else {
-        fs.readFile(path.resolve(`${api.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`), (err, data) => {
+        fs.readFile(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`), (err, data) => {
           if (err) {
             data = Buffer.from("[]")
           }
@@ -126,19 +118,12 @@ const Module: YourDashModule = {
 
           if (!includedApplication) return log(`Can't create quick shortcut for unknown application: ${req.body.name}`)
 
-          resizeBase64Image(32, 32, includedApplication?.icon, (err, image) => {
-            if (err) {
-              return res.json({ error: true })
-            }
-
+          resizeImage(32, 32, includedApplication?.icon, (image) => {
             json.push({
-              icon: image,
-              id: id,
-              name: req.body.name || "undefined",
-              url: req.body.url || '/app/dash'
+              icon: image, id: id, name: req.body.name || "undefined", url: req.body.url || '/app/'
             })
 
-            fs.writeFile(path.resolve(`${api.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`), JSON.stringify(json), (err) => {
+            fs.writeFile(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`), JSON.stringify(json), (err) => {
               if (err) {
                 log(`ERROR ${err}`)
                 return res.json({ error: true })
@@ -146,16 +131,18 @@ const Module: YourDashModule = {
 
               return res.json(json.filter((shortcut) => shortcut.id === id))
             })
+          },
+          () => {
+            return res.json({ error: true })
           })
         })
       }
     })
 
     request.post(`/panel/quick-shortcut/:id`, (req, res) => {
-      if (!fs.existsSync(path.resolve(`${api.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`)))
-        return res.json({ error: true })
+      if (!fs.existsSync(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`))) return res.json({ error: true })
 
-      fs.readFile(path.resolve(`${api.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`), (err, data) => {
+      fs.readFile(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`), (err, data) => {
         if (err) {
           log(`[${this.name}] ERROR: ${err}`)
           return res.json({ error: true })
@@ -168,14 +155,11 @@ const Module: YourDashModule = {
 
         const shortcutInd = json.indexOf(shortcut)
 
-        if (req.body.name)
-          json[ shortcutInd ].name = req.body.name
-        if (req.body.icon)
-          json[ shortcutInd ].icon = req.body.icon
-        if (req.body.url)
-          json[ shortcutInd ].url = req.body.url
+        if (req.body.name) json[shortcutInd].name = req.body.name
+        if (req.body.icon) json[shortcutInd].icon = req.body.icon
+        if (req.body.url) json[shortcutInd].url = req.body.url
 
-        fs.writeFile(path.resolve(`${api.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`), JSON.stringify(json), (err) => {
+        fs.writeFile(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`), JSON.stringify(json), (err) => {
           if (err) {
             log(`[${this.name}] ERROR: ${err}`)
             return res.json({ error: true })
@@ -187,10 +171,9 @@ const Module: YourDashModule = {
     });
 
     request.delete(`/panel/quick-shortcut/:id`, (req, res) => {
-      if (!fs.existsSync(path.resolve(`${api.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`)))
-        return res.json({ error: true })
+      if (!fs.existsSync(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`))) return res.json({ error: true })
 
-      fs.readFile(path.resolve(`${api.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`), (err, data) => {
+      fs.readFile(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`), (err, data) => {
         if (err) {
           log(`[${this.name}] ERROR: ${err}`)
           return res.json({ error: true })
@@ -200,7 +183,7 @@ const Module: YourDashModule = {
 
         json = json.filter((shortcut) => shortcut.id !== req.params.id)
 
-        fs.writeFile(path.resolve(`${api.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`), JSON.stringify(json), (err) => {
+        fs.writeFile(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`), JSON.stringify(json), (err) => {
           if (err) {
             log(`[${this.name}] ERROR: ${err}`)
             return res.json({ error: true })
@@ -212,23 +195,17 @@ const Module: YourDashModule = {
     });
 
     request.get(`/panel/launcher/apps`, (req, res) => {
-      if (!fs.existsSync(path.resolve(`${api.FsOrigin}/installed_apps.json`))) {
+      if (!fs.existsSync(path.resolve(`${moduleApi.FsOrigin}/installed_apps.json`))) {
         const defaultApps = [ "dash", "store", "settings", "files" ]
-        fs.writeFile(
-          path.resolve(`${api.FsOrigin}/installed_apps.json`),
-          JSON.stringify([
-            ...defaultApps
-          ]),
-          (err) => {
-            if (err) {
-              log(`ERROR: cannot write installed_apps.json`)
-              return res.json({ error: true });
-            }
-            res.json(defaultApps);
+        fs.writeFile(path.resolve(`${moduleApi.FsOrigin}/installed_apps.json`), JSON.stringify([ ...defaultApps ]), (err) => {
+          if (err) {
+            log(`ERROR: cannot write installed_apps.json`)
+            return res.json({ error: true });
           }
-        );
+          res.json(defaultApps);
+        });
       } else {
-        fs.readFile(path.resolve(`${api.FsOrigin}/installed_apps.json`), (err, data) => {
+        fs.readFile(path.resolve(`${moduleApi.FsOrigin}/installed_apps.json`), (err, data) => {
           if (err) {
             log("ERROR: couldn't read installed_apps.json")
             return res.json({ error: true })
@@ -239,23 +216,16 @@ const Module: YourDashModule = {
           const response: LauncherApplication[] = []
 
           result.map((item) => {
-            return resizeBase64Image(128, 128, item.icon, (err, image) => {
-              if (err) {
-                return res.json({ error: true })
-              }
-
-              response.push(
-                {
-                  displayName: item.displayName,
-                  icon: image,
-                  name: item.name,
-                  path: item.path,
-                } as LauncherApplication
-              )
+            return resizeImage(128, 128, item.icon, (image) => {
+              response.push({
+                displayName: item.displayName, icon: image, name: item.name, path: item.path,
+              } as LauncherApplication)
 
               if (response.length === result.length - 1) {
                 return res.json(response)
               }
+            }, () => {
+              return res.json({ error: true })
             })
           })
         })
@@ -263,21 +233,20 @@ const Module: YourDashModule = {
     })
 
     request.get(`/panel/user/profile/picture`, (req, res) => {
-      fs.readFile(`${api.UserFs(req)}/user.json`, (err, data) => {
+      fs.readFile(`${moduleApi.UserFs(req)}/user.json`, (err, data) => {
         if (err) {
           log(`ERROR: unable to read user.json`)
           return res.json({ error: true })
         }
 
         const json: YourDashUser = JSON.parse(data.toString())
-        const originalProfileImage = json.profile.image || returnBase64Image(path.resolve(`${api.FsOrigin}/../yourdash256.png`))
+        const originalProfileImage = json.profile.image || returnBase64Image(path.resolve(`${moduleApi.FsOrigin}/../yourdash256.png`))
 
 
-        resizeBase64Image(64, 64, originalProfileImage, (err, image) => {
-          if (err) {
-            return res.json({ error: true })
-          }
+        resizeImage(64, 64, originalProfileImage, (image) => {
           return res.json({ image: image })
+        }, () => {
+          return res.json({ error: true })
         })
       })
     })
@@ -287,27 +256,29 @@ const Module: YourDashModule = {
     // #region settings
 
     request.get(`/settings/user/profile/image`, (req, res) => {
-      fs.readFile(`${api.UserFs(req)}/user.json`, (err, data) => {
+      fs.readFile(`${moduleApi.UserFs(req)}/user.json`, (err, data) => {
         if (err) {
           log(`ERROR: unable to read user.json`)
           return res.json({ error: true })
         }
         const json: YourDashUser = JSON.parse(data.toString())
-        const originalProfileImage = json.profile.image || returnBase64Image(path.resolve(`${api.FsOrigin}/../yourdash256.png`))
+        const originalProfileImage = json.profile.image || returnBase64Image(path.resolve(`${moduleApi.FsOrigin}/../yourdash256.png`))
 
 
-        resizeBase64Image(256, 256, originalProfileImage, (err, image) => {
+        resizeImage(256, 256, originalProfileImage, (image) => {
           if (err) {
             return res.json({ error: true })
           }
 
           return res.json({ image: image })
+        }, () => {
+          return res.json({ error: true })
         })
       })
     })
 
     request.get(`/settings/user/profile`, (req, res) => {
-      fs.readFile(`${api.UserFs(req)}/user.json`, (err, data) => {
+      fs.readFile(`${moduleApi.UserFs(req)}/user.json`, (err, data) => {
         if (err) {
           log(`ERROR: unable to read user.json`)
           return res.json({ error: true })
@@ -316,14 +287,12 @@ const Module: YourDashModule = {
 
 
         return res.json({
-          name: json.name,
-          profile: {
+          name: json.name, profile: {
             description: json.profile.description,
             externalLinks: json.profile.externalLinks,
             location: json.profile.location,
             status: json.profile.status
-          },
-          userName: json.userName
+          }, userName: json.userName
         })
       })
     })
@@ -331,24 +300,17 @@ const Module: YourDashModule = {
     request.post(`/settings/user/profile`, (req, res) => {
 
       const {
-        firstName,
-        lastName,
-        userName,
-        description
+        firstName, lastName, userName, description
       } = req.body
 
       console.log(req.body)
 
-      if (!firstName)
-        return res.json({ error: "no firstName supplied" })
-      if (!lastName)
-        return res.json({ error: "no lastName supplied" })
-      if (!userName)
-        return res.json({ error: "no userName supplied" })
-      if (!description)
-        return res.json({ error: "no description supplied" })
+      if (!firstName) return res.json({ error: "no firstName supplied" })
+      if (!lastName) return res.json({ error: "no lastName supplied" })
+      if (!userName) return res.json({ error: "no userName supplied" })
+      if (!description) return res.json({ error: "no description supplied" })
 
-      fs.readFile(`${api.UserFs(req)}/user.json`, (err, data) => {
+      fs.readFile(`${moduleApi.UserFs(req)}/user.json`, (err, data) => {
         if (err) {
           log(`ERROR: unable to read user.json`)
           return res.json({ error: true })
@@ -360,7 +322,7 @@ const Module: YourDashModule = {
         json.userName = userName
         json.profile.description = description
 
-        fs.writeFile(`${api.UserFs(req)}/user.json`, JSON.stringify(json), (err) => {
+        fs.writeFile(`${moduleApi.UserFs(req)}/user.json`, JSON.stringify(json), (err) => {
           if (err) {
             log(`(${this.name}) ERROR: unable to write to user.json`)
             return res.json({ error: true })
@@ -376,20 +338,15 @@ const Module: YourDashModule = {
     // #region general
 
     request.get(`/instance/installed/apps`, (_req, res) => {
-      if (!fs.existsSync(path.resolve(`${api.FsOrigin}/installed_apps.json`))) {
-        fs.writeFile(
-          path.resolve(`${api.FsOrigin}/installed_apps.json`),
-          JSON.stringify({ apps: [] }),
-          (err) => {
-            if (err) return res.json({ error: true });
-            return res.json({ apps: [] });
-          }
-        );
+      if (!fs.existsSync(path.resolve(`${moduleApi.FsOrigin}/installed_apps.json`))) {
+        fs.writeFile(path.resolve(`${moduleApi.FsOrigin}/installed_apps.json`), JSON.stringify({ apps: [] }), (err) => {
+          if (err) return res.json({ error: true });
+          return res.json({ apps: [] });
+        });
       }
 
-      fs.readFile(path.resolve(`${api.FsOrigin}/installed_apps.json`), (err, data) => {
-        if (err)
-          return res.json({ error: true });
+      fs.readFile(path.resolve(`${moduleApi.FsOrigin}/installed_apps.json`), (err, data) => {
+        if (err) return res.json({ error: true });
         const json = JSON.parse(data.toString()) || [];
         return res.json(json);
       })
@@ -397,42 +354,41 @@ const Module: YourDashModule = {
 
     request.get(`/instance/config`, (_req, res) => {
       return res.json({
-        ...api.SERVER_CONFIG,
-        instanceEncryptionKey: "REDACTED"
+        ...moduleApi.SERVER_CONFIG, instanceEncryptionKey: "REDACTED"
       })
     })
 
     request.get(`/instance/login/background`, (_req, res) => {
-      return res.json({ image: api.SERVER_CONFIG.loginPageConfig.background || "" })
+      return res.json({ image: moduleApi.SERVER_CONFIG.loginPageConfig.background || "" })
     })
 
     request.get(`/instance/login/name`, (req, res) => {
-      return res.json({ name: api.SERVER_CONFIG.name })
+      return res.json({ name: moduleApi.SERVER_CONFIG.name })
     })
 
     request.get(`/instance/login/logo`, (_req, res) => {
-      return res.json({ image: api.SERVER_CONFIG.loginPageConfig.logo || "" })
+      return res.json({ image: moduleApi.SERVER_CONFIG.loginPageConfig.logo || "" })
     })
 
     request.get(`/instance/login/message`, (_req, res) => {
-      return res.json({ text: api.SERVER_CONFIG.loginPageConfig.message.content || "" })
+      return res.json({ text: moduleApi.SERVER_CONFIG.loginPageConfig.message.content || "" })
     })
 
 
     request.get(`/instance/default/background`, (_req, res) => {
-      return res.json({ image: api.SERVER_CONFIG.defaultBackground })
+      return res.json({ image: moduleApi.SERVER_CONFIG.defaultBackground })
     })
 
     request.get(`/instance/favicon`, (_req, res) => {
-      return res.send(api.SERVER_CONFIG.favicon)
+      return res.send(moduleApi.SERVER_CONFIG.favicon)
     })
 
     request.get(`/instance/logo`, (_req, res) => {
-      return res.json({ image: api.SERVER_CONFIG.logo })
+      return res.json({ image: moduleApi.SERVER_CONFIG.logo })
     })
 
     request.get(`/instance/version`, (_req, res) => {
-      return res.json({ version: api.SERVER_CONFIG.version })
+      return res.json({ version: moduleApi.SERVER_CONFIG.version })
     })
 
     request.post(`/test/echo`, (req, res) => {

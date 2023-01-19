@@ -1,7 +1,7 @@
 import YourDashModule from '../../module.js';
 import fs from 'fs';
 import { generateRandomStringOfLength } from '../../encryption.js';
-import { log, resizeBase64Image } from "./../../libServer.js"
+import { log, resizeImage } from "./../../libServer.js"
 import path from 'path';
 import TasksList from "./../../../types/tasks/list.js"
 import YourDashUser from '../../../types/core/user.js';
@@ -275,7 +275,7 @@ const module: YourDashModule = {
 
         const json = JSON.parse(data.toString()) as YourDashUser
 
-        resizeBase64Image(48, 48, json.profile.image, (err, image) => {
+        resizeImage(48, 48, json.profile.image, (err, image) => {
           if (err) {
             return res.json({ error: true })
           }

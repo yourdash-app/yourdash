@@ -2,7 +2,7 @@ import path from "path";
 import YourDashModule from "./../../module.js";
 import fs from "fs"
 import includedApps, { DEFAULT_APPS } from "../../includedApps.js"
-import { log, resizeBase64Image } from "../../libServer.js";
+import { log, resizeImage } from "../../libServer.js";
 import InstalledApplicationList from "../../../types/store/applicationList.js";
 import { YourDashServerConfig } from "../../index.js";
 import YourDashUser, { YourDashUserPermissions } from "./../../../types/core/user.js"
@@ -23,7 +23,7 @@ const module: YourDashModule = {
 
     request.get(`/included/apps`, (_req, res) => {
       const output = includedApps.map((app) => {
-        resizeBase64Image(96, 96, app.icon, (err, image) => {
+        resizeImage(96, 96, app.icon, (err, image) => {
           if (err) {
             return res.json({ error: true })
           }
@@ -53,7 +53,7 @@ const module: YourDashModule = {
           return res.json({ error: true })
         }
 
-        resizeBase64Image(284, 284, result.icon, (err, image) => {
+        resizeImage(284, 284, result.icon, (err, image) => {
           if (err) {
             return res.json({ error: true })
           }
