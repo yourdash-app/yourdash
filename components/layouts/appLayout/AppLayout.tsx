@@ -23,13 +23,13 @@ const AppLayout: React.FC<IAppLayout> = ({
     const queryString = new URLSearchParams(paramString)
 
     setStandaloneInterface(queryString.get("standalone") === "true")
-    setHasLoaded(true)
 
     verifyAndReturnJson(
       SERVER.get(`/core/panel/background-image`),
       (data) => {
         setBackgroundImage(data.image)
         setApplicationWindowMode(true)
+        setHasLoaded(true)
       },
       () => {
         console.error("unable to load user's background image")
@@ -51,7 +51,8 @@ const AppLayout: React.FC<IAppLayout> = ({
             setAppOpenAnimation(value)
           }}
         />
-        <div data-app-window={applicationWindowMode} data-app-transparent-background={transparentBackground} data-app-root-container style={{ opacity: appOpenAnimation ? "0" : "1" }}
+        <div data-app-window={applicationWindowMode} data-app-transparent-background={transparentBackground}
+          data-app-root-container style={{ opacity: appOpenAnimation ? "0" : "1" }}
           className={styles.content}>
           {children}
         </div>

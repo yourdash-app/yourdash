@@ -12,9 +12,10 @@
   --app-application-margin: 0rem;
   --app-application-rounding: 0rem;
   overflow: auto;
+  animation: zoomInAnimation 1500ms ease-in-out forwards;
   height: calc(
-    100vh -
-      calc(calc(var(--app-application-margin) * 2) + var(--app-panel-height))
+          100vh -
+          calc(calc(var(--app-application-margin) * 2) + var(--app-panel-height))
   );
   width: calc(100vw - calc(var(--app-application-margin) * 2));
   transition-property: opacity, height, width, margin, border-radius;
@@ -24,6 +25,7 @@
   border-radius: var(--app-application-rounding);
   box-shadow: 0 0 1rem #00000055;
   background-color: var(--background-color);
+
   &[data-app-window="true"] {
     --app-application-margin: 1rem;
     --app-application-rounding: 1rem;
@@ -36,7 +38,7 @@
 
   &[data-app-transparent-background="true"] {
     background: transparent;
-    box-shadow: 0 0 0rem #00000055;
+    box-shadow: 0 0 0 #00000055;
   }
 
   ::-webkit-scrollbar {
@@ -45,11 +47,20 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    border-radius: 8px var(--app-application-rounding)
-      var(--app-application-rounding) 8px;
+    border-radius: 8px var(--app-application-rounding) var(--app-application-rounding) 8px;
     background-color: var(--scrollbar-fg);
     border: transparent solid 6px;
     background-clip: content-box;
     transition: var(--transition);
+  }
+}
+
+@keyframes zoomInAnimation {
+  0% {
+    scale: 0;
+  }
+
+  100% {
+    scale: 1;
   }
 }

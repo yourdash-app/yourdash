@@ -7,13 +7,13 @@ import fs from "fs"
 
 const defaultCategories: SideBarCategory[] = [
   {
-    title: "Quick Access",
     children: [
       {
         title: "Home",
         path: "/"
       }
-    ]
+    ],
+    title: "Quick Access",
   }
 ]
 
@@ -27,7 +27,7 @@ const module: YourDashModule = {
           log(`ERROR: unable to read file ${api.UserFs}/user.json`)
           return
         }
-        let json = JSON.parse(data.toString()) as YourDashUser
+        const json = JSON.parse(data.toString()) as YourDashUser
         res.send({ quota: json.quota })
       })
     });
@@ -39,9 +39,7 @@ const module: YourDashModule = {
           res.json({ error: true })
         }
 
-        res.json({
-          usage: stats.size
-        })
+        res.json({ usage: stats.size })
       })
     })
 
@@ -67,7 +65,7 @@ const module: YourDashModule = {
           log(`ERROR: couldn't read ${api.UserAppData(req)}/files/sidebar/categories.json`)
           return res.json({ error: true })
         }
-        let json = JSON.parse(data.toString())
+        const json = JSON.parse(data.toString())
         return res.json({ categories: json })
       })
     });
@@ -94,8 +92,12 @@ const module: YourDashModule = {
       })
     })
   },
-  install() { },
-  unload() { },
+  install() {
+    return
+  },
+  unload() {
+    return
+  },
 };
 
 export default module;
