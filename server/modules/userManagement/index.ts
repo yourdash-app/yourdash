@@ -6,7 +6,6 @@ import { ENV } from '../../index.js';
 import YourDashModule from './../../module.js';
 import YourDashUser, { YourDashUserSettings } from '../../../types/core/user.js';
 import { log } from './../../libServer.js';
-import console from 'console';
 import CurrentUser from "../../../types/userManagement/currentUser";
 
 const USER_CACHE: { [key: string]: string } = {};
@@ -16,9 +15,9 @@ const Module: YourDashModule = {
     log(`installed the ${this.name} module`)
   },
 
-  load(request, api) {
+  load(request, moduleApi) {
     request.legacy().use((req, res, next) => {
-      if (req.path.startsWith('/test')) return res.send('yourdash instance');
+      if (req.path.startsWith('/test')) return res.send('YourDash instance');
       if (req.path.startsWith(`/api/${this.name}/login`)) return next();
       if (req.path.startsWith(`/api/core/instance/login`)) return next();
       if (req.headers.username) {
@@ -29,9 +28,7 @@ const Module: YourDashModule = {
             next();
           } else {
             process.stdout.write(
-              `${chalk.black(chalk.bgYellow('Cached data was used!'))} ${chalk.bgRed(
-                ' Unauthorized '
-              )}`
+              `${chalk.black(chalk.bgYellow('Cached data was used!'))} ${chalk.bgRed(' Unauthorized ')}`
             );
             return res.json({ error: true });
           }
@@ -60,12 +57,23 @@ const Module: YourDashModule = {
       const { username } = req.params;
       const password = req.headers.password as string;
       const { name } = req.headers;
-      console.log(password);
-      if (!password) return res.json({ error: true });
+
+      if (!password)
+        return res.json({ error: true });
+
       if (fs.existsSync(path.resolve(`${ENV.FsOrigin}/data/users/${username}`)))
         return res.sendStatus(403);
-      fs.mkdir(`${ENV.FsOrigin}/data/users/${username}/`, { recursive: true }, (err) => {
-        if (err) return res.json({ error: true });
+
+      fs.mkdir(`${moduleApi.FsOrigin}/data/users/${username}/profile`, { recursive: true }, (err) => {
+        if (err)
+          return res.json({ error: true });
+
+        fs.writeFileSync(
+          `${moduleApi.FsOrigin}/data/users/admin/profile/picture.png`,
+          fs.readFileSync(path.resolve(`${moduleApi.FsOrigin}/../default_user_profile.png`)
+          )
+        )
+
         fs.writeFile(
           `${ENV.FsOrigin}/data/users/${username}/user.json`,
           JSON.stringify({
@@ -132,7 +140,7 @@ const Module: YourDashModule = {
             if (err) return res.sendStatus(500);
             fs.writeFile(
               `${ENV.FsOrigin}/data/users/${username}/keys.json`,
-              JSON.stringify({ hashedKey: encrypt(password, api.SERVER_CONFIG), }),
+              JSON.stringify({ hashedKey: encrypt(password, moduleApi.SERVER_CONFIG), }),
               (err) => {
                 if (err) return res.sendStatus(500);
                 fs.writeFile(
@@ -184,7 +192,7 @@ const Module: YourDashModule = {
         const keysJson = JSON.parse(data.toString());
 
         // check if the password is correct
-        if (password === decrypt(keysJson.hashedKey, api.SERVER_CONFIG)) {
+        if (password === decrypt(keysJson.hashedKey, moduleApi.SERVER_CONFIG)) {
           const newSessionToken = generateRandomStringOfLength(256);
 
           // write the user's new session token
