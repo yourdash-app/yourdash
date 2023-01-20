@@ -1,6 +1,4 @@
 import InstalledApplication from "../types/store/installedApplication.js"
-import { returnBase64Image } from "./libServer.js"
-import * as path from "path"
 
 const includedApps: InstalledApplication[] = [
   {
@@ -8,7 +6,7 @@ const includedApps: InstalledApplication[] = [
     copyright: "MIT",
     description: "Test yourdash server endpoints",
     displayName: "Endpoint Tester",
-    icon: returnBase64Image(path.resolve("./assets/apps/endpoint-tester.png")),
+    icon: "endpoint-tester.png",
     moduleRequirements: [],
     name: "endpoint-tester",
     path: "/app/endpoint-tester",
@@ -19,7 +17,7 @@ const includedApps: InstalledApplication[] = [
     copyright: "MIT",
     description: "The YourDash dashboard",
     displayName: "Dashboard",
-    icon: returnBase64Image(path.resolve("./assets/apps/dash.png")),
+    icon: "dash.png",
     moduleRequirements: [],
     name: "dash",
     path: "/app/dash",
@@ -30,7 +28,7 @@ const includedApps: InstalledApplication[] = [
     copyright: "MIT",
     description: "The YourDash file manager",
     displayName: "Files",
-    icon: returnBase64Image(path.resolve("./assets/apps/files.png")),
+    icon: "files.png",
     moduleRequirements: [],
     name: "files",
     path: "/app/files",
@@ -40,7 +38,7 @@ const includedApps: InstalledApplication[] = [
     copyright: "MIT",
     description: "The YourDash application and extension manager",
     displayName: "Store",
-    icon: returnBase64Image(path.resolve("./assets/apps/store.png")),
+    icon: "store.png",
     moduleRequirements: [],
     name: "store",
     path: "/app/store",
@@ -50,7 +48,7 @@ const includedApps: InstalledApplication[] = [
     copyright: "MIT",
     description: "The YourDash settings manager",
     displayName: "Settings",
-    icon: returnBase64Image(path.resolve("./assets/apps/settings.png")),
+    icon: "settings.png",
     moduleRequirements: [],
     name: "settings",
     path: "/app/settings",
@@ -60,7 +58,7 @@ const includedApps: InstalledApplication[] = [
     copyright: "MIT",
     description: "The YourDash built-in mastodon client",
     displayName: "Mastodon Client",
-    icon: returnBase64Image(path.resolve("./assets/apps/mastodon.png")),
+    icon: "mastodon.png",
     moduleRequirements: [],
     name: "mastodon",
     path: "/app/mastodon",
@@ -70,7 +68,7 @@ const includedApps: InstalledApplication[] = [
     copyright: "MIT",
     description: "The todo list / task organization application for YourDash",
     displayName: "Tasks",
-    icon: returnBase64Image(path.resolve("./assets/apps/placeholder-icon.png")),
+    icon: "placeholder-icon.png",
     moduleRequirements: [
       "tasks"
     ],
@@ -82,7 +80,7 @@ const includedApps: InstalledApplication[] = [
     copyright: "MIT",
     description: "The YourDash code editor, edit files seamlessly with others.",
     displayName: "Code Studio",
-    icon: returnBase64Image(path.resolve("./assets/apps/code-studio.png")),
+    icon: "code-studio.png",
     moduleRequirements: [],
     name: "code-studio",
     path: "/app/code-studio",

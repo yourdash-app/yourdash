@@ -47,13 +47,14 @@ export function resizeImage(width: number, height: number, image: string, callba
     .toBuffer((err, buf) => {
       if (err) {
         console.log(err)
-        log(`ERROR: unable to resize image`)
+        log(`ERROR: unable to resize image: ${image}`)
         return error()
       }
       log(`Triggered Sharp, width: ${width}, height: ${height}`)
       return callback(base64FromBufferImage(buf))
     })
 }
+
 
 export class RequestManager {
 

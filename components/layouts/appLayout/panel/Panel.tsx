@@ -41,8 +41,8 @@ const Panel: React.FC<IPanel> = ({
   useEffect(() => {
     verifyAndReturnJson(
       SERVER.get(`/userManagement/current/user`),
-      (res: { user: YourDashUser }) => {
-        setUserData(res.user)
+      (res: YourDashUser) => {
+        setUserData(res)
       },
       () => {
         console.error(`error fetching user`)
@@ -90,7 +90,7 @@ const Panel: React.FC<IPanel> = ({
         <div data-title>Hiya, {userData?.name?.first}</div>
         <TextInput data-search onChange={(e) => {
           setSearchQuery(e.currentTarget.value.toLowerCase())
-        }} placeholder="Search" />
+        }} placeholder="Search"/>
       </div>
       <div className={styles.launcherGrid}>
         {
@@ -108,7 +108,7 @@ const Panel: React.FC<IPanel> = ({
                             url: app.path
                           }) }),
                           (data) => {
-                            setQuickShortcuts([ ...quickShortcuts, data[ 0 ] ])
+                            setQuickShortcuts([ ...quickShortcuts, data[0] ])
                           },
                           () => {
                             console.error(`unable to create quick shortcut with name: ${app.name}`)
@@ -127,7 +127,7 @@ const Panel: React.FC<IPanel> = ({
                       appIsOpening(false)
                     }, 500)
                   }}>
-                    <img src={app.icon} draggable={false} alt="" />
+                    <img src={app.icon} draggable={false} alt=""/>
                     <span>{app.name}</span>
                     {/* <div onClick={() => {
                   // show a dropdown
@@ -138,14 +138,14 @@ const Panel: React.FC<IPanel> = ({
             : <Button onClick={() => {
               router.reload()
             }}>
-              Reload Launcher Items
+                Reload Launcher Items
             </Button>
         }
       </div>
       <footer data-footer>
         <AuthenticatedImg onClick={() => {
           router.push(`/app/user/profile/${userData?.userName}`)
-        }} tabIndex={0} src={"/core/panel/user/profile/picture"} alt="" />
+        }} tabIndex={0} src={"/core/panel/user/profile/picture"} alt=""/>
         <span>{userData?.name?.first} {userData?.name?.last}</span>
         <div onClick={() => {
           setLauncherSlideOutVisible(false)
@@ -193,7 +193,7 @@ const Panel: React.FC<IPanel> = ({
                 }, 500)
               }}>
                 <div>
-                  <img draggable={false} src={shortcut.icon} alt="" />
+                  <img draggable={false} src={shortcut.icon} alt=""/>
                   {
                     router.pathname === shortcut.url ?
                       <div data-active-indicator></div> : <div></div>
@@ -210,7 +210,7 @@ const Panel: React.FC<IPanel> = ({
                 url: "/app/files"
               }) }),
               (data) => {
-                setQuickShortcuts([ ...quickShortcuts, data[ 0 ] ])
+                setQuickShortcuts([ ...quickShortcuts, data[0] ])
               },
               () => {
                 console.error(`unable to create quick shortcut with name: files`)
@@ -225,7 +225,7 @@ const Panel: React.FC<IPanel> = ({
     <div className={styles.account}>
       <AuthenticatedImg onClick={() => {
         setAccountDropdownVisible(!accountDropdownVisible)
-      }} tabIndex={0} src={"/core/panel/user/profile/picture"} alt="" />
+      }} tabIndex={0} src={"/core/panel/user/profile/picture"} alt=""/>
       <div style={{
         background: "#00000040",
         height: "100vh",
@@ -248,26 +248,26 @@ const Panel: React.FC<IPanel> = ({
           }}
           compact={true}
           className={styles.accountDropdown}>
-          <RowContainer className={styles.accountDropdownQuickActions} >
+          <RowContainer className={styles.accountDropdownQuickActions}>
             <div onClick={() => {
               setAccountDropdownVisible(false)
               localStorage.removeItem("sessiontoken")
               localStorage.removeItem("username")
               router.push("/login/")
             }}>
-              <Icon name='logout' color="var(--button-fg)" />
+              <Icon name='logout' color="var(--button-fg)"/>
             </div>
             <div onClick={() => {
               setAccountDropdownVisible(false)
               router.push("/about")
             }}>
-              <Icon name='info-16' color="var(--button-fg)" />
+              <Icon name='info-16' color="var(--button-fg)"/>
             </div>
             <div onClick={() => {
               setAccountDropdownVisible(false)
               router.push("/app/settings")
             }}>
-              <Icon name='gear-16' color="var(--button-fg)" />
+              <Icon name='gear-16' color="var(--button-fg)"/>
             </div>
           </RowContainer>
           <ColContainer>
@@ -340,7 +340,7 @@ const Panel: React.FC<IPanel> = ({
         </ColContainer>
       </div>
     </div>
-  </div >;
+  </div>;
 };
 
 export default Panel;

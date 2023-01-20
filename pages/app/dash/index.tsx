@@ -16,8 +16,7 @@ const Dash: NextPageWithLayout = () => {
   useEffect(() => {
     verifyAndReturnJson(
       SERVER.get("/userManagement/current/user"),
-      (response) => {
-        const user = response.user
+      (user) => {
         setName(user?.name?.first + " " + user?.name?.last)
       },
       () => {

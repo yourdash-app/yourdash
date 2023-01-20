@@ -192,7 +192,7 @@ function checkConfigurationVersion(cb: () => void) {
           checkConfigurationVersion(cb)
         })
       })
-    // eslint-disable-next-line no-fallthrough
+      // eslint-disable-next-line no-fallthrough
     default:
       cb()
   }
@@ -200,11 +200,16 @@ function checkConfigurationVersion(cb: () => void) {
 
 function checkIfAdministratorUserExists(cb: () => void) {
   if (!fs.existsSync(path.resolve(`${ENV.FsOrigin}/data/users/admin/user.json`))) {
-    fs.mkdir(path.resolve(`${ENV.FsOrigin}/data/users/admin/`), { recursive: true }, (err) => {
+    fs.mkdir(path.resolve(`${ENV.FsOrigin}/data/users/admin/profile/`), { recursive: true }, (err) => {
       if (err) {
         log(`${err}`);
         process.exit(1)
       }
+      fs.writeFileSync(
+        `${ENV.FsOrigin}/data/users/admin/profile/picture.png`,
+        fs.readFileSync(path.resolve(`${ENV.FsOrigin}/../default_user_profile.png`)
+        )
+      )
       fs.writeFile(
         `${ENV.FsOrigin}/data/users/admin/user.json`,
         JSON.stringify({
