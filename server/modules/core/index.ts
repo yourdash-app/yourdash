@@ -51,6 +51,7 @@ const Module: YourDashModule = {
           log(`[${this.name}] ERROR: ${err}`)
           return res.json({ error: true });
         }
+
         const json = JSON.parse(data.toString()) as quickShortcut[]
         return res.json(json)
       })
@@ -90,7 +91,7 @@ const Module: YourDashModule = {
               return res.json({ error: true })
             }
 
-            resizeImage(32, 32, path.resolve(`${moduleApi.FsOrigin}/../assets/apps/${includedApplication.icon}`), (image) => {
+            resizeImage(48, 48, path.resolve(`${moduleApi.FsOrigin}/../assets/apps/${includedApplication.icon}`), (image) => {
               json.push({
                 icon: image, id: id, name: req.body.name || "undefined", url: req.body.url || '/app/dash'
               })
@@ -218,10 +219,13 @@ const Module: YourDashModule = {
           result.map((item) => {
             return resizeImage(128, 128, `${moduleApi.FsOrigin}/../assets/apps/${item.icon}`, (image) => {
               response.push({
-                displayName: item.displayName, icon: image, name: item.name, path: item.path,
+                displayName: item.displayName,
+                icon: image,
+                name: item.name,
+                path: item.path,
               } as LauncherApplication)
 
-              if (response.length === result.length - 1) {
+              if (response.length === result.length) {
                 return res.json(response)
               }
             }, () => {
@@ -245,24 +249,10 @@ const Module: YourDashModule = {
     // #region settings
 
     request.get(`/settings/user/profile/image`, (req, res) => {
-      fs.readFile(`${moduleApi.UserFs(req)}/user.json`, (err, data) => {
-        if (err) {
-          log(`ERROR: unable to read user.json`)
-          return res.json({ error: true })
-        }
-        const json: YourDashUser = JSON.parse(data.toString())
-        const originalProfileImage = json.profile.image || returnBase64Image(path.resolve(`${moduleApi.FsOrigin}/../yourdash256.png`))
-
-
-        resizeImage(256, 256, originalProfileImage, (image) => {
-          if (err) {
-            return res.json({ error: true })
-          }
-
-          return res.json({ image: image })
-        }, () => {
-          return res.json({ error: true })
-        })
+      resizeImage(256, 256, path.resolve(`${moduleApi.UserFs(req)}/profile/picture.png`), (image) => {
+        return res.json({ image: image })
+      }, () => {
+        return res.json({ error: true })
       })
     })
 

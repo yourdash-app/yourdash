@@ -118,7 +118,7 @@ const Panel: React.FC<IPanel> = ({
                     },
                   ]} key={ind}>
                   <div className={styles.launcherGridItem} onClick={() => {
-                    if (app.path === router.pathname) return
+                    if (app.path === router.pathname) return setLauncherSlideOutVisible(false)
                     setLauncherSlideOutVisible(false)
                     router.prefetch(app.path)
                     appIsOpening(true)
@@ -128,10 +128,7 @@ const Panel: React.FC<IPanel> = ({
                     }, 500)
                   }}>
                     <img src={app.icon} draggable={false} alt=""/>
-                    <span>{app.name}</span>
-                    {/* <div onClick={() => {
-                  // show a dropdown
-                }}><Icon name='three-bars-16' color={"var(--button-fg)"} /></div> */}
+                    <span>{app.displayName}</span>
                   </div>
                 </RightClickMenu>
             })

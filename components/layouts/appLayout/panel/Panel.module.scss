@@ -11,9 +11,9 @@
   grid-template-columns: auto auto 1fr auto auto;
   align-items: center;
   color: var(--app-panel-fg);
-  // animation: slideInAnimation 1s ease-in-out forwards;
   box-shadow: 0 0 1rem #00000055;
   z-index: 200;
+  animation: slideInAnimation 1250ms ease-in-out forwards;
 }
 
 .tray {
@@ -210,7 +210,7 @@
       margin-bottom: 2.5rem;
       color: #ffffff;
       position: absolute;
-      bottom: 0rem;
+      bottom: 0;
     }
   }
 
@@ -301,7 +301,7 @@
       transition: var(--transition);
       cursor: pointer;
       user-select: none;
-      outline: 0rem solid #00000000;
+      outline: 0 solid #00000000;
 
       &:hover {
         scale: 1.05;
@@ -403,7 +403,7 @@
     > div {
       background-color: var(--button-vibrant-bg);
       height: 0.2rem;
-      width: 0rem;
+      width: 0;
       position: absolute;
       bottom: 0;
       left: 50%;
@@ -448,7 +448,7 @@
 
 @keyframes slideInAnimation {
   0% {
-    opacity: 1;
+    opacity: 0;
     transform: translateY(-200%);
   }
 
