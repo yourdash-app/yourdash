@@ -61,8 +61,8 @@ const StoreProduct: NextPageWithLayout = () => {
   return (
     <div className={styles.root} style={
       {
-        left: pageChanging ? "100%" : "0",
-        opacity: pageChanging ? "0" : "1"
+        opacity: pageChanging ? "0" : "1",
+        scale: pageChanging ? "0.5" : 1
       }
     }>
       <Carousel className={styles.carousel}>

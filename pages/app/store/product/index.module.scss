@@ -2,12 +2,12 @@
   transition: all 500ms ease-in-out;
   position: absolute;
   width: 100%;
-  top: 0;
+  height: 100%;
 
   > section {
     @keyframes fadeIn {
       from {
-        opacity: 0;
+        opacity: 0%;
       }
 
       to {
@@ -15,7 +15,7 @@
       }
     }
 
-    opacity: 0;
+    opacity: 0%;
     animation: 500ms 100ms ease-in-out fadeIn forwards;
     padding-left: 15rem;
     padding-right: 15rem;
@@ -211,7 +211,7 @@
 .carousel {
   @keyframes fadeIn {
     from {
-      opacity: 0;
+      opacity: 0%;
     }
 
     to {
@@ -219,7 +219,7 @@
     }
   }
 
-  opacity: 0;
+  opacity: 0%;
   animation: 500ms 100ms ease-in-out fadeIn forwards;
 }
 
