@@ -9,6 +9,7 @@ import Button from '../../../components/elements/button/Button';
 import SERVER, { verifyAndReturnJson } from '../../../lib/server';
 import Card from '../../../components/containers/card/Card';
 import TextBox from '../../../components/elements/textBox/TextBox';
+import Icon from "../../../components/elements/icon/Icon";
 
 const EndpointTester: NextPageWithLayout = () => {
   const [ response, setResponse ] = useState("")
@@ -28,7 +29,8 @@ const EndpointTester: NextPageWithLayout = () => {
   return (
     <main className={styles.root}>
       <RowContainer className={styles.header}>
-        <h2>YourDash Server Endpoint Debugger</h2>
+        <Icon name={"yourdash-logo"} useDefaultColor={true} style={{ height: "calc(100% - 0.125rem)" }}/>
+        <h2>Server Endpoint Debugger</h2>
         <DropdownButton
           items={[
             {
@@ -51,7 +53,7 @@ const EndpointTester: NextPageWithLayout = () => {
             }
           ]}
         >
-          Select method
+            Select method
         </DropdownButton>
         <DropdownButton
           items={[
@@ -69,7 +71,7 @@ const EndpointTester: NextPageWithLayout = () => {
             },
           ]}
         >
-          Expected response
+            Expected response
         </DropdownButton>
       </RowContainer>
       <section>
@@ -82,12 +84,12 @@ const EndpointTester: NextPageWithLayout = () => {
             placeholder='module name'
             onChange={(e) => {
               setQueryModule(e.currentTarget.value)
-            }} />
+            }}/>
           <TextInput
             placeholder='path'
             onChange={(e) => {
               setQueryUrl(e.currentTarget.value)
-            }} />
+            }}/>
           <Button onClick={() => {
             switch (queryMethod) {
               case "GET":
@@ -146,7 +148,7 @@ const EndpointTester: NextPageWithLayout = () => {
                 break;
             }
           }}>
-            Submit request
+              Submit request
           </Button>
         </RowContainer>
         {

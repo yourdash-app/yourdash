@@ -10,17 +10,16 @@
     gap: 0.5rem;
     padding: 0.5rem;
     max-width: calc(
-      100vw - calc(calc(var(--app-application-margin) * 2) + 1rem)
+            100vw - calc(calc(var(--app-application-margin) * 2) + 1rem)
     );
   }
 }
 
 .header {
   > h2 {
-    margin: 0;
-    margin-right: auto;
-    padding-left: 0.25rem;
+    margin: 0 auto 0 0;
   }
+
   align-items: center;
   margin: 0;
   padding: 0.5rem;
@@ -30,6 +29,7 @@
 
 .urlSection {
   margin-bottom: 0;
+
   > button {
     white-space: nowrap;
   }

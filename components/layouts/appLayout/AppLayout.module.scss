@@ -6,11 +6,22 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+
+  --app-application-margin: 0rem;
+  --app-application-rounding: 0rem;
+
+  &:has(> .content[data-app-window="true"]) {
+    --app-application-margin: 1rem;
+    --app-application-rounding: 1rem;
+  }
+
+  @media (max-width: 750px) {
+    --app-application-margin: 0rem !important;
+    --app-application-rounding: 0rem !important;
+  }
 }
 
 .content {
-  --app-application-margin: 0rem;
-  --app-application-rounding: 0rem;
   overflow: auto;
   animation: zoomInAnimation 1500ms ease-in-out forwards;
   height: calc(
@@ -25,16 +36,6 @@
   border-radius: var(--app-application-rounding);
   box-shadow: 0 0 1rem #00000055;
   background-color: var(--background-color);
-
-  &[data-app-window="true"] {
-    --app-application-margin: 1rem;
-    --app-application-rounding: 1rem;
-  }
-
-  @media (max-width: 750px) {
-    --app-application-margin: 0rem !important;
-    --app-application-rounding: 0rem !important;
-  }
 
   &[data-app-transparent-background="true"] {
     background: transparent;
