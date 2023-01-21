@@ -52,7 +52,7 @@ const AppLayout: React.FC<IAppLayout> = ({
           }}
         />
         <div data-app-window={applicationWindowMode} data-app-transparent-background={transparentBackground}
-          data-app-root-container style={{ opacity: appOpenAnimation ? "0" : "1" }}
+          data-app-root-container={true} style={{ opacity: appOpenAnimation ? "0" : "1" }}
           className={styles.content}>
           {children}
         </div>

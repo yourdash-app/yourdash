@@ -61,7 +61,7 @@ const StoreProduct: NextPageWithLayout = () => {
   return (
     <div className={styles.root} style={
       {
-        left: pageChanging ? "100%" : "var(--app-application-margin)",
+        left: pageChanging ? "100%" : "0",
         opacity: pageChanging ? "0" : "1"
       }
     }>
@@ -80,13 +80,13 @@ const StoreProduct: NextPageWithLayout = () => {
               <Icon color="var(--card-fg)" name="server-error"></Icon>
               <h3>Error</h3>
               <p>
-                The application was not installed!
+                    The application was not installed!
               </p>
               <Button
                 onClick={() => {
                   setInstallationError(false)
                 }}>
-                Ok
+                    Ok
               </Button>
             </ColContainer>
           </Card>
@@ -99,13 +99,13 @@ const StoreProduct: NextPageWithLayout = () => {
               <Icon color="var(--card-fg)" name="server-error"></Icon>
               <h3>Error</h3>
               <p>
-                The application was not uninstalled!
+                    The application was not uninstalled!
               </p>
               <Button
                 onClick={() => {
                   setUninstallationError(false)
                 }}>
-                Ok
+                    Ok
               </Button>
             </ColContainer>
           </Card>
@@ -118,7 +118,7 @@ const StoreProduct: NextPageWithLayout = () => {
       }}>
         <div>
           <div className={styles.installationPopupImgContainer}>
-            <img src={product?.icon} alt="" />
+            <img src={product?.icon} alt=""/>
             <div></div>
           </div>
           <ColContainer className={styles.installationPopupContent}>
@@ -131,7 +131,7 @@ const StoreProduct: NextPageWithLayout = () => {
               </p>
               <ul>
                 <h3>
-                  Requirements
+                    Requirements
                 </h3>
                 {
                   product?.moduleRequirements?.length === 0
@@ -169,7 +169,7 @@ const StoreProduct: NextPageWithLayout = () => {
                 )
               }
             }} vibrant>
-              Approve installation
+                Approve installation
             </Button>
           </ColContainer>
           <IconButton
@@ -189,8 +189,8 @@ const StoreProduct: NextPageWithLayout = () => {
             setTimeout(() => {
               router.push("/app/store")
             }, 600)
-          }} />
-        <img src={product?.icon} alt="" />
+          }}/>
+        <img src={product?.icon} alt=""/>
         <h2>{product.displayName}</h2>
         {
           product.installed && <Button
@@ -199,7 +199,7 @@ const StoreProduct: NextPageWithLayout = () => {
             }}
             style={{ marginRight: "0.5rem" }}
           >
-            Open
+                  Open
           </Button>
         }
         <Button onClick={() => {

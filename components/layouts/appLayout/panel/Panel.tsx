@@ -139,7 +139,7 @@ const Panel: React.FC<IPanel> = ({
             </Button>
         }
       </div>
-      <footer data-footer>
+      <footer data-footer={true}>
         <AuthenticatedImg onClick={() => {
           router.push(`/app/user/profile/${userData?.userName}`)
         }} tabIndex={0} src={"/core/panel/user/profile/picture"} alt=""/>
@@ -147,7 +147,7 @@ const Panel: React.FC<IPanel> = ({
         <div onClick={() => {
           setLauncherSlideOutVisible(false)
           router.push("/app/settings")
-        }} data-settings>
+        }} data-settings={true}>
           <Icon name='gear-16' color={"var(--container-fg)"}></Icon>
         </div>
       </footer>
@@ -181,6 +181,7 @@ const Panel: React.FC<IPanel> = ({
               }
             ]}>
               <div className={styles.shortcut} onClick={() => {
+                setLauncherSlideOutVisible(false)
                 if (shortcut.url === router.pathname) return
                 router.prefetch(shortcut.url)
                 appIsOpening(true)

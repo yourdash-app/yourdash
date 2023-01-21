@@ -1,13 +1,13 @@
 .root {
   transition: all 500ms ease-in-out;
   position: absolute;
-  width: calc(100% - calc(var(--app-application-margin) * 2));
-  top: calc(var(--app-application-margin) + var(--app-panel-height) + 1rem);
+  width: 100%;
+  top: 0;
 
   > section {
     @keyframes fadeIn {
       from {
-        opacity: 0%;
+        opacity: 0;
       }
 
       to {
@@ -15,7 +15,7 @@
       }
     }
 
-    opacity: 0%;
+    opacity: 0;
     animation: 500ms 100ms ease-in-out fadeIn forwards;
     padding-left: 15rem;
     padding-right: 15rem;
@@ -118,8 +118,7 @@
     }
 
     > .installationPopupImgContainer {
-      padding: 2rem;
-      padding-left: 0;
+      padding: 2rem 2rem 2rem 0;
       display: flex;
       position: relative;
       align-items: center;
@@ -191,9 +190,8 @@
 
           > p {
             color: var(--card-fg);
-            margin: 0;
             padding-left: 0.5rem;
-            margin-bottom: 0.25rem;
+            margin: 0 0 0.25rem;
           }
         }
       }
@@ -213,7 +211,7 @@
 .carousel {
   @keyframes fadeIn {
     from {
-      opacity: 0%;
+      opacity: 0;
     }
 
     to {
@@ -221,7 +219,7 @@
     }
   }
 
-  opacity: 0%;
+  opacity: 0;
   animation: 500ms 100ms ease-in-out fadeIn forwards;
 }
 
