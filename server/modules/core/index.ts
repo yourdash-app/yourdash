@@ -18,28 +18,8 @@ const Module: YourDashModule = {
     // #region /app panel
 
     request.get(`/panel/background-image`, (req, res) => {
-      if (!fs.existsSync(`${moduleApi.UserAppData(req)}/${this.name}/background.json`)) {
-        const defaultImage = returnBase64Image(`${moduleApi.FsOrigin}/../background.jpg`)
-
-        fs.writeFile(`${moduleApi.UserAppData(req)}/${this.name}/background.json`, JSON.stringify({ image: defaultImage }), (err) => {
-          if (err) {
-            return res.json({ error: true })
-          }
-
-          return res.json({ image: defaultImage })
-        })
-        return
-      }
-
-      fs.readFile(`${moduleApi.UserAppData(req)}/${this.name}/background.json`, (err, data) => {
-        if (err) {
-          return res.json({ error: true })
-        }
-
-        const json = JSON.parse(data.toString())
-
-        return res.json(json)
-      })
+      const defaultImage = returnBase64Image(`${moduleApi.FsOrigin}/../background.jpg`)
+      return res.json({ image: defaultImage })
     })
 
     request.get(`/panel/quick-shortcuts/`, (req, res) => {
