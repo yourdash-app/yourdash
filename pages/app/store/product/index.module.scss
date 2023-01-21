@@ -1,8 +1,8 @@
 .root {
   transition: all 500ms ease-in-out;
   position: absolute;
-  width: calc(100% - calc(var(--app-application-margin) * 2));
-  top: calc(var(--app-application-margin) + var(--app-panel-height) + 1rem);
+  width: 100%;
+  height: 100%;
 
   > section {
     @keyframes fadeIn {
@@ -118,8 +118,7 @@
     }
 
     > .installationPopupImgContainer {
-      padding: 2rem;
-      padding-left: 0;
+      padding: 2rem 2rem 2rem 0;
       display: flex;
       position: relative;
       align-items: center;
@@ -191,9 +190,8 @@
 
           > p {
             color: var(--card-fg);
-            margin: 0;
             padding-left: 0.5rem;
-            margin-bottom: 0.25rem;
+            margin: 0 0 0.25rem;
           }
         }
       }
