@@ -6,22 +6,21 @@ import SERVER, { verifyAndReturnJson } from "../../../lib/server";
 import { NextPageWithLayout } from '../../page';
 import styles from "./dash.module.scss";
 import { useRouter } from "next/router";
+import DashWidget from "../../../types/core/dash/dashWidget";
 
 const Dash: NextPageWithLayout = () => {
   const router = useRouter()
 
   const [ name, setName ] = useState("")
   const [ currentTime, setCurrentTime ] = useState("00:01")
+  const [ widgets, setWidgets ] = useState([] as DashWidget[])
 
   useEffect(() => {
-    verifyAndReturnJson(
-      SERVER.get("/userManagement/current/user"),
-      (user) => {
-        setName(user?.name?.first + " " + user?.name?.last)
-      },
-      () => {
-        setName("ERROR")
-      })
+    verifyAndReturnJson(SERVER.get("/userManagement/current/user"), (user) => {
+      setName(user?.name?.first + " " + user?.name?.last)
+    }, () => {
+      setName("ERROR")
+    })
   }, [])
 
   useEffect(() => {
@@ -36,30 +35,30 @@ const Dash: NextPageWithLayout = () => {
   }, [])
 
   if (name === "") return <></>
-  return (
-    <>
-      <Head>
-        <title>YourDash | Dashboard</title>
-      </Head>
-      <div className={styles.root}>
-        <div className={styles.welcome}>
-          <span className={styles.clock}>{currentTime}</span>
-          <span>Hiya, {name}</span>
-        </div>
-        <div className={styles.main}>
-          <div className={styles.homeMessage}>
-            <div>
-              <h1>Oh no!</h1>
-              <p>It appears that you have no dash widgets installed.</p>
-              <Button onClick={() => {
-                router.push(`/app/store`)
-              }} vibrant>Explore dash widgets</Button>
-            </div>
-          </div>
-        </div>
+  return (<>
+    <Head>
+      <title>YourDash | Dashboard</title>
+    </Head>
+    <div className={styles.root}>
+      <div className={styles.welcome}>
+        <span className={styles.clock}>{currentTime}</span>
+        <span>Hiya, {name}</span>
       </div>
-    </>
-  );
+      <div className={styles.main}>
+        {!widgets.length ? <div className={styles.homeMessage}>
+          <div>
+            <h1>Oh no!</h1>
+            <p>It appears that you have no dash widgets installed.</p>
+            <Button onClick={() => {
+              router.push(`/app/store`)
+            }} vibrant>Explore dash widgets</Button>
+          </div>
+        </div> : widgets.map((widget) => {
+          return <div>{widget}</div>
+        })}
+      </div>
+    </div>
+  </>);
 };
 
 export default Dash;
