@@ -1,58 +1,24 @@
 {
   "name": "yourdash",
-  "author": "ewsgit",
-  "description": "Your Dash",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "private": true,
-  "license": "MIT",
-  "type": "module",
-  "homepage": "https://github.com/ewsgit/yourdash",
-  "engines": {
-    "node": ">=14.0.0",
-    "yarn": ">=1.22.0",
-    "npm": "please-use-yarn"
-  },
-  "browserslist": [
-    "> 0.15%, not dead"
+  "workspaces": [
+    "apps/*",
+    "packages/*"
   ],
   "scripts": {
-    "dev:fs": "concurrently \"yarn dev:client\" \"yarn dev:server\"",
-    "dev:client": "next dev",
-    "dev:server": "yarn --cwd ./server dev",
-    "dev:server-no-nodemon": "yarn --cwd ./server dev-no-nodemon",
-    "dev:server-no-tsc-or-nodemon": "yarn --cwd ./server dev-no-tsc-or-nodemon",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "prepare": "husky install && yarn --cwd ./server"
-  },
-  "dependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.47.1",
-    "concurrently": "^7.5.0",
-    "eslint-plugin-unused-imports": "^2.0.0",
-    "next": "^13.0.5",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "sass": "^1.55.0",
-    "typescript": "^4.4.4",
-    "typescript-eslint": "^0.0.1-alpha.0",
-    "webpack": "^5"
+    "build": "turbo run build",
+    "dev": "turbo run dev --parallel",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
-    "@babel/core": "^7.17.8",
-    "@commitlint/cli": "^16.2.3",
-    "@commitlint/config-conventional": "^16.2.1",
-    "@types/node": "17.0.23",
-    "@types/react": "17.0.43",
-    "@types/react-dom": "17.0.14",
-    "@typescript-eslint/parser": "^5.0.1",
-    "babel-loader": "^8.2.4",
-    "cross-env": "^7.0.3",
-    "eslint": "^8.7.0",
-    "eslint-config-next": "12.1.4",
-    "husky": "^7.0.4"
+    "eslint-config-custom": "*",
+    "prettier": "latest",
+    "turbo": "latest"
   },
-  "resolutions": {
-    "webpack": "^5"
-  }
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "packageManager": "yarn@1.22.19"
 }
