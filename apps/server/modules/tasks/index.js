@@ -1,0 +1,237 @@
+import fs from 'fs';
+import { generateRandomStringOfLength } from '../../encryption.js';
+import { log, resizeImage } from "./../../libServer.js";
+import path from 'path';
+const module = {
+    install() {
+        log(`the ${this.name} module was installed`);
+    },
+    load(request, api) {
+        request.post(`/personal/list/create`, (req, res) => {
+            if (!fs.existsSync(`${api.UserAppData(req)}/${this.name}/lists`))
+                fs.mkdir(`${api.UserAppData(req)}/${this.name}/lists`, { recursive: true }, (err) => {
+                    if (err)
+                        return res.json({ error: true });
+                });
+            const listId = generateRandomStringOfLength(32);
+            if (fs.existsSync(`${api.UserAppData(req)}/${this.name}/lists/${listId}`))
+                return res.json({ error: true });
+            fs.writeFile(`${api.UserAppData(req)}/${this.name}/lists/${listId}.json`, JSON.stringify({
+                description: "Unknown description",
+                id: `${listId}`,
+                name: 'Unnamed list',
+                tasks: [
+                    {
+                        assignees: [],
+                        description: "test description",
+                        subTasks: [],
+                        tags: [],
+                        title: 'general',
+                    },
+                ],
+                tags: []
+            }), (err) => {
+                if (err)
+                    return res.json({ error: true });
+                return res.json({ id: listId });
+            });
+        });
+        request.get(`/personal/lists`, (req, res) => {
+            if (!fs.existsSync(`${api.UserAppData(req)}/${this.name}/lists`)) {
+                fs.mkdir(`${api.UserAppData(req)}/${this.name}/lists`, { recursive: true }, (err) => {
+                    if (err)
+                        return res.json({ error: true });
+                });
+                return res.json({ lists: [] });
+            }
+            fs.readdir(path.resolve(`${api.UserAppData(req)}/${this.name}/lists`), (err, data) => {
+                if (err) {
+                    log(`(${this.name}) ERROR: unable to read '${api.UserAppData(req)}/${this.name}'`);
+                    return res.json({ error: true });
+                }
+                const listsData = data.map((listName) => {
+                    try {
+                        const listData = JSON.parse(fs.readFileSync(path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${listName}`)).toString());
+                        return {
+                            id: listData.id,
+                            name: listData.name,
+                        };
+                    }
+                    catch (e) {
+                        return;
+                    }
+                });
+                return res.json({ lists: listsData });
+            });
+        });
+        request.delete(`/personal/list/delete/:listId`, (req, res) => {
+            if (!req.params.listId) {
+                return res.json({ error: true });
+            }
+            if (!fs.existsSync(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`)) {
+                return res.json({ error: true });
+            }
+            fs.rm(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`, (err) => {
+                if (err) {
+                    return res.json({ error: true });
+                }
+                return res.json({ success: true });
+            });
+        });
+        request.get(`/personal/list/:listId`, (req, res) => {
+            if (!req.params.listId) {
+                return res.json({ error: true });
+            }
+            if (!fs.existsSync(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`)) {
+                return res.json({ error: true });
+            }
+            fs.readFile(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`, (err, data) => {
+                if (err) {
+                    return res.json({ error: true });
+                }
+                const json = JSON.parse(data.toString());
+                return res.json(json);
+            });
+        });
+        request.post(`/personal/list/:listId`, (req, res) => {
+            if (!req.params.listId) {
+                return res.json({ error: true });
+            }
+            if (!fs.existsSync(path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`))) {
+                return res.json({ error: true });
+            }
+            fs.writeFile(path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`), JSON.stringify(req.body), (err) => {
+                if (err) {
+                    return res.json({ error: true });
+                }
+                return res.json({ success: true });
+            });
+        });
+        request.get(`/personal/list/:listId/task/:taskId`, (req, res) => {
+            if (!req.params.listId) {
+                return res.json({ error: true });
+            }
+            if (!fs.existsSync(path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`))) {
+                return res.json({ error: true });
+            }
+            fs.readFile(path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`), (err, data) => {
+                if (err) {
+                    return res.json({ error: true });
+                }
+                const json = JSON.parse(data.toString());
+                return res.json(json.tasks[parseInt(req.params.taskId)]);
+            });
+        });
+        request.delete(`/personal/list/:listId/task/:taskId`, (req, res) => {
+            if (!req.params.listId) {
+                return res.json({ error: true });
+            }
+            if (!fs.existsSync(path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`))) {
+                return res.json({ error: true });
+            }
+            try {
+                parseInt(req.params.taskId);
+            }
+            catch (err) {
+                return res.json({ error: "taskId was not a valid integer" });
+            }
+            fs.readFile(path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`), (err, data) => {
+                if (err) {
+                    return res.json({ error: true });
+                }
+                const json = JSON.parse(data.toString());
+                json.tasks.splice(parseInt(req.params.taskId), 1);
+                fs.writeFile(path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`), JSON.stringify(json), (err) => {
+                    if (err)
+                        return res.json({ error: true });
+                    return res.json({ success: true });
+                });
+            });
+        });
+        request.get(`/personal/list/:listId/create/task`, (req, res) => {
+            if (!fs.existsSync(path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`))) {
+                log(`no such file: ${path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`)}`);
+                return res.json({ error: true });
+            }
+            fs.readFile(path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`), (err, data) => {
+                if (err) {
+                    log(`unable to read file: ${path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`)}`);
+                    return res.json({ error: true });
+                }
+                const json = JSON.parse(data.toString());
+                json.tasks.push({
+                    assignees: [],
+                    description: "Why not give your task a description?",
+                    subTasks: [],
+                    tags: [],
+                    title: "Untitled Task",
+                });
+                fs.writeFile(path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`), JSON.stringify(json), (err) => {
+                    if (err) {
+                        log(`unable to write to file: ${path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`)}`);
+                        return res.json({ error: true });
+                    }
+                    return res.json({ id: json.tasks.length + 1 });
+                });
+            });
+        });
+        request.post(`/personal/list/:listId/task/:taskId`, (req, res) => {
+            const { listId, taskId } = req.params;
+            if (!listId || !taskId) {
+                log(`(${this.name}) ERROR: listId or taskId were not found in the request`);
+                return res.json({ error: true });
+            }
+            if (!fs.existsSync(path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${listId}.json`))) {
+                log(`(${this.name}) no such list: ${listId}`);
+                return res.json({ error: true });
+            }
+            fs.readFile(path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${listId}.json`), (err, data) => {
+                if (err) {
+                    log(`(${this.name}) unable to read ${listId}.json`);
+                    return res.json({ error: true });
+                }
+                const json = JSON.parse(data.toString());
+                json.tasks[parseInt(taskId)] = req.body;
+                fs.writeFile(path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${listId}.json`), JSON.stringify(json), (err) => {
+                    if (err) {
+                        log(`(${this.name}) ERROR: unable to write to ${listId}.json`);
+                        return res.json({ error: true });
+                    }
+                    return res.json({ success: true });
+                });
+            });
+        });
+        request.post(`/personal/list/:listId/task/:taskId/assignees`, (req, res) => {
+            const assignees = req.body.assignees;
+            res.json({ error: true });
+        });
+        request.get(`/assignee/:userName`, (req, res) => {
+            if (!req.params.userName)
+                return res.json({ error: true });
+            if (!fs.existsSync(path.resolve(`${api.FsOrigin}/data/users/${req.params.userName}/user.json`)))
+                return res.json({ error: true });
+            fs.readFile(path.resolve(`${api.FsOrigin}/data/users/${req.params.userName}/user.json`), (err, data) => {
+                if (err) {
+                    log(`(${this.name}) ERROR: no user named '${req.params.userName}'`);
+                    return res.json({ error: true });
+                }
+                const json = JSON.parse(data.toString());
+                resizeImage(48, 48, json.profile.image, (err, image) => {
+                    if (err) {
+                        return res.json({ error: true });
+                    }
+                    return res.json({
+                        name: `${json.name.first} ${json.name.last}`,
+                        profile: { image: image },
+                        userName: json.userName,
+                    });
+                });
+            });
+        });
+    },
+    name: 'tasks',
+    unload() {
+        log(`The ${this.name} module was unloaded`);
+    },
+};
+export default module;

@@ -1,0 +1,36 @@
+.root {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  overflow-y: auto;
+  max-height: 100%;
+
+  > section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    max-width: calc(
+            100vw - calc(calc(var(--app-application-margin) * 2) + 1rem)
+    );
+  }
+}
+
+.header {
+  > h2 {
+    margin: 0 auto 0 0;
+  }
+
+  align-items: center;
+  margin: 0;
+  padding: 0.5rem;
+  background: var(--container-bg);
+  color: var(--container-fg);
+}
+
+.urlSection {
+  margin-bottom: 0;
+
+  > button {
+    white-space: nowrap;
+  }
+}

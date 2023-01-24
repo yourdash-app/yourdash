@@ -1,0 +1,26 @@
+.root {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  height: 100%;
+
+  @media (max-width: 750px) {
+    grid-template-columns: 1fr;
+    > .sidebar {
+      display: none;
+    }
+  }
+
+  > .page {
+    max-height: calc(100vh - var(--app-panel-height));
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    > h1 {
+      margin: 0;
+      padding-left: 1rem;
+      padding-top: 1.5rem;
+      padding-bottom: 0rem;
+      color: var(--container-fg);
+    }
+  }
+}
