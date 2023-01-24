@@ -2,14 +2,20 @@ import NavigationBar from "./navigationBar/NavigationBar"
 import Footer from "./footer/Footer"
 import styles from "./HomeLayout.module.css"
 
-const HomeLayout: React.FC = ({ children }) => (
+interface IHomeLayout {
+  noFooter?: boolean
+}
+
+const HomeLayout: React.FC<IHomeLayout> = ({ children, noFooter }) => (
   <>
     <NavigationBar/>
     <div className={styles.root}>
       {children}
-      <Footer/>
+      {
+              !noFooter ?? <Footer/>
+          }
     </div>
   </>
-);
+  );
 
 export default HomeLayout;
