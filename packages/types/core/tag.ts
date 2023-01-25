@@ -1,7 +1,9 @@
-import COLOR from "../../../old/lib/color";
+import { type COLOR } from "types/global/color";
 
-export default interface Tag {
+interface Tag {
   name: string,
   color: COLOR,
   displayName: string
 }
+
+export { type Tag }

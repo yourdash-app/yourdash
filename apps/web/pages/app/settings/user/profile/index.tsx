@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react';
-import ColContainer from '../../../../../components/containers/ColContainer/ColContainer';
-import AuthenticatedImg from '../../../../../components/elements/authenticatedImg/AuthenticatedImg';
-import TextBox from '../../../../../components/elements/textBox/TextBox';
-import TextInput from '../../../../../components/elements/textInput/TextInput';
-import AppLayout from '../../../../../components/layouts/appLayout/AppLayout';
+import ColContainer from 'ui/containers/ColContainer/ColContainer';
+import AuthenticatedImg from 'ui/elements/authenticatedImg/AuthenticatedImg';
+import TextBox from 'ui/elements/textBox/TextBox';
+import TextInput from 'ui/elements/textInput/TextInput';
+import AppLayout from '../../../../../layouts/appLayout/AppLayout';
 import { NextPageWithLayout } from '../../../../page';
 import BooleanSetting from '../../components/BooleanSetting';
 import SettingsLayout from '../../components/SettingsLayout';
 import styles from "./index.module.scss"
-import SERVER, { verifyAndReturnJson } from '../../../../../lib/server';
-import Button from '../../../../../components/elements/button/Button';
+import SERVER, { verifyAndReturnJson } from '../../../../../server';
+import Button from 'ui/elements/button/Button';
 
 const SettingsPanel: NextPageWithLayout = () => {
   const [ firstName, setFirstName ] = React.useState("")
@@ -20,17 +20,17 @@ const SettingsPanel: NextPageWithLayout = () => {
 
   useEffect(() => {
     verifyAndReturnJson(
-      SERVER.get(`/core/settings/user/profile`),
-      (data) => {
-        setFirstName(data.name.first)
-        setLastName(data.name.last)
-        setUserName(data.userName)
-        setDescription(data.profile.description)
-        setLoaded(true)
-      },
-      () => {
-        console.error(`unable to fetch user data`)
-      }
+        SERVER.get(`/core/settings/user/profile`),
+        data => {
+          setFirstName(data.name.first)
+          setLastName(data.name.last)
+          setUserName(data.userName)
+          setDescription(data.profile.description)
+          setLoaded(true)
+        },
+        () => {
+          console.error(`unable to fetch user data`)
+        }
     )
   }, [])
 
@@ -42,56 +42,87 @@ const SettingsPanel: NextPageWithLayout = () => {
       <ColContainer style={{ padding: "1rem" }}>
         <section className={styles.section1}>
           <ColContainer className={styles.section1ProfileCard}>
-            <AuthenticatedImg src={`/core/settings/user/profile/image`} />
+            <AuthenticatedImg src={`/core/settings/user/profile/image`}/>
             <span className={styles.name}>{firstName} {lastName}</span>
             <span className={styles.username}>@{userName}</span>
             <p>{description}</p>
           </ColContainer>
           <ColContainer className={styles.section1EditPanel}>
             <p>First name</p>
-            <TextInput placeholder='first name' defaultValue={firstName} onChange={(e) => {
-              setFirstName(e.currentTarget.value)
-            }} />
+            <TextInput
+              placeholder='first name'
+              defaultValue={firstName}
+              onChange={e => {
+                setFirstName(e.currentTarget.value)
+              }}
+            />
             <p>Last name</p>
-            <TextInput placeholder='last name' defaultValue={lastName} onChange={(e) => {
-              setLastName(e.currentTarget.value)
-            }} />
+            <TextInput
+              placeholder='last name'
+              defaultValue={lastName}
+              onChange={e => {
+                setLastName(e.currentTarget.value)
+              }}
+            />
             <p>Username</p>
-            <TextInput placeholder='username' defaultValue={userName} onChange={(e) => {
-              setUserName(e.currentTarget.value)
-            }} />
+            <TextInput
+              placeholder='username'
+              defaultValue={userName}
+              onChange={e => {
+                setUserName(e.currentTarget.value)
+              }}
+            />
             <p>Description</p>
-            <TextBox placeholder='description' defaultValue={description} onChange={(e) => {
-              setDescription(e.currentTarget.value)
-            }} />
-            <Button vibrant onClick={() => {
+            <TextBox
+              placeholder='description'
+              defaultValue={description}
+              onChange={e => {
+                setDescription(e.currentTarget.value)
+              }}
+            />
+            <Button
+              vibrant
+              onClick={() => {
 
-              // TODO: send the new data to the server
+                // TODO: send the new data to the server
 
-              verifyAndReturnJson(
-                SERVER.post(`/core/settings/user/profile`, { body: JSON.stringify({
-                  description: description,
-                  firstName: firstName,
-                  lastName: lastName,
-                  userName: userName,
-                }) }),
-                () => {
-                  console.log(`user profile updated successfully`)
-                },
-                () => {
-                  console.error(`unable to update user profile`)
-                }
-              )
+                verifyAndReturnJson(
+                    SERVER.post(`/core/settings/user/profile`, {
+                      body: JSON.stringify({
+                        description,
+                        firstName,
+                        lastName,
+                        userName,
+                      })
+                    }),
+                    () => {
+                      console.log(`user profile updated successfully`)
+                    },
+                    () => {
+                      console.error(`unable to update user profile`)
+                    }
+                )
 
-            }}>Save</Button>
+              }}
+            >Save</Button>
           </ColContainer>
         </section>
-        <BooleanSetting title='Local discovery' description='Allow other users on this instance to view your profile' defaultValue={false} setValue={(value) => {
-          console.log(value)
-        }} />
-        <BooleanSetting title='Global discovery' description='Allow other users on any YourDash instance to view your profile' defaultValue={false} setValue={(value) => {
-          console.log(value)
-        }} />
+        <BooleanSetting
+          title='Local discovery'
+          description='Allow other users on this instance to view your profile'
+          defaultValue={false}
+          setValue={value => {
+            console.log(value)
+          }}
+        />
+        <BooleanSetting
+          title='Global discovery'
+          description='Allow other users on any YourDash instance to view your profile'
+          defaultValue={false}
+          setValue={value => {
+            console.log(value)
+          }}
+        />
       </ColContainer>
     </>
   );
@@ -99,10 +130,10 @@ const SettingsPanel: NextPageWithLayout = () => {
 
 export default SettingsPanel;
 
-SettingsPanel.getLayout = (page) => {
-  return <AppLayout>
+SettingsPanel.getLayout = page => (
+  <AppLayout>
     <SettingsLayout>
       {page}
     </SettingsLayout>
   </AppLayout>
-}
+)

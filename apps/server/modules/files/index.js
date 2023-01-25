@@ -38,7 +38,7 @@ const module = {
         });
         app.get(`/sidebar/categories`, (req, res) => {
             if (!fs.existsSync(path.resolve(`${api.UserAppData(req)}/files/sidebar`)))
-                return fs.mkdir(path.resolve(`${api.UserAppData(req)}/files/sidebar`), { recursive: true }, (err) => {
+                return fs.mkdir(path.resolve(`${api.UserAppData(req)}/files/sidebar`), { recursive: true }, err => {
                     if (err) {
                         log(`ERROR: unable to make directory: ${api.UserAppData(req)}/files/`);
                         return res.json({ error: true });
@@ -58,14 +58,14 @@ const module = {
         });
         app.get(`/sidebar/set/default`, (req, res) => {
             if (!fs.existsSync(path.resolve(`${api.UserAppData(req)}/files/sidebar`)))
-                return fs.mkdir(path.resolve(`${api.UserAppData(req)}/files/sidebar`), { recursive: true }, (err) => {
+                return fs.mkdir(path.resolve(`${api.UserAppData(req)}/files/sidebar`), { recursive: true }, err => {
                     if (err) {
                         log(`ERROR: unable to make directory: ${api.UserAppData(req)}/files/`);
                         return res.json({ error: true });
                     }
                     return res.json([]);
                 });
-            fs.writeFile(path.resolve(`${api.UserAppData(req)}/files/sidebar/categories.json`), JSON.stringify(defaultCategories), (err) => {
+            fs.writeFile(path.resolve(`${api.UserAppData(req)}/files/sidebar/categories.json`), JSON.stringify(defaultCategories), err => {
                 if (err) {
                     log(`ERROR: unable to write the defaults to ${path.resolve(`${api.UserAppData(req)}/files/sidebar/categories.json`)}`);
                     return res.json({ error: true });

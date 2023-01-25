@@ -2,11 +2,11 @@ import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
 import { decrypt, encrypt, generateRandomStringOfLength } from '../../encryption.js';
-import { ENV } from '../../index.js';
-import YourDashModule from './../../module.js';
-import YourDashUser, { YourDashUserSettings } from '../../../types/core/user.js';
-import { log } from './../../libServer.js';
-import CurrentUser from "../../../types/userManagement/currentUser";
+import { ENV } from "../../index.js";
+import { type YourDashModule } from "../../module.js";
+import { type YourDashUserSettings, type YourDashUser } from 'types/core/user.js';
+import { log } from '../../libServer.js';
+import { type CurrentUser } from "types/userManagement/currentUser.js";
 
 const USER_CACHE: { [key: string]: string } = {};
 
@@ -28,24 +28,24 @@ const Module: YourDashModule = {
             next();
           } else {
             process.stdout.write(
-              `${chalk.black(chalk.bgYellow('Cached data was used!'))} ${chalk.bgRed(' Unauthorized ')}`
+                `${chalk.black(chalk.bgYellow('Cached data was used!'))} ${chalk.bgRed(' Unauthorized ')}`
             );
             return res.json({ error: true });
           }
         } else {
           fs.readFile(
-            path.resolve(`${ENV.FsOrigin}/data/users/${userName}/keys.json`),
-            (err, data) => {
-              if (err) return res.json({ error: true });
-              const sessionKey = JSON.parse(data.toString()).sessionToken;
-              if (sessionKey === sessionToken) {
-                USER_CACHE[userName] = sessionKey;
-                next();
-              } else {
-                process.stdout.write(chalk.bgRed(' Unauthorized '));
-                return res.json({ error: true });
+              path.resolve(`${ENV.FsOrigin}/data/users/${userName}/keys.json`),
+              (err, data) => {
+                if (err) return res.json({ error: true });
+                const sessionKey = JSON.parse(data.toString()).sessionToken;
+                if (sessionKey === sessionToken) {
+                  USER_CACHE[userName] = sessionKey;
+                  next();
+                } else {
+                  process.stdout.write(chalk.bgRed(' Unauthorized '));
+                  return res.json({ error: true });
+                }
               }
-            }
           );
         }
       } else {
@@ -64,105 +64,113 @@ const Module: YourDashModule = {
       if (fs.existsSync(path.resolve(`${ENV.FsOrigin}/data/users/${username}`)))
         return res.sendStatus(403);
 
-      fs.mkdir(`${moduleApi.FsOrigin}/data/users/${username}/profile`, { recursive: true }, (err) => {
+      fs.mkdir(`${moduleApi.FsOrigin}/data/users/${username}/profile`, { recursive: true }, err => {
         if (err)
           return res.json({ error: true });
 
         fs.writeFileSync(
-          `${moduleApi.FsOrigin}/data/users/admin/profile/picture.png`,
-          fs.readFileSync(path.resolve(`${moduleApi.FsOrigin}/../default_user_profile.png`)
-          )
+            `${moduleApi.FsOrigin}/data/users/admin/profile/picture.png`,
+            fs.readFileSync(path.resolve(`${moduleApi.FsOrigin}/../default_user_profile.png`)
+            )
         )
 
         fs.writeFile(
-          `${ENV.FsOrigin}/data/users/${username}/user.json`,
-          JSON.stringify({
-            name: {
-              first: name,
-              last: '',
-            },
-            permissions: [],
-            profile: {
-              banner: '',
-              description: '',
-              externalLinks: {
-                custom: {
-                  public: false,
-                  value: '',
-                },
-                facebook: {
-                  public: false,
-                  value: '',
-                },
-                git: {
-                  org: [],
-                  personal: {
+            `${ENV.FsOrigin}/data/users/${username}/user.json`,
+            JSON.stringify({
+              name: {
+                first: name,
+                last: '',
+              },
+              permissions: [],
+              profile: {
+                banner: '',
+                description: '',
+                externalLinks: {
+                  custom: {
+                    public: false,
+                    value: '',
+                  },
+                  facebook: {
+                    public: false,
+                    value: '',
+                  },
+                  git: {
+                    org: [],
+                    personal: {
+                      public: false,
+                      value: '',
+                    },
+                  },
+                  instagram: {
+                    public: false,
+                    value: '',
+                  },
+                  mastodon: {
+                    public: false,
+                    value: '',
+                  },
+                  tiktok: {
+                    public: false,
+                    value: '',
+                  },
+                  twitter: {
+                    public: false,
+                    value: '',
+                  },
+                  youtube: {
                     public: false,
                     value: '',
                   },
                 },
-                instagram: {
+                image: '',
+                location: {
                   public: false,
                   value: '',
                 },
-                mastodon: {
-                  public: false,
-                  value: '',
-                },
-                tiktok: {
-                  public: false,
-                  value: '',
-                },
-                twitter: {
-                  public: false,
-                  value: '',
-                },
-                youtube: {
-                  public: false,
+                status: {
+                  public: true,
                   value: '',
                 },
               },
-              image: '',
-              location: {
-                public: false,
-                value: '',
-              },
-              status: {
-                public: true,
-                value: '',
-              },
-            },
-            quota: 0,
-            userName: username,
-            version: '1',
-          } as YourDashUser),
-          (err) => {
-            if (err) return res.sendStatus(500);
-            fs.writeFile(
-              `${ENV.FsOrigin}/data/users/${username}/keys.json`,
-              JSON.stringify({ hashedKey: encrypt(password, moduleApi.SERVER_CONFIG), }),
-              (err) => {
-                if (err) return res.sendStatus(500);
-                fs.writeFile(
-                  `${ENV.FsOrigin}/data/users/${username}/config.json`,
-                  JSON.stringify({ panel: { launcher: { shortcuts: [
-                    { icon: URL.createObjectURL(
-                      new Blob([
-                        fs.readFileSync(path.resolve(`${ENV.FsOrigin}./../yourdash.svg`)),
-                      ])
-                    ), },
-                  ], }, }, } as YourDashUserSettings),
-                  (err) => {
+              quota: 0,
+              userName: username,
+              version: '1',
+            } as YourDashUser),
+            err => {
+              if (err) return res.sendStatus(500);
+              fs.writeFile(
+                  `${ENV.FsOrigin}/data/users/${username}/keys.json`,
+                  JSON.stringify({ hashedKey: encrypt(password, moduleApi.SERVER_CONFIG), }),
+                  err => {
                     if (err) return res.sendStatus(500);
-                    fs.mkdir(`${ENV.UserFs(req)}/AppData/`, { recursive: true }, (err) => {
-                      if (err) return res.sendStatus(500);
-                      return res.send(`hello new user ${req.params.username}`);
-                    });
+                    fs.writeFile(
+                        `${ENV.FsOrigin}/data/users/${username}/config.json`,
+                        JSON.stringify({
+                          panel: {
+                            launcher: {
+                              shortcuts: [
+                                {
+                                  icon: URL.createObjectURL(
+                                      new Blob([
+                                        fs.readFileSync(path.resolve(`${ENV.FsOrigin}./../yourdash.svg`)),
+                                      ])
+                                  ),
+                                },
+                              ],
+                            },
+                          },
+                        } as YourDashUserSettings),
+                        err => {
+                          if (err) return res.sendStatus(500);
+                          fs.mkdir(`${ENV.UserFs(req)}/AppData/`, { recursive: true }, err => {
+                            if (err) return res.sendStatus(500);
+                            return res.send(`hello new user ${req.params.username}`);
+                          });
+                        }
+                    );
                   }
-                );
-              }
-            );
-          }
+              );
+            }
         );
       });
     });
@@ -197,26 +205,26 @@ const Module: YourDashModule = {
 
           // write the user's new session token
           fs.writeFile(
-            `${ENV.UserFs(req)}/keys.json`,
-            JSON.stringify({
-              hashedKey: keysJson.hashedKey,
-              sessionToken: newSessionToken,
-            }),
-            (err) => {
-              if (err) {
-                res.json({ error: `There was an issue with starting a new session.` });
-                return log(
-                  `ERROR ${username}'s keys.json could not be overwritten during the login process!`
-                );
-              }
-
-              // the password was correct and the user is now authenticated successfully!
-              res.json({
-                error: false,
+              `${ENV.UserFs(req)}/keys.json`,
+              JSON.stringify({
+                hashedKey: keysJson.hashedKey,
                 sessionToken: newSessionToken,
-              });
-              USER_CACHE[username] = newSessionToken;
-            }
+              }),
+              err => {
+                if (err) {
+                  res.json({ error: `There was an issue with starting a new session.` });
+                  return log(
+                      `ERROR ${username}'s keys.json could not be overwritten during the login process!`
+                  );
+                }
+
+                // the password was correct and the user is now authenticated successfully!
+                res.json({
+                  error: false,
+                  sessionToken: newSessionToken,
+                });
+                USER_CACHE[username] = newSessionToken;
+              }
           );
         }
       });
@@ -261,11 +269,11 @@ const Module: YourDashModule = {
         return res.sendStatus(403);
       }
       fs.readFile(
-        `${ENV.UserFs(req)}/permissions.json`,
-        (err, data) => {
-          if (err) return res.json({ error: true });
-          return res.send(data);
-        }
+          `${ENV.UserFs(req)}/permissions.json`,
+          (err, data) => {
+            if (err) return res.json({ error: true });
+            return res.send(data);
+          }
       );
     });
   },

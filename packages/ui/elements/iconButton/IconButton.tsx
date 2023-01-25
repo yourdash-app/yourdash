@@ -10,17 +10,20 @@ export interface IIconButton extends React.ComponentPropsWithoutRef<"button"> {
   disabled?: boolean;
   useDefaultColor?: boolean;
   color?: COLOR | CSSVariable;
+  className?: string
 }
 
 const IconButton: React.FC<IIconButton> = ({
-  icon, vibrant, disabled, useDefaultColor, color, ...extraProps
-}) => {
-  return <button
-    {...extraProps}
-    disabled={disabled}
-    className={`${styles.component} ${vibrant ? styles.vibrant : ""}`}>
-    <Icon useDefaultColor={useDefaultColor} color={color || `var(--button-fg)`} name={icon}></Icon>
-  </button>;
-};
+                                             icon, vibrant, disabled, useDefaultColor, color, className, ...extraProps
+                                           }) => (
+                                             <button
+                                               type={"button"}
+                                               {...extraProps}
+                                               disabled={disabled}
+                                               className={`${styles.component} ${vibrant ? styles.vibrant : ""} ${className}`}
+                                             >
+                                               <Icon useDefaultColor={useDefaultColor} color={color || `var(--button-fg)`} name={icon}/>
+                                             </button>
+);
 
 export default IconButton;

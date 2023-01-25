@@ -2,14 +2,14 @@ import path from "path";
 import fs from "fs";
 import includedApps, { DEFAULT_APPS } from "../../includedApps.js";
 import { log, resizeImage } from "../../libServer.js";
-import { YourDashUserPermissions } from "./../../../types/core/user.js";
+import { YourDashUserPermissions } from "types/core/user.js";
 const module = {
     install() {
         log(`Store module was installed`);
     },
     load(request, moduleApi) {
         if (!fs.existsSync(`${moduleApi.FsOrigin}/installed_apps.json`)) {
-            fs.writeFile(`${moduleApi.FsOrigin}/installed_apps.json`, JSON.stringify(DEFAULT_APPS), (err) => {
+            fs.writeFile(`${moduleApi.FsOrigin}/installed_apps.json`, JSON.stringify(DEFAULT_APPS), err => {
                 if (err) {
                     log(`(${this.name}) ERROR: unable to write required file installed_apps.json`);
                     return process.exit(1);
@@ -20,7 +20,7 @@ const module = {
             const result = [];
             let hasSentError = false;
             includedApps.map((app, ind) => {
-                resizeImage(96, 96, path.resolve(`${moduleApi.FsOrigin}/../assets/apps/${app.icon}`), (image) => {
+                resizeImage(96, 96, path.resolve(`${moduleApi.FsOrigin}/../assets/apps/${app.icon}`), image => {
                     result.push({
                         ...app,
                         icon: image
@@ -44,22 +44,20 @@ const module = {
                     return res.json({ error: true });
                 }
                 const json = JSON.parse(data.toString());
-                const result = includedApps.find((obj) => obj.name === req.params.applicationId);
+                const result = includedApps.find(obj => obj.name === req.params.applicationId);
                 if (!result) {
                     log(`ERROR: no store product found named: ${req.params.applicationId}`);
                     return res.json({ error: true });
                 }
-                resizeImage(284, 284, path.resolve(`${moduleApi.FsOrigin}/../assets/apps/${result.icon}`), (image) => {
-                    const installed = json.includes(includedApps.filter((app) => app.name === req.params.applicationId)[0].name);
+                resizeImage(284, 284, path.resolve(`${moduleApi.FsOrigin}/../assets/apps/${result.icon}`), image => {
+                    const installed = json.includes(includedApps.filter(app => app.name === req.params.applicationId)[0].name);
                     return res.json({
                         ...result,
                         icon: image,
-                        installed: installed,
+                        installed,
                         uninstallable: (result?.name !== "dash") && (result?.name !== "store") && (result?.name !== "settings") && (result?.name !== "files")
                     });
-                }, () => {
-                    return res.json({ error: true });
-                });
+                }, () => res.json({ error: true }));
             });
         });
         request.get(`/installed/apps`, (req, res) => {
@@ -69,32 +67,30 @@ const module = {
                     return res.json({ error: true });
                 }
                 const json = JSON.parse(data.toString());
-                const result = includedApps.filter((app) => json.includes(app.name)) || [];
-                return res.json(result.map((item) => {
-                    return {
-                        description: item.description,
-                        displayName: item.displayName,
-                        icon: { store: item.icon },
-                        name: item.name,
-                        path: item.path
-                    };
-                }));
+                const result = includedApps.filter(app => json.includes(app.name)) || [];
+                return res.json(result.map(item => ({
+                    description: item.description,
+                    displayName: item.displayName,
+                    icon: { store: item.icon },
+                    name: item.name,
+                    path: item.path
+                })));
             });
         });
         request.post(`/application/:applicationId/install`, (req, res) => {
             if (!fs.existsSync(path.resolve(`${moduleApi.FsOrigin}/installed_apps.json`))) {
                 const json = DEFAULT_APPS;
                 json.push(req.params.applicationId);
-                fs.writeFile(path.resolve(`${moduleApi.FsOrigin}/installed_apps.json`), JSON.stringify(json), (err) => {
+                fs.writeFile(path.resolve(`${moduleApi.FsOrigin}/installed_apps.json`), JSON.stringify(json), err => {
                     if (err) {
                         log(`ERROR: couldn't write installed_apps.json`);
                         return res.json({ error: true });
                     }
-                    return res.json({ installed: includedApps.filter((app) => json.includes(app.name)).find((obj) => obj.name === req.params.applicationId) !== undefined });
+                    return res.json({ installed: includedApps.filter(app => json.includes(app.name)).find(obj => obj.name === req.params.applicationId) !== undefined });
                 });
                 fs.writeFile(path.resolve(`${moduleApi.FsOrigin}/installed_apps.json`), JSON.stringify([
                     ...DEFAULT_APPS
-                ]), (err) => {
+                ]), err => {
                     if (err)
                         return res.json({ error: true });
                 });
@@ -112,7 +108,7 @@ const module = {
                         return res.json({ error: true });
                     }
                     const json = JSON.parse(data.toString());
-                    const application = includedApps.find((application) => application.name === req.params.applicationId);
+                    const application = includedApps.find(application => application.name === req.params.applicationId);
                     if (!application) {
                         log(`(Store) ERROR: unknown application ${req.params.applicationId}`);
                         return res.json({ error: true });
@@ -120,18 +116,18 @@ const module = {
                     application.moduleRequirements.forEach((moduleRequirement) => {
                         json.activeModules.push(moduleRequirement);
                     });
-                    fs.writeFile(path.resolve(`${moduleApi.FsOrigin}/yourdash.config.json`), JSON.stringify(json), (err) => {
+                    fs.writeFile(path.resolve(`${moduleApi.FsOrigin}/yourdash.config.json`), JSON.stringify(json), err => {
                         if (err) {
                             log(`(Store) ERROR: unable to`);
                         }
                     });
                 });
-                fs.writeFile(path.resolve(`${moduleApi.FsOrigin}/installed_apps.json`), JSON.stringify(json), (err) => {
+                fs.writeFile(path.resolve(`${moduleApi.FsOrigin}/installed_apps.json`), JSON.stringify(json), err => {
                     if (err) {
                         log(`ERROR: couldn't write installed_apps.json`);
                         return res.json({ error: true });
                     }
-                    return res.json({ installed: includedApps.filter((app) => json.includes(app.name)).find((obj) => obj.name === req.params.applicationId) !== undefined });
+                    return res.json({ installed: includedApps.filter(app => json.includes(app.name)).find(obj => obj.name === req.params.applicationId) !== undefined });
                 });
             });
         });
@@ -152,13 +148,13 @@ const module = {
                         return res.json({ error: true });
                     }
                     let json = JSON.parse(data.toString());
-                    const application = includedApps.find((application) => application.name === req.params.applicationId);
+                    const application = includedApps.find(application => application.name === req.params.applicationId);
                     if (!application) {
                         log(`(${this.name}) ERROR: no application with the name ${req.params.applicationId} exists`);
                         return res.json({ error: true });
                     }
-                    json = json.filter((app) => app !== req.params.applicationId);
-                    fs.writeFile(`${moduleApi.FsOrigin}/installed_apps.json`, JSON.stringify(json), (err) => {
+                    json = json.filter(app => app !== req.params.applicationId);
+                    fs.writeFile(`${moduleApi.FsOrigin}/installed_apps.json`, JSON.stringify(json), err => {
                         if (err) {
                             log(`(${this.name}) ERROR: unable to write installed_apps.json`);
                             return res.json({ error: true });

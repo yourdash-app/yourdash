@@ -4,5 +4,6 @@
   "main": "index.js",
   "author": "Ewsgit",
   "license": "MIT",
-  "private": false
+  "private": false,
+  "type": "module"
 }

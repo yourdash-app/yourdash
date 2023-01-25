@@ -12,9 +12,9 @@ export const RELEASE_CONFIGURATION = { CURRENT_VERSION: 1, };
 export const ENV = {
     DevMode: process.env.DEV === "true",
     FsOrigin: process.env.FsOrigin,
-    ModulePath: (module) => `/api/${module.name}`,
-    UserAppData: (req) => `${ENV.FsOrigin}/data/users/${req.headers.username}/AppData`,
-    UserFs: (req) => `${ENV.FsOrigin}/data/users/${req.headers.username}`,
+    ModulePath: module => `/api/${module.name}`,
+    UserAppData: req => `${ENV.FsOrigin}/data/users/${req.headers.username}/AppData`,
+    UserFs: req => `${ENV.FsOrigin}/data/users/${req.headers.username}`,
 };
 if (!ENV.FsOrigin)
     console.error('FsOrigin was not defined.');
@@ -131,21 +131,21 @@ function applicationStartup() {
         modulesToLoad = SERVER_CONFIG.activeModules;
     }
     log(modulesToLoad.toString());
-    modulesToLoad.forEach((module) => {
+    modulesToLoad.forEach(module => {
         if (!fs.existsSync(path.resolve(`./modules/${module}/index.js`)))
-            return log('(Start up) no such module: ' + module + ", non-existent modules should not be listed in the activeModules found in yourdash.config.json");
-        import('./modules/' + module + '/index.js').then((mod) => {
+            return log(`(Start up) no such module: ${module}, non-existent modules should not be listed in the activeModules found in yourdash.config.json`);
+        import(`./modules/${module}/index.js`).then(mod => {
             const currentModule = mod.default;
             const requestManager = new RequestManager(app, currentModule);
             currentModule.load(requestManager, {
-                SERVER_CONFIG: SERVER_CONFIG, ...ENV
+                SERVER_CONFIG, ...ENV
             });
-            log('(Start up) loaded module: ' + module);
+            log(`(Start up) loaded module: ${module}`);
             loadedModules.push(currentModule);
         });
     });
     process.on("exit", () => {
-        loadedModules.forEach((module) => {
+        loadedModules.forEach(module => {
             module.unload();
         });
         loadedModules = [];
@@ -154,24 +154,22 @@ function applicationStartup() {
         const date = new Date();
         switch (req.method) {
             case 'GET':
-                log(`${date.getHours()}:${date.getMinutes()}:${date.getSeconds() < 10 ? date.getSeconds() + '0' : date.getSeconds()} ${chalk.bgGreen(chalk.whiteBright(' GET '))} ${res.statusCode} ${req.path}`);
+                log(`${date.getHours()}:${date.getMinutes()}:${date.getSeconds() < 10 ? `${date.getSeconds()}0` : date.getSeconds()} ${chalk.bgGreen(chalk.whiteBright(' GET '))} ${res.statusCode} ${req.path}`);
                 break;
             case 'POST':
-                log(`${date.getHours()}:${date.getMinutes()}:${date.getSeconds() < 10 ? date.getSeconds() + '0' : date.getSeconds()} ${chalk.bgBlue(chalk.whiteBright(' POS '))} ${res.statusCode} ${req.path}`);
+                log(`${date.getHours()}:${date.getMinutes()}:${date.getSeconds() < 10 ? `${date.getSeconds()}0` : date.getSeconds()} ${chalk.bgBlue(chalk.whiteBright(' POS '))} ${res.statusCode} ${req.path}`);
                 break;
             case 'DELETE':
-                log(`${date.getHours()}:${date.getMinutes()}:${date.getSeconds() < 10 ? date.getSeconds() + '0' : date.getSeconds()} ${chalk.bgRed(chalk.whiteBright(' DEL '))} ${res.statusCode} ${req.path}`);
+                log(`${date.getHours()}:${date.getMinutes()}:${date.getSeconds() < 10 ? `${date.getSeconds()}0` : date.getSeconds()} ${chalk.bgRed(chalk.whiteBright(' DEL '))} ${res.statusCode} ${req.path}`);
                 break;
             case 'OPTIONS':
-                log(`${date.getHours()}:${date.getMinutes()}:${date.getSeconds() < 10 ? date.getSeconds() + '0' : date.getSeconds()} ${chalk.bgMagenta(chalk.whiteBright(' OPT '))} ${res.statusCode} ${req.path}`);
+                log(`${date.getHours()}:${date.getMinutes()}:${date.getSeconds() < 10 ? `${date.getSeconds()}0` : date.getSeconds()} ${chalk.bgMagenta(chalk.whiteBright(' OPT '))} ${res.statusCode} ${req.path}`);
                 break;
         }
         next();
     });
     app.use(cors({ origin: [ENV.DevMode ? true : 'http://localhost:3000', 'https://yourdash.vercel.app', 'https://ddsh.vercel.app', 'https://*ewsgit-github.vercel.app'], }));
-    app.get(`/`, (req, res) => {
-        return res.redirect(`https://yourdash.vercel.app/server/${req.url}`);
-    });
+    app.get(`/`, (req, res) => res.redirect(`https://yourdash.vercel.app/server/${req.url}`));
     setInterval(() => {
         console.log('attempting update');
         exec('git pull');
@@ -180,7 +178,7 @@ function applicationStartup() {
     if (ENV.DevMode) {
         app.listen(3560, () => {
             log('(Start up) Web server now online :D');
-        }).on("error", (err) => {
+        }).on("error", err => {
             log(`(Start up) CRITICAL ERROR: (${err.name}) ${err.message}`);
         });
     }

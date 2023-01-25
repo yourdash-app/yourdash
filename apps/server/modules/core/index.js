@@ -27,37 +27,35 @@ const Module = {
         });
         request.post(`/panel/quick-shortcut/create`, (req, res) => {
             if (!fs.existsSync(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`))) {
-                fs.mkdir(`${moduleApi.UserAppData(req)}/${this.name}/panel/quick-shortcuts/`, { recursive: true }, (err) => {
+                fs.mkdir(`${moduleApi.UserAppData(req)}/${this.name}/panel/quick-shortcuts/`, { recursive: true }, err => {
                     if (err) {
                         log(`[${this.name}] ERROR: ${err}`);
                         return process.exit(1);
                     }
-                    fs.writeFile(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`), "[]", (err) => {
+                    fs.writeFile(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`), "[]", err => {
                         if (err) {
                             log(`[${this.name}] ERROR: ${err}`);
                             return process.exit(1);
                         }
                         const json = [];
                         const id = generateRandomStringOfLength(32);
-                        const includedApplication = includedApps.find((app) => app.name === req.body.name);
+                        const includedApplication = includedApps.find(app => app.name === req.body.name);
                         if (!includedApplication) {
                             log(`Can't create quick shortcut for unknown application: ${req.body.name}`);
                             return res.json({ error: true });
                         }
-                        resizeImage(48, 48, path.resolve(`${moduleApi.FsOrigin}/../assets/apps/${includedApplication.icon}`), (image) => {
+                        resizeImage(48, 48, path.resolve(`${moduleApi.FsOrigin}/../assets/apps/${includedApplication.icon}`), image => {
                             json.push({
-                                icon: image, id: id, name: req.body.name || "undefined", url: req.body.url || '/app/dash'
+                                icon: image, id, name: req.body.name || "undefined", url: req.body.url || '/app/dash'
                             });
-                            fs.writeFile(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`), JSON.stringify(json), (err) => {
+                            fs.writeFile(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`), JSON.stringify(json), err => {
                                 if (err) {
                                     log(`ERROR ${err}`);
                                     return res.json({ error: true });
                                 }
-                                return res.json(json.filter((shortcut) => shortcut.id === id));
+                                return res.json(json.filter(shortcut => shortcut.id === id));
                             });
-                        }, () => {
-                            return res.json({ error: true });
-                        });
+                        }, () => res.json({ error: true }));
                     });
                 });
             }
@@ -68,23 +66,21 @@ const Module = {
                     }
                     const json = JSON.parse(data.toString());
                     const id = generateRandomStringOfLength(32);
-                    const includedApplication = includedApps.find((app) => app.name === req.body.name);
+                    const includedApplication = includedApps.find(app => app.name === req.body.name);
                     if (!includedApplication)
                         return log(`Can't create quick shortcut for unknown application: ${req.body.name}`);
-                    resizeImage(32, 32, path.resolve(`${moduleApi.FsOrigin}/../assets/apps/${includedApplication.icon}`), (image) => {
+                    resizeImage(32, 32, path.resolve(`${moduleApi.FsOrigin}/../assets/apps/${includedApplication.icon}`), image => {
                         json.push({
-                            icon: image, id: id, name: req.body.name || "undefined", url: req.body.url || '/app/'
+                            icon: image, id, name: req.body.name || "undefined", url: req.body.url || '/app/'
                         });
-                        fs.writeFile(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`), JSON.stringify(json), (err) => {
+                        fs.writeFile(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`), JSON.stringify(json), err => {
                             if (err) {
                                 log(`ERROR ${err}`);
                                 return res.json({ error: true });
                             }
-                            return res.json(json.filter((shortcut) => shortcut.id === id));
+                            return res.json(json.filter(shortcut => shortcut.id === id));
                         });
-                    }, () => {
-                        return res.json({ error: true });
-                    });
+                    }, () => res.json({ error: true }));
                 });
             }
         });
@@ -97,7 +93,7 @@ const Module = {
                     return res.json({ error: true });
                 }
                 const json = JSON.parse(data.toString());
-                const shortcut = json.find((shortcut) => shortcut.id === req.params.id);
+                const shortcut = json.find(shortcut => shortcut.id === req.params.id);
                 if (shortcut === undefined)
                     return res.json({ error: true });
                 const shortcutInd = json.indexOf(shortcut);
@@ -107,7 +103,7 @@ const Module = {
                     json[shortcutInd].icon = req.body.icon;
                 if (req.body.url)
                     json[shortcutInd].url = req.body.url;
-                fs.writeFile(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`), JSON.stringify(json), (err) => {
+                fs.writeFile(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`), JSON.stringify(json), err => {
                     if (err) {
                         log(`[${this.name}] ERROR: ${err}`);
                         return res.json({ error: true });
@@ -125,8 +121,8 @@ const Module = {
                     return res.json({ error: true });
                 }
                 let json = JSON.parse(data.toString());
-                json = json.filter((shortcut) => shortcut.id !== req.params.id);
-                fs.writeFile(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`), JSON.stringify(json), (err) => {
+                json = json.filter(shortcut => shortcut.id !== req.params.id);
+                fs.writeFile(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`), JSON.stringify(json), err => {
                     if (err) {
                         log(`[${this.name}] ERROR: ${err}`);
                         return res.json({ error: true });
@@ -138,7 +134,7 @@ const Module = {
         request.get(`/panel/launcher/apps`, (req, res) => {
             if (!fs.existsSync(path.resolve(`${moduleApi.FsOrigin}/installed_apps.json`))) {
                 const defaultApps = ["dash", "store", "settings", "files"];
-                fs.writeFile(path.resolve(`${moduleApi.FsOrigin}/installed_apps.json`), JSON.stringify([...defaultApps]), (err) => {
+                fs.writeFile(path.resolve(`${moduleApi.FsOrigin}/installed_apps.json`), JSON.stringify([...defaultApps]), err => {
                     if (err) {
                         log(`ERROR: cannot write installed_apps.json`);
                         return res.json({ error: true });
@@ -153,39 +149,27 @@ const Module = {
                         return res.json({ error: true });
                     }
                     const json = JSON.parse(data.toString());
-                    const result = includedApps.filter((app) => json.includes(app.name)) || [];
+                    const result = includedApps.filter(app => json.includes(app.name)) || [];
                     const response = [];
-                    result.map((item) => {
-                        return resizeImage(128, 128, `${moduleApi.FsOrigin}/../assets/apps/${item.icon}`, (image) => {
-                            response.push({
-                                displayName: item.displayName,
-                                icon: image,
-                                name: item.name,
-                                path: item.path,
-                            });
-                            if (response.length === result.length) {
-                                return res.json(response);
-                            }
-                        }, () => {
-                            return res.json({ error: true });
+                    result.map(item => resizeImage(128, 128, `${moduleApi.FsOrigin}/../assets/apps/${item.icon}`, image => {
+                        response.push({
+                            displayName: item.displayName,
+                            icon: image,
+                            name: item.name,
+                            path: item.path,
                         });
-                    });
+                        if (response.length === result.length) {
+                            return res.json(response);
+                        }
+                    }, () => res.json({ error: true })));
                 });
             }
         });
         request.get(`/panel/user/profile/picture`, (req, res) => {
-            resizeImage(64, 64, path.resolve(`${moduleApi.UserFs(req)}/profile/picture.png`), (image) => {
-                return res.json({ image: image });
-            }, () => {
-                return res.json({ error: true });
-            });
+            resizeImage(64, 64, path.resolve(`${moduleApi.UserFs(req)}/profile/picture.png`), image => res.json({ image }), () => res.json({ error: true }));
         });
         request.get(`/settings/user/profile/image`, (req, res) => {
-            resizeImage(256, 256, path.resolve(`${moduleApi.UserFs(req)}/profile/picture.png`), (image) => {
-                return res.json({ image: image });
-            }, () => {
-                return res.json({ error: true });
-            });
+            resizeImage(256, 256, path.resolve(`${moduleApi.UserFs(req)}/profile/picture.png`), image => res.json({ image }), () => res.json({ error: true }));
         });
         request.get(`/settings/user/profile`, (req, res) => {
             fs.readFile(`${moduleApi.UserFs(req)}/user.json`, (err, data) => {
@@ -225,7 +209,7 @@ const Module = {
                 json.name.last = lastName;
                 json.userName = userName;
                 json.profile.description = description;
-                fs.writeFile(`${moduleApi.UserFs(req)}/user.json`, JSON.stringify(json), (err) => {
+                fs.writeFile(`${moduleApi.UserFs(req)}/user.json`, JSON.stringify(json), err => {
                     if (err) {
                         log(`(${this.name}) ERROR: unable to write to user.json`);
                         return res.json({ error: true });
@@ -236,7 +220,7 @@ const Module = {
         });
         request.get(`/instance/installed/apps`, (_req, res) => {
             if (!fs.existsSync(path.resolve(`${moduleApi.FsOrigin}/installed_apps.json`))) {
-                fs.writeFile(path.resolve(`${moduleApi.FsOrigin}/installed_apps.json`), JSON.stringify({ apps: [] }), (err) => {
+                fs.writeFile(path.resolve(`${moduleApi.FsOrigin}/installed_apps.json`), JSON.stringify({ apps: [] }), err => {
                     if (err)
                         return res.json({ error: true });
                     return res.json({ apps: [] });
@@ -249,35 +233,17 @@ const Module = {
                 return res.json(json);
             });
         });
-        request.get(`/instance/config`, (_req, res) => {
-            return res.json({
-                ...moduleApi.SERVER_CONFIG, instanceEncryptionKey: "REDACTED"
-            });
-        });
-        request.get(`/instance/login/background`, (_req, res) => {
-            return res.json({ image: moduleApi.SERVER_CONFIG.loginPageConfig.background || "" });
-        });
-        request.get(`/instance/login/name`, (req, res) => {
-            return res.json({ name: moduleApi.SERVER_CONFIG.name });
-        });
-        request.get(`/instance/login/logo`, (_req, res) => {
-            return res.json({ image: moduleApi.SERVER_CONFIG.loginPageConfig.logo || "" });
-        });
-        request.get(`/instance/login/message`, (_req, res) => {
-            return res.json({ text: moduleApi.SERVER_CONFIG.loginPageConfig.message.content || "" });
-        });
-        request.get(`/instance/default/background`, (_req, res) => {
-            return res.json({ image: moduleApi.SERVER_CONFIG.defaultBackground });
-        });
-        request.get(`/instance/favicon`, (_req, res) => {
-            return res.send(moduleApi.SERVER_CONFIG.favicon);
-        });
-        request.get(`/instance/logo`, (_req, res) => {
-            return res.json({ image: moduleApi.SERVER_CONFIG.logo });
-        });
-        request.get(`/instance/version`, (_req, res) => {
-            return res.json({ version: moduleApi.SERVER_CONFIG.version });
-        });
+        request.get(`/instance/config`, (_req, res) => res.json({
+            ...moduleApi.SERVER_CONFIG, instanceEncryptionKey: "REDACTED"
+        }));
+        request.get(`/instance/login/background`, (_req, res) => res.json({ image: moduleApi.SERVER_CONFIG.loginPageConfig.background || "" }));
+        request.get(`/instance/login/name`, (req, res) => res.json({ name: moduleApi.SERVER_CONFIG.name }));
+        request.get(`/instance/login/logo`, (_req, res) => res.json({ image: moduleApi.SERVER_CONFIG.loginPageConfig.logo || "" }));
+        request.get(`/instance/login/message`, (_req, res) => res.json({ text: moduleApi.SERVER_CONFIG.loginPageConfig.message.content || "" }));
+        request.get(`/instance/default/background`, (_req, res) => res.json({ image: moduleApi.SERVER_CONFIG.defaultBackground }));
+        request.get(`/instance/favicon`, (_req, res) => res.send(moduleApi.SERVER_CONFIG.favicon));
+        request.get(`/instance/logo`, (_req, res) => res.json({ image: moduleApi.SERVER_CONFIG.logo }));
+        request.get(`/instance/version`, (_req, res) => res.json({ version: moduleApi.SERVER_CONFIG.version }));
         request.post(`/test/echo`, (req, res) => {
             res.json(req.body);
         });

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react"
-import Icon from "../../../../../components/elements/icon/Icon"
+import Icon from "ui/elements/icon/Icon"
 import styles from "./Carousel.module.scss"
 
 export interface ICarousel extends React.ComponentPropsWithoutRef<"div"> {
@@ -8,8 +8,8 @@ export interface ICarousel extends React.ComponentPropsWithoutRef<"div"> {
 }
 
 const Carousel: React.FC<ICarousel> = ({
-  children, className, ...extraProps 
-}) => {
+                                         children, className, ...extraProps
+                                       }) => {
   const pageRef = useRef<HTMLDivElement>(null)
   const [ indicator, setIndicator ] = useState(<></>)
   const [ scrollEvents, setScrollEvents ] = useState(0)
@@ -19,52 +19,67 @@ const Carousel: React.FC<ICarousel> = ({
     setIndicator(
       <div className={styles.indicator}>
         {
-          children instanceof Array ?
-            children.map((_child, ind) => {
-              if (!pageRef.current) {
-                return <i key={ind}></i>
-              }
-              const container = pageRef.current as HTMLDivElement
-              return <div key={ind} style={{ backgroundColor: Math.round(container.scrollLeft / window.innerWidth) === ind ? "var(--container-fg)" : "var(--container-bg)" }}></div>
-            })
-            : <div style={{ backgroundColor: Math.round((pageRef?.current?.scrollLeft || 0) / window.innerWidth) === 0 ?
-              "var(--container-fg)"
-              : "var(--container-bg)" }} />
-        }
-      </div >
+            children instanceof Array ?
+                children.map((_child, ind) => {
+                  if (!pageRef.current) {
+                    return <i key={ind}/>
+                  }
+                  const container = pageRef.current as HTMLDivElement
+                  return (
+                    <div
+                      key={ind}
+                      style={{ backgroundColor: Math.round(container.scrollLeft / window.innerWidth) === ind ? "var(--container-fg)" : "var(--container-bg)" }}
+                    />
+)
+                })
+                : (
+                  <div style={{
+                  backgroundColor: Math.round((pageRef?.current?.scrollLeft || 0) / window.innerWidth) === 0 ?
+                      "var(--container-fg)"
+                      : "var(--container-bg)"
+                }}
+                  />
+)
+          }
+      </div>
     )
   }, [ pageRef, children, scrollEvents ])
 
-  return <div {...extraProps} className={`${styles.component} ${className}`}>
-    <div className={styles.main} ref={pageRef} onScroll={() => setScrollEvents(scrollEvents + 1)}>
-      {
+  return (
+    <div {...extraProps} className={`${styles.component} ${className}`}>
+      <div className={styles.main} ref={pageRef} onScroll={() => setScrollEvents(scrollEvents + 1)}>
+        {
         children
       }
-    </div>
-    <div className={styles.controls}>
-      {
-        children instanceof Array ?
+      </div>
+      <div className={styles.controls}>
+        {
+        children instanceof Array ? (
           <>
             <button onClick={() => {
-              if (!pageRef.current) return
-              const container = pageRef.current as HTMLDivElement
-              container.scrollBy({ left: - window.innerWidth })
-            }}>
-              <Icon name="chevron-left-16" color="var(--button-fg)" />
+                if (!pageRef.current) return
+                const container = pageRef.current as HTMLDivElement
+                container.scrollBy({ left: -window.innerWidth })
+              }}
+            >
+              <Icon name="chevron-left-16" color="var(--button-fg)"/>
             </button>
             <button onClick={() => {
-              if (!pageRef.current) return
-              const container = pageRef.current as HTMLDivElement
-              container.scrollBy({ left: window.innerWidth })
-            }}>
-              <Icon name="chevron-right-16" color="var(--button-fg)" />
+                if (!pageRef.current) return
+                const container = pageRef.current as HTMLDivElement
+                container.scrollBy({ left: window.innerWidth })
+              }}
+            >
+              <Icon name="chevron-right-16" color="var(--button-fg)"/>
             </button>
           </>
-          : null
+          )
+            : null
       }
+      </div>
+      {indicator}
     </div>
-    {indicator}
-  </div>
+)
 }
 
 export default Carousel

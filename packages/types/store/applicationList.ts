@@ -1,4 +1,4 @@
-export default interface InstalledApplicationList {
+interface InstalledApplicationList {
   name: string,
   icon: {
     store: string
@@ -7,3 +7,5 @@ export default interface InstalledApplicationList {
   displayName: string,
   path: `/app/${string}`,
 }
+
+export type {InstalledApplicationList}

@@ -1,6 +1,6 @@
-import Tag from "../core/tag"
+import { type Tag } from "../core/tag"
 
-export default interface TasksListItem {
+interface TasksListItem {
   title: string,
   description: string,
   tags: Tag[],
@@ -11,3 +11,5 @@ export default interface TasksListItem {
     tags: string
   }[]
 }
+
+export { type TasksListItem }

@@ -1,5 +1,5 @@
-import ColContainer from '../../../../../components/containers/ColContainer/ColContainer';
-import AppLayout from '../../../../../components/layouts/appLayout/AppLayout';
+import ColContainer from 'ui/containers/ColContainer/ColContainer';
+import AppLayout from '../../../../../layouts/appLayout/AppLayout';
 import { NextPageWithLayout } from '../../../../page';
 import BooleanSetting from '../../components/BooleanSetting';
 import SettingsLayout from '../../components/SettingsLayout';
@@ -17,16 +17,18 @@ const SettingsPanel: NextPageWithLayout = () => {
           title='Rounded Application Windows'
           description='Make applications have a rounded border (this is only available on desktop)'
           defaultValue={appLayoutSettings.rounded}
-          setValue={(value) => {
-            console.log(value)
-          }}/>
+          setValue={value => {
+                console.log(value)
+              }}
+        />
         <BooleanSetting
           title='Floating Application Windows'
           description='Add a margin around applications and show your background image (this is only available on desktop)'
           defaultValue={appLayoutSettings.floating}
-          setValue={(value) => {
-            console.log(value)
-          }}/>
+          setValue={value => {
+                console.log(value)
+              }}
+        />
       </ColContainer>
     </>
   );
@@ -34,10 +36,10 @@ const SettingsPanel: NextPageWithLayout = () => {
 
 export default SettingsPanel;
 
-SettingsPanel.getLayout = (page) => {
-  return <AppLayout>
+SettingsPanel.getLayout = page => (
+  <AppLayout>
     <SettingsLayout>
       {page}
     </SettingsLayout>
   </AppLayout>
-}
+)

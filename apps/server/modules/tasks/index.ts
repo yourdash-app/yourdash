@@ -1,10 +1,10 @@
-import YourDashModule from '../../module.js';
+import { type YourDashModule } from '../../module.jsn';
 import fs from 'fs';
 import { generateRandomStringOfLength } from '../../encryption.js';
-import { log, resizeImage } from "./../../libServer.js"
+import { log, resizeImage } from "../../libServer.js"
 import path from 'path';
-import TasksList from "./../../../types/tasks/list.js"
-import YourDashUser from '../../../types/core/user.js';
+import { type TasksList } from "types/tasks/list.js"
+import { type YourDashUser } from 'types/core/user.js';
 
 const module: YourDashModule = {
   install() {
@@ -13,7 +13,7 @@ const module: YourDashModule = {
   load(request, api) {
     request.post(`/personal/list/create`, (req, res) => {
       if (!fs.existsSync(`${api.UserAppData(req)}/${this.name}/lists`))
-        fs.mkdir(`${api.UserAppData(req)}/${this.name}/lists`, { recursive: true }, (err) => {
+        fs.mkdir(`${api.UserAppData(req)}/${this.name}/lists`, { recursive: true }, err => {
           if (err) return res.json({ error: true });
         });
 
@@ -23,32 +23,32 @@ const module: YourDashModule = {
         return res.json({ error: true });
 
       fs.writeFile(
-        `${api.UserAppData(req)}/${this.name}/lists/${listId}.json`,
-        JSON.stringify({
-          description: "Unknown description",
-          id: `${listId}`,
-          name: 'Unnamed list',
-          tasks: [
-            {
-              assignees: [],
-              description: "test description",
-              subTasks: [],
-              tags: [],
-              title: 'general',
-            },
-          ],
-          tags: []
-        } as TasksList),
-        (err) => {
-          if (err) return res.json({ error: true });
-          return res.json({ id: listId });
-        }
+          `${api.UserAppData(req)}/${this.name}/lists/${listId}.json`,
+          JSON.stringify({
+            description: "Unknown description",
+            id: `${listId}`,
+            name: 'Unnamed list',
+            tasks: [
+              {
+                assignees: [],
+                description: "test description",
+                subTasks: [],
+                tags: [],
+                title: 'general',
+              },
+            ],
+            tags: []
+          } as TasksList),
+          err => {
+            if (err) return res.json({ error: true });
+            return res.json({ id: listId });
+          }
       );
     });
 
     request.get(`/personal/lists`, (req, res) => {
       if (!fs.existsSync(`${api.UserAppData(req)}/${this.name}/lists`)) {
-        fs.mkdir(`${api.UserAppData(req)}/${this.name}/lists`, { recursive: true }, (err) => {
+        fs.mkdir(`${api.UserAppData(req)}/${this.name}/lists`, { recursive: true }, err => {
           if (err) return res.json({ error: true });
         });
 
@@ -61,7 +61,7 @@ const module: YourDashModule = {
           return res.json({ error: true })
         }
 
-        const listsData = data.map((listName) => {
+        const listsData = data.map(listName => {
           try {
             const listData = JSON.parse(fs.readFileSync(path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${listName}`)).toString())
             return {
@@ -86,7 +86,7 @@ const module: YourDashModule = {
         return res.json({ error: true })
       }
 
-      fs.rm(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`, (err) => {
+      fs.rm(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`, err => {
         if (err) {
           return res.json({ error: true })
         }
@@ -124,7 +124,7 @@ const module: YourDashModule = {
         return res.json({ error: true })
       }
 
-      fs.writeFile(path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`), JSON.stringify(req.body), (err) => {
+      fs.writeFile(path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`), JSON.stringify(req.body), err => {
         if (err) {
           return res.json({ error: true })
         }
@@ -148,7 +148,7 @@ const module: YourDashModule = {
         }
         const json = JSON.parse(data.toString()) as TasksList
 
-        return res.json(json.tasks[ parseInt(req.params.taskId) ])
+        return res.json(json.tasks[parseInt(req.params.taskId)])
       })
     })
 
@@ -174,7 +174,7 @@ const module: YourDashModule = {
         const json = JSON.parse(data.toString()) as TasksList
         json.tasks.splice(parseInt(req.params.taskId), 1)
 
-        fs.writeFile(path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`), JSON.stringify(json), (err) => {
+        fs.writeFile(path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`), JSON.stringify(json), err => {
           if (err) return res.json({ error: true })
 
           return res.json({ success: true })
@@ -204,7 +204,7 @@ const module: YourDashModule = {
           title: "Untitled Task",
         })
 
-        fs.writeFile(path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`), JSON.stringify(json), (err) => {
+        fs.writeFile(path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`), JSON.stringify(json), err => {
           if (err) {
             log(`unable to write to file: ${path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`)}`)
             return res.json({ error: true })
@@ -240,7 +240,7 @@ const module: YourDashModule = {
 
         json.tasks[parseInt(taskId)] = req.body
 
-        fs.writeFile(path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${listId}.json`), JSON.stringify(json), (err) => {
+        fs.writeFile(path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${listId}.json`), JSON.stringify(json), err => {
           if (err) {
             log(`(${this.name}) ERROR: unable to write to ${listId}.json`)
             return res.json({ error: true })
@@ -275,17 +275,17 @@ const module: YourDashModule = {
 
         const json = JSON.parse(data.toString()) as YourDashUser
 
-        resizeImage(48, 48, json.profile.image, (err, image) => {
+        resizeImage(48, 48, json.profile.image, image => {
           if (err) {
             return res.json({ error: true })
           }
 
           return res.json({
             name: `${json.name.first} ${json.name.last}`,
-            profile: { image: image },
+            profile: { image },
             userName: json.userName,
           })
-        })
+        }, () => res.json({ error: true }))
       })
     })
   },

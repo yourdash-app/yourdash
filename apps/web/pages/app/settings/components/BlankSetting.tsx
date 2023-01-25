@@ -1,6 +1,6 @@
 import React from "react"
-import Card from "../../../../components/containers/card/Card"
-import ColContainer from "../../../../components/containers/ColContainer/ColContainer"
+import Card from "ui/containers/card/Card"
+import ColContainer from "ui/containers/ColContainer/ColContainer"
 import styles from "./BlankSetting.module.scss"
 
 export interface IBlankSetting {
@@ -9,19 +9,19 @@ export interface IBlankSetting {
 }
 
 const BlankSetting: React.FC<IBlankSetting> = ({
-  children, title, description 
-}) => {
-  return <div className={styles.component}>
-    <Card>
-      <ColContainer>
-        <h3>{title}</h3>
-        <p>{description}</p>
-      </ColContainer>
-      <div className={styles.child}>
-        {children}
-      </div>
-    </Card>
-  </div>
-}
+                                                 children, title, description
+                                               }) => (
+                                                 <div className={styles.component}>
+                                                   <Card>
+                                                     <ColContainer>
+                                                       <h3>{title}</h3>
+                                                       <p>{description}</p>
+                                                     </ColContainer>
+                                                     <div className={styles.child}>
+                                                       {children}
+                                                     </div>
+                                                   </Card>
+                                                 </div>
+)
 
 export default BlankSetting

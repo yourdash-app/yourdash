@@ -5,25 +5,25 @@
 
 import fs from 'fs';
 import path from 'path';
-import YourDashUser, { YourDashUserSettings } from '../types/core/user.js';
+import { type YourDashUserSettings, type YourDashUser } from 'types/core/user.js';
 import { encrypt, generateRandomStringOfLength } from './encryption.js';
-import { ENV, RELEASE_CONFIGURATION, YourDashServerConfig } from './index.js';
+import { ENV, RELEASE_CONFIGURATION, type YourDashServerConfig } from './index.js';
 import { log, returnBase64Image } from './libServer.js';
 import includedApps from './includedApps.js';
 
 export default function main(cb: () => void) {
   checkEnvironmentVariables(
-    () => checkYourDashConfigJson(
-      () => checkIfAdministratorUserExists(
-        () => checkConfigurationVersion(
-          () => checkIfAllInstalledAppsStillExist(
-            () => checkIfAllUsersHaveTheLatestConfig(
-              () => cb()
-            )
+      () => checkYourDashConfigJson(
+          () => checkIfAdministratorUserExists(
+              () => checkConfigurationVersion(
+                  () => checkIfAllInstalledAppsStillExist(
+                      () => checkIfAllUsersHaveTheLatestConfig(
+                          () => cb()
+                      )
+                  )
+              )
           )
-        )
       )
-    )
   )
 }
 
@@ -36,7 +36,7 @@ function checkIfAllUsersHaveTheLatestConfig(cb: () => void) {
       return process.exit(1)
     }
 
-    users.forEach((user) => {
+    users.forEach(user => {
       fs.readFile(path.resolve(`${ENV.FsOrigin}/data/users/${user}/user.json`), (err, data) => {
         if (err) {
           log(`(Start up): unable to read ${user}/user.json`)
@@ -57,7 +57,7 @@ function checkIfAllUsersHaveTheLatestConfig(cb: () => void) {
           json.name.last = "user"
         }
 
-        fs.writeFile(path.resolve(`${ENV.FsOrigin}/data/users/${user}/user.json`), JSON.stringify(json), (err) => {
+        fs.writeFile(path.resolve(`${ENV.FsOrigin}/data/users/${user}/user.json`), JSON.stringify(json), err => {
           if (err) {
             log(`(Start up) ERROR: unable to write ${path.resolve(`${ENV.FsOrigin}/data/users/${user}/user.json`)}`)
           }
@@ -77,14 +77,14 @@ function checkIfAllInstalledAppsStillExist(cb: () => void) {
 
       let json = JSON.parse(data.toString()) as string[]
 
-      json.forEach((app) => {
-        if (includedApps.find((includedApplication) => includedApplication.name === app))
+      json.forEach(app => {
+        if (includedApps.find(includedApplication => includedApplication.name === app))
           return
 
-        json = json.filter((application) => application !== app)
+        json = json.filter(application => application !== app)
       })
 
-      fs.writeFile(`${ENV.FsOrigin}/installed_apps.json`, JSON.stringify(json), (err) => {
+      fs.writeFile(`${ENV.FsOrigin}/installed_apps.json`, JSON.stringify(json), err => {
         if (err) {
           log(`(Start up) CRITICAL ERROR: unable to write to installed_apps.json`)
           return process.exit(1)
@@ -99,7 +99,7 @@ function checkIfAllInstalledAppsStillExist(cb: () => void) {
 
 function checkEnvironmentVariables(cb: () => void) {
   if (!fs.existsSync(path.resolve(ENV.FsOrigin))) {
-    fs.mkdir(ENV.FsOrigin, { recursive: true }, (err) => {
+    fs.mkdir(ENV.FsOrigin, { recursive: true }, err => {
       if (err) {
         log(`(Start up) ERROR: the 'FsOrigin' environment variable is invalid`)
         return process.exit(1)
@@ -115,46 +115,46 @@ function checkEnvironmentVariables(cb: () => void) {
 function checkYourDashConfigJson(cb: () => void) {
   if (!fs.existsSync(path.resolve(`${ENV.FsOrigin}/yourdash.config.json`))) {
     fs.writeFile(
-      path.resolve(`${ENV.FsOrigin}/yourdash.config.json`),
-      JSON.stringify({
-        activeModules: [ 'userManagement', 'core', 'files', 'store' ],
-        defaultBackground: returnBase64Image(path.resolve(`${ENV.FsOrigin}/../background.jpg`)),
-        favicon: returnBase64Image(path.resolve(`${ENV.FsOrigin}/../yourdash256.png`)),
-        instanceEncryptionKey: generateRandomStringOfLength(32),
-        loginPageConfig: {
-          background: { src: returnBase64Image(path.resolve(`${ENV.FsOrigin}/../background.jpg`)), },
-          logo: {
-            position: {
-              bottom: null,
-              left: null,
-              right: null,
-              top: null,
+        path.resolve(`${ENV.FsOrigin}/yourdash.config.json`),
+        JSON.stringify({
+          activeModules: [ 'userManagement', 'core', 'files', 'store' ],
+          defaultBackground: returnBase64Image(path.resolve(`${ENV.FsOrigin}/../background.jpg`)),
+          favicon: returnBase64Image(path.resolve(`${ENV.FsOrigin}/../yourdash256.png`)),
+          instanceEncryptionKey: generateRandomStringOfLength(32),
+          loginPageConfig: {
+            background: { src: returnBase64Image(path.resolve(`${ENV.FsOrigin}/../background.jpg`)), },
+            logo: {
+              position: {
+                bottom: null,
+                left: null,
+                right: null,
+                top: null,
+              },
+              src: returnBase64Image(path.resolve(`${ENV.FsOrigin}/../yourdash256.png`)),
             },
-            src: returnBase64Image(path.resolve(`${ENV.FsOrigin}/../yourdash256.png`)),
-          },
-          message: {
-            content: 'This server is new. Welcome to YourDash!',
-            position: {
-              bottom: null,
-              left: null,
-              right: null,
-              top: null,
+            message: {
+              content: 'This server is new. Welcome to YourDash!',
+              position: {
+                bottom: null,
+                left: null,
+                right: null,
+                top: null,
+              },
             },
           },
-        },
-        logo: returnBase64Image(path.resolve(`${ENV.FsOrigin}/../yourdash256.png`)),
-        name: 'YourDash Instance',
-        themeColor: '#a46',
-        version: 1,
-      } as YourDashServerConfig),
-      (err) => {
-        if (err) {
-          log(`(Start up) ERROR: a yourdash.config.json file could not be created!`)
-          process.exit(1)
+          logo: returnBase64Image(path.resolve(`${ENV.FsOrigin}/../yourdash256.png`)),
+          name: 'YourDash Instance',
+          themeColor: '#a46',
+          version: 1,
+        } as YourDashServerConfig),
+        err => {
+          if (err) {
+            log(`(Start up) ERROR: a yourdash.config.json file could not be created!`)
+            process.exit(1)
+          }
+          log(`config file was created in the data origin directory.`);
+          cb()
         }
-        log(`config file was created in the data origin directory.`);
-        cb()
-      }
     );
   } else {
     cb()
@@ -164,7 +164,7 @@ function checkYourDashConfigJson(cb: () => void) {
 // this should check for the version in the yourdash.config.json file
 function checkConfigurationVersion(cb: () => void) {
   const SERVER_CONFIG: YourDashServerConfig = JSON.parse(
-    fs.readFileSync(path.resolve(`${ENV.FsOrigin}/yourdash.config.json`)).toString()
+      fs.readFileSync(path.resolve(`${ENV.FsOrigin}/yourdash.config.json`)).toString()
   );
 
   // check if the version of the configuration is the same as the current version which is running
@@ -175,7 +175,7 @@ function checkConfigurationVersion(cb: () => void) {
   // e.g: if the version is 1 upgrade it to 2 in the configuration
   //      and adapt the known properties
   switch (SERVER_CONFIG.version) {
-    // eslint-disable-next-line no-fallthrough
+      // eslint-disable-next-line no-fallthrough
     case 1:
       fs.readFile(path.resolve(`${ENV.FsOrigin}/yourdash.config.json`), (err, data) => {
         if (err) {
@@ -184,7 +184,7 @@ function checkConfigurationVersion(cb: () => void) {
         }
         const jsonData: YourDashServerConfig = JSON.parse(data.toString())
         jsonData.version = 2
-        fs.writeFile(path.resolve(`${ENV.FsOrigin}/yourdash.config.json`), JSON.stringify(jsonData), (err) => {
+        fs.writeFile(path.resolve(`${ENV.FsOrigin}/yourdash.config.json`), JSON.stringify(jsonData), err => {
           if (err) {
             log(`(Start up) [Configuration Updater] ERROR: unable to write to yourdash.config.json`)
             return process.exit(1)
@@ -200,78 +200,84 @@ function checkConfigurationVersion(cb: () => void) {
 
 function checkIfAdministratorUserExists(cb: () => void) {
   if (!fs.existsSync(path.resolve(`${ENV.FsOrigin}/data/users/admin/user.json`))) {
-    fs.mkdir(path.resolve(`${ENV.FsOrigin}/data/users/admin/profile/`), { recursive: true }, (err) => {
+    fs.mkdir(path.resolve(`${ENV.FsOrigin}/data/users/admin/profile/`), { recursive: true }, err => {
       if (err) {
         log(`${err}`);
         process.exit(1)
       }
       fs.writeFileSync(
-        `${ENV.FsOrigin}/data/users/admin/profile/picture.png`,
-        fs.readFileSync(path.resolve(`${ENV.FsOrigin}/../default_user_profile.png`)
-        )
+          `${ENV.FsOrigin}/data/users/admin/profile/picture.png`,
+          fs.readFileSync(path.resolve(`${ENV.FsOrigin}/../default_user_profile.png`)
+          )
       )
       fs.writeFile(
-        `${ENV.FsOrigin}/data/users/admin/user.json`,
-        JSON.stringify({
-          name: {
-            first: 'Admin',
-            last: 'istrator'
-          },
-          profile: {
-            banner: '',
-            description: '',
-            externalLinks: {},
-            image: returnBase64Image(path.resolve(`${ENV.FsOrigin}/../default_user_profile.png`)),
-            location: {
-              public: false,
-              value: '',
+          `${ENV.FsOrigin}/data/users/admin/user.json`,
+          JSON.stringify({
+            name: {
+              first: 'Admin',
+              last: 'istrator'
             },
-            status: {
-              public: false, value: ''
+            profile: {
+              banner: '',
+              description: '',
+              externalLinks: {},
+              image: returnBase64Image(path.resolve(`${ENV.FsOrigin}/../default_user_profile.png`)),
+              location: {
+                public: false,
+                value: '',
+              },
+              status: {
+                public: false, value: ''
+              },
             },
-          },
-          userName: 'admin',
-          version: '1',
-        } as YourDashUser),
-        (err) => {
-          if (err) return log(`${err}`);
-          const SERVER_CONFIG: YourDashServerConfig = JSON.parse(
-            fs.readFileSync(path.resolve(`${ENV.FsOrigin}/yourdash.config.json`)).toString()
-          );
-          fs.writeFile(
-            path.resolve(`${ENV.FsOrigin}/data/users/admin/keys.json`),
-            JSON.stringify({ hashedKey: encrypt('admin', SERVER_CONFIG), }),
-            (err) => {
-              if (err) {
-                log(
-                  `(Start up) ERROR: could not encrypt (during administrator default credential generation): ${err}`
-                );
-                process.exit(1)
-              }
-              fs.writeFile(
-                `${ENV.FsOrigin}/data/users/admin/config.json`,
-                JSON.stringify({ panel: { launcher: { shortcuts: [
-                  {
-                    icon: returnBase64Image(
-                      path.resolve(`${ENV.FsOrigin}/../yourdash256.png`)
-                    ),
-                    name: 'Dashboard',
-                    url: '/app/dash',
-                  },
-                ], }, }, } as YourDashUserSettings),
-                (err) => {
+            userName: 'admin',
+            version: '1',
+          } as YourDashUser),
+          err => {
+            if (err) return log(`${err}`);
+            const SERVER_CONFIG: YourDashServerConfig = JSON.parse(
+                fs.readFileSync(path.resolve(`${ENV.FsOrigin}/yourdash.config.json`)).toString()
+            );
+            fs.writeFile(
+                path.resolve(`${ENV.FsOrigin}/data/users/admin/keys.json`),
+                JSON.stringify({ hashedKey: encrypt('admin', SERVER_CONFIG), }),
+                err => {
                   if (err) {
                     log(
-                      `(Start up) ERROR: could not write configuration (during administrator default configuration generation): ${err}`
+                        `(Start up) ERROR: could not encrypt (during administrator default credential generation): ${err}`
                     );
                     process.exit(1)
                   }
-                  return cb()
+                  fs.writeFile(
+                      `${ENV.FsOrigin}/data/users/admin/config.json`,
+                      JSON.stringify({
+                        panel: {
+                          launcher: {
+                            shortcuts: [
+                              {
+                                icon: returnBase64Image(
+                                    path.resolve(`${ENV.FsOrigin}/../yourdash256.png`)
+                                ),
+                                name: 'Dashboard',
+                                url: '/app/dash',
+                              },
+                            ],
+                          },
+                        },
+                      } as YourDashUserSettings),
+                      err => {
+                        if (err) {
+                          log(
+                              `(Start up) ERROR: could not write configuration (during administrator default configuration generation): ${err}`
+                          );
+                          process.exit(1)
+                        }
+                        return cb()
+                      }
+                  );
                 }
-              );
-            }
-          );
-        }
+            );
+          }
       );
     });
   } else {
