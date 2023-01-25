@@ -1,4 +1,4 @@
-export default interface InstalledApplication {
+interface InstalledApplication {
   name: string,
   moduleRequirements: string[],
   icon: string,
@@ -9,3 +9,5 @@ export default interface InstalledApplication {
   previewImages: string[],
   path: `/app/${string}`
 }
+
+export type { InstalledApplication }

@@ -1,4 +1,4 @@
-export default interface YourDashUser {
+interface YourDashUser {
   version: '1';
   name: {
     first: string;
@@ -62,7 +62,7 @@ export default interface YourDashUser {
   permissions: YourDashUserPermissions[]
 }
 
-export interface YourDashUserSettings {
+interface YourDashUserSettings {
   panel: {
     launcher: {
       slideOut: {
@@ -97,14 +97,14 @@ export interface YourDashUserSettings {
       items: {
         display: {
           size: number,
-          type: "" | ""
+          type: ""
         }
       }
     }
   };
 }
 
-export enum YourDashUserPermissions {
+enum YourDashUserPermissions {
   AddUsers,
   RemoveUsers,
   InstallApplications,
@@ -114,3 +114,5 @@ export enum YourDashUserPermissions {
   ChangeUserName,
   Administrator
 }
+
+export { type YourDashUserSettings, YourDashUserPermissions, type YourDashUser }

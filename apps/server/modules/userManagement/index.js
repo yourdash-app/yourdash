@@ -2,8 +2,8 @@ import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
 import { decrypt, encrypt, generateRandomStringOfLength } from '../../encryption.js';
-import { ENV } from '../../index.js';
-import { log } from './../../libServer.js';
+import { ENV } from "../../index.js";
+import { log } from '../../libServer.js';
 const USER_CACHE = {};
 const Module = {
     install() {
@@ -57,7 +57,7 @@ const Module = {
                 return res.json({ error: true });
             if (fs.existsSync(path.resolve(`${ENV.FsOrigin}/data/users/${username}`)))
                 return res.sendStatus(403);
-            fs.mkdir(`${moduleApi.FsOrigin}/data/users/${username}/profile`, { recursive: true }, (err) => {
+            fs.mkdir(`${moduleApi.FsOrigin}/data/users/${username}/profile`, { recursive: true }, err => {
                 if (err)
                     return res.json({ error: true });
                 fs.writeFileSync(`${moduleApi.FsOrigin}/data/users/admin/profile/picture.png`, fs.readFileSync(path.resolve(`${moduleApi.FsOrigin}/../default_user_profile.png`)));
@@ -120,20 +120,28 @@ const Module = {
                     quota: 0,
                     userName: username,
                     version: '1',
-                }), (err) => {
+                }), err => {
                     if (err)
                         return res.sendStatus(500);
-                    fs.writeFile(`${ENV.FsOrigin}/data/users/${username}/keys.json`, JSON.stringify({ hashedKey: encrypt(password, moduleApi.SERVER_CONFIG), }), (err) => {
+                    fs.writeFile(`${ENV.FsOrigin}/data/users/${username}/keys.json`, JSON.stringify({ hashedKey: encrypt(password, moduleApi.SERVER_CONFIG), }), err => {
                         if (err)
                             return res.sendStatus(500);
-                        fs.writeFile(`${ENV.FsOrigin}/data/users/${username}/config.json`, JSON.stringify({ panel: { launcher: { shortcuts: [
-                                        { icon: URL.createObjectURL(new Blob([
+                        fs.writeFile(`${ENV.FsOrigin}/data/users/${username}/config.json`, JSON.stringify({
+                            panel: {
+                                launcher: {
+                                    shortcuts: [
+                                        {
+                                            icon: URL.createObjectURL(new Blob([
                                                 fs.readFileSync(path.resolve(`${ENV.FsOrigin}./../yourdash.svg`)),
-                                            ])), },
-                                    ], }, }, }), (err) => {
+                                            ])),
+                                        },
+                                    ],
+                                },
+                            },
+                        }), err => {
                             if (err)
                                 return res.sendStatus(500);
-                            fs.mkdir(`${ENV.UserFs(req)}/AppData/`, { recursive: true }, (err) => {
+                            fs.mkdir(`${ENV.UserFs(req)}/AppData/`, { recursive: true }, err => {
                                 if (err)
                                     return res.sendStatus(500);
                                 return res.send(`hello new user ${req.params.username}`);
@@ -165,7 +173,7 @@ const Module = {
                     fs.writeFile(`${ENV.UserFs(req)}/keys.json`, JSON.stringify({
                         hashedKey: keysJson.hashedKey,
                         sessionToken: newSessionToken,
-                    }), (err) => {
+                    }), err => {
                         if (err) {
                             res.json({ error: `There was an issue with starting a new session.` });
                             return log(`ERROR ${username}'s keys.json could not be overwritten during the login process!`);

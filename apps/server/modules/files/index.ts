@@ -1,8 +1,8 @@
-import { SideBarCategory } from './../../../types/files/SideBar';
+import { type SideBarCategory } from 'types/files/SideBar';
 import path from "path";
-import YourDashUser from "../../../types/core/user.js";
+import { type YourDashUser } from "types/core/user.js";
 import { log } from "../../libServer.js";
-import YourDashModule from "../../module.js";
+import { type YourDashModule } from "../../module.js";
 import fs from "fs"
 
 const defaultCategories: SideBarCategory[] = [
@@ -46,15 +46,15 @@ const module: YourDashModule = {
     app.get(`/sidebar/categories`, (req, res) => {
       if (!fs.existsSync(path.resolve(`${api.UserAppData(req)}/files/sidebar`)))
         return fs.mkdir(
-          path.resolve(`${api.UserAppData(req)}/files/sidebar`),
-          { recursive: true },
-          (err) => {
-            if (err) {
-              log(`ERROR: unable to make directory: ${api.UserAppData(req)}/files/`)
-              return res.json({ error: true })
+            path.resolve(`${api.UserAppData(req)}/files/sidebar`),
+            { recursive: true },
+            err => {
+              if (err) {
+                log(`ERROR: unable to make directory: ${api.UserAppData(req)}/files/`)
+                return res.json({ error: true })
+              }
+              return res.json({ categories: [] })
             }
-            return res.json({ categories: [] })
-          }
         )
 
       if (!fs.existsSync(path.resolve(`${api.UserAppData(req)}/files/sidebar/categories.json`)))
@@ -73,17 +73,17 @@ const module: YourDashModule = {
     app.get(`/sidebar/set/default`, (req, res) => {
       if (!fs.existsSync(path.resolve(`${api.UserAppData(req)}/files/sidebar`)))
         return fs.mkdir(
-          path.resolve(`${api.UserAppData(req)}/files/sidebar`),
-          { recursive: true },
-          (err) => {
-            if (err) {
-              log(`ERROR: unable to make directory: ${api.UserAppData(req)}/files/`)
-              return res.json({ error: true })
+            path.resolve(`${api.UserAppData(req)}/files/sidebar`),
+            { recursive: true },
+            err => {
+              if (err) {
+                log(`ERROR: unable to make directory: ${api.UserAppData(req)}/files/`)
+                return res.json({ error: true })
+              }
+              return res.json([])
             }
-            return res.json([])
-          }
         )
-      fs.writeFile(path.resolve(`${api.UserAppData(req)}/files/sidebar/categories.json`), JSON.stringify(defaultCategories), (err) => {
+      fs.writeFile(path.resolve(`${api.UserAppData(req)}/files/sidebar/categories.json`), JSON.stringify(defaultCategories), err => {
         if (err) {
           log(`ERROR: unable to write the defaults to ${path.resolve(`${api.UserAppData(req)}/files/sidebar/categories.json`)}`)
           return res.json({ error: true })

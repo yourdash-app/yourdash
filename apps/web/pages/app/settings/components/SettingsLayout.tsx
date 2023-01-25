@@ -1,65 +1,67 @@
 import React from "react"
-import SideBar from "../../../../components/elements/sideBar/SideBar"
+import SideBar from "ui/elements/sideBar/SideBar"
 import styles from "./SettingsLayout.module.scss"
 import { useRouter } from "next/router"
 
 const SettingsLayout: React.FC = ({ children }) => {
   const router = useRouter()
 
-  return <div className={styles.root}>
-    <SideBar
-      style={{ height: "100%" }}
-      title="Settings"
-      items={
-        [
-          {
-            icon: "apps-16",
-            name: "Overview",
-            onClick: () => {
-              router.push(`/app/settings/`)
+  return (
+    <div className={styles.root}>
+      <SideBar
+        style={{ height: "100%" }}
+        title="Settings"
+        items={
+          [
+            {
+              icon: "apps-16",
+              name: "Overview",
+              onClick: () => {
+                router.push(`/app/settings/`)
+              },
+              type: "button",
             },
-            type: "button",
-          },
-          { type: "separator", },
-          {
-            icon: "person-16",
-            name: "Profile",
-            onClick: () => {
-              router.push(`/app/settings/user/profile`)
+            { type: "separator", },
+            {
+              icon: "person-16",
+              name: "Profile",
+              onClick: () => {
+                router.push(`/app/settings/user/profile`)
+              },
+              type: "button",
             },
-            type: "button",
-          },
-          {
-            icon: "app-launcher-16",
-            name: "Panel",
-            onClick: () => {
-              router.push(`/app/settings/user/panel`)
+            {
+              icon: "app-launcher-16",
+              name: "Panel",
+              onClick: () => {
+                router.push(`/app/settings/user/panel`)
+              },
+              type: "button",
             },
-            type: "button",
-          },
-          {
-            icon: "mail-16",
-            name: "Notifications",
-            onClick: () => {
-              router.push(`/app/settings/user/notifications`)
+            {
+              icon: "mail-16",
+              name: "Notifications",
+              onClick: () => {
+                router.push(`/app/settings/user/notifications`)
+              },
+              type: "button",
             },
-            type: "button",
-          },
-          {
-            icon: "paintbrush-16",
-            name: "Theme",
-            onClick: () => {
-              router.push(`/app/settings/user/theme`)
-            },
-            type: "button",
-          }
-        ]
-      }
-    />
-    <div className={styles.page}>
-      {children}
+            {
+              icon: "paintbrush-16",
+              name: "Theme",
+              onClick: () => {
+                router.push(`/app/settings/user/theme`)
+              },
+              type: "button",
+            }
+          ]
+        }
+      />
+      <div className={styles.page}>
+        {children}
+      </div>
     </div>
-  </div>
+)
 }
 
 export default SettingsLayout

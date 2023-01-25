@@ -1,5 +1,5 @@
 import React from "react"
-import ToggleSwitch from "../../../../components/elements/toggleSwitch/ToggleSwitch"
+import ToggleSwitch from "ui/elements/toggleSwitch/ToggleSwitch"
 import BlankSetting from "./BlankSetting"
 
 export interface IBooleanSetting {
@@ -10,11 +10,11 @@ export interface IBooleanSetting {
 }
 
 const BooleanSetting: React.FC<IBooleanSetting> = ({
-  title, description, setValue, defaultValue 
-}) => {
-  return <BlankSetting title={title} description={description}>
-    <ToggleSwitch onValueChange={(value) => setValue(value)} defaultValue={defaultValue ? "true" : "false"} />
-  </BlankSetting>
-}
+                                                     title, description, setValue, defaultValue
+                                                   }) => (
+                                                     <BlankSetting title={title} description={description}>
+                                                       <ToggleSwitch onValueChange={value => setValue(value)} defaultValue={defaultValue ? "true" : "false"}/>
+                                                     </BlankSetting>
+)
 
 export default BooleanSetting
