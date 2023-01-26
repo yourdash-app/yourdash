@@ -527,4 +527,4 @@ export const YourDashIconRawDictionary = YourDashIconDictionary;
 
 type YourDashIcon = keyof typeof YourDashIconDictionary;
 
-export default YourDashIcon;
+export type { YourDashIcon };

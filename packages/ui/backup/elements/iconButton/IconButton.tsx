@@ -1,7 +1,7 @@
 import COLOR from '../../../lib/color';
 import CSSVariable from '../../../lib/cssVariable';
-import Icon from '../icon/Icon';
-import YourDashIcon from '../icon/iconDictionary';
+import Icon from '../../../icon/Icon';
+import YourDashIcon from '../../../icon/iconDictionary';
 import styles from './IconButton.module.scss';
 
 export interface IIconButton extends React.ComponentPropsWithoutRef<"button"> {

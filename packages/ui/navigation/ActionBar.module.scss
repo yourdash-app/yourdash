@@ -1,0 +1,46 @@
+.component {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: blue;
+  height: 100%;
+  width: 5rem;
+}
+
+.action {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  place-items: center center;
+  transition: var(--transition);
+  user-select: none;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  color: var(--actionbar-fg);
+
+  &:hover {
+    .name {
+      background-color: #229cec;
+    }
+  }
+
+  &:active {
+    .name {
+      background-color: #128cdc;
+    }
+  }
+
+  .name {
+    background-color: #424c8c;
+    padding: 0.125rem 0.25rem;
+    border-radius: 0.25rem;
+    text-align: center;
+    text-overflow: ellipsis;
+    max-width: 4.5rem;
+    box-sizing: border-box;
+  }
+
+  .icon {
+    aspect-ratio: 1 / 1;
+  }
+}

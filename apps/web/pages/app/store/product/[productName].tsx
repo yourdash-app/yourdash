@@ -10,7 +10,7 @@ import { type InstalledApplication } from 'types/store/installedApplication';
 import Button from 'ui/backup/elements/button/Button';
 import Card from 'ui/backup/containers/card/Card';
 import ColContainer from 'ui/backup/containers/ColContainer/ColContainer';
-import Icon from 'ui/backup/elements/icon/Icon';
+import Icon from 'ui/icon/Icon';
 
 const StoreProduct: NextPageWithLayout = () => {
   const router = useRouter()

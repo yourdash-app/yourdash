@@ -1,6 +1,6 @@
 import styles from './Footer.module.scss';
 import Link from "next/link"
-import Icon from 'ui/backup/elements/icon/Icon';
+import Icon from 'ui/icon/Icon';
 
 export type IFooter = React.ComponentPropsWithoutRef<'div'>
 

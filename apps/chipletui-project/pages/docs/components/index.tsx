@@ -21,7 +21,7 @@ const Docs: NextPageWithLayout = () => (
 export default Docs;
 
 Docs.getLayout = page => (
-  <HomeLayout>
+  <HomeLayout noFooter>
     <DocsLayout>{page}</DocsLayout>
   </HomeLayout>
 )

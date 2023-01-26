@@ -5,7 +5,7 @@ let currentSessionLog = '----- [YOURDASH SERVER LOG] -----\n';
 export function log(input) {
     console.log(input);
     currentSessionLog += `${input.replaceAll('', '').replaceAll(/\[[0-9][0-9]m/gm, '')}\n`;
-    fs.writeFile(`${ENV.FsOrigin}/serverlog.txt`, currentSessionLog, (err) => {
+    fs.writeFile(`${ENV.FsOrigin}/serverlog.txt`, currentSessionLog, err => {
         if (err) {
             console.error(err);
             process.exit();
@@ -13,13 +13,13 @@ export function log(input) {
     });
 }
 export function returnBase64Image(path) {
-    return "data:image/png;base64," + fs.readFileSync(path, 'base64');
+    return `data:image/png;base64,${fs.readFileSync(path, 'base64')}`;
 }
 export function returnBase64Svg(path) {
-    return "data:image/svg;base64," + fs.readFileSync(path, 'base64');
+    return `data:image/svg;base64,${fs.readFileSync(path, 'base64')}`;
 }
 export function base64FromBufferImage(img) {
-    const base64 = "data:image/png;base64," + img.toString("base64");
+    const base64 = `data:image/png;base64,${img.toString("base64")}`;
     return base64;
 }
 export function resizeImage(width, height, image, callback, error) {

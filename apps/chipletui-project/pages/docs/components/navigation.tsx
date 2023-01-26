@@ -3,7 +3,7 @@ import DocsLayout from '../../../layouts/docsLayout/DocsLayout';
 import HomeLayout from '../../../layouts/homeLayout/HomeLayout';
 import Link from "next/link";
 import Badge from "ui/badges/Badge"
-import ApplicationBar from "ui/navigation/ApplicationBar";
+import ActionBar from "ui/navigation/ActionBar";
 
 const Docs: NextPageWithLayout = () => (
   <>
@@ -15,7 +15,7 @@ const Docs: NextPageWithLayout = () => (
 
 
       <section style={{ height: "30rem" }}>
-        <ApplicationBar actions={[ {
+        <ActionBar actions={[ {
             name: "test action", icon: "bruh", onClick: () => {
               console.log("action clicked!")
             }
@@ -29,7 +29,7 @@ const Docs: NextPageWithLayout = () => (
 export default Docs;
 
 Docs.getLayout = page => (
-  <HomeLayout>
+  <HomeLayout noFooter>
     <DocsLayout>{page}</DocsLayout>
   </HomeLayout>
 )
