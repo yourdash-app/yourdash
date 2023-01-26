@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import styles from './SideBar.module.scss';
-import YourDashIcon from '../icon/iconDictionary';
+import YourDashIcon from '../../../icon/iconDictionary';
 import IconButton from '../iconButton/IconButton'
-import Icon from '../icon/Icon';
+import Icon from '../../../icon/Icon';
 
 export interface ISideBar extends React.ComponentPropsWithoutRef<"main"> {
   items: (

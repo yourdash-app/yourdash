@@ -1,6 +1,6 @@
 import Link from "next/link";
 import ButtonLink from "ui/backup/elements/buttonLink/ButtonLink";
-import Icon from 'ui/backup/elements/icon/Icon';
+import Icon from 'ui/icon/Icon';
 import styles from './NavigationBar.module.scss';
 import { useEffect, useState } from "react";
 import AuthenticatedImg from "ui/backup/elements/authenticatedImg/AuthenticatedImg";

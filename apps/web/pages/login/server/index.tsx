@@ -10,7 +10,7 @@ import HomeLayout from "../../../layouts/homeLayout/HomeLayout";
 import SERVER, { verifyAndReturnJson } from "../../../server";
 import { NextPageWithLayout } from "../../page";
 import styles from "./index.module.scss";
-import { YourDashIconRawDictionary } from "ui/backup/elements/icon/iconDictionary";
+import { YourDashIconRawDictionary } from "ui/icon/iconDictionary";
 import DropdownButton from "ui/backup/elements/dropdownButton/DropdownButton";
 import RightClickMenuRootContainer from "ui/backup/elements/rightClickMenu/RightClickMenuRootContainer";
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react"
-import Icon from "ui/backup/elements/icon/Icon"
+import Icon from "ui/icon/Icon"
 import styles from "./Carousel.module.scss"
 
 export interface ICarousel extends React.ComponentPropsWithoutRef<"div"> {

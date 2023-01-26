@@ -1,14 +1,13 @@
 import { CSSProperties } from "react";
-import COLOR from "../../../lib/color";
-import CSSVariable from "../../../lib/cssVariable";
-import YourDashIcon, { YourDashIconRawDictionary } from "./iconDictionary";
+import { type COLOR } from "types/global/color";
+import { type YourDashIcon, YourDashIconRawDictionary } from "./iconDictionary";
 import styles from "./Icon.module.scss"
 
 export interface IIcon extends React.ComponentPropsWithoutRef<'div'> {
   name: YourDashIcon;
   style?: CSSProperties;
   className?: string;
-  color?: COLOR | CSSVariable;
+  color?: COLOR;
   useDefaultColor?: boolean;
 }
 

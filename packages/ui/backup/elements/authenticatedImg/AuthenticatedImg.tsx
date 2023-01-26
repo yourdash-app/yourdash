@@ -6,7 +6,7 @@
 
 import { useEffect, useState } from "react";
 import SERVER, { verifyAndReturnJson } from "web/server";
-import { YourDashIconRawDictionary } from "../icon/iconDictionary";
+import { YourDashIconRawDictionary } from "../../../icon/iconDictionary";
 
 export interface IAuthenticatedImg extends React.ComponentPropsWithoutRef<'img'> {
   src: string

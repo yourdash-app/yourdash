@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import ColContainer from 'ui/backup/containers/ColContainer/ColContainer';
 import RowContainer from 'ui/backup/containers/RowContainer/RowContainer';
 import CardButton from 'ui/backup/elements/cardButton/CardButton';
-import Icon from 'ui/backup/elements/icon/Icon';
+import Icon from 'ui/icon/Icon';
 import AppLayout from '../../../layouts/appLayout/AppLayout';
 import { NextPageWithLayout } from '../../page';
 import TasksLayout from './components/TasksLayout';

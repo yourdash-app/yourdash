@@ -12,7 +12,7 @@ import Card from 'ui/backup/containers/card/Card';
 import ColContainer from 'ui/backup/containers/ColContainer/ColContainer';
 import RowContainer from 'ui/backup/containers/RowContainer/RowContainer';
 import Button from 'ui/backup/elements/button/Button';
-import Icon from 'ui/backup/elements/icon/Icon';
+import Icon from 'ui/icon/Icon';
 import RightClickMenu from 'ui/backup/elements/rightClickMenu/RightClickMenu';
 import TextInput from 'ui/backup/elements/textInput/TextInput';
 import styles from './Panel.module.scss';

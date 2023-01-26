@@ -1,6 +1,6 @@
 import CardButton from "ui/backup/elements/cardButton/CardButton";
 import DropdownMenu from "ui/backup/elements/dropdownMenu/DropdownMenu";
-import Icon from "ui/backup/elements/icon/Icon";
+import Icon from "ui/icon/Icon";
 import IconButton from "ui/backup/elements/iconButton/IconButton";
 import styles from "./File.module.scss"
 

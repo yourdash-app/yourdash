@@ -1,13 +1,10 @@
 import React from "react"
+import "./variables.css"
 
 const ChipletUiRootIntergration: React.FC = ({ children }) => (
-  <>
-    {/* chiplet ui root elements will go here */}
-
-    <div/>
-
-    {children}
-  </>
+    <div>
+      <div></div>
+    </div>
 )
 
 export default ChipletUiRootIntergration
