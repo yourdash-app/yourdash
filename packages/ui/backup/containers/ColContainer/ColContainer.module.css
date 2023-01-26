@@ -1,0 +1,13 @@
+.component {
+  display: flex;
+  flex-direction: column;
+}
+
+.component > * {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+.component > *:last-child {
+  margin-bottom: 0;
+}

@@ -1,5 +1,5 @@
 import React from "react"
-import ToggleSwitch from "ui/elements/toggleSwitch/ToggleSwitch"
+import ToggleSwitch from "ui/backup/elements/toggleSwitch/ToggleSwitch"
 import BlankSetting from "./BlankSetting"
 
 export interface IBooleanSetting {

@@ -1,5 +1,5 @@
 import SERVER, { verifyAndReturnJson } from "../../server";
-import RightClickMenuRootContainer from "ui/elements/rightClickMenu/RightClickMenuRootContainer";
+import RightClickMenuRootContainer from "ui/backup/elements/rightClickMenu/RightClickMenuRootContainer";
 import styles from "./AppLayout.module.scss"
 import Panel from "./panel/Panel";
 import React, { ReactNode, useEffect, useState } from "react";
@@ -45,15 +45,15 @@ const AppLayout: React.FC<IAppLayout> = ({
         <RightClickMenuRootContainer>
           {children}
         </RightClickMenuRootContainer>
-)
+      )
       : (
         <RightClickMenuRootContainer>
           <div className={styles.root} style={{ backgroundImage: `url(${backgroundImage})` }}>
             <Panel
               backgroundImage={`url(${backgroundImage})`}
               appIsOpening={value => {
-                setAppOpenAnimation(value)
-              }}
+                    setAppOpenAnimation(value)
+                  }}
             />
             <div
               data-app-window={applicationWindowMode}
@@ -66,7 +66,7 @@ const AppLayout: React.FC<IAppLayout> = ({
             </div>
           </div>
         </RightClickMenuRootContainer>
-)
+      )
 };
 
 export default AppLayout;

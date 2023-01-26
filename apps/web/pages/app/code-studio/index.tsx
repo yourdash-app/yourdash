@@ -2,8 +2,8 @@ import Head from "next/head";
 import React from "react";
 import AppLayout from '../../../layouts/appLayout/AppLayout';
 import { NextPageWithLayout } from '../../page';
-import ColContainer from "ui/containers/ColContainer/ColContainer";
-import Button from "ui/elements/button/Button";
+import ColContainer from "ui/backup/containers/ColContainer/ColContainer";
+import Button from "ui/backup/elements/button/Button";
 import styles from "./index.module.scss"
 
 const CodeStudio: NextPageWithLayout = () => (

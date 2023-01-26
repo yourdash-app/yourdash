@@ -1,6 +1,6 @@
 import React from "react"
-import Card from "ui/containers/card/Card"
-import ColContainer from "ui/containers/ColContainer/ColContainer"
+import Card from "ui/backup/containers/card/Card"
+import ColContainer from "ui/backup/containers/ColContainer/ColContainer"
 import styles from "./BlankSetting.module.scss"
 
 export interface IBlankSetting {

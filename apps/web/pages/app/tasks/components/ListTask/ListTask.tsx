@@ -1,7 +1,7 @@
 import React from "react"
 import styles from "./ListTask.module.scss"
 import { type TasksListItem } from "types/tasks/listItem";
-import IconButton from "ui/elements/iconButton/IconButton";
+import IconButton from "ui/backup/elements/iconButton/IconButton";
 
 export interface IListTask {
   task: TasksListItem

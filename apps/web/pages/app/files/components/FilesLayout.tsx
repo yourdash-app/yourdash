@@ -1,6 +1,6 @@
 import FilesSideBar from "./FilesSideBar";
 import styles from "./FilesLayout.module.scss"
-import ColContainer from "ui/containers/ColContainer/ColContainer";
+import ColContainer from "ui/backup/containers/ColContainer/ColContainer";
 
 const FilesLayout: React.FC = ({ children }) => (
   <div className={styles.root}>

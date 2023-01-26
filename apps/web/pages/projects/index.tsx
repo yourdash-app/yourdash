@@ -1,4 +1,4 @@
-import Icon from 'ui/elements/icon/Icon';
+import Icon from 'ui/backup/elements/icon/Icon';
 
 import { NextPageWithLayout } from "../page";
 

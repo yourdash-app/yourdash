@@ -1,23 +1,23 @@
 import { Router } from 'next/router';
-import ColContainer from 'ui/containers/ColContainer/ColContainer';
+import ColContainer from 'ui/backup/containers/ColContainer/ColContainer';
 import AppLayout from '../../../../../layouts/appLayout/AppLayout';
 import { NextPageWithLayout } from '../../../../page';
 import SettingsLayout from '../../components/SettingsLayout';
-import Card from 'ui/containers/card/Card';
+import Card from 'ui/backup/containers/card/Card';
 import styles from "./index.module.scss"
-import RowContainer from 'ui/containers/RowContainer/RowContainer';
-import DropdownButton from 'ui/elements/dropdownButton/DropdownButton';
-import CenteredContainer from 'ui/containers/CenteredContainer/CenteredContainer';
-import Button from 'ui/elements/button/Button';
-import CardButton from 'ui/elements/cardButton/CardButton';
-import Chip from 'ui/elements/chip/Chip';
-import IconButton from 'ui/elements/iconButton/IconButton';
-import ProgressBar from 'ui/elements/progressBar/ProgressBar';
-import Spinner from 'ui/elements/spinner/Spinner';
-import TextBox from 'ui/elements/textBox/TextBox';
-import TextInput from 'ui/elements/textInput/TextInput';
-import ToggleSwitch from 'ui/elements/toggleSwitch/ToggleSwitch';
-import Tags from 'ui/elements/tags/Tags';
+import RowContainer from 'ui/backup/containers/RowContainer/RowContainer';
+import DropdownButton from 'ui/backup/elements/dropdownButton/DropdownButton';
+import CenteredContainer from 'ui/backup/containers/CenteredContainer/CenteredContainer';
+import Button from 'ui/backup/elements/button/Button';
+import CardButton from 'ui/backup/elements/cardButton/CardButton';
+import Chip from 'ui/backup/elements/chip/Chip';
+import IconButton from 'ui/backup/elements/iconButton/IconButton';
+import ProgressBar from 'ui/backup/elements/progressBar/ProgressBar';
+import Spinner from 'ui/backup/elements/spinner/Spinner';
+import TextBox from 'ui/backup/elements/textBox/TextBox';
+import TextInput from 'ui/backup/elements/textInput/TextInput';
+import ToggleSwitch from 'ui/backup/elements/toggleSwitch/ToggleSwitch';
+import Tags from 'ui/backup/elements/tags/Tags';
 
 const SettingsPanel: NextPageWithLayout = () => {
   const routeChange = () => {
@@ -69,8 +69,8 @@ const SettingsPanel: NextPageWithLayout = () => {
               >Button</Button>
               <Button
                 onClick={() => {
-                  console.log(`Implement Me!!!`)
-                }}
+                      console.log(`Implement Me!!!`)
+                    }}
                 vibrant
               >Vibrant Button</Button>
               <Card>
@@ -81,8 +81,8 @@ const SettingsPanel: NextPageWithLayout = () => {
                   >Button</Button>
                   <Button
                     onClick={() => {
-                      console.log(`Implement Me!!!`)
-                    }}
+                          console.log(`Implement Me!!!`)
+                        }}
                     vibrant
                   >Vibrant Button</Button>
                 </RowContainer>
@@ -121,39 +121,39 @@ const SettingsPanel: NextPageWithLayout = () => {
                 <IconButton
                   icon="bug-16"
                   onClick={() => {
-                    console.log(`Implement Me!!!`)
-                  }}
+                        console.log(`Implement Me!!!`)
+                      }}
                 />
                 <IconButton
                   icon="x-16"
                   onClick={() => {
-                    console.log(`Implement Me!!!`)
-                  }}
+                        console.log(`Implement Me!!!`)
+                      }}
                 />
                 <IconButton
                   icon="circle-16"
                   onClick={() => {
-                    console.log(`Implement Me!!!`)
-                  }}
+                        console.log(`Implement Me!!!`)
+                      }}
                 />
                 <IconButton
                   icon="server-error"
                   onClick={() => {
-                    console.log(`Implement Me!!!`)
-                  }}
+                        console.log(`Implement Me!!!`)
+                      }}
                 />
                 <IconButton
                   icon="yourdash-logo"
                   onClick={() => {
-                    console.log(`Implement Me!!!`)
-                  }}
+                        console.log(`Implement Me!!!`)
+                      }}
                 />
                 <IconButton
                   useDefaultColor
                   icon="yourdash-logo"
                   onClick={() => {
-                    console.log(`Implement Me!!!`)
-                  }}
+                        console.log(`Implement Me!!!`)
+                      }}
                 />
               </RowContainer>
               <ProgressBar value={20}/>
@@ -203,27 +203,27 @@ const SettingsPanel: NextPageWithLayout = () => {
               <Tags
                 compact
                 tags={[
-                  {
-                    color: "#337733",
-                    displayName: "Administrator",
-                    name: "administrator"
-                  },
-                  {
-                    color: "#434883",
-                    displayName: "Administrator",
-                    name: "administrator"
-                  },
-                  {
-                    color: "#884466",
-                    displayName: "Administrator",
-                    name: "administrator"
-                  },
-                  {
-                    color: "#938263",
-                    displayName: "Administrator",
-                    name: "administrator"
-                  }
-                ]}
+                      {
+                        color: "#337733",
+                        displayName: "Administrator",
+                        name: "administrator"
+                      },
+                      {
+                        color: "#434883",
+                        displayName: "Administrator",
+                        name: "administrator"
+                      },
+                      {
+                        color: "#884466",
+                        displayName: "Administrator",
+                        name: "administrator"
+                      },
+                      {
+                        color: "#938263",
+                        displayName: "Administrator",
+                        name: "administrator"
+                      }
+                    ]}
               />
             </ColContainer>
             <ColContainer>

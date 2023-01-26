@@ -1,10 +1,10 @@
 import Link from "next/link";
-import ButtonLink from "ui/elements/buttonLink/ButtonLink";
-import Icon from 'ui/elements/icon/Icon';
+import ButtonLink from "ui/backup/elements/buttonLink/ButtonLink";
+import Icon from 'ui/backup/elements/icon/Icon';
 import styles from './NavigationBar.module.scss';
 import { useEffect, useState } from "react";
-import AuthenticatedImg from "ui/elements/authenticatedImg/AuthenticatedImg";
-import IconButton from "ui/elements/iconButton/IconButton";
+import AuthenticatedImg from "ui/backup/elements/authenticatedImg/AuthenticatedImg";
+import IconButton from "ui/backup/elements/iconButton/IconButton";
 import { useRouter } from "next/router";
 
 const NavigationBar: React.FC = () => {
@@ -19,8 +19,8 @@ const NavigationBar: React.FC = () => {
         <IconButton
           className={styles.backButton}
           onClick={() => {
-        router.push("https://yourdash.vercel.app")
-      }}
+                router.push("https://yourdash.vercel.app")
+              }}
           icon="arrow-left-16"
         />
         <Icon useDefaultColor className={styles.yourDashLogo} name="yourdash-logo"/>
@@ -31,7 +31,7 @@ const NavigationBar: React.FC = () => {
         <Link href="https://github.com/ewsgit/yourdash">Git</Link>
       </div>
     </>
-)
+  )
 };
 
 export default NavigationBar;

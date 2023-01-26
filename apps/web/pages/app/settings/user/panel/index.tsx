@@ -1,4 +1,4 @@
-import ColContainer from 'ui/containers/ColContainer/ColContainer';
+import ColContainer from 'ui/backup/containers/ColContainer/ColContainer';
 import AppLayout from '../../../../../layouts/appLayout/AppLayout';
 import { NextPageWithLayout } from '../../../../page';
 import BooleanSetting from '../../components/BooleanSetting';

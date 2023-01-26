@@ -1,0 +1,65 @@
+/*
+ *   Copyright (c) 2022-2023 Ewsgit
+ *   All rights reserved.
+
+ *   Permission is hereby granted, free of charge, to any person obtaining a copy
+ *   of this software and associated documentation files (the "Software"), to deal
+ *   in the Software without restriction, including without limitation the rights
+ *   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *   copies of the Software, and to permit persons to whom the Software is
+ *   furnished to do so, subject to the following conditions:
+ 
+ *   The above copyright notice and this permission notice shall be included in all
+ *   copies or substantial portions of the Software.
+ 
+ *   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ *   SOFTWARE.
+ */
+
+.component {
+    border: none;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    font-size: 1rem;
+    font-family: 'Roboto';
+    transition: var(--transition);
+    border-radius: var(--button-rounding);
+    background-color: var(--button-bg);
+    color: var(--button-fg);
+    transform: scale(1) !important;
+    transform-origin: center;
+    position: absolute;
+    outline: var(--floating-label-outline);
+    background-color: var(--floating-label-bg);
+    color: var(--floating-label-fg);
+    user-select: none;
+}
+
+.noContent {
+    transform: scale(0) !important;
+}
+
+.info {
+    outline: 0.2rem solid var(--color-info-outline);
+    background-color: var(--color-info-bg);
+    color: var(--color-info-fg);
+}
+
+.warn {
+    outline: 0.2rem solid var(--color-warn-outline);
+    background-color: var(--color-warn-bg);
+    color: var(--color-warn-fg);
+}
+
+.error {
+    outline: 0.2rem solid var(--color-error-outline);
+    background-color: var(--color-error-bg);
+    color: var(--color-error-fg);
+}
