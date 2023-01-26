@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
-import ColContainer from 'ui/containers/ColContainer/ColContainer';
-import RowContainer from 'ui/containers/RowContainer/RowContainer';
-import CardButton from 'ui/elements/cardButton/CardButton';
-import Icon from 'ui/elements/icon/Icon';
+import ColContainer from 'ui/backup/containers/ColContainer/ColContainer';
+import RowContainer from 'ui/backup/containers/RowContainer/RowContainer';
+import CardButton from 'ui/backup/elements/cardButton/CardButton';
+import Icon from 'ui/backup/elements/icon/Icon';
 import AppLayout from '../../../layouts/appLayout/AppLayout';
 import { NextPageWithLayout } from '../../page';
 import TasksLayout from './components/TasksLayout';
 import styles from "./index.module.scss"
 import SERVER, { verifyAndReturnJson } from '../../../server';
-import IconButton from 'ui/elements/iconButton/IconButton';
-import Button from 'ui/elements/button/Button';
-import Card from 'ui/containers/card/Card';
+import IconButton from 'ui/backup/elements/iconButton/IconButton';
+import Button from 'ui/backup/elements/button/Button';
+import Card from 'ui/backup/containers/card/Card';
 import { useRouter } from 'next/navigation';
 
 function LoadPersonalLists(setPersonalLists: (_value: { name: string, id: string }[]) => void) {
@@ -47,16 +47,16 @@ const TasksIndex: NextPageWithLayout = () => {
           <h3>Personal lists</h3>
           <IconButton
             onClick={() => {
-              verifyAndReturnJson(
-                  SERVER.post("/tasks/personal/list/create", { body: "" }),
-                  () => {
-                    LoadPersonalLists(lists => setPersonalLists(lists))
-                  },
-                  () => {
-                    console.error("unable to create a new list")
-                  }
-              )
-            }}
+                  verifyAndReturnJson(
+                      SERVER.post("/tasks/personal/list/create", { body: "" }),
+                      () => {
+                        LoadPersonalLists(lists => setPersonalLists(lists))
+                      },
+                      () => {
+                        console.error("unable to create a new list")
+                      }
+                  )
+                }}
             icon="plus-16"
           />
         </section>
@@ -68,27 +68,27 @@ const TasksIndex: NextPageWithLayout = () => {
                       className={styles.list}
                       key={ind}
                       onClick={() => {
-                      router.push(`/app/tasks/personal/list/${list.id}`)
-                    }}
+                            router.push(`/app/tasks/personal/list/${list.id}`)
+                          }}
                     >
                       <span>{list.name}</span>
                       <IconButton
                         onClick={e => {
-                        e.stopPropagation()
-                        verifyAndReturnJson(
-                            SERVER.delete(`/tasks/personal/list/delete/${list.id}`),
-                            () => {
-                              LoadPersonalLists(lists => setPersonalLists(lists))
-                            },
-                            () => {
-                              console.error(`unable to delete list`)
-                            }
-                        )
-                      }}
+                              e.stopPropagation()
+                              verifyAndReturnJson(
+                                  SERVER.delete(`/tasks/personal/list/delete/${list.id}`),
+                                  () => {
+                                    LoadPersonalLists(lists => setPersonalLists(lists))
+                                  },
+                                  () => {
+                                    console.error(`unable to delete list`)
+                                  }
+                              )
+                            }}
                         icon="trash-16"
                       />
                     </CardButton>
-))
+                  ))
                   : (
                     <Card className={styles.message}>
                       <ColContainer>
@@ -100,23 +100,23 @@ const TasksIndex: NextPageWithLayout = () => {
                         </p>
                         <Button
                           onClick={() => {
-                        verifyAndReturnJson(
-                            SERVER.post("/tasks/personal/list/create", { body: "" }),
-                            () => {
-                              LoadPersonalLists(lists => setPersonalLists(lists))
-                            },
-                            () => {
-                              console.error("unable to create a new list")
-                            }
-                        )
-                      }}
+                                verifyAndReturnJson(
+                                    SERVER.post("/tasks/personal/list/create", { body: "" }),
+                                    () => {
+                                      LoadPersonalLists(lists => setPersonalLists(lists))
+                                    },
+                                    () => {
+                                      console.error("unable to create a new list")
+                                    }
+                                )
+                              }}
                           vibrant
                         >
                           Create a list
                         </Button>
                       </ColContainer>
                     </Card>
-)
+                  )
             }
         </ColContainer>
       </section>

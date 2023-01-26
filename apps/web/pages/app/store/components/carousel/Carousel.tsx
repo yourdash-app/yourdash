@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react"
-import Icon from "ui/elements/icon/Icon"
+import Icon from "ui/backup/elements/icon/Icon"
 import styles from "./Carousel.module.scss"
 
 export interface ICarousel extends React.ComponentPropsWithoutRef<"div"> {
@@ -30,16 +30,16 @@ const Carousel: React.FC<ICarousel> = ({
                       key={ind}
                       style={{ backgroundColor: Math.round(container.scrollLeft / window.innerWidth) === ind ? "var(--container-fg)" : "var(--container-bg)" }}
                     />
-)
+                  )
                 })
                 : (
                   <div style={{
-                  backgroundColor: Math.round((pageRef?.current?.scrollLeft || 0) / window.innerWidth) === 0 ?
-                      "var(--container-fg)"
-                      : "var(--container-bg)"
-                }}
+                      backgroundColor: Math.round((pageRef?.current?.scrollLeft || 0) / window.innerWidth) === 0 ?
+                          "var(--container-fg)"
+                          : "var(--container-bg)"
+                    }}
                   />
-)
+                )
           }
       </div>
     )
@@ -49,37 +49,37 @@ const Carousel: React.FC<ICarousel> = ({
     <div {...extraProps} className={`${styles.component} ${className}`}>
       <div className={styles.main} ref={pageRef} onScroll={() => setScrollEvents(scrollEvents + 1)}>
         {
-        children
-      }
+            children
+          }
       </div>
       <div className={styles.controls}>
         {
-        children instanceof Array ? (
-          <>
-            <button onClick={() => {
-                if (!pageRef.current) return
-                const container = pageRef.current as HTMLDivElement
-                container.scrollBy({ left: -window.innerWidth })
-              }}
-            >
-              <Icon name="chevron-left-16" color="var(--button-fg)"/>
-            </button>
-            <button onClick={() => {
-                if (!pageRef.current) return
-                const container = pageRef.current as HTMLDivElement
-                container.scrollBy({ left: window.innerWidth })
-              }}
-            >
-              <Icon name="chevron-right-16" color="var(--button-fg)"/>
-            </button>
-          </>
-          )
-            : null
-      }
+            children instanceof Array ? (
+              <>
+                <button onClick={() => {
+                        if (!pageRef.current) return
+                        const container = pageRef.current as HTMLDivElement
+                        container.scrollBy({ left: -window.innerWidth })
+                      }}
+                >
+                  <Icon name="chevron-left-16" color="var(--button-fg)"/>
+                </button>
+                <button onClick={() => {
+                        if (!pageRef.current) return
+                        const container = pageRef.current as HTMLDivElement
+                        container.scrollBy({ left: window.innerWidth })
+                      }}
+                >
+                  <Icon name="chevron-right-16" color="var(--button-fg)"/>
+                </button>
+              </>
+                )
+                : null
+          }
       </div>
       {indicator}
     </div>
-)
+  )
 }
 
 export default Carousel

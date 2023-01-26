@@ -1,6 +1,6 @@
 import Link from 'next/link'
-import Button from 'ui/elements/button/Button';
-import Slides from 'ui/elements/slides/Slides';
+import Button from 'ui/backup/elements/button/Button';
+import Slides from 'ui/backup/elements/slides/Slides';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 

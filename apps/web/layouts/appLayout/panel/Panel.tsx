@@ -1,23 +1,23 @@
 /*
- * Created on Sun Oct 23 2022
+ * Created on Sun Oct 23 2022-2023
  *
- * Copyright © 2022 Ewsgit
+ * Copyright © 2022-2023 Ewsgit
  */
 
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import SERVER, { verifyAndReturnJson } from "../../../server";
 import { type YourDashUser } from '../../../../../packages/types/core/user';
-import Card from 'ui/containers/card/Card';
-import ColContainer from 'ui/containers/ColContainer/ColContainer';
-import RowContainer from 'ui/containers/RowContainer/RowContainer';
-import Button from 'ui/elements/button/Button';
-import Icon from 'ui/elements/icon/Icon';
-import RightClickMenu from 'ui/elements/rightClickMenu/RightClickMenu';
-import TextInput from 'ui/elements/textInput/TextInput';
+import Card from 'ui/backup/containers/card/Card';
+import ColContainer from 'ui/backup/containers/ColContainer/ColContainer';
+import RowContainer from 'ui/backup/containers/RowContainer/RowContainer';
+import Button from 'ui/backup/elements/button/Button';
+import Icon from 'ui/backup/elements/icon/Icon';
+import RightClickMenu from 'ui/backup/elements/rightClickMenu/RightClickMenu';
+import TextInput from 'ui/backup/elements/textInput/TextInput';
 import styles from './Panel.module.scss';
 import { type quickShortcut as QuickShortcut } from 'types/core/panel/quickShortcut';
-import AuthenticatedImg from 'ui/elements/authenticatedImg/AuthenticatedImg';
+import AuthenticatedImg from 'ui/backup/elements/authenticatedImg/AuthenticatedImg';
 import { type InstalledApplication } from 'types/store/installedApplication';
 
 export interface IPanel {

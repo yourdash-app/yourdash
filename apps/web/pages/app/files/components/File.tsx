@@ -1,7 +1,7 @@
-import CardButton from "ui/elements/cardButton/CardButton";
-import DropdownMenu from "ui/elements/dropdownMenu/DropdownMenu";
-import Icon from "ui/elements/icon/Icon";
-import IconButton from "ui/elements/iconButton/IconButton";
+import CardButton from "ui/backup/elements/cardButton/CardButton";
+import DropdownMenu from "ui/backup/elements/dropdownMenu/DropdownMenu";
+import Icon from "ui/backup/elements/icon/Icon";
+import IconButton from "ui/backup/elements/iconButton/IconButton";
 import styles from "./File.module.scss"
 
 export interface IFile {
@@ -15,8 +15,8 @@ const File: React.FC<IFile> = ({
                                }) => (
                                  <CardButton
                                    onClick={() => {
-    console.log(`Implement Me!!!`)
-  }}
+          console.log(`Implement Me!!!`)
+        }}
                                    className={styles.component}
                                  >
                                    <Icon color={"var(--card-fg)"} name={type === "file" ? "file-16" : "file-directory-16"}/>
@@ -24,18 +24,18 @@ const File: React.FC<IFile> = ({
                                    <span>{path}</span>
                                    <span>{type}</span>
                                    <DropdownMenu items={[
-      {
-        name: "Delete",
-        onClick: () => {
-          console.log(`Implement Me!!!`)
+        {
+          name: "Delete",
+          onClick: () => {
+            console.log(`Implement Me!!!`)
+          }
         }
-      }
-    ]}
+      ]}
                                    >
                                      <IconButton
                                        onClick={() => {
-        console.log(`Implement Me!!!`)
-      }}
+              console.log(`Implement Me!!!`)
+            }}
                                        icon="three-bars-16"
                                      />
                                    </DropdownMenu>

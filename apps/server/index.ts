@@ -1,5 +1,5 @@
 /*
-*   Copyright (c) 2022 Ewsgit
+*   Copyright (c) 2022-2023 Ewsgit
 *   https://ewsgit.mit-license.org
 */
 
@@ -215,14 +215,14 @@ function applicationStartup() {
 
   // load all modules found in modulesToLoad
   modulesToLoad.forEach(module => {
-    if (!fs.existsSync(path.resolve(`./modules/${module}/index.js`))) return log(`(Start up) no such module: ${  module  }, non-existent modules should not be listed in the activeModules found in yourdash.config.json`);
-    import(`./modules/${  module  }/index.js`).then(mod => {
+    if (!fs.existsSync(path.resolve(`./modules/${module}/index.js`))) return log(`(Start up) no such module: ${module}, non-existent modules should not be listed in the activeModules found in yourdash.config.json`);
+    import(`./modules/${module}/index.js`).then(mod => {
       const currentModule = mod.default;
       const requestManager = new RequestManager(app, currentModule)
       currentModule.load(requestManager, {
         SERVER_CONFIG, ...ENV
       });
-      log(`(Start up) loaded module: ${  module}`);
+      log(`(Start up) loaded module: ${module}`);
 
       // log(`(RequestManager): loaded endpoints:`)
       // requestManager.getEndpoints().forEach((endpoint) => {
@@ -245,25 +245,25 @@ function applicationStartup() {
     switch (req.method) {
       case 'GET':
         log(
-            `${date.getHours()}:${date.getMinutes()}:${date.getSeconds() < 10 ? `${date.getSeconds()  }0` : date.getSeconds()
+            `${date.getHours()}:${date.getMinutes()}:${date.getSeconds() < 10 ? `${date.getSeconds()}0` : date.getSeconds()
             } ${chalk.bgGreen(chalk.whiteBright(' GET '))} ${res.statusCode} ${req.path}`
         );
         break;
       case 'POST':
         log(
-            `${date.getHours()}:${date.getMinutes()}:${date.getSeconds() < 10 ? `${date.getSeconds()  }0` : date.getSeconds()
+            `${date.getHours()}:${date.getMinutes()}:${date.getSeconds() < 10 ? `${date.getSeconds()}0` : date.getSeconds()
             } ${chalk.bgBlue(chalk.whiteBright(' POS '))} ${res.statusCode} ${req.path}`
         );
         break;
       case 'DELETE':
         log(
-            `${date.getHours()}:${date.getMinutes()}:${date.getSeconds() < 10 ? `${date.getSeconds()  }0` : date.getSeconds()
+            `${date.getHours()}:${date.getMinutes()}:${date.getSeconds() < 10 ? `${date.getSeconds()}0` : date.getSeconds()
             } ${chalk.bgRed(chalk.whiteBright(' DEL '))} ${res.statusCode} ${req.path}`
         );
         break;
       case 'OPTIONS':
         log(
-            `${date.getHours()}:${date.getMinutes()}:${date.getSeconds() < 10 ? `${date.getSeconds()  }0` : date.getSeconds()
+            `${date.getHours()}:${date.getMinutes()}:${date.getSeconds() < 10 ? `${date.getSeconds()}0` : date.getSeconds()
             } ${chalk.bgMagenta(chalk.whiteBright(' OPT '))} ${res.statusCode} ${req.path}`
         )
         break;

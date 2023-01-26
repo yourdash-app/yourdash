@@ -1,5 +1,5 @@
 /*
- *   Copyright (c) 2022 Ewsgit
+ *   Copyright (c) 2022-2023 Ewsgit
  *   https://ewsgit.mit-license.org
  */
 

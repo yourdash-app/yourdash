@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
-import ColContainer from 'ui/containers/ColContainer/ColContainer';
-import CardButton from 'ui/elements/cardButton/CardButton';
+import ColContainer from 'ui/backup/containers/ColContainer/ColContainer';
+import CardButton from 'ui/backup/elements/cardButton/CardButton';
 import AppLayout from '../../../layouts/appLayout/AppLayout';
 import { NextPageWithLayout } from '../../page';
 import SettingsLayout from './components/SettingsLayout';

@@ -1,4 +1,4 @@
-import SideBar from "ui/elements/sideBar/SideBar";
+import SideBar from "ui/backup/elements/sideBar/SideBar";
 import styles from "./DocsLayout.module.scss"
 
 export type IDocsLayout = React.ComponentPropsWithoutRef<'div'>

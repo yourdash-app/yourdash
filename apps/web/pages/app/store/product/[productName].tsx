@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import IconButton from 'ui/elements/iconButton/IconButton';
+import IconButton from 'ui/backup/backup/elements/iconButton/IconButton';
 import AppLayout from '../../../../layouts/appLayout/AppLayout';
 import { NextPageWithLayout } from '../../../page';
 import Carousel from '../components/carousel/Carousel';
@@ -7,10 +7,10 @@ import styles from "./index.module.scss"
 import { useEffect, useState } from 'react';
 import SERVER, { verifyAndReturnJson } from '../../../../server';
 import { type InstalledApplication } from 'types/store/installedApplication';
-import Button from 'ui/elements/button/Button';
-import Card from 'ui/containers/card/Card';
-import ColContainer from 'ui/containers/ColContainer/ColContainer';
-import Icon from 'ui/elements/icon/Icon';
+import Button from 'ui/backup/elements/button/Button';
+import Card from 'ui/backup/containers/card/Card';
+import ColContainer from 'ui/backup/containers/ColContainer/ColContainer';
+import Icon from 'ui/backup/elements/icon/Icon';
 
 const StoreProduct: NextPageWithLayout = () => {
   const router = useRouter()
@@ -49,14 +49,14 @@ const StoreProduct: NextPageWithLayout = () => {
           </p>
           <Button
             onClick={() => {
-              router.push(`/app/store`)
-            }}
+                  router.push(`/app/store`)
+                }}
           >
             Go back
           </Button>
         </ColContainer>
       </Card>
-)
+    )
 
   if (product.name === "undefined")
     return <></>
@@ -65,11 +65,11 @@ const StoreProduct: NextPageWithLayout = () => {
     <div
       className={styles.root}
       style={
-        {
-          left: pageChanging ? "100%" : "0",
-          opacity: pageChanging ? "0" : "1"
-        }
-      }
+            {
+              left: pageChanging ? "100%" : "0",
+              opacity: pageChanging ? "0" : "1"
+            }
+          }
     >
       <Carousel className={styles.carousel}>
         <div style={{
@@ -91,14 +91,14 @@ const StoreProduct: NextPageWithLayout = () => {
                     </p>
                     <Button
                       onClick={() => {
-                        setInstallationError(false)
-                      }}
+                            setInstallationError(false)
+                          }}
                     >
                       Ok
                     </Button>
                   </ColContainer>
                 </Card>
-)
+              )
               : null
         }
       {
@@ -113,23 +113,23 @@ const StoreProduct: NextPageWithLayout = () => {
                     </p>
                     <Button
                       onClick={() => {
-                        setUninstallationError(false)
-                      }}
+                            setUninstallationError(false)
+                          }}
                     >
                       Ok
                     </Button>
                   </ColContainer>
                 </Card>
-)
+              )
               : null
         }
       <div
         className={styles.installationPopup}
         style={{
-          opacity: showInstallationPopup ? "1" : "0",
-          pointerEvents: showInstallationPopup ? "all" : "none",
-          scale: showInstallationPopup ? "1" : "0.75"
-        }}
+              opacity: showInstallationPopup ? "1" : "0",
+              pointerEvents: showInstallationPopup ? "all" : "none",
+              scale: showInstallationPopup ? "1" : "0.75"
+            }}
       >
         <div>
           <div className={styles.installationPopupImgContainer}>
@@ -157,32 +157,32 @@ const StoreProduct: NextPageWithLayout = () => {
             </ColContainer>
             <Button
               onClick={() => {
-                if (product.installed) {
-                  return
-                } else {
-                  verifyAndReturnJson(
-                      SERVER.post(`/store/application/${productId}/install`, { body: JSON.stringify({ product: productId }) }),
-                      data => {
-                        if (data.installed) {
-                          setProduct(
-                              {
-                                ...product,
-                                installed: true
-                              }
-                          )
-                          setShowInstallationPopup(false)
-                          router.reload()
-                        } else {
-                          setInstallationError(true)
-                          setShowInstallationPopup(false)
-                        }
-                      },
-                      () => {
-                        console.error(`ERROR: couldn't install product`)
-                      }
-                  )
-                }
-              }}
+                    if (product.installed) {
+                      return
+                    } else {
+                      verifyAndReturnJson(
+                          SERVER.post(`/store/application/${productId}/install`, { body: JSON.stringify({ product: productId }) }),
+                          data => {
+                            if (data.installed) {
+                              setProduct(
+                                  {
+                                    ...product,
+                                    installed: true
+                                  }
+                              )
+                              setShowInstallationPopup(false)
+                              router.reload()
+                            } else {
+                              setInstallationError(true)
+                              setShowInstallationPopup(false)
+                            }
+                          },
+                          () => {
+                            console.error(`ERROR: couldn't install product`)
+                          }
+                      )
+                    }
+                  }}
               vibrant
             >
               Approve installation
@@ -214,13 +214,13 @@ const StoreProduct: NextPageWithLayout = () => {
               product.installed && (
               <Button
                 onClick={() => {
-                    router.push(`${product.path}`)
-                  }}
+                        router.push(`${product.path}`)
+                      }}
                 style={{ marginRight: "0.5rem" }}
               >
                 Open
               </Button>
-)
+              )
           }
         <Button onClick={() => {
             if (!product.installed) {

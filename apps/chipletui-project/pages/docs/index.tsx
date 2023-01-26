@@ -13,6 +13,9 @@ const Docs: NextPageWithLayout = () => (
       <Link href={"/docs/applications/list"}>
         Applications list
       </Link>
+      <Link href={"/docs/components/"}>
+        Chiplet components
+      </Link>
     </main>
   </>
 );

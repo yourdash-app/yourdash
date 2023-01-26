@@ -1,0 +1,42 @@
+.component {
+  border: none;
+  font-size: 1rem;
+  font-family: 'Roboto';
+  user-select: none;
+  transition: var(--transition);
+  position: relative;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.statusIndicator {
+  position: absolute;
+  bottom: 0.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.statusIndicator > * {
+  width: auto;
+  background-color: var(--container-bg);
+  border-radius: 100rem;
+  padding: 0.35rem 0.65rem;
+  margin-right: 0.2rem;
+  transition: var(--transition);
+}
+
+.statusIndicator > *:last-child {
+  margin-right: 0;
+}
+
+.active {
+  background-color: var(--container-fg);
+}

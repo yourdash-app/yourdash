@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
-import Card from 'ui/containers/card/Card';
-import ColContainer from 'ui/containers/ColContainer/ColContainer';
-import RowContainer from 'ui/containers/RowContainer/RowContainer';
+import Card from 'ui/backup/containers/card/Card';
+import ColContainer from 'ui/backup/containers/ColContainer/ColContainer';
+import RowContainer from 'ui/backup/containers/RowContainer/RowContainer';
 import AppLayout from '../../../layouts/appLayout/AppLayout';
 import { NextPageWithLayout } from '../../page';
 import Carousel from './components/carousel/Carousel';
@@ -66,8 +66,8 @@ const StoreIndex: NextPageWithLayout = () => {
               <Card
                 key={ind}
                 onClick={() => {
-                router.push(`/app/store/product/${item.name}`)
-              }}
+                      router.push(`/app/store/product/${item.name}`)
+                    }}
                 className={styles.card}
               >
                 <RowContainer>
@@ -78,7 +78,7 @@ const StoreIndex: NextPageWithLayout = () => {
                   </ColContainer>
                 </RowContainer>
               </Card>
-))
+            ))
           }
       </main>
     </div>

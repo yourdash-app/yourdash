@@ -1,8 +1,8 @@
-import CenteredContainer from "ui/containers/CenteredContainer/CenteredContainer";
-import ColContainer from "ui/containers/ColContainer/ColContainer";
-import Card from "ui/containers/card/Card";
-import Button from "ui/elements/button/Button";
-import TextInput from "ui/elements/textInput/TextInput";
+import CenteredContainer from "ui/backup/containers/CenteredContainer/CenteredContainer";
+import ColContainer from "ui/backup/containers/ColContainer/ColContainer";
+import Card from "ui/backup/containers/card/Card";
+import Button from "ui/backup/elements/button/Button";
+import TextInput from "ui/backup/elements/textInput/TextInput";
 import AppLayout from "../../../layouts/appLayout/AppLayout";
 import { NextPageWithLayout } from "../../page";
 
@@ -15,13 +15,13 @@ const StoreIndex: NextPageWithLayout = () => (
         <TextInput placeholder=""/>
         <TextInput placeholder="" type="password"/>
         <Button onClick={() => {
-                console.log(`Implement Me!!!`)
-              }}
+            console.log(`Implement Me!!!`)
+          }}
         >Submit</Button>
       </ColContainer>
     </Card>
   </CenteredContainer>
-  );
+);
 
 export default StoreIndex;
 

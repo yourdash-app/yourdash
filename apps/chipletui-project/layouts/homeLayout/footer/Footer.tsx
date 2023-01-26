@@ -1,6 +1,6 @@
 import styles from './Footer.module.scss';
 import Link from "next/link"
-import Icon from 'ui/elements/icon/Icon';
+import Icon from 'ui/backup/elements/icon/Icon';
 
 export type IFooter = React.ComponentPropsWithoutRef<'div'>
 
@@ -17,7 +17,7 @@ const Footer: React.FC<IFooter> = ({ ..._divProps }) => (
       <Link href="/docs">Docs</Link>
       <Link href="https://github.com/ewsgit/yourdash">Git Repository</Link>
     </section>
-    <span>YourDash © 2022 Ewsgit</span>
+    <span>YourDash © 2022-2023 Ewsgit</span>
   </div>
 );
 

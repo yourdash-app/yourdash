@@ -1,5 +1,5 @@
 /*
-*   Copyright (c) 2022 Ewsgit
+*   Copyright (c) 2022-2023 Ewsgit
 *   https://ewsgit.mit-license.org
 */
 
@@ -14,7 +14,7 @@ let currentSessionLog = '----- [YOURDASH SERVER LOG] -----\n';
 export function log(input: string) {
   console.log(input);
   currentSessionLog += `${input.replaceAll('', '').replaceAll(/\[[0-9][0-9]m/gm, '')}\n`;
-  fs.writeFile(`${ENV.FsOrigin}/serverlog.txt`, currentSessionLog, (err) => {
+  fs.writeFile(`${ENV.FsOrigin}/serverlog.txt`, currentSessionLog, err => {
     if (err) {
       console.error(err);
       process.exit();
@@ -25,34 +25,34 @@ export function log(input: string) {
 export type extend<T, E> = T & E
 
 export function returnBase64Image(path: string) {
-  return "data:image/png;base64," + fs.readFileSync(path, 'base64');
+  return `data:image/png;base64,${  fs.readFileSync(path, 'base64')}`;
 }
 
 export function returnBase64Svg(path: string) {
-  return "data:image/svg;base64," + fs.readFileSync(path, 'base64');
+  return `data:image/svg;base64,${  fs.readFileSync(path, 'base64')}`;
 }
 
 export function base64FromBufferImage(img: Buffer): string {
-  const base64 = "data:image/png;base64," + img.toString("base64")
+  const base64 = `data:image/png;base64,${  img.toString("base64")}`
   return base64
 }
 
 export function resizeImage(width: number, height: number, image: string, callback: (image: string) => void, error: () => void) {
   sharp(image)
-    .resize(width, height, {
-      kernel: "lanczos3",
-      withoutEnlargement: true
-    })
-    .png()
-    .toBuffer((err, buf) => {
-      if (err) {
-        console.log(err)
-        log(`ERROR: unable to resize image: ${image}`)
-        return error()
-      }
-      log(`Triggered Sharp, width: ${width}, height: ${height}`)
-      return callback(base64FromBufferImage(buf))
-    })
+      .resize(width, height, {
+        kernel: "lanczos3",
+        withoutEnlargement: true
+      })
+      .png()
+      .toBuffer((err, buf) => {
+        if (err) {
+          console.log(err)
+          log(`ERROR: unable to resize image: ${image}`)
+          return error()
+        }
+        log(`Triggered Sharp, width: ${width}, height: ${height}`)
+        return callback(base64FromBufferImage(buf))
+      })
 }
 
 

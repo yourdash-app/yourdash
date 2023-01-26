@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react';
-import ColContainer from 'ui/containers/ColContainer/ColContainer';
-import AuthenticatedImg from 'ui/elements/authenticatedImg/AuthenticatedImg';
-import TextBox from 'ui/elements/textBox/TextBox';
-import TextInput from 'ui/elements/textInput/TextInput';
+import ColContainer from 'ui/backup/containers/ColContainer/ColContainer';
+import AuthenticatedImg from 'ui/backup/elements/authenticatedImg/AuthenticatedImg';
+import TextBox from 'ui/backup/elements/textBox/TextBox';
+import TextInput from 'ui/backup/elements/textInput/TextInput';
 import AppLayout from '../../../../../layouts/appLayout/AppLayout';
 import { NextPageWithLayout } from '../../../../page';
 import BooleanSetting from '../../components/BooleanSetting';
 import SettingsLayout from '../../components/SettingsLayout';
 import styles from "./index.module.scss"
 import SERVER, { verifyAndReturnJson } from '../../../../../server';
-import Button from 'ui/elements/button/Button';
+import Button from 'ui/backup/elements/button/Button';
 
 const SettingsPanel: NextPageWithLayout = () => {
   const [ firstName, setFirstName ] = React.useState("")
@@ -53,57 +53,57 @@ const SettingsPanel: NextPageWithLayout = () => {
               placeholder='first name'
               defaultValue={firstName}
               onChange={e => {
-                setFirstName(e.currentTarget.value)
-              }}
+                    setFirstName(e.currentTarget.value)
+                  }}
             />
             <p>Last name</p>
             <TextInput
               placeholder='last name'
               defaultValue={lastName}
               onChange={e => {
-                setLastName(e.currentTarget.value)
-              }}
+                    setLastName(e.currentTarget.value)
+                  }}
             />
             <p>Username</p>
             <TextInput
               placeholder='username'
               defaultValue={userName}
               onChange={e => {
-                setUserName(e.currentTarget.value)
-              }}
+                    setUserName(e.currentTarget.value)
+                  }}
             />
             <p>Description</p>
             <TextBox
               placeholder='description'
               defaultValue={description}
               onChange={e => {
-                setDescription(e.currentTarget.value)
-              }}
+                    setDescription(e.currentTarget.value)
+                  }}
             />
             <Button
               vibrant
               onClick={() => {
 
-                // TODO: send the new data to the server
+                    // TODO: send the new data to the server
 
-                verifyAndReturnJson(
-                    SERVER.post(`/core/settings/user/profile`, {
-                      body: JSON.stringify({
-                        description,
-                        firstName,
-                        lastName,
-                        userName,
-                      })
-                    }),
-                    () => {
-                      console.log(`user profile updated successfully`)
-                    },
-                    () => {
-                      console.error(`unable to update user profile`)
-                    }
-                )
+                    verifyAndReturnJson(
+                        SERVER.post(`/core/settings/user/profile`, {
+                          body: JSON.stringify({
+                            description,
+                            firstName,
+                            lastName,
+                            userName,
+                          })
+                        }),
+                        () => {
+                          console.log(`user profile updated successfully`)
+                        },
+                        () => {
+                          console.error(`unable to update user profile`)
+                        }
+                    )
 
-              }}
+                  }}
             >Save</Button>
           </ColContainer>
         </section>
@@ -112,16 +112,16 @@ const SettingsPanel: NextPageWithLayout = () => {
           description='Allow other users on this instance to view your profile'
           defaultValue={false}
           setValue={value => {
-            console.log(value)
-          }}
+                console.log(value)
+              }}
         />
         <BooleanSetting
           title='Global discovery'
           description='Allow other users on any YourDash instance to view your profile'
           defaultValue={false}
           setValue={value => {
-            console.log(value)
-          }}
+                console.log(value)
+              }}
         />
       </ColContainer>
     </>
