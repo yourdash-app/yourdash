@@ -4,47 +4,42 @@ import Icon from "../icon/Icon";
 import { type ChipletIcon } from "../icon/iconDictionary";
 
 interface ISideBarProps {
-  actions: {
+  title: string
+  items: {
     label: string,
     icon: ChipletIcon,
     onClick: () => void
   }[];
-  focusedActions?: {
-    label: string,
-    icon: ChipletIcon,
-    onClick: () => void
-  }[]
+  expandedByDefault?: boolean
 }
 
-const SideBar: React.FC<ISideBarProps> = ({ actions, focusedActions }) => {
+const SideBar: React.FC<ISideBarProps> = ({ items, title, expandedByDefault }) => {
+  const [ expanded, setExpanded ] = useState(expandedByDefault || false)
   return (
-    <div className={styles.component}>
-      <section className={styles.focussedActions}>
-        {
-            focusedActions?.map(action => {
-              return (
-                <button className={styles.focussedAction} type="button" key={action.label} onClick={action.onClick}>
-                  <Icon className={styles.icon} name={action.icon} color={"var(--actionbar-fg)"}/>
-                  <span>{action.label}</span>
-                </button>
-              )
-            })
-          }
-      </section>
-      <section className={styles.actions}>
-        {
-            actions.map(action => {
-              return (
-                <button type="button" key={action.label} className={styles.action} onClick={action.onClick}>
-                  <div className={styles.iconBackground}>
-                    <Icon className={styles.icon} name={action.icon} color={"var(--actionbar-fg)"}/>
-                  </div>
-                  <span className={styles.name}>{action.label}</span>
-                </button>
-              )
-            })
-          }
-      </section>
+    <div className={styles.component} data-expanded={expanded}>
+      <header>
+        <button
+          title={"toggle sidebar"}
+          type="button"
+          className={styles.toggle}
+          onClick={() => {
+                return setExpanded(!expanded)
+              }}
+        >
+          <Icon name={"three-bars-16"} color={"var(--sidebar-fg)"}/>
+        </button>
+        <h2 className={styles.title}>{title}</h2>
+      </header>
+      {
+          items.map(item => {
+            return (
+              <button type="button" key={item.label} className={styles.item} onClick={item.onClick}>
+                <Icon className={styles.icon} name={item.icon} color={"var(--sidebar-fg)"}/>
+                <span className={styles.label}>{item.label}</span>
+              </button>
+            )
+          })
+        }
     </div>
   )
 }
