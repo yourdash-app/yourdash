@@ -1,6 +1,6 @@
-import SideBar from "ui/backup/elements/sideBar/SideBar";
 import styles from "./DocsLayout.module.scss"
 import { useRouter } from "next/router";
+import ActionBar from "ui/navigation/ActionBar";
 
 export type IDocsLayout = React.ComponentPropsWithoutRef<'div'>
 
@@ -9,33 +9,28 @@ const DocsLayout: React.FC<IDocsLayout> = ({ children }) => {
 
   return (
     <div className={styles.root}>
-      <section>
-        <SideBar
-          title="Docs"
-          items={[
+      <ActionBar
+        actions={[
             {
               icon: "server-16",
-              name: "Home",
+              label: "Home",
               onClick: () => {
                 router.push("/docs/")
               },
-              type: "button"
             },
             {
               icon: "server-16",
-              name: "Components",
+              label: "Components",
               onClick: () => {
                 router.push("/docs/components")
               },
-              type: "button"
             }
           ]}
-        />
-        <div className={styles.content}>
-          {children}
-        </div>
-        <div className={styles.listOfContents}/>
-      </section>
+      />
+      <div className={styles.content}>
+        {children}
+      </div>
+      <div className={styles.listOfContents}/>
     </div>
 )
 };

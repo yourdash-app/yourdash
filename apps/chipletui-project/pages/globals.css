@@ -1,3 +1,163 @@
+:root {
+  --background-color: #272727;
+  --transition: all 100ms ease-in-out;
+
+  --color-warn-bg: #ffaa00;
+  --color-warn-fg: #ffffff;
+  --color-warn-outline: #ef9a00;
+
+  --color-error-bg: #ff4400;
+  --color-error-fg: #ffffff;
+  --color-error-outline: #ef3400;
+
+  --color-success-bg: #50dd7a;
+  --color-success-fg: #ffffff;
+  --color-success-outline: #40cd6a;
+
+  --color-info-bg: #229cec;
+  --color-info-fg: #ffffff;
+  --color-info-outline: #128cdc;
+
+  --accent-color: #eb6a4b;
+
+  --focused-outline: 0.2rem solid var(--button-vibrant-bg);
+
+  --card-fg: #ffffff;
+  --card-bg: #464646;
+  --card-rounding: 1rem;
+  --card-compact-rounding: 0.5rem;
+
+  --header-bg: #363636;
+  --header-fg: #fff;
+
+  --container-bg: #363636;
+  --container-fg: #fff;
+  --container-separator: #222222;
+  --container-outline: #ffffff88;
+
+  --app-panel-height: 3rem;
+  --app-panel-fg: #fff;
+  --app-panel-bg: #444444;
+  --app-panel-item-fg: #fff;
+  --app-panel-item-bg: #333333;
+  --app-panel-item-rounding: 0.5rem;
+  --app-panel-item-hover-fg: #fff;
+  --app-panel-item-hover-bg: #444444;
+  --app-panel-item-hover-rounding: 0.5rem;
+  --app-panel-item-active-fg: #fff;
+  --app-panel-item-active-bg: #222222;
+  --app-panel-item-active-rounding: 0.5rem;
+  --app-panel-launcher-fg: #fff;
+  --app-panel-launcher-bg: #333333;
+  --app-panel-launcher-rounding: 0;
+  --app-panel-launcher-hover-fg: #fff;
+  --app-panel-launcher-hover-bg: #444444;
+  --app-panel-launcher-hover-rounding: 0;
+  --app-panel-launcher-active-fg: #fff;
+  --app-panel-launcher-active-bg: #222222;
+  --app-panel-launcher-active-rounding: 0;
+  --app-panel-launcher-grid-columns: 3;
+  --app-panel-separator: #333;
+
+  --app-dash-clock-font-weight: 800;
+  --app-dash-clock-shadow-color: #000;
+  --app-dash-clock-shadow-spread: 1rem;
+  --app-dash-clock-shadow-offset-x: 0;
+  --app-dash-clock-shadow-offset-y: 0;
+
+  --button-bg: #5a5a5a;
+  --button-fg: #fff;
+  --button-outline: 0 solid #000;
+  --button-rounding: 0.5rem;
+  --button-hover-bg: #6a6a6a;
+  --button-hover-fg: #fff;
+  --button-hover-outline: 0 solid #000;
+  --button-hover-rounding: 0.5rem;
+  --button-active-bg: #4a4a4a;
+  --button-active-fg: #fff;
+  --button-active-outline: 0 solid #000;
+  --button-active-rounding: 0.5rem;
+
+  --button-vibrant-bg: var(--accent-color);
+  --button-vibrant-fg: #fff;
+  --button-vibrant-outline: 0 solid #000;
+  --button-vibrant-rounding: 100rem;
+  --button-vibrant-hover-bg: #fb7a5b;
+  --button-vibrant-hover-fg: #fff;
+  --button-vibrant-hover-outline: 0 solid #000;
+  --button-vibrant-hover-rounding: 100rem;
+  --button-vibrant-active-bg: #db5a3b;
+  --button-vibrant-active-fg: #fff;
+  --button-vibrant-active-outline: 0 solid #000;
+  --button-vibrant-active-rounding: 100rem;
+
+  --link-fg: #f8ad9b;
+  --link-bg: var(--accent-color);
+
+  --text-input-bg: #5a5a5a;
+  --text-input-fg: #fff;
+  --text-input-outline: 0 solid #000;
+  --text-input-rounding: 0.5rem;
+  --text-input-focused-bg: #4a4a4a;
+  --text-input-focused-fg: #fff;
+  --text-input-focused-outline: 0.2rem solid var(--button-vibrant-bg);
+  --text-input-focused-rounding: 0.5rem;
+
+  --floating-label-bg: #363636;
+  --floating-label-fg: #fff;
+  --floating-label-outline: 0.2rem solid #222222;
+  --floating-label-rounding: 0.25rem;
+
+  --chip-bg: #5a5a5a;
+  --chip-fg: #ffffff;
+  --chip-rounding: 10rem;
+  --chip-hover-bg: #6a6a6a;
+  --chip-hover-fg: #ffffff;
+  --chip-hover-rounding: 10rem;
+  --chip-active-bg: #4a4a4a;
+  --chip-active-fg: #ffffff;
+  --chip-active-rounding: 10rem;
+  --chip-toggled-bg: #7a7a7a;
+  --chip-toggled-fg: #ffffff;
+  --chip-toggled-rounding: 10rem;
+  --chip-toggled-hover-bg: #8a8a8a;
+  --chip-toggled-hover-fg: #ffffff;
+  --chip-toggled-hover-rounding: 10rem;
+  --chip-toggled-active-bg: #6a6a6a;
+  --chip-toggled-active-fg: #ffffff;
+  --chip-toggled-active-rounding: 10rem;
+
+  --progress-bar-bg: #5a5a5a;
+  --progress-bar-fg: #ffffff;
+
+  --scrollbar-bg: #222;
+  --scrollbar-fg: var(--accent-color);
+  --scrollbar-hover-bg: #222;
+  --scrollbar-hover-fg: #fb7a5b;
+  --scrollbar-active-bg: #222;
+  --scrollbar-active-fg: #db5a3b;
+
+  --right-click-menu-bg: #444444;
+  --right-click-menu-fg: #ffffff;
+  --right-click-menu-border: #777777;
+  --right-click-menu-rounding: 1rem;
+  --right-click-menu-item-bg: #00000000;
+  --right-click-menu-item-fg: #ffffff;
+  --right-click-menu-item-hover-bg: #666666;
+  --right-click-menu-item-hover-fg: #ffffff;
+  --right-click-menu-item-active-bg: #555555;
+  --right-click-menu-item-active-fg: #ffffff;
+
+  --toggle-switch-bg: #333333;
+  --toggle-switch-bg-enabled: #008800;
+  --toggle-switch-thumb-bg: var(--button-bg);
+  --toggle-switch-thumb-hover-bg: var(--button-hover-bg);
+  --toggle-switch-thumb-active-bg: var(--button-active-bg);
+  --toggle-switch-thumb-rounding: 100rem;
+  --toggle-switch-thumb-hover-rounding: 100rem;
+  --toggle-switch-thumb-active-rounding: 100rem;
+}
+
 html,
 body {
   width: 100vw;

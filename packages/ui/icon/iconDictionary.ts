@@ -1,4 +1,4 @@
-const YourDashIconDictionary = {
+const ChipletIconDictionary = {
   'accessibility-16': '/assets/icons/accessibility-16.svg',
   'accessibility-inset-16': '/assets/icons/accessibility-inset-16.svg',
   'alert-16': '/assets/icons/alert-16.svg',
@@ -523,8 +523,8 @@ const YourDashIconDictionary = {
   'zap-24': '/assets/icons/zap-24.svg',
 };
 
-export const YourDashIconRawDictionary = YourDashIconDictionary;
+export const YourDashIconRawDictionary = ChipletIconDictionary;
 
-type YourDashIcon = keyof typeof YourDashIconDictionary;
+type ChipletIcon = keyof typeof ChipletIconDictionary;
 
-export type { YourDashIcon };
+export type { ChipletIcon };
