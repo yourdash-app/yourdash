@@ -159,4 +159,8 @@
 
     --actionbar-fg: #ffffff;
     --actionbar-bg: #1f1f1f;
+
+    --dialog-fg: #ffffff;
+    --dialog-bg: #333333;
+    --dialog-handle: #888888;
 }

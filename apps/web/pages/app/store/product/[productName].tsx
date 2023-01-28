@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import IconButton from 'ui/backup/backup/elements/iconButton/IconButton';
+import IconButton from 'ui/backup/elements/iconButton/IconButton';
 import AppLayout from '../../../../layouts/appLayout/AppLayout';
 import { NextPageWithLayout } from '../../../page';
 import Carousel from '../components/carousel/Carousel';
