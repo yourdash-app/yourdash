@@ -3,7 +3,7 @@ import DocsLayout from '../../../layouts/docsLayout/DocsLayout';
 import HomeLayout from '../../../layouts/homeLayout/HomeLayout';
 import SideBar from "ui/navigation/SideBar";
 
-const Docs: NextPageWithLayout = () => (
+const Docs: NextPageWithLayout = () => {return (
   <>
     <section data-header="true">
       <img src={"/background.jpg"} alt=""/>
@@ -12,7 +12,8 @@ const Docs: NextPageWithLayout = () => (
       <h1>Navigation</h1>
       <section style={{ height: "30rem" }}>
         <SideBar
-          actions={[
+          title={"Test navigation bar"}
+          items={[
                 {
                   label: "test action1",
                   icon: "alert-16",
@@ -35,25 +36,16 @@ const Docs: NextPageWithLayout = () => (
                   }
                 }
               ]}
-          focusedActions={[
-                {
-                  label: "test",
-                  icon: "apps-16",
-                  onClick: () => {
-                    console.log("focussed action clicked!")
-                  }
-                }
-              ]}
         />
       </section>
     </main>
   </>
-);
+)};
 
 export default Docs;
 
-Docs.getLayout = page => (
+Docs.getLayout = page => {return (
   <HomeLayout noFooter>
     <DocsLayout>{page}</DocsLayout>
   </HomeLayout>
-)
+)}

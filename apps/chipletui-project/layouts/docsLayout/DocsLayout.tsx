@@ -10,7 +10,8 @@ const DocsLayout: React.FC<IDocsLayout> = ({ children }) => {
   return (
     <div className={styles.root}>
       <SideBar
-        actions={[
+        title={"ChipletUI Docs"}
+        items={[
               {
                 icon: "server-16",
                 label: "Home",
