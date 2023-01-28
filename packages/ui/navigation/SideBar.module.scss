@@ -1,21 +1,45 @@
 .component {
   display: grid;
-  align-items: center;
-  justify-content: center;
-  grid-template-rows: auto 1fr;
+  grid-template-rows: auto auto 1fr;
   height: 100%;
   width: 5rem;
-  flex-direction: column;
   background-color: var(--actionbar-bg);
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
   box-sizing: border-box;
+
+  > .toggleButton {
+    aspect-ratio: 1 / 1;
+    width: 3rem;
+    background-color: transparent;
+    transition: var(--transition);
+    border: none;
+    border-radius: 0.75rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    box-sizing: border-box;
+    margin: 1rem;
+
+    &:hover:not(.toggled) {
+      > div {
+        transform: rotate(10deg);
+      }
+    }
+
+    &:active:not(.toggled) {
+      > div {
+        transform: rotate(25deg);
+      }
+    }
+
+    &.toggled {
+      transform: rotate(90deg);
+    }
+  }
 
   > .actions {
     display: flex;
     align-items: center;
-    justify-content: center;
     flex-direction: column;
+    padding-top: 0.5rem;
   }
 
   > .focussedActions {
@@ -54,7 +78,7 @@
     text-align: center;
     overflow: hidden;
     text-overflow: ellipsis;
-    width: 4.5rem;
+    width: 4rem;
     box-sizing: border-box;
     margin-top: 0.125rem;
   }
