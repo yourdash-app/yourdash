@@ -6,7 +6,9 @@ const Dialog: React.FC = ({ children }) => (
     <section className={styles.handle}>
       <div/>
     </section>
-    {children}
+    <section className={styles.content}>
+      {children}
+    </section>
   </div>
 )
 
