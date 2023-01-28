@@ -6,13 +6,13 @@
 core,files,store,tasks,userManagement
 (Start up) Web server now online :D
 (Start up) loaded module: core
-(Start up) loaded module: files
 (Start up) loaded module: tasks
 (Start up) loaded module: userManagement
+(Start up) loaded module: files
 (Start up) loaded module: store
-20:27:34  OPT  200 /api/core/panel/user/profile/picture
-20:27:34  OPT  200 /api/core/panel/user/profile/picture
-20:27:34  GET  200 /api/core/panel/user/profile/picture
+20:46:90  OPT  200 /api/core/panel/user/profile/picture
+20:46:90  OPT  200 /api/core/panel/user/profile/picture
+20:46:90  GET  200 /api/core/panel/user/profile/picture
 Triggered Sharp, width: 64, height: 64
-20:27:34  GET  200 /api/core/panel/user/profile/picture
+20:46:90  GET  200 /api/core/panel/user/profile/picture
 Triggered Sharp, width: 64, height: 64

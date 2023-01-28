@@ -5,7 +5,8 @@ module.exports = {
         "react/jsx-no-literals": "off",
         "react/react-in-jsx-scope": "off",
         "@typescript-eslint/ban-ts-comment": "off",
-        "import/order": "off"
+        "import/order": "off",
+        "@next/next/no-img-element": "off"
     }
 };
 

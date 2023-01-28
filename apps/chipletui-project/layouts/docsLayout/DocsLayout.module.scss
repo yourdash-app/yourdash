@@ -1,26 +1,22 @@
 .root {
-  overflow-y: auto;
   height: calc(100vh - 5rem);
-
-  > section {
-    height: 100%;
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-  }
+  display: grid;
+  grid-template-columns: auto 1fr auto;
 
   .content {
-    max-height: max-content;
     display: block;
     flex-direction: column;
+    box-sizing: border-box;
     color: var(--container-fg);
     text-align: left;
-    height: max-content;
     box-shadow: 0 0 2rem #00000088;
     transition: all 200ms ease-in-out;
-    margin: 2rem 15rem;
+    margin: 0 15rem;
     border-radius: calc(var(--card-rounding) * 2);
     overflow: hidden;
     padding: 1rem;
+    height: calc(100vh - 5rem);
+    overflow-y: auto;
 
     @media (max-width: 1920px) {
       margin-left: 10rem;

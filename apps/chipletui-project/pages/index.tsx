@@ -1,34 +1,14 @@
-import Link from 'next/link'
-import Button from 'ui/backup/elements/button/Button';
-import Slides from 'ui/backup/elements/slides/Slides';
-import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
-
-import HomeLayout from "../layouts/homeLayout/HomeLayout";
+ import HomeLayout from "../layouts/homeLayout/HomeLayout";
 
 import styles from "./index.module.scss"
 import { NextPageWithLayout } from './page';
 
-const Home: NextPageWithLayout = () => {
-  const router = useRouter()
-
-  const [ isLoggedIn, setIsLoggedIn ] = useState(false)
-
-  useEffect(() => {
-    setIsLoggedIn(localStorage.getItem("currentServer") !== undefined)
-  }, [])
-
-  return (
-    <div className={styles.root}>
-      <section className={styles.section1}>
-        <div>
-          <h1>YourDash</h1>
-          <p>The home for your files.</p>
-        </div>
-      </section>
-    </div>
-  );
-};
+const Home: NextPageWithLayout = () => (
+  <div className={styles.root}>
+    <h1>Chiplet UI</h1>
+    <p>A React component UI library built for YourDash</p>
+  </div>
+);
 
 export default Home;
 

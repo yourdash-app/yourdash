@@ -1,10 +1,29 @@
 .component {
-  display: flex;
+  display: grid;
   align-items: center;
   justify-content: center;
-  background-color: blue;
+  grid-template-rows: auto 1fr;
   height: 100%;
   width: 5rem;
+  flex-direction: column;
+  background-color: var(--actionbar-bg);
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  box-sizing: border-box;
+
+  > .actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  > .focussedActions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
 }
 
 .action {
@@ -19,28 +38,72 @@
   color: var(--actionbar-fg);
 
   &:hover {
-    .name {
-      background-color: #229cec;
+    .iconBackground {
+      background-color: var(--button-hover-bg);
     }
   }
 
   &:active {
-    .name {
-      background-color: #128cdc;
+    .iconBackground {
+      background-color: var(--button-active-bg);
     }
   }
 
   .name {
-    background-color: #424c8c;
     padding: 0.125rem 0.25rem;
-    border-radius: 0.25rem;
     text-align: center;
+    overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 4.5rem;
+    width: 4.5rem;
     box-sizing: border-box;
+    margin-top: 0.125rem;
+  }
+
+  .iconBackground {
+    width: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.75rem;
+    transition: var(--transition);
+    padding: 0.125rem;
   }
 
   .icon {
     aspect-ratio: 1 / 1;
+    height: 1.5rem;
+  }
+}
+
+.focussedAction {
+  border: none;
+  border-radius: 1rem;
+  overflow: hidden;
+  height: 4rem;
+  min-width: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--button-bg);
+  color: var(--button-fg);
+  transition: var(--transition);
+  cursor: pointer;
+
+  > div {
+    display: block;
+    height: 2.5rem;
+    aspect-ratio: 1 / 1;
+  }
+
+  &:hover {
+    background-color: var(--button-hover-bg);
+  }
+
+  &:active {
+    background-color: var(--button-active-bg);
+  }
+
+  > span {
+    display: none;
   }
 }
