@@ -2,9 +2,11 @@
   display: grid;
   grid-template-rows: auto auto 1fr;
   height: 100%;
-  width: 5rem;
+  width: 5.5rem;
   background-color: var(--actionbar-bg);
   box-sizing: border-box;
+  transition: var(--transition);
+
 
   > .toggleButton {
     aspect-ratio: 1 / 1;
@@ -18,20 +20,16 @@
     box-sizing: border-box;
     margin: 1rem;
 
-    &:hover:not(.toggled) {
+    &:hover {
       > div {
-        transform: rotate(10deg);
+        background-color: var(--button-hover-bg);
       }
     }
 
-    &:active:not(.toggled) {
+    &:active {
       > div {
-        transform: rotate(25deg);
+        background-color: var(--button-active-bg);
       }
-    }
-
-    &.toggled {
-      transform: rotate(90deg);
     }
   }
 

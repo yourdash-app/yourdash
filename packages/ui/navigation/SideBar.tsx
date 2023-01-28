@@ -17,19 +17,8 @@ interface ISideBarProps {
 }
 
 const SideBar: React.FC<ISideBarProps> = ({ actions, focusedActions }) => {
-  const [ expanded, setExpanded ] = useState(false)
-
   return (
     <div className={styles.component}>
-      <button
-        className={`${styles.toggleButton} ${expanded ? styles.toggled : null}`}
-        onClick={() => {
-              return setExpanded(!expanded)
-            }}
-        type={"button"}
-      >
-        <Icon name={"three-bars-16"} color={"var(--button-fg)"}/>
-      </button>
       <section className={styles.focussedActions}>
         {
             focusedActions?.map(action => {
