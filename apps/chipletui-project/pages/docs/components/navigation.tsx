@@ -1,7 +1,7 @@
 import { NextPageWithLayout } from "../../page";
 import DocsLayout from '../../../layouts/docsLayout/DocsLayout';
 import HomeLayout from '../../../layouts/homeLayout/HomeLayout';
-import ActionBar from "ui/navigation/ActionBar";
+import SideBar from "ui/navigation/SideBar";
 
 const Docs: NextPageWithLayout = () => (
   <>
@@ -11,7 +11,7 @@ const Docs: NextPageWithLayout = () => (
     <main>
       <h1>Navigation</h1>
       <section style={{ height: "30rem" }}>
-        <ActionBar
+        <SideBar
           actions={[
                 {
                   label: "test action1",

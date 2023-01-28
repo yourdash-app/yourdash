@@ -6,7 +6,8 @@ module.exports = {
         "react/react-in-jsx-scope": "off",
         "@typescript-eslint/ban-ts-comment": "off",
         "import/order": "off",
-        "@next/next/no-img-element": "off"
+        "@next/next/no-img-element": "off",
+        "arrow-body-style": ["error", "always"]
     }
 };
 

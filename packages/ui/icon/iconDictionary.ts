@@ -523,8 +523,8 @@ const ChipletIconDictionary = {
   'zap-24': '/assets/icons/zap-24.svg',
 };
 
-export const YourDashIconRawDictionary = ChipletIconDictionary;
+const ChipletRawIconDictionary = ChipletIconDictionary;
 
 type ChipletIcon = keyof typeof ChipletIconDictionary;
 
-export type { ChipletIcon };
+export { type ChipletIcon, ChipletRawIconDictionary };
