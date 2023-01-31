@@ -11,11 +11,12 @@
     text-align: left;
     box-shadow: 0 0 2rem #00000088;
     transition: all 200ms ease-in-out;
-    margin: 0 15rem;
+    margin: 2rem 15rem;
     border-radius: calc(var(--card-rounding) * 2);
     overflow: hidden;
     padding: 1rem;
-    height: calc(100vh - 5rem);
+    min-height: calc(100vh - 10rem);
+    height: max-content;
     overflow-y: auto;
 
     @media (max-width: 1920px) {

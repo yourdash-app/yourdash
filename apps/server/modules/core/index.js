@@ -166,10 +166,10 @@ const Module = {
             }
         });
         request.get(`/panel/user/profile/picture`, (req, res) => {
-            resizeImage(64, 64, path.resolve(`${moduleApi.UserFs(req)}/profile/picture.png`), image => res.json({ image }), () => res.json({ error: true }));
+            resizeImage(64, 64, path.resolve(`${moduleApi.UserFs(req)}/profile/picture.png`), image => { res.json({ image }); }, () => { res.json({ error: true }); });
         });
         request.get(`/settings/user/profile/image`, (req, res) => {
-            resizeImage(256, 256, path.resolve(`${moduleApi.UserFs(req)}/profile/picture.png`), image => res.json({ image }), () => res.json({ error: true }));
+            resizeImage(256, 256, path.resolve(`${moduleApi.UserFs(req)}/profile/picture.png`), image => { res.json({ image }); }, () => { res.json({ error: true }); });
         });
         request.get(`/settings/user/profile`, (req, res) => {
             fs.readFile(`${moduleApi.UserFs(req)}/user.json`, (err, data) => {

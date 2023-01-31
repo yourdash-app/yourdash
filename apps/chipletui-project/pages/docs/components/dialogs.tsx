@@ -9,7 +9,7 @@ const Docs: NextPageWithLayout = () => (
       <img src={"/background.jpg"} alt=""/>
     </section>
     <main>
-      <h1>Navigation</h1>
+      <h1>Dialogs</h1>
       <section style={{ height: "30rem" }}>
         <Dialog>
           <p>Test</p>

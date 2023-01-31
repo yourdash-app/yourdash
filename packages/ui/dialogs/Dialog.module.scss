@@ -19,6 +19,8 @@
     }
   }
 
+  transition: var(--transition);
+
   @media (min-width: 950px) {
     position: fixed;
     top: 50%;

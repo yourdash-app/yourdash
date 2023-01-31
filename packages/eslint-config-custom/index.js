@@ -7,7 +7,8 @@ module.exports = {
         "@typescript-eslint/ban-ts-comment": "off",
         "import/order": "off",
         "@next/next/no-img-element": "off",
-        "arrow-body-style": ["error", "always"]
+        "arrow-body-style": ["error", "always"],
+        "react/jsx-curly-spacing": [2, "always"]
     }
 };
 
