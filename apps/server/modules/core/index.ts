@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import {generateRandomStringOfLength} from '../../encryption.js';
 import {log, resizeImage, returnBase64Image} from '../../libServer.js';
-import {type YourDashModule} from './../../module.js';
+import {type YourDashModule} from '../../module';
 import {type quickShortcut} from "types/core/panel/quickShortcut.js"
 import includedApps from '../../includedApps.js';
 import {type LauncherApplication} from "types/core/panel/launcherApplication.js"
@@ -63,7 +63,7 @@ const Module: YourDashModule = {
                         const id = generateRandomStringOfLength(32)
 
                         // find the referenced application in the included applications list
-                        const includedApplication = includedApps.find(app => app.name === req.body.name)
+                        const includedApplication = includedApps.find(app => {return app.name === req.body.name})
 
                         // if the application doesn't exist return
                         if (!includedApplication) {
@@ -81,9 +81,9 @@ const Module: YourDashModule = {
                                     log(`ERROR ${err}`)
                                     return res.json({error: true})
                                 }
-                                return res.json(json.filter(shortcut => shortcut.id === id))
+                                return res.json(json.filter(shortcut => {return shortcut.id === id}))
                             })
-                        }, () => res.json({error: true}))
+                        }, () => {return res.json({error: true})})
                     })
                 })
             } else {
@@ -93,7 +93,7 @@ const Module: YourDashModule = {
                     }
                     const json = JSON.parse(data.toString()) as quickShortcut[]
                     const id = generateRandomStringOfLength(32)
-                    const includedApplication = includedApps.find(app => app.name === req.body.name)
+                    const includedApplication = includedApps.find(app => {return app.name === req.body.name})
 
                     if (!includedApplication) return log(`Can't create quick shortcut for unknown application: ${req.body.name}`)
 
@@ -108,10 +108,10 @@ const Module: YourDashModule = {
                                     return res.json({error: true})
                                 }
 
-                                return res.json(json.filter(shortcut => shortcut.id === id))
+                                return res.json(json.filter(shortcut => {return shortcut.id === id}))
                             })
                         },
-                        () => res.json({error: true}))
+                        () => {return res.json({error: true})})
                 })
             }
         })
@@ -126,7 +126,7 @@ const Module: YourDashModule = {
                 }
 
                 const json = JSON.parse(data.toString()) as quickShortcut[]
-                const shortcut = json.find(shortcut => shortcut.id === req.params.id)
+                const shortcut = json.find(shortcut => {return shortcut.id === req.params.id})
 
                 if (shortcut === undefined) return res.json({error: true})
 
@@ -158,7 +158,7 @@ const Module: YourDashModule = {
 
                 let json = JSON.parse(data.toString()) as quickShortcut[]
 
-                json = json.filter(shortcut => shortcut.id !== req.params.id)
+                json = json.filter(shortcut => {return shortcut.id !== req.params.id})
 
                 fs.writeFile(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`), JSON.stringify(json), err => {
                     if (err) {
@@ -188,11 +188,11 @@ const Module: YourDashModule = {
                         return res.json({error: true})
                     }
                     const json = JSON.parse(data.toString()) as string[]
-                    const result = includedApps.filter(app => json.includes(app.name)) || []
+                    const result = includedApps.filter(app => {return json.includes(app.name)}) || []
 
                     const response: LauncherApplication[] = []
 
-                    result.map(item => resizeImage(128, 128, `${moduleApi.FsOrigin}/../assets/apps/${item.icon}`, image => {
+                    result.map(item => {return resizeImage(128, 128, `${moduleApi.FsOrigin}/../assets/apps/${item.icon}`, image => {
                         response.push({
                             displayName: item.displayName,
                             icon: image,
@@ -203,7 +203,7 @@ const Module: YourDashModule = {
                         if (response.length === result.length) {
                             return res.json(response)
                         }
-                    }, () => res.json({error: true})))
+                    }, () => {return res.json({error: true})})})
                 })
             }
         })
@@ -295,26 +295,26 @@ const Module: YourDashModule = {
             })
         })
 
-        request.get(`/instance/config`, (_req, res) => res.json({
+        request.get(`/instance/config`, (_req, res) => {return res.json({
             ...moduleApi.SERVER_CONFIG, instanceEncryptionKey: "REDACTED"
-        }))
+        })})
 
-        request.get(`/instance/login/background`, (_req, res) => res.json({image: moduleApi.SERVER_CONFIG.loginPageConfig.background || ""}))
+        request.get(`/instance/login/background`, (_req, res) => {return res.json({image: moduleApi.SERVER_CONFIG.loginPageConfig.background || ""})})
 
-        request.get(`/instance/login/name`, (req, res) => res.json({name: moduleApi.SERVER_CONFIG.name}))
+        request.get(`/instance/login/name`, (req, res) => {return res.json({name: moduleApi.SERVER_CONFIG.name})})
 
-        request.get(`/instance/login/logo`, (_req, res) => res.json({image: moduleApi.SERVER_CONFIG.loginPageConfig.logo || ""}))
+        request.get(`/instance/login/logo`, (_req, res) => {return res.json({image: moduleApi.SERVER_CONFIG.loginPageConfig.logo || ""})})
 
-        request.get(`/instance/login/message`, (_req, res) => res.json({text: moduleApi.SERVER_CONFIG.loginPageConfig.message.content || ""}))
+        request.get(`/instance/login/message`, (_req, res) => {return res.json({text: moduleApi.SERVER_CONFIG.loginPageConfig.message.content || ""})})
 
 
-        request.get(`/instance/default/background`, (_req, res) => res.json({image: moduleApi.SERVER_CONFIG.defaultBackground}))
+        request.get(`/instance/default/background`, (_req, res) => {return res.json({image: moduleApi.SERVER_CONFIG.defaultBackground})})
 
-        request.get(`/instance/favicon`, (_req, res) => res.send(moduleApi.SERVER_CONFIG.favicon))
+        request.get(`/instance/favicon`, (_req, res) => {return res.send(moduleApi.SERVER_CONFIG.favicon)})
 
-        request.get(`/instance/logo`, (_req, res) => res.json({image: moduleApi.SERVER_CONFIG.logo}))
+        request.get(`/instance/logo`, (_req, res) => {return res.json({image: moduleApi.SERVER_CONFIG.logo})})
 
-        request.get(`/instance/version`, (_req, res) => res.json({version: moduleApi.SERVER_CONFIG.version}))
+        request.get(`/instance/version`, (_req, res) => {return res.json({version: moduleApi.SERVER_CONFIG.version})})
 
         request.post(`/test/echo`, (req, res) => {
             res.json(req.body)
