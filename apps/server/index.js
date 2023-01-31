@@ -5,7 +5,7 @@ import cors from 'cors';
 import express from 'express';
 import fs from 'fs';
 import path from 'path';
-import { RequestManager, log } from './libServer.js';
+import { log, RequestManager } from './libServer.js';
 import https from "https";
 import startupCheck from './startupCheck.js';
 export const RELEASE_CONFIGURATION = { CURRENT_VERSION: 1, };
@@ -28,90 +28,119 @@ function applicationStartup() {
             console.log(SERVER_CONFIG?.activeModules);
             log("(Start up) ERROR: yourdash.config.json is missing the 'activeModules' property!");
             process.exit(1);
+            break;
         case !(typeof SERVER_CONFIG?.defaultBackground === "string"):
             log("(Start up) ERROR: yourdash.config.json is missing the 'defaultBackground' property!");
             process.exit(1);
+            break;
         case !(typeof SERVER_CONFIG?.favicon === "string"):
             log("(Start up) ERROR: yourdash.config.json is missing the 'favicon' property!");
             process.exit(1);
+            break;
         case !(typeof SERVER_CONFIG?.instanceEncryptionKey === "string"):
             log("(Start up) ERROR: yourdash.config.json is missing the 'instanceEncryptionKey' property!");
             process.exit(1);
+            break;
         case !(typeof SERVER_CONFIG?.logo === "string"):
             log("(Start up) ERROR: yourdash.config.json is missing the 'logo' property!");
             process.exit(1);
+            break;
         case !(typeof SERVER_CONFIG?.name === "string"):
             log("(Start up) ERROR: yourdash.config.json is missing the 'name' property!");
             process.exit(1);
+            break;
         case !(typeof SERVER_CONFIG?.themeColor === "string"):
             log("(Start up) ERROR: yourdash.config.json is missing the 'themeColor' property!");
             process.exit(1);
+            break;
         case !(typeof SERVER_CONFIG?.version === "number"):
             log("(Start up) ERROR: yourdash.config.json is missing the 'version' property!");
             process.exit(1);
+            break;
         case !(SERVER_CONFIG?.loginPageConfig instanceof Object):
             log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig' property!");
             process.exit(1);
+            break;
         case !(SERVER_CONFIG?.loginPageConfig?.background instanceof Object):
             log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.background' property!");
             process.exit(1);
+            break;
         case !(typeof SERVER_CONFIG?.loginPageConfig?.background.src === "string"):
             log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.background.src' property!");
             process.exit(1);
+            break;
         case !(SERVER_CONFIG?.loginPageConfig?.logo instanceof Object):
             log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.logo' property!");
             process.exit(1);
+            break;
         case !(typeof SERVER_CONFIG?.loginPageConfig?.logo?.src === "string"):
             log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.logo.src' property!");
             process.exit(1);
+            break;
         case !(SERVER_CONFIG?.loginPageConfig?.logo?.position instanceof Object):
             log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.logo.position' property!");
             process.exit(1);
+            break;
         case !(typeof SERVER_CONFIG?.loginPageConfig?.logo?.position?.left === "string" || typeof SERVER_CONFIG?.loginPageConfig?.logo?.position?.left === typeof null):
             log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.logo.position.left' property!");
             process.exit(1);
+            break;
         case !(typeof SERVER_CONFIG?.loginPageConfig?.logo?.position?.top === "string" || typeof SERVER_CONFIG?.loginPageConfig?.logo?.position?.top === typeof null):
             log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.logo.position.top' property!");
             process.exit(1);
+            break;
         case !(typeof SERVER_CONFIG?.loginPageConfig?.logo?.position?.right === "string" || typeof SERVER_CONFIG?.loginPageConfig?.logo?.position?.right === typeof null):
             log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.logo.position.right' property!");
             process.exit(1);
+            break;
         case !(typeof SERVER_CONFIG?.loginPageConfig?.logo?.position?.bottom === "string" || typeof SERVER_CONFIG?.loginPageConfig?.logo?.position?.bottom === typeof null):
             log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.logo.position.bottom' property!");
             process.exit(1);
+            break;
         case !(SERVER_CONFIG?.loginPageConfig?.message instanceof Object):
             log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.message' property!");
             process.exit(1);
+            break;
         case !(typeof SERVER_CONFIG?.loginPageConfig?.message?.content === "string"):
             log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.message.content' property!");
             process.exit(1);
+            break;
         case !(SERVER_CONFIG?.loginPageConfig?.message?.position instanceof Object):
             log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.message.position' property!");
             process.exit(1);
+            break;
         case !(typeof SERVER_CONFIG?.loginPageConfig?.message?.position?.left === "string" || typeof SERVER_CONFIG?.loginPageConfig?.message?.position?.left === typeof null):
             log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.message.position.left' property!");
             process.exit(1);
+            break;
         case !(typeof SERVER_CONFIG?.loginPageConfig?.message?.position?.top === "string" || typeof SERVER_CONFIG?.loginPageConfig?.message?.position?.top === typeof null):
             log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.message.position.top' property!");
             process.exit(1);
+            break;
         case !(typeof SERVER_CONFIG?.loginPageConfig?.message?.position?.right === "string" || typeof SERVER_CONFIG?.loginPageConfig?.message?.position?.right === typeof null):
             log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.message.position.right' property!");
             process.exit(1);
+            break;
         case !(typeof SERVER_CONFIG?.loginPageConfig?.message?.position?.bottom === "string" || typeof SERVER_CONFIG?.loginPageConfig?.message?.position?.bottom === typeof null):
             log("(Start up) ERROR: yourdash.config.json is missing the 'loginPageConfig.message.position.bottom' property!");
             process.exit(1);
+            break;
         case !SERVER_CONFIG.activeModules.includes('core'):
             console.error(chalk.redBright(`(Start up) ERROR: the 'core' module is not enabled in yourdash.config.json`));
             process.exit(1);
+            break;
         case !SERVER_CONFIG.activeModules.includes('userManagement'):
             console.error(chalk.redBright(`(Start up) ERROR: the 'userManagement' module is not enabled in yourdash.config.json`));
             process.exit(1);
+            break;
         case !SERVER_CONFIG.activeModules.includes('files'):
             console.error(chalk.redBright(`(Start up) ERROR: the 'userManagement' module is not enabled in yourdash.config.json`));
             process.exit(1);
+            break;
         case !SERVER_CONFIG.activeModules.includes('store'):
             console.error(chalk.redBright(`(Start up) ERROR: the 'userManagement' module is not enabled in yourdash.config.json`));
             process.exit(1);
+            break;
         default:
             log("(Start up) yourdash.config.json has the required properties!");
     }
