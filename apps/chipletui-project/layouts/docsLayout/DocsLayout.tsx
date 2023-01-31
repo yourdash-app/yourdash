@@ -8,10 +8,10 @@ const DocsLayout: React.FC<IDocsLayout> = ({ children }) => {
   const router = useRouter()
 
   return (
-    <div className={styles.root}>
+    <div className={ styles.root }>
       <SideBar
-        title={"ChipletUI Docs"}
-        items={[
+        title={ "Chiplet UI Docs" }
+        items={ [
               {
                 icon: "server-16",
                 label: "Home",
@@ -26,12 +26,12 @@ const DocsLayout: React.FC<IDocsLayout> = ({ children }) => {
                   router.push("/docs/components")
                 },
               }
-            ]}
+            ] }
       />
-      <div className={styles.content}>
+      <div className={ styles.content }>
         {children}
       </div>
-      <div className={styles.listOfContents}/>
+      <div className={ styles.listOfContents }/>
     </div>
   )
 };

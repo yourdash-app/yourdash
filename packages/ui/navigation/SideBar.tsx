@@ -21,7 +21,9 @@ const SideBar: React.FC<ISideBarProps> = ({ items, title, expandedByDefault, hea
     <div className={ styles.component } data-expanded={ expanded }>
       <IconButton className={ styles.toggleButton } icon={ "three-bars-16" } onClick={ () => {return setExpanded(!expanded)} }/>
       <header className={ styles.header }>
-        <h2 className={ styles.title }>{title}</h2>
+        <section className={ styles.titleContainer }>
+          <h2 className={ styles.title }>{title}</h2>
+        </section>
         {headerContent}
       </header>
       <section className={ styles.items }>
@@ -29,7 +31,7 @@ const SideBar: React.FC<ISideBarProps> = ({ items, title, expandedByDefault, hea
           items.map(item => {
             return (
               <button className={ styles.item } type="button" key={ item.label } onClick={ item.onClick }>
-                <Icon name={ item.icon }/>
+                <Icon className={ styles.itemIcon } name={ item.icon } color={ "var(--sidebar-fg)" }/>
                 <span className={ styles.itemLabel }>
                   {item.label}
                 </span>
