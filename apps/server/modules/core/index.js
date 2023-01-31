@@ -39,7 +39,7 @@ const Module = {
                         }
                         const json = [];
                         const id = generateRandomStringOfLength(32);
-                        const includedApplication = includedApps.find(app => app.name === req.body.name);
+                        const includedApplication = includedApps.find(app => { return app.name === req.body.name; });
                         if (!includedApplication) {
                             log(`Can't create quick shortcut for unknown application: ${req.body.name}`);
                             return res.json({ error: true });
@@ -53,9 +53,9 @@ const Module = {
                                     log(`ERROR ${err}`);
                                     return res.json({ error: true });
                                 }
-                                return res.json(json.filter(shortcut => shortcut.id === id));
+                                return res.json(json.filter(shortcut => { return shortcut.id === id; }));
                             });
-                        }, () => res.json({ error: true }));
+                        }, () => { return res.json({ error: true }); });
                     });
                 });
             }
@@ -66,7 +66,7 @@ const Module = {
                     }
                     const json = JSON.parse(data.toString());
                     const id = generateRandomStringOfLength(32);
-                    const includedApplication = includedApps.find(app => app.name === req.body.name);
+                    const includedApplication = includedApps.find(app => { return app.name === req.body.name; });
                     if (!includedApplication)
                         return log(`Can't create quick shortcut for unknown application: ${req.body.name}`);
                     resizeImage(32, 32, path.resolve(`${moduleApi.FsOrigin}/../assets/apps/${includedApplication.icon}`), image => {
@@ -78,9 +78,9 @@ const Module = {
                                 log(`ERROR ${err}`);
                                 return res.json({ error: true });
                             }
-                            return res.json(json.filter(shortcut => shortcut.id === id));
+                            return res.json(json.filter(shortcut => { return shortcut.id === id; }));
                         });
-                    }, () => res.json({ error: true }));
+                    }, () => { return res.json({ error: true }); });
                 });
             }
         });
@@ -93,7 +93,7 @@ const Module = {
                     return res.json({ error: true });
                 }
                 const json = JSON.parse(data.toString());
-                const shortcut = json.find(shortcut => shortcut.id === req.params.id);
+                const shortcut = json.find(shortcut => { return shortcut.id === req.params.id; });
                 if (shortcut === undefined)
                     return res.json({ error: true });
                 const shortcutInd = json.indexOf(shortcut);
@@ -121,7 +121,7 @@ const Module = {
                     return res.json({ error: true });
                 }
                 let json = JSON.parse(data.toString());
-                json = json.filter(shortcut => shortcut.id !== req.params.id);
+                json = json.filter(shortcut => { return shortcut.id !== req.params.id; });
                 fs.writeFile(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`), JSON.stringify(json), err => {
                     if (err) {
                         log(`[${this.name}] ERROR: ${err}`);
@@ -149,19 +149,21 @@ const Module = {
                         return res.json({ error: true });
                     }
                     const json = JSON.parse(data.toString());
-                    const result = includedApps.filter(app => json.includes(app.name)) || [];
+                    const result = includedApps.filter(app => { return json.includes(app.name); }) || [];
                     const response = [];
-                    result.map(item => resizeImage(128, 128, `${moduleApi.FsOrigin}/../assets/apps/${item.icon}`, image => {
-                        response.push({
-                            displayName: item.displayName,
-                            icon: image,
-                            name: item.name,
-                            path: item.path,
-                        });
-                        if (response.length === result.length) {
-                            return res.json(response);
-                        }
-                    }, () => res.json({ error: true })));
+                    result.map(item => {
+                        return resizeImage(128, 128, `${moduleApi.FsOrigin}/../assets/apps/${item.icon}`, image => {
+                            response.push({
+                                displayName: item.displayName,
+                                icon: image,
+                                name: item.name,
+                                path: item.path,
+                            });
+                            if (response.length === result.length) {
+                                return res.json(response);
+                            }
+                        }, () => { return res.json({ error: true }); });
+                    });
                 });
             }
         });
@@ -233,17 +235,19 @@ const Module = {
                 return res.json(json);
             });
         });
-        request.get(`/instance/config`, (_req, res) => res.json({
-            ...moduleApi.SERVER_CONFIG, instanceEncryptionKey: "REDACTED"
-        }));
-        request.get(`/instance/login/background`, (_req, res) => res.json({ image: moduleApi.SERVER_CONFIG.loginPageConfig.background || "" }));
-        request.get(`/instance/login/name`, (req, res) => res.json({ name: moduleApi.SERVER_CONFIG.name }));
-        request.get(`/instance/login/logo`, (_req, res) => res.json({ image: moduleApi.SERVER_CONFIG.loginPageConfig.logo || "" }));
-        request.get(`/instance/login/message`, (_req, res) => res.json({ text: moduleApi.SERVER_CONFIG.loginPageConfig.message.content || "" }));
-        request.get(`/instance/default/background`, (_req, res) => res.json({ image: moduleApi.SERVER_CONFIG.defaultBackground }));
-        request.get(`/instance/favicon`, (_req, res) => res.send(moduleApi.SERVER_CONFIG.favicon));
-        request.get(`/instance/logo`, (_req, res) => res.json({ image: moduleApi.SERVER_CONFIG.logo }));
-        request.get(`/instance/version`, (_req, res) => res.json({ version: moduleApi.SERVER_CONFIG.version }));
+        request.get(`/instance/config`, (_req, res) => {
+            return res.json({
+                ...moduleApi.SERVER_CONFIG, instanceEncryptionKey: "REDACTED"
+            });
+        });
+        request.get(`/instance/login/background`, (_req, res) => { return res.json({ image: moduleApi.SERVER_CONFIG.loginPageConfig.background || "" }); });
+        request.get(`/instance/login/name`, (req, res) => { return res.json({ name: moduleApi.SERVER_CONFIG.name }); });
+        request.get(`/instance/login/logo`, (_req, res) => { return res.json({ image: moduleApi.SERVER_CONFIG.loginPageConfig.logo || "" }); });
+        request.get(`/instance/login/message`, (_req, res) => { return res.json({ text: moduleApi.SERVER_CONFIG.loginPageConfig.message.content || "" }); });
+        request.get(`/instance/default/background`, (_req, res) => { return res.json({ image: moduleApi.SERVER_CONFIG.defaultBackground }); });
+        request.get(`/instance/favicon`, (_req, res) => { return res.send(moduleApi.SERVER_CONFIG.favicon); });
+        request.get(`/instance/logo`, (_req, res) => { return res.json({ image: moduleApi.SERVER_CONFIG.logo }); });
+        request.get(`/instance/version`, (_req, res) => { return res.json({ version: moduleApi.SERVER_CONFIG.version }); });
         request.post(`/test/echo`, (req, res) => {
             res.json(req.body);
         });

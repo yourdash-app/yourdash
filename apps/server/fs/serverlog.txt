@@ -1,5 +1,5 @@
 ----- [YOURDASH SERVER LOG] -----
-(Start up) EnvironmentVariable FsOrigin detected as: C:\Users\ewsgi\WebstormProjects\yourdash\apps\server\fs
+(Start up) EnvironmentVariable FsOrigin detected as: /home/ewsgit/WebstormProjects/yourdash/apps/server/fs
 (Start up) EnvironmentVariable Dev detected as: true
 (Start up) yourdash.config.json has the required properties!
 (Start up) starting with all modules loaded due to the DEV environment variable being set to true.
@@ -10,3 +10,115 @@ core,files,store,tasks,userManagement
 (Start up) loaded module: userManagement
 (Start up) loaded module: tasks
 (Start up) loaded module: store
+20:57:15  GET  200 /test
+20:57:24  GET  200 /test
+20:57:40  OPT  200 /api/core/instance/login/background
+20:57:40  OPT  200 /api/core/instance/login/name
+20:57:40  GET  200 /api/core/instance/login/background
+20:57:40  GET  200 /api/core/instance/login/name
+20:57:40  OPT  200 /api/core/instance/login/logo
+20:57:40  OPT  200 /api/core/instance/login/message
+20:57:40  GET  200 /api/core/instance/login/logo
+20:57:40  GET  200 /api/core/instance/login/message
+20:57:40  OPT  200 /api/core/instance/login/name
+20:57:40  GET  200 /api/core/instance/login/name
+20:57:40  OPT  200 /api/core/instance/login/logo
+20:57:40  OPT  200 /api/core/instance/login/message
+20:57:40  GET  200 /api/core/instance/login/logo
+20:57:40  GET  200 /api/core/instance/login/message
+20:57:40  OPT  200 /api/core/instance/login/background
+20:57:40  GET  200 /api/core/instance/login/background
+20:57:50  OPT  200 /api/userManagement/login
+20:57:50  GET  200 /api/userManagement/login
+20:57:51  OPT  200 /api/core/panel/background-image
+20:57:51  GET  200 /api/core/panel/background-image
+20:57:51  OPT  200 /api/core/panel/background-image
+20:57:51  GET  200 /api/core/panel/background-image
+20:57:51  OPT  200 /api/core/panel/user/profile/picture
+20:57:51  OPT  200 /api/core/instance/logo
+20:57:51  GET  200 /api/core/panel/user/profile/picture
+20:57:51  OPT  200 /api/userManagement/current/user
+20:57:51  GET  200 /api/core/instance/logo
+20:57:51  OPT  200 /api/core/panel/quick-shortcuts/
+20:57:51  OPT  200 /api/core/panel/launcher/apps
+20:57:51  GET  200 /api/userManagement/current/user
+20:57:51  GET  200 /api/core/panel/quick-shortcuts/
+20:57:51  GET  200 /api/core/panel/launcher/apps
+20:57:51  OPT  200 /api/core/instance/logo
+20:57:51  GET  200 /api/core/instance/logo
+20:57:51  OPT  200 /api/core/panel/quick-shortcuts/
+20:57:51  OPT  200 /api/userManagement/current/user
+20:57:51  GET  200 /api/core/panel/quick-shortcuts/
+20:57:51  GET  200 /api/userManagement/current/user
+Triggered Sharp, width: 128, height: 128
+Triggered Sharp, width: 128, height: 128
+Triggered Sharp, width: 128, height: 128
+Triggered Sharp, width: 128, height: 128
+Triggered Sharp, width: 128, height: 128
+Triggered Sharp, width: 64, height: 64
+20:57:51  OPT  200 /api/core/panel/user/profile/picture
+20:57:51  GET  200 /api/core/panel/user/profile/picture
+Triggered Sharp, width: 128, height: 128
+Triggered Sharp, width: 128, height: 128
+20:57:51  OPT  200 /api/userManagement/current/user
+20:57:51  GET  200 /api/userManagement/current/user
+Triggered Sharp, width: 128, height: 128
+20:57:51  OPT  200 /api/userManagement/current/user
+20:57:51  GET  200 /api/userManagement/current/user
+20:57:51  OPT  200 /api/core/panel/launcher/apps
+20:57:51  GET  200 /api/core/panel/launcher/apps
+Triggered Sharp, width: 128, height: 128
+Triggered Sharp, width: 128, height: 128
+Triggered Sharp, width: 128, height: 128
+Triggered Sharp, width: 128, height: 128
+Triggered Sharp, width: 128, height: 128
+Triggered Sharp, width: 64, height: 64
+20:57:51  OPT  200 /api/core/panel/user/profile/picture
+20:57:51  GET  200 /api/core/panel/user/profile/picture
+Triggered Sharp, width: 128, height: 128
+Triggered Sharp, width: 128, height: 128
+Triggered Sharp, width: 128, height: 128
+Triggered Sharp, width: 64, height: 64
+20:57:51  OPT  200 /api/core/panel/user/profile/picture
+20:57:51  GET  200 /api/core/panel/user/profile/picture
+Triggered Sharp, width: 64, height: 64
+20:58:14  OPT  200 /api/store/included/apps
+20:58:14  GET  200 /api/store/included/apps
+Triggered Sharp, width: 96, height: 96
+Triggered Sharp, width: 96, height: 96
+Triggered Sharp, width: 96, height: 96
+Triggered Sharp, width: 96, height: 96
+Triggered Sharp, width: 96, height: 96
+Triggered Sharp, width: 96, height: 96
+Triggered Sharp, width: 96, height: 96
+Triggered Sharp, width: 96, height: 96
+20:58:15  OPT  200 /api/store/included/apps
+20:58:15  GET  200 /api/store/included/apps
+Triggered Sharp, width: 96, height: 96
+Triggered Sharp, width: 96, height: 96
+Triggered Sharp, width: 96, height: 96
+Triggered Sharp, width: 96, height: 96
+Triggered Sharp, width: 96, height: 96
+Triggered Sharp, width: 96, height: 96
+Triggered Sharp, width: 96, height: 96
+Triggered Sharp, width: 96, height: 96
+20:58:22  OPT  200 /api/userManagement/current/user
+20:58:22  GET  200 /api/userManagement/current/user
+20:58:22  OPT  200 /api/userManagement/current/user
+20:58:22  GET  200 /api/userManagement/current/user
+20:58:37  OPT  200 /api/tasks/personal/lists
+20:58:37  GET  200 /api/tasks/personal/lists
+20:58:37  OPT  200 /api/tasks/personal/lists
+20:58:37  GET  200 /api/tasks/personal/lists
+20:58:45  OPT  200 /api/tasks/personal/list/Uuo8BuC0DzU2fOjlixZ4hQnckKxxdvAf
+20:58:45  GET  200 /api/tasks/personal/list/Uuo8BuC0DzU2fOjlixZ4hQnckKxxdvAf
+20:58:45  OPT  200 /api/tasks/personal/list/Uuo8BuC0DzU2fOjlixZ4hQnckKxxdvAf
+20:58:45  GET  200 /api/tasks/personal/list/Uuo8BuC0DzU2fOjlixZ4hQnckKxxdvAf
+20:58:48  OPT  200 /api/tasks/personal/lists
+20:58:48  GET  200 /api/tasks/personal/lists
+20:58:48  OPT  200 /api/tasks/personal/lists
+20:58:48  GET  200 /api/tasks/personal/lists
+20:59:28  OPT  200 /api/tasks/personal/list/Uuo8BuC0DzU2fOjlixZ4hQnckKxxdvAf
+20:59:28  GET  200 /api/tasks/personal/list/Uuo8BuC0DzU2fOjlixZ4hQnckKxxdvAf
+20:59:28  OPT  200 /api/tasks/personal/list/Uuo8BuC0DzU2fOjlixZ4hQnckKxxdvAf
+20:59:28  GET  200 /api/tasks/personal/list/Uuo8BuC0DzU2fOjlixZ4hQnckKxxdvAf

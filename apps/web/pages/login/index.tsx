@@ -58,9 +58,9 @@ const ServerLogin: NextPageWithLayout = () => {
     setMessage("Checking if this url is valid...")
 
     fetch(`${url}:3560/test`)
-        .then(res => res.text())
+        .then(res => { return res.text() })
         .then(text => {
-          if (text === "yourdash instance") {
+          if (text === "YourDash instance") {
             setAllowed(true)
             return setMessage("")
           } else {
@@ -76,34 +76,34 @@ const ServerLogin: NextPageWithLayout = () => {
   }, [ url ])
 
   return (
-    <div className={styles.root}>
+    <div className={ styles.root }>
       <Card>
         <ColContainer>
-          <h1 className={styles.title}>Please enter the url of your server.</h1>
+          <h1 className={ styles.title }>Please enter the url of your server.</h1>
           <ValidatedTextInput
-            invalidReason={message}
-            onChange={e => {
+            invalidReason={ message }
+            onChange={ e => {
                   setUrl(e.target.value)
-                }}
-            onKeyDown={e => {
+                } }
+            onKeyDown={ e => {
                   if (!allowed) return
 
                   if (e.key === "Enter") {
                     localStorage.setItem("currentServer", `${url}:3560`)
                     router.push("/login/server")
                   }
-                }}
+                } }
           />
           <Button
-            disabled={!allowed}
-            onClick={() => {
+            disabled={ !allowed }
+            onClick={ () => {
                   localStorage.setItem("currentServer", `${url}:3560`)
                   router.push("/login/server")
-                }}
+                } }
           >Continue</Button>
         </ColContainer>
       </Card>
-      <Link href="/docs/" className={styles.link}>
+      <Link href="/docs/" className={ styles.link }>
         Setup your own server.
       </Link>
     </div>
@@ -112,4 +112,4 @@ const ServerLogin: NextPageWithLayout = () => {
 
 export default ServerLogin
 
-ServerLogin.getLayout = page => <HomeLayout>{page}</HomeLayout>
+ServerLogin.getLayout = page => {return <HomeLayout>{page}</HomeLayout>}
