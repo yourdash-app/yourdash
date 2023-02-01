@@ -99,7 +99,7 @@
 
 .accountNotificationList {
   position: absolute;
-  bottom: 0.5rem;
+  bottom: calc(calc(var(--app-panel-height) + 0.5rem) - 100vh);
   right: 0.5rem;
   transform-origin: bottom right;
   transition: var(--transition);
