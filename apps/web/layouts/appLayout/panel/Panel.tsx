@@ -8,17 +8,13 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import SERVER, { verifyAndReturnJson } from "../../../server";
 import { type YourDashUser } from '../../../../../packages/types/core/user';
-import Card from 'ui/backup/containers/card/Card';
-import ColContainer from 'ui/backup/containers/ColContainer/ColContainer';
-import RowContainer from 'ui/backup/containers/RowContainer/RowContainer';
-import Button from 'ui/backup/elements/button/Button';
-import Icon from 'ui/icon/Icon';
+import Chiplet from "ui"
 import RightClickMenu from 'ui/backup/elements/rightClickMenu/RightClickMenu';
 import TextInput from 'ui/backup/elements/textInput/TextInput';
 import styles from './Panel.module.scss';
 import { type quickShortcut as QuickShortcut } from 'types/core/panel/quickShortcut';
-import AuthenticatedImg from 'ui/backup/elements/authenticatedImg/AuthenticatedImg';
 import { type InstalledApplication } from 'types/store/installedApplication';
+import ServerImage from "../../../pages/app/components/serverImage/ServerImage";
 
 export interface IPanel {
   appIsOpening: (_value: boolean) => void,
@@ -72,41 +68,41 @@ const Panel: React.FC<IPanel> = ({
   }, [])
 
   return (
-    <div className={styles.component}>
+    <div className={ styles.component }>
       <div
-        className={styles.launcher}
-        onClick={() => {
+        className={ styles.launcher }
+        onClick={ () => {
               setLauncherSlideOutVisible(!launcherSlideOutVisible)
-            }}
+            } }
       >
-        <Icon
+        <Chiplet.Icon
           name='app-launcher-16'
-          style={{
+          style={ {
                 aspectRatio: "1/1",
                 height: "100%",
-              }}
-          color={"var(--app-panel-fg)"}
+              } }
+          color={ "var(--app-panel-fg)" }
         />
       </div>
-      <div className={`${styles.launcherSlideOut} ${launcherSlideOutVisible ? styles.launcherSlideOutVisible : ""}`}>
-        <div data-header style={{ backgroundImage }}>
+      <div className={ `${styles.launcherSlideOut} ${launcherSlideOutVisible ? styles.launcherSlideOutVisible : ""}` }>
+        <div data-header style={ { backgroundImage } }>
           <div data-title>Hiya, {userData?.name?.first}</div>
           <TextInput
             data-search
-            onChange={e => {
+            onChange={ e => {
                   setSearchQuery(e.currentTarget.value.toLowerCase())
-                }}
+                } }
             placeholder="Search"
           />
         </div>
-        <div className={styles.launcherGrid}>
+        <div className={ styles.launcherGrid }>
           {
               installedApps ?
                   installedApps.map((app, ind) => {
                     if (app?.name?.toLowerCase()?.includes(searchQuery) || app?.description?.toLowerCase()?.includes(searchQuery))
                       return (
                         <RightClickMenu
-                          items={[
+                          items={ [
                                 {
                                   name: "Pin to quick shortcuts",
                                   onClick: () => {
@@ -126,12 +122,12 @@ const Panel: React.FC<IPanel> = ({
                                     )
                                   }
                                 },
-                              ]}
-                          key={ind}
+                              ] }
+                          key={ app.name }
                         >
                           <div
-                            className={styles.launcherGridItem}
-                            onClick={() => {
+                            className={ styles.launcherGridItem }
+                            onClick={ () => {
                                   if (app.path === router.pathname) return setLauncherSlideOutVisible(false)
                                   setLauncherSlideOutVisible(false)
                                   router.prefetch(app.path)
@@ -140,67 +136,67 @@ const Panel: React.FC<IPanel> = ({
                                     router.push(app.path)
                                     appIsOpening(false)
                                   }, 500)
-                                }}
+                                } }
                           >
-                            <img src={app.icon} draggable={false} alt=""/>
+                            <img src={ app.icon } draggable={ false } alt=""/>
                             <span>{app.displayName}</span>
                           </div>
                         </RightClickMenu>
                       )
                   })
                   : (
-                    <Button onClick={() => {
+                    <Chiplet.Button onClick={ () => {
                         router.reload()
-                      }}
+                      } }
                     >
                       Reload Launcher Items
-                    </Button>
+                    </Chiplet.Button>
                   )
             }
         </div>
         <footer data-footer>
-          <AuthenticatedImg
-            onClick={() => {
+          <ServerImage
+            onClick={ () => {
                   router.push(`/app/user/profile/${userData?.userName}`)
-                }}
-            tabIndex={0}
-            src={"/core/panel/user/profile/picture"}
+                } }
+            tabIndex={ 0 }
+            src={ "/core/panel/user/profile/picture" }
             alt=""
           />
           <span>{userData?.name?.first} {userData?.name?.last}</span>
           <div
-            onClick={() => {
+            onClick={ () => {
                   setLauncherSlideOutVisible(false)
                   router.push("/app/settings")
-                }}
+                } }
             data-settings
           >
-            <Icon name='gear-16' color={"var(--container-fg)"}/>
+            <Chiplet.Icon name='gear-16' color={ "var(--container-fg)" }/>
           </div>
         </footer>
       </div>
-      <AuthenticatedImg
-        onClick={() => {
+      <ServerImage
+        onClick={ () => {
               router.push(`/app/dash`)
-            }}
-        src={"/core/instance/logo"}
-        className={styles.serverLogo}
+            } }
+        src={ "/core/instance/logo" }
+        className={ styles.serverLogo }
       />
       {/* <h2 className={styles.serverName}>YourDash</h2> */}
-      <div className={styles.shortcuts}>
+      <div className={ styles.shortcuts }>
         {
             quickShortcuts?.length !== 0
-                ? quickShortcuts?.map((shortcut, ind) => (
+                ? quickShortcuts?.map((shortcut, ind) => {return (
                   <RightClickMenu
-                    key={ind}
-                    items={[
+                    key={ shortcut.name }
+                    items={ [
                           {
                             name: "Remove quick shortcut",
                             onClick: () => {
                               verifyAndReturnJson(
                                   SERVER.delete(`/core/panel/quick-shortcut/${shortcut.id}`),
                                   () => {
-                                    setQuickShortcuts(quickShortcuts.filter(sc => sc.id !== shortcut.id))
+                                    setQuickShortcuts(quickShortcuts.filter(sc => {return sc.id !== shortcut.id}))
                                   },
                                   () => {
                                     console.error(`unable to delete quick shortcut ${shortcut.id}`)
@@ -208,11 +204,11 @@ const Panel: React.FC<IPanel> = ({
                               )
                             }
                           }
-                        ]}
+                        ] }
                   >
                     <div
-                      className={styles.shortcut}
-                      onClick={() => {
+                      className={ styles.shortcut }
+                      onClick={ () => {
                             setLauncherSlideOutVisible(false)
                             if (shortcut.url === router.pathname) return
                             router.prefetch(shortcut.url)
@@ -221,10 +217,10 @@ const Panel: React.FC<IPanel> = ({
                               router.push(shortcut.url)
                               appIsOpening(false)
                             }, 500)
-                          }}
+                          } }
                     >
                       <div>
-                        <img draggable={false} src={shortcut.icon} alt=""/>
+                        <img draggable={ false } src={ shortcut.icon } alt=""/>
                         {
                             router.pathname === shortcut.url ?
                               <div data-active-indicator/> : <div/>
@@ -233,9 +229,9 @@ const Panel: React.FC<IPanel> = ({
                       <span>{shortcut.name}</span>
                     </div>
                   </RightClickMenu>
-                ))
+                )})
                 : (
-                  <Button onClick={() => {
+                  <Chiplet.Button onClick={ () => {
                       verifyAndReturnJson(
                           SERVER.post(`/core/panel/quick-shortcut/create`, {
                             body: JSON.stringify({
@@ -250,25 +246,25 @@ const Panel: React.FC<IPanel> = ({
                             console.error(`unable to create quick shortcut with name: files`)
                           }
                       )
-                    }}
-                  >Add default quick shortcuts</Button>
+                    } }
+                  >Add default quick shortcuts</Chiplet.Button>
                 )
           }
       </div>
       {/* <div className={styles.tray}>
       <Icon name="browser-16" className={styles.trayIcon} color={"var(--app-panel-fg)"} />
     </div> */}
-      <div className={styles.account}>
-        <AuthenticatedImg
-          onClick={() => {
+      <div className={ styles.account }>
+        <ServerImage
+          onClick={ () => {
                 setAccountDropdownVisible(!accountDropdownVisible)
-              }}
-          tabIndex={0}
-          src={"/core/panel/user/profile/picture"}
+              } }
+          tabIndex={ 0 }
+          src={ "/core/panel/user/profile/picture" }
           alt=""
         />
         <div
-          style={{
+          style={ {
                 background: "#00000040",
                 height: "100vh",
                 left: 0,
@@ -278,120 +274,120 @@ const Panel: React.FC<IPanel> = ({
                 top: 0,
                 transition: "var(--transition)",
                 width: "100vw",
-              }}
-          onClick={() => {
+              } }
+          onClick={ () => {
                 setAccountDropdownVisible(false)
-              }}
+              } }
         />
         <div>
-          <Card
-            style={{
+          <Chiplet.Card
+            style={ {
                   opacity: !accountDropdownVisible ? "0" : "1",
                   pointerEvents: accountDropdownVisible ? "all" : "none",
                   transform: !accountDropdownVisible ? "scale(0.9)" : "scale(1)",
-                }}
+                } }
             compact
-            className={styles.accountDropdown}
+            className={ styles.accountDropdown }
           >
-            <RowContainer className={styles.accountDropdownQuickActions}>
-              <div onClick={() => {
+            <Chiplet.Row className={ styles.accountDropdownQuickActions }>
+              <div onClick={ () => {
                   setAccountDropdownVisible(false)
                   localStorage.removeItem("sessiontoken")
                   localStorage.removeItem("username")
                   router.push("/login/")
-                }}
+                } }
               >
-                <Icon name='logout' color="var(--button-fg)"/>
+                <Chiplet.Icon name='logout' color="var(--button-fg)"/>
               </div>
-              <div onClick={() => {
+              <div onClick={ () => {
                   setAccountDropdownVisible(false)
                   router.push("/about")
-                }}
+                } }
               >
-                <Icon name='info-16' color="var(--button-fg)"/>
+                <Chiplet.Icon name='info-16' color="var(--button-fg)"/>
               </div>
-              <div onClick={() => {
+              <div onClick={ () => {
                   setAccountDropdownVisible(false)
                   router.push("/app/settings")
-                }}
+                } }
               >
-                <Icon name='gear-16' color="var(--button-fg)"/>
+                <Chiplet.Icon name='gear-16' color="var(--button-fg)"/>
               </div>
-            </RowContainer>
-            <ColContainer>
-              <Button onClick={() => {
+            </Chiplet.Row>
+            <Chiplet.Column>
+              <Chiplet.Button onClick={ () => {
                   router.push(`/app/user/profile/${userData?.userName}`)
                   setAccountDropdownVisible(false)
-                }}
-              >Profile</Button>
-              <Button onClick={() => {
+                } }
+              >Profile</Chiplet.Button>
+              <Chiplet.Button onClick={ () => {
                   localStorage.removeItem("currentServer")
                   router.push("/login/server")
                   setAccountDropdownVisible(false)
-                }}
-              >Switch instance</Button>
-            </ColContainer>
-          </Card>
-          <ColContainer
-            className={styles.accountNotificationList}
-            style={{
+                } }
+              >Switch instance</Chiplet.Button>
+            </Chiplet.Column>
+          </Chiplet.Card>
+          <Chiplet.Column
+            className={ styles.accountNotificationList }
+            style={ {
                   opacity: !accountDropdownVisible ? "0" : "1",
                   pointerEvents: accountDropdownVisible ? "all" : "none",
                   transform: !accountDropdownVisible ? "scale(0.9)" : "scale(1)",
-                }}
+                } }
           >
-            <Card>
-              <RowContainer data-header>
-                <img src={`/assets/productLogos/yourdash.svg`} alt=""/>
+            <Chiplet.Card>
+              <Chiplet.Row data-header>
+                <img src={ `/assets/productLogos/yourdash.svg` } alt=""/>
                 <span>Notification Test</span>
-              </RowContainer>
-              <ColContainer>
+              </Chiplet.Row>
+              <Chiplet.Column>
                 <p>
                   This is some sample text for a notification
                 </p>
-                <Button onClick={() => {
+                <Chiplet.Button onClick={ () => {
                     console.log("Implenment me!")
-                  }}
+                  } }
                 >
                   Ok
-                </Button>
-              </ColContainer>
-            </Card>
-            <Card>
-              <RowContainer data-header>
-                <img src={`/assets/productLogos/yourdash.svg`} alt=""/>
+                </Chiplet.Button>
+              </Chiplet.Column>
+            </Chiplet.Card>
+            <Chiplet.Card>
+              <Chiplet.Row data-header>
+                <img src={ `/assets/productLogos/yourdash.svg` } alt=""/>
                 <span>Notification Test</span>
-              </RowContainer>
-              <ColContainer>
+              </Chiplet.Row>
+              <Chiplet.Column>
                 <p>
                   This is some sample text for a notification
                 </p>
-                <Button onClick={() => {
+                <Chiplet.Button onClick={ () => {
                     console.log("Implenment me!")
-                  }}
+                  } }
                 >
                   Ok
-                </Button>
-              </ColContainer>
-            </Card>
-            <Card>
-              <RowContainer data-header>
-                <img src={`/assets/productLogos/yourdash.svg`} alt=""/>
+                </Chiplet.Button>
+              </Chiplet.Column>
+            </Chiplet.Card>
+            <Chiplet.Card>
+              <Chiplet.Row data-header>
+                <img src={ `/assets/productLogos/yourdash.svg` } alt=""/>
                 <span>Notification Test</span>
-              </RowContainer>
-              <ColContainer>
+              </Chiplet.Row>
+              <Chiplet.Column>
                 <p>
                   This is some sample text for a notification
                 </p>
-                <Button onClick={() => {
+                <Chiplet.Button onClick={ () => {
                     console.log("Implenment me!")
-                  }}
+                  } }
                 >
                   Ok
-                </Button>
-              </ColContainer>
-            </Card>
-          </ColContainer>
+                </Chiplet.Button>
+              </Chiplet.Column>
+            </Chiplet.Card>
+          </Chiplet.Column>
         </div>
       </div>
     </div>

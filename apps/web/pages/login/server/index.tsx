@@ -125,7 +125,7 @@ const LoginOptions: NextPageWithLayout = () => {
                     )
                     : null
             }
-        <DropdownButton
+        <Chiplet.DropdownButton
           className={ styles.switchInstance }
           items={ [
                     {
@@ -135,7 +135,7 @@ const LoginOptions: NextPageWithLayout = () => {
                         }
                     }
                 ] }
-        >Switch instance</DropdownButton>
+        >Switch instance</Chiplet.DropdownButton>
       </div>
     );
 };

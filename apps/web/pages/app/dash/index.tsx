@@ -1,12 +1,12 @@
 import Head from "next/head";
 import React, { useEffect, useState } from "react";
-import Button from "ui/backup/elements/button/Button";
 import AppLayout from '../../../layouts/appLayout/AppLayout';
 import SERVER, { verifyAndReturnJson } from "../../../server";
 import { NextPageWithLayout } from '../../page';
 import styles from "./dash.module.scss";
 import { useRouter } from "next/router";
 import DashWidget from "types/core/dash/dashWidget";
+import Chiplet from "ui";
 
 const Dash: NextPageWithLayout = () => {
   const router = useRouter()
@@ -40,26 +40,26 @@ const Dash: NextPageWithLayout = () => {
       <Head>
         <title>YourDash | Dashboard</title>
       </Head>
-      <div className={styles.root}>
-        <div className={styles.welcome}>
-          <span className={styles.clock}>{currentTime}</span>
+      <div className={ styles.root }>
+        <div className={ styles.welcome }>
+          <span className={ styles.clock }>{currentTime}</span>
           <span>Hiya, {name}</span>
         </div>
-        <div className={styles.main}>
+        <div className={ styles.main }>
           {!widgets.length ? (
-            <div className={styles.homeMessage}>
+            <div className={ styles.homeMessage }>
               <div>
                 <h1>Oh no!</h1>
                 <p>It appears that you have no dash widgets installed.</p>
-                <Button
-                  onClick={() => {
+                <Chiplet.Button
+                  onClick={ () => {
                           router.push(`/app/store`)
-                        }}
+                        } }
                   vibrant
-                >Explore dash widgets</Button>
+                >Explore dash widgets</Chiplet.Button>
               </div>
             </div>
-            ) : widgets.map(widget => <div>{widget}</div>)}
+            ) : widgets.map(widget => {return <div>{widget}</div>})}
         </div>
       </div>
     </>
@@ -68,4 +68,4 @@ const Dash: NextPageWithLayout = () => {
 
 export default Dash;
 
-Dash.getLayout = page => <AppLayout transparentBackground>{page}</AppLayout>
+Dash.getLayout = page => {return <AppLayout transparentBackground>{page}</AppLayout>}

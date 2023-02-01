@@ -1,15 +1,11 @@
 import {useEffect, useState} from 'react';
-import RowContainer from '../../../components/containers/RowContainer/RowContainer';
-import AppLayout from '../../../components/layouts/appLayout/AppLayout';
+import AppLayout from '../../../layouts/appLayout/AppLayout';
 import {NextPageWithLayout} from '../../page';
-import DropdownButton from '../../../components/elements/dropdownButton/DropdownButton';
 import styles from "./index.module.scss"
-import TextInput from '../../../components/elements/textInput/TextInput';
-import Button from '../../../components/elements/button/SegmentButton';
-import SERVER, {verifyAndReturnJson} from '../../../lib/server';
-import Card from '../../../components/containers/card/Card';
-import TextBox from '../../../components/elements/textBox/TextBox';
-import Icon from "../../../components/elements/icon/Icon";
+import TextInput from 'ui/backup/elements/textInput/TextInput';
+import SERVER, {verifyAndReturnJson} from '../../../server';
+import TextBox from 'ui/backup/elements/textBox/TextBox';
+import Chiplet from "ui";
 
 const EndpointTester: NextPageWithLayout = () => {
     const [response, setResponse] = useState("")
@@ -28,10 +24,10 @@ const EndpointTester: NextPageWithLayout = () => {
 
     return (
       <main className={ styles.root }>
-        <RowContainer className={ styles.header }>
-          <Icon name={ "yourdash-logo" } useDefaultColor style={ {height: "calc(100% - 0.125rem)"} }/>
+        <Chiplet.Row className={ styles.header }>
+          <Chiplet.Icon name={ "yourdash-logo" } useDefaultColor style={ {height: "calc(100% - 0.125rem)"} }/>
           <h2>Server Endpoint Debugger</h2>
-          <DropdownButton
+          <Chiplet.DropdownButton
             items={ [
                         {
                             name: "GET",
@@ -54,8 +50,8 @@ const EndpointTester: NextPageWithLayout = () => {
                     ] }
           >
             Select method
-          </DropdownButton>
-          <DropdownButton
+          </Chiplet.DropdownButton>
+          <Chiplet.DropdownButton
             items={ [
                         {
                             name: "JSON",
@@ -72,13 +68,13 @@ const EndpointTester: NextPageWithLayout = () => {
                     ] }
           >
             Expected response
-          </DropdownButton>
-        </RowContainer>
+          </Chiplet.DropdownButton>
+        </Chiplet.Row>
         <section>
-          <RowContainer className={ styles.urlSection }>
-            <Button disabled>
+          <Chiplet.Row className={ styles.urlSection }>
+            <Chiplet.Button disabled>
               {serverUrl}/api
-            </Button>
+            </Chiplet.Button>
             <TextInput
               style={ {maxWidth: "10rem"} }
               placeholder='module name'
@@ -92,7 +88,7 @@ const EndpointTester: NextPageWithLayout = () => {
                             setQueryUrl(e.currentTarget.value)
                         } }
             />
-            <Button onClick={ () => {
+            <Chiplet.Button onClick={ () => {
                         switch (queryMethod) {
                             case "GET":
                                 switch (queryType) {
@@ -152,8 +148,8 @@ const EndpointTester: NextPageWithLayout = () => {
                     } }
             >
               Submit request
-            </Button>
-          </RowContainer>
+            </Chiplet.Button>
+          </Chiplet.Row>
           {
                     queryMethod === "POST" && (
                     <TextBox
@@ -164,7 +160,7 @@ const EndpointTester: NextPageWithLayout = () => {
                     />
                     )
                 }
-          <Card>
+          <Chiplet.Card>
             <pre style={ {
                 margin: 0, overflow: "auto", paddingBottom: "0.5rem"
             } }
@@ -173,7 +169,7 @@ const EndpointTester: NextPageWithLayout = () => {
                 {response}
               </code>
             </pre>
-          </Card>
+          </Chiplet.Card>
         </section>
       </main>
     );

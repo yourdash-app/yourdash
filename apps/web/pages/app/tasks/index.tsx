@@ -31,66 +31,66 @@ const TasksIndex: NextPageWithLayout = () => {
   const [ personalLists, setPersonalLists ] = useState(null as { name: string, id: string }[] | null)
 
   useEffect(() => {
-    LoadPersonalLists(lists => setPersonalLists(lists))
+    LoadPersonalLists(lists => {return setPersonalLists(lists)})
   }, [])
 
   if (personalLists === null) return <></>
 
   return (
     <ColContainer>
-      <RowContainer className={styles.title}>
+      <RowContainer className={ styles.title }>
         <Icon name='yourdash-logo' useDefaultColor/>
         <h1>Tasks</h1>
       </RowContainer>
-      <section className={styles.section}>
-        <section className={styles.sectionHeader}>
+      <section className={ styles.section }>
+        <section className={ styles.sectionHeader }>
           <h3>Personal lists</h3>
           <IconButton
-            onClick={() => {
+            onClick={ () => {
                   verifyAndReturnJson(
                       SERVER.post("/tasks/personal/list/create", { body: "" }),
                       () => {
-                        LoadPersonalLists(lists => setPersonalLists(lists))
+                        LoadPersonalLists(lists => {return setPersonalLists(lists)})
                       },
                       () => {
                         console.error("unable to create a new list")
                       }
                   )
-                }}
+                } }
             icon="plus-16"
           />
         </section>
         <ColContainer>
           {
               personalLists.length !== 0 ?
-                  personalLists.map((list, ind) => (
+                  personalLists.map((list, ind) => {return (
                     <CardButton
-                      className={styles.list}
-                      key={ind}
-                      onClick={() => {
+                      className={ styles.list }
+                      key={ ind }
+                      onClick={ () => {
                             router.push(`/app/tasks/personal/list/${list.id}`)
-                          }}
+                          } }
                     >
                       <span>{list.name}</span>
                       <IconButton
-                        onClick={e => {
+                        onClick={ e => {
                               e.stopPropagation()
                               verifyAndReturnJson(
                                   SERVER.delete(`/tasks/personal/list/delete/${list.id}`),
                                   () => {
-                                    LoadPersonalLists(lists => setPersonalLists(lists))
+                                    LoadPersonalLists(lists => {return setPersonalLists(lists)})
                                   },
                                   () => {
                                     console.error(`unable to delete list`)
                                   }
                               )
-                            }}
+                            } }
                         icon="trash-16"
                       />
                     </CardButton>
-                  ))
+                  )})
                   : (
-                    <Card className={styles.message}>
+                    <Card className={ styles.message }>
                       <ColContainer>
                         <h2>
                           Oh no!
@@ -99,17 +99,17 @@ const TasksIndex: NextPageWithLayout = () => {
                           You have no personal lists :(
                         </p>
                         <Button
-                          onClick={() => {
+                          onClick={ () => {
                                 verifyAndReturnJson(
                                     SERVER.post("/tasks/personal/list/create", { body: "" }),
                                     () => {
-                                      LoadPersonalLists(lists => setPersonalLists(lists))
+                                      LoadPersonalLists(lists => {return setPersonalLists(lists)})
                                     },
                                     () => {
                                       console.error("unable to create a new list")
                                     }
                                 )
-                              }}
+                              } }
                           vibrant
                         >
                           Create a list
@@ -145,10 +145,10 @@ const TasksIndex: NextPageWithLayout = () => {
               return <CardButton key={ind} onClick={() => {
                 console.log(`Implement Me!!!`)
               }}>
-                <RowContainer>
+                <row>
                   <img src={org.icon} alt="" />
                   <span>{org.name}</span>
-                </RowContainer>
+                </row>
               </CardButton>
             })
           }
@@ -160,10 +160,10 @@ const TasksIndex: NextPageWithLayout = () => {
 
 export default TasksIndex;
 
-TasksIndex.getLayout = page => (
+TasksIndex.getLayout = page => {return (
   <AppLayout>
     <TasksLayout>
       {page}
     </TasksLayout>
   </AppLayout>
-)
+)}
