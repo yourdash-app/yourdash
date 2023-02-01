@@ -5,7 +5,7 @@ import styles from "./username.module.scss"
 import { useRouter } from 'next/router';
 import ColContainer from '../../../../components/containers/ColContainer/ColContainer';
 import Card from '../../../../components/containers/card/Card';
-import Button from '../../../../components/elements/button/Button';
+import Button from '../../../../components/elements/button/SegmentButton';
 import Icon from '../../../../components/elements/icon/Icon';
 import AppLayout from '../../../../components/layouts/appLayout/AppLayout';
 

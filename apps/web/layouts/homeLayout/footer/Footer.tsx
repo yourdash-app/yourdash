@@ -1,13 +1,13 @@
 import styles from './Footer.module.scss';
 import Link from "next/link"
-import Icon from 'ui/icon/Icon';
+import Chiplet from 'ui';
 
 export type IFooter = React.ComponentPropsWithoutRef<'div'>
 
 const Footer: React.FC<IFooter> = ({ ..._divProps }) => (
   <div {..._divProps} className={styles.component}>
     <div data-branding>
-      <Icon useDefaultColor className={styles.logo} name="yourdash-logo"/>
+      <Chiplet.Icon useDefaultColor className={styles.logo} name="yourdash-logo"/>
       <h1>YourDash</h1>
     </div>
     <section>

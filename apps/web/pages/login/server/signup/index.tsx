@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import Card from "../../../../components/containers/card/Card";
 import ColContainer from "../../../../components/containers/ColContainer/ColContainer";
-import Button from "../../../../components/elements/button/Button";
+import Button from "../../../../components/elements/button/SegmentButton";
 import TextInput from "../../../../components/elements/textInput/TextInput";
 import HomeLayout from "../../../../components/layouts/homeLayout/HomeLayout";
 import { NextPageWithLayout } from "../../../page";

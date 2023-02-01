@@ -15,6 +15,7 @@ const Docs: NextPageWithLayout = () => {return (
         <ButtonLink href={ `/docs/components/badges` }>Badges</ButtonLink>
         <ButtonLink href={ `/docs/components/navigation` }>Navigation</ButtonLink>
         <ButtonLink href={ `/docs/components/dialogs` }>Dialogs</ButtonLink>
+        <ButtonLink href={ `/docs/components/buttons` }>Buttons</ButtonLink>
       </section>
     </main>
   </>
