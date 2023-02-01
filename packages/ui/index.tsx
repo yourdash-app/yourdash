@@ -7,6 +7,8 @@ import SegmentButton from "./segmentButton/SegmentButton";
 import Card from "./card/Card"
 import DropdownButton from "./dropdownButton/DropdownButton";
 import DropdownContainer from "./dropdownContainer/DropdownContainer";
+import Row from "./row/Row";
+import Column from "./column/Column";
 
 const Chiplet = {
     Badge,
@@ -17,7 +19,9 @@ const Chiplet = {
     Dialog,
     Card,
     DropdownButton,
-    DropdownContainer
+    DropdownContainer,
+    Row,
+    Column
 }
 
 export default Chiplet

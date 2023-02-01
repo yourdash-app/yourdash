@@ -1,6 +1,6 @@
 import React, { CSSProperties } from "react";
 import { type COLOR } from "types/global/color";
-import { type ChipletIcon, ChipletRawIconDictionary } from "./iconDictionary.ts";
+import ChipletIconDictionary, { type ChipletIcon } from "./iconDictionary";
 import styles from "./Icon.module.scss"
 
 export interface IIcon extends React.ComponentPropsWithoutRef<'div'> {
@@ -14,27 +14,27 @@ export interface IIcon extends React.ComponentPropsWithoutRef<'div'> {
 const Icon: React.FC<IIcon> = ({ name, style, className, color, useDefaultColor, ...genericProps }) => {
   return (
     <div
-      {...genericProps}
+      { ...genericProps }
       data-component-type-icon
-      style={{
+      style={ {
             ...(useDefaultColor ? {
-              backgroundImage: `url(${ChipletRawIconDictionary[name]})`,
+              backgroundImage: `url(${ChipletIconDictionary[name]})`,
               backgroundPosition: 'center',
               backgroundRepeat: 'no-repeat',
               backgroundSize: 'cover',
             } : {
-              WebkitMaskImage: `url(${ChipletRawIconDictionary[name]})`,
+              WebkitMaskImage: `url(${ChipletIconDictionary[name]})`,
               WebkitMaskPosition: 'center',
               WebkitMaskRepeat: 'no-repeat',
               WebkitMaskSize: 'cover',
               backgroundColor: color || "#ff0000",
-              maskImage: `url(${ChipletRawIconDictionary[name]})`,
+              maskImage: `url(${ChipletIconDictionary[name]})`,
               maskPosition: 'center',
               maskRepeat: 'no-repeat',
               maskSize: 'cover',
             }), ...style
-          }}
-      className={`${styles.component} ${className}`}
+          } }
+      className={ `${styles.component} ${className}` }
     />
   )
 }

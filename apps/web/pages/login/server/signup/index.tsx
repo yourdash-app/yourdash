@@ -7,7 +7,7 @@ import TextInput from "../../../../components/elements/textInput/TextInput";
 import HomeLayout from "../../../../components/layouts/homeLayout/HomeLayout";
 import { NextPageWithLayout } from "../../../page";
 import styles from "./index.module.scss";
-import RowContainer from "../../../../components/containers/RowContainer/RowContainer";
+import RowContainer from "../../../../components/containers/row/row";
 
 const LoginOptions: NextPageWithLayout = () => {
 
@@ -19,44 +19,47 @@ const LoginOptions: NextPageWithLayout = () => {
   const router = useRouter()
 
   return (
-    <>
-      <div className={styles.root}>
-        <Card>
-          <ColContainer style={{ alignItems: "center", }}>
-            {
-              !allowsSignUp ?
+    <div className={ styles.root }>
+      <Card>
+        <ColContainer style={ { alignItems: "center", } }>
+          {
+              !allowsSignUp ? (
                 <>
-                  <h2 style={{ margin: 0 }}>We&apos;re sorry</h2>
+                  <h2 style={ { margin: 0 } }>We&apos;re sorry</h2>
                   <p>This server isn&apos;t currently allowing users to sign up.</p>
-                  <RowContainer style={{ marginTop: "0.5rem" }}>
-                    <Button onClick={() => {
+                  <RowContainer style={ { marginTop: "0.5rem" } }>
+                    <Button
+                      onClick={ () => {
                       localStorage.removeItem("currentServer")
                       router.push("/login")
-                    }} vibrant>
+                    } }
+                      vibrant
+                    >
                       Select a different instance
                     </Button>
-                    <Button onClick={() => {
+                    <Button onClick={ () => {
                       router.push(`/login/server`)
-                    }}>
+                    } }
+                    >
                       Go back
                     </Button>
                   </RowContainer>
                 </>
-                :
-                <>
-                  <TextInput />
-                  <TextInput />
-                </>
-            }
-          </ColContainer>
-        </Card>
-      </div>
-    </>
+              )
+                : (
+                  <>
+                    <TextInput/>
+                    <TextInput/>
+                  </>
+              )}
+        </ColContainer>
+      </Card>
+    </div>
   );
 };
 
 export default LoginOptions;
 
-LoginOptions.getLayout = (page) => {
+LoginOptions.getLayout = page => {
   return <HomeLayout>{page}</HomeLayout>
 }

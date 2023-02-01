@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
-import SERVER, { verifyAndReturnJson } from "../../../../../lib/server"
-import { TaskAssignee } from "../../../../../types/tasks/taskAssignee"
+import SERVER, { verifyAndReturnJson } from "../../../../../server"
+import { TaskAssignee } from "types/tasks/taskAssignee"
 import styles from "./Assignees.module.scss"
 
 export interface IAssignees {
@@ -47,14 +47,18 @@ const Assignees: React.FC<IAssignees> = ({ assignees }) => {
     })
   }, [ assignees ])
 
-  return <div className={styles.component}>
-    {assigneesData.map((assignee, ind) => {
-      return <div key={ind} className={styles.assignee}>
-        <img src={assignee.profile.image} alt="" />
-        <span>{assignee.name}</span>
-      </div>
+  return (
+    <div className={ styles.component }>
+      {assigneesData.map((assignee, ind) => {
+      return (
+        <div key={ ind } className={ styles.assignee }>
+          <img src={ assignee.profile.image } alt=""/>
+          <span>{assignee.name}</span>
+        </div>
+)
     })}
-  </div>
+    </div>
+)
 }
 
 export default Assignees

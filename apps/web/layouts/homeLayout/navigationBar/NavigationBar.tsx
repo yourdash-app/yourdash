@@ -3,7 +3,6 @@ import ButtonLink from "ui/backup/elements/buttonLink/ButtonLink";
 import Chiplet from "ui";
 import styles from "./NavigationBar.module.scss";
 import {useEffect, useState} from "react";
-import AuthenticatedImg from "ui/backup/elements/authenticatedImg/AuthenticatedImg";
 
 const NavigationBar: React.FC = () => {
     const [loggedIn, setLoggedIn] = useState(false);
@@ -33,12 +32,9 @@ const NavigationBar: React.FC = () => {
               Login
             </ButtonLink>
                 ) : (
-                  <>
-                    <ButtonLink href="/app/dash" vibrant>
-                      Open
-                    </ButtonLink>
-                    <AuthenticatedImg src="/core/panel/user/profile/picture"/>
-                  </>
+                  <ButtonLink href="/app/dash" vibrant>
+                    Open
+                  </ButtonLink>
                 )}
         </div>
       </>

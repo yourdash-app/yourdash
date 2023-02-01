@@ -2,17 +2,18 @@ import type { AppProps } from 'next/app';
 
 import './globals.css';
 import { NextPageWithLayout } from './page';
-import ChipletUiRootIntergration from "ui/RootIntergration";
+import ChipletUiRootIntegration from "ui/RootIntegration";
+import React from "react";
 
 interface AppPropsWithLayout extends AppProps {
   Component: NextPageWithLayout;
 }
 
-const ApplicationContainer: React.FC = ({ children }) => {
+const ApplicationContainer: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
-    <ChipletUiRootIntergration>
+    <ChipletUiRootIntegration>
       {children}
-    </ChipletUiRootIntergration>
+    </ChipletUiRootIntegration>
   )
 }
 

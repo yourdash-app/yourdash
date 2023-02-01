@@ -7,10 +7,7 @@ import styles from "./index.module.scss"
 import { useEffect, useState } from 'react';
 import SERVER, { verifyAndReturnJson } from '../../../../server';
 import { type InstalledApplication } from 'types/store/installedApplication';
-import Button from 'ui/backup/elements/button/Button';
-import Card from 'ui/backup/containers/card/Card';
-import ColContainer from 'ui/backup/containers/ColContainer/ColContainer';
-import Icon from 'ui/icon/Icon';
+import Chiplet from "ui";
 
 const StoreProduct: NextPageWithLayout = () => {
   const router = useRouter()
@@ -40,22 +37,22 @@ const StoreProduct: NextPageWithLayout = () => {
 
   if (unableToLoadPopup)
     return (
-      <Card className={styles.errorPopup}>
-        <ColContainer>
-          <Icon color="var(--card-fg)" name="server-error"/>
+      <Chiplet.Card className={ styles.errorPopup }>
+        <Chiplet.Column>
+          <Chiplet.Icon color="var(--card-fg)" name="server-error"/>
           <h3>Error</h3>
           <p>
             The application &quot;{productId}&quot; was not found
           </p>
-          <Button
-            onClick={() => {
+          <Chiplet.Button
+            onClick={ () => {
                   router.push(`/app/store`)
-                }}
+                } }
           >
             Go back
-          </Button>
-        </ColContainer>
-      </Card>
+          </Chiplet.Button>
+        </Chiplet.Column>
+      </Chiplet.Card>
     )
 
   if (product.name === "undefined")
@@ -63,7 +60,7 @@ const StoreProduct: NextPageWithLayout = () => {
 
   return (
     <div
-      className={styles.root}
+      className={ styles.root }
       style={
             {
               left: pageChanging ? "100%" : "0",
@@ -71,73 +68,73 @@ const StoreProduct: NextPageWithLayout = () => {
             }
           }
     >
-      <Carousel className={styles.carousel}>
-        <div style={{
+      <Carousel className={ styles.carousel }>
+        <div style={ {
             backgroundImage: `url('/background.jpg')`,
             backgroundPosition: "center",
             backgroundSize: "cover"
-          }}
+          } }
         />
       </Carousel>
       {
           installationError
               ? (
-                <Card className={styles.errorPopup}>
-                  <ColContainer>
-                    <Icon color="var(--card-fg)" name="server-error"/>
+                <Chiplet.Card className={ styles.errorPopup }>
+                  <Chiplet.Column>
+                    <Chiplet.Icon color="var(--card-fg)" name="server-error"/>
                     <h3>Error</h3>
                     <p>
                       The application was not installed!
                     </p>
-                    <Button
-                      onClick={() => {
+                    <Chiplet.Button
+                      onClick={ () => {
                             setInstallationError(false)
-                          }}
+                          } }
                     >
                       Ok
-                    </Button>
-                  </ColContainer>
-                </Card>
+                    </Chiplet.Button>
+                  </Chiplet.Column>
+                </Chiplet.Card>
               )
               : null
         }
       {
           uninstallationError
               ? (
-                <Card className={styles.errorPopup}>
-                  <ColContainer>
-                    <Icon color="var(--card-fg)" name="server-error"/>
+                <Chiplet.Card className={ styles.errorPopup }>
+                  <Chiplet.Column>
+                    <Chiplet.Icon color="var(--card-fg)" name="server-error"/>
                     <h3>Error</h3>
                     <p>
                       The application was not uninstalled!
                     </p>
-                    <Button
-                      onClick={() => {
+                    <Chiplet.Button
+                      onClick={ () => {
                             setUninstallationError(false)
-                          }}
+                          } }
                     >
                       Ok
-                    </Button>
-                  </ColContainer>
-                </Card>
+                    </Chiplet.Button>
+                  </Chiplet.Column>
+                </Chiplet.Card>
               )
               : null
         }
       <div
-        className={styles.installationPopup}
-        style={{
+        className={ styles.installationPopup }
+        style={ {
               opacity: showInstallationPopup ? "1" : "0",
               pointerEvents: showInstallationPopup ? "all" : "none",
               scale: showInstallationPopup ? "1" : "0.75"
-            }}
+            } }
       >
         <div>
-          <div className={styles.installationPopupImgContainer}>
-            <img src={product?.icon} alt=""/>
+          <div className={ styles.installationPopupImgContainer }>
+            <img src={ product?.icon } alt=""/>
             <div/>
           </div>
-          <ColContainer className={styles.installationPopupContent}>
-            <ColContainer>
+          <Chiplet.Column className={ styles.installationPopupContent }>
+            <Chiplet.Column>
               <h1>
                 {product.displayName}
               </h1>
@@ -151,12 +148,12 @@ const StoreProduct: NextPageWithLayout = () => {
                 {
                     product?.moduleRequirements?.length === 0
                         ? <p>This application has no requirements :D</p>
-                        : product?.moduleRequirements?.map((requirement, ind) => <a key={ind}>{requirement}</a>)
+                        : product?.moduleRequirements?.map((requirement, ind) => {return <a key={ ind }>{requirement}</a>})
                   }
               </ul>
-            </ColContainer>
-            <Button
-              onClick={() => {
+            </Chiplet.Column>
+            <Chiplet.Button
+              onClick={ () => {
                     if (product.installed) {
                       return
                     } else {
@@ -182,47 +179,47 @@ const StoreProduct: NextPageWithLayout = () => {
                           }
                       )
                     }
-                  }}
+                  } }
               vibrant
             >
               Approve installation
-            </Button>
-          </ColContainer>
+            </Chiplet.Button>
+          </Chiplet.Column>
           <IconButton
-            icon={'x-16'}
-            onClick={() => {
+            icon={ 'x-16' }
+            onClick={ () => {
                   setShowInstallationPopup(false)
-                }}
+                } }
           />
         </div>
       </div>
-      <section className={styles.productHeader}>
+      <section className={ styles.productHeader }>
         <IconButton
           icon='arrow-left-16'
           color="var(--container-fg)"
-          onClick={() => {
+          onClick={ () => {
                 setPageChanging(true)
                 router.prefetch("/app/store")
                 setTimeout(() => {
                   router.push("/app/store")
                 }, 600)
-              }}
+              } }
         />
-        <img src={product?.icon} alt=""/>
+        <img src={ product?.icon } alt=""/>
         <h2>{product.displayName}</h2>
         {
               product.installed && (
-              <Button
-                onClick={() => {
+              <Chiplet.Button
+                onClick={ () => {
                         router.push(`${product.path}`)
-                      }}
-                style={{ marginRight: "0.5rem" }}
+                      } }
+                style={ { marginRight: "0.5rem" } }
               >
                 Open
-              </Button>
+              </Chiplet.Button>
               )
           }
-        <Button onClick={() => {
+        <Chiplet.Button onClick={ () => {
             if (!product.installed) {
               setShowInstallationPopup(true)
             } else {
@@ -244,18 +241,18 @@ const StoreProduct: NextPageWithLayout = () => {
                       })
                     }
                   },
-                  () => setUninstallationError(true)
+                  () => {return setUninstallationError(true)}
               )
             }
-          }}
+          } }
         >
           {product.installed ? product.uninstallable ? "Uninstall" : "Forcefully installed by the server" : "Install"}
-        </Button>
+        </Chiplet.Button>
       </section>
-      <section className={styles.description}>
-        <Card>
+      <section className={ styles.description }>
+        <Chiplet.Card>
           {product.description}
-        </Card>
+        </Chiplet.Card>
       </section>
     </div>
   );
@@ -263,8 +260,8 @@ const StoreProduct: NextPageWithLayout = () => {
 
 export default StoreProduct;
 
-StoreProduct.getLayout = page => (
+StoreProduct.getLayout = page => {return (
   <AppLayout>
     {page}
   </AppLayout>
-)
+)}

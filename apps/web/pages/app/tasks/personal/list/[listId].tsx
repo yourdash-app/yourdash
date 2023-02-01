@@ -1,6 +1,4 @@
 import { useEffect, useState } from 'react';
-import ColContainer from 'ui/backup/containers/ColContainer/ColContainer';
-import RowContainer from 'ui/backup/containers/RowContainer/RowContainer';
 import AppLayout from '../../../../../layouts/appLayout/AppLayout';
 import { NextPageWithLayout } from '../../../../page';
 import TasksLayout from '../../components/TasksLayout';
@@ -9,13 +7,12 @@ import { useRouter } from 'next/router';
 import { type TasksList } from 'types/tasks/list';
 import IconButton from 'ui/backup/elements/iconButton/IconButton';
 import styles from "./listId.module.scss"
-import Card from 'ui/backup/containers/card/Card';
 import TextInput from 'ui/backup/elements/textInput/TextInput';
-import Button from 'ui/backup/elements/button/Button';
 import TextBox from 'ui/backup/elements/textBox/TextBox';
 import Tags from 'ui/backup/elements/tags/Tags';
 import { type TasksListItem } from 'types/tasks/listItem';
 import ListTask from "../../components/ListTask/ListTask";
+import Chiplet from "ui";
 
 function loadList(listId: string, setList: (_value: TasksList) => void) {
   verifyAndReturnJson(
@@ -70,31 +67,31 @@ const TasksPersonalList: NextPageWithLayout = () => {
   if (!unsavedListData) return <></>
 
   return (
-    <div className={`${styles.root} ${pageChanging && styles.slideOut}`}>
+    <div className={ `${styles.root} ${pageChanging && styles.slideOut}` }>
       <div
-        className={`${styles.listSettingsBackdrop} ${showListSettings && styles.visible}`}
-        onClick={() => {
+        className={ `${styles.listSettingsBackdrop} ${showListSettings && styles.visible}` }
+        onClick={ () => {
               setShowListSettings(false)
-            }}
+            } }
       />
-      <Card className={`${styles.listSettings} ${showListSettings && styles.visible}`}>
-        <RowContainer className={styles.header}>
+      <Chiplet.Card className={ `${styles.listSettings} ${showListSettings && styles.visible}` }>
+        <Chiplet.Row className={ styles.header }>
           <h2>Manage list settings</h2>
           <IconButton
             icon="x-16"
-            onClick={() => {
+            onClick={ () => {
                   setShowListSettings(false)
-                }}
+                } }
           />
-        </RowContainer>
-        <main className={styles.main}>
+        </Chiplet.Row>
+        <main className={ styles.main }>
           <p>
             Title
           </p>
           <TextInput
-            defaultValue={unsavedListData.name}
+            defaultValue={ unsavedListData.name }
             placeholder='Untitled'
-            onChange={e => {
+            onChange={ e => {
                   if (!unsavedListData) return
 
                   setUnsavedListData({
@@ -104,18 +101,18 @@ const TasksPersonalList: NextPageWithLayout = () => {
                     tags: unsavedListData.tags,
                     tasks: unsavedListData.tasks,
                   })
-                }}
+                } }
           />
           <p>
             Description
           </p>
           <TextBox
-            style={{
+            style={ {
                   resize: "vertical",
                   transition: "none"
-                }}
-            defaultValue={unsavedListData.description}
-            onChange={e => {
+                } }
+            defaultValue={ unsavedListData.description }
+            onChange={ e => {
                   if (!unsavedListData) return
 
                   setUnsavedListData({
@@ -125,15 +122,15 @@ const TasksPersonalList: NextPageWithLayout = () => {
                     tags: unsavedListData.tags,
                     tasks: unsavedListData.tasks,
                   })
-                }}
+                } }
           />
           <p>
             Tags
           </p>
-          <Tags tags={unsavedListData.tags}/>
+          <Tags tags={ unsavedListData.tags }/>
         </main>
-        <Button
-          onClick={() => {
+        <Chiplet.Button
+          onClick={ () => {
                 verifyAndReturnJson(
                     SERVER.post(`/tasks/personal/list/${router.query.listId}`, { body: JSON.stringify(unsavedListData) }),
                     () => {
@@ -144,28 +141,28 @@ const TasksPersonalList: NextPageWithLayout = () => {
                     }
                 )
                 setShowListSettings(false)
-              }}
+              } }
           vibrant
         >
           Save and close
-        </Button>
-      </Card>
-      <ColContainer>
-        <RowContainer className={styles.header}>
+        </Chiplet.Button>
+      </Chiplet.Card>
+      <Chiplet.Column>
+        <Chiplet.Row className={ styles.header }>
           <IconButton
             icon='chevron-left-16'
-            onClick={() => {
+            onClick={ () => {
                   router.prefetch(`/app/tasks`)
                   setPageChanging(true)
                   setTimeout(() => {
                     router.push(`/app/tasks`)
                   }, 500)
-                }}
+                } }
           />
           <h1>{listData.name}</h1>
           <IconButton
             icon='plus-16'
-            onClick={() => {
+            onClick={ () => {
                   setSelectedTask(null)
                   verifyAndReturnJson(
                       SERVER.get(`/tasks/personal/list/${listData.id}/create/task`),
@@ -185,60 +182,60 @@ const TasksPersonalList: NextPageWithLayout = () => {
                         console.error("unable to create task")
                       }
                   )
-                }}
+                } }
           />
           <IconButton
             icon='gear-16'
-            onClick={() => {
+            onClick={ () => {
                   setShowListSettings(true)
-                }}
+                } }
           />
-        </RowContainer>
-        <ColContainer className={styles.tasksView}>
+        </Chiplet.Row>
+        <Chiplet.Column className={ styles.tasksView }>
           {
               listData.tasks ?
-                  listData.tasks.map((task, ind) => <ListTask task={task}/>)
+                  listData.tasks.map((task, ind) => {return <ListTask task={ task }/>})
                   : <h1>No tasks</h1>
             }
-        </ColContainer>
-      </ColContainer>
-      <section className={`${styles.taskProperties} ${selectedTask !== null && styles.taskPropertiesOpen}`}>
+        </Chiplet.Column>
+      </Chiplet.Column>
+      <section className={ `${styles.taskProperties} ${selectedTask !== null && styles.taskPropertiesOpen}` }>
         {
               selectedTaskData && (
-              <ColContainer>
-                <RowContainer>
+              <Chiplet.Column>
+                <Chiplet.Row>
                   <TextInput
-                    style={{ flex: 1 }}
-                    defaultValue={selectedTaskData?.title}
-                    onChange={e => {
+                    style={ { flex: 1 } }
+                    defaultValue={ selectedTaskData?.title }
+                    onChange={ e => {
                             setSelectedTaskData({
                               ...selectedTaskData, title: e.currentTarget.value
                             })
-                          }}
+                          } }
                   />
                   <IconButton
-                    style={{ aspectRatio: "1 / 1" }}
+                    style={ { aspectRatio: "1 / 1" } }
                     icon='x-16'
-                    onClick={() => {
+                    onClick={ () => {
                             setSelectedTask(null)
-                          }}
+                          } }
                   />
-                </RowContainer>
+                </Chiplet.Row>
                 <p>Description</p>
                 <TextBox
-                  style={{
+                  style={ {
                           flex: 1,
                           flexDirection: 'row',
-                        }}
-                  defaultValue={selectedTaskData?.description}
-                  onChange={e => {
+                        } }
+                  defaultValue={ selectedTaskData?.description }
+                  onChange={ e => {
                           setSelectedTaskData({
                             ...selectedTaskData, description: e.currentTarget.value
                           })
-                        }}
+                        } }
                 />
                 <p>Tags</p>
-                <Tags compact tags={selectedTaskData.tags}/>
+                <Tags compact tags={ selectedTaskData.tags }/>
                 <p>Assignees</p>
                 {/*
               <Card style={{
@@ -262,7 +259,7 @@ const TasksPersonalList: NextPageWithLayout = () => {
                 }}>Add Assignee</SegmentButton>
               </Card>
             */}
-                <Button onClick={() => {
+                <Chiplet.Button onClick={ () => {
                       setSelectedTask(null)
                       verifyAndReturnJson(
                           SERVER.post(`/tasks/personal/list/${router.query.listId}/task/${selectedTask}`, { body: JSON.stringify(selectedTaskData) }),
@@ -282,9 +279,9 @@ const TasksPersonalList: NextPageWithLayout = () => {
                             console.error(`unable to save new task data`)
                           }
                       )
-                    }}
-                >Apply</Button>
-              </ColContainer>
+                    } }
+                >Apply</Chiplet.Button>
+              </Chiplet.Column>
               )
           }
       </section>
@@ -294,10 +291,10 @@ const TasksPersonalList: NextPageWithLayout = () => {
 
 export default TasksPersonalList;
 
-TasksPersonalList.getLayout = page => (
+TasksPersonalList.getLayout = page => {return (
   <AppLayout>
     <TasksLayout>
       {page}
     </TasksLayout>
   </AppLayout>
-)
+)}
