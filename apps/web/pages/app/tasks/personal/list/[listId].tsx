@@ -249,7 +249,7 @@ const TasksPersonalList: NextPageWithLayout = () => {
                 transition: "var(--transition)",
               }}>
                 <Assignees assignees={selectedTaskData?.assignees || []} />
-                <Button onClick={() => {
+                <SegmentButton onClick={() => {
                   verifyAndReturnJson(
                     SERVER.post(`/tasks/personal/list/${listData.id}/task/${selectedTask}/assignees/`, { body: JSON.stringify([ ... selectedTaskData.assignees, "bob" ]) }),
                     () => {
@@ -259,7 +259,7 @@ const TasksPersonalList: NextPageWithLayout = () => {
                       console.error(`unable to add new assignee`)
                     }
                   )
-                }}>Add Assignee</Button>
+                }}>Add Assignee</SegmentButton>
               </Card>
             */}
                 <Button onClick={() => {
