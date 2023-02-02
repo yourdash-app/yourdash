@@ -1,6 +1,6 @@
 const SERVER = {
   delete(path: string, headers?: HeadersInit): Promise<Response> {
-    console.log(`[Server Request]: DELETE ${  path}`);
+    console.log(`[Server Request]: DELETE ${path}`);
     const defaultHeaders = {
       'content-type': 'application/json',
       sessiontoken: localStorage.getItem('sessiontoken') as string,
@@ -14,14 +14,16 @@ const SERVER = {
         },
         method: 'DELETE',
       })
-          .then(res => resolve(res))
+          .then(res => {
+            return resolve(res)
+          })
           .catch(err => {
             reject(err);
           });
     });
   },
   get(path: string, headers?: HeadersInit): Promise<Response> {
-    console.log(`[Server Request]: GET ${  path}`);
+    console.log(`[Server Request]: GET ${path}`);
     const defaultHeaders = {
       'content-type': 'application/json',
       sessiontoken: localStorage.getItem('sessiontoken') as string,
@@ -35,14 +37,16 @@ const SERVER = {
         },
         method: 'GET',
       })
-          .then(res => resolve(res))
+          .then(res => {
+            return resolve(res)
+          })
           .catch(err => {
             reject(err);
           });
     });
   },
   post(path: string, extras: { headers?: HeadersInit, body?: string }): Promise<Response> {
-    console.log(`[Server Request]: POST ${  path}`);
+    console.log(`[Server Request]: POST ${path}`);
     const defaultHeaders = {
       "content-type": "application/json",
       sessiontoken: localStorage.getItem('sessiontoken') as string,
@@ -57,7 +61,9 @@ const SERVER = {
         },
         method: 'POST',
       })
-          .then(res => resolve(res))
+          .then(res => {
+            return resolve(res)
+          })
           .catch(err => {
             reject(err);
           });

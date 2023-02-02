@@ -1,6 +1,4 @@
 import React, { useEffect } from 'react';
-import ColContainer from 'ui/backup/containers/ColContainer/ColContainer';
-import AuthenticatedImg from 'ui/backup/elements/authenticatedImg/AuthenticatedImg';
 import TextBox from 'ui/backup/elements/textBox/TextBox';
 import TextInput from 'ui/backup/elements/textInput/TextInput';
 import AppLayout from '../../../../../layouts/appLayout/AppLayout';
@@ -9,7 +7,8 @@ import BooleanSetting from '../../components/BooleanSetting';
 import SettingsLayout from '../../components/SettingsLayout';
 import styles from "./index.module.scss"
 import SERVER, { verifyAndReturnJson } from '../../../../../server';
-import Button from 'ui/backup/elements/button/Button';
+import Chiplet from "ui";
+import ServerImage from "../../../components/serverImage/ServerImage";
 
 const SettingsPanel: NextPageWithLayout = () => {
   const [ firstName, setFirstName ] = React.useState("")
@@ -34,55 +33,55 @@ const SettingsPanel: NextPageWithLayout = () => {
     )
   }, [])
 
-  if (!loaded) return <></>
+  if (!loaded) return <div/>
 
   return (
     <>
       <h1>Your Profile</h1>
-      <ColContainer style={{ padding: "1rem" }}>
-        <section className={styles.section1}>
-          <ColContainer className={styles.section1ProfileCard}>
-            <AuthenticatedImg src={`/core/settings/user/profile/image`}/>
-            <span className={styles.name}>{firstName} {lastName}</span>
-            <span className={styles.username}>@{userName}</span>
+      <Chiplet.Column style={ { padding: "1rem" } }>
+        <section className={ styles.section1 }>
+          <Chiplet.Column className={ styles.section1ProfileCard }>
+            <ServerImage src={ `/core/settings/user/profile/image` }/>
+            <span className={ styles.name }>{firstName} {lastName}</span>
+            <span className={ styles.username }>@{userName}</span>
             <p>{description}</p>
-          </ColContainer>
-          <ColContainer className={styles.section1EditPanel}>
+          </Chiplet.Column>
+          <Chiplet.Column className={ styles.section1EditPanel }>
             <p>First name</p>
             <TextInput
               placeholder='first name'
-              defaultValue={firstName}
-              onChange={e => {
+              defaultValue={ firstName }
+              onChange={ e => {
                     setFirstName(e.currentTarget.value)
-                  }}
+                  } }
             />
             <p>Last name</p>
             <TextInput
               placeholder='last name'
-              defaultValue={lastName}
-              onChange={e => {
+              defaultValue={ lastName }
+              onChange={ e => {
                     setLastName(e.currentTarget.value)
-                  }}
+                  } }
             />
             <p>Username</p>
             <TextInput
               placeholder='username'
-              defaultValue={userName}
-              onChange={e => {
+              defaultValue={ userName }
+              onChange={ e => {
                     setUserName(e.currentTarget.value)
-                  }}
+                  } }
             />
             <p>Description</p>
             <TextBox
               placeholder='description'
-              defaultValue={description}
-              onChange={e => {
+              defaultValue={ description }
+              onChange={ e => {
                     setDescription(e.currentTarget.value)
-                  }}
+                  } }
             />
-            <Button
+            <Chiplet.Button
               vibrant
-              onClick={() => {
+              onClick={ () => {
 
                     // TODO: send the new data to the server
 
@@ -103,37 +102,39 @@ const SettingsPanel: NextPageWithLayout = () => {
                         }
                     )
 
-                  }}
-            >Save</Button>
-          </ColContainer>
+                  } }
+            >Save</Chiplet.Button>
+          </Chiplet.Column>
         </section>
         <BooleanSetting
           title='Local discovery'
           description='Allow other users on this instance to view your profile'
-          defaultValue={false}
-          setValue={value => {
+          defaultValue={ false }
+          setValue={ value => {
                 console.log(value)
-              }}
+              } }
         />
         <BooleanSetting
           title='Global discovery'
           description='Allow other users on any YourDash instance to view your profile'
-          defaultValue={false}
-          setValue={value => {
+          defaultValue={ false }
+          setValue={ value => {
                 console.log(value)
-              }}
+              } }
         />
-      </ColContainer>
+      </Chiplet.Column>
     </>
   );
 };
 
 export default SettingsPanel;
 
-SettingsPanel.getLayout = page => (
-  <AppLayout>
-    <SettingsLayout>
-      {page}
-    </SettingsLayout>
-  </AppLayout>
-)
+SettingsPanel.getLayout = page => {
+  return (
+    <AppLayout>
+      <SettingsLayout>
+        {page}
+      </SettingsLayout>
+    </AppLayout>
+  )
+}

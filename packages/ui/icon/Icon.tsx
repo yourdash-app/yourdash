@@ -1,6 +1,6 @@
 import React, { CSSProperties } from "react";
 import { type COLOR } from "types/global/color";
-import ChipletIconDictionary, { type ChipletIcon } from "./iconDictionary";
+import { ChipletIconDictionary, type ChipletIcon } from "./iconDictionary.ts";
 import styles from "./Icon.module.scss"
 
 export interface IIcon extends React.ComponentPropsWithoutRef<'div'> {
@@ -15,7 +15,7 @@ const Icon: React.FC<IIcon> = ({ name, style, className, color, useDefaultColor,
   return (
     <div
       { ...genericProps }
-      data-component-type-icon
+      data-component-type-icon="true"
       style={ {
             ...(useDefaultColor ? {
               backgroundImage: `url(${ChipletIconDictionary[name]})`,
