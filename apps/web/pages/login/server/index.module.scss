@@ -28,6 +28,7 @@
     font-weight: 700;
     letter-spacing: 0.125rem;
   }
+
   > .content {
     max-width: 40rem;
     width: 90%;
@@ -39,6 +40,7 @@
           border-bottom-left-radius: calc(var(--text-input-rounding) / 2);
           margin-bottom: 0.25rem;
         }
+
         &:last-of-type {
           border-top-right-radius: calc(var(--text-input-rounding) / 2);
           border-top-left-radius: calc(var(--text-input-rounding) / 2);
@@ -59,8 +61,7 @@
 .title {
   color: var(--card-fg);
   margin: 0;
-  padding: 2rem;
-  padding-top: 1rem;
+  padding: 1rem 2rem 2rem;
 }
 
 .error {
@@ -75,6 +76,7 @@
   border: var(--container-outline);
   padding: 0.5rem;
   box-shadow: 0 0 1rem #00000055;
+
   > p {
     margin: 0;
     padding: 0.5rem;

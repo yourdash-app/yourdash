@@ -1,63 +1,57 @@
 import React from "react"
-import SideBar from "ui/backup/elements/sideBar/SideBar"
 import styles from "./SettingsLayout.module.scss"
 import { useRouter } from "next/router"
+import Chiplet from "ui";
 
-const SettingsLayout: React.FC = ({ children }) => {
+const SettingsLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const router = useRouter()
 
   return (
-    <div className={styles.root}>
-      <SideBar
-        style={{ height: "100%" }}
+    <div className={ styles.root }>
+      <Chiplet.SideBar
+        style={ { height: "100%" } }
         title="Settings"
         items={
               [
                 {
                   icon: "apps-16",
-                  name: "Overview",
+                  label: "Overview",
                   onClick: () => {
                     router.push(`/app/settings/`)
                   },
-                  type: "button",
                 },
-                { type: "separator", },
                 {
                   icon: "person-16",
-                  name: "Profile",
+                  label: "Profile",
                   onClick: () => {
                     router.push(`/app/settings/user/profile`)
                   },
-                  type: "button",
                 },
                 {
                   icon: "app-launcher-16",
-                  name: "Panel",
+                  label: "Panel",
                   onClick: () => {
                     router.push(`/app/settings/user/panel`)
                   },
-                  type: "button",
                 },
                 {
                   icon: "mail-16",
-                  name: "Notifications",
+                  label: "Notifications",
                   onClick: () => {
                     router.push(`/app/settings/user/notifications`)
                   },
-                  type: "button",
                 },
                 {
                   icon: "paintbrush-16",
-                  name: "Theme",
+                  label: "Theme",
                   onClick: () => {
                     router.push(`/app/settings/user/theme`)
                   },
-                  type: "button",
                 }
               ]
             }
       />
-      <div className={styles.page}>
+      <div className={ styles.page }>
         {children}
       </div>
     </div>

@@ -12,9 +12,15 @@ export const RELEASE_CONFIGURATION = { CURRENT_VERSION: 1, };
 export const ENV = {
     DevMode: process.env.DEV === "true",
     FsOrigin: process.env.FsOrigin,
-    ModulePath: module => `/api/${module.name}`,
-    UserAppData: req => `${ENV.FsOrigin}/data/users/${req.headers.username}/AppData`,
-    UserFs: req => `${ENV.FsOrigin}/data/users/${req.headers.username}`,
+    ModulePath: module => {
+        return `/api/${module.name}`;
+    },
+    UserAppData: req => {
+        return `${ENV.FsOrigin}/data/users/${req.headers.username}/AppData`;
+    },
+    UserFs: req => {
+        return `${ENV.FsOrigin}/data/users/${req.headers.username}`;
+    },
 };
 if (!ENV.FsOrigin)
     console.error('FsOrigin was not defined.');
@@ -198,7 +204,9 @@ function applicationStartup() {
         next();
     });
     app.use(cors({ origin: [ENV.DevMode ? true : 'http://localhost:3000', 'https://yourdash.vercel.app', 'https://ddsh.vercel.app', 'https://*ewsgit-github.vercel.app'], }));
-    app.get(`/`, (req, res) => res.redirect(`https://yourdash.vercel.app/server/${req.url}`));
+    app.get(`/`, (req, res) => {
+        return res.redirect(`https://yourdash.vercel.app/server/${req.url}`);
+    });
     setInterval(() => {
         console.log('attempting update');
         exec('git pull');
@@ -245,4 +253,6 @@ function applicationStartup() {
         });
     }
 }
-startupCheck(() => applicationStartup());
+startupCheck(() => {
+    return applicationStartup();
+});

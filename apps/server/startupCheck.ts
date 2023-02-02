@@ -5,69 +5,64 @@
 
 import fs from 'fs';
 import path from 'path';
-import { type YourDashUserSettings, type YourDashUser } from 'types/core/user.js';
+import { type YourDashUser, type YourDashUserSettings } from 'types/core/user.js';
 import { encrypt, generateRandomStringOfLength } from './encryption.js';
 import { ENV, RELEASE_CONFIGURATION, type YourDashServerConfig } from './index.js';
 import { log, returnBase64Image } from './libServer.js';
 import includedApps from './includedApps.js';
 
-export default function main(cb: () => void) {
-  checkEnvironmentVariables(
-      () => checkYourDashConfigJson(
-          () => checkIfAdministratorUserExists(
-              () => checkConfigurationVersion(
-                  () => checkIfAllInstalledAppsStillExist(
-                      () => checkIfAllUsersHaveTheLatestConfig(
-                          () => cb()
-                      )
-                  )
-              )
-          )
-      )
-  )
-}
+export default async function main(cb: () => void) {
+  await checkEnvironmentVariables()
+  await checkYourDashConfigJson()
+  await checkIfAdministratorUserExists()
+  await checkConfigurationVersion()
+  await checkIfAllInstalledAppsStillExist()
+  await checkIfAllUsersHaveTheLatestConfig()
 
-function checkIfAllUsersHaveTheLatestConfig(cb: () => void) {
   cb()
-
-  fs.readdir(`${ENV.FsOrigin}/data/users/`, (err, users) => {
-    if (err) {
-      log(`(Start up) ERROR: unable to read '${ENV.FsOrigin}/data/users/'`)
-      return process.exit(1)
-    }
-
-    users.forEach(user => {
-      fs.readFile(path.resolve(`${ENV.FsOrigin}/data/users/${user}/user.json`), (err, data) => {
-        if (err) {
-          log(`(Start up): unable to read ${user}/user.json`)
-          return process.exit(1)
-        }
-
-        const json = JSON.parse(data.toString()) as YourDashUser
-
-        if (!json.permissions) {
-          json.permissions = []
-        }
-
-        if (!json.name.first) {
-          json.name.first = "Unknown"
-        }
-
-        if (!json.name.last) {
-          json.name.last = "user"
-        }
-
-        fs.writeFile(path.resolve(`${ENV.FsOrigin}/data/users/${user}/user.json`), JSON.stringify(json), err => {
-          if (err) {
-            log(`(Start up) ERROR: unable to write ${path.resolve(`${ENV.FsOrigin}/data/users/${user}/user.json`)}`)
-          }
-        })
-      })
-    })
-  })
 }
 
-function checkIfAllInstalledAppsStillExist(cb: () => void) {
+function checkIfAllUsersHaveTheLatestConfig() {
+  return
+
+  // fs.readdir(`${ENV.FsOrigin}/data/users/`, (err, users) => {
+  //   if (err) {
+  //     log(`(Start up) ERROR: unable to read '${ENV.FsOrigin}/data/users/'`)
+  //     return process.exit(1)
+  //   }
+  //
+  //   users.forEach(user => {
+  //     fs.readFile(path.resolve(`${ENV.FsOrigin}/data/users/${user}/user.json`), (err, data) => {
+  //       if (err) {
+  //         log(`(Start up): unable to read ${user}/user.json`)
+  //         return process.exit(1)
+  //       }
+  //
+  //       const json = JSON.parse(data.toString()) as YourDashUser
+  //
+  //       if (!json.permissions) {
+  //         json.permissions = []
+  //       }
+  //
+  //       if (!json.name.first) {
+  //         json.name.first = "Unknown"
+  //       }
+  //
+  //       if (!json.name.last) {
+  //         json.name.last = "user"
+  //       }
+  //
+  //       fs.writeFile(path.resolve(`${ENV.FsOrigin}/data/users/${user}/user.json`), JSON.stringify(json), err => {
+  //         if (err) {
+  //           log(`(Start up) ERROR: unable to write ${path.resolve(`${ENV.FsOrigin}/data/users/${user}/user.json`)}`)
+  //         }
+  //       })
+  //     })
+  //   })
+  // })
+}
+
+function checkIfAllInstalledAppsStillExist() {
   if (fs.existsSync(path.resolve(`${ENV.FsOrigin}/installed_apps.json`))) {
     fs.readFile(`${ENV.FsOrigin}/installed_apps.json`, (err, data) => {
       if (err) {
@@ -78,10 +73,13 @@ function checkIfAllInstalledAppsStillExist(cb: () => void) {
       let json = JSON.parse(data.toString()) as string[]
 
       json.forEach(app => {
-        if (includedApps.find(includedApplication => includedApplication.name === app))
-          return
+        if (includedApps.find(includedApplication => {
+          return includedApplication.name === app
+        })) return
 
-        json = json.filter(application => application !== app)
+        json = json.filter(application => {
+          return application !== app
+        })
       })
 
       fs.writeFile(`${ENV.FsOrigin}/installed_apps.json`, JSON.stringify(json), err => {
@@ -89,15 +87,15 @@ function checkIfAllInstalledAppsStillExist(cb: () => void) {
           log(`(Start up) CRITICAL ERROR: unable to write to installed_apps.json`)
           return process.exit(1)
         }
-        cb()
+        return
       })
     })
   } else {
-    cb()
+    return
   }
 }
 
-function checkEnvironmentVariables(cb: () => void) {
+function checkEnvironmentVariables() {
   if (!fs.existsSync(path.resolve(ENV.FsOrigin))) {
     fs.mkdir(ENV.FsOrigin, { recursive: true }, err => {
       if (err) {
@@ -105,14 +103,14 @@ function checkEnvironmentVariables(cb: () => void) {
         return process.exit(1)
       }
       log(`(Start up) a folder has been created at the location of the 'FsOrigin' environment variable`)
-      cb()
+      return
     })
   } else {
-    cb()
+    return
   }
 }
 
-function checkYourDashConfigJson(cb: () => void) {
+function checkYourDashConfigJson() {
   if (!fs.existsSync(path.resolve(`${ENV.FsOrigin}/yourdash.config.json`))) {
     fs.writeFile(
         path.resolve(`${ENV.FsOrigin}/yourdash.config.json`),
@@ -153,23 +151,23 @@ function checkYourDashConfigJson(cb: () => void) {
             process.exit(1)
           }
           log(`config file was created in the data origin directory.`);
-          cb()
+          return
         }
     );
   } else {
-    cb()
+    return
   }
 }
 
 // this should check for the version in the yourdash.config.json file
-function checkConfigurationVersion(cb: () => void) {
+function checkConfigurationVersion() {
   const SERVER_CONFIG: YourDashServerConfig = JSON.parse(
       fs.readFileSync(path.resolve(`${ENV.FsOrigin}/yourdash.config.json`)).toString()
   );
 
   // check if the version of the configuration is the same as the current version which is running
   if (SERVER_CONFIG.version === RELEASE_CONFIGURATION.CURRENT_VERSION)
-    return cb()
+    return
 
   // try to upgrade for each version
   // e.g: if the version is 1 upgrade it to 2 in the configuration
@@ -189,16 +187,16 @@ function checkConfigurationVersion(cb: () => void) {
             log(`(Start up) [Configuration Updater] ERROR: unable to write to yourdash.config.json`)
             return process.exit(1)
           }
-          checkConfigurationVersion(cb)
+          return checkConfigurationVersion()
         })
       })
       // eslint-disable-next-line no-fallthrough
     default:
-      cb()
+      return
   }
 }
 
-function checkIfAdministratorUserExists(cb: () => void) {
+function checkIfAdministratorUserExists() {
   if (!fs.existsSync(path.resolve(`${ENV.FsOrigin}/data/users/admin/user.json`))) {
     fs.mkdir(path.resolve(`${ENV.FsOrigin}/data/users/admin/profile/`), { recursive: true }, err => {
       if (err) {
@@ -272,7 +270,7 @@ function checkIfAdministratorUserExists(cb: () => void) {
                           );
                           process.exit(1)
                         }
-                        return cb()
+                        return
                       }
                   );
                 }
@@ -281,6 +279,6 @@ function checkIfAdministratorUserExists(cb: () => void) {
       );
     });
   } else {
-    cb()
+    return
   }
 }

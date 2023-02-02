@@ -1,27 +1,29 @@
 import React from "react"
-import Card from "ui/backup/containers/card/Card"
-import ColContainer from "ui/backup/containers/ColContainer/ColContainer"
 import styles from "./BlankSetting.module.scss"
+import Chiplet from "ui";
 
 export interface IBlankSetting {
   title: string,
-  description: string
+  description: string,
+  children: React.ReactNode
 }
 
 const BlankSetting: React.FC<IBlankSetting> = ({
                                                  children, title, description
-                                               }) => (
-                                                 <div className={styles.component}>
-                                                   <Card>
-                                                     <ColContainer>
-                                                       <h3>{title}</h3>
-                                                       <p>{description}</p>
-                                                     </ColContainer>
-                                                     <div className={styles.child}>
-                                                       {children}
-                                                     </div>
-                                                   </Card>
-                                                 </div>
-)
+                                               }) => {
+  return (
+    <div className={ styles.component }>
+      <Chiplet.Card>
+        <Chiplet.Column>
+          <h3>{title}</h3>
+          <p>{description}</p>
+        </Chiplet.Column>
+        <div className={ styles.child }>
+          {children}
+        </div>
+      </Chiplet.Card>
+    </div>
+  )
+}
 
 export default BlankSetting

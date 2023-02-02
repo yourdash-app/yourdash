@@ -1,4 +1,4 @@
-import { type YourDashModule } from '../../module.jsn';
+import { type YourDashModule } from '../../module.js';
 import fs from 'fs';
 import { generateRandomStringOfLength } from '../../encryption.js';
 import { log, resizeImage } from "../../libServer.js"
@@ -10,20 +10,20 @@ const module: YourDashModule = {
   install() {
     log(`the ${this.name} module was installed`)
   },
-  load(request, api) {
+  load(request, moduleApi) {
     request.post(`/personal/list/create`, (req, res) => {
-      if (!fs.existsSync(`${api.UserAppData(req)}/${this.name}/lists`))
-        fs.mkdir(`${api.UserAppData(req)}/${this.name}/lists`, { recursive: true }, err => {
+      if (!fs.existsSync(`${moduleApi.UserAppData(req)}/${this.name}/lists`))
+        fs.mkdir(`${moduleApi.UserAppData(req)}/${this.name}/lists`, { recursive: true }, err => {
           if (err) return res.json({ error: true });
         });
 
       const listId = generateRandomStringOfLength(32);
 
-      if (fs.existsSync(`${api.UserAppData(req)}/${this.name}/lists/${listId}`))
+      if (fs.existsSync(`${moduleApi.UserAppData(req)}/${this.name}/lists/${listId}`))
         return res.json({ error: true });
 
       fs.writeFile(
-          `${api.UserAppData(req)}/${this.name}/lists/${listId}.json`,
+          `${moduleApi.UserAppData(req)}/${this.name}/lists/${listId}.json`,
           JSON.stringify({
             description: "Unknown description",
             id: `${listId}`,
@@ -47,23 +47,23 @@ const module: YourDashModule = {
     });
 
     request.get(`/personal/lists`, (req, res) => {
-      if (!fs.existsSync(`${api.UserAppData(req)}/${this.name}/lists`)) {
-        fs.mkdir(`${api.UserAppData(req)}/${this.name}/lists`, { recursive: true }, err => {
+      if (!fs.existsSync(`${moduleApi.UserAppData(req)}/${this.name}/lists`)) {
+        fs.mkdir(`${moduleApi.UserAppData(req)}/${this.name}/lists`, { recursive: true }, err => {
           if (err) return res.json({ error: true });
         });
 
         return res.json({ lists: [] })
       }
 
-      fs.readdir(path.resolve(`${api.UserAppData(req)}/${this.name}/lists`), (err, data) => {
+      fs.readdir(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/lists`), (err, data) => {
         if (err) {
-          log(`(${this.name}) ERROR: unable to read '${api.UserAppData(req)}/${this.name}'`)
+          log(`(${this.name}) ERROR: unable to read '${moduleApi.UserAppData(req)}/${this.name}'`)
           return res.json({ error: true })
         }
 
         const listsData = data.map(listName => {
           try {
-            const listData = JSON.parse(fs.readFileSync(path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${listName}`)).toString())
+            const listData = JSON.parse(fs.readFileSync(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/lists/${listName}`)).toString())
             return {
               id: listData.id,
               name: listData.name,
@@ -82,11 +82,11 @@ const module: YourDashModule = {
         return res.json({ error: true })
       }
 
-      if (!fs.existsSync(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`)) {
+      if (!fs.existsSync(`${moduleApi.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`)) {
         return res.json({ error: true })
       }
 
-      fs.rm(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`, err => {
+      fs.rm(`${moduleApi.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`, err => {
         if (err) {
           return res.json({ error: true })
         }
@@ -100,11 +100,11 @@ const module: YourDashModule = {
         return res.json({ error: true })
       }
 
-      if (!fs.existsSync(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`)) {
+      if (!fs.existsSync(`${moduleApi.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`)) {
         return res.json({ error: true })
       }
 
-      fs.readFile(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`, (err, data) => {
+      fs.readFile(`${moduleApi.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`, (err, data) => {
         if (err) {
           return res.json({ error: true })
         }
@@ -120,11 +120,11 @@ const module: YourDashModule = {
         return res.json({ error: true })
       }
 
-      if (!fs.existsSync(path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`))) {
+      if (!fs.existsSync(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`))) {
         return res.json({ error: true })
       }
 
-      fs.writeFile(path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`), JSON.stringify(req.body), err => {
+      fs.writeFile(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`), JSON.stringify(req.body), err => {
         if (err) {
           return res.json({ error: true })
         }
@@ -138,11 +138,11 @@ const module: YourDashModule = {
         return res.json({ error: true })
       }
 
-      if (!fs.existsSync(path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`))) {
+      if (!fs.existsSync(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`))) {
         return res.json({ error: true })
       }
 
-      fs.readFile(path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`), (err, data) => {
+      fs.readFile(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`), (err, data) => {
         if (err) {
           return res.json({ error: true })
         }
@@ -157,7 +157,7 @@ const module: YourDashModule = {
         return res.json({ error: true })
       }
 
-      if (!fs.existsSync(path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`))) {
+      if (!fs.existsSync(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`))) {
         return res.json({ error: true })
       }
 
@@ -167,14 +167,14 @@ const module: YourDashModule = {
         return res.json({ error: "taskId was not a valid integer" })
       }
 
-      fs.readFile(path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`), (err, data) => {
+      fs.readFile(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`), (err, data) => {
         if (err) {
           return res.json({ error: true })
         }
         const json = JSON.parse(data.toString()) as TasksList
         json.tasks.splice(parseInt(req.params.taskId), 1)
 
-        fs.writeFile(path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`), JSON.stringify(json), err => {
+        fs.writeFile(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`), JSON.stringify(json), err => {
           if (err) return res.json({ error: true })
 
           return res.json({ success: true })
@@ -183,14 +183,14 @@ const module: YourDashModule = {
     })
 
     request.get(`/personal/list/:listId/create/task`, (req, res) => {
-      if (!fs.existsSync(path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`))) {
-        log(`no such file: ${path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`)}`)
+      if (!fs.existsSync(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`))) {
+        log(`no such file: ${path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`)}`)
         return res.json({ error: true })
       }
 
-      fs.readFile(path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`), (err, data) => {
+      fs.readFile(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`), (err, data) => {
         if (err) {
-          log(`unable to read file: ${path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`)}`)
+          log(`unable to read file: ${path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`)}`)
           return res.json({ error: true })
         }
 
@@ -204,9 +204,9 @@ const module: YourDashModule = {
           title: "Untitled Task",
         })
 
-        fs.writeFile(path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`), JSON.stringify(json), err => {
+        fs.writeFile(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`), JSON.stringify(json), err => {
           if (err) {
-            log(`unable to write to file: ${path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`)}`)
+            log(`unable to write to file: ${path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`)}`)
             return res.json({ error: true })
           }
 
@@ -225,12 +225,12 @@ const module: YourDashModule = {
         return res.json({ error: true })
       }
 
-      if (!fs.existsSync(path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${listId}.json`))) {
+      if (!fs.existsSync(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/lists/${listId}.json`))) {
         log(`(${this.name}) no such list: ${listId}`)
         return res.json({ error: true })
       }
 
-      fs.readFile(path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${listId}.json`), (err, data) => {
+      fs.readFile(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/lists/${listId}.json`), (err, data) => {
         if (err) {
           log(`(${this.name}) unable to read ${listId}.json`)
           return res.json({ error: true })
@@ -240,7 +240,7 @@ const module: YourDashModule = {
 
         json.tasks[parseInt(taskId)] = req.body
 
-        fs.writeFile(path.resolve(`${api.UserAppData(req)}/${this.name}/lists/${listId}.json`), JSON.stringify(json), err => {
+        fs.writeFile(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/lists/${listId}.json`), JSON.stringify(json), err => {
           if (err) {
             log(`(${this.name}) ERROR: unable to write to ${listId}.json`)
             return res.json({ error: true })
@@ -264,10 +264,10 @@ const module: YourDashModule = {
     request.get(`/assignee/:userName`, (req, res) => {
       if (!req.params.userName) return res.json({ error: true })
 
-      if (!fs.existsSync(path.resolve(`${api.FsOrigin}/data/users/${req.params.userName}/user.json`)))
+      if (!fs.existsSync(path.resolve(`${moduleApi.FsOrigin}/data/users/${req.params.userName}/user.json`)))
         return res.json({ error: true })
 
-      fs.readFile(path.resolve(`${api.FsOrigin}/data/users/${req.params.userName}/user.json`), (err, data) => {
+      fs.readFile(path.resolve(`${moduleApi.FsOrigin}/data/users/${req.params.userName}/user.json`), (err, data) => {
         if (err) {
           log(`(${this.name}) ERROR: no user named '${req.params.userName}'`)
           return res.json({ error: true })
@@ -285,7 +285,7 @@ const module: YourDashModule = {
             profile: { image },
             userName: json.userName,
           })
-        }, () => res.json({ error: true }))
+        }, () => {return res.json({ error: true })})
       })
     })
   },

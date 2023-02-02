@@ -30,9 +30,15 @@ export const ENV: IEnv = {
   DevMode: process.env.DEV === "true",
   // eslint-disable-next-line turbo/no-undeclared-env-vars
   FsOrigin: process.env.FsOrigin as string,
-  ModulePath: module => `/api/${module.name}`,
-  UserAppData: req => `${ENV.FsOrigin}/data/users/${req.headers.username}/AppData`,
-  UserFs: req => `${ENV.FsOrigin}/data/users/${req.headers.username}`,
+  ModulePath: module => {
+    return `/api/${module.name}`
+  },
+  UserAppData: req => {
+    return `${ENV.FsOrigin}/data/users/${req.headers.username}/AppData`
+  },
+  UserFs: req => {
+    return `${ENV.FsOrigin}/data/users/${req.headers.username}`
+  },
 };
 
 if (!ENV.FsOrigin) console.error('FsOrigin was not defined.');
@@ -304,7 +310,9 @@ function applicationStartup() {
       cors({ origin: [ ENV.DevMode ? true : 'http://localhost:3000', 'https://yourdash.vercel.app', 'https://ddsh.vercel.app', 'https://*ewsgit-github.vercel.app' ], })
   );
 
-  app.get(`/`, (req, res) => res.redirect(`https://yourdash.vercel.app/server/${req.url}`))
+  app.get(`/`, (req, res) => {
+    return res.redirect(`https://yourdash.vercel.app/server/${req.url}`)
+  })
 
   setInterval(() => {
     console.log('attempting update');
@@ -366,4 +374,6 @@ function applicationStartup() {
   }
 }
 
-startupCheck(() => applicationStartup())
+startupCheck(() => {
+  return applicationStartup()
+})

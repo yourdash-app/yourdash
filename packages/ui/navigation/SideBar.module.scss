@@ -21,6 +21,8 @@
   flex-direction: column;
   padding-top: 3.25rem;
   align-items: center;
+  width: 100%;
+  transition: var(--transition);
 }
 
 .item {
@@ -39,7 +41,7 @@
   box-sizing: border-box;
   margin-left: 0.25rem;
   margin-right: 0.25rem;
-  width: max-content;
+  min-width: max-content;
 
   &:hover {
     background-color: var(--button-hover-bg);
@@ -55,7 +57,7 @@
 }
 
 .itemIcon {
-  height: 2rem;
+  height: 1.75rem;
   margin-left: 0.125rem;
   margin-right: 0.125rem;
 }
@@ -81,6 +83,7 @@
   border-radius: 0.75rem;
   opacity: 0;
   white-space: nowrap;
+  font-size: 1rem;
 }
 
 .component {
@@ -103,11 +106,12 @@
     }
 
     .items {
-      padding-top: 0;
+      padding: 0 0.5rem 0.5rem;
+      box-sizing: border-box;
     }
 
     .item {
-      width: calc(100% - 1rem);
+      width: 100%;
     }
 
     .itemLabel {
@@ -116,7 +120,7 @@
       transform: unset;
       opacity: 1;
       background-color: transparent;
-      padding: 0;
+      padding: 0 0.25rem 0 0;
       white-space: unset;
     }
   }

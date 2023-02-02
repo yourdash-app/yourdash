@@ -4,42 +4,19 @@ import { encrypt, generateRandomStringOfLength } from './encryption.js';
 import { ENV, RELEASE_CONFIGURATION } from './index.js';
 import { log, returnBase64Image } from './libServer.js';
 import includedApps from './includedApps.js';
-export default function main(cb) {
-    checkEnvironmentVariables(() => checkYourDashConfigJson(() => checkIfAdministratorUserExists(() => checkConfigurationVersion(() => checkIfAllInstalledAppsStillExist(() => checkIfAllUsersHaveTheLatestConfig(() => cb()))))));
-}
-function checkIfAllUsersHaveTheLatestConfig(cb) {
+export default async function main(cb) {
+    await checkEnvironmentVariables();
+    await checkYourDashConfigJson();
+    await checkIfAdministratorUserExists();
+    await checkConfigurationVersion();
+    await checkIfAllInstalledAppsStillExist();
+    await checkIfAllUsersHaveTheLatestConfig();
     cb();
-    fs.readdir(`${ENV.FsOrigin}/data/users/`, (err, users) => {
-        if (err) {
-            log(`(Start up) ERROR: unable to read '${ENV.FsOrigin}/data/users/'`);
-            return process.exit(1);
-        }
-        users.forEach(user => {
-            fs.readFile(path.resolve(`${ENV.FsOrigin}/data/users/${user}/user.json`), (err, data) => {
-                if (err) {
-                    log(`(Start up): unable to read ${user}/user.json`);
-                    return process.exit(1);
-                }
-                const json = JSON.parse(data.toString());
-                if (!json.permissions) {
-                    json.permissions = [];
-                }
-                if (!json.name.first) {
-                    json.name.first = "Unknown";
-                }
-                if (!json.name.last) {
-                    json.name.last = "user";
-                }
-                fs.writeFile(path.resolve(`${ENV.FsOrigin}/data/users/${user}/user.json`), JSON.stringify(json), err => {
-                    if (err) {
-                        log(`(Start up) ERROR: unable to write ${path.resolve(`${ENV.FsOrigin}/data/users/${user}/user.json`)}`);
-                    }
-                });
-            });
-        });
-    });
 }
-function checkIfAllInstalledAppsStillExist(cb) {
+function checkIfAllUsersHaveTheLatestConfig() {
+    return;
+}
+function checkIfAllInstalledAppsStillExist() {
     if (fs.existsSync(path.resolve(`${ENV.FsOrigin}/installed_apps.json`))) {
         fs.readFile(`${ENV.FsOrigin}/installed_apps.json`, (err, data) => {
             if (err) {
@@ -48,24 +25,28 @@ function checkIfAllInstalledAppsStillExist(cb) {
             }
             let json = JSON.parse(data.toString());
             json.forEach(app => {
-                if (includedApps.find(includedApplication => includedApplication.name === app))
+                if (includedApps.find(includedApplication => {
+                    return includedApplication.name === app;
+                }))
                     return;
-                json = json.filter(application => application !== app);
+                json = json.filter(application => {
+                    return application !== app;
+                });
             });
             fs.writeFile(`${ENV.FsOrigin}/installed_apps.json`, JSON.stringify(json), err => {
                 if (err) {
                     log(`(Start up) CRITICAL ERROR: unable to write to installed_apps.json`);
                     return process.exit(1);
                 }
-                cb();
+                return;
             });
         });
     }
     else {
-        cb();
+        return;
     }
 }
-function checkEnvironmentVariables(cb) {
+function checkEnvironmentVariables() {
     if (!fs.existsSync(path.resolve(ENV.FsOrigin))) {
         fs.mkdir(ENV.FsOrigin, { recursive: true }, err => {
             if (err) {
@@ -73,14 +54,14 @@ function checkEnvironmentVariables(cb) {
                 return process.exit(1);
             }
             log(`(Start up) a folder has been created at the location of the 'FsOrigin' environment variable`);
-            cb();
+            return;
         });
     }
     else {
-        cb();
+        return;
     }
 }
-function checkYourDashConfigJson(cb) {
+function checkYourDashConfigJson() {
     if (!fs.existsSync(path.resolve(`${ENV.FsOrigin}/yourdash.config.json`))) {
         fs.writeFile(path.resolve(`${ENV.FsOrigin}/yourdash.config.json`), JSON.stringify({
             activeModules: ['userManagement', 'core', 'files', 'store'],
@@ -118,17 +99,17 @@ function checkYourDashConfigJson(cb) {
                 process.exit(1);
             }
             log(`config file was created in the data origin directory.`);
-            cb();
+            return;
         });
     }
     else {
-        cb();
+        return;
     }
 }
-function checkConfigurationVersion(cb) {
+function checkConfigurationVersion() {
     const SERVER_CONFIG = JSON.parse(fs.readFileSync(path.resolve(`${ENV.FsOrigin}/yourdash.config.json`)).toString());
     if (SERVER_CONFIG.version === RELEASE_CONFIGURATION.CURRENT_VERSION)
-        return cb();
+        return;
     switch (SERVER_CONFIG.version) {
         case 1:
             fs.readFile(path.resolve(`${ENV.FsOrigin}/yourdash.config.json`), (err, data) => {
@@ -143,14 +124,14 @@ function checkConfigurationVersion(cb) {
                         log(`(Start up) [Configuration Updater] ERROR: unable to write to yourdash.config.json`);
                         return process.exit(1);
                     }
-                    checkConfigurationVersion(cb);
+                    return checkConfigurationVersion();
                 });
             });
         default:
-            cb();
+            return;
     }
 }
-function checkIfAdministratorUserExists(cb) {
+function checkIfAdministratorUserExists() {
     if (!fs.existsSync(path.resolve(`${ENV.FsOrigin}/data/users/admin/user.json`))) {
         fs.mkdir(path.resolve(`${ENV.FsOrigin}/data/users/admin/profile/`), { recursive: true }, err => {
             if (err) {
@@ -204,13 +185,13 @@ function checkIfAdministratorUserExists(cb) {
                             log(`(Start up) ERROR: could not write configuration (during administrator default configuration generation): ${err}`);
                             process.exit(1);
                         }
-                        return cb();
+                        return;
                     });
                 });
             });
         });
     }
     else {
-        cb();
+        return;
     }
 }

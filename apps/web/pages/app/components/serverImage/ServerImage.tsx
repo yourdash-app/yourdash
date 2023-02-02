@@ -6,15 +6,16 @@
 
 import React, { useEffect, useState } from "react";
 import SERVER, { verifyAndReturnJson } from "web/server";
-import ChipletIconDictionary from "ui/icon/iconDictionary";
+// eslint-disable-next-line import/named
+import { ChipletIconDictionary } from "ui/icon/iconDictionary.ts";
 
 export interface IServerImage extends React.ComponentPropsWithoutRef<'img'> {
   src: string
 }
 
 const ServerImage: React.FC<IServerImage> = ({
-                                                         src, ...imgElementProps
-                                                       }) => {
+                                               src, ...imgElementProps
+                                             }) => {
   const [ imgSrc, setImgSrc ] = useState(ChipletIconDictionary["server-error"])
   useEffect(() => {
     verifyAndReturnJson(

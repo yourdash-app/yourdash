@@ -19,8 +19,7 @@ export function returnBase64Svg(path) {
     return `data:image/svg;base64,${fs.readFileSync(path, 'base64')}`;
 }
 export function base64FromBufferImage(img) {
-    const base64 = `data:image/png;base64,${img.toString("base64")}`;
-    return base64;
+    return `data:image/png;base64,${img.toString("base64")}`;
 }
 export function resizeImage(width, height, image, callback, error) {
     sharp(image)
@@ -50,16 +49,26 @@ export class RequestManager {
     }
     get = (path, cb) => {
         this.endpoints.push(`GET ${path}`);
-        this.express.get(`/api/${this.module.name}${path}`, (req, res) => cb(req, res));
+        this.express.get(`/api/${this.module.name}${path}`, (req, res) => {
+            return cb(req, res);
+        });
     };
     post = (path, cb) => {
         this.endpoints.push(`POS ${path}`);
-        this.express.post(`/api/${this.module.name}${path}`, (req, res) => cb(req, res));
+        this.express.post(`/api/${this.module.name}${path}`, (req, res) => {
+            return cb(req, res);
+        });
     };
     delete = (path, cb) => {
         this.endpoints.push(`DEL ${path}`);
-        this.express.delete(`/api/${this.module.name}${path}`, (req, res) => cb(req, res));
+        this.express.delete(`/api/${this.module.name}${path}`, (req, res) => {
+            return cb(req, res);
+        });
     };
-    legacy = () => this.express;
-    getEndpoints = () => this.endpoints;
+    legacy = () => {
+        return this.express;
+    };
+    getEndpoints = () => {
+        return this.endpoints;
+    };
 }
