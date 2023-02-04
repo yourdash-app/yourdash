@@ -10,12 +10,6 @@
   color: var(--card-fg);
 }
 
-.compact {
-  padding: 0.5rem;
-  box-shadow: 0 0 0.5rem #00000055;
-  border-radius: var(--card-compact-rounding);
-}
-
 .clickable {
   height: auto;
   background-color: var(--card-bg);
@@ -36,3 +30,10 @@
   place-items: center;
   color: var(--card-fg);
 }
+
+.compact {
+  padding: 0.5rem;
+  box-shadow: 0 0 0.5rem #00000055;
+  border-radius: var(--card-compact-rounding);
+}
+

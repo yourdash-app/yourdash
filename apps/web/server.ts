@@ -74,14 +74,14 @@ const SERVER = {
 export default SERVER;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function verifyAndReturnJson(req: Promise<Response>, res: (_res: any) => void, error: () => void) {
+export function verifyAndReturnJson(req: Promise<Response>, res: (_res: any) => void, error: (json?: object) => void) {
   req
       .then(resp => {
         resp.json()
             .then(json => {
               if (!json.error)
                 return res(json)
-              error()
+              error(json)
             })
             .catch(() => {
               error()
