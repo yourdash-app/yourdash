@@ -1,6 +1,6 @@
 import React from "react"
-import ToggleSwitch from "ui/backup/elements/toggleSwitch/ToggleSwitch"
 import BlankSetting from "./BlankSetting"
+import Chiplet from "ui"
 
 export interface IBooleanSetting {
   title: string,
@@ -11,10 +11,17 @@ export interface IBooleanSetting {
 
 const BooleanSetting: React.FC<IBooleanSetting> = ({
                                                      title, description, setValue, defaultValue
-                                                   }) => (
-                                                     <BlankSetting title={title} description={description}>
-                                                       <ToggleSwitch onValueChange={value => setValue(value)} defaultValue={defaultValue ? "true" : "false"}/>
-                                                     </BlankSetting>
-)
+                                                   }) => {
+  return (
+    <BlankSetting title={ title } description={ description }>
+      <Chiplet.ToggleSwitch
+        onValueChange={ (value: boolean) => {
+              return setValue(value)
+            } }
+        defaultValue={ defaultValue ? "true" : "false" }
+      />
+    </BlankSetting>
+  )
+}
 
 export default BooleanSetting

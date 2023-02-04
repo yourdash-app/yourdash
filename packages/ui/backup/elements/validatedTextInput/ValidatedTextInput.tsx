@@ -1,4 +1,3 @@
-import FloatingLabel from '../floatingLabel/FloatingLabel';
 import styles from './ValidatedTextInput.module.scss';
 
 export interface IValidatedTextInput extends React.ComponentPropsWithoutRef<'input'> {
@@ -7,16 +6,21 @@ export interface IValidatedTextInput extends React.ComponentPropsWithoutRef<'inp
 }
 
 const ValidatedTextInput: React.FC<IValidatedTextInput> = ({
-  children, defaultValue, invalidReason, ...inputProps 
-}) => {
-  return <div className={styles.component}>
-    <input {...inputProps} type="text" defaultValue={defaultValue ? defaultValue : ""}  className={`${styles.input} ${invalidReason ? styles.invalid : styles.valid}`}>{children}</input>
-    <div className={styles.labelContainer}>
-      <FloatingLabel>
+                                                             defaultValue, invalidReason, ...inputProps
+                                                           }) => {
+  return (
+    <div className={ styles.component }>
+      <input
+        { ...inputProps }
+        type="text"
+        defaultValue={ defaultValue ? defaultValue : "" }
+        className={ `${styles.input} ${invalidReason ? styles.invalid : styles.valid}` }
+      />
+      <div className={ styles.labelContainer } data-reason={ invalidReason }>
         {invalidReason || ""}
-      </FloatingLabel>
+      </div>
     </div>
-  </div>
+  )
 }
 
 export default ValidatedTextInput;

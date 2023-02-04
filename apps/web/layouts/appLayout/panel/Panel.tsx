@@ -9,8 +9,6 @@ import React, { useEffect, useState } from 'react';
 import SERVER, { verifyAndReturnJson } from "../../../server";
 import { type YourDashUser } from '../../../../../packages/types/core/user';
 import Chiplet from "ui"
-import RightClickMenu from 'ui/backup/elements/rightClickMenu/RightClickMenu';
-import TextInput from 'ui/backup/elements/textInput/TextInput';
 import styles from './Panel.module.scss';
 import { type quickShortcut as QuickShortcut } from 'types/core/panel/quickShortcut';
 import { type InstalledApplication } from 'types/store/installedApplication';
@@ -85,9 +83,9 @@ const Panel: React.FC<IPanel> = ({
         />
       </div>
       <div className={ `${styles.launcherSlideOut} ${launcherSlideOutVisible ? styles.launcherSlideOutVisible : ""}` }>
-        <div data-header style={ { backgroundImage } }>
-          <div data-title>Hiya, {userData?.name?.first}</div>
-          <TextInput
+        <div data-header="true" style={ { backgroundImage } }>
+          <div data-title="true">Hiya, {userData?.name?.first}</div>
+          <Chiplet.TextInput
             data-search
             onChange={ e => {
                   setSearchQuery(e.currentTarget.value.toLowerCase())
@@ -101,7 +99,7 @@ const Panel: React.FC<IPanel> = ({
                   installedApps.map((app, ind) => {
                     if (app?.name?.toLowerCase()?.includes(searchQuery) || app?.description?.toLowerCase()?.includes(searchQuery))
                       return (
-                        <RightClickMenu
+                        <Chiplet.RightClickMenu
                           items={ [
                                 {
                                   name: "Pin to quick shortcuts",
@@ -141,7 +139,7 @@ const Panel: React.FC<IPanel> = ({
                             <img src={ app.icon } draggable={ false } alt=""/>
                             <span>{app.displayName}</span>
                           </div>
-                        </RightClickMenu>
+                        </Chiplet.RightClickMenu>
                       )
                   })
                   : (
@@ -154,7 +152,7 @@ const Panel: React.FC<IPanel> = ({
                   )
             }
         </div>
-        <footer data-footer>
+        <footer data-footer="true">
           <ServerImage
             onClick={ () => {
                   router.push(`/app/user/profile/${userData?.userName}`)
@@ -169,7 +167,7 @@ const Panel: React.FC<IPanel> = ({
                   setLauncherSlideOutVisible(false)
                   router.push("/app/settings")
                 } }
-            data-settings
+            data-settings="true"
           >
             <Chiplet.Icon name='gear-16' color={ "var(--container-fg)" }/>
           </div>
@@ -186,50 +184,54 @@ const Panel: React.FC<IPanel> = ({
       <div className={ styles.shortcuts }>
         {
             quickShortcuts?.length !== 0
-                ? quickShortcuts?.map((shortcut, ind) => {return (
-                  <RightClickMenu
-                    key={ shortcut.name }
-                    items={ [
-                          {
-                            name: "Remove quick shortcut",
-                            onClick: () => {
-                              verifyAndReturnJson(
-                                  SERVER.delete(`/core/panel/quick-shortcut/${shortcut.id}`),
-                                  () => {
-                                    setQuickShortcuts(quickShortcuts.filter(sc => {return sc.id !== shortcut.id}))
-                                  },
-                                  () => {
-                                    console.error(`unable to delete quick shortcut ${shortcut.id}`)
-                                  }
-                              )
+                ? quickShortcuts?.map((shortcut, ind) => {
+                  return (
+                    <Chiplet.RightClickMenu
+                      key={ shortcut.name }
+                      items={ [
+                            {
+                              name: "Remove quick shortcut",
+                              onClick: () => {
+                                verifyAndReturnJson(
+                                    SERVER.delete(`/core/panel/quick-shortcut/${shortcut.id}`),
+                                    () => {
+                                      setQuickShortcuts(quickShortcuts.filter(sc => {
+                                        return sc.id !== shortcut.id
+                                      }))
+                                    },
+                                    () => {
+                                      console.error(`unable to delete quick shortcut ${shortcut.id}`)
+                                    }
+                                )
+                              }
                             }
-                          }
-                        ] }
-                  >
-                    <div
-                      className={ styles.shortcut }
-                      onClick={ () => {
-                            setLauncherSlideOutVisible(false)
-                            if (shortcut.url === router.pathname) return
-                            router.prefetch(shortcut.url)
-                            appIsOpening(true)
-                            setTimeout(() => {
-                              router.push(shortcut.url)
-                              appIsOpening(false)
-                            }, 500)
-                          } }
+                          ] }
                     >
-                      <div>
-                        <img draggable={ false } src={ shortcut.icon } alt=""/>
-                        {
-                            router.pathname === shortcut.url ?
-                              <div data-active-indicator/> : <div/>
-                          }
+                      <div
+                        className={ styles.shortcut }
+                        onClick={ () => {
+                              setLauncherSlideOutVisible(false)
+                              if (shortcut.url === router.pathname) return
+                              router.prefetch(shortcut.url)
+                              appIsOpening(true)
+                              setTimeout(() => {
+                                router.push(shortcut.url)
+                                appIsOpening(false)
+                              }, 500)
+                            } }
+                      >
+                        <div>
+                          <img draggable={ false } src={ shortcut.icon } alt=""/>
+                          {
+                              router.pathname === shortcut.url ?
+                                <div data-active-indicator="true"/> : <div/>
+                            }
+                        </div>
+                        <span>{shortcut.name}</span>
                       </div>
-                      <span>{shortcut.name}</span>
-                    </div>
-                  </RightClickMenu>
-                )})
+                    </Chiplet.RightClickMenu>
+                  )
+                })
                 : (
                   <Chiplet.Button onClick={ () => {
                       verifyAndReturnJson(

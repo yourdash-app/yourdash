@@ -32,7 +32,9 @@ export default function ServerSelectionLink() {
     }
 
     fetch(`${hostname}:3560/test`)
-        .then(res => res.text())
+        .then(res => {
+          return res.text()
+        })
         .then(text => {
           if (text === "yourdash instance") {
             localStorage.setItem("currentServer", `${hostname}:3560`)

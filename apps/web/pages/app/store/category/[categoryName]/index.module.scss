@@ -62,7 +62,7 @@
 .card {
   @keyframes fadeIn {
     from {
-      opacity: 0%;
+      opacity: 0;
     }
 
     to {
@@ -70,7 +70,7 @@
     }
   }
 
-  opacity: 0%;
+  opacity: 0;
   animation: 500ms 100ms ease-in-out fadeIn forwards;
   border: solid 0.125rem var(--card-bg);
   cursor: pointer;
@@ -107,7 +107,7 @@
 .carousel {
   @keyframes fadeIn {
     from {
-      opacity: 0%;
+      opacity: 0;
     }
 
     to {
@@ -115,6 +115,6 @@
     }
   }
 
-  opacity: 0%;
+  opacity: 0;
   animation: 500ms 100ms ease-in-out fadeIn forwards;
 }

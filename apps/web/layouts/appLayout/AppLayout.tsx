@@ -1,12 +1,11 @@
 import SERVER, { verifyAndReturnJson } from "../../server";
-import RightClickMenuRootContainer from "ui/backup/elements/rightClickMenu/RightClickMenuRootContainer";
 import styles from "./AppLayout.module.scss"
 import Panel from "./panel/Panel";
 import React, { ReactNode, useEffect, useState } from "react";
 
 export interface IAppLayout {
   transparentBackground?: boolean;
-  children: ReactNode | undefined;
+  children: ReactNode;
 }
 
 const AppLayout: React.FC<IAppLayout> = ({
@@ -38,34 +37,30 @@ const AppLayout: React.FC<IAppLayout> = ({
     )
   }, [])
 
-  if (!hasLoaded) return <></>
+  if (!hasLoaded) return <div/>
 
   return standaloneInterface
       ? (
-        <RightClickMenuRootContainer>
-          {children}
-        </RightClickMenuRootContainer>
+          { children }
       )
       : (
-        <RightClickMenuRootContainer>
-          <div className={styles.root} style={{ backgroundImage: `url(${backgroundImage})` }}>
-            <Panel
-              backgroundImage={`url(${backgroundImage})`}
-              appIsOpening={value => {
-                    setAppOpenAnimation(value)
-                  }}
-            />
-            <div
-              data-app-window={applicationWindowMode}
-              data-app-transparent-background={transparentBackground}
-              data-app-root-container
-              style={{ opacity: appOpenAnimation ? "0" : "1" }}
-              className={styles.content}
-            >
-              {children}
-            </div>
+        <div className={ styles.root } style={ { backgroundImage: `url(${backgroundImage})` } }>
+          <Panel
+            backgroundImage={ `url(${backgroundImage})` }
+            appIsOpening={ value => {
+                  setAppOpenAnimation(value)
+                } }
+          />
+          <div
+            data-app-window={ applicationWindowMode }
+            data-app-transparent-background={ transparentBackground }
+            data-app-root-container="true"
+            style={ { opacity: appOpenAnimation ? "0" : "1" } }
+            className={ styles.content }
+          >
+            {children}
           </div>
-        </RightClickMenuRootContainer>
+        </div>
       )
 };
 

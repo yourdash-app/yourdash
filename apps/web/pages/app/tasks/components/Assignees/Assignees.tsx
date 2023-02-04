@@ -15,50 +15,50 @@ const Assignees: React.FC<IAssignees> = ({ assignees }) => {
     const result: TaskAssignee[] = []
     assignees.map((assignee, ind) => {
       verifyAndReturnJson(SERVER.get(`/tasks/assignee/${assignee}`),
-        (data: TaskAssignee) => {
-          result.push(data)
+          (data: TaskAssignee) => {
+            result.push(data)
 
-          if ((ind + 1) === assignees.length) {
-            if (result.length !== assignees.length) {
-              setTimeout(() => {
-                if (result.length !== assignees.length) {
-                  setTimeout(() => {
-                    if (result.length !== assignees.length) {
-                      console.error(`error fetching assignees`)
-                      setAssigneesData([])
-                    } else {
-                      setAssigneesData(result)
-                    }
-                  }, 500)
-                } else {
-                  setAssigneesData(result)
-                }
-              }, 250)
-            } else {
-              setAssigneesData(result)
+            if ((ind + 1) === assignees.length) {
+              if (result.length !== assignees.length) {
+                setTimeout(() => {
+                  if (result.length !== assignees.length) {
+                    setTimeout(() => {
+                      if (result.length !== assignees.length) {
+                        console.error(`error fetching assignees`)
+                        setAssigneesData([])
+                      } else {
+                        setAssigneesData(result)
+                      }
+                    }, 500)
+                  } else {
+                    setAssigneesData(result)
+                  }
+                }, 250)
+              } else {
+                setAssigneesData(result)
+              }
             }
-          }
 
-          return
-        },
-        () => {
-          console.error(`no user named '${assignee}'`)
-        })
+            return
+          },
+          () => {
+            console.error(`no user named '${assignee}'`)
+          })
     })
   }, [ assignees ])
 
   return (
     <div className={ styles.component }>
       {assigneesData.map((assignee, ind) => {
-      return (
-        <div key={ ind } className={ styles.assignee }>
-          <img src={ assignee.profile.image } alt=""/>
-          <span>{assignee.name}</span>
-        </div>
-)
-    })}
+          return (
+            <div key={ assignee.userName } className={ styles.assignee }>
+              <img src={ assignee.profile.image } alt=""/>
+              <span>{assignee.name}</span>
+            </div>
+          )
+        })}
     </div>
-)
+  )
 }
 
 export default Assignees

@@ -1,13 +1,9 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
-import Card from "../../../../components/containers/card/Card";
-import ColContainer from "../../../../components/containers/ColContainer/ColContainer";
-import Button from "../../../../components/elements/button/SegmentButton";
-import TextInput from "../../../../components/elements/textInput/TextInput";
-import HomeLayout from "../../../../components/layouts/homeLayout/HomeLayout";
+import Chiplet from "ui";
+import HomeLayout from "../../../../layouts/homeLayout/HomeLayout";
 import { NextPageWithLayout } from "../../../page";
 import styles from "./index.module.scss";
-import RowContainer from "../../../../components/containers/row/row";
 
 const LoginOptions: NextPageWithLayout = () => {
 
@@ -20,40 +16,35 @@ const LoginOptions: NextPageWithLayout = () => {
 
   return (
     <div className={ styles.root }>
-      <Card>
-        <ColContainer style={ { alignItems: "center", } }>
+      <Chiplet.Card>
+        <Chiplet.Column style={ { alignItems: "center", } }>
           {
-              !allowsSignUp ? (
+                !allowsSignUp && (
                 <>
                   <h2 style={ { margin: 0 } }>We&apos;re sorry</h2>
                   <p>This server isn&apos;t currently allowing users to sign up.</p>
-                  <RowContainer style={ { marginTop: "0.5rem" } }>
-                    <Button
+                  <Chiplet.Row style={ { marginTop: "0.5rem" } }>
+                    <Chiplet.Button
                       onClick={ () => {
-                      localStorage.removeItem("currentServer")
-                      router.push("/login")
-                    } }
+                              localStorage.removeItem("currentServer")
+                              router.push("/login")
+                            } }
                       vibrant
                     >
                       Select a different instance
-                    </Button>
-                    <Button onClick={ () => {
-                      router.push(`/login/server`)
-                    } }
+                    </Chiplet.Button>
+                    <Chiplet.Button onClick={ () => {
+                          router.push(`/login/server`)
+                        } }
                     >
                       Go back
-                    </Button>
-                  </RowContainer>
+                    </Chiplet.Button>
+                  </Chiplet.Row>
                 </>
-              )
-                : (
-                  <>
-                    <TextInput/>
-                    <TextInput/>
-                  </>
-              )}
-        </ColContainer>
-      </Card>
+                )
+            }
+        </Chiplet.Column>
+      </Chiplet.Card>
     </div>
   );
 };

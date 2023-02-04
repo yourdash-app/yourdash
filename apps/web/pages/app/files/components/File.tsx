@@ -1,8 +1,6 @@
-import CardButton from "ui/backup/elements/cardButton/CardButton";
-import DropdownMenu from "ui/backup/elements/dropdownMenu/DropdownMenu";
-import Icon from "ui/icon/Icon";
-import IconButton from "ui/backup/elements/iconButton/IconButton";
+import Chiplet from "ui";
 import styles from "./File.module.scss"
+import React from "react";
 
 export interface IFile {
   name: string,
@@ -12,34 +10,36 @@ export interface IFile {
 
 const File: React.FC<IFile> = ({
                                  name, path, type
-                               }) => (
-                                 <CardButton
-                                   onClick={() => {
-          console.log(`Implement Me!!!`)
-        }}
-                                   className={styles.component}
-                                 >
-                                   <Icon color={"var(--card-fg)"} name={type === "file" ? "file-16" : "file-directory-16"}/>
-                                   <span>{name}</span>
-                                   <span>{path}</span>
-                                   <span>{type}</span>
-                                   <DropdownMenu items={[
-        {
-          name: "Delete",
-          onClick: () => {
+                               }) => {
+  return (
+    <Chiplet.Card
+      onClick={ () => {
             console.log(`Implement Me!!!`)
-          }
-        }
-      ]}
-                                   >
-                                     <IconButton
-                                       onClick={() => {
+          } }
+      className={ styles.component }
+    >
+      <Chiplet.Icon color={ "var(--card-fg)" } name={ type === "file" ? "file-16" : "file-directory-16" }/>
+      <span>{name}</span>
+      <span>{path}</span>
+      <span>{type}</span>
+      <Chiplet.DropdownContainer items={ [
+          {
+            name: "Delete",
+            onClick: () => {
               console.log(`Implement Me!!!`)
-            }}
-                                       icon="three-bars-16"
-                                     />
-                                   </DropdownMenu>
-                                 </CardButton>
-);
+            }
+          }
+        ] }
+      >
+        <Chiplet.IconButton
+          onClick={ () => {
+                console.log(`Implement Me!!!`)
+              } }
+          icon="three-bars-16"
+        />
+      </Chiplet.DropdownContainer>
+    </Chiplet.Card>
+  )
+};
 
 export default File;

@@ -1,27 +1,47 @@
-import Badge from "./badge/Badge";
-import Icon from "./icon/Icon"
-import Dialog from "./dialog/Dialog";
-import SideBar from "./navigation/SideBar";
-import Button from "./button/Button";
-import SegmentButton from "./segmentButton/SegmentButton";
-import Card from "./card/Card"
-import DropdownButton from "./dropdownButton/DropdownButton";
-import DropdownContainer from "./dropdownContainer/DropdownContainer";
-import Row from "./row/Row";
-import Column from "./column/Column";
+import Badge from "./components/badge/Badge";
+import Button from "./components/button/Button";
+import ButtonLink from "./components/buttonLink/ButtonLink";
+import Card from "./components/card/Card"
+import Chip from "./components/chip/Chip";
+import Column from "./components/column/Column";
+import Dialog from "./components/dialog/Dialog";
+import DropdownButton from "./components/dropdownButton/DropdownButton";
+import DropdownContainer from "./components/dropdownContainer/DropdownContainer";
+import Icon from "./components/icon/Icon"
+import IconButton from "./components/iconButton/IconButton";
+import ProgressBar from "./components/progressBar/ProgressBar";
+import RightClickMenu from "./components/rightClickMenu/RightClickMenu";
+import Row from "./components/row/Row";
+import SegmentButton from "./components/segmentButton/SegmentButton";
+import SideBar from "./components/sideBar/SideBar";
+import Spinner from "./components/spinner/Spinner";
+import Tags from "./components/tags/Tags";
+import TextBox from "./components/textBox/TextBox";
+import TextInput from "./components/textInput/TextInput";
+import ToggleSwitch from "./components/toggleSwitch/ToggleSwitch";
 
 const Chiplet = {
-    Badge,
-    SideBar,
-    Icon,
-    Button,
-    SegmentButton,
-    Dialog,
-    Card,
-    DropdownButton,
-    DropdownContainer,
-    Row,
-    Column
+  Badge,
+  Button,
+  ButtonLink,
+  Card,
+  Chip,
+  Column,
+  Dialog,
+  DropdownButton,
+  DropdownContainer,
+  Icon,
+  IconButton,
+  ProgressBar,
+  RightClickMenu,
+  Row,
+  SegmentButton,
+  SideBar,
+  Spinner,
+  Tags,
+  TextBox,
+  TextInput,
+  ToggleSwitch,
 }
 
 export default Chiplet

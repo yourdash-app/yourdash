@@ -1,0 +1,16 @@
+.textarea {
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  font-family: "Roboto", sans-serif;
+  transition: none;
+  border-radius: var(--text-input-rounding);
+  background-color: var(--text-input-bg);
+  color: var(--text-input-fg);
+  width: 100%;
+  box-sizing: border-box;
+
+  &:focus-visible {
+    outline: var(--text-input-focused-outline);
+  }
+}

@@ -1,15 +1,13 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import ButtonLink from "ui/backup/elements/buttonLink/ButtonLink";
-import TextInput from "ui/backup/elements/textInput/TextInput";
 import HomeLayout from "../../../layouts/homeLayout/HomeLayout";
 import SERVER, { verifyAndReturnJson } from "../../../server";
 import { NextPageWithLayout } from "../../page";
 import styles from "./index.module.scss";
-import RightClickMenuRootContainer from "ui/backup/elements/rightClickMenu/RightClickMenuRootContainer";
+import RightClickMenuRootContainer from "ui/components/rightClickMenu/RightClickMenuRootContainer";
 import Chiplet from "ui"
-// eslint-disable-next-line import/named
-import { ChipletIconDictionary } from "ui/icon/iconDictionary.ts";
+// @ts-ignore
+import { ChipletIconDictionary } from "ui/components/icon/iconDictionary.ts";
 
 const LoginOptions: NextPageWithLayout = () => {
   const [ userName, setUserName ] = useState("")
@@ -65,14 +63,14 @@ const LoginOptions: NextPageWithLayout = () => {
       <h1>{serverDisplayName}</h1>
       <Chiplet.Card style={ { maxWidth: "calc(100vw - 5rem)", minWidth: "50%" } }>
         <Chiplet.Column>
-          <TextInput
+          <Chiplet.TextInput
             placeholder="Username"
             onChange={ e => {
                   setUserName(e.currentTarget.value);
                   setErrorHasOccurred(false)
                 } }
           />
-          <TextInput
+          <Chiplet.TextInput
             placeholder="Password"
             type="password"
             onChange={ e => {
@@ -110,9 +108,9 @@ const LoginOptions: NextPageWithLayout = () => {
             >
               Login
             </Chiplet.Button>
-            <ButtonLink style={ { flexGrow: 1 } } href="/login/server/signup">
+            <Chiplet.ButtonLink style={ { flexGrow: 1 } } href="/login/server/signup">
               Sign up
-            </ButtonLink>
+            </Chiplet.ButtonLink>
           </Chiplet.Row>
         </Chiplet.Column>
       </Chiplet.Card>

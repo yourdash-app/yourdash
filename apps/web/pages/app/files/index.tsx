@@ -4,18 +4,19 @@ import AppLayout from '../../../layouts/appLayout/AppLayout';
 import { NextPageWithLayout } from '../../page';
 import FilesLayout from "./components/FilesLayout";
 import File from "./components/File"
-import filesDirectory from "types/files/directory";
-import filesFile from "types/files/file";
+import { type filesDirectory } from "types/files/directory";
+import { type filesFile } from "types/files/file";
 
 const Files: NextPageWithLayout = () => {
   const [ items, setItems ] = React.useState([
         {
+          // @ts-ignore
           items: [],
           path: "/app/",
           type: "file",
-          name: ""
+          name: "asd"
         }
-      ] as (filesFile & filesDirectory)[]
+      ] as (filesFile | filesDirectory)[]
   )
 
   return (
@@ -27,9 +28,9 @@ const Files: NextPageWithLayout = () => {
           items.map(item => {
             switch (item.type) {
               case "file":
-                return <File name="FileName" path="/file/path" type="file"/>
+                return <File key={ item.path } name={ item.name } path={ item.path } type="file"/>
               case "directory":
-                return <File name="FileName" path="/file/path" type="folder"/>
+                return <File key={ item.path } name={ item.name } path={ item.path } type="folder"/>
             }
           })
         }
@@ -39,10 +40,12 @@ const Files: NextPageWithLayout = () => {
 
 export default Files;
 
-Files.getLayout = page => (
-  <AppLayout>
-    <FilesLayout>
-      {page}
-    </FilesLayout>
-  </AppLayout>
-)
+Files.getLayout = page => {
+  return (
+    <AppLayout>
+      <FilesLayout>
+        {page}
+      </FilesLayout>
+    </AppLayout>
+  )
+}

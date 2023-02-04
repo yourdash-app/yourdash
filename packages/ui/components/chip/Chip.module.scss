@@ -1,0 +1,51 @@
+.component {
+  padding: 0.5rem 1rem;
+  border-radius: var(--chip-rounding);
+  background-color: var(--chip-bg);
+  color: var(--chip-fg);
+  transition: var(--transition);
+  user-select: none;
+  cursor: pointer;
+
+  &:hover {
+    border-radius: var(--chip-hover-rounding);
+    background-color: var(--chip-hover-bg);
+    color: var(--chip-hover-fg);
+  }
+
+  &:active {
+    border-radius: var(--chip-active-rounding);
+    background-color: var(--chip-active-bg);
+    color: var(--chip-active-fg);
+  }
+}
+
+.toggled {
+  border-radius: var(--chip-toggled-rounding);
+  color: var(--chip-toggled-fg);
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    bottom: 0.05rem;
+    left: 50%;
+    translate: -50%;
+    background-color: var(--accent-color);
+    border-radius: 100rem;
+    height: 0.25rem;
+    width: 2rem;
+  }
+
+  &:hover {
+    border-radius: var(--chip-toggled-hover-rounding);
+    background-color: var(--chip-toggled-hover-bg);
+    color: var(--chip-toggled-hover-fg);
+  }
+
+  &:active {
+    border-radius: var(--chip-toggled-active-rounding);
+    background-color: var(--chip-toggled-active-bg);
+    color: var(--chip-toggled-active-fg);
+  }
+}

@@ -13,8 +13,10 @@ const Docs: NextPageWithLayout = () => {
 
 export default Docs;
 
-Docs.getLayout = page => (
+Docs.getLayout = page => {
+  return (
     <HomeLayout noFooter>
       <DocsLayout>{page}</DocsLayout>
     </HomeLayout>
-)
+  )
+}

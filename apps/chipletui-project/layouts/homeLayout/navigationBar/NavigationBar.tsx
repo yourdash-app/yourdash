@@ -1,30 +1,28 @@
 import Link from "next/link";
-import ButtonLink from "ui/backup/elements/buttonLink/ButtonLink";
-import Icon from 'ui/icon/Icon';
 import styles from './NavigationBar.module.scss';
-import { useEffect, useState } from "react";
-import AuthenticatedImg from "ui/backup/elements/authenticatedImg/AuthenticatedImg";
-import IconButton from "ui/backup/elements/iconButton/IconButton";
 import { useRouter } from "next/router";
+import Chiplet from "ui";
 
 const NavigationBar: React.FC = () => {
   const router = useRouter()
 
   return (
     <>
-      <div className={styles.spacer}>
+      <div className={ styles.spacer }>
         {/* Empty Spacer for fixed positioning */}
       </div>
-      <div className={styles.component}>
-        <IconButton
-          className={styles.backButton}
-          onClick={() => {
-                router.push("https://yourdash.vercel.app")
-              }}
+      <div className={ styles.component }>
+        <Chiplet.IconButton
+          className={ styles.backButton }
+          onClick={
+                () => {
+                  router.push("https://yourdash.vercel.app")
+                }
+              }
           icon="arrow-left-16"
         />
-        <Icon useDefaultColor className={styles.yourDashLogo} name="yourdash-logo"/>
-        <img src={`/logo.svg`} alt=""/>
+        <Chiplet.Icon useDefaultColor className={ styles.yourDashLogo } name="yourdash-logo"/>
+        <img src={ `/logo.svg` } alt=""/>
         <h1>Chiplet UI</h1>
         <Link href="/">Home</Link>
         <Link href="/docs">Docs</Link>

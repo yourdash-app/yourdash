@@ -5,11 +5,7 @@ import TasksLayout from '../../components/TasksLayout';
 import SERVER, { verifyAndReturnJson } from '../../../../../server';
 import { useRouter } from 'next/router';
 import { type TasksList } from 'types/tasks/list';
-import IconButton from 'ui/backup/elements/iconButton/IconButton';
 import styles from "./listId.module.scss"
-import TextInput from 'ui/backup/elements/textInput/TextInput';
-import TextBox from 'ui/backup/elements/textBox/TextBox';
-import Tags from 'ui/backup/elements/tags/Tags';
 import { type TasksListItem } from 'types/tasks/listItem';
 import ListTask from "../../components/ListTask/ListTask";
 import Chiplet from "ui";
@@ -63,12 +59,13 @@ const TasksPersonalList: NextPageWithLayout = () => {
     )
   }, [ selectedTask, router.query.listId ])
 
-  if (!listData) return <></>
-  if (!unsavedListData) return <></>
+  if (!listData) return <div/>
+  if (!unsavedListData) return <div/>
 
   return (
     <div className={ `${styles.root} ${pageChanging && styles.slideOut}` }>
-      <div
+      <button
+        type={ "button" }
         className={ `${styles.listSettingsBackdrop} ${showListSettings && styles.visible}` }
         onClick={ () => {
               setShowListSettings(false)
@@ -77,7 +74,7 @@ const TasksPersonalList: NextPageWithLayout = () => {
       <Chiplet.Card className={ `${styles.listSettings} ${showListSettings && styles.visible}` }>
         <Chiplet.Row className={ styles.header }>
           <h2>Manage list settings</h2>
-          <IconButton
+          <Chiplet.IconButton
             icon="x-16"
             onClick={ () => {
                   setShowListSettings(false)
@@ -88,7 +85,7 @@ const TasksPersonalList: NextPageWithLayout = () => {
           <p>
             Title
           </p>
-          <TextInput
+          <Chiplet.TextInput
             defaultValue={ unsavedListData.name }
             placeholder='Untitled'
             onChange={ e => {
@@ -106,7 +103,7 @@ const TasksPersonalList: NextPageWithLayout = () => {
           <p>
             Description
           </p>
-          <TextBox
+          <Chiplet.TextBox
             style={ {
                   resize: "vertical",
                   transition: "none"
@@ -127,7 +124,7 @@ const TasksPersonalList: NextPageWithLayout = () => {
           <p>
             Tags
           </p>
-          <Tags tags={ unsavedListData.tags }/>
+          <Chiplet.Tags tags={ unsavedListData.tags }/>
         </main>
         <Chiplet.Button
           onClick={ () => {
@@ -149,7 +146,7 @@ const TasksPersonalList: NextPageWithLayout = () => {
       </Chiplet.Card>
       <Chiplet.Column>
         <Chiplet.Row className={ styles.header }>
-          <IconButton
+          <Chiplet.IconButton
             icon='chevron-left-16'
             onClick={ () => {
                   router.prefetch(`/app/tasks`)
@@ -160,7 +157,7 @@ const TasksPersonalList: NextPageWithLayout = () => {
                 } }
           />
           <h1>{listData.name}</h1>
-          <IconButton
+          <Chiplet.IconButton
             icon='plus-16'
             onClick={ () => {
                   setSelectedTask(null)
@@ -184,7 +181,7 @@ const TasksPersonalList: NextPageWithLayout = () => {
                   )
                 } }
           />
-          <IconButton
+          <Chiplet.IconButton
             icon='gear-16'
             onClick={ () => {
                   setShowListSettings(true)
@@ -194,7 +191,9 @@ const TasksPersonalList: NextPageWithLayout = () => {
         <Chiplet.Column className={ styles.tasksView }>
           {
               listData.tasks ?
-                  listData.tasks.map((task, ind) => {return <ListTask task={ task }/>})
+                  listData.tasks.map((task, ind) => {
+                    return <ListTask key={ task.title } task={ task }/>
+                  })
                   : <h1>No tasks</h1>
             }
         </Chiplet.Column>
@@ -204,7 +203,7 @@ const TasksPersonalList: NextPageWithLayout = () => {
               selectedTaskData && (
               <Chiplet.Column>
                 <Chiplet.Row>
-                  <TextInput
+                  <Chiplet.TextInput
                     style={ { flex: 1 } }
                     defaultValue={ selectedTaskData?.title }
                     onChange={ e => {
@@ -213,7 +212,7 @@ const TasksPersonalList: NextPageWithLayout = () => {
                             })
                           } }
                   />
-                  <IconButton
+                  <Chiplet.IconButton
                     style={ { aspectRatio: "1 / 1" } }
                     icon='x-16'
                     onClick={ () => {
@@ -222,7 +221,7 @@ const TasksPersonalList: NextPageWithLayout = () => {
                   />
                 </Chiplet.Row>
                 <p>Description</p>
-                <TextBox
+                <Chiplet.TextBox
                   style={ {
                           flex: 1,
                           flexDirection: 'row',
@@ -235,7 +234,7 @@ const TasksPersonalList: NextPageWithLayout = () => {
                         } }
                 />
                 <p>Tags</p>
-                <Tags compact tags={ selectedTaskData.tags }/>
+                <Chiplet.Tags compact tags={ selectedTaskData.tags }/>
                 <p>Assignees</p>
                 {/*
               <Card style={{
@@ -291,10 +290,12 @@ const TasksPersonalList: NextPageWithLayout = () => {
 
 export default TasksPersonalList;
 
-TasksPersonalList.getLayout = page => {return (
-  <AppLayout>
-    <TasksLayout>
-      {page}
-    </TasksLayout>
-  </AppLayout>
-)}
+TasksPersonalList.getLayout = page => {
+  return (
+    <AppLayout>
+      <TasksLayout>
+        {page}
+      </TasksLayout>
+    </AppLayout>
+  )
+}

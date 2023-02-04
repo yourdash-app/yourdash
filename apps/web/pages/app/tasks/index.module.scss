@@ -4,9 +4,11 @@
   width: 100%;
   background-color: var(--container-bg);
   box-sizing: border-box;
+
   > div {
     height: 2.5rem;
   }
+
   > h1 {
     color: var(--container-fg);
     padding-left: 0.25rem;
@@ -26,17 +28,21 @@
   > div {
     > .list {
       padding: 0.25rem;
+
       > span {
         margin-right: auto;
         padding-left: 0.5rem;
       }
+
       > button {
         margin-right: 0.25rem;
+
         &:last-child {
           margin-right: 0;
         }
       }
     }
+
     > .message {
       text-align: center;
       margin-left: auto;
@@ -45,6 +51,15 @@
       > div {
         padding-left: 1rem;
         padding-right: 1rem;
+
+        > p {
+          margin: 0;
+        }
+
+        > h2 {
+          margin: 0 0 0.5rem;
+        }
+
         > :last-child {
           margin-top: 0.5rem;
         }
@@ -59,5 +74,20 @@
 
   > :first-child {
     margin-right: auto;
+  }
+}
+
+.main {
+  opacity: 0;
+  transition: var(--transition);
+  animation: fadeIn 250ms ease-in-out forwards;
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
   }
 }

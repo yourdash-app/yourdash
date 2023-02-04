@@ -9,10 +9,6 @@
   animation: fadeIn ease-in-out 500ms forwards;
   transform: translateX(0);
 
-  &.slideOut {
-    animation: fadeOut ease-in-out 500ms forwards;
-  }
-
   @keyframes fadeOut {
     from {
       opacity: 1;
@@ -61,11 +57,10 @@
   > .header {
     display: flex;
     align-items: center;
-    padding: 0;
-    padding-bottom: 0.5rem;
+    padding: 0 0 0.5rem;
+
     > h2 {
-      margin: 0;
-      margin-right: auto;
+      margin: 0 auto 0 0;
     }
   }
 
@@ -106,9 +101,9 @@
 .header {
   align-items: center;
   padding: 1rem;
+
   > h1 {
-    margin: 0;
-    margin-right: auto;
+    margin: 0 auto 0 0;
     padding-left: 0.5rem;
     color: var(--container-fg);
   }
@@ -119,24 +114,6 @@
   padding-right: 1rem;
 }
 
-.tasksViewTask {
-  padding: 0.25rem;
-
-  > div {
-    width: 100%;
-    align-items: center;
-    > span {
-      padding-left: 0.5rem;
-      margin-right: auto;
-    }
-
-    > button:last-of-type {
-      border-top-right-radius: 0.75rem;
-      border-bottom-right-radius: 0.75rem;
-    }
-  }
-}
-
 .taskProperties {
   background-color: var(--container-bg);
   transition: all 500ms ease-in-out, opacity 250ms ease-in-out;
@@ -144,7 +121,7 @@
   overflow-y: auto;
   box-sizing: border-box;
   opacity: 0;
-  width: 0rem;
+  width: 0;
 
   @media (max-width: 750px) {
     position: absolute;
@@ -159,6 +136,7 @@
     box-sizing: border-box;
     padding: 0.5rem;
     overflow-y: auto;
+
     > p {
       color: var(--container-fg);
     }

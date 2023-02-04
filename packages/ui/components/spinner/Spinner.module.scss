@@ -1,0 +1,11 @@
+.component {
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  font-family: "Roboto", sans-serif;
+  cursor: pointer;
+  transition: var(--transition);
+  border-radius: var(--button-rounding);
+  background-color: var(--button-bg);
+  color: var(--button-fg);
+}

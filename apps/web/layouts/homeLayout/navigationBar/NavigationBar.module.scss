@@ -12,19 +12,17 @@
   user-select: none;
   transition: var(--transition);
 
-  >h1 {
+  > h1 {
     font-size: 2rem;
     margin-right: 20rem;
     transition: var(--transition);
   }
 
-  >a[href] {
+  > a[href] {
     font-size: 1rem;
     text-decoration: none;
     color: var(--button-fg);
-    padding: 0.5rem;
-    padding-top: 0.25rem;
-    padding-bottom: 0.25rem;
+    padding: 0.25rem 0.5rem;
     transition: var(--transition);
     position: relative;
 
@@ -64,7 +62,7 @@
     }
   }
 
-  >button {
+  > button {
     margin-right: 1rem;
 
     :last-child {
@@ -72,7 +70,7 @@
     }
   }
 
-  >img {
+  > img {
     height: 2.5rem;
     aspect-ratio: 1 / 1;
     outline: 2.5px solid #ffffff55;
@@ -93,7 +91,7 @@
 
 @media (max-width: 850px) {
   .component {
-    >h1 {
+    > h1 {
       font-size: 2rem;
       margin-right: 10rem;
     }
@@ -102,12 +100,12 @@
 
 @media (max-width: 650px) {
   .component {
-    >h1 {
+    > h1 {
       font-size: 2rem;
       margin-right: 5rem;
     }
 
-    >a:nth-child(6) {
+    > a:nth-child(6) {
       display: none;
     }
   }
@@ -115,7 +113,7 @@
 
 @media (max-width: 575px) {
   .component {
-    >h1 {
+    > h1 {
       font-size: 2rem;
       margin-right: 2rem;
     }

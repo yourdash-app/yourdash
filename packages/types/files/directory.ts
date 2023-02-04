@@ -1,8 +1,11 @@
-import filesFile from "./file";
+// eslint-disable-next-line import/no-unresolved
+import { type filesFile } from "./file";
 
-export default interface filesDirectory {
+interface filesDirectory {
   name: string,
   path: string,
-  // items: (filesDirectory | filesFile)[]
+  items: (filesDirectory | filesFile)[]
   type: "directory"
 }
+
+export { type filesDirectory }
