@@ -1,5 +1,4 @@
 import { useRouter } from 'next/router';
-import IconButton from 'ui/backup/elements/iconButton/IconButton';
 import AppLayout from '../../../../layouts/appLayout/AppLayout';
 import { NextPageWithLayout } from '../../../page';
 import Carousel from '../components/carousel/Carousel';
@@ -56,7 +55,7 @@ const StoreProduct: NextPageWithLayout = () => {
     )
 
   if (product.name === "undefined")
-    return <></>
+    return <div/>
 
   return (
     <div
@@ -148,7 +147,9 @@ const StoreProduct: NextPageWithLayout = () => {
                 {
                     product?.moduleRequirements?.length === 0
                         ? <p>This application has no requirements :D</p>
-                        : product?.moduleRequirements?.map((requirement, ind) => {return <a key={ ind }>{requirement}</a>})
+                        : product?.moduleRequirements?.map(requirement => {
+                          return <p key={ requirement }>{requirement}</p>
+                        })
                   }
               </ul>
             </Chiplet.Column>
@@ -185,7 +186,7 @@ const StoreProduct: NextPageWithLayout = () => {
               Approve installation
             </Chiplet.Button>
           </Chiplet.Column>
-          <IconButton
+          <Chiplet.IconButton
             icon={ 'x-16' }
             onClick={ () => {
                   setShowInstallationPopup(false)
@@ -194,7 +195,7 @@ const StoreProduct: NextPageWithLayout = () => {
         </div>
       </div>
       <section className={ styles.productHeader }>
-        <IconButton
+        <Chiplet.IconButton
           icon='arrow-left-16'
           color="var(--container-fg)"
           onClick={ () => {
@@ -241,7 +242,9 @@ const StoreProduct: NextPageWithLayout = () => {
                       })
                     }
                   },
-                  () => {return setUninstallationError(true)}
+                  () => {
+                    return setUninstallationError(true)
+                  }
               )
             }
           } }
@@ -260,8 +263,10 @@ const StoreProduct: NextPageWithLayout = () => {
 
 export default StoreProduct;
 
-StoreProduct.getLayout = page => {return (
-  <AppLayout>
-    {page}
-  </AppLayout>
-)}
+StoreProduct.getLayout = page => {
+  return (
+    <AppLayout>
+      {page}
+    </AppLayout>
+  )
+}

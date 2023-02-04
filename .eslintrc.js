@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-commonjs
 module.exports = {
   root: true,
   // This tells ESLint to load the config from the package `eslint-config-custom`

@@ -13,44 +13,47 @@
   @media (max-width: 800px) {
     grid-template-columns: auto 1fr;
   }
+
   > [data-branding] {
     display: flex;
     align-items: center;
     justify-content: center;
     padding-left: 1rem;
     padding-right: 3rem;
+
     > h1 {
       margin: 0;
       padding-left: 0.5rem;
     }
   }
+
   > section {
     padding-right: 1rem;
     padding-left: 1rem;
     display: flex;
-    align-items: center;
     flex-wrap: wrap;
     align-items: center;
     justify-content: flex-start;
     gap: 0.5rem;
+
     > a {
-      padding-left: 1rem;
-      padding-right: 1rem;
-      padding-top: 0.5rem;
-      padding-bottom: 0.5rem;
+      padding: 0.5rem 1rem;
       border-radius: 100rem;
       text-decoration: none;
       transition: var(--transition);
       background-color: var(--chip-bg);
       color: var(--chip-fg);
+
       &:hover {
         background-color: var(--chip-hover-bg);
         color: var(--chip-hover-fg);
       }
+
       &:active {
         background-color: var(--chip-active-bg);
         color: var(--chip-active-fg);
       }
+
       @media (max-width: 475px) {
         &:nth-child(4) {
           display: none;
@@ -58,6 +61,7 @@
       }
     }
   }
+
   > span {
     margin-left: auto;
     place-self: center;

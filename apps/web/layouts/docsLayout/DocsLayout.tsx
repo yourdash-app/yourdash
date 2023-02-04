@@ -1,38 +1,36 @@
-import SideBar from "ui/backup/elements/sideBar/SideBar";
+import Chiplet from "ui";
 import styles from "./DocsLayout.module.scss"
 
 export type IDocsLayout = React.ComponentPropsWithoutRef<'div'>
 
-const DocsLayout: React.FC<IDocsLayout> = ({ children }) => (
-  <div className={styles.root}>
+const DocsLayout: React.FC<IDocsLayout> = ({ children }) => {return (
+  <div className={ styles.root }>
     <section>
-      <SideBar
+      <Chiplet.SideBar
         title="Docs"
-        items={[
+        items={ [
               {
                 icon: "server-16",
-                name: "Hello",
+                label: "Hello",
                 onClick: () => {
                   console.log("Implement Me!!!")
-                },
-                type: "button"
+                }
               },
               {
                 icon: "server-16",
-                name: "World",
+                label: "World",
                 onClick: () => {
                   console.log("Implement Me!!!")
-                },
-                type: "button"
+                }
               }
-            ]}
+            ] }
       />
-      <div className={styles.content}>
+      <div className={ styles.content }>
         {children}
       </div>
-      <div className={styles.listOfContents}/>
+      <div className={ styles.listOfContents }/>
     </section>
   </div>
-);
+)};
 
 export default DocsLayout;

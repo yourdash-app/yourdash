@@ -1,5 +1,4 @@
 import type { AppProps } from 'next/app';
-
 import './globals.css';
 import { NextPageWithLayout } from './page';
 import ChipletUiRootIntegration from "ui/RootIntegration";
@@ -18,7 +17,17 @@ const ApplicationContainer: React.FC<{ children: React.ReactNode }> = ({ childre
 }
 
 function NextApp({ Component, pageProps }: AppPropsWithLayout) {
-  return Component?.getLayout?.(<Component { ...pageProps }/>) || <Component { ...pageProps }/>;
+  return <ApplicationContainer>
+    {Component?.getLayout?.(<Component { ...pageProps }/>)}
+  </ApplicationContainer>
+      || ((page: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined) => {
+        return (
+          <ApplicationContainer>
+            {page}
+          </ApplicationContainer>
+        )
+      })
+
 }
 
 export default NextApp;

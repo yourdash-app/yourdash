@@ -15,7 +15,7 @@
       margin: 0;
       padding-left: 1rem;
       padding-top: 1.5rem;
-      padding-bottom: 0rem;
+      padding-bottom: 0;
       color: var(--container-fg);
     }
   }
@@ -29,17 +29,13 @@
     grid-template-rows: auto auto 1fr;
 
     > *:nth-child(1) {
-      margin: 0.5rem;
-      margin-top: 1rem;
-      margin-bottom: 1rem;
+      margin: 1rem 0.5rem;
       font-size: 1.75rem;
       color: var(--container-fg);
     }
 
     > *:nth-child(2) {
-      margin: 0.5rem;
-      margin-top: 0;
-      margin-bottom: 0;
+      margin: 0 0.5rem;
     }
   }
 }

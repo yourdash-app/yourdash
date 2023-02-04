@@ -1,6 +1,6 @@
 import styles from "./DocsLayout.module.scss"
 import { useRouter } from "next/router";
-import SideBar from "ui/navigation/SideBar";
+import Chiplet from "ui";
 
 export type IDocsLayout = React.ComponentPropsWithoutRef<'div'>
 
@@ -9,7 +9,7 @@ const DocsLayout: React.FC<IDocsLayout> = ({ children }) => {
 
   return (
     <div className={ styles.root }>
-      <SideBar
+      <Chiplet.SideBar
         title={ "Chiplet UI Docs" }
         items={ [
               {

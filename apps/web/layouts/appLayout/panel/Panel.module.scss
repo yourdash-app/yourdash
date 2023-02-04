@@ -16,26 +16,6 @@
   animation: slideInAnimation 1250ms ease-in-out forwards;
 }
 
-.tray {
-  height: var(--app-panel-height);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: row-reverse;
-}
-
-.trayIcon {
-  height: calc(var(--app-panel-height) - 1.5rem);
-  aspect-ratio: 1/1;
-
-  @for $index from 0 through 25 {
-    &:nth-child(#{$index + 1}) {
-      opacity: 0;
-      animation: slideInAnimation 2s $index * 0.2s ease-in-out forwards;
-    }
-  }
-}
-
 .account {
   margin-right: 0.5rem;
   margin-left: 0.5rem;
@@ -234,10 +214,7 @@
 
     > div[data-settings] {
       padding: 0.5rem;
-      margin-right: 0.5rem;
-      margin-top: 0.5rem;
-      margin-bottom: 0.5rem;
-      margin-left: auto;
+      margin: 0.5rem 0.5rem 0.5rem auto;
       border-radius: 100rem;
       background-color: var(--button-bg);
       color: var(--button-fg);
@@ -438,12 +415,6 @@
     transform: translateX(-50%);
     white-space: nowrap;
   }
-}
-
-.serverName {
-  margin: 0;
-  padding-left: 0.5rem;
-  padding-right: 0.25rem;
 }
 
 @keyframes slideInAnimation {

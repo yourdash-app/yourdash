@@ -5,9 +5,6 @@
 
   @media (max-width: 750px) {
     grid-template-columns: 1fr;
-    > .sidebar {
-      display: none;
-    }
   }
 
   > .page {
@@ -19,7 +16,7 @@
       margin: 0;
       padding-left: 1rem;
       padding-top: 1.5rem;
-      padding-bottom: 0rem;
+      padding-bottom: 0;
       color: var(--container-fg);
     }
   }

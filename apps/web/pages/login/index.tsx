@@ -82,24 +82,30 @@ const ServerLogin: NextPageWithLayout = () => {
           <h1 className={ styles.title }>Please enter the url of your server.</h1>
           <ValidatedTextInput
             invalidReason={ message }
-            onChange={ e => {
-                  setUrl(e.target.value)
-                } }
-            onKeyDown={ e => {
-                  if (!allowed) return
-
-                  if (e.key === "Enter") {
-                    localStorage.setItem("currentServer", `${url}:3560`)
-                    router.push("/login/server")
+            onChange={
+                  e => {
+                    setUrl(e.target.value)
                   }
-                } }
+                }
+            onKeyDown={
+                  e => {
+                    if (!allowed) return
+
+                    if (e.key === "Enter") {
+                      localStorage.setItem("currentServer", `${url}:3560`)
+                      router.push("/login/server")
+                    }
+                  }
+                }
           />
           <Chiplet.Button
             disabled={ !allowed }
-            onClick={ () => {
-                  localStorage.setItem("currentServer", `${url}:3560`)
-                  router.push("/login/server")
-                } }
+            onClick={
+                  () => {
+                    localStorage.setItem("currentServer", `${url}:3560`)
+                    router.push("/login/server")
+                  }
+                }
           >Continue</Chiplet.Button>
         </Chiplet.Column>
       </Chiplet.Card>

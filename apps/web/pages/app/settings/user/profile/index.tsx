@@ -1,6 +1,4 @@
 import React, { useEffect } from 'react';
-import TextBox from 'ui/backup/elements/textBox/TextBox';
-import TextInput from 'ui/backup/elements/textInput/TextInput';
 import AppLayout from '../../../../../layouts/appLayout/AppLayout';
 import { NextPageWithLayout } from '../../../../page';
 import BooleanSetting from '../../components/BooleanSetting';
@@ -48,36 +46,49 @@ const SettingsPanel: NextPageWithLayout = () => {
           </Chiplet.Column>
           <Chiplet.Column className={ styles.section1EditPanel }>
             <p>First name</p>
-            <TextInput
+            <Chiplet.TextInput
               placeholder='first name'
               defaultValue={ firstName }
-              onChange={ e => {
-                    setFirstName(e.currentTarget.value)
-                  } }
+              onChange={
+                    e => {
+                      setFirstName(e.currentTarget.value)
+                    }
+                  }
             />
             <p>Last name</p>
-            <TextInput
+            <Chiplet.TextInput
               placeholder='last name'
               defaultValue={ lastName }
-              onChange={ e => {
-                    setLastName(e.currentTarget.value)
-                  } }
+              onChange={
+                    e => {
+                      setLastName(e.currentTarget.value)
+                    }
+                  }
             />
             <p>Username</p>
-            <TextInput
+            <Chiplet.TextInput
               placeholder='username'
               defaultValue={ userName }
-              onChange={ e => {
-                    setUserName(e.currentTarget.value)
-                  } }
+              onChange={
+                    e => {
+                      setUserName(e.currentTarget.value)
+                    }
+                  }
             />
             <p>Description</p>
-            <TextBox
+            <Chiplet.TextBox
               placeholder='description'
               defaultValue={ description }
-              onChange={ e => {
-                    setDescription(e.currentTarget.value)
-                  } }
+              style={
+                    {
+                      resize: "vertical"
+                    }
+                  }
+              onChange={
+                    e => {
+                      setDescription(e.currentTarget.value)
+                    }
+                  }
             />
             <Chiplet.Button
               vibrant

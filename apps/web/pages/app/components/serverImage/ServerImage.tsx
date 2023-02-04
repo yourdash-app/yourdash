@@ -6,8 +6,8 @@
 
 import React, { useEffect, useState } from "react";
 import SERVER, { verifyAndReturnJson } from "web/server";
-// eslint-disable-next-line import/named
-import { ChipletIconDictionary } from "ui/icon/iconDictionary.ts";
+// @ts-ignore
+import { ChipletIconDictionary } from "ui/components/icon/iconDictionary.ts";
 
 export interface IServerImage extends React.ComponentPropsWithoutRef<'img'> {
   src: string

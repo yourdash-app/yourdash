@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from "react"
-import ProgressBar from "ui/backup/elements/progressBar/ProgressBar"
 import styles from "./FilesSideBar.module.scss"
-import IconButton from "ui/backup/elements/iconButton/IconButton"
-import DropdownMenu from "ui/backup/elements/dropdownMenu/DropdownMenu"
 import SERVER, { verifyAndReturnJson } from "../../../../server"
-import { SideBarCategory } from "types/files/SideBar"
+import { type SideBarCategory } from "types/files/SideBar"
 import { useRouter } from "next/navigation"
-import Button from "ui/backup/elements/button/Button"
-import Card from "ui/backup/containers/card/Card"
+import Chiplet from "ui"
 
 export interface IFilesSideBar {
   currentDir: string
@@ -23,80 +19,91 @@ const FilesSideBar: React.FC<IFilesSideBar> = () => {
         (data: { categories: SideBarCategory[] }) => {
           setCategories(data.categories)
         },
-        () => console.error("unable to fetch sidebar categories")
+        () => {
+          return console.error("unable to fetch sidebar categories")
+        }
     )
   }, [])
 
   if (categories === undefined)
-    return <div className={styles.component}/>
+    return <div className={ styles.component }/>
 
   return (
-    <div className={styles.component}>
-      <h1 className={styles.title}>Files</h1>
-      <div className={styles.dirShortcuts}>
+    <div className={ styles.component }>
+      <h1 className={ styles.title }>Files</h1>
+      <div className={ styles.dirShortcuts }>
         {
             categories.length !== 0 ?
-                categories.map((category: SideBarCategory, ind) => (
-                  <React.Fragment key={ind}>
-                    <h3>{category.title}</h3>
-                    <ul>
-                      {
-                          category.children.map((child, ind) => (
-                            <li
-                              key={ind}
-                              onClick={() => {
-                                    router.push(`/app/files/p${child.path}`)
-                                  }}
-                            >
-                              <span>{child.title}</span>
-                              <DropdownMenu
-                                items={[ {
-                                      name: "Remove from 'Quick actions'",
-                                      onClick: () => {
-                                        verifyAndReturnJson(
-                                            SERVER.delete(`/files/sidebar/category/${ind}`),
-                                            res => {
-                                              setCategories(res)
-                                            },
-                                            () => console.error(`unable to delete sidebar category ${ind}`)
-                                        )
-                                      }
-                                    } ]}
-                              >
-                                <IconButton
-                                  icon="three-bars-16"
-                                  onClick={() => {
-                                        console.log(`Implement Me!!!`)
-                                      }}
-                                />
-                              </DropdownMenu>
-                            </li>
-                          ))
-                        }
-                    </ul>
-                  </React.Fragment>
-                ))
+                categories.map((category: SideBarCategory, ind) => {
+                  return (
+                    <React.Fragment key={ category.title }>
+                      <h3>{category.title}</h3>
+                      <ul>
+                        {
+                            category.children.map((child, ind) => {
+                              return (
+                                <button
+                                  type="button"
+                                  key={ child.path }
+                                  onClick={ () => {
+                                        router.push(`/app/files/p${child.path}`)
+                                      } }
+                                >
+                                  <span>{child.title}</span>
+                                  <Chiplet.DropdownContainer
+                                    items={ [ {
+                                          name: "Remove from 'Quick actions'",
+                                          onClick: () => {
+                                            verifyAndReturnJson(
+                                                SERVER.delete(`/files/sidebar/category/${ind}`),
+                                                res => {
+                                                  setCategories(res)
+                                                },
+                                                () => {
+                                                  return console.error(`unable to delete sidebar category ${ind}`)
+                                                }
+                                            )
+                                          }
+                                        } ] }
+                                  >
+                                    <Chiplet.IconButton
+                                      icon="three-bars-16"
+                                      onClick={ () => {
+                                            console.log(`Implement Me!!!`)
+                                          } }
+                                    />
+                                  </Chiplet.DropdownContainer>
+                                </button>
+                              )
+                            })
+                          }
+                      </ul>
+                    </React.Fragment>
+                  )
+                })
                 : (
-                  <Card className={styles.dirShortcutsMessage}>
+                  <Chiplet.Card className={ styles.dirShortcutsMessage }>
                     <h1>Oh no!</h1>
                     <p>You have no categories added to the Sidebar</p>
-                    <Button
-                      onClick={() => {
+                    <Chiplet.Button
+                      onClick={ () => {
                             verifyAndReturnJson(
                                 SERVER.get(`/files/sidebar/set/default`),
                                 res => {
                                   setCategories(res.categories)
                                 },
-                                () => console.error("unable to reset sidebar categories")
+                                () => {
+                                  return console.error("unable to reset sidebar categories")
+                                }
                             )
-                          }}
+                          } }
                       vibrant
-                    >Add default categories</Button>
-                  </Card>
+                    >Add default categories</Chiplet.Button>
+                  </Chiplet.Card>
                 )
           }
       </div>
-      <section className={styles.footer}>
+      <section className={ styles.footer }>
         {/*
           <div className={styles.usageIcons}>
             <Icon name="codespaces-16" color="#ffffff" />
@@ -104,15 +111,15 @@ const FilesSideBar: React.FC<IFilesSideBar> = () => {
             <Icon name="codespaces-16" color="#ffffff" />
           </div>
         */}
-        <div className={styles.quota}>
-          <div className={styles.header}>
+        <div className={ styles.quota }>
+          <div className={ styles.header }>
             Quota percentage full
           </div>
-          <ProgressBar value={10} displayPercentage/>
+          <Chiplet.ProgressBar value={ 10 } displayPercentage/>
         </div>
       </section>
     </div>
-)
+  )
 }
 
 export default FilesSideBar

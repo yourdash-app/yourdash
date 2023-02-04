@@ -1,7 +1,7 @@
 import React from "react"
-import SideBar from "ui/backup/elements/sideBar/SideBar"
 import styles from "./TasksLayout.module.scss"
 import { useRouter } from "next/router"
+import Chiplet from "ui"
 
 const TasksLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const router = useRouter()
@@ -10,20 +10,18 @@ const TasksLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // const [ organizations, setOrganizations ] = useState([] as YourDashOrganization[])
 
   return (
-    <div className={styles.root}>
-      <SideBar
-        className={styles.sidebar}
-        style={{ height: "100%" }}
+    <div className={ styles.root }>
+      <Chiplet.SideBar
+        className={ styles.sideBar }
         title="Tasks"
         items={
               [
                 {
                   icon: "apps-16",
-                  name: "Home",
+                  label: "Home",
                   onClick: () => {
                     router.push(`/app/tasks/`)
                   },
-                  type: "button",
                 },
 
                 /* { type: "separator", },
@@ -52,7 +50,7 @@ const TasksLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               ]
             }
       />
-      <div className={styles.page}>
+      <div className={ styles.page }>
         {children}
       </div>
     </div>

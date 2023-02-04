@@ -1,0 +1,70 @@
+.component {
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  font-family: "Roboto", sans-serif;
+  cursor: pointer;
+  transition: var(--transition);
+  border-radius: var(--button-rounding);
+  background-color: var(--button-bg);
+  color: var(--button-fg);
+  user-select: none;
+
+  &:hover {
+    border-radius: var(--button-hover-rounding);
+    background-color: var(--button-hover-bg);
+    color: var(--button-hover-fg);
+
+    &[disabled] {
+      border-radius: var(--button-rounding);
+      background-color: var(--button-bg);
+      color: var(--button-fg);
+      cursor: not-allowed;
+    }
+  }
+
+  &:active {
+    border-radius: var(--button-active-rounding);
+    background-color: var(--button-active-bg);
+    color: var(--button-active-fg);
+
+    &[disabled] {
+      border-radius: var(--button-rounding);
+      background-color: var(--button-bg);
+      color: var(--button-fg);
+      cursor: not-allowed;
+    }
+  }
+}
+
+.vibrant {
+  border-radius: var(--button-vibrant-rounding);
+  background-color: var(--button-vibrant-bg);
+  color: var(--button-vibrant-fg);
+
+  &:hover {
+    border-radius: var(--button-vibrant-hover-rounding);
+    background-color: var(--button-vibrant-hover-bg);
+    color: var(--button-hover-vibrant-fg);
+
+    &[disabled] {
+      border-radius: var(--button-vibrant-rounding);
+      background-color: var(--button-vibrant-bg);
+      color: var(--button-vibrant-fg);
+      cursor: not-allowed;
+    }
+  }
+
+  &:active {
+    border-radius: var(--button-vibrant-active-rounding);
+    background-color: var(--button-vibrant-active-bg);
+    color: var(--button-vibrant-active-fg);
+
+    &[disabled] {
+      border-radius: var(--button-vibrant-rounding);
+      background-color: var(--button-vibrant-bg);
+      color: var(--button-vibrant-fg);
+      cursor: not-allowed;
+    }
+  }
+}
