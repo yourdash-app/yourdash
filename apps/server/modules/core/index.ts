@@ -226,16 +226,18 @@ const Module: YourDashModule = {
                     log(`ERROR: unable to read user.json`)
                     return res.json({error: true})
                 }
-                const json: YourDashUser = JSON.parse(data.toString())
+                const json: YourDashUser = JSON.parse(data.toString()) as YourDashUser
 
 
                 return res.json({
-                    name: json.name, profile: {
+                    name: json.name,
+                    profile: {
                         description: json.profile.description,
                         externalLinks: json.profile.externalLinks,
                         location: json.profile.location,
                         status: json.profile.status
-                    }, userName: json.userName
+                    },
+                    userName: json.userName
                 })
             })
         })

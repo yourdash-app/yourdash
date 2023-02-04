@@ -79,16 +79,16 @@ const module: YourDashModule = {
 
     request.delete(`/personal/list/delete/:listId`, (req, res) => {
       if (!req.params.listId) {
-        return res.json({ error: true })
+        return res.json({ error: `no list id was provided` })
       }
 
       if (!fs.existsSync(`${moduleApi.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`)) {
-        return res.json({ error: true })
+        return res.json({ error: `no list with the supplied id exists` })
       }
 
       fs.rm(`${moduleApi.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`, err => {
         if (err) {
-          return res.json({ error: true })
+          return res.json({ error: `unable to remove list with id ${req.params.listId}` })
         }
 
         return res.json({ success: true })
@@ -285,7 +285,9 @@ const module: YourDashModule = {
             profile: { image },
             userName: json.userName,
           })
-        }, () => {return res.json({ error: true })})
+        }, () => {
+          return res.json({ error: true })
+        })
       })
     })
   },

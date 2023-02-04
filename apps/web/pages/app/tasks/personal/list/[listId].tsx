@@ -25,8 +25,9 @@ function loadList(listId: string, setList: (_value: TasksList) => void) {
 const TasksPersonalList: NextPageWithLayout = () => {
   const router = useRouter()
 
-  const [ selectedTask, setSelectedTask ] = useState(null as null | number)
-  const [ selectedTaskData, setSelectedTaskData ] = useState(null as null | TasksListItem)
+  const [ activeTask, setActiveTask ] = useState(null as null | number)
+  const [ selectedTasks, setSelectedTasks ] = useState([] as number[])
+  const [ activeTaskData, setActiveTaskData ] = useState(null as null | TasksListItem)
   const [ listData, setListData ] = useState(null as TasksList | null)
   const [ showListSettings, setShowListSettings ] = useState(false)
   const [ unsavedListData, setUnsavedListData ] = useState(null as TasksList | null)
@@ -46,18 +47,18 @@ const TasksPersonalList: NextPageWithLayout = () => {
   }, [ router ])
 
   useEffect(() => {
-    if (selectedTask === null) return
+    if (activeTask === null) return
 
     verifyAndReturnJson(
-        SERVER.get(`/tasks/personal/list/${router.query.listId}/task/${selectedTask}`),
+        SERVER.get(`/tasks/personal/list/${router.query.listId}/task/${activeTask}`),
         data => {
-          setSelectedTaskData(data)
+          setActiveTaskData(data)
         },
         () => {
           console.error(`unable to fetch task data`)
         }
     )
-  }, [ selectedTask, router.query.listId ])
+  }, [ activeTask, router.query.listId ])
 
   if (!listData) return <div/>
   if (!unsavedListData) return <div/>
@@ -160,7 +161,7 @@ const TasksPersonalList: NextPageWithLayout = () => {
           <Chiplet.IconButton
             icon='plus-16'
             onClick={ () => {
-                  setSelectedTask(null)
+                  setActiveTask(null)
                   verifyAndReturnJson(
                       SERVER.get(`/tasks/personal/list/${listData.id}/create/task`),
                       () => {
@@ -192,23 +193,60 @@ const TasksPersonalList: NextPageWithLayout = () => {
           {
               listData.tasks ?
                   listData.tasks.map((task, ind) => {
-                    return <ListTask key={ task.title } task={ task }/>
+                    return (
+                      <ListTask
+                            /* eslint-disable-next-line react/no-array-index-key */
+                        key={ task.title + ind }
+                        task={ task }
+                        onClick={
+                              () => {
+                                return setActiveTask(ind)
+                              }
+                            }
+                        selectTask={
+                              value => {
+                                console.log(`task: ${task.title}:${value}`)
+                              }
+                            }
+                        onDelete={ () => {
+                              verifyAndReturnJson(
+                                  SERVER.delete(`/tasks/personal/list/delete/${listData.id}/task/${ind}`),
+                                  () => {
+                                    if (!router.query.listId) return
+
+                                    if (typeof router.query.listId === "string") {
+                                      loadList(router.query.listId, list => {
+                                        setListData(list)
+                                        setUnsavedListData(list)
+                                      })
+                                      console.log("success")
+                                    } else {
+                                      router.push(`/app/tasks`)
+                                    }
+                                  },
+                                  err => {
+                                    console.error(err)
+                                  }
+                              )
+                            } }
+                      />
+                    )
                   })
                   : <h1>No tasks</h1>
             }
         </Chiplet.Column>
       </Chiplet.Column>
-      <section className={ `${styles.taskProperties} ${selectedTask !== null && styles.taskPropertiesOpen}` }>
+      <section className={ `${styles.taskProperties} ${activeTask !== null && styles.taskPropertiesOpen}` }>
         {
-              selectedTaskData && (
+              activeTaskData && (
               <Chiplet.Column>
                 <Chiplet.Row>
                   <Chiplet.TextInput
                     style={ { flex: 1 } }
-                    defaultValue={ selectedTaskData?.title }
+                    defaultValue={ activeTaskData?.title }
                     onChange={ e => {
-                            setSelectedTaskData({
-                              ...selectedTaskData, title: e.currentTarget.value
+                            setActiveTaskData({
+                              ...activeTaskData, title: e.currentTarget.value
                             })
                           } }
                   />
@@ -216,7 +254,7 @@ const TasksPersonalList: NextPageWithLayout = () => {
                     style={ { aspectRatio: "1 / 1" } }
                     icon='x-16'
                     onClick={ () => {
-                            setSelectedTask(null)
+                            setActiveTask(null)
                           } }
                   />
                 </Chiplet.Row>
@@ -226,15 +264,15 @@ const TasksPersonalList: NextPageWithLayout = () => {
                           flex: 1,
                           flexDirection: 'row',
                         } }
-                  defaultValue={ selectedTaskData?.description }
+                  defaultValue={ activeTaskData?.description }
                   onChange={ e => {
-                          setSelectedTaskData({
-                            ...selectedTaskData, description: e.currentTarget.value
+                          setActiveTaskData({
+                            ...activeTaskData, description: e.currentTarget.value
                           })
                         } }
                 />
                 <p>Tags</p>
-                <Chiplet.Tags compact tags={ selectedTaskData.tags }/>
+                <Chiplet.Tags compact tags={ activeTaskData.tags }/>
                 <p>Assignees</p>
                 {/*
               <Card style={{
@@ -244,10 +282,10 @@ const TasksPersonalList: NextPageWithLayout = () => {
                 padding: "0.5rem",
                 transition: "var(--transition)",
               }}>
-                <Assignees assignees={selectedTaskData?.assignees || []} />
+                <Assignees assignees={activeTaskData?.assignees || []} />
                 <SegmentButton onClick={() => {
                   verifyAndReturnJson(
-                    SERVER.post(`/tasks/personal/list/${listData.id}/task/${selectedTask}/assignees/`, { body: JSON.stringify([ ... selectedTaskData.assignees, "bob" ]) }),
+                    SERVER.post(`/tasks/personal/list/${listData.id}/task/${activeTask}/assignees/`, { body: JSON.stringify([ ... activeTaskData.assignees, "bob" ]) }),
                     () => {
                       console.log(`new user added successfully`)
                     },
@@ -259,9 +297,9 @@ const TasksPersonalList: NextPageWithLayout = () => {
               </Card>
             */}
                 <Chiplet.Button onClick={ () => {
-                      setSelectedTask(null)
+                      setActiveTask(null)
                       verifyAndReturnJson(
-                          SERVER.post(`/tasks/personal/list/${router.query.listId}/task/${selectedTask}`, { body: JSON.stringify(selectedTaskData) }),
+                          SERVER.post(`/tasks/personal/list/${router.query.listId}/task/${activeTask}`, { body: JSON.stringify(activeTaskData) }),
                           () => {
                             if (!router.query.listId) return
 
