@@ -6,11 +6,13 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+}
 
+.content {
   --app-application-margin: 0rem;
   --app-application-rounding: 0rem;
 
-  &:has(> .content[data-app-window="true"]) {
+  &[data-app-window="true"] {
     --app-application-margin: 1rem;
     --app-application-rounding: 1rem;
   }
@@ -19,9 +21,7 @@
     --app-application-margin: 0rem !important;
     --app-application-rounding: 0rem !important;
   }
-}
 
-.content {
   overflow: auto;
   animation: zoomInAnimation 1500ms ease-in-out forwards;
   height: calc(

@@ -1,8 +1,7 @@
 import Link from 'next/link'
 import Chiplet from 'ui';
-import Slides from 'ui/backup/elements/slides/Slides';
 import {useRouter} from 'next/router';
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 
 import HomeLayout from "../layouts/homeLayout/HomeLayout";
 
@@ -12,57 +11,22 @@ import {NextPageWithLayout} from './page';
 const Home: NextPageWithLayout = () => {
     const router = useRouter()
 
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
-
-    useEffect(() => {
-        setIsLoggedIn(localStorage.getItem("currentServer") !== undefined)
-    }, [])
-
     return (
       <div className={ styles.root }>
         <section className={ styles.section1 }>
-          <div>
-            <div>
-              <Slides
-                slides={
-                                [
-                                  <h1 key={ 0 }>This is coming soon.</h1>,
-                                  <h1 key={ 1 }>This is coming soon..</h1>,
-                                  <h1 key={ 2 }>This is coming soon...</h1>,
-                                  <h1 key={ 3 }>This is coming soon....</h1>,
-                                  <h1 key={ 4 }>This is coming soon.....</h1>,
-                                ]
-                            }
-                changeDuration={ 1000 }
-              />
-            </div>
-          </div>
-          <div>
+          <Chiplet.Column>
             <h1>YourDash</h1>
             <p>The home for your files.</p>
             <div>
-              {
-                            isLoggedIn ? (
-                              <Chiplet.Button
-                                onClick={ () => {
-                                        router.push(`/login/`)
-                                    } }
-                                vibrant
-                              >Open</Chiplet.Button>
-                            ) : (
-                              <>
-                                <Chiplet.Button
-                                  onClick={ () => {
-                                            router.push("/login/server")
-                                        } }
-                                  vibrant
-                                >Sign Up</Chiplet.Button>
-                                <Link href="/login/">Login</Link>
-                              </>
-                            )
-                        }
+              <Chiplet.Button
+                onClick={ () => {
+                                router.push("/login/server")
+                            } }
+                vibrant
+              >Sign Up</Chiplet.Button>
+              <Link href="/login/">Login</Link>
             </div>
-          </div>
+          </Chiplet.Column>
         </section>
         <section className={ styles.section2 }>
           <Chiplet.Card>
@@ -93,60 +57,116 @@ const Home: NextPageWithLayout = () => {
         <section className={ styles.section3 }>
           <h3>Built using</h3>
           <div>
-            <Chiplet.Card>
-              <span>NodeJS</span>
-              <span>Runs the YourDash Server software</span>
-              <Chiplet.Button onClick={ () => {
-                            console.log(`Implement ME!!!`)
-                        } }
-              >Learn more</Chiplet.Button>
+            <Chiplet.Card onClick={
+                        () => {
+                            router.push(`https://nextjs.org`)
+                        }
+                    }
+            >
+              <Chiplet.Column>
+                <span>NodeJS</span>
+                <span>Powers YourDash instances</span>
+              </Chiplet.Column>
             </Chiplet.Card>
-            <Chiplet.Card>
-              <span>NextJS</span>
-              <span>Powers and builds the website</span>
-              <Chiplet.Button onClick={ () => {
-                            console.log(`Implement ME!!!`)
-                        } }
-              >Learn more</Chiplet.Button>
+            <Chiplet.Card onClick={
+                        () => {
+                            router.push(`https://nextjs.org`)
+                        }
+                    }
+            >
+              <Chiplet.Column>
+                <span>NextJS</span>
+                <span>Allow shipping minimal javascript to the browser</span>
+              </Chiplet.Column>
             </Chiplet.Card>
-            <Chiplet.Card>
+            <Chiplet.Card onClick={
+                        () => {
+                            router.push(`https://nextjs.org`)
+                        }
+                    }
+            ><Chiplet.Column>
               <span>Sass</span>
-              <span>Simplify writing css</span>
-              <Chiplet.Button onClick={ () => {
-                            console.log(`Implement ME!!!`)
-                        } }
-              >Learn more</Chiplet.Button>
+              <span>Allow writing nested css</span>
+            </Chiplet.Column>
             </Chiplet.Card>
-            <Chiplet.Card>
+            <Chiplet.Card onClick={
+                        () => {
+                            router.push(`https://nextjs.org`)
+                        }
+                    }
+            ><Chiplet.Column>
               <span>Typescript</span>
               <span>Add static typing to javascript</span>
-              <Chiplet.Button onClick={ () => {
-                            console.log(`Implement ME!!!`)
-                        } }
-              >Learn more</Chiplet.Button>
+            </Chiplet.Column>
             </Chiplet.Card>
           </div>
         </section>
         <section className={ styles.section4 }>
           <h3>Update Logs</h3>
           <div>
-            <Chiplet.Card>
+            <Chiplet.Card
+              onClick={
+                        () => {
+                            router.push(`/docs/updates`)
+                        }
+                    }
+              compact
+            >
               <span>Version 1</span>
               <span>The start of the YourDash project</span>
             </Chiplet.Card>
-            <Chiplet.Card>
+            <Chiplet.Card
+              onClick={
+                        () => {
+                            router.push(`/docs/updates`)
+                        }
+                    }
+              compact
+            >
               <span>Coming Soon</span>
               <span>Update not yet released</span>
             </Chiplet.Card>
-            <Chiplet.Card>
+            <Chiplet.Card
+              onClick={
+                        () => {
+                            router.push(`/docs/updates`)
+                        }
+                    }
+              compact
+            >
               <span>Coming Soon</span>
               <span>Update not yet released</span>
             </Chiplet.Card>
-            <Chiplet.Card>
+            <Chiplet.Card
+              onClick={
+                        () => {
+                            router.push(`/docs/updates`)
+                        }
+                    }
+              compact
+            >
               <span>Coming Soon</span>
               <span>Update not yet released</span>
             </Chiplet.Card>
-            <Chiplet.Card>
+            <Chiplet.Card
+              onClick={
+                        () => {
+                            router.push(`/docs/updates`)
+                        }
+                    }
+              compact
+            >
+              <span>Coming Soon</span>
+              <span>Update not yet released</span>
+            </Chiplet.Card>
+            <Chiplet.Card
+              onClick={
+                        () => {
+                            router.push(`/docs/updates`)
+                        }
+                    }
+              compact
+            >
               <span>Coming Soon</span>
               <span>Update not yet released</span>
             </Chiplet.Card>
