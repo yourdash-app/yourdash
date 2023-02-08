@@ -9,8 +9,8 @@ import {type LauncherApplication} from "types/core/panel/launcherApplication.js"
 import {type YourDashUser} from 'types/core/user.js';
 
 const Module: YourDashModule = {
-    install() {
-        log("Core module installed")
+    install: () => {
+        return 0
     },
 
     load(request, moduleApi) {
@@ -23,12 +23,12 @@ const Module: YourDashModule = {
         })
 
         request.get(`/panel/quick-shortcuts/`, (req, res) => {
-            if (!fs.existsSync(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/panel/quick-shortcuts/`))) {
+            if (!fs.existsSync(path.resolve(`${moduleApi.UserAppData(req)}/core/panel/quick-shortcuts/`))) {
                 return res.json([]);
             }
-            fs.readFile(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`), (err, data) => {
+            fs.readFile(path.resolve(`${moduleApi.UserAppData(req)}/core/panel/quick-shortcuts/shortcuts.json`), (err, data) => {
                 if (err) {
-                    log(`[${this.name}] ERROR: ${err}`)
+                    log(`[core] ERROR: ${err}`)
                     return res.json({error: true});
                 }
 
@@ -40,19 +40,19 @@ const Module: YourDashModule = {
         request.post(`/panel/quick-shortcut/create`, (req, res) => {
 
             // check if the quick-shortcuts directory doesn't exist
-            if (!fs.existsSync(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`))) {
+            if (!fs.existsSync(path.resolve(`${moduleApi.UserAppData(req)}/core/panel/quick-shortcuts/shortcuts.json`))) {
 
                 // create the directory
-                fs.mkdir(`${moduleApi.UserAppData(req)}/${this.name}/panel/quick-shortcuts/`, {recursive: true}, err => {
+                fs.mkdir(`${moduleApi.UserAppData(req)}/core/panel/quick-shortcuts/`, {recursive: true}, err => {
                     if (err) {
-                        log(`[${this.name}] ERROR: ${err}`)
+                        log(`[core] ERROR: ${err}`)
                         return process.exit(1)
                     }
 
                     // write a blank array to the shortcuts.json file
-                    fs.writeFile(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`), "[]", err => {
+                    fs.writeFile(path.resolve(`${moduleApi.UserAppData(req)}/core/panel/quick-shortcuts/shortcuts.json`), "[]", err => {
                         if (err) {
-                            log(`[${this.name}] ERROR: ${err}`)
+                            log(`[core] ERROR: ${err}`)
                             return process.exit(1)
                         }
 
@@ -76,7 +76,7 @@ const Module: YourDashModule = {
                                 icon: image, id, name: req.body.name || "undefined", url: req.body.url || '/app/dash'
                             })
 
-                            fs.writeFile(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`), JSON.stringify(json), err => {
+                            fs.writeFile(path.resolve(`${moduleApi.UserAppData(req)}/core/panel/quick-shortcuts/shortcuts.json`), JSON.stringify(json), err => {
                                 if (err) {
                                     log(`ERROR ${err}`)
                                     return res.json({error: true})
@@ -87,7 +87,7 @@ const Module: YourDashModule = {
                     })
                 })
             } else {
-                fs.readFile(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`), (err, data) => {
+                fs.readFile(path.resolve(`${moduleApi.UserAppData(req)}/core/panel/quick-shortcuts/shortcuts.json`), (err, data) => {
                     if (err) {
                         data = Buffer.from("[]")
                     }
@@ -102,7 +102,7 @@ const Module: YourDashModule = {
                                 icon: image, id, name: req.body.name || "undefined", url: req.body.url || '/app/'
                             })
 
-                            fs.writeFile(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`), JSON.stringify(json), err => {
+                            fs.writeFile(path.resolve(`${moduleApi.UserAppData(req)}/core/panel/quick-shortcuts/shortcuts.json`), JSON.stringify(json), err => {
                                 if (err) {
                                     log(`ERROR ${err}`)
                                     return res.json({error: true})
@@ -117,11 +117,11 @@ const Module: YourDashModule = {
         })
 
         request.post(`/panel/quick-shortcut/:id`, (req, res) => {
-            if (!fs.existsSync(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`))) return res.json({error: true})
+            if (!fs.existsSync(path.resolve(`${moduleApi.UserAppData(req)}/core/panel/quick-shortcuts/shortcuts.json`))) return res.json({error: true})
 
-            fs.readFile(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`), (err, data) => {
+            fs.readFile(path.resolve(`${moduleApi.UserAppData(req)}/core/panel/quick-shortcuts/shortcuts.json`), (err, data) => {
                 if (err) {
-                    log(`[${this.name}] ERROR: ${err}`)
+                    log(`[core] ERROR: ${err}`)
                     return res.json({error: true})
                 }
 
@@ -136,9 +136,9 @@ const Module: YourDashModule = {
                 if (req.body.icon) json[shortcutInd].icon = req.body.icon
                 if (req.body.url) json[shortcutInd].url = req.body.url
 
-                fs.writeFile(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`), JSON.stringify(json), err => {
+                fs.writeFile(path.resolve(`${moduleApi.UserAppData(req)}/core/panel/quick-shortcuts/shortcuts.json`), JSON.stringify(json), err => {
                     if (err) {
-                        log(`[${this.name}] ERROR: ${err}`)
+                        log(`[core] ERROR: ${err}`)
                         return res.json({error: true})
                     }
                 })
@@ -148,11 +148,11 @@ const Module: YourDashModule = {
         });
 
         request.delete(`/panel/quick-shortcut/:id`, (req, res) => {
-            if (!fs.existsSync(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`))) return res.json({error: true})
+            if (!fs.existsSync(path.resolve(`${moduleApi.UserAppData(req)}/core/panel/quick-shortcuts/shortcuts.json`))) return res.json({error: true})
 
-            fs.readFile(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`), (err, data) => {
+            fs.readFile(path.resolve(`${moduleApi.UserAppData(req)}/core/panel/quick-shortcuts/shortcuts.json`), (err, data) => {
                 if (err) {
-                    log(`[${this.name}] ERROR: ${err}`)
+                    log(`[core] ERROR: ${err}`)
                     return res.json({error: true})
                 }
 
@@ -160,9 +160,9 @@ const Module: YourDashModule = {
 
                 json = json.filter(shortcut => {return shortcut.id !== req.params.id})
 
-                fs.writeFile(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/panel/quick-shortcuts/shortcuts.json`), JSON.stringify(json), err => {
+                fs.writeFile(path.resolve(`${moduleApi.UserAppData(req)}/core/panel/quick-shortcuts/shortcuts.json`), JSON.stringify(json), err => {
                     if (err) {
-                        log(`[${this.name}] ERROR: ${err}`)
+                        log(`[core] ERROR: ${err}`)
                         return res.json({error: true})
                     }
                 })
@@ -269,7 +269,7 @@ const Module: YourDashModule = {
 
                 fs.writeFile(`${moduleApi.UserFs(req)}/user.json`, JSON.stringify(json), err => {
                     if (err) {
-                        log(`(${this.name}) ERROR: unable to write to user.json`)
+                        log(`(core) ERROR: unable to write to user.json`)
                         return res.json({error: true})
                     }
 
@@ -329,12 +329,9 @@ const Module: YourDashModule = {
         // #endregion
     },
 
-    name: 'core',
-
     unload() {
         log("WARNING: if the server hasn't been requested to shutdown a fatal problem has occurred! (the core module has been unloaded so expect core features to break)")
     },
-
 };
 
 export default Module;

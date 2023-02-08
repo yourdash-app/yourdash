@@ -25,8 +25,7 @@
   overflow: auto;
   animation: zoomInAnimation 1500ms ease-in-out forwards;
   height: calc(
-          100vh -
-          calc(calc(var(--app-application-margin) * 2) + var(--app-panel-height))
+          100vh - calc(calc(var(--app-application-margin) * 2) + var(--app-panel-height))
   );
   width: calc(100vw - calc(var(--app-application-margin) * 2));
   transition-property: opacity, height, width, margin, border-radius;

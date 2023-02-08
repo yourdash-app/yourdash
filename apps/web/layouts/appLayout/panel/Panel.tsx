@@ -67,7 +67,8 @@ const Panel: React.FC<IPanel> = ({
 
   return (
     <div className={ styles.component }>
-      <div
+      <button
+        type="button"
         className={ styles.launcher }
         onClick={ () => {
               setLauncherSlideOutVisible(!launcherSlideOutVisible)
@@ -81,7 +82,7 @@ const Panel: React.FC<IPanel> = ({
               } }
           color={ "var(--app-panel-fg)" }
         />
-      </div>
+      </button>
       <div className={ `${styles.launcherSlideOut} ${launcherSlideOutVisible ? styles.launcherSlideOutVisible : ""}` }>
         <div data-header="true" style={ { backgroundImage } }>
           <div data-title="true">Hiya, {userData?.name?.first}</div>
@@ -96,7 +97,7 @@ const Panel: React.FC<IPanel> = ({
         <div className={ styles.launcherGrid }>
           {
               installedApps ?
-                  installedApps.map((app, ind) => {
+                  installedApps.map(app => {
                     if (app?.name?.toLowerCase()?.includes(searchQuery) || app?.description?.toLowerCase()?.includes(searchQuery))
                       return (
                         <Chiplet.RightClickMenu
@@ -123,7 +124,8 @@ const Panel: React.FC<IPanel> = ({
                               ] }
                           key={ app.name }
                         >
-                          <div
+                          <button
+                            type="button"
                             className={ styles.launcherGridItem }
                             onClick={ () => {
                                   if (app.path === router.pathname) return setLauncherSlideOutVisible(false)
@@ -138,7 +140,7 @@ const Panel: React.FC<IPanel> = ({
                           >
                             <img src={ app.icon } draggable={ false } alt=""/>
                             <span>{app.displayName}</span>
-                          </div>
+                          </button>
                         </Chiplet.RightClickMenu>
                       )
                   })
@@ -184,7 +186,7 @@ const Panel: React.FC<IPanel> = ({
       <div className={ styles.shortcuts }>
         {
             quickShortcuts?.length !== 0
-                ? quickShortcuts?.map((shortcut, ind) => {
+                ? quickShortcuts?.map(shortcut => {
                   return (
                     <Chiplet.RightClickMenu
                       key={ shortcut.name }
@@ -207,7 +209,8 @@ const Panel: React.FC<IPanel> = ({
                             }
                           ] }
                     >
-                      <div
+                      <button
+                        type="button"
                         className={ styles.shortcut }
                         onClick={ () => {
                               setLauncherSlideOutVisible(false)
@@ -228,7 +231,7 @@ const Panel: React.FC<IPanel> = ({
                             }
                         </div>
                         <span>{shortcut.name}</span>
-                      </div>
+                      </button>
                     </Chiplet.RightClickMenu>
                   )
                 })
@@ -265,7 +268,8 @@ const Panel: React.FC<IPanel> = ({
           src={ "/core/panel/user/profile/picture" }
           alt=""
         />
-        <div
+        <button
+          type="button"
           style={ {
                 background: "#00000040",
                 height: "100vh",
@@ -292,29 +296,29 @@ const Panel: React.FC<IPanel> = ({
             className={ styles.accountDropdown }
           >
             <Chiplet.Row className={ styles.accountDropdownQuickActions }>
-              <div onClick={ () => {
+              <Chiplet.IconButton
+                icon="logout"
+                onClick={ () => {
                   setAccountDropdownVisible(false)
                   localStorage.removeItem("sessiontoken")
                   localStorage.removeItem("username")
                   router.push("/login/")
                 } }
-              >
-                <Chiplet.Icon name='logout' color="var(--button-fg)"/>
-              </div>
-              <div onClick={ () => {
+              />
+              <Chiplet.IconButton
+                icon='info-16'
+                onClick={ () => {
                   setAccountDropdownVisible(false)
                   router.push("/about")
                 } }
-              >
-                <Chiplet.Icon name='info-16' color="var(--button-fg)"/>
-              </div>
-              <div onClick={ () => {
+              />
+              <Chiplet.IconButton
+                icon="gear-16"
+                onClick={ () => {
                   setAccountDropdownVisible(false)
                   router.push("/app/settings")
                 } }
-              >
-                <Chiplet.Icon name='gear-16' color="var(--button-fg)"/>
-              </div>
+              />
             </Chiplet.Row>
             <Chiplet.Column>
               <Chiplet.Button onClick={ () => {

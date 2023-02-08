@@ -40,10 +40,7 @@ const AppLayout: React.FC<IAppLayout> = ({
     if (!hasLoaded) return <div/>
 
     return standaloneInterface
-        ? (
-            {children}
-        )
-        : (
+        ? children : (
           <div className={ styles.root } style={ {backgroundImage: `url(${backgroundImage})`} }>
             <Panel
               backgroundImage={ `url(${backgroundImage})` }

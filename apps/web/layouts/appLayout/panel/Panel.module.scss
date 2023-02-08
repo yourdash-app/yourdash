@@ -46,7 +46,7 @@
 
   > * {
     flex-grow: 1;
-    height: 1.5rem;
+    height: 2.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -123,9 +123,11 @@
 }
 
 .launcher {
+  margin: 0;
   padding: 0.5rem;
   background-color: var(--app-panel-launcher-bg);
-  height: calc(var(--app-panel-height) - 1rem);
+  border: none;
+  height: var(--app-panel-height);
   aspect-ratio: 1/1;
   transition: var(--transition);
   cursor: pointer;
@@ -266,6 +268,11 @@
     height: 100%;
 
     > .launcherGridItem {
+      border: none;
+      color: var(--card-fg);
+      padding: 0;
+      margin: 0;
+      font-size: 1rem;
       display: flex;
       flex-direction: column;
       width: 100%;
@@ -342,6 +349,10 @@
   position: relative;
   display: flex;
   transition: var(--transition);
+  background-color: transparent;
+  border: none;
+  margin: 0;
+  padding: 0;
 
   > div {
     transition: var(--transition);
@@ -352,7 +363,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #00000000;
+    background-color: transparent;
     cursor: pointer;
 
     &:hover {
@@ -395,25 +406,27 @@
     }
   }
 
-  &:hover {
-    > span {
-      opacity: 1;
-      pointer-events: all;
-    }
-  }
-
   > span {
     transition: var(--transition);
     pointer-events: none;
     opacity: 0;
     top: var(--app-panel-height);
     position: absolute;
-    padding: 0.25rem 0.5rem;
-    background: #00000088;
+    padding: 0.5rem 0.75rem;
     border-radius: 0.5rem;
     left: 50%;
+    font-size: 1rem;
     transform: translateX(-50%);
     white-space: nowrap;
+    color: var(--app-panel-fg);
+    background-color: var(--app-panel-bg);
+  }
+
+  &:hover {
+    > span {
+      opacity: 1;
+      pointer-events: all;
+    }
   }
 }
 
