@@ -220,7 +220,9 @@ const StoreProduct: NextPageWithLayout = () => {
               </Chiplet.Button>
               )
           }
-        <Chiplet.Button onClick={ () => {
+        <Chiplet.Button
+          disabled={ product.installed ? !product.uninstallable : false }
+          onClick={ () => {
             if (!product.installed) {
               setShowInstallationPopup(true)
             } else {

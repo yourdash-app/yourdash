@@ -10,13 +10,16 @@ import {type InstalledApplication} from "types/store/installedApplication.js";
 
 const module: YourDashModule = {
     install() {
-        log(`Store module was installed`)
+        return 0
     },
+    requiredModules: [],
+    configuration: {},
+    uninstall: () => {return 0},
     load(request, moduleApi) {
         if (!fs.existsSync(`${moduleApi.FsOrigin}/installed_apps.json`)) {
             fs.writeFile(`${moduleApi.FsOrigin}/installed_apps.json`, JSON.stringify(DEFAULT_APPS), err => {
                 if (err) {
-                    log(`(${this.name}) ERROR: unable to write required file installed_apps.json`)
+                    log(`(store) ERROR: unable to write required file installed_apps.json`)
                     return process.exit(1)
                 }
             })
@@ -187,7 +190,7 @@ const module: YourDashModule = {
         request.delete(`/application/:applicationId`, (req, res) => {
             fs.readFile(path.resolve(`${moduleApi.UserFs(req)}/user.json`), (err, data) => {
                 if (err) {
-                    log(`(${this.name}) ERROR: unable to read ${req.headers.username}'s user.json`)
+                    log(`(store) ERROR: unable to read ${req.headers.username}'s user.json`)
                     return res.json({error: true})
                 }
 
@@ -203,7 +206,7 @@ const module: YourDashModule = {
 
                 fs.readFile(`${moduleApi.FsOrigin}/installed_apps.json`, (err, data) => {
                     if (err) {
-                        log(`(${this.name}) ERROR: unable to read installed_apps.json`)
+                        log(`(store) ERROR: unable to read installed_apps.json`)
                         return res.json({error: true})
                     }
 
@@ -214,7 +217,7 @@ const module: YourDashModule = {
                     })
 
                     if (!application) {
-                        log(`(${this.name}) ERROR: no application with the name ${req.params.applicationId} exists`)
+                        log(`(store) ERROR: no application with the name ${req.params.applicationId} exists`)
                         return res.json({error: true})
                     }
 
@@ -224,7 +227,7 @@ const module: YourDashModule = {
 
                     fs.writeFile(`${moduleApi.FsOrigin}/installed_apps.json`, JSON.stringify(json), err => {
                         if (err) {
-                            log(`(${this.name}) ERROR: unable to write installed_apps.json`)
+                            log(`(store) ERROR: unable to write installed_apps.json`)
                             return res.json({error: true})
                         }
 
@@ -234,9 +237,8 @@ const module: YourDashModule = {
             })
         })
     },
-    name: "store",
     unload() {
-        log(`Store module unloaded`)
+        return 0
     },
 };
 

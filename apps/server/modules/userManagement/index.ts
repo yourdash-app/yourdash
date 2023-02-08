@@ -11,14 +11,10 @@ import { type CurrentUser } from "types/userManagement/currentUser.js";
 const USER_CACHE: { [key: string]: string } = {};
 
 const Module: YourDashModule = {
-  install() {
-    log(`installed the ${this.name} module`)
-  },
-
   load(request, moduleApi) {
     request.legacy().use((req, res, next) => {
       if (req.path.startsWith('/test')) return res.send('YourDash instance');
-      if (req.path.startsWith(`/api/${this.name}/login`)) return next();
+      if (req.path.startsWith(`/api/userManagement/login`)) return next();
       if (req.path.startsWith(`/api/core/instance/login`)) return next();
       if (req.headers.username) {
         const userName = req.headers.username as string;
@@ -277,12 +273,11 @@ const Module: YourDashModule = {
       );
     });
   },
-
-  name: 'userManagement',
-
-  unload() {
-    log(`unloaded the ${this.name} module`)
-  },
+  requiredModules: [],
+  configuration: {},
+  install: () => { return 0 },
+  unload: () => { return 0 },
+  uninstall: () => { return 0 }
 };
 
 export default Module;
