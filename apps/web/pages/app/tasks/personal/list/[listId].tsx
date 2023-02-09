@@ -58,13 +58,15 @@ const TasksPersonalList: NextPageWithLayout = () => {
           console.error(`unable to fetch task data`)
         }
     )
-  }, [ activeTask, router.query.listId ])
+  }, [ activeTask ])
 
   if (!listData) return <div/>
   if (!unsavedListData) return <div/>
 
   return (
     <div className={ `${styles.root} ${pageChanging && styles.slideOut}` }>
+
+      {/* Manage List Settings Backdrop */}
       <button
         type={ "button" }
         className={ `${styles.listSettingsBackdrop} ${showListSettings && styles.visible}` }
@@ -72,6 +74,8 @@ const TasksPersonalList: NextPageWithLayout = () => {
               setShowListSettings(false)
             } }
       />
+
+      {/* Manage List Settings Popup */}
       <Chiplet.Card className={ `${styles.listSettings} ${showListSettings && styles.visible}` }>
         <Chiplet.Row className={ styles.header }>
           <h2>Manage list settings</h2>
@@ -127,6 +131,7 @@ const TasksPersonalList: NextPageWithLayout = () => {
           </p>
           <Chiplet.Tags tags={ unsavedListData.tags }/>
         </main>
+
         <Chiplet.Button
           onClick={ () => {
                 verifyAndReturnJson(
@@ -145,6 +150,8 @@ const TasksPersonalList: NextPageWithLayout = () => {
           Save and close
         </Chiplet.Button>
       </Chiplet.Card>
+
+      {/* List Header */}
       <Chiplet.Column>
         <Chiplet.Row className={ styles.header }>
           <Chiplet.IconButton
@@ -189,6 +196,8 @@ const TasksPersonalList: NextPageWithLayout = () => {
                 } }
           />
         </Chiplet.Row>
+
+        {/* Tasks View */}
         <Chiplet.Column className={ styles.tasksView }>
           {
               listData.tasks ?
@@ -236,45 +245,48 @@ const TasksPersonalList: NextPageWithLayout = () => {
             }
         </Chiplet.Column>
       </Chiplet.Column>
+
       <section className={ `${styles.taskProperties} ${activeTask !== null && styles.taskPropertiesOpen}` }>
-        {
-              activeTaskData && (
-              <Chiplet.Column>
-                <Chiplet.Row>
-                  <Chiplet.TextInput
-                    style={ { flex: 1 } }
-                    defaultValue={ activeTaskData?.title }
-                    onChange={ e => {
-                            setActiveTaskData({
-                              ...activeTaskData, title: e.currentTarget.value
-                            })
-                          } }
-                  />
-                  <Chiplet.IconButton
-                    style={ { aspectRatio: "1 / 1" } }
-                    icon='x-16'
-                    onClick={ () => {
-                            setActiveTask(null)
-                          } }
-                  />
-                </Chiplet.Row>
-                <p>Description</p>
-                <Chiplet.TextBox
-                  style={ {
-                          flex: 1,
-                          flexDirection: 'row',
-                        } }
-                  defaultValue={ activeTaskData?.description }
-                  onChange={ e => {
-                          setActiveTaskData({
-                            ...activeTaskData, description: e.currentTarget.value
-                          })
-                        } }
-                />
-                <p>Tags</p>
-                <Chiplet.Tags compact tags={ activeTaskData.tags }/>
-                <p>Assignees</p>
-                {/*
+        <Chiplet.Column>
+          <Chiplet.Row>
+            <Chiplet.TextInput
+              style={ { flex: 1 } }
+              defaultValue={ activeTaskData?.title }
+              onChange={ e => {
+                    if (!activeTaskData) return
+
+                    setActiveTaskData({
+                      ...activeTaskData, title: e.currentTarget.value
+                    })
+                  } }
+            />
+            <Chiplet.IconButton
+              style={ { aspectRatio: "1 / 1" } }
+              icon='x-16'
+              onClick={ () => {
+                    setActiveTask(null)
+                  } }
+            />
+          </Chiplet.Row>
+          <p>Description</p>
+          <Chiplet.TextBox
+            style={ {
+                  flex: 1,
+                  flexDirection: 'row',
+                } }
+            defaultValue={ activeTaskData?.description }
+            onChange={ e => {
+                  if (!activeTaskData) return
+
+                  setActiveTaskData({
+                    ...activeTaskData, description: e.currentTarget.value
+                  })
+                } }
+          />
+          <p>Tags</p>
+          <Chiplet.Tags compact tags={ activeTaskData?.tags || [] }/>
+          <p>Assignees</p>
+          {/*
               <Card style={{
                 display: "flex",
                 flexDirection: "column",
@@ -296,31 +308,29 @@ const TasksPersonalList: NextPageWithLayout = () => {
                 }}>Add Assignee</SegmentButton>
               </Card>
             */}
-                <Chiplet.Button onClick={ () => {
-                      setActiveTask(null)
-                      verifyAndReturnJson(
-                          SERVER.post(`/tasks/personal/list/${router.query.listId}/task/${activeTask}`, { body: JSON.stringify(activeTaskData) }),
-                          () => {
-                            if (!router.query.listId) return
+          <Chiplet.Button onClick={ () => {
+              setActiveTask(null)
+              verifyAndReturnJson(
+                  SERVER.post(`/tasks/personal/list/${router.query.listId}/task/${activeTask}`, { body: JSON.stringify(activeTaskData) }),
+                  () => {
+                    if (!router.query.listId) return
 
-                            if (typeof router.query.listId === "string") {
-                              loadList(router.query.listId, list => {
-                                setListData(list)
-                                setUnsavedListData(list)
-                              })
-                            } else {
-                              router.push(`/app/tasks`)
-                            }
-                          },
-                          () => {
-                            console.error(`unable to save new task data`)
-                          }
-                      )
-                    } }
-                >Apply</Chiplet.Button>
-              </Chiplet.Column>
+                    if (typeof router.query.listId === "string") {
+                      loadList(router.query.listId, list => {
+                        setListData(list)
+                        setUnsavedListData(list)
+                      })
+                    } else {
+                      router.push(`/app/tasks`)
+                    }
+                  },
+                  () => {
+                    console.error(`unable to save new task data`)
+                  }
               )
-          }
+            } }
+          >Apply</Chiplet.Button>
+        </Chiplet.Column>
       </section>
     </div>
   );

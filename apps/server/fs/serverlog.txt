@@ -10,590 +10,305 @@ core,files,store,tasks,userManagement
 (Start up) loaded module: tasks
 (Start up) loaded module: userManagement
 (Start up) loaded module: store
-15:8:20  GET  200 /api/core/instance/login/background
-15:8:20  GET  200 /api/core/instance/login/name
-15:8:20  GET  200 /api/core/instance/login/logo
-15:8:20  GET  200 /api/core/instance/login/message
-15:8:20  GET  200 /api/core/instance/login/background
-15:8:20  GET  200 /api/core/instance/login/name
-15:8:20  GET  200 /api/core/instance/login/logo
-15:8:20  GET  200 /api/core/instance/login/message
-15:8:22  GET  200 /api/userManagement/login
-15:8:22  GET  200 /api/core/panel/background-image
-15:8:22  GET  200 /api/core/panel/background-image
-15:8:23  GET  200 /api/core/panel/user/profile/picture
-15:8:23  GET  200 /api/core/instance/logo
-15:8:23  GET  200 /api/userManagement/current/user
-15:8:23  GET  200 /api/core/panel/quick-shortcuts/
-15:8:23  GET  200 /api/core/panel/launcher/apps
-15:8:23  GET  200 /api/core/instance/logo
-15:8:23  GET  200 /api/core/panel/quick-shortcuts/
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 64, height: 64
-15:8:23  GET  200 /api/core/panel/user/profile/picture
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-15:8:23  GET  200 /api/userManagement/current/user
-15:8:23  GET  200 /api/userManagement/current/user
-15:8:23  GET  200 /api/userManagement/current/user
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-15:8:23  GET  200 /api/core/panel/launcher/apps
+15:49:56  GET  200 /api/core/instance/login/background
+15:49:56  GET  200 /api/core/instance/login/name
+15:49:56  GET  200 /api/core/instance/login/logo
+15:49:56  GET  200 /api/core/instance/login/message
+15:49:56  GET  200 /api/core/instance/login/background
+15:49:56  GET  200 /api/core/instance/login/name
+15:49:56  GET  200 /api/core/instance/login/logo
+15:49:56  GET  200 /api/core/instance/login/message
+15:49:58  GET  200 /api/userManagement/login
+15:49:59  GET  200 /api/core/panel/background-image
+15:49:59  GET  200 /api/core/panel/background-image
+15:50:00  GET  200 /api/core/panel/user/profile/picture
+15:50:00  GET  200 /api/core/instance/logo
+15:50:00  GET  200 /api/userManagement/current/user
+15:50:00  GET  200 /api/core/panel/quick-shortcuts/
+15:50:00  GET  200 /api/core/panel/launcher/apps
+15:50:00  GET  200 /api/core/instance/logo
+15:50:00  GET  200 /api/core/panel/quick-shortcuts/
 Triggered Sharp, width: 128, height: 128
 Triggered Sharp, width: 128, height: 128
 Triggered Sharp, width: 128, height: 128
 Triggered Sharp, width: 64, height: 64
-15:8:23  GET  200 /api/core/panel/user/profile/picture
+Triggered Sharp, width: 128, height: 128
+15:50:00  GET  200 /api/core/panel/user/profile/picture
+Triggered Sharp, width: 128, height: 128
+Triggered Sharp, width: 128, height: 128
+15:50:00  GET  200 /api/userManagement/current/user
+15:50:00  GET  200 /api/userManagement/current/user
+15:50:00  GET  200 /api/userManagement/current/user
+Triggered Sharp, width: 128, height: 128
+15:50:00  GET  200 /api/core/panel/launcher/apps
+Triggered Sharp, width: 64, height: 64
+15:50:00  GET  200 /api/core/panel/user/profile/picture
+Triggered Sharp, width: 128, height: 128
+Triggered Sharp, width: 128, height: 128
 Triggered Sharp, width: 128, height: 128
 Triggered Sharp, width: 128, height: 128
 Triggered Sharp, width: 128, height: 128
 Triggered Sharp, width: 128, height: 128
 Triggered Sharp, width: 128, height: 128
 Triggered Sharp, width: 64, height: 64
-15:8:23  GET  200 /api/core/panel/user/profile/picture
+15:50:00  GET  200 /api/core/panel/user/profile/picture
 Triggered Sharp, width: 64, height: 64
-15:8:35  POS  200 /api/core/panel/quick-shortcut/create
-Triggered Sharp, width: 48, height: 48
-15:8:35  GET  200 /api/userManagement/current/user
-15:8:35  GET  200 /api/userManagement/current/user
-15:8:38  GET  200 /api/store/included/apps
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-15:8:38  GET  200 /api/store/included/apps
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-15:8:42  GET  200 /api/store/application/dash
-Triggered Sharp, width: 284, height: 284
-15:8:42  GET  200 /api/store/application/dash
-Triggered Sharp, width: 284, height: 284
-15:8:44  DEL  200 /api/store/application/dash
-15:8:49  GET  200 /api/core/panel/background-image
-15:8:49  GET  200 /api/core/panel/background-image
-15:8:49  GET  200 /api/core/panel/user/profile/picture
-15:8:49  GET  200 /api/core/instance/logo
-15:8:49  GET  200 /api/userManagement/current/user
-15:8:49  GET  200 /api/store/application/dash
-15:8:49  GET  200 /api/core/panel/quick-shortcuts/
-15:8:49  GET  200 /api/core/panel/launcher/apps
-15:8:49  GET  200 /api/core/instance/logo
-15:8:49  GET  200 /api/userManagement/current/user
-15:8:49  GET  200 /api/core/panel/quick-shortcuts/
-Triggered Sharp, width: 284, height: 284
-15:8:49  GET  200 /api/store/application/dash
+15:50:90  GET  200 /api/core/settings/user/profile
+15:50:90  GET  200 /api/core/settings/user/profile
+15:50:90  GET  200 /api/core/settings/user/profile/image
+Triggered Sharp, width: 256, height: 256
+15:50:90  GET  200 /api/core/settings/user/profile/image
+Triggered Sharp, width: 256, height: 256
+15:50:18  GET  200 /api/core/panel/background-image
+15:50:18  GET  200 /api/core/panel/background-image
+15:50:18  GET  200 /api/core/panel/user/profile/picture
+15:50:18  GET  200 /api/core/instance/logo
+15:50:18  GET  200 /api/userManagement/current/user
+15:50:18  GET  200 /api/userManagement/current/user
+15:50:18  GET  200 /api/core/panel/quick-shortcuts/
+15:50:18  GET  200 /api/core/panel/launcher/apps
+15:50:18  GET  200 /api/core/instance/logo
+15:50:18  GET  200 /api/core/panel/quick-shortcuts/
 Triggered Sharp, width: 128, height: 128
 Triggered Sharp, width: 128, height: 128
 Triggered Sharp, width: 128, height: 128
 Triggered Sharp, width: 64, height: 64
-15:8:49  GET  200 /api/core/panel/user/profile/picture
+15:50:18  GET  200 /api/core/panel/user/profile/picture
 Triggered Sharp, width: 128, height: 128
 Triggered Sharp, width: 128, height: 128
 Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 284, height: 284
 Triggered Sharp, width: 128, height: 128
-15:8:49  GET  200 /api/core/panel/launcher/apps
+15:50:19  GET  200 /api/core/panel/launcher/apps
+Triggered Sharp, width: 128, height: 128
 Triggered Sharp, width: 128, height: 128
 Triggered Sharp, width: 128, height: 128
 Triggered Sharp, width: 64, height: 64
-Triggered Sharp, width: 128, height: 128
-15:8:49  GET  200 /api/core/panel/user/profile/picture
+15:50:19  GET  200 /api/core/panel/user/profile/picture
 Triggered Sharp, width: 128, height: 128
 Triggered Sharp, width: 128, height: 128
 Triggered Sharp, width: 128, height: 128
 Triggered Sharp, width: 128, height: 128
 Triggered Sharp, width: 64, height: 64
-15:8:49  GET  200 /api/core/panel/user/profile/picture
+15:50:19  GET  200 /api/core/panel/user/profile/picture
 Triggered Sharp, width: 64, height: 64
-15:8:53  GET  200 /api/userManagement/current/user
-15:8:53  GET  200 /api/userManagement/current/user
-15:11:37  GET  200 /api/core/panel/background-image
-15:11:42  GET  200 /api/core/panel/background-image
-15:11:42  GET  200 /api/core/panel/background-image
-15:11:42  GET  200 /api/core/panel/user/profile/picture
-15:11:42  GET  200 /api/core/instance/logo
-15:11:42  GET  200 /api/userManagement/current/user
-15:11:42  GET  200 /api/core/panel/quick-shortcuts/
-15:11:42  GET  200 /api/core/panel/launcher/apps
-15:11:42  GET  200 /api/userManagement/current/user
-15:11:42  GET  200 /api/core/instance/logo
-15:11:42  GET  200 /api/core/panel/quick-shortcuts/
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
+15:50:37  GET  200 /api/userManagement/current/user
+15:50:37  GET  200 /api/userManagement/current/user
+15:50:39  GET  200 /api/files/sidebar/categories
+15:50:39  GET  200 /api/files/sidebar/categories
+15:51:50  GET  200 /api/tasks/personal/lists
+15:51:50  GET  200 /api/tasks/personal/lists
+15:51:11  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b
+15:51:11  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b
+15:52:80  DEL  200 /api/tasks/personal/list/delete/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/0
+15:52:10  DEL  200 /api/tasks/personal/list/delete/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/1
+15:52:11  DEL  200 /api/tasks/personal/list/delete/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/1
+15:52:21  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/0
+15:52:22  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/1
+15:52:25  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/0
+15:52:26  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/1
+15:52:27  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/0
+15:52:31  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/1
+15:52:31  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/0
+15:53:14  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b
+15:53:14  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/0
+15:53:15  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b
+15:53:15  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/0
+15:57:32  GET  200 /api/core/instance/login/background
+15:57:32  GET  200 /api/core/instance/login/name
+15:57:32  GET  200 /api/core/instance/login/logo
+15:57:32  GET  200 /api/core/instance/login/message
+15:57:32  GET  200 /api/core/instance/login/background
+15:57:32  GET  200 /api/core/instance/login/name
+15:57:32  GET  200 /api/core/instance/login/logo
+15:57:32  GET  200 /api/core/instance/login/message
+15:57:34  GET  200 /api/userManagement/login
+15:57:34  GET  200 /api/core/panel/background-image
+15:57:34  GET  200 /api/core/panel/background-image
+15:57:34  GET  200 /api/core/panel/user/profile/picture
+15:57:34  GET  200 /api/core/instance/logo
+15:57:35  GET  200 /api/userManagement/current/user
+15:57:35  GET  200 /api/core/panel/quick-shortcuts/
+15:57:35  GET  200 /api/core/panel/launcher/apps
+15:57:35  GET  200 /api/userManagement/current/user
+15:57:35  GET  200 /api/core/instance/logo
+15:57:35  GET  200 /api/core/panel/quick-shortcuts/
 Triggered Sharp, width: 64, height: 64
-15:11:42  GET  200 /api/core/panel/user/profile/picture
+15:57:35  GET  200 /api/core/panel/user/profile/picture
 Triggered Sharp, width: 128, height: 128
 Triggered Sharp, width: 128, height: 128
 Triggered Sharp, width: 128, height: 128
 Triggered Sharp, width: 128, height: 128
-15:11:42  GET  200 /api/userManagement/current/user
-15:11:42  GET  200 /api/core/panel/launcher/apps
 Triggered Sharp, width: 128, height: 128
 Triggered Sharp, width: 128, height: 128
+15:57:35  GET  200 /api/userManagement/current/user
 Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 64, height: 64
-15:11:43  GET  200 /api/core/panel/user/profile/picture
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-15:11:43  GET  200 /api/userManagement/current/user
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 64, height: 64
-15:11:43  GET  200 /api/core/panel/user/profile/picture
-Triggered Sharp, width: 64, height: 64
-15:11:46  GET  200 /api/core/panel/background-image
-15:11:46  GET  200 /api/core/panel/background-image
-15:11:46  GET  200 /api/userManagement/current/user
-15:11:46  GET  200 /api/userManagement/current/user
-15:11:54  GET  200 /api/core/panel/background-image
-15:11:54  GET  200 /api/core/panel/background-image
-15:11:54  GET  200 /api/store/included/apps
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-15:11:54  GET  200 /api/store/included/apps
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-15:12:10  GET  200 /api/store/application/settings
-Triggered Sharp, width: 284, height: 284
-15:12:10  GET  200 /api/store/application/settings
-Triggered Sharp, width: 284, height: 284
-15:12:12  GET  200 /api/store/included/apps
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-15:12:12  GET  200 /api/store/included/apps
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-15:12:13  GET  200 /api/store/application/dash
-Triggered Sharp, width: 284, height: 284
-15:12:13  GET  200 /api/store/application/dash
-Triggered Sharp, width: 284, height: 284
-15:12:14  GET  200 /api/store/included/apps
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-15:12:14  GET  200 /api/store/included/apps
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-15:12:15  GET  200 /api/store/application/dash
-Triggered Sharp, width: 284, height: 284
-15:12:15  GET  200 /api/store/application/dash
-Triggered Sharp, width: 284, height: 284
-15:12:17  GET  200 /api/store/included/apps
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-15:12:17  GET  200 /api/store/included/apps
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-15:12:23  GET  200 /api/core/panel/background-image
-15:12:23  GET  200 /api/core/panel/background-image
-15:12:23  GET  200 /api/core/panel/user/profile/picture
-15:12:23  GET  200 /api/core/instance/logo
-15:12:23  GET  200 /api/userManagement/current/user
-15:12:23  GET  200 /api/core/panel/quick-shortcuts/
-15:12:23  GET  200 /api/core/panel/launcher/apps
-15:12:23  GET  200 /api/store/included/apps
-15:12:23  GET  200 /api/core/instance/logo
-15:12:23  GET  200 /api/userManagement/current/user
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 64, height: 64
-15:12:23  GET  200 /api/core/panel/user/profile/picture
-15:12:23  GET  200 /api/core/panel/quick-shortcuts/
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 128, height: 128
-15:12:23  GET  200 /api/store/included/apps
-Triggered Sharp, width: 128, height: 128
-15:12:23  GET  200 /api/core/panel/launcher/apps
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 64, height: 64
-15:12:23  GET  200 /api/core/panel/user/profile/picture
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
+15:57:35  GET  200 /api/userManagement/current/user
+15:57:35  GET  200 /api/core/panel/launcher/apps
 Triggered Sharp, width: 128, height: 128
 Triggered Sharp, width: 128, height: 128
 Triggered Sharp, width: 128, height: 128
 Triggered Sharp, width: 64, height: 64
-15:12:23  GET  200 /api/core/panel/user/profile/picture
+15:57:35  GET  200 /api/core/panel/user/profile/picture
 Triggered Sharp, width: 128, height: 128
 Triggered Sharp, width: 128, height: 128
 Triggered Sharp, width: 128, height: 128
 Triggered Sharp, width: 128, height: 128
 Triggered Sharp, width: 64, height: 64
-15:13:58  GET  200 /api/userManagement/current/user
-15:13:58  GET  200 /api/core/panel/quick-shortcuts/
-15:13:58  GET  200 /api/core/panel/launcher/apps
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-15:13:58  GET  200 /api/userManagement/current/user
-15:13:58  GET  200 /api/core/panel/quick-shortcuts/
-15:13:58  GET  200 /api/core/panel/launcher/apps
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-15:14:13  GET  200 /api/userManagement/current/user
-15:14:13  GET  200 /api/core/panel/quick-shortcuts/
-15:14:13  GET  200 /api/core/panel/launcher/apps
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-15:14:13  GET  200 /api/userManagement/current/user
-15:14:13  GET  200 /api/core/panel/quick-shortcuts/
-15:14:13  GET  200 /api/core/panel/launcher/apps
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-15:14:24  GET  200 /api/userManagement/current/user
-15:14:24  GET  200 /api/core/panel/quick-shortcuts/
-15:14:24  GET  200 /api/core/panel/launcher/apps
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-15:14:24  GET  200 /api/userManagement/current/user
-15:14:24  GET  200 /api/core/panel/quick-shortcuts/
-15:14:24  GET  200 /api/core/panel/launcher/apps
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-15:14:41  GET  200 /api/userManagement/current/user
-15:14:41  GET  200 /api/core/panel/quick-shortcuts/
-15:14:41  GET  200 /api/core/panel/launcher/apps
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-15:14:41  GET  200 /api/userManagement/current/user
-15:14:41  GET  200 /api/core/panel/quick-shortcuts/
-15:14:41  GET  200 /api/core/panel/launcher/apps
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-15:14:52  GET  200 /api/userManagement/current/user
-15:14:52  GET  200 /api/core/panel/quick-shortcuts/
-15:14:52  GET  200 /api/core/panel/launcher/apps
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-15:14:52  GET  200 /api/userManagement/current/user
-15:14:52  GET  200 /api/core/panel/quick-shortcuts/
-15:14:52  GET  200 /api/core/panel/launcher/apps
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-15:15:56  GET  200 /api/userManagement/current/user
-15:15:56  GET  200 /api/core/panel/quick-shortcuts/
-15:15:56  GET  200 /api/core/panel/launcher/apps
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-15:15:56  GET  200 /api/userManagement/current/user
-15:15:56  GET  200 /api/core/panel/quick-shortcuts/
-15:15:56  GET  200 /api/core/panel/launcher/apps
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-15:16:70  GET  200 /api/userManagement/current/user
-15:16:70  GET  200 /api/core/panel/quick-shortcuts/
-15:16:70  GET  200 /api/core/panel/launcher/apps
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-15:16:70  GET  200 /api/userManagement/current/user
-15:16:70  GET  200 /api/core/panel/quick-shortcuts/
-15:16:70  GET  200 /api/core/panel/launcher/apps
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-15:16:17  GET  200 /api/userManagement/current/user
-15:16:17  GET  200 /api/core/panel/quick-shortcuts/
-15:16:17  GET  200 /api/core/panel/launcher/apps
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-15:16:17  GET  200 /api/userManagement/current/user
-15:16:17  GET  200 /api/core/panel/quick-shortcuts/
-15:16:17  GET  200 /api/core/panel/launcher/apps
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-15:16:22  GET  200 /api/userManagement/current/user
-15:16:22  GET  200 /api/core/panel/quick-shortcuts/
-15:16:22  GET  200 /api/core/panel/launcher/apps
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-15:16:23  GET  200 /api/userManagement/current/user
-15:16:23  GET  200 /api/core/panel/quick-shortcuts/
-15:16:23  GET  200 /api/core/panel/launcher/apps
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-Triggered Sharp, width: 128, height: 128
-15:16:52  GET  200 /api/files/sidebar/categories
-15:16:52  GET  200 /api/files/sidebar/categories
-15:20:43  GET  200 /api/userManagement/current/user
-15:20:43  GET  200 /api/userManagement/current/user
-15:20:49  GET  200 /api/userManagement/current/user
-15:20:49  GET  200 /api/userManagement/current/user
-15:23:39  GET  200 /api/userManagement/current/user
-15:23:39  GET  200 /api/userManagement/current/user
-15:24:00  GET  200 /api/files/sidebar/categories
-15:24:00  GET  200 /api/files/sidebar/categories
-15:24:14  GET  200 /api/userManagement/current/user
-15:24:14  GET  200 /api/userManagement/current/user
-15:24:19  GET  200 /api/store/included/apps
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-15:24:20  GET  200 /api/store/included/apps
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-15:24:21  GET  200 /api/store/application/store
-Triggered Sharp, width: 284, height: 284
-15:24:21  GET  200 /api/store/application/store
-Triggered Sharp, width: 284, height: 284
-15:26:00  GET  200 /api/store/application/store
-Triggered Sharp, width: 284, height: 284
-15:26:00  GET  200 /api/store/application/store
-Triggered Sharp, width: 284, height: 284
-15:26:70  GET  200 /api/store/included/apps
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-15:26:70  GET  200 /api/store/included/apps
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-15:26:15  GET  200 /api/store/application/settings
-Triggered Sharp, width: 284, height: 284
-15:26:15  GET  200 /api/store/application/settings
-Triggered Sharp, width: 284, height: 284
-15:26:21  GET  200 /api/store/included/apps
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-15:26:21  GET  200 /api/store/included/apps
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-15:26:22  GET  200 /api/store/application/dash
-Triggered Sharp, width: 284, height: 284
-15:26:22  GET  200 /api/store/application/dash
-Triggered Sharp, width: 284, height: 284
-15:26:29  GET  200 /api/store/included/apps
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-15:26:29  GET  200 /api/store/included/apps
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-15:29:32  GET  200 /api/store/application/dash
-Triggered Sharp, width: 284, height: 284
-15:29:32  GET  200 /api/store/application/dash
-Triggered Sharp, width: 284, height: 284
-15:57:50  GET  200 /api/store/included/apps
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-15:57:50  GET  200 /api/store/included/apps
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
-Triggered Sharp, width: 96, height: 96
+15:57:35  GET  200 /api/core/panel/user/profile/picture
+Triggered Sharp, width: 64, height: 64
+15:57:44  GET  200 /api/tasks/personal/lists
+15:57:44  GET  200 /api/tasks/personal/lists
+15:57:44  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b
+15:57:44  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b
+15:57:45  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/0
+15:59:32  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b
+15:59:32  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/0
+15:59:33  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b
+15:59:33  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/0
+15:59:42  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b
+15:59:42  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/0
+16:0:34  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b
+16:0:34  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/0
+16:2:25  POS  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b
+16:2:29  POS  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b
+16:2:31  GET  200 /api/tasks/personal/lists
+16:2:31  GET  200 /api/tasks/personal/lists
+16:2:32  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b
+16:2:32  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b
+16:2:33  GET  200 /api/tasks/personal/lists
+16:2:33  GET  200 /api/tasks/personal/lists
+16:2:34  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b
+16:2:34  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b
+16:2:36  GET  200 /api/tasks/personal/lists
+16:2:36  GET  200 /api/tasks/personal/lists
+16:2:36  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b
+16:2:36  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b
+16:2:42  DEL  200 /api/tasks/personal/list/delete/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/1
+16:8:12  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/0
+16:24:70  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b
+16:24:70  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/0
+16:24:90  GET  200 /api/core/panel/background-image
+16:24:90  GET  200 /api/core/panel/background-image
+16:24:90  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b
+16:24:90  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b
+16:24:90  GET  200 /api/core/panel/user/profile/picture
+16:24:90  GET  200 /api/core/instance/logo
+16:24:90  GET  200 /api/userManagement/current/user
+16:24:90  GET  200 /api/core/panel/quick-shortcuts/
+16:24:90  GET  200 /api/core/instance/logo
+16:24:90  GET  200 /api/core/panel/launcher/apps
+16:24:90  GET  200 /api/userManagement/current/user
+16:24:90  GET  200 /api/core/panel/quick-shortcuts/
+Triggered Sharp, width: 128, height: 128
+Triggered Sharp, width: 128, height: 128
+Triggered Sharp, width: 128, height: 128
+Triggered Sharp, width: 64, height: 64
+16:24:90  GET  200 /api/core/panel/user/profile/picture
+Triggered Sharp, width: 128, height: 128
+Triggered Sharp, width: 128, height: 128
+Triggered Sharp, width: 128, height: 128
+Triggered Sharp, width: 128, height: 128
+16:24:90  GET  200 /api/core/panel/launcher/apps
+Triggered Sharp, width: 128, height: 128
+Triggered Sharp, width: 128, height: 128
+Triggered Sharp, width: 128, height: 128
+Triggered Sharp, width: 64, height: 64
+Triggered Sharp, width: 128, height: 128
+16:24:90  GET  200 /api/core/panel/user/profile/picture
+Triggered Sharp, width: 128, height: 128
+Triggered Sharp, width: 128, height: 128
+Triggered Sharp, width: 128, height: 128
+Triggered Sharp, width: 64, height: 64
+16:24:90  GET  200 /api/core/panel/user/profile/picture
+Triggered Sharp, width: 64, height: 64
+16:24:10  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/1
+16:24:11  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/0
+16:24:12  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/1
+16:24:12  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/2
+16:24:16  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/2
+16:24:16  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b
+16:24:19  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/0
+16:24:20  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/1
+16:25:80  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b
+16:25:80  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/1
+16:25:12  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/0
+16:25:14  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/1
+16:27:29  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/0
+16:28:18  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b
+16:28:18  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/0
+16:28:19  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b
+16:28:19  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/0
+16:29:40  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b
+16:29:40  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/0
+16:29:50  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b
+16:29:50  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/0
+16:29:18  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b
+16:29:18  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/0
+16:29:19  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b
+16:29:19  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/0
+16:29:20  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/1
+16:29:20  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/0
+16:29:21  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/1
+16:29:21  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/0
+16:31:31  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/1
+16:31:31  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/0
+16:31:47  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b
+16:31:47  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/0
+16:31:49  GET  200 /api/core/panel/background-image
+16:31:49  GET  200 /api/core/panel/background-image
+16:31:50  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b
+16:31:50  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b
+16:31:50  GET  200 /api/core/panel/user/profile/picture
+16:31:50  GET  200 /api/core/instance/logo
+16:31:50  GET  200 /api/userManagement/current/user
+16:31:50  GET  200 /api/core/panel/quick-shortcuts/
+16:31:50  GET  200 /api/core/panel/launcher/apps
+16:31:50  GET  200 /api/userManagement/current/user
+16:31:50  GET  200 /api/core/instance/logo
+16:31:50  GET  200 /api/core/panel/quick-shortcuts/
+Triggered Sharp, width: 128, height: 128
+Triggered Sharp, width: 128, height: 128
+Triggered Sharp, width: 128, height: 128
+Triggered Sharp, width: 64, height: 64
+16:31:50  GET  200 /api/core/panel/user/profile/picture
+Triggered Sharp, width: 128, height: 128
+Triggered Sharp, width: 128, height: 128
+Triggered Sharp, width: 128, height: 128
+Triggered Sharp, width: 128, height: 128
+16:31:50  GET  200 /api/core/panel/launcher/apps
+Triggered Sharp, width: 128, height: 128
+Triggered Sharp, width: 128, height: 128
+Triggered Sharp, width: 128, height: 128
+Triggered Sharp, width: 128, height: 128
+Triggered Sharp, width: 64, height: 64
+Triggered Sharp, width: 128, height: 128
+16:31:50  GET  200 /api/core/panel/user/profile/picture
+Triggered Sharp, width: 128, height: 128
+Triggered Sharp, width: 128, height: 128
+Triggered Sharp, width: 64, height: 64
+16:31:50  GET  200 /api/core/panel/user/profile/picture
+Triggered Sharp, width: 64, height: 64
+16:31:51  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/1
+16:31:52  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/0
+16:31:53  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/1
+16:31:54  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/2
+16:31:54  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/3
+16:31:55  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/4
+16:31:55  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/5
+16:31:59  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/0
+16:31:59  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/0
+16:31:59  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b
+16:32:00  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/1
+16:32:00  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/0
+16:32:60  GET  200 /api/tasks/personal/lists
+16:32:60  GET  200 /api/tasks/personal/lists
+16:32:70  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b
+16:32:70  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b
+16:32:10  POS  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b
+16:32:12  GET  200 /api/tasks/personal/lists
+16:32:12  GET  200 /api/tasks/personal/lists
+16:32:26  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b
+16:32:26  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b
+16:32:27  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/create/task
+16:32:27  GET  200 /api/tasks/personal/list/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b
+16:32:28  DEL  200 /api/tasks/personal/list/delete/SktlK2mdldfkV1nAkwLjNIHaIGNWCl1b/task/10
