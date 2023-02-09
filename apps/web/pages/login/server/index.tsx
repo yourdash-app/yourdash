@@ -95,7 +95,7 @@ const LoginOptions: NextPageWithLayout = () => {
                         setErrorHasOccurred(true)
                       }).catch(() => {
                         setErrorHasOccurred(true)
-                        throw new Error("Login Error, the server responded with an invalid response.")
+                        console.error("Login Error, the server responded with an invalid response.")
                       })
                     }).catch(err => {
                       if (err) {

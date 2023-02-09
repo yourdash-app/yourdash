@@ -13,7 +13,7 @@ const TasksLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     <div className={ styles.root }>
       <Chiplet.SideBar
         className={ styles.sideBar }
-        title="Tasks"
+        title="YourDash Tasks"
         items={
               [
                 {
