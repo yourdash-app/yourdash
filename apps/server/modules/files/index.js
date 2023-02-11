@@ -13,7 +13,6 @@ const defaultCategories = [
     }
 ];
 const module = {
-    name: "files",
     load(app, api) {
         app.get(`/user/quota`, (req, res) => {
             if (!fs.existsSync(`${api.UserFs}/user.json`))
@@ -30,7 +29,7 @@ const module = {
         app.get(`/user/quota/usage`, (req, res) => {
             fs.fstat(fs.openSync(`${api.UserFs(req)}`, "r"), (err, stats) => {
                 if (err) {
-                    log(`(${this.name}) ERROR: unable to fetch directory stats for user ${req.headers.username}`);
+                    log(`(files) ERROR: unable to fetch directory stats for user ${req.headers.username}`);
                     res.json({ error: true });
                 }
                 res.json({ usage: stats.size });
@@ -74,11 +73,16 @@ const module = {
             });
         });
     },
-    install() {
-        return;
+    install: () => {
+        return 0;
     },
-    unload() {
-        return;
+    unload: () => {
+        return 0;
     },
+    requiredModules: [],
+    uninstall: () => {
+        return 0;
+    },
+    configuration: {}
 };
 export default module;

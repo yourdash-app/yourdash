@@ -5,38 +5,40 @@
   right: 0.5rem;
 }
 
-//noinspection CssUnusedSymbol
-@media (min-width: 950px) {
-  /*noinspection ALL*/
-  .closeButton[data-visible="true"] {
+.closeButton[data-visible="true"] {
+  @media (min-width: 950px) {
     display: block;
   }
 }
 
-.component {
-  .handle {
-    width: 100%;
-    height: 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.handle {
+  width: 100%;
+  height: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    > div {
-      width: 2.5rem;
-      height: 0.5rem;
-      background-color: var(--dialog-handle);
-      border-radius: 100rem;
-      cursor: grab;
+  > div {
+    width: 2.5rem;
+    height: 0.5rem;
+    background-color: var(--dialog-handle);
+    border-radius: 100rem;
+    cursor: grab;
 
-      &:active {
-        cursor: grabbing;
-      }
+    &:active {
+      cursor: grabbing;
     }
   }
 
+  @media (min-width: 950px) {
+    display: none;
+  }
+}
+
+.component {
+
   transition: var(--transition);
 
-  //noinspection CssUnusedSymbol
   @media (min-width: 950px) {
     position: fixed;
     top: 50%;
@@ -45,11 +47,6 @@
     max-width: 30rem;
     width: 100vw;
     border-radius: 1rem;
-
-    /*noinspection ALL*/
-    > .handle {
-      display: none;
-    }
   }
 
   @media (max-width: 950px) {

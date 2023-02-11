@@ -6,14 +6,11 @@ import { ENV } from "../../index.js";
 import { log } from '../../libServer.js';
 const USER_CACHE = {};
 const Module = {
-    install() {
-        log(`installed the ${this.name} module`);
-    },
     load(request, moduleApi) {
         request.legacy().use((req, res, next) => {
             if (req.path.startsWith('/test'))
                 return res.send('YourDash instance');
-            if (req.path.startsWith(`/api/${this.name}/login`))
+            if (req.path.startsWith(`/api/userManagement/login`))
                 return next();
             if (req.path.startsWith(`/api/core/instance/login`))
                 return next();
@@ -229,9 +226,10 @@ const Module = {
             });
         });
     },
-    name: 'userManagement',
-    unload() {
-        log(`unloaded the ${this.name} module`);
-    },
+    requiredModules: [],
+    configuration: {},
+    install: () => { return 0; },
+    unload: () => { return 0; },
+    uninstall: () => { return 0; }
 };
 export default Module;

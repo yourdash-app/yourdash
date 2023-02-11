@@ -26,7 +26,7 @@ const TasksPersonalList: NextPageWithLayout = () => {
   const router = useRouter()
 
   const [ activeTask, setActiveTask ] = useState(null as null | number)
-  const [ selectedTasks, setSelectedTasks ] = useState([] as number[])
+  // const [ selectedTasks, setSelectedTasks ] = useState([] as number[])
   const [ activeTaskData, setActiveTaskData ] = useState(null as null | TasksListItem)
   const [ listData, setListData ] = useState(null as TasksList | null)
   const [ showListSettings, setShowListSettings ] = useState(false)

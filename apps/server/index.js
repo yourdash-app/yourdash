@@ -166,16 +166,16 @@ function applicationStartup() {
         modulesToLoad = SERVER_CONFIG.activeModules;
     }
     log(modulesToLoad.toString());
-    modulesToLoad.forEach(module => {
-        if (!fs.existsSync(path.resolve(`./modules/${module}/index.js`)))
-            return log(`(Start up) no such module: ${module}, non-existent modules should not be listed in the activeModules found in yourdash.config.json`);
-        import(`./modules/${module}/index.js`).then(mod => {
+    modulesToLoad.forEach(moduleName => {
+        if (!fs.existsSync(path.resolve(`./modules/${moduleName}/index.js`)))
+            return log(`(Start up) no such module: ${moduleName}, non-existent modules should not be listed in the activeModules found in yourdash.config.json`);
+        import(`./modules/${moduleName}/index.js`).then(mod => {
             const currentModule = mod.default;
-            const requestManager = new RequestManager(app, currentModule);
+            const requestManager = new RequestManager(app, currentModule, moduleName);
             currentModule.load(requestManager, {
                 SERVER_CONFIG, ...ENV
             });
-            log(`(Start up) loaded module: ${module}`);
+            log(`(Start up) loaded module: ${moduleName}`);
             loadedModules.push(currentModule);
         });
     });

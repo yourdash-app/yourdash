@@ -34,7 +34,6 @@ export function resizeImage(width, height, image, callback, error) {
             log(`ERROR: unable to resize image: ${image}`);
             return error();
         }
-        log(`Triggered Sharp, width: ${width}, height: ${height}`);
         return callback(base64FromBufferImage(buf));
     });
 }
@@ -42,26 +41,28 @@ export class RequestManager {
     express;
     module;
     endpoints;
-    constructor(app, module) {
+    name;
+    constructor(app, module, name) {
         this.express = app;
         this.module = module;
         this.endpoints = [];
+        this.name = name;
     }
     get = (path, cb) => {
         this.endpoints.push(`GET ${path}`);
-        this.express.get(`/api/${this.module.name}${path}`, (req, res) => {
+        this.express.get(`/api/${this.name}${path}`, (req, res) => {
             return cb(req, res);
         });
     };
     post = (path, cb) => {
         this.endpoints.push(`POS ${path}`);
-        this.express.post(`/api/${this.module.name}${path}`, (req, res) => {
+        this.express.post(`/api/${this.name}${path}`, (req, res) => {
             return cb(req, res);
         });
     };
     delete = (path, cb) => {
         this.endpoints.push(`DEL ${path}`);
-        this.express.delete(`/api/${this.module.name}${path}`, (req, res) => {
+        this.express.delete(`/api/${this.name}${path}`, (req, res) => {
             return cb(req, res);
         });
     };

@@ -214,7 +214,7 @@
       margin-left: 0.75rem;
     }
 
-    > div[data-settings] {
+    > button[data-settings] {
       padding: 0.5rem;
       margin: 0.5rem 0.5rem 0.5rem auto;
       border-radius: 100rem;
@@ -222,6 +222,7 @@
       color: var(--button-fg);
       transition: var(--transition);
       cursor: pointer;
+      border: none;
 
       &:hover {
         background-color: var(--button-hover-bg);
