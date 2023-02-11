@@ -2,6 +2,7 @@ import Badge from "./components/badge/Badge";
 import Button from "./components/button/Button";
 import ButtonLink from "./components/buttonLink/ButtonLink";
 import Card from "./components/card/Card"
+import Carousel from "./components/carousel/Carousel";
 import Chip from "./components/chip/Chip";
 import Column from "./components/column/Column";
 import Dialog from "./components/dialog/Dialog";
@@ -21,27 +22,28 @@ import TextInput from "./components/textInput/TextInput";
 import ToggleSwitch from "./components/toggleSwitch/ToggleSwitch";
 
 const Chiplet = {
-  Badge,
-  Button,
-  ButtonLink,
-  Card,
-  Chip,
-  Column,
-  Dialog,
-  DropdownButton,
-  DropdownContainer,
-  Icon,
-  IconButton,
-  ProgressBar,
-  RightClickMenu,
-  Row,
-  SegmentButton,
-  SideBar,
-  Spinner,
-  Tags,
-  TextBox,
-  TextInput,
-  ToggleSwitch,
+    Badge,
+    Button,
+    ButtonLink,
+    Card,
+    Carousel,
+    Chip,
+    Column,
+    Dialog,
+    DropdownButton,
+    DropdownContainer,
+    Icon,
+    IconButton,
+    ProgressBar,
+    RightClickMenu,
+    Row,
+    SegmentButton,
+    SideBar,
+    Spinner,
+    Tags,
+    TextBox,
+    TextInput,
+    ToggleSwitch,
 }
 
 export default Chiplet
