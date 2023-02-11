@@ -18,7 +18,11 @@ const ApplicationContainer: React.FC<{ children: React.ReactNode }> = ({ childre
 }
 
 function NextApp({ Component, pageProps }: AppPropsWithLayout) {
-  return Component?.getLayout?.(<Component { ...pageProps }/>) || <Component { ...pageProps }/>;
+  return (
+    <ApplicationContainer>
+      {Component?.getLayout?.(<Component { ...pageProps }/>) || <Component { ...pageProps }/>}
+    </ApplicationContainer>
+  )
 }
 
 export default NextApp;

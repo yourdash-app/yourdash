@@ -91,7 +91,7 @@ const StoreIndex: NextPageWithLayout = () => {
                     <img className={ styles.cardImg } src={ item?.icon } alt=""/>
                     <Chiplet.Column>
                       <h2 className={ styles.cardName }>{item?.displayName}</h2>
-                      <p className={ styles.cardDescription }>{item?.description}</p>
+                      <div className={ styles.cardDescription }>{item?.description}</div>
                     </Chiplet.Column>
                   </Chiplet.Row>
                 </Chiplet.Card>

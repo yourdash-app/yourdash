@@ -58,7 +58,7 @@
     background-color: var(--card-bg);
     color: var(--card-fg);
     border-radius: var(--card-rounding);
-    padding-bottom: 6rem;
+    padding: 0.5rem 0.5rem 6rem;
     position: relative;
     border: solid 0.125rem var(--card-bg);
     transition: var(--transition);
@@ -68,11 +68,11 @@
     }
 
     > h2 {
-      margin: 1rem;
+      margin: 0.5rem;
     }
 
     > p {
-      margin: 1rem;
+      margin: 0.5rem;
       text-align: left;
     }
 

@@ -20,7 +20,7 @@ export function decrypt(text, SERVER_CONFIG) {
 }
 export function generateRandomStringOfLength(len) {
     const chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
-    const randomArray = Array.from({ length: len }, (_v, _k) => chars[Math.floor(Math.random() * chars.length)]);
+    const randomArray = Array.from({ length: len }, (_v, _k) => { return chars[Math.floor(Math.random() * chars.length)]; });
     const randomString = randomArray.join('');
     return randomString;
 }

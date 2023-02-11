@@ -19,10 +19,7 @@ export interface IPanel {
   backgroundImage: string
 }
 
-const Panel: React.FC<IPanel> = ({
-                                   appIsOpening,
-                                   backgroundImage
-                                 }) => {
+const Panel: React.FC<IPanel> = ({ appIsOpening, backgroundImage }) => {
   const router = useRouter()
   const [ launcherSlideOutVisible, setLauncherSlideOutVisible ] = useState(false)
   const [ accountDropdownVisible, setAccountDropdownVisible ] = useState(false)
@@ -175,7 +172,8 @@ const Panel: React.FC<IPanel> = ({
             alt=""
           />
           <span>{userData?.name?.first} {userData?.name?.last}</span>
-          <div
+          <button
+            type={ "button" }
             onClick={ () => {
                   setLauncherSlideOutVisible(false)
                   router.push("/app/settings")
@@ -183,7 +181,7 @@ const Panel: React.FC<IPanel> = ({
             data-settings="true"
           >
             <Chiplet.Icon name='gear-16' color={ "var(--container-fg)" }/>
-          </div>
+          </button>
         </footer>
       </div>
       <ServerImage
@@ -215,7 +213,7 @@ const Panel: React.FC<IPanel> = ({
                               {
                                 name: "Open in new tab",
                                 onClick: () => {
-                                  window.open(`${location.origin}/app/${app.name}`)
+                                  window.open(`${location.origin}/app/${shortcut.name}`)
                                 }
                               },
                               {

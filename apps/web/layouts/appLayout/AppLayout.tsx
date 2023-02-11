@@ -1,17 +1,14 @@
 import SERVER, { verifyAndReturnJson } from "../../server";
 import styles from "./AppLayout.module.scss"
 import Panel from "./panel/Panel";
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export interface IAppLayout {
   transparentBackground?: boolean;
-  children: ReactNode;
+  children: React.ReactNode;
 }
 
-const AppLayout: React.FC<IAppLayout> = ({
-                                           children,
-                                           transparentBackground
-                                         }) => {
+const AppLayout: React.FC<IAppLayout> = ({ children, transparentBackground }) => {
   const [ appOpenAnimation, setAppOpenAnimation ] = useState(false)
   const [ applicationWindowMode, setApplicationWindowMode ] = useState(false)
   const [ standaloneInterface, setStandaloneInterface ] = useState(false)
@@ -40,7 +37,12 @@ const AppLayout: React.FC<IAppLayout> = ({
   if (!hasLoaded) return <div/>
 
   return standaloneInterface
-      ? children : (
+      ? (
+          // eslint-disable-next-line react/jsx-no-useless-fragment
+        <>
+          {children}
+        </>
+      ) : (
         <div className={ styles.root } style={ { backgroundImage: `url(${backgroundImage})` } }>
           <Panel
             backgroundImage={ `url(${backgroundImage})` }

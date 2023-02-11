@@ -3,7 +3,7 @@ import path from 'path';
 import { encrypt, generateRandomStringOfLength } from './encryption.js';
 import { ENV, RELEASE_CONFIGURATION } from './index.js';
 import { log, returnBase64Image } from './libServer.js';
-import includedApps from './includedApps.js';
+import includedApps, { DEFAULT_APPS } from './includedApps.js';
 export default async function main(cb) {
     await checkEnvironmentVariables();
     await checkYourDashConfigJson();
@@ -23,7 +23,14 @@ function checkIfAllInstalledAppsStillExist() {
                 log(`(Start up) CRITICAL ERROR: unable to read installed_apps.json`);
                 return process.exit(1);
             }
-            let json = JSON.parse(data.toString());
+            1;
+            let json = [];
+            try {
+                json = JSON.parse(data.toString());
+            }
+            catch (e) {
+                json = DEFAULT_APPS;
+            }
             json.forEach(app => {
                 if (includedApps.find(includedApplication => {
                     return includedApplication.name === app;

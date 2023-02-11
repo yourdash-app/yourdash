@@ -55,7 +55,7 @@ const DropdownContainer: React.FC<IDropdownContainer> = ({
                     } }
         >
           {
-                    items.map((item, ind) => {
+                    items.map(item => {
                       return (
                         <button
                           key={ item.name }

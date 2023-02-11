@@ -49,7 +49,7 @@ const Assignees: React.FC<IAssignees> = ({ assignees }) => {
 
   return (
     <div className={ styles.component }>
-      {assigneesData.map((assignee, ind) => {
+      {assigneesData.map(assignee => {
           return (
             <div key={ assignee.userName } className={ styles.assignee }>
               <img src={ assignee.profile.image } alt=""/>

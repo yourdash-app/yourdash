@@ -3,11 +3,11 @@ const includedApps = [
         author: "Ewsgit",
         copyright: "MIT",
         description: "Test yourdash server endpoints",
-        displayName: "Endpoint Tester",
-        icon: "endpoint-tester.png",
+        displayName: "Endpoints",
+        icon: "endpoints.png",
         moduleRequirements: [],
-        name: "endpoint-tester",
-        path: "/app/endpoint-tester",
+        name: "endpoints",
+        path: "/app/endpoints",
         previewImages: [],
     },
     {
@@ -27,7 +27,9 @@ const includedApps = [
         description: "The YourDash file manager",
         displayName: "Files",
         icon: "files.png",
-        moduleRequirements: [],
+        moduleRequirements: [
+            "files"
+        ],
         name: "files",
         path: "/app/files",
         previewImages: [],
@@ -37,7 +39,9 @@ const includedApps = [
         description: "The YourDash application and extension manager",
         displayName: "Store",
         icon: "store.png",
-        moduleRequirements: [],
+        moduleRequirements: [
+            "store"
+        ],
         name: "store",
         path: "/app/store",
         previewImages: [],
@@ -55,7 +59,7 @@ const includedApps = [
         author: "Ewsgit",
         copyright: "MIT",
         description: "The YourDash built-in mastodon client",
-        displayName: "Mastodon Client",
+        displayName: "Mastodon",
         icon: "mastodon.png",
         moduleRequirements: [],
         name: "mastodon",

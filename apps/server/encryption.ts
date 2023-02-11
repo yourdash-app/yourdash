@@ -4,7 +4,7 @@
  */
 
 import crypto from 'crypto';
-import { YourDashServerConfig } from '.';
+import { type YourDashServerConfig } from './index';
 
 export function encrypt(text: string, SERVER_CONFIG: YourDashServerConfig) {
   const iv = crypto.randomBytes(16);
@@ -35,7 +35,7 @@ export function generateRandomStringOfLength(len: number) {
   const chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
   const randomArray = Array.from(
       { length: len },
-      (_v, _k) => chars[Math.floor(Math.random() * chars.length)]
+      (_v, _k) => {return chars[Math.floor(Math.random() * chars.length)]}
   );
 
   const randomString = randomArray.join('');

@@ -4,19 +4,22 @@ import { log, resizeImage } from "../../libServer.js";
 import path from 'path';
 const module = {
     install() {
-        log(`the ${this.name} module was installed`);
+        return 0;
     },
+    requiredModules: [],
+    uninstall: () => { return 0; },
+    configuration: {},
     load(request, moduleApi) {
         request.post(`/personal/list/create`, (req, res) => {
-            if (!fs.existsSync(`${moduleApi.UserAppData(req)}/${this.name}/lists`))
-                fs.mkdir(`${moduleApi.UserAppData(req)}/${this.name}/lists`, { recursive: true }, err => {
+            if (!fs.existsSync(`${moduleApi.UserAppData(req)}/tasks/lists`))
+                fs.mkdir(`${moduleApi.UserAppData(req)}/tasks/lists`, { recursive: true }, err => {
                     if (err)
                         return res.json({ error: true });
                 });
             const listId = generateRandomStringOfLength(32);
-            if (fs.existsSync(`${moduleApi.UserAppData(req)}/${this.name}/lists/${listId}`))
+            if (fs.existsSync(`${moduleApi.UserAppData(req)}/tasks/lists/${listId}`))
                 return res.json({ error: true });
-            fs.writeFile(`${moduleApi.UserAppData(req)}/${this.name}/lists/${listId}.json`, JSON.stringify({
+            fs.writeFile(`${moduleApi.UserAppData(req)}/tasks/lists/${listId}.json`, JSON.stringify({
                 description: "Unknown description",
                 id: `${listId}`,
                 name: 'Unnamed list',
@@ -37,21 +40,21 @@ const module = {
             });
         });
         request.get(`/personal/lists`, (req, res) => {
-            if (!fs.existsSync(`${moduleApi.UserAppData(req)}/${this.name}/lists`)) {
-                fs.mkdir(`${moduleApi.UserAppData(req)}/${this.name}/lists`, { recursive: true }, err => {
+            if (!fs.existsSync(`${moduleApi.UserAppData(req)}/tasks/lists`)) {
+                fs.mkdir(`${moduleApi.UserAppData(req)}/tasks/lists`, { recursive: true }, err => {
                     if (err)
                         return res.json({ error: true });
                 });
                 return res.json({ lists: [] });
             }
-            fs.readdir(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/lists`), (err, data) => {
+            fs.readdir(path.resolve(`${moduleApi.UserAppData(req)}/tasks/lists`), (err, data) => {
                 if (err) {
-                    log(`(${this.name}) ERROR: unable to read '${moduleApi.UserAppData(req)}/${this.name}'`);
+                    log(`(tasks) ERROR: unable to read '${moduleApi.UserAppData(req)}/tasks'`);
                     return res.json({ error: true });
                 }
                 const listsData = data.map(listName => {
                     try {
-                        const listData = JSON.parse(fs.readFileSync(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/lists/${listName}`)).toString());
+                        const listData = JSON.parse(fs.readFileSync(path.resolve(`${moduleApi.UserAppData(req)}/tasks/lists/${listName}`)).toString());
                         return {
                             id: listData.id,
                             name: listData.name,
@@ -68,10 +71,10 @@ const module = {
             if (!req.params.listId) {
                 return res.json({ error: `no list id was provided` });
             }
-            if (!fs.existsSync(`${moduleApi.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`)) {
+            if (!fs.existsSync(`${moduleApi.UserAppData(req)}/tasks/lists/${req.params.listId}.json`)) {
                 return res.json({ error: `no list with the supplied id exists` });
             }
-            fs.rm(`${moduleApi.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`, err => {
+            fs.rm(`${moduleApi.UserAppData(req)}/tasks/lists/${req.params.listId}.json`, err => {
                 if (err) {
                     return res.json({ error: `unable to remove list with id ${req.params.listId}` });
                 }
@@ -82,10 +85,10 @@ const module = {
             if (!req.params.listId) {
                 return res.json({ error: true });
             }
-            if (!fs.existsSync(`${moduleApi.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`)) {
+            if (!fs.existsSync(`${moduleApi.UserAppData(req)}/tasks/lists/${req.params.listId}.json`)) {
                 return res.json({ error: true });
             }
-            fs.readFile(`${moduleApi.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`, (err, data) => {
+            fs.readFile(`${moduleApi.UserAppData(req)}/tasks/lists/${req.params.listId}.json`, (err, data) => {
                 if (err) {
                     return res.json({ error: true });
                 }
@@ -97,10 +100,10 @@ const module = {
             if (!req.params.listId) {
                 return res.json({ error: true });
             }
-            if (!fs.existsSync(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`))) {
+            if (!fs.existsSync(path.resolve(`${moduleApi.UserAppData(req)}/tasks/lists/${req.params.listId}.json`))) {
                 return res.json({ error: true });
             }
-            fs.writeFile(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`), JSON.stringify(req.body), err => {
+            fs.writeFile(path.resolve(`${moduleApi.UserAppData(req)}/tasks/lists/${req.params.listId}.json`), JSON.stringify(req.body), err => {
                 if (err) {
                     return res.json({ error: true });
                 }
@@ -111,10 +114,10 @@ const module = {
             if (!req.params.listId) {
                 return res.json({ error: true });
             }
-            if (!fs.existsSync(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`))) {
+            if (!fs.existsSync(path.resolve(`${moduleApi.UserAppData(req)}/tasks/lists/${req.params.listId}.json`))) {
                 return res.json({ error: true });
             }
-            fs.readFile(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`), (err, data) => {
+            fs.readFile(path.resolve(`${moduleApi.UserAppData(req)}/tasks/lists/${req.params.listId}.json`), (err, data) => {
                 if (err) {
                     return res.json({ error: true });
                 }
@@ -126,7 +129,7 @@ const module = {
             if (!req.params.listId) {
                 return res.json({ error: true });
             }
-            if (!fs.existsSync(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`))) {
+            if (!fs.existsSync(path.resolve(`${moduleApi.UserAppData(req)}/tasks/lists/${req.params.listId}.json`))) {
                 return res.json({ error: true });
             }
             try {
@@ -135,13 +138,13 @@ const module = {
             catch (err) {
                 return res.json({ error: "taskId was not a valid integer" });
             }
-            fs.readFile(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`), (err, data) => {
+            fs.readFile(path.resolve(`${moduleApi.UserAppData(req)}/tasks/lists/${req.params.listId}.json`), (err, data) => {
                 if (err) {
                     return res.json({ error: true });
                 }
                 const json = JSON.parse(data.toString());
                 json.tasks.splice(parseInt(req.params.taskId), 1);
-                fs.writeFile(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`), JSON.stringify(json), err => {
+                fs.writeFile(path.resolve(`${moduleApi.UserAppData(req)}/tasks/lists/${req.params.listId}.json`), JSON.stringify(json), err => {
                     if (err)
                         return res.json({ error: true });
                     return res.json({ success: true });
@@ -149,13 +152,13 @@ const module = {
             });
         });
         request.get(`/personal/list/:listId/create/task`, (req, res) => {
-            if (!fs.existsSync(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`))) {
-                log(`no such file: ${path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`)}`);
+            if (!fs.existsSync(path.resolve(`${moduleApi.UserAppData(req)}/tasks/lists/${req.params.listId}.json`))) {
+                log(`no such file: ${path.resolve(`${moduleApi.UserAppData(req)}/tasks/lists/${req.params.listId}.json`)}`);
                 return res.json({ error: true });
             }
-            fs.readFile(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`), (err, data) => {
+            fs.readFile(path.resolve(`${moduleApi.UserAppData(req)}/tasks/lists/${req.params.listId}.json`), (err, data) => {
                 if (err) {
-                    log(`unable to read file: ${path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`)}`);
+                    log(`unable to read file: ${path.resolve(`${moduleApi.UserAppData(req)}/tasks/lists/${req.params.listId}.json`)}`);
                     return res.json({ error: true });
                 }
                 const json = JSON.parse(data.toString());
@@ -166,9 +169,9 @@ const module = {
                     tags: [],
                     title: "Untitled Task",
                 });
-                fs.writeFile(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`), JSON.stringify(json), err => {
+                fs.writeFile(path.resolve(`${moduleApi.UserAppData(req)}/tasks/lists/${req.params.listId}.json`), JSON.stringify(json), err => {
                     if (err) {
-                        log(`unable to write to file: ${path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/lists/${req.params.listId}.json`)}`);
+                        log(`unable to write to file: ${path.resolve(`${moduleApi.UserAppData(req)}/tasks/lists/${req.params.listId}.json`)}`);
                         return res.json({ error: true });
                     }
                     return res.json({ id: json.tasks.length + 1 });
@@ -178,23 +181,23 @@ const module = {
         request.post(`/personal/list/:listId/task/:taskId`, (req, res) => {
             const { listId, taskId } = req.params;
             if (!listId || !taskId) {
-                log(`(${this.name}) ERROR: listId or taskId were not found in the request`);
+                log(`(tasks) ERROR: listId or taskId were not found in the request`);
                 return res.json({ error: true });
             }
-            if (!fs.existsSync(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/lists/${listId}.json`))) {
-                log(`(${this.name}) no such list: ${listId}`);
+            if (!fs.existsSync(path.resolve(`${moduleApi.UserAppData(req)}/tasks/lists/${listId}.json`))) {
+                log(`(tasks) no such list: ${listId}`);
                 return res.json({ error: true });
             }
-            fs.readFile(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/lists/${listId}.json`), (err, data) => {
+            fs.readFile(path.resolve(`${moduleApi.UserAppData(req)}/tasks/lists/${listId}.json`), (err, data) => {
                 if (err) {
-                    log(`(${this.name}) unable to read ${listId}.json`);
+                    log(`(tasks) unable to read ${listId}.json`);
                     return res.json({ error: true });
                 }
                 const json = JSON.parse(data.toString());
                 json.tasks[parseInt(taskId)] = req.body;
-                fs.writeFile(path.resolve(`${moduleApi.UserAppData(req)}/${this.name}/lists/${listId}.json`), JSON.stringify(json), err => {
+                fs.writeFile(path.resolve(`${moduleApi.UserAppData(req)}/tasks/lists/${listId}.json`), JSON.stringify(json), err => {
                     if (err) {
-                        log(`(${this.name}) ERROR: unable to write to ${listId}.json`);
+                        log(`(tasks) ERROR: unable to write to ${listId}.json`);
                         return res.json({ error: true });
                     }
                     return res.json({ success: true });
@@ -212,7 +215,7 @@ const module = {
                 return res.json({ error: true });
             fs.readFile(path.resolve(`${moduleApi.FsOrigin}/data/users/${req.params.userName}/user.json`), (err, data) => {
                 if (err) {
-                    log(`(${this.name}) ERROR: no user named '${req.params.userName}'`);
+                    log(`(tasks) ERROR: no user named '${req.params.userName}'`);
                     return res.json({ error: true });
                 }
                 const json = JSON.parse(data.toString());
@@ -231,9 +234,8 @@ const module = {
             });
         });
     },
-    name: 'tasks',
     unload() {
-        log(`The ${this.name} module was unloaded`);
+        return 0;
     },
 };
 export default module;
