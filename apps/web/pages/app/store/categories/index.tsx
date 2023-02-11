@@ -1,27 +1,12 @@
 import { useRouter } from 'next/router';
-import AppLayout from '../../../layouts/appLayout/AppLayout';
-import { NextPageWithLayout } from '../../page';
-import Carousel from './components/carousel/Carousel';
-import styles from "./index.module.scss"
-import { useEffect, useState } from 'react';
-import { type InstalledApplication } from 'types/store/installedApplication';
-import SERVER, { verifyAndReturnJson } from '../../../server';
+import AppLayout from '../../../../layouts/appLayout/AppLayout';
+import { NextPageWithLayout } from '../../../page';
+import Carousel from "../components/carousel/Carousel";
+import styles from "../index.module.scss"
 import Chiplet from 'ui';
 
 const StoreIndex: NextPageWithLayout = () => {
   const router = useRouter()
-
-  const [ includedApps, setIncludedApps ] = useState([] as InstalledApplication[])
-
-  useEffect(() => {
-    verifyAndReturnJson(
-        SERVER.get(`/store/list/applications`),
-        data => {
-          setIncludedApps(data)
-        }, () => {
-          console.error("error fetching installed apps")
-        })
-  }, [])
 
   return (
     <div className={ styles.root }>
@@ -76,29 +61,7 @@ const StoreIndex: NextPageWithLayout = () => {
           }
         />
       </Chiplet.Row>
-      <main className={ styles.cardContainer }>
-        {
-            includedApps.map((item, ind) => {
-              return (
-                <Chiplet.Card
-                  key={ item.name }
-                  onClick={ () => {
-                        router.push(`/app/store/product/${item.name}`)
-                      } }
-                  className={ styles.card }
-                >
-                  <Chiplet.Row>
-                    <img className={ styles.cardImg } src={ item?.icon } alt=""/>
-                    <Chiplet.Column>
-                      <h2 className={ styles.cardName }>{item?.displayName}</h2>
-                      <p className={ styles.cardDescription }>{item?.description}</p>
-                    </Chiplet.Column>
-                  </Chiplet.Row>
-                </Chiplet.Card>
-              )
-            })
-          }
-      </main>
+      <main className={ styles.cardContainer }/>
     </div>
   );
 };

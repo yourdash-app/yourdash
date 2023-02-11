@@ -1,4 +1,4 @@
-import { type InstalledApplication } from "../types/store/installedApplication.js"
+import { type InstalledApplication } from "types/store/installedApplication.js"
 
 const includedApps: InstalledApplication[] = [
   {

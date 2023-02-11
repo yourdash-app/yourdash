@@ -28,10 +28,14 @@ const DropdownButton: React.FC<IDropdownButton> = ({
             e.stopPropagation()
             e.preventDefault()
 
+            const clientRect = e.currentTarget.getBoundingClientRect()
+
             if (dropdownShown) {
               RootContainerContext(
                   0,
                   0,
+                  clientRect.width,
+                  clientRect.height,
                   false,
                   []
               )
@@ -40,11 +44,12 @@ const DropdownButton: React.FC<IDropdownButton> = ({
               return
             }
 
-            const clientRect = e.currentTarget.getBoundingClientRect()
 
             RootContainerContext(
                 clientRect.left,
                 clientRect.bottom,
+                clientRect.width,
+                clientRect.height,
                 true,
                 items.map(item => {
                   return {
@@ -60,12 +65,14 @@ const DropdownButton: React.FC<IDropdownButton> = ({
 
             setDropdownShown(true)
 
-            const listener = (e: MouseEvent) => {
-              e.preventDefault()
+            const listener = (ev: MouseEvent) => {
+              ev.preventDefault()
 
               RootContainerContext(
                   0,
                   0,
+                  clientRect.width,
+                  clientRect.height,
                   false,
                   []
               )

@@ -219,7 +219,7 @@ const TasksPersonalList: NextPageWithLayout = () => {
                             }
                         onDelete={ () => {
                               verifyAndReturnJson(
-                                  SERVER.delete(`/tasks/personal/list/delete/${listData.id}/task/${ind}`),
+                                  SERVER.delete(`/tasks/personal/list/${listData.id}/task/${ind}`),
                                   () => {
                                     if (!router.query.listId) return
 
@@ -251,8 +251,9 @@ const TasksPersonalList: NextPageWithLayout = () => {
           <Chiplet.Row>
             <Chiplet.TextInput
               style={ { flex: 1 } }
-              defaultValue={ activeTaskData?.title }
+              value={ activeTaskData?.title || "" }
               onChange={ e => {
+                    e.preventDefault()
                     if (!activeTaskData) return
 
                     setActiveTaskData({

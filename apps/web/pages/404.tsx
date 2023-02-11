@@ -1,25 +1,23 @@
 import HomeLayout from "../layouts/homeLayout/HomeLayout"
 import { NextPageWithLayout } from "./page"
+import Chiplet from "ui";
 
 const FourZeroFourPage: NextPageWithLayout = () => {
   return (
-    <div style={ {
+    <Chiplet.Column style={ {
         alignItems: "center",
-        display: "flex",
-        height: "100%",
         justifyContent: "center",
-        minHeight: "84vh",
-        width: "100%",
+        minHeight: "calc(100vh - 5rem)"
       } }
     >
-      <h1 style={ {
-          background: "var(--card-bg)",
-          borderRadius: "var(--card-rounding)",
-          color: "var(--card-fg)",
-          padding: "1rem 2rem",
-        } }
-      >404 | Page not found</h1>
-    </div>
+      <Chiplet.Card>
+        <Chiplet.Column>
+          <h1>YourDash</h1>
+          <p>Page not found</p>
+          <Chiplet.ButtonLink href={ "/" }>Home</Chiplet.ButtonLink>
+        </Chiplet.Column>
+      </Chiplet.Card>
+    </Chiplet.Column>
   )
 }
 
