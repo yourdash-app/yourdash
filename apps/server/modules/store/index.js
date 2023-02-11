@@ -40,6 +40,31 @@ const module = {
                 return res.json(resp);
             });
         });
+        request.get(`/list/categories`, (req, res) => {
+            const categories = new Set();
+            includedApps.forEach(app => {
+                return categories.add(app.category);
+            });
+            return res.json(Array.from(categories));
+        });
+        request.get(`/list/category/:categoryName/applications`, (req, res) => {
+            const applications = includedApps.filter(app => {
+                return app.category === req.params.categoryName;
+            });
+            Promise.all(applications.map(app => {
+                return new Promise((resolve, reject) => {
+                    resizeImage(96, 96, path.resolve(`${moduleApi.FsOrigin}/../assets/apps/${app.icon}`), image => {
+                        const application = { ...app };
+                        application.icon = image;
+                        return resolve(application);
+                    }, () => {
+                        return reject();
+                    });
+                });
+            })).then(resp => {
+                return res.json(resp);
+            });
+        });
         request.get(`/application/:applicationId`, (req, res) => {
             fs.readFile(path.resolve(`${moduleApi.FsOrigin}/installed_apps.json`), (err, data) => {
                 if (err) {

@@ -9,6 +9,7 @@ const includedApps = [
         name: "endpoints",
         path: "/app/endpoints",
         previewImages: [],
+        category: "devtools"
     },
     {
         author: "Ewsgit",
@@ -20,6 +21,7 @@ const includedApps = [
         name: "dash",
         path: "/app/dash",
         previewImages: [],
+        category: "core"
     },
     {
         author: "Ewsgit",
@@ -33,7 +35,9 @@ const includedApps = [
         name: "files",
         path: "/app/files",
         previewImages: [],
-    }, {
+        category: "core"
+    },
+    {
         author: "Ewsgit",
         copyright: "MIT",
         description: "The YourDash application and extension manager",
@@ -45,7 +49,9 @@ const includedApps = [
         name: "store",
         path: "/app/store",
         previewImages: [],
-    }, {
+        category: "core"
+    },
+    {
         author: "Ewsgit",
         copyright: "MIT",
         description: "The YourDash settings manager",
@@ -55,7 +61,9 @@ const includedApps = [
         name: "settings",
         path: "/app/settings",
         previewImages: [],
-    }, {
+        category: "core"
+    },
+    {
         author: "Ewsgit",
         copyright: "MIT",
         description: "The YourDash built-in mastodon client",
@@ -65,7 +73,9 @@ const includedApps = [
         name: "mastodon",
         path: "/app/mastodon",
         previewImages: [],
-    }, {
+        category: "social"
+    },
+    {
         author: "Ewsgit",
         copyright: "MIT",
         description: "The todo list / task organization application for YourDash",
@@ -77,7 +87,9 @@ const includedApps = [
         name: "tasks",
         path: "/app/tasks",
         previewImages: [],
-    }, {
+        category: "planning"
+    },
+    {
         author: "Ewsgit",
         copyright: "MIT",
         description: "The YourDash code editor, edit files seamlessly with others.",
@@ -87,6 +99,7 @@ const includedApps = [
         name: "code-studio",
         path: "/app/code-studio",
         previewImages: [],
+        category: "devtools"
     }
 ];
 export default includedApps;

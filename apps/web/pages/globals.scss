@@ -72,16 +72,6 @@ a[href] {
 
   &:hover {
     color: var(--link-bg);
-
-    &::before {
-      transform: scaleX(1);
-    }
-  }
-
-  &:active {
-    &::before {
-      transform: scaleX(1.2);
-    }
   }
 
   &::before {

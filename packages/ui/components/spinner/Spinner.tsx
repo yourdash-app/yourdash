@@ -1,8 +1,12 @@
 import styles from './Spinner.module.scss';
+import {CSSProperties} from "react";
 
-const Spinner: React.FC = ({ children }) => {
-  return <div className={ styles.component }>{children}</div>;
+export interface ISpinner {
+  style?: CSSProperties
+}
+
+const Spinner: React.FC<ISpinner> = ({children, style}) => {
+  return <div className={ styles.component } style={ style }>{children}</div>;
 };
 
 export default Spinner;
- 

@@ -8,9 +8,7 @@
   ],
   "scripts": {
     "build": "turbo run build",
-    "dev:all": "turbo run dev",
-    "dev:chipletui": "yarn --cwd ./apps/chipletui-project dev",
-    "dev": "concurrently \"yarn --cwd ./apps/server dev\" \"yarn --cwd ./apps/web dev\"",
+    "dev": "turbo run dev",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
@@ -22,8 +20,5 @@
   "engines": {
     "node": ">=14.0.0"
   },
-  "packageManager": "yarn@1.22.19",
-  "dependencies": {
-    "concurrently": "^7.6.0"
-  }
+  "packageManager": "yarn@1.22.19"
 }
