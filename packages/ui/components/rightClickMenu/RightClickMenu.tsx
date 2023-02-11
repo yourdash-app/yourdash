@@ -13,36 +13,43 @@ const RightClickMenu: React.FC<IRightClickMenu> = ({
 
   return (
     <section onContextMenu={ e => {
-    e.stopPropagation()
-    e.preventDefault()
-    RootContainerContext(
-        e.pageX,
-        e.pageY,
-        true,
-        items
-    )
+        e.stopPropagation()
+        e.preventDefault()
 
-    const listener = (e: MouseEvent) => {
-      e.preventDefault()
+        const clientRect = e.currentTarget.getBoundingClientRect()
 
-      RootContainerContext(
-          0,
-          0,
-          false,
-          []
-      )
+        RootContainerContext(
+            e.pageX,
+            e.pageY,
+            clientRect.width,
+            clientRect.height,
+            true,
+            items
+        )
 
-      window.removeEventListener("click", listener)
-      window.removeEventListener("contextmenu", listener)
-    }
+        const listener = (ev: MouseEvent) => {
+          ev.preventDefault()
 
-    window.addEventListener("click", listener)
-    window.addEventListener("contextmenu", listener)
-  } }
+          RootContainerContext(
+              0,
+              0,
+              clientRect.width,
+              clientRect.height,
+              false,
+              []
+          )
+
+          window.removeEventListener("click", listener)
+          window.removeEventListener("contextmenu", listener)
+        }
+
+        window.addEventListener("click", listener)
+        window.addEventListener("contextmenu", listener)
+      } }
     >
       {children}
     </section>
-)
+  )
 };
 
 export default RightClickMenu;

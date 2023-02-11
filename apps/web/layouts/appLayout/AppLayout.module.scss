@@ -28,13 +28,13 @@
           100vh - calc(calc(var(--app-application-margin) * 2) + var(--app-panel-height))
   );
   width: calc(100vw - calc(var(--app-application-margin) * 2));
-  transition-property: opacity, height, width, margin, border-radius;
-  transition-duration: 250ms;
-  transition-timing-function: ease-in-out;
   margin: var(--app-application-margin);
   border-radius: var(--app-application-rounding);
   box-shadow: 0 0 1rem #00000055;
   background-color: var(--background-color);
+  transition-property: opacity, height, width, margin, border-radius;
+  transition-duration: 250ms;
+  transition-timing-function: ease-in-out;
 
   &[data-app-transparent-background="true"] {
     background: transparent;

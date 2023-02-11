@@ -22,7 +22,7 @@ export function log(input: string) {
   });
 }
 
-export type extend<T, E> = T & E
+export type extend<Type, TypeExtension> = Type & TypeExtension
 
 export function returnBase64Image(path: string) {
   return `data:image/png;base64,${fs.readFileSync(path, 'base64')}`;
@@ -53,7 +53,6 @@ export function resizeImage(width: number, height: number, image: string, callba
           log(`ERROR: unable to resize image: ${image}`)
           return error()
         }
-        log(`Triggered Sharp, width: ${width}, height: ${height}`)
         return callback(base64FromBufferImage(buf))
       })
 }

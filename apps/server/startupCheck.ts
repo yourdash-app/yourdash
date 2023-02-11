@@ -9,7 +9,8 @@ import { type YourDashUser, type YourDashUserSettings } from 'types/core/user.js
 import { encrypt, generateRandomStringOfLength } from './encryption.js';
 import { ENV, RELEASE_CONFIGURATION, type YourDashServerConfig } from './index.js';
 import { log, returnBase64Image } from './libServer.js';
-import includedApps from './includedApps.js';
+import includedApps, { DEFAULT_APPS } from './includedApps.js';
+import { type InstalledApplication } from "types/store/installedApplication"
 
 export default async function main(cb: () => void) {
   await checkEnvironmentVariables()
@@ -69,8 +70,15 @@ function checkIfAllInstalledAppsStillExist() {
         log(`(Start up) CRITICAL ERROR: unable to read installed_apps.json`)
         return process.exit(1)
       }
+      1
 
-      let json = JSON.parse(data.toString()) as string[]
+      let json = [] as InstalledApplication[]
+
+      try {
+        json = JSON.parse(data.toString())
+      } catch (e) {
+        json = DEFAULT_APPS
+      }
 
       json.forEach(app => {
         if (includedApps.find(includedApplication => {

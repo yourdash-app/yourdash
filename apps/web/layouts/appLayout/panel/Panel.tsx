@@ -101,27 +101,35 @@ const Panel: React.FC<IPanel> = ({
                     if (app?.name?.toLowerCase()?.includes(searchQuery) || app?.description?.toLowerCase()?.includes(searchQuery))
                       return (
                         <Chiplet.RightClickMenu
-                          items={ [
-                                {
-                                  name: "Pin to quick shortcuts",
-                                  onClick: () => {
-                                    verifyAndReturnJson(
-                                        SERVER.post(`/core/panel/quick-shortcut/create`, {
-                                          body: JSON.stringify({
-                                            name: app.name,
-                                            url: app.path
-                                          })
-                                        }),
-                                        data => {
-                                          setQuickShortcuts([ ...quickShortcuts, data[0] ])
-                                        },
-                                        () => {
-                                          console.error(`unable to create quick shortcut with name: ${app.name}`)
-                                        }
-                                    )
+                          items={
+                                [
+                                  {
+                                    name: "Pin to quick shortcuts",
+                                    onClick: () => {
+                                      verifyAndReturnJson(
+                                          SERVER.post(`/core/panel/quick-shortcut/create`, {
+                                            body: JSON.stringify({
+                                              name: app.name,
+                                              url: app.path
+                                            })
+                                          }),
+                                          data => {
+                                            setQuickShortcuts([ ...quickShortcuts, data[0] ])
+                                          },
+                                          () => {
+                                            console.error(`unable to create quick shortcut with name: ${app.name}`)
+                                          }
+                                      )
+                                    }
+                                  },
+                                  {
+                                    name: "Open in new tab",
+                                    onClick: () => {
+                                      window.open(`${location.origin}/app/${app.name}`)
+                                    }
                                   }
-                                },
-                              ] }
+                                ]
+                              }
                           key={ app.name }
                         >
                           <button
@@ -132,11 +140,14 @@ const Panel: React.FC<IPanel> = ({
                                   setLauncherSlideOutVisible(false)
                                   router.prefetch(app.path)
                                   appIsOpening(true)
-                                  setTimeout(() => {
-                                    router.push(app.path)
-                                    appIsOpening(false)
-                                  }, 500)
-                                } }
+                                  setTimeout(
+                                      () => {
+                                        router.push(app.path)
+                                        appIsOpening(false)
+                                      }, 250
+                                  )
+                                }
+                                }
                           >
                             <img src={ app.icon } draggable={ false } alt=""/>
                             <span>{app.displayName}</span>
@@ -177,7 +188,16 @@ const Panel: React.FC<IPanel> = ({
       </div>
       <ServerImage
         onClick={ () => {
-              router.push(`/app/dash`)
+              if (router.pathname === `/app/dash`) return
+
+              router.prefetch(`/app/dash`)
+              appIsOpening(true)
+              setTimeout(
+                  () => {
+                    router.push(`/app/dash`)
+                    appIsOpening(false)
+                  }, 250
+              )
             } }
         src={ "/core/instance/logo" }
         className={ styles.serverLogo }
@@ -190,24 +210,32 @@ const Panel: React.FC<IPanel> = ({
                   return (
                     <Chiplet.RightClickMenu
                       key={ shortcut.name }
-                      items={ [
-                            {
-                              name: "Remove quick shortcut",
-                              onClick: () => {
-                                verifyAndReturnJson(
-                                    SERVER.delete(`/core/panel/quick-shortcut/${shortcut.id}`),
-                                    () => {
-                                      setQuickShortcuts(quickShortcuts.filter(sc => {
-                                        return sc.id !== shortcut.id
-                                      }))
-                                    },
-                                    () => {
-                                      console.error(`unable to delete quick shortcut ${shortcut.id}`)
-                                    }
-                                )
+                      items={
+                            [
+                              {
+                                name: "Open in new tab",
+                                onClick: () => {
+                                  window.open(`${location.origin}/app/${app.name}`)
+                                }
+                              },
+                              {
+                                name: "Remove quick shortcut",
+                                onClick: () => {
+                                  verifyAndReturnJson(
+                                      SERVER.delete(`/core/panel/quick-shortcut/${shortcut.id}`),
+                                      () => {
+                                        setQuickShortcuts(quickShortcuts.filter(sc => {
+                                          return sc.id !== shortcut.id
+                                        }))
+                                      },
+                                      () => {
+                                        console.error(`unable to delete quick shortcut ${shortcut.id}`)
+                                      }
+                                  )
+                                }
                               }
-                            }
-                          ] }
+                            ]
+                          }
                     >
                       <button
                         type="button"
@@ -220,7 +248,7 @@ const Panel: React.FC<IPanel> = ({
                               setTimeout(() => {
                                 router.push(shortcut.url)
                                 appIsOpening(false)
-                              }, 500)
+                              }, 250)
                             } }
                       >
                         <div>
@@ -299,25 +327,25 @@ const Panel: React.FC<IPanel> = ({
               <Chiplet.IconButton
                 icon="logout"
                 onClick={ () => {
-                  setAccountDropdownVisible(false)
-                  localStorage.removeItem("sessiontoken")
-                  localStorage.removeItem("username")
-                  router.push("/login/")
-                } }
+                      setAccountDropdownVisible(false)
+                      localStorage.removeItem("sessiontoken")
+                      localStorage.removeItem("username")
+                      router.push("/login/")
+                    } }
               />
               <Chiplet.IconButton
                 icon='info-16'
                 onClick={ () => {
-                  setAccountDropdownVisible(false)
-                  router.push("/about")
-                } }
+                      setAccountDropdownVisible(false)
+                      router.push("/about")
+                    } }
               />
               <Chiplet.IconButton
                 icon="gear-16"
                 onClick={ () => {
-                  setAccountDropdownVisible(false)
-                  router.push("/app/settings")
-                } }
+                      setAccountDropdownVisible(false)
+                      router.push("/app/settings")
+                    } }
               />
             </Chiplet.Row>
             <Chiplet.Column>

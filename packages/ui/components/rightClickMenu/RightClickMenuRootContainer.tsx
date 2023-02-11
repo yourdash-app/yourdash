@@ -11,10 +11,26 @@ const RightClickMenuRootContainer: React.FC = ({ children }) => {
   const [ items, setItems ] = React.useState([] as RightClickMenuItem[])
 
   return (
-    <RightClickMenuContext.Provider value={ (x, y, visible, items) => {
+    <RightClickMenuContext.Provider value={ (x, y, width, height, visible, items) => {
+        const screenWidth = window.innerWidth
+        const screenHeight = window.innerHeight
+
+        let resultX = x
+        let resultY = y
+
+        if ((x + width) > screenWidth) {
+          resultX = screenWidth - width
+        }
+
+        if ((y + height) > screenHeight) {
+          resultY = screenHeight - height
+        }
+
         setPosition({
-          x, y
+          x: resultX,
+          y: resultY
         });
+
         setVisible(visible);
         setItems(items)
       } }

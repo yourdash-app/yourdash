@@ -1,7 +1,6 @@
 import { COLOR } from 'types/global/color';
 import Icon from '../icon/Icon';
-// @ts-ignore
-import { ChipletIcon } from '../../../icon/iconDictionary'; // eslint-disable-line import/no-unresolved
+import { type ChipletIcon } from '../icon/iconDictionary';
 import styles from './IconButton.module.scss';
 
 export interface IIconButton extends React.ComponentPropsWithoutRef<"button"> {

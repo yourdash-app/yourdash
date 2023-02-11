@@ -310,6 +310,7 @@ const Module: YourDashModule = {
 
     request.get(`/instance/installed/apps`, (_req, res) => {
       if (!fs.existsSync(path.resolve(`${moduleApi.FsOrigin}/installed_apps.json`))) {
+        console.log("WARNING: core instance installed apps HERE")
         fs.writeFile(path.resolve(`${moduleApi.FsOrigin}/installed_apps.json`), JSON.stringify({ apps: [] }), err => {
           if (err) return res.json({ error: true });
           return res.json({ apps: [] });
