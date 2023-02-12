@@ -1,6 +1,6 @@
 .root {
   transition: all 500ms ease-in-out;
-  position: absolute;
+  position: relative;
   width: 100%;
   top: 0;
 
@@ -72,17 +72,8 @@
 }
 
 .installationPopup {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  translate: -50% -50%;
-  height: 60vh;
-  width: calc(100% - 10rem);
   z-index: 2;
   background-color: var(--card-bg);
-  box-sizing: border-box;
-  border-radius: 1.5rem;
-  box-shadow: 0 0 1rem #00000088;
   transition: var(--transition);
   color: var(--card-fg);
 
@@ -221,6 +212,7 @@
 
   opacity: 0;
   animation: 500ms 100ms ease-in-out fadeIn forwards;
+  max-width: 100%;
 }
 
 .errorPopup {

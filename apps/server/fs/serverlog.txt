@@ -10,612 +10,156 @@ core,files,store,tasks,userManagement
 (Start up) loaded module: tasks
 (Start up) loaded module: userManagement
 (Start up) loaded module: store
-9:21:14  GET  200 /api/core/panel/background-image
-9:21:14  GET  200 /api/core/panel/user/profile/picture
-9:21:14  GET  200 /api/core/instance/logo
-9:21:14  GET  200 /api/userManagement/current/user
-9:21:14  GET  200 /api/core/panel/quick-shortcuts/
-9:21:14  GET  200 /api/core/panel/launcher/apps
-9:21:14  GET  200 /api/files/dir/list/
-{"path":"AppData"}
-9:21:14  GET  200 /api/files/sidebar/categories
-9:21:14  GET  200 /api/core/panel/user/profile/picture
-9:22:21  GET  200 /api/files/dir/list/
-{"path":"/AppData"}
-9:22:53  GET  200 /api/files/dir/list/
-{"path":"/AppDatacore"}
-9:22:56  GET  200 /api/core/panel/background-image
-9:22:56  GET  200 /api/core/panel/user/profile/picture
-9:22:56  GET  200 /api/core/instance/logo
-9:22:56  GET  200 /api/files/dir/list/
-{"path":"/AppDatacore"}
-9:22:56  GET  200 /api/core/panel/quick-shortcuts/
-9:22:56  GET  200 /api/userManagement/current/user
-9:22:56  GET  200 /api/files/sidebar/categories
-9:22:56  GET  200 /api/core/panel/launcher/apps
-9:22:56  GET  200 /api/core/panel/user/profile/picture
-9:23:00  GET  200 /api/core/panel/background-image
-9:23:00  GET  200 /api/core/panel/user/profile/picture
-9:23:00  GET  200 /api/core/instance/logo
-9:23:00  GET  200 /api/userManagement/current/user
-9:23:00  GET  200 /api/core/panel/quick-shortcuts/
-9:23:00  GET  200 /api/core/panel/launcher/apps
-9:23:00  GET  200 /api/files/sidebar/categories
-9:23:00  GET  200 /api/files/dir/list/
-{"path":"/AppData"}
-9:23:00  GET  200 /api/core/panel/user/profile/picture
-9:23:42  GET  200 /api/files/dir/list/
-{"path":"/AppData,core"}
-9:23:45  GET  200 /api/core/panel/background-image
-9:23:46  GET  200 /api/files/dir/list/
-{"path":"/AppData,core"}
-9:23:46  GET  200 /api/core/panel/user/profile/picture
-9:23:46  GET  200 /api/core/instance/logo
-9:23:46  GET  200 /api/userManagement/current/user
-9:23:46  GET  200 /api/core/panel/quick-shortcuts/
-9:23:46  GET  200 /api/core/panel/launcher/apps
-9:23:46  GET  200 /api/files/sidebar/categories
-9:23:46  GET  200 /api/core/panel/user/profile/picture
-9:25:11  GET  200 /api/files/dir/list/
-{"path":"/AppData/core"}
-9:26:53  GET  200 /api/core/panel/background-image
-9:26:54  GET  200 /api/core/panel/user/profile/picture
-9:26:54  GET  200 /api/core/instance/logo
-9:26:54  GET  200 /api/userManagement/current/user
-9:26:54  GET  200 /api/core/panel/quick-shortcuts/
-9:26:54  GET  200 /api/core/panel/launcher/apps
-9:26:54  GET  200 /api/files/sidebar/categories
-9:26:54  GET  200 /api/files/dir/list/
-{"path":"/AppData/core"}
-9:26:54  GET  200 /api/core/panel/user/profile/picture
-9:27:46  GET  200 /api/core/panel/background-image
-9:27:47  GET  200 /api/core/panel/user/profile/picture
-9:27:47  GET  200 /api/core/instance/logo
-9:27:47  GET  200 /api/userManagement/current/user
-9:27:47  GET  200 /api/core/panel/quick-shortcuts/
-9:27:47  GET  200 /api/core/panel/launcher/apps
-9:27:47  GET  200 /api/files/sidebar/categories
-9:27:47  GET  200 /api/files/dir/list/
-{"path":"/AppData/core"}
-9:27:47  GET  200 /api/core/panel/user/profile/picture
-9:28:34  GET  200 /api/files/dir/list/
-{"path":"/AppData/corepanel"}
-9:28:36  GET  200 /api/core/panel/background-image
-9:28:37  GET  200 /api/files/dir/list/
-{"path":"/AppData/corepanel"}
-9:28:37  GET  200 /api/core/panel/user/profile/picture
-9:28:37  GET  200 /api/core/instance/logo
-9:28:37  GET  200 /api/userManagement/current/user
-9:28:37  GET  200 /api/core/panel/quick-shortcuts/
-9:28:37  GET  200 /api/core/panel/launcher/apps
-9:28:37  GET  200 /api/files/sidebar/categories
-9:28:37  GET  200 /api/core/panel/user/profile/picture
-9:28:44  GET  200 /api/core/panel/background-image
-9:28:44  GET  200 /api/core/panel/user/profile/picture
-9:28:44  GET  200 /api/core/instance/logo
-9:28:44  GET  200 /api/userManagement/current/user
-9:28:44  GET  200 /api/core/panel/quick-shortcuts/
-9:28:44  GET  200 /api/core/panel/launcher/apps
-9:28:44  GET  200 /api/files/sidebar/categories
-9:28:44  GET  200 /api/files/dir/list/
+11:42:47  GET  200 /api/core/panel/background-image
+11:42:47  GET  200 /api/core/panel/user/profile/picture
+11:42:47  GET  200 /api/core/instance/logo
+11:42:47  GET  200 /api/userManagement/current/user
+11:42:47  GET  200 /api/core/panel/quick-shortcuts/
+11:42:47  GET  200 /api/core/panel/launcher/apps
+11:42:47  GET  200 /api/userManagement/current/user
+11:42:48  GET  200 /api/core/panel/user/profile/picture
+11:42:49  GET  200 /api/core/instance/login/background
+11:42:49  GET  200 /api/core/instance/login/name
+11:42:49  GET  200 /api/core/instance/login/logo
+11:42:49  GET  200 /api/core/instance/login/message
+11:43:25  GET  200 /api/userManagement/login
+11:43:25  GET  200 /api/core/panel/background-image
+11:43:25  GET  200 /api/core/panel/user/profile/picture
+11:43:25  GET  200 /api/core/instance/logo
+11:43:25  GET  200 /api/userManagement/current/user
+11:43:25  GET  200 /api/core/panel/quick-shortcuts/
+11:43:25  GET  200 /api/core/panel/launcher/apps
+11:43:25  GET  200 /api/core/panel/user/profile/picture
+11:43:25  GET  200 /api/userManagement/current/user
+12:5:42  GET  200 /api/core/instance/login/background
+12:5:42  GET  200 /api/core/instance/login/name
+12:5:42  GET  200 /api/core/instance/login/logo
+12:5:42  GET  200 /api/core/instance/login/message
+12:5:44  GET  200 /api/userManagement/login
+12:5:44  GET  200 /api/core/panel/background-image
+12:5:44  GET  200 /api/core/panel/user/profile/picture
+12:5:44  GET  200 /api/core/instance/logo
+12:5:44  GET  200 /api/userManagement/current/user
+12:5:44  GET  200 /api/core/panel/quick-shortcuts/
+12:5:44  GET  200 /api/core/panel/launcher/apps
+12:5:44  GET  200 /api/userManagement/current/user
+12:5:44  GET  200 /api/core/panel/user/profile/picture
+12:6:48  GET  200 /api/store/list/applications
+12:7:30  GET  200 /api/files/sidebar/categories
+12:7:30  GET  200 /api/files/dir/list/
 {"path":"/"}
-9:28:44  GET  200 /api/core/panel/user/profile/picture
-9:29:11  GET  200 /api/files/dir/list/
+12:7:40  GET  200 /api/files/dir/list/
 {"path":"/AppData"}
-9:30:18  GET  200 /api/core/panel/background-image
-9:30:18  GET  200 /api/core/panel/user/profile/picture
-9:30:18  GET  200 /api/core/instance/logo
-9:30:18  GET  200 /api/userManagement/current/user
-9:30:18  GET  200 /api/core/panel/quick-shortcuts/
-9:30:18  GET  200 /api/core/panel/launcher/apps
-9:30:18  GET  200 /api/files/sidebar/categories
-9:30:18  GET  200 /api/files/dir/list/
+12:7:50  GET  200 /api/files/dir/list/
 {"path":"/AppData/core"}
-9:30:18  GET  200 /api/core/panel/user/profile/picture
-9:30:57  GET  200 /api/files/dir/list/
+12:7:50  GET  200 /api/files/dir/list/
 {"path":"/AppData/core/panel"}
-9:33:20  GET  200 /api/files/dir/list/
-{"path":"/AppData/core/panel"}
-9:33:40  GET  200 /api/core/panel/background-image
-9:33:50  GET  200 /api/files/dir/list/
-{"path":"/AppData/core/panel"}
-9:33:50  GET  200 /api/core/panel/user/profile/picture
-9:33:50  GET  200 /api/core/instance/logo
-9:33:50  GET  200 /api/userManagement/current/user
-9:33:50  GET  200 /api/core/panel/quick-shortcuts/
-9:33:50  GET  200 /api/core/panel/launcher/apps
-9:33:50  GET  200 /api/files/sidebar/categories
-9:33:50  GET  200 /api/core/panel/user/profile/picture
-9:33:19  GET  200 /api/files/dir/list/
-{"path":"/undefinedquick-shortcuts"}
-9:33:24  GET  200 /api/core/panel/background-image
-9:33:25  GET  200 /api/core/panel/user/profile/picture
-9:33:25  GET  200 /api/core/instance/logo
-9:33:25  GET  200 /api/userManagement/current/user
-9:33:25  GET  200 /api/core/panel/quick-shortcuts/
-9:33:25  GET  200 /api/core/panel/launcher/apps
-9:33:25  GET  200 /api/files/sidebar/categories
-9:33:25  GET  200 /api/files/dir/list/
-{"path":"/undefinedquick-shortcuts"}
-9:33:25  GET  200 /api/core/panel/user/profile/picture
-9:34:90  GET  200 /api/core/panel/background-image
-9:34:90  GET  200 /api/core/panel/user/profile/picture
-9:34:90  GET  200 /api/core/instance/logo
-9:34:90  GET  200 /api/userManagement/current/user
-9:34:90  GET  200 /api/core/panel/quick-shortcuts/
-9:34:90  GET  200 /api/core/panel/launcher/apps
-9:34:90  GET  200 /api/files/sidebar/categories
-9:34:90  GET  200 /api/core/panel/user/profile/picture
-9:34:10  GET  200 /api/files/dir/list/
-{"path":"/"}
-9:34:18  GET  200 /api/files/dir/list/
-{"path":"/profile"}
-9:34:28  GET  200 /api/core/panel/background-image
-9:34:28  GET  200 /api/core/panel/user/profile/picture
-9:34:28  GET  200 /api/core/instance/logo
-9:34:28  GET  200 /api/userManagement/current/user
-9:34:28  GET  200 /api/core/panel/quick-shortcuts/
-9:34:28  GET  200 /api/core/panel/launcher/apps
-9:34:28  GET  200 /api/files/sidebar/categories
-9:34:28  GET  200 /api/core/panel/user/profile/picture
-9:34:29  GET  200 /api/files/dir/list/
-{"path":"/"}
-9:34:31  GET  200 /api/files/dir/list/
-{"path":"/AppData"}
-9:34:49  GET  200 /api/files/dir/list/
-{"path":"/undefinedcore"}
-9:34:50  GET  200 /api/core/panel/background-image
-9:34:51  GET  200 /api/files/dir/list/
-{"path":"/undefinedcore"}
-9:34:51  GET  200 /api/core/panel/user/profile/picture
-9:34:51  GET  200 /api/core/instance/logo
-9:34:51  GET  200 /api/userManagement/current/user
-9:34:51  GET  200 /api/files/sidebar/categories
-9:34:51  GET  200 /api/core/panel/launcher/apps
-9:34:51  GET  200 /api/core/panel/quick-shortcuts/
-9:34:51  GET  200 /api/core/panel/user/profile/picture
-9:34:56  GET  200 /api/core/panel/background-image
-9:34:56  GET  200 /api/core/panel/user/profile/picture
-9:34:56  GET  200 /api/core/instance/logo
-9:34:56  GET  200 /api/core/panel/quick-shortcuts/
-9:34:56  GET  200 /api/userManagement/current/user
-9:34:56  GET  200 /api/core/panel/launcher/apps
-9:34:56  GET  200 /api/files/sidebar/categories
-9:34:56  GET  200 /api/files/dir/list/
-{"path":"/AppData"}
-9:34:56  GET  200 /api/core/panel/user/profile/picture
-9:35:21  GET  200 /api/files/dir/list/
-{"path":"/AppDatacore"}
-9:35:24  GET  200 /api/core/panel/background-image
-9:35:24  GET  200 /api/files/dir/list/
-{"path":"/AppDatacore"}
-9:35:24  GET  200 /api/core/panel/user/profile/picture
-9:35:24  GET  200 /api/core/instance/logo
-9:35:24  GET  200 /api/userManagement/current/user
-9:35:24  GET  200 /api/core/panel/quick-shortcuts/
-9:35:24  GET  200 /api/core/panel/launcher/apps
-9:35:24  GET  200 /api/files/sidebar/categories
-9:35:24  GET  200 /api/core/panel/user/profile/picture
-9:35:27  GET  200 /api/core/panel/background-image
-9:35:28  GET  200 /api/core/panel/user/profile/picture
-9:35:28  GET  200 /api/core/instance/logo
-9:35:28  GET  200 /api/userManagement/current/user
-9:35:28  GET  200 /api/core/panel/quick-shortcuts/
-9:35:28  GET  200 /api/core/panel/launcher/apps
-9:35:28  GET  200 /api/files/sidebar/categories
-9:35:28  GET  200 /api/files/dir/list/
-{"path":"/AppData"}
-9:35:28  GET  200 /api/core/panel/user/profile/picture
-9:35:55  GET  200 /api/files/dir/list/
-{"path":"/AppData/core"}
-9:35:59  GET  200 /api/core/panel/background-image
-9:36:00  GET  200 /api/core/panel/user/profile/picture
-9:36:00  GET  200 /api/core/instance/logo
-9:36:00  GET  200 /api/userManagement/current/user
-9:36:00  GET  200 /api/core/panel/quick-shortcuts/
-9:36:00  GET  200 /api/core/panel/launcher/apps
-9:36:00  GET  200 /api/files/sidebar/categories
-9:36:00  GET  200 /api/files/dir/list/
-{"path":"/"}
-9:36:00  GET  200 /api/core/panel/user/profile/picture
-9:36:90  GET  200 /api/core/panel/background-image
-9:36:90  GET  200 /api/core/panel/user/profile/picture
-9:36:90  GET  200 /api/core/instance/logo
-9:36:90  GET  200 /api/userManagement/current/user
-9:36:90  GET  200 /api/core/panel/quick-shortcuts/
-9:36:90  GET  200 /api/core/panel/launcher/apps
-9:36:90  GET  200 /api/files/sidebar/categories
-9:36:90  GET  200 /api/files/dir/list/
-{"path":"/"}
-9:36:90  GET  200 /api/core/panel/user/profile/picture
-9:36:20  GET  200 /api/files/dir/list/
-{"path":"/"}
-9:36:52  GET  200 /api/core/panel/background-image
-9:36:53  GET  200 /api/core/panel/user/profile/picture
-9:36:53  GET  200 /api/core/instance/logo
-9:36:53  GET  200 /api/userManagement/current/user
-9:36:53  GET  200 /api/core/panel/quick-shortcuts/
-9:36:53  GET  200 /api/core/panel/launcher/apps
-9:36:53  GET  200 /api/files/sidebar/categories
-9:36:53  GET  200 /api/files/dir/list/
-{"path":"/"}
-9:36:53  GET  200 /api/core/panel/user/profile/picture
-9:36:57  GET  200 /api/files/dir/list/
-{"path":"/AppData"}
-9:38:00  GET  200 /api/files/dir/list/
-{"path":"/AppData/core"}
-9:38:30  GET  200 /api/core/panel/background-image
-9:38:30  GET  200 /api/core/panel/user/profile/picture
-9:38:30  GET  200 /api/core/instance/logo
-9:38:30  GET  200 /api/userManagement/current/user
-9:38:30  GET  200 /api/core/panel/quick-shortcuts/
-9:38:30  GET  200 /api/files/dir/list/
-{"path":"/AppData/core"}
-9:38:30  GET  200 /api/core/panel/launcher/apps
-9:38:30  GET  200 /api/files/sidebar/categories
-9:38:30  GET  200 /api/core/panel/user/profile/picture
-9:38:28  GET  200 /api/files/dir/list/
-{"path":"/AppData/core/panel"}
-9:38:31  GET  200 /api/core/panel/background-image
-9:38:31  GET  200 /api/core/panel/user/profile/picture
-9:38:31  GET  200 /api/files/dir/list/
-{"path":"/AppData/core/panel"}
-9:38:31  GET  200 /api/core/instance/logo
-9:38:31  GET  200 /api/userManagement/current/user
-9:38:31  GET  200 /api/core/panel/quick-shortcuts/
-9:38:31  GET  200 /api/files/sidebar/categories
-9:38:31  GET  200 /api/core/panel/launcher/apps
-9:38:31  GET  200 /api/core/panel/user/profile/picture
-9:38:51  GET  200 /api/files/dir/list/
-{"path":"/AppData/core/panel"}
-9:38:53  GET  200 /api/core/panel/background-image
-9:38:54  GET  200 /api/files/dir/list/
-{"path":"/AppData/core/panel"}
-9:38:54  GET  200 /api/core/panel/user/profile/picture
-9:38:54  GET  200 /api/core/instance/logo
-9:38:54  GET  200 /api/userManagement/current/user
-9:38:54  GET  200 /api/core/panel/quick-shortcuts/
-9:38:54  GET  200 /api/core/panel/launcher/apps
-9:38:54  GET  200 /api/files/sidebar/categories
-9:38:54  GET  200 /api/core/panel/user/profile/picture
-9:39:21  GET  200 /api/files/dir/list/
-{"path":"/AppData/core/panel"}
-9:39:24  GET  200 /api/core/panel/background-image
-9:39:24  GET  200 /api/files/dir/list/
-{"path":"/AppData/core/panel"}
-9:39:24  GET  200 /api/core/panel/user/profile/picture
-9:39:24  GET  200 /api/core/instance/logo
-9:39:24  GET  200 /api/userManagement/current/user
-9:39:24  GET  200 /api/core/panel/quick-shortcuts/
-9:39:24  GET  200 /api/core/panel/launcher/apps
-9:39:24  GET  200 /api/files/sidebar/categories
-9:39:24  GET  200 /api/core/panel/user/profile/picture
-9:40:00  GET  200 /api/files/dir/list/
+12:7:60  GET  200 /api/files/dir/list/
 {"path":"/AppData/core/panel/quick-shortcuts"}
-9:40:90  GET  200 /api/core/panel/background-image
-9:40:90  GET  200 /api/core/panel/user/profile/picture
-9:40:90  GET  200 /api/core/instance/logo
-9:40:90  GET  200 /api/userManagement/current/user
-9:40:90  GET  200 /api/core/panel/quick-shortcuts/
-9:40:90  GET  200 /api/core/panel/launcher/apps
-9:40:90  GET  200 /api/files/sidebar/categories
-9:40:90  GET  200 /api/core/panel/user/profile/picture
-9:40:10  GET  200 /api/files/dir/list/
+12:7:11  GET  200 /api/files/dir/list/
 {"path":"/"}
-9:40:12  GET  200 /api/files/dir/list/
-{"path":"/AppData"}
-9:40:13  GET  200 /api/files/dir/list/
-{"path":"/AppData/core"}
-9:40:14  GET  200 /api/files/dir/list/
-{"path":"/AppData/core/panel"}
-9:40:15  GET  200 /api/files/dir/list/
-{"path":"/AppData/core/panel/quick-shortcuts"}
-9:41:10  GET  200 /api/files/dir/list/
-{"path":"/AppData/core/panel/quick-shortcuts"}
-9:41:30  GET  200 /api/core/panel/background-image
-9:41:40  GET  200 /api/files/dir/list/
-{"path":"/AppData/core/panel/quick-shortcuts"}
-9:41:40  GET  200 /api/core/panel/user/profile/picture
-9:41:40  GET  200 /api/core/instance/logo
-9:41:40  GET  200 /api/userManagement/current/user
-9:41:40  GET  200 /api/core/panel/quick-shortcuts/
-9:41:40  GET  200 /api/core/panel/launcher/apps
-9:41:40  GET  200 /api/files/sidebar/categories
-9:41:40  GET  200 /api/core/panel/user/profile/picture
-9:41:19  GET  200 /api/files/dir/list/
-{"path":"/AppData/core/panel"}
-9:41:20  GET  200 /api/files/dir/list/
-{"path":"/AppData/core"}
-9:41:23  GET  200 /api/files/dir/list/
-{"path":"/AppData"}
-9:41:27  GET  200 /api/files/dir/list/
+12:7:12  GET  200 /api/userManagement/current/user
+12:30:14  GET  200 /api/core/panel/background-image
+12:30:14  GET  200 /api/core/panel/user/profile/picture
+12:30:14  GET  200 /api/core/instance/logo
+12:30:14  GET  200 /api/userManagement/current/user
+12:30:14  GET  200 /api/core/panel/quick-shortcuts/
+12:30:14  GET  200 /api/core/panel/launcher/apps
+12:30:14  GET  200 /api/userManagement/current/user
+12:30:14  GET  200 /api/core/panel/user/profile/picture
+12:51:13  GET  200 /api/files/sidebar/categories
+12:51:13  GET  200 /api/files/dir/list/
 {"path":"/"}
-9:41:31  GET  200 /api/files/dir/list/
-{"path":"/profile"}
-9:41:39  GET  200 /api/files/dir/list/
-{"path":"/"}
-9:41:42  GET  200 /api/files/dir/list/
-{"path":"/profile"}
-9:41:44  GET  200 /api/files/dir/list/
-{"path":"/"}
-9:41:47  GET  200 /api/files/dir/list/
-{"path":"/AppData"}
-9:41:48  GET  200 /api/files/dir/list/
-{"path":"/AppData/files"}
-9:41:49  GET  200 /api/files/dir/list/
-{"path":"/AppData/files/sidebar"}
-9:41:52  GET  200 /api/files/dir/list/
-{"path":"/"}
-9:42:20  GET  200 /api/store/list/applications
-9:42:50  GET  200 /api/store/list/categories
-9:42:50  GET  200 /api/store/list/categories
-9:42:50  GET  200 /api/store/list/categories
-9:42:50  GET  200 /api/store/list/categories
-9:42:50  GET  200 /api/store/list/categories
-9:42:50  GET  200 /api/store/list/categories
-9:42:50  GET  200 /api/store/list/categories
-9:42:50  GET  200 /api/store/list/categories
-9:42:50  GET  200 /api/store/list/categories
-9:42:50  GET  200 /api/store/list/categories
-9:42:50  GET  200 /api/store/list/categories
-9:42:50  GET  200 /api/store/list/categories
-9:42:50  GET  200 /api/store/list/categories
-9:42:50  GET  200 /api/store/list/categories
-9:42:50  GET  200 /api/store/list/categories
-9:42:50  GET  200 /api/store/list/categories
-9:42:50  GET  200 /api/store/list/categories
-9:42:50  GET  200 /api/store/list/categories
-9:42:50  GET  200 /api/store/list/categories
-9:42:50  GET  200 /api/store/list/categories
-9:42:50  GET  200 /api/store/list/categories
-9:42:50  GET  200 /api/store/list/categories
-9:42:50  GET  200 /api/store/list/categories
-9:42:50  GET  200 /api/store/list/categories
-9:42:50  GET  200 /api/store/list/categories
-9:42:50  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:60  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:70  GET  200 /api/store/list/categories
-9:42:80  GET  200 /api/store/list/categories
-9:42:80  GET  200 /api/store/list/categories
-9:42:80  GET  200 /api/store/list/categories
-9:42:80  GET  200 /api/store/list/categories
-9:42:80  GET  200 /api/store/list/categories
-9:42:80  GET  200 /api/store/list/categories
-9:42:80  GET  200 /api/store/list/categories
-9:42:80  GET  200 /api/store/list/categories
-9:42:80  GET  200 /api/store/list/categories
-9:42:80  GET  200 /api/store/list/categories
-9:42:80  GET  200 /api/store/list/categories
-9:42:80  GET  200 /api/store/list/categories
-9:42:80  GET  200 /api/store/list/categories
-9:42:80  GET  200 /api/store/list/categories
-9:42:80  GET  200 /api/store/list/categories
-9:42:80  GET  200 /api/store/list/categories
-9:42:80  GET  200 /api/store/list/categories
-9:42:80  GET  200 /api/store/list/categories
-9:42:80  GET  200 /api/store/list/categories
-9:42:80  GET  200 /api/store/list/categories
-9:42:80  GET  200 /api/store/list/categories
-9:42:80  GET  200 /api/store/list/categories
-9:42:80  GET  200 /api/store/list/category/devtools/applications
-9:42:10  GET  200 /api/store/application/code-studio
-9:42:13  GET  200 /api/store/list/applications
-9:42:19  GET  200 /api/userManagement/current/user
-9:42:24  GET  200 /api/files/sidebar/categories
-9:42:24  GET  200 /api/files/dir/list/
-{"path":"/"}
-9:42:27  GET  200 /api/files/dir/list/
-{"path":"/"}
-9:42:36  GET  200 /api/userManagement/current/user
-9:43:46  GET  200 /api/store/list/applications
-9:43:48  GET  200 /api/store/application/tasks
-9:43:52  POS  200 /api/store/application/tasks/install
-9:43:53  GET  200 /api/core/panel/background-image
-9:43:53  GET  200 /api/store/application/tasks
-9:43:53  GET  200 /api/core/panel/user/profile/picture
-9:43:53  GET  200 /api/core/instance/logo
-9:43:53  GET  200 /api/userManagement/current/user
-9:43:53  GET  200 /api/core/panel/quick-shortcuts/
-9:43:53  GET  200 /api/core/panel/launcher/apps
-9:43:53  GET  200 /api/core/panel/user/profile/picture
-9:43:56  GET  200 /api/tasks/personal/lists
-9:44:24  GET  200 /api/core/panel/background-image
-9:44:25  GET  200 /api/core/panel/user/profile/picture
-9:44:25  GET  200 /api/core/instance/logo
-9:44:25  GET  200 /api/userManagement/current/user
-9:44:25  GET  200 /api/core/panel/quick-shortcuts/
-9:44:25  GET  200 /api/core/panel/launcher/apps
-9:44:25  GET  200 /api/tasks/personal/lists
-9:44:25  GET  200 /api/core/panel/user/profile/picture
-9:44:36  GET  200 /api/userManagement/current/user
-9:44:38  GET  200 /api/files/sidebar/categories
-9:44:38  GET  200 /api/files/dir/list/
-{"path":"/"}
-9:44:41  GET  200 /api/userManagement/current/user
-9:44:44  GET  200 /api/core/panel/background-image
-9:44:44  GET  200 /api/userManagement/current/user
-9:44:44  GET  200 /api/core/panel/user/profile/picture
-9:44:44  GET  200 /api/core/instance/logo
-9:44:44  GET  200 /api/core/panel/quick-shortcuts/
-9:44:44  GET  200 /api/userManagement/current/user
-9:44:44  GET  200 /api/core/panel/launcher/apps
-9:44:45  GET  200 /api/core/panel/user/profile/picture
-9:44:49  GET  200 /api/core/panel/background-image
-9:44:49  GET  200 /api/core/panel/user/profile/picture
-9:44:49  GET  200 /api/core/instance/logo
-9:44:49  GET  200 /api/core/panel/quick-shortcuts/
-9:44:49  GET  200 /api/core/panel/launcher/apps
-9:44:49  GET  200 /api/userManagement/current/user
-9:44:49  GET  200 /api/core/panel/user/profile/picture
-9:44:49  GET  200 /api/userManagement/current/user
-9:44:55  GET  200 /api/store/list/applications
-9:46:90  GET  200 /api/tasks/personal/lists
-9:46:11  GET  200 /api/tasks/personal/list/HDmCmKBVvj97o3M1HU7wxXWUfvRMbRkn
-9:48:29  GET  200 /api/core/panel/background-image
-9:48:30  GET  200 /api/core/panel/user/profile/picture
-9:48:30  GET  200 /api/core/instance/logo
-9:48:30  GET  200 /api/userManagement/current/user
-9:48:30  GET  200 /api/core/panel/quick-shortcuts/
-9:48:30  GET  200 /api/core/panel/launcher/apps
-9:48:30  GET  200 /api/tasks/personal/list/HDmCmKBVvj97o3M1HU7wxXWUfvRMbRkn
-9:48:30  GET  200 /api/core/panel/user/profile/picture
-9:48:34  GET  200 /api/tasks/personal/list/HDmCmKBVvj97o3M1HU7wxXWUfvRMbRkn/create/task
-9:48:34  GET  200 /api/tasks/personal/list/HDmCmKBVvj97o3M1HU7wxXWUfvRMbRkn
-9:48:38  GET  200 /api/tasks/personal/list/HDmCmKBVvj97o3M1HU7wxXWUfvRMbRkn/task/0
-9:48:41  POS  200 /api/tasks/personal/list/HDmCmKBVvj97o3M1HU7wxXWUfvRMbRkn/task/0
-9:48:41  GET  200 /api/tasks/personal/list/HDmCmKBVvj97o3M1HU7wxXWUfvRMbRkn
-9:48:44  GET  200 /api/tasks/personal/list/HDmCmKBVvj97o3M1HU7wxXWUfvRMbRkn/create/task
-9:48:44  GET  200 /api/tasks/personal/list/HDmCmKBVvj97o3M1HU7wxXWUfvRMbRkn
-9:48:45  GET  200 /api/tasks/personal/list/HDmCmKBVvj97o3M1HU7wxXWUfvRMbRkn/task/1
-9:49:20  POS  200 /api/tasks/personal/list/HDmCmKBVvj97o3M1HU7wxXWUfvRMbRkn/task/1
-9:49:20  GET  200 /api/tasks/personal/list/HDmCmKBVvj97o3M1HU7wxXWUfvRMbRkn
-9:50:28  GET  200 /api/tasks/personal/list/HDmCmKBVvj97o3M1HU7wxXWUfvRMbRkn/task/1
-9:50:31  GET  200 /api/tasks/personal/list/HDmCmKBVvj97o3M1HU7wxXWUfvRMbRkn/task/0
-9:50:53  POS  200 /api/tasks/personal/list/HDmCmKBVvj97o3M1HU7wxXWUfvRMbRkn
-9:50:56  GET  200 /api/tasks/personal/lists
-9:52:30  GET  200 /api/files/sidebar/categories
-9:52:30  GET  200 /api/files/dir/list/
-{"path":"/"}
-9:52:45  GET  200 /api/files/dir/list/
-{"path":"/AppData"}
-9:52:47  GET  200 /api/files/dir/list/
-{"path":"/AppData/core"}
-9:52:48  GET  200 /api/files/dir/list/
-{"path":"/AppData/core/panel"}
-9:52:49  GET  200 /api/files/dir/list/
-{"path":"/AppData/core/panel/quick-shortcuts"}
+12:51:14  GET  200 /api/userManagement/current/user
+12:53:27  GET  200 /api/core/panel/background-image
+12:53:28  GET  200 /api/core/panel/user/profile/picture
+12:53:28  GET  200 /api/core/instance/logo
+12:53:28  GET  200 /api/userManagement/current/user
+12:53:28  GET  200 /api/core/panel/quick-shortcuts/
+12:53:28  GET  200 /api/core/panel/launcher/apps
+12:53:28  GET  200 /api/userManagement/current/user
+12:53:28  GET  200 /api/core/panel/user/profile/picture
+12:58:48  GET  200 /api/store/list/applications
+12:58:58  GET  200 /api/store/application/endpoints
+12:59:10  POS  200 /api/store/application/endpoints/install
+12:59:30  GET  200 /api/core/panel/background-image
+12:59:30  GET  200 /api/core/panel/user/profile/picture
+12:59:30  GET  200 /api/core/instance/logo
+12:59:30  GET  200 /api/userManagement/current/user
+12:59:30  GET  200 /api/core/panel/quick-shortcuts/
+12:59:30  GET  200 /api/core/panel/launcher/apps
+12:59:30  GET  200 /api/store/application/endpoints
+12:59:30  GET  200 /api/core/panel/user/profile/picture
+12:59:90  GET  200 /api/store/list/applications
+13:0:25  GET  200 /api/store/application/endpoints
+13:0:27  GET  200 /api/store/list/applications
+13:1:18  GET  200 /api/store/application/tasks
+13:1:18  DEL  200 /api/store/application/tasks
+13:1:38  GET  200 /api/store/application/tasks
+13:6:37  GET  200 /api/core/panel/background-image
+13:6:37  GET  200 /api/core/panel/user/profile/picture
+13:6:37  GET  200 /api/core/instance/logo
+13:6:37  GET  200 /api/userManagement/current/user
+13:6:37  GET  200 /api/core/panel/quick-shortcuts/
+13:6:37  GET  200 /api/core/panel/launcher/apps
+13:6:37  GET  200 /api/store/application/tasks
+13:6:37  GET  200 /api/core/panel/user/profile/picture
+13:7:40  GET  200 /api/core/panel/background-image
+13:7:40  GET  200 /api/core/panel/user/profile/picture
+13:7:40  GET  200 /api/core/instance/logo
+13:7:40  GET  200 /api/userManagement/current/user
+13:7:40  GET  200 /api/core/panel/quick-shortcuts/
+13:7:40  GET  200 /api/core/panel/launcher/apps
+13:7:40  GET  200 /api/store/application/tasks
+13:7:40  GET  200 /api/core/panel/user/profile/picture
+13:7:31  GET  200 /api/core/panel/background-image
+13:7:32  GET  200 /api/core/panel/user/profile/picture
+13:7:32  GET  200 /api/core/instance/logo
+13:7:32  GET  200 /api/userManagement/current/user
+13:7:32  GET  200 /api/core/panel/quick-shortcuts/
+13:7:32  GET  200 /api/core/panel/launcher/apps
+13:7:32  GET  200 /api/store/application/tasks
+13:7:32  GET  200 /api/core/panel/user/profile/picture
+13:8:21  GET  200 /api/core/panel/background-image
+13:8:23  GET  200 /api/core/panel/background-image
+13:8:24  GET  200 /api/core/panel/user/profile/picture
+13:8:24  GET  200 /api/core/instance/logo
+13:8:24  GET  200 /api/userManagement/current/user
+13:8:24  GET  200 /api/core/panel/quick-shortcuts/
+13:8:24  GET  200 /api/core/panel/launcher/apps
+13:8:24  GET  200 /api/store/application/tasks
+13:8:24  GET  200 /api/core/panel/user/profile/picture
+13:8:32  GET  200 /api/store/application/tasks
+13:8:32  GET  200 /api/store/application/tasks
+13:13:80  GET  200 /api/store/application/tasks
+13:13:80  GET  200 /api/store/application/tasks
+13:13:52  GET  200 /api/store/application/tasks
+13:17:70  GET  200 /api/store/application/tasks
+13:17:25  GET  200 /api/store/application/tasks
+13:18:10  GET  200 /api/store/application/tasks
+13:18:10  GET  200 /api/store/application/tasks
+13:22:50  GET  200 /api/store/list/applications
+13:22:70  GET  200 /api/store/application/endpoints
+13:22:90  DEL  200 /api/store/application/endpoints
+13:22:11  POS  200 /api/store/application/endpoints/install
+13:22:12  GET  200 /api/core/panel/background-image
+13:22:12  GET  200 /api/core/panel/user/profile/picture
+13:22:12  GET  200 /api/core/instance/logo
+13:22:12  GET  200 /api/userManagement/current/user
+13:22:12  GET  200 /api/core/panel/quick-shortcuts/
+13:22:12  GET  200 /api/core/panel/launcher/apps
+13:22:12  GET  200 /api/store/application/endpoints
+13:22:12  GET  200 /api/core/panel/user/profile/picture
+13:22:18  GET  200 /api/core/panel/background-image
+13:22:19  GET  200 /api/core/panel/user/profile/picture
+13:22:19  GET  200 /api/core/instance/logo
+13:22:19  GET  200 /api/userManagement/current/user
+13:22:19  GET  200 /api/core/panel/quick-shortcuts/
+13:22:19  GET  200 /api/core/panel/launcher/apps
+13:22:19  GET  200 /api/store/application/endpoints
+13:22:19  GET  200 /api/core/panel/user/profile/picture
+13:23:30  GET  200 /api/store/list/applications
+13:23:31  GET  200 /api/store/application/endpoints
+13:23:33  GET  200 /api/store/list/applications
+13:23:34  GET  200 /api/store/application/endpoints
+13:23:38  DEL  200 /api/store/application/endpoints

@@ -23,18 +23,18 @@
   }
 
   overflow: auto;
-  animation: zoomInAnimation 750ms ease-in-out forwards;
-  height: calc(
-          100vh - calc(calc(var(--app-application-margin) * 2) + var(--app-panel-height))
-  );
-  width: calc(100vw - calc(var(--app-application-margin) * 2));
-  margin: var(--app-application-margin);
+  animation: animateIn 750ms ease-in-out forwards;
   border-radius: var(--app-application-rounding);
   box-shadow: 0 0 1rem #00000055;
   background-color: var(--background-color);
   transition-property: opacity, margin, border-radius;
   transition-duration: 250ms;
   transition-timing-function: ease-in-out;
+  margin: var(--app-application-margin);
+  height: calc(
+          100vh - calc(calc(var(--app-application-margin) * 2) + var(--app-panel-height))
+  );
+  width: calc(100vw - calc(var(--app-application-margin) * 2));
 
   &[data-app-transparent-background="true"] {
     background: transparent;
@@ -55,12 +55,14 @@
   }
 }
 
-@keyframes zoomInAnimation {
+@keyframes animateIn {
   0% {
-    scale: 0;
+    opacity: 0;
+    pointer-events: none;
   }
 
   100% {
-    scale: 1;
+    opacity: 1;
+    pointer-events: all;
   }
 }
