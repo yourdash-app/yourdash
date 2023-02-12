@@ -23,7 +23,7 @@
   }
 
   overflow: auto;
-  animation: zoomInAnimation 1500ms ease-in-out forwards;
+  animation: zoomInAnimation 750ms ease-in-out forwards;
   height: calc(
           100vh - calc(calc(var(--app-application-margin) * 2) + var(--app-panel-height))
   );

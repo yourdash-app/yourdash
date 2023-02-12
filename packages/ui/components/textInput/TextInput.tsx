@@ -12,7 +12,7 @@ const TextInput: React.FC<ITextInput> = ({
     <input
       { ...inputProps }
       type={ inputProps.type ? inputProps.type : "text" }
-      defaultValue={ defaultValue ? defaultValue : "" }
+      { ...defaultValue ? {defaultValue} : null }
       className={ `${styles.input} ${className}` }
     >{children}</input>
 )
