@@ -287,25 +287,33 @@ function applicationStartup() {
             `${date.getHours()}:${date.getMinutes()}:${date.getSeconds() < 10 ? `${date.getSeconds()}0` : date.getSeconds()
             } ${chalk.bgGreen(chalk.whiteBright(' GET '))} ${res.statusCode} ${req.path}`
         );
+        if (JSON.stringify(req.query) !== "{}")
+          log(JSON.stringify(req.query))
         break;
       case 'POST':
         log(
             `${date.getHours()}:${date.getMinutes()}:${date.getSeconds() < 10 ? `${date.getSeconds()}0` : date.getSeconds()
             } ${chalk.bgBlue(chalk.whiteBright(' POS '))} ${res.statusCode} ${req.path}`
         );
+        if (JSON.stringify(req.query) !== "{}")
+          log(JSON.stringify(req.query))
         break;
       case 'DELETE':
         log(
             `${date.getHours()}:${date.getMinutes()}:${date.getSeconds() < 10 ? `${date.getSeconds()}0` : date.getSeconds()
             } ${chalk.bgRed(chalk.whiteBright(' DEL '))} ${res.statusCode} ${req.path}`
         );
+        if (JSON.stringify(req.query) !== "{}")
+          log(JSON.stringify(req.query))
         break;
-      case 'OPTIONS':
+      // case 'OPTIONS':
         // log(
         //     `${date.getHours()}:${date.getMinutes()}:${date.getSeconds() < 10 ? `${date.getSeconds()}0` : date.getSeconds()
         //     } ${chalk.bgMagenta(chalk.whiteBright(' OPT '))} ${res.statusCode} ${req.path}`
         // )
-        break;
+        // if (JSON.stringify(req.query) !== "{}")
+        //   log(JSON.stringify(req.query))
+        // break;
     }
     next();
   });

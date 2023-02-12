@@ -4,6 +4,8 @@ import { type YourDashUser } from "types/core/user.js";
 import { log } from "../../libServer.js";
 import { type YourDashModule } from "../../module.js";
 import fs from "fs"
+import { type filesFile } from "types/files/file.js"
+import { type filesDirectory } from "types/files/directory.js"
 
 const defaultCategories: SideBarCategory[] = [
   {
@@ -18,8 +20,8 @@ const defaultCategories: SideBarCategory[] = [
 ]
 
 const module: YourDashModule = {
-  load(app, api) {
-    app.get(`/user/quota`, (req, res) => {
+  load(request, api) {
+    request.get(`/user/quota`, (req, res) => {
       if (!fs.existsSync(`${api.UserFs}/user.json`)) return res.send({ error: true })
       fs.readFile(`${api.UserFs}/user.json`, (err, data) => {
         if (err) {
@@ -31,7 +33,7 @@ const module: YourDashModule = {
       })
     });
 
-    app.get(`/user/quota/usage`, (req, res) => {
+    request.get(`/user/quota/usage`, (req, res) => {
       fs.fstat(fs.openSync(`${api.UserFs(req)}`, "r"), (err, stats) => {
         if (err) {
           log(`(files) ERROR: unable to fetch directory stats for user ${req.headers.username}`)
@@ -42,7 +44,7 @@ const module: YourDashModule = {
       })
     })
 
-    app.get(`/sidebar/categories`, (req, res) => {
+    request.get(`/sidebar/categories`, (req, res) => {
       if (!fs.existsSync(path.resolve(`${api.UserAppData(req)}/files/sidebar`)))
         return fs.mkdir(
             path.resolve(`${api.UserAppData(req)}/files/sidebar`),
@@ -69,7 +71,7 @@ const module: YourDashModule = {
       })
     });
 
-    app.get(`/sidebar/set/default`, (req, res) => {
+    request.get(`/sidebar/set/default`, (req, res) => {
       if (!fs.existsSync(path.resolve(`${api.UserAppData(req)}/files/sidebar`)))
         return fs.mkdir(
             path.resolve(`${api.UserAppData(req)}/files/sidebar`),
@@ -88,6 +90,44 @@ const module: YourDashModule = {
           return res.json({ error: true })
         }
         return res.json({ categories: defaultCategories })
+      })
+    })
+
+    request.get(`/dir/list/`, async (req, res) => {
+      if (!req?.query?.path)
+        return res.json({ error: true })
+
+      if (req.query.path === "")
+        return res.json({ error: true })
+
+      if (!fs.existsSync(`${api.UserFs(req)}${req.query.path}`))
+        return res.json({ error: true })
+
+      return res.json(
+       fs.readdirSync(path.resolve(`${api.UserFs(req)}${req.query.path}`)).map(itemName => {
+         const item = fs.statSync(path.resolve(`${api.UserFs(req)}${req.query.path}/${itemName}`));
+
+         return {
+           path: req.query.path,
+           type: item.isFile() ? "file" : "directory",
+           name: itemName
+         } as (filesFile | filesDirectory)
+       })
+      )
+    })
+
+    request.get(`/file/`, async (req, res) => {
+      if (!req?.query?.path)
+        return res.json({ error: true })
+
+      if (req.query.path === "")
+        return res.json({ error: true })
+
+      if (!fs.existsSync(`${api.UserFs(req)}${req.query.path}`))
+        return res.json({ error: true })
+
+      return res.json({
+        content: fs.readFileSync(`${api.UserFs(req)}${req.query.path}`).toString()
       })
     })
   },

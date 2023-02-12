@@ -42,8 +42,8 @@ const FilesSideBar: React.FC<IFilesSideBar> = () => {
                         {
                             category.children.map((child, ind) => {
                               return (
-                                <button
-                                  type="button"
+                                  // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions
+                                <div
                                   key={ child.path }
                                   onClick={ () => {
                                         router.push(`/app/files/p${child.path}`)
@@ -73,7 +73,7 @@ const FilesSideBar: React.FC<IFilesSideBar> = () => {
                                           } }
                                     />
                                   </Chiplet.DropdownContainer>
-                                </button>
+                                </div>
                               )
                             })
                           }

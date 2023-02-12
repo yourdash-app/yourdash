@@ -7,7 +7,7 @@ import Chiplet from "ui";
 
 const EndpointTester: NextPageWithLayout = () => {
   const [ response, setResponse ] = useState("")
-  const [ _responseDidError, setResponseDidError ] = useState(false)
+  const [ responseDidError, setResponseDidError ] = useState(false)
   const [ queryUrl, setQueryUrl ] = useState("")
   const [ queryModule, setQueryModule ] = useState("")
   const [ queryMethod, setQueryMethod ] = useState("GET" as "GET" | "POST" | "DELETE")
@@ -98,6 +98,7 @@ const EndpointTester: NextPageWithLayout = () => {
                           },
                           () => {
                             setResponseDidError(true)
+                            setResponse("")
                           }
                       )
                       break;
@@ -116,6 +117,7 @@ const EndpointTester: NextPageWithLayout = () => {
                           },
                           () => {
                             setResponseDidError(true)
+                            setResponse("")
                           }
                       )
                       break;
@@ -134,6 +136,7 @@ const EndpointTester: NextPageWithLayout = () => {
                           },
                           () => {
                             setResponseDidError(true)
+                            setResponse("")
                           }
                       )
                       break;
@@ -159,6 +162,9 @@ const EndpointTester: NextPageWithLayout = () => {
               )
           }
         <Chiplet.Card>
+          {
+            responseDidError && <h1 style={ { color: "var(--color-error-fg)", backgroundColor: "var(--color-error-bg)", maxWidth: "max-content", padding: "0.5rem", margin: 0 } }>This request received an error</h1>
+          }
           <pre style={ {
               margin: 0, overflow: "auto", paddingBottom: "0.5rem"
             } }

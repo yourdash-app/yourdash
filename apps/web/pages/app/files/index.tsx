@@ -1,11 +1,12 @@
 import Head from "next/head";
-import React from "react";
+import React, { useEffect } from "react";
 import AppLayout from '../../../layouts/appLayout/AppLayout';
 import { NextPageWithLayout } from '../../page';
 import FilesLayout from "./components/FilesLayout";
 import File from "./components/File"
 import { type filesDirectory } from "types/files/directory";
 import { type filesFile } from "types/files/file";
+import SERVER, { verifyAndReturnJson } from "../../../server";
 
 const Files: NextPageWithLayout = () => {
   const [ items, setItems ] = React.useState([
@@ -19,6 +20,18 @@ const Files: NextPageWithLayout = () => {
       ] as (filesFile | filesDirectory)[]
   )
 
+  useEffect(() => {
+    verifyAndReturnJson(
+        SERVER.get(`/files/dir/list/?path=/`),
+        data => {
+          setItems(data || [])
+        },
+        err => {
+          console.error(err)
+        }
+    )
+  }, [])
+
   return (
     <>
       <Head>
@@ -28,9 +41,9 @@ const Files: NextPageWithLayout = () => {
           items.map(item => {
             switch (item.type) {
               case "file":
-                return <File key={ item.path } name={ item.name } path={ item.path } type="file"/>
+                return <File key={ item.path } name={ item.name } path={ `${item.path}${item.name}` } type="file"/>
               case "directory":
-                return <File key={ item.path } name={ item.name } path={ item.path } type="folder"/>
+                return <File key={ item.path } name={ item.name } path={ `${item.path}${item.name}` } type="folder"/>
             }
           })
         }
