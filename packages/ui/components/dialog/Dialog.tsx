@@ -1,14 +1,17 @@
-import React from "react";
+import React, { CSSProperties } from "react";
 import styles from "./Dialog.module.scss"
 import IconButton from "../iconButton/IconButton";
 
 export interface IDialog {
-  onClose?: () => void
+  onClose?: () => void;
+  className?: string;
+  visible: boolean
+  style?: CSSProperties;
 }
 
-const Dialog: React.FC<IDialog> = ({ children, onClose }) => {
+const Dialog: React.FC<IDialog> = ({ children, onClose, className, visible, style }) => {
   return (
-    <div className={ styles.component }>
+    <div className={ `${styles.component} ${className} ${!visible && styles.hidden}` } style={ style }>
       <section className={ styles.handle }>
         <div/>
       </section>

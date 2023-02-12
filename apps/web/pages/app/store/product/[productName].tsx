@@ -120,13 +120,12 @@ const StoreProduct: NextPageWithLayout = () => {
                     )
                     : null
             }
-        <div
-          className={ styles.installationPopup }
+        <Chiplet.Dialog
+          visible={ showInstallationPopup }
+          onClose={ () => { setShowInstallationPopup(false) } }
           style={ {
-                    opacity: showInstallationPopup ? "1" : "0",
-                    pointerEvents: showInstallationPopup ? "all" : "none",
-                    scale: showInstallationPopup ? "1" : "0.75"
-                } }
+            zIndex: 2
+          } }
         >
           <div>
             <div className={ styles.installationPopupImgContainer }>
@@ -187,14 +186,8 @@ const StoreProduct: NextPageWithLayout = () => {
                 Approve installation
               </Chiplet.Button>
             </Chiplet.Column>
-            <Chiplet.IconButton
-              icon={ 'x-16' }
-              onClick={ () => {
-                            setShowInstallationPopup(false)
-                        } }
-            />
           </div>
-        </div>
+        </Chiplet.Dialog>
         <section className={ styles.productHeader }>
           <Chiplet.IconButton
             icon='arrow-left-16'
@@ -258,7 +251,7 @@ const StoreProduct: NextPageWithLayout = () => {
         <section className={ styles.description }>
           <Chiplet.Card>
             <p>{product.description}</p>
-            <p>Located in the '{product.category}' category</p>
+            <p>Located in the &quot;{product.category}&quot; category</p>
           </Chiplet.Card>
         </section>
       </div>

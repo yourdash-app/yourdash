@@ -33,7 +33,7 @@ const ServerLogin: NextPageWithLayout = () => {
       setUrl(`https://${url}`)
     }
 
-    if (url.startsWith("http://") && window.location.hostname !== "localhost") {
+    if (url.startsWith("http://") && window.location.protocol !== "http:") {
       setAllowed(false)
       return setMessage("Sorry, http:// urls are not supported by yourdash due to browser-imposed restrictions.")
     }
