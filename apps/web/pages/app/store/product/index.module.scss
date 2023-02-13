@@ -21,9 +21,14 @@
     padding-right: 15rem;
     transition: var(--transition);
 
-    @media (max-width: 1300px) {
+    @media (max-width: 1750px) {
       padding-left: 10rem;
       padding-right: 10rem;
+    }
+
+    @media (max-width: 1300px) {
+      padding-left: 7.5rem;
+      padding-right: 7.5rem;
     }
 
     @media (max-width: 1000px) {
@@ -39,34 +44,81 @@
 }
 
 .productHeader {
-  transform: translateY(-25%);
-  position: relative;
   display: grid;
-  align-items: center;
-  grid-template-columns: auto auto 1fr auto auto;
+  grid-template-columns: 1fr auto;
+  gap: 1rem;
+  transform: translateY(-25%);
 
-  > img {
-    height: 10rem;
-    margin-right: 1rem;
-    margin-left: 1rem;
-    padding: 0.5rem;
-    background-color: var(--card-bg);
-    border-radius: 3rem;
+  > section:first-child {
+    position: relative;
+    display: grid;
+    align-items: center;
+    grid-template-columns: auto auto 1fr;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+
+    > img {
+      height: 10rem;
+      margin-right: 1rem;
+      margin-left: 1rem;
+      padding: 0.5rem;
+      background-color: var(--card-bg);
+      border-radius: 3rem;
+
+      &[data-under-development="true"] {
+        border-radius: 2.5rem;
+        padding: 0rem;
+        outline: #db5a3b solid 0.5rem;
+        margin-left: 1.5rem;
+        margin-right: 1.5rem;
+      }
+    }
+
+    > h2 {
+      color: var(--container-fg);
+      padding-right: 1rem;
+      padding-left: 1rem;
+      font-size: 2.75rem;
+      font-weight: 500;
+      letter-spacing: 0.05rem;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      margin: 0 auto 0 0;
+      overflow: hidden;
+      width: 100%;
+      box-sizing: border-box;
+    }
   }
 
-  > h2 {
-    color: var(--container-fg);
-    padding-right: 1rem;
-    margin-right: auto;
+  > section:last-child {
+    display: grid;
+    grid-template-columns: auto auto;
+    place-items: center center;
+    gap: 0.5rem;
+
+    > button {
+      height: max-content;
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
   }
 
-  > button:last-child {
-    padding-left: 2rem;
-    padding-right: 2rem;
+  @media (max-width: 1250px) {
+    grid-template-columns: 1fr;
+    > section:last-child {
+      grid-template-columns: 1fr 1fr;
 
-    @media (max-width: 700px) {
-      margin-top: 1rem;
-      grid-column: 1 / 4;
+      &:not(& > button:nth-child(2)) {
+        grid-template-columns: 1fr;
+      }
+
+      place-items: unset;
+    }
+  }
+
+  @media (max-width: 950px) {
+    > section:last-child {
+      grid-template-columns: 1fr;
     }
   }
 }
@@ -107,94 +159,57 @@
       grid-template-rows: auto 1fr;
       padding: 2rem;
     }
+  }
 
-    > .installationPopupImgContainer {
-      padding: 2rem 2rem 2rem 0;
-      display: flex;
-      position: relative;
-      align-items: center;
-      justify-content: center;
+  > :last-child {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 2rem;
+    aspect-ratio: 1 / 1;
+    margin: 1.5rem;
+  }
+}
 
-      @media (max-width: 1000px) {
-        padding-left: 2rem;
+.installationPopupContent {
+  > button {
+    margin-top: 2rem;
+  }
+
+  > div {
+    gap: 2.5rem;
+
+    > div {
+
+      > h1 {
+        color: var(--card-fg);
+        margin: 0;
+        font-size: 2.5rem;
+        padding-bottom: 0.25rem;
       }
 
-      > img {
-        aspect-ratio: 1 / 1;
-        height: 30vh;
-
-        @media (max-width: 1000px) {
-          height: 20vh;
-        }
-
-        @media (max-width: 700px) {
-          height: auto;
-          width: 75%;
-        }
-      }
-
-      > div {
-        width: 0.25rem;
-        height: 100%;
-        background-color: var(--container-separator);
-        border-radius: 10rem;
-        position: absolute;
-        top: 0;
-        right: 0;
-
-        @media (max-width: 1000px) {
-          top: 100%;
-          height: 0.25rem;
-          width: 100%;
-        }
+      > p {
+        color: var(--card-fg);
+        margin: 0;
       }
     }
 
-    > .installationPopupContent {
-      > button {
-        margin-top: auto;
+    > ul {
+      padding-top: 0.5rem;
+      padding-left: 0.5rem;
+
+      > h3 {
+        color: var(--card-fg);
+        padding-bottom: 0.25rem;
+        text-decoration: underline;
+        margin: 0;
       }
 
-      > div {
-        > h1 {
-          color: var(--card-fg);
-          margin: 0;
-          font-size: 2.5rem;
-          padding-bottom: 0.25rem;
-        }
-
-        > p {
-          color: var(--card-fg);
-          margin: 0;
-        }
-
-        > ul {
-          padding-top: 0.5rem;
-          padding-left: 0.5rem;
-
-          > h3 {
-            color: var(--card-fg);
-            padding-bottom: 0.25rem;
-            text-decoration: underline;
-            margin: 0;
-          }
-
-          > p {
-            color: var(--card-fg);
-            padding-left: 0.5rem;
-            margin: 0 0 0.25rem;
-          }
-        }
+      > p {
+        color: var(--card-fg);
+        padding-left: 0.5rem;
+        margin: 0 0 0.25rem;
       }
-    }
-
-    > :last-child {
-      position: absolute;
-      top: 0;
-      right: 0;
-      height: 2rem;
-      aspect-ratio: 1 / 1;
-      margin: 1.5rem;
     }
   }
 }
@@ -257,4 +272,12 @@
       }
     }
   }
+}
+
+.descriptionNotice {
+  max-width: max-content;
+  padding: 0.5rem 0.75rem !important;
+  border-radius: var(--card-compact-rounding);
+  outline: solid var(--color-warn-bg) 0.2rem;
+  margin: 0 auto 1rem !important;
 }

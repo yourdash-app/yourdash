@@ -11,12 +11,12 @@ export interface IDialog {
 
 const Dialog: React.FC<IDialog> = ({ children, onClose, className, visible, style }) => {
   return (
-    <div className={ `${styles.component} ${className} ${!visible && styles.hidden}` } style={ style }>
+    <div className={ `${styles.component} ${!visible && styles.hidden}` } style={ style }>
       <section className={ styles.handle }>
         <div/>
       </section>
       <IconButton className={ styles.closeButton } data-visible={ !!onClose } icon={ "x-16" } onClick={ onClose }/>
-      <section className={ styles.content }>
+      <section className={ `${styles.content} ${className}` }>
         {children}
       </section>
     </div>
