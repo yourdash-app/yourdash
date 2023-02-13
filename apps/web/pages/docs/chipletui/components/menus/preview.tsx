@@ -1,27 +1,46 @@
 import Chiplet from "ui";
 import ComponentsLayout from "../componentsLayout";
-import { NextPageWithLayout } from "../../../../page";
+import { NextPageWithLayout } from "../../../page";
 
 const Preview: NextPageWithLayout = () => {
   return (
     <section style={ { display: "flex", flexDirection: "column", gap: "0.25rem" } }>
-      <Chiplet.DropdownButton items={
-          [
-            {
-              onClick: () => {
-                console.log("item 0 clicked")
-              },
-              name: "Item 0",
-            },
-            {
-              onClick: () => {
-                console.log("item 1 clicked")
-              },
-              name: "Item 1",
+      <Chiplet.Button
+        onClick={
+              () => {
+                console.log("test button")
+              }
             }
-          ]
-        }
-      >Dropdown button</Chiplet.DropdownButton>
+      >Button</Chiplet.Button>
+      <Chiplet.Button
+        vibrant
+        onClick={
+              () => {
+                console.log("test button")
+              }
+            }
+      >Button (vibrant)</Chiplet.Button>
+      <Chiplet.SegmentButton buttons={ [
+          {
+            label: "segment 1",
+            onClick: () => {
+              console.log("segment 1")
+            }
+          },
+          {
+            label: "segment 2",
+            onClick: () => {
+              console.log("segment 2")
+            }
+          },
+          {
+            label: "segment 3",
+            onClick: () => {
+              console.log("segment 3")
+            }
+          }
+        ] }
+      />
     </section>
   )
 };

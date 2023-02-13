@@ -1,30 +1,45 @@
 import Chiplet from "ui";
 import ComponentsLayout from "../componentsLayout";
-import { NextPageWithLayout } from "../../../../page";
+import { NextPageWithLayout } from "../../../page";
 
 const Preview: NextPageWithLayout = () => {
   return (
     <section style={ { display: "flex", flexDirection: "column", gap: "0.25rem" } }>
-      <Chiplet.ToggleSwitch
-        onValueChange={
+      <Chiplet.Button
+        onClick={
               () => {
-                return 0
+                console.log("test button")
               }
             }
-      />
-      <Chiplet.ToggleSwitch
-        onValueChange={
+      >Button</Chiplet.Button>
+      <Chiplet.Button
+        vibrant
+        onClick={
               () => {
-                return 0
+                console.log("test button")
               }
             }
-      />
-      <Chiplet.ToggleSwitch
-        onValueChange={
-              () => {
-                return 0
-              }
+      >Button (vibrant)</Chiplet.Button>
+      <Chiplet.SegmentButton buttons={ [
+          {
+            label: "segment 1",
+            onClick: () => {
+              console.log("segment 1")
             }
+          },
+          {
+            label: "segment 2",
+            onClick: () => {
+              console.log("segment 2")
+            }
+          },
+          {
+            label: "segment 3",
+            onClick: () => {
+              console.log("segment 3")
+            }
+          }
+        ] }
       />
     </section>
   )

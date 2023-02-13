@@ -1,6 +1,6 @@
-import { NextPageWithLayout } from "../../../../page";
-import DocsLayout from '../../../../../layouts/docsLayout/DocsLayout';
-import HomeLayout from '../../../../../layouts/homeLayout/HomeLayout';
+import { NextPageWithLayout } from "../../../page";
+import DocsLayout from '../../../../layouts/docsLayout/DocsLayout';
+import HomeLayout from '../../../../layouts/homeLayout/HomeLayout';
 import componentsStyle from "../components.module.scss"
 import Chiplet from "ui";
 import { useRouter } from "next/router";
@@ -19,7 +19,7 @@ const Docs: NextPageWithLayout = () => {
             icon={ "arrow-left-16" }
             onClick={
                   () => {
-                    router.push(`/docs/chipletui/components`)
+                    router.push(`/docs/components`)
                   }
                 }
             style={ { marginRight: "0.5rem" } }
@@ -30,7 +30,7 @@ const Docs: NextPageWithLayout = () => {
         <iframe
           title={ "preview frame" }
           className={ componentsStyle.previewFrame }
-          src={ `/docs/chipletui/components/carousels/preview` }
+          src={ `/docs/components/carousels/preview` }
         />
       </main>
     </>

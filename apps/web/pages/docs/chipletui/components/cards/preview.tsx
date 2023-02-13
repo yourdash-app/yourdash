@@ -1,6 +1,6 @@
 import Chiplet from "ui";
 import ComponentsLayout from "../componentsLayout";
-import { NextPageWithLayout } from "../../../../page";
+import { NextPageWithLayout } from "../../../page";
 
 const Preview: NextPageWithLayout = () => {
   return (
