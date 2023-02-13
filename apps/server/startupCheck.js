@@ -13,10 +13,10 @@ export default async function main(cb) {
     await checkIfAllUsersHaveTheLatestConfig();
     cb();
 }
-function checkIfAllUsersHaveTheLatestConfig() {
+async function checkIfAllUsersHaveTheLatestConfig() {
     return;
 }
-function checkIfAllInstalledAppsStillExist() {
+async function checkIfAllInstalledAppsStillExist() {
     if (fs.existsSync(path.resolve(`${ENV.FsOrigin}/installed_apps.json`))) {
         fs.readFile(`${ENV.FsOrigin}/installed_apps.json`, (err, data) => {
             if (err) {
@@ -53,68 +53,66 @@ function checkIfAllInstalledAppsStillExist() {
         return;
     }
 }
-function checkEnvironmentVariables() {
+async function checkEnvironmentVariables() {
     if (!fs.existsSync(path.resolve(ENV.FsOrigin))) {
-        fs.mkdir(ENV.FsOrigin, { recursive: true }, err => {
-            if (err) {
-                log(`(Start up) ERROR: the 'FsOrigin' environment variable is invalid`);
-                return process.exit(1);
-            }
-            log(`(Start up) a folder has been created at the location of the 'FsOrigin' environment variable`);
-            return;
-        });
+        try {
+            await fs.mkdirSync(ENV.FsOrigin, { recursive: true });
+        }
+        catch (err) {
+            log(`(Start up) ERROR: unable to create default ./fs/`);
+            process.exit(1);
+        }
     }
     else {
         return;
     }
 }
-function checkYourDashConfigJson() {
+async function checkYourDashConfigJson() {
     if (!fs.existsSync(path.resolve(`${ENV.FsOrigin}/yourdash.config.json`))) {
-        fs.writeFile(path.resolve(`${ENV.FsOrigin}/yourdash.config.json`), JSON.stringify({
-            activeModules: ['userManagement', 'core', 'files', 'store'],
-            defaultBackground: returnBase64Image(path.resolve(`${ENV.FsOrigin}/../background.jpg`)),
-            favicon: returnBase64Image(path.resolve(`${ENV.FsOrigin}/../yourdash256.png`)),
-            instanceEncryptionKey: generateRandomStringOfLength(32),
-            loginPageConfig: {
-                background: { src: returnBase64Image(path.resolve(`${ENV.FsOrigin}/../background.jpg`)), },
-                logo: {
-                    position: {
-                        bottom: null,
-                        left: null,
-                        right: null,
-                        top: null,
+        try {
+            fs.writeFileSync(path.resolve(`${ENV.FsOrigin}/yourdash.config.json`), JSON.stringify({
+                activeModules: ['userManagement', 'core', 'files', 'store'],
+                defaultBackground: returnBase64Image(path.resolve(`${ENV.FsOrigin}/../background.jpg`)),
+                favicon: returnBase64Image(path.resolve(`${ENV.FsOrigin}/../yourdash256.png`)),
+                instanceEncryptionKey: generateRandomStringOfLength(32),
+                loginPageConfig: {
+                    background: { src: returnBase64Image(path.resolve(`${ENV.FsOrigin}/../background.jpg`)), },
+                    logo: {
+                        position: {
+                            bottom: null,
+                            left: null,
+                            right: null,
+                            top: null,
+                        },
+                        src: returnBase64Image(path.resolve(`${ENV.FsOrigin}/../yourdash256.png`)),
                     },
-                    src: returnBase64Image(path.resolve(`${ENV.FsOrigin}/../yourdash256.png`)),
-                },
-                message: {
-                    content: 'This server is new. Welcome to YourDash!',
-                    position: {
-                        bottom: null,
-                        left: null,
-                        right: null,
-                        top: null,
+                    message: {
+                        content: 'This server is new. Welcome to YourDash!',
+                        position: {
+                            bottom: null,
+                            left: null,
+                            right: null,
+                            top: null,
+                        },
                     },
                 },
-            },
-            logo: returnBase64Image(path.resolve(`${ENV.FsOrigin}/../yourdash256.png`)),
-            name: 'YourDash Instance',
-            themeColor: '#a46',
-            version: 1,
-        }), err => {
-            if (err) {
-                log(`(Start up) ERROR: a yourdash.config.json file could not be created!`);
-                process.exit(1);
-            }
-            log(`config file was created in the data origin directory.`);
-            return;
-        });
+                logo: returnBase64Image(path.resolve(`${ENV.FsOrigin}/../yourdash256.png`)),
+                name: 'YourDash Instance',
+                themeColor: '#a46',
+                version: 1,
+            }));
+        }
+        catch (err) {
+            log(`(Start up) ERROR: a yourdash.config.json file could not be created! ${err}`);
+            return process.exit(1);
+        }
     }
     else {
         return;
     }
 }
-function checkConfigurationVersion() {
-    const SERVER_CONFIG = JSON.parse(fs.readFileSync(path.resolve(`${ENV.FsOrigin}/yourdash.config.json`)).toString());
+async function checkConfigurationVersion() {
+    const SERVER_CONFIG = await JSON.parse(fs.readFileSync(path.resolve(`${ENV.FsOrigin}/yourdash.config.json`)).toString());
     if (SERVER_CONFIG.version === RELEASE_CONFIGURATION.CURRENT_VERSION)
         return;
     switch (SERVER_CONFIG.version) {
@@ -138,7 +136,7 @@ function checkConfigurationVersion() {
             return;
     }
 }
-function checkIfAdministratorUserExists() {
+async function checkIfAdministratorUserExists() {
     if (!fs.existsSync(path.resolve(`${ENV.FsOrigin}/data/users/admin/user.json`))) {
         fs.mkdir(path.resolve(`${ENV.FsOrigin}/data/users/admin/profile/`), { recursive: true }, err => {
             if (err) {

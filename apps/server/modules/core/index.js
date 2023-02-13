@@ -269,7 +269,12 @@ const Module = {
             });
         });
         request.get(`/instance/login/background`, (_req, res) => {
-            return res.json({ image: moduleApi.SERVER_CONFIG.loginPageConfig.background || "" });
+            const img = Buffer.from(moduleApi.SERVER_CONFIG.loginPageConfig.background.src.split(",")[1], 'base64');
+            res.writeHead(200, {
+                'Content-Type': 'image/png',
+                'Content-Length': img.length
+            });
+            res.end(img);
         });
         request.get(`/instance/login/name`, (req, res) => {
             return res.json({ name: moduleApi.SERVER_CONFIG.name });

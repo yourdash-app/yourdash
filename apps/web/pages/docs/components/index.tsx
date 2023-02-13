@@ -14,9 +14,18 @@ const Docs: NextPageWithLayout = () => {
         <h1>Chiplet UI components</h1>
         <section className={ styles.main }>
           <Chiplet.ButtonLink href={ `/docs/components/badges` }>Badges</Chiplet.ButtonLink>
-          <Chiplet.ButtonLink href={ `/docs/components/navigation` }>Navigation</Chiplet.ButtonLink>
-          <Chiplet.ButtonLink href={ `/docs/components/dialogs` }>Dialogs</Chiplet.ButtonLink>
           <Chiplet.ButtonLink href={ `/docs/components/buttons` }>Buttons</Chiplet.ButtonLink>
+          <Chiplet.ButtonLink href={ `/docs/components/cards` }>Cards</Chiplet.ButtonLink>
+          <Chiplet.ButtonLink href={ `/docs/components/carousels` }>Carousels</Chiplet.ButtonLink>
+          <Chiplet.ButtonLink href={ `/docs/components/chips` }>Chips</Chiplet.ButtonLink>
+          <Chiplet.ButtonLink href={ `/docs/components/dialogs` }>Dialogs</Chiplet.ButtonLink>
+          <Chiplet.ButtonLink href={ `/docs/components/dropdowns` }>Dropdowns</Chiplet.ButtonLink>
+          <Chiplet.ButtonLink href={ `/docs/components/icons` }>Icons</Chiplet.ButtonLink>
+          <Chiplet.ButtonLink href={ `/docs/components/menus` }>Menus</Chiplet.ButtonLink>
+          <Chiplet.ButtonLink href={ `/docs/components/navigation` }>Navigation</Chiplet.ButtonLink>
+          <Chiplet.ButtonLink href={ `/docs/components/progress-indicators` }>Progress indicators</Chiplet.ButtonLink>
+          <Chiplet.ButtonLink href={ `/docs/components/switches` }>Switches</Chiplet.ButtonLink>
+          <Chiplet.ButtonLink href={ `/docs/components/text-inputs` }>Text inputs</Chiplet.ButtonLink>
         </section>
       </main>
     </>

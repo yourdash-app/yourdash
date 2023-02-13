@@ -182,7 +182,8 @@ const StoreProduct: NextPageWithLayout = () => {
                         }
                     )
                   }
-                } }
+                }
+                }
             vibrant
           >
             Approve installation
@@ -269,10 +270,12 @@ const StoreProduct: NextPageWithLayout = () => {
       <section className={ styles.description } style={ { marginTop: "0.5rem" } }>
         <Chiplet.Card>
           <p>Located in the &quot;{product.category}&quot; category</p>
-          <p>Author: {product.author}</p>
-          <p>Copyright: {product.copyright}</p>
-          <p>License: {product.license}</p>
-          <p>Author: {product.author}</p>
+          <p>
+            Author: {product.author}<br/>
+            Copyright: {product.copyright}<br/>
+            License: {product.license}<br/>
+            Author: {product.author}
+          </p>
         </Chiplet.Card>
       </section>
     </div>
