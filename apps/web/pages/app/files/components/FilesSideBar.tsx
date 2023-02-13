@@ -34,7 +34,7 @@ const FilesSideBar: React.FC<IFilesSideBar> = () => {
       <div className={ styles.dirShortcuts }>
         {
             categories.length !== 0 ?
-                categories.map((category: SideBarCategory, ind) => {
+                categories.map((category: SideBarCategory) => {
                   return (
                     <React.Fragment key={ category.title }>
                       <h3>{category.title}</h3>

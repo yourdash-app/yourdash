@@ -11,7 +11,7 @@
     "dev:all": "turbo run dev",
     "lint": "turbo run lint",
     "dev:main": "concurrently \"yarn --cwd ./apps/web dev\" \"yarn --cwd ./apps/server dev\"",
-    "dev:chipletdocs": "yarn --cwd ./apps/chipletui-project dev",
+    "build:main": "yarn --cwd ./apps/web build",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {

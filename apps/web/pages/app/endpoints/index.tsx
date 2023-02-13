@@ -12,7 +12,7 @@ const EndpointTester: NextPageWithLayout = () => {
   const [ queryModule, setQueryModule ] = useState("")
   const [ queryMethod, setQueryMethod ] = useState("GET" as "GET" | "POST" | "DELETE")
   const [ queryType, setQueryType ] = useState("json" as "json" | "text")
-  const [ _queryHeaders, /* setQueryHeaders */ ] = useState({})
+  /* const [ queryHeaders, setQueryHeaders ] = useState({}) */
   const [ queryBody, setQueryBody ] = useState("")
   const [ serverUrl, setServerUrl ] = useState("")
 
@@ -163,8 +163,17 @@ const EndpointTester: NextPageWithLayout = () => {
           }
         <Chiplet.Card>
           {
-            responseDidError && <h1 style={ { color: "var(--color-error-fg)", backgroundColor: "var(--color-error-bg)", maxWidth: "max-content", padding: "0.5rem", margin: 0 } }>This request received an error</h1>
-          }
+                responseDidError && (
+                <h1 style={ {
+                      color: "var(--color-error-fg)",
+                      backgroundColor: "var(--color-error-bg)",
+                      maxWidth: "max-content",
+                      padding: "0.5rem",
+                      margin: 0
+                    } }
+                >This request received an error</h1>
+                )
+            }
           <pre style={ {
               margin: 0, overflow: "auto", paddingBottom: "0.5rem"
             } }

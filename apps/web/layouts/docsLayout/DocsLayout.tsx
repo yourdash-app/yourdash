@@ -1,27 +1,30 @@
-import Chiplet from "ui";
 import styles from "./DocsLayout.module.scss"
+import { useRouter } from "next/router";
+import Chiplet from "ui";
 
 export type IDocsLayout = React.ComponentPropsWithoutRef<'div'>
 
-const DocsLayout: React.FC<IDocsLayout> = ({ children }) => {return (
-  <div className={ styles.root }>
-    <section>
+const DocsLayout: React.FC<IDocsLayout> = ({ children }) => {
+  const router = useRouter()
+
+  return (
+    <div className={ styles.root }>
       <Chiplet.SideBar
-        title="Docs"
+        title={ "Chiplet UI Docs" }
         items={ [
               {
                 icon: "server-16",
-                label: "Hello",
+                label: "Home",
                 onClick: () => {
-                  console.log("Implement Me!!!")
-                }
+                  router.push("/docs/")
+                },
               },
               {
                 icon: "server-16",
-                label: "World",
+                label: "Components",
                 onClick: () => {
-                  console.log("Implement Me!!!")
-                }
+                  router.push("/docs/components")
+                },
               }
             ] }
       />
@@ -29,8 +32,8 @@ const DocsLayout: React.FC<IDocsLayout> = ({ children }) => {return (
         {children}
       </div>
       <div className={ styles.listOfContents }/>
-    </section>
-  </div>
-)};
+    </div>
+  )
+};
 
 export default DocsLayout;
