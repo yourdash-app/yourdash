@@ -1,0 +1,10 @@
+{
+  "root": true,
+  "extends": [
+    "custom"
+  ],
+  "rules": {
+    "no-process-exit": "off",
+    "import/no-useless-path-segments": "off"
+  }
+}
