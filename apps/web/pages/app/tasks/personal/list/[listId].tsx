@@ -58,7 +58,7 @@ const TasksPersonalList: NextPageWithLayout = () => {
           console.error(`unable to fetch task data`)
         }
     )
-  }, [ activeTask ])
+  }, [ activeTask, router.query.listId ])
 
   if (!listData) return <div/>
   if (!unsavedListData) return <div/>

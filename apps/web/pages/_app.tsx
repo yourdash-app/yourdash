@@ -19,6 +19,7 @@ const ApplicationContainer: React.FC<{ children: React.ReactNode }> = ({ childre
 function NextApp({ Component, pageProps }: AppPropsWithLayout) {
   return (
     <ApplicationContainer>
+      {/* @ts-ignore */}
       {Component?.getLayout?.(<Component { ...pageProps }/>)}
     </ApplicationContainer>
   )

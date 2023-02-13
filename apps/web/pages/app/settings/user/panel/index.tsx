@@ -6,7 +6,7 @@ import { useState } from "react";
 import Chiplet from "ui";
 
 const SettingsPanel: NextPageWithLayout = () => {
-  const [ appLayoutSettings, setAppLayoutSettings ] = useState({
+  const [ appLayoutSettings, ] = useState({
     floating: true, rounded: true
   })
   return (
@@ -36,10 +36,12 @@ const SettingsPanel: NextPageWithLayout = () => {
 
 export default SettingsPanel;
 
-SettingsPanel.getLayout = page => {return (
-  <AppLayout>
-    <SettingsLayout>
-      {page}
-    </SettingsLayout>
-  </AppLayout>
-)}
+SettingsPanel.getLayout = page => {
+  return (
+    <AppLayout>
+      <SettingsLayout>
+        {page}
+      </SettingsLayout>
+    </AppLayout>
+  )
+}
