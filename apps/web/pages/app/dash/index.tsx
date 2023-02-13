@@ -13,7 +13,7 @@ const Dash: NextPageWithLayout = () => {
 
   const [ name, setName ] = useState("")
   const [ currentTime, setCurrentTime ] = useState("00:01")
-  const [ widgets, setWidgets ] = useState([] as DashWidget[])
+  const [ widgets, ] = useState([] as DashWidget[])
 
   useEffect(() => {
     verifyAndReturnJson(SERVER.get("/userManagement/current/user"), user => {
@@ -34,7 +34,8 @@ const Dash: NextPageWithLayout = () => {
     }
   }, [])
 
-  if (name === "") return <></>
+  if (name === "") return <div/>
+
   return (
     <>
       <Head>
@@ -46,20 +47,24 @@ const Dash: NextPageWithLayout = () => {
           <span>Hiya, {name}</span>
         </div>
         <div className={ styles.main }>
-          {!widgets.length ? (
-            <div className={ styles.homeMessage }>
-              <div>
-                <h1>Oh no!</h1>
-                <p>It appears that you have no dash widgets installed.</p>
-                <Chiplet.Button
-                  onClick={ () => {
-                          router.push(`/app/store`)
-                        } }
-                  vibrant
-                >Explore dash widgets</Chiplet.Button>
-              </div>
-            </div>
-            ) : widgets.map(widget => {return <div>{widget}</div>})}
+          {
+              !widgets.length ?
+                  (
+                    <div className={ styles.homeMessage }>
+                      <div>
+                        <h1>Oh no!</h1>
+                        <p>It appears that you have no dash widgets installed.</p>
+                        <Chiplet.Button
+                          onClick={ () => {
+                                router.push(`/app/store`)
+                              } }
+                          vibrant
+                        >Explore dash widgets</Chiplet.Button>
+                      </div>
+                    </div>
+                  ) : widgets.map(widget => {
+                    return <div key={ widget }>{widget}</div>
+                  })}
         </div>
       </div>
     </>
@@ -68,4 +73,6 @@ const Dash: NextPageWithLayout = () => {
 
 export default Dash;
 
-Dash.getLayout = page => {return <AppLayout transparentBackground>{page}</AppLayout>}
+Dash.getLayout = page => {
+  return <AppLayout transparentBackground>{page}</AppLayout>
+}

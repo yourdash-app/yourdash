@@ -10,34 +10,3 @@ core,files,store,tasks,userManagement
 (Start up) loaded module: tasks
 (Start up) loaded module: userManagement
 (Start up) loaded module: store
-12:39:54  GET  200 /api/core/panel/background-image
-12:39:54  GET  200 /api/core/panel/user/profile/picture
-12:39:54  GET  200 /api/core/instance/logo
-12:39:54  GET  200 /api/userManagement/current/user
-12:39:54  GET  200 /api/core/panel/quick-shortcuts/
-12:39:54  GET  200 /api/core/panel/launcher/apps
-12:39:54  GET  200 /api/store/application/settings
-12:39:54  GET  200 /api/core/panel/user/profile/picture
-12:40:14  GET  200 /api/store/application/settings
-12:40:26  GET  200 /api/store/application/settings
-12:41:20  GET  200 /api/store/application/settings
-12:41:30  GET  200 /api/store/application/settings
-12:41:23  GET  200 /api/store/application/settings
-12:41:28  GET  200 /api/store/application/settings
-12:41:33  GET  200 /api/store/application/settings
-12:46:12  GET  200 /api/store/application/settings
-12:46:13  GET  200 /api/store/application/settings
-12:47:42  GET  200 /api/store/list/applications
-12:47:51  GET  200 /api/store/application/author
-12:48:90  GET  200 /api/store/application/author
-12:48:90  GET  200 /api/store/application/author
-12:50:30  POS  200 /api/store/application/author/install
-12:50:40  GET  200 /api/core/panel/background-image
-12:50:50  GET  200 /api/core/panel/user/profile/picture
-12:50:50  GET  200 /api/userManagement/current/user
-12:50:50  GET  200 /api/core/panel/quick-shortcuts/
-12:50:50  GET  200 /api/core/panel/launcher/apps
-12:50:50  GET  200 /api/core/instance/logo
-12:50:50  GET  200 /api/store/application/author
-12:50:50  GET  200 /api/core/panel/user/profile/picture
-12:52:23  GET  200 /api/store/list/applications

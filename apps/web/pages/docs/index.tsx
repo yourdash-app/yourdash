@@ -14,6 +14,9 @@ const Docs: NextPageWithLayout = () => {
         <Link href={ "/docs/applications/list" }>
           Applications list
         </Link>
+        <Link href={ "/docs/components/" }>
+          Chiplet components
+        </Link>
       </main>
     </>
   )
@@ -23,7 +26,7 @@ export default Docs;
 
 Docs.getLayout = page => {
   return (
-    <HomeLayout>
+    <HomeLayout noFooter>
       <DocsLayout>{page}</DocsLayout>
     </HomeLayout>
   )
