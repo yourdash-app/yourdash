@@ -165,21 +165,27 @@ const Module = {
                     const result = includedApps.filter(app => {
                         return json.includes(app.name);
                     }) || [];
-                    const response = [];
-                    result.map(item => {
-                        return resizeImage(128, 128, `${moduleApi.FsOrigin}/../assets/apps/${item.icon}`, image => {
-                            response.push({
-                                displayName: item.displayName,
-                                icon: image,
-                                name: item.name,
-                                path: item.path,
+                    Promise.all(result.map(item => {
+                        return new Promise((response, reject) => {
+                            resizeImage(164, 164, `${moduleApi.FsOrigin}/../assets/apps/${item.icon}`, image => {
+                                response({
+                                    displayName: item.displayName,
+                                    icon: image,
+                                    name: item.name,
+                                    path: item.path,
+                                    description: item.description,
+                                    underDevelopment: item.underDevelopment || false
+                                });
+                            }, () => {
+                                reject();
                             });
-                            if (response.length === result.length) {
-                                return res.json(response);
-                            }
-                        }, () => {
-                            return res.json({ error: true });
                         });
+                    }))
+                        .then(resp => {
+                        return res.json(resp);
+                    })
+                        .catch(() => {
+                        res.json({ error: true });
                     });
                 });
             }
@@ -269,7 +275,12 @@ const Module = {
             });
         });
         request.get(`/instance/login/background`, (_req, res) => {
-            return res.json({ image: moduleApi.SERVER_CONFIG.loginPageConfig.background || "" });
+            const img = Buffer.from(moduleApi.SERVER_CONFIG.loginPageConfig.background.src.split(",")[1], 'base64');
+            res.writeHead(200, {
+                'Content-Type': 'image/png',
+                'Content-Length': img.length
+            });
+            res.end(img);
         });
         request.get(`/instance/login/name`, (req, res) => {
             return res.json({ name: moduleApi.SERVER_CONFIG.name });

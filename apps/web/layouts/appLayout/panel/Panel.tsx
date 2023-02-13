@@ -11,7 +11,7 @@ import { type YourDashUser } from '../../../../../packages/types/core/user';
 import Chiplet from "ui"
 import styles from './Panel.module.scss';
 import { type quickShortcut as QuickShortcut } from 'types/core/panel/quickShortcut';
-import { type InstalledApplication } from 'types/store/installedApplication';
+import { type LauncherApplication } from 'types/core/panel/launcherApplication';
 import ServerImage from "../../../pages/app/components/serverImage/ServerImage";
 
 export interface IPanel {
@@ -26,7 +26,7 @@ const Panel: React.FC<IPanel> = ({ appIsOpening, backgroundImage }) => {
   const [ userData, setUserData ] = useState(undefined as YourDashUser | undefined)
   const [ searchQuery, setSearchQuery ] = useState("")
   const [ quickShortcuts, setQuickShortcuts ] = useState([] as QuickShortcut[])
-  const [ installedApps, setInstalledApps ] = useState([] as InstalledApplication[])
+  const [ installedApps, setInstalledApps ] = useState([] as LauncherApplication[])
 
   useEffect(() => {
     verifyAndReturnJson(
@@ -52,7 +52,7 @@ const Panel: React.FC<IPanel> = ({ appIsOpening, backgroundImage }) => {
 
     verifyAndReturnJson(
         SERVER.get(`/core/panel/launcher/apps`),
-        res => {
+        (res: LauncherApplication[]) => {
           setInstalledApps(res)
         },
         () => {
@@ -146,8 +146,14 @@ const Panel: React.FC<IPanel> = ({ appIsOpening, backgroundImage }) => {
                                 }
                                 }
                           >
-                            <img src={ app.icon } draggable={ false } alt=""/>
-                            <span>{app.displayName}</span>
+                            <img
+                              src={ app.icon }
+                              draggable={ false }
+                              alt=""
+                            />
+                            <span
+                              className={ `${app.underDevelopment && styles.underDevelopment}` }
+                            >{app.displayName}</span>
                           </button>
                         </Chiplet.RightClickMenu>
                       )

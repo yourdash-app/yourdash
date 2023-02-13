@@ -5,7 +5,6 @@ import { log, resizeImage, returnBase64Image } from '../../libServer.js';
 import { type YourDashModule } from '../../module';
 import { type quickShortcut } from "types/core/panel/quickShortcut.js"
 import includedApps from '../../includedApps.js';
-import { type LauncherApplication } from "types/core/panel/launcherApplication.js"
 import { type YourDashUser } from 'types/core/user.js';
 
 const Module: YourDashModule = {
@@ -204,24 +203,30 @@ const Module: YourDashModule = {
             return json.includes(app.name)
           }) || []
 
-          const response: LauncherApplication[] = []
-
-          result.map(item => {
-            return resizeImage(128, 128, `${moduleApi.FsOrigin}/../assets/apps/${item.icon}`, image => {
-              response.push({
-                displayName: item.displayName,
-                icon: image,
-                name: item.name,
-                path: item.path,
-              } as LauncherApplication)
-
-              if (response.length === result.length) {
-                return res.json(response)
-              }
-            }, () => {
-              return res.json({ error: true })
-            })
-          })
+          Promise.all(
+              result.map(item => {
+                return new Promise((response, reject) => {
+                  resizeImage(164, 164, `${moduleApi.FsOrigin}/../assets/apps/${item.icon}`, image => {
+                    response({
+                      displayName: item.displayName,
+                      icon: image,
+                      name: item.name,
+                      path: item.path,
+                      description: item.description,
+                      underDevelopment: item.underDevelopment || false
+                    })
+                  }, () => {
+                    reject()
+                  })
+                })
+              })
+          )
+              .then(resp => {
+                return res.json(resp)
+              })
+              .catch(() => {
+                res.json({ error: true })
+              })
         })
       }
     })
@@ -331,7 +336,14 @@ const Module: YourDashModule = {
     })
 
     request.get(`/instance/login/background`, (_req, res) => {
-      return res.json({ image: moduleApi.SERVER_CONFIG.loginPageConfig.background || "" })
+      const img = Buffer.from(moduleApi.SERVER_CONFIG.loginPageConfig.background.src.split(",")[1], 'base64');
+
+      res.writeHead(200, {
+        'Content-Type': 'image/png',
+        'Content-Length': img.length
+      });
+
+      res.end(img);
     })
 
     request.get(`/instance/login/name`, (req, res) => {

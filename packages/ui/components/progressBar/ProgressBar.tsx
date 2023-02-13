@@ -13,26 +13,28 @@ const ProgressBar: React.FC<IProgressBar> = ({
       <div
         className={ styles.progress }
         style={ {
-      width: value > 0 ? `${value}%` : "100%",
-      ...value > 0 ? { backgroundColor: "var(--progress-bar-fg)" } : {},
-      position: value > 11 ? "relative" : "unset"
-    } }
+              width: value > 0 ? `${value * 100}%` : "100%",
+              ...value > 0 ? { backgroundColor: "var(--progress-bar-fg)" } : {},
+              position: value > 0.11 ? "relative" : "unset"
+            } }
       >
         {
-        displayPercentage
-            ? (
+              displayPercentage && (
               <span
                 className={ styles.percentage }
                 style={
-              value > 11 ? { color: "var(--progress-bar-bg)" } : {}
-            }
+                        {
+                          color: value > 0.11
+                              ? "var(--progress-bar-bg)"
+                              : "transparent"
+                        }
+                      }
               >{value}%</span>
-)
-            : null
-      }
+              )
+          }
       </div>
     </div>
-);
+  );
 };
 
 export default ProgressBar;
