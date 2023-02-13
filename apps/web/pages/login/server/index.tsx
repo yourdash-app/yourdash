@@ -13,20 +13,13 @@ const LoginOptions: NextPageWithLayout = () => {
   const [ userName, setUserName ] = useState("")
   const [ password, setPassword ] = useState("")
   const [ errorHasOccurred, setErrorHasOccurred ] = useState(false)
-  const [ currentServerBackground, setCurrentServerBackground ] = useState("")
   const [ currentServerLogo, setCurrentServerLogo ] = useState("")
   const [ currentServerMessage, setCurrentServerMessage ] = useState("")
   const [ serverDisplayName, setServerDisplayName ] = useState("")
+  const [ serverUrl, setServerUrl ] = useState("")
 
   useEffect(() => {
-    verifyAndReturnJson(
-        SERVER.get(`/core/instance/login/background`),
-        json => {
-          setCurrentServerBackground(json?.image?.src || ChipletIconDictionary["server-error"])
-        },
-        () => {
-          setCurrentServerBackground(ChipletIconDictionary["server-error"])
-        })
+    setServerUrl(localStorage.getItem("currentServer") || "")
     verifyAndReturnJson(
         SERVER.get(`/core/instance/login/name`),
         json => {
@@ -58,7 +51,11 @@ const LoginOptions: NextPageWithLayout = () => {
   return (
     <div className={ styles.root }>
       {errorHasOccurred ? <div className={ styles.error }><p>An Error Has Occurred</p></div> : null}
-      <img className={ styles.background } src={ currentServerBackground } alt=""/>
+      <img
+        className={ styles.background }
+        src={ `${serverUrl}/api/core/instance/login/background` }
+        alt=""
+      />
       <img className={ styles.logo } src={ currentServerLogo } alt=""/>
       <h1>{serverDisplayName}</h1>
       <Chiplet.Card style={ { maxWidth: "calc(100vw - 5rem)", minWidth: "50%" } }>

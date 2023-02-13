@@ -11,7 +11,14 @@ const CodeStudio: NextPageWithLayout = () => {
       <Head>
         <title>YourDash | Code Studio</title>
       </Head>
-      <Chiplet.Column className={ styles.root }>
+      <Chiplet.Column
+        className={ styles.root }
+        style={ {
+              background: `url(${require(`./background.svg`).default.src})`,
+              backgroundPosition: "center",
+              backgroundSize: "cover"
+            } }
+      >
         <header className={ styles.header }>
           <section>
             <h1>Code Studio</h1>
@@ -20,26 +27,26 @@ const CodeStudio: NextPageWithLayout = () => {
         </header>
         <main className={ styles.main }>
           <Chiplet.Column>
-            <Chiplet.Button onClick={ () => {
+            <Chiplet.Card onClick={ () => {
                 return console.log("Click")
               } }
-            >Project Name</Chiplet.Button>
-            <Chiplet.Button onClick={ () => {
+            >Project Name</Chiplet.Card>
+            <Chiplet.Card onClick={ () => {
                 return console.log("Click")
               } }
-            >Project Name</Chiplet.Button>
-            <Chiplet.Button onClick={ () => {
+            >Project Name</Chiplet.Card>
+            <Chiplet.Card onClick={ () => {
                 return console.log("Click")
               } }
-            >Project Name</Chiplet.Button>
-            <Chiplet.Button onClick={ () => {
+            >Project Name</Chiplet.Card>
+            <Chiplet.Card onClick={ () => {
                 return console.log("Click")
               } }
-            >Project Name</Chiplet.Button>
-            <Chiplet.Button onClick={ () => {
+            >Project Name</Chiplet.Card>
+            <Chiplet.Card onClick={ () => {
                 return console.log("Click")
               } }
-            >Project Name</Chiplet.Button>
+            >Project Name</Chiplet.Card>
           </Chiplet.Column>
           <Chiplet.Column>
             <Chiplet.Button onClick={ () => {
@@ -57,7 +64,7 @@ const CodeStudio: NextPageWithLayout = () => {
           </Chiplet.Column>
         </main>
         <footer className={ styles.footer }>
-          <p>Made by Ewsgit</p>
+          <p>Ewsgit © 2023</p>
         </footer>
       </Chiplet.Column>
     </>

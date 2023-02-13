@@ -1,7 +1,7 @@
 import { NextPageWithLayout } from "../page";
 import DocsLayout from '../../layouts/docsLayout/DocsLayout';
 import HomeLayout from '../../layouts/homeLayout/HomeLayout';
-import Link from "next/link";
+import Chiplet from "ui"
 
 const Docs: NextPageWithLayout = () => {
   return (
@@ -11,12 +11,14 @@ const Docs: NextPageWithLayout = () => {
       </section>
       <main>
         <h1>Docs Overview</h1>
-        <Link href={ "/docs/applications/list" }>
-          Applications list
-        </Link>
-        <Link href={ "/docs/components/" }>
-          Chiplet components
-        </Link>
+        <section style={ { display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr", gap: "0.5rem" } }>
+          <Chiplet.ButtonLink href={ "/docs/applications/list" }>
+            Applications list
+          </Chiplet.ButtonLink>
+          <Chiplet.ButtonLink href={ "/docs/chipletui/components/" }>
+            Chiplet components
+          </Chiplet.ButtonLink>
+        </section>
       </main>
     </>
   )

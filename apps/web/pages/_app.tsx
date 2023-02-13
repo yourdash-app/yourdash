@@ -20,7 +20,7 @@ function NextApp({ Component, pageProps }: AppPropsWithLayout) {
   return (
     <ApplicationContainer>
       {/* @ts-ignore */}
-      {Component?.getLayout?.(<Component { ...pageProps }/>)}
+      {Component?.getLayout?.(<Component { ...pageProps }/>) || <Component { ...pageProps }/>}
     </ApplicationContainer>
   )
 }

@@ -6,8 +6,11 @@
   transition: var(--transition);
   user-select: none;
   cursor: pointer;
+  border: solid 0.125rem var(--button-bg);
+  box-sizing: border-box;
 
   &:hover {
+    border: solid 0.125rem #ffffff55;
     border-radius: var(--chip-hover-rounding);
     background-color: var(--chip-hover-bg);
     color: var(--chip-hover-fg);

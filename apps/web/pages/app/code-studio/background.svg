@@ -1,0 +1,10 @@
+<svg height="1080" width="1920" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <radialGradient id="gradient" spreadMethod="pad" cx="50%" cy="50%" r="100%" fx="0%" fy="100%">
+            <stop offset="0%" style="stop-color:#b12cd2;stop-opacity:1"></stop>
+            <stop offset="50%" style="stop-color:#b52d4e;stop-opacity:1"></stop>
+            <stop offset="100%" style="stop-color:#ede119;stop-opacity:1"></stop>
+        </radialGradient>
+    </defs>
+    <rect fill="url(#gradient)" height="1080" width="1920"></rect>
+</svg>
