@@ -10,7 +10,6 @@ import { encrypt, generateRandomStringOfLength } from './encryption.js';
 import { ENV, RELEASE_CONFIGURATION, type YourDashServerConfig } from './index.js';
 import { log, returnBase64Image } from './libServer.js';
 import includedApps, { DEFAULT_APPS } from './includedApps.js';
-import { type InstalledApplication } from "types/store/installedApplication"
 
 export default async function main(cb: () => void) {
   await checkEnvironmentVariables()
@@ -72,10 +71,10 @@ function checkIfAllInstalledAppsStillExist() {
       }
       1
 
-      let json = [] as InstalledApplication[]
+      let json = [] as string[]
 
       try {
-        json = JSON.parse(data.toString())
+        json = JSON.parse(data.toString()) as string[]
       } catch (e) {
         json = DEFAULT_APPS
       }

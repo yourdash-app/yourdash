@@ -48,7 +48,7 @@ const StoreProduct: NextPageWithLayout = () => {
                             onClick={ () => {
                                     router.push(`/app/store/product/${item.name}`)
                                 } }
-                            className={ styles.card }
+                            className={ `${styles.card} ${item.underDevelopment && styles.cardUnderDevelopment}` }
                           >
                             <Chiplet.Row>
                               <img className={ styles.cardImg } src={ item?.icon } alt=""/>

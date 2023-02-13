@@ -1,5 +1,4 @@
 .root {
-  --app-application-transparent-background-blur: 5px;
   background: transparent;
 
   &[data-background="true"] {
@@ -18,7 +17,6 @@
   box-sizing: border-box;
   flex-direction: column;
   transition: var(--transition);
-  backdrop-filter: blur(var(--app-application-transparent-background-blur));
   outline: 0.125rem solid #00000055;
   margin: 0.125rem;
   border-radius: var(--app-application-rounding);

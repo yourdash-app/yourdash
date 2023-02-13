@@ -36,7 +36,6 @@
 }
 
 .component {
-
   transition: all 500ms;
   position: fixed;
 
@@ -45,7 +44,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     max-width: 60rem;
-    width: 100vw;
+    width: max-content;
     border-radius: 1rem;
 
     @media (max-width: 60rem) {
@@ -59,7 +58,7 @@
     left: 50%;
     transform: translateX(-50%);
     max-width: 40rem;
-    width: 100vw;
+    width: max-content;
     display: grid;
     grid-template-rows: auto 1fr;
     border-radius: 1rem 1rem 0 0;
@@ -68,15 +67,14 @@
   background-color: var(--dialog-bg);
   color: var(--dialog-fg);
   box-sizing: border-box;
-
-  @media (max-width: 30rem) {
-    border-radius: unset;
-  }
 }
 
 
 .content {
   padding: 1rem;
+  width: max-content;
+  max-width: inherit;
+  box-sizing: border-box;
 }
 
 .hidden {

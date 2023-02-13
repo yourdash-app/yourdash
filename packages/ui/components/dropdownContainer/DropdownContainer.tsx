@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import styles from './DropdownContainer.module.scss';
+import React, { useContext } from 'react';
+import RightClickMenuContext from "../rightClickMenu/RightClickMenuContext";
 
 export interface IDropdownContainer extends React.ComponentPropsWithoutRef<"div"> {
   items: {
@@ -12,72 +12,51 @@ export interface IDropdownContainer extends React.ComponentPropsWithoutRef<"div"
 const DropdownContainer: React.FC<IDropdownContainer> = ({
                                                            items, children, ...extraProps
                                                          }) => {
-  const [ shown, setShown ] = useState(false)
-  const [ willOverflowScreen, setWillOverflowScreen ] = useState(false)
+  const RootContainerContext = useContext(RightClickMenuContext)
 
   return (
-    <div
-      { ...extraProps }
-      style={ { position: "relative" } }
-    >
-      {/*eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions*/}
-      <div
-        onClick={ e => {
-              e.preventDefault()
-              e.stopPropagation()
-              const listener = () => {
-                setShown(false)
-                document.body.removeEventListener("auxclick", listener)
-                document.body.addEventListener("click", listener)
-              }
-              document.body.addEventListener("click", listener)
-              document.body.addEventListener("auxclick", listener)
-              setShown(!shown)
-              const rect = e.currentTarget.getBoundingClientRect()
-              setWillOverflowScreen(
-                  (rect.left + 320) > window.innerWidth
-              )
-            } }
-      >
-        {children}
-      </div>
-      {shown ? (
-                // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions
-        <div
-          className={ styles.menu }
-          onClick={ e => {
-                      e.stopPropagation()
-                    } }
-          style={ {
-                      top: "100%",
-                      ...willOverflowScreen ? { right: 0, } : { left: 0 },
-                      position: "absolute"
-                    } }
-        >
-          {
-                    items.map(item => {
-                      return (
-                        <button
-                          key={ item.name }
-                          type="button"
-                          onClick={ e => {
-                                e.preventDefault()
-                                e.stopPropagation()
-                                item.onClick()
-                              } }
-                        >
-                          <span>{item.name}</span>
-                          {
-                              item?.shortcut ? <span>{item.shortcut}</span> : null
-                            }
-                        </button>
-                      )
-                    })
-                  }
-        </div>
+    <button
+      style={ { background: "transparent", border: "none", padding: 0, margin: 0 } }
+      type={ "button" }
+      onClick={ e => {
+            e.stopPropagation()
+            e.preventDefault()
+
+            const clientRect = e.currentTarget.getBoundingClientRect()
+
+
+            RootContainerContext(
+                clientRect.left,
+                clientRect.bottom,
+                clientRect.width,
+                clientRect.height,
+                true,
+                items
             )
-            : null}
-    </div>
+
+            const listener = (ev: MouseEvent) => {
+              ev.preventDefault()
+              e.stopPropagation()
+
+              RootContainerContext(
+                  0,
+                  0,
+                  clientRect.width,
+                  clientRect.height,
+                  false,
+                  []
+              )
+
+              window.removeEventListener("click", listener)
+              window.removeEventListener("contextmenu", listener)
+            }
+            window.addEventListener("click", listener)
+            window.addEventListener("contextmenu", listener)
+          }
+          }
+    >
+      {children}
+    </button>
   )
 };
 

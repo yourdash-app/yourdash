@@ -41,9 +41,23 @@ const Files: NextPageWithLayout = () => {
           items.map(item => {
             switch (item.type) {
               case "file":
-                return <File key={ item.path } name={ item.name } path={ `${item.path}${item.name}` } type="file"/>
+                return (
+                  <File
+                    key={ item.path + item.name }
+                    name={ item.name }
+                    path={ `${item.path}${item.name}` }
+                    type="file"
+                  />
+)
               case "directory":
-                return <File key={ item.path } name={ item.name } path={ `${item.path}${item.name}` } type="folder"/>
+                return (
+                  <File
+                    key={ item.path + item.name }
+                    name={ item.name }
+                    path={ `${item.path}${item.name}` }
+                    type="folder"
+                  />
+)
             }
           })
         }

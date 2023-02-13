@@ -4,11 +4,11 @@ import includedApps, { DEFAULT_APPS } from "../../includedApps.js";
 import { log, resizeImage } from "../../libServer.js";
 import { YourDashUserPermissions } from "types/core/user.js";
 const module = {
+    requiredModules: [],
+    configuration: {},
     install: () => {
         return 0;
     },
-    requiredModules: [],
-    configuration: {},
     uninstall: () => {
         return 0;
     },

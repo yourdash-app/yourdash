@@ -8,11 +8,11 @@ import {type YourDashServerConfig} from "../../index.js";
 import {type YourDashUser, YourDashUserPermissions} from "types/core/user.js"
 
 const module: YourDashModule = {
+    requiredModules: [],
+    configuration: {},
     install: () => {
         return 0
     },
-    requiredModules: [],
-    configuration: {},
     uninstall: () => {
         return 0
     },

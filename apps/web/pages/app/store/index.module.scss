@@ -51,12 +51,12 @@
 
   opacity: 0;
   animation: 500ms 100ms ease-in-out fadeIn forwards;
-  border: solid 0.125rem var(--card-bg);
+  border: solid 0.25rem var(--card-bg);
   cursor: pointer;
   height: 8rem;
 
   &:hover {
-    border: solid 0.125rem #ffffff55;
+    border: solid 0.25rem #ffffff55;
   }
 
   display: flex;
@@ -66,6 +66,10 @@
     display: flex;
     align-items: center;
   }
+}
+
+.cardUnderDevelopment {
+  outline: #db5a3b dashed 0.125rem;
 }
 
 .cardImg {
