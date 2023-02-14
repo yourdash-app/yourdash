@@ -115,7 +115,7 @@ const FilesSideBar: React.FC<IFilesSideBar> = () => {
           <div className={ styles.header }>
             Quota percentage full
           </div>
-          <Chiplet.ProgressBar value={ 10 } displayPercentage/>
+          <Chiplet.ProgressBar value={ 0.2 } displayPercentage/>
         </div>
       </section>
     </div>

@@ -29,7 +29,7 @@ const ProgressBar: React.FC<IProgressBar> = ({
                               : "transparent"
                         }
                       }
-              >{value}%</span>
+              >{value * 100}%</span>
               )
           }
       </div>

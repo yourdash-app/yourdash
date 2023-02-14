@@ -37,7 +37,7 @@
 
     --app-panel-height: 3rem;
     --app-panel-fg: #fff;
-    --app-panel-bg: #444444;
+    --app-panel-bg: #333333;
     --app-panel-item-fg: #fff;
     --app-panel-item-bg: #333333;
     --app-panel-item-rounding: 0.5rem;
@@ -48,7 +48,7 @@
     --app-panel-item-active-bg: #222222;
     --app-panel-item-active-rounding: 0.5rem;
     --app-panel-launcher-fg: #fff;
-    --app-panel-launcher-bg: #333333;
+    --app-panel-launcher-bg: #222;
     --app-panel-launcher-rounding: 0;
     --app-panel-launcher-hover-fg: #fff;
     --app-panel-launcher-hover-bg: #444444;
@@ -57,7 +57,7 @@
     --app-panel-launcher-active-bg: #222222;
     --app-panel-launcher-active-rounding: 0;
     --app-panel-launcher-grid-columns: 3;
-    --app-panel-separator: #333;
+    --app-panel-separator: #222;
 
     --app-dash-clock-font-weight: 800;
     --app-dash-clock-shadow-color: #000;
