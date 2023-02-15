@@ -52,9 +52,11 @@ const Carousel: React.FC<ICarousel> = ({
       <div
         className={ styles.main }
         ref={ pageRef }
-        onScroll={ () => {
-              return setScrollEvents(scrollEvents + 1)
-            } }
+        onScroll={
+              () => {
+                return setScrollEvents(scrollEvents + 1)
+              }
+            }
       >
         {
             children

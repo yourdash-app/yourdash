@@ -3,15 +3,15 @@
   "version": "0.0.0",
   "private": true,
   "workspaces": [
-    "apps/*",
+    "projects/*",
     "packages/*"
   ],
   "scripts": {
     "build": "turbo run build",
     "dev:all": "turbo run dev",
     "lint": "turbo run lint",
-    "dev:main": "concurrently \"yarn --cwd ./apps/web dev\" \"yarn --cwd ./apps/server dev\"",
-    "build:main": "yarn --cwd ./apps/web build",
+    "dev:main": "concurrently \"yarn --cwd ./projects/web dev\" \"yarn --cwd ./projects/server dev\"",
+    "build:main": "yarn --cwd ./projects/web build",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
