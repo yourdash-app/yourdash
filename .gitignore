@@ -32,6 +32,6 @@ yarn-error.log*
 
 # turbo
 .turbo
-/apps/server/**/*.js
-/apps/server/*.js
-/apps/server/fs/*
+projects/server/**/*.js
+projects/server/*.js
+projects/server/fs/*
