@@ -282,7 +282,7 @@ const StoreProduct: NextPageWithLayout = () => {
                         )
                       }
                     }
-                  }
+              }
             >
               {product.installed ? product.uninstallable ? "Uninstall" : "Forcefully installed by the server" : "Install"}
             </Chiplet.Button>
