@@ -8,6 +8,7 @@
   border-radius: var(--card-rounding);
   background-color: var(--card-bg);
   color: var(--card-fg);
+  box-sizing: border-box;
 }
 
 .clickable {
@@ -19,7 +20,6 @@
   user-select: none;
   cursor: pointer;
   border: solid 0.125rem var(--card-bg);
-  box-sizing: border-box;
 
   &:hover {
     border: solid 0.125rem #ffffff55;
@@ -36,4 +36,3 @@
   box-shadow: 0 0 0.5rem #00000055;
   border-radius: var(--card-compact-rounding);
 }
-
