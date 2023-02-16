@@ -1,0 +1,20 @@
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_719_119)">
+<circle cx="128" cy="128" r="128" fill="#EB6A4B"/>
+<circle cx="128" cy="128" r="113" fill="#262626"/>
+<g clip-path="url(#clip1_719_119)">
+<path d="M64 103C64 100.791 65.7909 99 68 99H75.25C81.4632 99 86.5 104.037 86.5 110.25V188C86.5 190.209 84.7091 192 82.5 192H75.25C69.0368 192 64 186.963 64 180.75V103Z" fill="#EB6A4B"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M128 192H139.501C168.496 192 192.001 168.495 192.001 139.5V116.5C192.001 87.5051 168.496 64 139.501 64H128V86.5001H139.5C156.069 86.5001 169.5 99.9315 169.5 116.5V139.5C169.5 156.069 156.069 169.5 139.5 169.5H128V192Z" fill="#EB6A4B"/>
+<path d="M64 67.3962C64 65.5205 65.5205 64 67.3962 64H128V86.5H83.1038C72.5531 86.5 64 77.9469 64 67.3962V67.3962Z" fill="#EB6A4B"/>
+<path d="M99 188.604C99 178.053 107.553 169.5 118.104 169.5H128V192H102.396C100.521 192 99 190.479 99 188.604V188.604Z" fill="#EB6A4B"/>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_719_119">
+<rect width="256" height="256" fill="white"/>
+</clipPath>
+<clipPath id="clip1_719_119">
+<rect width="128" height="128" fill="white" transform="translate(64 64)"/>
+</clipPath>
+</defs>
+</svg>

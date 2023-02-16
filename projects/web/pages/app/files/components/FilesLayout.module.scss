@@ -1,0 +1,15 @@
+.root {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--background-color);
+}
+
+.pane {
+  padding: 1rem;
+  box-sizing: border-box;
+  max-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
