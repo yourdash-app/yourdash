@@ -5,10 +5,11 @@ import styles from "./Carousel.module.scss"
 export interface ICarousel extends React.ComponentPropsWithoutRef<"div"> {
   children: React.ReactChild[] | React.ReactChild,
   className?: string,
+  compactControls?: boolean
 }
 
 const Carousel: React.FC<ICarousel> = ({
-                                         children, className, ...extraProps
+                                         children, className, compactControls, ...extraProps
                                        }) => {
   const pageRef = useRef<HTMLDivElement>(null)
   const [ indicator, setIndicator ] = useState(<div/>)
@@ -62,7 +63,7 @@ const Carousel: React.FC<ICarousel> = ({
             children
           }
       </div>
-      <div className={ styles.controls }>
+      <div className={ `${styles.controls} ${compactControls && styles.controlsCompact}` }>
         {
             children instanceof Array ? (
               <>

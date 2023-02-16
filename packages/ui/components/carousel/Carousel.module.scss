@@ -41,13 +41,46 @@
   align-items: center;
 
   > button {
-    cursor: pointer;
     pointer-events: all;
     aspect-ratio: 1 / 2;
-    background-color: var(--button-bg);
-    border: 0;
-    border-radius: var(--button-rounding);
     box-shadow: 0 0 1rem #00000088;
+    font-size: 1rem;
+    font-family: "Roboto", sans-serif;
+    cursor: pointer;
+    transition: var(--transition);
+    border-radius: var(--button-rounding);
+    background-color: var(--button-bg);
+    color: var(--button-fg);
+    user-select: none;
+    border: solid 0.125rem var(--button-bg);
+    box-sizing: border-box;
+
+    &:hover {
+      border: solid 0.125rem #ffffff55;
+      border-radius: var(--button-hover-rounding);
+      background-color: var(--button-hover-bg);
+      color: var(--button-hover-fg);
+
+      &[disabled] {
+        border-radius: var(--button-rounding);
+        background-color: var(--button-bg);
+        color: var(--button-fg);
+        cursor: not-allowed;
+      }
+    }
+
+    &:active {
+      border-radius: var(--button-active-rounding);
+      background-color: var(--button-active-bg);
+      color: var(--button-active-fg);
+
+      &[disabled] {
+        border-radius: var(--button-rounding);
+        background-color: var(--button-bg);
+        color: var(--button-fg);
+        cursor: not-allowed;
+      }
+    }
 
     &:first-child {
       margin-right: auto;
@@ -61,6 +94,20 @@
     > div {
       width: 1rem;
       aspect-ratio: 1 / 1;
+    }
+  }
+}
+
+.controlsCompact {
+  > button {
+    &:first-child {
+      margin-left: 0;
+      border-radius: 0 var(--button-rounding) var(--button-rounding) 0;
+    }
+
+    &:last-child {
+      margin-right: 0;
+      border-radius: var(--button-rounding) 0 0 var(--button-rounding);
     }
   }
 }

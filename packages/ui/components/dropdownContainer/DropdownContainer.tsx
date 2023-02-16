@@ -15,9 +15,9 @@ const DropdownContainer: React.FC<IDropdownContainer> = ({
   const RootContainerContext = useContext(RightClickMenuContext)
 
   return (
-    <button
+      // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions
+    <div
       style={ { background: "transparent", border: "none", padding: 0, margin: 0 } }
-      type={ "button" }
       onClick={ e => {
             e.stopPropagation()
             e.preventDefault()
@@ -56,7 +56,7 @@ const DropdownContainer: React.FC<IDropdownContainer> = ({
           }
     >
       {children}
-    </button>
+    </div>
   )
 };
 
