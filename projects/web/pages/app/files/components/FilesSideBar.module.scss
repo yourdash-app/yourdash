@@ -1,0 +1,122 @@
+.component {
+  width: 20rem;
+  height: 100%;
+  background-color: var(--container-bg);
+  color: var(--container-fg);
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+
+  > .title {
+    padding-left: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  > .dirShortcuts {
+    > h3 {
+      margin: 0;
+      padding-left: 0.5rem;
+      padding-bottom: 0.25rem;
+
+      &:first-child {
+        padding-top: 0.5rem;
+      }
+    }
+
+    > ul {
+      margin: 0;
+      padding-left: 0.5rem;
+      padding-bottom: 1rem;
+      position: relative;
+
+      > div {
+        cursor: pointer;
+        display: flex;
+        padding: 0.25rem 0.25rem 0.25rem 0.75rem;
+        background: var(--button-bg);
+        border-radius: var(--button-rounding);
+        margin: 0.25rem 0.5rem 0;
+        align-items: center;
+        position: relative;
+        user-select: none;
+
+        & > :first-child {
+          margin-right: auto;
+        }
+
+        &::before {
+          content: "";
+          position: absolute;
+          top: 50%;
+          left: -0.5rem;
+          width: 0.25rem;
+          border-bottom: 0.25rem var(--card-bg) solid;
+          border-left: 0.25rem var(--card-bg) solid;
+          transform: translateY(-50%);
+        }
+
+        &:first-child {
+          &::after {
+            border-radius: 0.25rem 0.25rem 0 0;
+          }
+        }
+
+        &::after {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: -0.5rem;
+          height: 100%;
+          border-left: 0.25rem var(--card-bg) solid;
+          border-bottom: 0.25rem var(--card-bg) solid;
+        }
+
+        &:last-child {
+          &::before {
+            width: 0.25rem;
+            border-radius: 0 0 0 0.5rem;
+          }
+
+          &::after {
+            height: calc(50% - 0.375rem);
+            border-left: 0.25rem var(--card-bg) solid;
+          }
+        }
+      }
+    }
+
+    > .dirShortcutsMessage {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      position: absolute;
+      top: 50%;
+      margin: auto 1rem;
+      transform: translateY(-50%);
+
+      > h1 {
+        margin: 0;
+      }
+
+      > * {
+        text-align: center;
+      }
+    }
+  }
+
+  > .footer {
+    width: 100%;
+    background-color: var(--card-bg);
+
+    > .quota {
+      padding: 0.5rem;
+
+      > .header {
+        color: var(--container-fg);
+        margin-bottom: 0.25rem;
+      }
+    }
+  }
+}
