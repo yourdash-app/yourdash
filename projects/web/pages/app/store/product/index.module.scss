@@ -1,8 +1,13 @@
 .root {
-  transition: all 500ms ease-in-out;
+  transition: all 350ms ease-in-out;
   position: relative;
   width: 100%;
+  height: 100%;
   top: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-bottom: 1rem;
+  box-sizing: border-box;
 
   > section {
     @keyframes fadeIn {
@@ -20,6 +25,7 @@
     padding-left: 15rem;
     padding-right: 15rem;
     transition: var(--transition);
+    margin-top: 0.5rem;
 
     @media (max-width: 1750px) {
       padding-left: 10rem;
@@ -281,4 +287,15 @@
   border-radius: var(--card-compact-rounding);
   outline: solid var(--color-warn-bg) 0.2rem;
   margin: 0 auto 1rem !important;
+}
+
+.extensionsCarousel {
+  height: 10rem;
+}
+
+.extensionsPage {
+  padding: 1rem 2.5rem;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
 }

@@ -7,6 +7,7 @@ import SERVER, { verifyAndReturnJson } from '../../../../server';
 import { type InstalledApplication } from 'types/store/installedApplication';
 import Chiplet from "ui";
 import Head from "next/head";
+import { type InstalledApplicationExtension } from "types/store/installedApplicationExtension"
 
 const StoreProduct: NextPageWithLayout = () => {
   const router = useRouter()
@@ -21,13 +22,26 @@ const StoreProduct: NextPageWithLayout = () => {
   const [ installationError, setInstallationError ] = useState(false)
   const [ uninstallationError, setUninstallationError ] = useState(false)
   const [ unableToLoadPopup, setUnableToLoadPopup ] = useState(false)
+  const [ extensions, setExtensions ] = useState(null as null | InstalledApplicationExtension[][])
 
   useEffect(() => {
     if (!productId) return
     verifyAndReturnJson(
         SERVER.get(`/store/application/${productId}`),
-        json => {
-          if (json.error) return console.error("an error occurred fetching product data!")
+        (json: InstalledApplication & {
+          uninstallable: boolean,
+          installed: boolean
+        }) => {
+          if (json.extensions.length !== 0) {
+            const result: InstalledApplicationExtension[][] = []
+            for (let i = 0; i < json.extensions.length; i += 3) {
+              result.push(json.extensions.slice(i, i + 3));
+            }
+
+            setExtensions(result)
+          }
+
+
           setProduct(json)
         },
         () => {
@@ -217,7 +231,7 @@ const StoreProduct: NextPageWithLayout = () => {
                     router.prefetch("/app/store")
                     setTimeout(() => {
                       router.push("/app/store")
-                    }, 600)
+                    }, 400)
                   } }
             />
             <img src={ product?.icon } data-under-development={ product.underDevelopment } alt=""/>
@@ -274,27 +288,51 @@ const StoreProduct: NextPageWithLayout = () => {
             </Chiplet.Button>
           </section>
         </section>
-        <section className={ styles.description } style={ { marginTop: "-3rem" } }>
+        <section className={styles.description} style={{ marginTop: "-3rem" }}>
           <Chiplet.Card>
             {product.underDevelopment && (
-              <p className={ styles.descriptionNotice }>Notice: this product is under development, the following
-                description may be out of date and contain
-                incorrect information.</p>
-              )}
+                <p className={styles.descriptionNotice}>Notice: this product is under development, the following
+                  description may be out of date and contain
+                  incorrect information.</p>
+            )}
             <p>{product.description}</p>
           </Chiplet.Card>
         </section>
-        <section className={ styles.description } style={ { marginTop: "0.5rem" } }>
+        <section className={styles.description}>
           <Chiplet.Card>
             <p>Located in the &quot;{product.category}&quot; category</p>
             <p>
               Author: {product.author}<br/>
               Copyright: {product.copyright}<br/>
-              License: {product.license}<br/>
-              Author: {product.author}
+              License: {product.license}
             </p>
           </Chiplet.Card>
         </section>
+        {
+            extensions && (
+                <section>
+                  <Chiplet.Carousel compactControls className={styles.extensionsCarousel}>
+                    {
+                      extensions.map(extensions => {
+                        return (
+                            <Chiplet.Row key={extensions[0].name} className={styles.extensionsPage}>
+                              {
+                                extensions.map(extension => {
+                                  return (
+                                      <Chiplet.Card key={extension.name}>
+                                        <span>{extension.displayName}</span>
+                                      </Chiplet.Card>
+                                  )
+                                })
+                              }
+                            </Chiplet.Row>
+                        )
+                      })
+                    }
+                  </Chiplet.Carousel>
+                </section>
+            )
+        }
       </div>
     </>
   );
