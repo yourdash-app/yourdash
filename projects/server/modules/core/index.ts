@@ -9,7 +9,6 @@ import { type YourDashUser } from 'types/core/user.js';
 
 const Module: YourDashModule = {
   load(request, moduleApi) {
-
     // #region /app panel
 
     request.get(`/panel/background-image/:userName/:sessionTokenStart`, (req, res) => {

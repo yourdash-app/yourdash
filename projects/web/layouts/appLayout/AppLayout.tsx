@@ -15,7 +15,7 @@ const AppLayout: React.FC<IAppLayout> = ({ children, transparentBackground }) =>
     const queryString = new URLSearchParams(window.location.search)
 
     setStandaloneInterface(queryString.get("standalone") === "true")
-    setApplicationWindowMode(false)
+    setApplicationWindowMode(true)
 
     setBackgroundImageUrl(`${localStorage.getItem("currentServer") as string}/api/core/panel/background-image/${localStorage.getItem("username") as string}/${localStorage.getItem("sessiontoken")!.slice(0, 10) as string}`)
   }, [])

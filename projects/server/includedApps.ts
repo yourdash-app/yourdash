@@ -12,7 +12,8 @@ const includedApps: InstalledApplication[] = [
     name: "endpoints",
     path: "/app/endpoints",
     previewImages: [],
-    category: "devtools"
+    category: "devtools",
+    extensions: []
   },
   {
     author: "Ewsgit",
@@ -25,7 +26,37 @@ const includedApps: InstalledApplication[] = [
     name: "dash",
     path: "/app/dash",
     previewImages: [],
-    category: "core"
+    category: "core",
+    extensions: [
+      {
+        name: "recent_files",
+        license: "MIT",
+        description: "shows your recent files",
+        copyright: "Ewsgit © 2023",
+        displayName: "Recent Files"
+      },
+      {
+        name: "recent_tasks",
+        license: "MIT",
+        description: "shows your recent tasks",
+        copyright: "Ewsgit © 2023",
+        displayName: "Recent Tasks"
+      },
+      {
+        name: "recent_whiteboards",
+        license: "MIT",
+        description: "shows your recent whiteboards",
+        copyright: "Ewsgit © 2023",
+        displayName: "Recent Whiteboards"
+      },
+      {
+        name: "recent_flows",
+        license: "MIT",
+        description: "shows your recent flows",
+        copyright: "Ewsgit © 2023",
+        displayName: "Recent Flows"
+      }
+    ]
   },
   {
     author: "Ewsgit",
@@ -40,7 +71,8 @@ const includedApps: InstalledApplication[] = [
     name: "files",
     path: "/app/files",
     previewImages: [],
-    category: "core"
+    category: "core",
+    extensions: []
   },
   {
     author: "Ewsgit",
@@ -55,7 +87,8 @@ const includedApps: InstalledApplication[] = [
     name: "store",
     path: "/app/store",
     previewImages: [],
-    category: "core"
+    category: "core",
+    extensions: []
   },
   {
     author: "Ewsgit",
@@ -68,7 +101,8 @@ const includedApps: InstalledApplication[] = [
     name: "settings",
     path: "/app/settings",
     previewImages: [],
-    category: "core"
+    category: "core",
+    extensions: []
   },
   {
     author: "Ewsgit",
@@ -81,7 +115,8 @@ const includedApps: InstalledApplication[] = [
     name: "mastodon",
     path: "/app/mastodon",
     previewImages: [],
-    category: "social"
+    category: "social",
+    extensions: []
   },
   {
     author: "Ewsgit",
@@ -96,7 +131,8 @@ const includedApps: InstalledApplication[] = [
     name: "tasks",
     path: "/app/tasks",
     previewImages: [],
-    category: "productivity"
+    category: "productivity",
+    extensions: []
   },
   {
     author: "Ewsgit",
@@ -110,7 +146,8 @@ const includedApps: InstalledApplication[] = [
     path: "/app/code-studio",
     previewImages: [],
     category: "devtools",
-    underDevelopment: true
+    underDevelopment: true,
+    extensions: []
   },
   {
     author: "Ewsgit",
@@ -124,7 +161,8 @@ const includedApps: InstalledApplication[] = [
     path: "/app/flow",
     previewImages: [],
     category: "productivity",
-    underDevelopment: true
+    underDevelopment: true,
+    extensions: []
   },
   {
     author: "Ewsgit",
@@ -138,7 +176,8 @@ const includedApps: InstalledApplication[] = [
     path: "/app/whiteboard",
     previewImages: [],
     category: "productivity",
-    underDevelopment: true
+    underDevelopment: true,
+    extensions: []
   },
   {
     author: "Ewsgit",
@@ -152,7 +191,8 @@ const includedApps: InstalledApplication[] = [
     path: "/app/author",
     previewImages: [],
     category: "productivity",
-    underDevelopment: true
+    underDevelopment: true,
+    extensions: []
   },
   {
     author: "Ewsgit",
@@ -166,7 +206,8 @@ const includedApps: InstalledApplication[] = [
     path: "/app/presenter",
     previewImages: [],
     category: "productivity",
-    underDevelopment: true
+    underDevelopment: true,
+    extensions: []
   },
   {
     author: "Ewsgit",
@@ -180,7 +221,8 @@ const includedApps: InstalledApplication[] = [
     path: "/app/crunch",
     previewImages: [],
     category: "productivity",
-    underDevelopment: true
+    underDevelopment: true,
+    extensions: []
   },
   {
     author: "Ewsgit",
@@ -194,7 +236,8 @@ const includedApps: InstalledApplication[] = [
     path: "/app/terminal",
     previewImages: [],
     category: "devtools",
-    underDevelopment: true
+    underDevelopment: true,
+    extensions: []
   },
   {
     author: "Ewsgit",
@@ -208,7 +251,8 @@ const includedApps: InstalledApplication[] = [
     path: "/app/search",
     previewImages: [],
     category: "productivity",
-    underDevelopment: true
+    underDevelopment: true,
+    extensions: []
   },
   {
     author: "Ewsgit",
@@ -222,7 +266,8 @@ const includedApps: InstalledApplication[] = [
     path: "/app/text-editor",
     previewImages: [],
     category: "productivity",
-    underDevelopment: true
+    underDevelopment: true,
+    extensions: []
   }
 ]
 

@@ -18,7 +18,7 @@
   grid-template-columns: 1fr 1fr 1fr;
   grid-auto-rows: max-content;
   padding: 0 1rem 1rem;
-  gap: 1rem;
+  gap: 0.5rem;
   user-select: none;
   overflow-y: auto;
   box-sizing: border-box;
@@ -50,7 +50,7 @@
   }
 
   opacity: 0;
-  animation: 500ms 100ms ease-in-out fadeIn forwards;
+  animation: 300ms 100ms ease-in-out fadeIn forwards;
   border: solid 0.25rem var(--card-bg);
   cursor: pointer;
   height: 8rem;
@@ -69,7 +69,21 @@
 }
 
 .cardUnderDevelopment {
-  outline: #db5a3b dashed 0.125rem;
+  position: relative;
+  background-color: #db5a3b;
+
+  &::before {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    content: "";
+    border-radius: calc(var(--card-rounding) / 1.5);
+    z-index: -1;
+    opacity: 0.75;
+    background-color: var(--card-bg);
+  }
 }
 
 .cardImg {
