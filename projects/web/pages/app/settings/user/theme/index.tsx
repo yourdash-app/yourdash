@@ -64,19 +64,19 @@ const SettingsPanel: NextPageWithLayout = () => {
                 <Chiplet.Row>
                   <Chiplet.Button onClick={ () => {
                       console.log(`Implement Me!!!`)
-                  }}
+                    } }
                   >Button</Chiplet.Button>
                   <Chiplet.Button
-                      onClick={() => {
-                        console.log(`Implement Me!!!`)
-                      }}
-                      vibrant
+                    onClick={ () => {
+                          console.log(`Implement Me!!!`)
+                        } }
+                    vibrant
                   >Vibrant Button</Chiplet.Button>
                 </Chiplet.Row>
               </Chiplet.Card>
-              <Chiplet.Card onClick={() => {
-                console.log(`Implement Me!!!`)
-              }}
+              <Chiplet.Card onClick={ () => {
+                  console.log(`Implement Me!!!`)
+                } }
               >
                 Card Button
               </Chiplet.Card>
@@ -86,20 +86,20 @@ const SettingsPanel: NextPageWithLayout = () => {
                 <Chiplet.Chip active>Chip</Chiplet.Chip>
                 <Chiplet.Chip active>Chip</Chiplet.Chip>
               </Chiplet.Row>
-              <Chiplet.DropdownButton items={[
-                {
-                  name: "option",
-                  onClick: () => {
-                    console.log(`Implement Me!!!`)
+              <Chiplet.DropdownButton items={ [
+                  {
+                    name: "option",
+                    onClick: () => {
+                      console.log(`Implement Me!!!`)
+                    }
+                  },
+                  {
+                    name: "option",
+                    onClick: () => {
+                      console.log(`Implement Me!!!`)
+                    }
                   }
-                },
-                {
-                  name: "option",
-                  onClick: () => {
-                    console.log(`Implement Me!!!`)
-                  }
-                }
-              ]}
+                ] }
               >
                 Dropdown Button
               </Chiplet.DropdownButton>
@@ -130,38 +130,38 @@ const SettingsPanel: NextPageWithLayout = () => {
                       } }
                 />
                 <Chiplet.IconButton
-                    icon="yourdash-logo"
-                    onClick={() => {
-                      console.log(`Implement Me!!!`)
-                    }}
+                  icon="yourdash-logo"
+                  onClick={ () => {
+                        console.log(`Implement Me!!!`)
+                      } }
                 />
                 <Chiplet.IconButton
-                    useDefaultColor
-                    icon="yourdash-logo"
-                    onClick={() => {
-                      console.log(`Implement Me!!!`)
-                    }}
+                  useDefaultColor
+                  icon="yourdash-logo"
+                  onClick={ () => {
+                        console.log(`Implement Me!!!`)
+                      } }
                 />
               </Chiplet.Row>
-              <Chiplet.ProgressBar value={0.2}/>
-              <Chiplet.ProgressBar displayPercentage value={0.5}/>
-              <Chiplet.ProgressBar displayPercentage value={0.1}/>
+              <Chiplet.ProgressBar value={ 0.2 }/>
+              <Chiplet.ProgressBar displayPercentage value={ 0.5 }/>
+              <Chiplet.ProgressBar displayPercentage value={ 0.1 }/>
               <Chiplet.Spinner/>
-              <Chiplet.TextBox placeholder={"Text box"}/>
+              <Chiplet.TextBox placeholder={ "Text box" }/>
               <Chiplet.TextInput placeholder='Text input'/>
               <p>Toggle Switches</p>
               <Chiplet.Row>
-                <Chiplet.ToggleSwitch onValueChange={() => {
-                  console.log(`Implement Me!!!`)
-                }}
+                <Chiplet.ToggleSwitch onValueChange={ () => {
+                    console.log(`Implement Me!!!`)
+                  } }
                 />
-                <Chiplet.ToggleSwitch onValueChange={() => {
-                  console.log(`Implement Me!!!`)
-                }}
+                <Chiplet.ToggleSwitch onValueChange={ () => {
+                    console.log(`Implement Me!!!`)
+                  } }
                 />
-                <Chiplet.ToggleSwitch onValueChange={() => {
-                  console.log(`Implement Me!!!`)
-                }}
+                <Chiplet.ToggleSwitch onValueChange={ () => {
+                    console.log(`Implement Me!!!`)
+                  } }
                 />
               </Chiplet.Row>
               <Chiplet.Tags tags={ [
