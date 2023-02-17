@@ -2,8 +2,8 @@ import Head from "next/head";
 import React from "react";
 import AppLayout from '../../../layouts/appLayout/AppLayout';
 import { NextPageWithLayout } from '../../page';
-import styles from "./index.module.scss"
 import Chiplet from "ui";
+import styles from "./index.module.scss"
 
 const CodeStudio: NextPageWithLayout = () => {
   return (
@@ -11,14 +11,7 @@ const CodeStudio: NextPageWithLayout = () => {
       <Head>
         <title>YourDash | Code Studio</title>
       </Head>
-      <Chiplet.Column
-        className={ styles.root }
-        style={ {
-              background: `url(${require(`./background.svg`).default.src})`,
-              backgroundPosition: "center",
-              backgroundSize: "cover"
-            } }
-      >
+      <main className={ styles.root }>
         <header className={ styles.header }>
           <section>
             <h1>Code Studio</h1>
@@ -26,28 +19,6 @@ const CodeStudio: NextPageWithLayout = () => {
           </section>
         </header>
         <main className={ styles.main }>
-          <Chiplet.Column>
-            <Chiplet.Card onClick={ () => {
-                return console.log("Click")
-              } }
-            >Project Name</Chiplet.Card>
-            <Chiplet.Card onClick={ () => {
-                return console.log("Click")
-              } }
-            >Project Name</Chiplet.Card>
-            <Chiplet.Card onClick={ () => {
-                return console.log("Click")
-              } }
-            >Project Name</Chiplet.Card>
-            <Chiplet.Card onClick={ () => {
-                return console.log("Click")
-              } }
-            >Project Name</Chiplet.Card>
-            <Chiplet.Card onClick={ () => {
-                return console.log("Click")
-              } }
-            >Project Name</Chiplet.Card>
-          </Chiplet.Column>
           <Chiplet.Column>
             <Chiplet.Button onClick={ () => {
                 return console.log("Click")
@@ -62,11 +33,40 @@ const CodeStudio: NextPageWithLayout = () => {
               } }
             >Clone from GitHub</Chiplet.Button>
           </Chiplet.Column>
+          <Chiplet.Column>
+            <Chiplet.Card
+              compact
+              className={ styles.projectCard }
+              onClick={ () => {
+                    return 0
+                  } }
+            >
+              <h2>Test Project</h2>
+              <span>Test project description</span>
+            </Chiplet.Card>
+            <Chiplet.Card
+              compact
+              className={ styles.projectCard }
+              onClick={ () => {
+                    return 0
+                  } }
+            >
+              <h2>Test Project</h2>
+              <span>Test project description</span>
+            </Chiplet.Card>
+            <Chiplet.Card
+              compact
+              className={ styles.projectCard }
+              onClick={ () => {
+                    return 0
+                  } }
+            >
+              <h2>Test Project</h2>
+              <span>Test project description</span>
+            </Chiplet.Card>
+          </Chiplet.Column>
         </main>
-        <footer className={ styles.footer }>
-          <p>Ewsgit © 2023</p>
-        </footer>
-      </Chiplet.Column>
+      </main>
     </>
   )
 };

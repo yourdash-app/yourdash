@@ -39,6 +39,8 @@
   &[data-app-transparent-background="true"] {
     background: transparent;
     box-shadow: 0 0 0 #00000055;
+    backdrop-filter: blur(0.5rem);
+    outline: 0.25rem solid var(--container-bg);
   }
 
   ::-webkit-scrollbar {

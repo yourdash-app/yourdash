@@ -22,7 +22,7 @@ const ListTask: React.FC<IListTask> = ({ task, onClick, selectTask, onDelete }) 
               }
             }
       />
-      <h2>{task.title}</h2>
+      <h2>{task?.title}</h2>
       <div>
         {/*  assignees  */}
       </div>
