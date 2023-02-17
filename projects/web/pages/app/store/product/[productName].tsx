@@ -282,23 +282,23 @@ const StoreProduct: NextPageWithLayout = () => {
                         )
                       }
                     }
-              }
+                  }
             >
               {product.installed ? product.uninstallable ? "Uninstall" : "Forcefully installed by the server" : "Install"}
             </Chiplet.Button>
           </section>
         </section>
-        <section className={styles.description} style={{ marginTop: "-3rem" }}>
+        <section className={ styles.description } style={ { marginTop: "-3rem" } }>
           <Chiplet.Card>
             {product.underDevelopment && (
-                <p className={styles.descriptionNotice}>Notice: this product is under development, the following
-                  description may be out of date and contain
-                  incorrect information.</p>
-            )}
+              <p className={ styles.descriptionNotice }>Notice: this product is under development, the following
+                description may be out of date and contain
+                incorrect information.</p>
+              )}
             <p>{product.description}</p>
           </Chiplet.Card>
         </section>
-        <section className={styles.description}>
+        <section className={ styles.description }>
           <Chiplet.Card>
             <p>Located in the &quot;{product.category}&quot; category</p>
             <p>
@@ -309,30 +309,35 @@ const StoreProduct: NextPageWithLayout = () => {
           </Chiplet.Card>
         </section>
         {
-            extensions && (
-                <section>
-                  <Chiplet.Carousel compactControls className={styles.extensionsCarousel}>
-                    {
-                      extensions.map(extensions => {
-                        return (
-                            <Chiplet.Row key={extensions[0].name} className={styles.extensionsPage}>
+              extensions && (
+              <section>
+                <Chiplet.Carousel compactControls className={ styles.extensionsCarousel }>
+                  {
+                        extensions.map(extensions => {
+                          return (
+                            <Chiplet.Row key={ extensions[0].name } className={ styles.extensionsPage }>
                               {
-                                extensions.map(extension => {
-                                  return (
-                                      <Chiplet.Card key={extension.name}>
+                                  extensions.map(extension => {
+                                    return (
+                                      <Chiplet.Card
+                                        key={ extension.name }
+                                        onClick={ () => {
+                                          return 0
+                                        } }
+                                      >
                                         <span>{extension.displayName}</span>
                                       </Chiplet.Card>
-                                  )
-                                })
-                              }
+                                    )
+                                  })
+                                }
                             </Chiplet.Row>
-                        )
-                      })
-                    }
-                  </Chiplet.Carousel>
-                </section>
-            )
-        }
+                          )
+                        })
+                      }
+                </Chiplet.Carousel>
+              </section>
+              )
+          }
       </div>
     </>
   );
