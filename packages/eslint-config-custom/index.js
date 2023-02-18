@@ -9,6 +9,12 @@ module.exports = {
         "import/order": "off",
         "@next/next/no-img-element": "off",
         "arrow-body-style": ["error", "always"],
-        "react/jsx-curly-spacing": "off"
+        "react/jsx-curly-spacing": [2, "always"],
+        "react/jsx-tag-spacing": ["error", {
+            "closingSlash": "never",
+            "beforeSelfClosing": "always",
+            "afterOpening": "never",
+            "beforeClosing": "allow"
+        }]
     }
 };
