@@ -44,8 +44,9 @@
   display: grid;
   grid-template-rows: auto 1fr;
   gap: 1rem;
-  padding: 2rem;
+  padding: 1rem;
   box-sizing: border-box;
+  place-items: center;
 }
 
 .main {
@@ -55,13 +56,16 @@
   padding: 1rem;
   background-color: var(--background-color);
   border-radius: 1rem;
+  max-width: 60rem;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
 }
 
 .projectCard {
   display: grid;
   grid-template-columns: 1fr auto;
-  align-items: center;
-  justify-content: flex-start;
+  place-items: center flex-start;
 
   > h2 {
     margin: 0;
@@ -69,5 +73,8 @@
 }
 
 .sidebar {
-
+  > button {
+    padding-left: 4rem;
+    padding-right: 4rem;
+  }
 }
