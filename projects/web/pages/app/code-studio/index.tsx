@@ -19,27 +19,27 @@ const CodeStudio: NextPageWithLayout = () => {
           </section>
         </header>
         <main className={ styles.main }>
-          <Chiplet.Column>
-            <Chiplet.Button onClick={ () => {
-                return console.log("Click")
-              } }
+          <Chiplet.Column className={styles.sidebar}>
+            <Chiplet.Button onClick={() => {
+              return console.log("Click")
+            }}
             >Create project</Chiplet.Button>
-            <Chiplet.Button onClick={ () => {
-                return console.log("Click")
-              } }
+            <Chiplet.Button onClick={() => {
+              return console.log("Click")
+            }}
             >Open project</Chiplet.Button>
-            <Chiplet.Button onClick={ () => {
-                return console.log("Click")
-              } }
+            <Chiplet.Button onClick={() => {
+              return console.log("Click")
+            }}
             >Clone from GitHub</Chiplet.Button>
           </Chiplet.Column>
-          <Chiplet.Column>
+          <Chiplet.Column className={styles.projectCards}>
             <Chiplet.Card
-              compact
-              className={ styles.projectCard }
-              onClick={ () => {
-                    return 0
-                  } }
+                compact
+                className={styles.projectCard}
+                onClick={() => {
+                  return 0
+                }}
             >
               <h2>Test Project</h2>
               <span>Test project description</span>
