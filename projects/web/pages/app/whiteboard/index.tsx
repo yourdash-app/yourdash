@@ -71,6 +71,7 @@ const WhiteboardIndex: NextPageWithLayout = () => {
             </Chiplet.Card>
           </Chiplet.Row>
         </Chiplet.Carousel>
+        <Chiplet.Button>Create with template</Chiplet.Button>
         <h2 className={ styles.sectionTitle }>Recents</h2>
         <div className={ styles.recents }>
           <Chiplet.Card

@@ -9,7 +9,6 @@ module.exports = {
         "import/order": "off",
         "@next/next/no-img-element": "off",
         "arrow-body-style": ["error", "always"],
-        "react/jsx-curly-spacing": [2, "always"]
+        "react/jsx-curly-spacing": "off"
     }
 };
-
