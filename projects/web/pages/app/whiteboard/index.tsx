@@ -78,7 +78,7 @@ const WhiteboardIndex: NextPageWithLayout = () => {
                   return 0
                 } }
           >
-            <img src={ require("./../../../public/assets/productLogos/yourdash.svg").default.src } alt=""/>
+            <img src={require("./../../../public/assets/productLogos/yourdash.svg").default.src} alt=""/>
             <span>name</span>
           </Chiplet.Card>
           <Chiplet.Card
@@ -86,7 +86,7 @@ const WhiteboardIndex: NextPageWithLayout = () => {
                   return 0
                 } }
           >
-            <img src={ require("./../../../public/assets/productLogos/yourdash.svg").default.src } alt=""/>
+            <img src={require("./../../../public/assets/productLogos/yourdash.svg").default.src} alt=""/>
             <span>name</span>
           </Chiplet.Card>
           <Chiplet.Card
@@ -94,7 +94,7 @@ const WhiteboardIndex: NextPageWithLayout = () => {
                   return 0
                 } }
           >
-            <img src={ require("./../../../public/assets/productLogos/yourdash.svg").default.src } alt=""/>
+            <img src={require("./../../../public/assets/productLogos/yourdash.svg").default.src} alt=""/>
             <span>name</span>
           </Chiplet.Card>
           <Chiplet.Card
@@ -102,7 +102,7 @@ const WhiteboardIndex: NextPageWithLayout = () => {
                   return 0
                 } }
           >
-            <img src={ require("./../../../public/assets/productLogos/yourdash.svg").default.src } alt=""/>
+            <img src={require("./../../../public/assets/productLogos/yourdash.svg").default.src} alt=""/>
             <span>name</span>
           </Chiplet.Card>
           <Chiplet.Card
@@ -110,7 +110,7 @@ const WhiteboardIndex: NextPageWithLayout = () => {
                   return 0
                 } }
           >
-            <img src={ require("./../../../public/assets/productLogos/yourdash.svg").default.src } alt=""/>
+            <img src={require("./../../../public/assets/productLogos/yourdash.svg").default.src} alt=""/>
             <span>name</span>
           </Chiplet.Card>
           <Chiplet.Card
@@ -118,7 +118,7 @@ const WhiteboardIndex: NextPageWithLayout = () => {
                   return 0
                 } }
           >
-            <img src={ require("./../../../public/assets/productLogos/yourdash.svg").default.src } alt=""/>
+            <img src={require("./../../../public/assets/productLogos/yourdash.svg").default.src} alt=""/>
             <span>name</span>
           </Chiplet.Card>
           <Chiplet.Card
@@ -126,7 +126,7 @@ const WhiteboardIndex: NextPageWithLayout = () => {
                   return 0
                 } }
           >
-            <img src={ require("./../../../public/assets/productLogos/yourdash.svg").default.src } alt=""/>
+            <img src={require("./../../../public/assets/productLogos/yourdash.svg").default.src} alt=""/>
             <span>name</span>
           </Chiplet.Card>
         </div>

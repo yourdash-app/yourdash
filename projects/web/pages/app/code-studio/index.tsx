@@ -12,13 +12,13 @@ const CodeStudio: NextPageWithLayout = () => {
         <title>YourDash | Code Studio</title>
       </Head>
       <main className={ styles.root }>
-        <header className={ styles.header }>
+        <header className={styles.header}>
           <section>
             <h1>Code Studio</h1>
             <span>2023</span>
           </section>
         </header>
-        <main className={ styles.main }>
+        <main className={styles.main}>
           <Chiplet.Column className={styles.sidebar}>
             <Chiplet.Button onClick={() => {
               return console.log("Click")
@@ -45,11 +45,11 @@ const CodeStudio: NextPageWithLayout = () => {
               <span>Test project description</span>
             </Chiplet.Card>
             <Chiplet.Card
-              compact
-              className={ styles.projectCard }
-              onClick={ () => {
-                    return 0
-                  } }
+                compact
+                className={styles.projectCard}
+                onClick={() => {
+                  return 0
+                }}
             >
               <h2>Test Project</h2>
               <span>Test project description</span>
