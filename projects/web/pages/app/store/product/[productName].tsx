@@ -224,17 +224,17 @@ const StoreProduct: NextPageWithLayout = () => {
         <section className={ styles.productHeader }>
           <section>
             <Chiplet.IconButton
-              icon='arrow-left-16'
-              color="var(--container-fg)"
-              onClick={ () => {
-                    setPageChanging(true)
-                    router.prefetch("/app/store")
-                    setTimeout(() => {
-                      router.push("/app/store")
-                    }, 400)
-                  } }
+                icon='arrow-left-16'
+                color="var(--container-fg)"
+                onClick={() => {
+                  setPageChanging(true)
+                  router.prefetch("/app/store")
+                  setTimeout(() => {
+                    router.push("/app/store")
+                  }, 400)
+                }}
             />
-            <img src={ product?.icon } data-under-development={ product.underDevelopment } alt=""/>
+            <img src={product?.icon} data-under-development={product.underDevelopment} alt=""/>
             <h1>{product.displayName}{product.underDevelopment && " 🚧"}</h1>
           </section>
           <section>
