@@ -1,15 +1,37 @@
 .root {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  height: 100%;
-  overflow: hidden;
-  background-color: var(--background-color);
+    display: grid;
+    grid-template-columns: auto 1fr;
+    height: 100%;
+    overflow: hidden;
+    background-color: var(--background-color);
 }
 
 .pane {
-  padding: 1rem;
-  box-sizing: border-box;
-  max-height: 100%;
-  overflow-x: hidden;
-  overflow-y: auto;
+    box-sizing: border-box;
+    max-height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    > *:not(.header) {
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+        width: calc(100% - 1rem);
+    }
+}
+
+.header {
+    width: 100%;
+    padding: 0.5rem;
+    box-sizing: border-box;
+    background-color: var(--container-bg);
+}
+
+.currentPath {
+    color: var(--container-fg);
+    font-size: 1.25rem;
+}
+
+.headerSegment1 {
+    align-items: center;
+    margin-right: auto;
 }

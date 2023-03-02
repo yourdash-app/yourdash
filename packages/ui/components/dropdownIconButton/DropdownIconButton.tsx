@@ -1,25 +1,27 @@
-import { useContext, useState } from "react";
+import React, { useContext, useState } from "react";
+import IconButton from "../iconButton/IconButton";
 import RightClickMenuContext from "../rightClickMenu/RightClickMenuContext";
-import Button from "../button/Button";
+import { ChipletIcon } from "../icon/iconDictionary";
 
-export interface IDropdownButton {
-    children: string;
+export interface IDropdownIconButton {
     items: {
         name: string;
         shortcut?: string;
         onClick: () => void;
     }[];
     className?: string;
+    icon: ChipletIcon;
 }
 
-const DropdownButton: React.FC<IDropdownButton> = ({ children, items, className }) => {
+const DropdownIconButton: React.FC<IDropdownIconButton> = ({ items, className, icon }) => {
     const RootContainerContext = useContext(RightClickMenuContext);
 
     const [selectedOption, setSelectedOption] = useState("");
     const [dropdownShown, setDropdownShown] = useState(false);
 
     return (
-        <Button
+        <IconButton
+            icon={icon}
             className={className}
             onClick={(e) => {
                 e.stopPropagation();
@@ -68,10 +70,8 @@ const DropdownButton: React.FC<IDropdownButton> = ({ children, items, className 
                 window.addEventListener("click", listener);
                 window.addEventListener("contextmenu", listener);
             }}
-        >
-            {selectedOption || children}
-        </Button>
+        ></IconButton>
     );
 };
 
-export default DropdownButton;
+export default DropdownIconButton;

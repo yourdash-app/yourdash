@@ -1,6 +1,6 @@
 // eslint-disable-next-line import/no-commonjs
 module.exports = {
-    extends: ["turbo", "prettier", "eslint:recommended", "plugin:@typescript-eslint/recommended", "@jetbrains/eslint-config/browser", "@jetbrains/eslint-config/es6", "@jetbrains/eslint-config/node", "@jetbrains/eslint-config/react"],
+    extends: ["turbo", "prettier", "eslint:recommended", "plugin:@typescript-eslint/recommended"],
     rules: {
         "import/extensions": "off",
         "react/jsx-no-literals": "off",
@@ -9,6 +9,14 @@ module.exports = {
         "import/order": "off",
         "@next/next/no-img-element": "off",
         "arrow-body-style": ["error", "always"],
-        "react/jsx-curly-spacing": "off"
-    }
+        "react/jsx-curly-spacing": "off",
+        "import/no-unresolved": "off",
+    },
+    settings: {
+        "import/resolver": {
+            node: {
+                extensions: [".js", ".jsx", ".ts", ".tsx"],
+            },
+        },
+    },
 };

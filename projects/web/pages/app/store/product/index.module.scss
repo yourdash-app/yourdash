@@ -64,20 +64,21 @@
     padding-bottom: 1.5rem;
 
     > img {
-      height: 10rem;
-      margin-right: 1rem;
-      margin-left: 1rem;
-      padding: 0.5rem;
-      background-color: var(--card-bg);
-      border-radius: 3rem;
+        height: 10rem;
+        margin-right: 1rem;
+        margin-left: 1rem;
+        padding: 0.5rem;
+        background-color: var(--background-color);
+        border-radius: 3rem;
+        box-shadow: 0 0 0.25rem #00000055;
 
-      &[data-under-development="true"] {
-        border-radius: 2.5rem;
-        padding: 0rem;
-        outline: #db5a3b solid 0.5rem;
-        margin-left: 1.5rem;
-        margin-right: 1.5rem;
-      }
+        &[data-under-development="true"] {
+            border-radius: 2.5rem;
+            padding: 0rem;
+            outline: #db5a3b solid 0.5rem;
+            margin-left: 1.5rem;
+            margin-right: 1.5rem;
+        }
     }
 
     > h1 {
