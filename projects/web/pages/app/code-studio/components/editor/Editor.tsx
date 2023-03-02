@@ -36,7 +36,7 @@ const Editor: React.FC<IEditor> = ({ filePath, displayName, onChange, content })
   }, [ content ])
 
   return (
-      <main dangerouslySetInnerHTML={{ __html: rawHtml }}/>
+    <main dangerouslySetInnerHTML={{ __html: rawHtml }}/>
   )
 }
 

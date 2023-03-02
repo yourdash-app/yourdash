@@ -1,0 +1,18 @@
+.root {
+  min-height: calc(100vh - 5rem);
+  justify-content: center;
+  align-items: center;
+}
+
+.title {
+  padding-left: 2rem;
+  padding-right: 2rem;
+  text-align: center;
+  margin: 0;
+}
+
+.subtitle {
+  text-align: center;
+  width: 100%;
+  margin: 0;
+}
