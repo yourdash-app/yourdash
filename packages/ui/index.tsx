@@ -1,14 +1,14 @@
 import Badge from "./components/badge/Badge";
 import Button from "./components/button/Button";
 import ButtonLink from "./components/buttonLink/ButtonLink";
-import Card from "./components/card/Card"
+import Card from "./components/card/Card";
 import Carousel from "./components/carousel/Carousel";
 import Chip from "./components/chip/Chip";
 import Column from "./components/column/Column";
 import Dialog from "./components/dialog/Dialog";
 import DropdownButton from "./components/dropdownButton/DropdownButton";
 import DropdownContainer from "./components/dropdownContainer/DropdownContainer";
-import Icon from "./components/icon/Icon"
+import Icon from "./components/icon/Icon";
 import IconButton from "./components/iconButton/IconButton";
 import ProgressBar from "./components/progressBar/ProgressBar";
 import RightClickMenu from "./components/rightClickMenu/RightClickMenu";
@@ -20,6 +20,7 @@ import Tags from "./components/tags/Tags";
 import TextBox from "./components/textBox/TextBox";
 import TextInput from "./components/textInput/TextInput";
 import ToggleSwitch from "./components/toggleSwitch/ToggleSwitch";
+import DropdownIconButton from "./components/dropdownIconButton/DropdownIconButton";
 
 const Chiplet = {
     Badge,
@@ -32,6 +33,7 @@ const Chiplet = {
     Dialog,
     DropdownButton,
     DropdownContainer,
+    DropdownIconButton,
     Icon,
     IconButton,
     ProgressBar,
@@ -44,6 +46,6 @@ const Chiplet = {
     TextBox,
     TextInput,
     ToggleSwitch,
-}
+};
 
 export default Chiplet

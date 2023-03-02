@@ -1,0 +1,24 @@
+.component {
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  font-family: "Roboto", sans-serif;
+  cursor: pointer;
+  transition: var(--transition);
+  border-radius: var(--button-rounding);
+  background-color: var(--button-bg);
+  color: var(--button-fg);
+  user-select: none;
+
+  &:hover {
+    border-radius: var(--button-hover-rounding);
+    background-color: var(--button-hover-bg);
+    color: var(--button-hover-fg);
+  }
+
+  &:active {
+    border-radius: var(--button-active-rounding);
+    background-color: var(--button-active-bg);
+    color: var(--button-active-fg);
+  }
+}

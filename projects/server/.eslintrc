@@ -6,5 +6,12 @@
   "rules": {
     "no-process-exit": "off",
     "import/no-useless-path-segments": "off"
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
   }
 }
