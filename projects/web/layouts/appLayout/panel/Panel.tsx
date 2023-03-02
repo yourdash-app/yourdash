@@ -131,26 +131,25 @@ const Panel: React.FC<IPanel> = ({ backgroundImage }) => {
                               }
                           key={app.name}
                         >
-                          <button
-                            type="button"
-                            className={styles.launcherGridItem}
-                            onClick={
-                                  () => {
-                                    if (app.path === router.pathname) return setLauncherSlideOutVisible(false)
-                                    setLauncherSlideOutVisible(false)
-                                    router.push(app.path)
-                                  }
+                          <Chiplet.Card
+                              className={styles.launcherGridItem}
+                              onClick={
+                                () => {
+                                  if (app.path === router.pathname) return setLauncherSlideOutVisible(false)
+                                  setLauncherSlideOutVisible(false)
+                                  router.push(app.path)
                                 }
+                              }
                           >
                             <img
-                              src={app.icon}
-                              draggable={false}
-                              alt=""
+                                src={app.icon}
+                                draggable={false}
+                                alt=""
                             />
                             <span
-                              className={`${app.underDevelopment && styles.underDevelopment}`}
+                                className={`${app.underDevelopment && styles.underDevelopment}`}
                             >{app.displayName}</span>
-                          </button>
+                          </Chiplet.Card>
                         </Chiplet.RightClickMenu>
                       )
                   })
