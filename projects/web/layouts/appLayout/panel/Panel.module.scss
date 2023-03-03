@@ -262,27 +262,27 @@
       font-size: 1rem;
       display: flex;
       flex-direction: column;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      box-sizing: border-box;
-      align-items: center;
-      border-radius: var(--card-rounding);
-      background-color: var(--card-bg);
-      transition: var(--transition);
-      cursor: pointer;
-      user-select: none;
-      border-width: 0.25rem;
-
-      &:hover {
-        z-index: 100;
-        background-color: var(--card-bg);
-      }
-
-      > img {
         width: 100%;
-        aspect-ratio: 1 / 1;
+        height: 100%;
+        overflow: hidden;
         box-sizing: border-box;
+        align-items: center;
+        background-color: var(--card-bg);
+        transition: var(--transition);
+        cursor: pointer;
+        user-select: none;
+        border-width: 0.25rem;
+        box-shadow: none;
+
+        &:hover {
+            z-index: 100;
+            background-color: var(--card-bg);
+        }
+
+        > img {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            box-sizing: border-box;
         padding: 1rem;
       }
 

@@ -14,6 +14,7 @@ const FilesLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 <Chiplet.Row className={styles.header}>
                     <Chiplet.Row className={styles.headerSegment1}>
                         <Chiplet.IconButton
+                            disabled={!router.query.path}
                             icon={"arrow-left-16"}
                             color={"var(--button-fg)"}
                             onClick={() => {
