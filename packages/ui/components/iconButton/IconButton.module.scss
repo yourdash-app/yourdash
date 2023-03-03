@@ -1,37 +1,43 @@
 .component {
-  padding: 0.35rem;
-  font-family: "Roboto", sans-serif;
-  height: 2.25rem;
-  width: 2.25rem;
-  aspect-ratio: 1 / 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  cursor: pointer;
-  transition: var(--transition);
-  border-radius: var(--button-rounding);
-  background-color: var(--button-bg);
-  color: var(--button-fg);
-  user-select: none;
-  border: solid 0.125rem var(--button-bg);
-  box-sizing: border-box;
-
-  &:hover {
-    border: solid 0.125rem #ffffff55;
-    border-radius: var(--button-hover-rounding);
-    background-color: var(--button-hover-bg);
-    color: var(--button-hover-fg);
-  }
-
-  &:active {
-    border-radius: var(--button-active-rounding);
-    background-color: var(--button-active-bg);
-    color: var(--button-active-fg);
-  }
-
-  > * {
-    height: 100%;
+    padding: 0.35rem;
+    font-family: "Roboto", sans-serif;
+    height: 2.25rem;
+    width: 2.25rem;
     aspect-ratio: 1 / 1;
-  }
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    cursor: pointer;
+    transition: var(--transition);
+    border-radius: var(--button-rounding);
+    background-color: var(--button-bg);
+    color: var(--button-fg);
+    user-select: none;
+    border: solid 0.125rem var(--button-bg);
+    box-sizing: border-box;
+
+    &:hover {
+        border: solid 0.125rem #ffffff55;
+        border-radius: var(--button-hover-rounding);
+        background-color: var(--button-hover-bg);
+        color: var(--button-hover-fg);
+    }
+
+    &:active {
+        border-radius: var(--button-active-rounding);
+        background-color: var(--button-active-bg);
+        color: var(--button-active-fg);
+    }
+
+    &:disabled {
+        border-color: var(--button-bg);
+        color: var(--button-fg);
+        cursor: not-allowed;
+    }
+
+    > * {
+        height: 100%;
+        aspect-ratio: 1 / 1;
+    }
 }

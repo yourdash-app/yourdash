@@ -127,15 +127,16 @@ const module: YourDashModule = {
 
         // TODO: make this work
         request.post(`/file/create`, (req, res) => {
-            if (!req?.query?.path) return res.json({ error: true });
+            if (!req?.headers?.path) return res.json({ error: true });
 
-            if (req.query.path === "") return res.json({ error: true });
+            if (req.headers.path === "") return res.json({ error: true });
 
-            if (!fs.existsSync(`${api.UserFs(req)}${req.query.path}`)) return res.json({ error: true });
+            if (!fs.existsSync(`${api.UserFs(req)}${req.headers.path}`)) return res.json({ error: true });
 
-            const pathObject = req.query.path as string[];
+            const pathObject = req.headers.path;
+
             if (!pathObject) return;
-            pathObject.pop();
+            // pathObject.pop();
         });
     },
     install: () => {

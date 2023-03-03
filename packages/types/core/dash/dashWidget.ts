@@ -1,3 +1,3 @@
-type DashWidget = "weather" | "rss" | "github"
+type DashWidget = "weather" | "rss" | "github" | "TasksList" | "Notes";
 
-export default DashWidget
+export default DashWidget;
