@@ -284,34 +284,36 @@ const StoreProduct: NextPageWithLayout = () => {
                         </p>
                     </Chiplet.Card>
                 </section>
-                <section>
-                    <h3 className={styles.sectionTitle}>Extensions</h3>
-                </section>
                 {extensions && (
-                    <section>
-                        <Chiplet.Carousel compactControls className={styles.extensionsCarousel}>
-                            {extensions.map((extensions) => {
-                                return (
-                                    <Chiplet.Row key={extensions[0].name} className={styles.extensionsPage}>
-                                        {extensions.map((extension) => {
-                                            return (
-                                                <Chiplet.Card
-                                                    key={extension.name}
-                                                    onClick={() => {
-                                                        router.push(
-                                                            `/app/store/product/${productId}/extension/${extension.name}`
-                                                        );
-                                                    }}
-                                                >
-                                                    <span>{extension.displayName}</span>
-                                                </Chiplet.Card>
-                                            );
-                                        })}
-                                    </Chiplet.Row>
-                                );
-                            })}
-                        </Chiplet.Carousel>
-                    </section>
+                    <>
+                        <section>
+                            <h3 className={styles.sectionTitle}>Extensions</h3>
+                        </section>
+                        <section>
+                            <Chiplet.Carousel compactControls className={styles.extensionsCarousel}>
+                                {extensions.map((extensions) => {
+                                    return (
+                                        <Chiplet.Row key={extensions[0].name} className={styles.extensionsPage}>
+                                            {extensions.map((extension) => {
+                                                return (
+                                                    <Chiplet.Card
+                                                        key={extension.name}
+                                                        onClick={() => {
+                                                            router.push(
+                                                                `/app/store/product/${productId}/extension/${extension.name}`
+                                                            );
+                                                        }}
+                                                    >
+                                                        <span>{extension.displayName}</span>
+                                                    </Chiplet.Card>
+                                                );
+                                            })}
+                                        </Chiplet.Row>
+                                    );
+                                })}
+                            </Chiplet.Carousel>
+                        </section>
+                    </>
                 )}
             </div>
         </>
