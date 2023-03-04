@@ -1,131 +1,131 @@
 .component {
-  position: relative;
-  overflow: hidden;
-  height: 16rem;
+    position: relative;
+    overflow: hidden;
+    height: 16rem;
 
-  ::-webkit-scrollbar {
-    height: 0;
-    width: 0;
-  }
+    ::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+    }
 }
 
 .main {
-  scroll-behavior: smooth;
-  scroll-snap-type: x mandatory;
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  height: 100%;
-  overflow-x: hidden;
-
-  > div {
-    height: 100%;
+    display: flex;
+    overflow-x: hidden;
+    flex-direction: row;
     width: 100%;
-    scroll-snap-align: center;
-    flex-shrink: 0;
-    flex-grow: 0;
-    flex-wrap: nowrap;
-    flex-flow: row;
-  }
+    height: 100%;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+
+    > div {
+        flex-flow: row;
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-wrap: nowrap;
+        width: 100%;
+        height: 100%;
+        scroll-snap-align: center;
+    }
 }
 
 .controls {
-  position: absolute;
-  width: 100%;
-  pointer-events: none;
-  top: 50%;
-  left: 0;
-  transform: translateY(-50%);
-  display: flex;
-  align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    transform: translateY(-50%);
+    pointer-events: none;
 
-  > button {
-    pointer-events: all;
-    aspect-ratio: 1 / 2;
-    box-shadow: 0 0 1rem #00000088;
-    font-size: 1rem;
-    font-family: "Roboto", sans-serif;
-    cursor: pointer;
-    transition: var(--transition);
-    border-radius: var(--button-rounding);
-    background-color: var(--button-bg);
-    color: var(--button-fg);
-    user-select: none;
-    border: solid 0.125rem var(--button-bg);
-    box-sizing: border-box;
-
-    &:hover {
-      border: solid 0.125rem #ffffff55;
-      border-radius: var(--button-hover-rounding);
-      background-color: var(--button-hover-bg);
-      color: var(--button-hover-fg);
-
-      &[disabled] {
+    > button {
+        font-family: "Roboto", sans-serif;
+        font-size: 1rem;
+        box-sizing: border-box;
+        cursor: pointer;
+        user-select: none;
+        transition: var(--transition);
+        pointer-events: all;
+        color: var(--button-fg);
+        border: solid 0.125rem var(--button-bg);
         border-radius: var(--button-rounding);
         background-color: var(--button-bg);
-        color: var(--button-fg);
-        cursor: not-allowed;
-      }
-    }
+        box-shadow: 0 0 1rem #00000088;
+        aspect-ratio: 1 / 2;
 
-    &:active {
-      border-radius: var(--button-active-rounding);
-      background-color: var(--button-active-bg);
-      color: var(--button-active-fg);
+        &:hover {
+            color: var(--button-hover-fg);
+            border: solid 0.125rem #ffffff55;
+            border-radius: var(--button-hover-rounding);
+            background-color: var(--button-hover-bg);
 
-      &[disabled] {
-        border-radius: var(--button-rounding);
-        background-color: var(--button-bg);
-        color: var(--button-fg);
-        cursor: not-allowed;
-      }
-    }
+            &[disabled] {
+                cursor: not-allowed;
+                color: var(--button-fg);
+                border-radius: var(--button-rounding);
+                background-color: var(--button-bg);
+            }
+        }
 
-    &:first-child {
-      margin-right: auto;
-      margin-left: 1rem;
-    }
+        &:active {
+            color: var(--button-active-fg);
+            border-radius: var(--button-active-rounding);
+            background-color: var(--button-active-bg);
 
-    &:last-child {
-      margin-right: 1rem;
-    }
+            &[disabled] {
+                cursor: not-allowed;
+                color: var(--button-fg);
+                border-radius: var(--button-rounding);
+                background-color: var(--button-bg);
+            }
+        }
 
-    > div {
-      width: 1rem;
-      aspect-ratio: 1 / 1;
+        &:first-child {
+            margin-right: auto;
+            margin-left: 1rem;
+        }
+
+        &:last-child {
+            margin-right: 1rem;
+        }
+
+        > div {
+            width: 1rem;
+            aspect-ratio: 1 / 1;
+        }
     }
-  }
 }
 
 .controlsCompact {
-  > button {
-    &:first-child {
-      margin-left: 0;
-      border-radius: 0 var(--button-rounding) var(--button-rounding) 0;
-    }
+    > button {
+        &:first-child {
+            margin-left: 0;
+            border-radius: 0 var(--button-rounding) var(--button-rounding) 0;
+        }
 
-    &:last-child {
-      margin-right: 0;
-      border-radius: var(--button-rounding) 0 0 var(--button-rounding);
+        &:last-child {
+            margin-right: 0;
+            border-radius: var(--button-rounding) 0 0 var(--button-rounding);
+        }
     }
-  }
 }
 
 .indicator {
-  position: absolute;
-  bottom: 0.25rem;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 0.125rem;
-  min-width: 5rem;
+    position: absolute;
+    bottom: 0.25rem;
+    left: 50%;
+    display: flex;
+    min-width: 5rem;
+    transform: translateX(-50%);
+    gap: 0.125rem;
 
-  > div {
-    min-width: 1rem;
-    height: 0.25rem;
-    border-radius: 0.5rem;
-    box-shadow: 0 0 0.5rem #00000088;
-    transition: var(--transition);
-    flex-grow: 1;
-  }
+    > div {
+        flex-grow: 1;
+        min-width: 1rem;
+        height: 0.25rem;
+        transition: var(--transition);
+        border-radius: 0.5rem;
+        box-shadow: 0 0 0.5rem #00000088;
+    }
 }
