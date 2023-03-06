@@ -3,16 +3,16 @@
  *   https://ewsgit.mit-license.org
  */
 
-import { type IEnv, type YourDashServerConfig } from ".";
-import { RequestManager } from './libServer.js';
+import { type IEnv, type YourDashServerConfig } from "./index.js";
+import { RequestManager } from "./libServer.js";
 
 interface YourDashModule {
-  load: (_request: RequestManager, _api: { SERVER_CONFIG: YourDashServerConfig } & IEnv) => void;
-  unload: () => void;
-  install: () => void;
-  uninstall: () => void;
-  requiredModules: string[];
-  configuration?: { user?: (string | boolean)[]; global?: (string | boolean)[] }
+    load: (_request: RequestManager, _api: { SERVER_CONFIG: YourDashServerConfig } & IEnv) => void;
+    unload: () => void;
+    install: () => void;
+    uninstall: () => void;
+    requiredModules: string[];
+    configuration?: { user?: (string | boolean)[]; global?: (string | boolean)[] };
 }
 
-export type { YourDashModule }
+export type { YourDashModule };
