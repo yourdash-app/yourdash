@@ -100,7 +100,7 @@ const PanelLauncherSlideOut: React.FC<IPanelLauncherSlideOut> = ({
                                             router.push(app.path);
                                         }}
                                     >
-                                        <img src={app.icon} draggable={false} alt="" />
+                                        <img src={app.icon} draggable={false} loading={"lazy"} alt="" />
                                         <span className={`${app.underDevelopment && styles.underDevelopment}`}>
                                             {app.displayName}
                                         </span>

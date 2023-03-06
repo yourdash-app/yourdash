@@ -168,9 +168,9 @@ const Panel: React.FC<IPanel> = ({ backgroundImage }) => {
                     </Chiplet.Button>
                 )}
             </div>
-            {/* <div className={styles.tray}>
-                 <Icon name="browser-16" className={styles.trayIcon} color={"var(--app-panel-fg)"} />
-                 </div> */}
+            {/*<div className={styles.tray}>*/}
+            {/*    <Chiplet.Icon name="browser-16" className={styles.trayIcon} color={"var(--app-panel-fg)"} />*/}
+            {/*</div>*/}
             <div className={styles.account}>
                 <ServerImage
                     onClick={() => {
@@ -192,6 +192,7 @@ const Panel: React.FC<IPanel> = ({ backgroundImage }) => {
                         top: 0,
                         transition: "var(--transition)",
                         width: "100vw",
+                        border: "none",
                     }}
                     onClick={() => {
                         setAccountDropdownVisible(false);
