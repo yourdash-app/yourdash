@@ -134,7 +134,7 @@ const Panel: React.FC<IPanel> = ({ backgroundImage }) => {
                                 >
                                     <div>
                                         <img draggable={false} src={shortcut.icon} alt="" />
-                                        {router.pathname === shortcut.url ? (
+                                        {router.pathname.startsWith(shortcut.url) ? (
                                             <div data-active-indicator="true" />
                                         ) : (
                                             <div />
@@ -204,8 +204,8 @@ const Panel: React.FC<IPanel> = ({ backgroundImage }) => {
                             opacity: !accountDropdownVisible ? "0" : "1",
                             pointerEvents: accountDropdownVisible ? "all" : "none",
                             transform: !accountDropdownVisible ? "scale(0.9)" : "scale(1)",
+                            padding: "0.5rem",
                         }}
-                        compact
                         className={styles.accountDropdown}
                     >
                         <Chiplet.Row className={styles.accountDropdownQuickActions}>
@@ -261,38 +261,6 @@ const Panel: React.FC<IPanel> = ({ backgroundImage }) => {
                             transform: !accountDropdownVisible ? "scale(0.9)" : "scale(1)",
                         }}
                     >
-                        <Chiplet.Card>
-                            <Chiplet.Row data-header>
-                                <img src={`/assets/productLogos/yourdash.svg`} alt="" />
-                                <span>Notification Test</span>
-                            </Chiplet.Row>
-                            <Chiplet.Column>
-                                <p>This is some sample text for a notification</p>
-                                <Chiplet.Button
-                                    onClick={() => {
-                                        console.log("Implenment me!");
-                                    }}
-                                >
-                                    Ok
-                                </Chiplet.Button>
-                            </Chiplet.Column>
-                        </Chiplet.Card>
-                        <Chiplet.Card>
-                            <Chiplet.Row data-header>
-                                <img src={`/assets/productLogos/yourdash.svg`} alt="" />
-                                <span>Notification Test</span>
-                            </Chiplet.Row>
-                            <Chiplet.Column>
-                                <p>This is some sample text for a notification</p>
-                                <Chiplet.Button
-                                    onClick={() => {
-                                        console.log("Implenment me!");
-                                    }}
-                                >
-                                    Ok
-                                </Chiplet.Button>
-                            </Chiplet.Column>
-                        </Chiplet.Card>
                         <Chiplet.Card>
                             <Chiplet.Row data-header>
                                 <img src={`/assets/productLogos/yourdash.svg`} alt="" />
