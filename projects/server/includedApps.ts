@@ -165,7 +165,7 @@ const includedApps: InstalledApplication[] = [
         license: "MIT",
         description: "Plan and explain concepts to others in real-time.",
         displayName: "Whiteboard",
-        icon: "placeholder-icon.png",
+        icon: "whiteboard.png",
         moduleRequirements: [],
         name: "whiteboard",
         path: "/app/whiteboard",

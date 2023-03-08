@@ -1,6 +1,7 @@
 import Chiplet from "ui";
 import { useEffect, useState } from "react";
 import styles from "../../../tasks/personal/list/listId.module.scss";
+import moduleStyles from "./TasksList.module.scss";
 import ListTask from "../../../tasks/components/ListTask/ListTask";
 import SERVER, { verifyAndReturnJson } from "../../../../../server";
 import { TasksList } from "../../../../../../../packages/types/tasks/list";
@@ -38,7 +39,6 @@ const TasksList: React.FC = () => {
 
     useEffect(() => {
         LoadPersonalLists((data) => {
-            setSelectedListId(data?.[0].id || "");
             return setPossibleLists(data);
         });
     }, []);
@@ -49,9 +49,23 @@ const TasksList: React.FC = () => {
         });
     }, [selectedListId]);
 
+    if (possibleLists.length === 0)
+        return (
+            <Chiplet.Card
+                onClick={() => {
+                    return router.push("/app/tasks");
+                }}
+            >
+                <h2 className={moduleStyles.title} style={{ marginBottom: 0 }}>
+                    Personal Tasks
+                </h2>
+            </Chiplet.Card>
+        );
+
     return (
         <Chiplet.Card>
             <Chiplet.Column>
+                <h2 className={moduleStyles.title}>Personal Tasks</h2>
                 <Chiplet.DropdownButton
                     items={possibleLists.map((list) => {
                         return {
@@ -65,7 +79,7 @@ const TasksList: React.FC = () => {
                     select a list
                 </Chiplet.DropdownButton>
                 <Chiplet.Column className={styles.tasksView} style={{ padding: "unset" }}>
-                    {listData?.tasks ? (
+                    {listData?.tasks &&
                         listData.tasks.map((task, ind) => {
                             return (
                                 <ListTask
@@ -95,29 +109,28 @@ const TasksList: React.FC = () => {
                                     }}
                                 />
                             );
-                        })
-                    ) : (
-                        <h1>No tasks</h1>
-                    )}
-                    <Chiplet.Button
-                        onClick={() => {
-                            verifyAndReturnJson(
-                                SERVER.get(`/tasks/personal/list/${selectedListId}/create/task`),
-                                () => {
-                                    if (!selectedListId) return;
+                        })}
+                    {selectedListId !== "" && (
+                        <Chiplet.Button
+                            onClick={() => {
+                                verifyAndReturnJson(
+                                    SERVER.get(`/tasks/personal/list/${selectedListId}/create/task`),
+                                    () => {
+                                        if (!selectedListId) return;
 
-                                    loadList(selectedListId, (list) => {
-                                        setListData(list);
-                                    });
-                                },
-                                () => {
-                                    console.error("unable to create task");
-                                }
-                            );
-                        }}
-                    >
-                        Add task
-                    </Chiplet.Button>
+                                        loadList(selectedListId, (list) => {
+                                            setListData(list);
+                                        });
+                                    },
+                                    () => {
+                                        console.error("unable to create task");
+                                    }
+                                );
+                            }}
+                        >
+                            Add task
+                        </Chiplet.Button>
+                    )}
                 </Chiplet.Column>
             </Chiplet.Column>
         </Chiplet.Card>

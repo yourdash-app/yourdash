@@ -1,24 +1,23 @@
 .root {
+    display: flex;
+    overflow-y: auto;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    box-sizing: border-box;
+    width: calc(100% - 0.25rem);
+    height: calc(100% - 0.25rem);
+    margin: 0.125rem;
+    transition: var(--transition);
+    border-radius: var(--app-application-rounding);
     background: transparent;
 
     &[data-background="true"] {
         background: var(--app-background);
+        background-repeat: no-repeat;
         background-position: center;
         background-size: cover;
-        background-repeat: no-repeat;
     }
-
-    height: calc(100% - 0.25rem);
-    overflow-y: auto;
-    width: calc(100% - 0.25rem);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-sizing: border-box;
-    flex-direction: column;
-    transition: var(--transition);
-    margin: 0.125rem;
-    border-radius: var(--app-application-rounding);
 }
 
 // --app-dash-clock-font-weight: 800;
@@ -28,24 +27,19 @@
 // --app-dash-clock-shadow-offset-y: 0;
 
 .welcome {
-    font-weight: 700;
     font-size: 5rem;
+    font-weight: 900;
     display: flex;
-    flex-direction: column;
     align-items: center;
+    flex-direction: column;
     justify-content: center;
-    text-align: center;
-    color: #fff;
-    transition: var(--transition);
     margin-bottom: 1rem;
-
-    > * {
-        text-shadow: var(--app-dash-clock-shadow-offset-x) var(--app-dash-clock-shadow-offset-y) var(--app-dash-clock-shadow-spread) var(--app-dash-clock-shadow-color);
-    }
-
-    > .clock {
-        font-size: 8rem;
-    }
+    transition: var(--transition);
+    animation: 500ms 100ms ease-in-out fadeIn forwards;
+    text-align: center;
+    letter-spacing: 0.025rem;
+    opacity: 0;
+    color: #fff;
 
     @keyframes fadeIn {
         from {
@@ -57,22 +51,31 @@
         }
     }
 
-    opacity: 0;
-    animation: 500ms 100ms ease-in-out fadeIn forwards;
+    > * {
+        text-shadow: var(--app-dash-clock-shadow-offset-x) var(--app-dash-clock-shadow-offset-y) var(--app-dash-clock-shadow-spread) var(--app-dash-clock-shadow-color);
+    }
+
+    > .clock {
+        font-size: 8rem;
+    }
 }
 
 .main {
     display: grid;
-    max-width: 90rem;
-    width: 75%;
-    padding: 1rem;
-    border-radius: var(--card-rounding);
-    gap: 0.5rem;
-    justify-content: center;
-    grid-template-columns: repeat(1, 1fr);
-    max-height: calc(100vh - calc(calc(var(--app-panel-height) + 250px) + calc(var(--app-application-margin) * 2)));
-    overflow-y: auto;
     overflow-x: hidden;
+    overflow-y: auto;
+    justify-content: center;
+    width: 75%;
+    max-width: 90rem;
+    max-height: calc(100vh - calc(calc(var(--app-panel-height) + 250px) + calc(var(--app-application-margin) * 2)));
+    padding: 1rem;
+    animation: 500ms 100ms ease-in-out fadeIn forwards;
+    opacity: 0;
+    border-radius: var(--card-rounding);
+
+    gap: 0.5rem;
+
+    grid-template-columns: repeat(1, 1fr);
 
     @media screen and (min-width: 750px) {
         grid-template-columns: repeat(1, 1fr);
@@ -82,14 +85,6 @@
         grid-template-columns: repeat(2, 1fr);
     }
 
-    @media screen and (min-width: 1400px) {
-        grid-template-columns: repeat(3, 1fr);
-    }
-
-    @media screen and (min-width: 1800px) {
-        grid-template-columns: repeat(4, 1fr);
-    }
-
     @keyframes fadeIn {
         from {
             opacity: 0;
@@ -100,31 +95,35 @@
         }
     }
 
-    opacity: 0;
-    animation: 500ms 100ms ease-in-out fadeIn forwards;
+    @media screen and (min-width: 1400px) {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    @media screen and (min-width: 1800px) {
+        grid-template-columns: repeat(4, 1fr);
+    }
 }
 
 .homeMessage {
     display: flex;
     overflow-y: auto;
-    width: 100%;
-    box-sizing: border-box;
-    justify-content: flex-start;
     align-items: center;
     flex-direction: column;
+    justify-content: flex-start;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 2rem;
     grid-column: 1/-1;
     grid-row: 1/-1;
-    padding: 2rem;
 
     > div {
-        padding: 1.5rem;
         display: flex;
-        justify-content: center;
         align-items: center;
         flex-direction: column;
+        justify-content: center;
+        padding: 1.5rem;
+        color: var(--card-fg);
         border-radius: var(--card-rounding);
         background-color: var(--card-bg);
-        color: var(--card-fg);
         box-shadow: 0 0 1.5rem #00000088;
 
         > h1 {

@@ -5,31 +5,31 @@
  */
 
 .component {
-    height: var(--app-panel-height);
-    background: var(--app-panel-bg);
-    display: grid;
-    grid-template-columns: auto auto 1fr auto auto;
-    align-items: center;
-    color: var(--app-panel-fg);
-    box-shadow: 0 0 1rem #00000055;
     z-index: 200;
+    display: grid;
+    align-items: center;
+    height: var(--app-panel-height);
     animation: slideInAnimation 1250ms ease-in-out forwards;
+    color: var(--app-panel-fg);
+    background: var(--app-panel-bg);
+    box-shadow: 0 0 1rem #00000055;
+    grid-template-columns: auto auto 1fr auto auto;
 }
 
 .account {
-    margin-right: 0.5rem;
-    margin-left: 0.5rem;
-    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+    height: 100%;
+    margin-right: 0.5rem;
+    margin-left: 0.5rem;
 
     > img {
         height: calc(var(--app-panel-height) - 1rem);
-        aspect-ratio: 1 / 1;
-        border-radius: 0.5rem;
         cursor: pointer;
+        border-radius: 0.5rem;
         outline: 2.5px solid var(--app-panel-separator);
+        aspect-ratio: 1 / 1;
     }
 }
 
@@ -37,37 +37,37 @@
     position: absolute;
     top: calc(var(--app-panel-height) + 0.5rem);
     right: 0.5rem;
-    transform-origin: top right;
     transition: var(--transition);
+    transform-origin: top right;
 }
 
 .accountDropdownQuickActions {
     padding-bottom: 0.5rem;
 
     > * {
-        flex-grow: 1;
-        height: 2.5rem;
         display: flex;
         align-items: center;
+        flex-grow: 1;
         justify-content: center;
-        user-select: none;
+        height: 2.5rem;
+        padding: 0.5rem;
         cursor: pointer;
+        user-select: none;
+        transition: var(--transition);
+        color: var(--button-fg);
         border-radius: var(--button-rounding);
         background-color: var(--button-bg);
-        color: var(--button-fg);
-        transition: var(--transition);
-        padding: 0.5rem;
 
         &:hover {
+            color: var(--button-hover-fg);
             border-radius: var(--button-hover-rounding);
             background-color: var(--button-hover-bg);
-            color: var(--button-hover-fg);
         }
 
         &:active {
+            color: var(--button-active-fg);
             border-radius: var(--button-active-rounding);
             background-color: var(--button-active-bg);
-            color: var(--button-active-fg);
         }
 
         > * {
@@ -79,10 +79,10 @@
 
 .accountNotificationList {
     position: absolute;
-    bottom: calc(calc(var(--app-panel-height) + 0.5rem) - 100vh);
     right: 0.5rem;
-    transform-origin: bottom right;
+    bottom: calc(calc(var(--app-panel-height) + 0.5rem) - 100vh);
     transition: var(--transition);
+    transform-origin: bottom right;
 
     > div {
         padding: 0.5rem;
@@ -91,13 +91,13 @@
             &:first-child {
                 display: flex;
                 align-items: center;
-                background-color: var(--header-bg);
                 padding: 0.5rem;
                 border-radius: 0.5rem;
+                background-color: var(--header-bg);
 
                 > img {
+                    height: 1.5rem;
                     aspect-ratio: 1 / 1;
-                    height: 2rem;
                 }
             }
 
@@ -105,9 +105,9 @@
                 > p {
                     margin-top: 1rem;
                     margin-bottom: 1rem;
-                    text-align: center;
-                    padding-left: 0.5rem;
                     padding-right: 0.5rem;
+                    padding-left: 0.5rem;
+                    text-align: center;
                 }
             }
         }
@@ -116,21 +116,21 @@
 
 .serverLogo {
     height: 2rem;
-    padding-left: 0.5rem;
     margin-right: 50%;
-    user-select: none;
+    padding-left: 0.5rem;
     cursor: pointer;
+    user-select: none;
 }
 
 .launcher {
+    height: var(--app-panel-height);
     margin: 0;
     padding: 0.5rem;
-    background-color: var(--app-panel-launcher-bg);
-    border: none;
-    height: var(--app-panel-height);
-    aspect-ratio: 1/1;
-    transition: var(--transition);
     cursor: pointer;
+    transition: var(--transition);
+    border: none;
+    background-color: var(--app-panel-launcher-bg);
+    aspect-ratio: 1/1;
 
     &:hover {
         background-color: var(--app-panel-launcher-hover-bg);
@@ -145,54 +145,54 @@
     position: fixed;
     top: var(--app-panel-height);
     left: 0;
-    translate: -100%;
-    height: calc(100vh - var(--app-panel-height));
-    width: 28rem;
-    background-color: var(--container-bg);
-    transition: translate 0.25s ease-in-out;
     display: grid;
-    grid-template-rows: auto 1fr;
-    border-right: 0.25rem solid var(--app-panel-bg);
-    place-items: center;
     overflow: hidden;
+    width: 28rem;
+    height: calc(100vh - var(--app-panel-height));
+    transition: translate 0.25s ease-in-out;
+    border-right: 0.25rem solid var(--app-panel-bg);
+    background-color: var(--container-bg);
+    translate: -100%;
+    grid-template-rows: auto 1fr;
+    place-items: center;
 
     @media (max-width: 600px) {
         width: 100vw;
     }
 
     > div[data-header] {
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover;
         position: relative;
-        box-shadow: 0rem -1.5rem 1rem inset var(--container-bg);
         width: calc(2rem + 100%);
         height: 12rem;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        box-shadow: 0rem -1.5rem 1rem inset var(--container-bg);
 
         > div[data-title] {
             font-size: 3rem;
-            text-align: center;
-            user-select: none;
-            background: inherit;
-            background-clip: text;
             font-weight: 700;
-            letter-spacing: 0.15rem;
             position: absolute;
             top: 2.5rem;
             left: 50%;
-            translate: -50%;
+            user-select: none;
+            text-align: center;
             white-space: nowrap;
+            letter-spacing: 0.15rem;
             color: white;
+            background: inherit;
+            background-clip: text;
             text-shadow: 0 0 1rem #000000, 0 0 0.5rem #000000;
+            translate: -50%;
         }
 
         > input[data-search] {
-            margin-left: 2rem;
-            width: calc(100% - 4rem);
-            margin-bottom: 2.5rem;
-            color: #ffffff;
             position: absolute;
             bottom: 0;
+            width: calc(100% - 4rem);
+            margin-bottom: 2.5rem;
+            margin-left: 2rem;
+            color: #ffffff;
         }
     }
 
@@ -200,20 +200,20 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background-color: var(--app-panel-bg);
         width: 100%;
         padding: 1rem;
+        background-color: var(--app-panel-bg);
 
         > img {
-            margin-left: 1rem;
             height: 2rem;
-            aspect-ratio: 1 / 1;
+            margin-left: 1rem;
             border-radius: 0.5rem;
+            aspect-ratio: 1 / 1;
         }
 
         > span {
-            margin-left: 0.75rem;
             margin-right: auto;
+            margin-left: 0.75rem;
         }
 
         > button {
@@ -227,14 +227,14 @@
 }
 
 .launcherGrid {
-    height: 100%;
-    width: 100%;
+    display: grid;
     overflow-x: visible;
     overflow-y: auto;
-    display: grid;
-    grid-auto-rows: min-content;
     box-sizing: border-box;
+    width: 100%;
+    height: 100%;
     padding: 1rem;
+    grid-auto-rows: min-content;
     gap: 0.5rem;
     place-items: center;
 
@@ -256,22 +256,22 @@
         height: 100%;
 
         > .launcherGridItem {
-            color: var(--card-fg);
-            padding: 0;
-            margin: 0;
             font-size: 1rem;
             display: flex;
+            overflow: hidden;
+            align-items: center;
             flex-direction: column;
+            box-sizing: border-box;
             width: 100%;
             height: 100%;
-            overflow: hidden;
-            box-sizing: border-box;
-            align-items: center;
-            background-color: var(--card-bg);
-            transition: var(--transition);
+            margin: 0;
+            padding: 0;
             cursor: pointer;
             user-select: none;
+            transition: var(--transition);
+            color: var(--card-fg);
             border-width: 0.25rem;
+            background-color: var(--card-bg);
             box-shadow: none;
 
             &:hover {
@@ -280,18 +280,18 @@
             }
 
             > img {
-                width: 100%;
-                aspect-ratio: 1 / 1;
                 box-sizing: border-box;
+                width: 100%;
                 padding: 1rem;
+                aspect-ratio: 1 / 1;
             }
 
             > span {
                 width: 100%;
                 padding-top: 0.25em;
                 padding-bottom: 0.25em;
-                background-color: var(--button-bg);
                 text-align: center;
+                background-color: var(--button-bg);
             }
         }
     }
@@ -302,23 +302,23 @@
 }
 
 .shortcuts {
-    margin-left: 1.25rem;
-    margin-right: 0.5rem;
-    height: calc(var(--app-panel-height) - 0.5rem);
-    box-sizing: border-box;
     position: relative;
     display: flex;
+    box-sizing: border-box;
+    height: calc(var(--app-panel-height) - 0.5rem);
+    margin-right: 0.5rem;
+    margin-left: 1.25rem;
 
     &:before {
-        content: "";
-        height: calc(var(--app-panel-height) - 1rem);
+        position: absolute;
+        top: 50%;
+        left: -0.75rem;
         width: 0.25rem;
+        height: calc(var(--app-panel-height) - 1rem);
+        content: "";
+        transform: translateY(-50%);
         border-radius: 1rem;
         background-color: var(--app-panel-separator);
-        position: absolute;
-        left: -0.75rem;
-        top: 50%;
-        transform: translateY(-50%);
     }
 
     @for $index from 0 to 25 {
@@ -332,23 +332,23 @@
 .shortcut {
     position: relative;
     display: flex;
-    transition: var(--transition);
-    background-color: transparent;
-    border: none;
     margin: 0;
     padding: 0;
+    transition: var(--transition);
+    border: none;
+    background-color: transparent;
 
     > div {
-        transition: var(--transition);
-        height: calc(var(--app-panel-height) - 0.5rem);
-        aspect-ratio: 1 / 1;
-        overflow: hidden;
-        border-radius: 0.75rem;
         display: flex;
+        overflow: hidden;
         align-items: center;
         justify-content: center;
-        background-color: transparent;
+        height: calc(var(--app-panel-height) - 0.5rem);
         cursor: pointer;
+        transition: var(--transition);
+        border-radius: 0.75rem;
+        background-color: transparent;
+        aspect-ratio: 1 / 1;
 
         &:hover {
             background-color: #ffffff22;
@@ -365,24 +365,24 @@
         }
 
         > img {
-            transition: var(--transition);
-            height: 100%;
             box-sizing: border-box;
+            height: 100%;
             padding: 0.35rem;
+            transition: var(--transition);
             aspect-ratio: 1 / 1;
         }
 
         > div {
-            background-color: var(--button-vibrant-bg);
-            height: 0.2rem;
-            width: 0;
             position: absolute;
+            z-index: 2;
             bottom: 0;
             left: 50%;
+            width: 0;
+            height: 0.2rem;
+            transition: var(--transition);
             transform: translateX(-50%);
             border-radius: 0.5rem;
-            transition: var(--transition);
-            z-index: 2;
+            background-color: var(--button-vibrant-bg);
 
             &[data-active-indicator] {
                 width: 1.25rem;
@@ -391,25 +391,25 @@
     }
 
     > span {
-        transition: var(--transition);
-        pointer-events: none;
-        opacity: 0;
-        top: var(--app-panel-height);
-        position: absolute;
-        padding: 0.5rem 0.75rem;
-        border-radius: 0.5rem;
-        left: 50%;
         font-size: 1rem;
+        position: absolute;
+        top: var(--app-panel-height);
+        left: 50%;
+        padding: 0.5rem 0.75rem;
+        transition: var(--transition);
         transform: translateX(-50%);
         white-space: nowrap;
+        pointer-events: none;
+        opacity: 0;
         color: var(--app-panel-fg);
+        border-radius: 0.5rem;
         background-color: var(--app-panel-bg);
     }
 
     &:hover {
         > span {
-            opacity: 1;
             pointer-events: all;
+            opacity: 1;
         }
     }
 }

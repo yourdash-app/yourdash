@@ -50,7 +50,7 @@ const RightClickMenuRootContainer: React.FC = ({ children }) => {
             >
                 {items.map((item) => {
                     return (
-                        <button type="button" onClick={item.onClick} key={item.name}>
+                        <button type="button" onClick={item.onClick} key={item.name} tabIndex={2}>
                             {" "}
                             {item.name}
                         </button>
@@ -62,4 +62,4 @@ const RightClickMenuRootContainer: React.FC = ({ children }) => {
     );
 };
 
-export default RightClickMenuRootContainer
+export default RightClickMenuRootContainer;
