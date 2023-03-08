@@ -7,6 +7,7 @@ import { type YourDashModule } from "../../module.js";
 import { type YourDashUser } from "types/core/user.js";
 import { log } from "../../libServer.js";
 import { type CurrentUser } from "types/userManagement/currentUser.js";
+import User from "../../helpers/user.js";
 
 const USER_CACHE: { [key: string]: string } = {};
 
@@ -116,10 +117,7 @@ const Module: YourDashModule = {
                                 public: false,
                                 value: "",
                             },
-                            status: {
-                                public: true,
-                                value: "",
-                            },
+                            status: "",
                         },
                         quota: 0,
                         userName: username,
@@ -223,18 +221,16 @@ const Module: YourDashModule = {
                     return res.json({ error: true });
                 }
                 const user: YourDashUser = JSON.parse(data.toString());
-                return res.send({ profile: user.profile });
+                return res.json({ profile: user.profile });
             });
         });
 
         request.get(`/current/user/permissions`, (req, res) => {
             if (!fs.existsSync(`${ENV.UserFs(req)}`)) {
-                return res.sendStatus(403);
+                log(`ERROR: no user directory for ${req.headers.username}`);
+                return res.json({ error: true });
             }
-            fs.readFile(`${ENV.UserFs(req)}/permissions.json`, (err, data) => {
-                if (err) return res.json({ error: true });
-                return res.send(data);
-            });
+            return res.json(new User(req.headers.username as string).getPermissions() || []);
         });
     },
     requiredModules: [],

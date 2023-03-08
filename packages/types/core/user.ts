@@ -13,10 +13,7 @@ interface YourDashUser {
             value: string;
             public: boolean;
         };
-        status: {
-            value: string;
-            public: boolean;
-        };
+        status: string;
         externalLinks: {
             custom?: {
                 value: string;
