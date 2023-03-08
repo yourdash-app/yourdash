@@ -44,7 +44,7 @@ export const ENV: IEnv = {
         return `${ENV.FsOrigin}/data/users/${req.headers.username}`;
     },
     // eslint-disable-next-line turbo/no-undeclared-env-vars
-    PublicUrl: process.env.PublicUrl || "http://localhost:3560/",
+    PublicUrl: process.env.PublicUrl || "http://localhost:3560",
 };
 
 if (!ENV.FsOrigin) console.error("FsOrigin was not defined.");

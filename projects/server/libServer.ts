@@ -69,7 +69,7 @@ export function resizeImage(
                 return "";
             }
 
-            return callback(`${ENV.PublicUrl}api/images/cache/${cacheFileName}`);
+            return callback(`${ENV.PublicUrl}/api/images/cache/${cacheFileName}`);
         });
 }
 

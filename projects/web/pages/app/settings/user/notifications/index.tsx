@@ -7,7 +7,6 @@ import Chiplet from "ui";
 const SettingsPanel: NextPageWithLayout = () => {
     return (
         <>
-            <h1>Notifications</h1>
             <Chiplet.Column style={{ padding: "1rem" }}>
                 <BooleanSetting
                     title="Enable notifications"
@@ -27,7 +26,7 @@ export default SettingsPanel;
 SettingsPanel.getLayout = (page) => {
     return (
         <AppLayout>
-            <SettingsLayout>{page}</SettingsLayout>
+            <SettingsLayout title={"Notifications"}>{page}</SettingsLayout>
         </AppLayout>
     );
 };

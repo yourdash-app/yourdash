@@ -5,7 +5,7 @@
 
 import fs from "fs";
 import path from "path";
-import { type YourDashUser, type YourDashUserSettings } from "types/core/user.js";
+import { type YourDashUser, YourDashUserPermissions, type YourDashUserSettings } from "types/core/user.js";
 import { encrypt, generateRandomStringOfLength } from "./encryption.js";
 import { ENV, RELEASE_CONFIGURATION, type YourDashServerConfig } from "./index.js";
 import { log, returnBase64Image } from "./libServer.js";
@@ -215,7 +215,7 @@ async function checkIfAdministratorUserExists() {
             );
             fs.writeFile(
                 `${ENV.FsOrigin}/data/users/admin/user.json`,
-                JSON.stringify({
+                JSON.stringify(<YourDashUser>{
                     name: {
                         first: "Admin",
                         last: "istrator",
@@ -229,14 +229,13 @@ async function checkIfAdministratorUserExists() {
                             public: false,
                             value: "",
                         },
-                        status: {
-                            public: false,
-                            value: "",
-                        },
+                        status: "",
                     },
                     userName: "admin",
                     version: "1",
-                } as YourDashUser),
+                    permissions: [YourDashUserPermissions.Administrator],
+                    quota: 10000,
+                }),
                 (err) => {
                     if (err) return log(`${err}`);
                     const SERVER_CONFIG: YourDashServerConfig = JSON.parse(
