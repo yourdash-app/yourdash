@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import AppLayout from "../../../../../layouts/appLayout/AppLayout";
 import { NextPageWithLayout } from "../../../../page";
-import BooleanSetting from "../../components/BooleanSetting";
-import SettingsLayout from "../../components/SettingsLayout";
+import BooleanSetting from "../../components/BooleanSetting/BooleanSetting";
+import SettingsLayout from "../../components/SettingsLayout/SettingsLayout";
 import styles from "./index.module.scss";
 import SERVER, { verifyAndReturnJson } from "../../../../../server";
 import Chiplet from "ui";

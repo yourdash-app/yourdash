@@ -1,7 +1,7 @@
 import AppLayout from "../../../../../layouts/appLayout/AppLayout";
 import { NextPageWithLayout } from "../../../../page";
-import BooleanSetting from "../../components/BooleanSetting";
-import SettingsLayout from "../../components/SettingsLayout";
+import BooleanSetting from "../../components/BooleanSetting/BooleanSetting";
+import SettingsLayout from "../../components/SettingsLayout/SettingsLayout";
 import Chiplet from "ui";
 
 const SettingsPanel: NextPageWithLayout = () => {

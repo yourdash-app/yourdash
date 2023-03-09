@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { generateRandomStringOfLength } from "../../encryption.js";
-import { log, resizeImage } from "../../libServer.js";
+import { extend, log, resizeImage } from "../../libServer.js";
 import { type YourDashModule } from "../../module.js";
 import { type quickShortcut } from "types/core/panel/quickShortcut.js";
 import includedApps from "../../includedApps.js";
@@ -45,8 +45,47 @@ const Module: YourDashModule = {
                         return res.json({ error: true });
                     }
 
-                    const json = JSON.parse(data.toString()) as quickShortcut[];
-                    return res.json(json);
+                    const json = JSON.parse(data.toString()) as extend<quickShortcut, { icon: string }>[];
+
+                    Promise.all(
+                        json.map((app, ind) => {
+                            return new Promise((resolve) => {
+                                resizeImage(
+                                    48,
+                                    48,
+                                    path.resolve(
+                                        `${moduleApi.FsOrigin}/../assets/apps/${
+                                            includedApps.find((foo) => {
+                                                return foo.name === app.name;
+                                            })?.icon
+                                        }`
+                                    ),
+                                    (image) => {
+                                        resolve(
+                                            (json[ind] = {
+                                                url: app.url,
+                                                name: app.name,
+                                                id: app.id,
+                                                icon: image,
+                                            })
+                                        );
+                                    },
+                                    () => {
+                                        resolve(
+                                            (json[ind] = {
+                                                url: app.url,
+                                                name: app.name,
+                                                id: app.id,
+                                                icon: "TODO_ADD_ERROR_IMAGE",
+                                            })
+                                        );
+                                    }
+                                );
+                            });
+                        })
+                    ).then((resp) => {
+                        return res.json(resp);
+                    });
                 }
             );
         });
@@ -90,38 +129,25 @@ const Module: YourDashModule = {
                                 return res.json({ error: true });
                             }
 
-                            resizeImage(
-                                48,
-                                48,
-                                path.resolve(`${moduleApi.FsOrigin}/../assets/apps/${includedApplication.icon}`),
-                                (image) => {
-                                    json.push({
-                                        icon: image,
-                                        id,
-                                        name: req.body.name || "undefined",
-                                        url: req.body.url || "/app/dash",
-                                    });
+                            json.push({
+                                id,
+                                name: req.body.name || "undefined",
+                                url: req.body.url || "/app/dash",
+                            });
 
-                                    fs.writeFile(
-                                        path.resolve(
-                                            `${moduleApi.UserAppData(req)}/core/panel/quick-shortcuts/shortcuts.json`
-                                        ),
-                                        JSON.stringify(json),
-                                        (err) => {
-                                            if (err) {
-                                                log(`ERROR ${err}`);
-                                                return res.json({ error: true });
-                                            }
-                                            return res.json(
-                                                json.filter((shortcut) => {
-                                                    return shortcut.id === id;
-                                                })
-                                            );
-                                        }
+                            fs.writeFile(
+                                path.resolve(`${moduleApi.UserAppData(req)}/core/panel/quick-shortcuts/shortcuts.json`),
+                                JSON.stringify(json),
+                                (err) => {
+                                    if (err) {
+                                        log(`ERROR ${err}`);
+                                        return res.json({ error: true });
+                                    }
+                                    return res.json(
+                                        json.filter((shortcut) => {
+                                            return shortcut.id === id;
+                                        })
                                     );
-                                },
-                                () => {
-                                    return res.json({ error: true });
                                 }
                             );
                         }
@@ -143,39 +169,26 @@ const Module: YourDashModule = {
                         if (!includedApplication)
                             return log(`Can't create quick shortcut for unknown application: ${req.body.name}`);
 
-                        resizeImage(
-                            32,
-                            32,
-                            path.resolve(`${moduleApi.FsOrigin}/../assets/apps/${includedApplication.icon}`),
-                            (image) => {
-                                json.push({
-                                    icon: image,
-                                    id,
-                                    name: req.body.name || "undefined",
-                                    url: req.body.url || "/app/",
+                        json.push({
+                            id,
+                            name: req.body.name || "undefined",
+                            url: req.body.url || "/app/",
+                        });
+
+                        fs.writeFile(
+                            path.resolve(`${moduleApi.UserAppData(req)}/core/panel/quick-shortcuts/shortcuts.json`),
+                            JSON.stringify(json),
+                            (err) => {
+                                if (err) {
+                                    log(`ERROR ${err}`);
+                                    return res.json({ error: true });
+                                }
+
+                                return res.json({
+                                    ...json.filter((shortcut) => {
+                                        return shortcut.id === id;
+                                    }),
                                 });
-
-                                fs.writeFile(
-                                    path.resolve(
-                                        `${moduleApi.UserAppData(req)}/core/panel/quick-shortcuts/shortcuts.json`
-                                    ),
-                                    JSON.stringify(json),
-                                    (err) => {
-                                        if (err) {
-                                            log(`ERROR ${err}`);
-                                            return res.json({ error: true });
-                                        }
-
-                                        return res.json(
-                                            json.filter((shortcut) => {
-                                                return shortcut.id === id;
-                                            })
-                                        );
-                                    }
-                                );
-                            },
-                            () => {
-                                return res.json({ error: true });
                             }
                         );
                     }
@@ -205,7 +218,6 @@ const Module: YourDashModule = {
                     const shortcutInd = json.indexOf(shortcut);
 
                     if (req.body.name) json[shortcutInd].name = req.body.name;
-                    if (req.body.icon) json[shortcutInd].icon = req.body.icon;
                     if (req.body.url) json[shortcutInd].url = req.body.url;
 
                     fs.writeFile(

@@ -1,7 +1,7 @@
 import AppLayout from "../../../../../layouts/appLayout/AppLayout";
 import { NextPageWithLayout } from "../../../../page";
-import BooleanSetting from "../../components/BooleanSetting";
-import SettingsLayout from "../../components/SettingsLayout";
+import BooleanSetting from "../../components/BooleanSetting/BooleanSetting";
+import SettingsLayout from "../../components/SettingsLayout/SettingsLayout";
 import { useState } from "react";
 import Chiplet from "ui";
 
@@ -36,10 +36,10 @@ const SettingsPanel: NextPageWithLayout = () => {
 
 export default SettingsPanel;
 
-SettingsPanel.getLayout = page => {
-  return (
-      <AppLayout>
-          <SettingsLayout title={"Panel"}>{page}</SettingsLayout>
-      </AppLayout>
-  );
-}
+SettingsPanel.getLayout = (page) => {
+    return (
+        <AppLayout>
+            <SettingsLayout title={"Panel"}>{page}</SettingsLayout>
+        </AppLayout>
+    );
+};

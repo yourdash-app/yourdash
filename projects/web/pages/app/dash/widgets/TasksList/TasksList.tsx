@@ -44,6 +44,8 @@ const TasksList: React.FC = () => {
     }, []);
 
     useEffect(() => {
+        if (selectedListId === "") return;
+
         loadList(selectedListId, (data) => {
             return setListData(data);
         });

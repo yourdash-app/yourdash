@@ -1,7 +1,7 @@
 import { Router } from "next/router";
 import AppLayout from "../../../../../layouts/appLayout/AppLayout";
 import { NextPageWithLayout } from "../../../../page";
-import SettingsLayout from "../../components/SettingsLayout";
+import SettingsLayout from "../../components/SettingsLayout/SettingsLayout";
 import styles from "./index.module.scss";
 import React from "react";
 import Chiplet from "ui";
@@ -247,10 +247,10 @@ const SettingsPanel: NextPageWithLayout = () => {
 
 export default SettingsPanel;
 
-SettingsPanel.getLayout = page => {
-  return (
-      <AppLayout>
-          <SettingsLayout title={"Personal color theme"}>{page}</SettingsLayout>
-      </AppLayout>
-  );
-}
+SettingsPanel.getLayout = (page) => {
+    return (
+        <AppLayout>
+            <SettingsLayout title={"Personal color theme"}>{page}</SettingsLayout>
+        </AppLayout>
+    );
+};

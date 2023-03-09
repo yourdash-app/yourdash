@@ -1,8 +1,7 @@
 interface quickShortcut {
-  name: string,
-  icon: string,
-  id: string,
-  url: string
+    name: string;
+    id: string;
+    url: string;
 }
 
-export { type quickShortcut }
+export { type quickShortcut };
