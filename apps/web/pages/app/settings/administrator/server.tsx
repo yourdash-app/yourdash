@@ -12,7 +12,7 @@ export default Server;
 
 Server.getLayout = page => {
   return (
-    <AppLayout>
+    <AppLayout title="Test page for admin">
       <SettingsLayout>
         {page}
       </SettingsLayout>
