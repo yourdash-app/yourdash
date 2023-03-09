@@ -224,7 +224,6 @@ async function checkIfAdministratorUserExists() {
                         banner: "",
                         description: "",
                         externalLinks: {},
-                        image: returnBase64Image(path.resolve(`${ENV.FsOrigin}/../default_user_profile.png`)),
                         location: {
                             public: false,
                             value: "",

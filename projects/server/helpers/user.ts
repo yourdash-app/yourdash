@@ -45,17 +45,21 @@ export default class User {
                 fs.readFileSync(path.resolve(`${this.getUserPath(this.userName)}/user.json`)).toString()
             );
 
+            let output: string | null = null;
+
             resizeImage(
                 1920,
                 1080,
                 user.profile.banner,
                 (data: string) => {
-                    return data;
+                    output = data;
                 },
                 () => {
                     return null;
                 }
             );
+
+            return output;
         } catch (e) {
             log(`ERROR: unable to read ${this.userName}/profile.json`);
             return null;
@@ -68,17 +72,21 @@ export default class User {
                 fs.readFileSync(path.resolve(`${this.getUserPath(this.userName)}/user.json`)).toString()
             );
 
+            let output: string | null = null;
+
             resizeImage(
                 width,
                 height,
                 user.profile.image,
                 (data) => {
-                    return data;
+                    output = data;
                 },
                 () => {
                     return "TODO_ADD_ERROR_IMAGE";
                 }
             );
+
+            return output;
         } catch (e) {
             log(`ERROR: unable to read ${this.userName}/profile.json`);
             return null;

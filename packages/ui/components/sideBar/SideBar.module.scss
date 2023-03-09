@@ -1,153 +1,158 @@
 .header {
-  display: none;
+    display: none;
 }
 
 .title {
-  color: var(--sidebar-fg);
-  margin: 0;
+    margin: 0;
+    color: var(--sidebar-fg);
 }
 
 .titleContainer {
-  padding-right: calc(36px + 1rem);
-  height: 3.25rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding-left: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 3.25rem;
+    padding-right: calc(36px + 1rem);
+    padding-left: 0.5rem;
 }
 
 .items {
-  display: flex;
-  flex-direction: column;
-  padding-top: 3.25rem;
-  align-items: center;
-  width: 100%;
-  //transition: var(--transition);
-  box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    box-sizing: border-box;
+    width: 100%;
+    //transition: var(--transition);
+    padding-top: 3.25rem;
 
-  @media (max-width: 750px) {
-    flex-direction: row;
-  }
+    @media (max-width: 750px) {
+        flex-direction: row;
+    }
 }
 
 .item {
-  position: relative;
-  cursor: pointer;
-  background-color: transparent;
-  border: none;
-  border-radius: 0.5rem;
-  color: var(--button-fg);
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 0.5rem;
-  padding: 0.25rem;
-  box-sizing: border-box;
-  margin-left: 0.25rem;
-  margin-right: 0.25rem;
-  min-width: max-content;
-  transition: var(--transition);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    box-sizing: border-box;
+    min-width: max-content;
+    margin-right: 0.25rem;
+    margin-left: 0.25rem;
+    padding: 0.25rem;
+    cursor: pointer;
+    transition: var(--transition);
+    color: var(--button-fg);
+    border: none;
+    border-radius: 0.5rem;
+    background-color: transparent;
+    gap: 0.5rem;
 
-  &:hover {
-    background-color: var(--button-hover-bg);
+    &:hover {
+        background-color: var(--button-hover-bg);
 
-    .itemLabel {
-      opacity: 1;
+        .itemLabel {
+            opacity: 1;
+        }
     }
-  }
 
-  &:active {
-    background-color: var(--button-active-bg);
-  }
+    &:active {
+        background-color: var(--button-active-bg);
+    }
 }
 
 .itemIcon {
-  height: 1.75rem;
-  margin-left: 0.125rem;
-  margin-right: 0.125rem;
-  transition: var(--transition);
+    height: 1.75rem;
+    margin-right: 0.125rem;
+    margin-left: 0.125rem;
+    transition: var(--transition);
 }
 
 .toggleButton {
-  position: absolute;
-  top: 0.6rem;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: transparent;
+    position: absolute;
+    top: 0.6rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: transparent;
 }
 
 .itemLabel {
-  transition: var(--transition);
-  position: absolute;
-  left: calc(100% + 1rem);
-  top: 50%;
-  transform: translateY(-50%);
-  background-color: var(--sidebar-bg);
-  color: var(--sidebar-fg);
-  padding: 0.5rem;
-  pointer-events: none;
-  border-radius: 0.75rem;
-  opacity: 0;
-  white-space: nowrap;
-  font-size: 1rem;
+    font-size: 1rem;
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    left: calc(100% + 1rem);
+    padding: 0.25rem 0.5rem;
+    transition: var(--transition);
+    transform: translateY(-50%);
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    color: var(--container-fg);
+    border-radius: 0.5rem;
+    background-color: var(--container-bg);
 
-  @media (max-width: 750px) {
-    top: calc(0.5rem + 100%);
-    left: 50%;
-    transform: translate(-50%);
-  }
+    &:not([data-expanded="true"]) {
+        box-shadow: 0 0 0.5rem #00000055;
+    }
+
+    @media (max-width: 750px) {
+        top: calc(0.5rem + 100%);
+        left: 50%;
+        transform: translate(-50%);
+    }
 }
 
 .component {
-  position: relative;
-  min-height: max-content;
-  width: 4rem;
-  background-color: var(--sidebar-bg);
-
-  &[data-expanded="true"] {
-    width: max-content;
-
-    .header {
-      display: block;
-    }
-
-    .title {
-      padding-left: 0.25rem;
-      padding-right: 0.25rem;
-    }
-
-    .toggleButton {
-      left: unset;
-      right: 0.5rem;
-      transform: unset;
-    }
-
-    .items {
-      padding: 0 0.5rem 0.5rem;
-    }
-
-    .item {
-      width: 100%;
-    }
-
-    .itemLabel {
-      display: block;
-      position: unset;
-      transform: unset;
-      opacity: 1;
-      background-color: transparent;
-      padding: 0 0.25rem 0 0;
-      white-space: unset;
-    }
-  }
-
-  @media (max-width: 750px) {
-    width: 100%;
-    height: 4rem;
+    position: relative;
+    width: 4rem;
+    min-height: max-content;
+    background-color: var(--sidebar-bg);
 
     &[data-expanded="true"] {
-      width: 100%;
-      height: max-content;
+        width: max-content;
+
+        .header {
+            display: block;
+        }
+
+        .title {
+            padding-right: 0.25rem;
+            padding-left: 0.25rem;
+        }
+
+        .toggleButton {
+            right: 0.5rem;
+            left: unset;
+            transform: unset;
+        }
+
+        .items {
+            padding: 0 0.5rem 0.5rem;
+        }
+
+        .item {
+            width: 100%;
+        }
+
+        .itemLabel {
+            position: unset;
+            display: block;
+            padding: 0 0.25rem 0 0;
+            transform: unset;
+            white-space: unset;
+            opacity: 1;
+            background-color: transparent;
+        }
     }
-  }
+
+    @media (max-width: 750px) {
+        width: 100%;
+        height: 4rem;
+
+        &[data-expanded="true"] {
+            width: 100%;
+            height: max-content;
+        }
+    }
 }

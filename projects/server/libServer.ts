@@ -1,5 +1,3 @@
-// noinspection SpellCheckingInspection
-
 /*
  *   Copyright (c) 2022-2023 Ewsgit
  *   https://ewsgit.mit-license.org
@@ -32,53 +30,56 @@ export function returnBase64Image(path: string) {
     return `data:image/png;base64,${fs.readFileSync(path, "base64")}`;
 }
 
-export function returnBase64SvgFromFile(path: string) {
+export function returnBase64Svg(path: string) {
     return `data:image/svg;base64,${fs.readFileSync(path, "base64")}`;
 }
 
-export function returnBase64ImageFromBuffer(img: Buffer): string {
+export function base64FromBufferImage(img: Buffer): string {
     return `data:image/png;base64,${img.toString("base64")}`;
 }
 
 export function resizeImage(
-        width: number,
-        height: number,
-        image: string,
-        callback: (image: string) => void,
-        error: () => void
+    width: number,
+    height: number,
+    image: string,
+    callback: (image: string) => void,
+    error: () => void
 ) {
-    sharp(image).resize(width, height, {
-        kernel: "lanczos3",
-        withoutEnlargement: true,
-    }).png().toBuffer((err, buf) => {
-        if (err) {
-            console.error(err);
-            log(`ERROR: unable to resize image: ${image}`);
-            return error();
-        }
+    sharp(image)
+        .resize(width, height, {
+            kernel: "lanczos3",
+            withoutEnlargement: true,
+        })
+        .png()
+        .toBuffer((err, buf) => {
+            if (err) {
+                console.error(err);
+                log(`ERROR: unable to resize image: ${image}`);
+                return error();
+            }
 
-        const cacheFileName = generateRandomStringOfLength(8);
+            const cacheFileName = generateRandomStringOfLength(8);
 
-        try {
-            fs.writeFileSync(path.resolve(`${ENV.FsOrigin}/cache/images/${cacheFileName}.png`), buf, {
-                encoding: "binary",
-            });
-        } catch (e) {
-            log(`ERROR: unable to write image file for resize`);
-            return "";
-        }
+            try {
+                fs.writeFileSync(path.resolve(`${ENV.FsOrigin}/cache/images/${cacheFileName}.png`), buf, {
+                    encoding: "binary",
+                });
+            } catch (e) {
+                log(`ERROR: unable to write image file for resize`);
+                return "";
+            }
 
-        return callback(`${ENV.PublicUrl}api/images/cache/${cacheFileName}`);
-    });
+            return callback(`${ENV.PublicUrl}/api/images/cache/${cacheFileName}`);
+        });
 }
 
 export class RequestManager {
-    private readonly express: Application;
+    private express: Application;
 
     private module: YourDashModule;
 
-    private readonly endpoints: string[];
-    private readonly name: string;
+    private endpoints: string[];
+    private name: string;
 
     constructor(app: Application, module: YourDashModule, name: string) {
         this.express = app;

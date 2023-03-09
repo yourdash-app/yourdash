@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import AppLayout from "../../../layouts/appLayout/AppLayout";
 import { NextPageWithLayout } from "../../page";
-import SettingsLayout from "./components/SettingsLayout";
+import SettingsLayout from "./components/SettingsLayout/SettingsLayout";
 import styles from "./index.module.scss";
 import Chiplet from "ui";
 import { useEffect, useState } from "react";
@@ -73,7 +73,7 @@ const SettingsIndex: NextPageWithLayout = () => {
                         <Chiplet.Card
                             className={styles.card}
                             onClick={() => {
-                                router.push(`/app/settings/user/profile`);
+                                router.push(`/app/settings/administrator/default-theme`);
                             }}
                         >
                             Default theme
@@ -81,7 +81,7 @@ const SettingsIndex: NextPageWithLayout = () => {
                         <Chiplet.Card
                             className={styles.card}
                             onClick={() => {
-                                router.push(`/app/settings/user/panel`);
+                                router.push(`/app/settings/administrator/users`);
                             }}
                         >
                             Users
@@ -89,7 +89,7 @@ const SettingsIndex: NextPageWithLayout = () => {
                         <Chiplet.Card
                             className={styles.card}
                             onClick={() => {
-                                router.push(`/app/settings/user/theme`);
+                                router.push(`/app/settings/administrator/control-panel`);
                             }}
                         >
                             Control panel

@@ -95,7 +95,7 @@ const Panel: React.FC<IPanel> = ({ backgroundImage }) => {
                     quickShortcuts?.map((shortcut) => {
                         return (
                             <Chiplet.RightClickMenu
-                                key={shortcut.name}
+                                key={shortcut.id}
                                 items={[
                                     {
                                         name: "Open in new tab",
@@ -133,7 +133,8 @@ const Panel: React.FC<IPanel> = ({ backgroundImage }) => {
                                     }}
                                 >
                                     <div>
-                                        <img draggable={false} src={shortcut.icon} alt="" />
+                                        {/* @ts-ignore */}
+                                        <img draggable={false} src={shortcut?.icon} alt="" />
                                         {router.pathname.startsWith(shortcut.url) ? (
                                             <div data-active-indicator="true" />
                                         ) : (
