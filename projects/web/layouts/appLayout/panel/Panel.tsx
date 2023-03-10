@@ -12,7 +12,7 @@ import Chiplet from "ui";
 import styles from "./Panel.module.scss";
 import { type quickShortcut as QuickShortcut } from "types/core/panel/quickShortcut";
 import ServerImage from "../../../pages/app/components/serverImage/ServerImage";
-import PanelLauncherSlideOut from "./components/LauncherSlideOut/LauncherSlideOut";
+import PanelLauncherSlideOut from "./components/Launcher/LauncherSlideOut";
 
 export interface IPanel {
     backgroundImage: string;
@@ -169,18 +169,6 @@ const Panel: React.FC<IPanel> = ({ backgroundImage }) => {
                     </Chiplet.Button>
                 )}
             </div>
-            {/*<div className={styles.tray}>*/}
-            {/*    <Chiplet.Icon name="browser-16" className={styles.trayIcon} color={"var(--app-panel-fg)"} />*/}
-            {/*</div>*/}
-            <div className={styles.account}>
-                <ServerImage
-                    onClick={() => {
-                        setAccountDropdownVisible(!accountDropdownVisible);
-                    }}
-                    tabIndex={0}
-                    src={"/core/panel/user/profile/picture"}
-                    alt=""
-                />
                 <button
                     type="button"
                     style={{
@@ -199,88 +187,6 @@ const Panel: React.FC<IPanel> = ({ backgroundImage }) => {
                         setAccountDropdownVisible(false);
                     }}
                 />
-                <div>
-                    <Chiplet.Card
-                        style={{
-                            opacity: !accountDropdownVisible ? "0" : "1",
-                            pointerEvents: accountDropdownVisible ? "all" : "none",
-                            transform: !accountDropdownVisible ? "scale(0.9)" : "scale(1)",
-                            padding: "0.5rem",
-                        }}
-                        className={styles.accountDropdown}
-                    >
-                        <Chiplet.Row className={styles.accountDropdownQuickActions}>
-                            <Chiplet.IconButton
-                                icon="logout"
-                                onClick={() => {
-                                    setAccountDropdownVisible(false);
-                                    localStorage.removeItem("sessiontoken");
-                                    localStorage.removeItem("username");
-                                    router.push("/login/");
-                                }}
-                            />
-                            <Chiplet.IconButton
-                                icon="info-16"
-                                onClick={() => {
-                                    setAccountDropdownVisible(false);
-                                    router.push("/about");
-                                }}
-                            />
-                            <Chiplet.IconButton
-                                icon="gear-16"
-                                onClick={() => {
-                                    setAccountDropdownVisible(false);
-                                    router.push("/app/settings");
-                                }}
-                            />
-                        </Chiplet.Row>
-                        <Chiplet.Column>
-                            <Chiplet.Button
-                                onClick={() => {
-                                    router.push(`/app/user/profile/${userData?.userName}`);
-                                    setAccountDropdownVisible(false);
-                                }}
-                            >
-                                Profile
-                            </Chiplet.Button>
-                            <Chiplet.Button
-                                onClick={() => {
-                                    localStorage.removeItem("currentServer");
-                                    router.push("/login/server");
-                                    setAccountDropdownVisible(false);
-                                }}
-                            >
-                                Switch instance
-                            </Chiplet.Button>
-                        </Chiplet.Column>
-                    </Chiplet.Card>
-                    <Chiplet.Column
-                        className={styles.accountNotificationList}
-                        style={{
-                            opacity: !accountDropdownVisible ? "0" : "1",
-                            pointerEvents: accountDropdownVisible ? "all" : "none",
-                            transform: !accountDropdownVisible ? "scale(0.9)" : "scale(1)",
-                        }}
-                    >
-                        <Chiplet.Card>
-                            <Chiplet.Row data-header>
-                                <img src={`/assets/productLogos/yourdash.svg`} alt="" />
-                                <span>Notification Test</span>
-                            </Chiplet.Row>
-                            <Chiplet.Column>
-                                <p>This is some sample text for a notification</p>
-                                <Chiplet.Button
-                                    onClick={() => {
-                                        console.log("Implenment me!");
-                                    }}
-                                >
-                                    Ok
-                                </Chiplet.Button>
-                            </Chiplet.Column>
-                        </Chiplet.Card>
-                    </Chiplet.Column>
-                </div>
-            </div>
         </div>
     );
 };

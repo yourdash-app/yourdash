@@ -13,37 +13,57 @@
 }
 
 .section1ProfileCard {
-  margin: auto;
-  padding: 1rem;
-  background-color: var(--card-bg);
-  border-radius: var(--card-rounding);
-  color: var(--card-fg);
-
-  > img {
+    overflow: hidden;
+    width: calc(1rem + 256px);
+    margin: auto;
+    padding: 1rem;
+    color: var(--card-fg);
     border-radius: var(--card-rounding);
-    max-width: 256px;
-  }
+    background-color: var(--card-bg);
 
-  > .name {
-    font-size: 1.75rem;
-    margin-bottom: 0;
-    font-weight: 400;
-  }
+    > img {
+        max-width: 100%;
+        border-radius: calc(var(--card-rounding) / 2);
+    }
 
-  > .username {
-    font-size: 1.2rem;
-    opacity: 0.8;
-    font-weight: 900;
-    letter-spacing: 0.05rem;
-  }
+    > .name {
+        font-size: 1.75rem;
+        font-weight: 400;
+        margin-bottom: 0;
+    }
+
+    > .username {
+        font-size: 1.2rem;
+        font-weight: 900;
+        letter-spacing: 0.05rem;
+        opacity: 0.8;
+    }
+
+    > .description {
+        margin: 0.125rem;
+    }
 }
 
 .section1EditPanel {
-  > p {
-    color: var(--card-fg);
-    margin: 0;
-  }
+    justify-content: center;
+    box-sizing: border-box;
+    padding-top: 0.5rem;
 
-  padding-top: 0.5rem;
-  box-sizing: border-box;
+    > p {
+        margin: 0;
+        color: var(--card-fg);
+    }
+}
+
+.nameSegment {
+    flex-grow: 1;
+
+    > p {
+        margin: 0;
+        color: var(--container-fg);
+    }
+}
+
+.nameSegmentContainer {
+    width: 100%;
 }
