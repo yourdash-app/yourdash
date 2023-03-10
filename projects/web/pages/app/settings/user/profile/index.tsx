@@ -43,25 +43,33 @@ const SettingsPanel: NextPageWithLayout = () => {
                             {firstName} {lastName}
                         </span>
                         <span className={styles.username}>@{userName}</span>
-                        <p>{description}</p>
+                        <p className={styles.description}>{description}</p>
                     </Chiplet.Column>
                     <Chiplet.Column className={styles.section1EditPanel}>
-                        <p>First name</p>
-                        <Chiplet.TextInput
-                            placeholder="first name"
-                            defaultValue={firstName}
-                            onChange={(e) => {
-                                setFirstName(e.currentTarget.value);
-                            }}
-                        />
-                        <p>Last name</p>
-                        <Chiplet.TextInput
-                            placeholder="last name"
-                            defaultValue={lastName}
-                            onChange={(e) => {
-                                setLastName(e.currentTarget.value);
-                            }}
-                        />
+                        <Chiplet.Row className={styles.nameSegmentContainer}>
+                            <Chiplet.Column className={styles.nameSegment}>
+                                <p>First name</p>
+                                <Chiplet.TextInput
+                                    maxLength={16}
+                                    placeholder="first name"
+                                    defaultValue={firstName}
+                                    onChange={(e) => {
+                                        setFirstName(e.currentTarget.value);
+                                    }}
+                                />
+                            </Chiplet.Column>
+                            <Chiplet.Column className={styles.nameSegment}>
+                                <p>Last name</p>
+                                <Chiplet.TextInput
+                                    maxLength={16}
+                                    placeholder="last name"
+                                    defaultValue={lastName}
+                                    onChange={(e) => {
+                                        setLastName(e.currentTarget.value);
+                                    }}
+                                />
+                            </Chiplet.Column>
+                        </Chiplet.Row>
                         <p>Username</p>
                         <Chiplet.TextInput
                             placeholder="username"

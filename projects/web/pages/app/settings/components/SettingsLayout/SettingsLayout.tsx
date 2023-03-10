@@ -55,7 +55,7 @@ const SettingsLayout: React.FC<{ children: React.ReactNode; title: string }> = (
                         <Chiplet.IconButton
                             icon={"arrow-left-16"}
                             onClick={() => {
-                                router.push(`..`);
+                                router.back();
                             }}
                         />
                         <h1 className={styles.title}>{title}</h1>
