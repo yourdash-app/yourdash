@@ -1,15 +1,15 @@
 import Chiplet from "ui";
 import { useEffect, useState } from "react";
-import styles from "../../../tasks/personal/list/listId.module.scss";
-import moduleStyles from "./TasksList.module.scss";
-import ListTask from "../../../tasks/components/ListTask/ListTask";
+import styles from "../../../checklist/personal/list/listId.module.scss";
+import moduleStyles from "./Checklist.module.scss";
+import ListTask from "../../../checklist/components/ListTask/ListTask";
 import SERVER, { verifyAndReturnJson } from "../../../../../server";
-import { TasksList } from "../../../../../../../packages/types/tasks/list";
+import { TasksList } from "types/checklist/list";
 import { useRouter } from "next/router";
 
 function LoadPersonalLists(setPersonalLists: (_value: { name: string; id: string }[]) => void) {
     verifyAndReturnJson(
-        SERVER.get(`/tasks/personal/lists`),
+        SERVER.get(`/checklist/personal/lists`),
         (data) => {
             setPersonalLists(data.lists || []);
         },
@@ -21,7 +21,7 @@ function LoadPersonalLists(setPersonalLists: (_value: { name: string; id: string
 
 function loadList(listId: string, setList: (_value: TasksList) => void) {
     verifyAndReturnJson(
-        SERVER.get(`/tasks/personal/list/${listId}`),
+        SERVER.get(`/checklist/personal/list/${listId}`),
         (data) => {
             setList(data);
         },
@@ -31,7 +31,7 @@ function loadList(listId: string, setList: (_value: TasksList) => void) {
     );
 }
 
-const TasksList: React.FC = () => {
+const Checklist: React.FC = () => {
     const router = useRouter();
     const [possibleLists, setPossibleLists] = useState([] as { name: string; id: string }[]);
     const [selectedListId, setSelectedListId] = useState<string>("");
@@ -55,7 +55,7 @@ const TasksList: React.FC = () => {
         return (
             <Chiplet.Card
                 onClick={() => {
-                    return router.push("/app/tasks");
+                    return router.push("/app/checklist");
                 }}
             >
                 <h2 className={moduleStyles.title} style={{ marginBottom: 0 }}>
@@ -89,14 +89,14 @@ const TasksList: React.FC = () => {
                                     key={task.title + ind}
                                     task={task}
                                     onClick={() => {
-                                        return router.push(`/app/tasks/personal/list/${selectedListId}`);
+                                        return router.push(`/app/checklist/personal/list/${selectedListId}`);
                                     }}
                                     selectTask={() => {
                                         return 0;
                                     }}
                                     onDelete={() => {
                                         verifyAndReturnJson(
-                                            SERVER.delete(`/tasks/personal/list/${listData.id}/task/${ind}`),
+                                            SERVER.delete(`/checklist/personal/list/${listData.id}/task/${ind}`),
                                             () => {
                                                 if (!selectedListId) return;
 
@@ -116,7 +116,7 @@ const TasksList: React.FC = () => {
                         <Chiplet.Button
                             onClick={() => {
                                 verifyAndReturnJson(
-                                    SERVER.get(`/tasks/personal/list/${selectedListId}/create/task`),
+                                    SERVER.get(`/checklist/personal/list/${selectedListId}/create/task`),
                                     () => {
                                         if (!selectedListId) return;
 
@@ -139,4 +139,4 @@ const TasksList: React.FC = () => {
     );
 };
 
-export default TasksList;
+export default Checklist;
