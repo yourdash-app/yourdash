@@ -13,7 +13,7 @@
     color: var(--app-panel-fg);
     background: var(--app-panel-bg);
     box-shadow: 0 0 1rem #00000055;
-    grid-template-columns: auto auto 1fr auto auto;
+    grid-template-columns: auto auto auto 1fr auto;
 }
 
 .account {

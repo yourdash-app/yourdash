@@ -13,6 +13,8 @@ import styles from "./Panel.module.scss";
 import { type quickShortcut as QuickShortcut } from "types/core/panel/quickShortcut";
 import ServerImage from "../../../pages/app/components/serverImage/ServerImage";
 import PanelLauncherSlideOut from "./components/Launcher/LauncherSlideOut";
+import Launcher from "./components/Launcher/Launcher";
+import Clock from "./components/Clock/Clock";
 
 export interface IPanel {
     backgroundImage: string;
@@ -53,33 +55,13 @@ const Panel: React.FC<IPanel> = ({ backgroundImage }) => {
 
     return (
         <div className={styles.component}>
-            <button
-                type="button"
-                className={styles.launcher}
-                onClick={() => {
-                    setLauncherSlideOutVisible(!launcherSlideOutVisible);
+            <Launcher
+                background={backgroundImage}
+                userData={userData}
+                quickShortcuts={quickShortcuts}
+                setQuickShortcuts={(value) => {
+                    setQuickShortcuts(value);
                 }}
-            >
-                <Chiplet.Icon
-                    name="app-launcher-16"
-                    style={{
-                        aspectRatio: "1/1",
-                        height: "100%",
-                    }}
-                    color={"var(--app-panel-fg)"}
-                />
-            </button>
-            <PanelLauncherSlideOut
-                backgroundImage={backgroundImage}
-                userNames={userData?.name || { first: "", last: "" }}
-                setVisibility={(value: boolean) => {
-                    setLauncherSlideOutVisible(value);
-                }}
-                visible={launcherSlideOutVisible}
-                addQuickShortcut={(shortcut: QuickShortcut) => {
-                    setQuickShortcuts([...quickShortcuts, shortcut]);
-                }}
-                userName={userData?.userName || "ERROR"}
             />
             <ServerImage
                 onClick={() => {
@@ -169,24 +151,25 @@ const Panel: React.FC<IPanel> = ({ backgroundImage }) => {
                     </Chiplet.Button>
                 )}
             </div>
-                <button
-                    type="button"
-                    style={{
-                        background: "#00000040",
-                        height: "100vh",
-                        left: 0,
-                        opacity: accountDropdownVisible ? 1 : 0,
-                        pointerEvents: accountDropdownVisible ? "all" : "none",
-                        position: "fixed",
-                        top: 0,
-                        transition: "var(--transition)",
-                        width: "100vw",
-                        border: "none",
-                    }}
-                    onClick={() => {
-                        setAccountDropdownVisible(false);
-                    }}
-                />
+            <button
+                type="button"
+                style={{
+                    background: "#00000040",
+                    height: "100vh",
+                    left: 0,
+                    opacity: accountDropdownVisible ? 1 : 0,
+                    pointerEvents: accountDropdownVisible ? "all" : "none",
+                    position: "fixed",
+                    top: 0,
+                    transition: "var(--transition)",
+                    width: "100vw",
+                    border: "none",
+                }}
+                onClick={() => {
+                    setAccountDropdownVisible(false);
+                }}
+            />
+            <Clock />
         </div>
     );
 };

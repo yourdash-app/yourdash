@@ -13,7 +13,7 @@ const Dash: NextPageWithLayout = () => {
 
     const [name, setName] = useState("");
     const [currentTime, setCurrentTime] = useState("00:01");
-    const [widgets] = useState(["TasksList", "Notes"] as DashWidget[]);
+    const [widgets] = useState(["Checklist", "Notes"] as DashWidget[]);
 
     useEffect(() => {
         verifyAndReturnJson(
