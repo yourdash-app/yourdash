@@ -6,7 +6,7 @@ import { FlowTemplates } from "./types/FlowTemplates.js";
 
 const module: YourDashModule = {
     load(request, api) {
-        request.post(`/file/create`, (req, res) => {
+        request.post(`/project/create`, (req, res) => {
             const { name, template } = req.body;
 
             let defaultNodes: FlowNode[] = [];
