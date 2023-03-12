@@ -1,80 +1,97 @@
 .closeButton {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
 }
 
 .closeButton[data-visible="true"] {
-  display: block;
-  @media (max-width: 950px) {
-    display: none;
-  }
+    display: block;
+    @media (max-width: 950px) {
+        display: none;
+    }
 }
 
 .handle {
-  width: 100%;
-  height: 1.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 1.5rem;
 
-  > div {
-    width: 2.5rem;
-    height: 0.5rem;
-    background-color: var(--dialog-handle);
-    border-radius: 100rem;
-    cursor: grab;
+    > div {
+        width: 2.5rem;
+        height: 0.5rem;
+        cursor: grab;
+        border-radius: 100rem;
+        background-color: var(--dialog-handle);
 
-    &:active {
-      cursor: grabbing;
+        &:active {
+            cursor: grabbing;
+        }
     }
-  }
 
-  @media (min-width: 950px) {
-    display: none;
-  }
+    @media (min-width: 950px) {
+        display: none;
+    }
 }
 
 .component {
-  transition: all 500ms;
-  position: fixed;
-
-  @media (min-width: 950px) {
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    max-width: 60rem;
-    width: max-content;
-    border-radius: 1rem;
-
-    @media (max-width: 60rem) {
-      border-radius: unset;
-    }
-  }
-
-  @media (max-width: 950px) {
     position: fixed;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    max-width: 40rem;
-    width: max-content;
-    display: grid;
-    grid-template-rows: auto 1fr;
-    border-radius: 1rem 1rem 0 0;
-  }
+    box-sizing: border-box;
+    cursor: default;
 
-  background-color: var(--dialog-bg);
-  color: var(--dialog-fg);
-  box-sizing: border-box;
+    transition: all 500ms;
+
+    color: var(--dialog-fg);
+
+    background-color: var(--dialog-bg);
+    @media (min-width: 950px) {
+        top: 50%;
+        left: 50%;
+        width: max-content;
+        max-width: 60rem;
+        transform: translate(-50%, -50%);
+        border-radius: 1rem;
+
+        @media (max-width: 60rem) {
+            border-radius: unset;
+        }
+    }
+    @media (max-width: 950px) {
+        position: fixed;
+        bottom: 0;
+        left: 50%;
+        display: grid;
+        width: max-content;
+        min-width: calc(100% - 1rem);
+        transform: translateX(-50%);
+        border-radius: 1rem 1rem 0 0;
+        grid-template-rows: auto 1fr;
+    }
 }
 
 
 .content {
+    display: flex;
+    flex-direction: column;
     box-sizing: border-box;
-    width: max-content;
+    width: 100%;
     max-width: inherit;
     padding: 1rem;
+    gap: 0.5rem;
+
+    > .title {
+        height: 2.5rem;
+        margin: -1rem 2.5rem 0 0;
+
+
+        @media (max-width: 950px) {
+            margin-right: 0;
+            &.placeholder {
+                height: 0;
+            }
+        }
+    }
 }
 
 .background {

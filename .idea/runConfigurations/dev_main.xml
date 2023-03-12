@@ -5,7 +5,8 @@
     <scripts>
       <script value="dev:main" />
     </scripts>
-    <node-interpreter value="project" />
+    <node-interpreter value="$USER_HOME$/.nvm/versions/node/v18.15.0/bin/node" />
+    <package-manager value="yarn" />
     <envs />
     <method v="2" />
   </configuration>

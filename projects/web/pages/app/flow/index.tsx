@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import SERVER, { verifyAndReturnJson } from "../../../server";
 import { type CurrentUser } from "types/userManagement/currentUser";
 import Head from "next/head";
+import { FlowTemplates } from "../../../../server/modules/flow/types/FlowTemplates";
 
 const TasksIndex: NextPageWithLayout = () => {
     const [fullName, setFullName] = useState("");
@@ -92,42 +93,33 @@ const CreateButton: React.FC = () => {
                     setShowDialog(false);
                 }}
                 visible={showDialog}
+                title={"Create a flow project"}
             >
-                <Chiplet.Column>
-                    <h2
-                        style={{
-                            margin: 0,
-                            paddingRight: "2.5rem",
-                            marginTop: "-0.25rem",
-                            paddingBottom: "0.5rem",
-                        }}
-                    >
-                        Create a flow project
-                    </h2>
-                    <Chiplet.TextInput
-                        placeholder={"Project name"}
-                        onChange={(e) => {
-                            setProjectName(e.currentTarget.value);
-                        }}
-                        value={projectName}
-                    />
-                    <Chiplet.Button
-                        vibrant={true}
-                        onClick={() => {
-                            verifyAndReturnJson(
-                                SERVER.post(`/flow/project/create`),
-                                (data) => {
-                                    if (data.success) return console.log("created flow :D");
-                                },
-                                () => {
-                                    console.error("unable to create flow");
-                                }
-                            );
-                        }}
-                    >
-                        Create
-                    </Chiplet.Button>
-                </Chiplet.Column>
+                <Chiplet.TextInput
+                    placeholder={"Project name"}
+                    onChange={(e) => {
+                        setProjectName(e.currentTarget.value);
+                    }}
+                    value={projectName}
+                />
+                <Chiplet.Button
+                    vibrant={true}
+                    onClick={() => {
+                        verifyAndReturnJson(
+                            SERVER.post(`/flow/project/create`, {
+                                body: JSON.stringify({ name: projectName, template: FlowTemplates.BLANK }),
+                            }),
+                            (data) => {
+                                if (data.success) return console.log("created flow :D");
+                            },
+                            () => {
+                                console.error("unable to create flow");
+                            }
+                        );
+                    }}
+                >
+                    Create
+                </Chiplet.Button>
             </Chiplet.Dialog>
             <Chiplet.Button
                 vibrant
