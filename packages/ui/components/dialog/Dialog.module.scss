@@ -71,15 +71,32 @@
 
 
 .content {
-  padding: 1rem;
-  width: max-content;
-  max-width: inherit;
-  box-sizing: border-box;
+    box-sizing: border-box;
+    width: max-content;
+    max-width: inherit;
+    padding: 1rem;
+}
+
+.background {
+    transition: all 250ms ease-in-out, opacity 350ms linear;
+    opacity: 1;
 }
 
 .hidden {
-  opacity: 0;
-  pointer-events: none;
-  top: 100%;
-  transform: translate(-50%, 0);
+    top: 100%;
+    transform: translate(-50%, 0);
+    pointer-events: none;
+    opacity: 0;
+}
+
+.background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    transform: unset;
+    border: none;
+    background-color: #00000055;
 }
