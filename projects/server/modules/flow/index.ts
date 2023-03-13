@@ -9,6 +9,8 @@ const module: YourDashModule = {
         request.post(`/project/create`, (req, res) => {
             const { name, template } = req.body;
 
+            if (template === undefined || name === undefined) return res.json({ error: "Invalid name or template id" });
+
             let defaultNodes: FlowNode[] = [];
 
             switch (template) {

@@ -6,7 +6,8 @@ import { useEffect, useState } from "react";
 import SERVER, { verifyAndReturnJson } from "../../../server";
 import { type CurrentUser } from "types/userManagement/currentUser";
 import Head from "next/head";
-import { FlowTemplates } from "../../../../server/modules/flow/types/FlowTemplates";
+import { FlowTemplates } from "server/modules/flow/types/FlowTemplates";
+import { useRouter } from "next/router";
 
 const TasksIndex: NextPageWithLayout = () => {
     const [fullName, setFullName] = useState("");
@@ -35,8 +36,8 @@ const TasksIndex: NextPageWithLayout = () => {
                     <div className={styles.sidebarCollapsibleButtons}>
                         <CreateButton />
                         <CreateFromTemplateButton />
+                        <OpenFileButton />
                     </div>
-                    <Chiplet.Button>Open File</Chiplet.Button>
                 </Chiplet.Column>
                 <section className={styles.main}>
                     <h1>Welcome back, {fullName}</h1>
@@ -98,7 +99,7 @@ const CreateButton: React.FC = () => {
                 <Chiplet.TextInput
                     placeholder={"Project name"}
                     onChange={(e) => {
-                        setProjectName(e.currentTarget.value);
+                        setProjectName(e.currentTarget.value || "");
                     }}
                     value={projectName}
                 />
@@ -112,8 +113,8 @@ const CreateButton: React.FC = () => {
                             (data) => {
                                 if (data.success) return console.log("created flow :D");
                             },
-                            () => {
-                                console.error("unable to create flow");
+                            (err) => {
+                                console.error("unable to create flow: ", err);
                             }
                         );
                     }}
@@ -138,6 +139,7 @@ const CreateButton: React.FC = () => {
 
 const CreateFromTemplateButton: React.FC = () => {
     const [showDialog, setShowDialog] = useState(false);
+    const [projectName, setProjectName] = useState("");
 
     return (
         <div style={{ width: "100%" }}>
@@ -146,8 +148,33 @@ const CreateFromTemplateButton: React.FC = () => {
                     setShowDialog(false);
                 }}
                 visible={showDialog}
+                title={"Create a flow project from a template"}
             >
-                <h1>test</h1>
+                <Chiplet.TextInput
+                    placeholder={"Project name"}
+                    onChange={(e) => {
+                        setProjectName(e.currentTarget.value || "");
+                    }}
+                    value={projectName}
+                />
+                <Chiplet.Button
+                    vibrant={true}
+                    onClick={() => {
+                        verifyAndReturnJson(
+                            SERVER.post(`/flow/project/create`, {
+                                body: JSON.stringify({ name: projectName, template: FlowTemplates.BLANK }),
+                            }),
+                            (data) => {
+                                if (data.success) return console.log("created flow :D");
+                            },
+                            (err) => {
+                                console.error("unable to create flow: ", err);
+                            }
+                        );
+                    }}
+                >
+                    Create
+                </Chiplet.Button>
             </Chiplet.Dialog>
             <Chiplet.Button
                 style={{
@@ -158,6 +185,44 @@ const CreateFromTemplateButton: React.FC = () => {
                 }}
             >
                 Create from template
+            </Chiplet.Button>
+        </div>
+    );
+};
+
+const OpenFileButton: React.FC = () => {
+    const router = useRouter();
+
+    const [showDialog, setShowDialog] = useState(false);
+    const [selectedProjectName, setSelectedProjectName] = useState("");
+
+    return (
+        <div style={{ width: "100%" }}>
+            <Chiplet.Dialog
+                onClose={() => {
+                    setShowDialog(false);
+                }}
+                visible={showDialog}
+                title={"Create a flow project from a template"}
+            >
+                <Chiplet.Button
+                    vibrant={true}
+                    onClick={() => {
+                        router.push(`/app/flow/p/`);
+                    }}
+                >
+                    Open
+                </Chiplet.Button>
+            </Chiplet.Dialog>
+            <Chiplet.Button
+                style={{
+                    width: "100%",
+                }}
+                onClick={() => {
+                    return setShowDialog(true);
+                }}
+            >
+                Open a flow
             </Chiplet.Button>
         </div>
     );
