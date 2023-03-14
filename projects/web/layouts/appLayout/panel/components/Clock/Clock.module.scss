@@ -8,12 +8,13 @@
     padding-right: 0.5rem;
     padding-left: 0.5rem;
     cursor: pointer;
+    user-select: none;
     transition: var(--transition);
     border-radius: var(--button-rounding);
 
     &:hover {
-        background-color: var(--button-hover-bg);
         transition: var(--transition-fast);
+        background-color: var(--button-hover-bg);
     }
 
     &:active {
