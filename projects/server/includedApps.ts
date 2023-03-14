@@ -121,7 +121,7 @@ const includedApps: InstalledApplication[] = [
         license: "MIT",
         description: "The todo list / task organization application for YourDash",
         displayName: "Checklist",
-        icon: "placeholder-icon.png",
+        icon: "checklist.png",
         moduleRequirements: ["checklist"],
         name: "checklist",
         path: "/app/checklist",

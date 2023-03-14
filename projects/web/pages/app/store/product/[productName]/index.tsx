@@ -143,6 +143,7 @@ const StoreProduct: NextPageWithLayout = () => {
                     style={{
                         zIndex: 2,
                     }}
+                    title={"Installation confirmation"}
                 >
                     <Chiplet.Column className={styles.installationPopupContent}>
                         <Chiplet.Row>
@@ -151,12 +152,12 @@ const StoreProduct: NextPageWithLayout = () => {
                                 <p>{product.description}</p>
                             </Chiplet.Column>
                             {product?.moduleRequirements?.length !== 0 && (
-                                <ul>
-                                    <h3>Requirements</h3>
+                                <Chiplet.Column style={{ justifyContent: "center" }}>
+                                    <h3 style={{ margin: 0 }}>Requirements</h3>
                                     {product?.moduleRequirements?.map((requirement) => {
                                         return <p key={requirement}>{requirement}</p>;
                                     })}
-                                </ul>
+                                </Chiplet.Column>
                             )}
                         </Chiplet.Row>
                         <Chiplet.Button
