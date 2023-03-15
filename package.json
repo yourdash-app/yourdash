@@ -7,12 +7,14 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "turbo run build",
-    "dev:all": "turbo run dev",
-    "lint": "turbo run lint",
-    "dev:main": "concurrently \"yarn --cwd ./projects/web dev\" \"yarn --cwd ./projects/server dev\"",
-    "build:main": "yarn --cwd ./projects/web build",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+      "build": "turbo run build",
+      "dev:all": "turbo run dev",
+      "lint": "turbo run lint",
+      "dev:main": "concurrently \"yarn --cwd ./projects/web dev\" \"yarn --cwd ./projects/server dev\"",
+      "dev:web": "yarn --cwd ./projects/web dev",
+      "dev:server": "yarn --cwd ./projects/server dev",
+      "build:main": "yarn --cwd ./projects/web build",
+      "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
     "eslint-config-custom": "*",
