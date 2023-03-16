@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import AppLayout from '../../../../../layouts/appLayout/AppLayout';
 import { NextPageWithLayout } from '../../../../page';
 import styles from "./index.module.scss";
-import Chiplet from "ui";
+import Chiplet from "~/chipletui";
 import { useEffect, useState } from "react";
 import SERVER, { verifyAndReturnJson } from "../../../../../server";
 import Link from "next/link";

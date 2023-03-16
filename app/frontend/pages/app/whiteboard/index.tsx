@@ -1,6 +1,6 @@
 import { NextPageWithLayout } from "../../page";
 import AppLayout from "../../../layouts/appLayout/AppLayout";
-import Chiplet from "ui";
+import Chiplet from "~/chipletui";
 import styles from "./index.module.scss";
 
 const WhiteboardIndex: NextPageWithLayout = () => {

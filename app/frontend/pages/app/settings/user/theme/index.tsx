@@ -4,7 +4,7 @@ import { NextPageWithLayout } from "../../../../page";
 import SettingsLayout from "../../components/SettingsLayout/SettingsLayout";
 import styles from "./index.module.scss";
 import React from "react";
-import Chiplet from "ui";
+import Chiplet from "~/chipletui";
 
 const SettingsPanel: NextPageWithLayout = () => {
     const routeChange = () => {

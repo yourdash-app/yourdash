@@ -1,6 +1,6 @@
 import styles from './Footer.module.scss';
 import Link from "next/link"
-import Chiplet from 'ui';
+import Chiplet from '~/chipletui';
 import React from "react";
 
 export type IFooter = React.ComponentPropsWithoutRef<'div'>

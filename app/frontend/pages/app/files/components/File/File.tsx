@@ -1,4 +1,4 @@
-import Chiplet from "ui";
+import Chiplet from "~/chipletui";
 import styles from "./File.module.scss";
 import React from "react";
 import { useRouter } from "next/router";

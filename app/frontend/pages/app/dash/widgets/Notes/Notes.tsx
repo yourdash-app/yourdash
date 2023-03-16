@@ -1,4 +1,4 @@
-import Chiplet from "ui";
+import Chiplet from "~/chipletui";
 
 const Notes: React.FC = () => {
     return (

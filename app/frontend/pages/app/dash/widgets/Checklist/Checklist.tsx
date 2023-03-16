@@ -1,4 +1,4 @@
-import Chiplet from "ui";
+import Chiplet from "~/chipletui";
 import { useEffect, useState } from "react";
 import styles from "../../../checklist/personal/list/listId.module.scss";
 import moduleStyles from "./Checklist.module.scss";

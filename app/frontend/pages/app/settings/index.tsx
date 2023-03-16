@@ -3,7 +3,7 @@ import AppLayout from "../../../layouts/appLayout/AppLayout";
 import { NextPageWithLayout } from "../../page";
 import SettingsLayout from "./components/SettingsLayout/SettingsLayout";
 import styles from "./index.module.scss";
-import Chiplet from "ui";
+import Chiplet from "~/chipletui";
 import { useEffect, useState } from "react";
 import SERVER, { verifyAndReturnJson } from "../../../server";
 import { YourDashUserPermissions } from "../../../../../packages/types/core/user";

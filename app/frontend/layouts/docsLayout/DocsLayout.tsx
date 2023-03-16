@@ -1,6 +1,6 @@
 import styles from "./DocsLayout.module.scss"
 import { useRouter } from "next/router";
-import Chiplet from "ui";
+import Chiplet from "~/chipletui";
 
 export type IDocsLayout = React.ComponentPropsWithoutRef<'div'>
 

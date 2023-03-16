@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react"
-import Chiplet from "ui"
+import Chiplet from "~/chipletui"
 import styles from "./Carousel.module.scss"
 
 export interface ICarousel extends React.ComponentPropsWithoutRef<"div"> {

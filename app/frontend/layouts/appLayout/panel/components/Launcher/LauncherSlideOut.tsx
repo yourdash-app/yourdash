@@ -1,5 +1,5 @@
 import styles from "../../Panel.module.scss";
-import Chiplet from "ui";
+import Chiplet from "~/chipletui";
 import SERVER, { verifyAndReturnJson } from "../../../../../server";
 import ServerImage from "../../../../../pages/app/components/serverImage/ServerImage";
 import React, { useEffect, useState } from "react";

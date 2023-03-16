@@ -1,7 +1,7 @@
 import AppLayout from "../../../../../layouts/appLayout/AppLayout";
 import { NextPageWithLayout } from "../../../../page";
 import SettingsLayout from "../../components/SettingsLayout/SettingsLayout";
-import Chiplet from "ui";
+import Chiplet from "~/chipletui";
 import React from "react";
 import styles from "./index.module.scss";
 import { useRouter } from "next/router";

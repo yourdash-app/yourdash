@@ -4,7 +4,7 @@ import RightClickMenuContext from "./RightClickMenuContext";
 import styles from "./RightClickMenuRootContainer.module.scss";
 import RightClickMenuItem from "./RightClickMenuItem";
 
-const RightClickMenuRootContainer: React.FC = ({ children }) => {
+const RightClickMenuRootContainer: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [position, setPosition] = React.useState({
         x: 0,
         y: 0,

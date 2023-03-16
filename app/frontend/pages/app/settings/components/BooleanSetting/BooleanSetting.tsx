@@ -1,6 +1,6 @@
 import React from "react";
 import BlankSetting from "../BlankSetting/BlankSetting";
-import Chiplet from "ui";
+import Chiplet from "~/chipletui";
 
 export interface IBooleanSetting {
     title: string;

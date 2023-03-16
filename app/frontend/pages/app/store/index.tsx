@@ -5,7 +5,7 @@ import styles from "./index.module.scss"
 import { useEffect, useState } from 'react';
 import { type InstalledApplication } from 'types/store/installedApplication';
 import SERVER, { verifyAndReturnJson } from '../../../server';
-import Chiplet from 'ui';
+import Chiplet from '~/chipletui';
 import Head from "next/head";
 
 const StoreIndex: NextPageWithLayout = () => {

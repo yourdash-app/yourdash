@@ -2,7 +2,7 @@ import React from "react";
 import AppLayout from "../../../../../../layouts/appLayout/AppLayout";
 import SettingsLayout from "../../../components/SettingsLayout/SettingsLayout";
 import { NextPageWithLayout } from "../../../../../page";
-import Chiplet from "ui";
+import Chiplet from "~/chipletui";
 import { useRouter } from "next/router";
 
 const ManageUser: NextPageWithLayout = () => {

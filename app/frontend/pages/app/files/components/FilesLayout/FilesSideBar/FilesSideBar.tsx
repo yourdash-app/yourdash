@@ -3,7 +3,7 @@ import styles from "./FilesSideBar.module.scss";
 import SERVER, { verifyAndReturnJson } from "../../../../../../server";
 import { type SideBarCategory } from "types/files/SideBar";
 import { useRouter } from "next/navigation";
-import Chiplet from "ui";
+import Chiplet from "~/chipletui";
 
 export interface IFilesSideBar {
     currentDir: string;

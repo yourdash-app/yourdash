@@ -3,7 +3,7 @@ import { NextPageWithLayout } from "../../../../page";
 import BooleanSetting from "../../components/BooleanSetting/BooleanSetting";
 import SettingsLayout from "../../components/SettingsLayout/SettingsLayout";
 import { useState } from "react";
-import Chiplet from "ui";
+import Chiplet from "~/chipletui";
 
 const SettingsPanel: NextPageWithLayout = () => {
     const [appLayoutSettings] = useState({

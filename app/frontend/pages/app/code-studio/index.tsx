@@ -2,7 +2,7 @@ import Head from "next/head";
 import React from "react";
 import AppLayout from '../../../layouts/appLayout/AppLayout';
 import { NextPageWithLayout } from '../../page';
-import Chiplet from "ui";
+import Chiplet from "~/chipletui";
 import styles from "./index.module.scss"
 
 const CodeStudio: NextPageWithLayout = () => {

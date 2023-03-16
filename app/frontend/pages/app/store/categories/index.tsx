@@ -1,8 +1,8 @@
 import { useRouter } from 'next/router';
 import AppLayout from '../../../../layouts/appLayout/AppLayout';
-import { NextPageWithLayout } from '../../../page';
+import { NextPageWithLayout } from '~/pages/page';
 import styles from "./index.module.scss"
-import Chiplet from 'ui';
+import Chiplet from '~/chipletui';
 import { useEffect, useState } from "react";
 import SERVER, { verifyAndReturnJson } from "../../../../server";
 import Head from "next/head";

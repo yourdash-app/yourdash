@@ -3,7 +3,7 @@ import AppLayout from "../../../layouts/appLayout/AppLayout";
 import { NextPageWithLayout } from "../../page";
 import styles from "./index.module.scss";
 import SERVER, { verifyAndReturnJson } from "../../../server";
-import Chiplet from "ui";
+import Chiplet from "~/chipletui";
 
 const EndpointTester: NextPageWithLayout = () => {
     const [response, setResponse] = useState("");

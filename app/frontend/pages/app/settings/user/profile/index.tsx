@@ -5,7 +5,7 @@ import BooleanSetting from "../../components/BooleanSetting/BooleanSetting";
 import SettingsLayout from "../../components/SettingsLayout/SettingsLayout";
 import styles from "./index.module.scss";
 import SERVER, { verifyAndReturnJson } from "../../../../../server";
-import Chiplet from "ui";
+import Chiplet from "~/chipletui";
 import ServerImage from "../../../components/serverImage/ServerImage";
 
 const SettingsPanel: NextPageWithLayout = () => {

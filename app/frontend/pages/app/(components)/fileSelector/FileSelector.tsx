@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Chiplet from "ui";
+import Chiplet from "~/chipletui";
 import YourDashFileType from "../../../../../../packages/types/files/YourDashFileType";
 
 export interface IFileSelector {

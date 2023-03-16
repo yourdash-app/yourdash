@@ -1,23 +1,51 @@
-export * as Badge from "./components/badge/Badge";
-export * as Button from "./components/button/Button";
-export * as ButtonLink from "./components/buttonLink/ButtonLink";
-export * as Card from "./components/card/Card";
-export * as Carousel from "./components/carousel/Carousel";
-export * as Chip from "./components/chip/Chip";
-export * as Column from "./components/column/Column";
-export * as Dialog from "./components/dialog/Dialog";
-export * as DropdownButton from "./components/dropdownButton/DropdownButton";
-export * as DropdownContainer from "./components/dropdownContainer/DropdownContainer";
-export * as Icon from "./components/icon/Icon";
-export * as IconButton from "./components/iconButton/IconButton";
-export * as ProgressBar from "./components/progressBar/ProgressBar";
-export * as RightClickMenu from "./components/rightClickMenu/RightClickMenu";
-export * as Row from "./components/row/Row";
-export * as SegmentButton from "./components/segmentButton/SegmentButton";
-export * as SideBar from "./components/sideBar/SideBar";
-export * as Spinner from "./components/spinner/Spinner";
-export * as Tags from "./components/tags/Tags";
-export * as TextBox from "./components/textBox/TextBox";
-export * as TextInput from "./components/textInput/TextInput";
-export * as ToggleSwitch from "./components/toggleSwitch/ToggleSwitch";
-export * as DropdownIconButton from "./components/dropdownIconButton/DropdownIconButton";
+import Badge from "./components/badge/Badge";
+import Button from "./components/button/Button";
+import ButtonLink from "./components/buttonLink/ButtonLink";
+import Card from "./components/card/Card";
+import Carousel from "./components/carousel/Carousel";
+import Chip from "./components/chip/Chip";
+import Column from "./components/column/Column";
+import Dialog from "./components/dialog/Dialog";
+import DropdownButton from "./components/dropdownButton/DropdownButton";
+import DropdownContainer from "./components/dropdownContainer/DropdownContainer";
+import DropdownIconButton from "./components/dropdownIconButton/DropdownIconButton";
+import Icon from "./components/icon/Icon";
+import IconButton from "./components/iconButton/IconButton";
+import ProgressBar from "./components/progressBar/ProgressBar";
+import RightClickMenu from "./components/rightClickMenu/RightClickMenu";
+import Row from "./components/row/Row";
+import SegmentButton from "./components/segmentButton/SegmentButton";
+import SideBar from "./components/sideBar/SideBar";
+import Spinner from "./components/spinner/Spinner";
+import Tags from "./components/tags/Tags";
+import TextBox from "./components/textBox/TextBox";
+import TextInput from "./components/textInput/TextInput";
+import ToggleSwitch from "./components/toggleSwitch/ToggleSwitch";
+
+const Chiplet = {
+  Badge,
+  Button,
+  ButtonLink,
+  Card,
+  Carousel,
+  Chip,
+  Column,
+  Dialog,
+  DropdownButton,
+  DropdownContainer,
+  DropdownIconButton,
+  Icon,
+  IconButton,
+  ProgressBar,
+  RightClickMenu,
+  Row,
+  SegmentButton,
+  SideBar,
+  Spinner,
+  Tags,
+  TextBox,
+  TextInput,
+  ToggleSwitch,
+}
+
+export default Chiplet

@@ -1,4 +1,4 @@
-import Chiplet from "ui";
+import Chiplet from "~/chipletui";
 import AppLayout from "../../../layouts/appLayout/AppLayout";
 import { NextPageWithLayout } from "../../page";
 import styles from "./index.module.scss";

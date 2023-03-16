@@ -3,7 +3,8 @@
     "scripts": {
         "start-backend": "yarn --cwd ./app/backend start",
         "start-desktop": "yarn --cwd ./app/electron start",
-        "start-frontend": "yarn --cwd ./app/frontend start"
+        "start-frontend": "yarn --cwd ./app/frontend start",
+        "postinstall": "yarn --cwd ./app/backend && yarn --cwd ./app/electron && yarn --cwd ./app/frontend"
     },
     "packageManager": "yarn@1.22.0+",
     "version": "0.0.0",

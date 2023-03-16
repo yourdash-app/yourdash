@@ -7,7 +7,7 @@ import { type TasksList } from "types/checklist/list";
 import styles from "./listId.module.scss";
 import { type TasksListItem } from "types/checklist/listItem";
 import ListTask from "../../components/ListTask/ListTask";
-import Chiplet from "ui";
+import Chiplet from "~/chipletui";
 import ChecklistLayout from "../../components/ChecklistLayout";
 
 function loadList(listId: string, setList: (_value: TasksList) => void) {

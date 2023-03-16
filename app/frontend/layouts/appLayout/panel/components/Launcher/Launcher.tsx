@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styles from "../../Panel.module.scss";
-import Chiplet from "ui";
+import Chiplet from "~/chipletui";
 import PanelLauncherSlideOut from "./LauncherSlideOut";
 import {
     quickShortcut,

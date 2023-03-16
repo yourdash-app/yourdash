@@ -36,14 +36,14 @@
     > div {
       > input {
         &:first-of-type {
-          border-bottom-right-radius: calc(var(--text-input-rounding) / 2);
-          border-bottom-left-radius: calc(var(--text-input-rounding) / 2);
+          border-bottom-right-radius: calc(var(--input-rounding) / 2);
+          border-bottom-left-radius: calc(var(--input-rounding) / 2);
           margin-bottom: 0.25rem;
         }
 
         &:last-of-type {
-          border-top-right-radius: calc(var(--text-input-rounding) / 2);
-          border-top-left-radius: calc(var(--text-input-rounding) / 2);
+          border-top-right-radius: calc(var(--input-rounding) / 2);
+          border-top-left-radius: calc(var(--input-rounding) / 2);
         }
       }
     }

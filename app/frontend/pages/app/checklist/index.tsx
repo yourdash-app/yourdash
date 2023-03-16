@@ -4,7 +4,7 @@ import { NextPageWithLayout } from "../../page";
 import styles from "./index.module.scss";
 import SERVER, { verifyAndReturnJson } from "../../../server";
 import { useRouter } from "next/navigation";
-import Chiplet from "ui";
+import Chiplet from "~/chipletui";
 import ChecklistLayout from "./components/ChecklistLayout";
 
 function LoadPersonalLists(setPersonalLists: (_value: { name: string; id: string }[]) => void) {

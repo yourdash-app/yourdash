@@ -1,7 +1,7 @@
 import { NextPageWithLayout } from "../page";
 import DocsLayout from '../../layouts/docsLayout/DocsLayout';
 import HomeLayout from '../../layouts/homeLayout/HomeLayout';
-import Chiplet from "ui"
+import Chiplet from "~/chipletui"
 
 const Docs: NextPageWithLayout = () => {
   return (

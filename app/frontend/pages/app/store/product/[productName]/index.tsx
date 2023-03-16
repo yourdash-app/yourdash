@@ -5,7 +5,7 @@ import styles from "./index.module.scss";
 import { useEffect, useState } from "react";
 import SERVER, { verifyAndReturnJson } from "../../../../../server";
 import { type InstalledApplication } from "types/store/installedApplication";
-import Chiplet from "ui";
+import Chiplet from "~/chipletui";
 import Head from "next/head";
 import { type InstalledApplicationExtension } from "types/store/installedApplicationExtension";
 

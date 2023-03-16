@@ -1,8 +1,7 @@
 import React from "react"
-import "./variables.css"
 import RightClickMenuRootContainer from "./components/rightClickMenu/RightClickMenuRootContainer";
 
-const ChipletUiRootIntegration: React.FC = ({ children }) => {
+const ChipletUiRootIntegration: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <RightClickMenuRootContainer>
       {children}

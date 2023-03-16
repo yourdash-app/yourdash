@@ -41,17 +41,17 @@
       border-radius: 100rem;
       text-decoration: none;
       transition: var(--transition);
-      background-color: var(--chip-bg);
-      color: var(--chip-fg);
+      background-color: var(--button-bg);
+      color: var(--button-fg);
 
       &:hover {
-        background-color: var(--chip-hover-bg);
-        color: var(--chip-hover-fg);
+        background-color: var(--button-hover-bg);
+        color: var(--button-hover-fg);
       }
 
       &:active {
-        background-color: var(--chip-active-bg);
-        color: var(--chip-active-fg);
+        background-color: var(--button-active-bg);
+        color: var(--button-active-fg);
       }
 
       @media (max-width: 475px) {

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styles from "./FilesHeader.module.scss";
-import Chiplet from "ui";
+import Chiplet from "~/chipletui";
 import { useRouter } from "next/router";
 
 const FilesHeader: React.FC = () => {

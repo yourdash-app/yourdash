@@ -4,10 +4,10 @@ import HomeLayout from "../../../layouts/homeLayout/HomeLayout";
 import SERVER, { verifyAndReturnJson } from "../../../server";
 import { NextPageWithLayout } from "../../page";
 import styles from "./index.module.scss";
-import RightClickMenuRootContainer from "ui/components/rightClickMenu/RightClickMenuRootContainer";
-import Chiplet from "ui"
+import RightClickMenuRootContainer from "~/chipletui/components/rightClickMenu/RightClickMenuRootContainer";
+import Chiplet from "~/chipletui"
 // @ts-ignore
-import { ChipletIconDictionary } from "ui/components/icon/iconDictionary.ts";
+import { ChipletIconDictionary } from "~/chipletui/components/icon/iconDictionary.ts";
 
 const LoginOptions: NextPageWithLayout = () => {
   const [ userName, setUserName ] = useState("")
@@ -19,6 +19,8 @@ const LoginOptions: NextPageWithLayout = () => {
   const [ serverUrl, setServerUrl ] = useState("")
 
   useEffect(() => {
+    console.log(ChipletIconDictionary)
+
     setServerUrl(localStorage.getItem("currentServer") || "")
     verifyAndReturnJson(
         SERVER.get(`/core/instance/login/name`),

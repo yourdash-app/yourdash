@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import SERVER, { verifyAndReturnJson } from "../../../server";
 import { type YourDashUser } from "../../../../../packages/types/core/user";
-import Chiplet from "ui";
+import Chiplet from "~/chipletui";
 import styles from "./Panel.module.scss";
 import { type quickShortcut as QuickShortcut } from "types/core/panel/quickShortcut";
 import ServerImage from "../../../pages/app/components/serverImage/ServerImage";

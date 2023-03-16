@@ -1,6 +1,6 @@
 import React from "react"
 import styles from "./BlankSetting.module.scss"
-import Chiplet from "ui";
+import Chiplet from "~/chipletui";
 
 export interface IBlankSetting {
   title: string,

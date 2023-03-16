@@ -1,4 +1,4 @@
 module.exports = {
     reactStrictMode: false,
-    transpilePackages: ["ui"],
+    transpilePackages: ["~/chipletui"],
 };

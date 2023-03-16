@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./SettingsLayout.module.scss";
 import { useRouter } from "next/router";
-import Chiplet from "ui";
+import Chiplet from "~/chipletui";
 
 const SettingsLayout: React.FC<{ children: React.ReactNode; title: string }> = ({ children, title }) => {
     const router = useRouter();

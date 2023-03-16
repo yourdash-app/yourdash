@@ -1,5 +1,5 @@
 import React from "react";
-import Chiplet from "ui";
+import Chiplet from "~/chipletui";
 import styles from "../../../Panel.module.scss";
 
 export interface INotifications {

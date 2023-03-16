@@ -4,7 +4,7 @@ import SERVER, { verifyAndReturnJson } from "../../../../server";
 import styles from "./username.module.scss";
 import { useRouter } from "next/router";
 import AppLayout from "../../../../layouts/appLayout/AppLayout";
-import Chiplet from "ui";
+import Chiplet from "~/chipletui";
 import { YourDashUser } from "../../../../../../packages/types/core/user";
 
 const Username: NextPageWithLayout = () => {

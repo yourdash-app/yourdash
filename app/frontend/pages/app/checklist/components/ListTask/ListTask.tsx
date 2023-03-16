@@ -1,6 +1,6 @@
 import React from "react";
 import { type TasksListItem } from "types/checklist/listItem";
-import Chiplet from "ui";
+import Chiplet from "~/chipletui";
 import styles from "./ListTask.module.scss";
 
 export interface IListTask {

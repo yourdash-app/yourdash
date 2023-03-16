@@ -1,4 +1,4 @@
-import Chiplet from "ui";
+import Chiplet from "~/chipletui";
 import ComponentsLayout from "../componentsLayout";
 import { NextPageWithLayout } from "../../../../page";
 

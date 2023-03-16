@@ -1,7 +1,7 @@
 import type { AppProps } from 'next/app';
 import './globals.scss';
 import { NextPageWithLayout } from './page';
-import ChipletUiRootIntegration from "ui/RootIntegration";
+import ChipletUiRootIntegration from "~/chipletui/RootIntegration";
 import React from "react";
 
 interface AppPropsWithLayout extends AppProps {

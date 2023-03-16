@@ -1,6 +1,6 @@
 import AppLayout from "../../../layouts/appLayout/AppLayout";
 import { NextPageWithLayout } from "../../page";
-import Chiplet from "ui";
+import Chiplet from "~/chipletui";
 
 const StoreIndex: NextPageWithLayout = () => {
   return (

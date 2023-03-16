@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
-import Chiplet from "ui";
+import Chiplet from "~/chipletui";
 import HomeLayout from "../../../../layouts/homeLayout/HomeLayout";
 import { NextPageWithLayout } from "../../../page";
 import styles from "./index.module.scss";

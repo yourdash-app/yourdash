@@ -2,7 +2,7 @@ import AppLayout from "../../../../../layouts/appLayout/AppLayout";
 import { NextPageWithLayout } from "../../../../page";
 import BooleanSetting from "../../components/BooleanSetting/BooleanSetting";
 import SettingsLayout from "../../components/SettingsLayout/SettingsLayout";
-import Chiplet from "ui";
+import Chiplet from "~/chipletui";
 
 const SettingsPanel: NextPageWithLayout = () => {
     return (

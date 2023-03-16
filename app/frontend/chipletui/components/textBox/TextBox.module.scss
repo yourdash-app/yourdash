@@ -4,13 +4,13 @@
   font-size: 1rem;
   font-family: "Roboto", sans-serif;
   transition: none;
-  border-radius: var(--text-input-rounding);
-  background-color: var(--text-input-bg);
-  color: var(--text-input-fg);
+  border-radius: var(--input-rounding);
+  background-color: var(--input-bg);
+  color: var(--input-fg);
   width: 100%;
   box-sizing: border-box;
 
   &:focus-visible {
-    outline: var(--text-input-focused-outline);
+    outline: var(--input-focused-outline);
   }
 }

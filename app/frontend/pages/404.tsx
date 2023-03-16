@@ -1,6 +1,6 @@
 import HomeLayout from "../layouts/homeLayout/HomeLayout"
 import { NextPageWithLayout } from "./page"
-import Chiplet from "ui";
+import Chiplet from "~/chipletui";
 import styles from "./404.module.scss"
 
 const FourZeroFourPage: NextPageWithLayout = () => {

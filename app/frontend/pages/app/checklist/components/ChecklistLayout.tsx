@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./ChecklistLayout.module.scss";
 import { useRouter } from "next/router";
-import Chiplet from "ui";
+import Chiplet from "~/chipletui";
 
 const ChecklistLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const router = useRouter();

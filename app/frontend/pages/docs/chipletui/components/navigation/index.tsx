@@ -2,7 +2,7 @@ import { NextPageWithLayout } from "../../../../page";
 import DocsLayout from '../../../../../layouts/docsLayout/DocsLayout';
 import HomeLayout from '../../../../../layouts/homeLayout/HomeLayout';
 import componentsStyle from "../components.module.scss";
-import Chiplet from "ui";
+import Chiplet from "~/chipletui";
 import { useRouter } from "next/router";
 
 const Docs: NextPageWithLayout = () => {

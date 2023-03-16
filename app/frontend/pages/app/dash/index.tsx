@@ -6,7 +6,7 @@ import { NextPageWithLayout } from "../../page";
 import styles from "./index.module.scss";
 import { useRouter } from "next/router";
 import DashWidget from "types/core/dash/dashWidget";
-import Chiplet from "ui";
+import Chiplet from "~/chipletui";
 
 const Dash: NextPageWithLayout = () => {
     const router = useRouter();
