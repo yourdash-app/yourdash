@@ -20,20 +20,3 @@
   text-decoration: none;
   color: var(--header-fg);
 }
-
-.checks {
-  display: flex;
-  flex-wrap: wrap;
-
-  > * {
-    flex-grow: 1;
-    height: 3rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    > div {
-      height: 100%;
-    }
-  }
-}

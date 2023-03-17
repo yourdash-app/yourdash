@@ -202,9 +202,12 @@ h3 {
 }
 
 a[href] {
+  color: var(--link-fg);
+}
+
+[href] {
   position: relative;
   text-decoration: none;
-  color: var(--link-fg);
   transition: var(--transition);
   user-select: none;
 

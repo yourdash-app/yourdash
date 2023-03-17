@@ -1,5 +1,14 @@
-import test from "./placeholder.js"
+import cors from "cors"
+import express from "express"
 
-console.log("YourDash server startup")
+const app = express()
 
-test()
+app.use( cors() )
+
+app.get( `/test`, (_req, res) => {
+  return res.send( `YourDash instance` )
+} )
+
+app.listen( 3560, () => {
+  console.log( `Yourdash backend listening on port 3560` )
+} )
