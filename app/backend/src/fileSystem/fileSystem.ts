@@ -68,6 +68,16 @@ class FileSystemFile {
 
     return this
   }
+
+  delete(): null {
+    try {
+      fs.rmSync(this.path)
+    } catch (err) {
+      console.error(err)
+    }
+
+    return null
+  }
 }
 
 class FileSystemFolder {
@@ -99,12 +109,23 @@ class FileSystemFolder {
 
   move(path: string[]): this {
     try {
-      fs.cpSync( nodePath.resolve( this.path ), path.join( ...path ), { recursive: true } )
+      fs.cpSync( nodePath.resolve( this.path ), nodePath.join( ...path ), { recursive: true } )
       fs.rmSync( this.path )
+      this.path = nodePath.join( ...path )
     } catch (err) {
       console.error( err )
     }
 
     return this
+  }
+
+  delete(): null {
+    try {
+      fs.rmdirSync(this.path)
+    } catch (err) {
+      console.error(err)
+    }
+
+    return null
   }
 }

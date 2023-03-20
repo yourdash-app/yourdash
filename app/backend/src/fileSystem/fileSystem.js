@@ -57,6 +57,15 @@ class FileSystemFile {
         }
         return this;
     }
+    delete() {
+        try {
+            fs.rmSync(this.path);
+        }
+        catch (err) {
+            console.error(err);
+        }
+        return null;
+    }
 }
 class FileSystemFolder {
     path;
@@ -83,12 +92,22 @@ class FileSystemFolder {
     }
     move(path) {
         try {
-            fs.cpSync(nodePath.resolve(this.path), path.join(...path), { recursive: true });
+            fs.cpSync(nodePath.resolve(this.path), nodePath.join(...path), { recursive: true });
             fs.rmSync(this.path);
+            this.path = nodePath.join(...path);
         }
         catch (err) {
             console.error(err);
         }
         return this;
+    }
+    delete() {
+        try {
+            fs.rmdirSync(this.path);
+        }
+        catch (err) {
+            console.error(err);
+        }
+        return null;
     }
 }

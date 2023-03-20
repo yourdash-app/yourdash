@@ -4,21 +4,29 @@ import path from "path";
 import { encrypt, generateRandomStringOfLength } from "./helpers/encryption.js";
 import FileSystem from "./fileSystem/fileSystem.js";
 import * as fs from "fs";
+import User, { YourDashCorePermissions } from "./helpers/user";
 
 const app = express()
 
 const FILESYSTEM_ROOT = path.resolve( "./fs/" )
+export { FILESYSTEM_ROOT }
 
 console.log( FILESYSTEM_ROOT )
 
 const USER_SESSION_CACHE: { [key: string]: string } = [] as any as { [key: string]: string }
 
-if (!fs.existsSync( path.resolve( FILESYSTEM_ROOT ) ))
+if (!fs.existsSync( path.resolve( FILESYSTEM_ROOT ) )) {
   fs.cpSync( path.resolve( `./defaultFs/` ), path.resolve( FILESYSTEM_ROOT ), { recursive: true } )
+
+  new User().create("admin", { name: "Administrator", permissions: [ YourDashCorePermissions.Administrator ] })
+}
 
 app.use( cors() )
 app.use( express.json( { limit: "25mb" } ) )
-app.use( express.urlencoded( { limit: "25mb" } ) )
+app.use((_req, res, next) => {
+  res.removeHeader("X-Powered-By")
+  next()
+})
 
 // #region allows use without authentication
 
@@ -32,12 +40,12 @@ app.get( `/test`, (_req, res) => {
 
 app.get( "/api/instance/login/background", (_req, res) => {
   // TODO: save and load the actual background image
-  return res.sendFile( path.resolve( `../applications/dash.png` ) )
+  return res.sendFile( path.resolve( `${FILESYSTEM_ROOT}/background` ) )
 } )
 
 app.get( "/api/instance/login/logo", (_req, res) => {
   // TODO: save and load the actual logo
-  return res.sendFile( path.resolve( `../applications/dash.png` ) )
+  return res.sendFile( path.resolve( `${FILESYSTEM_ROOT}/logo` ) )
 } )
 
 app.get( "/api/instance/login/name", (_req, res) => {
