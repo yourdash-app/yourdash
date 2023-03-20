@@ -1,23 +1,20 @@
 import * as fs from "fs";
 import * as nodePath from "path";
-export default class FileSystem {
-    constructor() {
-        return this;
-    }
+const Fs = {
     createFile(...path) {
         return new FileSystemFile(path);
-    }
+    },
     createFolder(...path) {
         return new FileSystemFolder(path);
-    }
+    },
     openFile(...path) {
         let contents = fs.readFileSync(nodePath.resolve(nodePath.join(...path)));
         return new FileSystemFile(path, contents);
-    }
+    },
     openFolder(...path) {
         return new FileSystemFolder(path);
-    }
-}
+    },
+};
 class FileSystemFile {
     path;
     content;
@@ -35,6 +32,9 @@ class FileSystemFile {
         return this;
     }
     read() {
+        return this.content.toString();
+    }
+    readRaw() {
         return this.content;
     }
     setContent(content) {
@@ -110,4 +110,12 @@ class FileSystemFolder {
         }
         return null;
     }
+    createFile(...path) {
+        return new FileSystemFile([this.path, ...path]);
+    }
+    openFile(...path) {
+        let contents = fs.readFileSync(nodePath.resolve(nodePath.join(this.path, ...path)));
+        return new FileSystemFile([this.path, ...path], contents);
+    }
 }
+export default Fs;

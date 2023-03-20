@@ -57,7 +57,7 @@
 
 .root {
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: auto;
   height: 100vh;
 }
 
@@ -68,4 +68,19 @@
   height: 100%;
   width: 100%;
   translate: -50% -50%;
+}
+
+.messageContainer {
+  position: absolute;
+  bottom: 0.5rem;
+  width: auto;
+  z-index: 2;
+  transition: var(--transition);
+  left: 40.5rem;
+
+  @media (max-width: 1100px) {
+    max-width: 39rem;
+    left: 0.5rem;
+    box-shadow: unset;
+  }
 }

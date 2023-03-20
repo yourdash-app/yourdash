@@ -9,10 +9,12 @@
     "type": "module",
     "private": true,
     "dependencies": {
+        "@types/bcrypt": "^5.0.0",
         "@types/cors": "^2.8.13",
         "@types/express": "^4.17.17",
         "@types/node": "^18.15.3",
         "@types/sharp": "^0.31.1",
+        "bcrypt": "^5.1.0",
         "concurrently": "^7.6.0",
         "cors": "^2.8.5",
         "execa": "^7.1.1",

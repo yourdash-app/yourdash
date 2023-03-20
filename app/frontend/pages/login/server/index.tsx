@@ -11,16 +11,20 @@ import { useRouter } from "next/router";
 const LoginPage: NextPageWithLayout = () => {
   const router = useRouter()
 
-  const [ instanceName, setInstanceName ] = useState( "YourDash Instance" )
-  const [ serverUrl, setServerUrl ] = useState( "https://example.com" )
+  const [ instanceName, setInstanceName ] = useState( "" )
+  const [ serverUrl, setServerUrl ] = useState( "" )
+  const [ instanceMessage, setInstanceMessage ] = useState( "" )
 
   const [ username, setUsername ] = useState( "" )
   const [ password, setPassword ] = useState( "" )
 
   useEffect( () => {
-    setServerUrl( localStorage.getItem( "currentServer" ) || "https://example.com" )
+    if (!localStorage.getItem( "currentServer" )) router.push( `/login` )
+
+    setServerUrl( localStorage.getItem( "currentServer" ) as string )
 
     SERVER.get( `/instance/login/name` ).then( res => res.text() ).then( res => setInstanceName( res ) )
+    SERVER.get( `/instance/login/message` ).then( res => res.text() ).then( res => setInstanceMessage( res ) )
   }, [] )
 
   return <div className={ styles.root }>
@@ -46,7 +50,10 @@ const LoginPage: NextPageWithLayout = () => {
                   }
               )
             } ),
-            (data) => { sessionStorage.setItem( "sessionToken", data.token ) },
+            (data) => {
+              sessionStorage.setItem( "sessionToken", data.token )
+              router.push( `/app` )
+            },
             () => {console.error( `unable to create a new session token` )}
         )
       } }>
@@ -55,6 +62,9 @@ const LoginPage: NextPageWithLayout = () => {
       </Chiplet.Button>
     </section>
     <img className={ styles.background } src={ `${ serverUrl }/api/instance/login/background` } alt={ `` }/>
+    <Chiplet.Card className={ styles.messageContainer } compact={ true }>
+      <span>{ instanceMessage }</span>
+    </Chiplet.Card>
   </div>
 };
 

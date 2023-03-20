@@ -1,32 +1,27 @@
 import cors from "cors"
 import express from "express"
 import path from "path";
-import { encrypt, generateRandomStringOfLength } from "./helpers/encryption.js";
-import FileSystem from "./fileSystem/fileSystem.js";
+import { compareHash, generateRandomStringOfLength } from "./helpers/encryption.js";
 import * as fs from "fs";
-import User, { YourDashCorePermissions } from "./helpers/user";
+import User, { YourDashCorePermissions } from "./helpers/user.js";
+import Fs from "./fileSystem/fileSystem.js";
 
 const app = express()
-
 const FILESYSTEM_ROOT = path.resolve( "./fs/" )
-export { FILESYSTEM_ROOT }
-
-console.log( FILESYSTEM_ROOT )
-
 const USER_SESSION_CACHE: { [key: string]: string } = [] as any as { [key: string]: string }
 
 if (!fs.existsSync( path.resolve( FILESYSTEM_ROOT ) )) {
   fs.cpSync( path.resolve( `./defaultFs/` ), path.resolve( FILESYSTEM_ROOT ), { recursive: true } )
 
-  new User().create("admin", { name: "Administrator", permissions: [ YourDashCorePermissions.Administrator ] })
+  User.create( "admin", "admin", { name: "Administrator", permissions: [ YourDashCorePermissions.Administrator ] } )
 }
 
 app.use( cors() )
 app.use( express.json( { limit: "25mb" } ) )
-app.use((_req, res, next) => {
-  res.removeHeader("X-Powered-By")
+app.use( (_req, res, next) => {
+  res.removeHeader( "X-Powered-By" )
   next()
-})
+} )
 
 // #region allows use without authentication
 
@@ -39,13 +34,11 @@ app.get( `/test`, (_req, res) => {
 } )
 
 app.get( "/api/instance/login/background", (_req, res) => {
-  // TODO: save and load the actual background image
-  return res.sendFile( path.resolve( `${FILESYSTEM_ROOT}/background` ) )
+  return res.sendFile( path.resolve( `${ FILESYSTEM_ROOT }/background` ) )
 } )
 
 app.get( "/api/instance/login/logo", (_req, res) => {
-  // TODO: save and load the actual logo
-  return res.sendFile( path.resolve( `${FILESYSTEM_ROOT}/logo` ) )
+  return res.sendFile( path.resolve( `${ FILESYSTEM_ROOT }/logo` ) )
 } )
 
 app.get( "/api/instance/login/name", (_req, res) => {
@@ -58,26 +51,25 @@ app.get( "/api/instance/login/message", (_req, res) => {
   return res.send( `This instance is new, welcome to YourDash` )
 } )
 
+// @ts-ignore
 app.post( "/api/instance/login/login", (req, res) => {
-  let { username, password } = req.body as { username?: string, password?: string }
+  let { username, password } = req.body as { username: string, password: string }
 
-  if (!username || !password) return
+  if (!username || !password) return res.json( { error: true } )
 
-  let encryptedPassword = encrypt( password )
+  let hashedPassword = Fs.openFile( User.getPath( username ), "password.enc" ).read() as string
 
-  let fs = new FileSystem()
+  compareHash( hashedPassword, password ).then( resp => {
+    if (resp) {
+      let token = generateRandomStringOfLength( 128 )
 
-  let savedEncryptedPassword = JSON.parse( fs.openFile( `USER_DIRECTORY` ).read() as string )
+      USER_SESSION_CACHE[username] = token
 
-  if (encryptedPassword === savedEncryptedPassword) {
-    let token = generateRandomStringOfLength( 128 )
+      return res.json( { token } )
+    }
 
-    USER_SESSION_CACHE[username] = token
-
-    return res.json( { token } )
-  }
-
-  return res.json( { error: true } )
+    return res.json( { error: true } )
+  } ).catch( () => { return res.json( { error: true } )} )
 } )
 
 // #endregion
@@ -99,3 +91,5 @@ app.use( (req, res, next) => {
 app.listen( 3560, () => {
   console.log( `Yourdash backend listening on port 3560` )
 } )
+
+export { FILESYSTEM_ROOT }
