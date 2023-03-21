@@ -8,6 +8,7 @@ export interface IDialog {
     visible: boolean;
     style?: CSSProperties;
     title?: string;
+    children: React.ReactNode
 }
 
 const Dialog: React.FC<IDialog> = ({ children, onClose, className, visible, style, title }) => {
