@@ -16,7 +16,14 @@ const INSTANCE_URL = "http://localhost:3560"
 if (!fs.existsSync( path.resolve( FILESYSTEM_ROOT ) )) {
   fs.cpSync( path.resolve( `./defaultFs/` ), path.resolve( FILESYSTEM_ROOT ), { recursive: true } )
 
-  User.create( "admin", "admin", { name: "Administrator", permissions: [ YourDashCorePermissions.Administrator ] } )
+  User.create(
+      "admin",
+      "admin",
+      {
+        name: { first: "Admin", last: "istrator" },
+        permissions: [ YourDashCorePermissions.Administrator ]
+      }
+  )
 }
 
 app.use( cors() )
@@ -80,6 +87,13 @@ app.post( "/api/instance/login/login", (req, res) => {
 // check for authentication
 app.use( (req, res, next) => {
   let { username, sessiontoken } = req.headers as { username?: string, sessiontoken?: string }
+  let { u: usernameQuery, t: sessiontokenQuery } = req.query as { u?: string, t?: string }
+
+  if (usernameQuery)
+    username = usernameQuery
+
+  if (sessiontokenQuery)
+    sessiontoken = sessiontokenQuery
 
   if (!username || !sessiontoken) return res.json( { error: `Unauthorized request` } )
 
@@ -100,11 +114,9 @@ app.get( `/api/current/user`, (req, res) => {
 } )
 
 app.get( `/api/current/user/avatar`, (req, res) => {
-  let { username } = req.headers as { username: string }
+  let { u: username } = req.query as { u: string }
 
-  res.contentType("image/png")
-
-  return res.sendFile( Fs.openFolder( User.getPath( username ) ).openFile( `avatar.png` ).getPath() )
+  return res.sendFile( Fs.openFolder( User.getPath( username ) ).openFile( `avatar` ).getPath() )
 } )
 
 

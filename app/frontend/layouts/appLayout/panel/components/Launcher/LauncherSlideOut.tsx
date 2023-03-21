@@ -10,7 +10,7 @@ export interface IPanelLauncherSlideOut {
   visible: boolean;
   setVisibility: (visible: boolean) => void;
   backgroundImage: string;
-  fullName: string;
+  fullName: { first: string, last: string };
   addQuickShortcut: (shortcut: PanelQuickShortcut) => void;
   userName: string;
 }
@@ -45,7 +45,7 @@ const PanelLauncherSlideOut: React.FC<IPanelLauncherSlideOut> = ({
                                                           ? styles.launcherSlideOutVisible
                                                           : "" }` }>
           <div data-header="true" style={ { backgroundImage } }>
-            <div data-title="true">Hiya, { fullName }</div>
+            <div data-title="true">Hiya, { fullName.first }</div>
             <Chiplet.TextInput
                 data-search
                 onChange={ (e) => {
@@ -72,7 +72,7 @@ const PanelLauncherSlideOut: React.FC<IPanelLauncherSlideOut> = ({
                                         SERVER.post( `/core/panel/quick-shortcut/create`, {
                                           body: JSON.stringify( {
                                                                   name: app.name,
-                                                                  url: `/app/a/${app.name}`,
+                                                                  url: `/app/a/${ app.name }`,
                                                                 } ),
                                         } ),
                                         (data) => {
@@ -98,9 +98,9 @@ const PanelLauncherSlideOut: React.FC<IPanelLauncherSlideOut> = ({
                             <Chiplet.Card
                                 className={ styles.launcherGridItem }
                                 onClick={ () => {
-                                  if (`/app/a/${app.name}` === router.pathname) return setVisibility( false );
+                                  if (`/app/a/${ app.name }` === router.pathname) return setVisibility( false );
                                   setVisibility( false );
-                                  router.push( `/app/a/${app.name}` );
+                                  router.push( `/app/a/${ app.name }` );
                                 } }
                             >
                               <img src={ app.icon } draggable={ false } loading={ "lazy" } alt=""/>
@@ -132,8 +132,8 @@ const PanelLauncherSlideOut: React.FC<IPanelLauncherSlideOut> = ({
                 alt=""
             />
             <span>
-                        { fullName }
-                    </span>
+              { fullName.first } { fullName.last }
+            </span>
             <Chiplet.IconButton
                 icon="gear-16"
                 color={ "var(--container-fg)" }

@@ -6,7 +6,10 @@ import { YourDashCorePermissions, YourDashUser } from "./types.js";
 import * as fs from "fs";
 
 const User = {
-  create(username: string, password: string, options: { permissions: YourDashCorePermissions[], name: string }) {
+  create(username: string, password: string, options: {
+    permissions: YourDashCorePermissions[],
+    name: { first: string, last: string }
+  }) {
     const userFolder = Fs.createFolder( this.getPath( username ) ).write()
 
     userFolder.createFile( `user.json` ).setContent( JSON.stringify( {
@@ -19,7 +22,8 @@ const User = {
       userFolder.createFile( `password.enc` ).setContent( pass ).write()
     } )
 
-    userFolder.createFile(`avatar.png`).setContent(fs.readFileSync(path.resolve(`${FILESYSTEM_ROOT}/../src/defaultAssets/avatar.png`))).write()
+    userFolder.createFile( `avatar` ).setContent(
+        fs.readFileSync( path.resolve( `${ FILESYSTEM_ROOT }/../src/defaultAssets/avatar.png` ) ) ).write()
   },
 
   remove(username: string) {

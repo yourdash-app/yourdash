@@ -30,7 +30,6 @@ const Panel: React.FC<IPanel> = ({ backgroundImage }) => {
     verifyAndReturnJson(
         SERVER.get( `/current/user` ),
         (res: YourDashUser) => {
-          console.log( res )
           setUserData( res );
         },
         (err) => {
@@ -57,7 +56,7 @@ const Panel: React.FC<IPanel> = ({ backgroundImage }) => {
       <div className={ styles.component }>
         <Launcher
             background={ backgroundImage }
-            userData={ userData || { name: "Error", username: "error", permissions: [] } }
+            userData={ userData || { name: { first: "Error", last: "null" }, username: "error", permissions: [] } }
             quickShortcuts={ quickShortcuts }
             setQuickShortcuts={ (value) => {
               setQuickShortcuts( value );

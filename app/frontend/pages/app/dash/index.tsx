@@ -6,6 +6,7 @@ import { NextPageWithLayout } from "../../page";
 import styles from "./index.module.scss";
 import { useRouter } from "next/router";
 import Chiplet from "~/chipletui";
+import { YourDashUser } from "../../../../backend/src/helpers/user/types";
 
 const Dash: NextPageWithLayout = () => {
   const router = useRouter();
@@ -16,12 +17,12 @@ const Dash: NextPageWithLayout = () => {
 
   useEffect( () => {
     verifyAndReturnJson(
-        SERVER.get( "/userManagement/current/user" ),
-        (user) => {
-          setName( `${ user?.name?.first } ${ user?.name?.last }` );
+        SERVER.get( "/current/user" ),
+        (user: YourDashUser) => {
+          setName( `${ user.name.first } ${ user.name.last }` );
         },
         () => {
-          setName( "ERROR" );
+          setName( "Error Occurred" );
         }
     );
   }, [] );
@@ -74,7 +75,7 @@ const Dash: NextPageWithLayout = () => {
                       <p>It appears that you have no dash widgets installed.</p>
                       <Chiplet.Button
                           onClick={ () => {
-                            router.push( `/app/store` );
+                            return router.push( `/app/store` );
                           } }
                           vibrant
                       >

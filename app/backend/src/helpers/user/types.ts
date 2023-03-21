@@ -8,7 +8,7 @@ export enum YourDashCorePermissions {
 }
 
 export interface YourDashUser {
-  name: string,
+  name: { first: string, last: string },
   username: string,
   permissions: YourDashCorePermissions[]
 }
