@@ -1,5 +1,5 @@
 /*
- * Created on Sun Oct 23 2022-2023
+ * Created on Sun Oct 23 2022
  *
  * Copyright © 2022-2023 Ewsgit
  */
@@ -28,13 +28,13 @@ const Panel: React.FC<IPanel> = ({ backgroundImage }) => {
 
   useEffect( () => {
     verifyAndReturnJson(
-        SERVER.get( `/userManagement/current/user` ),
+        SERVER.get( `/current/user` ),
         (res: YourDashUser) => {
           setUserData( res );
         },
         () => {
           console.error( `error fetching user` );
-          localStorage.removeItem( "sessionToken" );
+          sessionStorage.removeItem( "sessionToken" );
           return router.push( "/login" );
         }
     );
@@ -64,10 +64,11 @@ const Panel: React.FC<IPanel> = ({ backgroundImage }) => {
         />
         <ServerImage
             onClick={ () => {
-              if (router.pathname === `/app/dash`) return;
+              if (router.pathname === `/app/dash`)
+                return;
               router.push( `/app/dash` );
             } }
-            src={ "/core/instance/logo" }
+            src={ "/panel/logo" }
             className={ styles.serverLogo }
         />
         {/* <h2 className={styles.serverName}>YourDash</h2> */ }

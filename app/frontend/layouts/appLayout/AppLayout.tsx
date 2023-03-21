@@ -8,39 +8,42 @@ export interface IAppLayout {
 }
 
 const AppLayout: React.FC<IAppLayout> = ({ children, transparentBackground }) => {
-  const [ applicationWindowMode, setApplicationWindowMode ] = useState(false)
-  const [ standaloneInterface, setStandaloneInterface ] = useState(false)
-  const [ backgroundImageUrl, setBackgroundImageUrl ] = useState("")
-  useEffect(() => {
-    const queryString = new URLSearchParams(window.location.search)
+  const [ applicationWindowMode, setApplicationWindowMode ] = useState( false )
+  const [ standaloneInterface, setStandaloneInterface ] = useState( false )
+  const [ backgroundImageUrl, setBackgroundImageUrl ] = useState( "" )
+  useEffect( () => {
+    const queryString = new URLSearchParams( window.location.search )
 
-    setStandaloneInterface(queryString.get("standalone") === "true")
-    setApplicationWindowMode(true)
+    setStandaloneInterface( queryString.get( "standalone" ) === "true" )
+    setApplicationWindowMode( true )
 
-    setBackgroundImageUrl(`${localStorage.getItem("currentServer") as string}/api/core/panel/background-image/${localStorage.getItem("username") as string}/${localStorage.getItem("sessiontoken")!.slice(0, 10) as string}`)
-  }, [])
+    setBackgroundImageUrl(
+        `${ localStorage.getItem( "currentServer" ) as string }/api/core/panel/background-image/${ localStorage.getItem(
+            "username" ) as string }/${ sessionStorage.getItem( "sessiontoken" )!.slice( 0, 10 ) as string }` )
+  }, [] )
 
   return standaloneInterface
-      ? (
-          // eslint-disable-next-line react/jsx-no-useless-fragment
-        <>
-          {children}
-        </>
-      ) : (
-        <div className={ styles.root } style={ { backgroundImage: `url(${backgroundImageUrl})` } }>
-          <Panel
-            backgroundImage={ `url(${backgroundImageUrl})` }
-          />
-          <div
-            data-app-window={ applicationWindowMode }
-            data-app-transparent-background={ transparentBackground }
-            data-app-root-container="true"
-            className={ styles.content }
-          >
-            {children}
-          </div>
-        </div>
-      )
+         ? (
+             // eslint-disable-next-line react/jsx-no-useless-fragment
+             <>
+               { children }
+             </>
+         )
+         : (
+             <div className={ styles.root } style={ { backgroundImage: `url(${ backgroundImageUrl })` } }>
+               <Panel
+                   backgroundImage={ `url(${ backgroundImageUrl })` }
+               />
+               <div
+                   data-app-window={ applicationWindowMode }
+                   data-app-transparent-background={ transparentBackground }
+                   data-app-root-container="true"
+                   className={ styles.content }
+               >
+                 { children }
+               </div>
+             </div>
+         )
 };
 
 export default AppLayout;

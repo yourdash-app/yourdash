@@ -9,6 +9,8 @@ import Fs from "./fileSystem/fileSystem.js";
 const app = express()
 const FILESYSTEM_ROOT = path.resolve( "./fs/" )
 const USER_SESSION_CACHE: { [key: string]: string } = [] as any as { [key: string]: string }
+// TODO: load from a config file
+const INSTANCE_URL = "http://localhost"
 
 if (!fs.existsSync( path.resolve( FILESYSTEM_ROOT ) )) {
   fs.cpSync( path.resolve( `./defaultFs/` ), path.resolve( FILESYSTEM_ROOT ), { recursive: true } )
@@ -76,7 +78,7 @@ app.post( "/api/instance/login/login", (req, res) => {
 
 // check for authentication
 app.use( (req, res, next) => {
-  let { username, sessiontoken } = req.body as { username?: string, sessiontoken?: string }
+  let { username, sessiontoken } = req.headers as { username?: string, sessiontoken?: string }
 
   if (!username || !sessiontoken) return res.json( { error: `Unauthorized request` } )
 
@@ -85,6 +87,15 @@ app.use( (req, res, next) => {
   }
 
   return res.json( { error: `Unauthorized request` } )
+} )
+
+app.get( `/current/user`, (req, res) => {
+  let { username } = req.headers as { username: string }
+
+  return {
+    avatar: `${ INSTANCE_URL }/current/user/avatar`,
+    ...JSON.parse( Fs.openFolder( User.getPath( username ) ).openFile( `user.json` ).read() )
+  }
 } )
 
 
