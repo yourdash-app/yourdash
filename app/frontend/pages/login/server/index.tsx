@@ -52,7 +52,8 @@ const LoginPage: NextPageWithLayout = () => {
             } ),
             (data) => {
               sessionStorage.setItem( "sessiontoken", data.token )
-              router.push( `/app` )
+              localStorage.setItem("username", username)
+              return router.push( `/app` )
             },
             () => {console.error( `unable to create a new session token` )}
         )

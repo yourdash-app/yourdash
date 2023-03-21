@@ -6,7 +6,7 @@ import styles from "./index.module.scss";
 import Chiplet from "~/chipletui";
 import { useEffect, useState } from "react";
 import SERVER, { verifyAndReturnJson } from "../../../server";
-import { YourDashUserPermissions } from "../../../../../packages/types/core/user";
+import { YourDashCorePermissions } from "../../../../backend/src/helpers/user/types";
 
 const SettingsIndex: NextPageWithLayout = () => {
     const [isAdmin, setIsAdmin] = useState(false);
@@ -15,7 +15,7 @@ const SettingsIndex: NextPageWithLayout = () => {
         verifyAndReturnJson(
             SERVER.get("/userManagement/current/user/permissions"),
             (data) => {
-                if (data.indexOf(YourDashUserPermissions.Administrator) !== -1) {
+                if (data.indexOf( YourDashCorePermissions.Administrator) !== -1) {
                     setIsAdmin(true);
                 }
             },

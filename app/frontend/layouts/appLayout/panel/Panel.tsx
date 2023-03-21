@@ -7,10 +7,10 @@
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import SERVER, { verifyAndReturnJson } from "../../../server";
-import { type YourDashUser } from "../../../../../packages/types/core/user";
+import { type YourDashUser } from "../../../../backend/src/helpers/user/types";
 import Chiplet from "~/chipletui";
 import styles from "./Panel.module.scss";
-import { type quickShortcut as QuickShortcut } from "types/core/panel/quickShortcut";
+import { type PanelQuickShortcut } from "~/../backend/src/helpers/panel/types";
 import ServerImage from "~/pages/app/(components)/serverImage/ServerImage";
 import Launcher from "./components/Launcher/Launcher";
 import Clock from "./components/Clock/Clock";
@@ -23,18 +23,19 @@ const Panel: React.FC<IPanel> = ({ backgroundImage }) => {
   const router = useRouter();
   const [ launcherSlideOutVisible, setLauncherSlideOutVisible ] = useState( false );
   const [ accountDropdownVisible, setAccountDropdownVisible ] = useState( false );
-  const [ userData, setUserData ] = useState( undefined as YourDashUser | undefined );
-  const [ quickShortcuts, setQuickShortcuts ] = useState( [] as QuickShortcut[] );
+  const [ userData, setUserData ] = useState( null as YourDashUser | null );
+  const [ quickShortcuts, setQuickShortcuts ] = useState( [] as PanelQuickShortcut[] );
 
   useEffect( () => {
     verifyAndReturnJson(
         SERVER.get( `/current/user` ),
         (res: YourDashUser) => {
+          console.log( res )
           setUserData( res );
         },
-        () => {
-          console.error( `error fetching user` );
-          sessionStorage.removeItem( "sessionToken" );
+        (err) => {
+          console.error( `error fetching user, error: `, err );
+          sessionStorage.removeItem( "sessiontoken" );
           return router.push( "/login" );
         }
     );
@@ -56,7 +57,7 @@ const Panel: React.FC<IPanel> = ({ backgroundImage }) => {
       <div className={ styles.component }>
         <Launcher
             background={ backgroundImage }
-            userData={ userData }
+            userData={ userData || { name: "Error", username: "error", permissions: [] } }
             quickShortcuts={ quickShortcuts }
             setQuickShortcuts={ (value) => {
               setQuickShortcuts( value );
@@ -75,10 +76,10 @@ const Panel: React.FC<IPanel> = ({ backgroundImage }) => {
         <div className={ styles.shortcuts }>
           { quickShortcuts?.length !== 0
             ? (
-                quickShortcuts?.map( (shortcut) => {
+                quickShortcuts?.map( (shortcut, ind) => {
                   return (
                       <Chiplet.RightClickMenu
-                          key={ shortcut.id }
+                          key={ ind }
                           items={ [
                             {
                               name: "Open in new tab",
@@ -90,16 +91,16 @@ const Panel: React.FC<IPanel> = ({ backgroundImage }) => {
                               name: "Remove quick shortcut",
                               onClick: () => {
                                 verifyAndReturnJson(
-                                    SERVER.delete( `/core/panel/quick-shortcut/${ shortcut.id }` ),
+                                    SERVER.delete( `/core/panel/quick-shortcut/${ ind }` ),
                                     () => {
                                       setQuickShortcuts(
-                                          quickShortcuts.filter( (sc) => {
-                                            return sc.id !== shortcut.id;
+                                          quickShortcuts.filter( (sc, scInd) => {
+                                            return scInd !== ind;
                                           } )
                                       );
                                     },
                                     () => {
-                                      console.error( `unable to delete quick shortcut ${ shortcut.id }` );
+                                      console.error( `unable to delete quick shortcut ${ ind }` );
                                     }
                                 );
                               },

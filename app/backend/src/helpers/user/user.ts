@@ -1,7 +1,9 @@
-import { FILESYSTEM_ROOT } from "../index.js";
+import { FILESYSTEM_ROOT } from "../../index.js";
 import path from "path";
-import Fs from "../fileSystem/fileSystem.js";
-import { hash } from "./encryption.js";
+import Fs from "../../fileSystem/fileSystem.js";
+import { hash } from "../encryption.js";
+import { YourDashCorePermissions, YourDashUser } from "./types.js";
+import * as fs from "fs";
 
 const User = {
   create(username: string, password: string, options: { permissions: YourDashCorePermissions[], name: string }) {
@@ -16,6 +18,8 @@ const User = {
     hash( password ).then( pass => {
       userFolder.createFile( `password.enc` ).setContent( pass ).write()
     } )
+
+    userFolder.createFile(`avatar.png`).setContent(fs.readFileSync(path.resolve(`${FILESYSTEM_ROOT}/../src/defaultAssets/avatar.png`))).write()
   },
 
   remove(username: string) {
@@ -28,18 +32,3 @@ const User = {
 }
 
 export default User
-
-export enum YourDashCorePermissions {
-  CreateFiles,
-  DeleteFiles,
-  Administrator,
-  ManageUsers,
-  UnlimitedQuota,
-  UploadFiles
-}
-
-export interface YourDashUser {
-  name: string,
-  username: string,
-  permissions: YourDashCorePermissions[]
-}

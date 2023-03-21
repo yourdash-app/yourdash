@@ -16,26 +16,20 @@ export interface IServerImage extends React.ComponentPropsWithoutRef<'img'> {
 const ServerImage: React.FC<IServerImage> = ({
                                                src, ...imgElementProps
                                              }) => {
-  const [ imgSrc, setImgSrc ] = useState( ChipletIconDictionary["server-error"] )
-  useEffect( () => {
-    verifyAndReturnJson(
-        SERVER.get( src ),
-        (json: { image: string }) => {
-          setImgSrc( json?.image || ChipletIconDictionary["server-error"] )
-        },
-        () => {
-          setImgSrc( ChipletIconDictionary["server-error"] )
-        }
-    )
-  }, [ src ] )
+  const [url, setUrl] = useState("")
+
+  useEffect(() => {
+    setUrl(localStorage.getItem( "currentServer" ) || "")
+  }, [])
+
+  if (!url) return <></>
 
   return (
       <img
           draggable={ false }
-          src={ imgSrc }
+          src={ `${ url }/api${ src }` }
           onError={ () => {
-            console.error( "Failed to load image" )
-            setImgSrc( ChipletIconDictionary["server-error"] )
+            console.error( `Failed to load image: ${src}` )
           } }
           alt=""
           { ...imgElementProps }

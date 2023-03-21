@@ -3,14 +3,15 @@ import express from "express"
 import path from "path";
 import { compareHash, generateRandomStringOfLength } from "./helpers/encryption.js";
 import * as fs from "fs";
-import User, { YourDashCorePermissions } from "./helpers/user.js";
+import { YourDashCorePermissions } from "./helpers/user/types.js";
+import User from "./helpers/user/user.js"
 import Fs from "./fileSystem/fileSystem.js";
 
 const app = express()
 const FILESYSTEM_ROOT = path.resolve( "./fs/" )
 const USER_SESSION_CACHE: { [key: string]: string } = [] as any as { [key: string]: string }
 // TODO: load from a config file
-const INSTANCE_URL = "http://localhost"
+const INSTANCE_URL = "http://localhost:3560"
 
 if (!fs.existsSync( path.resolve( FILESYSTEM_ROOT ) )) {
   fs.cpSync( path.resolve( `./defaultFs/` ), path.resolve( FILESYSTEM_ROOT ), { recursive: true } )
@@ -89,13 +90,21 @@ app.use( (req, res, next) => {
   return res.json( { error: `Unauthorized request` } )
 } )
 
-app.get( `/current/user`, (req, res) => {
+app.get( `/api/current/user`, (req, res) => {
   let { username } = req.headers as { username: string }
 
-  return {
-    avatar: `${ INSTANCE_URL }/current/user/avatar`,
-    ...JSON.parse( Fs.openFolder( User.getPath( username ) ).openFile( `user.json` ).read() )
-  }
+  return res.json( {
+                     avatar: `${ INSTANCE_URL }/current/user/avatar`,
+                     ...JSON.parse( Fs.openFolder( User.getPath( username ) ).openFile( `user.json` ).read() )
+                   } )
+} )
+
+app.get( `/api/current/user/avatar`, (req, res) => {
+  let { username } = req.headers as { username: string }
+
+  res.contentType("image/png")
+
+  return res.sendFile( Fs.openFolder( User.getPath( username ) ).openFile( `avatar.png` ).getPath() )
 } )
 
 

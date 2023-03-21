@@ -2,16 +2,14 @@ import React, { useState } from "react";
 import styles from "../../Panel.module.scss";
 import Chiplet from "~/chipletui";
 import PanelLauncherSlideOut from "./LauncherSlideOut";
-import {
-    quickShortcut,
-    quickShortcut as QuickShortcut,
-} from "../../../../../../../packages/types/core/panel/quickShortcut";
+import { PanelQuickShortcut } from "~/../backend/src/helpers/panel/types";
+import { YourDashUser } from "~/../backend/src/helpers/user/types";
 
 interface ILauncher {
     background: string;
-    userData: { userName: string; name: { first: string; last: string } } | undefined;
-    quickShortcuts: quickShortcut[];
-    setQuickShortcuts: (value: quickShortcut[]) => void;
+    userData: YourDashUser;
+    quickShortcuts: PanelQuickShortcut[];
+    setQuickShortcuts: (value: PanelQuickShortcut[]) => void;
 }
 
 const Launcher: React.FC<ILauncher> = ({ background, userData, quickShortcuts, setQuickShortcuts }) => {
@@ -37,15 +35,15 @@ const Launcher: React.FC<ILauncher> = ({ background, userData, quickShortcuts, s
             </button>
             <PanelLauncherSlideOut
                 backgroundImage={background}
-                userNames={userData?.name || { first: "", last: "" }}
+                fullName={ userData?.name || "error"}
                 setVisibility={(value: boolean) => {
                     setSlideoutVisible(value);
                 }}
                 visible={slideoutVisible}
-                addQuickShortcut={(shortcut: QuickShortcut) => {
+                addQuickShortcut={(shortcut: PanelQuickShortcut) => {
                     setQuickShortcuts([...quickShortcuts, shortcut]);
                 }}
-                userName={userData?.userName || "ERROR"}
+                userName={userData?.username || "ERROR"}
             />
         </>
     );

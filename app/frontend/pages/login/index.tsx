@@ -14,7 +14,7 @@ const ServerLogin: NextPageWithLayout = () => {
   const router = useRouter()
 
   useEffect( () => {
-    if (localStorage.getItem( "currentServer" )) {
+    if (localStorage.getItem( "currentServer" ) && localStorage.getItem("currentServer") !== "") {
       router.push( "/login/server" )
     }
   }, [ router ] )

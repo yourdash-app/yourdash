@@ -4,34 +4,33 @@ import SERVER, { verifyAndReturnJson } from "../../../../../server";
 import ServerImage from "~/pages/app/(components)/serverImage/ServerImage";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { type LauncherApplication } from "types/core/panel/launcherApplication";
-import { quickShortcut } from "types/core/panel/quickShortcut";
+import { type PanelLauncherApplication, PanelQuickShortcut } from "~/../backend/src/helpers/panel/types";
 
 export interface IPanelLauncherSlideOut {
   visible: boolean;
   setVisibility: (visible: boolean) => void;
   backgroundImage: string;
-  userNames: { first: string; last: string };
-  addQuickShortcut: (shortcut: quickShortcut) => void;
+  fullName: string;
+  addQuickShortcut: (shortcut: PanelQuickShortcut) => void;
   userName: string;
 }
 
 const PanelLauncherSlideOut: React.FC<IPanelLauncherSlideOut> = ({
                                                                    visible,
                                                                    backgroundImage,
-                                                                   userNames,
+                                                                   fullName,
                                                                    setVisibility,
                                                                    addQuickShortcut,
                                                                    userName,
                                                                  }) => {
   const router = useRouter();
-  const [ installedApps, setInstalledApps ] = useState( [] as LauncherApplication[] );
+  const [ installedApps, setInstalledApps ] = useState( [] as PanelLauncherApplication[] );
   const [ searchQuery, setSearchQuery ] = useState( "" );
 
   useEffect( () => {
     verifyAndReturnJson(
         SERVER.get( `/core/panel/launcher/apps` ),
-        (res: LauncherApplication[]) => {
+        (res: PanelLauncherApplication[]) => {
           setInstalledApps( res );
         },
         () => {
@@ -46,7 +45,7 @@ const PanelLauncherSlideOut: React.FC<IPanelLauncherSlideOut> = ({
                                                           ? styles.launcherSlideOutVisible
                                                           : "" }` }>
           <div data-header="true" style={ { backgroundImage } }>
-            <div data-title="true">Hiya, { userNames.first }</div>
+            <div data-title="true">Hiya, { fullName }</div>
             <Chiplet.TextInput
                 data-search
                 onChange={ (e) => {
@@ -73,7 +72,7 @@ const PanelLauncherSlideOut: React.FC<IPanelLauncherSlideOut> = ({
                                         SERVER.post( `/core/panel/quick-shortcut/create`, {
                                           body: JSON.stringify( {
                                                                   name: app.name,
-                                                                  url: app.path,
+                                                                  url: `/app/a/${app.name}`,
                                                                 } ),
                                         } ),
                                         (data) => {
@@ -99,9 +98,9 @@ const PanelLauncherSlideOut: React.FC<IPanelLauncherSlideOut> = ({
                             <Chiplet.Card
                                 className={ styles.launcherGridItem }
                                 onClick={ () => {
-                                  if (app.path === router.pathname) return setVisibility( false );
+                                  if (`/app/a/${app.name}` === router.pathname) return setVisibility( false );
                                   setVisibility( false );
-                                  router.push( app.path );
+                                  router.push( `/app/a/${app.name}` );
                                 } }
                             >
                               <img src={ app.icon } draggable={ false } loading={ "lazy" } alt=""/>
@@ -129,11 +128,11 @@ const PanelLauncherSlideOut: React.FC<IPanelLauncherSlideOut> = ({
                   router.push( `/app/user/profile/${ userName }` );
                 } }
                 tabIndex={ 0 }
-                src={ "/core/panel/user/profile/picture" }
+                src={ "/current/user/avatar" }
                 alt=""
             />
             <span>
-                        { userNames?.first } { userNames?.last }
+                        { fullName }
                     </span>
             <Chiplet.IconButton
                 icon="gear-16"

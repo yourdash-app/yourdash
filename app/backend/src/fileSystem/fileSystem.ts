@@ -78,6 +78,10 @@ class FileSystemFile {
 
     return null
   }
+
+  getPath(): string {
+    return this.path
+  }
 }
 
 class FileSystemFolder {
@@ -137,6 +141,10 @@ class FileSystemFolder {
     let contents = fs.readFileSync( nodePath.resolve( nodePath.join( this.path, ...path ) ) )
 
     return new FileSystemFile( [ this.path, ...path ], contents )
+  }
+
+  getPath(): string {
+    return this.path
   }
 }
 
