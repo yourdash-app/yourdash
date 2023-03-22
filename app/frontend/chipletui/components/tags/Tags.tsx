@@ -1,8 +1,14 @@
 import styles from "./Tags.module.scss";
 import { type Tag } from "types/core/tag";
 
+type COLOR = `#${string}` | `rgb(${string})` | `rgba(${string})` | `var(--${string})`
+
 export interface ITags {
-    tags: Tag[];
+    tags: {
+        name: string,
+        color: COLOR,
+        displayName: string
+    }[];
     compact?: boolean;
 }
 
