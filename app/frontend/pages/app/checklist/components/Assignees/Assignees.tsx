@@ -11,7 +11,7 @@ const Assignees: React.FC<IAssignees> = ({ assignees }) => {
 
     useEffect(() => {
         setAssigneesData([]);
-        const result: TaskAssignee[] = [];
+        const result = [];
         assignees.map((assignee, ind) => {
             verifyAndReturnJson(
                 SERVER.get(`/checklist/assignee/${assignee}`),
