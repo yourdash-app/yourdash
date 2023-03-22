@@ -1,10 +1,9 @@
 import React from "react";
-import { type TasksListItem } from "types/checklist/listItem";
 import Chiplet from "~/chipletui";
 import styles from "./ListTask.module.scss";
 
 export interface IListTask {
-    task: TasksListItem;
+    task: any;
     onClick: () => void;
     selectTask: (value: boolean) => void;
     onDelete: () => void;
