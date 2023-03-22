@@ -29,7 +29,7 @@ const PanelLauncherSlideOut: React.FC<IPanelLauncherSlideOut> = ({
 
   useEffect( () => {
     verifyAndReturnJson(
-        SERVER.get( `/core/panel/launcher/apps` ),
+        SERVER.get( `/panel/launcher/applications` ),
         (res: PanelLauncherApplication[]) => {
           setInstalledApps( res );
         },

@@ -66,7 +66,8 @@ const Panel: React.FC<IPanel> = ({ backgroundImage }) => {
             onClick={ () => {
               if (router.pathname === `/app/dash`)
                 return;
-              router.push( `/app/dash` );
+
+              return router.push( `/app/dash` );
             } }
             src={ "/panel/logo" }
             className={ styles.serverLogo }

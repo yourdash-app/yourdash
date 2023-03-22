@@ -21,13 +21,11 @@ const ServerImage: React.FC<IServerImage> = ({ src, ...imgElementProps }) => {
     setUrl( localStorage.getItem( "currentServer" ) || "" )
     setUsername( localStorage.getItem( "username" ) || "" )
     setToken( sessionStorage.getItem( "sessiontoken" ) || "" )
-
-    console.log( token )
-
-    // V4X;G84(H9@)bxAapi^£x84Dr-WfR52dh'Nge.#_G$dt0cG5Cpz|jwxr(w8AjtoPacsT$9Aw~Fk_;V1)"lHucjW7sRkbn£QL2a(£mR$BW9k!;B0,xSq!rqY~4tifSucP
   }, [] )
 
   if (url === "") return <></>
+  if (username === "") return <></>
+  if (token === "") return <></>
 
   return (
       <img

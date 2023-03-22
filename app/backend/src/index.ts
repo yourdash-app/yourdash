@@ -6,6 +6,12 @@ import * as fs from "fs";
 import { YourDashCorePermissions } from "./helpers/user/types.js";
 import User from "./helpers/user/user.js"
 import Fs from "./fileSystem/fileSystem.js";
+import {
+  getApplicationMetadata,
+  getInstallableApplications,
+  getInstalledApplications,
+  loadApplication
+} from "./appManager/applications.js";
 
 const app = express()
 const FILESYSTEM_ROOT = path.resolve( "./fs/" )
@@ -32,6 +38,8 @@ app.use( (_req, res, next) => {
   res.removeHeader( "X-Powered-By" )
   next()
 } )
+
+getInstalledApplications().forEach( app => loadApplication( app ) )
 
 // #region allows use without authentication
 
@@ -78,8 +86,8 @@ app.post( "/api/instance/login/login", (req, res) => {
       return res.json( { token } )
     }
 
-    return res.json( { error: true } )
-  } ).catch( () => { return res.json( { error: true } )} )
+    return res.json( { error: `The received password doesn't match` } )
+  } ).catch( () => { return res.json( { error: `Unable to compare password` } )} )
 } )
 
 // #endregion
@@ -117,6 +125,16 @@ app.get( `/api/current/user/avatar`, (req, res) => {
   let { u: username } = req.query as { u: string }
 
   return res.sendFile( Fs.openFolder( User.getPath( username ) ).openFile( `avatar` ).getPath() )
+} )
+
+app.get( `/api/panel/launcher/applications`, (_req, res) => {
+  return res.json(
+      [
+        ...getInstallableApplications().map( app => {
+          return getApplicationMetadata( app )
+        } )
+      ]
+  )
 } )
 
 
