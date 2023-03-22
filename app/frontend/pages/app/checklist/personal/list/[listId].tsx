@@ -3,9 +3,7 @@ import AppLayout from "../../../../../layouts/appLayout/AppLayout";
 import { NextPageWithLayout } from "../../../../page";
 import SERVER, { verifyAndReturnJson } from "../../../../../server";
 import { useRouter } from "next/router";
-import { type TasksList } from "types/checklist/list";
 import styles from "./listId.module.scss";
-import { type TasksListItem } from "types/checklist/listItem";
 import ListTask from "../../components/ListTask/ListTask";
 import Chiplet from "~/chipletui";
 import ChecklistLayout from "../../components/ChecklistLayout";
@@ -27,10 +25,10 @@ const TasksPersonalList: NextPageWithLayout = () => {
 
     const [activeTask, setActiveTask] = useState(null as null | number);
     // const [ selectedTasks, setSelectedTasks ] = useState([] as number[])
-    const [activeTaskData, setActiveTaskData] = useState(null as null | TasksListItem);
+    const [activeTaskData, setActiveTaskData] = useState(null as null | any);
     const [listData, setListData] = useState(null as TasksList | null);
     const [showListSettings, setShowListSettings] = useState(false);
-    const [unsavedListData, setUnsavedListData] = useState(null as TasksList | null);
+    const [unsavedListData, setUnsavedListData] = useState(null as any | null);
     const [pageChanging, setPageChanging] = useState(false);
 
     useEffect(() => {
