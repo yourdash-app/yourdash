@@ -15,7 +15,11 @@ export interface IFileSelector {
 const FileSelector: React.FC<IFileSelector> = ({ allowedFileTypes, singleFile, visible, onClose }) => {
     const [selectedFiles, setSelectedFiles] = useState([] as string[]);
 
-    return <Chiplet.Dialog visible={visible} onClose={onClose}></Chiplet.Dialog>;
+    return <Chiplet.Dialog visible={visible} onClose={onClose}>
+        <>
+          text
+        </>
+    </Chiplet.Dialog>;
 };
 
 export default FileSelector;
