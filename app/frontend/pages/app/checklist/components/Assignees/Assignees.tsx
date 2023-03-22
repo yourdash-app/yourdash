@@ -7,7 +7,7 @@ export interface IAssignees {
 }
 
 const Assignees: React.FC<IAssignees> = ({ assignees }) => {
-    const [assigneesData, setAssigneesData] = useState([]);
+    const [assigneesData, setAssigneesData] = useState([] as any[]);
 
     useEffect(() => {
         setAssigneesData([]);
