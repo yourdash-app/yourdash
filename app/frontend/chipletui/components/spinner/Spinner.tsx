@@ -5,7 +5,7 @@ export interface ISpinner {
   style?: CSSProperties
 }
 
-const Spinner: React.FC<ISpinner> = ({children, style}) => {
+const Spinner: React.FC<ISpinner> = ({style}) => {
   return <div className={ styles.component } style={ style }>{children}</div>;
 };
 
