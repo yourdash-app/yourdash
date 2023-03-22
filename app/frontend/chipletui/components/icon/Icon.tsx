@@ -1,5 +1,4 @@
 import React, { CSSProperties } from "react";
-import { type COLOR } from "types/global/color";
 // @ts-ignore
 import { type ChipletIcon, ChipletIconDictionary } from "./iconDictionary.ts";
 import styles from "./Icon.module.scss"
@@ -11,6 +10,8 @@ export interface IIcon extends React.ComponentPropsWithoutRef<'div'> {
   color?: COLOR;
   useDefaultColor?: boolean;
 }
+
+type COLOR = `#${string}` | `rgb(${string})` | `rgba(${string})` | `var(--${string})`
 
 const Icon: React.FC<IIcon> = ({ name, style, className, color, useDefaultColor, ...genericProps }) => {
   return (
