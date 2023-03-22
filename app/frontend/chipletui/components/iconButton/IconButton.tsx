@@ -1,7 +1,8 @@
-import { COLOR } from 'types/global/color';
 import Icon from '../icon/Icon';
 import { type ChipletIcon } from '../icon/iconDictionary';
 import styles from './IconButton.module.scss';
+
+type COLOR = `#${string}` | `rgb(${string})` | `rgba(${string})` | `var(--${string})`
 
 export interface IIconButton extends React.ComponentPropsWithoutRef<"button"> {
   icon: ChipletIcon;
