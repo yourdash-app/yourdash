@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import Chiplet from "~/chipletui";
-import YourDashFileType from "../../../../../../packages/types/files/YourDashFileType";
+
+enum YourDashFileTypes {
+    Text
+}
 
 export interface IFileSelector {
-    allowedFileTypes: YourDashFileType[];
+    allowedFileTypes: YourDashFileTypes[];
     singleFile: boolean;
     visible: boolean;
     onClose: () => void;
