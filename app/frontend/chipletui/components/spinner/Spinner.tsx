@@ -6,7 +6,7 @@ export interface ISpinner {
 }
 
 const Spinner: React.FC<ISpinner> = ({style}) => {
-  return <div className={ styles.component } style={ style }>{children}</div>;
+  return <div className={ styles.component } style={ style }></div>;
 };
 
 export default Spinner;
