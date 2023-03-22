@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import SERVER, { verifyAndReturnJson } from "../../../../../server";
-import { TaskAssignee } from "types/checklist/taskAssignee";
 import styles from "./Assignees.module.scss";
 
 export interface IAssignees {
@@ -8,7 +7,7 @@ export interface IAssignees {
 }
 
 const Assignees: React.FC<IAssignees> = ({ assignees }) => {
-    const [assigneesData, setAssigneesData] = useState([] as TaskAssignee[]);
+    const [assigneesData, setAssigneesData] = useState([]);
 
     useEffect(() => {
         setAssigneesData([]);
