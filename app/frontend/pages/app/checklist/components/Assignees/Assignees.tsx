@@ -15,7 +15,7 @@ const Assignees: React.FC<IAssignees> = ({ assignees }) => {
         assignees.map((assignee, ind) => {
             verifyAndReturnJson(
                 SERVER.get(`/checklist/assignee/${assignee}`),
-                (data: TaskAssignee) => {
+                (data: any) => {
                     result.push(data);
 
                     if (ind + 1 === assignees.length) {
