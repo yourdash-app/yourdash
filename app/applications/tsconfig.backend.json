@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "module": "NodeNext",
+    "target": "ESNext",
+    "sourceMap": true
+  },
+  "exclude": [
+    "node_modules"
+  ],
+  "include": [
+    "./apps/**/backend"
+  ],
+  "references": [
+    "../backend/tsconfig.json"
+  ]
+}

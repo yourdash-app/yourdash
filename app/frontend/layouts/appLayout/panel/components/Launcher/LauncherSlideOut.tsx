@@ -26,21 +26,18 @@ const PanelLauncherSlideOut: React.FC<IPanelLauncherSlideOut> = ({
   const router = useRouter();
   const [ installedApps, setInstalledApps ] = useState( [] as PanelLauncherApplication[] );
   const [ searchQuery, setSearchQuery ] = useState( "" );
+  const [ applicationLoadError, setApplicationLoadError ] = useState( false )
 
   useEffect( () => {
-    verifyAndReturnJson(
-        SERVER.get( `/panel/launcher/applications` ),
-        (res: PanelLauncherApplication[]) => {
-          setInstalledApps( res );
-        },
-        () => {
-          console.error( `error fetching the instance's installed apps` );
-        }
-    );
+    verifyAndReturnJson( SERVER.get( `/panel/launcher/applications` ), (res: PanelLauncherApplication[]) => {
+      setInstalledApps( res );
+    }, () => {
+      setApplicationLoadError( true )
+      console.error( `error fetching the instance's installed apps` );
+    } );
   }, [] );
 
-  return (
-      <>
+  return (<>
         <div className={ `${ styles.launcherSlideOut } ${ visible
                                                           ? styles.launcherSlideOutVisible
                                                           : "" }` }>
@@ -54,74 +51,57 @@ const PanelLauncherSlideOut: React.FC<IPanelLauncherSlideOut> = ({
                 placeholder="Search"
             />
           </div>
-          <div className={ styles.launcherGrid }>
-            { installedApps
-              ? (
-                  installedApps.map( (app) => {
-                    if (
-                        app?.name?.toLowerCase()?.includes( searchQuery ) ||
-                        app?.description?.toLowerCase()?.includes( searchQuery )
-                    )
-                      return (
-                          <Chiplet.RightClickMenu
-                              items={ [
-                                {
-                                  name: "Pin to quick shortcuts",
-                                  onClick: () => {
-                                    verifyAndReturnJson(
-                                        SERVER.post( `/core/panel/quick-shortcut/create`, {
-                                          body: JSON.stringify( {
-                                                                  name: app.name,
-                                                                  url: `/app/a/${ app.name }`,
-                                                                } ),
-                                        } ),
-                                        (data) => {
-                                          addQuickShortcut( data[0] );
-                                        },
-                                        () => {
-                                          console.error(
-                                              `unable to create quick shortcut with name: ${ app.name }`
-                                          );
-                                        }
-                                    );
+          { applicationLoadError
+            ? <p>Failed to load applications</p>
+            : <div className={ styles.launcherGrid }>
+              { installedApps
+                ? (installedApps.map( (app) => {
+                        if (app?.name?.toLowerCase()?.includes( searchQuery ) ||
+                            app?.description?.toLowerCase()?.includes( searchQuery )) return (<Chiplet.RightClickMenu
+                                items={ [
+                                  {
+                                    name: "Pin to quick shortcuts", onClick: () => {
+                                      verifyAndReturnJson( SERVER.post( `/core/panel/quick-shortcut/create`, {
+                                        body: JSON.stringify( {
+                                                                name: app.name, url: `/app/a/${ app.name }`,
+                                                              } ),
+                                      } ), (data) => {
+                                        addQuickShortcut( data[0] );
+                                      }, () => {
+                                        console.error( `unable to create quick shortcut with name: ${ app.name }` );
+                                      } );
+                                    },
+                                  }, {
+                                    name: "Open in new tab", onClick: () => {
+                                      window.open( `${ location.origin }/app/${ app.name }` );
+                                    },
                                   },
-                                },
-                                {
-                                  name: "Open in new tab",
-                                  onClick: () => {
-                                    window.open( `${ location.origin }/app/${ app.name }` );
-                                  },
-                                },
-                              ] }
-                              key={ app.name }
-                          >
-                            <Chiplet.Card
-                                className={ styles.launcherGridItem }
-                                onClick={ () => {
-                                  if (`/app/a/${ app.name }` === router.pathname) return setVisibility( false );
-                                  setVisibility( false );
-                                  router.push( `/app/a/${ app.name }` );
-                                } }
+                                ] }
+                                key={ app.name }
                             >
-                              <img src={ app.icon } draggable={ false } loading={ "lazy" } alt=""/>
-                              <span className={ `${ app.underDevelopment && styles.underDevelopment }` }>
+                              <Chiplet.Card
+                                  className={ styles.launcherGridItem }
+                                  onClick={ () => {
+                                    if (`/app/a/${ app.name }` === router.pathname) return setVisibility( false );
+                                    setVisibility( false );
+                                    router.push( `/app/a/${ app.name }` );
+                                  } }
+                              >
+                                <img src={ app.icon } draggable={ false } loading={ "lazy" } alt=""/>
+                                <span className={ `${ app.underDevelopment && styles.underDevelopment }` }>
                                                 { app.displayName }
                                             </span>
-                            </Chiplet.Card>
-                          </Chiplet.RightClickMenu>
-                      );
-                  } )
-              )
-              : (
-                  <Chiplet.Button
-                      onClick={ () => {
-                        router.reload();
-                      } }
-                  >
-                    Reload Launcher Items
-                  </Chiplet.Button>
-              ) }
-          </div>
+                              </Chiplet.Card>
+                            </Chiplet.RightClickMenu>);
+                      } ))
+                : (<Chiplet.Button
+                          onClick={ () => {
+                            router.reload();
+                          } }
+                      >
+                        Reload Launcher Items
+                      </Chiplet.Button>) }
+            </div> }
           <footer data-footer="true">
             <ServerImage
                 onClick={ () => {
@@ -153,8 +133,7 @@ const PanelLauncherSlideOut: React.FC<IPanelLauncherSlideOut> = ({
           </footer>
         </div>
         <section>{/*  TODO: add notifications here, they should slide in from the right side  */ }</section>
-      </>
-  );
+      </>);
 };
 
 export default PanelLauncherSlideOut;

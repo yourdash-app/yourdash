@@ -1,8 +1,7 @@
 const fs = require("fs")
 const path = require("node:path");
 
-
-console.log(`Applications sync started!`)
+console.log(`Syncing applications!`)
 
 function sync() {
     let apps = fs.readdirSync(path.resolve(`./apps/`))
@@ -22,6 +21,7 @@ function sync() {
 
         fs.cpSync(path.resolve(`./apps/${app}/frontend/`), path.resolve(`../frontend/pages/app/a/${app}`), {recursive: true})
         fs.cpSync(path.resolve(`./apps/${app}/backend/`), path.resolve(`../backend/src/appManager/apps/${app}`), {recursive: true})
+        fs.cpSync(path.resolve(`./apps/${app}/application.json`), path.resolve(`../backend/src/appManager/apps/${app}/application.json`))
     })
 }
 

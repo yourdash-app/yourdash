@@ -1,8 +1,10 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Start Desktop" type="CompoundRunConfigurationType">
+    <toRun name="compile-backend" type="js.build_tools.npm" />
     <toRun name="start-backend" type="js.build_tools.npm" />
     <toRun name="start-desktop" type="js.build_tools.npm" />
     <toRun name="start-frontend" type="js.build_tools.npm" />
+    <toRun name="sync-applications" type="js.build_tools.npm" />
     <method v="2" />
   </configuration>
 </component>

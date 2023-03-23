@@ -10,7 +10,9 @@ export function getInstalledApplications() {
 export function loadApplication(name) {
     if (getInstallableApplications().indexOf(name) === -1)
         return;
-    require(path.resolve(__dirname, `apps`, name, `index.js`));
+    const filePath = path.resolve('./src/appManager/apps', name, 'index.js');
+    const fileUrl = `file:///${filePath.replace(/\\/g, '/')}`;
+    import(fileUrl).then(imp => imp.default());
 }
 export function getApplicationMetadata(applicationName) {
     return JSON.parse(Fs.openFolder(`./src/appManager/`, `apps/`, applicationName).openFile(`application.json`).read());
