@@ -1,0 +1,31 @@
+.previewFrame {
+  width: 100%;
+  max-width: unset !important;
+  max-height: 25rem;
+  height: 25rem;
+  border: none;
+  box-sizing: border-box;
+  background-color: var(--card-bg);
+  padding: 0.5rem !important;
+  border-radius: calc(var(--card-rounding) * 2);
+  margin-left: auto !important;
+  margin-right: auto !important;
+
+  @media (min-width: 1500px) {
+    width: calc(100% - 10rem);
+    margin-left: 5rem !important;
+    margin-right: 5rem !important;
+  }
+
+  @media (min-width: 1750px) {
+    width: calc(100% - 15rem);
+    margin-left: 7.5rem !important;
+    margin-right: 7.5rem !important;
+  }
+
+  @media (min-width: 1920px) {
+    width: calc(100% - 20rem);
+    margin-left: 10rem !important;
+    margin-right: 10rem !important;
+  }
+}

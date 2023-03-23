@@ -1,0 +1,69 @@
+.section1 {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1rem;
+  max-width: 75rem;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+
+  @media (max-width: 950px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.section1ProfileCard {
+    overflow: hidden;
+    width: calc(1rem + 256px);
+    margin: auto;
+    padding: 1rem;
+    color: var(--card-fg);
+    border-radius: var(--card-rounding);
+    background-color: var(--card-bg);
+
+    > img {
+        max-width: 100%;
+        border-radius: calc(var(--card-rounding) / 2);
+    }
+
+    > .name {
+        font-size: 1.75rem;
+        font-weight: 400;
+        margin-bottom: 0;
+    }
+
+    > .username {
+        font-size: 1.2rem;
+        font-weight: 900;
+        letter-spacing: 0.05rem;
+        opacity: 0.8;
+    }
+
+    > .description {
+        margin: 0.125rem;
+    }
+}
+
+.section1EditPanel {
+    justify-content: center;
+    box-sizing: border-box;
+    padding-top: 0.5rem;
+
+    > p {
+        margin: 0;
+        color: var(--card-fg);
+    }
+}
+
+.nameSegment {
+    flex-grow: 1;
+
+    > p {
+        margin: 0;
+        color: var(--container-fg);
+    }
+}
+
+.nameSegmentContainer {
+    width: 100%;
+}

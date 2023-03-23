@@ -1,13 +1,12 @@
 {
   "name": "yourdash",
   "scripts": {
-    "start-backend": "yarn --cwd ./app/backend start",
-    "compile-backend": "yarn --cwd ./app/backend typescript",
-    "sync-applications": "yarn --cwd ./app/applications start",
-    "start-desktop": "yarn --cwd ./app/electron start",
-    "start-frontend": "yarn --cwd ./app/frontend start",
-    "postinstall": "concurrently \"yarn --cwd ./app/backend\" \"yarn --cwd ./app/electron\" \"yarn --cwd ./app/frontend\" \"yarn --cwd ./app/applications\" && echo All packages installed!",
-    "application-manager": ""
+    "start-backend": "yarn --cwd app.bak/backend start",
+    "compile-backend": "yarn --cwd app.bak/backend typescript",
+    "sync-applications": "node ./apps/watch.js",
+    "start-desktop": "yarn --cwd app.bak/electron start",
+    "start-frontend": "next dev ./frontend",
+    "create-application": "node ./apps/create.js"
   },
   "packageManager": "yarn@1.22.0+",
   "version": "0.0.0",
@@ -18,6 +17,26 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "concurrently": "^7.6.0"
+    "@types/bcrypt": "^5.0.0",
+    "@types/cors": "^2.8.13",
+    "@types/express": "^4.17.17",
+    "@types/node": "^18.15.6",
+    "@types/react": "^18.0.28",
+    "@types/react-dom": "^18.0.11",
+    "bcrypt": "^5.1.0",
+    "concurrently": "^7.6.0",
+    "esbuild": "^0.17.12",
+    "execa": "^7.1.1",
+    "express": "^4.18.2",
+    "next": "^13.2.4",
+    "nodemon": "^2.0.22",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "sass": "^1.59.3",
+    "sharp": "^0.31.3",
+    "typescript": "^5.0.2",
+    "vite": "^4.2.1",
+    "vite-electron-plugin": "^0.8.2",
+    "vite-plugin-electron-renderer": "^0.13.5"
   }
 }

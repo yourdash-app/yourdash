@@ -1,15 +1,16 @@
 import bodyParser from "body-parser";
 import chalk from "chalk";
-import { exec } from "child_process";
+import {exec} from "child_process";
 import cors from "cors";
 import express from "express";
 import fs from "fs";
 import path from "path";
-import { log, RequestManager } from "./libServer.js";
+import {log, RequestManager} from "./libServer.js";
 import https from "https";
 import startupCheck from "./startupCheck.js";
 import * as dotenv from "dotenv";
-export const RELEASE_CONFIGURATION = { CURRENT_VERSION: 1 };
+
+export const RELEASE_CONFIGURATION = {CURRENT_VERSION: 1};
 dotenv.config();
 export const ENV = {
     DevMode: process.env.DEV === "true",
@@ -27,6 +28,7 @@ export const ENV = {
 };
 if (!ENV.FsOrigin)
     console.error("FsOrigin was not defined.");
+
 function applicationStartup() {
     const SERVER_CONFIG = JSON.parse(fs.readFileSync(path.resolve(`${ENV.FsOrigin}/yourdash.config.json`)).toString());
     log(`(Start up) EnvironmentVariable FsOrigin detected as: ${path.resolve(ENV.FsOrigin)}`);
@@ -162,36 +164,32 @@ function applicationStartup() {
             log("(Start up) yourdash.config.json has the required properties!");
     }
     const app = express();
-    app.use(bodyParser.json({ limit: "50mb" }));
+    app.use(bodyParser.json({limit: "50mb"}));
     app.use((req, res, next) => {
         res.setHeader("X-Powered-By", "YourDash Instance Index");
         next();
     });
     if (!fs.existsSync(path.resolve(`${ENV.FsOrigin}/cache/images`))) {
         try {
-            fs.mkdirSync(path.resolve(`${ENV.FsOrigin}/cache/images`), { recursive: true });
-        }
-        catch (e) {
+            fs.mkdirSync(path.resolve(`${ENV.FsOrigin}/cache/images`), {recursive: true});
+        } catch (e) {
             log(`[Image Cache Startup] ERROR: unable to create a cache folder, server will no terminate. ${e}`);
             process.exit(1);
         }
-    }
-    else {
-        fs.rmSync(path.resolve(`${ENV.FsOrigin}/cache/images/`), { recursive: true });
+    } else {
+        fs.rmSync(path.resolve(`${ENV.FsOrigin}/cache/images/`), {recursive: true});
         try {
-            fs.mkdirSync(path.resolve(`${ENV.FsOrigin}/cache/images`), { recursive: true });
-        }
-        catch (e) {
+            fs.mkdirSync(path.resolve(`${ENV.FsOrigin}/cache/images`), {recursive: true});
+        } catch (e) {
             log(`[Image Cache Startup] ERROR: unable to create a cache folder, server will no terminate. ${e}`);
             process.exit(1);
         }
     }
     setInterval(() => {
-        fs.rmSync(path.resolve(`${ENV.FsOrigin}/cache/images/`), { recursive: true });
+        fs.rmSync(path.resolve(`${ENV.FsOrigin}/cache/images/`), {recursive: true});
         try {
-            fs.mkdirSync(path.resolve(`${ENV.FsOrigin}/cache/images`), { recursive: true });
-        }
-        catch (e) {
+            fs.mkdirSync(path.resolve(`${ENV.FsOrigin}/cache/images`), {recursive: true});
+        } catch (e) {
             log(`[Image Cache Startup] ERROR: unable to create a cache folder, server will no terminate. ${e}`);
             process.exit(1);
         }
@@ -204,8 +202,7 @@ function applicationStartup() {
     if (ENV.DevMode) {
         log("(Start up) starting with all modules loaded due to the DEV environment variable being set to true.");
         modulesToLoad = fs.readdirSync(path.resolve(`./modules/`));
-    }
-    else {
+    } else {
         modulesToLoad = SERVER_CONFIG.activeModules;
     }
     log(modulesToLoad.toString());
@@ -255,7 +252,7 @@ function applicationStartup() {
             ENV.DevMode ? true : "http://localhost:3000",
             "https://yourdash.vercel.app",
             "https://ddsh.vercel.app",
-            "https://*ewsgit-github.vercel.app",
+            "https://*ewsgit-github.vercel.app.bak",
         ],
     }));
     app.get(`/`, (req, res) => {
@@ -272,8 +269,7 @@ function applicationStartup() {
         }).on("error", (err) => {
             log(`(Start up) CRITICAL ERROR: (${err.name}) ${err.message}`);
         });
-    }
-    else {
+    } else {
         if (!fs.existsSync(`/etc/letsencrypt/live`)) {
             log(`(Start up) CRITICAL ERROR: /etc/letsencrypt/live not found, terminating server software`);
             return process.exit(1);
@@ -300,15 +296,16 @@ function applicationStartup() {
                     const TLSCert = data.toString();
                     https
                         .createServer({
-                        cert: TLSCert,
-                        key: TLSKey,
-                    }, app)
+                            cert: TLSCert,
+                            key: TLSKey,
+                        }, app)
                         .listen(3560);
                 });
             });
         });
     }
 }
+
 startupCheck(() => {
     return applicationStartup();
 });
