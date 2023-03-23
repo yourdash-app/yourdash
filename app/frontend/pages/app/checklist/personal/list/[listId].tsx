@@ -8,7 +8,7 @@ import ListTask from "../../components/ListTask/ListTask";
 import Chiplet from "~/chipletui";
 import ChecklistLayout from "../../components/ChecklistLayout";
 
-function loadList(listId: string, setList: (_value: TasksList) => void) {
+function loadList(listId: string, setList: (_value: any) => void) {
     verifyAndReturnJson(
         SERVER.get(`/checklist/personal/list/${listId}`),
         (data) => {
