@@ -1,0 +1,54 @@
+.component {
+  padding: 0.5rem 1rem;
+  border-radius: var(--button-rounding);
+  background-color: var(--button-bg);
+  color: var(--button-fg);
+  transition: var(--transition);
+  user-select: none;
+  cursor: pointer;
+  border: solid 0.125rem var(--button-bg);
+  box-sizing: border-box;
+
+  &:hover {
+    border: solid 0.125rem #ffffff55;
+    border-radius: var(--button-hover-rounding);
+    background-color: var(--button-hover-bg);
+    color: var(--button-hover-fg);
+  }
+
+  &:active {
+    border-radius: var(--button-active-rounding);
+    background-color: var(--button-active-bg);
+    color: var(--button-active-fg);
+  }
+}
+
+.toggled {
+  border-radius: var(--button-toggled-rounding);
+  color: var(--button-toggled-fg);
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    bottom: 0.05rem;
+    left: 50%;
+    translate: -50%;
+    background-color: var(--accent-color);
+    border-radius: 100rem;
+    height: 0.25rem;
+    width: 2rem;
+  }
+
+  &:hover {
+    border-radius: var(--button-toggled-hover-rounding);
+    background-color: var(--button-toggled-hover-bg);
+    color: var(--button-toggled-hover-fg);
+  }
+
+  &:active {
+    border-radius: var(--button-toggled-active-rounding);
+    background-color: var(--button-toggled-active-bg);
+    color: var(--button-toggled-active-fg);
+  }
+}

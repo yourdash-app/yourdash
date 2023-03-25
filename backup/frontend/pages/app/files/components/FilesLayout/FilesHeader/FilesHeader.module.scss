@@ -1,0 +1,22 @@
+.component {
+    box-sizing: border-box;
+    width: 100% !important;
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+    padding: 0.5rem;
+    background-color: var(--container-bg);
+}
+
+.currentPath {
+    font-size: 1.25rem;
+    color: var(--container-fg);
+}
+
+.segment1 {
+    align-items: center;
+    margin-right: auto;
+}
+
+.createNewFileDialogTitle {
+    margin: 0 2.5rem 0.5rem 0;
+}

@@ -1,0 +1,23 @@
+.component {
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: calc(var(--app-panel-height) - 1rem);
+    margin: 0 0.5rem 0 0;
+    padding-right: 0.5rem;
+    padding-left: 0.5rem;
+    cursor: pointer;
+    user-select: none;
+    transition: var(--transition);
+    border-radius: var(--button-rounding);
+
+    &:hover {
+        transition: var(--transition-fast);
+        background-color: var(--button-hover-bg);
+    }
+
+    &:active {
+        background-color: var(--button-active-bg);
+    }
+}

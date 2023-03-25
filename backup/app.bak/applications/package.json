@@ -1,0 +1,23 @@
+{
+  "name": "yourdash-applications",
+  "version": "0.0.0",
+  "description": "The applications for yourdash",
+  "main": "index.js",
+  "repository": "https://github.com/ewsgit/yourdash",
+  "author": "ewsgit",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "nodemon": "^2.0.22"
+  },
+  "scripts": {
+    "start": "nodemon ."
+  },
+  "nodemonConfig": {
+    "watch": [
+      "./apps/**/*"
+    ],
+    "ext": "json,ts,tsx",
+    "colours": true
+  }
+}

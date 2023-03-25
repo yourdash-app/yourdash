@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+
+    color-scheme: light dark;
+    color: rgba(255, 255, 255, 0.87);
+    background-color: #242424;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: 100%;
+
+    /* uses the rgb color method without alpha values */
+    --theme-50: 238 242 255;
+    --theme-100: 224 231 255;
+    --theme-200: 199 210 254;
+    --theme-300: 165 180 252;
+    --theme-400: 129 140 248;
+    --theme-500: 99 102 241;
+    --theme-600: 79 70 229;
+    --theme-700: 67 56 202;
+    --theme-800: 55 48 163;
+    --theme-900: 49 46 129;
+
+    /* uses the rgb color method without alpha values */
+    --base-50: 249 250 251;
+    --base-100: 243 244 246;
+    --base-200: 229 231 235;
+    --base-300: 209 213 219;
+    --base-400: 156 163 175;
+    --base-500: 107 114 128;
+    --base-600: 75 85 99;
+    --base-700: 55 65 81;
+    --base-800: 31 41 55;
+    --base-900: 17 24 39;
+}
+
+body {
+    background-image: linear-gradient(to bottom right, rgb(var(--base-700) / 1), rgb(var(--base-900) / 1));
+    height: 100vh;
+    overflow: hidden;
+}

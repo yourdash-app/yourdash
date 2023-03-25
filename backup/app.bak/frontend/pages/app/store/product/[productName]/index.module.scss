@@ -1,0 +1,287 @@
+.root {
+    position: relative;
+    top: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    padding-bottom: 1rem;
+    transition: all 350ms ease-in-out;
+
+    > section {
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 100%;
+            }
+        }
+
+        margin-top: 0.5rem;
+        padding-right: 15rem;
+        padding-left: 15rem;
+        transition: var(--transition);
+        animation: 500ms 100ms ease-in-out fadeIn forwards;
+        opacity: 0;
+
+        @media (max-width: 1750px) {
+            padding-right: 10rem;
+            padding-left: 10rem;
+        }
+
+        @media (max-width: 1300px) {
+            padding-right: 7.5rem;
+            padding-left: 7.5rem;
+        }
+
+        @media (max-width: 1000px) {
+            padding-right: 5rem;
+            padding-left: 5rem;
+        }
+
+        @media (max-width: 700px) {
+            padding-right: 1rem;
+            padding-left: 1rem;
+        }
+    }
+}
+
+.productHeader {
+    display: grid;
+    transform: translateY(-25%);
+    grid-template-columns: 1fr auto;
+    gap: 1rem;
+
+    > section:first-child {
+        position: relative;
+        display: grid;
+        align-items: center;
+        padding-top: 1.5rem;
+        padding-bottom: 1.5rem;
+        grid-template-columns: auto auto 1fr;
+
+        > img {
+            height: 10rem;
+            margin-right: 1rem;
+            margin-left: 1rem;
+            padding: 0.5rem;
+            border-radius: 3rem;
+            background-color: var(--background-color);
+            box-shadow: 0 0 0.25rem #00000055;
+
+            &[data-under-development="true"] {
+                margin-right: 1.5rem;
+                margin-left: 1.5rem;
+                padding: 0rem;
+                border-radius: 2.5rem;
+                outline: #db5a3b solid 0.5rem;
+            }
+        }
+
+        > h1 {
+            font-size: 2.75rem;
+            font-weight: 500;
+            overflow: hidden;
+            box-sizing: border-box;
+            width: 100%;
+            margin: 0 auto 0 0;
+            padding-right: 1rem;
+            padding-left: 1rem;
+            white-space: nowrap;
+            letter-spacing: 0.05rem;
+            text-overflow: ellipsis;
+            color: var(--container-fg);
+        }
+    }
+
+    > section:last-child {
+        display: grid;
+        grid-template-columns: auto auto;
+        place-items: center center;
+        gap: 0.5rem;
+
+        > button {
+            height: max-content;
+            padding-right: 2rem;
+            padding-left: 2rem;
+        }
+    }
+
+    @media (max-width: 1250px) {
+        grid-template-columns: 1fr;
+        > section:last-child {
+            grid-template-columns: 1fr 1fr;
+
+            &:not(& > button:nth-child(2)) {
+                grid-template-columns: 1fr;
+            }
+
+            place-items: unset;
+        }
+    }
+
+    @media (max-width: 950px) {
+        > section:last-child {
+            grid-template-columns: 1fr;
+        }
+    }
+}
+
+.installationPopup {
+    z-index: 2;
+    transition: var(--transition);
+    color: var(--card-fg);
+    background-color: var(--card-bg);
+
+    @media (max-width: 1000px) {
+        width: calc(75% - 10rem);
+        height: 75vh;
+    }
+
+    @media (max-width: 700px) {
+        width: calc(85% - 8rem);
+        height: 70vh;
+    }
+
+    @media (max-width: 500px) {
+        width: calc(95% - 5rem);
+        height: 85vh;
+    }
+
+    > div {
+        position: relative;
+        display: grid;
+        box-sizing: border-box;
+        width: 100%;
+        height: 100%;
+        padding: 3rem;
+        grid-template-columns: auto 1fr;
+        gap: 2rem;
+
+        @media (max-width: 1000px) {
+            padding: 2rem;
+            grid-template-columns: 1fr;
+            grid-template-rows: auto 1fr;
+        }
+    }
+
+    > :last-child {
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: 2rem;
+        margin: 1.5rem;
+        aspect-ratio: 1 / 1;
+    }
+}
+
+.installationPopupContent {
+    > div {
+        gap: 1rem;
+        > div {
+            padding-right: 0.5rem;
+            padding-left: 0.5rem;
+
+            > h1 {
+                font-size: 2.5rem;
+                margin: 0;
+                padding-bottom: 0.25rem;
+                color: var(--card-fg);
+            }
+
+            > p {
+                margin: 0;
+                color: var(--card-fg);
+            }
+        }
+    }
+}
+
+.carousel {
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 100%;
+        }
+    }
+
+    max-width: 100%;
+    animation: 500ms 100ms ease-in-out fadeIn forwards;
+    opacity: 0;
+}
+
+.errorPopup {
+    position: fixed;
+    z-index: 10;
+    top: 50%;
+    left: 50%;
+    width: max-content;
+    transform: translate(-50%, -50%);
+    border-radius: 1.5rem;
+
+    > div {
+        padding: 0.5rem;
+        text-align: center;
+
+        > h3 {
+            font-size: 3rem;
+            margin-top: 0;
+        }
+
+        > p {
+            margin-bottom: 1.5rem;
+            padding-right: 1.5rem;
+            padding-left: 1.5rem;
+        }
+
+        > [data-component-type-icon] {
+            width: 100%;
+            aspect-ratio: 3 / 2;
+        }
+    }
+}
+
+.description {
+    > div {
+        > p {
+            margin: 0;
+            padding-bottom: 1.5rem;
+
+            &:last-child {
+                padding-bottom: 0;
+            }
+        }
+    }
+}
+
+.descriptionNotice {
+    max-width: max-content;
+    margin: 0 auto 1rem !important;
+    padding: 0.5rem 0.75rem !important;
+    border-radius: var(--card-compact-rounding);
+    outline: solid var(--color-warn-bg) 0.2rem;
+}
+
+.sectionTitle {
+    font-size: 1.5rem;
+    margin-top: 1rem;
+    margin-bottom: -0.5rem;
+    color: var(--container-fg);
+}
+
+.extensionsCarousel {
+    max-height: 10rem;
+}
+
+.extensionsPage {
+    display: grid;
+    box-sizing: border-box;
+    padding: 1rem 2.5rem;
+    grid-template-columns: repeat(3, 1fr);
+}

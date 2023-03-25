@@ -1,9 +1,9 @@
 import React from "react";
-import YourDashLogo from "./../../public/assets/productLogos/yourdash.svg"
 
 const Header: React.FC = () => {
-  return <div className={ `sticky top-0 w-full h-16 bg-base-800 flex items-center justify-center` }>
-    <img src={ YourDashLogo } className={ `ml-auto h-12 pr-2` } alt={ `` }/>
+  return <div
+      className={ `sticky top-0 w-full h-16 bg-base-800 flex items-center justify-center bg-opacity-75 backdrop-blur-lg` }>
+    <img src={ `/assets/productLogos/yourdash.svg` } className={ `ml-auto h-12 pr-2` } alt={ `` }/>
     <h2 className={ `font-bold text-3xl` }>YourDash</h2>
     <section className={ `ml-auto mr-auto gap-2 flex items-center justify-center` }>
       <a href={ `/` }

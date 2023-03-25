@@ -1,0 +1,78 @@
+.root {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  height: 100%;
+  color: var(--container-fg);
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+  }
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 3rem;
+  background-color: var(--container-bg);
+  grid-column: 1 / 2;
+
+  @media (max-width: 900px) {
+    grid-column: unset;
+    align-items: center;
+    justify-content: center;
+  }
+
+  @media (max-width: 500px) {
+    padding: 2rem 1rem 1rem;
+  }
+
+  > button {
+    width: 100%;
+  }
+
+  > h1 {
+      margin-top: 0;
+      text-align: center;
+      white-space: nowrap;
+  }
+}
+
+.sidebarCollapsibleButtons {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+  width: 100%;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.main {
+    display: grid;
+    box-sizing: border-box;
+    margin-top: auto;
+    margin-bottom: auto;
+    padding-right: 3rem;
+    padding-left: 3rem;
+    grid-template-rows: auto 1fr;
+    grid-column: 2 / 4;
+
+    @media (max-width: 900px) {
+        align-items: center;
+        justify-content: center;
+        margin-top: 0;
+        grid-column: unset;
+    }
+
+    @media (max-width: 500px) {
+        padding: 1rem;
+    }
+}
+
+.recentProjects {
+  max-width: 20rem;
+}

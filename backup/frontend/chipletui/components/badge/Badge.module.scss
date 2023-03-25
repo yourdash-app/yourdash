@@ -1,0 +1,14 @@
+.component {
+  position: relative;
+}
+
+.indicator {
+  background-color: red;
+  padding: 0.125rem 0.25rem;
+  top: 0.125rem;
+  left: calc(100% - 0.25rem);
+  position: absolute;
+  color: white;
+  border-radius: 100rem;
+  font-size: 0.75rem;
+}

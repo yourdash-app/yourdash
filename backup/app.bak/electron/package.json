@@ -1,0 +1,22 @@
+{
+  "name": "electron",
+  "version": "0.0.0",
+  "description": "the electron application that wraps yourdash",
+  "main": "dist-electron/main.js",
+  "repository": "https://github.com/ewsgit/yourdash",
+  "author": "ewsgit",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "@types/node": "^18.15.3",
+    "copyfiles": "^2.4.1",
+    "cross-env": "^7.0.3",
+    "electron": "^23.1.3",
+    "vite": "^4.1.4",
+    "vite-electron-plugin": "^0.8.2",
+    "vite-plugin-electron-renderer": "^0.12.1"
+  },
+  "scripts": {
+    "start": "cross-env DEV=true vite"
+  }
+}

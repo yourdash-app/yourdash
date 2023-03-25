@@ -1,0 +1,80 @@
+.header {
+  display: flex;
+  max-height: 14rem;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-sizing: border-box;
+
+  > section {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #171717;
+    height: max-content;
+    width: max-content;
+    padding: 3rem;
+    border-radius: 2rem;
+
+    > h1 {
+      color: white;
+      font-weight: 700;
+      font-size: 5rem;
+      margin: 0;
+      font-family: Arial, serif;
+    }
+
+    > span {
+      position: absolute;
+      right: 1.5rem;
+      bottom: 1.5rem;
+      transform: rotate(-10deg);
+      font-weight: 700;
+      font-size: 3rem;
+      color: #d16150;
+      font-family: Arial, serif;
+    }
+  }
+}
+
+.root {
+  height: 100%;
+  width: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 1rem;
+  padding: 1rem;
+  box-sizing: border-box;
+  place-items: center;
+}
+
+.main {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: var(--background-color);
+  border-radius: 1rem;
+  max-width: 60rem;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.projectCard {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  place-items: center flex-start;
+
+  > h2 {
+    margin: 0;
+  }
+}
+
+.sidebar {
+  > button {
+    padding-left: 4rem;
+    padding-right: 4rem;
+  }
+}
