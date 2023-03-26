@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Start Development" type="CompoundRunConfigurationType">
+  <configuration default="false" name="Start Web" type="CompoundRunConfigurationType">
     <toRun name="start-client" type="js.build_tools.npm" />
     <toRun name="start-server" type="js.build_tools.npm" />
     <toRun name="sync-applications" type="js.build_tools.npm" />

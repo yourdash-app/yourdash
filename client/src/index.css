@@ -4,12 +4,12 @@
 
 :root {
     font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-    line-height: 1.5;
     font-weight: 400;
+    line-height: 1.5;
 
-    color-scheme: light dark;
     color: rgba(255, 255, 255, 0.87);
     background-color: #242424;
+    color-scheme: light dark;
 
     font-synthesis: none;
     text-rendering: optimizeLegibility;
@@ -43,7 +43,88 @@
 }
 
 body {
-    background-image: linear-gradient(to bottom right, rgb(var(--base-700) / 1), rgb(var(--base-900) / 1));
-    height: 100vh;
     overflow: hidden;
+    height: 100vh;
+    background-image: linear-gradient(to bottom right, rgb(var(--base-700) / 1), rgb(var(--base-900) / 1));
+}
+
+.animate__animated.animate__delay-250ms {
+    -webkit-animation-delay: 0.25s;
+    animation-delay: 0.25s;
+}
+
+.animate__animated.animate__delay-500ms {
+    -webkit-animation-delay: 0.5s;
+    animation-delay: 0.5s;
+}
+
+.animate__animated.animate__delay-750ms {
+    -webkit-animation-delay: 0.75s;
+    animation-delay: 0.75s;
+}
+
+.animate__animated.animate__delay-1250ms {
+    -webkit-animation-delay: 1.25s;
+    animation-delay: 1.25s;
+}
+
+.animate__animated.animate__delay-1500ms {
+    -webkit-animation-delay: 1.5s;
+    animation-delay: 1.5s;
+}
+
+.animate__animated.animate__delay-1750ms {
+    -webkit-animation-delay: 1.75s;
+    animation-delay: 1.75s;
+}
+
+.animate__animated.animate__250ms {
+    -webkit-animation-delay: 0.25s;
+    animation-delay: 0.25s;
+}
+
+.animate__animated.animate__500ms {
+    -webkit-animation-delay: 0.5s;
+    animation-delay: 0.5s;
+}
+
+.animate__animated.animate__750ms {
+    -webkit-animation-delay: 0.75s;
+    animation-delay: 0.75s;
+}
+
+.animate__animated.animate__1000ms {
+    -webkit-animation-delay: 1s;
+    animation-delay: 1s;
+}
+
+.animate__animated.animate__1250ms {
+    -webkit-animation-delay: 1.25s;
+    animation-delay: 1.25s;
+}
+
+.animate__animated.animate__1500ms {
+    -webkit-animation-delay: 1.5s;
+    animation-delay: 1.5s;
+}
+
+.animate__animated.animate__1750ms {
+    -webkit-animation-delay: 1.75s;
+    animation-delay: 1.75s;
+}
+
+.animate__animated.animate__2000ms {
+    -webkit-animation-delay: 2s;
+    animation-delay: 2s;
+}
+
+.animate__animated.animate__2500ms {
+    -webkit-animation-delay: 2.5s;
+    animation-delay: 2.5s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-delay: unset !important;
+    }
 }
