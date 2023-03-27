@@ -12,15 +12,20 @@ const TextInput: React.FC<ITextInput> = ({ onChange, title, mustMatchRegex, plac
       !mustMatchRegex
   )
   
-  return <div className={ `relative rounded-lg transition-all overflow-hidden ${ !!mustMatchRegex && (
-      valid
-      ? "hover:outline-2 focus-within:outline-2 outline outline-0 outline-green-400"
-      : "outline-2 outline-red-400 outline"
-  ) }` }>
-    <span className={ `bg-inherit` }>{ title }</span>
+  return <div className={ `relative transition-all` }>
+    <span
+        className={ `pl-2 pr-2 bg-base-700 absolute -top-1 left-4 text-sm z-10 [line-height:.65rem] select-none text-base-400` }
+    >
+      { title }
+    </span>
     <input
         placeholder={ placeholder }
-        className={ `w-full pl-2 pt-1 pb-1 pr-2 border-none outline-none` }
+        className={ `w-full pl-2 pt-1 pb-1 pr-2 outline-none relative z-0 rounded-lg bg-base-700 transition-all ${ !!mustMatchRegex &&
+                                                                                                                   (
+                                                                                                                       valid
+                                                                                                                       ? "hover:border-green-400 focus-within:border-green-400 border-2 border-base-600"
+                                                                                                                       : "border-2 border-red-400"
+                                                                                                                   ) }` }
         type={ `text` }
         onChange={ (e) => {
           const value = e.currentTarget.value

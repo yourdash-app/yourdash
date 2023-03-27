@@ -14,8 +14,9 @@ const Dialog: React.FC<IDialog> = ({ children }) => {
                                                                                     ? "items-end"
                                                                                     : "items-center" } bg-black bg-opacity-10` }>
     <main className={ `bg-base-700 overflow-hidden ${ isMobile
-                                                      ? ""
-                                                      : "max-w-5xl rounded-none lg:rounded-xl flex flex-col gap-2" }` }>
+                                                      ? "rounded-none rounded-t-xl"
+                                                      : "max-w-5xl rounded-none sm:rounded-xl sm:w-[unset] w-full" +
+                                                        " flex flex-col gap-2" }` }>
       { children }
     </main>
   </div>
