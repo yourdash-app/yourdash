@@ -1,0 +1,76 @@
+.component {
+    font-family: "Roboto", sans-serif;
+    font-size: 1rem;
+    box-sizing: border-box;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    user-select: none;
+    transition: var(--transition);
+    color: var(--button-fg);
+    border: solid 0.125rem var(--button-bg);
+    border-radius: var(--button-rounding);
+    background-color: var(--button-bg);
+
+    &:hover {
+        transition: var(--transition-fast) !important;
+        color: var(--button-hover-fg);
+        border: solid 0.125rem #ffffff55;
+        border-radius: var(--button-hover-rounding);
+        background-color: var(--button-hover-bg);
+
+        &[disabled] {
+            cursor: not-allowed;
+            color: var(--button-fg);
+            border-radius: var(--button-rounding);
+            background-color: var(--button-bg);
+        }
+    }
+
+    &:active {
+        color: var(--button-active-fg);
+        border-radius: var(--button-active-rounding);
+        background-color: var(--button-active-bg);
+
+        &[disabled] {
+            cursor: not-allowed;
+            color: var(--button-fg);
+            border-radius: var(--button-rounding);
+            background-color: var(--button-bg);
+        }
+    }
+}
+
+.vibrant {
+    box-sizing: border-box;
+    color: var(--button-vibrant-fg);
+    border: solid 0.125rem var(--button-vibrant-bg);
+    border-radius: var(--button-vibrant-rounding);
+    background-color: var(--button-vibrant-bg);
+
+    &:hover {
+        color: var(--button-hover-vibrant-fg);
+        border: solid 0.125rem #ffffff55;
+        border-radius: var(--button-vibrant-hover-rounding);
+        background-color: var(--button-vibrant-hover-bg);
+
+        &[disabled] {
+            cursor: not-allowed;
+            color: var(--button-vibrant-fg);
+            border-radius: var(--button-vibrant-rounding);
+            background-color: var(--button-vibrant-bg);
+        }
+    }
+
+    &:active {
+        color: var(--button-vibrant-active-fg);
+        border-radius: var(--button-vibrant-active-rounding);
+        background-color: var(--button-vibrant-active-bg);
+
+        &[disabled] {
+            cursor: not-allowed;
+            color: var(--button-vibrant-fg);
+            border-radius: var(--button-vibrant-rounding);
+            background-color: var(--button-vibrant-bg);
+        }
+    }
+}

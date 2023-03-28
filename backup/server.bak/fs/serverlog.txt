@@ -1,0 +1,22 @@
+----- [YOURDASH SERVER LOG] -----
+(Start up) EnvironmentVariable FsOrigin detected as: C:\Users\ewsgi\WebstormProjects\yourdash\projects\server\fs
+(Start up) EnvironmentVariable Dev detected as: true
+(Start up) yourdash.config.json has the required properties!
+(Start up) starting with all modules loaded due to the DEV environment variable being set to true.
+checklist,core,files,flow,store,tasks,userManagement
+(Start up) Web server now online :D
+(Start up) loaded module: checklist
+(Start up) loaded module: core
+(Start up) loaded module: files
+(Start up) loaded module: store
+(Start up) loaded module: tasks
+(Start up) loaded module: flow
+(Start up) loaded module: userManagement
+20:28:41  GET  200 /api/core/panel/user/profile/picture
+20:28:41  GET  200 /api/core/panel/launcher/apps
+20:28:41  GET  200 /api/core/instance/logo
+20:28:41  GET  200 /api/userManagement/current/user
+20:28:41  GET  200 /api/core/panel/quick-shortcuts/
+20:28:41  GET  200 /api/core/panel/background-image/admin/zFeLg4qmg6
+20:28:44  GET  200 /api/userManagement/current/user
+20:28:44  GET  200 /api/checklist/personal/lists
