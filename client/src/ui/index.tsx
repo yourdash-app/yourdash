@@ -1,6 +1,5 @@
 import Badge from "./components/badge/Badge";
 import Button from "./components/button/Button";
-import ButtonLink from "./components/buttonLink/ButtonLink";
 import Card from "./components/card/Card";
 import Carousel from "./components/carousel/Carousel";
 import Chip from "./components/chip/Chip";
@@ -25,7 +24,6 @@ import ToggleSwitch from "./components/toggleSwitch/ToggleSwitch";
 const Chiplet = {
   Badge,
   Button,
-  ButtonLink,
   Card,
   Carousel,
   Chip,
