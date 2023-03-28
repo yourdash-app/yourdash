@@ -19,8 +19,9 @@ import Tags from "./components/tags/Tags";
 import TextBox from "./components/textBox/TextBox";
 import TextInput from "./components/textInput/TextInput";
 import ToggleSwitch from "./components/toggleSwitch/ToggleSwitch";
+import "./ui.scss"
 
-const Chiplet = {
+const UI = {
   Badge,
   Button,
   Card,
@@ -44,4 +45,4 @@ const Chiplet = {
   ToggleSwitch,
 }
 
-export default Chiplet
+export default UI
