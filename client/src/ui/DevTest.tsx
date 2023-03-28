@@ -1,7 +1,4 @@
 import React from "react"
-import Button from "./button/Button";
-import MajorButton from "./button/MajorButton";
-import Card from "./card/Card";
 import Dialog from "./dialog/Dialog";
 import DialogMessage from "./dialog/DialogMessage";
 import NumberInput from "./input/NumberInput";
