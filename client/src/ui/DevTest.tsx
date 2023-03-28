@@ -1,7 +1,4 @@
 import React from "react"
-import Button from "./button/Button";
-import MajorButton from "./button/MajorButton";
-import Card from "./card/Card";
 import Dialog from "./dialog/Dialog";
 import DialogMessage from "./dialog/DialogMessage";
 import NumberInput from "./input/NumberInput";
@@ -29,9 +26,6 @@ const DevTest: React.FC = () => {
         message={ "The message: Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum excepturi, ipsam magnam nam nemo possimus quasi quibusdam quo repellendus ullam." }
         onConfirm={ () => { return 0 } }
     />
-    <Card/>
-    <Button/>
-    <MajorButton/>
   </>
 }
 
