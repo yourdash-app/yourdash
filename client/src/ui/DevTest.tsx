@@ -26,9 +26,6 @@ const DevTest: React.FC = () => {
         message={ "The message: Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum excepturi, ipsam magnam nam nemo possimus quasi quibusdam quo repellendus ullam." }
         onConfirm={ () => { return 0 } }
     />
-    <Card/>
-    <Button/>
-    <MajorButton/>
   </>
 }
 
