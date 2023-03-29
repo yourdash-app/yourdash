@@ -1,19 +1,19 @@
+import React from "react";
 import styles from './Button.module.scss';
 
 export interface IButton extends React.ComponentPropsWithoutRef<"button"> {
-  vibrant?: boolean;
   className?: string;
 }
 
 const Button: React.FC<IButton> = ({
-                                     children, vibrant, className, ...extraProps
+                                     children, className, ...extraProps
                                    }) => {
   return (
-    <button
-      type="button"
-      { ...extraProps }
-      className={ `${styles.component} ${vibrant ? styles.vibrant : ""} ${className}` }
-    >{children}</button>
+      <button
+          type="button"
+          { ...extraProps }
+          className={ `${ styles.component } ${ className }` }
+      >{ children }</button>
   );
 };
 

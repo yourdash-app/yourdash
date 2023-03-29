@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Header from "./components/Header";
-import UI from "./ui/index";
+import * as UI from "./ui/index";
 
 const Root: React.FC = () => {
   const [ taglineInd, setTaglineInd ] = useState( 0 )

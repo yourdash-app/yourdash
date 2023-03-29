@@ -1,14 +1,10 @@
 import 'animate.css'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import {
-  createHashRouter,
-  createRoutesFromElements,
-  Route,
-  RouterProvider
-} from "react-router-dom";
+import { createHashRouter, createRoutesFromElements, Route, RouterProvider } from "react-router-dom";
 import ComingSoon from "./ComingSoon";
 import ErrorElement from "./ErrorElement";
+import "./ui/ui.scss"
 import './index.css'
 import LoginPage from "./login/LoginPage";
 import Root from "./Root";

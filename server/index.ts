@@ -1,4 +1,5 @@
 import express from "express"
+import cors from "cors"
 
 console.log( `----------------------------------------------------\n                      YourDash                      \n----------------------------------------------------` )
 
@@ -9,6 +10,7 @@ export enum YourDashServerDiscoveryStatus {
 
 const app = express()
 app.use( express.json( { limit: "50mb" } ) )
+app.use( cors() )
 
 app.get( `/`, (req, res) => {
   return res.send( `Hello from the yourdash server software` )

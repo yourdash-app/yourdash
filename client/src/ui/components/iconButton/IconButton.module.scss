@@ -1,43 +1,53 @@
 .component {
-    padding: 0.35rem;
-    font-family: "Roboto", sans-serif;
-    height: 2.25rem;
-    width: 2.25rem;
+  font-family: "Roboto", sans-serif;
+  display: flex;
+  overflow: hidden;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0.35rem;
+  cursor: pointer;
+  user-select: none;
+  transition: var(--transition);
+  color: rgb(var(--button-fg));
+  border: solid 0.125rem rgb(var(--button-border));
+  border-radius: var(--button-rounding);
+  background-color: rgb(var(--button-bg));
+  aspect-ratio: 1 / 1;
+
+  &:hover {
+    transition: var(--transition-fast) !important;
+    color: rgb(var(--button-hover-fg));
+    border: solid 0.125rem rgb(var(--button-hover-border));
+    border-radius: var(--button-hover-rounding);
+    background-color: rgb(var(--button-hover-bg));
+
+    &[disabled] {
+      cursor: not-allowed;
+      color: rgb(var(--button-fg));
+      border-radius: var(--button-rounding);
+      background-color: rgb(var(--button-bg));
+    }
+  }
+
+  &:active {
+    color: rgb(var(--button-active-fg));
+    border: solid 0.125rem rgb(var(--button-active-border));
+    border-radius: var(--button-active-rounding);
+    background-color: rgb(var(--button-active-bg));
+
+    &[disabled] {
+      cursor: not-allowed;
+      color: rgb(var(--button-fg));
+      border-radius: var(--button-rounding);
+      background-color: rgb(var(--button-bg));
+    }
+  }
+
+  > * {
+    height: 100%;
     aspect-ratio: 1 / 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    cursor: pointer;
-    transition: var(--transition);
-    border-radius: var(--button-rounding);
-    background-color: var(--button-bg);
-    color: var(--button-fg);
-    user-select: none;
-    border: solid 0.125rem var(--button-bg);
-    box-sizing: border-box;
-
-    &:hover {
-        border: solid 0.125rem #ffffff55;
-        border-radius: var(--button-hover-rounding);
-        background-color: var(--button-hover-bg);
-        color: var(--button-hover-fg);
-    }
-
-    &:active {
-        border-radius: var(--button-active-rounding);
-        background-color: var(--button-active-bg);
-        color: var(--button-active-fg);
-    }
-
-    &:disabled {
-        border-color: var(--button-bg);
-        color: var(--button-fg);
-        cursor: not-allowed;
-    }
-
-    > * {
-        height: 100%;
-        aspect-ratio: 1 / 1;
-    }
+  }
 }

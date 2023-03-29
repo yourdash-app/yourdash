@@ -10,6 +10,7 @@
   "type": "module",
   "scripts": {
     "start-client": "yarn --cwd ./client dev",
+    "visualize-client-bundle": "yarn --cwd ./client visualize-bundle",
     "start-server": "yarn --cwd ./server dev",
     "sync-applications": "nodemon -w ./apps/ --exec node ./toolchain/sync-applications.js",
     "start-desktop": "yarn --cwd ./electron dev",
