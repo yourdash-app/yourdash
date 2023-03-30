@@ -72,19 +72,19 @@ const Root: React.FC = () => {
       <div className={ `relative md:block hidden` }>
         <img
             className={ `w-24 absolute top-36 left-56 aspect-square animate__animated animate__bounceInDown animate__1000ms` }
-            src={ `/assets/promo-apps/store.avif` }
+            src={ `/assets/promo-apps/store.png` }
             alt={ `` }/>
         <img
             className={ `w-24 absolute top-44 left-36 aspect-square animate__animated animate__bounceInDown animate__750ms` }
-            src={ `/assets/promo-apps/code-studio.avif` }
+            src={ `/assets/promo-apps/code-studio.png` }
             alt={ `` }/>
         <img
             className={ `w-24 absolute top-36 left-16 aspect-square animate__animated animate__bounceInDown animate__500ms` }
-            src={ `/assets/promo-apps/checklist.avif` }
+            src={ `/assets/promo-apps/checklist.png` }
             alt={ `` }/>
         <img
             className={ `w-24 absolute top-40 left-0 aspect-square animate__animated animate__bounceInDown animate__250ms` }
-            src={ `/assets/promo-apps/files.avif` }
+            src={ `/assets/promo-apps/files.png` }
             alt={ `` }/>
       </div>
     </section>
