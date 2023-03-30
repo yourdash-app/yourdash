@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import * as Ui from "./../ui"
+import * as Ui from "./../ui";
 
 const LoginPage: React.FC = () => {
-  const [ failure, setFailure ] = useState( false )
-  const [ instanceUrl, setInstanceUrl ] = useState( `http://example.com` )
+  const [ failure, setFailure ] = useState( false );
+  const [ instanceUrl, setInstanceUrl ] = useState( `http://example.com` );
   
   return <>
     <Ui.Card className={ `fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col gap-2` }>
@@ -12,14 +12,14 @@ const LoginPage: React.FC = () => {
           title={ "test title" }
           onChange={ (value) => {
             if (value.indexOf( ":" ) === -1) {
-              setInstanceUrl( value )
+              setInstanceUrl( value );
             } else {
-              setInstanceUrl( `${ value }:3560` )
+              setInstanceUrl( `${ value }:3560` );
             }
           } }
           mustMatchRegex={ /^(?:https?:\/\/)?(?:\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(?::\d+)?|localhost(?::\d+)?|(?!.*\.$)[\w.-]+\.[a-z]{2,})(?::\d+)?$/ }
           placeholder={ `https://example.com` }
-      />
+      ></Ui.TextInput>
       <Ui.Button
           className={ `w-full pt-2 pb-2 pl-4 pr-4 hover:bg-theme-600 active:bg-theme-500 bg-theme-700 transition-colors select-none cursor-pointer` }
           onClick={ () => {
@@ -27,10 +27,10 @@ const LoginPage: React.FC = () => {
             .then( resp => resp.json() )
             .then( resp => {
               if (resp.status === 1 && resp.type === "yourdash") {
-                localStorage.setItem( "current_server", instanceUrl )
-                window.location.href = "#/login/server"
+                localStorage.setItem( "current_server", instanceUrl );
+                window.location.href = "#/login/server";
               }
-            } )
+            } );
           } }>
         Continue
       </Ui.Button>
@@ -39,7 +39,7 @@ const LoginPage: React.FC = () => {
       <img src={ `/assets/productLogos/yourdash.svg` } className={ `h-full pt-2 pb-2` } alt={ `` }/>
       <h3 className={ `font-bold text-3xl` }>YourDash</h3>
     </header>
-  </>
-}
+  </>;
+};
 
-export default LoginPage
+export default LoginPage;
