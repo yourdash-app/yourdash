@@ -2,7 +2,7 @@ name: Deploy GitHub Pages to external repository
 
 on:
   push:
-    branches: [ "gh-pages" ]
+    branches: [ "main" ]
 
 jobs:
   build:
