@@ -1,10 +1,9 @@
-export default function getJson(
-    type: "GET" | "DELETE" | "POST", path: string, cb: (response: object) => void,
-    failure?: (response: object) => void
+export default function getJson(path: string, cb: (response: any) => void,
+                                failure?: (response: object) => void
 ): void {
   const serverUrl = localStorage.getItem( "current_server" )
   
-  fetch( `${ serverUrl }${ path }`, { method: type } )
+  fetch( `${ serverUrl }${ path }`, { method: "GET" } )
   .then( resp => resp.json() )
   .then( resp => {
     if (resp?.error) {
@@ -18,13 +17,12 @@ export default function getJson(
   } )
 }
 
-export function postJson(
-    type: "GET" | "DELETE" | "POST", path: string, cb: (response: object) => void,
-    failure?: (response: object) => void
+export function postJson(path: string, cb: (response: any) => void,
+                         failure?: (response: object) => void
 ): void {
   const serverUrl = localStorage.getItem( "current_server" )
   
-  fetch( `${ serverUrl }${ path }`, { method: type } )
+  fetch( `${ serverUrl }${ path }`, { method: "POST" } )
   .then( resp => resp.json() )
   .then( resp => {
     if (resp?.error) {
@@ -38,13 +36,12 @@ export function postJson(
   } )
 }
 
-export function deleteJson(
-    type: "GET" | "DELETE" | "POST", path: string, cb: (response: object) => void,
-    failure?: (response: object) => void
+export function deleteJson(path: string, cb: (response: any) => void,
+                           failure?: (response: object) => void
 ): void {
   const serverUrl = localStorage.getItem( "current_server" )
   
-  fetch( `${ serverUrl }${ path }`, { method: type } )
+  fetch( `${ serverUrl }${ path }`, { method: "DELETE" } )
   .then( resp => resp.json() )
   .then( resp => {
     if (resp?.error) {

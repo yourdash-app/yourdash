@@ -1,11 +1,17 @@
 import express from "express";
 import cors from "cors";
+import * as fs from "fs";
+import path from "path";
+import YourDashUser from "./core/user.js";
 console.log(`----------------------------------------------------\n                      YourDash                      \n----------------------------------------------------`);
 export var YourDashServerDiscoveryStatus;
 (function (YourDashServerDiscoveryStatus) {
     YourDashServerDiscoveryStatus[YourDashServerDiscoveryStatus["MAINTENANCE"] = 0] = "MAINTENANCE";
     YourDashServerDiscoveryStatus[YourDashServerDiscoveryStatus["NORMAL"] = 1] = "NORMAL";
 })(YourDashServerDiscoveryStatus || (YourDashServerDiscoveryStatus = {}));
+if (!fs.existsSync(path.resolve(`./fs/`))) {
+    fs.cpSync(path.resolve(`./default/fs/`), path.resolve(`./fs/`), { recursive: true });
+}
 const app = express();
 app.use(express.json({ limit: "50mb" }));
 app.use(cors());
@@ -22,6 +28,24 @@ app.get(`/test`, (req, res) => {
         default:
             console.error(`discovery status returned an invalid value`);
             return res.json({ status: YourDashServerDiscoveryStatus.MAINTENANCE, type: "yourdash" });
+    }
+});
+app.get(`/login/background`, (req, res) => {
+    return res.sendFile(path.resolve(`./fs/login_background.avif`));
+});
+app.get(`/login/user/:username/avatar`, (req, res) => {
+    const user = new YourDashUser(req.params.username);
+    return res.sendFile(path.resolve(user.getPath(), `login_avatar.avif`));
+});
+app.get(`/login/user/:username`, (req, res) => {
+    const user = new YourDashUser(req.params.username);
+    if (user.exists()) {
+        return res.json({
+            name: user.getName()
+        });
+    }
+    else {
+        return res.json({ error: `Coming soon...` });
     }
 });
 app.listen(3560, () => {

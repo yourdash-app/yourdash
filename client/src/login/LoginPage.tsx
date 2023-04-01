@@ -1,15 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as Ui from "./../ui";
 
 const LoginPage: React.FC = () => {
   const [ failure, setFailure ] = useState( false );
   const [ instanceUrl, setInstanceUrl ] = useState( `http://example.com` );
   
+  useEffect( () => {
+    if (localStorage.getItem( "current_server" ) && localStorage.getItem( "current_server" ) !== "") {
+      window.location.href = "#/login/server"
+    }
+  }, [] )
+  
   return <>
     <Ui.Card className={ `fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col gap-2` }>
       <h1 className={ `text-3xl text-white pb-3` }>Please input your instance's url</h1>
       <Ui.TextInput
-          title={ "test title" }
+          label={ "test title" }
           onChange={ (value) => {
             if (value.indexOf( ":" ) === -1) {
               setInstanceUrl( value );
