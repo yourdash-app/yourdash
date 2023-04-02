@@ -3,7 +3,7 @@
     "watch": true,
     "composite": true,
     "module": "ESNext",
-    "moduleResolution": "Node",
+    "moduleResolution": "NodeNext",
     "allowSyntheticDefaultImports": true,
     "target": "ESNext",
     "useDefineForClassFields": true,

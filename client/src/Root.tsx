@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Header from "./components/Header";
+import * as UI from "./ui/index";
 
 const Root: React.FC = () => {
   const [ taglineInd, setTaglineInd ] = useState( 0 )
@@ -62,9 +63,9 @@ const Root: React.FC = () => {
         </div>
         <div
             className={ `flex gap-4 pt-8 items-center justify-center animate__animated animate__fadeIn animate__delay-750ms` }>
-          <a href={ `/login` }
+          <a href={ `#/login` }
              className={ `pl-4 pr-4 pb-1.5 pt-1.5 hover:bg-theme-500 active:bg-theme-400 bg-theme-600 transition-colors select-none cursor-pointer rounded-full animate__animated animate__tada animate__delay-1s` }>Login</a>
-          <a href={ `/login/signup` }
+          <a href={ `#/login/signup` }
              className={ `hover:text-theme-500 active:text-theme-400 text-theme-200 transition-colors select-none cursor-pointer` }>Signup</a>
         </div>
       </div>
@@ -86,6 +87,19 @@ const Root: React.FC = () => {
             src={ `/assets/promo-apps/files.png` }
             alt={ `` }/>
       </div>
+    </section>
+    {/*TODO: fix css styling defaults*/ }
+    <section
+        className={ `text-3xl font-semibold pt-16 flex gap-4 ml-auto mr-auto w-max` }>
+      <UI.Card>
+        <h1>Host your own</h1>
+      </UI.Card>
+      <UI.Card>
+        <h1>Limitless personalization</h1>
+      </UI.Card>
+    </section>
+    <section className={ `flex items-center justify-center text-3xl font-semibold pt-16` }>
+      Coming soon...
     </section>
     <section className={ `flex items-center justify-center text-3xl font-semibold pt-16` }>
       Coming soon...

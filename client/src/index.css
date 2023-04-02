@@ -40,6 +40,35 @@
     --base-700: 55 65 81;
     --base-800: 31 41 55;
     --base-900: 17 24 39;
+
+    /*
+        Default theme variables
+
+        - input focus (outline)
+        - button background and foreground and border
+        - button major variant
+        - separator
+        - handle
+        - success and failure, normal, hover and active
+    */
+
+    --input-focus-outline: 0.25rem solid #459;
+    --input-focus-outline-active: 0.25rem solid #56a;
+
+    --container-bg: var(--base-700);
+    --container-fg: var(--base-50);
+
+    --button-bg: var(--base-700);
+    --button-fg: var(--base-200);
+    --button-border: var(--base-600);
+
+    --button-hover-bg: var(--base-600);
+    --button-hover-fg: var(--base-100);
+    --button-hover-border: var(--base-500);
+
+    --button-active-bg: var(--base-500);
+    --button-active-fg: var(--base-50);
+    --button-active-border: var(--base-400);
 }
 
 body {

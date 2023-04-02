@@ -1,42 +1,41 @@
 .component {
-    font-family: 'Roboto', sans-serif;
-    font-size: 1rem;
-    box-sizing: border-box;
-    padding: 1rem;
-    transition: var(--transition);
-    color: var(--card-fg);
-    border: none;
-    border-radius: var(--card-rounding);
-    background-color: var(--card-bg);
-    box-shadow: 0 0 1rem #00000055;
+  font-family: 'Roboto', sans-serif;
+  font-size: 1rem;
+  box-sizing: border-box;
+  padding: 1rem;
+  transition: var(--transition);
+  color: rgb(var(--container-fg));
+  border: none;
+  border-radius: var(--card-rounding);
+  background-color: rgb(var(--container-bg));
+  box-shadow: 0 0 0.5rem #00000044;
 
-    &:hover {
-        transition: var(--transition-fast) !important;
-    }
+  &:hover {
+    transition: var(--transition-fast) !important;
+  }
 }
 
 .clickable {
-    display: flex;
-    height: auto;
-    padding: 0.75rem;
-    cursor: pointer;
-    user-select: none;
-    transition: var(--transition);
-    color: var(--card-fg);
-    border: solid 0.125rem var(--card-bg);
+  display: flex;
+  height: auto;
+  padding: 0.75rem;
+  cursor: pointer;
+  user-select: none;
+  transition: var(--transition);
+  color: rgb(var(--container-fg));
+  border: solid 0.125rem rgb(var(--container-bg));
+  border-radius: var(--card-rounding);
+  background-color: rgb(var(--container-bg));
 
-    border-radius: var(--card-rounding);
+  &:hover {
+    border: solid 0.125rem #ffffff55;
+  }
 
-    background-color: var(--card-bg);
-    box-shadow: 0 0 0.5rem #00000055;
-    &:hover {
-        border: solid 0.125rem #ffffff55;
-    }
-    place-items: center;
+  place-items: center;
 }
 
 .compact {
-    padding: 0.5rem;
-    border-radius: var(--card-compact-rounding);
-    box-shadow: 0 0 0.5rem #00000055;
+  padding: 0.5rem;
+  border-radius: var(--card-compact-rounding);
+  box-shadow: 0 0 0.25rem #00000044;
 }
