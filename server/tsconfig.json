@@ -12,6 +12,12 @@
     ],
     "allowJs": false,
     "skipLibCheck": true,
-    "esModuleInterop": false
-  }
+    "esModuleInterop": false,
+    "sourceMap": true
+  },
+  "include": [
+    "index.ts",
+    "./core/**/*.ts",
+    "./apps/**/*.ts"
+  ]
 }

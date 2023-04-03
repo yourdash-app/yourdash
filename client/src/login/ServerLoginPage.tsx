@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Button, Card, Column, IconButton, TextInput } from "../ui/index";
-import getJson from "../helpers/fetch";
+import { Button, Card, Column, Dialog, IconButton, TextInput } from "../ui/index";
+import getJson, { postJson } from "../helpers/fetch";
 
 const ServerLoginPage: React.FC = () => {
   const [ selectedUser, setSelectedUser ] = useState<null | string>( null );
-  const [ name, setName ] = useState<{ first: string, middle: string, last: string }>( {
-    first: "Er", middle: "r", last: "or"
+  const [ name, setName ] = useState<{ first: string, last: string }>( {
+    first: "Err", last: "or"
   } );
   const [ serverUrl, setServerUrl ] = useState<null | string>( null )
   
@@ -34,11 +34,12 @@ export default ServerLoginPage;
 const SelectUser: React.FC<{
   setSelectedUser: (username: string) => void,
   serverUrl: string,
-  setName: (name: { first: string, middle: string, last: string }) => void
+  setName: (name: { first: string, last: string }) => void
 }> = ({
         setSelectedUser, serverUrl, setName
       }) => {
   const [ username, setUsername ] = useState<null | string>( null );
+  const [ validUser, setValidUser ] = useState( true )
   
   return <>
     <IconButton icon={ "arrow-left-16" }
@@ -57,15 +58,22 @@ const SelectUser: React.FC<{
           getJson( `/login/user/${ username }`, (json: { name: { first: string, middle: string, last: string } }) => {
             setSelectedUser( username );
             setName( json.name )
+          }, () => {
+            setValidUser( false )
           } )
         } }>Continue</Button>
       </Column>
     </Card>
+    {
+        !validUser && <Dialog title={ `This user does not exist` } onClose={ () => setValidUser( true ) }>
+                       <></>
+                   </Dialog>
+    }
   </>;
 };
 
 const LoginAsUser: React.FC<{
-  name: { first: string, middle: string, last: string }, username: string, serverUrl: string
+  name: { first: string, last: string }, username: string, serverUrl: string
 }> = ({ name, username, serverUrl }) => {
   const [ password, setPassword ] = useState<string | null>( null )
   
@@ -77,12 +85,20 @@ const LoginAsUser: React.FC<{
       <img alt={ `` } src={ `${ serverUrl }/login/user/${ username }/avatar` }
            className={ `rounded-xl aspect-square h-64` }/>
       <span
-          className={ `text-center text-2xl tracking-wide font-medium text-base-50` }>{ name.first } { name.middle } { name.last }</span>
+          className={ `text-center text-2xl tracking-wide font-medium text-base-50` }>{ name.first } { name.last }</span>
       <span className={ `text-center text-md text-base-200 tracking-wide font-medium -mt-3` }>{ username }</span>
       <TextInput label={ "password" } onChange={ (value) => {
         setPassword( value )
       } }/>
-      <Button>
+      <Button onClick={ () => {
+        postJson( `/login/user/${ username }/authenticate`, { password }, (response) => {
+          sessionStorage.setItem( `session_token`, response.token )
+          localStorage.setItem( `username`, username )
+          window.location.href = `#/app`
+        }, (err) => {
+          console.error( err )
+        } )
+      } }>
         Login
       </Button>
     </Card>

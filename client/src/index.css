@@ -55,6 +55,8 @@
     --input-focus-outline: 0.25rem solid #459;
     --input-focus-outline-active: 0.25rem solid #56a;
 
+    --application-panel-border: 0.1rem solid rgb(var(--base-600));
+
     --container-bg: var(--base-700);
     --container-fg: var(--base-50);
 
@@ -71,7 +73,7 @@
     --button-active-border: var(--base-400);
 }
 
-body {
+body, #root {
     overflow: hidden;
     height: 100vh;
     background-image: linear-gradient(to bottom right, rgb(var(--base-700) / 1), rgb(var(--base-900) / 1));

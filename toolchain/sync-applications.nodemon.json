@@ -1,0 +1,8 @@
+{
+  "watch": [
+    "./apps/**/client/src/",
+    "./apps/**/server/src/",
+    "./apps/**/application.json"
+  ],
+  "ext": "ts,tsx,json"
+}

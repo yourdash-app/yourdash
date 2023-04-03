@@ -9,20 +9,26 @@ import "./index.css";
 import LoginPage from "./login/LoginPage";
 import Root from "./Root";
 import ServerLoginPage from "./login/ServerLoginPage";
-import { DevSupport } from "@react-buddy/ide-toolbox";
+import AppLayout from "./app/Layout"
+import ApplicationIndex from "./app/ApplicationIndex";
 
 ReactDOM.createRoot( document.getElementById( `root` ) as HTMLElement ).render( <React.StrictMode>
   <RouterProvider router={ createHashRouter( createRoutesFromElements( <>
     <Route errorElement={ <ErrorElement/> }>
-      <Route path={ `/` } element={ <Root/> }/>
-      <Route path={ `/login` } element={ <LoginPage/> }/>
-      <Route path={ `/login/server` } element={ <ServerLoginPage/> }/>
+      <Route index element={ <Root/> }/>
       <Route path={ `/signup` } element={ <ComingSoon/> }/>
-      <Route path={ `/app` } element={ <ComingSoon/> }/>
-      <Route path={ `/app/a` } element={ <ComingSoon/> }/>
-      <Route path={ `/app/a/:application` } element={ <ComingSoon/> }/>
-      <Route path={ `/app/profile` } element={ <ComingSoon/> }/>
-      <Route path={ `/app/settings` } element={ <ComingSoon/> }/>
+      <Route path={ `/login` }>
+        <Route index element={ <LoginPage/> }/>
+        <Route path={ `server` } element={ <ServerLoginPage/> }/>
+      </Route>
+      <Route path={ `app` }>
+        <Route element={ <AppLayout/> }>
+          <Route index element={ <ComingSoon/> }/>
+          <Route path={ `a/*` } element={ <ApplicationIndex/> }/>
+          <Route path={ `profile` } element={ <ComingSoon/> }/>
+          <Route path={ `settings` } element={ <ComingSoon/> }/>
+        </Route>
+      </Route>
     </Route>
   </> ) ) }/>
 </React.StrictMode>, );

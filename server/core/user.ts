@@ -1,16 +1,17 @@
 import * as fs from "fs";
 import path from "path";
+import sharp from "sharp";
+import { hash } from "./encryption.js";
 
 export interface IYourDashUser {
   username: string,
-  fullName: { first: string, middle: string, last: string },
-  permissions: YourDashUserPermissions[]
+  fullName: { first: string, last: string },
+  permissions: YourDashUserPermissions[],
+  contacts: string[], // an array of user's usernames
 }
 
 export enum YourDashUserPermissions {
-  Administrator,
-  CreateFiles,
-  DeleteFiles
+  Administrator, CreateFiles, DeleteFiles
 }
 
 export default class YourDashUser {
@@ -26,11 +27,44 @@ export default class YourDashUser {
     return this
   }
   
+  setPassword(password: string): this {
+    try {
+      hash( password ).then( result => {
+        fs.writeFileSync( path.resolve( this.getPath(), `./password.txt` ), result )
+      } )
+    } catch (err) {
+      console.error( `unable to set password for user: ${ this.username }` )
+    }
+    
+    return this
+  }
+  
+  verifyUserConfig(): this {
+    // checks all properties of this.user to make sure that they match IYourDashUser
+    if (!this.user) {
+      // @ts-ignore
+      this.user = {}
+    }
+    if (!this.user.fullName) this.user.fullName = { first: "New", last: "User" }
+    if (!this.user.permissions) this.user.permissions = []
+    if (!this.user.contacts) this.user.contacts = []
+    
+    return this
+  }
+  
+  generateAvatars(): this {
+    sharp( fs.readFileSync( path.resolve( this.getPath(), "avatar.avif" ) ) )
+    .resize( 32, 32 )
+    .toFile( path.resolve( this.getPath(), "micro_avatar.avif" ) ).catch( err => console.error( err ) )
+    
+    return this
+  }
+  
   getPath(): string {
     return path.resolve( process.cwd(), `./fs/users/${ this.username }/` )
   }
   
-  getName(): { first: string, middle: string, last: string } {
+  getName(): { first: string, last: string } {
     return this.user.fullName
   }
   
@@ -39,7 +73,13 @@ export default class YourDashUser {
   }
   
   write() {
-    if (!fs.existsSync( this.getPath() )) fs.mkdirSync( this.getPath(), { recursive: true } )
+    if (!fs.existsSync( this.getPath() )) {
+      fs.mkdirSync( this.getPath(), { recursive: true } )
+      fs.cpSync( path.resolve( process.cwd(), `./default/avatar.avif` ), path.resolve( this.getPath(), `avatar.avif` ) )
+      hash( "password" ).then( response => {
+        fs.writeFileSync( path.resolve( this.getPath(), `./password.txt` ), response )
+      } )
+    }
     
     try {
       fs.writeFileSync( path.join( this.getPath(), `user.json` ), JSON.stringify( this.user ) )
@@ -64,6 +104,11 @@ export default class YourDashUser {
   addPermission(perm: YourDashUserPermissions): this {
     this.user.permissions.push( perm )
     
+    return this
+  }
+  
+  setName(name: { first: string, last: string }): this {
+    this.user.fullName = name
     return this
   }
 }

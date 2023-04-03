@@ -1,56 +1,86 @@
-export default function getJson(path: string, cb: (response: any) => void,
-                                failure?: (response: object) => void
-): void {
+export default function getJson(path: string, cb: (response: any) => void, failure?: (response: object) => void): void {
   const serverUrl = localStorage.getItem( "current_server" )
   
-  fetch( `${ serverUrl }${ path }`, { method: "GET" } )
+  fetch(
+      `${ serverUrl }${ path }`,
+      {
+        method: "GET",
+        // @ts-ignore
+        headers: {
+          "Content-Type": "application/json",
+          username: localStorage.getItem( "username" ),
+          sessiontoken: sessionStorage.getItem( "session_token" )
+        }
+      }
+  )
   .then( resp => resp.json() )
   .then( resp => {
     if (resp?.error) {
       failure?.( resp )
-      return console.error( `Error fetching from instance:${ path }`, resp.error )
+      return console.error( `Error fetching from instance: ${ path }`, resp.error )
     }
     cb( resp )
   } )
   .catch( err => {
-    console.error( `Error parsing result from instance:${ path }`, err )
+    console.error( `Error parsing result from instance: ${ path }`, err )
   } )
 }
 
-export function postJson(path: string, cb: (response: any) => void,
-                         failure?: (response: object) => void
+export function postJson(
+    path: string,
+    body: object,
+    cb: (response: any) => void,
+    failure?: (response: object) => void
 ): void {
   const serverUrl = localStorage.getItem( "current_server" )
   
-  fetch( `${ serverUrl }${ path }`, { method: "POST" } )
+  fetch( `${ serverUrl }${ path }`, {
+    method: "POST",
+    body: JSON.stringify( body ),
+    // @ts-ignore
+    headers: {
+      "Content-Type": "application/json",
+      username: localStorage.getItem( "username" ),
+      sessiontoken: sessionStorage.getItem( "session_token" )
+    }
+  } )
   .then( resp => resp.json() )
   .then( resp => {
     if (resp?.error) {
       failure?.( resp )
-      return console.error( `Error fetching from instance:${ path }`, resp.error )
+      return console.error( `Error fetching from instance: ${ path }`, resp.error )
     }
     cb( resp )
   } )
   .catch( err => {
-    console.error( `Error parsing result from instance:${ path }`, err )
+    console.error( `Error parsing result from instance: ${ path }`, err )
   } )
 }
 
-export function deleteJson(path: string, cb: (response: any) => void,
-                           failure?: (response: object) => void
-): void {
+export function deleteJson(path: string, cb: (response: any) => void, failure?: (response: object) => void): void {
   const serverUrl = localStorage.getItem( "current_server" )
   
-  fetch( `${ serverUrl }${ path }`, { method: "DELETE" } )
+  fetch(
+      `${ serverUrl }${ path }`,
+      {
+        method: "DELETE",
+        // @ts-ignore
+        headers: {
+          "Content-Type": "application/json",
+          username: localStorage.getItem( "username" ),
+          sessiontoken: sessionStorage.getItem( "session_token" )
+        }
+      }
+  )
   .then( resp => resp.json() )
   .then( resp => {
     if (resp?.error) {
       failure?.( resp )
-      return console.error( `Error fetching from instance:${ path }`, resp.error )
+      return console.error( `Error fetching from instance: ${ path }`, resp.error )
     }
     cb( resp )
   } )
   .catch( err => {
-    console.error( `Error parsing result from instance:${ path }`, err )
+    console.error( `Error parsing result from instance: ${ path }`, err )
   } )
 }
