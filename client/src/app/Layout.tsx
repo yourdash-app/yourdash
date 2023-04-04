@@ -17,17 +17,8 @@ const Layout: React.FC = () => {
                             : "1fr auto"
         }
   } } className={ `grid h-screen` }>
-    {
-      (panelLayout === "left" || panelLayout === "top")
-      ? <>
-        <Panel setSide={ (val) => setPanelLayout( val ) } side={ panelLayout }/>
-        <Outlet/>
-      </>
-      : <>
-        <Outlet/>
-        <Panel setSide={ (val) => setPanelLayout( val ) } side={ panelLayout }/>
-      </>
-    }
+    <Panel setSide={ (val) => setPanelLayout( val ) } side={ panelLayout }/>
+    <Outlet/>
   </div>
 }
 

@@ -1,4 +1,8 @@
-export default function getJson(path: string, cb: (response: any) => void, failure?: (response: object) => void): void {
+export default function getJson(
+    path: string,
+    cb: ( response: any ) => void,
+    failure?: ( response: object ) => void
+): void {
   const serverUrl = localStorage.getItem( "current_server" )
   
   fetch(
@@ -9,13 +13,13 @@ export default function getJson(path: string, cb: (response: any) => void, failu
         headers: {
           "Content-Type": "application/json",
           username: localStorage.getItem( "username" ),
-          sessiontoken: sessionStorage.getItem( "session_token" )
+          token: sessionStorage.getItem( "session_token" )
         }
       }
   )
   .then( resp => resp.json() )
   .then( resp => {
-    if (resp?.error) {
+    if ( resp?.error ) {
       failure?.( resp )
       return console.error( `Error fetching from instance: ${ path }`, resp.error )
     }
@@ -29,8 +33,8 @@ export default function getJson(path: string, cb: (response: any) => void, failu
 export function postJson(
     path: string,
     body: object,
-    cb: (response: any) => void,
-    failure?: (response: object) => void
+    cb: ( response: any ) => void,
+    failure?: ( response: object ) => void
 ): void {
   const serverUrl = localStorage.getItem( "current_server" )
   
@@ -41,12 +45,12 @@ export function postJson(
     headers: {
       "Content-Type": "application/json",
       username: localStorage.getItem( "username" ),
-      sessiontoken: sessionStorage.getItem( "session_token" )
+      token: sessionStorage.getItem( "session_token" )
     }
   } )
   .then( resp => resp.json() )
   .then( resp => {
-    if (resp?.error) {
+    if ( resp?.error ) {
       failure?.( resp )
       return console.error( `Error fetching from instance: ${ path }`, resp.error )
     }
@@ -57,7 +61,11 @@ export function postJson(
   } )
 }
 
-export function deleteJson(path: string, cb: (response: any) => void, failure?: (response: object) => void): void {
+export function deleteJson(
+    path: string,
+    cb: ( response: any ) => void,
+    failure?: ( response: object ) => void
+): void {
   const serverUrl = localStorage.getItem( "current_server" )
   
   fetch(
@@ -68,13 +76,13 @@ export function deleteJson(path: string, cb: (response: any) => void, failure?: 
         headers: {
           "Content-Type": "application/json",
           username: localStorage.getItem( "username" ),
-          sessiontoken: sessionStorage.getItem( "session_token" )
+          token: sessionStorage.getItem( "session_token" )
         }
       }
   )
   .then( resp => resp.json() )
   .then( resp => {
-    if (resp?.error) {
+    if ( resp?.error ) {
       failure?.( resp )
       return console.error( `Error fetching from instance: ${ path }`, resp.error )
     }

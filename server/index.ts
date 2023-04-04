@@ -8,14 +8,21 @@ import { generateLogos } from "./core/logo.js";
 
 console.log( `----------------------------------------------------\n                      YourDash                      \n----------------------------------------------------` )
 
-const SESSIONS: { [user: string]: string } = {}
+let SESSIONS: { [ user: string ]: string } = {}
 
 export enum YourDashServerDiscoveryStatus {
   MAINTENANCE, NORMAL
 }
 
+if ( process.env.DEV ) {
+  if ( fs.existsSync( path.resolve( process.cwd(), `.dev-session-tokens` ) ) ) {
+    // DEVELOPMENT MODE ONLY, loads all current session tokens between nodemon restarts
+    SESSIONS = JSON.parse( fs.readFileSync( path.resolve( process.cwd(), `.dev-session-tokens` ) ).toString() || "{}" )
+  }
+}
+
 function startupChecks() {
-  if (!fs.existsSync( path.resolve( `./fs/` ) )) {
+  if ( !fs.existsSync( path.resolve( `./fs/` ) ) ) {
     fs.cpSync(
         path.resolve( process.cwd(), `./default/fs/` ),
         path.resolve( process.cwd(), `./fs/` ),
@@ -31,7 +38,7 @@ function startupChecks() {
   
   let adminUser = new YourDashUser( "admin" )
   
-  if (!adminUser.exists()) {
+  if ( !adminUser.exists() ) {
     adminUser.verifyUserConfig()
     adminUser.addPermission( YourDashUserPermissions.Administrator )
     adminUser.setName( { first: "Admin", last: "istrator" } )
@@ -45,13 +52,13 @@ const app = express()
 app.use( express.json( { limit: "50mb" } ) )
 app.use( cors() )
 
-app.get( `/`, (req, res) => {
+app.get( `/`, ( req, res ) => {
   return res.send( `Hello from the yourdash server software` )
 } )
 
-app.get( `/test`, (req, res) => {
+app.get( `/test`, ( req, res ) => {
   const discoveryStatus: YourDashServerDiscoveryStatus = YourDashServerDiscoveryStatus.NORMAL as YourDashServerDiscoveryStatus
-  switch (discoveryStatus) {
+  switch ( discoveryStatus ) {
     case YourDashServerDiscoveryStatus.MAINTENANCE:
       return res.json( { status: YourDashServerDiscoveryStatus.MAINTENANCE, type: "yourdash" } )
     case YourDashServerDiscoveryStatus.NORMAL:
@@ -62,20 +69,20 @@ app.get( `/test`, (req, res) => {
   }
 } )
 
-app.get( `/login/background`, (req, res) => {
+app.get( `/login/background`, ( req, res ) => {
   return res.sendFile( path.resolve( process.cwd(), `./fs/login_background.avif` ) )
 } )
 
-app.get( `/login/user/:username/avatar`, (req, res) => {
+app.get( `/login/user/:username/avatar`, ( req, res ) => {
   const user = new YourDashUser( req.params.username )
   
   return res.sendFile( path.resolve( user.getPath(), `avatar.avif` ) )
 } )
 
-app.get( `/login/user/:username`, (req, res) => {
+app.get( `/login/user/:username`, ( req, res ) => {
   const user = new YourDashUser( req.params.username )
   
-  if (user.exists()) {
+  if ( user.exists() ) {
     return res.json( {
       name: user.getName()
     } )
@@ -84,43 +91,43 @@ app.get( `/login/user/:username`, (req, res) => {
   }
 } )
 
-app.post( `/login/user/:username/authenticate`, (req, res) => {
+app.post( `/login/user/:username/authenticate`, ( req, res ) => {
   const { username } = req.params
   const { password } = req.body
   
-  if (!username || username === "") return res.json( { error: true } )
-  if (!password || password === "") return res.json( { error: true } )
+  if ( !username || username === "" ) return res.json( { error: true } )
+  if ( !password || password === "" ) return res.json( { error: true } )
   
   const user = new YourDashUser( username )
   let savedHashedPassword = fs.readFileSync( path.resolve( user.getPath(), `./password.txt` ) ).toString()
   let sessionToken = generateRandomStringOfLength( 128 )
   
   compareHash( savedHashedPassword, password ).then( result => {
-    if (result) {
-      SESSIONS[username] = sessionToken
+    if ( result ) {
+      SESSIONS[ username ] = sessionToken
       return res.json( { token: sessionToken } )
     }
   } )
   
 } )
 
-app.get( `/login/is-authenticated`, (req, res) => {
+app.get( `/login/is-authenticated`, ( req, res ) => {
   let { username, token } = req.headers as { username?: string, token?: string }
   
   console.log( { username, token }, JSON.stringify( req.cookies ) )
   
-  if (!username)
+  if ( !username )
     return res.json( { error: true } )
   
-  if (!token)
+  if ( !token )
     return res.json( { error: true } )
   
-  if (SESSIONS[username] === token) return res.json( { success: true } )
+  if ( SESSIONS[ username ] === token ) return res.json( { success: true } )
   
   return res.json( { error: true } )
 } )
 
-app.get( `/panel/logo/small`, (req, res) => {
+app.get( `/panel/logo/small`, ( req, res ) => {
   return res.sendFile( path.resolve( process.cwd(), `./fs/logo_panel_small.avif` ) )
 } )
 
@@ -129,22 +136,30 @@ app.get( `/panel/logo/small`, (req, res) => {
 // --------------------------------------------------------------
 
 
-app.use( (req, res, next) => {
+app.use( ( req, res, next ) => {
   let { username, token } = req.headers as { username?: string, token?: string }
   
-  if (!username)
-    return res.json( { error: true } )
+  if ( !username )
+    return res.json( { error: `authorization fail` } )
   
-  if (!token)
-    return res.json( { error: true } )
+  if ( !token )
+    return res.json( { error: `authorization fail` } )
   
-  if (SESSIONS[username] === token) return next()
+  if ( SESSIONS[ username ] === token ) return next()
   
-  return res.json( { error: true } )
+  return res.json( { error: `authorization fail` } )
 } )
 
-new Promise<void>( (resolve, reject) => {
-  if (fs.existsSync( path.resolve( process.cwd(), `./apps/` ) )) {
+app.get( `/panel/user/name`, ( req, res ) => {
+  const { username } = req.headers as { username: string }
+  
+  const user = new YourDashUser( username )
+  
+  return res.json( user.getName() )
+} )
+
+new Promise<void>( ( resolve, reject ) => {
+  if ( fs.existsSync( path.resolve( process.cwd(), `./apps/` ) ) ) {
     let apps = fs.readdirSync( path.resolve( process.cwd(), `./apps/` ) )
     
     apps.map( app => {
@@ -152,7 +167,7 @@ new Promise<void>( (resolve, reject) => {
       import( `file://` + path.resolve( process.cwd(), `./apps/${ app }/index.js` ) ).then( mod => {
         try {
           mod.default()
-        } catch (err) {
+        } catch ( err ) {
           reject( err )
         }
       } ).catch( err => {
@@ -171,3 +186,10 @@ new Promise<void>( (resolve, reject) => {
 } ).catch( err => {
   console.error( `Error during server initialization: `, err )
 } )
+
+if ( process.env.DEV ) {
+// DEVELOPMENT MODE ONLY, saves all current session tokens between nodemon restarts
+  process.once( `SIGINT`, () => {
+    fs.writeFileSync( path.resolve( process.cwd(), `.dev-session-tokens` ), JSON.stringify( SESSIONS ) )
+  } );
+}

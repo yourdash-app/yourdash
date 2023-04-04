@@ -6,12 +6,18 @@ import YourDashUser, { YourDashUserPermissions } from "./core/user.js";
 import { compareHash, generateRandomStringOfLength } from "./core/encryption.js";
 import { generateLogos } from "./core/logo.js";
 console.log(`----------------------------------------------------\n                      YourDash                      \n----------------------------------------------------`);
-const SESSIONS = {};
+let SESSIONS = {};
 export var YourDashServerDiscoveryStatus;
 (function (YourDashServerDiscoveryStatus) {
     YourDashServerDiscoveryStatus[YourDashServerDiscoveryStatus["MAINTENANCE"] = 0] = "MAINTENANCE";
     YourDashServerDiscoveryStatus[YourDashServerDiscoveryStatus["NORMAL"] = 1] = "NORMAL";
 })(YourDashServerDiscoveryStatus || (YourDashServerDiscoveryStatus = {}));
+if (process.env.DEV) {
+    if (fs.existsSync(path.resolve(process.cwd(), `.dev-session-tokens`))) {
+        // DEVELOPMENT MODE ONLY, loads all current session tokens between nodemon restarts
+        SESSIONS = JSON.parse(fs.readFileSync(path.resolve(process.cwd(), `.dev-session-tokens`)).toString() || "{}");
+    }
+}
 function startupChecks() {
     if (!fs.existsSync(path.resolve(`./fs/`))) {
         fs.cpSync(path.resolve(process.cwd(), `./default/fs/`), path.resolve(process.cwd(), `./fs/`), { recursive: true });
@@ -102,12 +108,17 @@ app.get(`/panel/logo/small`, (req, res) => {
 app.use((req, res, next) => {
     let { username, token } = req.headers;
     if (!username)
-        return res.json({ error: true });
+        return res.json({ error: `authorization fail` });
     if (!token)
-        return res.json({ error: true });
+        return res.json({ error: `authorization fail` });
     if (SESSIONS[username] === token)
         return next();
-    return res.json({ error: true });
+    return res.json({ error: `authorization fail` });
+});
+app.get(`/panel/user/name`, (req, res) => {
+    const { username } = req.headers;
+    const user = new YourDashUser(username);
+    return res.json(user.getName());
 });
 new Promise((resolve, reject) => {
     if (fs.existsSync(path.resolve(process.cwd(), `./apps/`))) {
@@ -137,4 +148,10 @@ new Promise((resolve, reject) => {
 }).catch(err => {
     console.error(`Error during server initialization: `, err);
 });
+if (process.env.DEV) {
+    // DEVELOPMENT MODE ONLY, saves all current session tokens between nodemon restarts
+    process.once(`SIGINT`, () => {
+        fs.writeFileSync(path.resolve(process.cwd(), `.dev-session-tokens`), JSON.stringify(SESSIONS));
+    });
+}
 //# sourceMappingURL=index.js.map

@@ -17,6 +17,7 @@
     "concurrently": "^7.6.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "execa": "^7.1.1",
     "express": "^4.18.2",
     "nodemon": "^2.0.22",
@@ -27,7 +28,7 @@
   "scripts": {
     "compile": "tsc",
     "start": "node .",
-    "dev": "concurrently \"tsc\" \"nodemon .\""
+    "dev": "concurrently \"tsc\" \"cross-env DEV=true nodemon --signal SIGINT .\""
   },
   "nodemonConfig": {
     "ext": "js"

@@ -1,7 +1,7 @@
 import "animate.css";
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { createHashRouter, createRoutesFromElements, Route, RouterProvider } from "react-router-dom";
+import { createHashRouter, createRoutesFromElements, RouterProvider } from "react-router-dom";
 import ComingSoon from "./ComingSoon";
 import ErrorElement from "./ErrorElement";
 import "./ui/ui.scss";
@@ -11,6 +11,7 @@ import Root from "./Root";
 import ServerLoginPage from "./login/ServerLoginPage";
 import AppLayout from "./app/Layout"
 import ApplicationIndex from "./app/ApplicationIndex";
+import { Route } from "react-router";
 
 ReactDOM.createRoot( document.getElementById( `root` ) as HTMLElement ).render( <React.StrictMode>
   <RouterProvider router={ createHashRouter( createRoutesFromElements( <>
