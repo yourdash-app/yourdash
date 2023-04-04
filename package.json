@@ -17,6 +17,7 @@
     "postinstall": "yarn --cwd ./client && yarn --cwd ./server && yarn --cwd ./electron"
   },
   "dependencies": {
-    "nodemon": "^2.0.22"
+    "nodemon": "^2.0.22",
+    "prettier": "^2.8.7"
   }
 }

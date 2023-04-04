@@ -2,14 +2,17 @@
   <code_scheme name="Project" version="173">
     <option name="WRAP_WHEN_TYPING_REACHES_RIGHT_MARGIN" value="true" />
     <option name="ENABLE_SECOND_REFORMAT" value="true" />
+    <option name="SOFT_MARGINS" value="120" />
     <option name="DO_NOT_FORMAT">
       <list>
-        <fileSet type="globPattern" pattern="client/main.tsx" />
+        <fileSet type="globPattern" pattern="client/main.tsx,*" />
       </list>
     </option>
     <TypeScriptCodeStyleSettings version="0">
+      <option name="FORCE_SEMICOLON_STYLE" value="true" />
       <option name="SPACE_WITHIN_ARRAY_INITIALIZER_BRACKETS" value="true" />
       <option name="REFORMAT_C_STYLE_COMMENTS" value="true" />
+      <option name="FORCE_QUOTE_STYlE" value="true" />
       <option name="VAR_DECLARATION_WRAP" value="5" />
       <option name="SPACES_WITHIN_OBJECT_LITERAL_BRACES" value="true" />
       <option name="SPACES_WITHIN_IMPORTS" value="true" />
@@ -2016,6 +2019,7 @@
     <codeStyleSettings language="TypeScript">
       <option name="ALIGN_MULTILINE_CHAINED_METHODS" value="true" />
       <option name="ALIGN_MULTILINE_BINARY_OPERATION" value="true" />
+      <option name="ALIGN_MULTILINE_TERNARY_OPERATION" value="true" />
       <option name="ALIGN_MULTILINE_EXTENDS_LIST" value="true" />
       <option name="ALIGN_MULTILINE_ARRAY_INITIALIZER_EXPRESSION" value="true" />
       <option name="SPACE_WITHIN_PARENTHESES" value="true" />
@@ -2034,7 +2038,7 @@
       <option name="METHOD_PARAMETERS_LPAREN_ON_NEXT_LINE" value="true" />
       <option name="METHOD_PARAMETERS_RPAREN_ON_NEXT_LINE" value="true" />
       <option name="BINARY_OPERATION_WRAP" value="1" />
-      <option name="TERNARY_OPERATION_WRAP" value="5" />
+      <option name="TERNARY_OPERATION_WRAP" value="1" />
       <option name="TERNARY_OPERATION_SIGNS_ON_NEXT_LINE" value="true" />
       <option name="KEEP_SIMPLE_BLOCKS_IN_ONE_LINE" value="true" />
       <option name="KEEP_SIMPLE_METHODS_IN_ONE_LINE" value="true" />
