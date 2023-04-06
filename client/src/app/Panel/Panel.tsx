@@ -112,7 +112,7 @@ const PanelQuickShortcuts: React.FC = () => {
 
   useEffect(() => {
     getJson(`/panel/quick-shortcuts`, (resp) => setQuickShortcuts(resp));
-  });
+  }, []);
 
   return (
     <>

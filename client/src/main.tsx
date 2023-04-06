@@ -1,5 +1,5 @@
 import "animate.css";
-import React from "react";
+import React, { lazy } from "react";
 import ReactDOM from "react-dom/client";
 import { createRoutesFromElements, Route, RouterProvider } from "react-router";
 import ComingSoon from "./ComingSoon";
@@ -12,6 +12,8 @@ import ServerLoginPage from "./login/ServerLoginPage";
 import AppLayout from "./app/Layout";
 import ApplicationRedirectToDash from "./app/ApplicationRedirectToDash";
 import { createHashRouter } from "react-router-dom";
+
+const AppRouter = lazy(() => import("./app/AppRouter"));
 
 ReactDOM.createRoot(document.getElementById(`root`) as HTMLElement).render(
   <React.StrictMode>
@@ -28,7 +30,7 @@ ReactDOM.createRoot(document.getElementById(`root`) as HTMLElement).render(
             <Route path={`app`}>
               <Route element={<AppLayout />}>
                 <Route index element={<ApplicationRedirectToDash />} />
-                <Route path={`a/*`} lazy={() => import(`./app/AppRouter`)} />
+                <Route path={`a/*`} element={<AppRouter />} />
                 <Route path={`profile`} element={<ComingSoon />} />
                 <Route path={`settings`} element={<ComingSoon />} />
               </Route>

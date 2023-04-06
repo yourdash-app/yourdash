@@ -1,3 +1,6 @@
+// The YourDash project
+//  - https://github.com/yourdash-app/yourdash
+//  - https://yourdash-app.github.io
 import express from "express";
 import cors from "cors";
 import * as fs from "fs";
@@ -37,13 +40,19 @@ if (process.env.DEV) {
 }
 
 function startupChecks() {
-  if (!fs.existsSync(path.resolve(`./fs/`))) {
+  // check if the filesystem exists
+  if (!fs.existsSync(path.resolve(process.cwd(), `./fs/`))) {
     fs.cpSync(
       path.resolve(process.cwd(), `./default/fs/`),
       path.resolve(process.cwd(), `./fs/`),
       { recursive: true }
     );
 
+    // make sure that the users directory exists
+    if (!fs.existsSync(path.resolve(process.cwd(), `./fs/users`)))
+      fs.mkdirSync(path.resolve(process.cwd(), `./fs/users`));
+
+    // generate all instance logos
     generateLogos();
   }
 
@@ -214,6 +223,8 @@ new Promise<void>((resolve, reject) => {
     let apps = fs.readdirSync(path.resolve(process.cwd(), `./apps/`));
     apps.map((app) => {
       console.log(`loading application: ${app}`);
+
+      // import and load all applications
       import(`file://` + path.resolve(process.cwd(), `./apps/${app}/index.js`))
         .then((mod) => {
           try {
