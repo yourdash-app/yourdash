@@ -12,12 +12,11 @@
     "start-client": "yarn --cwd ./client dev",
     "visualize-client-bundle": "yarn --cwd ./client visualize-bundle",
     "start-server": "yarn --cwd ./server dev",
-    "sync-applications": "nodemon --config ./toolchain/sync-applications.nodemon.json ./toolchain/sync-applications.js",
     "start-desktop": "yarn --cwd ./electron dev",
     "postinstall": "yarn --cwd ./client && yarn --cwd ./server && yarn --cwd ./electron"
   },
   "dependencies": {
-    "nodemon": "^2.0.22",
-    "prettier": "^2.8.7"
+    "prettier": "^2.8.7",
+    "yarn": "^1.22.19"
   }
 }
