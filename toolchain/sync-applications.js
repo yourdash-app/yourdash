@@ -1,9 +1,8 @@
 import fs from "fs";
 import path from "node:path";
 
-console.log(`Syncing applications!`);
-
 function sync() {
+  console.log(`Syncing applications!`);
   let apps = fs.readdirSync(path.resolve(`./apps/`));
 
   apps.forEach((app) => {
@@ -12,6 +11,16 @@ function sync() {
 
     if (!fs.existsSync(path.resolve(`./apps/${app}/server`)))
       return console.error(`Application ${app} requires a ./server/ directory`);
+
+    if (!fs.existsSync(path.resolve(`./apps/${app}/client/src/index.tsx`)))
+      return console.error(
+        `Application ${app} requires a ./client/src/index.tsx file`
+      );
+
+    if (!fs.existsSync(path.resolve(`./apps/${app}/server/src/index.ts`)))
+      return console.error(
+        `Application ${app} requires a ./server/src/index.ts file`
+      );
 
     if (!fs.existsSync(path.resolve(`./apps/${app}/client/src`)))
       return console.error(
@@ -44,6 +53,9 @@ function sync() {
         );
       } catch (e) {
         console.error(e);
+        setTimeout(() => {
+          sync();
+        }, 1000);
       }
     }
 
@@ -57,37 +69,37 @@ function sync() {
         fs.mkdirSync(path.resolve(`./server/apps/${app}`), { recursive: true });
       } catch (e) {
         console.log(`an error occurred retrying now!`);
-        sync();
+        setTimeout(() => {
+          sync();
+        }, 1000);
       }
     }
 
     if (!fs.existsSync(path.resolve(`./apps/${app}/client/node_modules`))) {
       try {
-        fs.cpSync(
+        fs.symlinkSync(
           path.resolve(`./client/node_modules`),
-          path.resolve(`./apps/${app}/client/node_modules`),
-          {
-            recursive: true,
-          }
+          path.resolve(`./apps/${app}/client/node_modules`)
         );
       } catch (e) {
         console.log(`an error occurred retrying now!`);
-        sync();
+        setTimeout(() => {
+          sync();
+        }, 1000);
       }
     }
 
     if (!fs.existsSync(path.resolve(`./apps/${app}/server/node_modules`))) {
       try {
-        fs.cpSync(
+        fs.symlinkSync(
           path.resolve(`./server/node_modules`),
-          path.resolve(`./apps/${app}/server/node_modules`),
-          {
-            recursive: true,
-          }
+          path.resolve(`./apps/${app}/server/node_modules`)
         );
       } catch (e) {
         console.log(`an error occurred retrying now!`);
-        sync();
+        setTimeout(() => {
+          sync();
+        }, 1000);
       }
     }
 
@@ -98,7 +110,9 @@ function sync() {
       );
     } catch (e) {
       console.log(`an error occurred retrying now!`);
-      sync();
+      setTimeout(() => {
+        sync();
+      }, 1000);
     }
 
     try {
@@ -108,7 +122,9 @@ function sync() {
       );
     } catch (e) {
       console.log(`an error occurred retrying now!`);
-      sync();
+      setTimeout(() => {
+        sync();
+      }, 1000);
     }
 
     try {
@@ -118,7 +134,9 @@ function sync() {
       );
     } catch (e) {
       console.log(`an error occurred retrying now!`);
-      sync();
+      setTimeout(() => {
+        sync();
+      }, 1000);
     }
 
     try {
@@ -128,7 +146,9 @@ function sync() {
       );
     } catch (e) {
       console.log(`an error occurred retrying now!`);
-      sync();
+      setTimeout(() => {
+        sync();
+      }, 1000);
     }
 
     try {
@@ -142,7 +162,11 @@ function sync() {
       );
     } catch (e) {
       console.error(e);
+      setTimeout(() => {
+        sync();
+      }, 1000);
     }
+
     try {
       fs.cpSync(
         path.resolve(`./apps/${app}/server/src/`),
@@ -154,7 +178,11 @@ function sync() {
       );
     } catch (e) {
       console.error(e);
+      setTimeout(() => {
+        sync();
+      }, 1000);
     }
+
     try {
       fs.copyFileSync(
         path.resolve(`./apps/${app}/application.json`),
@@ -162,6 +190,21 @@ function sync() {
       );
     } catch (e) {
       console.error(e);
+      setTimeout(() => {
+        sync();
+      }, 1000);
+    }
+
+    try {
+      fs.copyFileSync(
+        path.resolve(`./apps/${app}/icon.avif`),
+        path.resolve(`./server/apps/${app}/icon.avif`)
+      );
+    } catch (e) {
+      console.error(e);
+      setTimeout(() => {
+        sync();
+      }, 1000);
     }
   });
   try {

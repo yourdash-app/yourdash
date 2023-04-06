@@ -55,7 +55,7 @@
     --input-focus-outline: 0.25rem solid #459;
     --input-focus-outline-active: 0.25rem solid #56a;
 
-    --application-panel-border: 0.1rem solid rgb(var(--base-600));
+    --application-panel-border: rgb(var(--base-600));
 
     --container-bg: var(--base-700);
     --container-fg: var(--base-50);

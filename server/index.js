@@ -3,8 +3,11 @@ import cors from "cors";
 import * as fs from "fs";
 import path from "path";
 import YourDashUser, { YourDashUserPermissions } from "./core/user.js";
-import { compareHash, generateRandomStringOfLength } from "./core/encryption.js";
+import { compareHash, generateRandomStringOfLength, } from "./core/encryption.js";
 import { generateLogos } from "./core/logo.js";
+import YourDashApplication, { getAllApplications, } from "./core/applications.js";
+import { base64DataUrl } from "./core/base64.js";
+import sharp from "sharp";
 console.log(`----------------------------------------------------\n                      YourDash                      \n----------------------------------------------------`);
 let SESSIONS = {};
 export var YourDashServerDiscoveryStatus;
@@ -15,7 +18,9 @@ export var YourDashServerDiscoveryStatus;
 if (process.env.DEV) {
     if (fs.existsSync(path.resolve(process.cwd(), `.dev-session-tokens`))) {
         // DEVELOPMENT MODE ONLY, loads all current session tokens between nodemon restarts
-        SESSIONS = JSON.parse(fs.readFileSync(path.resolve(process.cwd(), `.dev-session-tokens`)).toString() || "{}");
+        SESSIONS = JSON.parse(fs
+            .readFileSync(path.resolve(process.cwd(), `.dev-session-tokens`))
+            .toString() || "{}");
     }
 }
 function startupChecks() {
@@ -23,7 +28,7 @@ function startupChecks() {
         fs.cpSync(path.resolve(process.cwd(), `./default/fs/`), path.resolve(process.cwd(), `./fs/`), { recursive: true });
         generateLogos();
     }
-    fs.readdirSync(path.resolve(`./fs/users/`)).forEach(user => {
+    fs.readdirSync(path.resolve(`./fs/users/`)).forEach((user) => {
         new YourDashUser(user).verifyUserConfig().write();
     });
     let adminUser = new YourDashUser("admin");
@@ -45,12 +50,21 @@ app.get(`/test`, (req, res) => {
     const discoveryStatus = YourDashServerDiscoveryStatus.NORMAL;
     switch (discoveryStatus) {
         case YourDashServerDiscoveryStatus.MAINTENANCE:
-            return res.json({ status: YourDashServerDiscoveryStatus.MAINTENANCE, type: "yourdash" });
+            return res.json({
+                status: YourDashServerDiscoveryStatus.MAINTENANCE,
+                type: "yourdash",
+            });
         case YourDashServerDiscoveryStatus.NORMAL:
-            return res.json({ status: YourDashServerDiscoveryStatus.NORMAL, type: "yourdash" });
+            return res.json({
+                status: YourDashServerDiscoveryStatus.NORMAL,
+                type: "yourdash",
+            });
         default:
             console.error(`discovery status returned an invalid value`);
-            return res.json({ status: YourDashServerDiscoveryStatus.MAINTENANCE, type: "yourdash" });
+            return res.json({
+                status: YourDashServerDiscoveryStatus.MAINTENANCE,
+                type: "yourdash",
+            });
     }
 });
 app.get(`/login/background`, (req, res) => {
@@ -63,9 +77,7 @@ app.get(`/login/user/:username/avatar`, (req, res) => {
 app.get(`/login/user/:username`, (req, res) => {
     const user = new YourDashUser(req.params.username);
     if (user.exists()) {
-        return res.json({
-            name: user.getName()
-        });
+        return res.json({ name: user.getName() });
     }
     else {
         return res.json({ error: `Unknown user` });
@@ -79,9 +91,11 @@ app.post(`/login/user/:username/authenticate`, (req, res) => {
     if (!password || password === "")
         return res.json({ error: true });
     const user = new YourDashUser(username);
-    let savedHashedPassword = fs.readFileSync(path.resolve(user.getPath(), `./password.txt`)).toString();
+    let savedHashedPassword = fs
+        .readFileSync(path.resolve(user.getPath(), `./password.txt`))
+        .toString();
     let sessionToken = generateRandomStringOfLength(128);
-    compareHash(savedHashedPassword, password).then(result => {
+    compareHash(savedHashedPassword, password).then((result) => {
         if (result) {
             SESSIONS[username] = sessionToken;
             return res.json({ token: sessionToken });
@@ -90,7 +104,6 @@ app.post(`/login/user/:username/authenticate`, (req, res) => {
 });
 app.get(`/login/is-authenticated`, (req, res) => {
     let { username, token } = req.headers;
-    console.log({ username, token }, JSON.stringify(req.cookies));
     if (!username)
         return res.json({ error: true });
     if (!token)
@@ -120,19 +133,50 @@ app.get(`/panel/user/name`, (req, res) => {
     const user = new YourDashUser(username);
     return res.json(user.getName());
 });
+app.get(`/panel/launcher/applications`, (req, res) => {
+    Promise.all(getAllApplications().map((app) => {
+        let application = new YourDashApplication(app);
+        return new Promise((resolve) => {
+            sharp(fs.readFileSync(path.resolve(process.cwd(), `./apps/${app}/icon.avif`)))
+                .resize(98, 98)
+                .toBuffer((err, buf) => {
+                resolve({
+                    name: application.getName(),
+                    displayName: application.getDisplayName(),
+                    description: application.getDescription(),
+                    icon: base64DataUrl(buf.toString("base64")),
+                });
+            });
+        });
+    })).then((resp) => res.json(resp));
+});
+app.get(`/panel/quick-shortcuts`, (req, res) => {
+    const { username } = req.headers;
+    const user = new YourDashUser(username);
+    // attempt to load the quick-shortcuts.json file
+    try {
+        let file = fs.readFileSync(path.resolve(user.getPath(), `./quick-shortcuts.json`));
+        return res.json(JSON.parse(file.toString()));
+    }
+    catch (err) {
+        return res.json([]);
+    }
+});
 new Promise((resolve, reject) => {
     if (fs.existsSync(path.resolve(process.cwd(), `./apps/`))) {
         let apps = fs.readdirSync(path.resolve(process.cwd(), `./apps/`));
-        apps.map(app => {
+        apps.map((app) => {
             console.log(`loading application: ${app}`);
-            import(`file://` + path.resolve(process.cwd(), `./apps/${app}/index.js`)).then(mod => {
+            import(`file://` + path.resolve(process.cwd(), `./apps/${app}/index.js`))
+                .then((mod) => {
                 try {
-                    mod.default();
+                    mod.default(app);
                 }
                 catch (err) {
                     reject(err);
                 }
-            }).catch(err => {
+            })
+                .catch((err) => {
                 console.error(`Error while loading application: ${app}`, err);
             });
         });
@@ -141,11 +185,13 @@ new Promise((resolve, reject) => {
     else {
         resolve();
     }
-}).then(() => {
+})
+    .then(() => {
     app.listen(3560, () => {
         console.log(`server now listening on port 3560!`);
     });
-}).catch(err => {
+})
+    .catch((err) => {
     console.error(`Error during server initialization: `, err);
 });
 if (process.env.DEV) {

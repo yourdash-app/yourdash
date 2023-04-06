@@ -22,7 +22,8 @@
     "express": "^4.18.2",
     "nodemon": "^2.0.22",
     "sharp": "^0.32.0",
-    "typescript": "^5.0.2"
+    "typescript": "^5.0.2",
+    "~": "file:./"
   },
   "type": "module",
   "scripts": {
@@ -31,6 +32,6 @@
     "dev": "concurrently \"tsc\" \"cross-env DEV=true nodemon --signal SIGINT .\""
   },
   "nodemonConfig": {
-    "ext": "js"
+    "ext": "js,avif"
   }
 }
