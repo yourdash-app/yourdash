@@ -10,6 +10,13 @@ export interface IPanel {
 }
 
 const Panel: React.FC<IPanel> = ({ side, setSide }) => {
+  const [num, setNum] = useState(0);
+
+  //  @ts-ignore
+  Panel.reload = () => {
+    setNum(num + 1);
+  };
+
   return (
     <div
       style={{
@@ -253,7 +260,6 @@ export interface YourDashLauncherApplication {
   icon: string;
   description: string;
 }
-
 const PanelApplicationLauncherPopOut: React.FC<{
   side: "left" | "top" | "right" | "bottom";
   visible: boolean;

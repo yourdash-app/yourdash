@@ -20,7 +20,7 @@ const DashApplication: React.FC = () => {
           "current_server"
         )}/login/background)`,
       }}
-      className={`flex items-center justify-center flex-col h-full w-full bg-center bg-cover`}
+      className={`flex items-center justify-center flex-col h-full w-full bg-center bg-cover gap-4`}
     >
       <span
         className={clippy(
@@ -36,8 +36,9 @@ const DashApplication: React.FC = () => {
           translate-all
           animate__animated
           animate__fadeInUp
-          drop-shadow-2xl
-          backdrop-blur-sm
+          [filter:_drop-shadow(0_10px_8px_rgb(0_0_0/0.04))_drop-shadow(0_4px_3px_rgb(0_0_0/0.1))_drop-shadow(0_10px_8px_rgb(0_0_0/0.04))_drop-shadow(0_4px_3px_rgb(0_0_0/0.1))_drop-shadow(0_10px_8px_rgb(0_0_0/0.04))_drop-shadow(0_4px_3px_rgb(0_0_0/0.1))]
+          backdrop-blur-md
+          backdrop-contrast-[85%]
           p-4
           pl-6
           pr-6
@@ -47,7 +48,19 @@ const DashApplication: React.FC = () => {
       >
         Hiya, {userFullName.first} {userFullName.last}
       </span>
-      <section></section>
+      <section
+        className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 max-w-[90%] w-[100rem] gap-2 animate__animated animate__fadeInUp`}
+      >
+        <section
+          className={`h-64 bg-container-bg rounded-3xl bg-opacity-90 backdrop-blur-xl`}
+        ></section>
+        <section
+          className={`h-64 bg-container-bg rounded-3xl bg-opacity-90 backdrop-blur-xl`}
+        ></section>
+        <section
+          className={`h-64 bg-container-bg rounded-3xl bg-opacity-90 backdrop-blur-xl`}
+        ></section>
+      </section>
     </div>
   );
 };

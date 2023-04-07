@@ -4,6 +4,7 @@ import { Routes } from "react-router-dom";
 import DashApplication from "./apps/dash/index";
 import FilesApplication from "./apps/files/index";
 import DashApplicationWelcome from "./apps/dash/welcome";
+import SettingsApplication from "./apps/settings/index";
 
 const AppRouter: React.FC = () => {
   return (
@@ -13,6 +14,7 @@ const AppRouter: React.FC = () => {
         <Route path={`welcome`} element={<DashApplicationWelcome />} />
       </Route>
       <Route path={`files`} element={<FilesApplication />} />
+      <Route path={`settings`} element={<SettingsApplication />} />
     </Routes>
   );
 };
