@@ -16,6 +16,7 @@ import YourDashApplication, {
 } from "./core/applications.js";
 import { base64DataUrl } from "./core/base64.js";
 import sharp from "sharp";
+import YourDashPanel from "./core/panel.js";
 
 console.log(
   `----------------------------------------------------\n                      YourDash                      \n----------------------------------------------------`
@@ -205,17 +206,23 @@ app.get(`/panel/launcher/applications`, (req, res) => {
 
 app.get(`/panel/quick-shortcuts`, (req, res) => {
   const { username } = req.headers as { username: string };
-  const user = new YourDashUser(username);
 
-  // attempt to load the quick-shortcuts.json file
-  try {
-    let file = fs.readFileSync(
-      path.resolve(user.getPath(), `./quick-shortcuts.json`)
-    );
-    return res.json(JSON.parse(file.toString()));
-  } catch (err) {
-    return res.json([]);
-  }
+  let panel = new YourDashPanel(username);
+
+  return panel.getQuickShortcuts();
+});
+
+app.post(`/panel/quick-shortcuts/create`, (req, res) => {
+  const { username } = req.headers as { username: string };
+  const { displayName, icon, url } = req.body as {
+    displayName: string;
+    icon: string;
+    url: string;
+  };
+
+  let panel = new YourDashPanel(username);
+
+  return panel.createQuickShortcut(displayName, url, icon);
 });
 
 new Promise<void>((resolve, reject) => {
