@@ -209,7 +209,18 @@ app.get(`/panel/quick-shortcuts`, (req, res) => {
 
   let panel = new YourDashPanel(username);
 
-  return panel.getQuickShortcuts();
+  return res.json(panel.getQuickShortcuts());
+});
+
+app.delete(`/panel/quick-shortcut/:ind`, (req, res) => {
+  const { ind } = req.params;
+  const { username } = req.headers as { username: string };
+
+  let panel = new YourDashPanel(username);
+
+  panel.removeQuickShortcut(parseInt(ind));
+
+  return res.json({ success: true });
 });
 
 app.post(`/panel/quick-shortcuts/create`, (req, res) => {
@@ -222,7 +233,27 @@ app.post(`/panel/quick-shortcuts/create`, (req, res) => {
 
   let panel = new YourDashPanel(username);
 
-  return panel.createQuickShortcut(displayName, url, icon);
+  panel.createQuickShortcut(displayName, url, icon);
+  return res.json({ success: true });
+});
+
+app.get(`/panel/position`, (req, res) => {
+  const { username } = req.headers as { username: string };
+
+  let panel = new YourDashPanel(username);
+
+  return res.json({ position: panel.getPanelPosition() });
+});
+
+app.post(`/panel/position`, (req, res) => {
+  const { username } = req.headers as { username: string };
+  const { position } = req.body;
+
+  let panel = new YourDashPanel(username);
+
+  panel.setPanelPosition(position);
+
+  return res.json({ success: true });
 });
 
 new Promise<void>((resolve, reject) => {

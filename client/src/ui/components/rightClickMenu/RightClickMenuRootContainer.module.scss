@@ -1,12 +1,12 @@
 .component {
     position: fixed;
     z-index: 10000;
-    background-color: var(--right-click-menu-bg);
-    color: var(--right-click-menu-fg);
+    background-color: rgb(var(--container-bg));
+    color: rgb(var(--container-fg));
     margin: 0;
     overflow: hidden;
     border-radius: 0.5rem;
-    border: 2px solid var(--right-click-menu-border);
+    border: 2px solid var(--application-panel-border);
     padding: 0.25rem;
     box-shadow: 0 0 0.5rem #00000088;
     flex-direction: column;
@@ -23,17 +23,17 @@
         font-size: 0.9rem;
         text-align: start;
         transition: var(--transition);
-        background-color: var(--right-click-menu-item-bg);
-        color: var(--right-click-menu-item-fg);
+        background-color: rgb(var(--button-bg));
+        color: rgb(var(--button-fg));
 
         &:hover {
-            background-color: var(--right-click-menu-item-hover-bg);
-            color: var(--right-click-menu-item-hover-fg);
+            background-color: rgb(var(--button-hover-bg));
+            color: rgb(var(--button-hover-fg));
         }
 
         &:active {
-            background-color: var(--right-click-menu-item-active-bg);
-            color: var(--right-click-menu-item-active-fg);
+            background-color: rgb(var(--button-active-bg));
+            color: rgb(var(--button-active-fg));
         }
     }
 }

@@ -38,10 +38,11 @@ const DashApplication: React.FC = () => {
           animate__fadeInUp
           [filter:_drop-shadow(0_10px_8px_rgb(0_0_0/0.04))_drop-shadow(0_4px_3px_rgb(0_0_0/0.1))_drop-shadow(0_10px_8px_rgb(0_0_0/0.04))_drop-shadow(0_4px_3px_rgb(0_0_0/0.1))_drop-shadow(0_10px_8px_rgb(0_0_0/0.04))_drop-shadow(0_4px_3px_rgb(0_0_0/0.1))]
           backdrop-blur-md
-          backdrop-contrast-[85%]
-          p-4
-          pl-6
-          pr-6
+          bg-container-bg
+          bg-opacity-75
+          p-6
+          pl-8
+          pr-8
           rounded-3xl
           `
         )}
@@ -49,7 +50,7 @@ const DashApplication: React.FC = () => {
         Hiya, {userFullName.first} {userFullName.last}
       </span>
       <section
-        className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 max-w-[90%] w-[100rem] gap-2 animate__animated animate__fadeInUp`}
+        className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 w-[90%] max-w-[100rem] gap-2 animate__animated animate__fadeInUp`}
       >
         <section
           className={`h-64 bg-container-bg rounded-3xl bg-opacity-90 backdrop-blur-xl`}

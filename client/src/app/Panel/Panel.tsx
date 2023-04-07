@@ -1,12 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { Icon, IconButton, Row, TextInput } from "../../ui/index";
-import getJson from "../../helpers/fetch";
+import {
+  Icon,
+  IconButton,
+  RightClickMenu,
+  Row,
+  TextInput,
+} from "../../ui/index";
+import getJson, { deleteJson, postJson } from "../../helpers/fetch";
 import clippy from "../../helpers/clippy";
 import { useBeforeUnload } from "react-router-dom";
 
 export interface IPanel {
-  side: "top" | "left" | "right" | "bottom";
-  setSide: (side: "top" | "left" | "right" | "bottom") => void;
+  side: PanelPosition;
+  setSide: (side: PanelPosition) => void;
+}
+
+export enum PanelPosition {
+  left,
+  top,
+  right,
+  bottom,
 }
 
 const Panel: React.FC<IPanel> = ({ side, setSide }) => {
@@ -17,10 +30,16 @@ const Panel: React.FC<IPanel> = ({ side, setSide }) => {
     setNum(num + 1);
   };
 
+  useEffect(() => {
+    getJson(`/panel/position`, (res) => {
+      setSide(res.position);
+    });
+  }, [num]);
+
   return (
     <div
       style={{
-        ...(side === "top" || side === "bottom"
+        ...(side === PanelPosition.top || side === PanelPosition.bottom
           ? {
               flexDirection: "row",
               width: "100%",
@@ -29,18 +48,18 @@ const Panel: React.FC<IPanel> = ({ side, setSide }) => {
               flexDirection: "column",
               height: "100%",
             }),
-        ...(side === "left" && {
+        ...(side === PanelPosition.left && {
           borderRight: "0.1rem solid var(--application-panel-border)",
         }),
-        ...(side === "right" && {
+        ...(side === PanelPosition.right && {
           borderLeft: "1",
           gridRowEnd: -1,
           gridColumnStart: 2,
         }),
-        ...(side === "top" && {
+        ...(side === PanelPosition.top && {
           borderBottom: "0.1rem solid var(--application-panel-border)",
         }),
-        ...(side === "bottom" && {
+        ...(side === PanelPosition.bottom && {
           borderTop: "0.1rem solid var(--application-panel-border)",
           gridColumnEnd: -1,
           gridRowStart: 2,
@@ -59,39 +78,15 @@ const Panel: React.FC<IPanel> = ({ side, setSide }) => {
           rounded-full
           bg-[var(--application-panel-border)]
           `,
-          side === "top" || side === "bottom"
+          side === PanelPosition.top || side === PanelPosition.bottom
             ? "h-full w-0.5 ml-1 mr-1"
             : "w-full h-0.5 mt-1 mb-1"
         )}
       ></div>
-      <PanelQuickShortcuts />
-      <IconButton
-        onClick={() => {
-          setSide("left");
-        }}
-        icon="arrow-left-16"
-      />
-      <IconButton
-        onClick={() => {
-          setSide("right");
-        }}
-        icon="arrow-right-16"
-      />
-      <IconButton
-        onClick={() => {
-          setSide("top");
-        }}
-        icon="arrow-up-16"
-      />
-      <IconButton
-        onClick={() => {
-          setSide("bottom");
-        }}
-        icon="arrow-down-16"
-      />
+      <PanelQuickShortcuts num={num} />
       <section
         className={clippy(
-          side === "left" || side === "right"
+          side === PanelPosition.left || side === PanelPosition.right
             ? "mt-auto w-full"
             : "ml-auto h-full",
           `justify-center items-center flex flex-col`
@@ -112,27 +107,72 @@ interface PanelQuickShortcut {
   icon: string;
 }
 
-const PanelQuickShortcuts: React.FC = () => {
+const PanelQuickShortcuts: React.FC<{ num: number }> = ({ num }) => {
   const [quickShortcuts, setQuickShortcuts] = useState<PanelQuickShortcut[]>(
     []
   );
 
   useEffect(() => {
     getJson(`/panel/quick-shortcuts`, (resp) => setQuickShortcuts(resp));
-  }, []);
+  }, [num]);
 
   return (
     <>
-      {quickShortcuts.map((shortcut) => {
+      {quickShortcuts.map((shortcut, ind) => {
         return (
-          <div
-            className={`w-full aspect-square relative`}
+          <RightClickMenu
             key={shortcut.url}
-            onClick={() => (window.location.href = shortcut.url)}
+            items={[
+              {
+                name: "Unpin from panel",
+                onClick() {
+                  deleteJson(`/panel/quick-shortcut/${ind}`, () => {
+                    // @ts-ignore
+                    Panel.reload();
+                  });
+                },
+              },
+            ]}
           >
-            <img src={shortcut.icon} alt="" />
-            <span>{shortcut.displayName}</span>
-          </div>
+            <button
+              className={`w-full aspect-square relative group flex items-center justify-center mr-1 cursor-pointer outline-0`}
+              onClick={(e) => {
+                e.currentTarget.blur();
+                window.location.href = shortcut.url;
+              }}
+            >
+              <img
+                src={shortcut.icon}
+                alt=""
+                className={`w-[2rem] group-hover:scale-110 group-focus-within:scale-110 group-active:scale-95 transition-[var(--transition)]`}
+              />
+              <span
+                className={clippy(
+                  `
+                absolute
+                z-50
+                left-full
+                ml-4
+                top-1/2
+                -translate-y-1/2
+                pl-2
+                pr-2
+                pt-0.5
+                pb-0.5
+                bg-container-bg
+                rounded-lg
+                pointer-events-none
+                group-hover:opacity-100
+                opacity-0
+                transition-[var(--transition)]
+                shadow-lg
+                `
+                )}
+              >
+                {shortcut.displayName}
+              </span>
+            </button>
+          </RightClickMenu>
         );
       })}
     </>
@@ -173,14 +213,16 @@ const PanelAuthorizer: React.FC = () => {
 };
 
 const PanelApplicationLauncher: React.FC<{
-  side: "left" | "top" | "right" | "bottom";
+  side: PanelPosition;
   type: "slideOut" | "popOut";
 }> = ({ side, type }) => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
   return (
     <div
       className={clippy(
-        side === "left" || side === "right" ? "w-full" : "h-full",
+        side === PanelPosition.left || side === PanelPosition.right
+          ? "w-full"
+          : "h-full",
         `relative z-50`
       )}
     >
@@ -206,7 +248,7 @@ const PanelApplicationLauncher: React.FC<{
 };
 
 const PanelApplicationLauncherSlideOut: React.FC<{
-  side: "left" | "top" | "right" | "bottom";
+  side: PanelPosition;
   visible: boolean;
   setVisible: (value: boolean) => void;
 }> = ({ side, visible }) => {
@@ -224,27 +266,27 @@ const PanelApplicationLauncherSlideOut: React.FC<{
   return (
     <section
       className={clippy(
-        side === "left"
+        side === PanelPosition.left
           ? "left-full top-0 ml-2"
-          : side === "right"
+          : side === PanelPosition.right
           ? "right-full top-0 mr-2"
-          : side === "top"
+          : side === PanelPosition.top
           ? "top-full left-0 mt-2"
           : /* must be bottom*/ "bottom-full left-0 mb-2",
         visible ? "flex" : "hidden",
         `absolute w-96 bg-container-bg h-screen`
       )}
       style={{
-        ...(side === "left" && {
+        ...(side === PanelPosition.left && {
           borderRight: "0.1rem solid var(--application-panel-border)",
         }),
-        ...(side === "right" && {
+        ...(side === PanelPosition.right && {
           borderRight: "0.1rem solid var(--application-panel-border)",
         }),
-        ...(side === "top" && {
+        ...(side === PanelPosition.top && {
           borderRight: "0.1rem solid var(--application-panel-border)",
         }),
-        ...(side === "bottom" && {
+        ...(side === PanelPosition.bottom && {
           borderRight: "0.1rem solid var(--application-panel-border)",
         }),
       }}
@@ -261,7 +303,7 @@ export interface YourDashLauncherApplication {
   description: string;
 }
 const PanelApplicationLauncherPopOut: React.FC<{
-  side: "left" | "top" | "right" | "bottom";
+  side: PanelPosition;
   visible: boolean;
   setVisible: (value: boolean) => void;
 }> = ({ side, visible, setVisible }) => {
@@ -289,11 +331,11 @@ const PanelApplicationLauncherPopOut: React.FC<{
     <>
       <div
         className={clippy(
-          side === "left"
+          side === PanelPosition.left
             ? "left-full top-2 ml-3.5"
-            : side === "right"
+            : side === PanelPosition.right
             ? "right-full top-2 mr-3.5"
-            : side === "top"
+            : side === PanelPosition.top
             ? "top-full left-2 mt-3.5"
             : /* must be bottom*/ "bottom-full left-2 mb-3.5",
           `
@@ -307,19 +349,19 @@ const PanelApplicationLauncherPopOut: React.FC<{
           animate__faster
           opacity-0
         `,
-          side === "top" &&
+          side === PanelPosition.top &&
             (visible
               ? "animate__fadeIn"
               : "animate__fadeOut select-none pointer-events-none"),
-          side === "bottom" &&
+          side === PanelPosition.bottom &&
             (visible
               ? "animate__fadeIn"
               : "animate__fadeOut select-none pointer-events-none"),
-          side === "left" &&
+          side === PanelPosition.left &&
             (visible
               ? "animate__fadeIn"
               : "animate__fadeOut select-none pointer-events-none"),
-          side === "right" &&
+          side === PanelPosition.right &&
             (visible
               ? "animate__fadeIn"
               : "animate__fadeOut select-none pointer-events-none")
@@ -327,11 +369,11 @@ const PanelApplicationLauncherPopOut: React.FC<{
       />
       <section
         className={clippy(
-          side === "left"
+          side === PanelPosition.left
             ? "left-full top-0 ml-4"
-            : side === "right"
+            : side === PanelPosition.right
             ? "right-full top-0 mr-4"
-            : side === "top"
+            : side === PanelPosition.top
             ? "top-full left-0 mt-4"
             : /* must be bottom*/ "bottom-full left-0 mb-4",
           `
@@ -349,19 +391,19 @@ const PanelApplicationLauncherPopOut: React.FC<{
         flex-col
         gap-2
         `,
-          side === "top" &&
+          side === PanelPosition.top &&
             (visible
               ? "animate__fadeIn"
               : "animate__fadeOut select-none pointer-events-none"),
-          side === "bottom" &&
+          side === PanelPosition.bottom &&
             (visible
               ? "animate__fadeIn"
               : "animate__fadeOut select-none pointer-events-none"),
-          side === "left" &&
+          side === PanelPosition.left &&
             (visible
               ? "animate__fadeIn"
               : "animate__fadeOut select-none pointer-events-none"),
-          side === "right" &&
+          side === PanelPosition.right &&
             (visible
               ? "animate__fadeIn"
               : "animate__fadeOut select-none pointer-events-none")
@@ -423,16 +465,40 @@ const PanelApplicationLauncherPopOut: React.FC<{
               }
 
               return (
-                <button
+                <RightClickMenu
                   key={app.name}
-                  onClick={() => {
-                    setVisible(false);
-                    window.location.href = `#/app/a/${app.name}`;
-                  }}
+                  items={[
+                    {
+                      name: "Pin to Panel",
+                      onClick() {
+                        postJson(
+                          `/panel/quick-shortcuts/create`,
+                          {
+                            displayName: app.displayName,
+                            icon: app.icon,
+                            url: `#/app/a/${app.name}/`,
+                          },
+                          () => {
+                            // @ts-ignore
+                            Panel.reload();
+                          }
+                        );
+                      },
+                      shortcut: "ctrl+p",
+                    },
+                  ]}
                 >
-                  <img src={app.icon} alt={``} className={`p-2`} />
-                  <span>{app.displayName}</span>
-                </button>
+                  <button
+                    key={app.name}
+                    onClick={() => {
+                      setVisible(false);
+                      window.location.href = `#/app/a/${app.name}`;
+                    }}
+                  >
+                    <img src={app.icon} alt={``} className={`p-2`} />
+                    <span>{app.displayName}</span>
+                  </button>
+                </RightClickMenu>
               );
             })
           ) : (

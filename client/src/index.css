@@ -16,6 +16,7 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     -webkit-text-size-adjust: 100%;
+    width: 100%;
 
     /* uses the rgb color method without alpha values */
     --theme-50: 238 242 255;
