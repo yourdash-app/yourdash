@@ -21,7 +21,7 @@ export default class YourDashPanel {
     let user = new YourDashUser(this.username);
     return JSON.parse(
       fs
-        .readFileSync(path.resolve(user.getPath(), `./quick-shortcuts`))
+        .readFileSync(path.resolve(user.getPath(), `./quick-shortcuts.json`))
         .toString()
     );
   }
