@@ -5,7 +5,7 @@ import Panel from "../../Panel/Panel";
 
 const SettingsApplication: React.FC = () => {
   return (
-    <div>
+    <div className={`h-full overflow-auto`}>
       <h1
         className={`font-bold text-container-fg text-4xl tracking-wide pb-4 pt-4 pl-6 pr-6 bg-container-bg`}
       >
@@ -17,9 +17,10 @@ const SettingsApplication: React.FC = () => {
           Panel position
         </h2>
         <div
-          className={`grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 w-full p-4 gap-2`}
+          className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 w-full p-4 gap-2 max-w-5xl`}
         >
           <Card
+            className={`flex flex-col lg:aspect-square transition-[var(--transition)] aspect-[2/1]`}
             onClick={() => {
               postJson(`/panel/position`, { position: 0 }, () => {
                 // @ts-ignore
@@ -27,9 +28,16 @@ const SettingsApplication: React.FC = () => {
               });
             }}
           >
-            <span>Left</span>
+            <img
+              src={`/assets/settings/panel_left.svg`}
+              alt={``}
+              className={`w-full p-4`}
+              draggable={false}
+            />
+            <span className={`text-xl`}>Left</span>
           </Card>
           <Card
+            className={`flex flex-col lg:aspect-square transition-[var(--transition)] aspect-[2/1]`}
             onClick={() => {
               postJson(`/panel/position`, { position: 1 }, () => {
                 // @ts-ignore
@@ -37,9 +45,16 @@ const SettingsApplication: React.FC = () => {
               });
             }}
           >
-            <span>Top</span>
+            <img
+              src={`/assets/settings/panel_top.svg`}
+              alt={``}
+              className={`w-full p-4`}
+              draggable={false}
+            />
+            <span className={`text-xl`}>Top</span>
           </Card>
           <Card
+            className={`flex flex-col lg:aspect-square transition-[var(--transition)] aspect-[2/1]`}
             onClick={() => {
               postJson(`/panel/position`, { position: 2 }, () => {
                 // @ts-ignore
@@ -47,9 +62,16 @@ const SettingsApplication: React.FC = () => {
               });
             }}
           >
-            <span>Right</span>
+            <img
+              src={`/assets/settings/panel_right.svg`}
+              alt={``}
+              className={`w-full p-4`}
+              draggable={false}
+            />
+            <span className={`text-xl`}>Right</span>
           </Card>
           <Card
+            className={`flex flex-col lg:aspect-square transition-[var(--transition)] aspect-[2/1]`}
             onClick={() => {
               postJson(`/panel/position`, { position: 3 }, () => {
                 // @ts-ignore
@@ -57,7 +79,13 @@ const SettingsApplication: React.FC = () => {
               });
             }}
           >
-            <span>Bottom</span>
+            <img
+              src={`/assets/settings/panel_bottom.svg`}
+              alt={``}
+              className={`w-full p-4`}
+              draggable={false}
+            />
+            <span className={`text-xl`}>Bottom</span>
           </Card>
         </div>
       </section>

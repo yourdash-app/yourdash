@@ -42,6 +42,10 @@ export default class YourDashApplication {
   getDescription(): string {
     return this.application.description;
   }
+
+  getPath(): string {
+    return path.resolve(process.cwd(), `./apps/${this.name}/`);
+  }
 }
 
 export function getAllApplications(): string[] {

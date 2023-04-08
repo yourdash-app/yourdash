@@ -14,7 +14,7 @@ import { generateLogos } from "./core/logo.js";
 import YourDashApplication, {
   getAllApplications,
 } from "./core/applications.js";
-import { base64DataUrl } from "./core/base64.js";
+import { base64ToDataUrl } from "./core/base64.js";
 import sharp from "sharp";
 import YourDashPanel from "./core/panel.js";
 
@@ -76,6 +76,10 @@ startupChecks();
 const app = express();
 app.use(express.json({ limit: "50mb" }));
 app.use(cors());
+app.use((req, res, next) => {
+  res.removeHeader("X-Powered-By");
+  next();
+});
 
 app.get(`/`, (req, res) => {
   return res.send(`Hello from the yourdash server software`);
@@ -196,7 +200,7 @@ app.get(`/panel/launcher/applications`, (req, res) => {
               name: application.getName(),
               displayName: application.getDisplayName(),
               description: application.getDescription(),
-              icon: base64DataUrl(buf.toString("base64")),
+              icon: base64ToDataUrl(buf.toString("base64")),
             });
           });
       });
@@ -225,16 +229,25 @@ app.delete(`/panel/quick-shortcut/:ind`, (req, res) => {
 
 app.post(`/panel/quick-shortcuts/create`, (req, res) => {
   const { username } = req.headers as { username: string };
-  const { displayName, icon, url } = req.body as {
+  const { displayName, name, url } = req.body as {
     displayName: string;
-    icon: string;
     url: string;
+    name: string;
   };
 
   let panel = new YourDashPanel(username);
+  let application = new YourDashApplication(name);
 
-  panel.createQuickShortcut(displayName, url, icon);
-  return res.json({ success: true });
+  try {
+    panel.createQuickShortcut(
+      displayName,
+      url,
+      fs.readFileSync(path.resolve(application.getPath(), `./icon.avif`))
+    );
+    return res.json({ success: true });
+  } catch (err) {
+    return res.json({ error: true });
+  }
 });
 
 app.get(`/panel/position`, (req, res) => {

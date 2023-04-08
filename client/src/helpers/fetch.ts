@@ -14,7 +14,14 @@ export default function getJson(
       token: sessionStorage.getItem("session_token"),
     },
   })
-    .then((resp) => resp.json())
+    .then((resp) => {
+      if (
+        resp.headers.get("Content-Type") === "application/json; charset=utf-8"
+      )
+        return resp.json();
+
+      throw new Error(`not a valid JSON response`);
+    })
     .then((resp) => {
       if (resp?.error) {
         failure?.(resp);
@@ -48,7 +55,14 @@ export function postJson(
       token: sessionStorage.getItem("session_token"),
     },
   })
-    .then((resp) => resp.json())
+    .then((resp) => {
+      if (
+        resp.headers.get("Content-Type") === "application/json; charset=utf-8"
+      )
+        return resp.json();
+
+      throw new Error(`not a valid JSON response`);
+    })
     .then((resp) => {
       if (resp?.error) {
         failure?.(resp);
@@ -80,7 +94,14 @@ export function deleteJson(
       token: sessionStorage.getItem("session_token"),
     },
   })
-    .then((resp) => resp.json())
+    .then((resp) => {
+      if (
+        resp.headers.get("Content-Type") === "application/json; charset=utf-8"
+      )
+        return resp.json();
+
+      throw new Error(`not a valid JSON response`);
+    })
     .then((resp) => {
       if (resp?.error) {
         failure?.(resp);

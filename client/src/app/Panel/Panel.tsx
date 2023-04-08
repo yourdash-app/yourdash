@@ -200,13 +200,17 @@ const PanelInstanceIcon: React.FC = () => {
 
 const PanelAuthorizer: React.FC = () => {
   useEffect(() => {
-    getJson(
-      `/login/is-authenticated`,
-      () => {},
-      () => {
-        window.location.href = "#/login";
-      }
-    );
+    if (!localStorage.getItem("current_server")) {
+      window.location.href = "#/login";
+    } else {
+      getJson(
+        `/login/is-authenticated`,
+        () => {},
+        () => {
+          window.location.href = "#/login";
+        }
+      );
+    }
   }, []);
 
   return <></>;
