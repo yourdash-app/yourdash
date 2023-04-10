@@ -11,84 +11,174 @@ const SettingsApplication: React.FC = () => {
       >
         YourDash Settings
       </h1>
-      <section className={`p-4`}>
-        {/* TODO: add icons to the buttons ( left, top, right, bottom ) */}
-        <h2 className={`text-container-fg font-semibold text-3xl`}>
-          Panel position
-        </h2>
-        <div
-          className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 w-full p-4 gap-2 max-w-5xl`}
-        >
-          <Card
-            className={`flex flex-col lg:aspect-square transition-[var(--transition)] aspect-[2/1]`}
-            onClick={() => {
-              postJson(`/panel/position`, { position: 0 }, () => {
-                // @ts-ignore
-                Panel.reload();
-              });
-            }}
+      <main className={`ml-auto mr-auto w-full max-w-5xl`}>
+        <section className={`p-4`}>
+          {/* TODO: add icons to the buttons ( left, top, right, bottom ) */}
+          <h2
+            className={`text-container-fg font-semibold text-3xl w-min whitespace-nowrap pb-4`}
           >
-            <img
-              src={`/assets/settings/panel_left.svg`}
-              alt={``}
-              className={`w-full p-4`}
-              draggable={false}
-            />
-            <span className={`text-xl`}>Left</span>
-          </Card>
-          <Card
-            className={`flex flex-col lg:aspect-square transition-[var(--transition)] aspect-[2/1]`}
-            onClick={() => {
-              postJson(`/panel/position`, { position: 1 }, () => {
-                // @ts-ignore
-                Panel.reload();
-              });
-            }}
+            Panel position
+          </h2>
+          <div
+            className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 w-full gap-2 min-h-32`}
           >
-            <img
-              src={`/assets/settings/panel_top.svg`}
-              alt={``}
-              className={`w-full p-4`}
-              draggable={false}
-            />
-            <span className={`text-xl`}>Top</span>
-          </Card>
-          <Card
-            className={`flex flex-col lg:aspect-square transition-[var(--transition)] aspect-[2/1]`}
-            onClick={() => {
-              postJson(`/panel/position`, { position: 2 }, () => {
-                // @ts-ignore
-                Panel.reload();
-              });
-            }}
+            <Card
+              className={`flex flex-col transition-[var(--transition)] h-full`}
+              onClick={() => {
+                postJson(
+                  `/app/settings/panel/position`,
+                  { position: 0 },
+                  () => {
+                    // @ts-ignore
+                    Panel.reload();
+                  }
+                );
+              }}
+            >
+              <img
+                src={`/assets/settings/panel_left.svg`}
+                alt={``}
+                className={`p-4 h-full`}
+                draggable={false}
+              />
+              <span className={`text-xl`}>Left</span>
+            </Card>
+            <Card
+              className={`flex flex-col transition-[var(--transition)] h-full`}
+              onClick={() => {
+                postJson(
+                  `/app/settings/panel/position`,
+                  { position: 1 },
+                  () => {
+                    // @ts-ignoret
+                    Panel.reload();
+                  }
+                );
+              }}
+            >
+              <img
+                src={`/assets/settings/panel_top.svg`}
+                alt={``}
+                className={`p-4 h-full`}
+                draggable={false}
+              />
+              <span className={`text-xl`}>Top</span>
+            </Card>
+            <Card
+              className={`flex flex-col transition-[var(--transition)] h-full`}
+              onClick={() => {
+                postJson(
+                  `/app/settings/panel/position`,
+                  { position: 2 },
+                  () => {
+                    // @ts-ignore
+                    Panel.reload();
+                  }
+                );
+              }}
+            >
+              <img
+                src={`/assets/settings/panel_right.svg`}
+                alt={``}
+                className={`p-4 h-full`}
+                draggable={false}
+              />
+              <span className={`text-xl`}>Right</span>
+            </Card>
+            <Card
+              className={`flex flex-col transition-[var(--transition)] h-full`}
+              onClick={() => {
+                postJson(
+                  `/app/settings/panel/position`,
+                  { position: 3 },
+                  () => {
+                    // @ts-ignore
+                    Panel.reload();
+                  }
+                );
+              }}
+            >
+              <img
+                src={`/assets/settings/panel_bottom.svg`}
+                alt={``}
+                className={`p-4 h-full`}
+                draggable={false}
+              />
+              <span className={`text-xl`}>Bottom</span>
+            </Card>
+          </div>
+        </section>
+        <section className={`p-4`}>
+          {/* TODO: add icons to the buttons ( left, top, right, bottom ) */}
+          <h2
+            className={`text-container-fg font-semibold text-3xl w-min whitespace-nowrap pb-4`}
           >
-            <img
-              src={`/assets/settings/panel_right.svg`}
-              alt={``}
-              className={`w-full p-4`}
-              draggable={false}
-            />
-            <span className={`text-xl`}>Right</span>
-          </Card>
-          <Card
-            className={`flex flex-col lg:aspect-square transition-[var(--transition)] aspect-[2/1]`}
-            onClick={() => {
-              postJson(`/panel/position`, { position: 3 }, () => {
-                // @ts-ignore
-                Panel.reload();
-              });
-            }}
+            Panel Launcher
+          </h2>
+          <div
+            className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 w-full gap-2 min-h-32`}
           >
-            <img
-              src={`/assets/settings/panel_bottom.svg`}
-              alt={``}
-              className={`w-full p-4`}
-              draggable={false}
-            />
-            <span className={`text-xl`}>Bottom</span>
-          </Card>
-        </div>
-      </section>
+            <Card
+              className={`flex flex-col transition-[var(--transition)] h-full`}
+              onClick={() => {
+                postJson(
+                  `/app/settings/panel/launcher`,
+                  { launcher: 0 },
+                  () => {
+                    // @ts-ignore
+                    Panel.reload();
+                  }
+                );
+              }}
+            >
+              <img
+                src={`/assets/productLogos/yourdash.svg`}
+                alt={``}
+                className={`p-4 h-full`}
+                draggable={false}
+              />
+              <span className={`text-xl`}>Pop out</span>
+            </Card>
+            <Card
+              className={`flex flex-col transition-[var(--transition)] h-full`}
+              onClick={() => {
+                postJson(
+                  `/app/settings/panel/launcher`,
+                  { launcher: 1 },
+                  () => {
+                    // @ts-ignoret
+                    Panel.reload();
+                  }
+                );
+              }}
+            >
+              <img
+                src={`/assets/productLogos/yourdash.svg`}
+                alt={``}
+                className={`p-4 h-full`}
+                draggable={false}
+              />
+              <span className={`text-xl`}>Slide out</span>
+            </Card>
+          </div>
+        </section>
+        <section className={`p-4`}>
+          {/* TODO: add icons to the buttons ( left, top, right, bottom ) */}
+          <h2
+            className={`text-container-fg font-semibold text-3xl w-min whitespace-nowrap pb-4`}
+          >
+            Panel Quick Shortcuts
+          </h2>
+          <div
+            className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 w-full gap-2 min-h-32`}
+          >
+            <Card compact={true}>a</Card>
+            <Card compact={true}>a</Card>
+            <Card compact={true}>a</Card>
+            <Card compact={true}>a</Card>
+          </div>
+        </section>
+      </main>
     </div>
   );
 };

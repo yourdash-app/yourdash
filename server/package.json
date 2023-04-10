@@ -23,13 +23,14 @@
     "nodemon": "^2.0.22",
     "sharp": "^0.32.0",
     "typescript": "^5.0.3",
+    "undici": "^5.21.2",
     "~": "file:./"
   },
   "type": "module",
   "scripts": {
     "compile": "tsc",
     "start": "node .",
-    "dev": "concurrently \"tsc\" \"cross-env DEV=true nodemon --signal SIGINT .\""
+    "dev": "cross-env DEV=true nodemon --signal SIGINT ."
   },
   "nodemonConfig": {
     "ext": "js"

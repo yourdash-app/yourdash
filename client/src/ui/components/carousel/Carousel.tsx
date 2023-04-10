@@ -36,8 +36,8 @@ const Carousel: React.FC<ICarousel> = ({
                 style={{
                   backgroundColor:
                     Math.round(container.scrollLeft / window.innerWidth) === ind
-                      ? "var(--container-fg)"
-                      : "var(--container-bg)",
+                      ? "rgb(var(--container-fg))"
+                      : "rgb(var(--container-bg))",
                 }}
               />
             );
@@ -49,8 +49,8 @@ const Carousel: React.FC<ICarousel> = ({
                 Math.round(
                   (pageRef?.current?.scrollLeft || 0) / window.innerWidth
                 ) === 0
-                  ? "var(--container-fg)"
-                  : "var(--container-bg)",
+                  ? "rgb(var(--container-fg))"
+                  : "rgb(var(--container-bg))",
             }}
           />
         )}
@@ -84,7 +84,7 @@ const Carousel: React.FC<ICarousel> = ({
                 container.scrollBy({ left: -window.innerWidth });
               }}
             >
-              <Icon name="chevron-left-16" color="var(--button-fg)" />
+              <Icon name="chevron-left-16" color="rgb(var(--button-fg))" />
             </button>
             <button
               type={"button"}
@@ -94,7 +94,7 @@ const Carousel: React.FC<ICarousel> = ({
                 container.scrollBy({ left: window.innerWidth });
               }}
             >
-              <Icon name="chevron-right-16" color="var(--button-fg)" />
+              <Icon name="chevron-right-16" color="rgb(var(--button-fg))" />
             </button>
           </>
         ) : null}

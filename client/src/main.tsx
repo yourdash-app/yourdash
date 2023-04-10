@@ -1,5 +1,5 @@
 import "animate.css";
-import React, { lazy } from "react";
+import React from "react";
 import ReactDOM from "react-dom/client";
 import { createRoutesFromElements, Route, RouterProvider } from "react-router";
 import ComingSoon from "./ComingSoon";
@@ -13,8 +13,7 @@ import AppLayout from "./app/Layout";
 import ApplicationRedirectToDash from "./app/ApplicationRedirectToDash";
 import { createHashRouter } from "react-router-dom";
 import RightClickMenuRootContainer from "./ui/components/rightClickMenu/RightClickMenuRootContainer";
-
-const AppRouter = lazy(() => import("./app/AppRouter"));
+import AppRouter from "./app/AppRouter";
 
 ReactDOM.createRoot(document.getElementById(`root`) as HTMLElement).render(
   <React.StrictMode>
@@ -42,10 +41,5 @@ ReactDOM.createRoot(document.getElementById(`root`) as HTMLElement).render(
         )}
       />
     </RightClickMenuRootContainer>
-    <div
-      className={`fixed bottom-0 right-0 p-1 pl-2 rounded-tl-xl bg-container-bg text-container-fg pointer-events-none`}
-    >
-      Work in progress build
-    </div>
   </React.StrictMode>
 );

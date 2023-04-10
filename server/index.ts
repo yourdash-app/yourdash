@@ -74,8 +74,10 @@ function startupChecks() {
 startupChecks();
 
 const app = express();
+
 app.use(express.json({ limit: "50mb" }));
 app.use(cors());
+
 app.use((req, res, next) => {
   res.removeHeader("X-Powered-By");
   next();
@@ -229,9 +231,8 @@ app.delete(`/panel/quick-shortcut/:ind`, (req, res) => {
 
 app.post(`/panel/quick-shortcuts/create`, (req, res) => {
   const { username } = req.headers as { username: string };
-  const { displayName, name, url } = req.body as {
+  const { displayName, name } = req.body as {
     displayName: string;
-    url: string;
     name: string;
   };
 
@@ -241,7 +242,7 @@ app.post(`/panel/quick-shortcuts/create`, (req, res) => {
   try {
     panel.createQuickShortcut(
       displayName,
-      url,
+      `#/app/a/${name}`,
       fs.readFileSync(path.resolve(application.getPath(), `./icon.avif`))
     );
     return res.json({ success: true });
@@ -258,25 +259,24 @@ app.get(`/panel/position`, (req, res) => {
   return res.json({ position: panel.getPanelPosition() });
 });
 
-app.post(`/panel/position`, (req, res) => {
+app.get(`/panel/launcher`, (req, res) => {
   const { username } = req.headers as { username: string };
-  const { position } = req.body;
 
   let panel = new YourDashPanel(username);
 
-  panel.setPanelPosition(position);
-
-  return res.json({ success: true });
+  return res.json({ launcher: panel.getLauncherType() });
 });
 
 new Promise<void>((resolve, reject) => {
   if (fs.existsSync(path.resolve(process.cwd(), `./apps/`))) {
     let apps = fs.readdirSync(path.resolve(process.cwd(), `./apps/`));
-    apps.map((app) => {
-      console.log(`loading application: ${app}`);
+    apps.map((appName) => {
+      console.log(`loading application: ${appName}`);
 
       // import and load all applications
-      import(`file://` + path.resolve(process.cwd(), `./apps/${app}/index.js`))
+      import(
+        `file://` + path.resolve(process.cwd(), `./apps/${appName}/index.js`)
+      )
         .then((mod) => {
           try {
             mod.default(app);
@@ -285,7 +285,7 @@ new Promise<void>((resolve, reject) => {
           }
         })
         .catch((err) => {
-          console.error(`Error while loading application: ${app}`, err);
+          console.error(`Error while loading application: ${appName}`, err);
         });
     });
     resolve();

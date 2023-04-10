@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import RightClickMenuContext from "./RightClickMenuContext";
 import styles from "./RightClickMenuRootContainer.module.scss";
 import RightClickMenuItem from "./RightClickMenuItem";
@@ -13,6 +13,7 @@ const RightClickMenuRootContainer: React.FC<{ children: React.ReactNode }> = ({
   });
   const [visible, setVisible] = React.useState(false);
   const [items, setItems] = React.useState([] as RightClickMenuItem[]);
+  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     window.addEventListener("resize", () => {
@@ -26,13 +27,16 @@ const RightClickMenuRootContainer: React.FC<{ children: React.ReactNode }> = ({
         const screenWidth = window.innerWidth;
         const screenHeight = window.innerHeight;
 
-        const MAX_MENU_WIDTH = 200;
+        const MENU_WIDTH = ref.current?.getBoundingClientRect().width || 200;
+        const MENU_HEIGHT = ref.current?.getBoundingClientRect().height || 200;
 
         let resultX = x;
-        const resultY = y;
+        let resultY = y;
 
-        if (x + MAX_MENU_WIDTH >= screenWidth)
-          resultX = screenWidth - MAX_MENU_WIDTH;
+        if (x + MENU_WIDTH >= screenWidth) resultX = screenWidth - MENU_WIDTH;
+
+        if (y + MENU_HEIGHT >= screenHeight)
+          resultY = screenHeight - MENU_HEIGHT;
 
         setPosition({
           x: resultX,
@@ -44,6 +48,7 @@ const RightClickMenuRootContainer: React.FC<{ children: React.ReactNode }> = ({
       }}
     >
       <div
+        ref={ref}
         style={{
           display: visible ? "flex" : "none",
           left: position.x,

@@ -11,7 +11,9 @@
   "scripts": {
     "start-client": "yarn --cwd ./client dev",
     "visualize-client-bundle": "yarn --cwd ./client visualize-bundle",
-    "start-server": "yarn --cwd ./server dev",
+    "start-server": "yarn --cwd ./server start",
+    "start-server-dev": "yarn --cwd ./server dev",
+    "start-server-compile": "yarn --cwd ./server compile",
     "start-desktop": "yarn --cwd ./electron dev",
     "postinstall": "yarn --cwd ./client && yarn --cwd ./server && yarn --cwd ./electron"
   },

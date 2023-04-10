@@ -23,7 +23,8 @@ export enum PanelPosition {
 }
 
 const Panel: React.FC<IPanel> = ({ side, setSide }) => {
-  const [num, setNum] = useState(0);
+  const [num, setNum] = useState<number>(0);
+  const [launcherType, setLauncherType] = useState<number>(0);
 
   //  @ts-ignore
   Panel.reload = () => {
@@ -33,6 +34,10 @@ const Panel: React.FC<IPanel> = ({ side, setSide }) => {
   useEffect(() => {
     getJson(`/panel/position`, (res) => {
       setSide(res.position);
+    });
+
+    getJson(`/panel/launcher`, (res) => {
+      setLauncherType(res.launcher);
     });
   }, [num]);
 
@@ -65,12 +70,12 @@ const Panel: React.FC<IPanel> = ({ side, setSide }) => {
           gridRowStart: 2,
         }),
       }}
-      className={`bg-container-bg flex p-2 gap-1 relative justify-center items-center`}
+      className={`bg-container-bg flex p-2 gap-1 relative justify-center items-center z-10`}
     >
       {/* invisible component which checks that the user is authorized on the first load of the panel*/}
       <PanelAuthorizer />
+      <PanelApplicationLauncher side={side} type={launcherType} />
       <PanelInstanceIcon />
-      <PanelApplicationLauncher side={side} type={"popOut"} />
       {/* separator */}
       <div
         className={clippy(
@@ -83,7 +88,7 @@ const Panel: React.FC<IPanel> = ({ side, setSide }) => {
             : "w-full h-0.5 mt-1 mb-1"
         )}
       ></div>
-      <PanelQuickShortcuts num={num} />
+      <PanelQuickShortcuts num={num} side={side} />
       <section
         className={clippy(
           side === PanelPosition.left || side === PanelPosition.right
@@ -107,7 +112,10 @@ interface PanelQuickShortcut {
   icon: string;
 }
 
-const PanelQuickShortcuts: React.FC<{ num: number }> = ({ num }) => {
+const PanelQuickShortcuts: React.FC<{ num: number; side: PanelPosition }> = ({
+  num,
+  side,
+}) => {
   const [quickShortcuts, setQuickShortcuts] = useState<PanelQuickShortcut[]>(
     []
   );
@@ -148,25 +156,18 @@ const PanelQuickShortcuts: React.FC<{ num: number }> = ({ num }) => {
               />
               <span
                 className={clippy(
-                  `
-                absolute
-                z-50
-                left-full
-                ml-4
-                top-1/2
-                -translate-y-1/2
-                pl-2
-                pr-2
-                pt-0.5
-                pb-0.5
-                bg-container-bg
-                rounded-lg
-                pointer-events-none
-                group-hover:opacity-100
-                opacity-0
-                transition-[var(--transition)]
-                shadow-lg
-                `
+                  "absolute z-50 pl-2 pr-2 pt-0.5 pb-0.5 bg-container-bg rounded-lg" +
+                    " pointer-events-none group-hover:opacity-100 opacity-0" +
+                    " group-hover:[transition:var(--transition-fast)] shadow-lg" +
+                    " [transition:var(--transition)]",
+                  side === PanelPosition.left &&
+                    "ml-4 left-full top-1/2 -translate-y-1/2",
+                  side === PanelPosition.top &&
+                    "mt-4 top-full left-1/2 -translate-x-1/2",
+                  side === PanelPosition.right &&
+                    "mr-4 right-full top-1/2 -translate-y-1/2",
+                  side === PanelPosition.bottom &&
+                    "mb-4 bottom-full left-1/2 -translate-x-1/2"
                 )}
               >
                 {shortcut.displayName}
@@ -193,7 +194,7 @@ const PanelInstanceIcon: React.FC = () => {
       src={`${instanceUrl}/panel/logo/small`}
       onClick={() => (window.location.href = `#/app/a/dash`)}
       alt={``}
-      className={`cursor-pointer select-none`}
+      className={`cursor-pointer select-none mt-1`}
     />
   );
 };
@@ -201,12 +202,19 @@ const PanelInstanceIcon: React.FC = () => {
 const PanelAuthorizer: React.FC = () => {
   useEffect(() => {
     if (!localStorage.getItem("current_server")) {
+      setTimeout(() => {
+        console.clear();
+      }, 1000);
       window.location.href = "#/login";
     } else {
       getJson(
         `/login/is-authenticated`,
         () => {},
         () => {
+          setTimeout(() => {
+            console.clear();
+          }, 1000);
+          sessionStorage.removeItem("session_token");
           window.location.href = "#/login";
         }
       );
@@ -218,7 +226,7 @@ const PanelAuthorizer: React.FC = () => {
 
 const PanelApplicationLauncher: React.FC<{
   side: PanelPosition;
-  type: "slideOut" | "popOut";
+  type: number;
 }> = ({ side, type }) => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
   return (
@@ -227,14 +235,15 @@ const PanelApplicationLauncher: React.FC<{
         side === PanelPosition.left || side === PanelPosition.right
           ? "w-full"
           : "h-full",
-        `relative z-50`
+        `z-50`,
+        type !== 1 && `relative`
       )}
     >
       <IconButton
         icon={"three-bars-16"}
         onClick={() => setIsVisible(!isVisible)}
       />
-      {type === "slideOut" ? (
+      {type === 1 ? (
         <PanelApplicationLauncherSlideOut
           side={side}
           visible={isVisible}
@@ -271,14 +280,14 @@ const PanelApplicationLauncherSlideOut: React.FC<{
     <section
       className={clippy(
         side === PanelPosition.left
-          ? "left-full top-0 ml-2"
+          ? "left-full top-0 animate__fadeIn"
           : side === PanelPosition.right
-          ? "right-full top-0 mr-2"
+          ? "right-full top-0 animate__fadeIn"
           : side === PanelPosition.top
-          ? "top-full left-0 mt-2"
-          : /* must be bottom*/ "bottom-full left-0 mb-2",
+          ? "top-full left-0 animate__fadeIn"
+          : /* must be bottom*/ "bottom-full left-0 animate__fadeIn",
         visible ? "flex" : "hidden",
-        `absolute w-96 bg-container-bg h-screen`
+        `absolute w-96 bg-container-bg h-screen animate__animated z-0`
       )}
       style={{
         ...(side === PanelPosition.left && {
@@ -295,7 +304,34 @@ const PanelApplicationLauncherSlideOut: React.FC<{
         }),
       }}
     >
-      <h1>Launcher SlideOut</h1>
+      <header
+        style={{
+          backgroundImage: `url("http://localhost:3560/login/background")`,
+        }}
+        className={`h-32 flex items-center justify-center w-full bg-cover bg-center`}
+      >
+        <span
+          className={clippy(
+            `
+            text-container-fg
+            text-4xl
+            font-bold
+            [filter:_drop-shadow(0_10px_8px_rgb(0_0_0/0.04))_drop-shadow(0_4px_3px_rgb(0_0_0/0.1))_drop-shadow(0_10px_8px_rgb(0_0_0/0.04))_drop-shadow(0_4px_3px_rgb(0_0_0/0.1))_drop-shadow(0_10px_8px_rgb(0_0_0/0.04))_drop-shadow(0_4px_3px_rgb(0_0_0/0.1))]
+            backdrop-blur-sm
+            bg-container-bg
+            bg-opacity-50
+            pl-4
+            pr-4
+            pt-2
+            pb-2
+            rounded-2xl
+            overflow-hidden
+          `
+          )}
+        >
+          Hiya, {userFullName.first}
+        </span>
+      </header>
     </section>
   );
 };
@@ -479,8 +515,7 @@ const PanelApplicationLauncherPopOut: React.FC<{
                           `/panel/quick-shortcuts/create`,
                           {
                             displayName: app.displayName,
-                            icon: app.icon,
-                            url: `#/app/a/${app.name}/`,
+                            name: app.name,
                           },
                           () => {
                             // @ts-ignore

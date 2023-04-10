@@ -1,8 +1,7 @@
 import fs from "fs";
 import YourDashUser from "./user.js";
 import path from "path";
-import { base64ToDataUrl, dataUrlToBase64 } from "./base64.js";
-import sharp from "sharp";
+import { base64ToDataUrl } from "./base64.js";
 
 export interface YourDashPanelQuickShortcut {
   displayName: string;
@@ -17,6 +16,11 @@ export enum YourDashPanelPosition {
   bottom,
 }
 
+export enum YourDashPanelLauncherType {
+  popOut,
+  slideOut,
+}
+
 export default class YourDashPanel {
   username: string;
 
@@ -27,17 +31,40 @@ export default class YourDashPanel {
 
   getQuickShortcuts(): YourDashPanelQuickShortcut[] {
     let user = new YourDashUser(this.username);
-    return JSON.parse(
-      fs
-        .readFileSync(path.resolve(user.getPath(), `./quick-shortcuts.json`))
-        .toString()
-    );
+
+    try {
+      if (
+        !fs.existsSync(path.resolve(user.getPath(), `./quick-shortcuts.json`))
+      ) {
+        fs.writeFileSync(
+          path.resolve(user.getPath(), `./quick-shortcuts.json`),
+          "[]"
+        );
+      }
+
+      return JSON.parse(
+        fs
+          .readFileSync(path.resolve(user.getPath(), `./quick-shortcuts.json`))
+          .toString()
+      );
+    } catch (err) {
+      return [];
+    }
   }
 
   removeQuickShortcut(index: number): this {
     let user = new YourDashUser(this.username);
 
     try {
+      if (
+        !fs.existsSync(path.resolve(user.getPath(), `./quick-shortcuts.json`))
+      ) {
+        fs.writeFileSync(
+          path.resolve(user.getPath(), `./quick-shortcuts.json`),
+          "[]"
+        );
+      }
+
       let quickShortcuts: YourDashPanelQuickShortcut[] = JSON.parse(
         fs
           .readFileSync(path.resolve(user.getPath(), `./quick-shortcuts.json`))
@@ -61,11 +88,25 @@ export default class YourDashPanel {
     let user = new YourDashUser(this.username);
 
     try {
+      if (
+        !fs.existsSync(path.resolve(user.getPath(), `./quick-shortcuts.json`))
+      ) {
+        fs.writeFileSync(
+          path.resolve(user.getPath(), `./quick-shortcuts.json`),
+          "[]"
+        );
+      }
+
       let quickShortcuts: YourDashPanelQuickShortcut[] = JSON.parse(
         fs
           .readFileSync(path.resolve(user.getPath(), `./quick-shortcuts.json`))
           .toString()
       );
+
+      if (
+        quickShortcuts.filter((shortcut) => shortcut.url === url).length !== 0
+      )
+        return this;
 
       quickShortcuts.push({
         url,
@@ -93,7 +134,6 @@ export default class YourDashPanel {
           path.resolve(user.getPath(), `./panel.json`),
           JSON.stringify({ position: position })
         );
-        return this;
       }
 
       let panelConfig = JSON.parse(
@@ -129,5 +169,51 @@ export default class YourDashPanel {
     } catch (err) {
       return YourDashPanelPosition.left;
     }
+  }
+
+  getLauncherType(): YourDashPanelLauncherType {
+    let user = new YourDashUser(this.username);
+
+    try {
+      if (!fs.existsSync(path.resolve(user.getPath(), `./panel.json`))) {
+        return YourDashPanelLauncherType.popOut;
+      }
+
+      let panelConfig = JSON.parse(
+        fs.readFileSync(path.resolve(user.getPath(), `./panel.json`)).toString()
+      );
+
+      return panelConfig.launcher;
+    } catch (err) {
+      return YourDashPanelLauncherType.popOut;
+    }
+  }
+
+  setLauncherType(launcher: YourDashPanelLauncherType): this {
+    let user = new YourDashUser(this.username);
+
+    try {
+      if (!fs.existsSync(path.resolve(user.getPath(), `./panel.json`))) {
+        fs.writeFileSync(
+          path.resolve(user.getPath(), `./panel.json`),
+          JSON.stringify({ launcher: 0 })
+        );
+      }
+
+      let panelConfig = JSON.parse(
+        fs.readFileSync(path.resolve(user.getPath(), `./panel.json`)).toString()
+      );
+
+      panelConfig.launcher = launcher;
+
+      fs.writeFileSync(
+        path.resolve(user.getPath(), `./panel.json`),
+        JSON.stringify(panelConfig)
+      );
+    } catch (err) {
+      return this;
+    }
+
+    return this;
   }
 }
