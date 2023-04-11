@@ -118,7 +118,7 @@ function getWeatherConditionFromState(state: weatherStates): string {
 }
 
 const WeatherApplicationLocationPage: React.FC = () => {
-  const [displayedWeatherCondition, setDisplatedWeatherCondition] =
+  const [displayedWeatherCondition, setDisplayedWeatherCondition] =
     useState<weatherStates>(weatherStates.clear);
   const { id: locationId } = useParams();
   const [data, setData] = useState<{
@@ -164,7 +164,7 @@ const WeatherApplicationLocationPage: React.FC = () => {
       `/app/weather/forId/${locationId}`,
       (resp) => {
         setData(resp);
-        setDisplatedWeatherCondition(resp.currentWeather.condition);
+        setDisplayedWeatherCondition(resp.currentWeather.condition);
         console.log(resp);
       },
       () => {

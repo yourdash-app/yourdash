@@ -1,0 +1,7 @@
+{
+  "insertPragma": false,
+  "bracketSpacing": true,
+  "trailingComma": "all",
+  "semi": true,
+  "proseWrap": "always"
+}

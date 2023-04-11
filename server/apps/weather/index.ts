@@ -1,3 +1,5 @@
+/** @format */
+
 import { Application as ExpressApplication } from "express";
 import { fetch } from "undici";
 
@@ -93,7 +95,7 @@ export default function main(app: ExpressApplication) {
       return res.json({ error: true });
 
     fetch(
-      `https://geocoding-api.open-meteo.com/v1/search?name=${req.params.locationName}&language=en&count=5&format=json`
+      `https://geocoding-api.open-meteo.com/v1/search?name=${req.params.locationName}&language=en&count=5&format=json`,
     )
       .then((resp) => resp.json())
       .then((json) => {
@@ -101,11 +103,12 @@ export default function main(app: ExpressApplication) {
       })
       .catch(() => {
         console.log(`Failed to fetch weather data from open-meteo`);
+        return res.json({ error: true });
       });
   });
 
   app.get(`/app/weather/location/`, (req, res) => {
-    return res.json({ error: true });
+    return res.json([]);
   });
 
   app.get(`/app/weather/forId/:id`, (req, res) => {
@@ -124,7 +127,7 @@ export default function main(app: ExpressApplication) {
     }
 
     fetch(
-      `https://geocoding-api.open-meteo.com/v1/get?id=${req.params.id}&language=en&format=json`
+      `https://geocoding-api.open-meteo.com/v1/get?id=${req.params.id}&language=en&format=json`,
     )
       .then((resp) => resp.json())
       .then((json: any) => {
@@ -137,7 +140,7 @@ export default function main(app: ExpressApplication) {
         };
 
         fetch(
-          `https://api.open-meteo.com/v1/forecast?latitude=${json.latitude}&longitude=${json.longitude}&hourly=temperature_2m,weathercode&models=best_match&daily=temperature_2m_max,temperature_2m_min,weathercode&current_weather=true&timezone=${json.timezone}`
+          `https://api.open-meteo.com/v1/forecast?latitude=${json.latitude}&longitude=${json.longitude}&hourly=temperature_2m,weathercode&models=best_match&daily=temperature_2m_max,temperature_2m_min,weathercode&current_weather=true&timezone=${json.timezone}`,
         )
           .then((resp) => resp.json())
           .then((json: any) => {
@@ -153,7 +156,7 @@ export default function main(app: ExpressApplication) {
                 currentWeather: {
                   temp: json.current_weather.temperature,
                   condition: parseWeatherCodes(
-                    json.current_weather.weathercode
+                    json.current_weather.weathercode,
                   ),
                   time: json.current_weather.time,
                   wind: {
@@ -179,7 +182,7 @@ export default function main(app: ExpressApplication) {
                   hours: json.hourly.time.map((_, ind) => {
                     return {
                       condition: parseWeatherCodes(
-                        json.hourly.weathercode[ind]
+                        json.hourly.weathercode[ind],
                       ),
                       date: json.hourly.time[ind],
                       temp: json.hourly.temperature_2m[ind],

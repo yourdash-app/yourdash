@@ -1,3 +1,5 @@
+/** @format */
+
 // The YourDash project
 //  - https://github.com/yourdash-app/yourdash
 //  - https://yourdash-app.github.io
@@ -19,7 +21,7 @@ import sharp from "sharp";
 import YourDashPanel from "./core/panel.js";
 
 console.log(
-  `----------------------------------------------------\n                      YourDash                      \n----------------------------------------------------`
+  `----------------------------------------------------\n                      YourDash                      \n----------------------------------------------------`,
 );
 
 let SESSIONS: { [user: string]: string } = {};
@@ -35,7 +37,7 @@ if (process.env.DEV) {
     SESSIONS = JSON.parse(
       fs
         .readFileSync(path.resolve(process.cwd(), `.dev-session-tokens`))
-        .toString() || "{}"
+        .toString() || "{}",
     );
   }
 }
@@ -46,7 +48,7 @@ function startupChecks() {
     fs.cpSync(
       path.resolve(process.cwd(), `./default/fs/`),
       path.resolve(process.cwd(), `./fs/`),
-      { recursive: true }
+      { recursive: true },
     );
 
     // make sure that the users directory exists
@@ -112,7 +114,7 @@ app.get(`/test`, (req, res) => {
 
 app.get(`/login/background`, (req, res) => {
   return res.sendFile(
-    path.resolve(process.cwd(), `./fs/login_background.avif`)
+    path.resolve(process.cwd(), `./fs/login_background.avif`),
   );
 });
 
@@ -161,7 +163,7 @@ app.get(`/login/is-authenticated`, (req, res) => {
 
 app.get(`/panel/logo/small`, (req, res) => {
   return res.sendFile(
-    path.resolve(process.cwd(), `./fs/logo_panel_small.avif`)
+    path.resolve(process.cwd(), `./fs/logo_panel_small.avif`),
   );
 });
 
@@ -193,8 +195,8 @@ app.get(`/panel/launcher/applications`, (req, res) => {
       return new Promise((resolve) => {
         sharp(
           fs.readFileSync(
-            path.resolve(process.cwd(), `./apps/${app}/icon.avif`)
-          )
+            path.resolve(process.cwd(), `./apps/${app}/icon.avif`),
+          ),
         )
           .resize(98, 98)
           .toBuffer((err, buf) => {
@@ -206,7 +208,7 @@ app.get(`/panel/launcher/applications`, (req, res) => {
             });
           });
       });
-    })
+    }),
   ).then((resp) => res.json(resp));
 });
 
@@ -243,7 +245,7 @@ app.post(`/panel/quick-shortcuts/create`, (req, res) => {
     panel.createQuickShortcut(
       displayName,
       `#/app/a/${name}`,
-      fs.readFileSync(path.resolve(application.getPath(), `./icon.avif`))
+      fs.readFileSync(path.resolve(application.getPath(), `./icon.avif`)),
     );
     return res.json({ success: true });
   } catch (err) {
@@ -307,7 +309,7 @@ if (process.env.DEV) {
   process.once(`SIGINT`, () => {
     fs.writeFileSync(
       path.resolve(process.cwd(), `.dev-session-tokens`),
-      JSON.stringify(SESSIONS)
+      JSON.stringify(SESSIONS),
     );
   });
 }
