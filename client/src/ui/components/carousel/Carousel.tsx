@@ -15,8 +15,8 @@ const Carousel: React.FC<ICarousel> = ({
   ...extraProps
 }) => {
   const pageRef = useRef<HTMLDivElement>(null);
-  const [indicator, setIndicator] = useState(<div />);
-  const [scrollEvents, setScrollEvents] = useState(0);
+  const [indicator, setIndicator] = useState<JSX.Element>(<div />);
+  const [item, setItem] = useState<number>(0);
 
   useEffect(() => {
     if (!pageRef) return;
@@ -35,7 +35,10 @@ const Carousel: React.FC<ICarousel> = ({
                 key={ind}
                 style={{
                   backgroundColor:
-                    Math.round(container.scrollLeft / window.innerWidth) === ind
+                    Math.round(
+                      container.scrollLeft /
+                        (container.getBoundingClientRect().width || 0)
+                    ) === ind
                       ? "rgb(var(--container-fg))"
                       : "rgb(var(--container-bg))",
                 }}
@@ -47,7 +50,8 @@ const Carousel: React.FC<ICarousel> = ({
             style={{
               backgroundColor:
                 Math.round(
-                  (pageRef?.current?.scrollLeft || 0) / window.innerWidth
+                  (pageRef?.current?.scrollLeft || 0) /
+                    (pageRef.current?.getBoundingClientRect().width || 0)
                 ) === 0
                   ? "rgb(var(--container-fg))"
                   : "rgb(var(--container-bg))",
@@ -56,15 +60,15 @@ const Carousel: React.FC<ICarousel> = ({
         )}
       </div>
     );
-  }, [pageRef, children, scrollEvents]);
+  }, [pageRef, children]);
 
   return (
     <div {...extraProps} className={`${styles.component} ${className}`}>
       <div
         className={styles.main}
         ref={pageRef}
-        onScroll={() => {
-          return setScrollEvents(scrollEvents + 1);
+        onScroll={(e) => {
+          return e.preventDefault();
         }}
       >
         {children}
@@ -81,7 +85,15 @@ const Carousel: React.FC<ICarousel> = ({
               onClick={() => {
                 if (!pageRef.current) return;
                 const container = pageRef.current as HTMLDivElement;
-                container.scrollBy({ left: -window.innerWidth });
+                if (!container.children.item(item - 1)) return;
+
+                container.scrollTo({
+                  left:
+                    container.children.item(item - 1)?.getBoundingClientRect()
+                      .left || 0,
+                });
+
+                setItem(item - 1);
               }}
             >
               <Icon name="chevron-left-16" color="rgb(var(--button-fg))" />
@@ -91,7 +103,15 @@ const Carousel: React.FC<ICarousel> = ({
               onClick={() => {
                 if (!pageRef.current) return;
                 const container = pageRef.current as HTMLDivElement;
-                container.scrollBy({ left: window.innerWidth });
+                if (!container.children.item(item + 1)) return;
+
+                container.scrollTo({
+                  left:
+                    container.children.item(item + 1)?.getBoundingClientRect()
+                      .left || 0,
+                });
+
+                setItem(item - 1);
               }}
             >
               <Icon name="chevron-right-16" color="rgb(var(--button-fg))" />

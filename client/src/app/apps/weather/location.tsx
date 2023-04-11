@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from "react";
-import BACKGROUND_IMAGE_RAIN from "./../../../../public/background_4k.avif";
-import BACKGROUND_IMAGE_CLEAR from "./../../../../public/background_4k.avif";
-import BACKGROUND_IMAGE_FOG from "./../../../../public/background_4k.avif";
-import BACKGROUND_IMAGE_THUNDER from "./../../../../public/background_4k.avif";
-import BACKGROUND_IMAGE_SNOW from "./../../../../public/background_4k.avif";
+import BACKGROUND_IMAGE_CLEAR from "./weatherBackgrounds/clear.avif";
+import BACKGROUND_IMAGE_CLOUDY1 from "./weatherBackgrounds/cloudy1.avif";
+import BACKGROUND_IMAGE_CLOUDY2 from "./weatherBackgrounds/cloudy2.avif";
+import BACKGROUND_IMAGE_FOG from "./weatherBackgrounds/foggy.avif";
+import BACKGROUND_IMAGE_RAIN1 from "./weatherBackgrounds/rain1.avif";
+import BACKGROUND_IMAGE_RAIN2 from "./weatherBackgrounds/rain2.avif";
+import BACKGROUND_IMAGE_RAIN3 from "./weatherBackgrounds/rain3.avif";
+import BACKGROUND_IMAGE_SNOW1 from "./weatherBackgrounds/snow.avif";
+import BACKGROUND_IMAGE_SNOW2 from "./weatherBackgrounds/snow2.avif";
+import BACKGROUND_IMAGE_THUNDER from "./weatherBackgrounds/thunder.avif";
 import getJson from "helpers/fetch";
 import { useParams } from "react-router-dom";
-import { Card, IconButton } from "../../../ui/index";
+import { Card, Carousel, IconButton, MajorButton } from "../../../ui/index";
 import { chunk } from "../../../helpers/array";
+import clippy from "helpers/clippy";
 
 /*
  TODO: create svg backgrounds for different weather types,
@@ -35,13 +41,21 @@ import { chunk } from "../../../helpers/array";
  (*) Thunderstorm forecast with hail is only available in Central Europe
  */
 
-const backgroundImages = {
-  rain: BACKGROUND_IMAGE_RAIN,
-  clear: BACKGROUND_IMAGE_CLEAR,
-  fog: BACKGROUND_IMAGE_FOG,
-  thunder: BACKGROUND_IMAGE_THUNDER,
-  snow: BACKGROUND_IMAGE_SNOW,
-};
+const backgroundImages: any[] = [
+  BACKGROUND_IMAGE_CLEAR,
+  BACKGROUND_IMAGE_CLOUDY1,
+  BACKGROUND_IMAGE_CLOUDY2,
+  BACKGROUND_IMAGE_FOG,
+  BACKGROUND_IMAGE_RAIN1,
+  BACKGROUND_IMAGE_RAIN2,
+  BACKGROUND_IMAGE_RAIN3,
+  BACKGROUND_IMAGE_SNOW1,
+  BACKGROUND_IMAGE_SNOW2,
+  BACKGROUND_IMAGE_RAIN1,
+  BACKGROUND_IMAGE_RAIN2,
+  BACKGROUND_IMAGE_RAIN3,
+  BACKGROUND_IMAGE_THUNDER,
+];
 
 enum weatherStates {
   clear,
@@ -61,19 +75,19 @@ enum weatherStates {
 }
 
 const numericDayName = [
+  "Sunday",
   "Monday",
   "Tuesday",
   "Wednesday",
   "Thursday",
   "Friday",
   "Saturday",
-  "Sunday",
 ];
 
 function getWeatherConditionFromState(state: weatherStates): string {
   switch (state) {
     case weatherStates.clear:
-      return "clear";
+      return "clear skies";
     case weatherStates.heavyRain:
       return "heavy rain";
     case weatherStates.heavySnow:
@@ -104,9 +118,8 @@ function getWeatherConditionFromState(state: weatherStates): string {
 }
 
 const WeatherApplicationLocationPage: React.FC = () => {
-  const [displayedWeatherCondition, setDisplatedWeatherCondition] = useState<
-    "rain" | "clear" | "fog" | "thunder" | "snow"
-  >("clear");
+  const [displayedWeatherCondition, setDisplatedWeatherCondition] =
+    useState<weatherStates>(weatherStates.clear);
   const { id: locationId } = useParams();
   const [data, setData] = useState<{
     name: string;
@@ -142,15 +155,36 @@ const WeatherApplicationLocationPage: React.FC = () => {
     };
   } | null>(null);
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
+  const [failedToLoad, setFailedToLoad] = useState<boolean>(false);
 
   useEffect(() => {
     if (!locationId) window.location.href = "#/app/a/weather";
 
-    getJson(`/app/weather/forId/${locationId}`, (resp) => {
-      setData(resp);
-      console.log(resp);
-    });
+    getJson(
+      `/app/weather/forId/${locationId}`,
+      (resp) => {
+        setData(resp);
+        setDisplatedWeatherCondition(resp.currentWeather.condition);
+        console.log(resp);
+      },
+      () => {
+        setFailedToLoad(true);
+      }
+    );
   }, [locationId]);
+
+  if (!data)
+    return (
+      <>
+        {failedToLoad && (
+          <main>
+            <span>Unable to gather data for this location at this moment</span>
+            <MajorButton>Go back</MajorButton>
+          </main>
+        )}
+        {/* TODO: add loading indicator and show an error if one occurs */}
+      </>
+    );
 
   return (
     <div className={`relative overflow-auto`}>
@@ -158,8 +192,11 @@ const WeatherApplicationLocationPage: React.FC = () => {
         style={{
           backgroundImage: `url("${backgroundImages[displayedWeatherCondition]}")`,
         }}
+        className={`bg-center bg-cover bg-fixed`}
       >
-        <div className={`flex pl-8 pt-8 pb-8 flex-row`}>
+        <div
+          className={`flex pl-8 pt-8 pb-8 flex-row from-base-700 to-transparent bg-gradient-to-b`}
+        >
           <IconButton
             icon={`arrow-left-16`}
             className={`mb-4`}
@@ -167,45 +204,87 @@ const WeatherApplicationLocationPage: React.FC = () => {
               window.location.href = "#/app/a/weather";
             }}
           />
-          <div className={`pl-4`}>
-            <h1 className={`text-container-fg font-bold text-5xl`}>
+          <div className={`ml-4`}>
+            <h1
+              className={`text-container-fg font-bold text-5xl stroke-2 stroke-base-900`}
+            >
               {data?.name},
             </h1>
-            <span className={`mt-auto text-container-fg text-xl`}>
+            <span
+              className={`mt-auto text-container-fg text-xl stroke-1 stroke-base-900`}
+            >
               {data?.admin1}, {data?.country}
             </span>
           </div>
         </div>
-      </header>
-      <main className={`flex flex-col w-full`}>
         <section className={`h-48 flex items-center justify-center`}>
-          <span className={`text-6xl font-bold text-center`}>
+          <span
+            className={`text-6xl font-bold text-center [filter:_drop-shadow(0_10px_8px_rgb(0_0_0/0.04))_drop-shadow(0_4px_3px_rgb(0_0_0/0.1))_drop-shadow(0_10px_8px_rgb(0_0_0/0.04))_drop-shadow(0_4px_3px_rgb(0_0_0/0.1))_drop-shadow(0_10px_8px_rgb(0_0_0/0.04))_drop-shadow(0_4px_3px_rgb(0_0_0/0.1))]`}
+          >
             Currently {data?.currentWeather.temp.toFixed(0)}
-            {data?.daily.unit} with{" "}
+            {data?.daily.unit}{" "}
+            {data?.currentWeather.condition !== weatherStates.cloudy &&
+            data?.currentWeather.condition !== weatherStates.partlyCloudy &&
+            data?.currentWeather.condition !== weatherStates.thunder
+              ? "with"
+              : "and"}{" "}
             {getWeatherConditionFromState(data?.currentWeather.condition || 0)}
           </span>
         </section>
-        <h2 className={`font-semibold text-2xl pl-4 pt-4`}>Daily</h2>
-        <section
-          className={`grid 2xl:grid-cols-7 xl:grid-cols-6 lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-3 p-4 gap-2`}
+        <Carousel
+          className={`flex flex-row gap-2 min-w-full p-4 max-w-full overflow-x-auto`}
         >
-          {data?.daily.days.map((day, ind) => {
+          {chunk(data?.hourly.hours || [], 24)[0]?.map((hour, ind) => {
+            if (ind < new Date().getHours())
+              return <React.Fragment key={hour.date}></React.Fragment>;
+
+            return (
+              <Card className={`flex flex-col`} key={hour.date}>
+                <span className={`text-4xl font-bold text-center`}>
+                  {hour.temp.toFixed(0)}
+                  {data?.daily.unit}
+                </span>
+                <span className={`pt-2 text-2xl text-center`}>
+                  {new Date(hour.date).getHours() < 10
+                    ? "0" + new Date(hour.date).getHours()
+                    : new Date(hour.date).getHours()}
+                  :00
+                </span>
+                <span className={`pt-2 text-2xl mt-auto`}>
+                  {getWeatherConditionFromState(hour.condition)}
+                </span>
+              </Card>
+            );
+          })}
+        </Carousel>
+      </header>
+      <main className={`flex flex-col w-full`}>
+        <h2 className={`font-semibold text-2xl pl-4 pt-4`}>
+          Over the next six days
+        </h2>
+        <section
+          className={`grid 2xl:grid-cols-6 xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 p-4 gap-2`}
+        >
+          {data?.daily.days.slice(1).map((day, ind) => {
             return (
               <Card
-                className={`flex flex-col`}
+                className={clippy(
+                  `flex flex-col`,
+                  selectedDay === ind &&
+                    "outline-2 outline-container-fg outline"
+                )}
                 key={day.date}
                 onClick={() => {
+                  if (selectedDay === ind) return setSelectedDay(null);
                   setSelectedDay(ind);
                 }}
               >
-                <div
-                  className={`flex lg:flex-row sm:flex-col flex-row justify-between w-full`}
-                >
+                <div className={`flex flex-row justify-between w-full`}>
                   <span className={`text-4xl font-bold mr-auto`}>
                     {((day.temp.max + day.temp.min) / 2).toFixed(0)}
                     {data?.daily.unit}
                   </span>
-                  <div className={`flex flex-col lg:text-right text-center`}>
+                  <div className={`flex flex-col text-right`}>
                     <span>
                       high {day.temp.min.toFixed(0)}
                       {data?.daily.unit}
@@ -216,7 +295,7 @@ const WeatherApplicationLocationPage: React.FC = () => {
                     </span>
                   </div>
                 </div>
-                <span className={`pt-2 text-2xl mt-auto`}>
+                <span className={`pt-2 text-2xl mt-auto text-center`}>
                   {getWeatherConditionFromState(day.condition)}
                 </span>
                 <span className={`pt-2 text-2xl mt-auto`}>
