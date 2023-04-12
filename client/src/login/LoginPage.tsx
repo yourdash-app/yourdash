@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Card, TextInput } from "../ui/index";
+import { Button, Card, IconButton, TextInput } from "../ui/index";
 
 const LoginPage: React.FC = () => {
   const [failure, setFailure] = useState(false);
@@ -11,19 +11,19 @@ const LoginPage: React.FC = () => {
       localStorage.getItem("current_server") !== ""
     ) {
       window.location.href = "#/login/server";
+    } else if (window.location.hostname === "localhost") {
+      localStorage.setItem("current_server", "http://localhost:3560");
     }
   }, []);
 
   return (
-    <>
-      <Card
-        className={`fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col gap-2`}
-      >
-        <h1 className={`text-3xl text-container-fg pb-3`}>
-          Please input your instance's url
-        </h1>
+    <main className={`flex flex-col items-center justify-center h-full w-full`}>
+      <h1 className={`text-3xl text-container-fg pb-3`}>
+        Enter your instance to continue
+      </h1>
+      <Card className={`flex flex-col gap-2`}>
         <TextInput
-          label={"test title"}
+          label={"Instance URL"}
           onChange={(value) => {
             if (value.indexOf(":") === -1) {
               setInstanceUrl(value);
@@ -55,14 +55,35 @@ const LoginPage: React.FC = () => {
       <header
         className={`absolute top-0 left-0 w-full h-16 flex items-center justify-center gap-2`}
       >
+        <IconButton icon={"arrow-left-16"} className={"mr-auto ml-3.5"} />
+      </header>
+      <footer
+        className={`absolute bottom-0 left-0 w-full h-16 flex items-center gap-2 pl-3 bg-container-bg`}
+      >
         <img
           src={`/assets/productLogos/yourdash.svg`}
-          className={`h-full pt-2 pb-2`}
+          className={`h-full pt-3 pb-3`}
           alt={``}
         />
         <h3 className={`font-bold text-3xl`}>YourDash</h3>
-      </header>
-    </>
+        <Button
+          className={`ml-auto`}
+          onClick={() => {
+            window.location.href = "#/";
+          }}
+        >
+          Home
+        </Button>
+        <Button
+          className={`mr-2`}
+          onClick={() => {
+            window.location.href = "#/docs";
+          }}
+        >
+          Docs
+        </Button>
+      </footer>
+    </main>
   );
 };
 

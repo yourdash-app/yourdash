@@ -85,7 +85,7 @@ const Panel: React.FC<IPanel> = ({ side, setSide }) => {
           `,
           side === PanelPosition.top || side === PanelPosition.bottom
             ? "h-full w-0.5 ml-1 mr-1"
-            : "w-full h-0.5 mt-1 mb-1"
+            : "w-full h-0.5 mt-1 mb-1",
         )}
       ></div>
       <PanelQuickShortcuts num={num} side={side} />
@@ -94,11 +94,16 @@ const Panel: React.FC<IPanel> = ({ side, setSide }) => {
           side === PanelPosition.left || side === PanelPosition.right
             ? "mt-auto w-full"
             : "ml-auto h-full",
-          `justify-center items-center flex flex-col`
+          `justify-center items-center flex flex-col`,
         )}
       >
-        {/* TODO: add buttons here maybe? */}
-        {/*<IconButton icon={"gear-16"} />*/}
+        {/*
+        
+        TODO: feature idea, Quick search ( basically just opens a command panel for all of yourdash )
+              Note: remember include application filtering
+        
+        */}
+        <IconButton icon={"search-16"} />
       </section>
     </div>
   );
@@ -117,7 +122,7 @@ const PanelQuickShortcuts: React.FC<{ num: number; side: PanelPosition }> = ({
   side,
 }) => {
   const [quickShortcuts, setQuickShortcuts] = useState<PanelQuickShortcut[]>(
-    []
+    [],
   );
 
   useEffect(() => {
@@ -167,7 +172,7 @@ const PanelQuickShortcuts: React.FC<{ num: number; side: PanelPosition }> = ({
                   side === PanelPosition.right &&
                     "mr-4 right-full top-1/2 -translate-y-1/2",
                   side === PanelPosition.bottom &&
-                    "mb-4 bottom-full left-1/2 -translate-x-1/2"
+                    "mb-4 bottom-full left-1/2 -translate-x-1/2",
                 )}
               >
                 {shortcut.displayName}
@@ -216,7 +221,7 @@ const PanelAuthorizer: React.FC = () => {
           }, 1000);
           sessionStorage.removeItem("session_token");
           window.location.href = "#/login";
-        }
+        },
       );
     }
   }, []);
@@ -236,7 +241,7 @@ const PanelApplicationLauncher: React.FC<{
           ? "w-full"
           : "h-full",
         `z-50`,
-        type !== 1 && `relative`
+        type !== 1 && `relative`,
       )}
     >
       <IconButton
@@ -287,7 +292,7 @@ const PanelApplicationLauncherSlideOut: React.FC<{
           ? "top-full left-0 animate__fadeIn"
           : /* must be bottom*/ "bottom-full left-0 animate__fadeIn",
         visible ? "flex" : "hidden",
-        `absolute w-96 bg-container-bg h-screen animate__animated z-0`
+        `absolute w-96 bg-container-bg h-screen animate__animated z-0`,
       )}
       style={{
         ...(side === PanelPosition.left && {
@@ -326,7 +331,7 @@ const PanelApplicationLauncherSlideOut: React.FC<{
             pb-2
             rounded-2xl
             overflow-hidden
-          `
+          `,
           )}
         >
           Hiya, {userFullName.first}
@@ -404,7 +409,7 @@ const PanelApplicationLauncherPopOut: React.FC<{
           side === PanelPosition.right &&
             (visible
               ? "animate__fadeIn"
-              : "animate__fadeOut select-none pointer-events-none")
+              : "animate__fadeOut select-none pointer-events-none"),
         )}
       />
       <section
@@ -446,7 +451,7 @@ const PanelApplicationLauncherPopOut: React.FC<{
           side === PanelPosition.right &&
             (visible
               ? "animate__fadeIn"
-              : "animate__fadeOut select-none pointer-events-none")
+              : "animate__fadeOut select-none pointer-events-none"),
         )}
       >
         <section className={`flex items-center justify-center relative group`}>
@@ -490,7 +495,7 @@ const PanelApplicationLauncherPopOut: React.FC<{
             child:transition-[var(--transition)]
             child-active:transition-[var(--transition)]
             child-hover:transition-[var(--transition-fast)]
-          `
+          `,
           )}
         >
           {applications.length !== 0 ? (
@@ -520,7 +525,7 @@ const PanelApplicationLauncherPopOut: React.FC<{
                           () => {
                             // @ts-ignore
                             Panel.reload();
-                          }
+                          },
                         );
                       },
                       shortcut: "ctrl+p",

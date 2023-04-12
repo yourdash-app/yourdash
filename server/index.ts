@@ -3,22 +3,19 @@
 // The YourDash project
 //  - https://github.com/yourdash-app/yourdash
 //  - https://yourdash-app.github.io
+
 import express from "express";
 import cors from "cors";
 import * as fs from "fs";
 import path from "path";
 import YourDashUser, { YourDashUserPermissions } from "./core/user.js";
-import {
-  compareHash,
-  generateRandomStringOfLength,
-} from "./core/encryption.js";
+import { compareHash, generateRandomStringOfLength } from "./core/encryption.js";
 import { generateLogos } from "./core/logo.js";
-import YourDashApplication, {
-  getAllApplications,
-} from "./core/applications.js";
+import YourDashApplication, { getAllApplications } from "./core/applications.js";
 import { base64ToDataUrl } from "./core/base64.js";
 import sharp from "sharp";
 import YourDashPanel from "./core/panel.js";
+import "module-alias/register.js";
 
 console.log(
   `----------------------------------------------------\n                      YourDash                      \n----------------------------------------------------`,
@@ -34,22 +31,14 @@ export enum YourDashServerDiscoveryStatus {
 if (process.env.DEV) {
   if (fs.existsSync(path.resolve(process.cwd(), `.dev-session-tokens`))) {
     // DEVELOPMENT MODE ONLY, loads all current session tokens between nodemon restarts
-    SESSIONS = JSON.parse(
-      fs
-        .readFileSync(path.resolve(process.cwd(), `.dev-session-tokens`))
-        .toString() || "{}",
-    );
+    SESSIONS = JSON.parse(fs.readFileSync(path.resolve(process.cwd(), `.dev-session-tokens`)).toString() || "{}");
   }
 }
 
 function startupChecks() {
   // check if the filesystem exists
   if (!fs.existsSync(path.resolve(process.cwd(), `./fs/`))) {
-    fs.cpSync(
-      path.resolve(process.cwd(), `./default/fs/`),
-      path.resolve(process.cwd(), `./fs/`),
-      { recursive: true },
-    );
+    fs.cpSync(path.resolve(process.cwd(), `./default/fs/`), path.resolve(process.cwd(), `./fs/`), { recursive: true });
 
     // make sure that the users directory exists
     if (!fs.existsSync(path.resolve(process.cwd(), `./fs/users`)))
@@ -113,9 +102,7 @@ app.get(`/test`, (req, res) => {
 });
 
 app.get(`/login/background`, (req, res) => {
-  return res.sendFile(
-    path.resolve(process.cwd(), `./fs/login_background.avif`),
-  );
+  return res.sendFile(path.resolve(process.cwd(), `./fs/login_background.avif`));
 });
 
 app.get(`/login/user/:username/avatar`, (req, res) => {
@@ -138,9 +125,7 @@ app.post(`/login/user/:username/authenticate`, (req, res) => {
   if (!username || username === "") return res.json({ error: true });
   if (!password || password === "") return res.json({ error: true });
   const user = new YourDashUser(username);
-  let savedHashedPassword = fs
-    .readFileSync(path.resolve(user.getPath(), `./password.txt`))
-    .toString();
+  let savedHashedPassword = fs.readFileSync(path.resolve(user.getPath(), `./password.txt`)).toString();
   let sessionToken = generateRandomStringOfLength(128);
   compareHash(savedHashedPassword, password).then((result) => {
     if (result) {
@@ -162,9 +147,7 @@ app.get(`/login/is-authenticated`, (req, res) => {
 });
 
 app.get(`/panel/logo/small`, (req, res) => {
-  return res.sendFile(
-    path.resolve(process.cwd(), `./fs/logo_panel_small.avif`),
-  );
+  return res.sendFile(path.resolve(process.cwd(), `./fs/logo_panel_small.avif`));
 });
 
 // --------------------------------------------------------------
@@ -193,11 +176,7 @@ app.get(`/panel/launcher/applications`, (req, res) => {
     getAllApplications().map((app) => {
       let application = new YourDashApplication(app);
       return new Promise((resolve) => {
-        sharp(
-          fs.readFileSync(
-            path.resolve(process.cwd(), `./apps/${app}/icon.avif`),
-          ),
-        )
+        sharp(fs.readFileSync(path.resolve(process.cwd(), `./apps/${app}/icon.avif`)))
           .resize(98, 98)
           .toBuffer((err, buf) => {
             resolve({
@@ -276,9 +255,7 @@ new Promise<void>((resolve, reject) => {
       console.log(`loading application: ${appName}`);
 
       // import and load all applications
-      import(
-        `file://` + path.resolve(process.cwd(), `./apps/${appName}/index.js`)
-      )
+      import(`file://` + path.resolve(process.cwd(), `./apps/${appName}/index.js`))
         .then((mod) => {
           try {
             mod.default(app);
@@ -307,9 +284,6 @@ new Promise<void>((resolve, reject) => {
 if (process.env.DEV) {
   // DEVELOPMENT MODE ONLY, saves all current session tokens between nodemon restarts
   process.once(`SIGINT`, () => {
-    fs.writeFileSync(
-      path.resolve(process.cwd(), `.dev-session-tokens`),
-      JSON.stringify(SESSIONS),
-    );
+    fs.writeFileSync(path.resolve(process.cwd(), `.dev-session-tokens`), JSON.stringify(SESSIONS));
   });
 }

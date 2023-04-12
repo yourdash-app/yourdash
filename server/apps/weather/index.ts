@@ -2,6 +2,9 @@
 
 import { Application as ExpressApplication } from "express";
 import { fetch } from "undici";
+import fs, { mkdirSync } from "fs";
+import path from "path";
+import YourDashUser from "~/core/user.js";
 
 /*
  WMO Weather interpretation codes (WW)
@@ -63,10 +66,13 @@ function parseWeatherCodes(code: number): weatherStates {
       return weatherStates.rain;
     case 64:
     case 67:
+    case 65:
       return weatherStates.heavyRain;
     case 71:
-    case 73:
+      return weatherStates.lightSnow;
     case 75:
+      return weatherStates.heavySnow;
+    case 73:
     case 77:
     case 85:
     case 86:
@@ -86,13 +92,11 @@ function parseWeatherCodes(code: number): weatherStates {
   return 0;
 }
 
-let weatherForecastCache: { [key: string]: { cacheTime: Date; data: any } } =
-  {};
+let weatherForecastCache: { [key: string]: { cacheTime: Date; data: any } } = {};
 
 export default function main(app: ExpressApplication) {
   app.get(`/app/weather/location/:locationName`, (req, res) => {
-    if (req.params.locationName.indexOf(" ") !== -1)
-      return res.json({ error: true });
+    if (req.params.locationName.indexOf(" ") !== -1) return res.json({ error: true });
 
     fetch(
       `https://geocoding-api.open-meteo.com/v1/search?name=${req.params.locationName}&language=en&count=5&format=json`,
@@ -107,28 +111,64 @@ export default function main(app: ExpressApplication) {
       });
   });
 
+  app.get(`/app/weather/previous/locations`, (req, res) => {
+    const { username } = req.headers as { username: string };
+
+    const user = new YourDashUser(username);
+
+    try {
+      if (!fs.existsSync(path.resolve(user.getAppDataPath(), `weather`))) res.json([]);
+
+      let rawFile = fs.readFileSync(path.resolve(user.getAppDataPath(), `weather/previous_locations.json`)).toString();
+
+      return res.json(JSON.parse(rawFile));
+    } catch (err) {
+      return res.json([]);
+    }
+  });
+
   app.get(`/app/weather/location/`, (req, res) => {
     return res.json([]);
   });
 
   app.get(`/app/weather/forId/:id`, (req, res) => {
     if (!req.params.id) return res.json({ error: true });
+    const { username } = req.headers as { username: string };
+
+    const user = new YourDashUser(username);
 
     if (weatherForecastCache[req.params.id]) {
       let cache = weatherForecastCache[req.params.id];
-      if (
-        cache.cacheTime.getUTCMilliseconds() >
-        new Date().getUTCMilliseconds() - 6000
-      ) {
+      if (cache.cacheTime.getUTCMilliseconds() > new Date().getUTCMilliseconds() - 6000) {
+        let file = "[]";
+
+        if (!fs.existsSync(path.resolve(user.getAppDataPath(), `weather`)))
+          mkdirSync(path.resolve(user.getAppDataPath(), `weather`));
+
+        if (fs.existsSync(path.resolve(user.getAppDataPath(), `weather/previous_locations.json`))) {
+          file = fs.readFileSync(path.resolve(user.getAppDataPath(), `weather/previous_locations.json`)).toString();
+        }
+
+        let parsedFile = JSON.parse(file);
+
+        if (parsedFile.length > 5) parsedFile.shift();
+
+        if (parsedFile.indexOf({ name: cache.data.name, id: req.params.id }) === -1) {
+          parsedFile.push({ name: cache.data.name, id: req.params.id });
+        }
+
+        fs.writeFileSync(
+          path.resolve(user.getAppDataPath(), `weather/previous_locations.json`),
+          JSON.stringify(parsedFile),
+        );
+
         return res.json(cache.data);
       } else {
         delete weatherForecastCache[req.params.id];
       }
     }
 
-    fetch(
-      `https://geocoding-api.open-meteo.com/v1/get?id=${req.params.id}&language=en&format=json`,
-    )
+    fetch(`https://geocoding-api.open-meteo.com/v1/get?id=${req.params.id}&language=en&format=json`)
       .then((resp) => resp.json())
       .then((json: any) => {
         if (json?.error) return res.json({ error: true });
@@ -155,9 +195,7 @@ export default function main(app: ExpressApplication) {
                 country: out.country,
                 currentWeather: {
                   temp: json.current_weather.temperature,
-                  condition: parseWeatherCodes(
-                    json.current_weather.weathercode,
-                  ),
+                  condition: parseWeatherCodes(json.current_weather.weathercode),
                   time: json.current_weather.time,
                   wind: {
                     direction: json.current_weather.winddirection,
@@ -181,9 +219,7 @@ export default function main(app: ExpressApplication) {
                   unit: json.hourly_units.temperature_2m,
                   hours: json.hourly.time.map((_, ind) => {
                     return {
-                      condition: parseWeatherCodes(
-                        json.hourly.weathercode[ind],
-                      ),
+                      condition: parseWeatherCodes(json.hourly.weathercode[ind]),
                       date: json.hourly.time[ind],
                       temp: json.hourly.temperature_2m[ind],
                     };
@@ -192,6 +228,28 @@ export default function main(app: ExpressApplication) {
               },
               cacheTime: new Date(),
             };
+
+            let file = "[]";
+
+            if (!fs.existsSync(path.resolve(user.getAppDataPath(), `weather`)))
+              mkdirSync(path.resolve(user.getAppDataPath(), `weather`));
+
+            if (fs.existsSync(path.resolve(user.getAppDataPath(), `weather/previous_locations.json`))) {
+              file = fs.readFileSync(path.resolve(user.getAppDataPath(), `weather/previous_locations.json`)).toString();
+            }
+
+            let parsedFile = JSON.parse(file);
+
+            if (parsedFile.length > 5) parsedFile.shift();
+
+            if (parsedFile.indexOf({ name: out.name, id: req.params.id }) === -1) {
+              parsedFile.push({ name: out.name, id: req.params.id });
+            }
+
+            fs.writeFileSync(
+              path.resolve(user.getAppDataPath(), `weather/previous_locations.json`),
+              JSON.stringify(parsedFile),
+            );
 
             return res.json(<weatherForecast>{
               name: out.name,

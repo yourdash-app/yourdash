@@ -32,10 +32,7 @@ export default class YourDashUser {
   setPassword(password: string): this {
     try {
       hash(password).then((result) => {
-        fs.writeFileSync(
-          path.resolve(this.getPath(), `./password.txt`),
-          result
-        );
+        fs.writeFileSync(path.resolve(this.getPath(), `./password.txt`), result);
       });
     } catch (err) {
       console.error(`unable to set password for user: ${this.username}`);
@@ -50,8 +47,7 @@ export default class YourDashUser {
       // @ts-ignore
       this.user = {};
     }
-    if (!this.user.fullName)
-      this.user.fullName = { first: "New", last: "User" };
+    if (!this.user.fullName) this.user.fullName = { first: "New", last: "User" };
     if (!this.user.permissions) this.user.permissions = [];
     if (!this.user.contacts) this.user.contacts = [];
 
@@ -82,27 +78,16 @@ export default class YourDashUser {
   write() {
     if (!fs.existsSync(this.getPath())) {
       fs.mkdirSync(this.getPath(), { recursive: true });
-      fs.cpSync(
-        path.resolve(process.cwd(), `./default/avatar.avif`),
-        path.resolve(this.getPath(), `avatar.avif`)
-      );
+      fs.mkdirSync(path.resolve(this.getPath(), `./app_data/`));
+      fs.cpSync(path.resolve(process.cwd(), `./default/avatar.avif`), path.resolve(this.getPath(), `avatar.avif`));
       hash("password").then((response) => {
-        fs.writeFileSync(
-          path.resolve(this.getPath(), `./password.txt`),
-          response
-        );
+        fs.writeFileSync(path.resolve(this.getPath(), `./password.txt`), response);
       });
-      fs.writeFileSync(
-        path.resolve(this.getPath(), `./quick-shortcuts.json`),
-        JSON.stringify([])
-      );
+      fs.writeFileSync(path.resolve(this.getPath(), `./quick-shortcuts.json`), JSON.stringify([]));
     }
 
     try {
-      fs.writeFileSync(
-        path.join(this.getPath(), `user.json`),
-        JSON.stringify(this.user)
-      );
+      fs.writeFileSync(path.join(this.getPath(), `user.json`), JSON.stringify(this.user));
     } catch (err) {
       console.error(`Error writing user to disk!`, err);
     }
@@ -110,9 +95,7 @@ export default class YourDashUser {
 
   read(): this {
     try {
-      this.user = JSON.parse(
-        fs.readFileSync(path.join(this.getPath(), `user.json`)).toString()
-      );
+      this.user = JSON.parse(fs.readFileSync(path.join(this.getPath(), `user.json`)).toString());
     } catch (err) {
       console.error(`Error reading user from disk!`, err);
     }
@@ -132,5 +115,9 @@ export default class YourDashUser {
   setName(name: { first: string; last: string }): this {
     this.user.fullName = name;
     return this;
+  }
+
+  getAppDataPath(): string {
+    return path.resolve(this.getPath(), `./app_data/`);
   }
 }

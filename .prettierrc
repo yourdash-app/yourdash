@@ -3,5 +3,7 @@
   "bracketSpacing": true,
   "trailingComma": "all",
   "semi": true,
-  "proseWrap": "always"
+  "proseWrap": "always",
+  "bracketSameLine": false,
+  "printWidth": 120
 }

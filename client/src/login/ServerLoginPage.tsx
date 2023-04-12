@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Card,
-  Column,
-  Dialog,
-  IconButton,
-  TextInput,
-} from "../ui/index";
+import { Button, Card, Column, Dialog, IconButton, TextInput } from "../ui/index";
 import getJson, { postJson } from "../helpers/fetch";
 
 const ServerLoginPage: React.FC = () => {
@@ -29,23 +22,15 @@ const ServerLoginPage: React.FC = () => {
 
   return (
     <>
-      <div
-        className={`fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate__animated animate__fadeIn`}
-      >
-        <span className={`text-base-50 font-semibold text-3xl`}>
-          Waiting for instance...
-        </span>
+      <div className={`fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate__animated animate__fadeIn`}>
+        <span className={`text-base-50 font-semibold text-3xl`}>Waiting for instance...</span>
       </div>
       <main
         style={{ backgroundImage: `url('${serverUrl}/login/background')` }}
         className={`min-h-screen w-full bg-center bg-no-repeat animate__animated animate__fadeIn animate__delay-1s`}
       >
         {selectedUser ? (
-          <LoginAsUser
-            name={name}
-            serverUrl={serverUrl}
-            username={selectedUser}
-          />
+          <LoginAsUser name={name} serverUrl={serverUrl} username={selectedUser} />
         ) : (
           <SelectUser
             setName={(value) => setName(value)}
@@ -53,6 +38,11 @@ const ServerLoginPage: React.FC = () => {
             setSelectedUser={(username) => setSelectedUser(username)}
           />
         )}
+        <Card className={"absolute left-2 bottom-2"}>
+          <Card onClick={() => {}}>
+            <span>username</span>
+          </Card>
+        </Card>
       </main>
     </>
   );
@@ -82,11 +72,7 @@ const SelectUser: React.FC<{
         className={`fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate__animated animate__fadeIn animate__delay-1250ms`}
       >
         <Column>
-          <TextInput
-            label={`Username`}
-            mustMatchRegex={/[a-z]|[0-9]/}
-            onChange={(value) => setUsername(value)}
-          />
+          <TextInput label={`Username`} mustMatchRegex={/[a-z]|[0-9]/} onChange={(value) => setUsername(value)} />
           <Button
             disabled={username === null}
             onClick={() => {
@@ -94,15 +80,13 @@ const SelectUser: React.FC<{
 
               getJson(
                 `/login/user/${username}`,
-                (json: {
-                  name: { first: string; middle: string; last: string };
-                }) => {
+                (json: { name: { first: string; middle: string; last: string } }) => {
                   setSelectedUser(username);
                   setName(json.name);
                 },
                 () => {
                   setValidUser(false);
-                }
+                },
               );
             }}
           >
@@ -111,10 +95,7 @@ const SelectUser: React.FC<{
         </Column>
       </Card>
       {!validUser && (
-        <Dialog
-          title={`This user does not exist`}
-          onClose={() => setValidUser(true)}
-        >
+        <Dialog title={`This user does not exist`} onClose={() => setValidUser(true)}>
           <></>
         </Dialog>
       )}
@@ -139,21 +120,11 @@ const LoginAsUser: React.FC<{
       <Card
         className={`fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 gap-2 flex flex-col animate__animated animate__fadeIn`}
       >
-        <img
-          alt={``}
-          src={`${serverUrl}/login/user/${username}/avatar`}
-          className={`rounded-xl aspect-square h-64`}
-        />
-        <span
-          className={`text-center text-2xl tracking-wide font-medium text-base-50`}
-        >
+        <img alt={``} src={`${serverUrl}/login/user/${username}/avatar`} className={`rounded-xl aspect-square h-64`} />
+        <span className={`text-center text-2xl tracking-wide font-medium text-base-50`}>
           {name.first} {name.last}
         </span>
-        <span
-          className={`text-center text-md text-base-200 tracking-wide font-medium -mt-3`}
-        >
-          {username}
-        </span>
+        <span className={`text-center text-md text-base-200 tracking-wide font-medium -mt-3`}>{username}</span>
         <TextInput
           label={"password"}
           onChange={(value) => {
@@ -172,7 +143,7 @@ const LoginAsUser: React.FC<{
               },
               (err) => {
                 console.error(err);
-              }
+              },
             );
           }}
         >

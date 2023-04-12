@@ -18,6 +18,7 @@
     "postinstall": "yarn --cwd ./client && yarn --cwd ./server && yarn --cwd ./electron"
   },
   "dependencies": {
+    "module-alias": "^2.2.2",
     "prettier": "^2.8.7",
     "yarn": "^1.22.19"
   }
