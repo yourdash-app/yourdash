@@ -1,0 +1,20 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+    "@jetbrains",
+    "@jetbrains/eslint-config/browser",
+    "@jetbrains/eslint-config/es6",
+    "@jetbrains/eslint-config/node",
+    "@jetbrains/eslint-config/react",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "rules": {
+    "no-unused-vars": "warn",
+    "no-shadow": "off",
+    "object-curly-spacing": [
+      "warn",
+      "always"
+    ],
+    "import/extensions": [ "error", "always" ]
+  }
+}

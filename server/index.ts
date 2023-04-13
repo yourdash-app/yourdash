@@ -5,7 +5,7 @@
 //  - https://yourdash-app.github.io
 import express from "express";
 import cors from "cors";
-import * as fs from "fs";
+import { promises as fs, existsSync as fsExistsSync } from "fs";
 import path from "path";
 import YourDashUser, { YourDashUserPermissions } from "./core/user.js";
 import {
@@ -32,34 +32,40 @@ export enum YourDashServerDiscoveryStatus {
 }
 
 if (process.env.DEV) {
-  if (fs.existsSync(path.resolve(process.cwd(), `.dev-session-tokens`))) {
+  if (fsExistsSync(path.resolve(process.cwd(), `.dev-session-tokens`))) {
     // DEVELOPMENT MODE ONLY, loads all current session tokens between nodemon restarts
-    SESSIONS = JSON.parse(
-      fs
-        .readFileSync(path.resolve(process.cwd(), `.dev-session-tokens`))
-        .toString() || "{}",
-    );
+    fs.readFile(path.resolve(process.cwd(), `.dev-session-tokens`))
+      .then((file) => {
+        try {
+          SESSIONS = JSON.parse(file.toString() || "{}");
+        } catch (err) {
+          console.error(`(DEV MODE): Unable to load previous session tokens`);
+        }
+      })
+      .catch((err) => {
+        console.error(`(DEV MODE): Unable to load previous session tokens`);
+      });
   }
 }
 
-function startupChecks() {
+async function startupChecks() {
   // check if the filesystem exists
-  if (!fs.existsSync(path.resolve(process.cwd(), `./fs/`))) {
-    fs.cpSync(
+  if (!fsExistsSync(path.resolve(process.cwd(), `./fs/`))) {
+    await fs.cp(
       path.resolve(process.cwd(), `./default/fs/`),
       path.resolve(process.cwd(), `./fs/`),
       { recursive: true },
     );
 
     // make sure that the users directory exists
-    if (!fs.existsSync(path.resolve(process.cwd(), `./fs/users`)))
-      fs.mkdirSync(path.resolve(process.cwd(), `./fs/users`));
+    if (!fsExistsSync(path.resolve(process.cwd(), `./fs/users`)))
+      await fs.mkdir(path.resolve(process.cwd(), `./fs/users`));
 
     // generate all instance logos
     generateLogos();
   }
 
-  fs.readdirSync(path.resolve(`./fs/users/`)).forEach((user) => {
+  (await fs.readdir(path.resolve(`./fs/users/`))).forEach((user) => {
     new YourDashUser(user).verifyUserConfig().write();
   });
 
@@ -73,7 +79,7 @@ function startupChecks() {
   }
 }
 
-startupChecks();
+await startupChecks();
 
 const app = express();
 
@@ -269,9 +275,9 @@ app.get(`/panel/launcher`, (req, res) => {
   return res.json({ launcher: panel.getLauncherType() });
 });
 
-new Promise<void>((resolve, reject) => {
-  if (fs.existsSync(path.resolve(process.cwd(), `./apps/`))) {
-    let apps = fs.readdirSync(path.resolve(process.cwd(), `./apps/`));
+new Promise<void>(async (resolve, reject) => {
+  if (fsExistsSync(path.resolve(process.cwd(), `./apps/`))) {
+    let apps = await fs.readdir(path.resolve(process.cwd(), `./apps/`));
     apps.map((appName) => {
       console.log(`loading application: ${appName}`);
 
@@ -307,9 +313,11 @@ new Promise<void>((resolve, reject) => {
 if (process.env.DEV) {
   // DEVELOPMENT MODE ONLY, saves all current session tokens between nodemon restarts
   process.once(`SIGINT`, () => {
-    fs.writeFileSync(
+    fs.writeFile(
       path.resolve(process.cwd(), `.dev-session-tokens`),
       JSON.stringify(SESSIONS),
-    );
+    ).then(() => {
+      console.log(`(DEV MODE): saved session data`);
+    });
   });
 }

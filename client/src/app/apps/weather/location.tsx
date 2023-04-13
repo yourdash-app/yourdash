@@ -15,7 +15,7 @@ import { Card, Carousel, IconButton, MajorButton } from "../../../ui/index";
 import { chunk } from "../../../helpers/array";
 import clippy from "helpers/clippy";
 
-/*
+/**
  TODO: create svg backgrounds for different weather types,
  rain
  clear
@@ -169,7 +169,7 @@ const WeatherApplicationLocationPage: React.FC = () => {
       },
       () => {
         setFailedToLoad(true);
-      }
+      },
     );
   }, [locationId]);
 
@@ -271,7 +271,7 @@ const WeatherApplicationLocationPage: React.FC = () => {
                 className={clippy(
                   `flex flex-col`,
                   selectedDay === ind &&
-                    "outline-2 outline-container-fg outline"
+                    "outline-2 outline-container-fg outline",
                 )}
                 key={day.date}
                 onClick={() => {
@@ -337,7 +337,7 @@ const WeatherApplicationLocationPage: React.FC = () => {
                       </span>
                     </Card>
                   );
-                }
+                },
               )}
             </section>
           </>
