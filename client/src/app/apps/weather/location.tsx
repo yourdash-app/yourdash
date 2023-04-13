@@ -192,7 +192,7 @@ const WeatherApplicationLocationPage: React.FC = () => {
         style={{
           backgroundImage: `url("${backgroundImages[displayedWeatherCondition]}")`,
         }}
-        className={`bg-center bg-cover bg-fixed`}
+        className={`bg-center bg-cover bg-fixed pb-10`}
       >
         <div
           className={`flex pl-8 pt-8 pb-8 flex-row from-base-700 to-transparent bg-gradient-to-b`}
@@ -232,14 +232,14 @@ const WeatherApplicationLocationPage: React.FC = () => {
           </span>
         </section>
         <Carousel
-          className={`flex flex-row gap-2 min-w-full p-4 max-w-full overflow-x-auto`}
+          compactControls={true}
+          className={`flex flex-row gap-2 min-w-full p-10 pb-4 pt-4 max-w-full overflow-x-auto rounded-xl`}
         >
           {chunk(data?.hourly.hours || [], 24)[0]?.map((hour, ind) => {
-            if (ind < new Date().getHours())
-              return <React.Fragment key={hour.date}></React.Fragment>;
+            if (ind < new Date().getHours()) return null;
 
             return (
-              <Card className={`flex flex-col`} key={hour.date}>
+              <Card className={`flex !flex-col`} key={hour.date}>
                 <span className={`text-4xl font-bold text-center`}>
                   {hour.temp.toFixed(0)}
                   {data?.daily.unit}

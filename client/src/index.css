@@ -60,6 +60,7 @@
 
     --container-bg: var(--base-700);
     --container-fg: var(--base-50);
+    --container-border: var(--base-600);
 
     --button-bg: var(--base-700);
     --button-fg: var(--base-200);

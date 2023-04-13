@@ -17,6 +17,7 @@
   height: 100%;
   scroll-behavior: smooth;
   scroll-snap-type: x mandatory;
+  @apply rounded-xl;
 
   > * {
     flex-flow: row;

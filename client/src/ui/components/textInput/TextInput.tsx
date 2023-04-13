@@ -21,7 +21,7 @@ const TextInput: React.FC<ITextInput> = ({
   return (
     <div className={clippy(`relative transition-all`, className)}>
       <span
-        className={`pl-2 pr-2 bg-base-700 absolute -top-1 left-3 text-sm z-10 [line-height:.65rem] select-none text-base-400`}
+        className={`pl-2 pr-2 bg-base-700 absolute -top-1 left-2.5 text-sm z-10 [line-height:.65rem] select-none text-base-400`}
       >
         {label}
       </span>
