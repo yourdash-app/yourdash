@@ -2,30 +2,22 @@
 type TJson = boolean | number | string | null | TJson[] | { [key: string]: TJson };
 
 class __Internal__ClientServerInteraction {
-  private readonly instanceUrl: string;
-  private readonly username: string;
-  private readonly sessiontoken: string;
-
   constructor() {
-    this.instanceUrl = localStorage.getItem("current_server") || "https://example.com";
-    this.username = localStorage.getItem("username") || "";
-    this.sessiontoken = sessionStorage.getItem("session_token") || "";
-
-    if (this.instanceUrl === "https://example.com") throw new Error("There was an issue with the saved instance URL");
-    if (this.username === "") throw new Error("There was an issue with the saved current username");
-    if (this.sessiontoken === "") throw new Error("There was an issue with the saved session token");
-
     return this;
   }
 
   getJson(endpoint: string, cb: (response: any) => void, error?: (response: object) => void): void {
-    fetch(`${this.instanceUrl}${endpoint}`, {
+    let instanceUrl = localStorage.getItem("current_server") || "https://example.com";
+    let username = localStorage.getItem("username") || "";
+    let sessiontoken = sessionStorage.getItem("session_token") || "";
+
+    fetch(`${instanceUrl}${endpoint}`, {
       method: "GET",
       // @ts-ignore
       headers: {
         "Content-Type": "application/json",
-        username: this.username,
-        token: this.sessiontoken,
+        username: username,
+        token: sessiontoken,
       },
     })
       .then((resp) => {
@@ -46,16 +38,18 @@ class __Internal__ClientServerInteraction {
   }
 
   postJson(endpoint: string, body: TJson, cb: (response: any) => void, error?: (response: object) => void): void {
-    const serverUrl = localStorage.getItem("current_server");
+    let instanceUrl = localStorage.getItem("current_server") || "https://example.com";
+    let username = localStorage.getItem("username") || "";
+    let sessiontoken = sessionStorage.getItem("session_token") || "";
 
-    fetch(`${serverUrl}${endpoint}`, {
+    fetch(`${instanceUrl}${endpoint}`, {
       method: "POST",
       body: JSON.stringify(body),
       // @ts-ignore
       headers: {
         "Content-Type": "application/json",
-        username: this.username,
-        token: this.sessiontoken,
+        username: username,
+        token: sessiontoken,
       },
     })
       .then((resp) => {
@@ -76,15 +70,17 @@ class __Internal__ClientServerInteraction {
   }
 
   deleteJson(endpoint: string, cb: (response: any) => void, error?: (response: object) => void): void {
-    const serverUrl = localStorage.getItem("current_server");
+    let instanceUrl = localStorage.getItem("current_server") || "https://example.com";
+    let username = localStorage.getItem("username") || "";
+    let sessiontoken = sessionStorage.getItem("session_token") || "";
 
-    fetch(`${serverUrl}${endpoint}`, {
+    fetch(`${instanceUrl}${endpoint}`, {
       method: "DELETE",
       // @ts-ignore
       headers: {
         "Content-Type": "application/json",
-        username: this.username,
-        token: this.sessiontoken,
+        username: username,
+        token: sessiontoken,
       },
     })
       .then((resp) => {
@@ -104,46 +100,50 @@ class __Internal__ClientServerInteraction {
       });
   }
 
-  getText(endpoint: string, cb: (response: any) => void, error?: (response: object) => void): Promise<TJson> {
-    return new Promise<TJson>((resolve, reject) => {
-      fetch(`${this.instanceUrl}${endpoint}`, {
-        method: "GET",
-        // @ts-ignore
-        headers: {
-          "Content-Type": "text/plain",
-          username: this.username,
-          token: this.sessiontoken,
-        },
-      })
-        .then((resp) => {
-          if (resp.headers.get("Content-Type") === "text/plain; charset=utf-8") return resp.json();
+  getText(endpoint: string, cb: (response: any) => void, error?: (response: object) => void): void {
+    let instanceUrl = localStorage.getItem("current_server") || "https://example.com";
+    let username = localStorage.getItem("username") || "";
+    let sessiontoken = sessionStorage.getItem("session_token") || "";
 
-          throw new Error(`not a valid text response`);
-        })
-        .then((resp) => {
-          if (resp?.error) {
-            error?.(resp);
-            return console.error(`Error fetching from instance: ${endpoint}, Error:`, resp.error);
-          }
-          cb(resp);
-        })
-        .catch((err) => {
-          console.error(`Error parsing result from instance: ${endpoint}`, err);
-        });
-    });
+    fetch(`${instanceUrl}${endpoint}`, {
+      method: "GET",
+      // @ts-ignore
+      headers: {
+        "Content-Type": "text/plain",
+        username: username,
+        token: sessiontoken,
+      },
+    })
+      .then((resp) => {
+        if (resp.headers.get("Content-Type") === "text/plain; charset=utf-8") return resp.json();
+
+        throw new Error(`not a valid text response`);
+      })
+      .then((resp) => {
+        if (resp?.error) {
+          error?.(resp);
+          return console.error(`Error fetching from instance: ${endpoint}, Error:`, resp.error);
+        }
+        cb(resp);
+      })
+      .catch((err) => {
+        console.error(`Error parsing result from instance: ${endpoint}`, err);
+      });
   }
 
   postText(endpoint: string, body: string, cb: (response: any) => void, error?: (response: object) => void): void {
-    const serverUrl = localStorage.getItem("current_server");
+    let instanceUrl = localStorage.getItem("current_server") || "https://example.com";
+    let username = localStorage.getItem("username") || "";
+    let sessiontoken = sessionStorage.getItem("session_token") || "";
 
-    fetch(`${serverUrl}${endpoint}`, {
+    fetch(`${instanceUrl}${endpoint}`, {
       method: "POST",
       body: JSON.stringify(body),
       // @ts-ignore
       headers: {
         "Content-Type": "text/plain",
-        username: this.username,
-        token: this.sessiontoken,
+        username: username,
+        token: sessiontoken,
       },
     })
       .then((resp) => {
@@ -164,15 +164,17 @@ class __Internal__ClientServerInteraction {
   }
 
   deleteText(endpoint: string, cb: (response: any) => void, error?: (response: object) => void): void {
-    const serverUrl = localStorage.getItem("current_server");
+    let instanceUrl = localStorage.getItem("current_server") || "https://example.com";
+    let username = localStorage.getItem("username") || "";
+    let sessiontoken = sessionStorage.getItem("session_token") || "";
 
-    fetch(`${serverUrl}${endpoint}`, {
+    fetch(`${instanceUrl}${endpoint}`, {
       method: "DELETE",
       // @ts-ignore
       headers: {
         "Content-Type": "text/plain",
-        username: this.username,
-        token: this.sessiontoken,
+        username: username,
+        token: sessiontoken,
       },
     })
       .then((resp) => {

@@ -5,6 +5,7 @@ import { fetch } from "undici";
 import fs, { mkdirSync } from "fs";
 import path from "path";
 import YourDashUser from "~/core/user.js";
+import weatherForecast from "../../../shared/apps/weather/forecast.js";
 
 /*
  WMO Weather interpretation codes (WW)
@@ -24,23 +25,6 @@ import YourDashUser from "~/core/user.js";
  96, 99 *	Thunderstorm with slight and heavy hail
  (*) Thunderstorm forecast with hail is only available in Central Europe
 */
-
-enum weatherStates {
-  clear,
-  partlyCloudy,
-  cloudy,
-  fog,
-  lightRain,
-  rain,
-  heavyRain,
-  lightSnow,
-  snow,
-  heavySnow,
-  lightRainShowers,
-  rainShowers,
-  heavyRainShowers,
-  thunder,
-}
 
 function parseWeatherCodes(code: number): weatherStates {
   switch (code) {
@@ -299,38 +283,4 @@ export default function main(app: ExpressApplication) {
         return res.json({ error: true });
       });
   });
-}
-
-export interface weatherForecast {
-  name: string;
-  admin1: string;
-  country: string;
-  currentWeather: {
-    temp: number;
-    condition: weatherStates;
-    wind: {
-      direction: number;
-      speed: number;
-    };
-    time: string;
-  };
-  daily: {
-    unit: "°C" | "°F";
-    days: {
-      temp: {
-        min: number;
-        max: number;
-      };
-      date: string;
-      condition: weatherStates;
-    }[];
-  };
-  hourly: {
-    unit: "°C" | "°F";
-    hours: {
-      temp: number;
-      date: string;
-      condition: weatherStates;
-    }[];
-  };
 }

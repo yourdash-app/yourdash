@@ -15,6 +15,23 @@
       "warn",
       "always"
     ],
-    "import/extensions": [ "error", "always" ]
+    "import/extensions": [
+      "error",
+      "always"
+    ],
+    "quotes": [
+      "error",
+      "double",
+      {
+        "allowTemplateLiterals": false
+      }
+    ],
+    "sort-imports": "off",
+    "import/order": "off",
+    "space-in-parens": ["warn", "always"],
+    "max-len": ["warn", { "code": 120 }],
+    "semi": ["warn", "never"],
+    "consistent-return": "off",
+    "no-magic-numbers": "off"
   }
 }

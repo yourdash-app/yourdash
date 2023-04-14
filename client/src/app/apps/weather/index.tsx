@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Button, Card, TextInput } from "../../../ui/index";
-import getJson from "helpers/fetch";
 import csi from "../../../helpers/csi";
 
 const WeatherApplication: React.FC = () => {
@@ -42,7 +41,7 @@ const WeatherApplication: React.FC = () => {
       <Card className={`gap-2 flex flex-col`}>
         <TextInput
           onChange={(value: string) => {
-            getJson(`/app/weather/location/${value.replaceAll(" ", "+")}`, (resp) => {
+            csi.getJson(`/app/weather/location/${value.replaceAll(" ", "+")}`, (resp) => {
               setLocationQuery(resp?.results || []);
             });
           }}
