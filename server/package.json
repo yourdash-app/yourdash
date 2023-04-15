@@ -40,7 +40,7 @@
   "scripts": {
     "compile": "tsc",
     "start": "node .",
-    "dev": "cross-env DEV=true nodemon --signal SIGINT . --exec ts-node"
+    "dev": "cross-env DEV=true nodemon --signal SIGINT ."
   },
   "nodemonConfig": {
     "ext": "ts"

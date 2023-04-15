@@ -7,6 +7,7 @@
   "author": "Ewsgit",
   "license": "MIT",
   "private": true,
+  "type": "module",
   "scripts": {
     "start-client": "yarn --cwd ./client dev",
     "visualize-client-bundle": "yarn --cwd ./client visualize-bundle",

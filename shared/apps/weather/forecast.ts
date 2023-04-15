@@ -1,6 +1,6 @@
-import weatherStates from "./weatherStates.js";
+import { weatherStates } from "./weatherStates.js";
 
-export default interface weatherForecast {
+interface weatherForecast {
   name: string;
   admin1: string;
   country: string;
@@ -33,3 +33,5 @@ export default interface weatherForecast {
     }[];
   };
 }
+
+export { type weatherForecast }

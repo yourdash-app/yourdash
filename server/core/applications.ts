@@ -1,5 +1,5 @@
-import fs from "fs";
-import path from "path";
+import { promises as fs } from "fs"
+import path from "path"
 
 interface YourDashApplicationFile {
   name: string;
@@ -8,50 +8,56 @@ interface YourDashApplicationFile {
 }
 
 export default class YourDashApplication {
-  private name: string;
-  private readonly application: YourDashApplicationFile;
+  private readonly name: string
+  private application: YourDashApplicationFile
 
-  constructor(name: string) {
-    this.name = name;
+  constructor( name: string ) {
+    this.name = name
+    return this
+  }
+
+  async load(): Promise<this> {
     try {
       this.application = JSON.parse(
-        fs
-          .readFileSync(
-            path.resolve(process.cwd(), `./apps/${this.name}/application.json`)
-          )
-          .toString() || "{}"
-      );
-    } catch (err) {
-      console.error(err);
+        ( await fs.readFile( path.resolve( process.cwd(), `./apps/${this.name}/application.json` ) ) )
+          .toString() || "{}" )
+    } catch ( err ) {
+      console.error( err )
     }
-    return this;
+
+    return this
   }
 
   exists(): boolean {
-    return !!this.application;
+    return !!this.application
   }
 
   getName(): string {
-    return this.application.name;
+    return this.application.name
   }
 
   getDisplayName(): string {
-    return this.application.displayName;
+    return this.application.displayName
   }
 
   getDescription(): string {
-    return this.application.description;
+    return this.application.description
   }
 
   getPath(): string {
-    return path.resolve(process.cwd(), `./apps/${this.name}/`);
+    return path.resolve( process.cwd(), `./apps/${this.name}/` )
   }
 }
 
-export function getAllApplications(): string[] {
-  return fs.readdirSync(path.resolve(process.cwd(), `./apps/`));
+export async function getAllApplications(): Promise<string[]> {
+  try {
+    return await fs.readdir( path.resolve( process.cwd(), "./apps/" ) )
+  } catch ( _err ) {
+    console.log( "an issue reading the ./apps/ directory" )
+    return []
+  }
 }
 
-type YourDashApplicationServerPlugin = (app: Express.Application) => any;
+type YourDashApplicationServerPlugin = ( _app: Express.Application ) => any;
 
-export { type YourDashApplicationServerPlugin };
+export { type YourDashApplicationServerPlugin }

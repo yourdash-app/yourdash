@@ -15,4 +15,4 @@ enum weatherStates {
   thunder,
 }
 
-export default weatherStates
+export { weatherStates }

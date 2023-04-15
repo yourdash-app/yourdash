@@ -17,11 +17,14 @@ import YourDashPanel from "./core/panel.js"
 import YourDashUser, { YourDashUserPermissions } from "./core/user.js"
 
 console.log(
-  "----------------------------------------------------\n                      YourDash                      \n----------------------------------------------------" )
+  "----------------------------------------------------\n                      YourDash" +
+  "                      \n----------------------------------------------------"
+)
 
 let SESSIONS: { [ user: string ]: string } = {}
 
 export enum YourDashServerDiscoveryStatus {
+  // eslint-disable-next-line no-unused-vars
   MAINTENANCE, NORMAL,
 }
 
@@ -34,15 +37,17 @@ if ( process.env.DEV ) {
     fs.readFile( path.resolve(
       process.cwd(),
       ".dev-session-tokens"
-    ) ).then( file => {
-      try {
-        SESSIONS = JSON.parse( file.toString() || "{}" )
-      } catch ( err ) {
+    ) )
+      .then( file => {
+        try {
+          SESSIONS = JSON.parse( file.toString() || "{}" )
+        } catch ( _err ) {
+          console.error( "(DEV MODE): Unable to load previous session tokens" )
+        }
+      } )
+      .catch( () => {
         console.error( "(DEV MODE): Unable to load previous session tokens" )
-      }
-    } ).catch( () => {
-      console.error( "(DEV MODE): Unable to load previous session tokens" )
-    } )
+      } )
   }
 }
 
@@ -56,25 +61,26 @@ async function startupChecks() {
     )
 
     // make sure that the users directory exists
-    if ( !fsExistsSync( path.resolve( process.cwd(), "./fs/users" ) ) ) {
+    await fs.access( path.resolve( process.cwd(), "./fs/users" ) ).catch( async () => {
       await fs.mkdir( path.resolve( process.cwd(), "./fs/users" ) )
-    }
+    } )
 
     // generate all instance logos
     generateLogos()
   }
 
-  ( await fs.readdir( path.resolve( "./fs/users/" ) ) ).forEach( user => {
-    new YourDashUser( user ).verifyUserConfig().write()
-  } )
+  for ( const user of ( await fs.readdir( path.resolve( "./fs/users/" ) ) ) ) {
+    await ( await new YourDashUser( user ).read() ).verifyUserConfig().write()
+  }
 
-  const adminUser = new YourDashUser( "admin" )
+  const adminUserUnread = new YourDashUser( "admin" )
 
-  if ( !adminUser.exists() ) {
+  if ( !( await adminUserUnread.exists() ) ) {
+    const adminUser = await adminUserUnread.read()
     adminUser.verifyUserConfig()
     adminUser.addPermission( YourDashUserPermissions.Administrator )
     adminUser.setName( { first: "Admin", last: "istrator" } )
-    adminUser.write()
+    await adminUser.write()
   }
 }
 
@@ -85,14 +91,14 @@ const app = express()
 app.use( express.json( { limit: "50mb" } ) )
 app.use( cors() )
 
-app.use( ( req, res, next ) => {
+app.use( ( _req, res, next ) => {
   res.removeHeader( "X-Powered-By" )
   next()
 } )
 
-app.get( "/", ( req, res ) => res.send( "Hello from the yourdash server software" ) )
+app.get( "/", ( _req, res ) => res.send( "Hello from the yourdash server software" ) )
 
-app.get( "/test", ( req, res ) => {
+app.get( "/test", ( _req, res ) => {
   const discoveryStatus: YourDashServerDiscoveryStatus =
     YourDashServerDiscoveryStatus.NORMAL as YourDashServerDiscoveryStatus
 
@@ -113,7 +119,7 @@ app.get( "/test", ( req, res ) => {
   }
 } )
 
-app.get( "/login/background", ( req, res ) => res.sendFile( path.resolve(
+app.get( "/login/background", ( _req, res ) => res.sendFile( path.resolve(
   process.cwd(),
   "./fs/login_background.avif"
 ) ) )
@@ -123,10 +129,10 @@ app.get( "/login/user/:username/avatar", ( req, res ) => {
   return res.sendFile( path.resolve( user.getPath(), "avatar.avif" ) )
 } )
 
-app.get( "/login/user/:username", ( req, res ) => {
+app.get( "/login/user/:username", async ( req, res ) => {
   const user = new YourDashUser( req.params.username )
-  if ( user.exists() ) {
-    return res.json( { name: user.getName() } )
+  if ( await user.exists() ) {
+    return res.json( { name: ( await user.read() ).getName() } )
   } else {
     return res.json( { error: "Unknown user" } )
   }
@@ -170,7 +176,7 @@ app.get( "/login/is-authenticated", ( req, res ) => {
   return res.json( { error: true } )
 } )
 
-app.get( "/panel/logo/small", ( req, res ) => res.sendFile( path.resolve(
+app.get( "/panel/logo/small", ( _req, res ) => res.sendFile( path.resolve(
   process.cwd(),
   "./fs/logo_panel_small.avif"
 ) ) )
@@ -195,15 +201,15 @@ app.use( ( req, res, next ) => {
   return res.json( { error: "authorization fail" } )
 } )
 
-app.get( "/panel/user/name", ( req, res ) => {
+app.get( "/panel/user/name", async ( req, res ) => {
   const { username } = req.headers as { username: string }
-  const user = new YourDashUser( username )
+  const user = ( await new YourDashUser( username ).read() )
   return res.json( user.getName() )
 } )
 
-app.get( "/panel/launcher/applications", async ( req, res ) => {
-  Promise.all( getAllApplications().map( app => {
-    const application = new YourDashApplication( app )
+app.get( "/panel/launcher/applications", async ( _req, res ) => {
+  Promise.all( ( await getAllApplications() ).map( async app => {
+    const application = await new YourDashApplication( app ).load()
     return new Promise( async resolve => {
       sharp( await fs.readFile( path.resolve(
         process.cwd(),
@@ -224,21 +230,21 @@ app.get( "/panel/launcher/applications", async ( req, res ) => {
   } ) ).then( resp => res.json( resp ) )
 } )
 
-app.get( "/panel/quick-shortcuts", ( req, res ) => {
+app.get( "/panel/quick-shortcuts", async ( req, res ) => {
   const { username } = req.headers as { username: string }
 
   const panel = new YourDashPanel( username )
 
-  return res.json( panel.getQuickShortcuts() )
+  return res.json( await panel.getQuickShortcuts() )
 } )
 
-app.delete( "/panel/quick-shortcut/:ind", ( req, res ) => {
+app.delete( "/panel/quick-shortcut/:ind", async ( req, res ) => {
   const { ind } = req.params
   const { username } = req.headers as { username: string }
 
   const panel = new YourDashPanel( username )
 
-  panel.removeQuickShortcut( parseInt( ind, 10 ) )
+  await panel.removeQuickShortcut( parseInt( ind, 10 ) )
 
   return res.json( { success: true } )
 } )
@@ -253,23 +259,25 @@ app.post( "/panel/quick-shortcuts/create", async ( req, res ) => {
   const application = new YourDashApplication( name )
 
   try {
-    panel.createQuickShortcut(
+    await panel.createQuickShortcut(
       displayName,
       `#/app/a/${ name }`,
       await fs.readFile( path.resolve( application.getPath(), "./icon.avif" ) )
     )
     return res.json( { success: true } )
-  } catch ( err ) {
+  } catch ( _err ) {
     return res.json( { error: true } )
   }
 } )
 
-app.get( "/panel/position", ( req, res ) => {
+app.get( "/panel/position", async ( req, res ) => {
   const { username } = req.headers as { username: string }
 
   const panel = new YourDashPanel( username )
 
-  return res.json( { position: panel.getPanelPosition() } )
+  console.log( await panel.getPanelPosition() )
+
+  return res.json( { position: await panel.getPanelPosition() } )
 } )
 
 app.get( "/panel/launcher", ( req, res ) => {
@@ -283,7 +291,7 @@ app.get( "/panel/launcher", ( req, res ) => {
 new Promise<void>( async ( resolve, reject ) => {
   if ( fsExistsSync( path.resolve( process.cwd(), "./apps/" ) ) ) {
     const apps = await fs.readdir( path.resolve( process.cwd(), "./apps/" ) )
-    apps.map( appName => {
+    apps.forEach( appName => {
       console.log( `loading application: ${ appName }` )
 
       // import and load all applications
