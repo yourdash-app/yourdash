@@ -28,7 +28,8 @@
     "react-router-dom": "^6.10.0",
     "sass": "^1.60.0",
     "ui": "./src/ui/",
-    "vite-bundle-visualizer": "^0.6.0"
+    "vite-bundle-visualizer": "^0.6.0",
+    "vite-plugin-mkcert": "^1.14.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.33",

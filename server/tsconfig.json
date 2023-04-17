@@ -13,7 +13,8 @@
     "allowJs": false,
     "skipLibCheck": true,
     "esModuleInterop": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "rootDir": ".."
   },
   "include": [
     "./**/*.ts",
@@ -21,10 +22,5 @@
   ],
   "paths": {
     "~/*": ["~/*"]
-  },
-  "references": [
-    {
-      "path": "../shared/tsconfig.json"
-    },
-  ]
+  }
 }

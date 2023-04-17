@@ -275,17 +275,15 @@ app.get( "/panel/position", async ( req, res ) => {
 
   const panel = new YourDashPanel( username )
 
-  console.log( await panel.getPanelPosition() )
-
   return res.json( { position: await panel.getPanelPosition() } )
 } )
 
-app.get( "/panel/launcher", ( req, res ) => {
+app.get( "/panel/launcher", async ( req, res ) => {
   const { username } = req.headers as { username: string }
 
   const panel = new YourDashPanel( username )
 
-  return res.json( { launcher: panel.getLauncherType() } )
+  return res.json( { launcher: await panel.getLauncherType() } )
 } )
 
 new Promise<void>( async ( resolve, reject ) => {

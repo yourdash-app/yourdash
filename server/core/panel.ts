@@ -1,7 +1,7 @@
 import { promises as fs } from "fs"
-import YourDashUser from "./user.js"
 import path from "path"
 import { base64ToDataUrl } from "./base64.js"
+import YourDashUser from "./user.js"
 
 export interface YourDashPanelQuickShortcut {
   displayName: string;
@@ -15,6 +15,11 @@ export enum YourDashPanelPosition {
 
 export enum YourDashPanelLauncherType {
   popOut, slideOut,
+}
+
+const DEFAULT_PANEL_CONFIG = {
+  launcher: YourDashPanelLauncherType.popOut,
+  position: YourDashPanelPosition.left
 }
 
 export default class YourDashPanel {
@@ -111,22 +116,19 @@ export default class YourDashPanel {
   async setPanelPosition( position: YourDashPanelPosition ): Promise<this> {
     const user = new YourDashUser( this.username )
 
-    try {
-      await new Promise<void>( resolve => {
-        fs.access( path.resolve( user.getPath(), "./panel.json" ) ).then( () => {
-          resolve()
-        } ).catch( async () => {
-          await fs.writeFile( path.resolve( user.getPath(), "./panel.json" ), JSON.stringify( { position } ) )
-          resolve()
-        } )
-      } )
+    let panelConfig
 
-      const panelConfig = JSON.parse(
+    try {
+      panelConfig = JSON.parse(
         ( await fs.readFile( path.resolve( user.getPath(), "./panel.json" ) ) ).toString()
       )
+    } catch ( _err ) {
+      panelConfig = DEFAULT_PANEL_CONFIG
+    }
 
-      panelConfig.position = position
+    panelConfig.position = position
 
+    try {
       await fs.writeFile( path.resolve( user.getPath(), "./panel.json" ), JSON.stringify( panelConfig ) )
     } catch ( _err ) {
       return this
@@ -135,74 +137,54 @@ export default class YourDashPanel {
     return this
   }
 
-  // TODO: this returns undefined causing AppLayout to look broken
   async getPanelPosition(): Promise<YourDashPanelPosition> {
     const user = new YourDashUser( this.username )
 
+    let panelConfig
+
     try {
-      const defaultPosition = await new Promise<void | boolean>( async resolve => {
-        fs.access( path.resolve( user.getPath(), "./panel.json" ) ).then( () => {
-          resolve( false )
-        } ).catch( () => resolve() )
-      } )
-
-      if ( defaultPosition !== false ) {
-        return YourDashPanelPosition.left
-      }
-
-      const panelConfig = JSON.parse(
+      panelConfig = JSON.parse(
         ( await fs.readFile( path.resolve( user.getPath(), "./panel.json" ) ) ).toString()
       )
-
-      return panelConfig.position
     } catch ( _err ) {
-      return YourDashPanelPosition.left
+      panelConfig = DEFAULT_PANEL_CONFIG
     }
+
+    return panelConfig.position
   }
 
   async getLauncherType(): Promise<YourDashPanelLauncherType> {
     const user = new YourDashUser( this.username )
 
+    let panelConfig
+
     try {
-      const defaultLauncherType = await new Promise<void | YourDashPanelLauncherType>( resolve => {
-        fs.access( path.resolve( user.getPath(), "./panel.json" ) ).then( () => resolve() ).catch( () => {
-          resolve( YourDashPanelLauncherType.popOut )
-        } )
-      } )
-
-      if ( defaultLauncherType ) {
-        return defaultLauncherType
-      }
-
-      const panelConfig = JSON.parse(
+      panelConfig = JSON.parse(
         ( await fs.readFile( path.resolve( user.getPath(), "./panel.json" ) ) ).toString()
       )
-
-      return panelConfig.launcher
     } catch ( _err ) {
-      return YourDashPanelLauncherType.popOut
+      panelConfig = DEFAULT_PANEL_CONFIG
     }
+
+    return panelConfig.launcher
   }
 
   async setLauncherType( launcher: YourDashPanelLauncherType ): Promise<this> {
     const user = new YourDashUser( this.username )
 
-    try {
-      await new Promise<void>( resolve => {
-        fs.access( path.resolve( user.getPath(), "./panel.json" ) ).catch( async () => {
-          await fs.writeFile(
-            path.resolve( user.getPath(), "./panel.json" ), JSON.stringify( { launcher: 0 } )
-          )
-          resolve()
-        } )
-      } )
+    let panelConfig
 
-      const panelConfig = JSON.parse(
+    try {
+      panelConfig = JSON.parse(
         ( await fs.readFile( path.resolve( user.getPath(), "./panel.json" ) ) ).toString()
       )
+    } catch ( _err ) {
+      panelConfig = DEFAULT_PANEL_CONFIG
+    }
 
-      panelConfig.launcher = launcher
+    panelConfig.launcher = launcher
 
+    try {
       await fs.writeFile( path.resolve( user.getPath(), "./panel.json" ), JSON.stringify( panelConfig ) )
     } catch ( _err ) {
       return this

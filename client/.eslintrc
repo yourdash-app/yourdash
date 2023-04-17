@@ -63,6 +63,7 @@
     "react/jsx-curly-spacing": [
       "warn",
       "always"
-    ]
+    ],
+    "react/jsx-no-literals": "off"
   }
 }

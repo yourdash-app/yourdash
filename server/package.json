@@ -43,6 +43,6 @@
     "dev": "cross-env DEV=true nodemon --signal SIGINT ."
   },
   "nodemonConfig": {
-    "ext": "ts"
+    "ext": "js"
   }
 }
