@@ -104,7 +104,7 @@ const includedApps: InstalledApplication[] = [
     author: "Ewsgit",
     copyright: "Ewsgit © 2023",
     license: "MIT",
-    description: "The YourDash built-in mastodon client",
+    description: "The YourDash built-in mastodon server",
     displayName: "Mastodon",
     icon: "mastodon.png",
     moduleRequirements: [],

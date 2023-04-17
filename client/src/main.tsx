@@ -1,28 +1,45 @@
-import "animate.css";
-import React from "react";
-import ReactDOM from "react-dom/client";
-import { createHashRouter, createRoutesFromElements, Route, RouterProvider } from "react-router-dom";
-import ComingSoon from "./ComingSoon";
-import ErrorElement from "./ErrorElement";
-import "./ui/ui.scss";
-import "./index.css";
-import LoginPage from "./login/LoginPage";
-import Root from "./Root";
-import ServerLoginPage from "./login/ServerLoginPage";
-import { DevSupport } from "@react-buddy/ide-toolbox";
+import "animate.css"
+import React from "react"
+import ReactDOM from "react-dom/client"
+import { createRoutesFromElements, Route, RouterProvider } from "react-router"
+import ComingSoon from "./ComingSoon"
+import ErrorElement from "./ErrorElement"
+import "./ui/ui.scss"
+import "./index.css"
+import LoginPage from "./login/LoginPage.jsx"
+import Root from "./Root.jsx"
+import ServerLoginPage from "./login/ServerLoginPage.jsx"
+import AppLayout from "./app/Layout.jsx"
+import ApplicationRedirectToDash from "./app/ApplicationRedirectToDash.jsx"
+import { createHashRouter } from "react-router-dom"
+import RightClickMenuRootContainer from "./ui/components/rightClickMenu/RightClickMenuRootContainer.jsx"
+import AppRouter from "./app/AppRouter.jsx"
 
-ReactDOM.createRoot( document.getElementById( `root` ) as HTMLElement ).render( <React.StrictMode>
-  <RouterProvider router={ createHashRouter( createRoutesFromElements( <>
-    <Route errorElement={ <ErrorElement/> }>
-      <Route path={ `/` } element={ <Root/> }/>
-      <Route path={ `/login` } element={ <LoginPage/> }/>
-      <Route path={ `/login/server` } element={ <ServerLoginPage/> }/>
-      <Route path={ `/signup` } element={ <ComingSoon/> }/>
-      <Route path={ `/app` } element={ <ComingSoon/> }/>
-      <Route path={ `/app/a` } element={ <ComingSoon/> }/>
-      <Route path={ `/app/a/:application` } element={ <ComingSoon/> }/>
-      <Route path={ `/app/profile` } element={ <ComingSoon/> }/>
-      <Route path={ `/app/settings` } element={ <ComingSoon/> }/>
-    </Route>
-  </> ) ) }/>
-</React.StrictMode>, );
+ReactDOM.createRoot( document.getElementById( "root" ) as HTMLElement ).render(
+  <React.StrictMode>
+    <RightClickMenuRootContainer>
+      <RouterProvider
+        router={ createHashRouter(
+          createRoutesFromElements(
+            <Route errorElement={ <ErrorElement/> }>
+              <Route index element={ <Root/> }/>
+              <Route path={ "/signup" } element={ <ComingSoon/> }/>
+              <Route path={ "/login" }>
+                <Route index element={ <LoginPage/> }/>
+                <Route path={ "server" } element={ <ServerLoginPage/> }/>
+              </Route>
+              <Route path={ "app" }>
+                <Route element={ <AppLayout/> }>
+                  <Route index element={ <ApplicationRedirectToDash/> }/>
+                  <Route path={ "a/*" } element={ <AppRouter/> }/>
+                  <Route path={ "profile" } element={ <ComingSoon/> }/>
+                  <Route path={ "settings" } element={ <ComingSoon/> }/>
+                </Route>
+              </Route>
+            </Route>
+          )
+        ) }
+      />
+    </RightClickMenuRootContainer>
+  </React.StrictMode>
+)

@@ -1,11 +1,11 @@
 .component {
-  border: none;
-  padding: 0.5rem 1rem;
+  font-family: "Inter", sans-serif;
   font-size: 1rem;
-  font-family: "Roboto", sans-serif;
+  padding: 0.5rem 1rem;
   cursor: pointer;
   transition: var(--transition);
+  color: var(--button-fg);
+  border: none;
   border-radius: var(--button-rounding);
   background-color: var(--button-bg);
-  color: var(--button-fg);
 }

@@ -1,0 +1,74 @@
+import React, { useRef } from "react";
+import styles from "./Carousel.module.scss";
+import Icon from "../icon/Icon";
+
+export interface ICarousel extends React.ComponentPropsWithoutRef<"div"> {
+  children: React.ReactNode[] | React.ReactNode;
+  className?: string;
+  compactControls?: boolean;
+}
+
+const Carousel: React.FC<ICarousel> = ({
+  children,
+  className,
+  compactControls,
+  ...extraProps
+}) => {
+  const pageRef = useRef<HTMLDivElement>(null);
+
+  return (
+    <div {...extraProps} className={`${styles.component} ${className}`}>
+      <div
+        className={styles.main}
+        ref={pageRef}
+        onScroll={(e) => {
+          return e.preventDefault();
+        }}
+      >
+        {children}
+      </div>
+      <div
+        className={`${styles.controls} ${
+          compactControls && styles.controlsCompact
+        }`}
+      >
+        {children instanceof Array ? (
+          <>
+            <button
+              type={"button"}
+              onClick={() => {
+                if (!pageRef.current) return;
+                const container = pageRef.current as HTMLDivElement;
+
+                container.scrollTo({
+                  left:
+                    container.scrollLeft -
+                    (container.getBoundingClientRect().width / 4) * 3,
+                });
+              }}
+            >
+              <Icon name="chevron-left-16" color="rgb(var(--button-fg))" />
+            </button>
+            <button
+              type={"button"}
+              onClick={() => {
+                if (!pageRef.current) return;
+                const container = pageRef.current as HTMLDivElement;
+
+                container.scrollTo({
+                  left:
+                    container.scrollLeft +
+                    (container.getBoundingClientRect().width / 4) * 3,
+                });
+              }}
+            >
+              <Icon name="chevron-right-16" color="rgb(var(--button-fg))" />
+            </button>
+          </>
+        ) : null}
+      </div>
+    </div>
+  );
+};
+
+export default Carousel;

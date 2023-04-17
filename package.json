@@ -11,12 +11,13 @@
   "scripts": {
     "start-client": "yarn --cwd ./client dev",
     "visualize-client-bundle": "yarn --cwd ./client visualize-bundle",
-    "start-server": "yarn --cwd ./server dev",
-    "sync-applications": "nodemon -w ./apps/ --exec node ./toolchain/sync-applications.js",
+    "start-server": "yarn --cwd ./server start",
+    "start-server-dev": "yarn --cwd ./server dev",
     "start-desktop": "yarn --cwd ./electron dev",
     "postinstall": "yarn --cwd ./client && yarn --cwd ./server && yarn --cwd ./electron"
   },
   "dependencies": {
-    "nodemon": "^2.0.22"
+    "ts-node": "^10.9.1",
+    "yarn": "^1.22.19"
   }
 }
