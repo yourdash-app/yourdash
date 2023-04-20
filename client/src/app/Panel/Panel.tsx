@@ -1,14 +1,8 @@
-import React, { useEffect, useState } from "react"
-import {
-  Icon,
-  IconButton,
-  RightClickMenu,
-  Row,
-  TextInput
-} from "../../ui"
-import getJson, { deleteJson, postJson } from "../../helpers/fetch"
-import clippy from "../../helpers/clippy"
+import React, { useEffect, useRef, useState } from "react"
 import { useBeforeUnload } from "react-router-dom"
+import clippy from "../../helpers/clippy"
+import getJson, { deleteJson, postJson } from "../../helpers/fetch"
+import { Icon, IconButton, RightClickMenu, Row, TextInput } from "../../ui"
 
 export enum PanelPosition {
   left,
@@ -21,96 +15,6 @@ export interface IPanel {
   side: PanelPosition;
   setSide: ( side: PanelPosition ) => void;
 }
-
-
-const Panel: React.FC<IPanel> = ( { side, setSide } ) => {
-  const [num, setNum] = useState<number>( 0 )
-  const [launcherType, setLauncherType] = useState<number>( 0 )
-
-  //  @ts-ignore
-  Panel.reload = () => {
-    setNum( num + 1 )
-  }
-
-  useEffect( () => {
-    getJson( "/panel/position", res => {
-      setSide( res.position )
-    } )
-
-    getJson( "/panel/launcher", res => {
-      setLauncherType( res.launcher )
-    } )
-  }, [num] ) // eslint-disable-line react-hooks/exhaustive-deps
-
-  return (
-    <div
-      style={ {
-        ...( side === PanelPosition.top || side === PanelPosition.bottom
-          ? {
-            flexDirection: "row",
-            width: "100%"
-          }
-          : {
-            flexDirection: "column",
-            height: "100%"
-          } ),
-        ...( side === PanelPosition.left && {
-          borderRight: "0.1rem solid var(--application-panel-border)"
-        } ),
-        ...( side === PanelPosition.right && {
-          borderLeft: "1",
-          gridRowEnd: -1,
-          gridColumnStart: 2
-        } ),
-        ...( side === PanelPosition.top && {
-          borderBottom: "0.1rem solid var(--application-panel-border)"
-        } ),
-        ...( side === PanelPosition.bottom && {
-          borderTop: "0.1rem solid var(--application-panel-border)",
-          gridColumnEnd: -1,
-          gridRowStart: 2
-        } )
-      } }
-      className={ "bg-container-bg flex p-2 gap-1 relative justify-center items-center z-10" }
-    >
-      {/* invisible component which checks that the user is authorized on the first load of the panel*/ }
-      <PanelAuthorizer/>
-      <PanelApplicationLauncher side={ side } type={ launcherType }/>
-      <PanelInstanceIcon/>
-      {/* separator */ }
-      <div
-        className={ clippy(
-          `
-          rounded-full
-          bg-[var(--application-panel-border)]
-          `,
-          side === PanelPosition.top || side === PanelPosition.bottom
-            ? "h-full w-0.5 ml-1 mr-1"
-            : "w-full h-0.5 mt-1 mb-1"
-        ) }
-      />
-      <PanelQuickShortcuts num={ num } side={ side }/>
-      <section
-        className={ clippy(
-          side === PanelPosition.left || side === PanelPosition.right
-            ? "mt-auto w-full"
-            : "ml-auto h-full",
-          "justify-center items-center flex flex-col"
-        ) }
-      >
-        {/*
-         
-         TODO: feature idea, Quick search ( basically just opens a command panel for all of yourdash )
-         Note: remember include application filtering
-         
-         */ }
-        <IconButton icon={ "search-16" }/>
-      </section>
-    </div>
-  )
-}
-
-export default Panel
 
 interface PanelQuickShortcut {
   displayName: string;
@@ -141,14 +45,16 @@ const PanelQuickShortcuts: React.FC<{ num: number; side: PanelPosition }> = ( {
               onClick() {
                 deleteJson( `/panel/quick-shortcut/${ ind }`, () => {
                   // @ts-ignore
-                  Panel.reload()
+                  Panel.reload() // eslint-disable-line no-use-before-define
                 } )
               }
             }
           ] }
         >
           <button
-            className={ "w-full aspect-square relative group flex items-center justify-center mr-1 cursor-pointer outline-0" }
+            type={ "button" }
+            className={ "w-full aspect-square relative group flex items-center " +
+                        "justify-center mr-1 cursor-pointer outline-0" }
             onClick={ e => {
               e.currentTarget.blur()
               window.location.href = shortcut.url
@@ -157,7 +63,8 @@ const PanelQuickShortcuts: React.FC<{ num: number; side: PanelPosition }> = ( {
             <img
               src={ shortcut.icon }
               alt=""
-              className={ "w-[2rem] group-hover:scale-110 group-focus-within:scale-110 group-active:scale-95 transition-[var(--transition)]" }
+              className={ "w-[2rem] group-hover:scale-110 group-focus-within:scale-110 " +
+                          "group-active:scale-95 transition-[var(--transition)]" }
             />
             <span
               className={ clippy(
@@ -196,12 +103,17 @@ const PanelInstanceIcon: React.FC = () => {
   }
 
   return (
-    <img
-      src={ `${ instanceUrl }/panel/logo/small` }
+    <button
+      type={ "button" }
+      className={ "border-none" }
       onClick={ () => ( window.location.href = "#/app/a/dash" ) }
-      alt={ "" }
-      className={ "cursor-pointer select-none mt-1" }
-    />
+    >
+      <img
+        src={ `${ instanceUrl }/panel/logo/small` }
+        alt={ "" }
+        className={ "cursor-pointer select-none mt-1" }
+      />
+    </button>
   )
 }
 
@@ -215,7 +127,7 @@ const PanelAuthorizer: React.FC = () => {
     } else {
       getJson(
         "/login/is-authenticated",
-        () => {},
+        () => null,
         () => {
           setTimeout( () => {
             console.clear()
@@ -227,45 +139,7 @@ const PanelAuthorizer: React.FC = () => {
     }
   }, [] )
 
-  return <></>
-}
-
-const PanelApplicationLauncher: React.FC<{
-  side: PanelPosition;
-  type: number;
-}> = ( { side, type } ) => {
-  const [isVisible, setIsVisible] = useState<boolean>( false )
-  return (
-    <div
-      className={ clippy(
-        side === PanelPosition.left || side === PanelPosition.right
-          ? "w-full"
-          : "h-full",
-        "z-50",
-        type !== 1 && "relative"
-      ) }
-    >
-      <IconButton
-        icon={ "three-bars-16" }
-        onClick={ () => setIsVisible( !isVisible ) }
-      />
-      { type === 1
-        ? (
-          <PanelApplicationLauncherSlideOut
-            side={ side }
-            visible={ isVisible }
-            setVisible={ val => setIsVisible( val ) }
-          />
-        )
-        : (
-          <PanelApplicationLauncherPopOut
-            side={ side }
-            visible={ isVisible }
-            setVisible={ val => setIsVisible( val ) }
-          />
-        ) }
-    </div>
-  )
+  return null
 }
 
 const PanelApplicationLauncherSlideOut: React.FC<{
@@ -320,21 +194,21 @@ const PanelApplicationLauncherSlideOut: React.FC<{
       >
         <span
           className={ clippy(
-            `
-            text-container-fg
-            text-4xl
-            font-bold
-            [filter:_drop-shadow(0_10px_8px_rgb(0_0_0/0.04))_drop-shadow(0_4px_3px_rgb(0_0_0/0.1))_drop-shadow(0_10px_8px_rgb(0_0_0/0.04))_drop-shadow(0_4px_3px_rgb(0_0_0/0.1))_drop-shadow(0_10px_8px_rgb(0_0_0/0.04))_drop-shadow(0_4px_3px_rgb(0_0_0/0.1))]
-            backdrop-blur-sm
-            bg-container-bg
-            bg-opacity-50
-            pl-4
-            pr-4
-            pt-2
-            pb-2
-            rounded-2xl
-            overflow-hidden
-          `
+            "text-container-fg" +
+            "text-4xl" +
+            "font-bold" +
+            "[filter:_drop-shadow(0_10px_8px_rgb(0_0_0/0.04))_drop-shadow(0_4px_3px_rgb(0_0_0/0.1))_drop-shadow(0_" +
+            "10px_8px_rgb(0_0_0/0.04))_drop-shadow(0_4px_3px_rgb(0_0_0/0.1))_drop-shadow(0_10px_8px_rgb(0_0_0/0.04))" +
+            "_drop-shadow(0_4px_3px_rgb(0_0_0/0.1))]" +
+            "backdrop-blur-sm" +
+            "bg-container-bg" +
+            "bg-opacity-50" +
+            "pl-4" +
+            "pr-4" +
+            "pt-2" +
+            "pb-2" +
+            "rounded-2xl" +
+            "overflow-hidden"
           ) }
         >
           Hiya, { userFullName.first }
@@ -349,6 +223,26 @@ export interface YourDashLauncherApplication {
   displayName: string;
   icon: string;
   description: string;
+}
+
+const PanelApplicationLauncherPopOutDateAndTime: React.FC = () => {
+  const [date, setDate] = useState( new Date() )
+
+  const interval = useRef<NodeJS.Timer | null>( null )
+
+  useEffect( () => {
+    interval.current = setInterval( () => {
+      setDate( new Date() )
+    }, 60000 )
+  }, [] )
+
+  useBeforeUnload( () => {
+    if ( interval.current ) {
+      clearInterval( interval.current )
+    }
+  } )
+
+  return <span className={ "pl-1" }>{ date.toDateString() }</span>
 }
 
 const PanelApplicationLauncherPopOut: React.FC<{
@@ -583,20 +477,129 @@ const PanelApplicationLauncherPopOut: React.FC<{
   )
 }
 
-const PanelApplicationLauncherPopOutDateAndTime: React.FC = () => {
-  const [date, setDate] = useState( new Date() )
+const PanelApplicationLauncher: React.FC<{
+  side: PanelPosition;
+  type: number;
+}> = ( { side, type } ) => {
+  const [isVisible, setIsVisible] = useState<boolean>( false )
+  return (
+    <div
+      className={ clippy(
+        side === PanelPosition.left || side === PanelPosition.right
+          ? "w-full"
+          : "h-full",
+        "z-50",
+        type !== 1 && "relative"
+      ) }
+    >
+      <IconButton
+        icon={ "three-bars-16" }
+        onClick={ () => setIsVisible( !isVisible ) }
+      />
+      { type === 1
+        ? (
+          <PanelApplicationLauncherSlideOut
+            side={ side }
+            visible={ isVisible }
+            setVisible={ val => setIsVisible( val ) }
+          />
+        )
+        : (
+          <PanelApplicationLauncherPopOut
+            side={ side }
+            visible={ isVisible }
+            setVisible={ val => setIsVisible( val ) }
+          />
+        ) }
+    </div>
+  )
+}
 
-  let interval: NodeJS.Timer
+const Panel: React.FC<IPanel> = ( { side, setSide } ) => {
+  const [num, setNum] = useState<number>( 0 )
+  const [launcherType, setLauncherType] = useState<number>( 0 )
+
+  //  @ts-ignore
+  Panel.reload = () => {
+    setNum( num + 1 )
+  }
 
   useEffect( () => {
-    interval = setInterval( () => {
-      setDate( new Date() )
-    }, 60000 )
-  }, [] )
+    getJson( "/panel/position", res => {
+      setSide( res.position )
+    } )
 
-  useBeforeUnload( () => {
-    clearInterval( interval )
-  } )
+    getJson( "/panel/launcher", res => {
+      setLauncherType( res.launcher )
+    } )
+  }, [num] ) // eslint-disable-line react-hooks/exhaustive-deps
 
-  return <span className={ "pl-1" }>{ date.toDateString() }</span>
+  return (
+    <div
+      style={ {
+        ...( side === PanelPosition.top || side === PanelPosition.bottom
+          ? {
+            flexDirection: "row",
+            width: "100%"
+          }
+          : {
+            flexDirection: "column",
+            height: "100%"
+          } ),
+        ...( side === PanelPosition.left && {
+          borderRight: "0.1rem solid var(--application-panel-border)"
+        } ),
+        ...( side === PanelPosition.right && {
+          borderLeft: "1",
+          gridRowEnd: -1,
+          gridColumnStart: 2
+        } ),
+        ...( side === PanelPosition.top && {
+          borderBottom: "0.1rem solid var(--application-panel-border)"
+        } ),
+        ...( side === PanelPosition.bottom && {
+          borderTop: "0.1rem solid var(--application-panel-border)",
+          gridColumnEnd: -1,
+          gridRowStart: 2
+        } )
+      } }
+      className={ "bg-container-bg flex p-2 gap-1 relative justify-center items-center z-10" }
+    >
+      {/* invisible component which checks that the user is authorized on the first load of the panel*/ }
+      <PanelAuthorizer/>
+      <PanelApplicationLauncher side={ side } type={ launcherType }/>
+      <PanelInstanceIcon/>
+      {/* separator */ }
+      <div
+        className={ clippy(
+          `
+          rounded-full
+          bg-[var(--application-panel-border)]
+          `,
+          side === PanelPosition.top || side === PanelPosition.bottom
+            ? "h-full w-0.5 ml-1 mr-1"
+            : "w-full h-0.5 mt-1 mb-1"
+        ) }
+      />
+      <PanelQuickShortcuts num={ num } side={ side }/>
+      <section
+        className={ clippy(
+          side === PanelPosition.left || side === PanelPosition.right
+            ? "mt-auto w-full"
+            : "ml-auto h-full",
+          "justify-center items-center flex flex-col"
+        ) }
+      >
+        {/*
+         
+         TODO: feature idea, Quick search ( basically just opens a command panel for all of yourdash )
+         Note: remember include application filtering
+         
+         */ }
+        <IconButton icon={ "search-16" }/>
+      </section>
+    </div>
+  )
 }
+
+export default Panel

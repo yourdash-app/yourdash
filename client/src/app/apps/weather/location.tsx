@@ -196,10 +196,11 @@ const WeatherApplicationLocationPage: React.FC = () => {
         style={ {
           backgroundImage: `url("${backgroundImages[displayedWeatherCondition]}")`
         } }
-        className={ "bg-center bg-cover bg-fixed pb-6  relative" }
+        className={ "bg-center bg-cover bg-fixed pb-6 relative overflow-hidden" }
       >
         <div
-          className={ "flex pl-8 pt-8 pb-8 flex-row from-base-700 to-transparent bg-gradient-to-b" }
+          className={ "flex pl-8 pt-8 pb-8 flex-row from-base-700 to-transparent bg-gradient-to-b animate__animated" +
+                      " animate__fadeInDown" }
         >
           <IconButton
             icon={ "arrow-left-16" }
@@ -225,7 +226,8 @@ const WeatherApplicationLocationPage: React.FC = () => {
         <section className={ "h-48 flex items-center justify-center" }>
           <span
             /* eslint-disable-next-line max-len */
-            className={ "text-6xl font-bold text-center [filter:_drop-shadow(0_10px_8px_rgb(0_0_0/0.04))_drop-shadow(0_4px_3px_rgb(0_0_0/0.1))_drop-shadow(0_10px_8px_rgb(0_0_0/0.04))_drop-shadow(0_4px_3px_rgb(0_0_0/0.1))_drop-shadow(0_10px_8px_rgb(0_0_0/0.04))_drop-shadow(0_4px_3px_rgb(0_0_0/0.1))]" }
+            className={ "animate__animated animate__fadeInUp text-6xl font-bold text-center" +
+                        " [filter:_drop-shadow(0_10px_8px_rgb(0_0_0/0.04))_drop-shadow(0_4px_3px_rgb(0_0_0/0.1))_drop-shadow(0_10px_8px_rgb(0_0_0/0.04))_drop-shadow(0_4px_3px_rgb(0_0_0/0.1))_drop-shadow(0_10px_8px_rgb(0_0_0/0.04))_drop-shadow(0_4px_3px_rgb(0_0_0/0.1))]" }
           >
             Currently {data?.currentWeather.temp.toFixed( 0 )}
             {data?.daily.unit}{" "}
@@ -239,8 +241,8 @@ const WeatherApplicationLocationPage: React.FC = () => {
         </section>
         <Carousel
           compactControls
-          containerClassName={ "min-w-full p-10 pb-4 pt-4 max-w-full overflow-x-auto rounded-xl" }
-          className={ "flex flex-row gap-2 animate__animated animate__fadeInUp" }
+          containerClassName={ "min-w-full p-10 pb-4 pt-4 max-w-full overflow-x-auto rounded-xl animate__animated animate__fadeInUp" }
+          className={ "flex flex-row gap-2" }
         >
           {/*{chunk( data?.hourly.hours || [], 24 )[0]?.map( ( hour, ind ) => {*/}
           {/*  if ( ind < new Date().getHours() ) {*/}
@@ -266,7 +268,7 @@ const WeatherApplicationLocationPage: React.FC = () => {
           {/*  )*/}
           {/*} )}*/}
 
-          <div className={ "w-56 relative" }>
+          <div className={ "w-48 relative" }>
             <Card
               onClick={ () => {
                 setSelectedDay( 0 )
@@ -300,7 +302,7 @@ const WeatherApplicationLocationPage: React.FC = () => {
           {
             data.daily.days.slice( 1 ).map( ( day, ind ) => (
               <div
-                className={ "w-56 relative" }
+                className={ "w-48 relative" }
                 key={ day.date }
               >
                 <Card
@@ -339,7 +341,8 @@ const WeatherApplicationLocationPage: React.FC = () => {
           <a
             href="https://open-meteo.com/"
             className={ "absolute bottom-0 right-0 text-xs rounded-tl-md bg-container-bg border-2" +
-                        " border-container-border pt-1 pb-1 pl-2 pr-2" }
+                        " border-container-border pt-1 pb-1 pl-2 pr-2 animate__animated animate__fadeIn" +
+                        " animate__delay-500ms" }
           >
             powered by open-meteo
           </a>
