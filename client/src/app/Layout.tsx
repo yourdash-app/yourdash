@@ -25,7 +25,7 @@ const Layout: React.FC = () => {
       className={ "grid h-screen" }
     >
       <Panel setSide={ val => setPanelLayout( val ) } side={ panelLayout }/>
-      <main className={ "min-h-full overflow-auto w-full flex flex-col" }>
+      <main className={ "min-h-full overflow-hidden overflow-y-auto w-full flex flex-col" }>
         <Outlet/>
       </main>
     </div>
