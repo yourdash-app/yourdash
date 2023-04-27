@@ -188,6 +188,7 @@ const PanelApplicationLauncherSlideOut: React.FC<{
     >
       <header
         style={ {
+          // FIXME: this will only work during development, this needs urgently changing
           backgroundImage: "url(\"http://localhost:3560/login/background\")"
         } }
         className={ "h-32 flex items-center justify-center w-full bg-cover bg-center" }
@@ -396,62 +397,66 @@ const PanelApplicationLauncherPopOut: React.FC<{
           `
           ) }
         >
-          { applications.length !== 0 ? (
-            applications.map( app => {
-              if ( searchValue !== "" ) {
-                if (
-                  !app.description.includes( searchValue ) &&
+          { applications.length !== 0
+            ? (
+              applications.map( app => {
+                if ( searchValue !== "" ) {
+                  if (
+                    !app.description.includes( searchValue ) &&
                   !app.name.includes( searchValue )
-                ) {
-                  return <React.Fragment key={ app.name }/>
+                  ) {
+                    return <React.Fragment key={ app.name }/>
+                  }
                 }
-              }
 
-              return (
-                <RightClickMenu
-                  key={ app.name }
-                  items={ [
-                    {
-                      name: "Pin to Panel",
-                      onClick() {
-                        postJson(
-                          "/panel/quick-shortcuts/create",
-                          {
-                            displayName: app.displayName,
-                            name: app.name
-                          },
-                          () => {
-                            // @ts-ignore
-                            Panel.reload()
-                          }
-                        )
-                      },
-                      shortcut: "ctrl+p"
-                    }
-                  ] }
-                >
-                  <button
+                return (
+                  <RightClickMenu
                     key={ app.name }
-                    onClick={ () => {
-                      setVisible( false )
-                      window.location.href = `#/app/a/${ app.name }`
-                    } }
+                    items={ [
+                      {
+                        name: "Pin to Panel",
+                        onClick() {
+                          postJson(
+                            "/panel/quick-shortcuts/create",
+                            {
+                              displayName: app.displayName,
+                              name: app.name
+                            },
+                            () => {
+                              // @ts-ignore
+                              // eslint-disable-next-line no-use-before-define
+                              Panel.reload()
+                            }
+                          )
+                        },
+                        shortcut: "ctrl+p"
+                      }
+                    ] }
                   >
-                    <img src={ app.icon } alt={ "" } className={ "p-2" }/>
-                    <span>{ app.displayName }</span>
-                  </button>
-                </RightClickMenu>
-              )
-            } )
-          ) : (
-            <div
-              className={ "col-span-4 bg-container-bg h-24 flex items-center justify-center" }
-            >
-              <span className={ "!text-container-fg !border-none" }>
-                You have no applications?
-              </span>
-            </div>
-          ) }
+                    <button
+                      type={ "button" }
+                      key={ app.name }
+                      onClick={ () => {
+                        setVisible( false )
+                        window.location.href = `#/app/a/${ app.name }`
+                      } }
+                    >
+                      <img src={ app.icon } alt={ "" } className={ "p-2" }/>
+                      <span>{ app.displayName }</span>
+                    </button>
+                  </RightClickMenu>
+                )
+              } )
+            )
+            : (
+              <div
+                className={ "col-span-4 bg-container-bg h-24 flex items-center justify-center" }
+              >
+                <span className={ "!text-container-fg !border-none" }>
+                  You have no applications?
+                </span>
+              </div>
+            ) }
         </section>
         <section className={ "flex items-center justify-center" }>
           <PanelApplicationLauncherPopOutDateAndTime/>

@@ -1,30 +1,35 @@
 /** @format */
 
 import { Application as ExpressApplication } from "express"
-import { fetch } from "undici"
 import { promises as fs } from "fs"
 import path from "path"
-import YourDashUser from "../../core/user.js"
+import { fetch } from "undici"
 import { type weatherForecast } from "../../../shared/apps/weather/forecast.js"
 import { weatherStates } from "../../../shared/apps/weather/weatherStates.js"
+import YourDashUser from "../../core/user.js"
 
 /**
+ 
  WMO Weather interpretation codes (WW)
- Code    Description
- 0    Clear sky
- 1, 2, 3    Mainly clear, partly cloudy, and overcast
- 45, 48    Fog and depositing rime fog
- 51, 53, 55    Drizzle: Light, moderate, and dense intensity
- 56, 57    Freezing Drizzle: Light and dense intensity
- 61, 63, 65    Rain: Slight, moderate and heavy intensity
- 66, 67    Freezing Rain: Light and heavy intensity
- 71, 73, 75    Snow fall: Slight, moderate, and heavy intensity
- 77    Snow grains
- 80, 81, 82    Rain showers: Slight, moderate, and violent
- 85, 86    Snow showers slight and heavy
- 95 *    Thunderstorm: Slight or moderate
- 96, 99 *    Thunderstorm with slight and heavy hail
+ 
+ Code         | Description
+--------------|-----------------------------------------------------------------
+ 0            | Clear sky
+ 1, 2, 3      | Mainly clear, partly cloudy, and overcast
+ 45, 48       | Fog and depositing rime fog
+ 51, 53, 55   | Drizzle: Light, moderate, and dense intensity
+ 56, 57       | Freezing Drizzle: Light and dense intensity
+ 61, 63, 65   | Rain: Slight, moderate and heavy intensity
+ 66, 67       | Freezing Rain: Light and heavy intensity
+ 71, 73, 75   | Snow fall: Slight, moderate, and heavy intensity
+ 77           | Snow grains
+ 80, 81, 82   | Rain showers: Slight, moderate, and violent
+ 85, 86       | Snow showers slight and heavy
+ 95 *         | Thunderstorm: Slight or moderate
+ 96, 99 *     | Thunderstorm with slight and heavy hail
+--------------|-----------------------------------------------------------------
  (*) Thunderstorm forecast with hail is only available in Central Europe
+ 
  */
 
 function parseWeatherCodes( code: number ): weatherStates {
@@ -102,7 +107,7 @@ export default function main( app: ExpressApplication ) {
     const user = new YourDashUser( username )
 
     try {
-      await fs.access( path.resolve( user.getAppDataPath(), "weather" ) ).catch( () => res.json( [] ) )
+      await fs.access( path.resolve( user.getAppDataPath(), "weather" ) )
 
       const rawFile = ( await fs.readFile(
         path.resolve( user.getAppDataPath(), "weather/previous_locations.json" )
@@ -135,19 +140,21 @@ export default function main( app: ExpressApplication ) {
           await fs.mkdir( path.resolve( user.getAppDataPath(), "weather" ) )
         } )
 
-        await fs.access( path.resolve( user.getAppDataPath(), "weather/previous_locations.json" ) ).then( async () => {
+        try {
           file = ( await fs.readFile(
             path.resolve( user.getAppDataPath(), "weather/previous_locations.json" )
           ) ).toString()
-        } )
+        } catch ( _err ) {
+          file = "[]"
+        }
 
-        const parsedFile = JSON.parse( file )
+        const parsedFile = JSON.parse( file ) as { name: string, id: string }[]
 
         if ( parsedFile.length > 5 ) {
           parsedFile.shift()
         }
 
-        if ( parsedFile.indexOf( { name: cache.data.name, id: req.params.id } ) === -1 ) {
+        if ( parsedFile.find( obj => obj.id === req.params.id ) === undefined ) {
           parsedFile.push( { name: cache.data.name, id: req.params.id } )
         }
 
@@ -241,7 +248,7 @@ export default function main( app: ExpressApplication ) {
               parsedFile.shift()
             }
 
-            if ( parsedFile.indexOf( { name: out.name, id: req.params.id } ) === -1 ) {
+            if ( parsedFile.find( obj => obj.id === req.params.id ) === undefined ) {
               parsedFile.push( { name: out.name, id: req.params.id } )
             }
 
