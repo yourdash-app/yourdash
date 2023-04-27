@@ -5,6 +5,7 @@ import ComingSoon from "../ComingSoon"
 import DashApplication from "./apps/dash"
 import DashApplicationWelcome from "./apps/dash/welcome"
 import FilesApplication from "./apps/files"
+import PhotosApplication from "./apps/photos"
 import SettingsApplication from "./apps/settings"
 import WeatherApplication from "./apps/weather"
 import WeatherApplicationLocationPage from "./apps/weather/location"
@@ -23,6 +24,9 @@ const AppRouter: React.FC = () => (
       <Route path={ "location" }>
         <Route path={ ":id" } element={ <WeatherApplicationLocationPage/> }/>
       </Route>
+    </Route>
+    <Route path={ "photos" }>
+      <Route index element={ <PhotosApplication/> }/>
     </Route>
     <Route path={ "todo" } element={ <ComingSoon/> }/>
     <Route path={ "services" } element={ <ComingSoon/> }/>

@@ -500,10 +500,10 @@ const WeatherApplicationLocationPage: React.FC = () => {
                     ) }
                   >
                     <section className={ "flex items-center justify-between" }>
-                      <h2 className={ "font-bold text-6xl flex" }>{ new Date( hour.date ).getHours() < 10
+                      <h2 className={ "font-bold text-3xl flex" }>{ new Date( hour.date ).getHours() < 10
                         ? `0${
-                          new Date( hour.date ).getHours() }`
-                        : new Date( hour.date ).getHours() }</h2>
+                          new Date( hour.date ).getHours() }:00`
+                        : `${ new Date( hour.date ).getHours() }:00` }</h2>
                       <img
                         src={ "/assets/productLogos/yourdash.svg" }
                         draggable={ false }
@@ -528,10 +528,10 @@ const WeatherApplicationLocationPage: React.FC = () => {
                     ) }
                   >
                     <section className={ "flex items-center justify-between" }>
-                      <h2 className={ "font-bold text-6xl flex" }>{ new Date( hour.date ).getHours() < 10
+                      <h2 className={ "font-bold text-3xl flex" }>{ new Date( hour.date ).getHours() < 10
                         ? `0${
-                          new Date( hour.date ).getHours() }`
-                        : new Date( hour.date ).getHours() }</h2>
+                          new Date( hour.date ).getHours() }:00`
+                        : `${ new Date( hour.date ).getHours() }:00` }</h2>
                       <img
                         src={ "/assets/productLogos/yourdash.svg" }
                         draggable={ false }
