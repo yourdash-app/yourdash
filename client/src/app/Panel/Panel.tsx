@@ -362,7 +362,8 @@ const PanelApplicationLauncherPopOut: React.FC<{
             } }
           />
           <div
-            className={ "absolute right-0 top-0 h-[2.25rem] w-[2.25rem] p-[0.35rem] group-focus-within:opacity-0 pointer-events-none transition-all [border:0.125rem_solid_#00000000]" }
+            className={ "absolute right-0 top-0 h-[2.25rem] w-[2.25rem] p-[0.35rem] group-focus-within:opacity-0 " +
+                        "pointer-events-none transition-all [border:0.125rem_solid_#00000000]" }
           >
             <Icon name={ "search-16" } color={ "rgb(var(--container-fg))" }/>
           </div>
@@ -473,6 +474,15 @@ const PanelApplicationLauncherPopOut: React.FC<{
               onClick={ () => {
                 setVisible( false )
                 window.location.href = "#/app/a/settings"
+              } }
+            />
+            <IconButton
+              icon={ "logout" }
+              onClick={ () => {
+                setVisible( false )
+                sessionStorage.removeItem( "session_token" )
+                localStorage.removeItem( "username" )
+                window.location.href = "#/"
               } }
             />
           </Row>

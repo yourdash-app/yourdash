@@ -1,7 +1,7 @@
 import clippy from "helpers/clippy"
 import React, { useEffect, useState } from "react"
 import getJson, { postJson } from "../helpers/fetch"
-import { Button, Card, Column, Dialog, IconButton, TextInput } from "../ui"
+import { Card, Column, Dialog, IconButton, MajorButton, TextInput } from "../ui"
 
 const SelectUser: React.FC<{
   setSelectedUser: ( username: string ) => void;
@@ -49,7 +49,7 @@ const SelectUser: React.FC<{
             }
             }
           />
-          <Button
+          <MajorButton
             disabled={ username === null }
             onClick={ () => {
               if ( username === null ) {
@@ -69,7 +69,7 @@ const SelectUser: React.FC<{
             } }
           >
             Continue
-          </Button>
+          </MajorButton>
         </Column>
       </Card>
       {!validUser && (
@@ -128,7 +128,7 @@ const LoginAsUser: React.FC<{
             setPassword( value )
           } }
         />
-        <Button
+        <MajorButton
           onClick={ () => {
             postJson(
               `/login/user/${username}/authenticate`,
@@ -145,7 +145,7 @@ const LoginAsUser: React.FC<{
           } }
         >
           Login
-        </Button>
+        </MajorButton>
       </Card>
     </>
   )

@@ -19,11 +19,21 @@ const FilesLayout: React.FC<IFilesLayout> = ( { children } ) => (
 
       <div className={ "flex flex-col gap-1" }>
         <h2 className={ "pl-2 pr-2 pb-0.5 pt-2" }>Category</h2>
-        <Button className={ "!pt-0.5 !pb-0.5" }><span className={ "m-0" }>Cat item 1</span></Button>
-        <Button className={ "!pt-0.5 !pb-0.5" }><span className={ "m-0" }>Cat item 2</span></Button>
-        <Button className={ "!pt-0.5 !pb-0.5" }><span className={ "m-0" }>Cat item 3</span></Button>
-        <Button className={ "!pt-0.5 !pb-0.5" }><span className={ "m-0" }>Cat item 4</span></Button>
-        <Button className={ "!pt-0.5 !pb-0.5" }><span className={ "m-0" }>Cat item 5</span></Button>
+        <Button className={ "!pt-0.5 !pb-0.5" }>
+          <span className={ "m-0" }>Cat item 1</span>
+        </Button>
+        <Button className={ "!pt-0.5 !pb-0.5" }>
+          <span className={ "m-0" }>Cat item 2</span>
+        </Button>
+        <Button className={ "!pt-0.5 !pb-0.5" }>
+          <span className={ "m-0" }>Cat item 3</span>
+        </Button>
+        <Button className={ "!pt-0.5 !pb-0.5" }>
+          <span className={ "m-0" }>Cat item 4</span>
+        </Button>
+        <Button className={ "!pt-0.5 !pb-0.5" }>
+          <span className={ "m-0" }>Cat item 5</span>
+        </Button>
       </div>
     </section>
     <section className={ "flex flex-col w-full min-h-full overflow-auto" }>
