@@ -1,3 +1,4 @@
+import { Application as ExpressApplication } from "express"
 import { promises as fs } from "fs"
 import path from "path"
 
@@ -58,6 +59,6 @@ export async function getAllApplications(): Promise<string[]> {
   }
 }
 
-type YourDashApplicationServerPlugin = ( _app: Express.Application ) => any;
+type YourDashApplicationServerPlugin = ( _app: ExpressApplication ) => any;
 
 export { type YourDashApplicationServerPlugin }
