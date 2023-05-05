@@ -2,7 +2,7 @@ import clippy from "helpers/clippy"
 import path from "path-browserify"
 import React, { useEffect, useState } from "react"
 import { postJson } from "../../../helpers/fetch"
-import { IconButton } from "../../../ui"
+import { Icon, IconButton, RightClickMenu } from "../../../ui"
 import FilesLayout from "./FilesLayout"
 
 const FilesApplication: React.FC = () => {
@@ -21,7 +21,7 @@ const FilesApplication: React.FC = () => {
 
   return (
     <FilesLayout>
-      <section className={ "p-2 flex items-center bg-container-bg gap-2" }>
+      <section className={ "p-2 flex items-center bg-container-bg gap-2 top-0 sticky z-10" }>
         <IconButton
           onClick={ () => {
             setCurrentPath( path.join( currentPath, ".." ) )
@@ -30,27 +30,50 @@ const FilesApplication: React.FC = () => {
         />
         <span>{ currentPath }</span>
       </section>
+      <div
+        className={
+          clippy(
+            "bg-container-bg pl-2 pr-2 pt-0.5 pb-0.5 text-left transition-colors [transition:var(--transition)] hover:[transition:var(--transition-fast)] flex items-center"
+          )
+        }
+      >
+        <Icon name={ "info-16" } className={ "h-[calc(100%-0.35rem)] mr-1.5" } color={ "rgb(var(--container-fg))" }/>
+        <span className={ "mr-auto" }>Name</span>
+        <span>Type</span>
+      </div>
       {
         files.map( ( file, ind ) => (
-          <button
-            type={ "button" }
+          <RightClickMenu
             key={ file.name }
-            onClick={ () => {
-              setCurrentPath( path.join( currentPath, file.name ) )
-            } }
-            className={
-              clippy(
-                ind % 2 === 0
-                  ? "bg-slate-700 hover:bg-slate-800 active:bg-slate-900"
-                  : "bg-slate-600 hover:bg-slate-500 active:bg-slate-400",
-                "pl-2 pr-2 pt-0.5 pb-0.5 text-left transition-colors [transition:var(--transition)]" +
-                " hover:[transition:var(--transition-fast)] justify-between flex items-center"
-              )
-            }
+            items={ [
+              {
+                name: "Delete",
+                onClick() {
+                  return 0
+                }
+              }
+            ] }
+            className={ "w-full" }
           >
-            <span>{ file.name }</span>
-            <span>{ file.type }</span>
-          </button>
+            <button
+              type={ "button" }
+              onClick={ () => {
+                setCurrentPath( path.join( currentPath, file.name ) )
+              } }
+              className={
+                clippy(
+                  ind % 2 === 0
+                    ? "bg-slate-700 bg-opacity-60 hover:bg-opacity-90 active:bg-opacity-75"
+                    : "bg-slate-600 bg-opacity-60 hover:bg-opacity-90 active:bg-opacity-75",
+                  "pl-2 pr-2 pt-0.5 pb-0.5 text-left transition-colors [transition:var(--transition)] hover:[transition:var(--transition-fast)] flex items-center w-full"
+                )
+              }
+            >
+              <Icon name={ file.type === "file" ? "file-16" : "file-directory-16" } className={ "h-[calc(100%-0.35rem)] mr-1.5" } color={ "rgb(var(--container-fg))" }/>
+              <span className={ "mr-auto" }>{ file.name }</span>
+              <span>{ file.type }</span>
+            </button>
+          </RightClickMenu>
         ) )
       }
     </FilesLayout>
