@@ -3,6 +3,7 @@ import React from "react"
 import ReactDOM from "react-dom/client"
 import { createRoutesFromElements, Route, RouterProvider } from "react-router"
 import ComingSoon from "./ComingSoon"
+import DocsLayout from "./docs/Layout"
 import ErrorElement from "./ErrorElement"
 import "./ui/ui.scss"
 import "./index.css"
@@ -35,6 +36,9 @@ ReactDOM.createRoot( document.getElementById( "root" ) as HTMLElement ).render(
                   <Route path={ "profile" } element={ <ComingSoon/> }/>
                   <Route path={ "settings" } element={ <ComingSoon/> }/>
                 </Route>
+              </Route>
+              <Route path={ "docs" } element={ <DocsLayout/> }>
+                <Route index/>
               </Route>
             </Route>
           )
