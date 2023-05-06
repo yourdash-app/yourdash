@@ -51,9 +51,15 @@ const FilesApplication: React.FC = () => {
                 onClick() {
                   return 0
                 }
+              },
+              {
+                name: "Pin to sidebar",
+                onClick() {
+                  return 0
+                }
               }
             ] }
-            className={ "w-full" }
+            className={ "w-full flex" }
           >
             <button
               type={ "button" }
@@ -69,7 +75,11 @@ const FilesApplication: React.FC = () => {
                 )
               }
             >
-              <Icon name={ file.type === "file" ? "file-16" : "file-directory-16" } className={ "h-[calc(100%-0.35rem)] mr-1.5" } color={ "rgb(var(--container-fg))" }/>
+              <Icon
+                name={ file.type === "file" ? "file-16" : "file-directory-16" }
+                className={ "h-[calc(100%-0.35rem)] mr-1.5" }
+                color={ "rgb(var(--container-fg))" }
+              />
               <span className={ "mr-auto" }>{ file.name }</span>
               <span>{ file.type }</span>
             </button>
