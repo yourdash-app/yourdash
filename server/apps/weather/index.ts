@@ -197,6 +197,7 @@ export default function main( app: ExpressApplication ) {
               data: {
                 name: out.name,
                 admin1: out.admin1,
+                admin2: out.admin2,
                 country: out.country,
                 currentWeather: {
                   temp: json.current_weather.temperature,

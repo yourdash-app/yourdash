@@ -21,26 +21,28 @@ const FilesApplication: React.FC = () => {
 
   return (
     <FilesLayout>
-      <section className={ "p-2 flex items-center bg-container-bg gap-2 top-0 sticky z-10" }>
-        <IconButton
-          onClick={ () => {
-            setCurrentPath( path.join( currentPath, ".." ) )
-          } }
-          icon={ "chevron-left-16" }
-        />
-        <span>{ currentPath }</span>
+      <section className={ "p-2 flex flex-col bg-container-bg top-0 sticky z-10 pb-0 gap-1 shadow-lg" }>
+        <div className={ "flex items-center gap-2" }>
+          <IconButton
+            onClick={ () => {
+              setCurrentPath( path.join( currentPath, ".." ) )
+            } }
+            icon={ "chevron-left-16" }
+          />
+          <span>{ currentPath }</span>
+        </div>
+        <div
+          className={
+            clippy(
+              "bg-container-bg pl-2 pr-2 pt-0.5 pb-0.5 text-left transition-colors [transition:var(--transition)] hover:[transition:var(--transition-fast)] flex items-center"
+            )
+          }
+        >
+          <Icon name={ "info-16" } className={ "h-[calc(100%-0.35rem)] mr-1.5" } color={ "rgb(var(--container-fg))" }/>
+          <span className={ "mr-auto" }>Name</span>
+          <span>Type</span>
+        </div>
       </section>
-      <div
-        className={
-          clippy(
-            "bg-container-bg pl-2 pr-2 pt-0.5 pb-0.5 text-left transition-colors [transition:var(--transition)] hover:[transition:var(--transition-fast)] flex items-center"
-          )
-        }
-      >
-        <Icon name={ "info-16" } className={ "h-[calc(100%-0.35rem)] mr-1.5" } color={ "rgb(var(--container-fg))" }/>
-        <span className={ "mr-auto" }>Name</span>
-        <span>Type</span>
-      </div>
       {
         files.map( ( file, ind ) => (
           <RightClickMenu

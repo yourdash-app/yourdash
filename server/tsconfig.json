@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "watch": true,
-    "composite": true,
     "module": "ESNext",
     "moduleResolution": "NodeNext",
     "allowSyntheticDefaultImports": true,
@@ -14,7 +13,8 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
     "sourceMap": true,
-    "rootDir": ".."
+    "rootDir": "..",
+    "removeComments": true
   },
   "include": [
     "./**/*.ts",

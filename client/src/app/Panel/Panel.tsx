@@ -442,7 +442,7 @@ const PanelApplicationLauncherPopOut: React.FC<{
                         window.location.href = `#/app/a/${ app.name }`
                       } }
                     >
-                      <img src={ app.icon } alt={ "" } className={ "p-2" }/>
+                      <img src={ app.icon } alt={ "" } className={ "w-[98px] aspect-square" }/>
                       <span>{ app.displayName }</span>
                     </button>
                   </RightClickMenu>

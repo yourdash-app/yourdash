@@ -9,7 +9,7 @@ import express from "express"
 import { existsSync as fsExistsSync, promises as fs } from "fs"
 import path from "path"
 import sharp from "sharp"
-import YourDashApplication, { getAllApplications } from "./core/applications.js"
+import YourDashUnreadApplication, { getAllApplications } from "./core/applications.js"
 import { base64ToDataUrl } from "./core/base64.js"
 import { compareHash, generateRandomStringOfLength } from "./core/encryption.js"
 import { generateLogos } from "./core/logo.js"
@@ -209,7 +209,7 @@ app.get( "/panel/user/name", async ( req, res ) => {
 
 app.get( "/panel/launcher/applications", async ( _req, res ) => {
   Promise.all( ( await getAllApplications() ).map( async app => {
-    const application = await new YourDashApplication( app ).load()
+    const application = await new YourDashUnreadApplication( app ).read()
     return new Promise( async resolve => {
       sharp( await fs.readFile( path.resolve(
         process.cwd(),
@@ -256,7 +256,7 @@ app.post( "/panel/quick-shortcuts/create", async ( req, res ) => {
   }
 
   const panel = new YourDashPanel( username )
-  const application = new YourDashApplication( name )
+  const application = new YourDashUnreadApplication( name )
 
   try {
     await panel.createQuickShortcut(

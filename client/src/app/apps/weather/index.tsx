@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
-import { Button, Card, TextInput } from "../../../ui"
 import csi from "../../../helpers/csi"
+import { Button, Card, TextInput } from "../../../ui"
 
 const WeatherApplication: React.FC = () => {
   const [locationQuery, setLocationQuery] = useState<any[]>( [] )
@@ -60,7 +60,7 @@ const WeatherApplication: React.FC = () => {
               window.location.href = `#/app/a/weather/location/${ item.id }`
             } }
           >
-            { item.name }, { item.admin1 }, { item.country }
+            { item.name }, { item.admin1 && `${item.admin1}, ` }{ item.admin2 && `${item.admin2}, ` }{ item.country }
           </Button>
         ) ) }
       </Card>

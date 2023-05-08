@@ -14,7 +14,7 @@
   color: rgb(var(--button-fg));
   border: solid 0.125rem rgb(var(--button-border));
   border-radius: var(--button-rounding);
-  background-color: rgb(var(--button-bg));
+  background-color: rgb(var(--button-bg)) !important;
   aspect-ratio: 1 / 1;
 
   &:hover {

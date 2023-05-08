@@ -1,6 +1,6 @@
 import clippy from "helpers/clippy"
 import getJson from "helpers/fetch"
-import React, { useEffect, useState, useTransition } from "react"
+import React, { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { chunk } from "../../../helpers/array"
 import { Card, Carousel, Icon, IconButton, MajorButton } from "../../../ui"
@@ -51,6 +51,7 @@ const backgroundImages: any[] = [
   BACKGROUND_IMAGE_RAIN3,
   BACKGROUND_IMAGE_SNOW1,
   BACKGROUND_IMAGE_SNOW2,
+  BACKGROUND_IMAGE_SNOW1,
   BACKGROUND_IMAGE_RAIN1,
   BACKGROUND_IMAGE_RAIN2,
   BACKGROUND_IMAGE_RAIN3,
@@ -126,6 +127,7 @@ const WeatherApplicationLocationPage: React.FC = () => {
   const [data, setData] = useState<{
     name: string;
     admin1: string;
+    admin2: string;
     country: string;
     currentWeather: {
       temp: number;
@@ -183,9 +185,12 @@ const WeatherApplicationLocationPage: React.FC = () => {
     return (
       <>
         { failedToLoad && (
-          <main>
-            <span>Unable to gather data for this location at this moment</span>
-            <MajorButton>Go back</MajorButton>
+          <main className={ "flex flex-col items-center justify-center h-full w-full gap-2" }>
+            <span className={ "text-3xl pl-4 pr-4 text-center" }>Unable to gather data for this location at this moment</span>
+            <MajorButton onClick={ () => {
+              window.location.href = "#/app/a/weather"
+            } }
+            >Go back</MajorButton>
           </main>
         ) }
         {/* TODO: add loading indicator and show an error if one occurs */ }
@@ -231,7 +236,7 @@ const WeatherApplicationLocationPage: React.FC = () => {
               className={ "mt-auto text-container-fg text-xl stroke-1 stroke-base-900 animate__animated" +
                           " animate__slideInDown animate__delay-100" }
             >
-              { data?.admin1 }, { data?.country }
+              { data?.admin1 && `${data.admin1}, `}{ data?.admin2 && `${data.admin2}, `}{ data?.country }
             </span>
           </div>
         </div>
@@ -366,9 +371,7 @@ const WeatherApplicationLocationPage: React.FC = () => {
         <footer>
           <a
             href="https://open-meteo.com/"
-            className={ "absolute bottom-0 right-0 text-xs rounded-tl-md bg-container-bg border-2" +
-                        " border-container-border pt-1 pb-1 pl-2 pr-2 animate__animated animate__fadeIn" +
-                        " animate__delay-500ms" }
+            className={ "absolute bottom-0 right-0 text-xs text-opacity-50 text-white animate__animated animate__fadeIn animate__delay-500ms pr-1 pb-0.5" }
           >
             powered by open-meteo
           </a>
