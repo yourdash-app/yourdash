@@ -62,6 +62,10 @@
       "always"
     ],
     "react/jsx-no-literals": "off",
-    "no-nested-ternary": "off"
+    "no-nested-ternary": "off",
+    "arrow-body-style": [
+      "error",
+      "always"
+    ]
   }
 }

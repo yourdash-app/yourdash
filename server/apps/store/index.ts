@@ -11,9 +11,10 @@ export default function main( app: ExpressApplication ) {
         const application = ( await new YourDashUnreadApplication( app ).read() )
         return {
           name: application.getName(),
-          backgroundImage: `data:image/png;base64,${ ( await application.getStoreBackground() ).toString( "base64" )}`,
-          icon: `data:image/avif;base64,${ ( await application.getIcon() ).toString( "base64" )}`,
-          displayName: application.getDisplayName()
+          backgroundImage: `data:image/png;base64,${ ( await application.getStoreBackground() ).toString( "base64" ) }`,
+          icon: `data:image/avif;base64,${ ( await application.getIcon() ).toString( "base64" ) }`,
+          displayName: application.getDisplayName(),
+          installed: application.isInstalled()
         }
       } ) ).then( out => res.json( out ) )
   } )

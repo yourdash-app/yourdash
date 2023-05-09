@@ -173,7 +173,6 @@ const WeatherApplicationLocationPage: React.FC = () => {
       resp => {
         setData( resp )
         setDisplayedWeatherCondition( resp.currentWeather.condition )
-        console.log( resp )
       },
       () => {
         setFailedToLoad( true )
@@ -236,7 +235,7 @@ const WeatherApplicationLocationPage: React.FC = () => {
               className={ "mt-auto text-container-fg text-xl stroke-1 stroke-base-900 animate__animated" +
                           " animate__slideInDown animate__delay-100" }
             >
-              { data?.admin1 && `${data.admin1}, `}{ data?.admin2 && `${data.admin2}, `}{ data?.country }
+              { data?.admin1 && `${ data.admin1 }, ` }{ data?.admin2 && `${ data.admin2 }, ` }{ data?.country }
             </span>
           </div>
         </div>
@@ -323,49 +322,51 @@ const WeatherApplicationLocationPage: React.FC = () => {
           </div>
 
           {
-            data.daily.days.slice( 1 ).map( ( day, ind ) => (
-              <div
-                className={ "w-48 relative" }
-                key={ day.date }
-              >
-                <Card
-                  onClick={ () => {
-                    setSelectedDay( ind + 1 )
-                  } }
-                  className={ clippy(
-                    "w-full h-[10.5rem] flex-col transition-[var(--transition)] absolute",
-                    selectedDay === ind + 1
-                      ? "bottom-[3.5rem]"
-                      : "bottom-0"
-                  ) }
+            data.daily.days.slice( 1 ).map( ( day, ind ) => {
+              return (
+                <div
+                  className={ "w-48 relative" }
+                  key={ day.date }
                 >
-                  <section className={ "flex items-center justify-between" }>
-                    <h2 className={ "font-bold text-6xl flex" }>{ new Date( day.date ).getDate() }
-                      <div className={ "font-normal text-2xl mb-auto" }>th</div>
-                    </h2>
-                    <img
-                      src={ "/assets/productLogos/yourdash.svg" }
-                      draggable={ false }
-                      alt={ "" }
-                      className={ "w-16" }
-                    />
-                  </section>
-                  <section className={ "font-normal text-3xl" }>
-                    { numericDayName[new Date( day.date ).getDay()] }
-                  </section>
-                  <section className={ "flex justify-between items-center" }>
-                    <span className={ "flex items-center justify-center" }>
-                      <Icon name={ "triangle-down-16" } color={ "rgb(var(--container-fg))" } className={ "h-8" }/>
-                      { day?.temp.min }°C
-                    </span>
-                    <span className={ "flex items-center justify-center" }>
-                      <Icon name={ "triangle-up-16" } color={ "rgb(var(--container-fg))" } className={ "h-8" }/>
-                      { day?.temp.max }°C
-                    </span>
-                  </section>
-                </Card>
-              </div>
-            ) )
+                  <Card
+                    onClick={ () => {
+                      setSelectedDay( ind + 1 )
+                    } }
+                    className={ clippy(
+                      "w-full h-[10.5rem] flex-col transition-[var(--transition)] absolute",
+                      selectedDay === ind + 1
+                        ? "bottom-[3.5rem]"
+                        : "bottom-0"
+                    ) }
+                  >
+                    <section className={ "flex items-center justify-between" }>
+                      <h2 className={ "font-bold text-6xl flex" }>{ new Date( day.date ).getDate() }
+                        <div className={ "font-normal text-2xl mb-auto" }>th</div>
+                      </h2>
+                      <img
+                        src={ "/assets/productLogos/yourdash.svg" }
+                        draggable={ false }
+                        alt={ "" }
+                        className={ "w-16" }
+                      />
+                    </section>
+                    <section className={ "font-normal text-3xl" }>
+                      { numericDayName[new Date( day.date ).getDay()] }
+                    </section>
+                    <section className={ "flex justify-between items-center" }>
+                      <span className={ "flex items-center justify-center" }>
+                        <Icon name={ "triangle-down-16" } color={ "rgb(var(--container-fg))" } className={ "h-8" }/>
+                        { day?.temp.min }°C
+                      </span>
+                      <span className={ "flex items-center justify-center" }>
+                        <Icon name={ "triangle-up-16" } color={ "rgb(var(--container-fg))" } className={ "h-8" }/>
+                        { day?.temp.max }°C
+                      </span>
+                    </section>
+                  </Card>
+                </div>
+              )
+            } )
           }
         </Carousel>
         <footer>
@@ -492,62 +493,66 @@ const WeatherApplicationLocationPage: React.FC = () => {
 
           {
             selectedDay !== 0
-              ? chunk( data.hourly.hours, 24 )[selectedDay].map( hour => (
-                <div
-                  className={ "w-48 relative h-[7.5rem] mt-auto mb-auto" }
-                  key={ hour.date }
-                >
-                  <Card
-                    className={ clippy(
-                      "w-full h-full flex-col transition-[var(--transition)] absolute"
-                    ) }
+              ? chunk( data.hourly.hours, 24 )[selectedDay].map( hour => {
+                return (
+                  <div
+                    className={ "w-48 relative h-[7.5rem] mt-auto mb-auto" }
+                    key={ hour.date }
                   >
-                    <section className={ "flex items-center justify-between" }>
-                      <h2 className={ "font-bold text-3xl flex" }>{ new Date( hour.date ).getHours() < 10
-                        ? `0${
-                          new Date( hour.date ).getHours() }:00`
-                        : `${ new Date( hour.date ).getHours() }:00` }</h2>
-                      <img
-                        src={ "/assets/productLogos/yourdash.svg" }
-                        draggable={ false }
-                        alt={ "" }
-                        className={ "w-16" }
-                      />
-                    </section>
-                    <section className={ "flex justify-center items-center w-full text-center" }>
-                      { hour?.temp }°C
-                    </section>
-                  </Card>
-                </div>
-              ) )
-              : chunk( data.hourly.hours, 24 )[0].slice( new Date().getHours() ).map( hour => (
-                <div
-                  className={ "w-48 relative h-[7.5rem] mt-auto mb-auto" }
-                  key={ hour.date }
-                >
-                  <Card
-                    className={ clippy(
-                      "w-full h-full flex-col transition-[var(--transition)] absolute"
-                    ) }
+                    <Card
+                      className={ clippy(
+                        "w-full h-full flex-col transition-[var(--transition)] absolute"
+                      ) }
+                    >
+                      <section className={ "flex items-center justify-between" }>
+                        <h2 className={ "font-bold text-3xl flex" }>{ new Date( hour.date ).getHours() < 10
+                          ? `0${
+                            new Date( hour.date ).getHours() }:00`
+                          : `${ new Date( hour.date ).getHours() }:00` }</h2>
+                        <img
+                          src={ "/assets/productLogos/yourdash.svg" }
+                          draggable={ false }
+                          alt={ "" }
+                          className={ "w-16" }
+                        />
+                      </section>
+                      <section className={ "flex justify-center items-center w-full text-center" }>
+                        { hour?.temp }°C
+                      </section>
+                    </Card>
+                  </div>
+                )
+              } )
+              : chunk( data.hourly.hours, 24 )[0].slice( new Date().getHours() ).map( hour => {
+                return (
+                  <div
+                    className={ "w-48 relative h-[7.5rem] mt-auto mb-auto" }
+                    key={ hour.date }
                   >
-                    <section className={ "flex items-center justify-between" }>
-                      <h2 className={ "font-bold text-3xl flex" }>{ new Date( hour.date ).getHours() < 10
-                        ? `0${
-                          new Date( hour.date ).getHours() }:00`
-                        : `${ new Date( hour.date ).getHours() }:00` }</h2>
-                      <img
-                        src={ "/assets/productLogos/yourdash.svg" }
-                        draggable={ false }
-                        alt={ "" }
-                        className={ "w-16" }
-                      />
-                    </section>
-                    <section className={ "flex justify-center items-center w-full text-center" }>
-                      { hour?.temp }°C
-                    </section>
-                  </Card>
-                </div>
-              ) )
+                    <Card
+                      className={ clippy(
+                        "w-full h-full flex-col transition-[var(--transition)] absolute"
+                      ) }
+                    >
+                      <section className={ "flex items-center justify-between" }>
+                        <h2 className={ "font-bold text-3xl flex" }>{ new Date( hour.date ).getHours() < 10
+                          ? `0${
+                            new Date( hour.date ).getHours() }:00`
+                          : `${ new Date( hour.date ).getHours() }:00` }</h2>
+                        <img
+                          src={ "/assets/productLogos/yourdash.svg" }
+                          draggable={ false }
+                          alt={ "" }
+                          className={ "w-16" }
+                        />
+                      </section>
+                      <section className={ "flex justify-center items-center w-full text-center" }>
+                        { hour?.temp }°C
+                      </section>
+                    </Card>
+                  </div>
+                )
+              } )
           }
         </Carousel>
       </main>

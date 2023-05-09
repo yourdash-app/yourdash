@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@jetbrains/eslint-config": "^5.4.1",
+    "@tailwindcss/container-queries": "^0.1.1",
     "@types/node": "^18.15.11",
     "@types/path-browserify": "^1.0.0",
     "@typescript-eslint/eslint-plugin": "^5.58.0",

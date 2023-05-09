@@ -36,7 +36,7 @@ class YourDashApplication {
   // Returns a Buffer containing the data for the application's icon
   getIcon(): Promise<Buffer> {
     try {
-      return fs.readFile( path.resolve( process.cwd(), `./apps/${this.name}/icon.avif` ) )
+      return fs.readFile( path.resolve( process.cwd(), `./apps/${ this.name }/icon.avif` ) )
     } catch ( _e ) {
       return fs.readFile( path.resolve( process.cwd(), "./assets/placeholder_application_icon.png" ) )
     }
@@ -54,12 +54,12 @@ class YourDashApplication {
   // Returns true if the application is installed, otherwise returns false
   isInstalled(): boolean {
     // TODO: implement logic to check if the application is installed
-    return false
+    return true
   }
 
   // Returns the path to the application
   getPath(): string {
-    return path.resolve( process.cwd(), `./apps/${this.name}/` )
+    return path.resolve( process.cwd(), `./apps/${ this.name }/` )
   }
 }
 
@@ -86,7 +86,7 @@ export default class YourDashUnreadApplication {
     try {
       return new YourDashApplication(
         JSON.parse(
-          ( await fs.readFile( path.resolve( process.cwd(), `./apps/${this.name}/application.json` ) ) )
+          ( await fs.readFile( path.resolve( process.cwd(), `./apps/${ this.name }/application.json` ) ) )
             .toString() || "{}" )
       )
     } catch ( _err ) {
@@ -96,7 +96,7 @@ export default class YourDashUnreadApplication {
 
   // Return the path to the application
   getPath(): string {
-    return path.resolve( process.cwd(), `./apps/${this.name}/` )
+    return path.resolve( process.cwd(), `./apps/${ this.name }/` )
   }
 }
 
