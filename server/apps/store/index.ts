@@ -1,6 +1,6 @@
 import { Application as ExpressApplication } from "express"
 import { PromotedApplication } from "../../../shared/apps/store/promotedApplication.js"
-import YourDashUnreadApplication from "../../core/applications.js"
+import YourDashUnreadApplication, { getAllApplications } from "../../core/applications.js"
 
 const promotedApplications: string[] = ["dash", "store"]
 
@@ -17,5 +17,19 @@ export default function main( app: ExpressApplication ) {
           installed: application.isInstalled()
         }
       } ) ).then( out => res.json( out ) )
+  } )
+
+  app.get( "/app/store/categories", async ( _req, res ) => {
+    const applications = await getAllApplications()
+
+    const categories: {[key: string]: boolean} = {}
+
+    for ( const application of applications ) {
+      const app = await new YourDashUnreadApplication( application ).read()
+
+      categories[app.getCategory()] = true
+    }
+
+    return res.json( Object.keys( categories ) )
   } )
 }

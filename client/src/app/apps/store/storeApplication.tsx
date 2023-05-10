@@ -5,10 +5,15 @@ import { Carousel, MajorButton } from "../../../ui"
 
 const StoreApplication: React.FC = () => {
   const [promotedApplications, setPromotedApplications] = useState<PromotedApplication[]>( [] )
+  const [categories, setCategories] = useState<string[]>( [] )
 
   useEffect( () => {
     csi.getJson( "/app/store/promoted/applications", data => {
       setPromotedApplications( data )
+    } )
+
+    csi.getJson( "/app/store/categories", data => {
+      setCategories( data )
     } )
   }, [] )
 
@@ -35,7 +40,13 @@ const StoreApplication: React.FC = () => {
           }
         </Carousel>
       </header>
-      Store Application
+      <section>
+        {
+          categories.map( category => {
+            return <div key={ category }>{category}</div>
+          } )
+        }
+      </section>
     </main>
   )
 }

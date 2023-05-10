@@ -7,15 +7,15 @@ interface NavigatorExtended extends Navigator {
 }
 
 export default function isMobileDevice(): boolean {
-  const nav: NavigatorExtended = navigator;
-  
+  const nav: NavigatorExtended = navigator
+
   // Check if UA Client Hints are supported
-  if (nav.userAgentData) {
+  if ( nav.userAgentData ) {
     return nav.userAgentData.mobile
   } else {
-    const mobileDeviceRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
-    
+    const mobileDeviceRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i
+
     // Check if UA matches
-    return navigator.userAgent.match( mobileDeviceRegex ) !== null;
+    return navigator.userAgent.match( mobileDeviceRegex ) !== null
   }
 }

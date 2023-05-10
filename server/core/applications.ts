@@ -6,6 +6,7 @@ interface YourDashApplicationFile {
   name: string;
   displayName: string;
   description: string;
+  category: string
 }
 
 class YourDashApplication {
@@ -55,6 +56,10 @@ class YourDashApplication {
   isInstalled(): boolean {
     // TODO: implement logic to check if the application is installed
     return true
+  }
+
+  getCategory(): string {
+    return this.application.category
   }
 
   // Returns the path to the application
