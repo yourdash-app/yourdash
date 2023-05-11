@@ -31,62 +31,66 @@ const PanelQuickShortcuts: React.FC<{ num: number; side: PanelPosition }> = ( {
   )
 
   useEffect( () => {
-    getJson( "/panel/quick-shortcuts", resp => setQuickShortcuts( resp ) )
+    getJson( "/panel/quick-shortcuts", resp => {
+      return setQuickShortcuts( resp )
+    } )
   }, [num] )
 
   return (
     <>
-      { quickShortcuts.map( ( shortcut, ind ) => (
-        <RightClickMenu
-          key={ shortcut.url }
-          items={ [
-            {
-              name: "Unpin from panel",
-              onClick() {
-                deleteJson( `/panel/quick-shortcut/${ ind }`, () => {
-                  // @ts-ignore
-                  Panel.reload() // eslint-disable-line no-use-before-define
-                } )
+      { quickShortcuts.map( ( shortcut, ind ) => {
+        return (
+          <RightClickMenu
+            key={ shortcut.url }
+            items={ [
+              {
+                name: "Unpin from panel",
+                onClick() {
+                  deleteJson( `/panel/quick-shortcut/${ ind }`, () => {
+                    // @ts-ignore
+                    Panel.reload() // eslint-disable-line no-use-before-define
+                  } )
+                }
               }
-            }
-          ] }
-        >
-          <button
-            type={ "button" }
-            className={ "w-full aspect-square relative group flex items-center " +
-                        "justify-center mr-1 cursor-pointer outline-0" }
-            onClick={ e => {
-              e.currentTarget.blur()
-              window.location.href = shortcut.url
-            } }
+            ] }
           >
-            <img
-              src={ shortcut.icon }
-              alt=""
-              className={ "w-[2rem] group-hover:scale-110 group-focus-within:scale-110 " +
-                          "group-active:scale-95 transition-[var(--transition)]" }
-            />
-            <span
-              className={ clippy(
-                "absolute z-50 pl-2 pr-2 pt-0.5 pb-0.5 bg-container-bg rounded-lg" +
-                " pointer-events-none group-hover:opacity-100 opacity-0" +
-                " group-hover:[transition:var(--transition-fast)] shadow-lg" +
-                " [transition:var(--transition)]",
-                side === PanelPosition.left &&
-                "ml-4 left-full top-1/2 -translate-y-1/2",
-                side === PanelPosition.top &&
-                "mt-4 top-full left-1/2 -translate-x-1/2",
-                side === PanelPosition.right &&
-                "mr-4 right-full top-1/2 -translate-y-1/2",
-                side === PanelPosition.bottom &&
-                "mb-4 bottom-full left-1/2 -translate-x-1/2"
-              ) }
+            <button
+              type={ "button" }
+              className={ "w-full aspect-square relative group flex items-center " +
+                          "justify-center mr-1 cursor-pointer outline-0" }
+              onClick={ e => {
+                e.currentTarget.blur()
+                window.location.href = shortcut.url
+              } }
             >
-              { shortcut.displayName }
-            </span>
-          </button>
-        </RightClickMenu>
-      ) ) }
+              <img
+                src={ shortcut.icon }
+                alt=""
+                className={ "w-[2rem] group-hover:scale-110 group-focus-within:scale-110 " +
+                            "group-active:scale-95 transition-[var(--transition)]" }
+              />
+              <span
+                className={ clippy(
+                  "absolute z-50 pl-2 pr-2 pt-0.5 pb-0.5 bg-container-bg rounded-lg" +
+                  " pointer-events-none group-hover:opacity-100 opacity-0" +
+                  " group-hover:[transition:var(--transition-fast)] shadow-lg" +
+                  " [transition:var(--transition)]",
+                  side === PanelPosition.left &&
+                  "ml-4 left-full top-1/2 -translate-y-1/2",
+                  side === PanelPosition.top &&
+                  "mt-4 top-full left-1/2 -translate-x-1/2",
+                  side === PanelPosition.right &&
+                  "mr-4 right-full top-1/2 -translate-y-1/2",
+                  side === PanelPosition.bottom &&
+                  "mb-4 bottom-full left-1/2 -translate-x-1/2"
+                ) }
+              >
+                { shortcut.displayName }
+              </span>
+            </button>
+          </RightClickMenu>
+        )
+      } ) }
     </>
   )
 }
@@ -106,7 +110,9 @@ const PanelInstanceIcon: React.FC = () => {
     <button
       type={ "button" }
       className={ "border-none" }
-      onClick={ () => ( window.location.href = "#/app/a/dash" ) }
+      onClick={ () => {
+        return ( window.location.href = "#/app/a/dash" )
+      } }
     >
       <img
         src={ `${ instanceUrl }/panel/logo/small` }
@@ -127,7 +133,9 @@ const PanelAuthorizer: React.FC = () => {
     } else {
       getJson(
         "/login/is-authenticated",
-        () => null,
+        () => {
+          return null
+        },
         () => {
           setTimeout( () => {
             console.clear()
@@ -322,10 +330,9 @@ const PanelApplicationLauncherPopOut: React.FC<{
                 : /* must be bottom*/ "bottom-full left-0 mb-4",
           `
         absolute
-        bg-[rgb(var(--container-bg))]
+        bg-container-bg
         w-[36rem]
-        max-h-[60rem]
-        p-2
+        max-h-[80rem]
         rounded-xl
         [border:solid_0.1rem_var(--application-panel-border)]
         animate__animated
@@ -334,6 +341,7 @@ const PanelApplicationLauncherPopOut: React.FC<{
         flex
         flex-col
         gap-2
+        overflow-hidden
         `,
           side === PanelPosition.top &&
           ( visible
@@ -353,7 +361,7 @@ const PanelApplicationLauncherPopOut: React.FC<{
             : "animate__fadeOut select-none pointer-events-none" )
         ) }
       >
-        <section className={ "flex items-center justify-center relative group" }>
+        <section className={ "flex items-center justify-center relative group bg-container-secondary-bg p-2 pl-3" }>
           <span className={ "text-2xl mr-auto" }>Hiya, { userFullName.first }</span>
           <TextInput
             className={ "w-[2.25rem] h-[2.25rem] focus-within:w-64 transition-all" }
@@ -362,8 +370,7 @@ const PanelApplicationLauncherPopOut: React.FC<{
             } }
           />
           <div
-            className={ "absolute right-0 top-0 h-[2.25rem] w-[2.25rem] p-[0.35rem] group-focus-within:opacity-0 " +
-                        "pointer-events-none transition-all [border:0.125rem_solid_#00000000]" }
+            className={ "absolute right-2 top-2 h-[2.25rem] w-[2.25rem] p-[0.35rem] group-focus-within:opacity-0 pointer-events-none transition-all [border:0.125rem_solid_#00000000]" }
           >
             <Icon name={ "search-16" } color={ "rgb(var(--container-fg))" }/>
           </div>
@@ -371,9 +378,12 @@ const PanelApplicationLauncherPopOut: React.FC<{
         <section
           className={ clippy(
             `
+            bg-container-bg
             grid
             grid-cols-4
-            gap-2
+            gap-3
+            pl-2
+            pr-2
             child:rounded-xl
             child:bg-button-bg
             child-hover:bg-button-hover-bg
@@ -381,15 +391,12 @@ const PanelApplicationLauncherPopOut: React.FC<{
             child:text-button-fg
             child-hover:text-button-hover-fg
             child-active:text-button-active-fg
-            child:border-button-border
-            child-hover:border-button-hover-border
-            child-active:border-button-active-border
-            child:border-2
             child:flex
             child:items-center
             child:justify-center
             child:flex-col
-            child:p-2
+            child:pt-3
+            child:pb-1
             child:cursor-pointer
             child:select-none
             child:transition-[var(--transition)]
@@ -404,7 +411,7 @@ const PanelApplicationLauncherPopOut: React.FC<{
                 if ( searchValue !== "" ) {
                   if (
                     !app.description.includes( searchValue ) &&
-                  !app.name.includes( searchValue )
+                    !app.name.includes( searchValue )
                   ) {
                     return <React.Fragment key={ app.name }/>
                   }
@@ -442,7 +449,7 @@ const PanelApplicationLauncherPopOut: React.FC<{
                         window.location.href = `#/app/a/${ app.name }`
                       } }
                     >
-                      <img src={ app.icon } alt={ "" } className={ "w-[98px] aspect-square" }/>
+                      <img src={ app.icon } alt={ "" } className={ "w-[98px] aspect-square mb-2" }/>
                       <span>{ app.displayName }</span>
                     </button>
                   </RightClickMenu>
@@ -459,7 +466,7 @@ const PanelApplicationLauncherPopOut: React.FC<{
               </div>
             ) }
         </section>
-        <section className={ "flex items-center justify-center" }>
+        <section className={ "flex items-center justify-center bg-container-secondary-bg p-2 pl-3" }>
           <PanelApplicationLauncherPopOutDateAndTime/>
           <Row className={ "ml-auto" }>
             <IconButton
@@ -509,21 +516,27 @@ const PanelApplicationLauncher: React.FC<{
     >
       <IconButton
         icon={ "three-bars-16" }
-        onClick={ () => setIsVisible( !isVisible ) }
+        onClick={ () => {
+          return setIsVisible( !isVisible )
+        } }
       />
       { type === 1
         ? (
           <PanelApplicationLauncherSlideOut
             side={ side }
             visible={ isVisible }
-            setVisible={ val => setIsVisible( val ) }
+            setVisible={ val => {
+              return setIsVisible( val )
+            } }
           />
         )
         : (
           <PanelApplicationLauncherPopOut
             side={ side }
             visible={ isVisible }
-            setVisible={ val => setIsVisible( val ) }
+            setVisible={ val => {
+              return setIsVisible( val )
+            } }
           />
         ) }
     </div>

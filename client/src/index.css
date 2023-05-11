@@ -64,17 +64,22 @@
     --container-fg: var(--base-50);
     --container-border: var(--base-600);
 
+    --container-secondary-bg: var(--base-800);
+    --container-secondary-fg: var(--base-100);
+    --container-secondary-border: var(--base-700);
+
+    --container-tertiary-bg: var(--base-900);
+    --container-tertiary-fg: var(--base-200);
+    --container-tertiary-border: var(--base-800);
+
     --button-bg: var(--base-700);
     --button-fg: var(--base-200);
-    --button-border: var(--base-600);
 
     --button-hover-bg: var(--base-600);
     --button-hover-fg: var(--base-100);
-    --button-hover-border: var(--base-500);
 
     --button-active-bg: var(--base-500);
     --button-active-fg: var(--base-50);
-    --button-active-border: var(--base-400);
 }
 
 @media (prefers-color-scheme: light) {

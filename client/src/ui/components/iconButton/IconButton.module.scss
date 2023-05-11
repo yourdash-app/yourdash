@@ -12,15 +12,13 @@
   user-select: none;
   transition: var(--transition);
   color: rgb(var(--button-fg));
-  border: solid 0.125rem rgb(var(--button-border));
   border-radius: var(--button-rounding);
-  background-color: rgb(var(--button-bg)) !important;
+  background-color: rgb(var(--button-bg));
   aspect-ratio: 1 / 1;
 
   &:hover {
     transition: var(--transition-fast) !important;
     color: rgb(var(--button-hover-fg));
-    border: solid 0.125rem rgb(var(--button-hover-border));
     border-radius: var(--button-hover-rounding);
     background-color: rgb(var(--button-hover-bg));
 
@@ -34,7 +32,6 @@
 
   &:active {
     color: rgb(var(--button-active-fg));
-    border: solid 0.125rem rgb(var(--button-active-border));
     border-radius: var(--button-active-rounding);
     background-color: rgb(var(--button-active-bg));
 
