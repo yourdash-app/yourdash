@@ -1,7 +1,7 @@
 import { promises as fs } from "fs"
 import path from "path"
-import YourDashUnreadUser from "../../core/user.js"
-import { type YourDashApplicationServerPlugin } from "../../core/applications.js"
+import YourDashUnreadUser from "../../helpers/user.js"
+import { type YourDashApplicationServerPlugin } from "../../helpers/applications.js"
 
 const main: YourDashApplicationServerPlugin = app => {
   app.post( "/app/files/get", async ( req, res ) => {

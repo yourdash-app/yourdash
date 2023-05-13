@@ -62,7 +62,7 @@ class YourDashUser {
   }
 
   async generateAvatars(): Promise<this> {
-    sharp( ( await fs.readFile( path.resolve( this.getPath(), "avatar.avif" ) ) ) )
+    sharp( ( await fs.readFile( path.resolve( this.getPath(), "default_avatar.avif" ) ) ) )
       .resize( 32, 32 )
       .toFile( path.resolve(
         this.getPath(),
@@ -99,7 +99,7 @@ class YourDashUser {
     if ( !( await this.exists() ) ) {
       await fs.mkdir( this.getPath(), { recursive: true } )
       await fs.cp(
-        path.resolve( process.cwd(), "./default/avatar.avif" ),
+        path.resolve( process.cwd(), "./assets/default_avatar.avif" ),
         path.resolve( this.getPath(), "avatar.avif" )
       )
       hash( "password" ).then( async response => {
@@ -121,8 +121,8 @@ class YourDashUser {
       this.user = await JSON.parse( (
         await fs.readFile( path.join( this.getPath(), "user.json" ) )
       ).toString() || "{}" )
-    } catch ( err ) {
-      console.error( "Error reading user from disk!", err )
+    } catch ( _err ) {
+      console.error( `Error reading user "${ this.username }" from disk!` )
     }
     return this
   }

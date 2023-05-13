@@ -6,14 +6,14 @@ import path from "path"
 import { fetch } from "undici"
 import { type weatherForecast } from "../../../shared/apps/weather/forecast.js"
 import { weatherStates } from "../../../shared/apps/weather/weatherStates.js"
-import YourDashUser from "../../core/user.js"
+import YourDashUser from "../../helpers/user.js"
 
 /**
  
  WMO Weather interpretation codes (WW)
  
  Code         | Description
---------------|-----------------------------------------------------------------
+ --------------|-----------------------------------------------------------------
  0            | Clear sky
  1, 2, 3      | Mainly clear, partly cloudy, and overcast
  45, 48       | Fog and depositing rime fog
@@ -27,7 +27,7 @@ import YourDashUser from "../../core/user.js"
  85, 86       | Snow showers slight and heavy
  95 *         | Thunderstorm: Slight or moderate
  96, 99 *     | Thunderstorm with slight and heavy hail
---------------|-----------------------------------------------------------------
+ --------------|-----------------------------------------------------------------
  (*) Thunderstorm forecast with hail is only available in Central Europe
  
  */

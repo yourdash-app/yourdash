@@ -56,8 +56,7 @@ const PanelQuickShortcuts: React.FC<{ num: number; side: PanelPosition }> = ( {
           >
             <button
               type={ "button" }
-              className={ "w-full aspect-square relative group flex items-center " +
-                          "justify-center mr-1 cursor-pointer outline-0" }
+              className={ "w-full aspect-square relative group flex items-center justify-center mr-1 cursor-pointer outline-0 !bg-transparent" }
               onClick={ e => {
                 e.currentTarget.blur()
                 window.location.href = shortcut.url
@@ -66,8 +65,7 @@ const PanelQuickShortcuts: React.FC<{ num: number; side: PanelPosition }> = ( {
               <img
                 src={ shortcut.icon }
                 alt=""
-                className={ "w-[2rem] group-hover:scale-110 group-focus-within:scale-110 " +
-                            "group-active:scale-95 transition-[var(--transition)]" }
+                className={ "w-[2rem] group-hover:scale-110 group-focus-within:scale-110 group-active:scale-95 transition-[var(--transition)]" }
               />
               <span
                 className={ clippy(
@@ -109,7 +107,7 @@ const PanelInstanceIcon: React.FC = () => {
   return (
     <button
       type={ "button" }
-      className={ "border-none" }
+      className={ "border-none !bg-transparent" }
       onClick={ () => {
         return ( window.location.href = "#/app/a/dash" )
       } }
@@ -418,41 +416,42 @@ const PanelApplicationLauncherPopOut: React.FC<{
                 }
 
                 return (
-                  <RightClickMenu
+                  <button
+                    type={ "button" }
                     key={ app.name }
-                    items={ [
-                      {
-                        name: "Pin to Panel",
-                        onClick() {
-                          postJson(
-                            "/panel/quick-shortcuts/create",
-                            {
-                              displayName: app.displayName,
-                              name: app.name
-                            },
-                            () => {
-                              // @ts-ignore
-                              // eslint-disable-next-line no-use-before-define
-                              Panel.reload()
-                            }
-                          )
-                        },
-                        shortcut: "ctrl+p"
-                      }
-                    ] }
+                    onClick={ () => {
+                      setVisible( false )
+                      window.location.href = `#/app/a/${ app.name }`
+                    } }
                   >
-                    <button
-                      type={ "button" }
+                    <RightClickMenu
+                      className={ "w-full h-full flex flex-col items-center justify-center" }
                       key={ app.name }
-                      onClick={ () => {
-                        setVisible( false )
-                        window.location.href = `#/app/a/${ app.name }`
-                      } }
+                      items={ [
+                        {
+                          name: "Pin to Panel",
+                          onClick() {
+                            postJson(
+                              "/panel/quick-shortcuts/create",
+                              {
+                                displayName: app.displayName,
+                                name: app.name
+                              },
+                              () => {
+                                // @ts-ignore
+                                // eslint-disable-next-line no-use-before-define
+                                Panel.reload()
+                              }
+                            )
+                          },
+                          shortcut: "ctrl+p"
+                        }
+                      ] }
                     >
                       <img src={ app.icon } alt={ "" } className={ "w-[98px] aspect-square mb-2" }/>
                       <span>{ app.displayName }</span>
-                    </button>
-                  </RightClickMenu>
+                    </RightClickMenu>
+                  </button>
                 )
               } )
             )
@@ -506,39 +505,44 @@ const PanelApplicationLauncher: React.FC<{
   const [isVisible, setIsVisible] = useState<boolean>( false )
   return (
     <div
-      className={ clippy(
-        side === PanelPosition.left || side === PanelPosition.right
-          ? "w-full"
-          : "h-full",
-        "z-50",
-        type !== 1 && "relative"
-      ) }
+      className={
+        clippy(
+          side === PanelPosition.left || side === PanelPosition.right
+            ? "w-full"
+            : "h-full",
+          "z-50",
+          type !== 1 && "relative"
+        )
+      }
     >
       <IconButton
-        icon={ "three-bars-16" }
+        icon={ "app-launcher-16" }
+        className={ "p-0.5" }
         onClick={ () => {
           return setIsVisible( !isVisible )
         } }
       />
-      { type === 1
-        ? (
-          <PanelApplicationLauncherSlideOut
-            side={ side }
-            visible={ isVisible }
-            setVisible={ val => {
-              return setIsVisible( val )
-            } }
-          />
-        )
-        : (
-          <PanelApplicationLauncherPopOut
-            side={ side }
-            visible={ isVisible }
-            setVisible={ val => {
-              return setIsVisible( val )
-            } }
-          />
-        ) }
+      {
+        type === 1
+          ? (
+            <PanelApplicationLauncherSlideOut
+              side={ side }
+              visible={ isVisible }
+              setVisible={ val => {
+                return setIsVisible( val )
+              } }
+            />
+          )
+          : (
+            <PanelApplicationLauncherPopOut
+              side={ side }
+              visible={ isVisible }
+              setVisible={ val => {
+                return setIsVisible( val )
+              } }
+            />
+          )
+      }
     </div>
   )
 }

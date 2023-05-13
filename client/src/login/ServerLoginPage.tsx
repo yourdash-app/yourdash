@@ -8,7 +8,7 @@ const SelectUser: React.FC<{
   serverUrl: string;
   setName: ( name: { first: string; last: string } ) => void;
 }> = ( { setSelectedUser, serverUrl, setName } ) => {
-  const [username, setUsername] = useState<null | string>( null )
+  const [username, setUsername] = useState<string>( "" )
   const [validUser, setValidUser] = useState( true )
 
   return (
@@ -28,7 +28,6 @@ const SelectUser: React.FC<{
           <TextInput
             label={ "Username" }
             mustMatchRegex={ /[a-z]|[0-9]/ }
-            onChange={ value => setUsername( value ) }
             onKeyDown={ e => {
               if ( e.key === "Enter" ) {
                 if ( username === null ) {
@@ -36,35 +35,38 @@ const SelectUser: React.FC<{
                 }
 
                 getJson(
-                  `/login/user/${username}`,
+                  `/login/user/${ username }`,
                   ( json: { name: { first: string; middle: string; last: string } } ) => {
                     setSelectedUser( username )
                     setName( json.name )
                   },
                   () => {
                     setValidUser( false )
-                  },
+                  }
                 )
               }
             }
             }
+            onChange={ value => {
+              setUsername( value )
+            } }
           />
           <MajorButton
-            disabled={ username === null }
+            disabled={ username === "" }
             onClick={ () => {
-              if ( username === null ) {
+              if ( username === "" ) {
                 return
               }
 
               getJson(
-                `/login/user/${username}`,
+                `/login/user/${ username }`,
                 ( json: { name: { first: string; middle: string; last: string } } ) => {
                   setSelectedUser( username )
                   setName( json.name )
                 },
                 () => {
                   setValidUser( false )
-                },
+                }
               )
             } }
           >
@@ -72,9 +74,14 @@ const SelectUser: React.FC<{
           </MajorButton>
         </Column>
       </Card>
-      {!validUser && (
-        <Dialog title={ "This user does not exist" } onClose={ () => setValidUser( true ) }/>
-      )}
+      { !validUser && (
+        <Dialog
+          title={ "This user does not exist" }
+          onClose={ () => {
+            return setValidUser( true )
+          } }
+        />
+      ) }
     </>
   )
 }
@@ -91,27 +98,29 @@ const LoginAsUser: React.FC<{
       <IconButton
         icon={ "arrow-left-16" }
         className={ "left-2 top-2 fixed animate__animated animate__fadeInLeft" }
-        onClick={ () => window.location.reload() }
+        onClick={ () => {
+          return window.location.reload()
+        } }
       />
       <Card
         className={ clippy( "fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 gap-2 flex flex-col" +
-          " animate__animated animate__fadeIn" ) }
+                            " animate__animated animate__fadeIn" ) }
       >
         <img
-          alt={ "" }
-          src={ `${serverUrl}/login/user/${username}/avatar` }
+          alt=""
+          src={ `${ serverUrl }/login/user/${ username }/avatar` }
           className={ "rounded-xl aspect-square h-64" }
         />
         <span className={ "text-center text-2xl tracking-wide font-medium text-base-50" }>
-          {name.first} {name.last}
+          { name.first } { name.last }
         </span>
-        <span className={ "text-center text-md text-base-200 tracking-wide font-medium -mt-3" }>{username}</span>
+        <span className={ "text-center text-md text-base-200 tracking-wide font-medium -mt-3" }>{ username }</span>
         <TextInput
           label={ "password" }
           onKeyDown={ e => {
             if ( e.key === "Enter" ) {
               postJson(
-                `/login/user/${username}/authenticate`,
+                `/login/user/${ username }/authenticate`,
                 { password },
                 response => {
                   sessionStorage.setItem( "session_token", response.token )
@@ -120,7 +129,7 @@ const LoginAsUser: React.FC<{
                 },
                 err => {
                   console.error( err )
-                },
+                }
               )
             }
           } }
@@ -131,7 +140,7 @@ const LoginAsUser: React.FC<{
         <MajorButton
           onClick={ () => {
             postJson(
-              `/login/user/${username}/authenticate`,
+              `/login/user/${ username }/authenticate`,
               { password },
               response => {
                 sessionStorage.setItem( "session_token", response.token )
@@ -140,7 +149,7 @@ const LoginAsUser: React.FC<{
               },
               err => {
                 console.error( err )
-              },
+              }
             )
           } }
         >
@@ -177,22 +186,35 @@ const ServerLoginPage: React.FC = () => {
         <span className={ "text-base-50 font-semibold text-3xl" }>Waiting for instance...</span>
       </div>
       <main
-        style={ { backgroundImage: `url('${serverUrl}/login/background')` } }
+        style={ { backgroundImage: `url('${ serverUrl }/login/background')` } }
         className={ "min-h-screen w-full bg-center bg-no-repeat animate__animated animate__fadeIn animate__delay-1s" }
       >
-        {selectedUser
-          ? (
-            <LoginAsUser name={ name } serverUrl={ serverUrl } username={ selectedUser }/>
-          )
-          : (
-            <SelectUser
-              setName={ value => setName( value ) }
-              serverUrl={ serverUrl }
-              setSelectedUser={ username => setSelectedUser( username ) }
-            />
-          )}
+        {
+          selectedUser
+            ? (
+              <LoginAsUser
+                name={ name }
+                serverUrl={ serverUrl }
+                username={ selectedUser }
+              />
+            )
+            : (
+              <SelectUser
+                setName={ value => {
+                  return setName( value )
+                } }
+                serverUrl={ serverUrl }
+                setSelectedUser={ username => {
+                  return setSelectedUser( username )
+                } }
+              />
+            )
+        }
         <Card className={ "absolute left-2 bottom-2" }>
-          <Card onClick={ () => 0 }>
+          <Card onClick={ () => {
+            return 0
+          } }
+          >
             <span>username</span>
           </Card>
         </Card>

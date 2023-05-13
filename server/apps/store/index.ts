@@ -1,6 +1,6 @@
 import { Application as ExpressApplication } from "express"
 import { PromotedApplication } from "../../../shared/apps/store/promotedApplication.js"
-import YourDashUnreadApplication, { getAllApplications } from "../../core/applications.js"
+import YourDashUnreadApplication, { getAllApplications } from "../../helpers/applications.js"
 
 const promotedApplications: string[] = ["dash", "store"]
 
@@ -22,7 +22,7 @@ export default function main( app: ExpressApplication ) {
   app.get( "/app/store/categories", async ( _req, res ) => {
     const applications = await getAllApplications()
 
-    const categories: {[key: string]: boolean} = {}
+    const categories: { [ key: string ]: boolean } = {}
 
     for ( const application of applications ) {
       const app = await new YourDashUnreadApplication( application ).read()

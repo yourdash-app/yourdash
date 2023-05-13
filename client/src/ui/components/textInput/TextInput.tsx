@@ -25,9 +25,9 @@ const TextInput: React.FC<ITextInput> = ( {
     <div className={ clippy( "relative transition-all", className ) }>
       <span
         className={ clippy( "pl-2 pr-2 bg-base-700 absolute -top-1 left-2.5 text-sm z-10 [line-height:.65rem]" +
-          " select-none text-base-400" ) }
+                            " select-none text-base-400" ) }
       >
-        {label}
+        { label }
       </span>
       <input
         placeholder={ placeholder }
@@ -39,16 +39,18 @@ const TextInput: React.FC<ITextInput> = ( {
             : "border-2 border-base-600"
         }` }
         type={ "text" }
-        onKeyDown={ e => onKeyDown?.( e ) }
+        onKeyDown={ e => {
+          return onKeyDown?.( e )
+        } }
         onChange={ e => {
           const value = e.currentTarget.value
+          onChange( value )
           if (
             !mustMatchRegex ||
             ( value.match( mustMatchRegex ) !== null &&
               value.match( mustMatchRegex )?.length === 1 )
           ) {
             setValid( true )
-            onChange( value )
           } else {
             setValid( false )
           }

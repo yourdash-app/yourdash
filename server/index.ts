@@ -9,16 +9,15 @@ import express from "express"
 import { existsSync as fsExistsSync, promises as fs } from "fs"
 import path from "path"
 import sharp from "sharp"
-import YourDashUnreadApplication, { getAllApplications } from "./core/applications.js"
-import { base64ToDataUrl } from "./core/base64.js"
-import { compareHash, generateRandomStringOfLength } from "./core/encryption.js"
-import { generateLogos } from "./core/logo.js"
-import YourDashPanel from "./core/panel.js"
-import YourDashUser, { YourDashUserPermissions } from "./core/user.js"
+import YourDashUnreadApplication, { getAllApplications } from "./helpers/applications.js"
+import { base64ToDataUrl } from "./helpers/base64.js"
+import { compareHash, generateRandomStringOfLength } from "./helpers/encryption.js"
+import { generateLogos } from "./helpers/logo.js"
+import YourDashPanel from "./helpers/panel.js"
+import YourDashUser, { YourDashUserPermissions } from "./helpers/user.js"
 
 console.log(
-  "----------------------------------------------------\n                      YourDash" +
-  "                      \n----------------------------------------------------"
+  "----------------------------------------------------\n                      YourDash                      \n----------------------------------------------------"
 )
 
 let SESSIONS: { [ user: string ]: string } = {}
@@ -54,16 +53,11 @@ if ( process.env.DEV ) {
 async function startupChecks() {
   // check if the filesystem exists
   if ( !fsExistsSync( path.resolve( process.cwd(), "./fs/" ) ) ) {
-    await fs.cp(
-      path.resolve( process.cwd(), "./default/fs/" ),
-      path.resolve( process.cwd(), "./fs/" ),
-      { recursive: true }
-    )
-
-    // make sure that the users directory exists
-    await fs.access( path.resolve( process.cwd(), "./fs/users" ) ).catch( async () => {
-      await fs.mkdir( path.resolve( process.cwd(), "./fs/users" ) )
-    } )
+    await fs.mkdir( path.resolve( process.cwd(), "./fs/" ) )
+    await fs.cp( path.resolve( process.cwd(), "./assets/default_avatar.avif" ), path.resolve( process.cwd(), "./fs/avatar.avif" ) )
+    await fs.cp( path.resolve( process.cwd(), "./assets/default_instance_logo.avif" ), path.resolve( process.cwd(), "./fs/instance_logo.avif" ) )
+    await fs.cp( path.resolve( process.cwd(), "./assets/default_login_background.avif" ), path.resolve( process.cwd(), "./fs/login_background.avif" ) )
+    await fs.mkdir( path.resolve( process.cwd(), "./fs/users/" ) )
 
     // generate all instance logos
     generateLogos()
