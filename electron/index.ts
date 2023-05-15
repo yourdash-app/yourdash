@@ -1,5 +1,5 @@
-import { app, BrowserWindow } from "electron";
-import path from "path";
+import { app, BrowserWindow } from "electron"
+import path from "node:path"
 
 process.env["ELECTRON_DISABLE_SECURITY_WARNINGS"] = "true";
 
@@ -20,7 +20,7 @@ function init() {
     });
   } else {
     window
-      .loadFile(path.join(__dirname, "../../frontend/index.html"))
+      .loadFile(path.join(process.cwd(), "../client/dist/index.html"))
       .then(() => {
         window.show();
         window.focus();

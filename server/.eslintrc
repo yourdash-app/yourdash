@@ -27,6 +27,7 @@
       }
     ],
     "sort-imports": "off",
+    "import/no-useless-path-segments": "off",
     "import/order": "off",
     "space-in-parens": [
       "warn",

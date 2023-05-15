@@ -38,7 +38,7 @@
       <option name="SPACES_WITHIN_IMPORTS" value="true" />
       <option name="INDENT_CHAINED_CALLS" value="false" />
       <option name="SPACES_WITHIN_INTERPOLATION_EXPRESSIONS" value="true" />
-      <option name="IMPORT_SORT_MODULE_NAME" value="true" />
+      <option name="IMPORT_SORT_MEMBERS" value="false" />
       <option name="IMPORT_USE_NODE_RESOLUTION" value="GLOBAL" />
     </TypeScriptCodeStyleSettings>
     <VueCodeStyleSettings>

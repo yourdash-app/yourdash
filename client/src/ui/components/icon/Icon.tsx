@@ -31,7 +31,7 @@ const Icon: React.FC<IIcon> = ( { name, style, className, color, useDefaultColor
             WebkitMaskPosition: "center",
             WebkitMaskRepeat: "no-repeat",
             WebkitMaskSize: "cover",
-            backgroundColor: color || "#ff0000",
+            backgroundColor: color || "currentColor",
             maskImage: `url(${ ChipletIconDictionary[name] })`,
             maskPosition: "center",
             maskRepeat: "no-repeat",

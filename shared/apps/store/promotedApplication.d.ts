@@ -3,4 +3,5 @@ export interface PromotedApplication {
     icon: string;
     backgroundImage: string;
     displayName: string;
+    installed: boolean;
 }

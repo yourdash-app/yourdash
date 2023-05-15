@@ -11,44 +11,29 @@ import path from "path"
 import sharp from "sharp"
 import YourDashUnreadApplication, { getAllApplications } from "./helpers/applications.js"
 import { base64ToDataUrl } from "./helpers/base64.js"
-import { compareHash, generateRandomStringOfLength } from "./helpers/encryption.js"
+import { compareHash } from "./helpers/encryption.js"
 import { generateLogos } from "./helpers/logo.js"
 import YourDashPanel from "./helpers/panel.js"
 import YourDashUser, { YourDashUserPermissions } from "./helpers/user.js"
+import { YourDashSession, YourDashSessionType } from "../shared/core/session.js"
+import { createSession } from "./helpers/session.js"
 
 console.log(
   "----------------------------------------------------\n                      YourDash                      \n----------------------------------------------------"
 )
 
-let SESSIONS: { [ user: string ]: string } = {}
+const SESSIONS: { [ user: string ]: YourDashSession[] } = {}
+
+export function __internalGetSessions(): { [ user: string ]: YourDashSession[] } {
+  return SESSIONS
+}
 
 export enum YourDashServerDiscoveryStatus {
   // eslint-disable-next-line no-unused-vars
-  MAINTENANCE, NORMAL,
+  MAINTENANCE, NORMAL, HIDDEN
 }
 
-const SESSION_TOKEN_LENGTH = 128
-
-if ( process.env.DEV ) {
-  if ( fsExistsSync( path.resolve( process.cwd(), ".dev-session-tokens" ) ) ) {
-    // DEVELOPMENT MODE ONLY, loads all current session tokens between nodemon
-    // restarts
-    fs.readFile( path.resolve(
-      process.cwd(),
-      ".dev-session-tokens"
-    ) )
-      .then( file => {
-        try {
-          SESSIONS = JSON.parse( file.toString() || "{}" )
-        } catch ( _err ) {
-          console.error( "(DEV MODE): Unable to load previous session tokens" )
-        }
-      } )
-      .catch( () => {
-        console.error( "(DEV MODE): Unable to load previous session tokens" )
-      } )
-  }
-}
+export const SESSION_TOKEN_LENGTH = 128
 
 async function startupChecks() {
   // check if the filesystem exists
@@ -145,11 +130,10 @@ app.post( "/login/user/:username/authenticate", async ( req, res ) => {
   const savedHashedPassword = (
     await fs.readFile( path.resolve( user.getPath(), "./password.txt" ) )
   ).toString()
-  const sessionToken = generateRandomStringOfLength( SESSION_TOKEN_LENGTH )
   compareHash( savedHashedPassword, password ).then( result => {
     if ( result ) {
-      SESSIONS[username] = sessionToken
-      return res.json( { token: sessionToken } )
+      const session = createSession( username, YourDashSessionType.web )
+      return res.json( { token: session.sessionToken } )
     }
   } )
 } )
@@ -158,13 +142,20 @@ app.get( "/login/is-authenticated", ( req, res ) => {
   const { username, token } = req.headers as {
     username?: string; token?: string;
   }
+
   if ( !username ) {
     return res.json( { error: true } )
   }
+
   if ( !token ) {
     return res.json( { error: true } )
   }
-  if ( SESSIONS[username] === token ) {
+
+  if ( !SESSIONS[username] ) {
+    return res.json( { error: true } )
+  }
+
+  if ( SESSIONS[username].find( session => session.sessionToken === token ) ) {
     return res.json( { success: true } )
   }
   return res.json( { error: true } )
@@ -175,23 +166,33 @@ app.get( "/panel/logo/small", ( _req, res ) => res.sendFile( path.resolve(
   "./fs/logo_panel_small.avif"
 ) ) )
 
-// --------------------------------------------------------------
-// WARNING: all endpoints require authentication after this point
-// --------------------------------------------------------------
+
+/**
+ --------------------------------------------------------------
+ WARNING: all endpoints require authentication after this point
+ --------------------------------------------------------------
+*/
+
 
 app.use( ( req, res, next ) => {
-  const { username, token } = req.headers as {
-    username?: string; token?: string;
-  }
+  const { username, token } = req.headers as { username?: string, token?: string }
+
   if ( !username ) {
     return res.json( { error: "authorization fail" } )
   }
+
   if ( !token ) {
     return res.json( { error: "authorization fail" } )
   }
-  if ( SESSIONS[username] === token ) {
+
+  if ( !SESSIONS[username] ) {
+    return res.json( { error: "authorization fail" } )
+  }
+
+  if ( SESSIONS[username].find( session => session.sessionToken === token ) ) {
     return next()
   }
+
   return res.json( { error: "authorization fail" } )
 } )
 
@@ -255,7 +256,7 @@ app.post( "/panel/quick-shortcuts/create", async ( req, res ) => {
   try {
     await panel.createQuickShortcut(
       displayName,
-      `#/app/a/${ name }`,
+      `/app/a/${ name }`,
       await fs.readFile( path.resolve( application.getPath(), "./icon.avif" ) )
     )
     return res.json( { success: true } )
@@ -313,16 +314,3 @@ new Promise<void>( async ( resolve, reject ) => {
 } ).catch( err => {
   console.error( "Error during server initialization: ", err )
 } )
-
-if ( process.env.DEV ) {
-  // DEVELOPMENT MODE ONLY, saves all current session tokens between nodemon
-  // restarts
-  process.once( "SIGINT", () => {
-    fs.writeFile(
-      path.resolve( process.cwd(), ".dev-session-tokens" ),
-      JSON.stringify( SESSIONS )
-    ).then( () => {
-      console.log( "(DEV MODE): saved session data" )
-    } )
-  } )
-}

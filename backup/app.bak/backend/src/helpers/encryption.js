@@ -1,5 +1,6 @@
 import crypto from "crypto";
 import bcrypt from "bcrypt";
+// FIXME: replace me this is a placeholder value!
 const INSTANCE_ENCRYPTION_KEY = "test key";
 export function encrypt(text) {
     const iv = crypto.randomBytes(25);

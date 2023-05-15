@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react"
 import { Button, Card, IconButton, TextInput } from "../ui"
+import { useNavigate } from "react-router-dom"
 
 const LoginPage: React.FC = () => {
+  const navigate = useNavigate()
   const [failure, setFailure] = useState( false )
   const [instanceUrl, setInstanceUrl] = useState( "http://example.com" )
 
@@ -10,7 +12,7 @@ const LoginPage: React.FC = () => {
       localStorage.getItem( "current_server" ) &&
       localStorage.getItem( "current_server" ) !== ""
     ) {
-      window.location.href = "#/login/server"
+      navigate( "/login/server" )
     } else if ( window.location.hostname === "localhost" ) {
       localStorage.setItem( "current_server", "http://localhost:3560" )
     }
@@ -41,11 +43,13 @@ const LoginPage: React.FC = () => {
                       "transition-colors select-none cursor-pointer" }
           onClick={ () => {
             fetch( `${instanceUrl}/test` )
-              .then( resp => resp.json() )
+              .then( resp => {
+                return resp.json()
+              } )
               .then( resp => {
                 if ( resp.status === 1 && resp.type === "yourdash" ) {
                   localStorage.setItem( "current_server", instanceUrl )
-                  window.location.href = "#/login/server"
+                  navigate( "/login/server" )
                 }
               } )
           } }
@@ -70,7 +74,7 @@ const LoginPage: React.FC = () => {
         <Button
           className={ "ml-auto" }
           onClick={ () => {
-            window.location.href = "#/"
+            navigate( "/" )
           } }
         >
           Home
@@ -78,7 +82,7 @@ const LoginPage: React.FC = () => {
         <Button
           className={ "mr-2" }
           onClick={ () => {
-            window.location.href = "#/docs"
+            navigate( "/docs" )
           } }
         >
           Docs

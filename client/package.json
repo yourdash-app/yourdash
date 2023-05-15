@@ -7,11 +7,14 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "visualize-bundle": "vite-bundle-visualizer"
+    "visualize-bundle": "vite-bundle-visualizer",
+    "process-application-routes": "node ./meta/generateApplicationRoutes.js"
   },
   "dependencies": {
     "@jetbrains/eslint-config": "^5.4.1",
+    "@loadable/component": "^5.15.3",
     "@tailwindcss/container-queries": "^0.1.1",
+    "@types/loadable__component": "^5.13.4",
     "@types/node": "^18.15.11",
     "@types/path-browserify": "^1.0.0",
     "@typescript-eslint/eslint-plugin": "^5.58.0",

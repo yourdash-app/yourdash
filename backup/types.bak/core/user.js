@@ -1,4 +1,4 @@
-export var YourDashUserPermissions;
+var YourDashUserPermissions;
 (function (YourDashUserPermissions) {
     YourDashUserPermissions[YourDashUserPermissions["AddUsers"] = 0] = "AddUsers";
     YourDashUserPermissions[YourDashUserPermissions["RemoveUsers"] = 1] = "RemoveUsers";
@@ -9,3 +9,4 @@ export var YourDashUserPermissions;
     YourDashUserPermissions[YourDashUserPermissions["ChangeUserName"] = 6] = "ChangeUserName";
     YourDashUserPermissions[YourDashUserPermissions["Administrator"] = 7] = "Administrator";
 })(YourDashUserPermissions || (YourDashUserPermissions = {}));
+export { YourDashUserPermissions };

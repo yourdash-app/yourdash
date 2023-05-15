@@ -12,5 +12,5 @@ export default defineConfig( {
       ui: path.resolve( process.cwd(), "./src/ui/" )
     }
   },
-  plugins: [react(), dynamicImport()/*, enable for https testing. mkcert()*/]
+  plugins: [react(), dynamicImport()/*, enable for https tests. mkcert()*/]
 } )

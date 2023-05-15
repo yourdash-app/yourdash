@@ -15,7 +15,7 @@ const FilesLayout: React.FC<IFilesLayout> = ( { children } ) => {
   return (
     <main className={ "grid grid-cols-[auto,1fr] h-full" }>
       <section
-        className={ "flex flex-col min-h-full overflow-x-hidden overflow-y-auto pl-1 pr-1 border-r-2 border border-container-border min-w-[10rem]" }
+        className={ "flex flex-col min-h-full overflow-x-hidden overflow-y-auto pl-1 pr-1 border-0 border-r-[1px] border-container-border min-w-[10rem]" }
       >
         <h1
           className={ "font-semibold text-container-fg text-3xl text-center pt-2 pb-2" }

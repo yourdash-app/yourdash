@@ -1,3 +1,7 @@
+/*
+ *   Copyright (c) 2022-2023 Ewsgit
+ *   https://ewsgit.mit-license.org
+ */
 import crypto from "crypto";
 export function encrypt(text, SERVER_CONFIG) {
     const iv = crypto.randomBytes(16);

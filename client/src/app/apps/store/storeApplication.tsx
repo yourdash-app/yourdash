@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { PromotedApplication } from "../../../../../shared/apps/store/promotedApplication"
 import csi from "../../../helpers/csi"
-import { Carousel, MajorButton } from "../../../ui"
+import { Card, Carousel, MajorButton } from "../../../ui"
 
 const StoreApplication: React.FC = () => {
   const [promotedApplications, setPromotedApplications] = useState<PromotedApplication[]>( [] )
@@ -40,10 +40,10 @@ const StoreApplication: React.FC = () => {
           }
         </Carousel>
       </header>
-      <section>
+      <section className={ "p-4 grid grid-cols-5 gap-2" }>
         {
           categories.map( category => {
-            return <div key={ category }>{category}</div>
+            return <Card key={ category }>{category}</Card>
           } )
         }
       </section>

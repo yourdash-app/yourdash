@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from "react"
 import Header from "./components/Header"
 import { Card } from "./ui"
-import * as UI from "./ui"
+import { Link } from "react-router-dom"
 
 const Root: React.FC = () => {
   const [taglineInd, setTaglineInd] = useState( 0 )
 
   useEffect( () => {
     if ( taglineInd + 1 >= 3 ) {
-      setTimeout( () => setTaglineInd( 0 ), 3000 )
+      setTimeout( () => {
+        return setTaglineInd( 0 )
+      }, 3000 )
     } else {
-      setTimeout( () => setTaglineInd( taglineInd + 1 ), 3000 )
+      setTimeout( () => {
+        return setTaglineInd( taglineInd + 1 )
+      }, 3000 )
     }
   }, [taglineInd] )
 
@@ -71,18 +75,18 @@ const Root: React.FC = () => {
           <div
             className={ "flex gap-4 pt-7 items-center justify-center animate__animated animate__fadeIn animate__delay-750ms" }
           >
-            <a
-              href={ "#/login" }
+            <Link
+              to={ "/login" }
               className={ "pl-4 pr-4 pb-1.5 pt-1.5 hover:bg-theme-500 active:bg-theme-400 bg-theme-600 transition-colors select-none cursor-pointer rounded-full animate__animated animate__tada animate__delay-1s" }
             >
               Login
-            </a>
-            <a
-              href={ "#/login/signup" }
+            </Link>
+            <Link
+              to={ "/login/signup" }
               className={ "hover:text-theme-500 active:text-theme-400 text-theme-200 transition-colors select-none cursor-pointer" }
             >
               Signup
-            </a>
+            </Link>
           </div>
         </div>
         <div className={ "relative md:block hidden" }>

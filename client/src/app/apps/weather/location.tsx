@@ -1,7 +1,7 @@
 import clippy from "helpers/clippy"
-import getJson from "helpers/fetch"
+import csi from "helpers/csi"
 import React, { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { useParams, useNavigate } from "react-router-dom"
 import { chunk } from "../../../helpers/array"
 import { Card, Carousel, Icon, IconButton, MajorButton } from "../../../ui"
 import BACKGROUND_IMAGE_CLEAR from "./weatherBackgrounds/clear.avif"
@@ -14,6 +14,12 @@ import BACKGROUND_IMAGE_RAIN3 from "./weatherBackgrounds/rain3.jpg"
 import BACKGROUND_IMAGE_SNOW1 from "./weatherBackgrounds/snow.jpg"
 import BACKGROUND_IMAGE_SNOW2 from "./weatherBackgrounds/snow2.jpg"
 import BACKGROUND_IMAGE_THUNDER from "./weatherBackgrounds/thunder.jpg"
+import WEATHER_ICON_CLEAR from "./weatherIcons/clear.svg"
+import WEATHER_ICON_HEAVY_RAIN from "./weatherIcons/heavy_rain.svg"
+import WEATHER_ICON_LIGHT_RAIN from "./weatherIcons/light_rain.svg"
+import WEATHER_ICON_SNOW from "./weatherIcons/snow.svg"
+import WEATHER_ICON_CLOUDY from "./weatherIcons/cloudy.svg"
+import WEATHER_ICON_PARTLY_CLOUDY from "./weatherIcons/partly_cloudy.svg"
 
 /**
  TODO: create svg backgrounds for different weather types,
@@ -120,6 +126,41 @@ function getWeatherConditionFromState( state: weatherStates ): string {
   }
 }
 
+function getWeatherIconFromState( state: weatherStates ): string {
+  switch ( state ) {
+    case weatherStates.clear:
+      return WEATHER_ICON_CLEAR
+    case weatherStates.heavyRain:
+      return WEATHER_ICON_HEAVY_RAIN
+    case weatherStates.heavySnow:
+      return WEATHER_ICON_SNOW
+    case weatherStates.cloudy:
+      return WEATHER_ICON_CLOUDY
+    case weatherStates.lightSnow:
+      return WEATHER_ICON_SNOW
+    case weatherStates.fog:
+      return WEATHER_ICON_CLOUDY
+    case weatherStates.lightRain:
+      return WEATHER_ICON_LIGHT_RAIN
+    case weatherStates.rainShowers:
+      return WEATHER_ICON_LIGHT_RAIN
+    case weatherStates.heavyRainShowers:
+      return WEATHER_ICON_HEAVY_RAIN
+    case weatherStates.lightRainShowers:
+      return WEATHER_ICON_LIGHT_RAIN
+    case weatherStates.partlyCloudy:
+      return WEATHER_ICON_PARTLY_CLOUDY
+    case weatherStates.rain:
+      return WEATHER_ICON_LIGHT_RAIN
+    case weatherStates.snow:
+      return WEATHER_ICON_SNOW
+    case weatherStates.thunder:
+      return WEATHER_ICON_HEAVY_RAIN
+    default:
+      return "/assets/productLogos/yourdash.svg"
+  }
+}
+
 const WeatherApplicationLocationPage: React.FC = () => {
   const [displayedWeatherCondition, setDisplayedWeatherCondition] =
     useState<weatherStates>( weatherStates.clear )
@@ -159,16 +200,18 @@ const WeatherApplicationLocationPage: React.FC = () => {
     };
   } | null>( null )
 
+  const navigate = useNavigate()
+
   const [selectedDay, setSelectedDay] = useState<number>( 0 )
   const [failedToLoad, setFailedToLoad] = useState<boolean>( false )
   const [transitioningOut, setTransitioningOut] = useState<boolean>( false )
 
   useEffect( () => {
     if ( !locationId ) {
-      window.location.href = "#/app/a/weather"
+      navigate( "/app/a/weather" )
     }
 
-    getJson(
+    csi.getJson(
       `/app/weather/forId/${ locationId }`,
       resp => {
         setData( resp )
@@ -187,9 +230,11 @@ const WeatherApplicationLocationPage: React.FC = () => {
           <main className={ "flex flex-col items-center justify-center h-full w-full gap-2" }>
             <span className={ "text-3xl pl-4 pr-4 text-center" }>Unable to gather data for this location at this moment</span>
             <MajorButton onClick={ () => {
-              window.location.href = "#/app/a/weather"
+              navigate( "/app/a/weather" )
             } }
-            >Go back</MajorButton>
+            >
+              Go back
+            </MajorButton>
           </main>
         ) }
         {/* TODO: add loading indicator and show an error if one occurs */ }
@@ -211,8 +256,7 @@ const WeatherApplicationLocationPage: React.FC = () => {
         className={ "bg-center bg-cover bg-fixed pb-6 relative overflow-hidden" }
       >
         <div
-          className={ "flex pl-8 pt-8 pb-8 flex-row from-base-700 to-transparent bg-gradient-to-b animate__animated" +
-                      " animate__fadeInDown" }
+          className={ "flex pl-8 pt-8 pb-8 flex-row from-base-700 to-transparent bg-gradient-to-b animate__animated animate__fadeInDown" }
         >
           <IconButton
             icon={ "arrow-left-16" }
@@ -221,7 +265,7 @@ const WeatherApplicationLocationPage: React.FC = () => {
               setTransitioningOut( true )
 
               setTimeout( () => {
-                window.location.href = "#/app/a/weather"
+                navigate( "/app/a/weather" )
               }, 600 )
             } }
           />
@@ -263,30 +307,6 @@ const WeatherApplicationLocationPage: React.FC = () => {
                                " animate__animated animate__fadeInUp" }
           className={ "flex flex-row gap-2" }
         >
-          {/*{chunk( data?.hourly.hours || [], 24 )[0]?.map( ( hour, ind ) => {*/ }
-          {/*  if ( ind < new Date().getHours() ) {*/ }
-          {/*    return null*/ }
-          {/*  }*/ }
-
-          {/*  return (*/ }
-          {/*    <Card className={ "flex !flex-col" } key={ hour.date }>*/ }
-          {/*      <span className={ "text-4xl font-bold text-center" }>*/ }
-          {/*        {hour.temp.toFixed( 0 )}*/ }
-          {/*        {data?.daily.unit}*/ }
-          {/*      </span>*/ }
-          {/*      <span className={ "pt-2 text-2xl text-center" }>*/ }
-          {/*        {new Date( hour.date ).getHours() < 10*/ }
-          {/*          ? `0${ new Date( hour.date ).getHours()}`*/ }
-          {/*          : new Date( hour.date ).getHours()}*/ }
-          {/*        :00*/ }
-          {/*      </span>*/ }
-          {/*      <span className={ "pt-2 text-2xl mt-auto" }>*/ }
-          {/*        {getWeatherConditionFromState( hour.condition )}*/ }
-          {/*      </span>*/ }
-          {/*    </Card>*/ }
-          {/*  )*/ }
-          {/*} )}*/ }
-
           <div className={ "w-48 relative" }>
             <Card
               onClick={ () => {
@@ -303,7 +323,7 @@ const WeatherApplicationLocationPage: React.FC = () => {
                 <h2 className={ "font-bold text-6xl flex" }>{ new Date( data.daily.days[0].date ).getDate() }
                   <div className={ "font-normal text-2xl mb-auto" }>th</div>
                 </h2>
-                <img src={ "/assets/productLogos/yourdash.svg" } draggable={ false } alt={ "" } className={ "w-16" }/>
+                <img src={ getWeatherIconFromState( data.daily.days[0].condition ) } draggable={ false } alt={ "" } className={ "w-16 pl-2" }/>
               </section>
               <section className={ "font-normal text-3xl" }>
                 { numericDayName[new Date( data.daily.days[0].date ).getDay()] }
@@ -344,10 +364,10 @@ const WeatherApplicationLocationPage: React.FC = () => {
                         <div className={ "font-normal text-2xl mb-auto" }>th</div>
                       </h2>
                       <img
-                        src={ "/assets/productLogos/yourdash.svg" }
+                        src={ getWeatherIconFromState( day.condition ) }
                         draggable={ false }
                         alt={ "" }
-                        className={ "w-16" }
+                        className={ "w-16 pl-2" }
                       />
                     </section>
                     <section className={ "font-normal text-3xl" }>
@@ -379,118 +399,12 @@ const WeatherApplicationLocationPage: React.FC = () => {
         </footer>
       </header>
       <main className={ "flex flex-col w-full" }>
-        {/*<h2 className={ "font-semibold text-2xl pl-4 pt-4" }>*/ }
-        {/*  Over the next six days*/ }
-        {/*</h2>*/ }
-        {/*<section*/ }
-        {/*className={"grid 2xl:grid-cols-6 xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 p-4 gap-2"}*/ }
-        {/*>*/ }
-        {/*  {data?.daily.days.slice( 1 ).map( ( day, ind ) => (*/ }
-        {/*    <Card*/ }
-        {/*      className={ clippy(*/ }
-        {/*        "flex flex-col",*/ }
-        {/*        selectedDay === ind &&*/ }
-        {/*            "outline-2 outline-container-fg outline",*/ }
-        {/*      ) }*/ }
-        {/*      key={ day.date }*/ }
-        {/*      onClick={ () => {*/ }
-        {/*        if ( selectedDay === ind ) {*/ }
-        {/*          return setSelectedDay( null )*/ }
-        {/*        }*/ }
-        {/*        setSelectedDay( ind )*/ }
-        {/*      } }*/ }
-        {/*    >*/ }
-        {/*      <div className={ "flex flex-row justify-between w-full" }>*/ }
-        {/*        <span className={ "text-4xl font-bold mr-auto" }>*/ }
-        {/*          {( ( day.temp.max + day.temp.min ) / 2 ).toFixed( 0 )}*/ }
-        {/*          {data?.daily.unit}*/ }
-        {/*        </span>*/ }
-        {/*        <div className={ "flex flex-col text-right" }>*/ }
-        {/*          <span>*/ }
-        {/*            high {day.temp.min.toFixed( 0 )}*/ }
-        {/*            {data?.daily.unit}*/ }
-        {/*          </span>*/ }
-        {/*          <span>*/ }
-        {/*            low {day.temp.max.toFixed( 0 )}*/ }
-        {/*            {data?.daily.unit}*/ }
-        {/*          </span>*/ }
-        {/*        </div>*/ }
-        {/*      </div>*/ }
-        {/*      <span className={ "pt-2 text-2xl mt-auto text-center" }>*/ }
-        {/*        {getWeatherConditionFromState( day.condition )}*/ }
-        {/*      </span>*/ }
-        {/*      <span className={ "pt-2 text-2xl mt-auto" }>*/ }
-        {/*        {numericDayName[new Date( day.date ).getDay()]}*/ }
-        {/*      </span>*/ }
-        {/*    </Card>*/ }
-        {/*  ) )}*/ }
-        {/*</section>*/ }
-        {/*{selectedDay !== null && (*/ }
-        {/*  <>*/ }
-        {/*    <h2 className={ "font-semibold text-2xl pl-4" }>*/ }
-        {/*      {*/ }
-        {/*        numericDayName[*/ }
-        {/*          new Date( data?.daily.days[selectedDay].date || "" ).getDay()*/ }
-        {/*        ]*/ }
-        {/*      }{" "}*/ }
-        {/*      - Hourly*/ }
-        {/*    </h2>*/ }
-        {/*    <section*/ }
-        {/*      className={ "grid 2xl:grid-cols-[repeat(12,1fr)] xl:grid-cols-9 lg:grid-cols-7" +*/ }
-        {/*                  " md:grid-cols-5 sm:grid-cols-3 grid-cols-1 gap-2 min-w-full p-4" }*/ }
-        {/*    >*/ }
-        {/*      {chunk( data?.hourly.hours || [], 24 )[selectedDay]?.map(*/ }
-        {/*        hour => (*/ }
-        {/*          <Card className={ "flex flex-col" } key={ hour.date }>*/ }
-        {/*            <span className={ "text-4xl font-bold text-center" }>*/ }
-        {/*              {hour.temp.toFixed( 0 )}*/ }
-        {/*              {data?.daily.unit}*/ }
-        {/*            </span>*/ }
-        {/*            <span className={ "pt-2 text-2xl text-center" }>*/ }
-        {/*              {new Date( hour.date ).getHours() < 10*/ }
-        {/*                ? `0${ new Date( hour.date ).getHours()}`*/ }
-        {/*                : new Date( hour.date ).getHours()}*/ }
-        {/*              :00*/ }
-        {/*            </span>*/ }
-        {/*            <span className={ "pt-2 text-2xl mt-auto" }>*/ }
-        {/*              {getWeatherConditionFromState( hour.condition )}*/ }
-        {/*            </span>*/ }
-        {/*          </Card>*/ }
-        {/*        ),*/ }
-        {/*      )}*/ }
-        {/*    </section>*/ }
-        {/*  </>*/ }
-        {/*)}*/ }
         <Carousel
           compactControls
           containerClassName={ "min-w-full p-10 pb-4 pt-4 max-w-full overflow-x-auto rounded-xl" +
                                " animate__animated animate__fadeIn animate__delay-500ms" }
           className={ "flex flex-row gap-2" }
         >
-          {/*{chunk( data?.hourly.hours || [], 24 )[0]?.map( ( hour, ind ) => {*/ }
-          {/*  if ( ind < new Date().getHours() ) {*/ }
-          {/*    return null*/ }
-          {/*  }*/ }
-
-          {/*  return (*/ }
-          {/*    <Card className={ "flex !flex-col" } key={ hour.date }>*/ }
-          {/*      <span className={ "text-4xl font-bold text-center" }>*/ }
-          {/*        {hour.temp.toFixed( 0 )}*/ }
-          {/*        {data?.daily.unit}*/ }
-          {/*      </span>*/ }
-          {/*      <span className={ "pt-2 text-2xl text-center" }>*/ }
-          {/*        {new Date( hour.date ).getHours() < 10*/ }
-          {/*          ? `0${ new Date( hour.date ).getHours()}`*/ }
-          {/*          : new Date( hour.date ).getHours()}*/ }
-          {/*        :00*/ }
-          {/*      </span>*/ }
-          {/*      <span className={ "pt-2 text-2xl mt-auto" }>*/ }
-          {/*        {getWeatherConditionFromState( hour.condition )}*/ }
-          {/*      </span>*/ }
-          {/*    </Card>*/ }
-          {/*  )*/ }
-          {/*} )}*/ }
-
           {
             selectedDay !== 0
               ? chunk( data.hourly.hours, 24 )[selectedDay].map( hour => {
@@ -510,7 +424,7 @@ const WeatherApplicationLocationPage: React.FC = () => {
                             new Date( hour.date ).getHours() }:00`
                           : `${ new Date( hour.date ).getHours() }:00` }</h2>
                         <img
-                          src={ "/assets/productLogos/yourdash.svg" }
+                          src={ getWeatherIconFromState( hour.condition ) }
                           draggable={ false }
                           alt={ "" }
                           className={ "w-16" }
@@ -540,7 +454,7 @@ const WeatherApplicationLocationPage: React.FC = () => {
                             new Date( hour.date ).getHours() }:00`
                           : `${ new Date( hour.date ).getHours() }:00` }</h2>
                         <img
-                          src={ "/assets/productLogos/yourdash.svg" }
+                          src={ getWeatherIconFromState( hour.condition ) }
                           draggable={ false }
                           alt={ "" }
                           className={ "w-16" }

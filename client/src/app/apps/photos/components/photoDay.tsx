@@ -11,7 +11,7 @@ const PhotoDay: React.FC<{ photoCategory: { date: string, photos: string[] } }> 
           setIsOpen( !isOpen )
         } }
         type={ "button" }
-        className={ "text-left border-b-[1px] border-b-container-border pt-2.5 pb-0.5 pl-2 ml-2.5 mr-2.5 flex justify-between text-xl" }
+        className={ "text-left border-b-[1px] border-b-container-border pt-2.5 pb-0.5 pl-2 ml-2.5 mr-2.5 flex justify-between text-xl !bg-transparent" }
       >
         <h3>
           { photoCategory.date }
@@ -26,7 +26,9 @@ const PhotoDay: React.FC<{ photoCategory: { date: string, photos: string[] } }> 
         isOpen && (
           <Card>
             {
-              photoCategory.photos.map( photo => <img src={ photo } key={ photo } alt={ "user-uploaded photo" }/> )
+              photoCategory.photos.map( photo => {
+                return <img src={ photo } key={ photo } alt={ "" }/>
+              } )
             }
           </Card>
         )

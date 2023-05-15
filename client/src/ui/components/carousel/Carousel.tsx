@@ -1,5 +1,5 @@
 import React, { useRef } from "react"
-import Icon from "../icon/Icon"
+import { IconButton } from "../.."
 import styles from "./Carousel.module.scss"
 
 export interface ICarousel extends React.ComponentPropsWithoutRef<"div"> {
@@ -23,7 +23,9 @@ const Carousel: React.FC<ICarousel> = ( {
       <div
         className={ `${styles.main} ${className}` }
         ref={ pageRef }
-        onScroll={ e => e.preventDefault() }
+        onScroll={ e => {
+          return e.preventDefault()
+        } }
       >
         {children}
       </div>
@@ -35,8 +37,8 @@ const Carousel: React.FC<ICarousel> = ( {
         {children instanceof Array
           ? (
             <>
-              <button
-                type={ "button" }
+              <IconButton
+                icon={ "chevron-left-16" }
                 onClick={ () => {
                   if ( !pageRef.current ) {
                     return
@@ -49,11 +51,9 @@ const Carousel: React.FC<ICarousel> = ( {
                     ( container.getBoundingClientRect().width / 4 ) * 3
                   } )
                 } }
-              >
-                <Icon name="chevron-left-16" color="rgb(var(--button-fg))"/>
-              </button>
-              <button
-                type={ "button" }
+              />
+              <IconButton
+                icon={ "chevron-right-16" }
                 onClick={ () => {
                   if ( !pageRef.current ) {
                     return
@@ -66,9 +66,7 @@ const Carousel: React.FC<ICarousel> = ( {
                     ( container.getBoundingClientRect().width / 4 ) * 3
                   } )
                 } }
-              >
-                <Icon name="chevron-right-16" color="rgb(var(--button-fg))"/>
-              </button>
+              />
             </>
           )
           : null}

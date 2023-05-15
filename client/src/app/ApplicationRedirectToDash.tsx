@@ -1,30 +1,32 @@
-import React, { useEffect } from "react";
-import getJson from "../helpers/fetch";
+import React, { useEffect } from "react"
+import csi from "../helpers/csi"
+import { useNavigate } from "react-router-dom"
 
 const ApplicationRedirectToDash: React.FC = () => {
-  useEffect(() => {
-    if (!localStorage.getItem("current_server")) {
-      setTimeout(() => {
-        console.clear();
-      }, 1000);
-      window.location.href = "#/login";
+  const navigate = useNavigate()
+  useEffect( () => {
+    if ( !localStorage.getItem( "current_server" ) ) {
+      setTimeout( () => {
+        console.clear()
+      }, 1000 )
+      navigate( "/login" )
     } else {
-      getJson(
-        `/login/is-authenticated`,
+      csi.getJson(
+        "/login/is-authenticated",
         () => {
-          window.location.href = "#/app/a/dash";
+          navigate( "/app/a/dash" )
         },
         () => {
-          setTimeout(() => {
-            console.clear();
-          }, 1000);
-          sessionStorage.removeItem("session_token");
-          window.location.href = "#/login";
+          setTimeout( () => {
+            console.clear()
+          }, 1000 )
+          sessionStorage.removeItem( "session_token" )
+          navigate( "/login" )
         },
-      );
+      )
     }
-  }, []);
-  return <></>;
-};
+  }, [] )
+  return null
+}
 
-export default ApplicationRedirectToDash;
+export default ApplicationRedirectToDash

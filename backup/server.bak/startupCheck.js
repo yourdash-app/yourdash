@@ -1,3 +1,7 @@
+/*
+ *   Copyright (c) 2022-2023 Ewsgit
+ *   https://ewsgit.mit-license.org
+ */
 import fs from "fs";
 import path from "path";
 import { YourDashUserPermissions } from "types/core/user.js";
@@ -16,6 +20,41 @@ export default async function main(cb) {
 }
 async function checkIfAllUsersHaveTheLatestConfig() {
     return;
+    // fs.readdir(`${ENV.FsOrigin}/data/users/`, (err, users) => {
+    //   if (err) {
+    //     log(`(Start up) ERROR: unable to read '${ENV.FsOrigin}/data/users/'`)
+    //     return process.exit(1)
+    //   }
+    //
+    //   users.forEach(user => {
+    //     fs.readFile(path.resolve(`${ENV.FsOrigin}/data/users/${user}/user.json`), (err, data) => {
+    //       if (err) {
+    //         log(`(Start up): unable to read ${user}/user.json`)
+    //         return process.exit(1)
+    //       }
+    //
+    //       const json = JSON.parse(data.toString()) as YourDashUser
+    //
+    //       if (!json.permissions) {
+    //         json.permissions = []
+    //       }
+    //
+    //       if (!json.name.first) {
+    //         json.name.first = "Unknown"
+    //       }
+    //
+    //       if (!json.name.last) {
+    //         json.name.last = "user"
+    //       }
+    //
+    //       fs.writeFile(path.resolve(`${ENV.FsOrigin}/data/users/${user}/user.json`), JSON.stringify(json), err => {
+    //         if (err) {
+    //           log(`(Start up) ERROR: unable to write ${path.resolve(`${ENV.FsOrigin}/data/users/${user}/user.json`)}`)
+    //         }
+    //       })
+    //     })
+    //   })
+    // })
 }
 async function checkIfAllInstalledAppsStillExist() {
     if (fs.existsSync(path.resolve(`${ENV.FsOrigin}/installed_apps.json`))) {
@@ -114,11 +153,17 @@ async function checkYourDashConfigJson() {
         return;
     }
 }
+// this should check for the version in the yourdash.config.json file
 async function checkConfigurationVersion() {
     const SERVER_CONFIG = await JSON.parse(fs.readFileSync(path.resolve(`${ENV.FsOrigin}/yourdash.config.json`)).toString());
+    // check if the version of the configuration is the same as the current version which is running
     if (SERVER_CONFIG.version === RELEASE_CONFIGURATION.CURRENT_VERSION)
         return;
+    // try to upgrade for each version
+    // e.g: if the version is 1 upgrade it to 2 in the configuration
+    //      and adapt the known properties
     switch (SERVER_CONFIG.version) {
+        // eslint-disable-next-line no-fallthrough
         case 1:
             fs.readFile(path.resolve(`${ENV.FsOrigin}/yourdash.config.json`), (err, data) => {
                 if (err) {
@@ -135,6 +180,7 @@ async function checkConfigurationVersion() {
                     return checkConfigurationVersion();
                 });
             });
+        // eslint-disable-next-line no-fallthrough
         default:
             return;
     }

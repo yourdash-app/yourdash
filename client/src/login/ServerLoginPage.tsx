@@ -1,13 +1,15 @@
 import clippy from "helpers/clippy"
 import React, { useEffect, useState } from "react"
-import getJson, { postJson } from "../helpers/fetch"
+import csi from "../helpers/csi"
 import { Card, Column, Dialog, IconButton, MajorButton, TextInput } from "../ui"
+import { useNavigate } from "react-router-dom"
 
 const SelectUser: React.FC<{
   setSelectedUser: ( username: string ) => void;
   serverUrl: string;
   setName: ( name: { first: string; last: string } ) => void;
 }> = ( { setSelectedUser, serverUrl, setName } ) => {
+  const navigate = useNavigate()
   const [username, setUsername] = useState<string>( "" )
   const [validUser, setValidUser] = useState( true )
 
@@ -18,7 +20,7 @@ const SelectUser: React.FC<{
         className={ "left-2 top-2 fixed animate__animated animate__fadeInLeft animate__delay-1250ms" }
         onClick={ () => {
           localStorage.removeItem( "current_server" )
-          window.location.href = "#/login"
+          navigate( "/login" )
         } }
       />
       <Card
@@ -34,7 +36,7 @@ const SelectUser: React.FC<{
                   return
                 }
 
-                getJson(
+                csi.getJson(
                   `/login/user/${ username }`,
                   ( json: { name: { first: string; middle: string; last: string } } ) => {
                     setSelectedUser( username )
@@ -58,7 +60,7 @@ const SelectUser: React.FC<{
                 return
               }
 
-              getJson(
+              csi.getJson(
                 `/login/user/${ username }`,
                 ( json: { name: { first: string; middle: string; last: string } } ) => {
                   setSelectedUser( username )
@@ -91,6 +93,7 @@ const LoginAsUser: React.FC<{
   username: string;
   serverUrl: string;
 }> = ( { name, username, serverUrl } ) => {
+  const navigate = useNavigate()
   const [password, setPassword] = useState<string | null>( null )
 
   return (
@@ -119,13 +122,13 @@ const LoginAsUser: React.FC<{
           label={ "password" }
           onKeyDown={ e => {
             if ( e.key === "Enter" ) {
-              postJson(
+              csi.postJson(
                 `/login/user/${ username }/authenticate`,
                 { password },
                 response => {
                   sessionStorage.setItem( "session_token", response.token )
                   localStorage.setItem( "username", username )
-                  window.location.href = "#/app"
+                  navigate( "/app" )
                 },
                 err => {
                   console.error( err )
@@ -139,13 +142,13 @@ const LoginAsUser: React.FC<{
         />
         <MajorButton
           onClick={ () => {
-            postJson(
+            csi.postJson(
               `/login/user/${ username }/authenticate`,
               { password },
               response => {
                 sessionStorage.setItem( "session_token", response.token )
                 localStorage.setItem( "username", username )
-                window.location.href = "#/app"
+                navigate( "/app" )
               },
               err => {
                 console.error( err )
@@ -161,6 +164,7 @@ const LoginAsUser: React.FC<{
 }
 
 const ServerLoginPage: React.FC = () => {
+  const navigate = useNavigate()
   const [selectedUser, setSelectedUser] = useState<null | string>( null )
   const [name, setName] = useState<{ first: string; last: string }>( {
     first: "Unknown",
@@ -172,7 +176,7 @@ const ServerLoginPage: React.FC = () => {
     setServerUrl( localStorage.getItem( "current_server" ) )
 
     if ( sessionStorage.getItem( "session_token" ) ) {
-      window.location.href = "#/app/"
+      navigate( "/app" )
     }
   }, [] )
 
