@@ -4,6 +4,8 @@ import path from "path"
 import sharp from "sharp"
 
 import { hash } from "./encryption.js"
+import { IYourDashSession } from "../../shared/core/session.js"
+import { getSessionsForUser } from "./session.js"
 
 export enum YourDashUserPermissions {
   Administrator, CreateFiles, DeleteFiles,
@@ -140,6 +142,10 @@ class YourDashUser {
   setName( name: { first: string; last: string } ): this {
     this.user.fullName = name
     return this
+  }
+
+  getSessions(): IYourDashSession<any>[] {
+    return getSessionsForUser( this.username )
   }
 }
 

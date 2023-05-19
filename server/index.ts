@@ -15,16 +15,16 @@ import { compareHash } from "./helpers/encryption.js"
 import { generateLogos } from "./helpers/logo.js"
 import YourDashPanel from "./helpers/panel.js"
 import YourDashUser, { YourDashUserPermissions } from "./helpers/user.js"
-import { YourDashSession, YourDashSessionType } from "../shared/core/session.js"
+import { IYourDashSession, YourDashSessionType } from "../shared/core/session.js"
 import { createSession } from "./helpers/session.js"
 
 console.log(
   "----------------------------------------------------\n                      YourDash                      \n----------------------------------------------------"
 )
 
-const SESSIONS: { [ user: string ]: YourDashSession[] } = {}
+const SESSIONS: { [ user: string ]: IYourDashSession<any>[] } = {}
 
-export function __internalGetSessions(): { [ user: string ]: YourDashSession[] } {
+export function __internalGetSessions(): { [ user: string ]: IYourDashSession<any>[] } {
   return SESSIONS
 }
 
@@ -132,7 +132,7 @@ app.post( "/login/user/:username/authenticate", async ( req, res ) => {
   ).toString()
   compareHash( savedHashedPassword, password ).then( result => {
     if ( result ) {
-      const session = createSession( username, YourDashSessionType.web )
+      const session = createSession( username, req.ip, YourDashSessionType.web )
       return res.json( { token: session.sessionToken } )
     }
   } )
@@ -279,6 +279,14 @@ app.get( "/panel/launcher", async ( req, res ) => {
   const panel = new YourDashPanel( username )
 
   return res.json( { launcher: await panel.getLauncherType() } )
+} )
+
+app.get( "/core/personal-server-accelerator/sessions", async ( req, res ) => {
+  const { username } = req.headers as { username: string }
+
+  const user = await ( new YourDashUser( username ).read() )
+
+  return res.json( { sessions: user.getSessions().filter( session => session.type === YourDashSessionType.desktop ) } )
 } )
 
 new Promise<void>( async ( resolve, reject ) => {
