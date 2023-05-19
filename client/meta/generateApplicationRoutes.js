@@ -22,7 +22,7 @@ const AppRouter = () => {
 export default AppRouter
 `
 
-const applicationsPathNames = await fs.readdir( path.resolve( process.cwd(), "./electron/app/apps" ) )
+const applicationsPathNames = await fs.readdir( path.resolve( process.cwd(), "./src/app/apps" ) )
 
 let loadableRegionReplacement = ""
 let routeRegionReplacement = ""
@@ -42,4 +42,4 @@ applicationsPathNames.forEach( ( app, ind ) => {
 fileTemplate = fileTemplate.replace( "/* region loadable */", loadableRegionReplacement )
 fileTemplate = fileTemplate.replace( "{/* region routes */}", routeRegionReplacement )
 
-fs.writeFile( path.resolve( process.cwd(), "./electron/app/AppRouter.tsx" ), fileTemplate )
+fs.writeFile( path.resolve( process.cwd(), "./src/app/AppRouter.tsx" ), fileTemplate )
