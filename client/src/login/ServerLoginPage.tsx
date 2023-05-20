@@ -132,6 +132,9 @@ const LoginAsUser: React.FC<{
                 },
                 err => {
                   console.error( err )
+                },
+                {
+                  type: localStorage.getItem( "desktop_mode" ) ? "desktop" : "web"
                 }
               )
             }

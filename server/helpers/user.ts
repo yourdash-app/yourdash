@@ -109,6 +109,7 @@ class YourDashUser {
       } )
       await fs.writeFile( path.resolve( this.getPath(), "./quick-shortcuts.json" ), JSON.stringify( [] ) )
       await fs.mkdir( this.getAppDataPath() )
+      await fs.mkdir( path.resolve( this.getPath(), "./fs/" ) )
     }
 
     try {

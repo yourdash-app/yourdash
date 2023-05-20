@@ -1,5 +1,5 @@
 // YourDash Client-Server interface Toolkit
-type TJson = boolean | number | string | null | TJson[] | { [key: string]: TJson };
+type TJson = boolean | number | string | null | TJson[] | { [ key: string ]: TJson };
 
 class __internalClientServerInteraction {
   constructor() {
@@ -11,7 +11,7 @@ class __internalClientServerInteraction {
     const username = localStorage.getItem( "username" ) || ""
     const sessiontoken = sessionStorage.getItem( "session_token" ) || ""
 
-    fetch( `${instanceUrl}${endpoint}`, {
+    fetch( `${ instanceUrl }${ endpoint }`, {
       method: "GET",
       // @ts-ignore
       headers: {
@@ -33,28 +33,29 @@ class __internalClientServerInteraction {
           if ( resp.error === "authorization fail" ) {
             window.location.href = "/"
           }
-          return console.error( `Error fetching from instance: ${endpoint}, Error:`, resp.error )
+          return console.error( `Error fetching from instance: ${ endpoint }, Error:`, resp.error )
         }
         cb( resp )
       } )
       .catch( err => {
-        console.error( `Error parsing result from instance: ${endpoint}`, err )
+        console.error( `Error parsing result from instance: ${ endpoint }`, err )
       } )
   }
 
-  postJson( endpoint: string, body: TJson, cb: ( response: any ) => void, error?: ( response: object ) => void ): void {
+  postJson( endpoint: string, body: TJson, cb: ( response: any ) => void, error?: ( response: object ) => void, extraHeaders?: { [ key: string ]: string } ): void {
     const instanceUrl = localStorage.getItem( "current_server" ) || "https://example.com"
     const username = localStorage.getItem( "username" ) || ""
     const sessiontoken = sessionStorage.getItem( "session_token" ) || ""
 
-    fetch( `${instanceUrl}${endpoint}`, {
+    fetch( `${ instanceUrl }${ endpoint }`, {
       method: "POST",
       body: JSON.stringify( body ),
       // @ts-ignore
       headers: {
         "Content-Type": "application/json",
         username,
-        token: sessiontoken
+        token: sessiontoken,
+        ...( extraHeaders || {} )
       }
     } )
       .then( resp => {
@@ -70,12 +71,12 @@ class __internalClientServerInteraction {
           if ( resp.error === "authorization fail" ) {
             window.location.href = "/"
           }
-          return console.error( `Error fetching from instance: ${endpoint}, Error:`, resp.error )
+          return console.error( `Error fetching from instance: ${ endpoint }, Error:`, resp.error )
         }
         cb( resp )
       } )
       .catch( err => {
-        console.error( `Error parsing result from instance: ${endpoint}`, err )
+        console.error( `Error parsing result from instance: ${ endpoint }`, err )
       } )
   }
 
@@ -84,7 +85,7 @@ class __internalClientServerInteraction {
     const username = localStorage.getItem( "username" ) || ""
     const sessiontoken = sessionStorage.getItem( "session_token" ) || ""
 
-    fetch( `${instanceUrl}${endpoint}`, {
+    fetch( `${ instanceUrl }${ endpoint }`, {
       method: "DELETE",
       // @ts-ignore
       headers: {
@@ -106,12 +107,12 @@ class __internalClientServerInteraction {
           if ( resp.error === "authorization fail" ) {
             window.location.href = "/"
           }
-          return console.error( `Error fetching from instance: ${endpoint}, Error:`, resp.error )
+          return console.error( `Error fetching from instance: ${ endpoint }, Error:`, resp.error )
         }
         cb( resp )
       } )
       .catch( err => {
-        console.error( `Error parsing result from instance: ${endpoint}`, err )
+        console.error( `Error parsing result from instance: ${ endpoint }`, err )
       } )
   }
 
@@ -120,7 +121,7 @@ class __internalClientServerInteraction {
     const username = localStorage.getItem( "username" ) || ""
     const sessiontoken = sessionStorage.getItem( "session_token" ) || ""
 
-    fetch( `${instanceUrl}${endpoint}`, {
+    fetch( `${ instanceUrl }${ endpoint }`, {
       method: "GET",
       // @ts-ignore
       headers: {
@@ -142,12 +143,12 @@ class __internalClientServerInteraction {
           if ( resp.error === "authorization fail" ) {
             window.location.href = "/"
           }
-          return console.error( `Error fetching from instance: ${endpoint}, Error:`, resp.error )
+          return console.error( `Error fetching from instance: ${ endpoint }, Error:`, resp.error )
         }
         cb( resp )
       } )
       .catch( err => {
-        console.error( `Error parsing result from instance: ${endpoint}`, err )
+        console.error( `Error parsing result from instance: ${ endpoint }`, err )
       } )
   }
 
@@ -156,7 +157,7 @@ class __internalClientServerInteraction {
     const username = localStorage.getItem( "username" ) || ""
     const sessiontoken = sessionStorage.getItem( "session_token" ) || ""
 
-    fetch( `${instanceUrl}${endpoint}`, {
+    fetch( `${ instanceUrl }${ endpoint }`, {
       method: "POST",
       body: JSON.stringify( body ),
       // @ts-ignore
@@ -179,12 +180,12 @@ class __internalClientServerInteraction {
           if ( resp.error === "authorization fail" ) {
             window.location.href = "/"
           }
-          return console.error( `Error fetching from instance: ${endpoint}, Error:`, resp.error )
+          return console.error( `Error fetching from instance: ${ endpoint }, Error:`, resp.error )
         }
         cb( resp )
       } )
       .catch( err => {
-        console.error( `Error parsing result from instance: ${endpoint}`, err )
+        console.error( `Error parsing result from instance: ${ endpoint }`, err )
       } )
   }
 
@@ -193,7 +194,7 @@ class __internalClientServerInteraction {
     const username = localStorage.getItem( "username" ) || ""
     const sessiontoken = sessionStorage.getItem( "session_token" ) || ""
 
-    fetch( `${instanceUrl}${endpoint}`, {
+    fetch( `${ instanceUrl }${ endpoint }`, {
       method: "DELETE",
       // @ts-ignore
       headers: {
@@ -215,15 +216,19 @@ class __internalClientServerInteraction {
           if ( resp.error === "authorization fail" ) {
             window.location.href = "/"
           }
-          return console.error( `Error fetching from instance: ${endpoint}, Error:`, resp.error )
+          return console.error( `Error fetching from instance: ${ endpoint }, Error:`, resp.error )
         }
         cb( resp )
       } )
       .catch( err => {
-        console.error( `Error parsing result from instance: ${endpoint}`, err )
+        console.error( `Error parsing result from instance: ${ endpoint }`, err )
       } )
   }
 }
 
 const csi = new __internalClientServerInteraction()
+
+// @ts-ignore
+window.csi = csi
+
 export default csi

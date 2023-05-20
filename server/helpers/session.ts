@@ -14,7 +14,7 @@ export function getSessionId( username: string, sessionToken: string ): number |
   return __internalGetSessions()[username].find( session => session.sessionToken === sessionToken )?.id || null
 }
 
-export async function createSession<T extends YourDashSessionType>( username: string, ip: string, type: T ): IYourDashSession<T> {
+export async function createSession<T extends YourDashSessionType>( username: string, ip: string, type: T ): Promise<IYourDashSession<T>> {
   const sessionToken = generateRandomStringOfLength( SESSION_TOKEN_LENGTH )
 
   const newSessionId = __internalGetSessions()[username] ? __internalGetSessions()[username].length + 1 : 0
@@ -28,12 +28,9 @@ export async function createSession<T extends YourDashSessionType>( username: st
 
   const user = new YourDashUnreadUser( username )
 
-  let userSessions = []
   try {
-    userSessions = JSON.parse( ( await fs.readFile( path.resolve( user.getPath(), "./sessions.json" ) ) ).toString() )
-  } catch ( _err ) {
-    userSessions = []
-  }
+    __internalGetSessions()[username] = JSON.parse( ( await fs.readFile( path.resolve( user.getPath(), "./sessions.json" ) ) ).toString() )
+  } catch ( _err ) { /* empty */ }
 
   if ( __internalGetSessions()[username] ) {
     __internalGetSessions()[username].push( session )
@@ -42,9 +39,10 @@ export async function createSession<T extends YourDashSessionType>( username: st
   }
 
   try {
-  fs.writeFile( path.resolve( user.getPath(), "./sessions.json" ), JSON.stringify( userSessions ) )
-  } catch ( e ) {
-    
+    await fs.writeFile( path.resolve( user.getPath(), "./sessions.json" ), JSON.stringify( __internalGetSessions()[username] ) )
+  } catch ( __e ) {
+    console.log( `Unable to write ${ username }/sessions.json` )
+    return session
   }
 
   return session
@@ -55,16 +53,19 @@ export default class YourDashSession<T extends YourDashSessionType> {
   type: T
   sessionToken: string
   ip: string
-  constructor( session: IYourDashSession<T> ) {
+  username: string
+
+  constructor( username: string, session: IYourDashSession<T> ) {
     this.id = session.id
     this.type = session.type
     this.sessionToken = session.sessionToken
     this.ip = session.ip
+    this.username = username
   }
 
   async isOnline(): Promise<boolean> {
     return new Promise<boolean>( ( resolve, reject ) => {
-      fetch( `${this.ip}/` )
+      fetch( `${ this.ip }/` )
         .then( res => res.json() )
         .then( res => {
           if ( !res ) {
@@ -80,5 +81,10 @@ export default class YourDashSession<T extends YourDashSessionType> {
     } )
   }
 
-
+  invalidate() {
+    __internalGetSessions()[this.username].splice(
+      __internalGetSessions()[this.username].findIndex( val => val.id === this.id ),
+      1
+    )
+  }
 }

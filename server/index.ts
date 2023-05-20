@@ -130,15 +130,15 @@ app.post( "/login/user/:username/authenticate", async ( req, res ) => {
   const savedHashedPassword = (
     await fs.readFile( path.resolve( user.getPath(), "./password.txt" ) )
   ).toString()
-  compareHash( savedHashedPassword, password ).then( result => {
+  compareHash( savedHashedPassword, password ).then( async result => {
     if ( result ) {
-      const session = createSession( username, req.ip, YourDashSessionType.web )
+      const session = await createSession( username, req.ip, req.headers?.type === "desktop" ? YourDashSessionType.desktop : YourDashSessionType.web )
       return res.json( { token: session.sessionToken } )
     }
   } )
 } )
 
-app.get( "/login/is-authenticated", ( req, res ) => {
+app.get( "/login/is-authenticated", async ( req, res ) => {
   const { username, token } = req.headers as {
     username?: string; token?: string;
   }
@@ -152,7 +152,13 @@ app.get( "/login/is-authenticated", ( req, res ) => {
   }
 
   if ( !SESSIONS[username] ) {
-    return res.json( { error: true } )
+    try {
+      const user = await ( new YourDashUser( username ).read() )
+
+      SESSIONS[username] = user.getSessions() || []
+    } catch ( _err ) {
+      return res.json( { error: true } )
+    }
   }
 
   if ( SESSIONS[username].find( session => session.sessionToken === token ) ) {
@@ -171,10 +177,10 @@ app.get( "/panel/logo/small", ( _req, res ) => res.sendFile( path.resolve(
  --------------------------------------------------------------
  WARNING: all endpoints require authentication after this point
  --------------------------------------------------------------
-*/
+ */
 
 
-app.use( ( req, res, next ) => {
+app.use( async ( req, res, next ) => {
   const { username, token } = req.headers as { username?: string, token?: string }
 
   if ( !username ) {
@@ -186,7 +192,13 @@ app.use( ( req, res, next ) => {
   }
 
   if ( !SESSIONS[username] ) {
-    return res.json( { error: "authorization fail" } )
+    try {
+      const user = await ( new YourDashUser( username ).read() )
+
+      SESSIONS[username] = user.getSessions() || []
+    } catch ( _err ) {
+      return res.json( { error: "authorization fail" } )
+    }
   }
 
   if ( SESSIONS[username].find( session => session.sessionToken === token ) ) {
@@ -281,12 +293,48 @@ app.get( "/panel/launcher", async ( req, res ) => {
   return res.json( { launcher: await panel.getLauncherType() } )
 } )
 
+app.get( "/core/sessions", async ( req, res ) => {
+  const { username } = req.headers as { username: string }
+
+  const user = await ( new YourDashUser( username ).read() )
+
+  return res.json( { sessions: user.getSessions() } )
+} )
+
 app.get( "/core/personal-server-accelerator/sessions", async ( req, res ) => {
   const { username } = req.headers as { username: string }
 
   const user = await ( new YourDashUser( username ).read() )
 
   return res.json( { sessions: user.getSessions().filter( session => session.type === YourDashSessionType.desktop ) } )
+} )
+
+app.get( "/core/personal-server-accelerator/", async ( req, res ) => {
+  const { username } = req.headers as { username: string }
+
+  const user = await ( new YourDashUser( username ) )
+
+  try {
+    return JSON.parse( ( await fs.readFile( path.resolve( user.getPath(), "personal_server_accelerator.json" ) ) ).toString() )
+  } catch ( _err ) {
+    return res.json( { error: `Unable to read ${ username }/personal_server_accelerator.json` } )
+  }
+} )
+
+app.post( "/core/personal-server-accelerator/", async ( req, res ) => {
+  const { username } = req.headers as { username: string }
+  const body = req.body
+
+  const user = await ( new YourDashUser( username ) )
+
+  try {
+    await fs.writeFile( path.resolve( user.getPath(), "personal_server_accelerator.json" ), JSON.stringify( body ) )
+  } catch ( _err ) {
+    return res.json( { error: `Unable to write to ${ username }/personal_server_accelerator.json` } )
+  }
+
+
+  return res.json( { success: true } )
 } )
 
 new Promise<void>( async ( resolve, reject ) => {
