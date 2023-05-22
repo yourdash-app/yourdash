@@ -104,7 +104,7 @@ const PanelApplicationLauncherSlideOut: React.FC<{
             icon={ "logout" }
             onClick={ () => {
               setVisible( false )
-              sessionStorage.removeItem( "session_token" )
+              localStorage.removeItem( "session_token" )
               localStorage.removeItem( "username" )
               navigate( "/" )
             } }

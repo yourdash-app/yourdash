@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react"
-import { Card, Icon } from "../../../../ui"
+import { Card, Icon, IconButton } from "../../../../ui"
 import csi from "../../../../helpers/csi"
-import Panel from "../../../Panel/Panel"
 import { IYourDashSession, YourDashSessionType } from "../../../../../../shared/core/session"
 
 const SetttingsPageSession: React.FC = () => {
+  const [reloadNum, setReloadNum] = useState( 0 )
   const [sessions, setSessions] = useState<IYourDashSession<any>[]>( [] )
   const [personalServerAccelerationSessions, setPersonalServerAcceleration] = useState<IYourDashSession<YourDashSessionType.desktop>[]>( [] )
 
@@ -42,7 +42,7 @@ const SetttingsPageSession: React.FC = () => {
     csi.getJson( "/core/personal-server-accelerator/sessions", data => {
       setPersonalServerAcceleration( data.sessions )
     } )
-  }, [] )
+  }, [reloadNum] )
 
   return (
     <div className={ "h-full overflow-auto" }>
@@ -85,14 +85,21 @@ const SetttingsPageSession: React.FC = () => {
                       />
                     ) }
                   </div>
-                  <div className={ "w-full bg-container-secondary-bg pl-4 p-3 flex flex-col text-container-fg" }>
-                    <span className={ "text-container-tertiary-fg font-semibold tracking-wide" }>
-                      { session.ip }
+                  <div className={ "w-full bg-container-secondary-bg pl-4 p-3 flex text-container-fg items-center justify-between" }>
+                    <span>
+                      { session.type === YourDashSessionType.web && "Web" }
+                      { session.type === YourDashSessionType.cli && "Cli" }
+                      { session.type === YourDashSessionType.desktop && "Desktop" }
+                      { session.type === YourDashSessionType.external && "External" }
                     </span>
-                    { session.type === YourDashSessionType.web && "Web" }
-                    { session.type === YourDashSessionType.cli && "Cli" }
-                    { session.type === YourDashSessionType.desktop && "Desktop" }
-                    { session.type === YourDashSessionType.external && "External" }
+                    <IconButton
+                      icon={ "x-16" }
+                      onClick={ () => {
+                        csi.deleteJson( `/core/session/${session.id}`, data => {
+                          setReloadNum( reloadNum + 1 )
+                        } )
+                      } }
+                    />
                   </div>
                 </Card>
               )
@@ -100,7 +107,7 @@ const SetttingsPageSession: React.FC = () => {
           }
         </section>
 
-        <h2 className={ "ml-auto mr-auto w-full max-w-5xl font-semibold text-4xl tracking-wide pb-2 pt-8" }>PSA Sessions</h2>
+        <h2 className={ "ml-auto mr-auto w-full max-w-5xl font-semibold text-4xl tracking-wide pb-2 pt-8" }>PSA Supported Sessions</h2>
         <section className={ "gap-2 flex flex-wrap" }>
           {
             personalServerAccelerationSessions.map( session => {
@@ -113,11 +120,18 @@ const SetttingsPageSession: React.FC = () => {
                       name={ "device-desktop-16" }
                     />
                   </div>
-                  <div className={ "w-full bg-container-secondary-bg pl-4 p-3 flex flex-col text-container-fg" }>
-                    <span className={ "text-container-tertiary-fg font-semibold tracking-wide" }>
-                      { session.ip }
+                  <div className={ "w-full bg-container-secondary-bg pl-4 p-3 flex text-container-fg justify-between items-center" }>
+                    <span>
+                      Desktop
                     </span>
-                    Desktop
+                    <IconButton
+                      icon={ "x-16" }
+                      onClick={ () => {
+                        csi.deleteJson( `/core/session/${session.id}`, data => {
+                          setReloadNum( reloadNum + 1 )
+                        } )
+                      } }
+                    />
                   </div>
                 </Card>
               )

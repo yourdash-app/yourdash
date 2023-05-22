@@ -126,7 +126,7 @@ const LoginAsUser: React.FC<{
                 `/login/user/${ username }/authenticate`,
                 { password },
                 response => {
-                  sessionStorage.setItem( "session_token", response.token )
+                  localStorage.setItem( "session_token", response.token )
                   localStorage.setItem( "username", username )
                   navigate( "/app" )
                 },
@@ -149,7 +149,7 @@ const LoginAsUser: React.FC<{
               `/login/user/${ username }/authenticate`,
               { password },
               response => {
-                sessionStorage.setItem( "session_token", response.token )
+                localStorage.setItem( "session_token", response.token )
                 localStorage.setItem( "username", username )
                 navigate( "/app" )
               },
@@ -178,7 +178,7 @@ const ServerLoginPage: React.FC = () => {
   useEffect( () => {
     setServerUrl( localStorage.getItem( "current_server" ) )
 
-    if ( sessionStorage.getItem( "session_token" ) ) {
+    if ( localStorage.getItem( "session_token" ) ) {
       navigate( "/app" )
     }
   }, [] )

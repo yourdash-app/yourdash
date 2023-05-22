@@ -1,5 +1,6 @@
 import { app, BrowserWindow } from "electron"
 import path from "node:path"
+import startPsaBackend from "../psa-backend/index"
 
 process.env["ELECTRON_DISABLE_SECURITY_WARNINGS"] = "true";
 
@@ -45,4 +46,6 @@ function init() {
 
 app.whenReady().then(() => {
   init();
+  
+  startPsaBackend("ws://localhost:3560", "http://localhost:3560","admin", "password");
 });

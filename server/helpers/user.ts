@@ -5,7 +5,7 @@ import sharp from "sharp"
 
 import { hash } from "./encryption.js"
 import { IYourDashSession } from "../../shared/core/session.js"
-import { getSessionsForUser } from "./session.js"
+import YourDashSession, { getSessionsForUser } from "./session.js"
 
 export enum YourDashUserPermissions {
   Administrator, CreateFiles, DeleteFiles,
@@ -147,6 +147,14 @@ class YourDashUser {
 
   getSessions(): IYourDashSession<any>[] {
     return getSessionsForUser( this.username )
+  }
+
+  getSession( sessionId: number ): YourDashSession<any> {
+    // return a YourDashSession which has the sessionId as its id, find the correct session and use it as an input
+    return new YourDashSession(
+      this.username,
+      getSessionsForUser( this.username )[getSessionsForUser( this.username ).findIndex( val => val.id === sessionId )]
+    )
   }
 }
 

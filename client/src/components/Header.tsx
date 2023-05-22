@@ -4,7 +4,7 @@ import { Link } from "react-router-dom"
 const Header: React.FC = () => {
   return (
     <div
-      className={ "sticky top-0 w-full h-16 bg-base-800 flex items-center justify-center bg-opacity-75 backdrop-blur-lg" }
+      className={ "sticky top-0 w-full h-16 bg-base-800 flex items-center justify-center bg-opacity-75 backdrop-blur-lg z-10" }
     >
       <img
         src={ "/assets/productLogos/yourdash.svg" }

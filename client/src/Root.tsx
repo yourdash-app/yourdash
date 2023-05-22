@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react"
 import Header from "./components/Header"
-import { Card } from "./ui"
-import { Link } from "react-router-dom"
+import { Card, MajorButton } from "./ui"
+import { Link, useNavigate } from "react-router-dom"
 
 const Root: React.FC = () => {
+  const navigate = useNavigate()
   const [taglineInd, setTaglineInd] = useState( 0 )
 
   useEffect( () => {
@@ -19,7 +20,7 @@ const Root: React.FC = () => {
   }, [taglineInd] )
 
   return (
-    <main className={ "bg-base-900 min-h-screen" }>
+    <main className={ "bg-base-900 min-h-screen h-full" }>
       <Header/>
       <section
         className={ "animate__animated animate__fadeIn w-full h-[30rem] overflow-hidden relative bg-base-800 [clip-path:_polygon(0_0,_100%_0%,_100%_85%,_0%_100%);] grid md:grid-cols-2 grid-cols-1 gap-10 pb-4" }
@@ -33,7 +34,7 @@ const Root: React.FC = () => {
             className={ "relative whitespace-nowrap w-full animate__animated animate__slideInRight animate__delay-500ms" }
           >
             <span
-              className={ "absolute flex items-end text-end transition-all duration-500" }
+              className={ "absolute flex items-end text-end transition-all motion-reduce:transition-none duration-500" }
               style={ {
                 right: taglineInd === 0
                   ? 0
@@ -46,7 +47,7 @@ const Root: React.FC = () => {
               Manage your files with ease
             </span>
             <span
-              className={ "absolute flex items-end text-end transition-all duration-500" }
+              className={ "absolute flex items-end text-end transition-all motion-reduce:transition-none duration-500" }
               style={ {
                 right: taglineInd === 1
                   ? 0
@@ -59,7 +60,7 @@ const Root: React.FC = () => {
               Collaborate seamlessly
             </span>
             <span
-              className={ "absolute flex items-end text-end transition-all duration-500" }
+              className={ "absolute flex items-end text-end transition-all motion-reduce:transition-none duration-500" }
               style={ {
                 right: taglineInd === 2
                   ? 0
@@ -113,6 +114,28 @@ const Root: React.FC = () => {
         </div>
       </section>
       { /*TODO: fix css styling defaults*/ }
+      <section
+        className={ "pt-8 flex justify-between items-center gap-4 ml-auto mr-auto grid-cols-1 max-w-5xl w-full lg:grid-cols-2 xl:grid-cols-3 pl-8 pr-8 mb-10" }
+      >
+        <h3 className={ "text-7xl font-black animate__animated animate__bounceInLeft animate__500ms animate__slow" }>
+          Host Your
+          <br/>
+          Own
+        </h3>
+        <div className={ "flex items-end gap-4 flex-col animate__animated animate__bounceInRight animate__500ms animate__slow relative" }>
+          <span className={ "w-72 text-right text-2xl" }>
+            Run a single command and be up-and-running within minutes
+            <span className={ "text-base font-thin text-gray-300" }>
+              *
+            </span>
+          </span>
+          <MajorButton onClick={ () => {
+            navigate( "/docs/get-started" )
+          } }
+          >Get Started</MajorButton>
+          <span className={ "text-xs text-gray-400 absolute top-full mt-2" }>*On linux devices only</span>
+        </div>
+      </section>
       <section
         className={ "text-3xl font-semibold pt-8 grid gap-4 ml-auto mr-auto grid-cols-1 max-w-5xl w-full lg:grid-cols-2 xl:grid-cols-3 pl-8 pr-8" }
       >

@@ -20,7 +20,7 @@ const ApplicationRedirectToDash: React.FC = () => {
           setTimeout( () => {
             console.clear()
           }, 1000 )
-          sessionStorage.removeItem( "session_token" )
+          localStorage.removeItem( "session_token" )
           navigate( "/login" )
         },
       )

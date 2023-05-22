@@ -9,7 +9,7 @@ class __internalClientServerInteraction {
   getJson( endpoint: string, cb: ( response: any ) => void, error?: ( response: object ) => void ): void {
     const instanceUrl = localStorage.getItem( "current_server" ) || "https://example.com"
     const username = localStorage.getItem( "username" ) || ""
-    const sessiontoken = sessionStorage.getItem( "session_token" ) || ""
+    const sessiontoken = localStorage.getItem( "session_token" ) || ""
 
     fetch( `${ instanceUrl }${ endpoint }`, {
       method: "GET",
@@ -31,7 +31,9 @@ class __internalClientServerInteraction {
         if ( resp?.error ) {
           error?.( resp )
           if ( resp.error === "authorization fail" ) {
+            console.error( "unauthorized request ", endpoint )
             window.location.href = "/"
+            return
           }
           return console.error( `Error fetching from instance: ${ endpoint }, Error:`, resp.error )
         }
@@ -45,7 +47,7 @@ class __internalClientServerInteraction {
   postJson( endpoint: string, body: TJson, cb: ( response: any ) => void, error?: ( response: object ) => void, extraHeaders?: { [ key: string ]: string } ): void {
     const instanceUrl = localStorage.getItem( "current_server" ) || "https://example.com"
     const username = localStorage.getItem( "username" ) || ""
-    const sessiontoken = sessionStorage.getItem( "session_token" ) || ""
+    const sessiontoken = localStorage.getItem( "session_token" ) || ""
 
     fetch( `${ instanceUrl }${ endpoint }`, {
       method: "POST",
@@ -69,7 +71,9 @@ class __internalClientServerInteraction {
         if ( resp?.error ) {
           error?.( resp )
           if ( resp.error === "authorization fail" ) {
+            console.error( "unauthorized request ", endpoint )
             window.location.href = "/"
+            return
           }
           return console.error( `Error fetching from instance: ${ endpoint }, Error:`, resp.error )
         }
@@ -83,7 +87,7 @@ class __internalClientServerInteraction {
   deleteJson( endpoint: string, cb: ( response: any ) => void, error?: ( response: object ) => void ): void {
     const instanceUrl = localStorage.getItem( "current_server" ) || "https://example.com"
     const username = localStorage.getItem( "username" ) || ""
-    const sessiontoken = sessionStorage.getItem( "session_token" ) || ""
+    const sessiontoken = localStorage.getItem( "session_token" ) || ""
 
     fetch( `${ instanceUrl }${ endpoint }`, {
       method: "DELETE",
@@ -105,7 +109,9 @@ class __internalClientServerInteraction {
         if ( resp?.error ) {
           error?.( resp )
           if ( resp.error === "authorization fail" ) {
+            console.error( "unauthorized request ", endpoint )
             window.location.href = "/"
+            return
           }
           return console.error( `Error fetching from instance: ${ endpoint }, Error:`, resp.error )
         }
@@ -119,7 +125,7 @@ class __internalClientServerInteraction {
   getText( endpoint: string, cb: ( response: any ) => void, error?: ( response: object ) => void ): void {
     const instanceUrl = localStorage.getItem( "current_server" ) || "https://example.com"
     const username = localStorage.getItem( "username" ) || ""
-    const sessiontoken = sessionStorage.getItem( "session_token" ) || ""
+    const sessiontoken = localStorage.getItem( "session_token" ) || ""
 
     fetch( `${ instanceUrl }${ endpoint }`, {
       method: "GET",
@@ -141,7 +147,9 @@ class __internalClientServerInteraction {
         if ( resp?.error ) {
           error?.( resp )
           if ( resp.error === "authorization fail" ) {
+            console.error( "unauthorized request ", endpoint )
             window.location.href = "/"
+            return
           }
           return console.error( `Error fetching from instance: ${ endpoint }, Error:`, resp.error )
         }
@@ -155,7 +163,7 @@ class __internalClientServerInteraction {
   postText( endpoint: string, body: string, cb: ( response: any ) => void, error?: ( response: object ) => void ): void {
     const instanceUrl = localStorage.getItem( "current_server" ) || "https://example.com"
     const username = localStorage.getItem( "username" ) || ""
-    const sessiontoken = sessionStorage.getItem( "session_token" ) || ""
+    const sessiontoken = localStorage.getItem( "session_token" ) || ""
 
     fetch( `${ instanceUrl }${ endpoint }`, {
       method: "POST",
@@ -178,7 +186,9 @@ class __internalClientServerInteraction {
         if ( resp?.error ) {
           error?.( resp )
           if ( resp.error === "authorization fail" ) {
+            console.error( "unauthorized request ", endpoint )
             window.location.href = "/"
+            return
           }
           return console.error( `Error fetching from instance: ${ endpoint }, Error:`, resp.error )
         }
@@ -192,7 +202,7 @@ class __internalClientServerInteraction {
   deleteText( endpoint: string, cb: ( response: any ) => void, error?: ( response: object ) => void ): void {
     const instanceUrl = localStorage.getItem( "current_server" ) || "https://example.com"
     const username = localStorage.getItem( "username" ) || ""
-    const sessiontoken = sessionStorage.getItem( "session_token" ) || ""
+    const sessiontoken = localStorage.getItem( "session_token" ) || ""
 
     fetch( `${ instanceUrl }${ endpoint }`, {
       method: "DELETE",
@@ -214,7 +224,9 @@ class __internalClientServerInteraction {
         if ( resp?.error ) {
           error?.( resp )
           if ( resp.error === "authorization fail" ) {
+            console.error( "unauthorized request ", endpoint )
             window.location.href = "/"
+            return
           }
           return console.error( `Error fetching from instance: ${ endpoint }, Error:`, resp.error )
         }
