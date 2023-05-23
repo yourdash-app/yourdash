@@ -117,12 +117,12 @@ const Root: React.FC = () => {
       <section
         className={ "pt-8 flex justify-between items-center gap-4 ml-auto mr-auto grid-cols-1 max-w-5xl w-full lg:grid-cols-2 xl:grid-cols-3 pl-8 pr-8 mb-10" }
       >
-        <h3 className={ "text-7xl font-black animate__animated animate__bounceInLeft animate__500ms animate__slow" }>
+        <h3 className={ "text-7xl font-black animate__animated animate__fadeInLeft animate__500ms animate__slow" }>
           Host Your
           <br/>
           Own
         </h3>
-        <div className={ "flex items-end gap-4 flex-col animate__animated animate__bounceInRight animate__500ms animate__slow relative" }>
+        <div className={ "flex items-end gap-4 flex-col animate__animated animate__fadeInRight animate__500ms animate__slow relative" }>
           <span className={ "w-72 text-right text-2xl" }>
             Run a single command and be up-and-running within minutes
             <span className={ "text-base font-thin text-gray-300" }>
@@ -132,8 +132,12 @@ const Root: React.FC = () => {
           <MajorButton onClick={ () => {
             navigate( "/docs/get-started" )
           } }
-          >Get Started</MajorButton>
-          <span className={ "text-xs text-gray-400 absolute top-full mt-2" }>*On linux devices only</span>
+          >
+            Get Startedf
+          </MajorButton>
+          <span className={ "text-xs text-gray-400 absolute top-full mt-2" }>
+            *On linux devices only
+          </span>
         </div>
       </section>
       <section
@@ -152,9 +156,6 @@ const Root: React.FC = () => {
       <section className={ "flex items-center justify-center text-5xl font-bold pt-16 tracking-wide" }>
         Coming soon...
       </section>
-      {/*<section className={ "flex items-center justify-center text-3xl font-semibold pt-16" }>*/ }
-      {/*  Coming soon...*/ }
-      {/*</section>*/ }
     </main>
   )
 }

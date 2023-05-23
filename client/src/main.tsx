@@ -15,10 +15,13 @@ import ServerLoginPage from "./login/ServerLoginPage.jsx"
 import Root from "./Root.jsx"
 import RightClickMenuRootContainer from "./ui/components/rightClickMenu/RightClickMenuRootContainer.jsx"
 import loadable from "@loadable/component"
-import DocsRouter from "./docs/DocsRouter"
 
 const AppRouter = loadable( () => {
   return import( "./app/AppRouter" )
+} )
+
+const DocsRouter = loadable( () => {
+  return import( "./docs/DocsRouter" )
 } )
 
 ReactDOM.createRoot( document.getElementById( "root" ) as HTMLElement ).render(
