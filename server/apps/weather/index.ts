@@ -1,31 +1,36 @@
 /** @format */
 
 import { Application as ExpressApplication } from "express"
-import { fetch } from "undici"
 import { promises as fs } from "fs"
 import path from "path"
-import YourDashUser from "../../core/user.js"
+import { fetch } from "undici"
 import { type weatherForecast } from "../../../shared/apps/weather/forecast.js"
 import { weatherStates } from "../../../shared/apps/weather/weatherStates.js"
+import YourDashUser from "../../helpers/user.js"
 
-/*
+/**
+ 
  WMO Weather interpretation codes (WW)
- Code	Description
- 0	Clear sky
- 1, 2, 3	Mainly clear, partly cloudy, and overcast
- 45, 48	Fog and depositing rime fog
- 51, 53, 55	Drizzle: Light, moderate, and dense intensity
- 56, 57	Freezing Drizzle: Light and dense intensity
- 61, 63, 65	Rain: Slight, moderate and heavy intensity
- 66, 67	Freezing Rain: Light and heavy intensity
- 71, 73, 75	Snow fall: Slight, moderate, and heavy intensity
- 77	Snow grains
- 80, 81, 82	Rain showers: Slight, moderate, and violent
- 85, 86	Snow showers slight and heavy
- 95 *	Thunderstorm: Slight or moderate
- 96, 99 *	Thunderstorm with slight and heavy hail
+ 
+ Code         | Description
+ --------------|-----------------------------------------------------------------
+ 0            | Clear sky
+ 1, 2, 3      | Mainly clear, partly cloudy, and overcast
+ 45, 48       | Fog and depositing rime fog
+ 51, 53, 55   | Drizzle: Light, moderate, and dense intensity
+ 56, 57       | Freezing Drizzle: Light and dense intensity
+ 61, 63, 65   | Rain: Slight, moderate and heavy intensity
+ 66, 67       | Freezing Rain: Light and heavy intensity
+ 71, 73, 75   | Snow fall: Slight, moderate, and heavy intensity
+ 77           | Snow grains
+ 80, 81, 82   | Rain showers: Slight, moderate, and violent
+ 85, 86       | Snow showers slight and heavy
+ 95 *         | Thunderstorm: Slight or moderate
+ 96, 99 *     | Thunderstorm with slight and heavy hail
+ --------------|-----------------------------------------------------------------
  (*) Thunderstorm forecast with hail is only available in Central Europe
-*/
+ 
+ */
 
 function parseWeatherCodes( code: number ): weatherStates {
   switch ( code ) {
@@ -77,7 +82,7 @@ function parseWeatherCodes( code: number ): weatherStates {
   }
 }
 
-const weatherForecastCache: { [key: string]: { cacheTime: Date; data: any } } = {}
+const weatherForecastCache: { [ key: string ]: { cacheTime: Date; data: any } } = {}
 
 export default function main( app: ExpressApplication ) {
   app.get( "/app/weather/location/:locationName", ( req, res ) => {
@@ -86,7 +91,7 @@ export default function main( app: ExpressApplication ) {
     }
 
     fetch(
-      `https://geocoding-api.open-meteo.com/v1/search?name=${req.params.locationName}&language=en&count=5&format=json`,
+      `https://geocoding-api.open-meteo.com/v1/search?name=${ req.params.locationName }&language=en&count=5&format=json`
     )
       .then( resp => resp.json() )
       .then( json => res.json( json ) )
@@ -102,13 +107,15 @@ export default function main( app: ExpressApplication ) {
     const user = new YourDashUser( username )
 
     try {
-      await fs.access( path.resolve( user.getAppDataPath(), "weather" ) ).catch( () => res.json( [] ) )
+      await fs.access( path.resolve( user.getAppDataPath(), "weather" ) )
 
       const rawFile = ( await fs.readFile(
         path.resolve( user.getAppDataPath(), "weather/previous_locations.json" )
       ) ).toString()
 
-      return res.json( JSON.parse( rawFile ) )
+      const parsedFile = JSON.parse( rawFile )
+
+      return res.json( parsedFile )
     } catch ( _err ) {
       return res.json( [] )
     }
@@ -133,25 +140,27 @@ export default function main( app: ExpressApplication ) {
           await fs.mkdir( path.resolve( user.getAppDataPath(), "weather" ) )
         } )
 
-        await fs.access( path.resolve( user.getAppDataPath(), "weather/previous_locations.json" ) ).then( async () => {
+        try {
           file = ( await fs.readFile(
             path.resolve( user.getAppDataPath(), "weather/previous_locations.json" )
           ) ).toString()
-        } )
+        } catch ( _err ) {
+          file = "[]"
+        }
 
-        const parsedFile = JSON.parse( file )
+        const parsedFile = JSON.parse( file ) as { name: string, id: string }[]
 
         if ( parsedFile.length > 5 ) {
           parsedFile.shift()
         }
 
-        if ( parsedFile.indexOf( { name: cache.data.name, id: req.params.id } ) === -1 ) {
+        if ( parsedFile.find( obj => obj.id === req.params.id ) === undefined ) {
           parsedFile.push( { name: cache.data.name, id: req.params.id } )
         }
 
         await fs.writeFile(
           path.resolve( user.getAppDataPath(), "weather/previous_locations.json" ),
-          JSON.stringify( parsedFile ),
+          JSON.stringify( parsedFile )
         )
 
         return res.json( cache.data )
@@ -160,7 +169,7 @@ export default function main( app: ExpressApplication ) {
       }
     }
 
-    fetch( `https://geocoding-api.open-meteo.com/v1/get?id=${req.params.id}&language=en&format=json` )
+    fetch( `https://geocoding-api.open-meteo.com/v1/get?id=${ req.params.id }&language=en&format=json` )
       .then( resp => resp.json() )
       .then( ( json: any ) => {
         if ( json?.error ) {
@@ -174,7 +183,7 @@ export default function main( app: ExpressApplication ) {
         }
 
         fetch(
-          `https://api.open-meteo.com/v1/forecast?latitude=${json.latitude}&longitude=${json.longitude}&hourly=temperature_2m,weathercode&models=best_match&daily=temperature_2m_max,temperature_2m_min,weathercode&current_weather=true&timezone=${json.timezone}`,
+          `https://api.open-meteo.com/v1/forecast?latitude=${ json.latitude }&longitude=${ json.longitude }&hourly=temperature_2m,weathercode&models=best_match&daily=temperature_2m_max,temperature_2m_min,weathercode&current_weather=true&timezone=${ json.timezone }`
         )
           .then( resp => resp.json() )
           .then( async ( json: any ) => {
@@ -188,6 +197,7 @@ export default function main( app: ExpressApplication ) {
               data: {
                 name: out.name,
                 admin1: out.admin1,
+                admin2: out.admin2,
                 country: out.country,
                 currentWeather: {
                   temp: json.current_weather.temperature,
@@ -239,13 +249,13 @@ export default function main( app: ExpressApplication ) {
               parsedFile.shift()
             }
 
-            if ( parsedFile.indexOf( { name: out.name, id: req.params.id } ) === -1 ) {
+            if ( parsedFile.find( obj => obj.id === req.params.id ) === undefined ) {
               parsedFile.push( { name: out.name, id: req.params.id } )
             }
 
             await fs.writeFile(
               path.resolve( user.getAppDataPath(), "weather/previous_locations.json" ),
-              JSON.stringify( parsedFile ),
+              JSON.stringify( parsedFile )
             )
 
             return res.json( <weatherForecast>{

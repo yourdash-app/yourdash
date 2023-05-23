@@ -2,18 +2,24 @@ import "animate.css"
 import React from "react"
 import ReactDOM from "react-dom/client"
 import { createRoutesFromElements, Route, RouterProvider } from "react-router"
+import { createHashRouter } from "react-router-dom"
+import ApplicationRedirectToDash from "./app/ApplicationRedirectToDash.jsx"
+import AppLayout from "./app/Layout.jsx"
 import ComingSoon from "./ComingSoon"
+import DocsLayout from "./docs/Layout"
 import ErrorElement from "./ErrorElement"
 import "./ui/ui.scss"
 import "./index.css"
 import LoginPage from "./login/LoginPage.jsx"
-import Root from "./Root.jsx"
 import ServerLoginPage from "./login/ServerLoginPage.jsx"
-import AppLayout from "./app/Layout.jsx"
-import ApplicationRedirectToDash from "./app/ApplicationRedirectToDash.jsx"
-import { createHashRouter } from "react-router-dom"
+import Root from "./Root.jsx"
 import RightClickMenuRootContainer from "./ui/components/rightClickMenu/RightClickMenuRootContainer.jsx"
-import AppRouter from "./app/AppRouter.jsx"
+import loadable from "@loadable/component"
+import DocsRouter from "./docs/DocsRouter"
+
+const AppRouter = loadable( () => {
+  return import( "./app/AppRouter" )
+} )
 
 ReactDOM.createRoot( document.getElementById( "root" ) as HTMLElement ).render(
   <React.StrictMode>
@@ -31,10 +37,14 @@ ReactDOM.createRoot( document.getElementById( "root" ) as HTMLElement ).render(
               <Route path={ "app" }>
                 <Route element={ <AppLayout/> }>
                   <Route index element={ <ApplicationRedirectToDash/> }/>
-                  <Route path={ "a/*" } element={ <AppRouter/> }/>
-                  <Route path={ "profile" } element={ <ComingSoon/> }/>
-                  <Route path={ "settings" } element={ <ComingSoon/> }/>
+                  <Route
+                    path={ "a/*" }
+                    element={ <AppRouter/> }
+                  />
                 </Route>
+              </Route>
+              <Route path={ "docs/*" } element={ <DocsLayout/> }>
+                <Route path={ "*" } element={ <DocsRouter/> }/>
               </Route>
             </Route>
           )

@@ -1,14 +1,13 @@
-import React from "react";
-import FilesLayout from "./FilesLayout";
+import React from "react"
+import { Routes, Route } from "react-router"
+import FilesApplication from "./filesApplication"
 
-const FilesApplication: React.FC = () => {
+const FilesRouter: React.FC = () => {
   return (
-    <FilesLayout>
-      <span>File1</span>
-      <span>File2</span>
-      <span>File3</span>
-    </FilesLayout>
-  );
-};
+    <Routes>
+      <Route index element={ <FilesApplication/> }/>
+    </Routes>
+  )
+}
 
-export default FilesApplication;
+export default FilesRouter

@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "watch": true,
-    "composite": true,
     "module": "ESNext",
     "moduleResolution": "NodeNext",
     "allowSyntheticDefaultImports": true,
@@ -13,18 +12,12 @@
     "allowJs": false,
     "skipLibCheck": true,
     "esModuleInterop": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "rootDir": "..",
+    "removeComments": true
   },
   "include": [
     "./**/*.ts",
     "./../shared/**/*.ts"
-  ],
-  "paths": {
-    "~/*": ["~/*"]
-  },
-  "references": [
-    {
-      "path": "../shared/tsconfig.json"
-    },
   ]
 }

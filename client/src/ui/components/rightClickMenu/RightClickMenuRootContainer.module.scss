@@ -1,39 +1,49 @@
 .component {
-    position: fixed;
-    z-index: 10000;
-    background-color: rgb(var(--container-bg));
-    color: rgb(var(--container-fg));
-    margin: 0;
-    overflow: hidden;
-    border-radius: 0.5rem;
-    border: 2px solid var(--application-panel-border);
-    padding: 0.25rem;
-    box-shadow: 0 0 0.5rem #00000088;
-    flex-direction: column;
-    gap: 0.125rem;
-    width: 200px;
-    box-sizing: border-box;
+  position: fixed;
+  z-index: 10000;
+  overflow: hidden;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 200px;
+  margin: 0;
+  padding: 0.15rem;
+  color: rgb(var(--container-fg));
+  border: 1px solid rgb(var(--container-border));
+  border-radius: 0.5rem;
+  background-color: rgb(var(--container-bg));
+  box-shadow: 0 0 0.5rem #00000088;
+  gap: 0.1rem;
 
-    > button {
-        padding: 0.125rem 0.5rem;
-        user-select: none;
-        cursor: pointer;
-        border-radius: 0.25rem;
-        border: none;
-        font-size: 0.9rem;
-        text-align: start;
-        transition: var(--transition);
-        background-color: rgb(var(--button-bg));
-        color: rgb(var(--button-fg));
+  > button {
+    font-size: 0.95rem;
+    padding: 0.125rem 0.5rem;
+    cursor: pointer;
+    user-select: none;
+    transition: var(--transition);
+    text-align: start;
+    color: rgb(var(--button-fg));
+    border: none;
+    border-radius: 0.2rem;
+    background-color: rgb(var(--button-bg));
 
-        &:hover {
-            background-color: rgb(var(--button-hover-bg));
-            color: rgb(var(--button-hover-fg));
-        }
-
-        &:active {
-            background-color: rgb(var(--button-active-bg));
-            color: rgb(var(--button-active-fg));
-        }
+    &:hover {
+      color: rgb(var(--button-hover-fg));
+      background-color: rgb(var(--button-hover-bg));
     }
+
+    &:active {
+      color: rgb(var(--button-active-fg));
+      background-color: rgb(var(--button-active-bg));
+    }
+
+    &:first-child {
+      border-top-left-radius: 0.35rem;
+      border-top-right-radius: 0.35rem;
+    }
+
+    &:last-child {
+      border-bottom-right-radius: 0.35rem;
+      border-bottom-left-radius: 0.35rem;
+    }
+  }
 }

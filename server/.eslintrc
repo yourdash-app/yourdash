@@ -27,22 +27,37 @@
       }
     ],
     "sort-imports": "off",
+    "import/no-useless-path-segments": "off",
     "import/order": "off",
-    "space-in-parens": ["warn", "always"],
-    "max-len": ["warn", { "code": 120 }],
-    "semi": ["warn", "never"],
+    "space-in-parens": [
+      "warn",
+      "always"
+    ],
+    "max-len": [
+      "off"
+    ],
+    "semi": [
+      "warn",
+      "never"
+    ],
     "consistent-return": "off",
     "no-magic-numbers": "off",
     "import/no-unresolved": "off",
     "import/named": "off",
-    "dot-location": [ "warn", "property" ],
-    "@typescript-eslint/no-unused-vars": ["warn", {
-      "varsIgnorePattern": "^_",
-      "args": "all",
-      "argsIgnorePattern": "^_",
-      "caughtErrors": "all",
-      "caughtErrorsIgnorePattern": "^_"
-    }],
+    "dot-location": [
+      "warn",
+      "property"
+    ],
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        "varsIgnorePattern": "^_",
+        "args": "all",
+        "argsIgnorePattern": "^_",
+        "caughtErrors": "all",
+        "caughtErrorsIgnorePattern": "^_"
+      }
+    ],
     "complexity": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/ban-ts-comment": "off"

@@ -9,71 +9,52 @@ import express from "express"
 import { existsSync as fsExistsSync, promises as fs } from "fs"
 import path from "path"
 import sharp from "sharp"
-import YourDashApplication, { getAllApplications } from "./core/applications.js"
-import { base64ToDataUrl } from "./core/base64.js"
-import { compareHash, generateRandomStringOfLength } from "./core/encryption.js"
-import { generateLogos } from "./core/logo.js"
-import YourDashPanel from "./core/panel.js"
-import YourDashUser, { YourDashUserPermissions } from "./core/user.js"
+import YourDashUnreadApplication, { getAllApplications } from "./helpers/applications.js"
+import { base64ToDataUrl } from "./helpers/base64.js"
+import { compareHash } from "./helpers/encryption.js"
+import { generateLogos } from "./helpers/logo.js"
+import YourDashPanel from "./helpers/panel.js"
+import YourDashUnreadUser, { YourDashUserPermissions } from "./helpers/user.js"
+import { IYourDashSession, YourDashSessionType } from "../shared/core/session.js"
+import { createSession } from "./helpers/session.js"
+import { Server as SocketIoServer } from "socket.io"
+import * as http from "http"
 
 console.log(
-  "----------------------------------------------------\n                      YourDash" +
-  "                      \n----------------------------------------------------"
+  "----------------------------------------------------\n                      YourDash                      \n----------------------------------------------------"
 )
 
-let SESSIONS: { [ user: string ]: string } = {}
+const SESSIONS: { [ user: string ]: IYourDashSession<any>[] } = {}
+
+export function __internalGetSessions(): { [ user: string ]: IYourDashSession<any>[] } {
+  return SESSIONS
+}
 
 export enum YourDashServerDiscoveryStatus {
   // eslint-disable-next-line no-unused-vars
-  MAINTENANCE, NORMAL,
+  MAINTENANCE, NORMAL, HIDDEN
 }
 
-const SESSION_TOKEN_LENGTH = 128
-
-if ( process.env.DEV ) {
-  if ( fsExistsSync( path.resolve( process.cwd(), ".dev-session-tokens" ) ) ) {
-    // DEVELOPMENT MODE ONLY, loads all current session tokens between nodemon
-    // restarts
-    fs.readFile( path.resolve(
-      process.cwd(),
-      ".dev-session-tokens"
-    ) )
-      .then( file => {
-        try {
-          SESSIONS = JSON.parse( file.toString() || "{}" )
-        } catch ( _err ) {
-          console.error( "(DEV MODE): Unable to load previous session tokens" )
-        }
-      } )
-      .catch( () => {
-        console.error( "(DEV MODE): Unable to load previous session tokens" )
-      } )
-  }
-}
+export const SESSION_TOKEN_LENGTH = 128
 
 async function startupChecks() {
   // check if the filesystem exists
   if ( !fsExistsSync( path.resolve( process.cwd(), "./fs/" ) ) ) {
-    await fs.cp(
-      path.resolve( process.cwd(), "./default/fs/" ),
-      path.resolve( process.cwd(), "./fs/" ),
-      { recursive: true }
-    )
-
-    // make sure that the users directory exists
-    await fs.access( path.resolve( process.cwd(), "./fs/users" ) ).catch( async () => {
-      await fs.mkdir( path.resolve( process.cwd(), "./fs/users" ) )
-    } )
+    await fs.mkdir( path.resolve( process.cwd(), "./fs/" ) )
+    await fs.cp( path.resolve( process.cwd(), "./assets/default_avatar.avif" ), path.resolve( process.cwd(), "./fs/avatar.avif" ) )
+    await fs.cp( path.resolve( process.cwd(), "./assets/default_instance_logo.avif" ), path.resolve( process.cwd(), "./fs/instance_logo.avif" ) )
+    await fs.cp( path.resolve( process.cwd(), "./assets/default_login_background.avif" ), path.resolve( process.cwd(), "./fs/login_background.avif" ) )
+    await fs.mkdir( path.resolve( process.cwd(), "./fs/users/" ) )
 
     // generate all instance logos
     generateLogos()
   }
 
   for ( const user of ( await fs.readdir( path.resolve( "./fs/users/" ) ) ) ) {
-    await ( await new YourDashUser( user ).read() ).verifyUserConfig().write()
+    await ( await new YourDashUnreadUser( user ).read() ).verifyUserConfig().write()
   }
 
-  const adminUserUnread = new YourDashUser( "admin" )
+  const adminUserUnread = new YourDashUnreadUser( "admin" )
 
   if ( !( await adminUserUnread.exists() ) ) {
     const adminUser = await adminUserUnread.read()
@@ -87,6 +68,57 @@ async function startupChecks() {
 await startupChecks()
 
 const app = express()
+const httpServer = http.createServer( app )
+const io = new SocketIoServer( httpServer )
+const activeSockets = new Map<string, string>()
+
+export { io, activeSockets }
+
+io.use( async ( socket, next ) => {
+  const { username, sessionToken } = socket.handshake.query as { username?: string, sessionToken?: string }
+
+  if ( !username ) {
+    return socket.disconnect()
+  }
+
+  if ( !sessionToken ) {
+    return socket.disconnect()
+  }
+
+  if ( !SESSIONS[username] ) {
+    try {
+      const user = await ( new YourDashUnreadUser( username ).read() )
+
+      SESSIONS[username] = user.getSessions() || []
+    } catch ( _err ) {
+      return socket.disconnect()
+    }
+  }
+
+  if ( SESSIONS[username].find( session => session.sessionToken === sessionToken ) ) {
+    return next()
+  }
+
+
+  return socket.disconnect()
+} )
+
+io.on( "connection", socket => {
+  activeSockets.set( socket.handshake.query.sessionToken as string, socket.id )
+
+  socket.on( "execute-command-response", output => {
+    console.log( output )
+  } )
+
+  socket.on( "disconnect", () => {
+    activeSockets.forEach( ( value, key ) => {
+      if ( value === socket.id ) {
+        activeSockets.delete( key )
+      }
+    } )
+  } )
+} )
+
 
 app.use( express.json( { limit: "50mb" } ) )
 app.use( cors() )
@@ -99,8 +131,7 @@ app.use( ( _req, res, next ) => {
 app.get( "/", ( _req, res ) => res.send( "Hello from the yourdash server software" ) )
 
 app.get( "/test", ( _req, res ) => {
-  const discoveryStatus: YourDashServerDiscoveryStatus =
-    YourDashServerDiscoveryStatus.NORMAL as YourDashServerDiscoveryStatus
+  const discoveryStatus: YourDashServerDiscoveryStatus = YourDashServerDiscoveryStatus.NORMAL as YourDashServerDiscoveryStatus
 
   switch ( discoveryStatus ) {
     case YourDashServerDiscoveryStatus.MAINTENANCE:
@@ -125,12 +156,12 @@ app.get( "/login/background", ( _req, res ) => res.sendFile( path.resolve(
 ) ) )
 
 app.get( "/login/user/:username/avatar", ( req, res ) => {
-  const user = new YourDashUser( req.params.username )
+  const user = new YourDashUnreadUser( req.params.username )
   return res.sendFile( path.resolve( user.getPath(), "avatar.avif" ) )
 } )
 
 app.get( "/login/user/:username", async ( req, res ) => {
-  const user = new YourDashUser( req.params.username )
+  const user = new YourDashUnreadUser( req.params.username )
   if ( await user.exists() ) {
     return res.json( { name: ( await user.read() ).getName() } )
   } else {
@@ -139,41 +170,36 @@ app.get( "/login/user/:username", async ( req, res ) => {
 } )
 
 app.post( "/login/user/:username/authenticate", async ( req, res ) => {
-  const { username } = req.params
-  const { password } = req.body
+  const username = req.params.username
+  const password = req.body.password
+
   if ( !username || username === "" ) {
     return res.json( { error: true } )
   }
+
   if ( !password || password === "" ) {
     return res.json( { error: true } )
   }
-  const user = new YourDashUser( username )
-  const savedHashedPassword = (
-    await fs.readFile( path.resolve( user.getPath(), "./password.txt" ) )
-  ).toString()
-  const sessionToken = generateRandomStringOfLength( SESSION_TOKEN_LENGTH )
-  compareHash( savedHashedPassword, password ).then( result => {
-    if ( result ) {
-      SESSIONS[username] = sessionToken
-      return res.json( { token: sessionToken } )
-    }
-  } )
-} )
 
-app.get( "/login/is-authenticated", ( req, res ) => {
-  const { username, token } = req.headers as {
-    username?: string; token?: string;
-  }
-  if ( !username ) {
-    return res.json( { error: true } )
-  }
-  if ( !token ) {
-    return res.json( { error: true } )
-  }
-  if ( SESSIONS[username] === token ) {
-    return res.json( { success: true } )
-  }
-  return res.json( { error: true } )
+  const user = new YourDashUnreadUser( username )
+
+  const savedHashedPassword = ( await fs.readFile( path.resolve( user.getPath(), "./password.txt" ) ) ).toString()
+
+  compareHash( savedHashedPassword, password )
+    .then( async result => {
+      if ( result ) {
+        const session = await createSession(
+          username,
+          req.headers?.type === "desktop"
+            ? YourDashSessionType.desktop
+            : YourDashSessionType.web
+        )
+        return res.json( { token: session.sessionToken } )
+      } else {
+        return res.json( { error: true } )
+      }
+    } )
+    .catch( _err => res.json( { error: true } ) )
 } )
 
 app.get( "/panel/logo/small", ( _req, res ) => res.sendFile( path.resolve(
@@ -181,35 +207,78 @@ app.get( "/panel/logo/small", ( _req, res ) => res.sendFile( path.resolve(
   "./fs/logo_panel_small.avif"
 ) ) )
 
-// --------------------------------------------------------------
-// WARNING: all endpoints require authentication after this point
-// --------------------------------------------------------------
-
-app.use( ( req, res, next ) => {
+app.get( "/login/is-authenticated", async ( req, res ) => {
   const { username, token } = req.headers as {
     username?: string; token?: string;
   }
+
+  if ( !username ) {
+    return res.json( { error: true } )
+  }
+
+  if ( !token ) {
+    return res.json( { error: true } )
+  }
+
+  if ( !SESSIONS[username] ) {
+    try {
+      const user = await ( new YourDashUnreadUser( username ).read() )
+
+      SESSIONS[username] = user.getSessions() || []
+    } catch ( _err ) {
+      return res.json( { error: true } )
+    }
+  }
+
+  if ( SESSIONS[username].find( session => session.sessionToken === token ) ) {
+    return res.json( { success: true } )
+  }
+  return res.json( { error: true } )
+} )
+
+/**
+ --------------------------------------------------------------
+ WARNING: all endpoints require authentication after this point
+ --------------------------------------------------------------
+ */
+
+app.use( async ( req, res, next ) => {
+  const { username, token } = req.headers as { username?: string, token?: string }
+
   if ( !username ) {
     return res.json( { error: "authorization fail" } )
   }
+
   if ( !token ) {
     return res.json( { error: "authorization fail" } )
   }
-  if ( SESSIONS[username] === token ) {
+
+  if ( !SESSIONS[username] ) {
+    try {
+      const user = await ( new YourDashUnreadUser( username ).read() )
+
+      SESSIONS[username] = user.getSessions() || []
+    } catch ( _err ) {
+      return res.json( { error: "authorization fail" } )
+    }
+  }
+
+  if ( SESSIONS[username].find( session => session.sessionToken === token ) ) {
     return next()
   }
+
   return res.json( { error: "authorization fail" } )
 } )
 
 app.get( "/panel/user/name", async ( req, res ) => {
   const { username } = req.headers as { username: string }
-  const user = ( await new YourDashUser( username ).read() )
+  const user = ( await new YourDashUnreadUser( username ).read() )
   return res.json( user.getName() )
 } )
 
 app.get( "/panel/launcher/applications", async ( _req, res ) => {
   Promise.all( ( await getAllApplications() ).map( async app => {
-    const application = await new YourDashApplication( app ).load()
+    const application = await new YourDashUnreadApplication( app ).read()
     return new Promise( async resolve => {
       sharp( await fs.readFile( path.resolve(
         process.cwd(),
@@ -256,12 +325,12 @@ app.post( "/panel/quick-shortcuts/create", async ( req, res ) => {
   }
 
   const panel = new YourDashPanel( username )
-  const application = new YourDashApplication( name )
+  const application = new YourDashUnreadApplication( name )
 
   try {
     await panel.createQuickShortcut(
       displayName,
-      `#/app/a/${ name }`,
+      `/app/a/${ name }`,
       await fs.readFile( path.resolve( application.getPath(), "./icon.avif" ) )
     )
     return res.json( { success: true } )
@@ -275,17 +344,69 @@ app.get( "/panel/position", async ( req, res ) => {
 
   const panel = new YourDashPanel( username )
 
-  console.log( await panel.getPanelPosition() )
-
   return res.json( { position: await panel.getPanelPosition() } )
 } )
 
-app.get( "/panel/launcher", ( req, res ) => {
+app.get( "/panel/launcher", async ( req, res ) => {
   const { username } = req.headers as { username: string }
 
   const panel = new YourDashPanel( username )
 
-  return res.json( { launcher: panel.getLauncherType() } )
+  return res.json( { launcher: await panel.getLauncherType() } )
+} )
+
+app.get( "/core/sessions", async ( req, res ) => {
+  const { username } = req.headers as { username: string }
+
+  const user = await ( new YourDashUnreadUser( username ).read() )
+
+  return res.json( { sessions: user.getSessions() } )
+} )
+
+app.delete( "/core/session/:id", async ( req, res ) => {
+  const { username } = req.headers as { username: string }
+  const { id: sessionId } = req.params
+
+  const user = await ( new YourDashUnreadUser( username ).read() )
+
+  user.getSession( parseInt( sessionId, 10 ) ).invalidate()
+
+  return res.json( { success: true } )
+} )
+
+app.get( "/core/personal-server-accelerator/sessions", async ( req, res ) => {
+  const { username } = req.headers as { username: string }
+
+  const user = await ( new YourDashUnreadUser( username ).read() )
+
+  return res.json( { sessions: user.getSessions().filter( session => session.type === YourDashSessionType.desktop ) } )
+} )
+
+app.get( "/core/personal-server-accelerator/", async ( req, res ) => {
+  const { username } = req.headers as { username: string }
+
+  const user = await ( new YourDashUnreadUser( username ) )
+
+  try {
+    return JSON.parse( ( await fs.readFile( path.resolve( user.getPath(), "personal_server_accelerator.json" ) ) ).toString() )
+  } catch ( _err ) {
+    return res.json( { error: `Unable to read ${ username }/personal_server_accelerator.json` } )
+  }
+} )
+
+app.post( "/core/personal-server-accelerator/", async ( req, res ) => {
+  const { username } = req.headers as { username: string }
+  const body = req.body
+
+  const user = await ( new YourDashUnreadUser( username ) )
+
+  try {
+    await fs.writeFile( path.resolve( user.getPath(), "personal_server_accelerator.json" ), JSON.stringify( body ) )
+  } catch ( _err ) {
+    return res.json( { error: `Unable to write to ${ username }/personal_server_accelerator.json` } )
+  }
+
+  return res.json( { success: true } )
 } )
 
 new Promise<void>( async ( resolve, reject ) => {
@@ -315,22 +436,9 @@ new Promise<void>( async ( resolve, reject ) => {
     resolve()
   }
 } ).then( () => {
-  app.listen( 3560, () => {
+  httpServer.listen( 3560, () => {
     console.log( "server now listening on port 3560!" )
   } )
 } ).catch( err => {
   console.error( "Error during server initialization: ", err )
 } )
-
-if ( process.env.DEV ) {
-  // DEVELOPMENT MODE ONLY, saves all current session tokens between nodemon
-  // restarts
-  process.once( "SIGINT", () => {
-    fs.writeFile(
-      path.resolve( process.cwd(), ".dev-session-tokens" ),
-      JSON.stringify( SESSIONS )
-    ).then( () => {
-      console.log( "(DEV MODE): saved session data" )
-    } )
-  } )
-}

@@ -1,9 +1,0 @@
-{
-  "name": "types",
-  "version": "1.0.0",
-  "main": "index.js",
-  "author": "Ewsgit",
-  "license": "MIT",
-  "private": false,
-  "type": "module"
-}

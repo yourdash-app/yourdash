@@ -1,0 +1,19 @@
+{
+  "name": "yourdash-server-cli",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@types/chalk-animation": "^1.6.1",
+    "chalk": "^5.2.0",
+    "chalk-animation": "^2.0.3",
+    "typescript": "^5.0.4"
+  },
+  "scripts": {
+    "test": "jest",
+    "compile": "tsc",
+    "run": "node ./src/index.js"
+  },
+  "bin": {
+    "yourdash": "./src/index.js"
+  }
+}

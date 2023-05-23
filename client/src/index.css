@@ -1,9 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap');
+
 @tailwind base;
-@tailwind components;
 @tailwind utilities;
 
 :root {
-    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    font-family: Roboto, system-ui, Avenir, Helvetica, Arial, sans-serif;
     font-weight: 400;
     line-height: 1.5;
 
@@ -62,17 +63,25 @@
     --container-fg: var(--base-50);
     --container-border: var(--base-600);
 
-    --button-bg: var(--base-700);
+    --container-secondary-bg: var(--base-800);
+    --container-secondary-fg: var(--base-100);
+    --container-secondary-border: var(--base-700);
+
+    --container-tertiary-bg: var(--base-900);
+    --container-tertiary-fg: var(--base-200);
+    --container-tertiary-border: var(--base-800);
+
+    --button-rounding: 0.5rem;
+    --button-bg: var(--base-600);
     --button-fg: var(--base-200);
-    --button-border: var(--base-600);
+    --button-hover-bg: var(--base-500);
+    --button-hover-fg: var(--base-50);
+    --button-active-bg: var(--base-400);
+    --button-active-fg: var(--base-900);
+}
 
-    --button-hover-bg: var(--base-600);
-    --button-hover-fg: var(--base-100);
-    --button-hover-border: var(--base-500);
-
-    --button-active-bg: var(--base-500);
-    --button-active-fg: var(--base-50);
-    --button-active-border: var(--base-400);
+button[type='button'] {
+    background-color: rgb(var(--button-bg));
 }
 
 @media (prefers-color-scheme: light) {
