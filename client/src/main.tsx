@@ -2,7 +2,7 @@ import "animate.css"
 import React from "react"
 import ReactDOM from "react-dom/client"
 import { createRoutesFromElements, Route, RouterProvider } from "react-router"
-import { createBrowserRouter } from "react-router-dom"
+import { createHashRouter } from "react-router-dom"
 import ApplicationRedirectToDash from "./app/ApplicationRedirectToDash.jsx"
 import AppLayout from "./app/Layout.jsx"
 import ComingSoon from "./ComingSoon"
@@ -25,7 +25,7 @@ ReactDOM.createRoot( document.getElementById( "root" ) as HTMLElement ).render(
   <React.StrictMode>
     <RightClickMenuRootContainer>
       <RouterProvider
-        router={ createBrowserRouter(
+        router={ createHashRouter(
           createRoutesFromElements(
             <Route errorElement={ <ErrorElement/> }>
               <Route index element={ <Root/> }/>
