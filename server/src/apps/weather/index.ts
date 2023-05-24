@@ -4,8 +4,8 @@ import { Application as ExpressApplication } from "express"
 import { promises as fs } from "fs"
 import path from "path"
 import { fetch } from "undici"
-import { type weatherForecast } from "../../../shared/apps/weather/forecast.js"
-import { weatherStates } from "../../../shared/apps/weather/weatherStates.js"
+import { type weatherForecast } from "../../../../shared/apps/weather/forecast.js"
+import { weatherStates } from "../../../../shared/apps/weather/weatherStates.js"
 import YourDashUser from "../../helpers/user.js"
 
 /**

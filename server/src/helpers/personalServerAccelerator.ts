@@ -1,5 +1,5 @@
-import { IYourDashSession, YourDashSessionType } from "../../shared/core/session.js"
-import { activeSockets, io } from "./../index.js"
+import { IYourDashSession, YourDashSessionType } from "../../../shared/core/session.js"
+import { activeSockets, io } from "../main.js"
 
 export function executeCommand( session: IYourDashSession<YourDashSessionType.desktop>, command: string ): Promise<any> {
   return new Promise( resolve => {

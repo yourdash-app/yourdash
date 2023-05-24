@@ -4,7 +4,7 @@ import path from "path"
 import sharp from "sharp"
 
 import { hash } from "./encryption.js"
-import { IYourDashSession } from "../../shared/core/session.js"
+import { IYourDashSession } from "../../../shared/core/session.js"
 import YourDashSession, { getSessionsForUser } from "./session.js"
 
 export enum YourDashUserPermissions {

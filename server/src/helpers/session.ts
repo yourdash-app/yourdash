@@ -1,5 +1,5 @@
-import { __internalGetSessions, SESSION_TOKEN_LENGTH } from "../index.js"
-import { YourDashSessionType, IYourDashSession } from "../../shared/core/session.js"
+import { __internalGetSessions, SESSION_TOKEN_LENGTH } from "../main.js"
+import { YourDashSessionType, IYourDashSession } from "../../../shared/core/session.js"
 import { generateRandomStringOfLength } from "./encryption.js"
 import { promises as fs } from "fs"
 import YourDashUnreadUser from "./user.js"

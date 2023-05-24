@@ -1,5 +1,5 @@
 import { Application as ExpressApplication } from "express"
-import { PromotedApplication } from "../../../shared/apps/store/promotedApplication.js"
+import { PromotedApplication } from "../../../../shared/apps/store/promotedApplication.js"
 import YourDashUnreadApplication, { getAllApplications } from "../../helpers/applications.js"
 
 const promotedApplications: string[] = ["dash", "store"]

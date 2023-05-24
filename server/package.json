@@ -30,24 +30,20 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "execa": "^7.1.1",
     "express": "^4.18.2",
+    "minimist": "^1.2.8",
     "module-alias": "^2.2.2",
+    "node-hmr": "^1.4.0",
     "nodemon": "^2.0.22",
     "sharp": "^0.32.0",
     "socket.io": "^4.6.1",
     "typescript": "^5.0.3",
     "undici": "^5.21.2",
-    "~": "file:./"
+    "~": "file:./src/"
   },
   "type": "module",
   "scripts": {
     "compile": "tsc",
     "start": "node .",
-    "dev": "cross-env DEV=true nodemon ."
-  },
-  "nodemonConfig": {
-    "ext": "js",
-    "ignore": [
-      "**/node_modules/*"
-    ]
+    "dev": "concurrently \"yarn compile\" \"yarn start --dev\""
   }
 }

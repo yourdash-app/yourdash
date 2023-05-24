@@ -2011,7 +2011,7 @@ minimatch@^3.0.5, minimatch@^3.1.1, minimatch@^3.1.2:
   dependencies:
     brace-expansion "^1.1.7"
 
-minimist@^1.2.0, minimist@^1.2.3, minimist@^1.2.6:
+minimist@^1.2.0, minimist@^1.2.3, minimist@^1.2.6, minimist@^1.2.8:
   version "1.2.8"
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.8.tgz#c1a464e7693302e082a075cee0c057741ac4772c"
   integrity sha512-2yyAR8qBkN3YuheJanUpWC5U3bb5osDywNB8RzDVlDwDHbocAJveqqj1u8+SVD7jkWT4yvsHCpWqqWqAxb0zCA==
@@ -2109,6 +2109,13 @@ node-fetch@^2.6.7:
   integrity sha512-DJm/CJkZkRjKKj4Zi4BsKVZh3ValV5IR5s7LVZnW+6YMh0W1BfNA8XSs6DLMGYlId5F3KnA70uu2qepcR08Qqg==
   dependencies:
     whatwg-url "^5.0.0"
+
+node-hmr@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/node-hmr/-/node-hmr-1.4.0.tgz#d2fb6b6b18ffe8ee6336aa646ee4911967a1a828"
+  integrity sha512-1QcM4WCo6MkMpOJQds9Xxolmw15yj7GndtRNxxWjeWaODnm1qOu+qZfplQV5HGMVPBRsh26ZGa+eZ62m8t9W0A==
+  dependencies:
+    chokidar "^3.5.2"
 
 nodemon@^2.0.22:
   version "2.0.22"
@@ -3138,34 +3145,5 @@ yocto-queue@^0.1.0:
   resolved "https://registry.yarnpkg.com/yocto-queue/-/yocto-queue-0.1.0.tgz#0294eb3dee05028d31ee1a5fa2c556a6aaf10a1b"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
 
-"~@file:.":
+"~@file:./src":
   version "0.0.0"
-  dependencies:
-    "@jetbrains/eslint-config" "^5.4.1"
-    "@types/bcrypt" "^5.0.0"
-    "@types/express" "^4.17.17"
-    "@types/node" "^18.15.7"
-    "@types/sharp" "^0.31.1"
-    "@typescript-eslint/eslint-plugin" "^5.58.0"
-    "@typescript-eslint/parser" "^5.58.0"
-    bcrypt "^5.1.0"
-    chalk "^5.2.0"
-    concurrently "^7.6.0"
-    cookie-parser "^1.4.6"
-    cors "^2.8.5"
-    cross-env "^7.0.3"
-    eslint "^8.38.0"
-    eslint-plugin-bdd "^2.1.1"
-    eslint-plugin-import "^2.27.5"
-    eslint-plugin-jsx-a11y "^6.7.1"
-    eslint-plugin-react "^7.32.2"
-    eslint-plugin-react-hooks "^4.6.0"
-    execa "^7.1.1"
-    express "^4.18.2"
-    module-alias "^2.2.2"
-    nodemon "^2.0.22"
-    sharp "^0.32.0"
-    socket.io "^4.6.1"
-    typescript "^5.0.3"
-    undici "^5.21.2"
-    "~" "file:./../../../AppData/Local/Yarn/Cache/v6/npm--0.0.0-4f7d934e-1198-485a-830d-4d330de1f5e7-1684653598653/node_modules/~"
