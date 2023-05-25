@@ -1,9 +1,10 @@
-import { __internalGetSessions, SESSION_TOKEN_LENGTH } from "../main.js"
+import { __internalGetSessions } from "../index.js"
 import { YourDashSessionType, IYourDashSession } from "../../../shared/core/session.js"
 import { generateRandomStringOfLength } from "./encryption.js"
 import { promises as fs } from "fs"
 import YourDashUnreadUser from "./user.js"
 import path from "path"
+import { SESSION_TOKEN_LENGTH } from "../main.js"
 
 export function getSessionsForUser( username: string ): IYourDashSession<any>[] {
   return __internalGetSessions()[username]

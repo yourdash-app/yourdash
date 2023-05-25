@@ -1,6 +1,5 @@
 import minimist from "minimist"
 import hmr from "node-hmr"
-import * as http from "http"
 import { IYourDashSession } from "../../shared/core/session.js"
 
 console.log(
@@ -9,18 +8,20 @@ console.log(
 
 const args = minimist( process.argv.slice( 2 ) )
 
+export { args }
+
 const SESSIONS: { [ user: string ]: IYourDashSession<any>[] } = {}
 
 export function __internalGetSessions(): { [ user: string ]: IYourDashSession<any>[] } {
   return SESSIONS
 }
 
-let app: http.RequestListener
+console.log( process.cwd() )
 
-hmr( async () => {
-  ( { default: app } = await import( "./main.js" ) )
-} )
-
-const server = http.createServer( app )
-
-server.listen( 3000 )
+if ( args.dev ) {
+  hmr( async () => {
+    await import( "./main.js" )
+  }, {} )
+} else {
+  await import( "./main.js" )
+}
