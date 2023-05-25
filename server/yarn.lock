@@ -588,7 +588,7 @@ chalk@^5.2.0:
   resolved "https://registry.yarnpkg.com/chalk/-/chalk-5.2.0.tgz#249623b7d66869c673699fb66d65723e54dfcfb3"
   integrity sha512-ree3Gqw/nazQAPuJJEy+avdl7QfZMcUvmHIKgEZkGL+xOBzRvup5Hxo6LHuMceSxOabuJLJm5Yp/92R9eMmMvA==
 
-chokidar@^3.5.2:
+chokidar@^3.5.2, chokidar@^3.5.3:
   version "3.5.3"
   resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-3.5.3.tgz#1cf37c8707b932bd1af1ae22c0432e2acd1903bd"
   integrity sha512-Dr3sfKRP6oTcjf2JmUmFJfeVMvXBdegxB0iVQ5eb2V10uFJUCAS8OByZdVAyVb8xXNz3GjjTgj9kLWsZTqE6kw==
@@ -2109,13 +2109,6 @@ node-fetch@^2.6.7:
   integrity sha512-DJm/CJkZkRjKKj4Zi4BsKVZh3ValV5IR5s7LVZnW+6YMh0W1BfNA8XSs6DLMGYlId5F3KnA70uu2qepcR08Qqg==
   dependencies:
     whatwg-url "^5.0.0"
-
-node-hmr@^1.4.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/node-hmr/-/node-hmr-1.4.0.tgz#d2fb6b6b18ffe8ee6336aa646ee4911967a1a828"
-  integrity sha512-1QcM4WCo6MkMpOJQds9Xxolmw15yj7GndtRNxxWjeWaODnm1qOu+qZfplQV5HGMVPBRsh26ZGa+eZ62m8t9W0A==
-  dependencies:
-    chokidar "^3.5.2"
 
 nodemon@^2.0.22:
   version "2.0.22"

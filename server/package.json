@@ -18,6 +18,7 @@
     "@typescript-eslint/parser": "^5.58.0",
     "bcrypt": "^5.1.0",
     "chalk": "^5.2.0",
+    "chokidar": "^3.5.3",
     "concurrently": "^7.6.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -32,7 +33,6 @@
     "express": "^4.18.2",
     "minimist": "^1.2.8",
     "module-alias": "^2.2.2",
-    "node-hmr": "^1.4.0",
     "nodemon": "^2.0.22",
     "sharp": "^0.32.0",
     "socket.io": "^4.6.1",
@@ -43,6 +43,6 @@
   "scripts": {
     "compile": "tsc",
     "start": "node ./src/index.js",
-    "dev": "concurrently \"yarn compile\" \"yarn start --dev\""
+    "dev": "yarn start --dev"
   }
 }

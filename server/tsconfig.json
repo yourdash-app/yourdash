@@ -14,10 +14,11 @@
     "esModuleInterop": true,
     "sourceMap": true,
     "rootDir": "..",
-    "removeComments": true
+    "removeComments": true,
+    "incremental": true
   },
   "include": [
-    "./**/*.ts",
+    "./src/**/*.ts",
     "./../shared/**/*.ts"
   ]
 }

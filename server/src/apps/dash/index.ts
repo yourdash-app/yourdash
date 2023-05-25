@@ -1,3 +1,3 @@
 export default function hello() {
-  return console.log( "hello world from the 'dash' app" )
+  return console.log( "hello world from the dash application" )
 }
