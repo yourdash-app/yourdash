@@ -15,13 +15,22 @@ import { compareHash } from "./helpers/encryption.js"
 import { generateLogos } from "./helpers/logo.js"
 import YourDashPanel from "./helpers/panel.js"
 import YourDashUnreadUser, { YourDashUserPermissions } from "./helpers/user.js"
-import { YourDashSessionType } from "../../shared/core/session.js"
+import { YourDashSessionType, IYourDashSession } from "../../shared/core/session.js"
 import { createSession } from "./helpers/session.js"
 import { Server as SocketIoServer } from "socket.io"
 import * as http from "http"
 import chalk from "chalk"
-import { __internalGetSessions, args } from "./index.js"
-import { IncomingMessage, ServerResponse, Server } from "http"
+import minimist from "minimist"
+
+const args = minimist( process.argv.slice( 2 ) )
+
+const SESSIONS: { [key: string]: IYourDashSession<any>[] } = {}
+
+function __internalGetSessions() {
+  return SESSIONS
+}
+
+export { args, __internalGetSessions }
 
 export enum YourDashServerDiscoveryStatus {
   // eslint-disable-next-line no-unused-vars
@@ -457,10 +466,7 @@ new Promise<void>( async ( resolve, reject ) => {
 
       // import and load all applications
       import(
-        `file://${ path.resolve(
-          process.cwd(),
-          `./src/apps/${ appName }/index.js`
-        ) }`
+        `./src/apps/${ appName }/index.js`
       ).then( mod => {
         try {
           mod.default( { app, io } )
@@ -482,3 +488,5 @@ new Promise<void>( async ( resolve, reject ) => {
 } ).catch( err => {
   console.error( `[${ chalk.yellow.bold( "CORE" ) }]: Error during server initialization: ${ err.toString() }` )
 } )
+
+console.log( "Hello from YourDash HMR!!!" )
