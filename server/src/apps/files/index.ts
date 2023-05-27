@@ -3,7 +3,7 @@ import path from "path"
 import YourDashUnreadUser from "../../helpers/user.js"
 import { type YourDashApplicationServerPlugin } from "../../helpers/applications.js"
 
-const main: YourDashApplicationServerPlugin = app => {
+const main: YourDashApplicationServerPlugin = ( { app } ) => {
   app.post( "/app/files/get", async ( req, res ) => {
     const { username } = req.headers as { username: string }
 

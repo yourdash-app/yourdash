@@ -10,11 +10,15 @@ export interface YourDashPanelQuickShortcut {
 }
 
 export enum YourDashPanelPosition {
-  left, top, right, bottom,
+  left,
+  top,
+  right,
+  bottom
 }
 
 export enum YourDashPanelLauncherType {
-  popOut, slideOut,
+  popOut,
+  slideOut
 }
 
 const DEFAULT_PANEL_CONFIG = {

@@ -15,7 +15,8 @@
     "sourceMap": true,
     "rootDir": "..",
     "removeComments": true,
-    "incremental": true
+    "incremental": true,
+    "resolveJsonModule": true
   },
   "include": [
     "./src/**/*.ts",

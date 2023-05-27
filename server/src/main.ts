@@ -21,6 +21,7 @@ import { Server as SocketIoServer } from "socket.io"
 import * as http from "http"
 import chalk from "chalk"
 import { __internalGetSessions, args } from "./index.js"
+import { IncomingMessage, ServerResponse, Server } from "http"
 
 export enum YourDashServerDiscoveryStatus {
   // eslint-disable-next-line no-unused-vars
@@ -321,7 +322,7 @@ app.get( "/panel/launcher/applications", async ( _req, res ) => {
     return new Promise( async resolve => {
       sharp( await fs.readFile( path.resolve(
         process.cwd(),
-        `./apps/${ app }/icon.avif`
+        `./src/apps/${ app }/icon.avif`
       ) ) ).resize( 98, 98 ).toBuffer( ( err, buf ) => {
         if ( err ) {
           resolve( { error: true } )
@@ -449,20 +450,20 @@ app.post( "/core/personal-server-accelerator/", async ( req, res ) => {
 } )
 
 new Promise<void>( async ( resolve, reject ) => {
-  if ( fsExistsSync( path.resolve( process.cwd(), "./apps/" ) ) ) {
-    const apps = await fs.readdir( path.resolve( process.cwd(), "./apps/" ) )
+  if ( fsExistsSync( path.resolve( process.cwd(), "./src/apps/" ) ) ) {
+    const apps = await fs.readdir( path.resolve( process.cwd(), "./src/apps/" ) )
     apps.forEach( appName => {
-      console.log( `loading application: ${ appName }` )
+      console.log( `[${ chalk.yellow.bold( "CORE" ) }]: loading application: ${ appName }` )
 
       // import and load all applications
       import(
         `file://${ path.resolve(
           process.cwd(),
-          `./apps/${ appName }/index.js`
+          `./src/apps/${ appName }/index.js`
         ) }`
       ).then( mod => {
         try {
-          mod.default( app )
+          mod.default( { app, io } )
         } catch ( err ) {
           reject( err )
         }
@@ -476,8 +477,8 @@ new Promise<void>( async ( resolve, reject ) => {
   }
 } ).then( () => {
   httpServer.listen( 3560, () => {
-    console.log( "server now listening on port 3560!" )
+    console.log( `[${ chalk.yellow.bold( "CORE" ) }]: server now listening on port 3560!` )
   } )
 } ).catch( err => {
-  console.error( "Error during server initialization: ", err )
+  console.error( `[${ chalk.yellow.bold( "CORE" ) }]: Error during server initialization: ${ err.toString() }` )
 } )

@@ -1,6 +1,7 @@
 import { Application as ExpressApplication } from "express"
 import { promises as fs } from "fs"
 import path from "path"
+import { Server as SocketServer } from "socket.io"
 
 interface YourDashApplicationFile {
   name: string;
@@ -37,18 +38,18 @@ class YourDashApplication {
   // Returns a Buffer containing the data for the application's icon
   getIcon(): Promise<Buffer> {
     try {
-      return fs.readFile( path.resolve( process.cwd(), `./apps/${ this.name }/icon.avif` ) )
+      return fs.readFile( path.resolve( process.cwd(), `./src/apps/${ this.name }/icon.avif` ) )
     } catch ( _e ) {
-      return fs.readFile( path.resolve( process.cwd(), "./assets/placeholder_application_icon.png" ) )
+      return fs.readFile( path.resolve( process.cwd(), "./src/assets/placeholder_application_icon.png" ) )
     }
   }
 
   // Returns a Buffer containing the data for the application's store page banner
   getStoreBackground(): Promise<Buffer> {
     try {
-      return fs.readFile( path.resolve( process.cwd(), "./assets/promoted_application_default_background.png" ) )
+      return fs.readFile( path.resolve( process.cwd(), "./src/assets/promoted_application_default_background.png" ) )
     } catch ( _e ) {
-      return fs.readFile( path.resolve( process.cwd(), "./assets/promoted_application_default_background.png" ) )
+      return fs.readFile( path.resolve( process.cwd(), "./src/assets/promoted_application_default_background.png" ) )
     }
   }
 
@@ -64,16 +65,16 @@ class YourDashApplication {
 
   // Returns the path to the application
   getPath(): string {
-    return path.resolve( process.cwd(), `./apps/${ this.name }/` )
+    return path.resolve( process.cwd(), `./src/apps/${ this.name }/` )
   }
 }
 
 // Returns an array of strings with the name of each application that exists ( installed or not )
 export async function getAllApplications(): Promise<string[]> {
   try {
-    return await fs.readdir( path.resolve( process.cwd(), "./apps/" ) )
+    return await fs.readdir( path.resolve( process.cwd(), "./src/apps/" ) )
   } catch ( _err ) {
-    console.log( "an issue reading the ./apps/ directory" )
+    console.log( "an issue reading the ./src/apps/ directory" )
     return []
   }
 }
@@ -91,7 +92,7 @@ export default class YourDashUnreadApplication {
     try {
       return new YourDashApplication(
         JSON.parse(
-          ( await fs.readFile( path.resolve( process.cwd(), `./apps/${ this.name }/application.json` ) ) )
+          ( await fs.readFile( path.resolve( process.cwd(), `./src/apps/${ this.name }/application.json` ) ) )
             .toString() || "{}" )
       )
     } catch ( _err ) {
@@ -101,10 +102,10 @@ export default class YourDashUnreadApplication {
 
   // Return the path to the application
   getPath(): string {
-    return path.resolve( process.cwd(), `./apps/${ this.name }/` )
+    return path.resolve( process.cwd(), `./src/apps/${ this.name }/` )
   }
 }
 
-type YourDashApplicationServerPlugin = ( _app: ExpressApplication ) => any;
+type YourDashApplicationServerPlugin = ( { app, io }: { app: ExpressApplication, io: SocketServer } ) => any;
 
 export { type YourDashApplicationServerPlugin }

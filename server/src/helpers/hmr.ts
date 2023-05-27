@@ -1,11 +1,10 @@
 import chokidar from "chokidar"
 
-export default function hmr( paths: string[], callback: () => void ) {
+export default function hmr( paths: string[], callback: ( event?: string ) => void ) {
   callback()
 
   chokidar.watch( paths )
     .on( "change", ( event, path ) => {
-      console.log( `[HMR]: ${event} changed` )
-      callback()
+      callback( event )
     } )
 }
