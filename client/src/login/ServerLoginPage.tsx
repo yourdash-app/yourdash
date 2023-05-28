@@ -181,7 +181,7 @@ const ServerLoginPage: React.FC = () => {
     if ( localStorage.getItem( "session_token" ) ) {
       navigate( "/app" )
     }
-  }, [] )
+  }, [navigate] )
 
   if ( !serverUrl ) {
     return null

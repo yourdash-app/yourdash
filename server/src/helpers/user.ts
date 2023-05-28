@@ -101,7 +101,7 @@ class YourDashUser {
     if ( !( await this.exists() ) ) {
       await fs.mkdir( this.getPath(), { recursive: true } )
       await fs.cp(
-        path.resolve( process.cwd(), "./assets/default_avatar.avif" ),
+        path.resolve( process.cwd(), "./src/assets/default_avatar.avif" ),
         path.resolve( this.getPath(), "avatar.avif" )
       )
       hash( "password" ).then( async response => {
@@ -140,13 +140,19 @@ class YourDashUser {
     return this
   }
 
+  setPermissions( permissions: YourDashUserPermissions[] ): this {
+    this.user.permissions = permissions
+
+    return this
+  }
+
   setName( name: { first: string; last: string } ): this {
     this.user.fullName = name
     return this
   }
 
-  getSessions(): IYourDashSession<any>[] {
-    return getSessionsForUser( this.username )
+  async getSessions(): Promise<IYourDashSession<any>[]> {
+    return JSON.parse( ( await fs.readFile( path.resolve( this.getPath(), "sessions.json" ) ) ).toString() )
   }
 
   getSession( sessionId: number ): YourDashSession<any> {
@@ -183,6 +189,10 @@ export default class YourDashUnreadUser {
           resolve( false )
         } )
     } )
+  }
+
+  async create( password: string, name: {first: string, last: string}, permissions: YourDashUserPermissions[] ) {
+    return new YourDashUser( this.username ).verifyUserConfig().setPassword( password ).setName( name ).setPermissions( permissions ).write()
   }
 
   async read() {

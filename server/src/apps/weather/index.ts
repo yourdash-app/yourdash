@@ -7,6 +7,7 @@ import { fetch } from "undici"
 import { type weatherForecast } from "../../../../shared/apps/weather/forecast.js"
 import { weatherStates } from "../../../../shared/apps/weather/weatherStates.js"
 import YourDashUser from "../../helpers/user.js"
+import { YourDashApplicationServerPlugin } from "../../helpers/applications.js"
 
 /**
  
@@ -84,9 +85,9 @@ function parseWeatherCodes( code: number ): weatherStates {
 
 const weatherForecastCache: { [ key: string ]: { cacheTime: Date; data: any } } = {}
 
-export default function main( app: ExpressApplication ) {
+const main: YourDashApplicationServerPlugin = ( { app } ) => {
   app.get( "/app/weather/location/:locationName", ( req, res ) => {
-    if ( req.params.locationName.indexOf( " " ) !== -1 ) {
+    if ( !req.params.locationName ) {
       return res.json( { error: true } )
     }
 
@@ -127,6 +128,7 @@ export default function main( app: ExpressApplication ) {
     if ( !req.params.id ) {
       return res.json( { error: true } )
     }
+
     const { username } = req.headers as { username: string }
 
     const user = new YourDashUser( username )
@@ -141,9 +143,13 @@ export default function main( app: ExpressApplication ) {
         } )
 
         try {
-          file = ( await fs.readFile(
-            path.resolve( user.getAppDataPath(), "weather/previous_locations.json" )
-          ) ).toString()
+          await fs.access( path.resolve( user.getAppDataPath(), "weather" ) )
+
+          file = (
+            await fs.readFile(
+              path.resolve( user.getAppDataPath(), "weather/previous_locations.json" )
+            )
+          ).toString() || "[]"
         } catch ( _err ) {
           file = "[]"
         }
@@ -160,7 +166,7 @@ export default function main( app: ExpressApplication ) {
 
         await fs.writeFile(
           path.resolve( user.getAppDataPath(), "weather/previous_locations.json" ),
-          JSON.stringify( parsedFile )
+          JSON.stringify( parsedFile || [] )
         )
 
         return res.json( cache.data )
@@ -303,3 +309,5 @@ export default function main( app: ExpressApplication ) {
       } )
   } )
 }
+
+export default main

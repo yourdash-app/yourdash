@@ -30,23 +30,37 @@ function __internalGetSessions() {
   return SESSIONS
 }
 
-export { args, __internalGetSessions }
-
-export enum YourDashServerDiscoveryStatus {
+const SESSION_TOKEN_LENGTH = 128
+enum YourDashServerDiscoveryStatus {
   // eslint-disable-next-line no-unused-vars
   MAINTENANCE, NORMAL, HIDDEN
 }
 
-export const SESSION_TOKEN_LENGTH = 128
+export { args, __internalGetSessions, SESSION_TOKEN_LENGTH, YourDashServerDiscoveryStatus }
 
 async function startupChecks() {
   // check if the filesystem exists
   if ( !fsExistsSync( path.resolve( process.cwd(), "./fs/" ) ) ) {
-    await fs.mkdir( path.resolve( process.cwd(), "./fs/" ) )
-    await fs.cp( path.resolve( process.cwd(), "./src/assets/default_avatar.avif" ), path.resolve( process.cwd(), "./fs/avatar.avif" ) )
-    await fs.cp( path.resolve( process.cwd(), "./src/assets/default_instance_logo.avif" ), path.resolve( process.cwd(), "./fs/instance_logo.avif" ) )
-    await fs.cp( path.resolve( process.cwd(), "./src/assets/default_login_background.avif" ), path.resolve( process.cwd(), "./fs/login_background.avif" ) )
-    await fs.mkdir( path.resolve( process.cwd(), "./fs/users/" ) )
+    await fs.mkdir(
+      path.resolve( process.cwd(),
+        "./fs/"
+      ) )
+    await fs.cp(
+      path.resolve( process.cwd(),
+        "./src/assets/default_avatar.avif" ), path.resolve( process.cwd(), "./fs/default_avatar.avif"
+      ) )
+    await fs.cp(
+      path.resolve( process.cwd(),
+        "./src/assets/default_instance_logo.avif" ), path.resolve( process.cwd(), "./fs/instance_logo.avif"
+      ) )
+    await fs.cp(
+      path.resolve( process.cwd(),
+        "./src/assets/default_login_background.avif" ), path.resolve( process.cwd(), "./fs/login_background.avif"
+      ) )
+    await fs.mkdir(
+      path.resolve( process.cwd(),
+        "./fs/users/"
+      ) )
 
     // generate all instance logos
     generateLogos()
@@ -59,11 +73,11 @@ async function startupChecks() {
   const adminUserUnread = new YourDashUnreadUser( "admin" )
 
   if ( !( await adminUserUnread.exists() ) ) {
-    const adminUser = await adminUserUnread.read()
-    adminUser.verifyUserConfig()
-    adminUser.addPermission( YourDashUserPermissions.Administrator )
-    adminUser.setName( { first: "Admin", last: "istrator" } )
-    await adminUser.write()
+    await adminUserUnread.create(
+      "password",
+      { first: "Admin", last: "istrator" },
+      [YourDashUserPermissions.Administrator]
+    )
   }
 }
 
@@ -91,7 +105,7 @@ io.use( async ( socket, next ) => {
     try {
       const user = await ( new YourDashUnreadUser( username ).read() )
 
-      __internalGetSessions()[username] = user.getSessions() || []
+      __internalGetSessions()[username] = ( await user.getSessions() ) || []
     } catch ( _err ) {
       return socket.disconnect()
     }
@@ -269,17 +283,17 @@ app.get( "/login/is-authenticated", async ( req, res ) => {
     return res.json( { error: true } )
   }
 
-  if ( !__internalGetSessions()[username] ) {
+  if ( !SESSIONS[username] ) {
     try {
       const user = await ( new YourDashUnreadUser( username ).read() )
 
-      __internalGetSessions()[username] = user.getSessions() || []
+      SESSIONS[username] = ( await user.getSessions() ) || []
     } catch ( _err ) {
       return res.json( { error: true } )
     }
   }
 
-  if ( __internalGetSessions()[username].find( session => session.sessionToken === token ) ) {
+  if ( SESSIONS[username].find( session => session.sessionToken === token ) ) {
     return res.json( { success: true } )
   }
   return res.json( { error: true } )
@@ -306,7 +320,7 @@ app.use( async ( req, res, next ) => {
     try {
       const user = await ( new YourDashUnreadUser( username ).read() )
 
-      __internalGetSessions()[username] = user.getSessions() || []
+      SESSIONS[username] = ( await user.getSessions() ) || []
     } catch ( _err ) {
       return res.json( { error: "authorization fail" } )
     }
@@ -428,7 +442,7 @@ app.get( "/core/personal-server-accelerator/sessions", async ( req, res ) => {
 
   const user = await ( new YourDashUnreadUser( username ).read() )
 
-  return res.json( { sessions: user.getSessions().filter( session => session.type === YourDashSessionType.desktop ) } )
+  return res.json( { sessions: ( await user.getSessions() ).filter( session => session.type === YourDashSessionType.desktop ) } )
 } )
 
 app.get( "/core/personal-server-accelerator/", async ( req, res ) => {
@@ -466,7 +480,7 @@ new Promise<void>( async ( resolve, reject ) => {
 
       // import and load all applications
       import(
-        `./src/apps/${ appName }/index.js`
+        `./apps/${ appName }/index.js`
       ).then( mod => {
         try {
           mod.default( { app, io } )
@@ -488,5 +502,3 @@ new Promise<void>( async ( resolve, reject ) => {
 } ).catch( err => {
   console.error( `[${ chalk.yellow.bold( "CORE" ) }]: Error during server initialization: ${ err.toString() }` )
 } )
-
-console.log( "Hello from YourDash HMR!!!" )

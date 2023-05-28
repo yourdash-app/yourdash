@@ -142,7 +142,7 @@ const PanelAuthorizer: React.FC = () => {
             console.clear()
           }, 1000 )
           localStorage.removeItem( "session_token" )
-          navigate( "/login" )
+          navigate( "/login/server" )
         }
       )
     }

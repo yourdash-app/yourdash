@@ -1,10 +1,9 @@
-import { Application as ExpressApplication } from "express"
 import { PromotedApplication } from "../../../../shared/apps/store/promotedApplication.js"
-import YourDashUnreadApplication, { getAllApplications } from "../../helpers/applications.js"
+import YourDashUnreadApplication, { getAllApplications, YourDashApplicationServerPlugin } from "../../helpers/applications.js"
 
 const promotedApplications: string[] = ["dash", "store"]
 
-export default function main( app: ExpressApplication ) {
+const main: YourDashApplicationServerPlugin = ( { app } ) => {
   app.get( "/app/store/promoted/applications", ( _req, res ) => {
     Promise.all(
       promotedApplications.map( async ( app ): Promise<PromotedApplication> => {
@@ -33,3 +32,5 @@ export default function main( app: ExpressApplication ) {
     return res.json( Object.keys( categories ) )
   } )
 }
+
+export default main

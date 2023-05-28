@@ -1,3 +1,7 @@
-export default function init() {
-  return console.log( "hello world from the 'photos' app" )
+import { YourDashApplicationServerPlugin } from "../../helpers/applications.js"
+
+const main: YourDashApplicationServerPlugin = () => {
+  console.log( "Photos application" )
 }
+
+export default main

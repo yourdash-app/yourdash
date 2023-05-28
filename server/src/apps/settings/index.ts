@@ -1,7 +1,8 @@
 import { Application as ExpressApplication } from "express"
 import YourDashPanel from "../../helpers/panel.js"
+import { YourDashApplicationServerPlugin } from "../../helpers/applications.js"
 
-export default function main( app: ExpressApplication ) {
+const main: YourDashApplicationServerPlugin = ( { app } ) => {
   app.post( "/app/settings/panel/position", ( req, res ) => {
     const { username } = req.headers as { username: string }
     const { position } = req.body
@@ -24,3 +25,5 @@ export default function main( app: ExpressApplication ) {
     return res.json( { success: true } )
   } )
 }
+
+export default main

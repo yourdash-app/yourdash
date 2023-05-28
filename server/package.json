@@ -46,6 +46,6 @@
     "compile": "tsc",
     "start": "node ./src/index.js",
     "dev": "node ./src/index.js --dev",
-    "nodemon-start": "nodemon ./src/main.js"
+    "nodemon-start": "nodemon --signal SIGINT ./src/main.js"
   }
 }
