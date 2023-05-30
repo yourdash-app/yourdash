@@ -8,3 +8,7 @@ export function generateLogos() {
     .toFile( path.resolve( process.cwd(), "./fs/logo_panel_small.avif" ) )
     .catch( err => console.error( err ) )
 }
+
+export function getInstanceLogoBase64(): string {
+  return fs.readFileSync( path.resolve( process.cwd(), "./fs/instance_logo.avif" ) ).toString( "base64" )
+}

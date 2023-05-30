@@ -62,14 +62,20 @@
     --container-bg: var(--base-700);
     --container-fg: var(--base-50);
     --container-border: var(--base-600);
+    --container-padding: 0.5rem;
+    --container-rounding: 1rem;
 
     --container-secondary-bg: var(--base-800);
     --container-secondary-fg: var(--base-100);
     --container-secondary-border: var(--base-700);
+    --container-secondary-padding: 0.25rem;
+    --container-secondary-rounding: 0.5rem;
 
     --container-tertiary-bg: var(--base-900);
     --container-tertiary-fg: var(--base-200);
     --container-tertiary-border: var(--base-800);
+    --container-tertiary-padding: 0.1rem;
+    --container-tertiary-rounding: 0.25rem;
 
     --button-rounding: 0.5rem;
     --button-bg: var(--base-600);

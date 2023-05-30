@@ -66,9 +66,10 @@ if ( args.dev ) {
     if ( data.toString().indexOf( "to restart at any time, enter" ) !== -1 ) {
       return
     }
-    if ( data.toString().indexOf( "$ nodemon ./src/main.js" ) !== -1 ) {
-      return
+    if ( data.toString().indexOf( "restarting due to changes..." ) !== -1 ) {
+      return process.stdout.write( `${ chalk.reset( "[" ) }${ chalk.magenta.bold( "HMR" ) }]: ----------------------------------------------------------------------------------------------------\n` )
     }
+
     let output = data.toString()
 
     output = output.replaceAll( "\x1Bc", "" )

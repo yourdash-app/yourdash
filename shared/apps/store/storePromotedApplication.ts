@@ -1,4 +1,4 @@
-export interface PromotedApplication {
+export interface StorePromotedApplication {
   name: string,
   icon: string,
   backgroundImage: string,

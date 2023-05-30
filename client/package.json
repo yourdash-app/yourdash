@@ -27,7 +27,6 @@
     "eslint-plugin-jsx-a11y": "^6.7.1",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "helpers": "./src/helpers/",
     "path-browserify": "^1.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -35,9 +34,11 @@
     "react-router-dom": "^6.10.0",
     "sass": "^1.60.0",
     "socket.io-client": "^4.6.1",
-    "ui": "./src/ui/",
     "vite-bundle-visualizer": "^0.6.0",
-    "vite-plugin-mkcert": "^1.14.0"
+    "vite-plugin-mkcert": "^1.14.0",
+    "helpers": "./src/helpers/",
+    "ui": "./src/ui/",
+    "shared": "../shared/"
   },
   "devDependencies": {
     "@types/react": "^18.0.33",

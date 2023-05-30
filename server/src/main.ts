@@ -476,13 +476,14 @@ new Promise<void>( async ( resolve, reject ) => {
   if ( fsExistsSync( path.resolve( process.cwd(), "./src/apps/" ) ) ) {
     const apps = await fs.readdir( path.resolve( process.cwd(), "./src/apps/" ) )
     apps.forEach( appName => {
-      console.log( `[${ chalk.yellow.bold( "CORE" ) }]: loading application: ${ appName }` )
+      // console.log( `[${ chalk.bold.yellow.inverse( "CORE" ) }]: loading application: ${ appName }` )
 
       // import and load all applications
       import(
         `./apps/${ appName }/index.js`
       ).then( mod => {
         try {
+          console.log( `Loading application: ${appName}` )
           mod.default( { app, io } )
         } catch ( err ) {
           reject( err )

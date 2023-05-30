@@ -25,34 +25,32 @@ const DocsRouter = loadable( () => {
 } )
 
 ReactDOM.createRoot( document.getElementById( "root" ) as HTMLElement ).render(
-  <React.StrictMode>
-    <RightClickMenuRootContainer>
-      <RouterProvider
-        router={ createHashRouter(
-          createRoutesFromElements(
-            <Route errorElement={ <ErrorElement/> }>
-              <Route index element={ <Root/> }/>
-              <Route path={ "/signup" } element={ <ComingSoon/> }/>
-              <Route path={ "/login" }>
-                <Route index element={ <LoginPage/> }/>
-                <Route path={ "server" } element={ <ServerLoginPage/> }/>
-              </Route>
-              <Route path={ "app" }>
-                <Route element={ <AppLayout/> }>
-                  <Route index element={ <ApplicationRedirectToDash/> }/>
-                  <Route
-                    path={ "a/*" }
-                    element={ <AppRouter/> }
-                  />
-                </Route>
-              </Route>
-              <Route path={ "docs/*" } element={ <DocsLayout/> }>
-                <Route path={ "*" } element={ <DocsRouter/> }/>
+  <RightClickMenuRootContainer>
+    <RouterProvider
+      router={ createHashRouter(
+        createRoutesFromElements(
+          <Route errorElement={ <ErrorElement/> }>
+            <Route index element={ <Root/> }/>
+            <Route path={ "/signup" } element={ <ComingSoon/> }/>
+            <Route path={ "/login" }>
+              <Route index element={ <LoginPage/> }/>
+              <Route path={ "server" } element={ <ServerLoginPage/> }/>
+            </Route>
+            <Route path={ "app" }>
+              <Route element={ <AppLayout/> }>
+                <Route index element={ <ApplicationRedirectToDash/> }/>
+                <Route
+                  path={ "a/*" }
+                  element={ <AppRouter/> }
+                />
               </Route>
             </Route>
-          )
-        ) }
-      />
-    </RightClickMenuRootContainer>
-  </React.StrictMode>
+            <Route path={ "docs/*" } element={ <DocsLayout/> }>
+              <Route path={ "*" } element={ <DocsRouter/> }/>
+            </Route>
+          </Route>
+        )
+      ) }
+    />
+  </RightClickMenuRootContainer>
 )

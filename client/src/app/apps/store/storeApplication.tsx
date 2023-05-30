@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react"
-import { PromotedApplication } from "../../../../../shared/apps/store/promotedApplication"
+import { StorePromotedApplication } from "../../../../../shared/apps/store/storePromotedApplication"
 import csi from "../../../helpers/csi"
 import { Card, Carousel, MajorButton } from "../../../ui"
+import { useNavigate } from "react-router-dom"
 
 const StoreApplication: React.FC = () => {
-  const [promotedApplications, setPromotedApplications] = useState<PromotedApplication[]>( [] )
+  const navigate = useNavigate()
+  const [promotedApplications, setPromotedApplications] = useState<StorePromotedApplication[]>( [] )
   const [categories, setCategories] = useState<string[]>( [] )
 
   useEffect( () => {
@@ -43,7 +45,14 @@ const StoreApplication: React.FC = () => {
       <section className={ "p-4 grid grid-cols-5 gap-2" }>
         {
           categories.map( category => {
-            return <Card key={ category }>{category}</Card>
+            return (
+              <Card
+                key={ category }
+                onClick={ () => {
+                  navigate( `/app/a/store/cat/${category}` )
+                } }
+              >{category}</Card>
+            )
           } )
         }
       </section>
