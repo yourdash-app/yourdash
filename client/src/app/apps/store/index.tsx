@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router"
 import StoreApplication from "./storeApplication"
 import ComingSoon from "../../../ComingSoon"
 import StoreCategoryPage from "./category/StoreCategoryPage"
+import StoreApplicationPage from "./application/StoreApplicationPage"
 
 const StoreRouter: React.FC = () => {
   return (
@@ -18,7 +19,7 @@ const StoreRouter: React.FC = () => {
       </Route>
       <Route path={ "app" }>
         <Route index element={ <ComingSoon/> }/>
-        <Route path={ ":id" } element={ <StoreApplication/> }/>
+        <Route path={ ":id" } element={ <StoreApplicationPage/> }/>
       </Route>
     </Routes>
   )

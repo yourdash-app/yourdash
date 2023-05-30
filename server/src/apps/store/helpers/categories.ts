@@ -19,5 +19,5 @@ export async function getAllApplicationsFromCategory( category: string ): Promis
 
   const results = await Promise.all( applications.map( async application => await ( new YourDashUnreadApplication( application ).read() ) ) )
 
-  return results.filter( app => app.getCategory() === category )
+  return results.filter( app => app.getCategory() === category ).map( app => app.getName() )
 }

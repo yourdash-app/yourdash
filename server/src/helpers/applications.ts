@@ -2,19 +2,13 @@ import { Application as ExpressApplication } from "express"
 import { promises as fs } from "fs"
 import path from "path"
 import { Server as SocketServer } from "socket.io"
-
-interface YourDashApplicationFile {
-  name: string;
-  displayName: string;
-  description: string;
-  category: string
-}
+import { type IYourDashApplication } from "../../../shared/core/application.js"
 
 class YourDashApplication {
   private readonly name: string
-  private application: YourDashApplicationFile
+  private application: IYourDashApplication
 
-  constructor( application: YourDashApplicationFile ) {
+  constructor( application: IYourDashApplication ) {
     this.name = application.name
     this.application = application
     return this
@@ -67,6 +61,10 @@ class YourDashApplication {
   getPath(): string {
     return path.resolve( process.cwd(), `./src/apps/${ this.name }/` )
   }
+
+  getRawApplicationData(): IYourDashApplication {
+    return this.application
+  }
 }
 
 // Returns an array of strings with the name of each application that exists ( installed or not )
@@ -97,6 +95,16 @@ export default class YourDashUnreadApplication {
       )
     } catch ( _err ) {
       return null
+    }
+  }
+
+  async exists(): Promise<boolean> {
+    // check if the application exists in the ./src/apps/ directory
+    try {
+      await fs.readFile( path.resolve( process.cwd(), `./src/apps/${ this.name }/application.json` ) )
+      return true
+    } catch ( _err ) {
+      return false
     }
   }
 

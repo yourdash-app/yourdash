@@ -3,6 +3,7 @@ import YourDashUnreadApplication, { getAllApplications, YourDashApplicationServe
 import { IStoreCategory } from "../../../../shared/apps/store/storeCategory.js"
 import getAllCategories, { getAllApplicationsFromCategory } from "./helpers/categories.js"
 import { getInstanceLogoBase64 } from "../../helpers/logo.js"
+import { IYourDashApplication } from "../../../../shared/core/application.js"
 
 const promotedApplications: string[] = ["dash", "store"]
 
@@ -45,7 +46,7 @@ const main: YourDashApplicationServerPlugin = ( { app } ) => {
     const categories = await getAllCategories()
 
     if ( !categories.includes( id ) ) {
-      return res.json( { error: `unknown category ${id}` } )
+      return res.json( { error: `unknown category ${ id }` } )
     }
 
     const categoryApplications = await getAllApplicationsFromCategory( id )
@@ -71,6 +72,27 @@ const main: YourDashApplicationServerPlugin = ( { app } ) => {
       displayName: id.slice( 0, 1 ).toUpperCase() + id.slice( 1 ),
       promotedApplications,
       bannerImage: `data:image/avif;base64,${ getInstanceLogoBase64() }`
+    } )
+  } )
+
+  app.get( "/app/store/application/:id", async ( req, res ) => {
+    const { id } = req.params
+
+    if ( !id ) {
+      return res.json( { error: true } )
+    }
+
+    const unreadApplication = await new YourDashUnreadApplication( id )
+
+    if ( !( await unreadApplication.exists() ) ) {
+      return res.json( { error: true } )
+    }
+
+    const application = ( await unreadApplication.read() )
+
+    return res.json( {
+      ...application.getRawApplicationData(),
+      icon: `data:image/avif;base64,${ ( await application.getIcon() ).toString( "base64" ) }`
     } )
   } )
 }
