@@ -193,7 +193,7 @@ const Panel: React.FC<IPanel> = ( { side, setSide } ) => {
           borderRight: "0.1rem solid var(--application-panel-border)"
         } ),
         ...( side === PanelPosition.right && {
-          borderLeft: "1",
+          borderLeft: "0.1rem solid var(--application-panel-border)",
           gridRowEnd: -1,
           gridColumnStart: 2
         } ),

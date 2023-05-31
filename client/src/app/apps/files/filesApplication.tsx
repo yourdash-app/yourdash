@@ -71,7 +71,7 @@ const FilesApplication: React.FC = () => {
                   } }
                   className={
                     clippy(
-                      "pl-2 pr-2 pt-0.5 pb-0.5 text-left transition-colors rounded-none [transition:var(--transition)] hover:[transition:var(--transition-fast)] flex items-center w-full",
+                      "pl-2 pr-2 pt-0.5 pb-0.5 h-[unset] text-left transition-colors rounded-none [transition:var(--transition)] hover:[transition:var(--transition-fast)] flex items-center w-full",
                     )
                   }
                 >

@@ -50,7 +50,7 @@ const LauncherGridView: React.FC<ILauncherGridView> = ( { applications, setVisib
             if ( searchValue !== "" ) {
               if (
                 !app.description.includes( searchValue ) &&
-                    !app.name.includes( searchValue )
+                !app.name.includes( searchValue )
               ) {
                 return null
               }

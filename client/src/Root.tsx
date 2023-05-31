@@ -133,7 +133,7 @@ const Root: React.FC = () => {
             navigate( "/docs/get-started" )
           } }
           >
-            Get Startedf
+            Get Started
           </MajorButton>
           <span className={ "text-xs text-gray-400 absolute top-full mt-2" }>
             *On linux devices only

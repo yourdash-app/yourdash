@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { useParams, useNavigate } from "react-router-dom"
-import { IconButton, Spinner, Card } from "../../../../ui"
+import { IconButton, Spinner, Card, Button } from "../../../../ui"
 import csi from "../../../../helpers/csi"
 import { IYourDashApplication } from "../../../../../../shared/core/application"
 
@@ -38,7 +38,7 @@ const StoreApplicationPage: React.FC = () => {
         <IconButton
           icon={ "arrow-left-16" }
           onClick={ () => {
-            navigate( "/app/a/store/" )
+            navigate( `/app/a/store/cat/${appData?.category}` )
           } }
         />
         <h1 className={ "text-3xl font-semibold tracking-wide" }>YourDash Store | { appData?.displayName }</h1>
@@ -53,23 +53,26 @@ const StoreApplicationPage: React.FC = () => {
             )
             : appData && (
               <>
-                <header className={ "flex flex-col w-full bg-container-bg p-2 gap-4" }>
-                  <img className={ "w-full h-64 aspect-square" } src={ appData.icon } alt=""/>
-                  <section className={ "flex items-center text-4xl font-semibold tracking-wide p-2 gap-4 max-w-[50rem] w-full ml-auto mr-auto" }>
-                    <img className={ "w-24 aspect-square" } src={ appData.icon } alt=""/>
-                    <h1 className={ "mr-auto" }>{ appData.displayName }</h1>
+                <header className={ "flex flex-col w-full bg-container-bg gap-4" }>
+                  <img className={ "w-full h-64 aspect-square select-none" } src={ appData.icon } draggable={ false } alt=""/>
+                  <section className={ "flex items-center p-4 gap-4 max-w-[50rem] w-full ml-auto mr-auto" }>
+                    <img className={ "w-24 aspect-square select-none" } src={ appData.icon } draggable={ false } alt=""/>
+                    <h1 className={ "text-4xl font-semibold tracking-wide mr-auto" }>{ appData.displayName }</h1>
                     <div className={ "flex gap-2" }>
+                      <Button>Install</Button>
                       <IconButton icon={ "link-external-16" }/>
                     </div>
                   </section>
                 </header>
-                <Card>
-                  { appData.description }
-                </Card>
-                <Card>
-                  <div>Category: { appData.category }</div>
-                  <div>ID: { appData.name }</div>
-                </Card>
+                <main className={ "p-4 flex flex-col gap-2 max-w-[50rem] w-full ml-auto mr-auto" }>
+                  <Card>
+                    { appData.description }
+                  </Card>
+                  <Card>
+                    <div>Category: { appData.category }</div>
+                    <div>ID: { appData.name }</div>
+                  </Card>
+                </main>
               </>
             )
         }

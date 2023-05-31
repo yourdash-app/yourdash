@@ -1,8 +1,9 @@
 import clippy from "helpers/clippy"
-import React, { useState } from "react"
+import React, { useState, FocusEventHandler } from "react"
 
 export interface ITextInput {
   onChange: ( text: string ) => void;
+  onBlur?: FocusEventHandler<HTMLInputElement>;
   label?: string;
   mustMatchRegex?: RegExp;
   placeholder?: string;
@@ -13,6 +14,7 @@ export interface ITextInput {
 
 const TextInput: React.FC<ITextInput> = ( {
   onChange,
+  onBlur,
   label,
   mustMatchRegex,
   placeholder,
@@ -39,6 +41,7 @@ const TextInput: React.FC<ITextInput> = ( {
             : "border-2 border-base-600"
         }` }
         type={ "text" }
+        onBlur={ onBlur }
         onKeyDown={ e => {
           return onKeyDown?.( e )
         } }

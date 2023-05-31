@@ -59,17 +59,19 @@ const RightClickMenuRootContainer: React.FC<{ children: React.ReactNode }> = ( {
         } }
         className={ styles.component }
       >
-        {items.map( item => (
-          <button
-            type="button"
-            onClick={ item.onClick }
-            key={ item.name }
-            /* eslint-disable-next-line jsx-a11y/tabindex-no-positive */
-            tabIndex={ 2 }
-          >
-            {item.name}
-          </button>
-        ) )}
+        {items.map( item => {
+          return (
+            <button
+              type="button"
+              onClick={ item.onClick }
+              key={ item.name }
+              /* eslint-disable-next-line jsx-a11y/tabindex-no-positive */
+              tabIndex={ 2 }
+            >
+              {item.name}
+            </button>
+          )
+        } )}
       </div>
       {children}
     </RightClickMenuContext.Provider>

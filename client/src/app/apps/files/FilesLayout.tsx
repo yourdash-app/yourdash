@@ -1,6 +1,6 @@
 import path from "path-browserify"
 import React, { useState } from "react"
-import { Button } from "../../../ui"
+import { Button, MajorButton } from "../../../ui"
 
 export interface IFilesLayout {
   children: React.ReactNode;
@@ -24,6 +24,10 @@ const FilesLayout: React.FC<IFilesLayout> = ( { children } ) => {
         </h1>
 
         <div className={ "flex flex-col gap-1" }>
+          <div className={ "w-full border-t-[1px] border-t-container-border" }/>
+          <MajorButton>Create</MajorButton>
+          <Button>Upload</Button>
+          <div className={ "w-full border-t-[1px] border-t-container-border" }/>
           <h2 className={ "pl-2 pr-2 pb-0.5 pt-2" }>Shortcuts</h2>
           {
             sidebarShortcuts

@@ -17,7 +17,7 @@ export default function startPsaBackend( wsInstanceUrl: string, restInstanceUrl:
   .then( ( sessionTokenResponse: any ) => {
     const io = socketIoClient( wsInstanceUrl, {
       query: {
-        username: username, sessionToken: sessionTokenResponse.token
+        username: username, sessionToken: sessionTokenResponse.token, sessionId: sessionTokenResponse.id
       }
     } )
     

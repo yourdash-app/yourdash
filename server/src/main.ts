@@ -86,7 +86,14 @@ await startupChecks()
 const app = express()
 const httpServer = http.createServer( app )
 const io = new SocketIoServer( httpServer )
-const activeSockets = new Map<string, string>()
+const activeSockets = new Map<{id: string, token: string}, string>()
+
+process.on( "SIGINT", () => {
+  httpServer.close( () => {
+    // eslint-disable-next-line no-process-exit
+    process.exit( 0 )
+  } )
+} )
 
 export { io, activeSockets }
 
@@ -120,7 +127,7 @@ io.use( async ( socket, next ) => {
 } )
 
 io.on( "connection", socket => {
-  activeSockets.set( socket.handshake.query.sessionToken as string, socket.id )
+  activeSockets.set( { id: socket.handshake.query.id as string, token: socket.handshake.query.sessionToken as string }, socket.id )
 
   socket.on( "execute-command-response", output => {
     console.log( output )
@@ -257,7 +264,7 @@ app.post( "/login/user/:username/authenticate", async ( req, res ) => {
             ? YourDashSessionType.desktop
             : YourDashSessionType.web
         )
-        return res.json( { token: session.sessionToken } )
+        return res.json( { token: session.sessionToken, id: session.id } )
       } else {
         return res.json( { error: true } )
       }
@@ -423,7 +430,7 @@ app.get( "/core/sessions", async ( req, res ) => {
 
   const user = await ( new YourDashUnreadUser( username ).read() )
 
-  return res.json( { sessions: user.getSessions() } )
+  return res.json( { sessions: await user.getSessions() } )
 } )
 
 app.delete( "/core/session/:id", async ( req, res ) => {
@@ -472,34 +479,36 @@ app.post( "/core/personal-server-accelerator/", async ( req, res ) => {
   return res.json( { success: true } )
 } )
 
-new Promise<void>( async ( resolve, reject ) => {
-  if ( fsExistsSync( path.resolve( process.cwd(), "./src/apps/" ) ) ) {
-    const apps = await fs.readdir( path.resolve( process.cwd(), "./src/apps/" ) )
-    apps.forEach( appName => {
+try {
+  await new Promise<void>( async ( resolve, reject ) => {
+    if ( fsExistsSync( path.resolve( process.cwd(), "./src/apps/" ) ) ) {
+      const apps = await fs.readdir( path.resolve( process.cwd(), "./src/apps/" ) )
+      apps.forEach( appName => {
       // console.log( `[${ chalk.bold.yellow.inverse( "CORE" ) }]: loading application: ${ appName }` )
 
-      // import and load all applications
-      import(
-        `./apps/${ appName }/index.js`
-      ).then( mod => {
-        try {
-          console.log( `Loading application: ${appName}` )
-          mod.default( { app, io } )
-        } catch ( err ) {
-          reject( err )
-        }
-      } ).catch( err => {
-        console.error( `Error while loading application: ${ appName }`, err )
+        // import and load all applications
+        import(
+          `./apps/${ appName }/index.js`
+        ).then( mod => {
+          try {
+            console.log( `Loading application: ${appName}` )
+            mod.default( { app, io } )
+          } catch ( err ) {
+            reject( err )
+          }
+        } ).catch( err => {
+          console.error( `Error while loading application: ${ appName }`, err )
+        } )
       } )
-    } )
-    resolve()
-  } else {
-    resolve()
-  }
-} ).then( () => {
-  httpServer.listen( 3560, () => {
-    console.log( `[${ chalk.yellow.bold( "CORE" ) }]: server now listening on port 3560!` )
+      resolve()
+    } else {
+      resolve()
+    }
   } )
-} ).catch( err => {
+} catch ( err ) {
   console.error( `[${ chalk.yellow.bold( "CORE" ) }]: Error during server initialization: ${ err.toString() }` )
+}
+
+httpServer.listen( 3560, () => {
+  console.log( `[${ chalk.yellow.bold( "CORE" ) }]: server now listening on port 3560!` )
 } )
