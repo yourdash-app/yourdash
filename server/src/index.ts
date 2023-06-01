@@ -48,7 +48,7 @@ if ( args.dev || args.compile ) {
 }
 
 if ( args.dev ) {
-  const childProcess = exec( `yarn run nodemon-start -- ${process.argv.slice( 2 ).toString()}` )
+  const childProcess = exec( `yarn nodemon-start -- --color=full ${process.argv.slice( 2 ).toString()}` )
 
   childProcess.stdout.on( "data", data => {
     if ( data.toString().indexOf( "2.0.22" ) !== -1 ) {
@@ -67,16 +67,16 @@ if ( args.dev ) {
       return
     }
     if ( data.toString().indexOf( "restarting due to changes..." ) !== -1 ) {
-      return process.stdout.write( `${ chalk.reset( "[" ) }${ chalk.magenta.bold( "HMR" ) }]: ----------------------------------------------------------------------------------------------------\n` )
+      return process.stdout.write( `${ chalk.reset( "[" ) }${ chalk.magenta.bold( "HMR" ) }]: ----------------------------------------------------------------------------------------------------\n${chalk.reset( "" )}` )
     }
 
-    let output = data.toString()
-
-    output = output.replaceAll( "\x1Bc", "" )
-
-    output = output.replaceAll( "[nodemon] ", `${ chalk.reset( "[" ) }${ chalk.magenta.bold( "HMR" ) }]: ` )
+    let output = data
 
     if ( output.indexOf( "[nodemon]" ) !== -1 ) {
+      output = output.replaceAll( "\x1Bc", "" )
+
+      output = output.replaceAll( "[nodemon] ", `${ chalk.reset( "[" ) }${ chalk.magenta.bold( "HMR" ) }]: ` )
+
       output = output.replaceAll( "\n", "" )
     }
 
@@ -88,13 +88,13 @@ if ( args.dev ) {
       return
     }
 
-    let output = data.toString()
-
-    output = output.replaceAll( "\x1Bc", "" )
-
-    output = output.replaceAll( "[nodemon] ", `${ chalk.reset( "[" ) }${ chalk.magenta.bold( "HMR ERROR" ) }]: ` )
+    let output = data
 
     if ( output.indexOf( "[nodemon]" ) !== -1 ) {
+      output = output.replaceAll( "\x1Bc", "" )
+
+      output = output.replaceAll( "[nodemon] ", `${ chalk.reset( "[" ) }${ chalk.magenta.bold( "HMR ERROR" ) }]: ` )
+
       output = output.replaceAll( "\n", "" )
     }
 

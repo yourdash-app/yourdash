@@ -491,7 +491,7 @@ try {
           `./apps/${ appName }/index.js`
         ).then( mod => {
           try {
-            console.log( `Loading application: ${appName}` )
+            console.log( `[${ chalk.yellow.bold( "CORE" ) }]: Loading application: ${appName}` )
             mod.default( { app, io } )
           } catch ( err ) {
             reject( err )
