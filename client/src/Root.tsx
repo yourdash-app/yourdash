@@ -20,7 +20,7 @@ const Root: React.FC = () => {
   }, [taglineInd] )
 
   return (
-    <main className={ "bg-base-900 min-h-screen h-full" }>
+    <main className={ "bg-base-900 min-h-screen h-full overflow-y-auto" }>
       <Header/>
       <section
         className={ "animate__animated animate__fadeIn w-full h-[30rem] overflow-hidden relative bg-base-800 [clip-path:_polygon(0_0,_100%_0%,_100%_85%,_0%_100%);] grid md:grid-cols-2 grid-cols-1 gap-10 pb-4" }
@@ -153,7 +153,7 @@ const Root: React.FC = () => {
           <h1 className={ "font-medium text-2xl tracking-wide" }>Open sourced</h1>
         </Card>
       </section>
-      <section className={ "flex items-center justify-center text-5xl font-bold pt-16 tracking-wide" }>
+      <section className={ "flex items-center justify-center text-5xl font-bold pt-16 pb-16 tracking-wide" }>
         Coming soon...
       </section>
     </main>
