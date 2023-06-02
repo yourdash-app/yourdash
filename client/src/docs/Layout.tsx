@@ -10,6 +10,7 @@ const DocsLayout: React.FC = () => {
       <Header/>
       <main className={ "grid grid-cols-[auto,1fr] h-full w-full" }>
         <SideBar
+          expandedByDefault
           title={ "YourDash Docs" }
           items={ [
             {

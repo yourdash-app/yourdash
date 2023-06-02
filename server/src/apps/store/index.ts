@@ -3,7 +3,6 @@ import YourDashUnreadApplication, { getAllApplications, YourDashApplicationServe
 import { IStoreCategory } from "../../../../shared/apps/store/storeCategory.js"
 import getAllCategories, { getAllApplicationsFromCategory } from "./helpers/categories.js"
 import { getInstanceLogoBase64 } from "../../helpers/logo.js"
-import { IYourDashApplication } from "../../../../shared/core/application.js"
 
 const promotedApplications: string[] = ["dash", "store"]
 
