@@ -10,12 +10,12 @@ const SettingsApplication: React.FC = () => {
       <h1
         className={ "font-bold text-container-fg text-4xl tracking-wide pb-4 pt-4 pl-6 pr-6 bg-container-bg" }
       >
-        YourDash Settings
+        YourDash Settings | Panel
       </h1>
       <main className={ "ml-auto mr-auto w-full max-w-5xl" }>
         <SettingsSectionPanelPosition/>
         <section className={ "p-4" }>
-          {/* TODO: add icons to the buttons ( left, top, right, bottom ) */}
+          {/* TODO: improve the design of the position button icons */}
           <h2
             className={ "text-container-fg font-semibold text-3xl w-min whitespace-nowrap pb-4" }
           >
@@ -69,7 +69,7 @@ const SettingsApplication: React.FC = () => {
           </div>
         </section>
         <section className={ "p-4" }>
-          {/* TODO: add icons to the buttons ( left, top, right, bottom ) */}
+          {/* TODO: add launcher icons ( slide out, pop out ) */}
           <h2
             className={ "text-container-fg font-semibold text-3xl w-min whitespace-nowrap pb-4" }
           >

@@ -23,7 +23,7 @@ const LauncherGridView: React.FC<ILauncherGridView> = ( { applications, setVisib
             gap-3
             pl-2
             pr-2
-            child:rounded-xl
+            child:rounded-button-rounding
             child:bg-button-bg
             child-hover:bg-button-hover-bg
             child-active:bg-button-active-bg

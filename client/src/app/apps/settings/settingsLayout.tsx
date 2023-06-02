@@ -11,13 +11,18 @@ const SettingsLayout: React.FC = () => {
         title={ "YourDash Settings" }
         items={ [
           {
-            icon: "yourdash-logo", label: "Panel", onClick() {
+            icon: "app-launcher-16", label: "Panel", onClick() {
               navigate( "/app/a/settings/" )
             }
           },
           {
-            icon: "yourdash-logo", label: "Sessions", onClick() {
+            icon: "device-mobile-16", label: "Sessions", onClick() {
               navigate( "/app/a/settings/session" )
+            }
+          },
+          {
+            icon: "tools-16", label: "Developer", onClick() {
+              navigate( "/app/a/settings/developer" )
             }
           }
         ] }

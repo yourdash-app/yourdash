@@ -4,7 +4,7 @@
 
 .title {
   margin: 0;
-  color: rgb(var(--sidebar-fg));
+  color: rgb(var(--container-fg));
 }
 
 .titleContainer {
@@ -47,7 +47,7 @@
   transition: var(--transition);
   color: rgb(var(--button-fg));
   border: none;
-  border-radius: 0.5rem;
+  border-radius: var(--button-rounding);
   background-color: transparent;
   gap: 0.5rem;
 

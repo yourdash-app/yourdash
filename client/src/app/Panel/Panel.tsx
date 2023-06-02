@@ -70,10 +70,10 @@ const PanelQuickShortcuts: React.FC<{ num: number; side: PanelPosition }> = ( { 
               />
               <span
                 className={ clippy(
-                  "absolute z-50 pl-2 pr-2 pt-0.5 pb-0.5 bg-container-bg rounded-lg" +
+                  "absolute z-50 pl-2 pr-2 pt-0.5 pb-0.5 bg-container-secondary-bg rounded-container-rounding" +
                   " pointer-events-none group-hover:opacity-100 opacity-0" +
                   " group-hover:[transition:var(--transition-fast)] shadow-lg" +
-                  " [transition:var(--transition)]",
+                  " [transition:var(--transition)] whitespace-nowrap",
                   side === PanelPosition.left &&
                   "ml-4 left-full top-1/2 -translate-y-1/2",
                   side === PanelPosition.top &&

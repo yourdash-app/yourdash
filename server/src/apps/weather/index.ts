@@ -95,7 +95,9 @@ const main: YourDashApplicationServerPlugin = ( { app } ) => {
       `https://geocoding-api.open-meteo.com/v1/search?name=${ req.params.locationName }&language=en&count=5&format=json`
     )
       .then( resp => resp.json() )
-      .then( json => res.json( json ) )
+      .then( json => {
+        res.json( json )
+      } )
       .catch( () => {
         console.log( "Failed to fetch weather data from open-meteo" )
         return res.json( { error: true } )

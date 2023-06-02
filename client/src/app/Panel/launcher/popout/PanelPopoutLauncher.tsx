@@ -87,7 +87,7 @@ const PanelApplicationLauncherPopOut: React.FC<{
         bg-container-bg
         w-[36rem]
         max-h-[80rem]
-        rounded-xl
+        rounded-container-rounding
         [border:solid_0.1rem_var(--application-panel-border)]
         animate__animated
         animate__faster

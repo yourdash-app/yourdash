@@ -6,7 +6,7 @@
   transition: var(--transition);
   color: rgb(var(--container-fg));
   border: none;
-  border-radius: var(--card-rounding);
+  border-radius: var(--container-rounding);
   background-color: rgb(var(--container-bg));
   box-shadow: 0 0 0.5rem #00000044;
 
@@ -21,7 +21,7 @@
   transition: var(--transition);
   color: rgb(var(--container-fg));
   border: solid 0.125rem rgb(var(--container-bg));
-  border-radius: var(--card-rounding);
+  border-radius: var(--container-rounding);
   background-color: rgb(var(--container-bg));
 
   &:hover {

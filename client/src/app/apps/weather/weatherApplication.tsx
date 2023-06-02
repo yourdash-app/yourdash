@@ -22,7 +22,7 @@ const WeatherApplication: React.FC = () => {
       <h2 className={ "pt-4 pb-4 pl-4 text-base-50 font-semibold text-3xl bg-container-bg absolute top-0 left-0" +
                       " w-full" }
       >
-        Weather
+        YourDash Weather
       </h2>
       <Card className={ "gap-2 flex flex-col mb-4" }>
         <span>Previous locations</span>
@@ -47,6 +47,13 @@ const WeatherApplication: React.FC = () => {
       </Card>
       <Card className={ "gap-2 flex flex-col" }>
         <TextInput
+          onKeyDown={ e => {
+            if ( e.key === "Enter" ) {
+              if ( locationQuery[0] ) {
+                navigate( `/app/a/weather/location/${ locationQuery[0].id }` )
+              }
+            }
+          } }
           onChange={ ( value: string ) => {
             csi.getJson( `/app/weather/location/${ value.replaceAll( " ", "+" ) }`, resp => {
               setLocationQuery( resp?.results || [] )

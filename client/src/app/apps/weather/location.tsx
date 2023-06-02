@@ -3,7 +3,7 @@ import csi from "helpers/csi"
 import React, { useEffect, useState } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import { chunk } from "../../../helpers/array"
-import { Card, Carousel, Icon, IconButton, MajorButton } from "../../../ui"
+import { Card, Carousel, Icon, IconButton, MajorButton, Spinner } from "../../../ui"
 import BACKGROUND_IMAGE_CLEAR from "./weatherBackgrounds/clear.avif"
 import BACKGROUND_IMAGE_CLOUDY1 from "./weatherBackgrounds/cloudy1.avif"
 import BACKGROUND_IMAGE_CLOUDY2 from "./weatherBackgrounds/cloudy2.jpg"
@@ -22,13 +22,6 @@ import WEATHER_ICON_CLOUDY from "./weatherIcons/cloudy.svg"
 import WEATHER_ICON_PARTLY_CLOUDY from "./weatherIcons/partly_cloudy.svg"
 
 /**
- TODO: create svg backgrounds for different weather types,
- rain
- clear
- fog
- thunder
- snow
- 
  WMO Weather interpretation codes (WW)
  Code    Description
  0    Clear sky
@@ -91,6 +84,7 @@ const numericDayName = [
   "Saturday"
 ]
 
+// returns the weather description for the given weather state
 function getWeatherConditionFromState( state: weatherStates ): string {
   switch ( state ) {
     case weatherStates.clear:
@@ -126,6 +120,7 @@ function getWeatherConditionFromState( state: weatherStates ): string {
   }
 }
 
+// returns the corresponding icon for the given weather state
 function getWeatherIconFromState( state: weatherStates ): string {
   switch ( state ) {
     case weatherStates.clear:
@@ -225,19 +220,26 @@ const WeatherApplicationLocationPage: React.FC = () => {
 
   if ( !data ) {
     return (
+      // eslint-disable-next-line react/jsx-no-useless-fragment
       <>
-        { failedToLoad && (
-          <main className={ "flex flex-col items-center justify-center h-full w-full gap-2" }>
-            <span className={ "text-3xl pl-4 pr-4 text-center" }>Unable to gather data for this location at this moment</span>
-            <MajorButton onClick={ () => {
-              navigate( "/app/a/weather" )
-            } }
-            >
-              Go back
-            </MajorButton>
-          </main>
-        ) }
-        {/* TODO: add loading indicator and show an error if one occurs */ }
+        { failedToLoad
+          ? (
+            <main className={ "flex flex-col items-center justify-center h-full w-full gap-2" }>
+              <span className={ "text-3xl pl-4 pr-4 text-center" }>Unable to gather data for this location at this moment</span>
+              <MajorButton onClick={ () => {
+                navigate( "/app/a/weather" )
+              } }
+              >
+                Go back
+              </MajorButton>
+            </main>
+          )
+          : (
+            <div className={ "w-full min-h-full flex items-center justify-center" }>
+              <Spinner/>
+            </div>
+          )
+        }
       </>
     )
   }
@@ -402,7 +404,7 @@ const WeatherApplicationLocationPage: React.FC = () => {
         <Carousel
           compactControls
           containerClassName={ "min-w-full p-10 pb-4 pt-4 max-w-full overflow-x-auto rounded-xl" +
-                               " animate__animated animate__fadeIn animate__delay-500ms" }
+                               " animate__animated animate__fadeIn animate__delay-500ms h-80" }
           className={ "flex flex-row gap-2" }
         >
           {
@@ -410,26 +412,27 @@ const WeatherApplicationLocationPage: React.FC = () => {
               ? chunk( data.hourly.hours, 24 )[selectedDay].map( hour => {
                 return (
                   <div
-                    className={ "w-48 relative h-[7.5rem] mt-auto mb-auto" }
+                    className={ "relative h-full flex justify-center" }
                     key={ hour.date }
                   >
                     <Card
+                      style={ {
+                        marginBottom: `${( ( hour?.temp - data.daily.days[selectedDay]?.temp.min ) / ( data.daily.days[selectedDay]?.temp.max - data.daily.days[selectedDay]?.temp.min ) ) * 8.25 }rem`
+                      } }
                       className={ clippy(
-                        "w-full h-full flex-col transition-[var(--transition)] absolute"
+                        "w-full flex flex-col items-center justify-center h-[9.75rem] mt-auto"
                       ) }
                     >
-                      <section className={ "flex items-center justify-between" }>
-                        <h2 className={ "font-bold text-3xl flex" }>{ new Date( hour.date ).getHours() < 10
-                          ? `0${
-                            new Date( hour.date ).getHours() }:00`
-                          : `${ new Date( hour.date ).getHours() }:00` }</h2>
-                        <img
-                          src={ getWeatherIconFromState( hour.condition ) }
-                          draggable={ false }
-                          alt={ "" }
-                          className={ "w-16" }
-                        />
-                      </section>
+                      <h2 className={ "font-bold text-3xl flex" }>{ new Date( hour.date ).getHours() < 10
+                        ? `0${
+                          new Date( hour.date ).getHours() }:00`
+                        : `${ new Date( hour.date ).getHours() }:00` }</h2>
+                      <img
+                        src={ getWeatherIconFromState( hour.condition ) }
+                        draggable={ false }
+                        alt={ "" }
+                        className={ "w-16" }
+                      />
                       <section className={ "flex justify-center items-center w-full text-center" }>
                         { hour?.temp }°C
                       </section>
@@ -440,26 +443,27 @@ const WeatherApplicationLocationPage: React.FC = () => {
               : chunk( data.hourly.hours, 24 )[0].slice( new Date().getHours() ).map( hour => {
                 return (
                   <div
-                    className={ "w-48 relative h-[7.5rem] mt-auto mb-auto" }
+                    className={ "relative h-full flex justify-center" }
                     key={ hour.date }
                   >
                     <Card
+                      style={ {
+                        marginBottom: `${( ( hour?.temp - data.daily.days[0]?.temp.min ) / ( data.daily.days[0]?.temp.max - data.daily.days[0]?.temp.min ) ) * 8.25 }rem`
+                      } }
                       className={ clippy(
-                        "w-full h-full flex-col transition-[var(--transition)] absolute"
+                        "w-full flex flex-col items-center justify-center h-[9.75rem] mt-auto"
                       ) }
                     >
-                      <section className={ "flex items-center justify-between" }>
-                        <h2 className={ "font-bold text-3xl flex" }>{ new Date( hour.date ).getHours() < 10
-                          ? `0${
-                            new Date( hour.date ).getHours() }:00`
-                          : `${ new Date( hour.date ).getHours() }:00` }</h2>
-                        <img
-                          src={ getWeatherIconFromState( hour.condition ) }
-                          draggable={ false }
-                          alt={ "" }
-                          className={ "w-16" }
-                        />
-                      </section>
+                      <h2 className={ "font-bold text-3xl flex" }>{ new Date( hour.date ).getHours() < 10
+                        ? `0${
+                          new Date( hour.date ).getHours() }:00`
+                        : `${ new Date( hour.date ).getHours() }:00` }</h2>
+                      <img
+                        src={ getWeatherIconFromState( hour.condition ) }
+                        draggable={ false }
+                        alt={ "" }
+                        className={ "w-16" }
+                      />
                       <section className={ "flex justify-center items-center w-full text-center" }>
                         { hour?.temp }°C
                       </section>

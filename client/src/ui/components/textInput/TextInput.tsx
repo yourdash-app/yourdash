@@ -33,7 +33,7 @@ const TextInput: React.FC<ITextInput> = ( {
       </span>
       <input
         placeholder={ placeholder }
-        className={ `w-full pl-2 pt-1 pb-1 pr-2 outline-none relative z-0 rounded-lg bg-base-700 transition-all ${
+        className={ `w-full pl-2 pt-1 pb-1 pr-2 outline-none relative z-0 rounded-button-rounding bg-base-700 transition-all ${
           mustMatchRegex
             ? valid
               ? "hover:border-green-400 focus-within:border-green-400 border-2 border-base-600"

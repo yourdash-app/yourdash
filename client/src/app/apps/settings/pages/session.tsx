@@ -3,7 +3,7 @@ import { Card, Icon, IconButton } from "../../../../ui"
 import csi from "../../../../helpers/csi"
 import { IYourDashSession, YourDashSessionType } from "../../../../../../shared/core/session"
 
-const SetttingsPageSession: React.FC = () => {
+const SettingsPageSession: React.FC = () => {
   const [reloadNum, setReloadNum] = useState( 0 )
   const [sessions, setSessions] = useState<IYourDashSession<any>[]>( [] )
   const [personalServerAccelerationSessions, setPersonalServerAcceleration] = useState<IYourDashSession<YourDashSessionType.desktop>[]>( [] )
@@ -49,7 +49,7 @@ const SetttingsPageSession: React.FC = () => {
       <h1
         className={ "font-bold text-container-fg text-4xl tracking-wide pb-4 pt-4 pl-6 pr-6 bg-container-bg" }
       >
-        YourDash Settings
+        YourDash Settings | Sessions
       </h1>
       <main className={ "ml-auto mr-auto w-full max-w-5xl p-4" }>
         <h2 className={ "ml-auto mr-auto w-full max-w-5xl font-semibold text-4xl tracking-wide pb-2" }>Sessions</h2>
@@ -143,4 +143,4 @@ const SetttingsPageSession: React.FC = () => {
   )
 }
 
-export default SetttingsPageSession
+export default SettingsPageSession

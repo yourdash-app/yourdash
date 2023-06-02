@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { Icon, MajorButton, Button, DropdownButton, TextBox } from "../../../ui"
+import { Icon, MajorButton, Button, DropdownButton, TextBox, Card } from "../../../ui"
 import csi from "helpers/csi"
 import { IDiffusionLabImageGenerationData } from "../../../../../shared/apps/diffusion_lab/image/generationData"
 import YourDashLogo from "../../../../public/assets/productLogos/yourdash.svg"
@@ -100,16 +100,18 @@ const DiffusionLabApplication: React.FC = () => {
       </header>
       <main className={ "p-3 flex gap-3" }>
         <section className={ "flex flex-col flex-grow" }>
-          <span>Prompt</span>
-          <TextBox onChange={ e => {
-            setGenerationData( { ...generationData, prompt: { ...generationData.prompt, positive: e.target.value } } )
-          } }
-          />
-          <span>Negative prompt</span>
-          <TextBox onChange={ e => {
-            setGenerationData( { ...generationData, prompt: { ...generationData.prompt, negative: e.target.value } } )
-          } }
-          />
+          <Card>
+            <span>Prompt</span>
+            <TextBox onChange={ e => {
+              setGenerationData( { ...generationData, prompt: { ...generationData.prompt, positive: e.target.value } } )
+            } }
+            />
+            <span>Negative prompt</span>
+            <TextBox onChange={ e => {
+              setGenerationData( { ...generationData, prompt: { ...generationData.prompt, negative: e.target.value } } )
+            } }
+            />
+          </Card>
         </section>
         <section>
           <div className={ "flex flex-col" }>
