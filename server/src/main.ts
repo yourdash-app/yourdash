@@ -24,13 +24,14 @@ import minimist from "minimist"
 
 const args = minimist( process.argv.slice( 2 ) )
 
-const SESSIONS: { [key: string]: IYourDashSession<any>[] } = {}
+const SESSIONS: { [ key: string ]: IYourDashSession<any>[] } = {}
 
 function __internalGetSessions() {
   return SESSIONS
 }
 
 const SESSION_TOKEN_LENGTH = 128
+
 enum YourDashServerDiscoveryStatus {
   // eslint-disable-next-line no-unused-vars
   MAINTENANCE, NORMAL, HIDDEN
@@ -42,23 +43,31 @@ async function startupChecks() {
   // check if the filesystem exists
   if ( !fsExistsSync( path.resolve( process.cwd(), "./fs/" ) ) ) {
     await fs.mkdir(
-      path.resolve( process.cwd(),
+      path.resolve(
+        process.cwd(),
         "./fs/"
       ) )
     await fs.cp(
-      path.resolve( process.cwd(),
-        "./src/assets/default_avatar.avif" ), path.resolve( process.cwd(), "./fs/default_avatar.avif"
+      path.resolve(
+        process.cwd(),
+        "./src/assets/default_avatar.avif"
+      ), path.resolve( process.cwd(), "./fs/default_avatar.avif"
       ) )
     await fs.cp(
-      path.resolve( process.cwd(),
-        "./src/assets/default_instance_logo.avif" ), path.resolve( process.cwd(), "./fs/instance_logo.avif"
+      path.resolve(
+        process.cwd(),
+        "./src/assets/default_instance_logo.avif"
+      ), path.resolve( process.cwd(), "./fs/instance_logo.avif"
       ) )
     await fs.cp(
-      path.resolve( process.cwd(),
-        "./src/assets/default_login_background.avif" ), path.resolve( process.cwd(), "./fs/login_background.avif"
+      path.resolve(
+        process.cwd(),
+        "./src/assets/default_login_background.avif"
+      ), path.resolve( process.cwd(), "./fs/login_background.avif"
       ) )
     await fs.mkdir(
-      path.resolve( process.cwd(),
+      path.resolve(
+        process.cwd(),
         "./fs/users/"
       ) )
 
@@ -86,7 +95,7 @@ await startupChecks()
 const app = express()
 const httpServer = http.createServer( app )
 const io = new SocketIoServer( httpServer )
-const activeSockets = new Map<{id: string, token: string}, string>()
+const activeSockets = new Map<{ id: string, token: string }, string>()
 
 process.on( "SIGINT", () => {
   httpServer.close( () => {
@@ -220,10 +229,13 @@ app.get( "/test", ( _req, res ) => {
   }
 } )
 
-app.get( "/login/background", ( _req, res ) => res.sendFile( path.resolve(
-  process.cwd(),
-  "./fs/login_background.avif"
-) ) )
+app.get(
+  "/login/background",
+  ( _req, res ) => res.sendFile( path.resolve(
+    process.cwd(),
+    "./fs/login_background.avif"
+  ) )
+)
 
 app.get( "/login/user/:username/avatar", ( req, res ) => {
   const user = new YourDashUnreadUser( req.params.username )
@@ -484,14 +496,14 @@ try {
     if ( fsExistsSync( path.resolve( process.cwd(), "./src/apps/" ) ) ) {
       const apps = await fs.readdir( path.resolve( process.cwd(), "./src/apps/" ) )
       apps.forEach( appName => {
-      // console.log( `[${ chalk.bold.yellow.inverse( "CORE" ) }]: loading application: ${ appName }` )
+        // console.log( `[${ chalk.bold.yellow.inverse( "CORE" ) }]: loading application: ${ appName }` )
 
         // import and load all applications
         import(
           `./apps/${ appName }/index.js`
         ).then( mod => {
           try {
-            console.log( `[${ chalk.yellow.bold( "CORE" ) }]: Loading application: ${appName}` )
+            console.log( `[${ chalk.yellow.bold( "CORE" ) }]: Loading application: ${ appName }` )
             mod.default( { app, io } )
           } catch ( err ) {
             reject( err )

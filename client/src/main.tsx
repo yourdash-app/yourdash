@@ -46,7 +46,12 @@ ReactDOM.createRoot( document.getElementById( "root" ) as HTMLElement ).render(
               </Route>
             </Route>
             <Route path={ "docs/*" } element={ <DocsLayout/> }>
-              <Route path={ "*" } element={ <DocsRouter/> }/>
+              <Route
+                path={ "*" }
+                element={ (
+                  <DocsRouter/>
+                ) }
+              />
             </Route>
           </Route>
         )

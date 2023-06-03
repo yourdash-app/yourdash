@@ -1,6 +1,6 @@
 {
-  "name": "diffusion_lab",
-  "displayName": "Diffusion Lab",
-  "description": "This is the default application description, you can edit this information in this application's 'application.json'",
-  "category": "ai"
+  "name": "endpoints",
+  "displayName": "Endpoint Tester",
+  "description": "For use in testing and developing YourDash endpoints in the core project and independent applications",
+  "category": "devtools"
 }

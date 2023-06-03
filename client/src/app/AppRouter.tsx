@@ -13,18 +13,21 @@ const Application1 = loadable( () => {
   return import( "./apps/diffusion_lab" )
 } )
 const Application2 = loadable( () => {
-  return import( "./apps/files" )
+  return import( "./apps/endpoints" )
 } )
 const Application3 = loadable( () => {
-  return import( "./apps/photos" )
+  return import( "./apps/files" )
 } )
 const Application4 = loadable( () => {
-  return import( "./apps/settings" )
+  return import( "./apps/photos" )
 } )
 const Application5 = loadable( () => {
-  return import( "./apps/store" )
+  return import( "./apps/settings" )
 } )
 const Application6 = loadable( () => {
+  return import( "./apps/store" )
+} )
+const Application7 = loadable( () => {
   return import( "./apps/weather" )
 } )
 
@@ -33,11 +36,12 @@ const AppRouter = () => {
     <Routes>
       <Route path={ "dash/*" } element={ <Application0/> }/>
       <Route path={ "diffusion_lab/*" } element={ <Application1/> }/>
-      <Route path={ "files/*" } element={ <Application2/> }/>
-      <Route path={ "photos/*" } element={ <Application3/> }/>
-      <Route path={ "settings/*" } element={ <Application4/> }/>
-      <Route path={ "store/*" } element={ <Application5/> }/>
-      <Route path={ "weather/*" } element={ <Application6/> }/>
+      <Route path={ "endpoints/*" } element={ <Application2/> }/>
+      <Route path={ "files/*" } element={ <Application3/> }/>
+      <Route path={ "photos/*" } element={ <Application4/> }/>
+      <Route path={ "settings/*" } element={ <Application5/> }/>
+      <Route path={ "store/*" } element={ <Application6/> }/>
+      <Route path={ "weather/*" } element={ <Application7/> }/>
     </Routes>
   )
 }

@@ -34,8 +34,6 @@ const LauncherGridView: React.FC<ILauncherGridView> = ( { applications, setVisib
             child:items-center
             child:justify-center
             child:flex-col
-            child:pt-3
-            child:pb-1
             child:cursor-pointer
             child:select-none
             child:transition-[var(--transition)]
@@ -67,7 +65,7 @@ const LauncherGridView: React.FC<ILauncherGridView> = ( { applications, setVisib
                 className={ "group" }
               >
                 <RightClickMenu
-                  className={ "w-full h-full flex flex-col items-center justify-center" }
+                  className={ "w-full h-full flex flex-col items-center justify-center pt-3 pb-1" }
                   key={ app.name }
                   items={ [
                     {
@@ -87,6 +85,13 @@ const LauncherGridView: React.FC<ILauncherGridView> = ( { applications, setVisib
                             }, 100 )
                           }
                         )
+                      },
+                      shortcut: "ctrl+p"
+                    },
+                    {
+                      name: "Open in new tab",
+                      onClick() {
+                        window.open( `${ window.location.origin }#/app/a/${ app.name }`, "_blank" )
                       },
                       shortcut: "ctrl+p"
                     }

@@ -15,8 +15,9 @@
     "sourceMap": true,
     "rootDir": "..",
     "removeComments": true,
-    "incremental": true,
-    "resolveJsonModule": true
+    // "incremental": true, // this is causing problems on startup with applications deciding not to load!
+    "resolveJsonModule": true,
+    "experimentalDecorators": true
   },
   "include": [
     "./src/**/*.ts",

@@ -2,11 +2,15 @@ import minimist from "minimist"
 import chalk from "chalk"
 import { exec } from "child_process"
 
-console.log( `-------------------------\n     ${chalk.whiteBright( "YourDash v0.0.1" )}     \n-------------------------` )
+console.log(
+  `-------------------------\n     ${ chalk.whiteBright(
+    "YourDash v0.0.1"
+  ) }     \n-------------------------`
+)
 
 const args = minimist( process.argv.slice( 2 ) )
 
-console.log( `Starting with arguments: ${JSON.stringify( args )}` )
+console.log( `Starting with arguments: ${ JSON.stringify( args ) }` )
 
 if ( args.dev || args.compile ) {
   const childProcess = exec( "yarn run compile" )
@@ -21,7 +25,12 @@ if ( args.dev || args.compile ) {
     if ( data.toString() === "" ) {
       return
     }
-    console.log( `[${chalk.bold.blue( "TSC" )}]: ${data.toString().replaceAll( "\n", "" ).replaceAll( "\x1Bc", "" )}` )
+    console.log(
+      `[${ chalk.bold.blue( "TSC" ) }]: ${ data
+        .toString()
+        .replaceAll( "\n", "" )
+        .replaceAll( "\x1Bc", "" ) }`
+    )
   } )
 
   childProcess.stderr.on( "data", data => {
@@ -34,21 +43,32 @@ if ( args.dev || args.compile ) {
     if ( data.toString() === "" ) {
       return
     }
-    console.log( `[${chalk.bold.blue( "TSC ERROR" )}]: ${data.toString().replaceAll( "\n", "" ).replaceAll( "\x1Bc", "" )}` )
+    console.log(
+      `[${ chalk.bold.blue( "TSC ERROR" ) }]: ${ data
+        .toString()
+        .replaceAll( "\n", "" )
+        .replaceAll( "\x1Bc", "" ) }`
+    )
   } )
 
   process.on( "exit", code => {
-    console.log( `[${chalk.yellow.bold( "CORE" )}]: Server about to exit!` )
+    console.log( `[${ chalk.yellow.bold( "CORE" ) }]: Server about to exit!` )
 
     if ( childProcess && !childProcess.killed ) {
-      console.log( `[${chalk.yellow.bold( "CORE" )}]: Killing child process [ ${childProcess.pid} ] (${chalk.bold.blue( "TSC" )})` )
+      console.log(
+        `[${ chalk.yellow.bold( "CORE" ) }]: Killing child process [ ${
+          childProcess.pid
+        } ] (${ chalk.bold.blue( "TSC" ) })`
+      )
       childProcess.kill()
     }
   } )
 }
 
 if ( args.dev ) {
-  const childProcess = exec( `yarn nodemon-start -- --color=full ${process.argv.slice( 2 ).toString()}` )
+  const childProcess = exec(
+    `yarn nodemon-start -- --color=full ${ process.argv.slice( 2 ).join( " " ) }`
+  )
 
   childProcess.stdout.on( "data", data => {
     if ( data.toString().indexOf( "2.0.22" ) !== -1 ) {
@@ -67,7 +87,13 @@ if ( args.dev ) {
       return
     }
     if ( data.toString().indexOf( "restarting due to changes..." ) !== -1 ) {
-      return process.stdout.write( `${ chalk.reset( "[" ) }${ chalk.magenta.bold( "HMR" ) }]: ----------------------------------------------------------------------------------------------------\n${chalk.reset( "" )}` )
+      return process.stdout.write(
+        `${ chalk.reset( "[" ) }${ chalk.magenta.bold(
+          "HMR"
+        ) }]: ----------------------------------------------------------------------------------------------------\n${ chalk.reset(
+          ""
+        ) }`
+      )
     }
 
     let output = data
@@ -75,7 +101,10 @@ if ( args.dev ) {
     if ( output.indexOf( "[nodemon]" ) !== -1 ) {
       output = output.replaceAll( "\x1Bc", "" )
 
-      output = output.replaceAll( "[nodemon] ", `${ chalk.reset( "[" ) }${ chalk.magenta.bold( "HMR" ) }]: ` )
+      output = output.replaceAll(
+        "[nodemon] ",
+        `${ chalk.reset( "[" ) }${ chalk.magenta.bold( "HMR" ) }]: `
+      )
 
       output = output.replaceAll( "\n", "" )
     }
@@ -84,7 +113,13 @@ if ( args.dev ) {
   } )
 
   childProcess.stderr.on( "data", data => {
-    if ( data.toString().indexOf( "warning From Yarn 1.0 onwards, scripts don't require \"--\" for options to be forwarded. In a future version, any explicit \"--\" will be forwarded as-is to the scripts." ) !== -1 ) {
+    if (
+      data
+        .toString()
+        .indexOf(
+          "warning From Yarn 1.0 onwards, scripts don't require \"--\" for options to be forwarded. In a future version, any explicit \"--\" will be forwarded as-is to the scripts."
+        ) !== -1
+    ) {
       return
     }
 
@@ -93,7 +128,10 @@ if ( args.dev ) {
     if ( output.indexOf( "[nodemon]" ) !== -1 ) {
       output = output.replaceAll( "\x1Bc", "" )
 
-      output = output.replaceAll( "[nodemon] ", `${ chalk.reset( "[" ) }${ chalk.magenta.bold( "HMR ERROR" ) }]: ` )
+      output = output.replaceAll(
+        "[nodemon] ",
+        `${ chalk.reset( "[" ) }${ chalk.magenta.bold( "HMR ERROR" ) }]: `
+      )
 
       output = output.replaceAll( "\n", "" )
     }
@@ -101,11 +139,19 @@ if ( args.dev ) {
     process.stdout.write( output )
   } )
 
-  process.on( "exit", code => {
-    console.log( `[${chalk.yellow.bold( "CORE" )}]: Server about to exit!` )
+  process.on( "exit", exitCode => {
+    console.log(
+      `[${ chalk.yellow.bold(
+        "CORE"
+      ) }]: Server about to exit!\nexitcode: ${ exitCode }`
+    )
 
     if ( childProcess && !childProcess.killed ) {
-      console.log( `[${chalk.yellow.bold( "CORE" )}]: Killing child process [ ${childProcess.pid} ] (${chalk.magenta.bold( "HMR" )})` )
+      console.log(
+        `[${ chalk.yellow.bold( "CORE" ) }]: Killing child process [ ${
+          childProcess.pid
+        } ] (${ chalk.magenta.bold( "HMR" ) })`
+      )
       childProcess.kill()
       console.log( childProcess.pid )
       if ( childProcess && !childProcess.killed ) {

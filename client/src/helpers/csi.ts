@@ -6,7 +6,7 @@ class __internalClientServerInteraction {
     return this
   }
 
-  getJson( endpoint: string, cb: ( response: any ) => void, error?: ( response: object ) => void ): void {
+  getJson( endpoint: string, cb: ( response: any ) => void, error?: ( response: string ) => void, extraHeaders?: { [ key: string ]: string } ): void {
     const instanceUrl = localStorage.getItem( "current_server" ) || "https://example.com"
     const username = localStorage.getItem( "username" ) || ""
     const sessiontoken = localStorage.getItem( "session_token" ) || ""
@@ -17,7 +17,8 @@ class __internalClientServerInteraction {
       headers: {
         "Content-Type": "application/json",
         username,
-        token: sessiontoken
+        token: sessiontoken,
+        ...( extraHeaders || {} )
       }
     } )
       .then( resp => {
@@ -44,7 +45,7 @@ class __internalClientServerInteraction {
       } )
   }
 
-  postJson( endpoint: string, body: TJson, cb: ( response: any ) => void, error?: ( response: object ) => void, extraHeaders?: { [ key: string ]: string } ): void {
+  postJson( endpoint: string, body: TJson, cb: ( response: any ) => void, error?: ( response: string ) => void, extraHeaders?: { [ key: string ]: string } ): void {
     const instanceUrl = localStorage.getItem( "current_server" ) || "https://example.com"
     const username = localStorage.getItem( "username" ) || ""
     const sessiontoken = localStorage.getItem( "session_token" ) || ""
@@ -84,7 +85,7 @@ class __internalClientServerInteraction {
       } )
   }
 
-  deleteJson( endpoint: string, cb: ( response: any ) => void, error?: ( response: object ) => void ): void {
+  deleteJson( endpoint: string, cb: ( response: any ) => void, error?: ( response: string ) => void, extraHeaders?: { [ key: string ]: string } ): void {
     const instanceUrl = localStorage.getItem( "current_server" ) || "https://example.com"
     const username = localStorage.getItem( "username" ) || ""
     const sessiontoken = localStorage.getItem( "session_token" ) || ""
@@ -122,7 +123,7 @@ class __internalClientServerInteraction {
       } )
   }
 
-  getText( endpoint: string, cb: ( response: any ) => void, error?: ( response: object ) => void ): void {
+  getText( endpoint: string, cb: ( response: any ) => void, error?: ( response: string ) => void, extraHeaders?: { [ key: string ]: string } ): void {
     const instanceUrl = localStorage.getItem( "current_server" ) || "https://example.com"
     const username = localStorage.getItem( "username" ) || ""
     const sessiontoken = localStorage.getItem( "session_token" ) || ""
@@ -133,7 +134,8 @@ class __internalClientServerInteraction {
       headers: {
         "Content-Type": "text/plain",
         username,
-        token: sessiontoken
+        token: sessiontoken,
+        ...( extraHeaders || {} )
       }
     } )
       .then( resp => {
@@ -160,7 +162,7 @@ class __internalClientServerInteraction {
       } )
   }
 
-  postText( endpoint: string, body: string, cb: ( response: any ) => void, error?: ( response: object ) => void ): void {
+  postText( endpoint: string, body: string, cb: ( response: any ) => void, error?: ( response: string ) => void, extraHeaders?: { [ key: string ]: string } ): void {
     const instanceUrl = localStorage.getItem( "current_server" ) || "https://example.com"
     const username = localStorage.getItem( "username" ) || ""
     const sessiontoken = localStorage.getItem( "session_token" ) || ""
@@ -172,7 +174,8 @@ class __internalClientServerInteraction {
       headers: {
         "Content-Type": "text/plain",
         username,
-        token: sessiontoken
+        token: sessiontoken,
+        ...( extraHeaders || {} )
       }
     } )
       .then( resp => {
@@ -199,7 +202,7 @@ class __internalClientServerInteraction {
       } )
   }
 
-  deleteText( endpoint: string, cb: ( response: any ) => void, error?: ( response: object ) => void ): void {
+  deleteText( endpoint: string, cb: ( response: any ) => void, error?: ( response: string ) => void, extraHeaders?: { [ key: string ]: string } ): void {
     const instanceUrl = localStorage.getItem( "current_server" ) || "https://example.com"
     const username = localStorage.getItem( "username" ) || ""
     const sessiontoken = localStorage.getItem( "session_token" ) || ""
@@ -210,7 +213,8 @@ class __internalClientServerInteraction {
       headers: {
         "Content-Type": "text/plain",
         username,
-        token: sessiontoken
+        token: sessiontoken,
+        ...( extraHeaders || {} )
       }
     } )
       .then( resp => {
