@@ -12,7 +12,7 @@ const args = minimist( process.argv.slice( 2 ) )
 
 console.log( `Starting with arguments: ${ JSON.stringify( args ) }` )
 
-if ( args.dev || args.compile ) {
+if ( !args.dev && args.compile ) {
   const childProcess = exec( "yarn run compile" )
 
   childProcess.stdout.on( "data", data => {
@@ -66,24 +66,20 @@ if ( args.dev || args.compile ) {
 }
 
 if ( args.dev ) {
+  console.log( `[${chalk.hex( "#fc6f45" ).bold( "DEV" )}]: starting server \"node ./src/main.js --color=full ${ process.argv.slice( 2 ).join( " " ) }\"` )
+
   const childProcess = exec(
-    `yarn nodemon-start -- --color=full ${ process.argv.slice( 2 ).join( " " ) }`
+    `npx tsc-watch --project . --onSuccess \"node${args.debug && " --inspect"} ./src/main.js --color=full ${ process.argv.slice( 2 ).join( " " ) }\"`
   )
 
   childProcess.stdout.on( "data", data => {
-    if ( data.toString().indexOf( "2.0.22" ) !== -1 ) {
+    if ( data.toString().indexOf( "Found 0 errors. Watching for file changes." ) !== -1 ) {
       return
     }
-    if ( data.toString().indexOf( "watching path" ) !== -1 ) {
+    if ( data.toString().indexOf( "Starting compilation in watch mode..." ) !== -1 ) {
       return
     }
-    if ( data.toString().indexOf( "watching extensions" ) !== -1 ) {
-      return
-    }
-    if ( data.toString().indexOf( "$ nodemon ./src/main.js" ) !== -1 ) {
-      return
-    }
-    if ( data.toString().indexOf( "to restart at any time, enter" ) !== -1 ) {
+    if ( data.toString() === "\n" ) {
       return
     }
     if ( data.toString().indexOf( "restarting due to changes..." ) !== -1 ) {
@@ -143,7 +139,7 @@ if ( args.dev ) {
     console.log(
       `[${ chalk.yellow.bold(
         "CORE"
-      ) }]: Server about to exit!\nexitcode: ${ exitCode }`
+      ) }]: Server about to exit!\nexit code: ${ exitCode }`
     )
 
     if ( childProcess && !childProcess.killed ) {

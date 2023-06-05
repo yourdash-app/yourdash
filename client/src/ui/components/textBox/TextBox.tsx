@@ -12,6 +12,12 @@ const TextBox: React.FC<ITextBox> = ( {
   return (
     <textarea
       { ...inputProps }
+      onKeyDown={ e => {
+        if ( e.key === "Tab" ) {
+          e.preventDefault()
+          e.stopPropagation()
+        }
+      } }
       defaultValue={ defaultValue ? defaultValue : "" }
       className={ `${styles.textarea} ${className}` }
     >{children}</textarea>

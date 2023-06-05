@@ -146,7 +146,7 @@ const PanelAuthorizer: React.FC = () => {
         }
       )
     }
-  }, [navigate] )
+  }, [] )
 
   return null
 }

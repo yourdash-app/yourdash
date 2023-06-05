@@ -24,6 +24,8 @@ import minimist from "minimist"
 
 const args = minimist( process.argv.slice( 2 ) )
 
+global.args = args
+
 const SESSIONS: { [ key: string ]: IYourDashSession<any>[] } = {}
 
 function __internalGetSessions() {
@@ -95,7 +97,7 @@ await startupChecks()
 const app = express()
 const httpServer = http.createServer( app )
 const io = new SocketIoServer( httpServer )
-const activeSockets = new Map<{ id: string, token: string }, string>()
+const activeSockets: { [ username: string ]: { id: string, token: string }[] } = {}
 
 process.on( "SIGINT", () => {
   httpServer.close( () => {
@@ -136,20 +138,25 @@ io.use( async ( socket, next ) => {
 } )
 
 io.on( "connection", socket => {
-  activeSockets.set( { id: socket.handshake.query.id as string, token: socket.handshake.query.sessionToken as string }, socket.id )
+  if ( !activeSockets[socket.handshake.query.username as string] ) {
+    activeSockets[socket.handshake.query.username as string] = []
+  }
+
+  activeSockets[socket.handshake.query.username as string].push( { id: socket.handshake.query.id as string, token: socket.handshake.query.sessionToken as string } )
 
   socket.on( "execute-command-response", output => {
     console.log( output )
   } )
 
   socket.on( "disconnect", () => {
-    activeSockets.forEach( ( value, key ) => {
-      if ( value === socket.id ) {
-        activeSockets.delete( key )
-      }
-    } )
-  } )
-} )
+    activeSockets[socket.handshake.query.username as string].forEach( ( value, key ) => {
+      activeSockets[socket.handshake.query.username as string].filter( sock => sock.id !== socket.id )
+    }
+    )
+  }
+  )
+}
+)
 
 
 app.use( express.json( { limit: "50mb" } ) )

@@ -26,9 +26,26 @@ export default function startPsaBackend( wsInstanceUrl: string, restInstanceUrl:
       io.emit( "execute-command-response", resp )
     } )
     
+    io.on("connect", () => {
+      console.log( "Connected to psa-backend!" )
+    })
+    
     io.on("disconnect", () => {
       console.log( "Disconnected from psa-backend! (retrying connection)" )
-      io.connect()
+      
+      function retry() {
+        io.connect()
+        
+        if ( !io.connected ) {
+          setTimeout( retry, 1000 )
+        }
+      }
+      
+      retry()
+    })
+    
+    io.on("/core/update", () => {
+      console.log("Update requested!")
     })
     
     app.get( "/", ( req, res ) => {

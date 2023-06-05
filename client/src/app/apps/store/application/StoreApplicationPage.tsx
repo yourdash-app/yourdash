@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { useParams, useNavigate } from "react-router-dom"
-import { IconButton, Spinner, Card, Button } from "../../../../ui"
+import { IconButton, Spinner, Card, Button, Icon } from "../../../../ui"
 import csi from "../../../../helpers/csi"
 import { IYourDashApplication } from "../../../../../../shared/core/application"
 
@@ -68,10 +68,33 @@ const StoreApplicationPage: React.FC = () => {
                   <Card>
                     { appData.description }
                   </Card>
-                  <Card>
+                  <Card className={ "flex flex-col" }>
                     <div>Category: { appData.category }</div>
                     <div>ID: { appData.name }</div>
                   </Card>
+                  <h2 className={ "text-2xl font-medium" }>Source Code</h2>
+                  <section className={ "grid grid-cols-2 gap-2" }>
+                    <Card
+                      onClick={ () => {
+                        window.open( `https://github.com/yourdash-app/yourdash/tree/main/client/src/app/apps/${ appData.name }` )
+                      } }
+                      className={ "flex gap-1 items-center" }
+                    >
+                      <Icon className={ "h-5" } name={ "link-16" }/>
+                      <span>
+                        Client
+                      </span>
+                    </Card>
+                    <Card
+                      onClick={ () => {
+                        window.open( `https://github.com/yourdash-app/yourdash/tree/main/server/src/apps/${ appData.name }` )
+                      } }
+                      className={ "flex gap-1 items-center" }
+                    >
+                      <Icon className={ "h-5" } name={ "link-16" }/>
+                      <span>Server</span>
+                    </Card>
+                  </section>
                 </main>
               </>
             )

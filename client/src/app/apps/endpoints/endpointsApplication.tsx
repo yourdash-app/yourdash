@@ -167,23 +167,39 @@ const EndpointsApplication: React.FC = () => {
           </Button>
         </section>
       </header>
-      <main className={ "p-3 grid grid-cols-[2fr,3fr] gap-3" }>
-        <section className={ "h-full" }>
+      <main className={ "p-3 grid grid-cols-[2fr,3fr] gap-2" }>
+        <section className={ "bg-container-bg text-container-fg rounded-container-rounding p-2 h-max flex flex-col" }>
           <AutocompletedTextInput
             options={ endpoints }
-            label={ "Endpoint" }
+            label={ "Request Endpoint" }
             onChange={ value => {
               setSelectedEndpoint( value )
             } }
+            className={ "mb-2" }
           />
+          {
+            requestMethod !== "GET" && (
+              <>
+                <span className={ "-mb-0.5 text-opacity-60 text-container-fg" }>Request Body</span>
+                <TextBox
+                  defaultValue={ "{\n  \n}" }
+                  onChange={ e => {
+                    setRequestBody( e.currentTarget.value )
+                  } }
+                />
+              </>
+            )
+          }
+          <span className={ "-mb-0.5 text-opacity-60 text-container-fg" }>Request Extra Headers</span>
           <TextBox
+            defaultValue={ "{\n  \n}" }
             onChange={ e => {
-              setRequestBody( e.currentTarget.value )
+              setRequestHeaders( JSON.parse( e.currentTarget.value ) )
             } }
           />
         </section>
-        <section>
-          <pre>
+        <section className={ "overflow-x-auto" }>
+          <pre className={ "bg-container-tertiary-bg text-container-fg p-4 rounded-container-rounding w-max" }>
             {
               requestType === "JSON"
                 ? JSON.stringify( response, null, 2 )
@@ -191,7 +207,13 @@ const EndpointsApplication: React.FC = () => {
             }
           </pre>
           {
-            didError
+            didError && (
+              <pre className={ "bg-container-tertiary-bg text-red-400 p-4 rounded-container-rounding" }>
+                {
+                  didError
+                }
+              </pre>
+            )
           }
         </section>
       </main>

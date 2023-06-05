@@ -42,11 +42,13 @@ const StoreApplication: React.FC = () => {
           }
         </Carousel>
       </header>
-      <section className={ "p-4 grid grid-cols-5 gap-2" }>
+      <h2 className={ "text-3xl font-semibold tracking-wide pt-2 pl-5" }>Categories</h2>
+      <section className={ "p-4 grid grid-cols-3 gap-2" }>
         {
           categories.map( category => {
             return (
               <Card
+                className={ "text-3xl font-semibold tracking-wide text-center" }
                 key={ category }
                 onClick={ () => {
                   navigate( `/app/a/store/cat/${category}` )
