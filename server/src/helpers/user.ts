@@ -6,6 +6,7 @@ import sharp from "sharp"
 import { hash } from "./encryption.js"
 import { IYourDashSession } from "../../../shared/core/session.js"
 import YourDashSession, { getSessionsForUser } from "./session.js"
+import chalk from "chalk"
 
 export enum YourDashUserPermissions {
   Administrator, CreateFiles, DeleteFiles,
@@ -155,12 +156,17 @@ class YourDashUser {
     return JSON.parse( ( await fs.readFile( path.resolve( this.getPath(), "sessions.json" ) ) ).toString() )
   }
 
-  getSession( sessionId: number ): YourDashSession<any> {
-    // return a YourDashSession which has the sessionId as its id, find the correct session and use it as an input
-    return new YourDashSession(
-      this.username,
-      getSessionsForUser( this.username )[getSessionsForUser( this.username ).findIndex( val => val.id === sessionId )]
-    )
+  getSession( sessionId: number ): YourDashSession<any> | undefined {
+    try {
+      // return a YourDashSession which has the sessionId as its id, find the correct session and use it as an input
+      return new YourDashSession(
+        this.username,
+        getSessionsForUser( this.username )[getSessionsForUser( this.username ).findIndex( val => val.id === sessionId )]
+      )
+    } catch ( _err ) {
+      console.log( `[${ chalk.yellow( "WARN" ) }]: unable to find session: ${ sessionId }` )
+      return undefined
+    }
   }
 }
 
@@ -191,7 +197,7 @@ export default class YourDashUnreadUser {
     } )
   }
 
-  async create( password: string, name: {first: string, last: string}, permissions: YourDashUserPermissions[] ) {
+  async create( password: string, name: { first: string, last: string }, permissions: YourDashUserPermissions[] ) {
     return new YourDashUser( this.username ).verifyUserConfig().setPassword( password ).setName( name ).setPermissions( permissions ).write()
   }
 

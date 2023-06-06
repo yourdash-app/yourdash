@@ -11,6 +11,7 @@ export function executeCommand( session: IYourDashSession<YourDashSessionType.de
   } )
 }
 
+// FIXME: THIS DOES NOT WORK!
 export function getSocketFromSession( session: IYourDashSession<YourDashSessionType.desktop> ): SocketIoSocket | undefined {
   const sockets = io.sockets.sockets
 
@@ -35,8 +36,6 @@ export class PersonalServerAcceleratorCommunication {
 
   constructor( session: IYourDashSession<YourDashSessionType.desktop> ) {
     this.socketConnection = getSocketFromSession( session )
-
-    console.log( getSocketFromSession( session ) )
 
     return this
   }

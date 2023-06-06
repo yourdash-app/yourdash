@@ -142,7 +142,10 @@ io.on( "connection", socket => {
     activeSockets[socket.handshake.query.username as string] = []
   }
 
-  activeSockets[socket.handshake.query.username as string].push( { id: socket.handshake.query.id as string, token: socket.handshake.query.sessionToken as string } )
+  activeSockets[socket.handshake.query.username as string].push( {
+    id: socket.handshake.query.id as string,
+    token: socket.handshake.query.sessionToken as string
+  } )
 
   socket.on( "execute-command-response", output => {
     console.log( output )
@@ -151,10 +154,8 @@ io.on( "connection", socket => {
   socket.on( "disconnect", () => {
     activeSockets[socket.handshake.query.username as string].forEach( ( value, key ) => {
       activeSockets[socket.handshake.query.username as string].filter( sock => sock.id !== socket.id )
-    }
-    )
-  }
-  )
+    } )
+  } )
 }
 )
 

@@ -53,6 +53,10 @@ export default class YourDashSession<T extends YourDashSessionType> {
   username: string
 
   constructor( username: string, session: IYourDashSession<T> ) {
+    if ( !session ) {
+      throw new Error( "An invalid session was provided to YourDashSession" )
+    }
+
     this.id = session.id
     this.type = session.type
     this.sessionToken = session.sessionToken

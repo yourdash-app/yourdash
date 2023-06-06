@@ -66,10 +66,10 @@ if ( !args.dev && args.compile ) {
 }
 
 if ( args.dev ) {
-  console.log( `[${chalk.hex( "#fc6f45" ).bold( "DEV" )}]: starting server \"node ./src/main.js --color=full ${ process.argv.slice( 2 ).join( " " ) }\"` )
+  console.log( `[${ chalk.hex( "#fc6f45" ).bold( "DEV" ) }]: starting server \"node ./src/main.js --color=full ${ process.argv.slice( 2 ).join( " " ) }\"` )
 
   const childProcess = exec(
-    `npx tsc-watch --project . --onSuccess \"node${args.debug && " --inspect"} ./src/main.js --color=full ${ process.argv.slice( 2 ).join( " " ) }\"`
+    `npx tsc-watch --project . --onSuccess \"node${ args.debug ? " --inspect" : "" } ./src/main.js --color=full ${ process.argv.slice( 2 ).join( " " ) }\"`
   )
 
   childProcess.stdout.on( "data", data => {

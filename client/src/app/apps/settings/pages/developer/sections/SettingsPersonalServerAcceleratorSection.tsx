@@ -3,7 +3,7 @@ import { IYourDashSession, YourDashSessionType } from "shared/core/session"
 import { Button } from "../../../../../../ui"
 import csi from "helpers/csi"
 
-const SettingsPersonalServerAcceleratorSection: React.FC = ( ) => {
+const SettingsPersonalServerAcceleratorSection: React.FC = () => {
   const [sessions, setSessions] = useState<IYourDashSession<YourDashSessionType.desktop>[]>( [] )
   const [selectedSession, setSelectedSession] = useState<IYourDashSession<YourDashSessionType.desktop> | null>( null )
   return (
@@ -11,7 +11,7 @@ const SettingsPersonalServerAcceleratorSection: React.FC = ( ) => {
       <h2>Personal Server Accelerator DEBUGGER</h2>
       <main>
         <Button onClick={ () => {
-          csi.getJson( "/app/settings/debug/psa/update/5", data => {
+          csi.getJson( "/app/settings/debug/psa/update/2", data => {
             return 0
           } )
         } }

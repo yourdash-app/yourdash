@@ -34,6 +34,10 @@ const main: YourDashApplicationServerPlugin = ( { app, io } ) => {
 
     const psa = new PersonalServerAcceleratorCommunication( user.getSession( parseInt( sessionId, 10 ) ) )
 
+    if ( !psa.socketConnection ) {
+      return res.json( { success: false } )
+    }
+
     console.log( psa )
     console.log( user.getSession( parseInt( sessionId, 10 ) ) )
 

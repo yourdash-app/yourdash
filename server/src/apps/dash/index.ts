@@ -1,7 +1,7 @@
-import { YourDashApplicationServerPlugin } from "../../helpers/applications.js";
+import { YourDashApplicationServerPlugin } from "../../helpers/applications.js"
 
 const main: YourDashApplicationServerPlugin = () => {
-  console.log("Dash application");
-};
+  console.log( "Dash application" )
+}
 
-export default main;
+export default main
