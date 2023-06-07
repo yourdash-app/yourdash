@@ -20,7 +20,9 @@ const LauncherGridView: React.FC<ILauncherGridView> = ( { applications, setVisib
             bg-container-bg
             grid
             grid-cols-4
-            gap-3
+            items-center
+            justify-center
+            gap-2
             pl-2
             pr-2
             child:rounded-button-rounding
@@ -39,6 +41,7 @@ const LauncherGridView: React.FC<ILauncherGridView> = ( { applications, setVisib
             child:transition-[var(--transition)]
             child-active:transition-[var(--transition)]
             child-hover:transition-[var(--transition-fast)]
+            child:aspect-square
           `
       ) }
     >
@@ -65,7 +68,7 @@ const LauncherGridView: React.FC<ILauncherGridView> = ( { applications, setVisib
                 className={ "group" }
               >
                 <RightClickMenu
-                  className={ "w-full h-full flex flex-col items-center justify-center pt-3 pb-1" }
+                  className={ "w-full h-full flex flex-col items-center justify-center" }
                   key={ app.name }
                   items={ [
                     {
@@ -97,7 +100,7 @@ const LauncherGridView: React.FC<ILauncherGridView> = ( { applications, setVisib
                     }
                   ] }
                 >
-                  <img src={ app.icon } alt={ "" } className={ "w-[98px] aspect-square mb-2 shadow-md rounded-3xl group-active:shadow-inner" }/>
+                  <img src={ app.icon } alt={ "" } className={ "w-[98px] aspect-square shadow-md rounded-3xl group-active:shadow-inner mb-1" }/>
                   <span>{ app.displayName }</span>
                 </RightClickMenu>
               </button>

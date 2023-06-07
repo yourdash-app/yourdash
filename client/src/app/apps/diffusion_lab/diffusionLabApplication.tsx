@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react"
-import { Icon, MajorButton, Button, DropdownButton, TextBox, Card } from "../../../ui"
+import { Icon, MajorButton, Button, DropdownButton, TextBox, Card, ResizeContainer } from "../../../ui"
 import csi from "helpers/csi"
 import { IDiffusionLabImageGenerationData } from "../../../../../shared/apps/diffusion_lab/image/generationData"
 import YourDashLogo from "../../../../public/assets/productLogos/yourdash.svg"
 
 const DiffusionLabApplication: React.FC = () => {
-  const [progress, setProgress] = useState<number>( 1 )
+  const [progress, setProgress] = useState<number>( 0 )
   const [models, setModels] = useState<string[]>( [] )
   const [generationData, setGenerationData] = useState<IDiffusionLabImageGenerationData>( {
     extensions: [],
@@ -98,7 +98,7 @@ const DiffusionLabApplication: React.FC = () => {
           }
         </section>
       </header>
-      <main className={ "p-3 flex gap-3" }>
+      <ResizeContainer className={ "p-3 flex gap-3" } direction={ "column" }>
         <section className={ "flex flex-col flex-grow" }>
           <Card>
             <span>Prompt</span>
@@ -132,7 +132,7 @@ const DiffusionLabApplication: React.FC = () => {
             </div>
           </div>
         </section>
-      </main>
+      </ResizeContainer>
     </main>
   )
 }

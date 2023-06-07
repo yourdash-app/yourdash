@@ -42,4 +42,6 @@ applicationsPathNames.forEach( ( app, ind ) => {
 fileTemplate = fileTemplate.replace( "/* region loadable */", loadableRegionReplacement )
 fileTemplate = fileTemplate.replace( "{/* region routes */}", routeRegionReplacement )
 
-fs.writeFile( path.resolve( process.cwd(), "./src/app/AppRouter.tsx" ), fileTemplate )
+fs.writeFile( path.resolve( process.cwd(), "./src/app/AppRouter.tsx" ), fileTemplate ).then( () => {
+  console.log( "Generated AppRouter.tsx Successfully" )
+} )

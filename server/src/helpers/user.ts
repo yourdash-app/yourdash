@@ -164,7 +164,7 @@ class YourDashUser {
         getSessionsForUser( this.username )[getSessionsForUser( this.username ).findIndex( val => val.id === sessionId )]
       )
     } catch ( _err ) {
-      console.log( `[${ chalk.yellow( "WARN" ) }]: unable to find session: ${ sessionId }` )
+      console.log( `[${ chalk.yellowBright( "WARN" ) }]: unable to find session: ${ sessionId }` )
       return undefined
     }
   }

@@ -1,0 +1,11 @@
+.component {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+}
+
+.handle {
+  cursor: col-resize;
+  background-color: rgb(var(--theme-500));
+  position: absolute;
+}

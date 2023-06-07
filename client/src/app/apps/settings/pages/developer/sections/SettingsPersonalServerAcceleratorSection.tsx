@@ -11,7 +11,7 @@ const SettingsPersonalServerAcceleratorSection: React.FC = () => {
       <h2>Personal Server Accelerator DEBUGGER</h2>
       <main>
         <Button onClick={ () => {
-          csi.getJson( "/app/settings/debug/psa/update/3", data => {
+          csi.getJson( "/app/settings/debug/psa/update/5", data => {
             return 0
           } )
         } }

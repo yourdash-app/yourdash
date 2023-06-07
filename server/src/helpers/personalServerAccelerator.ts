@@ -12,15 +12,27 @@ export function executeCommand( username: string, session: IYourDashSession<Your
 }
 
 export function getSocketFromSession( username: string, session: IYourDashSession<YourDashSessionType.desktop> ): SocketIoSocket | undefined {
-  return activeSockets[username].find( sock => sock.id === session.id.toString() ).socket
+  if ( !session || !username ) {
+    return undefined
+  }
 
-  return undefined
+  const connection = activeSockets[username].find( sock => sock.id === session.id.toString() )
+
+  if ( !connection ) {
+    return undefined
+  }
+
+  return activeSockets[username].find( sock => sock.id === session.id.toString() )?.socket || undefined
 }
 
 export class PersonalServerAcceleratorCommunication {
   socketConnection: SocketIoSocket
 
   constructor( username: string, session: IYourDashSession<YourDashSessionType.desktop> ) {
+    if ( !session ) {
+      return undefined
+    }
+
     this.socketConnection = getSocketFromSession( username, session )
 
     return this
