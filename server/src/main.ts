@@ -17,7 +17,7 @@ import YourDashPanel from "./helpers/panel.js"
 import YourDashUnreadUser, { YourDashUserPermissions } from "./helpers/user.js"
 import { YourDashSessionType, IYourDashSession } from "../../shared/core/session.js"
 import { createSession } from "./helpers/session.js"
-import { Server as SocketIoServer } from "socket.io"
+import { Server as SocketIoServer, Socket as SocketIoSocket } from "socket.io"
 import * as http from "http"
 import chalk from "chalk"
 import minimist from "minimist"
@@ -97,7 +97,11 @@ await startupChecks()
 const app = express()
 const httpServer = http.createServer( app )
 const io = new SocketIoServer( httpServer )
-const activeSockets: { [ username: string ]: { id: string, token: string }[] } = {}
+
+export interface ISocketActiveSocket { id: string, token: string, socket: SocketIoSocket }
+
+const activeSockets: { [ username: string ]: ISocketActiveSocket[] } = {}
+
 
 process.on( "SIGINT", () => {
   httpServer.close( () => {
@@ -106,45 +110,29 @@ process.on( "SIGINT", () => {
   } )
 } )
 
-export { io, activeSockets }
-
-io.use( async ( socket, next ) => {
-  const { username, sessionToken } = socket.handshake.query as { username?: string, sessionToken?: string }
-
-  if ( !username ) {
-    return socket.disconnect()
-  }
-
-  if ( !sessionToken ) {
-    return socket.disconnect()
-  }
-
-  if ( !__internalGetSessions()[username] ) {
-    try {
-      const user = await ( new YourDashUnreadUser( username ).read() )
-
-      __internalGetSessions()[username] = ( await user.getSessions() ) || []
-    } catch ( _err ) {
-      return socket.disconnect()
-    }
-  }
-
-  if ( __internalGetSessions()[username].find( session => session.sessionToken === sessionToken ) ) {
-    return next()
-  }
-
-
-  return socket.disconnect()
-} )
-
 io.on( "connection", socket => {
+  // Check that all required parameters are present
+  if ( !socket.handshake.query.username || !socket.handshake.query.sessionToken || !socket.handshake.query.sessionId ) {
+
+    console.log(
+      socket.handshake.query.username,
+      socket.handshake.query.sessionToken,
+      socket.handshake.query.sessionId
+    )
+
+    console.log( "[PSA-BACKEND]: Missing required parameters" )
+
+    return socket.disconnect( true )
+  }
+
   if ( !activeSockets[socket.handshake.query.username as string] ) {
     activeSockets[socket.handshake.query.username as string] = []
   }
 
-  activeSockets[socket.handshake.query.username as string].push( {
-    id: socket.handshake.query.id as string,
-    token: socket.handshake.query.sessionToken as string
+  activeSockets[socket.handshake.query.username as string].push( <ISocketActiveSocket>{
+    id: socket.handshake.query.sessionId as string,
+    token: socket.handshake.query.sessionToken as string,
+    socket
   } )
 
   socket.on( "execute-command-response", output => {
@@ -158,6 +146,33 @@ io.on( "connection", socket => {
   } )
 }
 )
+
+io.use( async ( socket, next ) => {
+
+  const { username, sessionToken } = socket.handshake.query as { username?: string, sessionToken?: string }
+  if ( !username || !sessionToken ) {
+    return socket.disconnect()
+
+  }
+  if ( !__internalGetSessions()[username] ) {
+    try {
+      const user = await ( new YourDashUnreadUser( username ).read() )
+
+      __internalGetSessions()[username] = ( await user.getSessions() ) || []
+    } catch ( _err ) {
+      return socket.disconnect()
+    }
+
+  }
+  if ( __internalGetSessions()[username].find( session => session.sessionToken === sessionToken ) ) {
+    return next()
+
+  }
+  return socket.disconnect()
+
+} )
+
+export { io, activeSockets }
 
 
 app.use( express.json( { limit: "50mb" } ) )

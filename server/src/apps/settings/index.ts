@@ -32,14 +32,11 @@ const main: YourDashApplicationServerPlugin = ( { app, io } ) => {
     const { username } = req.headers as { username: string }
     const user = await ( new YourDashUnreadUser( username ).read() )
 
-    const psa = new PersonalServerAcceleratorCommunication( user.getSession( parseInt( sessionId, 10 ) ) )
+    const psa = new PersonalServerAcceleratorCommunication( username, user.getSession( parseInt( sessionId, 10 ) ) )
 
     if ( !psa.socketConnection ) {
       return res.json( { success: false } )
     }
-
-    console.log( psa )
-    console.log( user.getSession( parseInt( sessionId, 10 ) ) )
 
     psa.emit( "/core/update", true )
 

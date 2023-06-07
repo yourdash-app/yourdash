@@ -15,8 +15,8 @@ interface ISavedSession {
   username: string
 }
 
-export default function startPsaBackend( wsInstanceUrl: string, restInstanceUrl: string, username: string, password: string ) {
-  if ( !fs.existsSync( SAVED_SESSION_PATH ) ) {
+export default function startPsaBackend( wsInstanceUrl: string, restInstanceUrl: string, username: string, password: string, reAuth?: boolean ) {
+  if ( !fs.existsSync( SAVED_SESSION_PATH ) || reAuth ) {
     fs.writeFileSync( SAVED_SESSION_PATH, "{}" )
     
     fetch( `${ restInstanceUrl }/login/user/${ username }/authenticate`, {
