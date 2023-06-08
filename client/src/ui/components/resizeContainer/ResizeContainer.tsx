@@ -29,10 +29,7 @@ const ResizeContainer: React.FC<IResizeContainerProps> = ( {
   }
 
   const handleMouseMove = ( event: React.MouseEvent<HTMLDivElement> ) => {
-    if ( !ref.current ) {
-      return
-    }
-    if ( !dragging ) {
+    if ( !ref.current || !dragging ) {
       return
     }
     const currentPos = direction === "row" ? event.clientX - ref.current.getBoundingClientRect().left : event.clientY - ref.current.getBoundingClientRect().top
@@ -48,8 +45,9 @@ const ResizeContainer: React.FC<IResizeContainerProps> = ( {
   return (
     <div
       ref={ ref }
-      style={ { ...style, flexDirection: direction } }
+      style={ { ...style, flexDirection: direction, padding: 0 } }
       className={ `${ styles.component } ${ className }` }
+      onMouseMove={ handleMouseMove }
     >
       <div style={ {
         [direction === "row" ? "width" : "height"]: containerSize
@@ -59,16 +57,27 @@ const ResizeContainer: React.FC<IResizeContainerProps> = ( {
       </div>
       {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */ }
       <div
-        style={ direction === "row"
-          ? {
-            left: `${ containerSize - 4 }px`, cursor: "col-resize", top: 0, height: "100%", width: "0.5rem"
-          }
-          : {
-            left: 0, cursor: "row-resize", top: `${ containerSize - 4 }px`, width: "100%", height: "0.5rem"
-          } }
+        style={
+          direction === "row"
+            ? {
+              left: `${ containerSize - 4 }px`,
+              cursor: "col-resize",
+              top: 0,
+              height: "100%",
+              width: "0.5rem",
+              ...dragging ? { backgroundColor: "rgb(var(--theme-500))", transition: "none" } : {}
+            }
+            : {
+              left: 0,
+              cursor: "row-resize",
+              top: `${ containerSize - 4 }px`,
+              width: "100%",
+              height: "0.5rem",
+              ...dragging ? { backgroundColor: "rgb(var(--theme-500))", transition: "none" } : {}
+            }
+        }
         className={ styles.handle }
         onMouseDown={ handleMouseDown }
-        onMouseMove={ handleMouseMove }
         onMouseUp={ handleMouseUp }
       />
       { children[1] }

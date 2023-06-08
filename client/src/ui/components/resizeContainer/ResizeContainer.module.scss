@@ -2,10 +2,21 @@
   display: flex;
   flex-direction: row;
   position: relative;
+
+  > * {
+    flex-grow: 0;
+    flex-shrink: 0;
+  }
 }
 
 .handle {
   cursor: col-resize;
-  background-color: rgb(var(--theme-500));
   position: absolute;
+  background-color: transparent;
+  transition: var(--transition);
+
+  &:hover {
+    transition: var(--transition-fast);
+    background-color: rgb(var(--theme-500));
+  }
 }

@@ -33,6 +33,8 @@ const DiffusionLabApplication: React.FC = () => {
       setGenerationData( { ...generationData, model: data.models[0] } )
       setModels( data.models )
     } )
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [] )
 
   return (
@@ -98,8 +100,8 @@ const DiffusionLabApplication: React.FC = () => {
           }
         </section>
       </header>
-      <ResizeContainer className={ "p-3 flex gap-3" } direction={ "column" }>
-        <section className={ "flex flex-col flex-grow" }>
+      <ResizeContainer className={ "flex gap-3" } direction={ "row" }>
+        <section className={ "flex flex-col flex-grow pl-3 pt-3 pb-3" }>
           <Card>
             <span>Prompt</span>
             <TextBox onChange={ e => {
@@ -114,10 +116,10 @@ const DiffusionLabApplication: React.FC = () => {
           </Card>
         </section>
         <section>
-          <div className={ "flex flex-col" }>
+          <div className={ "flex flex-col pr-3 pt-3 pb-3" }>
             <div
               style={ {
-                aspectRatio: `${generationData.dimensions.width} / ${generationData.dimensions.height}`
+                aspectRatio: `${ generationData.dimensions.width } / ${ generationData.dimensions.height }`
               } }
               className={ "flex flex-col flex-wrap p-4 items-center justify-center" }
             >
