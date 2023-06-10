@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import Header from "./components/Header"
-import { Card, MajorButton } from "./ui"
+import { Card, MajorButton, Button } from "./ui"
 import { Link, useNavigate } from "react-router-dom"
 
 const Root: React.FC = () => {
@@ -20,7 +20,7 @@ const Root: React.FC = () => {
   }, [taglineInd] )
 
   return (
-    <main className={ "bg-base-900 min-h-screen h-full overflow-y-auto" }>
+    <main className={ "bg-base-900 min-h-screen h-full overflow-y-auto overflow-x-hidden" }>
       <Header/>
       <section
         className={ "animate__animated animate__fadeIn w-full h-[30rem] overflow-hidden relative bg-base-800 [clip-path:_polygon(0_0,_100%_0%,_100%_85%,_0%_100%);] grid md:grid-cols-2 grid-cols-1 gap-10 pb-4" }
@@ -113,7 +113,6 @@ const Root: React.FC = () => {
           />
         </div>
       </section>
-      { /*TODO: fix css styling defaults*/ }
       <section
         className={ "pt-8 flex justify-between items-center gap-4 ml-auto mr-auto grid-cols-1 max-w-5xl w-full lg:grid-cols-2 xl:grid-cols-3 pl-8 pr-8 mb-10" }
       >
@@ -141,20 +140,44 @@ const Root: React.FC = () => {
         </div>
       </section>
       <section
-        className={ "text-3xl font-semibold pt-8 grid gap-4 ml-auto mr-auto grid-cols-1 max-w-5xl w-full lg:grid-cols-2 xl:grid-cols-3 pl-8 pr-8" }
+        className={ "pt-8 flex justify-between items-center gap-4 ml-auto mr-auto grid-cols-1 max-w-5xl w-full lg:grid-cols-2 xl:grid-cols-3 pl-8 pr-8 mb-10" }
       >
-        <Card className={ "flex items-center justify-center text-center" }>
-          <h1 className={ "font-medium text-2xl tracking-wide" }>Host your own</h1>
-        </Card>
-        <Card className={ "flex items-center justify-center text-center" }>
-          <h1 className={ "font-medium text-2xl tracking-wide" }>Limitless personalization</h1>
-        </Card>
-        <Card className={ "flex items-center justify-center text-center" }>
-          <h1 className={ "font-medium text-2xl tracking-wide" }>Open sourced</h1>
-        </Card>
+        <div className={ "flex items-start gap-4 flex-col animate__animated animate__fadeInLeft animate__1000ms animate__slow relative" }>
+          <span className={ "w-72 text-left text-2xl" }>
+            Download and create themes and plugins with ease
+          </span>
+          <Button onClick={ () => {
+            navigate( "/docs/get-started" )
+          } }
+          >
+            Learn more
+          </Button>
+        </div>
+        <h3 className={ "text-7xl font-black text-right animate__animated animate__fadeInRight animate__1000ms animate__slow" }>
+          Limitless
+          <br/>
+          personalization
+        </h3>
       </section>
-      <section className={ "flex items-center justify-center text-5xl font-bold pt-16 pb-16 tracking-wide" }>
-        Coming soon...
+      <section
+        className={ "pt-8 flex justify-between items-center gap-4 ml-auto mr-auto grid-cols-1 max-w-5xl w-full lg:grid-cols-2 xl:grid-cols-3 pl-8 pr-8 mb-10" }
+      >
+        <h3 className={ "text-7xl font-black animate__animated animate__fadeInLeft animate__1500ms animate__slow" }>
+          Open
+          <br/>
+          sourced
+        </h3>
+        <div className={ "flex items-end gap-4 flex-col animate__animated animate__fadeInRight animate__1500ms animate__slow relative" }>
+          <span className={ "w-72 text-right text-2xl" }>
+            Run a single command and be up-and-running within minutes
+          </span>
+          <Button onClick={ () => {
+            navigate( "/docs/get-started" )
+          } }
+          >
+            Learn more
+          </Button>
+        </div>
       </section>
     </main>
   )

@@ -5,7 +5,7 @@ import { IDiffusionLabImageGenerationData } from "../../../../../shared/apps/dif
 import YourDashLogo from "../../../../public/assets/productLogos/yourdash.svg"
 
 const DiffusionLabApplication: React.FC = () => {
-  const [progress, setProgress] = useState<number>( 0 )
+  const [progress, setProgress] = useState<number>( 1 )
   const [models, setModels] = useState<string[]>( [] )
   const [generationData, setGenerationData] = useState<IDiffusionLabImageGenerationData>( {
     extensions: [],
@@ -78,11 +78,16 @@ const DiffusionLabApplication: React.FC = () => {
         </section>
         <section className={ "flex items-center justify-center h-full gap-2" }>
           {
-            progress === 0
+            progress === 1
               ? (
                 <MajorButton
                   onClick={ () => {
                     setProgress( 1 )
+
+                    csi.postJson( "/app/diffusion_lab/generate", { ...generationData }, data => {
+                      setGenerationResult( data )
+                      setProgress( 1 )
+                    } )
                   } }
                 >
                   Diffuse

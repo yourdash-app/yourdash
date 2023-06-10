@@ -5,8 +5,12 @@
 .indicator {
   background-color: red;
   padding: 0.125rem 0.25rem;
-  top: 0.125rem;
-  left: calc(100% - 0.25rem);
+  top: -0.5rem;
+  height: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  left: calc(100% - 0.5rem);
   position: absolute;
   color: white;
   border-radius: 100rem;

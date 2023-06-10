@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react"
 import { useParams, useNavigate } from "react-router-dom"
-import { IconButton, Spinner, Card, Button, Icon } from "../../../../ui"
+import { IconButton, Spinner, Card, Button, Icon, Badge, DateInput } from "../../../../ui"
 import csi from "../../../../helpers/csi"
 import { IYourDashApplication } from "../../../../../../shared/core/application"
+import StoreApplicationDefaultHeaderBackground from "./default_background.png"
 
 interface IYourDashApplicationStorePage extends IYourDashApplication {
   icon: string
@@ -33,34 +34,38 @@ const StoreApplicationPage: React.FC = () => {
   }
 
   return (
-    <div className={ "grid grid-rows-[auto,1fr] h-full" }>
-      <header className={ "bg-container-bg text-container-fg border-b-[1px] border-b-container-border p-2 pr-4 flex gap-2" }>
-        <IconButton
-          icon={ "arrow-left-16" }
-          onClick={ () => {
-            navigate( `/app/a/store/cat/${appData?.category}` )
-          } }
-        />
-        <h1 className={ "text-3xl font-semibold tracking-wide" }>YourDash Store | { appData?.displayName }</h1>
-      </header>
+    <div className={ "h-full relative" }>
+      <IconButton
+        className={ "absolute left-4 top-4 z-10" }
+        icon={ "arrow-left-16" }
+        onClick={ () => {
+          navigate( `/app/a/store/cat/${ appData?.category }` )
+        } }
+      />
       <main>
         {
           isLoading
             ? (
               <div className={ "w-full h-full flex items-center justify-center" }>
                 <Spinner/>
+                TODO: add a back button
               </div>
             )
             : appData && (
               <>
                 <header className={ "flex flex-col w-full bg-container-bg gap-4" }>
-                  <img className={ "w-full h-64 aspect-square select-none" } src={ appData.icon } draggable={ false } alt=""/>
+                  <div className="h-64 relative">
+                    <img className={ "w-full h-64" } src={ StoreApplicationDefaultHeaderBackground } alt=""/>
+                    <div className={ "flex items-center justify-center flex-row absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 gap-3" }>
+                      <img className={ "w-24 aspect-square select-none" } src={ appData.icon } draggable={ false } alt=""/>
+                      <h1 className={ "text-5xl tracking-wider font-black" }>{ appData.displayName }</h1>
+                    </div>
+                  </div>
                   <section className={ "flex items-center p-4 gap-4 max-w-[50rem] w-full ml-auto mr-auto" }>
                     <img className={ "w-24 aspect-square select-none" } src={ appData.icon } draggable={ false } alt=""/>
                     <h1 className={ "text-4xl font-semibold tracking-wide mr-auto" }>{ appData.displayName }</h1>
                     <div className={ "flex gap-2" }>
                       <Button>Install</Button>
-                      <IconButton icon={ "link-external-16" }/>
                     </div>
                   </section>
                 </header>

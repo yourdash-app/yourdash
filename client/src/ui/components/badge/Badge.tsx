@@ -1,4 +1,4 @@
-import React from "react";
+import React from "react"
 import styles from "./Badge.module.scss"
 
 export interface IBadgeProps {
@@ -6,18 +6,25 @@ export interface IBadgeProps {
   children: React.ReactNode
 }
 
-const Badge: React.FC<IBadgeProps> = ({ children, badgeCount }) => {
+const Badge: React.FC<IBadgeProps> = ( { children, badgeCount } ) => {
   return (
-      badgeCount !== 0 ? (
+    badgeCount !== 0
+      ? (
         <div className={ styles.component }>
-          <span className={ styles.indicator }>
-            {badgeCount > 999 ? "999+" : badgeCount}
+          <span
+            className={ styles.indicator }
+            style={ {
+              ...badgeCount < 10 ? { aspectRatio: "1/1" } : {}
+            } }
+          >
+            { badgeCount > 999 ? "999+" : badgeCount }
           </span>
-          {children}
+          { children }
         </div>
-      ) : (
+      )
+      : (
         <div className={ styles.component }>
-          {children}
+          { children }
         </div>
       )
   )

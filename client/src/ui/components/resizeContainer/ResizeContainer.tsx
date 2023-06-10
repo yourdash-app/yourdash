@@ -6,10 +6,11 @@ interface IResizeContainerProps {
   className?: string;
   children: [ReactNode, ReactNode];
   direction: "column" | "row";
+  startingRatio: `${ number }/${ number }` | `${ number } / ${ number }`;
 }
 
 const ResizeContainer: React.FC<IResizeContainerProps> = ( {
-  children, style, className, direction
+  children, style, className, direction, startingRatio
 } ) => {
   const [dragging, setDragging] = useState( false )
   const [containerSize, setContainerSize] = useState( 0 )

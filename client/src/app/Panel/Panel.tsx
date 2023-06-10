@@ -70,7 +70,7 @@ const PanelQuickShortcuts: React.FC<{ num: number; side: PanelPosition }> = ( { 
               />
               <span
                 className={ clippy(
-                  "absolute z-50 pl-2 pr-2 pt-0.5 pb-0.5 bg-container-secondary-bg rounded-container-rounding" +
+                  "absolute z-50 pl-3 pr-3 pt-0.5 pb-0.5 bg-container-secondary-bg rounded-container-rounding" +
                   " pointer-events-none group-hover:opacity-100 opacity-0" +
                   " group-hover:[transition:var(--transition-fast)] shadow-lg" +
                   " [transition:var(--transition)] whitespace-nowrap",
@@ -146,6 +146,8 @@ const PanelAuthorizer: React.FC = () => {
         }
       )
     }
+
+    // eslint-ignore-next-line react-hooks/exhaustive-deps
   }, [] )
 
   return null
@@ -236,7 +238,7 @@ const Panel: React.FC<IPanel> = ( { side, setSide } ) => {
         <PanelDesktopIndicator side={ side }/>
         {/*
          
-         TODO: feature idea, Quick search ( basically just opens a command panel for all of yourdash )
+         TODO: feature idea, Quick search ( basically just opens a command panel for all of YourDash )
          Note: remember include application filtering
          
          */ }
