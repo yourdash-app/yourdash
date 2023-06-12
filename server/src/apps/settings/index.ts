@@ -13,7 +13,9 @@ const main: YourDashApplicationServerPlugin = ( { app, io } ) => {
 
     panel.setPanelPosition( position )
 
-    return res.json( { success: true } )
+    return res.json( {
+      success: true
+    } )
   } )
 
   app.post( "/app/settings/panel/launcher", ( req, res ) => {
@@ -40,7 +42,10 @@ const main: YourDashApplicationServerPlugin = ( { app, io } ) => {
 
     psa.emit( "/core/update", true )
 
-    return res.json( { success: true, data: user.getSession( parseInt( sessionId, 10 ) ) } )
+    return res.json( {
+      success: true,
+      data: user.getSession( parseInt( sessionId, 10 ) )
+    } )
   } )
 }
 

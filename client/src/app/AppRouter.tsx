@@ -7,41 +7,45 @@ import React from "react"
 import { Route, Routes } from "react-router"
 
 const Application0 = loadable( () => {
-  return import( "./apps/dash" )
+  return import( "./apps/code_studio" )
 } )
 const Application1 = loadable( () => {
-  return import( "./apps/diffusion_lab" )
+  return import( "./apps/dash" )
 } )
 const Application2 = loadable( () => {
-  return import( "./apps/endpoints" )
+  return import( "./apps/diffusion_lab" )
 } )
 const Application3 = loadable( () => {
-  return import( "./apps/files" )
+  return import( "./apps/endpoints" )
 } )
 const Application4 = loadable( () => {
-  return import( "./apps/photos" )
+  return import( "./apps/files" )
 } )
 const Application5 = loadable( () => {
-  return import( "./apps/settings" )
+  return import( "./apps/photos" )
 } )
 const Application6 = loadable( () => {
-  return import( "./apps/store" )
+  return import( "./apps/settings" )
 } )
 const Application7 = loadable( () => {
+  return import( "./apps/store" )
+} )
+const Application8 = loadable( () => {
   return import( "./apps/weather" )
 } )
 
 const AppRouter = () => {
   return (
     <Routes>
-      <Route path={ "dash/*" } element={ <Application0/> }/>
-      <Route path={ "diffusion_lab/*" } element={ <Application1/> }/>
-      <Route path={ "endpoints/*" } element={ <Application2/> }/>
-      <Route path={ "files/*" } element={ <Application3/> }/>
-      <Route path={ "photos/*" } element={ <Application4/> }/>
-      <Route path={ "settings/*" } element={ <Application5/> }/>
-      <Route path={ "store/*" } element={ <Application6/> }/>
-      <Route path={ "weather/*" } element={ <Application7/> }/>
+      <Route path={ "code_studio/*" } element={ <Application0/> }/>
+      <Route path={ "dash/*" } element={ <Application1/> }/>
+      <Route path={ "diffusion_lab/*" } element={ <Application2/> }/>
+      <Route path={ "endpoints/*" } element={ <Application3/> }/>
+      <Route path={ "files/*" } element={ <Application4/> }/>
+      <Route path={ "photos/*" } element={ <Application5/> }/>
+      <Route path={ "settings/*" } element={ <Application6/> }/>
+      <Route path={ "store/*" } element={ <Application7/> }/>
+      <Route path={ "weather/*" } element={ <Application8/> }/>
     </Routes>
   )
 }

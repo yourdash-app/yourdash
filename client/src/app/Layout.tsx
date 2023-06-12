@@ -7,6 +7,10 @@ const Layout: React.FC = () => {
     PanelPosition.left
   )
 
+  if ( new URLSearchParams( window.location.search ).has( "standalone" ) ) {
+    return <Outlet/>
+  }
+
   return (
     <div
       style={ {
@@ -24,7 +28,12 @@ const Layout: React.FC = () => {
       } }
       className={ "grid h-screen" }
     >
-      <Panel setSide={ val => setPanelLayout( val ) } side={ panelLayout }/>
+      <Panel
+        setSide={ val => {
+          return setPanelLayout( val )
+        } }
+        side={ panelLayout }
+      />
       <main className={ "min-h-full overflow-hidden overflow-y-auto w-full flex flex-col" }>
         <Outlet/>
       </main>

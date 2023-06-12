@@ -53,7 +53,7 @@ const StoreApplicationPage: React.FC = () => {
             )
             : appData && (
               <>
-                <header className={ "flex flex-col w-full bg-container-bg gap-4" }>
+                <header className={ "flex flex-col w-full bg-container-bg" }>
                   <div className="h-64 relative">
                     <img className={ "w-full h-64" } src={ StoreApplicationDefaultHeaderBackground } alt=""/>
                     <div className={ "flex items-center justify-center flex-row absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 gap-3" }>
@@ -76,6 +76,8 @@ const StoreApplicationPage: React.FC = () => {
                   <Card className={ "flex flex-col" }>
                     <div>Category: { appData.category }</div>
                     <div>ID: { appData.name }</div>
+                    <br/>
+                    <div>Created as part of the YourDash Project</div>
                   </Card>
                   <h2 className={ "text-2xl font-medium" }>Source Code</h2>
                   <section className={ "grid grid-cols-2 gap-2" }>

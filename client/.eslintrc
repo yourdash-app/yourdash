@@ -4,68 +4,14 @@
     "@jetbrains",
     "@jetbrains/eslint-config/browser",
     "@jetbrains/eslint-config/es6",
-    "@jetbrains/eslint-config/node",
     "@jetbrains/eslint-config/react",
     "plugin:@typescript-eslint/recommended"
   ],
   "rules": {
-    "no-unused-vars": "off",
-    "no-shadow": "off",
-    "object-curly-spacing": [
-      "warn",
-      "always"
-    ],
-    "import/extensions": "off",
-    "quotes": [
-      "error",
-      "double",
-      {
-        "allowTemplateLiterals": false
-      }
-    ],
-    "sort-imports": "off",
-    "import/order": "off",
-    "space-in-parens": [
-      "warn",
-      "always"
-    ],
-    "max-len": [
-      "off"
-    ],
-    "semi": [
-      "warn",
-      "never"
-    ],
-    "consistent-return": "off",
-    "no-magic-numbers": "off",
-    "import/no-unresolved": "off",
-    "import/named": "off",
-    "dot-location": [
-      "warn",
-      "property"
-    ],
-    "@typescript-eslint/no-unused-vars": [
-      "warn",
-      {
-        "varsIgnorePattern": "^_",
-        "args": "all",
-        "argsIgnorePattern": "^_",
-        "caughtErrors": "all",
-        "caughtErrorsIgnorePattern": "^_"
-      }
-    ],
-    "complexity": "off",
-    "@typescript-eslint/no-explicit-any": "off",
-    "@typescript-eslint/ban-ts-comment": "off",
-    "react/jsx-curly-spacing": [
-      "warn",
-      "always"
-    ],
-    "react/jsx-no-literals": "off",
-    "no-nested-ternary": "off",
-    "arrow-body-style": [
-      "error",
-      "always"
-    ]
+    "import/no-unresolved": ["off"],
+    "import/extensions": ["off"],
+    "@typescript-eslint/ban-ts-comment": ["off"],
+    "no-console": ["off"],
+    "react-hooks/exhaustive-deps": ["off"]
   }
 }

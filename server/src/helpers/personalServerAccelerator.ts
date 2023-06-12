@@ -16,13 +16,13 @@ export function getSocketFromSession( username: string, session: IYourDashSessio
     return undefined
   }
 
-  const connection = activeSockets[username].find( sock => sock.id === session.id.toString() )
+  const connection = activeSockets[username]?.find( sock => sock.id === session.id.toString() ) || undefined
 
   if ( !connection ) {
     return undefined
   }
 
-  return activeSockets[username].find( sock => sock.id === session.id.toString() )?.socket || undefined
+  return activeSockets[username]?.find( sock => sock.id === session.id.toString() )?.socket || undefined
 }
 
 export class PersonalServerAcceleratorCommunication {

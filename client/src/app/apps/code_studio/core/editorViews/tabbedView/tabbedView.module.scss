@@ -1,0 +1,78 @@
+.tabbedView {
+  background-color: rgb(var(--container-bg));
+  height: 2.5rem;
+  display: flex;
+  user-select: none;
+}
+
+.tab {
+  height: 100%;
+  display: flex;
+  width: max-content;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-bottom: 0.2rem solid rgb(var(--theme-500));
+  padding: 0.5rem 0.75rem;
+  gap: 0.5rem;
+  transition: var(--transition);
+  color: rgb(var(--button-fg));
+  background-color: rgb(var(--button-bg));
+
+  &:hover {
+    background-color: rgb(var(--button-hover-bg));
+    color: rgb(var(--button-hover-fg));
+    transition: var(--transition-fast);
+
+    > .closeButton {
+      background-color: rgb(var(--button-hover-fg));
+      transition: var(--transition-fast);
+    }
+  }
+
+  &:active {
+    background-color: rgb(var(--button-active-bg));
+    color: rgb(var(--button-active-fg));
+
+    > .closeButton {
+      background-color: rgb(var(--button-active-fg));
+    }
+  }
+
+  .open {
+    background-color: rgb(var(--button-active-bg));
+    color: rgb(var(--button-active-fg));
+
+    > .closeButton {
+      background-color: rgb(var(--button-active-fg));
+    }
+  }
+
+  > .icon {
+    height: 100%;
+    aspect-ratio: 1 / 1;
+  }
+
+  > .label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: rgb(var(--button-fg));
+  }
+
+  > .closeButton {
+    cursor: pointer;
+    height: 1.25rem;
+    aspect-ratio: 1 / 1;
+    margin: auto;
+    -webkit-mask-position: center center;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-size: cover;
+    background-color: rgb(var(--button-fg));
+    transition: var(--transition);
+
+    &:hover {
+      background-color: rgb(var(--button-active-fg));
+      transition: var(--transition-fast);
+    }
+  }
+}

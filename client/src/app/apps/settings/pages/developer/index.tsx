@@ -3,6 +3,7 @@ import { Card, Icon, IconButton } from "../../../../../ui"
 import csi from "../../../../../helpers/csi"
 import { IYourDashSession, YourDashSessionType } from "../../../../../../../shared/core/session"
 import SettingsPersonalServerAcceleratorSection from "./sections/SettingsPersonalServerAcceleratorSection"
+import CodeStudioEditor from "../../../code_studio/core/CodeStudioCoreUIComponent"
 
 const SettingsPageDeveloper: React.FC = () => {
   return (
