@@ -2,12 +2,15 @@ import {
   ChipletIconDictionary
 } from '../../../../../../ui/components/icon/iconDictionary';
 
+import MarkdownView from '../markdownView/markdownView';
+
 import TabbedView, {TabTypes} from './tabbedView';
 import styles from './tabbedView.module.scss';
 
 export default class Tab {
   private readonly domElement: HTMLDivElement;
   private containerView: TabbedView;
+  private childView: MarkdownView;
 
   constructor(
     containerView: TabbedView,
@@ -18,13 +21,13 @@ export default class Tab {
     this.domElement = document.createElement('div');
     this.containerView.domElement.appendChild(this.domElement);
 
-    this.domElement.className = `${styles.tab}`;
+    this.domElement.className = styles.tab;
 
     const icon = document.createElement('img');
     this.domElement.appendChild(icon);
 
     icon.alt = '';
-    icon.className = `${styles.icon}`;
+    icon.className = `${ styles.icon }`;
 
     switch (type) {
       default:
@@ -41,10 +44,12 @@ export default class Tab {
     const closeButton = document.createElement('div');
     this.domElement.appendChild(closeButton);
 
-    closeButton.className = `${styles.closeButton}`;
-    closeButton.style.webkitMaskImage = `url(${ChipletIconDictionary['x-16']})`;
+    closeButton.className = `${ styles.closeButton }`;
+    closeButton.style.webkitMaskImage = `url(${ ChipletIconDictionary['x-16'] })`;
 
     closeButton.addEventListener('click', () => this.close());
+
+    this.childView = new MarkdownView(this.containerView.domElement);
 
     return this;
   }
@@ -55,7 +60,12 @@ export default class Tab {
     this.containerView.tabCloseEvent(this);
   }
 
-  open() {
-    this.containerView.tabOpenEvent(this);
+  deactivate() {
+    this.domElement.classList.remove(styles.open);
+  }
+
+  activate() {
+    this.domElement.classList.add(styles.open);
+    this.containerView.tabActivateEvent(this);
   }
 }

@@ -23,10 +23,10 @@ export default class CodeStudio {
 
     const tabbedView = new TabbedView(this.containerDomElement);
 
-    tabbedView.createTab(TabTypes.PlainText, 'Test Plain Text 1');
-    tabbedView.createTab(TabTypes.PlainText, 'Test Plain Text 2');
-    tabbedView.createTab(TabTypes.PlainText, 'Test Plain Text 3');
-    tabbedView.createTab(TabTypes.PlainText, 'Test Plain Text 4');
+    tabbedView.createTab(TabTypes.PlainText, 'Test Plain Text 1.txt');
+    tabbedView.createTab(TabTypes.PlainText, 'Test Plain Text 2.txt');
+    tabbedView.createTab(TabTypes.PlainText, 'Test Plain Text 3.txt');
+    tabbedView.createTab(TabTypes.PlainText, 'Test Plain Text 4.txt');
 
     return this;
   }

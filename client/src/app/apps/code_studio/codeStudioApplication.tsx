@@ -1,10 +1,9 @@
-import React from "react"
-import CodeStudioEditor from "./core/CodeStudioCoreUIComponent"
+import React from 'react';
 
-const CodeStudioApplication: React.FC = () => {
-  return (
-    <CodeStudioEditor/>
-  )
-}
+import CodeStudioEditor from './core/CodeStudioCoreUIComponent';
 
-export { CodeStudioApplication as default }
+const CodeStudioApplication: React.FC = () => (
+  <CodeStudioEditor/>
+);
+
+export {CodeStudioApplication as default};
