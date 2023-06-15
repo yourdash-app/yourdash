@@ -1,32 +1,26 @@
 import CodeStudioPanel from './panel/panel';
-import TabbedView, {TabTypes} from './editorViews/tabbedView/tabbedView';
+import UIComponent from './components/uiComponent';
+import CoreUI from './coreUI';
+import TabbedView from './components/tabbedView/tabbedView';
 
-export default class CodeStudio {
+export default class CodeStudio extends CoreUI {
   panels: {
     left: CodeStudioPanel[], right: CodeStudioPanel[],
   } = {
       left: [], right: []
     };
 
-  containerDomElement: HTMLDivElement;
-  domElement: HTMLDivElement;
-
   constructor(containerDomElement: HTMLDivElement) {
-    this.containerDomElement = containerDomElement;
-    this.domElement = document.createElement('div');
+    super(containerDomElement);
 
-    this.containerDomElement.appendChild(this.domElement);
+    const component = new TabbedView(this);
 
-    while (this.containerDomElement.firstChild) {
-      this.containerDomElement.removeChild(this.containerDomElement.firstChild);
-    }
-
-    const tabbedView = new TabbedView(this.containerDomElement);
-
-    tabbedView.createTab(TabTypes.PlainText, 'Test Plain Text 1.txt');
-    tabbedView.createTab(TabTypes.PlainText, 'Test Plain Text 2.txt');
-    tabbedView.createTab(TabTypes.PlainText, 'Test Plain Text 3.txt');
-    tabbedView.createTab(TabTypes.PlainText, 'Test Plain Text 4.txt');
+    // const tabbedView = new TabbedView(this.containerDomElement);
+    //
+    // tabbedView.createTab(TabTypes.PlainText, 'Test Plain Text 1.txt');
+    // tabbedView.createTab(TabTypes.PlainText, 'Test Plain Text 2.txt');
+    // tabbedView.createTab(TabTypes.PlainText, 'Test Plain Text 3.txt');
+    // tabbedView.createTab(TabTypes.PlainText, 'Test Plain Text 4.txt');
 
     return this;
   }

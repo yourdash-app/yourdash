@@ -13,13 +13,10 @@ const CodeStudioEditor: React.FC = () => {
     }
 
     const cs = new CodeStudio(ref.current);
-
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ref.current]);
 
   return (
-    <div ref={ref}/>
+    <main className={'w-full h-full'} ref={ref}/>
   );
 };
 
