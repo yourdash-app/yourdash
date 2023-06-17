@@ -113,11 +113,13 @@ const main: YourDashApplicationServerPlugin = ({app}) => {
     try {
       await fs.access(path.resolve(user.getAppDataPath(), 'weather'));
 
-      const rawFile = (await fs.readFile(
-        path.resolve(user.getAppDataPath(), 'weather/previous_locations.json')
-      )).toString();
+      const rawFile = (
+        await fs.readFile(
+          path.resolve(user.getAppDataPath(), 'weather/previous_locations.json')
+        )
+      ).toString() || '[]';
 
-      const parsedFile = JSON.parse(rawFile);
+      const parsedFile = JSON.parse(rawFile) || [];
 
       return res.json(parsedFile);
     } catch (_err) {

@@ -1,15 +1,14 @@
-import React from "react"
-import { Routes, Route } from "react-router"
-import DashApplication from "./dashApplication"
-import DashApplicationWelcome from "./welcome"
+import React from 'react';
+import {Routes, Route} from 'react-router';
 
-const DashRouter: React.FC = () => {
-  return (
-    <Routes>
-      <Route index element={ <DashApplication/> }/>
-      <Route path={ "welcome" } element={ <DashApplicationWelcome/> }/>
-    </Routes>
-  )
-}
+import DashApplication from './dashApplication';
+import DashApplicationWelcome from './welcome';
 
-export default DashRouter
+const DashRouter: React.FC = () => (
+  <Routes>
+    <Route index element={<DashApplication/>}/>
+    <Route path={'welcome'} element={<DashApplicationWelcome/>}/>
+  </Routes>
+);
+
+export default DashRouter;

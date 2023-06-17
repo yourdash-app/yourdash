@@ -538,7 +538,7 @@ app.get('/core/userdb', async (req, res) => {
   let output = {};
 
   try {
-    output = JSON.parse(fs.readFile(path.resolve(user.getPath(), './userdb.json')).toString());
+    output = JSON.parse(fs.readFile(path.resolve(user.getPath(), './userdb.json')).toString()) || {};
   } catch (_err) {
     output = {};
     fs.writeFile(path.resolve(user.getPath(), './userdb.json'), '{}');
