@@ -1,52 +1,54 @@
-import { Application as ExpressApplication } from "express"
-import YourDashPanel from "../../helpers/panel.js"
-import { YourDashApplicationServerPlugin } from "../../helpers/applications.js"
-import YourDashUnreadUser from "../../helpers/user.js"
-import { PersonalServerAcceleratorCommunication } from "../../helpers/personalServerAccelerator.js"
+import {Application as ExpressApplication} from 'express';
 
-const main: YourDashApplicationServerPlugin = ( { app, io } ) => {
-  app.post( "/app/settings/panel/position", ( req, res ) => {
-    const { username } = req.headers as { username: string }
-    const { position } = req.body
+import log from '../../helpers/log.js';
+import YourDashPanel from '../../helpers/panel.js';
+import {type YourDashApplicationServerPlugin} from '../../helpers/applications.js';
+import YourDashUnreadUser from '../../helpers/user.js';
+import {PersonalServerAcceleratorCommunication} from '../../helpers/personalServerAccelerator.js';
 
-    const panel = new YourDashPanel( username )
+const main: YourDashApplicationServerPlugin = ({app, io}) => {
+  app.post('/app/settings/panel/position', (req, res) => {
+    const {username} = req.headers as { username: string };
+    const {position} = req.body;
 
-    panel.setPanelPosition( position )
+    const panel = new YourDashPanel(username);
 
-    return res.json( {
+    panel.setPanelPosition(position);
+
+    return res.json({
       success: true
-    } )
-  } )
+    });
+  });
 
-  app.post( "/app/settings/panel/launcher", ( req, res ) => {
-    const { username } = req.headers as { username: string }
-    const { launcher } = req.body
+  app.post('/app/settings/panel/launcher', (req, res) => {
+    const {username} = req.headers as { username: string };
+    const {launcher} = req.body;
 
-    const panel = new YourDashPanel( username )
+    const panel = new YourDashPanel(username);
 
-    panel.setLauncherType( launcher )
+    panel.setLauncherType(launcher);
 
-    return res.json( { success: true } )
-  } )
+    return res.json({success: true});
+  });
 
-  app.get( "/app/settings/debug/psa/update/:sessionId", async ( req, res ) => {
-    const { sessionId } = req.params
-    const { username } = req.headers as { username: string }
-    const user = await ( new YourDashUnreadUser( username ).read() )
+  app.get('/app/settings/debug/psa/update/:sessionId', async (req, res) => {
+    const {sessionId} = req.params;
+    const {username} = req.headers as { username: string };
+    const user = await (new YourDashUnreadUser(username).read());
 
-    const psa = new PersonalServerAcceleratorCommunication( username, user.getSession( parseInt( sessionId, 10 ) ) )
+    const psa = new PersonalServerAcceleratorCommunication(username, user.getSession(parseInt(sessionId, 10)));
 
-    if ( !psa.socketConnection ) {
-      return res.json( { success: false } )
+    if (!psa.socketConnection) {
+      return res.json({success: false});
     }
 
-    psa.emit( "/core/update", true )
+    psa.emit('/core/update', true);
 
-    return res.json( {
+    return res.json({
       success: true,
-      data: user.getSession( parseInt( sessionId, 10 ) )
-    } )
-  } )
-}
+      data: user.getSession(parseInt(sessionId, 10))
+    });
+  });
+};
 
-export default main
+export default main;

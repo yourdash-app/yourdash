@@ -1,13 +1,17 @@
 /** @format */
 
-import { Application as ExpressApplication } from "express"
-import { promises as fs } from "fs"
-import path from "path"
-import { fetch } from "undici"
-import { type weatherForecast } from "../../../../shared/apps/weather/forecast.js"
-import { weatherStates } from "../../../../shared/apps/weather/weatherStates.js"
-import YourDashUser from "../../helpers/user.js"
-import { YourDashApplicationServerPlugin } from "../../helpers/applications.js"
+import {promises as fs} from 'fs';
+import path from 'path';
+
+import {Application as ExpressApplication} from 'express';
+import {fetch} from 'undici';
+
+import {type weatherForecast} from '../../../../shared/apps/weather/forecast.js';
+import {weatherStates} from '../../../../shared/apps/weather/weatherStates.js';
+import YourDashUser from '../../helpers/user.js';
+import {type YourDashApplicationServerPlugin} from '../../helpers/applications.js';
+
+import log from '../../helpers/log.js';
 
 /**
  
@@ -33,18 +37,18 @@ import { YourDashApplicationServerPlugin } from "../../helpers/applications.js"
  
  */
 
-function parseWeatherCodes( code: number ): weatherStates {
-  switch ( code ) {
+function parseWeatherCodes(code: number): weatherStates {
+  switch (code) {
     case 0:
     case 1:
-      return weatherStates.clear
+      return weatherStates.clear;
     case 2:
-      return weatherStates.partlyCloudy
+      return weatherStates.partlyCloudy;
     case 3:
-      return weatherStates.cloudy
+      return weatherStates.cloudy;
     case 45:
     case 48:
-      return weatherStates.fog
+      return weatherStates.fog;
     case 51:
     case 53:
     case 55:
@@ -52,227 +56,158 @@ function parseWeatherCodes( code: number ): weatherStates {
     case 57:
     case 61:
     case 66:
-      return weatherStates.lightRain
+      return weatherStates.lightRain;
     case 63:
-      return weatherStates.rain
+      return weatherStates.rain;
     case 64:
     case 67:
     case 65:
-      return weatherStates.heavyRain
+      return weatherStates.heavyRain;
     case 71:
-      return weatherStates.lightSnow
+      return weatherStates.lightSnow;
     case 75:
-      return weatherStates.heavySnow
+      return weatherStates.heavySnow;
     case 73:
     case 77:
     case 85:
     case 86:
-      return weatherStates.snow
+      return weatherStates.snow;
     case 80:
-      return weatherStates.lightRainShowers
+      return weatherStates.lightRainShowers;
     case 81:
-      return weatherStates.rainShowers
+      return weatherStates.rainShowers;
     case 82:
-      return weatherStates.heavyRainShowers
+      return weatherStates.heavyRainShowers;
     case 95:
     case 96:
     case 99:
-      return weatherStates.thunder
+      return weatherStates.thunder;
     default:
-      return 0
+      return 0;
   }
 }
 
-const weatherForecastCache: { [ key: string ]: { cacheTime: Date; data: any } } = {}
+const weatherForecastCache: { [ key: string ]: { cacheTime: Date; data: any } } = {};
 
-const main: YourDashApplicationServerPlugin = ( { app } ) => {
-  app.get( "/app/weather/location/:locationName", ( req, res ) => {
-    if ( !req.params.locationName ) {
-      return res.json( { error: true } )
+const main: YourDashApplicationServerPlugin = ({app}) => {
+  app.get('/app/weather/location/:locationName', (req, res) => {
+    if (!req.params.locationName) {
+      return res.json({error: true});
     }
 
     fetch(
       `https://geocoding-api.open-meteo.com/v1/search?name=${ req.params.locationName }&language=en&count=5&format=json`
-    )
-      .then( resp => resp.json() )
-      .then( json => {
-        res.json( json )
-      } )
-      .catch( () => {
-        console.log( "Failed to fetch weather data from open-meteo" )
-        return res.json( { error: true } )
-      } )
-  } )
+    ).then(resp => resp.json()).then(json => {
+      res.json(json);
+    }).catch(() => {
+      log('Failed to fetch weather data from open-meteo');
+      return res.json({error: true});
+    });
+  });
 
-  app.get( "/app/weather/previous/locations", async ( req, res ) => {
-    const { username } = req.headers as { username: string }
+  app.get('/app/weather/previous/locations', async (req, res) => {
+    const {username} = req.headers as { username: string };
 
-    const user = new YourDashUser( username )
+    const user = new YourDashUser(username);
 
     try {
-      await fs.access( path.resolve( user.getAppDataPath(), "weather" ) )
+      await fs.access(path.resolve(user.getAppDataPath(), 'weather'));
 
-      const rawFile = ( await fs.readFile(
-        path.resolve( user.getAppDataPath(), "weather/previous_locations.json" )
-      ) ).toString()
+      const rawFile = (await fs.readFile(
+        path.resolve(user.getAppDataPath(), 'weather/previous_locations.json')
+      )).toString();
 
-      const parsedFile = JSON.parse( rawFile )
+      const parsedFile = JSON.parse(rawFile);
 
-      return res.json( parsedFile )
-    } catch ( _err ) {
-      return res.json( [] )
+      return res.json(parsedFile);
+    } catch (_err) {
+      return res.json([]);
     }
-  } )
+  });
 
-  app.get( "/app/weather/location/", ( _req, res ) => res.json( [] ) )
+  app.get('/app/weather/location/', (_req, res) => res.json([]));
 
-  app.get( "/app/weather/forId/:id", async ( req, res ) => {
-    if ( !req.params.id ) {
-      return res.json( { error: true } )
+  app.get('/app/weather/forId/:id', async (req, res) => {
+    if (!req.params.id) {
+      return res.json({error: true});
     }
 
-    const { username } = req.headers as { username: string }
+    const {username} = req.headers as { username: string };
 
-    const user = new YourDashUser( username )
+    const user = new YourDashUser(username);
 
-    if ( weatherForecastCache[req.params.id] ) {
-      const cache = weatherForecastCache[req.params.id]
-      if ( cache.cacheTime.getUTCMilliseconds() > new Date().getUTCMilliseconds() - 6000 ) {
-        let file = "[]"
+    if (weatherForecastCache[req.params.id]) {
+      const cache = weatherForecastCache[req.params.id];
+      if (cache.cacheTime.getUTCMilliseconds() > new Date().getUTCMilliseconds() - 6000) {
+        let file = '[]';
 
-        await fs.access( path.resolve( user.getAppDataPath(), "weather" ) ).catch( async () => {
-          await fs.mkdir( path.resolve( user.getAppDataPath(), "weather" ) )
-        } )
+        await fs.access(path.resolve(user.getAppDataPath(), 'weather')).catch(async () => {
+          await fs.mkdir(path.resolve(user.getAppDataPath(), 'weather'));
+        });
 
         try {
-          await fs.access( path.resolve( user.getAppDataPath(), "weather" ) )
+          await fs.access(path.resolve(user.getAppDataPath(), 'weather'));
 
           file = (
             await fs.readFile(
-              path.resolve( user.getAppDataPath(), "weather/previous_locations.json" )
+              path.resolve(user.getAppDataPath(), 'weather/previous_locations.json')
             )
-          ).toString() || "[]"
-        } catch ( _err ) {
-          file = "[]"
+          ).toString() || '[]';
+        } catch (_err) {
+          file = '[]';
         }
 
-        const parsedFile = JSON.parse( file ) as { name: string, id: string }[]
+        const parsedFile = JSON.parse(file) as { name: string, id: string }[];
 
-        if ( parsedFile.length > 5 ) {
-          parsedFile.shift()
+        if (parsedFile.length > 5) {
+          parsedFile.shift();
         }
 
-        if ( parsedFile.find( obj => obj.id === req.params.id ) === undefined ) {
-          parsedFile.push( { name: cache.data.name, id: req.params.id } )
+        if (parsedFile.find(obj => obj.id === req.params.id) === undefined) {
+          parsedFile.push({name: cache.data.name, id: req.params.id});
         }
 
         await fs.writeFile(
-          path.resolve( user.getAppDataPath(), "weather/previous_locations.json" ),
-          JSON.stringify( parsedFile || [] )
-        )
+          path.resolve(user.getAppDataPath(), 'weather/previous_locations.json'),
+          JSON.stringify(parsedFile || [])
+        );
 
-        return res.json( cache.data )
+        return res.json(cache.data);
       } else {
-        delete weatherForecastCache[req.params.id]
+        delete weatherForecastCache[req.params.id];
       }
     }
 
-    fetch( `https://geocoding-api.open-meteo.com/v1/get?id=${ req.params.id }&language=en&format=json` )
-      .then( resp => resp.json() )
-      .then( ( json: any ) => {
-        if ( json?.error ) {
-          return res.json( { error: true } )
+    fetch(`https://geocoding-api.open-meteo.com/v1/get?id=${ req.params.id }&language=en&format=json`).then(resp => resp.json()).then(
+      (json: any) => {
+        if (json?.error) {
+          return res.json({error: true});
         }
 
         const out: any = {
           name: json.name,
           admin1: json.admin1,
           country: json.country
-        }
+        };
 
         fetch(
           `https://api.open-meteo.com/v1/forecast?latitude=${ json.latitude }&longitude=${ json.longitude }&hourly=temperature_2m,weathercode&models=best_match&daily=temperature_2m_max,temperature_2m_min,weathercode&current_weather=true&timezone=${ json.timezone }`
-        )
-          .then( resp => resp.json() )
-          .then( async ( json: any ) => {
-            if ( json?.error ) {
-              return res.json( { error: true } )
-            }
+        ).then(resp => resp.json()).then(async (json: any) => {
+          if (json?.error) {
+            return res.json({error: true});
+          }
 
-            out.weather = json
+          out.weather = json;
 
-            weatherForecastCache[req.params.id] = {
-              data: {
-                name: out.name,
-                admin1: out.admin1,
-                admin2: out.admin2,
-                country: out.country,
-                currentWeather: {
-                  temp: json.current_weather.temperature,
-                  condition: parseWeatherCodes( json.current_weather.weathercode ),
-                  time: json.current_weather.time,
-                  wind: {
-                    direction: json.current_weather.winddirection,
-                    speed: json.current_weather.windspeed
-                  }
-                },
-                daily: {
-                  unit: json.daily_units.temperature_2m_max,
-                  days: json.daily.time.map( ( _, ind ) => ( {
-                    date: json.daily.time[ind],
-                    temp: {
-                      min: json.daily.temperature_2m_min[ind],
-                      max: json.daily.temperature_2m_max[ind]
-                    },
-                    condition: parseWeatherCodes( json.daily.weathercode[ind] )
-                  } ) )
-                },
-                hourly: {
-                  unit: json.hourly_units.temperature_2m,
-                  hours: json.hourly.time.map( ( _, ind ) => ( {
-                    condition: parseWeatherCodes( json.hourly.weathercode[ind] ),
-                    date: json.hourly.time[ind],
-                    temp: json.hourly.temperature_2m[ind]
-                  } ) )
-                }
-              },
-              cacheTime: new Date()
-            }
-
-            let file = "[]"
-
-            fs.access( path.resolve( user.getAppDataPath(), "weather" ) ).catch( () => {
-              fs.mkdir( path.resolve( user.getAppDataPath(), "weather" ) )
-            } )
-
-            fs.access( path.resolve( user.getAppDataPath(), "weather/previous_locations.json" ) ).catch( async () => {
-              file = ( await fs.readFile(
-                path.resolve( user.getAppDataPath(), "weather/previous_locations.json" )
-              ) ).toString()
-            } )
-
-            const parsedFile = JSON.parse( file )
-
-            if ( parsedFile.length > 5 ) {
-              parsedFile.shift()
-            }
-
-            if ( parsedFile.find( obj => obj.id === req.params.id ) === undefined ) {
-              parsedFile.push( { name: out.name, id: req.params.id } )
-            }
-
-            await fs.writeFile(
-              path.resolve( user.getAppDataPath(), "weather/previous_locations.json" ),
-              JSON.stringify( parsedFile )
-            )
-
-            return res.json( <weatherForecast>{
+          weatherForecastCache[req.params.id] = {
+            data: {
               name: out.name,
               admin1: out.admin1,
+              admin2: out.admin2,
               country: out.country,
               currentWeather: {
                 temp: json.current_weather.temperature,
-                condition: parseWeatherCodes( json.current_weather.weathercode ),
+                condition: parseWeatherCodes(json.current_weather.weathercode),
                 time: json.current_weather.time,
                 wind: {
                   direction: json.current_weather.winddirection,
@@ -281,35 +216,96 @@ const main: YourDashApplicationServerPlugin = ( { app } ) => {
               },
               daily: {
                 unit: json.daily_units.temperature_2m_max,
-                days: json.daily.time.map( ( _, ind ) => ( {
+                days: json.daily.time.map((_, ind) => ({
                   date: json.daily.time[ind],
                   temp: {
                     min: json.daily.temperature_2m_min[ind],
                     max: json.daily.temperature_2m_max[ind]
                   },
-                  condition: parseWeatherCodes( json.daily.weathercode[ind] )
-                } ) )
+                  condition: parseWeatherCodes(json.daily.weathercode[ind])
+                }))
               },
               hourly: {
                 unit: json.hourly_units.temperature_2m,
-                hours: json.hourly.time.map( ( _, ind ) => ( {
-                  condition: parseWeatherCodes( json.hourly.weathercode[ind] ),
+                hours: json.hourly.time.map((_, ind) => ({
+                  condition: parseWeatherCodes(json.hourly.weathercode[ind]),
                   date: json.hourly.time[ind],
                   temp: json.hourly.temperature_2m[ind]
-                } ) )
+                }))
               }
-            } )
-          } )
-          .catch( err => {
-            console.log( "Failed to fetch weather data from open-meteo", err )
-            return res.json( { error: true } )
-          } )
-      } )
-      .catch( err => {
-        console.log( "Failed to fetch weather data from open-meteo", err )
-        return res.json( { error: true } )
-      } )
-  } )
-}
+            },
+            cacheTime: new Date()
+          };
 
-export default main
+          let file = '[]';
+
+          fs.access(path.resolve(user.getAppDataPath(), 'weather')).catch(() => {
+            fs.mkdir(path.resolve(user.getAppDataPath(), 'weather'));
+          });
+
+          fs.access(path.resolve(user.getAppDataPath(), 'weather/previous_locations.json')).catch(async () => {
+            file = (await fs.readFile(
+              path.resolve(user.getAppDataPath(), 'weather/previous_locations.json')
+            )).toString();
+          });
+
+          const parsedFile = JSON.parse(file);
+
+          if (parsedFile.length > 5) {
+            parsedFile.shift();
+          }
+
+          if (parsedFile.find(obj => obj.id === req.params.id) === undefined) {
+            parsedFile.push({name: out.name, id: req.params.id});
+          }
+
+          await fs.writeFile(
+            path.resolve(user.getAppDataPath(), 'weather/previous_locations.json'),
+            JSON.stringify(parsedFile)
+          );
+
+          return res.json(<weatherForecast>{
+            name: out.name,
+            admin1: out.admin1,
+            country: out.country,
+            currentWeather: {
+              temp: json.current_weather.temperature,
+              condition: parseWeatherCodes(json.current_weather.weathercode),
+              time: json.current_weather.time,
+              wind: {
+                direction: json.current_weather.winddirection,
+                speed: json.current_weather.windspeed
+              }
+            },
+            daily: {
+              unit: json.daily_units.temperature_2m_max,
+              days: json.daily.time.map((_, ind) => ({
+                date: json.daily.time[ind],
+                temp: {
+                  min: json.daily.temperature_2m_min[ind],
+                  max: json.daily.temperature_2m_max[ind]
+                },
+                condition: parseWeatherCodes(json.daily.weathercode[ind])
+              }))
+            },
+            hourly: {
+              unit: json.hourly_units.temperature_2m,
+              hours: json.hourly.time.map((_, ind) => ({
+                condition: parseWeatherCodes(json.hourly.weathercode[ind]),
+                date: json.hourly.time[ind],
+                temp: json.hourly.temperature_2m[ind]
+              }))
+            }
+          });
+        }).catch(err => {
+          log('Failed to fetch weather data from open-meteo', err);
+          return res.json({error: true});
+        });
+      }).catch(err => {
+      log('Failed to fetch weather data from open-meteo', err);
+      return res.json({error: true});
+    });
+  });
+};
+
+export default main;

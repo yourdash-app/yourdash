@@ -1,6 +1,6 @@
 import React from 'react';
 
-import CodeStudioEditor from './core/CodeStudioCoreUIComponent';
+import CodeStudioEditor from './core/Editor';
 
 const CodeStudioApplication: React.FC = () => (
   <CodeStudioEditor/>

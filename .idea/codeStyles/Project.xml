@@ -1049,7 +1049,7 @@
       </indentOptions>
     </codeStyleSettings>
     <codeStyleSettings language="JavaScript">
-      <option name="RIGHT_MARGIN" value="80" />
+      <option name="RIGHT_MARGIN" value="120" />
       <option name="ALIGN_MULTILINE_PARAMETERS" value="false" />
       <option name="ALIGN_MULTILINE_FOR" value="false" />
       <option name="IF_BRACE_FORCE" value="3" />
@@ -2061,7 +2061,7 @@
       </arrangement>
     </codeStyleSettings>
     <codeStyleSettings language="TypeScript">
-      <option name="RIGHT_MARGIN" value="80" />
+      <option name="RIGHT_MARGIN" value="200" />
       <option name="ALIGN_MULTILINE_PARAMETERS" value="false" />
       <option name="ALIGN_MULTILINE_FOR" value="false" />
       <option name="ALIGN_MULTILINE_BINARY_OPERATION" value="true" />

@@ -1,7 +1,6 @@
-import { YourDashApplicationServerPlugin } from "../../helpers/applications.js"
+import {type YourDashApplicationServerPlugin} from '../../helpers/applications.js';
+import log from '../../helpers/log.js';
 
-const main: YourDashApplicationServerPlugin = () => {
-  console.log( "Photos application" )
-}
+const main: YourDashApplicationServerPlugin = () => 0;
 
-export default main
+export default main;

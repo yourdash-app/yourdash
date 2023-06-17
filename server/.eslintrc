@@ -9,9 +9,26 @@
     "plugin:@typescript-eslint/recommended"
   ],
   "rules": {
-    "@typescript-eslint/ban-ts-comment": ["off"],
-    "no-console": ["off"],
+    "@typescript-eslint/ban-ts-comment": [
+      "off"
+    ],
+    "no-console": [
+      "off"
+    ],
     "no-use-before-define": "off",
-    "@typescript-eslint/no-use-before-define": "error"
+    "@typescript-eslint/no-use-before-define": "error",
+    "max-len": [
+      "off"
+    ],
+    "no-shadow": "off",
+    "@typescript-eslint/no-shadow": "off",
+    "complexity": [
+      "off"
+    ],
+    "import/extensions": [
+      "off"
+    ],
+    "no-magic-numbers": "off",
+    "no-nested-ternary": "off"
   }
 }

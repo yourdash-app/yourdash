@@ -5,6 +5,8 @@ import {useNavigate} from 'react-router-dom';
 import clippy from '../../helpers/clippy';
 import {IconButton, RightClickMenu} from '../../ui';
 
+import {loadDatabaseFromServer} from '../../helpers/database';
+
 import PanelApplicationLauncher from './launcher/PanelLaunchers';
 import PanelDesktopIndicator from './desktop/PanelDesktopIndicator';
 
@@ -50,7 +52,8 @@ const PanelQuickShortcuts: React.FC<{
               onClick() {
                 csi.deleteJson(`/panel/quick-shortcut/${ ind }`, () => {
                   // @ts-ignore
-                  Panel.reload(); // eslint-disable-line no-use-before-define
+                  // eslint-disable-next-line @typescript-eslint/no-use-before-define
+                  Panel.reload();
                 });
               }
             }
@@ -58,7 +61,8 @@ const PanelQuickShortcuts: React.FC<{
         >
           <button
             type={'button'}
-            className={'w-full aspect-square relative group flex items-center justify-center mr-1 cursor-pointer outline-0 !bg-transparent'}
+            className={'w-full aspect-square relative group flex items-center justify-center mr-1 cursor-pointer ' +
+                        'outline-0 !bg-transparent'}
             onClick={e => {
               e.currentTarget.blur();
               navigate(shortcut.url);
@@ -68,22 +72,23 @@ const PanelQuickShortcuts: React.FC<{
               draggable={false}
               src={shortcut.icon}
               alt=""
-              className={'w-[2rem] group-hover:scale-110 group-focus-within:scale-125 group-active:scale-95 transition-[var(--transition)]'}
+              className={'w-[2rem] group-hover:scale-110 group-focus-within:scale-125 group-active:scale-95 ' +
+                          'transition-[var(--transition)]'}
             />
             <span
               className={clippy(
                 'absolute z-50 pl-3 pr-3 pt-0.5 pb-0.5 bg-container-secondary-bg rounded-container-rounding' +
-                  ' pointer-events-none group-hover:opacity-100 opacity-0' +
-                  ' group-hover:[transition:var(--transition-fast)] shadow-lg' +
-                  ' [transition:var(--transition)] whitespace-nowrap',
+                ' pointer-events-none group-hover:opacity-100 opacity-0' +
+                ' group-hover:[transition:var(--transition-fast)] shadow-lg' +
+                ' [transition:var(--transition)] whitespace-nowrap',
                 side === PanelPosition.left &&
-                  'ml-4 left-full top-1/2 -translate-y-1/2',
+                'ml-4 left-full top-1/2 -translate-y-1/2',
                 side === PanelPosition.top &&
-                  'mt-4 top-full left-1/2 -translate-x-1/2',
+                'mt-4 top-full left-1/2 -translate-x-1/2',
                 side === PanelPosition.right &&
-                  'mr-4 right-full top-1/2 -translate-y-1/2',
+                'mr-4 right-full top-1/2 -translate-y-1/2',
                 side === PanelPosition.bottom &&
-                  'mb-4 bottom-full left-1/2 -translate-x-1/2'
+                'mb-4 bottom-full left-1/2 -translate-x-1/2'
               )}
             >
               {shortcut.displayName}
@@ -136,7 +141,9 @@ const PanelAuthorizer: React.FC = () => {
     } else {
       csi.getJson(
         '/login/is-authenticated',
-        () => null,
+        () => {
+          loadDatabaseFromServer();
+        },
         () => {
           setTimeout(() => {
             console.clear();
@@ -208,7 +215,7 @@ const Panel: React.FC<IPanel> = ({side, setSide}) => {
           gridRowStart: 2
         })
       }}
-      className={'bg-container-bg flex p-2 gap-1 relative justify-center items-center z-10'}
+      className={'bg-container-bg flex p-2 gap-1 relative justify-center items-center z-[1000000]'}
     >
       {/* invisible component which checks that the user is authorized on the first load of the panel*/}
       <PanelAuthorizer/>
