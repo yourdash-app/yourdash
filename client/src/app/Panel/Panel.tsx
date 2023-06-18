@@ -215,7 +215,13 @@ const Panel: React.FC<IPanel> = ({side, setSide}) => {
           gridRowStart: 2
         })
       }}
-      className={'bg-container-bg flex p-2 gap-1 relative justify-center items-center z-[1000000]'}
+      className={clippy(
+        'bg-container-bg flex p-2 gap-1 relative justify-center items-center z-[1000000] animate__animated',
+        side === PanelPosition.top && 'animate__fadeInDown',
+        side === PanelPosition.bottom && 'animate__fadeInUp',
+        side === PanelPosition.left && 'animate__fadeInLeft',
+        side === PanelPosition.right && 'animate__fadeInRight'
+      )}
     >
       {/* invisible component which checks that the user is authorized on the first load of the panel*/}
       <PanelAuthorizer/>

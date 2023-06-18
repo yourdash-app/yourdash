@@ -1,44 +1,48 @@
-import React, { useState } from "react"
-import { Outlet } from "react-router-dom"
-import Panel, { PanelPosition } from "./Panel/Panel"
+import React, {useState} from 'react';
+import {Outlet} from 'react-router-dom';
+
+import clippy from '../helpers/clippy';
+
+import Panel, {PanelPosition} from './Panel/Panel';
 
 const Layout: React.FC = () => {
   const [panelLayout, setPanelLayout] = useState<PanelPosition>(
     PanelPosition.left
-  )
+  );
 
-  if ( new URLSearchParams( window.location.search ).has( "standalone" ) ) {
-    return <Outlet/>
+  if (new URLSearchParams(window.location.search).has('standalone')) {
+    return <Outlet/>;
   }
 
   return (
     <div
-      style={ {
+      style={{
         ...(
-          ( panelLayout === PanelPosition.left || panelLayout === PanelPosition.right )
+          (panelLayout === PanelPosition.left || panelLayout === PanelPosition.right)
             ? {
               gridTemplateColumns:
-                panelLayout === PanelPosition.left ? "auto 1fr" : "1fr auto"
+                panelLayout === PanelPosition.left ? 'auto 1fr' : '1fr auto'
             }
             : {
               gridTemplateRows:
-                panelLayout === PanelPosition.top ? "auto 1fr" : "1fr auto"
+                panelLayout === PanelPosition.top ? 'auto 1fr' : '1fr auto'
             }
         )
-      } }
-      className={ "grid h-screen" }
+      }}
+      className={'grid h-screen'}
     >
       <Panel
-        setSide={ val => {
-          return setPanelLayout( val )
-        } }
-        side={ panelLayout }
+        setSide={val => setPanelLayout(val)}
+        side={panelLayout}
       />
-      <main className={ "min-h-full overflow-hidden overflow-y-auto w-full flex flex-col" }>
+      <main className={clippy(
+        'min-h-full overflow-hidden overflow-y-auto w-full flex flex-col animate__animated animate__slow animate__fadeIn'
+      )}
+      >
         <Outlet/>
       </main>
     </div>
-  )
-}
+  );
+};
 
-export default Layout
+export default Layout;

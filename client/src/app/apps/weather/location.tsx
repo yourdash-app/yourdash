@@ -6,6 +6,8 @@ import {useParams, useNavigate} from 'react-router-dom';
 import {chunk} from '../../../helpers/array';
 import {Card, Carousel, Icon, IconButton, MajorButton, Spinner} from '../../../ui';
 
+import useTranslate from '../../../helpers/l10n';
+
 import BACKGROUND_IMAGE_CLEAR from './weatherBackgrounds/clear.avif';
 import BACKGROUND_IMAGE_CLOUDY1 from './weatherBackgrounds/cloudy1.avif';
 import BACKGROUND_IMAGE_CLOUDY2 from './weatherBackgrounds/cloudy2.jpg';
@@ -162,6 +164,7 @@ const WeatherApplicationLocationPage: React.FC = () => {
   const [displayedWeatherCondition, setDisplayedWeatherCondition] =
     useState<weatherStates>(weatherStates.clear);
   const {id: locationId} = useParams();
+  const trans = useTranslate('weather');
   const [data, setData] = useState<{
     name: string;
     admin1: string;
@@ -301,8 +304,7 @@ const WeatherApplicationLocationPage: React.FC = () => {
                         '-shadow(0_10px_8px_rgb(0_0_0/0.04))_drop-shadow(0_4px_3px_rgb(0_0_0/0.1))_drop-shadow(0_10px' +
                         '_8px_rgb(0_0_0/0.04))_drop-shadow(0_4px_3px_rgb(0_0_0/0.1))]'}
           >
-            Currently {data?.currentWeather.temp.toFixed(0)}
-            {data?.daily.unit}{' '}
+            {`Currently ${ data?.currentWeather.temp.toFixed(0) }${ data?.daily.unit } `}
             {
               data?.currentWeather.condition !== weatherStates.cloudy &&
               data?.currentWeather.condition !== weatherStates.partlyCloudy &&
@@ -379,7 +381,8 @@ const WeatherApplicationLocationPage: React.FC = () => {
                 >
                   <section className={'flex items-center justify-between'}>
                     <h2 className={'font-bold text-6xl flex'}>{new Date(day.date).getDate()}
-                      <div className={'font-normal text-2xl mb-auto'}>th</div>
+                      {/* eslint-disable-next-line no-magic-numbers */}
+                      <div className={'font-normal text-2xl mb-auto'}>{new Date(day.date).getDate() === 1 ? 'st' : new Date(day.date).getDate() === 2 ? 'nd' : new Date(day.date).getDate() === 3 ? 'rd' : 'th'}</div>
                     </h2>
                     <img
                       src={getWeatherIconFromState(day.condition)}
@@ -411,7 +414,7 @@ const WeatherApplicationLocationPage: React.FC = () => {
             href="https://open-meteo.com/"
             className={'absolute bottom-0 right-0 text-xs text-opacity-50 text-white animate__animated animate__fadeIn animate__delay-500ms pr-1 pb-0.5'}
           >
-            {'powered by open-meteo'}
+            {trans('Powered by {0}', ['open-meteo.com'])}
           </a>
         </footer>
       </header>
@@ -423,6 +426,7 @@ const WeatherApplicationLocationPage: React.FC = () => {
         >
           {
             selectedDay !== 0
+              // eslint-disable-next-line no-magic-numbers
               ? chunk(data.hourly.hours, 24)[selectedDay].map(hour => (
                 <div
                   className={'relative h-full flex justify-center'}
