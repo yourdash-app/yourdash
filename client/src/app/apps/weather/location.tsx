@@ -289,8 +289,7 @@ const WeatherApplicationLocationPage: React.FC = () => {
               {`${ data?.name },`}
             </h1>
             <span
-              className={'mt-auto text-container-fg text-xl stroke-1 stroke-base-900 animate__animated' +
-                          ' animate__slideInDown animate__delay-100'}
+              className={'mt-auto text-container-fg text-xl stroke-1 stroke-base-900 animate__animated animate__slideInDown animate__delay-100'}
             >
               {data?.admin1 && `${ data.admin1 }, `}{data?.admin2 && `${ data.admin2 }, `}{data?.country}
             </span>
@@ -299,82 +298,39 @@ const WeatherApplicationLocationPage: React.FC = () => {
         <section className={'h-48 flex items-center justify-center'}>
           <span
             /* eslint-disable-next-line max-len */
-            className={'animate__animated animate__fadeInUp text-6xl font-bold text-center' +
-                        ' [filter:_drop-shadow(0_10px_8px_rgb(0_0_0/0.04))_drop-shadow(0_4px_3px_rgb(0_0_0/0.1))_drop' +
-                        '-shadow(0_10px_8px_rgb(0_0_0/0.04))_drop-shadow(0_4px_3px_rgb(0_0_0/0.1))_drop-shadow(0_10px' +
-                        '_8px_rgb(0_0_0/0.04))_drop-shadow(0_4px_3px_rgb(0_0_0/0.1))]'}
+            className={'animate__animated animate__fadeInUp text-6xl font-bold text-center [filter:_drop-shadow(0_10px_8px_rgb(0_0_0/0.04))_drop-shadow(0_4px_3px_rgb(0_0_0/0.1))_drop-shadow(0_10px_8px_rgb(0_0_0/0.04))_drop-shadow(0_4px_3px_rgb(0_0_0/0.1))_drop-shadow(0_10px_8px_rgb(0_0_0/0.04))_drop-shadow(0_4px_3px_rgb(0_0_0/0.1))] leading-tight'}
           >
-            {`Currently ${ data?.currentWeather.temp.toFixed(0) }${ data?.daily.unit } `}
+            {`${trans('Currently')} ${ data?.currentWeather.temp.toFixed(0) }${ data?.daily.unit } `}
             {
               data?.currentWeather.condition !== weatherStates.cloudy &&
               data?.currentWeather.condition !== weatherStates.partlyCloudy &&
               data?.currentWeather.condition !== weatherStates.thunder
-                ? 'with '
-                : 'and '
+                ? `${trans('with')} `
+                : `${trans('and')} `
             }
             {
-              getWeatherConditionFromState(data?.currentWeather.condition || 0)
+              trans(getWeatherConditionFromState(data?.currentWeather.condition || 0))
             }
           </span>
         </section>
         <Carousel
           compactControls
-          containerClassName={'min-w-full p-10 pb-4 pt-4 max-w-full overflow-x-auto rounded-xl' +
-                               ' animate__animated animate__fadeInUp'}
+          containerClassName={'min-w-full p-10 pb-4 pt-4 max-w-full overflow-x-auto rounded-xl animate__animated animate__fadeInUp'}
           className={'flex flex-row gap-2'}
         >
-          <div className={'w-48 relative'}>
-            <Card
-              onClick={() => {
-                setSelectedDay(0);
-              }}
-              className={clippy(
-                'w-full h-[10.5rem] flex-col transition-[var(--transition)] absolute',
-                selectedDay === 0
-                  ? 'bottom-[3.5rem]'
-                  : 'bottom-0'
-              )}
-            >
-              <section className={'flex items-center justify-between'}>
-                <h2 className={'font-bold text-6xl flex'}>{new Date(data.daily.days[0].date).getDate()}
-                  <div className={'font-normal text-2xl mb-auto'}>th</div>
-                </h2>
-                <img
-                  src={getWeatherIconFromState(data.daily.days[0].condition)}
-                  draggable={false}
-                  alt={''}
-                  className={'w-16 pl-2'}
-                />
-              </section>
-              <section className={'font-normal text-3xl'}>
-                {numericDayName[new Date(data.daily.days[0].date).getDay()]}
-              </section>
-              <section className={'flex justify-between items-center'}>
-                <span className={'flex items-center justify-center'}>
-                  <Icon name={'triangle-down-16'} color={'rgb(var(--container-fg))'} className={'h-8'}/>
-                  {data.daily.days[0]?.temp.min}°C
-                </span>
-                <span className={'flex items-center justify-center'}>
-                  <Icon name={'triangle-up-16'} color={'rgb(var(--container-fg))'} className={'h-8'}/>
-                  {data.daily.days[0]?.temp.max}°C
-                </span>
-              </section>
-            </Card>
-          </div>
-
           {
-            data.daily.days.slice(1).map((day, ind) => (
+            data.daily.days.map((day, ind) => (
               <div
                 className={'w-48 relative'}
                 key={day.date}
               >
                 <Card
                   onClick={() => {
-                    setSelectedDay(ind + 1);
+                    setSelectedDay(ind);
                   }}
                   className={clippy(
                     'w-full h-[10.5rem] flex-col transition-[var(--transition)] absolute',
-                    selectedDay === ind + 1
+                    selectedDay === ind
                       ? 'bottom-[3.5rem]'
                       : 'bottom-0'
                   )}
@@ -392,7 +348,7 @@ const WeatherApplicationLocationPage: React.FC = () => {
                     />
                   </section>
                   <section className={'font-normal text-3xl'}>
-                    {numericDayName[new Date(day.date).getDay()]}
+                    {trans(numericDayName[new Date(day.date).getDay()])}
                   </section>
                   <section className={'flex justify-between items-center'}>
                     <span className={'flex items-center justify-center'}>
@@ -425,69 +381,40 @@ const WeatherApplicationLocationPage: React.FC = () => {
           className={'flex flex-row gap-2'}
         >
           {
-            selectedDay !== 0
-              // eslint-disable-next-line no-magic-numbers
-              ? chunk(data.hourly.hours, 24)[selectedDay].map(hour => (
-                <div
-                  className={'relative h-full flex justify-center'}
-                  key={hour.date}
-                >
-                  <Card
-                    style={{
-                      marginBottom: `${ ((hour?.temp - data.daily.days[selectedDay]?.temp.min) /
+            // eslint-disable-next-line no-magic-numbers
+            chunk(data.hourly.hours, 24)[selectedDay].map(hour => (
+              <div
+                className={'relative h-full flex justify-center'}
+                key={hour.date}
+              >
+                <Card
+                  style={{
+                    marginBottom: `${ ((hour?.temp - data.daily.days[selectedDay]?.temp.min) /
                                          (data.daily.days[selectedDay]?.temp.max -
+                                          // eslint-disable-next-line no-magic-numbers
                                           data.daily.days[selectedDay]?.temp.min)) * 8.25 }rem`
-                    }}
-                    className={clippy(
-                      'w-full flex flex-col items-center justify-center h-[9.75rem] mt-auto'
-                    )}
-                  >
-                    <h2 className={'font-bold text-3xl flex'}>{new Date(hour.date).getHours() < 10
-                      ? `0${
-                        new Date(hour.date).getHours() }:00`
-                      : `${ new Date(hour.date).getHours() }:00`}</h2>
-                    <img
-                      src={getWeatherIconFromState(hour.condition)}
-                      draggable={false}
-                      alt={''}
-                      className={'w-16'}
-                    />
-                    <section className={'flex justify-center items-center w-full text-center'}>
-                      {hour?.temp || 'ERROR'}{'°C'}
-                    </section>
-                  </Card>
-                </div>
-              ))
-              : chunk(data.hourly.hours, 24)[0].slice(new Date().getHours()).map(hour => (
-                <div
-                  className={'relative h-full flex justify-center'}
-                  key={hour.date}
+                  }}
+                  className={clippy(
+                    'w-full flex flex-col items-center justify-center h-[9.75rem] mt-auto'
+                  )}
                 >
-                  <Card
-                    style={{
-                      marginBottom: `${ ((hour?.temp - data.daily.days[0]?.temp.min) /
-                                         (data.daily.days[0]?.temp.max - data.daily.days[0]?.temp.min)) * 8.25 }rem`
-                    }}
-                    className={clippy(
-                      'w-full flex flex-col items-center justify-center h-[9.75rem] mt-auto'
-                    )}
-                  >
-                    <h2 className={'font-bold text-3xl flex'}>{new Date(hour.date).getHours() < 10
-                      ? `0${
-                        new Date(hour.date).getHours() }:00`
-                      : `${ new Date(hour.date).getHours() }:00`}</h2>
-                    <img
-                      src={getWeatherIconFromState(hour.condition)}
-                      draggable={false}
-                      alt={''}
-                      className={'w-16'}
-                    />
-                    <section className={'flex justify-center items-center w-full text-center'}>
-                      {hour?.temp || 'ERROR'}{'°C'}
-                    </section>
-                  </Card>
-                </div>
-              ))
+                  {/* eslint-disable-next-line no-magic-numbers */}
+                  <h2 className={'font-bold text-3xl flex'}>{new Date(hour.date).getHours() < 10
+                    ? `0${
+                      new Date(hour.date).getHours() }:00`
+                    : `${ new Date(hour.date).getHours() }:00`}</h2>
+                  <img
+                    src={getWeatherIconFromState(hour.condition)}
+                    draggable={false}
+                    alt={''}
+                    className={'w-16'}
+                  />
+                  <section className={'flex justify-center items-center w-full text-center'}>
+                    {hour?.temp || 'ERROR'}{'°C'}
+                  </section>
+                </Card>
+              </div>
+            ))
           }
         </Carousel>
       </main>

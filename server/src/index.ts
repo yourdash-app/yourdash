@@ -1,16 +1,14 @@
 import {exec} from 'child_process';
-
 import minimist from 'minimist';
 import chalk from 'chalk';
+import fkill from 'fkill';
 
-import log from './helpers/log.js';
-
-log(`-------------------------\n     ${ chalk.whiteBright('YourDash v0.0.1') }     \n-------------------------`);
+console.log(`-------------------------\n     ${ chalk.whiteBright('YourDash CLI v0.0.1') }     \n-------------------------`);
 
 // eslint-disable-next-line no-magic-numbers
 const args = minimist(process.argv.slice(2));
 
-log(`Starting with arguments: ${ JSON.stringify(args) }`);
+console.log(`Starting with arguments: ${ JSON.stringify(args) }`);
 
 if (!args.dev && args.compile) {
   const childProcess = exec('yarn run compile');
@@ -26,7 +24,7 @@ if (!args.dev && args.compile) {
       return;
     }
 
-    log(`[${ chalk.bold.blue('TSC') }]: ${ data.toString().replaceAll('\n', '').replaceAll('\x1Bc', '') }`);
+    console.log(`[${ chalk.bold.blue('TSC') }]: ${ data.toString().replaceAll('\n', '').replaceAll('\x1Bc', '') }`);
   });
 
   childProcess.stderr.on('data', data => {
@@ -39,25 +37,25 @@ if (!args.dev && args.compile) {
     if (data.toString() === '') {
       return;
     }
-    log(`[${ chalk.bold.blue('TSC ERROR') }]: ${ data.toString().replaceAll('\n', '').replaceAll(
+    console.log(`[${ chalk.bold.blue('TSC ERROR') }]: ${ data.toString().replaceAll('\n', '').replaceAll(
       '\x1Bc',
       ''
     ) }`);
   });
 
   process.on('exit', code => {
-    log(`[${ chalk.yellow.bold('CORE') }]: Server about to exit!`);
+    console.log(`${ chalk.yellow.bold('CORE') }: Server about to exit!`);
 
     if (childProcess && !childProcess.killed) {
-      log(`[${ chalk.yellow.bold('CORE') }]: Killing child process [ ${ childProcess.pid } ] (${ chalk.bold.blue(
+      console.log(`${ chalk.yellow.bold('CORE') }: Killing child process [ ${ childProcess.pid } ] (${ chalk.bold.blue(
         'TSC') })`);
       childProcess.kill();
     }
   });
 }
 
-if (args.dev) {
-  log(`[${ chalk.hex('#fc6f45').bold('DEV') }]: starting server \"node ./src/main.js --color=full ${ process.argv.slice(
+function startDevServer() {
+  console.log(`[${ chalk.hex('#fc6f45').bold('DEV') }]: starting server \"node ./src/main.js --color=full ${ process.argv.slice(
     2).join(' ') }\"`);
 
   const childProcess = exec(`npx tsc-watch --project . --onSuccess \"node${ args.debug
@@ -65,6 +63,11 @@ if (args.dev) {
     : '' } ./src/main.js --color=full ${ process.argv.slice(2).join(' ') }\"`);
 
   childProcess.stdout.on('data', data => {
+    if (data === 'INFO     Shutting down...\n') {
+      fkill(childProcess.pid, {force: true});
+      startDevServer();
+      return;
+    }
     if (data.toString().indexOf('Found 0 errors. Watching for file changes.') !== -1) {
       return;
     }
@@ -75,8 +78,8 @@ if (args.dev) {
       return;
     }
     if (data.toString().indexOf('restarting due to changes...') !== -1) {
-      return process.stdout.write(`${ chalk.reset('[') }${ chalk.magenta.bold('HMR') }]: ----------------------------------------------------------------------------------------------------\n${ chalk.reset(
-        '') }`);
+      process.stdout.write(`${ chalk.reset('[') }${ chalk.magenta.bold('HMR') }]: ----------------------------------------------------------------------------------------------------\n${ chalk.reset() }`);
+      return;
     }
 
     let output = data;
@@ -112,19 +115,31 @@ if (args.dev) {
     process.stdout.write(output);
   });
 
+  process.stdin.on('data', chunk => {
+    childProcess.stdin.write(chunk);
+  });
+
+  process.stdin.on('end', () => {
+    childProcess.stdin.end();
+  });
+
   process.on('exit', exitCode => {
-    log(`[${ chalk.yellow.bold('CORE') }]: Server about to exit!\nexit code: ${ exitCode }`);
+    console.log(`${ chalk.yellow.bold('CORE') }: Server about to exit!\nexit code: ${ exitCode }`);
 
     if (childProcess && !childProcess.killed) {
-      log(`[${ chalk.yellow.bold('CORE') }]: Killing child process [ ${ childProcess.pid } ] (${ chalk.magenta.bold(
+      console.log(`${ chalk.yellow.bold('CORE') }: Killing child process [ ${ childProcess.pid } ] (${ chalk.magenta.bold(
         'HMR') })`);
       childProcess.kill();
-      log(childProcess.pid);
+      console.log(childProcess.pid);
       if (childProcess && !childProcess.killed) {
-        log('WARNING: HMR process still running!');
+        console.log('WARNING: HMR process still running!');
       }
     }
   });
+}
+
+if (args.dev) {
+  startDevServer();
 } else {
   await import('./main.js');
 }

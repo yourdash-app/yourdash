@@ -1,10 +1,18 @@
 import {useEffect, useState} from 'react';
 
+// @ts-ignore
+window.setTranslateLanguage = (language: string) => {
+  // @ts-ignore
+  window.translateLang = language;
+};
+
 export default function useTranslate(application: string) {
   const [messages, setMessages] = useState<{ [ key: string ]: string } | undefined>(undefined);
 
   useEffect(() => {
-    import(`../app/apps/${ application }/i10n/${ navigator.language }.json`).then(response => setMessages(response.default));
+    // @ts-ignore
+    const langauge = window.translateLang || navigator.language;
+    import(`../app/apps/${ application }/i10n/${ langauge }.json`).then(response => setMessages(response.default));
   }, []);
 
   return (message: string, params?: string[]) => {

@@ -1,4 +1,4 @@
-import KeyValueDatabase from '../../../shared/core/database.js';
+import KeyValueDatabase from './keyValueDatabase.js';
 
 const userDatabases: { [ username: string ]: KeyValueDatabase } = {};
 

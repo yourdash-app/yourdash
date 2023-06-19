@@ -6,9 +6,14 @@ import {type YourDashApplicationServerPlugin} from '../../helpers/applications.j
 import YourDashUnreadUser from '../../helpers/user.js';
 import {PersonalServerAcceleratorCommunication} from '../../helpers/personalServerAccelerator.js';
 
-const main: YourDashApplicationServerPlugin = ({app, io}) => {
-  app.post('/app/settings/panel/position', (req, res) => {
-    const {username} = req.headers as { username: string };
+const main: YourDashApplicationServerPlugin = ({
+  app,
+  io
+}) => {
+  app.post('/app/settings/core/panel/position', (req, res) => {
+    const {username} = req.headers as {
+      username: string
+    };
     const {position} = req.body;
 
     const panel = new YourDashPanel(username);
@@ -20,8 +25,10 @@ const main: YourDashApplicationServerPlugin = ({app, io}) => {
     });
   });
 
-  app.post('/app/settings/panel/launcher', (req, res) => {
-    const {username} = req.headers as { username: string };
+  app.post('/app/settings/core/panel/quick-shortcuts', (req, res) => {
+    const {username} = req.headers as {
+      username: string
+    };
     const {launcher} = req.body;
 
     const panel = new YourDashPanel(username);
@@ -33,7 +40,9 @@ const main: YourDashApplicationServerPlugin = ({app, io}) => {
 
   app.get('/app/settings/debug/psa/update/:sessionId', async (req, res) => {
     const {sessionId} = req.params;
-    const {username} = req.headers as { username: string };
+    const {username} = req.headers as {
+      username: string
+    };
     const user = await (new YourDashUnreadUser(username).read());
 
     const psa = new PersonalServerAcceleratorCommunication(username, user.getSession(parseInt(sessionId, 10)));

@@ -29,6 +29,7 @@
       "off"
     ],
     "no-magic-numbers": "off",
-    "no-nested-ternary": "off"
+    "no-nested-ternary": "off",
+    "import/order": "off"
   }
 }

@@ -31,14 +31,17 @@ interface IPanelQuickShortcut {
 const PanelQuickShortcuts: React.FC<{
   num: number;
   side: PanelPosition
-}> = ({num, side}) => {
+}> = ({
+  num,
+  side
+}) => {
   const navigate = useNavigate();
   const [quickShortcuts, setQuickShortcuts] = useState<IPanelQuickShortcut[]>(
     []
   );
 
   useEffect(() => {
-    csi.getJson('/panel/quick-shortcuts', resp => setQuickShortcuts(resp));
+    csi.getJson('/core/panel/quick-shortcuts', resp => setQuickShortcuts(resp));
   }, [num]);
 
   return (
@@ -50,7 +53,7 @@ const PanelQuickShortcuts: React.FC<{
             {
               name: 'Unpin from panel',
               onClick() {
-                csi.deleteJson(`/panel/quick-shortcut/${ ind }`, () => {
+                csi.deleteJson(`/core/panel/quick-shortcuts${ ind }`, () => {
                   // @ts-ignore
                   // eslint-disable-next-line @typescript-eslint/no-use-before-define
                   Panel.reload();
@@ -119,7 +122,7 @@ const PanelInstanceIcon: React.FC = () => {
       onClick={() => navigate('/app/a/dash')}
     >
       <img
-        src={`${ instanceUrl }/panel/logo/small`}
+        src={`${ instanceUrl }/core/panel/logo/small`}
         alt={''}
         className={'cursor-pointer select-none'}
       />
@@ -167,7 +170,10 @@ export interface YourDashLauncherApplication {
   description: string;
 }
 
-const Panel: React.FC<IPanel> = ({side, setSide}) => {
+const Panel: React.FC<IPanel> = ({
+  side,
+  setSide
+}) => {
   const [num, setNum] = useState<number>(0);
   const [launcherType, setLauncherType] = useState<number>(0);
 
@@ -177,11 +183,11 @@ const Panel: React.FC<IPanel> = ({side, setSide}) => {
   };
 
   useEffect(() => {
-    csi.getJson('/panel/position', res => {
+    csi.getJson('/core/panel/position', res => {
       setSide(res.position);
     });
 
-    csi.getJson('/panel/launcher', res => {
+    csi.getJson('/core/panel/quick-shortcuts', res => {
       setLauncherType(res.launcher);
     });
   }, [num]); // eslint-disable-line react-hooks/exhaustive-deps

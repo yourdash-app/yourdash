@@ -32,6 +32,8 @@
       <option name="FORCE_QUOTE_STYlE" value="true" />
       <option name="ENFORCE_TRAILING_COMMA" value="Remove" />
       <option name="VAR_DECLARATION_WRAP" value="5" />
+      <option name="OBJECT_LITERAL_WRAP" value="2" />
+      <option name="OBJECT_TYPES_WRAP" value="2" />
       <option name="INDENT_CHAINED_CALLS" value="false" />
       <option name="CHAINED_CALL_DOT_ON_NEW_LINE" value="false" />
       <option name="SPACES_WITHIN_INTERPOLATION_EXPRESSIONS" value="true" />

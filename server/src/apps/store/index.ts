@@ -1,12 +1,10 @@
 import {type StorePromotedApplication} from '../../../../shared/apps/store/storePromotedApplication.js';
 import YourDashUnreadApplication, {
   getAllApplications,
-  YourDashApplicationServerPlugin
+  type YourDashApplicationServerPlugin
 } from '../../helpers/applications.js';
-import {IStoreCategory} from '../../../../shared/apps/store/storeCategory.js';
-
+import {type IStoreCategory} from '../../../../shared/apps/store/storeCategory.js';
 import {getInstanceLogoBase64} from '../../helpers/logo.js';
-
 import getAllCategories, {getAllApplicationsFromCategory} from './helpers/categories.js';
 
 const promotedApplications: string[] = ['dash', 'store'];
@@ -29,7 +27,9 @@ const main: YourDashApplicationServerPlugin = ({app}) => {
   app.get('/app/store/categories', async (_req, res) => {
     const applications = await getAllApplications();
 
-    const categories: { [ key: string ]: boolean } = {};
+    const categories: {
+      [ key: string ]: boolean
+    } = {};
 
     for (const application of applications) {
       const app = await new YourDashUnreadApplication(application).read();
@@ -55,7 +55,11 @@ const main: YourDashApplicationServerPlugin = ({app}) => {
 
     const categoryApplications = await getAllApplicationsFromCategory(id);
 
-    const applicationsOutput: { name: string, icon: string, displayName: string }[] = [];
+    const applicationsOutput: {
+      name: string,
+      icon: string,
+      displayName: string
+    }[] = [];
 
     await new Promise((resolve, reject) => {
 

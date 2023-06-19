@@ -5,40 +5,33 @@
 //  - https://yourdash-app.github.io
 
 import {existsSync as fsExistsSync, promises as fs} from 'fs';
-
 import path from 'path';
-
 import * as http from 'http';
-
 import cors from 'cors';
 import express from 'express';
-
 import sharp from 'sharp';
-
 import {Server as SocketIoServer, Socket as SocketIoSocket} from 'socket.io';
-
 import chalk from 'chalk';
-
 import minimist from 'minimist';
-
-import {YourDashSessionType, IYourDashSession} from '../../shared/core/session.js';
-
-import log from './helpers/log.js';
-
-import YourDashUnreadApplication, {getAllApplications} from './helpers/applications.js';
+import {YourDashSessionType, type IYourDashSession} from '../../shared/core/session.js';
+import log, {logTypes} from './helpers/log.js';
+import YourDashUnreadApplication from './helpers/applications.js';
 import {base64ToDataUrl} from './helpers/base64.js';
 import {compareHash} from './helpers/encryption.js';
 import {generateLogos} from './helpers/logo.js';
 import YourDashPanel from './helpers/panel.js';
 import YourDashUnreadUser, {YourDashUserPermissions} from './helpers/user.js';
 import {createSession} from './helpers/session.js';
-
+import globalDatabase from './helpers/globalDatabase.js';
+import fkill from 'fkill';
 
 const args = minimist(process.argv.slice(2));
 
 global.args = args;
 
-const SESSIONS: { [ key: string ]: IYourDashSession<any>[] } = {};
+const SESSIONS: {
+  [ key: string ]: IYourDashSession<any>[]
+} = {};
 
 function __internalGetSessions() {
   return SESSIONS;
@@ -98,7 +91,10 @@ async function startupChecks() {
   if (!(await adminUserUnread.exists())) {
     await adminUserUnread.create(
       'password',
-      {first: 'Admin', last: 'istrator'},
+      {
+        first: 'Admin',
+        last: 'istrator'
+      },
       [YourDashUserPermissions.Administrator]
     );
   }
@@ -116,7 +112,9 @@ export interface ISocketActiveSocket {
   socket: SocketIoSocket
 }
 
-const activeSockets: { [ username: string ]: ISocketActiveSocket[] } = {};
+const activeSockets: {
+  [ username: string ]: ISocketActiveSocket[]
+} = {};
 
 
 process.on('SIGINT', () => {
@@ -131,14 +129,16 @@ io.on('connection', socket => {
   if (!socket.handshake.query.username || !socket.handshake.query.sessionToken || !socket.handshake.query.sessionId) {
 
     log(
+      logTypes.info,
       socket.handshake.query.username,
       socket.handshake.query.sessionToken,
       socket.handshake.query.sessionId
     );
 
-    log('[PSA-BACKEND]: Missing required parameters');
+    log(logTypes.error, '[PSA-BACKEND]: Missing required parameters');
 
-    return socket.disconnect(true);
+    socket.disconnect(true);
+    return;
   }
 
   if (!activeSockets[socket.handshake.query.username as string]) {
@@ -160,12 +160,20 @@ io.on('connection', socket => {
       activeSockets[socket.handshake.query.username as string].filter(sock => sock.id !== socket.id);
     });
   });
+
+  return;
 }
 );
 
 io.use(async (socket, next) => {
 
-  const {username, sessionToken} = socket.handshake.query as { username?: string, sessionToken?: string };
+  const {
+    username,
+    sessionToken
+  } = socket.handshake.query as {
+    username?: string,
+    sessionToken?: string
+  };
   if (!username || !sessionToken) {
     return socket.disconnect();
 
@@ -205,6 +213,7 @@ if (args['log-requests']) {
     switch (req.method) {
       case 'GET':
         log(
+          logTypes.info,
           `${ date.getHours() }:${ date.getMinutes() }:${
             date.getSeconds() < 10
               ? `${ date.getSeconds() }0`
@@ -212,11 +221,12 @@ if (args['log-requests']) {
           } ${ chalk.bgGreen(chalk.whiteBright(' GET ')) } ${ res.statusCode } ${ req.path }`
         );
         if (JSON.stringify(req.query) !== '{}') {
-          log(JSON.stringify(req.query));
+          log(logTypes.info, JSON.stringify(req.query));
         }
         break;
       case 'POST':
         log(
+          logTypes.info,
           `${ date.getHours() }:${ date.getMinutes() }:${
             date.getSeconds() < 10
               ? `${ date.getSeconds() }0`
@@ -224,27 +234,41 @@ if (args['log-requests']) {
           } ${ chalk.bgBlue(chalk.whiteBright(' POS ')) } ${ res.statusCode } ${ req.path }`
         );
         if (JSON.stringify(req.query) !== '{}') {
-          log(JSON.stringify(req.query));
+          log(logTypes.info, JSON.stringify(req.query));
         }
         break;
       case 'DELETE':
         log(
-          `${ date.getHours() }:${ date.getMinutes() }:${
+          logTypes.info, `${ date.getHours() }:${ date.getMinutes() }:${
             date.getSeconds() < 10
               ? `${ date.getSeconds() }0`
               : date.getSeconds()
           } ${ chalk.bgRed(chalk.whiteBright(' DEL ')) } ${ res.statusCode } ${ req.path }`
         );
         if (JSON.stringify(req.query) !== '{}') {
-          log(JSON.stringify(req.query));
+          log(logTypes.info, JSON.stringify(req.query));
         }
         break;
       default:
-        log(`WARN ERROR IN REQUEST LOGGER, UNKNOWN REQUEST TYPE: ${ req.method }`);
+        log(logTypes.error, `ERROR IN REQUEST LOGGER, UNKNOWN REQUEST TYPE: ${ req.method }`);
     }
     next();
   });
 }
+
+process.stdin.on('data', data => {
+  const commandAndArgs = data.toString().replaceAll('\n', '').replaceAll('\r', '').split(' ');
+  const command = commandAndArgs[0];
+  const args = commandAndArgs.slice(1);
+
+  switch (command) {
+    case 'exit':
+      log(logTypes.info, 'Shutting down...');
+      break;
+    default:
+      log(logTypes.error, `UNKNOWN COMMAND: ${ command }`);
+  }
+});
 
 app.get('/', (_req, res) => res.send('Hello from the yourdash server software'));
 
@@ -254,16 +278,19 @@ app.get('/test', (_req, res) => {
   switch (discoveryStatus) {
     case YourDashServerDiscoveryStatus.MAINTENANCE:
       return res.json({
-        status: YourDashServerDiscoveryStatus.MAINTENANCE, type: 'yourdash'
+        status: YourDashServerDiscoveryStatus.MAINTENANCE,
+        type: 'yourdash'
       });
     case YourDashServerDiscoveryStatus.NORMAL:
       return res.json({
-        status: YourDashServerDiscoveryStatus.NORMAL, type: 'yourdash'
+        status: YourDashServerDiscoveryStatus.NORMAL,
+        type: 'yourdash'
       });
     default:
       console.error('discovery status returned an invalid value');
       return res.json({
-        status: YourDashServerDiscoveryStatus.MAINTENANCE, type: 'yourdash'
+        status: YourDashServerDiscoveryStatus.MAINTENANCE,
+        type: 'yourdash'
       });
   }
 });
@@ -290,7 +317,7 @@ app.get('/login/user/:username', async (req, res) => {
   }
 });
 
-app.post('/login/user/:username/authenticate', async (req, res) => {
+app.post('/login/user/:username/authenticate', (req, res) => {
   const username = req.params.username;
   const password = req.body.password;
 
@@ -304,9 +331,9 @@ app.post('/login/user/:username/authenticate', async (req, res) => {
 
   const user = new YourDashUnreadUser(username);
 
-  const savedHashedPassword = (await fs.readFile(path.resolve(user.getPath(), './password.txt'))).toString();
+  const savedHashedPassword = (fs.readFile(path.resolve(user.getPath(), './password.txt'))).toString();
 
-  compareHash(savedHashedPassword, password).then(async result => {
+  return compareHash(savedHashedPassword, password).then(async result => {
     if (result) {
       const session = await createSession(
         username,
@@ -314,21 +341,28 @@ app.post('/login/user/:username/authenticate', async (req, res) => {
           ? YourDashSessionType.desktop
           : YourDashSessionType.web
       );
-      return res.json({token: session.sessionToken, id: session.id});
+      return res.json({
+        token: session.sessionToken,
+        id: session.id
+      });
     } else {
       return res.json({error: true});
     }
   }).catch(_err => res.json({error: true}));
 });
 
-app.get('/panel/logo/small', (_req, res) => res.sendFile(path.resolve(
+app.get('/core/panel/logo/small', (_req, res) => res.sendFile(path.resolve(
   process.cwd(),
   './fs/logo_panel_small.avif'
 )));
 
 app.get('/login/is-authenticated', async (req, res) => {
-  const {username, token} = req.headers as {
-    username?: string; token?: string;
+  const {
+    username,
+    token
+  } = req.headers as {
+    username?: string;
+    token?: string;
   };
 
   if (!username) {
@@ -362,7 +396,13 @@ app.get('/login/is-authenticated', async (req, res) => {
  */
 
 app.use(async (req, res, next) => {
-  const {username, token} = req.headers as { username?: string, token?: string };
+  const {
+    username,
+    token
+  } = req.headers as {
+    username?: string,
+    token?: string
+  };
 
   if (!username) {
     return res.json({error: 'authorization fail'});
@@ -389,20 +429,24 @@ app.use(async (req, res, next) => {
   return res.json({error: 'authorization fail'});
 });
 
-app.get('/panel/user/name', async (req, res) => {
-  const {username} = req.headers as { username: string };
+app.get('/core/panel/logo/small', async (req, res) => {
+  const {username} = req.headers as {
+    username: string
+  };
   const user = (await new YourDashUnreadUser(username).read());
   return res.json(user.getName());
 });
 
-app.get('/panel/launcher/applications', async (_req, res) => {
-  Promise.all((await getAllApplications()).map(async app => {
+app.get('/core/core/panel/quick-shortcuts/applications', async (_req, res) => {
+  Promise.all((globalDatabase.getValue('installed_applications') || ['dash', 'settings']).map(async app => {
     const application = await new YourDashUnreadApplication(app).read();
     return new Promise(async resolve => {
-      sharp(await fs.readFile(path.resolve(
-        process.cwd(),
-        `./src/apps/${ app }/icon.avif`
-      ))).resize(98, 98).toBuffer((err, buf) => {
+      sharp(
+        await fs.readFile(path.resolve(
+          process.cwd(),
+          `./src/apps/${ app }/icon.avif`
+        ))
+      ).resize(98, 98).toBuffer((err, buf) => {
         if (err) {
           resolve({error: true});
         }
@@ -418,17 +462,21 @@ app.get('/panel/launcher/applications', async (_req, res) => {
   })).then(resp => res.json(resp));
 });
 
-app.get('/panel/quick-shortcuts', async (req, res) => {
-  const {username} = req.headers as { username: string };
+app.get('/core/panel/quick-shortcuts', async (req, res) => {
+  const {username} = req.headers as {
+    username: string
+  };
 
   const panel = new YourDashPanel(username);
 
   return res.json(await panel.getQuickShortcuts());
 });
 
-app.delete('/panel/quick-shortcut/:ind', async (req, res) => {
+app.delete('/core/panel/quick-shortcuts:ind', async (req, res) => {
   const {ind} = req.params;
-  const {username} = req.headers as { username: string };
+  const {username} = req.headers as {
+    username: string
+  };
 
   const panel = new YourDashPanel(username);
 
@@ -437,10 +485,16 @@ app.delete('/panel/quick-shortcut/:ind', async (req, res) => {
   return res.json({success: true});
 });
 
-app.post('/panel/quick-shortcuts/create', async (req, res) => {
-  const {username} = req.headers as { username: string };
-  const {displayName, name} = req.body as {
-    displayName: string; name: string;
+app.post('/core/panel/quick-shortcuts/create', async (req, res) => {
+  const {username} = req.headers as {
+    username: string
+  };
+  const {
+    displayName,
+    name
+  } = req.body as {
+    displayName: string;
+    name: string;
   };
 
   const panel = new YourDashPanel(username);
@@ -458,16 +512,20 @@ app.post('/panel/quick-shortcuts/create', async (req, res) => {
   }
 });
 
-app.get('/panel/position', async (req, res) => {
-  const {username} = req.headers as { username: string };
+app.get('/core/panel/position', async (req, res) => {
+  const {username} = req.headers as {
+    username: string
+  };
 
   const panel = new YourDashPanel(username);
 
   return res.json({position: await panel.getPanelPosition()});
 });
 
-app.get('/panel/launcher', async (req, res) => {
-  const {username} = req.headers as { username: string };
+app.get('/core/panel/quick-shortcuts', async (req, res) => {
+  const {username} = req.headers as {
+    username: string
+  };
 
   const panel = new YourDashPanel(username);
 
@@ -475,7 +533,9 @@ app.get('/panel/launcher', async (req, res) => {
 });
 
 app.get('/core/sessions', async (req, res) => {
-  const {username} = req.headers as { username: string };
+  const {username} = req.headers as {
+    username: string
+  };
 
   const user = await (new YourDashUnreadUser(username).read());
 
@@ -483,7 +543,9 @@ app.get('/core/sessions', async (req, res) => {
 });
 
 app.delete('/core/session/:id', async (req, res) => {
-  const {username} = req.headers as { username: string };
+  const {username} = req.headers as {
+    username: string
+  };
   const {id: sessionId} = req.params;
 
   const user = await (new YourDashUnreadUser(username).read());
@@ -494,7 +556,9 @@ app.delete('/core/session/:id', async (req, res) => {
 });
 
 app.get('/core/personal-server-accelerator/sessions', async (req, res) => {
-  const {username} = req.headers as { username: string };
+  const {username} = req.headers as {
+    username: string
+  };
 
   const user = await (new YourDashUnreadUser(username).read());
 
@@ -504,7 +568,9 @@ app.get('/core/personal-server-accelerator/sessions', async (req, res) => {
 });
 
 app.get('/core/personal-server-accelerator/', async (req, res) => {
-  const {username} = req.headers as { username: string };
+  const {username} = req.headers as {
+    username: string
+  };
 
   const user = await (new YourDashUnreadUser(username));
 
@@ -516,7 +582,9 @@ app.get('/core/personal-server-accelerator/', async (req, res) => {
 });
 
 app.post('/core/personal-server-accelerator/', async (req, res) => {
-  const {username} = req.headers as { username: string };
+  const {username} = req.headers as {
+    username: string
+  };
   const body = req.body;
 
   const user = new YourDashUnreadUser(username);
@@ -531,7 +599,9 @@ app.post('/core/personal-server-accelerator/', async (req, res) => {
 });
 
 app.get('/core/userdb', async (req, res) => {
-  const {username} = req.headers as { username: string };
+  const {username} = req.headers as {
+    username: string
+  };
 
   const user = new YourDashUnreadUser(username);
 
@@ -551,7 +621,9 @@ app.get('/core/userdb', async (req, res) => {
 app.post('/core/userdb', async (req, res) => {
   return 0;
 
-  const {username} = req.headers as { username: string };
+  const {username} = req.headers as {
+    username: string
+  };
 
   const user = new YourDashUnreadUser(username);
 
@@ -567,36 +639,45 @@ app.post('/core/userdb', async (req, res) => {
   return res.json(output);
 });
 
-try {
-  await new Promise<void>(async (resolve, reject) => {
-    if (fsExistsSync(path.resolve(process.cwd(), './src/apps/'))) {
-      const apps = await fs.readdir(path.resolve(process.cwd(), './src/apps/'));
-      apps.forEach(appName => {
-        // log( `[${ chalk.bold.yellow.inverse( "CORE" ) }]: loading application: ${ appName }` )
-
-        // import and load all applications
-        import(
-          `./apps/${ appName }/index.js`
-        ).then(mod => {
-          try {
-            log(`[${ chalk.yellow.bold('CORE') }]: Loading application: ${ appName }`);
-            mod.default({app, io});
-          } catch (err) {
-            reject(err);
-          }
-        }).catch(err => {
-          console.error(`Error while loading application: ${ appName }`, err);
-        });
-      });
-      resolve();
-    } else {
-      resolve();
-    }
-  });
-} catch (err) {
-  console.error(`[${ chalk.yellow.bold('CORE') }]: Error during server initialization: ${ err.toString() }`);
-}
+/*
+ * Start listening for requests
+ * */
 
 httpServer.listen(3560, () => {
-  log(`[${ chalk.yellow.bold('CORE') }]: server now listening on port 3560!`);
+  log(logTypes.info, `${ chalk.yellow.bold('CORE') }: ---------- server now listening on port 3560! ----------`);
 });
+
+/*
+ * Load all installed Applications
+ */
+
+if (fsExistsSync(path.resolve(process.cwd(), './src/apps/'))) {
+  const apps = await fs.readdir(path.resolve(process.cwd(), './src/apps/'));
+  apps.forEach(appName => {
+    if (!fsExistsSync(path.resolve(process.cwd(), `./src/apps/${ appName }/index.js`))) {
+      return;
+    }
+
+    log(logTypes.info, `${ chalk.yellow.bold('CORE') }: Loading application: ${ appName }`);
+
+    // import and load all applications
+    import(
+      `./apps/${ appName }/index.js`
+    ).then(mod => {
+      try {
+        log(logTypes.info, `${ chalk.yellow.bold('CORE') }: Initializing application: ${ appName }`);
+        mod.default({
+          app,
+          io
+        });
+        log(logTypes.success, `${ chalk.yellow.bold('CORE') }: Initialized application: ${ appName }`);
+      } catch (err) {
+        log(logTypes.error, `${ chalk.yellow.bold('CORE') }: Error during application initialization: ${ appName }`);
+      }
+    }).catch(err => {
+      console.error(`Error while loading application: ${ appName }`, err);
+    });
+  });
+} else {
+  log(logTypes.error, `${ chalk.yellow.bold('CORE') }: No applications found!`);
+}

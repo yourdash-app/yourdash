@@ -8,10 +8,12 @@ import chalk from 'chalk';
 
 import {IYourDashSession} from '../../../shared/core/session.js';
 
-import log from './log.js';
+import log, {logTypes} from './log.js';
 
 import {hash} from './encryption.js';
 import YourDashSession, {getSessionsForUser} from './session.js';
+import KeyValueDatabase from './keyValueDatabase.js';
+import getUserDatabase from './userDatabase.js';
 
 
 export enum YourDashUserPermissions {
@@ -35,8 +37,6 @@ class YourDashUser {
     if (!this.exists()) {
       return;
     }
-
-    return this;
   }
 
   setPassword(password: string): this {
@@ -166,9 +166,13 @@ class YourDashUser {
         getSessionsForUser(this.username)[getSessionsForUser(this.username).findIndex(val => val.id === sessionId)]
       );
     } catch (_err) {
-      log(`[${ chalk.yellowBright('WARN') }]: unable to find session: ${ sessionId }`);
+      log(logTypes.warn, `${ chalk.yellow.bold('CORE') }: unable to find session: ${ sessionId }`);
       return undefined;
     }
+  }
+
+  getPersonalDatabase(): KeyValueDatabase {
+    return getUserDatabase(this.username);
   }
 }
 

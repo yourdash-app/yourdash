@@ -7,7 +7,7 @@ import {Server as SocketServer} from 'socket.io';
 
 import {type IYourDashApplication} from '../../../shared/core/application.js';
 
-import log from './log.js';
+import log, {logTypes} from './log.js';
 
 class YourDashApplication {
   private readonly name: string;
@@ -77,7 +77,7 @@ export async function getAllApplications(): Promise<string[]> {
   try {
     return await fs.readdir(path.resolve(process.cwd(), './src/apps/'));
   } catch (_err) {
-    log('an issue reading the ./src/apps/ directory');
+    log(logTypes.error, 'A problem occurred reading the ./src/apps/ directory');
     return [];
   }
 }

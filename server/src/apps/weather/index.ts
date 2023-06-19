@@ -3,7 +3,6 @@
 import {promises as fs} from 'fs';
 import path from 'path';
 
-import {Application as ExpressApplication} from 'express';
 import {fetch} from 'undici';
 
 import {type weatherForecast} from '../../../../shared/apps/weather/forecast.js';
@@ -11,7 +10,7 @@ import {weatherStates} from '../../../../shared/apps/weather/weatherStates.js';
 import YourDashUser from '../../helpers/user.js';
 import {type YourDashApplicationServerPlugin} from '../../helpers/applications.js';
 
-import log from '../../helpers/log.js';
+import log, {logTypes} from '../../helpers/log.js';
 
 /**
  
@@ -100,7 +99,7 @@ const main: YourDashApplicationServerPlugin = ({app}) => {
     ).then(resp => resp.json()).then(json => {
       res.json(json);
     }).catch(() => {
-      log('Failed to fetch weather data from open-meteo');
+      log(logTypes.error, 'Failed to fetch weather data from open-meteo');
       return res.json({error: true});
     });
   });
@@ -300,11 +299,11 @@ const main: YourDashApplicationServerPlugin = ({app}) => {
             }
           });
         }).catch(err => {
-          log('Failed to fetch weather data from open-meteo', err);
+          log(logTypes.error, 'Failed to fetch weather data from open-meteo', err);
           return res.json({error: true});
         });
       }).catch(err => {
-      log('Failed to fetch weather data from open-meteo', err);
+      log(logTypes.error, 'Failed to fetch weather data from open-meteo', err);
       return res.json({error: true});
     });
   });

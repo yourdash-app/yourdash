@@ -6,7 +6,7 @@ import path from 'path';
 import {__internalGetSessions, SESSION_TOKEN_LENGTH} from '../main.js';
 import {YourDashSessionType, type IYourDashSession} from '../../../shared/core/session.js';
 
-import log from './log.js';
+import log, {logTypes} from './log.js';
 
 import {generateRandomStringOfLength} from './encryption.js';
 import YourDashUnreadUser from './user.js';
@@ -55,7 +55,7 @@ export async function createSession<T extends YourDashSessionType>(
       JSON.stringify(__internalGetSessions()[username])
     );
   } catch (__e) {
-    log(`Unable to write ${ username }/sessions.json`);
+    log(logTypes.error, `Unable to write ${ username }/sessions.json`);
     return session;
   }
 

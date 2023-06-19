@@ -10,22 +10,32 @@ import LauncherGridView from '../sharedComponents/LauncherGridView';
 import LauncherDateAndTime from '../sharedComponents/LauncherDateAndTime';
 
 const PanelApplicationLauncherPopOut: React.FC<{
-  side: PanelPosition; visible: boolean; setVisible: (value: boolean) => void;
-}> = ({side, visible, setVisible}) => {
+  side: PanelPosition;
+  visible: boolean;
+  setVisible: (value: boolean) => void;
+}> = ({
+  side,
+  visible,
+  setVisible
+}) => {
   const navigate = useNavigate();
   const [userFullName, setUserFullName] = useState<{
-    first: string; last: string;
-  }>({first: '', last: ''});
+    first: string;
+    last: string;
+  }>({
+    first: '',
+    last: ''
+  });
 
   const [applications, setApplications] = useState<YourDashLauncherApplication[]>([]);
   const [searchValue, setSearchValue] = useState<string>('');
 
   useEffect(() => {
-    csi.getJson('/panel/user/name', res => {
+    csi.getJson('/core/panel/logo/small', res => {
       setUserFullName(res);
     });
 
-    csi.getJson('/panel/launcher/applications', res => {
+    csi.getJson('/core/core/panel/quick-shortcuts/applications', res => {
       setApplications(res);
     });
   }, []);

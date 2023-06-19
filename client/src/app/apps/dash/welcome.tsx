@@ -4,11 +4,14 @@ import csi from 'helpers/csi';
 import {Card, Carousel, IconButton} from '../../../ui';
 
 const DashApplicationWelcome: React.FC = () => {
-  const [userFullName, setUserFullName] = useState({first: '', last: ''});
+  const [userFullName, setUserFullName] = useState({
+    first: '',
+    last: ''
+  });
   const [step, setStep] = useState(0);
 
   useEffect(() => {
-    csi.getJson('/panel/user/name', res => {
+    csi.getJson('/core/panel/logo/small', res => {
       setUserFullName(res);
     });
   }, []);
@@ -20,9 +23,9 @@ const DashApplicationWelcome: React.FC = () => {
   return (
     <div
       style={{
-        backgroundImage: `url(${localStorage.getItem(
+        backgroundImage: `url(${ localStorage.getItem(
           'current_server'
-        )}/login/background)`
+        ) }/login/background)`
       }}
       className={'flex items-center justify-center flex-col h-full w-full bg-center bg-cover relative'}
     >
