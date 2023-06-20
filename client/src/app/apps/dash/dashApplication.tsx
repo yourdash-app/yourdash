@@ -8,7 +8,7 @@ const DashApplication: React.FC = () => {
   });
 
   useEffect(() => {
-    csi.getJson('/core/panel/logo/small', res => {
+    csi.getJson('/app/dash/user-full-name', res => {
       setUserFullName(res);
     });
   }, []);
@@ -25,15 +25,7 @@ const DashApplication: React.FC = () => {
         ) }/login/background)`
       }}
       className={
-        'flex ' +
-        'items-center ' +
-        'justify-center ' +
-        'flex-col ' +
-        'h-full ' +
-        'w-full ' +
-        'bg-center ' +
-        'bg-cover ' +
-        'gap-4'
+        'flex items-center justify-center flex-col h-full w-full bg-center bg-cover gap-4'
       }
     >
       <div

@@ -23,7 +23,6 @@ import YourDashPanel from './helpers/panel.js';
 import YourDashUnreadUser, {YourDashUserPermissions} from './helpers/user.js';
 import {createSession} from './helpers/session.js';
 import globalDatabase from './helpers/globalDatabase.js';
-import fkill from 'fkill';
 
 const args = minimist(process.argv.slice(2));
 
@@ -102,6 +101,11 @@ async function startupChecks() {
 
 await startupChecks();
 
+if (fsExistsSync(path.resolve(process.cwd(), './fs/globalDatabase.json'))) {
+  globalDatabase.readFromDisk(path.resolve(process.cwd(), './fs/globalDatabase.json'));
+  log(logTypes.success, 'Global database loaded');
+}
+
 const app = express();
 const httpServer = http.createServer(app);
 const io = new SocketIoServer(httpServer);
@@ -116,13 +120,16 @@ const activeSockets: {
   [ username: string ]: ISocketActiveSocket[]
 } = {};
 
-
-process.on('SIGINT', () => {
-  httpServer.close(() => {
+const beforeShutdown = () => {
+  log(logTypes.info, 'Shutting down...');
+  globalDatabase.writeToDisk(path.resolve(process.cwd(), './fs/globalDatabase.json')).then(() =>
     // eslint-disable-next-line no-process-exit
-    process.exit(0);
-  });
-});
+    process.kill(process.pid, 'SIGINT')
+  );
+};
+
+process.on('SIGINT', beforeShutdown);
+process.on('SIGTERM', beforeShutdown);
 
 io.on('connection', socket => {
   // Check that all required parameters are present
@@ -214,11 +221,7 @@ if (args['log-requests']) {
       case 'GET':
         log(
           logTypes.info,
-          `${ date.getHours() }:${ date.getMinutes() }:${
-            date.getSeconds() < 10
-              ? `${ date.getSeconds() }0`
-              : date.getSeconds()
-          } ${ chalk.bgGreen(chalk.whiteBright(' GET ')) } ${ res.statusCode } ${ req.path }`
+          `${ chalk.bgGreen(chalk.whiteBright(' GET ')) } ${ res.statusCode } ${ req.path }`
         );
         if (JSON.stringify(req.query) !== '{}') {
           log(logTypes.info, JSON.stringify(req.query));
@@ -227,11 +230,7 @@ if (args['log-requests']) {
       case 'POST':
         log(
           logTypes.info,
-          `${ date.getHours() }:${ date.getMinutes() }:${
-            date.getSeconds() < 10
-              ? `${ date.getSeconds() }0`
-              : date.getSeconds()
-          } ${ chalk.bgBlue(chalk.whiteBright(' POS ')) } ${ res.statusCode } ${ req.path }`
+          `${ chalk.bgBlue(chalk.whiteBright(' POS ')) } ${ res.statusCode } ${ req.path }`
         );
         if (JSON.stringify(req.query) !== '{}') {
           log(logTypes.info, JSON.stringify(req.query));
@@ -239,11 +238,7 @@ if (args['log-requests']) {
         break;
       case 'DELETE':
         log(
-          logTypes.info, `${ date.getHours() }:${ date.getMinutes() }:${
-            date.getSeconds() < 10
-              ? `${ date.getSeconds() }0`
-              : date.getSeconds()
-          } ${ chalk.bgRed(chalk.whiteBright(' DEL ')) } ${ res.statusCode } ${ req.path }`
+          logTypes.info, `${ chalk.bgRed(chalk.whiteBright(' DEL ')) } ${ res.statusCode } ${ req.path }`
         );
         if (JSON.stringify(req.query) !== '{}') {
           log(logTypes.info, JSON.stringify(req.query));
@@ -263,7 +258,7 @@ process.stdin.on('data', data => {
 
   switch (command) {
     case 'exit':
-      log(logTypes.info, 'Shutting down...');
+      beforeShutdown();
       break;
     default:
       log(logTypes.error, `UNKNOWN COMMAND: ${ command }`);
@@ -429,14 +424,6 @@ app.use(async (req, res, next) => {
   return res.json({error: 'authorization fail'});
 });
 
-app.get('/core/panel/logo/small', async (req, res) => {
-  const {username} = req.headers as {
-    username: string
-  };
-  const user = (await new YourDashUnreadUser(username).read());
-  return res.json(user.getName());
-});
-
 app.get('/core/core/panel/quick-shortcuts/applications', async (_req, res) => {
   Promise.all((globalDatabase.getValue('installed_applications') || ['dash', 'settings']).map(async app => {
     const application = await new YourDashUnreadApplication(app).read();
@@ -460,6 +447,14 @@ app.get('/core/core/panel/quick-shortcuts/applications', async (_req, res) => {
       });
     });
   })).then(resp => res.json(resp));
+});
+
+app.get('/core/panel/user-full-name', async (req, res) => {
+  const {username} = req.headers as {
+    username: string
+  };
+  const user = (await new YourDashUnreadUser(username).read());
+  return res.json(user.getName());
 });
 
 app.get('/core/panel/quick-shortcuts', async (req, res) => {
@@ -652,9 +647,10 @@ httpServer.listen(3560, () => {
  */
 
 if (fsExistsSync(path.resolve(process.cwd(), './src/apps/'))) {
-  const apps = await fs.readdir(path.resolve(process.cwd(), './src/apps/'));
+  const apps = (globalDatabase.getValue('installed_applications') || ['dash', 'settings']);
   apps.forEach(appName => {
     if (!fsExistsSync(path.resolve(process.cwd(), `./src/apps/${ appName }/index.js`))) {
+      log(logTypes.error, `${ chalk.yellow.bold('CORE') }: Unknown application: ${ appName }!`);
       return;
     }
 
@@ -665,7 +661,7 @@ if (fsExistsSync(path.resolve(process.cwd(), './src/apps/'))) {
       `./apps/${ appName }/index.js`
     ).then(mod => {
       try {
-        log(logTypes.info, `${ chalk.yellow.bold('CORE') }: Initializing application: ${ appName }`);
+        log(logTypes.info, `${ chalk.yellow.bold('CORE') }: Starting application: ${ appName }`);
         mod.default({
           app,
           io

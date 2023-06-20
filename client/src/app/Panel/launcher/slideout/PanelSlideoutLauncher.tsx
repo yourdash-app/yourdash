@@ -34,7 +34,7 @@ const PanelApplicationLauncherSlideOut: React.FC<{
   const [searchValue, setSearchValue] = useState<string>('');
 
   useEffect(() => {
-    csi.getJson('/core/panel/logo/small', res => {
+    csi.getJson('/core/panel/user-full-name', res => {
       setUserFullName(res);
     });
 

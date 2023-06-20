@@ -1,7 +1,7 @@
 import {exec} from 'child_process';
 import minimist from 'minimist';
 import chalk from 'chalk';
-import fkill from 'fkill';
+import {TscWatchClient} from 'tsc-watch/client.js';
 
 console.log(`-------------------------\n     ${ chalk.whiteBright('YourDash CLI v0.0.1') }     \n-------------------------`);
 
@@ -60,82 +60,11 @@ function startDevServer() {
 
   const childProcess = exec(`npx tsc-watch --project . --onSuccess \"node${ args.debug
     ? ' --inspect'
-    : '' } ./src/main.js --color=full ${ process.argv.slice(2).join(' ') }\"`);
+    : '' } ./src/main.js --color=full ${ process.argv.slice(2).join(' ') }\"`, {killSignal: 'SIGINT'});
 
-  childProcess.stdout.on('data', data => {
-    if (data === 'INFO     Shutting down...\n') {
-      fkill(childProcess.pid, {force: true});
-      startDevServer();
-      return;
-    }
-    if (data.toString().indexOf('Found 0 errors. Watching for file changes.') !== -1) {
-      return;
-    }
-    if (data.toString().indexOf('Starting compilation in watch mode...') !== -1) {
-      return;
-    }
-    if (data.toString() === '\n') {
-      return;
-    }
-    if (data.toString().indexOf('restarting due to changes...') !== -1) {
-      process.stdout.write(`${ chalk.reset('[') }${ chalk.magenta.bold('HMR') }]: ----------------------------------------------------------------------------------------------------\n${ chalk.reset() }`);
-      return;
-    }
+  const watch = new TscWatchClient();
 
-    let output = data;
-
-    if (output.indexOf('[nodemon]') !== -1) {
-      output = output.replaceAll('\x1Bc', '');
-
-      output = output.replaceAll('[nodemon] ', `${ chalk.reset('[') }${ chalk.magenta.bold('HMR') }]: `);
-
-      output = output.replaceAll('\n', '');
-    }
-
-    process.stdout.write(output);
-  });
-
-  childProcess.stderr.on('data', data => {
-    if (data.toString().indexOf(
-      'warning From Yarn 1.0 onwards, scripts don\'t require "--" for options to be forwarded. In a future version, any explicit "--" will be forwarded as-is to the scripts.') !==
-         -1) {
-      return;
-    }
-
-    let output = data;
-
-    if (output.indexOf('[nodemon]') !== -1) {
-      output = output.replaceAll('\x1Bc', '');
-
-      output = output.replaceAll('[nodemon] ', `${ chalk.reset('[') }${ chalk.magenta.bold('HMR ERROR') }]: `);
-
-      output = output.replaceAll('\n', '');
-    }
-
-    process.stdout.write(output);
-  });
-
-  process.stdin.on('data', chunk => {
-    childProcess.stdin.write(chunk);
-  });
-
-  process.stdin.on('end', () => {
-    childProcess.stdin.end();
-  });
-
-  process.on('exit', exitCode => {
-    console.log(`${ chalk.yellow.bold('CORE') }: Server about to exit!\nexit code: ${ exitCode }`);
-
-    if (childProcess && !childProcess.killed) {
-      console.log(`${ chalk.yellow.bold('CORE') }: Killing child process [ ${ childProcess.pid } ] (${ chalk.magenta.bold(
-        'HMR') })`);
-      childProcess.kill();
-      console.log(childProcess.pid);
-      if (childProcess && !childProcess.killed) {
-        console.log('WARNING: HMR process still running!');
-      }
-    }
-  });
+  watch.start([`--onSuccess \"node ./src/main.js --color=full ${ process.argv.slice(2).join(' ') }\"`]);
 }
 
 if (args.dev) {
