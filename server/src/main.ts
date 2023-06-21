@@ -124,7 +124,7 @@ const beforeShutdown = () => {
   log(logTypes.info, 'Shutting down...');
   globalDatabase.writeToDisk(path.resolve(process.cwd(), './fs/globalDatabase.json')).then(() =>
     // eslint-disable-next-line no-process-exit
-    process.kill(process.pid, 'SIGINT')
+    process.kill(process.pid, 0)
   );
 };
 

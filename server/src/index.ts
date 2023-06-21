@@ -1,7 +1,6 @@
-import {exec} from 'child_process';
+import {exec, ChildProcess} from 'child_process';
 import minimist from 'minimist';
 import chalk from 'chalk';
-import {TscWatchClient} from 'tsc-watch/client.js';
 
 console.log(`-------------------------\n     ${ chalk.whiteBright('YourDash CLI v0.0.1') }     \n-------------------------`);
 
@@ -37,6 +36,7 @@ if (!args.dev && args.compile) {
     if (data.toString() === '') {
       return;
     }
+
     console.log(`[${ chalk.bold.blue('TSC ERROR') }]: ${ data.toString().replaceAll('\n', '').replaceAll(
       '\x1Bc',
       ''
@@ -58,13 +58,61 @@ function startDevServer() {
   console.log(`[${ chalk.hex('#fc6f45').bold('DEV') }]: starting server \"node ./src/main.js --color=full ${ process.argv.slice(
     2).join(' ') }\"`);
 
-  const childProcess = exec(`npx tsc-watch --project . --onSuccess \"node${ args.debug
+  const devProcess = exec(`yarn run compile && nodemon${ args.debug
     ? ' --inspect'
-    : '' } ./src/main.js --color=full ${ process.argv.slice(2).join(' ') }\"`, {killSignal: 'SIGINT'});
+    : '' } ./src/main.js --color=full ${ process.argv.slice(2).join(' ') }`);
 
-  const watch = new TscWatchClient();
+  const compilationProcess = exec('yarn run compile --watch');
 
-  watch.start([`--onSuccess \"node ./src/main.js --color=full ${ process.argv.slice(2).join(' ') }\"`]);
+  devProcess.on('close', code => {
+    console.log(`child process exited with code ${ code }`);
+
+    if (code === 0) {
+      startDevServer();
+    }
+  });
+
+  devProcess.stdout.on('data', data => {
+    if (data.toString().includes('[nodemon]')) {
+      return;
+    }
+
+    process.stdout.write(data);
+  });
+
+  devProcess.stderr.on('data', data => {
+    if (data.toString().indexOf(
+      'warning From Yarn 1.0 onwards, scripts don\'t require "--" for options to be forwarded. In a future version, any explicit "--" will be forwarded as-is to the scripts.') !==
+         -1) {
+      return;
+    }
+
+    process.stdout.write(data);
+  });
+
+  process.stdin.on('data', chunk => {
+    devProcess.stdin.write(chunk);
+  });
+
+  process.stdin.on('end', () => {
+    devProcess.stdin.end();
+  });
+
+  compilationProcess.on('close', code => {
+    console.log(`compilation process exited with code ${ code }`);
+  });
+
+  compilationProcess.stdout.on('data', data => {
+    if (data.toString().includes('\x1Bc')) {
+      return;
+    }
+
+    process.stdout.write(data);
+  });
+
+  compilationProcess.stderr.on('data', data => {
+    process.stdout.write(data);
+  });
 }
 
 if (args.dev) {
