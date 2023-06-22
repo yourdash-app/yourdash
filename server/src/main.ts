@@ -1,5 +1,3 @@
-/** @format */
-
 // The YourDash project
 //  - https://github.com/yourdash-app/yourdash
 //  - https://yourdash-app.github.io
@@ -23,6 +21,7 @@ import YourDashPanel from './helpers/panel.js';
 import YourDashUnreadUser, {YourDashUserPermissions} from './helpers/user.js';
 import {createSession} from './helpers/session.js';
 import globalDatabase from './helpers/globalDatabase.js';
+import killPort from 'kill-port';
 
 const args = minimist(process.argv.slice(2));
 
@@ -40,7 +39,7 @@ const SESSION_TOKEN_LENGTH = 128;
 
 enum YourDashServerDiscoveryStatus {
   // eslint-disable-next-line no-unused-vars
-  MAINTENANCE, NORMAL, HIDDEN
+  MAINTENANCE, NORMAL, INVISIBLE
 }
 
 export {args, __internalGetSessions, SESSION_TOKEN_LENGTH, YourDashServerDiscoveryStatus};
@@ -102,8 +101,15 @@ async function startupChecks() {
 await startupChecks();
 
 if (fsExistsSync(path.resolve(process.cwd(), './fs/globalDatabase.json'))) {
-  globalDatabase.readFromDisk(path.resolve(process.cwd(), './fs/globalDatabase.json'));
+  await globalDatabase.readFromDisk(path.resolve(process.cwd(), './fs/globalDatabase.json'));
   log(logTypes.success, 'Global database loaded');
+} else {
+  globalDatabase.set('installed_applications', ['dash', 'settings', 'files', 'store', 'weather']);
+  if (!globalDatabase.writeToDisk(path.resolve(process.cwd(), './fs/globalDatabase.json'))) {
+    log(logTypes.error, 'Error creating global database');
+  } else {
+    log(logTypes.success, 'Global database created');
+  }
 }
 
 const app = express();
@@ -121,11 +127,11 @@ const activeSockets: {
 } = {};
 
 const beforeShutdown = () => {
-  log(logTypes.info, 'Shutting down...');
-  globalDatabase.writeToDisk(path.resolve(process.cwd(), './fs/globalDatabase.json')).then(() =>
-    // eslint-disable-next-line no-process-exit
-    process.kill(process.pid, 0)
-  );
+  log(logTypes.info, 'Shutting down... (restart of core should occur automatically)');
+
+  globalDatabase.writeToDisk(path.resolve(process.cwd(), './fs/globalDatabase.json'));
+
+  process.kill(process.pid, 0);
 };
 
 process.on('SIGINT', beforeShutdown);
@@ -244,6 +250,16 @@ if (args['log-requests']) {
           log(logTypes.info, JSON.stringify(req.query));
         }
         break;
+      case 'OPTIONS':
+        if (args['log-options-requests']) {
+          log(
+            logTypes.info,
+            `${ chalk.bgCyan(chalk.whiteBright(' OPT ')) } ${ res.statusCode } ${ req.path }`
+          );
+          if (JSON.stringify(req.query) !== '{}') {
+            log(logTypes.info, JSON.stringify(req.query));
+          }
+        }
       default:
         log(logTypes.error, `ERROR IN REQUEST LOGGER, UNKNOWN REQUEST TYPE: ${ req.method }`);
     }
@@ -425,7 +441,7 @@ app.use(async (req, res, next) => {
 });
 
 app.get('/core/core/panel/quick-shortcuts/applications', async (_req, res) => {
-  Promise.all((globalDatabase.getValue('installed_applications') || ['dash', 'settings']).map(async app => {
+  Promise.all((globalDatabase.get('installed_applications')).map(async app => {
     const application = await new YourDashUnreadApplication(app).read();
     return new Promise(async resolve => {
       sharp(
@@ -637,9 +653,21 @@ app.post('/core/userdb', async (req, res) => {
 /*
  * Start listening for requests
  * */
-
-httpServer.listen(3560, () => {
-  log(logTypes.info, `${ chalk.yellow.bold('CORE') }: ---------- server now listening on port 3560! ----------`);
+killPort(3560).then(() => {
+  try {
+    httpServer.listen(3560, () => {
+      log(logTypes.info, `${ chalk.yellow.bold('CORE') }: -------------------- server now listening on port 3560! --------------------`);
+    });
+  } catch (_err) {
+    log(logTypes.error, `${ chalk.yellow.bold('CORE') }: Unable to start server!, retrying...`);
+    killPort(3560).then(() => {
+      killPort(3560).then(() => {
+        httpServer.listen(3560, () => {
+          log(logTypes.info, `${ chalk.yellow.bold('CORE') }: -------------------- server now listening on port 3560! --------------------`);
+        });
+      });
+    });
+  }
 });
 
 /*
@@ -647,8 +675,8 @@ httpServer.listen(3560, () => {
  */
 
 if (fsExistsSync(path.resolve(process.cwd(), './src/apps/'))) {
-  const apps = (globalDatabase.getValue('installed_applications') || ['dash', 'settings']);
-  apps.forEach(appName => {
+  const apps = (globalDatabase.get('installed_applications'));
+  apps.forEach((appName: string) => {
     if (!fsExistsSync(path.resolve(process.cwd(), `./src/apps/${ appName }/index.js`))) {
       log(logTypes.error, `${ chalk.yellow.bold('CORE') }: Unknown application: ${ appName }!`);
       return;

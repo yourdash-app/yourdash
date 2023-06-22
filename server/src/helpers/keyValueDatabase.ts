@@ -1,4 +1,4 @@
-import {promises as fs} from 'fs';
+import {promises as fs, writeFile} from 'fs';
 
 import KVD from '../../../shared/core/database.js';
 
@@ -7,7 +7,7 @@ export default class KeyValueDatabase extends KVD {
     super();
   }
 
-  async writeToDisk(path: string) {
+  writeToDisk(path: string) {
     try {
       fs.writeFile(path, JSON.stringify(this.keys));
       return true;

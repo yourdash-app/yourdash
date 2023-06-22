@@ -1,6 +1,7 @@
 import {exec, ChildProcess} from 'child_process';
 import minimist from 'minimist';
 import chalk from 'chalk';
+import killPort from 'kill-port';
 
 console.log(`-------------------------\n     ${ chalk.whiteBright('YourDash CLI v0.0.1') }     \n-------------------------`);
 
@@ -65,15 +66,23 @@ function startDevServer() {
   const compilationProcess = exec('yarn run compile --watch');
 
   devProcess.on('close', code => {
-    console.log(`child process exited with code ${ code }`);
-
-    if (code === 0) {
-      startDevServer();
-    }
+    console.log(`child process exited with code ${ code }, will not auto-restart!`);
   });
 
   devProcess.stdout.on('data', data => {
     if (data.toString().includes('[nodemon]')) {
+      return;
+    }
+
+    if (data.toString().includes('Shutting down... (restart of core should occur automatically)')) {
+      if (
+        devProcess.kill('SIGTERM') &&
+        compilationProcess.kill('SIGTERM')
+      ) {
+        startDevServer();
+      } else {
+        console.log('Unable to kill child processes');
+      }
       return;
     }
 
@@ -104,6 +113,9 @@ function startDevServer() {
 
   compilationProcess.stdout.on('data', data => {
     if (data.toString().includes('\x1Bc')) {
+      return;
+    }
+    if (data.toString() === '\n') {
       return;
     }
 

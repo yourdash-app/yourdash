@@ -8,7 +8,7 @@ export enum logTypes {
 export default function log(type: logTypes, ...message: any[]) {
   const logParams = [];
 
-  if (globalDatabase.getValue('settings:should_log_time')) {
+  if (globalDatabase.get('settings:should_log_time')) {
     const date = new Date();
 
     logParams.push(`${ date.getHours() }:${ date.getMinutes() }:${ date.getSeconds() < 10

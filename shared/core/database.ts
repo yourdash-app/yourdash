@@ -1,11 +1,13 @@
 export default class KeyValueDatabase {
-  keys: { [ key: string ]: any };
+  keys: {
+    [ key: string ]: any
+  };
   
   constructor() {
     this.keys = {};
   }
   
-  getValue(key: string) {
+  get(key: string) {
     return this.keys[ key ];
   }
   
