@@ -1,16 +1,16 @@
 /** @format */
 
-import {promises as fs} from 'fs';
-import path from 'path';
+import {promises as fs} from "fs";
+import path from "path";
 
-import {fetch} from 'undici';
+import {fetch} from "undici";
 
-import {type weatherForecast} from '../../../../shared/apps/weather/forecast.js';
-import {weatherStates} from '../../../../shared/apps/weather/weatherStates.js';
-import YourDashUser from '../../helpers/user.js';
-import {type YourDashApplicationServerPlugin} from '../../helpers/applications.js';
+import {type weatherForecast} from "../../../../shared/apps/weather/forecast.js";
+import {weatherStates} from "../../../../shared/apps/weather/weatherStates.js";
+import YourDashUser from "../../helpers/user.js";
+import {type YourDashApplicationServerPlugin} from "../../helpers/applications.js";
 
-import log, {logTypes} from '../../helpers/log.js';
+import log, {logTypes} from "../../helpers/log.js";
 
 /**
  
@@ -86,37 +86,42 @@ function parseWeatherCodes(code: number): weatherStates {
   }
 }
 
-const weatherForecastCache: { [ key: string ]: { cacheTime: Date; data: any } } = {};
+const weatherForecastCache: {
+  [ key: string ]: {
+    cacheTime: Date;
+    data: any
+  }
+} = {};
 
 const main: YourDashApplicationServerPlugin = ({app}) => {
-  app.get('/app/weather/location/:locationName', (req, res) => {
+  app.get("/app/weather/location/:locationName", (req, res) => {
     if (!req.params.locationName) {
       return res.json({error: true});
     }
 
     fetch(
       `https://geocoding-api.open-meteo.com/v1/search?name=${ req.params.locationName }&language=en&count=5&format=json`
-    ).then(resp => resp.json()).then(json => {
-      res.json(json);
-    }).catch(() => {
-      log(logTypes.error, 'Failed to fetch weather data from open-meteo');
+    ).then(resp => resp.json()).then(json => res.json(json)).catch(() => {
+      log(logTypes.error, "Failed to fetch weather data from open-meteo");
       return res.json({error: true});
     });
   });
 
-  app.get('/app/weather/previous/locations', async (req, res) => {
-    const {username} = req.headers as { username: string };
+  app.get("/app/weather/previous/locations", async (req, res) => {
+    const {username} = req.headers as {
+      username: string
+    };
 
     const user = new YourDashUser(username);
 
     try {
-      await fs.access(path.resolve(user.getAppDataPath(), 'weather'));
+      await fs.access(path.resolve(user.getAppDataPath(), "weather"));
 
       const rawFile = (
         await fs.readFile(
-          path.resolve(user.getAppDataPath(), 'weather/previous_locations.json')
+          path.resolve(user.getAppDataPath(), "weather/previous_locations.json")
         )
-      ).toString() || '[]';
+      ).toString() || "[]";
 
       const parsedFile = JSON.parse(rawFile) || [];
 
@@ -126,50 +131,58 @@ const main: YourDashApplicationServerPlugin = ({app}) => {
     }
   });
 
-  app.get('/app/weather/location/', (_req, res) => res.json([]));
+  app.get("/app/weather/location/", (_req, res) => res.json([]));
 
-  app.get('/app/weather/forId/:id', async (req, res) => {
+  app.get("/app/weather/forId/:id", async (req, res) => {
     if (!req.params.id) {
       return res.json({error: true});
     }
 
-    const {username} = req.headers as { username: string };
+    const {username} = req.headers as {
+      username: string
+    };
 
     const user = new YourDashUser(username);
 
     if (weatherForecastCache[req.params.id]) {
       const cache = weatherForecastCache[req.params.id];
       if (cache.cacheTime.getUTCMilliseconds() > new Date().getUTCMilliseconds() - 6000) {
-        let file = '[]';
+        let file = "[]";
 
-        await fs.access(path.resolve(user.getAppDataPath(), 'weather')).catch(async () => {
-          await fs.mkdir(path.resolve(user.getAppDataPath(), 'weather'));
+        await fs.access(path.resolve(user.getAppDataPath(), "weather")).catch(async () => {
+          await fs.mkdir(path.resolve(user.getAppDataPath(), "weather"));
         });
 
         try {
-          await fs.access(path.resolve(user.getAppDataPath(), 'weather'));
+          await fs.access(path.resolve(user.getAppDataPath(), "weather"));
 
           file = (
             await fs.readFile(
-              path.resolve(user.getAppDataPath(), 'weather/previous_locations.json')
+              path.resolve(user.getAppDataPath(), "weather/previous_locations.json")
             )
-          ).toString() || '[]';
+          ).toString() || "[]";
         } catch (_err) {
-          file = '[]';
+          file = "[]";
         }
 
-        const parsedFile = JSON.parse(file) as { name: string, id: string }[];
+        const parsedFile = JSON.parse(file) as {
+          name: string,
+          id: string
+        }[];
 
         if (parsedFile.length > 5) {
           parsedFile.shift();
         }
 
         if (parsedFile.find(obj => obj.id === req.params.id) === undefined) {
-          parsedFile.push({name: cache.data.name, id: req.params.id});
+          parsedFile.push({
+            name: cache.data.name,
+            id: req.params.id
+          });
         }
 
         await fs.writeFile(
-          path.resolve(user.getAppDataPath(), 'weather/previous_locations.json'),
+          path.resolve(user.getAppDataPath(), "weather/previous_locations.json"),
           JSON.stringify(parsedFile || [])
         );
 
@@ -238,17 +251,18 @@ const main: YourDashApplicationServerPlugin = ({app}) => {
             cacheTime: new Date()
           };
 
-          let file = '[]';
+          let file = "[]";
 
-          fs.access(path.resolve(user.getAppDataPath(), 'weather')).catch(() => {
-            fs.mkdir(path.resolve(user.getAppDataPath(), 'weather'));
-          });
-
-          fs.access(path.resolve(user.getAppDataPath(), 'weather/previous_locations.json')).catch(async () => {
-            file = (await fs.readFile(
-              path.resolve(user.getAppDataPath(), 'weather/previous_locations.json')
-            )).toString();
-          });
+          try {
+            file = (await fs.readFile(path.resolve(user.getAppDataPath(), "weather/previous_locations.json"))).toString();
+          } catch (_err) {
+            file = "[]";
+            try {
+              fs.mkdir(path.resolve(user.getAppDataPath(), "weather"));
+            } catch (_err2) {
+              /* irrelevant */
+            }
+          }
 
           const parsedFile = JSON.parse(file);
 
@@ -257,11 +271,14 @@ const main: YourDashApplicationServerPlugin = ({app}) => {
           }
 
           if (parsedFile.find(obj => obj.id === req.params.id) === undefined) {
-            parsedFile.push({name: out.name, id: req.params.id});
+            parsedFile.push({
+              name: out.name,
+              id: req.params.id
+            });
           }
 
           await fs.writeFile(
-            path.resolve(user.getAppDataPath(), 'weather/previous_locations.json'),
+            path.resolve(user.getAppDataPath(), "weather/previous_locations.json"),
             JSON.stringify(parsedFile)
           );
 
@@ -299,11 +316,11 @@ const main: YourDashApplicationServerPlugin = ({app}) => {
             }
           });
         }).catch(err => {
-          log(logTypes.error, 'Failed to fetch weather data from open-meteo', err);
+          log(logTypes.error, "Failed to fetch weather data from open-meteo", err);
           return res.json({error: true});
         });
       }).catch(err => {
-      log(logTypes.error, 'Failed to fetch weather data from open-meteo', err);
+      log(logTypes.error, "Failed to fetch weather data from open-meteo", err);
       return res.json({error: true});
     });
   });

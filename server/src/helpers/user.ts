@@ -1,19 +1,13 @@
-import {promises as fs} from 'fs';
-import path from 'path';
-
-
-import sharp from 'sharp';
-
-import chalk from 'chalk';
-
-import {IYourDashSession} from '../../../shared/core/session.js';
-
-import log, {logTypes} from './log.js';
-
-import {hash} from './encryption.js';
-import YourDashSession, {getSessionsForUser} from './session.js';
-import KeyValueDatabase from './keyValueDatabase.js';
-import getUserDatabase from './userDatabase.js';
+import {promises as fs} from "fs";
+import path from "path";
+import sharp from "sharp";
+import chalk from "chalk";
+import {type IYourDashSession} from "../../../shared/core/session.js";
+import log, {logTypes} from "./log.js";
+import {hash} from "./encryption.js";
+import YourDashSession, {getSessionsForUser} from "./session.js";
+import KeyValueDatabase from "./keyValueDatabase.js";
+import getUserDatabase from "./userDatabase.js";
 
 
 export enum YourDashUserPermissions {
@@ -22,7 +16,10 @@ export enum YourDashUserPermissions {
 
 export interface IYourDashUser {
   username: string;
-  fullName: { first: string; last: string };
+  fullName: {
+    first: string;
+    last: string
+  };
   permissions: YourDashUserPermissions[];
   contacts: string[]; // an array of user's usernames
 }
@@ -42,7 +39,7 @@ class YourDashUser {
   setPassword(password: string): this {
     try {
       hash(password).then(async result => {
-        await fs.writeFile(path.resolve(this.getPath(), './password.txt'), result);
+        await fs.writeFile(path.resolve(this.getPath(), "./password.txt"), result);
       });
     } catch (_err) {
       console.error(`unable to set password for user: ${ this.username }`);
@@ -58,7 +55,10 @@ class YourDashUser {
       this.user = {};
     }
     if (!this.user.fullName) {
-      this.user.fullName = {first: 'New', last: 'User'};
+      this.user.fullName = {
+        first: "New",
+        last: "User"
+      };
     }
     if (!this.user.permissions) {
       this.user.permissions = [];
@@ -71,9 +71,9 @@ class YourDashUser {
   }
 
   async generateAvatars(): Promise<this> {
-    sharp((await fs.readFile(path.resolve(this.getPath(), 'default_avatar.avif')))).resize(32, 32).toFile(path.resolve(
+    sharp((await fs.readFile(path.resolve(this.getPath(), "default_avatar.avif")))).resize(32, 32).toFile(path.resolve(
       this.getPath(),
-      'micro_avatar.avif'
+      "micro_avatar.avif"
     )).catch(err => console.error(err));
     return this;
   }
@@ -83,10 +83,13 @@ class YourDashUser {
   }
 
   getAppDataPath(): string {
-    return path.resolve(this.getPath(), './app_data/');
+    return path.resolve(this.getPath(), "./app_data/");
   }
 
-  getName(): { first: string; last: string } {
+  getName(): {
+    first: string;
+    last: string
+    } {
     return this.user.fullName;
   }
 
@@ -104,29 +107,30 @@ class YourDashUser {
     if (!(await this.exists())) {
       await fs.mkdir(this.getPath(), {recursive: true});
       await fs.cp(
-        path.resolve(process.cwd(), './src/assets/default_avatar.avif'),
-        path.resolve(this.getPath(), 'avatar.avif')
+        path.resolve(process.cwd(), "./src/assets/default_avatar.avif"),
+        path.resolve(this.getPath(), "avatar.avif")
       );
-      hash('password').then(async response => {
-        await fs.writeFile(path.resolve(this.getPath(), './password.txt'), response);
+      hash("password").then(async response => {
+        await fs.writeFile(path.resolve(this.getPath(), "./password.txt"), response);
       });
-      await fs.writeFile(path.resolve(this.getPath(), './quick-shortcuts.json'), JSON.stringify([]));
+      await fs.writeFile(path.resolve(this.getPath(), "./quick-shortcuts.json"), "[]");
       await fs.mkdir(this.getAppDataPath());
-      await fs.mkdir(path.resolve(this.getPath(), './fs/'));
+      await fs.mkdir(path.resolve(this.getPath(), "./fs/"));
+      await fs.writeFile(path.resolve(this.getPath(), "./userdb.json"), "{}");
     }
 
     try {
-      await fs.writeFile(path.join(this.getPath(), 'user.json'), JSON.stringify(this.user));
+      await fs.writeFile(path.join(this.getPath(), "user.json"), JSON.stringify(this.user));
     } catch (err) {
-      console.error('Error writing user to disk!', err);
+      console.error("Error writing user to disk!", err);
     }
   }
 
   async read(): Promise<this> {
     try {
       this.user = await JSON.parse((
-        await fs.readFile(path.join(this.getPath(), 'user.json'))
-      ).toString() || '{}');
+        await fs.readFile(path.join(this.getPath(), "user.json"))
+      ).toString() || "{}");
     } catch (_err) {
       console.error(`Error reading user "${ this.username }" from disk!`);
     }
@@ -149,13 +153,16 @@ class YourDashUser {
     return this;
   }
 
-  setName(name: { first: string; last: string }): this {
+  setName(name: {
+    first: string;
+    last: string
+  }): this {
     this.user.fullName = name;
     return this;
   }
 
   async getSessions(): Promise<IYourDashSession<any>[]> {
-    return JSON.parse((await fs.readFile(path.resolve(this.getPath(), 'sessions.json'))).toString());
+    return JSON.parse((await fs.readFile(path.resolve(this.getPath(), "sessions.json"))).toString());
   }
 
   getSession(sessionId: number): YourDashSession<any> | undefined {
@@ -166,7 +173,7 @@ class YourDashUser {
         getSessionsForUser(this.username)[getSessionsForUser(this.username).findIndex(val => val.id === sessionId)]
       );
     } catch (_err) {
-      log(logTypes.warn, `${ chalk.yellow.bold('CORE') }: unable to find session: ${ sessionId }`);
+      log(logTypes.warn, `${ chalk.yellow.bold("CORE") }: unable to find session: ${ sessionId }`);
       return undefined;
     }
   }
@@ -188,7 +195,7 @@ export default class YourDashUnreadUser {
   }
 
   getAppDataPath(): string {
-    return path.resolve(this.getPath(), './app_data/');
+    return path.resolve(this.getPath(), "./app_data/");
   }
 
   async exists(): Promise<boolean> {
@@ -201,7 +208,14 @@ export default class YourDashUnreadUser {
     });
   }
 
-  async create(password: string, name: { first: string, last: string }, permissions: YourDashUserPermissions[]) {
+  async create(
+    password: string,
+    name: {
+      first: string,
+      last: string
+    },
+    permissions: YourDashUserPermissions[]
+  ) {
     return new YourDashUser(this.username).verifyUserConfig().setPassword(password).setName(name).setPermissions(
       permissions).write();
   }

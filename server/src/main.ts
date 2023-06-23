@@ -328,21 +328,24 @@ app.get("/login/user/:username", async (req, res) => {
   }
 });
 
-app.post("/login/user/:username/authenticate", (req, res) => {
+app.post("/login/user/:username/authenticate", async (req, res) => {
   const username = req.params.username;
   const password = req.body.password;
 
   if (!username || username === "") {
-    return res.json({error: true});
+    return res.json({error: "Missing username"});
   }
 
   if (!password || password === "") {
-    return res.json({error: true});
+    return res.json({error: "Missing password"});
   }
 
   const user = new YourDashUnreadUser(username);
 
-  const savedHashedPassword = (fs.readFile(path.resolve(user.getPath(), "./password.txt"))).toString();
+  const savedHashedPassword = (await fs.readFile(path.resolve(user.getPath(), "./password.txt"))).toString();
+
+  log(logTypes.info, savedHashedPassword);
+  log(logTypes.info, password);
 
   return compareHash(savedHashedPassword, password).then(async result => {
     if (result) {
@@ -357,9 +360,9 @@ app.post("/login/user/:username/authenticate", (req, res) => {
         id: session.id
       });
     } else {
-      return res.json({error: true});
+      return res.json({error: "Incorrect password"});
     }
-  }).catch(_err => res.json({error: true}));
+  }).catch(() => res.json({error: "Hash comparison failure"}));
 });
 
 app.get("/core/panel/logo/small", (_req, res) => res.sendFile(path.resolve(
@@ -677,8 +680,23 @@ killPort(3560).then(() => {
 if (fsExistsSync(path.resolve(process.cwd(), "./src/apps/"))) {
   const apps = (globalDatabase.get("installed_applications"));
   apps.forEach((appName: string) => {
-    if (!fsExistsSync(path.resolve(process.cwd(), `./src/apps/${ appName }/index.js`))) {
+    if (!fsExistsSync(path.resolve(process.cwd(), `./src/apps/${ appName }`))) {
       log(logTypes.error, `${ chalk.yellow.bold("CORE") }: Unknown application: ${ appName }!`);
+      return;
+    }
+
+    if (!fsExistsSync(path.resolve(process.cwd(), `./src/apps/${ appName }/index.js`))) {
+      log(logTypes.error, `${ chalk.yellow.bold("CORE") }: application ${ appName } does not contain an index.ts file!`);
+      return;
+    }
+
+    if (!fsExistsSync(path.resolve(process.cwd(), `./src/apps/${ appName }/application.json`))) {
+      log(logTypes.error, `${ chalk.yellow.bold("CORE") }: application ${ appName } does not contain an application.json file!`);
+      return;
+    }
+
+    if (!fsExistsSync(path.resolve(process.cwd(), `./src/apps/${ appName }/icon.avif`))) {
+      log(logTypes.error, `${ chalk.yellow.bold("CORE") }: application ${ appName } does not contain an icon.avif file!`);
       return;
     }
 
