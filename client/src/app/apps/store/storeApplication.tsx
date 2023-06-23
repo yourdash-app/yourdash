@@ -24,7 +24,7 @@ const StoreApplication: React.FC = () => {
   return (
     <main>
       <header
-        className={'w-full flex flex-col items-center justify-center pt-2 pb-4 bg-container-bg bg-opacity-40 backdrop-blur-lg'}
+        className={'w-full flex flex-col items-center justify-center pt-2 pb-4 bg-container-bg bg-opacity-40 backdrop-blur-lg animate__animated animate__fadeIn'}
       >
         <h2 className={'text-3xl font-semibold tracking-wide pt-1 pb-3'}>{'YourDash Store'}</h2>
         <Carousel containerClassName={'max-w-4xl w-full'}>
@@ -61,20 +61,24 @@ const StoreApplication: React.FC = () => {
           }
         </Carousel>
       </header>
-      <h2 className={'text-3xl font-semibold tracking-wide pt-2 pl-5'}>{'Categories'}</h2>
-      <section className={'p-4 grid grid-cols-3 gap-2'}>
-        {
-          categories.map(category => (
-            <Card
-              className={'text-3xl font-semibold tracking-wide text-center'}
-              key={category}
-              onClick={() => {
-                navigate(`/app/a/store/cat/${ category }`);
-              }}
-            >{category}</Card>
-          ))
-        }
-      </section>
+      <h2 className={'text-3xl font-semibold tracking-wide pt-2 pl-5 animate__animated animate__fadeIn animate__250ms'}>{'Categories'}</h2>
+      {
+        categories.length !== 0 && (
+          <section className={'p-4 grid grid-cols-3 gap-2 animate__animated animate__fadeIn animate__250ms'}>
+            {
+              categories.map(category => (
+                <Card
+                  className={'text-3xl font-semibold tracking-wide text-center'}
+                  key={category}
+                  onClick={() => {
+                    navigate(`/app/a/store/cat/${ category }`);
+                  }}
+                >{category}</Card>
+              ))
+            }
+          </section>
+        )
+      }
     </main>
   );
 };

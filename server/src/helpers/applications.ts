@@ -8,6 +8,7 @@ import {Server as SocketServer} from 'socket.io';
 import {type IYourDashApplication} from '../../../shared/core/application.js';
 
 import log, {logTypes} from './log.js';
+import globalDatabase from './globalDatabase.js';
 
 class YourDashApplication {
   private readonly name: string;
@@ -54,8 +55,11 @@ class YourDashApplication {
 
   // Returns true if the application is installed, otherwise returns false
   isInstalled(): boolean {
-    // TODO: implement logic to check if the application is installed
-    return true;
+    if (globalDatabase.get('installed_applications').includes(this.name)) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   getCategory(): string {
@@ -119,6 +123,12 @@ export default class YourDashUnreadApplication {
   }
 }
 
-type YourDashApplicationServerPlugin = ({app, io}: { app: ExpressApplication, io: SocketServer }) => any;
+type YourDashApplicationServerPlugin = ({
+  app,
+  io
+}: {
+  app: ExpressApplication,
+  io: SocketServer
+}) => any;
 
 export {type YourDashApplicationServerPlugin};

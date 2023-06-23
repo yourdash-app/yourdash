@@ -1,12 +1,13 @@
-import React from 'react';
+import React from "react";
 
-import csi from 'helpers/csi';
+import csi from "helpers/csi";
 
-import {useNavigate} from 'react-router-dom';
+import {useNavigate} from "react-router-dom";
 
-import clippy from '../../../../helpers/clippy';
-import {RightClickMenu} from '../../../../ui';
-import Panel, {YourDashLauncherApplication} from '../../Panel';
+import clippy from "../../../../helpers/clippy";
+import {RightClickMenu} from "../../../../ui";
+import Panel, {YourDashLauncherApplication} from "../../Panel";
+import {useTranslateAppCoreUI} from "../../../../helpers/l10n";
 
 
 export interface ILauncherGridView {
@@ -20,6 +21,7 @@ const LauncherGridView: React.FC<ILauncherGridView> = ({
   setVisible,
   searchValue
 }) => {
+  const trans = useTranslateAppCoreUI();
   const navigate = useNavigate();
   return (
     <section
@@ -56,7 +58,7 @@ const LauncherGridView: React.FC<ILauncherGridView> = ({
       {applications.length !== 0
         ? (
           applications.map(app => {
-            if (searchValue !== '') {
+            if (searchValue !== "") {
               if (
                 !app.description.includes(searchValue) &&
                 !app.name.includes(searchValue)
@@ -67,23 +69,23 @@ const LauncherGridView: React.FC<ILauncherGridView> = ({
 
             return (
               <button
-                type={'button'}
+                type={"button"}
                 key={app.name}
                 onClick={() => {
                   setVisible(false);
                   navigate(`/app/a/${ app.name }`);
                 }}
-                className={'group'}
+                className={"group"}
               >
                 <RightClickMenu
-                  className={'w-full h-full flex flex-col items-center justify-center'}
+                  className={"w-full h-full flex flex-col items-center justify-center"}
                   key={app.name}
                   items={[
                     {
-                      name: 'Pin to Panel',
+                      name: "Pin to Panel",
                       onClick() {
                         csi.postJson(
-                          '/core/panel/quick-shortcuts/create',
+                          "/core/panel/quick-shortcuts/create",
                           {
                             displayName: app.displayName,
                             name: app.name
@@ -93,22 +95,27 @@ const LauncherGridView: React.FC<ILauncherGridView> = ({
                               // @ts-ignore
                               // eslint-disable-next-line no-use-before-define
                               Panel.reload();
+                              // eslint-disable-next-line no-magic-numbers
                             }, 100);
                           }
                         );
-                      },
-                      shortcut: 'ctrl+p'
+                      }
                     },
                     {
-                      name: 'Open in new tab',
+                      name: "Open in new tab",
                       onClick() {
-                        window.open(`${ window.location.origin }#/app/a/${ app.name }`, '_blank');
-                      },
-                      shortcut: 'ctrl+p'
+                        window.open(`${ window.location.origin }#/app/a/${ app.name }`, "_blank");
+                      }
+                    },
+                    {
+                      name: "Show in AppStore",
+                      onClick() {
+                        navigate(`/app/a/store/app/${ app.name }`);
+                      }
                     }
                   ]}
                 >
-                  <img src={app.icon} alt={''} className={'w-[98px] aspect-square shadow-md rounded-3xl group-active:shadow-inner mb-1'}/>
+                  <img src={app.icon} alt={""} className={"w-[98px] aspect-square shadow-md rounded-3xl group-active:shadow-inner mb-1"}/>
                   <span>{app.displayName}</span>
                 </RightClickMenu>
               </button>
@@ -117,10 +124,10 @@ const LauncherGridView: React.FC<ILauncherGridView> = ({
         )
         : (
           <div
-            className={'col-span-4 bg-container-bg h-24 flex items-center justify-center'}
+            className={"col-span-4 bg-container-bg h-24 flex items-center justify-center"}
           >
-            <span className={'!text-container-fg !border-none'}>
-              You have no applications?
+            <span className={"!text-container-fg !border-none"}>
+              {trans("You currently have no applications installed")}
             </span>
           </div>
         )}

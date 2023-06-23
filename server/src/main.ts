@@ -2,26 +2,26 @@
 //  - https://github.com/yourdash-app/yourdash
 //  - https://yourdash-app.github.io
 
-import {existsSync as fsExistsSync, promises as fs} from 'fs';
-import path from 'path';
-import * as http from 'http';
-import cors from 'cors';
-import express from 'express';
-import sharp from 'sharp';
-import {Server as SocketIoServer, Socket as SocketIoSocket} from 'socket.io';
-import chalk from 'chalk';
-import minimist from 'minimist';
-import {YourDashSessionType, type IYourDashSession} from '../../shared/core/session.js';
-import log, {logTypes} from './helpers/log.js';
-import YourDashUnreadApplication from './helpers/applications.js';
-import {base64ToDataUrl} from './helpers/base64.js';
-import {compareHash} from './helpers/encryption.js';
-import {generateLogos} from './helpers/logo.js';
-import YourDashPanel from './helpers/panel.js';
-import YourDashUnreadUser, {YourDashUserPermissions} from './helpers/user.js';
-import {createSession} from './helpers/session.js';
-import globalDatabase from './helpers/globalDatabase.js';
-import killPort from 'kill-port';
+import {existsSync as fsExistsSync, promises as fs} from "fs";
+import path from "path";
+import * as http from "http";
+import cors from "cors";
+import express from "express";
+import sharp from "sharp";
+import {Server as SocketIoServer, Socket as SocketIoSocket} from "socket.io";
+import chalk from "chalk";
+import minimist from "minimist";
+import {YourDashSessionType, type IYourDashSession} from "../../shared/core/session.js";
+import log, {logTypes} from "./helpers/log.js";
+import YourDashUnreadApplication from "./helpers/applications.js";
+import {base64ToDataUrl} from "./helpers/base64.js";
+import {compareHash} from "./helpers/encryption.js";
+import {generateLogos} from "./helpers/logo.js";
+import YourDashPanel from "./helpers/panel.js";
+import YourDashUnreadUser, {YourDashUserPermissions} from "./helpers/user.js";
+import {createSession} from "./helpers/session.js";
+import globalDatabase from "./helpers/globalDatabase.js";
+import killPort from "kill-port";
 
 const args = minimist(process.argv.slice(2));
 
@@ -46,52 +46,52 @@ export {args, __internalGetSessions, SESSION_TOKEN_LENGTH, YourDashServerDiscove
 
 async function startupChecks() {
   // check if the filesystem exists
-  if (!fsExistsSync(path.resolve(process.cwd(), './fs/'))) {
+  if (!fsExistsSync(path.resolve(process.cwd(), "./fs/"))) {
     await fs.mkdir(
       path.resolve(
         process.cwd(),
-        './fs/'
+        "./fs/"
       ));
     await fs.cp(
       path.resolve(
         process.cwd(),
-        './src/assets/default_avatar.avif'
-      ), path.resolve(process.cwd(), './fs/default_avatar.avif'
+        "./src/assets/default_avatar.avif"
+      ), path.resolve(process.cwd(), "./fs/default_avatar.avif"
       ));
     await fs.cp(
       path.resolve(
         process.cwd(),
-        './src/assets/default_instance_logo.avif'
-      ), path.resolve(process.cwd(), './fs/instance_logo.avif'
+        "./src/assets/default_instance_logo.avif"
+      ), path.resolve(process.cwd(), "./fs/instance_logo.avif"
       ));
     await fs.cp(
       path.resolve(
         process.cwd(),
-        './src/assets/default_login_background.avif'
-      ), path.resolve(process.cwd(), './fs/login_background.avif'
+        "./src/assets/default_login_background.avif"
+      ), path.resolve(process.cwd(), "./fs/login_background.avif"
       ));
     await fs.mkdir(
       path.resolve(
         process.cwd(),
-        './fs/users/'
+        "./fs/users/"
       ));
 
     // generate all instance logos
     generateLogos();
   }
 
-  for (const user of (await fs.readdir(path.resolve('./fs/users/')))) {
+  for (const user of (await fs.readdir(path.resolve("./fs/users/")))) {
     await (await new YourDashUnreadUser(user).read()).verifyUserConfig().write();
   }
 
-  const adminUserUnread = new YourDashUnreadUser('admin');
+  const adminUserUnread = new YourDashUnreadUser("admin");
 
   if (!(await adminUserUnread.exists())) {
     await adminUserUnread.create(
-      'password',
+      "password",
       {
-        first: 'Admin',
-        last: 'istrator'
+        first: "Admin",
+        last: "istrator"
       },
       [YourDashUserPermissions.Administrator]
     );
@@ -100,15 +100,15 @@ async function startupChecks() {
 
 await startupChecks();
 
-if (fsExistsSync(path.resolve(process.cwd(), './fs/globalDatabase.json'))) {
-  await globalDatabase.readFromDisk(path.resolve(process.cwd(), './fs/globalDatabase.json'));
-  log(logTypes.success, 'Global database loaded');
+if (fsExistsSync(path.resolve(process.cwd(), "./fs/globalDatabase.json"))) {
+  await globalDatabase.readFromDisk(path.resolve(process.cwd(), "./fs/globalDatabase.json"));
+  log(logTypes.success, "Global database loaded");
 } else {
-  globalDatabase.set('installed_applications', ['dash', 'settings', 'files', 'store', 'weather']);
-  if (!globalDatabase.writeToDisk(path.resolve(process.cwd(), './fs/globalDatabase.json'))) {
-    log(logTypes.error, 'Error creating global database');
+  globalDatabase.set("installed_applications", ["dash", "settings", "files", "store", "weather"]);
+  if (!globalDatabase.writeToDisk(path.resolve(process.cwd(), "./fs/globalDatabase.json"))) {
+    log(logTypes.error, "Error creating global database");
   } else {
-    log(logTypes.success, 'Global database created');
+    log(logTypes.success, "Global database created");
   }
 }
 
@@ -127,17 +127,17 @@ const activeSockets: {
 } = {};
 
 const beforeShutdown = () => {
-  log(logTypes.info, 'Shutting down... (restart of core should occur automatically)');
+  log(logTypes.info, "Shutting down... (restart of core should occur automatically)");
 
-  globalDatabase.writeToDisk(path.resolve(process.cwd(), './fs/globalDatabase.json'));
+  globalDatabase.writeToDisk(path.resolve(process.cwd(), "./fs/globalDatabase.json"));
 
   process.kill(process.pid, 0);
 };
 
-process.on('SIGINT', beforeShutdown);
-process.on('SIGTERM', beforeShutdown);
+process.on("SIGINT", beforeShutdown);
+process.on("SIGTERM", beforeShutdown);
 
-io.on('connection', socket => {
+io.on("connection", socket => {
   // Check that all required parameters are present
   if (!socket.handshake.query.username || !socket.handshake.query.sessionToken || !socket.handshake.query.sessionId) {
 
@@ -148,7 +148,7 @@ io.on('connection', socket => {
       socket.handshake.query.sessionId
     );
 
-    log(logTypes.error, '[PSA-BACKEND]: Missing required parameters');
+    log(logTypes.error, "[PSA-BACKEND]: Missing required parameters");
 
     socket.disconnect(true);
     return;
@@ -164,11 +164,11 @@ io.on('connection', socket => {
     socket
   });
 
-  socket.on('execute-command-response', output => {
+  socket.on("execute-command-response", output => {
     log(output);
   });
 
-  socket.on('disconnect', () => {
+  socket.on("disconnect", () => {
     activeSockets[socket.handshake.query.username as string].forEach((value, key) => {
       activeSockets[socket.handshake.query.username as string].filter(sock => sock.id !== socket.id);
     });
@@ -212,51 +212,51 @@ io.use(async (socket, next) => {
 export {io, activeSockets};
 
 
-app.use(express.json({limit: '50mb'}));
+app.use(express.json({limit: "50mb"}));
 app.use(cors());
 
 app.use((_req, res, next) => {
-  res.removeHeader('X-Powered-By');
+  res.removeHeader("X-Powered-By");
   next();
 });
 
-if (args['log-requests']) {
+if (args["log-requests"]) {
   app.use((req, res, next) => {
     const date = new Date();
     switch (req.method) {
-      case 'GET':
+      case "GET":
         log(
           logTypes.info,
-          `${ chalk.bgGreen(chalk.whiteBright(' GET ')) } ${ res.statusCode } ${ req.path }`
+          `${ chalk.bgGreen(chalk.whiteBright(" GET ")) } ${ res.statusCode } ${ req.path }`
         );
-        if (JSON.stringify(req.query) !== '{}') {
+        if (JSON.stringify(req.query) !== "{}") {
           log(logTypes.info, JSON.stringify(req.query));
         }
         break;
-      case 'POST':
+      case "POST":
         log(
           logTypes.info,
-          `${ chalk.bgBlue(chalk.whiteBright(' POS ')) } ${ res.statusCode } ${ req.path }`
+          `${ chalk.bgBlue(chalk.whiteBright(" POS ")) } ${ res.statusCode } ${ req.path }`
         );
-        if (JSON.stringify(req.query) !== '{}') {
+        if (JSON.stringify(req.query) !== "{}") {
           log(logTypes.info, JSON.stringify(req.query));
         }
         break;
-      case 'DELETE':
+      case "DELETE":
         log(
-          logTypes.info, `${ chalk.bgRed(chalk.whiteBright(' DEL ')) } ${ res.statusCode } ${ req.path }`
+          logTypes.info, `${ chalk.bgRed(chalk.whiteBright(" DEL ")) } ${ res.statusCode } ${ req.path }`
         );
-        if (JSON.stringify(req.query) !== '{}') {
+        if (JSON.stringify(req.query) !== "{}") {
           log(logTypes.info, JSON.stringify(req.query));
         }
         break;
-      case 'OPTIONS':
-        if (args['log-options-requests']) {
+      case "OPTIONS":
+        if (args["log-options-requests"]) {
           log(
             logTypes.info,
-            `${ chalk.bgCyan(chalk.whiteBright(' OPT ')) } ${ res.statusCode } ${ req.path }`
+            `${ chalk.bgCyan(chalk.whiteBright(" OPT ")) } ${ res.statusCode } ${ req.path }`
           );
-          if (JSON.stringify(req.query) !== '{}') {
+          if (JSON.stringify(req.query) !== "{}") {
             log(logTypes.info, JSON.stringify(req.query));
           }
         }
@@ -267,13 +267,13 @@ if (args['log-requests']) {
   });
 }
 
-process.stdin.on('data', data => {
-  const commandAndArgs = data.toString().replaceAll('\n', '').replaceAll('\r', '').split(' ');
+process.stdin.on("data", data => {
+  const commandAndArgs = data.toString().replaceAll("\n", "").replaceAll("\r", "").split(" ");
   const command = commandAndArgs[0];
   const args = commandAndArgs.slice(1);
 
   switch (command) {
-    case 'exit':
+    case "exit":
       beforeShutdown();
       break;
     default:
@@ -281,74 +281,74 @@ process.stdin.on('data', data => {
   }
 });
 
-app.get('/', (_req, res) => res.send('Hello from the yourdash server software'));
+app.get("/", (_req, res) => res.send("Hello from the yourdash server software"));
 
-app.get('/test', (_req, res) => {
+app.get("/test", (_req, res) => {
   const discoveryStatus: YourDashServerDiscoveryStatus = YourDashServerDiscoveryStatus.NORMAL as YourDashServerDiscoveryStatus;
 
   switch (discoveryStatus) {
     case YourDashServerDiscoveryStatus.MAINTENANCE:
       return res.json({
         status: YourDashServerDiscoveryStatus.MAINTENANCE,
-        type: 'yourdash'
+        type: "yourdash"
       });
     case YourDashServerDiscoveryStatus.NORMAL:
       return res.json({
         status: YourDashServerDiscoveryStatus.NORMAL,
-        type: 'yourdash'
+        type: "yourdash"
       });
     default:
-      console.error('discovery status returned an invalid value');
+      console.error("discovery status returned an invalid value");
       return res.json({
         status: YourDashServerDiscoveryStatus.MAINTENANCE,
-        type: 'yourdash'
+        type: "yourdash"
       });
   }
 });
 
 app.get(
-  '/login/background',
+  "/login/background",
   (_req, res) => res.sendFile(path.resolve(
     process.cwd(),
-    './fs/login_background.avif'
+    "./fs/login_background.avif"
   ))
 );
 
-app.get('/login/user/:username/avatar', (req, res) => {
+app.get("/login/user/:username/avatar", (req, res) => {
   const user = new YourDashUnreadUser(req.params.username);
-  return res.sendFile(path.resolve(user.getPath(), 'avatar.avif'));
+  return res.sendFile(path.resolve(user.getPath(), "avatar.avif"));
 });
 
-app.get('/login/user/:username', async (req, res) => {
+app.get("/login/user/:username", async (req, res) => {
   const user = new YourDashUnreadUser(req.params.username);
   if (await user.exists()) {
     return res.json({name: (await user.read()).getName()});
   } else {
-    return res.json({error: 'Unknown user'});
+    return res.json({error: "Unknown user"});
   }
 });
 
-app.post('/login/user/:username/authenticate', (req, res) => {
+app.post("/login/user/:username/authenticate", (req, res) => {
   const username = req.params.username;
   const password = req.body.password;
 
-  if (!username || username === '') {
+  if (!username || username === "") {
     return res.json({error: true});
   }
 
-  if (!password || password === '') {
+  if (!password || password === "") {
     return res.json({error: true});
   }
 
   const user = new YourDashUnreadUser(username);
 
-  const savedHashedPassword = (fs.readFile(path.resolve(user.getPath(), './password.txt'))).toString();
+  const savedHashedPassword = (fs.readFile(path.resolve(user.getPath(), "./password.txt"))).toString();
 
   return compareHash(savedHashedPassword, password).then(async result => {
     if (result) {
       const session = await createSession(
         username,
-        req.headers?.type === 'desktop'
+        req.headers?.type === "desktop"
           ? YourDashSessionType.desktop
           : YourDashSessionType.web
       );
@@ -362,12 +362,12 @@ app.post('/login/user/:username/authenticate', (req, res) => {
   }).catch(_err => res.json({error: true}));
 });
 
-app.get('/core/panel/logo/small', (_req, res) => res.sendFile(path.resolve(
+app.get("/core/panel/logo/small", (_req, res) => res.sendFile(path.resolve(
   process.cwd(),
-  './fs/logo_panel_small.avif'
+  "./fs/logo_panel_small.avif"
 )));
 
-app.get('/login/is-authenticated', async (req, res) => {
+app.get("/login/is-authenticated", async (req, res) => {
   const {
     username,
     token
@@ -416,11 +416,11 @@ app.use(async (req, res, next) => {
   };
 
   if (!username) {
-    return res.json({error: 'authorization fail'});
+    return res.json({error: "authorization fail"});
   }
 
   if (!token) {
-    return res.json({error: 'authorization fail'});
+    return res.json({error: "authorization fail"});
   }
 
   if (!__internalGetSessions()[username]) {
@@ -429,7 +429,7 @@ app.use(async (req, res, next) => {
 
       SESSIONS[username] = (await user.getSessions()) || [];
     } catch (_err) {
-      return res.json({error: 'authorization fail'});
+      return res.json({error: "authorization fail"});
     }
   }
 
@@ -437,11 +437,11 @@ app.use(async (req, res, next) => {
     return next();
   }
 
-  return res.json({error: 'authorization fail'});
+  return res.json({error: "authorization fail"});
 });
 
-app.get('/core/core/panel/quick-shortcuts/applications', async (_req, res) => {
-  Promise.all((globalDatabase.get('installed_applications')).map(async app => {
+app.get("/core/panel/applications", async (_req, res) => {
+  Promise.all((globalDatabase.get("installed_applications")).map(async app => {
     const application = await new YourDashUnreadApplication(app).read();
     return new Promise(async resolve => {
       sharp(
@@ -458,14 +458,14 @@ app.get('/core/core/panel/quick-shortcuts/applications', async (_req, res) => {
           name: application.getName(),
           displayName: application.getDisplayName(),
           description: application.getDescription(),
-          icon: base64ToDataUrl(buf.toString('base64'))
+          icon: base64ToDataUrl(buf.toString("base64"))
         });
       });
     });
   })).then(resp => res.json(resp));
 });
 
-app.get('/core/panel/user-full-name', async (req, res) => {
+app.get("/core/panel/user-full-name", async (req, res) => {
   const {username} = req.headers as {
     username: string
   };
@@ -473,7 +473,7 @@ app.get('/core/panel/user-full-name', async (req, res) => {
   return res.json(user.getName());
 });
 
-app.get('/core/panel/quick-shortcuts', async (req, res) => {
+app.get("/core/panel/quick-shortcuts", async (req, res) => {
   const {username} = req.headers as {
     username: string
   };
@@ -483,7 +483,7 @@ app.get('/core/panel/quick-shortcuts', async (req, res) => {
   return res.json(await panel.getQuickShortcuts());
 });
 
-app.delete('/core/panel/quick-shortcuts:ind', async (req, res) => {
+app.delete("/core/panel/quick-shortcuts:ind", async (req, res) => {
   const {ind} = req.params;
   const {username} = req.headers as {
     username: string
@@ -496,7 +496,7 @@ app.delete('/core/panel/quick-shortcuts:ind', async (req, res) => {
   return res.json({success: true});
 });
 
-app.post('/core/panel/quick-shortcuts/create', async (req, res) => {
+app.post("/core/panel/quick-shortcuts/create", async (req, res) => {
   const {username} = req.headers as {
     username: string
   };
@@ -515,7 +515,7 @@ app.post('/core/panel/quick-shortcuts/create', async (req, res) => {
     await panel.createQuickShortcut(
       displayName,
       `/app/a/${ name }`,
-      await fs.readFile(path.resolve(application.getPath(), './icon.avif'))
+      await fs.readFile(path.resolve(application.getPath(), "./icon.avif"))
     );
     return res.json({success: true});
   } catch (_err) {
@@ -523,7 +523,7 @@ app.post('/core/panel/quick-shortcuts/create', async (req, res) => {
   }
 });
 
-app.get('/core/panel/position', async (req, res) => {
+app.get("/core/panel/position", async (req, res) => {
   const {username} = req.headers as {
     username: string
   };
@@ -533,7 +533,7 @@ app.get('/core/panel/position', async (req, res) => {
   return res.json({position: await panel.getPanelPosition()});
 });
 
-app.get('/core/panel/quick-shortcuts', async (req, res) => {
+app.get("/core/panel/quick-shortcuts", async (req, res) => {
   const {username} = req.headers as {
     username: string
   };
@@ -543,7 +543,7 @@ app.get('/core/panel/quick-shortcuts', async (req, res) => {
   return res.json({launcher: await panel.getLauncherType()});
 });
 
-app.get('/core/sessions', async (req, res) => {
+app.get("/core/sessions", async (req, res) => {
   const {username} = req.headers as {
     username: string
   };
@@ -553,7 +553,7 @@ app.get('/core/sessions', async (req, res) => {
   return res.json({sessions: await user.getSessions()});
 });
 
-app.delete('/core/session/:id', async (req, res) => {
+app.delete("/core/session/:id", async (req, res) => {
   const {username} = req.headers as {
     username: string
   };
@@ -566,7 +566,7 @@ app.delete('/core/session/:id', async (req, res) => {
   return res.json({success: true});
 });
 
-app.get('/core/personal-server-accelerator/sessions', async (req, res) => {
+app.get("/core/personal-server-accelerator/sessions", async (req, res) => {
   const {username} = req.headers as {
     username: string
   };
@@ -578,7 +578,7 @@ app.get('/core/personal-server-accelerator/sessions', async (req, res) => {
   });
 });
 
-app.get('/core/personal-server-accelerator/', async (req, res) => {
+app.get("/core/personal-server-accelerator/", async (req, res) => {
   const {username} = req.headers as {
     username: string
   };
@@ -586,13 +586,13 @@ app.get('/core/personal-server-accelerator/', async (req, res) => {
   const user = await (new YourDashUnreadUser(username));
 
   try {
-    return JSON.parse((await fs.readFile(path.resolve(user.getPath(), 'personal_server_accelerator.json'))).toString());
+    return JSON.parse((await fs.readFile(path.resolve(user.getPath(), "personal_server_accelerator.json"))).toString());
   } catch (_err) {
     return res.json({error: `Unable to read ${ username }/personal_server_accelerator.json`});
   }
 });
 
-app.post('/core/personal-server-accelerator/', async (req, res) => {
+app.post("/core/personal-server-accelerator/", async (req, res) => {
   const {username} = req.headers as {
     username: string
   };
@@ -601,7 +601,7 @@ app.post('/core/personal-server-accelerator/', async (req, res) => {
   const user = new YourDashUnreadUser(username);
 
   try {
-    await fs.writeFile(path.resolve(user.getPath(), 'personal_server_accelerator.json'), JSON.stringify(body));
+    await fs.writeFile(path.resolve(user.getPath(), "personal_server_accelerator.json"), JSON.stringify(body));
   } catch (_err) {
     return res.json({error: `Unable to write to ${ username }/personal_server_accelerator.json`});
   }
@@ -609,7 +609,7 @@ app.post('/core/personal-server-accelerator/', async (req, res) => {
   return res.json({success: true});
 });
 
-app.get('/core/userdb', async (req, res) => {
+app.get("/core/userdb", async (req, res) => {
   const {username} = req.headers as {
     username: string
   };
@@ -619,17 +619,17 @@ app.get('/core/userdb', async (req, res) => {
   let output = {};
 
   try {
-    output = JSON.parse(fs.readFile(path.resolve(user.getPath(), './userdb.json')).toString()) || {};
+    output = JSON.parse(fs.readFile(path.resolve(user.getPath(), "./userdb.json")).toString()) || {};
   } catch (_err) {
     output = {};
-    fs.writeFile(path.resolve(user.getPath(), './userdb.json'), '{}');
+    fs.writeFile(path.resolve(user.getPath(), "./userdb.json"), "{}");
   }
 
   return res.json(output);
 });
 
 // TODO: implement this
-app.post('/core/userdb', async (req, res) => {
+app.post("/core/userdb", async (req, res) => {
   return 0;
 
   const {username} = req.headers as {
@@ -641,10 +641,10 @@ app.post('/core/userdb', async (req, res) => {
   let output = {};
 
   try {
-    output = JSON.parse(fs.readFile(path.resolve(user.getPath(), './userdb.json')).toString());
+    output = JSON.parse(fs.readFile(path.resolve(user.getPath(), "./userdb.json")).toString());
   } catch (_err) {
     output = {};
-    fs.writeFile(path.resolve(user.getPath(), './userdb.json'), '{}');
+    fs.writeFile(path.resolve(user.getPath(), "./userdb.json"), "{}");
   }
 
   return res.json(output);
@@ -656,14 +656,14 @@ app.post('/core/userdb', async (req, res) => {
 killPort(3560).then(() => {
   try {
     httpServer.listen(3560, () => {
-      log(logTypes.info, `${ chalk.yellow.bold('CORE') }: -------------------- server now listening on port 3560! --------------------`);
+      log(logTypes.info, `${ chalk.yellow.bold("CORE") }: -------------------- server now listening on port 3560! --------------------`);
     });
   } catch (_err) {
-    log(logTypes.error, `${ chalk.yellow.bold('CORE') }: Unable to start server!, retrying...`);
+    log(logTypes.error, `${ chalk.yellow.bold("CORE") }: Unable to start server!, retrying...`);
     killPort(3560).then(() => {
       killPort(3560).then(() => {
         httpServer.listen(3560, () => {
-          log(logTypes.info, `${ chalk.yellow.bold('CORE') }: -------------------- server now listening on port 3560! --------------------`);
+          log(logTypes.info, `${ chalk.yellow.bold("CORE") }: -------------------- server now listening on port 3560! --------------------`);
         });
       });
     });
@@ -674,34 +674,34 @@ killPort(3560).then(() => {
  * Load all installed Applications
  */
 
-if (fsExistsSync(path.resolve(process.cwd(), './src/apps/'))) {
-  const apps = (globalDatabase.get('installed_applications'));
+if (fsExistsSync(path.resolve(process.cwd(), "./src/apps/"))) {
+  const apps = (globalDatabase.get("installed_applications"));
   apps.forEach((appName: string) => {
     if (!fsExistsSync(path.resolve(process.cwd(), `./src/apps/${ appName }/index.js`))) {
-      log(logTypes.error, `${ chalk.yellow.bold('CORE') }: Unknown application: ${ appName }!`);
+      log(logTypes.error, `${ chalk.yellow.bold("CORE") }: Unknown application: ${ appName }!`);
       return;
     }
 
-    log(logTypes.info, `${ chalk.yellow.bold('CORE') }: Loading application: ${ appName }`);
+    log(logTypes.info, `${ chalk.yellow.bold("CORE") }: Loading application: ${ appName }`);
 
     // import and load all applications
     import(
       `./apps/${ appName }/index.js`
     ).then(mod => {
       try {
-        log(logTypes.info, `${ chalk.yellow.bold('CORE') }: Starting application: ${ appName }`);
+        log(logTypes.info, `${ chalk.yellow.bold("CORE") }: Starting application: ${ appName }`);
         mod.default({
           app,
           io
         });
-        log(logTypes.success, `${ chalk.yellow.bold('CORE') }: Initialized application: ${ appName }`);
+        log(logTypes.success, `${ chalk.yellow.bold("CORE") }: Initialized application: ${ appName }`);
       } catch (err) {
-        log(logTypes.error, `${ chalk.yellow.bold('CORE') }: Error during application initialization: ${ appName }`);
+        log(logTypes.error, `${ chalk.yellow.bold("CORE") }: Error during application initialization: ${ appName }`);
       }
     }).catch(err => {
       console.error(`Error while loading application: ${ appName }`, err);
     });
   });
 } else {
-  log(logTypes.error, `${ chalk.yellow.bold('CORE') }: No applications found!`);
+  log(logTypes.error, `${ chalk.yellow.bold("CORE") }: No applications found!`);
 }

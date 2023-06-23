@@ -32,6 +32,14 @@
     "@typescript-eslint/no-shadow": "error",
     "complexity": "off",
     "no-nested-ternary": "off",
-    "import/order": "off"
+    "import/order": "off",
+    "jsx-quotes": [
+      "warn",
+      "prefer-double"
+    ],
+    "quotes": [
+      "warn",
+      "double"
+    ]
   }
 }

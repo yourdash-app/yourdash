@@ -1,13 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {useParams, useNavigate} from 'react-router-dom';
-
-import {
-  IconButton,
-  Spinner,
-  Card,
-  Button,
-  Icon
-} from '../../../../ui';
+import {IconButton, Spinner, Card, Button, Icon} from '../../../../ui';
 import csi from '../../../../helpers/csi';
 import {type IYourDashApplication} from '../../../../../../shared/core/application';
 
@@ -15,6 +8,25 @@ import StoreApplicationDefaultHeaderBackground from './default_background.svg';
 
 interface IYourDashApplicationStorePage extends IYourDashApplication {
   icon: string;
+  installed: boolean;
+}
+
+function requestApplication(
+  applicationId: string,
+  setAppData: (data: IYourDashApplicationStorePage) => void,
+  setIsLoading: (data: boolean) => void,
+  navigate: (data: string) => void
+) {
+  csi.getJson(
+    `/app/store/application/${ applicationId }`,
+    data => {
+      setAppData(data);
+      setIsLoading(false);
+    },
+    () => {
+      navigate('/app/a/store');
+    }
+  );
 }
 
 const StoreApplicationPage: React.FC = () => {
@@ -24,16 +36,7 @@ const StoreApplicationPage: React.FC = () => {
   const [appData, setAppData] = useState<IYourDashApplicationStorePage>();
 
   useEffect(() => {
-    csi.getJson(
-      `/app/store/application/${ applicationId }`,
-      data => {
-        setAppData(data);
-        setIsLoading(false);
-      },
-      () => {
-        navigate('/app/a/store');
-      }
-    );
+    requestApplication(applicationId || 'dash', setAppData, setIsLoading, navigate);
   }, [applicationId, navigate]);
 
   if (!applicationId) {
@@ -71,8 +74,7 @@ const StoreApplicationPage: React.FC = () => {
                   >{appData.displayName}</h1>
                 </div>
                 <section
-                  className={'flex items-center p-4 gap-4 max-w-[50rem] w-full ml-auto mr-auto animate__animated ' +
-                            'animate__fadeIn animate__250ms'}
+                  className={'flex items-center p-4 gap-4 max-w-[50rem] w-full ml-auto mr-auto animate__animated animate__fadeIn animate__250ms'}
                 >
                   <IconButton
                     icon={'arrow-left-16'}
@@ -90,13 +92,29 @@ const StoreApplicationPage: React.FC = () => {
                     className={'text-4xl font-semibold tracking-wide mr-auto'}
                   >{appData.displayName}</h1>
                   <div className={'flex gap-2'}>
-                    <Button>{'Install'}</Button>
+                    <Button onClick={() => {
+                      if (appData.installed) {
+                        csi.postJson(`/app/store/application/uninstall/${ appData.name }`, {}, resp => {
+                          if (resp.success) {
+                            requestApplication(applicationId, setAppData, setIsLoading, navigate);
+                          }
+                        });
+                      } else {
+                        csi.postJson(`/app/store/application/install/${ appData.name }`, {}, resp => {
+                          if (resp.success) {
+                            requestApplication(applicationId, setAppData, setIsLoading, navigate);
+                          }
+                        });
+                      }
+                    }}
+                    >{
+                        appData.installed ? 'Remove' : 'Install'
+                      }</Button>
                   </div>
                 </section>
               </header>
               <main
-                className={'p-4 flex flex-col gap-2 max-w-[50rem] w-full ml-auto mr-auto animate__500ms' +
-                          ' animate__animated animate__fadeIn'}
+                className={'p-4 flex flex-col gap-2 max-w-[50rem] w-full ml-auto mr-auto animate__500ms animate__animated animate__fadeIn'}
               >
                 <Card>
                   {appData.description}

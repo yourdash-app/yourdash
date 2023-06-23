@@ -6,6 +6,7 @@ import YourDashUnreadApplication, {
 import {type IStoreCategory} from '../../../../shared/apps/store/storeCategory.js';
 import {getInstanceLogoBase64} from '../../helpers/logo.js';
 import getAllCategories, {getAllApplicationsFromCategory} from './helpers/categories.js';
+import globalDatabase from '../../helpers/globalDatabase.js';
 
 const promotedApplications: string[] = ['dash', 'store'];
 
@@ -32,7 +33,13 @@ const main: YourDashApplicationServerPlugin = ({app}) => {
     } = {};
 
     for (const application of applications) {
-      const app = await new YourDashUnreadApplication(application).read();
+      const unreadApp = new YourDashUnreadApplication(application);
+
+      if (!unreadApp.exists()) {
+        continue;
+      }
+
+      const app = await unreadApp.read();
 
       categories[app.getCategory()] = true;
     }
@@ -61,17 +68,14 @@ const main: YourDashApplicationServerPlugin = ({app}) => {
       displayName: string
     }[] = [];
 
-    await new Promise((resolve, reject) => {
-
-      Promise.all(categoryApplications.map(async app => {
-        const application = await new YourDashUnreadApplication(app).read();
-        applicationsOutput.push({
-          name: application.getName(),
-          icon: `data:image/avif;base64,${ (await application.getIcon()).toString('base64') }`,
-          displayName: application.getDisplayName()
-        });
-      })).then(() => resolve(null));
-    });
+    await Promise.all(categoryApplications.map(async app => {
+      const application = await new YourDashUnreadApplication(app).read();
+      applicationsOutput.push({
+        name: application.getName(),
+        icon: `data:image/avif;base64,${ (await application.getIcon()).toString('base64') }`,
+        displayName: application.getDisplayName()
+      });
+    }));
 
     return res.json(<IStoreCategory>{
       id,
@@ -100,8 +104,29 @@ const main: YourDashApplicationServerPlugin = ({app}) => {
 
     return res.json({
       ...application.getRawApplicationData(),
-      icon: `data:image/avif;base64,${ (await application.getIcon()).toString('base64') }`
+      icon: `data:image/avif;base64,${ (await application.getIcon()).toString('base64') }`,
+      installed: application.isInstalled()
     });
+  });
+
+  app.post('/app/store/application/install/:id', (req, res) => {
+    const {id} = req.params;
+    const application = new YourDashUnreadApplication(id);
+    if (!application.exists()) {
+      return res.json({error: true});
+    }
+    globalDatabase.set('installed_applications', [...globalDatabase.get('installed_applications'), id]);
+    return res.json({success: true});
+  });
+
+  app.post('/app/store/application/uninstall/:id', (req, res) => {
+    const {id} = req.params;
+    const application = new YourDashUnreadApplication(id);
+    if (!application.exists()) {
+      return res.json({error: true});
+    }
+    globalDatabase.set('installed_applications', globalDatabase.get('installed_applications').filter(app => app !== id));
+    return res.json({success: true});
   });
 };
 

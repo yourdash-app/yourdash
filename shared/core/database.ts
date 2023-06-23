@@ -13,14 +13,17 @@ export default class KeyValueDatabase {
   
   set(key: string, value: any) {
     this.keys[ key ] = value;
+    changeOccured(this);
   }
   
   removeValue(key: string) {
     delete this.keys[ key ];
+    changeOccured(this);
   }
   
   clear() {
     this.keys = {};
+    changeOccured(this);
   }
   
   getKeys() {
@@ -34,4 +37,8 @@ export default class KeyValueDatabase {
   doesKeyExist(key: string) {
     return Object.keys(this.keys).includes(key);
   }
+}
+
+function changeOccured(db: KeyValueDatabase) {
+  console.log('changeOccured: ', JSON.stringify(db, null, 2));
 }

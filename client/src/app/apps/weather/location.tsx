@@ -1,29 +1,29 @@
-import clippy from 'helpers/clippy';
-import csi from 'helpers/csi';
-import React, {useEffect, useState} from 'react';
-import {useParams, useNavigate} from 'react-router-dom';
+import clippy from "helpers/clippy";
+import csi from "helpers/csi";
+import React, {useEffect, useState} from "react";
+import {useParams, useNavigate} from "react-router-dom";
 
-import {chunk} from '../../../helpers/array';
-import {Card, Carousel, Icon, IconButton, MajorButton, Spinner} from '../../../ui';
+import {chunk} from "../../../helpers/array";
+import {Card, Carousel, Icon, IconButton, MajorButton, Spinner} from "../../../ui";
 
-import useTranslate from '../../../helpers/l10n';
+import useTranslate from "../../../helpers/l10n";
 
-import BACKGROUND_IMAGE_CLEAR from './weatherBackgrounds/clear.avif';
-import BACKGROUND_IMAGE_CLOUDY1 from './weatherBackgrounds/cloudy1.avif';
-import BACKGROUND_IMAGE_CLOUDY2 from './weatherBackgrounds/cloudy2.jpg';
-import BACKGROUND_IMAGE_FOG from './weatherBackgrounds/foggy.jpg';
-import BACKGROUND_IMAGE_RAIN1 from './weatherBackgrounds/rain1.jpg';
-import BACKGROUND_IMAGE_RAIN2 from './weatherBackgrounds/rain2.jpg';
-import BACKGROUND_IMAGE_RAIN3 from './weatherBackgrounds/rain3.jpg';
-import BACKGROUND_IMAGE_SNOW1 from './weatherBackgrounds/snow.jpg';
-import BACKGROUND_IMAGE_SNOW2 from './weatherBackgrounds/snow2.jpg';
-import BACKGROUND_IMAGE_THUNDER from './weatherBackgrounds/thunder.jpg';
-import WEATHER_ICON_CLEAR from './weatherIcons/clear.svg';
-import WEATHER_ICON_HEAVY_RAIN from './weatherIcons/heavy_rain.svg';
-import WEATHER_ICON_LIGHT_RAIN from './weatherIcons/light_rain.svg';
-import WEATHER_ICON_SNOW from './weatherIcons/snow.svg';
-import WEATHER_ICON_CLOUDY from './weatherIcons/cloudy.svg';
-import WEATHER_ICON_PARTLY_CLOUDY from './weatherIcons/partly_cloudy.svg';
+import BACKGROUND_IMAGE_CLEAR from "./weatherBackgrounds/clear.avif";
+import BACKGROUND_IMAGE_CLOUDY1 from "./weatherBackgrounds/cloudy1.avif";
+import BACKGROUND_IMAGE_CLOUDY2 from "./weatherBackgrounds/cloudy2.jpg";
+import BACKGROUND_IMAGE_FOG from "./weatherBackgrounds/foggy.jpg";
+import BACKGROUND_IMAGE_RAIN1 from "./weatherBackgrounds/rain1.jpg";
+import BACKGROUND_IMAGE_RAIN2 from "./weatherBackgrounds/rain2.jpg";
+import BACKGROUND_IMAGE_RAIN3 from "./weatherBackgrounds/rain3.jpg";
+import BACKGROUND_IMAGE_SNOW1 from "./weatherBackgrounds/snow.jpg";
+import BACKGROUND_IMAGE_SNOW2 from "./weatherBackgrounds/snow2.jpg";
+import BACKGROUND_IMAGE_THUNDER from "./weatherBackgrounds/thunder.jpg";
+import WEATHER_ICON_CLEAR from "./weatherIcons/clear.svg";
+import WEATHER_ICON_HEAVY_RAIN from "./weatherIcons/heavy_rain.svg";
+import WEATHER_ICON_LIGHT_RAIN from "./weatherIcons/light_rain.svg";
+import WEATHER_ICON_SNOW from "./weatherIcons/snow.svg";
+import WEATHER_ICON_CLOUDY from "./weatherIcons/cloudy.svg";
+import WEATHER_ICON_PARTLY_CLOUDY from "./weatherIcons/partly_cloudy.svg";
 
 /**
  WMO Weather interpretation codes (WW)
@@ -79,48 +79,48 @@ enum weatherStates {
 }
 
 const numericDayName = [
-  'Sunday',
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday'
+  "DAY_SUNDAY",
+  "DAY_MONDAY",
+  "DAY_TUESDAY",
+  "DAY_WEDNESDAY",
+  "DAY_THURSDAY",
+  "DAY_FRIDAY",
+  "DAY_SATURDAY"
 ];
 
 // returns the weather description for the given weather state
 function getWeatherConditionFromState(state: weatherStates): string {
   switch (state) {
     case weatherStates.clear:
-      return 'clear skies';
+      return "CONDITION_CLEAR_SKIES";
     case weatherStates.heavyRain:
-      return 'heavy rain';
+      return "CONDITION_HEAVY_RAIN";
     case weatherStates.heavySnow:
-      return 'heavy snow';
+      return "CONDITION_HEAVY_SNOW";
     case weatherStates.cloudy:
-      return 'cloudy';
+      return "CONDITION_CLOUDY";
     case weatherStates.lightSnow:
-      return 'light snow';
+      return "CONDITION_LIGHT_SNOW";
     case weatherStates.fog:
-      return 'foggy';
+      return "CONDITION_FOGGY";
     case weatherStates.lightRain:
-      return 'light rain';
+      return "CONDITION_LIGHT_RAIN";
     case weatherStates.rainShowers:
-      return 'rain showers';
+      return "CONDITION_RAIN_SHOWER";
     case weatherStates.heavyRainShowers:
-      return 'heavy rain showers';
+      return "CONDITION_HEAVY_RAIN_SHOWER";
     case weatherStates.lightRainShowers:
-      return 'light rain showers';
+      return "CONDITION_LIGHT_RAIN_SHOWER";
     case weatherStates.partlyCloudy:
-      return 'partly cloudy';
+      return "CONDITION_PARTLY_CLOUDY";
     case weatherStates.rain:
-      return 'raining';
+      return "CONDITION_RAIN";
     case weatherStates.snow:
-      return 'snowing';
+      return "CONDITION_SNOW";
     case weatherStates.thunder:
-      return 'thunder';
+      return "CONDITION_THUNDER";
     default:
-      return 'unknown';
+      return "unknown";
   }
 }
 
@@ -156,7 +156,7 @@ function getWeatherIconFromState(state: weatherStates): string {
     case weatherStates.thunder:
       return WEATHER_ICON_HEAVY_RAIN;
     default:
-      return '/assets/productLogos/yourdash.svg';
+      return "/assets/productLogos/yourdash.svg";
   }
 }
 
@@ -164,7 +164,7 @@ const WeatherApplicationLocationPage: React.FC = () => {
   const [displayedWeatherCondition, setDisplayedWeatherCondition] =
     useState<weatherStates>(weatherStates.clear);
   const {id: locationId} = useParams();
-  const trans = useTranslate('weather');
+  const trans = useTranslate("weather");
   const [data, setData] = useState<{
     name: string;
     admin1: string;
@@ -180,7 +180,7 @@ const WeatherApplicationLocationPage: React.FC = () => {
       time: string;
     };
     daily: {
-      unit: '°C' | '°F';
+      unit: "°C" | "°F";
       days: {
         temp: {
           min: number;
@@ -191,7 +191,7 @@ const WeatherApplicationLocationPage: React.FC = () => {
       }[];
     };
     hourly: {
-      unit: '°C' | '°F';
+      unit: "°C" | "°F";
       hours: {
         temp: number;
         date: string;
@@ -208,7 +208,7 @@ const WeatherApplicationLocationPage: React.FC = () => {
 
   useEffect(() => {
     if (!locationId) {
-      navigate('/app/a/weather');
+      navigate("/app/a/weather");
     }
 
     csi.getJson(
@@ -229,20 +229,20 @@ const WeatherApplicationLocationPage: React.FC = () => {
       <>
         {failedToLoad
           ? (
-            <main className={'flex flex-col items-center justify-center h-full w-full gap-2'}>
-              <span className={'text-3xl pl-4 pr-4 text-center'}>
+            <main className={"flex flex-col items-center justify-center h-full w-full gap-2"}>
+              <span className={"text-3xl pl-4 pr-4 text-center"}>
                 Unable to gather data for this location at this moment
               </span>
               <MajorButton onClick={() => {
-                navigate('/app/a/weather');
+                navigate("/app/a/weather");
               }}
               >
-                {'Go back'}
+                {"Go back"}
               </MajorButton>
             </main>
           )
           : (
-            <div className={'w-full min-h-full flex items-center justify-center'}>
+            <div className={"w-full min-h-full flex items-center justify-center"}>
               <Spinner/>
             </div>
           )
@@ -254,23 +254,23 @@ const WeatherApplicationLocationPage: React.FC = () => {
   return (
     <div
       className={clippy(
-        'overflow-auto animate__animated animate__faster',
-        transitioningOut ? 'animate__fadeOutRight' : 'animate__fadeIn'
+        "overflow-auto animate__animated animate__faster",
+        transitioningOut ? "animate__fadeOutRight" : "animate__fadeIn"
       )}
     >
       <header
         style={{
           backgroundImage: `url("${ backgroundImages[displayedWeatherCondition] }")`
         }}
-        className={'bg-center bg-cover bg-fixed pb-6 relative overflow-hidden'}
+        className={"bg-center bg-cover bg-fixed pb-6 relative overflow-hidden"}
       >
         <div
-          className={'flex pl-8 pt-8 pb-8 flex-row from-base-700 to-transparent bg-gradient-to-b animate__animated ' +
-                      'animate__fadeInDown'}
+          className={"flex pl-8 pt-8 pb-8 flex-row from-base-700 to-transparent bg-gradient-to-b animate__animated " +
+                      "animate__fadeInDown"}
         >
           <IconButton
-            icon={'arrow-left-16'}
-            className={'mb-4'}
+            icon={"arrow-left-16"}
+            className={"mb-4"}
             onClick={() => {
               setTransitioningOut(true);
 
@@ -278,35 +278,35 @@ const WeatherApplicationLocationPage: React.FC = () => {
               const TRANSITION_DURATION = 600;
 
               setTimeout(() => {
-                navigate('/app/a/weather');
+                navigate("/app/a/weather");
               }, TRANSITION_DURATION);
             }}
           />
-          <div className={'ml-4'}>
+          <div className={"ml-4"}>
             <h1
-              className={'text-container-fg font-bold text-5xl stroke-2 stroke-base-900'}
+              className={"text-container-fg font-bold text-5xl stroke-2 stroke-base-900"}
             >
               {`${ data?.name },`}
             </h1>
             <span
-              className={'mt-auto text-container-fg text-xl stroke-1 stroke-base-900 animate__animated animate__slideInDown animate__delay-100'}
+              className={"mt-auto text-container-fg text-xl stroke-1 stroke-base-900 animate__animated animate__slideInDown animate__delay-100"}
             >
               {data?.admin1 && `${ data.admin1 }, `}{data?.admin2 && `${ data.admin2 }, `}{data?.country}
             </span>
           </div>
         </div>
-        <section className={'h-48 flex items-center justify-center'}>
+        <section className={"h-48 flex items-center justify-center"}>
           <span
             /* eslint-disable-next-line max-len */
-            className={'animate__animated animate__fadeInUp text-6xl font-bold text-center [filter:_drop-shadow(0_10px_8px_rgb(0_0_0/0.04))_drop-shadow(0_4px_3px_rgb(0_0_0/0.1))_drop-shadow(0_10px_8px_rgb(0_0_0/0.04))_drop-shadow(0_4px_3px_rgb(0_0_0/0.1))_drop-shadow(0_10px_8px_rgb(0_0_0/0.04))_drop-shadow(0_4px_3px_rgb(0_0_0/0.1))] leading-tight'}
+            className={"animate__animated animate__fadeInUp text-6xl font-bold text-center [filter:_drop-shadow(0_10px_8px_rgb(0_0_0/0.04))_drop-shadow(0_4px_3px_rgb(0_0_0/0.1))_drop-shadow(0_10px_8px_rgb(0_0_0/0.04))_drop-shadow(0_4px_3px_rgb(0_0_0/0.1))_drop-shadow(0_10px_8px_rgb(0_0_0/0.04))_drop-shadow(0_4px_3px_rgb(0_0_0/0.1))] leading-tight"}
           >
-            {`${trans('Currently')} ${ data?.currentWeather.temp.toFixed(0) }${ data?.daily.unit } `}
+            {`${ trans("CURRENTLY") } ${ data?.currentWeather.temp.toFixed(0) }${ data?.daily.unit } `}
             {
               data?.currentWeather.condition !== weatherStates.cloudy &&
               data?.currentWeather.condition !== weatherStates.partlyCloudy &&
               data?.currentWeather.condition !== weatherStates.thunder
-                ? `${trans('with')} `
-                : `${trans('and')} `
+                ? `${ trans("WITH") } `
+                : `${ trans("AND") } `
             }
             {
               trans(getWeatherConditionFromState(data?.currentWeather.condition || 0))
@@ -315,13 +315,13 @@ const WeatherApplicationLocationPage: React.FC = () => {
         </section>
         <Carousel
           compactControls
-          containerClassName={'min-w-full p-10 pb-4 pt-4 max-w-full overflow-x-auto rounded-xl animate__animated animate__fadeInUp'}
-          className={'flex flex-row gap-2'}
+          containerClassName={"min-w-full p-10 pb-4 pt-4 max-w-full overflow-x-auto rounded-xl animate__animated animate__fadeInUp"}
+          className={"flex flex-row gap-2"}
         >
           {
             data.daily.days.map((day, ind) => (
               <div
-                className={'w-48 relative'}
+                className={"w-48 relative"}
                 key={day.date}
               >
                 <Card
@@ -329,35 +329,35 @@ const WeatherApplicationLocationPage: React.FC = () => {
                     setSelectedDay(ind);
                   }}
                   className={clippy(
-                    'w-full h-[10.5rem] flex-col transition-[var(--transition)] absolute',
+                    "w-full h-[10.5rem] flex-col transition-[var(--transition)] absolute",
                     selectedDay === ind
-                      ? 'bottom-[3.5rem]'
-                      : 'bottom-0'
+                      ? "bottom-[3.5rem]"
+                      : "bottom-0"
                   )}
                 >
-                  <section className={'flex items-center justify-between'}>
-                    <h2 className={'font-bold text-6xl flex'}>{new Date(day.date).getDate()}
+                  <section className={"flex items-center justify-between"}>
+                    <h2 className={"font-bold text-6xl flex"}>{new Date(day.date).getDate()}
                       {/* eslint-disable-next-line no-magic-numbers */}
-                      <div className={'font-normal text-2xl mb-auto'}>{new Date(day.date).getDate() === 1 ? 'st' : new Date(day.date).getDate() === 2 ? 'nd' : new Date(day.date).getDate() === 3 ? 'rd' : 'th'}</div>
+                      <div className={"font-normal text-2xl mb-auto"}>{new Date(day.date).getDate() === 1 ? "st" : new Date(day.date).getDate() === 2 ? "nd" : new Date(day.date).getDate() === 3 ? "rd" : "th"}</div>
                     </h2>
                     <img
                       src={getWeatherIconFromState(day.condition)}
                       draggable={false}
-                      alt={''}
-                      className={'w-16 pl-2'}
+                      alt={""}
+                      className={"w-16 pl-2"}
                     />
                   </section>
-                  <section className={'font-normal text-3xl'}>
+                  <section className={"font-normal text-3xl"}>
                     {trans(numericDayName[new Date(day.date).getDay()])}
                   </section>
-                  <section className={'flex justify-between items-center'}>
-                    <span className={'flex items-center justify-center'}>
-                      <Icon name={'triangle-down-16'} color={'rgb(var(--container-fg))'} className={'h-8'}/>
-                      {day?.temp.min}{'°C'}
+                  <section className={"flex justify-between items-center"}>
+                    <span className={"flex items-center justify-center"}>
+                      <Icon name={"triangle-down-16"} color={"rgb(var(--container-fg))"} className={"h-8"}/>
+                      {day?.temp.min}{"°C"}
                     </span>
-                    <span className={'flex items-center justify-center'}>
-                      <Icon name={'triangle-up-16'} color={'rgb(var(--container-fg))'} className={'h-8'}/>
-                      {day?.temp.max}{'°C'}
+                    <span className={"flex items-center justify-center"}>
+                      <Icon name={"triangle-up-16"} color={"rgb(var(--container-fg))"} className={"h-8"}/>
+                      {day?.temp.max}{"°C"}
                     </span>
                   </section>
                 </Card>
@@ -368,49 +368,47 @@ const WeatherApplicationLocationPage: React.FC = () => {
         <footer>
           <a
             href="https://open-meteo.com/"
-            className={'absolute bottom-0 right-0 text-xs text-opacity-50 text-white animate__animated animate__fadeIn animate__delay-500ms pr-1 pb-0.5'}
+            className={"absolute bottom-0 right-0 text-xs text-opacity-50 text-white animate__animated animate__fadeIn animate__delay-500ms pr-1 pb-0.5"}
           >
-            {trans('Powered by {0}', ['open-meteo.com'])}
+            {trans("POWERED_BY_WATERMARK", ["open-meteo.com"])}
           </a>
         </footer>
       </header>
-      <main className={'flex flex-col w-full'}>
+      <main className={"flex flex-col w-full"}>
         <Carousel
           compactControls
-          containerClassName={'min-w-full p-10 pb-4 pt-4 max-w-full overflow-x-auto rounded-xl animate__animated animate__fadeIn animate__delay-500ms h-80'}
-          className={'flex flex-row gap-2'}
+          containerClassName={"min-w-full p-10 pb-4 pt-4 max-w-full overflow-x-auto rounded-xl animate__animated animate__fadeIn animate__delay-500ms h-80"}
+          className={"flex flex-row gap-2"}
         >
           {
             // eslint-disable-next-line no-magic-numbers
             chunk(data.hourly.hours, 24)[selectedDay].map(hour => (
               <div
-                className={'relative h-full flex justify-center'}
+                className={"relative h-full flex justify-center"}
                 key={hour.date}
               >
                 <Card
                   style={{
-                    marginBottom: `${ ((hour?.temp - data.daily.days[selectedDay]?.temp.min) /
-                                         (data.daily.days[selectedDay]?.temp.max -
-                                          // eslint-disable-next-line no-magic-numbers
-                                          data.daily.days[selectedDay]?.temp.min)) * 8.25 }rem`
+                    marginBottom: `${ (
+                      (hour?.temp - data.daily.days[selectedDay]?.temp.min) / (data.daily.days[selectedDay]?.temp.max - data.daily.days[selectedDay]?.temp.min)) * 8.25 }rem` // eslint-disable-line no-magic-numbers
                   }}
                   className={clippy(
-                    'w-full flex flex-col items-center justify-center h-[9.75rem] mt-auto'
+                    "w-full flex flex-col items-center justify-center h-[9.75rem] mt-auto"
                   )}
                 >
                   {/* eslint-disable-next-line no-magic-numbers */}
-                  <h2 className={'font-bold text-3xl flex'}>{new Date(hour.date).getHours() < 10
+                  <h2 className={"font-bold text-3xl flex"}>{new Date(hour.date).getHours() < 10
                     ? `0${
                       new Date(hour.date).getHours() }:00`
                     : `${ new Date(hour.date).getHours() }:00`}</h2>
                   <img
                     src={getWeatherIconFromState(hour.condition)}
                     draggable={false}
-                    alt={''}
-                    className={'w-16'}
+                    alt={""}
+                    className={"w-16"}
                   />
-                  <section className={'flex justify-center items-center w-full text-center'}>
-                    {hour?.temp || 'ERROR'}{'°C'}
+                  <section className={"flex justify-center items-center w-full text-center"}>
+                    {hour?.temp || "ERROR"}{"°C"}
                   </section>
                 </Card>
               </div>

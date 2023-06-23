@@ -64,8 +64,7 @@ const PanelQuickShortcuts: React.FC<{
         >
           <button
             type={'button'}
-            className={'w-full aspect-square relative group flex items-center justify-center mr-1 cursor-pointer ' +
-                        'outline-0 !bg-transparent'}
+            className={'w-full aspect-square relative group flex items-center justify-center mr-1 cursor-pointer outline-0 !bg-transparent'}
             onClick={e => {
               e.currentTarget.blur();
               navigate(shortcut.url);
@@ -75,8 +74,7 @@ const PanelQuickShortcuts: React.FC<{
               draggable={false}
               src={shortcut.icon}
               alt=""
-              className={'w-[2rem] group-hover:scale-110 group-focus-within:scale-125 group-active:scale-95 ' +
-                          'transition-[var(--transition)]'}
+              className={'w-[2rem] group-hover:scale-110 group-focus-within:scale-150 group-active:scale-95 transition-[var(--transition)] hover:transition-[var(--transition-fast)]'}
             />
             <span
               className={clippy(

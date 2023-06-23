@@ -36,7 +36,7 @@ const Layout: React.FC = () => {
         side={panelLayout}
       />
       <main className={clippy(
-        'min-h-full overflow-hidden overflow-y-auto w-full flex flex-col animate__animated animate__slow animate__fadeIn'
+        'min-h-full overflow-hidden overflow-y-auto w-full flex flex-col'
       )}
       >
         <Outlet/>

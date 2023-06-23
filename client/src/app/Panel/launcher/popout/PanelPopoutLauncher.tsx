@@ -1,13 +1,14 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState} from "react";
 
-import {useNavigate} from 'react-router-dom';
+import {useNavigate} from "react-router-dom";
 
-import clippy from '../../../../helpers/clippy';
-import csi from '../../../../helpers/csi';
-import {Icon, IconButton, Row, TextInput} from '../../../../ui';
-import {PanelPosition, YourDashLauncherApplication} from '../../Panel';
-import LauncherGridView from '../sharedComponents/LauncherGridView';
-import LauncherDateAndTime from '../sharedComponents/LauncherDateAndTime';
+import clippy from "../../../../helpers/clippy";
+import csi from "../../../../helpers/csi";
+import {Icon, IconButton, Row, TextInput} from "../../../../ui";
+import {PanelPosition, YourDashLauncherApplication} from "../../Panel";
+import LauncherGridView from "../sharedComponents/LauncherGridView";
+import LauncherDateAndTime from "../sharedComponents/LauncherDateAndTime";
+import {useTranslateAppCoreUI} from "../../../../helpers/l10n";
 
 const PanelApplicationLauncherPopOut: React.FC<{
   side: PanelPosition;
@@ -18,24 +19,25 @@ const PanelApplicationLauncherPopOut: React.FC<{
   visible,
   setVisible
 }) => {
+  const trans = useTranslateAppCoreUI();
   const navigate = useNavigate();
   const [userFullName, setUserFullName] = useState<{
     first: string;
     last: string;
   }>({
-    first: '',
-    last: ''
+    first: "",
+    last: ""
   });
 
   const [applications, setApplications] = useState<YourDashLauncherApplication[]>([]);
-  const [searchValue, setSearchValue] = useState<string>('');
+  const [searchValue, setSearchValue] = useState<string>("");
 
   useEffect(() => {
-    csi.getJson('/core/panel/user-full-name', res => {
+    csi.getJson("/core/panel/user-full-name", res => {
       setUserFullName(res);
     });
 
-    csi.getJson('/core/core/panel/quick-shortcuts/applications', res => {
+    csi.getJson("/core/panel/applications", res => {
       setApplications(res);
     });
   }, []);
@@ -45,12 +47,12 @@ const PanelApplicationLauncherPopOut: React.FC<{
       <div
         className={clippy(
           side === PanelPosition.left
-            ? 'left-full top-2 ml-3.5'
+            ? "left-full top-2 ml-3.5"
             : side === PanelPosition.right
-              ? 'right-full top-2 mr-3.5'
+              ? "right-full top-2 mr-3.5"
               : side === PanelPosition.top
-                ? 'top-full left-2 mt-3.5'
-                : 'bottom-full left-2 mb-3.5',
+                ? "top-full left-2 mt-3.5"
+                : "bottom-full left-2 mb-3.5",
           `
           h-4
           aspect-square
@@ -64,77 +66,77 @@ const PanelApplicationLauncherPopOut: React.FC<{
           rounded-sm
         `,
           side === PanelPosition.top &&
-          (visible ? 'animate__fadeIn' : 'animate__fadeOut select-none pointer-events-none'),
+          (visible ? "animate__fadeIn" : "animate__fadeOut select-none pointer-events-none"),
           side === PanelPosition.bottom &&
-          (visible ? 'animate__fadeIn' : 'animate__fadeOut select-none pointer-events-none'),
+          (visible ? "animate__fadeIn" : "animate__fadeOut select-none pointer-events-none"),
           side === PanelPosition.left &&
-          (visible ? 'animate__fadeIn' : 'animate__fadeOut select-none pointer-events-none'),
+          (visible ? "animate__fadeIn" : "animate__fadeOut select-none pointer-events-none"),
           side === PanelPosition.right &&
-          (visible ? 'animate__fadeIn' : 'animate__fadeOut select-none pointer-events-none')
+          (visible ? "animate__fadeIn" : "animate__fadeOut select-none pointer-events-none")
         )}
       />
       <section
         className={clippy(
           side === PanelPosition.left
-            ? 'left-full top-0 ml-4'
+            ? "left-full top-0 ml-4"
             : side === PanelPosition.right
-              ? 'right-full top-0 mr-4'
+              ? "right-full top-0 mr-4"
               : side === PanelPosition.top
-                ? 'top-full left-0 mt-4'
-                : 'bottom-full left-0 mb-4',
-          'absolute bg-container-bg min-w-[39rem] max-h-[80rem] rounded-container-rounding',
-          '[border:solid_0.1rem_var(--application-panel-border)] animate__animated animate__faster opacity-0',
-          'flex flex-col gap-2 overflow-hidden',
+                ? "top-full left-0 mt-4"
+                : "bottom-full left-0 mb-4",
+          "absolute bg-container-bg min-w-[39rem] max-h-[80rem] rounded-container-rounding",
+          "[border:solid_0.1rem_var(--application-panel-border)] animate__animated animate__faster opacity-0",
+          "flex flex-col gap-2 overflow-hidden",
           side === PanelPosition.top &&
-          (visible ? 'animate__fadeIn' : 'animate__fadeOut select-none pointer-events-none'),
+          (visible ? "animate__fadeIn" : "animate__fadeOut select-none pointer-events-none"),
           side === PanelPosition.bottom &&
-          (visible ? 'animate__fadeIn' : 'animate__fadeOut select-none pointer-events-none'),
+          (visible ? "animate__fadeIn" : "animate__fadeOut select-none pointer-events-none"),
           side === PanelPosition.left &&
-          (visible ? 'animate__fadeIn' : 'animate__fadeOut select-none pointer-events-none'),
+          (visible ? "animate__fadeIn" : "animate__fadeOut select-none pointer-events-none"),
           side === PanelPosition.right &&
-          (visible ? 'animate__fadeIn' : 'animate__fadeOut select-none pointer-events-none')
+          (visible ? "animate__fadeIn" : "animate__fadeOut select-none pointer-events-none")
         )}
       >
-        <section className={'flex items-center justify-center relative group bg-container-secondary-bg p-2 pl-3'}>
-          <span className={'text-2xl mr-auto'}>{`Hiya, ${ userFullName.first }`}</span>
+        <section className={"flex items-center justify-center relative group bg-container-secondary-bg p-2 pl-3"}>
+          <span className={"text-2xl mr-auto"}>{trans("LOCALIZED_GREETING", [userFullName.first])}</span>
           <TextInput
-            className={'w-[2.25rem] h-[2.25rem] focus-within:w-64 transition-all'}
+            className={"w-[2.25rem] h-[2.25rem] focus-within:w-64 transition-all"}
             onChange={val => {
               setSearchValue(val);
             }}
           />
           <div
-            className={'absolute right-2 top-2 h-[2.25rem] w-[2.25rem] p-[0.35rem] group-focus-within:opacity-0' +
-                        ' pointer-events-none transition-all [border:0.125rem_solid_#00000000]'}
+            className={"absolute right-2 top-2 h-[2.25rem] w-[2.25rem] p-[0.35rem] group-focus-within:opacity-0" +
+                        " pointer-events-none transition-all [border:0.125rem_solid_#00000000]"}
           >
-            <Icon name={'search-16'} color={'rgb(var(--container-fg))'}/>
+            <Icon name={"search-16"} color={"rgb(var(--container-fg))"}/>
           </div>
         </section>
         <LauncherGridView applications={applications} setVisible={setVisible} searchValue={searchValue}/>
-        <section className={'flex items-center justify-center bg-container-secondary-bg p-2 pl-3'}>
+        <section className={"flex items-center justify-center bg-container-secondary-bg p-2 pl-3"}>
           <LauncherDateAndTime/>
-          <Row className={'ml-auto'}>
+          <Row className={"ml-auto"}>
             <IconButton
-              icon={'person-16'}
+              icon={"person-16"}
               onClick={() => {
                 setVisible(false);
-                navigate('/app/a/profile');
+                navigate("/app/a/profile");
               }}
             />
             <IconButton
-              icon={'gear-16'}
+              icon={"gear-16"}
               onClick={() => {
                 setVisible(false);
-                navigate('/app/a/settings');
+                navigate("/app/a/settings");
               }}
             />
             <IconButton
-              icon={'logout'}
+              icon={"logout"}
               onClick={() => {
                 setVisible(false);
-                localStorage.removeItem('session_token');
-                localStorage.removeItem('username');
-                navigate('/');
+                localStorage.removeItem("session_token");
+                localStorage.removeItem("username");
+                navigate("/");
               }}
             />
           </Row>
