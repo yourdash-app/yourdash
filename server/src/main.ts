@@ -673,6 +673,12 @@ killPort(3560).then(() => {
   }
 });
 
+
+if (JSON.stringify(globalDatabase.keys) === JSON.stringify({})) {
+  await fs.rm(path.resolve(process.cwd(), "./fs/globalDatabase.json"));
+}
+
+
 /*
  * Load all installed Applications
  */

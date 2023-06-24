@@ -254,7 +254,7 @@ const main: YourDashApplicationServerPlugin = ({app}) => {
           let file = "[]";
 
           try {
-            file = (await fs.readFile(path.resolve(user.getAppDataPath(), "weather/previous_locations.json"))).toString();
+            file = (await fs.readFile(path.resolve(user.getAppDataPath(), "weather/previous_locations.json"))).toString() || "[]";
           } catch (_err) {
             file = "[]";
             try {
