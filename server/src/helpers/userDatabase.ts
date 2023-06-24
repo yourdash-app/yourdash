@@ -1,6 +1,8 @@
-import KeyValueDatabase from './keyValueDatabase.js';
+import KeyValueDatabase from "./keyValueDatabase.js";
 
-const userDatabases: { [ username: string ]: KeyValueDatabase } = {};
+const userDatabases: {
+  [ username: string ]: KeyValueDatabase
+} = {};
 
 export default function getUserDatabase(username: string) {
   if (userDatabases[username]) {

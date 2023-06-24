@@ -9,6 +9,7 @@ import {PanelPosition, YourDashLauncherApplication} from "../../Panel";
 import LauncherGridView from "../sharedComponents/LauncherGridView";
 import LauncherDateAndTime from "../sharedComponents/LauncherDateAndTime";
 import {useTranslateAppCoreUI} from "../../../../helpers/l10n";
+import db from "../../../../helpers/database";
 
 const PanelApplicationLauncherPopOut: React.FC<{
   side: PanelPosition;

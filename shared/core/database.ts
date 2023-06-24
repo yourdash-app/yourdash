@@ -37,8 +37,14 @@ export default class KeyValueDatabase {
   doesKeyExist(key: string) {
     return Object.keys(this.keys).includes(key);
   }
+  
+  merge(keys: {
+    [ key: string ]: any
+  }) {
+    this.keys = Object.assign(this.keys, keys);
+  }
 }
 
 function changeOccured(db: KeyValueDatabase) {
-  console.log('changeOccured: ', JSON.stringify(db, null, 2));
+  console.log("changeOccured: ", JSON.stringify(db, null, 2));
 }

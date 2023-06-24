@@ -98,7 +98,26 @@ async function startupChecks() {
   }
 }
 
+async function startupTasks() {
+  const users = await fs.readdir(path.resolve(process.cwd(), `./fs/users/${ this.username }/`));
+
+  users.forEach(user => {
+    const userUnread = new YourDashUnreadUser(user);
+
+    if (!fsExistsSync(path.resolve(process.cwd(), `./fs/users/${ user }/userdb.json`))) {
+      return;
+    }
+
+    userUnread.read().then(user => {
+      fs.readFile(path.resolve(process.cwd(), `./fs/users/${ user }/userdb.json`)).then(dbFile => {
+        user.getPersonalDatabase().merge(JSON.parse(dbFile.toString()));
+      });
+    });
+  });
+}
+
 await startupChecks();
+await startupTasks();
 
 if (fsExistsSync(path.resolve(process.cwd(), "./fs/globalDatabase.json"))) {
   await globalDatabase.readFromDisk(path.resolve(process.cwd(), "./fs/globalDatabase.json"));
@@ -179,7 +198,6 @@ io.on("connection", socket => {
 );
 
 io.use(async (socket, next) => {
-
   const {
     username,
     sessionToken
@@ -206,7 +224,6 @@ io.use(async (socket, next) => {
 
   }
   return socket.disconnect();
-
 });
 
 export {io, activeSockets};
@@ -260,6 +277,7 @@ if (args["log-requests"]) {
             log(logTypes.info, JSON.stringify(req.query));
           }
         }
+        break;
       default:
         log(logTypes.error, `ERROR IN REQUEST LOGGER, UNKNOWN REQUEST TYPE: ${ req.method }`);
     }
@@ -622,10 +640,21 @@ app.get("/core/userdb", async (req, res) => {
   let output = {};
 
   try {
-    output = JSON.parse(fs.readFile(path.resolve(user.getPath(), "./userdb.json")).toString()) || {};
+    const fileData = JSON.parse(fs.readFile(path.resolve(user.getPath(), "./userdb.json")).toString());
+    if (fileData) {
+      output = fileData;
+    } else {
+      throw new Error("Unable to read userdb.json");
+    }
   } catch (_err) {
-    output = {};
-    fs.writeFile(path.resolve(user.getPath(), "./userdb.json"), "{}");
+    const readUser = await user.read();
+
+    output = {
+      "user:username": username,
+      "user:full_name": readUser.getName()
+    };
+
+    fs.writeFile(path.resolve(user.getPath(), "./userdb.json"), JSON.stringify(output));
   }
 
   return res.json(output);

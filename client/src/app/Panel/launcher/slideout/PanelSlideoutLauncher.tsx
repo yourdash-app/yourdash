@@ -8,6 +8,7 @@ import {PanelPosition, YourDashLauncherApplication} from "../../Panel";
 import LauncherGridView from "../sharedComponents/LauncherGridView";
 import LauncherDateAndTime from "../sharedComponents/LauncherDateAndTime";
 import {IconButton, Row} from "../../../../ui";
+import db from "../../../../helpers/database";
 
 const PanelApplicationLauncherSlideOut: React.FC<{
   side: PanelPosition;
