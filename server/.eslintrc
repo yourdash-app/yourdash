@@ -38,6 +38,12 @@
     "quotes": [
       "warn",
       "double"
+    ],
+    "no-trailing-spaces": "warn",
+    "indent": "warn",
+    "object-curly-spacing": [
+      "warn",
+      "always"
     ]
   }
 }

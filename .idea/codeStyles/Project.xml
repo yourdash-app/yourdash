@@ -16,6 +16,8 @@
       <option name="FORCE_SEMICOLON_STYLE" value="true" />
       <option name="FORCE_QUOTE_STYlE" value="true" />
       <option name="ENFORCE_TRAILING_COMMA" value="Remove" />
+      <option name="SPACES_WITHIN_OBJECT_LITERAL_BRACES" value="true" />
+      <option name="SPACES_WITHIN_IMPORTS" value="true" />
       <option name="CHAINED_CALL_DOT_ON_NEW_LINE" value="false" />
       <option name="IMPORT_SORT_MODULE_NAME" value="true" />
     </JSCodeStyleSettings>
@@ -32,6 +34,8 @@
       <option name="VAR_DECLARATION_WRAP" value="5" />
       <option name="OBJECT_LITERAL_WRAP" value="2" />
       <option name="OBJECT_TYPES_WRAP" value="2" />
+      <option name="SPACES_WITHIN_OBJECT_LITERAL_BRACES" value="true" />
+      <option name="SPACES_WITHIN_IMPORTS" value="true" />
       <option name="INDENT_CHAINED_CALLS" value="false" />
       <option name="CHAINED_CALL_DOT_ON_NEW_LINE" value="false" />
       <option name="SPACES_WITHIN_INTERPOLATION_EXPRESSIONS" value="true" />
