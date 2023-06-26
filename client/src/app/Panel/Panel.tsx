@@ -229,7 +229,7 @@ const Panel: React.FC<IPanel> = ({
     >
       {/* invisible component which checks that the user is authorized on the first load of the panel*/}
       <PanelAuthorizer/>
-      <PanelApplicationLauncher side={side} type={launcherType}/>
+      <PanelApplicationLauncher num={num} side={side} type={launcherType}/>
       <PanelInstanceIcon/>
       {/* separator */}
       <div

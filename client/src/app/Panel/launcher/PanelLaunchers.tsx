@@ -10,9 +10,11 @@ import PanelApplicationLauncherSlideOut from "./slideout/PanelSlideoutLauncher";
 const PanelApplicationLauncher: React.FC<{
   side: PanelPosition;
   type: number;
+  num: number
 }> = ({
   side,
-  type
+  type,
+  num
 }) => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
   return (
@@ -35,6 +37,7 @@ const PanelApplicationLauncher: React.FC<{
         type === 1
           ? (
             <PanelApplicationLauncherSlideOut
+              num={num}
               side={side}
               visible={isVisible}
               setVisible={val => setIsVisible(val)}
@@ -42,6 +45,7 @@ const PanelApplicationLauncher: React.FC<{
           )
           : (
             <PanelApplicationLauncherPopOut
+              num={num}
               side={side}
               visible={isVisible}
               setVisible={val => setIsVisible(val)}

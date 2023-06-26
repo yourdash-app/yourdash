@@ -14,10 +14,12 @@ const PanelApplicationLauncherSlideOut: React.FC<{
   side: PanelPosition;
   visible: boolean;
   setVisible: (value: boolean) => void;
+  num: number
 }> = ({
   side,
   visible,
-  setVisible
+  setVisible,
+  num
 }) => {
   const navigate = useNavigate();
 
@@ -42,7 +44,7 @@ const PanelApplicationLauncherSlideOut: React.FC<{
     csi.getJson("/core/panel/applications", res => {
       setApplications(res);
     });
-  }, []);
+  }, [num]);
 
   return (
     <section

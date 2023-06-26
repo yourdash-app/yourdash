@@ -13,7 +13,7 @@ import {useTranslateAppCoreUI} from "../../../../helpers/l10n";
 export interface ILauncherGridView {
   applications: YourDashLauncherApplication[],
   setVisible: (value: boolean) => void,
-  searchValue: string,
+  searchValue: string
 }
 
 const LauncherGridView: React.FC<ILauncherGridView> = ({
