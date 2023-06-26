@@ -98,26 +98,7 @@ async function startupChecks() {
   }
 }
 
-async function startupTasks() {
-  const users = await fs.readdir(path.resolve(process.cwd(), `./fs/users/${ this.username }/`));
-
-  users.forEach(user => {
-    const userUnread = new YourDashUnreadUser(user);
-
-    if (!fsExistsSync(path.resolve(process.cwd(), `./fs/users/${ user }/userdb.json`))) {
-      return;
-    }
-
-    userUnread.read().then(user => {
-      fs.readFile(path.resolve(process.cwd(), `./fs/users/${ user }/userdb.json`)).then(dbFile => {
-        user.getPersonalDatabase().merge(JSON.parse(dbFile.toString()));
-      });
-    });
-  });
-}
-
 await startupChecks();
-await startupTasks();
 
 if (fsExistsSync(path.resolve(process.cwd(), "./fs/globalDatabase.json"))) {
   await globalDatabase.readFromDisk(path.resolve(process.cwd(), "./fs/globalDatabase.json"));
@@ -184,7 +165,7 @@ io.on("connection", socket => {
   });
 
   socket.on("execute-command-response", output => {
-    log(output);
+    log(logTypes.info, output);
   });
 
   socket.on("disconnect", () => {

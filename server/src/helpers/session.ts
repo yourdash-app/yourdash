@@ -1,15 +1,15 @@
-import {promises as fs} from 'fs';
+import {promises as fs} from "fs";
 
 
-import path from 'path';
+import path from "path";
 
-import {__internalGetSessions, SESSION_TOKEN_LENGTH} from '../main.js';
-import {YourDashSessionType, type IYourDashSession} from '../../../shared/core/session.js';
+import {__internalGetSessions, SESSION_TOKEN_LENGTH} from "../main.js";
+import {YourDashSessionType, type IYourDashSession} from "../../../shared/core/session.js";
 
-import log, {logTypes} from './log.js';
+import log, {logTypes} from "./log.js";
 
-import {generateRandomStringOfLength} from './encryption.js';
-import YourDashUnreadUser from './user.js';
+import {generateRandomStringOfLength} from "./encryption.js";
+import YourDashUnreadUser from "./user.js";
 
 
 export function getSessionsForUser(username: string): IYourDashSession<any>[] {
@@ -31,7 +31,7 @@ export async function createSession<T extends YourDashSessionType>(
   try {
     __internalGetSessions()[username] = JSON.parse((await fs.readFile(path.resolve(
       user.getPath(),
-      './sessions.json'
+      "./sessions.json"
     ))).toString());
   } catch (_err) { /* empty */ }
 
@@ -51,11 +51,12 @@ export async function createSession<T extends YourDashSessionType>(
 
   try {
     await fs.writeFile(
-      path.resolve(user.getPath(), './sessions.json'),
+      path.resolve(user.getPath(), "./sessions.json"),
       JSON.stringify(__internalGetSessions()[username])
     );
   } catch (__e) {
     log(logTypes.error, `Unable to write ${ username }/sessions.json`);
+
     return session;
   }
 
@@ -70,7 +71,7 @@ export default class YourDashSession<T extends YourDashSessionType> {
 
   constructor(username: string, session: IYourDashSession<T>) {
     if (!session) {
-      throw new Error('An invalid session was provided to YourDashSession');
+      throw new Error("An invalid session was provided to YourDashSession");
     }
 
     this.id = session.id;
@@ -92,7 +93,7 @@ export default class YourDashSession<T extends YourDashSessionType> {
     const user = new YourDashUnreadUser(this.username);
     try {
       fs.writeFile(
-        path.resolve(user.getPath(), './sessions.json'),
+        path.resolve(user.getPath(), "./sessions.json"),
         JSON.stringify(__internalGetSessions()[this.username])
       );
     } catch (_err) {

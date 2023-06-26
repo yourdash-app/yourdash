@@ -27,8 +27,11 @@ export default class KeyValueDatabase {
     doesKeyExist(key) {
         return Object.keys(this.keys).includes(key);
     }
+    merge(keys) {
+        this.keys = Object.assign(this.keys, keys);
+    }
 }
 function changeOccured(db) {
-    console.log('changeOccured: ', JSON.stringify(db, null, 2));
+    console.log("changeOccured: ", JSON.stringify(db, null, 2));
 }
 //# sourceMappingURL=database.js.map

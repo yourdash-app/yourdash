@@ -9,7 +9,6 @@ import YourDashSession, {getSessionsForUser} from "./session.js";
 import KeyValueDatabase from "./keyValueDatabase.js";
 import getUserDatabase from "./userDatabase.js";
 
-
 export enum YourDashUserPermissions {
   Administrator, CreateFiles, DeleteFiles,
 }
@@ -178,8 +177,8 @@ class YourDashUser {
     }
   }
 
-  getPersonalDatabase(): KeyValueDatabase {
-    return getUserDatabase(this.username);
+  async getPersonalDatabase() {
+    return await getUserDatabase(this.username);
   }
 }
 
