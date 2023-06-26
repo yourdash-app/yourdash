@@ -1,23 +1,18 @@
-import {promises as fs} from "fs";
-
-
+import { promises as fs } from "fs";
 import path from "path";
-
-import {__internalGetSessions, SESSION_TOKEN_LENGTH} from "../main.js";
-import {YourDashSessionType, type IYourDashSession} from "../../../shared/core/session.js";
-
-import log, {logTypes} from "./log.js";
-
-import {generateRandomStringOfLength} from "./encryption.js";
+import { __internalGetSessionsDoNotUseOutsideOfCore, SESSION_TOKEN_LENGTH } from "../core/sessions.js";
+import { YourDashSessionType, type IYourDashSession } from "../../../shared/core/session.js";
+import log, { logTypes } from "./log.js";
+import { generateRandomStringOfLength } from "./encryption.js";
 import YourDashUnreadUser from "./user.js";
 
 
 export function getSessionsForUser(username: string): IYourDashSession<any>[] {
-  return __internalGetSessions()[username];
+  return __internalGetSessionsDoNotUseOutsideOfCore()[username];
 }
 
 export function getSessionId(username: string, sessionToken: string): number | null {
-  return __internalGetSessions()[username].find(session => session.sessionToken === sessionToken)?.id || null;
+  return __internalGetSessionsDoNotUseOutsideOfCore()[username].find(session => session.sessionToken === sessionToken)?.id || null;
 }
 
 export async function createSession<T extends YourDashSessionType>(
@@ -29,7 +24,7 @@ export async function createSession<T extends YourDashSessionType>(
   const user = new YourDashUnreadUser(username);
 
   try {
-    __internalGetSessions()[username] = JSON.parse((await fs.readFile(path.resolve(
+    __internalGetSessionsDoNotUseOutsideOfCore()[username] = JSON.parse((await fs.readFile(path.resolve(
       user.getPath(),
       "./sessions.json"
     ))).toString());
@@ -43,16 +38,16 @@ export async function createSession<T extends YourDashSessionType>(
     sessionToken
   };
 
-  if (__internalGetSessions()[username]) {
-    __internalGetSessions()[username].push(session);
+  if (__internalGetSessionsDoNotUseOutsideOfCore()[username]) {
+    __internalGetSessionsDoNotUseOutsideOfCore()[username].push(session);
   } else {
-    __internalGetSessions()[username] = [session];
+    __internalGetSessionsDoNotUseOutsideOfCore()[username] = [session];
   }
 
   try {
     await fs.writeFile(
       path.resolve(user.getPath(), "./sessions.json"),
-      JSON.stringify(__internalGetSessions()[username])
+      JSON.stringify(__internalGetSessionsDoNotUseOutsideOfCore()[username])
     );
   } catch (__e) {
     log(logTypes.error, `Unable to write ${ username }/sessions.json`);
@@ -85,8 +80,8 @@ export default class YourDashSession<T extends YourDashSessionType> {
   }
 
   invalidate() {
-    __internalGetSessions()[this.username].splice(
-      __internalGetSessions()[this.username].findIndex(val => val.id === this.id),
+    __internalGetSessionsDoNotUseOutsideOfCore()[this.username].splice(
+      __internalGetSessionsDoNotUseOutsideOfCore()[this.username].findIndex(val => val.id === this.id),
       1
     );
 
@@ -94,7 +89,7 @@ export default class YourDashSession<T extends YourDashSessionType> {
     try {
       fs.writeFile(
         path.resolve(user.getPath(), "./sessions.json"),
-        JSON.stringify(__internalGetSessions()[this.username])
+        JSON.stringify(__internalGetSessionsDoNotUseOutsideOfCore()[this.username])
       );
     } catch (_err) {
       return;
