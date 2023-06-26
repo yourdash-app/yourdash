@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="PSA Backend" pattern="file[YourDash]:psa-backend//*" />
+</component>

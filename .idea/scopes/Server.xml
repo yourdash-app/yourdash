@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="Server" pattern="(file[YourDash]:shared//*||file[YourDash]:server//*)&amp;&amp;!file[YourDash]:server/fs//*&amp;&amp;!file:server/src/index.ts&amp;&amp;!file:server/yarn.lock&amp;&amp;!file:server/yarn-error.log&amp;&amp;!file:server/package.json&amp;&amp;!file:server/nodemon.json&amp;&amp;!file:server/.eslintrc&amp;&amp;!file:server/tsconfig.json" />
+</component>

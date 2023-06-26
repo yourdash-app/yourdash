@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="Client" pattern="file[YourDash]:client//*||file[YourDash]:shared//*" />
+</component>
