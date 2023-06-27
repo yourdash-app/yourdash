@@ -10,6 +10,8 @@ import YourDashPanel from "../../helpers/panel.js";
 
 export default async function defineRoute(app: ExpressApplication) {
   app.get("/core/panel/applications", async (_req, res) => {
+    res.set("Cache-Control", "no-store");
+
     Promise.all((globalDatabase.get("installed_applications")).map(async app => {
       const application = await new YourDashUnreadApplication(app).read();
       return new Promise(async resolve => {
@@ -35,6 +37,8 @@ export default async function defineRoute(app: ExpressApplication) {
   });
 
   app.get("/core/panel/user-full-name", async (req, res) => {
+    res.set("Cache-Control", "no-store");
+
     const { username } = req.headers as {
       username: string
     };
@@ -43,6 +47,8 @@ export default async function defineRoute(app: ExpressApplication) {
   });
 
   app.get("/core/panel/quick-shortcuts", async (req, res) => {
+    res.set("Cache-Control", "no-store");
+
     const { username } = req.headers as {
       username: string
     };
@@ -53,6 +59,8 @@ export default async function defineRoute(app: ExpressApplication) {
   });
 
   app.delete("/core/panel/quick-shortcuts:ind", async (req, res) => {
+    res.set("Cache-Control", "no-store");
+
     const { ind } = req.params;
     const { username } = req.headers as {
       username: string
@@ -66,6 +74,8 @@ export default async function defineRoute(app: ExpressApplication) {
   });
 
   app.post("/core/panel/quick-shortcuts/create", async (req, res) => {
+    res.set("Cache-Control", "no-store");
+
     const { username } = req.headers as {
       username: string
     };
@@ -93,6 +103,8 @@ export default async function defineRoute(app: ExpressApplication) {
   });
 
   app.get("/core/panel/position", async (req, res) => {
+    res.set("Cache-Control", "no-store");
+
     const { username } = req.headers as {
       username: string
     };
@@ -103,6 +115,8 @@ export default async function defineRoute(app: ExpressApplication) {
   });
 
   app.get("/core/panel/quick-shortcuts", async (req, res) => {
+    res.set("Cache-Control", "no-store");
+
     const { username } = req.headers as {
       username: string
     };

@@ -12,27 +12,22 @@ export default function loadApplications(app, io) {
         log(logTypes.error, `${ chalk.yellow.bold("CORE") }: Unknown application: ${ appName }!`);
         return;
       }
-
       if (!fsExistsSync(path.resolve(process.cwd(), `./src/apps/${ appName }/index.js`))) {
         log(logTypes.error, `${ chalk.yellow.bold("CORE") }: application ${ appName } does not contain an index.ts file!`);
         return;
       }
-
       if (!fsExistsSync(path.resolve(process.cwd(), `./src/apps/${ appName }/application.json`))) {
         log(logTypes.error, `${ chalk.yellow.bold("CORE") }: application ${ appName } does not contain an application.json file!`);
         return;
       }
-
       if (!fsExistsSync(path.resolve(process.cwd(), `./src/apps/${ appName }/icon.avif`))) {
         log(logTypes.error, `${ chalk.yellow.bold("CORE") }: application ${ appName } does not contain an icon.avif file!`);
         return;
       }
 
-      log(logTypes.info, `${ chalk.yellow.bold("CORE") }: Loading application: ${ appName }`);
-
       // import and load all applications
       import(
-        `./apps/${ appName }/index.js`
+        `../apps/${ appName }/index.js`
       ).then(mod => {
         try {
           log(logTypes.info, `${ chalk.yellow.bold("CORE") }: Starting application: ${ appName }`);
@@ -44,8 +39,8 @@ export default function loadApplications(app, io) {
         } catch (err) {
           log(logTypes.error, `${ chalk.yellow.bold("CORE") }: Error during application initialization: ${ appName }`);
         }
-      }).catch(err => {
-        console.error(`Error while loading application: ${ appName }`, err);
+      }).catch(_err => {
+        log(logTypes.error, `${ chalk.yellow.bold("CORE") }: Error while loading application: ${ appName }`);
       });
     });
   } else {
