@@ -1,4 +1,4 @@
-import {exec, ChildProcess} from "child_process";
+import { exec, ChildProcess } from "child_process";
 import minimist from "minimist";
 import chalk from "chalk";
 import killPort from "kill-port";
@@ -59,7 +59,7 @@ function startDevServer() {
   console.log(`[${ chalk.hex("#fc6f45").bold("DEV") }]: starting server \"node ./src/main.js --color=full ${ process.argv.slice(
     2).join(" ") }\"`);
 
-  const devProcess = exec(`yarn run compile && nodemon${ args.debug
+  const devProcess = exec(`yarn run compile && nodemon --signal SIGINT${ args.debug
     ? " --inspect-brk"
     : "" } ./src/main.js --color=full ${ process.argv.slice(2).join(" ") }`);
 
@@ -75,15 +75,16 @@ function startDevServer() {
     }
 
     if (data.toString().includes("Shutting down... (restart of core should occur automatically)")) {
-      if (
-        devProcess.kill("SIGTERM") &&
-        compilationProcess.kill("SIGTERM")
-      ) {
-        startDevServer();
-      } else {
-        console.log("Unable to kill child processes");
-      }
-      return;
+      devProcess.on("close", () => {
+        console.log(devProcess.killed);
+        if (
+          compilationProcess.kill("SIGTERM")
+        ) {
+          startDevServer();
+        } else {
+          console.log("Unable to kill child processes");
+        }
+      });
     }
 
     process.stdout.write(data);

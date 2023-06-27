@@ -3,14 +3,10 @@ import KeyValueDatabase from "../../../../../shared/core/database";
 import csi from "../../../helpers/csi";
 
 const GlobalDbApplication: React.FC = () => {
-  const [kvd, setKvd] = useState<KeyValueDatabase | undefined>(undefined);
-  // @ts-ignore
   const [keys, setKeys] = useState<any>({});
 
   useEffect(() => {
-    setKvd(new KeyValueDatabase());
-
-    csi.getJson("/app/global_db/get", data => {
+    csi.getJson("/app/global_db/db", data => {
       if (!data.db) {
         return;
       }

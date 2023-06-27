@@ -3,7 +3,7 @@ import { type YourDashApplicationServerPlugin } from "../../helpers/applications
 import globalDatabase from "../../helpers/globalDatabase.js";
 
 const main: YourDashApplicationServerPlugin = ({ app }) => {
-  app.get("/app/global_db/get", async (req, res) => {
+  app.get("/app/global_db/db", async (req, res) => {
     const { username } = req.headers as {
       username: string
     };
@@ -11,10 +11,37 @@ const main: YourDashApplicationServerPlugin = ({ app }) => {
     const user = await new YourDashUnreadUser(username).read();
 
     if (user.hasPermission(YourDashUserPermissions.Administrator)) {
-      res.json({
+      return res.json({
         db: globalDatabase.keys
       });
     }
+
+    return res.json({
+      error: true
+    });
+  });
+
+  app.post("/app/global_db/db", async (req, res) => {
+    const { username } = req.headers as {
+      username: string
+    };
+
+    const {
+      key,
+      value
+    } = req.body;
+
+    const user = await new YourDashUnreadUser(username).read();
+
+    if (user.hasPermission(YourDashUserPermissions.Administrator)) {
+      globalDatabase.set(key, value);
+
+      return res.json({
+        success: true
+      });
+    }
+
+    return res.json({ error: true });
   });
 };
 

@@ -7,16 +7,12 @@ import path from "path";
 import * as http from "http";
 import cors from "cors";
 import express from "express";
-import sharp from "sharp";
 import { Server as SocketIoServer, Socket as SocketIoSocket } from "socket.io";
 import chalk from "chalk";
 import minimist from "minimist";
 import { YourDashSessionType } from "../../shared/core/session.js";
 import log, { logTypes } from "./helpers/log.js";
-import YourDashUnreadApplication from "./helpers/applications.js";
-import { base64ToDataUrl } from "./helpers/base64.js";
 import { compareHash } from "./helpers/encryption.js";
-import YourDashPanel from "./helpers/panel.js";
 import YourDashUnreadUser from "./helpers/user.js";
 import { createSession } from "./helpers/session.js";
 import globalDatabase from "./helpers/globalDatabase.js";
@@ -54,13 +50,15 @@ const activeSockets: {
 const beforeShutdown = () => {
   log(logTypes.info, "Shutting down... (restart of core should occur automatically)");
 
-  globalDatabase.writeToDisk(path.resolve(process.cwd(), "./fs/globalDatabase.json"));
-
-  process.kill(process.pid, 0);
+  globalDatabase.writeToDisk(
+    path.resolve(process.cwd(), "./fs/globalDatabase.json"),
+    () => {
+      process.kill(process.pid);
+    }
+  );
 };
 
 process.on("SIGINT", beforeShutdown);
-process.on("SIGTERM", beforeShutdown);
 
 io.on("connection", socket => {
   // Check that all required parameters are present
