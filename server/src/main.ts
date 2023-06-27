@@ -26,6 +26,7 @@ import { __internalGetSessionsDoNotUseOutsideOfCore } from "./core/sessions.js";
 import { YourDashServerDiscoveryStatus } from "./core/discovery.js";
 import startupTasks from "./core/startupTasks.js";
 import defineCorePanelRoutes from "./core/endpoints/panel.js";
+import loadApplications from "./core/loadApplications.js";
 
 const args = minimist(process.argv.slice(2));
 
@@ -510,54 +511,4 @@ if (JSON.stringify(globalDatabase.keys) === JSON.stringify({})) {
   await fs.rm(path.resolve(process.cwd(), "./fs/globalDatabase.json"));
 }
 
-
-/*
- * Load all installed Applications
- */
-
-if (fsExistsSync(path.resolve(process.cwd(), "./src/apps/"))) {
-  const apps = (globalDatabase.get("installed_applications"));
-  apps.forEach((appName: string) => {
-    if (!fsExistsSync(path.resolve(process.cwd(), `./src/apps/${ appName }`))) {
-      log(logTypes.error, `${ chalk.yellow.bold("CORE") }: Unknown application: ${ appName }!`);
-      return;
-    }
-
-    if (!fsExistsSync(path.resolve(process.cwd(), `./src/apps/${ appName }/index.js`))) {
-      log(logTypes.error, `${ chalk.yellow.bold("CORE") }: application ${ appName } does not contain an index.ts file!`);
-      return;
-    }
-
-    if (!fsExistsSync(path.resolve(process.cwd(), `./src/apps/${ appName }/application.json`))) {
-      log(logTypes.error, `${ chalk.yellow.bold("CORE") }: application ${ appName } does not contain an application.json file!`);
-      return;
-    }
-
-    if (!fsExistsSync(path.resolve(process.cwd(), `./src/apps/${ appName }/icon.avif`))) {
-      log(logTypes.error, `${ chalk.yellow.bold("CORE") }: application ${ appName } does not contain an icon.avif file!`);
-      return;
-    }
-
-    log(logTypes.info, `${ chalk.yellow.bold("CORE") }: Loading application: ${ appName }`);
-
-    // import and load all applications
-    import(
-      `./apps/${ appName }/index.js`
-    ).then(mod => {
-      try {
-        log(logTypes.info, `${ chalk.yellow.bold("CORE") }: Starting application: ${ appName }`);
-        mod.default({
-          app,
-          io
-        });
-        log(logTypes.success, `${ chalk.yellow.bold("CORE") }: Initialized application: ${ appName }`);
-      } catch (err) {
-        log(logTypes.error, `${ chalk.yellow.bold("CORE") }: Error during application initialization: ${ appName }`);
-      }
-    }).catch(err => {
-      console.error(`Error while loading application: ${ appName }`, err);
-    });
-  });
-} else {
-  log(logTypes.error, `${ chalk.yellow.bold("CORE") }: No applications found!`);
-}
+loadApplications(app, io);
