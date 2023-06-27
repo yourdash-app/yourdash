@@ -1,11 +1,11 @@
-import {promises as fs} from "fs";
+import { promises as fs } from "fs";
 import path from "path";
 import sharp from "sharp";
 import chalk from "chalk";
-import {type IYourDashSession} from "../../../shared/core/session.js";
-import log, {logTypes} from "./log.js";
-import {hash} from "./encryption.js";
-import YourDashSession, {getSessionsForUser} from "./session.js";
+import { type IYourDashSession } from "../../../shared/core/session.js";
+import log, { logTypes } from "./log.js";
+import { hash } from "./encryption.js";
+import YourDashSession, { getSessionsForUser } from "./session.js";
 import KeyValueDatabase from "./keyValueDatabase.js";
 import getUserDatabase from "./userDatabase.js";
 
@@ -104,7 +104,7 @@ class YourDashUser {
 
   async write() {
     if (!(await this.exists())) {
-      await fs.mkdir(this.getPath(), {recursive: true});
+      await fs.mkdir(this.getPath(), { recursive: true });
       await fs.cp(
         path.resolve(process.cwd(), "./src/assets/default_avatar.avif"),
         path.resolve(this.getPath(), "avatar.avif")
@@ -134,6 +134,10 @@ class YourDashUser {
       console.error(`Error reading user "${ this.username }" from disk!`);
     }
     return this;
+  }
+
+  getPermissions(): YourDashUserPermissions[] {
+    return this.user.permissions;
   }
 
   hasPermission(perm: YourDashUserPermissions): boolean {
@@ -215,8 +219,7 @@ export default class YourDashUnreadUser {
     },
     permissions: YourDashUserPermissions[]
   ) {
-    return new YourDashUser(this.username).verifyUserConfig().setPassword(password).setName(name).setPermissions(
-      permissions).write();
+    return new YourDashUser(this.username).verifyUserConfig().setPassword(password).setName(name).setPermissions(permissions).write();
   }
 
   async read() {

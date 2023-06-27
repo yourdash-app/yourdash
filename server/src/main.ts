@@ -50,7 +50,7 @@ const activeSockets: {
 const beforeShutdown = () => {
   log(logTypes.info, "Shutting down... (restart of core should occur automatically)");
 
-  globalDatabase.writeToDisk(
+  globalDatabase._internalDoNotUseWriteToDiskOnlyIntendedForShutdownSequence(
     path.resolve(process.cwd(), "./fs/globalDatabase.json"),
     () => {
       process.kill(process.pid);

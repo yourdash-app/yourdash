@@ -9,7 +9,7 @@ export default async function startupTasks() {
     log(logTypes.success, "Global database loaded");
   } else {
     globalDatabase.set("installed_applications", ["dash", "settings", "files", "store", "weather"]);
-    if (!globalDatabase.writeToDisk(path.resolve(process.cwd(), "./fs/globalDatabase.json"))) {
+    if (!(await globalDatabase.writeToDisk(path.resolve(process.cwd(), "./fs/globalDatabase.json")))) {
       log(logTypes.error, "Error creating global database");
     } else {
       log(logTypes.success, "Global database created");

@@ -20,8 +20,17 @@ const GlobalDbApplication: React.FC = () => {
       <span>{"GlobalDbApplication"}</span>
       <div>
         {
-          Object.keys(keys).map((key: any) => (
-            <span key={key}>{key}</span>
+          Object.keys(keys).map((key: any, ind: number) => (
+            <div key={key}>
+              <span>
+                {key}
+              </span>
+              <div>
+                {
+                  keys[ind]
+                }
+              </div>
+            </div>
           ))
         }
       </div>

@@ -7,11 +7,20 @@ export default class KeyValueDatabase extends KVD {
     super();
   }
 
-  writeToDisk(path: string, cb: () => void) {
+  _internalDoNotUseWriteToDiskOnlyIntendedForShutdownSequence(path: string, cb?: () => void) {
     try {
       writeFile(path, JSON.stringify(this.keys), cb);
     } catch (_err) {
       /* empty */
+    }
+  }
+
+  async writeToDisk(path: string): Promise<boolean> {
+    try {
+      await fs.writeFile(path, JSON.stringify(this.keys));
+      return true;
+    } catch (_err) {
+      return false;
     }
   }
 
