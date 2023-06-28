@@ -26,15 +26,12 @@ const main: YourDashApplicationServerPlugin = ({ app }) => {
       username: string
     };
 
-    const {
-      key,
-      value
-    } = req.body;
+    const keys = req.body;
 
     const user = await new YourDashUnreadUser(username).read();
 
     if (user.hasPermission(YourDashUserPermissions.Administrator)) {
-      globalDatabase.set(key, value);
+      globalDatabase.merge(keys);
 
       return res.json({
         success: true

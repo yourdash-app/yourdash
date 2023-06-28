@@ -105,12 +105,14 @@ const LauncherGridView: React.FC<ILauncherGridView> = ({
                       name: "Open in new tab",
                       onClick() {
                         window.open(`${ window.location.origin }#/app/a/${ app.name }`, "_blank");
+                        setVisible(false);
                       }
                     },
                     {
                       name: "Show in AppStore",
                       onClick() {
                         navigate(`/app/a/store/app/${ app.name }`);
+                        setVisible(false);
                       }
                     }
                   ]}

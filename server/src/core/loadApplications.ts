@@ -46,41 +46,45 @@ function checkIfApplicationIsValidToLoad(applicationName: string): boolean {
   return true;
 }
 
+export function loadApplication(appName: string, app, io) {
+  if (!checkIfApplicationIsValidToLoad(appName)) {
+    return;
+  }
+
+  // import and load all applications
+  import(`../apps/${ appName }/index.js`).then((mod: {
+    default?: YourDashApplicationServerPlugin
+  }) => {
+    try {
+      log(logTypes.info, `${ chalk.yellow.bold("CORE") }: Starting application: ${ appName }`);
+
+      if (!mod.default) {
+        log(
+          logTypes.error,
+          `${ chalk.yellow.bold("CORE") }: Unable to load ${ appName }! This application does not contain a default export!`
+        );
+        return;
+      }
+
+      mod.default({
+        app, // express app instance
+        io // socket.io server instance
+      });
+      log(logTypes.success, `${ chalk.yellow.bold("CORE") }: Initialized application: ${ appName }`);
+    } catch (err) {
+      log(logTypes.error, `${ chalk.yellow.bold("CORE") }: Error during application initialization: ${ appName }`);
+    }
+  }).catch(_err => {
+    log(logTypes.error, `${ chalk.yellow.bold("CORE") }: Error while loading application: ${ appName }`);
+  });
+}
+
+
 export default function loadApplications(app, io) {
   if (fsExistsSync(path.resolve(process.cwd(), "./src/apps/"))) {
     const apps = (globalDatabase.get("installed_applications"));
     apps.forEach((appName: string) => {
-
-      if (!checkIfApplicationIsValidToLoad(appName)) {
-        return;
-      }
-
-      // import and load all applications
-      import(`../apps/${ appName }/index.js`).then((mod: {
-        default?: YourDashApplicationServerPlugin
-      }) => {
-        try {
-          log(logTypes.info, `${ chalk.yellow.bold("CORE") }: Starting application: ${ appName }`);
-
-          if (!mod.default) {
-            log(
-              logTypes.error,
-              `${ chalk.yellow.bold("CORE") }: Unable to load ${ appName }! This application does not contain a default export!`
-            );
-            return;
-          }
-
-          mod.default({
-            app, // express app instance
-            io // socket.io server instance
-          });
-          log(logTypes.success, `${ chalk.yellow.bold("CORE") }: Initialized application: ${ appName }`);
-        } catch (err) {
-          log(logTypes.error, `${ chalk.yellow.bold("CORE") }: Error during application initialization: ${ appName }`);
-        }
-      }).catch(_err => {
-        log(logTypes.error, `${ chalk.yellow.bold("CORE") }: Error while loading application: ${ appName }`);
-      });
+      loadApplication(appName, app, io);
     });
   } else {
     log(logTypes.error, `${ chalk.yellow.bold("CORE") }: No applications found!`);
