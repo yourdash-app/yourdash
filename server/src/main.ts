@@ -2,7 +2,7 @@
 //  - https://github.com/yourdash-app/yourdash
 //  - https://yourdash-app.github.io
 
-import { existsSync as fsExistsSync, promises as fs } from "fs";
+import { promises as fs } from "fs";
 import path from "path";
 import * as http from "http";
 import cors from "cors";
@@ -23,6 +23,7 @@ import { YourDashServerDiscoveryStatus } from "./core/discovery.js";
 import startupTasks from "./core/startupTasks.js";
 import defineCorePanelRoutes from "./core/endpoints/panel.js";
 import loadApplications from "./core/loadApplications.js";
+import startRequestLogger from "./core/requestLogger.js";
 
 const args = minimist(process.argv.slice(2));
 
@@ -53,16 +54,20 @@ const beforeShutdown = () => {
   globalDatabase._internalDoNotUseWriteToDiskOnlyIntendedForShutdownSequence(
     path.resolve(process.cwd(), "./fs/globalDatabase.json"),
     () => {
+
       process.kill(process.pid);
     }
   );
 };
 
+
 process.on("SIGINT", beforeShutdown);
 
-io.on("connection", socket => {
+io.on("connection", (socket: SocketIoSocket<any, any, any, any>) => {
   // Check that all required parameters are present
+
   if (!socket.handshake.query.username || !socket.handshake.query.sessionToken || !socket.handshake.query.sessionId) {
+
 
     log(
       logTypes.info,
@@ -77,9 +82,12 @@ io.on("connection", socket => {
     return;
   }
 
+
   if (!activeSockets[socket.handshake.query.username as string]) {
+
     activeSockets[socket.handshake.query.username as string] = [];
   }
+
 
   activeSockets[socket.handshake.query.username as string].push(<ISocketActiveSocket>{
     id: socket.handshake.query.sessionId as string,
@@ -92,16 +100,17 @@ io.on("connection", socket => {
   });
 
   socket.on("disconnect", () => {
-    activeSockets[socket.handshake.query.username as string].forEach(value => {
+
+    activeSockets[socket.handshake.query.username as string].forEach(() => {
+
       activeSockets[socket.handshake.query.username as string].filter(sock => sock.id !== socket.id);
     });
   });
 
   return;
-}
-);
+});
 
-io.use(async (socket, next) => {
+io.use(async (socket: SocketIoSocket<any, any, any, any>, next) => {
   const {
     username,
     sessionToken
@@ -111,21 +120,17 @@ io.use(async (socket, next) => {
   };
   if (!username || !sessionToken) {
     return socket.disconnect();
-
   }
   if (!__internalGetSessionsDoNotUseOutsideOfCore()[username]) {
     try {
       const user = await new YourDashUnreadUser(username).read();
-
       __internalGetSessionsDoNotUseOutsideOfCore()[username] = await user.getSessions() || [];
     } catch (_err) {
       return socket.disconnect();
     }
-
   }
   if (__internalGetSessionsDoNotUseOutsideOfCore()[username].find(session => session.sessionToken === sessionToken)) {
     return next();
-
   }
   return socket.disconnect();
 });
@@ -137,56 +142,17 @@ app.use(express.json({ limit: "50mb" }));
 app.use(cors());
 
 app.use((_req, res, next) => {
+
   res.removeHeader("X-Powered-By");
   next();
 });
 
 if (args["log-requests"]) {
-  app.use((req, res, next) => {
-    switch (req.method) {
-      case "GET":
-        log(
-          logTypes.info,
-          `${ chalk.bgGreen(chalk.whiteBright(" GET ")) } ${ res.statusCode } ${ req.path }`
-        );
-        if (JSON.stringify(req.query) !== "{}") {
-          log(logTypes.info, JSON.stringify(req.query));
-        }
-        break;
-      case "POST":
-        log(
-          logTypes.info,
-          `${ chalk.bgBlue(chalk.whiteBright(" POS ")) } ${ res.statusCode } ${ req.path }`
-        );
-        if (JSON.stringify(req.query) !== "{}") {
-          log(logTypes.info, JSON.stringify(req.query));
-        }
-        break;
-      case "DELETE":
-        log(
-          logTypes.info, `${ chalk.bgRed(chalk.whiteBright(" DEL ")) } ${ res.statusCode } ${ req.path }`
-        );
-        if (JSON.stringify(req.query) !== "{}") {
-          log(logTypes.info, JSON.stringify(req.query));
-        }
-        break;
-      case "OPTIONS":
-        if (args["log-options-requests"]) {
-          log(
-            logTypes.info,
-            `${ chalk.bgCyan(chalk.whiteBright(" OPT ")) } ${ res.statusCode } ${ req.path }`
-          );
-          if (JSON.stringify(req.query) !== "{}") {
-            log(logTypes.info, JSON.stringify(req.query));
-          }
-        }
-        break;
-      default:
-        log(logTypes.error, `ERROR IN REQUEST LOGGER, UNKNOWN REQUEST TYPE: ${ req.method }`);
-    }
-    next();
+  startRequestLogger(app, {
+    logOptionsRequests: !!args["log-options-requests"]
   });
 }
+
 
 process.stdin.on("data", data => {
   const commandAndArgs = data.toString().replaceAll("\n", "").replaceAll("\r", "").split(" ");
@@ -324,10 +290,10 @@ app.get("/login/is-authenticated", async (req, res) => {
   return res.json({ error: true });
 });
 
-/**
- --------------------------------------------------------------
- WARNING: all endpoints require authentication after this point
- --------------------------------------------------------------
+/*
+ * --------------------------------------------------------------
+ * WARNING: all endpoints require authentication after this point
+ * --------------------------------------------------------------
  */
 
 app.use(async (req, res, next) => {
@@ -463,30 +429,30 @@ app.get("/core/userdb", async (req, res) => {
 });
 
 // TODO: implement this
-app.post("/core/userdb", async (req, res) => {
-  return 0;
-
-  const { username } = req.headers as {
-    username: string
-  };
-
-  const user = new YourDashUnreadUser(username);
-
-  let output = {};
-
-  try {
-    output = JSON.parse(fs.readFile(path.resolve(user.getPath(), "./userdb.json")).toString());
-  } catch (_err) {
-    output = {};
-    fs.writeFile(path.resolve(user.getPath(), "./userdb.json"), "{}");
-  }
-
-  return res.json(output);
-});
+app.post("/core/userdb", async (req, res) =>
+  0
+  //
+  // const { username } = req.headers as {
+  //   username: string
+  // };
+  //
+  // const user = new YourDashUnreadUser(username);
+  //
+  // let output = {};
+  //
+  // try {
+  //   output = JSON.parse(fs.readFile(path.resolve(user.getPath(), "./userdb.json")).toString());
+  // } catch (_err) {
+  //   output = {};
+  //   fs.writeFile(path.resolve(user.getPath(), "./userdb.json"), "{}");
+  // }
+  //
+  // return res.json(output);
+);
 
 /*
  * Start listening for requests
- * */
+ */
 killPort(3560).then(() => {
   try {
     httpServer.listen(3560, () => {

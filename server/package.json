@@ -14,7 +14,6 @@
     "@types/kill-port": "^2.0.0",
     "@types/node": "^18.15.7",
     "@types/sharp": "^0.31.1",
-    "@types/socket.io": "^3.0.2",
     "@types/tsc-watch": "^4.2.0",
     "@typescript-eslint/parser": "^5.58.0",
     "bcrypt": "^5.1.0",

@@ -51,6 +51,9 @@ const DbItem: React.FC<IdbItem> = ({
         active
           ? (
             <TextInput
+              onBlur={e => {
+                setKey(e.currentTarget.value);
+              }}
               onChange={(value: string) => {
                 setKey(value);
               }}
@@ -58,7 +61,9 @@ const DbItem: React.FC<IdbItem> = ({
               className={"mt-auto mb-auto flex-shrink-0"}
             />
           )
-          : <span className={"mt-auto mb-auto"}>{key}</span>
+          : (
+            <span className={"mt-auto mb-auto"}>{key}</span>
+          )
       }
       {
         active && (

@@ -1,4 +1,5 @@
 import KeyboardInputManager from "./keyboardManager";
+import {CodeStudioFileTypes} from "./fileTypes";
 
 export default class CodeStudioEditor {
   keyboardInputManager: KeyboardInputManager;
@@ -9,5 +10,10 @@ export default class CodeStudioEditor {
     this.htmlContainer = containerElement;
 
     return this;
+  }
+
+  // TODO: implement ME
+  loadRawCode(fileName: string, fileType: CodeStudioFileTypes, rawCode: string) {
+    return;
   }
 }

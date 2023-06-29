@@ -1,7 +1,6 @@
-import { exec, ChildProcess } from "child_process";
+import { exec } from "child_process";
 import minimist from "minimist";
 import chalk from "chalk";
-import killPort from "kill-port";
 
 console.log(`-------------------------\n     ${ chalk.whiteBright("YourDash CLI v0.0.1") }     \n-------------------------`);
 
@@ -24,7 +23,7 @@ if (!args.dev && args.compile) {
       return;
     }
 
-    console.log(`[${ chalk.bold.blue("TSC") }]: ${ data.toString().replaceAll("\n", "").replaceAll("\x1Bc", "") }`);
+    console.log(`[${ chalk.bold.blue("TSC") }]: ${ data.toString().replaceAll("\n", "").replaceAll("\x1Bc", "").replaceAll("error", `${ chalk.bold.redBright("ERROR") }`) }`);
   });
 
   childProcess.stderr.on("data", data => {
@@ -38,18 +37,14 @@ if (!args.dev && args.compile) {
       return;
     }
 
-    console.log(`[${ chalk.bold.blue("TSC ERROR") }]: ${ data.toString().replaceAll("\n", "").replaceAll(
-      "\x1Bc",
-      ""
-    ) }`);
+    console.log(`[${ chalk.bold.blue("TSC ERROR") }]: ${ data.toString().replaceAll("\n", "").replaceAll("\x1Bc", "").replaceAll("error", `${ chalk.bold.redBright("ERROR") }`) }`);
   });
 
-  process.on("exit", code => {
+  process.on("exit", () => {
     console.log(`${ chalk.yellow.bold("CORE") }: Server about to exit!`);
 
     if (childProcess && !childProcess.killed) {
-      console.log(`${ chalk.yellow.bold("CORE") }: Killing child process [ ${ childProcess.pid } ] (${ chalk.bold.blue(
-        "TSC") })`);
+      console.log(`${ chalk.yellow.bold("CORE") }: Killing child process [ ${ childProcess.pid } ] (${ chalk.bold.blue("TSC") })`);
       childProcess.kill();
     }
   });
