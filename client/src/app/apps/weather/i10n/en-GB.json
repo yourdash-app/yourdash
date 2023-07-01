@@ -27,5 +27,6 @@
   "CONDITION_UNKNOWN": "unknown",
   "AND": "and",
   "WITH": "with",
-  "CURRENTLY": "Currently"
+  "CURRENTLY": "Currently",
+  "PROBLEM_FETCHING_DATA": "Unable to gather data for this location at this moment."
 }

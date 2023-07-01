@@ -1,13 +1,12 @@
 import { type StorePromotedApplication } from "../../../../shared/apps/store/storePromotedApplication.js";
-import YourDashUnreadApplication, {
-  getAllApplications,
-  type YourDashApplicationServerPlugin
-} from "../../helpers/applications.js";
+import YourDashUnreadApplication, { getAllApplications, type YourDashApplicationServerPlugin } from "../../helpers/applications.js";
 import { type IStoreCategory } from "../../../../shared/apps/store/storeCategory.js";
 import { getInstanceLogoBase64 } from "../../helpers/logo.js";
 import getAllCategories, { getAllApplicationsFromCategory } from "./helpers/categories.js";
 import globalDatabase from "../../helpers/globalDatabase.js";
 import { loadApplication } from "../../core/loadApplications.js";
+import path from "path";
+import authenticatedImage, { authenticatedImageType } from "../../core/authenticatedImage.js";
 
 const promotedApplications: string[] = ["dash", "store"];
 
@@ -49,6 +48,28 @@ const main: YourDashApplicationServerPlugin = ({
     }
 
     return res.json(Object.keys(categories));
+  });
+
+  app.get("/app/store/applications", async (req, res) => {
+    const { username } = req.headers as {
+      username: string
+    };
+
+    const applications = await getAllApplications();
+
+    return res.json(
+      await Promise.all(
+        applications.map(async application => {
+          const app = await new YourDashUnreadApplication(application).read();
+
+          return {
+            id: application,
+            displayName: app.getDisplayName(),
+            icon: authenticatedImage(username, authenticatedImageType.file, app.getIconPath())
+          };
+        })
+      )
+    );
   });
 
   app.get("/app/store/category/:id", async (req, res) => {
@@ -98,13 +119,13 @@ const main: YourDashApplicationServerPlugin = ({
       return res.json({ error: true });
     }
 
-    const unreadApplication = await new YourDashUnreadApplication(id);
+    const unreadApplication = new YourDashUnreadApplication(id);
 
     if (!(await unreadApplication.exists())) {
       return res.json({ error: true });
     }
 
-    const application = (await unreadApplication.read());
+    const application = await unreadApplication.read();
 
     return res.json({
       ...application.getRawApplicationData(),
@@ -133,6 +154,16 @@ const main: YourDashApplicationServerPlugin = ({
     }
     globalDatabase.set("installed_applications", globalDatabase.get("installed_applications").filter(app => app !== id));
     return res.json({ success: true });
+  });
+
+  app.get("/app/store/application/:id/icon", async (req, res) => {
+    const { id } = req.params;
+    const unreadApplication = new YourDashUnreadApplication(id);
+    if (!(await unreadApplication.exists())) {
+      return res.sendFile(path.resolve(process.cwd(), "./assets/placeholder_application_icon.png"));
+    }
+    const application = await unreadApplication.read();
+    return res.sendFile(application.getIconPath());
   });
 };
 

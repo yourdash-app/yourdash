@@ -2,6 +2,9 @@
 module.exports = {
   content: ["./src/**/*.tsx", "./src/**/*.ts"], theme: {
     extend: {
+      screens: {
+        "3xl": "1600px"
+      },
       colors: {
         theme: {
           50: "rgb(var(--theme-50) / <alpha-value>)",
@@ -14,7 +17,8 @@ module.exports = {
           700: "rgb(var(--theme-700) / <alpha-value>)",
           800: "rgb(var(--theme-800) / <alpha-value>)",
           900: "rgb(var(--theme-900) / <alpha-value>)"
-        }, base: {
+        },
+        base: {
           50: "rgb(var(--base-50) / <alpha-value>)",
           100: "rgb(var(--base-100) / <alpha-value>)",
           200: "rgb(var(--base-200) / <alpha-value>)",
@@ -25,7 +29,8 @@ module.exports = {
           700: "rgb(var(--base-700) / <alpha-value>)",
           800: "rgb(var(--base-800) / <alpha-value>)",
           900: "rgb(var(--base-900) / <alpha-value>)"
-        }, container: {
+        },
+        container: {
           bg: "rgb(var(--container-bg) / <alpha-value>)",
           fg: "rgb(var(--container-fg) / <alpha-value>)",
           border: "rgb(var(--container-border) / <alpha-value>)",
@@ -39,20 +44,33 @@ module.exports = {
             fg: "rgb(var(--container-tertiary-fg) / <alpha-value>)",
             border: "rgb(var(--container-tertiary-border) / <alpha-value>)"
           }
-        }, button: {
-          bg: "rgb(var(--button-bg) / <alpha-value>)", fg: "rgb(var(--button-fg) / <alpha-value>)", hover: {
-            bg: "rgb(var(--button-hover-bg) / <alpha-value>)", fg: "rgb(var(--button-hover-fg) / <alpha-value>)"
-          }, active: {
-            bg: "rgb(var(--button-active-bg) / <alpha-value>)", fg: "rgb(var(--button-active-fg) / <alpha-value>)"
+        },
+        button: {
+          bg: "rgb(var(--button-bg) / <alpha-value>)",
+          fg: "rgb(var(--button-fg) / <alpha-value>)",
+          hover: {
+            bg: "rgb(var(--button-hover-bg) / <alpha-value>)",
+            fg: "rgb(var(--button-hover-fg) / <alpha-value>)"
+          },
+          active: {
+            bg: "rgb(var(--button-active-bg) / <alpha-value>)",
+            fg: "rgb(var(--button-active-fg) / <alpha-value>)"
           }
-        }, input: {
-          bg: "rgb(var(--input-bg) / <alpha-value>)", fg: "rgb(var(--input-fg) / <alpha-value>)", hover: {
-            bg: "rgb(var(--input-hover-bg) / <alpha-value>)", fg: "rgb(var(--input-hover-fg) / <alpha-value>)"
-          }, active: {
-            bg: "rgb(var(--input-active-bg) / <alpha-value>)", fg: "rgb(var(--input-active-fg) / <alpha-value>)"
+        },
+        input: {
+          bg: "rgb(var(--input-bg) / <alpha-value>)",
+          fg: "rgb(var(--input-fg) / <alpha-value>)",
+          hover: {
+            bg: "rgb(var(--input-hover-bg) / <alpha-value>)",
+            fg: "rgb(var(--input-hover-fg) / <alpha-value>)"
+          },
+          active: {
+            bg: "rgb(var(--input-active-bg) / <alpha-value>)",
+            fg: "rgb(var(--input-active-fg) / <alpha-value>)"
           }
         }
-      }, borderRadius: {
+      },
+      borderRadius: {
         "button-rounding": "var(--button-rounding)",
         "input-rounding": "var(--input-rounding)",
         "container-rounding": "var(--container-rounding)",
@@ -60,9 +78,13 @@ module.exports = {
         "container-tertiary-rounding": "var(--container-tertiary-rounding)"
       }
     }
-  }, plugins: [function ( { addVariant } ) {
-    addVariant( "child", "& > *" )
-    addVariant( "child-hover", "& > *:hover" )
-    addVariant( "child-active", "& > *:active" )
-  }, require( "@tailwindcss/container-queries" )]
-}
+  },
+  plugins: [
+    ({ addVariant }) => {
+      addVariant("child", "& > *");
+      addVariant("child-hover", "& > *:hover");
+      addVariant("child-active", "& > *:active");
+    },
+    require("@tailwindcss/container-queries")
+  ]
+};

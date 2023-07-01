@@ -26,22 +26,25 @@ import WEATHER_ICON_CLOUDY from "./weatherIcons/cloudy.svg";
 import WEATHER_ICON_PARTLY_CLOUDY from "./weatherIcons/partly_cloudy.svg";
 
 /**
- WMO Weather interpretation codes (WW)
- Code    Description
- 0    Clear sky
- 1, 2, 3    Mainly clear, partly cloudy, and overcast
- 45, 48    Fog and depositing rime fog
- 51, 53, 55    Drizzle: Light, moderate, and dense intensity
- 56, 57    Freezing Drizzle: Light and dense intensity
- 61, 63, 65    Rain: Slight, moderate and heavy intensity
- 66, 67    Freezing Rain: Light and heavy intensity
- 71, 73, 75    Snow fall: Slight, moderate, and heavy intensity
- 77    Snow grains
- 80, 81, 82    Rain showers: Slight, moderate, and violent
- 85, 86    Snow showers slight and heavy
- 95 *    Thunderstorm: Slight or moderate
- 96, 99 *    Thunderstorm with slight and heavy hail
- (*) Thunderstorm forecast with hail is only available in Central Europe
+ * WMO Weather interpretation codes ( WW )
+ *
+ *  Code        Description
+ *  0           Clear sky
+ *  1, 2, 3     Mainly clear, partly cloudy, and overcast
+ *  45, 48      Fog and depositing rime fog
+ *  51, 53, 55  Drizzle: Light, moderate, and dense intensity
+ *  56, 57      Freezing Drizzle: Light and dense intensity
+ *  61, 63, 65  Rain: Slight, moderate and heavy intensity
+ *  66, 67      Freezing Rain: Light and heavy intensity
+ *  71, 73, 75  Snow fall: Slight, moderate, and heavy intensity
+ *  77          Snow grains
+ *  80, 81, 82  Rain showers: Slight, moderate, and violent
+ *  85, 86      Snow showers slight and heavy
+ *  95          Thunderstorm: Slight or moderate (*)
+ *  96, 99      Thunderstorm with slight and heavy hail (*)
+ *
+ * (*) Thunderstorm forecast with hail is only available in Central Europe
+ *
  */
 
 const backgroundImages: any[] = [
@@ -231,7 +234,7 @@ const WeatherApplicationLocationPage: React.FC = () => {
           ? (
             <main className={"flex flex-col items-center justify-center h-full w-full gap-2"}>
               <span className={"text-3xl pl-4 pr-4 text-center"}>
-                Unable to gather data for this location at this moment
+                {trans("PROBLEM_FETCHING_DATA")}
               </span>
               <MajorButton onClick={() => {
                 navigate("/app/a/weather");
@@ -396,11 +399,12 @@ const WeatherApplicationLocationPage: React.FC = () => {
                     "w-full flex flex-col items-center justify-center h-[9.75rem] mt-auto"
                   )}
                 >
-                  {/* eslint-disable-next-line no-magic-numbers */}
-                  <h2 className={"font-bold text-3xl flex"}>{new Date(hour.date).getHours() < 10
-                    ? `0${
-                      new Date(hour.date).getHours() }:00`
-                    : `${ new Date(hour.date).getHours() }:00`}</h2>
+                  <h2 className={"font-bold text-3xl flex"}>{
+                    /* eslint-disable-next-line no-magic-numbers */
+                    new Date(hour.date).getHours() < 10
+                      ? `0${ new Date(hour.date).getHours() }:00`
+                      : `${ new Date(hour.date).getHours() }:00`}
+                  </h2>
                   <img
                     src={getWeatherIconFromState(hour.condition)}
                     draggable={false}
@@ -408,7 +412,7 @@ const WeatherApplicationLocationPage: React.FC = () => {
                     className={"w-16"}
                   />
                   <section className={"flex justify-center items-center w-full text-center"}>
-                    {hour?.temp || "ERROR"}{"°C"}
+                    {`${ hour?.temp }°C` || "ERROR"}
                   </section>
                 </Card>
               </div>

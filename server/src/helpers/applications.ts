@@ -1,13 +1,13 @@
-import {promises as fs} from "fs";
+import { promises as fs } from "fs";
 
 import path from "path";
 
-import {Application as ExpressApplication} from "express";
-import {Server as SocketServer} from "socket.io";
+import { Application as ExpressApplication } from "express";
+import { Server as SocketServer } from "socket.io";
 
-import {type IYourDashApplication} from "../../../shared/core/application.js";
+import { type IYourDashApplication } from "../../../shared/core/application.js";
 
-import log, {logTypes} from "./log.js";
+import log, { logTypes } from "./log.js";
 import globalDatabase from "./globalDatabase.js";
 
 class YourDashApplication {
@@ -42,6 +42,11 @@ class YourDashApplication {
     } catch (_e) {
       return fs.readFile(path.resolve(process.cwd(), "./src/assets/placeholder_application_icon.png"));
     }
+  }
+
+  // Returns a string with the path to the application's icon
+  getIconPath(): string {
+    return path.resolve(process.cwd(), `./src/apps/${ this.name }/icon.avif`);
   }
 
   // Returns a Buffer containing the data for the application's store page banner
@@ -87,7 +92,7 @@ export async function getAllApplications(): Promise<string[]> {
 }
 
 export default class YourDashUnreadApplication {
-  private readonly name: string;
+  private name: string;
 
   constructor(name: string) {
     this.name = name;
@@ -131,4 +136,4 @@ type YourDashApplicationServerPlugin = ({
   io: SocketServer
 }) => any;
 
-export {type YourDashApplicationServerPlugin};
+export { type YourDashApplicationServerPlugin };

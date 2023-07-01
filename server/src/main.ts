@@ -24,6 +24,7 @@ import startupTasks from "./core/startupTasks.js";
 import defineCorePanelRoutes from "./core/endpoints/panel.js";
 import loadApplications from "./core/loadApplications.js";
 import startRequestLogger from "./core/requestLogger.js";
+import { startAuthenticatedImageHelper } from "./core/authenticatedImage.js";
 
 const args = minimist(process.argv.slice(2));
 
@@ -95,7 +96,7 @@ io.on("connection", (socket: SocketIoSocket<any, any, any, any>) => {
     socket
   });
 
-  socket.on("execute-command-response", output => {
+  socket.on("execute-command-response", (output: any) => {
     log(logTypes.info, output);
   });
 
@@ -290,11 +291,7 @@ app.get("/login/is-authenticated", async (req, res) => {
   return res.json({ error: true });
 });
 
-/*
- * --------------------------------------------------------------
- * WARNING: all endpoints require authentication after this point
- * --------------------------------------------------------------
- */
+startAuthenticatedImageHelper(app);
 
 app.use(async (req, res, next) => {
   const {
@@ -305,11 +302,7 @@ app.use(async (req, res, next) => {
     token?: string
   };
 
-  if (!username) {
-    return res.json({ error: "authorization fail" });
-  }
-
-  if (!token) {
+  if (!username || !token) {
     return res.json({ error: "authorization fail" });
   }
 
@@ -329,6 +322,12 @@ app.use(async (req, res, next) => {
 
   return res.json({ error: "authorization fail" });
 });
+
+/*
+ * --------------------------------------------------------------
+ * WARNING: all endpoints require authentication after this point
+ * --------------------------------------------------------------
+ */
 
 await defineCorePanelRoutes(app);
 
@@ -372,10 +371,10 @@ app.get("/core/personal-server-accelerator/", async (req, res) => {
     username: string
   };
 
-  const user = await (new YourDashUnreadUser(username));
+  const unreadUser = new YourDashUnreadUser(username);
 
   try {
-    return JSON.parse((await fs.readFile(path.resolve(user.getPath(), "personal_server_accelerator.json"))).toString());
+    return JSON.parse((await fs.readFile(path.resolve(unreadUser.getPath(), "personal_server_accelerator.json"))).toString());
   } catch (_err) {
     return res.json({ error: `Unable to read ${ username }/personal_server_accelerator.json` });
   }
@@ -405,14 +404,21 @@ app.get("/core/userdb", async (req, res) => {
 
   const user = new YourDashUnreadUser(username);
 
-  let output = {};
+  let output: object;
 
   try {
     const fileData = JSON.parse(fs.readFile(path.resolve(user.getPath(), "./userdb.json")).toString());
     if (fileData) {
       output = fileData;
     } else {
-      throw new Error("Unable to read userdb.json");
+      const readUser = await user.read();
+
+      output = {
+        "user:username": username,
+        "user:full_name": readUser.getName()
+      };
+
+      await fs.writeFile(path.resolve(user.getPath(), "./userdb.json"), JSON.stringify(output));
     }
   } catch (_err) {
     const readUser = await user.read();
@@ -422,14 +428,14 @@ app.get("/core/userdb", async (req, res) => {
       "user:full_name": readUser.getName()
     };
 
-    fs.writeFile(path.resolve(user.getPath(), "./userdb.json"), JSON.stringify(output));
+    await fs.writeFile(path.resolve(user.getPath(), "./userdb.json"), JSON.stringify(output));
   }
 
   return res.json(output);
 });
 
 // TODO: implement this
-app.post("/core/userdb", async (req, res) =>
+app.post("/core/userdb", async () =>
   0
   //
   // const { username } = req.headers as {
