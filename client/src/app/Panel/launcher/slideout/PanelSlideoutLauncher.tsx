@@ -79,7 +79,7 @@ const PanelApplicationLauncherSlideOut: React.FC<{
       <header
         style={{
           // FIXME: this will only work during development, this needs urgently changing
-          backgroundImage: "url(\"http://localhost:3560/login/background\")"
+          backgroundImage: "url(\"http://localhost:3560/core/login/background\")"
         }}
         className={"h-32 flex items-center justify-center w-full bg-cover bg-center"}
       >

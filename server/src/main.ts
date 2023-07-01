@@ -25,6 +25,7 @@ import defineCorePanelRoutes from "./core/endpoints/panel.js";
 import loadApplications from "./core/loadApplications.js";
 import startRequestLogger from "./core/requestLogger.js";
 import { startAuthenticatedImageHelper } from "./core/authenticatedImage.js";
+import defineLoginEndpoints from "./core/endpoints/login.js";
 
 const args = minimist(process.argv.slice(2));
 
@@ -49,7 +50,8 @@ const activeSockets: {
   [ username: string ]: ISocketActiveSocket[]
 } = {};
 
-const beforeShutdown = () => {
+// save the database before process termination
+const handleShutdown = () => {
   log(logTypes.info, "Shutting down... (restart of core should occur automatically)");
 
   globalDatabase._internalDoNotUseWriteToDiskOnlyIntendedForShutdownSequence(
@@ -60,35 +62,22 @@ const beforeShutdown = () => {
     }
   );
 };
+process.on("SIGINT", handleShutdown);
 
-
-process.on("SIGINT", beforeShutdown);
-
+// Handle socket.io connections
 io.on("connection", (socket: SocketIoSocket<any, any, any, any>) => {
   // Check that all required parameters are present
 
   if (!socket.handshake.query.username || !socket.handshake.query.sessionToken || !socket.handshake.query.sessionId) {
-
-
-    log(
-      logTypes.info,
-      socket.handshake.query.username,
-      socket.handshake.query.sessionToken,
-      socket.handshake.query.sessionId
-    );
-
-    log(logTypes.error, "[PSA-BACKEND]: Missing required parameters");
+    log(logTypes.error, "[PSA-BACKEND]: Closing connection! Missing required parameters!");
 
     socket.disconnect(true);
     return;
   }
 
-
   if (!activeSockets[socket.handshake.query.username as string]) {
-
     activeSockets[socket.handshake.query.username as string] = [];
   }
-
 
   activeSockets[socket.handshake.query.username as string].push(<ISocketActiveSocket>{
     id: socket.handshake.query.sessionId as string,
@@ -101,16 +90,17 @@ io.on("connection", (socket: SocketIoSocket<any, any, any, any>) => {
   });
 
   socket.on("disconnect", () => {
-
     activeSockets[socket.handshake.query.username as string].forEach(() => {
-
       activeSockets[socket.handshake.query.username as string].filter(sock => sock.id !== socket.id);
     });
+
+    log(logTypes.info, "[PSA-BACKEND]: Closing PSA connection");
   });
 
   return;
 });
 
+// handle socket.io session authentication
 io.use(async (socket: SocketIoSocket<any, any, any, any>, next) => {
   const {
     username,
@@ -138,12 +128,9 @@ io.use(async (socket: SocketIoSocket<any, any, any, any>, next) => {
 
 export { io, activeSockets };
 
-
 app.use(express.json({ limit: "50mb" }));
 app.use(cors());
-
 app.use((_req, res, next) => {
-
   res.removeHeader("X-Powered-By");
   next();
 });
@@ -154,7 +141,6 @@ if (args["log-requests"]) {
   });
 }
 
-
 process.stdin.on("data", data => {
   const commandAndArgs = data.toString().replaceAll("\n", "").replaceAll("\r", "").split(" ");
   const command = commandAndArgs[0];
@@ -162,10 +148,10 @@ process.stdin.on("data", data => {
 
   switch (command) {
     case "exit":
-      beforeShutdown();
+      handleShutdown();
       break;
     default:
-      log(logTypes.error, `UNKNOWN COMMAND: ${ command }`);
+      log(logTypes.error, `Unknown command: ${ command }`);
   }
 });
 
@@ -194,105 +180,10 @@ app.get("/test", (_req, res) => {
   }
 });
 
-app.get(
-  "/login/background",
-  (_req, res) => res.sendFile(path.resolve(
-    process.cwd(),
-    "./fs/login_background.avif"
-  ))
-);
-
-app.get("/login/user/:username/avatar", (req, res) => {
-  const user = new YourDashUnreadUser(req.params.username);
-  return res.sendFile(path.resolve(user.getPath(), "avatar.avif"));
-});
-
-app.get("/login/user/:username", async (req, res) => {
-  const user = new YourDashUnreadUser(req.params.username);
-  if (await user.exists()) {
-    return res.json({ name: (await user.read()).getName() });
-  } else {
-    return res.json({ error: "Unknown user" });
-  }
-});
-
-app.post("/login/user/:username/authenticate", async (req, res) => {
-  const username = req.params.username;
-  const password = req.body.password;
-
-  if (!username || username === "") {
-    return res.json({ error: "Missing username" });
-  }
-
-  if (!password || password === "") {
-    return res.json({ error: "Missing password" });
-  }
-
-  const user = new YourDashUnreadUser(username);
-
-  const savedHashedPassword = (await fs.readFile(path.resolve(user.getPath(), "./password.txt"))).toString();
-
-  log(logTypes.info, savedHashedPassword);
-  log(logTypes.info, password);
-
-  return compareHash(savedHashedPassword, password).then(async result => {
-    if (result) {
-      const session = await createSession(
-        username,
-        req.headers?.type === "desktop"
-          ? YourDashSessionType.desktop
-          : YourDashSessionType.web
-      );
-      return res.json({
-        token: session.sessionToken,
-        id: session.id
-      });
-    } else {
-      return res.json({ error: "Incorrect password" });
-    }
-  }).catch(() => res.json({ error: "Hash comparison failure" }));
-});
-
-app.get("/core/panel/logo/small", (_req, res) => res.sendFile(path.resolve(
-  process.cwd(),
-  "./fs/logo_panel_small.avif"
-)));
-
-app.get("/login/is-authenticated", async (req, res) => {
-  const {
-    username,
-    token
-  } = req.headers as {
-    username?: string;
-    token?: string;
-  };
-
-  if (!username) {
-    return res.json({ error: true });
-  }
-
-  if (!token) {
-    return res.json({ error: true });
-  }
-
-  if (!__internalGetSessionsDoNotUseOutsideOfCore()[username]) {
-    try {
-      const user = await (new YourDashUnreadUser(username).read());
-
-      __internalGetSessionsDoNotUseOutsideOfCore()[username] = (await user.getSessions()) || [];
-    } catch (_err) {
-      return res.json({ error: true });
-    }
-  }
-
-  if (__internalGetSessionsDoNotUseOutsideOfCore()[username].find(session => session.sessionToken === token)) {
-    return res.json({ success: true });
-  }
-  return res.json({ error: true });
-});
-
 startAuthenticatedImageHelper(app);
+defineLoginEndpoints(app);
 
+// check for authentication
 app.use(async (req, res, next) => {
   const {
     username,
@@ -323,7 +214,7 @@ app.use(async (req, res, next) => {
   return res.json({ error: "authorization fail" });
 });
 
-/*
+/**
  * --------------------------------------------------------------
  * WARNING: all endpoints require authentication after this point
  * --------------------------------------------------------------

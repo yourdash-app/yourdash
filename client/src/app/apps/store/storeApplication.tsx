@@ -102,7 +102,7 @@ const StoreApplication: React.FC = () => {
       </h2>
       {
         applications.length !== 0 && (
-          <section className={"p-4 grid grid-cols-3 gap-2 animate__animated animate__fadeIn animate__250ms"}>
+          <section className={"p-4 grid grid-cols-3 gap-2 animate__animated animate__fadeIn animate__500ms"}>
             {
               applications.map(application => (
                 <StoreApplicationComponent

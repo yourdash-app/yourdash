@@ -1,8 +1,9 @@
 import log, { logTypes } from "../helpers/log.js";
 import chalk from "chalk";
+import { Application as ExpressApplication } from "express";
 
 export default function startRequestLogger(
-  app,
+  app: ExpressApplication,
   options: {
     logOptionsRequests?: boolean
   }
@@ -12,7 +13,7 @@ export default function startRequestLogger(
       case "GET":
         log(
           logTypes.info,
-          `${ chalk.bgGreen(chalk.whiteBright(" GET ")) } ${ res.statusCode } ${ req.path }`
+          `${ chalk.bgGreen(chalk.black(" GET ")) } ${ res.statusCode } ${ req.path }`
         );
         if (JSON.stringify(req.query) !== "{}") {
           log(logTypes.info, JSON.stringify(req.query));
@@ -21,7 +22,7 @@ export default function startRequestLogger(
       case "POST":
         log(
           logTypes.info,
-          `${ chalk.bgBlue(chalk.whiteBright(" POS ")) } ${ res.statusCode } ${ req.path }`
+          `${ chalk.bgBlue(chalk.black(" POS ")) } ${ res.statusCode } ${ req.path }`
         );
         if (JSON.stringify(req.query) !== "{}") {
           log(logTypes.info, JSON.stringify(req.query));
@@ -29,7 +30,8 @@ export default function startRequestLogger(
         break;
       case "DELETE":
         log(
-          logTypes.info, `${ chalk.bgRed(chalk.whiteBright(" DEL ")) } ${ res.statusCode } ${ req.path }`
+          logTypes.info,
+          `${ chalk.bgRed(chalk.black(" DEL ")) } ${ res.statusCode } ${ req.path }`
         );
         if (JSON.stringify(req.query) !== "{}") {
           log(logTypes.info, JSON.stringify(req.query));
@@ -39,7 +41,7 @@ export default function startRequestLogger(
         if (options.logOptionsRequests) {
           log(
             logTypes.info,
-            `${ chalk.bgCyan(chalk.whiteBright(" OPT ")) } ${ res.statusCode } ${ req.path }`
+            `${ chalk.bgCyan(chalk.black(" OPT ")) } ${ res.statusCode } ${ req.path }`
           );
           if (JSON.stringify(req.query) !== "{}") {
             log(logTypes.info, JSON.stringify(req.query));

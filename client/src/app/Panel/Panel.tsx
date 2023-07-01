@@ -141,7 +141,7 @@ const PanelAuthorizer: React.FC = () => {
       navigate("/login");
     } else {
       csi.getJson(
-        "/login/is-authenticated",
+        "/core/login/is-authenticated",
         () => {
           loadDatabaseFromServer();
         },
