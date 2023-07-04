@@ -44,7 +44,7 @@ const SelectUser: React.FC<{
                 }
 
                 csi.getJson(
-                  `/login/user/${ username }`,
+                  `/core/login/user/${ username }`,
                   (json: {
                     name: {
                       first: string;
@@ -74,7 +74,7 @@ const SelectUser: React.FC<{
               }
 
               csi.getJson(
-                `/login/user/${ username }`,
+                `/core/login/user/${ username }`,
                 (json: {
                   name: {
                     first: string;
@@ -133,7 +133,7 @@ const LoginAsUser: React.FC<{
       >
         <img
           alt=""
-          src={`${ serverUrl }/login/user/${ username }/avatar`}
+          src={`${ serverUrl }/core/login/user/${ username }/avatar`}
           className={"rounded-xl aspect-square h-64"}
         />
         <span className={"text-center text-2xl tracking-wide font-medium text-base-50"}>
@@ -145,7 +145,7 @@ const LoginAsUser: React.FC<{
           onKeyDown={e => {
             if (e.key === "Enter") {
               csi.postJson(
-                `/login/user/${ username }/authenticate`,
+                `/core/login/user/${ username }/authenticate`,
                 {password},
                 response => {
                   localStorage.setItem("session_token", response.token);
@@ -168,7 +168,7 @@ const LoginAsUser: React.FC<{
         <MajorButton
           onClick={() => {
             csi.postJson(
-              `/login/user/${ username }/authenticate`,
+              `/core/login/user/${ username }/authenticate`,
               {password},
               response => {
                 localStorage.setItem("session_token", response.token);

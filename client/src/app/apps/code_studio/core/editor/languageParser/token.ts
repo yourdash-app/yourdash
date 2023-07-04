@@ -1,20 +1,14 @@
-enum TokenType {
-  Identifier,
-  Keyword,
-  String,
-  Number,
-  Operator,
-  Punctuation
-}
+import defaultTheme from "./defaultTheme";
+import {TokenType} from "./tokenType";
 
-enum FontWeight {
+export enum FontWeight {
   Normal,
   Bold,
   Bolder,
   Lighter
 }
 
-enum TextDecoration {
+export enum TextDecoration {
   None,
   Underline,
   Overline,
@@ -24,8 +18,6 @@ enum TextDecoration {
 export default class Token {
   type: TokenType;
   value: string;
-  color: string;
-  font: string;
   textDecoration?: string;
   errorMessage?: string;
   warningMessage?: string;
@@ -36,8 +28,6 @@ export default class Token {
   constructor(
     value: string,
     type: TokenType,
-    color: string,
-    font: string,
     textDecoration?: string,
     errorMessage?: string,
     warningMessage?: string,
@@ -47,8 +37,6 @@ export default class Token {
   ) {
     this.value = value;
     this.type = type;
-    this.color = color;
-    this.font = font;
     this.textDecoration = textDecoration;
     this.errorMessage = errorMessage;
     this.warningMessage = warningMessage;
@@ -61,8 +49,7 @@ export default class Token {
     const tokenSpan = document.createElement("span");
 
     tokenSpan.textContent = this.value;
-    tokenSpan.style.color = this.color;
-    tokenSpan.style.font = this.font;
+    tokenSpan.style.color = defaultTheme.tokenTypes[this.type] || "#555555";
     tokenSpan.style.fontWeight = "400";
 
     return tokenSpan;

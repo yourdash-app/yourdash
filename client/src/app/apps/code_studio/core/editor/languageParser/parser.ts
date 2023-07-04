@@ -1,18 +1,19 @@
 import Token from "./token";
 
-export default class CodeStudioLanguageParser {
+export default class CodeStudioBaseLanguageParser {
   language: string;
-  parsedTokens: Token[][];
+  parsedTokens: Token[];
 
-  constructor() {
-    this.language = "javascript";
+  constructor(language: string) {
+    this.language = language;
+    this.parsedTokens = [];
   }
 
-  parse(rawFile: string) {
-    return;
+  parseString(str: string) {
+    return this;
   }
 
   parseLine(lineNumber: number, line: string) {
-  
+    return this;
   }
 }
