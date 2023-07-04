@@ -17,6 +17,8 @@ const DashApplication: React.FC = () => {
     csi.getJson("/app/dash/user-full-name", res => {
       setUserFullName(res);
     });
+
+    setUserName(localStorage.getItem("username") || "ERROR");
   }, []);
 
   if (userFullName.first === "" && userFullName.last === "") {
