@@ -27,11 +27,17 @@ const PhotosApplication: React.FC = () => {
             ? photoCategories.map(photoCategory => <PhotoDay key={photoCategory.date} photoCategory={photoCategory}/>)
             : (
               <main className={"min-h-full w-full flex items-center justify-center flex-col gap-2"}>
-                <span className={"font-semibold text-3xl tracking-wide"}>{trans("NO_PHOTOS_MESSAGE")}</span>
-                <MajorButton className={"flex items-center justify-center pl-2 pr-2"}>
+                <span className={"font-semibold text-3xl tracking-wide"}>
+                  {
+                    trans("NO_PHOTOS_MESSAGE")
+                  }
+                </span>
+                <MajorButton className={"flex items-center justify-center gap-2"}>
+                  <Icon className={"h-6"} name={"upload-16"}/>
                   <span className={"flex-nowrap whitespace-nowrap flex items-center justify-center"}>
-                    <Icon className={"h-6"} name={"upload-16"}/>
-                    {trans("NO_PHOTOS_UPLOAD_PROMPT")}
+                    {
+                      trans("NO_PHOTOS_UPLOAD_PROMPT")
+                    }
                   </span>
                 </MajorButton>
               </main>

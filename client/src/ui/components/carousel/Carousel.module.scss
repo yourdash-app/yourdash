@@ -1,7 +1,8 @@
 .component {
   position: relative;
   overflow: hidden;
-  height: 16rem;
+  min-height: 8rem;
+  max-height: max-content;
 
   ::-webkit-scrollbar {
     width: 0;
@@ -22,7 +23,6 @@
   @media (prefers-reduced-motion: reduce) {
     scroll-behavior: auto;
   }
-
 
   > * {
     flex-flow: row;

@@ -1,0 +1,16 @@
+{
+  "BANNER": {
+    "MESSAGE": "YourDash is a pre-alpha project"
+  },
+  "SECTIONS": {
+    "HOST_YOUR_OWN": {
+      "TITLE": "Host your own"
+    },
+    "LIMITLESS_PERSONALISATION": {
+      "TITLE": "Limitless personalisation"
+    },
+    "OPEN_SOURCED": {
+      "TITLE": "Open sourced"
+    }
+  }
+}

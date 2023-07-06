@@ -7,6 +7,7 @@ import globalDatabase from "../../helpers/globalDatabase.js";
 import { loadApplication } from "../../core/loadApplications.js";
 import path from "path";
 import authenticatedImage, { authenticatedImageType } from "../../core/authenticatedImage.js";
+import { IYourDashStoreApplication } from "../../../../shared/apps/store/storeApplication.js";
 
 const promotedApplications: string[] = ["dash", "store"];
 
@@ -127,11 +128,13 @@ const main: YourDashApplicationServerPlugin = ({
 
     const application = await unreadApplication.read();
 
-    return res.json({
+    const response: IYourDashStoreApplication = {
       ...application.getRawApplicationData(),
       icon: `data:image/avif;base64,${ (await application.getIcon()).toString("base64") }`,
       installed: application.isInstalled()
-    });
+    };
+
+    return res.json(response);
   });
 
   app.post("/app/store/application/install/:id", (req, res) => {

@@ -1,20 +1,15 @@
 import React, {useState, useEffect} from "react";
 import {useParams, useNavigate} from "react-router-dom";
-import {IconButton, Spinner, Card, Button, Icon} from "../../../../ui";
+import {IconButton, Spinner, Card, Button, Icon, MajorButton, Carousel} from "../../../../ui";
 import csi from "../../../../helpers/csi";
-import {type IYourDashApplication} from "../../../../../../shared/core/application";
-
 import StoreApplicationDefaultHeaderBackground from "./default_background.svg";
 import Panel from "../../../Panel/Panel";
-
-interface IYourDashApplicationStorePage extends IYourDashApplication {
-  icon: string;
-  installed: boolean;
-}
+import useTranslate from "../../../../helpers/l10n";
+import {type IYourDashStoreApplication} from "../../../../../../shared/apps/store/storeApplication";
 
 function requestApplication(
   applicationId: string,
-  setAppData: (data: IYourDashApplicationStorePage) => void,
+  setAppData: (data: IYourDashStoreApplication) => void,
   setIsLoading: (data: boolean) => void,
   navigate: (data: string) => void
 ) {
@@ -31,10 +26,11 @@ function requestApplication(
 }
 
 const StoreApplicationPage: React.FC = () => {
+  const trans = useTranslate("store");
   const navigate = useNavigate();
   const {id: applicationId} = useParams();
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [appData, setAppData] = useState<IYourDashApplicationStorePage>();
+  const [appData, setAppData] = useState<IYourDashStoreApplication>();
 
   useEffect(() => {
     requestApplication(applicationId || "dash", setAppData, setIsLoading, navigate);
@@ -78,7 +74,7 @@ const StoreApplicationPage: React.FC = () => {
                   className={"flex items-center p-4 gap-4 max-w-[50rem] w-full ml-auto mr-auto animate__animated animate__fadeIn animate__250ms"}
                 >
                   <IconButton
-                    icon={"arrow-left-16"}
+                    icon={"chevron-left-16"}
                     onClick={() => {
                       navigate(`/app/a/store/cat/${ appData?.category }`);
                     }}
@@ -89,10 +85,19 @@ const StoreApplicationPage: React.FC = () => {
                     draggable={false}
                     alt=""
                   />
-                  <h1
-                    className={"text-4xl font-semibold tracking-wide mr-auto"}
-                  >{appData.displayName}</h1>
+                  <h1 className={"text-4xl font-semibold tracking-wide mr-auto"}>
+                    {appData.displayName}
+                  </h1>
                   <div className={"flex gap-2"}>
+                    <MajorButton
+                      onClick={() => {
+                        navigate(`/app/a/${appData.name}`);
+                      }}
+                    >
+                      {
+                        trans("OPEN_APPLICATION")
+                      }
+                    </MajorButton>
                     <Button onClick={() => {
                       if (appData.installed) {
                         csi.postJson(`/app/store/application/uninstall/${ appData.name }`, {}, resp => {
@@ -114,9 +119,11 @@ const StoreApplicationPage: React.FC = () => {
                         });
                       }
                     }}
-                    >{
-                        appData.installed ? "Remove" : "Install"
-                      }</Button>
+                    >
+                      {
+                        appData.installed ? trans("UNINSTALL") : trans("INSTALL")
+                      }
+                    </Button>
                   </div>
                 </section>
               </header>
@@ -127,12 +134,24 @@ const StoreApplicationPage: React.FC = () => {
                   {appData.description}
                 </Card>
                 <Card className={"flex flex-col"}>
-                  <div>{`Category: ${ appData.category }`}</div>
-                  <div>{`ID: ${ appData.name }`}</div>
+                  <div>
+                    {
+                      `Category: ${ appData.category }`
+                    }
+                  </div>
+                  <div>
+                    {
+                      `ID: ${ appData.name }`
+                    }
+                  </div>
                   <br/>
-                  <div>{"Created as part of the YourDash Project"}</div>
+                  <div>
+                    {
+                      "Created as part of the YourDash Project"
+                    }
+                  </div>
                 </Card>
-                <h2 className={"text-2xl font-medium"}>{"Source Code"}</h2>
+                <h2 className={"text-2xl font-medium"}>{trans("SOURCE_CODE_SECTION")}</h2>
                 <section className={"grid grid-cols-2 gap-2"}>
                   <Card
                     onClick={() => {
@@ -144,7 +163,9 @@ const StoreApplicationPage: React.FC = () => {
                   >
                     <Icon className={"h-5"} name={"link-16"}/>
                     <span>
-                      {"Client"}
+                      {
+                        "Client"
+                      }
                     </span>
                   </Card>
                   <Card
@@ -156,8 +177,37 @@ const StoreApplicationPage: React.FC = () => {
                     className={"flex gap-1 items-center"}
                   >
                     <Icon className={"h-5"} name={"link-16"}/>
-                    <span>{"Server"}</span>
+                    <span>
+                      {
+                        "Server"
+                      }
+                    </span>
                   </Card>
+                </section>
+                <h2 className={"text-2xl font-medium"}>{trans("AUTHORS_SECTION")}</h2>
+                <section className={"w-full"}>
+                  <Carousel>
+                    {
+                      appData.authors?.map(author => (
+                        <Card key={author.avatarUrl} className={"flex flex-col gap-2"}>
+                          <img className={"h-32 aspect-square rounded-container-rounding"} src={author.avatarUrl} alt={author.avatarUrl}/>
+                          <div className={"flex items-center justify-between"}>
+                            <span>{author.displayName}</span>
+                            {
+                              author.site && (
+                                <IconButton
+                                  onClick={() => {
+                                    window.location.href = author.site;
+                                  }}
+                                  icon={"link-16"}
+                                />
+                              )
+                            }
+                          </div>
+                        </Card>
+                      ))
+                    }
+                  </Carousel>
                 </section>
               </main>
             </>

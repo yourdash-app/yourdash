@@ -9,6 +9,7 @@ import { type IYourDashApplication } from "../../../shared/core/application.js";
 
 import log, { logTypes } from "./log.js";
 import globalDatabase from "./globalDatabase.js";
+import { IYourDashStoreAuthor } from "../../../shared/apps/store/storeAuthor.js";
 
 class YourDashApplication {
   private readonly name: string;
