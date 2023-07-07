@@ -53,4 +53,6 @@ export default function startRequestLogger(
     }
     next();
   });
+
+  log(logTypes.success, `Started the requests logger${ options && " (logging options requests is enabled)" }`);
 }

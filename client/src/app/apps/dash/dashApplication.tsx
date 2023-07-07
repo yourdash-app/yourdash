@@ -25,24 +25,32 @@ const DashApplication: React.FC = () => {
     return null;
   }
 
-  switch (layout) {
-    case "browser":
-      return (
-        <BrowserLayout
-          username={userName}
-          fullName={userFullName}
-        />
-      );
-    case "dashboard":
-      return (
-        <DashboardLayout
-          username={userName}
-          fullName={userFullName}
-        />
-      );
-    default:
-      return null;
-  }
+  return (
+    <div
+      className={"max-h-screen overflow-hidden bg-cover bg-center"}
+      style={{
+        backgroundImage: `url(${ localStorage.getItem(
+          "current_server"
+        ) }/core/login/background)`
+      }}
+    >
+      {
+        layout === "dashboard"
+          ? (
+            <DashboardLayout
+              username={userName}
+              fullName={userFullName}
+            />
+          )
+          : (
+            <BrowserLayout
+              username={userName}
+              fullName={userFullName}
+            />
+          )
+      }
+    </div>
+  );
 };
 
 export default DashApplication;

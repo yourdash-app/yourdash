@@ -1,44 +1,33 @@
-import React, {useState} from 'react';
-import {Outlet} from 'react-router-dom';
-
-import clippy from '../helpers/clippy';
-
-import Panel, {PanelPosition} from './Panel/Panel';
+import React, {useState} from "react";
+import {Outlet} from "react-router-dom";
+import clippy from "../helpers/clippy";
+import Panel, {PanelPosition} from "./Panel/Panel";
+import styles from "./appLayout.module.scss";
 
 const Layout: React.FC = () => {
   const [panelLayout, setPanelLayout] = useState<PanelPosition>(
     PanelPosition.left
   );
 
-  if (new URLSearchParams(window.location.search).has('standalone')) {
+  if (new URLSearchParams(window.location.search).has("standalone")) {
     return <Outlet/>;
   }
 
   return (
     <div
-      style={{
-        ...(
-          (panelLayout === PanelPosition.left || panelLayout === PanelPosition.right)
-            ? {
-              gridTemplateColumns:
-                panelLayout === PanelPosition.left ? 'auto 1fr' : '1fr auto'
-            }
-            : {
-              gridTemplateRows:
-                panelLayout === PanelPosition.top ? 'auto 1fr' : '1fr auto'
-            }
-        )
-      }}
-      className={'grid h-screen'}
+      className={clippy(
+        styles.layout,
+        panelLayout === PanelPosition.left && styles.left,
+        panelLayout === PanelPosition.top && styles.top,
+        panelLayout === PanelPosition.right && styles.right,
+        panelLayout === PanelPosition.bottom && styles.bottom
+      )}
     >
       <Panel
         setSide={val => setPanelLayout(val)}
         side={panelLayout}
       />
-      <main className={clippy(
-        'min-h-full overflow-hidden overflow-y-auto w-full flex flex-col'
-      )}
-      >
+      <main className={styles.content}>
         <Outlet/>
       </main>
     </div>

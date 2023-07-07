@@ -24,14 +24,14 @@ const SelectUser: React.FC<{
     <>
       <IconButton
         icon={"arrow-left-16"}
-        className={"left-2 top-2 fixed animate__animated animate__fadeInLeft animate__delay-1250ms"}
+        className={"left-2 top-2 fixed animate__animated animate__fadeInLeft animate__1250ms"}
         onClick={() => {
           localStorage.removeItem("current_server");
           navigate("/login");
         }}
       />
       <Card
-        className={"fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate__animated animate__fadeIn animate__delay-1250ms"}
+        className={"fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate__animated animate__fadeIn animate__1250ms"}
       >
         <Column>
           <TextInput
@@ -219,7 +219,7 @@ const ServerLoginPage: React.FC = () => {
       </div>
       <main
         style={{backgroundImage: `url('${ serverUrl }/core/login/background')`}}
-        className={"min-h-screen w-full bg-center bg-no-repeat animate__animated animate__fadeIn animate__delay-1s"}
+        className={"min-h-screen w-full bg-center bg-no-repeat animate__animated animate__fadeIn animate__1s"}
       >
         {
           selectedUser

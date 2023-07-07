@@ -1,35 +1,62 @@
-import React from "react"
-import { Outlet, useNavigate } from "react-router-dom"
-import { SideBar } from "../../../ui"
+import React from "react";
+import {Outlet, useNavigate} from "react-router-dom";
+import {SideBar} from "../../../ui";
 
 const SettingsLayout: React.FC = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   return (
-    <main className={ "grid grid-cols-[auto,1fr] h-full w-full" }>
+    <main className={"grid grid-cols-1 grid-rows-[auto,1fr] md:grid-rows-none md:grid-cols-[auto,1fr] h-full w-full"}>
       <SideBar
-        title={ "YourDash Settings" }
-        items={ [
+        title={"Settings"}
+        items={[
           {
-            icon: "app-launcher-16", label: "Panel", onClick() {
-              navigate( "/app/a/settings/" )
+            icon: "home-16",
+            label: "Home",
+            onClick() {
+              navigate("/app/a/settings/");
             }
           },
           {
-            icon: "device-mobile-16", label: "Sessions", onClick() {
-              navigate( "/app/a/settings/session" )
+            icon: "paintbrush-16",
+            label: "Personalization",
+            onClick() {
+              navigate("/app/a/settings/personalization");
             }
           },
           {
-            icon: "tools-16", label: "Developer", onClick() {
-              navigate( "/app/a/settings/developer" )
+            icon: "login",
+            label: "Login sessions",
+            onClick() {
+              navigate("/app/a/settings/session");
+            }
+          },
+          {
+            icon: "accessibility-16",
+            label: "Accessibility",
+            onClick() {
+              navigate("/app/a/settings/accessibility");
+            }
+          },
+          {
+            icon: "tools-16",
+            label: "Admin tools",
+            onClick() {
+              navigate("/app/a/settings/admin");
+            }
+          },
+          {
+            icon: "code-16",
+            label: "Developer tools",
+            onClick() {
+              navigate("/app/a/settings/developer");
             }
           }
-        ] }
+        ]}
       />
       <Outlet/>
     </main>
-  )
-}
+  );
+};
 
-export default SettingsLayout
+export default SettingsLayout;

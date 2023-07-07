@@ -20,6 +20,7 @@
     -webkit-text-size-adjust: 100%;
 
     /* Default theme's transitions */
+    --transition-slow: all 1000ms ease-in-out;
     --transition: all 100ms ease-in-out;
     --transition-fast: all 25ms ease-in-out;
 
@@ -143,34 +144,21 @@ body, #root {
     background-image: linear-gradient(to bottom right, rgb(var(--base-700) / 1), rgb(var(--base-900) / 1));
 }
 
-.animate__animated.animate__delay-250ms {
-    -webkit-animation-delay: 0.25s;
-    animation-delay: 0.25s;
+// delay
+
+.animate__animated.animate__50ms {
+    -webkit-animation-delay: 0.05s;
+    animation-delay: 0.05s;
 }
 
-.animate__animated.animate__delay-500ms {
-    -webkit-animation-delay: 0.5s;
-    animation-delay: 0.5s;
+.animate__animated.animate__100ms {
+    -webkit-animation-delay: 0.1s;
+    animation-delay: 0.1s;
 }
 
-.animate__animated.animate__delay-750ms {
-    -webkit-animation-delay: 0.75s;
-    animation-delay: 0.75s;
-}
-
-.animate__animated.animate__delay-1250ms {
-    -webkit-animation-delay: 1.25s;
-    animation-delay: 1.25s;
-}
-
-.animate__animated.animate__delay-1500ms {
-    -webkit-animation-delay: 1.5s;
-    animation-delay: 1.5s;
-}
-
-.animate__animated.animate__delay-1750ms {
-    -webkit-animation-delay: 1.75s;
-    animation-delay: 1.75s;
+.animate__animated.animate__150ms {
+    -webkit-animation-delay: 0.15s;
+    animation-delay: 0.15s;
 }
 
 .animate__animated.animate__250ms {
@@ -216,6 +204,56 @@ body, #root {
 .animate__animated.animate__2500ms {
     -webkit-animation-delay: 2.5s;
     animation-delay: 2.5s;
+}
+
+// Duration
+
+.animate__animated.animate__duration_50ms {
+    --animate-duration: 0.05s;
+}
+
+.animate__animated.animate__duration_100ms {
+    --animate-duration: 0.1s;
+}
+
+.animate__animated.animate__duration_150ms {
+    --animate-duration: 0.15s;
+}
+
+.animate__animated.animate__duration_250ms {
+    --animate-duration: 0.25s;
+}
+
+.animate__animated.animate__duration_500ms {
+    --animate-duration: 0.5s;
+}
+
+.animate__animated.animate__duration_750ms {
+    --animate-duration: 0.75s;
+}
+
+.animate__animated.animate__duration_1000ms {
+    --animate-duration: 1s;
+}
+
+.animate__animated.animate__duration_1250ms {
+    --animate-duration: 1.25s;
+}
+
+.animate__animated.animate__duration_1500ms {
+    --animate-duration: 1.5s;
+}
+
+.animate__animated.animate__duration_1750ms {
+    --animate-duration: 1.75s;
+}
+
+.animate__animated.animate__duration_2000ms {
+    --animate-duration: 2s;
+}
+
+.animate__animated.animate__duration_2500ms {
+    --animate-duration: 2.5s;
 }
 
 @media (prefers-reduced-motion: reduce) {

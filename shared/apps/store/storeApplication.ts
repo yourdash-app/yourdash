@@ -1,4 +1,4 @@
-import { IYourDashStoreAuthor } from "./storeAuthor";
+import { IYourDashStoreAuthor } from "./storeAuthor.js";
 
 export interface IYourDashStoreApplication {
   name: string;
@@ -7,5 +7,5 @@ export interface IYourDashStoreApplication {
   category: string;
   icon: string;
   installed: boolean;
-  authors: IYourDashStoreAuthor[]
+  authors: IYourDashStoreAuthor[];
 }

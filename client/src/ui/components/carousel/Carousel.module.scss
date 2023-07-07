@@ -19,6 +19,9 @@
   scroll-behavior: smooth;
   scroll-snap-type: x mandatory;
   border-radius: var(--container-rounding);
+  padding-left: 3.25rem;
+  padding-right: 3.25rem;
+  gap: 6.5rem;
 
   @media (prefers-reduced-motion: reduce) {
     scroll-behavior: auto;
@@ -33,6 +36,12 @@
     max-height: 100%;
     scroll-snap-align: center;
   }
+}
+
+.mainControlsCompact {
+  padding-left: 2.75rem;
+  padding-right: 2.75rem;
+  gap: 5.5rem;
 }
 
 .controls {
@@ -57,11 +66,11 @@
 
     &:first-child {
       margin-right: auto;
-      margin-left: 1rem;
+      margin-left: 0.5rem;
     }
 
     &:last-child {
-      margin-right: 1rem;
+      margin-right: 0.5rem;
     }
   }
 }

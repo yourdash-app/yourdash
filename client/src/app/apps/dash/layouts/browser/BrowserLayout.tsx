@@ -16,11 +16,6 @@ const BrowserLayout: React.FC<IBrowserLayout> = ({
   const trans = useTranslate("dash");
   return (
     <div
-      style={{
-        backgroundImage: `url(${ localStorage.getItem(
-          "current_server"
-        ) }/core/login/background)`
-      }}
       className={
         "flex items-center justify-center flex-col h-full w-full bg-center bg-cover gap-4"
       }

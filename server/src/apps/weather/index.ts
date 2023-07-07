@@ -1,16 +1,16 @@
-/** @format */
-
-import {promises as fs} from "fs";
+import { promises as fs } from "fs";
 import path from "path";
 
-import {fetch} from "undici";
+import { fetch } from "undici";
 
-import {type weatherForecast} from "../../../../shared/apps/weather/forecast.js";
-import {weatherStates} from "../../../../shared/apps/weather/weatherStates.js";
+import { type weatherForecast } from "../../../../shared/apps/weather/forecast.js";
+import { weatherStates } from "../../../../shared/apps/weather/weatherStates.js";
 import YourDashUser from "../../helpers/user.js";
-import {type YourDashApplicationServerPlugin} from "../../helpers/applications.js";
+import { type YourDashApplicationServerPlugin } from "../../helpers/applications.js";
 
-import log, {logTypes} from "../../helpers/log.js";
+import log, { logTypes } from "../../helpers/log.js";
+
+const OPEN_METEO_INSTANCE = "https://api.open-meteo.com";
 
 /**
  
@@ -93,22 +93,22 @@ const weatherForecastCache: {
   }
 } = {};
 
-const main: YourDashApplicationServerPlugin = ({app}) => {
+const main: YourDashApplicationServerPlugin = ({ app }) => {
   app.get("/app/weather/location/:locationName", (req, res) => {
     if (!req.params.locationName) {
-      return res.json({error: true});
+      return res.json({ error: true });
     }
 
     fetch(
       `https://geocoding-api.open-meteo.com/v1/search?name=${ req.params.locationName }&language=en&count=5&format=json`
     ).then(resp => resp.json()).then(json => res.json(json)).catch(() => {
       log(logTypes.error, "Failed to fetch weather data from open-meteo");
-      return res.json({error: true});
+      return res.json({ error: true });
     });
   });
 
   app.get("/app/weather/previous/locations", async (req, res) => {
-    const {username} = req.headers as {
+    const { username } = req.headers as {
       username: string
     };
 
@@ -135,10 +135,10 @@ const main: YourDashApplicationServerPlugin = ({app}) => {
 
   app.get("/app/weather/forId/:id", async (req, res) => {
     if (!req.params.id) {
-      return res.json({error: true});
+      return res.json({ error: true });
     }
 
-    const {username} = req.headers as {
+    const { username } = req.headers as {
       username: string
     };
 
@@ -195,7 +195,7 @@ const main: YourDashApplicationServerPlugin = ({app}) => {
     fetch(`https://geocoding-api.open-meteo.com/v1/get?id=${ req.params.id }&language=en&format=json`).then(resp => resp.json()).then(
       (json: any) => {
         if (json?.error) {
-          return res.json({error: true});
+          return res.json({ error: true });
         }
 
         const out: any = {
@@ -208,7 +208,7 @@ const main: YourDashApplicationServerPlugin = ({app}) => {
           `https://api.open-meteo.com/v1/forecast?latitude=${ json.latitude }&longitude=${ json.longitude }&hourly=temperature_2m,weathercode&models=best_match&daily=temperature_2m_max,temperature_2m_min,weathercode&current_weather=true&timezone=${ json.timezone }`
         ).then(resp => resp.json()).then(async (json: any) => {
           if (json?.error) {
-            return res.json({error: true});
+            return res.json({ error: true });
           }
 
           out.weather = json;
@@ -317,12 +317,29 @@ const main: YourDashApplicationServerPlugin = ({app}) => {
           });
         }).catch(err => {
           log(logTypes.error, "Failed to fetch weather data from open-meteo", err);
-          return res.json({error: true});
+          return res.json({ error: true });
         });
       }).catch(err => {
       log(logTypes.error, "Failed to fetch weather data from open-meteo", err);
-      return res.json({error: true});
+      return res.json({ error: true });
     });
+  });
+
+  app.get("/app/weather/hourly/:location", async (req, res) => {
+    const { location } = req.params;
+
+    const {
+      latitude,
+      longitude
+    } = {
+      latitude: 52.52,
+      longitude: 13.41
+    };
+
+    const weatherData = await (await fetch(`${ OPEN_METEO_INSTANCE }/v1/forecast?latitude=${ latitude }&longitude=${ longitude }&hourly=temperature_2m,apparent_temperature,precipitation_probability,weathercode&current_weather=true&forecast_days=1`)).json();
+
+    // return hourly weather data
+    return res.json(weatherData);
   });
 };
 

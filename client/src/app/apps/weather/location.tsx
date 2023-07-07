@@ -47,7 +47,7 @@ import WEATHER_ICON_PARTLY_CLOUDY from "./weatherIcons/partly_cloudy.svg";
  *
  */
 
-const backgroundImages: any[] = [
+export const backgroundImages: any[] = [
   BACKGROUND_IMAGE_CLEAR,
   BACKGROUND_IMAGE_CLOUDY1,
   BACKGROUND_IMAGE_CLOUDY2,
@@ -64,7 +64,7 @@ const backgroundImages: any[] = [
   BACKGROUND_IMAGE_THUNDER
 ];
 
-enum weatherStates {
+export enum weatherStates {
   clear,
   partlyCloudy,
   cloudy,
@@ -81,7 +81,7 @@ enum weatherStates {
   thunder,
 }
 
-const numericDayName = [
+export const numericDayName = [
   "DAY_SUNDAY",
   "DAY_MONDAY",
   "DAY_TUESDAY",
@@ -92,7 +92,7 @@ const numericDayName = [
 ];
 
 // returns the weather description for the given weather state
-function getWeatherConditionFromState(state: weatherStates): string {
+export function getWeatherConditionFromState(state: weatherStates): string {
   switch (state) {
     case weatherStates.clear:
       return "CONDITION_CLEAR_SKIES";
@@ -128,7 +128,7 @@ function getWeatherConditionFromState(state: weatherStates): string {
 }
 
 // returns the corresponding icon for the given weather state
-function getWeatherIconFromState(state: weatherStates): string {
+export function getWeatherIconFromState(state: weatherStates): string {
   switch (state) {
     case weatherStates.clear:
       return WEATHER_ICON_CLEAR;
@@ -164,8 +164,7 @@ function getWeatherIconFromState(state: weatherStates): string {
 }
 
 const WeatherApplicationLocationPage: React.FC = () => {
-  const [displayedWeatherCondition, setDisplayedWeatherCondition] =
-    useState<weatherStates>(weatherStates.clear);
+  const [displayedWeatherCondition, setDisplayedWeatherCondition] = useState<weatherStates>(weatherStates.clear);
   const {id: locationId} = useParams();
   const trans = useTranslate("weather");
   const [data, setData] = useState<{
@@ -292,7 +291,7 @@ const WeatherApplicationLocationPage: React.FC = () => {
               {`${ data?.name },`}
             </h1>
             <span
-              className={"mt-auto text-container-fg text-xl stroke-1 stroke-base-900 animate__animated animate__slideInDown animate__delay-100"}
+              className={"mt-auto text-container-fg text-xl stroke-1 stroke-base-900 animate__animated animate__slideInDown"}
             >
               {data?.admin1 && `${ data.admin1 }, `}{data?.admin2 && `${ data.admin2 }, `}{data?.country}
             </span>
@@ -318,7 +317,7 @@ const WeatherApplicationLocationPage: React.FC = () => {
         </section>
         <Carousel
           compactControls
-          containerClassName={"min-w-full p-10 pb-4 pt-4 max-w-full overflow-x-auto rounded-xl animate__animated animate__fadeInUp"}
+          containerClassName={"min-w-full h-64 p-10 pb-4 pt-4 max-w-full overflow-x-auto rounded-xl animate__animated animate__fadeInUp animate__duration_100ms"}
           className={"flex flex-row gap-2"}
         >
           {
@@ -371,7 +370,7 @@ const WeatherApplicationLocationPage: React.FC = () => {
         <footer>
           <a
             href="https://open-meteo.com/"
-            className={"absolute bottom-0 right-0 text-xs text-opacity-50 text-white animate__animated animate__fadeIn animate__delay-500ms pr-1 pb-0.5"}
+            className={"absolute bottom-0 right-0 text-xs text-opacity-50 text-white animate__animated animate__fadeIn animate__500ms pr-1 pb-0.5"}
           >
             {trans("POWERED_BY_WATERMARK", ["open-meteo.com"])}
           </a>
@@ -380,7 +379,7 @@ const WeatherApplicationLocationPage: React.FC = () => {
       <main className={"flex flex-col w-full"}>
         <Carousel
           compactControls
-          containerClassName={"min-w-full p-10 pb-4 pt-4 max-w-full overflow-x-auto rounded-xl animate__animated animate__fadeIn animate__delay-500ms h-80"}
+          containerClassName={"min-w-full p-10 pb-4 pt-4 max-w-full overflow-x-auto rounded-xl animate__animated animate__fadeIn animate__500ms h-80"}
           className={"flex flex-row gap-2"}
         >
           {

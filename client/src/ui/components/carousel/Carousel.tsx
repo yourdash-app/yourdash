@@ -19,16 +19,16 @@ const Carousel: React.FC<ICarousel> = ({
   const pageRef = useRef<HTMLDivElement>(null);
 
   return (
-    <div {...extraProps} className={`${styles.component} ${containerClassName}`}>
+    <div {...extraProps} className={`${ styles.component } ${ containerClassName }`}>
       <div
-        className={`${styles.main} ${className}`}
+        className={`${ styles.main } ${ compactControls && styles.mainControlsCompact } ${ className }`}
         ref={pageRef}
         onScroll={e => e.preventDefault()}
       >
         {children}
       </div>
       <div
-        className={`${styles.controls} ${
+        className={`${ styles.controls } ${
           compactControls && styles.controlsCompact
         }`}
       >
@@ -45,8 +45,8 @@ const Carousel: React.FC<ICarousel> = ({
 
                   container.scrollTo({
                     left:
-                    container.scrollLeft -
-                    (container.getBoundingClientRect().width / 4) * 3
+                      container.scrollLeft -
+                      (container.getBoundingClientRect().width / 4) * 3
                   });
                 }}
               />
@@ -60,8 +60,8 @@ const Carousel: React.FC<ICarousel> = ({
 
                   container.scrollTo({
                     left:
-                    container.scrollLeft +
-                    (container.getBoundingClientRect().width / 4) * 3
+                      container.scrollLeft +
+                      (container.getBoundingClientRect().width / 4) * 3
                   });
                 }}
               />

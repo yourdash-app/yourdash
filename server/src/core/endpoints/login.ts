@@ -12,6 +12,7 @@ export default function defineLoginEndpoints(app: ExpressApplication) {
   app.get(
     "/core/login/background",
     (_req, res) => {
+      res.set("Content-Type", "image/avif");
       return res.sendFile(path.resolve(
         process.cwd(),
         "./fs/login_background.avif"

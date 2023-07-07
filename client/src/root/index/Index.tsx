@@ -32,7 +32,7 @@ const Index: React.FC = () => {
           </h1>
           {/* Taglines scroller */}
           <div
-            className={"relative whitespace-nowrap w-full animate__animated animate__slideInRight animate__delay-500ms"}
+            className={"relative whitespace-nowrap w-full animate__animated animate__slideInRight animate__500ms"}
           >
             <span
               className={"absolute flex items-end text-end transition-all motion-reduce:transition-none duration-500"}
@@ -45,7 +45,7 @@ const Index: React.FC = () => {
                   : 0
               }}
             >
-              Manage your files with ease
+              {trans("TAGLINES.0")}
             </span>
             <span
               className={"absolute flex items-end text-end transition-all motion-reduce:transition-none duration-500"}
@@ -58,7 +58,7 @@ const Index: React.FC = () => {
                   : 0
               }}
             >
-              Collaborate seamlessly
+              {trans("TAGLINES.1")}
             </span>
             <span
               className={"absolute flex items-end text-end transition-all motion-reduce:transition-none duration-500"}
@@ -71,15 +71,15 @@ const Index: React.FC = () => {
                   : 0
               }}
             >
-              Make it your own
+              {trans("TAGLINES.2")}
             </span>
           </div>
           <div
-            className={"flex gap-4 pt-7 items-center justify-center animate__animated animate__fadeIn animate__delay-750ms"}
+            className={"flex gap-4 pt-7 items-center justify-center animate__animated animate__fadeIn animate__750ms"}
           >
             <Link
               to={"/login"}
-              className={"pl-4 pr-4 pb-1.5 pt-1.5 hover:bg-theme-500 active:bg-theme-400 bg-theme-600 transition-colors select-none cursor-pointer rounded-full animate__animated animate__tada animate__delay-1s"}
+              className={"pl-4 pr-4 pb-1.5 pt-1.5 hover:bg-theme-500 active:bg-theme-400 bg-theme-600 transition-colors select-none cursor-pointer rounded-full animate__animated animate__tada animate__1s"}
             >
               Login
             </Link>
@@ -118,12 +118,12 @@ const Index: React.FC = () => {
         <section
           className={"lg:flex-row flex-col pt-8 flex lg:justify-between items-center gap-4 w-full pl-8 pr-8 mb-10"}
         >
-          <h3 className={"text-7xl font-black animate__animated animate__fadeInLeft animate__500ms animate__slow"}>
+          <h3 className={"text-7xl lg:text-left text-center font-black animate__animated animate__fadeInLeft animate__500ms animate__slow"}>
             {trans("SECTIONS.HOST_YOUR_OWN.TITLE")}
           </h3>
-          <div className={"flex items-end gap-4 flex-col animate__animated animate__fadeInRight animate__500ms animate__slow relative"}>
-            <span className={"w-72 text-right text-2xl"}>
-              Run a single command and be up-and-running within minutes
+          <div className={"flex lg:items-end items-center gap-4 flex-col animate__animated animate__fadeInRight animate__500ms animate__slow relative"}>
+            <span className={"lg:w-72 lg:text-right text-center text-2xl"}>
+              {trans("SECTIONS.HOST_YOUR_OWN.CONTENT")}
               <span className={"text-base font-thin text-gray-300"}>
                 *
               </span>
@@ -132,46 +132,46 @@ const Index: React.FC = () => {
               navigate("/docs/get-started");
             }}
             >
-              Get Started
+              {trans("SECTIONS.HOST_YOUR_OWN.ACTION")}
             </MajorButton>
             <span className={"text-xs text-gray-400 absolute top-full mt-2"}>
-              *On linux devices only
+              *{trans("SECTIONS.HOST_YOUR_OWN.DISCLAIMER")}
             </span>
           </div>
         </section>
         <section
-          className={"lg:flex-row flex-col pt-8 flex lg:justify-between items-center gap-4 w-full pl-8 pr-8 mb-10"}
+          className={"lg:flex-row flex-col-reverse pt-8 flex lg:justify-between items-center gap-4 w-full pl-8 pr-8 mb-10"}
         >
-          <div className={"flex items-start gap-4 flex-col animate__animated animate__fadeInLeft animate__1000ms animate__slow relative"}>
-            <span className={"w-72 text-left text-2xl"}>
-              Download and create themes and plugins with ease
+          <div className={"flex lg:items-start items-center gap-4 flex-col animate__animated animate__fadeInLeft animate__1000ms animate__slow relative"}>
+            <span className={"lg:w-72 lg:text-left text-center text-2xl"}>
+              {trans("SECTIONS.LIMITLESS_PERSONALISATION.CONTENT")}
             </span>
             <Button onClick={() => {
               navigate("/docs/get-started");
             }}
             >
-              Learn more
+              {trans("SECTIONS.LIMITLESS_PERSONALISATION.ACTION")}
             </Button>
           </div>
-          <h3 className={"text-7xl font-black text-right animate__animated animate__fadeInRight animate__1000ms animate__slow"}>
+          <h3 className={"text-7xl font-black lg:text-right text-center animate__animated animate__fadeInRight animate__1000ms animate__slow"}>
             {trans("SECTIONS.LIMITLESS_PERSONALISATION.TITLE")}
           </h3>
         </section>
         <section
           className={"lg:flex-row flex-col pt-8 flex lg:justify-between items-center gap-4 w-full pl-8 pr-8 mb-10"}
         >
-          <h3 className={"text-7xl font-black animate__animated animate__fadeInLeft animate__1500ms animate__slow"}>
+          <h3 className={"text-7xl lg:text-left text-center font-black animate__animated animate__fadeInLeft animate__1500ms animate__slow"}>
             {trans("SECTIONS.OPEN_SOURCED.TITLE")}
           </h3>
-          <div className={"flex items-end gap-4 flex-col animate__animated animate__fadeInRight animate__1500ms animate__slow relative"}>
-            <span className={"w-72 text-right text-2xl"}>
-              Run a single command and be up-and-running within minutes
+          <div className={"flex lg:items-end items-center gap-4 flex-col animate__animated animate__fadeInRight animate__1500ms animate__slow relative"}>
+            <span className={"lg:w-72 lg:text-right text-center text-2xl"}>
+              {trans("SECTIONS.OPEN_SOURCED.CONTENT")}
             </span>
             <Button onClick={() => {
               navigate("/docs/get-started");
             }}
             >
-              Learn more
+              {trans("SECTIONS.OPEN_SOURCED.ACTION")}
             </Button>
           </div>
         </section>

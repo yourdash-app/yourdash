@@ -91,7 +91,7 @@ const StoreApplicationPage: React.FC = () => {
                   <div className={"flex gap-2"}>
                     <MajorButton
                       onClick={() => {
-                        navigate(`/app/a/${appData.name}`);
+                        navigate(`/app/a/${ appData.name }`);
                       }}
                     >
                       {

@@ -22,8 +22,10 @@ class __internalClientServerInteraction {
 
     fetch(`${ instanceUrl }${ endpoint }`, {
       method: "GET",
+      mode: "cors",
       // @ts-ignore
       headers: {
+        "Access-Control-Allow-Origin": "*",
         "Content-Type": "application/json",
         username,
         token: sessiontoken,
@@ -66,9 +68,11 @@ class __internalClientServerInteraction {
 
     fetch(`${ instanceUrl }${ endpoint }`, {
       method: "POST",
+      mode: "cors",
       body: JSON.stringify(body),
       // @ts-ignore
       headers: {
+        "Access-Control-Allow-Origin": "*",
         "Content-Type": "application/json",
         username,
         token: sessiontoken,
@@ -110,8 +114,10 @@ class __internalClientServerInteraction {
 
     fetch(`${ instanceUrl }${ endpoint }`, {
       method: "DELETE",
+      mode: "cors",
       // @ts-ignore
       headers: {
+        "Access-Control-Allow-Origin": "*",
         "Content-Type": "application/json",
         username,
         token: sessiontoken
@@ -152,8 +158,10 @@ class __internalClientServerInteraction {
 
     fetch(`${ instanceUrl }${ endpoint }`, {
       method: "GET",
+      mode: "cors",
       // @ts-ignore
       headers: {
+        "Access-Control-Allow-Origin": "*",
         "Content-Type": "text/plain",
         username,
         token: sessiontoken,
@@ -196,9 +204,11 @@ class __internalClientServerInteraction {
 
     fetch(`${ instanceUrl }${ endpoint }`, {
       method: "POST",
+      mode: "cors",
       body: JSON.stringify(body),
       // @ts-ignore
       headers: {
+        "Access-Control-Allow-Origin": "*",
         "Content-Type": "text/plain",
         username,
         token: sessiontoken,
@@ -240,8 +250,10 @@ class __internalClientServerInteraction {
 
     fetch(`${ instanceUrl }${ endpoint }`, {
       method: "DELETE",
+      mode: "cors",
       // @ts-ignore
       headers: {
+        "Access-Control-Allow-Origin": "*",
         "Content-Type": "text/plain",
         username,
         token: sessiontoken,

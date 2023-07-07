@@ -1,14 +1,12 @@
 import React, {useEffect, useState} from "react";
 import csi from "helpers/csi";
 import {useNavigate} from "react-router-dom";
-
 import clippy from "../../helpers/clippy";
 import {IconButton, RightClickMenu} from "../../ui";
-
 import {loadDatabaseFromServer} from "../../helpers/database";
-
 import PanelApplicationLauncher from "./launcher/PanelLaunchers";
 import PanelDesktopIndicator from "./desktop/PanelDesktopIndicator";
+import styles from "./Panel.module.scss";
 
 export enum PanelPosition {
   left,
@@ -192,42 +190,16 @@ const Panel: React.FC<IPanel> = ({
 
   return (
     <div
-      style={{
-        ...(side === PanelPosition.top || side === PanelPosition.bottom
-          ? {
-            flexDirection: "row",
-            width: "100%"
-          }
-          : {
-            flexDirection: "column",
-            height: "100%"
-          }),
-        ...(side === PanelPosition.left && {
-          borderRight: "0.1rem solid var(--application-panel-border)"
-        }),
-        ...(side === PanelPosition.right && {
-          borderLeft: "0.1rem solid var(--application-panel-border)",
-          gridRowEnd: -1,
-          gridColumnStart: 2
-        }),
-        ...(side === PanelPosition.top && {
-          borderBottom: "0.1rem solid var(--application-panel-border)"
-        }),
-        ...(side === PanelPosition.bottom && {
-          borderTop: "0.1rem solid var(--application-panel-border)",
-          gridColumnEnd: -1,
-          gridRowStart: 2
-        })
-      }}
       className={clippy(
-        "bg-container-bg flex p-2 gap-1 relative justify-center items-center z-[1000000] animate__animated",
-        side === PanelPosition.top && "animate__fadeInDown",
-        side === PanelPosition.bottom && "animate__fadeInUp",
-        side === PanelPosition.left && "animate__fadeInLeft",
-        side === PanelPosition.right && "animate__fadeInRight"
+        "bg-container-bg flex p-2 gap-1 relative justify-center items-center z-[1000000] animate__animated animate__fadeIn w-full ",
+        side === PanelPosition.top && styles.sideTop,
+        side === PanelPosition.bottom && styles.sideBottom,
+        side === PanelPosition.left && styles.sideLeft,
+        side === PanelPosition.right && styles.sideRight,
+        styles.panel
       )}
     >
-      {/* invisible component which checks that the user is authorized on the first load of the panel*/}
+      {/* invisible components which checks that the user is authorized on the first load of the panel*/}
       <PanelAuthorizer/>
       <PanelApplicationLauncher num={num} side={side} type={launcherType}/>
       <PanelInstanceIcon/>

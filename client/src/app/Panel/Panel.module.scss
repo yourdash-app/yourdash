@@ -1,0 +1,58 @@
+.panel {
+  max-width: max-content;
+
+  @media (max-width: 840px) {
+    max-width: unset;
+  }
+}
+
+@mixin mobileDock {
+  @media (max-width: 840px) {
+    border: none;
+
+    flex-direction: row;
+    width: 100%;
+    border-top: 0.1rem solid var(--application-panel-border);
+    grid-column-end: -1;
+    grid-row-start: 2;
+    height: max-content;
+  }
+}
+
+.sideTop {
+  flex-direction: row;
+  width: 100%;
+  border-bottom: 0.1rem solid var(--application-panel-border);
+  max-width: unset;
+
+  @include mobileDock
+}
+
+.sideLeft {
+  flex-direction: column;
+  height: 100%;
+  border-right: 0.1rem solid var(--application-panel-border);
+
+  @include mobileDock
+}
+
+.sideBottom {
+  flex-direction: row;
+  width: 100%;
+  border-top: 0.1rem solid var(--application-panel-border);
+  grid-column-end: -1;
+  grid-row-start: 2;
+  max-width: unset;
+
+  @include mobileDock
+}
+
+.sideRight {
+  flex-direction: column;
+  height: 100%;
+  border-left: 0.1rem solid var(--application-panel-border);
+  grid-row-end: -1;
+  grid-column-start: 2;
+
+  @include mobileDock
+}
