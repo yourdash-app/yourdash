@@ -1,11 +1,10 @@
 import React, {useState} from "react";
-
 import clippy from "../../../helpers/clippy";
 import {IconButton} from "../../../ui";
 import {PanelPosition} from "../Panel";
-
 import PanelApplicationLauncherPopOut from "./popout/PanelPopoutLauncher";
 import PanelApplicationLauncherSlideOut from "./slideout/PanelSlideoutLauncher";
+import styles from "./PanelLaunchers.module.scss";
 
 const PanelApplicationLauncher: React.FC<{
   side: PanelPosition;
@@ -22,15 +21,16 @@ const PanelApplicationLauncher: React.FC<{
       className={
         clippy(
           side === PanelPosition.left || side === PanelPosition.right
-            ? "w-full mb-1"
-            : "h-full mr-1",
-          type !== 1 && "relative"
+            ? styles.horizontal
+            : styles.vertical,
+          type !== 1 && "relative",
+          styles.component
         )
       }
     >
       <IconButton
         icon={"app-launcher-16"}
-        className={"p-0.5"}
+        className={styles.button}
         onClick={() => setIsVisible(!isVisible)}
       />
       {

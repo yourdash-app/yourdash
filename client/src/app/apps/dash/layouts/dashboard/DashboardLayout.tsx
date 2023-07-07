@@ -3,6 +3,7 @@ import useTranslate from "../../../../../helpers/l10n";
 import {IconButton, Chip, Row} from "../../../../../ui";
 import {useNavigate} from "react-router-dom";
 import WeatherHourlyConditions from "../../widgets/weather/WeatherHourlyConditions/WeatherHourlyConditions";
+import styles from "./DashboardLayout.module.scss";
 
 export interface IDashboard {
   username: string,
@@ -50,12 +51,12 @@ const DashboardLayout: React.FC<IDashboard> = ({
           </Chip>
         </Row>
       </header>
-      <section className={"grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 pb-6 child:min-h-[20rem]"}>
+      <section className={styles.content}>
         {/* Widgets */}
-        <div className={"bg-red-400 h-auto col-span-3 rounded-xl flex items-center justify-center font-bold text-4xl text-center p-4"}>
+        <div className={"bg-red-400 h-auto rounded-xl flex items-center justify-center font-bold text-4xl text-center p-4"}>
           {"Placeholder Widget"}
         </div>
-        <div className={"bg-red-400 h-auto row-span-3 col-span-1 rounded-xl flex items-center justify-center font-bold text-4xl text-center p-4"}>
+        <div className={"bg-red-400 h-auto rounded-xl flex items-center justify-center font-bold text-4xl text-center p-4"}>
           {"Placeholder Widget"}
         </div>
         <WeatherHourlyConditions/>

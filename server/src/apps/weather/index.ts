@@ -99,9 +99,7 @@ const main: YourDashApplicationServerPlugin = ({ app }) => {
       return res.json({ error: true });
     }
 
-    fetch(
-      `https://geocoding-api.open-meteo.com/v1/search?name=${ req.params.locationName }&language=en&count=5&format=json`
-    ).then(resp => resp.json()).then(json => res.json(json)).catch(() => {
+    fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${ req.params.locationName }&language=en&count=5&format=json`).then(resp => resp.json()).then(json => res.json(json)).catch(() => {
       log(logTypes.error, "Failed to fetch weather data from open-meteo");
       return res.json({ error: true });
     });
@@ -117,11 +115,7 @@ const main: YourDashApplicationServerPlugin = ({ app }) => {
     try {
       await fs.access(path.resolve(user.getAppDataPath(), "weather"));
 
-      const rawFile = (
-        await fs.readFile(
-          path.resolve(user.getAppDataPath(), "weather/previous_locations.json")
-        )
-      ).toString() || "[]";
+      const rawFile = (await fs.readFile(path.resolve(user.getAppDataPath(), "weather/previous_locations.json"))).toString() || "[]";
 
       const parsedFile = JSON.parse(rawFile) || [];
 
@@ -156,11 +150,7 @@ const main: YourDashApplicationServerPlugin = ({ app }) => {
         try {
           await fs.access(path.resolve(user.getAppDataPath(), "weather"));
 
-          file = (
-            await fs.readFile(
-              path.resolve(user.getAppDataPath(), "weather/previous_locations.json")
-            )
-          ).toString() || "[]";
+          file = (await fs.readFile(path.resolve(user.getAppDataPath(), "weather/previous_locations.json"))).toString() || "[]";
         } catch (_err) {
           file = "[]";
         }
@@ -181,10 +171,7 @@ const main: YourDashApplicationServerPlugin = ({ app }) => {
           });
         }
 
-        await fs.writeFile(
-          path.resolve(user.getAppDataPath(), "weather/previous_locations.json"),
-          JSON.stringify(parsedFile || [])
-        );
+        await fs.writeFile(path.resolve(user.getAppDataPath(), "weather/previous_locations.json"), JSON.stringify(parsedFile || []));
 
         return res.json(cache.data);
       } else {
@@ -192,99 +179,29 @@ const main: YourDashApplicationServerPlugin = ({ app }) => {
       }
     }
 
-    fetch(`https://geocoding-api.open-meteo.com/v1/get?id=${ req.params.id }&language=en&format=json`).then(resp => resp.json()).then(
-      (json: any) => {
+    fetch(`https://geocoding-api.open-meteo.com/v1/get?id=${ req.params.id }&language=en&format=json`).then(resp => resp.json()).then((json: any) => {
+      if (json?.error) {
+        return res.json({ error: true });
+      }
+
+      const out: any = {
+        name: json.name,
+        admin1: json.admin1,
+        country: json.country
+      };
+
+      fetch(`https://api.open-meteo.com/v1/forecast?latitude=${ json.latitude }&longitude=${ json.longitude }&hourly=temperature_2m,weathercode&models=best_match&daily=temperature_2m_max,temperature_2m_min,weathercode&current_weather=true&timezone=${ json.timezone }`).then(resp => resp.json()).then(async (json: any) => {
         if (json?.error) {
           return res.json({ error: true });
         }
 
-        const out: any = {
-          name: json.name,
-          admin1: json.admin1,
-          country: json.country
-        };
+        out.weather = json;
 
-        fetch(
-          `https://api.open-meteo.com/v1/forecast?latitude=${ json.latitude }&longitude=${ json.longitude }&hourly=temperature_2m,weathercode&models=best_match&daily=temperature_2m_max,temperature_2m_min,weathercode&current_weather=true&timezone=${ json.timezone }`
-        ).then(resp => resp.json()).then(async (json: any) => {
-          if (json?.error) {
-            return res.json({ error: true });
-          }
-
-          out.weather = json;
-
-          weatherForecastCache[req.params.id] = {
-            data: {
-              name: out.name,
-              admin1: out.admin1,
-              admin2: out.admin2,
-              country: out.country,
-              currentWeather: {
-                temp: json.current_weather.temperature,
-                condition: parseWeatherCodes(json.current_weather.weathercode),
-                time: json.current_weather.time,
-                wind: {
-                  direction: json.current_weather.winddirection,
-                  speed: json.current_weather.windspeed
-                }
-              },
-              daily: {
-                unit: json.daily_units.temperature_2m_max,
-                days: json.daily.time.map((_, ind) => ({
-                  date: json.daily.time[ind],
-                  temp: {
-                    min: json.daily.temperature_2m_min[ind],
-                    max: json.daily.temperature_2m_max[ind]
-                  },
-                  condition: parseWeatherCodes(json.daily.weathercode[ind])
-                }))
-              },
-              hourly: {
-                unit: json.hourly_units.temperature_2m,
-                hours: json.hourly.time.map((_, ind) => ({
-                  condition: parseWeatherCodes(json.hourly.weathercode[ind]),
-                  date: json.hourly.time[ind],
-                  temp: json.hourly.temperature_2m[ind]
-                }))
-              }
-            },
-            cacheTime: new Date()
-          };
-
-          let file = "[]";
-
-          try {
-            file = (await fs.readFile(path.resolve(user.getAppDataPath(), "weather/previous_locations.json"))).toString() || "[]";
-          } catch (_err) {
-            file = "[]";
-            try {
-              fs.mkdir(path.resolve(user.getAppDataPath(), "weather"));
-            } catch (_err2) {
-              /* irrelevant */
-            }
-          }
-
-          const parsedFile = JSON.parse(file);
-
-          if (parsedFile.length > 5) {
-            parsedFile.shift();
-          }
-
-          if (parsedFile.find(obj => obj.id === req.params.id) === undefined) {
-            parsedFile.push({
-              name: out.name,
-              id: req.params.id
-            });
-          }
-
-          await fs.writeFile(
-            path.resolve(user.getAppDataPath(), "weather/previous_locations.json"),
-            JSON.stringify(parsedFile)
-          );
-
-          return res.json(<weatherForecast>{
+        weatherForecastCache[req.params.id] = {
+          data: {
             name: out.name,
             admin1: out.admin1,
+            admin2: out.admin2,
             country: out.country,
             currentWeather: {
               temp: json.current_weather.temperature,
@@ -314,12 +231,76 @@ const main: YourDashApplicationServerPlugin = ({ app }) => {
                 temp: json.hourly.temperature_2m[ind]
               }))
             }
+          },
+          cacheTime: new Date()
+        };
+
+        let file = "[]";
+
+        try {
+          file = (await fs.readFile(path.resolve(user.getAppDataPath(), "weather/previous_locations.json"))).toString() || "[]";
+        } catch (_err) {
+          file = "[]";
+          try {
+            fs.mkdir(path.resolve(user.getAppDataPath(), "weather"));
+          } catch (_err2) {
+            /* irrelevant */
+          }
+        }
+
+        const parsedFile = JSON.parse(file);
+
+        if (parsedFile.length > 5) {
+          parsedFile.shift();
+        }
+
+        if (parsedFile.find(obj => obj.id === req.params.id) === undefined) {
+          parsedFile.push({
+            name: out.name,
+            id: req.params.id
           });
-        }).catch(err => {
-          log(logTypes.error, "Failed to fetch weather data from open-meteo", err);
-          return res.json({ error: true });
+        }
+
+        await fs.writeFile(path.resolve(user.getAppDataPath(), "weather/previous_locations.json"), JSON.stringify(parsedFile));
+
+        return res.json(<weatherForecast>{
+          name: out.name,
+          admin1: out.admin1,
+          country: out.country,
+          currentWeather: {
+            temp: json.current_weather.temperature,
+            condition: parseWeatherCodes(json.current_weather.weathercode),
+            time: json.current_weather.time,
+            wind: {
+              direction: json.current_weather.winddirection,
+              speed: json.current_weather.windspeed
+            }
+          },
+          daily: {
+            unit: json.daily_units.temperature_2m_max,
+            days: json.daily.time.map((_, ind) => ({
+              date: json.daily.time[ind],
+              temp: {
+                min: json.daily.temperature_2m_min[ind],
+                max: json.daily.temperature_2m_max[ind]
+              },
+              condition: parseWeatherCodes(json.daily.weathercode[ind])
+            }))
+          },
+          hourly: {
+            unit: json.hourly_units.temperature_2m,
+            hours: json.hourly.time.map((_, ind) => ({
+              condition: parseWeatherCodes(json.hourly.weathercode[ind]),
+              date: json.hourly.time[ind],
+              temp: json.hourly.temperature_2m[ind]
+            }))
+          }
         });
       }).catch(err => {
+        log(logTypes.error, "Failed to fetch weather data from open-meteo", err);
+        return res.json({ error: true });
+      });
+    }).catch(err => {
       log(logTypes.error, "Failed to fetch weather data from open-meteo", err);
       return res.json({ error: true });
     });
@@ -328,18 +309,19 @@ const main: YourDashApplicationServerPlugin = ({ app }) => {
   app.get("/app/weather/hourly/:location", async (req, res) => {
     const { location } = req.params;
 
+    const locationData: { latitude: number, longitude: number } = (await (await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${ location }&language=en&count=5&format=json`)).json() as any).results as any;
+
     const {
       latitude,
       longitude
     } = {
-      latitude: 52.52,
-      longitude: 13.41
+      latitude: locationData[0]?.latitude || 51.5085,
+      longitude: locationData[0]?.longitude || -0.1257
     };
 
     const weatherData = await (await fetch(`${ OPEN_METEO_INSTANCE }/v1/forecast?latitude=${ latitude }&longitude=${ longitude }&hourly=temperature_2m,apparent_temperature,precipitation_probability,weathercode&current_weather=true&forecast_days=1`)).json();
 
-    // return hourly weather data
-    return res.json(weatherData);
+    return res.json({ data: weatherData, location: locationData[0] });
   });
 };
 

@@ -41,7 +41,7 @@ async function authorize(restInstanceUrl: string, username: string, password: st
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      type: "desktop"
+      type: "psa"
     },
     body: JSON.stringify({
       password

@@ -1,0 +1,42 @@
+name: Deploy GitHub Pages to external repository
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "dev" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build website
+        run: (cd ./client && yarn build)
+
+      - name: Deploy to external repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ORG_FULL_ACCESS_TOKEN }}
+
+        with:
+          source-directory: client/dist/
+          destination-github-username: yourdash-app
+          destination-repository-name: yourdash-app.github.io
+          target-directory: dev-branch
+          user-email: ewsgit@duck.com
+          target-branch: "gh-pages"

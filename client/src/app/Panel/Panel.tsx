@@ -5,7 +5,7 @@ import clippy from "../../helpers/clippy";
 import {IconButton, RightClickMenu} from "../../ui";
 import {loadDatabaseFromServer} from "../../helpers/database";
 import PanelApplicationLauncher from "./launcher/PanelLaunchers";
-import PanelDesktopIndicator from "./desktop/PanelDesktopIndicator";
+import PanelDesktopIndicator from "./psa/PanelDesktopIndicator";
 import styles from "./Panel.module.scss";
 
 export enum PanelPosition {
@@ -62,7 +62,7 @@ const PanelQuickShortcuts: React.FC<{
         >
           <button
             type={"button"}
-            className={"w-full aspect-square relative group flex items-center justify-center mr-1 cursor-pointer outline-0 !bg-transparent"}
+            className={styles.quickShortcut}
             onClick={e => {
               e.currentTarget.blur();
               navigate(shortcut.url);
@@ -72,22 +72,15 @@ const PanelQuickShortcuts: React.FC<{
               draggable={false}
               src={shortcut.icon}
               alt=""
-              className={"w-[2rem] group-hover:scale-110 group-focus-within:scale-150 group-active:scale-95 transition-[var(--transition)] hover:transition-[var(--transition-fast)]"}
+              className={styles.quickShortcutIcon}
             />
             <span
               className={clippy(
-                "absolute z-50 pl-3 pr-3 pt-0.5 pb-0.5 bg-container-secondary-bg rounded-container-rounding" +
-                " pointer-events-none group-hover:opacity-100 opacity-0" +
-                " group-hover:[transition:var(--transition-fast)] shadow-lg" +
-                " [transition:var(--transition)] whitespace-nowrap",
-                side === PanelPosition.left &&
-                "ml-4 left-full top-1/2 -translate-y-1/2",
-                side === PanelPosition.top &&
-                "mt-4 top-full left-1/2 -translate-x-1/2",
-                side === PanelPosition.right &&
-                "mr-4 right-full top-1/2 -translate-y-1/2",
-                side === PanelPosition.bottom &&
-                "mb-4 bottom-full left-1/2 -translate-x-1/2"
+                styles.quickShortcutLabel,
+                side === PanelPosition.left && styles.quickShortcutLabelLeft,
+                side === PanelPosition.top && styles.quickShortcutLabelTop,
+                side === PanelPosition.right && styles.quickShortcutLabelRight,
+                side === PanelPosition.bottom && styles.quickShortcutLabelBottom
               )}
             >
               {shortcut.displayName}
@@ -120,7 +113,7 @@ const PanelInstanceIcon: React.FC = () => {
       <img
         src={`${ instanceUrl }/core/panel/logo/small`}
         alt={""}
-        className={"cursor-pointer select-none"}
+        className={"cursor-pointer select-none w-8"}
       />
     </button>
   );
@@ -166,10 +159,7 @@ export interface YourDashLauncherApplication {
   description: string;
 }
 
-const Panel: React.FC<IPanel> = ({
-  side,
-  setSide
-}) => {
+const Panel: React.FC<IPanel> = ({side, setSide}) => {
   const [num, setNum] = useState<number>(0);
   const [launcherType, setLauncherType] = useState<number>(0);
 
@@ -191,7 +181,7 @@ const Panel: React.FC<IPanel> = ({
   return (
     <div
       className={clippy(
-        "bg-container-bg flex p-2 gap-1 relative justify-center items-center z-[1000000] animate__animated animate__fadeIn w-full ",
+        "animate__animated animate__fadeIn",
         side === PanelPosition.top && styles.sideTop,
         side === PanelPosition.bottom && styles.sideBottom,
         side === PanelPosition.left && styles.sideLeft,
@@ -205,34 +195,26 @@ const Panel: React.FC<IPanel> = ({
       <PanelInstanceIcon/>
       {/* separator */}
       <div
-        className={clippy(
-          `
-          rounded-full
-          bg-[var(--application-panel-border)]
-          `,
-          side === PanelPosition.top || side === PanelPosition.bottom
-            ? "h-full w-0.5 ml-1 mr-1"
-            : "w-full h-0.5 mt-1 mb-1"
-        )}
+        className={
+          clippy(
+            styles.separator,
+            side === PanelPosition.top || side === PanelPosition.bottom ? styles.separatorHorizontal : styles.separatorVertical
+          )
+        }
       />
       <PanelQuickShortcuts num={num} side={side}/>
-      <section
-        className={clippy(
-          side === PanelPosition.left || side === PanelPosition.right
-            ? "mt-auto w-full flex-col"
-            : "ml-auto h-full",
-          "justify-center items-center flex gap-2"
-        )}
-      >
-        <PanelDesktopIndicator side={side}/>
-        {/*
-         
-         TODO: feature idea, Quick search ( basically just opens a command panel for all of YourDash )
-         Note: remember include application filtering
-         
-         */}
-        <IconButton icon={"search-16"}/>
-      </section>
+      {/*<section*/}
+      {/*  className={clippy(*/}
+      {/*    side === PanelPosition.left || side === PanelPosition.right*/}
+      {/*      ? "mt-auto w-full flex-col"*/}
+      {/*      : "ml-auto h-full",*/}
+      {/*    "justify-center items-center flex gap-2"*/}
+      {/*  )}*/}
+      {/*>*/}
+      {/*  <PanelDesktopIndicator side={side}/>*/}
+      {/*  /!* TODO: feature idea, Quick search ( basically just opens a command panel for all of YourDash ) *!/*/}
+      {/*  <IconButton icon={"search-16"} className={"!w-[2rem] !h-[2rem]"}/>*/}
+      {/*</section>*/}
     </div>
   );
 };

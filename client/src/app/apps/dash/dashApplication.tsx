@@ -27,27 +27,13 @@ const DashApplication: React.FC = () => {
 
   return (
     <div
-      className={"max-h-screen overflow-hidden bg-cover bg-center"}
-      style={{
-        backgroundImage: `url(${ localStorage.getItem(
-          "current_server"
-        ) }/core/login/background)`
-      }}
+      className={"overflow-hidden bg-cover bg-center h-full w-full"}
+      style={{backgroundImage: `url(${ localStorage.getItem("current_server") }/core/login/background)`}}
     >
       {
         layout === "dashboard"
-          ? (
-            <DashboardLayout
-              username={userName}
-              fullName={userFullName}
-            />
-          )
-          : (
-            <BrowserLayout
-              username={userName}
-              fullName={userFullName}
-            />
-          )
+          ? <DashboardLayout username={userName} fullName={userFullName}/>
+          : <BrowserLayout username={userName} fullName={userFullName}/>
       }
     </div>
   );

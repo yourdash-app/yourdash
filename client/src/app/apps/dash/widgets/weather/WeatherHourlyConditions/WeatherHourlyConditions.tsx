@@ -9,18 +9,24 @@ import HourlyConditionsHour from "./HourlyConditionsHour";
 const WeatherHourlyConditions: React.FC = () => {
   const trans = useTranslate("dash");
   const [weatherData, setWeatherData] = useState<any>(null);
+  const [locationData, setLocationData] = useState<any>(null);
 
   useEffect(() => {
-    csi.getJson("/app/weather/hourly/a", res => {
+    csi.getJson("/app/weather/hourly/London", res => {
+      setWeatherData(res.data);
+      setLocationData(res.location);
       console.log(res);
-      setWeatherData(res);
     });
   }, []);
+
+  if (!weatherData || !locationData) {
+    return null;
+  }
 
   return (
     <Card className={"flex flex-col col-span-2"}>
       <span>
-        {"Hourly weather conditions"}
+        {"Hourly weather conditions"} {locationData?.name}, {locationData?.admin1}, {locationData?.country}
       </span>
       <main className={"flex h-full"}>
         {

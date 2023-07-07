@@ -1,0 +1,117 @@
+.arrow {
+  &.left {
+    top: 0.5rem;
+    left: 100%;
+    margin-left: 0.875rem;
+
+    @media (max-width: 840px) {
+      top: unset;
+      bottom: 100%;
+
+      left: 0.5rem;
+      margin-bottom: 0.875rem;
+      margin-left: unset;
+    }
+  }
+
+  &.right {
+    right: 100%;
+    left: 0.5rem;
+    margin-right: 0.875rem;
+
+    @media (max-width: 840px) {
+      right: unset;
+      bottom: 100%;
+
+      left: 0.5rem;
+      margin-right: unset;
+      margin-bottom: 0.875rem;
+    }
+  }
+
+  &.top {
+    top: 100%;
+    left: 0.5rem;
+    margin-top: 0.875rem;
+
+    @media (max-width: 840px) {
+      top: unset;
+      bottom: 100%;
+
+      left: 0.5rem;
+      margin-top: unset;
+      margin-bottom: 0.875rem;
+    }
+  }
+
+  &.bottom {
+    bottom: 100%;
+    left: 0.5rem;
+    margin-bottom: 0.875rem;
+  }
+}
+
+.component {
+  position: absolute;
+  display: flex;
+  overflow: hidden;
+  flex-direction: column;
+  min-width: 39rem;
+  max-height: 80rem;
+  opacity: 0;
+  border: solid 0.1rem var(--application-panel-border);
+  border-radius: var(--container-rounding);
+  background: rgb(var(--container-bg));
+  gap: 0.25rem;
+
+  &.left {
+    top: 0;
+    left: 100%;
+    margin-left: 1rem;
+
+    @media (max-width: 840px) {
+      top: unset;
+      margin-left: unset;
+
+      bottom: 100%;
+      left: 0;
+      margin-bottom: 1rem;
+    }
+  }
+
+  &.top {
+    top: 100%;
+    left: 0;
+    margin-top: 1rem;
+
+    @media (max-width: 840px) {
+      top: unset;
+      margin-top: unset;
+
+      bottom: 100%;
+      left: 0;
+      margin-bottom: 1rem;
+    }
+  }
+
+  &.right {
+    right: 100%;
+    left: 0;
+    margin-right: 1rem;
+
+    @media (max-width: 840px) {
+      right: unset;
+      margin-right: unset;
+
+      bottom: 100%;
+      left: 0;
+      margin-bottom: 1rem;
+    }
+  }
+
+  &.bottom {
+    bottom: 100%;
+    left: 0;
+    margin-bottom: 1rem;
+  }
+}

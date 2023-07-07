@@ -1,0 +1,11 @@
+.content {
+  display: grid;
+  gap: 1rem;
+  padding-bottom: 1.5rem;
+
+  > * {
+    min-height: 20rem;
+  }
+
+  grid-template-columns: repeat(auto-fit, minmax(24rem, 1fr));
+}
