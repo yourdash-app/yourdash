@@ -39,13 +39,26 @@
       "warn",
       "double"
     ],
-    "no-trailing-spaces": "warn",
     "indent": "warn",
+    "@typescript-eslint/no-explicit-any": "off",
+    "arrow-body-style": "off",
     "object-curly-spacing": [
       "warn",
       "always"
     ],
-    "@typescript-eslint/no-explicit-any": "off",
-    "arrow-body-style": "off"
+    "space-in-parens": [
+      "warn",
+      "always"
+    ],
+    "dot-location": [
+      "warn",
+      "property"
+    ],
+    "no-trailing-spaces": [
+      "warn",
+      {
+        "skipBlankLines": true
+      }
+    ]
   }
 }

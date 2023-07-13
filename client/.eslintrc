@@ -40,6 +40,24 @@
     "quotes": [
       "warn",
       "double"
+    ],
+    "object-curly-spacing": [
+      "warn",
+      "always"
+    ],
+    "space-in-parens": [
+      "warn",
+      "always"
+    ],
+    "dot-location": [
+      "warn",
+      "property"
+    ],
+    "no-trailing-spaces": [
+      "warn",
+      {
+        "skipBlankLines": true
+      }
     ]
   }
 }
