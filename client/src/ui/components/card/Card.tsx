@@ -2,7 +2,7 @@ import React, {CSSProperties} from "react";
 
 import styles from "./Card.module.scss";
 
-export interface ICard {
+export interface ICard extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
   onClick?: () => void;
   children: React.ReactNode;
   style?: CSSProperties;
@@ -15,7 +15,8 @@ const Card: React.FC<ICard> = ({
   onClick,
   style,
   className,
-  level
+  level,
+  ...extraProps
 }) => {
   if (onClick) {
     return (
@@ -24,6 +25,7 @@ const Card: React.FC<ICard> = ({
         // @ts-ignore
         style={{...style}}
         onClick={onClick}
+        {...extraProps}
         className={`${ styles.component } ${ styles.clickable } ${ level === "secondary" ? styles.secondary : "" } ${ level === "tertiary" ? styles.tertiary : "" } ${ className }`}
       >
         {children}
@@ -31,7 +33,7 @@ const Card: React.FC<ICard> = ({
     );
   } else {
     return (
-      <div style={style} className={`${ styles.component } ${ level === "secondary" ? styles.secondary : "" } ${ level === "tertiary" ? styles.tertiary : "" } ${ className }`}>
+      <div {...extraProps} style={style} className={`${ styles.component } ${ level === "secondary" ? styles.secondary : "" } ${ level === "tertiary" ? styles.tertiary : "" } ${ className }`}>
         {children}
       </div>
     );

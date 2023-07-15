@@ -321,25 +321,24 @@ app.get( "/core/userdb", async ( req, res ) => {
 } );
 
 // TODO: implement this
-app.post( "/core/userdb", async () => 0
-  //
-  // const { username } = req.headers as {
-  //   username: string
-  // };
-  //
-  // const user = new YourDashUnreadUser(username);
-  //
-  // let output = {};
-  //
-  // try {
-  //   output = JSON.parse(fs.readFile(path.resolve(user.getPath(), "./userdb.json")).toString());
-  // } catch (_err) {
-  //   output = {};
-  //   fs.writeFile(path.resolve(user.getPath(), "./userdb.json"), "{}");
-  // }
-  //
-  // return res.json(output);
-);
+app.post( "/core/userdb", async ( req, res ) => {
+  const { username } = req.headers as {
+     username: string
+   };
+  
+  const user = new YourDashUnreadUser( username );
+  
+  let output = {};
+  
+  try {
+    output = JSON.parse( fs.readFile( path.resolve( user.getPath(), "./userdb.json" ) ).toString() );
+  } catch ( _err ) {
+    output = {};
+    fs.writeFile( path.resolve( user.getPath(), "./userdb.json" ), "{}" );
+  }
+  
+  return res.json( output );
+} );
 
 /*
  * Start listening for requests

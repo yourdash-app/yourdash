@@ -13,6 +13,12 @@ const Index: React.FC = () => (
       icon={"paintbrush-16"}
     />
     <SettingCategoryComponent
+      href={"/app/a/settings/personalization/dashboard"}
+      description={"Customize your dashboard"}
+      title={"Dashboard"}
+      icon={"paintbrush-16"}
+    />
+    <SettingCategoryComponent
       href={"/app/a/settings/personalization/profile"}
       description={"Personalize your profile"}
       title={"Profile"}

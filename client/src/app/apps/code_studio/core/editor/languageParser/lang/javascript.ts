@@ -34,6 +34,16 @@ export default class CodeStudioLanguageParser extends CodeStudioBaseLanguagePars
         outputToken.value = str.slice(0, 1);
         outputToken.type = TokenType.Identifier;
         break;
+      case str.startsWith("module"):
+        outputString = str.slice(6);
+        outputToken.value = "module";
+        outputToken.type = TokenType.Keyword;
+        break;
+      case str.startsWith("export"):
+        outputString = str.slice(6);
+        outputToken.value = "export";
+        outputToken.type = TokenType.Keyword;
+        break;
       case str.startsWith("function"):
         outputString = str.slice(8);
         outputToken.value = "function";
@@ -44,6 +54,16 @@ export default class CodeStudioLanguageParser extends CodeStudioBaseLanguagePars
         outputToken.value = "import";
         outputToken.type = TokenType.Keyword;
         break;
+      case str.startsWith("abstract"):
+        outputString = str.slice(8);
+        outputToken.value = "abstract";
+        outputToken.type = TokenType.Keyword;
+        break;
+      case str.startsWith("return"):
+        outputString = str.slice(6);
+        outputToken.value = "return";
+        outputToken.type = TokenType.Keyword;
+        break;
       case str.startsWith("from"):
         outputString = str.slice(4);
         outputToken.value = "from";
@@ -52,6 +72,11 @@ export default class CodeStudioLanguageParser extends CodeStudioBaseLanguagePars
       case str.startsWith("const"):
         outputString = str.slice(5);
         outputToken.value = "const";
+        outputToken.type = TokenType.Keyword;
+        break;
+      case str.startsWith("class"):
+        outputString = str.slice(5);
+        outputToken.value = "class";
         outputToken.type = TokenType.Keyword;
         break;
       case str.startsWith("var"):
@@ -96,6 +121,12 @@ export default class CodeStudioLanguageParser extends CodeStudioBaseLanguagePars
       case str.slice(0, 1) === "?":
         outputString = str.slice(1);
         outputToken.value = "?";
+        outputToken.type = TokenType.Operator;
+        outputToken.fontWeight = "700";
+        break;
+      case str.slice(0, 1) === "|":
+        outputString = str.slice(1);
+        outputToken.value = "|";
         outputToken.type = TokenType.Operator;
         outputToken.fontWeight = "700";
         break;
@@ -198,6 +229,18 @@ export default class CodeStudioLanguageParser extends CodeStudioBaseLanguagePars
       case str.slice(0, 1) === "}":
         outputString = str.slice(1);
         outputToken.value = "}";
+        outputToken.type = TokenType.Punctuation;
+        outputToken.fontWeight = "700";
+        break;
+      case str.slice(0, 1) === "<":
+        outputString = str.slice(1);
+        outputToken.value = "<";
+        outputToken.type = TokenType.Punctuation;
+        outputToken.fontWeight = "700";
+        break;
+      case str.slice(0, 1) === ">":
+        outputString = str.slice(1);
+        outputToken.value = ">";
         outputToken.type = TokenType.Punctuation;
         outputToken.fontWeight = "700";
         break;

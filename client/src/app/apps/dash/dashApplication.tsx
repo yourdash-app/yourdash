@@ -1,8 +1,10 @@
 import React, {useEffect, useState} from "react";
 import csi from "helpers/csi";
 import useTranslate from "../../../helpers/l10n";
-import BrowserLayout from "./layouts/browser/BrowserLayout";
-import DashboardLayout from "./layouts/dashboard/DashboardLayout";
+import loadable from "@loadable/component";
+
+const DashboardLayout = loadable(() => import("./layouts/dashboard/DashboardLayout"));
+const BrowserLayout = loadable(() => import("./layouts/browser/BrowserLayout"));
 
 const DashApplication: React.FC = () => {
   const trans = useTranslate("dash");

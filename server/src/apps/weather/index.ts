@@ -52,11 +52,11 @@ function parseWeatherCodes(code: number): weatherStates {
     case 53:
     case 55:
     case 56:
-    case 57:
     case 61:
     case 66:
       return weatherStates.lightRain;
     case 63:
+    case 57:
       return weatherStates.rain;
     case 64:
     case 67:
@@ -319,6 +319,10 @@ const main: YourDashApplicationServerPlugin = ({ app }) => {
       longitude: locationData[0]?.longitude || -0.1257
     };
 
+    // FIXME: we need to use parseWeatherCodes() before sending to the client
+    //        this causes the client to show "unknown" as the weatherCondition
+    //        and a missing icon error will occur as we only support a limited
+    //        range of weather types
     const weatherData = await (await fetch(`${ OPEN_METEO_INSTANCE }/v1/forecast?latitude=${ latitude }&longitude=${ longitude }&hourly=temperature_2m,apparent_temperature,precipitation_probability,weathercode&current_weather=true&forecast_days=1`)).json();
 
     return res.json({ data: weatherData, location: locationData[0] });

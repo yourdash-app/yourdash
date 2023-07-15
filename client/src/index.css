@@ -105,6 +105,18 @@
     --input-active-fg: var(--base-900);
 }
 
+::-webkit-scrollbar {
+    width: 0.5rem;
+    height: 0.5rem;
+    background-color: rgb(var(--container-secondary-bg));
+    border-radius: 0.5rem;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgb(var(--container-secondary-fg));
+    border-radius: 0.5rem;
+}
+
 button[type='button'] {
     background-color: rgb(var(--button-bg));
 }
@@ -143,8 +155,6 @@ body, #root {
     color: rgb(var(--base-50));
     background-image: linear-gradient(to bottom right, rgb(var(--base-700) / 1), rgb(var(--base-900) / 1));
 }
-
-// delay
 
 .animate__animated.animate__50ms {
     -webkit-animation-delay: 0.05s;
@@ -205,8 +215,6 @@ body, #root {
     -webkit-animation-delay: 2.5s;
     animation-delay: 2.5s;
 }
-
-// Duration
 
 .animate__animated.animate__duration_50ms {
     --animate-duration: 0.05s;

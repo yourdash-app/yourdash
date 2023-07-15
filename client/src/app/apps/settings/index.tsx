@@ -1,11 +1,12 @@
 import React from "react";
-import {Routes, Route} from "react-router";
+import { Routes, Route } from "react-router";
 import SettingsApplication from "./settingsApplication";
 import SettingsPageSession from "./pages/session";
 import SettingsLayout from "./settingsLayout";
 import SettingsPageDeveloper from "./pages/developer";
 import PersonalizationIndex from "./pages/personalization/Index";
 import AdminToolsIndex from "./pages/admin/Index";
+import DashboardPersonalizationIndex from "./pages/personalization/dashboard/Index";
 
 const SettingsRouter: React.FC = () => (
   <Routes>
@@ -16,6 +17,7 @@ const SettingsRouter: React.FC = () => (
       />
       <Route path={"personalization"}>
         <Route index element={<PersonalizationIndex/>}/>
+        <Route path={"dashboard"} element={<DashboardPersonalizationIndex/>}/>
       </Route>
       <Route path={"session"}>
         <Route index element={<SettingsPageSession/>}/>

@@ -1,11 +1,15 @@
 .content {
-  display: grid;
+  display: flex;
   gap: 1rem;
   padding-bottom: 1.5rem;
+  max-width: 100%;
+  overflow-x: hidden;
+  @apply pl-8 pr-8;
 
   > * {
-    min-height: 20rem;
+    flex-grow: 1;
+    flex-shrink: 1;
   }
 
-  grid-template-columns: repeat(auto-fill, minmax(24rem, 1fr));
+  flex-wrap: wrap;
 }

@@ -1,7 +1,6 @@
 import React from "react";
 import {
   useFloating,
-  flip,
   offset,
   shift,
   autoUpdate,
@@ -9,26 +8,32 @@ import {
   useFocus,
   useDismiss,
   useRole,
-  useInteractions
+  useInteractions,
+  autoPlacement
 } from "@floating-ui/react";
 import DROPLET_ICON from "../../../../weather/weatherIcons/droplet.svg";
 import {Card} from "../../../../../../ui";
+import {getWeatherConditionFromState} from "../../../../weather/location";
+import useTranslate from "../../../../../../helpers/l10n";
 
 export interface IHourlyConditionsHour {
   time: string,
   conditionIcon: string,
   temperature: number,
   feelsLike: number,
-  rainChance: number
+  rainChance: number,
+  conditionState: number
 }
 
 const HourlyConditionsHour: React.FC<IHourlyConditionsHour> = ({
   time,
   conditionIcon,
+  conditionState,
   temperature,
   feelsLike,
   rainChance
 }) => {
+  const trans = useTranslate("weather");
   const [showTooltip, setShowTooltip] = React.useState(false);
   const {
     refs,
@@ -38,12 +43,15 @@ const HourlyConditionsHour: React.FC<IHourlyConditionsHour> = ({
     open: showTooltip,
     onOpenChange: setShowTooltip,
     middleware: [
-      flip(),
       // eslint-disable-next-line no-magic-numbers
       offset(8),
-      shift()
+      shift(),
+      autoPlacement({
+        autoAlignment: true,
+        padding: 8,
+        altBoundary: true
+      })
     ],
-    placement: "top",
     whileElementsMounted: autoUpdate
   });
 
@@ -68,6 +76,7 @@ const HourlyConditionsHour: React.FC<IHourlyConditionsHour> = ({
           >
             <Card>
               <span>{`${ temperature }°C`}</span>
+              <div>{trans(getWeatherConditionFromState(conditionState))}</div>
               <div className={"flex items-center justify-center"}>
                 <img className={"h-full"} src={DROPLET_ICON} alt={""}/>
                 <span>{`Rain chance: ${ rainChance }%`}</span>
@@ -80,16 +89,24 @@ const HourlyConditionsHour: React.FC<IHourlyConditionsHour> = ({
       <div
         ref={refs.setReference}
         {...getReferenceProps()}
-        className={"p-2 h-max mt-auto mb-auto flex flex-col items-center justify-center border-r-[1px] border-r-container-border last-of-type:border-r-0"}
+        className={"h-max mt-auto mb-auto flex flex-col items-center justify-center"}
       >
-        <span>{time}</span>
-        <img alt={""} className={"aspect-square h-16"} src={conditionIcon}/>
-        <span>{`${ temperature }°C`}</span>
-        <div className={"flex items-center justify-center"}>
-          <img className={"h-full"} src={DROPLET_ICON} alt={""}/>
-          <span>{`${ rainChance }%`}</span>
-        </div>
-        <span>{`${ feelsLike }°C`}</span>
+        <Card
+          className={"flex flex-col items-center justify-center"}
+          onClick={() => {
+            // TODO: implement logic on click of a "weather hour"
+            console.log("IMPLEMENT ME!!!");
+          }}
+        >
+          <span>{time}</span>
+          <img alt={""} className={"aspect-square h-16"} src={conditionIcon}/>
+          <span>{`${ temperature }°C`}</span>
+          <div className={"flex items-center justify-center"}>
+            <img className={"h-full"} src={DROPLET_ICON} alt={""}/>
+            <span>{`${ rainChance }%`}</span>
+          </div>
+          <span>{`${ feelsLike }°C`}</span>
+        </Card>
       </div>
     </>
   );

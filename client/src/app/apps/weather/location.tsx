@@ -159,6 +159,7 @@ export function getWeatherIconFromState(state: weatherStates): string {
     case weatherStates.thunder:
       return WEATHER_ICON_HEAVY_RAIN;
     default:
+      console.log(`Weather icon missing for weather state: ${state}`);
       return "/assets/productLogos/yourdash.svg";
   }
 }
