@@ -1,5 +1,5 @@
 .component {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   font-size: 1rem;
   box-sizing: border-box;
   padding: 1rem;
@@ -51,4 +51,8 @@
   }
 
   place-items: center;
+}
+
+.border {
+  border: solid 0.125rem rgb(var(--container-border));
 }

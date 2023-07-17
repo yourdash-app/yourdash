@@ -1,32 +1,30 @@
-import React from 'react';
+import React from "react";
 
-import CodeStudioEditor from './core/Editor';
+import CodeStudioEditor from "./core/Editor";
+import TabContainer from "./ui/Tabs/TabContainer";
+import StatusBar from "./ui/StatusBar/StatusBar";
 
 const CodeStudioApplication: React.FC = () => (
-  <main className={'grid grid-rows-[auto,1fr,auto] h-full'}>
+  <main className={"grid grid-rows-[auto,1fr,auto] h-full"}>
     {/* Tabs */}
     <section>
-      <span>
-        {'Tabs'}
-      </span>
+      <TabContainer/>
     </section>
     {/* Content */}
-    <section className={'grid grid-cols-[auto,1fr,auto]'}>
+    <section className={"grid grid-cols-[auto,1fr,auto] h-full overflow-hidden"}>
       <section>
-        {'FileManager'}
+        {"FileManager"}
       </section>
       <CodeStudioEditor/>
       <section>
-        {'Symbols'}
+        {"Symbols"}
       </section>
     </section>
     {/*StatusBar*/}
     <section>
-      <span>
-        {'StatusBar'}
-      </span>
+      <StatusBar/>
     </section>
   </main>
 );
 
-export {CodeStudioApplication as default};
+export { CodeStudioApplication as default };

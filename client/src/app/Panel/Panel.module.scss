@@ -3,10 +3,7 @@
   background: rgb(var(--container-bg));
   display: flex;
   padding: 0.5rem;
-  gap: 0.75rem;
   position: relative;
-  justify-content: start;
-  align-items: center;
   z-index: 1000000;
   width: 100%;
 
@@ -15,16 +12,28 @@
   }
 }
 
+.panelSectionStart {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+}
+
 @mixin mobileDock {
   @media (max-width: 840px) {
     border: none;
-
     flex-direction: row;
     width: 100%;
     border-top: 0.1rem solid var(--application-panel-border);
     grid-column-end: -1;
     grid-row-start: 2;
     height: max-content;
+
+    > .panelSectionStart {
+      width: 100%;
+      flex-direction: row;
+    }
   }
 }
 
@@ -34,13 +43,23 @@
   border-bottom: 0.1rem solid var(--application-panel-border);
   max-width: unset;
 
+  > .panelSectionStart {
+    width: 100%;
+    flex-direction: row;
+  }
+
   @include mobileDock
 }
 
 .sideLeft {
-  flex-direction: column;
-  height: 100%;
   border-right: 0.1rem solid var(--application-panel-border);
+  height: 100%;
+  flex-direction: column;
+
+  > .panelSectionStart {
+    flex-direction: column;
+    height: 100%;
+  }
 
   @include mobileDock
 }
@@ -49,9 +68,12 @@
   flex-direction: row;
   width: 100%;
   border-top: 0.1rem solid var(--application-panel-border);
-  grid-column-end: -1;
-  grid-row-start: 2;
   max-width: unset;
+
+  > .panelSectionStart {
+    width: 100%;
+    flex-direction: row;
+  }
 
   @include mobileDock
 }
@@ -62,6 +84,11 @@
   border-left: 0.1rem solid var(--application-panel-border);
   grid-row-end: -1;
   grid-column-start: 2;
+
+  > .panelSectionStart {
+    height: 100%;
+    flex-direction: column;
+  }
 
   @include mobileDock
 }
@@ -190,4 +217,19 @@
   width: 2rem;
   aspect-ratio: 1 / 1;
   transition: var(--transition);
+}
+
+.panelTray {
+  display: flex;
+  background-color: red;
+}
+
+.panelTrayHorizontal {
+  margin-left: auto;
+  flex-direction: row;
+}
+
+.panelTrayVertical {
+  margin-top: auto;
+  flex-direction: column;
 }

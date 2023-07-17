@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import csi from "helpers/csi";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import clippy from "../../helpers/clippy";
-import {IconButton, RightClickMenu} from "../../ui";
-import {loadDatabaseFromServer} from "../../helpers/database";
+import { IconButton, RightClickMenu } from "../../ui";
+import { loadDatabaseFromServer } from "../../helpers/database";
 import PanelApplicationLauncher from "./launcher/PanelLaunchers";
 import PanelDesktopIndicator from "./psa/PanelDesktopIndicator";
 import styles from "./Panel.module.scss";
@@ -17,7 +17,7 @@ export enum PanelPosition {
 
 export interface IPanel {
   side: PanelPosition;
-  setSide: (side: PanelPosition) => void;
+  setSide: ( side: PanelPosition ) => void;
 }
 
 interface IPanelQuickShortcut {
@@ -29,33 +29,33 @@ interface IPanelQuickShortcut {
 const PanelQuickShortcuts: React.FC<{
   num: number;
   side: PanelPosition
-}> = ({
+}> = ( {
   num,
   side
-}) => {
+} ) => {
   const navigate = useNavigate();
   const [quickShortcuts, setQuickShortcuts] = useState<IPanelQuickShortcut[]>(
     []
   );
-
-  useEffect(() => {
-    csi.getJson("/core/panel/quick-shortcuts", resp => setQuickShortcuts(resp));
-  }, [num]);
-
+  
+  useEffect( () => {
+    csi.getJson( "/core/panel/quick-shortcuts", resp => setQuickShortcuts( resp ) );
+  }, [num] );
+  
   return (
     <>
-      {quickShortcuts.map((shortcut, ind) => (
+      {quickShortcuts.map( ( shortcut, ind ) => (
         <RightClickMenu
           key={shortcut.url}
           items={[
             {
               name: "Unpin from panel",
               onClick() {
-                csi.deleteJson(`/core/panel/quick-shortcuts${ ind }`, () => {
+                csi.deleteJson( `/core/panel/quick-shortcuts${ ind }`, () => {
                   // @ts-ignore
                   // eslint-disable-next-line @typescript-eslint/no-use-before-define
                   Panel.reload();
-                });
+                } );
               }
             }
           ]}
@@ -65,7 +65,7 @@ const PanelQuickShortcuts: React.FC<{
             className={styles.quickShortcut}
             onClick={e => {
               e.currentTarget.blur();
-              navigate(shortcut.url);
+              navigate( shortcut.url );
             }}
           >
             <img
@@ -87,28 +87,28 @@ const PanelQuickShortcuts: React.FC<{
             </span>
           </button>
         </RightClickMenu>
-      ))}
+      ) )}
     </>
   );
 };
 
 const PanelInstanceIcon: React.FC = () => {
   const navigate = useNavigate();
-  const [instanceUrl, setInstanceUrl] = useState<string | null>(null);
-
-  useEffect(() => {
-    setInstanceUrl(localStorage.getItem("current_server"));
-  }, []);
-
-  if (!instanceUrl) {
+  const [instanceUrl, setInstanceUrl] = useState<string | null>( null );
+  
+  useEffect( () => {
+    setInstanceUrl( localStorage.getItem( "current_server" ) );
+  }, [] );
+  
+  if ( !instanceUrl ) {
     return <div/>;
   }
-
+  
   return (
     <button
       type={"button"}
       className={"border-none !bg-transparent"}
-      onClick={() => navigate("/app/a/dash")}
+      onClick={() => navigate( "/app/a/dash" )}
     >
       <img
         src={`${ instanceUrl }/core/panel/logo/small`}
@@ -121,15 +121,15 @@ const PanelInstanceIcon: React.FC = () => {
 
 const PanelAuthorizer: React.FC = () => {
   const navigate = useNavigate();
-
+  
   const TIME_UNTIL_CONSOLE_CLEAR = 1000;
-
-  useEffect(() => {
-    if (!localStorage.getItem("current_server")) {
-      setTimeout(() => {
+  
+  useEffect( () => {
+    if ( !localStorage.getItem( "current_server" ) ) {
+      setTimeout( () => {
         console.clear();
-      }, TIME_UNTIL_CONSOLE_CLEAR);
-      navigate("/login");
+      }, TIME_UNTIL_CONSOLE_CLEAR );
+      navigate( "/login" );
     } else {
       csi.getJson(
         "/core/login/is-authenticated",
@@ -137,18 +137,18 @@ const PanelAuthorizer: React.FC = () => {
           loadDatabaseFromServer();
         },
         () => {
-          setTimeout(() => {
+          setTimeout( () => {
             console.clear();
-          }, TIME_UNTIL_CONSOLE_CLEAR);
-          localStorage.removeItem("session_token");
-          navigate("/login/server");
+          }, TIME_UNTIL_CONSOLE_CLEAR );
+          localStorage.removeItem( "session_token" );
+          navigate( "/login/server" );
         }
       );
     }
-
+    
     // eslint-ignore-next-line react-hooks/exhaustive-deps
-  }, []);
-
+  }, [] );
+  
   return null;
 };
 
@@ -159,25 +159,28 @@ export interface YourDashLauncherApplication {
   description: string;
 }
 
-const Panel: React.FC<IPanel> = ({side, setSide}) => {
-  const [num, setNum] = useState<number>(0);
-  const [launcherType, setLauncherType] = useState<number>(0);
-
+const Panel: React.FC<IPanel> = ( {
+  side,
+  setSide
+} ) => {
+  const [num, setNum] = useState<number>( 0 );
+  const [launcherType, setLauncherType] = useState<number>( 0 );
+  
   //  @ts-ignore
   Panel.reload = () => {
-    setNum(num + 1);
+    setNum( num + 1 );
   };
-
-  useEffect(() => {
-    csi.getJson("/core/panel/position", res => {
-      setSide(res.position);
-    });
-
-    csi.getJson("/core/panel/quick-shortcuts", res => {
-      setLauncherType(res.launcher);
-    });
-  }, [num]); // eslint-disable-line react-hooks/exhaustive-deps
-
+  
+  useEffect( () => {
+    csi.getJson( "/core/panel/position", res => {
+      setSide( res.position );
+    } );
+    
+    csi.getJson( "/core/panel/quick-shortcuts", res => {
+      setLauncherType( res.launcher );
+    } );
+  }, [num] ); // eslint-disable-line react-hooks/exhaustive-deps
+  
   return (
     <div
       className={clippy(
@@ -189,32 +192,34 @@ const Panel: React.FC<IPanel> = ({side, setSide}) => {
         styles.panel
       )}
     >
-      {/* invisible components which checks that the user is authorized on the first load of the panel*/}
-      <PanelAuthorizer/>
-      <PanelApplicationLauncher num={num} side={side} type={launcherType}/>
-      <PanelInstanceIcon/>
-      {/* separator */}
-      <div
-        className={
-          clippy(
-            styles.separator,
-            side === PanelPosition.top || side === PanelPosition.bottom ? styles.separatorHorizontal : styles.separatorVertical
-          )
-        }
-      />
-      <PanelQuickShortcuts num={num} side={side}/>
-      {/*<section*/}
-      {/*  className={clippy(*/}
-      {/*    side === PanelPosition.left || side === PanelPosition.right*/}
-      {/*      ? "mt-auto w-full flex-col"*/}
-      {/*      : "ml-auto h-full",*/}
-      {/*    "justify-center items-center flex gap-2"*/}
-      {/*  )}*/}
-      {/*>*/}
-      {/*  <PanelDesktopIndicator side={side}/>*/}
-      {/*  /!* TODO: feature idea, Quick search ( basically just opens a command panel for all of YourDash ) *!/*/}
-      {/*  <IconButton icon={"search-16"} className={"!w-[2rem] !h-[2rem]"}/>*/}
-      {/*</section>*/}
+      <section className={styles.panelSectionStart}>
+        {/* invisible components which checks that the user is authorized on the first load of the panel*/}
+        <PanelAuthorizer/>
+        <PanelApplicationLauncher num={num} side={side} type={launcherType}/>
+        <PanelInstanceIcon/>
+        {/* separator */}
+        <div
+          className={
+            clippy(
+              styles.separator,
+              side === PanelPosition.top || side === PanelPosition.bottom ? styles.separatorHorizontal : styles.separatorVertical
+            )
+          }
+        />
+        <PanelQuickShortcuts num={num} side={side}/>
+      </section>
+      <section
+        className={clippy(
+          side === PanelPosition.left || side === PanelPosition.right
+            ? styles.panelTrayVertical
+            : styles.panelTrayHorizontal,
+          styles.panelTray
+        )}
+      >
+        <PanelDesktopIndicator side={side}/>
+        {/* TODO: feature idea, Quick search ( basically just opens a command panel for all of YourDash ) */}
+        <IconButton icon={"search-16"} className={"!w-[2rem] !h-[2rem]"}/>
+      </section>
     </div>
   );
 };

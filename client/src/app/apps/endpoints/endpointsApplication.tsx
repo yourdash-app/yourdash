@@ -1,33 +1,33 @@
-import React, {useState, useEffect} from "react";
-import {Icon, Button, DropdownButton, TextBox} from "../../../ui";
+import React, { useState, useEffect } from "react";
+import { Icon, Button, DropdownButton, TextBox } from "../../../ui";
 import csi from "../../../helpers/csi";
 import AutocompletedTextInput from "../../../ui/components/autocompletedTextInput/AutocompletedTextInput";
 
-function loadPossibleEndpoints(setEndpoints: (data: string[]) => void) {
-  csi.getJson("/app/endpoints/endpoints", data => {
-    const endpoints = data.map((endpoint: any) => endpoint?.route?.path || null).filter((endpoint: any) => endpoint !== null);
-
-    setEndpoints(endpoints);
-  });
+function loadPossibleEndpoints( setEndpoints: ( data: string[] ) => void ) {
+  csi.getJson( "/app/endpoints/endpoints", data => {
+    const endpoints = data.map( ( endpoint: any ) => endpoint?.route?.path || null ).filter( ( endpoint: any ) => endpoint !== null );
+    
+    setEndpoints( endpoints );
+  } );
 }
 
 const EndpointsApplication: React.FC = () => {
-  const [requestType, setRequestType] = useState<"Text" | "JSON">("JSON");
-  const [requestMethod, setRequestMethod] = useState<"GET" | "POST" | "DELETE">("GET");
+  const [requestType, setRequestType] = useState<"Text" | "JSON">( "JSON" );
+  const [requestMethod, setRequestMethod] = useState<"GET" | "POST" | "DELETE">( "GET" );
   const [requestHeaders, setRequestHeaders] = useState<{
     [ key: string ]: string
-  }>({});
-  const [requestBody, setRequestBody] = useState<string>("");
-  const [selectedEndpoint, setSelectedEndpoint] = useState<string>("");
-  const [endpoints, setEndpoints] = useState<string[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [didError, setDidError] = useState<string | false>(false);
-  const [response, setResponse] = useState<string>("");
-
-  useEffect(() => {
-    loadPossibleEndpoints(endpoints => setEndpoints(endpoints));
-  }, []);
-
+  }>( {} );
+  const [requestBody, setRequestBody] = useState<string>( "" );
+  const [selectedEndpoint, setSelectedEndpoint] = useState<string>( "" );
+  const [endpoints, setEndpoints] = useState<string[]>( [] );
+  const [loading, setLoading] = useState<boolean>( true );
+  const [didError, setDidError] = useState<string | false>( false );
+  const [response, setResponse] = useState<string>( "" );
+  
+  useEffect( () => {
+    loadPossibleEndpoints( endpoints => setEndpoints( endpoints ) );
+  }, [] );
+  
   return (
     <main>
       <header className={"w-full p-3 flex items-center justify-between sticky top-0 bg-container-bg text-container-fg"}>
@@ -38,19 +38,19 @@ const EndpointsApplication: React.FC = () => {
                 {
                   name: "Get",
                   onClick() {
-                    setRequestMethod("GET");
+                    setRequestMethod( "GET" );
                   }
                 },
                 {
                   name: "Post",
                   onClick() {
-                    setRequestMethod("POST");
+                    setRequestMethod( "POST" );
                   }
                 },
                 {
                   name: "Delete",
                   onClick() {
-                    setRequestMethod("DELETE");
+                    setRequestMethod( "DELETE" );
                   }
                 }
               ]
@@ -64,13 +64,13 @@ const EndpointsApplication: React.FC = () => {
                 {
                   name: "Text",
                   onClick() {
-                    setRequestType("Text");
+                    setRequestType( "Text" );
                   }
                 },
                 {
                   name: "JSON",
                   onClick() {
-                    setRequestType("JSON");
+                    setRequestType( "JSON" );
                   }
                 }
               ]
@@ -90,72 +90,72 @@ const EndpointsApplication: React.FC = () => {
         <section className={"flex items-center justify-center h-full gap-2"}>
           <Button
             onClick={() => {
-              setDidError(false);
-              setLoading(true);
-
-              switch (requestMethod) {
+              setDidError( false );
+              setLoading( true );
+              
+              switch ( requestMethod ) {
                 case "GET":
-                  switch (requestType) {
+                  switch ( requestType ) {
                     case "Text":
-                      csi.getText(selectedEndpoint, data => {
-                        setResponse(data);
+                      csi.getText( selectedEndpoint, data => {
+                        setResponse( data );
                       }, error => {
-                        setDidError(error);
-                      }, requestHeaders);
+                        setDidError( error );
+                      }, requestHeaders );
                       break;
                     case "JSON":
-                      csi.getJson(selectedEndpoint, data => {
-                        setResponse(data);
+                      csi.getJson( selectedEndpoint, data => {
+                        setResponse( data );
                       }, error => {
-                        setDidError(error);
-                      }, requestHeaders);
+                        setDidError( error );
+                      }, requestHeaders );
                       break;
                     default:
-                      setDidError("[INTERNAL] This should never happen");
+                      setDidError( "[INTERNAL] This should never happen" );
                   }
                   break;
                 case "POST":
-                  switch (requestType) {
+                  switch ( requestType ) {
                     case "Text":
-                      csi.postText(selectedEndpoint, requestBody, data => {
-                        setResponse(data);
+                      csi.postText( selectedEndpoint, requestBody, data => {
+                        setResponse( data );
                       }, error => {
-                        setDidError(error);
-                      }, requestHeaders);
+                        setDidError( error );
+                      }, requestHeaders );
                       break;
                     case "JSON":
-                      csi.postJson(selectedEndpoint, requestBody, data => {
-                        setResponse(data);
+                      csi.postJson( selectedEndpoint, requestBody, data => {
+                        setResponse( data );
                       }, error => {
-                        setDidError(error);
-                      }, requestHeaders);
+                        setDidError( error );
+                      }, requestHeaders );
                       break;
                     default:
-                      setDidError("[INTERNAL] This should never happen");
+                      setDidError( "[INTERNAL] This should never happen" );
                   }
                   break;
                 case "DELETE":
-                  switch (requestType) {
+                  switch ( requestType ) {
                     case "Text":
-                      csi.deleteText(selectedEndpoint, data => {
-                        setResponse(data);
+                      csi.deleteText( selectedEndpoint, data => {
+                        setResponse( data );
                       }, error => {
-                        setDidError(error);
-                      }, requestHeaders);
+                        setDidError( error );
+                      }, requestHeaders );
                       break;
                     case "JSON":
-                      csi.deleteJson(selectedEndpoint, data => {
-                        setResponse(data);
+                      csi.deleteJson( selectedEndpoint, data => {
+                        setResponse( data );
                       }, error => {
-                        setDidError(error);
-                      }, requestHeaders);
+                        setDidError( error );
+                      }, requestHeaders );
                       break;
                     default:
-                      setDidError("[INTERNAL] This should never happen");
+                      setDidError( "[INTERNAL] This should never happen" );
                   }
                   break;
                 default:
-                  setDidError("[INTERNAL] This should never happen");
+                  setDidError( "[INTERNAL] This should never happen" );
               }
             }}
           >
@@ -169,7 +169,7 @@ const EndpointsApplication: React.FC = () => {
             options={endpoints}
             label={"Request Endpoint"}
             onChange={value => {
-              setSelectedEndpoint(value);
+              setSelectedEndpoint( value );
             }}
             className={"mb-2"}
           />
@@ -180,7 +180,7 @@ const EndpointsApplication: React.FC = () => {
                 <TextBox
                   defaultValue={"{\n  \n}"}
                   onChange={e => {
-                    setRequestBody(e.currentTarget.value);
+                    setRequestBody( e.currentTarget.value );
                   }}
                 />
               </>
@@ -190,7 +190,7 @@ const EndpointsApplication: React.FC = () => {
           <TextBox
             defaultValue={"{\n  \n}"}
             onChange={e => {
-              setRequestHeaders(JSON.parse(e.currentTarget.value));
+              setRequestHeaders( JSON.parse( e.currentTarget.value ) );
             }}
           />
         </section>
@@ -198,7 +198,7 @@ const EndpointsApplication: React.FC = () => {
           <pre className={"bg-container-tertiary-bg text-container-fg p-4 rounded-container-rounding w-auto"}>
             {
               requestType === "JSON"
-                ? JSON.stringify(response, null, 2)
+                ? JSON.stringify( response, null, 2 )
                 : response
             }
           </pre>
