@@ -99,7 +99,7 @@ const main: YourDashApplicationServerPlugin = ( { app } ) => {
                 if ( ( await fs.stat( path.join( user.getPath(), req.body.path, file ) ) ).size > 1024 * 1024 ) {
                   icon = "";
                 } else {
-                  // use sharp to downscale the image to 128x128
+                  // downscale the image
                   const image = sharp( path.join( user.getPath(), req.body.path, file ) ).resize( 96, 96 );
                   
                   icon = authenticatedImage( username, authenticatedImageType.base64, ( await image.toBuffer() ).toString( "base64" ) );

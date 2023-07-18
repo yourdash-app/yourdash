@@ -4,15 +4,17 @@ import CodeStudioLanguageParser from "./editor/languageParser/parser";
 
 const Editor: React.FC = () => {
   const ref = useRef( null );
-  
+
   useEffect( () => {
     if ( !ref.current ) {
       return;
     }
-    
+
     const editor = new CodeStudioEditor( ref.current );
     
     editor._debugRenderParsedString( "import { Component } from \"react\";\n" +
+                                     "\n" +
+                                     "// YourDash Javascript parser test script\n" +
                                      "\n" +
                                      "module Greetings {\n" +
                                      "  export abstract class Greeter<T> {\n" +
@@ -117,7 +119,7 @@ const Editor: React.FC = () => {
   }, [] );
   
   return (
-    <div className={"overflow-auto h-full w-full"} ref={ref}/>
+    <div className={"overflow-auto h-full w-full bg-container-tertiary-bg p-2"} ref={ref}/>
   );
 };
 

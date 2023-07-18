@@ -3,6 +3,8 @@ import React from "react";
 import CodeStudioEditor from "./core/Editor";
 import TabContainer from "./ui/Tabs/TabContainer";
 import StatusBar from "./ui/StatusBar/StatusBar";
+import FileManager from "./ui/FileManager/FileManager";
+import Symbols from "./ui/Symbols/Symbols";
 
 const CodeStudioApplication: React.FC = () => (
   <main className={"grid grid-rows-[auto,1fr,auto] h-full"}>
@@ -13,11 +15,11 @@ const CodeStudioApplication: React.FC = () => (
     {/* Content */}
     <section className={"grid grid-cols-[auto,1fr,auto] h-full overflow-hidden"}>
       <section>
-        {"FileManager"}
+        <FileManager/>
       </section>
       <CodeStudioEditor/>
       <section>
-        {"Symbols"}
+        <Symbols/>
       </section>
     </section>
     {/*StatusBar*/}

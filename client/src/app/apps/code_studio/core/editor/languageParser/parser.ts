@@ -34,4 +34,12 @@ export default class CodeStudioLanguageParser {
   parseLine( lineNumber: number, line: string ) {
     return this;
   }
+  
+  terminate() {
+    this.worker.terminate();
+  }
+  
+  kill() {
+    this.worker.terminate();
+  }
 }

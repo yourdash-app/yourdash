@@ -1,7 +1,7 @@
 import React from "react";
 import useTranslate from "../../../../../helpers/l10n";
-import {IconButton, Chip, Row} from "../../../../../ui";
-import {useNavigate} from "react-router-dom";
+import { IconButton, Chip, Row } from "../../../../../ui";
+import { useNavigate } from "react-router-dom";
 import WeatherHourlyConditions from "../../widgets/weather/WeatherHourlyConditions/WeatherHourlyConditions";
 import styles from "./DashboardLayout.module.scss";
 import BlankDashWidget from "../../widgets/blank/BlankDashWidget";
@@ -14,12 +14,12 @@ export interface IDashboard {
   }
 }
 
-const DashboardLayout: React.FC<IDashboard> = ({
+const DashboardLayout: React.FC<IDashboard> = ( {
   username,
   fullName
-}) => {
+} ) => {
   const navigate = useNavigate();
-  const trans = useTranslate("dash");
+  const trans = useTranslate( "dash" );
   return (
     <main
       className={"flex flex-col w-full min-h-full h-full overflow-y-auto"}
@@ -28,14 +28,14 @@ const DashboardLayout: React.FC<IDashboard> = ({
         <Row>
           <span className={"text-5xl font-bold"}>
             {
-              trans("LOCALIZED_GREETING", [fullName.first, fullName.last])
+              trans( "LOCALIZED_GREETING", [fullName.first, fullName.last] )
             }
           </span>
           <IconButton
             className={"ml-auto"}
             icon={"gear-16"}
             onClick={() => {
-              navigate("/app/a/settings");
+              navigate( "/app/a/settings/personalization/dashboard" );
             }}
           />
         </Row>

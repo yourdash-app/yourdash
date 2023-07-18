@@ -5,6 +5,7 @@ import getParserForFileExtension, { getParserForLanguage } from "../../code_stud
 import pathBrowserify from "path-browserify";
 import CodeStudioPlainTextLanguageParser from "../../code_studio/core/editor/languageParser/lang/plainText";
 import CodeStudioLanguageParser from "../../code_studio/core/editor/languageParser/parser";
+import { IconButton } from "../../../../ui";
 
 export interface ITextPreview {
   path: string;
@@ -12,6 +13,7 @@ export interface ITextPreview {
 
 const TextPreview: React.FC<ITextPreview> = ( { path = "" } ) => {
   const ref = useRef<HTMLDivElement>( null );
+  const [formatJson, setFormatJson] = React.useState( getParserForFileExtension( pathBrowserify.extname( path ).replace( ".", "" ) ) === "json" );
   
   useEffect( () => {
     if ( !ref.current ) {
@@ -22,18 +24,39 @@ const TextPreview: React.FC<ITextPreview> = ( { path = "" } ) => {
     
     // @ts-ignore
     csi.postText( "/app/files/get/file", { path }, resp => {
+      let content = resp;
+      
+      if ( formatJson ) {
+        content = JSON.stringify( JSON.parse( content ), null, 2 );
+      }
+      
       let parser = new CodeStudioLanguageParser( getParserForFileExtension( pathBrowserify.extname( path ).replace( ".", "" ) ) );
       
       if ( !parser ) {
         parser = new CodeStudioLanguageParser( "plainText" );
       }
       
-      editor._debugRenderParsedString( resp, parser );
+      console.log( content );
+      console.log( parser );
+      
+      editor._debugRenderParsedString( content, parser );
     } );
     
-  }, [!!ref.current, path] );
+  }, [!!ref.current, path, formatJson] );
   
-  return <div data-yourdash-codestudio-editor="true" className={"overflow-auto w-full p-2"} ref={ref}/>;
+  return (
+    <section className={"flex flex-col gap-2"}>
+      <div className={"flex gap-1"}>
+        <IconButton
+          icon="arrow-switch-16"
+          onClick={() => {
+            setFormatJson( !formatJson );
+          }}
+        />
+      </div>
+      <div data-yourdash-codestudio-editor="true" className={"overflow-auto w-full p-2"} ref={ref}/>
+    </section>
+  );
 };
 
 export default TextPreview;
