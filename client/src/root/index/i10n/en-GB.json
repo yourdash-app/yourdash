@@ -1,6 +1,9 @@
 {
   "BANNER": {
-    "MESSAGE": "YourDash is a pre-alpha project"
+    "MESSAGE": {
+      "CONTENT": "YourDash is a pre-alpha project",
+      "CALL_TO_ACTION": "learn more."
+    }
   },
   "SECTIONS": {
     "HOST_YOUR_OWN": {
