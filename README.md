@@ -6,12 +6,11 @@ You can find the current changes on the "dev" branch
 
 https://yourdash-app.github.io
 
-Readme not coming soon...
-
 # About
 
 - YourDash's goal is to be a more-performant nextcloud alternative which can achieve a good level of performance on a
   Raspberry Pi 4.
+- Built using Node.js, Vite, Express, Electron and Typescript
 
 # See more in the docs
 

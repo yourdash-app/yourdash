@@ -22,6 +22,8 @@
  */
 
 import "animate.css";
+import "./index.css";
+import "./ui/ui.scss";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createRoutesFromElements, Route, RouterProvider } from "react-router";
@@ -32,13 +34,10 @@ import AppLayout from "./app/Layout.jsx";
 import ComingSoon from "./ComingSoon";
 import DocsLayout from "./root/docs/Layout";
 import ErrorElement from "./ErrorElement";
-import "./ui/ui.scss";
-import "./index.css";
 import LoginPage from "./login/LoginPage.jsx";
 import ServerLoginPage from "./login/ServerLoginPage.jsx";
 import Index from "./root/index/Index";
 import RightClickMenuRootContainer from "./ui/components/rightClickMenu/RightClickMenuRootContainer.jsx";
-import HowToHelp from "./root/doc/call-to-action/how-to-help/HowToHelp";
 
 const AppRouter = loadable( () => import( "./app/AppRouter" ) );
 
@@ -72,11 +71,6 @@ ReactDOM.createRoot( document.getElementById( "root" ) as HTMLElement ).render(
                   <DocsRouter/>
                 )}
               />
-            </Route>
-            <Route path={"doc"}>
-              <Route path={"call-to-action"}>
-                <Route path={"how-to-help"} element={<HowToHelp/>}/>
-              </Route>
             </Route>
           </Route>
         )

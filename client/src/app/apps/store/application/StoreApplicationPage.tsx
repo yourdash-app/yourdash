@@ -1,46 +1,69 @@
-import React, {useState, useEffect} from "react";
-import {useParams, useNavigate} from "react-router-dom";
-import {IconButton, Spinner, Card, Button, Icon, MajorButton, Carousel} from "../../../../ui";
+/*
+ * Copyright (c) 2023 YourDash contributors.
+ * YourDash is licensed under the MIT License.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { IconButton, Spinner, Card, Button, Icon, MajorButton, Carousel } from "../../../../ui";
 import csi from "../../../../helpers/csi";
 import StoreApplicationDefaultHeaderBackground from "./default_background.svg";
 import Panel from "../../../Panel/Panel";
 import useTranslate from "../../../../helpers/l10n";
-import {type IYourDashStoreApplication} from "../../../../../../shared/apps/store/storeApplication";
+import { type IYourDashStoreApplication } from "../../../../../../shared/apps/store/storeApplication";
 
 function requestApplication(
   applicationId: string,
-  setAppData: (data: IYourDashStoreApplication) => void,
-  setIsLoading: (data: boolean) => void,
-  navigate: (data: string) => void
+  setAppData: ( data: IYourDashStoreApplication ) => void,
+  setIsLoading: ( data: boolean ) => void,
+  navigate: ( data: string ) => void
 ) {
   csi.getJson(
     `/app/store/application/${ applicationId }`,
     data => {
-      setAppData(data);
-      setIsLoading(false);
+      setAppData( data );
+      setIsLoading( false );
     },
     () => {
-      navigate("/app/a/store");
+      navigate( "/app/a/store" );
     }
   );
 }
 
 const StoreApplicationPage: React.FC = () => {
-  const trans = useTranslate("store");
+  const trans = useTranslate( "store" );
   const navigate = useNavigate();
-  const {id: applicationId} = useParams();
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const { id: applicationId } = useParams();
+  const [isLoading, setIsLoading] = useState<boolean>( true );
   const [appData, setAppData] = useState<IYourDashStoreApplication>();
-
-  useEffect(() => {
-    requestApplication(applicationId || "dash", setAppData, setIsLoading, navigate);
-  }, [applicationId, navigate]);
-
-  if (!applicationId) {
-    navigate("/app/a/store");
+  
+  useEffect( () => {
+    requestApplication( applicationId || "dash", setAppData, setIsLoading, navigate );
+  }, [applicationId, navigate] );
+  
+  if ( !applicationId ) {
+    navigate( "/app/a/store" );
     return null;
   }
-
+  
   return (
     <div className={"h-full"}>
       {
@@ -76,7 +99,7 @@ const StoreApplicationPage: React.FC = () => {
                   <IconButton
                     icon={"chevron-left-16"}
                     onClick={() => {
-                      navigate(`/app/a/store/cat/${ appData?.category }`);
+                      navigate( `/app/a/store/cat/${ appData?.category }` );
                     }}
                   />
                   <img
@@ -89,39 +112,42 @@ const StoreApplicationPage: React.FC = () => {
                     {appData.displayName}
                   </h1>
                   <div className={"flex gap-2"}>
-                    <MajorButton
-                      onClick={() => {
-                        navigate(`/app/a/${ appData.name }`);
-                      }}
-                    >
-                      {
-                        trans("OPEN_APPLICATION")
-                      }
-                    </MajorButton>
+                    {
+                      appData.installed && (
+                        <MajorButton
+                          onClick={() => {
+                            navigate( `/app/a/${ appData.name }` );
+                          }}
+                        >
+                          {
+                            trans( "OPEN_APPLICATION" )
+                          }
+                        </MajorButton>
+                      )}
                     <Button onClick={() => {
-                      if (appData.installed) {
-                        csi.postJson(`/app/store/application/uninstall/${ appData.name }`, {}, resp => {
-                          if (resp.success) {
-                            requestApplication(applicationId, setAppData, setIsLoading, navigate);
+                      if ( appData.installed ) {
+                        csi.postJson( `/app/store/application/uninstall/${ appData.name }`, {}, resp => {
+                          if ( resp.success ) {
+                            requestApplication( applicationId, setAppData, setIsLoading, navigate );
                           }
-
+                        
                           // @ts-ignore
                           Panel.reload();
-                        });
+                        } );
                       } else {
-                        csi.postJson(`/app/store/application/install/${ appData.name }`, {}, resp => {
-                          if (resp.success) {
-                            requestApplication(applicationId, setAppData, setIsLoading, navigate);
+                        csi.postJson( `/app/store/application/install/${ appData.name }`, {}, resp => {
+                          if ( resp.success ) {
+                            requestApplication( applicationId, setAppData, setIsLoading, navigate );
                           }
-
+                        
                           // @ts-ignore
                           Panel.reload();
-                        });
+                        } );
                       }
                     }}
                     >
                       {
-                        appData.installed ? trans("UNINSTALL") : trans("INSTALL")
+                        appData.installed ? trans( "UNINSTALL" ) : trans( "INSTALL" )
                       }
                     </Button>
                   </div>
@@ -151,7 +177,7 @@ const StoreApplicationPage: React.FC = () => {
                     }
                   </div>
                 </Card>
-                <h2 className={"text-2xl font-medium"}>{trans("SOURCE_CODE_SECTION")}</h2>
+                <h2 className={"text-2xl font-medium"}>{trans( "SOURCE_CODE_SECTION" )}</h2>
                 <section className={"grid grid-cols-2 gap-2"}>
                   <Card
                     onClick={() => {
@@ -184,11 +210,11 @@ const StoreApplicationPage: React.FC = () => {
                     </span>
                   </Card>
                 </section>
-                <h2 className={"text-2xl font-medium"}>{trans("AUTHORS_SECTION")}</h2>
+                <h2 className={"text-2xl font-medium"}>{trans( "AUTHORS_SECTION" )}</h2>
                 <section className={"w-full"}>
                   <Carousel>
                     {
-                      appData.authors?.map(author => (
+                      appData.authors?.map( author => (
                         <Card key={author.avatarUrl} className={"flex flex-col gap-2"}>
                           <img className={"h-32 aspect-square rounded-container-rounding"} src={author.avatarUrl} alt={author.avatarUrl}/>
                           <div className={"flex items-center justify-between"}>
@@ -205,7 +231,7 @@ const StoreApplicationPage: React.FC = () => {
                             }
                           </div>
                         </Card>
-                      ))
+                      ) )
                     }
                   </Carousel>
                 </section>

@@ -44,7 +44,7 @@ const Index: React.FC = () => {
     <main className={"bg-base-900 min-h-screen h-full overflow-y-auto overflow-x-hidden"}>
       <Header/>
       <section className={"w-full bg-container-bg p-3 flex items-center justify-center gap-1"}>
-        {trans( "BANNER.MESSAGE.CONTENT" )}<Link className={"text-theme-300 hover:text-theme-400 active:text-theme-200"} to={"/doc/call-to-action/how-to-help"}>{trans( "BANNER.MESSAGE.CALL_TO_ACTION" )}</Link>
+        {trans( "BANNER.MESSAGE.CONTENT" )}<Link className={"text-theme-300 hover:text-theme-400 active:text-theme-200"} to={"/docs/how-to-help"}>{trans( "BANNER.MESSAGE.CALL_TO_ACTION" )}</Link>
       </section>
       <section
         className={"animate__animated animate__fadeIn w-full h-[30rem] overflow-hidden relative bg-base-800 [clip-path:_polygon(0_0,_100%_0%,_100%_85%,_0%_100%);] grid md:grid-cols-2 grid-cols-1 gap-10 pb-4"}

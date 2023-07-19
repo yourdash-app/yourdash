@@ -22,36 +22,18 @@
  */
 
 import React from "react";
+import ComingSoon from "../../../../ComingSoon";
+import { MajorButton } from "../../../../ui";
 
-import Icon from "../icon/Icon";
-import { type ChipletIcon } from "../icon/iconDictionary";
-
-import styles from "./IconButton.module.scss";
-
-export interface IIconButton extends React.ComponentPropsWithoutRef<"button"> {
-  icon: ChipletIcon;
-  vibrant?: boolean;
-  disabled?: boolean;
-  useDefaultColor?: boolean;
-  className?: string;
-}
-
-const IconButton: React.FC<IIconButton> = ( {
-  icon,
-  vibrant,
-  disabled,
-  useDefaultColor,
-  className,
-  ...extraProps
-} ) => (
-  <button
-    type={"button"}
-    {...extraProps}
-    disabled={disabled}
-    className={`${ styles.component } ${ vibrant && styles.vibrant } ${ className && className }`}
-  >
-    <Icon useDefaultColor={useDefaultColor} color={"currentColor"} name={icon}/>
-  </button>
+const OverviewPage: React.FC = () => (
+  <div className={"text-center"}>
+    <h1 className={"text-6xl font-semibold tracking-wide animate__animated animate__fadeIn mt-8"}>Overview</h1>
+    <p className={"animate__animated animate__fadeInDown animate__250ms mt-3"}>a quick and simple guide to the YourDash documentation</p>
+    
+    <footer className={"w-full flex max-w-screen-2xl"}>
+      <MajorButton className={"ml-auto"}>{"Next page"}</MajorButton>
+    </footer>
+  </div>
 );
 
-export default IconButton;
+export default OverviewPage;
