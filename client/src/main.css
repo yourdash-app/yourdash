@@ -23,9 +23,6 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap');
 
-@tailwind base;
-@tailwind utilities;
-
 :root {
     font-family: Roboto, system-ui, Avenir, Helvetica, Arial, sans-serif;
     font-weight: 400;

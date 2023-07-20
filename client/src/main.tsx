@@ -23,7 +23,7 @@
 
 import "animate.css";
 import "./ui/ui.scss";
-import "./index.css";
+import "./main.css";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createRoutesFromElements, Route, RouterProvider } from "react-router";
@@ -38,6 +38,7 @@ import LoginPage from "./login/LoginPage.jsx";
 import ServerLoginPage from "./login/ServerLoginPage.jsx";
 import Index from "./root/index/Index";
 import RightClickMenuRootContainer from "./ui/components/rightClickMenu/RightClickMenuRootContainer.jsx";
+import "./tailwindcss.css";
 
 const AppRouter = loadable( () => import( "./app/AppRouter" ) );
 
