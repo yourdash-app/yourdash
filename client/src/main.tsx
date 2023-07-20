@@ -22,8 +22,8 @@
  */
 
 import "animate.css";
-import "./index.css";
 import "./ui/ui.scss";
+import "./index.css";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createRoutesFromElements, Route, RouterProvider } from "react-router";

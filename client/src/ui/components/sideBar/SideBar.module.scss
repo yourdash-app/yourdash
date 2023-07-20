@@ -95,7 +95,7 @@
 }
 
 .itemIcon {
-  width: calc(100% - 0.25rem);
+  width: 1.6875rem;
   aspect-ratio: 1 / 1;
   transition: var(--transition);
 }
@@ -171,8 +171,9 @@
       padding: 0.5rem;
       align-items: center;
       justify-content: flex-start;
-      flex-direction: row;
       text-align: start;
+      flex-direction: row;
+      aspect-ratio: unset;
     }
 
     .itemLabel {
