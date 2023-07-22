@@ -64,17 +64,17 @@ const DbItem: React.FC<IdbItem> = ( {
                 if ( key === "" || content === "" ) {
                   return;
                 }
-                
+                       
                 try {
                   JSON.parse( content );
                 } catch ( _err ) {
                   return;
                 }
-                
+                       
                 if ( key !== item.key ) {
                   removeKey( item.key );
                 }
-                
+                       
                 setItemData( key, content );
               }}
               className={"flex-shrink-0"}
