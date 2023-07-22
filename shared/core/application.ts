@@ -6,4 +6,5 @@ export interface IYourDashApplication {
   description: string;
   category: string;
   authors: IYourDashStoreAuthor[];
+  dependencies: string[];
 }

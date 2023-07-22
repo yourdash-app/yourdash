@@ -8,4 +8,5 @@ export interface IYourDashStoreApplication {
   icon: string;
   installed: boolean;
   authors: IYourDashStoreAuthor[];
+  dependencies: string[];
 }

@@ -21,37 +21,24 @@
  * SOFTWARE.
  */
 
-import React from "react";
-
-import Icon from "../icon/Icon";
-import { YourDashIcon } from "../icon/iconDictionary";
-
-import styles from "./IconButton.module.scss";
-
-export interface IIconButton extends React.ComponentPropsWithoutRef<"button"> {
-  icon: YourDashIcon;
-  vibrant?: boolean;
-  disabled?: boolean;
-  useDefaultColor?: boolean;
-  className?: string;
+.component {
+  padding: 1rem;
+  gap: 1rem;
+  display: flex;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
 }
 
-const IconButton: React.FC<IIconButton> = ( {
-  icon,
-  vibrant,
-  disabled,
-  useDefaultColor,
-  className,
-  ...extraProps
-} ) => (
-  <button
-    type={"button"}
-    {...extraProps}
-    disabled={disabled}
-    className={`${styles.component} ${vibrant && styles.vibrant} ${className && className}`}
-  >
-    <Icon useDefaultColor={useDefaultColor} color={"currentColor"} icon={icon}/>
-  </button>
-);
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
 
-export default IconButton;
+.label{
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+  font-weight: 700;
+  letter-spacing: 0.025rem;
+}

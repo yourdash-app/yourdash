@@ -4,7 +4,7 @@ export interface IMajorButton extends React.ComponentPropsWithoutRef<"button"> {
   className?: string;
 }
 
-const MajorButton: React.FC<IMajorButton> = ({children, className, ...extraProps}) => (
+const MajorButton: React.FC<IMajorButton> = ( { children, className, ...extraProps } ) => (
   <button
     type="button"
     {...extraProps}

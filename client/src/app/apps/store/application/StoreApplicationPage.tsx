@@ -29,6 +29,7 @@ import StoreApplicationDefaultHeaderBackground from "./default_background.svg";
 import Panel from "../../../Panel/Panel";
 import useTranslate from "../../../../helpers/l10n";
 import { type IYourDashStoreApplication } from "../../../../../../shared/apps/store/storeApplication";
+import InstallationPopup from "./components/InstallationPopup";
 
 function requestApplication(
   applicationId: string,
@@ -54,6 +55,7 @@ const StoreApplicationPage: React.FC = () => {
   const { id: applicationId } = useParams();
   const [isLoading, setIsLoading] = useState<boolean>( true );
   const [appData, setAppData] = useState<IYourDashStoreApplication>();
+  const [showInstallationConfirmation, setShowInstallationConfirmation] = useState<boolean>( false );
   
   useEffect( () => {
     requestApplication( applicationId || "dash", setAppData, setIsLoading, navigate );
@@ -66,6 +68,23 @@ const StoreApplicationPage: React.FC = () => {
   
   return (
     <div className={"h-full"}>
+      {showInstallationConfirmation && (
+        <InstallationPopup
+          applicationData={appData}
+          onClose={() => setShowInstallationConfirmation( false )}
+          onConfirm={() => {
+            csi.postJson( `/app/store/application/install/${ appData?.name }`, {}, resp => {
+              if ( resp.success ) {
+                requestApplication( applicationId, setAppData, setIsLoading, navigate );
+              }
+              
+              // @ts-ignore
+              Panel.reload();
+            } );
+            setShowInstallationConfirmation( false );
+          }}
+        />
+      )}
       {
         isLoading
           ? (
@@ -135,14 +154,7 @@ const StoreApplicationPage: React.FC = () => {
                           Panel.reload();
                         } );
                       } else {
-                        csi.postJson( `/app/store/application/install/${ appData.name }`, {}, resp => {
-                          if ( resp.success ) {
-                            requestApplication( applicationId, setAppData, setIsLoading, navigate );
-                          }
-                        
-                          // @ts-ignore
-                          Panel.reload();
-                        } );
+                        setShowInstallationConfirmation( true );
                       }
                     }}
                     >

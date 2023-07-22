@@ -58,6 +58,9 @@
       {
         "skipBlankLines": true
       }
+    ],
+    "arrow-body-style": [
+      "off"
     ]
   }
 }

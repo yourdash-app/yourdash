@@ -22,49 +22,44 @@
  */
 
 import React from "react";
-import { SideBar } from "../../../ui";
-import { useNavigate } from "react-router-dom";
-import GlobalDbApplication from "../global_db/globalDbApplication";
-import YourDevHome from "./YourDevHome";
+import { type IYourDashStoreApplication } from "../../../../../../../shared/apps/store/storeApplication";
+import styles from "./InstallationPopup.module.scss";
+import { Card, IconButton } from "../../../../../ui";
+import { YourDashIcon } from "../../../../../ui/components/icon/iconDictionary";
 
-const YourDevApplication: React.FC = () => {
-  const navigate = useNavigate();
-  const [page, setPage] = React.useState<"home" | "global_db" | "user_db">( "home" );
-  
+export interface IInstallationPopup {
+  applicationData: IYourDashStoreApplication | undefined,
+  onClose(): void
+  onConfirm(): void
+}
+
+const InstallationPopup: React.FC<IInstallationPopup> = ( { applicationData, onClose, onConfirm } ) => {
   return (
-    <main className={"h-full grid grid-cols-[auto,1fr]"}>
-      <SideBar
-        title={"YourDev"}
-        items={[
-          {
-            label: "Home",
-            icon: "home-16",
-            onClick: () => {
-              setPage( "home" );
-            }
-          },
-          {
-            label: "Global DB",
-            icon: "database-16",
-            onClick: () => {
-              setPage( "global_db" );
-            }
-          },
-          {
-            label: "User DB",
-            icon: "person-16",
-            onClick: () => {
-              setPage( "user_db" );
-            }
-          }
-        ]}
-      />
-      {page === "home" && <YourDevHome/>}
-      {page === "global_db" && <GlobalDbApplication/>}
-      {page === "user_db" && null}
-      
-    </main>
+    <Card showBorder className={styles.component}>
+      <section className={"flex items-center justify-between"}>
+        <h1>{"Confirm installation of YourDev"}</h1>
+        <IconButton
+          icon={YourDashIcon.X16}
+          onClick={() => {
+            onClose();
+          }}
+        />
+      </section>
+      <p>
+        {"Do you want to install YourDev?"}
+        {
+          applicationData?.dependencies && (
+            applicationData.dependencies.map( dependency => (
+              <p key={dependency}>
+                {dependency}
+              </p>
+            ) )
+          )
+          
+        }
+      </p>
+    </Card>
   );
 };
 
-export default YourDevApplication;
+export default InstallationPopup;

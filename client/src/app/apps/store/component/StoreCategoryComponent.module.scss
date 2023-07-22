@@ -21,37 +21,56 @@
  * SOFTWARE.
  */
 
-import React from "react";
-
-import Icon from "../icon/Icon";
-import { YourDashIcon } from "../icon/iconDictionary";
-
-import styles from "./IconButton.module.scss";
-
-export interface IIconButton extends React.ComponentPropsWithoutRef<"button"> {
-  icon: YourDashIcon;
-  vibrant?: boolean;
-  disabled?: boolean;
-  useDefaultColor?: boolean;
-  className?: string;
+.component {
+  position: relative;
+  overflow: hidden;
+  padding: 6rem 1rem 1rem;
+  cursor: pointer;
+  background: #333333;
 }
 
-const IconButton: React.FC<IIconButton> = ( {
-  icon,
-  vibrant,
-  disabled,
-  useDefaultColor,
-  className,
-  ...extraProps
-} ) => (
-  <button
-    type={"button"}
-    {...extraProps}
-    disabled={disabled}
-    className={`${styles.component} ${vibrant && styles.vibrant} ${className && className}`}
-  >
-    <Icon useDefaultColor={useDefaultColor} color={"currentColor"} icon={icon}/>
-  </button>
-);
+.background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition: var(--transition);
+  opacity: 50%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
 
-export default IconButton;
+.component:hover .background,
+.component:focus-visible .background {
+  transition: var(--transition-fast);
+  opacity: 1;
+}
+
+.gradient {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: linear-gradient(0deg, #000000aa 0%, transparent 100%);
+}
+
+.label {
+  font-size: 3rem;
+  line-height: 1;
+  transition: var(--transition);
+  transform-origin: bottom left;
+  font-weight: 700;
+  letter-spacing: 0.025rem;
+  position: absolute;
+  left: 1rem;
+  bottom: 1rem;
+}
+
+.component:hover .label,
+.component:focus-visible .label {
+  transition: var(--transition-fast);
+  scale: 1.05;
+}

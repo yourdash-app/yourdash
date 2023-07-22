@@ -1,12 +1,12 @@
 import React, { CSSProperties } from "react";
 import styles from "./Icon.module.scss";
 // @ts-ignore
-import { type ChipletIcon, ChipletIconDictionary } from "./iconDictionary.ts";
+import { YourDashIcon } from "./iconDictionary.ts";
 
 type COLOR = `#${ string }` | `rgb(${ string })` | `rgba(${ string })` | `var(--${ string })` | "currentColor"
 
 export interface IIcon extends React.ComponentPropsWithoutRef<"div"> {
-  name: ChipletIcon;
+  icon: YourDashIcon;
   style?: CSSProperties;
   className?: string;
   color?: COLOR;
@@ -14,7 +14,7 @@ export interface IIcon extends React.ComponentPropsWithoutRef<"div"> {
 }
 
 const Icon: React.FC<IIcon> = ( {
-  name,
+  icon,
   style,
   className,
   color,
@@ -27,18 +27,18 @@ const Icon: React.FC<IIcon> = ( {
     style={{
       ...( useDefaultColor
         ? {
-          backgroundImage: `url(${ ChipletIconDictionary[name] })`,
+          backgroundImage: `url(${ icon })`,
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover"
         }
         : {
-          WebkitMaskImage: `url(${ ChipletIconDictionary[name] })`,
+          WebkitMaskImage: `url(${ icon })`,
           WebkitMaskPosition: "center",
           WebkitMaskRepeat: "no-repeat",
           WebkitMaskSize: "cover",
           backgroundColor: color || "currentColor",
-          maskImage: `url(${ ChipletIconDictionary[name] })`,
+          maskImage: `url(${ icon })`,
           maskPosition: "center",
           maskRepeat: "no-repeat",
           maskSize: "cover"
