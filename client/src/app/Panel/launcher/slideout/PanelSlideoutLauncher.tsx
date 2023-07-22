@@ -1,51 +1,75 @@
-import React, {useEffect, useState} from "react";
+/*
+ * Copyright (c) 2023 YourDash contributors.
+ * YourDash is licensed under the MIT License.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 
-import {useNavigate} from "react-router-dom";
+import React, { useEffect, useState } from "react";
+
+import { useNavigate } from "react-router-dom";
 
 import clippy from "../../../../helpers/clippy";
 import csi from "../../../../helpers/csi";
-import {PanelPosition, YourDashLauncherApplication} from "../../Panel";
+import { PanelPosition, YourDashLauncherApplication } from "../../Panel";
 import LauncherGridView from "../sharedComponents/LauncherGridView";
 import LauncherDateAndTime from "../sharedComponents/LauncherDateAndTime";
-import {IconButton, Row} from "../../../../ui";
+import { IconButton, Row } from "../../../../ui";
 import db from "../../../../helpers/database";
+import { YourDashIcon } from "../../../../ui/components/icon/iconDictionary";
 
 const PanelApplicationLauncherSlideOut: React.FC<{
   side: PanelPosition;
   visible: boolean;
-  setVisible: (value: boolean) => void;
+  setVisible: ( value: boolean ) => void;
   num: number
-}> = ({
+}> = ( {
   side,
   visible,
   setVisible,
   num
-}) => {
+} ) => {
   const navigate = useNavigate();
-
+  
   const [userFullName, setUserFullName] = useState<{
     first: string;
     last: string;
-  }>({
+  }>( {
     first: "",
     last: ""
-  });
-
+  } );
+  
   const [applications, setApplications] = useState<
     YourDashLauncherApplication[]
-  >([]);
-  const [searchValue, setSearchValue] = useState<string>("");
-
-  useEffect(() => {
-    csi.getJson("/core/panel/user-full-name", res => {
-      setUserFullName(res);
-    });
-
-    csi.getJson("/core/panel/applications", res => {
-      setApplications(res);
-    });
-  }, [num]);
-
+  >( [] );
+  const [searchValue, setSearchValue] = useState<string>( "" );
+  
+  useEffect( () => {
+    csi.getJson( "/core/panel/user-full-name", res => {
+      setUserFullName( res );
+    } );
+    
+    csi.getJson( "/core/panel/applications", res => {
+      setApplications( res );
+    } );
+  }, [num] );
+  
   return (
     <section
       className={
@@ -62,18 +86,18 @@ const PanelApplicationLauncherSlideOut: React.FC<{
         )
       }
       style={{
-        ...(side === PanelPosition.left && {
+        ...( side === PanelPosition.left && {
           borderRight: "0.1rem solid var(--application-panel-border)"
-        }),
-        ...(side === PanelPosition.right && {
+        } ),
+        ...( side === PanelPosition.right && {
           borderRight: "0.1rem solid var(--application-panel-border)"
-        }),
-        ...(side === PanelPosition.top && {
+        } ),
+        ...( side === PanelPosition.top && {
           borderRight: "0.1rem solid var(--application-panel-border)"
-        }),
-        ...(side === PanelPosition.bottom && {
+        } ),
+        ...( side === PanelPosition.bottom && {
           borderRight: "0.1rem solid var(--application-panel-border)"
-        })
+        } )
       }}
     >
       <header
@@ -99,26 +123,26 @@ const PanelApplicationLauncherSlideOut: React.FC<{
         <LauncherDateAndTime/>
         <Row className={"ml-auto"}>
           <IconButton
-            icon={"person-16"}
+            icon={YourDashIcon.Person16}
             onClick={() => {
-              setVisible(false);
-              navigate("/app/a/profile");
+              setVisible( false );
+              navigate( "/app/a/profile" );
             }}
           />
           <IconButton
-            icon={"gear-16"}
+            icon={YourDashIcon.Gear16}
             onClick={() => {
-              setVisible(false);
-              navigate("/app/a/settings");
+              setVisible( false );
+              navigate( "/app/a/settings" );
             }}
           />
           <IconButton
-            icon={"logout"}
+            icon={YourDashIcon.Logout}
             onClick={() => {
-              setVisible(false);
-              localStorage.removeItem("session_token");
-              localStorage.removeItem("username");
-              navigate("/");
+              setVisible( false );
+              localStorage.removeItem( "session_token" );
+              localStorage.removeItem( "username" );
+              navigate( "/" );
             }}
           />
         </Row>

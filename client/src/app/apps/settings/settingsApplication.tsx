@@ -1,11 +1,35 @@
+/*
+ * Copyright (c) 2023 YourDash contributors.
+ * YourDash is licensed under the MIT License.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 import React from "react";
-import {Card, Column} from "../../../ui";
+import { Card, Column } from "../../../ui";
 import csi from "../../../helpers/csi";
 import Panel from "../../Panel/Panel";
 import SettingsSectionPanelPosition from "./sections/SettingsSectionPanelPosition";
 import SettingsPageSession from "./pages/session";
 import SettingCategoryComponent from "./components/SettingCategoryComponent";
 import BasePageLayout from "./components/BasePageLayout";
+import { YourDashIcon } from "../../../ui/components/icon/iconDictionary";
 
 const SettingsApplication: React.FC = () => (
   <BasePageLayout
@@ -16,25 +40,25 @@ const SettingsApplication: React.FC = () => (
       href={"/app/a/settings/personalization"}
       description={"Sample text"}
       title={"Personalization"}
-      icon={"paintbrush-16"}
+      icon={YourDashIcon.Paintbrush16}
     />
     <SettingCategoryComponent
       href={"/app/a/settings/session"}
       description={"Sample text"}
       title={"Login sessions"}
-      icon={"login"}
+      icon={YourDashIcon.Login}
     />
     <SettingCategoryComponent
       href={"/app/a/settings/accessibility"}
       description={"Sample text"}
       title={"Accessibility"}
-      icon={"accessibility-16"}
+      icon={YourDashIcon.Accessibility16}
     />
     <SettingCategoryComponent
       href={"/app/a/settings/admin"}
       description={"Sample text"}
       title={"Admin tools"}
-      icon={"tools-16"}
+      icon={YourDashIcon.Tools16}
     />
     <div className={"h-full overflow-auto"}>
       <main className={"ml-auto mr-auto w-full max-w-5xl"}>
@@ -49,7 +73,7 @@ const SettingsApplication: React.FC = () => (
               onClick={() => {
                 csi.postJson(
                   "/app/settings/core/panel/quick-shortcuts",
-                  {launcher: 0},
+                  { launcher: 0 },
                   () => {
                     // @ts-ignore
                     Panel.reload();
@@ -63,14 +87,14 @@ const SettingsApplication: React.FC = () => (
                 className={"p-4 h-full"}
                 draggable={false}
               />
-              <span className={"text-xl"}>Pop out</span>
+              <span className={"text-xl"}>{"Pop out"}</span>
             </Card>
             <Card
               className={"flex flex-col transition-[var(--transition)] h-full"}
               onClick={() => {
                 csi.postJson(
                   "/app/settings/core/panel/quick-shortcuts",
-                  {launcher: 1},
+                  { launcher: 1 },
                   () => {
                     // @ts-ignoret
                     Panel.reload();
@@ -84,7 +108,7 @@ const SettingsApplication: React.FC = () => (
                 className={"p-4 h-full"}
                 draggable={false}
               />
-              <span className={"text-xl"}>Slide out</span>
+              <span className={"text-xl"}>{"Slide out"}</span>
             </Card>
           </div>
         </section>

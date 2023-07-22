@@ -24,6 +24,7 @@
 import React from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { SideBar } from "../../../ui";
+import { YourDashIcon } from "../../../ui/components/icon/iconDictionary";
 
 const SettingsLayout: React.FC = () => {
   const navigate = useNavigate();
@@ -34,42 +35,42 @@ const SettingsLayout: React.FC = () => {
         title={"Settings"}
         items={[
           {
-            icon: "home-16",
+            icon: YourDashIcon.Home16,
             label: "Home",
             onClick() {
               navigate( "/app/a/settings/" );
             }
           },
           {
-            icon: "paintbrush-16",
+            icon: YourDashIcon.Paintbrush16,
             label: "Personalization",
             onClick() {
               navigate( "/app/a/settings/personalization" );
             }
           },
           {
-            icon: "login",
+            icon: YourDashIcon.Login,
             label: "Login sessions",
             onClick() {
               navigate( "/app/a/settings/session" );
             }
           },
           {
-            icon: "accessibility-16",
+            icon: YourDashIcon.Accessibility16,
             label: "Accessibility",
             onClick() {
               navigate( "/app/a/settings/accessibility" );
             }
           },
           {
-            icon: "tools-16",
+            icon: YourDashIcon.Tools16,
             label: "Admin tools",
             onClick() {
               navigate( "/app/a/settings/admin" );
             }
           },
           {
-            icon: "code-16",
+            icon: YourDashIcon.Code16,
             label: "Developer tools",
             onClick() {
               navigate( "/app/a/settings/developer" );

@@ -28,6 +28,7 @@ import { PanelPosition } from "../Panel";
 import PanelApplicationLauncherPopOut from "./popout/PanelPopoutLauncher";
 import PanelApplicationLauncherSlideOut from "./slideout/PanelSlideoutLauncher";
 import styles from "./PanelLaunchers.module.scss";
+import { YourDashIcon } from "../../../ui/components/icon/iconDictionary";
 
 const PanelApplicationLauncher: React.FC<{
   side: PanelPosition;
@@ -52,7 +53,7 @@ const PanelApplicationLauncher: React.FC<{
       }
     >
       <IconButton
-        icon={"app-launcher-16"}
+        icon={YourDashIcon.AppLauncher16}
         className={styles.button}
         onClick={() => setIsVisible( !isVisible )}
       />

@@ -1,7 +1,32 @@
+/*
+ * Copyright (c) 2023 YourDash contributors.
+ * YourDash is licensed under the MIT License.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 import React, { useState, useEffect } from "react";
 import { Icon, Button, DropdownButton, TextBox } from "../../../ui";
 import csi from "../../../helpers/csi";
 import AutocompletedTextInput from "../../../ui/components/autocompletedTextInput/AutocompletedTextInput";
+import { YourDashIcon } from "../../../ui/components/icon/iconDictionary";
+import useTranslate from "../../../helpers/l10n";
 
 function loadPossibleEndpoints( setEndpoints: ( data: string[] ) => void ) {
   csi.getJson( "/app/endpoints/endpoints", data => {
@@ -12,11 +37,10 @@ function loadPossibleEndpoints( setEndpoints: ( data: string[] ) => void ) {
 }
 
 const EndpointsApplication: React.FC = () => {
+  const trans = useTranslate( "endpoints" );
   const [requestType, setRequestType] = useState<"Text" | "JSON">( "JSON" );
   const [requestMethod, setRequestMethod] = useState<"GET" | "POST" | "DELETE">( "GET" );
-  const [requestHeaders, setRequestHeaders] = useState<{
-    [ key: string ]: string
-  }>( {} );
+  const [requestHeaders, setRequestHeaders] = useState<{ [ key: string ]: string }>( {} );
   const [requestBody, setRequestBody] = useState<string>( "" );
   const [selectedEndpoint, setSelectedEndpoint] = useState<string>( "" );
   const [endpoints, setEndpoints] = useState<string[]>( [] );
@@ -25,7 +49,7 @@ const EndpointsApplication: React.FC = () => {
   const [response, setResponse] = useState<string>( "" );
   
   useEffect( () => {
-    loadPossibleEndpoints( endpoints => setEndpoints( endpoints ) );
+    loadPossibleEndpoints( eps => setEndpoints( eps ) );
   }, [] );
   
   return (
@@ -81,9 +105,9 @@ const EndpointsApplication: React.FC = () => {
         </section>
         <section className={"absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"}>
           <div className={"flex items-center justify-center h-full gap-1.5"}>
-            <Icon className={"h-9 aspect-square"} useDefaultColor name={"yourdash-logo"}/>
+            <Icon className={"h-9 aspect-square"} useDefaultColor icon={YourDashIcon.YourDashLogo}/>
             <h2 className={"text-3xl font-semibold tracking-wide"}>
-              YourDash Endpoints tester
+              {trans( "APPLICATION_NAME" )}
             </h2>
           </div>
         </section>
@@ -111,27 +135,27 @@ const EndpointsApplication: React.FC = () => {
                       }, requestHeaders );
                       break;
                     default:
-                      setDidError( "[INTERNAL] This should never happen" );
+                      setDidError( trans( "INTERNAL_ERROR" ) );
                   }
                   break;
                 case "POST":
                   switch ( requestType ) {
                     case "Text":
-                      csi.postText( selectedEndpoint, requestBody, data => {
+                      csi.postText( selectedEndpoint, JSON.parse( requestBody ), data => {
                         setResponse( data );
                       }, error => {
                         setDidError( error );
                       }, requestHeaders );
                       break;
                     case "JSON":
-                      csi.postJson( selectedEndpoint, requestBody, data => {
+                      csi.postJson( selectedEndpoint, JSON.parse( requestBody ), data => {
                         setResponse( data );
                       }, error => {
                         setDidError( error );
                       }, requestHeaders );
                       break;
                     default:
-                      setDidError( "[INTERNAL] This should never happen" );
+                      setDidError( trans( "INTERNAL_ERROR" ) );
                   }
                   break;
                 case "DELETE":
@@ -151,15 +175,15 @@ const EndpointsApplication: React.FC = () => {
                       }, requestHeaders );
                       break;
                     default:
-                      setDidError( "[INTERNAL] This should never happen" );
+                      setDidError( trans( "INTERNAL_ERROR" ) );
                   }
                   break;
                 default:
-                  setDidError( "[INTERNAL] This should never happen" );
+                  setDidError( trans( "INTERNAL_ERROR" ) );
               }
             }}
           >
-            {"Send request"}
+            {trans( "SEND_REQUEST.LABEL" )}
           </Button>
         </section>
       </header>
@@ -176,7 +200,7 @@ const EndpointsApplication: React.FC = () => {
           {
             requestMethod !== "GET" && (
               <>
-                <span className={"-mb-0.5 text-opacity-60 text-container-fg"}>Request Body</span>
+                <span className={"-mb-0.5 text-opacity-60 text-container-fg"}>{"Request Body"}</span>
                 <TextBox
                   defaultValue={"{\n  \n}"}
                   onChange={e => {
@@ -186,7 +210,7 @@ const EndpointsApplication: React.FC = () => {
               </>
             )
           }
-          <span className={"-mb-0.5 text-opacity-60 text-container-fg"}>Request Extra Headers</span>
+          <span className={"-mb-0.5 text-opacity-60 text-container-fg"}>{"Request Extra Headers"}</span>
           <TextBox
             defaultValue={"{\n  \n}"}
             onChange={e => {
@@ -194,24 +218,28 @@ const EndpointsApplication: React.FC = () => {
             }}
           />
         </section>
-        <section className={"overflow-x-auto w-auto"}>
-          <pre className={"bg-container-tertiary-bg text-container-fg p-4 rounded-container-rounding w-auto"}>
-            {
-              requestType === "JSON"
-                ? JSON.stringify( response, null, 2 )
-                : response
-            }
-          </pre>
-          {
-            didError && (
-              <pre className={"bg-container-tertiary-bg text-red-400 p-4 rounded-container-rounding"}>
+        {
+          !loading && (
+            <section className={"overflow-x-auto w-auto"}>
+              <pre className={"bg-container-tertiary-bg text-container-fg p-4 rounded-container-rounding w-auto"}>
                 {
-                  didError
+                  requestType === "JSON"
+                    ? JSON.stringify( response, null, 2 )
+                    : response
                 }
               </pre>
-            )
-          }
-        </section>
+              {
+                didError && (
+                  <pre className={"bg-container-tertiary-bg text-red-400 p-4 rounded-container-rounding"}>
+                    {
+                      didError
+                    }
+                  </pre>
+                )
+              }
+            </section>
+          )
+        }
       </main>
     </main>
   );

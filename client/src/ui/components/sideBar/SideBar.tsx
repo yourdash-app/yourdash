@@ -24,14 +24,14 @@
 import React, { CSSProperties, useState } from "react";
 import styles from "./SideBar.module.scss";
 import IconButton from "../iconButton/IconButton";
-import { ChipletIcon } from "../icon/iconDictionary";
+import { YourDashIcon } from "../icon/iconDictionary";
 import Icon from "../icon/Icon";
 
 export interface ISideBarProps {
   title: string;
   items: {
     label: string;
-    icon: ChipletIcon;
+    icon: YourDashIcon;
     onClick: () => void;
   }[];
   expandedByDefault?: boolean;
@@ -53,7 +53,7 @@ const SideBar: React.FC<ISideBarProps> = ( {
     <div className={`${ styles.component } ${ className }`} data-expanded={expanded} style={style}>
       <IconButton
         className={styles.toggleButton}
-        icon={"three-bars-16"}
+        icon={YourDashIcon.ThreeBars16}
         onClick={() => setExpanded( !expanded )}
       />
       <header className={styles.header}>
@@ -65,7 +65,7 @@ const SideBar: React.FC<ISideBarProps> = ( {
       <section className={styles.items}>
         {items.map( item => (
           <button className={styles.item} type="button" key={item.label} onClick={item.onClick}>
-            <Icon className={styles.itemIcon} name={item.icon}/>
+            <Icon className={styles.itemIcon} icon={item.icon}/>
             <div className={styles.itemLabel} data-expanded={expanded}>
               {item.label}
             </div>

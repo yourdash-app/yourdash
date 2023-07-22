@@ -1,11 +1,34 @@
+/*
+ * Copyright (c) 2023 YourDash contributors.
+ * YourDash is licensed under the MIT License.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 import React, { useEffect, useRef } from "react";
 import CodeStudioEditor from "../../code_studio/core/editor/editor";
 import csi from "helpers/csi";
-import getParserForFileExtension, { getParserForLanguage } from "../../code_studio/core/editor/languageParser/parserLookup";
+import getParserForFileExtension from "../../code_studio/core/editor/languageParser/parserLookup";
 import pathBrowserify from "path-browserify";
-import CodeStudioPlainTextLanguageParser from "../../code_studio/core/editor/languageParser/lang/plainText";
 import CodeStudioLanguageParser from "../../code_studio/core/editor/languageParser/parser";
 import { IconButton } from "../../../../ui";
+import { YourDashIcon } from "../../../../ui/components/icon/iconDictionary";
 
 export interface ITextPreview {
   path: string;
@@ -27,6 +50,7 @@ const TextPreview: React.FC<ITextPreview> = ( { path = "" } ) => {
       let content = resp;
       
       if ( formatJson ) {
+        // eslint-disable-next-line no-magic-numbers
         content = JSON.stringify( JSON.parse( content ), null, 2 );
       }
       
@@ -48,7 +72,7 @@ const TextPreview: React.FC<ITextPreview> = ( { path = "" } ) => {
     <section className={"flex flex-col gap-2"}>
       <div className={"flex gap-1"}>
         <IconButton
-          icon="arrow-switch-16"
+          icon={YourDashIcon.ArrowSwitch16}
           onClick={() => {
             setFormatJson( !formatJson );
           }}

@@ -1,9 +1,33 @@
+/*
+ * Copyright (c) 2023 YourDash contributors.
+ * YourDash is licensed under the MIT License.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 import React from "react";
 import csi from "../../../../helpers/csi";
 import useTranslate from "../../../../helpers/l10n";
 import { IconButton, Icon, RightClickMenu, Button } from "../../../../ui";
 import clippy from "../../../../helpers/clippy";
 import path from "path-browserify";
+import { YourDashIcon } from "../../../../ui/components/icon/iconDictionary";
 
 const DetailsLayout: React.FC = () => {
   const [currentPath, setCurrentPath] = React.useState( "/" );
@@ -32,7 +56,7 @@ const DetailsLayout: React.FC = () => {
             onClick={() => {
               setCurrentPath( path.join( currentPath, ".." ) );
             }}
-            icon={"chevron-left-16"}
+            icon={YourDashIcon.ChevronLeft16}
           />
           <span>{currentPath}</span>
         </div>
@@ -43,7 +67,7 @@ const DetailsLayout: React.FC = () => {
             )
           }
         >
-          <Icon name={"info-16"} className={"h-[calc(100%-0.35rem)] mr-1.5"} color={"rgb(var(--container-fg))"}/>
+          <Icon icon={YourDashIcon.Info16} className={"h-[calc(100%-0.35rem)] mr-1.5"} color={"rgb(var(--container-fg))"}/>
           <span className={"mr-auto"}>{trans( "NAME" )}</span>
           <span>{trans( "TYPE" )}</span>
         </div>
@@ -80,7 +104,7 @@ const DetailsLayout: React.FC = () => {
                 }
               >
                 <Icon
-                  name={file.type === "file" ? "file-16" : "file-directory-16"}
+                  icon={file.type === "file" ? YourDashIcon.File16 : YourDashIcon.FileDirectory16}
                   className={"h-[calc(100%-0.35rem)] mr-1.5"}
                   color={"rgb(var(--container-fg))"}
                 />

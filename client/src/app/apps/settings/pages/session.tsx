@@ -1,14 +1,38 @@
-import React, {useState, useEffect} from "react";
-import {Card, Icon, IconButton} from "../../../../ui";
+/*
+ * Copyright (c) 2023 YourDash contributors.
+ * YourDash is licensed under the MIT License.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+import React, { useState, useEffect } from "react";
+import { Card, Icon, IconButton } from "../../../../ui";
 import csi from "../../../../helpers/csi";
-import {IYourDashSession, YourDashSessionType} from "../../../../../../shared/core/session";
+import { type IYourDashSession, YourDashSessionType } from "../../../../../../shared/core/session";
+import { YourDashIcon } from "../../../../ui/components/icon/iconDictionary";
 
 const SettingsPageSession: React.FC = () => {
-  const [reloadNum, setReloadNum] = useState(0);
-  const [sessions, setSessions] = useState<IYourDashSession<any>[]>([]);
-  const [personalServerAccelerationSessions, setPersonalServerAcceleration] = useState<IYourDashSession<YourDashSessionType.desktop>[]>([]);
-
-  useEffect(() => {
+  const [reloadNum, setReloadNum] = useState( 0 );
+  const [sessions, setSessions] = useState<IYourDashSession<any>[]>( [] );
+  const [personalServerAccelerationSessions, setPersonalServerAcceleration] = useState<IYourDashSession<YourDashSessionType.desktop>[]>( [] );
+  
+  useEffect( () => {
     // setSessions( [
     //   {
     //     id: 2,
@@ -35,15 +59,15 @@ const SettingsPageSession: React.FC = () => {
     //     ip: "127.0.0.3"
     //   }
     // ] )
-    csi.getJson("/core/sessions", data => {
-      setSessions(data.sessions);
-    });
-
-    csi.getJson("/core/personal-server-accelerator/sessions", data => {
-      setPersonalServerAcceleration(data.sessions);
-    });
-  }, [reloadNum]);
-
+    csi.getJson( "/core/sessions", data => {
+      setSessions( data.sessions );
+    } );
+    
+    csi.getJson( "/core/personal-server-accelerator/sessions", data => {
+      setPersonalServerAcceleration( data.sessions );
+    } );
+  }, [reloadNum] );
+  
   return (
     <div className={"h-full overflow-auto"}>
       <h1
@@ -55,7 +79,7 @@ const SettingsPageSession: React.FC = () => {
         <h2 className={"ml-auto mr-auto w-full max-w-5xl font-semibold text-4xl tracking-wide pb-2"}>Sessions</h2>
         <section className={"gap-2 flex flex-wrap"}>
           {
-            sessions.map(session => (
+            sessions.map( session => (
               <Card className={"p-0 overflow-hidden flex flex-grow flex-col min-w-[14rem]"} key={session.id}>
                 <div className={"font-semibold text-6xl text-container-fg pl-4 pt-2 pb-2 flex gap-4 w-full"}>
                   {
@@ -65,7 +89,7 @@ const SettingsPageSession: React.FC = () => {
                     session.type === YourDashSessionType.web && (
                       <Icon
                         className={"aspect-square h-8 m-auto ml-0"}
-                        name={"browser-16"}
+                        icon={YourDashIcon.Browser16}
                       />
                     )
                   }
@@ -73,7 +97,7 @@ const SettingsPageSession: React.FC = () => {
                     session.type === YourDashSessionType.cli && (
                       <Icon
                         className={"aspect-square h-8 m-auto ml-0"}
-                        name={"terminal-16"}
+                        icon={YourDashIcon.Terminal16}
                       />
                     )
                   }
@@ -81,7 +105,7 @@ const SettingsPageSession: React.FC = () => {
                     session.type === YourDashSessionType.desktop && (
                       <Icon
                         className={"aspect-square h-8 m-auto ml-0"}
-                        name={"device-desktop-16"}
+                        icon={YourDashIcon.DeviceDesktop16}
                       />
                     )
                   }
@@ -89,7 +113,7 @@ const SettingsPageSession: React.FC = () => {
                     session.type === YourDashSessionType.external && (
                       <Icon
                         className={"aspect-square h-8 m-auto ml-0"}
-                        name={"question-16"}
+                        icon={YourDashIcon.Question16}
                       />
                     )
                   }
@@ -110,46 +134,46 @@ const SettingsPageSession: React.FC = () => {
                     }
                   </span>
                   <IconButton
-                    icon={"x-16"}
+                    icon={YourDashIcon.X16}
                     onClick={() => {
-                      csi.deleteJson(`/core/session/${ session.id }`, data => {
-                        setReloadNum(reloadNum + 1);
-                      });
+                      csi.deleteJson( `/core/session/${ session.id }`, data => {
+                        setReloadNum( reloadNum + 1 );
+                      } );
                     }}
                   />
                 </div>
               </Card>
-            ))
+            ) )
           }
         </section>
-
+        
         <h2 className={"ml-auto mr-auto w-full max-w-5xl font-semibold text-4xl tracking-wide pb-2 pt-8"}>PSA Supported Sessions</h2>
         <section className={"gap-2 flex flex-wrap"}>
           {
-            personalServerAccelerationSessions.map(session => (
+            personalServerAccelerationSessions.map( session => (
               <Card className={"p-0 overflow-hidden flex flex-grow flex-col min-w-[14rem]"} key={session.id}>
                 <div className={"font-semibold text-6xl text-container-fg pl-4 pt-2 pb-2 flex gap-4 w-full"}>
                   {session.id}
                   <Icon
                     className={"aspect-square h-8 m-auto ml-0"}
-                    name={"device-desktop-16"}
+                    icon={YourDashIcon.DeviceDesktop16}
                   />
                 </div>
                 <div className={"w-full bg-container-secondary-bg pl-4 p-3 flex text-container-fg justify-between items-center"}>
                   <span>
-                    Desktop
+                    {"Desktop"}
                   </span>
                   <IconButton
-                    icon={"x-16"}
+                    icon={YourDashIcon.X16}
                     onClick={() => {
-                      csi.deleteJson(`/core/session/${ session.id }`, data => {
-                        setReloadNum(reloadNum + 1);
-                      });
+                      csi.deleteJson( `/core/session/${ session.id }`, data => {
+                        setReloadNum( reloadNum + 1 );
+                      } );
                     }}
                   />
                 </div>
               </Card>
-            ))
+            ) )
           }
         </section>
       </main>

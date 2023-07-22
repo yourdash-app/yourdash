@@ -26,6 +26,7 @@ import { SideBar } from "../../../ui";
 import { useNavigate } from "react-router-dom";
 import GlobalDbApplication from "../global_db/globalDbApplication";
 import YourDevHome from "./YourDevHome";
+import { YourDashIcon } from "../../../ui/components/icon/iconDictionary";
 
 const YourDevApplication: React.FC = () => {
   const navigate = useNavigate();
@@ -38,21 +39,21 @@ const YourDevApplication: React.FC = () => {
         items={[
           {
             label: "Home",
-            icon: "home-16",
+            icon: YourDashIcon.Home16,
             onClick: () => {
               setPage( "home" );
             }
           },
           {
             label: "Global DB",
-            icon: "database-16",
+            icon: YourDashIcon.Database16,
             onClick: () => {
               setPage( "global_db" );
             }
           },
           {
             label: "User DB",
-            icon: "person-16",
+            icon: YourDashIcon.Person16,
             onClick: () => {
               setPage( "user_db" );
             }
@@ -62,7 +63,7 @@ const YourDevApplication: React.FC = () => {
       {page === "home" && <YourDevHome/>}
       {page === "global_db" && <GlobalDbApplication/>}
       {page === "user_db" && null}
-      
+    
     </main>
   );
 };

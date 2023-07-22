@@ -24,6 +24,7 @@
 import React from "react";
 import { Card, Icon } from "../../../../ui";
 import Header from "../../../index/components/Header";
+import { YourDashIcon } from "../../../../ui/components/icon/iconDictionary";
 
 const HowToHelp: React.FC = () => (
   <main className={"w-full flex flex-col gap-4"}>
@@ -38,7 +39,7 @@ const HowToHelp: React.FC = () => (
         <p>
           {"Add new features / improve existing ones"}
         </p>
-        <Icon className={"ml-auto mt-auto h-8"} name={"link-16"}/>
+        <Icon className={"ml-auto mt-auto h-8"} icon={YourDashIcon.Link16}/>
       </Card>
       <Card onClick={() => 0}>
         <h2>
@@ -47,7 +48,7 @@ const HowToHelp: React.FC = () => (
         <p>
           {"Help improve reliability or fix something unexpected"}
         </p>
-        <Icon className={"ml-auto mt-auto h-8"} name={"link-16"}/>
+        <Icon className={"ml-auto mt-auto h-8"} icon={YourDashIcon.Link16}/>
       </Card>
       <Card onClick={() => 0}>
         <h2>
@@ -56,7 +57,7 @@ const HowToHelp: React.FC = () => (
         <p>
           {"Help make YourDash inclusive for all"}
         </p>
-        <Icon className={"ml-auto mt-auto h-8"} name={"link-16"}/>
+        <Icon className={"ml-auto mt-auto h-8"} icon={YourDashIcon.Link16}/>
       </Card>
     </div>
   </main>
