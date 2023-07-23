@@ -1,4 +1,4 @@
-/*
+/*!
  * Copyright (c) 2023 YourDash contributors.
  * YourDash is licensed under the MIT License.
  *
@@ -27,6 +27,8 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: max-content;
-  max-width: calc(100% - 2rem);
   z-index: 2;
+  gap: 0.5rem;
+  display: flex;
+  flex-direction: column;
 }
