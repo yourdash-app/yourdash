@@ -5,7 +5,7 @@
 ## Notes
 
 - TODO:
-    - phase out user.json in favor of userdb.json to accelerate common user data fetching
-    - phase out sessions.json in favor of userdb.json to accelerate authentication due to it being required for each
+    - phase out user.json in favor of user_db.json to accelerate common user data fetching
+    - phase out sessions.json in favor of user_db.json to accelerate authentication due to it being required for each
       request
-    - phase out panel.json in favor of userdb.json to improve client-side ui handling
+    - phase out panel.json in favor of user_db.json to improve client-side ui handling

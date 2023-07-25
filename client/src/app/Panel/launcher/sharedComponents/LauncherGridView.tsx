@@ -50,7 +50,7 @@ const LauncherGridView: React.FC<ILauncherGridView> = ( {
     <section
       className={clippy(
         `
-            bg-container-bg
+            bg-bg
             grid
             grid-cols-4
             items-center
@@ -97,7 +97,7 @@ const LauncherGridView: React.FC<ILauncherGridView> = ( {
                   setVisible( false );
                   navigate( `/app/a/${ app.name }` );
                 }}
-                className={"group p-2"}
+                className={"group p-4 pb-2"}
               >
                 <RightClickMenu
                   className={"w-full flex flex-col items-center justify-center gap-2"}

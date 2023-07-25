@@ -21,9 +21,10 @@
  * SOFTWARE.
  */
 
-// The YourDash project
-//  - https://github.com/yourdash-app/yourdash
-//  - https://yourdash-app.github.io
+/** # The YourDash project
+ - https://github.com/yourdash-app/yourdash
+ - https://yourdash-app.github.io
+ */
 
 import { promises as fs, writeFile } from "fs";
 import path from "path";
@@ -47,25 +48,36 @@ import loadApplications from "./core/loadApplications.js";
 import startRequestLogger from "./core/requestLogger.js";
 import { startAuthenticatedImageHelper } from "./core/authenticatedImage.js";
 import defineLoginEndpoints from "./core/endpoints/login.js";
+import YourDashApi from "./core/yourDashApi.js";
 
 const args = minimist( process.argv.slice( 2 ) );
 
+// allow args to be accessed using global.args or as an export
 global.args = args;
-
 export { args };
 
+// run Startup checks and tasks
 await startupChecks();
 await startupTasks();
 
 const app = express();
+// noinspection JSVoidFunctionReturnValueUsed
 const httpServer = http.createServer( app );
-const io = new SocketIoServer( httpServer );
+const io = new SocketIoServer(
+  httpServer,
+  {
+    path: "/personal-server-accelerator",
+    cors: { preflightContinue: true }
+  }
+);
 
 export interface ISocketActiveSocket {
   id: string,
   token: string,
   socket: SocketIoSocket
 }
+
+export const YOURDASH_API = new YourDashApi( app, httpServer );
 
 const activeSockets: {
   [ username: string ]: ISocketActiveSocket[]
@@ -185,23 +197,24 @@ app.get( "/", ( _req, res ) => res.send( "Hello from the yourdash server softwar
 
 app.get( "/test", ( _req, res ) => {
   const discoveryStatus: YourDashServerDiscoveryStatus = YourDashServerDiscoveryStatus.NORMAL as YourDashServerDiscoveryStatus;
+  const TYPE = "yourdash";
   
   switch ( discoveryStatus ) {
     case YourDashServerDiscoveryStatus.MAINTENANCE:
       return res.json( {
         status: YourDashServerDiscoveryStatus.MAINTENANCE,
-        type: "yourdash"
+        type: TYPE
       } );
     case YourDashServerDiscoveryStatus.NORMAL:
       return res.json( {
         status: YourDashServerDiscoveryStatus.NORMAL,
-        type: "yourdash"
+        type: TYPE
       } );
     default:
       log( logTypes.error, "discovery status returned an invalid value" );
       return res.json( {
         status: YourDashServerDiscoveryStatus.MAINTENANCE,
-        type: "yourdash"
+        type: TYPE
       } );
   }
 } );
@@ -219,6 +232,7 @@ app.use( async ( req, res, next ) => {
     token?: string
   };
   
+  // if no username or token is provided then fail the authentication
   if ( !username || !token ) {
     return res.json( { error: "authorization fail" } );
   }
@@ -241,9 +255,9 @@ app.use( async ( req, res, next ) => {
 } );
 
 /**
- * --------------------------------------------------------------
- * WARNING: all endpoints require authentication after this point
- * --------------------------------------------------------------
+ * # --------------------------------------------------------------
+ * # WARNING: all endpoints require authentication after this point
+ * # --------------------------------------------------------------
  */
 
 await defineCorePanelRoutes( app );
@@ -314,7 +328,7 @@ app.post( "/core/personal-server-accelerator/", async ( req, res ) => {
   return res.json( { success: true } );
 } );
 
-app.get( "/core/userdb", async ( req, res ) => {
+app.get( "/core/user_db", async ( req, res ) => {
   const { username } = req.headers as {
     username: string
   };
@@ -324,7 +338,7 @@ app.get( "/core/userdb", async ( req, res ) => {
   let output: object;
   
   try {
-    const fileData = JSON.parse( fs.readFile( path.resolve( user.getPath(), "./userdb.json" ) ).toString() );
+    const fileData = JSON.parse( fs.readFile( path.resolve( user.getPath(), "./user_db.json" ) ).toString() );
     if ( fileData ) {
       output = fileData;
     } else {
@@ -335,7 +349,7 @@ app.get( "/core/userdb", async ( req, res ) => {
         "user:full_name": readUser.getName()
       };
       
-      await fs.writeFile( path.resolve( user.getPath(), "./userdb.json" ), JSON.stringify( output ) );
+      await fs.writeFile( path.resolve( user.getPath(), "./user_db.json" ), JSON.stringify( output ) );
     }
   } catch ( _err ) {
     const readUser = await user.read();
@@ -345,67 +359,64 @@ app.get( "/core/userdb", async ( req, res ) => {
       "user:full_name": readUser.getName()
     };
     
-    await fs.writeFile( path.resolve( user.getPath(), "./userdb.json" ), JSON.stringify( output ) );
+    await fs.writeFile( path.resolve( user.getPath(), "./user_db.json" ), JSON.stringify( output ) );
   }
   
   return res.json( output );
 } );
 
 // TODO: implement this
-app.post( "/core/userdb", async ( req, res ) => {
+app.post( "/core/user_db", async ( req, res ) => {
   const { username } = req.headers as {
     username: string
   };
   
   const user = new YourDashUnreadUser( username );
   
-  let output = {};
+  let output: object;
+  const changes = req.body;
   
   try {
-    output = JSON.parse( fs.readFile( path.resolve( user.getPath(), "./userdb.json" ) ).toString() );
+    output = JSON.parse( fs.readFile( path.resolve( user.getPath(), "./user_db.json" ) ).toString() );
   } catch ( _err ) {
     output = {};
-    fs.writeFile( path.resolve( user.getPath(), "./userdb.json" ), "{}" );
+    await fs.writeFile( path.resolve( user.getPath(), "./user_db.json" ), "{}" );
   }
   
-  return res.json( output );
+  console.log( changes );
+  
+  Object.keys( changes ).forEach( change => {
+    output[change] = changes[change];
+  } );
+  
+  console.log( output );
+  
+  try {
+    await fs.writeFile( path.resolve( user.getPath(), "./user_db.json" ), JSON.stringify( output ) );
+    return res.json( { success: true } );
+  } catch ( _err ) {
+    return res.json( { error: `Unable to write to ${ username }/user_db.json` } );
+    
+  }
 } );
 
 /*
  * Start listening for requests
  */
-killPort( 3560 ).then( () => {
+function startHttpServer() {
   try {
     httpServer.listen( 3560, () => {
-      log( logTypes.info, `${ chalk.yellow.bold( "CORE" ) }: -------------------- server now listening on port 3560! --------------------` );
+      log( logTypes.info, `${ chalk.bold.yellow( "CORE" ) }: -------------------- server now listening on port 3560! --------------------` );
     } );
   } catch ( _err ) {
-    log( logTypes.error, `${ chalk.yellow.bold( "CORE" ) }: Unable to start server!, retrying...` );
+    log( logTypes.error, `${ chalk.bold.yellow( "CORE" ) }: Unable to start server!, retrying...` );
     killPort( 3560 ).then( () => {
-      killPort( 3560 ).then( () => {
-        httpServer.listen( 3560, () => {
-          log( logTypes.info, `${ chalk.yellow.bold( "CORE" ) }: -------------------- server now listening on port 3560! --------------------` );
-        } );
-      } );
+      startHttpServer();
     } );
   }
-} ).catch( () => {
-  try {
-    httpServer.listen( 3560, () => {
-      log( logTypes.info, `${ chalk.yellow.bold( "CORE" ) }: -------------------- server now listening on port 3560! --------------------` );
-    } );
-  } catch ( _err ) {
-    log( logTypes.error, `${ chalk.yellow.bold( "CORE" ) }: Unable to start server!, retrying...` );
-    killPort( 3560 ).then( () => {
-      killPort( 3560 ).then( () => {
-        httpServer.listen( 3560, () => {
-          log( logTypes.info, `${ chalk.yellow.bold( "CORE" ) }: -------------------- server now listening on port 3560! --------------------` );
-        } );
-      } );
-    } );
-  }
-} );
+}
 
+startHttpServer();
 
 if ( JSON.stringify( globalDatabase.keys ) === JSON.stringify( {} ) ) {
   await fs.rm( path.resolve( process.cwd(), "./fs/globalDatabase.json" ) );

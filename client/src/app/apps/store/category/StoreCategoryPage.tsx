@@ -72,7 +72,7 @@ const StoreCategoryPage: React.FC = () => {
               </div>
             )
             : (
-              <div className={"w-full max-h-full grid grid-cols-3 gap-4 p-8 animate__animated animate__fadeIn animate__250ms"}>
+              <div className={"w-full max-h-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-8 animate__animated animate__fadeIn animate__250ms"}>
                 {
                   categoryData && categoryData.applications.map( application => (
                     <Card

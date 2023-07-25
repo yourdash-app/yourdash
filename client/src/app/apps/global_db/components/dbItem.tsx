@@ -49,7 +49,7 @@ const DbItem: React.FC<IdbItem> = ( {
   }, [item] );
   
   return (
-    <div className={"bg-container-secondary-bg text-container-secondary-fg flex gap-4 p-2 rounded-xl"}>
+    <div className={"bg-container-bg text-container-fg flex gap-4 p-2 rounded-xl"}>
       <div className={"flex flex-col gap-2"}>
         <IconButton
           icon={active ? YourDashIcon.ChevronUp16 : YourDashIcon.ChevronDown16}

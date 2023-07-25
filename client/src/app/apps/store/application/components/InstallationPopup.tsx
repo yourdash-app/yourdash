@@ -43,66 +43,57 @@ const InstallationPopup: React.FC<IInstallationPopup> = ( {
 } ) => {
   const navigate = useNavigate();
   return (
-    <Dialog onClose={() => {
-      onClose();
-    }}
+    <Dialog
+      onClose={() => {
+        onClose();
+      }}
+      title={`Confirm installation of ${ applicationData?.displayName }`}
     >
-      <Card showBorder className={styles.component}>
-        <section className={"flex items-center justify-between"}>
-          <h1 className={"text-3xl font-semibold tracking-wide"}>{`Confirm installation of ${ applicationData?.displayName }`}</h1>
-          <IconButton
-            icon={YourDashIcon.X16}
-            onClick={() => {
-              onClose();
-            }}
-          />
-        </section>
-        <section className={"flex flex-col items-center gap-2"}>
-          <div>
-            {`Do you want to install ${ applicationData?.displayName }?`}
-          </div>
-          {
-            applicationData?.dependencies && (
-              <Card level={"secondary"} className={"flex flex-col gap-2"}>
-                <div>
-                  {"The following dependency applications will be installed automatically."}
-                </div>
-                <div className={"flex flex-wrap w-full"}>
-                  {
-                    applicationData.dependencies.map( dependency => (
-                      <Card
-                        className={"p-2 flex-grow text-center"}
-                        level={"tertiary"}
-                        onClick={() => {
-                          navigate( `/app/a/store/app/${ dependency }` );
-                        }}
-                        key={dependency}
-                      >
-                        {dependency}
-                      </Card>
-                      
-                    ) )
-                    
-                  }
-                </div>
-              </Card>
-            )}
-          <div className={"flex gap-2"}>
-            <Button onClick={() => {
-              onClose();
-            }}
-            >
-              {"Cancel"}
-            </Button>
-            <MajorButton onClick={() => {
-              onConfirm();
-            }}
-            >
-              {"Confirm installation"}
-            </MajorButton>
-          </div>
-        </section>
-      </Card>
+      <section className={"flex flex-col items-center gap-2"}>
+        <div>
+          {`Do you want to install ${ applicationData?.displayName }?`}
+        </div>
+        {
+          applicationData?.dependencies && (
+            <Card level={"secondary"} className={"flex flex-col gap-2"}>
+              <div>
+                {"The following dependency applications will be installed automatically."}
+              </div>
+              <div className={"flex flex-wrap w-full"}>
+                {
+                  applicationData.dependencies.map( dependency => (
+                    <Card
+                      className={"p-2 flex-grow text-center"}
+                      level={"tertiary"}
+                      onClick={() => {
+                        navigate( `/app/a/store/app/${ dependency }` );
+                      }}
+                      key={dependency}
+                    >
+                      {dependency}
+                    </Card>
+                                                
+                  ) )
+                                                
+                }
+              </div>
+            </Card>
+          )}
+        <div className={"flex gap-2"}>
+          <Button onClick={() => {
+            onClose();
+          }}
+          >
+            {"Cancel"}
+          </Button>
+          <MajorButton onClick={() => {
+            onConfirm();
+          }}
+          >
+            {"Confirm installation"}
+          </MajorButton>
+        </div>
+      </section>
     </Dialog>
   );
 };

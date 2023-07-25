@@ -73,7 +73,7 @@ export default function log( type: logTypes, ...message: any[] ) {
           ? "ERROR"
           : type === logTypes.success ? "SUCCESS" : "UNKNOWN" ),
     // eslint-disable-next-line no-control-regex
-    message: logParams.slice( 1 ).map( msg => msg.replace( /\x1b\[[0-9;]*m/g, "" ) )
+    message: logParams.slice( 1 )?.map( msg => msg?.replace( /\x1b\[[0-9;]*m/g, "" ) )
   } );
   
   // @ts-ignore

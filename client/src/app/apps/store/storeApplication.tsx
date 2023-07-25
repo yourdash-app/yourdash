@@ -1,37 +1,60 @@
-import React, {useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
-import {type StorePromotedApplication} from "../../../../../shared/apps/store/storePromotedApplication";
+/*
+ * Copyright (c) 2023 YourDash contributors.
+ * YourDash is licensed under the MIT License.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { type StorePromotedApplication } from "../../../../../shared/apps/store/storePromotedApplication";
 import csi from "../../../helpers/csi";
-import {Carousel, MajorButton} from "../../../ui";
+import { Carousel, MajorButton } from "../../../ui";
 import StoreCategoryComponent from "./component/StoreCategoryComponent";
 import StoreApplicationComponent from "./component/StoreApplicationComponent";
 import useTranslate from "../../../helpers/l10n";
 
 const StoreApplication: React.FC = () => {
   const navigate = useNavigate();
-  const trans = useTranslate("store");
-  const [promotedApplications, setPromotedApplications] = useState<StorePromotedApplication[]>([]);
-  const [categories, setCategories] = useState<string[]>([]);
+  const trans = useTranslate( "store" );
+  const [promotedApplications, setPromotedApplications] = useState<StorePromotedApplication[]>( [] );
+  const [categories, setCategories] = useState<string[]>( [] );
   const [applications, setApplications] = useState<{
     id: string,
     displayName: string,
     icon: string
-  }[]>([]);
-
-  useEffect(() => {
-    csi.getJson("/app/store/promoted/applications", data => {
-      setPromotedApplications(data);
-    });
-
-    csi.getJson("/app/store/categories", data => {
-      setCategories(data);
-    });
-
-    csi.getJson("/app/store/applications", data => {
-      setApplications(data);
-    });
-  }, []);
-
+  }[]>( [] );
+  
+  useEffect( () => {
+    csi.getJson( "/app/store/promoted/applications", data => {
+      setPromotedApplications( data );
+    } );
+    
+    csi.getJson( "/app/store/categories", data => {
+      setCategories( data );
+    } );
+    
+    csi.getJson( "/app/store/applications", data => {
+      setApplications( data );
+    } );
+  }, [] );
+  
   return (
     <main>
       <header
@@ -40,7 +63,7 @@ const StoreApplication: React.FC = () => {
         <h2 className={"text-3xl font-semibold tracking-wide pt-1 pb-3"}>{"YourDash Store"}</h2>
         <Carousel containerClassName={"max-w-4xl w-full h-64"}>
           {
-            promotedApplications.map(item => (
+            promotedApplications.map( item => (
               <div key={item.name} className={"w-full h-full"}>
                 <div
                   style={{
@@ -68,7 +91,7 @@ const StoreApplication: React.FC = () => {
                   </div>
                 </div>
               </div>
-            ))
+            ) )
           }
         </Carousel>
       </header>
@@ -83,12 +106,12 @@ const StoreApplication: React.FC = () => {
         categories.length !== 0 && (
           <section className={"p-4 grid 3xl:grid-cols-3 md:grid-cols-2 grid-cols-1 lg:gap-2 gap-1 animate__animated animate__fadeIn animate__250ms"}>
             {
-              categories.map(category => (
+              categories.map( category => (
                 <StoreCategoryComponent
                   id={category}
                   key={category}
                 />
-              ))
+              ) )
             }
           </section>
         )
@@ -102,16 +125,16 @@ const StoreApplication: React.FC = () => {
       </h2>
       {
         applications.length !== 0 && (
-          <section className={"p-4 grid grid-cols-3 gap-2 animate__animated animate__fadeIn animate__500ms"}>
+          <section className={"p-4 grid grid-cols-1 gap-2 animate__animated animate__fadeIn animate__500ms md:grid-cols-2 lg:grid-cols-3"}>
             {
-              applications.map(application => (
+              applications.map( application => (
                 <StoreApplicationComponent
                   id={application.id}
                   displayName={application.displayName}
                   key={application.id}
                   icon={application.icon}
                 />
-              ))
+              ) )
             }
           </section>
         )

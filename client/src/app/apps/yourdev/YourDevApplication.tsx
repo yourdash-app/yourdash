@@ -35,7 +35,7 @@ const YourDevApplication: React.FC = () => {
   return (
     <main className={"h-full grid grid-cols-[auto,1fr]"}>
       <SideBar
-        title={"YourDev"}
+        title={"YourDash Demo Application"}
         items={[
           {
             label: "Home",
