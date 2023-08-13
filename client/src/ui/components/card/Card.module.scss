@@ -51,6 +51,10 @@
   }
 }
 
+.border {
+  border: solid 0.125rem rgb(var(--container-border));
+}
+
 .clickable {
   cursor: pointer;
   user-select: none;
@@ -65,6 +69,10 @@
     color: rgb(var(--container-secondary-fg));
     border: solid 0.125rem rgb(var(--container-secondary-bg));
     border-radius: var(--container-secondary-rounding);
+
+    &:hover {
+      border: solid 0.125rem #ffffff55;
+    }
   }
 
   //noinspection CssUnusedSymbol
@@ -73,11 +81,11 @@
     color: rgb(var(--container-tertiary-fg));
     border: solid 0.125rem rgb(var(--container-tertiary-bg));
     border-radius: var(--container-tertiary-rounding);
+
+    &:hover {
+      border: solid 0.125rem #ffffff55;
+    }
   }
 
   place-items: center;
-}
-
-.border {
-  border: solid 0.125rem rgb(var(--container-border));
 }

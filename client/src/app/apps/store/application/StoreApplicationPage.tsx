@@ -59,7 +59,9 @@ const StoreApplicationPage: React.FC = () => {
   const [showInstallationConfirmation, setShowInstallationConfirmation] = useState<boolean>( false );
   
   useEffect( () => {
-    requestApplication( applicationId || "dash", setAppData, setIsLoading, navigate );
+    setShowInstallationConfirmation( false );
+    setIsLoading( true );
+    requestApplication( applicationId || "dash", data => setAppData( data ), setIsLoading, navigate );
   }, [applicationId, navigate] );
   
   if ( !applicationId ) {

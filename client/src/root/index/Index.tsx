@@ -199,6 +199,32 @@ const Index: React.FC = () => {
           </div>
         </section>
       </main>
+      <footer
+        className={"w-full h-16 flex items-center gap-2 pl-3 bg-container-bg mt-16"}
+      >
+        <img
+          src={"/assets/productLogos/yourdash.svg"}
+          className={"h-full pt-3 pb-3"}
+          alt={""}
+        />
+        <h3 className={"font-bold text-3xl"}>{"YourDash"}</h3>
+        <p className={"ml-auto mr-auto"}>{"Copyright © 2022-2023 YourDash Contributors"}</p>
+        <Button
+          onClick={() => {
+            navigate( "/" );
+          }}
+        >
+          {"Home"}
+        </Button>
+        <Button
+          className={"mr-2"}
+          onClick={() => {
+            navigate( "/docs" );
+          }}
+        >
+          {"Docs"}
+        </Button>
+      </footer>
     </main>
   );
 };

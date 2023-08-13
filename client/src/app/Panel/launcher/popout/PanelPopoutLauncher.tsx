@@ -76,26 +76,15 @@ const PanelApplicationLauncherPopOut: React.FC<{
           side === PanelPosition.right && styles.right,
           side === PanelPosition.bottom && styles.bottom,
           styles.arrow,
-          `
-          h-4
-          aspect-square
-          bg-container-bg
-          [border:solid_0.1rem_var(--application-panel-border)]
-          absolute
-          rotate-45
-          animate__animated
-          animate__faster
-          opacity-0
-          rounded-sm
-        `,
+          "animate__animated animate__duration_100ms",
           side === PanelPosition.top &&
-          ( visible ? "animate__fadeIn" : "animate__fadeOut select-none pointer-events-none" ),
+          ( visible ? "animate__fadeIn" : "animate__fadeOut" ),
           side === PanelPosition.bottom &&
-          ( visible ? "animate__fadeIn" : "animate__fadeOut select-none pointer-events-none" ),
+          ( visible ? "animate__fadeIn" : "animate__fadeOut" ),
           side === PanelPosition.left &&
-          ( visible ? "animate__fadeIn" : "animate__fadeOut select-none pointer-events-none" ),
+          ( visible ? "animate__fadeIn" : "animate__fadeOut" ),
           side === PanelPosition.right &&
-          ( visible ? "animate__fadeIn" : "animate__fadeOut select-none pointer-events-none" )
+          ( visible ? "animate__fadeIn" : "animate__fadeOut" )
         )}
       />
       <section
@@ -106,17 +95,10 @@ const PanelApplicationLauncherPopOut: React.FC<{
           side === PanelPosition.bottom && styles.bottom,
           styles.component,
           "animate__animated animate__faster",
-          side === PanelPosition.top &&
-          ( visible ? "animate__fadeIn" : "animate__fadeOut select-none pointer-events-none" ),
-          side === PanelPosition.bottom &&
-          ( visible ? "animate__fadeIn" : "animate__fadeOut select-none pointer-events-none" ),
-          side === PanelPosition.left &&
-          ( visible ? "animate__fadeIn" : "animate__fadeOut select-none pointer-events-none" ),
-          side === PanelPosition.right &&
-          ( visible ? "animate__fadeIn" : "animate__fadeOut select-none pointer-events-none" )
+          visible ? "animate__fadeIn" : "animate__fadeOut select-none pointer-events-none"
         )}
       >
-        <section className={"flex items-center justify-center relative group bg-container-secondary-bg p-2 pl-3"}>
+        <section className={"flex items-center justify-center relative group bg-container-bg p-2 pl-3"}>
           <span className={"text-2xl mr-auto"}>{trans( "LOCALIZED_GREETING", [userFullName.first] )}</span>
           <TextInput
             className={"w-[2.25rem] h-[2.25rem] focus-within:w-64 transition-all"}
@@ -132,7 +114,7 @@ const PanelApplicationLauncherPopOut: React.FC<{
           </div>
         </section>
         <LauncherGridView applications={applications} setVisible={setVisible} searchValue={searchValue}/>
-        <section className={"flex items-center justify-center bg-container-secondary-bg p-2 pl-3"}>
+        <section className={"flex items-center justify-center bg-container-bg p-2 pl-3"}>
           <LauncherDateAndTime/>
           <Row className={"ml-auto"}>
             <IconButton

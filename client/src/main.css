@@ -80,27 +80,29 @@
         - success and failure, normal, hover and active
     */
 
+    --bg: var(--base-800);
+
     --input-focus-outline: 0.25rem solid #459;
     --input-focus-outline-active: 0.25rem solid #56a;
 
     --application-panel-border: rgb(var(--base-600));
 
     --container-bg: var(--base-700);
-    --container-fg: var(--base-50);
+    --container-fg: var(--base-200);
     --container-border: var(--base-600);
     --container-padding: 0.5rem;
     /*--container-rounding: 0rem;*/
     --container-rounding: 1rem;
 
-    --container-secondary-bg: var(--base-800);
+    --container-secondary-bg: var(--base-600);
     --container-secondary-fg: var(--base-100);
     --container-secondary-border: var(--base-700);
     --container-secondary-padding: 0.25rem;
     /*--container-secondary-rounding: 0rem;*/
     --container-secondary-rounding: 0.5rem;
 
-    --container-tertiary-bg: var(--base-900);
-    --container-tertiary-fg: var(--base-200);
+    --container-tertiary-bg: var(--base-500);
+    --container-tertiary-fg: var(--base-50);
     --container-tertiary-border: var(--base-800);
     --container-tertiary-padding: 0.1rem;
     /*--container-tertiary-rounding: 0;*/
@@ -283,5 +285,6 @@ body, #root {
 @media (prefers-reduced-motion: reduce) {
     * {
         animation-delay: unset !important;
+        animation-duration: 0s !important;
     }
 }

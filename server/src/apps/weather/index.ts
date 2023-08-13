@@ -33,7 +33,7 @@ import { type YourDashApplicationServerPlugin } from "../../helpers/applications
 
 import log, { logTypes } from "../../helpers/log.js";
 
-const OPEN_METEO_INSTANCE = "https://api.open-meteo.com";
+const OPEN_METEO_INSTANCE = "open-meteo.com";
 
 /**
  
@@ -122,7 +122,7 @@ const main: YourDashApplicationServerPlugin = ( { app } ) => {
       return res.json( { error: true } );
     }
     
-    fetch( `https://geocoding-api.open-meteo.com/v1/search?name=${ req.params.locationName }&language=en&count=5&format=json` ).then( resp => resp.json() ).then( json => res.json( json ) ).catch( () => {
+    fetch( `https://geocoding-api.${ OPEN_METEO_INSTANCE }/v1/search?name=${ req.params.locationName }&language=en&count=5&format=json` ).then( resp => resp.json() ).then( json => res.json( json ) ).catch( () => {
       log( logTypes.error, "Failed to fetch weather data from open-meteo" );
       return res.json( { error: true } );
     } );
@@ -202,7 +202,7 @@ const main: YourDashApplicationServerPlugin = ( { app } ) => {
       }
     }
     
-    fetch( `https://geocoding-api.open-meteo.com/v1/get?id=${ req.params.id }&language=en&format=json` ).then( resp => resp.json() ).then( ( json: any ) => {
+    fetch( `https://geocoding-api.${ OPEN_METEO_INSTANCE }/v1/get?id=${ req.params.id }&language=en&format=json` ).then( resp => resp.json() ).then( ( json: any ) => {
       if ( json?.error ) {
         return res.json( { error: true } );
       }
@@ -213,7 +213,7 @@ const main: YourDashApplicationServerPlugin = ( { app } ) => {
         country: json.country
       };
       
-      fetch( `https://api.open-meteo.com/v1/forecast?latitude=${ json.latitude }&longitude=${ json.longitude }&hourly=temperature_2m,weathercode&models=best_match&daily=temperature_2m_max,temperature_2m_min,weathercode&current_weather=true&timezone=${ json.timezone }` ).then( resp => resp.json() ).then( async ( json: any ) => {
+      fetch( `https://api.${ OPEN_METEO_INSTANCE }/v1/forecast?latitude=${ json.latitude }&longitude=${ json.longitude }&hourly=temperature_2m,weathercode&models=best_match&daily=temperature_2m_max,temperature_2m_min,weathercode&current_weather=true&timezone=${ json.timezone }` ).then( resp => resp.json() ).then( async ( json: any ) => {
         if ( json?.error ) {
           return res.json( { error: true } );
         }
@@ -332,7 +332,7 @@ const main: YourDashApplicationServerPlugin = ( { app } ) => {
   app.get( "/app/weather/hourly/:location", async ( req, res ) => {
     const { location } = req.params;
     
-    fetch( `https://geocoding-api.open-meteo.com/v1/search?name=${ location }&language=en&count=5&format=json` )
+    fetch( `https://geocoding-api.${ OPEN_METEO_INSTANCE }/v1/search?name=${ location }&language=en&count=5&format=json` )
       .then( async resp => {
         const locationData: {
         latitude: number,
@@ -352,7 +352,7 @@ const main: YourDashApplicationServerPlugin = ( { app } ) => {
         //        and a missing icon error will occur as we only support a limited
         //        range of weather types
       
-        fetch( `${ OPEN_METEO_INSTANCE }/v1/forecast?latitude=${ latitude }&longitude=${ longitude }&hourly=temperature_2m,apparent_temperature,precipitation_probability,weathercode&current_weather=true&forecast_days=1` )
+        fetch( `https://api.${ OPEN_METEO_INSTANCE }/v1/forecast?latitude=${ latitude }&longitude=${ longitude }&hourly=temperature_2m,apparent_temperature,precipitation_probability,weathercode&current_weather=true&forecast_days=1` )
           .then( data => data.json() ).then( weatherData => {
             return res.json( {
               data: weatherData,

@@ -30,6 +30,7 @@ module.exports = {
         "3xl": "1600px"
       },
       colors: {
+        bg: "rgb(var(--bg) / <alpha-value>)",
         theme: {
           50: "rgb(var(--theme-50) / <alpha-value>)",
           100: "rgb(var(--theme-100) / <alpha-value>)",

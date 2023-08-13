@@ -10,6 +10,14 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\server\fs\log.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+              <option name="escapeCharacter" value="\" />
+            </Attribute>
+          </value>
+        </entry>
       </map>
     </option>
   </component>
