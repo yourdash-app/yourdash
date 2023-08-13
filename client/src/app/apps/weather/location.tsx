@@ -356,7 +356,7 @@ const WeatherApplicationLocationPage: React.FC = () => {
                     setSelectedDay( ind );
                   }}
                   className={clippy(
-                    "w-full h-[10.5rem] flex-col transition-[var(--transition)] absolute",
+                    "w-full h-[10.5rem] flex-col transition-[var(--transition)] absolute p-4",
                     selectedDay === ind
                       ? "bottom-[3.5rem]"
                       : "bottom-0"

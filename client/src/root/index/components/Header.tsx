@@ -52,7 +52,7 @@ const Header: React.FC = () => (
       </Link>
       <Link
         to={"https://github.com/yourdash-app/yourdash"}
-        className={"hover:text-theme-500 active:text-theme-400 transition-colors cursor-pointer select-none animate__fadeInDown animate__animated animate__500ms"}
+        className={"sm:block hidden hover:text-theme-500 active:text-theme-400 transition-colors cursor-pointer select-none animate__fadeInDown animate__animated animate__500ms"}
       >
         {"Contribute"}
       </Link>

@@ -77,7 +77,7 @@
   transform: translateY(-50%);
   pointer-events: none;
 
-  > button {
+  > button[type="button"] {
     height: unset;
     pointer-events: all;
     aspect-ratio: 2 / 3;
@@ -99,7 +99,7 @@
 }
 
 .controlsCompact {
-  > button {
+  > button[type="button"] {
     &:first-child {
       margin-left: 0;
       border-radius: 0 var(--button-rounding) var(--button-rounding) 0;

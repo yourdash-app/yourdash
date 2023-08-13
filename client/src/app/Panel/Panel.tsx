@@ -22,11 +22,10 @@
  */
 
 import React, { useEffect, useState } from "react";
-import csi from "helpers/csi";
+import csi from "../../helpers/csi";
 import { useNavigate } from "react-router-dom";
 import clippy from "../../helpers/clippy";
 import { IconButton, RightClickMenu } from "../../ui";
-import { loadDatabaseFromServer } from "../../helpers/database";
 import PanelApplicationLauncher from "./launcher/PanelLaunchers";
 import PanelDesktopIndicator from "./psa/PanelDesktopIndicator";
 import styles from "./Panel.module.scss";
@@ -158,7 +157,7 @@ const PanelAuthorizer: React.FC = () => {
       csi.getJson(
         "/core/login/is-authenticated",
         () => {
-          loadDatabaseFromServer();
+          csi.getUserDB();
         },
         () => {
           setTimeout( () => {

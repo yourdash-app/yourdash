@@ -25,6 +25,7 @@ import React, { CSSProperties, useState } from "react";
 import IconButton from "../iconButton/IconButton";
 import styles from "./Dialog.module.scss";
 import { YourDashIcon } from "../icon/iconDictionary";
+import { Card } from "../..";
 
 export interface IDialog {
   onClose?: () => void;
@@ -55,9 +56,15 @@ const Dialog: React.FC<IDialog> = ( {
           onClose?.();
         }
       }}
+      onTouchEnd={e => {
+        if ( e.touches[0].screenY < initialDragPosition ) {
+          onClose?.();
+        }
+      }}
     >
       {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions */}
-      <div
+      <Card
+        showBorder
         className={`${ styles.component } ${ visible === false && styles.hidden }`}
         style={style}
         onMouseUp={e => {
@@ -66,6 +73,7 @@ const Dialog: React.FC<IDialog> = ( {
         onClick={e => {
           e.stopPropagation();
         }}
+        unStyledClickable
       >
         {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
         <section
@@ -74,7 +82,15 @@ const Dialog: React.FC<IDialog> = ( {
             setInitialDragPosition( e.screenY );
           }}
           onMouseUp={e => {
-            if ( e.screenY > initialDragPosition ) {
+            if ( e.screenY < initialDragPosition ) {
+              onClose?.();
+            }
+          }}
+          onTouchStart={e => {
+            setInitialDragPosition( e.touches[0].screenY );
+          }}
+          onTouchEnd={e => {
+            if ( e.touches[0].screenY < initialDragPosition ) {
               onClose?.();
             }
           }}
@@ -88,7 +104,7 @@ const Dialog: React.FC<IDialog> = ( {
           </h1>
           {children}
         </section>
-      </div>
+      </Card>
     </div>
   );
 };

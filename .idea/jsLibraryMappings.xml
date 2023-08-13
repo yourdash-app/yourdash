@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="JavaScriptLibraryMappings">
-    <includedPredefinedLibrary name="HTTP Pre-Request and Response Handler" />
-    <includedPredefinedLibrary name="Node.js Core" />
+    <file url="file://$PROJECT_DIR$/client" libraries="{HTML}" />
+    <file url="file://$PROJECT_DIR$/electron" libraries="{@types/node}" />
+    <file url="file://$PROJECT_DIR$/psa-backend" libraries="{@types/node}" />
+    <file url="file://$PROJECT_DIR$/server" libraries="{@types/node}" />
   </component>
 </project>

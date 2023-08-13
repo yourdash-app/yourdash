@@ -1,3 +1,26 @@
+/*
+ * Copyright (c) 2023 YourDash contributors.
+ * YourDash is licensed under the MIT License.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 import React, { useEffect, useState } from "react";
 import useTranslate from "../../../../../../helpers/l10n";
 import { Card } from "../../../../../../ui";
@@ -10,7 +33,7 @@ const WeatherHourlyConditions: React.FC = () => {
   const trans = useTranslate( "weather" );
   const [weatherData, setWeatherData] = useState<any>( null );
   const [locationData, setLocationData] = useState<any>( null );
-
+  
   useEffect( () => {
     csi.getJson( "/app/weather/hourly/London", res => {
       setWeatherData( res.data );
@@ -18,14 +41,14 @@ const WeatherHourlyConditions: React.FC = () => {
       console.log( res );
     } );
   }, [] );
-
+  
   if ( !weatherData || !locationData ) {
     return null;
   }
-
+  
   return (
     <Card className={"flex flex-col col-span-2 p-1 max-w-full"}>
-      <div className={"flex pl-2.5 pt-2 pr-2 items-end gap-1"}>
+      <div className={"flex pl-2.5 pt-2 pr-2 items-end gap-1 w-full text-left"}>
         <span className={"font-bold text-4xl"}>
           {`${ locationData?.name }, `}
         </span>
@@ -51,14 +74,14 @@ const WeatherHourlyConditions: React.FC = () => {
             const date = new Date( hour );
             const currentDate = new Date();
             const conditionState = condition;
-
+            
             if ( date.getHours() < currentDate.getHours() ) {
               return null;
             }
             
             // eslint-disable-next-line no-magic-numbers
             const time = `${ date.getHours() < 10 ? `0${ date.getHours() }` : date.getHours() }:${ date.getMinutes() < 10 ? `0${ date.getMinutes() }` : date.getMinutes() }`;
-
+            
             return (
               <HourlyConditionsHour conditionState={conditionState} conditionIcon={conditionIcon} time={time} feelsLike={feelsLike} rainChance={rainChance} temperature={temperature} key={hour}/>
             );

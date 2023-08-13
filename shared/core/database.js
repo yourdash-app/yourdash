@@ -8,15 +8,15 @@ export default class KeyValueDatabase {
     }
     set(key, value) {
         this.keys[key] = value;
-        changeOccured(this);
+        changeOccurred(this);
     }
     removeValue(key) {
         delete this.keys[key];
-        changeOccured(this);
+        changeOccurred(this);
     }
     clear() {
         this.keys = {};
-        changeOccured(this);
+        changeOccurred(this);
     }
     getKeys() {
         return Object.keys(this.keys);
@@ -31,7 +31,7 @@ export default class KeyValueDatabase {
         this.keys = Object.assign(this.keys, keys);
     }
 }
-function changeOccured(db) {
-    console.log("changeOccured: ", JSON.stringify(db, null, 2));
+function changeOccurred(db) {
+    console.debug("changeOccurred: ", JSON.stringify(db, null, 2));
 }
 //# sourceMappingURL=database.js.map

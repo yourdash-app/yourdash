@@ -119,7 +119,7 @@ const Editor: React.FC = () => {
   }, [] );
   
   return (
-    <div className={"overflow-auto h-full w-full bg-container-tertiary-bg p-2"} ref={ref}/>
+    <div className={"overflow-auto h-full w-full bg-[#333333] p-2"} ref={ref}/>
   );
 };
 

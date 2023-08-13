@@ -21,21 +21,51 @@
  * SOFTWARE.
  */
 
-import React from "react";
+import React, { useEffect } from "react";
 import BasePageLayout from "../../../components/BasePageLayout";
 import BooleanSettingComponent from "../../../components/BooleanSettingComponent";
 import { YourDashIcon } from "../../../../../../ui/components/icon/iconDictionary";
+import csi from "../../../../../../helpers/csi";
 
-const index: React.FC = () => (
-  <BasePageLayout title={"Dashboard personalization"}>
-    <BooleanSettingComponent
-      title={"Use browser layout"}
-      icon={YourDashIcon.Browser16}
-      description={"Use the \"browser\" layout instead of the \"dashboard\" layout"}
-      value={false}
-      setValue={() => 0}
-    />
-  </BasePageLayout>
-);
+const Index: React.FC = () => {
+  const [useBrowserLayout, setUseBrowserLayout] = React.useState<undefined | boolean>( undefined );
+  
+  useEffect( () => {
+    const db = csi.getUserDB();
+    
+    setUseBrowserLayout( db.get( "dash:useBrowserLayout" ) || false );
+    
+    return () => {
+      csi.postJson( "/core/user_db", { "dash:useBrowserLayout": useBrowserLayout }, () => {
+        console.log( "out", db );
+      } );
+    };
+  }, [] );
+  
+  useEffect( () => {
+    const db = csi.userDB;
+    
+    db.set( "dash:useBrowserLayout", useBrowserLayout );
+  } );
+  
+  if ( useBrowserLayout === undefined ) {
+    return null;
+  }
+  
+  return (
+    <BasePageLayout title={"Dashboard personalization"}>
+      <BooleanSettingComponent
+        title={"Use browser layout"}
+        icon={YourDashIcon.Browser16}
+        description={"Use the \"browser\" layout instead of the \"dashboard\" layout"}
+        value={useBrowserLayout}
+        setValue={val => {
+          console.log( val );
+          setUseBrowserLayout( val );
+        }}
+      />
+    </BasePageLayout>
+  );
+};
 
-export default index;
+export default Index;

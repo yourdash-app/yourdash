@@ -1,4 +1,4 @@
-/*!
+/*
  * Copyright (c) 2023 YourDash contributors.
  * YourDash is licensed under the MIT License.
  *
@@ -21,14 +21,18 @@
  * SOFTWARE.
  */
 
-.component {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: max-content;
-  z-index: 2;
-  gap: 0.5rem;
+.content {
   display: flex;
-  flex-direction: column;
+  gap: 1rem;
+  padding-bottom: 1.5rem;
+  max-width: 100%;
+  overflow-x: hidden;
+  @apply pl-8 pr-8;
+
+  > * {
+    flex-grow: 1;
+    flex-shrink: 1;
+  }
+
+  flex-wrap: wrap;
 }

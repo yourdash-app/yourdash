@@ -3,7 +3,7 @@
   <component name="CsvFileAttributes">
     <option name="attributeMap">
       <map>
-        <entry key="C:\Users\ewsgi\projects\stablediffusionwebui\outputs\save\log.csv">
+        <entry key="/server/fs/log.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
