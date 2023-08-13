@@ -26,7 +26,7 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Build website
-        run: (cd ./client && yarn build)
+        run: (cd ./web-client && yarn build)
 
       - name: Deploy to external repository
         uses: cpina/github-action-push-to-another-repository@main
@@ -34,7 +34,7 @@ jobs:
           API_TOKEN_GITHUB: ${{ secrets.ORG_FULL_ACCESS_TOKEN }}
 
         with:
-          source-directory: client/dist/
+          source-directory: web-client/dist/
           destination-github-username: yourdash-app
           destination-repository-name: yourdash-app.github.io
           user-email: ewsgit@duck.com

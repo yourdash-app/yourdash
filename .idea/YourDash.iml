@@ -6,10 +6,10 @@
       <excludeFolder url="file://$MODULE_DIR$/temp" />
       <excludeFolder url="file://$MODULE_DIR$/tmp" />
       <excludeFolder url="file://$MODULE_DIR$/backup" />
-      <excludeFolder url="file://$MODULE_DIR$/client/node_modules" />
-      <excludeFolder url="file://$MODULE_DIR$/electron/node_modules" />
       <excludeFolder url="file://$MODULE_DIR$/node_modules" />
       <excludeFolder url="file://$MODULE_DIR$/server/node_modules" />
+      <excludeFolder url="file://$MODULE_DIR$/backup/client/node_modules" />
+      <excludeFolder url="file://$MODULE_DIR$/backup/electron/node_modules" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

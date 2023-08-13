@@ -1,0 +1,290 @@
+/*
+ * Copyright (c) 2023 YourDash contributors.
+ * YourDash is licensed under the MIT License.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap');
+
+:root {
+    font-family: Roboto, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    font-weight: 400;
+    line-height: 1.5;
+
+    width: 100%;
+    color: rgba(255, 255, 255, 0.87);
+    background-color: #242424;
+
+    color-scheme: light dark;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: 100%;
+
+    /* Default theme's transitions */
+    --transition-slow: all 1000ms ease-in-out;
+    --transition: all 100ms ease-in-out;
+    --transition-fast: all 25ms ease-in-out;
+
+    /* uses the rgb color method without alpha values */
+    --theme-50: 238 242 255;
+    --theme-100: 224 231 255;
+    --theme-200: 199 210 254;
+    --theme-300: 165 180 252;
+    --theme-400: 129 140 248;
+    --theme-500: 99 102 241;
+    --theme-600: 79 70 229;
+    --theme-700: 67 56 202;
+    --theme-800: 55 48 163;
+    --theme-900: 49 46 129;
+
+    /* uses the rgb color method without alpha values */
+    --base-50: 249 250 251;
+    --base-100: 243 244 246;
+    --base-200: 229 231 235;
+    --base-300: 209 213 219;
+    --base-400: 156 163 175;
+    --base-500: 107 114 128;
+    --base-600: 75 85 99;
+    --base-700: 55 65 81;
+    --base-800: 31 41 55;
+    --base-900: 17 24 39;
+    --base-950: 2 6 23;
+
+    /*
+        Default theme variables
+
+        - input focus (outline)
+        - button background and foreground and border
+        - button major variant
+        - separator
+        - handle
+        - success and failure, normal, hover and active
+    */
+
+    --bg: var(--base-800);
+
+    --input-focus-outline: 0.25rem solid #459;
+    --input-focus-outline-active: 0.25rem solid #56a;
+
+    --application-panel-border: rgb(var(--base-600));
+
+    --container-bg: var(--base-700);
+    --container-fg: var(--base-200);
+    --container-border: var(--base-600);
+    --container-padding: 0.5rem;
+    /*--container-rounding: 0rem;*/
+    --container-rounding: 1rem;
+
+    --container-secondary-bg: var(--base-600);
+    --container-secondary-fg: var(--base-100);
+    --container-secondary-border: var(--base-700);
+    --container-secondary-padding: 0.25rem;
+    /*--container-secondary-rounding: 0rem;*/
+    --container-secondary-rounding: 0.5rem;
+
+    --container-tertiary-bg: var(--base-500);
+    --container-tertiary-fg: var(--base-50);
+    --container-tertiary-border: var(--base-800);
+    --container-tertiary-padding: 0.1rem;
+    /*--container-tertiary-rounding: 0;*/
+    --container-tertiary-rounding: 0.25rem;
+
+    /*--button-rounding: 0;*/
+    --button-rounding: 0.5rem;
+    --button-bg: var(--base-600);
+    --button-fg: var(--base-200);
+    --button-hover-bg: var(--base-500);
+    --button-hover-fg: var(--base-50);
+    --button-active-bg: var(--base-400);
+    --button-active-fg: var(--base-900);
+
+    /*--input-rounding: 0;*/
+    --input-rounding: 0.5rem;
+    --input-bg: var(--base-600);
+    --input-fg: var(--base-200);
+    --input-hover-bg: var(--base-500);
+    --input-hover-fg: var(--base-50);
+    --input-active-bg: var(--base-400);
+    --input-active-fg: var(--base-900);
+}
+
+::-webkit-scrollbar {
+    width: 0.5rem;
+    height: 0.5rem;
+    background-color: rgb(var(--container-secondary-bg));
+    border-radius: 0.5rem;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgb(var(--container-secondary-fg));
+    border-radius: 0.5rem;
+}
+
+@media (prefers-color-scheme: light) {
+    :root {
+        /* uses the rgb color method without alpha values */
+        --theme-50: 236 254 255;
+        --theme-100: 207 250 254;
+        --theme-200: 165 243 252;
+        --theme-300: 103 232 249;
+        --theme-400: 34 211 238;
+        --theme-500: 6 182 212;
+        --theme-600: 8 145 178;
+        --theme-700: 14 116 144;
+        --theme-800: 21 94 117;
+        --theme-900: 22 78 99;
+
+        /* uses the rgb color method without alpha values */
+        --base-900: 249 250 251;
+        --base-800: 243 244 246;
+        --base-700: 229 231 235;
+        --base-600: 209 213 219;
+        --base-400: 156 163 175;
+        --base-500: 107 114 128;
+        --base-300: 75 85 99;
+        --base-200: 55 65 81;
+        --base-100: 31 41 55;
+        --base-50: 17 24 39;
+    }
+}
+
+body, #root {
+    overflow: hidden;
+    height: 100vh;
+    color: rgb(var(--base-50));
+    background-image: linear-gradient(to bottom right, rgb(var(--base-700) / 1), rgb(var(--base-900) / 1));
+}
+
+.animate__animated.animate__50ms {
+    -webkit-animation-delay: 0.05s;
+    animation-delay: 0.05s;
+}
+
+.animate__animated.animate__100ms {
+    -webkit-animation-delay: 0.1s;
+    animation-delay: 0.1s;
+}
+
+.animate__animated.animate__150ms {
+    -webkit-animation-delay: 0.15s;
+    animation-delay: 0.15s;
+}
+
+.animate__animated.animate__250ms {
+    -webkit-animation-delay: 0.25s;
+    animation-delay: 0.25s;
+}
+
+.animate__animated.animate__500ms {
+    -webkit-animation-delay: 0.5s;
+    animation-delay: 0.5s;
+}
+
+.animate__animated.animate__750ms {
+    -webkit-animation-delay: 0.75s;
+    animation-delay: 0.75s;
+}
+
+.animate__animated.animate__1000ms {
+    -webkit-animation-delay: 1s;
+    animation-delay: 1s;
+}
+
+.animate__animated.animate__1250ms {
+    -webkit-animation-delay: 1.25s;
+    animation-delay: 1.25s;
+}
+
+.animate__animated.animate__1500ms {
+    -webkit-animation-delay: 1.5s;
+    animation-delay: 1.5s;
+}
+
+.animate__animated.animate__1750ms {
+    -webkit-animation-delay: 1.75s;
+    animation-delay: 1.75s;
+}
+
+.animate__animated.animate__2000ms {
+    -webkit-animation-delay: 2s;
+    animation-delay: 2s;
+}
+
+.animate__animated.animate__2500ms {
+    -webkit-animation-delay: 2.5s;
+    animation-delay: 2.5s;
+}
+
+.animate__animated.animate__duration_50ms {
+    --animate-duration: 0.05s;
+}
+
+.animate__animated.animate__duration_100ms {
+    --animate-duration: 0.1s;
+}
+
+.animate__animated.animate__duration_150ms {
+    --animate-duration: 0.15s;
+}
+
+.animate__animated.animate__duration_250ms {
+    --animate-duration: 0.25s;
+}
+
+.animate__animated.animate__duration_500ms {
+    --animate-duration: 0.5s;
+}
+
+.animate__animated.animate__duration_750ms {
+    --animate-duration: 0.75s;
+}
+
+.animate__animated.animate__duration_1000ms {
+    --animate-duration: 1s;
+}
+
+.animate__animated.animate__duration_1250ms {
+    --animate-duration: 1.25s;
+}
+
+.animate__animated.animate__duration_1500ms {
+    --animate-duration: 1.5s;
+}
+
+.animate__animated.animate__duration_1750ms {
+    --animate-duration: 1.75s;
+}
+
+.animate__animated.animate__duration_2000ms {
+    --animate-duration: 2s;
+}
+
+.animate__animated.animate__duration_2500ms {
+    --animate-duration: 2.5s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-delay: unset !important;
+        animation-duration: 0s !important;
+    }
+}

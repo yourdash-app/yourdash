@@ -1,0 +1,38 @@
+@mixin mobileMode {
+  @media (max-width: 840px) {
+    flex-direction: column-reverse;
+  }
+}
+
+.left {
+  flex-direction: row;
+  @include mobileMode;
+}
+
+.right {
+  flex-direction: row-reverse;
+  @include mobileMode;
+}
+
+.top {
+  flex-direction: column;
+  @include mobileMode;
+}
+
+.bottom {
+  flex-direction: column-reverse;
+  @include mobileMode;
+}
+
+.layout {
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
+.content {
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: 100%;
+  width: 100%;
+}

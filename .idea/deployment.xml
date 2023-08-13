@@ -5,14 +5,8 @@
       <paths name="EwsgitCloud">
         <serverdata>
           <mappings>
-            <mapping deploy="/yourdash" local="$PROJECT_DIR$" web="/" />
+            <mapping local="$PROJECT_DIR$" web="/" />
           </mappings>
-          <excludedPaths>
-            <excludedPath local="true" path="$PROJECT_DIR$/client/node_modules" />
-            <excludedPath local="true" path="$PROJECT_DIR$/node_modules" />
-            <excludedPath local="true" path="$PROJECT_DIR$/server/node_modules" />
-            <excludedPath local="true" path="$PROJECT_DIR$/server/fs" />
-          </excludedPaths>
         </serverdata>
       </paths>
     </serverData>

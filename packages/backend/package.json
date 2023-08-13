@@ -1,0 +1,41 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Ewsgit <ewsgit@duck.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@types/bcrypt": "^5.0.0",
+    "@types/express": "^4.17.17",
+    "@types/kill-port": "^2.0.0",
+    "@types/node": "^18.15.7",
+    "@types/sharp": "^0.31.1",
+    "@types/tsc-watch": "^4.2.0",
+    "bcrypt": "^5.1.0",
+    "chalk": "^5.2.0",
+    "chokidar": "^3.5.3",
+    "concurrently": "^7.6.0",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
+    "esm": "^3.2.25",
+    "execa": "^7.1.1",
+    "express": "^4.18.2",
+    "fkill": "^8.1.0",
+    "kill-port": "^2.0.1",
+    "minimist": "^1.2.8",
+    "nodemon": "^2.0.22",
+    "sharp": "^0.32.0",
+    "socket.io": "^4.6.1",
+    "tsc-watch": "^6.0.4",
+    "typescript": "^5.0.3",
+    "undici": "^5.21.2"
+  },
+  "type": "module",
+  "scripts": {
+    "compile": "tsc",
+    "compile-watch": "tsc --watch",
+    "start": "node ./src/index.js",
+    "dev": "node ./src/index.js --dev"
+  }
+}

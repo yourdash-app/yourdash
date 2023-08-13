@@ -1,0 +1,50 @@
+.component {
+  position: fixed;
+  z-index: 10000000;
+  overflow: hidden;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 200px;
+  margin: 0;
+  padding: 0.25rem;
+  color: rgb(var(--container-fg));
+  border: 1px solid rgb(var(--container-border));
+  border-radius: 0.5rem;
+  background-color: rgb(var(--container-bg));
+  box-shadow: 0 0 0.5rem #00000088;
+  gap: 0.15rem;
+
+  > button {
+    font-size: 0.95rem;
+    padding: 0.125rem 0.5rem;
+    cursor: pointer;
+    user-select: none;
+    transition: var(--transition);
+    text-align: start;
+    color: rgb(var(--button-fg));
+    border: none;
+    border-radius: 0.15rem;
+    background-color: rgb(var(--button-bg));
+
+    &:hover {
+      color: rgb(var(--button-hover-fg));
+      background-color: rgb(var(--button-hover-bg));
+      transition: var(--transition-fast);
+    }
+
+    &:active {
+      color: rgb(var(--button-active-fg));
+      background-color: rgb(var(--button-active-bg));
+    }
+
+    &:first-child {
+      border-top-left-radius: 0.25rem;
+      border-top-right-radius: 0.25rem;
+    }
+
+    &:last-child {
+      border-bottom-right-radius: 0.25rem;
+      border-bottom-left-radius: 0.25rem;
+    }
+  }
+}
