@@ -33,7 +33,7 @@ import express from "express";
 import { Server as SocketIoServer, Socket as SocketIoSocket } from "socket.io";
 import chalk from "chalk";
 import minimist from "minimist";
-import { YourDashSessionType } from "../../shared/core/session.js";
+import { YourDashSessionType } from "shared/core/session.js";
 import log, { logTypes, logHistory } from "./helpers/log.js";
 import YourDashUnreadUser from "./helpers/user.js";
 import globalDatabase from "./helpers/globalDatabase.js";
@@ -173,11 +173,11 @@ process.stdin.on( "data", data => {
   // const args = commandAndArgs.slice(1);
   
   switch ( command ) {
-    case "exit":
-      handleShutdown();
-      break;
-    default:
-      log( logTypes.error, `Unknown command: ${ command }` );
+  case "exit":
+    handleShutdown();
+    break;
+  default:
+    log( logTypes.error, `Unknown command: ${ command }` );
   }
 } );
 
@@ -187,22 +187,22 @@ app.get( "/test", ( _req, res ) => {
   const discoveryStatus: YourDashServerDiscoveryStatus = YourDashServerDiscoveryStatus.NORMAL as YourDashServerDiscoveryStatus;
   
   switch ( discoveryStatus ) {
-    case YourDashServerDiscoveryStatus.MAINTENANCE:
-      return res.json( {
-        status: YourDashServerDiscoveryStatus.MAINTENANCE,
-        type: "yourdash"
-      } );
-    case YourDashServerDiscoveryStatus.NORMAL:
-      return res.json( {
-        status: YourDashServerDiscoveryStatus.NORMAL,
-        type: "yourdash"
-      } );
-    default:
-      log( logTypes.error, "discovery status returned an invalid value" );
-      return res.json( {
-        status: YourDashServerDiscoveryStatus.MAINTENANCE,
-        type: "yourdash"
-      } );
+  case YourDashServerDiscoveryStatus.MAINTENANCE:
+    return res.json( {
+      status: YourDashServerDiscoveryStatus.MAINTENANCE,
+      type: "yourdash"
+    } );
+  case YourDashServerDiscoveryStatus.NORMAL:
+    return res.json( {
+      status: YourDashServerDiscoveryStatus.NORMAL,
+      type: "yourdash"
+    } );
+  default:
+    log( logTypes.error, "discovery status returned an invalid value" );
+    return res.json( {
+      status: YourDashServerDiscoveryStatus.MAINTENANCE,
+      type: "yourdash"
+    } );
   }
 } );
 

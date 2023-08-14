@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="ProjectStartupSharedConfiguration">
-    <configurations>
-      <configuration id="npm.compile server" name="compile server" />
-      <configuration id="npm.install" name="install" />
-    </configurations>
-  </component>
-</project>

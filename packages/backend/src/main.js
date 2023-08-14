@@ -6,7 +6,7 @@ import express from "express";
 import { Server as SocketIoServer } from "socket.io";
 import chalk from "chalk";
 import minimist from "minimist";
-import { YourDashSessionType } from "../../shared/core/session.js";
+import { YourDashSessionType } from "shared/core/session.js";
 import log, { logTypes, logHistory } from "./helpers/log.js";
 import YourDashUnreadUser from "./helpers/user.js";
 import globalDatabase from "./helpers/globalDatabase.js";

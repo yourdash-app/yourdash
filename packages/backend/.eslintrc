@@ -1,11 +1,6 @@
 {
   "parser": "@typescript-eslint/parser",
   "extends": [
-    "@jetbrains",
-    "@jetbrains/eslint-config/browser",
-    "@jetbrains/eslint-config/es6",
-    "@jetbrains/eslint-config/node",
-    "@jetbrains/eslint-config/react",
     "plugin:@typescript-eslint/recommended"
   ],
   "rules": {
@@ -39,7 +34,6 @@
       "warn",
       "double"
     ],
-    "indent": "warn",
     "@typescript-eslint/no-explicit-any": "off",
     "arrow-body-style": "off",
     "object-curly-spacing": [
@@ -59,6 +53,7 @@
       {
         "skipBlankLines": true
       }
-    ]
+    ],
+    "indent": ["warn", 2]
   }
 }
