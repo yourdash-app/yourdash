@@ -9,7 +9,7 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "visualize-bundle": "vite-bundle-visualizer",
-    "process-application-routes": "node ./meta/generateApplicationRoutes.js"
+    "generate-application-routes": "node toolchain/generateApplicationRoutes.js"
   },
   "dependencies": {
     "@floating-ui/react": "^0.25.1",
