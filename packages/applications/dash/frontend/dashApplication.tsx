@@ -21,9 +21,9 @@
  * SOFTWARE.
  */
 
-import React, { useEffect, useState } from "react";
-import csi from "../../../helpers/csi";
-import useTranslate from "../../../helpers/l10n";
+import * as React from "react";
+import csi from "web-client/src/helpers/csi";
+import useTranslate from "web-client/src/helpers/l10n";
 import loadable from "@loadable/component";
 
 const DashboardLayout = loadable( () => import( "./layouts/dashboard/DashboardLayout" ) );
@@ -31,14 +31,14 @@ const BrowserLayout = loadable( () => import( "./layouts/browser/BrowserLayout" 
 
 const DashApplication: React.FC = () => {
   const trans = useTranslate( "dash" );
-  const [userFullName, setUserFullName] = useState( {
+  const [userFullName, setUserFullName] = React.useState( {
     first: "",
     last: ""
   } );
-  const [userName, setUserName] = useState( "" );
-  const [layout, setLayout] = useState<"browser" | "dashboard">( "dashboard" );
+  const [userName, setUserName] = React.useState( "" );
+  const [layout, setLayout] = React.useState<"browser" | "dashboard">( "dashboard" );
   
-  useEffect( () => {
+  React.useEffect( () => {
     csi.getJson( "/app/dash/user-full-name", res => {
       setUserFullName( res );
     } );

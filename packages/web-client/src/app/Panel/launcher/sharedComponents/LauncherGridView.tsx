@@ -23,14 +23,12 @@
 
 import React from "react";
 
-import csi from "helpers/csi";
-
+import csi from "web-client/src/helpers/csi";
 import { useNavigate } from "react-router-dom";
-
-import clippy from "../../../../helpers/clippy";
+import clippy from "web-client/src/helpers/clippy";
 import { RightClickMenu } from "../../../../ui";
 import Panel, { YourDashLauncherApplication } from "../../Panel";
-import { useTranslateAppCoreUI } from "../../../../helpers/l10n";
+import { useTranslateAppCoreUI } from "web-client/src/helpers/l10n";
 
 
 export interface ILauncherGridView {

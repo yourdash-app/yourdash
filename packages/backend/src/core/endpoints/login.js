@@ -1,7 +1,7 @@
-import YourDashUnreadUser from "../../helpers/user.js";
-import log, { logTypes } from "../../helpers/log.js";
-import { compareHash } from "../../helpers/encryption.js";
-import { createSession } from "../../helpers/session.js";
+import YourDashUnreadUser from "backend/src/helpers/user.js";
+import log, { logTypes } from "backend/src/helpers/log.js";
+import { compareHash } from "backend/src/helpers/encryption.js";
+import { createSession } from "backend/src/helpers/session.js";
 import { YourDashSessionType } from "../../../../shared/core/session.js";
 import { __internalGetSessionsDoNotUseOutsideOfCore } from "../sessions.js";
 import path from "path";

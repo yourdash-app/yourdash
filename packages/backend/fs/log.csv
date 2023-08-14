@@ -1,14 +1,9 @@
 log_type,messages
 SUCCESS,Global database loaded
-INFO,CORE: Starting application: dash
-SUCCESS,CORE: Initialized application: dash
-INFO,CORE: Starting application: settings
-SUCCESS,CORE: Initialized application: settings
-INFO,CORE: Starting application: files
-SUCCESS,CORE: Initialized application: files
-INFO,CORE: Starting application: store
-SUCCESS,CORE: Initialized application: store
-INFO,CORE: Starting application: weather
-SUCCESS,CORE: Initialized application: weather
+ERROR,CORE: application dash does not contain an application.json file!
+ERROR,CORE: application settings does not contain an application.json file!
+ERROR,CORE: application files does not contain an application.json file!
+ERROR,CORE: application store does not contain an application.json file!
+ERROR,CORE: application weather does not contain an application.json file!
 INFO,CORE: -------------------- server now listening on port 3560! --------------------
 INFO,Shutting down... (restart of core should occur automatically)

@@ -22,9 +22,9 @@
  */
 
 import React, { useEffect, useState } from "react";
-import csi from "../../../helpers/csi";
-import { Card, Carousel, IconButton } from "../../../ui";
-import { YourDashIcon } from "../../../ui/components/icon/iconDictionary";
+import csi from "web-client/src/helpers/csi";
+import { Card, Carousel, IconButton } from "web-client/src/ui";
+import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
 
 const DashApplicationWelcome: React.FC = () => {
   const [userFullName, setUserFullName] = useState( {

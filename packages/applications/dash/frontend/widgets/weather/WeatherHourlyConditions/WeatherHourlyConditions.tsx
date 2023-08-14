@@ -22,12 +22,12 @@
  */
 
 import React, { useEffect, useState } from "react";
-import useTranslate from "../../../../../../helpers/l10n";
+import useTranslate from "../../../../backend/src/helpers/l10n";
 import { Card } from "../../../../../../ui";
-import csi from "../../../../../../helpers/csi";
+import csi from "../../../../backend/src/helpers/csi";
 import { getWeatherIconFromState } from "../../../../weather/location";
 import HourlyConditionsHour from "./HourlyConditionsHour";
-import { chunk } from "../../../../../../helpers/array";
+import { chunk } from "../../../../backend/src/helpers/array";
 
 const WeatherHourlyConditions: React.FC = () => {
   const trans = useTranslate( "weather" );

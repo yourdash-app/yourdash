@@ -23,13 +23,13 @@
 
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import clippy from "../../../../helpers/clippy";
-import csi from "../../../../helpers/csi";
+import clippy from "web-client/src/helpers/clippy";
+import csi from "web-client/src/helpers/csi";
 import { Icon, IconButton, Row, TextInput } from "../../../../ui";
 import { PanelPosition, YourDashLauncherApplication } from "../../Panel";
 import LauncherGridView from "../sharedComponents/LauncherGridView";
 import LauncherDateAndTime from "../sharedComponents/LauncherDateAndTime";
-import { useTranslateAppCoreUI } from "../../../../helpers/l10n";
+import { useTranslateAppCoreUI } from "web-client/src/helpers/l10n";
 import styles from "./PanelPopoutLauncher.module.scss";
 import { YourDashIcon } from "../../../../ui/components/icon/iconDictionary";
 

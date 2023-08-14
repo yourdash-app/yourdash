@@ -14,7 +14,7 @@ import {
 import DROPLET_ICON from "../../../../weather/weatherIcons/droplet.svg";
 import { Card } from "../../../../../../ui";
 import { getWeatherConditionFromState } from "../../../../weather/location";
-import useTranslate from "../../../../../../helpers/l10n";
+import useTranslate from "../../../../backend/src/helpers/l10n";
 
 export interface IHourlyConditionsHour {
   time: string,

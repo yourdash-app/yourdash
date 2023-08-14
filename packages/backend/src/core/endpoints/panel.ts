@@ -22,14 +22,14 @@
  */
 
 import { Application as ExpressApplication } from "express";
-import globalDatabase from "../../helpers/globalDatabase.js";
-import YourDashUnreadApplication from "../../helpers/applications.js";
-import { base64ToDataUrl } from "../../helpers/base64.js";
+import globalDatabase from "backend/src/helpers/globalDatabase.js";
+import YourDashUnreadApplication from "backend/src/helpers/applications.js";
+import { base64ToDataUrl } from "backend/src/helpers/base64.js";
 import sharp from "sharp";
 import path from "path";
 import { promises as fs, existsSync as fsExistsSync } from "fs";
-import YourDashUnreadUser from "../../helpers/user.js";
-import YourDashPanel from "../../helpers/panel.js";
+import YourDashUnreadUser from "backend/src/helpers/user.js";
+import YourDashPanel from "backend/src/helpers/panel.js";
 
 export default async function defineRoute( app: ExpressApplication ) {
   app.get( "/core/panel/applications", async ( _req, res ) => {
@@ -41,7 +41,7 @@ export default async function defineRoute( app: ExpressApplication ) {
         sharp(
           await fs.readFile( path.resolve(
             process.cwd(),
-            `./src/apps/${ app }/icon.avif`
+            `../applications/${ app }/icon.avif`
           ) )
         ).resize( 98, 98 ).toBuffer( ( err, buf ) => {
           if ( err ) {

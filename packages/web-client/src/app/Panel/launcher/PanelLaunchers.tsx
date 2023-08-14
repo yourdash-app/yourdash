@@ -22,7 +22,7 @@
  */
 
 import React, { useState } from "react";
-import clippy from "../../../helpers/clippy";
+import clippy from "web-client/src/helpers/clippy";
 import { IconButton } from "../../../ui";
 import { PanelPosition } from "../Panel";
 import PanelApplicationLauncherPopOut from "./popout/PanelPopoutLauncher";

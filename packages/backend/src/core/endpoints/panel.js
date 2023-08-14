@@ -1,18 +1,18 @@
-import globalDatabase from "../../helpers/globalDatabase.js";
-import YourDashUnreadApplication from "../../helpers/applications.js";
-import { base64ToDataUrl } from "../../helpers/base64.js";
+import globalDatabase from "backend/src/helpers/globalDatabase.js";
+import YourDashUnreadApplication from "backend/src/helpers/applications.js";
+import { base64ToDataUrl } from "backend/src/helpers/base64.js";
 import sharp from "sharp";
 import path from "path";
 import { promises as fs } from "fs";
-import YourDashUnreadUser from "../../helpers/user.js";
-import YourDashPanel from "../../helpers/panel.js";
+import YourDashUnreadUser from "backend/src/helpers/user.js";
+import YourDashPanel from "backend/src/helpers/panel.js";
 export default async function defineRoute(app) {
     app.get("/core/panel/applications", async (_req, res) => {
         res.set("Cache-Control", "no-store");
         Promise.all((globalDatabase.get("installed_applications")).map(async (app) => {
             const application = await new YourDashUnreadApplication(app).read();
             return new Promise(async (resolve) => {
-                sharp(await fs.readFile(path.resolve(process.cwd(), `./src/apps/${app}/icon.avif`))).resize(98, 98).toBuffer((err, buf) => {
+                sharp(await fs.readFile(path.resolve(process.cwd(), `../applications/${app}/icon.avif`))).resize(98, 98).toBuffer((err, buf) => {
                     if (err) {
                         resolve({ error: true });
                     }

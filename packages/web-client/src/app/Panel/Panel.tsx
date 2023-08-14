@@ -22,9 +22,9 @@
  */
 
 import React, { useEffect, useState } from "react";
-import csi from "../../helpers/csi";
+import csi from "web-client/src/helpers/csi";
 import { useNavigate } from "react-router-dom";
-import clippy from "../../helpers/clippy";
+import clippy from "web-client/src/helpers/clippy";
 import { IconButton, RightClickMenu } from "../../ui";
 import PanelApplicationLauncher from "./launcher/PanelLaunchers";
 import PanelDesktopIndicator from "./psa/PanelDesktopIndicator";

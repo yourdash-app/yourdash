@@ -22,16 +22,13 @@
  */
 
 import React, { useEffect, useState } from "react";
-
 import { useNavigate } from "react-router-dom";
-
-import clippy from "../../../../helpers/clippy";
-import csi from "../../../../helpers/csi";
+import clippy from "web-client/src/helpers/clippy";
+import csi from "web-client/src/helpers/csi";
 import { PanelPosition, YourDashLauncherApplication } from "../../Panel";
 import LauncherGridView from "../sharedComponents/LauncherGridView";
 import LauncherDateAndTime from "../sharedComponents/LauncherDateAndTime";
 import { IconButton, Row } from "../../../../ui";
-import db from "../../../../helpers/database";
 import { YourDashIcon } from "../../../../ui/components/icon/iconDictionary";
 
 const PanelApplicationLauncherSlideOut: React.FC<{

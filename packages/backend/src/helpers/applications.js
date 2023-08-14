@@ -24,14 +24,14 @@ class YourDashApplication {
     }
     getIcon() {
         try {
-            return fs.readFile(path.resolve(process.cwd(), `./src/apps/${this.name}/icon.avif`));
+            return fs.readFile(path.resolve(process.cwd(), `../applications/${this.name}/icon.avif`));
         }
         catch (_e) {
             return fs.readFile(path.resolve(process.cwd(), "./src/assets/placeholder_application_icon.png"));
         }
     }
     getIconPath() {
-        return path.resolve(process.cwd(), `./src/apps/${this.name}/icon.avif`);
+        return path.resolve(process.cwd(), `../applications/${this.name}/icon.avif`);
     }
     getStoreBackground() {
         try {
@@ -53,7 +53,7 @@ class YourDashApplication {
         return this.application.category;
     }
     getPath() {
-        return path.resolve(process.cwd(), `./src/apps/${this.name}/`);
+        return path.resolve(process.cwd(), `../applications/${this.name}/`);
     }
     getRawApplicationData() {
         return this.application;
@@ -61,10 +61,10 @@ class YourDashApplication {
 }
 export async function getAllApplications() {
     try {
-        return await fs.readdir(path.resolve(process.cwd(), "./src/apps/"));
+        return await fs.readdir(path.resolve(process.cwd(), "../applications/"));
     }
     catch (_err) {
-        log(logTypes.error, "A problem occurred reading the ./src/apps/ directory");
+        log(logTypes.error, "A problem occurred reading the ../applications/ directory");
         return [];
     }
 }
@@ -76,7 +76,7 @@ export default class YourDashUnreadApplication {
     }
     async read() {
         try {
-            return new YourDashApplication(JSON.parse((await fs.readFile(path.resolve(process.cwd(), `./src/apps/${this.name}/application.json`))).toString() ||
+            return new YourDashApplication(JSON.parse((await fs.readFile(path.resolve(process.cwd(), `../applications/${this.name}/application.json`))).toString() ||
                 "{}"));
         }
         catch (_err) {
@@ -85,7 +85,7 @@ export default class YourDashUnreadApplication {
     }
     async exists() {
         try {
-            await fs.readFile(path.resolve(process.cwd(), `./src/apps/${this.name}/application.json`));
+            await fs.readFile(path.resolve(process.cwd(), `../applications/${this.name}/application.json`));
             return true;
         }
         catch (_err) {
@@ -93,7 +93,7 @@ export default class YourDashUnreadApplication {
         }
     }
     getPath() {
-        return path.resolve(process.cwd(), `./src/apps/${this.name}/`);
+        return path.resolve(process.cwd(), `../applications/${this.name}/`);
     }
 }
 //# sourceMappingURL=applications.js.map

@@ -1,5 +1,14 @@
-import { promises as fs } from "fs";
+import { existsSync, promises as fs } from "fs";
 import path from "path";
+
+/*
+*
+* ! NOTICE !
+*
+* THIS FILE HAS BEEN MODIFIED TO ALLOW FOR APPLICATIONS WITHOUT FRONTENDS
+* HOWEVER, THIS HAS NOT BEEN TESTED.
+*
+* */
 
 let fileTemplate =
   `/**
@@ -25,16 +34,21 @@ export default AppRouter
 
 let applicationsPathNames = await fs.readdir( path.resolve( process.cwd(), "../applications/" ) );
 
-applicationsPathNames = applicationsPathNames.filter( name => name.indexOf( "." ) === -1 )
+applicationsPathNames = applicationsPathNames.filter( name => name.indexOf( "." ) === -1 );
 
 let loadableRegionReplacement = "";
 let routeRegionReplacement = "";
-applicationsPathNames.forEach( ( app, ind ) => {
-  loadableRegionReplacement += `const Application${ind} = loadable( () => import( "applications/${app}/frontend/index" ) );\n`;
-  if ( ind === 0 ) {
-    routeRegionReplacement += `<Route path={"${applicationsPathNames[ind]}/*"} element={<Application${ind}/>}/>`;
-  } else {
-    routeRegionReplacement += `\n      <Route path={"${applicationsPathNames[ind]}/*"} element={<Application${ind}/>}/>`;
+
+let applicationHasLoaded = false;
+applicationsPathNames.forEach( ( appName, ind ) => {
+  if ( existsSync( path.resolve( process.cwd(), `../applications/${appName}/frontend/index.tsx` ) ) ) {
+    loadableRegionReplacement += `const Application${ind} = loadable( () => import( "applications/${appName}/frontend/index" ) );\n`;
+    if ( applicationHasLoaded ) {
+      routeRegionReplacement += `<Route path={"${applicationsPathNames[ind]}/*"} element={<Application${ind}/>}/>`;
+    } else {
+      routeRegionReplacement += `\n      <Route path={"${applicationsPathNames[ind]}/*"} element={<Application${ind}/>}/>`;
+    }
+    applicationHasLoaded = true;
   }
 } );
 
