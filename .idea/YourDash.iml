@@ -10,6 +10,7 @@
       <excludeFolder url="file://$MODULE_DIR$/server/node_modules" />
       <excludeFolder url="file://$MODULE_DIR$/backup/client/node_modules" />
       <excludeFolder url="file://$MODULE_DIR$/backup/electron/node_modules" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/application-generator" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

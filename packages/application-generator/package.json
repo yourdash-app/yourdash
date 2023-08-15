@@ -1,0 +1,13 @@
+{
+  "name": "generator-create-yourdash-app",
+  "version": "0.1.0",
+  "description": "A utility to create a YourDash application",
+  "main": "index.js",
+  "repository": "https://github.com/yourdash-app/yourdash",
+  "author": "ewsgit",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "yeoman-generator": "^5.9.0"
+  }
+}

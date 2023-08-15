@@ -58,51 +58,51 @@ const OPEN_METEO_INSTANCE = "open-meteo.com";
 
 function parseWeatherCodes( code: number ): weatherStates {
   switch ( code ) {
-    case 0:
-    case 1:
-      return weatherStates.clear;
-    case 2:
-      return weatherStates.partlyCloudy;
-    case 3:
-      return weatherStates.cloudy;
-    case 45:
-    case 48:
-      return weatherStates.fog;
-    case 51:
-    case 53:
-    case 55:
-    case 56:
-    case 61:
-    case 66:
-      return weatherStates.lightRain;
-    case 63:
-    case 57:
-      return weatherStates.rain;
-    case 64:
-    case 67:
-    case 65:
-      return weatherStates.heavyRain;
-    case 71:
-      return weatherStates.lightSnow;
-    case 75:
-      return weatherStates.heavySnow;
-    case 73:
-    case 77:
-    case 85:
-    case 86:
-      return weatherStates.snow;
-    case 80:
-      return weatherStates.lightRainShowers;
-    case 81:
-      return weatherStates.rainShowers;
-    case 82:
-      return weatherStates.heavyRainShowers;
-    case 95:
-    case 96:
-    case 99:
-      return weatherStates.thunder;
-    default:
-      return 0;
+  case 0:
+  case 1:
+    return weatherStates.clear;
+  case 2:
+    return weatherStates.partlyCloudy;
+  case 3:
+    return weatherStates.cloudy;
+  case 45:
+  case 48:
+    return weatherStates.fog;
+  case 51:
+  case 53:
+  case 55:
+  case 56:
+  case 61:
+  case 66:
+    return weatherStates.lightRain;
+  case 63:
+  case 57:
+    return weatherStates.rain;
+  case 64:
+  case 67:
+  case 65:
+    return weatherStates.heavyRain;
+  case 71:
+    return weatherStates.lightSnow;
+  case 75:
+    return weatherStates.heavySnow;
+  case 73:
+  case 77:
+  case 85:
+  case 86:
+    return weatherStates.snow;
+  case 80:
+    return weatherStates.lightRainShowers;
+  case 81:
+    return weatherStates.rainShowers;
+  case 82:
+    return weatherStates.heavyRainShowers;
+  case 95:
+  case 96:
+  case 99:
+    return weatherStates.thunder;
+  default:
+    return 0;
   }
 }
 
@@ -333,41 +333,41 @@ const main: YourDashApplicationServerPlugin = ( { app } ) => {
     const { location } = req.params;
     
     fetch( `https://geocoding-api.${ OPEN_METEO_INSTANCE }/v1/search?name=${ location }&language=en&count=5&format=json` )
-    .then( async resp => {
-      const locationData: {
+      .then( async resp => {
+        const locationData: {
         latitude: number,
         longitude: number
       } = ( await resp.json() as any ).results as any;
       
-      const {
-        latitude,
-        longitude
-      } = {
-        latitude: locationData[ 0 ]?.latitude || 51.5085,
-        longitude: locationData[ 0 ]?.longitude || -0.1257
-      };
+        const {
+          latitude,
+          longitude
+        } = {
+          latitude: locationData[ 0 ]?.latitude || 51.5085,
+          longitude: locationData[ 0 ]?.longitude || -0.1257
+        };
       
-      // FIXME: we need to use parseWeatherCodes() before sending to the client
-      //        this causes the client to show "unknown" as the weatherCondition
-      //        and a missing icon error will occur as we only support a limited
-      //        range of weather types
+        // FIXME: we need to use parseWeatherCodes() before sending to the client
+        //        this causes the client to show "unknown" as the weatherCondition
+        //        and a missing icon error will occur as we only support a limited
+        //        range of weather types
       
-      fetch( `https://api.${ OPEN_METEO_INSTANCE }/v1/forecast?latitude=${ latitude }&longitude=${ longitude }&hourly=temperature_2m,apparent_temperature,precipitation_probability,weathercode&current_weather=true&forecast_days=1` )
-      .then( data => data.json() ).then( weatherData => {
-        return res.json( {
-          data: weatherData,
-          location: locationData[ 0 ]
-        } );
+        fetch( `https://api.${ OPEN_METEO_INSTANCE }/v1/forecast?latitude=${ latitude }&longitude=${ longitude }&hourly=temperature_2m,apparent_temperature,precipitation_probability,weathercode&current_weather=true&forecast_days=1` )
+          .then( data => data.json() ).then( weatherData => {
+            return res.json( {
+              data: weatherData,
+              location: locationData[ 0 ]
+            } );
+          } )
+          .catch( _err => {
+            log( logTypes.error, "Unable to fetch weather data for location: ", { locationData } );
+            return res.json( { error: true } );
+          } );
       } )
       .catch( _err => {
-        log( logTypes.error, "Unable to fetch weather data for location: ", { locationData } );
+        log( logTypes.error, "Unable to fetch weather data for location: ", { location } );
         return res.json( { error: true } );
       } );
-    } )
-    .catch( _err => {
-      log( logTypes.error, "Unable to fetch weather data for location: ", { location } );
-      return res.json( { error: true } );
-    } );
   } );
 };
 
