@@ -35,12 +35,17 @@ const main = ({ app, io }) => {
     app.get("/app/store/applications", async (req, res) => {
         const { username } = req.headers;
         const applications = await getAllApplications();
-        return res.json(await Promise.all(applications.map(async (application) => {
-            const app = await new YourDashUnreadApplication(application).read();
+        return res.json(await Promise.all(applications.map(async (applicationName) => {
+            const unreadApplication = new YourDashUnreadApplication(applicationName);
+            if (!(await unreadApplication.exists())) {
+                return { id: applicationName };
+            }
+            const app = await unreadApplication.read();
+            console.log(process.cwd());
             return {
-                id: application,
-                displayName: app.getDisplayName(),
-                icon: authenticatedImage(username, authenticatedImageType.file, app.getIconPath())
+                id: applicationName,
+                displayName: app.getDisplayName() || applicationName,
+                icon: authenticatedImage(username, authenticatedImageType.file, app.getIconPath()) || authenticatedImage(username, authenticatedImageType.file, path.join(process.cwd(), ""))
             };
         })));
     });

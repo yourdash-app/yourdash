@@ -83,13 +83,21 @@ const main: YourDashApplicationServerPlugin = ( {
     
     return res.json(
       await Promise.all(
-        applications.map( async application => {
-          const app = await new YourDashUnreadApplication( application ).read();
+        applications.map( async applicationName => {
+          const unreadApplication = new YourDashUnreadApplication(applicationName)
+          
+          if ( !( await unreadApplication.exists() ) ) {
+            return { id: applicationName};
+          }
+          
+          const app = await unreadApplication.read();
+          
+          console.log(process.cwd())
           
           return {
-            id: application,
-            displayName: app.getDisplayName(),
-            icon: authenticatedImage( username, authenticatedImageType.file, app.getIconPath() )
+            id: applicationName,
+            displayName: app.getDisplayName() || applicationName,
+            icon: authenticatedImage( username, authenticatedImageType.file, app.getIconPath() ) || authenticatedImage(username, authenticatedImageType.file,  path.join(process.cwd(), ""))
           };
         } )
       )

@@ -37,7 +37,8 @@ export function loadApplication(appName, app, io) {
             }
             mod.default({
                 app,
-                io
+                io,
+                pluginFilesystemPath: path.resolve(path.join(process.cwd(), `../applications/${appName}`))
             });
             log(logTypes.success, `${chalk.yellow.bold("CORE")}: Initialized application: ${appName}`);
             return 1;

@@ -1,19 +1,19 @@
-import clippy from "helpers/clippy";
-import React, {useState, FocusEventHandler} from "react";
+import clippy from "web-client/src/helpers/clippy";
+import React, { useState, FocusEventHandler } from "react";
 
 export interface ITextInput {
-  onChange: (text: string) => void;
+  onChange: ( text: string ) => void;
   onBlur?: FocusEventHandler<HTMLInputElement>;
   label?: string;
   mustMatchRegex?: RegExp;
   placeholder?: string;
   className?: string;
   // @ts-ignore
-  onKeyDown?: (e: KeyboardEvent<HTMLInputElement>) => void,
+  onKeyDown?: ( e: KeyboardEvent<HTMLInputElement> ) => void,
   defaultValue?: string
 }
 
-const TextInput: React.FC<ITextInput> = ({
+const TextInput: React.FC<ITextInput> = ( {
   onChange,
   onBlur,
   label,
@@ -22,14 +22,14 @@ const TextInput: React.FC<ITextInput> = ({
   className,
   onKeyDown,
   defaultValue
-}) => {
-  const [valid, setValid] = useState(!mustMatchRegex);
+} ) => {
+  const [valid, setValid] = useState( !mustMatchRegex );
 
   return (
-    <div className={clippy("relative transition-all", className)}>
+    <div className={clippy( "relative transition-all", className )}>
       <span
-        className={clippy("pl-2 pr-2 bg-base-700 absolute -top-1 left-2.5 text-sm z-10 [line-height:.65rem]" +
-                           " select-none text-base-400")}
+        className={clippy( "pl-2 pr-2 bg-base-700 absolute -top-1 left-2.5 text-sm z-10 [line-height:.65rem]" +
+                           " select-none text-base-400" )}
       >
         {label}
       </span>
@@ -45,18 +45,18 @@ const TextInput: React.FC<ITextInput> = ({
         type={"text"}
         onBlur={onBlur}
         defaultValue={defaultValue}
-        onKeyDown={e => onKeyDown?.(e)}
+        onKeyDown={e => onKeyDown?.( e )}
         onChange={e => {
           const value = e.currentTarget.value;
-          onChange(value);
+          onChange( value );
           if (
             !mustMatchRegex ||
-            (value.match(mustMatchRegex) !== null &&
-             value.match(mustMatchRegex)?.length === 1)
+            ( value.match( mustMatchRegex ) !== null &&
+             value.match( mustMatchRegex )?.length === 1 )
           ) {
-            setValid(true);
+            setValid( true );
           } else {
-            setValid(false);
+            setValid( false );
           }
         }}
       />

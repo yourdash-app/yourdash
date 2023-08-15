@@ -23,7 +23,7 @@
 
 /** @type {import("tailwindcss").Config} */
 module.exports = {
-  content: ["./src/**/*.tsx", "./src/**/*.ts"],
+  content: ["./src/**/*.tsx", "./src/**/*.ts", "../applications/**/frontend/**/*.ts", "../applications/**/frontend/**/*.tsx"],
   theme: {
     extend: {
       screens: {

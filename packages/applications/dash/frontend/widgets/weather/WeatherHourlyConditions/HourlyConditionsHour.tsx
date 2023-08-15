@@ -11,10 +11,10 @@ import {
   useInteractions,
   autoPlacement
 } from "@floating-ui/react";
-import DROPLET_ICON from "../../../../weather/weatherIcons/droplet.svg";
-import { Card } from "../../../../../../ui";
-import { getWeatherConditionFromState } from "../../../../weather/location";
-import useTranslate from "../../../../backend/src/helpers/l10n";
+import DROPLET_ICON from "applications/weather/frontend/weatherIcons/droplet.svg";
+import { Card } from "web-client/src/ui";
+import { getWeatherConditionFromState } from "applications/weather/frontend/location";
+import useTranslate from "web-client/src/helpers/l10n";
 
 export interface IHourlyConditionsHour {
   time: string,

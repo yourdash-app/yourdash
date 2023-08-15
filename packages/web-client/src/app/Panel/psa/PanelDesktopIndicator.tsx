@@ -24,7 +24,7 @@
 import React, { useState, useEffect } from "react";
 import { IconButton } from "../../../ui";
 import { PanelPosition } from "../Panel";
-import clippy from "helpers/clippy";
+import clippy from "web-client/src/helpers/clippy";
 import { YourDashIcon } from "../../../ui/components/icon/iconDictionary";
 
 const PanelDesktopIndicator: React.FC<{ side: PanelPosition }> = ( { side } ) => {

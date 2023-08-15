@@ -3,13 +3,17 @@ import log, { logTypes } from "backend/src/helpers/log.js";
 export default async function getAllCategories() {
     const applications = await getAllApplications();
     const categories = {};
-    for (const application of applications) {
-        const app = await new YourDashUnreadApplication(application).read();
+    for (const applicationName of applications) {
+        const unreadApplication = new YourDashUnreadApplication(applicationName);
+        if (!(await unreadApplication.exists())) {
+            continue;
+        }
+        const app = await unreadApplication.read();
         try {
             categories[app.getCategory()] = true;
         }
         catch (_err) {
-            log(logTypes.error, `application: ${app.getName()} doesn't have a category defined`);
+            log(logTypes.error, `application: ${app?.getName() || applicationName} doesn't have a category defined`);
         }
     }
     return Object.keys(categories);

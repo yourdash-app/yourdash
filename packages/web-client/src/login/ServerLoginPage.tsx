@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 
-import clippy from "helpers/clippy";
+import clippy from "web-client/src/helpers/clippy";
 import React, { useEffect, useState } from "react";
 import csi from "../helpers/csi";
 import { Card, Column, Dialog, IconButton, MajorButton, TextInput } from "../ui";

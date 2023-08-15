@@ -41,7 +41,7 @@ export default function log(type, ...message) {
                 : type === logTypes.error
                     ? "ERROR"
                     : type === logTypes.success ? "SUCCESS" : "UNKNOWN"),
-        message: logParams.slice(1).map(msg => msg.replace(/\x1b\[[0-9;]*m/g, ""))
+        message: logParams.slice(1).map(msg => msg?.replace?.(/\x1b\[[0-9;]*m/g, "") || "LOGGING ERROR")
     });
     console.log(...logParams);
 }

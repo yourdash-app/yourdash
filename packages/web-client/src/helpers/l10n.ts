@@ -29,8 +29,8 @@ window.setTranslateLanguage = ( language: string ) => {
   window.translateLang = language;
 };
 
-interface Itranslation {
-  [ key: string ]: string | Itranslation;
+interface ITranslation {
+  [ key: string ]: string | ITranslation;
 }
 
 function getValue( obj: any, selector: string ): any {
@@ -49,12 +49,12 @@ function getValue( obj: any, selector: string ): any {
 }
 
 export default function useTranslate( application: string ) {
-  const [messages, setMessages] = useState<Itranslation | undefined>( undefined );
+  const [messages, setMessages] = useState<ITranslation | undefined>( undefined );
   
   useEffect( () => {
     // @ts-ignore
     const langauge = window.translateLang || navigator.language;
-    import( `../app/apps/${ application }/i10n/${ langauge }.json` ).then( response => setMessages( response.default ) ).catch( () => {
+    import( `applications/${ application }/frontend/i10n/${ langauge }.json` ).then( response => setMessages( response.default ) ).catch( () => {
       // eslint-disable-next-line no-alert
       alert( `This page is currently missing translation into your language (${ langauge })` );
     } );
@@ -70,7 +70,7 @@ export default function useTranslate( application: string ) {
 }
 
 export function useTranslateAppCoreUI() {
-  const [messages, setMessages] = useState<Itranslation | undefined>( undefined );
+  const [messages, setMessages] = useState<ITranslation | undefined>( undefined );
   
   useEffect( () => {
     // @ts-ignore
@@ -92,7 +92,7 @@ export function useTranslateAppCoreUI() {
 
 
 export function useTranslateHomePage( page: string ) {
-  const [messages, setMessages] = useState<Itranslation | undefined>( undefined );
+  const [messages, setMessages] = useState<ITranslation | undefined>( undefined );
   
   useEffect( () => {
     // @ts-ignore

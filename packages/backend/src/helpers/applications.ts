@@ -154,10 +154,12 @@ export default class YourDashUnreadApplication {
 
 type YourDashApplicationServerPlugin = ( {
   app,
-  io
+  io,
+  pluginFilesystemPath
 }: {
   app: ExpressApplication,
-  io: SocketServer
+  io: SocketServer,
+  pluginFilesystemPath: string
 } ) => any;
 
 export { type YourDashApplicationServerPlugin };

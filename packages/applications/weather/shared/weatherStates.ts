@@ -21,25 +21,21 @@
  * SOFTWARE.
  */
 
-import { promises as fs } from "fs";
-import path from "path";
-import { fetch } from "undici";
-import { type weatherForecast } from "shared/apps/weather/forecast.js";
-import { weatherStates } from "shared/apps/weather/weatherStates.js";
-import YourDashUser from "backend/src/helpers/user.js";
-import { type YourDashApplicationServerPlugin } from "backend/src/helpers/applications.js";
-import log, { logTypes } from "backend/src/helpers/log.js";
+enum weatherStates {
+  clear,
+  partlyCloudy,
+  cloudy,
+  fog,
+  lightRain,
+  rain,
+  heavyRain,
+  lightSnow,
+  snow,
+  heavySnow,
+  lightRainShowers,
+  rainShowers,
+  heavyRainShowers,
+  thunder,
+}
 
-const OPEN_METEO_INSTANCE_URL = "open-meteo.com";
-
-const main: YourDashApplicationServerPlugin = ( { app } ) => {
-  const weatherForecastCache: {
-    [ key: string ]: {
-      cacheTime: Date;
-      data: any
-    }
-  } = {};
-  
-};
-
-export default main;
+export { weatherStates }
