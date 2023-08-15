@@ -1,6 +1,10 @@
-const OPEN_METEO_INSTANCE_URL = "open-meteo.com";
+import getLocationAutocompleteSuggestions from "./locationAutocompleteSuggestions.js";
+export const weatherForecastCache = {};
 const main = ({ app }) => {
-    const weatherForecastCache = {};
+    app.get("/app/weather/geolocation/:locationName", async (req, res) => {
+        const locationName = req.params.locationName;
+        return res.json(await getLocationAutocompleteSuggestions(locationName, 8));
+    });
 };
 export default main;
 //# sourceMappingURL=index.js.map

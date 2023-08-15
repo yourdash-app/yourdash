@@ -21,21 +21,21 @@
  * SOFTWARE.
  */
 
-enum weatherStates {
-  clear,
-  partlyCloudy,
-  cloudy,
-  fog,
-  lightRain,
-  rain,
-  heavyRain,
-  lightSnow,
-  snow,
-  heavySnow,
-  lightRainShowers,
-  rainShowers,
-  heavyRainShowers,
-  thunder,
+enum WEATHER_STATES {
+  CLEAR,
+  PARTLY_CLOUDY,
+  CLOUDY,
+  FOG,
+  LIGHT_RAIN,
+  RAIN,
+  HEAVY_RAIN,
+  LIGHT_SNOW,
+  SNOW,
+  HEAVY_SNOW,
+  LIGHT_RAIN_SHOWERS,
+  RAIN_SHOWERS,
+  HEAVY_RAIN_SHOWERS,
+  THUNDER
 }
 
-export { weatherStates }
+export { WEATHER_STATES }

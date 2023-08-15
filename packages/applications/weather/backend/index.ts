@@ -21,25 +21,17 @@
  * SOFTWARE.
  */
 
-import { promises as fs } from "fs";
-import path from "path";
-import { fetch } from "undici";
-import { type weatherForecast } from "shared/apps/weather/forecast.js";
-import { weatherStates } from "shared/apps/weather/weatherStates.js";
-import YourDashUser from "backend/src/helpers/user.js";
 import { type YourDashApplicationServerPlugin } from "backend/src/helpers/applications.js";
-import log, { logTypes } from "backend/src/helpers/log.js";
+import getLocationAutocompleteSuggestions from "./locationAutocompleteSuggestions.js";
 
-const OPEN_METEO_INSTANCE_URL = "open-meteo.com";
+export const weatherForecastCache: { [ key: string ]: { cacheTime: Date; data: any } } = {};
 
 const main: YourDashApplicationServerPlugin = ( { app } ) => {
-  const weatherForecastCache: {
-    [ key: string ]: {
-      cacheTime: Date;
-      data: any
-    }
-  } = {};
-  
+  app.get( "/app/weather/geolocation/:locationName", async ( req, res ) => {
+    const locationName = req.params.locationName;
+    
+    return res.json( await getLocationAutocompleteSuggestions( locationName, 8 ) )
+  } )
 };
 
 export default main;

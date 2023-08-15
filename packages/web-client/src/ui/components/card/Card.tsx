@@ -48,8 +48,8 @@ const Card: React.FC<ICard> = ( {
 } ) => {
   if ( onClick ) {
     return (
-      <div /* eslint-disable-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events */
-        tabIndex={0} /* eslint-disable-line jsx-a11y/no-noninteractive-tabindex */
+      <div
+        tabIndex={0}
         // @ts-ignore
         style={{ ...style }}
         onClick={onClick}
