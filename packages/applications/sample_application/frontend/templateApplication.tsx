@@ -21,14 +21,19 @@
  * SOFTWARE.
  */
 
-interface ILocationAutocompleteSuggestion {
-  address: {
-    name?: string;
-    admin1?: string;
-    country?: string;
-  },
-  latitude: string,
-  longitude: string
-}
+import * as React from "react";
+import csi from "web-client/src/helpers/csi";
+import useTranslate from "web-client/src/helpers/l10n";
+import loadable from "@loadable/component";
 
-export { type ILocationAutocompleteSuggestion }
+const TemplateApplication: React.FC = () => {
+  const trans = useTranslate( "template_application" );
+
+  return (
+    <div>
+      {trans("LOCALIZED_GREETING")}
+    </div>
+  );
+};
+
+export default TemplateApplication;

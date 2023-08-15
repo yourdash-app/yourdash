@@ -21,14 +21,27 @@
  * SOFTWARE.
  */
 
-interface ILocationAutocompleteSuggestion {
-  address: {
-    name?: string;
-    admin1?: string;
-    country?: string;
+import { WEATHER_STATES } from "./weatherStates";
+
+interface IWeatherDataForLocationId {
+  location: {
+    name: string,
+    admin1?: string,
+    country?: string,
   },
-  latitude: string,
-  longitude: string
+  currentCondition: {
+    temperature: number,
+    weatherState: WEATHER_STATES,
+    weatherCode: number,
+    windSpeed: number,
+    windDirection: number,
+    windGust: number,
+  },
+  days: {
+    date: number,
+    weatherState: WEATHER_STATES,
+    
+  }[]
 }
 
-export { type ILocationAutocompleteSuggestion }
+export { type IWeatherDataForLocationId }

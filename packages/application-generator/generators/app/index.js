@@ -21,14 +21,33 @@
  * SOFTWARE.
  */
 
-interface ILocationAutocompleteSuggestion {
-  address: {
-    name?: string;
-    admin1?: string;
-    country?: string;
-  },
-  latitude: string,
-  longitude: string
-}
+const Generator = require( "yeoman-generator" );
 
-export { type ILocationAutocompleteSuggestion }
+module.exports = class extends Generator {
+  constructor( args, opts ) {
+    super( args, opts );
+
+    this.log("WARNING! REMEMBER TO ONLY RUN THIS GENERATOR WHILE INSIDE OF THE `packages/applications` DIRECTORY!!!")
+
+    return
+  }
+
+  prompting() {
+    return this.prompt( [{
+      type: "input",
+      name: "applicationName",
+      message: "Your directory name",
+      default: "my_yourdash_application" // Default directory name
+    }] ).then( ( answers ) => {
+      this.directoryName = answers.applicationName;
+    } );
+  }
+
+  writing() {
+    this.fs.copyTpl(
+      this.templatePath( "template_application" ),
+      this.destinationPath( this.directoryName ),
+      { title: 'Copying template' }
+    );
+  }
+};

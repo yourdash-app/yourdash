@@ -19,8 +19,8 @@
     "experimentalDecorators": true
   },
   "include": [
-    "./src/**/*.ts",
-    "./../shared/**/*.ts",
-    "./../applications/**/backend/**/*.ts"
+    "src/**/*.ts",
+    "../shared/**/*.ts",
+    "../applications/**/backend/**/*.ts"
   ]
 }

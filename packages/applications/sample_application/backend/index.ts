@@ -21,14 +21,10 @@
  * SOFTWARE.
  */
 
-interface ILocationAutocompleteSuggestion {
-  address: {
-    name?: string;
-    admin1?: string;
-    country?: string;
-  },
-  latitude: string,
-  longitude: string
-}
+import {type YourDashApplicationServerPlugin} from 'backend/src/helpers/applications.js';
 
-export { type ILocationAutocompleteSuggestion }
+const main: YourDashApplicationServerPlugin = ({ app, io }) => {
+
+};
+
+export default main;
