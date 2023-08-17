@@ -24,33 +24,38 @@
 // WORK IN PROGRESS APPLICATION https://open-meteo.com/en/docs#***REMOVED***&hourly=temperature_2m,precipitation_probability,weathercode,cloudcover,windspeed_80m&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max,rain_sum,precipitation_hours,windspeed_10m_max,windgusts_10m_max&current_weather=true&windspeed_unit=mph&timezone=Europe%2FLondon
 
 import { type YourDashApplicationServerPlugin } from "backend/src/helpers/applications.js";
-import getLocationAutocompleteSuggestions from "./locationAutocompleteSuggestions.js";
-import getWeatherDataForLocationId from "./getWeatherDataForLocationId.js";
+import getLocationAutocompleteSuggestions from "./helpers/locationAutocompleteSuggestions.js";
+import getWeatherDataForLocationId from "./helpers/getWeatherDataForLocationId.js";
 
-export const weatherForecastCache: { [ key: string ]: { cacheTime: number; data: any } } = {};
+export const weatherForecastCache: {
+  [ key: string ]: {
+    cacheTime: number;
+    data: any
+  }
+} = {};
 
 const main: YourDashApplicationServerPlugin = ( { app } ) => {
   app.get( "/app/weather/geolocation/:locationName", async ( req, res ) => {
     const locationName = req.params.locationName;
     
-    return res.json( await getLocationAutocompleteSuggestions( locationName, 8 ) )
-  } )
+    return res.json( await getLocationAutocompleteSuggestions( locationName, 8 ) );
+  } );
   
-  app.get( "/app/weather/for/:latitude/:longitude", async ( req, res ) => {
-    const { latitude, longitude } = req.params;
+  app.get( "/app/weather/location/:id", async ( req, res ) => {
+    const { id } = req.params;
     
-    if ( weatherForecastCache[ latitude + ":" + longitude ] ) {
-      const currentTime = Math.floor( new Date().getTime() / 1000 )
+    if ( weatherForecastCache[ id ] ) {
+      const currentTime = Math.floor( new Date().getTime() / 1000 );
       
-      if ( currentTime !> weatherForecastCache[latitude + ":" + longitude].cacheTime + 1_800_000 /* 30 minutes */ ) {
-        return res.json( weatherForecastCache[latitude + ":" + longitude].data );
+      if ( currentTime > weatherForecastCache[ id ].cacheTime + 1_800_000 /* 30 minutes */ ) {
+        return res.json( weatherForecastCache[ id ].data );
       }
       
-      delete weatherForecastCache[ latitude + ":" + longitude ];
+      delete weatherForecastCache[ id ];
     }
     
-    return res.json( await getWeatherDataForLocationId( latitude, longitude ) );
-  } )
+    return res.json( await getWeatherDataForLocationId( id ) );
+  } );
 };
 
 export default main;

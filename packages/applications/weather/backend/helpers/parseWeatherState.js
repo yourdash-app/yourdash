@@ -1,4 +1,4 @@
-import { WEATHER_STATES } from "../shared/weatherStates.js";
+import { WEATHER_STATES } from "../../shared/weatherStates.js";
 export default function parseWeatherCodes(code) {
     switch (code) {
         case 0:

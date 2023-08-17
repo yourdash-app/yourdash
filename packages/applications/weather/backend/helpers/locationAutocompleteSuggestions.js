@@ -14,7 +14,9 @@ export default async function getLocationAutocompleteSuggestions(input, suggesti
                     name: result.name,
                     admin1: result.admin1,
                     country: result.country
-                }
+                },
+                latitude: result.latitude,
+                longitude: result.longitude
             };
         });
     }

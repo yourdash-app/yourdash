@@ -21,14 +21,31 @@
  * SOFTWARE.
  */
 
-import { fetch } from "undici"
+import React from "react";
+import { IWeatherDataForLocation } from "../shared/weatherDataForLocation";
+import WeatherApplicationLocationPage from "./LocationPage";
+import { useParams } from "react-router"
+import csi from "web-client/src/helpers/csi";
+import { Spinner } from "web-client/src/ui/index";
 
-export default async function getWeatherDataForLocationId( latitude: string, longitude: string ) {
-  const TIMEZONE = "Europe/London"
+const WeatherApplicationLocationById: React.FC = () => {
+  const { id } = useParams();
   
-  const fetchRequest = await fetch(
-    `https://api.open-meteo.com/v1/forecast?***REMOVED***&hourly=temperature_2m,precipitation_probability,weathercode,cloudcover,windspeed_80m&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max,rain_sum,precipitation_hours,windspeed_10m_max,windgusts_10m_max&current_weather=true&windspeed_unit=mph&timezone=${TIMEZONE.replaceAll( "/", "%2F" )}`
-  )
+  const [locationData, setLocationData] = React.useState<null | IWeatherDataForLocation>( null )
   
-  return fetchRequest.json()
+  React.useEffect( () => {
+    csi.getJson( `/app/weather/location/${ id }`, data => {
+      setLocationData( data )
+    } )
+  }, [id] );
+  
+  if ( locationData !== null ) {
+    return <WeatherApplicationLocationPage weatherData={locationData}/>
+  }
+  
+  return <div className={"w-full min-h-full flex items-center justify-center"}>
+    <Spinner/>
+  </div>
 }
+
+export default WeatherApplicationLocationById

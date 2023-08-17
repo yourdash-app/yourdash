@@ -49,6 +49,11 @@ declare module "*.svg" {
   export default value;
 }
 
+declare module "*.avif" {
+  const value: string;
+  export default value;
+}
+
 // For CSS imports
 declare module "*.css" {
   const value: string;

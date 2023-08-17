@@ -21,14 +21,13 @@
  * SOFTWARE.
  */
 
-import { type ILocationAutocompleteSuggestion } from "../shared/locationAutocompleteSuggestion.js";
+import { type ILocationAutocompleteSuggestion } from "../../shared/locationAutocompleteSuggestion.js";
 import { fetch } from "undici";
 
 export default async function getLocationAutocompleteSuggestions( input: string, suggestionCount: number ): Promise<ILocationAutocompleteSuggestion[]> {
   const endpoint = `https://geocoding-api.open-meteo.com/v1/search?name=${input.replaceAll( " ", "+" )}&count=${suggestionCount}&language=en&format=json`;
   
   try {
-    
     const fetchRequest = await fetch( endpoint );
     const response = ( await fetchRequest.json() ) as any;
     
@@ -43,7 +42,9 @@ export default async function getLocationAutocompleteSuggestions( input: string,
           name: result.name,
           admin1: result.admin1,
           country: result.country
-        }
+        },
+        latitude: result.latitude,
+        longitude: result.longitude
       } as ILocationAutocompleteSuggestion;
     } );
   } catch ( _err ) {

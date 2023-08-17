@@ -3,13 +3,13 @@ import { useNavigate } from "react-router-dom";
 import csi from "web-client/src/helpers/csi";
 import { Card, TextInput, IconButton } from "web-client/src/ui";
 import useTranslate from "web-client/src/helpers/l10n";
-import APPLICATION_ICON from "./weatherIcons/partly_cloudy.svg"
+import APPLICATION_ICON from "./assets/weatherIcons/partly_cloudy.svg"
 import clippy from "web-client/src/helpers/clippy";
 import { ILocationAutocompleteSuggestion } from "../shared/locationAutocompleteSuggestion";
-import BACKGROUND_IMAGE from "./weatherBackgrounds/thunder.jpg"
+import BACKGROUND_IMAGE from "./assets/weatherBackgrounds/thunder.jpg"
 import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
 
-const WeatherApplication: React.FC = () => {
+const SelectLocationPage: React.FC = () => {
   const navigate = useNavigate();
   const trans = useTranslate( "weather" );
   const [locationQuery, setLocationQuery] = useState<ILocationAutocompleteSuggestion[]>( [] );
@@ -29,7 +29,7 @@ const WeatherApplication: React.FC = () => {
           {trans( "APPLICATION_BRANDING" )}
         </h2>
       </header>
-      <Card className={"gap-2 flex flex-col p-4"}>
+      <Card className={"gap-2 flex flex-col p-4 w-full lg:max-w-4xl md:max-w-2xl max-w-[calc(100vw-1rem)]"}>
         <div className={"flex gap-2 items-center justify-center w-full"}>
           <TextInput
             className={"w-full font-semibold tracking-wide text-3xl"}
@@ -37,7 +37,7 @@ const WeatherApplication: React.FC = () => {
             onKeyDown={e => {
               if ( e.key === "Enter" ) {
                 if ( locationQuery[0] ) {
-                  navigate( `/app/a/weather/location/${ locationQuery[0].id }` );
+                  navigate( `/app/a/weather/${ locationQuery[0].id }` );
                 }
               }
             }}
@@ -48,34 +48,36 @@ const WeatherApplication: React.FC = () => {
             }}
             label={trans( "LOCATION" )}
           />
-          <IconButton icon={YourDashIcon.Pin16} onClick={( e ) => {
-            if ( navigator.geolocation ) {
-              navigator.geolocation.getCurrentPosition(
-                ( position ) => {
-                  console.log( position )
-                },
-                () => {
-                  alert( "Unable to get your location, please allow location access in your browser settings and try again." );
-                },
-                {
-                  enableHighAccuracy: true,
-                  timeout: 5000,
-                  maximumAge: 0
-                } );
-            } else {
-              e.currentTarget.disabled = true;
-            }
-          }}/>
+          {/*<IconButton icon={YourDashIcon.Pin16} onClick={( e ) => {*/}
+          {/*  if ( navigator.geolocation ) {*/}
+          {/*    navigator.geolocation.getCurrentPosition(*/}
+          {/*      ( position ) => {*/}
+          {/*        console.log( position )*/}
+          {/*      },*/}
+          {/*      () => {*/}
+          {/*        alert( "Unable to get your location, please allow location access in your browser settings and try again." );*/}
+          {/*      },*/}
+          {/*      {*/}
+          {/*        enableHighAccuracy: true,*/}
+          {/*        timeout: 5000,*/}
+          {/*        maximumAge: 0*/}
+          {/*      } );*/}
+          {/*  } else {*/}
+          {/*    e.currentTarget.disabled = true;*/}
+          {/*  }*/}
+          {/*}}/>*/}
         </div>
         {
-          locationQuery.length !== 0 && <div className={"grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2"}>
+          locationQuery.length !== 0 && <div className={clippy(
+            "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 w-full"
+          )}>
             {locationQuery.map( ( item, ind ) => (
               <Card
                 key={item.id}
                 className={clippy( "hover:bg-button-hover-bg active:bg-button-active-bg hover:text-button-hover-fg active:text-button-active-fg transition-[var(--transition)] cursor-pointer w-full",
                   ind === 0 ? "bg-button-hover-bg text-button-hover-fg" : "bg-button-bg text-button-fg" ) }
                 onClick={() => {
-                  navigate( `/app/a/weather/location/${ item.latitude }/${ item.longitude }` );
+                  navigate( `/app/a/weather/${ item.id }` );
                 }}
               >
                 <h2 className={"text-2xl font-semibold tracking-wide"}>{item.address.name}{item.address.country !== item.address.name && ","}</h2>
@@ -114,4 +116,4 @@ const WeatherApplication: React.FC = () => {
   );
 };
 
-export default WeatherApplication;
+export default SelectLocationPage;

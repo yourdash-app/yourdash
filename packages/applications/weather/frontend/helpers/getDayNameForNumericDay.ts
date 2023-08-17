@@ -21,13 +21,16 @@
  * SOFTWARE.
  */
 
-interface ILocationAutocompleteSuggestion {
-  id: string,
-  address: {
-    name?: string;
-    admin1?: string;
-    country?: string;
-  }
-}
+const numericDayName = [
+  "DAY_SUNDAY",
+  "DAY_MONDAY",
+  "DAY_TUESDAY",
+  "DAY_WEDNESDAY",
+  "DAY_THURSDAY",
+  "DAY_FRIDAY",
+  "DAY_SATURDAY"
+];
 
-export { type ILocationAutocompleteSuggestion }
+export default function getDayNameForNumericDay( numericDay: number ) {
+  return numericDayName[ numericDay ];
+}
