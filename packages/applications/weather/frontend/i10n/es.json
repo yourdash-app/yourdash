@@ -15,7 +15,7 @@
   "CONDITION_HEAVY_SNOW": "fuertes nevadas",
   "CONDITION_CLOUDY": "nublado",
   "CONDITION_LIGHT_SNOW": "nieve ligera",
-  "CONDITION_FOGGY": "neblinoso",
+  "CONDITION_FOG": "neblinoso",
   "CONDITION_LIGHT_RAIN": "lluvia ligera",
   "CONDITION_RAIN_SHOWERS": "chubascos de lluvia",
   "CONDITION_HEAVY_RAIN_SHOWERS": "fuertes lluvias",
