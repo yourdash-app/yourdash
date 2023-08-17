@@ -21,15 +21,11 @@
  * SOFTWARE.
  */
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useTranslate from "web-client/src/helpers/l10n";
-
-import { weatherStates } from "shared/apps/weather/weatherStates";
 import { IWeatherDataForLocation } from "../shared/weatherDataForLocation";
 import WeatherApplicationLocationPageHeader from "./components/Header";
-import WeatherApplicationDaysCarousel from "./components/DaysCarousel";
-
 
 const WeatherApplicationLocationPage: React.FC<{ weatherData: IWeatherDataForLocation }> = ( { weatherData } ) => {
   const trans = useTranslate( "weather" );
@@ -42,7 +38,6 @@ const WeatherApplicationLocationPage: React.FC<{ weatherData: IWeatherDataForLoc
   return (
     <div>
       <WeatherApplicationLocationPageHeader weatherData={weatherData}/>
-      <WeatherApplicationDaysCarousel weatherData={weatherData}/>
     </div>
   );
 };

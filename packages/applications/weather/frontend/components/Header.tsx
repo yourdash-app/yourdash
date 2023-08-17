@@ -25,10 +25,16 @@ import React from "react"
 import { IWeatherDataForLocation } from "../../shared/weatherDataForLocation";
 import { IconButton } from "web-client/src/ui/index";
 import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
+import getWeatherConditionFromState from "../helpers/getWeatherConditionFromState";
+import useTranslate from "web-client/src/helpers/l10n";
+import getWeatherBackgroundForCondition from "../helpers/getWeatherBackgroundForCondition";
+import WeatherApplicationDaysCarousel from "./DaysCarousel";
 
 const WeatherApplicationLocationPageHeader: React.FC<{ weatherData: IWeatherDataForLocation}> = ( { weatherData } ) => {
-  return <>
-    <header className={"p-4 pt-4 pb-0 flex gap-2 h-[5.75rem] items-center justify-between from-base-700 to-transparent bg-gradient-to-b child:flex child:items-center"}>
+  const trans = useTranslate( "weather" )
+  
+  return <header style={{ backgroundImage: `url(${getWeatherBackgroundForCondition( weatherData.currentWeather.weatherState )}` }} className={"bg-cover bg-center"}>
+    <section className={"p-4 pt-4 pb-0 flex gap-2 h-[5.75rem] items-center justify-between from-base-700 to-transparent bg-gradient-to-b child:flex child:items-center"}>
       <section className={"flex gap-2"}>
         <IconButton icon={YourDashIcon.ChevronLeft16}/>
         <div className={"flex flex-col"}>
@@ -42,11 +48,12 @@ const WeatherApplicationLocationPageHeader: React.FC<{ weatherData: IWeatherData
       <section>
         <IconButton icon={YourDashIcon.Bookmark16}/>
       </section>
-    </header>
-    <section>
-      <span>{weatherData.currentWeather.weatherState}</span>
     </section>
-  </>
+    <section className={"flex items-center justify-center pt-24 pb-24 font-semibold text-6xl"}>
+      <span>Currently {weatherData.currentWeather.temperature}{weatherData.units.hourly.temperature} with {trans( getWeatherConditionFromState( weatherData.currentWeather.weatherState ) )}</span>
+    </section>
+    <WeatherApplicationDaysCarousel weatherData={weatherData}/>
+  </header>
 }
 
 export default WeatherApplicationLocationPageHeader

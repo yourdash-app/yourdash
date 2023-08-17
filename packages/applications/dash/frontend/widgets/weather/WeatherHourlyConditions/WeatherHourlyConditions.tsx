@@ -25,12 +25,12 @@ import React, { useEffect, useState } from "react";
 import useTranslate from "web-client/src/helpers/l10n";
 import { Card } from "web-client/src/ui";
 import csi from "web-client/src/helpers/csi";
-import { getWeatherIconFromState } from "../../../../../weather/frontend/location";
 import HourlyConditionsHour from "./HourlyConditionsHour";
+import { IWeatherDataForLocation } from "../../../../../weather/shared/weatherDataForLocation";
 
 const WeatherHourlyConditions: React.FC = () => {
   const trans = useTranslate( "weather" );
-  const [weatherData, setWeatherData] = useState<any>( null );
+  const [weatherData, setWeatherData] = useState<IWeatherDataForLocation | null>( null );
   const [locationData, setLocationData] = useState<any>( null );
   
   useEffect( () => {
@@ -59,7 +59,7 @@ const WeatherHourlyConditions: React.FC = () => {
           )
         }
         <span className={"opacity-75"}>
-          {`${ locationData?.country }`}
+          { locationData?.country }
         </span>
       </div>
       <main className={"flex h-full p-2 gap-2 overflow-x-auto max-w-full"}>

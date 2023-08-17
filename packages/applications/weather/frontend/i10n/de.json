@@ -15,7 +15,7 @@
   "CONDITION_HEAVY_SNOW": "starker Schneefall",
   "CONDITION_CLOUDY": "wolkig",
   "CONDITION_LIGHT_SNOW": "leichter Schnee",
-  "CONDITION_FOGGY": "nebelig",
+  "CONDITION_FOG": "nebelig",
   "CONDITION_LIGHT_RAIN": "leichter Regen",
   "CONDITION_RAIN_SHOWER": "Regenschauer",
   "CONDITION_HEAVY_RAIN_SHOWER": "heftige Regenschauer",
