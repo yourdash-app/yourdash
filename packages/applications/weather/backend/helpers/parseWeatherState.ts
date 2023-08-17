@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 
-import { WEATHER_STATES } from "../shared/weatherStates.js";
+import { WEATHER_STATES } from "../../shared/weatherStates.js";
 
 /**
  # WMO Weather interpretation codes (WW)

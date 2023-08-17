@@ -21,13 +21,13 @@
  * SOFTWARE.
  */
 
-interface ILocationAutocompleteSuggestion {
-  id: string,
-  address: {
-    name?: string;
-    admin1?: string;
-    country?: string;
-  }
+import { IWeatherDataForLocation } from "../../shared/weatherDataForLocation";
+import React from "react"
+
+const WeatherApplicationDaysCarousel: React.FC<{ weatherData: IWeatherDataForLocation}> = ( { weatherData } ) => {
+  return <div className={"sticky top-[5.75rem]"}>
+    test
+  </div>
 }
 
-export { type ILocationAutocompleteSuggestion }
+export default WeatherApplicationDaysCarousel

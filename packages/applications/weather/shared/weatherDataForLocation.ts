@@ -21,27 +21,63 @@
  * SOFTWARE.
  */
 
-import { WEATHER_STATES } from "./weatherStates";
+import { WEATHER_STATES } from "./weatherStates.js";
 
-interface IWeatherDataForLocationId {
+interface IWeatherDataForLocation {
   location: {
     name: string,
     admin1?: string,
-    country?: string,
+    country?: string
   },
-  currentCondition: {
+  timezone: string,
+  units: {
+    hourly: {
+      temperature: string,
+      precipitationProbability: string,
+      cloudCover: string,
+      windSpeed: string,
+    }
+    daily: {
+      temperature: {
+        max: string,
+        min: string
+      },
+      rainSum: string
+      windSpeed: string
+    }
+  },
+  currentWeather: {
     temperature: number,
-    weatherState: WEATHER_STATES,
-    weatherCode: number,
     windSpeed: number,
     windDirection: number,
-    windGust: number,
-  },
-  days: {
-    date: number,
     weatherState: WEATHER_STATES,
-    
-  }[]
+    isDay: boolean,
+    time: string
+  },
+  hourly: {
+    time: string[],
+    temperature: number[],
+    precipitationProbability: number[],
+    weatherState: WEATHER_STATES[],
+    cloudCover: number[],
+    windSpeed: number[]
+  },
+  daily: {
+    time: string[],
+    temperature: {
+      max: number[],
+      min: number[]
+    },
+    rainSum: number[],
+    windSpeed: {
+      min: number[],
+      max: number[]
+    },
+    precipitationHours: number[],
+    weatherState: WEATHER_STATES[],
+    sunrise: string[],
+    sunset: string[],
+  },
 }
 
-export { type IWeatherDataForLocationId }
+export { type IWeatherDataForLocation };

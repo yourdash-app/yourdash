@@ -21,13 +21,30 @@
  * SOFTWARE.
  */
 
-interface ILocationAutocompleteSuggestion {
-  id: string,
-  address: {
-    name?: string;
-    admin1?: string;
-    country?: string;
-  }
-}
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import useTranslate from "web-client/src/helpers/l10n";
 
-export { type ILocationAutocompleteSuggestion }
+import { weatherStates } from "shared/apps/weather/weatherStates";
+import { IWeatherDataForLocation } from "../shared/weatherDataForLocation";
+import WeatherApplicationLocationPageHeader from "./components/Header";
+import WeatherApplicationDaysCarousel from "./components/DaysCarousel";
+
+
+const WeatherApplicationLocationPage: React.FC<{ weatherData: IWeatherDataForLocation }> = ( { weatherData } ) => {
+  const trans = useTranslate( "weather" );
+  const navigate = useNavigate();
+
+  const [selectedDay, setSelectedDay] = useState<number>( 0 );
+  const [failedToLoad, setFailedToLoad] = useState<boolean>( false );
+  const [transitioningOut, setTransitioningOut] = useState<boolean>( false );
+  
+  return (
+    <div>
+      <WeatherApplicationLocationPageHeader weatherData={weatherData}/>
+      <WeatherApplicationDaysCarousel weatherData={weatherData}/>
+    </div>
+  );
+};
+
+export default WeatherApplicationLocationPage;
