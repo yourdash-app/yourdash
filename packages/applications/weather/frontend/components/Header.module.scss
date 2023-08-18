@@ -1,4 +1,4 @@
-/*
+/*!
  * Copyright (c) 2023 YourDash contributors.
  * YourDash is licensed under the MIT License.
  *
@@ -21,26 +21,18 @@
  * SOFTWARE.
  */
 
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import useTranslate from "web-client/src/helpers/l10n";
-import { IWeatherDataForLocation } from "../shared/weatherDataForLocation";
-import WeatherApplicationLocationPageHeader from "./components/Header";
+.stuck {
 
-const WeatherApplicationLocationPage: React.FC<{ weatherData: IWeatherDataForLocation }> = ( { weatherData } ) => {
-  const trans = useTranslate( "weather" );
-  const navigate = useNavigate();
+}
 
-  const [selectedDay, setSelectedDay] = useState<number>( 0 );
-  const [failedToLoad, setFailedToLoad] = useState<boolean>( false );
-  const [transitioningOut, setTransitioningOut] = useState<boolean>( false );
-  
-  return (
-    <div className={"overflow-auto max-h-full"}>
-      <WeatherApplicationLocationPageHeader weatherData={weatherData}/>
-      <div className={"pt-96 pb-96 h-96 bg-red-400 relative z-50"}></div>
-    </div>
-  );
-};
+.currentWeatherHeader {
+  transition: var(--transition-slow);
 
-export default WeatherApplicationLocationPage;
+  @apply flex items-center justify-center pt-24 pb-24 font-semibold text-6xl;
+  &.stuck {
+    padding-top: 0;
+    padding-bottom: 0;
+    font-weight: 500;
+    font-size: 3rem;
+  }
+}

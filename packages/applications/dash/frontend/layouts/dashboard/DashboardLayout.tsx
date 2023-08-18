@@ -25,7 +25,6 @@ import * as React from "react";
 import useTranslate from "web-client/src/helpers/l10n";
 import { IconButton, Chip, Row } from "web-client/src/ui";
 import { useNavigate } from "react-router-dom";
-import WeatherHourlyConditions from "../../widgets/weather/WeatherHourlyConditions/WeatherHourlyConditions";
 import styles from "./DashboardLayout.module.scss";
 import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
 
@@ -77,7 +76,6 @@ const DashboardLayout: React.FC<IDashboard> = ( {
       </header>
       <section className={styles.content}>
         {/* Widgets */}
-        <WeatherHourlyConditions/>
         <div className={"bg-red-400 h-auto rounded-xl flex items-center justify-center font-bold text-4xl text-center p-4"}>
           {"Placeholder Widget"}
         </div>

@@ -27,6 +27,7 @@ import { Card, Carousel, Icon } from "web-client/src/ui/index";
 import getDayNameForNumericDay from "../helpers/getDayNameForNumericDay";
 import useTranslate from "web-client/src/helpers/l10n";
 import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
+import getWeatherIconFromState from "../helpers/getWeatherIconFromState";
 
 const WeatherApplicationDaysCarousel: React.FC<{
   weatherData: IWeatherDataForLocation
@@ -41,20 +42,23 @@ const WeatherApplicationDaysCarousel: React.FC<{
         return <Card onClick={ () => {
           return 0;
         } }>
-          <h2 className={"flex gap-1"}>
-            { trans( getDayNameForNumericDay( date.getDay() ) ) }
-            <span className={
-              `${
-                date.getDate() === 1
-                  ? "after:content-['st']"
-                  : date.getDate() === 2
-                    ? "after:content-['nd']"
-                    : date.getDate() === 3
-                      ? "after:content-['rd']"
-                      : "after:content-['th']"
-              }`
-            }>{ date.getDate() }</span>
-          </h2>
+          <div className={"flex gap-1 items-center"}>
+            <h2 className={"flex gap-1 font-semibold text-3xl"}>
+              { trans( getDayNameForNumericDay( date.getDay() ) ) }
+              <span className={
+                `${
+                  date.getDate() === 1
+                    ? "after:content-['st']"
+                    : date.getDate() === 2
+                      ? "after:content-['nd']"
+                      : date.getDate() === 3
+                        ? "after:content-['rd']"
+                        : "after:content-['th']"
+                } after:font-light after:text-sm after:justify-self-start flex`
+              }>{ date.getDate() }</span>
+            </h2>
+            <img className={"w-12"} alt={""} src={getWeatherIconFromState( weatherData.currentWeather.weatherState )}/>
+          </div>
           <div>
             <div className={"font-black text-3xl flex gap-1 items-center"}>
               <Icon icon={ YourDashIcon.ChevronUp16 } className={"h-4"} color={"#43aa8b"}/>

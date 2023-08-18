@@ -1,4 +1,0 @@
-log_type,messages
-SUCCESS,Global database loaded
-SUCCESS,Started the requests logger (logging options requests is enabled)
-INFO,Shutting down... (restart of core should occur automatically)
