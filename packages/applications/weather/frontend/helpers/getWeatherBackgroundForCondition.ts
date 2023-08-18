@@ -31,12 +31,6 @@ import BACKGROUND_IMAGE_RAIN3 from "../assets/weatherBackgrounds/rain3.jpg";
 import BACKGROUND_IMAGE_SNOW1 from "../assets/weatherBackgrounds/snow.jpg";
 import BACKGROUND_IMAGE_SNOW2 from "../assets/weatherBackgrounds/snow2.jpg";
 import BACKGROUND_IMAGE_THUNDER from "../assets/weatherBackgrounds/thunder.jpg";
-import WEATHER_ICON_CLEAR from "./assets/weatherIcons/clear.svg";
-import WEATHER_ICON_HEAVY_RAIN from "./assets/weatherIcons/heavy_rain.svg";
-import WEATHER_ICON_LIGHT_RAIN from "./assets/weatherIcons/light_rain.svg";
-import WEATHER_ICON_SNOW from "./assets/weatherIcons/snow.svg";
-import WEATHER_ICON_CLOUDY from "./assets/weatherIcons/cloudy.svg";
-import WEATHER_ICON_PARTLY_CLOUDY from "./assets/weatherIcons/partly_cloudy.svg";
 import { WEATHER_STATES } from "../../shared/weatherStates";
 
 export const backgroundImages: string[] = [

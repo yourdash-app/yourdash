@@ -23,6 +23,7 @@
 
 import { fetch } from "undici";
 import { IWeatherDataForLocation } from "../../shared/weatherDataForLocation.js";
+import parseWeatherCodes from "./parseWeatherState.js";
 
 export default async function getWeatherDataForLongitudeAndLatitude( id: string ): Promise<IWeatherDataForLocation> {
   const locationRequest = await fetch( `https://geocoding-api.open-meteo.com/v1/get?id=${ id }&language=en&format=json` );
@@ -109,7 +110,7 @@ export default async function getWeatherDataForLongitudeAndLatitude( id: string 
       temperature: requestResponse.current_weather.temperature,
       windSpeed: requestResponse.current_weather.windspeed,
       windDirection: requestResponse.current_weather.winddirection,
-      weatherState: requestResponse.current_weather.weathercode,
+      weatherState: parseWeatherCodes( requestResponse.current_weather.weathercode ),
       isDay: requestResponse.current_weather.is_day,
       time: requestResponse.current_weather.time
     },
@@ -135,7 +136,7 @@ export default async function getWeatherDataForLongitudeAndLatitude( id: string 
       precipitationProbability: requestResponse.hourly.precipitation_probability,
       cloudCover: requestResponse.hourly.cloudcover,
       windSpeed: requestResponse.hourly.windspeed_80m,
-      weatherState: requestResponse.hourly.weathercode
+      weatherState: requestResponse.hourly.weathercode.map( code => parseWeatherCodes( code ) ),
     },
     daily: {
       time: requestResponse.daily.time,
@@ -148,7 +149,7 @@ export default async function getWeatherDataForLongitudeAndLatitude( id: string 
         max: requestResponse.daily.windgusts_10m_max
       },
       precipitationHours: requestResponse.daily.precipitation_hours,
-      weatherState: requestResponse.daily.weathercode,
+      weatherState: requestResponse.daily.weathercode.map( code => parseWeatherCodes( code ) ),
       rainSum: requestResponse.daily.rain_sum,
       sunrise: requestResponse.daily.sunrise,
       sunset: requestResponse.daily.sunset
