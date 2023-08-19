@@ -26,19 +26,31 @@ import { useNavigate } from "react-router-dom";
 import useTranslate from "web-client/src/helpers/l10n";
 import { IWeatherDataForLocation } from "../shared/weatherDataForLocation";
 import WeatherApplicationLocationPageHeader from "./components/Header";
+import { Column, Button } from "web-client/src/ui/index";
 
 const WeatherApplicationLocationPage: React.FC<{ weatherData: IWeatherDataForLocation }> = ( { weatherData } ) => {
   const trans = useTranslate( "weather" );
   const navigate = useNavigate();
+  const scrollContainerRef = React.useRef<HTMLDivElement>( null )
 
   const [selectedDay, setSelectedDay] = useState<number>( 0 );
   const [failedToLoad, setFailedToLoad] = useState<boolean>( false );
   const [transitioningOut, setTransitioningOut] = useState<boolean>( false );
   
   return (
-    <div className={"overflow-auto max-h-full"}>
-      <WeatherApplicationLocationPageHeader weatherData={weatherData}/>
-      <div className={"pt-96 pb-96 h-96 bg-red-400 relative z-50"}></div>
+    <div className={"overflow-hidden h-full grid grid-rows-[auto,1fr]"}>
+      <WeatherApplicationLocationPageHeader scrollContainerRef={scrollContainerRef} weatherData={weatherData}/>
+      <div ref={scrollContainerRef} className={"h-full overflow-auto"}>
+        <Column>
+          {weatherData.hourly.time.map( ( hourDate, ind ) => {
+            const date = new Date( hourDate )
+            
+            return <Button>
+              {date.getHours()}
+            </Button>
+          } )}
+        </Column>
+      </div>
     </div>
   );
 };
