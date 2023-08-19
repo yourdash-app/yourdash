@@ -27,6 +27,7 @@
 
 .currentWeatherHeader {
   transition: var(--transition-slow);
+  text-align: center;
 
   @apply flex items-center justify-center pt-24 pb-24 font-semibold text-6xl;
   &.stuck {

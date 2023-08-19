@@ -34,57 +34,57 @@ import clippy from "web-client/src/helpers/clippy";
 
 interface WeatherApplicationLocationPageHeaderProps {
   weatherData: IWeatherDataForLocation;
+  scrollContainerRef: React.RefObject<HTMLDivElement>
 }
 
 const WeatherApplicationLocationPageHeader: React.FC<WeatherApplicationLocationPageHeaderProps> = ( {
-  weatherData
+  weatherData,
+  scrollContainerRef
 } ) => {
   const trans = useTranslate( "weather" );
-  const stickyRef = React.useRef<HTMLDivElement>( null );
   const [isStuck, setIsStuck] = React.useState<boolean>( false );
   
   React.useEffect( () => {
+    if ( !scrollContainerRef.current ) return
     
-    if ( !stickyRef.current ) return
-    
-    const parentElement = stickyRef.current.parentElement as HTMLDivElement
+    const element = scrollContainerRef.current as HTMLDivElement
     
     function listener(): void {
-      if ( parentElement.scrollTop > 0 ) {
+      if ( element.scrollTop > 0 ) {
         setIsStuck( true );
       } else {
         setIsStuck( false );
       }
     }
     
-    parentElement.addEventListener( "scroll", listener )
+    element.addEventListener( "scroll", listener )
 
     return () => {
-      parentElement.removeEventListener( "scroll", listener )
+      element.removeEventListener( "scroll", listener )
     }
   }, [] )
   
   React.useEffect( () => {
-    if ( !stickyRef.current ) return
+    if ( !scrollContainerRef.current ) return
     
-    const element = stickyRef.current as HTMLDivElement
-    const parentElement = stickyRef.current.parentElement as HTMLDivElement
+    const element = scrollContainerRef.current as HTMLDivElement
     
     if ( isStuck ) {
-      parentElement.scrollTo( { behavior: "instant", top: element.getBoundingClientRect().height } )
-      parentElement.style.paddingBottom = element.getBoundingClientRect().height + "px"
+      setTimeout( () => {
+        element.scrollTo( { behavior: "smooth", top: 1 } )
+      }, 100 )
     } else {
-      parentElement.scrollTo( { behavior: "instant", top: 0 } )
-      parentElement.style.paddingBottom = "0px"
+      element.scrollTo( { behavior: "instant", top: 0 } )
     }
   }, [isStuck] )
   
   return <header
-    style={ { backgroundImage: `url(${ getWeatherBackgroundForCondition(
-      weatherData.currentWeather.weatherState
-    ) }` } }
-    className={ "bg-cover bg-center sticky top-0" }
-    ref={stickyRef}
+    style={ {
+      backgroundImage: `url(${ getWeatherBackgroundForCondition(
+        weatherData.currentWeather.weatherState
+      ) }`
+    } }
+    className={ "bg-cover bg-center sticky top-0 left-0 w-full" }
   >
     <section className={ "p-4 flex gap-2 h-32 items-center justify-between from-base-700 to-transparent bg-gradient-to-b child:flex child:items-center" }>
       <section className={ "flex gap-2" }>

@@ -22,7 +22,7 @@ const SelectLocationPage: React.FC = () => {
   }, [] );
 
   return (
-    <main className={"flex h-full w-full items-center justify-center overflow-auto relative flex-col background-cover background-center"} style={{ backgroundImage: `url(${BACKGROUND_IMAGE})` }}>
+    <main className={"flex h-full w-full items-center justify-center overflow-auto relative flex-col bg-cover bg-center"} style={{ backgroundImage: `url(${BACKGROUND_IMAGE})` }}>
       <header className={"pt-2 pb-2 pl-4 flex items-center absolute top-0 left-0 w-full gap-2"}>
         <img src={APPLICATION_ICON} alt={""} className={"aspect-square h-16"}/>
         <h2 className={"text-base-50 font-semibold text-4xl"}>
