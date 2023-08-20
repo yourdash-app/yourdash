@@ -6,26 +6,42 @@ import useTranslate from "web-client/src/helpers/l10n";
 import APPLICATION_ICON from "./assets/weatherIcons/partly_cloudy.svg"
 import clippy from "web-client/src/helpers/clippy";
 import { ILocationAutocompleteSuggestion } from "../shared/locationAutocompleteSuggestion";
-import BACKGROUND_IMAGE from "./assets/weatherBackgrounds/thunder.jpg"
-import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
+import THUNDER_BACKGROUND from "./assets/weatherBackgrounds/thunder.jpg"
+import CLOUDY_BACKGROUND from "./assets/weatherBackgrounds/cloudy1.jpg"
+import RAIN_BACKGROUND from "./assets/weatherBackgrounds/rain1.jpg"
+import SNOW_BACKGROUND from "./assets/weatherBackgrounds/snow.jpg"
+import CLEAR_BACKGROUND from "./assets/weatherBackgrounds/clear.jpg"
+
+const BACKGROUND_IMAGES: string[] = [
+  THUNDER_BACKGROUND,
+  CLOUDY_BACKGROUND,
+  RAIN_BACKGROUND,
+  SNOW_BACKGROUND,
+  CLEAR_BACKGROUND
+]
 
 const SelectLocationPage: React.FC = () => {
   const navigate = useNavigate();
   const trans = useTranslate( "weather" );
   const [locationQuery, setLocationQuery] = useState<ILocationAutocompleteSuggestion[]>( [] );
   const [ previousWeatherLocations, setPreviousWeatherLocations] = useState<{ name: string; id: number }[]>( [] );
-
+  const [backgroundImage, setBackgroundImage] = useState<string>( "" )
+  
   useEffect( () => {
     csi.getJson( "/app/weather/previous/locations", resp => {
       setPreviousWeatherLocations( resp || [] );
     } );
+    
+    const backgroundIndex = Math.floor( Math.random() * 5 )
+    
+    setBackgroundImage( BACKGROUND_IMAGES[backgroundIndex] )
   }, [] );
 
   return (
-    <main className={"flex h-full w-full items-center justify-center overflow-auto relative flex-col bg-cover bg-center"} style={{ backgroundImage: `url(${BACKGROUND_IMAGE})` }}>
+    <main className={"flex h-full w-full items-center justify-center overflow-auto relative flex-col bg-cover bg-center"} style={{ backgroundImage: `url(${backgroundImage})` }}>
       <header className={"pt-2 pb-2 pl-4 flex items-center absolute top-0 left-0 w-full gap-2"}>
         <img src={APPLICATION_ICON} alt={""} className={"aspect-square h-16"}/>
-        <h2 className={"text-base-50 font-semibold text-4xl"}>
+        <h2 className={"text-base-50 font-semibold text-4xl drop-shadow-lg"}>
           {trans( "APPLICATION_BRANDING" )}
         </h2>
       </header>
