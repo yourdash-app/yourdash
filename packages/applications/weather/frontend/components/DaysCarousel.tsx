@@ -28,10 +28,13 @@ import getDayNameForNumericDay from "../helpers/getDayNameForNumericDay";
 import useTranslate from "web-client/src/helpers/l10n";
 import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
 import getWeatherIconFromState from "../helpers/getWeatherIconFromState";
+import clippy from "web-client/src/helpers/clippy";
 
 const WeatherApplicationDaysCarousel: React.FC<{
-  weatherData: IWeatherDataForLocation
-}> = ( { weatherData } ) => {
+  weatherData: IWeatherDataForLocation,
+  setSelectedDay: ( day: number ) => void,
+  selectedDay: number
+}> = ( { weatherData, setSelectedDay, selectedDay } ) => {
   const trans = useTranslate( "weather" );
   
   return <Carousel className={ "sticky top-[5.75rem] flex gap-1 p-2 pl-10 pr-10 w-full" } compactControls>
@@ -41,9 +44,12 @@ const WeatherApplicationDaysCarousel: React.FC<{
         
         return <Card
           onClick={ () => {
-            return 0;
+            setSelectedDay( index )
           } }
           key={dayDateTime}
+          className={clippy(
+            selectedDay === index ? "mb-4" : "mt-4"
+          )}
         >
           <div className={"flex gap-1 items-center"}>
             <h2 className={"flex gap-1 font-semibold text-3xl"}>
