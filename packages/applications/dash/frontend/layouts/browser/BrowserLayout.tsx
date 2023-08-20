@@ -22,11 +22,11 @@
  */
 
 import React from "react";
-import useTranslate from "../../../backend/src/helpers/l10n";
+import useTranslate from "web-client/src/helpers/l10n";
 import styles from "./BrowserLayout.module.scss";
-import { IconButton } from "../../../../../ui";
+import { IconButton } from "web-client/src/ui";
 import { useNavigate } from "react-router-dom";
-import { YourDashIcon } from "../../../../../ui/components/icon/iconDictionary";
+import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
 
 export interface IBrowserLayout {
   username: string,
