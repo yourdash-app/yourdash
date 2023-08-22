@@ -7,13 +7,13 @@ export interface IButton extends UKComponentProps {
 }
 
 export default class Button extends UKComponent<IButton> {
-  constructor(props: IButton) {
-    super(props);
+  constructor( props: IButton ) {
+    super( props );
 
-    this.domElement = document.createElement("button")
+    this.domElement = document.createElement( "button" )
     this.domElement.innerText = this.props.label;
-    this.domElement.classList.add(styles.component)
-    this.domElement.addEventListener("click", this.click.bind(this))
+    this.domElement.classList.add( styles.component )
+    this.domElement.addEventListener( "click", this.click.bind( this ) )
   }
 
   click() {
