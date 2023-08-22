@@ -9,10 +9,11 @@ window.__uikit__ = {
 
 export default class UIKit {
   domElement: HTMLDivElement = document.createElement("div")
-  components: UKComponent<UKComponentProps>[] = []
+  children: UKComponent<UKComponentProps>[] = []
 
   constructor(container: HTMLElement) {
-
+    // @ts-ignore
+    window.__uikit__.componentTree.push(this)
     container.appendChild(this.domElement)
 
     return this
@@ -24,7 +25,7 @@ export default class UIKit {
     comp.parentDomElement = this.domElement
     comp.parentDomElement.appendChild(comp.domElement)
 
-    this.components.push(comp)
+    this.children.push(comp)
     return comp
   }
 }
