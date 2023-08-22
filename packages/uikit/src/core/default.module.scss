@@ -1,12 +1,30 @@
 /*!
- * Copyright ©2023 @Ewsgit and YourDash contributors.
- * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ * Copyright (c) 2023 YourDash contributors.
+ * YourDash is licensed under the MIT License.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap");
 
 .uikit {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: lato, system-ui, Avenir, Helvetica, Arial, sans-serif;
   font-weight: 400;
   line-height: 1.5;
   color-scheme: light dark;
@@ -57,38 +75,33 @@
 
   --border-width: 0.0625rem;
 
-  /* font weights */
-  --weight-regular: 400;
-  --weight-medium: 500;
-  --weight-semibold: 600;
-  --weight-bold: 700;
-
-  /* background */
   --bg: var(--base-800);
-  --fg: var(--base-0);
 
-  /* container */
+  --input-focus-outline: 0.25rem solid #445599;
+  --input-focus-outline-active: 0.25rem solid #5566aa;
+
+  --application-panel-border: rgb(var(--base-600));
+
   --container-bg: var(--base-700);
   --container-fg: var(--base-200);
   --container-border: var(--base-600);
   --container-padding: 1rem;
   --container-rounding: 1rem;
 
-  /* secondary container */
   --container-secondary-bg: var(--base-600);
   --container-secondary-fg: var(--base-100);
   --container-secondary-border: var(--base-700);
   --container-secondary-padding: 0.75rem;
   --container-secondary-rounding: 0.5rem;
 
-  /* tertiary container */
-  --container-tertiary-bg: var(--base-550);
+  --container-tertiary-bg: var(--base-500);
   --container-tertiary-fg: var(--base-50);
-  --container-tertiary-border: var(--base-750);
+  --container-tertiary-border: var(--base-800);
   --container-tertiary-padding: 0.5rem;
   --container-tertiary-rounding: 0.25rem;
 
-  /* button */
+  --button-padding: 0.75rem;
+  --button-rounding: 0.5rem;
   --button-bg: var(--base-600);
   --button-fg: var(--base-200);
   --button-border: var(--border-width) solid #aaa3;
@@ -99,28 +112,6 @@
   --button-active-fg: var(--base-1000);
   --button-active-border: var(--border-width) solid #0003;
 
-  /* small button */
-  --button-small-padding: 0.3125rem 0.75rem;
-  --button-small-rounding: 0.1875rem;
-  --button-small-fontsize: 0.75rem;
-  --button-small-lineheight: 1rem;
-  --button-small-fontweight: var(--weight-regular);
-
-  /* medium button */
-  --button-padding: 0.3125rem 0.75rem;
-  --button-rounding: 0.25rem;
-  --button-fontsize: 0.875rem;
-  --button-lineheight: 1.25rem;
-  --button-fontweight: var(--weight-semibold);
-
-  /* large button */
-  --button-large-padding: 0.3125rem 0.75rem;
-  --button-large-rounding: 0.25rem;
-  --button-large-fontsize: 1rem;
-  --button-large-lineheight: 1.375rem;
-  --button-large-fontweight: var(--weight-semibold);
-
-  /* generic input */
   --input-rounding: 0.5rem;
   --input-bg: var(--base-600);
   --input-fg: var(--base-200);
@@ -128,10 +119,7 @@
   --input-hover-fg: var(--base-50);
   --input-active-bg: var(--base-400);
   --input-active-fg: var(--base-900);
-  --input-focus-outline: 0.25rem solid #445599;
-  --input-focus-outline-active: 0.25rem solid #5566aa;
 
-  /* TODO: REMOVE AFTER TESTING */
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
