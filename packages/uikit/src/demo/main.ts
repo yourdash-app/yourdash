@@ -1,44 +1,26 @@
 import UIKit from "../core";
-import Button from "../core/components/buttons/button.ts";
 import Image from "../core/components/image/image.ts";
+import createButtonsSection from "./sections/buttons/buttons.ts";
+import Card from "../core/components/card/card.ts";
 
 function init() {
-  const ui = new UIKit( document.body )
+  const ui = new UIKit(document.body)
 
-  ui.add( Button, {
-    label: "Button 1 Label",
-    onClick() {
-      console.log( "Button 1 Clicked" )
-    }
-  } )
-  ui.add( Button, {
-    label: "Button 2 Label",
-    onClick() {
-      console.log( "Button 2 Clicked" )
-    }
-  } )
-  ui.add( Button, {
-    label: "Button 3 Label",
-    onClick() {
-      console.log( "Button 3 Clicked" )
-    }
-  } )
-  ui.add( Button, {
-    label: "Button 4 Label",
-    onClick() {
-      console.log( "Button 4 Clicked" )
-    }
-  } )
-  ui.add( Button, {
-    label: "Button 5 Label",
-    onClick() {
-      console.log( "Button 5 Clicked" )
-    }
-  } )
-  ui.add( Image, {
+  createButtonsSection(ui)
+
+  const card = ui.add(Card, {})
+
+  card.slots.content.create(Image, {
     src: "/vite.svg",
     alt: "logo"
-  } )
+  })
+
+  card.setLabel("Button 1 Label")
+
+  ui.add(Image, {
+    src: "/vite.svg",
+    alt: "logo"
+  })
 }
 
 init()
