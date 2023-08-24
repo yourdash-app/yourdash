@@ -1,0 +1,24 @@
+.component {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration-line: none;
+  vertical-align: middle;
+  margin: 0;
+  padding: var(--container-padding);
+}
+
+.levelSecondary {
+  padding: var(--container-secondary-padding);
+  border-radius: var(--container-secondary-rounding);
+}
+
+.levelTertiary {
+  padding: var(--container-tertiary-padding);
+  border-radius: var(--container-tertiary-rounding);
+}
+
+.levelQuaternary {
+  padding: var(--container-quarternary-padding);
+  border-radius: var(--container-quarternary-rounding);
+}
