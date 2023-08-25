@@ -20,7 +20,7 @@ Some of the YourDash projects include
 
 - YourDash Backend (backend)
 - YourDash Web (web-client)
-- UIKIT (uikit)
+- UIKit (uikit)
 
 # See more in the docs
 

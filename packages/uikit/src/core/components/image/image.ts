@@ -28,14 +28,14 @@ export interface ImageProps extends UKComponentProps {
   alt?: string;
 }
 
-export default class Image extends UKComponent<ImageProps, {}> {
+export default class Image extends UKComponent {
   domElement: HTMLImageElement
   
   constructor( props: ImageProps ) {
     super( props );
     
     this.domElement = document.createElement( "img" )
-    this.domElement.src = this.props.src;
-    this.domElement.alt = this.props.alt || ""
+    this.domElement.src = props.src;
+    this.domElement.alt = props.alt || ""
   }
 }

@@ -19,11 +19,11 @@
 - [ ] icon button
 - [ ] combo button
 - [ ] text
-- 
+
 # General
 - [ ] image
 - [ ] icon
-- [ ] Card
+- [ ] card
 - [ ] header
 - [ ] footer
 - [ ] sidebar
@@ -34,3 +34,8 @@
     - [ ] success
     - [ ] error
     - [ ] warning
+
+# Base component
+- [ ] State management
+- [ ] Auto re-render on state change
+- [ ] r
