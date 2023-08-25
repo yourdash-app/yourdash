@@ -3,7 +3,7 @@
  * https://github.com/ewsgit/yourdash
  */
 
-import UKComponent, { UKComponentProps, UKComponentSlots } from "./component.ts";
+import UKComponent, { UKComponentProps } from "./component.ts";
 import defaultStyles from "./default.module.scss"
 export {}
 
@@ -14,7 +14,7 @@ window.__uikit__ = {
 
 export default class UIKit {
   domElement: HTMLDivElement = document.createElement( "div" )
-  children: UKComponent<UKComponentProps, UKComponentSlots>[] = []
+  children: UKComponent[] = []
 
   constructor( container: HTMLElement ) {
     // @ts-ignore
@@ -36,8 +36,8 @@ export default class UIKit {
     return this
   }
 
-  add<P extends UKComponentProps, S extends UKComponentSlots>( component: typeof UKComponent<P, S>, props: P, slots?: S ) {
-    const comp = new component( props, slots )
+  add( component: typeof UKComponent, props: UKComponentProps ) {
+    const comp = new component( props )
 
     comp.parentDomElement = this.domElement
     comp.parentDomElement.appendChild( comp.domElement )
