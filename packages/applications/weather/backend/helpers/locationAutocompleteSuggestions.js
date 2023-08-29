@@ -1,5 +1,5 @@
 import { fetch } from "undici";
-export default async function getLocationAutocompleteSuggestions(input, suggestionCount) {
+export default async function getGeolocationSuggestions(input, suggestionCount) {
     const endpoint = `https://geocoding-api.open-meteo.com/v1/search?name=${input.replaceAll(" ", "+")}&count=${suggestionCount}&language=en&format=json`;
     try {
         const fetchRequest = await fetch(endpoint);

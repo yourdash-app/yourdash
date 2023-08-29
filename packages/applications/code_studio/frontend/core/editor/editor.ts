@@ -22,23 +22,33 @@ export default class CodeStudioEditor {
   }
   
   _debugRenderParsedString( string: string, parser: CodeStudioLanguageParser ) {
-    this.htmlContainer.innerHTML = "<pre><code id=\"cs-test-output\" style=\"font-family:'Jetbrains Mono'\"></code></pre>";
+    this.htmlContainer.innerHTML = "<pre><code id=\"cs-text-output\"></code></pre>";
     
-    if ( document.getElementById( "cs-test-output" ) ) {
-      const placeholderParser = new CodeStudioLanguageParser( "plainText" );
-      placeholderParser.parseString( string );
-      placeholderParser.onParse( tokens => {
-        renderTokens( document.getElementById( "cs-test-output" ) as HTMLDivElement, tokens );
-      } );
+    if ( document.getElementById( "cs-text-output" ) ) {
+      // @ts-ignore
+      document.getElementById( "cs-text-output" ).style.fontFamily = "Jetbrains Mono, JetbrainsMono Nerd Font, Fira Code, Source Code Pro, monospace"
+      
+      const LINES_TO_PARSE = 4
+      const STARTING_LINE = 0
+      
+      const lines = string.split( "\n" );
+      
       parser.onParse( tokens => {
         if ( this.debugMode ) {
           console.log( tokens );
           console.log( `Token count: ${ tokens.length }` );
         }
-        renderTokens( document.getElementById( "cs-test-output" ) as HTMLDivElement, tokens );
+        
+        renderTokens(
+          document.getElementById( "cs-text-output" ) as HTMLDivElement,
+          tokens
+        );
       } );
       
-      parser.parseString( string );
+      // @ts-ignore
+      document.getElementById( "cs-text-output" ).innerHTML = string;
+        
+      parser.parseString( lines.slice( STARTING_LINE, LINES_TO_PARSE ).join( "\n" ) );
     }
   }
 }

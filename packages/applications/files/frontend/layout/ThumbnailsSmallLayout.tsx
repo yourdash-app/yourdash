@@ -24,12 +24,12 @@
 import * as React from "react";
 import csi from "web-client/src/helpers/csi";
 import useTranslate from "web-client/src/helpers/l10n";
-import { IconButton, Icon, RightClickMenu, Button } from "web-client/src/ui";
+import { IconButton, Icon, RightClickMenu, Button, Card } from "web-client/src/ui";
 import clippy from "web-client/src/helpers/clippy";
 import * as path from "path-browserify";
-import TextPreview from "../preview/TextPreview";
 import Preview from "../preview/Preview";
 import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
+import styles from "./ThumbnailsSmallLayout.module.scss"
 
 const DetailsLayout: React.FC = () => {
   const [currentPath, setCurrentPath] = React.useState( "/" );
@@ -87,7 +87,7 @@ const DetailsLayout: React.FC = () => {
           )
           : (
             /* TODO: make columns adapt to screen width */
-            <section className={"p-1 grid grid-cols-6 gap-2"}>
+            <section className={styles.files}>
               {
                 files.map( file => (
                   <RightClickMenu
@@ -106,29 +106,25 @@ const DetailsLayout: React.FC = () => {
                         }
                       }
                     ]}
-                    className={"w-full flex min-h-[6rem]"}
+                    className={styles.item}
                   >
-                    <Button
+                    <Card
                       onClick={() => {
                         setCurrentPath( path.join( currentPath, file.name ) );
                       }}
-                      className={
-                        clippy(
-                          "transition-colors rounded-none [transition:var(--transition)] hover:[transition:var(--transition-fast)] flex items-center w-full flex-col justify-center h-full text-center overflow-hidden rounded-md p-2 gap-1"
-                        )
-                      }
+                      className={ styles.itemButton }
                     >
                       {
                         file.icon === ""
                           ? (
                             file.type === "dir"
-                              ? <Icon icon={YourDashIcon.FileDirectory16}/>
-                              : <Icon icon={YourDashIcon.File16}/>
+                              ? <Icon className={styles.itemIcon} icon={YourDashIcon.FileDirectory16}/>
+                              : <Icon className={styles.itemIcon} icon={YourDashIcon.File16}/>
                           )
-                          : <img alt={""} src={`${ csi.getInstanceUrl() }${ file.icon }`}/>
+                          : <img className={styles.itemIcon} alt={""} src={`${ csi.getInstanceUrl() }${ file.icon }`}/>
                       }
                       <span className={"pl-2 pr-2 text-ellipsis"}>{file.name}</span>
-                    </Button>
+                    </Card>
                   </RightClickMenu>
                 ) )
               }

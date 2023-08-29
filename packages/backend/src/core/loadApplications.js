@@ -36,7 +36,7 @@ export function loadApplication(appName, app, io) {
                 return;
             }
             mod.default({
-                app,
+                exp: app,
                 io,
                 pluginFilesystemPath: path.resolve(path.join(process.cwd(), `../applications/${appName}`))
             });

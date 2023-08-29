@@ -4,6 +4,7 @@
   "OPEN_APPLICATION": "Open",
   "INSTALL": "Install",
   "UNINSTALL": "Uninstall",
+  "ABOUT_SECTION": "About",
   "SOURCE_CODE_SECTION": "Source code",
   "AUTHORS_SECTION": "Authors"
 }

@@ -35,10 +35,10 @@ import { IYourDashStoreApplication } from "shared/apps/store/storeApplication.js
 const promotedApplications: string[] = ["dash", "store"];
 
 const main: YourDashApplicationServerPlugin = ( {
-  app,
+  exp,
   io
 } ) => {
-  app.get( "/app/store/promoted/applications", ( _req, res ) => {
+  exp.get( "/app/store/promoted/applications", ( _req, res ) => {
     Promise.all(
       promotedApplications.map( async ( app ): Promise<StorePromotedApplication> => {
         const application = ( await new YourDashUnreadApplication( app ).read() );
@@ -52,7 +52,7 @@ const main: YourDashApplicationServerPlugin = ( {
       } ) ).then( out => res.json( out ) );
   } );
   
-  app.get( "/app/store/categories", async ( _req, res ) => {
+  exp.get( "/app/store/categories", async ( _req, res ) => {
     const applications = await getAllApplications();
     
     const categories: {
@@ -60,13 +60,13 @@ const main: YourDashApplicationServerPlugin = ( {
     } = {};
     
     for ( const application of applications ) {
-      const unreadApp = new YourDashUnreadApplication( application );
+      const unreadApplication = new YourDashUnreadApplication( application );
       
-      if ( !( await unreadApp.exists() ) ) {
+      if ( !( await unreadApplication.exists() ) ) {
         continue;
       }
       
-      const app = await unreadApp.read();
+      const app = await unreadApplication.read();
       
       categories[app.getCategory()] = true;
     }
@@ -74,7 +74,7 @@ const main: YourDashApplicationServerPlugin = ( {
     return res.json( Object.keys( categories ) );
   } );
   
-  app.get( "/app/store/applications", async ( req, res ) => {
+  exp.get( "/app/store/applications", async ( req, res ) => {
     const { username } = req.headers as {
       username: string
     };
@@ -84,27 +84,27 @@ const main: YourDashApplicationServerPlugin = ( {
     return res.json(
       await Promise.all(
         applications.map( async applicationName => {
-          const unreadApplication = new YourDashUnreadApplication(applicationName)
+          const unreadApplication = new YourDashUnreadApplication( applicationName )
           
           if ( !( await unreadApplication.exists() ) ) {
-            return { id: applicationName};
+            return { id: applicationName };
           }
           
-          const app = await unreadApplication.read();
+          const application = await unreadApplication.read();
           
-          console.log(process.cwd())
+          console.log( process.cwd() )
           
           return {
             id: applicationName,
-            displayName: app.getDisplayName() || applicationName,
-            icon: authenticatedImage( username, authenticatedImageType.file, app.getIconPath() ) || authenticatedImage(username, authenticatedImageType.file,  path.join(process.cwd(), ""))
+            displayName: application.getDisplayName() || applicationName,
+            icon: authenticatedImage( username, authenticatedImageType.file, application.getIconPath() ) || authenticatedImage( username, authenticatedImageType.file,  path.join( process.cwd(), "" ) )
           };
         } )
       )
     );
   } );
   
-  app.get( "/app/store/category/:id", async ( req, res ) => {
+  exp.get( "/app/store/category/:id", async ( req, res ) => {
     const { id } = req.params;
     
     if ( !id ) {
@@ -144,7 +144,7 @@ const main: YourDashApplicationServerPlugin = ( {
     } );
   } );
   
-  app.get( "/app/store/application/:id", async ( req, res ) => {
+  exp.get( "/app/store/application/:id", async ( req, res ) => {
     const { id } = req.params;
     
     if ( !id ) {
@@ -168,7 +168,7 @@ const main: YourDashApplicationServerPlugin = ( {
     return res.json( response );
   } );
   
-  app.post( "/app/store/application/install/:id", async ( req, res ) => {
+  exp.post( "/app/store/application/install/:id", async ( req, res ) => {
     const { id } = req.params;
     const applicationUnread = new YourDashUnreadApplication( id );
     if ( !( await applicationUnread.exists() ) ) {
@@ -177,12 +177,12 @@ const main: YourDashApplicationServerPlugin = ( {
     const application = await applicationUnread.read();
     
     globalDatabase.set( "installed_applications", [...globalDatabase.get( "installed_applications" ), id, ...application.getDependencies()] );
-    loadApplication( id, app, io );
+    loadApplication( id, exp, io );
     
     return res.json( { success: true } );
   } );
   
-  app.post( "/app/store/application/uninstall/:id", ( req, res ) => {
+  exp.post( "/app/store/application/uninstall/:id", ( req, res ) => {
     const { id } = req.params;
     const application = new YourDashUnreadApplication( id );
     if ( !application.exists() ) {
@@ -192,7 +192,7 @@ const main: YourDashApplicationServerPlugin = ( {
     return res.json( { success: true } );
   } );
   
-  app.get( "/app/store/application/:id/icon", async ( req, res ) => {
+  exp.get( "/app/store/application/:id/icon", async ( req, res ) => {
     const { id } = req.params;
     const unreadApplication = new YourDashUnreadApplication( id );
     if ( !( await unreadApplication.exists() ) ) {

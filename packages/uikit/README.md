@@ -37,5 +37,3 @@
 
 # Base component
 - [ ] State management
-- [ ] Auto re-render on state change
-- [ ] r

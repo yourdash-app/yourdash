@@ -26,8 +26,8 @@ import { type YourDashApplicationServerPlugin } from "backend/src/helpers/applic
 import globalDatabase from "backend/src/helpers/globalDatabase.js";
 import path from "path";
 
-const main: YourDashApplicationServerPlugin = ( { app } ) => {
-  app.get( "/app/global_db/db", async ( req, res ) => {
+const main: YourDashApplicationServerPlugin = ( { exp } ) => {
+  exp.get( "/app/global_db/db", async ( req, res ) => {
     const { username } = req.headers as {
       username: string
     };
@@ -45,7 +45,7 @@ const main: YourDashApplicationServerPlugin = ( { app } ) => {
     } );
   } );
   
-  app.post( "/app/global_db/db", async ( req, res ) => {
+  exp.post( "/app/global_db/db", async ( req, res ) => {
     const { username } = req.headers as {
       username: string
     };
@@ -65,7 +65,7 @@ const main: YourDashApplicationServerPlugin = ( { app } ) => {
     return res.json( { error: true } );
   } );
   
-  app.post( "/app/global_db/db/force-write", async ( req, res ) => {
+  exp.post( "/app/global_db/db/force-write", async ( req, res ) => {
     const { username } = req.headers as {
       username: string
     };
