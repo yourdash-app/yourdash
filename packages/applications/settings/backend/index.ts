@@ -21,66 +21,66 @@
  * SOFTWARE.
  */
 
-import {Application as ExpressApplication} from 'express';
+import { Application as ExpressApplication } from "express";
 
-import log from 'backend/src/helpers/log.js';
-import YourDashPanel from 'backend/src/helpers/panel.js';
-import {type YourDashApplicationServerPlugin} from 'backend/src/helpers/applications.js';
-import YourDashUnreadUser from 'backend/src/helpers/user.js';
-import {PersonalServerAcceleratorCommunication} from 'backend/src/helpers/personalServerAccelerator.js';
+import log from "backend/src/helpers/log.js";
+import YourDashPanel from "backend/src/helpers/panel.js";
+import { type YourDashApplicationServerPlugin } from "backend/src/helpers/applications.js";
+import YourDashUnreadUser from "backend/src/helpers/user.js";
+import { PersonalServerAcceleratorCommunication } from "backend/src/helpers/personalServerAccelerator.js";
 
-const main: YourDashApplicationServerPlugin = ({
-  app,
+const main: YourDashApplicationServerPlugin = ( {
+  exp,
   io
-}) => {
-  app.post('/app/settings/core/panel/position', (req, res) => {
-    const {username} = req.headers as {
+} ) => {
+  exp.post( "/app/settings/core/panel/position", ( req, res ) => {
+    const { username } = req.headers as {
       username: string
     };
-    const {position} = req.body;
+    const { position } = req.body;
 
-    const panel = new YourDashPanel(username);
+    const panel = new YourDashPanel( username );
 
-    panel.setPanelPosition(position);
+    panel.setPanelPosition( position );
 
-    return res.json({
+    return res.json( {
       success: true
-    });
-  });
+    } );
+  } );
 
-  app.post('/app/settings/core/panel/quick-shortcuts', (req, res) => {
-    const {username} = req.headers as {
+  exp.post( "/app/settings/core/panel/quick-shortcuts", ( req, res ) => {
+    const { username } = req.headers as {
       username: string
     };
-    const {launcher} = req.body;
+    const { launcher } = req.body;
 
-    const panel = new YourDashPanel(username);
+    const panel = new YourDashPanel( username );
 
-    panel.setLauncherType(launcher);
+    panel.setLauncherType( launcher );
 
-    return res.json({success: true});
-  });
+    return res.json( { success: true } );
+  } );
 
-  app.get('/app/settings/debug/psa/update/:sessionId', async (req, res) => {
-    const {sessionId} = req.params;
-    const {username} = req.headers as {
+  exp.get( "/app/settings/debug/psa/update/:sessionId", async ( req, res ) => {
+    const { sessionId } = req.params;
+    const { username } = req.headers as {
       username: string
     };
-    const user = await (new YourDashUnreadUser(username).read());
+    const user = await ( new YourDashUnreadUser( username ).read() );
 
-    const psa = new PersonalServerAcceleratorCommunication(username, user.getSession(parseInt(sessionId, 10)));
+    const psa = new PersonalServerAcceleratorCommunication( username, user.getSession( parseInt( sessionId, 10 ) ) );
 
-    if (!psa.socketConnection) {
-      return res.json({success: false});
+    if ( !psa.socketConnection ) {
+      return res.json( { success: false } );
     }
 
-    psa.emit('/core/update', true);
+    psa.emit( "/core/update", true );
 
-    return res.json({
+    return res.json( {
       success: true,
-      data: user.getSession(parseInt(sessionId, 10))
-    });
-  });
+      data: user.getSession( parseInt( sessionId, 10 ) )
+    } );
+  } );
 };
 
 export default main;

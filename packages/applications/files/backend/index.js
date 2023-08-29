@@ -4,8 +4,8 @@ import YourDashUnreadUser from "backend/src/helpers/user.js";
 import authenticatedImage, { authenticatedImageType } from "backend/src/core/authenticatedImage.js";
 import sharp from "sharp";
 import getFileType, { FileTypes } from "shared/core/fileType.js";
-const main = ({ app }) => {
-    app.post("/app/files/get", async (req, res) => {
+const main = ({ exp }) => {
+    exp.post("/app/files/get", async (req, res) => {
         const { username } = req.headers;
         if (!req.body.path) {
             return res.json({ files: [] });
@@ -38,7 +38,7 @@ const main = ({ app }) => {
             });
         });
     });
-    app.post("/app/files/get/thumbnails-small", async (req, res) => {
+    exp.post("/app/files/get/thumbnails-small", async (req, res) => {
         const { username } = req.headers;
         if (!req.body.path) {
             return res.json({ files: [] });
@@ -93,7 +93,7 @@ const main = ({ app }) => {
             }))).filter(file => !!file)
         });
     });
-    app.post("/app/files/get/file", async (req, res) => {
+    exp.post("/app/files/get/file", async (req, res) => {
         const { username } = req.headers;
         if (!req.body.path) {
             return res.send("[YOURDASH] Error: Unknown file");

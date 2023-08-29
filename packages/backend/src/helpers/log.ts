@@ -33,6 +33,12 @@ export const logHistory: {
   message: any[]
 }[] = [];
 
+/**
+ * Logs a message with the specified type.
+ * @param {logTypes} type - The type of log message.
+ * @param {...any} message - The message(s) to log.
+ * @returns {void}
+ */
 export default function log( type: logTypes, ...message: any[] ) {
   const logParams = [];
   

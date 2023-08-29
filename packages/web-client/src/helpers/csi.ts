@@ -76,12 +76,12 @@ class __internalClientServerInteraction {
           window.location.href = "/";
           return;
         }
-        console.error( `Error fetching from instance: ${ endpoint }, Error:`, resp.error );
+        console.error( `Error fetching from instance: (json) GET ${ endpoint }, Error:`, resp.error );
         return;
       }
       cb( resp );
     } ).catch( err => {
-      console.error( `Error parsing result from instance: ${ endpoint }`, err );
+      console.error( `Error parsing result from instance: (json) GET ${ endpoint }`, err );
     } );
   }
   
@@ -124,12 +124,12 @@ class __internalClientServerInteraction {
           window.location.href = "/";
           return;
         }
-        console.error( `Error fetching from instance: ${ endpoint }, Error:`, resp.error );
+        console.error( `Error fetching from instance: (json) POST ${ endpoint }, Error:`, resp.error );
         return;
       }
       cb( resp );
     } ).catch( err => {
-      console.error( `Error parsing result from instance: ${ endpoint }`, err );
+      console.error( `Error parsing result from instance: (json) POST ${ endpoint }`, err );
     } );
   }
   
@@ -169,12 +169,12 @@ class __internalClientServerInteraction {
           window.location.href = "/";
           return;
         }
-        console.error( `Error fetching from instance: ${ endpoint }, Error:`, resp.error );
+        console.error( `Error fetching from instance: (json) DELETE ${ endpoint }, Error:`, resp.error );
         return;
       }
       cb( resp );
     } ).catch( err => {
-      console.error( `Error parsing result from instance: ${ endpoint }`, err );
+      console.error( `Error parsing result from instance: (json) DELETE ${ endpoint }`, err );
     } );
   }
   
@@ -216,12 +216,12 @@ class __internalClientServerInteraction {
           return;
         }
         
-        console.error( `Error fetching from instance: ${ endpoint }, Error:`, resp.error );
+        console.error( `Error fetching from instance: (txt) GET ${ endpoint }, Error:`, resp.error );
         return;
       }
       cb( resp );
     } ).catch( err => {
-      console.error( `Error parsing result from instance: ${ endpoint }`, err );
+      console.error( `Error parsing result from instance: (txt) GET ${ endpoint }`, err );
     } );
   }
   
@@ -254,7 +254,7 @@ class __internalClientServerInteraction {
       .then( resp => {
         cb( resp );
       } ).catch( err => {
-        console.error( `Error parsing result from instance: ${ endpoint }`, err );
+        console.error( `Error parsing result from instance: (txt) POST ${ endpoint }`, err );
       } );
   }
   
@@ -295,12 +295,12 @@ class __internalClientServerInteraction {
           window.location.href = "/";
           return;
         }
-        console.error( `Error fetching from instance: ${ endpoint }, Error:`, resp.error );
+        console.error( `Error fetching from instance: (txt) DELETE ${ endpoint }, Error:`, resp.error );
         return;
       }
       cb( resp );
     } ).catch( err => {
-      console.error( `Error parsing result from instance: ${ endpoint }`, err );
+      console.error( `Error parsing result from instance: (txt) DELETE ${ endpoint }`, err );
     } );
   }
   

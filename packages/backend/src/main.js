@@ -20,23 +20,23 @@ import loadApplications from "./core/loadApplications.js";
 import startRequestLogger from "./core/requestLogger.js";
 import { startAuthenticatedImageHelper } from "./core/authenticatedImage.js";
 import defineLoginEndpoints from "./core/endpoints/login.js";
-const args = minimist(process.argv.slice(2));
-global.args = args;
-export { args };
+import defineUserDatabaseRoutes, { userDatabases } from "./core/endpoints/userDatabase.js";
+const PROCESS_ARGUMENTS = minimist(process.argv.slice(2));
+export { PROCESS_ARGUMENTS };
+await globalDatabase.readFromDisk(path.resolve(process.cwd(), "./fs/globalDatabase.json"));
 await startupChecks();
 await startupTasks();
-const app = express();
-const httpServer = http.createServer(app);
+const exp = express();
+const httpServer = http.createServer(exp);
 const io = new SocketIoServer(httpServer);
 const activeSockets = {};
 const handleShutdown = () => {
     log(logTypes.info, "Shutting down... (restart of core should occur automatically)");
-    let logOutput = "log_type,messages\n";
-    logOutput += logHistory.map(hist => {
-        return `${hist.type},${hist.message.map(msg => msg.replaceAll(",", "\,")).join(",")}`;
+    const logOutput = logHistory.map(hist => {
+        return `${hist.type}: ${hist.message}`;
     }).join("\n");
-    writeFile(path.resolve(process.cwd(), "./fs/log.csv"), logOutput, () => {
-        globalDatabase._internalDoNotUseWriteToDiskOnlyIntendedForShutdownSequence(path.resolve(process.cwd(), "./fs/globalDatabase.json"), () => {
+    writeFile(path.resolve(process.cwd(), "./fs/log.log"), logOutput, () => {
+        globalDatabase._internalDoNotUseOnlyIntendedForShutdownSequenceWriteToDisk(path.resolve(process.cwd(), "./fs/globalDatabase.json"), () => {
             process.kill(process.pid);
         });
     });
@@ -87,14 +87,14 @@ io.use(async (socket, next) => {
     return socket.disconnect();
 });
 export { io, activeSockets };
-if (args["log-requests"]) {
-    startRequestLogger(app, {
-        logOptionsRequests: !!args["log-options-requests"]
+if (PROCESS_ARGUMENTS["log-requests"]) {
+    startRequestLogger(exp, {
+        logOptionsRequests: !!PROCESS_ARGUMENTS["log-options-requests"]
     });
 }
-app.use(cors());
-app.use(express.json({ limit: "50mb" }));
-app.use((_req, res, next) => {
+exp.use(cors());
+exp.use(express.json({ limit: "50mb" }));
+exp.use((_req, res, next) => {
     res.removeHeader("X-Powered-By");
     next();
 });
@@ -109,8 +109,8 @@ process.stdin.on("data", data => {
             log(logTypes.error, `Unknown command: ${command}`);
     }
 });
-app.get("/", (_req, res) => res.send("Hello from the yourdash server software"));
-app.get("/test", (_req, res) => {
+exp.get("/", (_req, res) => res.send("Hello from the yourdash server software"));
+exp.get("/test", (_req, res) => {
     const discoveryStatus = YourDashServerDiscoveryStatus.NORMAL;
     switch (discoveryStatus) {
         case YourDashServerDiscoveryStatus.MAINTENANCE:
@@ -131,9 +131,9 @@ app.get("/test", (_req, res) => {
             });
     }
 });
-startAuthenticatedImageHelper(app);
-defineLoginEndpoints(app);
-app.use(async (req, res, next) => {
+startAuthenticatedImageHelper(exp);
+defineLoginEndpoints(exp);
+exp.use(async (req, res, next) => {
     const { username, token } = req.headers;
     if (!username || !token) {
         return res.json({ error: "authorization fail" });
@@ -142,6 +142,14 @@ app.use(async (req, res, next) => {
         try {
             const user = await (new YourDashUnreadUser(username).read());
             __internalGetSessionsDoNotUseOutsideOfCore()[username] = (await user.getSessions()) || [];
+            const database = fs.readFile(path.resolve(user.getPath(), "./userdb.json"))?.toString();
+            if (database) {
+                userDatabases.set(username, JSON.parse(database));
+            }
+            else {
+                userDatabases.set(username, {});
+                fs.writeFile(path.resolve(user.getPath(), "./userdb.json"), JSON.stringify({}));
+            }
         }
         catch (_err) {
             return res.json({ error: "authorization fail" });
@@ -152,27 +160,27 @@ app.use(async (req, res, next) => {
     }
     return res.json({ error: "authorization fail" });
 });
-await defineCorePanelRoutes(app);
-app.get("/core/sessions", async (req, res) => {
+await defineCorePanelRoutes(exp);
+exp.get("/core/sessions", async (req, res) => {
     const { username } = req.headers;
     const user = await (new YourDashUnreadUser(username).read());
     return res.json({ sessions: await user.getSessions() });
 });
-app.delete("/core/session/:id", async (req, res) => {
+exp.delete("/core/session/:id", async (req, res) => {
     const { username } = req.headers;
     const { id: sessionId } = req.params;
     const user = await (new YourDashUnreadUser(username).read());
     user.getSession(parseInt(sessionId, 10)).invalidate();
     return res.json({ success: true });
 });
-app.get("/core/personal-server-accelerator/sessions", async (req, res) => {
+exp.get("/core/personal-server-accelerator/sessions", async (req, res) => {
     const { username } = req.headers;
     const user = await (new YourDashUnreadUser(username).read());
     return res.json({
         sessions: (await user.getSessions()).filter(session => session.type === YourDashSessionType.desktop)
     });
 });
-app.get("/core/personal-server-accelerator/", async (req, res) => {
+exp.get("/core/personal-server-accelerator/", async (req, res) => {
     const { username } = req.headers;
     const unreadUser = new YourDashUnreadUser(username);
     try {
@@ -182,7 +190,7 @@ app.get("/core/personal-server-accelerator/", async (req, res) => {
         return res.json({ error: `Unable to read ${username}/personal_server_accelerator.json` });
     }
 });
-app.post("/core/personal-server-accelerator/", async (req, res) => {
+exp.post("/core/personal-server-accelerator/", async (req, res) => {
     const { username } = req.headers;
     const body = req.body;
     const user = new YourDashUnreadUser(username);
@@ -194,7 +202,7 @@ app.post("/core/personal-server-accelerator/", async (req, res) => {
     }
     return res.json({ success: true });
 });
-app.get("/core/userdb", async (req, res) => {
+exp.get("/core/userdb", async (req, res) => {
     const { username } = req.headers;
     const user = new YourDashUnreadUser(username);
     let output;
@@ -222,7 +230,7 @@ app.get("/core/userdb", async (req, res) => {
     }
     return res.json(output);
 });
-app.post("/core/userdb", async (req, res) => {
+exp.post("/core/userdb", async (req, res) => {
     const { username } = req.headers;
     const user = new YourDashUnreadUser(username);
     let output = {};
@@ -235,7 +243,10 @@ app.post("/core/userdb", async (req, res) => {
     }
     return res.json(output);
 });
-killPort(3560).then(() => {
+defineUserDatabaseRoutes(exp);
+loadApplications(exp, io);
+async function listenForRequests() {
+    await killPort(3560);
     try {
         httpServer.listen(3560, () => {
             log(logTypes.info, `${chalk.bold.yellow("CORE")}: -------------------- server now listening on port 3560! --------------------`);
@@ -243,17 +254,11 @@ killPort(3560).then(() => {
     }
     catch (_err) {
         log(logTypes.error, `${chalk.bold.yellow("CORE")}: Unable to start server!, retrying...`);
-        killPort(3560).then(() => {
-            killPort(3560).then(() => {
-                httpServer.listen(3560, () => {
-                    log(logTypes.info, `${chalk.bold.yellow("CORE")}: -------------------- server now listening on port 3560! --------------------`);
-                });
-            });
-        });
+        await listenForRequests();
     }
-});
+}
+await listenForRequests();
 if (JSON.stringify(globalDatabase.keys) === JSON.stringify({})) {
     await fs.rm(path.resolve(process.cwd(), "./fs/globalDatabase.json"));
 }
-loadApplications(app, io);
 //# sourceMappingURL=main.js.map

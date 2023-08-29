@@ -4,7 +4,7 @@ export default class KeyValueDatabase extends KVD {
     constructor() {
         super();
     }
-    _internalDoNotUseWriteToDiskOnlyIntendedForShutdownSequence(path, cb) {
+    _internalDoNotUseOnlyIntendedForShutdownSequenceWriteToDisk(path, cb) {
         try {
             writeFile(path, JSON.stringify(this.keys), cb);
         }

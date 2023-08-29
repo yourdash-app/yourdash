@@ -21,30 +21,30 @@
  * SOFTWARE.
  */
 
-import {type YourDashApplicationServerPlugin} from 'backend/src/helpers/applications.js';
-import YourDashUnreadUser from 'backend/src/helpers/user.js';
+import { type YourDashApplicationServerPlugin } from "backend/src/helpers/applications.js";
+import YourDashUnreadUser from "backend/src/helpers/user.js";
 
-const main: YourDashApplicationServerPlugin = ({ app, io }) => {
-  app.get('/app/dash/user-full-name', async (req, res) => {
-    const {username} = req.headers as {
+const main: YourDashApplicationServerPlugin = ( { exp, io } ) => {
+  exp.get( "/app/dash/user-full-name", async ( req, res ) => {
+    const { username } = req.headers as {
       username: string
     };
 
-    const user = await new YourDashUnreadUser(username).read();
+    const user = await new YourDashUnreadUser( username ).read();
 
-    res.json(user.getName());
-  });
+    res.json( user.getName() );
+  } );
 
   // TODO: implement module system
-  app.get('/app/dash/modules', async (req, res) => {
-    const {username} = req.headers as {
+  exp.get( "/app/dash/modules", async ( req, res ) => {
+    const { username } = req.headers as {
       username: string
     };
 
-    const user = await new YourDashUnreadUser(username).read();
+    const user = await new YourDashUnreadUser( username ).read();
 
-    res.json({success: true});
-  });
+    res.json( { success: true } );
+  } );
 };
 
 export default main;

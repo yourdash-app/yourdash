@@ -19,51 +19,51 @@ class CodeStudioLanguageParser extends CodeStudioBaseLanguageParser {
     const outputToken = new Token( "[YourDash CodeStudio ERROR] tokenization error", TokenType.Plain );
     
     switch ( true ) {
-      case str.startsWith( "\"" ):
-      case str.startsWith( "\'" ):
-        outputString = str.slice( 1 );
-        outputToken.value = str.slice( 0, 1 );
-        outputToken.type = TokenType.String;
-        this.isInsideString = !this.isInsideString;
-        break;
-      case this.isInsideString:
-        outputString = str.slice( 1 );
-        outputToken.value = str.slice( 0, 1 );
-        outputToken.type = TokenType.String;
-        break;
-      case str.slice( 0, 1 ) === " ":
-        outputString = str.slice( 1 );
-        outputToken.value = " ";
-        outputToken.type = TokenType.Plain;
-        break;
-      case str.slice( 0, 1 ) === "\n":
-        outputString = str.slice( 1 );
-        outputToken.value = "\n";
-        outputToken.type = TokenType.Plain;
-        break;
-      case str.slice( 0, 1 ) === "\t":
-        outputString = str.slice( 1 );
-        outputToken.value = "\t";
-        outputToken.type = TokenType.Plain;
-        break;
-      case str.slice( 0, 1 ) === "0":
-      case str.slice( 0, 1 ) === "1":
-      case str.slice( 0, 1 ) === "2":
-      case str.slice( 0, 1 ) === "3":
-      case str.slice( 0, 1 ) === "4":
-      case str.slice( 0, 1 ) === "5":
-      case str.slice( 0, 1 ) === "6":
-      case str.slice( 0, 1 ) === "7":
-      case str.slice( 0, 1 ) === "8":
-      case str.slice( 0, 1 ) === "9":
-        outputString = str.slice( 1 );
-        outputToken.value = str.slice( 0, 1 );
-        outputToken.type = TokenType.Number;
-        break;
-      default:
-        outputString = str.slice( 1 );
-        outputToken.value = str.slice( 0, 1 );
-        outputToken.type = TokenType.Plain;
+    case str.startsWith( "\"" ):
+    case str.startsWith( "\'" ):
+      outputString = str.slice( 1 );
+      outputToken.value = str.slice( 0, 1 );
+      outputToken.type = TokenType.String;
+      this.isInsideString = !this.isInsideString;
+      break;
+    case this.isInsideString:
+      outputString = str.slice( 1 );
+      outputToken.value = str.slice( 0, 1 );
+      outputToken.type = TokenType.String;
+      break;
+    case str.slice( 0, 1 ) === " ":
+      outputString = str.slice( 1 );
+      outputToken.value = " ";
+      outputToken.type = TokenType.Plain;
+      break;
+    case str.slice( 0, 1 ) === "\n":
+      outputString = str.slice( 1 );
+      outputToken.value = "\n";
+      outputToken.type = TokenType.Plain;
+      break;
+    case str.slice( 0, 1 ) === "\t":
+      outputString = str.slice( 1 );
+      outputToken.value = "\t";
+      outputToken.type = TokenType.Plain;
+      break;
+    case str.slice( 0, 1 ) === "0":
+    case str.slice( 0, 1 ) === "1":
+    case str.slice( 0, 1 ) === "2":
+    case str.slice( 0, 1 ) === "3":
+    case str.slice( 0, 1 ) === "4":
+    case str.slice( 0, 1 ) === "5":
+    case str.slice( 0, 1 ) === "6":
+    case str.slice( 0, 1 ) === "7":
+    case str.slice( 0, 1 ) === "8":
+    case str.slice( 0, 1 ) === "9":
+      outputString = str.slice( 1 );
+      outputToken.value = str.slice( 0, 1 );
+      outputToken.type = TokenType.Number;
+      break;
+    default:
+      outputString = str.slice( 1 );
+      outputToken.value = str.slice( 0, 1 );
+      outputToken.type = TokenType.Plain;
     }
     
     return {

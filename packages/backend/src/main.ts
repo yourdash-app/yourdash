@@ -47,18 +47,40 @@ import loadApplications from "./core/loadApplications.js";
 import startRequestLogger from "./core/requestLogger.js";
 import { startAuthenticatedImageHelper } from "./core/authenticatedImage.js";
 import defineLoginEndpoints from "./core/endpoints/login.js";
+import defineUserDatabaseRoutes, { userDatabases } from "./core/endpoints/userDatabase.js";
 
-const args = minimist( process.argv.slice( 2 ) );
+/*
 
-global.args = args;
+  Server Startup steps
+  
+  1. Fetch arguments
+  2. Load the global database
+  3. Load authentication service
+  4. Begin listening for requests
+  5. Start startup services
+    - request logger
+    - authenticated image
+    - user sanitization
+    - caching service
+  6. Load applications
+  7. Load post-startup services
+  
+*/
 
-export { args };
+// THIS FILE IS A WORK IN PROGRESS
+
+// 1. Fetch arguments
+const PROCESS_ARGUMENTS = minimist( process.argv.slice( 2 ) );
+export { PROCESS_ARGUMENTS };
+
+// 2. Load the global database
+await globalDatabase.readFromDisk( path.resolve( process.cwd(), "./fs/globalDatabase.json" ) );
 
 await startupChecks();
 await startupTasks();
 
-const app = express();
-const httpServer = http.createServer( app );
+const exp = express();
+const httpServer = http.createServer( exp );
 const io = new SocketIoServer( httpServer );
 
 export interface ISocketActiveSocket {
@@ -75,19 +97,17 @@ const activeSockets: {
 const handleShutdown = () => {
   log( logTypes.info, "Shutting down... (restart of core should occur automatically)" );
   
-  let logOutput = "log_type,messages\n";
-  
-  logOutput += logHistory.map( hist => {
-    return `${ hist.type },${ hist.message.map( msg => msg.replaceAll( ",", "\," ) ).join( "," ) }`;
+  const logOutput = logHistory.map( hist => {
+    return `${ hist.type }: ${ hist.message }`;
   } ).join( "\n" );
   
-  writeFile( path.resolve( process.cwd(), "./fs/log.csv" ), logOutput, () => {
-    globalDatabase._internalDoNotUseWriteToDiskOnlyIntendedForShutdownSequence( path.resolve( process.cwd(), "./fs/globalDatabase.json" ), () => {
-      
+  writeFile( path.resolve( process.cwd(), "./fs/log.log" ), logOutput, () => {
+    globalDatabase._internalDoNotUseOnlyIntendedForShutdownSequenceWriteToDisk( path.resolve( process.cwd(), "./fs/globalDatabase.json" ), () => {
       process.kill( process.pid );
     } );
   } );
 };
+
 process.on( "SIGINT", handleShutdown );
 
 // Handle socket.io connections
@@ -154,15 +174,15 @@ io.use( async ( socket: SocketIoSocket<any, any, any, any>, next ) => {
 
 export { io, activeSockets };
 
-if ( args["log-requests"] ) {
-  startRequestLogger( app, {
-    logOptionsRequests: !!args["log-options-requests"]
+if ( PROCESS_ARGUMENTS["log-requests"] ) {
+  startRequestLogger( exp, {
+    logOptionsRequests: !!PROCESS_ARGUMENTS["log-options-requests"]
   } );
 }
 
-app.use( cors() );
-app.use( express.json( { limit: "50mb" } ) );
-app.use( ( _req, res, next ) => {
+exp.use( cors() );
+exp.use( express.json( { limit: "50mb" } ) );
+exp.use( ( _req, res, next ) => {
   res.removeHeader( "X-Powered-By" );
   next();
 } );
@@ -181,9 +201,9 @@ process.stdin.on( "data", data => {
   }
 } );
 
-app.get( "/", ( _req, res ) => res.send( "Hello from the yourdash server software" ) );
+exp.get( "/", ( _req, res ) => res.send( "Hello from the yourdash server software" ) );
 
-app.get( "/test", ( _req, res ) => {
+exp.get( "/test", ( _req, res ) => {
   const discoveryStatus: YourDashServerDiscoveryStatus = YourDashServerDiscoveryStatus.NORMAL as YourDashServerDiscoveryStatus;
   
   switch ( discoveryStatus ) {
@@ -206,11 +226,11 @@ app.get( "/test", ( _req, res ) => {
   }
 } );
 
-startAuthenticatedImageHelper( app );
-defineLoginEndpoints( app );
+startAuthenticatedImageHelper( exp );
+defineLoginEndpoints( exp );
 
 // check for authentication
-app.use( async ( req, res, next ) => {
+exp.use( async ( req, res, next ) => {
   const {
     username,
     token
@@ -228,6 +248,15 @@ app.use( async ( req, res, next ) => {
       const user = await ( new YourDashUnreadUser( username ).read() );
       
       __internalGetSessionsDoNotUseOutsideOfCore()[username] = ( await user.getSessions() ) || [];
+      
+      const database = fs.readFile( path.resolve( user.getPath(), "./userdb.json" ) )?.toString()
+      
+      if ( database ) {
+        userDatabases.set( username, JSON.parse( database ) );
+      } else {
+        userDatabases.set( username, {} );
+        fs.writeFile( path.resolve( user.getPath(), "./userdb.json" ), JSON.stringify( {} ) );
+      }
     } catch ( _err ) {
       return res.json( { error: "authorization fail" } );
     }
@@ -246,9 +275,9 @@ app.use( async ( req, res, next ) => {
  * --------------------------------------------------------------
  */
 
-await defineCorePanelRoutes( app );
+await defineCorePanelRoutes( exp );
 
-app.get( "/core/sessions", async ( req, res ) => {
+exp.get( "/core/sessions", async ( req, res ) => {
   const { username } = req.headers as {
     username: string
   };
@@ -258,7 +287,7 @@ app.get( "/core/sessions", async ( req, res ) => {
   return res.json( { sessions: await user.getSessions() } );
 } );
 
-app.delete( "/core/session/:id", async ( req, res ) => {
+exp.delete( "/core/session/:id", async ( req, res ) => {
   const { username } = req.headers as {
     username: string
   };
@@ -271,7 +300,7 @@ app.delete( "/core/session/:id", async ( req, res ) => {
   return res.json( { success: true } );
 } );
 
-app.get( "/core/personal-server-accelerator/sessions", async ( req, res ) => {
+exp.get( "/core/personal-server-accelerator/sessions", async ( req, res ) => {
   const { username } = req.headers as {
     username: string
   };
@@ -283,7 +312,7 @@ app.get( "/core/personal-server-accelerator/sessions", async ( req, res ) => {
   } );
 } );
 
-app.get( "/core/personal-server-accelerator/", async ( req, res ) => {
+exp.get( "/core/personal-server-accelerator/", async ( req, res ) => {
   const { username } = req.headers as {
     username: string
   };
@@ -297,7 +326,7 @@ app.get( "/core/personal-server-accelerator/", async ( req, res ) => {
   }
 } );
 
-app.post( "/core/personal-server-accelerator/", async ( req, res ) => {
+exp.post( "/core/personal-server-accelerator/", async ( req, res ) => {
   const { username } = req.headers as {
     username: string
   };
@@ -314,7 +343,7 @@ app.post( "/core/personal-server-accelerator/", async ( req, res ) => {
   return res.json( { success: true } );
 } );
 
-app.get( "/core/userdb", async ( req, res ) => {
+exp.get( "/core/userdb", async ( req, res ) => {
   const { username } = req.headers as {
     username: string
   };
@@ -352,7 +381,7 @@ app.get( "/core/userdb", async ( req, res ) => {
 } );
 
 // TODO: implement this
-app.post( "/core/userdb", async ( req, res ) => {
+exp.post( "/core/userdb", async ( req, res ) => {
   const { username } = req.headers as {
     username: string
   };
@@ -371,29 +400,29 @@ app.post( "/core/userdb", async ( req, res ) => {
   return res.json( output );
 } );
 
+defineUserDatabaseRoutes( exp )
+
+loadApplications( exp, io );
+
 /*
  * Start listening for requests
  */
-killPort( 3560 ).then( () => {
+async function listenForRequests() {
+  await killPort( 3560 )
   try {
     httpServer.listen( 3560, () => {
       log( logTypes.info, `${ chalk.bold.yellow( "CORE" ) }: -------------------- server now listening on port 3560! --------------------` );
     } );
   } catch ( _err ) {
     log( logTypes.error, `${ chalk.bold.yellow( "CORE" ) }: Unable to start server!, retrying...` );
-    killPort( 3560 ).then( () => {
-      killPort( 3560 ).then( () => {
-        httpServer.listen( 3560, () => {
-          log( logTypes.info, `${ chalk.bold.yellow( "CORE" ) }: -------------------- server now listening on port 3560! --------------------` );
-        } );
-      } );
-    } );
+    
+    await listenForRequests();
   }
-} );
+}
+
+await listenForRequests();
 
 
 if ( JSON.stringify( globalDatabase.keys ) === JSON.stringify( {} ) ) {
   await fs.rm( path.resolve( process.cwd(), "./fs/globalDatabase.json" ) );
 }
-
-loadApplications( app, io );

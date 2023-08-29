@@ -7,7 +7,7 @@ export default class KeyValueDatabase extends KVD {
     super();
   }
 
-  _internalDoNotUseWriteToDiskOnlyIntendedForShutdownSequence( path: string, cb?: () => void ) {
+  _internalDoNotUseOnlyIntendedForShutdownSequenceWriteToDisk( path: string, cb?: () => void ) {
     try {
       writeFile( path, JSON.stringify( this.keys ), cb );
     } catch ( _err ) {
