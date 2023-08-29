@@ -7,7 +7,7 @@ import Card from "../../../core/components/card/card.ts";
 export default function createButtonsSection(ui: UIKit) {
   const cardContainer = ui.add(Card, {  })
 
-  createButtons(cardContainer)
-  createTransparentButtons(cardContainer)
-  createDisabledButtons(cardContainer)
+  createButtons(cardContainer as Card)
+  createTransparentButtons(cardContainer as Card)
+  createDisabledButtons(cardContainer as Card)
 }

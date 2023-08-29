@@ -23,8 +23,8 @@
 
 import { type YourDashApplicationServerPlugin } from "backend/src/helpers/applications.js"
 
-const main: YourDashApplicationServerPlugin = ( { app, io } ) => {
-  app.get( "/app/endpoints/endpoints", ( req, res ) => res.json( app._router.stack )
+const main: YourDashApplicationServerPlugin = ( { exp, io } ) => {
+  exp.get( "/app/endpoints/endpoints", ( req, res ) => res.json( exp._router.stack )
   )
 }
 

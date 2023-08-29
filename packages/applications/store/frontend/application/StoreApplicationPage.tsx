@@ -174,7 +174,8 @@ const StoreApplicationPage: React.FC = () => {
                 <Card>
                   {appData.description}
                 </Card>
-                <Card className={"flex flex-col"}>
+                <h2 className={"text-2xl font-medium"}>{trans( "ABOUT_SECTION" )}</h2>
+                <Card className={"flex flex-col items-start"}>
                   <div>
                     {
                       `Category: ${ appData.category }`
@@ -232,7 +233,7 @@ const StoreApplicationPage: React.FC = () => {
                       appData.authors?.map( author => (
                         <Card key={author.avatarUrl} className={"flex flex-col gap-2"}>
                           <img className={"h-32 aspect-square rounded-container-rounding"} src={author.avatarUrl} alt={author.avatarUrl}/>
-                          <div className={"flex items-center justify-between"}>
+                          <div className={"flex items-center justify-between gap-2"}>
                             <span>{author.displayName}</span>
                             {
                               author.site && (

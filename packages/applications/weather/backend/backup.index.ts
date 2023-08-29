@@ -113,8 +113,8 @@ const weatherForecastCache: {
   }
 } = {};
 
-const main: YourDashApplicationServerPlugin = ( { app } ) => {
-  app.get( "/app/weather/location/:locationName", ( req, res ) => {
+const main: YourDashApplicationServerPlugin = ( { exp } ) => {
+  exp.get( "/app/weather/location/:locationName", ( req, res ) => {
     if ( !req.params.locationName ) {
       return res.json( { error: true } );
     }
@@ -125,7 +125,7 @@ const main: YourDashApplicationServerPlugin = ( { app } ) => {
     } );
   } );
   
-  app.get( "/app/weather/previous/locations", async ( req, res ) => {
+  exp.get( "/app/weather/previous/locations", async ( req, res ) => {
     const { username } = req.headers as {
       username: string
     };
@@ -145,9 +145,9 @@ const main: YourDashApplicationServerPlugin = ( { app } ) => {
     }
   } );
   
-  app.get( "/app/weather/location/", ( _req, res ) => res.json( [] ) );
+  exp.get( "/app/weather/location/", ( _req, res ) => res.json( [] ) );
   
-  app.get( "/app/weather/forId/:id", async ( req, res ) => {
+  exp.get( "/app/weather/forId/:id", async ( req, res ) => {
     if ( !req.params.id ) {
       return res.json( { error: true } );
     }
@@ -329,7 +329,7 @@ const main: YourDashApplicationServerPlugin = ( { app } ) => {
     } );
   } );
   
-  app.get( "/app/weather/hourly/:location", async ( req, res ) => {
+  exp.get( "/app/weather/hourly/:location", async ( req, res ) => {
     const { location } = req.params;
     
     fetch( `https://geocoding-api.${ OPEN_METEO_INSTANCE }/v1/search?name=${ location }&language=en&count=5&format=json` )

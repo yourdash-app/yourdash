@@ -36,21 +36,17 @@ const Index: React.FC = () => {
     setUseBrowserLayout( db.get( "dash:useBrowserLayout" ) || false );
     
     return () => {
-      csi.postJson( "/core/user_db", { "dash:useBrowserLayout": useBrowserLayout }, () => {
+      csi.postJson( "/core/user_db", { "dash:useBrowserLayout": useBrowserLayout || false }, () => {
         console.log( "out", db );
       } );
     };
   }, [] );
   
-  React.useEffect( () => {
-    const db = csi.userDB;
-    
-    db.set( "dash:useBrowserLayout", useBrowserLayout );
-  } );
-  
   if ( useBrowserLayout === undefined ) {
     return null;
   }
+  
+  console.log( "value:", useBrowserLayout )
   
   return (
     <BasePageLayout title={"Dashboard personalization"}>
@@ -60,7 +56,7 @@ const Index: React.FC = () => {
         description={"Use the \"browser\" layout instead of the \"dashboard\" layout"}
         value={useBrowserLayout}
         setValue={val => {
-          console.log( val );
+          console.log( val, useBrowserLayout );
           setUseBrowserLayout( val );
         }}
       />

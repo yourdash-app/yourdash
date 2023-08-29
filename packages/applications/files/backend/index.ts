@@ -29,8 +29,8 @@ import authenticatedImage, { authenticatedImageType } from "backend/src/core/aut
 import sharp from "sharp";
 import getFileType, { FileTypes } from "shared/core/fileType.js";
 
-const main: YourDashApplicationServerPlugin = ( { app } ) => {
-  app.post( "/app/files/get", async ( req, res ) => {
+const main: YourDashApplicationServerPlugin = ( { exp } ) => {
+  exp.post( "/app/files/get", async ( req, res ) => {
     const { username } = req.headers as {
       username: string
     };
@@ -74,7 +74,7 @@ const main: YourDashApplicationServerPlugin = ( { app } ) => {
     } );
   } );
   
-  app.post( "/app/files/get/thumbnails-small", async ( req, res ) => {
+  exp.post( "/app/files/get/thumbnails-small", async ( req, res ) => {
     const { username } = req.headers as {
       username: string
     };
@@ -111,25 +111,25 @@ const main: YourDashApplicationServerPlugin = ( { app } ) => {
             let icon = "";
             
             switch ( extension ) {
-              case ".png":
-              case ".jpg":
-              case ".jpeg":
-              case ".webp":
-              case ".avif":
-              case ".svg":
-              case ".gif":
-                // check if the file size is more than 1mb
-                if ( ( await fs.stat( path.join( user.getPath(), req.body.path, file ) ) ).size > 1024 * 1024 ) {
-                  icon = "";
-                } else {
-                  // downscale the image
-                  const image = sharp( path.join( user.getPath(), req.body.path, file ) ).resize( 96, 96 );
+            case ".png":
+            case ".jpg":
+            case ".jpeg":
+            case ".webp":
+            case ".avif":
+            case ".svg":
+            case ".gif":
+              // check if the file size is more than 1mb
+              if ( ( await fs.stat( path.join( user.getPath(), req.body.path, file ) ) ).size > 1024 * 1024 ) {
+                icon = "";
+              } else {
+                // downscale the image
+                const image = sharp( path.join( user.getPath(), req.body.path, file ) ).resize( 96, 96 );
                   
-                  icon = authenticatedImage( username, authenticatedImageType.base64, ( await image.toBuffer() ).toString( "base64" ) );
-                }
-                break;
-              default:
-                break;
+                icon = authenticatedImage( username, authenticatedImageType.base64, ( await image.toBuffer() ).toString( "base64" ) );
+              }
+              break;
+            default:
+              break;
             }
             
             return {
@@ -145,7 +145,7 @@ const main: YourDashApplicationServerPlugin = ( { app } ) => {
     } );
   } );
   
-  app.post( "/app/files/get/file", async ( req, res ) => {
+  exp.post( "/app/files/get/file", async ( req, res ) => {
     const { username } = req.headers as {
       username: string
     };
@@ -160,12 +160,12 @@ const main: YourDashApplicationServerPlugin = ( { app } ) => {
     
     try {
       switch ( getFileType( filePath ) ) {
-        case FileTypes.PlainText:
-          return res.send( ( await fs.readFile( filePath ) ).toString() );
-        case FileTypes.Image:
-          return res.send( authenticatedImage( username, authenticatedImageType.file, filePath ) );
-        default:
-          return res.send( "[YOURDASH] Error: Unsupported file type" );
+      case FileTypes.PlainText:
+        return res.send( ( await fs.readFile( filePath ) ).toString() );
+      case FileTypes.Image:
+        return res.send( authenticatedImage( username, authenticatedImageType.file, filePath ) );
+      default:
+        return res.send( "[YOURDASH] Error: Unsupported file type" );
       }
       
     } catch ( _err ) {

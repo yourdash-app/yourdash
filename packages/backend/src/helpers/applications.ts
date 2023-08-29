@@ -76,6 +76,7 @@ class YourDashApplication {
   // Returns a Buffer containing the data for the application's store page banner
   getStoreBackground(): Promise<Buffer> {
     try {
+      // TODO: add support for custom application backgrounds
       return fs.readFile( path.resolve( process.cwd(), "./src/assets/promoted_application_default_background.png" ) );
     } catch ( _e ) {
       return fs.readFile( path.resolve( process.cwd(), "./src/assets/promoted_application_default_background.png" ) );
@@ -84,11 +85,7 @@ class YourDashApplication {
   
   // Returns true if the application is installed, otherwise returns false
   isInstalled(): boolean {
-    if ( globalDatabase.get( "installed_applications" ).includes( this.name ) ) {
-      return true;
-    } else {
-      return false;
-    }
+    return !!globalDatabase.get( "installed_applications" ).includes( this.name );
   }
   
   getCategory(): string {
@@ -108,7 +105,7 @@ class YourDashApplication {
 // Returns an array of strings with the name of each application that exists ( installed or not )
 export async function getAllApplications(): Promise<string[]> {
   try {
-    return await fs.readdir( path.resolve( process.cwd(), "../applications/" ) );
+    return ( await fs.readdir( path.resolve( process.cwd(), "../applications/" ) ) ).filter( app => app !== "package.json" );
   } catch ( _err ) {
     log( logTypes.error, "A problem occurred reading the ../applications/ directory" );
     return [];
@@ -116,7 +113,7 @@ export async function getAllApplications(): Promise<string[]> {
 }
 
 export default class YourDashUnreadApplication {
-  private name: string;
+  private readonly name: string;
   
   constructor( name: string ) {
     this.name = name;
@@ -153,11 +150,11 @@ export default class YourDashUnreadApplication {
 }
 
 type YourDashApplicationServerPlugin = ( {
-  app,
+  exp,
   io,
   pluginFilesystemPath
 }: {
-  app: ExpressApplication,
+  exp: ExpressApplication,
   io: SocketServer,
   pluginFilesystemPath: string
 } ) => any;

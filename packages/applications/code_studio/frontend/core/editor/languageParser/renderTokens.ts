@@ -2,8 +2,6 @@ import Token from "./token";
 import defaultTheme from "./defaultTheme";
 
 export default function renderTokens( htmlElement: HTMLDivElement, tokens: Token[] ) {
-  htmlElement.innerHTML = "";
-  
   tokens.forEach( token => {
     const tokenDiv = document.createElement( "span" );
     
@@ -23,7 +21,7 @@ export default function renderTokens( htmlElement: HTMLDivElement, tokens: Token
     //   tokenDiv.appendChild( element );
     // }
     
-    htmlElement.appendChild( tokenDiv );
+    htmlElement.innerHTML.replace( token.value, tokenDiv.outerHTML );
   } );
   return 0;
 }

@@ -21,14 +21,21 @@
  * SOFTWARE.
  */
 
+import UKComponent, { UKComponentProps, UKComponentSlots, UKComponentState } from "./component"
+
 export default class DomTree {
   element: HTMLElement
   children: DomTree[]
+  component: UKComponent<UKComponentProps, UKComponentState, UKComponentSlots> | undefined
   
   constructor( element: HTMLElement ) {
     this.element = element
     this.children = []
   }
-  
-  createC
+
+  addChild(element: HTMLElement) {
+    this.children.push(new DomTree(element))
+
+    return this
+  }
 }
