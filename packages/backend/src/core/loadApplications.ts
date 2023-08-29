@@ -71,7 +71,7 @@ export function loadApplication( appName: string, app: ExpressApplication, io: S
         }
 
         mod.default( {
-          app, // express app instance
+          exp: app, // express app instance
           io, // socket.io server instance
           pluginFilesystemPath: path.resolve( path.join( process.cwd(), `../applications/${ appName }` ) )
         } );

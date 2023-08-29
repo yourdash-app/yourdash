@@ -24,17 +24,19 @@
 import { type ILocationAutocompleteSuggestion } from "../../shared/locationAutocompleteSuggestion.js";
 import { fetch } from "undici";
 
-export default async function getLocationAutocompleteSuggestions( input: string, suggestionCount: number ): Promise<ILocationAutocompleteSuggestion[]> {
+export default async function getGeolocationSuggestions( input: string, suggestionCount: number ): Promise<ILocationAutocompleteSuggestion[]> {
   const endpoint = `https://geocoding-api.open-meteo.com/v1/search?name=${input.replaceAll( " ", "+" )}&count=${suggestionCount}&language=en&format=json`;
   
   try {
     const fetchRequest = await fetch( endpoint );
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const response = ( await fetchRequest.json() ) as any;
     
     if ( !response ) {
       return [];
     }
     
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return response.results.map( ( result: any ) => {
       return {
         id: result.id,

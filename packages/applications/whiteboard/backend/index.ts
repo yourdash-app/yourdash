@@ -21,8 +21,8 @@
  * SOFTWARE.
  */
 
-import {type YourDashApplicationServerPlugin} from 'backend/src/helpers/applications.js';
+import { type YourDashApplicationServerPlugin } from "backend/src/helpers/applications.js";
 
-const main: YourDashApplicationServerPlugin = ({app}) => 0;
+const main: YourDashApplicationServerPlugin = ( { exp } ) => 0;
 
 export default main;

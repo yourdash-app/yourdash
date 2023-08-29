@@ -14,9 +14,9 @@ export function getParserForLanguage( language: string ): string {
   const extensionForLanguageParser: {
     [ key: string ]: string
   } = {
-    javascript: "./lang/javascript",
-    json: "./lang/json",
-    plainText: "./lang/plainText"
+    javascript: "./lang/javascript.ts",
+    json: "./lang/json.ts",
+    plainText: "./lang/plainText.ts"
   };
   
   return extensionForLanguageParser[language];

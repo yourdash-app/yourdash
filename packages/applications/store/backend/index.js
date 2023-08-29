@@ -6,8 +6,8 @@ import { loadApplication } from "backend/src/core/loadApplications.js";
 import path from "path";
 import authenticatedImage, { authenticatedImageType } from "backend/src/core/authenticatedImage.js";
 const promotedApplications = ["dash", "store"];
-const main = ({ app, io }) => {
-    app.get("/app/store/promoted/applications", (_req, res) => {
+const main = ({ exp, io }) => {
+    exp.get("/app/store/promoted/applications", (_req, res) => {
         Promise.all(promotedApplications.map(async (app) => {
             const application = (await new YourDashUnreadApplication(app).read());
             return {
@@ -19,20 +19,20 @@ const main = ({ app, io }) => {
             };
         })).then(out => res.json(out));
     });
-    app.get("/app/store/categories", async (_req, res) => {
+    exp.get("/app/store/categories", async (_req, res) => {
         const applications = await getAllApplications();
         const categories = {};
         for (const application of applications) {
-            const unreadApp = new YourDashUnreadApplication(application);
-            if (!(await unreadApp.exists())) {
+            const unreadApplication = new YourDashUnreadApplication(application);
+            if (!(await unreadApplication.exists())) {
                 continue;
             }
-            const app = await unreadApp.read();
+            const app = await unreadApplication.read();
             categories[app.getCategory()] = true;
         }
         return res.json(Object.keys(categories));
     });
-    app.get("/app/store/applications", async (req, res) => {
+    exp.get("/app/store/applications", async (req, res) => {
         const { username } = req.headers;
         const applications = await getAllApplications();
         return res.json(await Promise.all(applications.map(async (applicationName) => {
@@ -40,16 +40,16 @@ const main = ({ app, io }) => {
             if (!(await unreadApplication.exists())) {
                 return { id: applicationName };
             }
-            const app = await unreadApplication.read();
+            const application = await unreadApplication.read();
             console.log(process.cwd());
             return {
                 id: applicationName,
-                displayName: app.getDisplayName() || applicationName,
-                icon: authenticatedImage(username, authenticatedImageType.file, app.getIconPath()) || authenticatedImage(username, authenticatedImageType.file, path.join(process.cwd(), ""))
+                displayName: application.getDisplayName() || applicationName,
+                icon: authenticatedImage(username, authenticatedImageType.file, application.getIconPath()) || authenticatedImage(username, authenticatedImageType.file, path.join(process.cwd(), ""))
             };
         })));
     });
-    app.get("/app/store/category/:id", async (req, res) => {
+    exp.get("/app/store/category/:id", async (req, res) => {
         const { id } = req.params;
         if (!id) {
             return res.json({ error: true });
@@ -77,7 +77,7 @@ const main = ({ app, io }) => {
             bannerImage: `data:image/avif;base64,${getInstanceLogoBase64()}`
         });
     });
-    app.get("/app/store/application/:id", async (req, res) => {
+    exp.get("/app/store/application/:id", async (req, res) => {
         const { id } = req.params;
         if (!id) {
             return res.json({ error: true });
@@ -94,7 +94,7 @@ const main = ({ app, io }) => {
         };
         return res.json(response);
     });
-    app.post("/app/store/application/install/:id", async (req, res) => {
+    exp.post("/app/store/application/install/:id", async (req, res) => {
         const { id } = req.params;
         const applicationUnread = new YourDashUnreadApplication(id);
         if (!(await applicationUnread.exists())) {
@@ -102,10 +102,10 @@ const main = ({ app, io }) => {
         }
         const application = await applicationUnread.read();
         globalDatabase.set("installed_applications", [...globalDatabase.get("installed_applications"), id, ...application.getDependencies()]);
-        loadApplication(id, app, io);
+        loadApplication(id, exp, io);
         return res.json({ success: true });
     });
-    app.post("/app/store/application/uninstall/:id", (req, res) => {
+    exp.post("/app/store/application/uninstall/:id", (req, res) => {
         const { id } = req.params;
         const application = new YourDashUnreadApplication(id);
         if (!application.exists()) {
@@ -114,7 +114,7 @@ const main = ({ app, io }) => {
         globalDatabase.set("installed_applications", globalDatabase.get("installed_applications").filter(app => app !== id));
         return res.json({ success: true });
     });
-    app.get("/app/store/application/:id/icon", async (req, res) => {
+    exp.get("/app/store/application/:id/icon", async (req, res) => {
         const { id } = req.params;
         const unreadApplication = new YourDashUnreadApplication(id);
         if (!(await unreadApplication.exists())) {

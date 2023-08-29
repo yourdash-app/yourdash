@@ -42,12 +42,7 @@ class YourDashApplication {
         }
     }
     isInstalled() {
-        if (globalDatabase.get("installed_applications").includes(this.name)) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return !!globalDatabase.get("installed_applications").includes(this.name);
     }
     getCategory() {
         return this.application.category;
@@ -61,7 +56,7 @@ class YourDashApplication {
 }
 export async function getAllApplications() {
     try {
-        return await fs.readdir(path.resolve(process.cwd(), "../applications/"));
+        return (await fs.readdir(path.resolve(process.cwd(), "../applications/"))).filter(app => app !== "package.json");
     }
     catch (_err) {
         log(logTypes.error, "A problem occurred reading the ../applications/ directory");

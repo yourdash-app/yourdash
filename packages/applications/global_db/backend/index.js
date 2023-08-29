@@ -1,8 +1,8 @@
 import YourDashUnreadUser, { YourDashUserPermissions } from "backend/src/helpers/user.js";
 import globalDatabase from "backend/src/helpers/globalDatabase.js";
 import path from "path";
-const main = ({ app }) => {
-    app.get("/app/global_db/db", async (req, res) => {
+const main = ({ exp }) => {
+    exp.get("/app/global_db/db", async (req, res) => {
         const { username } = req.headers;
         const user = await new YourDashUnreadUser(username).read();
         if (user.hasPermission(YourDashUserPermissions.Administrator)) {
@@ -14,7 +14,7 @@ const main = ({ app }) => {
             error: true
         });
     });
-    app.post("/app/global_db/db", async (req, res) => {
+    exp.post("/app/global_db/db", async (req, res) => {
         const { username } = req.headers;
         const keys = req.body;
         const user = await new YourDashUnreadUser(username).read();
@@ -26,7 +26,7 @@ const main = ({ app }) => {
         }
         return res.json({ error: true });
     });
-    app.post("/app/global_db/db/force-write", async (req, res) => {
+    exp.post("/app/global_db/db/force-write", async (req, res) => {
         const { username } = req.headers;
         const keys = req.body;
         const user = await new YourDashUnreadUser(username).read();

@@ -24,8 +24,11 @@
 // WORK IN PROGRESS APPLICATION https://open-meteo.com/en/docs#***REMOVED***&hourly=temperature_2m,precipitation_probability,weathercode,cloudcover,windspeed_80m&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max,rain_sum,precipitation_hours,windspeed_10m_max,windgusts_10m_max&current_weather=true&windspeed_unit=mph&timezone=Europe%2FLondon
 
 import { type YourDashApplicationServerPlugin } from "backend/src/helpers/applications.js";
-import getLocationAutocompleteSuggestions from "./helpers/locationAutocompleteSuggestions.js";
+import getGeolocationSuggestions from "./helpers/locationAutocompleteSuggestions.js";
 import getWeatherDataForLocationId from "./helpers/getWeatherDataForLocationId.js";
+import { ILocationAutocompleteSuggestion } from "../shared/locationAutocompleteSuggestion.js";
+import log, { logTypes } from "backend/src/helpers/log.js";
+import geolocationApi from "./geolocationApi.js";
 
 export const weatherForecastCache: {
   [ key: string ]: {
@@ -34,14 +37,11 @@ export const weatherForecastCache: {
   }
 } = {};
 
-const main: YourDashApplicationServerPlugin = ( { app } ) => {
-  app.get( "/app/weather/geolocation/:locationName", async ( req, res ) => {
-    const locationName = req.params.locationName;
-    
-    return res.json( await getLocationAutocompleteSuggestions( locationName, 8 ) );
-  } );
+
+const main: YourDashApplicationServerPlugin = ( { exp } ) => {
+  geolocationApi( exp )
   
-  app.get( "/app/weather/location/:id", async ( req, res ) => {
+  exp.get( "/app/weather/location/:id", async ( req, res ) => {
     const { id } = req.params;
     
     if ( weatherForecastCache[ id ] ) {
