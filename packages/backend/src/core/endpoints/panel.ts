@@ -35,7 +35,7 @@ export default async function defineRoute( app: ExpressApplication ) {
   app.get( "/core/panel/applications", async ( _req, res ) => {
     res.set( "Cache-Control", "no-store" );
     
-    Promise.all( ( globalDatabase.get( "installed_applications" ) ).map( async app => {
+    Promise.all( ( globalDatabase.get( "installedApplications" ) ).map( async app => {
       const application = await new YourDashUnreadApplication( app ).read();
       return new Promise( async resolve => {
         sharp(

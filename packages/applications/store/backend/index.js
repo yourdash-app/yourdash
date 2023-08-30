@@ -101,7 +101,7 @@ const main = ({ exp, io }) => {
             return res.json({ error: true });
         }
         const application = await applicationUnread.read();
-        globalDatabase.set("installed_applications", [...globalDatabase.get("installed_applications"), id, ...application.getDependencies()]);
+        globalDatabase.set("installedApplications", [...globalDatabase.get("installedApplications"), id, ...application.getDependencies()]);
         loadApplication(id, exp, io);
         return res.json({ success: true });
     });
@@ -111,7 +111,7 @@ const main = ({ exp, io }) => {
         if (!application.exists()) {
             return res.json({ error: true });
         }
-        globalDatabase.set("installed_applications", globalDatabase.get("installed_applications").filter(app => app !== id));
+        globalDatabase.set("installedApplications", globalDatabase.get("installedApplications").filter(app => app !== id));
         return res.json({ success: true });
     });
     exp.get("/app/store/application/:id/icon", async (req, res) => {
