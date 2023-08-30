@@ -91,11 +91,16 @@ export function loadApplication( appName: string, app: ExpressApplication, io: S
     } );
 }
 
-export default function loadApplications( app: ExpressApplication, io: SocketIoServer ) {
+export default function loadApplications( exp: ExpressApplication, io: SocketIoServer ) {
   if ( fsExistsSync( path.resolve( process.cwd(), "../applications/" ) ) ) {
-    const apps = ( globalDatabase.get( "installed_applications" ) );
+    const apps = ( globalDatabase.get( "installedApplications" ) );
+    console.log( apps )
     apps.forEach( ( appName: string ) => {
-      loadApplication( appName, app, io );
+      try {
+        loadApplication( appName, exp, io );
+      } catch ( e ) {
+        console.trace( e )
+      }
     } );
   } else {
     log( logTypes.error, `${ chalk.yellow.bold( "CORE" ) }: No applications found!` );

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 YourDash contributors.
+ * Copyright © 2023 @Ewsgit and YourDash contributors.
  * YourDash is licensed under the MIT License.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,8 +24,9 @@
 import { exec } from "child_process";
 import minimist from "minimist";
 import chalk from "chalk";
+import centerTerminalOutputOnLine from "./helpers/terminal/centerTerminalOutputOnLine.js";
 
-console.log( `-------------------------\n     ${ chalk.whiteBright( "YourDash CLI v0.0.1" ) }     \n-------------------------` );
+console.log( centerTerminalOutputOnLine( chalk.whiteBright( "YourDash CLI v0.0.1" ) ) );
 
 // eslint-disable-next-line no-magic-numbers
 const args = minimist( process.argv.slice( 2 ) );
@@ -60,7 +61,12 @@ if ( !args.dev && args.compile ) {
       return;
     }
     
-    console.log( `[${ chalk.bold.blue( "TSC ERROR" ) }]: ${ data.toString().replaceAll( "\n", "" ).replaceAll( "\x1Bc", "" ).replaceAll( "error", `${ chalk.bold.redBright( "ERROR" ) }` ) }` );
+    console.log( `[${ chalk.bold.blue( "TSC ERROR" ) }]: ${
+      data.toString()
+        .replaceAll( "\n", "" )
+        .replaceAll( "\x1Bc", "" )
+        .replaceAll( "error", `${ chalk.bold.redBright( "ERROR" ) }` )
+    }` );
   } );
   
   process.on( "exit", () => {

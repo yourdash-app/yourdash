@@ -9,7 +9,7 @@ import YourDashPanel from "backend/src/helpers/panel.js";
 export default async function defineRoute(app) {
     app.get("/core/panel/applications", async (_req, res) => {
         res.set("Cache-Control", "no-store");
-        Promise.all((globalDatabase.get("installed_applications")).map(async (app) => {
+        Promise.all((globalDatabase.get("installedApplications")).map(async (app) => {
             const application = await new YourDashUnreadApplication(app).read();
             return new Promise(async (resolve) => {
                 sharp(await fs.readFile(path.resolve(process.cwd(), `../applications/${app}/icon.avif`))).resize(98, 98).toBuffer((err, buf) => {
