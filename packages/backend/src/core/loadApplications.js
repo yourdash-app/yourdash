@@ -52,11 +52,17 @@ export function loadApplication(appName, app, io) {
         return 0;
     });
 }
-export default function loadApplications(app, io) {
+export default function loadApplications(exp, io) {
     if (fsExistsSync(path.resolve(process.cwd(), "../applications/"))) {
-        const apps = (globalDatabase.get("installed_applications"));
+        const apps = (globalDatabase.get("installedApplications"));
+        console.log(apps);
         apps.forEach((appName) => {
-            loadApplication(appName, app, io);
+            try {
+                loadApplication(appName, exp, io);
+            }
+            catch (e) {
+                console.trace(e);
+            }
         });
     }
     else {

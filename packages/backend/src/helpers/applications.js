@@ -42,7 +42,7 @@ class YourDashApplication {
         }
     }
     isInstalled() {
-        return !!globalDatabase.get("installed_applications").includes(this.name);
+        return !!globalDatabase.get("installedApplications").includes(this.name);
     }
     getCategory() {
         return this.application.category;

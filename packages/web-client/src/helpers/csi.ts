@@ -315,9 +315,7 @@ class __internalClientServerInteraction {
   getUserDB() {
     this.getJson( "/core/user_db", data => {
       this.userDB.clear();
-      Object.keys( data ).forEach( key => {
-        this.userDB.set( key, data[key] );
-      } );
+      this.userDB.keys = data
     } );
     return this.userDB;
   }
