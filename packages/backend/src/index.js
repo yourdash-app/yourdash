@@ -1,7 +1,8 @@
 import { exec } from "child_process";
 import minimist from "minimist";
 import chalk from "chalk";
-console.log(`-------------------------\n     ${chalk.whiteBright("YourDash CLI v0.0.1")}     \n-------------------------`);
+import centerTerminalOutputOnLine from "./helpers/terminal/centerTerminalOutputOnLine.js";
+console.log(centerTerminalOutputOnLine(chalk.whiteBright("YourDash CLI v0.0.1")));
 const args = minimist(process.argv.slice(2));
 console.log(`Starting with arguments: ${JSON.stringify(args)}`);
 if (!args.dev && args.compile) {
@@ -28,7 +29,10 @@ if (!args.dev && args.compile) {
         if (data.toString() === "") {
             return;
         }
-        console.log(`[${chalk.bold.blue("TSC ERROR")}]: ${data.toString().replaceAll("\n", "").replaceAll("\x1Bc", "").replaceAll("error", `${chalk.bold.redBright("ERROR")}`)}`);
+        console.log(`[${chalk.bold.blue("TSC ERROR")}]: ${data.toString()
+            .replaceAll("\n", "")
+            .replaceAll("\x1Bc", "")
+            .replaceAll("error", `${chalk.bold.redBright("ERROR")}`)}`);
     });
     process.on("exit", () => {
         console.log(`${chalk.yellow.bold("CORE")}: Server about to exit!`);

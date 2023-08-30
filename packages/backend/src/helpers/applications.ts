@@ -85,7 +85,7 @@ class YourDashApplication {
   
   // Returns true if the application is installed, otherwise returns false
   isInstalled(): boolean {
-    return !!globalDatabase.get( "installed_applications" ).includes( this.name );
+    return !!globalDatabase.get( "installedApplications" ).includes( this.name );
   }
   
   getCategory(): string {

@@ -1,8 +1,8 @@
-import { activeSockets } from '../main.js';
+import { activeSockets } from "../main.js";
 export function executeCommand(username, session, command) {
     return new Promise(resolve => {
         const socket = getSocketFromSession(username, session);
-        socket.emit('execute-command', command, data => {
+        socket.emit("execute-command", command, data => {
             resolve(data);
         });
     });
