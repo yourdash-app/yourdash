@@ -37,10 +37,9 @@ import killPort from "kill-port";
 import { YourDashSessionType } from "shared/core/session.js";
 import log, { logTypes, logHistory } from "./helpers/log.js";
 import YourDashUnreadUser, { YourDashUserPermissions } from "./helpers/user.js";
-import globalDatabase from "./helpers/globalDatabase.js";
+import GLOBAL_DB from "./helpers/globalDatabase.js";
 import { __internalGetSessionsDoNotUseOutsideOfCore } from "./core/sessions.js";
 import { YourDashServerDiscoveryStatus } from "./core/discovery.js";
-import startupTasks from "./core/startupTasks.js";
 import defineCorePanelRoutes from "./core/endpoints/panel.js";
 import loadApplications from "./core/loadApplications.js";
 import startRequestLogger from "./core/requestLogger.js";
@@ -73,6 +72,8 @@ import { generateLogos } from "./helpers/logo.js";
 // THIS FILE IS A WORK IN PROGRESS
 // -------------------------------
 
+const FS_DIRECTORY_PATH = path.resolve( path.join( process.cwd(), "./fs/" ) );
+
 /*
  //////////////////////////////////
  //  1. Fetch process arguments  //
@@ -86,10 +87,12 @@ export { PROCESS_ARGUMENTS };
  //  2. Load the global database  //
  ///////////////////////////////////
 */
-await globalDatabase.readFromDisk( path.resolve( process.cwd(), "./fs/global_database.json" ) );
+if ( fsExistsSync( path.join( FS_DIRECTORY_PATH, "./global_database.json" ) ) ) {
+  await GLOBAL_DB.readFromDisk( path.join( FS_DIRECTORY_PATH, "./global_database.json" ) );
 
-if ( JSON.stringify( globalDatabase.keys ) === JSON.stringify( {} ) ) {
-  await fs.rm( path.resolve( process.cwd(), "./fs/global_database.json" ) );
+  if ( JSON.stringify( GLOBAL_DB.keys ) === JSON.stringify( {} ) ) {
+    await fs.rm( path.join( FS_DIRECTORY_PATH, "./global_database.json" ) );
+  }
 }
 
 /*
@@ -101,7 +104,6 @@ const exp = express();
 const httpServer = http.createServer( exp );
 const socketIo = new SocketIoServer( httpServer );
 
-const FS_DIRECTORY_PATH = path.resolve( path.join( process.cwd(), "./fs/" ) );
 
 /*
  //////////////////////////////////////////////
@@ -125,7 +127,18 @@ if ( !fsExistsSync( FS_DIRECTORY_PATH ) ) {
         path.join( FS_DIRECTORY_PATH, "./default_avatar.avif" )
       );
     } catch ( e ) {
-      log( logTypes.error, "Unable to create the default user avatar" );
+      log( logTypes.error, "Unable to copy the default user avatar" );
+      console.trace( e );
+    }
+    
+    // set the instance's default logo
+    try {
+      await fs.cp(
+        path.join( process.cwd(), "./src/assets/default_instance_logo.avif" ),
+        path.join( FS_DIRECTORY_PATH, "./instance_logo.avif" )
+      );
+    } catch ( e ) {
+      log( logTypes.error, "Unable to copy the default instance logo" );
       console.trace( e );
     }
     
@@ -160,15 +173,32 @@ if ( !fsExistsSync( FS_DIRECTORY_PATH ) ) {
         },
         installedApplications: ["dash", "settings", "files", "store", "weather"]
       } ) );
+      
+      // load the new global database
+      await GLOBAL_DB.readFromDisk( path.join( FS_DIRECTORY_PATH, "./global_database.json" ) )
     } catch ( e ) {
-      log( logTypes.error, "Unable to create the \"./fs/global_db.json\" file" );
+      log( logTypes.error, "Unable to create the \"./fs/global_database.json\" file" );
     }
     
     // create the default instance logos
     try {
       generateLogos();
     } catch ( e ) {
-      log( logTypes.error, "Unable to create the \"./fs/global_db.json\" file" );
+      log( logTypes.error, "Unable to generate logo assets" );
+    }
+    
+    // if the administrator user doesn't exist,
+    // create a new user "admin" with the administrator permission
+    const adminUserUnread = new YourDashUnreadUser( "admin" );
+    if ( !( await adminUserUnread.exists() ) ) {
+      await adminUserUnread.create(
+        "password",
+        {
+          first: "Admin",
+          last: "istrator"
+        },
+        [YourDashUserPermissions.Administrator]
+      );
     }
   } catch ( err ) {
     log( logTypes.error, "Uncaught error in fs verification!" );
@@ -178,21 +208,6 @@ if ( !fsExistsSync( FS_DIRECTORY_PATH ) ) {
 
 for ( const user of ( await fs.readdir( path.resolve( "./fs/users/" ) ) ) ) {
   await ( await new YourDashUnreadUser( user ).read() ).verifyUserConfig().write();
-}
-
-
-// if the administrator user doesn't exist,
-// create a new user "admin" with the administrator permission
-const adminUserUnread = new YourDashUnreadUser( "admin" );
-if ( !( await adminUserUnread.exists() ) ) {
-  await adminUserUnread.create(
-    "password",
-    {
-      first: "Admin",
-      last: "istrator"
-    },
-    [YourDashUserPermissions.Administrator]
-  );
 }
 
 /*
@@ -225,7 +240,7 @@ await listenForRequests();
  /////////////////
  //  SOCKET.IO  //            TODO: REFACTOR PENDING
  /////////////////
- */
+*/
 
 export interface ISocketActiveSocket {
   id: string;
@@ -251,8 +266,8 @@ const handleShutdown = () => {
     .join( "\n" );
   
   writeFile( path.resolve( process.cwd(), "./fs/log.log" ), logOutput, () => {
-    globalDatabase._internalDoNotUseOnlyIntendedForShutdownSequenceWriteToDisk(
-      path.resolve( process.cwd(), "./fs/globalDatabase.json" ),
+    GLOBAL_DB._internalDoNotUseOnlyIntendedForShutdownSequenceWriteToDisk(
+      path.resolve( process.cwd(), "./fs/GLOBAL_DB.json" ),
       () => {
         process.kill( process.pid );
       }
@@ -419,7 +434,7 @@ exp.use( async ( req, res, next ) => {
         ( await user.getSessions() ) || [];
       
       const database = fs
-        .readFile( path.resolve( user.getPath(), "./userdb.json" ) )
+        .readFile( path.resolve( user.getPath(), "./user_db.json" ) )
         ?.toString();
       
       if ( database ) {
@@ -427,7 +442,7 @@ exp.use( async ( req, res, next ) => {
       } else {
         userDatabases.set( username, {} );
         fs.writeFile(
-          path.resolve( user.getPath(), "./userdb.json" ),
+          path.resolve( user.getPath(), "./user_db.json" ),
           JSON.stringify( {} )
         );
       }
