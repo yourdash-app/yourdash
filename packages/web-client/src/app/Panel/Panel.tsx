@@ -144,7 +144,6 @@ const PanelInstanceIcon: React.FC = () => {
 
 const PanelAuthorizer: React.FC = () => {
   const navigate = useNavigate();
-  
   const TIME_UNTIL_CONSOLE_CLEAR = 1000;
   
   useEffect( () => {
@@ -188,6 +187,7 @@ const Panel: React.FC<IPanel> = ( {
 } ) => {
   const [num, setNum] = useState<number>( 0 );
   const [launcherType, setLauncherType] = useState<number>( 0 );
+  const [loaded, setLoaded] = useState<number>( 0 )
   
   //  @ts-ignore
   Panel.reload = () => {
@@ -197,12 +197,22 @@ const Panel: React.FC<IPanel> = ( {
   useEffect( () => {
     csi.getJson( "/core/panel/position", res => {
       setSide( res.position );
+      setLoaded( loaded + 1 )
+    }, () => {
+      console.log( "Unable to fetch the panel position" )
     } );
     
     csi.getJson( "/core/panel/quick-shortcuts", res => {
       setLauncherType( res.launcher );
+      setLoaded( loaded + 1 )
+    }, () => {
+      console.log( "Unable to fetch the panel quick shortcuts" )
     } );
-  }, [num] ); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [num] );
+  
+  if ( loaded === 0 )
+    return null
+  
   
   return (
     <div

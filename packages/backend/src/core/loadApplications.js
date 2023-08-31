@@ -61,6 +61,7 @@ export default function loadApplications(exp, io) {
                 loadApplication(appName, exp, io);
             }
             catch (e) {
+                log(logTypes.error, `unable to load application: ${appName}`);
                 console.trace(e);
             }
         });

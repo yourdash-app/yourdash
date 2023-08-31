@@ -99,6 +99,7 @@ export default function loadApplications( exp: ExpressApplication, io: SocketIoS
       try {
         loadApplication( appName, exp, io );
       } catch ( e ) {
+        log( logTypes.error, `unable to load application: ${appName}` )
         console.trace( e )
       }
     } );

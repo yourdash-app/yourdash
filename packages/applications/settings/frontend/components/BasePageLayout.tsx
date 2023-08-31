@@ -41,7 +41,8 @@ const BasePageLayout: React.FC<IBasePageLayout> = ( {
   
   return (
     <main className={"flex flex-col items-center ml-auto mr-auto w-full max-w-6xl pl-4 pr-4"}>
-      <section className={"flex items-center w-full gap-2 pt-8 pb-8 pl-4 pr-4"}>
+      <section className={"flex items-center w-full gap-2 pt-8 pb-8 pl-4 pr-4 animate__animated animate__fadeIn" +
+                          " animate__duration_250ms"}>
         {
           !noBack && (
             <IconButton
@@ -54,7 +55,7 @@ const BasePageLayout: React.FC<IBasePageLayout> = ( {
         }
         <h1 className={"font-bold text-container-fg text-4xl w-full text-left"}>{title}</h1>
       </section>
-      <div className={"grid grid-cols-1 w-full xl:grid-cols-2 gap-2"}>
+      <div className={"grid grid-cols-1 w-full xl:grid-cols-2 gap-2 animate__animated animate__fadeIn animate__100ms"}>
         {children}
       </div>
     </main>

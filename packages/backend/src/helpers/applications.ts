@@ -29,7 +29,7 @@ import { type IYourDashApplication } from "shared/core/application.js";
 import log, { logTypes } from "./log.js";
 import globalDatabase from "./globalDatabase.js";
 
-class YourDashApplication {
+class YDApplication {
   private readonly name: string;
   private readonly application: IYourDashApplication;
   
@@ -112,7 +112,7 @@ export async function getAllApplications(): Promise<string[]> {
   }
 }
 
-export default class YourDashUnreadApplication {
+export default class YourDashApplication {
   private readonly name: string;
   
   constructor( name: string ) {
@@ -121,9 +121,9 @@ export default class YourDashUnreadApplication {
   }
   
   // Returns a YourDashApplication class which is initialized with the application's data
-  async read(): Promise<YourDashApplication | null> {
+  async read(): Promise<YDApplication | null> {
     try {
-      return new YourDashApplication(
+      return new YDApplication(
         JSON.parse(
           ( await fs.readFile( path.resolve( process.cwd(), `../applications/${ this.name }/application.json` ) ) ).toString() ||
           "{}" )
