@@ -1,4 +1,4 @@
-import YourDashUnreadApplication, { getAllApplications } from "backend/src/helpers/applications.js";
+import YourDashApplication, { getAllApplications } from "backend/src/helpers/applications.js";
 import log, { logTypes } from "backend/src/helpers/log.js";
 
 export default async function getAllCategories(): Promise<string[]> {
@@ -6,10 +6,10 @@ export default async function getAllCategories(): Promise<string[]> {
 
   const categories: { [ key: string ]: boolean } = {};
 
-  for (const applicationName of applications) {
-    const unreadApplication = new YourDashUnreadApplication(applicationName);
+  for ( const applicationName of applications ) {
+    const unreadApplication = new YourDashApplication( applicationName );
     
-    if (!(await unreadApplication.exists())) {
+    if ( !( await unreadApplication.exists() ) ) {
       continue;
     }
     
@@ -17,18 +17,18 @@ export default async function getAllCategories(): Promise<string[]> {
     
     try {
       categories[app.getCategory()] = true;
-    } catch (_err) {
-      log(logTypes.error, `application: ${ app?.getName() || applicationName } doesn't have a category defined`);
+    } catch ( _err ) {
+      log( logTypes.error, `application: ${ app?.getName() || applicationName } doesn't have a category defined` );
     }
   }
 
-  return Object.keys(categories);
+  return Object.keys( categories );
 }
 
-export async function getAllApplicationsFromCategory(category: string): Promise<string[]> {
+export async function getAllApplicationsFromCategory( category: string ): Promise<string[]> {
   const applications = await getAllApplications();
 
-  const results = await Promise.all(applications.map(async application => await (new YourDashUnreadApplication(application).read())));
+  const results = await Promise.all( applications.map( async application => await ( new YourDashApplication( application ).read() ) ) );
 
-  return results.filter(app => app.getCategory() === category).map(app => app.getName());
+  return results.filter( app => app.getCategory() === category ).map( app => app.getName() );
 }

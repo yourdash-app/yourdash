@@ -31,6 +31,7 @@ import { hash } from "./encryption.js";
 import YourDashSession, { getSessionsForUser } from "./session.js";
 import KeyValueDatabase from "./keyValueDatabase.js";
 import getUserDatabase from "./userDatabase.js";
+import GLOBAL_DB from "./globalDatabase.js";
 
 export enum YourDashUserPermissions {
   Administrator, CreateFiles, DeleteFiles,
@@ -135,7 +136,7 @@ class YourDashUser {
       hash( "password" ).then( async response => {
         await fs.writeFile( path.resolve( this.getPath(), "./password.txt" ), response );
       } );
-      await fs.writeFile( path.resolve( this.getPath(), "./quick-shortcuts.json" ), "[]" );
+      await fs.writeFile( path.resolve( this.getPath(), "./quick-shortcuts.json" ), JSON.stringify( GLOBAL_DB.get( "defaults:user:" ) ) );
       await fs.mkdir( this.getAppDataPath() );
       await fs.mkdir( path.resolve( this.getPath(), "./fs/" ) );
       await fs.writeFile( path.resolve( this.getPath(), "./user_db.json" ), "{}" );
