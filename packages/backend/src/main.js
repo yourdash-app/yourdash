@@ -6,14 +6,13 @@ import express from "express";
 import { Server as SocketIoServer } from "socket.io";
 import chalk from "chalk";
 import minimist from "minimist";
+import killPort from "kill-port";
 import { YourDashSessionType } from "shared/core/session.js";
 import log, { logTypes, logHistory } from "./helpers/log.js";
-import YourDashUnreadUser from "./helpers/user.js";
+import YourDashUnreadUser, { YourDashUserPermissions } from "./helpers/user.js";
 import globalDatabase from "./helpers/globalDatabase.js";
-import killPort from "kill-port";
 import { __internalGetSessionsDoNotUseOutsideOfCore } from "./core/sessions.js";
 import { YourDashServerDiscoveryStatus } from "./core/discovery.js";
-import startupTasks from "./core/startupTasks.js";
 import defineCorePanelRoutes from "./core/endpoints/panel.js";
 import loadApplications from "./core/loadApplications.js";
 import startRequestLogger from "./core/requestLogger.js";
@@ -21,16 +20,19 @@ import { startAuthenticatedImageHelper } from "./core/authenticatedImage.js";
 import defineLoginEndpoints from "./core/endpoints/login.js";
 import defineUserDatabaseRoutes, { userDatabases } from "./core/endpoints/userDatabase.js";
 import centerTerminalOutputOnLine from "./helpers/terminal/centerTerminalOutputOnLine.js";
+import { generateLogos } from "./helpers/logo.js";
+const FS_DIRECTORY_PATH = path.resolve(path.join(process.cwd(), "./fs/"));
 const PROCESS_ARGUMENTS = minimist(process.argv.slice(2));
 export { PROCESS_ARGUMENTS };
-await globalDatabase.readFromDisk(path.resolve(process.cwd(), "./fs/global_database.json"));
-if (JSON.stringify(globalDatabase.keys) === JSON.stringify({})) {
-    await fs.rm(path.resolve(process.cwd(), "./fs/global_database.json"));
+if (fsExistsSync(path.join(FS_DIRECTORY_PATH, "./global_database.json"))) {
+    await globalDatabase.readFromDisk(path.join(FS_DIRECTORY_PATH, "./global_database.json"));
+    if (JSON.stringify(globalDatabase.keys) === JSON.stringify({})) {
+        await fs.rm(path.join(FS_DIRECTORY_PATH, "./global_database.json"));
+    }
 }
 const exp = express();
 const httpServer = http.createServer(exp);
 const socketIo = new SocketIoServer(httpServer);
-const FS_DIRECTORY_PATH = path.resolve(path.join(process.cwd(), "./fs/"));
 if (!fsExistsSync(FS_DIRECTORY_PATH)) {
     try {
         try {
@@ -44,7 +46,14 @@ if (!fsExistsSync(FS_DIRECTORY_PATH)) {
             await fs.cp(path.join(process.cwd(), "./src/assets/default_avatar.avif"), path.join(FS_DIRECTORY_PATH, "./default_avatar.avif"));
         }
         catch (e) {
-            log(logTypes.error, "Unable to create the default user avatar");
+            log(logTypes.error, "Unable to copy the default user avatar");
+            console.trace(e);
+        }
+        try {
+            await fs.cp(path.join(process.cwd(), "./src/assets/default_instance_logo.avif"), path.join(FS_DIRECTORY_PATH, "./instance_logo.avif"));
+        }
+        catch (e) {
+            log(logTypes.error, "Unable to copy the default instance logo");
             console.trace(e);
         }
         try {
@@ -72,15 +81,32 @@ if (!fsExistsSync(FS_DIRECTORY_PATH)) {
                 },
                 installedApplications: ["dash", "settings", "files", "store", "weather"]
             }));
+            await globalDatabase.readFromDisk(path.join(FS_DIRECTORY_PATH, "./global_database.json"));
         }
         catch (e) {
-            log(logTypes.error, "Unable to create the \"./fs/global_db.json\" file");
+            log(logTypes.error, "Unable to create the \"./fs/global_database.json\" file");
+        }
+        try {
+            generateLogos();
+        }
+        catch (e) {
+            log(logTypes.error, "Unable to generate logo assets");
+        }
+        const adminUserUnread = new YourDashUnreadUser("admin");
+        if (!(await adminUserUnread.exists())) {
+            await adminUserUnread.create("password", {
+                first: "Admin",
+                last: "istrator"
+            }, [YourDashUserPermissions.Administrator]);
         }
     }
     catch (err) {
         log(logTypes.error, "Uncaught error in fs verification!");
         console.trace(err);
     }
+}
+for (const user of (await fs.readdir(path.resolve("./fs/users/")))) {
+    await (await new YourDashUnreadUser(user).read()).verifyUserConfig().write();
 }
 async function listenForRequests() {
     await killPort(3560);
@@ -95,7 +121,6 @@ async function listenForRequests() {
     }
 }
 await listenForRequests();
-await startupTasks();
 const activeSockets = {};
 const handleShutdown = () => {
     log(logTypes.info, "Shutting down... (restart of core should occur automatically)");
@@ -112,9 +137,7 @@ const handleShutdown = () => {
 };
 process.on("SIGINT", handleShutdown);
 socketIo.on("connection", (socket) => {
-    if (!socket.handshake.query.username ||
-        !socket.handshake.query.sessionToken ||
-        !socket.handshake.query.sessionId) {
+    if (!socket.handshake.query.username || !socket.handshake.query.sessionToken || !socket.handshake.query.sessionId) {
         log(logTypes.error, "[PSA-BACKEND]: Closing connection! Missing required parameters!");
         socket.disconnect(true);
         return;
@@ -220,14 +243,14 @@ exp.use(async (req, res, next) => {
             __internalGetSessionsDoNotUseOutsideOfCore()[username] =
                 (await user.getSessions()) || [];
             const database = fs
-                .readFile(path.resolve(user.getPath(), "./userdb.json"))
+                .readFile(path.resolve(user.getPath(), "./user_db.json"))
                 ?.toString();
             if (database) {
                 userDatabases.set(username, JSON.parse(database));
             }
             else {
                 userDatabases.set(username, {});
-                fs.writeFile(path.resolve(user.getPath(), "./userdb.json"), JSON.stringify({}));
+                fs.writeFile(path.resolve(user.getPath(), "./user_db.json"), JSON.stringify({}));
             }
         }
         catch (_err) {
@@ -279,9 +302,7 @@ exp.post("/core/personal-server-accelerator/", async (req, res) => {
         await fs.writeFile(path.resolve(user.getPath(), "personal_server_accelerator.json"), JSON.stringify(body));
     }
     catch (_err) {
-        return res.json({
-            error: `Unable to write to ${username}/personal_server_accelerator.json`
-        });
+        return res.json({ error: `Unable to write to ${username}/personal_server_accelerator.json` });
     }
     return res.json({ success: true });
 });

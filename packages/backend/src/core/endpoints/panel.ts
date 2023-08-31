@@ -23,7 +23,7 @@
 
 import { Application as ExpressApplication } from "express";
 import globalDatabase from "backend/src/helpers/globalDatabase.js";
-import YourDashUnreadApplication from "backend/src/helpers/applications.js";
+import YourDashApplication from "backend/src/helpers/applications.js";
 import { base64ToDataUrl } from "backend/src/helpers/base64.js";
 import sharp from "sharp";
 import path from "path";
@@ -36,7 +36,7 @@ export default async function defineRoute( app: ExpressApplication ) {
     res.set( "Cache-Control", "no-store" );
     
     Promise.all( ( globalDatabase.get( "installedApplications" ) ).map( async app => {
-      const application = await new YourDashUnreadApplication( app ).read();
+      const application = await new YourDashApplication( app ).read();
       return new Promise( async resolve => {
         sharp(
           await fs.readFile( path.resolve(
@@ -111,7 +111,7 @@ export default async function defineRoute( app: ExpressApplication ) {
     };
     
     const panel = new YourDashPanel( username );
-    const application = new YourDashUnreadApplication( name );
+    const application = new YourDashApplication( name );
     
     try {
       await panel.createQuickShortcut(

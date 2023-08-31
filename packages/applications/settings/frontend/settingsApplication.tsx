@@ -36,6 +36,12 @@ const SettingsApplication: React.FC = () => (
     title={"Home"}
   >
     <SettingCategoryComponent
+      href={"/app/a/settings/profile"}
+      description={"Manage your user profile"}
+      title={"Profile"}
+      icon={YourDashIcon.Person16}
+    />
+    <SettingCategoryComponent
       href={"/app/a/settings/personalization"}
       description={"Sample text"}
       title={"Personalization"}
