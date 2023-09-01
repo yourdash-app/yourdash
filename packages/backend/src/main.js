@@ -10,7 +10,7 @@ import killPort from "kill-port";
 import { YourDashSessionType } from "shared/core/session.js";
 import log, { logTypes, logHistory } from "./helpers/log.js";
 import YourDashUnreadUser, { YourDashUserPermissions } from "./helpers/user.js";
-import globalDatabase from "./helpers/globalDatabase.js";
+import GLOBAL_DB from "./helpers/globalDatabase.js";
 import { __internalGetSessionsDoNotUseOutsideOfCore } from "./core/sessions.js";
 import { YourDashServerDiscoveryStatus } from "./core/discovery.js";
 import defineCorePanelRoutes from "./core/endpoints/panel.js";
@@ -25,8 +25,8 @@ const FS_DIRECTORY_PATH = path.resolve(path.join(process.cwd(), "./fs/"));
 const PROCESS_ARGUMENTS = minimist(process.argv.slice(2));
 export { PROCESS_ARGUMENTS };
 if (fsExistsSync(path.join(FS_DIRECTORY_PATH, "./global_database.json"))) {
-    await globalDatabase.readFromDisk(path.join(FS_DIRECTORY_PATH, "./global_database.json"));
-    if (JSON.stringify(globalDatabase.keys) === JSON.stringify({})) {
+    await GLOBAL_DB.readFromDisk(path.join(FS_DIRECTORY_PATH, "./global_database.json"));
+    if (JSON.stringify(GLOBAL_DB.keys) === JSON.stringify({})) {
         await fs.rm(path.join(FS_DIRECTORY_PATH, "./global_database.json"));
     }
 }
@@ -81,7 +81,7 @@ if (!fsExistsSync(FS_DIRECTORY_PATH)) {
                 },
                 installedApplications: ["dash", "settings", "files", "store", "weather"]
             }));
-            await globalDatabase.readFromDisk(path.join(FS_DIRECTORY_PATH, "./global_database.json"));
+            await GLOBAL_DB.readFromDisk(path.join(FS_DIRECTORY_PATH, "./global_database.json"));
         }
         catch (e) {
             log(logTypes.error, "Unable to create the \"./fs/global_database.json\" file");
@@ -130,7 +130,7 @@ const handleShutdown = () => {
     })
         .join("\n");
     writeFile(path.resolve(process.cwd(), "./fs/log.log"), logOutput, () => {
-        globalDatabase._internalDoNotUseOnlyIntendedForShutdownSequenceWriteToDisk(path.resolve(process.cwd(), "./fs/globalDatabase.json"), () => {
+        GLOBAL_DB._internalDoNotUseOnlyIntendedForShutdownSequenceWriteToDisk(path.resolve(process.cwd(), "./fs/GLOBAL_DB.json"), () => {
             process.kill(process.pid);
         });
     });

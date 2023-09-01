@@ -315,9 +315,28 @@ class __internalClientServerInteraction {
   getUserDB() {
     this.getJson( "/core/user_db", data => {
       this.userDB.clear();
-      this.userDB.keys = data
+      this.userDB.keys = data;
     } );
     return this.userDB;
+  }
+  
+  setUserDB( database: KeyValueDatabase ): Promise<KeyValueDatabase> {
+    return new Promise<KeyValueDatabase>( ( resolve, reject ) => {
+    
+      const previousKeys = this.userDB.keys;
+      this.postJson( "/core/user_db",
+        database.keys,
+        () => {
+          this.userDB.keys = database.keys;
+          
+          resolve( this.userDB )
+        },
+        () => {
+          this.userDB.keys = previousKeys
+
+          reject( "Unable to save the user database to the server" )
+        } );
+    } )
   }
 }
 
