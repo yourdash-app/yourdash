@@ -2,7 +2,7 @@ import { promises as fs } from "fs";
 import path from "path";
 import log, { logTypes } from "./log.js";
 import globalDatabase from "./globalDatabase.js";
-class YourDashApplication {
+class YDApplication {
     name;
     application;
     constructor(application) {
@@ -63,7 +63,7 @@ export async function getAllApplications() {
         return [];
     }
 }
-export default class YourDashUnreadApplication {
+export default class YourDashApplication {
     name;
     constructor(name) {
         this.name = name;
@@ -71,7 +71,7 @@ export default class YourDashUnreadApplication {
     }
     async read() {
         try {
-            return new YourDashApplication(JSON.parse((await fs.readFile(path.resolve(process.cwd(), `../applications/${this.name}/application.json`))).toString() ||
+            return new YDApplication(JSON.parse((await fs.readFile(path.resolve(process.cwd(), `../applications/${this.name}/application.json`))).toString() ||
                 "{}"));
         }
         catch (_err) {
