@@ -23,7 +23,7 @@
 
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import useTranslate from "web-client/src/helpers/l10n";
+import useTranslate from "web-client/src/helpers/i10n";
 import { IWeatherDataForLocation } from "../shared/weatherDataForLocation";
 import WeatherApplicationLocationPageHeader from "./components/Header";
 import { Column, Button, Card } from "web-client/src/ui/index";

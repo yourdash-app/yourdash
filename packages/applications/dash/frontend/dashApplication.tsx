@@ -23,7 +23,7 @@
 
 import * as React from "react";
 import csi from "web-client/src/helpers/csi";
-import useTranslate from "web-client/src/helpers/l10n";
+import useTranslate from "web-client/src/helpers/i10n";
 import loadable from "@loadable/component";
 
 const DashboardLayout = loadable( () => import( "./layouts/dashboard/DashboardLayout" ) );

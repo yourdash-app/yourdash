@@ -26,7 +26,7 @@ import { Icon, Button, DropdownButton, TextBox } from "../../../ui";
 import csi from "../backend/src/helpers/csi";
 import AutocompletedTextInput from "../../../ui/components/autocompletedTextInput/AutocompletedTextInput";
 import { YourDashIcon } from "../../../ui/components/icon/iconDictionary";
-import useTranslate from "../backend/src/helpers/l10n";
+import useTranslate from "../backend/src/helpers/i10n";
 
 function loadPossibleEndpoints( setEndpoints: ( data: string[] ) => void ) {
   csi.getJson( "/app/endpoints/endpoints", data => {
@@ -118,68 +118,68 @@ const EndpointsApplication: React.FC = () => {
               setLoading( true );
               
               switch ( requestMethod ) {
-                case "GET":
-                  switch ( requestType ) {
-                    case "Text":
-                      csi.getText( selectedEndpoint, data => {
-                        setResponse( data );
-                      }, error => {
-                        setDidError( error );
-                      }, requestHeaders );
-                      break;
-                    case "JSON":
-                      csi.getJson( selectedEndpoint, data => {
-                        setResponse( data );
-                      }, error => {
-                        setDidError( error );
-                      }, requestHeaders );
-                      break;
-                    default:
-                      setDidError( trans( "INTERNAL_ERROR" ) );
-                  }
+              case "GET":
+                switch ( requestType ) {
+                case "Text":
+                  csi.getText( selectedEndpoint, data => {
+                    setResponse( data );
+                  }, error => {
+                    setDidError( error );
+                  }, requestHeaders );
                   break;
-                case "POST":
-                  switch ( requestType ) {
-                    case "Text":
-                      csi.postText( selectedEndpoint, JSON.parse( requestBody ), data => {
-                        setResponse( data );
-                      }, error => {
-                        setDidError( error );
-                      }, requestHeaders );
-                      break;
-                    case "JSON":
-                      csi.postJson( selectedEndpoint, JSON.parse( requestBody ), data => {
-                        setResponse( data );
-                      }, error => {
-                        setDidError( error );
-                      }, requestHeaders );
-                      break;
-                    default:
-                      setDidError( trans( "INTERNAL_ERROR" ) );
-                  }
-                  break;
-                case "DELETE":
-                  switch ( requestType ) {
-                    case "Text":
-                      csi.deleteText( selectedEndpoint, data => {
-                        setResponse( data );
-                      }, error => {
-                        setDidError( error );
-                      }, requestHeaders );
-                      break;
-                    case "JSON":
-                      csi.deleteJson( selectedEndpoint, data => {
-                        setResponse( data );
-                      }, error => {
-                        setDidError( error );
-                      }, requestHeaders );
-                      break;
-                    default:
-                      setDidError( trans( "INTERNAL_ERROR" ) );
-                  }
+                case "JSON":
+                  csi.getJson( selectedEndpoint, data => {
+                    setResponse( data );
+                  }, error => {
+                    setDidError( error );
+                  }, requestHeaders );
                   break;
                 default:
                   setDidError( trans( "INTERNAL_ERROR" ) );
+                }
+                break;
+              case "POST":
+                switch ( requestType ) {
+                case "Text":
+                  csi.postText( selectedEndpoint, JSON.parse( requestBody ), data => {
+                    setResponse( data );
+                  }, error => {
+                    setDidError( error );
+                  }, requestHeaders );
+                  break;
+                case "JSON":
+                  csi.postJson( selectedEndpoint, JSON.parse( requestBody ), data => {
+                    setResponse( data );
+                  }, error => {
+                    setDidError( error );
+                  }, requestHeaders );
+                  break;
+                default:
+                  setDidError( trans( "INTERNAL_ERROR" ) );
+                }
+                break;
+              case "DELETE":
+                switch ( requestType ) {
+                case "Text":
+                  csi.deleteText( selectedEndpoint, data => {
+                    setResponse( data );
+                  }, error => {
+                    setDidError( error );
+                  }, requestHeaders );
+                  break;
+                case "JSON":
+                  csi.deleteJson( selectedEndpoint, data => {
+                    setResponse( data );
+                  }, error => {
+                    setDidError( error );
+                  }, requestHeaders );
+                  break;
+                default:
+                  setDidError( trans( "INTERNAL_ERROR" ) );
+                }
+                break;
+              default:
+                setDidError( trans( "INTERNAL_ERROR" ) );
               }
             }}
           >

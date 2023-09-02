@@ -26,7 +26,7 @@ import { IWeatherDataForLocation } from "../../shared/weatherDataForLocation";
 import { IconButton } from "web-client/src/ui/index";
 import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
 import getWeatherConditionFromState from "../helpers/getWeatherConditionFromState";
-import useTranslate from "web-client/src/helpers/l10n";
+import useTranslate from "web-client/src/helpers/i10n";
 import getWeatherBackgroundForCondition from "../helpers/getWeatherBackgroundForCondition";
 import WeatherApplicationDaysCarousel from "./DaysCarousel";
 import styles from "./Header.module.scss";

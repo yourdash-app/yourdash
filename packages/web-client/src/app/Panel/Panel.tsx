@@ -25,7 +25,7 @@ import React, { useEffect, useState } from "react";
 import csi from "web-client/src/helpers/csi";
 import { useNavigate } from "react-router-dom";
 import clippy from "web-client/src/helpers/clippy";
-import { IconButton, RightClickMenu } from "../../ui";
+import { IconButton, RightClickMenu, Spinner, Card } from "../../ui";
 import PanelApplicationLauncher from "./launcher/PanelLaunchers";
 import PanelDesktopIndicator from "./psa/PanelDesktopIndicator";
 import styles from "./Panel.module.scss";
@@ -67,10 +67,10 @@ const PanelQuickShortcuts: React.FC<{
   
   return (
     <>
-      {quickShortcuts.map( ( shortcut, ind ) => (
+      { quickShortcuts.map( ( shortcut, ind ) => (
         <RightClickMenu
-          key={shortcut.url}
-          items={[
+          key={ shortcut.url }
+          items={ [
             {
               name: "Unpin from panel",
               onClick() {
@@ -81,36 +81,36 @@ const PanelQuickShortcuts: React.FC<{
                 } );
               }
             }
-          ]}
+          ] }
         >
           <button
-            type={"button"}
-            className={styles.quickShortcut}
-            onClick={e => {
+            type={ "button" }
+            className={ styles.quickShortcut }
+            onClick={ e => {
               e.currentTarget.blur();
               navigate( shortcut.url );
-            }}
+            } }
           >
             <img
-              draggable={false}
-              src={shortcut.icon}
+              draggable={ false }
+              src={ shortcut.icon }
               alt=""
-              className={styles.quickShortcutIcon}
+              className={ styles.quickShortcutIcon }
             />
             <span
-              className={clippy(
+              className={ clippy(
                 styles.quickShortcutLabel,
                 side === PanelPosition.left && styles.quickShortcutLabelLeft,
                 side === PanelPosition.top && styles.quickShortcutLabelTop,
                 side === PanelPosition.right && styles.quickShortcutLabelRight,
                 side === PanelPosition.bottom && styles.quickShortcutLabelBottom
-              )}
+              ) }
             >
-              {shortcut.displayName}
+              { shortcut.displayName }
             </span>
           </button>
         </RightClickMenu>
-      ) )}
+      ) ) }
     </>
   );
 };
@@ -124,19 +124,19 @@ const PanelInstanceIcon: React.FC = () => {
   }, [] );
   
   if ( !instanceUrl ) {
-    return <div/>;
+    return <div />;
   }
   
   return (
     <button
-      type={"button"}
-      className={"border-none !bg-transparent"}
-      onClick={() => navigate( "/app/a/dash" )}
+      type={ "button" }
+      className={ "border-none !bg-transparent" }
+      onClick={ () => navigate( "/app/a/dash" ) }
     >
       <img
-        src={`${ instanceUrl }/core/panel/logo/small`}
-        alt={""}
-        className={"cursor-pointer select-none w-8"}
+        src={ `${ instanceUrl }/core/panel/logo/small` }
+        alt={ "" }
+        className={ "cursor-pointer select-none w-8" }
       />
     </button>
   );
@@ -187,7 +187,7 @@ const Panel: React.FC<IPanel> = ( {
 } ) => {
   const [num, setNum] = useState<number>( 0 );
   const [launcherType, setLauncherType] = useState<number>( 0 );
-  const [loaded, setLoaded] = useState<number>( 0 )
+  const [loaded, setLoaded] = useState<number>( 0 );
   
   //  @ts-ignore
   Panel.reload = () => {
@@ -197,61 +197,75 @@ const Panel: React.FC<IPanel> = ( {
   useEffect( () => {
     csi.getJson( "/core/panel/position", res => {
       setSide( res.position );
-      setLoaded( loaded + 1 )
+      setLoaded( loaded + 1 );
     }, () => {
-      console.log( "Unable to fetch the panel position" )
+      console.log( "Unable to fetch the panel position" );
     } );
     
     csi.getJson( "/core/panel/quick-shortcuts", res => {
       setLauncherType( res.launcher );
-      setLoaded( loaded + 1 )
+      setLoaded( loaded + 1 );
     }, () => {
-      console.log( "Unable to fetch the panel quick shortcuts" )
+      console.log( "Unable to fetch the panel quick shortcuts" );
     } );
   }, [num] );
   
-  if ( loaded === 0 )
-    return null
-  
+  if ( loaded === 0 ) {
+    return <main className={ styles.panelLoading }>
+      <Spinner />
+      <div>
+        Loading Application Layout
+      </div>
+    </main>;
+  }
   
   return (
     <div
-      className={clippy(
+      className={ clippy(
         "animate__animated animate__fadeIn",
         side === PanelPosition.top && styles.sideTop,
         side === PanelPosition.bottom && styles.sideBottom,
         side === PanelPosition.left && styles.sideLeft,
         side === PanelPosition.right && styles.sideRight,
         styles.panel
-      )}
+      ) }
     >
-      <section className={styles.panelSectionStart}>
-        {/* invisible components which checks that the user is authorized on the first load of the panel*/}
-        <PanelAuthorizer/>
-        <PanelApplicationLauncher num={num} side={side} type={launcherType}/>
-        <PanelInstanceIcon/>
-        {/* separator */}
+      <section className={ styles.panelSectionStart }>
+        {/* invisible components which checks that the user is authorized on the first load of the panel*/ }
+        <PanelAuthorizer />
+        <PanelApplicationLauncher
+          num={ num }
+          side={ side }
+          type={ launcherType }
+        />
+        <PanelInstanceIcon />
+        {/* separator */ }
         <div
           className={
             clippy(
               styles.separator,
-              side === PanelPosition.top || side === PanelPosition.bottom ? styles.separatorHorizontal : styles.separatorVertical
+              side === PanelPosition.top || side === PanelPosition.bottom
+                ? styles.separatorHorizontal
+                : styles.separatorVertical
             )
           }
         />
-        <PanelQuickShortcuts num={num} side={side}/>
+        <PanelQuickShortcuts
+          num={ num }
+          side={ side }
+        />
       </section>
       <section
-        className={clippy(
+        className={ clippy(
           side === PanelPosition.left || side === PanelPosition.right
             ? styles.panelTrayVertical
             : styles.panelTrayHorizontal,
           styles.panelTray
-        )}
+        ) }
       >
-        <PanelDesktopIndicator side={side}/>
-        {/* TODO: feature idea, Quick search ( basically just opens a command panel for all of YourDash ) */}
-        <IconButton icon={YourDashIcon.Search16} className={"!w-[2rem] !h-[2rem]"}/>
+        <PanelDesktopIndicator side={ side } />
+        {/* TODO: feature idea, Quick search ( basically just opens a command panel for all of YourDash ) */ }
+        <IconButton icon={ YourDashIcon.Search16 } className={ "!w-[2rem] !h-[2rem]" } />
       </section>
     </div>
   );

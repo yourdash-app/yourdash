@@ -22,7 +22,6 @@ const Application10 = loadable( () => import( "applications/yourdev/frontend/ind
 const AppRouter = () => {
   return (
     <Routes>
-      
       <Route path={"code_studio/*"} element={<Application0/>}/><Route path={"dash/*"} element={<Application1/>}/><Route path={"diffusion_lab/*"} element={<Application2/>}/><Route path={"endpoints/*"} element={<Application3/>}/><Route path={"files/*"} element={<Application4/>}/><Route path={"global_db/*"} element={<Application5/>}/><Route path={"photos/*"} element={<Application6/>}/><Route path={"settings/*"} element={<Application7/>}/><Route path={"store/*"} element={<Application8/>}/><Route path={"weather/*"} element={<Application9/>}/><Route path={"yourdev/*"} element={<Application10/>}/>
     </Routes>
   );
