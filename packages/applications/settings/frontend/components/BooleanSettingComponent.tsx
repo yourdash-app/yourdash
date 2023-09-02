@@ -4,14 +4,19 @@ import { ToggleSwitch } from "web-client/src/ui";
 
 export interface IBooleanSettingComponent extends IBaseSettingComponent {
   setValue( value: boolean ): void;
-  value: boolean
+  
+  value: boolean;
 }
 
-const BooleanSettingComponent: React.FC<Omit<IBooleanSettingComponent, "children">> = ( { value, setValue, ...baseSettingComponentProps } ) => (
+const BooleanSettingComponent: React.FC<Omit<IBooleanSettingComponent, "children">> = ( {
+  value,
+  setValue,
+  ...baseSettingComponentProps
+} ) => (
   <BaseSettingComponent
-    {...baseSettingComponentProps}
+    { ...baseSettingComponentProps }
   >
-    <ToggleSwitch onValueChange={() => setValue( !value )} defaultValue={value ? "true" : "false"}/>
+    <ToggleSwitch setValue={ ( val ) => setValue( val ) } value={ value } />
   </BaseSettingComponent>
 );
 

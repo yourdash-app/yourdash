@@ -26,27 +26,32 @@ import BasePageLayout from "../../../components/BasePageLayout";
 import BooleanSettingComponent from "../../../components/BooleanSettingComponent";
 import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
 import csi from "web-client/src/helpers/csi";
+import KeyValueDatabase from "shared/core/database";
 
 const Index: React.FC = () => {
+  const [num, setNum] = React.useState<number>( 0 );
   const [useBrowserLayout, setUseBrowserLayout] = React.useState<undefined | boolean>( undefined );
+  const [db, setDb] = React.useState<KeyValueDatabase | undefined>( undefined )
   
   React.useEffect( () => {
-    const db = csi.getUserDB();
+    const database = csi.getUserDB();
     
-    setUseBrowserLayout( db.get( "dash:useBrowserLayout" ) || false );
-    
-    return () => {
-      csi.postJson( "/core/user_db", { "dash:useBrowserLayout": useBrowserLayout || false }, () => {
-        console.log( "out", db );
-      } );
-    };
+    setDb( database )
   }, [] );
   
-  if ( useBrowserLayout === undefined ) {
-    return null;
-  }
+  React.useEffect( () => {
+    if ( !db ) return
+    
+    try {
+      csi.setUserDB( db )
+    } catch ( err ) {
+      console.log( "Unable to set the user database" )
+    }
+  }, [num] )
   
-  console.log( "value:", useBrowserLayout )
+  if ( !db ) {
+    return null
+  }
   
   return (
     <BasePageLayout title={"Dashboard personalization"}>
@@ -54,10 +59,10 @@ const Index: React.FC = () => {
         title={"Use browser layout"}
         icon={YourDashIcon.Browser16}
         description={"Use the \"browser\" layout instead of the \"dashboard\" layout"}
-        value={useBrowserLayout}
+        value={db.get( "dash:useBrowserLayout" )}
         setValue={val => {
-          console.log( val, useBrowserLayout );
-          setUseBrowserLayout( val );
+          db.set( "dash:useBrowserLayout", val )
+          setNum( num + 1 )
         }}
       />
     </BasePageLayout>
