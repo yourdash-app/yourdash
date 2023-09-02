@@ -1,19 +1,8 @@
 import React from "react";
-import {
-  useFloating,
-  offset,
-  shift,
-  autoUpdate,
-  useHover,
-  useFocus,
-  useDismiss,
-  useRole,
-  useInteractions,
-  autoPlacement
-} from "@floating-ui/react";
+import { useFloating, offset, shift, autoUpdate, useHover, useFocus, useDismiss, useRole, useInteractions, autoPlacement } from "@floating-ui/react";
 import DROPLET_ICON from "applications/weather/frontend/weatherIcons/droplet.svg";
 import { Card } from "web-client/src/ui";
-import { getWeatherConditionFromState } from "applications/weather/frontend/location";
+import getWeatherConditionFromState from "applications/weather/frontend/helpers/getWeatherConditionFromState";
 import useTranslate from "web-client/src/helpers/l10n";
 
 export interface IHourlyConditionsHour {
@@ -25,46 +14,46 @@ export interface IHourlyConditionsHour {
   conditionState: number
 }
 
-const HourlyConditionsHour: React.FC<IHourlyConditionsHour> = ( {
+const HourlyConditionsHour: React.FC<IHourlyConditionsHour> = ({
   time,
   conditionIcon,
   conditionState,
   temperature,
   feelsLike,
   rainChance
-} ) => {
-  const trans = useTranslate( "weather" );
-  const [showTooltip, setShowTooltip] = React.useState( false );
+}) => {
+  const trans = useTranslate("weather");
+  const [ showTooltip, setShowTooltip ] = React.useState(false);
   const {
     refs,
     floatingStyles,
     context
-  } = useFloating( {
+  } = useFloating({
     open: showTooltip,
     onOpenChange: setShowTooltip,
     middleware: [
       // eslint-disable-next-line no-magic-numbers
-      offset( 8 ),
+      offset(8),
       shift(),
-      autoPlacement( {
+      autoPlacement({
         autoAlignment: true,
         padding: 8,
         altBoundary: true
-      } )
+      })
     ],
     whileElementsMounted: autoUpdate
-  } );
-  
+  });
+
   const {
     getReferenceProps,
     getFloatingProps
-  } = useInteractions( [
-    useHover( context, { move: false } ),
-    useFocus( context ),
-    useDismiss( context ),
-    useRole( context, { role: "tooltip" } )
-  ] );
-  
+  } = useInteractions([
+    useHover(context, { move: false }),
+    useFocus(context),
+    useDismiss(context),
+    useRole(context, { role: "tooltip" })
+  ]);
+
   return (
     <>
       {
@@ -75,13 +64,13 @@ const HourlyConditionsHour: React.FC<IHourlyConditionsHour> = ( {
             {...getFloatingProps()}
           >
             <Card showBorder>
-              <span>{`${ temperature }°C`}</span>
-              <div>{trans( getWeatherConditionFromState( conditionState ) )}</div>
+              <span>{`${temperature}°C`}</span>
+              <div>{trans(getWeatherConditionFromState(conditionState))}</div>
               <div className={"flex items-center justify-center"}>
-                <img className={"h-full"} src={DROPLET_ICON} alt={""}/>
-                <span>{`Rain chance: ${ rainChance }%`}</span>
+                <img className={"h-full"} src={DROPLET_ICON} alt={""} />
+                <span>{`Rain chance: ${rainChance}%`}</span>
               </div>
-              <span>{`${ feelsLike }°C`}</span>
+              <span>{`${feelsLike}°C`}</span>
             </Card>
           </div>
         )
@@ -95,17 +84,17 @@ const HourlyConditionsHour: React.FC<IHourlyConditionsHour> = ( {
           className={"flex flex-col items-center justify-center"}
           onClick={() => {
             // TODO: implement logic on click of a "weather hour"
-            console.log( "IMPLEMENT ME!!!" );
+            console.log("IMPLEMENT ME!!!");
           }}
         >
           <span>{time}</span>
-          <img alt={""} className={"aspect-square h-16"} src={conditionIcon}/>
-          <span>{`${ temperature }°C`}</span>
+          <img alt={""} className={"aspect-square h-16"} src={conditionIcon} />
+          <span>{`${temperature}°C`}</span>
           <div className={"flex items-center justify-center"}>
-            <img className={"h-full"} src={DROPLET_ICON} alt={""}/>
-            <span>{`${ rainChance }%`}</span>
+            <img className={"h-full"} src={DROPLET_ICON} alt={""} />
+            <span>{`${rainChance}%`}</span>
           </div>
-          <span>{`${ feelsLike }°C`}</span>
+          <span>{`${feelsLike}°C`}</span>
         </Card>
       </div>
     </>

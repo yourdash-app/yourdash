@@ -21,6 +21,10 @@
  * SOFTWARE.
  */
 
+function changeOccurred( db: KeyValueDatabase ) {
+  console.debug( "changeOccurred: ", JSON.stringify( db, null, 2 ) );
+}
+
 export default class KeyValueDatabase {
   keys: {
     [ key: string ]: any
@@ -66,8 +70,4 @@ export default class KeyValueDatabase {
   } ) {
     this.keys = Object.assign( this.keys, keys );
   }
-}
-
-function changeOccurred( db: KeyValueDatabase ) {
-  console.debug( "changeOccurred: ", JSON.stringify( db, null, 2 ) );
 }
