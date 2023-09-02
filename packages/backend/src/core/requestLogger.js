@@ -34,6 +34,6 @@ export default function startRequestLogger(app, options) {
         }
         next();
     });
-    log(logTypes.success, `Started the requests logger${options && " (logging options requests is enabled)"}`);
+    log(logTypes.success, `Started the requests logger${options && " (logging options requests is also enabled)"}`);
 }
 //# sourceMappingURL=requestLogger.js.map
