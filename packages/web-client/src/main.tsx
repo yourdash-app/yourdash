@@ -30,7 +30,7 @@ import { createRoutesFromElements, Route, RouterProvider } from "react-router";
 import { createHashRouter } from "react-router-dom";
 import loadable from "@loadable/component";
 import ApplicationRedirectToDash from "./app/ApplicationRedirectToDash.jsx";
-import AppLayout from "./app/Layout.jsx";
+import AppLayout from "./app/new/AppLayout";
 import ComingSoon from "./ComingSoon";
 import DocsLayout from "./root/docs/Layout";
 import ErrorElement from "./ErrorElement";

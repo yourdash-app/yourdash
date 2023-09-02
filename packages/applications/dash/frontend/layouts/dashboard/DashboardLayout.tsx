@@ -22,7 +22,7 @@
  */
 
 import * as React from "react";
-import useTranslate from "web-client/src/helpers/l10n";
+import useTranslate from "web-client/src/helpers/i10n";
 import { IconButton, Chip, Row } from "web-client/src/ui";
 import { useNavigate } from "react-router-dom";
 import styles from "./DashboardLayout.module.scss";

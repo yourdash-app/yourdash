@@ -27,7 +27,7 @@ import csi from "helpers/csi";
 import { IDiffusionLabImageGenerationData } from "../../../../../shared/apps/diffusion_lab/image/generationData";
 import YourDashLogo from "../../../../public/assets/productLogos/yourdash.svg";
 import { YourDashIcon } from "../../../ui/components/icon/iconDictionary";
-import useTranslate from "../backend/src/helpers/l10n";
+import useTranslate from "../backend/src/helpers/i10n";
 
 const DiffusionLabApplication: React.FC = () => {
   const trans = useTranslate( "diffusion_lab" );

@@ -25,7 +25,7 @@ import React, { useEffect, useState } from "react";
 import Header from "./components/Header";
 import { MajorButton, Button } from "../../ui";
 import { Link, useNavigate } from "react-router-dom";
-import { useTranslateHomePage } from "web-client/src/helpers/l10n";
+import { useTranslateHomePage } from "web-client/src/helpers/i10n";
 
 const Index: React.FC = () => {
   const trans = useTranslateHomePage( "index" );

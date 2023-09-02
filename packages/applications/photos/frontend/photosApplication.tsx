@@ -24,7 +24,7 @@
 import React, { useEffect, useState } from "react";
 import { Icon, MajorButton } from "../../../ui";
 import PhotoDay from "./components/photoDay";
-import useTranslate from "../backend/src/helpers/l10n";
+import useTranslate from "../backend/src/helpers/i10n";
 import { YourDashIcon } from "../../../ui/components/icon/iconDictionary";
 
 const PhotosApplication: React.FC = () => {
