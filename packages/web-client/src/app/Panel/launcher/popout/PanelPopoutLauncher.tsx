@@ -29,7 +29,7 @@ import { Icon, IconButton, Row, TextInput } from "../../../../ui";
 import { PanelPosition, YourDashLauncherApplication } from "../../Panel";
 import LauncherGridView from "../sharedComponents/LauncherGridView";
 import LauncherDateAndTime from "../sharedComponents/LauncherDateAndTime";
-import { useTranslateAppCoreUI } from "web-client/src/helpers/l10n";
+import { useTranslateAppCoreUI } from "web-client/src/helpers/i10n";
 import styles from "./PanelPopoutLauncher.module.scss";
 import { YourDashIcon } from "../../../../ui/components/icon/iconDictionary";
 

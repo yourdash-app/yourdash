@@ -23,7 +23,7 @@
 
 import React from "react";
 import csi from "../../backend/src/helpers/csi";
-import useTranslate from "../../backend/src/helpers/l10n";
+import useTranslate from "../../backend/src/helpers/i10n";
 import { IconButton, Icon, RightClickMenu, Button } from "../../../../ui";
 import clippy from "../../backend/src/helpers/clippy";
 import path from "path-browserify";
