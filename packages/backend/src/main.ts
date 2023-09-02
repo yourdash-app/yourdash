@@ -171,7 +171,12 @@ if ( !fsExistsSync( FS_DIRECTORY_PATH ) ) {
             username: "admin"
           }
         },
-        installedApplications: ["dash", "settings", "files", "store", "weather"]
+        installedApplications: ["dash", "settings", "files", "store", "weather"],
+        defaults: {
+          user: {
+            quickShortcuts: ["dash", "settings", "files", "store", "weather"]
+          }
+        }
       } ) );
       
       // load the new global database
