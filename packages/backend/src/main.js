@@ -79,7 +79,12 @@ if (!fsExistsSync(FS_DIRECTORY_PATH)) {
                         username: "admin"
                     }
                 },
-                installedApplications: ["dash", "settings", "files", "store", "weather"]
+                installedApplications: ["dash", "settings", "files", "store", "weather"],
+                defaults: {
+                    user: {
+                        quickShortcuts: ["dash", "settings", "files", "store", "weather"]
+                    }
+                }
             }));
             await GLOBAL_DB.readFromDisk(path.join(FS_DIRECTORY_PATH, "./global_database.json"));
         }

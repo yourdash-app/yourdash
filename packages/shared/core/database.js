@@ -1,3 +1,6 @@
+function changeOccurred(db) {
+    console.debug("changeOccurred: ", JSON.stringify(db, null, 2));
+}
 export default class KeyValueDatabase {
     keys;
     constructor() {
@@ -30,8 +33,5 @@ export default class KeyValueDatabase {
     merge(keys) {
         this.keys = Object.assign(this.keys, keys);
     }
-}
-function changeOccurred(db) {
-    console.debug("changeOccurred: ", JSON.stringify(db, null, 2));
 }
 //# sourceMappingURL=database.js.map

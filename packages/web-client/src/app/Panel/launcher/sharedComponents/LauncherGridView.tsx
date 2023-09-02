@@ -28,7 +28,7 @@ import { useNavigate } from "react-router-dom";
 import clippy from "web-client/src/helpers/clippy";
 import { RightClickMenu } from "../../../../ui";
 import Panel, { YourDashLauncherApplication } from "../../Panel";
-import { useTranslateAppCoreUI } from "web-client/src/helpers/l10n";
+import { useTranslateAppCoreUI } from "web-client/src/helpers/i10n";
 
 
 export interface ILauncherGridView {

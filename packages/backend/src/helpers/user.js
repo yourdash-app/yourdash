@@ -80,7 +80,7 @@ class YourDashUser {
             hash("password").then(async (response) => {
                 await fs.writeFile(path.resolve(this.getPath(), "./password.txt"), response);
             });
-            await fs.writeFile(path.resolve(this.getPath(), "./quick-shortcuts.json"), JSON.stringify(GLOBAL_DB.get("defaults:user:")));
+            await fs.writeFile(path.resolve(this.getPath(), "./quick-shortcuts.json"), JSON.stringify(GLOBAL_DB.get("defaults:user:quickShortcuts")));
             await fs.mkdir(this.getAppDataPath());
             await fs.mkdir(path.resolve(this.getPath(), "./fs/"));
             await fs.writeFile(path.resolve(this.getPath(), "./user_db.json"), "{}");

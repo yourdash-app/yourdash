@@ -27,7 +27,7 @@ import { IconButton, Spinner, Card, Button, Icon, MajorButton, Carousel } from "
 import csi from "web-client/src/helpers/csi";
 import StoreApplicationDefaultHeaderBackground from "./default_background.svg";
 import Panel from "web-client/src/app/Panel/Panel";
-import useTranslate from "web-client/src/helpers/l10n";
+import useTranslate from "web-client/src/helpers/i10n";
 import { type IYourDashStoreApplication } from "shared/apps/store/storeApplication";
 import InstallationPopup from "./components/InstallationPopup";
 import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";

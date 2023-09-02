@@ -25,11 +25,10 @@ import { promises as fs } from "fs";
 import path from "path";
 import sharp from "sharp";
 import chalk from "chalk";
-import { type IYourDashSession } from "../../../shared/core/session.js";
+import { type IYourDashSession } from "shared/core/session.js";
 import log, { logTypes } from "./log.js";
 import { hash } from "./encryption.js";
 import YourDashSession, { getSessionsForUser } from "./session.js";
-import KeyValueDatabase from "./keyValueDatabase.js";
 import getUserDatabase from "./userDatabase.js";
 import GLOBAL_DB from "./globalDatabase.js";
 
