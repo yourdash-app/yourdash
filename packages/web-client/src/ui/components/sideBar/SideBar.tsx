@@ -53,7 +53,7 @@ const SideBar: React.FC<ISideBarProps> = ( {
     <div className={`${ styles.component } ${ className }`} data-expanded={expanded} style={style}>
       <IconButton
         className={styles.toggleButton}
-        icon={YourDashIcon.ThreeBars16}
+        icon={YourDashIcon.ThreeBars}
         onClick={() => setExpanded( !expanded )}
       />
       <header className={styles.header}>

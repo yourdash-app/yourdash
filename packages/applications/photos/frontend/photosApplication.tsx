@@ -57,7 +57,7 @@ const PhotosApplication: React.FC = () => {
                   }
                 </span>
                 <MajorButton className={"flex items-center justify-center gap-2"}>
-                  <Icon className={"h-6"} icon={YourDashIcon.Upload16}/>
+                  <Icon className={"h-6"} icon={YourDashIcon.Upload}/>
                   <span className={"flex-nowrap whitespace-nowrap flex items-center justify-center"}>
                     {
                       trans( "NO_PHOTOS_UPLOAD_PROMPT" )

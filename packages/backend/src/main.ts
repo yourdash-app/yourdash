@@ -73,6 +73,7 @@ import { generateLogos } from "./helpers/logo.js";
 // -------------------------------
 
 const FS_DIRECTORY_PATH = path.resolve( path.join( process.cwd(), "./fs/" ) );
+export { FS_DIRECTORY_PATH }
 
 /*
  //////////////////////////////////
@@ -211,8 +212,13 @@ if ( !fsExistsSync( FS_DIRECTORY_PATH ) ) {
   }
 }
 
-for ( const user of ( await fs.readdir( path.resolve( "./fs/users/" ) ) ) ) {
-  await ( await new YourDashUnreadUser( user ).read() ).verifyUserConfig().write();
+try {
+  for ( const user of ( await fs.readdir( path.join( FS_DIRECTORY_PATH, "./users/" ) ) ) ) {
+    await ( await new YourDashUnreadUser( user ).read() ).verifyUserConfig().write();
+  }
+} catch ( err ) {
+  log( logTypes.error, "Unable to verify users' settings!" );
+  console.trace( err );
 }
 
 /*
@@ -272,7 +278,7 @@ const handleShutdown = () => {
   
   writeFile( path.resolve( process.cwd(), "./fs/log.log" ), logOutput, () => {
     GLOBAL_DB._internalDoNotUseOnlyIntendedForShutdownSequenceWriteToDisk(
-      path.resolve( process.cwd(), "./fs/GLOBAL_DB.json" ),
+      path.resolve( process.cwd(), "./fs/global_database.json" ),
       () => {
         process.kill( process.pid );
       }

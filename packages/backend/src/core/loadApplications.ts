@@ -4,8 +4,8 @@ import log, { logTypes } from "../helpers/log.js";
 import { existsSync as fsExistsSync } from "fs";
 import chalk from "chalk";
 import { type YourDashApplicationServerPlugin } from "../helpers/applications.js";
-import { type Application as ExpressApplication } from "express"
-import { type Server as SocketIoServer } from "socket.io"
+import { type Application as ExpressApplication } from "express";
+import { type Server as SocketIoServer } from "socket.io";
 
 function checkIfApplicationIsValidToLoad( applicationName: string ): boolean {
   if (
@@ -93,8 +93,12 @@ export function loadApplication( appName: string, app: ExpressApplication, io: S
 
 export default function loadApplications( exp: ExpressApplication, io: SocketIoServer ) {
   if ( fsExistsSync( path.resolve( process.cwd(), "../applications/" ) ) ) {
-    const apps = ( globalDatabase.get( "installedApplications" ) );
-    console.log( apps )
+    const apps = ( globalDatabase.get( "installedApplications" ) ) || [];
+    if ( apps?.length === 0 ) {
+      log( logTypes.warn, "No applications were loaded" )
+    } else {
+      log( logTypes.info, `Loading applications ${apps}` );
+    }
     apps.forEach( ( appName: string ) => {
       try {
         loadApplication( appName, exp, io );

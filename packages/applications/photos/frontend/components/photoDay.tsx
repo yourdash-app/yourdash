@@ -46,7 +46,7 @@ const PhotoDay: React.FC<{
           {photoCategory.date}
         </h3>
         <Icon
-          icon={isOpen ? YourDashIcon.ChevronDown16 : YourDashIcon.ChevronUp16}
+          icon={isOpen ? YourDashIcon.ChevronDown : YourDashIcon.ChevronUp}
           className={"h-5"}
           color={"rgb(var(--button-fg))"}
         />

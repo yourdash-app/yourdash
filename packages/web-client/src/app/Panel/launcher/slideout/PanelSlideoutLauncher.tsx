@@ -120,14 +120,14 @@ const PanelApplicationLauncherSlideOut: React.FC<{
         <LauncherDateAndTime/>
         <Row className={"ml-auto"}>
           <IconButton
-            icon={YourDashIcon.Person16}
+            icon={YourDashIcon.Person}
             onClick={() => {
               setVisible( false );
               navigate( "/app/a/profile" );
             }}
           />
           <IconButton
-            icon={YourDashIcon.Gear16}
+            icon={YourDashIcon.Gear}
             onClick={() => {
               setVisible( false );
               navigate( "/app/a/settings" );

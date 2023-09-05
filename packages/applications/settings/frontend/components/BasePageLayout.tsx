@@ -48,7 +48,7 @@ const BasePageLayout: React.FC<IBasePageLayout> = ( {
               onClick={() => {
                 navigate( ".." );
               }}
-              icon={YourDashIcon.ChevronLeft16}
+              icon={YourDashIcon.ChevronLeft}
             />
           )
         }

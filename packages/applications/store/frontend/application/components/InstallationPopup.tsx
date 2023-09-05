@@ -45,7 +45,7 @@ const InstallationPopup: React.FC<IInstallationPopup> = ( { applicationData, onC
         <section className={"flex items-center justify-between"}>
           <h1 className={"text-3xl font-semibold tracking-wide"}>{`Confirm installation of ${ applicationData?.displayName }`}</h1>
           <IconButton
-            icon={YourDashIcon.X16}
+            icon={YourDashIcon.X}
             onClick={() => {
               onClose();
             }}

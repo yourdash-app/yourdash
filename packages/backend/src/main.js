@@ -22,6 +22,7 @@ import defineUserDatabaseRoutes, { userDatabases } from "./core/endpoints/userDa
 import centerTerminalOutputOnLine from "./helpers/terminal/centerTerminalOutputOnLine.js";
 import { generateLogos } from "./helpers/logo.js";
 const FS_DIRECTORY_PATH = path.resolve(path.join(process.cwd(), "./fs/"));
+export { FS_DIRECTORY_PATH };
 const PROCESS_ARGUMENTS = minimist(process.argv.slice(2));
 export { PROCESS_ARGUMENTS };
 if (fsExistsSync(path.join(FS_DIRECTORY_PATH, "./global_database.json"))) {
@@ -110,8 +111,14 @@ if (!fsExistsSync(FS_DIRECTORY_PATH)) {
         console.trace(err);
     }
 }
-for (const user of (await fs.readdir(path.resolve("./fs/users/")))) {
-    await (await new YourDashUnreadUser(user).read()).verifyUserConfig().write();
+try {
+    for (const user of (await fs.readdir(path.join(FS_DIRECTORY_PATH, "./users/")))) {
+        await (await new YourDashUnreadUser(user).read()).verifyUserConfig().write();
+    }
+}
+catch (err) {
+    log(logTypes.error, "Unable to verify users' settings!");
+    console.trace(err);
 }
 async function listenForRequests() {
     await killPort(3560);
@@ -135,7 +142,7 @@ const handleShutdown = () => {
     })
         .join("\n");
     writeFile(path.resolve(process.cwd(), "./fs/log.log"), logOutput, () => {
-        GLOBAL_DB._internalDoNotUseOnlyIntendedForShutdownSequenceWriteToDisk(path.resolve(process.cwd(), "./fs/GLOBAL_DB.json"), () => {
+        GLOBAL_DB._internalDoNotUseOnlyIntendedForShutdownSequenceWriteToDisk(path.resolve(process.cwd(), "./fs/global_database.json"), () => {
             process.kill(process.pid);
         });
     });

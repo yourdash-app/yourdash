@@ -62,7 +62,7 @@ const DashApplicationWelcome: React.FC = () => {
                 {"Customize everything"}
               </p>
               <div className={"flex items-center justify-end w-full"}>
-                <IconButton icon={YourDashIcon.LinkExternal16}/>
+                <IconButton icon={YourDashIcon.LinkExternal}/>
               </div>
             </Card>
             <Card
@@ -73,7 +73,7 @@ const DashApplicationWelcome: React.FC = () => {
                 {"Customize everything"}
               </p>
               <div className={"flex items-center justify-end w-full"}>
-                <IconButton icon={YourDashIcon.LinkExternal16}/>
+                <IconButton icon={YourDashIcon.LinkExternal}/>
               </div>
             </Card>
             <Card
@@ -84,7 +84,7 @@ const DashApplicationWelcome: React.FC = () => {
                 {"Customize everything"}
               </p>
               <div className={"flex items-center justify-end w-full"}>
-                <IconButton icon={YourDashIcon.LinkExternal16}/>
+                <IconButton icon={YourDashIcon.LinkExternal}/>
               </div>
             </Card>
           </main>

@@ -60,7 +60,7 @@ const Carousel: React.FC<ICarousel> = ( {
           ? (
             <>
               <IconButton
-                icon={YourDashIcon.ChevronLeft16}
+                icon={YourDashIcon.ChevronLeft}
                 onClick={() => {
                   if ( !pageRef.current ) {
                     return;
@@ -76,7 +76,7 @@ const Carousel: React.FC<ICarousel> = ( {
                 }}
               />
               <IconButton
-                icon={YourDashIcon.ChevronRight16}
+                icon={YourDashIcon.ChevronRight}
                 onClick={() => {
                   if ( !pageRef.current ) {
                     return;

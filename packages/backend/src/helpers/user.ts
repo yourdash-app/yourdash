@@ -31,6 +31,7 @@ import { hash } from "./encryption.js";
 import YourDashSession, { getSessionsForUser } from "./session.js";
 import getUserDatabase from "./userDatabase.js";
 import GLOBAL_DB from "./globalDatabase.js";
+import { FS_DIRECTORY_PATH } from "../main.js";
 
 export enum YourDashUserPermissions {
   Administrator, CreateFiles, DeleteFiles,
@@ -58,11 +59,10 @@ class YourDashUser {
     }
   }
   
-  setPassword( password: string ): this {
+  async setPassword( password: string ): Promise<this> {
     try {
-      hash( password ).then( async result => {
-        await fs.writeFile( path.resolve( this.getPath(), "./password.txt" ), result );
-      } );
+      const hashedPassword = await hash( password )
+      await fs.writeFile( path.resolve( this.getPath(), "./password.txt" ), hashedPassword );
     } catch ( _err ) {
       console.error( `unable to set password for user: ${ this.username }` );
     }
@@ -93,10 +93,18 @@ class YourDashUser {
   }
   
   async generateAvatars(): Promise<this> {
-    sharp( ( await fs.readFile( path.resolve( this.getPath(), "default_avatar.avif" ) ) ) ).resize( 32, 32 ).toFile( path.resolve(
-      this.getPath(),
-      "micro_avatar.avif"
-    ) ).catch( err => console.error( err ) );
+    sharp( ( await fs.readFile( path.resolve( this.getPath(), "avatar.avif" ) ) ) )
+      .resize( 32, 32 )
+      .toFile( path.resolve( this.getPath(), "small_avatar.avif" ) )
+      .catch( err => console.error( err ) );
+    sharp( ( await fs.readFile( path.resolve( this.getPath(), "avatar.avif" ) ) ) )
+      .resize( 64, 64 )
+      .toFile( path.resolve( this.getPath(), "medium_avatar.avif" ) )
+      .catch( err => console.error( err ) );
+    sharp( ( await fs.readFile( path.resolve( this.getPath(), "avatar.avif" ) ) ) )
+      .resize( 128, 128 )
+      .toFile( path.resolve( this.getPath(), "large_avatar.avif" ) )
+      .catch( err => console.error( err ) );
     return this;
   }
   
@@ -125,7 +133,7 @@ class YourDashUser {
     } );
   }
   
-  async write() {
+  async write(): Promise<void> {
     if ( !( await this.exists() ) ) {
       await fs.mkdir( this.getPath(), { recursive: true } );
       await fs.cp(
@@ -143,6 +151,8 @@ class YourDashUser {
     
     try {
       await fs.writeFile( path.join( this.getPath(), "user.json" ), JSON.stringify( this.user ) );
+      const db = await this.getPersonalDatabase()
+      await db.writeToDisk( path.resolve( this.getPath(), "./user_db.json" ) );
     } catch ( err ) {
       console.error( "Error writing user to disk!", err );
     }
@@ -179,11 +189,13 @@ class YourDashUser {
     return this;
   }
   
-  setName( name: {
+  async setName( name: {
     first: string;
     last: string
-  } ): this {
+  } ): Promise<this> {
     this.user.fullName = name;
+    const db = await this.getPersonalDatabase()
+    db.set( "core:user:userFullName", name );
     return this;
   }
   
@@ -217,11 +229,11 @@ export default class YourDashUnreadUser {
   }
   
   getPath(): string {
-    return path.resolve( process.cwd(), `./fs/users/${ this.username }/` );
+    return path.join( FS_DIRECTORY_PATH, `./users/${ this.username }/` );
   }
   
   getAppDataPath(): string {
-    return path.resolve( this.getPath(), "./app_data/" );
+    return path.join( this.getPath(), "./app_data/" );
   }
   
   async exists(): Promise<boolean> {
@@ -242,10 +254,23 @@ export default class YourDashUnreadUser {
     },
     permissions: YourDashUserPermissions[]
   ) {
-    return new YourDashUser( this.username ).verifyUserConfig().setPassword( password ).setName( name ).setPermissions( permissions ).write();
+    const user = new YourDashUser( this.username )
+    
+    await fs.cp( path.resolve( process.cwd(), path.join( "./src/assets/default_avatar.avif" ) ), path.join( user.getPath(), "./avatar.avif" ) )
+
+    await fs.writeFile( path.join( user.getPath(), "./user_db.json" ), "{}" )
+    
+    user.verifyUserConfig()
+    await user.setName( name )
+    await user.setPassword( password )
+    user.setPermissions( permissions )
+    await user.write();
+    await user.generateAvatars()
+    
+    return user
   }
   
-  async read() {
+  async read(): Promise<YourDashUser> {
     return await new YourDashUser( this.username ).read();
   }
 }

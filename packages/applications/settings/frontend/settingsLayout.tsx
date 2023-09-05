@@ -35,14 +35,14 @@ const SettingsLayout: React.FC = () => {
         title={"Settings"}
         items={[
           {
-            icon: YourDashIcon.Home16,
+            icon: YourDashIcon.Home,
             label: "Home",
             onClick() {
               navigate( "/app/a/settings/" );
             }
           },
           {
-            icon: YourDashIcon.Paintbrush16,
+            icon: YourDashIcon.Paintbrush,
             label: "Personalization",
             onClick() {
               navigate( "/app/a/settings/personalization" );
@@ -56,21 +56,21 @@ const SettingsLayout: React.FC = () => {
             }
           },
           {
-            icon: YourDashIcon.Accessibility16,
+            icon: YourDashIcon.Accessibility,
             label: "Accessibility",
             onClick() {
               navigate( "/app/a/settings/accessibility" );
             }
           },
           {
-            icon: YourDashIcon.Tools16,
+            icon: YourDashIcon.Tools,
             label: "Admin tools",
             onClick() {
               navigate( "/app/a/settings/admin" );
             }
           },
           {
-            icon: YourDashIcon.Code16,
+            icon: YourDashIcon.Code,
             label: "Developer tools",
             onClick() {
               navigate( "/app/a/settings/developer" );

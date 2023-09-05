@@ -30,11 +30,26 @@ type TJson = {
   [ key: string ]: ITJson
 }
 
+export class UserDatabase extends KeyValueDatabase {
+  constructor() {
+    super()
+  }
+  
+  set( key: string, value: any ) {
+    super.set( key, value );
+    
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    csi.postJson( "/core/user_db", this.keys, () => {
+      return 0
+    } )
+  }
+}
+
 class __internalClientServerInteraction {
-  userDB: KeyValueDatabase;
+  userDB: UserDatabase;
   
   constructor() {
-    this.userDB = new KeyValueDatabase();
+    this.userDB = new UserDatabase();
     
     return this;
   }
@@ -312,12 +327,15 @@ class __internalClientServerInteraction {
     return localStorage.getItem( "username" ) || "";
   }
   
-  getUserDB() {
-    this.getJson( "/core/user_db", data => {
-      this.userDB.clear();
-      this.userDB.keys = data;
-    } );
-    return this.userDB;
+  async getUserDB(): Promise<UserDatabase> {
+    return new Promise( ( resolve ) => {
+      this.getJson( "/core/user_db", data => {
+        this.userDB.clear();
+        this.userDB.keys = data;
+        
+        resolve( this.userDB )
+      } );
+    } )
   }
   
   setUserDB( database: KeyValueDatabase ): Promise<KeyValueDatabase> {
