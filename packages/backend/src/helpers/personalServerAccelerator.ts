@@ -1,7 +1,7 @@
 import { Socket as SocketIoSocket } from "socket.io";
 
 import { IYourDashSession, YourDashSessionType } from "../../../shared/core/session.js";
-import { activeSockets, socketIo } from "../main.js";
+import { ACTIVE_SOCKET_IO_SOCKETS, socketIo } from "../main.js";
 
 import log from "./log.js";
 
@@ -26,13 +26,13 @@ export function getSocketFromSession(
     return undefined;
   }
 
-  const connection = activeSockets[username]?.find( sock => sock.id === session.id.toString() ) || undefined;
+  const connection = ACTIVE_SOCKET_IO_SOCKETS[username]?.find( sock => sock.id === session.id.toString() ) || undefined;
 
   if ( !connection ) {
     return undefined;
   }
 
-  return activeSockets[username]?.find( sock => sock.id === session.id.toString() )?.socket || undefined;
+  return ACTIVE_SOCKET_IO_SOCKETS[username]?.find( sock => sock.id === session.id.toString() )?.socket || undefined;
 }
 
 export class PersonalServerAcceleratorCommunication {

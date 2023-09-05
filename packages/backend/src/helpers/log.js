@@ -1,13 +1,13 @@
 import chalk from "chalk";
 import globalDatabase from "./globalDatabase.js";
-export var logTypes;
-(function (logTypes) {
-    logTypes[logTypes["info"] = 0] = "info";
-    logTypes[logTypes["warn"] = 1] = "warn";
-    logTypes[logTypes["error"] = 2] = "error";
-    logTypes[logTypes["success"] = 3] = "success";
-})(logTypes || (logTypes = {}));
-export const logHistory = [];
+export var LOG_TYPES;
+(function (LOG_TYPES) {
+    LOG_TYPES[LOG_TYPES["INFO"] = 0] = "INFO";
+    LOG_TYPES[LOG_TYPES["WARN"] = 1] = "WARN";
+    LOG_TYPES[LOG_TYPES["ERROR"] = 2] = "ERROR";
+    LOG_TYPES[LOG_TYPES["SUCCESS"] = 3] = "SUCCESS";
+})(LOG_TYPES || (LOG_TYPES = {}));
+export const LOG_HISTORY = [];
 export default function log(type, ...message) {
     const logParams = [];
     if (globalDatabase.get("settings:log_should_log_time")) {
@@ -17,30 +17,30 @@ export default function log(type, ...message) {
             : date.getSeconds()} `);
     }
     switch (type) {
-        case logTypes.info:
+        case LOG_TYPES.INFO:
             logParams.push(chalk.blue("INFO    "));
             break;
-        case logTypes.warn:
+        case LOG_TYPES.WARN:
             logParams.push(chalk.yellow("WARN    "));
             break;
-        case logTypes.error:
+        case LOG_TYPES.ERROR:
             logParams.push(chalk.red("ERROR   "));
             break;
-        case logTypes.success:
+        case LOG_TYPES.SUCCESS:
             logParams.push(chalk.green("SUCCESS "));
             break;
         default:
             break;
     }
     logParams.push(...message);
-    logHistory.push({
-        type: (type === logTypes.info
+    LOG_HISTORY.push({
+        type: (type === LOG_TYPES.INFO
             ? "INFO"
-            : type === logTypes.warn
+            : type === LOG_TYPES.WARN
                 ? "WARN"
-                : type === logTypes.error
+                : type === LOG_TYPES.ERROR
                     ? "ERROR"
-                    : type === logTypes.success ? "SUCCESS" : "UNKNOWN"),
+                    : type === LOG_TYPES.SUCCESS ? "SUCCESS" : "UNKNOWN"),
         message: logParams.slice(1).map(msg => msg?.replace?.(/\x1b\[[0-9;]*m/g, "") || "LOGGING ERROR")
     });
     console.log(...logParams);

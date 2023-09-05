@@ -47,7 +47,7 @@ const WeatherConditionsForHour: React.FC<IWeatherConditionsForHour> = ( {
   
   if ( !selectedHourDate ) return null
   
-  return <section className={ "h-max ml-2 mr-2 flex flex-col gap-2" }>
+  return <section className={ "h-max ml-2 mr-2 flex flex-col gap-2 w-max" }>
     <section className={"gap-2 flex text-xl"}>
       <span>
         {

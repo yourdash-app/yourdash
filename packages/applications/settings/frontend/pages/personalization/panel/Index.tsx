@@ -23,10 +23,9 @@
 
 import { useState } from "react"
 import BasePageLayout from "../../../components/BasePageLayout";
-import BooleanSettingComponent from "../../../components/BooleanSettingComponent";
 import csi from "web-client/src/helpers/csi";
 import { YourDashIcon } from "web-client/src/ui/index";
-import Panel from "web-client/src/app/new/Panel/Panel"
+import Panel from "web-client/src/app/panel/Panel"
 import DropdownSettingComponent from "../../../components/DropdownSettingComponent";
 
 const Index: React.FC = () => {
@@ -58,7 +57,8 @@ const Index: React.FC = () => {
         csi.userDB.set( "core:panel:size", val );
         // @ts-ignore
         Panel.reload();
-      }}/>
+      }}
+    />
     <DropdownSettingComponent
       title={"Panel Side"}
       icon={YourDashIcon.Gear}
@@ -87,7 +87,8 @@ const Index: React.FC = () => {
         csi.userDB.set( "core:panel:side", val );
         // @ts-ignore
         Panel.reload();
-      }}/>
+      }}
+    />
   </BasePageLayout>
 }
 
