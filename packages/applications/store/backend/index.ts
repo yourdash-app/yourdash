@@ -92,8 +92,6 @@ const main: YourDashApplicationServerPlugin = ( {
           
           const application = await unreadApplication.read();
           
-          console.log( process.cwd() )
-          
           return {
             id: applicationName,
             displayName: application.getDisplayName() || applicationName,

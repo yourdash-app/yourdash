@@ -35,7 +35,7 @@ import chalk from "chalk";
 import minimist from "minimist";
 import killPort from "kill-port";
 import { YourDashSessionType } from "shared/core/session.js";
-import log, { logTypes, logHistory } from "./helpers/log.js";
+import log, { LOG_TYPES, LOG_HISTORY } from "./helpers/log.js";
 import YourDashUnreadUser, { YourDashUserPermissions } from "./helpers/user.js";
 import GLOBAL_DB from "./helpers/globalDatabase.js";
 import { __internalGetSessionsDoNotUseOutsideOfCore } from "./core/sessions.js";
@@ -117,7 +117,7 @@ if ( !fsExistsSync( FS_DIRECTORY_PATH ) ) {
     try {
       await fs.mkdir( FS_DIRECTORY_PATH );
     } catch ( e ) {
-      log( logTypes.error, "Unable to create \"./fs/\"" );
+      log( LOG_TYPES.ERROR, "Unable to create \"./fs/\"" );
       console.trace( e );
     }
     
@@ -128,7 +128,7 @@ if ( !fsExistsSync( FS_DIRECTORY_PATH ) ) {
         path.join( FS_DIRECTORY_PATH, "./default_avatar.avif" )
       );
     } catch ( e ) {
-      log( logTypes.error, "Unable to copy the default user avatar" );
+      log( LOG_TYPES.ERROR, "Unable to copy the default user avatar" );
       console.trace( e );
     }
     
@@ -139,7 +139,7 @@ if ( !fsExistsSync( FS_DIRECTORY_PATH ) ) {
         path.join( FS_DIRECTORY_PATH, "./instance_logo.avif" )
       );
     } catch ( e ) {
-      log( logTypes.error, "Unable to copy the default instance logo" );
+      log( LOG_TYPES.ERROR, "Unable to copy the default instance logo" );
       console.trace( e );
     }
     
@@ -150,14 +150,14 @@ if ( !fsExistsSync( FS_DIRECTORY_PATH ) ) {
         path.join( FS_DIRECTORY_PATH, "./login_background.avif" )
       );
     } catch ( e ) {
-      log( logTypes.error, "Unable to create the default login background" );
+      log( LOG_TYPES.ERROR, "Unable to create the default login background" );
     }
     
     // create the users' folders
     try {
       await fs.mkdir( path.join( FS_DIRECTORY_PATH, "./users/" ) );
     } catch ( e ) {
-      log( logTypes.error, "Unable to create the \"./fs/users/\" directory" );
+      log( LOG_TYPES.ERROR, "Unable to create the \"./fs/users/\" directory" );
     }
     
     // create the global database
@@ -183,14 +183,14 @@ if ( !fsExistsSync( FS_DIRECTORY_PATH ) ) {
       // load the new global database
       await GLOBAL_DB.readFromDisk( path.join( FS_DIRECTORY_PATH, "./global_database.json" ) )
     } catch ( e ) {
-      log( logTypes.error, "Unable to create the \"./fs/global_database.json\" file" );
+      log( LOG_TYPES.ERROR, "Unable to create the \"./fs/global_database.json\" file" );
     }
     
     // create the default instance logos
     try {
       generateLogos();
     } catch ( e ) {
-      log( logTypes.error, "Unable to generate logo assets" );
+      log( LOG_TYPES.ERROR, "Unable to generate logo assets" );
     }
     
     // if the administrator user doesn't exist,
@@ -207,7 +207,7 @@ if ( !fsExistsSync( FS_DIRECTORY_PATH ) ) {
       );
     }
   } catch ( err ) {
-    log( logTypes.error, "Uncaught error in fs verification!" );
+    log( LOG_TYPES.ERROR, "Uncaught error in fs verification!" );
     console.trace( err );
   }
 }
@@ -217,7 +217,7 @@ try {
     await ( await new YourDashUnreadUser( user ).read() ).verifyUserConfig().write();
   }
 } catch ( err ) {
-  log( logTypes.error, "Unable to verify users' settings!" );
+  log( LOG_TYPES.ERROR, "Unable to verify users' settings!" );
   console.trace( err );
 }
 
@@ -231,13 +231,13 @@ async function listenForRequests() {
   try {
     httpServer.listen( 3560, () => {
       log(
-        logTypes.info,
+        LOG_TYPES.INFO,
         centerTerminalOutputOnLine( "server now listening on port 3560!" )
       );
     } );
   } catch ( _err ) {
     log(
-      logTypes.error,
+      LOG_TYPES.ERROR,
       `${ chalk.bold.yellow( "CORE" ) }: Unable to start server!, retrying...`
     );
     
@@ -259,24 +259,24 @@ export interface ISocketActiveSocket {
   socket: SocketIoSocket;
 }
 
-const activeSockets: {
+const ACTIVE_SOCKET_IO_SOCKETS: {
   [ username: string ]: ISocketActiveSocket[];
 } = {};
 
 // save the database before process termination
-const handleShutdown = () => {
+const CORE_HANDLE_SHUTDOWN = () => {
   log(
-    logTypes.info,
+    LOG_TYPES.INFO,
     "Shutting down... (restart of core should occur automatically)"
   );
   
-  const logOutput = logHistory
+  const LOG_OUTPUT = LOG_HISTORY
     .map( ( hist ) => {
       return `${ hist.type }: ${ hist.message }`;
     } )
     .join( "\n" );
   
-  writeFile( path.resolve( process.cwd(), "./fs/log.log" ), logOutput, () => {
+  writeFile( path.resolve( process.cwd(), "./fs/log.log" ), LOG_OUTPUT, () => {
     GLOBAL_DB._internalDoNotUseOnlyIntendedForShutdownSequenceWriteToDisk(
       path.resolve( process.cwd(), "./fs/global_database.json" ),
       () => {
@@ -286,24 +286,24 @@ const handleShutdown = () => {
   } );
 };
 
-process.on( "SIGINT", handleShutdown );
+process.on( "SIGINT", CORE_HANDLE_SHUTDOWN );
 
 // Handle socket.io connections
 socketIo.on( "connection", ( socket: SocketIoSocket<any, any, any, any> ) => { // eslint-disable-line @typescript-eslint/no-explicit-any
   
   // Check that all required parameters are present
   if ( !socket.handshake.query.username || !socket.handshake.query.sessionToken || !socket.handshake.query.sessionId ) {
-    log( logTypes.error, "[PSA-BACKEND]: Closing connection! Missing required parameters!" );
+    log( LOG_TYPES.ERROR, "[PSA-BACKEND]: Closing connection! Missing required parameters!" );
     
     socket.disconnect( true );
     return;
   }
   
-  if ( !activeSockets[ socket.handshake.query.username as string ] ) {
-    activeSockets[ socket.handshake.query.username as string ] = [];
+  if ( !ACTIVE_SOCKET_IO_SOCKETS[ socket.handshake.query.username as string ] ) {
+    ACTIVE_SOCKET_IO_SOCKETS[ socket.handshake.query.username as string ] = [];
   }
   
-  activeSockets[ socket.handshake.query.username as string ].push( <
+  ACTIVE_SOCKET_IO_SOCKETS[ socket.handshake.query.username as string ].push( <
     ISocketActiveSocket
     >{
       id: socket.handshake.query.sessionId as string,
@@ -312,17 +312,17 @@ socketIo.on( "connection", ( socket: SocketIoSocket<any, any, any, any> ) => { /
     } );
   
   socket.on( "execute-command-response", ( output: any ) => {
-    log( logTypes.info, output );
+    log( LOG_TYPES.INFO, output );
   } );
   
   socket.on( "disconnect", () => {
-    activeSockets[ socket.handshake.query.username as string ].forEach( () => {
-      activeSockets[ socket.handshake.query.username as string ].filter(
+    ACTIVE_SOCKET_IO_SOCKETS[ socket.handshake.query.username as string ].forEach( () => {
+      ACTIVE_SOCKET_IO_SOCKETS[ socket.handshake.query.username as string ].filter(
         ( sock ) => sock.id !== socket.id
       );
     } );
     
-    log( logTypes.info, "[PSA-BACKEND]: Closing PSA connection" );
+    log( LOG_TYPES.INFO, "[PSA-BACKEND]: Closing PSA connection" );
   } );
   
   return;
@@ -359,7 +359,7 @@ socketIo.use( async ( socket: SocketIoSocket<any, any, any, any>, next ) => {
   return socket.disconnect();
 } );
 
-export { socketIo, activeSockets };
+export { socketIo, ACTIVE_SOCKET_IO_SOCKETS };
 
 if ( PROCESS_ARGUMENTS[ "log-requests" ] ) {
   startRequestLogger( exp, {
@@ -385,10 +385,10 @@ process.stdin.on( "data", ( data ) => {
   
   switch ( command ) {
   case "exit":
-    handleShutdown();
+    CORE_HANDLE_SHUTDOWN();
     break;
   default:
-    log( logTypes.error, `Unknown command: ${ command }` );
+    log( LOG_TYPES.ERROR, `Unknown command: ${ command }` );
   }
 } );
 
@@ -412,7 +412,7 @@ exp.get( "/test", ( _req, res ) => {
       type: "yourdash"
     } );
   default:
-    log( logTypes.error, "discovery status returned an invalid value" );
+    log( LOG_TYPES.ERROR, "discovery status returned an invalid value" );
     return res.json( {
       status: YourDashServerDiscoveryStatus.MAINTENANCE,
       type: "yourdash"

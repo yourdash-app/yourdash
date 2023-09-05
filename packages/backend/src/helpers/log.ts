@@ -24,22 +24,25 @@
 import chalk from "chalk";
 import globalDatabase from "./globalDatabase.js";
 
-export enum logTypes {
-  info, warn, error, success
+export enum LOG_TYPES {
+  INFO,
+  WARN,
+  ERROR,
+  SUCCESS
 }
 
-export const logHistory: {
+export const LOG_HISTORY: {
   type: string,
   message: any[]
 }[] = [];
 
 /**
  * Logs a message with the specified type.
- * @param {logTypes} type - The type of log message.
+ * @param {LOG_TYPES} type - The type of log message.
  * @param {...any} message - The message(s) to log.
  * @returns {void}
  */
-export default function log( type: logTypes, ...message: any[] ) {
+export default function log( type: LOG_TYPES, ...message: any[] ) {
   const logParams = [];
   
   if ( globalDatabase.get( "settings:log_should_log_time" ) ) {
@@ -52,16 +55,16 @@ export default function log( type: logTypes, ...message: any[] ) {
   }
   
   switch ( type ) {
-  case logTypes.info:
+  case LOG_TYPES.INFO:
     logParams.push( chalk.blue( "INFO    " ) );
     break;
-  case logTypes.warn:
+  case LOG_TYPES.WARN:
     logParams.push( chalk.yellow( "WARN    " ) );
     break;
-  case logTypes.error:
+  case LOG_TYPES.ERROR:
     logParams.push( chalk.red( "ERROR   " ) );
     break;
-  case logTypes.success:
+  case LOG_TYPES.SUCCESS:
     logParams.push( chalk.green( "SUCCESS " ) );
     break;
   default:
@@ -70,14 +73,14 @@ export default function log( type: logTypes, ...message: any[] ) {
   
   logParams.push( ...message );
   
-  logHistory.push( {
-    type: ( type === logTypes.info
+  LOG_HISTORY.push( {
+    type: ( type === LOG_TYPES.INFO
       ? "INFO"
-      : type === logTypes.warn
+      : type === LOG_TYPES.WARN
         ? "WARN"
-        : type === logTypes.error
+        : type === LOG_TYPES.ERROR
           ? "ERROR"
-          : type === logTypes.success ? "SUCCESS" : "UNKNOWN" ),
+          : type === LOG_TYPES.SUCCESS ? "SUCCESS" : "UNKNOWN" ),
     // eslint-disable-next-line no-control-regex
     message: logParams.slice( 1 ).map( msg => msg?.replace?.( /\x1b\[[0-9;]*m/g, "" ) || "LOGGING ERROR" )
   } );

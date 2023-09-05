@@ -2,7 +2,7 @@ import { promises as fs } from "fs";
 import path from "path";
 import sharp from "sharp";
 import chalk from "chalk";
-import log, { logTypes } from "./log.js";
+import log, { LOG_TYPES } from "./log.js";
 import { hash } from "./encryption.js";
 import YourDashSession, { getSessionsForUser } from "./session.js";
 import getUserDatabase from "./userDatabase.js";
@@ -142,7 +142,7 @@ class YourDashUser {
             return new YourDashSession(this.username, getSessionsForUser(this.username)[getSessionsForUser(this.username).findIndex(val => val.id === sessionId)]);
         }
         catch (_err) {
-            log(logTypes.warn, `${chalk.yellow.bold("CORE")}: unable to find session: ${sessionId}`);
+            log(LOG_TYPES.WARN, `${chalk.yellow.bold("CORE")}: unable to find session: ${sessionId}`);
             return undefined;
         }
     }

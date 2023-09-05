@@ -1,7 +1,7 @@
 import { promises as fs } from "fs";
 import path from "path";
 import { __internalGetSessionsDoNotUseOutsideOfCore, SESSION_TOKEN_LENGTH } from "../core/sessions.js";
-import log, { logTypes } from "./log.js";
+import log, { LOG_TYPES } from "./log.js";
 import { generateRandomStringOfLength } from "./encryption.js";
 import YourDashUnreadUser from "./user.js";
 export function getSessionsForUser(username) {
@@ -33,7 +33,7 @@ export async function createSession(username, type) {
         await fs.writeFile(path.resolve(user.getPath(), "./sessions.json"), JSON.stringify(__internalGetSessionsDoNotUseOutsideOfCore()[username]));
     }
     catch (__e) {
-        log(logTypes.error, `Unable to write ${username}/sessions.json`);
+        log(LOG_TYPES.ERROR, `Unable to write ${username}/sessions.json`);
         return session;
     }
     return session;

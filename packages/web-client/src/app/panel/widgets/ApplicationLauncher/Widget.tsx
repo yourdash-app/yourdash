@@ -22,7 +22,7 @@
  */
 
 import React, { useEffect } from "react";
-import { IconButton, YourDashIcon } from "../../../../../ui/index";
+import { IconButton, YourDashIcon } from "../../../../ui/index";
 import styles from "./Widget.module.scss"
 import ApplicationLauncher from "./launcher/Launcher";
 import { useLocation } from "react-router";
