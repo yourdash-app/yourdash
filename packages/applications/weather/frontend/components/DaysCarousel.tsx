@@ -70,11 +70,11 @@ const WeatherApplicationDaysCarousel: React.FC<{
           </div>
           <div>
             <div className={"font-black text-3xl flex gap-1 items-center"}>
-              <Icon icon={ YourDashIcon.ChevronUp16 } className={"h-4"} color={"#43aa8b"}/>
+              <Icon icon={ YourDashIcon.ChevronUp } className={"h-4"} color={"#43aa8b"}/>
               <span>{weatherData.daily.temperature.max[index]}</span><span className={"text-[#43aa8b]"}>{weatherData.units.daily.temperature.max}</span>
             </div>
             <div className={"text-xl flex gap-1 items-center"}>
-              <Icon icon={ YourDashIcon.ChevronDown16 } className={"h-4"} color={"#f94144"}/>
+              <Icon icon={ YourDashIcon.ChevronDown } className={"h-4"} color={"#f94144"}/>
               <span>{weatherData.daily.temperature.min[index]}</span><span className={"text-[#f94144]"}>{weatherData.units.daily.temperature.min}</span>
             </div>
           </div>

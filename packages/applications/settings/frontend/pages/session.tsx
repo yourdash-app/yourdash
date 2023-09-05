@@ -89,7 +89,7 @@ const SettingsPageSession: React.FC = () => {
                     session.type === YourDashSessionType.web && (
                       <Icon
                         className={"aspect-square h-8 m-auto ml-0"}
-                        icon={YourDashIcon.Browser16}
+                        icon={YourDashIcon.Browser}
                       />
                     )
                   }
@@ -97,7 +97,7 @@ const SettingsPageSession: React.FC = () => {
                     session.type === YourDashSessionType.cli && (
                       <Icon
                         className={"aspect-square h-8 m-auto ml-0"}
-                        icon={YourDashIcon.Terminal16}
+                        icon={YourDashIcon.Terminal}
                       />
                     )
                   }
@@ -105,7 +105,7 @@ const SettingsPageSession: React.FC = () => {
                     session.type === YourDashSessionType.desktop && (
                       <Icon
                         className={"aspect-square h-8 m-auto ml-0"}
-                        icon={YourDashIcon.DeviceDesktop16}
+                        icon={YourDashIcon.DeviceDesktop}
                       />
                     )
                   }
@@ -113,7 +113,7 @@ const SettingsPageSession: React.FC = () => {
                     session.type === YourDashSessionType.external && (
                       <Icon
                         className={"aspect-square h-8 m-auto ml-0"}
-                        icon={YourDashIcon.Question16}
+                        icon={YourDashIcon.Question}
                       />
                     )
                   }
@@ -134,7 +134,7 @@ const SettingsPageSession: React.FC = () => {
                     }
                   </span>
                   <IconButton
-                    icon={YourDashIcon.X16}
+                    icon={YourDashIcon.X}
                     onClick={() => {
                       csi.deleteJson( `/core/session/${ session.id }`, data => {
                         setReloadNum( reloadNum + 1 );
@@ -156,7 +156,7 @@ const SettingsPageSession: React.FC = () => {
                   {session.id}
                   <Icon
                     className={"aspect-square h-8 m-auto ml-0"}
-                    icon={YourDashIcon.DeviceDesktop16}
+                    icon={YourDashIcon.DeviceDesktop}
                   />
                 </div>
                 <div className={"w-full bg-container-secondary-bg pl-4 p-3 flex text-container-fg justify-between items-center"}>
@@ -164,7 +164,7 @@ const SettingsPageSession: React.FC = () => {
                     {"Desktop"}
                   </span>
                   <IconButton
-                    icon={YourDashIcon.X16}
+                    icon={YourDashIcon.X}
                     onClick={() => {
                       csi.deleteJson( `/core/session/${ session.id }`, data => {
                         setReloadNum( reloadNum + 1 );

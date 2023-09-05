@@ -22,8 +22,8 @@
  */
 
 import React from "react";
-import { Card, Icon, IconButton } from "../../../ui";
-import { YourDashIcon } from "../../../ui/components/icon/iconDictionary";
+import { Card, Icon, IconButton } from "web-client/src/ui";
+import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
 
 const YourDevHome: React.FC = () => (
   <div className={"grid grid-cols-2 h-full overflow-hidden gap-4 p-4 bg-bg"}>
@@ -33,19 +33,19 @@ const YourDevHome: React.FC = () => (
         <h1 className={"text-3xl font-bold tracking-wide"}>{"YourDev / Home"}</h1>
         <div className={"ml-auto flex gap-2 items-center"}>
           <div className={"flex flex-col gap-1 items-center justify-center"}>
-            <IconButton icon={YourDashIcon.Plug16}/>
+            <IconButton icon={YourDashIcon.Plug}/>
             <span>{"20"}</span>
           </div>
           <div className={"flex flex-col gap-1 items-center justify-center"}>
-            <IconButton icon={YourDashIcon.Info16} color={"#32b3ff"}/>
+            <IconButton icon={YourDashIcon.Info} color={"#32b3ff"}/>
             <span>{"200"}</span>
           </div>
           <div className={"flex flex-col gap-1 items-center justify-center"}>
-            <IconButton icon={YourDashIcon.Alert16} color={"#eeff33"}/>
+            <IconButton icon={YourDashIcon.Alert} color={"#eeff33"}/>
             <span>{"4"}</span>
           </div>
           <div className={"flex flex-col gap-1 items-center justify-center"}>
-            <IconButton icon={YourDashIcon.XCircle16} color={"#ff6633"}/>
+            <IconButton icon={YourDashIcon.XCircle} color={"#ff6633"}/>
             <span>{"1"}</span>
           </div>
         </div>

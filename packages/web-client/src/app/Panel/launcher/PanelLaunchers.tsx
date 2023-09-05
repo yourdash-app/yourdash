@@ -53,7 +53,7 @@ const PanelApplicationLauncher: React.FC<{
       }
     >
       <IconButton
-        icon={YourDashIcon.AppLauncher16}
+        icon={YourDashIcon.AppLauncher}
         className={styles.button}
         onClick={() => setIsVisible( !isVisible )}
       />

@@ -44,38 +44,46 @@ const AppRouter = loadable( () => import( "./app/AppRouter" ) );
 
 const DocsRouter = loadable( () => import( "./root/docs/DocsRouter" ) );
 
-ReactDOM.createRoot( document.getElementById( "root" ) as HTMLElement ).render(
-  <RightClickMenuRootContainer>
-    <RouterProvider
-      router={createHashRouter(
-        createRoutesFromElements(
-          <Route errorElement={<ErrorElement/>}>
-            <Route index element={<Index/>}/>
-            <Route path={"/signup"} element={<ComingSoon/>}/>
-            <Route path={"/login"}>
-              <Route index element={<LoginPage/>}/>
-              <Route path={"server"} element={<ServerLoginPage/>}/>
-            </Route>
-            <Route path={"app"}>
-              <Route element={<AppLayout/>}>
-                <Route index element={<ApplicationRedirectToDash/>}/>
+function main() {
+  ReactDOM.createRoot( document.getElementById( "root" ) as HTMLElement ).render(
+    <RightClickMenuRootContainer>
+      <RouterProvider
+        router={createHashRouter(
+          createRoutesFromElements(
+            <Route errorElement={<ErrorElement/>}>
+              <Route index element={<Index/>}/>
+              <Route path={"/signup"} element={<ComingSoon/>}/>
+              <Route path={"/login"}>
+                <Route index element={<LoginPage/>}/>
+                <Route path={"server"} element={<ServerLoginPage/>}/>
+              </Route>
+              <Route path={"app"}>
+                <Route element={<AppLayout/>}>
+                  <Route index element={<ApplicationRedirectToDash/>}/>
+                  <Route
+                    path={"a/*"}
+                    element={<AppRouter/>}
+                  />
+                </Route>
+              </Route>
+              <Route path={"docs/*"} element={<DocsLayout/>}>
                 <Route
-                  path={"a/*"}
-                  element={<AppRouter/>}
+                  path={"*"}
+                  element={(
+                    <DocsRouter/>
+                  )}
                 />
               </Route>
             </Route>
-            <Route path={"docs/*"} element={<DocsLayout/>}>
-              <Route
-                path={"*"}
-                element={(
-                  <DocsRouter/>
-                )}
-              />
-            </Route>
-          </Route>
-        )
-      )}
-    />
-  </RightClickMenuRootContainer>
-);
+          )
+        )}
+      />
+    </RightClickMenuRootContainer>
+  );
+}
+
+const element = document.getElementById( "root" ) as HTMLElement
+
+element.innerHTML = "<h1>Loading YourDash...</h1>"
+
+main()

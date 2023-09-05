@@ -7,6 +7,7 @@ import DeveloperSettingsIndexPage from "./pages/developer";
 import PersonalizationIndexPage from "./pages/personalization/Index";
 import AdminToolsIndexPage from "./pages/admin/Index";
 import DashboardPersonalizationIndexPage from "./pages/personalization/dashboard/Index";
+import PanelPersonalizationIndexPage from "./pages/personalization/panel/Index";
 import ProfileIndexPage from "./pages/profile/Index";
 
 const SettingsRouter: React.FC = () => (
@@ -19,6 +20,7 @@ const SettingsRouter: React.FC = () => (
       <Route path={"personalization"}>
         <Route index element={<PersonalizationIndexPage/>}/>
         <Route path={"dashboard"} element={<DashboardPersonalizationIndexPage/>}/>
+        <Route path={"panel"} element={<PanelPersonalizationIndexPage/>}/>
       </Route>
       <Route path={"session"}>
         <Route index element={<SessionIndexPage/>}/>

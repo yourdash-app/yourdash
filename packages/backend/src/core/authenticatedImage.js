@@ -1,4 +1,5 @@
 import path from "path";
+import crypto from "crypto";
 export var authenticatedImageType;
 (function (authenticatedImageType) {
     authenticatedImageType[authenticatedImageType["base64"] = 0] = "base64";
@@ -23,7 +24,7 @@ export function startAuthenticatedImageHelper(app) {
     });
 }
 export default function authenticatedImage(username, type, value) {
-    const id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    const id = crypto.randomUUID();
     if (!authenticatedImages[username]) {
         authenticatedImages[username] = {};
     }

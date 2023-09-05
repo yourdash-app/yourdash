@@ -119,7 +119,7 @@ const StoreApplicationPage: React.FC = () => {
                   className={"flex items-center p-4 gap-4 max-w-[50rem] w-full ml-auto mr-auto animate__animated animate__fadeIn animate__250ms"}
                 >
                   <IconButton
-                    icon={YourDashIcon.ChevronLeft16}
+                    icon={YourDashIcon.ChevronLeft}
                     onClick={() => {
                       navigate( `/app/a/store/cat/${ appData?.category }` );
                     }}
@@ -203,7 +203,7 @@ const StoreApplicationPage: React.FC = () => {
                     }}
                     className={"flex gap-1 items-center"}
                   >
-                    <Icon className={"h-5"} icon={YourDashIcon.Link16}/>
+                    <Icon className={"h-5"} icon={YourDashIcon.Link}/>
                     <span>
                       {
                         "Client"
@@ -218,7 +218,7 @@ const StoreApplicationPage: React.FC = () => {
                     }}
                     className={"flex gap-1 items-center"}
                   >
-                    <Icon className={"h-5"} icon={YourDashIcon.Link16}/>
+                    <Icon className={"h-5"} icon={YourDashIcon.Link}/>
                     <span>
                       {
                         "Server"
@@ -241,7 +241,7 @@ const StoreApplicationPage: React.FC = () => {
                                   onClick={() => {
                                     window.location.href = author.site;
                                   }}
-                                  icon={YourDashIcon.Link16}
+                                  icon={YourDashIcon.Link}
                                 />
                               )
                             }

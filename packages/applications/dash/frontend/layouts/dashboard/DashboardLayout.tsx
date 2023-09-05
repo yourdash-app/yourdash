@@ -55,7 +55,7 @@ const DashboardLayout: React.FC<IDashboard> = ( {
           </span>
           <IconButton
             className={"ml-auto"}
-            icon={YourDashIcon.Gear16}
+            icon={YourDashIcon.Gear}
             onClick={() => {
               navigate( "/app/a/settings/personalization/dashboard" );
             }}

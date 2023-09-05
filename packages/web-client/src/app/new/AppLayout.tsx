@@ -23,10 +23,15 @@
 
 import { Outlet } from "react-router";
 import PanelLayout from "./Panel/PanelLayout";
+import { memo } from "react";
+import csi from "../../helpers/csi";
 
 const AppLayout: React.FC = () => {
   const isStandalone = new URLSearchParams( window.location.search ).has( "standalone" )
+  csi.getUserDB()
   
+  
+  // Standalone mode displays only the application and not the Panel
   if ( isStandalone ) {
     return <Outlet />;
   }
@@ -34,4 +39,4 @@ const AppLayout: React.FC = () => {
   return <PanelLayout />
 }
 
-export default AppLayout
+export default memo( AppLayout )

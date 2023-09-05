@@ -1,0 +1,80 @@
+/*!
+ * Copyright © 2023 @Ewsgit and YourDash contributors.
+ * YourDash is licensed under the MIT License.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+.applicationLauncher {
+  position: fixed;
+  background: rgb(var(--container-bg));
+  color: rgb(var(--container-fg));
+  border-radius: 0 var(--container-rounding) var(--container-rounding) 0;
+  z-index: -5;
+  width: 24rem;
+  height: max-content;
+  overflow: hidden;
+}
+
+@mixin horizontal {
+  translate: -50%0;
+  width: 75%;
+  left: 50%;
+}
+
+@mixin vertical {
+  translate: 0 -50%;
+  max-height: 90%;
+  min-height: max-content;
+  top: 50%;
+}
+
+.sideTop {
+  @include horizontal;
+  top: var(--app-panel-size);
+}
+
+.sideRight {
+  @include vertical;
+  right: var(--app-panel-size);
+}
+
+.sideBottom {
+  @include horizontal;
+  bottom: var(--app-panel-size);
+}
+
+.sideLeft {
+  @include vertical;
+  left: var(--app-panel-size);
+}
+
+.invisible {
+  visibility: hidden;
+  display: none;
+}
+
+.footer {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  width: 100%;
+  background-color: rgb(var(--container-secondary-bg));
+  padding: 0.5rem;
+}

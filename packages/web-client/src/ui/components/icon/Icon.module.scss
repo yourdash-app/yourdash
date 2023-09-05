@@ -24,6 +24,5 @@
 .component {
   user-select: none;
   aspect-ratio: 1 / 1;
-  z-index: 1;
-  position: relative;
+  position: static;
 }

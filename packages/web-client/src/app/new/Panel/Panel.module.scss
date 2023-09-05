@@ -1,0 +1,93 @@
+/*!
+ * Copyright © 2023 @Ewsgit and YourDash contributors.
+ * YourDash is licensed under the MIT License.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+.panel {
+  display: flex;
+  gap: 0.25rem;
+  padding: var(--app-panel-padding);
+  box-sizing: border-box;
+  transition: var(--transition);
+  background: rgb(var(--container-bg));
+  position: relative;
+  z-index: 50;
+}
+
+@mixin horizontal {
+  flex-direction: row;
+  height: calc(var(--app-panel-size));
+
+  &.small {
+    --app-panel-size: 2.5rem;
+    --app-panel-padding: 0.25rem;
+  }
+
+  &.medium {
+    --app-panel-size: 3.5rem;
+    --app-panel-padding: 0.25rem;
+  }
+
+  &.large {
+    --app-panel-size: 5rem;
+    --app-panel-padding: 0.75rem;
+  }
+}
+
+@mixin vertical {
+  flex-direction: column;
+  width: calc(var(--app-panel-size));
+
+  &.small {
+    --app-panel-size: 2.5rem;
+    --app-panel-padding: 0.25rem;
+  }
+
+  &.medium {
+    --app-panel-size: 3.5rem;
+    --app-panel-padding: 0.5rem;
+  }
+
+  &.large {
+    --app-panel-size: 5rem;
+    --app-panel-padding: 0.75rem;
+  }
+}
+
+.top {
+  @include horizontal;
+  border-bottom: 1px rgb(var(--container-border)) solid;
+}
+
+.right {
+  @include vertical;
+  border-left: 1px rgb(var(--container-border)) solid;
+}
+
+.bottom {
+  @include horizontal;
+  border-top: 1px rgb(var(--container-border)) solid;
+}
+
+.left {
+  @include vertical;
+  border-right: 1px rgb(var(--container-border)) solid;
+}

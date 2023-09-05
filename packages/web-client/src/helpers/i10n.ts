@@ -57,6 +57,9 @@ export default function useTranslate( application: string ) {
     import( `applications/${ application }/frontend/i10n/${ langauge }.json` ).then( response => setMessages( response.default ) ).catch( () => {
       // eslint-disable-next-line no-alert
       alert( `This page is currently missing translation into your language (${ langauge })` );
+      
+      // @ts-ignore
+      window.setTranslateLanguage( "en-GB" )
     } );
   }, [] );
   
@@ -78,6 +81,9 @@ export function useTranslateAppCoreUI() {
     import( `../app/i10n/${ langauge }.json` ).then( response => setMessages( response.default ) ).catch( () => {
       // eslint-disable-next-line no-alert
       alert( `This page is currently missing translation into your language (${ langauge })` );
+      
+      // @ts-ignore
+      window.setTranslateLanguage( "en-GB" )
     } );
   }, [] );
   
@@ -100,6 +106,9 @@ export function useTranslateHomePage( page: string ) {
     import( `../root/${ page }/i10n/${ langauge }.json` ).then( response => setMessages( response.default ) ).catch( () => {
       // eslint-disable-next-line no-alert
       alert( `This page is currently missing translation into your language (${ langauge })` );
+      
+      // @ts-ignore
+      window.setTranslateLanguage( "en-GB" )
     } );
   }, [] );
   

@@ -97,7 +97,7 @@ const Dialog: React.FC<IDialog> = ( {
         >
           <div/>
         </section>
-        <IconButton className={styles.closeButton} data-visible={!!onClose} icon={YourDashIcon.X16} onClick={onClose}/>
+        <IconButton className={styles.closeButton} data-visible={!!onClose} icon={YourDashIcon.X} onClick={onClose}/>
         <section className={`${ styles.content } ${ className }`}>
           <h1 className={`${ styles.title } ${ ( title === "" || title === undefined ) && styles.placeholder }`}>
             {title}

@@ -39,7 +39,7 @@ const HowToHelp: React.FC = () => (
         <p>
           {"Add new features / improve existing ones"}
         </p>
-        <Icon className={"ml-auto mt-auto h-8"} icon={YourDashIcon.Link16}/>
+        <Icon className={"ml-auto mt-auto h-8"} icon={YourDashIcon.Link}/>
       </Card>
       <Card onClick={() => 0}>
         <h2>
@@ -48,7 +48,7 @@ const HowToHelp: React.FC = () => (
         <p>
           {"Help improve reliability or fix something unexpected"}
         </p>
-        <Icon className={"ml-auto mt-auto h-8"} icon={YourDashIcon.Link16}/>
+        <Icon className={"ml-auto mt-auto h-8"} icon={YourDashIcon.Link}/>
       </Card>
       <Card onClick={() => 0}>
         <h2>
@@ -57,7 +57,7 @@ const HowToHelp: React.FC = () => (
         <p>
           {"Help make YourDash inclusive for all"}
         </p>
-        <Icon className={"ml-auto mt-auto h-8"} icon={YourDashIcon.Link16}/>
+        <Icon className={"ml-auto mt-auto h-8"} icon={YourDashIcon.Link}/>
       </Card>
     </div>
   </main>

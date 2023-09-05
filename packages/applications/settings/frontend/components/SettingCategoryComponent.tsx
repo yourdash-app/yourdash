@@ -57,7 +57,7 @@ const SettingCategory: React.FC<IBaseSettingComponent> = ( {
       title={title}
       description={description}
     >
-      <Icon className={"aspect-square h-8"} icon={!external ? YourDashIcon.ChevronRight16 : YourDashIcon.Link16}/>
+      <Icon className={"aspect-square h-8"} icon={!external ? YourDashIcon.ChevronRight : YourDashIcon.Link}/>
     </BaseSettingComponent>
   );
 };
