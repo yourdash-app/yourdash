@@ -52,7 +52,6 @@ export default function defineLoginEndpoints(app) {
             }
         }).catch(() => res.json({ error: "Hash comparison failure" }));
     });
-    app.get("/core/panel/logo/small", (_req, res) => res.sendFile(path.resolve(process.cwd(), "./fs/logo_panel_small.avif")));
     app.get("/core/login/is-authenticated", async (req, res) => {
         const { username, token } = req.headers;
         if (!username || !token) {

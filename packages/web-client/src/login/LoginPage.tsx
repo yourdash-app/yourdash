@@ -85,7 +85,7 @@ const LoginPage: React.FC = () => {
       <header
         className={"absolute top-0 left-0 w-full h-16 flex items-center justify-center gap-2"}
       >
-        <IconButton icon={YourDashIcon.ChevronLeft16} className={"mr-auto ml-3.5"}/>
+        <IconButton icon={YourDashIcon.ChevronLeft} className={"mr-auto ml-3.5"}/>
       </header>
       <footer
         className={"absolute bottom-0 left-0 w-full h-16 flex items-center gap-2 pl-3 bg-container-bg"}

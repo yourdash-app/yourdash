@@ -61,7 +61,7 @@ const SettingsPersonalServerAcceleratorSection: React.FC = () => {
                       {session.id}
                       <Icon
                         className={"aspect-square h-8 m-auto ml-0"}
-                        icon={YourDashIcon.DeviceDesktop16}
+                        icon={YourDashIcon.DeviceDesktop}
                       />
                     </div>
                   </Card>

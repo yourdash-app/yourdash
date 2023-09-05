@@ -12,6 +12,7 @@ export { default as DropdownContainer } from "./components/dropdownContainer/Dro
 export { default as DropdownIconButton } from "./components/dropdownIconButton/DropdownIconButton"
 export { default as NumberInput } from "./components/numberInput/NumberInput"
 export { default as Icon } from "./components/icon/Icon"
+export { YourDashIcon } from "./components/icon/iconDictionary"
 export { default as IconButton } from "./components/iconButton/IconButton"
 export { default as ProgressBar } from "./components/progressBar/ProgressBar"
 export { default as RightClickMenu } from "./components/rightClickMenu/RightClickMenu"

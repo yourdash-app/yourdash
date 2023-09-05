@@ -56,7 +56,7 @@ const StoreCategoryPage: React.FC = () => {
     <div className={"grid grid-rows-[auto,1fr] h-full"}>
       <header className={"bg-container-bg text-container-fg border-b-[1px] border-b-container-border p-2 pr-4 flex gap-2 animate__animated animate__fadeIn"}>
         <IconButton
-          icon={YourDashIcon.ChevronLeft16}
+          icon={YourDashIcon.ChevronLeft}
           onClick={() => {
             navigate( "/app/a/store/" );
           }}

@@ -47,7 +47,7 @@ const SelectUser: React.FC<{
   return (
     <>
       <IconButton
-        icon={YourDashIcon.ChevronLeft16}
+        icon={YourDashIcon.ChevronLeft}
         className={"left-2 top-2 fixed animate__animated animate__fadeInLeft animate__1250ms"}
         onClick={() => {
           localStorage.removeItem( "current_server" );
@@ -147,7 +147,7 @@ const LoginAsUser: React.FC<{
   return (
     <>
       <IconButton
-        icon={YourDashIcon.ChevronLeft16}
+        icon={YourDashIcon.ChevronLeft}
         className={"left-2 top-2 fixed animate__animated animate__fadeInLeft"}
         onClick={() => window.location.reload()}
       />

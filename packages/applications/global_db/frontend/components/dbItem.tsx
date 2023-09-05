@@ -22,8 +22,8 @@
  */
 
 import React, { useEffect, useState } from "react";
-import { TextBox, IconButton, TextInput } from "../../../../ui";
-import { YourDashIcon } from "../../../../ui/components/icon/iconDictionary";
+import { TextBox, IconButton, TextInput } from "web-client/src/ui";
+import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
 
 export interface IdbItem {
   item: {
@@ -52,14 +52,14 @@ const DbItem: React.FC<IdbItem> = ( {
     <div className={"bg-container-bg text-container-fg flex gap-4 p-2 rounded-xl"}>
       <div className={"flex flex-col gap-2"}>
         <IconButton
-          icon={active ? YourDashIcon.ChevronUp16 : YourDashIcon.ChevronDown16}
+          icon={active ? YourDashIcon.ChevronUp : YourDashIcon.ChevronDown}
           onClick={() => setActive( !active )}
           className={"flex-shrink-0"}
         />
         {
           active && (
             <IconButton
-              icon={YourDashIcon.Check16}
+              icon={YourDashIcon.Check}
               onClick={() => {
                 if ( key === "" || content === "" ) {
                   return;
@@ -102,7 +102,7 @@ const DbItem: React.FC<IdbItem> = ( {
           <TextBox
             className={"flex flex-shrink"}
             defaultValue={content}
-            onChange={e => {
+            onChange={( e: any ) => {
               setContent( e.currentTarget.value );
             }}
           />

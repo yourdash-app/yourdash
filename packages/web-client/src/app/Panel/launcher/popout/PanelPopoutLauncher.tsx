@@ -110,7 +110,7 @@ const PanelApplicationLauncherPopOut: React.FC<{
             className={"absolute right-2 top-2 h-[2.25rem] w-[2.25rem] p-[0.35rem] group-focus-within:opacity-0" +
                         " pointer-events-none transition-all [border:0.125rem_solid_#00000000]"}
           >
-            <Icon icon={YourDashIcon.Search16} color={"rgb(var(--container-fg))"}/>
+            <Icon icon={YourDashIcon.Search} color={"rgb(var(--container-fg))"}/>
           </div>
         </section>
         <LauncherGridView applications={applications} setVisible={setVisible} searchValue={searchValue}/>
@@ -118,14 +118,14 @@ const PanelApplicationLauncherPopOut: React.FC<{
           <LauncherDateAndTime/>
           <Row className={"ml-auto"}>
             <IconButton
-              icon={YourDashIcon.Person16}
+              icon={YourDashIcon.Person}
               onClick={() => {
                 setVisible( false );
                 navigate( "/app/a/profile" );
               }}
             />
             <IconButton
-              icon={YourDashIcon.Gear16}
+              icon={YourDashIcon.Gear}
               onClick={() => {
                 setVisible( false );
                 navigate( "/app/a/settings" );
