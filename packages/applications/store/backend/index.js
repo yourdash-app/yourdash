@@ -41,7 +41,6 @@ const main = ({ exp, io }) => {
                 return { id: applicationName };
             }
             const application = await unreadApplication.read();
-            console.log(process.cwd());
             return {
                 id: applicationName,
                 displayName: application.getDisplayName() || applicationName,

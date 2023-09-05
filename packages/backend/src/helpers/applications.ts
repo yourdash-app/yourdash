@@ -26,7 +26,7 @@ import path from "path";
 import { Application as ExpressApplication } from "express";
 import { Server as SocketServer } from "socket.io";
 import { type IYourDashApplication } from "shared/core/application.js";
-import log, { logTypes } from "./log.js";
+import log, { LOG_TYPES } from "./log.js";
 import globalDatabase from "./globalDatabase.js";
 
 class YDApplication {
@@ -107,7 +107,7 @@ export async function getAllApplications(): Promise<string[]> {
   try {
     return ( await fs.readdir( path.resolve( process.cwd(), "../applications/" ) ) ).filter( app => app !== "package.json" );
   } catch ( _err ) {
-    log( logTypes.error, "A problem occurred reading the ../applications/ directory" );
+    log( LOG_TYPES.ERROR, "A problem occurred reading the ../applications/ directory" );
     return [];
   }
 }

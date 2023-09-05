@@ -1,6 +1,6 @@
 import { promises as fs } from "fs";
 import path from "path";
-import log, { logTypes } from "./log.js";
+import log, { LOG_TYPES } from "./log.js";
 import globalDatabase from "./globalDatabase.js";
 class YDApplication {
     name;
@@ -59,7 +59,7 @@ export async function getAllApplications() {
         return (await fs.readdir(path.resolve(process.cwd(), "../applications/"))).filter(app => app !== "package.json");
     }
     catch (_err) {
-        log(logTypes.error, "A problem occurred reading the ../applications/ directory");
+        log(LOG_TYPES.ERROR, "A problem occurred reading the ../applications/ directory");
         return [];
     }
 }
