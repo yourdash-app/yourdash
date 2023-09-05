@@ -23,7 +23,7 @@
 
 import { Server as SocketIOServer } from "socket.io";
 import { Application as ExpressApplication } from "express";
-import log, { logTypes } from "../helpers/log.js";
+import log, { LOG_TYPES } from "../helpers/log.js";
 import * as http from "http";
 
 class YourDashWebsocketManager {
@@ -48,9 +48,9 @@ class YourDashWebsocketManager {
       if ( ( await this.servers[appName].server.fetchSockets() ).length === 0 ) {
         this.servers[appName].server.close();
         delete this.servers[appName];
-        log( logTypes.info, `[YourDashWebsocketManager] ${ appName } was closed as it has no clients connected.` );
+        log( LOG_TYPES.INFO, `[YourDashWebsocketManager] ${ appName } was closed as it has no clients connected.` );
       } else {
-        log( logTypes.info, `[YourDashWebsocketManager] ${ appName } is connected with ${ Object.keys( this.servers[appName].server.fetchSockets() ).length } clients.` );
+        log( LOG_TYPES.INFO, `[YourDashWebsocketManager] ${ appName } is connected with ${ Object.keys( this.servers[appName].server.fetchSockets() ).length } clients.` );
       }
     } );
   }
@@ -69,7 +69,7 @@ class YourDashWebsocketManager {
       connections: []
     };
     
-    log( logTypes.info, `[YourDashWebsocketManager] ${ appName } was created.` );
+    log( LOG_TYPES.INFO, `[YourDashWebsocketManager] ${ appName } was created.` );
     
     return server;
   }

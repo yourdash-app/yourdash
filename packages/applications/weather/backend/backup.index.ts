@@ -28,7 +28,7 @@ import { type weatherForecast } from "shared/apps/weather/forecast.js";
 import { weatherStates } from "shared/apps/weather/weatherStates.js";
 import YourDashUser from "backend/src/helpers/user.js";
 import { type YourDashApplicationServerPlugin } from "backend/src/helpers/applications.js";
-import log, { logTypes } from "backend/src/helpers/log.js";
+import log, { LOG_TYPES } from "backend/src/helpers/log.js";
 
 const OPEN_METEO_INSTANCE = "open-meteo.com";
 
@@ -120,7 +120,7 @@ const main: YourDashApplicationServerPlugin = ( { exp } ) => {
     }
     
     fetch( `https://geocoding-api.${ OPEN_METEO_INSTANCE }/v1/search?name=${ req.params.locationName }&language=en&count=5&format=json` ).then( resp => resp.json() ).then( json => res.json( json ) ).catch( () => {
-      log( logTypes.error, "Failed to fetch weather data from open-meteo" );
+      log( LOG_TYPES.ERROR, "Failed to fetch weather data from open-meteo" );
       return res.json( { error: true } );
     } );
   } );
@@ -284,7 +284,7 @@ const main: YourDashApplicationServerPlugin = ( { exp } ) => {
         try {
           await fs.writeFile( path.resolve( user.getAppDataPath(), "weather/previous_locations.json" ), JSON.stringify( parsedFile ) );
         } catch ( err ) {
-          log( logTypes.error, "Weather: Unable to write previous_locations.json" );
+          log( LOG_TYPES.ERROR, "Weather: Unable to write previous_locations.json" );
         }
         return res.json( <weatherForecast>{
           name: out.name,
@@ -320,11 +320,11 @@ const main: YourDashApplicationServerPlugin = ( { exp } ) => {
           }
         } );
       } ).catch( err => {
-        log( logTypes.error, "Failed to fetch weather data from open-meteo", err );
+        log( LOG_TYPES.ERROR, "Failed to fetch weather data from open-meteo", err );
         return res.json( { error: true } );
       } );
     } ).catch( err => {
-      log( logTypes.error, "Failed to fetch weather data from open-meteo", err );
+      log( LOG_TYPES.ERROR, "Failed to fetch weather data from open-meteo", err );
       return res.json( { error: true } );
     } );
   } );
@@ -360,12 +360,12 @@ const main: YourDashApplicationServerPlugin = ( { exp } ) => {
             } );
           } )
           .catch( _err => {
-            log( logTypes.error, "Unable to fetch weather data for location: ", { locationData } );
+            log( LOG_TYPES.ERROR, "Unable to fetch weather data for location: ", { locationData } );
             return res.json( { error: true } );
           } );
       } )
       .catch( _err => {
-        log( logTypes.error, "Unable to fetch weather data for location: ", { location } );
+        log( LOG_TYPES.ERROR, "Unable to fetch weather data for location: ", { location } );
         return res.json( { error: true } );
       } );
   } );

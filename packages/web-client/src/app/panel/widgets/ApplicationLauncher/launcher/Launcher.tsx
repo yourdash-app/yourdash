@@ -22,12 +22,12 @@
  */
 
 import styles from "./Launcher.module.scss"
-import clippy from "../../../../../../helpers/clippy";
-import { TextInput, Card, IconButton, YourDashIcon } from "../../../../../../ui/index";
+import clippy from "../../../../../helpers/clippy";
+import { TextInput, Card, IconButton, YourDashIcon } from "../../../../../ui/index";
 import { memo, useEffect, useState } from "react";
 import ApplicationsLauncherApplications from "./Applications/Applications";
 import IPanelApplicationsLauncherApplication from "shared/core/panel/applicationsLauncher/application";
-import csi from "../../../../../../helpers/csi";
+import csi from "../../../../../helpers/csi";
 
 const ApplicationLauncher: React.FC<{ side: "top" | "right" | "bottom" | "left", visible: boolean }> = ( { side, visible } ) => {
   const [apps, setApps] = useState<IPanelApplicationsLauncherApplication[]>( [] )

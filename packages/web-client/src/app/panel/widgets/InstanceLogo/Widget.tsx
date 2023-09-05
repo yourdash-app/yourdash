@@ -21,22 +21,30 @@
  * SOFTWARE.
  */
 
-import { Outlet } from "react-router";
-import PanelLayout from "./Panel/PanelLayout";
-import { memo } from "react";
-import csi from "../../helpers/csi";
+import { useNavigate } from "react-router";
+import csi from "../../../../helpers/csi";
+import styles from "./Widget.module.scss";
+import { memo, useEffect, useState } from "react";
 
-const AppLayout: React.FC = () => {
-  const isStandalone = new URLSearchParams( window.location.search ).has( "standalone" )
-  csi.getUserDB()
+const InstanceLogoWidget: React.FC = () => {
+  const navigate = useNavigate();
+  const [icons, setIcons] = useState<{ small: string, medium: string, large: string }>( { small: "", medium: "", large: "" } )
   
+  useEffect( () => {
+    csi.getJson( "/core/panel/logo", ( data ) => {
+      setIcons( data )
+    } )
+  }, [] )
   
-  // Standalone mode displays only the application and not the Panel
-  if ( isStandalone ) {
-    return <Outlet />;
-  }
-  
-  return <PanelLayout />
-}
+  return <img
+    src={ `${csi.getInstanceUrl()}${icons.large}` }
+    alt={ "Instance logo" }
+    draggable={ false }
+    className={ styles.icon }
+    onClick={ () => {
+      navigate( "/app/a/dash" );
+    } }
+  />;
+};
 
-export default memo( AppLayout )
+export default memo( InstanceLogoWidget );

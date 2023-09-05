@@ -1,4 +1,4 @@
-import { activeSockets } from "../main.js";
+import { ACTIVE_SOCKET_IO_SOCKETS } from "../main.js";
 export function executeCommand(username, session, command) {
     return new Promise(resolve => {
         const socket = getSocketFromSession(username, session);
@@ -11,11 +11,11 @@ export function getSocketFromSession(username, session) {
     if (!session || !username) {
         return undefined;
     }
-    const connection = activeSockets[username]?.find(sock => sock.id === session.id.toString()) || undefined;
+    const connection = ACTIVE_SOCKET_IO_SOCKETS[username]?.find(sock => sock.id === session.id.toString()) || undefined;
     if (!connection) {
         return undefined;
     }
-    return activeSockets[username]?.find(sock => sock.id === session.id.toString())?.socket || undefined;
+    return ACTIVE_SOCKET_IO_SOCKETS[username]?.find(sock => sock.id === session.id.toString())?.socket || undefined;
 }
 export class PersonalServerAcceleratorCommunication {
     socketConnection;

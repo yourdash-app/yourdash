@@ -22,11 +22,11 @@
  */
 
 import styles from "./Panel.module.scss"
-import clippy from "../../../helpers/clippy";
+import clippy from "../../helpers/clippy";
 import { useEffect, useState } from "react";
 import loadable from "@loadable/component";
-import { YourDashIcon, IconButton } from "../../../ui/index";
-import csi from "../../../helpers/csi";
+import { YourDashIcon, IconButton } from "../../ui/index";
+import csi from "../../helpers/csi";
 
 const Panel: React.FC<{ side: "top" | "right" | "bottom" | "left", setLayoutReloadNumber: ( num: number ) => void }> = ( { side, setLayoutReloadNumber } ) => {
   const [widgets, setWidgets] = useState<string[]>( ["InstanceLogo", "ApplicationLauncher"] )

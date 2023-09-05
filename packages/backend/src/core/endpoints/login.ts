@@ -1,6 +1,6 @@
 import { Application as ExpressApplication } from "express";
 import YourDashUnreadUser from "backend/src/helpers/user.js";
-import log, { logTypes } from "backend/src/helpers/log.js";
+import log, { LOG_TYPES } from "backend/src/helpers/log.js";
 import { compareHash } from "backend/src/helpers/encryption.js";
 import { createSession } from "backend/src/helpers/session.js";
 import { YourDashSessionType } from "../../../../shared/core/session.js";
@@ -50,8 +50,8 @@ export default function defineLoginEndpoints( app: ExpressApplication ) {
 
     const savedHashedPassword = ( await fs.readFile( path.resolve( user.getPath(), "./password.txt" ) ) ).toString();
 
-    log( logTypes.info, savedHashedPassword );
-    log( logTypes.info, password );
+    log( LOG_TYPES.INFO, savedHashedPassword );
+    log( LOG_TYPES.INFO, password );
 
     return compareHash( savedHashedPassword, password ).then( async result => {
       if ( result ) {

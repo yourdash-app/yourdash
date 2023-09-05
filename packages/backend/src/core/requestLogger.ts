@@ -1,4 +1,4 @@
-import log, { logTypes } from "../helpers/log.js";
+import log, { LOG_TYPES } from "../helpers/log.js";
 import chalk from "chalk";
 import { Application as ExpressApplication } from "express";
 
@@ -12,47 +12,47 @@ export default function startRequestLogger(
     switch ( req.method ) {
     case "GET":
       log(
-        logTypes.info,
+        LOG_TYPES.INFO,
         `${ chalk.bgGreen( chalk.black( " GET " ) ) } ${ res.statusCode } ${ req.path }`
       );
       if ( JSON.stringify( req.query ) !== "{}" ) {
-        log( logTypes.info, JSON.stringify( req.query ) );
+        log( LOG_TYPES.INFO, JSON.stringify( req.query ) );
       }
       break;
     case "POST":
       log(
-        logTypes.info,
+        LOG_TYPES.INFO,
         `${ chalk.bgBlue( chalk.black( " POS " ) ) } ${ res.statusCode } ${ req.path }`
       );
       if ( JSON.stringify( req.query ) !== "{}" ) {
-        log( logTypes.info, JSON.stringify( req.query ) );
+        log( LOG_TYPES.INFO, JSON.stringify( req.query ) );
       }
       break;
     case "DELETE":
       log(
-        logTypes.info,
+        LOG_TYPES.INFO,
         `${ chalk.bgRed( chalk.black( " DEL " ) ) } ${ res.statusCode } ${ req.path }`
       );
       if ( JSON.stringify( req.query ) !== "{}" ) {
-        log( logTypes.info, JSON.stringify( req.query ) );
+        log( LOG_TYPES.INFO, JSON.stringify( req.query ) );
       }
       break;
     case "OPTIONS":
       if ( options.logOptionsRequests ) {
         log(
-          logTypes.info,
+          LOG_TYPES.INFO,
           `${ chalk.bgCyan( chalk.black( " OPT " ) ) } ${ res.statusCode } ${ req.path }`
         );
         if ( JSON.stringify( req.query ) !== "{}" ) {
-          log( logTypes.info, JSON.stringify( req.query ) );
+          log( LOG_TYPES.INFO, JSON.stringify( req.query ) );
         }
       }
       break;
     default:
-      log( logTypes.error, `ERROR IN REQUEST LOGGER, UNKNOWN REQUEST TYPE: ${ req.method }` );
+      log( LOG_TYPES.ERROR, `ERROR IN REQUEST LOGGER, UNKNOWN REQUEST TYPE: ${ req.method }` );
     }
     next();
   } );
   
-  log( logTypes.success, `Started the requests logger${ options && " (logging options requests is also enabled)" }` );
+  log( LOG_TYPES.SUCCESS, `Started the requests logger${ options && " (logging options requests is also enabled)" }` );
 }

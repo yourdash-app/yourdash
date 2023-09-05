@@ -26,14 +26,35 @@ import { useNavigate } from "react-router-dom";
 import useTranslate from "web-client/src/helpers/i10n";
 import { IWeatherDataForLocation } from "../shared/weatherDataForLocation";
 import WeatherApplicationLocationPageHeader from "./components/Header";
-import { Column, Button, Card } from "web-client/src/ui/index";
+import { Column, Card } from "web-client/src/ui/index";
 import { chunk } from "web-client/src/helpers/array";
 import getWeatherIconFromState from "./helpers/getWeatherIconFromState";
 import WeatherConditionsForHour from "./components/WeatherConditionsForHour";
+// @ts-ignore
+import { Line } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip
+} from "chart.js";
+import parseWeatherCodes from "../backend/helpers/parseWeatherState";
 
 interface IWeatherApplicationLocationPage {
-  weatherData: IWeatherDataForLocation
+  weatherData: IWeatherDataForLocation;
 }
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip
+);
 
 const WeatherApplicationLocationPage: React.FC<IWeatherApplicationLocationPage> = ( { weatherData } ) => {
   const trans = useTranslate( "weather" );
@@ -47,16 +68,16 @@ const WeatherApplicationLocationPage: React.FC<IWeatherApplicationLocationPage> 
     <div className={ "overflow-hidden h-full grid grid-rows-[auto,1fr]" }>
       <WeatherApplicationLocationPageHeader
         setSelectedDay={ day => setSelectedDay( day ) }
-        selectedDay={selectedDay}
+        selectedDay={ selectedDay }
         scrollContainerRef={ scrollContainerRef }
         weatherData={ weatherData }
       />
-      <div ref={ scrollContainerRef } className={ "h-full overflow-auto grid grid-cols-[auto,1fr,auto] p-4" }>
-        <Column className={"overflow-auto h-full pr-2"}>
+      <div ref={ scrollContainerRef } className={ "h-full grid lg:grid-cols-[auto,auto,1fr] grid-cols-[1fr] p-4 overflow-x-hidden" }>
+        <Column className={ "overflow-auto h-full pr-2 w-max" }>
           {
             chunk( weatherData.hourly.time, 24 )[ selectedDay ].map( ( hourDate, ind ) => {
               const date = new Date( hourDate );
-            
+              
               return <Card
                 level={ "secondary" }
                 key={ hourDate }
@@ -105,9 +126,90 @@ const WeatherApplicationLocationPage: React.FC<IWeatherApplicationLocationPage> 
             />
             : <div />
         }
-        <section className={"h-full"}>
-          <h1>CONDITIONS FOR DAY</h1>
-        </section>
+        <div className={"relative w-full hidden lg:block h-96"}>
+          <Line
+            options={{
+              responsive: true,
+              plugins: {
+                title: {
+                  display: true,
+                  text: "Weather for the next 24 hours",
+                  align: "end"
+                },
+              },
+              transitions: true,
+              spanGaps: true
+            }}
+            data={
+              {
+                labels: chunk( weatherData.hourly.time, 24 )[selectedDay].map( time => {
+                  const date = new Date( time )
+                  return `${
+                    date.getHours() < 9
+                      ? `0${date.getHours() + 1}`
+                      : date.getHours() + 1
+                  }:00`
+                } ),
+                datasets: [
+                  {
+                    label: "Weather Condition (WMO)",
+                    data: chunk( weatherData.hourly.weatherState, 24 )[selectedDay].map( state => {
+                      return parseWeatherCodes( state )
+                    } ),
+                    backgroundColor: "#8338EC88",
+                    borderColor: "#8338EC88",
+                    borderCapStyle: "round",
+                    borderWidth: 8,
+                    tension: 0.25,
+                    pointRadius: 16,
+                    pointBackgroundColor: "#0000",
+                    pointBorderWidth: 0,
+                    hoverPointRadius: 16
+                  },
+                  {
+                    label: "Rain Chance (%)",
+                    data: chunk( weatherData.hourly.precipitationProbability, 24 )[selectedDay],
+                    backgroundColor: "#3A86FF88",
+                    borderColor: "#3A86FF88",
+                    borderCapStyle: "round",
+                    borderWidth: 8,
+                    tension: 0.25,
+                    pointRadius: 16,
+                    pointBackgroundColor: "#0000",
+                    pointBorderWidth: 0,
+                    hoverPointRadius: 16
+                  },
+                  {
+                    label: `Average Temperature (${weatherData.units.hourly.temperature})`,
+                    data: chunk( weatherData.hourly.temperature, 24 )[selectedDay],
+                    backgroundColor: "#FB5607",
+                    borderColor: "#FB5607",
+                    borderCapStyle: "round",
+                    borderWidth: 8,
+                    tension: 0.25,
+                    pointRadius: 16,
+                    pointBackgroundColor: "#0000",
+                    pointBorderWidth: 0,
+                    hoverPointRadius: 16
+                  },
+                  {
+                    label: `Average Wind Speed (${weatherData.units.hourly.windSpeed})`,
+                    data: chunk( weatherData.hourly.windSpeed, 24 )[selectedDay],
+                    backgroundColor: "#FF006E",
+                    borderColor: "#FF006E",
+                    borderCapStyle: "round",
+                    borderWidth: 8,
+                    tension: 0.25,
+                    pointRadius: 16,
+                    pointBackgroundColor: "#0000",
+                    pointBorderWidth: 0,
+                    hoverPointRadius: 16
+                  }
+                ]
+              }
+            }
+          />
+        </div>
       </div>
     </div>
   );
