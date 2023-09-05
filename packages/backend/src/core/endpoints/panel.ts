@@ -27,12 +27,14 @@ import YourDashApplication from "backend/src/helpers/applications.js";
 import { base64ToDataUrl } from "backend/src/helpers/base64.js";
 import sharp from "sharp";
 import path from "path";
-import { promises as fs, existsSync as fsExistsSync } from "fs";
-import YourDashUnreadUser from "backend/src/helpers/user.js";
+import { promises as fs } from "fs";
 import YourDashPanel from "backend/src/helpers/panel.js";
+import { FS_DIRECTORY_PATH } from "../../main.js";
+import authenticatedImage, { authenticatedImageType } from "../authenticatedImage.js";
+import IPanelApplicationsLauncherApplication from "shared/core/panel/applicationsLauncher/application.js";
 
-export default async function defineRoute( app: ExpressApplication ) {
-  app.get( "/core/panel/applications", async ( _req, res ) => {
+export default async function defineRoute( exp: ExpressApplication ) {
+  exp.get( "/core/panel/applications", async ( _req, res ) => {
     res.set( "Cache-Control", "no-store" );
     
     Promise.all( ( globalDatabase.get( "installedApplications" ) ).map( async app => {
@@ -43,12 +45,12 @@ export default async function defineRoute( app: ExpressApplication ) {
             process.cwd(),
             `../applications/${ app }/icon.avif`
           ) )
-        ).resize( 98, 98 ).toBuffer( ( err, buf ) => {
+        ).resize( 88, 88 ).toBuffer( ( err, buf ) => {
           if ( err ) {
             resolve( { error: true } );
           }
           
-          resolve( {
+          resolve( <IPanelApplicationsLauncherApplication>{
             name: application.getName(),
             displayName: application.getDisplayName(),
             description: application.getDescription(),
@@ -58,18 +60,8 @@ export default async function defineRoute( app: ExpressApplication ) {
       } );
     } ) ).then( resp => res.json( resp ) );
   } );
-  
-  app.get( "/core/panel/user-full-name", async ( req, res ) => {
-    res.set( "Cache-Control", "no-store" );
-    
-    const { username } = req.headers as {
-      username: string
-    };
-    const user = ( await new YourDashUnreadUser( username ).read() );
-    return res.json( user.getName() );
-  } );
-  
-  app.get( "/core/panel/quick-shortcuts", async ( req, res ) => {
+
+  exp.get( "/core/panel/quick-shortcuts", async ( req, res ) => {
     res.set( "Cache-Control", "no-store" );
     
     const { username } = req.headers as {
@@ -81,7 +73,7 @@ export default async function defineRoute( app: ExpressApplication ) {
     return res.json( await panel.getQuickShortcuts() );
   } );
   
-  app.delete( "/core/panel/quick-shortcuts:ind", async ( req, res ) => {
+  exp.delete( "/core/panel/quick-shortcuts:ind", async ( req, res ) => {
     res.set( "Cache-Control", "no-store" );
     
     const { ind } = req.params;
@@ -96,7 +88,7 @@ export default async function defineRoute( app: ExpressApplication ) {
     return res.json( { success: true } );
   } );
   
-  app.post( "/core/panel/quick-shortcuts/create", async ( req, res ) => {
+  exp.post( "/core/panel/quick-shortcuts/create", async ( req, res ) => {
     res.set( "Cache-Control", "no-store" );
     
     const { username } = req.headers as {
@@ -125,7 +117,7 @@ export default async function defineRoute( app: ExpressApplication ) {
     }
   } );
   
-  app.get( "/core/panel/position", async ( req, res ) => {
+  exp.get( "/core/panel/position", async ( req, res ) => {
     res.set( "Cache-Control", "no-store" );
     
     const { username } = req.headers as {
@@ -137,7 +129,7 @@ export default async function defineRoute( app: ExpressApplication ) {
     return res.json( { position: await panel.getPanelPosition() } );
   } );
   
-  app.get( "/core/panel/quick-shortcuts", async ( req, res ) => {
+  exp.get( "/core/panel/quick-shortcuts", async ( req, res ) => {
     res.set( "Cache-Control", "no-store" );
     
     const { username } = req.headers as {
@@ -147,5 +139,15 @@ export default async function defineRoute( app: ExpressApplication ) {
     const panel = new YourDashPanel( username );
     
     return res.json( { launcher: await panel.getLauncherType() } );
+  } );
+  
+  exp.get( "/core/panel/logo", ( req, res ) => {
+    const { username } = req.headers as { username: string };
+    
+    return res.json( {
+      small: authenticatedImage( username, authenticatedImageType.file, path.join( FS_DIRECTORY_PATH, "./logo_panel_small.avif" ) ),
+      medium: authenticatedImage( username, authenticatedImageType.file, path.join( FS_DIRECTORY_PATH, "./logo_panel_medium.avif" ) ),
+      large: authenticatedImage( username, authenticatedImageType.file, path.join( FS_DIRECTORY_PATH, "./logo_panel_large.avif" ) )
+    } )
   } );
 }

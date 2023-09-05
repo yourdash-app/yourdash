@@ -50,7 +50,7 @@ const BrowserLayout: React.FC<IBrowserLayout> = ( {
     >
       <IconButton
         className={"fixed top-4 right-4"}
-        icon={YourDashIcon.Gear16}
+        icon={YourDashIcon.Gear}
         onClick={() => {
           navigate( "/app/a/settings/personalization/dashboard" );
         }}

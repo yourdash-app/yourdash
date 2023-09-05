@@ -265,7 +265,7 @@ const Panel: React.FC<IPanel> = ( {
       >
         <PanelDesktopIndicator side={ side } />
         {/* TODO: feature idea, Quick search ( basically just opens a command panel for all of YourDash ) */ }
-        <IconButton icon={ YourDashIcon.Search16 } className={ "!w-[2rem] !h-[2rem]" } />
+        <IconButton icon={ YourDashIcon.Search } className={ "!w-[2rem] !h-[2rem]" } />
       </section>
     </div>
   );

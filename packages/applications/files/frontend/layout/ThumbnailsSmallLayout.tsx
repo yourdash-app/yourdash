@@ -60,7 +60,7 @@ const DetailsLayout: React.FC = () => {
             onClick={() => {
               setCurrentPath( path.join( currentPath, ".." ) );
             }}
-            icon={YourDashIcon.ChevronLeft16}
+            icon={YourDashIcon.ChevronLeft}
           />
           <span>{currentPath}</span>
         </div>
@@ -73,7 +73,7 @@ const DetailsLayout: React.FC = () => {
                 )
               }
             >
-              <Icon icon={YourDashIcon.Info16} className={"h-[calc(100%-0.35rem)] mr-1.5"} color={"rgb(var(--container-fg))"}/>
+              <Icon icon={YourDashIcon.Info} className={"h-[calc(100%-0.35rem)] mr-1.5"} color={"rgb(var(--container-fg))"}/>
               <span className={"mr-auto"}>{trans( "NAME" )}</span>
               <span>{trans( "TYPE" )}</span>
             </div>
@@ -118,8 +118,8 @@ const DetailsLayout: React.FC = () => {
                         file.icon === ""
                           ? (
                             file.type === "dir"
-                              ? <Icon className={styles.itemIcon} icon={YourDashIcon.FileDirectory16}/>
-                              : <Icon className={styles.itemIcon} icon={YourDashIcon.File16}/>
+                              ? <Icon className={styles.itemIcon} icon={YourDashIcon.FileDirectory}/>
+                              : <Icon className={styles.itemIcon} icon={YourDashIcon.File}/>
                           )
                           : <img className={styles.itemIcon} alt={""} src={`${ csi.getInstanceUrl() }${ file.icon }`}/>
                       }

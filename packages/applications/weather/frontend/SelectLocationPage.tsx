@@ -64,7 +64,7 @@ const SelectLocationPage: React.FC = () => {
             }}
             label={trans( "LOCATION" )}
           />
-          {/*<IconButton icon={YourDashIcon.Pin16} onClick={( e ) => {*/}
+          {/*<IconButton icon={YourDashIcon.Pin} onClick={( e ) => {*/}
           {/*  if ( navigator.geolocation ) {*/}
           {/*    navigator.geolocation.getCurrentPosition(*/}
           {/*      ( position ) => {*/}

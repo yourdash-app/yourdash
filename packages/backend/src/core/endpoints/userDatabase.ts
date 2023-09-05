@@ -35,6 +35,8 @@ export default function defineUserDatabaseRoutes( exp: ExpressApplication ) {
   exp.get( "/core/user_db", async ( req, res ) => {
     const { username } = req.headers as { username: string }
     
+    console.log( userDatabases.get( username ) )
+    
     return res.json( userDatabases.get( username ) || {} )
   } )
   
@@ -42,6 +44,8 @@ export default function defineUserDatabaseRoutes( exp: ExpressApplication ) {
     const { username } = req.headers as { username: string }
     
     userDatabases.set( username, req.body )
+    
+    console.log( userDatabases.get( username ) )
     
     return res.json( { success: true } )
   } )

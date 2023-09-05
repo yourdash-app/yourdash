@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "ESNext",
+    "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "allowSyntheticDefaultImports": true,
     "target": "ESNext",
@@ -22,5 +22,6 @@
     "src/**/*.ts",
     "../shared/**/*.ts",
     "../applications/**/backend/**/*.ts"
-  ]
+  ],
+  "exclude" : ["node_modules"]
 }

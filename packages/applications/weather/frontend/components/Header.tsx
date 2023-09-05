@@ -86,7 +86,7 @@ const WeatherApplicationLocationPageHeader: React.FC<WeatherApplicationLocationP
     <section className={ "p-4 flex gap-2 h-28 items-center justify-between from-base-700 to-transparent bg-gradient-to-b child:flex child:items-center" }>
       <section className={ "flex gap-2" }>
         <IconButton
-          icon={ YourDashIcon.ChevronLeft16 }
+          icon={ YourDashIcon.ChevronLeft }
           onClick={() => {
             navigate( "/app/a/weather" )
           }}
@@ -100,9 +100,9 @@ const WeatherApplicationLocationPageHeader: React.FC<WeatherApplicationLocationP
         </div>
       </section>
       <section className={"gap-2 flex"}>
-        <IconButton icon={ YourDashIcon.Bookmark16 } />
+        <IconButton icon={ YourDashIcon.Bookmark } />
         <IconButton
-          icon={ isStuck ? YourDashIcon.ChevronDown16 : YourDashIcon.ChevronUp16 }
+          icon={ isStuck ? YourDashIcon.ChevronDown : YourDashIcon.ChevronUp }
           onClick={() => {
             setIsStuck( !isStuck )
           }}

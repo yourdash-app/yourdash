@@ -39,21 +39,21 @@ const YourDevApplication: React.FC = () => {
         items={[
           {
             label: "Home",
-            icon: YourDashIcon.Home16,
+            icon: YourDashIcon.Home,
             onClick: () => {
               setPage( "home" );
             }
           },
           {
             label: "Global DB",
-            icon: YourDashIcon.Database16,
+            icon: YourDashIcon.Database,
             onClick: () => {
               setPage( "global_db" );
             }
           },
           {
             label: "User DB",
-            icon: YourDashIcon.Person16,
+            icon: YourDashIcon.Person,
             onClick: () => {
               setPage( "user_db" );
             }

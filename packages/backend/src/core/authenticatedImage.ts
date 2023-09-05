@@ -1,5 +1,6 @@
 import { Application as ExpressApplication } from "express";
 import path from "path";
+import crypto from "crypto";
 
 export enum authenticatedImageType {
   base64,
@@ -42,7 +43,7 @@ export function startAuthenticatedImageHelper( app: ExpressApplication ) {
 }
 
 export default function authenticatedImage( username: string, type: authenticatedImageType, value: string ): string {
-  const id = Math.random().toString( 36 ).substring( 2, 15 ) + Math.random().toString( 36 ).substring( 2, 15 );
+  const id = crypto.randomUUID()
   
   if ( !authenticatedImages[username] ) {
     authenticatedImages[username] = {};

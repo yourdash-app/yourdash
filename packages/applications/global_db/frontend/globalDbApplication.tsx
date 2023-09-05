@@ -22,9 +22,9 @@
  */
 
 import React, { useEffect, useState } from "react";
-import csi from "../backend/src/helpers/csi";
+import csi from "web-client/src/helpers/csi";
 import DbItem from "./components/dbItem";
-import { Button } from "../../../ui";
+import { Button } from "web-client/src/ui";
 
 const GlobalDbApplication: React.FC = () => {
   const [keys, setKeys] = useState<{

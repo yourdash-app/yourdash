@@ -38,21 +38,21 @@ const DocsLayout: React.FC = () => {
           title={"YourDash Docs"}
           items={[
             {
-              icon: YourDashIcon.Home16,
+              icon: YourDashIcon.Home,
               label: "Overview",
               onClick() {
                 navigate( "/docs/" );
               }
             },
             {
-              icon: YourDashIcon.Info16,
+              icon: YourDashIcon.Info,
               label: "Get Started",
               onClick() {
                 navigate( "/docs/get-started" );
               }
             },
             {
-              icon: YourDashIcon.Accessibility16,
+              icon: YourDashIcon.Accessibility,
               label: "Translation",
               onClick() {
                 navigate( "/docs/translation" );

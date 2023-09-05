@@ -34,13 +34,13 @@ const Index: React.FC = () => (
       href={"/app/a/settings/personalization/panel"}
       description={"Customize your panel"}
       title={"Panel"}
-      icon={YourDashIcon.Paintbrush16}
+      icon={YourDashIcon.Paintbrush}
     />
     <SettingCategoryComponent
       href={"/app/a/settings/personalization/dashboard"}
       description={"Customize your dashboard"}
       title={"Dashboard"}
-      icon={YourDashIcon.Paintbrush16}
+      icon={YourDashIcon.Paintbrush}
     />
     <SettingCategoryComponent
       href={"/app/a/settings/personalization/profile"}
@@ -52,7 +52,7 @@ const Index: React.FC = () => (
       href={"/app/a/settings/personalization/theme"}
       description={"Customize the look of YourDash"}
       title={"Theme"}
-      icon={YourDashIcon.Accessibility16}
+      icon={YourDashIcon.Accessibility}
     />
   </BasePageLayout>
 );

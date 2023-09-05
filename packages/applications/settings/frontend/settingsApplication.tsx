@@ -39,13 +39,13 @@ const SettingsApplication: React.FC = () => (
       href={"/app/a/settings/profile"}
       description={"Manage your user profile"}
       title={"Profile"}
-      icon={YourDashIcon.Person16}
+      icon={YourDashIcon.Person}
     />
     <SettingCategoryComponent
       href={"/app/a/settings/personalization"}
       description={"Sample text"}
       title={"Personalization"}
-      icon={YourDashIcon.Paintbrush16}
+      icon={YourDashIcon.Paintbrush}
     />
     <SettingCategoryComponent
       href={"/app/a/settings/session"}
@@ -57,13 +57,13 @@ const SettingsApplication: React.FC = () => (
       href={"/app/a/settings/accessibility"}
       description={"Sample text"}
       title={"Accessibility"}
-      icon={YourDashIcon.Accessibility16}
+      icon={YourDashIcon.Accessibility}
     />
     <SettingCategoryComponent
       href={"/app/a/settings/admin"}
       description={"Sample text"}
       title={"Admin tools"}
-      icon={YourDashIcon.Tools16}
+      icon={YourDashIcon.Tools}
     />
     <div className={"h-full overflow-auto"}>
       <main className={"ml-auto mr-auto w-full max-w-5xl"}>

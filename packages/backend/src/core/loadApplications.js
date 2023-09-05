@@ -54,8 +54,13 @@ export function loadApplication(appName, app, io) {
 }
 export default function loadApplications(exp, io) {
     if (fsExistsSync(path.resolve(process.cwd(), "../applications/"))) {
-        const apps = (globalDatabase.get("installedApplications"));
-        console.log(apps);
+        const apps = (globalDatabase.get("installedApplications")) || [];
+        if (apps?.length === 0) {
+            log(logTypes.warn, "No applications were loaded");
+        }
+        else {
+            log(logTypes.info, `Loading applications ${apps}`);
+        }
         apps.forEach((appName) => {
             try {
                 loadApplication(appName, exp, io);

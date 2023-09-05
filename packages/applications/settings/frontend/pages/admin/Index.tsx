@@ -34,7 +34,7 @@ const Index: React.FC = () => (
       href={"https://google.com"}
       description={"Sample text"}
       title={"Sample text"}
-      icon={YourDashIcon.Paintbrush16}
+      icon={YourDashIcon.Paintbrush}
       external
     />
     <SettingCategoryComponent
@@ -48,13 +48,13 @@ const Index: React.FC = () => (
       href={"/app/a/settings/accessibility"}
       description={"Sample text"}
       title={"Sample text"}
-      icon={YourDashIcon.Accessibility16}
+      icon={YourDashIcon.Accessibility}
     />
     <SettingCategoryComponent
       href={"/app/a/settings/admin"}
       description={"Sample text"}
       title={"Sample text"}
-      icon={YourDashIcon.Tools16}
+      icon={YourDashIcon.Tools}
     />
   </BasePageLayout>
 );

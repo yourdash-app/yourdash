@@ -44,7 +44,7 @@ const PanelDesktopIndicator: React.FC<{ side: PanelPosition }> = ( { side } ) =>
   return (
     <div className={"relative"}>
       <IconButton
-        icon={YourDashIcon.Server16}
+        icon={YourDashIcon.Server}
         onClick={() => {
           setVisible( !visible );
         }}
