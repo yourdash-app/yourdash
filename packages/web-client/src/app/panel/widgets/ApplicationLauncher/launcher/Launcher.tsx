@@ -49,7 +49,7 @@ const ApplicationLauncher: React.FC<{ side: "top" | "right" | "bottom" | "left",
       !visible && styles.invisible
     )}
   >
-    <ApplicationsLauncherApplications apps={apps} visible={visible}/>
+    <ApplicationsLauncherApplications apps={apps}/>
     <section className={styles.footer}>
       <div>
         <img src={""} alt={""}/>
@@ -59,7 +59,7 @@ const ApplicationLauncher: React.FC<{ side: "top" | "right" | "bottom" | "left",
         />
       </div>
       <span>
-        {csi.userDB.get( "core:user:userFullName" )}
+        {csi.userDB.get( "core:user:userFullName" ).first}
       </span>
     </section>
   </div>

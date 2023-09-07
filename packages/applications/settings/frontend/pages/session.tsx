@@ -24,13 +24,13 @@
 import React, { useState, useEffect } from "react";
 import { Card, Icon, IconButton } from "web-client/src/ui";
 import csi from "web-client/src/helpers/csi";
-import { type IYourDashSession, YourDashSessionType } from "shared/core/session";
+import { type IYourDashSession, YOURDASH_SESSION_TYPE } from "shared/core/session";
 import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
 
 const SettingsPageSession: React.FC = () => {
   const [reloadNum, setReloadNum] = useState( 0 );
   const [sessions, setSessions] = useState<IYourDashSession<any>[]>( [] );
-  const [personalServerAccelerationSessions, setPersonalServerAcceleration] = useState<IYourDashSession<YourDashSessionType.desktop>[]>( [] );
+  const [personalServerAccelerationSessions, setPersonalServerAcceleration] = useState<IYourDashSession<YOURDASH_SESSION_TYPE.desktop>[]>( [] );
   
   useEffect( () => {
     // setSessions( [
@@ -86,7 +86,7 @@ const SettingsPageSession: React.FC = () => {
                     session.id
                   }
                   {
-                    session.type === YourDashSessionType.web && (
+                    session.type === YOURDASH_SESSION_TYPE.web && (
                       <Icon
                         className={"aspect-square h-8 m-auto ml-0"}
                         icon={YourDashIcon.Browser}
@@ -94,7 +94,7 @@ const SettingsPageSession: React.FC = () => {
                     )
                   }
                   {
-                    session.type === YourDashSessionType.cli && (
+                    session.type === YOURDASH_SESSION_TYPE.cli && (
                       <Icon
                         className={"aspect-square h-8 m-auto ml-0"}
                         icon={YourDashIcon.Terminal}
@@ -102,7 +102,7 @@ const SettingsPageSession: React.FC = () => {
                     )
                   }
                   {
-                    session.type === YourDashSessionType.desktop && (
+                    session.type === YOURDASH_SESSION_TYPE.desktop && (
                       <Icon
                         className={"aspect-square h-8 m-auto ml-0"}
                         icon={YourDashIcon.DeviceDesktop}
@@ -110,7 +110,7 @@ const SettingsPageSession: React.FC = () => {
                     )
                   }
                   {
-                    session.type === YourDashSessionType.external && (
+                    session.type === YOURDASH_SESSION_TYPE.external && (
                       <Icon
                         className={"aspect-square h-8 m-auto ml-0"}
                         icon={YourDashIcon.Question}
@@ -121,16 +121,16 @@ const SettingsPageSession: React.FC = () => {
                 <div className={"w-full bg-container-secondary-bg pl-4 p-3 flex text-container-fg items-center justify-between"}>
                   <span>
                     {
-                      session.type === YourDashSessionType.web && "Web"
+                      session.type === YOURDASH_SESSION_TYPE.web && "Web"
                     }
                     {
-                      session.type === YourDashSessionType.cli && "Cli"
+                      session.type === YOURDASH_SESSION_TYPE.cli && "Cli"
                     }
                     {
-                      session.type === YourDashSessionType.desktop && "Desktop"
+                      session.type === YOURDASH_SESSION_TYPE.desktop && "Desktop"
                     }
                     {
-                      session.type === YourDashSessionType.external && "External"
+                      session.type === YOURDASH_SESSION_TYPE.external && "External"
                     }
                   </span>
                   <IconButton

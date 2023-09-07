@@ -26,7 +26,7 @@ import globalDatabase from "./globalDatabase.js";
 
 export enum LOG_TYPES {
   INFO,
-  WARN,
+  WARNING,
   ERROR,
   SUCCESS
 }
@@ -58,7 +58,7 @@ export default function log( type: LOG_TYPES, ...message: any[] ) {
   case LOG_TYPES.INFO:
     logParams.push( chalk.blue( "INFO    " ) );
     break;
-  case LOG_TYPES.WARN:
+  case LOG_TYPES.WARNING:
     logParams.push( chalk.yellow( "WARN    " ) );
     break;
   case LOG_TYPES.ERROR:
@@ -76,7 +76,7 @@ export default function log( type: LOG_TYPES, ...message: any[] ) {
   LOG_HISTORY.push( {
     type: ( type === LOG_TYPES.INFO
       ? "INFO"
-      : type === LOG_TYPES.WARN
+      : type === LOG_TYPES.WARNING
         ? "WARN"
         : type === LOG_TYPES.ERROR
           ? "ERROR"

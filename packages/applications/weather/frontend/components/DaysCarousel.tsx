@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 YourDash contributors.
+ * Copyright ©2023 @Ewsgit and YourDash contributors.
  * YourDash is licensed under the MIT License.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy

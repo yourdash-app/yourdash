@@ -105,7 +105,9 @@ class YDApplication {
 // Returns an array of strings with the name of each application that exists ( installed or not )
 export async function getAllApplications(): Promise<string[]> {
   try {
-    return ( await fs.readdir( path.resolve( process.cwd(), "../applications/" ) ) ).filter( app => app !== "package.json" );
+    return ( await fs.readdir( path.resolve( process.cwd(), "../applications/" ) ) ).filter( app => {
+      return ( app !== "package.json" ) && ( app !== "node_modules" );
+    } );
   } catch ( _err ) {
     log( LOG_TYPES.ERROR, "A problem occurred reading the ../applications/ directory" );
     return [];
