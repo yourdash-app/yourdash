@@ -56,7 +56,7 @@ export default function loadApplications(exp, io) {
     if (fsExistsSync(path.resolve(process.cwd(), "../applications/"))) {
         const apps = (globalDatabase.get("installedApplications")) || [];
         if (apps?.length === 0) {
-            log(LOG_TYPES.WARN, "No applications were loaded");
+            log(LOG_TYPES.WARNING, "No applications were loaded");
         }
         else {
             log(LOG_TYPES.INFO, `Loading applications ${apps}`);

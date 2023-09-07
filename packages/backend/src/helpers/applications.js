@@ -56,7 +56,9 @@ class YDApplication {
 }
 export async function getAllApplications() {
     try {
-        return (await fs.readdir(path.resolve(process.cwd(), "../applications/"))).filter(app => app !== "package.json");
+        return (await fs.readdir(path.resolve(process.cwd(), "../applications/"))).filter(app => {
+            return (app !== "package.json") && (app !== "node_modules");
+        });
     }
     catch (_err) {
         log(LOG_TYPES.ERROR, "A problem occurred reading the ../applications/ directory");

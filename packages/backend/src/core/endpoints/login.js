@@ -2,7 +2,7 @@ import YourDashUnreadUser from "backend/src/helpers/user.js";
 import log, { LOG_TYPES } from "backend/src/helpers/log.js";
 import { compareHash } from "backend/src/helpers/encryption.js";
 import { createSession } from "backend/src/helpers/session.js";
-import { YourDashSessionType } from "../../../../shared/core/session.js";
+import { YOURDASH_SESSION_TYPE } from "../../../../shared/core/session.js";
 import { __internalGetSessionsDoNotUseOutsideOfCore } from "../sessions.js";
 import path from "path";
 import { promises as fs } from "fs";
@@ -40,8 +40,8 @@ export default function defineLoginEndpoints(app) {
         return compareHash(savedHashedPassword, password).then(async (result) => {
             if (result) {
                 const session = await createSession(username, req.headers?.type === "desktop"
-                    ? YourDashSessionType.desktop
-                    : YourDashSessionType.web);
+                    ? YOURDASH_SESSION_TYPE.desktop
+                    : YOURDASH_SESSION_TYPE.web);
                 return res.json({
                     token: session.sessionToken,
                     id: session.id

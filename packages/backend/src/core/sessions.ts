@@ -1,4 +1,4 @@
-import { type IYourDashSession } from "../../../shared/core/session.js";
+import { type IYourDashSession } from "shared/core/session.js";
 
 const SESSIONS: {
   [ key: string ]: IYourDashSession<any>[]

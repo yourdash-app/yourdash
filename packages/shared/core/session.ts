@@ -1,10 +1,10 @@
-export interface IYourDashSession<T extends YourDashSessionType> {
+export interface IYourDashSession<T extends YOURDASH_SESSION_TYPE> {
   id: number,
   type: T,
   sessionToken: string
 }
 
-export enum YourDashSessionType {
+export enum YOURDASH_SESSION_TYPE {
   web,
   desktop,
   cli,
