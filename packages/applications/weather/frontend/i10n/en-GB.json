@@ -28,5 +28,8 @@
   "AND": "and",
   "WITH": "with",
   "CURRENTLY": "Currently",
-  "PROBLEM_FETCHING_DATA": "Unable to gather data for this location at this moment."
+  "PROBLEM_FETCHING_DATA": "Unable to gather data for this location at this moment.",
+  "GRAPH": {
+    "WEATHER_CONDITION": "Weather Condition (WMO)"
+  }
 }

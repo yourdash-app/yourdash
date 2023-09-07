@@ -1,13 +1,13 @@
 import { Socket as SocketIoSocket } from "socket.io";
 
-import { IYourDashSession, YourDashSessionType } from "../../../shared/core/session.js";
+import { IYourDashSession, YOURDASH_SESSION_TYPE } from "../../../shared/core/session.js";
 import { ACTIVE_SOCKET_IO_SOCKETS, socketIo } from "../main.js";
 
 import log from "./log.js";
 
 export function executeCommand(
   username: string,
-  session: IYourDashSession<YourDashSessionType.desktop>,
+  session: IYourDashSession<YOURDASH_SESSION_TYPE.desktop>,
   command: string
 ): Promise<any> {
   return new Promise( resolve => {
@@ -20,7 +20,7 @@ export function executeCommand(
 
 export function getSocketFromSession(
   username: string,
-  session: IYourDashSession<YourDashSessionType.desktop>
+  session: IYourDashSession<YOURDASH_SESSION_TYPE.desktop>
 ): SocketIoSocket | undefined {
   if ( !session || !username ) {
     return undefined;
@@ -38,7 +38,7 @@ export function getSocketFromSession(
 export class PersonalServerAcceleratorCommunication {
   socketConnection: SocketIoSocket;
 
-  constructor( username: string, session: IYourDashSession<YourDashSessionType.desktop> ) {
+  constructor( username: string, session: IYourDashSession<YOURDASH_SESSION_TYPE.desktop> ) {
     if ( !session ) {
       return undefined;
     }

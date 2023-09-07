@@ -142,7 +142,7 @@ class YourDashUser {
             return new YourDashSession(this.username, getSessionsForUser(this.username)[getSessionsForUser(this.username).findIndex(val => val.id === sessionId)]);
         }
         catch (_err) {
-            log(LOG_TYPES.WARN, `${chalk.yellow.bold("CORE")}: unable to find session: ${sessionId}`);
+            log(LOG_TYPES.WARNING, `${chalk.yellow.bold("CORE")}: unable to find session: ${sessionId}`);
             return undefined;
         }
     }

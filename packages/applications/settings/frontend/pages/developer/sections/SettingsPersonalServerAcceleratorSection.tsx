@@ -22,14 +22,14 @@
  */
 
 import React, { useState, useEffect } from "react";
-import { IYourDashSession, YourDashSessionType } from "shared/core/session";
+import { IYourDashSession, YOURDASH_SESSION_TYPE } from "shared/core/session";
 import { Button, Card, Icon, Row } from "web-client/src/ui";
 import csi from "web-client/src/helpers/csi";
 import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
 
 const SettingsPersonalServerAcceleratorSection: React.FC = () => {
-  const [psaSessions, setPsaSessions] = useState<IYourDashSession<YourDashSessionType.desktop>[]>( [] );
-  const [selectedSession, setSelectedSession] = useState<IYourDashSession<YourDashSessionType.desktop> | null>( null );
+  const [psaSessions, setPsaSessions] = useState<IYourDashSession<YOURDASH_SESSION_TYPE.desktop>[]>( [] );
+  const [selectedSession, setSelectedSession] = useState<IYourDashSession<YOURDASH_SESSION_TYPE.desktop> | null>( null );
   
   useEffect( () => {
     

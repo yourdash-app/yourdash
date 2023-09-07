@@ -1,7 +1,7 @@
 import { promises as fs } from "fs";
 import path from "path";
 import { __internalGetSessionsDoNotUseOutsideOfCore, SESSION_TOKEN_LENGTH } from "../core/sessions.js";
-import { YourDashSessionType, type IYourDashSession } from "../../../shared/core/session.js";
+import { YOURDASH_SESSION_TYPE, type IYourDashSession } from "../../../shared/core/session.js";
 import log, { LOG_TYPES } from "./log.js";
 import { generateRandomStringOfLength } from "./encryption.js";
 import YourDashUnreadUser from "./user.js";
@@ -15,7 +15,7 @@ export function getSessionId( username: string, sessionToken: string ): number |
   return __internalGetSessionsDoNotUseOutsideOfCore()[username].find( session => session.sessionToken === sessionToken )?.id || null;
 }
 
-export async function createSession<T extends YourDashSessionType>(
+export async function createSession<T extends YOURDASH_SESSION_TYPE>(
   username: string,
   type: T
 ): Promise<IYourDashSession<T>> {
@@ -58,7 +58,7 @@ export async function createSession<T extends YourDashSessionType>(
   return session;
 }
 
-export default class YourDashSession<T extends YourDashSessionType> {
+export default class YourDashSession<T extends YOURDASH_SESSION_TYPE> {
   id: number;
   type: T;
   sessionToken: string;

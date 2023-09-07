@@ -30,17 +30,8 @@ import { Column, Card } from "web-client/src/ui/index";
 import { chunk } from "web-client/src/helpers/array";
 import getWeatherIconFromState from "./helpers/getWeatherIconFromState";
 import WeatherConditionsForHour from "./components/WeatherConditionsForHour";
-// @ts-ignore
 import { Line } from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip
-} from "chart.js";
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip } from "chart.js";
 import parseWeatherCodes from "../backend/helpers/parseWeatherState";
 
 interface IWeatherApplicationLocationPage {
@@ -64,6 +55,7 @@ const WeatherApplicationLocationPage: React.FC<IWeatherApplicationLocationPage> 
   const [selectedDay, setSelectedDay] = useState<number>( 0 );
   const [selectedHour, setSelectedHour] = useState<number | null>( null );
   
+  // @ts-ignore
   return (
     <div className={ "overflow-hidden h-full grid grid-rows-[auto,1fr]" }>
       <WeatherApplicationLocationPageHeader
@@ -137,6 +129,7 @@ const WeatherApplicationLocationPage: React.FC<IWeatherApplicationLocationPage> 
                   align: "end"
                 },
               },
+              // @ts-ignore
               transitions: true,
               spanGaps: true
             }}
@@ -152,7 +145,7 @@ const WeatherApplicationLocationPage: React.FC<IWeatherApplicationLocationPage> 
                 } ),
                 datasets: [
                   {
-                    label: "Weather Condition (WMO)",
+                    label: trans( "GRAPH.WEATHER_CONDITION" ),
                     data: chunk( weatherData.hourly.weatherState, 24 )[selectedDay].map( state => {
                       return parseWeatherCodes( state )
                     } ),
@@ -164,6 +157,7 @@ const WeatherApplicationLocationPage: React.FC<IWeatherApplicationLocationPage> 
                     pointRadius: 16,
                     pointBackgroundColor: "#0000",
                     pointBorderWidth: 0,
+                    // @ts-ignore
                     hoverPointRadius: 16
                   },
                   {
@@ -177,6 +171,7 @@ const WeatherApplicationLocationPage: React.FC<IWeatherApplicationLocationPage> 
                     pointRadius: 16,
                     pointBackgroundColor: "#0000",
                     pointBorderWidth: 0,
+                    // @ts-ignore
                     hoverPointRadius: 16
                   },
                   {
@@ -190,6 +185,7 @@ const WeatherApplicationLocationPage: React.FC<IWeatherApplicationLocationPage> 
                     pointRadius: 16,
                     pointBackgroundColor: "#0000",
                     pointBorderWidth: 0,
+                    // @ts-ignore
                     hoverPointRadius: 16
                   },
                   {
@@ -203,6 +199,7 @@ const WeatherApplicationLocationPage: React.FC<IWeatherApplicationLocationPage> 
                     pointRadius: 16,
                     pointBackgroundColor: "#0000",
                     pointBorderWidth: 0,
+                    // @ts-ignore
                     hoverPointRadius: 16
                   }
                 ]

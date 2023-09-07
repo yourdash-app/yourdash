@@ -3,7 +3,7 @@ import globalDatabase from "./globalDatabase.js";
 export var LOG_TYPES;
 (function (LOG_TYPES) {
     LOG_TYPES[LOG_TYPES["INFO"] = 0] = "INFO";
-    LOG_TYPES[LOG_TYPES["WARN"] = 1] = "WARN";
+    LOG_TYPES[LOG_TYPES["WARNING"] = 1] = "WARNING";
     LOG_TYPES[LOG_TYPES["ERROR"] = 2] = "ERROR";
     LOG_TYPES[LOG_TYPES["SUCCESS"] = 3] = "SUCCESS";
 })(LOG_TYPES || (LOG_TYPES = {}));
@@ -20,7 +20,7 @@ export default function log(type, ...message) {
         case LOG_TYPES.INFO:
             logParams.push(chalk.blue("INFO    "));
             break;
-        case LOG_TYPES.WARN:
+        case LOG_TYPES.WARNING:
             logParams.push(chalk.yellow("WARN    "));
             break;
         case LOG_TYPES.ERROR:
@@ -36,7 +36,7 @@ export default function log(type, ...message) {
     LOG_HISTORY.push({
         type: (type === LOG_TYPES.INFO
             ? "INFO"
-            : type === LOG_TYPES.WARN
+            : type === LOG_TYPES.WARNING
                 ? "WARN"
                 : type === LOG_TYPES.ERROR
                     ? "ERROR"
