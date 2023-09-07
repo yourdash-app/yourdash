@@ -1,6 +1,6 @@
-enum YourDashServerDiscoveryStatus {
+enum YOURDASH_INSTANCE_DISCOVERY_STATUS {
   // eslint-disable-next-line no-unused-vars
   MAINTENANCE, NORMAL, INVISIBLE
 }
 
-export {YourDashServerDiscoveryStatus};
+export { YOURDASH_INSTANCE_DISCOVERY_STATUS };

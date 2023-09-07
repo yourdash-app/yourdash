@@ -1,8 +1,8 @@
-var YourDashServerDiscoveryStatus;
-(function (YourDashServerDiscoveryStatus) {
-    YourDashServerDiscoveryStatus[YourDashServerDiscoveryStatus["MAINTENANCE"] = 0] = "MAINTENANCE";
-    YourDashServerDiscoveryStatus[YourDashServerDiscoveryStatus["NORMAL"] = 1] = "NORMAL";
-    YourDashServerDiscoveryStatus[YourDashServerDiscoveryStatus["INVISIBLE"] = 2] = "INVISIBLE";
-})(YourDashServerDiscoveryStatus || (YourDashServerDiscoveryStatus = {}));
-export { YourDashServerDiscoveryStatus };
+var YOURDASH_INSTANCE_DISCOVERY_STATUS;
+(function (YOURDASH_INSTANCE_DISCOVERY_STATUS) {
+    YOURDASH_INSTANCE_DISCOVERY_STATUS[YOURDASH_INSTANCE_DISCOVERY_STATUS["MAINTENANCE"] = 0] = "MAINTENANCE";
+    YOURDASH_INSTANCE_DISCOVERY_STATUS[YOURDASH_INSTANCE_DISCOVERY_STATUS["NORMAL"] = 1] = "NORMAL";
+    YOURDASH_INSTANCE_DISCOVERY_STATUS[YOURDASH_INSTANCE_DISCOVERY_STATUS["INVISIBLE"] = 2] = "INVISIBLE";
+})(YOURDASH_INSTANCE_DISCOVERY_STATUS || (YOURDASH_INSTANCE_DISCOVERY_STATUS = {}));
+export { YOURDASH_INSTANCE_DISCOVERY_STATUS };
 //# sourceMappingURL=discovery.js.map

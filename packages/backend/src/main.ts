@@ -34,18 +34,18 @@ import { Server as SocketIoServer, Socket as SocketIoSocket } from "socket.io";
 import chalk from "chalk";
 import minimist from "minimist";
 import killPort from "kill-port";
-import { YourDashSessionType } from "shared/core/session.js";
+import { YOURDASH_SESSION_TYPE } from "shared/core/session.js";
 import log, { LOG_TYPES, LOG_HISTORY } from "./helpers/log.js";
 import YourDashUnreadUser, { YourDashUserPermissions } from "./helpers/user.js";
 import GLOBAL_DB from "./helpers/globalDatabase.js";
 import { __internalGetSessionsDoNotUseOutsideOfCore } from "./core/sessions.js";
-import { YourDashServerDiscoveryStatus } from "./core/discovery.js";
+import { YOURDASH_INSTANCE_DISCOVERY_STATUS } from "./core/discovery.js";
 import defineCorePanelRoutes from "./core/endpoints/panel.js";
 import loadApplications from "./core/loadApplications.js";
 import startRequestLogger from "./core/requestLogger.js";
 import { startAuthenticatedImageHelper } from "./core/authenticatedImage.js";
 import defineLoginEndpoints from "./core/endpoints/login.js";
-import defineUserDatabaseRoutes, { userDatabases } from "./core/endpoints/userDatabase.js";
+import defineUserDatabaseRoutes, { USER_DATABASES, saveUserDatabases } from "./core/endpoints/userDatabase.js";
 import centerTerminalOutputOnLine from "./helpers/terminal/centerTerminalOutputOnLine.js";
 import { generateLogos } from "./helpers/logo.js";
 
@@ -94,6 +94,31 @@ if ( fsExistsSync( path.join( FS_DIRECTORY_PATH, "./global_database.json" ) ) ) 
   if ( JSON.stringify( GLOBAL_DB.keys ) === JSON.stringify( {} ) ) {
     await fs.rm( path.join( FS_DIRECTORY_PATH, "./global_database.json" ) );
   }
+} else {
+  // warn the administrator
+  log( LOG_TYPES.WARNING, "The global database file does not exist, creating a new one" );
+  
+  // write the default global database file
+  await fs.writeFile( path.join( FS_DIRECTORY_PATH, "./global_database.json" ), JSON.stringify( {
+    displayName: "YourDash Instance",
+    administratorDetails: {
+      name: "[ADMINISTRATOR NAME]",
+      contactDetails: {
+        phone: false,
+        email: "admin@example.com",
+        username: "admin"
+      }
+    },
+    installedApplications: ["dash", "settings", "files", "store", "weather"],
+    defaults: {
+      user: {
+        quickShortcuts: ["dash", "settings", "files", "store", "weather"]
+      }
+    }
+  } ) );
+      
+  // load the new global database
+  await GLOBAL_DB.readFromDisk( path.join( FS_DIRECTORY_PATH, "./global_database.json" ) )
 }
 
 /*
@@ -276,6 +301,8 @@ const CORE_HANDLE_SHUTDOWN = () => {
     } )
     .join( "\n" );
   
+  saveUserDatabases()
+  
   writeFile( path.resolve( process.cwd(), "./fs/log.log" ), LOG_OUTPUT, () => {
     GLOBAL_DB._internalDoNotUseOnlyIntendedForShutdownSequenceWriteToDisk(
       path.resolve( process.cwd(), "./fs/global_database.json" ),
@@ -303,13 +330,11 @@ socketIo.on( "connection", ( socket: SocketIoSocket<any, any, any, any> ) => { /
     ACTIVE_SOCKET_IO_SOCKETS[ socket.handshake.query.username as string ] = [];
   }
   
-  ACTIVE_SOCKET_IO_SOCKETS[ socket.handshake.query.username as string ].push( <
-    ISocketActiveSocket
-    >{
-      id: socket.handshake.query.sessionId as string,
-      token: socket.handshake.query.sessionToken as string,
-      socket
-    } );
+  ACTIVE_SOCKET_IO_SOCKETS[ socket.handshake.query.username as string ].push( <ISocketActiveSocket>{
+    id: socket.handshake.query.sessionId as string,
+    token: socket.handshake.query.sessionToken as string,
+    socket
+  } );
   
   socket.on( "execute-command-response", ( output: any ) => {
     log( LOG_TYPES.INFO, output );
@@ -397,24 +422,24 @@ exp.get( "/", ( _req, res ) =>
 );
 
 exp.get( "/test", ( _req, res ) => {
-  const discoveryStatus: YourDashServerDiscoveryStatus =
-    YourDashServerDiscoveryStatus.NORMAL as YourDashServerDiscoveryStatus;
+  const discoveryStatus: YOURDASH_INSTANCE_DISCOVERY_STATUS =
+    YOURDASH_INSTANCE_DISCOVERY_STATUS.NORMAL as YOURDASH_INSTANCE_DISCOVERY_STATUS;
   
   switch ( discoveryStatus ) {
-  case YourDashServerDiscoveryStatus.MAINTENANCE:
+  case YOURDASH_INSTANCE_DISCOVERY_STATUS.MAINTENANCE:
     return res.json( {
-      status: YourDashServerDiscoveryStatus.MAINTENANCE,
+      status: YOURDASH_INSTANCE_DISCOVERY_STATUS.MAINTENANCE,
       type: "yourdash"
     } );
-  case YourDashServerDiscoveryStatus.NORMAL:
+  case YOURDASH_INSTANCE_DISCOVERY_STATUS.NORMAL:
     return res.json( {
-      status: YourDashServerDiscoveryStatus.NORMAL,
+      status: YOURDASH_INSTANCE_DISCOVERY_STATUS.NORMAL,
       type: "yourdash"
     } );
   default:
     log( LOG_TYPES.ERROR, "discovery status returned an invalid value" );
     return res.json( {
-      status: YourDashServerDiscoveryStatus.MAINTENANCE,
+      status: YOURDASH_INSTANCE_DISCOVERY_STATUS.MAINTENANCE,
       type: "yourdash"
     } );
   }
@@ -449,9 +474,9 @@ exp.use( async ( req, res, next ) => {
         ?.toString();
       
       if ( database ) {
-        userDatabases.set( username, JSON.parse( database ) );
+        USER_DATABASES.set( username, JSON.parse( database ) );
       } else {
-        userDatabases.set( username, {} );
+        USER_DATABASES.set( username, {} );
         fs.writeFile(
           path.resolve( user.getPath(), "./user_db.json" ),
           JSON.stringify( {} )
@@ -512,7 +537,7 @@ exp.get( "/core/personal-server-accelerator/sessions", async ( req, res ) => {
   const user = await new YourDashUnreadUser( username ).read();
   
   return res.json( {
-    sessions: ( await user.getSessions() ).filter( ( session ) => session.type === YourDashSessionType.desktop )
+    sessions: ( await user.getSessions() ).filter( ( session ) => session.type === YOURDASH_SESSION_TYPE.desktop )
   } );
 } );
 

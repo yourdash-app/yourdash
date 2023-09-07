@@ -22,30 +22,49 @@
  */
 
 import { Application as ExpressApplication } from "express"
+import { promises as fs } from "fs";
+import YourDashUnreadUser from "../../helpers/user.js";
+import path from "path";
 
-type ITJson = boolean | number | string | null | TJson
+type JSONValue = boolean | number | string | null | JSONFile
 
-type TJson = {
-  [ key: string ]: ITJson
+type JSONFile = {
+  [ key: string ]: JSONValue
 }
 
-export const userDatabases = new Map<string, TJson>()
+export const USER_DATABASES = new Map<string, JSONFile>()
+
+export function saveUserDatabases() {
+  USER_DATABASES.forEach( async ( database, key ) => {
+    const user = new YourDashUnreadUser( key )
+    
+    await fs.writeFile( path.join( user.getPath(), "user_db.json" ), JSON.stringify( database ) )
+  } )
+}
+
+export async function loadUserDatabase( username: string ): Promise<JSONFile> {
+  const user = new YourDashUnreadUser( username )
+  
+  return JSON.parse( ( await fs.readFile( path.join( user.getPath(), "user_db.json" ) ) ).toString() )
+}
 
 export default function defineUserDatabaseRoutes( exp: ExpressApplication ) {
   exp.get( "/core/user_db", async ( req, res ) => {
     const { username } = req.headers as { username: string }
     
-    console.log( userDatabases.get( username ) )
+    if ( !USER_DATABASES.get( username ) ) {
+      USER_DATABASES.set( username, await loadUserDatabase( username ) )
+    }
     
-    return res.json( userDatabases.get( username ) || {} )
+    return res.json( USER_DATABASES.get( username ) || {} )
   } )
   
   exp.post( "/core/user_db", async ( req, res ) => {
     const { username } = req.headers as { username: string }
     
-    userDatabases.set( username, req.body )
+    USER_DATABASES.set( username, req.body )
     
-    console.log( userDatabases.get( username ) )
+    console.log( USER_DATABASES.get( username ) )
     
     return res.json( { success: true } )
   } )
