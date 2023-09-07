@@ -25,20 +25,20 @@ import KeyValueDatabase from "./keyValueDatabase.js";
 import path from "path";
 import YourDashUnreadUser from "./user.js";
 
-const userDatabases: {
+const USER_DATABASES: {
   [ username: string ]: KeyValueDatabase
 } = {};
 
 export default async function getUserDatabase( username: string ) {
-  if ( userDatabases[username] ) {
-    return userDatabases[username];
+  if ( USER_DATABASES[username] ) {
+    return USER_DATABASES[username];
   }
   
-  userDatabases[username] = new KeyValueDatabase();
+  USER_DATABASES[username] = new KeyValueDatabase();
   
   const user = new YourDashUnreadUser( username );
   
-  await userDatabases[username].readFromDisk( path.resolve( user.getPath(), "./user_db.json" ) );
+  await USER_DATABASES[username].readFromDisk( path.resolve( user.getPath(), "./user_db.json" ) );
   
-  return userDatabases[username];
+  return USER_DATABASES[username];
 }
