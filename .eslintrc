@@ -58,6 +58,9 @@
     "arrow-body-style": [
       "off"
     ],
-    "indent": ["warn", 2]
+    "indent": ["warn", 2],
+    "block-spacing": "warn",
+    "spaced-comment": "warn",
+    "space-before-blocks": "warn"
   }
 }

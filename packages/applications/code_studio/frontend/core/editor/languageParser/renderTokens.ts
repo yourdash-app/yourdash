@@ -1,13 +1,13 @@
-import Token from "./token";
 import defaultTheme from "./defaultTheme";
+import Token from "./token";
 
 export default function renderTokens( htmlElement: HTMLDivElement, tokens: Token[] ) {
+  htmlElement.innerHTML = tokens.map( token => token.value ).join( "" );
+  
+  let output = "";
+  
   tokens.forEach( token => {
     const tokenDiv = document.createElement( "span" );
-    
-    tokenDiv.innerText = token.value;
-    tokenDiv.style.color = defaultTheme.tokenTypes[token.type];
-    tokenDiv.style.fontWeight = token.fontWeight;
     
     // if ( token.errorMessage ) {
     //   tokenDiv.style.position = "relative";
@@ -21,7 +21,14 @@ export default function renderTokens( htmlElement: HTMLDivElement, tokens: Token
     //   tokenDiv.appendChild( element );
     // }
     
-    htmlElement.innerHTML.replace( token.value, tokenDiv.outerHTML );
+    tokenDiv.textContent = token.value;
+    tokenDiv.style.color = defaultTheme.tokenTypes[token.type] || "#555555";
+    tokenDiv.style.fontWeight = token.fontWeight;
+    
+    output += tokenDiv.outerHTML;
   } );
+  
+  htmlElement.innerHTML = output;
+  
   return 0;
 }

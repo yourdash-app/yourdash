@@ -228,7 +228,13 @@ const ServerLoginPage: React.FC = () => {
     setServerUrl( localStorage.getItem( "current_server" ) );
     
     if ( localStorage.getItem( "session_token" ) ) {
-      navigate( "/app" );
+      csi.getJson( "/core/login/is-authenticated", ( { success: isAuthenticated }: { success: boolean } ) => {
+        if ( isAuthenticated ) {
+          navigate( "/app" );
+        } else {
+          localStorage.removeItem( "session_token" );
+        }
+      } )
     }
   }, [navigate] );
   

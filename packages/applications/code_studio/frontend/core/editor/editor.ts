@@ -28,26 +28,18 @@ export default class CodeStudioEditor {
       // @ts-ignore
       document.getElementById( "cs-text-output" ).style.fontFamily = "Jetbrains Mono, JetbrainsMono Nerd Font, Fira Code, Source Code Pro, monospace"
       
-      const LINES_TO_PARSE = 4
+      const LINES_TO_PARSE = 256
       const STARTING_LINE = 0
       
       const lines = string.split( "\n" );
       
       parser.onParse( tokens => {
-        if ( this.debugMode ) {
-          console.log( tokens );
-          console.log( `Token count: ${ tokens.length }` );
-        }
-        
         renderTokens(
           document.getElementById( "cs-text-output" ) as HTMLDivElement,
           tokens
         );
       } );
       
-      // @ts-ignore
-      document.getElementById( "cs-text-output" ).innerHTML = string;
-        
       parser.parseString( lines.slice( STARTING_LINE, LINES_TO_PARSE ).join( "\n" ) );
     }
   }
