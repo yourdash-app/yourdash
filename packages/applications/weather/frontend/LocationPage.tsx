@@ -119,6 +119,9 @@ const WeatherApplicationLocationPage: React.FC<IWeatherApplicationLocationPage> 
             : <div />
         }
         <div className={"relative w-full hidden lg:block h-96"}>
+          {/*
+            TODO: create a graphing library for UIKit
+          */}
           <Line
             options={{
               responsive: true,

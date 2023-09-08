@@ -67,14 +67,4 @@ export default class Token {
     this.infoMessage = infoMessage;
     this.fontWeight = fontWeight || "400";
   }
-  
-  render() {
-    const tokenSpan = document.createElement( "span" );
-    
-    tokenSpan.textContent = this.value;
-    tokenSpan.style.color = defaultTheme.tokenTypes[this.type] || "#555555";
-    tokenSpan.style.fontWeight = "400";
-    
-    return tokenSpan;
-  }
 }
