@@ -25,6 +25,7 @@ function checkIfApplicationIsValidToLoad(applicationName) {
 }
 export function loadApplication(appName, app, io) {
     if (!checkIfApplicationIsValidToLoad(appName)) {
+        log(LOG_TYPES.ERROR, `${chalk.yellow.bold("CORE")}: Unable to load newly installed application: ${appName}!`);
         return;
     }
     import(`applications/${appName}/backend/index.js`)
@@ -54,7 +55,7 @@ export function loadApplication(appName, app, io) {
 }
 export default function loadApplications(exp, io) {
     if (fsExistsSync(path.resolve(process.cwd(), "../applications/"))) {
-        const apps = (globalDatabase.get("installedApplications")) || [];
+        const apps = globalDatabase.get("installedApplications") || [];
         if (apps?.length === 0) {
             log(LOG_TYPES.WARNING, "No applications were loaded");
         }

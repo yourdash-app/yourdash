@@ -25,7 +25,7 @@ import { promises as fs } from "fs";
 import path from "path";
 import YourDashUnreadUser from "backend/src/helpers/user.js";
 import { type YourDashApplicationServerPlugin } from "backend/src/helpers/applications.js";
-import authenticatedImage, { authenticatedImageType } from "backend/src/core/authenticatedImage.js";
+import authenticatedImage, { AUTHENTICATED_IMAGE_TYPE } from "backend/src/core/authenticatedImage.js";
 import sharp from "sharp";
 import getFileType, { FileTypes } from "shared/core/fileType.js";
 
@@ -124,8 +124,8 @@ const main: YourDashApplicationServerPlugin = ( { exp } ) => {
               } else {
                 // downscale the image
                 const image = sharp( path.join( user.getPath(), req.body.path, file ) ).resize( 96, 96 );
-                  
-                icon = authenticatedImage( username, authenticatedImageType.base64, ( await image.toBuffer() ).toString( "base64" ) );
+                
+                icon = authenticatedImage( username, AUTHENTICATED_IMAGE_TYPE.BASE64, ( await image.toBuffer() ).toString( "base64" ) );
               }
               break;
             default:
@@ -163,7 +163,7 @@ const main: YourDashApplicationServerPlugin = ( { exp } ) => {
       case FileTypes.PlainText:
         return res.send( ( await fs.readFile( filePath ) ).toString() );
       case FileTypes.Image:
-        return res.send( authenticatedImage( username, authenticatedImageType.file, filePath ) );
+        return res.send( authenticatedImage( username, AUTHENTICATED_IMAGE_TYPE.FILE, filePath ) );
       default:
         return res.send( "[YOURDASH] Error: Unsupported file type" );
       }

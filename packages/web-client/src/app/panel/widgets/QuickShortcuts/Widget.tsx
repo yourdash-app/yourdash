@@ -1,5 +1,5 @@
 /*
- * Copyright © 2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2023 @Ewsgit and YourDash contributors.
  * YourDash is licensed under the MIT License.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,52 +21,49 @@
  * SOFTWARE.
  */
 
-import IPanelApplicationsLauncherApplication from "shared/core/panel/applicationsLauncher/application";
-import csi from "../../../../../../../helpers/csi";
-import { RightClickMenu } from "../../../../../../../ui/index";
-import styles from "./ApplicationGrid.module.scss"
-import { useNavigate } from "react-router";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import clippy from "../../../../helpers/clippy";
+import csi from "../../../../helpers/csi";
+import styles from "./Widget.module.scss";
 
-const ApplicationGrid: React.FC<{ applications: IPanelApplicationsLauncherApplication[] }> = ( { applications } ) => {
+const QuickShortcuts: React.FC<{side: "top" | "right" | "bottom" | "left" }> = ( { side } ) => {
   const navigate = useNavigate()
   
-  return <section className={styles.grid}>
+  const [applications, setApplications] = useState<{
+    name: string,
+    icon: string
+  }[]>( [] );
+  
+  useEffect( () => {
+    csi.getJson( "/core/panel/quick-shortcuts", ( data ) => {
+      setApplications( data );
+    } );
+  }, [] );
+  
+  return <>
     {
       applications.map( application => {
-        return <RightClickMenu
-          items={[
-            {
-              name: "Pin To Panel",
-              onClick() {
-                csi.postJson(
-                  "/core/panel/quick-shortcuts/create",
-                  { name: application.name },
-                  () => {
-                    return 0
-                  } )
-              }
-            }
-          ]}
-          className={styles.item}
-          key={application.name}
+        return <div
           onClick={() => {
             navigate( `/app/a/${application.name}` )
           }}
+          className={clippy( styles.application, ( side === "top" || side === "bottom" ) ? styles.horizontal : styles.vertical )}
         >
           <img
-            className={styles.itemIcon}
-            src={application.icon}
-            alt=""
+            className={styles.applicationIcon}
+            src={ `${ csi.getInstanceUrl() }${application.icon}` }
+            alt={ "" }
           />
           <span
-            className={styles.itemLabel}
+            className={styles.applicationLabel}
           >
-            {application.name}
+            { application.name }
           </span>
-        </RightClickMenu>
+        </div>;
       } )
     }
-  </section>
-}
+  </>
+};
 
-export default ApplicationGrid;
+export default QuickShortcuts;

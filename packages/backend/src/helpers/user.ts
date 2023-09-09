@@ -25,7 +25,7 @@ import { promises as fs } from "fs";
 import path from "path";
 import sharp from "sharp";
 import chalk from "chalk";
-import { type IYourDashSession } from "shared/core/session.js";
+import { type IYourDashSession, YOURDASH_SESSION_TYPE } from "shared/core/session.js";
 import log, { LOG_TYPES } from "./log.js";
 import { hash } from "./encryption.js";
 import YourDashSession, { getSessionsForUser } from "./session.js";

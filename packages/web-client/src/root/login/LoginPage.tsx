@@ -22,9 +22,9 @@
  */
 
 import React, { useEffect, useState } from "react";
-import { Button, Card, IconButton, TextInput } from "../ui";
+import { Button, Card, IconButton, TextInput } from "../../ui/index";
 import { useNavigate } from "react-router-dom";
-import { YourDashIcon } from "../ui/components/icon/iconDictionary";
+import { YourDashIcon } from "../../ui/components/icon/iconDictionary";
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
