@@ -1,7 +1,6 @@
-import { promises as fs } from 'fs';
-import path from 'path';
-import { base64ToDataUrl } from './base64.js';
-import YourDashUser from './user.js';
+import { promises as fs } from "fs";
+import path from "path";
+import YourDashUser from "./user.js";
 export var YourDashPanelPosition;
 (function (YourDashPanelPosition) {
     YourDashPanelPosition[YourDashPanelPosition["left"] = 0] = "left";
@@ -25,79 +24,42 @@ export default class YourDashPanel {
         return this;
     }
     async getQuickShortcuts() {
-        const user = new YourDashUser(this.username);
-        try {
-            await new Promise(resolve => {
-                fs.access(path.resolve(user.getPath(), './quick-shortcuts.json')).then(() => {
-                    resolve();
-                }).catch(async () => {
-                    await fs.writeFile(path.resolve(user.getPath(), './quick-shortcuts.json'), '[]');
-                    resolve();
-                });
-                resolve();
-            });
-            return JSON.parse((await fs.readFile(path.resolve(user.getPath(), './quick-shortcuts.json'))).toString());
-        }
-        catch (_err) {
-            return [];
-        }
+        const user = await new YourDashUser(this.username).read();
+        const db = await user.getPersonalDatabase();
+        console.log(db.get("core:panel:quickShortcuts"));
+        return JSON.parse(db.get("core:panel:quickShortcuts") || "[]");
     }
     async removeQuickShortcut(index) {
-        const user = new YourDashUser(this.username);
-        try {
-            await new Promise(resolve => {
-                fs.access(path.resolve(user.getPath(), './quick-shortcuts.json')).then(() => {
-                    resolve();
-                }).catch(async () => {
-                    await fs.writeFile(path.resolve(user.getPath(), './quick-shortcuts.json'), '[]');
-                    resolve();
-                });
-            });
-            let quickShortcuts = JSON.parse((await fs.readFile(path.resolve(user.getPath(), './quick-shortcuts.json'))).toString());
-            quickShortcuts = quickShortcuts.filter((_sc, ind) => ind !== index);
-            await fs.writeFile(path.resolve(user.getPath(), './quick-shortcuts.json'), JSON.stringify(quickShortcuts));
-        }
-        catch (_err) {
-            return;
-        }
+        const user = await new YourDashUser(this.username).read();
+        const db = await user.getPersonalDatabase();
+        const shortcuts = JSON.parse(db.get("core:panel:quickShortcuts"));
+        shortcuts.splice(index, 1);
+        db.set("core:panel:quickShortcuts", JSON.stringify(shortcuts));
+        return this;
     }
-    async createQuickShortcut(displayName, url, icon) {
-        const user = new YourDashUser(this.username);
-        try {
-            await new Promise(resolve => {
-                fs.access(path.resolve(user.getPath(), './quick-shortcuts.json')).then(() => {
-                    resolve();
-                }).catch(async () => {
-                    await fs.writeFile(path.resolve(user.getPath(), './quick-shortcuts.json'), '[]');
-                    resolve();
-                });
-            });
-            const quickShortcuts = JSON.parse((await fs.readFile(path.resolve(user.getPath(), './quick-shortcuts.json'))).toString());
-            if (quickShortcuts.filter(shortcut => shortcut.url === url).length !== 0) {
-                return this;
-            }
-            quickShortcuts.push({
-                url, displayName, icon: base64ToDataUrl(icon.toString('base64'))
-            });
-            await fs.writeFile(path.resolve(user.getPath(), './quick-shortcuts.json'), JSON.stringify(quickShortcuts));
-        }
-        catch (_err) {
+    async createQuickShortcut(applicationID) {
+        const user = await new YourDashUser(this.username).read();
+        const db = await user.getPersonalDatabase();
+        const shortcuts = JSON.parse(db.get("core:panel:quickShortcuts") || "[]");
+        if (shortcuts.indexOf(applicationID) !== -1) {
             return this;
         }
+        shortcuts.push(applicationID);
+        db.set("core:panel:quickShortcuts", JSON.stringify(shortcuts));
         return this;
     }
     async setPanelPosition(position) {
         const user = new YourDashUser(this.username);
         let panelConfig;
         try {
-            panelConfig = JSON.parse((await fs.readFile(path.resolve(user.getPath(), './panel.json'))).toString());
+            panelConfig = JSON.parse((await fs.readFile(path.resolve(user.getPath(), "./panel.json"))).toString());
         }
         catch (_err) {
             panelConfig = DEFAULT_PANEL_CONFIG;
         }
         panelConfig.position = position;
         try {
-            await fs.writeFile(path.resolve(user.getPath(), './panel.json'), JSON.stringify(panelConfig));
+            await fs.writeFile(path.resolve(user.getPath(), "./panel.json"), JSON.stringify(panelConfig));
         }
         catch (_err) {
             return this;
@@ -108,7 +70,7 @@ export default class YourDashPanel {
         const user = new YourDashUser(this.username);
         let panelConfig;
         try {
-            panelConfig = JSON.parse((await fs.readFile(path.resolve(user.getPath(), './panel.json'))).toString());
+            panelConfig = JSON.parse((await fs.readFile(path.resolve(user.getPath(), "./panel.json"))).toString());
         }
         catch (_err) {
             panelConfig = DEFAULT_PANEL_CONFIG;
@@ -119,7 +81,7 @@ export default class YourDashPanel {
         const user = new YourDashUser(this.username);
         let panelConfig;
         try {
-            panelConfig = JSON.parse((await fs.readFile(path.resolve(user.getPath(), './panel.json'))).toString());
+            panelConfig = JSON.parse((await fs.readFile(path.resolve(user.getPath(), "./panel.json"))).toString());
         }
         catch (_err) {
             panelConfig = DEFAULT_PANEL_CONFIG;
@@ -130,14 +92,14 @@ export default class YourDashPanel {
         const user = new YourDashUser(this.username);
         let panelConfig;
         try {
-            panelConfig = JSON.parse((await fs.readFile(path.resolve(user.getPath(), './panel.json'))).toString());
+            panelConfig = JSON.parse((await fs.readFile(path.resolve(user.getPath(), "./panel.json"))).toString());
         }
         catch (_err) {
             panelConfig = DEFAULT_PANEL_CONFIG;
         }
         panelConfig.launcher = launcher;
         try {
-            await fs.writeFile(path.resolve(user.getPath(), './panel.json'), JSON.stringify(panelConfig));
+            await fs.writeFile(path.resolve(user.getPath(), "./panel.json"), JSON.stringify(panelConfig));
         }
         catch (_err) {
             return this;

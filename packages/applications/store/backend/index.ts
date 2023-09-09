@@ -29,7 +29,7 @@ import getAllCategories, { getAllApplicationsFromCategory } from "./helpers/cate
 import GLOBAL_DB from "backend/src/helpers/globalDatabase.js";
 import { loadApplication } from "backend/src/core/loadApplications.js";
 import path from "path";
-import authenticatedImage, { authenticatedImageType } from "backend/src/core/authenticatedImage.js";
+import authenticatedImage, { AUTHENTICATED_IMAGE_TYPE } from "backend/src/core/authenticatedImage.js";
 import { IYourDashStoreApplication } from "shared/apps/store/storeApplication.js";
 
 const promotedApplications: string[] = ["dash", "store"];
@@ -95,7 +95,7 @@ const main: YourDashApplicationServerPlugin = ( {
           return {
             id: applicationName,
             displayName: application.getDisplayName() || applicationName,
-            icon: authenticatedImage( username, authenticatedImageType.file, application.getIconPath() ) || authenticatedImage( username, authenticatedImageType.file,  path.join( process.cwd(), "" ) )
+            icon: authenticatedImage( username, AUTHENTICATED_IMAGE_TYPE.FILE, application.getIconPath() ) || authenticatedImage( username, AUTHENTICATED_IMAGE_TYPE.FILE,  path.join( process.cwd(), "" ) )
           };
         } )
       )
