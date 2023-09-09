@@ -1,10 +1,10 @@
 import path from "path";
 import crypto from "crypto";
-export var authenticatedImageType;
-(function (authenticatedImageType) {
-    authenticatedImageType[authenticatedImageType["base64"] = 0] = "base64";
-    authenticatedImageType[authenticatedImageType["file"] = 1] = "file";
-})(authenticatedImageType || (authenticatedImageType = {}));
+export var AUTHENTICATED_IMAGE_TYPE;
+(function (AUTHENTICATED_IMAGE_TYPE) {
+    AUTHENTICATED_IMAGE_TYPE[AUTHENTICATED_IMAGE_TYPE["BASE64"] = 0] = "BASE64";
+    AUTHENTICATED_IMAGE_TYPE[AUTHENTICATED_IMAGE_TYPE["FILE"] = 1] = "FILE";
+})(AUTHENTICATED_IMAGE_TYPE || (AUTHENTICATED_IMAGE_TYPE = {}));
 const authenticatedImages = {};
 export function startAuthenticatedImageHelper(app) {
     app.get("/core/authenticated-img/:username/:id", (req, res) => {
@@ -13,11 +13,11 @@ export function startAuthenticatedImageHelper(app) {
         if (!image) {
             return res.sendFile(path.resolve(process.cwd(), "./src/assets/default_avatar.avif"));
         }
-        if (image.type === authenticatedImageType.base64) {
+        if (image.type === AUTHENTICATED_IMAGE_TYPE.BASE64) {
             const buf = Buffer.from(image.value, "base64");
             return res.send(buf);
         }
-        if (image.type === authenticatedImageType.file) {
+        if (image.type === AUTHENTICATED_IMAGE_TYPE.FILE) {
             return res.sendFile(image.value);
         }
         return res.sendFile(path.resolve(process.cwd(), "./src/assets/default_avatar.avif"));

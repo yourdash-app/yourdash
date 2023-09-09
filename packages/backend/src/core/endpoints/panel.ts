@@ -30,7 +30,7 @@ import path from "path";
 import { promises as fs } from "fs";
 import YourDashPanel from "backend/src/helpers/panel.js";
 import { FS_DIRECTORY_PATH } from "../../main.js";
-import authenticatedImage, { authenticatedImageType } from "../authenticatedImage.js";
+import authenticatedImage, { AUTHENTICATED_IMAGE_TYPE } from "../authenticatedImage.js";
 import IPanelApplicationsLauncherApplication from "shared/core/panel/applicationsLauncher/application.js";
 
 export default async function defineRoute( exp: ExpressApplication ) {
@@ -60,7 +60,7 @@ export default async function defineRoute( exp: ExpressApplication ) {
       } );
     } ) ).then( resp => res.json( resp ) );
   } );
-
+  
   exp.get( "/core/panel/quick-shortcuts", async ( req, res ) => {
     res.set( "Cache-Control", "no-store" );
     
@@ -70,10 +70,19 @@ export default async function defineRoute( exp: ExpressApplication ) {
     
     const panel = new YourDashPanel( username );
     
-    return res.json( await panel.getQuickShortcuts() );
+    return res.json( ( await panel.getQuickShortcuts() ).map( shortcut => {
+      return {
+        name: shortcut,
+        icon: authenticatedImage(
+          username,
+          AUTHENTICATED_IMAGE_TYPE.FILE,
+          path.resolve( path.join( process.cwd(), `../applications/${ shortcut }/icon.avif` ) )
+        )
+      };
+    } ) );
   } );
   
-  exp.delete( "/core/panel/quick-shortcuts:ind", async ( req, res ) => {
+  exp.delete( "/core/panel/quick-shortcuts/:ind", async ( req, res ) => {
     res.set( "Cache-Control", "no-store" );
     
     const { ind } = req.params;
@@ -94,27 +103,15 @@ export default async function defineRoute( exp: ExpressApplication ) {
     const { username } = req.headers as {
       username: string
     };
-    const {
-      displayName,
-      name
-    } = req.body as {
-      displayName: string;
+    const { name } = req.body as {
       name: string;
     };
     
     const panel = new YourDashPanel( username );
-    const application = new YourDashApplication( name );
     
-    try {
-      await panel.createQuickShortcut(
-        displayName,
-        `/app/a/${ name }`,
-        await fs.readFile( path.resolve( application.getPath(), "./icon.avif" ) )
-      );
-      return res.json( { success: true } );
-    } catch ( _err ) {
-      return res.json( { error: true } );
-    }
+    await panel.createQuickShortcut( name );
+    
+    return res.json( { success: true } );
   } );
   
   exp.get( "/core/panel/position", async ( req, res ) => {
@@ -129,7 +126,7 @@ export default async function defineRoute( exp: ExpressApplication ) {
     return res.json( { position: await panel.getPanelPosition() } );
   } );
   
-  exp.get( "/core/panel/quick-shortcuts", async ( req, res ) => {
+  exp.get( "/core/panel/launcher-type", async ( req, res ) => {
     res.set( "Cache-Control", "no-store" );
     
     const { username } = req.headers as {
@@ -142,12 +139,26 @@ export default async function defineRoute( exp: ExpressApplication ) {
   } );
   
   exp.get( "/core/panel/logo", ( req, res ) => {
-    const { username } = req.headers as { username: string };
+    const { username } = req.headers as {
+      username: string
+    };
     
     return res.json( {
-      small: authenticatedImage( username, authenticatedImageType.file, path.join( FS_DIRECTORY_PATH, "./logo_panel_small.avif" ) ),
-      medium: authenticatedImage( username, authenticatedImageType.file, path.join( FS_DIRECTORY_PATH, "./logo_panel_medium.avif" ) ),
-      large: authenticatedImage( username, authenticatedImageType.file, path.join( FS_DIRECTORY_PATH, "./logo_panel_large.avif" ) )
-    } )
+      small: authenticatedImage(
+        username,
+        AUTHENTICATED_IMAGE_TYPE.FILE,
+        path.join( FS_DIRECTORY_PATH, "./logo_panel_small.avif" )
+      ),
+      medium: authenticatedImage(
+        username,
+        AUTHENTICATED_IMAGE_TYPE.FILE,
+        path.join( FS_DIRECTORY_PATH, "./logo_panel_medium.avif" )
+      ),
+      large: authenticatedImage(
+        username,
+        AUTHENTICATED_IMAGE_TYPE.FILE,
+        path.join( FS_DIRECTORY_PATH, "./logo_panel_large.avif" )
+      )
+    } );
   } );
 }

@@ -29,7 +29,7 @@ import { YourDashIcon, IconButton } from "../../ui/index";
 import csi from "../../helpers/csi";
 
 const Panel: React.FC<{ side: "top" | "right" | "bottom" | "left", setLayoutReloadNumber: ( num: number ) => void }> = ( { side, setLayoutReloadNumber } ) => {
-  const [widgets, setWidgets] = useState<string[]>( ["InstanceLogo", "ApplicationLauncher"] )
+  const [widgets, setWidgets] = useState<string[]>( ["InstanceLogo", "ApplicationLauncher", "Separator", "QuickShortcuts"] )
   const [panelSize, setPanelSize] = useState<"small" | "medium" | "large">( "medium" )
   const [num, setNum] = useState<number>( 0 )
   
@@ -57,7 +57,7 @@ const Panel: React.FC<{ side: "top" | "right" | "bottom" | "left", setLayoutRelo
       widgets.map( widget => {
         const LoadableWidget = loadable( () => import( `./widgets/${widget}/Widget` ) )
         
-        return <LoadableWidget key={widget} side={side}/>
+        return <LoadableWidget key={widget} side={side} />
       } )
     }
   </section>
