@@ -32,25 +32,7 @@ if (fsExistsSync(path.join(FS_DIRECTORY_PATH, "./global_database.json"))) {
     }
 }
 else {
-    log(LOG_TYPES.WARNING, "The global database file does not exist, creating a new one");
-    await fs.writeFile(path.join(FS_DIRECTORY_PATH, "./global_database.json"), JSON.stringify({
-        displayName: "YourDash Instance",
-        administratorDetails: {
-            name: "[ADMINISTRATOR NAME]",
-            contactDetails: {
-                phone: false,
-                email: "admin@example.com",
-                username: "admin"
-            }
-        },
-        installedApplications: ["dash", "settings", "files", "store", "weather"],
-        defaults: {
-            user: {
-                quickShortcuts: ["dash", "settings", "files", "store", "weather"]
-            }
-        }
-    }));
-    await GLOBAL_DB.readFromDisk(path.join(FS_DIRECTORY_PATH, "./global_database.json"));
+    log(LOG_TYPES.WARNING, "Unable to load the global database!");
 }
 const exp = express();
 const httpServer = http.createServer(exp);
@@ -91,6 +73,7 @@ if (!fsExistsSync(FS_DIRECTORY_PATH)) {
             log(LOG_TYPES.ERROR, "Unable to create the \"./fs/users/\" directory");
         }
         try {
+            log(LOG_TYPES.INFO, "The global database file does not exist, creating a new one");
             await fs.writeFile(path.join(FS_DIRECTORY_PATH, "./global_database.json"), JSON.stringify({
                 displayName: "YourDash Instance",
                 administratorDetails: {

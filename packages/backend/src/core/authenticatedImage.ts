@@ -2,15 +2,15 @@ import { Application as ExpressApplication } from "express";
 import path from "path";
 import crypto from "crypto";
 
-export enum authenticatedImageType {
-  base64,
-  file
+export enum AUTHENTICATED_IMAGE_TYPE {
+  BASE64,
+  FILE
 }
 
 const authenticatedImages: {
   [ username: string ]: {
     [ id: string ]: {
-      type: authenticatedImageType,
+      type: AUTHENTICATED_IMAGE_TYPE,
       value: string
     }
   }
@@ -29,12 +29,12 @@ export function startAuthenticatedImageHelper( app: ExpressApplication ) {
       return res.sendFile( path.resolve( process.cwd(), "./src/assets/default_avatar.avif" ) );
     }
     
-    if ( image.type === authenticatedImageType.base64 ) {
+    if ( image.type === AUTHENTICATED_IMAGE_TYPE.BASE64 ) {
       const buf = Buffer.from( image.value, "base64" );
       return res.send( buf );
     }
     
-    if ( image.type === authenticatedImageType.file ) {
+    if ( image.type === AUTHENTICATED_IMAGE_TYPE.FILE ) {
       return res.sendFile( image.value );
     }
     
@@ -42,7 +42,7 @@ export function startAuthenticatedImageHelper( app: ExpressApplication ) {
   } );
 }
 
-export default function authenticatedImage( username: string, type: authenticatedImageType, value: string ): string {
+export default function authenticatedImage( username: string, type: AUTHENTICATED_IMAGE_TYPE, value: string ): string {
   const id = crypto.randomUUID()
   
   if ( !authenticatedImages[username] ) {

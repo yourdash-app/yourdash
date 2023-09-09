@@ -95,30 +95,7 @@ if ( fsExistsSync( path.join( FS_DIRECTORY_PATH, "./global_database.json" ) ) ) 
     await fs.rm( path.join( FS_DIRECTORY_PATH, "./global_database.json" ) );
   }
 } else {
-  // warn the administrator
-  log( LOG_TYPES.WARNING, "The global database file does not exist, creating a new one" );
-  
-  // write the default global database file
-  await fs.writeFile( path.join( FS_DIRECTORY_PATH, "./global_database.json" ), JSON.stringify( {
-    displayName: "YourDash Instance",
-    administratorDetails: {
-      name: "[ADMINISTRATOR NAME]",
-      contactDetails: {
-        phone: false,
-        email: "admin@example.com",
-        username: "admin"
-      }
-    },
-    installedApplications: ["dash", "settings", "files", "store", "weather"],
-    defaults: {
-      user: {
-        quickShortcuts: ["dash", "settings", "files", "store", "weather"]
-      }
-    }
-  } ) );
-      
-  // load the new global database
-  await GLOBAL_DB.readFromDisk( path.join( FS_DIRECTORY_PATH, "./global_database.json" ) )
+  log( LOG_TYPES.WARNING, "Unable to load the global database!" );
 }
 
 /*
@@ -129,7 +106,6 @@ if ( fsExistsSync( path.join( FS_DIRECTORY_PATH, "./global_database.json" ) ) ) 
 const exp = express();
 const httpServer = http.createServer( exp );
 const socketIo = new SocketIoServer( httpServer );
-
 
 /*
  //////////////////////////////////////////////
@@ -187,6 +163,9 @@ if ( !fsExistsSync( FS_DIRECTORY_PATH ) ) {
     
     // create the global database
     try {
+      log( LOG_TYPES.INFO, "The global database file does not exist, creating a new one" );
+  
+      // write the default global database file
       await fs.writeFile( path.join( FS_DIRECTORY_PATH, "./global_database.json" ), JSON.stringify( {
         displayName: "YourDash Instance",
         administratorDetails: {
@@ -204,7 +183,7 @@ if ( !fsExistsSync( FS_DIRECTORY_PATH ) ) {
           }
         }
       } ) );
-      
+  
       // load the new global database
       await GLOBAL_DB.readFromDisk( path.join( FS_DIRECTORY_PATH, "./global_database.json" ) )
     } catch ( e ) {
@@ -225,6 +204,7 @@ if ( !fsExistsSync( FS_DIRECTORY_PATH ) ) {
       await adminUserUnread.create(
         "password",
         {
+          // Admin istrator
           first: "Admin",
           last: "istrator"
         },

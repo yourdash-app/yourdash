@@ -23,10 +23,10 @@
 
 import clippy from "web-client/src/helpers/clippy";
 import React, { useEffect, useState } from "react";
-import csi from "../helpers/csi";
-import { Card, Column, Dialog, IconButton, MajorButton, TextInput } from "../ui";
+import csi from "../../helpers/csi";
+import { Card, Column, Dialog, IconButton, MajorButton, TextInput } from "../../ui/index";
 import { useNavigate } from "react-router-dom";
-import { YourDashIcon } from "../ui/components/icon/iconDictionary";
+import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
 
 const SelectUser: React.FC<{
   setSelectedUser: ( username: string ) => void;

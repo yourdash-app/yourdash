@@ -52,6 +52,7 @@ function checkIfApplicationIsValidToLoad( applicationName: string ): boolean {
 
 export function loadApplication( appName: string, app: ExpressApplication, io: SocketIoServer ) {
   if ( !checkIfApplicationIsValidToLoad( appName ) ) {
+    log( LOG_TYPES.ERROR, `${ chalk.yellow.bold( "CORE" ) }: Unable to load newly installed application: ${ appName }!` );
     return;
   }
 
@@ -75,25 +76,25 @@ export function loadApplication( appName: string, app: ExpressApplication, io: S
           io, // socket.io server instance
           pluginFilesystemPath: path.resolve( path.join( process.cwd(), `../applications/${ appName }` ) )
         } );
-          
+        
         log( LOG_TYPES.SUCCESS, `${ chalk.yellow.bold( "CORE" ) }: Initialized application: ${ appName }` );
-          
+        
         return 1
       } catch ( err ) {
         log( LOG_TYPES.ERROR, `${ chalk.yellow.bold( "CORE" ) }: Error during application initialization: ${ appName }` );
-          
+        
         return 0
       }
     } ).catch( _err => {
       log( LOG_TYPES.ERROR, `${ chalk.yellow.bold( "CORE" ) }: Error while loading application: ${ appName }` );
-        
+      
       return 0
     } );
 }
 
 export default function loadApplications( exp: ExpressApplication, io: SocketIoServer ) {
   if ( fsExistsSync( path.resolve( process.cwd(), "../applications/" ) ) ) {
-    const apps = ( globalDatabase.get( "installedApplications" ) ) || [];
+    const apps = globalDatabase.get( "installedApplications" ) || [];
     if ( apps?.length === 0 ) {
       log( LOG_TYPES.WARNING, "No applications were loaded" )
     } else {

@@ -22,14 +22,13 @@
  */
 
 import React from "react";
-import { SideBar } from "../../../ui";
+import { SideBar } from "web-client/src/ui";
 import { useNavigate } from "react-router-dom";
-import GlobalDbApplication from "../global_db/globalDbApplication";
+import GlobalDbApplication from "applications/global_db/frontend/globalDbApplication";
 import YourDevHome from "./YourDevHome";
-import { YourDashIcon } from "../../../ui/components/icon/iconDictionary";
+import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
 
 const YourDevApplication: React.FC = () => {
-  const navigate = useNavigate();
   const [page, setPage] = React.useState<"home" | "global_db" | "user_db">( "home" );
   
   return (
