@@ -38,7 +38,7 @@ const Panel: React.FC<{ side: "top" | "right" | "bottom" | "left", setLayoutRelo
   }, [num] );
   
   // @ts-ignore
-  Panel.reload = () => {
+  window.__yourdashCorePanelReload = () => {
     setNum( num + 1 )
     setLayoutReloadNumber( num + 1 )
   }

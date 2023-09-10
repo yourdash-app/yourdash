@@ -1,6 +1,6 @@
 import KeyValueDatabase from "./keyValueDatabase.js";
 import path from "path";
-import YourDashUnreadUser from "./user.js";
+import YourDashUnreadUser from "../core/user/user.js";
 const USER_DATABASES = {};
 export default async function getUserDatabase(username) {
     if (USER_DATABASES[username]) {

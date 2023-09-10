@@ -45,10 +45,17 @@ const QuickShortcuts: React.FC<{side: "top" | "right" | "bottom" | "left" }> = (
     {
       applications.map( application => {
         return <div
+          key={ application.name }
           onClick={() => {
             navigate( `/app/a/${application.name}` )
           }}
-          className={clippy( styles.application, ( side === "top" || side === "bottom" ) ? styles.horizontal : styles.vertical )}
+          className={clippy(
+            styles.application,
+            side === "top" && styles.top,
+            side === "right" && styles.right,
+            side === "bottom" && styles.bottom,
+            side === "left" && styles.left
+          ) }
         >
           <img
             className={styles.applicationIcon}

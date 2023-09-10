@@ -1,6 +1,6 @@
 import { promises as fs } from "fs";
 import path from "path";
-import YourDashUser from "./user.js";
+import YourDashUser from "../core/user/user.js";
 export var YourDashPanelPosition;
 (function (YourDashPanelPosition) {
     YourDashPanelPosition[YourDashPanelPosition["left"] = 0] = "left";
@@ -26,7 +26,6 @@ export default class YourDashPanel {
     async getQuickShortcuts() {
         const user = await new YourDashUser(this.username).read();
         const db = await user.getPersonalDatabase();
-        console.log(db.get("core:panel:quickShortcuts"));
         return JSON.parse(db.get("core:panel:quickShortcuts") || "[]");
     }
     async removeQuickShortcut(index) {

@@ -24,10 +24,10 @@
 .panel {
   display: flex;
   gap: 0.25rem;
-  padding: var(--app-panel-padding);
   box-sizing: border-box;
   transition: var(--transition);
   background: rgb(var(--container-bg));
+  padding: var(--app-panel-padding);
   position: relative;
   z-index: 50;
   user-select: none;
@@ -35,7 +35,7 @@
 
 @mixin horizontal {
   flex-direction: row;
-  height: calc(var(--app-panel-size));
+  height: var(--app-panel-size);
 
   &.small {
     --app-panel-size: 2.5rem;
@@ -55,7 +55,7 @@
 
 @mixin vertical {
   flex-direction: column;
-  width: calc(var(--app-panel-size));
+  width: var(--app-panel-size);
 
   &.small {
     --app-panel-size: 2.5rem;
