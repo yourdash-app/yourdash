@@ -82,7 +82,7 @@ const StoreApplicationPage: React.FC = () => {
               }
               
               // @ts-ignore
-              Panel.reload();
+              window.__yourdashCorePanelReload()
             } );
             setShowInstallationConfirmation( false );
           }}
@@ -154,7 +154,7 @@ const StoreApplicationPage: React.FC = () => {
                           }
                         
                           // @ts-ignore
-                          Panel.reload();
+                          window.__yourdashCorePanelReload()
                         } );
                       } else {
                         setShowInstallationConfirmation( true );

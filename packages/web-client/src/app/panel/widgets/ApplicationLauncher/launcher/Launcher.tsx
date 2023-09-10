@@ -23,7 +23,7 @@
 
 import styles from "./Launcher.module.scss"
 import clippy from "../../../../../helpers/clippy";
-import { TextInput, Card, IconButton, YourDashIcon } from "../../../../../ui/index";
+import { IconButton, YourDashIcon } from "../../../../../ui/index";
 import { memo, useEffect, useState } from "react";
 import ApplicationsLauncherApplications from "./Applications/Applications";
 import IPanelApplicationsLauncherApplication from "shared/core/panel/applicationsLauncher/application";
@@ -51,6 +51,10 @@ const ApplicationLauncher: React.FC<{ side: "top" | "right" | "bottom" | "left",
   >
     <ApplicationsLauncherApplications apps={apps}/>
     <section className={styles.footer}>
+      <IconButton
+        className={styles.logoutButton}
+        icon={YourDashIcon.Logout}
+      />
       <div>
         <img src={""} alt={""}/>
         <IconButton

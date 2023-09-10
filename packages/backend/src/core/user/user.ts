@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 YourDash contributors.
+ * Copyright ©2023 @Ewsgit and YourDash contributors.
  * YourDash is licensed under the MIT License.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,21 +21,18 @@
  * SOFTWARE.
  */
 
+import chalk from "chalk";
 import { promises as fs } from "fs";
 import path from "path";
+import { type IYourDashSession } from "shared/core/session.js";
 import sharp from "sharp";
-import chalk from "chalk";
-import { type IYourDashSession, YOURDASH_SESSION_TYPE } from "shared/core/session.js";
-import log, { LOG_TYPES } from "./log.js";
-import { hash } from "./encryption.js";
-import YourDashSession, { getSessionsForUser } from "./session.js";
-import getUserDatabase from "./userDatabase.js";
-import GLOBAL_DB from "./globalDatabase.js";
-import { FS_DIRECTORY_PATH } from "../main.js";
-
-export enum YourDashUserPermissions {
-  Administrator, CreateFiles, DeleteFiles,
-}
+import { hash } from "../../helpers/encryption.js";
+import GLOBAL_DB from "../../helpers/globalDatabase.js";
+import log, { LOG_TYPES } from "../../helpers/log.js";
+import YourDashSession, { getSessionsForUser } from "../../helpers/session.js";
+import getUserDatabase from "../../helpers/userDatabase.js";
+import { FS_DIRECTORY_PATH } from "../../main.js";
+import { YourDashCoreUserPermissions, YourDashUserPermission } from "./permissions.js";
 
 export interface IYourDashUser {
   username: string;
@@ -43,7 +40,7 @@ export interface IYourDashUser {
     first: string;
     last: string
   };
-  permissions: YourDashUserPermissions[];
+  permissions: YourDashUserPermission[];
   contacts: string[]; // an array of user's usernames
 }
 
@@ -146,7 +143,10 @@ class YourDashUser {
       await fs.writeFile( path.resolve( this.getPath(), "./quick-shortcuts.json" ), JSON.stringify( GLOBAL_DB.get( "defaults:user:quickShortcuts" ) ) );
       await fs.mkdir( this.getAppDataPath() );
       await fs.mkdir( path.resolve( this.getPath(), "./fs/" ) );
-      await fs.writeFile( path.resolve( this.getPath(), "./user_db.json" ), "{}" );
+      await fs.writeFile( path.resolve( this.getPath(), "./user_db.json" ), JSON.stringify( {
+        "core:user:userFullName": this.user.fullName,
+        "core:user:username": this.user.username
+      } ) );
     }
     
     try {
@@ -169,21 +169,21 @@ class YourDashUser {
     return this;
   }
   
-  getPermissions(): YourDashUserPermissions[] {
+  getPermissions(): YourDashUserPermission[] {
     return this.user.permissions;
   }
   
-  hasPermission( perm: YourDashUserPermissions ): boolean {
+  hasPermission( perm: YourDashCoreUserPermissions ): boolean {
     return this.user.permissions.indexOf( perm ) !== -1;
   }
   
-  addPermission( perm: YourDashUserPermissions ): this {
+  addPermission( perm: YourDashCoreUserPermissions ): this {
     this.user.permissions.push( perm );
     
     return this;
   }
   
-  setPermissions( permissions: YourDashUserPermissions[] ): this {
+  setPermissions( permissions: YourDashCoreUserPermissions[] ): this {
     this.user.permissions = permissions;
     
     return this;
@@ -237,13 +237,12 @@ export default class YourDashUnreadUser {
   }
   
   async exists(): Promise<boolean> {
-    return new Promise<boolean>( resolve => {
-      fs.access( this.getPath() ).then( () => {
-        resolve( true );
-      } ).catch( () => {
-        resolve( false );
-      } );
-    } );
+    try {
+      await fs.access( this.getPath() )
+      return true
+    } catch ( _err ) {
+      return false
+    }
   }
   
   async create(
@@ -252,13 +251,16 @@ export default class YourDashUnreadUser {
       first: string,
       last: string
     },
-    permissions: YourDashUserPermissions[]
+    permissions: YourDashCoreUserPermissions[]
   ) {
     const user = new YourDashUser( this.username )
     
-    await fs.cp( path.resolve( process.cwd(), path.join( "./src/assets/default_avatar.avif" ) ), path.join( user.getPath(), "./avatar.avif" ) )
-
-    await fs.writeFile( path.join( user.getPath(), "./user_db.json" ), "{}" )
+    await fs.mkdir( this.getPath(), { recursive: true } );
+    
+    await fs.cp(
+      path.resolve( path.join( process.cwd(), "./src/assets/default_avatar.avif" ) ),
+      path.resolve( path.join( user.getPath(), "./avatar.avif" ) )
+    )
     
     user.verifyUserConfig()
     await user.setName( name )

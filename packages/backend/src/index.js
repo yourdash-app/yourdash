@@ -51,6 +51,9 @@ function startDevServer() {
     devProcess.on("close", code => {
         console.log(`child process exited with code ${code}, will not auto-restart!`);
     });
+    if (args.debug) {
+        console.log("ws://127.0.0.1:9229/");
+    }
     devProcess.stdout.on("data", data => {
         if (data.toString().includes("[nodemon]")) {
             return;

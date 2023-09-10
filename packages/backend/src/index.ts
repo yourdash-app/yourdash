@@ -93,6 +93,10 @@ function startDevServer() {
     console.log( `child process exited with code ${ code }, will not auto-restart!` );
   } );
   
+  if ( args.debug ) {
+    console.log( "ws://127.0.0.1:9229/" )
+  }
+  
   devProcess.stdout.on( "data", data => {
     // remove all messages from nodemon
     if ( data.toString().includes( "[nodemon]" ) ) {
