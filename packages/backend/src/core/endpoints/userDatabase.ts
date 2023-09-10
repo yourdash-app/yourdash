@@ -23,7 +23,7 @@
 
 import { Application as ExpressApplication } from "express"
 import { promises as fs } from "fs";
-import YourDashUnreadUser from "../../helpers/user.js";
+import YourDashUnreadUser from "../user/user.js";
 import path from "path";
 
 type JSONValue = boolean | number | string | null | JSONFile
@@ -37,6 +37,8 @@ export const USER_DATABASES = new Map<string, JSONFile>()
 export function saveUserDatabases() {
   USER_DATABASES.forEach( async ( database, key ) => {
     const user = new YourDashUnreadUser( key )
+    
+    console.log( "Saving database", database )
     
     await fs.writeFile( path.join( user.getPath(), "user_db.json" ), JSON.stringify( database ) )
   } )

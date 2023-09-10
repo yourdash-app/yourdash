@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 YourDash contributors.
+ * Copyright ©2023 @Ewsgit and YourDash contributors.
  * YourDash is licensed under the MIT License.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,24 +21,30 @@
  * SOFTWARE.
  */
 
-import KeyValueDatabase from "./keyValueDatabase.js";
-import path from "path";
-import YourDashUnreadUser from "../core/user/user.js";
+import React from "react";
+import clippy from "../../../../../helpers/clippy";
+import styles from "./FloatingApplication.module.scss"
 
-const USER_DATABASES: {
-  [ username: string ]: KeyValueDatabase
-} = {};
+const FloatingApplication: React.FC<{ src: string, position: 0 | 1 | 2 | 3 }> = ( { src, position } ) => {
+  return <div className={clippy(
+    styles.container,
+    "animate__animated animate__bounceInDown animate__250ms"
+  )}>
+    <img
+      className={ clippy(
+        styles.floatingApplication,
+        position === 0
+          ? styles.first
+          : position === 1
+            ? styles.second
+            : position === 2
+              ? styles.third
+              : styles.fourth
+      ) }
+      src={ src }
+      alt={ "" }
+    />
+  </div>
+};
 
-export default async function getUserDatabase( username: string ) {
-  if ( USER_DATABASES[username] ) {
-    return USER_DATABASES[username];
-  }
-  
-  USER_DATABASES[username] = new KeyValueDatabase();
-  
-  const user = new YourDashUnreadUser( username );
-  
-  await USER_DATABASES[username].readFromDisk( path.resolve( user.getPath(), "./user_db.json" ) );
-  
-  return USER_DATABASES[username];
-}
+export default FloatingApplication;

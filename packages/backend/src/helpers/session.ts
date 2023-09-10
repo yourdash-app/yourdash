@@ -4,7 +4,7 @@ import { __internalGetSessionsDoNotUseOutsideOfCore, SESSION_TOKEN_LENGTH } from
 import { YOURDASH_SESSION_TYPE, type IYourDashSession } from "../../../shared/core/session.js";
 import log, { LOG_TYPES } from "./log.js";
 import { generateRandomStringOfLength } from "./encryption.js";
-import YourDashUnreadUser from "./user.js";
+import YourDashUnreadUser from "../core/user/user.js";
 
 
 export function getSessionsForUser( username: string ): IYourDashSession<any>[] {

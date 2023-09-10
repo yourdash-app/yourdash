@@ -21,7 +21,8 @@
  * SOFTWARE.
  */
 
-import YourDashUnreadUser, { YourDashUserPermissions } from "backend/src/helpers/user.js";
+import YourDashUnreadUser from "backend/src/core/user/user.js";
+import { YourDashCoreUserPermissions } from "backend/src/core/user/permissions.js";
 import { type YourDashApplicationServerPlugin } from "backend/src/helpers/applications.js";
 import globalDatabase from "backend/src/helpers/globalDatabase.js";
 import path from "path";
@@ -34,7 +35,7 @@ const main: YourDashApplicationServerPlugin = ( { exp } ) => {
     
     const user = await new YourDashUnreadUser( username ).read();
     
-    if ( user.hasPermission( YourDashUserPermissions.Administrator ) ) {
+    if ( user.hasPermission( YourDashCoreUserPermissions.Administrator ) ) {
       return res.json( {
         db: globalDatabase.keys
       } );
@@ -54,7 +55,7 @@ const main: YourDashApplicationServerPlugin = ( { exp } ) => {
     
     const user = await new YourDashUnreadUser( username ).read();
     
-    if ( user.hasPermission( YourDashUserPermissions.Administrator ) ) {
+    if ( user.hasPermission( YourDashCoreUserPermissions.Administrator ) ) {
       globalDatabase.merge( keys );
       
       return res.json( {
@@ -74,7 +75,7 @@ const main: YourDashApplicationServerPlugin = ( { exp } ) => {
     
     const user = await new YourDashUnreadUser( username ).read();
     
-    if ( user.hasPermission( YourDashUserPermissions.Administrator ) ) {
+    if ( user.hasPermission( YourDashCoreUserPermissions.Administrator ) ) {
       globalDatabase.merge( keys );
       await globalDatabase.writeToDisk( path.resolve( process.cwd(), "./fs/globalDatabase.json" ) );
       

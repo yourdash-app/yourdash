@@ -1,6 +1,6 @@
 import { promises as fs } from "fs";
 import path from "path";
-import YourDashUnreadUser from "backend/src/helpers/user.js";
+import YourDashUnreadUser from "backend/src/core/user/user.js";
 import authenticatedImage, { AUTHENTICATED_IMAGE_TYPE } from "backend/src/core/authenticatedImage.js";
 import sharp from "sharp";
 import getFileType, { FileTypes } from "shared/core/fileType.js";

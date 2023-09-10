@@ -56,7 +56,7 @@ const Index: React.FC = () => {
         setPanelSize( val as "small" | "medium" | "large" );
         csi.userDB.set( "core:panel:size", val );
         // @ts-ignore
-        Panel.reload();
+        window.__yourdashCorePanelReload()
       }}
     />
     <DropdownSettingComponent
@@ -86,7 +86,7 @@ const Index: React.FC = () => {
         setPanelSide( val as "top" | "right" | "bottom" | "left" );
         csi.userDB.set( "core:panel:side", val );
         // @ts-ignore
-        Panel.reload();
+        window.__yourdashCorePanelReload()
       }}
     />
   </BasePageLayout>
