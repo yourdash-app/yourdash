@@ -3,7 +3,7 @@ import path from "path";
 
 import { base64ToDataUrl } from "./base64.js";
 import log from "./log.js";
-import YourDashUser from "./user.js";
+import YourDashUser from "../core/user/user.js";
 
 export interface YourDashPanelQuickShortcut {
   displayName: string;
@@ -40,8 +40,6 @@ export default class YourDashPanel {
     const user = await new YourDashUser( this.username ).read();
   
     const db = await user.getPersonalDatabase()
-    
-    console.log( db.get( "core:panel:quickShortcuts" ) )
     
     return JSON.parse( db.get( "core:panel:quickShortcuts" ) || "[]" )
   }

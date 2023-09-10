@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Start &amp; Debug Backend" type="CompoundRunConfigurationType">
+    <toRun name="Debug Backend" type="ChromiumRemoteDebugType" />
+    <toRun name="Start Backend In Debug Mode" type="js.build_tools.npm" />
+    <method v="2" />
+  </configuration>
+</component>

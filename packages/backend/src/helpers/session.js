@@ -3,7 +3,7 @@ import path from "path";
 import { __internalGetSessionsDoNotUseOutsideOfCore, SESSION_TOKEN_LENGTH } from "../core/sessions.js";
 import log, { LOG_TYPES } from "./log.js";
 import { generateRandomStringOfLength } from "./encryption.js";
-import YourDashUnreadUser from "./user.js";
+import YourDashUnreadUser from "../core/user/user.js";
 export function getSessionsForUser(username) {
     return __internalGetSessionsDoNotUseOutsideOfCore()[username];
 }

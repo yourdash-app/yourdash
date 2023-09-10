@@ -29,7 +29,6 @@
 
 .applicationLabel {
   position: absolute;
-  left: calc(var(--app-panel-size));
   padding: 0.25rem 0.75rem;
   user-select: none;
   transition: var(--transition);
@@ -68,12 +67,44 @@
   }
 }
 
-.vertical {
+@mixin vertical {
   margin-top: 0.0625rem;
   margin-bottom: 0.0625rem;
 }
 
-.horizontal {
+@mixin horizontal {
   margin-left: 0.0625rem;
   margin-right: 0.0625rem;
+}
+
+.left {
+  @include vertical;
+
+  .applicationLabel {
+    left: calc(var(--app-panel-size));
+  }
+}
+
+.right {
+  @include vertical;
+
+  .applicationLabel {
+    right: calc(var(--app-panel-size));
+  }
+}
+
+.bottom {
+  @include horizontal;
+
+  .applicationLabel {
+    bottom: calc(var(--app-panel-size));
+  }
+}
+
+.top {
+  @include horizontal;
+
+  .applicationLabel {
+    top: calc(var(--app-panel-size));
+  }
 }

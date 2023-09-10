@@ -9,7 +9,8 @@ import minimist from "minimist";
 import killPort from "kill-port";
 import { YOURDASH_SESSION_TYPE } from "shared/core/session.js";
 import log, { LOG_TYPES, LOG_HISTORY } from "./helpers/log.js";
-import YourDashUnreadUser, { YourDashUserPermissions } from "./helpers/user.js";
+import YourDashUnreadUser from "./core/user/user.js";
+import { YourDashCoreUserPermissions } from "./core/user/permissions.js";
 import GLOBAL_DB from "./helpers/globalDatabase.js";
 import { __internalGetSessionsDoNotUseOutsideOfCore } from "./core/sessions.js";
 import { YOURDASH_INSTANCE_DISCOVERY_STATUS } from "./core/discovery.js";
@@ -107,7 +108,7 @@ if (!fsExistsSync(FS_DIRECTORY_PATH)) {
             await adminUserUnread.create("password", {
                 first: "Admin",
                 last: "istrator"
-            }, [YourDashUserPermissions.Administrator]);
+            }, [YourDashCoreUserPermissions.Administrator]);
         }
     }
     catch (err) {
@@ -230,18 +231,18 @@ exp.get("/test", (_req, res) => {
     const discoveryStatus = YOURDASH_INSTANCE_DISCOVERY_STATUS.NORMAL;
     switch (discoveryStatus) {
         case YOURDASH_INSTANCE_DISCOVERY_STATUS.MAINTENANCE:
-            return res.json({
+            return res.status(200).json({
                 status: YOURDASH_INSTANCE_DISCOVERY_STATUS.MAINTENANCE,
                 type: "yourdash"
             });
         case YOURDASH_INSTANCE_DISCOVERY_STATUS.NORMAL:
-            return res.json({
+            return res.status(200).json({
                 status: YOURDASH_INSTANCE_DISCOVERY_STATUS.NORMAL,
                 type: "yourdash"
             });
         default:
             log(LOG_TYPES.ERROR, "discovery status returned an invalid value");
-            return res.json({
+            return res.status(200).json({
                 status: YOURDASH_INSTANCE_DISCOVERY_STATUS.MAINTENANCE,
                 type: "yourdash"
             });

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 YourDash contributors.
+ * Copyright ©2023 @Ewsgit and YourDash contributors.
  * YourDash is licensed under the MIT License.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,24 +21,13 @@
  * SOFTWARE.
  */
 
-import KeyValueDatabase from "./keyValueDatabase.js";
-import path from "path";
-import YourDashUnreadUser from "../core/user/user.js";
-
-const USER_DATABASES: {
-  [ username: string ]: KeyValueDatabase
-} = {};
-
-export default async function getUserDatabase( username: string ) {
-  if ( USER_DATABASES[username] ) {
-    return USER_DATABASES[username];
-  }
-  
-  USER_DATABASES[username] = new KeyValueDatabase();
-  
-  const user = new YourDashUnreadUser( username );
-  
-  await USER_DATABASES[username].readFromDisk( path.resolve( user.getPath(), "./user_db.json" ) );
-  
-  return USER_DATABASES[username];
+export enum YourDashCoreUserPermissions {
+  WriteFiles,
+  ReadFiles,
+  DeleteFiles,
+  Administrator
 }
+
+type YourDashUserPermission = YourDashCoreUserPermissions | string;
+
+export type { YourDashUserPermission }

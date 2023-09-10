@@ -1,5 +1,5 @@
 import { Application as ExpressApplication } from "express";
-import YourDashUnreadUser from "backend/src/helpers/user.js";
+import YourDashUnreadUser from "backend/src/core/user/user.js";
 import log, { LOG_TYPES } from "backend/src/helpers/log.js";
 import { compareHash } from "backend/src/helpers/encryption.js";
 import { createSession } from "backend/src/helpers/session.js";

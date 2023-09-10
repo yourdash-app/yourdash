@@ -57,4 +57,12 @@
     transition: var(--transition-fast);
     background: rgb(var(--button-hover-bg));
   }
+
+  &:active {
+    .itemIcon {
+      scale: 0.95;
+    }
+
+    background: rgb(var(--button-active-bg));
+  }
 }
