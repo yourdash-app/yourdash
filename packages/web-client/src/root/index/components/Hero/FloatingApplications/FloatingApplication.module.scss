@@ -21,78 +21,82 @@
  * SOFTWARE.
  */
 
-.floatingApplication {
-  @apply shadow-2xl;
 
-  border-radius: 1.5rem;
-  transition: all 250ms ease-in-out;
-}
-
-@mixin defaults {
-  --scale: var(--original-scale);
-  --vertical-offset: var(--original-vertical-offset);
-
-  transform: scale(var(--post-animation-scale));
-  top: var(--post-animation-vertical-offset);
-  z-index: unset;
-  width: 6rem;
-  position: absolute;
-  left: 50%;
-  translate: -50% -50%;
-  aspect-ratio: 1 / 1;
-  animation: float 2s ease-in-out infinite;
-}
-
-.container {
-  height: 100%;
-  width: 6rem;
-  position: relative;
+.floatContainer {
+  animation: float 3s var(--animation-delay) ease-in-out infinite;
 
   &:hover {
     > .floatingApplication {
-      --scale: calc(var(--original-scale) + 15%);
-      --vertical-offset: calc(var(--original-vertical-offset) - 5%);
+      transition: var(--transition-fast);
+    }
+  }
+}
+
+.floatingApplication {
+  z-index: unset;
+  top: var(--post-animation-vertical-offset);
+  width: 6rem;
+  transition: all 250ms ease-in-out;
+  transform: scale(var(--post-animation-scale));
+  animation: scale 3s var(--animation-delay) ease-in-out infinite;
+  border-radius: 1.5rem;
+  aspect-ratio: 1 / 1;
+  scale: 0.85;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 6rem;
+  height: 100%;
+
+  &:hover {
+    > .floatingApplication {
       z-index: 1;
       transition: var(--transition);
+      --scale: calc(var(--original-scale) + 15%);
+      --vertical-offset: calc(var(--original-vertical-offset) - 5);
     }
   }
 }
 
 .first {
-  --original-scale: 90%;
-  --original-vertical-offset: 45%;
-  @include defaults;
+  --animation-delay: 0s;
 }
 
 .second {
-  --original-scale: 80%;
-  --original-vertical-offset: 50%;
-  @include defaults;
+  --animation-delay: 0.5s;
 }
 
 .third {
-  --original-scale: 70%;
-  --original-vertical-offset: 55%;
-  @include defaults;
+  --animation-delay: 1s;
 }
 
 .fourth {
-  --original-scale: 80%;
-  --original-vertical-offset: 50%;
-  @include defaults;
+  --animation-delay: 1.5s;
 }
 
 @keyframes float {
   0% {
-    --post-animation-scale: calc(var(--scale) + 5%);
-    --post-animation-vertical-offset: calc(var(--vertical-offset) - 5%);
+    height: 6rem;
   }
   50% {
-    --post-animation-scale: var(--scale);
-    --post-animation-vertical-offset: var(--vertical-offset);
+    height: 10rem;
   }
   100% {
-    --post-animation-scale: calc(var(--scale) + 5%);
-    --post-animation-vertical-offset: calc(var(--vertical-offset) - 5%);
+    height: 6rem;
+  }
+}
+
+@keyframes scale {
+  0% {
+    scale: 0.85;
+  }
+  50% {
+    scale: 0.9;
+  }
+  100% {
+    scale: 0.85;
   }
 }
