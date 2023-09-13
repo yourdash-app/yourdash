@@ -29,10 +29,6 @@ import FloatingApplications from "./FloatingApplications/FloatingApplications";
 import IndexPageHeroTaglines from "./Taglines";
 
 const IndexPageHero: React.FC = () => {
-  const trans = useTranslateHomePage( "index" );
-  const navigate = useNavigate();
-  
-  
   return <section
     className={ "animate__animated animate__fadeIn w-full h-[30rem] overflow-hidden relative bg-base-800 [clip-path:_polygon(0_0,_100%_0%,_100%_85%,_0%_100%);] grid md:grid-cols-2 grid-cols-1 gap-10 pb-4" }
   >
