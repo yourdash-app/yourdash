@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 YourDash contributors.
+ * Copyright ©2023 @Ewsgit and YourDash contributors.
  * YourDash is licensed under the MIT License.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,44 +22,14 @@
  */
 
 import React from "react";
-import { SideBar } from "../../ui";
-import { Outlet, useNavigate } from "react-router-dom";
-import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
+import { Outlet } from "react-router";
+import Header from "./components/Header";
 
-const DocsLayout: React.FC = () => {
-  const navigate = useNavigate();
-  return (
-    <main className={"grid grid-cols-[auto,1fr] h-full w-full"}>
-      <SideBar
-        expandedByDefault
-        title={"Docs"}
-        items={[
-          {
-            icon: YourDashIcon.Home,
-            label: "Overview",
-            onClick() {
-              navigate( "/docs/" );
-            }
-          },
-          {
-            icon: YourDashIcon.Info,
-            label: "Get Started",
-            onClick() {
-              navigate( "/docs/get-started" );
-            }
-          },
-          {
-            icon: YourDashIcon.Accessibility,
-            label: "Translation",
-            onClick() {
-              navigate( "/docs/translation" );
-            }
-          }
-        ]}
-      />
-      <Outlet/>
-    </main>
-  );
+const RootLayout: React.FC = () => {
+  return <main className={"h-screen overflow-y-auto"}>
+    <Header />
+    <Outlet />
+  </main>;
 };
 
-export default DocsLayout;
+export default RootLayout;

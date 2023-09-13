@@ -23,7 +23,7 @@
 
 import React from "react";
 import { Card, Icon } from "../../../../ui";
-import Header from "../../../index/components/Header";
+import Header from "../../../components/Header";
 import { YourDashIcon } from "../../../../ui/components/icon/iconDictionary";
 
 const HowToHelp: React.FC = () => (
