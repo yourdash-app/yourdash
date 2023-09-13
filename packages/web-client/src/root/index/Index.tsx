@@ -25,25 +25,14 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslateHomePage } from "web-client/src/helpers/i10n";
 import { Button, MajorButton } from "../../ui";
-import Header from "./components/Header";
+import Header from "../components/Header";
 import IndexPageHero from "./components/Hero/Hero";
 
 const Index: React.FC = () => {
   const trans = useTranslateHomePage( "index" );
   const navigate = useNavigate();
   
-  return ( <main className={ "bg-base-900 min-h-screen h-full overflow-y-auto overflow-x-hidden" }>
-    <Header />
-    <section className={ "w-full bg-container-bg p-3 flex items-center justify-center gap-1 animate__animated" +
-                         " animate__fadeInDown" }>
-      { trans( "BANNER.MESSAGE.CONTENT" ) }
-      <Link
-        className={"text-theme-300 hover:text-theme-400 active:text-theme-200"}
-        to={ "/docs/how-to-help" }
-      >
-        { trans( "BANNER.MESSAGE.CALL_TO_ACTION" ) }
-      </Link>
-    </section>
+  return ( <>
     <IndexPageHero />
     <main className={ "max-w-6xl ml-auto mr-auto" }>
       <section
@@ -105,7 +94,7 @@ const Index: React.FC = () => {
         </div>
       </section>
     </main>
-  </main> );
+  </> );
 };
 
 export default Index;
