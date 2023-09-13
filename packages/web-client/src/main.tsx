@@ -37,6 +37,7 @@ import ErrorElement from "./ErrorElement";
 import LoginPage from "./root/login/LoginPage.jsx";
 import ServerLoginPage from "./root/login/ServerLoginPage.jsx";
 import Index from "./root/index/Index";
+import RootLayout from "./root/RootLayout";
 import RightClickMenuRootContainer from "./ui/components/rightClickMenu/RightClickMenuRootContainer.jsx";
 import "./tailwindcss.css";
 
@@ -51,11 +52,21 @@ function main() {
         router={createHashRouter(
           createRoutesFromElements(
             <Route errorElement={<ErrorElement/>}>
-              <Route index element={<Index/>}/>
-              <Route path={"/signup"} element={<ComingSoon/>}/>
-              <Route path={"/login"}>
-                <Route index element={<LoginPage/>}/>
-                <Route path={"server"} element={<ServerLoginPage/>}/>
+              <Route element={<RootLayout/>}>
+                <Route index element={<Index/>}/>
+                <Route path={"/signup"} element={<ComingSoon/>}/>
+                <Route path={"/login"}>
+                  <Route index element={<LoginPage/>}/>
+                  <Route path={"server"} element={<ServerLoginPage/>}/>
+                </Route>
+                <Route path={"docs/*"} element={<DocsLayout/>}>
+                  <Route
+                    path={"*"}
+                    element={(
+                      <DocsRouter/>
+                    )}
+                  />
+                </Route>
               </Route>
               <Route path={"app"}>
                 <Route element={<AppLayout/>}>
@@ -65,14 +76,6 @@ function main() {
                     element={<AppRouter/>}
                   />
                 </Route>
-              </Route>
-              <Route path={"docs/*"} element={<DocsLayout/>}>
-                <Route
-                  path={"*"}
-                  element={(
-                    <DocsRouter/>
-                  )}
-                />
               </Route>
             </Route>
           )
