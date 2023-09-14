@@ -260,9 +260,7 @@ exp.use(async (req, res, next) => {
             const user = await new YourDashUnreadUser(username).read();
             __internalGetSessionsDoNotUseOutsideOfCore()[username] =
                 (await user.getSessions()) || [];
-            const database = fs
-                .readFile(path.resolve(user.getPath(), "./user_db.json"))
-                ?.toString();
+            const database = (await fs.readFile(path.resolve(user.getPath(), "./user_db.json"))).toString();
             if (database) {
                 USER_DATABASES.set(username, JSON.parse(database));
             }
