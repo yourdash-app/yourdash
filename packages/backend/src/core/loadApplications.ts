@@ -50,7 +50,7 @@ function checkIfApplicationIsValidToLoad( applicationName: string ): boolean {
   return true;
 }
 
-export function loadApplication( appName: string, app: ExpressApplication, io: SocketIoServer ) {
+export function loadApplication( appName: string, exp: ExpressApplication, io: SocketIoServer ) {
   if ( !checkIfApplicationIsValidToLoad( appName ) ) {
     log( LOG_TYPES.ERROR, `${ chalk.yellow.bold( "CORE" ) }: Unable to load newly installed application: ${ appName }!` );
     return;
@@ -72,7 +72,7 @@ export function loadApplication( appName: string, app: ExpressApplication, io: S
         }
 
         mod.default( {
-          exp: app, // express app instance
+          exp: exp, // express exp instance
           io, // socket.io server instance
           pluginFilesystemPath: path.resolve( path.join( process.cwd(), `../applications/${ appName }` ) )
         } );

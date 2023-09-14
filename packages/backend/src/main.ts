@@ -43,7 +43,7 @@ import { __internalGetSessionsDoNotUseOutsideOfCore } from "./core/sessions.js";
 import { YOURDASH_INSTANCE_DISCOVERY_STATUS } from "./core/discovery.js";
 import defineCorePanelRoutes from "./core/endpoints/panel.js";
 import loadApplications from "./core/loadApplications.js";
-import startRequestLogger from "./core/requestLogger.js";
+import startRequestLogger from "./core/logRequests.js";
 import { startAuthenticatedImageHelper } from "./core/authenticatedImage.js";
 import defineLoginEndpoints from "./core/endpoints/login.js";
 import defineUserDatabaseRoutes, { USER_DATABASES, saveUserDatabases } from "./core/endpoints/userDatabase.js";
@@ -258,7 +258,6 @@ await listenForRequests();
  //  SOCKET.IO  //            TODO: REFACTOR PENDING
  /////////////////
 */
-
 export interface ISocketActiveSocket {
   id: string;
   token: string;
@@ -480,12 +479,8 @@ exp.use( async ( req, res, next ) => {
  * --------------------------------------------------------------
  */
 
-await defineCorePanelRoutes( exp );
-
 exp.get( "/core/sessions", async ( req, res ) => {
-  const { username } = req.headers as {
-    username: string;
-  };
+  const { username } = req.headers as { username: string; };
   
   const user = await new YourDashUnreadUser( username ).read();
   

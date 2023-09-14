@@ -14,9 +14,8 @@ import { YourDashCoreUserPermissions } from "./core/user/permissions.js";
 import GLOBAL_DB from "./helpers/globalDatabase.js";
 import { __internalGetSessionsDoNotUseOutsideOfCore } from "./core/sessions.js";
 import { YOURDASH_INSTANCE_DISCOVERY_STATUS } from "./core/discovery.js";
-import defineCorePanelRoutes from "./core/endpoints/panel.js";
 import loadApplications from "./core/loadApplications.js";
-import startRequestLogger from "./core/requestLogger.js";
+import startRequestLogger from "./core/logRequests.js";
 import { startAuthenticatedImageHelper } from "./core/authenticatedImage.js";
 import defineLoginEndpoints from "./core/endpoints/login.js";
 import defineUserDatabaseRoutes, { USER_DATABASES, saveUserDatabases } from "./core/endpoints/userDatabase.js";
@@ -266,7 +265,7 @@ exp.use(async (req, res, next) => {
             }
             else {
                 USER_DATABASES.set(username, {});
-                fs.writeFile(path.resolve(user.getPath(), "./user_db.json"), JSON.stringify({}));
+                await fs.writeFile(path.resolve(user.getPath(), "./user_db.json"), JSON.stringify({}));
             }
         }
         catch (_err) {
@@ -278,7 +277,6 @@ exp.use(async (req, res, next) => {
     }
     return res.json({ error: "authorization fail" });
 });
-await defineCorePanelRoutes(exp);
 exp.get("/core/sessions", async (req, res) => {
     const { username } = req.headers;
     const user = await new YourDashUnreadUser(username).read();

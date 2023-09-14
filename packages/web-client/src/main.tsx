@@ -55,10 +55,6 @@ function main() {
               <Route element={<RootLayout/>}>
                 <Route index element={<Index/>}/>
                 <Route path={"/signup"} element={<ComingSoon/>}/>
-                <Route path={"/login"}>
-                  <Route index element={<LoginPage/>}/>
-                  <Route path={"server"} element={<ServerLoginPage/>}/>
-                </Route>
                 <Route path={"docs/*"} element={<DocsLayout/>}>
                   <Route
                     path={"*"}
@@ -67,6 +63,10 @@ function main() {
                     )}
                   />
                 </Route>
+              </Route>
+              <Route path={"/login"}>
+                <Route index element={<LoginPage/>}/>
+                <Route path={"server"} element={<ServerLoginPage/>}/>
               </Route>
               <Route path={"app"}>
                 <Route element={<AppLayout/>}>
