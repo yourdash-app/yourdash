@@ -22,39 +22,39 @@
  */
 
 import React from "react";
-import csi from "../../backend/src/helpers/csi";
-import useTranslate from "../../backend/src/helpers/i10n";
-import { IconButton, Icon, RightClickMenu, Button } from "../../../../ui";
-import clippy from "../../backend/src/helpers/clippy";
+import csi from "web-client/src/helpers/csi";
+import useTranslate from "web-client/src/helpers/i10n";
+import { IconButton, Icon, RightClickMenu, Button } from "web-client/src/ui";
+import clippy from "web-client/src/helpers/clippy";
 import path from "path-browserify";
-import { YourDashIcon } from "../../../../ui/components/icon/iconDictionary";
+import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
 
 const DetailsLayout: React.FC = () => {
-  const [currentPath, setCurrentPath] = React.useState( "/" );
-  const [files, setFiles] = React.useState<{
+  const [ currentPath, setCurrentPath ] = React.useState("/");
+  const [ files, setFiles ] = React.useState<{
     name: string,
     type: "dir" | "file"
-  }[]>( [] );
-  const trans = useTranslate( "files" );
-  
-  React.useEffect( () => {
+  }[]>([]);
+  const trans = useTranslate("files");
+
+  React.useEffect(() => {
     // eslint-disable-next-line consistent-return
-    csi.postJson( "/app/files/get", { path: currentPath }, resp => {
-      if ( Object.keys( resp.files ).length === 0 ) {
-        return setFiles( [] );
+    csi.postJson("/app/files/get", { path: currentPath }, resp => {
+      if (Object.keys(resp.files).length === 0) {
+        return setFiles([]);
       }
-      
-      setFiles( resp?.files || [] );
-    } );
-  }, [currentPath] );
-  
+
+      setFiles(resp?.files || []);
+    });
+  }, [ currentPath ]);
+
   return (
     <>
       <section className={"p-2 flex flex-col bg-container-bg top-0 sticky pb-0 gap-1 shadow-lg z-10"}>
         <div className={"flex items-center gap-2"}>
           <IconButton
             onClick={() => {
-              setCurrentPath( path.join( currentPath, ".." ) );
+              setCurrentPath(path.join(currentPath, ".."));
             }}
             icon={YourDashIcon.ChevronLeft}
           />
@@ -67,14 +67,14 @@ const DetailsLayout: React.FC = () => {
             )
           }
         >
-          <Icon icon={YourDashIcon.Info} className={"h-[calc(100%-0.35rem)] mr-1.5"} color={"rgb(var(--container-fg))"}/>
-          <span className={"mr-auto"}>{trans( "NAME" )}</span>
-          <span>{trans( "TYPE" )}</span>
+          <Icon icon={YourDashIcon.Info} className={"h-[calc(100%-0.35rem)] mr-1.5"} color={"rgb(var(--container-fg))"} />
+          <span className={"mr-auto"}>{trans("NAME")}</span>
+          <span>{trans("TYPE")}</span>
         </div>
       </section>
       <section className={"p-0.5"}>
         {
-          files.map( file => (
+          files.map(file => (
             <RightClickMenu
               key={file.name}
               items={[
@@ -95,7 +95,7 @@ const DetailsLayout: React.FC = () => {
             >
               <Button
                 onClick={() => {
-                  setCurrentPath( path.join( currentPath, file.name ) );
+                  setCurrentPath(path.join(currentPath, file.name));
                 }}
                 className={
                   clippy(
@@ -112,7 +112,7 @@ const DetailsLayout: React.FC = () => {
                 <span>{file.type}</span>
               </Button>
             </RightClickMenu>
-          ) )
+          ))
         }
       </section>
     </>
