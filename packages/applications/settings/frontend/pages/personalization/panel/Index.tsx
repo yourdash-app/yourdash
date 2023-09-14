@@ -51,7 +51,7 @@ const Index: React.FC = () => {
           name: "Large"
         }
       ]}
-      value={panelSize}
+      value={panelSize || "medium"}
       setValue={( val ) => {
         setPanelSize( val as "small" | "medium" | "large" );
         csi.userDB.set( "core:panel:size", val );
@@ -81,7 +81,7 @@ const Index: React.FC = () => {
           name: "Left (Default)"
         }
       ]}
-      value={panelSide}
+      value={panelSide || "left"}
       setValue={( val ) => {
         setPanelSide( val as "top" | "right" | "bottom" | "left" );
         csi.userDB.set( "core:panel:side", val );

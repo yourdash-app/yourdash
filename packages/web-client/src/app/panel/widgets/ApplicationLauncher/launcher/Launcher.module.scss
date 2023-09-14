@@ -30,6 +30,8 @@
   width: 24rem;
   height: max-content;
   overflow: hidden;
+  border: 0.125rem solid rgb(var(--container-border));
+  border-left: none;
 }
 
 @mixin horizontal {

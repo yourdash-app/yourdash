@@ -26,7 +26,7 @@ import { Outlet } from "react-router";
 import Header from "./components/Header";
 
 const RootLayout: React.FC = () => {
-  return <main className={"h-screen overflow-y-auto"}>
+  return <main className={"h-screen overflow-y-auto relative bg-[rgb(var(--base-900))]"}>
     <Header />
     <Outlet />
   </main>;

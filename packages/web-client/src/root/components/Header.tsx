@@ -71,7 +71,7 @@ const Header: React.FC = () => {
           </section>
         </div>
       </div>
-      <section className={ "w-full bg-container-bg p-1.5 flex items-center justify-center gap-1  animate__animated animate__backInDown animate__duration_1500ms" }>
+      <section className={ "w-full bg-container-bg p-1.5 box-content flex items-center justify-center gap-1 animate__animated animate__backInDown animate__duration_1500ms" }>
         { trans( "BANNER.MESSAGE.CONTENT" ) }
         <Link
           className={ "text-theme-300 hover:text-theme-400 active:text-theme-200" }
