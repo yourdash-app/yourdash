@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Card } from "web-client/src/ui";
 import csi from "web-client/src/helpers/csi";
-import Panel from "web-client/src/app/Panel/Panel";
+import Panel from "web-client/src/app/panel/Panel";
 
 const SettingsSectionPanelPosition: React.FC = () => (
   <section className={"p-4"}>

@@ -1,4 +1,4 @@
-import clippy from "helpers/clippy"
+import clippy from "web-client/src/helpers/clippy"
 import React, { useState, FocusEventHandler, useRef } from "react"
 import { Button, Card } from "../.."
 
