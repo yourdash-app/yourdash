@@ -1,4 +1,4 @@
-import YourDashPanel from "backend/src/helpers/panel.js";
+import YourDashPanel from "backend/src/core/panel.js";
 import YourDashUnreadUser from "backend/src/core/user/user.js";
 import { PersonalServerAcceleratorCommunication } from "backend/src/helpers/personalServerAccelerator.js";
 const main = ({ exp, io }) => {

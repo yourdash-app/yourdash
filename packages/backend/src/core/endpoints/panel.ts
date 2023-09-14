@@ -28,7 +28,7 @@ import { base64ToDataUrl } from "backend/src/helpers/base64.js";
 import sharp from "sharp";
 import path from "path";
 import { promises as fs } from "fs";
-import YourDashPanel from "backend/src/helpers/panel.js";
+import YourDashPanel from "backend/src/core/panel.js";
 import { FS_DIRECTORY_PATH } from "../../main.js";
 import authenticatedImage, { AUTHENTICATED_IMAGE_TYPE } from "../authenticatedImage.js";
 import IPanelApplicationsLauncherApplication from "shared/core/panel/applicationsLauncher/application.js";
