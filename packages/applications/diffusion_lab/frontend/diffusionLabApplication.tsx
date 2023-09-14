@@ -23,7 +23,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Icon, MajorButton, Button, DropdownButton, TextBox, Card, ResizeContainer } from "web-client/src/ui";
-import csi from "helpers/csi";
+import csi from "web-client/src/helpers/csi";
 import { IDiffusionLabImageGenerationData } from "shared/apps/diffusion_lab/image/generationData";
 import YourDashLogo from "web-client/public/assets/productLogos/yourdash.svg";
 import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
@@ -110,7 +110,7 @@ const DiffusionLabApplication: React.FC = () => {
                   onClick={() => {
                     setProgress(1);
 
-                    csi.postJson("/app/diffusion_lab/generate", { ...generationData }, data => {
+                    csi.postJson("/app/diffusion_lab/generate", { ...generationData }, (data: any) => {
                       setGenerationResult(data);
                       setProgress(1);
                     });
