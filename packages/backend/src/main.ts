@@ -451,15 +451,13 @@ exp.use( async ( req, res, next ) => {
       __internalGetSessionsDoNotUseOutsideOfCore()[ username ] =
         ( await user.getSessions() ) || [];
       
-      const database = fs
-        .readFile( path.resolve( user.getPath(), "./user_db.json" ) )
-        ?.toString();
+      const database = ( await fs.readFile( path.resolve( user.getPath(), "./user_db.json" ) ) ).toString();
       
       if ( database ) {
         USER_DATABASES.set( username, JSON.parse( database ) );
       } else {
         USER_DATABASES.set( username, {} );
-        fs.writeFile(
+        await fs.writeFile(
           path.resolve( user.getPath(), "./user_db.json" ),
           JSON.stringify( {} )
         );
