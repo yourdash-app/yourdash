@@ -26,7 +26,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { IconButton, Spinner, Card, Button, Icon, MajorButton, Carousel } from "web-client/src/ui";
 import csi from "web-client/src/helpers/csi";
 import StoreApplicationDefaultHeaderBackground from "./default_background.svg";
-import Panel from "web-client/src/app/Panel/Panel";
+import Panel from "web-client/src/app/panel/Panel";
 import useTranslate from "web-client/src/helpers/i10n";
 import { type IYourDashStoreApplication } from "shared/apps/store/storeApplication";
 import InstallationPopup from "./components/InstallationPopup";
@@ -34,57 +34,57 @@ import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
 
 function requestApplication(
   applicationId: string,
-  setAppData: ( data: IYourDashStoreApplication ) => void,
-  setIsLoading: ( data: boolean ) => void,
-  navigate: ( data: string ) => void
+  setAppData: (data: IYourDashStoreApplication) => void,
+  setIsLoading: (data: boolean) => void,
+  navigate: (data: string) => void
 ) {
   csi.getJson(
-    `/app/store/application/${ applicationId }`,
+    `/app/store/application/${applicationId}`,
     data => {
-      setAppData( data );
-      setIsLoading( false );
+      setAppData(data);
+      setIsLoading(false);
     },
     () => {
-      navigate( "/app/a/store" );
+      navigate("/app/a/store");
     }
   );
 }
 
 const StoreApplicationPage: React.FC = () => {
-  const trans = useTranslate( "store" );
+  const trans = useTranslate("store");
   const navigate = useNavigate();
   const { id: applicationId } = useParams();
-  const [isLoading, setIsLoading] = useState<boolean>( true );
-  const [appData, setAppData] = useState<IYourDashStoreApplication>();
-  const [showInstallationConfirmation, setShowInstallationConfirmation] = useState<boolean>( false );
-  
-  useEffect( () => {
-    setShowInstallationConfirmation( false );
-    setIsLoading( true );
-    requestApplication( applicationId || "dash", data => setAppData( data ), setIsLoading, navigate );
-  }, [applicationId, navigate] );
-  
-  if ( !applicationId ) {
-    navigate( "/app/a/store" );
+  const [ isLoading, setIsLoading ] = useState<boolean>(true);
+  const [ appData, setAppData ] = useState<IYourDashStoreApplication>();
+  const [ showInstallationConfirmation, setShowInstallationConfirmation ] = useState<boolean>(false);
+
+  useEffect(() => {
+    setShowInstallationConfirmation(false);
+    setIsLoading(true);
+    requestApplication(applicationId || "dash", data => setAppData(data), setIsLoading, navigate);
+  }, [ applicationId, navigate ]);
+
+  if (!applicationId) {
+    navigate("/app/a/store");
     return null;
   }
-  
+
   return (
     <div className={"h-full relative"}>
       {showInstallationConfirmation && (
         <InstallationPopup
           applicationData={appData}
-          onClose={() => setShowInstallationConfirmation( false )}
+          onClose={() => setShowInstallationConfirmation(false)}
           onConfirm={() => {
-            csi.postJson( `/app/store/application/install/${ appData?.name }`, {}, resp => {
-              if ( resp.success ) {
-                requestApplication( applicationId, setAppData, setIsLoading, navigate );
+            csi.postJson(`/app/store/application/install/${appData?.name}`, {}, resp => {
+              if (resp.success) {
+                requestApplication(applicationId, setAppData, setIsLoading, navigate);
               }
-              
+
               // @ts-ignore
               window.__yourdashCorePanelReload()
-            } );
-            setShowInstallationConfirmation( false );
+            });
+            setShowInstallationConfirmation(false);
           }}
         />
       )}
@@ -92,7 +92,7 @@ const StoreApplicationPage: React.FC = () => {
         isLoading
           ? (
             <div className={"w-full h-full flex items-center justify-center"}>
-              <Spinner/>
+              <Spinner />
               {"TODO: add a back button"}
             </div>
           )
@@ -101,7 +101,7 @@ const StoreApplicationPage: React.FC = () => {
               <header className={"flex flex-col w-full bg-container-bg"}>
                 <div
                   style={{
-                    backgroundImage: `url(${ StoreApplicationDefaultHeaderBackground })`
+                    backgroundImage: `url(${StoreApplicationDefaultHeaderBackground})`
                   }}
                   className="sm:h-64 h-32 transition-all bg-cover bg-center flex select-none items-center justify-center flex-row gap-3 animate__animated animate__fadeIn"
                 >
@@ -121,7 +121,7 @@ const StoreApplicationPage: React.FC = () => {
                   <IconButton
                     icon={YourDashIcon.ChevronLeft}
                     onClick={() => {
-                      navigate( `/app/a/store/cat/${ appData?.category }` );
+                      navigate(`/app/a/store/cat/${appData?.category}`);
                     }}
                   />
                   <img
@@ -138,31 +138,31 @@ const StoreApplicationPage: React.FC = () => {
                       appData.installed && (
                         <MajorButton
                           onClick={() => {
-                            navigate( `/app/a/${ appData.name }` );
+                            navigate(`/app/a/${appData.name}`);
                           }}
                         >
                           {
-                            trans( "OPEN_APPLICATION" )
+                            trans("OPEN_APPLICATION")
                           }
                         </MajorButton>
                       )}
                     <Button onClick={() => {
-                      if ( appData.installed ) {
-                        csi.postJson( `/app/store/application/uninstall/${ appData.name }`, {}, resp => {
-                          if ( resp.success ) {
-                            requestApplication( applicationId, setAppData, setIsLoading, navigate );
+                      if (appData.installed) {
+                        csi.postJson(`/app/store/application/uninstall/${appData.name}`, {}, resp => {
+                          if (resp.success) {
+                            requestApplication(applicationId, setAppData, setIsLoading, navigate);
                           }
-                        
+
                           // @ts-ignore
                           window.__yourdashCorePanelReload()
-                        } );
+                        });
                       } else {
-                        setShowInstallationConfirmation( true );
+                        setShowInstallationConfirmation(true);
                       }
                     }}
                     >
                       {
-                        appData.installed ? trans( "UNINSTALL" ) : trans( "INSTALL" )
+                        appData.installed ? trans("UNINSTALL") : trans("INSTALL")
                       }
                     </Button>
                   </div>
@@ -174,36 +174,36 @@ const StoreApplicationPage: React.FC = () => {
                 <Card>
                   {appData.description}
                 </Card>
-                <h2 className={"text-2xl font-medium"}>{trans( "ABOUT_SECTION" )}</h2>
+                <h2 className={"text-2xl font-medium"}>{trans("ABOUT_SECTION")}</h2>
                 <Card className={"flex flex-col items-start"}>
                   <div>
                     {
-                      `Category: ${ appData.category }`
+                      `Category: ${appData.category}`
                     }
                   </div>
                   <div>
                     {
-                      `ID: ${ appData.name }`
+                      `ID: ${appData.name}`
                     }
                   </div>
-                  <br/>
+                  <br />
                   <div>
                     {
                       "Created as part of the YourDash Project"
                     }
                   </div>
                 </Card>
-                <h2 className={"text-2xl font-medium"}>{trans( "SOURCE_CODE_SECTION" )}</h2>
+                <h2 className={"text-2xl font-medium"}>{trans("SOURCE_CODE_SECTION")}</h2>
                 <section className={"grid grid-cols-2 gap-2"}>
                   <Card
                     onClick={() => {
                       window.open(
-                        `https://github.com/yourdash-app/yourdash/tree/main/client/src/app/apps/${ appData.name }`
+                        `https://github.com/yourdash-app/yourdash/tree/main/client/src/app/apps/${appData.name}`
                       );
                     }}
                     className={"flex gap-1 items-center"}
                   >
-                    <Icon className={"h-5"} icon={YourDashIcon.Link}/>
+                    <Icon className={"h-5"} icon={YourDashIcon.Link} />
                     <span>
                       {
                         "Client"
@@ -213,12 +213,12 @@ const StoreApplicationPage: React.FC = () => {
                   <Card
                     onClick={() => {
                       window.open(
-                        `https://github.com/yourdash-app/yourdash/tree/main/server/src/apps/${ appData.name }`
+                        `https://github.com/yourdash-app/yourdash/tree/main/server/src/apps/${appData.name}`
                       );
                     }}
                     className={"flex gap-1 items-center"}
                   >
-                    <Icon className={"h-5"} icon={YourDashIcon.Link}/>
+                    <Icon className={"h-5"} icon={YourDashIcon.Link} />
                     <span>
                       {
                         "Server"
@@ -226,13 +226,13 @@ const StoreApplicationPage: React.FC = () => {
                     </span>
                   </Card>
                 </section>
-                <h2 className={"text-2xl font-medium"}>{trans( "AUTHORS_SECTION" )}</h2>
+                <h2 className={"text-2xl font-medium"}>{trans("AUTHORS_SECTION")}</h2>
                 <section className={"w-full"}>
                   <Carousel>
                     {
-                      appData.authors?.map( author => (
+                      appData.authors?.map(author => (
                         <Card key={author.avatarUrl} className={"flex flex-col gap-2"}>
-                          <img className={"h-32 aspect-square rounded-container-rounding"} src={author.avatarUrl} alt={author.avatarUrl}/>
+                          <img className={"h-32 aspect-square rounded-container-rounding"} src={author.avatarUrl} alt={author.avatarUrl} />
                           <div className={"flex items-center justify-between gap-2"}>
                             <span>{author.displayName}</span>
                             {
@@ -247,7 +247,7 @@ const StoreApplicationPage: React.FC = () => {
                             }
                           </div>
                         </Card>
-                      ) )
+                      ))
                     }
                   </Carousel>
                 </section>
