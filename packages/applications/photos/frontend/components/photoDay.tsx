@@ -22,22 +22,22 @@
  */
 
 import React, { useState } from "react";
-import { Card, Icon } from "../../../../ui";
-import { YourDashIcon } from "../../../../ui/components/icon/iconDictionary";
+import { Card, Icon } from "web-client/src/ui";
+import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
 
 const PhotoDay: React.FC<{
   photoCategory: {
     date: string,
     photos: string[]
   }
-}> = ( { photoCategory } ) => {
-  const [isOpen, setIsOpen] = useState<boolean>( true );
-  
+}> = ({ photoCategory }) => {
+  const [ isOpen, setIsOpen ] = useState<boolean>(true);
+
   return (
     <div key={photoCategory.date} className={"flex flex-col gap-1"}>
       <button
         onClick={() => {
-          setIsOpen( !isOpen );
+          setIsOpen(!isOpen);
         }}
         type={"button"}
         className={"text-left border-b-[1px] border-b-container-border pt-2.5 pb-0.5 pl-2 ml-2.5 mr-2.5 flex justify-between text-xl !bg-transparent"}
@@ -55,7 +55,7 @@ const PhotoDay: React.FC<{
         isOpen && (
           <Card>
             {
-              photoCategory.photos.map( photo => <img src={photo} key={photo} alt={""}/> )
+              photoCategory.photos.map(photo => <img src={photo} key={photo} alt={""} />)
             }
           </Card>
         )
