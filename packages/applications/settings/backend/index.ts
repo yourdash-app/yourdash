@@ -21,10 +21,7 @@
  * SOFTWARE.
  */
 
-import { Application as ExpressApplication } from "express";
-
-import log from "backend/src/helpers/log.js";
-import YourDashPanel from "backend/src/helpers/panel.js";
+import YourDashPanel from "backend/src/core/panel.js";
 import { type YourDashApplicationServerPlugin } from "backend/src/helpers/applications.js";
 import YourDashUnreadUser from "backend/src/core/user/user.js";
 import { PersonalServerAcceleratorCommunication } from "backend/src/helpers/personalServerAccelerator.js";
@@ -68,7 +65,10 @@ const main: YourDashApplicationServerPlugin = ( {
     };
     const user = await ( new YourDashUnreadUser( username ).read() );
 
-    const psa = new PersonalServerAcceleratorCommunication( username, user.getSession( parseInt( sessionId, 10 ) ) );
+    const psa = new PersonalServerAcceleratorCommunication(
+      username,
+      user.getSession( parseInt( sessionId, 10 ) )
+    );
 
     if ( !psa.socketConnection ) {
       return res.json( { success: false } );
