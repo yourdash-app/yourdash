@@ -1,3 +1,8 @@
+/*
+ * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
 export enum YourDashIcon {
   Accessibility = "/assets/icons/accessibility-16.svg",
   AccessibilityInset = "/assets/icons/accessibility-inset-16.svg",

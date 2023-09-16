@@ -44,16 +44,11 @@ if (!args.dev && args.compile) {
 }
 function startDevServer() {
     console.log(`[${chalk.hex("#fc6f45").bold("DEV")}]: starting server \"node ./src/main.js --color=full ${process.argv.slice(2).join(" ")}\"`);
-    const devProcess = exec(`yarn run compile && nodemon --signal SIGINT${args.debug
-        ? " --inspect-brk"
-        : ""} ./src/main.js --color=full ${process.argv.slice(2).join(" ")}`);
+    const devProcess = exec(`yarn run compile && nodemon --signal SIGINT${args.debug ? " --inspect-brk" : ""} ./src/main.js --color=full ${process.argv.slice(2).join(" ")}`);
     const compilationProcess = exec("yarn run compile --watch");
     devProcess.on("close", code => {
         console.log(`child process exited with code ${code}, will not auto-restart!`);
     });
-    if (args.debug) {
-        console.log("ws://127.0.0.1:9229/");
-    }
     devProcess.stdout.on("data", data => {
         if (data.toString().includes("[nodemon]")) {
             return;

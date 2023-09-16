@@ -1,3 +1,8 @@
+/*
+ * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
 import UKComponent, { UKComponentProps, UKComponentState, UKComponentSlots } from "../../../component.ts";
 import styles from "./iconButton.module.scss";
 import State from "../../../state.ts";
