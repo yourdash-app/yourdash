@@ -1,3 +1,8 @@
+/*
+ * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
 /** UIKit - a vanilla JS UI library (https://github.com/yourdash-app/yourdash/tree/main/packages/uikit) */
 
 import UKComponent, { UKComponentProps, UKComponentSlots, UKComponentState } from "./component.ts";

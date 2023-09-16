@@ -1,3 +1,8 @@
+/*
+ * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
 import Button from "../../../core/components/buttons/button/button.ts";
 import Card from "../../../core/components/card/card.ts";
 
