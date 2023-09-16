@@ -9,7 +9,6 @@ function checkIfApplicationIsValidToLoad(applicationName) {
         return false;
     }
     if (!fsExistsSync(path.resolve(process.cwd(), `../applications/${applicationName}/backend/index.js`))) {
-        console.log(path.resolve(process.cwd(), `../applications/${applicationName}/backend/index.js`));
         log(LOG_TYPES.ERROR, `${chalk.yellow.bold("CORE")}: application ${applicationName} does not contain an index.ts file!`);
         return false;
     }
@@ -23,7 +22,7 @@ function checkIfApplicationIsValidToLoad(applicationName) {
     }
     return true;
 }
-export function loadApplication(appName, app, io) {
+export function loadApplication(appName, exp, io) {
     if (!checkIfApplicationIsValidToLoad(appName)) {
         log(LOG_TYPES.ERROR, `${chalk.yellow.bold("CORE")}: Unable to load newly installed application: ${appName}!`);
         return;
@@ -37,7 +36,7 @@ export function loadApplication(appName, app, io) {
                 return;
             }
             mod.default({
-                exp: app,
+                exp: exp,
                 io,
                 pluginFilesystemPath: path.resolve(path.join(process.cwd(), `../applications/${appName}`))
             });
@@ -48,7 +47,7 @@ export function loadApplication(appName, app, io) {
             log(LOG_TYPES.ERROR, `${chalk.yellow.bold("CORE")}: Error during application initialization: ${appName}`);
             return 0;
         }
-    }).catch(_err => {
+    }).catch(() => {
         log(LOG_TYPES.ERROR, `${chalk.yellow.bold("CORE")}: Error while loading application: ${appName}`);
         return 0;
     });
@@ -67,7 +66,7 @@ export default function loadApplications(exp, io) {
                 loadApplication(appName, exp, io);
             }
             catch (e) {
-                log(LOG_TYPES.ERROR, `unable to load application: ${appName}`);
+                log(LOG_TYPES.ERROR, `Unable to load application: ${appName}`);
                 console.trace(e);
             }
         });

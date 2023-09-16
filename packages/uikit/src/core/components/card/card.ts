@@ -1,3 +1,8 @@
+/*
+ * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
 import UKComponent, { UKComponentProps, UKComponentSlots, UKComponentState } from "../../component.ts";
 import styles from "./card.module.scss";
 import UKComponentSlot from "../../slot.ts";

@@ -8,6 +8,8 @@ import chalk from "chalk";
 import minimist from "minimist";
 import killPort from "kill-port";
 import { YOURDASH_SESSION_TYPE } from "shared/core/session.js";
+import defineCorePanelRoutes from "./core/endpoints/panel.js";
+import defineUserEndpoints from "./core/endpoints/user.js";
 import log, { LOG_TYPES, LOG_HISTORY } from "./helpers/log.js";
 import YourDashUnreadUser from "./core/user/user.js";
 import { YourDashCoreUserPermissions } from "./core/user/permissions.js";
@@ -21,6 +23,7 @@ import defineLoginEndpoints from "./core/endpoints/login.js";
 import defineUserDatabaseRoutes, { USER_DATABASES, saveUserDatabases } from "./core/endpoints/userDatabase.js";
 import centerTerminalOutputOnLine from "./helpers/terminal/centerTerminalOutputOnLine.js";
 import { generateLogos } from "./helpers/logo.js";
+import { startUserDatabaseService } from "./helpers/userDatabase.js";
 const FS_DIRECTORY_PATH = path.resolve(path.join(process.cwd(), "./fs/"));
 export { FS_DIRECTORY_PATH };
 const PROCESS_ARGUMENTS = minimist(process.argv.slice(2));
@@ -140,11 +143,9 @@ await listenForRequests();
 const ACTIVE_SOCKET_IO_SOCKETS = {};
 const CORE_HANDLE_SHUTDOWN = () => {
     log(LOG_TYPES.INFO, "Shutting down... (restart of core should occur automatically)");
-    const LOG_OUTPUT = LOG_HISTORY
-        .map((hist) => {
+    const LOG_OUTPUT = LOG_HISTORY.map((hist) => {
         return `${hist.type}: ${hist.message}`;
-    })
-        .join("\n");
+    }).join("\n");
     saveUserDatabases();
     writeFile(path.resolve(process.cwd(), "./fs/log.log"), LOG_OUTPUT, () => {
         GLOBAL_DB._internalDoNotUseOnlyIntendedForShutdownSequenceWriteToDisk(path.resolve(process.cwd(), "./fs/global_database.json"), () => {
@@ -180,30 +181,24 @@ socketIo.on("connection", (socket) => {
 });
 socketIo.use(async (socket, next) => {
     const { username, sessionToken } = socket.handshake.query;
-    if (!username || !sessionToken) {
+    if (!username || !sessionToken)
         return socket.disconnect();
-    }
     if (!__internalGetSessionsDoNotUseOutsideOfCore()[username]) {
         try {
             const user = await new YourDashUnreadUser(username).read();
-            __internalGetSessionsDoNotUseOutsideOfCore()[username] =
-                (await user.getSessions()) || [];
+            __internalGetSessionsDoNotUseOutsideOfCore()[username] = (await user.getSessions()) || [];
         }
         catch (_err) {
             return socket.disconnect();
         }
     }
-    if (__internalGetSessionsDoNotUseOutsideOfCore()[username].find((session) => session.sessionToken === sessionToken)) {
+    if (__internalGetSessionsDoNotUseOutsideOfCore()[username].find((session) => session.sessionToken === sessionToken))
         return next();
-    }
     return socket.disconnect();
 });
 export { socketIo, ACTIVE_SOCKET_IO_SOCKETS };
-if (PROCESS_ARGUMENTS["log-requests"]) {
-    startRequestLogger(exp, {
-        logOptionsRequests: !!PROCESS_ARGUMENTS["log-options-requests"]
-    });
-}
+if (PROCESS_ARGUMENTS["log-requests"])
+    startRequestLogger(exp, { logOptionsRequests: !!PROCESS_ARGUMENTS["log-options-requests"] });
 exp.use(cors());
 exp.use(express.json({ limit: "50mb" }));
 exp.use((_req, res, next) => {
@@ -211,11 +206,7 @@ exp.use((_req, res, next) => {
     next();
 });
 process.stdin.on("data", (data) => {
-    const commandAndArgs = data
-        .toString()
-        .replaceAll("\n", "")
-        .replaceAll("\r", "")
-        .split(" ");
+    const commandAndArgs = data.toString().replaceAll("\n", "").replaceAll("\r", "").split(" ");
     const command = commandAndArgs[0];
     switch (command) {
         case "exit":
@@ -230,21 +221,12 @@ exp.get("/test", (_req, res) => {
     const discoveryStatus = YOURDASH_INSTANCE_DISCOVERY_STATUS.NORMAL;
     switch (discoveryStatus) {
         case YOURDASH_INSTANCE_DISCOVERY_STATUS.MAINTENANCE:
-            return res.status(200).json({
-                status: YOURDASH_INSTANCE_DISCOVERY_STATUS.MAINTENANCE,
-                type: "yourdash"
-            });
+            return res.status(200).json({ status: YOURDASH_INSTANCE_DISCOVERY_STATUS.MAINTENANCE, type: "yourdash" });
         case YOURDASH_INSTANCE_DISCOVERY_STATUS.NORMAL:
-            return res.status(200).json({
-                status: YOURDASH_INSTANCE_DISCOVERY_STATUS.NORMAL,
-                type: "yourdash"
-            });
+            return res.status(200).json({ status: YOURDASH_INSTANCE_DISCOVERY_STATUS.NORMAL, type: "yourdash" });
         default:
-            log(LOG_TYPES.ERROR, "discovery status returned an invalid value");
-            return res.status(200).json({
-                status: YOURDASH_INSTANCE_DISCOVERY_STATUS.MAINTENANCE,
-                type: "yourdash"
-            });
+            log(LOG_TYPES.ERROR, "Discovery status returned an invalid value");
+            return res.status(200).json({ status: YOURDASH_INSTANCE_DISCOVERY_STATUS.MAINTENANCE, type: "yourdash" });
     }
 });
 startAuthenticatedImageHelper(exp);
@@ -321,5 +303,8 @@ exp.post("/core/personal-server-accelerator/", async (req, res) => {
     return res.json({ success: true });
 });
 defineUserDatabaseRoutes(exp);
+defineCorePanelRoutes(exp);
+defineUserEndpoints(exp);
+startUserDatabaseService();
 loadApplications(exp, socketIo);
 //# sourceMappingURL=main.js.map

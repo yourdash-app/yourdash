@@ -1,29 +1,12 @@
 /*
- * Copyright (c) 2023 YourDash contributors.
- * YourDash is licensed under the MIT License.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-// The YourDash project
-//  - https://github.com/yourdash-app/yourdash
-//  - https://yourdash-app.github.io
+//  * The YourDash project
+//  *  - https://github.com/yourdash-app/yourdash
+//  *  - https://yourdash.pages.dev
+//  *  - https://ydsh.pages.dev
 
 import { promises as fs, writeFile, existsSync as fsExistsSync } from "fs";
 import path from "path";
@@ -35,13 +18,14 @@ import chalk from "chalk";
 import minimist from "minimist";
 import killPort from "kill-port";
 import { YOURDASH_SESSION_TYPE } from "shared/core/session.js";
+import defineCorePanelRoutes from "./core/endpoints/panel.js";
+import defineUserEndpoints from "./core/endpoints/user.js";
 import log, { LOG_TYPES, LOG_HISTORY } from "./helpers/log.js";
 import YourDashUnreadUser from "./core/user/user.js";
 import { YourDashCoreUserPermissions } from "./core/user/permissions.js"
 import GLOBAL_DB from "./helpers/globalDatabase.js";
 import { __internalGetSessionsDoNotUseOutsideOfCore } from "./core/sessions.js";
 import { YOURDASH_INSTANCE_DISCOVERY_STATUS } from "./core/discovery.js";
-import defineCorePanelRoutes from "./core/endpoints/panel.js";
 import loadApplications from "./core/loadApplications.js";
 import startRequestLogger from "./core/logRequests.js";
 import { startAuthenticatedImageHelper } from "./core/authenticatedImage.js";
@@ -49,29 +33,27 @@ import defineLoginEndpoints from "./core/endpoints/login.js";
 import defineUserDatabaseRoutes, { USER_DATABASES, saveUserDatabases } from "./core/endpoints/userDatabase.js";
 import centerTerminalOutputOnLine from "./helpers/terminal/centerTerminalOutputOnLine.js";
 import { generateLogos } from "./helpers/logo.js";
+import { startUserDatabaseService } from "./helpers/userDatabase.js";
 
 /*
- 
- Server Startup steps
- 
- 1. Fetch process arguments
- 2. Load the global database
- 3. Init express
- 4. Load authentication service
- 5. Begin listening for requests
- 6. Start startup services
- - request logger
- - authenticated image
- - user sanitization
- - caching service
- 7. Load applications
- 8. Load post-startup services
- 
+ * --- Server Startup steps ---
+ * 1. Fetch process arguments
+ * 2. Load the global database
+ * 3. Init express
+ * 4. Load authentication service
+ * 5. Begin listening for requests
+ * 6. Start startup services
+ *    - request logger
+ *    - authenticated image
+ *    - user sanitization
+ *    - caching service
+ * 7. Load applications
+ * 8. Load post-startup services
  */
 
-// -------------------------------
-// THIS FILE IS A WORK IN PROGRESS
-// -------------------------------
+// ! -------------------------------
+// ! THIS FILE IS A WORK IN PROGRESS
+// ! -------------------------------
 
 const FS_DIRECTORY_PATH = path.resolve( path.join( process.cwd(), "./fs/" ) );
 export { FS_DIRECTORY_PATH }
@@ -275,11 +257,9 @@ const CORE_HANDLE_SHUTDOWN = () => {
     "Shutting down... (restart of core should occur automatically)"
   );
   
-  const LOG_OUTPUT = LOG_HISTORY
-    .map( ( hist ) => {
-      return `${ hist.type }: ${ hist.message }`;
-    } )
-    .join( "\n" );
+  const LOG_OUTPUT = LOG_HISTORY.map( ( hist ) => {
+    return `${ hist.type }: ${ hist.message }`;
+  } ).join( "\n" );
   
   saveUserDatabases()
   
@@ -316,7 +296,7 @@ socketIo.on( "connection", ( socket: SocketIoSocket<any, any, any, any> ) => { /
     socket
   } );
   
-  socket.on( "execute-command-response", ( output: any ) => {
+  socket.on( "execute-command-response", ( output: never ) => {
     log( LOG_TYPES.INFO, output );
   } );
   
@@ -334,43 +314,31 @@ socketIo.on( "connection", ( socket: SocketIoSocket<any, any, any, any> ) => { /
 } );
 
 // handle socket.io session authentication
-socketIo.use( async ( socket: SocketIoSocket<any, any, any, any>, next ) => {
-  const {
-    username,
-    sessionToken
-  } = socket.handshake.query as {
-    username?: string;
-    sessionToken?: string;
-  };
-  if ( !username || !sessionToken ) {
+socketIo.use( async ( socket: SocketIoSocket, next ) => {
+  const { username, sessionToken } = socket.handshake.query as { username?: string, sessionToken?: string };
+  
+  if ( !username || !sessionToken )
     return socket.disconnect();
-  }
+  
   if ( !__internalGetSessionsDoNotUseOutsideOfCore()[ username ] ) {
     try {
       const user = await new YourDashUnreadUser( username ).read();
-      __internalGetSessionsDoNotUseOutsideOfCore()[ username ] =
-        ( await user.getSessions() ) || [];
+      __internalGetSessionsDoNotUseOutsideOfCore()[ username ] = ( await user.getSessions() ) || [];
     } catch ( _err ) {
       return socket.disconnect();
     }
   }
-  if (
-    __internalGetSessionsDoNotUseOutsideOfCore()[ username ].find(
-      ( session ) => session.sessionToken === sessionToken
-    )
-  ) {
+  
+  if ( __internalGetSessionsDoNotUseOutsideOfCore()[ username ].find( ( session ) => session.sessionToken === sessionToken ) )
     return next();
-  }
+  
   return socket.disconnect();
 } );
 
 export { socketIo, ACTIVE_SOCKET_IO_SOCKETS };
 
-if ( PROCESS_ARGUMENTS[ "log-requests" ] ) {
-  startRequestLogger( exp, {
-    logOptionsRequests: !!PROCESS_ARGUMENTS[ "log-options-requests" ]
-  } );
-}
+if ( PROCESS_ARGUMENTS[ "log-requests" ] )
+  startRequestLogger( exp, { logOptionsRequests: !!PROCESS_ARGUMENTS[ "log-options-requests" ] } );
 
 exp.use( cors() );
 exp.use( express.json( { limit: "50mb" } ) );
@@ -380,13 +348,8 @@ exp.use( ( _req, res, next ) => {
 } );
 
 process.stdin.on( "data", ( data ) => {
-  const commandAndArgs = data
-    .toString()
-    .replaceAll( "\n", "" )
-    .replaceAll( "\r", "" )
-    .split( " " );
+  const commandAndArgs = data.toString().replaceAll( "\n", "" ).replaceAll( "\r", "" ).split( " " );
   const command = commandAndArgs[ 0 ];
-  // const args = commandAndArgs.slice(1);
   
   switch ( command ) {
   case "exit":
@@ -403,26 +366,16 @@ exp.get( "/", ( _req, res ) =>
 
 // Server discovery endpoint
 exp.get( "/test", ( _req, res ) => {
-  const discoveryStatus: YOURDASH_INSTANCE_DISCOVERY_STATUS =
-    YOURDASH_INSTANCE_DISCOVERY_STATUS.NORMAL as YOURDASH_INSTANCE_DISCOVERY_STATUS;
+  const discoveryStatus: YOURDASH_INSTANCE_DISCOVERY_STATUS = YOURDASH_INSTANCE_DISCOVERY_STATUS.NORMAL as YOURDASH_INSTANCE_DISCOVERY_STATUS;
   
   switch ( discoveryStatus ) {
   case YOURDASH_INSTANCE_DISCOVERY_STATUS.MAINTENANCE:
-    return res.status( 200 ).json( {
-      status: YOURDASH_INSTANCE_DISCOVERY_STATUS.MAINTENANCE,
-      type: "yourdash"
-    } );
+    return res.status( 200 ).json( { status: YOURDASH_INSTANCE_DISCOVERY_STATUS.MAINTENANCE, type: "yourdash" } );
   case YOURDASH_INSTANCE_DISCOVERY_STATUS.NORMAL:
-    return res.status( 200 ).json( {
-      status: YOURDASH_INSTANCE_DISCOVERY_STATUS.NORMAL,
-      type: "yourdash"
-    } );
+    return res.status( 200 ).json( { status: YOURDASH_INSTANCE_DISCOVERY_STATUS.NORMAL, type: "yourdash" } );
   default:
-    log( LOG_TYPES.ERROR, "discovery status returned an invalid value" );
-    return res.status( 200 ).json( {
-      status: YOURDASH_INSTANCE_DISCOVERY_STATUS.MAINTENANCE,
-      type: "yourdash"
-    } );
+    log( LOG_TYPES.ERROR, "Discovery status returned an invalid value" );
+    return res.status( 200 ).json( { status: YOURDASH_INSTANCE_DISCOVERY_STATUS.MAINTENANCE, type: "yourdash" } );
   }
 } );
 
@@ -431,13 +384,7 @@ defineLoginEndpoints( exp );
 
 // check for authentication
 exp.use( async ( req, res, next ) => {
-  const {
-    username,
-    token
-  } = req.headers as {
-    username?: string;
-    token?: string;
-  };
+  const { username, token } = req.headers as { username?: string, token?: string };
   
   if ( !username || !token ) {
     return res.json( { error: "authorization fail" } );
@@ -480,7 +427,7 @@ exp.use( async ( req, res, next ) => {
  */
 
 exp.get( "/core/sessions", async ( req, res ) => {
-  const { username } = req.headers as { username: string; };
+  const { username } = req.headers as { username: string };
   
   const user = await new YourDashUnreadUser( username ).read();
   
@@ -488,9 +435,7 @@ exp.get( "/core/sessions", async ( req, res ) => {
 } );
 
 exp.delete( "/core/session/:id", async ( req, res ) => {
-  const { username } = req.headers as {
-    username: string;
-  };
+  const { username } = req.headers as { username: string };
   const { id: sessionId } = req.params;
   
   const user = await new YourDashUnreadUser( username ).read();
@@ -501,9 +446,7 @@ exp.delete( "/core/session/:id", async ( req, res ) => {
 } );
 
 exp.get( "/core/personal-server-accelerator/sessions", async ( req, res ) => {
-  const { username } = req.headers as {
-    username: string;
-  };
+  const { username } = req.headers as { username: string };
   
   const user = await new YourDashUnreadUser( username ).read();
   
@@ -513,9 +456,7 @@ exp.get( "/core/personal-server-accelerator/sessions", async ( req, res ) => {
 } );
 
 exp.get( "/core/personal-server-accelerator/", async ( req, res ) => {
-  const { username } = req.headers as {
-    username: string;
-  };
+  const { username } = req.headers as { username: string };
   
   const unreadUser = new YourDashUnreadUser( username );
   
@@ -535,9 +476,7 @@ exp.get( "/core/personal-server-accelerator/", async ( req, res ) => {
 } );
 
 exp.post( "/core/personal-server-accelerator/", async ( req, res ) => {
-  const { username } = req.headers as {
-    username: string;
-  };
+  const { username } = req.headers as { username: string };
   const body = req.body;
   
   const user = new YourDashUnreadUser( username );
@@ -554,6 +493,12 @@ exp.post( "/core/personal-server-accelerator/", async ( req, res ) => {
   return res.json( { success: true } );
 } );
 
+// define all core endpoints
 defineUserDatabaseRoutes( exp );
+defineCorePanelRoutes( exp )
+defineUserEndpoints( exp )
+
+// start core services
+startUserDatabaseService()
 
 loadApplications( exp, socketIo );

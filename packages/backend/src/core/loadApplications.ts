@@ -1,3 +1,8 @@
+/*
+ * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
 import path from "path";
 import globalDatabase from "../helpers/globalDatabase.js";
 import log, { LOG_TYPES } from "../helpers/log.js";
@@ -8,42 +13,23 @@ import { type Application as ExpressApplication } from "express";
 import { type Server as SocketIoServer } from "socket.io";
 
 function checkIfApplicationIsValidToLoad( applicationName: string ): boolean {
-  if (
-    !fsExistsSync( path.resolve( process.cwd(), `../applications/${ applicationName }/backend` ) )
-  ) {
-    log(
-      LOG_TYPES.ERROR,
-      `${ chalk.yellow.bold( "CORE" ) }: Unknown application: ${ applicationName }!`
-    );
+  if ( !fsExistsSync( path.resolve( process.cwd(), `../applications/${ applicationName }/backend` ) ) ) {
+    log( LOG_TYPES.ERROR,`${ chalk.yellow.bold( "CORE" ) }: Unknown application: ${ applicationName }!` );
     return false;
   }
-  if (
-    !fsExistsSync( path.resolve( process.cwd(), `../applications/${ applicationName }/backend/index.js` ) )
-  ) {
-    console.log( path.resolve( process.cwd(), `../applications/${ applicationName }/backend/index.js` ) );
-    
-    log(
-      LOG_TYPES.ERROR,
-      `${ chalk.yellow.bold( "CORE" ) }: application ${ applicationName } does not contain an index.ts file!`
-    );
+  
+  if ( !fsExistsSync( path.resolve( process.cwd(), `../applications/${ applicationName }/backend/index.js` ) ) ) {
+    log( LOG_TYPES.ERROR,`${ chalk.yellow.bold( "CORE" ) }: application ${ applicationName } does not contain an index.ts file!` );
     return false;
   }
-  if (
-    !fsExistsSync( path.resolve( process.cwd(), `../applications/${ applicationName }/application.json` ) )
-  ) {
-    log(
-      LOG_TYPES.ERROR,
-      `${ chalk.yellow.bold( "CORE" ) }: application ${ applicationName } does not contain an application.json file!`
-    );
+  
+  if ( !fsExistsSync( path.resolve( process.cwd(), `../applications/${ applicationName }/application.json` ) ) ) {
+    log( LOG_TYPES.ERROR,`${ chalk.yellow.bold( "CORE" ) }: application ${ applicationName } does not contain an application.json file!` );
     return false;
   }
-  if (
-    !fsExistsSync( path.resolve( process.cwd(), `../applications/${ applicationName }/icon.avif` ) )
-  ) {
-    log(
-      LOG_TYPES.ERROR,
-      `${ chalk.yellow.bold( "CORE" ) }: application ${ applicationName } does not contain an icon.avif file!`
-    );
+  
+  if ( !fsExistsSync( path.resolve( process.cwd(), `../applications/${ applicationName }/icon.avif` ) ) ) {
+    log( LOG_TYPES.ERROR,`${ chalk.yellow.bold( "CORE" ) }: application ${ applicationName } does not contain an icon.avif file!` );
     return false;
   }
 
@@ -57,7 +43,6 @@ export function loadApplication( appName: string, exp: ExpressApplication, io: S
   }
 
   // import and load all applications
-  
   import( `applications/${ appName }/backend/index.js` )
     .then( ( mod: { default?: YourDashApplicationServerPlugin } ) => {
       try {
@@ -85,7 +70,7 @@ export function loadApplication( appName: string, exp: ExpressApplication, io: S
         
         return 0
       }
-    } ).catch( _err => {
+    } ).catch( () => {
       log( LOG_TYPES.ERROR, `${ chalk.yellow.bold( "CORE" ) }: Error while loading application: ${ appName }` );
       
       return 0
@@ -104,7 +89,7 @@ export default function loadApplications( exp: ExpressApplication, io: SocketIoS
       try {
         loadApplication( appName, exp, io );
       } catch ( e ) {
-        log( LOG_TYPES.ERROR, `unable to load application: ${appName}` )
+        log( LOG_TYPES.ERROR, `Unable to load application: ${appName}` )
         console.trace( e )
       }
     } );

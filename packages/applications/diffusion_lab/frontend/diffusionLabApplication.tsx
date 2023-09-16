@@ -1,24 +1,6 @@
 /*
- * Copyright (c) 2023 YourDash contributors.
- * YourDash is licensed under the MIT License.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 import React, { useState, useEffect } from "react";
@@ -30,10 +12,10 @@ import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
 import useTranslate from "web-client/src/helpers/i10n";
 
 const DiffusionLabApplication: React.FC = () => {
-  const trans = useTranslate("diffusion_lab");
-  const [ progress, setProgress ] = useState<number>(1);
-  const [ models, setModels ] = useState<string[]>([]);
-  const [ generationData, setGenerationData ] = useState<IDiffusionLabImageGenerationData>({
+  const trans = useTranslate( "diffusion_lab" );
+  const [ progress, setProgress ] = useState<number>( 1 );
+  const [ models, setModels ] = useState<string[]>( [] );
+  const [ generationData, setGenerationData ] = useState<IDiffusionLabImageGenerationData>( {
     extensions: [],
     dimensions: {
       width: 256,
@@ -51,44 +33,44 @@ const DiffusionLabApplication: React.FC = () => {
       size: 1,
       quantity: 1
     }
-  });
-  const [ generationResult, setGenerationResult ] = useState<string[][]>([]);
+  } );
+  const [ generationResult, setGenerationResult ] = useState<string[][]>( [] );
 
-  useEffect(() => {
-    csi.getJson("/app/diffusion_lab/models", (data: { models: string[] }) => {
-      setGenerationData({ ...generationData, model: data.models[ 0 ] });
-      setModels(data.models);
-    });
+  useEffect( () => {
+    csi.getJson( "/app/diffusion_lab/models", ( data: { models: string[] } ) => {
+      setGenerationData( { ...generationData, model: data.models[ 0 ] } );
+      setModels( data.models );
+    } );
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [] );
 
   return (
     <main>
       <header className={"w-full p-3 flex items-center justify-between sticky top-0 bg-container-bg text-container-fg"}>
         <section className={"flex items-center justify-center h-full gap-2"}>
           <DropdownButton items={
-            models.map(model => {
+            models.map( model => {
               return {
-                name: model.slice(0, 1).toUpperCase() + model.slice(1),
+                name: model.slice( 0, 1 ).toUpperCase() + model.slice( 1 ),
                 onClick: () => {
-                  setGenerationData({ ...generationData, model });
+                  setGenerationData( { ...generationData, model } );
                 }
               };
-            })
+            } )
           }
           >
             Select a diffusion model
           </DropdownButton>
           <DropdownButton items={
-            models.map(model => {
+            models.map( model => {
               return {
-                name: model.slice(0, 1).toUpperCase() + model.slice(1),
+                name: model.slice( 0, 1 ).toUpperCase() + model.slice( 1 ),
                 onClick: () => {
-                  setGenerationData({ ...generationData, model });
+                  setGenerationData( { ...generationData, model } );
                 }
               };
-            })
+            } )
           }
           >
             Select a VAE
@@ -98,7 +80,7 @@ const DiffusionLabApplication: React.FC = () => {
           <div className={"flex items-center justify-center h-full gap-1.5"}>
             <Icon className={"h-9 aspect-square"} useDefaultColor icon={YourDashIcon.YourDashLogo} />
             <h2 className={"text-3xl font-semibold tracking-wide"}>
-              {trans("APPLICATION_NAME")}
+              {trans( "APPLICATION_NAME" )}
             </h2>
           </div>
         </section>
@@ -108,24 +90,24 @@ const DiffusionLabApplication: React.FC = () => {
               ? (
                 <MajorButton
                   onClick={() => {
-                    setProgress(1);
+                    setProgress( 1 );
 
-                    csi.postJson("/app/diffusion_lab/generate", { ...generationData }, (data: any) => {
-                      setGenerationResult(data);
-                      setProgress(1);
-                    });
+                    csi.postJson( "/app/diffusion_lab/generate", { ...generationData }, ( data: any ) => {
+                      setGenerationResult( data );
+                      setProgress( 1 );
+                    } );
                   }}
                 >
-                  {trans("GENERATE_BUTTON.LABEL")}
+                  {trans( "GENERATE_BUTTON.LABEL" )}
                 </MajorButton>
               )
               : (
                 <Button
                   onClick={() => {
-                    setProgress(0);
+                    setProgress( 0 );
                   }}
                 >
-                  {trans("STOP_BUTTON.LABEL")}
+                  {trans( "STOP_BUTTON.LABEL" )}
                 </Button>
               )
           }
@@ -134,14 +116,14 @@ const DiffusionLabApplication: React.FC = () => {
       <ResizeContainer className={"flex gap-3"} direction={"row"}>
         <section className={"flex flex-col flex-grow pl-3 pt-3 pb-3"}>
           <Card>
-            <span>{trans("PROMPT.LABEL")}</span>
+            <span>{trans( "PROMPT.LABEL" )}</span>
             <TextBox onChange={e => {
-              setGenerationData({ ...generationData, prompt: { ...generationData.prompt, positive: e.target.value } });
+              setGenerationData( { ...generationData, prompt: { ...generationData.prompt, positive: e.target.value } } );
             }}
             />
-            <span>{trans("NEGATIVE_PROMPT.LABEL")}</span>
+            <span>{trans( "NEGATIVE_PROMPT.LABEL" )}</span>
             <TextBox onChange={e => {
-              setGenerationData({ ...generationData, prompt: { ...generationData.prompt, negative: e.target.value } });
+              setGenerationData( { ...generationData, prompt: { ...generationData.prompt, negative: e.target.value } } );
             }}
             />
           </Card>
@@ -155,12 +137,12 @@ const DiffusionLabApplication: React.FC = () => {
               className={"flex flex-col flex-wrap p-4 items-center justify-center"}
             >
               {
-                generationResult.map(batch => {
-                  return batch.map(image => {
+                generationResult.map( batch => {
+                  return batch.map( image => {
                     // eslint-disable-next-line jsx-a11y/img-redundant-alt
                     return <img key={image} src={image || YourDashLogo} alt="generated ai-image" className={"w-full h-full"} />;
-                  });
-                })
+                  } );
+                } )
               }
             </div>
           </div>

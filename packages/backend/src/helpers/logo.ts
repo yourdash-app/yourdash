@@ -1,3 +1,8 @@
+/*
+ * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
 import fs from "fs";
 import path from "path";
 import sharp from "sharp";
@@ -33,4 +38,3 @@ export function generateLogos() {
 export function getInstanceLogoBase64(): string {
   return fs.readFileSync( path.join( FS_DIRECTORY_PATH, "./instance_logo.avif" ) ).toString( "base64" );
 }
- 

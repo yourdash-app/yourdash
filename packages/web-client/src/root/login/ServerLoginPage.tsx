@@ -1,24 +1,6 @@
 /*
- * Copyright (c) 2023 YourDash contributors.
- * YourDash is licensed under the MIT License.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 import clippy from "web-client/src/helpers/clippy";
@@ -55,57 +37,26 @@ const SelectUser: React.FC<{
         }}
       />
       <Card
-        className={"fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate__animated animate__fadeIn animate__1250ms"}
+        className={"fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate__animated animate__fadeIn animate__1250ms flex flex-col gap-2 items-center justify-center"}
       >
-        <Column>
-          <TextInput
-            label={"Username"}
-            mustMatchRegex={/[a-z]|[0-9]/}
-            onKeyDown={e => {
-              if ( e.key === "Enter" ) {
-                if ( username === null ) {
-                  return;
-                }
-                
-                csi.getJson(
-                  `/core/login/user/${ username }`,
-                  ( json: {
-                    name: {
-                      first: string;
-                      middle: string;
-                      last: string
-                    }
-                  } ) => {
-                    setSelectedUser( username );
-                    setName( json.name );
-                  },
-                  () => {
-                    setValidUser( false );
-                  }
-                );
-              }
-            }
-            }
-            onChange={value => {
-              setUsername( value );
-            }}
-          />
-          <MajorButton
-            disabled={username === ""}
-            onClick={() => {
-              if ( username === "" ) {
+        <TextInput
+          label={"Username"}
+          mustMatchRegex={/[a-z]|[0-9]/}
+          onKeyDown={e => {
+            if ( e.key === "Enter" ) {
+              if ( username === null ) {
                 return;
               }
               
               csi.getJson(
                 `/core/login/user/${ username }`,
                 ( json: {
-                  name: {
-                    first: string;
-                    middle: string;
-                    last: string
-                  }
-                } ) => {
+                    name: {
+                      first: string;
+                      middle: string;
+                      last: string
+                    }
+                  } ) => {
                   setSelectedUser( username );
                   setName( json.name );
                 },
@@ -113,11 +64,40 @@ const SelectUser: React.FC<{
                   setValidUser( false );
                 }
               );
-            }}
-          >
+            }
+          }
+          }
+          onChange={value => {
+            setUsername( value );
+          }}
+        />
+        <MajorButton
+          disabled={username === ""}
+          onClick={() => {
+            if ( username === "" ) {
+              return;
+            }
+            
+            csi.getJson(
+              `/core/login/user/${ username }`,
+              ( json: {
+                  name: {
+                    first: string;
+                    middle: string;
+                    last: string
+                  }
+                } ) => {
+                setSelectedUser( username );
+                setName( json.name );
+              },
+              () => {
+                setValidUser( false );
+              }
+            );
+          }}
+        >
             Continue
-          </MajorButton>
-        </Column>
+        </MajorButton>
       </Card>
       {!validUser && (
         <Dialog
