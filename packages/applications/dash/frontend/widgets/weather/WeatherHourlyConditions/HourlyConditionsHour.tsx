@@ -1,3 +1,8 @@
+/*
+ * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
 import React from "react";
 import { useFloating, offset, shift, autoUpdate, useHover, useFocus, useDismiss, useRole, useInteractions, autoPlacement } from "@floating-ui/react";
 import DROPLET_ICON from "applications/weather/frontend/weatherIcons/droplet.svg";

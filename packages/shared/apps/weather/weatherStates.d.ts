@@ -1,3 +1,8 @@
+/*
+ * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
 declare enum weatherStates {
     clear = 0,
     partlyCloudy = 1,

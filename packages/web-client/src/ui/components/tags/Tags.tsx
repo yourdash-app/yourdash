@@ -1,3 +1,8 @@
+/*
+ * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
 import styles from "./Tags.module.scss";
 
 type COLOR = `#${string}` | `rgb(${string})` | `rgba(${string})` | `var(--${string})`
@@ -28,4 +33,4 @@ const Tags: React.FC<ITags> = ({
   );
 };
 
-export default Tags; 
+export default Tags;

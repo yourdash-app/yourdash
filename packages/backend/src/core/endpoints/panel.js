@@ -7,7 +7,7 @@ import { promises as fs } from "fs";
 import YourDashPanel from "backend/src/core/panel.js";
 import { FS_DIRECTORY_PATH } from "../../main.js";
 import authenticatedImage, { AUTHENTICATED_IMAGE_TYPE } from "../authenticatedImage.js";
-export default async function defineRoute(exp) {
+export default function defineCorePanelRoutes(exp) {
     exp.get("/core/panel/applications", async (_req, res) => {
         res.set("Cache-Control", "no-store");
         Promise.all((globalDatabase.get("installedApplications")).map(async (app) => {
