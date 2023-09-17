@@ -10,6 +10,6 @@ export enum YourDashCoreUserPermissions {
   Administrator
 }
 
-type YourDashUserPermission = YourDashCoreUserPermissions | string;
+type yourDashUserPermission = YourDashCoreUserPermissions | string;
 
-export type { YourDashUserPermission }
+export type { yourDashUserPermission }

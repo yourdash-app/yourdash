@@ -8,31 +8,31 @@
 //  *  - https://yourdash.pages.dev
 //  *  - https://ydsh.pages.dev
 
-import { promises as fs, writeFile, existsSync as fsExistsSync } from "fs";
-import path from "path";
-import * as http from "http";
+import chalk from "chalk";
 import cors from "cors";
 import express from "express";
-import { Server as SocketIoServer, Socket as SocketIoSocket } from "socket.io";
-import chalk from "chalk";
-import minimist from "minimist";
+import { existsSync as fsExistsSync, promises as fs, writeFile } from "fs";
+import * as http from "http";
 import killPort from "kill-port";
+import minimist from "minimist";
+import path from "path";
 import { YOURDASH_SESSION_TYPE } from "shared/core/session.js";
+import { Server as SocketIoServer, Socket as SocketIoSocket } from "socket.io";
+import { startAuthenticatedImageHelper } from "./core/authenticatedImage.js";
+import { YOURDASH_INSTANCE_DISCOVERY_STATUS } from "./core/discovery.js";
+import defineLoginEndpoints from "./core/endpoints/login.js";
 import defineCorePanelRoutes from "./core/endpoints/panel.js";
 import defineUserEndpoints from "./core/endpoints/user.js";
-import log, { LOG_TYPES, LOG_HISTORY } from "./helpers/log.js";
-import YourDashUnreadUser from "./core/user/user.js";
-import { YourDashCoreUserPermissions } from "./core/user/permissions.js"
-import GLOBAL_DB from "./helpers/globalDatabase.js";
-import { __internalGetSessionsDoNotUseOutsideOfCore } from "./core/sessions.js";
-import { YOURDASH_INSTANCE_DISCOVERY_STATUS } from "./core/discovery.js";
+import defineUserDatabaseRoutes, { saveUserDatabases, USER_DATABASES } from "./core/endpoints/userDatabase.js";
 import loadApplications from "./core/loadApplications.js";
 import startRequestLogger from "./core/logRequests.js";
-import { startAuthenticatedImageHelper } from "./core/authenticatedImage.js";
-import defineLoginEndpoints from "./core/endpoints/login.js";
-import defineUserDatabaseRoutes, { USER_DATABASES, saveUserDatabases } from "./core/endpoints/userDatabase.js";
-import centerTerminalOutputOnLine from "./helpers/terminal/centerTerminalOutputOnLine.js";
+import { __internalGetSessionsDoNotUseOutsideOfCore } from "./core/session.js";
+import YourDashUser from "./core/user/index.js";
+import { YourDashCoreUserPermissions } from "./core/user/permissions.js";
+import GLOBAL_DB from "./helpers/globalDatabase.js";
+import log, { LOG_HISTORY, logType } from "./helpers/log.js";
 import { generateLogos } from "./helpers/logo.js";
+import centerTerminalOutputOnLine from "./helpers/terminal/centerTerminalOutputOnLine.js";
 import { startUserDatabaseService } from "./helpers/userDatabase.js";
 
 /*
@@ -78,7 +78,7 @@ if ( fsExistsSync( path.join( FS_DIRECTORY_PATH, "./global_database.json" ) ) ) 
     await fs.rm( path.join( FS_DIRECTORY_PATH, "./global_database.json" ) );
   }
 } else {
-  log( LOG_TYPES.WARNING, "Unable to load the global database!" );
+  log( logType.WARNING, "Unable to load the global database!" );
 }
 
 /*
@@ -101,7 +101,7 @@ if ( !fsExistsSync( FS_DIRECTORY_PATH ) ) {
     try {
       await fs.mkdir( FS_DIRECTORY_PATH );
     } catch ( e ) {
-      log( LOG_TYPES.ERROR, "Unable to create \"./fs/\"" );
+      log( logType.ERROR, "Unable to create \"./fs/\"" );
       console.trace( e );
     }
     
@@ -112,7 +112,7 @@ if ( !fsExistsSync( FS_DIRECTORY_PATH ) ) {
         path.join( FS_DIRECTORY_PATH, "./default_avatar.avif" )
       );
     } catch ( e ) {
-      log( LOG_TYPES.ERROR, "Unable to copy the default user avatar" );
+      log( logType.ERROR, "Unable to copy the default user avatar" );
       console.trace( e );
     }
     
@@ -123,7 +123,7 @@ if ( !fsExistsSync( FS_DIRECTORY_PATH ) ) {
         path.join( FS_DIRECTORY_PATH, "./instance_logo.avif" )
       );
     } catch ( e ) {
-      log( LOG_TYPES.ERROR, "Unable to copy the default instance logo" );
+      log( logType.ERROR, "Unable to copy the default instance logo" );
       console.trace( e );
     }
     
@@ -134,19 +134,19 @@ if ( !fsExistsSync( FS_DIRECTORY_PATH ) ) {
         path.join( FS_DIRECTORY_PATH, "./login_background.avif" )
       );
     } catch ( e ) {
-      log( LOG_TYPES.ERROR, "Unable to create the default login background" );
+      log( logType.ERROR, "Unable to create the default login background" );
     }
     
     // create the users' folders
     try {
       await fs.mkdir( path.join( FS_DIRECTORY_PATH, "./users/" ) );
     } catch ( e ) {
-      log( LOG_TYPES.ERROR, "Unable to create the \"./fs/users/\" directory" );
+      log( logType.ERROR, "Unable to create the \"./fs/users/\" directory" );
     }
     
     // create the global database
     try {
-      log( LOG_TYPES.INFO, "The global database file does not exist, creating a new one" );
+      log( logType.INFO, "The global database file does not exist, creating a new one" );
   
       // write the default global database file
       await fs.writeFile( path.join( FS_DIRECTORY_PATH, "./global_database.json" ), JSON.stringify( {
@@ -170,43 +170,28 @@ if ( !fsExistsSync( FS_DIRECTORY_PATH ) ) {
       // load the new global database
       await GLOBAL_DB.readFromDisk( path.join( FS_DIRECTORY_PATH, "./global_database.json" ) )
     } catch ( e ) {
-      log( LOG_TYPES.ERROR, "Unable to create the \"./fs/global_database.json\" file" );
+      log( logType.ERROR, "Unable to create the \"./fs/global_database.json\" file" );
     }
     
     // create the default instance logos
     try {
       generateLogos();
     } catch ( e ) {
-      log( LOG_TYPES.ERROR, "Unable to generate logo assets" );
+      log( logType.ERROR, "Unable to generate logo assets" );
     }
     
     // if the administrator user doesn't exist,
     // create a new user "admin" with the administrator permission
-    const adminUserUnread = new YourDashUnreadUser( "admin" );
-    if ( !( await adminUserUnread.exists() ) ) {
-      await adminUserUnread.create(
-        "password",
-        {
-          // Admin istrator
-          first: "Admin",
-          last: "istrator"
-        },
-        [YourDashCoreUserPermissions.Administrator]
-      );
+    const adminUser = new YourDashUser( "admin" );
+    if ( !await adminUser.doesExist() ) {
+      await adminUser.create();
+      await adminUser.setName( { first: "Admin", last: "istrator" } )
+      await adminUser.setPermissions( [ YourDashCoreUserPermissions.Administrator ] )
     }
   } catch ( err ) {
-    log( LOG_TYPES.ERROR, "Uncaught error in fs verification!" );
+    log( logType.ERROR, "Uncaught error in fs verification!" );
     console.trace( err );
   }
-}
-
-try {
-  for ( const user of ( await fs.readdir( path.join( FS_DIRECTORY_PATH, "./users/" ) ) ) ) {
-    await ( await new YourDashUnreadUser( user ).read() ).verifyUserConfig().write();
-  }
-} catch ( err ) {
-  log( LOG_TYPES.ERROR, "Unable to verify users' settings!" );
-  console.trace( err );
 }
 
 /*
@@ -219,13 +204,13 @@ async function listenForRequests() {
   try {
     httpServer.listen( 3560, () => {
       log(
-        LOG_TYPES.INFO,
+        logType.INFO,
         centerTerminalOutputOnLine( "server now listening on port 3560!" )
       );
     } );
   } catch ( _err ) {
     log(
-      LOG_TYPES.ERROR,
+      logType.ERROR,
       `${ chalk.bold.yellow( "CORE" ) }: Unable to start server!, retrying...`
     );
     
@@ -253,7 +238,7 @@ const ACTIVE_SOCKET_IO_SOCKETS: {
 // save the database before process termination
 const CORE_HANDLE_SHUTDOWN = () => {
   log(
-    LOG_TYPES.INFO,
+    logType.INFO,
     "Shutting down... (restart of core should occur automatically)"
   );
   
@@ -280,7 +265,7 @@ socketIo.on( "connection", ( socket: SocketIoSocket<any, any, any, any> ) => { /
   
   // Check that all required parameters are present
   if ( !socket.handshake.query.username || !socket.handshake.query.sessionToken || !socket.handshake.query.sessionId ) {
-    log( LOG_TYPES.ERROR, "[PSA-BACKEND]: Closing connection! Missing required parameters!" );
+    log( logType.ERROR, "[PSA-BACKEND]: Closing connection! Missing required parameters!" );
     
     socket.disconnect( true );
     return;
@@ -297,7 +282,7 @@ socketIo.on( "connection", ( socket: SocketIoSocket<any, any, any, any> ) => { /
   } );
   
   socket.on( "execute-command-response", ( output: never ) => {
-    log( LOG_TYPES.INFO, output );
+    log( logType.INFO, output );
   } );
   
   socket.on( "disconnect", () => {
@@ -307,7 +292,7 @@ socketIo.on( "connection", ( socket: SocketIoSocket<any, any, any, any> ) => { /
       );
     } );
     
-    log( LOG_TYPES.INFO, "[PSA-BACKEND]: Closing PSA connection" );
+    log( logType.INFO, "[PSA-BACKEND]: Closing PSA connection" );
   } );
   
   return;
@@ -322,8 +307,8 @@ socketIo.use( async ( socket: SocketIoSocket, next ) => {
   
   if ( !__internalGetSessionsDoNotUseOutsideOfCore()[ username ] ) {
     try {
-      const user = await new YourDashUnreadUser( username ).read();
-      __internalGetSessionsDoNotUseOutsideOfCore()[ username ] = ( await user.getSessions() ) || [];
+      const user = new YourDashUser( username );
+      __internalGetSessionsDoNotUseOutsideOfCore()[ username ] = ( await user.getAllLoginSessions() ) || [];
     } catch ( _err ) {
       return socket.disconnect();
     }
@@ -356,7 +341,7 @@ process.stdin.on( "data", ( data ) => {
     CORE_HANDLE_SHUTDOWN();
     break;
   default:
-    log( LOG_TYPES.ERROR, `Unknown command: ${ command }` );
+    log( logType.ERROR, `Unknown command: ${ command }` );
   }
 } );
 
@@ -374,7 +359,7 @@ exp.get( "/test", ( _req, res ) => {
   case YOURDASH_INSTANCE_DISCOVERY_STATUS.NORMAL:
     return res.status( 200 ).json( { status: YOURDASH_INSTANCE_DISCOVERY_STATUS.NORMAL, type: "yourdash" } );
   default:
-    log( LOG_TYPES.ERROR, "Discovery status returned an invalid value" );
+    log( logType.ERROR, "Discovery status returned an invalid value" );
     return res.status( 200 ).json( { status: YOURDASH_INSTANCE_DISCOVERY_STATUS.MAINTENANCE, type: "yourdash" } );
   }
 } );
@@ -392,19 +377,19 @@ exp.use( async ( req, res, next ) => {
   
   if ( !__internalGetSessionsDoNotUseOutsideOfCore()[ username ] ) {
     try {
-      const user = await new YourDashUnreadUser( username ).read();
+      const user = new YourDashUser( username );
       
       __internalGetSessionsDoNotUseOutsideOfCore()[ username ] =
-        ( await user.getSessions() ) || [];
+        ( await user.getAllLoginSessions() ) || [];
       
-      const database = ( await fs.readFile( path.resolve( user.getPath(), "./user_db.json" ) ) ).toString();
+      const database = ( await fs.readFile( path.join( user.path, "core/user_db.json" ) ) ).toString();
       
       if ( database ) {
         USER_DATABASES.set( username, JSON.parse( database ) );
       } else {
         USER_DATABASES.set( username, {} );
         await fs.writeFile(
-          path.resolve( user.getPath(), "./user_db.json" ),
+          path.join( user.path, "core/user_db.json" ),
           JSON.stringify( {} )
         );
       }
@@ -429,18 +414,18 @@ exp.use( async ( req, res, next ) => {
 exp.get( "/core/sessions", async ( req, res ) => {
   const { username } = req.headers as { username: string };
   
-  const user = await new YourDashUnreadUser( username ).read();
+  const user = new YourDashUser( username );
   
-  return res.json( { sessions: await user.getSessions() } );
+  return res.json( { sessions: await user.getAllLoginSessions() } );
 } );
 
 exp.delete( "/core/session/:id", async ( req, res ) => {
   const { username } = req.headers as { username: string };
   const { id: sessionId } = req.params;
   
-  const user = await new YourDashUnreadUser( username ).read();
+  const user = new YourDashUser( username );
   
-  user.getSession( parseInt( sessionId, 10 ) ).invalidate();
+  user.getLoginSession( parseInt( sessionId, 10 ) ).invalidate();
   
   return res.json( { success: true } );
 } );
@@ -448,23 +433,23 @@ exp.delete( "/core/session/:id", async ( req, res ) => {
 exp.get( "/core/personal-server-accelerator/sessions", async ( req, res ) => {
   const { username } = req.headers as { username: string };
   
-  const user = await new YourDashUnreadUser( username ).read();
+  const user = new YourDashUser( username );
   
   return res.json( {
-    sessions: ( await user.getSessions() ).filter( ( session ) => session.type === YOURDASH_SESSION_TYPE.desktop )
+    sessions: ( await user.getAllLoginSessions() ).filter( ( session ) => session.type === YOURDASH_SESSION_TYPE.desktop )
   } );
 } );
 
 exp.get( "/core/personal-server-accelerator/", async ( req, res ) => {
   const { username } = req.headers as { username: string };
   
-  const unreadUser = new YourDashUnreadUser( username );
+  const user = new YourDashUser( username );
   
   try {
     return JSON.parse(
       (
         await fs.readFile(
-          path.resolve( unreadUser.getPath(), "personal_server_accelerator.json" )
+          path.join( user.path, "personal_server_accelerator.json" )
         )
       ).toString()
     );
@@ -479,11 +464,11 @@ exp.post( "/core/personal-server-accelerator/", async ( req, res ) => {
   const { username } = req.headers as { username: string };
   const body = req.body;
   
-  const user = new YourDashUnreadUser( username );
+  const user = new YourDashUser( username );
   
   try {
     await fs.writeFile(
-      path.resolve( user.getPath(), "personal_server_accelerator.json" ),
+      path.join( user.path, "personal_server_accelerator.json" ),
       JSON.stringify( body )
     );
   } catch ( _err ) {

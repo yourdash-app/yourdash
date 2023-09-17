@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import YourDashUnreadUser from "backend/src/core/user/user.js";
+import YourDashUser from "backend/src/core/user/index.js";
 import { YourDashCoreUserPermissions } from "backend/src/core/user/permissions.js";
 import { type YourDashApplicationServerPlugin } from "backend/src/helpers/applications.js";
 import globalDatabase from "backend/src/helpers/globalDatabase.js";
@@ -15,9 +15,9 @@ const main: YourDashApplicationServerPlugin = ( { exp } ) => {
       username: string
     };
     
-    const user = await new YourDashUnreadUser( username ).read();
+    const user = new YourDashUser( username );
     
-    if ( user.hasPermission( YourDashCoreUserPermissions.Administrator ) ) {
+    if ( await user.hasPermission( YourDashCoreUserPermissions.Administrator ) ) {
       return res.json( {
         db: globalDatabase.keys
       } );
@@ -35,9 +35,9 @@ const main: YourDashApplicationServerPlugin = ( { exp } ) => {
     
     const keys = req.body;
     
-    const user = await new YourDashUnreadUser( username ).read();
+    const user = new YourDashUser( username );
     
-    if ( user.hasPermission( YourDashCoreUserPermissions.Administrator ) ) {
+    if ( await user.hasPermission( YourDashCoreUserPermissions.Administrator ) ) {
       globalDatabase.merge( keys );
       
       return res.json( {
@@ -55,9 +55,9 @@ const main: YourDashApplicationServerPlugin = ( { exp } ) => {
     
     const keys = req.body;
     
-    const user = await new YourDashUnreadUser( username ).read();
+    const user = new YourDashUser( username );
     
-    if ( user.hasPermission( YourDashCoreUserPermissions.Administrator ) ) {
+    if ( await user.hasPermission( YourDashCoreUserPermissions.Administrator ) ) {
       globalDatabase.merge( keys );
       await globalDatabase.writeToDisk( path.resolve( process.cwd(), "./fs/globalDatabase.json" ) );
       

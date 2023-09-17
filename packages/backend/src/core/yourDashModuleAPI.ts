@@ -5,7 +5,7 @@
 
 import { Server as SocketIOServer } from "socket.io";
 import { Application as ExpressApplication } from "express";
-import log, { LOG_TYPES } from "../helpers/log.js";
+import log, { logType } from "../helpers/log.js";
 import * as http from "http";
 
 class YourDashWebsocketManager {
@@ -30,9 +30,9 @@ class YourDashWebsocketManager {
       if ( ( await this.servers[appName].server.fetchSockets() ).length === 0 ) {
         this.servers[appName].server.close();
         delete this.servers[appName];
-        log( LOG_TYPES.INFO, `[YourDashWebsocketManager] ${ appName } was closed as it has no clients connected.` );
+        log( logType.INFO, `[YourDashWebsocketManager] ${ appName } was closed as it has no clients connected.` );
       } else {
-        log( LOG_TYPES.INFO, `[YourDashWebsocketManager] ${ appName } is connected with ${ Object.keys( this.servers[appName].server.fetchSockets() ).length } clients.` );
+        log( logType.INFO, `[YourDashWebsocketManager] ${ appName } is connected with ${ Object.keys( this.servers[appName].server.fetchSockets() ).length } clients.` );
       }
     } );
   }
@@ -51,7 +51,7 @@ class YourDashWebsocketManager {
       connections: []
     };
     
-    log( LOG_TYPES.INFO, `[YourDashWebsocketManager] ${ appName } was created.` );
+    log( logType.INFO, `[YourDashWebsocketManager] ${ appName } was created.` );
     
     return server;
   }
@@ -65,7 +65,7 @@ class YourDashWebsocketManager {
   }
 }
 
-export default class YourDashApi {
+export default class YourDashModuleAPI {
   websocket: YourDashWebsocketManager;
   
   constructor( app: ExpressApplication, httpServer: http.Server<typeof http.IncomingMessage, typeof http.ServerResponse> ) {

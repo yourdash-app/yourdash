@@ -13,5 +13,6 @@
   "scripts": {
     "start-web": "yarn --cwd ./packages/web-client dev",
     "start-backend": "yarn --cwd ./packages/backend dev --log-requests"
-  }
+  },
+  "dependencies": {}
 }

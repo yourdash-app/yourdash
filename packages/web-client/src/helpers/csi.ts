@@ -4,7 +4,7 @@
  */
 
 // YourDash Client-Server interface Toolkit
-import KeyValueDatabase from "../../../shared/core/database";
+import KeyValueDatabase from "shared/core/database";
 
 type ITJson = boolean | number | string | null | TJson
 
