@@ -8,7 +8,7 @@ import path from "path";
 import { Application as ExpressApplication } from "express";
 import { Server as SocketServer } from "socket.io";
 import { type IYourDashApplication } from "shared/core/application.js";
-import log, { LOG_TYPES } from "./log.js";
+import log, { logType } from "./log.js";
 import globalDatabase from "./globalDatabase.js";
 
 class YDApplication {
@@ -91,7 +91,7 @@ export async function getAllApplications(): Promise<string[]> {
       return ( app !== "package.json" ) && ( app !== "node_modules" );
     } );
   } catch ( _err ) {
-    log( LOG_TYPES.ERROR, "A problem occurred reading the ../applications/ directory" );
+    log( logType.ERROR, "A problem occurred reading the ../applications/ directory" );
     return [];
   }
 }

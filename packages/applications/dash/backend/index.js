@@ -1,13 +1,13 @@
-import YourDashUnreadUser from "backend/src/core/user/user.js";
+import YourDashUser from "backend/src/core/user/index.js";
 const main = ({ exp, io }) => {
     exp.get("/app/dash/user-full-name", async (req, res) => {
         const { username } = req.headers;
-        const user = await new YourDashUnreadUser(username).read();
-        res.json(user.getName());
+        const user = new YourDashUser(username);
+        res.json(await user.getName());
     });
     exp.get("/app/dash/modules", async (req, res) => {
         const { username } = req.headers;
-        const user = await new YourDashUnreadUser(username).read();
+        const user = await new YourDashUser(username);
         res.json({ success: true });
     });
 };

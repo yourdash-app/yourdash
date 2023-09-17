@@ -5,11 +5,7 @@
 
 import { promises as fs } from "fs";
 import path from "path";
-
-import { base64ToDataUrl } from "../helpers/base64.js";
-import log from "../helpers/log.js";
-import { addUserDatabaseToSaveQueue } from "../helpers/userDatabase.js";
-import YourDashUser from "./user/user.js";
+import YourDashUser from "./user/index.js";
 
 export interface YourDashPanelQuickShortcut {
   displayName: string;
@@ -43,32 +39,32 @@ export default class YourDashPanel {
   }
 
   async getQuickShortcuts(): Promise<YourDashPanelQuickShortcut[]> {
-    const user = await new YourDashUser( this.username ).read();
+    const user = new YourDashUser( this.username );
   
-    const db = await user.getPersonalDatabase()
+    const db = await user.getDatabase()
     
     return JSON.parse( db.get( "core:panel:quickShortcuts" ) || "[]" )
   }
 
   async removeQuickShortcut( index: number ): Promise<this> {
-    const user = await new YourDashUser( this.username ).read();
+    const user = new YourDashUser( this.username );
   
-    const db = await user.getPersonalDatabase()
+    const db = await user.getDatabase()
     
     const shortcuts = JSON.parse( db.get( "core:panel:quickShortcuts" ) )
     
     shortcuts.splice( index, 1 )
     
     db.set( "core:panel:quickShortcuts", JSON.stringify( shortcuts ) )
-    user.addDatabaseToSaveQueue()
+    user.saveDatabase()
     
     return this
   }
 
   async createQuickShortcut( applicationID: string ): Promise<this> {
-    const user = await new YourDashUser( this.username ).read();
+    const user = new YourDashUser( this.username );
   
-    const db = await user.getPersonalDatabase()
+    const db = await user.getDatabase()
     
     const shortcuts = JSON.parse( db.get( "core:panel:quickShortcuts" ) || "[]" )
     
@@ -79,7 +75,7 @@ export default class YourDashPanel {
     shortcuts.push( applicationID )
     
     db.set( "core:panel:quickShortcuts", JSON.stringify( shortcuts ) )
-    user.addDatabaseToSaveQueue()
+    user.saveDatabase()
     
     return this
   }
@@ -91,7 +87,7 @@ export default class YourDashPanel {
 
     try {
       panelConfig = JSON.parse(
-        ( await fs.readFile( path.resolve( user.getPath(), "./panel.json" ) ) ).toString()
+        ( await fs.readFile( path.join( user.path, "core/panel.json" ) ) ).toString()
       );
     } catch ( _err ) {
       panelConfig = DEFAULT_PANEL_CONFIG;
@@ -100,7 +96,7 @@ export default class YourDashPanel {
     panelConfig.position = position;
 
     try {
-      await fs.writeFile( path.resolve( user.getPath(), "./panel.json" ), JSON.stringify( panelConfig ) );
+      await fs.writeFile( path.join( user.path, "core/panel.json" ), JSON.stringify( panelConfig ) );
     } catch ( _err ) {
       return this;
     }
@@ -115,7 +111,7 @@ export default class YourDashPanel {
 
     try {
       panelConfig = JSON.parse(
-        ( await fs.readFile( path.resolve( user.getPath(), "./panel.json" ) ) ).toString()
+        ( await fs.readFile( path.join( user.path, "core/panel.json" ) ) ).toString()
       );
     } catch ( _err ) {
       panelConfig = DEFAULT_PANEL_CONFIG;
@@ -131,7 +127,7 @@ export default class YourDashPanel {
 
     try {
       panelConfig = JSON.parse(
-        ( await fs.readFile( path.resolve( user.getPath(), "./panel.json" ) ) ).toString()
+        ( await fs.readFile( path.join( user.path, "core/panel.json" ) ) ).toString()
       );
     } catch ( _err ) {
       panelConfig = DEFAULT_PANEL_CONFIG;
@@ -147,7 +143,7 @@ export default class YourDashPanel {
 
     try {
       panelConfig = JSON.parse(
-        ( await fs.readFile( path.resolve( user.getPath(), "./panel.json" ) ) ).toString()
+        ( await fs.readFile( path.join( user.path, "core/panel.json" ) ) ).toString()
       );
     } catch ( _err ) {
       panelConfig = DEFAULT_PANEL_CONFIG;
@@ -156,7 +152,7 @@ export default class YourDashPanel {
     panelConfig.launcher = launcher;
 
     try {
-      await fs.writeFile( path.resolve( user.getPath(), "./panel.json" ), JSON.stringify( panelConfig ) );
+      await fs.writeFile( path.join( user.path, "core/panel.json" ), JSON.stringify( panelConfig ) );
     } catch ( _err ) {
       return this;
     }

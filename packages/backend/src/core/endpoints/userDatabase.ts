@@ -5,7 +5,7 @@
 
 import { Application as ExpressApplication } from "express"
 import { promises as fs, writeFileSync } from "fs";
-import YourDashUnreadUser from "../user/user.js";
+import YourDashUser from "../user/index.js";
 import path from "path";
 
 type JSONValue = boolean | number | string | null | JSONFile
@@ -19,18 +19,18 @@ export const USER_DATABASES = new Map<string, JSONFile>()
 export function saveUserDatabases() {
   const databases = Array.from( USER_DATABASES )
   databases.map( ( [ key, database ] ) => {
-    const user = new YourDashUnreadUser( key )
+    const user = new YourDashUser( key )
     
     console.log( "Saving database", database )
     
-    writeFileSync( path.join( user.getPath(), "user_db.json" ), JSON.stringify( database ) )
+    writeFileSync( path.join( user.path, "core/user_db.json" ), JSON.stringify( database ) )
   } )
 }
 
 export async function loadUserDatabase( username: string ): Promise<JSONFile> {
-  const user = new YourDashUnreadUser( username )
+  const user = new YourDashUser( username )
   
-  return JSON.parse( ( await fs.readFile( path.join( user.getPath(), "user_db.json" ) ) ).toString() )
+  return JSON.parse( ( await fs.readFile( path.join( user.path, "core/user_db.json" ) ) ).toString() )
 }
 
 export default function defineUserDatabaseRoutes( exp: ExpressApplication ) {

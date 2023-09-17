@@ -45,7 +45,7 @@ const ApplicationLauncher: React.FC<{ side: "top" | "right" | "bottom" | "left",
         />
       </div>
       <span>
-        {csi.userDB.get( "core:user:userFullName" ).first}
+        {csi.userDB.get( "core:user:name" )?.first || "Unknown First Name"}
       </span>
     </section>
   </div>
