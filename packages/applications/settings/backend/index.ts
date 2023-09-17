@@ -5,14 +5,14 @@
 
 import YourDashPanel from "backend/src/core/panel.js";
 import { type YourDashApplicationServerPlugin } from "backend/src/helpers/applications.js";
-import YourDashUnreadUser from "backend/src/core/user/user.js";
+import YourDashUser from "backend/src/core/user/index.js";
 import { PersonalServerAcceleratorCommunication } from "backend/src/helpers/personalServerAccelerator.js";
 
 const main: YourDashApplicationServerPlugin = ( {
   exp,
   io
 } ) => {
-  exp.post( "/app/settings/core/panel/position", ( req, res ) => {
+  exp.post( "/app/settings/core/panel/position", async ( req, res ) => {
     const { username } = req.headers as {
       username: string
     };
@@ -20,7 +20,7 @@ const main: YourDashApplicationServerPlugin = ( {
 
     const panel = new YourDashPanel( username );
 
-    panel.setPanelPosition( position );
+    await panel.setPanelPosition( position );
 
     return res.json( {
       success: true
@@ -45,11 +45,11 @@ const main: YourDashApplicationServerPlugin = ( {
     const { username } = req.headers as {
       username: string
     };
-    const user = await ( new YourDashUnreadUser( username ).read() );
+    const user = new YourDashUser( username );
 
     const psa = new PersonalServerAcceleratorCommunication(
       username,
-      user.getSession( parseInt( sessionId, 10 ) )
+      user.getLoginSession( parseInt( sessionId, 10 ) )
     );
 
     if ( !psa.socketConnection ) {
@@ -60,7 +60,7 @@ const main: YourDashApplicationServerPlugin = ( {
 
     return res.json( {
       success: true,
-      data: user.getSession( parseInt( sessionId, 10 ) )
+      data: user.getLoginSession( parseInt( sessionId, 10 ) )
     } );
   } );
 };

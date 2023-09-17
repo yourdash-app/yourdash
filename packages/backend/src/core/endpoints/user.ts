@@ -5,43 +5,43 @@
 
 import { Application as ExpressApplication } from "express";
 import path from "path";
-import authenticatedImage, { AUTHENTICATED_IMAGE_TYPE } from "../authenticatedImage.js";
-import YourDashUnreadUser from "../user/user.js";
+import authenticatedImage, { authenticatedImageType } from "../authenticatedImage.js";
+import YourDashUser from "../user/index.js";
 
 export default function defineUserEndpoints( exp: ExpressApplication ) {
   exp.get( "/core/user/current/avatar/large", ( req, res ) => {
     const { username } = req.headers as { username: string }
     
-    const unreadUser = new YourDashUnreadUser( username )
-    const avatarPath = path.join( unreadUser.getPath(), "large_avatar.avif" )
+    const unreadUser = new YourDashUser( username )
+    const avatarPath = path.join( unreadUser.path, "avatars/large_avatar.avif" )
     
-    return res.status( 200 ).type( "text/plain" ).send( authenticatedImage( username, AUTHENTICATED_IMAGE_TYPE.FILE, avatarPath ) )
+    return res.status( 200 ).type( "text/plain" ).send( authenticatedImage( username, authenticatedImageType.FILE, avatarPath ) )
   } )
   
   exp.get( "/core/user/current/avatar/medium", ( req, res ) => {
     const { username } = req.headers as { username: string }
     
-    const unreadUser = new YourDashUnreadUser( username )
-    const avatarPath = path.join( unreadUser.getPath(), "medium_avatar.avif" )
+    const unreadUser = new YourDashUser( username )
+    const avatarPath = path.join( unreadUser.path, "avatars/medium_avatar.avif" )
     
-    return res.status( 200 ).type( "text/plain" ).send( authenticatedImage( username, AUTHENTICATED_IMAGE_TYPE.FILE, avatarPath ) )
+    return res.status( 200 ).type( "text/plain" ).send( authenticatedImage( username, authenticatedImageType.FILE, avatarPath ) )
   } )
   
   exp.get( "/core/user/current/avatar/small", ( req, res ) => {
     const { username } = req.headers as { username: string }
     
-    const unreadUser = new YourDashUnreadUser( username )
-    const avatarPath = path.join( unreadUser.getPath(), "small_avatar.avif" )
+    const unreadUser = new YourDashUser( username )
+    const avatarPath = path.join( unreadUser.path, "avatars/small_avatar.avif" )
     
-    return res.status( 200 ).type( "text/plain" ).send( authenticatedImage( username, AUTHENTICATED_IMAGE_TYPE.FILE, avatarPath ) )
+    return res.status( 200 ).type( "text/plain" ).send( authenticatedImage( username, authenticatedImageType.FILE, avatarPath ) )
   } )
   
   exp.get( "/core/user/current/avatar/original", ( req, res ) => {
     const { username } = req.headers as { username: string }
     
-    const unreadUser = new YourDashUnreadUser( username )
-    const avatarPath = path.join( unreadUser.getPath(), "avatar.avif" )
+    const unreadUser = new YourDashUser( username )
+    const avatarPath = path.join( unreadUser.path, "avatars/original.avif" )
     
-    return res.status( 200 ).type( "text/plain" ).send( authenticatedImage( username, AUTHENTICATED_IMAGE_TYPE.FILE, avatarPath ) )
+    return res.status( 200 ).type( "text/plain" ).send( authenticatedImage( username, authenticatedImageType.FILE, avatarPath ) )
   } )
 }

@@ -35,10 +35,10 @@ export default function useTranslate( application: string ) {
   
   useEffect( () => {
     // @ts-ignore
-    const langauge = window.translateLang || navigator.language;
-    import( `applications/${ application }/frontend/i10n/${ langauge }.json` ).then( response => setMessages( response.default ) ).catch( () => {
+    const language = window.translateLang || navigator.language;
+    import( `../../../applications/${ application }/frontend/i10n/${ language }.json` ).then( response => setMessages( response.default ) ).catch( () => {
       // eslint-disable-next-line no-alert
-      alert( `This page is currently missing translation into your language (${ langauge })` );
+      alert( `This page is currently missing translation into your language (${ language })` );
       
       // @ts-ignore
       window.setTranslateLanguage( "en-GB" )
@@ -59,10 +59,10 @@ export function useTranslateAppCoreUI() {
   
   useEffect( () => {
     // @ts-ignore
-    const langauge = window.translateLang || navigator.language;
-    import( `../app/i10n/${ langauge }.json` ).then( response => setMessages( response.default ) ).catch( () => {
+    const language = window.translateLang || navigator.language;
+    import( `../app/i10n/${ language }.json` ).then( response => setMessages( response.default ) ).catch( () => {
       // eslint-disable-next-line no-alert
-      alert( `This page is currently missing translation into your language (${ langauge })` );
+      alert( `This page is currently missing translation into your language (${ language })` );
       
       // @ts-ignore
       window.setTranslateLanguage( "en-GB" )
@@ -84,10 +84,10 @@ export function useTranslateHomePage( page: string ) {
   
   useEffect( () => {
     // @ts-ignore
-    const langauge = window.translateLang || navigator.language;
-    import( `../root/${ page }/i10n/${ langauge }.json` ).then( response => setMessages( response.default ) ).catch( () => {
+    const language = window.translateLang || navigator.language;
+    import( `../root/${ page }/i10n/${ language }.json` ).then( response => setMessages( response.default ) ).catch( () => {
       // eslint-disable-next-line no-alert
-      alert( `This page is currently missing translation into your language (${ langauge })` );
+      alert( `This page is currently missing translation into your language (${ language })` );
       
       // @ts-ignore
       window.setTranslateLanguage( "en-GB" )

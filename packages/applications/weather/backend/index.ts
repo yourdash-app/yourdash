@@ -9,7 +9,7 @@ import { type YourDashApplicationServerPlugin } from "backend/src/helpers/applic
 import getGeolocationSuggestions from "./helpers/locationAutocompleteSuggestions.js";
 import getWeatherDataForLocationId from "./helpers/getWeatherDataForLocationId.js";
 import { ILocationAutocompleteSuggestion } from "../shared/locationAutocompleteSuggestion.js";
-import log, { LOG_TYPES } from "backend/src/helpers/log.js";
+import log, { logType } from "backend/src/helpers/log.js";
 import geolocationApi from "./geolocationApi.js";
 
 export const weatherForecastCache: {

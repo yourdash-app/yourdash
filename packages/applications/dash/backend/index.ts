@@ -4,7 +4,7 @@
  */
 
 import { type YourDashApplicationServerPlugin } from "backend/src/helpers/applications.js";
-import YourDashUnreadUser from "backend/src/core/user/user.js";
+import YourDashUser from "backend/src/core/user/index.js";
 
 const main: YourDashApplicationServerPlugin = ( { exp, io } ) => {
   exp.get( "/app/dash/user-full-name", async ( req, res ) => {
@@ -12,9 +12,9 @@ const main: YourDashApplicationServerPlugin = ( { exp, io } ) => {
       username: string
     };
 
-    const user = await new YourDashUnreadUser( username ).read();
+    const user = new YourDashUser( username );
 
-    res.json( user.getName() );
+    res.json( await user.getName() );
   } );
 
   // TODO: implement module system
@@ -23,7 +23,7 @@ const main: YourDashApplicationServerPlugin = ( { exp, io } ) => {
       username: string
     };
 
-    const user = await new YourDashUnreadUser( username ).read();
+    const user = await new YourDashUser( username );
 
     res.json( { success: true } );
   } );

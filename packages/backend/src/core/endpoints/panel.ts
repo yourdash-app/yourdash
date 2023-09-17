@@ -12,14 +12,14 @@ import path from "path";
 import { promises as fs } from "fs";
 import YourDashPanel from "backend/src/core/panel.js";
 import { FS_DIRECTORY_PATH } from "../../main.js";
-import authenticatedImage, { AUTHENTICATED_IMAGE_TYPE } from "../authenticatedImage.js";
+import authenticatedImage, { authenticatedImageType } from "../authenticatedImage.js";
 import IPanelApplicationsLauncherApplication from "shared/core/panel/applicationsLauncher/application.js";
 
 export default function defineCorePanelRoutes( exp: ExpressApplication ) {
   exp.get( "/core/panel/applications", async ( _req, res ) => {
     res.set( "Cache-Control", "no-store" );
     
-    Promise.all( ( globalDatabase.get( "installedApplications" ) ).map( async app => {
+    Promise.all( ( globalDatabase.get( "installedApplications" ) ).map( async ( app: any ) => {
       const application = await new YourDashApplication( app ).read();
       return new Promise( async resolve => {
         sharp(
@@ -57,7 +57,7 @@ export default function defineCorePanelRoutes( exp: ExpressApplication ) {
         name: shortcut,
         icon: authenticatedImage(
           username,
-          AUTHENTICATED_IMAGE_TYPE.FILE,
+          authenticatedImageType.FILE,
           path.resolve( path.join( process.cwd(), `../applications/${ shortcut }/icon.avif` ) )
         )
       };
@@ -82,12 +82,8 @@ export default function defineCorePanelRoutes( exp: ExpressApplication ) {
   exp.post( "/core/panel/quick-shortcuts/create", async ( req, res ) => {
     res.set( "Cache-Control", "no-store" );
     
-    const { username } = req.headers as {
-      username: string
-    };
-    const { name } = req.body as {
-      name: string;
-    };
+    const { username } = req.headers as { username: string };
+    const { name } = req.body as { name: string };
     
     const panel = new YourDashPanel( username );
     
@@ -126,17 +122,17 @@ export default function defineCorePanelRoutes( exp: ExpressApplication ) {
     return res.json( {
       small: authenticatedImage(
         username,
-        AUTHENTICATED_IMAGE_TYPE.FILE,
+        authenticatedImageType.FILE,
         path.join( FS_DIRECTORY_PATH, "./logo_panel_small.avif" )
       ),
       medium: authenticatedImage(
         username,
-        AUTHENTICATED_IMAGE_TYPE.FILE,
+        authenticatedImageType.FILE,
         path.join( FS_DIRECTORY_PATH, "./logo_panel_medium.avif" )
       ),
       large: authenticatedImage(
         username,
-        AUTHENTICATED_IMAGE_TYPE.FILE,
+        authenticatedImageType.FILE,
         path.join( FS_DIRECTORY_PATH, "./logo_panel_large.avif" )
       )
     } );

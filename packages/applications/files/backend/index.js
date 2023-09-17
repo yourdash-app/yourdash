@@ -1,7 +1,7 @@
 import { promises as fs } from "fs";
 import path from "path";
-import YourDashUnreadUser from "backend/src/core/user/user.js";
-import authenticatedImage, { AUTHENTICATED_IMAGE_TYPE } from "backend/src/core/authenticatedImage.js";
+import YourDashUser from "backend/src/core/user/index.js";
+import authenticatedImage, { authenticatedImageType } from "backend/src/core/authenticatedImage.js";
 import sharp from "sharp";
 import getFileType, { FileTypes } from "shared/core/fileType.js";
 const main = ({ exp }) => {
@@ -10,20 +10,20 @@ const main = ({ exp }) => {
         if (!req.body.path) {
             return res.json({ files: [] });
         }
-        const user = new YourDashUnreadUser(username);
+        const user = new YourDashUser(username);
         let files = [];
         try {
-            files = await fs.readdir(path.join(user.getPath(), req.body.path));
+            files = await fs.readdir(path.join(user.path, req.body.path));
         }
         catch (_err) {
             files = [];
         }
         Promise.all(files.map(async (file) => {
             try {
-                const type = (await fs.lstat(path.join(user.getPath(), req.body.path, file))).isFile()
+                const type = (await fs.lstat(path.join(user.path, req.body.path, file))).isFile()
                     ? "file"
                     : "directory";
-                const name = path.basename(path.join(user.getPath(), req.body.path, file));
+                const name = path.basename(path.join(user.path, req.body.path, file));
                 return {
                     type,
                     name
@@ -32,9 +32,9 @@ const main = ({ exp }) => {
             catch (_err) {
                 return false;
             }
-        })).then(files => {
+        })).then(outputFiles => {
             return res.json({
-                files: files.filter(file => !!file)
+                files: outputFiles.filter(file => !!file)
             });
         });
     });
@@ -43,12 +43,12 @@ const main = ({ exp }) => {
         if (!req.body.path) {
             return res.json({ files: [] });
         }
-        const user = new YourDashUnreadUser(username);
+        const user = new YourDashUser(username);
         let files = [];
-        console.log(`PATH: ${path.join(user.getPath(), req.body.path)}`);
-        console.log(`USER PATH: ${path.resolve(user.getPath())}`);
+        console.log(`PATH: ${path.join(user.path, req.body.path)}`);
+        console.log(`USER PATH: ${path.resolve(user.path)}`);
         try {
-            files = await fs.readdir(path.join(user.getPath(), req.body.path));
+            files = await fs.readdir(path.join(user.path, req.body.path));
         }
         catch (_err) {
             files = [];
@@ -56,11 +56,11 @@ const main = ({ exp }) => {
         return res.json({
             files: (await Promise.all(files.map(async (file) => {
                 try {
-                    const type = (await fs.lstat(path.join(user.getPath(), req.body.path, file))).isFile()
+                    const type = (await fs.lstat(path.join(user.path, req.body.path, file))).isFile()
                         ? "file"
                         : "directory";
-                    const name = path.basename(path.join(user.getPath(), req.body.path, file));
-                    const extension = path.extname(path.join(user.getPath(), req.body.path, file));
+                    const name = path.basename(path.join(user.path, req.body.path, file));
+                    const extension = path.extname(path.join(user.path, req.body.path, file));
                     let icon = "";
                     switch (extension) {
                         case ".png":
@@ -70,12 +70,12 @@ const main = ({ exp }) => {
                         case ".avif":
                         case ".svg":
                         case ".gif":
-                            if ((await fs.stat(path.join(user.getPath(), req.body.path, file))).size > 1024 * 1024) {
+                            if ((await fs.stat(path.join(user.path, req.body.path, file))).size > 1024 * 1024) {
                                 icon = "";
                             }
                             else {
-                                const image = sharp(path.join(user.getPath(), req.body.path, file)).resize(96, 96);
-                                icon = authenticatedImage(username, AUTHENTICATED_IMAGE_TYPE.BASE64, (await image.toBuffer()).toString("base64"));
+                                const image = sharp(path.join(user.path, req.body.path, file)).resize(96, 96);
+                                icon = authenticatedImage(username, authenticatedImageType.BASE64, (await image.toBuffer()).toString("base64"));
                             }
                             break;
                         default:
@@ -98,14 +98,14 @@ const main = ({ exp }) => {
         if (!req.body.path) {
             return res.send("[YOURDASH] Error: Unknown file");
         }
-        const user = new YourDashUnreadUser(username);
-        const filePath = path.join(user.getPath(), req.body.path);
+        const user = new YourDashUser(username);
+        const filePath = path.join(user.path, req.body.path);
         try {
             switch (getFileType(filePath)) {
                 case FileTypes.PlainText:
                     return res.send((await fs.readFile(filePath)).toString());
                 case FileTypes.Image:
-                    return res.send(authenticatedImage(username, AUTHENTICATED_IMAGE_TYPE.FILE, filePath));
+                    return res.send(authenticatedImage(username, authenticatedImageType.FILE, filePath));
                 default:
                     return res.send("[YOURDASH] Error: Unsupported file type");
             }

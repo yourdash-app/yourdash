@@ -1,5 +1,5 @@
 import YourDashApplication, { getAllApplications } from "backend/src/helpers/applications.js";
-import log, { LOG_TYPES } from "backend/src/helpers/log.js";
+import log, { logType } from "backend/src/helpers/log.js";
 export default async function getAllCategories() {
     const applications = await getAllApplications();
     const categories = {};
@@ -13,7 +13,7 @@ export default async function getAllCategories() {
             categories[app.getCategory()] = true;
         }
         catch (_err) {
-            log(LOG_TYPES.ERROR, `application: ${app?.getName() || applicationName} doesn't have a category defined`);
+            log(logType.ERROR, `application: ${app?.getName() || applicationName} doesn't have a category defined`);
         }
     }
     return Object.keys(categories);

@@ -1,4 +1,4 @@
-import log, { LOG_TYPES } from "backend/src/helpers/log.js";
+import log, { logType } from "backend/src/helpers/log.js";
 import getGeolocationSuggestions from "./helpers/locationAutocompleteSuggestions.js";
 export default function geolocationApi(exp) {
     const geolocationApiCache = new Map();
@@ -9,7 +9,7 @@ export default function geolocationApi(exp) {
         }
         if (geolocationApiCache.get(req.params.locationName))
             return res.json(geolocationApiCache.get(req.params.locationName));
-        log(LOG_TYPES.INFO, `Fetching location suggestions for ${req.params.locationName}`);
+        log(logType.INFO, `Fetching location suggestions for ${req.params.locationName}`);
         const suggestions = await getGeolocationSuggestions(locationName, 8);
         geolocationApiCache.set(req.params.locationName, suggestions);
         return res.json(suggestions);

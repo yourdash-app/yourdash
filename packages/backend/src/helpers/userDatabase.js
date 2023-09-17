@@ -1,14 +1,14 @@
 import scheduleTask from "../core/taskScheduler.js";
+import YourDashUser from "../core/user/index.js";
 import KeyValueDatabase from "./keyValueDatabase.js";
 import path from "path";
-import YourDashUnreadUser from "../core/user/user.js";
 const USER_DATABASES = {};
 export function startUserDatabaseService() {
     scheduleTask("core:userdb_write_to_disk", "*/1 * * * *", () => {
-        Object.keys(USER_DATABASES).forEach(username => {
+        Object.keys(USER_DATABASES).forEach(async (username) => {
             if (USER_DATABASES[username].changed) {
-                const user = new YourDashUnreadUser(username);
-                USER_DATABASES[username].db.writeToDisk(path.resolve(user.getPath(), "./user_db.json"));
+                const user = new YourDashUser(username);
+                await USER_DATABASES[username].db.writeToDisk(path.join(user.path, "core/user_db.json"));
             }
         });
     });
@@ -18,11 +18,16 @@ export default async function getUserDatabase(username) {
         return USER_DATABASES[username].db;
     }
     USER_DATABASES[username] = { db: new KeyValueDatabase(), changed: false };
-    const user = new YourDashUnreadUser(username);
-    await USER_DATABASES[username].db.readFromDisk(path.resolve(user.getPath(), "./user_db.json"));
+    const user = new YourDashUser(username);
+    await USER_DATABASES[username].db.readFromDisk(path.join(user.path, "core/user_db.json"));
     return USER_DATABASES[username].db;
 }
 export function addUserDatabaseToSaveQueue(username) {
     USER_DATABASES[username].changed = true;
+}
+export async function saveUserDatabaseInstantly(username) {
+    USER_DATABASES[username].changed = false;
+    const user = new YourDashUser(username);
+    await USER_DATABASES[username].db.writeToDisk(path.join(user.path, "core/user_db.json"));
 }
 //# sourceMappingURL=userDatabase.js.map

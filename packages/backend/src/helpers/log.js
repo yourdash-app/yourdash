@@ -1,12 +1,12 @@
 import chalk from "chalk";
 import globalDatabase from "./globalDatabase.js";
-export var LOG_TYPES;
-(function (LOG_TYPES) {
-    LOG_TYPES[LOG_TYPES["INFO"] = 0] = "INFO";
-    LOG_TYPES[LOG_TYPES["WARNING"] = 1] = "WARNING";
-    LOG_TYPES[LOG_TYPES["ERROR"] = 2] = "ERROR";
-    LOG_TYPES[LOG_TYPES["SUCCESS"] = 3] = "SUCCESS";
-})(LOG_TYPES || (LOG_TYPES = {}));
+export var logType;
+(function (logType) {
+    logType[logType["INFO"] = 0] = "INFO";
+    logType[logType["WARNING"] = 1] = "WARNING";
+    logType[logType["ERROR"] = 2] = "ERROR";
+    logType[logType["SUCCESS"] = 3] = "SUCCESS";
+})(logType || (logType = {}));
 export const LOG_HISTORY = [];
 export default function log(type, ...message) {
     const logParams = [];
@@ -17,16 +17,16 @@ export default function log(type, ...message) {
             : date.getSeconds()} `);
     }
     switch (type) {
-        case LOG_TYPES.INFO:
+        case logType.INFO:
             logParams.push(chalk.blue("INFO    "));
             break;
-        case LOG_TYPES.WARNING:
+        case logType.WARNING:
             logParams.push(chalk.yellow("WARN    "));
             break;
-        case LOG_TYPES.ERROR:
+        case logType.ERROR:
             logParams.push(chalk.red("ERROR   "));
             break;
-        case LOG_TYPES.SUCCESS:
+        case logType.SUCCESS:
             logParams.push(chalk.green("SUCCESS "));
             break;
         default:
@@ -34,15 +34,18 @@ export default function log(type, ...message) {
     }
     logParams.push(...message);
     LOG_HISTORY.push({
-        type: (type === LOG_TYPES.INFO
+        type: (type === logType.INFO
             ? "INFO"
-            : type === LOG_TYPES.WARNING
+            : type === logType.WARNING
                 ? "WARN"
-                : type === LOG_TYPES.ERROR
+                : type === logType.ERROR
                     ? "ERROR"
-                    : type === LOG_TYPES.SUCCESS ? "SUCCESS" : "UNKNOWN"),
+                    : type === logType.SUCCESS ? "SUCCESS" : "UNKNOWN"),
         message: logParams.slice(1).map(msg => msg?.replace?.(/\x1b\[[0-9;]*m/g, "") || "LOGGING ERROR")
     });
+    if (type === logType.ERROR) {
+        logParams.push("\n" + new Error().stack);
+    }
     console.log(...logParams);
 }
 //# sourceMappingURL=log.js.map

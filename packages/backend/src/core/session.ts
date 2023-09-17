@@ -5,12 +5,12 @@
 
 import { type IYourDashSession } from "shared/core/session.js";
 
-const SESSIONS: {
+const Session: {
   [ key: string ]: IYourDashSession<any>[]
 } = {};
 
 function __internalGetSessionsDoNotUseOutsideOfCore() {
-  return SESSIONS;
+  return Session;
 }
 
 const SESSION_TOKEN_LENGTH = 128;
