@@ -6,7 +6,7 @@ import path from "path";
 import { promises as fs } from "fs";
 import YourDashPanel from "backend/src/core/panel.js";
 import { FS_DIRECTORY_PATH } from "../../main.js";
-import authenticatedImage, { AUTHENTICATED_IMAGE_TYPE } from "../authenticatedImage.js";
+import authenticatedImage, { authenticatedImageType } from "../authenticatedImage.js";
 export default function defineCorePanelRoutes(exp) {
     exp.get("/core/panel/applications", async (_req, res) => {
         res.set("Cache-Control", "no-store");
@@ -34,7 +34,7 @@ export default function defineCorePanelRoutes(exp) {
         return res.json((await panel.getQuickShortcuts()).map(shortcut => {
             return {
                 name: shortcut,
-                icon: authenticatedImage(username, AUTHENTICATED_IMAGE_TYPE.FILE, path.resolve(path.join(process.cwd(), `../applications/${shortcut}/icon.avif`)))
+                icon: authenticatedImage(username, authenticatedImageType.FILE, path.resolve(path.join(process.cwd(), `../applications/${shortcut}/icon.avif`)))
             };
         }));
     });
@@ -69,9 +69,9 @@ export default function defineCorePanelRoutes(exp) {
     exp.get("/core/panel/logo", (req, res) => {
         const { username } = req.headers;
         return res.json({
-            small: authenticatedImage(username, AUTHENTICATED_IMAGE_TYPE.FILE, path.join(FS_DIRECTORY_PATH, "./logo_panel_small.avif")),
-            medium: authenticatedImage(username, AUTHENTICATED_IMAGE_TYPE.FILE, path.join(FS_DIRECTORY_PATH, "./logo_panel_medium.avif")),
-            large: authenticatedImage(username, AUTHENTICATED_IMAGE_TYPE.FILE, path.join(FS_DIRECTORY_PATH, "./logo_panel_large.avif"))
+            small: authenticatedImage(username, authenticatedImageType.FILE, path.join(FS_DIRECTORY_PATH, "./logo_panel_small.avif")),
+            medium: authenticatedImage(username, authenticatedImageType.FILE, path.join(FS_DIRECTORY_PATH, "./logo_panel_medium.avif")),
+            large: authenticatedImage(username, authenticatedImageType.FILE, path.join(FS_DIRECTORY_PATH, "./logo_panel_large.avif"))
         });
     });
 }

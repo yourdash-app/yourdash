@@ -6,7 +6,7 @@
 import chalk from "chalk";
 import globalDatabase from "./globalDatabase.js";
 
-export enum LOG_TYPES {
+export enum logType {
   INFO,
   WARNING,
   ERROR,
@@ -20,11 +20,11 @@ export const LOG_HISTORY: {
 
 /**
  * Logs a message with the specified type.
- * @param {LOG_TYPES} type - The type of log message.
+ * @param {logType} type - The type of log message.
  * @param {...any} message - The message(s) to log.
  * @returns {void}
  */
-export default function log( type: LOG_TYPES, ...message: any[] ) {
+export default function log( type: logType, ...message: any[] ) {
   const logParams = [];
   
   if ( globalDatabase.get( "settings:log_should_log_time" ) ) {
@@ -37,16 +37,16 @@ export default function log( type: LOG_TYPES, ...message: any[] ) {
   }
   
   switch ( type ) {
-  case LOG_TYPES.INFO:
+  case logType.INFO:
     logParams.push( chalk.blue( "INFO    " ) );
     break;
-  case LOG_TYPES.WARNING:
+  case logType.WARNING:
     logParams.push( chalk.yellow( "WARN    " ) );
     break;
-  case LOG_TYPES.ERROR:
+  case logType.ERROR:
     logParams.push( chalk.red( "ERROR   " ) );
     break;
-  case LOG_TYPES.SUCCESS:
+  case logType.SUCCESS:
     logParams.push( chalk.green( "SUCCESS " ) );
     break;
   default:
@@ -56,16 +56,20 @@ export default function log( type: LOG_TYPES, ...message: any[] ) {
   logParams.push( ...message );
   
   LOG_HISTORY.push( {
-    type: ( type === LOG_TYPES.INFO
+    type: ( type === logType.INFO
       ? "INFO"
-      : type === LOG_TYPES.WARNING
+      : type === logType.WARNING
         ? "WARN"
-        : type === LOG_TYPES.ERROR
+        : type === logType.ERROR
           ? "ERROR"
-          : type === LOG_TYPES.SUCCESS ? "SUCCESS" : "UNKNOWN" ),
+          : type === logType.SUCCESS ? "SUCCESS" : "UNKNOWN" ),
     // eslint-disable-next-line no-control-regex
     message: logParams.slice( 1 ).map( msg => msg?.replace?.( /\x1b\[[0-9;]*m/g, "" ) || "LOGGING ERROR" )
   } );
+  
+  if ( type === logType.ERROR ) {
+    logParams.push( "\n" + new Error().stack )
+  }
   
   // @ts-ignore
   console.log( ...logParams );

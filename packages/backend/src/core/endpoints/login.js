@@ -1,24 +1,25 @@
-import YourDashUnreadUser from "backend/src/core/user/user.js";
-import log, { LOG_TYPES } from "backend/src/helpers/log.js";
+import YourDashUser from "backend/src/core/user/index.js";
 import { compareHash } from "backend/src/helpers/encryption.js";
+import log, { logType } from "backend/src/helpers/log.js";
 import { createSession } from "backend/src/helpers/session.js";
-import { YOURDASH_SESSION_TYPE } from "../../../../shared/core/session.js";
-import { __internalGetSessionsDoNotUseOutsideOfCore } from "../sessions.js";
-import path from "path";
 import { promises as fs } from "fs";
+import path from "path";
+import { YOURDASH_SESSION_TYPE } from "shared/core/session.js";
+import { __internalGetSessionsDoNotUseOutsideOfCore } from "../session.js";
+import { userAvatarSize } from "../user/avatarSize.js";
 export default function defineLoginEndpoints(app) {
     app.get("/core/login/background", (_req, res) => {
         res.set("Content-Type", "image/avif");
         return res.sendFile(path.resolve(process.cwd(), "./fs/login_background.avif"));
     });
     app.get("/core/login/user/:username/avatar", (req, res) => {
-        const user = new YourDashUnreadUser(req.params.username);
-        return res.sendFile(path.resolve(user.getPath(), "avatar.avif"));
+        const user = new YourDashUser(req.params.username);
+        return res.sendFile(user.getAvatar(userAvatarSize.LARGE));
     });
     app.get("/core/login/user/:username", async (req, res) => {
-        const user = new YourDashUnreadUser(req.params.username);
-        if (await user.exists()) {
-            return res.json({ name: (await user.read()).getName() });
+        const user = new YourDashUser(req.params.username);
+        if (await user.doesExist()) {
+            return res.json({ name: await user.getName() });
         }
         else {
             return res.json({ error: "Unknown user" });
@@ -33,10 +34,10 @@ export default function defineLoginEndpoints(app) {
         if (!password || password === "") {
             return res.json({ error: "Missing password" });
         }
-        const user = new YourDashUnreadUser(username);
-        const savedHashedPassword = (await fs.readFile(path.resolve(user.getPath(), "./password.txt"))).toString();
-        log(LOG_TYPES.INFO, savedHashedPassword);
-        log(LOG_TYPES.INFO, password);
+        const user = new YourDashUser(username);
+        const savedHashedPassword = (await fs.readFile(path.join(user.path, "core/password.enc"))).toString();
+        log(logType.INFO, savedHashedPassword);
+        log(logType.INFO, password);
         return compareHash(savedHashedPassword, password).then(async (result) => {
             if (result) {
                 const session = await createSession(username, req.headers?.type === "desktop"
@@ -54,13 +55,12 @@ export default function defineLoginEndpoints(app) {
     });
     app.get("/core/login/is-authenticated", async (req, res) => {
         const { username, token } = req.headers;
-        if (!username || !token) {
+        if (!username || !token)
             return res.json({ error: true });
-        }
         if (!__internalGetSessionsDoNotUseOutsideOfCore()[username]) {
             try {
-                const user = await (new YourDashUnreadUser(username).read());
-                __internalGetSessionsDoNotUseOutsideOfCore()[username] = (await user.getSessions()) || [];
+                const user = new YourDashUser(username);
+                __internalGetSessionsDoNotUseOutsideOfCore()[username] = (await user.getAllLoginSessions()) || [];
             }
             catch (_err) {
                 return res.json({ error: true });

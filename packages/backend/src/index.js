@@ -1,7 +1,7 @@
 import { exec } from "child_process";
 import minimist from "minimist";
 import chalk from "chalk";
-import centerTerminalOutputOnLine from "./helpers/terminal/centerTerminalOutputOnLine.js";
+import centerTerminalOutputOnLine from "backend/src/helpers/terminal/centerTerminalOutputOnLine.js";
 console.log(centerTerminalOutputOnLine(chalk.whiteBright("YourDash CLI v0.0.1")));
 const args = minimist(process.argv.slice(2));
 console.log(`Starting with arguments: ${JSON.stringify(args)}`);
@@ -44,7 +44,7 @@ if (!args.dev && args.compile) {
 }
 function startDevServer() {
     console.log(`[${chalk.hex("#fc6f45").bold("DEV")}]: starting server \"node ./src/main.js --color=full ${process.argv.slice(2).join(" ")}\"`);
-    const devProcess = exec(`yarn run compile && nodemon --signal SIGINT${args.debug ? " --inspect-brk" : ""} ./src/main.js --color=full ${process.argv.slice(2).join(" ")}`);
+    const devProcess = exec(`nodemon --signal SIGINT${args.debug ? " --inspect-brk" : ""} ./src/main.js --color=full ${process.argv.slice(2).join(" ")}`);
     const compilationProcess = exec("yarn run compile --watch");
     devProcess.on("close", code => {
         console.log(`child process exited with code ${code}, will not auto-restart!`);

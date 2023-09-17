@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import KeyValueDatabase from './keyValueDatabase.js';
+import KeyValueDatabase from "./keyValueDatabase.js";
 
 const globalDatabase: KeyValueDatabase = new KeyValueDatabase();
 
