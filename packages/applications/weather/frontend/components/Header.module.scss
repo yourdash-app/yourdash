@@ -12,7 +12,6 @@
   text-align: center;
   height: 20rem;
   text-shadow: #242424bb 0 0 0.75rem, #24242488 0 0 0.5rem, #24242444 0 0 0.25rem;
-    will-change: scroll-position;
 
   @apply flex items-center justify-center font-semibold text-6xl;
   &.stuck {

@@ -23,25 +23,11 @@ const InstallationPopup: React.FC<IInstallationPopup> = ( {
   onConfirm
 } ) => {
   const navigate = useNavigate();
-  return ( <Dialog onClose={ () => {
-    onClose();
-  } }
-  >
-    <Card
-      showBorder
-      level={ "secondary" }
+  return (
+    <Dialog
+      onClose={onClose}
+      title={`Confirm installation of ${ applicationData?.displayName }`}
     >
-      <section
-        className={ "flex items-center justify-between" }
-      >
-        <h1 className={ "text-3xl font-semibold tracking-wide" }>{ `Confirm installation of ${ applicationData?.displayName }` }</h1>
-        <IconButton
-          icon={ YourDashIcon.X }
-          onClick={ () => {
-            onClose();
-          } }
-        />
-      </section>
       <section className={ "flex flex-col items-center gap-2" }>
         <div>
           { `Do you want to install ${ applicationData?.displayName }?` }
@@ -87,8 +73,8 @@ const InstallationPopup: React.FC<IInstallationPopup> = ( {
           </MajorButton>
         </div>
       </section>
-    </Card>
-  </Dialog> );
+    </Dialog>
+  );
 };
 
 export default InstallationPopup;

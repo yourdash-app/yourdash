@@ -23,7 +23,7 @@ const YourDevHome: React.FC = () => (
             <span>{"200"}</span>
           </div>
           <div className={"flex flex-col gap-1 items-center justify-center"}>
-            <IconButton icon={YourDashIcon.Alert} color={"#eeff33"}/>
+            <IconButton icon={YourDashIcon.Alert} color={"#eab842"}/>
             <span>{"4"}</span>
           </div>
           <div className={"flex flex-col gap-1 items-center justify-center"}>
