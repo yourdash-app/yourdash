@@ -7,47 +7,55 @@
   position: fixed;
   background: rgb(var(--container-bg));
   color: rgb(var(--container-fg));
-  border-radius: 0 var(--container-rounding) var(--container-rounding) 0;
   z-index: -5;
   width: 24rem;
   height: max-content;
   border: 0.125rem solid rgb(var(--container-border));
-  border-left: none;
   overflow-x: hidden;
   overflow-y: auto;
 }
 
 @mixin horizontal {
-  translate: -50%0;
-  width: 75%;
-  left: 50%;
+  max-width: 75%;
+  left: 0;
 }
 
 @mixin vertical {
-  translate: 0 -50%;
   max-height: 90%;
   min-height: max-content;
-  top: 50%;
+  top: 0;
 }
 
 .sideTop {
   @include horizontal;
   top: var(--app-panel-size);
+  border-top: none;
+  border-left: none;
+  border-radius: 0 0 var(--container-rounding) 0;
 }
 
 .sideRight {
   @include vertical;
   right: var(--app-panel-size);
+  border-top: none;
+  border-right: none;
+  border-radius: 0 0 0 var(--container-rounding);
 }
 
 .sideBottom {
   @include horizontal;
   bottom: var(--app-panel-size);
+  border-bottom: none;
+  border-left: none;
+  border-radius: 0 var(--container-rounding) 0 0;
 }
 
 .sideLeft {
   @include vertical;
   left: var(--app-panel-size);
+  border-top: none;
+  border-left: none;
+  border-radius: 0 0 var(--container-rounding) 0;
 }
 
 .invisible {

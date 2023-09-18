@@ -18,7 +18,7 @@ const IndexPageHero: React.FC = () => {
       className={ "flex flex-col items-end justify-center overflow-hidden md:ml-0 md:mr-0 ml-auto mr-auto" }
     >
       <h1
-        className={ "text-6xl font-bold text-base-50 animate__jackInTheBox animate__animated flex select-none" }
+        className={ "text-6xl font-bold text-base-50 animate__jackInTheBox animate__animated animate__250ms flex select-none" }
       >
         YourDash
       </h1>
