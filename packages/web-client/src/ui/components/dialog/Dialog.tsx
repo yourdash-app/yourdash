@@ -29,7 +29,6 @@ const Dialog: React.FC<IDialog> = ( {
   const [initialDragPosition, setInitialDragPosition] = useState( 0 );
   
   return (
-    // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions
     <div
       className={`${ styles.background } ${ visible === false && styles.hidden }`}
       onClick={onClose}
@@ -44,10 +43,9 @@ const Dialog: React.FC<IDialog> = ( {
         }
       }}
     >
-      {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions */}
       <Card
         showBorder
-        className={`${ styles.component } ${ visible === false && styles.hidden }`}
+        className={`${ styles.component } ${ visible === false && styles.hidden } animate__animated animate__flipInX animate__duration_750ms`}
         style={style}
         onMouseUp={e => {
           e.stopPropagation();
@@ -57,7 +55,6 @@ const Dialog: React.FC<IDialog> = ( {
         }}
         unStyledClickable
       >
-        {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
         <section
           className={styles.handle}
           onMouseDown={e => {
@@ -79,9 +76,16 @@ const Dialog: React.FC<IDialog> = ( {
         >
           <div/>
         </section>
-        <IconButton className={styles.closeButton} data-visible={!!onClose} icon={YourDashIcon.X} onClick={onClose}/>
+        <IconButton
+          className={styles.closeButton}
+          data-visible={!!onClose}
+          icon={YourDashIcon.X}
+          onClick={onClose}
+        />
         <section className={`${ styles.content } ${ className }`}>
-          <h1 className={`${ styles.title } ${ ( title === "" || title === undefined ) && styles.placeholder }`}>
+          <h1
+            className={`${ styles.title } ${ ( title === "" || title === undefined ) && styles.placeholder }`}
+          >
             {title}
           </h1>
           {children}

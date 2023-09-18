@@ -13,17 +13,17 @@ const main = ({ exp }) => {
         const user = new YourDashUser(username);
         let files = [];
         try {
-            files = await fs.readdir(path.join(user.path, req.body.path));
+            files = await fs.readdir(path.join(user.path, "fs/", req.body.path));
         }
         catch (_err) {
             files = [];
         }
         Promise.all(files.map(async (file) => {
             try {
-                const type = (await fs.lstat(path.join(user.path, req.body.path, file))).isFile()
+                const type = (await fs.lstat(path.join(user.path, "fs/", req.body.path, file))).isFile()
                     ? "file"
                     : "directory";
-                const name = path.basename(path.join(user.path, req.body.path, file));
+                const name = path.basename(path.join(user.path, "fs/", req.body.path, file));
                 return {
                     type,
                     name
@@ -45,10 +45,10 @@ const main = ({ exp }) => {
         }
         const user = new YourDashUser(username);
         let files = [];
-        console.log(`PATH: ${path.join(user.path, req.body.path)}`);
-        console.log(`USER PATH: ${path.resolve(user.path)}`);
+        console.log(`PATH: ${path.join(user.path, "fs/", req.body.path)}`);
+        console.log(`USER PATH: ${path.resolve("fs/", user.path)}`);
         try {
-            files = await fs.readdir(path.join(user.path, req.body.path));
+            files = await fs.readdir(path.join(user.path, "fs/", req.body.path));
         }
         catch (_err) {
             files = [];
@@ -56,11 +56,11 @@ const main = ({ exp }) => {
         return res.json({
             files: (await Promise.all(files.map(async (file) => {
                 try {
-                    const type = (await fs.lstat(path.join(user.path, req.body.path, file))).isFile()
+                    const type = (await fs.lstat(path.join(user.path, "fs/", req.body.path, file))).isFile()
                         ? "file"
                         : "directory";
-                    const name = path.basename(path.join(user.path, req.body.path, file));
-                    const extension = path.extname(path.join(user.path, req.body.path, file));
+                    const name = path.basename(path.join(user.path, "fs/", req.body.path, file));
+                    const extension = path.extname(path.join(user.path, "fs/", req.body.path, file));
                     let icon = "";
                     switch (extension) {
                         case ".png":
@@ -70,11 +70,11 @@ const main = ({ exp }) => {
                         case ".avif":
                         case ".svg":
                         case ".gif":
-                            if ((await fs.stat(path.join(user.path, req.body.path, file))).size > 1024 * 1024) {
+                            if ((await fs.stat(path.join(user.path, "fs/", req.body.path, file))).size > 1024 * 1024) {
                                 icon = "";
                             }
                             else {
-                                const image = sharp(path.join(user.path, req.body.path, file)).resize(96, 96);
+                                const image = sharp(path.join(user.path, "fs/", req.body.path, file)).resize(96, 96);
                                 icon = authenticatedImage(username, authenticatedImageType.BASE64, (await image.toBuffer()).toString("base64"));
                             }
                             break;
@@ -99,7 +99,7 @@ const main = ({ exp }) => {
             return res.send("[YOURDASH] Error: Unknown file");
         }
         const user = new YourDashUser(username);
-        const filePath = path.join(user.path, req.body.path);
+        const filePath = path.join(user.path, "fs/", req.body.path);
         try {
             switch (getFileType(filePath)) {
                 case FileTypes.PlainText:

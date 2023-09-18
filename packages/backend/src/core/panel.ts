@@ -43,7 +43,7 @@ export default class YourDashPanel {
   
     const db = await user.getDatabase()
     
-    return JSON.parse( db.get( "core:panel:quickShortcuts" ) || "[]" )
+    return db.get( "core:panel:quickShortcuts" ) || []
   }
 
   async removeQuickShortcut( index: number ): Promise<this> {
@@ -51,11 +51,11 @@ export default class YourDashPanel {
   
     const db = await user.getDatabase()
     
-    const shortcuts = JSON.parse( db.get( "core:panel:quickShortcuts" ) )
+    const shortcuts = db.get( "core:panel:quickShortcuts" ) || []
     
     shortcuts.splice( index, 1 )
     
-    db.set( "core:panel:quickShortcuts", JSON.stringify( shortcuts ) )
+    db.set( "core:panel:quickShortcuts", shortcuts )
     user.saveDatabase()
     
     return this
@@ -66,7 +66,7 @@ export default class YourDashPanel {
   
     const db = await user.getDatabase()
     
-    const shortcuts = JSON.parse( db.get( "core:panel:quickShortcuts" ) || "[]" )
+    const shortcuts = db.get( "core:panel:quickShortcuts" ) || []
     
     if ( shortcuts.indexOf( applicationID ) !== -1 ) {
       return this
@@ -74,7 +74,7 @@ export default class YourDashPanel {
     
     shortcuts.push( applicationID )
     
-    db.set( "core:panel:quickShortcuts", JSON.stringify( shortcuts ) )
+    db.set( "core:panel:quickShortcuts", shortcuts )
     user.saveDatabase()
     
     return this

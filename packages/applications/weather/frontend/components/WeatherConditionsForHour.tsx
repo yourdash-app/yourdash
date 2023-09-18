@@ -11,7 +11,7 @@ import { Card } from "web-client/src/ui/index";
 interface IWeatherConditionsForHour {
   weatherData: IWeatherDataForLocation,
   selectedDay: number,
-  selectedHour: number,
+  selectedHour?: number,
 }
 
 const WeatherConditionsForHour: React.FC<IWeatherConditionsForHour> = ( {
@@ -22,15 +22,22 @@ const WeatherConditionsForHour: React.FC<IWeatherConditionsForHour> = ( {
   const [selectedHourDate, setSelectedHourDate] = React.useState<Date | null>( null );
   
   React.useEffect( () => {
-    setSelectedHourDate(
-      new Date( chunk( weatherData.hourly.time, 24 )[selectedDay][selectedHour] )
-    )
+    if ( selectedHour !== undefined )
+      setSelectedHourDate(
+        new Date( chunk( weatherData.hourly.time, 24 )[selectedDay][selectedHour] )
+      )
   }, [ selectedDay, selectedHour ] )
   
-  if ( !selectedHourDate ) return null
+  if ( !selectedHourDate || selectedHour === undefined )
+    return <Card className={ "col-span-2 flex items-center justify-center h-max" } showBorder>
+      <h1>Click an hour to show more information.</h1>
+    </Card>
   
-  return <section className={ "h-max ml-2 mr-2 flex flex-col gap-2 w-max" }>
-    <section className={"gap-2 flex text-xl"}>
+  return <>
+    <Card
+      className={"gap-2 flex text-xl col-span-3 items-center justify-center w-full"}
+      showBorder
+    >
       <span>
         {
           selectedHourDate.toLocaleDateString( undefined, { dateStyle: "full" } )
@@ -43,53 +50,51 @@ const WeatherConditionsForHour: React.FC<IWeatherConditionsForHour> = ( {
             : selectedHourDate.getHours() + 1
         }:00
       </span>
-    </section>
+    </Card>
     {/* Hourly metrics section */}
-    <section className={"grid gap-2 grid-cols-3"}>
-      <Card
-        level={"secondary"}
-        className={"flex items-center justify-center flex-col gap-2"}
-      >
-        <span className={"font-semibold text-2xl"}>
+    <Card
+      className={"flex items-center justify-center flex-col gap-2"}
+      showBorder
+    >
+      <span className={"font-semibold text-2xl"}>
           Wind  speed
-        </span>
-        {
-          chunk( weatherData.hourly.windSpeed, 24 )[selectedDay][selectedHour]
-        }
-        {
-          weatherData.units.hourly.windSpeed.replace( "mp/h", "mph" )
-        }
-      </Card>
-      <Card
-        level={"secondary"}
-        className={"flex items-center justify-center flex-col gap-2"}
-      >
-        <span className={"font-semibold text-2xl"}>
+      </span>
+      {
+        chunk( weatherData.hourly.windSpeed, 24 )[selectedDay][selectedHour]
+      }
+      {
+        weatherData.units.hourly.windSpeed.replace( "mp/h", "mph" )
+      }
+    </Card>
+    <Card
+      className={"flex items-center justify-center flex-col gap-2"}
+      showBorder
+    >
+      <span className={"font-semibold text-2xl"}>
           Cloud cover
-        </span>
-        {
-          chunk( weatherData.hourly.cloudCover, 24 )[selectedDay][selectedHour]
-        }
-        {
-          weatherData.units.hourly.cloudCover
-        }
-      </Card>
-      <Card
-        level={"secondary"}
-        className={"flex items-center justify-center flex-col gap-2"}
-      >
-        <span className={"font-semibold text-2xl"}>
+      </span>
+      {
+        chunk( weatherData.hourly.cloudCover, 24 )[selectedDay][selectedHour]
+      }
+      {
+        weatherData.units.hourly.cloudCover
+      }
+    </Card>
+    <Card
+      className={"flex items-center justify-center flex-col gap-2"}
+      showBorder
+    >
+      <span className={"font-semibold text-2xl"}>
           Rain  probability
-        </span>
-        {
-          chunk( weatherData.hourly.precipitationProbability, 24 )[selectedDay][selectedHour]
-        }
-        {
-          weatherData.units.hourly.precipitationProbability
-        }
-      </Card>
-    </section>
-  </section>;
+      </span>
+      {
+        chunk( weatherData.hourly.precipitationProbability, 24 )[selectedDay][selectedHour]
+      }
+      {
+        weatherData.units.hourly.precipitationProbability
+      }
+    </Card>
+  </>
 };
 
 export default WeatherConditionsForHour;

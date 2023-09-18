@@ -4,16 +4,37 @@
  */
 
 import { Outlet } from "react-router";
+import { Card, Spinner } from "../ui/index";
 import PanelLayout from "./panel/PanelLayout";
-import { memo, useEffect } from "react";
+import React, { memo, useEffect } from "react";
 import csi from "../helpers/csi";
 
 const AppLayout: React.FC = () => {
+  const [loaded, setLoaded] = React.useState<boolean>( false );
   const isStandalone = new URLSearchParams( window.location.search ).has( "standalone" )
   
   useEffect( () => {
-    csi.getUserDB()
+    csi.getUserDB().then( () => {
+      setLoaded( true );
+    } )
   }, [] );
+  
+  if ( !loaded )
+    return <div className={"w-full h-full flex items-center justify-center flex-col gap-4"}>
+      <Spinner/>
+      <Card
+        className={"flex items-center justify-center"}
+        showBorder
+      >
+        <h1 className={"text-5xl font-bold pl-4 pr-4"}>Loading YourDash</h1>
+      </Card>
+      <Card
+        className={"fixed bottom-4 text-center animate__animated animate__fadeInUp p-2 pl-4 pr-4"}
+        showBorder
+      >
+        Please reload if this takes longer than 10 seconds
+      </Card>
+    </div>
   
   // Standalone mode displays only the application and not the Panel
   if ( isStandalone ) {

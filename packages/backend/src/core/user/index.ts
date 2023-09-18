@@ -68,7 +68,8 @@ export default class YourDashUser {
         first: "New",
         last: "User"
       },
-      "core:user:username": this.username
+      "core:user:username": this.username,
+      "core:panel:quickShortcuts": ["dash", "files", "settings"]
     } ) )
     await this.setPassword( "password" );
     await this.setAvatar( path.join( process.cwd(), "./src/assets/default_avatar.avif" ) );
@@ -79,7 +80,8 @@ export default class YourDashUser {
         last: "User"
       },
       bio: "👋 I'm new to YourDash, say hi!",
-      permissions: []
+      permissions: [],
+      version: 1
     } as IYourDashUserJson ) )
     log( logType.INFO, `CORE: Created user ${this.username}` )
   }
@@ -216,5 +218,19 @@ export default class YourDashUser {
   
   getAppDirectory( applicationName: string ): string {
     return path.join( this.path, `apps/${ applicationName }/` );
+  }
+  
+  async update() {
+    const currentUserJson = JSON.parse( ( await fs.readFile( path.join( this.path, "core/user.json" ) ) ).toString() ) as IYourDashUserJson
+    
+    // noinspection FallThroughInSwitchStatementJS
+    switch ( currentUserJson.version ) {
+    case undefined:
+      currentUserJson.version = 1
+    case 1:
+      // add code to update from version 1 to 2 when version 2 is implemented
+    default:
+      return
+    }
   }
 }
