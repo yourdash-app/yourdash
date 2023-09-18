@@ -1,0 +1,40 @@
+/*!
+ * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
+.component {
+  width: 2.5rem;
+  height: 1.1rem;
+  border-radius: 0.5rem;
+  @apply bg-red-400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: var(--transition);
+  cursor: pointer;
+
+  > .thumb {
+    position: absolute;
+    top: -0.25rem;
+    height: calc(100% + 0.5rem);
+    border-radius: 100rem;
+    aspect-ratio: 1 / 1;
+    transition: var(--transition);
+    pointer-events: none;
+    background-color: rgb(var(--input-fg));
+  }
+
+  &:hover {
+    > div {
+      background-color: rgb(var(--input-hover-fg));
+    }
+  }
+
+  &:active {
+    > div {
+      background-color: rgb(var(--input-active-fg));
+    }
+  }
+}

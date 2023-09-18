@@ -1,0 +1,64 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+    "@jetbrains",
+    "@jetbrains/eslint-config/browser",
+    "@jetbrains/eslint-config/es6",
+    "@jetbrains/eslint-config/node",
+    "@jetbrains/eslint-config/react",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "rules": {
+    "@typescript-eslint/ban-ts-comment": [
+      "off"
+    ],
+    "no-console": [
+      "off"
+    ],
+    "no-use-before-define": "off",
+    "@typescript-eslint/no-use-before-define": "error",
+    "max-len": [
+      "off"
+    ],
+    "no-shadow": "off",
+    "@typescript-eslint/no-shadow": "off",
+    "complexity": [
+      "off"
+    ],
+    "import/extensions": [
+      "off"
+    ],
+    "no-magic-numbers": "off",
+    "no-nested-ternary": "off",
+    "import/order": "off",
+    "jsx-quotes": [
+      "warn",
+      "prefer-double"
+    ],
+    "quotes": [
+      "warn",
+      "double"
+    ],
+    "indent": "warn",
+    "@typescript-eslint/no-explicit-any": "off",
+    "arrow-body-style": "off",
+    "object-curly-spacing": [
+      "warn",
+      "always"
+    ],
+    "space-in-parens": [
+      "warn",
+      "always"
+    ],
+    "dot-location": [
+      "warn",
+      "property"
+    ],
+    "no-trailing-spaces": [
+      "warn",
+      {
+        "skipBlankLines": true
+      }
+    ]
+  }
+}

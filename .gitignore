@@ -1,13 +1,2 @@
-/node_modules/
-/server/node_modules/
-/client/node_modules/
-/electron/node_modules/
-/server/fs/
-/server/**/*.d.ts
-/server/**/*.js
-/server/*.d.ts
-/server/*.js
 **/node_modules/
-**/node_modules
-**/*.js.map
-**/.dev-session-tokens
+/packages/backend/fs/

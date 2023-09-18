@@ -1,0 +1,79 @@
+/*!
+ * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
+.component {
+  font-family: "Roboto", sans-serif;
+  font-size: 1rem;
+  box-sizing: border-box;
+  transition: var(--transition);
+  color: rgb(var(--container-fg));
+  padding: var(--container-padding);
+  border: none;
+  border-radius: var(--container-rounding);
+  background-color: rgb(var(--container-bg));
+  box-shadow: 0 0 0.5rem #00000044;
+
+  &.secondary {
+    padding: var(--container-secondary-padding);
+    background-color: rgb(var(--container-secondary-bg));
+    color: rgb(var(--container-secondary-fg));
+    border-radius: var(--container-secondary-rounding);
+  }
+
+  //noinspection CssUnusedSymbol
+  &.tertiary {
+    padding: var(--container-tertiary-padding);
+    background-color: rgb(var(--container-tertiary-bg));
+    color: rgb(var(--container-tertiary-fg));
+    border-radius: var(--container-tertiary-rounding);
+  }
+
+  &:hover {
+    transition: var(--transition-fast) !important;
+  }
+
+  place-items: center;
+}
+
+.border {
+  border: solid 0.125rem rgb(var(--container-border));
+}
+
+.border {
+  border: solid 0.125rem rgb(var(--container-border));
+}
+
+.clickable {
+  cursor: pointer;
+  user-select: none;
+  border: solid 0.125rem rgb(var(--container-bg));
+
+  &:hover {
+    border: solid 0.125rem #ffffff55;
+  }
+
+  &.secondary {
+    background-color: rgb(var(--container-secondary-bg));
+    color: rgb(var(--container-secondary-fg));
+    border: solid 0.125rem rgb(var(--container-secondary-bg));
+
+    &:hover {
+      border: solid 0.125rem #ffffff55;
+    }
+  }
+
+  //noinspection CssUnusedSymbol
+  &.tertiary {
+    background-color: rgb(var(--container-tertiary-bg));
+    color: rgb(var(--container-tertiary-fg));
+    border: solid 0.125rem rgb(var(--container-tertiary-bg));
+
+    &:hover {
+      border: solid 0.125rem #ffffff55;
+    }
+  }
+
+  place-items: center;
+}

@@ -1,0 +1,23 @@
+/*!
+ * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
+.component {
+  position: relative;
+}
+
+.indicator {
+  background-color: red;
+  padding: 0.125rem 0.25rem;
+  top: -0.5rem;
+  height: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  left: calc(100% - 0.5rem);
+  position: absolute;
+  color: white;
+  border-radius: 100rem;
+  font-size: 0.75rem;
+}

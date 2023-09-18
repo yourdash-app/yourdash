@@ -1,0 +1,9 @@
+<!--
+  - Copyright ©2023 @Ewsgit and YourDash contributors.
+  - YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+  -->
+
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="32" height="32" rx="4" fill="#E9E9E9"/>
+<path d="M1 4C1 2.34315 2.34315 1 4 1H5V31H4C2.34315 31 1 29.6569 1 28V4Z" fill="#3F3F3F"/>
+</svg>

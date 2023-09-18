@@ -1,0 +1,7 @@
+{
+  "type": "module",
+  "version": "0.0.1",
+  "name": "shared",
+  "author": "Ewsgit <ewsgit@duck.com>",
+  "license": "MIT"
+}

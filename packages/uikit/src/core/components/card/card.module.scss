@@ -1,0 +1,29 @@
+/*!
+ * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
+.component {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration-line: none;
+  vertical-align: middle;
+  margin: 0;
+  padding: var(--container-padding);
+}
+
+.levelSecondary {
+  padding: var(--container-secondary-padding);
+  border-radius: var(--container-secondary-rounding);
+}
+
+.levelTertiary {
+  padding: var(--container-tertiary-padding);
+  border-radius: var(--container-tertiary-rounding);
+}
+
+.levelQuaternary {
+  padding: var(--container-quarternary-padding);
+  border-radius: var(--container-quarternary-rounding);
+}

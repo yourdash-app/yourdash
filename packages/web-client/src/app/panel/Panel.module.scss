@@ -1,0 +1,76 @@
+/*!
+ * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
+.panel {
+  display: flex;
+  gap: 0.25rem;
+  box-sizing: border-box;
+  transition: var(--transition);
+  background: rgb(var(--container-bg));
+  padding: var(--app-panel-padding);
+  position: relative;
+  z-index: 50;
+  user-select: none;
+}
+
+@mixin horizontal {
+  flex-direction: row;
+  height: var(--app-panel-size);
+
+  &.small {
+    --app-panel-size: 2.5rem;
+    --app-panel-padding: 0.25rem;
+  }
+
+  &.medium {
+    --app-panel-size: 3.5rem;
+    --app-panel-padding: 0.25rem;
+  }
+
+  &.large {
+    --app-panel-size: 5rem;
+    --app-panel-padding: 0.75rem;
+  }
+}
+
+@mixin vertical {
+  flex-direction: column;
+  width: var(--app-panel-size);
+
+  &.small {
+    --app-panel-size: 2.5rem;
+    --app-panel-padding: 0.25rem;
+  }
+
+  &.medium {
+    --app-panel-size: 3.5rem;
+    --app-panel-padding: 0.5rem;
+  }
+
+  &.large {
+    --app-panel-size: 5rem;
+    --app-panel-padding: 0.75rem;
+  }
+}
+
+.top {
+  @include horizontal;
+  border-bottom: 1px rgb(var(--container-border)) solid;
+}
+
+.right {
+  @include vertical;
+  border-left: 1px rgb(var(--container-border)) solid;
+}
+
+.bottom {
+  @include horizontal;
+  border-top: 1px rgb(var(--container-border)) solid;
+}
+
+.left {
+  @include vertical;
+  border-right: 1px rgb(var(--container-border)) solid;
+}

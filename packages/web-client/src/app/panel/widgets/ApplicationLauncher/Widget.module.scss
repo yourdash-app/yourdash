@@ -1,0 +1,13 @@
+/*!
+ * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
+.launcherButton {
+  width: calc(var(--app-panel-size) - calc(var(--app-panel-padding) * 2)) !important;
+  height: unset !important;
+}
+
+.widgetContainer {
+  position: relative;
+}
