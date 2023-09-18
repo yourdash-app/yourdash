@@ -1,4 +1,4 @@
-name: Deploy GitHub Pages to external repository
+name: Check For Build Errors
 
 on:
   workflow_dispatch:
@@ -27,16 +27,3 @@ jobs:
 
       - name: Build website
         run: (cd ./packages/web-client && yarn build)
-
-      - name: Deploy to external repository
-        uses: cpina/github-action-push-to-another-repository@main
-        env:
-          API_TOKEN_GITHUB: ${{ secrets.ORG_FULL_ACCESS_TOKEN }}
-
-        with:
-          source-directory: packages/web-client/dist/
-          destination-github-username: yourdash-app
-          destination-repository-name: yourdash-app.github.io
-          target-directory: dev-branch
-          user-email: ewsgit@duck.com
-          target-branch: "gh-pages"
