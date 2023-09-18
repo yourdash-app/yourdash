@@ -37,4 +37,4 @@ jobs:
           destination-github-username: yourdash-app
           destination-repository-name: "yourdash-app.github.io"
           user-email: ewsgit@duck.com
-          target-branch: "gh-pages"
+          target-branch: main
