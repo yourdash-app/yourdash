@@ -30,12 +30,9 @@ jobs:
 
       - name: Deploy to external repository
         uses: cpina/github-action-push-to-another-repository@main
-        env:
-          API_TOKEN_GITHUB: ${{ secrets.SSH_DEPLOY_KEY }}
-
         with:
           source-directory: packages/web-client/dist/
           destination-github-username: yourdash-app
-          destination-repository-name: yourdash-app.github.io
+          destination-repository-name: "yourdash-app.github.io"
           user-email: ewsgit@duck.com
           target-branch: "gh-pages"
