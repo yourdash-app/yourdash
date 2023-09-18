@@ -1,0 +1,29 @@
+/*!
+ * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
+.component {
+  font-family: "Inter", sans-serif;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  user-select: none;
+  transition: var(--transition);
+  color: var(--button-fg);
+  border: none;
+  border-radius: var(--button-rounding);
+  background-color: var(--button-bg);
+
+  &:hover {
+    color: var(--button-hover-fg);
+    border-radius: var(--button-hover-rounding);
+    background-color: var(--button-hover-bg);
+  }
+
+  &:active {
+    color: var(--button-active-fg);
+    border-radius: var(--button-active-rounding);
+    background-color: var(--button-active-bg);
+  }
+}

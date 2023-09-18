@@ -1,0 +1,50 @@
+/*!
+ * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 1rem;
+}
+
+.itemIcon {
+  width: 5.5rem;
+  height: 5.5rem;
+  scale: 0.89;
+  transition: var(--transition);
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0.25rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: var(--container-secondary-rounding);
+  background: rgb(var(--button-bg));
+  transition: var(--transition);
+
+  &:hover {
+    .itemIcon {
+      scale: 1;
+      transition: var(--transition-fast);
+    }
+
+    transition: var(--transition-fast);
+    background: rgb(var(--button-hover-bg));
+  }
+
+  &:active {
+    .itemIcon {
+      scale: 0.95;
+    }
+
+    background: rgb(var(--button-active-bg));
+  }
+}

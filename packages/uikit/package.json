@@ -1,0 +1,19 @@
+{
+  "name": "@yourdash/uikit",
+  "version": "0.0.1",
+  "description": "The YourDash UI Framework",
+  "main": "index.js",
+  "repository": "https://github.com/yourdash-app/yourdash",
+  "author": "Ewsgit",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "dev": "vite dev --host"
+  },
+  "dependencies": {
+    "@loadable/component": "^5.15.3",
+    "@vitejs/plugin-react-swc": "^3.3.2",
+    "vite": "^4.4.9",
+    "vite-plugin-dynamic-import": "^1.5.0"
+  }
+}

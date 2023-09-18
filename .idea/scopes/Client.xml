@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="Client" pattern="(file[YourDash]:packages/web-client//*||file[YourDash]:packages/applications/**/frontend//*||file[YourDash]:packages/shared//*)&amp;&amp;!file:**/*.js&amp;&amp;!file:**/*.js.map&amp;&amp;!file:**/*.jsx" />
+</component>

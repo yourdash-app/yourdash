@@ -1,0 +1,28 @@
+/*!
+ * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
+.files {
+  @apply p-2 grid grid-cols-6 gap-1;
+}
+
+.item {
+  @apply w-full flex min-h-[6rem];
+
+  height: 100%;
+}
+
+.itemButton {
+  @apply flex items-center w-full flex-col justify-center text-center p-2 gap-1;
+
+  height: 100%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.itemIcon {
+  display: flex;
+  height: 2rem;
+  width: 2rem;
+}
