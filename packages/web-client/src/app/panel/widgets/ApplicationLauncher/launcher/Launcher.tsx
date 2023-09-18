@@ -21,15 +21,17 @@ const ApplicationLauncher: React.FC<{ side: "top" | "right" | "bottom" | "left",
   }, [] );
   
   return <div
-    className={clippy(
-      styles.applicationLauncher,
-      side === "top" && styles.sideTop,
-      side === "right" && styles.sideRight,
-      side === "bottom" && styles.sideBottom,
-      side === "left" && styles.sideLeft,
-      "animate__animated animate__fadeInLeft animate__duration_500ms",
-      !visible && styles.invisible
-    )}
+    className={
+      clippy(
+        styles.applicationLauncher,
+        side === "top" && `${styles.sideTop} animate__fadeInLeft`,
+        side === "right" && `${styles.sideRight} animate__fadeInDown`,
+        side === "bottom" && `${styles.sideBottom} animate__fadeInLeft`,
+        side === "left" && `${styles.sideLeft} animate__fadeInDown`,
+        "animate__animated animate__duration_500ms",
+        !visible && styles.invisible
+      )
+    }
   >
     <ApplicationsLauncherApplications apps={apps}/>
     <section className={styles.footer}>

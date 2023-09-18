@@ -46,9 +46,7 @@ export default function defineCorePanelRoutes( exp: ExpressApplication ) {
   exp.get( "/core/panel/quick-shortcuts", async ( req, res ) => {
     res.set( "Cache-Control", "no-store" );
     
-    const { username } = req.headers as {
-      username: string
-    };
+    const { username } = req.headers as { username: string };
     
     const panel = new YourDashPanel( username );
     
@@ -106,10 +104,7 @@ export default function defineCorePanelRoutes( exp: ExpressApplication ) {
   
   exp.get( "/core/panel/launcher-type", async ( req, res ) => {
     res.set( "Cache-Control", "no-store" );
-    
-    const { username } = req.headers as {
-      username: string
-    };
+    const { username } = req.headers as { username: string };
     
     const panel = new YourDashPanel( username );
     

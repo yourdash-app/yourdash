@@ -26,7 +26,7 @@ const main: YourDashApplicationServerPlugin = ( { exp } ) => {
     let files: any[] = [];
     
     try {
-      files = await fs.readdir( path.join( user.path, req.body.path ) );
+      files = await fs.readdir( path.join( user.path, "fs/", req.body.path ) );
     } catch ( _err ) {
       files = [];
     }
@@ -35,11 +35,11 @@ const main: YourDashApplicationServerPlugin = ( { exp } ) => {
       files.map( async file => {
         try {
           const type = (
-            await fs.lstat( path.join( user.path, req.body.path, file ) )
+            await fs.lstat( path.join( user.path, "fs/", req.body.path, file ) )
           ).isFile()
             ? "file"
             : "directory";
-          const name = path.basename( path.join( user.path, req.body.path, file ) );
+          const name = path.basename( path.join( user.path, "fs/", req.body.path, file ) );
           
           return {
             type,
@@ -69,11 +69,11 @@ const main: YourDashApplicationServerPlugin = ( { exp } ) => {
     
     let files: any[] = [];
     
-    console.log( `PATH: ${ path.join( user.path, req.body.path ) }` );
-    console.log( `USER PATH: ${ path.resolve( user.path ) }` );
+    console.log( `PATH: ${ path.join( user.path, "fs/", req.body.path ) }` );
+    console.log( `USER PATH: ${ path.resolve( "fs/", user.path ) }` );
     
     try {
-      files = await fs.readdir( path.join( user.path, req.body.path ) );
+      files = await fs.readdir( path.join( user.path, "fs/", req.body.path ) );
     } catch ( _err ) {
       files = [];
     }
@@ -82,13 +82,13 @@ const main: YourDashApplicationServerPlugin = ( { exp } ) => {
       files: ( await Promise.all(
         files.map( async file => {
           try {
-            const type = ( await fs.lstat( path.join( user.path, req.body.path, file ) ) ).isFile()
+            const type = ( await fs.lstat( path.join( user.path, "fs/", req.body.path, file ) ) ).isFile()
               ? "file"
               : "directory";
             
-            const name = path.basename( path.join( user.path, req.body.path, file ) );
+            const name = path.basename( path.join( user.path, "fs/", req.body.path, file ) );
             
-            const extension = path.extname( path.join( user.path, req.body.path, file ) );
+            const extension = path.extname( path.join( user.path, "fs/", req.body.path, file ) );
             
             let icon = "";
             
@@ -101,11 +101,11 @@ const main: YourDashApplicationServerPlugin = ( { exp } ) => {
             case ".svg":
             case ".gif":
               // check if the file size is more than 1mb
-              if ( ( await fs.stat( path.join( user.path, req.body.path, file ) ) ).size > 1024 * 1024 ) {
+              if ( ( await fs.stat( path.join( user.path, "fs/", req.body.path, file ) ) ).size > 1024 * 1024 ) {
                 icon = "";
               } else {
                 // downscale the image
-                const image = sharp( path.join( user.path, req.body.path, file ) ).resize( 96, 96 );
+                const image = sharp( path.join( user.path, "fs/", req.body.path, file ) ).resize( 96, 96 );
                 
                 icon = authenticatedImage( username, authenticatedImageType.BASE64, ( await image.toBuffer() ).toString( "base64" ) );
               }
@@ -138,7 +138,7 @@ const main: YourDashApplicationServerPlugin = ( { exp } ) => {
     
     const user = new YourDashUser( username );
     
-    const filePath = path.join( user.path, req.body.path );
+    const filePath = path.join( user.path, "fs/", req.body.path );
     
     try {
       switch ( getFileType( filePath ) ) {
