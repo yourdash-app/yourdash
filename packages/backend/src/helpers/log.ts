@@ -55,20 +55,19 @@ export default function log( type: logType, ...message: any[] ) {
   
   logParams.push( ...message );
   
-  LOG_HISTORY.push( {
-    type: ( type === logType.INFO
-      ? "INFO"
-      : type === logType.WARNING
-        ? "WARN"
-        : type === logType.ERROR
-          ? "ERROR"
-          : type === logType.SUCCESS ? "SUCCESS" : "UNKNOWN" ),
-    // eslint-disable-next-line no-control-regex
-    message: logParams.slice( 1 ).map( msg => msg?.replace?.( /\x1b\[[0-9;]*m/g, "" ) || "LOGGING ERROR" )
-  } );
-  
   if ( type === logType.ERROR ) {
-    logParams.push( "\n" + new Error().stack )
+    logParams.push( "\n" + new Error( ...message ).stack )
+  } else {
+    LOG_HISTORY.push( {
+      type: type === logType.INFO
+        ? "INFO"
+        : type === logType.WARNING
+          ? "WARN"
+          : type === logType.SUCCESS
+            ? "SUCCESS"
+            : "UNKNOWN",
+      message: logParams.slice( 1 ).map( msg => msg?.replace?.( /\x1b\[[0-9;]*m/g, "" ) || "LOGGING ERROR" )
+    } );
   }
   
   // @ts-ignore

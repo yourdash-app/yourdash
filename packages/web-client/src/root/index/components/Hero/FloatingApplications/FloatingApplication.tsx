@@ -20,6 +20,7 @@ const FloatingApplication: React.FC<{
         className={ clippy( styles.floatingApplication ) }
         src={ src }
         alt={ "" }
+        draggable={false}
       />
     </div>
   </div>;

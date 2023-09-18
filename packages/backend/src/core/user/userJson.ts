@@ -13,5 +13,6 @@ export default interface IYourDashUserJson {
   },
   bio?: string,
   url?: string,
-  permissions: yourDashUserPermission[]
+  permissions: yourDashUserPermission[],
+  version?: number
 }

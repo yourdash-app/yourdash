@@ -25,25 +25,25 @@ const SettingsApplication: React.FC = () => {
     />
     <SettingCategoryComponent
       href={"/app/a/settings/personalization"}
-      description={"Sample text"}
+      description={"Customize your experience"}
       title={"Personalization"}
       icon={YourDashIcon.Paintbrush}
     />
     <SettingCategoryComponent
       href={"/app/a/settings/session"}
-      description={"Sample text"}
+      description={"Manage your login sessions"}
       title={"Login sessions"}
       icon={YourDashIcon.Login}
     />
     <SettingCategoryComponent
       href={"/app/a/settings/accessibility"}
-      description={"Sample text"}
+      description={"Toggle QOL features"}
       title={"Accessibility"}
       icon={YourDashIcon.Accessibility}
     />
     <SettingCategoryComponent
       href={"/app/a/settings/admin"}
-      description={"Sample text"}
+      description={"Am Devloper"}
       title={"Admin tools"}
       icon={YourDashIcon.Tools}
     />

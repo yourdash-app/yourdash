@@ -11,12 +11,16 @@ import styles from "./PanelLayout.module.scss"
 import csi from "../../helpers/csi";
 
 const PanelLayout: React.FC = () => {
-  const [panelSide, setPanelSide] = React.useState<"top" | "right" | "bottom" | "left">( csi.userDB.get( "core:panel:side" ) || "left" )
+  const [panelSide, setPanelSide] = React.useState<"top" | "right" | "bottom" | "left" | undefined>( undefined )
   const [reloadNumber, setReloadNumber] = React.useState<number>( 0 )
   
   useEffect( () => {
     setPanelSide( csi.userDB.get( "core:panel:side" ) || "left" )
   }, [reloadNumber] );
+  
+  if ( panelSide === undefined ) {
+    return <></>
+  }
   
   switch ( panelSide ) {
   case "top":
