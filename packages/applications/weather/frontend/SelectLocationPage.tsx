@@ -50,7 +50,7 @@ const SelectLocationPage: React.FC = () => {
           {trans( "APPLICATION_BRANDING" )}
         </h2>
       </header>
-      <Card className={"gap-2 flex flex-col p-4 w-full lg:max-w-4xl md:max-w-2xl max-w-[calc(100vw-1rem)]"}>
+      <Card className={"gap-2 flex flex-col p-4 w-full lg:max-w-4xl md:max-w-2xl max-w-[calc(100vw-1rem)] shadow-2xl"} showBorder>
         <div className={"flex gap-2 items-center justify-center w-full"}>
           <TextInput
             className={"w-full font-semibold tracking-wide text-3xl"}
@@ -69,7 +69,7 @@ const SelectLocationPage: React.FC = () => {
             }}
             label={trans( "LOCATION" )}
           />
-          {/*<IconButton icon={YourDashIcon.Pin} onClick={( e ) => {*/}
+          {/* <IconButton icon={YourDashIcon.Pin} onClick={( e ) => {*/}
           {/*  if ( navigator.geolocation ) {*/}
           {/*    navigator.geolocation.getCurrentPosition(*/}
           {/*      ( position ) => {*/}
@@ -86,7 +86,7 @@ const SelectLocationPage: React.FC = () => {
           {/*  } else {*/}
           {/*    e.currentTarget.disabled = true;*/}
           {/*  }*/}
-          {/*}}/>*/}
+          {/* }}/>*/}
         </div>
         {
           locationQuery.length !== 0 && <div className={clippy(

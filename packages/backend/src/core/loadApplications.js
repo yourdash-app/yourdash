@@ -24,7 +24,6 @@ function checkIfApplicationIsValidToLoad(applicationName) {
 }
 export function loadApplication(appName, exp, io) {
     if (!checkIfApplicationIsValidToLoad(appName)) {
-        log(logType.ERROR, `${chalk.yellow.bold("CORE")}: Unable to load newly installed application: ${appName}!`);
         return;
     }
     import(`applications/${appName}/backend/index.js`)

@@ -37,8 +37,10 @@ function checkIfApplicationIsValidToLoad( applicationName: string ): boolean {
 }
 
 export function loadApplication( appName: string, exp: ExpressApplication, io: SocketIoServer ) {
+  // check if the application contains a valid backend plugin
   if ( !checkIfApplicationIsValidToLoad( appName ) ) {
-    log( logType.ERROR, `${ chalk.yellow.bold( "CORE" ) }: Unable to load newly installed application: ${ appName }!` );
+    // some applications don't have a backend plugin to load
+    // in this case we return as this is not required
     return;
   }
 

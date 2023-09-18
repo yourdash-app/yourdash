@@ -4,7 +4,8 @@
  */
 
 .applicationIcon {
-  width: calc(var(--app-panel-size) - var(--app-panel-padding));
+  max-width: 100%;
+  max-height: 100%;
   transition: var(--transition);
   aspect-ratio: 1 / 1;
 }
@@ -65,6 +66,10 @@
   .applicationLabel {
     left: calc(var(--app-panel-size));
   }
+
+  .applicationIcon {
+    width: calc(var(--app-panel-size) - var(--app-panel-padding));
+  }
 }
 
 .right {
@@ -72,6 +77,10 @@
 
   .applicationLabel {
     right: calc(var(--app-panel-size));
+  }
+
+  .applicationIcon {
+    width: calc(var(--app-panel-size) - var(--app-panel-padding));
   }
 }
 
@@ -81,6 +90,10 @@
   .applicationLabel {
     bottom: calc(var(--app-panel-size));
   }
+
+  .applicationIcon {
+    height: calc(var(--app-panel-size) - var(--app-panel-padding));
+  }
 }
 
 .top {
@@ -88,5 +101,9 @@
 
   .applicationLabel {
     top: calc(var(--app-panel-size));
+  }
+
+  .applicationIcon {
+    height: calc(var(--app-panel-size) - var(--app-panel-padding));
   }
 }
