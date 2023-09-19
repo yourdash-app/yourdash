@@ -27,13 +27,14 @@ import defineUserDatabaseRoutes, { saveUserDatabases, USER_DATABASES } from "./c
 import loadApplications from "./core/loadApplications.js";
 import startRequestLogger from "./core/logRequests.js";
 import { __internalGetSessionsDoNotUseOutsideOfCore } from "./core/session.js";
+import scheduleTask from "./core/taskScheduler.js";
 import YourDashUser from "./core/user/index.js";
 import { YourDashCoreUserPermissions } from "./core/user/permissions.js";
 import GLOBAL_DB from "./helpers/globalDatabase.js";
 import log, { LOG_HISTORY, logType } from "./helpers/log.js";
 import { generateLogos } from "./helpers/logo.js";
 import centerTerminalOutputOnLine from "./helpers/terminal/centerTerminalOutputOnLine.js";
-import { startUserDatabaseService } from "./helpers/userDatabase.js";
+import { startUserDatabaseService } from "./core/user/database.js";
 
 /*
  * --- Server Startup steps ---

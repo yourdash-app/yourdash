@@ -132,8 +132,8 @@ const LoginAsUser: React.FC<{
         onClick={() => window.location.reload()}
       />
       <Card
-        className={clippy( "fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 gap-2 flex flex-col" +
-                            " animate__animated animate__fadeIn" )}
+        showBorder
+        className={clippy( "fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 gap-2 flex flex-col animate__animated animate__fadeIn" )}
       >
         <img
           alt=""

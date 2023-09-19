@@ -10,7 +10,7 @@ import sharp from "sharp";
 import { hash } from "../../helpers/encryption.js";
 import log, { logType } from "../../helpers/log.js";
 import YourDashSession, { getSessionsForUser } from "../../helpers/session.js";
-import getUserDatabase, { addUserDatabaseToSaveQueue, saveUserDatabaseInstantly } from "../../helpers/userDatabase.js";
+import getUserDatabase, { addUserDatabaseToSaveQueue, saveUserDatabaseInstantly } from "./database.js";
 import { FS_DIRECTORY_PATH } from "../../main.js";
 import { userAvatarSize } from "./avatarSize.js";
 import { yourDashUserPermission } from "./permissions.js";

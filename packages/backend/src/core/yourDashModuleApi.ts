@@ -65,7 +65,7 @@ class YourDashWebsocketManager {
   }
 }
 
-export default class YourDashModuleAPI {
+export default class YourDashModuleApi {
   websocket: YourDashWebsocketManager;
   
   constructor( app: ExpressApplication, httpServer: http.Server<typeof http.IncomingMessage, typeof http.ServerResponse> ) {

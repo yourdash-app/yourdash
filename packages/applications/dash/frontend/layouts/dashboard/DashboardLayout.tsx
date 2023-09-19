@@ -30,7 +30,7 @@ const DashboardLayout: React.FC<IDashboard> = ( {
     >
       <header className={"p-6 pl-8 pr-8 flex flex-col from-container-bg to-transparent bg-gradient-to-b"}>
         <Row>
-          <span className={"text-5xl font-bold"}>
+          <span className={"text-5xl font-bold [text-shadow:#242424bb_0_0_0.75rem,_#24242488_0_0_0.5rem,_#24242444_0_0_0.25rem]"}>
             {
               trans( "LOCALIZED_GREETING", [fullName.first, fullName.last] )
             }

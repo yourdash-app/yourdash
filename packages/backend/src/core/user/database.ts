@@ -3,9 +3,9 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import scheduleTask from "../core/taskScheduler.js";
-import YourDashUser from "../core/user/index.js";
-import KeyValueDatabase from "./keyValueDatabase.js";
+import scheduleTask from "../taskScheduler.js";
+import YourDashUser from "./index.js";
+import KeyValueDatabase from "../../helpers/keyValueDatabase.js";
 import path from "path";
 
 const USER_DATABASES: {
