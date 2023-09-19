@@ -28,7 +28,7 @@ jobs:
       - name: Build website
         run: (cd ./packages/web-client && yarn build)
 
-      - name: Deploy to external repository
+      - name: Deploy to "yourdash.pages.dev" and "yourdash-app.github.io"
         uses: cpina/github-action-push-to-another-repository@main
         env:
           SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY }}
@@ -38,3 +38,11 @@ jobs:
           destination-repository-name: "yourdash-app.github.io"
           user-email: ewsgit@duck.com
           target-branch: main
+
+      - name: Deploy to "ydsh.pages.dev" and "yourdash-app.github.io/yourdash"
+        uses: moodiest/push-to-branch-action@develop
+        env:
+          REPO: self
+          BRANCH: gh-pages
+          FOLDER: packages/web-client/dist/
+          GITHUB_TOKEN: ${{ secrets.SSH_DEPLOY_KEY }}
