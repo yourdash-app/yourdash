@@ -45,4 +45,4 @@ jobs:
           REPO: self
           BRANCH: gh-pages
           FOLDER: packages/web-client/dist/
-          GITHUB_TOKEN: ${{ secrets.SSH_DEPLOY_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
