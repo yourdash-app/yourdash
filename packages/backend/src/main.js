@@ -23,7 +23,7 @@ import GLOBAL_DB from "./helpers/globalDatabase.js";
 import log, { LOG_HISTORY, logType } from "./helpers/log.js";
 import { generateLogos } from "./helpers/logo.js";
 import centerTerminalOutputOnLine from "./helpers/terminal/centerTerminalOutputOnLine.js";
-import { startUserDatabaseService } from "./helpers/userDatabase.js";
+import { startUserDatabaseService } from "./core/user/database.js";
 const FS_DIRECTORY_PATH = path.resolve(path.join(process.cwd(), "./fs/"));
 export { FS_DIRECTORY_PATH };
 const PROCESS_ARGUMENTS = minimist(process.argv.slice(2));
