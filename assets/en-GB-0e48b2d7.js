@@ -1,0 +1,1 @@
+const E="YourDash Endpoint Tester",N="[INTERNAL] This should never happen",R={LABEL:"Send Request"},e={APPLICATION_NAME:E,INTERNAL_ERROR:N,SEND_REQUEST:R};export{E as APPLICATION_NAME,N as INTERNAL_ERROR,R as SEND_REQUEST,e as default};

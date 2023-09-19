@@ -1,0 +1,1 @@
+const A="Subir",o="Crear",s="archivos",T="Atajos",t="Nombre",N="Tipo",c={UPLOAD:A,CREATE:o,APPLICATION_BRANDING:s,SHORTCUTS:T,NAME:t,TYPE:N};export{s as APPLICATION_BRANDING,o as CREATE,t as NAME,T as SHORTCUTS,N as TYPE,A as UPLOAD,c as default};
