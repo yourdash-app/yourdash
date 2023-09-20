@@ -36,14 +36,27 @@ const Card: React.FC<ICard> = ( {
         style={{ ...style }}
         onClick={onClick}
         {...extraProps}
-        className={clippy( styles.component, !unStyledClickable && styles.clickable, level === "secondary" && styles.secondary, level === "tertiary" && styles.tertiary, className, showBorder && styles.border )}
+        className={clippy(
+          styles.component,
+          !unStyledClickable && styles.clickable,
+          level === "secondary" && styles.secondary,
+          level === "tertiary" && styles.tertiary,
+          className,
+          showBorder && styles.border
+        )}
       >
         {children}
       </div>
     );
   } else {
     return (
-      <div {...extraProps} style={style} className={clippy( styles.component, level === "secondary" && styles.secondary, level === "tertiary" && styles.tertiary, className, showBorder && styles.border )}>
+      <div {...extraProps} style={style} className={clippy(
+        styles.component,
+        level === "secondary" && styles.secondary,
+        level === "tertiary" && styles.tertiary,
+        className,
+        showBorder && styles.border
+      )}>
         {children}
       </div>
     );

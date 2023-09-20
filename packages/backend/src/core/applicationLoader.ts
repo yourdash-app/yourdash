@@ -13,27 +13,25 @@ import { type Application as ExpressApplication } from "express";
 import { type Server as SocketIoServer } from "socket.io";
 
 function checkIfApplicationIsValidToLoad( applicationName: string ): boolean {
-  if ( !fsExistsSync( path.resolve( process.cwd(), `../applications/${ applicationName }/backend` ) ) ) {
-    log( logType.ERROR,`${ chalk.yellow.bold( "CORE" ) }: Unknown application: ${ applicationName }!` );
-    return false;
-  }
-  
-  if ( !fsExistsSync( path.resolve( process.cwd(), `../applications/${ applicationName }/backend/index.js` ) ) ) {
-    log( logType.ERROR,`${ chalk.yellow.bold( "CORE" ) }: application ${ applicationName } does not contain an index.ts file!` );
-    return false;
-  }
-  
+  // Required
   if ( !fsExistsSync( path.resolve( process.cwd(), `../applications/${ applicationName }/application.json` ) ) ) {
     log( logType.ERROR,`${ chalk.yellow.bold( "CORE" ) }: application ${ applicationName } does not contain an application.json file!` );
     return false;
   }
   
+  // Required
   if ( !fsExistsSync( path.resolve( process.cwd(), `../applications/${ applicationName }/icon.avif` ) ) ) {
     log( logType.ERROR,`${ chalk.yellow.bold( "CORE" ) }: application ${ applicationName } does not contain an icon.avif file!` );
     return false;
   }
-
-  return true;
+  
+  // Only required if the application needs a backend
+  if ( !fsExistsSync( path.resolve( process.cwd(), `../applications/${ applicationName }/backend` ) ) ) {
+    return false;
+  }
+  
+  // Only required if the application needs a backend
+  return fsExistsSync( path.resolve( process.cwd(), `../applications/${ applicationName }/backend/index.js` ) );
 }
 
 export function loadApplication( appName: string, exp: ExpressApplication, io: SocketIoServer ) {
@@ -59,27 +57,25 @@ export function loadApplication( appName: string, exp: ExpressApplication, io: S
         }
 
         mod.default( {
-          exp: exp, // express exp instance
-          io, // socket.io server instance
-          pluginFilesystemPath: path.resolve( path.join( process.cwd(), `../applications/${ appName }` ) )
+          exp: exp, // express Application
+          io, // socket.io instance
+          pluginFilesystemPath: path.resolve( path.join( process.cwd(), `../applications/${ appName }` ) ),
+          APPLICATION_ID: appName
         } );
         
         log( logType.SUCCESS, `${ chalk.yellow.bold( "CORE" ) }: Initialized application: ${ appName }` );
-        
-        return 1
+        return
       } catch ( err ) {
         log( logType.ERROR, `${ chalk.yellow.bold( "CORE" ) }: Error during application initialization: ${ appName }` );
-        
-        return 0
+        return
       }
     } ).catch( () => {
       log( logType.ERROR, `${ chalk.yellow.bold( "CORE" ) }: Error while loading application: ${ appName }` );
-      
-      return 0
+      return
     } );
 }
 
-export default function loadApplications( exp: ExpressApplication, io: SocketIoServer ) {
+export default function applicationLoader( exp: ExpressApplication, io: SocketIoServer ) {
   if ( fsExistsSync( path.resolve( process.cwd(), "../applications/" ) ) ) {
     const apps = globalDatabase.get( "installedApplications" ) || [];
     if ( apps?.length === 0 ) {

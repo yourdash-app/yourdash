@@ -1,6 +1,5 @@
 import globalDatabase from "backend/src/helpers/globalDatabase.js";
 import YourDashApplication from "backend/src/helpers/applications.js";
-import { base64ToDataUrl } from "backend/src/helpers/base64.js";
 import sharp from "sharp";
 import path from "path";
 import { promises as fs } from "fs";
@@ -8,8 +7,9 @@ import YourDashPanel from "backend/src/core/panel.js";
 import { FS_DIRECTORY_PATH } from "../../main.js";
 import authenticatedImage, { authenticatedImageType } from "../authenticatedImage.js";
 export default function defineCorePanelRoutes(exp) {
-    exp.get("/core/panel/applications", async (_req, res) => {
+    exp.get("/core/panel/applications", async (req, res) => {
         res.set("Cache-Control", "no-store");
+        const { username } = req.headers;
         Promise.all((globalDatabase.get("installedApplications")).map(async (app) => {
             const application = await new YourDashApplication(app).read();
             return new Promise(async (resolve) => {
@@ -21,7 +21,7 @@ export default function defineCorePanelRoutes(exp) {
                         name: application.getName(),
                         displayName: application.getDisplayName(),
                         description: application.getDescription(),
-                        icon: base64ToDataUrl(buf.toString("base64"))
+                        icon: authenticatedImage(username, authenticatedImageType.BASE64, buf.toString("base64"))
                     });
                 });
             });
@@ -31,12 +31,13 @@ export default function defineCorePanelRoutes(exp) {
         res.set("Cache-Control", "no-store");
         const { username } = req.headers;
         const panel = new YourDashPanel(username);
-        return res.json((await panel.getQuickShortcuts()).map(shortcut => {
+        return res.json(await Promise.all((await panel.getQuickShortcuts()).map(async (shortcut) => {
+            const application = await new YourDashApplication(shortcut).read();
             return {
                 name: shortcut,
-                icon: authenticatedImage(username, authenticatedImageType.FILE, path.resolve(path.join(process.cwd(), `../applications/${shortcut}/icon.avif`)))
+                icon: authenticatedImage(username, authenticatedImageType.FILE, await application.getIconPath())
             };
-        }));
+        })));
     });
     exp.delete("/core/panel/quick-shortcuts/:ind", async (req, res) => {
         res.set("Cache-Control", "no-store");

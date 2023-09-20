@@ -49,45 +49,30 @@ const AutocompletedTextInput: React.FC<IAutocompletedTextInput> = ( {
         }` }
         type={ "text" }
         onFocus={ e => {
-          if (
-            options.includes( e.currentTarget.value ) && e.currentTarget.value !== "/"
-          ) {
+          if ( options.includes( e.currentTarget.value ) && e.currentTarget.value !== "/" ) {
             setPossibleOptions( [] )
           } else {
-            setPossibleOptions(
-              options.filter( opt => {
-                return opt.includes( e.currentTarget.value )
-              } )
-            )
+            setPossibleOptions( options.filter( opt => {
+              return opt.includes( e.currentTarget.value )
+            } ) )
           }
         } }
-        onBlur={ e => {
-          if ( onBlur ) {
-            onBlur( e )
-          }
-        } }
-        onKeyDown={ e => {
-          return onKeyDown?.( e )
-        } }
+        onBlur={ e => onBlur?.( e ) }
+        onKeyDown={ e =>  onKeyDown?.( e ) }
         ref={ ref }
         onChange={ e => {
           const value = e.currentTarget.value
 
-          if ( !value ) {
+          if ( !value )
             return setValid( false )
-          }
-
+          
           onChange( value )
 
-          setPossibleOptions(
-            options.filter( opt => {
-              return opt.includes( value )
-            } )
-          )
+          setPossibleOptions( options.filter( opt => {
+            return opt.includes( value )
+          } ) )
 
-          if (
-            options.includes( value )
-          ) {
+          if ( options.includes( value ) ) {
             if ( value !== "/" ) {
               setPossibleOptions( [] )
             }
