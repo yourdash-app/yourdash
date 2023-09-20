@@ -17,7 +17,9 @@ const Button: React.FC<IButton> = ( {
     type="button"
     {...extraProps}
     className={`${ styles.component } ${ className }`}
-  >{children}</button>
+  >
+    {children}
+  </button>
 );
 
 export default Button;

@@ -40,7 +40,7 @@ const ApplicationGrid: React.FC<{ applications: IPanelApplicationsLauncherApplic
         >
           <img
             className={styles.itemIcon}
-            src={application.icon}
+            src={`${ csi.getInstanceUrl() }${application.icon}`}
             alt=""
           />
           <span className={styles.itemLabel}>{application.name}</span>

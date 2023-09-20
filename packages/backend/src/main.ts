@@ -24,7 +24,7 @@ import defineLoginEndpoints from "./core/endpoints/login.js";
 import defineCorePanelRoutes from "./core/endpoints/panel.js";
 import defineUserEndpoints from "./core/endpoints/user.js";
 import defineUserDatabaseRoutes, { saveUserDatabases, USER_DATABASES } from "./core/endpoints/userDatabase.js";
-import loadApplications from "./core/loadApplications.js";
+import applicationLoader from "./core/applicationLoader.js";
 import startRequestLogger from "./core/logRequests.js";
 import { __internalGetSessionsDoNotUseOutsideOfCore } from "./core/session.js";
 import scheduleTask from "./core/taskScheduler.js";
@@ -487,4 +487,4 @@ defineUserEndpoints( exp )
 // start core services
 startUserDatabaseService()
 
-loadApplications( exp, socketIo );
+applicationLoader( exp, socketIo );

@@ -22,16 +22,22 @@ class YDApplication {
     getDependencies() {
         return this.application.dependencies || [];
     }
-    getIcon() {
+    async getIcon() {
         try {
-            return fs.readFile(path.resolve(process.cwd(), `../applications/${this.name}/icon.avif`));
+            return await fs.readFile(path.resolve(process.cwd(), `../applications/${this.name}/icon.avif`));
         }
         catch (_e) {
-            return fs.readFile(path.resolve(process.cwd(), "./src/assets/placeholder_application_icon.png"));
+            return await fs.readFile(path.resolve(process.cwd(), "./src/assets/placeholder_application_icon.png"));
         }
     }
-    getIconPath() {
-        return path.resolve(process.cwd(), `../applications/${this.name}/icon.avif`);
+    async getIconPath() {
+        try {
+            await fs.access(path.resolve(process.cwd(), `../applications/${this.name}/icon.avif`));
+            return path.resolve(process.cwd(), `../applications/${this.name}/icon.avif`);
+        }
+        catch (_e) {
+            return path.resolve(process.cwd(), "./src/assets/placeholder_application_icon.png");
+        }
     }
     getStoreBackground() {
         try {

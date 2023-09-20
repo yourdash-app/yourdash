@@ -16,8 +16,9 @@ import authenticatedImage, { authenticatedImageType } from "../authenticatedImag
 import IPanelApplicationsLauncherApplication from "shared/core/panel/applicationsLauncher/application.js";
 
 export default function defineCorePanelRoutes( exp: ExpressApplication ) {
-  exp.get( "/core/panel/applications", async ( _req, res ) => {
+  exp.get( "/core/panel/applications", async ( req, res ) => {
     res.set( "Cache-Control", "no-store" );
+    const { username } = req.headers as { username: string }
     
     Promise.all( ( globalDatabase.get( "installedApplications" ) ).map( async ( app: any ) => {
       const application = await new YourDashApplication( app ).read();
@@ -36,7 +37,8 @@ export default function defineCorePanelRoutes( exp: ExpressApplication ) {
             name: application.getName(),
             displayName: application.getDisplayName(),
             description: application.getDescription(),
-            icon: base64ToDataUrl( buf.toString( "base64" ) )
+            // TODO: change from base 64 to file and pre-process assets instead of at request time
+            icon: authenticatedImage( username, authenticatedImageType.BASE64, buf.toString( "base64" ) )
           } );
         } );
       } );
@@ -50,16 +52,18 @@ export default function defineCorePanelRoutes( exp: ExpressApplication ) {
     
     const panel = new YourDashPanel( username );
     
-    return res.json( ( await panel.getQuickShortcuts() ).map( shortcut => {
+    return res.json( await Promise.all( ( await panel.getQuickShortcuts() ).map( async shortcut => {
+      const application = await new YourDashApplication( shortcut ).read()
+      
       return {
         name: shortcut,
         icon: authenticatedImage(
           username,
           authenticatedImageType.FILE,
-          path.resolve( path.join( process.cwd(), `../applications/${ shortcut }/icon.avif` ) )
+          await application.getIconPath()
         )
       };
-    } ) );
+    } ) ) );
   } );
   
   exp.delete( "/core/panel/quick-shortcuts/:ind", async ( req, res ) => {
