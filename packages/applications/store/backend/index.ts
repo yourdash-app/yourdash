@@ -9,17 +9,14 @@ import { type IStoreCategory } from "shared/apps/store/storeCategory.js";
 import { getInstanceLogoBase64 } from "backend/src/helpers/logo.js";
 import getAllCategories, { getAllApplicationsFromCategory } from "./helpers/categories.js";
 import GLOBAL_DB from "backend/src/helpers/globalDatabase.js";
-import { loadApplication } from "backend/src/core/loadApplications.js";
+import { loadApplication } from "backend/src/core/applicationLoader.js";
 import path from "path";
 import authenticatedImage, { authenticatedImageType } from "backend/src/core/authenticatedImage.js";
 import { IYourDashStoreApplication } from "shared/apps/store/storeApplication.js";
 
 const promotedApplications: string[] = ["dash", "store"];
 
-const main: YourDashApplicationServerPlugin = ( {
-  exp,
-  io
-} ) => {
+const main: YourDashApplicationServerPlugin = ( { exp, io } ) => {
   exp.get( "/app/store/promoted/applications", ( _req, res ) => {
     Promise.all(
       promotedApplications.map( async ( app ): Promise<StorePromotedApplication> => {
@@ -77,7 +74,7 @@ const main: YourDashApplicationServerPlugin = ( {
           return {
             id: applicationName,
             displayName: application.getDisplayName() || applicationName,
-            icon: authenticatedImage( username, authenticatedImageType.FILE, application.getIconPath() ) || authenticatedImage( username, authenticatedImageType.FILE,  path.join( process.cwd(), "" ) )
+            icon: authenticatedImage( username, authenticatedImageType.FILE, await application.getIconPath() )
           };
         } )
       )
@@ -179,7 +176,7 @@ const main: YourDashApplicationServerPlugin = ( {
       return res.sendFile( path.resolve( process.cwd(), "./assets/placeholder_application_icon.png" ) );
     }
     const application = await unreadApplication.read();
-    return res.sendFile( application.getIconPath() );
+    return res.sendFile( await application.getIconPath() );
   } );
 };
 

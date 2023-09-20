@@ -14,7 +14,7 @@ import defineLoginEndpoints from "./core/endpoints/login.js";
 import defineCorePanelRoutes from "./core/endpoints/panel.js";
 import defineUserEndpoints from "./core/endpoints/user.js";
 import defineUserDatabaseRoutes, { saveUserDatabases, USER_DATABASES } from "./core/endpoints/userDatabase.js";
-import loadApplications from "./core/loadApplications.js";
+import applicationLoader from "./core/applicationLoader.js";
 import startRequestLogger from "./core/logRequests.js";
 import { __internalGetSessionsDoNotUseOutsideOfCore } from "./core/session.js";
 import YourDashUser from "./core/user/index.js";
@@ -296,5 +296,5 @@ defineUserDatabaseRoutes(exp);
 defineCorePanelRoutes(exp);
 defineUserEndpoints(exp);
 startUserDatabaseService();
-loadApplications(exp, socketIo);
+applicationLoader(exp, socketIo);
 //# sourceMappingURL=main.js.map

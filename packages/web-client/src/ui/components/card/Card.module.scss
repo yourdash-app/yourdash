@@ -37,14 +37,6 @@
   place-items: center;
 }
 
-.border {
-  border: solid 0.125rem rgb(var(--container-border));
-}
-
-.border {
-  border: solid 0.125rem rgb(var(--container-border));
-}
-
 .clickable {
   cursor: pointer;
   user-select: none;
@@ -54,6 +46,10 @@
     border: solid 0.125rem #ffffff55;
   }
 
+  &:active {
+    border: solid 0.125rem #ffffff33;
+  }
+
   &.secondary {
     background-color: rgb(var(--container-secondary-bg));
     color: rgb(var(--container-secondary-fg));
@@ -61,6 +57,10 @@
 
     &:hover {
       border: solid 0.125rem #ffffff55;
+    }
+
+    &:active {
+      border: solid 0.125rem #ffffff33;
     }
   }
 
@@ -73,7 +73,15 @@
     &:hover {
       border: solid 0.125rem #ffffff55;
     }
+
+    &:active {
+      border: solid 0.125rem #ffffff33;
+    }
   }
 
   place-items: center;
+}
+
+.border {
+  border: solid 0.125rem rgb(var(--container-border));
 }

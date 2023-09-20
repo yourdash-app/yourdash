@@ -23,10 +23,7 @@ const authenticatedImages: {
 
 export function startAuthenticatedImageHelper( app: ExpressApplication ) {
   app.get( "/core/authenticated-img/:username/:id", ( req, res ) => {
-    const {
-      username,
-      id
-    } = req.params;
+    const { username, id } = req.params;
     
     const image = authenticatedImages?.[username]?.[id];
     
