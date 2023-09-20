@@ -38,7 +38,7 @@ export default class YourDashPanel {
     return this;
   }
 
-  async getQuickShortcuts(): Promise<YourDashPanelQuickShortcut[]> {
+  async getQuickShortcuts(): Promise<string[]> {
     const user = new YourDashUser( this.username );
   
     const db = await user.getDatabase()

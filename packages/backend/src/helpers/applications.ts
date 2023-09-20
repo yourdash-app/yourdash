@@ -42,17 +42,22 @@ class YDApplication {
   }
   
   // Returns a Buffer containing the data for the application's icon
-  getIcon(): Promise<Buffer> {
+  async getIcon(): Promise<Buffer> {
     try {
-      return fs.readFile( path.resolve( process.cwd(), `../applications/${ this.name }/icon.avif` ) );
+      return await fs.readFile( path.resolve( process.cwd(), `../applications/${ this.name }/icon.avif` ) );
     } catch ( _e ) {
-      return fs.readFile( path.resolve( process.cwd(), "./src/assets/placeholder_application_icon.png" ) );
+      return await fs.readFile( path.resolve( process.cwd(), "./src/assets/placeholder_application_icon.png" ) );
     }
   }
   
   // Returns a string with the path to the application's icon
-  getIconPath(): string {
-    return path.resolve( process.cwd(), `../applications/${ this.name }/icon.avif` );
+  async getIconPath(): Promise<string> {
+    try {
+      await fs.access( path.resolve( process.cwd(), `../applications/${ this.name }/icon.avif` ) )
+      return path.resolve( process.cwd(), `../applications/${ this.name }/icon.avif` );
+    } catch ( _e ) {
+      return path.resolve( process.cwd(), "./src/assets/placeholder_application_icon.png" )
+    }
   }
   
   // Returns a Buffer containing the data for the application's store page banner
@@ -136,11 +141,13 @@ export default class YourDashApplication {
 type YourDashApplicationServerPlugin = ( {
   exp,
   io,
-  pluginFilesystemPath
+  pluginFilesystemPath,
+  APPLICATION_ID
 }: {
   exp: ExpressApplication,
   io: SocketServer,
-  pluginFilesystemPath: string
+  pluginFilesystemPath: string,
+  readonly APPLICATION_ID: string
 } ) => any;
 
 export { type YourDashApplicationServerPlugin };

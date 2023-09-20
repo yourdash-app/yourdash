@@ -46,7 +46,7 @@ export default function useTranslate( application: string ) {
   }, [] );
   
   return ( message: string, params?: string[] ) => {
-    let output = getValue( messages, message ) || message;
+    let output = getValue( messages, message ) || "";
     params?.forEach( ( p, i ) => {
       output = output?.replace( `{${ i }}`, p );
     } );
