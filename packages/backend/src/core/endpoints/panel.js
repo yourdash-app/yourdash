@@ -13,7 +13,9 @@ export default function defineCorePanelRoutes(exp) {
         Promise.all((globalDatabase.get("installedApplications")).map(async (app) => {
             const application = await new YourDashApplication(app).read();
             return new Promise(async (resolve) => {
-                sharp(await fs.readFile(path.resolve(process.cwd(), `../applications/${app}/icon.avif`))).resize(88, 88).toBuffer((err, buf) => {
+                sharp(await fs.readFile(await application.getIconPath()))
+                    .resize(88, 88)
+                    .toBuffer((err, buf) => {
                     if (err) {
                         resolve({ error: true });
                     }
@@ -40,11 +42,16 @@ export default function defineCorePanelRoutes(exp) {
         })));
     });
     exp.delete("/core/panel/quick-shortcuts/:ind", async (req, res) => {
-        res.set("Cache-Control", "no-store");
+        res.set("Cache-Control", "");
         const { ind } = req.params;
         const { username } = req.headers;
         const panel = new YourDashPanel(username);
-        await panel.removeQuickShortcut(parseInt(ind, 10));
+        try {
+            await panel.removeQuickShortcut(parseInt(ind, 10));
+        }
+        catch (e) {
+            return res.json({ success: false, error: "Unable to remove shortcut" });
+        }
         return res.json({ success: true });
     });
     exp.post("/core/panel/quick-shortcuts/create", async (req, res) => {
