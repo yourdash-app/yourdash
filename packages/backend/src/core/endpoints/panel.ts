@@ -23,24 +23,20 @@ export default function defineCorePanelRoutes( exp: ExpressApplication ) {
     Promise.all( ( globalDatabase.get( "installedApplications" ) ).map( async ( app: any ) => {
       const application = await new YourDashApplication( app ).read();
       return new Promise( async resolve => {
-        sharp(
-          await fs.readFile( path.resolve(
-            process.cwd(),
-            `../applications/${ app }/icon.avif`
-          ) )
-        ).resize( 88, 88 ).toBuffer( ( err, buf ) => {
-          if ( err ) {
-            resolve( { error: true } );
-          }
+        sharp( await fs.readFile( await application.getIconPath() ) )
+          .resize( 88, 88 )
+          .toBuffer( ( err, buf ) => {
+            if ( err ) {
+              resolve( { error: true } );
+            }
           
-          resolve( <IPanelApplicationsLauncherApplication>{
-            name: application.getName(),
-            displayName: application.getDisplayName(),
-            description: application.getDescription(),
-            // TODO: change from base 64 to file and pre-process assets instead of at request time
-            icon: authenticatedImage( username, authenticatedImageType.BASE64, buf.toString( "base64" ) )
+            resolve( <IPanelApplicationsLauncherApplication>{
+              name: application.getName(),
+              displayName: application.getDisplayName(),
+              description: application.getDescription(),
+              icon: authenticatedImage( username, authenticatedImageType.BASE64, buf.toString( "base64" ) ) // TODO: change from base 64 to file and pre-process assets instead of at request time
+            } );
           } );
-        } );
       } );
     } ) ).then( resp => res.json( resp ) );
   } );
@@ -67,16 +63,17 @@ export default function defineCorePanelRoutes( exp: ExpressApplication ) {
   } );
   
   exp.delete( "/core/panel/quick-shortcuts/:ind", async ( req, res ) => {
-    res.set( "Cache-Control", "no-store" );
+    res.set( "Cache-Control", "" );
     
     const { ind } = req.params;
-    const { username } = req.headers as {
-      username: string
-    };
+    const { username } = req.headers as { username: string };
     
     const panel = new YourDashPanel( username );
-    
-    await panel.removeQuickShortcut( parseInt( ind, 10 ) );
+    try {
+      await panel.removeQuickShortcut( parseInt( ind, 10 ) );
+    } catch ( e ) {
+      return res.json( { success: false, error: "Unable to remove shortcut" } );
+    }
     
     return res.json( { success: true } );
   } );
