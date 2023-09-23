@@ -19,10 +19,9 @@ function checkIfApplicationIsValidToLoad( applicationName: string ): boolean {
     return false;
   }
   
-  // Required
+  // Not Required ( use 'placeholder.avif' instead)
   if ( !fsExistsSync( path.resolve( process.cwd(), `../applications/${ applicationName }/icon.avif` ) ) ) {
     log( logType.ERROR,`${ chalk.yellow.bold( "CORE" ) }: application ${ applicationName } does not contain an icon.avif file!` );
-    return false;
   }
   
   // Only required if the application needs a backend
