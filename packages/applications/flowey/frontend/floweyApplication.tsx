@@ -4,15 +4,22 @@
  */
 
 import * as React from "react";
-import { Button, Card } from "web-client/src/ui/index";
+import { Card } from "web-client/src/ui/index";
 
 const FloweyApplication: React.FC = () => {
   return (
     <main className={"grid grid-cols-3 gap-2"}>
-      <header className={"col-span-3 h-96 flex items-center md:pl-24 justify-center md:justify-normal bg-cover bg-center"} style={{ backgroundImage: "url(/assets/background.jpg)" }}>
+      <header
+        className={"col-span-3 h-96 flex items-center md:pl-24 justify-center md:justify-normal bg-cover bg-center"}
+        style={{ backgroundImage: "url(/assets/background.jpg)" }}
+      >
         <div className={"flex flex-col gap-1"}>
-          <h1 className={"text-6xl font-black tracking-wide [text-shadow:#242424bb_0_0_0.75rem,_#24242488_0_0_0.5rem,_#24242444_0_0_0.25rem]"}>Flowey</h1>
-          <span className={"[text-shadow:#242424bb_0_0_0.75rem,_#24242488_0_0_0.5rem,_#24242444_0_0_0.25rem] font-semibold tracking-wide"}>Flowchart and blockout tool</span>
+          <h1 className={"text-6xl font-black tracking-wide [text-shadow:#242424bb_0_0_0.75rem,_#24242488_0_0_0.5rem,_#24242444_0_0_0.25rem]"}>
+            Flowey
+          </h1>
+          <span className={"[text-shadow:#242424bb_0_0_0.75rem,_#24242488_0_0_0.5rem,_#24242444_0_0_0.25rem] font-semibold tracking-wide"}>
+            Flowchart and block-out tool
+          </span>
           (Placeholder background)
         </div>
       </header>

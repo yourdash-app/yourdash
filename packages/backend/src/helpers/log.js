@@ -1,5 +1,7 @@
 import chalk from "chalk";
 import globalDatabase from "./globalDatabase.js";
+import sourceMapSupport from "source-map-support";
+sourceMapSupport.install();
 export var logType;
 (function (logType) {
     logType[logType["INFO"] = 0] = "INFO";
@@ -32,11 +34,11 @@ export default function log(type, ...message) {
         default:
             break;
     }
-    logParams.push(...message);
     if (type === logType.ERROR) {
-        logParams.push("\n" + new Error(...message).stack);
+        logParams.push(new Error(message.toString()).stack.slice(7));
     }
     else {
+        logParams.push(...message);
         LOG_HISTORY.push({
             type: type === logType.INFO
                 ? "INFO"

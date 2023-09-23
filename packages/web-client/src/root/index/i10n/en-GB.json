@@ -21,6 +21,11 @@
       "TITLE": "Open sourced",
       "CONTENT": "See how YourDash works and help improve it for everyone",
       "ACTION": "Learn more"
+    },
+    "PROJECTS": {
+      "TITLE": "Projects",
+      "CONTENT": "Checkout some other YourDash projects",
+      "ACTION": "Learn more"
     }
   },
   "TAGLINES": [
