@@ -5,6 +5,9 @@
 
 import chalk from "chalk";
 import globalDatabase from "./globalDatabase.js";
+import sourceMapSupport from "source-map-support"
+
+sourceMapSupport.install()
 
 export enum logType {
   INFO,
@@ -24,7 +27,7 @@ export const LOG_HISTORY: {
  * @param {...any} message - The message(s) to log.
  * @returns {void}
  */
-export default function log( type: logType, ...message: any[] ) {
+export default function log( type: logType, ...message: unknown[] ): void {
   const logParams = [];
   
   if ( globalDatabase.get( "settings:log_should_log_time" ) ) {
@@ -53,11 +56,11 @@ export default function log( type: logType, ...message: any[] ) {
     break;
   }
   
-  logParams.push( ...message );
-  
   if ( type === logType.ERROR ) {
-    logParams.push( "\n" + new Error( ...message ).stack )
+    logParams.push( new Error( message.toString() ).stack.slice( 7 ) )
   } else {
+    logParams.push( ...message );
+  
     LOG_HISTORY.push( {
       type: type === logType.INFO
         ? "INFO"
