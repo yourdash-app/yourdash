@@ -24,8 +24,8 @@ import RightClickMenuRootContainer from "./ui/components/rightClickMenu/RightCli
 import "./tailwindcss.css";
 
 const AppRouter = loadable( () => import( "./app/AppRouter" ) );
-
 const DocsRouter = loadable( () => import( "./root/docs/DocsRouter" ) );
+const ProjectsRouter = loadable( () => import( "./root/projects/ProjectsRouter" ) );
 
 function main() {
   ReactDOM.createRoot( document.getElementById( "root" ) as HTMLElement ).render(
@@ -33,11 +33,24 @@ function main() {
       <RouterProvider
         router={createHashRouter(
           createRoutesFromElements(
-            <Route errorElement={<ErrorElement/>}>
-              <Route element={<RootLayout/>}>
-                <Route index element={<Index/>}/>
-                <Route path={"/signup"} element={<ComingSoon/>}/>
-                <Route path={"docs/*"} element={<DocsLayout/>}>
+            <Route
+              errorElement={<ErrorElement/>}
+            >
+              <Route
+                element={<RootLayout/>}
+              >
+                <Route
+                  index
+                  element={<Index/>}
+                />
+                <Route
+                  path={"/signup"}
+                  element={<ComingSoon/>}
+                />
+                <Route
+                  path={"docs/*"}
+                  element={<DocsLayout/>}
+                >
                   <Route
                     path={"*"}
                     element={(
@@ -46,13 +59,38 @@ function main() {
                   />
                 </Route>
               </Route>
+              <Route
+                path={"projects/*"}
+                element={<ProjectsRouter/>}
+              />
+              <Route
+                path={"project/*"}
+                element={<ProjectsRouter/>}
+              />
+              <Route
+                path={"proj/*"}
+                element={<ProjectsRouter/>}
+              />
               <Route path={"/login"}>
-                <Route index element={<LoginPage/>}/>
-                <Route path={"server"} element={<ServerLoginPage/>}/>
+                <Route
+                  index
+                  element={<LoginPage/>}
+                />
+                <Route
+                  path={"server"}
+                  element={<ServerLoginPage/>}
+                />
               </Route>
-              <Route path={"app"}>
-                <Route element={<AppLayout/>}>
-                  <Route index element={<ApplicationRedirectToDash/>}/>
+              <Route
+                path={"app"}
+              >
+                <Route
+                  element={<AppLayout/>}
+                >
+                  <Route
+                    index
+                    element={<ApplicationRedirectToDash/>}
+                  />
                   <Route
                     path={"a/*"}
                     element={<AppRouter/>}
