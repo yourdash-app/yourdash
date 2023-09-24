@@ -48,7 +48,7 @@ const WeatherApplicationDaysCarousel: React.FC<{
                 } after:font-light after:text-sm after:justify-self-start flex`
               }>{ date.getDate() }</span>
             </h2>
-            <img className={"w-12"} alt={""} src={getWeatherIconFromState( weatherData.daily.weatherState[index] )}/>
+            <img className={"w-16"} alt={""} src={getWeatherIconFromState( weatherData.daily.weatherState[index] )}/>
           </div>
           <div>
             <div className={"font-black text-3xl flex gap-1 items-center"}>

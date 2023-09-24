@@ -6,7 +6,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslateHomePage } from "web-client/src/helpers/i10n";
-import { Button, Card, MajorButton } from "../../ui";
+import { MajorButton } from "../../ui";
 import KeyPointsCard from "./components/content/KeyPointsCard";
 import IndexPageHero from "./components/Hero/Hero";
 
@@ -16,7 +16,7 @@ const Index: React.FC = () => {
   
   return ( <>
     <IndexPageHero />
-    <main className={ "max-w-6xl ml-auto mr-auto grid xl:grid-cols-3 gap-2 grid-cols-2" }>
+    <main className={ "max-w-6xl ml-auto mr-auto grid xl:grid-cols-3 gap-2 grid-cols-2 pb-12" }>
       <section
         className={ "lg:flex-row flex-col pt-8 flex lg:justify-between items-center gap-4 w-full pl-8 pr-8 mb-10 xl:col-span-3 col-span-2" }
       >
@@ -31,7 +31,7 @@ const Index: React.FC = () => {
             </span>
           </span>
           <MajorButton onClick={ () => {
-            navigate( "/docs/get-started" );
+            navigate( "/docs/faq" );
           } }
           >
             { trans( "SECTIONS.HOST_YOUR_OWN.ACTION" ) }
@@ -48,7 +48,7 @@ const Index: React.FC = () => {
         action={ {
           label: trans( "SECTIONS.LIMITLESS_PERSONALISATION.ACTION" ),
           onClick: () => {
-            navigate( "/docs/get-started" );
+            navigate( "/docs/faq" );
           }
         }}
       />
@@ -58,7 +58,7 @@ const Index: React.FC = () => {
         action={ {
           label: trans( "SECTIONS.OPEN_SOURCED.ACTION" ),
           onClick: () => {
-            navigate( "/docs/get-started" );
+            navigate( "/docs/faq" );
           }
         }}
       />
