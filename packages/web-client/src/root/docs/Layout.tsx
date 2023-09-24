@@ -27,7 +27,7 @@ const DocsLayout: React.FC = () => {
             icon: YourDashIcon.Info,
             label: "Get Started",
             onClick() {
-              navigate( "/docs/get-started" );
+              navigate( "/docs/faq" );
             }
           },
           {
