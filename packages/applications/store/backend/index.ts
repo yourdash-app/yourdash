@@ -3,16 +3,16 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { type StorePromotedApplication } from "shared/apps/store/storePromotedApplication.js";
-import YourDashApplication, { getAllApplications, type YourDashApplicationServerPlugin } from "backend/src/helpers/applications.js";
-import { type IStoreCategory } from "shared/apps/store/storeCategory.js";
-import { getInstanceLogoBase64 } from "backend/src/helpers/logo.js";
-import getAllCategories, { getAllApplicationsFromCategory } from "./helpers/categories.js";
-import GLOBAL_DB from "backend/src/helpers/globalDatabase.js";
-import { loadApplication } from "backend/src/core/applicationLoader.js";
-import path from "path";
 import authenticatedImage, { authenticatedImageType } from "backend/src/core/authenticatedImage.js";
+import YourDashApplication, { getAllApplications, type YourDashApplicationServerPlugin } from "backend/src/helpers/applications.js";
 import { IYourDashStoreApplication } from "shared/apps/store/storeApplication.js";
+import { IStoreCategory } from "shared/apps/store/storeCategory.js";
+import { type StorePromotedApplication } from "shared/apps/store/storePromotedApplication.js";
+import getAllCategories, { getAllApplicationsFromCategory } from "./helpers/categories.js";
+import path from "path"
+import globalDatabase from "backend/src/helpers/globalDatabase.js"
+import { getInstanceLogoBase64 } from "backend/src/helpers/logo.js"
+import { loadApplication } from "backend/src/core/applicationLoader.js";
 
 const promotedApplications: string[] = ["dash", "store"];
 
@@ -82,6 +82,7 @@ const main: YourDashApplicationServerPlugin = ( { exp, io } ) => {
   } );
   
   exp.get( "/app/store/category/:id", async ( req, res ) => {
+    const { username } = req.headers as { username: string }
     const { id } = req.params;
     
     if ( !id ) {
@@ -106,7 +107,7 @@ const main: YourDashApplicationServerPlugin = ( { exp, io } ) => {
       const application = await new YourDashApplication( app ).read();
       applicationsOutput.push( {
         name: application.getName(),
-        icon: `data:image/avif;base64,${ ( await application.getIcon() ).toString( "base64" ) }`,
+        icon: authenticatedImage( username, authenticatedImageType.FILE, await application.getIconPath() ),
         displayName: application.getDisplayName()
       } );
     } ) );
@@ -153,7 +154,7 @@ const main: YourDashApplicationServerPlugin = ( { exp, io } ) => {
     }
     const application = await applicationUnread.read();
     
-    GLOBAL_DB.set( "installedApplications", [...GLOBAL_DB.get( "installedApplications" ), id, ...application.getDependencies()] );
+    globalDatabase.set( "installedApplications", [ ...globalDatabase.get( "installedApplications" ), id, ...application.getDependencies()] );
     loadApplication( id, exp, io );
     
     return res.json( { success: true } );
@@ -165,7 +166,7 @@ const main: YourDashApplicationServerPlugin = ( { exp, io } ) => {
     if ( !application.exists() ) {
       return res.json( { error: true } );
     }
-    GLOBAL_DB.set( "installedApplications", GLOBAL_DB.get( "installedApplications" ).filter( app => app !== id ) );
+    globalDatabase.set( "installedApplications", globalDatabase.get( "installedApplications" ).filter( app => app !== id ) );
     return res.json( { success: true } );
   } );
   

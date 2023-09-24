@@ -7,12 +7,16 @@ import * as React from "react";
 import SettingCategoryComponent from "../../components/SettingCategoryComponent";
 import BasePageLayout from "../../components/BasePageLayout";
 import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
+import SettingsPersonalServerAcceleratorSection from "./sections/SettingsPersonalServerAcceleratorSection";
+import SettingsStoreSection from "./sections/SettingsStoreSection";
 
 const Index: React.FC = () => (
   <BasePageLayout
     title={"Admin tools"}
   >
-    <SettingCategoryComponent
+    {
+      /*
+      <SettingCategoryComponent
       href={"https://google.com"}
       description={"Sample text"}
       title={"Sample text"}
@@ -38,6 +42,10 @@ const Index: React.FC = () => (
       title={"Sample text"}
       icon={YourDashIcon.Tools}
     />
+    */
+    }
+    <SettingsPersonalServerAcceleratorSection/>
+    <SettingsStoreSection/>
   </BasePageLayout>
 );
 

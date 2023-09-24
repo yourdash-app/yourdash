@@ -9,6 +9,7 @@ import csi from "web-client/src/helpers/csi";
 import { type IStoreCategory } from "shared/apps/store/storeCategory";
 import { Spinner, Card, IconButton } from "web-client/src/ui";
 import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
+import StoreApplicationComponent from "../component/StoreApplicationComponent";
 
 const StoreCategoryPage: React.FC = () => {
   const navigate = useNavigate();
@@ -57,14 +58,12 @@ const StoreCategoryPage: React.FC = () => {
               <div className={"w-full max-h-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-8 animate__animated animate__fadeIn animate__250ms"}>
                 {
                   categoryData && categoryData.applications.map( application => (
-                    <Card
+                    <StoreApplicationComponent
                       key={application.name}
-                      className={"flex items-center gap-2 text-2xl font-semibold tracking-wide"}
-                      onClick={() => navigate( `/app/a/store/app/${ application.name }` )}
-                    >
-                      <img alt={""} src={application.icon} className={"h-16 aspect-square"}/>
-                      <span>{application.displayName}</span>
-                    </Card>
+                      displayName={application.displayName}
+                      id={application.name}
+                      icon={application.icon}
+                    />
                   ) )
                 }
               </div>
