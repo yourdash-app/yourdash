@@ -50,13 +50,6 @@ const SettingsLayout: React.FC = () => {
             onClick() {
               navigate( "/app/a/settings/admin" );
             }
-          },
-          {
-            icon: YourDashIcon.Code,
-            label: "Developer tools",
-            onClick() {
-              navigate( "/app/a/settings/developer" );
-            }
           }
         ]}
       />

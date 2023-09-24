@@ -22,6 +22,7 @@ export default function defineCorePanelRoutes( exp: ExpressApplication ) {
     
     Promise.all( ( globalDatabase.get( "installedApplications" ) ).map( async ( app: any ) => {
       const application = await new YourDashApplication( app ).read();
+
       return new Promise( async resolve => {
         sharp( await fs.readFile( await application.getIconPath() ) )
           .resize( 88, 88 )
