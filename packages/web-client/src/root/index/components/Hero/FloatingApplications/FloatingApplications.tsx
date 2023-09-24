@@ -15,11 +15,11 @@ const IndexPageHeroApplications: React.FC = () => {
       position={0}
     />
     <FloatingApplication
-      src={"/assets/promo-apps/checklist.png"}
+      src={"/assets/promo-apps/organization.png"}
       position={1}
     />
     <FloatingApplication
-      src={"/assets/promo-apps/code-studio.png"}
+      src={"/assets/promo-apps/code_studio.png"}
       position={2}
     />
     <FloatingApplication

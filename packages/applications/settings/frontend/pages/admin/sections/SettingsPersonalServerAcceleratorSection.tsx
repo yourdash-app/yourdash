@@ -5,7 +5,7 @@
 
 import React, { useState, useEffect } from "react";
 import { IYourDashSession, YOURDASH_SESSION_TYPE } from "shared/core/session";
-import { Button, Card, Icon, Row } from "web-client/src/ui";
+import { Button, Card, Icon, Row } from "web-client/src/ui/index";
 import csi from "web-client/src/helpers/csi";
 import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
 
