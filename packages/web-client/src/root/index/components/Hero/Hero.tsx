@@ -3,9 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
-import { useTranslateHomePage } from "../../../../helpers/i10n";
+import React from "react";
 import { Link } from "react-router-dom";
 import FloatingApplications from "./FloatingApplications/FloatingApplications";
 import IndexPageHeroTaglines from "./Taglines";
