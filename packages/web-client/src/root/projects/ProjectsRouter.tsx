@@ -5,16 +5,14 @@
 
 import React from "react";
 import { Routes, Route } from "react-router";
-import RootLayout from "../RootLayout";
-import ProjectsIndexPage from "./Index";
+import ProjectUiKitIndexPage from "./uikit/Index";
 
 const DocsRouter: React.FC = () => (
   <Routes>
-    <Route element={<RootLayout/>}>
-      <Route path={"/"} element={<ProjectsIndexPage/>}/>
-    </Route>
-    
     {/* Other Projects' routes */}
+    <Route path={"uikit"}>
+      <Route index element={<ProjectUiKitIndexPage/>}/>
+    </Route>
   </Routes>
 );
 
