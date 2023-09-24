@@ -8,9 +8,9 @@ import { Card } from "../../ui/index";
 
 const PROJECTS: { name: string, icon: string, description: string, link: string }[] = [
   {
-    name: "OpenCade",
+    name: "OpenCade Engine",
     icon: "/assets/productLogos/yourdash.svg",
-    link: "https://github.com/Ewsgit/OpenCade",
+    link: "https://github.com/Ewsgit/OpenCade-Engine",
     description: "A game engine designed for the web."
   },
   {

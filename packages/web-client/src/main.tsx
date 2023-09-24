@@ -19,6 +19,7 @@ import ErrorElement from "./ErrorElement";
 import LoginPage from "./root/login/LoginPage.jsx";
 import ServerLoginPage from "./root/login/ServerLoginPage.jsx";
 import Index from "./root/index/Index";
+import ProjectsIndexPage from "./root/projects/Index";
 import RootLayout from "./root/RootLayout";
 import RightClickMenuRootContainer from "./ui/components/rightClickMenu/RightClickMenuRootContainer.jsx";
 import "./tailwindcss.css";
@@ -58,6 +59,7 @@ function main() {
                     )}
                   />
                 </Route>
+                <Route path={"projects"} index element={<ProjectsIndexPage/>}/>
               </Route>
               <Route
                 path={"projects/*"}
