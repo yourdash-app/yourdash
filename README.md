@@ -24,7 +24,7 @@ Some of the YourDash projects include
 
 # See more in the docs
 
-https://yourdash-app.github.io/#/docs
+https://ydsh.pages.dev/#/docs
 
 # Credits
 
