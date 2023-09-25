@@ -3,10 +3,27 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-//  * The YourDash project
-//  *  - https://github.com/yourdash-app/yourdash
-//  *  - https://yourdash.pages.dev
-//  *  - https://ydsh.pages.dev
+/*
+ * # The YourDash project
+ *  - https://github.com/yourdash-app/yourdash
+ *  - https://yourdash.pages.dev
+ *  - https://ydsh.pages.dev
+ *
+ * # ----- Server Startup steps -----
+ * 1. Fetch process arguments
+ * 2. Load the global database
+ * 3. Init express
+ * 4. Load authentication service
+ * 5. Start core services
+ * 6. Begin listening for requests
+ * 7. Start startup services
+ *    - request logger
+ *    - authenticated image
+ *    - user sanitization
+ *    - caching service
+ * 8. Load applications
+ * 9. Load post-startup services
+ */
 
 import chalk from "chalk";
 import cors from "cors";
@@ -18,44 +35,27 @@ import minimist from "minimist";
 import path from "path";
 import { YOURDASH_SESSION_TYPE } from "shared/core/session.js";
 import { Server as SocketIoServer, Socket as SocketIoSocket } from "socket.io";
-import { startAuthenticatedImageHelper } from "./core/authenticatedImage.js";
-import { YOURDASH_INSTANCE_DISCOVERY_STATUS } from "./core/discovery.js";
-import defineLoginEndpoints from "./core/endpoints/login.js";
-import defineCorePanelRoutes from "./core/endpoints/panel.js";
-import defineUserEndpoints from "./core/endpoints/user.js";
-import defineUserDatabaseRoutes, { saveUserDatabases, USER_DATABASES } from "./core/endpoints/userDatabase.js";
-import applicationLoader from "./core/applicationLoader.js";
-import startRequestLogger from "./core/logRequests.js";
-import { __internalGetSessionsDoNotUseOutsideOfCore } from "./core/session.js";
-import scheduleTask from "./core/taskScheduler.js";
-import YourDashUser from "./core/user/index.js";
-import { YourDashCoreUserPermissions } from "./core/user/permissions.js";
-import globalDatabase from "./helpers/globalDatabase.js";
-import log, { LOG_HISTORY, logType } from "./helpers/log.js";
-import { generateLogos } from "./helpers/logo.js";
-import centerTerminalOutputOnLine from "./helpers/terminal/centerTerminalOutputOnLine.js";
-import { startUserDatabaseService } from "./core/user/database.js";
+import { startAuthenticatedImageHelper } from "backend/src/core/authenticatedImage.js";
+import { YOURDASH_INSTANCE_DISCOVERY_STATUS } from "backend/src/core/discovery.js";
+import defineLoginEndpoints from "backend/src/core/endpoints/login.js";
+import defineCorePanelRoutes from "backend/src/core/endpoints/panel.js";
+import defineUserEndpoints from "backend/src/core/endpoints/user.js";
+import defineUserDatabaseRoutes, { saveUserDatabases, USER_DATABASES } from "backend/src/core/endpoints/userDatabase.js";
+import applicationLoader from "backend/src/core/applicationLoader.js";
+import startRequestLogger from "backend/src/core/logRequests.js";
+import { __internalGetSessionsDoNotUseOutsideOfCore } from "backend/src/core/session.js";
+import scheduleTask from "backend/src/core/taskScheduler.js";
+import YourDashUser from "backend/src/core/user/index.js";
+import { YourDashCoreUserPermissions } from "backend/src/core/user/permissions.js";
+import globalDatabase from "backend/src/helpers/globalDatabase.js";
+import log, { LOG_HISTORY, logType } from "backend/src/helpers/log.js";
+import { generateLogos } from "backend/src/helpers/logo.js";
+import centerTerminalOutputOnLine from "backend/src/helpers/terminal/centerTerminalOutputOnLine.js";
+import { startUserDatabaseService } from "backend/src/core/user/database.js";
 
-/*
- * --- Server Startup steps ---
- * 1. Fetch process arguments
- * 2. Load the global database
- * 3. Init express
- * 4. Load authentication service
- * 5. Register save global database task
- * 6. Begin listening for requests
- * 7. Start startup services
- *    - request logger
- *    - authenticated image
- *    - user sanitization
- *    - caching service
- * 8. Load applications
- * 9. Load post-startup services
- */
-
-// ! -------------------------------
-// ! THIS FILE IS A WORK IN PROGRESS
-// ! -------------------------------
+// ! ------------------------------- !
+// ! THIS FILE IS A WORK IN PROGRESS !
+// ! ------------------------------- !
 
 const FS_DIRECTORY_PATH = path.resolve( path.join( process.cwd(), "./fs/" ) );
 export { FS_DIRECTORY_PATH };
@@ -191,10 +191,13 @@ if ( !fsExistsSync( FS_DIRECTORY_PATH ) ) {
 }
 
 /*
- /////////////////////////////////////////////
- //  5. Register save global database task  //
- /////////////////////////////////////////////
+ //////////////////////////////
+ //  5. Start core services  //
+ //////////////////////////////
 */
+
+// start core services
+startUserDatabaseService();
 
 scheduleTask( "save_global_database", "*/5 * * * *", async () => {
   await globalDatabase.writeToDisk( path.resolve( path.join( process.cwd(), "./fs/global_database.json" ) ) );
@@ -257,19 +260,21 @@ process.on( "SIGINT", CORE_HANDLE_SHUTDOWN );
 // Handle socket.io connections
 socketIo.on( "connection", ( socket: SocketIoSocket<any, any, any, any> ) => { // eslint-disable-line @typescript-eslint/no-explicit-any
   
+  const handshakeUsername = socket.handshake.query.username as string;
+  
   // Check that all required parameters are present
-  if ( !socket.handshake.query.username || !socket.handshake.query.sessionToken || !socket.handshake.query.sessionId ) {
+  if ( !handshakeUsername || !socket.handshake.query.sessionToken || !socket.handshake.query.sessionId ) {
     log( logType.ERROR, "[PSA-BACKEND]: Closing connection! Missing required parameters!" );
     
     socket.disconnect( true );
     return;
   }
   
-  if ( !ACTIVE_SOCKET_IO_SOCKETS[ socket.handshake.query.username as string ] ) {
-    ACTIVE_SOCKET_IO_SOCKETS[ socket.handshake.query.username as string ] = [];
+  if ( !ACTIVE_SOCKET_IO_SOCKETS[ handshakeUsername as string ] ) {
+    ACTIVE_SOCKET_IO_SOCKETS[ handshakeUsername as string ] = [];
   }
   
-  ACTIVE_SOCKET_IO_SOCKETS[ socket.handshake.query.username as string ].push( <ISocketActiveSocket>{
+  ACTIVE_SOCKET_IO_SOCKETS[ handshakeUsername as string ].push( <ISocketActiveSocket>{
     id: socket.handshake.query.sessionId as string,
     token: socket.handshake.query.sessionToken as string,
     socket
@@ -280,8 +285,8 @@ socketIo.on( "connection", ( socket: SocketIoSocket<any, any, any, any> ) => { /
   } );
   
   socket.on( "disconnect", () => {
-    ACTIVE_SOCKET_IO_SOCKETS[ socket.handshake.query.username as string ].forEach( () => {
-      ACTIVE_SOCKET_IO_SOCKETS[ socket.handshake.query.username as string ].filter( ( sock ) => sock.id !== socket.id );
+    ACTIVE_SOCKET_IO_SOCKETS[ handshakeUsername as string ].forEach( () => {
+      ACTIVE_SOCKET_IO_SOCKETS[ handshakeUsername as string ].filter( ( s ) => s.id !== socket.id );
     } );
     
     log( logType.INFO, "[PSA-BACKEND]: Closing PSA connection" );
@@ -369,6 +374,7 @@ exp.get( "/test", ( _req, res ) => {
   }
 } );
 
+// Load all endpoints which require no authentication
 startAuthenticatedImageHelper( exp );
 defineLoginEndpoints( exp );
 
@@ -478,7 +484,5 @@ defineUserDatabaseRoutes( exp );
 defineCorePanelRoutes( exp );
 defineUserEndpoints( exp );
 
-// start core services
-startUserDatabaseService();
-
-applicationLoader( exp, socketIo );
+// load applications
+applicationLoader( exp, httpServer );

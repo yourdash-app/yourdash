@@ -38,12 +38,14 @@ const ApplicationGrid: React.FC<{ applications: IPanelApplicationsLauncherApplic
             navigate( `/app/a/${application.name}` )
           }}
         >
-          <img
-            className={styles.itemIcon}
-            src={`${ csi.getInstanceUrl() }${application.icon}`}
-            alt=""
-          />
-          <span className={styles.itemLabel}>{application.name}</span>
+          <div className={styles.itemContent}>
+            <img
+              className={styles.itemIcon}
+              src={`${ csi.getInstanceUrl() }${application.icon}`}
+              alt=""
+            />
+            <span className={styles.itemLabel}>{application.displayName}</span>
+          </div>
         </RightClickMenu>
       } )
     }
