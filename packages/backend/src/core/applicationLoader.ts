@@ -8,9 +8,9 @@ import globalDatabase from "../helpers/globalDatabase.js";
 import log, { logType } from "../helpers/log.js";
 import { existsSync as fsExistsSync } from "fs";
 import chalk from "chalk";
-import { type YourDashApplicationServerPlugin } from "../helpers/applications.js";
 import { type Application as ExpressApplication } from "express";
-import { type Server as SocketIoServer } from "socket.io";
+import YourDashModule from "./yourDashModule.js";
+import http, { Server as HttpServer } from "http"
 
 function checkIfApplicationIsValidToLoad( applicationName: string ): boolean {
   // Required
@@ -33,7 +33,7 @@ function checkIfApplicationIsValidToLoad( applicationName: string ): boolean {
   return fsExistsSync( path.resolve( process.cwd(), `../applications/${ applicationName }/backend/index.js` ) );
 }
 
-export function loadApplication( appName: string, exp: ExpressApplication, io: SocketIoServer ) {
+export function loadApplication( appName: string, exp: ExpressApplication, httpServer: http.Server ) {
   // check if the application contains a valid backend plugin
   if ( !checkIfApplicationIsValidToLoad( appName ) ) {
     // some applications don't have a backend plugin to load
@@ -41,11 +41,11 @@ export function loadApplication( appName: string, exp: ExpressApplication, io: S
     return;
   }
 
-  // import and load all applications
+  // import and load all application modules
   import( `applications/${ appName }/backend/index.js` )
-    .then( ( mod: { default?: YourDashApplicationServerPlugin } ) => {
+    .then( ( mod: { default?: typeof YourDashModule } ) => {
       try {
-        log( logType.INFO, `${ chalk.yellow.bold( "CORE" ) }: Starting application: ${ appName }` );
+        log( logType.INFO, `${ chalk.yellow.bold( "CORE" ) }: Loading application: ${ appName }` );
 
         if ( !mod.default ) {
           log(
@@ -55,26 +55,36 @@ export function loadApplication( appName: string, exp: ExpressApplication, io: S
           return;
         }
 
-        mod.default( {
+        try {
+          new mod.default( {
+            moduleName: appName,
+            exp,
+            httpServer
+          } )
+        /* BACKUP: {
           exp: exp, // express Application
           io, // socket.io instance
           pluginFilesystemPath: path.resolve( path.join( process.cwd(), `../applications/${ appName }` ) ),
           APPLICATION_ID: appName
-        } );
+        } */
+        } catch ( err ) {
+          log( logType.ERROR, `${ chalk.yellow.bold( "CORE" ) }: Error during application execution: ${ appName }\n`, err );
+          return
+        }
         
-        log( logType.SUCCESS, `${ chalk.yellow.bold( "CORE" ) }: Initialized application: ${ appName }` );
+        log( logType.SUCCESS, `${ chalk.yellow.bold( "CORE" ) }: Initialized application: ${ appName }\n` );
         return
       } catch ( err ) {
-        log( logType.ERROR, `${ chalk.yellow.bold( "CORE" ) }: Error during application initialization: ${ appName }` );
+        log( logType.ERROR, `${ chalk.yellow.bold( "CORE" ) }: Error during application initialization: ${ appName }\n`, err );
         return
       }
-    } ).catch( () => {
-      log( logType.ERROR, `${ chalk.yellow.bold( "CORE" ) }: Error while loading application: ${ appName }` );
+    } ).catch( ( err ) => {
+      log( logType.ERROR, `${ chalk.yellow.bold( "CORE" ) }: Error while loading application: ${ appName }\n`, err );
       return
     } );
 }
 
-export default function applicationLoader( exp: ExpressApplication, io: SocketIoServer ) {
+export default function applicationLoader( exp: ExpressApplication, httpServer: HttpServer ) {
   if ( fsExistsSync( path.resolve( process.cwd(), "../applications/" ) ) ) {
     const apps = globalDatabase.get( "installedApplications" ) || [];
     if ( apps?.length === 0 ) {
@@ -84,7 +94,7 @@ export default function applicationLoader( exp: ExpressApplication, io: SocketIo
     }
     apps.forEach( ( appName: string ) => {
       try {
-        loadApplication( appName, exp, io );
+        loadApplication( appName, exp, httpServer );
       } catch ( e ) {
         log( logType.ERROR, `Unable to load application: ${appName}` )
         console.trace( e )

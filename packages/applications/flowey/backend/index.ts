@@ -3,12 +3,10 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { YourDashApplicationServerPlugin } from "backend/src/helpers/applications.js";
+import YourDashModule, { YourDashModuleArguments } from "backend/src/core/yourDashModule.js";
 
-const floweyBackend: YourDashApplicationServerPlugin = ( { exp, APPLICATION_ID } ) => {
-  exp.get( `/app/${APPLICATION_ID}/`, ( req, res ) => {
-    return res.json( { applicationName: APPLICATION_ID } )
-  } )
+export default class FloweyModule extends YourDashModule {
+  constructor( args: YourDashModuleArguments ) {
+    super( args );
+  }
 }
-
-export default floweyBackend;
