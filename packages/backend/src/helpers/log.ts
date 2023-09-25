@@ -57,7 +57,11 @@ export default function log( type: logType, ...message: unknown[] ): void {
   }
   
   if ( type === logType.ERROR ) {
-    logParams.push( new Error( message.toString() ).stack.slice( 7 ) )
+    let stackTrace = new Error( message.toString() ).stack.slice( 7 )
+    const stackArray = stackTrace.split( "\n" );
+    stackArray.splice( 1,1 );
+    stackTrace = stackArray.join( "\n" );
+    logParams.push( stackTrace )
   } else {
     logParams.push( ...message );
   

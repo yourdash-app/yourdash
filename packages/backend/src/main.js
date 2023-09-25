@@ -13,23 +13,23 @@ import minimist from "minimist";
 import path from "path";
 import { YOURDASH_SESSION_TYPE } from "shared/core/session.js";
 import { Server as SocketIoServer } from "socket.io";
-import { startAuthenticatedImageHelper } from "./core/authenticatedImage.js";
-import { YOURDASH_INSTANCE_DISCOVERY_STATUS } from "./core/discovery.js";
-import defineLoginEndpoints from "./core/endpoints/login.js";
-import defineCorePanelRoutes from "./core/endpoints/panel.js";
-import defineUserEndpoints from "./core/endpoints/user.js";
-import defineUserDatabaseRoutes, { saveUserDatabases, USER_DATABASES } from "./core/endpoints/userDatabase.js";
-import applicationLoader from "./core/applicationLoader.js";
-import startRequestLogger from "./core/logRequests.js";
-import { __internalGetSessionsDoNotUseOutsideOfCore } from "./core/session.js";
-import scheduleTask from "./core/taskScheduler.js";
-import YourDashUser from "./core/user/index.js";
-import { YourDashCoreUserPermissions } from "./core/user/permissions.js";
-import globalDatabase from "./helpers/globalDatabase.js";
-import log, { LOG_HISTORY, logType } from "./helpers/log.js";
-import { generateLogos } from "./helpers/logo.js";
-import centerTerminalOutputOnLine from "./helpers/terminal/centerTerminalOutputOnLine.js";
-import { startUserDatabaseService } from "./core/user/database.js";
+import { startAuthenticatedImageHelper } from "backend/src/core/authenticatedImage.js";
+import { YOURDASH_INSTANCE_DISCOVERY_STATUS } from "backend/src/core/discovery.js";
+import defineLoginEndpoints from "backend/src/core/endpoints/login.js";
+import defineCorePanelRoutes from "backend/src/core/endpoints/panel.js";
+import defineUserEndpoints from "backend/src/core/endpoints/user.js";
+import defineUserDatabaseRoutes, { saveUserDatabases, USER_DATABASES } from "backend/src/core/endpoints/userDatabase.js";
+import applicationLoader from "backend/src/core/applicationLoader.js";
+import startRequestLogger from "backend/src/core/logRequests.js";
+import { __internalGetSessionsDoNotUseOutsideOfCore } from "backend/src/core/session.js";
+import scheduleTask from "backend/src/core/taskScheduler.js";
+import YourDashUser from "backend/src/core/user/index.js";
+import { YourDashCoreUserPermissions } from "backend/src/core/user/permissions.js";
+import globalDatabase from "backend/src/helpers/globalDatabase.js";
+import log, { LOG_HISTORY, logType } from "backend/src/helpers/log.js";
+import { generateLogos } from "backend/src/helpers/logo.js";
+import centerTerminalOutputOnLine from "backend/src/helpers/terminal/centerTerminalOutputOnLine.js";
+import { startUserDatabaseService } from "backend/src/core/user/database.js";
 const FS_DIRECTORY_PATH = path.resolve( path.join( process.cwd(), "./fs/" ) );
 export { FS_DIRECTORY_PATH };
 const PROCESS_ARGUMENTS = minimist( process.argv.slice( 2 ) );
@@ -126,6 +126,7 @@ if ( !fsExistsSync( FS_DIRECTORY_PATH ) ) {
     console.trace( err );
   }
 }
+startUserDatabaseService();
 scheduleTask( "save_global_database", "*/5 * * * *", async () => {
   await globalDatabase.writeToDisk( path.resolve( path.join( process.cwd(), "./fs/global_database.json" ) ) );
 } );
@@ -157,15 +158,16 @@ const CORE_HANDLE_SHUTDOWN = () => {
 };
 process.on( "SIGINT", CORE_HANDLE_SHUTDOWN );
 socketIo.on( "connection", ( socket ) => {
-  if ( !socket.handshake.query.username || !socket.handshake.query.sessionToken || !socket.handshake.query.sessionId ) {
+  const handshakeUsername = socket.handshake.query.username;
+  if ( !handshakeUsername || !socket.handshake.query.sessionToken || !socket.handshake.query.sessionId ) {
     log( logType.ERROR, "[PSA-BACKEND]: Closing connection! Missing required parameters!" );
     socket.disconnect( true );
     return;
   }
-  if ( !ACTIVE_SOCKET_IO_SOCKETS[socket.handshake.query.username] ) {
-    ACTIVE_SOCKET_IO_SOCKETS[socket.handshake.query.username] = [];
+  if ( !ACTIVE_SOCKET_IO_SOCKETS[handshakeUsername] ) {
+    ACTIVE_SOCKET_IO_SOCKETS[handshakeUsername] = [];
   }
-  ACTIVE_SOCKET_IO_SOCKETS[socket.handshake.query.username].push( {
+  ACTIVE_SOCKET_IO_SOCKETS[handshakeUsername].push( {
     id: socket.handshake.query.sessionId,
     token: socket.handshake.query.sessionToken,
     socket
@@ -174,8 +176,8 @@ socketIo.on( "connection", ( socket ) => {
     log( logType.INFO, output );
   } );
   socket.on( "disconnect", () => {
-    ACTIVE_SOCKET_IO_SOCKETS[socket.handshake.query.username].forEach( () => {
-      ACTIVE_SOCKET_IO_SOCKETS[socket.handshake.query.username].filter( ( sock ) => sock.id !== socket.id );
+    ACTIVE_SOCKET_IO_SOCKETS[handshakeUsername].forEach( () => {
+      ACTIVE_SOCKET_IO_SOCKETS[handshakeUsername].filter( ( s ) => s.id !== socket.id );
     } );
     log( logType.INFO, "[PSA-BACKEND]: Closing PSA connection" );
   } );
@@ -318,6 +320,5 @@ exp.post( "/core/personal-server-accelerator/", async ( req, res ) => {
 defineUserDatabaseRoutes( exp );
 defineCorePanelRoutes( exp );
 defineUserEndpoints( exp );
-startUserDatabaseService();
-applicationLoader( exp, socketIo );
+applicationLoader( exp, httpServer );
 // # sourceMappingURL=main.js.map

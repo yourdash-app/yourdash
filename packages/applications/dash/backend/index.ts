@@ -3,30 +3,32 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { type YourDashApplicationServerPlugin } from "backend/src/helpers/applications.js";
 import YourDashUser from "backend/src/core/user/index.js";
+import YourDashModule, { YourDashModuleArguments } from "backend/src/core/yourDashModule.js";
 
-const main: YourDashApplicationServerPlugin = ( { exp, io } ) => {
-  exp.get( "/app/dash/user-full-name", async ( req, res ) => {
-    const { username } = req.headers as {
+export default class DashModule extends YourDashModule {
+  constructor( args: YourDashModuleArguments ) {
+    super( args );
+  
+    this.API().request.get( "/app/dash/user-full-name", async ( req, res ) => {
+      const { username } = req.headers as {
       username: string
     };
 
-    const user = new YourDashUser( username );
+      const user = new YourDashUser( username );
 
-    res.json( await user.getName() );
-  } );
+      res.json( await user.getName() );
+    } );
 
-  // TODO: implement module system
-  exp.get( "/app/dash/modules", async ( req, res ) => {
-    const { username } = req.headers as {
+    // TODO: implement module system
+    this.API().request.get( "/app/dash/modules", async ( req, res ) => {
+      const { username } = req.headers as {
       username: string
     };
 
-    const user = await new YourDashUser( username );
+      const user = new YourDashUser( username );
 
-    res.json( { success: true } );
-  } );
-};
-
-export default main;
+      res.json( { success: true } );
+    } );
+  }
+}
