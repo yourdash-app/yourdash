@@ -3,12 +3,12 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { type YourDashApplicationServerPlugin } from "backend/src/helpers/applications.js"
+import YourDashModule, { YourDashModuleArguments } from "backend/src/core/yourDashModule.js";
 
-const main: YourDashApplicationServerPlugin = ( { exp, io } ) => {
-  exp.get( "/app/diffusion_lab/models", async ( req, res ) => res.json( { models: ["everything v5", "stable diffusion 2.1", "blueberry mix"] } )
-  )
+export default class DiffusionLabModule extends YourDashModule {
+  constructor( args: YourDashModuleArguments ) {
+    super( args );
+    this.API().request.get( "/app/diffusion_lab/models", async ( req, res ) => res.json( { models: ["everything v5", "stable diffusion 2.1", "blueberry mix"] } )
+    )
+  }
 }
-
-
-export default main

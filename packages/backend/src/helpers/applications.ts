@@ -137,17 +137,3 @@ export default class YourDashApplication {
     return path.resolve( process.cwd(), `../applications/${ this.name }/` );
   }
 }
-
-type YourDashApplicationServerPlugin = ( {
-  exp,
-  io,
-  pluginFilesystemPath,
-  APPLICATION_ID
-}: {
-  exp: ExpressApplication,
-  io: SocketServer,
-  pluginFilesystemPath: string,
-  readonly APPLICATION_ID: string
-} ) => any;
-
-export { type YourDashApplicationServerPlugin };
