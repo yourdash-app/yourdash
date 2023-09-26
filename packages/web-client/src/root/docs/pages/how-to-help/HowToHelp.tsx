@@ -4,9 +4,8 @@
  */
 
 import React from "react";
-import { Card, Icon } from "../../../../ui";
-import Header from "../../../components/Header";
-import { YourDashIcon } from "../../../../ui/components/icon/iconDictionary";
+import { Card, Icon } from "web-client/src/ui";
+import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
 
 const HowToHelp: React.FC = () => (
   <main className={"w-full flex flex-col gap-4"}>

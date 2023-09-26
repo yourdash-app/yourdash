@@ -65,11 +65,9 @@ function startDevServer() {
   console.log( `[${ chalk.hex( "#fc6f45" ).bold( "DEV" ) }]: starting server \"node ./src/main.js --color=full ${ process.argv.slice(
     2 ).join( " " ) }\"` );
   
-  const devProcess = exec( `nodemon --signal SIGINT${ args.debug ? " --inspect-brk" : "" } ./src/main.js --color=full ${ process.argv.slice( 2 ).join( " " ) }` );
+  const devProcess = exec( `nodemon --watch --exec ts-node ./src/main.js ${ args.debug ? "--inspect-brk " : "" }--color=full ${ process.argv.slice( 2 ).join( " " ) }` );
   
-  const compilationProcess = exec( "yarn run compile --watch" );
-  
-  devProcess.on( "close", code => {
+  devProcess.on( "exit", code => {
     console.log( `child process exited with code ${ code }, will not auto-restart!` );
   } );
   
@@ -79,17 +77,8 @@ function startDevServer() {
       return;
     }
     
-    if ( data.toString().includes( "Shutting down... (restart of core should occur automatically)" ) ) {
-      devProcess.on( "close", () => {
-        console.log( devProcess.killed );
-        if (
-          compilationProcess.kill( "SIGTERM" )
-        ) {
-          startDevServer();
-        } else {
-          console.log( "Unable to kill child processes" );
-        }
-      } );
+    if ( data.toString().includes( "Shutting down... ( restart should occur automatically )" ) ) {
+      devProcess.stdin.write( "rs" )
     }
     
     process.stdout.write( data );
@@ -111,25 +100,6 @@ function startDevServer() {
   
   process.stdin.on( "end", () => {
     devProcess.stdin.end();
-  } );
-  
-  compilationProcess.on( "close", code => {
-    console.log( `compilation process exited with code ${ code }` );
-  } );
-  
-  compilationProcess.stdout.on( "data", data => {
-    if ( data.toString().includes( "\x1Bc" ) ) {
-      return;
-    }
-    if ( data.toString() === "\n" ) {
-      return;
-    }
-    
-    process.stdout.write( data );
-  } );
-  
-  compilationProcess.stderr.on( "data", data => {
-    process.stdout.write( data );
   } );
 }
 

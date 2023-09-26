@@ -21,7 +21,7 @@ function checkIfApplicationIsValidToLoad( applicationName: string ): boolean {
   
   // Not Required ( use 'placeholder.avif' instead)
   if ( !fsExistsSync( path.resolve( process.cwd(), `../applications/${ applicationName }/icon.avif` ) ) ) {
-    log( logType.ERROR,`${ chalk.yellow.bold( "CORE" ) }: application ${ applicationName } does not contain an icon.avif file!` );
+    log( logType.WARNING,`${ chalk.yellow.bold( "CORE" ) }: application ${ applicationName } does not contain an icon.avif file!` );
   }
   
   // Only required if the application needs a backend
@@ -72,7 +72,7 @@ export function loadApplication( appName: string, exp: ExpressApplication, httpS
           return
         }
         
-        log( logType.SUCCESS, `${ chalk.yellow.bold( "CORE" ) }: Initialized application: ${ appName }\n` );
+        log( logType.SUCCESS, `${ chalk.yellow.bold( "CORE" ) }: Initialized application: ${ appName }` );
         return
       } catch ( err ) {
         log( logType.ERROR, `${ chalk.yellow.bold( "CORE" ) }: Error during application initialization: ${ appName }\n`, err );

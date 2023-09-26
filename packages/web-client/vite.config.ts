@@ -14,5 +14,5 @@ export default defineConfig( {
     react(),
     dynamicImport()
     // enable for https tests. `mkcert()`
-  ],
+  ]
 } )
