@@ -5,8 +5,6 @@
 
 import { promises as fs } from "fs";
 import path from "path";
-import { Application as ExpressApplication } from "express";
-import { Server as SocketServer } from "socket.io";
 import { type IYourDashApplication } from "shared/core/application.js";
 import log, { logType } from "./log.js";
 import globalDatabase from "./globalDatabase.js";

@@ -20,7 +20,7 @@ export default function defineCorePanelRoutes( exp: ExpressApplication ) {
     res.set( "Cache-Control", "no-store" );
     const { username } = req.headers as { username: string }
     
-    Promise.all( ( globalDatabase.get( "installedApplications" ) ).map( async ( app: any ) => {
+    Promise.all( ( globalDatabase.get( "installedApplications" ) || [] ).map( async ( app: any ) => {
       const application = await new YourDashApplication( app ).read();
 
       return new Promise( async resolve => {

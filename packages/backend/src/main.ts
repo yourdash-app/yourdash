@@ -25,6 +25,23 @@
  * 9. Load post-startup services
  */
 
+import applicationLoader from "backend/src/core/applicationLoader.js";
+import { startAuthenticatedImageHelper } from "backend/src/core/authenticatedImage.js";
+import { YOURDASH_INSTANCE_DISCOVERY_STATUS } from "backend/src/core/discovery.js";
+import defineLoginEndpoints from "backend/src/core/endpoints/login.js";
+import defineCorePanelRoutes from "backend/src/core/endpoints/panel.js";
+import defineUserEndpoints from "backend/src/core/endpoints/user.js";
+import defineUserDatabaseRoutes, { saveUserDatabases, USER_DATABASES } from "backend/src/core/endpoints/userDatabase.js";
+import startRequestLogger from "backend/src/core/logRequests.js";
+import { __internalGetSessionsDoNotUseOutsideOfCore } from "backend/src/core/session.js";
+import scheduleTask from "backend/src/core/taskScheduler.js";
+import { startUserDatabaseService } from "backend/src/core/user/database.js";
+import YourDashUser from "backend/src/core/user/index.js";
+import { YourDashCoreUserPermissions } from "backend/src/core/user/permissions.js";
+import globalDatabase from "backend/src/helpers/globalDatabase.js";
+import log, { LOG_HISTORY, logType } from "backend/src/helpers/log.js";
+import { generateLogos } from "backend/src/helpers/logo.js";
+import centerTerminalOutputOnLine from "backend/src/helpers/terminal/centerTerminalOutputOnLine.js";
 import chalk from "chalk";
 import cors from "cors";
 import express from "express";
@@ -35,23 +52,6 @@ import minimist from "minimist";
 import path from "path";
 import { YOURDASH_SESSION_TYPE } from "shared/core/session.js";
 import { Server as SocketIoServer, Socket as SocketIoSocket } from "socket.io";
-import { startAuthenticatedImageHelper } from "backend/src/core/authenticatedImage.js";
-import { YOURDASH_INSTANCE_DISCOVERY_STATUS } from "backend/src/core/discovery.js";
-import defineLoginEndpoints from "backend/src/core/endpoints/login.js";
-import defineCorePanelRoutes from "backend/src/core/endpoints/panel.js";
-import defineUserEndpoints from "backend/src/core/endpoints/user.js";
-import defineUserDatabaseRoutes, { saveUserDatabases, USER_DATABASES } from "backend/src/core/endpoints/userDatabase.js";
-import applicationLoader from "backend/src/core/applicationLoader.js";
-import startRequestLogger from "backend/src/core/logRequests.js";
-import { __internalGetSessionsDoNotUseOutsideOfCore } from "backend/src/core/session.js";
-import scheduleTask from "backend/src/core/taskScheduler.js";
-import YourDashUser from "backend/src/core/user/index.js";
-import { YourDashCoreUserPermissions } from "backend/src/core/user/permissions.js";
-import globalDatabase from "backend/src/helpers/globalDatabase.js";
-import log, { LOG_HISTORY, logType } from "backend/src/helpers/log.js";
-import { generateLogos } from "backend/src/helpers/logo.js";
-import centerTerminalOutputOnLine from "backend/src/helpers/terminal/centerTerminalOutputOnLine.js";
-import { startUserDatabaseService } from "backend/src/core/user/database.js";
 
 // ! ------------------------------- !
 // ! THIS FILE IS A WORK IN PROGRESS !
@@ -239,8 +239,8 @@ const ACTIVE_SOCKET_IO_SOCKETS: {
 } = {};
 
 // save the database before process termination
-const CORE_HANDLE_SHUTDOWN = () => {
-  log( logType.INFO, "Shutting down... (restart of core should occur automatically)" );
+function shutdownGracefully() {
+  log( logType.INFO, "Shutting down... ( restart should occur automatically )" );
   
   const LOG_OUTPUT = LOG_HISTORY.map( ( hist ) => {
     return `${ hist.type }: ${ hist.message }`;
@@ -249,13 +249,15 @@ const CORE_HANDLE_SHUTDOWN = () => {
   saveUserDatabases();
   
   writeFile( path.resolve( process.cwd(), "./fs/log.log" ), LOG_OUTPUT, () => {
-    globalDatabase._internalDoNotUseOnlyIntendedForShutdownSequenceWriteToDisk( path.resolve( process.cwd(), "./fs/global_database.json" ), () => {
-      process.kill( process.pid );
-    } );
+    try {
+      globalDatabase._internalDoNotUseOnlyIntendedForShutdownSequenceWriteToDisk( path.resolve( process.cwd(), "./fs/global_database.json" ) );
+    } catch ( e ) {
+      log( logType.ERROR, "[EXTREME] Shutdown Error! failed to save global database. User data will have been lost!" );
+    }
   } );
-};
+}
 
-process.on( "SIGINT", CORE_HANDLE_SHUTDOWN );
+process.on( "SIGINT", shutdownGracefully );
 
 // Handle socket.io connections
 socketIo.on( "connection", ( socket: SocketIoSocket<any, any, any, any> ) => { // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -341,7 +343,7 @@ process.stdin.on( "data", ( data ) => {
   
   switch ( command ) {
   case "exit":
-    CORE_HANDLE_SHUTDOWN();
+    shutdownGracefully();
     break;
   default:
     log( logType.ERROR, `Unknown command: ${ command }` );

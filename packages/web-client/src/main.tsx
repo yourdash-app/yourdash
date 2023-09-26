@@ -109,6 +109,15 @@ function main() {
 
 const element = document.getElementById( "root" ) as HTMLElement
 
-element.innerHTML = "<h1>Loading YourDash...</h1>"
+const loadingElement = document.createElement( "h1" )
+
+loadingElement.style.display = "flex"
+loadingElement.style.width = "100%"
+loadingElement.style.height = "100%"
+loadingElement.style.justifyContent = "center"
+loadingElement.style.alignItems = "center"
+loadingElement.innerText = "Loading YourDash..."
+
+element.appendChild( loadingElement )
 
 main()
