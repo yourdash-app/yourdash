@@ -5,6 +5,7 @@
     "allowSyntheticDefaultImports": true,
     "target": "ESNext",
     "useDefineForClassFields": true,
+    "incremental": true,
     "lib": [
       "ESNext"
     ],

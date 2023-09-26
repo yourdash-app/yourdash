@@ -10,7 +10,7 @@ export default function defineCorePanelRoutes(exp) {
     exp.get("/core/panel/applications", async (req, res) => {
         res.set("Cache-Control", "no-store");
         const { username } = req.headers;
-        Promise.all((globalDatabase.get("installedApplications")).map(async (app) => {
+        Promise.all((globalDatabase.get("installedApplications") || []).map(async (app) => {
             const application = await new YourDashApplication(app).read();
             return new Promise(async (resolve) => {
                 sharp(await fs.readFile(await application.getIconPath()))
