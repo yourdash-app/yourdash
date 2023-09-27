@@ -6,7 +6,7 @@
 import * as React from "react";
 import { Card } from "web-client/src/ui/index";
 
-const FloweyApplication: React.FC = () => {
+const StartupView: React.FC = () => {
   return (
     <main className={"grid grid-cols-3 gap-2"}>
       <header
@@ -58,4 +58,4 @@ const FloweyApplication: React.FC = () => {
   );
 };
 
-export default FloweyApplication;
+export default StartupView;

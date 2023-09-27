@@ -4,8 +4,8 @@
  */
 
 import React from "react";
-import { IWeatherDataForLocation } from "../shared/weatherDataForLocation";
-import WeatherApplicationLocationPage from "./LocationPage";
+import { IWeatherDataForLocation } from "../../../shared/weatherDataForLocation";
+import WeatherApplicationLocationPage from "./weatherForLocationView";
 import { useParams } from "react-router"
 import csi from "web-client/src/helpers/csi";
 import { Spinner } from "web-client/src/ui/index";

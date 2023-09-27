@@ -6,16 +6,16 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import csi from "web-client/src/helpers/csi";
-import { Card, TextInput, IconButton } from "web-client/src/ui";
+import { Card, TextInput, IconButton } from "web-client/src/ui/index";
 import useTranslate from "web-client/src/helpers/i10n";
-import APPLICATION_ICON from "./assets/weatherIcons/partly_cloudy.svg"
+import APPLICATION_ICON from "../../assets/weatherIcons/partly_cloudy.svg"
 import clippy from "web-client/src/helpers/clippy";
-import { ILocationAutocompleteSuggestion } from "../shared/locationAutocompleteSuggestion";
-import THUNDER_BACKGROUND from "./assets/weatherBackgrounds/thunder.jpg"
-import CLOUDY_BACKGROUND from "./assets/weatherBackgrounds/cloudy1.jpg"
-import RAIN_BACKGROUND from "./assets/weatherBackgrounds/rain1.jpg"
-import SNOW_BACKGROUND from "./assets/weatherBackgrounds/snow.jpg"
-import CLEAR_BACKGROUND from "./assets/weatherBackgrounds/clear.jpg"
+import { ILocationAutocompleteSuggestion } from "../../../shared/locationAutocompleteSuggestion";
+import THUNDER_BACKGROUND from "../../assets/weatherBackgrounds/thunder.jpg"
+import CLOUDY_BACKGROUND from "../../assets/weatherBackgrounds/cloudy1.jpg"
+import RAIN_BACKGROUND from "../../assets/weatherBackgrounds/rain1.jpg"
+import SNOW_BACKGROUND from "../../assets/weatherBackgrounds/snow.jpg"
+import CLEAR_BACKGROUND from "../../assets/weatherBackgrounds/clear.jpg"
 
 const BACKGROUND_IMAGES: string[] = [
   THUNDER_BACKGROUND,
@@ -25,7 +25,7 @@ const BACKGROUND_IMAGES: string[] = [
   CLEAR_BACKGROUND
 ]
 
-const SelectLocationPage: React.FC = () => {
+const SelectLocationView: React.FC = () => {
   const navigate = useNavigate();
   const trans = useTranslate( "weather" );
   const [locationQuery, setLocationQuery] = useState<ILocationAutocompleteSuggestion[]>( [] );
@@ -137,4 +137,4 @@ const SelectLocationPage: React.FC = () => {
   );
 };
 
-export default SelectLocationPage;
+export default SelectLocationView;
