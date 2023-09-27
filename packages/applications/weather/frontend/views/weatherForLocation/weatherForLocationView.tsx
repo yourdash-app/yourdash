@@ -4,12 +4,12 @@
  */
 
 import React, { useState } from "react";
-import { IWeatherDataForLocation } from "../shared/weatherDataForLocation";
-import WeatherApplicationLocationPageHeader from "./components/Header";
+import { IWeatherDataForLocation } from "../../../shared/weatherDataForLocation";
+import WeatherApplicationLocationPageHeader from "../../components/Header";
 import { Card } from "web-client/src/ui/index";
 import { chunk } from "web-client/src/helpers/array";
-import getWeatherIconFromState from "./helpers/getWeatherIconFromState";
-import WeatherConditionsForHour from "./components/WeatherConditionsForHour";
+import getWeatherIconFromState from "../../helpers/getWeatherIconFromState";
+import WeatherConditionsForHour from "../../components/WeatherConditionsForHour";
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip } from "chart.js";
 
 interface IWeatherApplicationLocationPage {

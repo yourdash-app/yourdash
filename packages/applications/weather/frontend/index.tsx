@@ -5,12 +5,12 @@
 
 import React from "react";
 import { Routes, Route } from "react-router";
-import SelectLocationPage from "./SelectLocationPage";
-import WeatherApplicationDataLoader from "./LocationDataLoader";
+import SelectLocationView from "./views/selectLocation/SelectLocationView";
+import WeatherApplicationDataLoader from "./views/weatherForLocation/LocationDataLoader";
 
 const WeatherRouter: React.FC = () => (
   <Routes>
-    <Route index element={<SelectLocationPage/>}/>
+    <Route index element={<SelectLocationView/>}/>
     <Route path={":id"} element={<WeatherApplicationDataLoader/>}/>
   </Routes>
 );
