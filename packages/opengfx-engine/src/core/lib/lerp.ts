@@ -3,8 +3,6 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import Engine from "opengfx"
-
-const engine = new Engine()
-
-engine.start( document.body as HTMLDivElement )
+export default function lerp( a: number, b: number, t: number ): number {
+  return a * ( 1 - t ) + b * t
+}
