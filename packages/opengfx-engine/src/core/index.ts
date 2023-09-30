@@ -4,24 +4,25 @@
  */
 
 import { GFX_RENDER_PIPELINE } from "./render/pipelines/index";
+import Scene from "./scene/scene.ts";
 import Screen from "./screen";
 
-export default class Engine {
-  private canvasElement: HTMLCanvasElement
-  private containerElement: HTMLDivElement
+export default class Engine<T extends GFX_RENDER_PIPELINE> {
+  private readonly canvasElement: HTMLCanvasElement
+  private readonly containerElement: HTMLDivElement
   private renderPipeline: GFX_RENDER_PIPELINE
-  screen: Screen
+  screen: Screen<T>
+  currentScene: Scene
   
-  constructor() {
+  constructor( containerElement: HTMLElement, pipeline: GFX_RENDER_PIPELINE = GFX_RENDER_PIPELINE.TwoDimensional ) {
+    console.debug( "OpenGFX engine started" )
     this.containerElement = document.createElement( "div" ) as HTMLDivElement
+    containerElement.appendChild( this.containerElement )
     this.canvasElement = document.createElement( "canvas" ) as HTMLCanvasElement
     this.containerElement.appendChild( this.canvasElement )
-    this.renderPipeline = GFX_RENDER_PIPELINE.TwoDimensional
-    this.screen = new Screen( this.containerElement, this.canvasElement )
-  }
-  
-  start( containerElement: HTMLElement, pipeline: GFX_RENDER_PIPELINE = GFX_RENDER_PIPELINE.TwoDimensional ): Engine {
-    console.debug( "OpenGFX engine started" )
+    this.renderPipeline = pipeline
+    this.screen = new Screen( this.containerElement, this.canvasElement, this.renderPipeline )
+    this.currentScene = new Scene( { id: "default_scene", objects: [] } )
     containerElement.appendChild( this.containerElement )
     this.containerElement.style.backgroundColor = "#333333"
     this.canvasElement.style.outline = "solid #000 0.125rem"
@@ -29,8 +30,12 @@ export default class Engine {
     this.containerElement.style.height = "100%"
     
     this.screen.update()
-    
-    this.renderPipeline = pipeline
+    this.currentScene.render( this.screen )
+  }
+  
+  setScene( scene: Scene ): this {
+    this.currentScene = scene
+    this.currentScene.render( this.screen )
     
     return this
   }
