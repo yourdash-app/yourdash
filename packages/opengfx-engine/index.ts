@@ -3,9 +3,6 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-enum GFX_RENDER_PIPELINE {
-  TwoDimensional = "2d",
-  ThreeDimensional = "3d",
-}
+import initEngine from "./src/core/index.ts";
 
-export { GFX_RENDER_PIPELINE }
+export default initEngine
