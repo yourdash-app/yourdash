@@ -3,18 +3,13 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import GFXObject from "./object.ts";
+import { Engine } from "../index.ts";
+import Screen from "../screen.ts";
+import LoadObj from "./format/obj.ts";
 
-export default async function loadObject( path: string ) {
-  try {
-    const obj = await import( path )
-    
-    const object = new GFXObject( obj.screen, obj.parentContainer, obj.engine )
-    
-    object.id = obj.id
-    
-    return object
-  } catch ( e ) {
-    return null;
-  }
+export default async function loadObject( path: string, screen: Screen, engine: Engine ) {
+  const loader = new LoadObj( screen, engine );
+  
+  await loader.load( path );
+  console.log( loader )
 }

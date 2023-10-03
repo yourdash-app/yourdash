@@ -4,9 +4,11 @@
  */
 
 import initEngine from "opengfx"
-// import { lerpPropertyOverTime } from "../../../../core/lib/lerp.ts";
-// import GFXObject from "../../../../core/object/object.ts";
+import loadObject from "../../../../core/object/loadObject.ts";
 
+// @ts-ignore
 const engine = await initEngine( document.body as HTMLDivElement )
+
+await loadObject( "/boeing/boeing_787.obj?raw", engine.screen, engine )
 
 // engine.setScene( new Scene( { id: "default_scene", objects: [] }, engine.screen ) )
