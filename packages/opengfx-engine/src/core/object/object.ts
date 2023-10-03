@@ -26,8 +26,7 @@ export default class GFXObject {
     this.mesh = new Float32Array( [
       ...vertexHelper( { x:-0.5, y:0.5, z:0, w:2 }, { red: 1, green: 0, blue: 0, alpha: 1 } ),
       ...vertexHelper( { x:0.5, y:0.5, z:0, w:2 }, { red: 0, green: 1, blue: 0, alpha: 1 } ),
-      ...vertexHelper( { x:0.5, y:-0.5, z:0, w:2 }, { red: 0, green: 1, blue: 0, alpha: 1 } ),
-      ...vertexHelper( { x:1, y:-1, z:0, w:2 }, { red: 1, green: 1, blue: 1, alpha: 1 } )
+      ...vertexHelper( { x:0.5, y:-0.5, z:0, w:2 }, { red: 0, green: 1, blue: 0, alpha: 1 } )
     ] )
     this.vertexBuffer = engine.gpuDevice.createBuffer( {
       size: this.mesh.byteLength,
