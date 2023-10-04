@@ -29,3 +29,7 @@ https://ydsh.pages.dev/#/docs
 # Credits
 
 - Created by [Ewsgit](https://github.com/ewsgit)
+
+## Top contributors
+
+%%__top_contributors_list__%%
