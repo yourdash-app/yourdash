@@ -49,7 +49,7 @@ if ( !args.dev && args.compile ) {
 }
 function startDevServer() {
   console.log( `[${chalk.hex( "#fc6f45" ).bold( "DEV" )}]: nodemon --watch --exec ts-node ./src/main.js ${args.debug ? "--inspect-brk " : ""}--color=full ${process.argv.slice( 2 ).join( " " )}` );
-  const devProcess = exec( `nodemon --watch --exec ts-node ./src/main.js ${args.debug ? "--inspect-brk " : ""}--color=full ${process.argv.slice( 2 ).join( " " )}` );
+  const devProcess = exec( `nodemon -- ${args.debug ? "--inspect-brk " : ""}--color=full ${process.argv.slice( 2 ).join( " " )}` );
   devProcess.on( "exit", code => {
     console.log( `child process exited with code ${code}, will not auto-restart!` );
   } );

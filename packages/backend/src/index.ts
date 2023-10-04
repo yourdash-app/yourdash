@@ -62,9 +62,10 @@ if ( !args.dev && args.compile ) {
 }
 
 function startDevServer() {
-  console.log( `[${ chalk.hex( "#fc6f45" ).bold( "DEV" ) }]: nodemon --watch --exec ts-node ./src/main.js ${ args.debug ? "--inspect-brk " : "" }--color=full ${ process.argv.slice( 2 ).join( " " ) }` );
+  const DEV_COMMAND = `nodemon -- ${ args.debug ? "--inspect-brk " : "" }--color=full ${ process.argv.slice( 2 ).join( " " ) }`
+  console.log( `[${ chalk.hex( "#fc6f45" ).bold( "DEV" ) }]: ${DEV_COMMAND}` );
   
-  const devProcess = exec( `nodemon --watch --exec ts-node ./src/main.js ${ args.debug ? "--inspect-brk " : "" }--color=full ${ process.argv.slice( 2 ).join( " " ) }` );
+  const devProcess = exec( DEV_COMMAND );
   
   devProcess.on( "exit", code => {
     console.log( `child process exited with code ${ code }, will not auto-restart!` );
