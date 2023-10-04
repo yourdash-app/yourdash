@@ -4,7 +4,7 @@
  */
 
 import authenticatedImage, { authenticatedImageType } from "backend/src/core/authenticatedImage.js";
-import YourDashModule from "backend/src/core/YourDashModule.js";
+import YourDashModule from "backend/src/core/yourDashModule.js";
 import getAllCategories, { getAllApplicationsFromCategory } from "./helpers/categories.js";
 import path from "path";
 import globalDatabase from "backend/src/helpers/globalDatabase.js";
