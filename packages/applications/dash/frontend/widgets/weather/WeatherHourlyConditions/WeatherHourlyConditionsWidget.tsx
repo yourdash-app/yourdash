@@ -7,24 +7,22 @@ import React, { useEffect, useState } from "react";
 import useTranslate from "web-client/src/helpers/i10n";
 import { Card } from "web-client/src/ui";
 import csi from "web-client/src/helpers/csi";
-import HourlyConditionsHour from "./HourlyConditionsHour";
 import { IWeatherDataForLocation } from "../../../../../weather/shared/weatherDataForLocation";
-import getWeatherIconFromState from "applications/weather/frontend/helpers/getWeatherIconFromState";
 
-const WeatherHourlyConditions: React.FC = () => {
-  const trans = useTranslate("weather");
-  const [ weatherData, setWeatherData ] = useState<IWeatherDataForLocation | null>(null);
-  const [ locationData, setLocationData ] = useState<any>(null);
+const WeatherHourlyConditionsWidget: React.FC = () => {
+  const trans = useTranslate( "weather" );
+  const [ weatherData, setWeatherData ] = useState<IWeatherDataForLocation | null>( null );
+  const [ locationData, setLocationData ] = useState<any>( null );
 
-  useEffect(() => {
-    csi.getJson("/app/weather/hourly/London", res => {
-      setWeatherData(res.data);
-      setLocationData(res.location);
-      console.log(res);
-    });
-  }, []);
+  useEffect( () => {
+    csi.getJson( "/app/weather/hourly/London", res => {
+      setWeatherData( res.data );
+      setLocationData( res.location );
+      console.log( res );
+    } );
+  }, [] );
 
-  if (!weatherData || !locationData) {
+  if ( !weatherData || !locationData ) {
     return null;
   }
 
@@ -85,4 +83,4 @@ const WeatherHourlyConditions: React.FC = () => {
   );
 };
 
-export default WeatherHourlyConditions;
+export default WeatherHourlyConditionsWidget;

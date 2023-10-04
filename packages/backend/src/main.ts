@@ -209,7 +209,9 @@ scheduleTask( "save_global_database", "*/5 * * * *", async () => {
  ///////////////////////////////////////
 */
 async function listenForRequests() {
-  await killPort( 3560 );
+  try {
+    await killPort( 3560 );
+  } catch ( e ) { /* Ignore any errors */ }
   try {
     httpServer.listen( 3560, () => {
       log( logType.INFO, centerTerminalOutputOnLine( "server now listening on port 3560!" ) );
