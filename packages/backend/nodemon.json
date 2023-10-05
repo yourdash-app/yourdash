@@ -1,6 +1,7 @@
 {
   "watch": [
-    "src/**/*"
+    "src/**/*",
+    "../applications/**/backend/**/*"
   ],
   "exec": "ts-node ./src/main",
   "ext": "ts"
