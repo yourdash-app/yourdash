@@ -8,6 +8,7 @@ import useTranslate from "web-client/src/helpers/i10n";
 import { Card } from "web-client/src/ui";
 import csi from "web-client/src/helpers/csi";
 import { IWeatherDataForLocation } from "../../../../../weather/shared/weatherDataForLocation";
+import BlankDashWidget from "../../blank/BlankDashWidget";
 
 const WeatherHourlyConditionsWidget: React.FC = () => {
   const trans = useTranslate( "weather" );
@@ -15,7 +16,7 @@ const WeatherHourlyConditionsWidget: React.FC = () => {
   const [ locationData, setLocationData ] = useState<any>( null );
 
   useEffect( () => {
-    csi.getJson( "/app/weather/hourly/London", res => {
+    csi.getJson( "/app/weather/hourly/***REMOVED***", res => {
       setWeatherData( res.data );
       setLocationData( res.location );
       console.log( res );
@@ -23,7 +24,7 @@ const WeatherHourlyConditionsWidget: React.FC = () => {
   }, [] );
 
   if ( !weatherData || !locationData ) {
-    return null;
+    return <BlankDashWidget/>;
   }
 
   return (

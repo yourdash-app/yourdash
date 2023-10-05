@@ -24,5 +24,8 @@
     "../shared/**/*.ts",
     "../applications/**/backend/**/*.ts"
   ],
-  "exclude" : ["node_modules"]
+  "exclude" : ["node_modules"],
+  "ts-node": {
+    "require": ["tsconfig-paths/register"]
+  }
 }
