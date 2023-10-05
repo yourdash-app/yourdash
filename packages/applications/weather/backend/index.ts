@@ -16,11 +16,12 @@ export const weatherForecastCache: {
   }
 } = {};
 
-
 export default class WeatherModule extends YourDashModule {
   
   constructor( args: YourDashModuleArguments ) {
     super( args );
+    
+    console.log( "This is a test" );
     
     geolocationApi( this.API().request )
   
@@ -28,10 +29,10 @@ export default class WeatherModule extends YourDashModule {
       const { id } = req.params;
     
       if ( weatherForecastCache[ id ] ) {
-        const currentTime = Math.floor( new Date().getTime() / 1000 );
+        const currentTime = Math.floor( new Date().getTime() / 1_000 );
       
         if ( currentTime > weatherForecastCache[ id ].cacheTime + 1_800_000 /* 30 minutes */ ) {
-          return res.json( weatherForecastCache[ id ].data );
+          return res.json( { ...weatherForecastCache[ id ].data, collectedAt: weatherForecastCache[ id ].cacheTime } );
         }
       
         delete weatherForecastCache[ id ];

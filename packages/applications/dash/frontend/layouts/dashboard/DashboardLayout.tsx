@@ -60,18 +60,6 @@ const DashboardLayout: React.FC<IDashboard> = ( {
       <section className={styles.content}>
         {/* Widgets */}
         <WeatherHourlyConditionsWidget />
-        <div className={"bg-red-400 h-auto rounded-xl flex items-center justify-center font-bold text-4xl text-center p-4"}>
-          {"Placeholder Widget"}
-        </div>
-        <div className={"bg-red-400 h-auto rounded-xl flex items-center justify-center font-bold text-4xl text-center p-4"}>
-          {"Placeholder Widget"}
-        </div>
-        <div className={"bg-red-400 h-auto rounded-xl flex items-center justify-center font-bold text-4xl text-center p-4"}>
-          {"Placeholder Widget"}
-        </div>
-        <div className={"bg-red-400 h-auto rounded-xl flex items-center justify-center font-bold text-4xl text-center p-4"}>
-          {"Placeholder Widget"}
-        </div>
       </section>
     </main>
   );
