@@ -4,7 +4,12 @@
  */
 
 import React from "react";
+import { Card } from "web-client/src/ui/index";
 
-const BlankDashWidget: React.FC = () => <div className={"flex min-w-[8rem]"} />;
+const BlankDashWidget: React.FC = () => {
+  return <Card showBorder className={"flex items-center justify-center"}>
+    Failed to load widget
+  </Card>;
+};
 
 export default BlankDashWidget;
