@@ -5,6 +5,6 @@
   ],
   "ext": "ts",
   "execMap": {
-    "ts": "ts-node --esm"
+    "ts": "ts-node --esm --pretty"
   }
 }
