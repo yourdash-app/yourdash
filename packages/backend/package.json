@@ -42,7 +42,6 @@
   "type": "module",
   "scripts": {
     "compile": "tsc",
-    "compile-watch": "tsc --watch",
     "start": "node ./src/index.js",
     "dev": "node ./src/index.js --dev"
   }

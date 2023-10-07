@@ -62,7 +62,7 @@ if ( !args.dev && args.compile ) {
 }
 
 function startDevServer() {
-  const DEV_COMMAND = `nodemon -- ${ args.debug ? "--inspect-brk " : "" }--color=full ${ process.argv.slice( 2 ).join( " " ) }`
+  const DEV_COMMAND = `nodemon ./src/main.ts -- ${ args.debug ? "--inspect-brk " : "" }--color=full ${ process.argv.slice( 2 ).join( " " ) }`
   console.log( `[${ chalk.hex( "#fc6f45" ).bold( "DEV" ) }]: ${DEV_COMMAND}` );
   
   const devProcess = exec( DEV_COMMAND );
