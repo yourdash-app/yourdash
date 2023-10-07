@@ -3,6 +3,8 @@
     "src/**/*",
     "../applications/**/backend/**/*"
   ],
-  "exec": "ts-node ./src/main",
-  "ext": "ts"
+  "ext": "ts",
+  "execMap": {
+    "ts": "ts-node --esm"
+  }
 }
