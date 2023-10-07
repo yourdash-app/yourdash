@@ -6,7 +6,28 @@
 import { exec } from "child_process";
 import minimist from "minimist";
 import chalk from "chalk";
-import centerTerminalOutputOnLine from "backend/src/helpers/terminal/centerTerminalOutputOnLine.js";
+
+function getTerminalWidth(): number {
+  return process.stdout.columns || 80
+}
+
+function centerTerminalOutputOnLine( string: string ): string {
+  const TERMINAL_WIDTH = getTerminalWidth()
+  const STRING_LENGTH = string.length
+  const LINE_SIZE = ( TERMINAL_WIDTH - ( STRING_LENGTH + 12 ) ) / 2
+  
+  let output = ""
+  
+  for ( let i = 0; i < LINE_SIZE; i++ )
+    output += "-"
+  
+  output += ` ${string} `
+  
+  for ( let i = 0; i < LINE_SIZE; i++ )
+    output += "-"
+  
+  return output
+}
 
 console.log( centerTerminalOutputOnLine( chalk.whiteBright( "YourDash CLI v0.0.1" ) ) );
 
@@ -16,7 +37,7 @@ const args = minimist( process.argv.slice( 2 ) );
 console.log( `Starting with arguments: ${ JSON.stringify( args ) }` );
 
 if ( !args.dev && args.compile ) {
-  const childProcess = exec( "yarn run compile" );
+  const childProcess = exec( "yarn run compile-all" );
   
   childProcess.stdout.on( "data", ( data: string ) => {
     if ( data.toString() === "$ tsc\n" ) {
