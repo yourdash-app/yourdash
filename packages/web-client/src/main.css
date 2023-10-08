@@ -23,6 +23,7 @@
 
     /* Default theme's transitions */
     --transition-slow: all 1000ms ease-in-out;
+    --transition-slower: all 250ms ease-in-out;
     --transition: all 100ms ease-in-out;
     --transition-fast: all 25ms ease-in-out;
 
