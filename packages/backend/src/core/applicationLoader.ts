@@ -15,13 +15,13 @@ import http, { Server as HttpServer } from "http"
 function checkIfApplicationIsValidToLoad( applicationName: string ): boolean {
   // Required
   if ( !fsExistsSync( path.resolve( process.cwd(), `../applications/${ applicationName }/application.json` ) ) ) {
-    log( logType.ERROR,`${ chalk.yellow.bold( "CORE" ) }: application ${ applicationName } does not contain an application.json file!` );
+    log( logType.ERROR,"core", `application ${ applicationName } does not contain an application.json file!` );
     return false;
   }
   
   // Not Required ( use 'placeholder.avif' instead)
   if ( !fsExistsSync( path.resolve( process.cwd(), `../applications/${ applicationName }/icon.avif` ) ) ) {
-    log( logType.WARNING,`${ chalk.yellow.bold( "CORE" ) }: application ${ applicationName } does not contain an icon.avif file!` );
+    log( logType.WARNING,"core", `application ${ applicationName } does not contain an icon.avif file!` );
   }
   
   // Only required if the application needs a backend
@@ -45,12 +45,13 @@ export function loadApplication( appName: string, exp: ExpressApplication, httpS
   import( `applications/${ appName }/backend/index.js` )
     .then( ( mod: { default?: typeof YourDashModule } ) => {
       try {
-        log( logType.INFO, `${ chalk.yellow.bold( "CORE" ) }: Loading application: ${ appName }` );
+        log( logType.INFO, "core", `Loading application: ${ appName }` );
 
         if ( !mod.default ) {
           log(
             logType.ERROR,
-            `${ chalk.yellow.bold( "CORE" ) }: Unable to load ${ appName }! This application does not contain a default export!`
+            "core",
+            `Unable to load ${ appName }! This application does not contain a default export!`
           );
           return;
         }
@@ -68,18 +69,18 @@ export function loadApplication( appName: string, exp: ExpressApplication, httpS
           APPLICATION_ID: appName
         } */
         } catch ( err ) {
-          log( logType.ERROR, `${ chalk.yellow.bold( "CORE" ) }: Error during application execution: ${ appName }\n`, err );
+          log( logType.ERROR, "core", `Error during application execution: ${ appName }\n`, err );
           return
         }
         
-        log( logType.SUCCESS, `${ chalk.yellow.bold( "CORE" ) }: Initialized application: ${ appName }` );
+        log( logType.SUCCESS, "core", `Initialized application: ${ appName }` );
         return
       } catch ( err ) {
-        log( logType.ERROR, `${ chalk.yellow.bold( "CORE" ) }: Error during application initialization: ${ appName }\n`, err );
+        log( logType.ERROR, "core", `Error during application initialization: ${ appName }\n`, err );
         return
       }
     } ).catch( ( err ) => {
-      log( logType.ERROR, `${ chalk.yellow.bold( "CORE" ) }: Error while loading application: ${ appName }\n`, err );
+      log( logType.ERROR, "core", `Error while loading application: ${ appName }\n`, err );
       return
     } );
 }
@@ -88,19 +89,19 @@ export default function applicationLoader( exp: ExpressApplication, httpServer: 
   if ( fsExistsSync( path.resolve( process.cwd(), "../applications/" ) ) ) {
     const apps = globalDatabase.get( "installedApplications" ) || [];
     if ( apps?.length === 0 ) {
-      log( logType.WARNING, "No applications were loaded" )
+      log( logType.WARNING, "core", "No applications were loaded" )
     } else {
-      log( logType.INFO, `Loading applications ${apps}` );
+      log( logType.INFO, "core", `Loading applications ${apps}` );
     }
     apps.forEach( ( appName: string ) => {
       try {
         loadApplication( appName, exp, httpServer );
       } catch ( e ) {
-        log( logType.ERROR, `Unable to load application: ${appName}` )
+        log( logType.ERROR, "core", `Unable to load application: ${appName}` )
         console.trace( e )
       }
     } );
   } else {
-    log( logType.ERROR, `${ chalk.yellow.bold( "CORE" ) }: No applications found!` );
+    log( logType.ERROR, "core", "No applications found!" );
   }
 }
