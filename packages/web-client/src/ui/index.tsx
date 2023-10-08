@@ -26,6 +26,7 @@ const RightClickMenu = loadable( () => import( "./components/rightClickMenu/Righ
 const Row = loadable( () => import( "./components/row/Row" ) )
 const SegmentButton = loadable( () => import( "./components/segmentButton/SegmentButton" ) )
 const SideBar = loadable( () => import( "./components/sideBar/SideBar" ) )
+const Slides = loadable( () => import( "./components/slides/Slides" ) )
 const Spinner = loadable( () => import( "./components/spinner/Spinner" ) )
 const Tags = loadable( () => import( "./components/tags/Tags" ) )
 const TextBox = loadable( () => import( "./components/textBox/TextBox" ) )
@@ -54,6 +55,7 @@ export {
   Row,
   SegmentButton,
   SideBar,
+  Slides,
   Spinner,
   Tags,
   TextBox,
