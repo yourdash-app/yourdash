@@ -33,7 +33,7 @@ export default class YourDashModule {
       websocket: this.websocketManager,
       request: this.expressApp,
       log( type: logType, ...message: any[] ) {
-        log( type, [ `[${ this.moduleName }]`, ...message ] );
+        log( type, `app:${this.moduleName}`, ...message );
       },
       getPath() {
         return path.resolve( path.join( process.cwd(), "../applications", this.moduleName ) );

@@ -25,6 +25,7 @@
  * 9. Load post-startup services
  */
 
+import expressCompression from "compression";
 import applicationLoader from "backend/src/core/applicationLoader.js";
 import { startAuthenticatedImageHelper } from "backend/src/core/authenticatedImage.js";
 import { YOURDASH_INSTANCE_DISCOVERY_STATUS } from "backend/src/core/discovery.js";
@@ -42,7 +43,6 @@ import globalDatabase from "backend/src/helpers/globalDatabase.js";
 import log, { LOG_HISTORY, logType } from "backend/src/helpers/log.js";
 import { generateLogos } from "backend/src/helpers/logo.js";
 import centerTerminalOutputOnLine from "backend/src/helpers/terminal/centerTerminalOutputOnLine.js";
-import chalk from "chalk";
 import cors from "cors";
 import express from "express";
 import { existsSync as fsExistsSync, promises as fs, writeFile } from "fs";
@@ -52,6 +52,8 @@ import minimist from "minimist";
 import path from "path";
 import { YOURDASH_SESSION_TYPE } from "shared/core/session.js";
 import { Server as SocketIoServer, Socket as SocketIoSocket } from "socket.io";
+
+log( logType.INFO, "core", "Welcome to the YourDash Instance Server!" );
 
 // ! ------------------------------- !
 // ! THIS FILE IS A WORK IN PROGRESS !
@@ -203,6 +205,27 @@ scheduleTask( "save_global_database", "*/5 * * * *", async () => {
   await globalDatabase.writeToDisk( path.resolve( path.join( process.cwd(), "./fs/global_database.json" ) ) );
 } );
 
+// save the database before process termination
+function shutdownGracefully() {
+  log( logType.INFO, "Shutting down... ( restart should occur automatically )" );
+  
+  const LOG_OUTPUT = LOG_HISTORY.map( ( hist ) => {
+    return `${ hist.type }: ${ hist.message }`;
+  } ).join( "\n" );
+  
+  httpServer.close()
+  
+  saveUserDatabases();
+  
+  writeFile( path.resolve( process.cwd(), "./fs/log.log" ), LOG_OUTPUT, () => {
+    try {
+      globalDatabase._internalDoNotUseOnlyIntendedForShutdownSequenceWriteToDisk( path.resolve( process.cwd(), "./fs/global_database.json" ) );
+    } catch ( e ) {
+      log( logType.ERROR, "[EXTREME] Shutdown Error! failed to save global database. User data will have been lost!" );
+    }
+  } );
+}
+
 /*
  ///////////////////////////////////////
  //  6. Begin listening for requests  //
@@ -210,16 +233,28 @@ scheduleTask( "save_global_database", "*/5 * * * *", async () => {
 */
 async function listenForRequests() {
   try {
-    await killPort( 3560 );
-  } catch ( e ) { /* Ignore any errors */ }
-  try {
-    httpServer.listen( 3560, () => {
-      log( logType.INFO, centerTerminalOutputOnLine( "server now listening on port 3560!" ) );
-    } );
-  } catch ( _err ) {
-    log( logType.ERROR, `${ chalk.bold.yellow( "CORE" ) }: Unable to start server!, retrying...` );
+    try {
+      await killPort( 3563 );
+      log( logType.INFO, "Killed port 3563" );
+    } catch ( e ) {
+      // ignore errors
+    }
     
-    await listenForRequests();
+    
+    httpServer.listen( 3563, () => {
+      log( logType.INFO, "core", "server now listening on port 3563!" )
+    } );
+  } catch ( reason ) {
+    log( logType.INFO, "Unable to kill port 3563", reason );
+    
+    try {
+      httpServer.listen( 3563, () => {
+        log( logType.INFO, "core", "server now listening on port 3563!" );
+      } );
+    } catch ( _err ) {
+      log( logType.ERROR, "core", "Unable to start server!" );
+      shutdownGracefully();
+    }
   }
 }
 
@@ -239,25 +274,6 @@ export interface ISocketActiveSocket {
 const ACTIVE_SOCKET_IO_SOCKETS: {
   [ username: string ]: ISocketActiveSocket[];
 } = {};
-
-// save the database before process termination
-function shutdownGracefully() {
-  log( logType.INFO, "Shutting down... ( restart should occur automatically )" );
-  
-  const LOG_OUTPUT = LOG_HISTORY.map( ( hist ) => {
-    return `${ hist.type }: ${ hist.message }`;
-  } ).join( "\n" );
-  
-  saveUserDatabases();
-  
-  writeFile( path.resolve( process.cwd(), "./fs/log.log" ), LOG_OUTPUT, () => {
-    try {
-      globalDatabase._internalDoNotUseOnlyIntendedForShutdownSequenceWriteToDisk( path.resolve( process.cwd(), "./fs/global_database.json" ) );
-    } catch ( e ) {
-      log( logType.ERROR, "[EXTREME] Shutdown Error! failed to save global database. User data will have been lost!" );
-    }
-  } );
-}
 
 process.on( "SIGINT", shutdownGracefully );
 
@@ -334,6 +350,7 @@ if ( PROCESS_ARGUMENTS[ "log-requests" ] ) {
 
 exp.use( cors() );
 exp.use( express.json( { limit: "50mb" } ) );
+exp.use( expressCompression() );
 exp.use( ( _req, res, next ) => {
   res.removeHeader( "X-Powered-By" );
   next();
@@ -376,6 +393,10 @@ exp.get( "/test", ( _req, res ) => {
       type: "yourdash"
     } );
   }
+} );
+
+exp.get( "/ping", ( req, res ) => {
+  return res.send( "pong" );
 } );
 
 // Load all endpoints which require no authentication

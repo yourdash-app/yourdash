@@ -5,7 +5,6 @@
     "allowSyntheticDefaultImports": true,
     "target": "ESNext",
     "useDefineForClassFields": true,
-    "incremental": true,
     "lib": [
       "ESNext"
     ],
@@ -15,7 +14,6 @@
     "sourceMap": true,
     "rootDir": "..",
     "removeComments": true,
-    // "incremental": true, // this is causing problems on startup with applications deciding not to load!
     "resolveJsonModule": true,
     "experimentalDecorators": true
   },
@@ -24,8 +22,7 @@
     "../shared/**/*.ts",
     "../applications/**/backend/**/*.ts"
   ],
-  "exclude" : ["node_modules"],
-  "ts-node": {
-    "require": ["tsconfig-paths/register"]
-  }
+  "exclude": [
+    "node_modules"
+  ]
 }
