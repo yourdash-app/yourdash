@@ -29,9 +29,9 @@ export class WebsocketManager {
       if ( ( await this.servers[ appName ].server.fetchSockets() ).length === 0 ) {
         this.servers[ appName ].server.close();
         delete this.servers[ appName ];
-        log( logType.INFO, `[YourDashWebsocketManager] ${ appName } was closed as it has no clients connected.` );
+        log( logType.INFO, "core:websocket_manager", `${ appName } was closed as it has no clients connected.` );
       } else {
-        log( logType.INFO, `[YourDashWebsocketManager] ${ appName } is connected with ${ Object.keys( this.servers[ appName ].server.fetchSockets() ).length } clients.` );
+        log( logType.INFO, "core:websocket_manager", `${ appName } is connected with ${ Object.keys( this.servers[ appName ].server.fetchSockets() ).length } clients.` );
       }
     } );
   }
@@ -50,7 +50,7 @@ export class WebsocketManager {
       connections: []
     };
     
-    log( logType.INFO, `[YourDashWebsocketManager] ${ appName } was created.` );
+    log( logType.INFO, "core:websocket_manager", `${ appName } was created.` );
     
     return server;
   }
