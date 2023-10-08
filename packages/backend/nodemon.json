@@ -3,8 +3,5 @@
     "src/**/*",
     "../applications/**/backend/**/*"
   ],
-  "ext": "ts",
-  "execMap": {
-    "ts": "ts-node --esm --pretty"
-  }
+  "ext": "*.js"
 }

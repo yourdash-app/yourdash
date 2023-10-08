@@ -83,13 +83,52 @@ if ( !args.dev && args.compile ) {
 }
 
 function startDevServer() {
-  const DEV_COMMAND = `nodemon ./src/main.ts -- ${ args.debug ? "--inspect-brk " : "" }--color=full ${ process.argv.slice( 2 ).join( " " ) }`
+  const COMPILE_COMMAND = "tsc --watch"
+  const DEV_COMMAND = `nodemon ./src/main.js -- ${ args.debug ? "--inspect-brk " : "" }--color=full ${ process.argv.slice( 2 ).join( " " ) }`
   console.log( `[${ chalk.hex( "#fc6f45" ).bold( "DEV" ) }]: ${DEV_COMMAND}` );
   
+  const compileProcess = exec( COMPILE_COMMAND );
   const devProcess = exec( DEV_COMMAND );
   
+  compileProcess.stdout.on( "data", ( data: string ) => {
+    if ( data.toString() === "$ tsc\n" ) {
+      return;
+    }
+    if ( data.toString() === "\x1Bc" ) {
+      return;
+    }
+    if ( data.toString() === "" ) {
+      return;
+    }
+    
+    console.log( `[${ chalk.bold.blue( "TSC" ) }]: ${ data.toString().replaceAll( "\n", "" ).replaceAll( "\x1Bc", "" ) }` );
+  } );
+  
+  compileProcess.stderr.on( "data", data => {
+    if ( data.toString() === "$ tsc\n" ) {
+      return;
+    }
+    if ( data.toString() === "\x1Bc" ) {
+      return;
+    }
+    if ( data.toString() === "" ) {
+      return;
+    }
+    
+    console.log( `[${ chalk.bold.blue( "TSC ERROR" ) }]: ${
+      data.toString()
+        .replaceAll( "\n", "" )
+        .replaceAll( "\x1Bc", "" )
+        .replaceAll( "error", `${ chalk.bold.redBright( "ERROR" ) }` )
+    }` );
+  } );
+  
+  compileProcess.on( "exit", code => {
+    console.log( `hot compilation process exited with code ${ code }, will not auto-restart!` );
+  } )
+  
   devProcess.on( "exit", code => {
-    console.log( `child process exited with code ${ code }, will not auto-restart!` );
+    console.log( `application process exited with code ${ code }, will not auto-restart!` );
   } );
   
   devProcess.stdout.on( "data", data => {

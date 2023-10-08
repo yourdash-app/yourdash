@@ -18,16 +18,18 @@ export enum logType {
 
 export const LOG_HISTORY: {
   type: string,
-  message: any[]
+  level: string,
+  message: never[]
 }[] = [];
 
 /**
  * Logs a message with the specified type.
  * @param {logType} type - The type of log message.
+ * @param {string} level - The level to log to.
  * @param {...any} message - The message(s) to log.
  * @returns {void}
  */
-export default function log( type: logType, ...message: unknown[] ): void {
+export default function log( type: logType, level: string, ...message: unknown[] ): void {
   const logParams = [];
   
   if ( globalDatabase.get( "settings:log_should_log_time" ) ) {
@@ -38,6 +40,8 @@ export default function log( type: logType, ...message: unknown[] ): void {
       : date.getSeconds()
     } ` );
   }
+  
+  logParams.push( `[${level}]` )
   
   switch ( type ) {
   case logType.INFO:
@@ -73,7 +77,8 @@ export default function log( type: logType, ...message: unknown[] ): void {
           : type === logType.SUCCESS
             ? "SUCCESS"
             : "UNKNOWN",
-      message: logParams.slice( 1 ).map( msg => msg?.replace?.( /\x1b\[[0-9;]*m/g, "" ) || "LOGGING ERROR" )
+      level: level.toLowerCase(),
+      message: logParams.slice( 1 ).map( msg => msg?.replace?.( /\x1b\[[0-9;]*m/g, "" ) || "LOGGING ERROR" ) as never
     } );
   }
   
