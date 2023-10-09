@@ -35,7 +35,7 @@ const IndexPageHero: React.FC = () => {
           to={ "/login/signup" }
           className={ "hover:text-theme-500 active:text-theme-400 text-theme-200 transition-colors select-none cursor-pointer" }
         >
-          Signup
+          Placeholder Text
         </Link>
       </div>
     </div>

@@ -36,7 +36,7 @@ const DashApplication: React.FC = () => {
   return (
     <div
       className={"overflow-hidden bg-cover bg-center h-full w-full"}
-      style={{ backgroundImage: `url(${ localStorage.getItem( "current_server" ) }/core/login/background)` }}
+      style={{ backgroundImage: `url(${ localStorage.getItem( "current_server" ) }/core/login/instance/background)` }}
     >
       {
         layout === "dashboard"
