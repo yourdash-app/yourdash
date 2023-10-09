@@ -16,8 +16,8 @@ import AppLayout from "./app/AppLayout";
 import ComingSoon from "./ComingSoon";
 import DocsLayout from "./root/docs/Layout";
 import ErrorElement from "./ErrorElement";
-import LoginPage from "./root/login/LoginPage.jsx";
-import ServerLoginPage from "./root/login/ServerLoginPage.jsx";
+import LoginPage from "./root/login/views/LoginPage";
+import ServerLoginPage from "./root/login/Page";
 import Index from "./root/index/Index";
 import ProjectsIndexPage from "./root/projects/Index";
 import RootLayout from "./root/RootLayout";
@@ -76,10 +76,6 @@ function main() {
               <Route path={"/login"}>
                 <Route
                   index
-                  element={<LoginPage/>}
-                />
-                <Route
-                  path={"server"}
                   element={<ServerLoginPage/>}
                 />
               </Route>
