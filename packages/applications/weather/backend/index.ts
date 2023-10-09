@@ -21,8 +21,6 @@ export default class WeatherModule extends YourDashModule {
   constructor( args: YourDashModuleArguments ) {
     super( args );
     
-    console.log( "This is a test" );
-    
     geolocationApi( this.API().request )
   
     this.API().request.get( "/app/weather/location/:id", async ( req, res ) => {
