@@ -31,7 +31,7 @@ const Slides: React.FC<ISlides> = ( { slides, interval } ) => {
     return <div>No Slides Provided</div>
   }
   
-  return <div className={"w-full h-full bg-bg relative overflow-hidden"}>
+  return <div className={"w-full h-full bg-bg relative overflow-hidden select-none"}>
     {
       currentSlideIndex !== 0
         ? <div className={styles.previousFrame} key={currentSlideIndex - 1}>
@@ -56,7 +56,7 @@ const Slides: React.FC<ISlides> = ( { slides, interval } ) => {
                 index === currentSlideIndex
                   ? "w-10 bg-button-active-bg active:bg-button-active-bg hover:bg-button-active-bg"
                   : "w-5 bg-button-bg hover:w-8 hover:bg-button-hover-bg active:bg-button-active-bg",
-                "h-3 rounded-button-rounding [transition:var(--transition-slower)]"
+                "h-3 rounded-button-rounding [transition:var(--transition-slower)] hover:[transition:var(--transition)]"
               )}
               onClick={ () => {
                 clearTimeout( timeoutId )

@@ -4,9 +4,9 @@
  */
 
 import React, { useEffect, useState } from "react";
-import { Button, Card, IconButton, MajorButton, TextInput } from "../../ui/index";
+import { Button, Card, IconButton, MajorButton, TextInput } from "../../../ui/index";
 import { useNavigate } from "react-router-dom";
-import { YourDashIcon } from "../../ui/components/icon/iconDictionary";
+import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -14,13 +14,10 @@ const LoginPage: React.FC = () => {
   const [instanceUrl, setInstanceUrl] = useState( "http://example.com" );
   
   useEffect( () => {
-    if (
-      localStorage.getItem( "current_server" ) &&
-      localStorage.getItem( "current_server" ) !== ""
-    ) {
-      navigate( "/login/server" );
+    if ( localStorage.getItem( "current_server" ) && localStorage.getItem( "current_server" ) !== "" ) {
+      navigate( "/login/user" );
     } else if ( window.location.hostname === "localhost" ) {
-      localStorage.setItem( "current_server", "http://localhost:3560" );
+      localStorage.setItem( "current_server", "http://localhost:3563" );
     }
   }, [] );
   
@@ -36,7 +33,7 @@ const LoginPage: React.FC = () => {
             if ( value.indexOf( ":" ) === -1 ) {
               setInstanceUrl( value );
             } else {
-              setInstanceUrl( `${ value }:3560` );
+              setInstanceUrl( `${ value }:3563` );
             }
           }}
           mustMatchRegex={
@@ -55,7 +52,7 @@ const LoginPage: React.FC = () => {
             } ).then( resp => resp.json() ).then( resp => {
               if ( resp.status === 1 && resp.type === "yourdash" ) {
                 localStorage.setItem( "current_server", instanceUrl );
-                navigate( "/login/server" );
+                navigate( "/login/user" );
               }
             } );
           }}

@@ -28,7 +28,7 @@ const DashApplicationWelcome: React.FC = () => {
   return (
     <div
       style={{
-        backgroundImage: `url(${ localStorage.getItem( "current_server" ) }/core/login/background)`
+        backgroundImage: `url(${ localStorage.getItem( "current_server" ) }/core/login/instance/background)`
       }}
       className={"flex items-center justify-center flex-col h-full w-full bg-center bg-cover relative"}
     >

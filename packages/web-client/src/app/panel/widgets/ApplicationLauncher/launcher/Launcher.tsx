@@ -3,15 +3,17 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import { useNavigate } from "react-router-dom";
 import styles from "./Launcher.module.scss"
 import clippy from "../../../../../helpers/clippy";
 import { IconButton, YourDashIcon } from "../../../../../ui/index";
-import { memo, useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import ApplicationsLauncherApplications from "./Applications/Applications";
 import IPanelApplicationsLauncherApplication from "shared/core/panel/applicationsLauncher/application";
 import csi from "../../../../../helpers/csi";
 
 const ApplicationLauncher: React.FC<{ side: "top" | "right" | "bottom" | "left", visible: boolean }> = ( { side, visible } ) => {
+  const navigate = useNavigate()
   const [apps, setApps] = useState<IPanelApplicationsLauncherApplication[]>( [] )
   
   useEffect( () => {
@@ -38,6 +40,10 @@ const ApplicationLauncher: React.FC<{ side: "top" | "right" | "bottom" | "left",
       <IconButton
         className={styles.logoutButton}
         icon={YourDashIcon.Logout}
+        onClick={() => {
+          csi.logout();
+          navigate( "/login" )
+        }}
       />
       <div>
         <img src={""} alt={""}/>
