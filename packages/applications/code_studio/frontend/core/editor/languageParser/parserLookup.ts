@@ -9,7 +9,8 @@ export default function getParserForFileExtension( fileExtension: string ): stri
   } = {
     js: "javascript",
     json: "json",
-    txt: "plainText"
+    txt: "plainText",
+    typescript: "typescript"
   };
   
   return extensionForLanguageParser[fileExtension];
@@ -19,9 +20,10 @@ export function getParserForLanguage( language: string ): string {
   const extensionForLanguageParser: {
     [ key: string ]: string
   } = {
-    javascript: "./lang/javascript.ts",
-    json: "./lang/json.ts",
-    plainText: "./lang/plainText.ts"
+    javascript: "./lang/javascript/index.ts",
+    json: "./lang/json/index.ts",
+    plainText: "./lang/plainText/index.ts",
+    typescript: "./lang/typescript/index.ts"
   };
   
   return extensionForLanguageParser[language];
