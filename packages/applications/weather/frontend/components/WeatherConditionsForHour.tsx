@@ -32,14 +32,14 @@ const WeatherConditionsForHour: React.FC<IWeatherConditionsForHour> = ( {
   }, [ selectedDay, selectedHour ] );
   
   if ( !selectedHourDate || selectedHour === null ) {
-    return <Card className={ "col-span-3 flex items-center justify-center h-max" } showBorder>
+    return <Card className={ "col-span-3 flex items-center justify-center h-max sticky top-4" } showBorder>
       <h1>Click an hour to show more information.</h1>
     </Card>;
   }
   
   return <>
     <Card
-      className={ "gap-2 flex col-span-3 items-center justify-center w-full" }
+      className={ "gap-2 flex col-span-3 items-center justify-center w-full sticky top-4" }
       showBorder
     >
       <span className={ "text-3xl font-semibold tracking-wide" }>
