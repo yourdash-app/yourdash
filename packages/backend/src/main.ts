@@ -42,7 +42,6 @@ import { YourDashCoreUserPermissions } from "backend/src/core/user/permissions.j
 import globalDatabase from "backend/src/helpers/globalDatabase.js";
 import log, { LOG_HISTORY, logType } from "backend/src/helpers/log.js";
 import { generateLogos } from "backend/src/helpers/logo.js";
-import centerTerminalOutputOnLine from "backend/src/helpers/terminal/centerTerminalOutputOnLine.js";
 import cors from "cors";
 import express from "express";
 import { existsSync as fsExistsSync, promises as fs, writeFile } from "fs";

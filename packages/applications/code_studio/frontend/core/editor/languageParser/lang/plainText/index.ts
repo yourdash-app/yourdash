@@ -3,9 +3,9 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import CodeStudioBaseLanguageParser from "../baseLanguageParser";
-import Token from "../token";
-import { TokenType } from "../tokenType";
+import CodeStudioBaseLanguageParser from "../../baseLanguageParser";
+import Token from "../../token";
+import { TokenType } from "../../tokenType";
 
 // The YourDash CodeStudio language parser for "plainText" files.
 

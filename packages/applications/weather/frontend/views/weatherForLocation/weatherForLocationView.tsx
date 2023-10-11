@@ -51,7 +51,7 @@ const WeatherApplicationLocationPage: React.FC<IWeatherApplicationLocationPage> 
               } }
             >
               <img
-                className={ "h-16" }
+                className={ "h-16 -mt-4 -mb-4 -ml-2" }
                 src={ getWeatherIconFromState( chunk( weatherData.hourly.weatherState, 24 )[ selectedDay ][ ind ] ) }
                 alt={ "" }
               />
@@ -65,7 +65,7 @@ const WeatherApplicationLocationPage: React.FC<IWeatherApplicationLocationPage> 
             </Card>;
           } ) }
         </section>
-        <section className={ "w-full h-max sticky top-0 grid grid-cols-3 gap-2 grid-rows-[auto,1fr]" }>
+        <section className={ "w-full h-full grid grid-cols-3 gap-2 grid-rows-[auto,1fr]" }>
           { <WeatherConditionsForHour
             selectedHour={ selectedHour as number | undefined }
             selectedDay={ selectedDay }
