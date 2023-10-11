@@ -26,10 +26,15 @@ const Page: React.FC = () => {
             setInstanceHostname={setInstanceHostname}
             username={username}
           />
-          : <InstanceSelector setInstanceUrl={( value ) => setInstanceHostname( value )} />
+          : <InstanceSelector
+            setInstanceUrl={( value ) => setInstanceHostname( value )}
+          />
       }
     </Card>
-    <Card showBorder className={"[transition:var(--transition-slower)] overflow-hidden animate__animated animate__fadeIn"}>
+    <Card
+      showBorder
+      className={"[transition:var(--transition-slower)] overflow-hidden animate__animated animate__fadeIn"}
+    >
       {
         instanceHostname
           ? <InstanceInfo/>
