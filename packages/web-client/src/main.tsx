@@ -16,13 +16,12 @@ import AppLayout from "./app/AppLayout";
 import ComingSoon from "./ComingSoon";
 import DocsLayout from "./root/docs/Layout";
 import ErrorElement from "./ErrorElement";
-import LoginPage from "./root/login/views/LoginPage";
 import ServerLoginPage from "./root/login/Page";
 import Index from "./root/index/Index";
 import ProjectsIndexPage from "./root/projects/Index";
 import RootLayout from "./root/RootLayout";
-import RightClickMenuRootContainer from "./ui/components/rightClickMenu/RightClickMenuRootContainer.jsx";
 import "./tailwindcss.css";
+import ChipletUiRootIntegration from "./ui/RootIntegration";
 
 const AppRouter = loadable( () => import( "./app/AppRouter" ) );
 const DocsRouter = loadable( () => import( "./root/docs/DocsRouter" ) );
@@ -30,7 +29,7 @@ const ProjectsRouter = loadable( () => import( "./root/projects/ProjectsRouter" 
 
 function main() {
   ReactDOM.createRoot( document.getElementById( "root" ) as HTMLElement ).render(
-    <RightClickMenuRootContainer>
+    <ChipletUiRootIntegration>
       <RouterProvider
         router={createHashRouter(
           createRoutesFromElements(
@@ -99,7 +98,7 @@ function main() {
           )
         )}
       />
-    </RightClickMenuRootContainer>
+    </ChipletUiRootIntegration>
   );
 }
 
