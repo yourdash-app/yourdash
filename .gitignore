@@ -1,4 +1,5 @@
 **/node_modules/
-/packages/backend/fs/
-/packages/backend/**/*.js
-/packages/backend/**/*.js.map
+packages/backend/fs/
+packages/backend/**/*.js
+packages/backend/**/*.js.map
+packages/applications/**/*.js
