@@ -3,17 +3,32 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import React from "react"
+import React from "react";
+import IToast from "./IToast";
 import ToastContainer from "./ToastContainer";
-import ToastContext from "./ToastContext";
+import ToastContext, { IToastContext } from "./ToastContext";
 
 const ToastContextProvider: React.FC<{ children: React.ReactNode }> = ( { children } ) => {
-  const [toasts, setToasts] = React.useState<{ message: string, type: "success" | "error" | "info" | "warn"}[]>( [] )
+  const [ toasts, setToasts ] = React.useState<IToast[]>( [] );
   
-  return <ToastContext.Provider value={( message: string, type: "success" | "error" | "info" | "warn" ) => setToasts( [...toasts, { message: message, type }] )}>
-    <ToastContainer toasts={toasts}/>
-    {children}
-  </ToastContext.Provider>
-}
+  return <ToastContext.Provider value={
+    ( ( props: IToast ) => {
+      setToasts( [ ...toasts, props ] );
+      
+      if ( props.params?.noAutoClose )
+        return
+        
+      // remove toast after 10 seconds
+      setTimeout( () => {
+        setToasts( ( prevToasts ) => {
+          return prevToasts.filter( ( toast ) => toast.message !== props.message );
+        } );
+      }, 10_000 );
+    } ) as IToastContext
+  }>
+    <ToastContainer toasts={ toasts } />
+    { children }
+  </ToastContext.Provider>;
+};
 
-export default ToastContextProvider
+export default ToastContextProvider;
