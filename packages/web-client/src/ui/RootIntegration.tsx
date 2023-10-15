@@ -5,15 +5,15 @@
 
 import React from "react"
 import RightClickMenuRootContainer from "./components/rightClickMenu/RightClickMenuRootContainer";
-import ToastContext from "./components/toast/ToastContext";
+import ToastContextProvider from "./components/toast/ToastContextProvider";
 
 const ChipletUiRootIntegration: React.FC<{ children: React.ReactNode }> = ( { children } ) => {
   return (
-    <ToastContext.Provider>
+    <ToastContextProvider>
       <RightClickMenuRootContainer>
         {children}
       </RightClickMenuRootContainer>
-    </ToastContext.Provider>
+    </ToastContextProvider>
   )
 }
 

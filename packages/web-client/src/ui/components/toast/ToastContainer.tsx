@@ -3,10 +3,13 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import React from "react";
+import IToast from "./IToast";
 import Toast from "./Toast";
+import styles from "./Toast.module.scss"
 
-const ToastContainer: React.FC<{ toasts: {message: string, type: "success" | "error" | "info" | "warn"}[]}> = ( { toasts } ) => {
-  return <div className={"fixed bottom-0 right-0 gap-2 flex flex-col pr-2 pb-2"}>
+const ToastContainer: React.FC<{ toasts: IToast[]}> = ( { toasts } ) => {
+  return <div className={styles.toastsRootContainer}>
     {
       toasts.map( toast => {
         return <Toast
