@@ -4,6 +4,7 @@
  */
 
 import { useContext } from "react";
+import IToast from "../ui/components/toast/IToast";
 import ToastContext from "../ui/components/toast/ToastContext";
 
 export default function useYourDashLib() {
@@ -11,17 +12,33 @@ export default function useYourDashLib() {
   
   return {
     toast: {
-      success: ( message: string ) => {
-        toast.success( message )
+      success: ( message: string, options?: IToast["params"] ) => {
+        toast( {
+          message,
+          type: "success",
+          params: options
+        } )
       },
-      error: ( message: string ) => {
-        toast.error( message )
+      error: ( message: string, options?: IToast["params"] ) => {
+        toast( {
+          message,
+          type: "error",
+          params: options
+        } )
       },
-      info: ( message: string ) => {
-        toast.info( message )
+      info: ( message: string, options?: IToast["params"] ) => {
+        toast( {
+          message,
+          type: "info",
+          params: options
+        } )
       },
-      warn: ( message: string ) => {
-        toast.warn( message )
+      warn: ( message: string, options?: IToast["params"] ) => {
+        toast( {
+          message,
+          type: "warn",
+          params: options
+        } )
       }
     }
   }

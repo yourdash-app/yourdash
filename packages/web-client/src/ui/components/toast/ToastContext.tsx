@@ -4,5 +4,8 @@
  */
 
 import React from "react";
+import IToast from "./IToast";
 
-export default React.createContext( null as any )
+export type IToastContext = ( props: IToast ) => void
+
+export default React.createContext(  ( ()=> { /* empty function */ } ) as IToastContext )
