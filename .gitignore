@@ -4,3 +4,5 @@
 /packages/backend/**/*.js.map
 /packages/applications/**/*.js
 /packages/applications/**/*.js.map
+/packages/shared/**/*.js
+/packages/shared/**/*.js.map
