@@ -51,7 +51,35 @@ const YourDevHome: React.FC = () => {
               ydsh.toast.info( `Test Toast, ${Math.floor( Math.random() * 10000 )}` )
             } }
           >
-            Test Toast
+            Info Toast
+          </Button>
+          <Button
+            onClick={ () => {
+              ydsh.toast.warn( `Test Toast, ${Math.floor( Math.random() * 10000 )}` )
+            } }
+          >
+            Warn Toast
+          </Button>
+          <Button
+            onClick={ () => {
+              ydsh.toast.error( `Test Toast, ${Math.floor( Math.random() * 10000 )}` )
+            } }
+          >
+            Error Toast
+          </Button>
+          <Button
+            onClick={ () => {
+              ydsh.toast.success( `Test Toast, ${Math.floor( Math.random() * 10000 )}` )
+            } }
+          >
+            Success Toast
+          </Button>
+          <Button
+            onClick={ () => {
+              ydsh.toast.silent( `Test Toast, ${Math.floor( Math.random() * 10000 )}` )
+            } }
+          >
+            Silent Toast
           </Button>
         </Card>
       </section>

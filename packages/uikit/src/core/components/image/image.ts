@@ -10,7 +10,7 @@ export interface ImageProps extends UKComponentProps {
   alt?: string;
 }
 
-export default class Image extends UKComponent<ImageProps, {}, {}> {
+export default class Image extends UKComponent<ImageProps> {
   domElement: HTMLImageElement
   
   constructor( props: ImageProps ) {
