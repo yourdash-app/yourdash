@@ -5,10 +5,10 @@
 
 export default interface IToast {
   message: string;
-  type: "success" | "error" | "info" | "warn";
+  type: "success" | "error" | "info" | "warn" | "silent";
   params?: {
     options?: {name: string, cb: () => void}[],
     noAutoClose?: boolean,
-    onClose?: () => void
+    onClose?: () => void,
   }
 }
