@@ -3,16 +3,14 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import UKComponent, { UKComponentProps, UKComponentSlots, UKComponentState } from "../../component.ts";
+import UKComponent, { UKComponentSlots } from "../../component.ts";
 import styles from "./card.module.scss";
 import UKComponentSlot from "../../slot.ts";
 
-export interface CardProps extends UKComponentProps {
+export interface CardProps {
   label?: string,
   onClick?: () => void
 }
-
-export type CardState = UKComponentState
 
 export interface CardSlots extends UKComponentSlots {
   actions: UKComponentSlot,
@@ -22,7 +20,7 @@ export interface CardSlots extends UKComponentSlots {
   contentFooter: UKComponentSlot
 }
 
-export default class Card extends UKComponent<CardProps, CardState, CardSlots> {
+export default class Card extends UKComponent<CardProps, never, CardSlots> {
   private labelDomElement: HTMLSpanElement
   private headerDomElement: HTMLDivElement
   private headerExtrasDomElement: HTMLDivElement

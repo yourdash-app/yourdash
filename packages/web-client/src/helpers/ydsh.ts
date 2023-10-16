@@ -39,6 +39,13 @@ export default function useYourDashLib() {
           type: "warn",
           params: options
         } )
+      },
+      silent: ( message: string, options?: IToast["params"] ) => {
+        toast( {
+          message,
+          type: "silent",
+          params: options
+        } )
       }
     }
   }

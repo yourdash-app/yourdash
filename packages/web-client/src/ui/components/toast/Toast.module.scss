@@ -26,19 +26,19 @@
   }
 
   &[data-type="success"] {
-
+    border-color: #00fa9a !important;
   }
 
   &[data-type="error"] {
-
+    border-color: #dc3313 !important;
   }
 
   &[data-type="info"] {
-
+    border-color: #00b8ff !important;
   }
 
   &[data-type="warn"] {
-
+    border-color: #ffc107 !important;
   }
 }
 

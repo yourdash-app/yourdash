@@ -23,7 +23,7 @@ const ToastContextProvider: React.FC<{ children: React.ReactNode }> = ( { childr
         setToasts( ( prevToasts ) => {
           return prevToasts.filter( ( toast ) => toast.message !== props.message );
         } );
-      }, 10_000 );
+      }, 7500 );
     } ) as IToastContext
   }>
     <ToastContainer toasts={ toasts } />
