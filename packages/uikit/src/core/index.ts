@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-/** UIKit - a vanilla JS UI library (https://github.com/yourdash-app/yourdash/tree/main/packages/uikit) */
+/** UIKit - a vanilla Typescript UI library (https://github.com/yourdash-app/yourdash/tree/main/packages/uikit) */
 
 import UKComponent, { UKComponentProps, UKComponentSlots, UKComponentState } from "./component.ts";
 import defaultStyles from "./default.module.scss"
