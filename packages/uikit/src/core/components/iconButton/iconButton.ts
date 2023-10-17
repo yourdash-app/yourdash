@@ -3,10 +3,10 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import UKComponent, { UKComponentProps, UKComponentState, UKComponentSlots } from "../../../component.ts";
+import UKComponent, { UKComponentProps, UKComponentState, UKComponentSlots } from "../../component.ts";
 import styles from "./iconButton.module.scss";
-import State from "../../../state.ts";
-import { UKIcon } from "../../../icons/icons.ts";
+import State from "../../state.ts";
+import { UKIcon } from "../../icons/icons.ts";
 
 export interface IconButtonProps extends UKComponentProps {
   icon: UKIcon,
