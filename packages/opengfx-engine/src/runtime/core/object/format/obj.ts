@@ -8,23 +8,15 @@ export default class LoadObj {
   objects: { [ key: string ]: { mesh: number[] } };
   mesh: Float32Array;
   
-  constructor( screen: Screen, engine: Engine ) {
-    this.screen = screen;
-    this.engine = engine;
-    this.rawData = {
-      lines: []
-    };
-    this.objects = {};
-    this.mesh = new Float32Array( [] );
-    
-    return this;
-  }
-  
   async load( path: string ) {
-    const rawFile = ( await import( path ) ).default;
+    const rawFile = ( await import( `${path}?raw` /* @vite-ignore */ ) ).default;
+    
+    console.log( rawFile )
     
     // @ts-ignore
     this.rawData.lines = rawFile.split( "\n" );
+    
+    console.log( this.rawData.lines )
     
     let currentObject = "";
     
@@ -91,7 +83,7 @@ fn fragment_main(fragData: VertexOut) -> @location(0) vec4f
     const shaderModule = this.engine.gpuDevice.createShaderModule( {
       code: shaders
     } );
-
+    
     
     const vertexBuffers = [{
       attributes: [
@@ -109,7 +101,7 @@ fn fragment_main(fragData: VertexOut) -> @location(0) vec4f
       arrayStride: 32,
       stepMode: "vertex"
     }];
-
+    
     const pipelineDescriptor: GPURenderPipelineDescriptor = {
       vertex: {
         module: shaderModule,
@@ -144,7 +136,7 @@ fn fragment_main(fragData: VertexOut) -> @location(0) vec4f
     };
     
     const passEncoder = this.engine.gpuCommandEncoder.beginRenderPass( this.engine.renderPassDescriptor );
-
+    
     passEncoder.setPipeline( this.engine.renderPipeline );
     passEncoder.setVertexBuffer( 0, buf );
     passEncoder.draw( this.mesh.length / 8 );
@@ -154,5 +146,17 @@ fn fragment_main(fragData: VertexOut) -> @location(0) vec4f
     console.log( "Rendered:", buf );
     
     console.log( this );
+  }
+  
+  constructor( screen: Screen, engine: Engine ) {
+    this.screen = screen;
+    this.engine = engine;
+    this.rawData = {
+      lines: []
+    };
+    this.objects = {};
+    this.mesh = new Float32Array( [] );
+    
+    return this;
   }
 }
