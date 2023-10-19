@@ -5,10 +5,12 @@
 
 import initEngine from "opengfx"
 import loadObject from "../../../../runtime/core/object/loadObject.ts";
+// @ts-ignore
+import BOEING_MODEL from "./../public/boeing/Boeing_787.obj?raw"
 
 // @ts-ignore
 const engine = await initEngine( document.body as HTMLDivElement )
 
-await loadObject( new URL( "/boeing/boeing_787.obj", import.meta.url ).toString(), engine.screen, engine )
+await loadObject( BOEING_MODEL, engine.screen, engine )
 
 // engine.setScene( new Scene( { id: "default_scene", objects: [] }, engine.screen ) )
