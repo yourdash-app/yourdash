@@ -7,9 +7,8 @@ import { Engine } from "../index.ts";
 import Screen from "../screen.ts";
 import LoadObj from "./format/obj.ts";
 
-export default async function loadObject( path: string, screen: Screen, engine: Engine ) {
+export default async function loadObject( objectData: string, screen: Screen, engine: Engine ) {
   const loader = new LoadObj( screen, engine );
   
-  await loader.load( path );
-  console.log( loader )
+  await loader.load( objectData );
 }
