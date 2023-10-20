@@ -25,7 +25,6 @@
  * 9. Load post-startup services
  */
 
-import expressCompression from "compression";
 import applicationLoader from "backend/src/core/applicationLoader.js";
 import { startAuthenticatedImageHelper } from "backend/src/core/authenticatedImage.js";
 import { YOURDASH_INSTANCE_DISCOVERY_STATUS } from "backend/src/core/discovery.js";
@@ -42,6 +41,7 @@ import { YourDashCoreUserPermissions } from "backend/src/core/user/permissions.j
 import globalDatabase from "backend/src/helpers/globalDatabase.js";
 import log, { LOG_HISTORY, logType } from "backend/src/helpers/log.js";
 import { generateLogos } from "backend/src/helpers/logo.js";
+import expressCompression from "compression";
 import cors from "cors";
 import express from "express";
 import { existsSync as fsExistsSync, promises as fs, writeFile } from "fs";
@@ -51,6 +51,9 @@ import minimist from "minimist";
 import path from "path";
 import { YOURDASH_SESSION_TYPE } from "shared/core/session.js";
 import { Server as SocketIoServer, Socket as SocketIoSocket } from "socket.io";
+import Undici from "undici";
+import scheduleBackendUpdateChecker, { performBackendUpdate } from "./core/update/performBackendUpdate.js";
+import fetch = Undici.fetch;
 
 log( logType.INFO, "core", "Welcome to the YourDash Instance Server!" );
 
@@ -205,7 +208,7 @@ scheduleTask( "save_global_database", "*/5 * * * *", async () => {
 } );
 
 // save the database before process termination
-function shutdownGracefully() {
+export function shutdownInstanceGracefully() {
   log( logType.INFO, "Shutting down... ( restart should occur automatically )" );
   
   const LOG_OUTPUT = LOG_HISTORY.map( ( hist ) => {
@@ -234,11 +237,10 @@ async function listenForRequests() {
   try {
     try {
       await killPort( 3563 );
-      log( logType.INFO, "Killed port 3563" );
+      log( logType.INFO, "core", "Killed port 3563" );
     } catch ( e ) {
       // ignore errors
     }
-    
     
     httpServer.listen( 3563, () => {
       log( logType.INFO, "core", "server now listening on port 3563!" )
@@ -252,7 +254,7 @@ async function listenForRequests() {
       } );
     } catch ( _err ) {
       log( logType.ERROR, "core", "Unable to start server!" );
-      shutdownGracefully();
+      shutdownInstanceGracefully();
     }
   }
 }
@@ -274,7 +276,7 @@ const ACTIVE_SOCKET_IO_SOCKETS: {
   [ username: string ]: ISocketActiveSocket[];
 } = {};
 
-process.on( "SIGINT", shutdownGracefully );
+process.on( "SIGINT", shutdownInstanceGracefully );
 
 // Handle socket.io connections
 socketIo.on( "connection", ( socket: SocketIoSocket<any, any, any, any> ) => { // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -361,7 +363,7 @@ process.stdin.on( "data", ( data ) => {
   
   switch ( command ) {
   case "exit":
-    shutdownGracefully();
+    shutdownInstanceGracefully();
     break;
   default:
     log( logType.ERROR, `Unknown command: ${ command }` );
@@ -402,6 +404,22 @@ exp.get( "/ping", ( req, res ) => {
 startAuthenticatedImageHelper( exp );
 defineLoginEndpoints( exp );
 
+exp.get( "/core/test/self-ping", ( req, res ) => {
+  return res.json( { success: true } );
+} )
+
+fetch( "http://localhost:3563/core/test/self-ping" )
+  .then( res => res.json() )
+  .then( ( data: { success?: boolean } ) => {
+    if ( data?.success ) {
+      return log( logType.SUCCESS, "core", "self ping successful - The server is receiving requests" );
+    }
+    log( logType.ERROR, "core", "CRITICAL ERROR!, unable to ping self" )
+  } )
+  .catch( () => {
+    log( logType.ERROR, "core", "CRITICAL ERROR!, unable to ping self" )
+  } )
+
 // check for authentication
 exp.use( async ( req, res, next ) => {
   const {
@@ -438,6 +456,7 @@ exp.use( async ( req, res, next ) => {
   
   return res.json( { error: "authorization fail" } );
 } );
+
 
 /*
  * --------------------------------------------------------------
@@ -510,3 +529,7 @@ defineUserEndpoints( exp );
 
 // load applications
 applicationLoader( exp, httpServer );
+
+if ( !PROCESS_ARGUMENTS.dev ) {
+  scheduleBackendUpdateChecker()
+}

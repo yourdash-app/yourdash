@@ -6,7 +6,7 @@
 import schedule, { RecurrenceRule, RecurrenceSpecDateRange, RecurrenceSpecObjLit } from "node-schedule";
 import log, { logType } from "../helpers/log.js";
 
-export default function scheduleTask( name: string, rule: RecurrenceRule | RecurrenceSpecDateRange | RecurrenceSpecObjLit | Date | string | number, task: () => void ) {
+export default function scheduleTask( name: string, rule: RecurrenceRule | RecurrenceSpecDateRange | RecurrenceSpecObjLit | Date | string | number, task: () => Promise<void> ) {
   log(
     logType.INFO,
     "core:task_scheduler",
