@@ -17,13 +17,29 @@ const InstanceSelector: React.FC<IInstanceSelector> = ( { setInstanceUrl } ) => 
     <span className={"animate__animated animate__fadeIn text-4xl font-semibold"}>Choose an Instance</span>
     <TextInput
       label={"Instance URL"}
-      onChange={() => {}}
+      onChange={() => 0 }
       onValid={( val ) => {
-        if ( val.indexOf( ":" ) === -1 ) {
+        if ( val.replace( "://", "" ).indexOf( ":" ) !== -1 ) {
           setUncheckedInstanceUrl( val );
         } else {
           setUncheckedInstanceUrl( `${ val }:3563` );
         }
+      }}
+      onKeyDown={( e ) => {
+        if ( e.key !== "Enter" ) return
+        
+        fetch( `${uncheckedInstanceUrl}/test` )
+          .then( res => res.json() )
+          .then( json => {
+            if ( json.type === "yourdash" ) {
+              setInstanceUrl( uncheckedInstanceUrl );
+            } else {
+              alert( "This is not a valid YourDash instance" );
+            }
+          } )
+          .catch( () => {
+            alert( "This is not a valid YourDash instance" );
+          } )
       }}
       mustMatchRegex={/^(?:https?:\/\/)?(?:\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(?::\d+)?|localhost(?::\d+)?|(?!.*\.$)[\w.-]+\.[a-z]{2,})(?::\d+)?$/}
       placeholder={"https://example.com"}
@@ -40,7 +56,7 @@ const InstanceSelector: React.FC<IInstanceSelector> = ( { setInstanceUrl } ) => 
               alert( "This is not a valid YourDash instance" );
             }
           } )
-          .catch( err => {
+          .catch( () => {
             alert( "This is not a valid YourDash instance" );
           } )
       }}

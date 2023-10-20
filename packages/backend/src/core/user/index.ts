@@ -8,6 +8,7 @@ import { promises as fs } from "fs";
 import path from "path";
 import sharp from "sharp";
 import { hash } from "../../helpers/encryption.js";
+import GlobalDatabase from "../../helpers/globalDatabase.js";
 import log, { logType } from "../../helpers/log.js";
 import YourDashSession, { getSessionsForUser } from "../../helpers/session.js";
 import getUserDatabase, { addUserDatabaseToSaveQueue, saveUserDatabaseInstantly } from "./database.js";
@@ -63,14 +64,17 @@ export default class YourDashUser {
     await fs.mkdir( path.join( this.path, "fs" ) );
     await fs.mkdir( path.join( this.path, "apps" ) );
     await fs.mkdir( path.join( this.path, "temp" ) );
-    await fs.writeFile( path.join( this.path, "core/user_db.json" ), JSON.stringify( {
-      "core:user:name": {
-        first: "New",
-        last: "User"
-      },
-      "core:user:username": this.username,
-      "core:panel:quickShortcuts": ["dash", "files", "settings"]
-    } ) )
+    await fs.writeFile(
+      path.join( this.path, "core/user_db.json" ),
+      JSON.stringify( {
+        "core:user:name": {
+          first: "New",
+          last: "User"
+        },
+        "core:user:username": this.username,
+        "core:panel:quickShortcuts": GlobalDatabase.get( "defaults" ).user.quickShortcuts
+      } )
+    )
     await this.setPassword( "password" );
     await this.setAvatar( path.join( process.cwd(), "./src/assets/default_avatar.avif" ) );
     await fs.writeFile( path.join( this.path, "core/user.json" ), JSON.stringify( {
@@ -93,7 +97,7 @@ export default class YourDashUser {
       const db = await this.getDatabase()
       db.set( "core:user:name", { first, last } )
       await saveUserDatabaseInstantly( this.username )
-      fs.writeFile( path.join( this.path, "core/user.json" ), JSON.stringify( currentUserJson ) )
+      await fs.writeFile( path.join( this.path, "core/user.json" ), JSON.stringify( currentUserJson ) )
     } catch( err ) {
       log( logType.ERROR, `Unable to write / read ${this.username}'s core/user.json` )
     }
@@ -112,7 +116,7 @@ export default class YourDashUser {
     try {
       const currentUserJson = JSON.parse( ( await fs.readFile( path.join( this.path, "core/user.json" ) ) ).toString() ) as IYourDashUserJson
       currentUserJson.bio = bio
-      fs.writeFile( path.join( this.path, "core/user.json" ), JSON.stringify( currentUserJson ) )
+      await fs.writeFile( path.join( this.path, "core/user.json" ), JSON.stringify( currentUserJson ) )
     } catch( err ) {
       log( logType.ERROR, `Unable to write / read ${this.username}'s core/user.json` )
     }
@@ -131,7 +135,7 @@ export default class YourDashUser {
     try {
       const currentUserJson = JSON.parse( ( await fs.readFile( path.join( this.path, "core/user.json" ) ) ).toString() ) as IYourDashUserJson
       currentUserJson.url = url
-      fs.writeFile( path.join( this.path, "core/user.json" ), JSON.stringify( currentUserJson ) )
+      await fs.writeFile( path.join( this.path, "core/user.json" ), JSON.stringify( currentUserJson ) )
     } catch( err ) {
       log( logType.ERROR, `Unable to write / read ${this.username}'s core/user.json` )
     }
@@ -150,7 +154,7 @@ export default class YourDashUser {
     try {
       const currentUserJson = JSON.parse( ( await fs.readFile( path.join( this.path, "core/user.json" ) ) ).toString() ) as IYourDashUserJson
       currentUserJson.permissions = permissions
-      fs.writeFile( path.join( this.path, "core/user.json" ), JSON.stringify( currentUserJson ) )
+      await fs.writeFile( path.join( this.path, "core/user.json" ), JSON.stringify( currentUserJson ) )
     } catch( err ) {
       log( logType.ERROR, `Unable to write / read ${this.username}'s core/user.json` )
     }

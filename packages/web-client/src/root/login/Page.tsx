@@ -27,7 +27,7 @@ const Page: React.FC = () => {
             username={username}
           />
           : <InstanceSelector
-            setInstanceUrl={( value ) => setInstanceHostname( value )}
+            setInstanceUrl={( value ) => { setInstanceHostname( value ); localStorage.setItem( "current_server", value ) }}
           />
       }
     </Card>
