@@ -13,14 +13,15 @@ const USER_DATABASES: {
 } = {};
 
 export function startUserDatabaseService() {
-  scheduleTask( "core:userdb_write_to_disk", "*/1 * * * *", () => {
-    Object.keys( USER_DATABASES ).forEach( async username => {
-      if ( USER_DATABASES[username].changed ) {
-        const user = new YourDashUser( username );
+  scheduleTask( "core:userdb_write_to_disk", "*/5 * * * *", async () => {
+    Object.keys( USER_DATABASES )
+      .map( async username => {
+        if ( USER_DATABASES[username].changed ) {
+          const user = new YourDashUser( username );
       
-        await USER_DATABASES[username].db.writeToDisk( path.join( user.path, "core/user_db.json" ) )
-      }
-    } )
+          await USER_DATABASES[username].db.writeToDisk( path.join( user.path, "core/user_db.json" ) )
+        }
+      } )
   } )
 }
 
