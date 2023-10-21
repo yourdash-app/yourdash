@@ -201,7 +201,10 @@ export default class YourDashUser {
   getLoginSession( sessionId: number ): YourDashSession<any> | undefined {
     try {
       // return a YourDashSession which has the sessionId as its id, find the correct session and use it as an input
-      return new YourDashSession( this.username, getSessionsForUser( this.username )[ getSessionsForUser( this.username ).findIndex( val => val.id === sessionId ) ] );
+      return new YourDashSession(
+        this.username,
+        getSessionsForUser( this.username )[ getSessionsForUser( this.username ).findIndex( val => val.id === sessionId ) ]
+      );
     } catch ( _err ) {
       log( logType.WARNING, `${ chalk.yellow.bold( "CORE" ) }: unable to find session: ${ sessionId }` );
       return undefined;
