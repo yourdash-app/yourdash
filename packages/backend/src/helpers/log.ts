@@ -5,21 +5,16 @@
 
 import chalk from "chalk";
 import globalDatabase from "./globalDatabase.js";
-import sourceMapSupport from "source-map-support"
+import sourceMapSupport from "source-map-support";
 
-sourceMapSupport.install()
+sourceMapSupport.install();
 
 export enum logType {
-  INFO,
-  WARNING,
-  ERROR,
-  SUCCESS
+  INFO, WARNING, ERROR, SUCCESS
 }
 
 export const LOG_HISTORY: {
-  type: string,
-  level: string,
-  message: never[]
+  type: string, level: string, message: never[]
 }[] = [];
 
 /**
@@ -35,48 +30,39 @@ export default function log( type: logType, level: string, ...message: unknown[]
   if ( globalDatabase.get( "settings:log_should_log_time" ) ) {
     const date = new Date();
     
-    logParams.push( `${ date.getHours() }:${ date.getMinutes() }:${ date.getSeconds() < 10
-      ? `${ date.getSeconds() }0`
-      : date.getSeconds()
-    } ` );
+    logParams.push( `${ date.getHours() }:${ date.getMinutes() }:${ date.getSeconds() < 10 ? `${ date.getSeconds() }0` : date.getSeconds() } ` );
   }
   
-  logParams.push( `[${level}]` )
+  logParams.push( `[${ level }]` );
   
   switch ( type ) {
   case logType.INFO:
-    logParams.push( chalk.blue( "INFO    " ) );
+    logParams.push( chalk.blue( "INFO" ) );
     break;
   case logType.WARNING:
-    logParams.push( chalk.yellow( "WARN    " ) );
+    logParams.push( chalk.yellow( "WARN" ) );
     break;
   case logType.ERROR:
-    logParams.push( chalk.red( "ERROR   " ) );
+    logParams.push( chalk.red( "ERROR" ) );
     break;
   case logType.SUCCESS:
-    logParams.push( chalk.green( "SUCCESS " ) );
+    logParams.push( chalk.green( "SUCCESS" ) );
     break;
   default:
     break;
   }
   
   if ( type === logType.ERROR ) {
-    let stackTrace = new Error( message.toString() ).stack.slice( 7 )
+    let stackTrace = new Error( message.toString() ).stack.slice( 7 );
     const stackArray = stackTrace.split( "\n" );
-    stackArray.splice( 1,1 );
+    stackArray.splice( 1, 1 );
     stackTrace = stackArray.join( "\n" );
-    logParams.push( stackTrace )
+    logParams.push( stackTrace );
   } else {
     logParams.push( ...message );
-  
+    
     LOG_HISTORY.push( {
-      type: type === logType.INFO
-        ? "INFO"
-        : type === logType.WARNING
-          ? "WARN"
-          : type === logType.SUCCESS
-            ? "SUCCESS"
-            : "UNKNOWN",
+      type: type === logType.INFO ? "INFO" : type === logType.WARNING ? "WARN" : type === logType.SUCCESS ? "SUCCESS" : "UNKNOWN",
       level: level.toLowerCase(),
       message: logParams.slice( 1 ).map( msg => msg?.replace?.( /\x1b\[[0-9;]*m/g, "" ) || "LOGGING ERROR" ) as never
     } );

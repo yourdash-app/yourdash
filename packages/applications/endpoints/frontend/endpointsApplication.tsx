@@ -11,10 +11,10 @@ import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
 import useTranslate from "web-client/src/helpers/i10n";
 
 function loadPossibleEndpoints( setEndpoints: ( data: string[] ) => void ) {
-  csi.getJson( "/app/endpoints/endpoints", ( data: any ) => {
-    const endpoints = data.map( ( endpoint: any ) => endpoint?.route?.path || null ).filter( ( endpoint: any ) => endpoint !== null );
+  csi.getJson( "/app/endpoints/endpoints", ( data: any ) => { // eslint-disable-line @typescript-eslint/no-explicit-any
+    const endpoints: string[] = data.map( ( endpoint: any ) => endpoint?.route?.path || null ).filter( ( endpoint: any ) => endpoint !== null ); // eslint-disable-line @typescript-eslint/no-explicit-any
 
-    setEndpoints( endpoints );
+    setEndpoints( [...new Set( endpoints )] );
   } );
 }
 

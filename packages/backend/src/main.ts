@@ -52,10 +52,10 @@ import path from "path";
 import { YOURDASH_SESSION_TYPE } from "shared/core/session.js";
 import { Server as SocketIoServer, Socket as SocketIoSocket } from "socket.io";
 import Undici from "undici";
-import scheduleBackendUpdateChecker, { performBackendUpdate } from "./core/update/performBackendUpdate.js";
+import scheduleBackendUpdateChecker from "./core/update/performBackendUpdate.js";
 import fetch = Undici.fetch;
 
-log( logType.INFO, "core", "Welcome to the YourDash Instance Server!" );
+log( logType.INFO, "core", "Welcome to the YourDash Instance Backend!" );
 
 // ! ------------------------------- !
 // ! THIS FILE IS A WORK IN PROGRESS !
@@ -215,7 +215,7 @@ export function shutdownInstanceGracefully() {
     return `${ hist.type }: ${ hist.message }`;
   } ).join( "\n" );
   
-  httpServer.close()
+  httpServer.close();
   
   saveUserDatabases();
   
@@ -223,7 +223,7 @@ export function shutdownInstanceGracefully() {
     try {
       globalDatabase._internalDoNotUseOnlyIntendedForShutdownSequenceWriteToDisk( path.resolve( process.cwd(), "./fs/global_database.json" ) );
     } catch ( e ) {
-      log( logType.ERROR, "[EXTREME] Shutdown Error! failed to save global database. User data will have been lost!" );
+      log( logType.ERROR, "[EXTREME SEVERITY] Shutdown Error! failed to save global database. User data will have been lost! (past 5 minutes)" );
     }
   } );
 }
@@ -243,7 +243,7 @@ async function listenForRequests() {
     }
     
     httpServer.listen( 3563, () => {
-      log( logType.INFO, "core", "server now listening on port 3563!" )
+      log( logType.INFO, "core", "server now listening on port 3563!" );
     } );
   } catch ( reason ) {
     log( logType.INFO, "Unable to kill port 3563", reason );
@@ -365,12 +365,33 @@ process.stdin.on( "data", ( data ) => {
   case "exit":
     shutdownInstanceGracefully();
     break;
+  case "gdb":
+    const subCommand = commandAndArgs[ 1 ];
+    const key = commandAndArgs[ 2 ];
+    const value = commandAndArgs[ 3 ];
+    
+    switch ( subCommand ) {
+    case "set":
+      globalDatabase.set( key, value );
+      log( logType.INFO, "core:command", `set "${ key }" to "${ value }"` );
+      break;
+    case "get":
+      log( logType.INFO, "core:command", globalDatabase.get( key ) );
+      break;
+    case "delete":
+      globalDatabase.removeValue( key );
+      log( logType.INFO, "core:command", `deleted "${ key }"` );
+      break;
+    default:
+      log( logType.INFO, "core:command", "gdb ( Global Database )\n- get: \"gdb get {key}\"\n- set: \"gdb set {key} {value}\"\n- delete: \"gdb delete {key}\"" );
+    }
+    break;
   default:
-    log( logType.ERROR, `Unknown command: ${ command }` );
+    log( logType.ERROR, "core:command", `Unknown command: ${ command }` );
   }
 } );
 
-exp.get( "/", ( _req, res ) => res.send( "Hello from the yourdash server software" ) );
+exp.get( "/", ( _req, res ) => res.send( "Hello from the YourDash instance software! 👋" ) );
 
 // Server discovery endpoint
 exp.get( "/test", ( _req, res ) => {
@@ -406,7 +427,7 @@ defineLoginEndpoints( exp );
 
 exp.get( "/core/test/self-ping", ( req, res ) => {
   return res.json( { success: true } );
-} )
+} );
 
 fetch( "http://localhost:3563/core/test/self-ping" )
   .then( res => res.json() )
@@ -414,11 +435,11 @@ fetch( "http://localhost:3563/core/test/self-ping" )
     if ( data?.success ) {
       return log( logType.SUCCESS, "core", "self ping successful - The server is receiving requests" );
     }
-    log( logType.ERROR, "core", "CRITICAL ERROR!, unable to ping self" )
+    log( logType.ERROR, "core", "CRITICAL ERROR!, unable to ping self" );
   } )
   .catch( () => {
-    log( logType.ERROR, "core", "CRITICAL ERROR!, unable to ping self" )
-  } )
+    log( logType.ERROR, "core", "CRITICAL ERROR!, unable to ping self" );
+  } );
 
 // check for authentication
 exp.use( async ( req, res, next ) => {
@@ -531,5 +552,5 @@ defineUserEndpoints( exp );
 applicationLoader( exp, httpServer );
 
 if ( !PROCESS_ARGUMENTS.dev ) {
-  scheduleBackendUpdateChecker()
+  scheduleBackendUpdateChecker();
 }

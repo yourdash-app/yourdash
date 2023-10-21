@@ -5,10 +5,10 @@
 
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import useYourDashLib from "web-client/src/helpers/ydsh";
 import { IconButton, Spinner, Card, Button, Icon, MajorButton, Carousel } from "web-client/src/ui";
 import csi from "web-client/src/helpers/csi";
 import StoreApplicationDefaultHeaderBackground from "./default_background.svg";
-import Panel from "web-client/src/app/panel/Panel";
 import useTranslate from "web-client/src/helpers/i10n";
 import { type IYourDashStoreApplication } from "shared/apps/store/storeApplication";
 import InstallationPopup from "./components/InstallationPopup";
@@ -25,6 +25,7 @@ function requestApplication( applicationId: string, setAppData: ( data: IYourDas
 
 const StoreApplicationPage: React.FC = () => {
   const trans = useTranslate( "store" );
+  const ydsh = useYourDashLib()
   const navigate = useNavigate();
   const { id: applicationId } = useParams();
   const [isLoading, setIsLoading] = useState<boolean>( true );
@@ -50,6 +51,7 @@ const StoreApplicationPage: React.FC = () => {
         csi.postJson( `/app/store/application/install/${ appData?.name }`, {}, resp => {
           if ( resp.success ) {
             requestApplication( applicationId, setAppData, setIsLoading, navigate );
+            ydsh.toast.success( `Installed "${appData?.name}" successfully` )
           }
           
           // @ts-ignore
@@ -111,6 +113,7 @@ const StoreApplicationPage: React.FC = () => {
                     csi.postJson( `/app/store/application/uninstall/${ appData.name }`, {}, resp => {
                       if ( resp.success ) {
                         requestApplication( applicationId, setAppData, setIsLoading, navigate );
+                        ydsh.toast.success( `Uninstalled "${appData.name}" successfully` )
                       }
                   
                       // @ts-ignore
@@ -148,33 +151,18 @@ const StoreApplicationPage: React.FC = () => {
                 { "Created as part of the YourDash Project" }
               </div>
             </Card>
-            <h2 className={ "text-2xl font-medium" }>{ trans( "SOURCE_CODE_SECTION" ) }</h2>
-            <section className={ "grid grid-cols-2 gap-2" }>
-              <Card
-                showBorder
-                onClick={ () => {
-                  window.open( `https://github.com/yourdash-app/yourdash/tree/main/client/src/app/apps/${ appData.name }` );
-                } }
-                className={ "flex gap-1 items-center" }
-              >
-                <Icon className={ "h-5" } icon={ YourDashIcon.Link } />
-                <span>
-                  { "Client" }
-                </span>
-              </Card>
-              <Card
-                showBorder
-                onClick={ () => {
-                  window.open( `https://github.com/yourdash-app/yourdash/tree/main/server/src/apps/${ appData.name }` );
-                } }
-                className={ "flex gap-1 items-center" }
-              >
-                <Icon className={ "h-5" } icon={ YourDashIcon.Link } />
-                <span>
-                  { "Server" }
-                </span>
-              </Card>
-            </section>
+            <Card
+              showBorder
+              onClick={ () => {
+                window.open( `https://github.com/yourdash-app/yourdash/tree/main/packages/applications/${ appData.name }` );
+              } }
+              className={ "flex gap-1 items-center" }
+            >
+              <Icon className={ "h-5" } icon={ YourDashIcon.Link } />
+              <span>
+                { "View Source" }
+              </span>
+            </Card>
             <h2 className={ "text-2xl font-medium" }>{ trans( "AUTHORS_SECTION" ) }</h2>
             <section className={ "w-full" }>
               <Carousel>

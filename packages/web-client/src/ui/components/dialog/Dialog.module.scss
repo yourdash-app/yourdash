@@ -11,7 +11,7 @@
 
 .closeButton[data-visible="true"] {
   display: block;
-  @media (max-width: 750px) {
+  @media (max-width: 768px) {
     display: none;
   }
 }
@@ -35,7 +35,7 @@
     }
   }
 
-  @media (min-width: 750px) {
+  @media (min-width: 768px) {
     display: none;
   }
 }
@@ -51,11 +51,11 @@
   background-color: rgb(var(--container-bg));
 
   box-shadow: 0 0 1rem #00000055;
-  @media (min-width: 750px) {
+  @media (min-width: 768px) {
     width: max-content;
     border-radius: 1rem;
   }
-  @media (max-width: 750px) {
+  @media (max-width: 768px) {
     display: grid;
     width: max-content;
     min-width: calc(100% - 1rem);
@@ -81,7 +81,7 @@
     font-size: 1.5rem;
     font-weight: 600;
 
-    @media (max-width: 750px) {
+    @media (max-width: 768px) {
       margin-right: 0;
       &.placeholder {
         height: 0;
