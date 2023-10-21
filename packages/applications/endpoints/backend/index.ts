@@ -8,7 +8,6 @@ import YourDashModule, { YourDashModuleArguments } from "backend/src/core/yourDa
 export default class EndpointsModule extends YourDashModule {
   constructor( args: YourDashModuleArguments ) {
     super( args );
-    this.API().request.get( "/app/endpoints/endpoints", ( req, res ) => res.json( this.API().request._router.stack )
-    )
+    this.API().request.get( "/app/endpoints/endpoints", ( req, res ) => res.json( this.API().request._router.stack ) )
   }
 }
