@@ -14,12 +14,9 @@ const SettingsPersonalServerAcceleratorSection: React.FC = () => {
   const [selectedSession, setSelectedSession] = useState<IYourDashSession<YOURDASH_SESSION_TYPE.desktop> | null>( null );
   
   useEffect( () => {
-    
     csi.getJson( "/core/personal-server-accelerator/sessions", data => {
       setPsaSessions( data.sessions );
     } );
-    
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [] );
   
   return (

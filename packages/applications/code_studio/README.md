@@ -1,4 +1,4 @@
-# YourDash Mastodon Client "code_studio"
+# YourDash Code Studio "code_studio"
 
 Create and edit code projects
 

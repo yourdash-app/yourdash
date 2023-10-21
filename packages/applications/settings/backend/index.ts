@@ -64,7 +64,7 @@ export default class SettingsModule extends YourDashModule {
       } );
     } );
     
-    this.API().request.get( "/app/settings/admin/dev/install_all_applications", async ( req, res ) => {
+    this.API().request.get( "/app/settings/developer/install_all_applications", async ( req, res ) => {
       const installableApplications = ( await fs.readdir( "../applications" ) ).filter( app => app !== "node_modules" && app !== "package.json" && app !== "package-lock.json" );
       
       installableApplications.map( app => {

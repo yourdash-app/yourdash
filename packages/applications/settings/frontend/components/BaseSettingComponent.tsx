@@ -22,7 +22,7 @@ const BaseSettingComponent: React.FC<IBaseSettingComponent> = ( {
   icon,
   onClick
 } ) => (
-  <Card onClick={onClick} className={"flex gap-2 items-center w-full"}>
+  <Card onClick={onClick} className={"flex gap-2 items-center w-full h-max"}>
     <Icon className={"aspect-square h-10"} icon={icon}/>
     <div className={"mr-auto"}>
       <h2 className={"font-semibold text-container-fg text-3xl -mb-1"}>{title}</h2>
