@@ -4,16 +4,16 @@
  */
 
 import * as React from "react";
-import ComingSoon from "web-client/src/ComingSoon";
 import BasePageLayout from "../../components/BasePageLayout";
+import SettingsPersonalServerAcceleratorSection from "./sections/SettingsPersonalServerAcceleratorSection";
+import SettingsStoreSection from "./sections/SettingsStoreSection";
 
 const Index: React.FC = () => (
   <BasePageLayout
-    title={ "Admin tools" }
+    title={"Developer tools"}
   >
-    <section className={ "w-full h-full flex flex-col items-center col-span-2" }>
-      <ComingSoon />
-    </section>
+    <SettingsPersonalServerAcceleratorSection/>
+    <SettingsStoreSection/>
   </BasePageLayout>
 );
 
