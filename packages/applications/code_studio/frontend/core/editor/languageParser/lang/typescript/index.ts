@@ -6,6 +6,7 @@
 import CodeStudioBaseLanguageParser from "../../baseLanguageParser";
 import Token from "../../token";
 import { TokenType } from "../../tokenType";
+import TsGlobalScope from "./globalScope";
 
 // The YourDash CodeStudio language parser for the "TypeScript" language.
 
@@ -21,11 +22,7 @@ class CodeStudioLanguageParser extends CodeStudioBaseLanguageParser {
     super( "javascript" );
     this.isSubProperty = false;
     this.isInsideString = false;
-    this.globalScope = {
-      name: "global",
-      type: "variable",
-      localScopes: []
-    };
+    this.globalScope = new TsGlobalScope()
     this.isInsideSingleLineComment = false;
     this.followingImportStatement = false;
     this.isFunctionName = false;

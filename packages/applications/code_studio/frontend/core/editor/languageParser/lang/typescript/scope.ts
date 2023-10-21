@@ -3,17 +3,16 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-export default class TsScope<T extends TsScope<T>> {
+export type TsScopeTypes = "function" | "boolean" | "object" | "string" | "number" | "class" | "globalScope"
+
+export default class TsScope<T extends TsScopeTypes> {
   name = "anonymous";
-  type: this;
+  type: this = this;
   readonly isFunction: boolean = false;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  localScopes: { [name: string]: TsScope<any> };
+  localScopes: { [name: string]: TsScope<any> } = {}; // eslint-disable-line @typescript-eslint/no-explicit-any
   accessOutsideOfCurrentScope = true;
   
   constructor( { name, isFunction, accessOutsideOfCurrentScope }: { name?: string, isFunction?: boolean, accessOutsideOfCurrentScope?: boolean } ) {
-    this.type = this;
-    this.localScopes = {}
     if ( name )
       this.name = name;
     if ( isFunction )
@@ -22,7 +21,7 @@ export default class TsScope<T extends TsScope<T>> {
       this.accessOutsideOfCurrentScope = accessOutsideOfCurrentScope;
   }
   
-  addChild( child: TsScope<T> ) {
+  addChild<C extends TsScopeTypes>( child: TsScope<C> ) {
     this.localScopes[child.name] = child;
   }
 }
