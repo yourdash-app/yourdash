@@ -7,6 +7,7 @@ import * as React from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { SideBar } from "web-client/src/ui";
 import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
+import { SideBarItemType, SideBarState } from "web-client/src/ui/components/sideBar/SideBar";
 
 const SettingsLayout: React.FC = () => {
   const navigate = useNavigate();
@@ -14,9 +15,11 @@ const SettingsLayout: React.FC = () => {
   return (
     <main className={"grid grid-cols-1 grid-rows-[auto,1fr] md:grid-rows-none md:grid-cols-[auto,1fr] h-full w-full bg-bg"}>
       <SideBar
+        defaultState={SideBarState.NormalMinimised}
         title={"Settings"}
         items={[
           {
+            type: SideBarItemType.Button,
             icon: YourDashIcon.Home,
             label: "Home",
             onClick() {
@@ -24,6 +27,7 @@ const SettingsLayout: React.FC = () => {
             }
           },
           {
+            type: SideBarItemType.Button,
             icon: YourDashIcon.Paintbrush,
             label: "Personalization",
             onClick() {
@@ -31,6 +35,7 @@ const SettingsLayout: React.FC = () => {
             }
           },
           {
+            type: SideBarItemType.Button,
             icon: YourDashIcon.Login,
             label: "Login sessions",
             onClick() {
@@ -38,6 +43,7 @@ const SettingsLayout: React.FC = () => {
             }
           },
           {
+            type: SideBarItemType.Button,
             icon: YourDashIcon.Accessibility,
             label: "Accessibility",
             onClick() {
@@ -45,6 +51,7 @@ const SettingsLayout: React.FC = () => {
             }
           },
           {
+            type: SideBarItemType.Button,
             icon: YourDashIcon.Tools,
             label: "Admin tools",
             onClick() {

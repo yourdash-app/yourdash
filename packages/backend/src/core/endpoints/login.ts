@@ -92,7 +92,7 @@ export default function defineLoginEndpoints( exp: ExpressApplication ) {
   exp.get( "/core/login/instance/metadata", ( req, res ) => {
     return res.json( {
       title: GlobalDatabase.get( "core:instance:name" ) || "Placeholder name",
-      message: GlobalDatabase.get( "core:login:message" ) || "Placeholder message, hey system admin, you should change this!",
+      message: GlobalDatabase.get( "core:login:message" ) || "Placeholder message. Hey system admin, you should change this!",
     } )
   } )
   
