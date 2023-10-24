@@ -4,18 +4,17 @@
  */
 
 import React from "react";
-import { Card, Slides } from "../../../../ui/index";
+import { Slides } from "../../../../ui/index";
 
 const YourDashLoginSlides: React.FC = () => {
   return <>
     <Slides
       interval={2500}
       slides={[
-        <div className={"text-7xl font-black -rotate-12"}>YourDash Login Slides</div>,
-        <span>Placeholder 2</span>,
-        <span>Placeholder 3</span>,
-        <span>Placeholder 4</span>,
-        <span>Placeholder 5</span>
+        <div className={"text-7xl font-black -rotate-12"}>YourDash Placeholder 1</div>,
+        <div className={"text-7xl font-black -rotate-12"}>YourDash Placeholder 2</div>,
+        <div className={"text-7xl font-black -rotate-12"}>YourDash Placeholder 3</div>,
+        <div className={"text-7xl font-black -rotate-12"}>YourDash Placeholder 4</div>,
       ]}/>
   </>
 }

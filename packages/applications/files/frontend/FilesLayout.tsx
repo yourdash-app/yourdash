@@ -5,8 +5,10 @@
 
 import path from "path-browserify";
 import React from "react";
-import { Button, MajorButton } from "web-client/src/ui";
+import { Button, MajorButton, SideBar, YourDashIcon } from "web-client/src/ui";
 import useTranslate from "web-client/src/helpers/i10n";
+import { SideBarItemType, SideBarState } from "web-client/src/ui/components/sideBar/SideBar";
+import FilePane from "./views/filePane/FilePane";
 
 export interface IFilesLayout {
   children: React.ReactNode;
@@ -20,17 +22,13 @@ const FilesLayout: React.FC<IFilesLayout> = ( { children } ) => {
   const trans = useTranslate( "files" );
 
   return (
-    <main className={"grid grid-cols-[auto,1fr] h-full"}>
-      <section
-        className={"flex flex-col min-h-full overflow-x-hidden overflow-y-auto pl-1 pr-1 border-0 border-r-[1px] border-container-border min-w-[10rem]"}
+    <div className={"grid grid-cols-[auto,1fr] h-full overflow-hidden"}>
+      {/* <h1
+        className={"font-semibold text-container-fg text-3xl text-center pt-2 pb-2"}
       >
-        <h1
-          className={"font-semibold text-container-fg text-3xl text-center pt-2 pb-2"}
-        >
-          {trans( "APPLICATION_BRANDING" )}
-        </h1>
-
-        <div className={"flex flex-col gap-1"}>
+        {trans( "APPLICATION_BRANDING" )}
+      </h1>
+      <div className={"flex flex-col gap-1"}>
           <div className={"w-full border-t-[1px] border-t-container-border"}/>
           <MajorButton>{trans( "CREATE" )}</MajorButton>
           <Button>{trans( "UPLOAD" )}</Button>
@@ -49,12 +47,32 @@ const FilesLayout: React.FC<IFilesLayout> = ( { children } ) => {
                 </Button>
               )
           }
-        </div>
-      </section>
-      <section className={"flex flex-col w-full min-h-full overflow-auto"}>
-        {children}
-      </section>
-    </main>
+        </div> */}
+        
+      <SideBar
+        items={[
+          {
+            type: SideBarItemType.Button,
+            label: "Upload File",
+            icon: YourDashIcon.Upload,
+            onClick: () => {
+              return 0
+            }
+          },
+          {
+            type: SideBarItemType.Separator,
+            label: "",
+            icon: YourDashIcon.Plus,
+            onClick: () => {
+              return 0
+            }
+          }
+        ]}
+        title={"Files"}
+        defaultState={SideBarState.NormalExpanded}
+      />
+      <FilePane/>
+    </div>
   );
 };
 

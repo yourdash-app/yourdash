@@ -18,6 +18,7 @@ export interface ITextInput extends React.HTMLProps<HTMLInputElement> {
   onKeyDown?: ( e: KeyboardEvent<HTMLInputElement> ) => void,
   defaultValue?: string
   onValid?: ( value: string ) => void
+  autoComplete?: string
 }
 
 const TextInput: React.FC<ITextInput> = ( {
@@ -30,6 +31,7 @@ const TextInput: React.FC<ITextInput> = ( {
   onKeyDown,
   defaultValue,
   onValid,
+  autoComplete,
   ...extraProps
 } ) => {
   const [valid, setValid] = useState( !mustMatchRegex );
@@ -44,6 +46,7 @@ const TextInput: React.FC<ITextInput> = ( {
       </span>
       <input
         {...extraProps}
+        autoComplete={autoComplete}
         placeholder={placeholder}
         className={`w-full pl-2 pt-1 pb-1 pr-2 outline-none relative z-0 rounded-button-rounding bg-base-700 transition-all ${
           mustMatchRegex

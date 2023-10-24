@@ -12,16 +12,16 @@ import scheduleTask from "../taskScheduler.js";
 export async function performBackendUpdate() {
   // spawn a new process to perform the update and restart yourdash
   const gitProcess = spawn( "git", ["pull"], { cwd: path.join( process.cwd(), ".." ) } )
-  
+
   gitProcess.stderr.on( "data", ( data ) => {
     log( logType.ERROR, "core:perform_backend_update", data.toString() )
   } )
-  
-  gitProcess.on( "close", () => {
+
+  gitProcess.on("close", () => {
     if( gitProcess.stdout.find( str => str.includes( "Already up to date." ) ) ) {
       log( logType.INFO, "core:perform_backend_update", "Already up to date!" )
     }
-    
+
     log( logType.INFO, "core:perform_backend_update", "Updated!" )
     shutdownInstanceGracefully()
   } )

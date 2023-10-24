@@ -3,10 +3,11 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { Application as ExpressApplication } from "express"
+import { Application as ExpressApplication } from "express";
 import { promises as fs, writeFileSync } from "fs";
-import YourDashUser from "../user/index.js";
 import path from "path";
+import log, { logType } from "../../helpers/log.js";
+import YourDashUser from "../user/index.js";
 
 type JSONValue = boolean | number | string | null | JSONFile
 
@@ -30,7 +31,15 @@ export function saveUserDatabases() {
 export async function loadUserDatabase( username: string ): Promise<JSONFile> {
   const user = new YourDashUser( username )
   
-  return JSON.parse( ( await fs.readFile( path.join( user.path, "core/user_db.json" ) ) ).toString() )
+  try {
+    // attempt to parse json data from "user_db.json"
+    return JSON.parse( ( await fs.readFile( path.join( user.path, "core/user_db.json" ) ) ).toString() )
+  } catch ( _err ) {
+    log( logType.WARNING, "core:userdb", `Unable to parse "${username}"'s user database.` )
+
+    // throw an error because we can't parse user_db.json
+    throw new Error( `Unable to parse "${username}"'s user database.` )
+  }
 }
 
 export default function defineUserDatabaseRoutes( exp: ExpressApplication ) {
