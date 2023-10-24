@@ -8,6 +8,8 @@ import IToast from "./IToast";
 import ToastContainer from "./ToastContainer";
 import ToastContext, { IToastContext } from "./ToastContext";
 
+let toastTimeouts: NodeJS.Timeout[] = [];
+
 const ToastContextProvider: React.FC<{ children: React.ReactNode }> = ( { children } ) => {
   const [ toasts, setToasts ] = React.useState<IToast[]>( [] );
   
@@ -19,11 +21,23 @@ const ToastContextProvider: React.FC<{ children: React.ReactNode }> = ( { childr
         return
         
       // remove toast after 10 seconds
-      setTimeout( () => {
+      toastTimeouts.push( setTimeout( () => {
         setToasts( ( prevToasts ) => {
           return prevToasts.filter( ( toast ) => toast.message !== props.message );
         } );
-      }, 7500 );
+        
+        toastTimeouts.map( ( timeout ) => {
+          clearTimeout( timeout );
+        } );
+        
+        toastTimeouts = [];
+        
+        toastTimeouts.push( setTimeout( () => {
+          setToasts( ( prevToasts ) => {
+            return prevToasts.filter( ( toast ) => toast.message !== props.message );
+          } )
+        }, 7500 ) )
+      }, 7500 ) )
     } ) as IToastContext
   }>
     <ToastContainer toasts={ toasts } />

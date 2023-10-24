@@ -9,7 +9,7 @@ import FloatingApplication from "./FloatingApplication";
 import styles from "./FloatingApplications.module.scss"
 
 const IndexPageHeroApplications: React.FC = () => {
-  return <div className={ clippy( "relative md:flex hidden", styles.container ) }>
+  return <div className={ clippy( "relative md:flex hidden animate__animated animate__bounceInDown animate__500ms animate__duration_2000ms", styles.container ) }>
     <FloatingApplication
       src={"/assets/promo-apps/files.png"}
       position={0}

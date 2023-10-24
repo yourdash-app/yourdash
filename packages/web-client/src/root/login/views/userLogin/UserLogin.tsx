@@ -6,6 +6,7 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import csi from "web-client/src/helpers/csi";
+import useYourDashLib from "../../../../helpers/ydsh";
 import { Button, IconButton, MajorButton, TextInput, YourDashIcon } from "../../../../ui/index";
 
 interface IUserLogin {
@@ -18,6 +19,7 @@ interface IUserLogin {
 
 const UserLogin: React.FC<IUserLogin> = ( { setUsername, setPassword, password, username, setInstanceHostname } ) => {
   const navigate = useNavigate()
+  const ydsh = useYourDashLib()
   const [isValidUser, setIsValidUser] = React.useState<boolean>( false )
   const [avatar, setAvatar] = React.useState<string>( "" )
   const [fullName, setFullName] = React.useState<{ first: string, last: string }>( { first: "Err", last: "or" } )
@@ -87,23 +89,46 @@ const UserLogin: React.FC<IUserLogin> = ( { setUsername, setPassword, password, 
       className={"w-64 aspect-square rounded-3xl"}
     />
     <span className={"text-3xl font-semibold"}>{fullName.first} {fullName.last}</span>
-    <TextInput
-      key={"username-input"}
-      label={"Username"}
-      onChange={value => setUsername( value )}
-      placeholder={""}
-      value={username}
-    />
-    <TextInput
-      key={"password-input"}
-      label={"Password"}
-      type={"password"}
-      onChange={value => setPassword( value )}
-      placeholder={""}
-      value={password}
+    <form className={"flex-col flex items-center gap-4"}>
+      <TextInput
+        autoComplete={`yourdash-instance-login username instance-${csi.getInstanceUrl()}`}
+        key={"username-input"}
+        label={"Username"}
+        onChange={value => setUsername( value )}
+        placeholder={""}
+        value={username}
+      />
+      <TextInput
+        autoComplete={`yourdash-instance-login password instance-${csi.getInstanceUrl()}`}
+        key={"password-input"}
+        label={"Password"}
+        type={"password"}
+        onChange={value => setPassword( value )}
+        placeholder={""}
+        value={password}
       
-      onKeyDown={e => {
-        if ( e.key === "Enter" ) {
+        onKeyDown={e => {
+          if ( e.key === "Enter" ) {
+            csi.postJson(
+              `/core/login/user/${ username }/authenticate`,
+              { password },
+              response => {
+                localStorage.setItem( "session_token", response.token );
+                localStorage.setItem( "username", username );
+                navigate( "/app" );
+              },
+              () => {
+                ydsh.toast.error( "Invalid password" );
+              },
+              {
+                type: localStorage.getItem( "desktop_mode" ) ? "desktop" : "web"
+              }
+            );
+          }
+        }}
+      />
+      <MajorButton
+        onClick={() => {
           csi.postJson(
             `/core/login/user/${ username }/authenticate`,
             { password },
@@ -112,34 +137,18 @@ const UserLogin: React.FC<IUserLogin> = ( { setUsername, setPassword, password, 
               localStorage.setItem( "username", username );
               navigate( "/app" );
             },
-            err => {
-              console.error( err );
+            () => {
+              ydsh.toast.error( "Invalid password" );
             },
             {
               type: localStorage.getItem( "desktop_mode" ) ? "desktop" : "web"
             }
           );
-        }
-      }}
-    />
-    <MajorButton
-      onClick={() => {
-        csi.postJson(
-          `/core/login/user/${ username }/authenticate`,
-          { password },
-          response => {
-            localStorage.setItem( "session_token", response.token );
-            localStorage.setItem( "username", username );
-            navigate( "/app" );
-          },
-          err => {
-            console.error( err );
-          }
-        );
-      }}
-    >
+        }}
+      >
       Continue
-    </MajorButton>
+      </MajorButton>
+    </form>
   </div>
 }
 
