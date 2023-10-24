@@ -13,28 +13,30 @@ const OverviewPage: React.FC = () => {
   return (
     <div className={ "text-center" }>
       <h1 className={ "text-6xl font-semibold tracking-wide animate__animated animate__fadeIn mt-8" }>Overview</h1>
-      <p className={ "animate__animated animate__fadeInDown animate__500ms mt-3" }>find the correct documentation</p>
+      <p className={ "animate__animated animate__fadeInDown animate__500ms mt-3" }>a quick and simple guide to the YourDash documentation</p>
       
       <section className={ "grid grid-cols-2 gap-2 max-w-5xl ml-auto mr-auto pt-8 pb-8" }>
         {
-          ( [
-            {
-              name: "FAQ",
-              link: "/docs/faq"
-            },
-            {
-              name: "Get Started",
-              link: "/docs/get-started"
-            },
-            {
-              name: "Translation",
-              link: "/docs/translation"
-            },
-            {
-              name: "Contribute",
-              link: "/docs/how-to-help"
-            }
-          ] as { name: string, link: string }[] ).map( obj => {
+          (
+            [
+              {
+                name: "FAQ",
+                link: "/docs/faq"
+              },
+              {
+                name: "Get Started",
+                link: "/docs/get-started"
+              },
+              {
+                name: "Translation",
+                link: "/docs/translation"
+              },
+              {
+                name: "Contribute",
+                link: "/docs/contribution"
+              }
+            ] as { name: string, link: string }[]
+          ).map( obj => {
             return <Card
               key={ obj.name }
               onClick={ () => navigate( obj.link ) }

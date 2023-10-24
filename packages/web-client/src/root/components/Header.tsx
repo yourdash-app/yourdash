@@ -58,7 +58,7 @@ const Header: React.FC = () => {
           { trans( "BANNER.MESSAGE.CONTENT" ) }
           <Link
             className={ "text-theme-300 hover:text-theme-400 active:text-theme-200" }
-            to={ "/docs/how-to-help" }
+            to={ "/docs/contribution" }
           >
             { trans( "BANNER.MESSAGE.CALL_TO_ACTION" ) }
           </Link>
