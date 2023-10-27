@@ -60,6 +60,7 @@
     &:hover {
       background-color: rgb(var(--button-hover-bg));
       color: rgb(var(--button-hover-fg));
+      transition: var(--transition-fast);
     }
 
     &:active {

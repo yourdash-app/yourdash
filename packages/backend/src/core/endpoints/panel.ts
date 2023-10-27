@@ -6,7 +6,6 @@
 import { Application as ExpressApplication } from "express";
 import globalDatabase from "backend/src/helpers/globalDatabase.js";
 import YourDashApplication from "backend/src/helpers/applications.js";
-import { base64ToDataUrl } from "backend/src/helpers/base64.js";
 import sharp from "sharp";
 import path from "path";
 import { promises as fs } from "fs";
@@ -20,12 +19,12 @@ export default function defineCorePanelRoutes( exp: ExpressApplication ) {
     res.set( "Cache-Control", "no-store" );
     const { username } = req.headers as { username: string }
     
-    Promise.all( ( globalDatabase.get( "installedApplications" ) || [] ).map( async ( app: any ) => {
+    Promise.all( ( globalDatabase.get( "installedApplications" ) || [] ).map( async ( app ) => {
       const application = await new YourDashApplication( app ).read();
 
       return new Promise( async resolve => {
         sharp( await fs.readFile( await application.getIconPath() ) )
-          .resize( 88, 88 )
+          .resize( 128, 128 )
           .toBuffer( ( err, buf ) => {
             if ( err ) {
               resolve( { error: true } );

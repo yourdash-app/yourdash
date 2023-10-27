@@ -3,7 +3,7 @@ name: Check For Build Errors
 on:
   workflow_dispatch:
   push:
-    branches: [ "dev" ]
+    branches: [ "react-buddy-toolbox" ]
 
 jobs:
   build:

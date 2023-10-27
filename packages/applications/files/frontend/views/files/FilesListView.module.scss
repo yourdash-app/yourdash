@@ -13,6 +13,7 @@
 .file {
   padding: 0.125rem 0.25rem;
   background-color: #444;
+  transition: var(--transition);
 
   &.odd {
     background-color: #333;
