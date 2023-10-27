@@ -34,7 +34,9 @@ const BasePageLayout: React.FC<IBasePageLayout> = ( {
             />
           )
         }
-        <h1 className={"font-bold text-container-fg text-4xl w-full text-left"}>{title}</h1>
+        <h1 className={"font-bold text-container-fg text-4xl w-full text-left"}>
+          {title}
+        </h1>
       </section>
       <div className={"grid grid-cols-1 w-full xl:grid-cols-2 gap-2 animate__animated animate__fadeIn animate__100ms h-full overflow-x-hidden overflow-y-auto auto-rows-max"}>
         {children}

@@ -9,6 +9,6 @@ export default class CodeStudioModule extends YourDashModule {
   constructor( args: YourDashModuleArguments ) {
     super( args );
     
-    this.API().request.get( "/app/code_studio/", ( req, res ) => res.json( { success: true } ) );
+    this.API.request.get( "/app/code_studio/", ( req, res ) => res.json( { success: true } ) );
   }
 }

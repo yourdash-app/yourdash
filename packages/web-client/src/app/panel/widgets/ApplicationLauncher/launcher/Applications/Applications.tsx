@@ -7,42 +7,48 @@ import React, { useEffect } from "react";
 import IPanelApplicationsLauncherApplication from "shared/core/panel/applicationsLauncher/application";
 import ApplicationGrid from "./Grid/ApplicationGrid";
 import { TextInput } from "../../../../../../ui/index";
-import styles from "./Applications.module.scss"
+import styles from "./Applications.module.scss";
 import { useNavigate } from "react-router";
+import ApplicationList from "./List/ApplicationList";
 
-let filteredApplications: IPanelApplicationsLauncherApplication[] = []
+let filteredApplications: IPanelApplicationsLauncherApplication[] = [];
 
-const ApplicationsLauncherApplications: React.FC<{apps: IPanelApplicationsLauncherApplication[]}> = ( { apps } ) => {
-  const navigate = useNavigate()
-  const [layout, setLayout] = React.useState<"grid" | "list">( "grid" )
-  const [applications, setApplications] = React.useState<IPanelApplicationsLauncherApplication[]>( apps )
+const ApplicationsLauncherApplications: React.FC<{ apps: IPanelApplicationsLauncherApplication[] }> = ( { apps } ) => {
+  const navigate = useNavigate();
+  const [ layout, setLayout ] = React.useState<"grid" | "list">( "grid" );
+  const [ applications, setApplications ] = React.useState<IPanelApplicationsLauncherApplication[]>( apps );
   
   useEffect( () => {
-    setApplications( apps )
-  }, [apps] );
+    setApplications( apps );
+    
+    // for development purposes only
+    // setLayout( "list" )
+  }, [ apps ] );
   
   return <>
     <TextInput
-      className={styles.searchBar}
-      onKeyDown={( e ) => {
+      className={ styles.searchBar }
+      onKeyDown={ ( e ) => {
         if ( e.key === "Enter" ) {
           if ( filteredApplications.length === 1 ) {
-            navigate( `/app/a/${filteredApplications[0].name}` )
+            navigate( `/app/a/${ filteredApplications[ 0 ].name }` );
           }
         }
-      }}
-      onChange={( val ) => {
-        filteredApplications = apps.filter( application => application.name.toLowerCase().includes( val.toLowerCase() ) || application.description.toLowerCase().includes( val.toLowerCase() ) || application.displayName.toLowerCase().includes( val.toLowerCase() ) )
+      } }
+      onChange={ ( val ) => {
+        filteredApplications = apps.filter( application => {
+          return application.name.toLowerCase().includes( val.toLowerCase() ) ||
+                 application.description.toLowerCase().includes( val.toLowerCase() ) ||
+                 application.displayName.toLowerCase().includes( val.toLowerCase() );
+        } );
         
-        setApplications(
-          filteredApplications
-        )
-      }}
+        setApplications( filteredApplications );
+      } }
     />
+    
+    { layout === "grid" && <ApplicationGrid applications={ applications } /> }
+    { layout === "list" && <ApplicationList applications={ applications } /> }
+  </>;
+};
 
-    { layout === "grid" && <ApplicationGrid applications={applications}></ApplicationGrid> }
-    { layout === "list" && <></> }
-  </>
-}
-
-export default ApplicationsLauncherApplications
+export default ApplicationsLauncherApplications;

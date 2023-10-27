@@ -281,5 +281,6 @@ body, #root {
     * {
         animation-delay: unset !important;
         animation-duration: 0s !important;
+        transition: all 0s !important;
     }
 }

@@ -5,16 +5,12 @@
 
 import { promises as fs } from "fs";
 import path from "path";
-import YourDashUser from "backend/src/core/user/index.js";
-import authenticatedImage, { authenticatedImageType } from "backend/src/core/authenticatedImage.js";
-import sharp from "sharp";
-import getFileType, { FileTypes } from "shared/core/fileType.js";
 import YourDashModule, { YourDashModuleArguments } from "backend/src/core/yourDashModule.js";
 
 export default class FilesModule extends YourDashModule {
   constructor( args: YourDashModuleArguments ) {
     super( args );
-    this.API().request.post( "/app/files/get", async ( req, res ) => {
+    /*     this.API.request.post( "/app/files/get", async ( req, res ) => {
       const { username } = req.headers as {
       username: string
     };
@@ -58,7 +54,7 @@ export default class FilesModule extends YourDashModule {
       } );
     } );
   
-    this.API().request.post( "/app/files/get/thumbnails-small", async ( req, res ) => {
+    this.API.request.post( "/app/files/get/thumbnails-small", async ( req, res ) => {
       const { username } = req.headers as {
       username: string
     };
@@ -69,10 +65,7 @@ export default class FilesModule extends YourDashModule {
     
       const user = new YourDashUser( username );
     
-      let files: any[] = [];
-    
-      console.log( `PATH: ${ path.join( user.path, "fs/", req.body.path ) }` );
-      console.log( `USER PATH: ${ path.resolve( "fs/", user.path ) }` );
+      let files: string[];
     
       try {
         files = await fs.readdir( path.join( user.path, "fs/", req.body.path ) );
@@ -102,7 +95,7 @@ export default class FilesModule extends YourDashModule {
               case ".avif":
               case ".svg":
               case ".gif":
-              // check if the file size is more than 1mb
+                // check if the file size is more than 1mb, if so, ignore generating the thumbnail and return an empty string
                 if ( ( await fs.stat( path.join( user.path, "fs/", req.body.path, file ) ) ).size > 1024 * 1024 ) {
                   icon = "";
                 } else {
@@ -116,11 +109,7 @@ export default class FilesModule extends YourDashModule {
                 break;
               }
             
-              return {
-                type,
-                name,
-                icon
-              };
+              return { type, name, icon };
             } catch ( _err ) {
               return false;
             }
@@ -129,7 +118,7 @@ export default class FilesModule extends YourDashModule {
       } );
     } );
   
-    this.API().request.post( "/app/files/get/file", async ( req, res ) => {
+    this.API.request.post( "/app/files/get/file", async ( req, res ) => {
       const { username } = req.headers as {
       username: string
     };
@@ -155,6 +144,48 @@ export default class FilesModule extends YourDashModule {
       } catch ( _err ) {
         return res.send( "[YOURDASH] Error: Unable to read file" );
       }
-    } );
+    } ); */
+    
+    this.API.request.get( `/app/${this.API.applicationName}`, ( req, res ) => {
+      return res.json( { message: `Hello world from ${this.API.applicationName}! 👋` } )
+    } )
+    
+    this.API.request.get( `/app/${this.API.applicationName}/list/dir/@/`, async ( req, res ) => {
+      // path
+      const p = "/"
+      
+      const user = this.API.getUser( req );
+      
+      try {
+        const contents = await fs.readdir( path.join( user.path, "fs", p ) )
+      
+        return res.json( {
+          contents: contents
+        } )
+      } catch ( _err ) {
+        return res.json( {
+          contents: []
+        } )
+      }
+    } )
+    
+    this.API.request.get( `/app/${this.API.applicationName}/list/dir/@/:path`, async ( req, res ) => {
+      // path
+      const p = req.params.path
+      
+      const user = this.API.getUser( req );
+      
+      try {
+        const contents = await fs.readdir( path.join( user.path, "fs", p ) )
+      
+        return res.json( {
+          contents: contents
+        } )
+      } catch ( _err ) {
+        return res.json( {
+          contents: []
+        } )
+      }
+    } )
   }
 }

@@ -3,7 +3,7 @@
   <component name="WebServers">
     <option name="servers">
       <webServer id="0c1f0d69-8219-42ef-a2cb-57f4f78267f9" name="EwsgitCloud">
-        <fileTransfer rootFolder="/home/ewsgit" accessType="SFTP" host="192.168.0.70" port="22" sshConfigId="feb19a08-ecf2-49d3-8b3d-3aaf187a438b" sshConfig="ewsgit@192.168.0.70:22 password">
+        <fileTransfer rootFolder="/home/ewsgit" accessType="SFTP" host="192.168.0.70" port="22" sshConfigId="feb19a08-ecf2-49d3-8b3d-3aaf187a438b" sshConfig="ewsgit@192.168.0.70:22 agent" authAgent="true">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
           </advancedOptions>
