@@ -78,7 +78,7 @@ export { PROCESS_ARGUMENTS };
 */
 if ( fsExistsSync( path.join( FS_DIRECTORY_PATH, "./global_database.json" ) ) ) {
   await globalDatabase.readFromDisk( path.join( FS_DIRECTORY_PATH, "./global_database.json" ) );
-
+  
   if ( JSON.stringify( globalDatabase.keys ) === JSON.stringify( {} ) ) {
     await fs.rm( path.join( FS_DIRECTORY_PATH, "./global_database.json" ) );
   }
@@ -109,7 +109,7 @@ if ( !fsExistsSync( FS_DIRECTORY_PATH ) ) {
       log( logType.ERROR, "Unable to create \"./fs/\"" );
       console.trace( e );
     }
-
+    
     // set the instance's default user avatar
     try {
       await fs.cp( path.join( process.cwd(), "./src/assets/default_avatar.avif" ), path.join( FS_DIRECTORY_PATH, "./default_avatar.avif" ) );
@@ -117,7 +117,7 @@ if ( !fsExistsSync( FS_DIRECTORY_PATH ) ) {
       log( logType.ERROR, "Unable to copy the default user avatar" );
       console.trace( e );
     }
-
+    
     // set the instance's default logo
     try {
       await fs.cp( path.join( process.cwd(), "./src/assets/default_instance_logo.avif" ), path.join( FS_DIRECTORY_PATH, "./instance_logo.avif" ) );
@@ -125,25 +125,25 @@ if ( !fsExistsSync( FS_DIRECTORY_PATH ) ) {
       log( logType.ERROR, "Unable to copy the default instance logo" );
       console.trace( e );
     }
-
+    
     // set the default login background
     try {
       await fs.cp( path.join( process.cwd(), "./src/assets/default_login_background.avif" ), path.join( FS_DIRECTORY_PATH, "./login_background.avif" ) );
     } catch ( e ) {
       log( logType.ERROR, "Unable to create the default login background" );
     }
-
+    
     // create the users' folders
     try {
       await fs.mkdir( path.join( FS_DIRECTORY_PATH, "./users/" ) );
     } catch ( e ) {
       log( logType.ERROR, "Unable to create the \"./fs/users/\" directory" );
     }
-
+    
     // create the global database
     try {
       log( logType.INFO, "The global database file does not exist, creating a new one" );
-
+      
       // write the default global database file
       await fs.writeFile( path.join( FS_DIRECTORY_PATH, "./global_database.json" ), JSON.stringify( {
         displayName: "YourDash Instance",
@@ -162,20 +162,20 @@ if ( !fsExistsSync( FS_DIRECTORY_PATH ) ) {
           }
         }
       } ) );
-
+      
       // load the new global database
       await globalDatabase.readFromDisk( path.join( FS_DIRECTORY_PATH, "./global_database.json" ) );
     } catch ( e ) {
       log( logType.ERROR, "Unable to create the \"./fs/global_database.json\" file" );
     }
-
+    
     // create the default instance logos
     try {
       generateLogos();
     } catch ( e ) {
       log( logType.ERROR, "Unable to generate logo assets" );
     }
-
+    
     // if the administrator user doesn't exist,
     // create a new user "admin" with the administrator permission
     const ADMIN_USER = new YourDashUser( "admin" );
@@ -209,15 +209,15 @@ scheduleTask( "save_global_database", "*/5 * * * *", async () => {
 // save the database before process termination
 export function shutdownInstanceGracefully() {
   log( logType.INFO, "Shutting down... ( restart should occur automatically )" );
-
+  
   const LOG_OUTPUT = LOG_HISTORY.map( ( hist ) => {
     return `${ hist.type }: ${ hist.message }`;
   } ).join( "\n" );
-
+  
   httpServer.close();
-
+  
   saveUserDatabases();
-
+  
   writeFile( path.resolve( process.cwd(), "./fs/log.log" ), LOG_OUTPUT, () => {
     try {
       globalDatabase._internalDoNotUseOnlyIntendedForShutdownSequenceWriteToDisk( path.resolve( process.cwd(), "./fs/global_database.json" ) );
@@ -240,13 +240,13 @@ async function listenForRequests() {
     } catch ( e ) {
       // ignore errors
     }
-
+    
     httpServer.listen( 3563, () => {
       log( logType.INFO, "core", "server now listening on port 3563!" );
     } );
   } catch ( reason ) {
     log( logType.INFO, "Unable to kill port 3563", reason );
-
+    
     try {
       httpServer.listen( 3563, () => {
         log( logType.INFO, "core", "server now listening on port 3563!" );
@@ -279,39 +279,39 @@ process.on( "SIGINT", shutdownInstanceGracefully );
 
 // Handle socket.io connections
 socketIo.on( "connection", ( socket: SocketIoSocket<any, any, any, any> ) => { // eslint-disable-line @typescript-eslint/no-explicit-any
-
+  
   const handshakeUsername = socket.handshake.query.username as string;
-
+  
   // Check that all required parameters are present
   if ( !handshakeUsername || !socket.handshake.query.sessionToken || !socket.handshake.query.sessionId ) {
     log( logType.ERROR, "[PSA-BACKEND]: Closing connection! Missing required parameters!" );
-
+    
     socket.disconnect( true );
     return;
   }
-
+  
   if ( !ACTIVE_SOCKET_IO_SOCKETS[ handshakeUsername as string ] ) {
     ACTIVE_SOCKET_IO_SOCKETS[ handshakeUsername as string ] = [];
   }
-
+  
   ACTIVE_SOCKET_IO_SOCKETS[ handshakeUsername as string ].push( <ISocketActiveSocket>{
     id: socket.handshake.query.sessionId as string,
     token: socket.handshake.query.sessionToken as string,
     socket
   } );
-
+  
   socket.on( "execute-command-response", ( output: never ) => {
     log( logType.INFO, output );
   } );
-
+  
   socket.on( "disconnect", () => {
     ACTIVE_SOCKET_IO_SOCKETS[ handshakeUsername as string ].forEach( () => {
       ACTIVE_SOCKET_IO_SOCKETS[ handshakeUsername as string ].filter( ( s ) => s.id !== socket.id );
     } );
-
+    
     log( logType.INFO, "[PSA-BACKEND]: Closing PSA connection" );
   } );
-
+  
   return;
 } );
 
@@ -321,11 +321,11 @@ socketIo.use( async ( socket: SocketIoSocket, next ) => {
     username,
     sessionToken
   } = socket.handshake.query as { username?: string, sessionToken?: string };
-
+  
   if ( !username || !sessionToken ) {
     return socket.disconnect();
   }
-
+  
   if ( !__internalGetSessionsDoNotUseOutsideOfCore()[ username ] ) {
     try {
       const user = new YourDashUser( username );
@@ -334,11 +334,11 @@ socketIo.use( async ( socket: SocketIoSocket, next ) => {
       return socket.disconnect();
     }
   }
-
+  
   if ( __internalGetSessionsDoNotUseOutsideOfCore()[ username ].find( ( session ) => session.sessionToken === sessionToken ) ) {
     return next();
   }
-
+  
   return socket.disconnect();
 } );
 
@@ -359,7 +359,7 @@ exp.use( ( _req, res, next ) => {
 process.stdin.on( "data", ( data ) => {
   const commandAndArgs = data.toString().replaceAll( "\n", "" ).replaceAll( "\r", "" ).split( " " );
   const command = commandAndArgs[ 0 ];
-
+  
   switch ( command ) {
   case "exit":
     shutdownInstanceGracefully();
@@ -368,7 +368,7 @@ process.stdin.on( "data", ( data ) => {
     const subCommand = commandAndArgs[ 1 ];
     const key = commandAndArgs[ 2 ];
     const value = commandAndArgs[ 3 ];
-
+    
     switch ( subCommand ) {
     case "set":
       globalDatabase.set( key, value );
@@ -390,12 +390,15 @@ process.stdin.on( "data", ( data ) => {
   }
 } );
 
-exp.get( "/", ( _req, res ) => res.send( "Hello from the YourDash instance software! 👋" ) );
+exp.get( "/", ( _req, res ) => {
+  // INFO: This should not be used for detection of a YourDash Instance, instead use the '/test' endpoint
+  return res.send( "Hello from the YourDash instance software! 👋" );
+} );
 
 // Server discovery endpoint
 exp.get( "/test", ( _req, res ) => {
   const discoveryStatus: YOURDASH_INSTANCE_DISCOVERY_STATUS = YOURDASH_INSTANCE_DISCOVERY_STATUS.NORMAL as YOURDASH_INSTANCE_DISCOVERY_STATUS;
-
+  
   switch ( discoveryStatus ) {
   case YOURDASH_INSTANCE_DISCOVERY_STATUS.MAINTENANCE:
     return res.status( 200 ).json( {
@@ -417,6 +420,7 @@ exp.get( "/test", ( _req, res ) => {
 } );
 
 exp.get( "/ping", ( _req, res ) => {
+  // INFO: This should not be used for detection of a YourDash Instance, instead use the '/test' endpoint
   return res.send( "pong" );
 } );
 
@@ -428,7 +432,7 @@ exp.get( "/core/test/self-ping", ( _req, res ) => {
   return res.json( { success: true } );
 } );
 
-// on startup we ping ourselves to check if the webserver is running and accepting requests
+// on startup, we ping ourselves to check if the webserver is running and accepting requests
 fetch( "http://localhost:3563/core/test/self-ping" )
   .then( res => res.json() )
   .then( ( data: { success?: boolean } ) => {
@@ -448,19 +452,19 @@ exp.use( async ( req, res, next ) => {
     username,
     token
   } = req.headers as { username?: string, token?: string };
-
+  
   if ( !username || !token ) {
     return res.json( { error: "authorization fail" } );
   }
-
+  
   if ( !__internalGetSessionsDoNotUseOutsideOfCore()[ username ] ) {
     try {
       const user = new YourDashUser( username );
-
+      
       __internalGetSessionsDoNotUseOutsideOfCore()[ username ] = ( await user.getAllLoginSessions() ) || [];
-
+      
       const database = ( await fs.readFile( path.join( user.path, "core/user_db.json" ) ) ).toString();
-
+      
       if ( database ) {
         USER_DATABASES.set( username, JSON.parse( database ) );
       } else {
@@ -471,11 +475,11 @@ exp.use( async ( req, res, next ) => {
       return res.json( { error: "authorization fail" } );
     }
   }
-
+  
   if ( __internalGetSessionsDoNotUseOutsideOfCore()[ username ].find( ( session ) => session.sessionToken === token ) ) {
     return next();
   }
-
+  
   return res.json( { error: "authorization fail" } );
 } );
 
@@ -488,28 +492,28 @@ exp.use( async ( req, res, next ) => {
 
 exp.get( "/core/sessions", async ( req, res ) => {
   const { username } = req.headers as { username: string };
-
+  
   const user = new YourDashUser( username );
-
+  
   return res.json( { sessions: await user.getAllLoginSessions() } );
 } );
 
 exp.delete( "/core/session/:id", async ( req, res ) => {
   const { username } = req.headers as { username: string };
   const { id: sessionId } = req.params;
-
+  
   const user = new YourDashUser( username );
-
+  
   user.getLoginSession( parseInt( sessionId, 10 ) ).invalidate();
-
+  
   return res.json( { success: true } );
 } );
 
 exp.get( "/core/personal-server-accelerator/sessions", async ( req, res ) => {
   const { username } = req.headers as { username: string };
-
+  
   const user = new YourDashUser( username );
-
+  
   return res.json( {
     // all desktop sessions should support the PSA api
     sessions: ( await user.getAllLoginSessions() ).filter( ( session: { type: YOURDASH_SESSION_TYPE } ) => session.type === YOURDASH_SESSION_TYPE.desktop )
@@ -518,9 +522,9 @@ exp.get( "/core/personal-server-accelerator/sessions", async ( req, res ) => {
 
 exp.get( "/core/personal-server-accelerator/", async ( req, res ) => {
   const { username } = req.headers as { username: string };
-
+  
   const user = new YourDashUser( username );
-
+  
   try {
     return JSON.parse( ( await fs.readFile( path.join( user.path, "personal_server_accelerator.json" ) ) ).toString() );
   } catch ( _err ) {
@@ -533,15 +537,15 @@ exp.get( "/core/personal-server-accelerator/", async ( req, res ) => {
 exp.post( "/core/personal-server-accelerator/", async ( req, res ) => {
   const { username } = req.headers as { username: string };
   const body = req.body;
-
+  
   const user = new YourDashUser( username );
-
+  
   try {
     await fs.writeFile( path.join( user.path, "personal_server_accelerator.json" ), JSON.stringify( body ) );
   } catch ( _err ) {
     return res.json( { error: `Unable to write to ${ username }/personal_server_accelerator.json` } );
   }
-
+  
   return res.json( { success: true } );
 } );
 

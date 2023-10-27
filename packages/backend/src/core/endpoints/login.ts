@@ -5,7 +5,6 @@
 
 import YourDashUser from "backend/src/core/user/index.js";
 import { compareHash } from "backend/src/helpers/encryption.js";
-import log, { logType } from "backend/src/helpers/log.js";
 import { createSession } from "backend/src/helpers/session.js";
 import { Application as ExpressApplication } from "express";
 import { promises as fs } from "fs";
@@ -46,22 +45,26 @@ export default function defineLoginEndpoints( exp: ExpressApplication ) {
 
     const savedHashedPassword = ( await fs.readFile( path.join( user.path, "core/password.enc" ) ) ).toString();
 
-    return compareHash( savedHashedPassword, password ).then( async result => {
-      if ( result ) {
-        const session = await createSession(
-          username,
-          req.headers?.type === "desktop"
-            ? YOURDASH_SESSION_TYPE.desktop
-            : YOURDASH_SESSION_TYPE.web
-        );
-        return res.json( {
-          token: session.sessionToken,
-          id: session.id
-        } );
-      } else {
-        return res.json( { error: "Incorrect password" } );
-      }
-    } ).catch( () => res.json( { error: "Hash comparison failure" } ) );
+    return compareHash( savedHashedPassword, password )
+      .then( async result => {
+        if ( result ) {
+          const session = await createSession(
+            username,
+            req.headers?.type === "desktop"
+              ? YOURDASH_SESSION_TYPE.desktop
+              : YOURDASH_SESSION_TYPE.web
+          );
+          return res.json( {
+            token: session.sessionToken,
+            id: session.id
+          } );
+        } else {
+          return res.json( { error: "Incorrect password" } );
+        }
+      } )
+      .catch( () => {
+        return res.json( { error: "Hash comparison failure" } );
+      } );
   } );
 
   exp.get( "/core/login/is-authenticated", async ( req, res ) => {
@@ -81,9 +84,7 @@ export default function defineLoginEndpoints( exp: ExpressApplication ) {
       }
     }
 
-    if (
-      __internalGetSessionsDoNotUseOutsideOfCore()[username].find( session => session.sessionToken === token )
-    ) {
+    if ( __internalGetSessionsDoNotUseOutsideOfCore()[username].find( session => session.sessionToken === token ) ) {
       return res.json( { success: true } );
     }
     return res.json( { error: true } );
@@ -96,14 +97,8 @@ export default function defineLoginEndpoints( exp: ExpressApplication ) {
     } )
   } )
   
-  exp.get(
-    "/core/login/instance/background",
-    ( _req, res ) => {
-      res.set( "Content-Type", "image/avif" );
-      return res.sendFile( path.resolve(
-        process.cwd(),
-        "./fs/login_background.avif"
-      ) );
-    }
-  );
+  exp.get( "/core/login/instance/background",( _req, res ) => {
+    res.set( "Content-Type", "image/avif" );
+    return res.sendFile( path.resolve( process.cwd(),"./fs/login_background.avif" ) );
+  } );
 }

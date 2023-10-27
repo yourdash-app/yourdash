@@ -4,11 +4,16 @@
  */
 
 import React from "react"
+import FilePathWidget from "./widgets/filePathWidget/Index"
 
-const StatusBar: React.FC = () => {
-  return <>
-      statusbar
-  </>
+export interface IStatusBar {
+  path: string, // a path which can be parsed to form a filePathWidget
+}
+
+const StatusBar: React.FC<IStatusBar> = ( { path } ) => {
+  return <section>
+    <FilePathWidget filePath={path}/>
+  </section>
 }
 
 export default StatusBar
