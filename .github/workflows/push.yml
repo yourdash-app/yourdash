@@ -1,4 +1,4 @@
-name: Build and Deploy to https://ydsh.pages.dev and https://yourdash.pages.dev
+name: Build and Deploy to https://ydsh.pages.react-buddy-toolbox and https://yourdash.pages.react-buddy-toolbox
 
 on:
   workflow_dispatch:

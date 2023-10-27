@@ -6,6 +6,7 @@
 import "animate.css";
 import "./ui/ui.scss";
 import "./main.css";
+import { DevSupport } from "@react-buddy/ide-toolbox";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createRoutesFromElements, Route, RouterProvider } from "react-router";
@@ -14,6 +15,7 @@ import loadable from "@loadable/component";
 import ApplicationRedirectToDash from "./app/ApplicationRedirectToDash.jsx";
 import AppLayout from "./app/AppLayout";
 import ComingSoon from "./ComingSoon";
+import { ComponentPreviews, useInitial } from "./react-buddy-toolbox/index";
 import DocsLayout from "./root/docs/Layout";
 import ErrorElement from "./ErrorElement";
 import ServerLoginPage from "./root/login/Page";
@@ -31,88 +33,92 @@ function main() {
   ReactDOM.createRoot( document.getElementById( "root" ) as HTMLElement ).render(
     <ChipletUiRootIntegration>
       <RouterProvider
-        router={createHashRouter(
+        router={ createHashRouter(
           createRoutesFromElements(
             <Route
-              errorElement={<ErrorElement/>}
+              errorElement={ <ErrorElement /> }
             >
               <Route
-                element={<RootLayout/>}
+                element={ <RootLayout /> }
               >
                 <Route
                   index
-                  element={<Index/>}
+                  element={ <Index /> }
                 />
                 <Route
-                  path={"/signup"}
-                  element={<ComingSoon/>}
+                  path={ "/signup" }
+                  element={ <ComingSoon /> }
                 />
                 <Route
-                  path={"docs/*"}
-                  element={<DocsLayout/>}
+                  path={ "docs/*" }
+                  element={ <DocsLayout /> }
                 >
                   <Route
-                    path={"*"}
-                    element={(
-                      <DocsRouter/>
-                    )}
+                    path={ "*" }
+                    element={ (
+                      <DocsRouter />
+                    ) }
                   />
                 </Route>
-                <Route path={"projects"} index element={<ProjectsIndexPage/>}/>
+                <Route path={ "projects" } index element={ <ProjectsIndexPage /> } />
               </Route>
               <Route
-                path={"projects/*"}
-                element={<ProjectsRouter/>}
+                path={ "projects/*" }
+                element={ <ProjectsRouter /> }
               />
               <Route
-                path={"project/*"}
-                element={<ProjectsRouter/>}
+                path={ "project/*" }
+                element={ <ProjectsRouter /> }
               />
               <Route
-                path={"proj/*"}
-                element={<ProjectsRouter/>}
+                path={ "proj/*" }
+                element={ <ProjectsRouter /> }
               />
-              <Route path={"/login"}>
+              <Route path={ "/login" }>
                 <Route
                   index
-                  element={<ServerLoginPage/>}
+                  element={ <ServerLoginPage /> }
                 />
               </Route>
               <Route
-                path={"app"}
+                path={ "app" }
               >
                 <Route
-                  element={<AppLayout/>}
+                  element={ <AppLayout /> }
                 >
                   <Route
                     index
-                    element={<ApplicationRedirectToDash/>}
+                    element={ <ApplicationRedirectToDash /> }
                   />
                   <Route
-                    path={"a/*"}
-                    element={<AppRouter/>}
+                    path={ "a/*" }
+                    element={ <DevSupport ComponentPreviews={ ComponentPreviews }
+                      useInitialHook={ useInitial }
+                    >
+                      <AppRouter />
+                    </DevSupport> }
                   />
                 </Route>
               </Route>
             </Route>
           )
-        )}
+        ) }
       />
     </ChipletUiRootIntegration>
   );
 }
 
-const element = document.getElementById( "root" ) as HTMLElement
+const element = document.getElementById( "root" ) as HTMLElement;
 
-const loadingElement = document.createElement( "h1" )
+const loadingElement = document.createElement( "h1" );
 
-loadingElement.style.display = "flex"
-loadingElement.style.width = "100%"
-loadingElement.style.height = "100%"
-loadingElement.style.justifyContent = "center"
-loadingElement.style.alignItems = "center"
-loadingElement.innerText = "Loading YourDash..."
+loadingElement.style.display = "flex";
+loadingElement.style.width = "100%";
+loadingElement.style.height = "100%";
+loadingElement.style.justifyContent = "center";
+loadingElement.style.alignItems = "center";
+loadingElement.innerText = "Loading YourDash...";
 
-element.appendChild( loadingElement )
+element.appendChild( loadingElement );
 
-main()
+main();
