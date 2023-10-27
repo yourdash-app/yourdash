@@ -22,9 +22,9 @@ export default class WeatherModule extends YourDashModule {
   constructor( args: YourDashModuleArguments ) {
     super( args );
     
-    geolocationApi( this.API().request )
+    geolocationApi( this.API.request )
   
-    this.API().request.get( "/app/weather/location/:id", async ( req, res ) => {
+    this.API.request.get( "/app/weather/location/:id", async ( req, res ) => {
       const { id } = req.params;
     
       if ( weatherForecastCache[ id ] ) {
@@ -40,6 +40,6 @@ export default class WeatherModule extends YourDashModule {
       return res.json( await getWeatherDataForLocationId( id ) );
     } );
     
-    weatherPredictionEngine( this.API().request )
+    weatherPredictionEngine( this.API.request )
   }
 }

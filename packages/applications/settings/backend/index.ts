@@ -15,7 +15,7 @@ export default class SettingsModule extends YourDashModule {
   constructor( args: YourDashModuleArguments ) {
     super( args );
     
-    this.API().request.post( "/app/settings/core/panel/position", async ( req, res ) => {
+    this.API.request.post( "/app/settings/core/panel/position", async ( req, res ) => {
       const { username } = req.headers as {
         username: string
       };
@@ -30,7 +30,7 @@ export default class SettingsModule extends YourDashModule {
       } );
     } );
     
-    this.API().request.post( "/app/settings/core/panel/quick-shortcuts", ( req, res ) => {
+    this.API.request.post( "/app/settings/core/panel/quick-shortcuts", ( req, res ) => {
       const { username } = req.headers as {
         username: string
       };
@@ -43,7 +43,7 @@ export default class SettingsModule extends YourDashModule {
       return res.json( { success: true } );
     } );
     
-    this.API().request.get( "/app/settings/debug/psa/update/:sessionId", async ( req, res ) => {
+    this.API.request.get( "/app/settings/debug/psa/update/:sessionId", async ( req, res ) => {
       const { sessionId } = req.params;
       const { username } = req.headers as {
         username: string
@@ -64,7 +64,7 @@ export default class SettingsModule extends YourDashModule {
       } );
     } );
     
-    this.API().request.get( "/app/settings/developer/install_all_applications", async ( req, res ) => {
+    this.API.request.get( "/app/settings/developer/install_all_applications", async ( req, res ) => {
       const installableApplications = ( await fs.readdir( "../applications" ) ).filter( app => app !== "node_modules" && app !== "package.json" && app !== "package-lock.json" );
       
       installableApplications.map( app => {
@@ -72,7 +72,7 @@ export default class SettingsModule extends YourDashModule {
           return;
         
         globalDatabase.set( "installedApplications", [ ...globalDatabase.get( "installedApplications" ), app ] );
-        loadApplication( app, this.API().request, this.API().websocket.httpServer );
+        loadApplication( app, this.API.request, this.API.websocket.httpServer );
       } )
       
       return res.json( { success: true } );

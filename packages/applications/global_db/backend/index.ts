@@ -12,7 +12,7 @@ import YourDashModule, { YourDashModuleArguments } from "backend/src/core/yourDa
 export default class GlobalDbModule extends YourDashModule {
   constructor( args: YourDashModuleArguments ) {
     super( args );
-    this.API().request.get( "/app/global_db/db", async ( req, res ) => {
+    this.API.request.get( "/app/global_db/db", async ( req, res ) => {
       const { username } = req.headers as {
         username: string
       };
@@ -30,7 +30,7 @@ export default class GlobalDbModule extends YourDashModule {
       } );
     } );
     
-    this.API().request.post( "/app/global_db/db", async ( req, res ) => {
+    this.API.request.post( "/app/global_db/db", async ( req, res ) => {
       const { username } = req.headers as {
         username: string
       };
@@ -50,7 +50,7 @@ export default class GlobalDbModule extends YourDashModule {
       return res.json( { error: true } );
     } );
     
-    this.API().request.post( "/app/global_db/db/force-write", async ( req, res ) => {
+    this.API.request.post( "/app/global_db/db/force-write", async ( req, res ) => {
       const { username } = req.headers as {
         username: string
       };
