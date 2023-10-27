@@ -7,10 +7,10 @@ import React from "react";
 import IPanelApplicationsLauncherApplication from "shared/core/panel/applicationsLauncher/application";
 import csi from "../../../../../../../helpers/csi";
 import { RightClickMenu } from "../../../../../../../ui/index";
-import styles from "./ApplicationGrid.module.scss"
+import styles from "./ApplicationList.module.scss"
 import { useNavigate } from "react-router";
 
-const ApplicationGrid: React.FC<{ applications: IPanelApplicationsLauncherApplication[] }> = ( { applications } ) => {
+const ApplicationList: React.FC<{ applications: IPanelApplicationsLauncherApplication[] }> = ( { applications } ) => {
   const navigate = useNavigate()
   
   return <section className={styles.grid}>
@@ -53,4 +53,4 @@ const ApplicationGrid: React.FC<{ applications: IPanelApplicationsLauncherApplic
   </section>
 }
 
-export default ApplicationGrid;
+export default ApplicationList;

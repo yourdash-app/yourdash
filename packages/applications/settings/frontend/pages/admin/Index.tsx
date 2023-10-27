@@ -6,11 +6,11 @@
 import * as React from "react";
 import ComingSoon from "web-client/src/ComingSoon";
 import BasePageLayout from "../../components/BasePageLayout";
+import ManageUsers from "./sections/manageUsers/ManageUsers";
 
 const Index: React.FC = () => (
-  <BasePageLayout
-    title={ "Admin tools" }
-  >
+  <BasePageLayout title={ "Admin tools" }>
+    <ManageUsers/>
     <section className={ "w-full h-full flex flex-col items-center col-span-2" }>
       <ComingSoon />
     </section>

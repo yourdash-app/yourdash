@@ -10,7 +10,7 @@ export default class DashModule extends YourDashModule {
   constructor( args: YourDashModuleArguments ) {
     super( args );
   
-    this.API().request.get( "/app/dash/user-full-name", async ( req, res ) => {
+    this.API.request.get( "/app/dash/user-full-name", async ( req, res ) => {
       const { username } = req.headers as {
       username: string
     };
@@ -21,7 +21,7 @@ export default class DashModule extends YourDashModule {
     } );
 
     // TODO: implement module system
-    this.API().request.get( "/app/dash/modules", async ( req, res ) => {
+    this.API.request.get( "/app/dash/modules", async ( req, res ) => {
       const { username } = req.headers as {
       username: string
     };
