@@ -8,7 +8,7 @@ import YourDashModule, { YourDashModuleArguments } from "backend/src/core/yourDa
 export default class DiffusionLabModule extends YourDashModule {
   constructor( args: YourDashModuleArguments ) {
     super( args );
-    this.API().request.get( "/app/diffusion_lab/models", async ( req, res ) => res.json( { models: ["everything v5", "stable diffusion 2.1", "blueberry mix"] } )
+    this.API.request.get( "/app/diffusion_lab/models", async ( req, res ) => res.json( { models: ["everything v5", "stable diffusion 2.1", "blueberry mix"] } )
     )
   }
 }

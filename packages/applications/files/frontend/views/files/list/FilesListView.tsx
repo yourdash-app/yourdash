@@ -18,7 +18,8 @@ const FilesListView: React.FC<{ files: { type: "file" | "directory", name: strin
         key={ file.name }
         className={ clippy( styles.file, isOdd && styles.odd ) }
       >
-        <span>{ file.name }</span>
+        <div className={ styles.fileName }>{ file.name }</div>
+        <div className={ styles.fileType }>{ file.type.split( "." )[1] }</div>
       </div>;
     } ) }
   </section>;

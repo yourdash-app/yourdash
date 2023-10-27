@@ -9,7 +9,7 @@ export default class YourDevModule extends YourDashModule {
   constructor( args: YourDashModuleArguments ) {
     super( args );
   
-    this.API().request.get( "/app/yourdev/", ( req, res ) => {
+    this.API.request.get( "/app/yourdev/", ( req, res ) => {
       return res.json( { success: true } )
     } )
   }

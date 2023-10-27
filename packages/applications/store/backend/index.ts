@@ -21,7 +21,7 @@ export default class StoreModule extends YourDashModule {
 
   constructor( args: YourDashModuleArguments ) {
     super( args );
-    this.API().request.get( "/app/store/promoted/applications", ( _req, res ) => {
+    this.API.request.get( "/app/store/promoted/applications", ( _req, res ) => {
       Promise.all(
         promotedApplications.map( async ( app ): Promise<StorePromotedApplication> => {
           const application = ( await new YourDashApplication( app ).read() );
@@ -35,7 +35,7 @@ export default class StoreModule extends YourDashModule {
         } ) ).then( out => res.json( out ) );
     } );
   
-    this.API().request.get( "/app/store/categories", async ( _req, res ) => {
+    this.API.request.get( "/app/store/categories", async ( _req, res ) => {
       const applications = await getAllApplications();
     
       const categories: {
@@ -57,7 +57,7 @@ export default class StoreModule extends YourDashModule {
       return res.json( Object.keys( categories ) );
     } );
   
-    this.API().request.get( "/app/store/applications", async ( req, res ) => {
+    this.API.request.get( "/app/store/applications", async ( req, res ) => {
       const { username } = req.headers as {
       username: string
     };
@@ -85,7 +85,7 @@ export default class StoreModule extends YourDashModule {
       );
     } );
   
-    this.API().request.get( "/app/store/category/:id", async ( req, res ) => {
+    this.API.request.get( "/app/store/category/:id", async ( req, res ) => {
       const { username } = req.headers as { username: string }
       const { id } = req.params;
     
@@ -126,7 +126,7 @@ export default class StoreModule extends YourDashModule {
       } );
     } );
   
-    this.API().request.get( "/app/store/application/:id", async ( req, res ) => {
+    this.API.request.get( "/app/store/application/:id", async ( req, res ) => {
       const { id } = req.params;
     
       if ( !id ) {
@@ -150,7 +150,7 @@ export default class StoreModule extends YourDashModule {
       return res.json( response );
     } );
   
-    this.API().request.post( "/app/store/application/install/:id", async ( req, res ) => {
+    this.API.request.post( "/app/store/application/install/:id", async ( req, res ) => {
       const { id } = req.params;
       const applicationUnread = new YourDashApplication( id );
       if ( !( await applicationUnread.exists() ) ) {
@@ -159,12 +159,12 @@ export default class StoreModule extends YourDashModule {
       const application = await applicationUnread.read();
     
       globalDatabase.set( "installedApplications", [ ...globalDatabase.get( "installedApplications" ), id, ...application.getDependencies()] );
-      loadApplication( id, this.API().request, this.API().websocket.httpServer );
+      loadApplication( id, this.API.request, this.API.websocket.httpServer );
     
       return res.json( { success: true } );
     } );
   
-    this.API().request.post( "/app/store/application/uninstall/:id", ( req, res ) => {
+    this.API.request.post( "/app/store/application/uninstall/:id", ( req, res ) => {
       const { id } = req.params;
       const application = new YourDashApplication( id );
       if ( !application.exists() ) {
@@ -174,7 +174,7 @@ export default class StoreModule extends YourDashModule {
       return res.json( { success: true } );
     } );
   
-    this.API().request.get( "/app/store/application/:id/icon", async ( req, res ) => {
+    this.API.request.get( "/app/store/application/:id/icon", async ( req, res ) => {
       const { id } = req.params;
       const unreadApplication = new YourDashApplication( id );
       if ( !( await unreadApplication.exists() ) ) {

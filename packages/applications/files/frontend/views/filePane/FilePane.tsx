@@ -5,7 +5,7 @@
 
 import React from "react"
 import FilePaneControls from "../filePaneControls/filePaneControls";
-import FilesListView from "../files/FilesListView";
+import FilesListView from "../files/list/FilesListView";
 import StatusBar from "../statusBar/StatusBar";
 import styles from "./FilePane.module.scss"
 
