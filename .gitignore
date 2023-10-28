@@ -6,3 +6,4 @@
 /packages/applications/**/*.js.map
 /packages/shared/**/*.js
 /packages/shared/**/*.js.map
+/.idea/webServers.xml
