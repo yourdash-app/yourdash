@@ -4,9 +4,9 @@
  */
 
 import YourDashUser from "backend/src/core/user/index.js";
-import YourDashModule, { YourDashModuleArguments } from "backend/src/core/yourDashModule.js";
+import Module, { YourDashModuleArguments } from "backend/src/core/module.js";
 
-export default class DashModule extends YourDashModule {
+export default class DashModule extends Module {
   constructor( args: YourDashModuleArguments ) {
     super( args );
   
