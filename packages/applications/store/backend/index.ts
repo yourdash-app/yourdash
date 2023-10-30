@@ -4,7 +4,7 @@
  */
 
 import authenticatedImage, { authenticatedImageType } from "backend/src/core/authenticatedImage.js";
-import YourDashModule, { YourDashModuleArguments } from "backend/src/core/yourDashModule.js";
+import Module, { YourDashModuleArguments } from "backend/src/core/module.js";
 import { IYourDashStoreApplication } from "shared/apps/store/storeApplication.js";
 import { IStoreCategory } from "shared/apps/store/storeCategory.js";
 import { type StorePromotedApplication } from "shared/apps/store/storePromotedApplication.js";
@@ -17,7 +17,7 @@ import YourDashApplication, { getAllApplications } from "backend/src/helpers/app
 
 const promotedApplications: string[] = ["dash", "store"];
 
-export default class StoreModule extends YourDashModule {
+export default class StoreModule extends Module {
 
   constructor( args: YourDashModuleArguments ) {
     super( args );

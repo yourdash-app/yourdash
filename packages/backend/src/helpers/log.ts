@@ -4,14 +4,8 @@
  */
 
 import chalk from "chalk";
+import { logType } from "../core/core/coreApiLog.js";
 import globalDatabase from "./globalDatabase.js";
-import sourceMapSupport from "source-map-support";
-
-sourceMapSupport.install();
-
-export enum logType {
-  INFO, WARNING, ERROR, SUCCESS
-}
 
 export const LOG_HISTORY: {
   type: string, level: string, message: never[]

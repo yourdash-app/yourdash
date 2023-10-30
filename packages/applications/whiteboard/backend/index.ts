@@ -3,9 +3,9 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import YourDashModule, { YourDashModuleArguments } from "backend/src/core/yourDashModule.js";
+import Module, { YourDashModuleArguments } from "backend/src/core/module.js";
 
-export default class YourDevModule extends YourDashModule {
+export default class YourDevModule extends Module {
   constructor( args: YourDashModuleArguments ) {
     super( args );
     

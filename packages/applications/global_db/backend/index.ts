@@ -7,9 +7,9 @@ import YourDashUser from "backend/src/core/user/index.js";
 import { YourDashCoreUserPermissions } from "backend/src/core/user/permissions.js";
 import globalDatabase from "backend/src/helpers/globalDatabase.js";
 import path from "path";
-import YourDashModule, { YourDashModuleArguments } from "backend/src/core/yourDashModule.js";
+import Module, { YourDashModuleArguments } from "backend/src/core/module.js";
 
-export default class GlobalDbModule extends YourDashModule {
+export default class GlobalDbModule extends Module {
   constructor( args: YourDashModuleArguments ) {
     super( args );
     this.API.request.get( "/app/global_db/db", async ( req, res ) => {
