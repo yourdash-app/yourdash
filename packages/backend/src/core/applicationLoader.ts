@@ -9,7 +9,7 @@ import log, { logType } from "../helpers/log.js";
 import { existsSync as fsExistsSync } from "fs";
 import chalk from "chalk";
 import { type Application as ExpressApplication } from "express";
-import YourDashModule from "./yourDashModule.js";
+import Module from "./module.js";
 import http, { Server as HttpServer } from "http"
 
 function checkIfApplicationIsValidToLoad( applicationName: string ): boolean {
@@ -43,7 +43,7 @@ export function loadApplication( appName: string, exp: ExpressApplication, httpS
 
   // import and load all application modules
   import( `applications/${ appName }/backend/index.js` )
-    .then( ( mod: { default?: typeof YourDashModule } ) => {
+    .then( ( mod: { default?: typeof Module } ) => {
       try {
         log( logType.INFO, "core", `Loading application: ${ appName }` );
 
@@ -57,17 +57,14 @@ export function loadApplication( appName: string, exp: ExpressApplication, httpS
         }
 
         try {
+          // execute the loaded module with the moduleApi parameters
           new mod.default( {
             moduleName: appName,
-            exp,
-            httpServer
+            exp: exp,
+            httpServer: httpServer,
+            // @ts-ignore
+            coreApi: {} // TODO: replace with the instance's coreApi object when applicationLoader has been upgraded to the CoreApi System
           } )
-        /* BACKUP: {
-          exp: exp, // express Application
-          io, // socket.io instance
-          pluginFilesystemPath: path.resolve( path.join( process.cwd(), `../applications/${ appName }` ) ),
-          APPLICATION_ID: appName
-        } */
         } catch ( err ) {
           log( logType.ERROR, "core", `Error during application execution: ${ appName }\n`, err );
           return

@@ -4,14 +4,14 @@
  */
 
 import YourDashPanel from "backend/src/core/panel.js";
-import YourDashModule, { YourDashModuleArguments } from "backend/src/core/yourDashModule.js";
+import Module, { YourDashModuleArguments } from "backend/src/core/module.js";
 import YourDashUser from "backend/src/core/user/index.js";
 import { PersonalServerAcceleratorCommunication } from "backend/src/helpers/personalServerAccelerator.js";
 import { promises as fs } from "fs";
 import globalDatabase from "backend/src/helpers/globalDatabase.js";
 import { loadApplication } from "backend/src/core/applicationLoader.js";
 
-export default class SettingsModule extends YourDashModule {
+export default class SettingsModule extends Module {
   constructor( args: YourDashModuleArguments ) {
     super( args );
     
