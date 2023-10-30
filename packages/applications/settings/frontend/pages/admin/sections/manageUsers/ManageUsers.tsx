@@ -4,13 +4,25 @@
  */
 
 import React from "react";
+import UsersView from "./views/users/UsersView";
 
 const ManageUsers: React.FC = () => {
-  return (
-    <>
-      Manage Users ADMIN
-    </>
-  );
+  const [ currentView, setCurrentView ] = React.useState<"createUser" | "usersView" | "manageUser">( "usersView" )
+
+  switch ( currentView ) {
+  case "createUser":
+    return (
+      <>WIP</>
+    )
+  case "usersView":
+    return (
+      <UsersView />
+    )
+  case "manageUser":
+    return (
+      <>WIP</>
+    )
+  }
 };
 
 export default ManageUsers;

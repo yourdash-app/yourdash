@@ -4,7 +4,9 @@
  */
 
 import { Application as ExpressApplication, Request as ExpressRequest } from "express";
-import log, { logType } from "../helpers/log.js";
+import log from "../helpers/log.js";
+import CoreApi from "./core/coreApi.js";
+import { logType } from "./core/coreApiLog.js";
 import YourDashUser from "./user/index.js";
 import { WebsocketManager } from "./websocketManager.js";
 import path from "path";
@@ -13,14 +15,14 @@ import http from "http";
 export interface YourDashModuleArguments {
   moduleName: string,
   exp: ExpressApplication,
-  httpServer: http.Server
+  httpServer: http.Server,
+  coreApi: CoreApi
 }
 
-export default class YourDashModule {
+export default class Module {
   private readonly websocketManager: WebsocketManager;
   private readonly expressApp: ExpressApplication;
   private readonly moduleName: string;
-  // @ts-ignore
   protected API: {
     websocket: WebsocketManager,
     request: ExpressApplication,
@@ -28,8 +30,9 @@ export default class YourDashModule {
     getPath(): string,
     applicationName: string,
     moduleName: string,
-    getUser( req: ExpressRequest ): YourDashUser
-  } = {}
+    getUser( req: ExpressRequest ): YourDashUser,
+    core: CoreApi
+  };
   
   constructor( args: YourDashModuleArguments ) {
     this.expressApp = args.exp;
@@ -50,7 +53,8 @@ export default class YourDashModule {
         const username = req.headers.username as string;
         
         return new YourDashUser( username );
-      }
+      },
+      core: args.coreApi
     }
     
     return this;

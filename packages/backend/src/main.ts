@@ -25,57 +25,68 @@
 * 9. Load post-startup services
 */
 
-import applicationLoader from "backend/src/core/applicationLoader.js";
-import { startAuthenticatedImageHelper } from "backend/src/core/authenticatedImage.js";
-import { YOURDASH_INSTANCE_DISCOVERY_STATUS } from "backend/src/core/discovery.js";
-import defineLoginEndpoints from "backend/src/core/endpoints/login.js";
-import defineCorePanelRoutes from "backend/src/core/endpoints/panel.js";
-import defineUserEndpoints from "backend/src/core/endpoints/user.js";
-import defineUserDatabaseRoutes, { saveUserDatabases, USER_DATABASES } from "backend/src/core/endpoints/userDatabase.js";
-import startRequestLogger from "backend/src/core/logRequests.js";
-import { __internalGetSessionsDoNotUseOutsideOfCore } from "backend/src/core/session.js";
-import scheduleTask from "backend/src/core/taskScheduler.js";
-import { startUserDatabaseService } from "backend/src/core/user/database.js";
-import YourDashUser from "backend/src/core/user/index.js";
-import { YourDashCoreUserPermissions } from "backend/src/core/user/permissions.js";
-import globalDatabase from "backend/src/helpers/globalDatabase.js";
-import log, { LOG_HISTORY, logType } from "backend/src/helpers/log.js";
-import { generateLogos } from "backend/src/helpers/logo.js";
-import expressCompression from "compression";
-import cors from "cors";
-import express from "express";
-import { existsSync as fsExistsSync, promises as fs, writeFile } from "fs";
-import * as http from "http";
-import killPort from "kill-port";
-import minimist from "minimist";
-import path from "path";
-import { YOURDASH_SESSION_TYPE } from "shared/core/session.js";
-import { Server as SocketIoServer, Socket as SocketIoSocket } from "socket.io";
-import { fetch } from "undici";
-import scheduleBackendUpdateChecker from "./core/update/performBackendUpdate.js";
+// import applicationLoader from "backend/src/core/applicationLoader.js";
+// import { startAuthenticatedImageHelper } from "backend/src/core/authenticatedImage.js";
+// import { YOURDASH_INSTANCE_DISCOVERY_STATUS } from "backend/src/core/discovery.js";
+// import defineLoginEndpoints from "backend/src/core/endpoints/login.js";
+// import defineCorePanelRoutes from "backend/src/core/endpoints/panel.js";
+// import defineUserEndpoints from "backend/src/core/endpoints/user.js";
+// import defineUserDatabaseRoutes, { saveUserDatabases, USER_DATABASES } from "backend/src/core/endpoints/userDatabase.js";
+// import startRequestLogger from "backend/src/core/logRequests.js";
+// import { __internalGetSessionsDoNotUseOutsideOfCore } from "backend/src/core/session.js";
+// import scheduleTask from "backend/src/core/taskScheduler.js";
+// import { startUserDatabaseService } from "backend/src/core/user/database.js";
+// import YourDashUser from "backend/src/core/user/index.js";
+// import { YourDashCoreUserPermissions } from "backend/src/core/user/permissions.js";
+// import globalDatabase from "backend/src/helpers/globalDatabase.js";
+// import log, { LOG_HISTORY } from "backend/src/helpers/log.js";
+// import { generateLogos } from "backend/src/helpers/logo.js";
+// import expressCompression from "compression";
+// import cors from "cors";
+// import express from "express";
+// import { existsSync as fsExistsSync, promises as fs, writeFile } from "fs";
+// import * as http from "http";
+// import killPort from "kill-port";
+// import minimist from "minimist";
+// import path from "path";
+// import { YOURDASH_SESSION_TYPE } from "shared/core/session.js";
+// import { Server as SocketIoServer, Socket as SocketIoSocket } from "socket.io";
+import sourceMapSupport from "source-map-support";
+import CoreApi from "./core/core/coreApi.js";
+// import { fetch } from "undici";
+// import { logType } from "./core/core/coreApiLog.js";
+// import scheduleBackendUpdateChecker from "./core/update/performBackendUpdate.js";
+
+// ---------------------------------------------
+// TODO: replace this file with calls to CoreApi
+// ---------------------------------------------
+
+sourceMapSupport.install();
+
+const coreApi = new CoreApi()
+
+coreApi.log.info( "core", "Initialized YourDash..." );
+
+/*
 
 log( logType.INFO, "core", "Welcome to the YourDash Instance Backend!" );
-
-// ! ------------------------------- !
-// ! THIS FILE IS A WORK IN PROGRESS !
-// ! ------------------------------- !
 
 const FS_DIRECTORY_PATH = path.resolve( path.join( process.cwd(), "./fs/" ) );
 export { FS_DIRECTORY_PATH };
 
-/*
+/!*
  //////////////////////////////////
  //  1. Fetch process arguments  //
  //////////////////////////////////
-*/
+*!/
 const PROCESS_ARGUMENTS = minimist( process.argv.slice( 2 ) );
 export { PROCESS_ARGUMENTS };
 
-/*
+/!*
  ///////////////////////////////////
  //  2. Load the global database  //
  ///////////////////////////////////
-*/
+*!/
 if ( fsExistsSync( path.join( FS_DIRECTORY_PATH, "./global_database.json" ) ) ) {
   await globalDatabase.readFromDisk( path.join( FS_DIRECTORY_PATH, "./global_database.json" ) );
   
@@ -86,20 +97,20 @@ if ( fsExistsSync( path.join( FS_DIRECTORY_PATH, "./global_database.json" ) ) ) 
   log( logType.WARNING, "Unable to load the global database!" );
 }
 
-/*
+/!*
  /////////////////////////////
  //  3. Initialize express  //
  /////////////////////////////
-*/
+*!/
 const exp = express();
 const httpServer = http.createServer( exp );
 const socketIo = new SocketIoServer( httpServer );
 
-/*
+/!*
  //////////////////////////////////////////////
  //  4. Verify correct filesystem structure  //
  //////////////////////////////////////////////
-*/
+*!/
 if ( !fsExistsSync( FS_DIRECTORY_PATH ) ) {
   try {
     // create the fs directory
@@ -193,16 +204,16 @@ if ( !fsExistsSync( FS_DIRECTORY_PATH ) ) {
   }
 }
 
-/*
+/!*
  //////////////////////////////
  //  5. Start core services  //
  //////////////////////////////
-*/
+*!/
 
 // start core services
 startUserDatabaseService();
 
-scheduleTask( "save_global_database", "*/5 * * * *", async () => {
+scheduleTask( "save_global_database", "*!/5 * * * *", async () => {
   await globalDatabase.writeToDisk( path.resolve( path.join( process.cwd(), "./fs/global_database.json" ) ) );
 } );
 
@@ -227,11 +238,11 @@ export function shutdownInstanceGracefully() {
   } );
 }
 
-/*
+/!*
  ///////////////////////////////////////
  //  6. Begin listening for requests  //
  ///////////////////////////////////////
-*/
+*!/
 async function listenForRequests() {
   try {
     try {
@@ -260,11 +271,11 @@ async function listenForRequests() {
 
 await listenForRequests();
 
-/*
+/!*
  /////////////////
  //  SOCKET.IO  //            TODO: REFACTOR PENDING
  /////////////////
-*/
+*!/
 export interface ISocketActiveSocket {
   id: string;
   token: string;
@@ -484,11 +495,11 @@ exp.use( async ( req, res, next ) => {
 } );
 
 
-/*
+/!*
  * --------------------------------------------------------------
  * WARNING: all endpoints require authentication after this point
  * --------------------------------------------------------------
- */
+ *!/
 
 exp.get( "/core/sessions", async ( req, res ) => {
   const { username } = req.headers as { username: string };
@@ -561,3 +572,4 @@ applicationLoader( exp, httpServer );
 if ( !PROCESS_ARGUMENTS.dev ) {
   scheduleBackendUpdateChecker();
 }
+*/
