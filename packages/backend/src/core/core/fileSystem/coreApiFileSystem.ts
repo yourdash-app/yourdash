@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import CoreApi from "./coreApi.js";
+import CoreApi from "../coreApi.js";
 
 export default class CoreApiFileSystem {
   private coreApi: CoreApi;
@@ -13,5 +13,10 @@ export default class CoreApiFileSystem {
     return this;
   }
   
-  
+  getFile( path: string ) {
+    
+    // TODO: return an FSFile
+    
+    return this
+  }
 }
