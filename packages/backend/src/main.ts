@@ -75,14 +75,6 @@ const FS_DIRECTORY_PATH = path.resolve( path.join( process.cwd(), "./fs/" ) );
 export { FS_DIRECTORY_PATH };
 
 /!*
- //////////////////////////////////
- //  1. Fetch process arguments  //
- //////////////////////////////////
-*!/
-const PROCESS_ARGUMENTS = minimist( process.argv.slice( 2 ) );
-export { PROCESS_ARGUMENTS };
-
-/!*
  ///////////////////////////////////
  //  2. Load the global database  //
  ///////////////////////////////////

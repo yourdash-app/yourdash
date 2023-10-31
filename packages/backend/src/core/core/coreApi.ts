@@ -3,8 +3,9 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import minimist from "minimist";
 import CoreApiCommands from "./coreApiCommands.js";
-import CoreApiFileSystem from "./coreApiFileSystem.js";
+import CoreApiFileSystem from "./fileSystem/coreApiFileSystem.js";
 import CoreApiGlobalDb from "./coreApiGlobalDb.js";
 import CoreApiLog from "./coreApiLog.js";
 import CoreApiModuleManager from "./coreApiModuleManager.js";
@@ -19,6 +20,7 @@ export default class CoreApi {
   readonly commands: CoreApiCommands;
   readonly fileSystem: CoreApiFileSystem;
   readonly scheduler: CoreApiScheduler;
+  processArguments: minimist.ParsedArgs
   
   constructor() {
     this.users = new CoreApiUsers( this )
@@ -29,8 +31,13 @@ export default class CoreApi {
     this.fileSystem = new CoreApiFileSystem( this )
     this.scheduler = new CoreApiScheduler( this )
     
+    this.commands.registerCommand( "hello", [], () => {
+      this.log.info( "core:command", "Hello Called!" )
+    } )
+    
     this.startupInstance()
       .then( () => {
+        /* don't log the success as  */
         return
       } )
       .catch( ( err ) => {
@@ -43,6 +50,9 @@ export default class CoreApi {
   // start the YourDash Instance
   private async startupInstance() {
     this.log.info( "core", "Welcome to the YourDash Instance backend" )
+    
+    // Fetch process arguments
+    this.processArguments = minimist( process.argv.slice( 2 ) );
     
     this.commands.registerCommand(
       "restart",
@@ -66,7 +76,7 @@ export default class CoreApi {
     
     return this
   }
-  
+
   // try not to use this method for production stability, instead prefer to reload a specific module if it works for your use-case.
   shutdownInstance() {
     this.commands.getAllCommands().forEach( command => {
@@ -75,7 +85,7 @@ export default class CoreApi {
     
     return this
   }
-  
+
   // shutdown and startup the YourDash Instance
   async restartInstance() {
     this.shutdownInstance()
