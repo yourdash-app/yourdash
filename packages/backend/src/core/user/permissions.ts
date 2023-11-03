@@ -3,13 +3,13 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-export enum YourDashCoreUserPermissions {
+export enum YOURDASH_USER_PERMISSIONS {
   WriteFiles,
   ReadFiles,
   DeleteFiles,
   Administrator
 }
 
-type yourDashUserPermission = YourDashCoreUserPermissions | string;
+type yourDashUserPermission = YOURDASH_USER_PERMISSIONS | string;
 
 export type { yourDashUserPermission }

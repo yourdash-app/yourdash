@@ -76,7 +76,7 @@ export default class YourDashUser {
       } )
     )
     await this.setPassword( "password" );
-    await this.setAvatar( path.join( process.cwd(), "./src/assets/default_avatar.avif" ) );
+    await this.setAvatar( path.join( process.cwd(), "./src/defaults/default_avatar.avif" ) );
     await fs.writeFile( path.join( this.path, "core/user.json" ), JSON.stringify( {
       username: this.username,
       name: {

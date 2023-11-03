@@ -4,7 +4,7 @@
  */
 
 import YourDashUser from "backend/src/core/user/index.js";
-import { YourDashCoreUserPermissions } from "backend/src/core/user/permissions.js";
+import { YOURDASH_USER_PERMISSIONS } from "backend/src/core/user/permissions.js";
 import globalDatabase from "backend/src/helpers/globalDatabase.js";
 import path from "path";
 import Module, { YourDashModuleArguments } from "backend/src/core/module.js";
@@ -19,7 +19,7 @@ export default class GlobalDbModule extends Module {
       
       const user = new YourDashUser( username );
       
-      if ( await user.hasPermission( YourDashCoreUserPermissions.Administrator ) ) {
+      if ( await user.hasPermission( YOURDASH_USER_PERMISSIONS.Administrator ) ) {
         return res.json( {
           db: globalDatabase.keys
         } );
@@ -39,7 +39,7 @@ export default class GlobalDbModule extends Module {
       
       const user = new YourDashUser( username );
       
-      if ( await user.hasPermission( YourDashCoreUserPermissions.Administrator ) ) {
+      if ( await user.hasPermission( YOURDASH_USER_PERMISSIONS.Administrator ) ) {
         globalDatabase.merge( keys );
         
         return res.json( {
@@ -59,7 +59,7 @@ export default class GlobalDbModule extends Module {
       
       const user = new YourDashUser( username );
       
-      if ( await user.hasPermission( YourDashCoreUserPermissions.Administrator ) ) {
+      if ( await user.hasPermission( YOURDASH_USER_PERMISSIONS.Administrator ) ) {
         globalDatabase.merge( keys );
         await globalDatabase.writeToDisk( path.resolve( process.cwd(), "./fs/globalDatabase.json" ) );
         

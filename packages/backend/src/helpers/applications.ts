@@ -44,7 +44,7 @@ class YDApplication {
     try {
       return await fs.readFile( path.resolve( process.cwd(), `../applications/${ this.name }/icon.avif` ) );
     } catch ( _e ) {
-      return await fs.readFile( path.resolve( process.cwd(), "./src/assets/placeholder_application_icon.png" ) );
+      return await fs.readFile( path.resolve( process.cwd(), "./src/defaults/placeholder_application_icon.png" ) );
     }
   }
   
@@ -54,7 +54,7 @@ class YDApplication {
       await fs.access( path.resolve( process.cwd(), `../applications/${ this.name }/icon.avif` ) )
       return path.resolve( process.cwd(), `../applications/${ this.name }/icon.avif` );
     } catch ( _e ) {
-      return path.resolve( process.cwd(), "./src/assets/placeholder_application_icon.png" )
+      return path.resolve( process.cwd(), "./src/defaults/placeholder_application_icon.png" )
     }
   }
   
@@ -62,9 +62,9 @@ class YDApplication {
   getStoreBackground(): Promise<Buffer> {
     try {
       // TODO: add support for custom application backgrounds
-      return fs.readFile( path.resolve( process.cwd(), "./src/assets/promoted_application_default_background.png" ) );
+      return fs.readFile( path.resolve( process.cwd(), "./src/defaults/promoted_application_default_background.png" ) );
     } catch ( _e ) {
-      return fs.readFile( path.resolve( process.cwd(), "./src/assets/promoted_application_default_background.png" ) );
+      return fs.readFile( path.resolve( process.cwd(), "./src/defaults/promoted_application_default_background.png" ) );
     }
   }
   

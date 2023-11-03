@@ -77,7 +77,8 @@ export default function defineLoginEndpoints( exp: ExpressApplication ) {
       try {
         const user = new YourDashUser( username );
 
-        // ! FIXME: This appear to be strange behaviour
+        // FIXME: This appears to be strange behaviour
+        //        (update: 2/11/23) [Ewsgit] What is strange?!?!?!
         __internalGetSessionsDoNotUseOutsideOfCore()[username] = ( await user.getAllLoginSessions() ) || [];
       } catch ( _err ) {
         return res.json( { error: true } );
@@ -93,7 +94,7 @@ export default function defineLoginEndpoints( exp: ExpressApplication ) {
   exp.get( "/core/login/instance/metadata", ( req, res ) => {
     return res.json( {
       title: GlobalDatabase.get( "core:instance:name" ) || "Placeholder name",
-      message: GlobalDatabase.get( "core:login:message" ) || "Placeholder message. Hey system admin, you should change this!",
+      message: GlobalDatabase.get( "core:instance:message" ) || "Placeholder message. Hey system admin, you should change this!",
     } )
   } )
   
