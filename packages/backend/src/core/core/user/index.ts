@@ -125,7 +125,7 @@ export default class YourDashUser {
       currentUserJson.name = { first, last }
       const db = await this.getDatabase()
       db.set( "core:user:name", { first, last } )
-      await this.saveDatabaseInstantly( this.username ) // force the database to update instantly as it does not normally instantly update, so it can save the instance's performance
+      await coreApi.users.saveDatabaseInstantly( this.username ) // force the database to update instantly as it does not normally instantly update, so it can save the instance's performance
       await fs.writeFile( path.join( this.path, "core/user.json" ), JSON.stringify( currentUserJson ) )
     } catch( err ) {
       coreApi.log.error( `Unable to write / read ${this.username}'s core/user.json` )
