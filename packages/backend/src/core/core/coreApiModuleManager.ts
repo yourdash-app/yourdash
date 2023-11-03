@@ -4,19 +4,16 @@
  */
 
 import Module from "../module.js";
-import CoreApi from "./coreApi.js";
 
 export default class CoreApiModuleManager {
-  private coreApi: CoreApi;
   private loadedModules: Module[]
   
-  constructor( coreApi: CoreApi ) {
-    this.coreApi = coreApi
+  constructor() {
     return this;
   }
   
   checkModule( module: Module ) {
-  
+    // TODO: check the module before loading
   }
   
   loadModule( module: Module ) {

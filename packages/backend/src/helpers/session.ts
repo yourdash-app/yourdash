@@ -5,14 +5,13 @@
 
 import { promises as fs } from "fs";
 import path from "path";
+import { type IYourDashSession, YOURDASH_SESSION_TYPE } from "shared/core/session.js";
+import coreApi from "../core/core/coreApi.js";
+import YourDashUser from "../core/core/user/index.js";
 import { __internalGetSessionsDoNotUseOutsideOfCore, SESSION_TOKEN_LENGTH } from "../core/session.js";
-import { YOURDASH_SESSION_TYPE, type IYourDashSession } from "shared/core/session.js";
-import log, { logType } from "./log.js";
 import { generateRandomStringOfLength } from "./encryption.js";
-import YourDashUser from "../core/user/index.js";
 
-
-export function getSessionsForUser( username: string ): IYourDashSession<any>[] {
+export function getSessionsForUser( username: string ): IYourDashSession<any>[] { // eslint-disable-line @typescript-eslint/no-explicit-any
   return __internalGetSessionsDoNotUseOutsideOfCore()[username];
 }
 
@@ -53,7 +52,7 @@ export async function createSession<T extends YOURDASH_SESSION_TYPE>(
       JSON.stringify( __internalGetSessionsDoNotUseOutsideOfCore()[username] )
     );
   } catch ( __e ) {
-    log( logType.ERROR, `Unable to write ${ username }/core/sessions.json` );
+    coreApi.log.error( `Unable to write ${ username }/core/sessions.json` );
 
     return session;
   }
@@ -82,7 +81,7 @@ export default class YourDashSession<T extends YOURDASH_SESSION_TYPE> {
     return false;
   }
 
-  invalidate() {
+  async invalidate() {
     __internalGetSessionsDoNotUseOutsideOfCore()[this.username].splice(
       __internalGetSessionsDoNotUseOutsideOfCore()[this.username].findIndex( val => val.id === this.id ),
       1
@@ -90,7 +89,7 @@ export default class YourDashSession<T extends YOURDASH_SESSION_TYPE> {
 
     const user = new YourDashUser( this.username );
     try {
-      fs.writeFile(
+      await fs.writeFile(
         path.join( user.path, "core/sessions.json" ),
         JSON.stringify( __internalGetSessionsDoNotUseOutsideOfCore()[this.username] )
       );

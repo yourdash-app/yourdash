@@ -4,11 +4,13 @@
  */
 
 import path from "path";
-import YourDashUser from "../user/index.js";
+import KeyValueDatabase from "../../helpers/keyValueDatabase.js";
 import coreApi from "./coreApi.js";
+import YourDashUser from "./user/index.js";
 
 export default class CoreApiUsers {
   private usersMarkedForDeletion: string[] = [];
+  private userDatabases: { [ username: string ]: { db: KeyValueDatabase, changed: boolean } }
 
   constructor() {
     coreApi.scheduler.scheduleTask(
@@ -20,7 +22,21 @@ export default class CoreApiUsers {
         }
       } )
     
+    this.userDatabases = {}
+    
     return this;
+  }
+
+  __internal__startUserDatabaseService() {
+    coreApi.scheduler.scheduleTask( "core:userdb_write_to_disk", "*/5 * * * *", async () => {
+      Object.keys( this.userDatabases ).map( async username => {
+        if ( !this.userDatabases[username].changed ) return
+      
+        const user = new YourDashUser( username );
+      
+        await this.userDatabases[username].db.writeToDisk( path.join( user.path, "core/user_db.json" ) )
+      } )
+    } )
   }
 
   async create( username: string ) {
@@ -42,6 +58,7 @@ export default class CoreApiUsers {
     // TODO: DELETE THE USER FROM THE FS
     
     await coreApi.fs.removePath( path.join( coreApi.fs.ROOT_PATH, `./users/${username}` ) )
+    delete this.userDatabases[username]
     
     return this
   }

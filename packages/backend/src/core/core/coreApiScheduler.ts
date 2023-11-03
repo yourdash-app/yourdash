@@ -5,14 +5,10 @@
 
 import schedule, { RecurrenceRule, RecurrenceSpecDateRange, RecurrenceSpecObjLit } from "node-schedule";
 import log from "../../helpers/log.js";
-import CoreApi from "./coreApi.js";
 import { logType } from "./coreApiLog.js";
 
 export default class CoreApiScheduler {
-  private coreApi: CoreApi;
-  
-  constructor( coreApi: CoreApi ) {
-    this.coreApi = coreApi
+  constructor() {
     return this;
   }
   

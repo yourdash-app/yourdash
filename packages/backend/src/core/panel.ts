@@ -5,7 +5,7 @@
 
 import { promises as fs } from "fs";
 import path from "path";
-import YourDashUser from "./user/index.js";
+import YourDashUser from "./core/user/index.js";
 
 export interface YourDashPanelQuickShortcut {
   displayName: string;
