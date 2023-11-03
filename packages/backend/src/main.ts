@@ -25,73 +25,17 @@
 * 9. Load post-startup services
 */
 
-// import applicationLoader from "backend/src/core/applicationLoader.js";
-// import { startAuthenticatedImageHelper } from "backend/src/core/authenticatedImage.js";
-// import { YOURDASH_INSTANCE_DISCOVERY_STATUS } from "backend/src/core/discovery.js";
-// import defineLoginEndpoints from "backend/src/core/endpoints/login.js";
-// import defineCorePanelRoutes from "backend/src/core/endpoints/panel.js";
-// import defineUserEndpoints from "backend/src/core/endpoints/user.js";
-// import defineUserDatabaseRoutes, { saveUserDatabases, USER_DATABASES } from "backend/src/core/endpoints/userDatabase.js";
-// import startRequestLogger from "backend/src/core/logRequests.js";
-// import { __internalGetSessionsDoNotUseOutsideOfCore } from "backend/src/core/session.js";
-// import scheduleTask from "backend/src/core/taskScheduler.js";
-// import { startUserDatabaseService } from "backend/src/core/user/database.js";
-// import YourDashUser from "backend/src/core/user/index.js";
-// import { YourDashCoreUserPermissions } from "backend/src/core/user/permissions.js";
-// import globalDatabase from "backend/src/helpers/globalDatabase.js";
-// import log, { LOG_HISTORY } from "backend/src/helpers/log.js";
-// import { generateLogos } from "backend/src/helpers/logo.js";
-// import expressCompression from "compression";
-// import cors from "cors";
-// import express from "express";
-// import { existsSync as fsExistsSync, promises as fs, writeFile } from "fs";
-// import * as http from "http";
-// import killPort from "kill-port";
-// import minimist from "minimist";
-// import path from "path";
-// import { YOURDASH_SESSION_TYPE } from "shared/core/session.js";
-// import { Server as SocketIoServer, Socket as SocketIoSocket } from "socket.io";
 import sourceMapSupport from "source-map-support";
-import CoreApi from "./core/core/coreApi.js";
-// import { fetch } from "undici";
-// import { logType } from "./core/core/coreApiLog.js";
-// import scheduleBackendUpdateChecker from "./core/update/performBackendUpdate.js";
+import coreApi from "./core/core/coreApi.js";
 
 // TODO: replace this file with calls to CoreApi
 //       --- CURRENTLY IN PROGRESS ---
 
 sourceMapSupport.install();
 
-const coreApi = new CoreApi()
-
 coreApi.log.info( "core", "Initialized YourDash..." );
 
 /*
-
-log( logType.INFO, "core", "Welcome to the YourDash Instance Backend!" );
-
-/!*
- //////////////////////////////////////////////
- //  4. Verify correct filesystem structure  //
- //////////////////////////////////////////////
-*!/
-if ( !fsExistsSync( FS_DIRECTORY_PATH ) ) {
-  try {
-    // create the fs directory
-    try {
-      await fs.mkdir( FS_DIRECTORY_PATH );
-    } catch ( e ) {
-      log( logType.ERROR, "Unable to create \"./fs/\"" );
-      console.trace( e );
-    }
-    
-    
-  } catch ( err ) {
-    log( logType.ERROR, "Uncaught error in fs verification!" );
-    console.trace( err );
-  }
-}
-
 /!*
  //////////////////////////////
  //  5. Start core services  //

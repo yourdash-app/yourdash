@@ -4,19 +4,15 @@
  */
 
 import chalk from "chalk";
-import CoreApi from "./coreApi.js";
 
 export enum logType {
   INFO, WARNING, ERROR, SUCCESS
 }
 
 export default class CoreApiLog {
-  private coreApi: CoreApi;
   logHistory: ( string | Uint8Array )[] = [];
   
-  constructor( coreApi: CoreApi ) {
-    this.coreApi = coreApi
-    
+  constructor() {
     return this;
   }
   

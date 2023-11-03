@@ -4,25 +4,23 @@
  */
 
 import path from "path";
-import CoreApi from "./coreApi.js";
+import coreApi from "./coreApi.js";
 
 export default class CoreApiGlobalDb {
-  private coreApi: CoreApi;
   private keys: { [ key: string ]: any } // eslint-disable-line @typescript-eslint/no-explicit-any
   
-  constructor( coreApi: CoreApi ) {
-    this.coreApi = coreApi
+  constructor() {
     return this;
   }
   
   async loadFromDisk( dbFilePath: string ) {
-    if ( await this.coreApi.fs.exists( dbFilePath ) ) {
+    if ( await coreApi.fs.exists( dbFilePath ) ) {
       
       if ( JSON.stringify( this.keys ) === JSON.stringify( {} ) ) {
-        await this.coreApi.fs.removePath( path.join( this.coreApi.fs.ROOT_PATH, "./global_database.json" ) );
+        await coreApi.fs.removePath( path.join( coreApi.fs.ROOT_PATH, "./global_database.json" ) );
       }
     } else {
-      this.coreApi.log.warning( "Unable to load the global database!" );
+      coreApi.log.warning( "Unable to load the global database!" );
     }
     
     return this

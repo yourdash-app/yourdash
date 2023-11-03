@@ -4,13 +4,13 @@
  */
 
 import { Application as ExpressApplication, Request as ExpressRequest } from "express";
+import http from "http";
+import path from "path";
 import log from "../helpers/log.js";
 import CoreApi from "./core/coreApi.js";
 import { logType } from "./core/coreApiLog.js";
-import YourDashUser from "./user/index.js";
+import YourDashUser from "./core/user/index.js";
 import { WebsocketManager } from "./websocketManager.js";
-import path from "path";
-import http from "http";
 
 export interface YourDashModuleArguments {
   moduleName: string,
