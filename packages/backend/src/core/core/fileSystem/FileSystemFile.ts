@@ -3,16 +3,13 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import { promises as fs } from "fs";
 import pth from "path";
-import CoreApi from "../coreApi.js";
-import { promises as fs } from "fs"
 
 export default class FileSystemFile {
-  private readonly coreApi: CoreApi
   path: string
   
-  constructor( coreApi: CoreApi, path: string ) {
-    this.coreApi = coreApi
+  constructor( path: string ) {
     this.path = path
   }
   

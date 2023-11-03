@@ -7,7 +7,7 @@ import { Application as ExpressApplication } from "express";
 import { promises as fs, writeFileSync } from "fs";
 import path from "path";
 import log, { logType } from "../../helpers/log.js";
-import YourDashUser from "../user/index.js";
+import YourDashUser from "../core/user/index.js";
 
 type JSONValue = boolean | number | string | null | JSONFile
 
