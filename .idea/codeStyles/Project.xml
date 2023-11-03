@@ -2074,7 +2074,7 @@
       </arrangement>
     </codeStyleSettings>
     <codeStyleSettings language="TypeScript">
-      <option name="RIGHT_MARGIN" value="400" />
+      <option name="RIGHT_MARGIN" value="300" />
       <option name="BLOCK_COMMENT_ADD_SPACE" value="true" />
       <option name="ALIGN_MULTILINE_PARAMETERS" value="false" />
       <option name="ALIGN_MULTILINE_FOR" value="false" />

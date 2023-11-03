@@ -34,7 +34,7 @@ export default function defineCorePanelRoutes( exp: ExpressApplication ) {
               name: application.getName(),
               displayName: application.getDisplayName(),
               description: application.getDescription(),
-              icon: authenticatedImage( username, authenticatedImageType.BASE64, buf.toString( "base64" ) ) // TODO: change from base 64 to file and pre-process assets instead of at request time
+              icon: authenticatedImage( username, authenticatedImageType.BASE64, buf.toString( "base64" ) ) // TODO: change from base 64 to file and pre-process defaults instead of at request time
             } );
           } );
       } );
