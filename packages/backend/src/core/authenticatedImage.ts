@@ -28,7 +28,7 @@ export function startAuthenticatedImageHelper( app: ExpressApplication ) {
     const image = authenticatedImages?.[username]?.[id];
     
     if ( !image ) {
-      return res.sendFile( path.resolve( process.cwd(), "./src/assets/default_avatar.avif" ) );
+      return res.sendFile( path.resolve( process.cwd(), "./src/defaults/default_avatar.avif" ) );
     }
     
     if ( image.type === authenticatedImageType.BASE64 ) {
@@ -40,7 +40,7 @@ export function startAuthenticatedImageHelper( app: ExpressApplication ) {
       return res.sendFile( image.value );
     }
     
-    return res.sendFile( path.resolve( process.cwd(), "./src/assets/default_avatar.avif" ) );
+    return res.sendFile( path.resolve( process.cwd(), "./src/defaults/default_avatar.avif" ) );
   } );
 }
 

@@ -57,9 +57,8 @@ import CoreApi from "./core/core/coreApi.js";
 // import { logType } from "./core/core/coreApiLog.js";
 // import scheduleBackendUpdateChecker from "./core/update/performBackendUpdate.js";
 
-// ---------------------------------------------
 // TODO: replace this file with calls to CoreApi
-// ---------------------------------------------
+//       --- CURRENTLY IN PROGRESS ---
 
 sourceMapSupport.install();
 
@@ -70,33 +69,6 @@ coreApi.log.info( "core", "Initialized YourDash..." );
 /*
 
 log( logType.INFO, "core", "Welcome to the YourDash Instance Backend!" );
-
-const FS_DIRECTORY_PATH = path.resolve( path.join( process.cwd(), "./fs/" ) );
-export { FS_DIRECTORY_PATH };
-
-/!*
- ///////////////////////////////////
- //  2. Load the global database  //
- ///////////////////////////////////
-*!/
-if ( fsExistsSync( path.join( FS_DIRECTORY_PATH, "./global_database.json" ) ) ) {
-  await globalDatabase.readFromDisk( path.join( FS_DIRECTORY_PATH, "./global_database.json" ) );
-  
-  if ( JSON.stringify( globalDatabase.keys ) === JSON.stringify( {} ) ) {
-    await fs.rm( path.join( FS_DIRECTORY_PATH, "./global_database.json" ) );
-  }
-} else {
-  log( logType.WARNING, "Unable to load the global database!" );
-}
-
-/!*
- /////////////////////////////
- //  3. Initialize express  //
- /////////////////////////////
-*!/
-const exp = express();
-const httpServer = http.createServer( exp );
-const socketIo = new SocketIoServer( httpServer );
 
 /!*
  //////////////////////////////////////////////
@@ -113,83 +85,7 @@ if ( !fsExistsSync( FS_DIRECTORY_PATH ) ) {
       console.trace( e );
     }
     
-    // set the instance's default user avatar
-    try {
-      await fs.cp( path.join( process.cwd(), "./src/assets/default_avatar.avif" ), path.join( FS_DIRECTORY_PATH, "./default_avatar.avif" ) );
-    } catch ( e ) {
-      log( logType.ERROR, "Unable to copy the default user avatar" );
-      console.trace( e );
-    }
     
-    // set the instance's default logo
-    try {
-      await fs.cp( path.join( process.cwd(), "./src/assets/default_instance_logo.avif" ), path.join( FS_DIRECTORY_PATH, "./instance_logo.avif" ) );
-    } catch ( e ) {
-      log( logType.ERROR, "Unable to copy the default instance logo" );
-      console.trace( e );
-    }
-    
-    // set the default login background
-    try {
-      await fs.cp( path.join( process.cwd(), "./src/assets/default_login_background.avif" ), path.join( FS_DIRECTORY_PATH, "./login_background.avif" ) );
-    } catch ( e ) {
-      log( logType.ERROR, "Unable to create the default login background" );
-    }
-    
-    // create the users' folders
-    try {
-      await fs.mkdir( path.join( FS_DIRECTORY_PATH, "./users/" ) );
-    } catch ( e ) {
-      log( logType.ERROR, "Unable to create the \"./fs/users/\" directory" );
-    }
-    
-    // create the global database
-    try {
-      log( logType.INFO, "The global database file does not exist, creating a new one" );
-      
-      // write the default global database file
-      await fs.writeFile( path.join( FS_DIRECTORY_PATH, "./global_database.json" ), JSON.stringify( {
-        displayName: "YourDash Instance",
-        administratorDetails: {
-          name: "[ADMINISTRATOR NAME]",
-          contactDetails: {
-            phone: false,
-            email: "admin@example.com",
-            username: "admin"
-          }
-        },
-        installedApplications: [ "dash", "settings", "files", "store", "weather" ],
-        defaults: {
-          user: {
-            quickShortcuts: [ "dash", "settings", "files", "store", "weather" ]
-          }
-        }
-      } ) );
-      
-      // load the new global database
-      await globalDatabase.readFromDisk( path.join( FS_DIRECTORY_PATH, "./global_database.json" ) );
-    } catch ( e ) {
-      log( logType.ERROR, "Unable to create the \"./fs/global_database.json\" file" );
-    }
-    
-    // create the default instance logos
-    try {
-      generateLogos();
-    } catch ( e ) {
-      log( logType.ERROR, "Unable to generate logo assets" );
-    }
-    
-    // if the administrator user doesn't exist,
-    // create a new user "admin" with the administrator permission
-    const ADMIN_USER = new YourDashUser( "admin" );
-    if ( !await ADMIN_USER.doesExist() ) {
-      await ADMIN_USER.create();
-      await ADMIN_USER.setName( {
-        first: "Admin",
-        last: "istrator"
-      } );
-      await ADMIN_USER.setPermissions( [ YourDashCoreUserPermissions.Administrator ] );
-    }
   } catch ( err ) {
     log( logType.ERROR, "Uncaught error in fs verification!" );
     console.trace( err );
