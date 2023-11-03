@@ -3,14 +3,14 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { YourDashCoreUserPermissions } from "backend/src/core/user/permissions.js";
+import { YOURDASH_USER_PERMISSIONS } from "backend/src/core/user/permissions.js";
 import Module from "backend/src/core/module.js";
 
 export default function manageUsers( api: Module["API"] ) {
   api.request.use( `/app/${api.applicationName}/admin/manage-users`, async ( req, res, next ) => {
     const user = api.getUser( req );
     
-    if ( await user.hasPermission( YourDashCoreUserPermissions.Administrator ) ) {
+    if ( await user.hasPermission( YOURDASH_USER_PERMISSIONS.Administrator ) ) {
       return next()
     }
     
