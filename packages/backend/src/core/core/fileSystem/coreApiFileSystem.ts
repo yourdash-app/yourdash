@@ -5,18 +5,16 @@
 
 import { promises as fs } from "fs";
 import pth from "path";
+import coreApi from "../coreApi.js";
 import CoreApi from "../coreApi.js";
 import CoreApiVerifyFileSystem from "./coreApiVerifyFileSystem.js";
 import FileSystemDirectory from "./FileSystemDirectory.js";
 import FileSystemFile from "./FileSystemFile.js";
 
 export default class CoreApiFileSystem {
-  private readonly coreApi: CoreApi;
   ROOT_PATH: string;
   
-  constructor( coreApi: CoreApi ) {
-    this.coreApi = coreApi
-    
+  constructor() {
     this.ROOT_PATH = pth.resolve( pth.join( process.cwd(), "./fs/" ) );
     
     return this;
@@ -29,9 +27,9 @@ export default class CoreApiFileSystem {
   
   async get( path: string ) {
     if ( await this.getType( path ) === "directory" ) {
-      return new FileSystemDirectory( this.coreApi, path )
+      return new FileSystemDirectory( coreApi, path )
     } else {
-      return new FileSystemFile( this.coreApi, path )
+      return new FileSystemFile( coreApi, path )
     }
   }
   
@@ -51,12 +49,12 @@ export default class CoreApiFileSystem {
   }
   
   createFile( path: string ) {
-    return new FileSystemFile( this.coreApi, path )
+    return new FileSystemFile( coreApi, path )
   }
   
   async createDirectory( path: string ) {
     await fs.mkdir( path, { recursive: true } )
-    return new FileSystemDirectory( this.coreApi, path )
+    return new FileSystemDirectory( coreApi, path )
   }
   
   async removePath( path: string ) {

@@ -3,18 +3,18 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import express, { Application as ExpressApplication } from "express";
+import http from "http";
 import minimist from "minimist";
+import path from "path";
+import socketIo from "socket.io";
 import CoreApiCommands from "./coreApiCommands.js";
-import CoreApiFileSystem from "./fileSystem/coreApiFileSystem.js";
 import CoreApiGlobalDb from "./coreApiGlobalDb.js";
 import CoreApiLog from "./coreApiLog.js";
 import CoreApiModuleManager from "./coreApiModuleManager.js";
 import CoreApiScheduler from "./coreApiScheduler.js";
 import CoreApiUsers from "./coreApiUsers.js";
-import path from "path";
-import express, { Application as ExpressApplication } from "express"
-import http from "http"
-import socketIo from "socket.io"
+import CoreApiFileSystem from "./fileSystem/coreApiFileSystem.js";
 import CoreApiVerifyFileSystem from "./fileSystem/coreApiVerifyFileSystem.js";
 
 class CoreApi {
@@ -53,8 +53,24 @@ class CoreApi {
     this.verifyFileSystem = new CoreApiVerifyFileSystem()
     
     this.commands.registerCommand( "hello", [], () => {
-      this.log.info( "core:command", "Hello Called!" )
+      this.log.info( "core:command", "Hello!" )
     } )
+    
+    this.commands.registerCommand(
+      "restart",
+      [],
+      async () => {
+        await this.restartInstance()
+      }
+    )
+    
+    this.commands.registerCommand(
+      "gdb",
+      [],
+      () => {
+        this.log.warning( "core:gdb", "IMPLEMENT ME!" )
+      }
+    )
     
     this.startupInstance()
       .then( () => {
@@ -71,25 +87,8 @@ class CoreApi {
   // start the YourDash Instance
   private async startupInstance() {
     this.log.info( "core", "Welcome to the YourDash Instance backend" )
-    this.commands.registerCommand(
-      "restart",
-      [],
-      () => {
-        this.restartInstance()
-      }
-    )
-    
-    this.commands.registerCommand(
-      "gdb",
-      [],
-      () => {
-        this.log.warning( "core:gdb", "IMPLEMENT ME!" )
-      }
-    )
     
     await this.globalDb.loadFromDisk( path.join( this.fs.ROOT_PATH, "./global_database.json" ) )
-
-    
     
     this.log.info( "core", "Welcome to the YourDash Instance backend" )
     

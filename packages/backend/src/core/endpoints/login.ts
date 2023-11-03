@@ -11,8 +11,8 @@ import { promises as fs } from "fs";
 import path from "path";
 import { YOURDASH_SESSION_TYPE } from "shared/core/session.js";
 import GlobalDatabase from "../../helpers/globalDatabase.js";
+import { userAvatarSize } from "../core/user/avatarSize.js";
 import { __internalGetSessionsDoNotUseOutsideOfCore } from "../session.js";
-import { userAvatarSize } from "../user/avatarSize.js";
 
 export default function defineLoginEndpoints( exp: ExpressApplication ) {
   exp.get( "/core/login/user/:username/avatar", ( req, res ) => {

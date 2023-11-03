@@ -6,13 +6,12 @@
 import chalk from "chalk";
 import { promises as fs } from "fs";
 import path from "path";
+import KeyValueDatabase from "shared/core/database.js";
 import sharp from "sharp";
-import { hash } from "../../helpers/encryption.js";
-import GlobalDatabase from "../../helpers/globalDatabase.js";
-import log, { logType } from "../../helpers/log.js";
-import YourDashSession, { getSessionsForUser } from "../../helpers/session.js";
-import getUserDatabase, { addUserDatabaseToSaveQueue, saveUserDatabaseInstantly } from "./database.js";
-import { FS_DIRECTORY_PATH } from "../../main.js";
+import { hash } from "../../../helpers/encryption.js";
+import GlobalDatabase from "../../../helpers/globalDatabase.js";
+import YourDashSession, { getSessionsForUser } from "../../../helpers/session.js";
+import coreApi from "../coreApi.js";
 import { userAvatarSize } from "./avatarSize.js";
 import { yourDashUserPermission } from "./permissions.js";
 import IYourDashUserJson from "./userJson.js";
@@ -23,8 +22,38 @@ export default class YourDashUser {
   
   constructor( username: string ) {
     this.username = username;
-    this.path = path.resolve( path.join( FS_DIRECTORY_PATH, `users/${ this.username }` ) );
+    this.path = path.resolve( path.join( coreApi.fs.ROOT_PATH, `users/${ this.username }` ) );
   }
+  
+  // ==========================================================
+  
+  saveUserDatabaseInstantly() {
+    coreApi.users.__internal__saveUserDatabaseInstantly( this.username )
+  }
+  
+  async getUserDatabase( username: string ): Promise<KeyValueDatabase> {
+    if ( userDatabases[username] ) {
+      return userDatabases[username].db;
+    }
+  
+    userDatabases[username] = { db: new KeyValueDatabase(), changed: false };
+    const user = new YourDashUser( username );
+    await userDatabases[username].db.readFromDisk( path.join( user.path, "core/user_db.json" ) );
+  
+    return userDatabases[username].db;
+  }
+
+  addUserDatabaseToSaveQueue( username: string ) {
+    userDatabases[username].changed = true
+  }
+
+  saveUserDatabaseInstantly( username: string ) {
+    userDatabases[username].changed = false
+    const user = new YourDashUser( username );
+    await userDatabases[username].db.writeToDisk( path.join( user.path, "core/user_db.json" ) )
+  }
+  
+  // ==========================================================
   
   getAvatar( size: userAvatarSize ): string {
     switch ( size ) {
@@ -87,7 +116,7 @@ export default class YourDashUser {
       permissions: [],
       version: 1
     } as IYourDashUserJson ) )
-    log( logType.INFO, `CORE: Created user ${this.username}` )
+    coreApi.log.info( `CORE: Created user ${this.username}` )
   }
   
   async setName( { first, last }: { first: string, last: string } ) {
@@ -96,10 +125,10 @@ export default class YourDashUser {
       currentUserJson.name = { first, last }
       const db = await this.getDatabase()
       db.set( "core:user:name", { first, last } )
-      await saveUserDatabaseInstantly( this.username )
+      await this.saveDatabaseInstantly( this.username ) // force the database to update instantly as it does not normally instantly update, so it can save the instance's performance
       await fs.writeFile( path.join( this.path, "core/user.json" ), JSON.stringify( currentUserJson ) )
     } catch( err ) {
-      log( logType.ERROR, `Unable to write / read ${this.username}'s core/user.json` )
+      coreApi.log.error( `Unable to write / read ${this.username}'s core/user.json` )
     }
   }
   
@@ -108,7 +137,7 @@ export default class YourDashUser {
       const currentUserJson = JSON.parse( ( await fs.readFile( path.join( this.path, "core/user.json" ) ) ).toString() ) as IYourDashUserJson
       return currentUserJson.name
     } catch( err ) {
-      log( logType.ERROR, `Unable to read ${this.username}'s core/user.json` )
+      coreApi.log.error( `Unable to read ${this.username}'s core/user.json` )
     }
   }
   
@@ -118,7 +147,7 @@ export default class YourDashUser {
       currentUserJson.bio = bio
       await fs.writeFile( path.join( this.path, "core/user.json" ), JSON.stringify( currentUserJson ) )
     } catch( err ) {
-      log( logType.ERROR, `Unable to write / read ${this.username}'s core/user.json` )
+      coreApi.log.error( `Unable to write / read ${this.username}'s core/user.json` )
     }
   }
   
@@ -127,7 +156,7 @@ export default class YourDashUser {
       const currentUserJson = JSON.parse( ( await fs.readFile( path.join( this.path, "core/user.json" ) ) ).toString() ) as IYourDashUserJson
       return currentUserJson.bio
     } catch( err ) {
-      log( logType.ERROR, `Unable to read ${this.username}'s core/user.json` )
+      coreApi.log.error( `Unable to read ${this.username}'s core/user.json` )
     }
   }
   
@@ -137,7 +166,7 @@ export default class YourDashUser {
       currentUserJson.url = url
       await fs.writeFile( path.join( this.path, "core/user.json" ), JSON.stringify( currentUserJson ) )
     } catch( err ) {
-      log( logType.ERROR, `Unable to write / read ${this.username}'s core/user.json` )
+      coreApi.log.error( `Unable to write / read ${this.username}'s core/user.json` )
     }
   }
   
@@ -146,7 +175,7 @@ export default class YourDashUser {
       const currentUserJson = JSON.parse( ( await fs.readFile( path.join( this.path, "core/user.json" ) ) ).toString() ) as IYourDashUserJson
       return currentUserJson.url
     } catch( err ) {
-      log( logType.ERROR, `Unable to read ${this.username}'s core/user.json` )
+      coreApi.log.error( `Unable to read ${this.username}'s core/user.json` )
     }
   }
   
@@ -156,7 +185,7 @@ export default class YourDashUser {
       currentUserJson.permissions = permissions
       await fs.writeFile( path.join( this.path, "core/user.json" ), JSON.stringify( currentUserJson ) )
     } catch( err ) {
-      log( logType.ERROR, `Unable to write / read ${this.username}'s core/user.json` )
+      coreApi.log.error( `Unable to write / read ${this.username}'s core/user.json` )
     }
   }
   
@@ -165,7 +194,7 @@ export default class YourDashUser {
       const currentUserJson = JSON.parse( ( await fs.readFile( path.join( this.path, "core/user.json" ) ) ).toString() ) as IYourDashUserJson
       return currentUserJson.permissions
     } catch( err ) {
-      log( logType.ERROR, `Unable to read ${this.username}'s core/user.json` )
+      coreApi.log.error( `Unable to read ${this.username}'s core/user.json` )
     }
   }
   
@@ -174,7 +203,7 @@ export default class YourDashUser {
       const currentUserJson = JSON.parse( ( await fs.readFile( path.join( this.path, "core/user.json" ) ) ).toString() ) as IYourDashUserJson
       return currentUserJson.permissions.indexOf( permission ) !== -1
     } catch( err ) {
-      log( logType.ERROR, `Unable to read ${this.username}'s core/user.json` )
+      coreApi.log.error( `Unable to read ${this.username}'s core/user.json` )
       return false
     }
   }
@@ -194,7 +223,7 @@ export default class YourDashUser {
     try {
       await fs.writeFile( path.join( this.path, "./core/password.enc" ), hashedPassword );
     } catch ( e ) {
-      log( logType.ERROR, `unable to create a new password for user ${ this.username }` );
+      coreApi.log.error( `unable to create a new password for user ${ this.username }` );
     }
   }
   
@@ -206,7 +235,7 @@ export default class YourDashUser {
         getSessionsForUser( this.username )[ getSessionsForUser( this.username ).findIndex( val => val.id === sessionId ) ]
       );
     } catch ( _err ) {
-      log( logType.WARNING, `${ chalk.yellow.bold( "CORE" ) }: unable to find session: ${ sessionId }` );
+      coreApi.log.error( `${ chalk.yellow.bold( "CORE" ) }: unable to find session: ${ sessionId }` );
       return undefined;
     }
   }

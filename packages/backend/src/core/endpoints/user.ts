@@ -6,7 +6,7 @@
 import { Application as ExpressApplication } from "express";
 import path from "path";
 import authenticatedImage, { authenticatedImageType } from "../authenticatedImage.js";
-import YourDashUser from "../user/index.js";
+import YourDashUser from "../core/user/index.js";
 
 export default function defineUserEndpoints( exp: ExpressApplication ) {
   exp.get( "/core/user/current/avatar/large", ( req, res ) => {

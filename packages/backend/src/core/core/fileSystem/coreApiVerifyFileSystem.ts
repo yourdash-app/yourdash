@@ -4,9 +4,9 @@
  */
 
 import path from "path";
-import { YOURDASH_USER_PERMISSIONS } from "../../user/permissions.js";
 import coreApi from "../coreApi.js";
 import generateInstanceLogos from "../helpers/generateInstanceLogos.js";
+import { YOURDASH_USER_PERMISSIONS } from "../user/permissions.js";
 import FileSystemDirectory from "./FileSystemDirectory.js";
 
 export default class CoreApiVerifyFileSystem {
