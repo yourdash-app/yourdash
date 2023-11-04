@@ -27,30 +27,19 @@ export default class YourDashUser {
   
   // ==========================================================
   
-  saveUserDatabaseInstantly() {
-    coreApi.users.__internal__saveUserDatabaseInstantly( this.username )
+  async saveUserDatabaseInstantly() {
+    await coreApi.users.__internal__saveUserDatabaseInstantly( this.username )
+    
+    return this
   }
   
   async getUserDatabase( username: string ): Promise<KeyValueDatabase> {
-    if ( userDatabases[username] ) {
-      return userDatabases[username].db;
-    }
-  
-    userDatabases[username] = { db: new KeyValueDatabase(), changed: false };
-    const user = new YourDashUser( username );
-    await userDatabases[username].db.readFromDisk( path.join( user.path, "core/user_db.json" ) );
-  
-    return userDatabases[username].db;
+    return coreApi.users.__internal__getUserDatabase( username )
   }
 
   addUserDatabaseToSaveQueue( username: string ) {
-    userDatabases[username].changed = true
-  }
-
-  saveUserDatabaseInstantly( username: string ) {
-    userDatabases[username].changed = false
-    const user = new YourDashUser( username );
-    await userDatabases[username].db.writeToDisk( path.join( user.path, "core/user_db.json" ) )
+    coreApi.users.__internal__addUserDatabaseToSaveQueue( username )
+    return this
   }
   
   // ==========================================================
@@ -125,7 +114,7 @@ export default class YourDashUser {
       currentUserJson.name = { first, last }
       const db = await this.getDatabase()
       db.set( "core:user:name", { first, last } )
-      await coreApi.users.saveDatabaseInstantly( this.username ) // force the database to update instantly as it does not normally instantly update, so it can save the instance's performance
+      await coreApi.users.__internal__saveUserDatabaseInstantly( this.username ) // force the database to update instantly as it does not normally instantly update, so it can save the instance's performance
       await fs.writeFile( path.join( this.path, "core/user.json" ), JSON.stringify( currentUserJson ) )
     } catch( err ) {
       coreApi.log.error( `Unable to write / read ${this.username}'s core/user.json` )
@@ -245,11 +234,11 @@ export default class YourDashUser {
   }
   
   async getDatabase() {
-    return await getUserDatabase( this.username );
+    return await coreApi.users.__internal__getUserDatabase( this.username );
   }
   
   saveDatabase() {
-    addUserDatabaseToSaveQueue( this.username );
+    coreApi.users.__internal__addUserDatabaseToSaveQueue( this.username );
   }
   
   getAppDirectory( applicationName: string ): string {
