@@ -5,31 +5,29 @@
 
 import { promises as fs } from "fs";
 import pth from "path";
-import coreApi from "../coreApi.js";
-import CoreApi from "../coreApi.js";
+import { CoreApi } from "../coreApi.js";
 import CoreApiVerifyFileSystem from "./coreApiVerifyFileSystem.js";
 import FileSystemDirectory from "./FileSystemDirectory.js";
 import FileSystemFile from "./FileSystemFile.js";
 
 export default class CoreApiFileSystem {
   ROOT_PATH: string;
+  coreApi: CoreApi;
+  readonly verifyFileSystem: CoreApiVerifyFileSystem;
   
-  constructor() {
+  constructor( coreApi: CoreApi ) {
     this.ROOT_PATH = pth.resolve( pth.join( process.cwd(), "./fs/" ) );
+    this.coreApi = coreApi;
+    this.verifyFileSystem = new CoreApiVerifyFileSystem( this.coreApi )
     
     return this;
   }
   
-  async verifyFileSystem() {
-    const vfs = new CoreApiVerifyFileSystem()
-    await vfs.verify()
-  }
-  
   async get( path: string ) {
     if ( await this.getType( path ) === "directory" ) {
-      return new FileSystemDirectory( coreApi, path )
+      return new FileSystemDirectory( this.coreApi, path )
     } else {
-      return new FileSystemFile( coreApi, path )
+      return new FileSystemFile( this.coreApi, path )
     }
   }
   
@@ -49,12 +47,12 @@ export default class CoreApiFileSystem {
   }
   
   createFile( path: string ) {
-    return new FileSystemFile( coreApi, path )
+    return new FileSystemFile( this.coreApi, path )
   }
   
   async createDirectory( path: string ) {
     await fs.mkdir( path, { recursive: true } )
-    return new FileSystemDirectory( coreApi, path )
+    return new FileSystemDirectory( this.coreApi, path )
   }
   
   async removePath( path: string ) {

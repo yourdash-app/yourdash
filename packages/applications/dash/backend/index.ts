@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import YourDashUser from "backend/src/core/user/index.js";
+import coreApi from "backend/src/core/core/coreApi.js";
 import Module, { YourDashModuleArguments } from "backend/src/core/module.js";
 
 export default class DashModule extends Module {
@@ -15,18 +15,14 @@ export default class DashModule extends Module {
       username: string
     };
 
-      const user = new YourDashUser( username );
+      const user = coreApi.users.get( username )
 
       res.json( await user.getName() );
     } );
 
     // TODO: implement module system
     this.API.request.get( "/app/dash/modules", async ( req, res ) => {
-      const { username } = req.headers as {
-      username: string
-    };
-
-      const user = new YourDashUser( username );
+      const { username } = req.headers as { username: string };
 
       res.json( { success: true } );
     } );

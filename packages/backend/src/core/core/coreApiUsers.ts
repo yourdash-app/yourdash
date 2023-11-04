@@ -5,20 +5,24 @@
 
 import path from "path";
 import KeyValueDatabase from "../../helpers/keyValueDatabase.js";
-import coreApi from "./coreApi.js";
+import { CoreApi } from "./coreApi.js";
+import CoreApiVerifyFileSystem from "./fileSystem/coreApiVerifyFileSystem.js";
 import YourDashUser from "./user/index.js";
 
 export default class CoreApiUsers {
   private usersMarkedForDeletion: string[] = [];
-  private userDatabases: { [ username: string ]: { db: KeyValueDatabase, changed: boolean } }
-
-  constructor() {
-    coreApi.scheduler.scheduleTask(
+  private readonly userDatabases: { [ username: string ]: { db: KeyValueDatabase, changed: boolean } }
+  private readonly coreApi: CoreApi;
+  
+  constructor( coreApi: CoreApi ) {
+    this.coreApi = coreApi
+    
+    this.coreApi.scheduler.scheduleTask(
       "core:users:delete_all_marked_users",
       "*/5 * * * *", /* every 5 minutes */
       async () => {
         for ( const username of this.usersMarkedForDeletion ) {
-          await coreApi.users.forceDelete( username )
+          await this.coreApi.users.forceDelete( username )
         }
       } )
     
@@ -28,7 +32,7 @@ export default class CoreApiUsers {
   }
 
   __internal__startUserDatabaseService() {
-    coreApi.scheduler.scheduleTask( "core:userdb_write_to_disk", "*/5 * * * *", async () => {
+    this.coreApi.scheduler.scheduleTask( "core:userdb_write_to_disk", "*/5 * * * *", async () => {
       Object.keys( this.userDatabases ).map( async username => {
         if ( !this.userDatabases[username].changed ) return
       
@@ -38,11 +42,42 @@ export default class CoreApiUsers {
       } )
     } )
   }
+  
+  async __internal__getUserDatabase( username: string ) {
+    if ( this.userDatabases[username] ) {
+      return this.userDatabases[username].db;
+    }
+    
+    this.userDatabases[username] = { db: new KeyValueDatabase(), changed: false };
+    const user = new YourDashUser( username );
+    await this.userDatabases[username].db.readFromDisk( path.join( user.path, "core/user_db.json" ) );
 
-  async create( username: string ) {
-    await coreApi.fs.verifyFileSystem()
+    return this.userDatabases[username].db;
+  }
+  
+  __internal__addUserDatabaseToSaveQueue( username: string ) {
+    this.userDatabases[username].changed = true
+  }
+  
+  async __internal__saveUserDatabaseInstantly( username: string ) {
+    this.userDatabases[username].changed = false
+
+    const user = new YourDashUser( username );
+    
+    await this.userDatabases[username].db.writeToDisk( path.join( user.path, "core/user_db.json" ) )
     
     return this
+  }
+  
+  get( username: string ) {
+    return new YourDashUser( username )
+  }
+
+  async create( username: string ) {
+    const vfs = new CoreApiVerifyFileSystem( this.coreApi )
+    await vfs.checkUserDirectory( username )
+    
+    return new YourDashUser( "admin" )
   }
 
   delete( username: string ) {
@@ -57,7 +92,7 @@ export default class CoreApiUsers {
     
     // TODO: DELETE THE USER FROM THE FS
     
-    await coreApi.fs.removePath( path.join( coreApi.fs.ROOT_PATH, `./users/${username}` ) )
+    await this.coreApi.fs.removePath( path.join( this.coreApi.fs.ROOT_PATH, `./users/${username}` ) )
     delete this.userDatabases[username]
     
     return this

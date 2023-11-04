@@ -5,12 +5,17 @@
 
 import { promises as fs } from "fs";
 import pth from "path";
+import { CoreApi } from "../coreApi.js";
 
 export default class FileSystemFile {
   path: string
+  private readonly coreApi: CoreApi
   
-  constructor( path: string ) {
+  constructor( coreApi: CoreApi, path: string ) {
     this.path = path
+    this.coreApi = coreApi
+    
+    return this
   }
   
   getName(): string {
