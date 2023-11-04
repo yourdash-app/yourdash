@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import coreApi from "./coreApi.js";
+import { CoreApi } from "./coreApi.js";
 
 export default class CoreApiCommands {
   availableCommands: {
@@ -12,9 +12,11 @@ export default class CoreApiCommands {
       callback( args: {[arg: string]: string | boolean} ): void
     }
   };
+  private readonly coreApi: CoreApi;
   
-  constructor() {
+  constructor( coreApi: CoreApi ) {
     this.availableCommands = {}
+    this.coreApi = coreApi
     
     return this;
   }
@@ -26,7 +28,7 @@ export default class CoreApiCommands {
       callback: callback
     }
     
-    coreApi.log.info( "core:command", `Registered command: '${commandName}'` )
+    this.coreApi.log.info( "core:command", `Registered command: '${commandName}'` )
     
     return this
   }
@@ -49,7 +51,7 @@ export default class CoreApiCommands {
   runCommand( commandName: string, args: {[arg: string]: string | boolean} ): Promise<boolean> {
     return new Promise<boolean>( ( resolve, reject ) => {
       if ( !this.availableCommands[commandName] ) {
-        coreApi.log.error( "core:command", `Command '${commandName}' does not exist!` )
+        this.coreApi.log.error( "core:command", `Command '${commandName}' does not exist!` )
         return reject( `Command '${commandName}' does not exist!` )
       }
     
