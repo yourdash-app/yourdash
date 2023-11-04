@@ -7,7 +7,7 @@ import express, { Application as ExpressApplication } from "express";
 import http from "http";
 import minimist from "minimist";
 import path from "path";
-import socketIo from "socket.io";
+import * as socketIo from "socket.io";
 import CoreApiCommands from "./coreApiCommands.js";
 import CoreApiGlobalDb from "./coreApiGlobalDb.js";
 import CoreApiLog from "./coreApiLog.js";
@@ -15,9 +15,8 @@ import CoreApiModuleManager from "./coreApiModuleManager.js";
 import CoreApiScheduler from "./coreApiScheduler.js";
 import CoreApiUsers from "./coreApiUsers.js";
 import CoreApiFileSystem from "./fileSystem/coreApiFileSystem.js";
-import CoreApiVerifyFileSystem from "./fileSystem/coreApiVerifyFileSystem.js";
 
-class CoreApi {
+export class CoreApi {
   // core apis
   readonly users: CoreApiUsers;
   readonly log: CoreApiLog;
@@ -26,7 +25,6 @@ class CoreApi {
   readonly commands: CoreApiCommands;
   readonly fs: CoreApiFileSystem;
   readonly scheduler: CoreApiScheduler;
-  readonly verifyFileSystem: CoreApiVerifyFileSystem;
   // general vars
   readonly processArguments: minimist.ParsedArgs;
   readonly expressServer: ExpressApplication;
@@ -43,14 +41,13 @@ class CoreApi {
     this.socketIoServer = new socketIo.Server( this.httpServer );
     
     // define core apis
-    this.users = new CoreApiUsers()
+    this.scheduler = new CoreApiScheduler()
+    this.users = new CoreApiUsers( this )
     this.log = new CoreApiLog()
     this.moduleManager = new CoreApiModuleManager()
-    this.globalDb = new CoreApiGlobalDb()
-    this.commands = new CoreApiCommands()
-    this.fs = new CoreApiFileSystem()
-    this.scheduler = new CoreApiScheduler()
-    this.verifyFileSystem = new CoreApiVerifyFileSystem()
+    this.globalDb = new CoreApiGlobalDb( this )
+    this.commands = new CoreApiCommands( this )
+    this.fs = new CoreApiFileSystem( this )
     
     this.commands.registerCommand( "hello", [], () => {
       this.log.info( "core:command", "Hello!" )
@@ -74,8 +71,7 @@ class CoreApi {
     
     this.startupInstance()
       .then( () => {
-        /* don't log the success as startupInstance already logs upon its success */
-        return
+        /* INFO: don't log the success as startupInstance already logs upon its success */
       } )
       .catch( ( err ) => {
         this.log.error( "core", `An error occurred with YourDash startup: ${ err }` )
