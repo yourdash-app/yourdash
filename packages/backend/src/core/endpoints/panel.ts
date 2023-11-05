@@ -10,9 +10,9 @@ import sharp from "sharp";
 import path from "path";
 import { promises as fs } from "fs";
 import YourDashPanel from "backend/src/core/panel.js";
-import { FS_DIRECTORY_PATH } from "../../main.js";
 import authenticatedImage, { authenticatedImageType } from "../authenticatedImage.js";
 import IPanelApplicationsLauncherApplication from "shared/core/panel/applicationsLauncher/application.js";
+import coreApi from "../core/coreApi.js";
 
 export default function defineCorePanelRoutes( exp: ExpressApplication ) {
   exp.get( "/core/panel/applications", async ( req, res ) => {
@@ -119,17 +119,17 @@ export default function defineCorePanelRoutes( exp: ExpressApplication ) {
       small: authenticatedImage(
         username,
         authenticatedImageType.FILE,
-        path.join( FS_DIRECTORY_PATH, "./logo_panel_small.avif" )
+        path.join( coreApi.fs.ROOT_PATH, "./logo_panel_small.avif" )
       ),
       medium: authenticatedImage(
         username,
         authenticatedImageType.FILE,
-        path.join( FS_DIRECTORY_PATH, "./logo_panel_medium.avif" )
+        path.join( coreApi.fs.ROOT_PATH, "./logo_panel_medium.avif" )
       ),
       large: authenticatedImage(
         username,
         authenticatedImageType.FILE,
-        path.join( FS_DIRECTORY_PATH, "./logo_panel_large.avif" )
+        path.join( coreApi.fs.ROOT_PATH, "./logo_panel_large.avif" )
       )
     } );
   } );

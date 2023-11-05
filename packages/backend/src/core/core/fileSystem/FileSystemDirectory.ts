@@ -4,8 +4,8 @@
  */
 
 import pth from "path";
-import CoreApi from "../coreApi.js";
 import { promises as fs } from "fs"
+import { CoreApi } from "../coreApi.js";
 
 export default class FileSystemDirectory {
   private readonly coreApi: CoreApi

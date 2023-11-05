@@ -4,9 +4,8 @@
  */
 
 import sharp from "sharp";
-import log from "../../../helpers/log.js";
 import coreApi from "../coreApi.js";
-import { logType } from "../coreApiLog.js";
+import { LOG_TYPE } from "../coreApiLog.js";
 import fs from "fs"
 import path from "path"
 
@@ -16,7 +15,7 @@ export default function generateInstanceLogos() {
     .resize( 31, 31 )
     .toFile( path.join( coreApi.fs.ROOT_PATH, "./logo_panel_small.avif" ) )
     .catch( err => {
-      log( logType.ERROR, `unable to create "fs/logo_panel_small.avif" ${ err }` );
+      coreApi.log.error( `unable to create "fs/logo_panel_small.avif" ${ err }` );
     } );
   
   sharp(
@@ -24,7 +23,7 @@ export default function generateInstanceLogos() {
     .resize( 39, 39 )
     .toFile( path.join( coreApi.fs.ROOT_PATH, "./logo_panel_medium.avif" ) )
     .catch( err => {
-      log( logType.ERROR, `unable to create "fs/logo_panel_medium.avif" ${ err }` );
+      coreApi.log.error( `unable to create "fs/logo_panel_medium.avif" ${ err }` );
     } );
   
   sharp(
@@ -32,6 +31,6 @@ export default function generateInstanceLogos() {
     .resize( 55, 55 )
     .toFile( path.join( coreApi.fs.ROOT_PATH, "./logo_panel_large.avif" ) )
     .catch( err => {
-      log( logType.ERROR, `unable to create "fs/logo_panel_large.avif" ${ err }` );
+      coreApi.log.error( `unable to create "fs/logo_panel_large.avif" ${ err }` );
     } );
 }

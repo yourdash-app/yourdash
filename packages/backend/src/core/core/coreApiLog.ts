@@ -5,19 +5,19 @@
 
 import chalk from "chalk";
 
-export enum logType {
+export enum LOG_TYPE {
   INFO, WARNING, ERROR, SUCCESS
 }
 
 export default class CoreApiLog {
-  logHistory: ( string | Uint8Array )[] = [];
+  logHistory: { type: LOG_TYPE, level: string, message: ( string | Uint8Array )[] }[] = [];
   
   constructor() {
     return this;
   }
   
-  private log( level: string, ...message: ( string | Uint8Array )[] ) { // eslint-disable-line @typescript-eslint/no-explicit-any
-    this.logHistory.push( ...message );
+  private log( type: LOG_TYPE, level: string, ...message: ( string | Uint8Array )[] ) { // eslint-disable-line @typescript-eslint/no-explicit-any
+    this.logHistory.push( { type: type, level: level, message: message } );
     
     process.stdout.write( chalk.bold( `${chalk.white( "[" )}${chalk.italic.yellow( level.toUpperCase() ) }${chalk.white( "]" )}` ) )
     
@@ -32,6 +32,7 @@ export default class CoreApiLog {
   
   info( level: string, ...message: ( string | Uint8Array )[] ) {
     return this.log(
+      LOG_TYPE.INFO,
       level,
       chalk.bold( `${chalk.white( "[" )}${chalk.blue( "INFO" )}${chalk.white( "]" )} ` ),
       ...message
@@ -40,6 +41,7 @@ export default class CoreApiLog {
   
   success( level: string, ...message: ( string | Uint8Array )[] ) {
     return this.log(
+      LOG_TYPE.SUCCESS,
       level,
       chalk.bold( `${chalk.white( "[" )}${chalk.green( "SUCCESS" )}${chalk.white( "]" )} ` ),
       ...message
@@ -48,6 +50,7 @@ export default class CoreApiLog {
   
   warning( level: string, ...message: ( string | Uint8Array )[] ) {
     return this.log(
+      LOG_TYPE.WARNING,
       level,
       chalk.bold( `${chalk.white( "[" )}${chalk.yellow( "WARNING" )}${chalk.white( "]" )} ` ),
       ...message
@@ -56,6 +59,7 @@ export default class CoreApiLog {
   
   error( level: string, ...message: ( string | Uint8Array )[] ) {
     return this.log(
+      LOG_TYPE.ERROR,
       level,
       chalk.bold( `${chalk.white( "[" )}${chalk.red( "ERROR" )}${chalk.white( "]" )} ` ),
       ...message
