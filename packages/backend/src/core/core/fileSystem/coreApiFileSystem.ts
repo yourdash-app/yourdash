@@ -31,6 +31,22 @@ export default class CoreApiFileSystem {
     }
   }
   
+  async getFile( path: string ) {
+    if ( await this.getType( path ) === "file" ) {
+      return new FileSystemFile( this.coreApi, path )
+    }
+    
+    return null
+  }
+  
+  async getDirectory( path: string ) {
+    if ( await this.getType( path ) === "directory" ) {
+      return new FileSystemDirectory( this.coreApi, path )
+    }
+
+    return null
+  }
+  
   async getType( path: string ): Promise<"file" | "directory"> {
     return ( await fs.lstat( path ) ).isDirectory()
       ? "directory"

@@ -5,11 +5,11 @@
 
 import YourDashPanel from "backend/src/core/panel.js";
 import Module, { YourDashModuleArguments } from "backend/src/core/module.js";
-import YourDashUser from "backend/src/core/user/index.js";
+import YourDashUser from "backend/src/core/core/user/index.js";
 import { PersonalServerAcceleratorCommunication } from "backend/src/helpers/personalServerAccelerator.js";
 import { promises as fs } from "fs";
-import globalDatabase from "backend/src/helpers/globalDatabase.js";
-import { loadApplication } from "backend/src/core/applicationLoader.js";
+import coreApi from "backend/src/core/core/coreApi.js"
+import path from "path"
 
 export default class SettingsModule extends Module {
   constructor( args: YourDashModuleArguments ) {
@@ -30,7 +30,7 @@ export default class SettingsModule extends Module {
       } );
     } );
     
-    this.API.request.post( "/app/settings/core/panel/quick-shortcuts", ( req, res ) => {
+    this.API.request.post( "/app/settings/core/panel/quick-shortcuts", async ( req, res ) => {
       const { username } = req.headers as {
         username: string
       };
@@ -38,7 +38,7 @@ export default class SettingsModule extends Module {
       
       const panel = new YourDashPanel( username );
       
-      panel.setLauncherType( launcher );
+      await panel.setLauncherType( launcher );
       
       return res.json( { success: true } );
     } );
@@ -50,7 +50,7 @@ export default class SettingsModule extends Module {
       };
       const user = new YourDashUser( username );
       
-      const psa = new PersonalServerAcceleratorCommunication( username, user.getLoginSession( parseInt( sessionId, 10 ) ) );
+      const psa = new PersonalServerAcceleratorCommunication( username, user.getLoginSessionById( parseInt( sessionId, 10 ) ) );
       
       if ( !psa.socketConnection ) {
         return res.json( { success: false } );
@@ -60,19 +60,19 @@ export default class SettingsModule extends Module {
       
       return res.json( {
         success: true,
-        data: user.getLoginSession( parseInt( sessionId, 10 ) )
+        data: user.getLoginSessionById( parseInt( sessionId, 10 ) )
       } );
     } );
     
     this.API.request.get( "/app/settings/developer/install_all_applications", async ( req, res ) => {
       const installableApplications = ( await fs.readdir( "../applications" ) ).filter( app => app !== "node_modules" && app !== "package.json" && app !== "package-lock.json" );
       
-      installableApplications.map( app => {
-        if ( globalDatabase.get( "installedApplications" ).includes( app ) )
+      installableApplications.map( async app => {
+        if ( coreApi.globalDb.get( "installedApplications" ).includes( app ) )
           return;
         
-        globalDatabase.set( "installedApplications", [ ...globalDatabase.get( "installedApplications" ), app ] );
-        loadApplication( app, this.API.request, this.API.websocket.httpServer );
+        coreApi.globalDb.set( "installedApplications", [ ...coreApi.globalDb.get( "installedApplications" ), app ] );
+        await coreApi.moduleManager.loadModule( path.join( process.cwd(), `../applications/${app}/backend/` ) );
       } )
       
       return res.json( { success: true } );

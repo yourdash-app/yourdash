@@ -5,9 +5,9 @@
 
 import { Application as ExpressApplication } from "express";
 
-import log, { logType } from "backend/src/helpers/log.js";
 import { ILocationAutocompleteSuggestion } from "../shared/locationAutocompleteSuggestion.js";
 import getGeolocationSuggestions from "./helpers/locationAutocompleteSuggestions.js";
+import coreApi from "backend/src/core/core/coreApi.js";
 
 export default function geolocationApi( exp: ExpressApplication ) {
   const geolocationApiCache = new Map<string, ILocationAutocompleteSuggestion[]>()
@@ -22,7 +22,7 @@ export default function geolocationApi( exp: ExpressApplication ) {
     if ( geolocationApiCache.get( req.params.locationName ) )
       return res.json( geolocationApiCache.get( req.params.locationName ) );
     
-    log( logType.INFO, `Fetching location suggestions for ${req.params.locationName}` );
+    coreApi.log.info( `Fetching location suggestions for ${req.params.locationName}` );
     
     const suggestions = await getGeolocationSuggestions( locationName, 8 )
     

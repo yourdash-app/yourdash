@@ -7,8 +7,8 @@ import { Application as ExpressApplication, Request as ExpressRequest } from "ex
 import http from "http";
 import path from "path";
 import log from "../helpers/log.js";
-import CoreApi from "./core/coreApi.js";
-import { logType } from "./core/coreApiLog.js";
+import { CoreApi } from "./core/coreApi.js";
+import { LOG_TYPE } from "./core/coreApiLog.js";
 import YourDashUser from "./core/user/index.js";
 import { WebsocketManager } from "./websocketManager.js";
 
@@ -26,7 +26,7 @@ export default class Module {
   protected API: {
     websocket: WebsocketManager,
     request: ExpressApplication,
-    log( type: logType, ...message: any[] ): void, // eslint-disable-line @typescript-eslint/no-explicit-any
+    log( type: LOG_TYPE, ...message: any[] ): void, // eslint-disable-line @typescript-eslint/no-explicit-any
     getPath(): string,
     applicationName: string,
     moduleName: string,
@@ -41,7 +41,7 @@ export default class Module {
     this.API = {
       websocket: this.websocketManager,
       request: this.expressApp,
-      log( type: logType, ...message: any[] ) { // eslint-disable-line @typescript-eslint/no-explicit-any
+      log( type: LOG_TYPE, ...message: any[] ) { // eslint-disable-line @typescript-eslint/no-explicit-any
         log( type, `app:${this.moduleName}`, ...message );
       },
       getPath() {

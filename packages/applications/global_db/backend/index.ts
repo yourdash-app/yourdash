@@ -3,11 +3,11 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import YourDashUser from "backend/src/core/user/index.js";
-import { YOURDASH_USER_PERMISSIONS } from "backend/src/core/user/permissions.js";
-import globalDatabase from "backend/src/helpers/globalDatabase.js";
+import YourDashUser from "backend/src/core/core/user/index.js";
+import { YOURDASH_USER_PERMISSIONS } from "backend/src/core/core/user/permissions.js";
 import path from "path";
 import Module, { YourDashModuleArguments } from "backend/src/core/module.js";
+import coreApi from "backend/src/core/core/coreApi.js";
 
 export default class GlobalDbModule extends Module {
   constructor( args: YourDashModuleArguments ) {
@@ -21,7 +21,7 @@ export default class GlobalDbModule extends Module {
       
       if ( await user.hasPermission( YOURDASH_USER_PERMISSIONS.Administrator ) ) {
         return res.json( {
-          db: globalDatabase.keys
+          db: coreApi.globalDb.keys
         } );
       }
       
@@ -40,7 +40,7 @@ export default class GlobalDbModule extends Module {
       const user = new YourDashUser( username );
       
       if ( await user.hasPermission( YOURDASH_USER_PERMISSIONS.Administrator ) ) {
-        globalDatabase.merge( keys );
+        coreApi.globalDb.merge( keys );
         
         return res.json( {
           success: true
@@ -60,8 +60,8 @@ export default class GlobalDbModule extends Module {
       const user = new YourDashUser( username );
       
       if ( await user.hasPermission( YOURDASH_USER_PERMISSIONS.Administrator ) ) {
-        globalDatabase.merge( keys );
-        await globalDatabase.writeToDisk( path.resolve( process.cwd(), "./fs/globalDatabase.json" ) );
+        coreApi.globalDb.merge( keys );
+        await coreApi.globalDb.writeToDisk( path.resolve( process.cwd(), "./fs/globalDatabase.json" ) );
         
         return res.json( {
           success: true

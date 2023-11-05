@@ -15,6 +15,8 @@ import CoreApiModuleManager from "./coreApiModuleManager.js";
 import CoreApiScheduler from "./coreApiScheduler.js";
 import CoreApiUsers from "./coreApiUsers.js";
 import CoreApiFileSystem from "./fileSystem/coreApiFileSystem.js";
+import fs from "fs"
+import CoreApiWebsocketManager from "./websocket/coreApiWebsocketManager.js";
 
 export class CoreApi {
   // core apis
@@ -25,11 +27,11 @@ export class CoreApi {
   readonly commands: CoreApiCommands;
   readonly fs: CoreApiFileSystem;
   readonly scheduler: CoreApiScheduler;
+  readonly websocketManager: CoreApiWebsocketManager;
   // general vars
   readonly processArguments: minimist.ParsedArgs;
   readonly expressServer: ExpressApplication;
   readonly httpServer: http.Server;
-  readonly socketIoServer: socketIo.Server;
   
   constructor() {
     // Fetch process arguments
@@ -38,24 +40,26 @@ export class CoreApi {
     // Create the requests server
     this.expressServer = express()
     this.httpServer = http.createServer( this.expressServer );
-    this.socketIoServer = new socketIo.Server( this.httpServer );
     
     // define core apis
-    this.scheduler = new CoreApiScheduler()
+    this.scheduler = new CoreApiScheduler( this )
     this.users = new CoreApiUsers( this )
     this.log = new CoreApiLog()
-    this.moduleManager = new CoreApiModuleManager()
+    this.moduleManager = new CoreApiModuleManager( this )
     this.globalDb = new CoreApiGlobalDb( this )
     this.commands = new CoreApiCommands( this )
     this.fs = new CoreApiFileSystem( this )
+    this.websocketManager = new CoreApiWebsocketManager( this )
     
-    this.commands.registerCommand( "hello", [], () => {
-      this.log.info( "core:command", "Hello!" )
-    } )
+    this.commands.registerCommand(
+      "hello",
+      () => {
+        this.log.info( "core:command", "Hello!" )
+      }
+    )
     
     this.commands.registerCommand(
       "restart",
-      [],
       async () => {
         await this.restartInstance()
       }
@@ -63,9 +67,26 @@ export class CoreApi {
     
     this.commands.registerCommand(
       "gdb",
-      [],
-      () => {
-        this.log.warning( "core:gdb", "IMPLEMENT ME!" )
+      ( args ) => {
+        const subCommand = commandAndArgs[ 1 ];
+        const key = commandAndArgs[ 2 ];
+        const value = commandAndArgs[ 3 ];
+    
+        switch ( subCommand ) {
+        case "set":
+          globalDatabase.set( key, value );
+          log( logType.INFO, "core:command", `set "${ key }" to "${ value }"` );
+          break;
+        case "get":
+          log( logType.INFO, "core:command", globalDatabase.get( key ) );
+          break;
+        case "delete":
+          globalDatabase.removeValue( key );
+          log( logType.INFO, "core:command", `deleted "${ key }"` );
+          break;
+        default:
+          log( logType.INFO, "core:command", "gdb ( Global Database )\n- get: \"gdb get {key}\"\n- set: \"gdb set {key} {value}\"\n- delete: \"gdb delete {key}\"" );
+        }
       }
     )
     
@@ -85,8 +106,11 @@ export class CoreApi {
     this.log.info( "core", "Welcome to the YourDash Instance backend" )
     
     await this.globalDb.loadFromDisk( path.join( this.fs.ROOT_PATH, "./global_database.json" ) )
+
+    this.users.__internal__startUserDatabaseService()
+    this.users.__internal__startUserDeletionService()
     
-    this.log.info( "core", "Welcome to the YourDash Instance backend" )
+    await this.moduleManager.loadInstalledModules() // TODO: implement module loading
     
     return this
   }
@@ -96,6 +120,27 @@ export class CoreApi {
     this.commands.getAllCommands().forEach( command => {
       this.commands.removeCommand( command )
     } )
+    
+    this.log.info( "core", "Shutting down... ( restart should occur automatically )" );
+  
+    const LOG_OUTPUT = this.log.logHistory.map( ( hist ) => {
+      return `${ hist.type }: ${ hist.message }`;
+    } ).join( "\n" );
+  
+    this.httpServer.close();
+  
+    fs.readdirSync( path.resolve( this.fs.ROOT_PATH, "./users" ) )
+      .forEach( async username => {
+        await this.users.__internal__saveUserDatabaseInstantly( username )
+      } )
+  
+    fs.writeFile( path.resolve( process.cwd(), "./fs/log.log" ), LOG_OUTPUT, () => {
+      try {
+        this.globalDb.__internal__doNotUseOnlyIntendedForShutdownSequenceWriteToDisk( path.resolve( process.cwd(), "./fs/global_database.json" ) );
+      } catch ( e ) {
+        this.log.error( "core", "[EXTREME SEVERITY] Shutdown Error! failed to save global database. User data will have been lost! (past 5 minutes)" );
+      }
+    } );
     
     return this
   }

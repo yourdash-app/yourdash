@@ -37,40 +37,6 @@ coreApi.log.info( "core", "Initialized YourDash..." );
 
 /*
 /!*
- //////////////////////////////
- //  5. Start core services  //
- //////////////////////////////
-*!/
-
-// start core services
-startUserDatabaseService();
-
-scheduleTask( "save_global_database", "*!/5 * * * *", async () => {
-  await globalDatabase.writeToDisk( path.resolve( path.join( process.cwd(), "./fs/global_database.json" ) ) );
-} );
-
-// save the database before process termination
-export function shutdownInstanceGracefully() {
-  log( logType.INFO, "Shutting down... ( restart should occur automatically )" );
-  
-  const LOG_OUTPUT = LOG_HISTORY.map( ( hist ) => {
-    return `${ hist.type }: ${ hist.message }`;
-  } ).join( "\n" );
-  
-  httpServer.close();
-  
-  saveUserDatabases();
-  
-  writeFile( path.resolve( process.cwd(), "./fs/log.log" ), LOG_OUTPUT, () => {
-    try {
-      globalDatabase._internalDoNotUseOnlyIntendedForShutdownSequenceWriteToDisk( path.resolve( process.cwd(), "./fs/global_database.json" ) );
-    } catch ( e ) {
-      log( logType.ERROR, "[EXTREME SEVERITY] Shutdown Error! failed to save global database. User data will have been lost! (past 5 minutes)" );
-    }
-  } );
-}
-
-/!*
  ///////////////////////////////////////
  //  6. Begin listening for requests  //
  ///////////////////////////////////////
@@ -114,76 +80,11 @@ export interface ISocketActiveSocket {
   socket: SocketIoSocket;
 }
 
-const ACTIVE_SOCKET_IO_SOCKETS: {
+const ACTIVE_SOCKET_IO_SOCKETS: {                                 TODO: REFACTOR PENDING, CoreApiWebsocketManager
   [ username: string ]: ISocketActiveSocket[];
 } = {};
 
-process.on( "SIGINT", shutdownInstanceGracefully );
-
 // Handle socket.io connections
-socketIo.on( "connection", ( socket: SocketIoSocket<any, any, any, any> ) => { // eslint-disable-line @typescript-eslint/no-explicit-any
-  
-  const handshakeUsername = socket.handshake.query.username as string;
-  
-  // Check that all required parameters are present
-  if ( !handshakeUsername || !socket.handshake.query.sessionToken || !socket.handshake.query.sessionId ) {
-    log( logType.ERROR, "[PSA-BACKEND]: Closing connection! Missing required parameters!" );
-    
-    socket.disconnect( true );
-    return;
-  }
-  
-  if ( !ACTIVE_SOCKET_IO_SOCKETS[ handshakeUsername as string ] ) {
-    ACTIVE_SOCKET_IO_SOCKETS[ handshakeUsername as string ] = [];
-  }
-  
-  ACTIVE_SOCKET_IO_SOCKETS[ handshakeUsername as string ].push( <ISocketActiveSocket>{
-    id: socket.handshake.query.sessionId as string,
-    token: socket.handshake.query.sessionToken as string,
-    socket
-  } );
-  
-  socket.on( "execute-command-response", ( output: never ) => {
-    log( logType.INFO, output );
-  } );
-  
-  socket.on( "disconnect", () => {
-    ACTIVE_SOCKET_IO_SOCKETS[ handshakeUsername as string ].forEach( () => {
-      ACTIVE_SOCKET_IO_SOCKETS[ handshakeUsername as string ].filter( ( s ) => s.id !== socket.id );
-    } );
-    
-    log( logType.INFO, "[PSA-BACKEND]: Closing PSA connection" );
-  } );
-  
-  return;
-} );
-
-// handle socket.io session authentication
-socketIo.use( async ( socket: SocketIoSocket, next ) => {
-  const {
-    username,
-    sessionToken
-  } = socket.handshake.query as { username?: string, sessionToken?: string };
-  
-  if ( !username || !sessionToken ) {
-    return socket.disconnect();
-  }
-  
-  if ( !__internalGetSessionsDoNotUseOutsideOfCore()[ username ] ) {
-    try {
-      const user = new YourDashUser( username );
-      __internalGetSessionsDoNotUseOutsideOfCore()[ username ] = ( await user.getAllLoginSessions() ) || [];
-    } catch ( _err ) {
-      return socket.disconnect();
-    }
-  }
-  
-  if ( __internalGetSessionsDoNotUseOutsideOfCore()[ username ].find( ( session ) => session.sessionToken === sessionToken ) ) {
-    return next();
-  }
-  
-  return socket.disconnect();
-} );
 
 export { socketIo, ACTIVE_SOCKET_IO_SOCKETS };
 
