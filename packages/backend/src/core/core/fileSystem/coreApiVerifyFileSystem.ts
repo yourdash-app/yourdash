@@ -113,7 +113,7 @@ export default class CoreApiVerifyFileSystem {
     
     // if the administrator user doesn't exist,
     // create a new user "admin" with the administrator permission
-    const ADMIN_USER = this.coreApi.users.create( "admin" );
+    const ADMIN_USER = await this.coreApi.users.create( "admin" );
     
     if ( !await ADMIN_USER.doesExist() ) {
       await ADMIN_USER.create();

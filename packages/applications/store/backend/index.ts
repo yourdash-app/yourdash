@@ -10,10 +10,9 @@ import { IStoreCategory } from "shared/apps/store/storeCategory.js";
 import { type StorePromotedApplication } from "shared/apps/store/storePromotedApplication.js";
 import getAllCategories, { getAllApplicationsFromCategory } from "./helpers/categories.js";
 import path from "path"
-import globalDatabase from "backend/src/helpers/globalDatabase.js"
 import { getInstanceLogoBase64 } from "backend/src/helpers/logo.js"
-import { loadApplication } from "backend/src/core/applicationLoader.js";
 import YourDashApplication, { getAllApplications } from "backend/src/helpers/applications.js";
+import coreApi from "backend/src/core/core/coreApi.js";
 
 const promotedApplications: string[] = ["dash", "store"];
 
@@ -158,9 +157,8 @@ export default class StoreModule extends Module {
       }
       const application = await applicationUnread.read();
     
-      globalDatabase.set( "installedApplications", [ ...globalDatabase.get( "installedApplications" ), id, ...application.getDependencies()] );
-      loadApplication( id, this.API.request, this.API.websocket.httpServer );
-    
+      coreApi.globalDb.set( "installedApplications", [ ...coreApi.globalDb.get( "installedApplications" ), id, ...application.getDependencies()] );
+      await coreApi.moduleManager.loadModule( path.join( process.cwd(), `../applications/${id}/backend/` ) );
       return res.json( { success: true } );
     } );
   
@@ -170,7 +168,7 @@ export default class StoreModule extends Module {
       if ( !application.exists() ) {
         return res.json( { error: true } );
       }
-      globalDatabase.set( "installedApplications", globalDatabase.get( "installedApplications" ).filter( app => app !== id ) );
+      coreApi.globalDb.set( "installedApplications", coreApi.globalDb.get( "installedApplications" ).filter( app => app !== id ) );
       return res.json( { success: true } );
     } );
   
