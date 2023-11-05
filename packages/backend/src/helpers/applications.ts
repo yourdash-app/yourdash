@@ -6,8 +6,10 @@
 import { promises as fs } from "fs";
 import path from "path";
 import { type IYourDashApplication } from "shared/core/application.js";
-import log, { logType } from "./log.js";
+import coreApi from "../core/core/coreApi.js";
 import globalDatabase from "./globalDatabase.js";
+
+// TODO: replace the module loading from names to paths to support loading modules outside of the project's codebase
 
 class YDApplication {
   private readonly name: string;
@@ -94,7 +96,7 @@ export async function getAllApplications(): Promise<string[]> {
       return ( app !== "package.json" ) && ( app !== "node_modules" );
     } );
   } catch ( _err ) {
-    log( logType.ERROR, "A problem occurred reading the ../applications/ directory" );
+    coreApi.log.error( "A problem occurred reading the ../applications/ directory" );
     return [];
   }
 }

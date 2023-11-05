@@ -9,7 +9,6 @@ import path from "path";
 import KeyValueDatabase from "shared/core/database.js";
 import sharp from "sharp";
 import { hash } from "../../../helpers/encryption.js";
-import GlobalDatabase from "../../../helpers/globalDatabase.js";
 import YourDashSession, { getSessionsForUser } from "../../../helpers/session.js";
 import coreApi from "../coreApi.js";
 import { userAvatarSize } from "./avatarSize.js";
@@ -90,7 +89,7 @@ export default class YourDashUser {
           last: "User"
         },
         "core:user:username": this.username,
-        "core:panel:quickShortcuts": GlobalDatabase.get( "defaults" ).user.quickShortcuts
+        "core:panel:quickShortcuts": coreApi.globalDb.get( "defaults" ).user.quickShortcuts
       } )
     )
     await this.setPassword( "password" );
@@ -216,7 +215,7 @@ export default class YourDashUser {
     }
   }
   
-  getLoginSession( sessionId: number ): YourDashSession<any> | undefined {
+  getLoginSessionById( sessionId: number ): YourDashSession<any> | undefined {
     try {
       // return a YourDashSession which has the sessionId as its id, find the correct session and use it as an input
       return new YourDashSession(
@@ -225,6 +224,19 @@ export default class YourDashUser {
       );
     } catch ( _err ) {
       coreApi.log.error( `${ chalk.yellow.bold( "CORE" ) }: unable to find session: ${ sessionId }` );
+      return undefined;
+    }
+  }
+  
+  getLoginSessionByToken( token: string ): YourDashSession<any> | undefined {
+    try {
+      // return a YourDashSession which has the sessionId as its id, find the correct session and use it as an input
+      return new YourDashSession(
+        this.username,
+        getSessionsForUser( this.username )[ getSessionsForUser( this.username ).findIndex( val => val.token === token ) ]
+      );
+    } catch ( _err ) {
+      coreApi.log.error( `${ chalk.yellow.bold( "CORE" ) }: unable to find session: ${ token }` );
       return undefined;
     }
   }

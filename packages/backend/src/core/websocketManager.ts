@@ -3,9 +3,9 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import log, { logType } from "../helpers/log.js";
 import { Server as SocketIOServer } from "socket.io"
 import * as http from "http";
+import coreApi from "./core/coreApi.js";
 
 export class WebsocketManager {
   servers: {
@@ -29,9 +29,9 @@ export class WebsocketManager {
       if ( ( await this.servers[ appName ].server.fetchSockets() ).length === 0 ) {
         this.servers[ appName ].server.close();
         delete this.servers[ appName ];
-        log( logType.INFO, "core:websocket_manager", `${ appName } was closed as it has no clients connected.` );
+        coreApi.log.info( "core:websocket_manager", `${ appName } was closed as it has no clients connected.` );
       } else {
-        log( logType.INFO, "core:websocket_manager", `${ appName } is connected with ${ Object.keys( this.servers[ appName ].server.fetchSockets() ).length } clients.` );
+        coreApi.log.info( "core:websocket_manager", `${ appName } is connected with ${ Object.keys( this.servers[ appName ].server.fetchSockets() ).length } clients.` );
       }
     } );
   }
@@ -50,7 +50,7 @@ export class WebsocketManager {
       connections: []
     };
     
-    log( logType.INFO, "core:websocket_manager", `${ appName } was created.` );
+    coreApi.log.info( "core:websocket_manager", `${ appName } was created.` );
     
     return server;
   }

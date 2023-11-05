@@ -4,13 +4,17 @@
  */
 
 import path from "path";
+import KeyValueDatabase from "../../helpers/keyValueDatabase.js";
 import { CoreApi } from "./coreApi.js";
 
-export default class CoreApiGlobalDb {
-  private keys: { [ key: string ]: any } // eslint-disable-line @typescript-eslint/no-explicit-any
+// TODO: rewrite this to use a KVD ( Key Value Database )
+
+export default class CoreApiGlobalDb extends KeyValueDatabase {
   private readonly coreApi: CoreApi;
   
   constructor( coreApi: CoreApi ) {
+    super()
+    
     this.coreApi = coreApi
     
     return this;
@@ -23,7 +27,7 @@ export default class CoreApiGlobalDb {
         await this.coreApi.fs.removePath( path.join( this.coreApi.fs.ROOT_PATH, "./global_database.json" ) );
       }
     } else {
-      this.coreApi.log.warning( "Unable to load the global database!" );
+      this.coreApi.log.warning( "core:globaldb", "Unable to load the global database!" );
     }
     
     return this

@@ -4,11 +4,7 @@
  */
 
 import { Socket as SocketIoSocket } from "socket.io";
-
-import { IYourDashSession, YOURDASH_SESSION_TYPE } from "../../../shared/core/session.js";
-import { ACTIVE_SOCKET_IO_SOCKETS, socketIo } from "../main.js";
-
-import log from "./log.js";
+import { IYourDashSession, YOURDASH_SESSION_TYPE } from "shared/core/session.js";
 
 export function executeCommand(
   username: string,
@@ -31,7 +27,7 @@ export function getSocketFromSession(
     return undefined;
   }
 
-  const connection = ACTIVE_SOCKET_IO_SOCKETS[username]?.find( sock => sock.id === session.id.toString() ) || undefined;
+  const connection = ACTIVE_SOCKET_IO_SOCKETS[username]?.find( socket => socket.id === session.id.toString() ) || undefined;
 
   if ( !connection ) {
     return undefined;
@@ -53,11 +49,11 @@ export class PersonalServerAcceleratorCommunication {
     return this;
   }
 
-  listenFor( path: string, callBack: ( data: any ) => void ) {
+  listenFor( path: string, callBack: ( data: any ) => void ) { // eslint-disable-line @typescript-eslint/no-explicit-any
     this.socketConnection.on( path, callBack );
   }
 
-  emit( path: string, data: any ) {
+  emit( path: string, data: any ) { // eslint-disable-line @typescript-eslint/no-explicit-any
     this.socketConnection.emit( path, data );
   }
 }

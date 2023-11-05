@@ -16,16 +16,6 @@ export default class CoreApiUsers {
   
   constructor( coreApi: CoreApi ) {
     this.coreApi = coreApi
-    
-    this.coreApi.scheduler.scheduleTask(
-      "core:users:delete_all_marked_users",
-      "*/5 * * * *", /* every 5 minutes */
-      async () => {
-        for ( const username of this.usersMarkedForDeletion ) {
-          await this.coreApi.users.forceDelete( username )
-        }
-      } )
-    
     this.userDatabases = {}
     
     return this;
@@ -41,6 +31,17 @@ export default class CoreApiUsers {
         await this.userDatabases[username].db.writeToDisk( path.join( user.path, "core/user_db.json" ) )
       } )
     } )
+  }
+  
+  __internal__startUserDeletionService() {
+    this.coreApi.scheduler.scheduleTask(
+      "core:users:delete_all_marked_users",
+      "*/5 * * * *", /* every 5 minutes */
+      async () => {
+        for ( const username of this.usersMarkedForDeletion ) {
+          await this.coreApi.users.forceDelete( username )
+        }
+      } )
   }
   
   async __internal__getUserDatabase( username: string ) {
@@ -108,5 +109,9 @@ export default class CoreApiUsers {
   
   getByUsername( username: string ): YourDashUser {
     return new YourDashUser( username )
+  }
+  
+  async getAllUsers(): Promise<string[]> {
+    return ( await this.coreApi.fs.getDirectory( path.join( this.coreApi.fs.ROOT_PATH, "./users" ) ) ).getChildren()
   }
 }
