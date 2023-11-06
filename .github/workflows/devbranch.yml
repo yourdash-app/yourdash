@@ -1,9 +1,9 @@
-name: Check For Build Errors
+name: Build and Deploy to https://ydsh.pages.dev and https://yourdash.pages.dev
 
 on:
   workflow_dispatch:
   push:
-    branches: [ "react-buddy-toolbox" ]
+    branches: [ "dev" ]
 
 jobs:
   build:
@@ -27,3 +27,15 @@ jobs:
 
       - name: Build website
         run: (cd ./packages/web-client && yarn build)
+
+      - name: Deploy to external repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.SSH_DEPLOY_KEY }}
+
+        with:
+          source-directory: packages/web-client/dist/
+          destination-github-username: yourdash-app
+          destination-repository-name: ydsh-dev
+          user-email: ewsgit@duck.com
+          target-branch: "gh-pages"
