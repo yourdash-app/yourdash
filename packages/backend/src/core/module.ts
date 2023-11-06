@@ -6,8 +6,7 @@
 import { Application as ExpressApplication, Request as ExpressRequest } from "express";
 import http from "http";
 import path from "path";
-import log from "../helpers/log.js";
-import { CoreApi } from "./core/coreApi.js";
+import coreApi, { CoreApi } from "./core/coreApi.js";
 import { LOG_TYPE } from "./core/coreApiLog.js";
 import YourDashUser from "./core/user/index.js";
 import { WebsocketManager } from "./websocketManager.js";
@@ -42,7 +41,22 @@ export default class Module {
       websocket: this.websocketManager,
       request: this.expressApp,
       log( type: LOG_TYPE, ...message: any[] ) { // eslint-disable-line @typescript-eslint/no-explicit-any
-        log( type, `app:${this.moduleName}`, ...message );
+        switch( type ) {
+        case LOG_TYPE.INFO:
+          coreApi.log.info( `app:${this.moduleName}`, ...message );
+          return;
+        case LOG_TYPE.ERROR:
+          coreApi.log.error( `app:${this.moduleName}`, ...message );
+          return;
+        case LOG_TYPE.SUCCESS:
+          coreApi.log.success( `app:${this.moduleName}`, ...message );
+          return;
+        case LOG_TYPE.WARNING:
+          coreApi.log.warning( `app:${this.moduleName}`, ...message );
+          return;
+        default:
+          coreApi.log.info( `app:${this.moduleName}`, ...message );
+        }
       },
       getPath() {
         return path.resolve( path.join( process.cwd(), "../applications", this.moduleName ) );

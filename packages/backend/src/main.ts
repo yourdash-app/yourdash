@@ -26,14 +26,11 @@
 */
 
 import sourceMapSupport from "source-map-support";
-import coreApi from "./core/core/coreApi.js";
-
-// TODO: replace this file with calls to CoreApi
-//       --- CURRENTLY IN PROGRESS ---
+import coreApi from "./core/core/coreApi.js"; // Load the CoreApi which is responsible for starting the YourDash Instance
 
 sourceMapSupport.install();
 
-coreApi.log.info( "core", "Initialized YourDash..." );
+await coreApi.__internal__startInstance()
 
 /*
 /!*
