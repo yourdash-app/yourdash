@@ -6,6 +6,7 @@
 import path from "path";
 import KeyValueDatabase from "../../helpers/keyValueDatabase.js";
 import { CoreApi } from "./coreApi.js";
+import { promises as fs } from "fs"
 
 // TODO: rewrite this to use a KVD ( Key Value Database )
 

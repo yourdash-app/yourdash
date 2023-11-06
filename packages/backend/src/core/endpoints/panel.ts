@@ -4,7 +4,6 @@
  */
 
 import { Application as ExpressApplication } from "express";
-import globalDatabase from "backend/src/helpers/globalDatabase.js";
 import YourDashApplication from "backend/src/helpers/applications.js";
 import sharp from "sharp";
 import path from "path";
@@ -19,7 +18,7 @@ export default function defineCorePanelRoutes( exp: ExpressApplication ) {
     res.set( "Cache-Control", "no-store" );
     const { username } = req.headers as { username: string }
     
-    Promise.all( ( globalDatabase.get( "installedApplications" ) || [] ).map( async ( app ) => {
+    Promise.all( ( coreApi.globalDb.get( "installedApplications" ) || [] ).map( async ( app ) => {
       const application = await new YourDashApplication( app ).read();
 
       return new Promise( async resolve => {

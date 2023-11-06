@@ -3,15 +3,15 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import YourDashUser from "backend/src/core/user/index.js";
+import YourDashUser from "backend/src/core/core/user/index.js";
 import { compareHash } from "backend/src/helpers/encryption.js";
 import { createSession } from "backend/src/helpers/session.js";
 import { Application as ExpressApplication } from "express";
 import { promises as fs } from "fs";
 import path from "path";
-import { YOURDASH_SESSION_TYPE } from "shared/core/session.js";
-import GlobalDatabase from "../../helpers/globalDatabase.js";
+import coreApi from "../core/coreApi.js";
 import { userAvatarSize } from "../core/user/avatarSize.js";
+import { YOURDASH_SESSION_TYPE } from "../core/user/session.js";
 import { __internalGetSessionsDoNotUseOutsideOfCore } from "../session.js";
 
 export default function defineLoginEndpoints( exp: ExpressApplication ) {
@@ -93,8 +93,8 @@ export default function defineLoginEndpoints( exp: ExpressApplication ) {
 
   exp.get( "/core/login/instance/metadata", ( req, res ) => {
     return res.json( {
-      title: GlobalDatabase.get( "core:instance:name" ) || "Placeholder name",
-      message: GlobalDatabase.get( "core:instance:message" ) || "Placeholder message. Hey system admin, you should change this!",
+      title: coreApi.globalDb.get( "core:instance:name" ) || "Placeholder name",
+      message: coreApi.globalDb.get( "core:instance:message" ) || "Placeholder message. Hey system admin, you should change this!",
     } )
   } )
   
