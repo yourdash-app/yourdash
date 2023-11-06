@@ -54,7 +54,7 @@ export class CoreApi {
     this.commands.registerCommand(
       "hello",
       () => {
-        this.log.info( "core:command", "Hello!" )
+        this.log.info( "core:command", "Hello from YourDash!" )
       }
     )
     
@@ -68,31 +68,31 @@ export class CoreApi {
     this.commands.registerCommand(
       "gdb",
       ( args ) => {
-        const subCommand = commandAndArgs[ 1 ];
-        const key = commandAndArgs[ 2 ];
-        const value = commandAndArgs[ 3 ];
+        const subCommand = args[ 0 ];
+        const key = args[ 1 ];
+        const value = args[ 2 ];
     
         switch ( subCommand ) {
         case "set":
-          globalDatabase.set( key, value );
-          log( logType.INFO, "core:command", `set "${ key }" to "${ value }"` );
+          this.globalDb.set( key, value );
+          this.log.info( "core:command", `set "${ key }" to "${ value }"` );
           break;
         case "get":
-          log( logType.INFO, "core:command", globalDatabase.get( key ) );
+          this.log.info( "core:command", this.globalDb.get( key ) );
           break;
         case "delete":
-          globalDatabase.removeValue( key );
-          log( logType.INFO, "core:command", `deleted "${ key }"` );
+          this.globalDb.removeValue( key );
+          this.log.info( "core:command", `deleted "${ key }"` );
           break;
         default:
-          log( logType.INFO, "core:command", "gdb ( Global Database )\n- get: \"gdb get {key}\"\n- set: \"gdb set {key} {value}\"\n- delete: \"gdb delete {key}\"" );
+          this.log.info( "core:command", "gdb ( Global Database )\n- get: \"gdb get {key}\"\n- set: \"gdb set {key} {value}\"\n- delete: \"gdb delete {key}\"" );
         }
       }
     )
     
-    this.startupInstance()
+    this.__internal__startInstance()
       .then( () => {
-        /* INFO: don't log the success as startupInstance already logs upon its success */
+        /* INFO: don't log the success as __internal__startInstance already logs upon its success */
       } )
       .catch( ( err ) => {
         this.log.error( "core", `An error occurred with YourDash startup: ${ err }` )
@@ -102,15 +102,17 @@ export class CoreApi {
   }
   
   // start the YourDash Instance
-  private async startupInstance() {
-    this.log.info( "core", "Welcome to the YourDash Instance backend" )
+  async __internal__startInstance() {
+    this.log.info( "core:startup", "Welcome to the YourDash Instance backend" )
+    
+    await this.fs.verifyFileSystem.verify()
     
     await this.globalDb.loadFromDisk( path.join( this.fs.ROOT_PATH, "./global_database.json" ) )
 
     this.users.__internal__startUserDatabaseService()
     this.users.__internal__startUserDeletionService()
     
-    await this.moduleManager.loadInstalledModules() // TODO: implement module loading
+    await this.moduleManager.loadInstalledModules()
     
     return this
   }
@@ -148,7 +150,7 @@ export class CoreApi {
   // shutdown and startup the YourDash Instance
   async restartInstance() {
     this.shutdownInstance()
-    await this.startupInstance()
+    await this.__internal__startInstance()
     
     return this
   }

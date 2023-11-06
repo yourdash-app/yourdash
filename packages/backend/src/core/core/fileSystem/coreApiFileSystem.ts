@@ -75,11 +75,7 @@ export default class CoreApiFileSystem {
     return await fs.rm( path, { recursive: true, maxRetries: 2, retryDelay: 500 } )
   }
   
-  async copyFile( source: string, destination: string ) {
-    return await fs.copyFile( source, destination )
-  }
-  
-  async copyDirectory( source: string, destination: string ) {
-    return await fs.cp( source, destination, { recursive: true } )
+  async copy( source: string, destination: string ) {
+    return await fs.cp( source, destination, { recursive: true, force: true } )
   }
 }

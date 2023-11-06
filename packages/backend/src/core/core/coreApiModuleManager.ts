@@ -74,4 +74,8 @@ export default class CoreApiModuleManager {
   getLoadedModules(): Module[] {
     return this.loadedModules
   }
+  
+  loadInstalledModules() {
+    //
+  }
 }
