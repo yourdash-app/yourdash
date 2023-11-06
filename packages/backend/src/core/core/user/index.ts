@@ -75,36 +75,40 @@ export default class YourDashUser {
   }
   
   async create() {
-    await fs.mkdir( this.path );
-    await fs.mkdir( path.join( this.path, "avatars" ) );
-    await fs.mkdir( path.join( this.path, "core" ) );
-    await fs.mkdir( path.join( this.path, "fs" ) );
-    await fs.mkdir( path.join( this.path, "apps" ) );
-    await fs.mkdir( path.join( this.path, "temp" ) );
-    await fs.writeFile(
-      path.join( this.path, "core/user_db.json" ),
-      JSON.stringify( {
-        "core:user:name": {
+    try {
+      await fs.mkdir( this.path );
+      await fs.mkdir( path.join( this.path, "avatars" ) );
+      await fs.mkdir( path.join( this.path, "core" ) );
+      await fs.mkdir( path.join( this.path, "fs" ) );
+      await fs.mkdir( path.join( this.path, "apps" ) );
+      await fs.mkdir( path.join( this.path, "temp" ) );
+      await fs.writeFile(
+        path.join( this.path, "core/user_db.json" ),
+        JSON.stringify( {
+          "core:user:name": {
+            first: "New",
+            last: "User"
+          },
+          "core:user:username": this.username,
+          "core:panel:quickShortcuts": coreApi.globalDb.get( "defaults" ).user.quickShortcuts
+        } )
+      )
+      await this.setPassword( "password" );
+      await this.setAvatar( path.join( process.cwd(), "./src/defaults/default_avatar.avif" ) );
+      await fs.writeFile( path.join( this.path, "core/user.json" ), JSON.stringify( {
+        username: this.username,
+        name: {
           first: "New",
           last: "User"
         },
-        "core:user:username": this.username,
-        "core:panel:quickShortcuts": coreApi.globalDb.get( "defaults" ).user.quickShortcuts
-      } )
-    )
-    await this.setPassword( "password" );
-    await this.setAvatar( path.join( process.cwd(), "./src/defaults/default_avatar.avif" ) );
-    await fs.writeFile( path.join( this.path, "core/user.json" ), JSON.stringify( {
-      username: this.username,
-      name: {
-        first: "New",
-        last: "User"
-      },
-      bio: "👋 I'm new to YourDash, say hi!",
-      permissions: [],
-      version: 1
-    } as IYourDashUserJson ) )
-    coreApi.log.info( `CORE: Created user ${this.username}` )
+        bio: "👋 I'm new to YourDash, say hi!",
+        permissions: [],
+        version: 1
+      } as IYourDashUserJson ) )
+      coreApi.log.info( `CORE: Created user ${this.username}` )
+    } catch ( e ) {
+      console.error( e )
+    }
   }
   
   async setName( { first, last }: { first: string, last: string } ) {

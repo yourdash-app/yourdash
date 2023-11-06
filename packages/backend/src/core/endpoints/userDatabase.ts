@@ -6,7 +6,7 @@
 import { Application as ExpressApplication } from "express";
 import { promises as fs, writeFileSync } from "fs";
 import path from "path";
-import log, { LOG_TYPE } from "../../helpers/log.js";
+import coreApi from "../core/coreApi.js";
 import YourDashUser from "../core/user/index.js";
 
 type JSONValue = boolean | number | string | null | JSONFile
@@ -35,7 +35,7 @@ export async function loadUserDatabase( username: string ): Promise<JSONFile> {
     // attempt to parse json data from "user_db.json"
     return JSON.parse( ( await fs.readFile( path.join( user.path, "core/user_db.json" ) ) ).toString() )
   } catch ( _err ) {
-    log( logType.WARNING, "core:userdb", `Unable to parse "${username}"'s user database.` )
+    coreApi.log.warning( "core:userdb", `Unable to parse "${username}"'s user database.` )
 
     // throw an error because we can't parse user_db.json
     throw new Error( `Unable to parse "${username}"'s user database.` )
