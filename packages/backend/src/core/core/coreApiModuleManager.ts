@@ -3,8 +3,8 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import Module from "../module.js";
 import path from "path";
+import Module from "../module.js";
 import { CoreApi } from "./coreApi.js";
 
 export default class CoreApiModuleManager {
@@ -13,6 +13,7 @@ export default class CoreApiModuleManager {
   
   constructor( coreApi: CoreApi ) {
     this.coreApi = coreApi;
+    this.loadedModules = []
     
     return this;
   }
@@ -76,9 +77,15 @@ export default class CoreApiModuleManager {
   }
   
   async loadInstalledModules() {
-    await this.coreApi.globalDb.get( "installedModules" )
-      .map( async ( moduleName: string ) => {
-        await this.loadModule( path.join( process.cwd(), "../applications", moduleName, "./backend" ) );
-      } );
+    this.coreApi.globalDb.get( "core:installedModules" )?.forEach( ( modulePath: string ) => {
+      this.loadModule( modulePath );
+    } );
+    
+    if ( this.getLoadedModules().length === 0 ) {
+      this.coreApi.log.warning( "core:modulemanager", "No modules loaded!" )
+      return
+    }
+    
+    this.coreApi.log.info( "core:modulemanager", `Loaded ${ this.getLoadedModules().length } modules` );
   }
 }

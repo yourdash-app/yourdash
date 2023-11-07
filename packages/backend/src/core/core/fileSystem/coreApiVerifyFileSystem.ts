@@ -89,16 +89,17 @@ export default class CoreApiVerifyFileSystem {
     if ( !await this.coreApi.fs.exists( path.join( this.coreApi.fs.ROOT_PATH, "./global_database.json" ) ) ) {
       // create the global database
       try {
-        this.coreApi.log.info( "core:verifyfs", "The global database file does not exist, creating a new one" );
+        this.coreApi.log.info( "core:verify_fs", "The global database file does not exist, creating a new one" );
         
         // write the default global database file
         await this.coreApi.fs.copy(
           path.join( process.cwd(), "./src/defaults/default_global_database.json" ),
           path.join( this.coreApi.fs.ROOT_PATH, "./global_database.json" )
-        )
+        );
+        
       } catch ( e ) {
         console.log( e );
-        this.coreApi.log.error( "core:verifyfs", "Unable to create the \"./fs/global_database.json\" file" );
+        this.coreApi.log.error( "core:verify_fs", "Unable to create the \"./fs/global_database.json\" file" );
       }
     }
     
