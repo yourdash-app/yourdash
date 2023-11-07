@@ -76,6 +76,11 @@ export default class CoreApiFileSystem {
   }
   
   async copy( source: string, destination: string ) {
-    return await fs.cp( source, destination, { recursive: true, force: true } )
+    try {
+      return await fs.cp( source, destination )
+    } catch ( e ) {
+      this.coreApi.log.error( "core:fs", "Unable to copy file: " + source + " to " + destination );
+      return false
+    }
   }
 }
