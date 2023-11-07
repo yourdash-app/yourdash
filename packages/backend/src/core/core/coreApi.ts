@@ -4,10 +4,10 @@
  */
 
 import express, { Application as ExpressApplication } from "express";
+import fs from "fs";
 import http from "http";
 import minimist from "minimist";
 import path from "path";
-import * as socketIo from "socket.io";
 import CoreApiCommands from "./coreApiCommands.js";
 import CoreApiGlobalDb from "./coreApiGlobalDb.js";
 import CoreApiLog from "./coreApiLog.js";
@@ -15,7 +15,6 @@ import CoreApiModuleManager from "./coreApiModuleManager.js";
 import CoreApiScheduler from "./coreApiScheduler.js";
 import CoreApiUsers from "./coreApiUsers.js";
 import CoreApiFileSystem from "./fileSystem/coreApiFileSystem.js";
-import fs from "fs"
 import CoreApiWebsocketManager from "./websocket/coreApiWebsocketManager.js";
 
 export class CoreApi {
@@ -89,14 +88,6 @@ export class CoreApi {
         }
       }
     )
-    
-    this.__internal__startInstance()
-      .then( () => {
-        /* INFO: don't log the success as __internal__startInstance already logs upon its success */
-      } )
-      .catch( ( err ) => {
-        this.log.error( "core", `An error occurred with YourDash startup: ${ err }` )
-      } )
     
     return this;
   }

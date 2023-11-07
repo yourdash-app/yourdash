@@ -7,7 +7,6 @@ import { promises as fs } from "fs";
 import path from "path";
 import { type IYourDashApplication } from "shared/core/application.js";
 import coreApi from "../core/core/coreApi.js";
-import globalDatabase from "./globalDatabase.js";
 
 // TODO: replace the module loading from names to paths to support loading modules outside of the project's codebase
 
@@ -72,7 +71,7 @@ class YDApplication {
   
   // Returns true if the application is installed, otherwise returns false
   isInstalled(): boolean {
-    return !!globalDatabase.get( "installedApplications" ).includes( this.name );
+    return !!coreApi.globalDb.get( "installedApplications" ).includes( this.name );
   }
   
   getCategory(): string {
