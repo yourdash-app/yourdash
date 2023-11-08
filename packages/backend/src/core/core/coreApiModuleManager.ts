@@ -75,7 +75,10 @@ export default class CoreApiModuleManager {
     return this.loadedModules
   }
   
-  loadInstalledModules() {
-    //
+  async loadInstalledModules() {
+    await this.coreApi.globalDb.get( "installedModules" )
+      .map( async ( moduleName: string ) => {
+        await this.loadModule( path.join( process.cwd(), "../applications", moduleName, "./backend" ) );
+      } );
   }
 }
