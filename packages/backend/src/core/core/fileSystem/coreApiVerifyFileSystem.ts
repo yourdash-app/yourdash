@@ -51,7 +51,10 @@ export default class CoreApiVerifyFileSystem {
     if ( !await this.coreApi.fs.exists( path.join( this.coreApi.fs.ROOT_PATH, "./default_avatar.avif" ) ) ) {
       // set the instance's default user avatar
       try {
-        await this.coreApi.fs.copy( path.join( process.cwd(), "./src/defaults/default_avatar.avif" ), path.join( this.coreApi.fs.ROOT_PATH, "./default_avatar.avif" ) );
+        await this.coreApi.fs.copy(
+          path.join( process.cwd(), "./src/defaults/default_avatar.avif" ),
+          path.join( this.coreApi.fs.ROOT_PATH, "./default_avatar.avif" )
+        );
       } catch ( e ) {
         this.coreApi.log.error( "Unable to copy the default user avatar" );
         console.trace( e );
@@ -61,7 +64,10 @@ export default class CoreApiVerifyFileSystem {
     if ( !await this.coreApi.fs.exists( path.join( this.coreApi.fs.ROOT_PATH, "./instance_logo.avif" ) ) ) {
       // set the instance's default logo
       try {
-        await this.coreApi.fs.copy( path.join( process.cwd(), "./src/defaults/default_instance_logo.avif" ), path.join( this.coreApi.fs.ROOT_PATH, "./instance_logo.avif" ) );
+        await this.coreApi.fs.copy(
+          path.join( process.cwd(), "./src/defaults/default_instance_logo.avif" ),
+          path.join( this.coreApi.fs.ROOT_PATH, "./instance_logo.avif" )
+        );
       } catch ( e ) {
         this.coreApi.log.error( "Unable to copy the default instance logo" );
         console.trace( e );
@@ -71,7 +77,10 @@ export default class CoreApiVerifyFileSystem {
     if ( !await this.coreApi.fs.exists( path.join( this.coreApi.fs.ROOT_PATH, "./login_background.avif" ) ) ) {
       // set the default login background
       try {
-        await this.coreApi.fs.copy( path.join( process.cwd(), "./src/defaults/default_login_background.avif" ), path.join( this.coreApi.fs.ROOT_PATH, "./login_background.avif" ) );
+        await this.coreApi.fs.copy(
+          path.join( process.cwd(), "./src/defaults/default_login_background.avif" ),
+          path.join( this.coreApi.fs.ROOT_PATH, "./login_background.avif" )
+        );
       } catch ( e ) {
         this.coreApi.log.error( "Unable to create the default login background" );
       }
@@ -86,10 +95,7 @@ export default class CoreApiVerifyFileSystem {
         await this.coreApi.fs.copy(
           path.join( process.cwd(), "./src/defaults/default_global_database.json" ),
           path.join( this.coreApi.fs.ROOT_PATH, "./global_database.json" )
-        );
-        
-        // load the new global database
-        await this.coreApi.globalDb.loadFromDisk( path.join( this.coreApi.fs.ROOT_PATH, "./global_database.json" ) );
+        )
       } catch ( e ) {
         console.log( e );
         this.coreApi.log.error( "core:verifyfs", "Unable to create the \"./fs/global_database.json\" file" );

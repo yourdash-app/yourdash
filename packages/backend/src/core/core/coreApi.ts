@@ -107,7 +107,8 @@ export class CoreApi {
     
     await this.fs.verifyFileSystem.verify()
     
-    await this.globalDb.loadFromDisk( path.join( this.fs.ROOT_PATH, "./global_database.json" ) )
+    // TODO: load the db after it has been copied to disk otherwise this will stop the copy from working
+    // await this.globalDb.loadFromDisk( path.join( this.fs.ROOT_PATH, "./global_database.json" ) )
 
     this.users.__internal__startUserDatabaseService()
     this.users.__internal__startUserDeletionService()
