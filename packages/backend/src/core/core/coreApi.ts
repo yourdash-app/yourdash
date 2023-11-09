@@ -93,19 +93,23 @@ export class CoreApi {
   }
   
   // start the YourDash Instance
-  async __internal__startInstance() {
+  __internal__startInstance() {
     this.log.info( "core:startup", "Welcome to the YourDash Instance backend" )
     
-    await this.fs.verifyFileSystem.verify()
+    this.fs.verifyFileSystem.verify()
+      .then( () => {
+        this.globalDb.loadFromDisk( path.join( this.fs.ROOT_PATH, "./global_database.json" ) )
+          .then( () => {
+            this.users.__internal__startUserDatabaseService()
+            this.users.__internal__startUserDeletionService()
     
-    // TODO: load the db after it has been copied to disk otherwise this will stop the copy from working
-    // await this.globalDb.loadFromDisk( path.join( this.fs.ROOT_PATH, "./global_database.json" ) )
-
-    this.users.__internal__startUserDatabaseService()
-    this.users.__internal__startUserDeletionService()
+            this.moduleManager.loadInstalledModules()
+              .then( () => {
+                this.log.success( "core", "Startup complete!" );
+              } )
+          } )
     
-    await this.moduleManager.loadInstalledModules()
-    
+      } )
     return this
   }
 
@@ -142,7 +146,7 @@ export class CoreApi {
   // shutdown and startup the YourDash Instance
   async restartInstance() {
     this.shutdownInstance()
-    await this.__internal__startInstance()
+    this.__internal__startInstance()
     
     return this
   }

@@ -125,7 +125,7 @@ export default class CoreApiVerifyFileSystem {
       await ADMIN_USER.setPermissions( [ YOURDASH_USER_PERMISSIONS.Administrator ] );
     }
     
-    return this;
+    return 1;
   }
   
   async checkUserDirectory( username: string ) {
