@@ -8,7 +8,7 @@
       "username": "admin"
     }
   },
-  "installedApplications": [
+  "core:installedApplications": [
     "dash",
     "settings",
     "files",

@@ -30,14 +30,12 @@ import coreApi from "./core/core/coreApi.js";
 
 sourceMapSupport.install();
 
-// Start the YourDash Instance
-await coreApi.__internal__startInstance()
-  .then( () => {
-    /* INFO: don't log the success as __internal__startInstance already logs upon its success */
-  } )
-  .catch( ( err ) => {
-    coreApi.log.error( "core", `An error occurred with YourDash startup: ${ err }` )
-  } )
+try {
+  // Start the YourDash Instance
+  coreApi.__internal__startInstance()
+} catch( err )  {
+  coreApi.log.error( "core", `An error occurred with YourDash startup: ${ err }` )
+}
 
 /*
 /!*

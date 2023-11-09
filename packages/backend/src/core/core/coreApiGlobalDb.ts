@@ -6,7 +6,6 @@
 import path from "path";
 import KeyValueDatabase from "../../helpers/keyValueDatabase.js";
 import { CoreApi } from "./coreApi.js";
-import { promises as fs } from "fs"
 
 // TODO: rewrite this to use a KVD ( Key Value Database )
 
@@ -22,10 +21,14 @@ export default class CoreApiGlobalDb extends KeyValueDatabase {
   }
   
   async loadFromDisk( dbFilePath: string ) {
+    this.coreApi.log.info( "core:globaldb", "Loading global database from disk..." )
+    
     if ( await this.coreApi.fs.exists( dbFilePath ) ) {
+      await this.readFromDisk( dbFilePath )
       
       if ( JSON.stringify( this.keys ) === JSON.stringify( {} ) ) {
         await this.coreApi.fs.removePath( path.join( this.coreApi.fs.ROOT_PATH, "./global_database.json" ) );
+        await this.coreApi.restartInstance()
       }
     } else {
       this.coreApi.log.warning( "core:globaldb", "Unable to load the global database!" );
