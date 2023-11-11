@@ -33,6 +33,7 @@ export default class KeyValueDatabase {
   clear() {
     this.keys = {};
     changeOccurred( this );
+    return this
   }
   
   getKeys() {

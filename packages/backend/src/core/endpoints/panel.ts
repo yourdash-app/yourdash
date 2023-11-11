@@ -3,14 +3,14 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { Application as ExpressApplication } from "express";
-import YourDashApplication from "backend/src/helpers/applications.js";
-import sharp from "sharp";
-import path from "path";
-import { promises as fs } from "fs";
 import YourDashPanel from "backend/src/core/panel.js";
-import authenticatedImage, { authenticatedImageType } from "../authenticatedImage.js";
+import YourDashApplication from "backend/src/helpers/applications.js";
+import { Application as ExpressApplication } from "express";
+import { promises as fs } from "fs";
+import path from "path";
 import IPanelApplicationsLauncherApplication from "shared/core/panel/applicationsLauncher/application.js";
+import sharp from "sharp";
+import authenticatedImage, { authenticatedImageType } from "../authenticatedImage.js";
 import coreApi from "../core/coreApi.js";
 
 export default function defineCorePanelRoutes( exp: ExpressApplication ) {
@@ -33,7 +33,8 @@ export default function defineCorePanelRoutes( exp: ExpressApplication ) {
               name: application.getName(),
               displayName: application.getDisplayName(),
               description: application.getDescription(),
-              icon: authenticatedImage( username, authenticatedImageType.BASE64, buf.toString( "base64" ) ) // TODO: change from base 64 to file and pre-process defaults instead of at request time
+              // TODO: change from base 64 to file and pre-process defaults instead of at request time
+              icon: authenticatedImage( username, authenticatedImageType.BASE64, buf.toString( "base64" ) )
             } );
           } );
       } );

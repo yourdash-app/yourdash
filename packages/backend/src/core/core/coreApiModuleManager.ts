@@ -39,24 +39,29 @@ export default class CoreApiModuleManager {
     return this.coreApi.fs.exists( path.resolve( `${ modulePath }/backend/index.js` ) );
   }
   
-  async loadModule( modulePath: string ) {
+  async loadModule( moduleName: string, modulePath: string ) {
     // if the module is not valid or does not require a backend module, return
     if ( !this.checkModule( modulePath ) ) {
       return;
     }
     
-    this.coreApi.log.info( "core", `Loading module: "${ modulePath }"` );
+    this.coreApi.log.info( "core:modulemanager", `Loading module: "${ moduleName }"` )
     
-    const module = await import( path.resolve( modulePath, "./index.js" ) );
+    try {
+      const module = await import( `${modulePath}/index.js` );
     
-    if ( !module.default ) {
-      this.coreApi.log.error( "core", `Unable to load ${ modulePath }! This application does not contain a default export!` );
-      return;
+      if ( !module.default ) {
+        this.coreApi.log.error( "core", `Unable to load ${ moduleName }! This application does not contain a default export!` );
+        return;
+      }
+    
+      new module.default( { moduleName: moduleName, modulePath: modulePath } );
+    
+      this.loadedModules.push( module );
+      this.coreApi.log.success( "core:modulemanager", `Loaded module: "${ moduleName }"` )
+    } catch ( e ) {
+      this.coreApi.log.error( "core:modulemanager", `Invalid module: "${ moduleName }"` );
     }
-    
-    module.default();
-    
-    this.loadedModules.push( module );
     
     return this;
   }
@@ -78,14 +83,13 @@ export default class CoreApiModuleManager {
   }
   
   async loadInstalledModules() {
-    this.coreApi.globalDb.get( "core:installedApplications" )?.forEach( ( moduleName: string ) => {
-      const modulePath = fileUrl( path.resolve( path.join( process.cwd(), "../applications", moduleName, "./backend/index.js" ) ) )
-      
-      this.coreApi.log.info( "core:modulemanager", "Loading module: " + modulePath )
-      this.loadModule( modulePath );
-      console.log( this.getLoadedModules() );
-    } );
+    const installedApplications = this.coreApi.globalDb.get( "core:installedApplications" )
     
+    for( const moduleName of installedApplications ) {
+      const modulePath = fileUrl( path.resolve( path.join( process.cwd(), "../applications", moduleName, "./backend" ) ) )
+      
+      await this.loadModule( moduleName, modulePath );
+    }
     
     if ( this.getLoadedModules().length === 0 ) {
       this.coreApi.log.warning( "core:modulemanager", "No modules loaded!" )

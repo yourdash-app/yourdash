@@ -3,11 +3,18 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import chalk from "chalk";
+import expressCompression from "compression";
+import cors from "cors";
 import express, { Application as ExpressApplication } from "express";
-import fs from "fs";
+import { promises as fs, readdirSync as fsReaddirSync, writeFile as fsWriteFile } from "fs";
 import http from "http";
+import killPort from "kill-port";
 import minimist from "minimist";
 import path from "path";
+import { fetch } from "undici";
+import { compareHash } from "../../helpers/encryption.js";
+import { createSession } from "../../helpers/session.js";
 import CoreApiCommands from "./coreApiCommands.js";
 import CoreApiGlobalDb from "./coreApiGlobalDb.js";
 import CoreApiLog from "./coreApiLog.js";
@@ -15,6 +22,10 @@ import CoreApiModuleManager from "./coreApiModuleManager.js";
 import CoreApiScheduler from "./coreApiScheduler.js";
 import CoreApiUsers from "./coreApiUsers.js";
 import CoreApiFileSystem from "./fileSystem/coreApiFileSystem.js";
+import { YOURDASH_INSTANCE_DISCOVERY_STATUS } from "./types/discoveryStatus.js";
+import { userAvatarSize } from "./user/avatarSize.js";
+import YourDashUser from "./user/index.js";
+import { YOURDASH_SESSION_TYPE } from "./user/session.js";
 import CoreApiWebsocketManager from "./websocket/coreApiWebsocketManager.js";
 
 export class CoreApi {
@@ -102,19 +113,341 @@ export class CoreApi {
           .then( () => {
             this.users.__internal__startUserDatabaseService()
             this.users.__internal__startUserDeletionService()
+            
+            try {
+              killPort( 3563 ).then( () => {
+                this.log.info( "core", "Killed port 3563" );
+                this.httpServer.listen( 3563, () => {
+                  this.log.success( "core", "server now listening on port 3563!" );
+                  this.log.success( "core", "Startup complete!" );
+                  this.loadCoreEndpoints()
+                } );
+              } );
+            } catch ( reason ) {
+              this.log.warning( "Unable to kill port 3563", reason );
     
-            this.moduleManager.loadInstalledModules()
-              .then( () => {
-                this.log.success( "core", "Startup complete!" );
-              } )
+              try {
+                this.httpServer.listen( 3563, () => {
+                  this.log.info( "core", "server now listening on port 3563!" );
+                  this.log.success( "core", "Startup complete!" );
+                  this.loadCoreEndpoints()
+                } );
+              } catch ( _err ) {
+                this.log.error( "core", "Unable to start server!" );
+                this.shutdownInstance();
+              }
+            }
           } )
     
       } )
     return this
   }
+  
+  private startRequestLogger( options: { logOptionsRequests?: boolean } ) {
+    this.expressServer.use( ( req, res, next ) => {
+      switch ( req.method ) {
+      case "GET":
+        this.log.info( "core:request_get", `${ chalk.bgGreen( chalk.black( " GET " ) ) } ${ res.statusCode } ${ req.path }` );
+        if ( JSON.stringify( req.query ) !== "{}" ) {
+          this.log.info( JSON.stringify( req.query ) );
+        }
+        break;
+      case "POST":
+        this.log.info( "core:request_post", `${ chalk.bgBlue( chalk.black( " POS " ) ) } ${ res.statusCode } ${ req.path }` );
+        if ( JSON.stringify( req.query ) !== "{}" ) {
+          this.log.info( JSON.stringify( req.query ) );
+        }
+        break;
+      case "DELETE":
+        this.log.info( "core:request_delete", `${ chalk.bgRed( chalk.black( " DEL " ) ) } ${ res.statusCode } ${ req.path }` );
+        if ( JSON.stringify( req.query ) !== "{}" ) {
+          this.log.info( JSON.stringify( req.query ) );
+        }
+        break;
+      case "OPTIONS":
+        if ( options.logOptionsRequests ) {
+          this.log.info( "core:request_options", `${ chalk.bgCyan( chalk.black( " OPT " ) ) } ${ res.statusCode } ${ req.path }` );
+          if ( JSON.stringify( req.query ) !== "{}" ) {
+            this.log.info( JSON.stringify( req.query ) );
+          }
+        }
+        break;
+      default:
+        this.log.error( "core:requests", `ERROR IN REQUEST LOGGER, UNKNOWN REQUEST TYPE: ${ req.method }` );
+      }
+      next();
+    } );
+  
+    this.log.success( "core:requests", `Started the requests logger${ options && " (logging options requests is also enabled)" }` );
+  }
+  
+  private loadCoreEndpoints() {
+    if ( this.processArguments[ "log-requests" ] ) {
+      this.startRequestLogger( { logOptionsRequests: !!this.processArguments[ "log-options-requests" ] } );
+    }
+
+    this.expressServer.use( cors() );
+    this.expressServer.use( express.json( { limit: "50mb" } ) );
+    this.expressServer.use( expressCompression() );
+    this.expressServer.use( ( _req, res, next ) => {
+      
+      // remove the X-Powered-By header to prevent exploitation from knowing the request server
+      // this is a security measure against exploiters who don't look into the project's source code
+      res.removeHeader( "X-Powered-By" );
+      
+      next();
+    } );
+    
+    this.expressServer.get( "/", ( _req, res ) => {
+      // INFO: This should not be used for detection of a YourDash Instance, instead use the '/test' endpoint
+      return res.send( "Hello from the YourDash instance software! 👋" );
+    } );
+
+    // Server discovery endpoint
+    this.expressServer.get( "/test", ( _req, res ) => {
+      const discoveryStatus: YOURDASH_INSTANCE_DISCOVERY_STATUS = YOURDASH_INSTANCE_DISCOVERY_STATUS.NORMAL as YOURDASH_INSTANCE_DISCOVERY_STATUS;
+  
+      switch ( discoveryStatus ) {
+      case YOURDASH_INSTANCE_DISCOVERY_STATUS.MAINTENANCE:
+        return res.status( 200 ).json( {
+          status: YOURDASH_INSTANCE_DISCOVERY_STATUS.MAINTENANCE,
+          type: "yourdash"
+        } );
+      case YOURDASH_INSTANCE_DISCOVERY_STATUS.NORMAL:
+        return res.status( 200 ).json( {
+          status: YOURDASH_INSTANCE_DISCOVERY_STATUS.NORMAL,
+          type: "yourdash"
+        } );
+      default:
+        this.log.error( "Discovery status returned an invalid value" );
+        return res.status( 200 ).json( {
+          status: YOURDASH_INSTANCE_DISCOVERY_STATUS.MAINTENANCE,
+          type: "yourdash"
+        } );
+      }
+    } );
+
+    this.expressServer.get( "/ping", ( _req, res ) => {
+      // INFO: This should not be used for detection of a YourDash Instance, instead use the '/test' endpoint
+      return res.send( "pong" );
+    } );
+    
+    this.expressServer.get( "/core/test/self-ping", ( _req, res ) => {
+      return res.json( { success: true } );
+    } );
+    
+    // on startup, we ping ourselves to check if the webserver is running and accepting requests
+    this.log.info( "core:self_ping_test", "pinging self" );
+    fetch( "http://localhost:3563/core/test/self-ping" )
+      .then( res => res.json() )
+      .then( ( data: { success?: boolean } ) => {
+        if ( data?.success ) {
+          return this.log.success( "core:self_ping_test", "self ping successful - The server is receiving requests" );
+        }
+        this.log.error( "core:self_ping_test", "CRITICAL ERROR!, unable to ping self" );
+      } )
+      .catch( () => {
+        // TODO: on failure we should alert the administrator, currently we only print to the log as PushNotification support has not yet been implemented
+        this.log.error( "core:self_ping_test", "CRITICAL ERROR!, unable to ping self" );
+      } );
+    
+    this.expressServer.get( "/core/login/user/:username/avatar", ( req, res ) => {
+      const user = new YourDashUser( req.params.username );
+      return res.sendFile( user.getAvatar( userAvatarSize.LARGE ) );
+    } );
+
+    this.expressServer.get( "/core/login/user/:username", async ( req, res ) => {
+      const user = new YourDashUser( req.params.username );
+      if ( await user.doesExist() ) {
+        return res.json( { name: await user.getName() } );
+      } else {
+        return res.json( { error: "Unknown user" } );
+      }
+    } );
+
+    this.expressServer.post( "/core/login/user/:username/authenticate", async ( req, res ) => {
+      const username = req.params.username;
+      const password = req.body.password;
+
+      if ( !username || username === "" ) {
+        return res.json( { error: "Missing username" } );
+      }
+
+      if ( !password || password === "" ) {
+        return res.json( { error: "Missing password" } );
+      }
+
+      const user = new YourDashUser( username );
+
+      const savedHashedPassword = ( await fs.readFile( path.join( user.path, "core/password.enc" ) ) ).toString();
+
+      return compareHash( savedHashedPassword, password )
+        .then( async result => {
+          if ( result ) {
+            const session = await createSession(
+              username,
+              req.headers?.type === "desktop"
+                ? YOURDASH_SESSION_TYPE.desktop
+                : YOURDASH_SESSION_TYPE.web
+            );
+            return res.json( {
+              token: session.sessionToken,
+              id: session.id
+            } );
+          } else {
+            return res.json( { error: "Incorrect password" } );
+          }
+        } )
+        .catch( () => {
+          return res.json( { error: "Hash comparison failure" } );
+        } );
+    } );
+
+    this.expressServer.get( "/core/login/is-authenticated", async ( req, res ) => {
+      const { username, token } = req.headers as { username?: string, token?: string };
+
+      if ( !username || !token )
+        return res.json( { error: true } );
+
+      if ( !this.users.__internal__getSessionsDoNotUseOutsideOfCore()[username] ) {
+        try {
+          const user = new YourDashUser( username );
+
+          // FIXME: This appears to be strange behaviour
+          //        (update: 2/11/23) [Ewsgit] What is strange?!?!?!
+          this.users.__internal__getSessionsDoNotUseOutsideOfCore()[username] = ( await user.getAllLoginSessions() ) || [];
+        } catch ( _err ) {
+          return res.json( { error: true } );
+        }
+      }
+
+      if ( this.users.__internal__getSessionsDoNotUseOutsideOfCore()[username].find( session => session.sessionToken === token ) ) {
+        return res.json( { success: true } );
+      }
+      return res.json( { error: true } );
+    } );
+
+    this.expressServer.get( "/core/login/instance/metadata", ( req, res ) => {
+      return res.json( {
+        title: this.globalDb.get( "core:instance:name" ) || "Placeholder name",
+        message: this.globalDb.get( "core:instance:message" ) || "Placeholder message. Hey system admin, you should change this!",
+      } )
+    } )
+  
+    this.expressServer.get( "/core/login/instance/background",( _req, res ) => {
+      res.set( "Content-Type", "image/avif" );
+      return res.sendFile( path.resolve( process.cwd(),"./fs/login_background.avif" ) );
+    } );
+    
+    // check for authentication
+    this.expressServer.use( async ( req, res, next ) => {
+      const {
+        username,
+        token
+      } = req.headers as { username?: string, token?: string };
+  
+      if ( !username || !token ) {
+        return res.json( { error: "authorization fail" } );
+      }
+  
+      if ( !this.users.__internal__getSessionsDoNotUseOutsideOfCore()[ username ] ) {
+        try {
+          const user = this.users.get( username );
+      
+          this.users.__internal__getSessionsDoNotUseOutsideOfCore()[ username ] = ( await user.getAllLoginSessions() ) || [];
+      
+          const database = ( await fs.readFile( path.join( user.path, "core/user_db.json" ) ) ).toString();
+      
+          if ( database ) {
+            ( await this.users.__internal__getUserDatabase( username ) ).clear().merge( JSON.parse( database ) );
+          } else {
+            ( await this.users.__internal__getUserDatabase( username ) ).clear()
+            await fs.writeFile( path.join( user.path, "core/user_db.json" ), JSON.stringify( {} ) );
+          }
+        } catch ( _err ) {
+          return res.json( { error: "authorization fail" } );
+        }
+      }
+  
+      if ( this.users.__internal__getSessionsDoNotUseOutsideOfCore()[ username ].find( ( session ) => session.sessionToken === token ) ) {
+        return next();
+      }
+  
+      return res.json( { error: "authorization fail" } );
+    } );
+    
+    /*
+     * --------------------------------------------------------------
+     * WARNING: all endpoints require authentication after this point
+     * --------------------------------------------------------------
+     */
+    
+    this.moduleManager.loadInstalledModules()
+
+    this.expressServer.get( "/core/sessions", async ( req, res ) => {
+      const { username } = req.headers as { username: string };
+  
+      const user = this.users.get( username );
+  
+      return res.json( { sessions: await user.getAllLoginSessions() } );
+    } );
+
+    this.expressServer.delete( "/core/session/:id", async ( req, res ) => {
+      const { username } = req.headers as { username: string };
+      const { id: sessionId } = req.params;
+  
+      const user = this.users.get( username );
+  
+      await user.getLoginSessionById( parseInt( sessionId, 10 ) ).invalidate();
+  
+      return res.json( { success: true } );
+    } );
+
+    this.expressServer.get( "/core/personal-server-accelerator/sessions", async ( req, res ) => {
+      const { username } = req.headers as { username: string };
+  
+      const user = this.users.get( username );
+  
+      return res.json( {
+        // all desktop sessions should support the PSA api
+        sessions: ( await user.getAllLoginSessions() ).filter( ( session: { type: YOURDASH_SESSION_TYPE } ) => session.type === YOURDASH_SESSION_TYPE.desktop )
+      } );
+    } );
+
+    this.expressServer.get( "/core/personal-server-accelerator/", async ( req, res ) => {
+      const { username } = req.headers as { username: string };
+  
+      const user = this.users.get( username );
+  
+      try {
+        return JSON.parse( ( await fs.readFile( path.join( user.path, "personal_server_accelerator.json" ) ) ).toString() );
+      } catch ( _err ) {
+        return res.json( {
+          error: `Unable to read ${ username }/personal_server_accelerator.json`
+        } );
+      }
+    } );
+
+    this.expressServer.post( "/core/personal-server-accelerator/", async ( req, res ) => {
+      const { username } = req.headers as { username: string };
+      const body = req.body;
+  
+      const user = this.users.get( username );
+  
+      try {
+        await fs.writeFile( path.join( user.path, "personal_server_accelerator.json" ), JSON.stringify( body ) );
+      } catch ( _err ) {
+        return res.json( { error: `Unable to write to ${ username }/personal_server_accelerator.json` } );
+      }
+  
+      return res.json( { success: true } );
+    } );
+  }
 
   // try not to use this method for production stability, instead prefer to reload a specific module if it works for your use-case.
   shutdownInstance() {
+    this.httpServer.close()
+    
     this.commands.getAllCommands().forEach( command => {
       this.commands.removeCommand( command )
     } )
@@ -127,18 +460,22 @@ export class CoreApi {
   
     this.httpServer.close();
   
-    fs.readdirSync( path.resolve( this.fs.ROOT_PATH, "./users" ) )
+    fsReaddirSync( path.resolve( this.fs.ROOT_PATH, "./users" ) )
       .forEach( async username => {
         await this.users.__internal__saveUserDatabaseInstantly( username )
       } )
   
-    fs.writeFile( path.resolve( process.cwd(), "./fs/log.log" ), LOG_OUTPUT, () => {
-      try {
-        this.globalDb.__internal__doNotUseOnlyIntendedForShutdownSequenceWriteToDisk( path.resolve( process.cwd(), "./fs/global_database.json" ) );
-      } catch ( e ) {
-        this.log.error( "core", "[EXTREME SEVERITY] Shutdown Error! failed to save global database. User data will have been lost! (past 5 minutes)" );
+    fsWriteFile(
+      path.resolve( process.cwd(), "./fs/log.log" ),
+      LOG_OUTPUT,
+      () => {
+        try {
+          this.globalDb.__internal__doNotUseOnlyIntendedForShutdownSequenceWriteToDisk( path.resolve( process.cwd(), "./fs/global_database.json" ) );
+        } catch ( e ) {
+          this.log.error( "core", "[EXTREME SEVERITY] Shutdown Error! failed to save global database. User data will have been lost! (past 5 minutes)" );
+        }
       }
-    } );
+    );
     
     return this
   }
