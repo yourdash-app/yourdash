@@ -4,7 +4,6 @@
  */
 
 import { Application as ExpressApplication, Request as ExpressRequest } from "express";
-import http from "http";
 import path from "path";
 import coreApi, { CoreApi } from "./core/coreApi.js";
 import { LOG_TYPE } from "./core/coreApiLog.js";
@@ -13,9 +12,7 @@ import { WebsocketManager } from "./websocketManager.js";
 
 export interface YourDashModuleArguments {
   moduleName: string,
-  exp: ExpressApplication,
-  httpServer: http.Server,
-  coreApi: CoreApi
+  modulePath: string
 }
 
 export default class Module {
@@ -23,23 +20,23 @@ export default class Module {
   private readonly expressApp: ExpressApplication;
   private readonly moduleName: string;
   protected API: {
-    websocket: WebsocketManager,
-    request: ExpressApplication,
+    websocket: CoreApi["websocketManager"],
+    request: CoreApi["expressServer"],
     log( type: LOG_TYPE, ...message: any[] ): void, // eslint-disable-line @typescript-eslint/no-explicit-any
     getPath(): string,
     applicationName: string,
     moduleName: string,
     getUser( req: ExpressRequest ): YourDashUser,
-    core: CoreApi
+    core: CoreApi,
+    path: string,
+    modulePath: string
   };
   
   constructor( args: YourDashModuleArguments ) {
-    this.expressApp = args.exp;
-    this.websocketManager = new WebsocketManager( args.httpServer );
     this.moduleName = args.moduleName;
     this.API = {
-      websocket: this.websocketManager,
-      request: this.expressApp,
+      websocket: coreApi.websocketManager,
+      request: coreApi.expressServer,
       log( type: LOG_TYPE, ...message: any[] ) { // eslint-disable-line @typescript-eslint/no-explicit-any
         switch( type ) {
         case LOG_TYPE.INFO:
@@ -68,7 +65,9 @@ export default class Module {
         
         return new YourDashUser( username );
       },
-      core: args.coreApi
+      core: coreApi,
+      path: args.modulePath,
+      modulePath: args.modulePath
     }
     
     return this;
