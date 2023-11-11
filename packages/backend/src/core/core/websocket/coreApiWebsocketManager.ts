@@ -3,10 +3,9 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { __internalGetSessionsDoNotUseOutsideOfCore } from "../../session.js";
+import * as socketIo from "socket.io";
 import { CoreApi } from "../coreApi.js";
 import WebsocketConnection from "./websocketConnection.js";
-import * as socketIo from "socket.io"
 
 export default class CoreApiWebsocketManager {
   private readonly coreApi: CoreApi
@@ -65,16 +64,16 @@ export default class CoreApiWebsocketManager {
         return socket.disconnect();
       }
   
-      if ( !__internalGetSessionsDoNotUseOutsideOfCore()[ username ] ) {
+      if ( !coreApi.users.__internal__getSessionsDoNotUseOutsideOfCore()[ username ] ) {
         try {
           const user = this.coreApi.users.get( username );
-          __internalGetSessionsDoNotUseOutsideOfCore()[ username ] = ( await user.getAllLoginSessions() ) || [];
+          coreApi.users.__internal__getSessionsDoNotUseOutsideOfCore()[ username ] = ( await user.getAllLoginSessions() ) || [];
         } catch ( _err ) {
           return socket.disconnect();
         }
       }
   
-      if ( __internalGetSessionsDoNotUseOutsideOfCore()[ username ].find( ( session ) => session.sessionToken === sessionToken ) ) {
+      if ( coreApi.users.__internal__getSessionsDoNotUseOutsideOfCore()[ username ].find( ( session ) => session.sessionToken === sessionToken ) ) {
         return next();
       }
   
