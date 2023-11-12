@@ -9,14 +9,15 @@ export type UKComponentState = { [ name: string ]: State<any> } // eslint-disabl
 export type UKComponentSlots = { [ name: string ]: State<UKComponent> }
 
 export default class UKComponent<ComponentState extends UKComponentState = UKComponentState, ComponentSlots extends UKComponentSlots = UKComponentSlots> {
-  declare domElement: HTMLElement;
+  domElement: HTMLElement;
   declare parentDomElement: HTMLElement;
   state: ComponentState;
   slots: ComponentSlots;
   
-  constructor( props?: { __internal?: { type: "component" } } ) {
+  constructor() {
     this.state = {} as ComponentState;
     this.slots = {} as ComponentSlots;
+    this.domElement = document.createElement( "uk-empty-component" ) as HTMLDivElement
     
     return this;
   }
