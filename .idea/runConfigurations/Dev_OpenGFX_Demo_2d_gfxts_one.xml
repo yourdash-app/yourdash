@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="dev:2d:gfxts-one" type="js.build_tools.npm" nameIsGenerated="true">
+  <configuration default="false" name="Dev OpenGFX Demo 2d gfxts-one" type="js.build_tools.npm">
     <package-json value="$PROJECT_DIR$/packages/opengfx-engine/package.json" />
     <command value="run" />
     <scripts>

@@ -3,22 +3,22 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import UKComponent, { UKComponentState, UKComponentProps } from "../../component.ts";
+import UKComponent from "../../component.ts";
 import { UKIconDictionary } from "../../icons/dict/iconDictionary.ts";
 import styles from "./icon.module.scss";
 import { UKIcon } from "../../icons/icons.ts";
 
 type COLOR = `#${ string }` | `rgb(${ string })` | `rgba(${ string })` | `var(--${ string })` | "currentColor"
 
-export interface IconProps extends UKComponentProps {
+export interface IconProps {
     icon: UKIcon,
     useDefaultColor?: boolean,
     color?: COLOR
 }
 
-export default class Icon extends UKComponent<IconProps, UKComponentState, UKComponentProps> {
+export default class Icon extends UKComponent {
   constructor( props: IconProps ) {
-    super( props );
+    super();
     
     this.domElement = document.createElement( "div" );
     

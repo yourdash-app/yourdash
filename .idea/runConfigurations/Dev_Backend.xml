@@ -1,9 +1,9 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="dev UIKit" type="js.build_tools.npm">
-    <package-json value="$PROJECT_DIR$/packages/uikit/package.json" />
+  <configuration default="false" name="Dev Backend" type="js.build_tools.npm">
+    <package-json value="$PROJECT_DIR$/package.json" />
     <command value="run" />
     <scripts>
-      <script value="dev" />
+      <script value="yourdash:dev-backend" />
     </scripts>
     <node-interpreter value="project" />
     <envs />

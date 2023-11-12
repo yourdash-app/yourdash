@@ -1,9 +1,9 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Start Web" type="js.build_tools.npm">
+  <configuration default="false" name="Dev Desktop Client" type="js.build_tools.npm">
     <package-json value="$PROJECT_DIR$/package.json" />
     <command value="run" />
     <scripts>
-      <script value="yourdash:start-web" />
+      <script value="yourdash:dev-desktop-client" />
     </scripts>
     <node-interpreter value="project" />
     <envs />

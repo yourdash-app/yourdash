@@ -11,11 +11,12 @@
     ]
   },
   "scripts": {
-    "yourdash:start-web": "yarn --cwd ./packages/web-client dev",
-    "yourdash:start-backend": "yarn --cwd ./packages/backend dev --log-requests",
-    "oc:opengfx:start": "yarn --cwd ./packages/opengfx-engine dev",
+    "yourdash:dev-web-client": "yarn --cwd ./packages/web-client dev",
+    "yourdash:dev-backend": "yarn --cwd ./packages/backend dev --log-requests",
     "yourdash:setup-project": "yarn && yarn --cwd ./packages/backend compile && yarn --cwd ./packages/backend compile-all",
-    "yourdash:build-production": "yarn --cwd ./packages/backend compile-all && yarn --cwd ./packages/web-client build"
+    "yourdash:build-production": "yarn --cwd ./packages/backend compile-all && yarn --cwd ./packages/web-client build",
+    "opengfx:dev": "yarn --cwd ./packages/opengfx-engine dev",
+    "yourdash:dev-desktop-client": "yarn --cwd ./packages/desktop-client/ dev"
   },
   "dependencies": {}
 }

@@ -1,0 +1,16 @@
+{
+  "extends": "@electron-toolkit/tsconfig/tsconfig.web.json",
+  "compilerOptions": {
+    "composite": true
+  },
+  "include": [
+    "src/renderer/**/*.ts",
+    "src/preload/*.d.ts",
+    "../shared/**/*.ts",
+    "../applications/**/desktop-frontend",
+    "../applications/**/shared"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
