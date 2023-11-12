@@ -1,9 +1,9 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Start Backend" type="js.build_tools.npm">
+  <configuration default="false" name="Dev Web Client" type="js.build_tools.npm">
     <package-json value="$PROJECT_DIR$/package.json" />
     <command value="run" />
     <scripts>
-      <script value="yourdash:start-backend" />
+      <script value="yourdash:dev-web-client" />
     </scripts>
     <node-interpreter value="project" />
     <envs />
