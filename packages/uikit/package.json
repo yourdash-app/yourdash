@@ -2,7 +2,7 @@
   "name": "@yourdash/uikit",
   "version": "0.0.1",
   "description": "The YourDash UI Framework",
-  "main": "index.js",
+  "main": "src/core/index.js",
   "repository": "https://github.com/yourdash-app/yourdash",
   "author": "Ewsgit",
   "license": "MIT",
