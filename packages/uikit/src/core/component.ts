@@ -5,20 +5,23 @@
 
 import State from "./state.ts";
 
-export type UKComponentState = { [ name: string ]: State<any> } // eslint-disable-line @typescript-eslint/no-explicit-any
-export type UKComponentSlots = { [ name: string ]: State<UKComponent> }
+export type UKComponentState = { [ key: string ]: State<any> } // eslint-disable-line @typescript-eslint/no-explicit-any
+export type UKComponentSlots = { [ key: string ]: State<UKComponent> }
+export type UKComponentProps = { [ key: string ]: any }
 
-export default class UKComponent<ComponentState extends UKComponentState = UKComponentState, ComponentSlots extends UKComponentSlots = UKComponentSlots> {
+export default class UKComponent<ComponentProps extends UKComponentProps = UKComponentProps, ComponentState extends UKComponentState = UKComponentState, ComponentSlots extends UKComponentSlots = UKComponentSlots> {
   domElement: HTMLElement;
   declare parentDomElement: HTMLElement;
   state: ComponentState;
   slots: ComponentSlots;
-  
+  props: ComponentProps;
+
   constructor() {
     this.state = {} as ComponentState;
     this.slots = {} as ComponentSlots;
-    this.domElement = document.createElement( "uk-empty-component" ) as HTMLDivElement
-    
+    this.props = {} as ComponentProps;
+    this.domElement = document.createElement( "uk-empty-component" ) as HTMLDivElement;
+
     return this;
   }
 }
