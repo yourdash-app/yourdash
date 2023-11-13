@@ -4,6 +4,7 @@
   "description": "The YourDash Desktop Application",
   "main": "./out/main/index.js",
   "author": "Ewsgit",
+  "licence": "MIT",
   "homepage": "https://yourdash.pages.dev",
   "scripts": {
     "lint": "eslint . --ext .ts --fix",
