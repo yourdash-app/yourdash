@@ -1,10 +1,6 @@
-# desktop-client
+# YourDash Desktop Client
 
-A minimal Electron application with TypeScript
-
-## Recommended IDE Setup
-
-- [VSCode](https://code.visualstudio.com/) + [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) + [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+An application created using the YourDash WebClient and UIKit and allow use of PSA and integrate better with user's workflows
 
 ## Project Setup
 
