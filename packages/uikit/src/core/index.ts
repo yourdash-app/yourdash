@@ -5,7 +5,7 @@
 
 /** UIKit - a vanilla Typescript UI library (https://github.com/yourdash-app/yourdash/tree/main/packages/uikit) */
 
-import UKComponent, { UKComponentProps, UKComponentSlots, UKComponentState } from "./component.ts";
+import UKComponent from "./component.ts";
 import defaultStyles from "./default.module.scss"
 
 export {}
@@ -17,7 +17,7 @@ window.__uikit__ = {
 
 export default class UIKit {
   domElement: HTMLDivElement = document.createElement( "div" )
-  children: UKComponent<UKComponentProps, UKComponentState, UKComponentSlots>[] = []
+  children: UKComponent[] = []
 
   constructor( container: HTMLElement ) {
     // @ts-ignore
@@ -39,8 +39,7 @@ export default class UIKit {
     return this
   }
 
-  add<T extends UKComponent<UKComponentProps, UKComponentState, UKComponentSlots>>( component: new( props: T["props"] ) => T, props: T["props"] ) {
-    // @ts-ignore
+  add<T extends UKComponent>( component: new ( props: T["props"] ) => T, props: T["props"] ) {
     const comp = new component( props )
 
     comp.parentDomElement = this.domElement
@@ -50,3 +49,5 @@ export default class UIKit {
     return comp
   }
 }
+
+export * from "./components/index.ts"

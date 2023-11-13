@@ -1,4 +1,4 @@
-import { app, shell, BrowserWindow } from "electron";
+import { app, shell, BrowserWindow, ipcMain } from "electron";
 import { join } from "path";
 import { electronApp, optimizer, is } from "@electron-toolkit/utils";
 import APPLICATION_ICON from "./resources/icon.png?asset";
@@ -62,6 +62,10 @@ app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
     app.quit();
   }
+});
+
+ipcMain.on("core-log-renderer-startup", (_event, msg) => {
+  console.log(msg);
 });
 
 // TODO: implement loaded application's module loading
