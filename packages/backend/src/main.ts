@@ -39,17 +39,6 @@ try {
 
 /*
 /!*
- ///////////////////////////////////////
- //  6. Begin listening for requests  //
- ///////////////////////////////////////
-*!/
-async function listenForRequests() {
-
-}
-
-await listenForRequests();
-
-/!*
  /////////////////
  //  SOCKET.IO  //            TODO: REFACTOR PENDING
  /////////////////
@@ -71,32 +60,9 @@ export { socketIo, ACTIVE_SOCKET_IO_SOCKETS };
 process.stdin.on( "data", ( data ) => {
   const commandAndArgs = data.toString().replaceAll( "\n", "" ).replaceAll( "\r", "" ).split( " " );
   const command = commandAndArgs[ 0 ];
-  
+
   switch ( command ) {
-  case "exit":
-    shutdownInstanceGracefully();
-    break;
-  case "gdb":
-    const subCommand = commandAndArgs[ 1 ];
-    const key = commandAndArgs[ 2 ];
-    const value = commandAndArgs[ 3 ];
-    
-    switch ( subCommand ) {
-    case "set":
-      globalDatabase.set( key, value );
-      log( logType.INFO, "core:command", `set "${ key }" to "${ value }"` );
-      break;
-    case "get":
-      log( logType.INFO, "core:command", globalDatabase.get( key ) );
-      break;
-    case "delete":
-      globalDatabase.removeValue( key );
-      log( logType.INFO, "core:command", `deleted "${ key }"` );
-      break;
-    default:
-      log( logType.INFO, "core:command", "gdb ( Global Database )\n- get: \"gdb get {key}\"\n- set: \"gdb set {key} {value}\"\n- delete: \"gdb delete {key}\"" );
-    }
-    break;
+  // Already implemented
   default:
     log( logType.ERROR, "core:command", `Unknown command: ${ command }` );
   }
