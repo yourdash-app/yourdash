@@ -18,20 +18,18 @@ import IYourDashUserJson from "./userJson.js";
 export default class YourDashUser {
   username: string;
   path: string;
-  
+
   constructor( username: string ) {
     this.username = username;
     this.path = path.resolve( path.join( coreApi.fs.ROOT_PATH, `users/${ this.username }` ) );
   }
-  
-  // ==========================================================
-  
+
   async saveUserDatabaseInstantly() {
     await coreApi.users.__internal__saveUserDatabaseInstantly( this.username )
-    
+
     return this
   }
-  
+
   async getUserDatabase( username: string ): Promise<KeyValueDatabase> {
     return coreApi.users.__internal__getUserDatabase( username )
   }
@@ -40,8 +38,6 @@ export default class YourDashUser {
     coreApi.users.__internal__addUserDatabaseToSaveQueue( username )
     return this
   }
-  
-  // ==========================================================
   
   getAvatar( size: userAvatarSize ): string {
     switch ( size ) {
@@ -55,11 +51,11 @@ export default class YourDashUser {
       return path.join( this.path, "avatars/original.avif" );
     }
   }
-  
+
   async setAvatar( filePath: string ) {
     await fs.cp( path.resolve( filePath ), path.join( this.path, "avatars/original.avif" ) );
     const newAvatarFile = await fs.readFile( path.resolve( filePath ) );
-    
+
     sharp( newAvatarFile )
       .resize( 32, 32 )
       .toFile( path.join( this.path, "avatars/small.avif" ) )
@@ -73,7 +69,7 @@ export default class YourDashUser {
       .toFile( path.join( this.path, "avatars/large.avif" ) )
       .catch( err => console.error( err ) );
   }
-  
+
   async create() {
     try {
       await coreApi.fs.createDirectory( this.path );
@@ -110,7 +106,7 @@ export default class YourDashUser {
       coreApi.log.error( `CORE: Unable to create user ${this.username}` )
     }
   }
-  
+
   async setName( { first, last }: { first: string, last: string } ) {
     try {
       const currentUserJson = JSON.parse( ( await fs.readFile( path.join( this.path, "core/user.json" ) ) ).toString() ) as IYourDashUserJson
@@ -123,7 +119,7 @@ export default class YourDashUser {
       coreApi.log.error( `Unable to write / read ${this.username}'s core/user.json` )
     }
   }
-  
+
   async getName() {
     try {
       const currentUserJson = JSON.parse( ( await fs.readFile( path.join( this.path, "core/user.json" ) ) ).toString() ) as IYourDashUserJson
@@ -132,7 +128,7 @@ export default class YourDashUser {
       coreApi.log.error( "core:user", `Unable to read ${this.username}'s core/user.json` )
     }
   }
-  
+
   async setBio( bio: string ) {
     try {
       const currentUserJson = JSON.parse( ( await fs.readFile( path.join( this.path, "core/user.json" ) ) ).toString() ) as IYourDashUserJson
@@ -142,7 +138,7 @@ export default class YourDashUser {
       coreApi.log.error( `Unable to write / read ${this.username}'s core/user.json` )
     }
   }
-  
+
   async getBio() {
     try {
       const currentUserJson = JSON.parse( ( await fs.readFile( path.join( this.path, "core/user.json" ) ) ).toString() ) as IYourDashUserJson
@@ -151,7 +147,7 @@ export default class YourDashUser {
       coreApi.log.error( "core:user", `Unable to read ${this.username}'s core/user.json` )
     }
   }
-  
+
   async setUrl( url: string ) {
     try {
       const currentUserJson = JSON.parse( ( await fs.readFile( path.join( this.path, "core/user.json" ) ) ).toString() ) as IYourDashUserJson
@@ -161,7 +157,7 @@ export default class YourDashUser {
       coreApi.log.error( `Unable to write / read ${this.username}'s core/user.json` )
     }
   }
-  
+
   async getUrl() {
     try {
       const currentUserJson = JSON.parse( ( await fs.readFile( path.join( this.path, "core/user.json" ) ) ).toString() ) as IYourDashUserJson
@@ -170,7 +166,7 @@ export default class YourDashUser {
       coreApi.log.error( "core:user", `Unable to read ${this.username}'s core/user.json` )
     }
   }
-  
+
   async setPermissions( permissions: yourDashUserPermission[] ) {
     try {
       const currentUserJson = JSON.parse( ( await fs.readFile( path.join( this.path, "core/user.json" ) ) ).toString() ) as IYourDashUserJson
@@ -180,7 +176,7 @@ export default class YourDashUser {
       coreApi.log.error( `Unable to write / read ${this.username}'s core/user.json` )
     }
   }
-  
+
   async getPermissions() {
     try {
       const currentUserJson = JSON.parse( ( await fs.readFile( path.join( this.path, "core/user.json" ) ) ).toString() ) as IYourDashUserJson
@@ -189,7 +185,7 @@ export default class YourDashUser {
       coreApi.log.error( "core:user", `Unable to read ${this.username}'s core/user.json` )
     }
   }
-  
+
   async hasPermission( permission: yourDashUserPermission ): Promise<boolean> {
     try {
       const currentUserJson = JSON.parse( ( await fs.readFile( path.join( this.path, "core/user.json" ) ) ).toString() ) as IYourDashUserJson
@@ -199,7 +195,7 @@ export default class YourDashUser {
       return false
     }
   }
-  
+
   async doesExist(): Promise<boolean> {
     try {
       await fs.access( this.path );
@@ -208,17 +204,17 @@ export default class YourDashUser {
       return false;
     }
   }
-  
+
   async setPassword( password: string ) {
     const hashedPassword = await hash( password );
-    
+
     try {
       await fs.writeFile( path.join( this.path, "./core/password.enc" ), hashedPassword );
     } catch ( e ) {
       coreApi.log.error( `unable to create a new password for user ${ this.username }` );
     }
   }
-  
+
   getLoginSessionById( sessionId: number ): YourDashSession<any> | undefined {
     try {
       // return a YourDashSession which has the sessionId as its id, find the correct session and use it as an input
@@ -231,7 +227,7 @@ export default class YourDashUser {
       return undefined;
     }
   }
-  
+
   getLoginSessionByToken( token: string ): YourDashSession<any> | undefined {
     try {
       // return a YourDashSession which has the sessionId as its id, find the correct session and use it as an input
@@ -244,26 +240,26 @@ export default class YourDashUser {
       return undefined;
     }
   }
-  
+
   async getAllLoginSessions() {
     return JSON.parse( ( await fs.readFile( path.resolve( this.path, "core/sessions.json" ) ) ).toString() );
   }
-  
+
   async getDatabase() {
     return await coreApi.users.__internal__getUserDatabase( this.username );
   }
-  
+
   saveDatabase() {
     coreApi.users.__internal__addUserDatabaseToSaveQueue( this.username );
   }
-  
+
   getAppDirectory( applicationName: string ): string {
     return path.join( this.path, `apps/${ applicationName }/` );
   }
-  
+
   async update() {
     const currentUserJson = JSON.parse( ( await fs.readFile( path.join( this.path, "core/user.json" ) ) ).toString() ) as IYourDashUserJson
-    
+
     // noinspection FallThroughInSwitchStatementJS
     switch ( currentUserJson.version ) {
     case undefined:

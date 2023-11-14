@@ -1,16 +1,22 @@
 {
-  "extends": "@electron-toolkit/tsconfig/tsconfig.web.json",
   "compilerOptions": {
     "composite": true,
+    "allowImportingTsExtensions": true
   },
   "include": [
     "src/renderer/**/*.ts",
     "src/preload/*.d.ts",
     "../shared/**/*.ts",
     "../applications/**/desktop-frontend",
-    "../applications/**/shared"
+    "../applications/**/shared",
+    "../uikit/"
   ],
   "exclude": [
     "node_modules"
+  ],
+  "references": [
+    {
+      "path": "../uikit"
+    }
   ]
 }
