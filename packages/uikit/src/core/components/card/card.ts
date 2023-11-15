@@ -30,7 +30,7 @@ export default class Card extends UKComponent<CardProps, never, CardSlots> {
   private actionsDomElement: HTMLDivElement
 
   constructor( props: CardProps ) {
-    super( props );
+    super();
 
     this.domElement = document.createElement( "div" );
 

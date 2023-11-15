@@ -16,7 +16,7 @@ export interface ButtonProps extends UKComponentProps {
 
 export default class Button extends UKComponent<ButtonProps, {}, {}> {
   constructor( props: ButtonProps ) {
-    super( props );
+    super();
 
     this.domElement = document.createElement( "button" )
     this.setLabel( props.label )

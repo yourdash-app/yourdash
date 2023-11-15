@@ -4,3 +4,6 @@
  */
 
 export { default as Button } from "./button/button.ts"
+export { default as Card } from "./card/card.ts"
+export { default as Icon } from "./icon/icon.ts"
+export { default as IconButton } from "./iconButton/iconButton.ts"

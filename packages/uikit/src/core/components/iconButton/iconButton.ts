@@ -9,7 +9,7 @@ import State from "../../state.ts";
 import { UKIcon } from "../../icons/icons.ts";
 
 export interface IconButtonProps extends UKComponentProps {
-  icon: UKIcon,
+  icon: keyof typeof UKIcon,
   onClick: () => void,
   size?: "small" | "medium" | "large",
   transparent?: boolean,
@@ -22,7 +22,7 @@ export interface IconButtonState extends UKComponentState {
 
 export default class IconButton extends UKComponent<IconButtonProps, IconButtonState, UKComponentSlots> {
   constructor( props: IconButtonProps ) {
-    super( props );
+    super();
 
     this.state = {
       label: new State<string>( props.label )
@@ -34,7 +34,7 @@ export default class IconButton extends UKComponent<IconButtonProps, IconButtonS
     this.state.label.addListener( label => this.domElement.innerText = label )
 
     if ( this.props.size ) {
-      this.setSize( this.props.size )
+      this.setSize( props.size )
     }
 
     if ( this.props.transparent ) {

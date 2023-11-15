@@ -1,24 +1,18 @@
-import * as UIKit from "../../../../uikit/src/core/index.ts";
+import * as UIKit from "@yourdash/uikit/src/core/index";
 
 class ApplicationCore {
   electron: ( typeof window )["electron"];
+  uiKitRoot: UIKit.default;
 
   constructor() {
     this.electron = window.electron;
+    this.uiKitRoot = new UIKit.default( document.getElementById( "core-application" )! );
   }
 
   init(): this {
     this.electron.ipcRenderer.postMessage( "core-log-renderer-startup", "ok" );
 
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    // noinspection JSPotentiallyInvalidConstructorUsage
-    const uk = new UIKit.default( document.getElementById( "core-application" )! );
-
-    uk.add( UIKit.Button, { label: "Hello", onClick() { console.log( "a" ); } } );
-    uk.add( UIKit.Button, { label: "Hello", onClick() { console.log( "a" ); } } );
-    uk.add( UIKit.Button, { label: "Hello", onClick() { console.log( "a" ); } } );
-    uk.add( UIKit.Button, { label: "Hello", onClick() { console.log( "a" ); } } );
-    uk.add( UIKit.Button, { label: "Hello", onClick() { console.log( "a" ); } } );
+    this.uiKitRoot.add( UIKit.Button, { label: "Hello", onClick() { console.log( "Hello World" ); } } );
 
     return this;
   }
