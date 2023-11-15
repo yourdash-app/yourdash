@@ -3,7 +3,8 @@
     "composite": true,
     "types": [
       "electron-vite/node"
-    ]
+    ],
+    "esModuleInterop": true
   },
   "include": [
     "electron.vite.config.*",

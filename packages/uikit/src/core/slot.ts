@@ -15,7 +15,7 @@ export default class UKComponentSlot extends State<UKComponent<UKComponentState,
     this.domElement = containingDomElement
   }
 
-  createComponent<T extends UKComponent<UKComponentState, UKComponentSlots>>( component: typeof T, props: T ) {
+  createComponent<T extends UKComponent>( component: new ( props: T["props"] ) => T, props: T["props"] ) {
     const comp = new component( props )
 
     comp.parentDomElement = this.domElement
@@ -24,7 +24,7 @@ export default class UKComponentSlot extends State<UKComponent<UKComponentState,
     return comp
   }
 
-  addComponent( component: UKComponent<UKComponentState, UKComponentSlots> ) {
+  addComponent( component: UKComponent ) {
     component.parentDomElement = this.domElement
     component.parentDomElement.appendChild( component.domElement )
 

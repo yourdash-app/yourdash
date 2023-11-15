@@ -1,10 +1,10 @@
 {
   "name": "desktop-client",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "The YourDash Desktop Application",
   "main": "./out/main/index.js",
   "author": "Ewsgit",
-  "licence": "MIT",
+  "license": "MIT",
   "homepage": "https://yourdash.pages.dev",
   "scripts": {
     "lint": "eslint . --ext .ts --fix",

@@ -12,22 +12,22 @@ import csi from "../helpers/csi";
 const AppLayout: React.FC = () => {
   const [loaded, setLoaded] = React.useState<boolean>( false );
   const isStandalone = new URLSearchParams( window.location.search ).has( "standalone" )
-  
+
   useEffect( () => {
     const timer = setTimeout( () => {
       window.location.reload()
     }, 5000 )
-    
+
     csi.getUserDB().then( () => {
       setLoaded( true );
       clearTimeout( timer )
     } )
-    
+
     return () => {
       clearTimeout( timer )
     }
   }, [] );
-  
+
   if ( !loaded )
     return <div className={"w-full h-full flex items-center justify-center flex-col gap-4"}>
       <Spinner/>
@@ -44,12 +44,12 @@ const AppLayout: React.FC = () => {
         This should not take longer than 10 seconds
       </Card>
     </div>
-  
+
   // Standalone mode displays only the application and not the Panel
   if ( isStandalone ) {
     return <Outlet />;
   }
-  
+
   return <PanelLayout />
 }
 
