@@ -4,14 +4,13 @@
  */
 
 import UKComponent from "../../component.ts";
-import { UKIconDictionary } from "../../icons/dict/iconDictionary.ts";
 import styles from "./icon.module.scss";
 import { UKIcon } from "../../icons/icons.ts";
 
 type COLOR = `#${ string }` | `rgb(${ string })` | `rgba(${ string })` | `var(--${ string })` | "currentColor"
 
 export interface IconProps {
-    icon: UKIcon,
+    icon: keyof typeof UKIcon,
     useDefaultColor?: boolean,
     color?: COLOR
 }
@@ -19,12 +18,12 @@ export interface IconProps {
 export default class Icon extends UKComponent {
   constructor( props: IconProps ) {
     super();
-    
+
     this.domElement = document.createElement( "div" );
-    
+
     this.domElement.classList.add( styles.component )
-    
-    UKIconDictionary[ props.icon ]().then( icon => {
+
+    UKIcon[ props.icon ]().then( icon => {
       if ( props.useDefaultColor ) {
         this.domElement.style.backgroundImage = `url(${ icon.default })`
         this.domElement.style.backgroundPosition = "center"
@@ -42,7 +41,7 @@ export default class Icon extends UKComponent {
         this.domElement.style.maskSize = "cover"
       }
     } )
-    
+
     return this
   }
 }
