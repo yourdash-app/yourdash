@@ -3,8 +3,6 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { StorePromotedApplication } from "./storePromotedApplication.js"
-
 interface IStoreCategory {
   id: string,
   icon: string,
@@ -18,4 +16,4 @@ interface IStoreCategory {
   }[]
 }
 
-export {type IStoreCategory}
+export { type IStoreCategory }

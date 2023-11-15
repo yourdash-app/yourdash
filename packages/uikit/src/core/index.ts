@@ -8,8 +8,6 @@
 import UKComponent from "./component.ts";
 import defaultStyles from "./default.module.scss"
 
-export {}
-
 // @ts-ignore
 window.__uikit__ = {
   componentTree: [],
