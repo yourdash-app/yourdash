@@ -3,8 +3,6 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
-
 .uikit {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   font-weight: 400;
@@ -60,8 +58,9 @@
   /* font weights */
   --weight-regular: 400;
   --weight-medium: 500;
-  --weight-semibold: 600;
-  --weight-bold: 700;
+  --weight-semibold: 700;
+  --weight-bold: 800;
+  --weight-black: 900;
 
   /* background */
   --bg: var(--base-800);
@@ -88,16 +87,27 @@
   --container-tertiary-padding: 0.5rem;
   --container-tertiary-rounding: 0.25rem;
 
-  /* button */
-  --button-bg: var(--base-600);
-  --button-fg: var(--base-200);
-  --button-border: var(--border-width) solid #aaa3;
-  --button-hover-bg: var(--base-650);
-  --button-hover-fg: var(--base-50);
-  --button-hover-border: var(--border-width) solid #aaa6;
-  --button-active-bg: var(--base-450);
-  --button-active-fg: var(--base-1000);
-  --button-active-border: var(--border-width) solid #0003;
+  /* primary button */
+  --button-primary-bg: var(--base-700);
+  --button-primary-fg: var(--base-200);
+  --button-primary-border: var(--border-width) solid #aaa3;
+  --button-primary-hover-bg: var(--base-650);
+  --button-primary-hover-fg: var(--base-50);
+  --button-primary-hover-border: var(--border-width) solid #aaa6;
+  --button-primary-active-bg: var(--base-450);
+  --button-primary-active-fg: var(--base-1000);
+  --button-primary-active-border: var(--border-width) solid #0003;
+
+  /* secondary button */
+  --button-secondary-bg: var(--base-600);
+  --button-secondary-fg: var(--base-200);
+  --button-secondary-border: var(--border-width) solid #aaa3;
+  --button-secondary-hover-bg: var(--base-650);
+  --button-secondary-hover-fg: var(--base-50);
+  --button-secondary-hover-border: var(--border-width) solid #aaa6;
+  --button-secondary-active-bg: var(--base-450);
+  --button-secondary-active-fg: var(--base-1000);
+  --button-secondary-active-border: var(--border-width) solid #0003;
 
   /* small button */
   --button-small-padding: 0.3125rem 0.75rem;
@@ -131,8 +141,7 @@
   --input-focus-outline: 0.25rem solid #445599;
   --input-focus-outline-active: 0.25rem solid #5566aa;
 
-  /* TODO: REMOVE AFTER TESTING */
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
+  * {
+    font-family: "Inter", sans-serif;
+  }
 }

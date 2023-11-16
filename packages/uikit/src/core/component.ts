@@ -16,10 +16,10 @@ export default class UKComponent<ComponentProps extends UKComponentProps = UKCom
   slots: ComponentSlots;
   props: ComponentProps;
 
-  constructor() {
+  constructor( props: ComponentProps = {} ) {
     this.state = {} as ComponentState;
     this.slots = {} as ComponentSlots;
-    this.props = {} as ComponentProps;
+    this.props = props as ComponentProps;
     this.domElement = document.createElement( "uk-empty-component" ) as HTMLDivElement;
 
     return this;
