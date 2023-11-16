@@ -11,28 +11,29 @@ export interface ButtonProps extends UKComponentProps {
   onClick: () => void,
   size?: "small" | "medium" | "large",
   transparent?: boolean,
-  disabled?: boolean
+  disabled?: boolean,
+  type?: "primary" | "secondary" | "tertiary",
 }
 
-export default class Button extends UKComponent<ButtonProps, {}, {}> {
+export default class Button extends UKComponent<ButtonProps> {
   constructor( props: ButtonProps ) {
-    super();
+    super( props );
 
     this.domElement = document.createElement( "button" )
     this.setLabel( props.label )
     this.domElement.classList.add( styles.component )
 
-    if ( this.props.size ) {
+    if ( this.props.size )
       this.setSize( this.props.size )
-    }
 
-    if ( this.props.transparent ) {
+    if ( this.props.transparent )
       this.setTransparent( true )
-    }
 
-    if ( this.props.disabled ) {
+    if ( this.props.disabled )
       this.setDisabled( true )
-    }
+
+    if ( !this.props.type )
+      this.setType( "secondary" )
 
     this.domElement.addEventListener( "click", this.click.bind( this ) )
   }
@@ -71,6 +72,7 @@ export default class Button extends UKComponent<ButtonProps, {}, {}> {
       this.domElement.classList.add( styles.sizeLarge )
       break;
     default:
+      this.domElement.classList.add( styles.sizeMedium )
       break;
     }
 
@@ -80,6 +82,30 @@ export default class Button extends UKComponent<ButtonProps, {}, {}> {
   setLabel( label: string ): this {
     this.domElement.innerText = label
     this.domElement.ariaLabel = label
+
+    return this
+  }
+
+  setType( type: Required<ButtonProps["type"]> ): this {
+    this.props.type = type
+
+    this.domElement.classList.remove( styles.typePrimary )
+    this.domElement.classList.remove( styles.typeSecondary )
+    this.domElement.classList.remove( styles.typeTertiary )
+
+    switch ( type ) {
+    case "primary":
+      this.domElement.classList.add( styles.typePrimary )
+      break;
+    case "secondary":
+      this.domElement.classList.add( styles.typeSecondary )
+      break;
+    case "tertiary":
+      this.domElement.classList.add( styles.typeTertiary )
+      break;
+    default:
+      break;
+    }
 
     return this
   }

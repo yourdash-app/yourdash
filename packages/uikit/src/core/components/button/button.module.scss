@@ -12,17 +12,17 @@
   vertical-align: middle;
   margin: 0;
   overflow: hidden;
-  border: var(--button-border);
+  border: var(--button-secondary-border);
   white-space: nowrap;
 
-  border-radius: var(--button-rounding);
-  padding: var(--button-padding);
-  font-size: var(--button-fontsize);
+  border-radius: var(--button-secondary-rounding);
+  padding: var(--button-secondary-padding);
+  font-size: var(--button-secondary-fontsize);
   font-weight: var(--weight-semibold);
-  line-height: var(--button-lineheight);
+  line-height: var(--button-secondary-lineheight);
 
-  color: rgb(var(--button-fg));
-  background-color: rgb(var(--button-bg));
+  color: rgb(var(--button-secondary-fg));
+  background-color: rgb(var(--button-secondary-bg));
   transition: var(--transition);
   min-width: 6rem;
   width: max-content;
@@ -31,15 +31,15 @@
     cursor: pointer;
 
     transition: var(--transition-fast);
-    background-color: rgb(var(--button-hover-bg));
-    color: rgb(var(--button-hover-fg));
-    border: var(--button-hover-border);
+    background-color: rgb(var(--button-secondary-hover-bg));
+    color: rgb(var(--button-secondary-hover-fg));
+    border: var(--button-secondary-hover-border);
   }
 
   &:active:not([disabled="true"]) {
-    background-color: rgb(var(--button-active-bg));
-    color: rgb(var(--button-active-fg));
-    border: var(--button-active-border);
+    background-color: rgb(var(--button-secondary-active-bg));
+    color: rgb(var(--button-secondary-active-fg));
+    border: var(--button-secondary-active-border);
   }
 
   &.transparent {
@@ -68,4 +68,16 @@
   font-size: var(--button-large-fontsize);
   font-weight: var(--button-large-fontweight);
   line-height: var(--button-large-lineheight);
+}
+
+.typePrimary {
+
+}
+
+.typeSecondary {
+
+}
+
+.typeTertiary {
+
 }

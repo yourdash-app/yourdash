@@ -3,8 +3,8 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import State from "./state";
 import UKComponent, { UKComponentSlots, UKComponentState } from "./component";
+import State from "./state";
 
 export default class UKComponentSlot extends State<UKComponent<UKComponentState, UKComponentSlots>> {
   domElement: HTMLElement
@@ -24,7 +24,7 @@ export default class UKComponentSlot extends State<UKComponent<UKComponentState,
     return comp
   }
 
-  addComponent( component: UKComponent ) {
+  add( component: UKComponent ) {
     component.parentDomElement = this.domElement
     component.parentDomElement.appendChild( component.domElement )
 
