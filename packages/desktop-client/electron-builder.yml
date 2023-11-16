@@ -1,5 +1,5 @@
-appId: com.electron.app
-productName: desktop-client
+appId: io.github.yourdash-app.yourdash
+productName: YourDash Desktop Client
 directories:
   buildResources: build
 files:
@@ -12,12 +12,12 @@ files:
 asarUnpack:
   - resources/**
 win:
-  executableName: desktop-client
+  executableName: ydsh-desktop
 nsis:
   artifactName: ${name}-${version}-setup.${ext}
   shortcutName: ${productName}
   uninstallDisplayName: ${productName}
-  createDesktopShortcut: always
+  createDesktopShortcut: true
 mac:
   entitlementsInherit: build/entitlements.mac.plist
   extendInfo:
@@ -33,7 +33,7 @@ linux:
     - AppImage
     - snap
     - deb
-  maintainer: electronjs.org
+  maintainer: yourdash.pages.dev
   category: Utility
 appImage:
   artifactName: ${name}-${version}.${ext}
