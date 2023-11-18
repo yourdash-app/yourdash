@@ -1,3 +1,8 @@
+/*
+ * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
 import { electronApp, is, optimizer } from "@electron-toolkit/utils";
 import { app, BrowserWindow, ipcMain, shell } from "electron";
 import { join } from "path";
@@ -9,13 +14,14 @@ function createWindow(): void {
     width: 1024,
     height: 768,
     show: true,
-    autoHideMenuBar: true,
     icon: APPLICATION_ICON,
     webPreferences: {
-      preload: join( __dirname, "../preload/index.js" ),
-      sandbox: false,
-    },
+      preload: join( __dirname, "../preload/index.js" ), sandbox: false
+    }
   } );
+
+  // Remove the menu bar from the window
+  mainWindow.removeMenu();
 
   mainWindow.on( "ready-to-show", () => {
     mainWindow.show();
@@ -26,12 +32,22 @@ function createWindow(): void {
     return { action: "deny" };
   } );
 
-  // Load the internal vite server if in development mode
-  if ( is.dev && process.env["ELECTRON_RENDERER_URL"] ) {
-    mainWindow.loadURL( process.env["ELECTRON_RENDERER_URL"] );
+  if ( is.dev && process.env[ "ELECTRON_RENDERER_URL" ] ) {
+    // Load the internal vite server if in development mode
+    mainWindow.loadURL( process.env[ "ELECTRON_RENDERER_URL" ] );
   } else {
+    // Load the index.html when running the app in production
     mainWindow.loadFile( join( __dirname, "../renderer/index.html" ) );
   }
+
+  ipcMain.on( "core-log-renderer-startup", ( _event, msg ) => {
+    console.log( msg );
+  } );
+
+  ipcMain.on( "core:control:zoom", ( _event, scale ) => {
+    console.log( scale );
+    mainWindow.webContents.setZoomFactor( scale );
+  } );
 }
 
 // This method will be called when Electron has finished
@@ -50,8 +66,10 @@ app.whenReady().then( () => {
   createWindow();
 
   // Only for Darwin
-  app.on( "activate", function () {
-    if ( BrowserWindow.getAllWindows().length === 0 ) createWindow();
+  app.on( "activate", function() {
+    if ( BrowserWindow.getAllWindows().length === 0 ) {
+      createWindow();
+    }
   } );
 } );
 
@@ -63,9 +81,3 @@ app.on( "window-all-closed", () => {
     app.quit();
   }
 } );
-
-ipcMain.on( "core-log-renderer-startup", ( _event, msg ) => {
-  console.log( msg );
-} );
-
-// TODO: implement loaded application's module loading
