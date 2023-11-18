@@ -16,7 +16,7 @@ export default class UKComponent<ComponentProps extends UKComponentProps = UKCom
   slots: ComponentSlots;
   props: ComponentProps;
 
-  constructor( props: ComponentProps = {} ) {
+  constructor( props: ComponentProps ) {
     this.state = {} as ComponentState;
     this.slots = {} as ComponentSlots;
     this.props = props as ComponentProps;
