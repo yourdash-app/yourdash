@@ -5,25 +5,75 @@
 
 .component {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration-line: none;
-  vertical-align: middle;
+  flex-direction: column;
   margin: 0;
-  padding: var(--container-padding);
+  //padding: var(--container-padding);
+  background: gray;
+  padding: 0.25rem;
 }
 
-.levelSecondary {
+.header {
+  background: cyan;
+  height: 2.5rem;
+  padding: 0.25rem;
+
+  .label {
+    color: rgb(var(--container-fg));
+    font-size: 1.5rem;
+    font-weight: var(--weight-bold);
+  }
+}
+
+.actionsSlot {
+  background: yellow;
+  padding: 1rem;
+}
+
+.contentSlot {
+  background: palevioletred;
+  padding: 0.5rem;
+}
+
+.headerExtrasSlot {
+  background: gold;
+  height: 100%;
+  margin-left: auto;
+  width: max-content;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+}
+
+.contentHeaderSlot {
+  background: mediumspringgreen;
+  padding: 0.5rem;
+  border-bottom: 0.125rem solid rgb(var(--container-border));
+  margin-bottom: 0.25rem;
+}
+
+.contentFooterSlot {
+  background: #00b8ff;
+  padding: 0.5rem;
+  border-top: 0.125rem solid rgb(var(--container-border));
+  margin-top: 0.25rem;
+}
+
+.cardLevel0 {
   padding: var(--container-secondary-padding);
   border-radius: var(--container-secondary-rounding);
 }
 
-.levelTertiary {
+.cardLevel1 {
+  padding: var(--container-secondary-padding);
+  border-radius: var(--container-secondary-rounding);
+}
+
+.cardLevel2 {
   padding: var(--container-tertiary-padding);
   border-radius: var(--container-tertiary-rounding);
 }
 
-.levelQuaternary {
+.cardLevel3 {
   padding: var(--container-quarternary-padding);
   border-radius: var(--container-quarternary-rounding);
 }
