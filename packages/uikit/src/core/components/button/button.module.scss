@@ -17,14 +17,14 @@
 
   border-radius: var(--button-secondary-rounding);
   padding: var(--button-secondary-padding);
-  font-size: var(--button-secondary-fontsize);
+  font-size: 0.8rem;
+  height: 1.5rem;
   font-weight: var(--weight-semibold);
-  line-height: var(--button-secondary-lineheight);
 
   color: rgb(var(--button-secondary-fg));
   background-color: rgb(var(--button-secondary-bg));
   transition: var(--transition);
-  min-width: 6rem;
+  min-width: 4.5rem;
   width: max-content;
 
   &:hover:not([disabled="true"]) {
@@ -50,7 +50,7 @@
 
   &[disabled="true"] {
     cursor: not-allowed;
-    filter: brightness(0.95);
+    filter: brightness(0.9);
   }
 }
 

@@ -38,7 +38,7 @@ export default class Button extends UKComponent<ButtonProps> {
     this.domElement.addEventListener( "click", this.click.bind( this ) )
   }
 
-  setDisabled( disabled: boolean ): this {
+  setDisabled( disabled: ButtonProps["disabled"] ): this {
     if ( disabled ) {
       this.domElement.setAttribute( "disabled", "true" )
     } else {
@@ -48,7 +48,7 @@ export default class Button extends UKComponent<ButtonProps> {
     return this
   }
 
-  setTransparent( transparent: boolean ): this {
+  setTransparent( transparent: ButtonProps["transparent"] ): this {
     if ( transparent ) {
       this.domElement.classList.add( styles.transparent )
     } else {

@@ -9,10 +9,10 @@ import State from "./state";
 export default class UKComponentSlot extends State<UKComponent<UKComponentState, UKComponentSlots>> {
   domElement: HTMLElement
 
-  constructor( containingDomElement: HTMLElement ) {
+  constructor( domElement: HTMLElement ) {
     super();
 
-    this.domElement = containingDomElement
+    this.domElement = domElement
   }
 
   createComponent<T extends UKComponent>( component: new ( props: T["props"] ) => T, props: T["props"] ) {

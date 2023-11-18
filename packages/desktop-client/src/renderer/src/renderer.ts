@@ -11,14 +11,18 @@ class ApplicationCore {
     this.uiKitRoot = new UIKit.default( document.getElementById( "core-application" )! );
 
     // Load the inter font
+    // noinspection SpellCheckingInspection
     document.fonts.add( new FontFace( "Inter", "url(\"../assets/Inter/Inter-VariableFont_slnt,wght.ttf\")" ) )
+
+    return this
   }
 
   init(): this {
+    const self = this; // eslint-disable-line @typescript-eslint/no-this-alias
     this.electron.ipcRenderer.postMessage( "core-log-renderer-startup", "ok" );
 
     ["primary", "secondary", "tertiary"].forEach( buttonType => {
-      const row = this.uiKitRoot.add( Card, {} );
+      const row = this.uiKitRoot.add( Card, {  } );
       ["small", "medium", "large"].forEach( buttonSize => {
         row.slots.content.createComponent( UIKit.Button, {
           label: "Button",
@@ -29,6 +33,20 @@ class ApplicationCore {
           size: buttonSize as "small" | "medium" | "large",
         } );
       } )
+    } )
+
+    this.uiKitRoot.add( UIKit.Button, {
+      label: "Zoom 100%",
+      onClick() {
+        self.electron.ipcRenderer.send( "core:control:zoom", 1 )
+      }
+    } )
+
+    this.uiKitRoot.add( UIKit.Button, {
+      label: "Zoom 200%",
+      onClick() {
+        self.electron.ipcRenderer.send( "core:control:zoom", 2 )
+      }
     } )
 
     return this;
