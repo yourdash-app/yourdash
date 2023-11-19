@@ -7,73 +7,83 @@
   display: flex;
   flex-direction: column;
   margin: 0;
-  //padding: var(--container-padding);
-  background: gray;
-  padding: 0.25rem;
+  overflow: hidden;
 }
 
 .header {
-  background: cyan;
-  height: 2.5rem;
-  padding: 0.25rem;
+  padding: 0.5rem 0.5rem 0 1rem;
+  display: flex;
+  align-items: center;
 
-  .label {
+  .title {
     color: rgb(var(--container-fg));
     font-size: 1.5rem;
-    font-weight: var(--weight-bold);
+    font-weight: var(--weight-semibold);
   }
 }
 
 .actionsSlot {
-  background: yellow;
-  padding: 1rem;
+  padding: 0 0.5rem 0.5rem;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  gap: 0.25rem;
+
+  &:not(:has(> *)) {
+    visibility: hidden;
+    display: none;
+  }
+}
+
+.actionsFillWidth {
+  width: 100%;
+  justify-content: center;
+
+  & > * {
+    flex-grow: 1;
+  }
 }
 
 .contentSlot {
-  background: palevioletred;
-  padding: 0.5rem;
+  color: rgb(var(--container-secondary-fg));
+  display: flex;
+  gap: 0.25rem;
+  margin: var(--card-padding);
+
+  &:not(:has(> *)) {
+    visibility: hidden;
+    display: none;
+  }
 }
 
 .headerExtrasSlot {
-  background: gold;
   height: 100%;
   margin-left: auto;
   width: max-content;
   display: flex;
   align-items: center;
   justify-content: end;
-}
-
-.contentHeaderSlot {
-  background: mediumspringgreen;
-  padding: 0.5rem;
-  border-bottom: 0.125rem solid rgb(var(--container-border));
-  margin-bottom: 0.25rem;
-}
-
-.contentFooterSlot {
-  background: #00b8ff;
-  padding: 0.5rem;
-  border-top: 0.125rem solid rgb(var(--container-border));
-  margin-top: 0.25rem;
+  padding-right: 0.5rem;
 }
 
 .cardLevel0 {
-  padding: var(--container-secondary-padding);
-  border-radius: var(--container-secondary-rounding);
+  --card-padding: var(--container-padding);
+  --card-rounding: var(--container-rounding);
+  border-radius: var(--card-rounding);
+  background: rgb(var(--container-bg));
 }
 
 .cardLevel1 {
-  padding: var(--container-secondary-padding);
-  border-radius: var(--container-secondary-rounding);
+  --card-padding: var(--container-secondary-padding);
+  --card-rounding: var(--container-secondary-rounding);
+  border-radius: var(--card-rounding);
+  background: rgb(var(--container-secondary-bg));
 }
 
 .cardLevel2 {
-  padding: var(--container-tertiary-padding);
-  border-radius: var(--container-tertiary-rounding);
-}
-
-.cardLevel3 {
-  padding: var(--container-quarternary-padding);
-  border-radius: var(--container-quarternary-rounding);
+  --card-padding: var(--container-tertiary-padding);
+  --card-rounding: var(--container-tertiary-rounding);
+  border-radius: var(--card-rounding);
+  background: rgb(var(--container-tertiary-bg));
 }

@@ -11,30 +11,30 @@ import { UKIcon } from "../core/icons/icons.ts";
 
 function init() {
   const ui = new UIKit( document.body );
-  
+
   createButtonsSection( ui );
 
-  ui.add( Icon, {
+  ui.createComponent( Icon, {
     icon: UKIcon.Archive
   } )
-  
-  ui.add( Icon, {
+
+  ui.createComponent( Icon, {
     icon: UKIcon.Apps
   } )
 
-  ui.add( Icon, {
+  ui.createComponent( Icon, {
     icon: UKIcon.ArrowDown
   } )
 
-  ui.add( Icon, {
+  ui.createComponent( Icon, {
     icon: UKIcon.Browser
   } )
 
-  ui.add( Icon, {
+  ui.createComponent( Icon, {
     icon: UKIcon.Broadcast
   } )
-  
-  ui.add( Image, {
+
+  ui.createComponent( Image, {
     src: "/vite.svg",
     alt: "logo"
   } );

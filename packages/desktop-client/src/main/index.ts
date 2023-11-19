@@ -4,7 +4,7 @@
  */
 
 import { electronApp, is, optimizer } from "@electron-toolkit/utils";
-import { app, BrowserWindow, ipcMain, shell } from "electron";
+import { app, BrowserWindow, ipcMain, Menu, MenuItem, shell } from "electron";
 import { join } from "path";
 import APPLICATION_ICON from "./resources/icon.png?asset";
 
@@ -15,13 +15,38 @@ function createWindow(): void {
     height: 768,
     show: true,
     icon: APPLICATION_ICON,
+    autoHideMenuBar: !is.dev,
     webPreferences: {
       preload: join( __dirname, "../preload/index.js" ), sandbox: false
     }
   } );
 
-  // Remove the menu bar from the window
-  mainWindow.removeMenu();
+  if ( is.dev ) {
+  // Set the custom menubar for the window
+    const mainWindowMenuBar = new Menu()
+    mainWindowMenuBar.append( new MenuItem( {
+      label: "Developer",
+      submenu: [
+        {
+          role: "reload",
+          accelerator: process.platform === "darwin" ? "Alt+Cmd+I" : "F5",
+          click: () => { console.log( "Electron rocks!" ) }
+        },
+        {
+          role: "forceReload",
+          accelerator: process.platform === "darwin" ? "Alt+Cmd+I" : "Ctrl+F5"
+        },
+        {
+          role: "toggleDevTools",
+          accelerator: process.platform === "darwin" ? "Alt+Cmd+I" : "Ctrl+Shift+I"
+        }
+      ]
+    } ) )
+
+    mainWindow.setMenu( mainWindowMenuBar )
+  } else {
+    mainWindow.removeMenu()
+  }
 
   mainWindow.on( "ready-to-show", () => {
     mainWindow.show();
@@ -59,8 +84,8 @@ app.whenReady().then( () => {
 
   // Default open or close DevTools by F12 in development
   // and ignore CommandOrControl + R in production.
-  app.on( "browser-window-created", ( _, window ) => {
-    optimizer.watchWindowShortcuts( window );
+  app.on( "browser-window-created", ( _, window ) => { // eslint-disable-line @typescript-eslint/no-unused-vars
+    // do nothing yet
   } );
 
   createWindow();
