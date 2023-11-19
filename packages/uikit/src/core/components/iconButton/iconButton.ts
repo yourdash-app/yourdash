@@ -4,6 +4,7 @@
  */
 
 import UKComponent, { UKComponentProps, UKComponentState, UKComponentSlots } from "../../component.ts";
+import { ButtonProps } from "../button/button.ts";
 import styles from "./iconButton.module.scss";
 import State from "../../state.ts";
 import { UKIcon } from "../../icons/icons.ts";
@@ -13,7 +14,8 @@ export interface IconButtonProps extends UKComponentProps {
   onClick: () => void,
   size?: "small" | "medium" | "large",
   transparent?: boolean,
-  disabled?: boolean
+  disabled?: boolean,
+  useDefaultColor?: boolean
 }
 
 export interface IconButtonState extends UKComponentState {
@@ -21,76 +23,175 @@ export interface IconButtonState extends UKComponentState {
 }
 
 export default class IconButton extends UKComponent<IconButtonProps, IconButtonState, UKComponentSlots> {
+  domElement: HTMLButtonElement;
+  iconDomElement: HTMLDivElement;
+
   constructor( props: IconButtonProps ) {
-    super();
+    super( props );
 
     this.state = {
       label: new State<string>( props.label )
-    }
+    };
 
-    this.domElement = document.createElement( "button" )
-    this.domElement.classList.add( styles.component )
+    this.domElement = document.createElement( "button" );
+    this.domElement.classList.add( styles.component );
 
-    this.state.label.addListener( label => this.domElement.innerText = label )
+    this.iconDomElement = document.createElement( "div" );
+    this.iconDomElement.classList.add( styles.icon );
+
+    this.domElement.appendChild( this.iconDomElement );
+
+    this.state.label.addListener( label => this.domElement.innerText = label );
 
     if ( this.props.size ) {
-      this.setSize( props.size )
+      this.setSize( props.size );
     }
 
     if ( this.props.transparent ) {
-      this.setTransparent( true )
+      this.setTransparent( true );
     }
 
     if ( this.props.disabled ) {
-      this.setDisabled( true )
+      this.setDisabled( true );
     }
 
-    this.domElement.addEventListener( "click", this.click.bind( this ) )
+    if ( props.useDefaultColor !== undefined ) {
+      this.setUseDefaultColor( props.useDefaultColor );
+    } else {
+      this.setUseDefaultColor( false );
+    }
+
+    if ( this.props.type === undefined ) {
+      this.setType( "secondary" );
+    } else {
+      this.setType( this.props.type );
+    }
+
+    this.setIcon( this.props.icon );
+
+    this.domElement.addEventListener( "click", this.click.bind( this ) );
   }
 
   setDisabled( disabled: boolean ): this {
     if ( disabled ) {
-      this.domElement.setAttribute( "disabled", "true" )
+      this.domElement.setAttribute( "disabled", "true" );
     } else {
-      this.domElement.removeAttribute( "disabled" )
+      this.domElement.removeAttribute( "disabled" );
     }
 
-    return this
+    return this;
   }
 
   setTransparent( transparent: boolean ): this {
     if ( transparent ) {
-      this.domElement.classList.add( styles.transparent )
+      this.domElement.classList.add( styles.transparent );
     } else {
-      this.domElement.classList.remove( styles.transparent )
+      this.domElement.classList.remove( styles.transparent );
     }
 
-    return this
+    return this;
   }
 
   setSize( size: Required<IconButtonProps["size"]> ): this {
-    this.props.size = size
+    this.props.size = size;
 
-    this.domElement.classList.remove( styles.sizeSmall )
-    this.domElement.classList.remove( styles.sizeLarge )
+    this.domElement.classList.remove( styles.sizeSmall );
+    this.domElement.classList.remove( styles.sizeLarge );
 
     switch ( size ) {
     case "small":
-      this.domElement.classList.add( styles.sizeSmall )
+      this.domElement.classList.add( styles.sizeSmall );
       break;
     case "large":
-      this.domElement.classList.add( styles.sizeLarge )
+      this.domElement.classList.add( styles.sizeLarge );
       break;
     default:
       break;
     }
 
+    return this;
+  }
+
+  setType( type: Required<ButtonProps["type"]> ): this {
+    this.props.type = type;
+
+    this.domElement.classList.remove( styles.typePrimary );
+    this.domElement.classList.remove( styles.typeSecondary );
+    this.domElement.classList.remove( styles.typeTertiary );
+
+    switch ( type ) {
+    case "primary":
+      this.domElement.classList.add( styles.typePrimary );
+      break;
+    case "secondary":
+      this.domElement.classList.add( styles.typeSecondary );
+      break;
+    case "tertiary":
+      this.domElement.classList.add( styles.typeTertiary );
+      break;
+    default:
+      break;
+    }
+
+    return this;
+  }
+
+  setIcon( icon: keyof typeof UKIcon ): this {
+    this.props.icon = icon;
+
+    this.iconDomElement.innerText = this.props.icon;
+
+    if ( this.props.useDefaultColor ) {
+      this.iconDomElement.style.backgroundImage = `url(${ UKIcon[ icon ] })`;
+      this.iconDomElement.style.backgroundPosition = "center";
+      this.iconDomElement.style.backgroundRepeat = "no-repeat";
+      this.iconDomElement.style.backgroundSize = "cover";
+    } else {
+      this.iconDomElement.style.webkitMaskImage = `url(${ UKIcon[ icon ] })`;
+      this.iconDomElement.style.webkitMaskPosition = "center";
+      this.iconDomElement.style.webkitMaskRepeat = "no-repeat";
+      this.iconDomElement.style.webkitMaskSize = "cover";
+      this.iconDomElement.style.backgroundColor = "currentColor";
+      this.iconDomElement.style.maskImage = `url(${ UKIcon[ icon ] })`;
+      this.iconDomElement.style.maskPosition = "center";
+      this.iconDomElement.style.maskRepeat = "no-repeat";
+      this.iconDomElement.style.maskSize = "cover";
+    }
+
     return this
   }
 
-  click(): this {
-    this.props.onClick()
 
-    return this
+  /*
+   ( useDefaultColor
+      ? {
+        backgroundImage: `url(${ icon })`,
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover"
+      }
+      : {
+        WebkitMaskImage: `url(${ icon })`,
+        WebkitMaskPosition: "center",
+        WebkitMaskRepeat: "no-repeat",
+        WebkitMaskSize: "cover",
+        backgroundColor: color || "currentColor",
+        maskImage: `url(${ icon })`,
+        maskPosition: "center",
+        maskRepeat: "no-repeat",
+        maskSize: "cover"
+      } )
+  */
+
+  setUseDefaultColor( useDefaultColor: boolean ): this {
+    this.props.useDefaultColor = useDefaultColor;
+
+    return this;
+  }
+
+  click(): this {
+    this.props.onClick();
+
+    return this;
   }
 }

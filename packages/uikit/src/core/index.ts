@@ -34,12 +34,26 @@ export default class UIKit {
         : "255, 255, 255"
     )
 
+    // Support the prefers-reduced-motion media query
+    if ( window.matchMedia( "(prefers-reduced-motion: reduce)" ).matches ) {
+      this.disableAnimations();
+    } else {
+      this.enableAnimations();
+    }
+
     return this
   }
 
-  add<T extends UKComponent>( component: new ( props: T["props"] ) => T, props: T["props"] ) {
-    const comp = new component( props )
+  enableAnimations() {
+    this.domElement.classList.remove( defaultStyles.noAnimations );
+  }
 
+  disableAnimations() {
+    this.domElement.classList.add( defaultStyles.noAnimations );
+  }
+
+  createComponent<T extends UKComponent>( component: new ( props: T["props"] ) => T, props: T["props"] = {} ) {
+    const comp = new component( props )
     comp.parentDomElement = this.domElement
     comp.parentDomElement.appendChild( comp.domElement )
 
