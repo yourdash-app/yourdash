@@ -42,6 +42,19 @@
   --base-950: 10, 15, 31;
   --base-1000: 2, 6, 23;
 
+  /* theme accent color palette */
+  --accent-100: 255, 255, 255;
+  --accent-200: 255, 204, 153;
+  --accent-300: 255, 153, 51;
+  --accent-400: 255, 128, 0;
+  --accent-500: 230, 115, 0;
+  --accent-600: 204, 102, 0;
+  --accent-700: 153, 76, 0;
+  --accent-800: 102, 51, 0;
+  --accent-900: 51, 25, 0;
+  --accent-1000: 0, 0, 0;
+
+
   /*
       Default theme variables
 
@@ -56,6 +69,7 @@
   --border-width: 0.0625rem;
 
   /* font weights */
+  --weight-light: 300;
   --weight-regular: 400;
   --weight-medium: 500;
   --weight-semibold: 700;
@@ -71,7 +85,7 @@
   --container-fg: var(--base-200);
   --container-border: var(--base-600);
   --container-padding: 1rem;
-  --container-rounding: 1rem;
+  --container-rounding: 0.75rem;
 
   /* secondary container */
   --container-secondary-bg: var(--base-600);
@@ -88,18 +102,18 @@
   --container-tertiary-rounding: 0.25rem;
 
   /* primary button */
-  --button-primary-bg: var(--base-700);
-  --button-primary-fg: var(--base-200);
-  --button-primary-border: var(--border-width) solid #aaa3;
-  --button-primary-hover-bg: var(--base-650);
-  --button-primary-hover-fg: var(--base-50);
-  --button-primary-hover-border: var(--border-width) solid #aaa6;
-  --button-primary-active-bg: var(--base-450);
-  --button-primary-active-fg: var(--base-1000);
-  --button-primary-active-border: var(--border-width) solid #0003;
+  --button-primary-bg: var(--base-600);
+  --button-primary-fg: var(--accent-0);
+  --button-primary-border: var(--border-width) solid rgb(var(--accent-600));
+  --button-primary-hover-bg: var(--accent-600);
+  --button-primary-hover-fg: var(--accent-1000);
+  --button-primary-hover-border: var(--border-width) solid rgb(var(--accent-500));
+  --button-primary-active-bg: var(--accent-400);
+  --button-primary-active-fg: var(--accent-1000);
+  --button-primary-active-border: var(--border-width) solid rgb(var(--accent-300));
 
   /* secondary button */
-  --button-secondary-bg: var(--base-600);
+  --button-secondary-bg: var(--base-700);
   --button-secondary-fg: var(--base-200);
   --button-secondary-border: var(--border-width) solid #aaa3;
   --button-secondary-hover-bg: var(--base-650);
@@ -109,26 +123,31 @@
   --button-secondary-active-fg: var(--base-1000);
   --button-secondary-active-border: var(--border-width) solid #0003;
 
+  /* tertiary button */
+  --button-tertiary-bg: var(--base-800);
+  --button-tertiary-fg: var(--base-300);
+  --button-tertiary-border: var(--border-width) solid #aaa3;
+  --button-tertiary-hover-bg: var(--base-750);
+  --button-tertiary-hover-fg: var(--base-150);
+  --button-tertiary-hover-border: var(--border-width) solid #aaa6;
+  --button-tertiary-active-bg: var(--base-550);
+  --button-tertiary-active-fg: var(--base-900);
+  --button-tertiary-active-border: var(--border-width) solid #0003;
+
   /* small button */
-  --button-small-padding: 0.3125rem 0.75rem;
+  --button-small-padding: 0 0.5rem;
   --button-small-rounding: 0.1875rem;
-  --button-small-fontsize: 0.75rem;
-  --button-small-lineheight: 1rem;
-  --button-small-fontweight: var(--weight-regular);
+  --button-small-fontsize: 0.8rem;
 
   /* medium button */
-  --button-padding: 0.3125rem 0.75rem;
+  --button-padding: 0 0.75rem;
   --button-rounding: 0.25rem;
-  --button-fontsize: 0.875rem;
-  --button-lineheight: 1.25rem;
-  --button-fontweight: var(--weight-semibold);
+  --button-fontsize: 0.95rem;
 
   /* large button */
-  --button-large-padding: 0.3125rem 0.75rem;
+  --button-large-padding: 0 1rem;
   --button-large-rounding: 0.25rem;
   --button-large-fontsize: 1rem;
-  --button-large-lineheight: 1.375rem;
-  --button-large-fontweight: var(--weight-semibold);
 
   /* generic input */
   --input-rounding: 0.5rem;
@@ -143,5 +162,11 @@
 
   * {
     font-family: "Inter", sans-serif;
+  }
+}
+
+.noAnimations {
+  * {
+    transition-duration: 0s !important;
   }
 }

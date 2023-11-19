@@ -12,34 +12,32 @@
   vertical-align: middle;
   margin: 0;
   overflow: hidden;
-  border: var(--button-secondary-border);
+  border: var(--button-primary-border);
   white-space: nowrap;
-
-  border-radius: var(--button-secondary-rounding);
-  padding: var(--button-secondary-padding);
-  font-size: 0.8rem;
-  height: 1.5rem;
-  font-weight: var(--weight-semibold);
-
-  color: rgb(var(--button-secondary-fg));
-  background-color: rgb(var(--button-secondary-bg));
+  height: 1.75rem;
+  color: rgb(var(--button-primary-fg));
+  background-color: rgb(var(--button-primary-bg));
   transition: var(--transition);
   min-width: 4.5rem;
   width: max-content;
+  border-radius: var(--button-rounding);
+  padding: var(--button-padding);
+  font-size: var(--button-fontsize);
+  font-weight: var(--weight-regular);
 
   &:hover:not([disabled="true"]) {
     cursor: pointer;
 
     transition: var(--transition-fast);
-    background-color: rgb(var(--button-secondary-hover-bg));
-    color: rgb(var(--button-secondary-hover-fg));
-    border: var(--button-secondary-hover-border);
+    background-color: rgb(var(--button-primary-hover-bg));
+    color: rgb(var(--button-primary-hover-fg));
+    border: var(--button-primary-hover-border);
   }
 
   &:active:not([disabled="true"]) {
-    background-color: rgb(var(--button-secondary-active-bg));
-    color: rgb(var(--button-secondary-active-fg));
-    border: var(--button-secondary-active-border);
+    background-color: rgb(var(--button-primary-active-bg));
+    color: rgb(var(--button-primary-active-fg));
+    border: var(--button-primary-active-border);
   }
 
   &.transparent {
@@ -58,26 +56,52 @@
   border-radius: var(--button-small-rounding);
   padding: var(--button-small-padding);
   font-size: var(--button-small-fontsize);
-  font-weight: var(--button-small-fontweight);
-  line-height: var(--button-small-lineheight);
+  font-weight: var(--weight-light);
+  height: 1.5rem;
+  min-width: 4rem;
 }
 
 .sizeLarge {
   border-radius: var(--button-large-rounding);
   padding: var(--button-large-padding);
   font-size: var(--button-large-fontsize);
-  font-weight: var(--button-large-fontweight);
-  line-height: var(--button-large-lineheight);
-}
-
-.typePrimary {
-
+  font-weight: var(--weight-medium);
+  height: 2rem;
+  min-width: 5rem;
 }
 
 .typeSecondary {
+  background-color: rgb(var(--button-secondary-bg));
+  color: rgb(var(--button-secondary-fg));
+  border: var(--button-secondary-border);
 
+  &:hover:not([disabled="true"]) {
+    background-color: rgb(var(--button-secondary-hover-bg));
+    color: rgb(var(--button-secondary-hover-fg));
+    border: var(--button-secondary-hover-border);
+  }
+
+  &:active:not([disabled="true"]) {
+    background-color: rgb(var(--button-secondary-active-bg));
+    color: rgb(var(--button-secondary-active-fg));
+    border: var(--button-secondary-active-border);
+  }
 }
 
 .typeTertiary {
+  background-color: rgb(var(--button-tertiary-bg));
+  color: rgb(var(--button-tertiary-fg));
+  border: var(--button-tertiary-border);
 
+  &:hover:not([disabled="true"]) {
+    background-color: rgb(var(--button-tertiary-hover-bg));
+    color: rgb(var(--button-tertiary-hover-fg));
+    border: var(--button-tertiary-hover-border);
+  }
+
+  &:active:not([disabled="true"]) {
+    background-color: rgb(var(--button-tertiary-active-bg));
+    color: rgb(var(--button-tertiary-active-fg));
+    border: var(--button-tertiary-active-border);
+  }
 }

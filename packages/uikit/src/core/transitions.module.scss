@@ -1,0 +1,19 @@
+/*!
+ * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
+@keyframes UKAppear {
+  0% {
+    opacity: 0;
+    transform: scaleY(0.5) scaleX(0.75);
+  }
+  100% {
+    opacity: 1;
+    transform: scaleY(1) scaleX(1);
+  }
+}
+
+.UKTransition_appear {
+  animation: UKAppear ease-out 0.25s forwards;
+}

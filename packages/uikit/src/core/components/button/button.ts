@@ -32,8 +32,11 @@ export default class Button extends UKComponent<ButtonProps> {
     if ( this.props.disabled )
       this.setDisabled( true )
 
-    if ( !this.props.type )
+    if ( this.props.type === undefined ) {
       this.setType( "secondary" )
+    } else {
+      this.setType( this.props.type )
+    }
 
     this.domElement.addEventListener( "click", this.click.bind( this ) )
   }
@@ -72,7 +75,6 @@ export default class Button extends UKComponent<ButtonProps> {
       this.domElement.classList.add( styles.sizeLarge )
       break;
     default:
-      this.domElement.classList.add( styles.sizeMedium )
       break;
     }
 

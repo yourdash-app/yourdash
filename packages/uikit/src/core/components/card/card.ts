@@ -4,91 +4,81 @@
  */
 
 import UKComponent, { UKComponentSlots } from "../../component.ts";
-import * as UIKit from "../../index.ts";
 import UKComponentSlot from "../../slot.ts";
 import styles from "./card.module.scss";
+import transitionStyles from "../../transitions.module.scss"
 
 export interface CardProps {
-  label?: string,
+  title?: string,
   onClick?: () => void,
-  level?: 0 | 1 | 2 | 3
+  level?: 0 | 1 | 2,
+  actionsFillWidth?: boolean,
+  contentNoPadding?: boolean,
+  noBorder?: boolean
 }
 
 export interface CardSlots extends UKComponentSlots {
   actions: UKComponentSlot,
   content: UKComponentSlot,
   headerExtras: UKComponentSlot,
-  contentHeader: UKComponentSlot,
-  contentFooter: UKComponentSlot
 }
 
 export default class Card extends UKComponent<CardProps, never, CardSlots> {
-  private readonly labelDomElement: HTMLSpanElement
+  private readonly titleDomElement: HTMLSpanElement
   private readonly headerDomElement: HTMLDivElement
-  private readonly contentContainerDomElement: HTMLElement
 
   constructor( props: CardProps ) {
     super( props );
 
     this.domElement = document.createElement( "div" );
 
-    if ( props.level ) {
+    this.slots = {
+      actions: new UKComponentSlot( document.createElement( "div" ) ),
+      content: new UKComponentSlot( document.createElement( "div" ) ),
+      headerExtras: new UKComponentSlot( document.createElement( "div" ) ),
+    }
+
+    if ( props.level !== undefined ) {
       this.setLevel( props.level )
     } else {
       this.setLevel( 0 )
     }
 
-    this.slots = {
-      actions: new UKComponentSlot( document.createElement( "div" ) ),
-      content: new UKComponentSlot( document.createElement( "div" ) ),
-      headerExtras: new UKComponentSlot( document.createElement( "div" ) ),
-      contentHeader: new UKComponentSlot( document.createElement( "div" ) ),
-      contentFooter: new UKComponentSlot( document.createElement( "div" ) ),
+    if ( props.actionsFillWidth !== undefined ) {
+      this.setActionsFillWidth( props.actionsFillWidth )
     }
 
     this.slots.actions.domElement.classList.add( styles.actionsSlot );
     this.slots.content.domElement.classList.add( styles.contentSlot );
     this.slots.headerExtras.domElement.classList.add( styles.headerExtrasSlot );
-    this.slots.contentHeader.domElement.classList.add( styles.contentHeaderSlot );
-    this.slots.contentFooter.domElement.classList.add( styles.contentFooterSlot );
 
     this.headerDomElement = document.createElement( "div" );
     this.headerDomElement.classList.add( styles.header );
     this.domElement.appendChild( this.headerDomElement );
 
-    this.labelDomElement = document.createElement( "div" )
-    this.labelDomElement.innerText = this.props.label || "";
-    this.labelDomElement.classList.add( styles.label );
+    this.titleDomElement = document.createElement( "div" )
+    this.titleDomElement.innerText = this.props.title || "";
+    this.titleDomElement.classList.add( styles.title );
 
-    this.headerDomElement.appendChild( this.labelDomElement );
+    this.headerDomElement.appendChild( this.titleDomElement );
     this.headerDomElement.appendChild( this.slots.headerExtras.domElement );
 
-    this.contentContainerDomElement = document.createElement( "div" )
-    this.contentContainerDomElement.classList.add( styles.contentContainer )
-    this.domElement.appendChild( this.contentContainerDomElement )
-
-    this.contentContainerDomElement.appendChild( this.slots.contentHeader.domElement );
-
-    this.contentContainerDomElement.appendChild( this.slots.content.domElement )
-
-    this.contentContainerDomElement.appendChild( this.slots.contentFooter.domElement );
+    this.domElement.appendChild( this.slots.content.domElement );
 
     this.domElement.appendChild( this.slots.actions.domElement );
 
     this.domElement.classList.add( styles.component );
     this.domElement.addEventListener( "click", this.click.bind( this ) );
 
-    // TODO: REMOVE THIS AT A LATER DATE
-
-    this.setLabel( "Test Card" )
-
-    this.slots.headerExtras.createComponent( UIKit.Button, { label: "header extra button", onClick() { return 0 } } )
+    this.slots.content.domElement.classList.add( transitionStyles.UKTransition_appear )
+    this.slots.headerExtras.domElement.classList.add( transitionStyles.UKTransition_appear )
+    this.slots.actions.domElement.classList.add( transitionStyles.UKTransition_appear )
 
     return this
   }
 
-  setLabel( label: string ) {
-    this.labelDomElement.innerText = label;
+  setTitle( label: string ) {
+    this.titleDomElement.innerText = label;
     return this;
   }
 
@@ -117,5 +107,13 @@ export default class Card extends UKComponent<CardProps, never, CardSlots> {
     }
 
     return this
+  }
+
+  setActionsFillWidth( fillWidth: boolean ) {
+    if ( fillWidth ) {
+      this.slots.actions.domElement.classList.add( styles.actionsFillWidth )
+    } else {
+      this.slots.actions.domElement.classList.remove( styles.actionsFillWidth )
+    }
   }
 }
