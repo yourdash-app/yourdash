@@ -1,3 +1,8 @@
+/*
+ * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
 import * as UIKit from "@yourdash/uikit/src/core/index";
 import { Card } from "@yourdash/uikit/src/core/index";
 
@@ -17,8 +22,10 @@ class ApplicationCore {
     const self = this; // eslint-disable-line @typescript-eslint/no-this-alias
     this.electron.ipcRenderer.postMessage( "core-log-renderer-startup", "ok" );
 
+    const colContainer = this.uiKitRoot.createComponent( UIKit.Col );
+
     ["primary", "secondary", "tertiary"].forEach( ( buttonType, ind ) => {
-      const row = this.uiKitRoot.createComponent( Card, { actionsFillWidth: true } );
+      const row = colContainer.createComponent( Card, { actionsFillWidth: true } );
 
       row.setTitle( `Test Card ${ind}` )
 
@@ -45,6 +52,17 @@ class ApplicationCore {
         } )
       } )
     } )
+
+    const box1 = colContainer.createComponent( UIKit.Box )
+
+    box1.domElement.style.height = "5rem"
+    box1.setNoBorder( true )
+
+    const box2 = colContainer.createComponent( UIKit.Box )
+
+    box2.domElement.style.height = "5rem"
+    box2.setNoBorder( false )
+    box2.setNoRounding( true )
 
     const zoomRow = this.uiKitRoot.createComponent( UIKit.Row )
 

@@ -3,10 +3,11 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import UKSlotComponent from "./slotComponent.ts";
 import State from "./state.ts";
 
 export type UKComponentState = { [ key: string ]: State<any> } // eslint-disable-line @typescript-eslint/no-explicit-any
-export type UKComponentSlots = { [ key: string ]: State<UKComponent> }
+export type UKComponentSlots = { [ key: string ]: State<ValidUKComponent> }
 export type UKComponentProps = { [ key: string ]: any }
 
 export default class UKComponent<ComponentProps extends UKComponentProps = UKComponentProps, ComponentState extends UKComponentState = UKComponentState, ComponentSlots extends UKComponentSlots = UKComponentSlots> {
@@ -26,3 +27,5 @@ export default class UKComponent<ComponentProps extends UKComponentProps = UKCom
     return this;
   }
 }
+
+export type ValidUKComponent = UKComponent | UKSlotComponent
