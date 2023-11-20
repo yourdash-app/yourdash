@@ -5,7 +5,7 @@
 
 /** UIKit - a vanilla Typescript UI library (https://github.com/yourdash-app/yourdash/tree/main/packages/uikit) */
 
-import UKComponent from "./component.ts";
+import { ValidUKComponent } from "./component.ts";
 import defaultStyles from "./default.module.scss"
 
 // @ts-ignore
@@ -15,7 +15,7 @@ window.__uikit__ = {
 
 export default class UIKit {
   domElement: HTMLDivElement = document.createElement( "div" )
-  children: UKComponent[] = []
+  children: ValidUKComponent[] = []
 
   constructor( container: HTMLElement ) {
     // @ts-ignore
@@ -52,7 +52,7 @@ export default class UIKit {
     this.domElement.classList.add( defaultStyles.noAnimations );
   }
 
-  createComponent<T extends UKComponent>( component: new ( props: T["props"] ) => T, props: T["props"] = {} ) {
+  createComponent<T extends ValidUKComponent>( component: new ( props: T["props"] ) => T, props: T["props"] = {} ) {
     const comp = new component( props )
     comp.parentDomElement = this.domElement
     comp.parentDomElement.appendChild( comp.domElement )
