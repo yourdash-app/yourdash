@@ -4,9 +4,9 @@
  */
 
 import UKSlotComponent from "../../slotComponent.ts";
-import styles from "./row.module.scss";
+import styles from "./col.module.scss";
 
-export default class Row extends UKSlotComponent {
+export default class Col extends UKSlotComponent {
   constructor() {
     super();
 
