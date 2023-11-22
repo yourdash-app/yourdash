@@ -3,22 +3,21 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import UKSlotComponent from "./slotComponent.ts";
+import UKComponentSlot from "./slot.ts";
 import State from "./state.ts";
 
 export type UKComponentState = { [ key: string ]: State<any> } // eslint-disable-line @typescript-eslint/no-explicit-any
 export type UKComponentSlots = { [ key: string ]: State<ValidUKComponent> }
-export type UKComponentProps = { [ key: string ]: any }
+export type UKComponentProps = { [ key: string ]: any } | undefined  // eslint-disable-line @typescript-eslint/no-explicit-any
 
-export default class UKComponent<ComponentProps extends UKComponentProps = UKComponentProps, ComponentState extends UKComponentState = UKComponentState, ComponentSlots extends UKComponentSlots = UKComponentSlots> {
+export class UKComponent<ComponentProps extends UKComponentProps = UKComponentProps, ComponentState extends UKComponentState = UKComponentState, ComponentSlots extends UKComponentSlots = UKComponentSlots> {
   domElement: HTMLElement;
   declare parentDomElement: HTMLElement;
   state: ComponentState;
   slots: ComponentSlots;
   props: ComponentProps;
 
-  // @ts-ignore
-  constructor( props: ComponentProps = {} ) {
+  constructor( props: ComponentProps ) {
     this.state = {} as ComponentState;
     this.slots = {} as ComponentSlots;
     this.props = props as ComponentProps;
@@ -27,5 +26,21 @@ export default class UKComponent<ComponentProps extends UKComponentProps = UKCom
     return this;
   }
 }
+
+export class UKSlotComponent<ComponentProps extends UKComponentProps = UKComponentProps, ComponentState extends UKComponentState = UKComponentState> extends UKComponentSlot {
+  declare parentDomElement: HTMLElement;
+  state: ComponentState;
+  props: ComponentProps;
+
+  constructor( props: ComponentProps ) {
+    super( document.createElement( "div" ) );
+
+    this.state = {} as ComponentState;
+    this.props = props as ComponentProps;
+
+    return this;
+  }
+}
+
 
 export type ValidUKComponent = UKComponent | UKSlotComponent

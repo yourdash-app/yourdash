@@ -3,10 +3,10 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import UKComponent, { UKComponentProps } from "../../component.ts";
+import { UKComponent } from "../../component.ts";
 import styles from "./button.module.scss";
 
-export interface ButtonProps extends UKComponentProps {
+export interface ButtonProps {
   label: string,
   onClick: () => void,
   size?: "small" | "medium" | "large",

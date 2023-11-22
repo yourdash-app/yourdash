@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import UKComponent, { UKComponentSlots } from "../../component.ts";
+import { UKComponent, UKComponentSlots } from "../../component.ts";
 import UKComponentSlot from "../../slot.ts";
 import styles from "./card.module.scss";
 import transitionStyles from "../../transitions.module.scss"
