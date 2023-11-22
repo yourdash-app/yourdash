@@ -3,12 +3,16 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import UKSlotComponent from "../../slotComponent.ts";
+import { UKSlotComponent } from "../../component.ts";
 import styles from "./box.module.scss";
 
 export interface BoxProps {
   noBorder?: boolean | { top?: boolean, right?: boolean, bottom?: boolean, left?: boolean };
   noRounding?: boolean;
+  dimensions?: {
+    width?: CSSStyleDeclaration["width"],
+    height?: CSSStyleDeclaration["height"]
+  }
 }
 
 export default class Box extends UKSlotComponent<BoxProps> {
@@ -23,6 +27,9 @@ export default class Box extends UKSlotComponent<BoxProps> {
 
     if ( props.noRounding !== undefined )
       this.setNoRounding( props.noRounding );
+
+    if ( props.dimensions !== undefined )
+      this.setDimensions( props.dimensions );
   }
 
   setNoBorder( noBorder: Box["props"]["noBorder"] ) {
@@ -58,5 +65,17 @@ export default class Box extends UKSlotComponent<BoxProps> {
     }
 
     return this
+  }
+
+  setDimensions( dimensions: Box["props"]["dimensions"] ) {
+    if ( dimensions?.width !== undefined ) {
+      this.domElement.style.width = dimensions.width;
+    }
+
+    if ( dimensions?.height !== undefined ) {
+      this.domElement.style.height = dimensions.height;
+    }
+
+    return this;
   }
 }

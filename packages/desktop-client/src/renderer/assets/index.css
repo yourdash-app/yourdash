@@ -3,7 +3,8 @@ body, html {
   flex-direction: column;
   font-family: Inter, sans-serif;
   color: #ffffff;
-  background: linear-gradient(to bottom right, #f8be34, #ff9bae);
+  background: linear-gradient(to bottom right, #f8be34, #ff9bae) no-repeat fixed;
+  background-size: cover;
   height: 100%;
   width: 100%;
   font-size: 16px;

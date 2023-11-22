@@ -14,10 +14,13 @@ export default defineConfig( {
   },
   renderer: {
     server: {
-      port: 5174
+      port: 5174,
+      hmr: {
+        overlay: true
+      }
     },
     plugins: [
       react()
-    ]
+    ],
   }
 } )
