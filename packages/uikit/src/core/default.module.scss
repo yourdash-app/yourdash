@@ -160,6 +160,16 @@
   --input-focus-outline: 0.25rem solid #445599;
   --input-focus-outline-active: 0.25rem solid #5566aa;
 
+  /* header levels */
+  --level0-font-size: 1.5rem;
+  --level0-font-weight: 700;
+  --level1-font-size: 1.25rem;
+  --level1-font-weight: 600;
+  --level2-font-size: 1rem;
+  --level2-font-weight: 500;
+  --level3-font-size: 0.75rem;
+  --level3-font-weight: 400;
+
   * {
     font-family: "Inter", sans-serif;
   }

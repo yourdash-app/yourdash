@@ -8,9 +8,15 @@
 import { ValidUKComponent } from "./component.ts";
 import defaultStyles from "./default.module.scss"
 
-// @ts-ignore
+// Modify the typescript global window object to contain the __uikit__ object
+declare global {
+    interface Window { __uikit__: { componentTree: ValidUKComponent[], root: UIKit } }
+}
+
+// Define the __uikit__ object in the window object
 window.__uikit__ = {
   componentTree: [],
+  root: undefined! // eslint-disable-line @typescript-eslint/no-non-null-assertion
 }
 
 export default class UIKit {
@@ -18,6 +24,7 @@ export default class UIKit {
   children: ValidUKComponent[] = []
 
   constructor( container: HTMLElement ) {
+    window.__uikit__.root = this
     // @ts-ignore
     window.__uikit__["componentTree"].push( this )
     container.appendChild( this.domElement )
@@ -52,13 +59,18 @@ export default class UIKit {
     this.domElement.classList.add( defaultStyles.noAnimations );
   }
 
-  createComponent<T extends ValidUKComponent>( component: new ( props: T["props"] ) => T, props: T["props"] = {} ) {
+  createComponent<T extends ValidUKComponent>( component: new ( props: T["props"] ) => T, props: T["props"] = undefined ) {
     const comp = new component( props )
     comp.parentDomElement = this.domElement
     comp.parentDomElement.appendChild( comp.domElement )
 
     this.children.push( comp )
     return comp
+  }
+
+  addComponent( component: ValidUKComponent ) {
+    this.children.push( component )
+    this.domElement.appendChild( component.domElement )
   }
 }
 

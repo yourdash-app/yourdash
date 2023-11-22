@@ -3,19 +3,21 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import UKComponent, { UKComponentProps, UKComponentState, UKComponentSlots } from "../../component.ts";
+import { UKComponent, UKComponentState, UKComponentSlots } from "../../component.ts";
 import { ButtonProps } from "../button/button.ts";
 import styles from "./iconButton.module.scss";
 import State from "../../state.ts";
 import { UKIcon } from "../../icons/icons.ts";
 
-export interface IconButtonProps extends UKComponentProps {
+export interface IconButtonProps {
   icon: keyof typeof UKIcon,
   onClick: () => void,
   size?: "small" | "medium" | "large",
   transparent?: boolean,
   disabled?: boolean,
-  useDefaultColor?: boolean
+  useDefaultColor?: boolean,
+  label?: string // shown on hover,
+  type?: "primary" | "secondary" | "tertiary"
 }
 
 export interface IconButtonState extends UKComponentState {

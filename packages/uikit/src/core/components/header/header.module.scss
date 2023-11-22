@@ -1,0 +1,27 @@
+/*!
+ * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
+.component {
+  font-weight: var(--header-level0-font-weight);
+  text-align: left;
+  font-size: var(--header-level0-font-size);
+  font-family: "Inter", sans-serif;
+}
+
+.level0 {
+  font-size: 1.5rem;
+}
+
+.level1 {
+  font-size: 1.25rem;
+}
+
+.level2 {
+  font-size: 1rem;
+}
+
+.level3 {
+  font-size: 0.75rem;
+}
