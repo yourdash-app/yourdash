@@ -13,10 +13,12 @@ export default class CoreView extends UKSlotComponent<undefined> {
   constructor() {
     super( undefined );
 
-    const headerMenu = this.createComponent( UIKit.Box, { noRounding: true, dimensions: { width: "100%" }, flex: "row", alignItems: "center" } )
+    const headerMenu = this.createComponent( UIKit.Box, { noRounding: true, dimensions: { width: "100%" }, flex: "row", alignItems: "center", justifyContent: "space-between" } )
 
     headerMenu.createComponent( UIKit.IconButton, { icon: "Apps", onClick() { /* Empty */ } } )
-    headerMenu.createComponent( UIKit.Header, { content: "Hello World!" } )
+    headerMenu.createComponent( UIKit.Header, { content: "Hello World!", level: 1 } )
+
+    headerMenu.domElement.style.position = "relative"
 
     this.pushNotificationMenu = this.createComponent( PushNotificationMenuView )
     headerMenu.add( this.pushNotificationMenu )

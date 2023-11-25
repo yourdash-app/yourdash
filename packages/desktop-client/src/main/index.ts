@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { electronApp, is, optimizer } from "@electron-toolkit/utils";
+import { electronApp, is } from "@electron-toolkit/utils";
 import { app, BrowserWindow, ipcMain, Menu, MenuItem, shell } from "electron";
 import { join } from "path";
 import APPLICATION_ICON from "./resources/icon.png?asset";
