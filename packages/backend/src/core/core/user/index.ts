@@ -38,7 +38,7 @@ export default class YourDashUser {
     coreApi.users.__internal__addUserDatabaseToSaveQueue( username )
     return this
   }
-  
+
   getAvatar( size: userAvatarSize ): string {
     switch ( size ) {
     case userAvatarSize.LARGE:
@@ -72,21 +72,42 @@ export default class YourDashUser {
 
   async create() {
     try {
-      await coreApi.fs.createDirectory( this.path );
-      await coreApi.fs.createDirectory( path.join( this.path, "avatars" ) );
-      await coreApi.fs.createDirectory( path.join( this.path, "core" ) );
-      await coreApi.fs.createDirectory( path.join( this.path, "fs" ) );
-      await coreApi.fs.createDirectory( path.join( this.path, "apps" ) );
-      await coreApi.fs.createDirectory( path.join( this.path, "temp" ) );
-      await coreApi.fs.createFile( path.join( this.path, "./core/user_db.json" ) )
-        .write( JSON.stringify( {
-          "core:user:name": {
-            first: "New",
-            last: "User"
-          },
-          "core:user:username": this.username,
-          "core:panel:quickShortcuts": coreApi.globalDb.get( "defaults" ).user.quickShortcuts
-        } ) )
+      // "/"
+      if ( !( await coreApi.fs.exists( this.path ) ) ) {
+        await coreApi.fs.createDirectory( this.path );
+      }
+      // "/apps/"
+      if ( !( await coreApi.fs.exists( path.join( this.path, "/apps" ) ) ) ) {
+        await coreApi.fs.createDirectory( path.join( this.path, "/apps" ) );
+      }
+      // "/avatars/"
+      if ( !( await coreApi.fs.exists( path.join( this.path, "/avatars" ) ) ) ) {
+        await coreApi.fs.createDirectory( path.join( this.path, "/avatars" ) );
+      }
+      // "/core/"
+      if ( !( await coreApi.fs.exists( path.join( this.path, "/core" ) ) ) ) {
+        await coreApi.fs.createDirectory( path.join( this.path, "/core" ) );
+      }
+      // "/fs/"
+      if ( !( await coreApi.fs.exists( path.join( this.path, "/fs" ) ) ) ) {
+        await coreApi.fs.createDirectory( path.join( this.path, "/fs" ) );
+      }
+      // "/temp/"
+      if ( !( await coreApi.fs.exists( path.join( this.path, "/temp" ) ) ) ) {
+        await coreApi.fs.createDirectory( path.join( this.path, "/temp" ) );
+      }
+      // "/core/user_db.json"
+      await (
+        coreApi.fs.createFile( path.join( this.path, "./core/user_db.json" ) )
+          .write( JSON.stringify( {
+            "core:user:name": {
+              first: "New",
+              last: "User"
+            },
+            "core:user:username": this.username,
+            "core:panel:quickShortcuts": coreApi.globalDb.get( "defaults" ).user.quickShortcuts
+          } ) )
+      )
       await this.setPassword( "password" );
       await this.setAvatar( path.join( process.cwd(), "./src/defaults/default_avatar.avif" ) );
       await coreApi.fs.createFile( path.join( this.path, "core/user.json" ) )
@@ -100,10 +121,10 @@ export default class YourDashUser {
           permissions: [],
           version: 1
         } as IYourDashUserJson ) )
-      coreApi.log.info( `CORE: Created user ${this.username}` )
+      coreApi.log.info( "core", `Created user ${this.username}` )
     } catch ( e ) {
       // console.error( e )
-      coreApi.log.error( `CORE: Unable to create user ${this.username}` )
+      coreApi.log.error( "core", `Unable to create user ${this.username}` )
     }
   }
 
