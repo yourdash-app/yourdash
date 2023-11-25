@@ -15,11 +15,14 @@ import path from "path";
 import { fetch } from "undici";
 import { compareHash } from "../../helpers/encryption.js";
 import { createSession } from "../../helpers/session.js";
+import CoreApiAuthenticatedImage from "./coreApiAuthenticatedImage.js";
 import CoreApiCommands from "./coreApiCommands.js";
 import CoreApiGlobalDb from "./coreApiGlobalDb.js";
 import CoreApiLog from "./coreApiLog.js";
 import CoreApiModuleManager from "./coreApiModuleManager.js";
+import CoreApiPanel from "./coreApiPanel.js";
 import CoreApiScheduler from "./coreApiScheduler.js";
+import CoreApiUserDatabase from "./coreApiUserDatabase.js";
 import CoreApiUsers from "./coreApiUsers.js";
 import CoreApiFileSystem from "./fileSystem/coreApiFileSystem.js";
 import { YOURDASH_INSTANCE_DISCOVERY_STATUS } from "./types/discoveryStatus.js";
@@ -37,20 +40,23 @@ export class CoreApi {
   readonly commands: CoreApiCommands;
   readonly fs: CoreApiFileSystem;
   readonly scheduler: CoreApiScheduler;
+  readonly userDatabase: CoreApiUserDatabase;
+  readonly panel: CoreApiPanel;
+  readonly authenticatedImage: CoreApiAuthenticatedImage;
   readonly websocketManager: CoreApiWebsocketManager;
   // general vars
   readonly processArguments: minimist.ParsedArgs;
   readonly expressServer: ExpressApplication;
   readonly httpServer: http.Server;
-  
+
   constructor() {
     // Fetch process arguments
     this.processArguments = minimist( process.argv.slice( 2 ) );
-    
+
     // Create the requests server
     this.expressServer = express()
     this.httpServer = http.createServer( this.expressServer );
-    
+
     // define core apis
     this.scheduler = new CoreApiScheduler( this )
     this.users = new CoreApiUsers( this )
@@ -59,29 +65,32 @@ export class CoreApi {
     this.globalDb = new CoreApiGlobalDb( this )
     this.commands = new CoreApiCommands( this )
     this.fs = new CoreApiFileSystem( this )
+    this.userDatabase = new CoreApiUserDatabase( this )
+    this.panel = new CoreApiPanel( this )
+    this.authenticatedImage = new CoreApiAuthenticatedImage( this )
     this.websocketManager = new CoreApiWebsocketManager( this )
-    
+
     this.commands.registerCommand(
       "hello",
       () => {
         this.log.info( "core:command", "Hello from YourDash!" )
       }
     )
-    
+
     this.commands.registerCommand(
       "restart",
       async () => {
         await this.restartInstance()
       }
     )
-    
+
     this.commands.registerCommand(
       "gdb",
       ( args ) => {
         const subCommand = args[ 0 ];
         const key = args[ 1 ];
         const value = args[ 2 ];
-    
+
         switch ( subCommand ) {
         case "set":
           this.globalDb.set( key, value );
@@ -99,21 +108,21 @@ export class CoreApi {
         }
       }
     )
-    
+
     return this;
   }
-  
+
   // start the YourDash Instance
   __internal__startInstance() {
     this.log.info( "core:startup", "Welcome to the YourDash Instance backend" )
-    
+
     this.fs.verifyFileSystem.verify()
       .then( () => {
         this.globalDb.loadFromDisk( path.join( this.fs.ROOT_PATH, "./global_database.json" ) )
           .then( () => {
             this.users.__internal__startUserDatabaseService()
             this.users.__internal__startUserDeletionService()
-            
+
             try {
               killPort( 3563 ).then( () => {
                 this.log.info( "core", "Killed port 3563" );
@@ -125,7 +134,7 @@ export class CoreApi {
               } );
             } catch ( reason ) {
               this.log.warning( "Unable to kill port 3563", reason );
-    
+
               try {
                 this.httpServer.listen( 3563, () => {
                   this.log.info( "core", "server now listening on port 3563!" );
@@ -138,11 +147,11 @@ export class CoreApi {
               }
             }
           } )
-    
+
       } )
     return this
   }
-  
+
   private startRequestLogger( options: { logOptionsRequests?: boolean } ) {
     this.expressServer.use( ( req, res, next ) => {
       switch ( req.method ) {
@@ -177,10 +186,10 @@ export class CoreApi {
       }
       next();
     } );
-  
+
     this.log.success( "core:requests", `Started the requests logger${ options && " (logging options requests is also enabled)" }` );
   }
-  
+
   private loadCoreEndpoints() {
     if ( this.processArguments[ "log-requests" ] ) {
       this.startRequestLogger( { logOptionsRequests: !!this.processArguments[ "log-options-requests" ] } );
@@ -190,14 +199,14 @@ export class CoreApi {
     this.expressServer.use( express.json( { limit: "50mb" } ) );
     this.expressServer.use( expressCompression() );
     this.expressServer.use( ( _req, res, next ) => {
-      
+
       // remove the X-Powered-By header to prevent exploitation from knowing the request server
       // this is a security measure against exploiters who don't look into the project's source code
       res.removeHeader( "X-Powered-By" );
-      
+
       next();
     } );
-    
+
     this.expressServer.get( "/", ( _req, res ) => {
       // INFO: This should not be used for detection of a YourDash Instance, instead use the '/test' endpoint
       return res.send( "Hello from the YourDash instance software! 👋" );
@@ -206,7 +215,7 @@ export class CoreApi {
     // Server discovery endpoint
     this.expressServer.get( "/test", ( _req, res ) => {
       const discoveryStatus: YOURDASH_INSTANCE_DISCOVERY_STATUS = YOURDASH_INSTANCE_DISCOVERY_STATUS.NORMAL as YOURDASH_INSTANCE_DISCOVERY_STATUS;
-  
+
       switch ( discoveryStatus ) {
       case YOURDASH_INSTANCE_DISCOVERY_STATUS.MAINTENANCE:
         return res.status( 200 ).json( {
@@ -231,11 +240,11 @@ export class CoreApi {
       // INFO: This should not be used for detection of a YourDash Instance, instead use the '/test' endpoint
       return res.send( "pong" );
     } );
-    
+
     this.expressServer.get( "/core/test/self-ping", ( _req, res ) => {
       return res.json( { success: true } );
     } );
-    
+
     // on startup, we ping ourselves to check if the webserver is running and accepting requests
     this.log.info( "core:self_ping_test", "pinging self" );
     fetch( "http://localhost:3563/core/test/self-ping" )
@@ -250,7 +259,7 @@ export class CoreApi {
         // TODO: on failure we should alert the administrator, currently we only print to the log as PushNotification support has not yet been implemented
         this.log.error( "core:self_ping_test", "CRITICAL ERROR!, unable to ping self" );
       } );
-    
+
     this.expressServer.get( "/core/login/user/:username/avatar", ( req, res ) => {
       const user = new YourDashUser( req.params.username );
       return res.sendFile( user.getAvatar( userAvatarSize.LARGE ) );
@@ -333,31 +342,33 @@ export class CoreApi {
         message: this.globalDb.get( "core:instance:message" ) || "Placeholder message. Hey system admin, you should change this!",
       } )
     } )
-  
+
     this.expressServer.get( "/core/login/instance/background",( _req, res ) => {
       res.set( "Content-Type", "image/avif" );
       return res.sendFile( path.resolve( process.cwd(),"./fs/login_background.avif" ) );
     } );
-    
-    // check for authentication
+
+    this.authenticatedImage.__internal__loadEndpoints()
+
+    // ----- check for authentication ------
     this.expressServer.use( async ( req, res, next ) => {
       const {
         username,
         token
       } = req.headers as { username?: string, token?: string };
-  
+
       if ( !username || !token ) {
         return res.json( { error: "authorization fail" } );
       }
-  
+
       if ( !this.users.__internal__getSessionsDoNotUseOutsideOfCore()[ username ] ) {
         try {
           const user = this.users.get( username );
-      
+
           this.users.__internal__getSessionsDoNotUseOutsideOfCore()[ username ] = ( await user.getAllLoginSessions() ) || [];
-      
+
           const database = ( await fs.readFile( path.join( user.path, "core/user_db.json" ) ) ).toString();
-      
+
           if ( database ) {
             ( await this.users.__internal__getUserDatabase( username ) ).clear().merge( JSON.parse( database ) );
           } else {
@@ -368,46 +379,46 @@ export class CoreApi {
           return res.json( { error: "authorization fail" } );
         }
       }
-  
+
       if ( this.users.__internal__getSessionsDoNotUseOutsideOfCore()[ username ].find( ( session ) => session.sessionToken === token ) ) {
         return next();
       }
-  
+
       return res.json( { error: "authorization fail" } );
     } );
-    
+
     /*
      * --------------------------------------------------------------
      * WARNING: all endpoints require authentication after this point
      * --------------------------------------------------------------
      */
-    
+
     this.moduleManager.loadInstalledModules()
 
     this.expressServer.get( "/core/sessions", async ( req, res ) => {
       const { username } = req.headers as { username: string };
-  
+
       const user = this.users.get( username );
-  
+
       return res.json( { sessions: await user.getAllLoginSessions() } );
     } );
 
     this.expressServer.delete( "/core/session/:id", async ( req, res ) => {
       const { username } = req.headers as { username: string };
       const { id: sessionId } = req.params;
-  
+
       const user = this.users.get( username );
-  
+
       await user.getLoginSessionById( parseInt( sessionId, 10 ) ).invalidate();
-  
+
       return res.json( { success: true } );
     } );
 
     this.expressServer.get( "/core/personal-server-accelerator/sessions", async ( req, res ) => {
       const { username } = req.headers as { username: string };
-  
+
       const user = this.users.get( username );
-  
+
       return res.json( {
         // all desktop sessions should support the PSA api
         sessions: ( await user.getAllLoginSessions() ).filter( ( session: { type: YOURDASH_SESSION_TYPE } ) => session.type === YOURDASH_SESSION_TYPE.desktop )
@@ -416,9 +427,9 @@ export class CoreApi {
 
     this.expressServer.get( "/core/personal-server-accelerator/", async ( req, res ) => {
       const { username } = req.headers as { username: string };
-  
+
       const user = this.users.get( username );
-  
+
       try {
         return JSON.parse( ( await fs.readFile( path.join( user.path, "personal_server_accelerator.json" ) ) ).toString() );
       } catch ( _err ) {
@@ -431,40 +442,43 @@ export class CoreApi {
     this.expressServer.post( "/core/personal-server-accelerator/", async ( req, res ) => {
       const { username } = req.headers as { username: string };
       const body = req.body;
-  
+
       const user = this.users.get( username );
-  
+
       try {
         await fs.writeFile( path.join( user.path, "personal_server_accelerator.json" ), JSON.stringify( body ) );
       } catch ( _err ) {
         return res.json( { error: `Unable to write to ${ username }/personal_server_accelerator.json` } );
       }
-  
+
       return res.json( { success: true } );
     } );
+
+    this.userDatabase.__internal__loadEndpoints()
+    this.panel.__internal__loadEndpoints()
   }
 
   // try not to use this method for production stability, instead prefer to reload a specific module if it works for your use-case.
   shutdownInstance() {
     this.httpServer.close()
-    
+
     this.commands.getAllCommands().forEach( command => {
       this.commands.removeCommand( command )
     } )
-    
+
     this.log.info( "core", "Shutting down... ( restart should occur automatically )" );
-  
+
     const LOG_OUTPUT = this.log.logHistory.map( ( hist ) => {
       return `${ hist.type }: ${ hist.message }`;
     } ).join( "\n" );
-  
+
     this.httpServer.close();
-  
+
     fsReaddirSync( path.resolve( this.fs.ROOT_PATH, "./users" ) )
       .forEach( async username => {
         await this.users.__internal__saveUserDatabaseInstantly( username )
       } )
-  
+
     fsWriteFile(
       path.resolve( process.cwd(), "./fs/log.log" ),
       LOG_OUTPUT,
@@ -476,7 +490,7 @@ export class CoreApi {
         }
       }
     );
-    
+
     return this
   }
 
@@ -484,7 +498,7 @@ export class CoreApi {
   async restartInstance() {
     this.shutdownInstance()
     this.__internal__startInstance()
-    
+
     return this
   }
 }
