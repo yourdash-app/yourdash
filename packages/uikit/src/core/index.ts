@@ -6,7 +6,7 @@
 /** UIKit - a vanilla Typescript UI library (https://github.com/yourdash-app/yourdash/tree/main/packages/uikit) */
 
 import { ValidUKComponent } from "./component.ts";
-import defaultStyles from "./default.module.scss"
+import defaultStyles from "./default.module.scss";
 
 // Modify the typescript global window object to contain the __uikit__ object
 declare global {
@@ -20,14 +20,14 @@ window.__uikit__ = {
 }
 
 export default class UIKit {
-  domElement: HTMLDivElement = document.createElement( "div" )
+  domElement: HTMLDivElement;
   children: ValidUKComponent[] = []
 
-  constructor( container: HTMLElement ) {
+  constructor( container: HTMLDivElement ) {
     window.__uikit__.root = this
     // @ts-ignore
     window.__uikit__["componentTree"].push( this )
-    container.appendChild( this.domElement )
+    this.domElement = container
     this.domElement.classList.add( defaultStyles.uikit )
 
     // define the accent color

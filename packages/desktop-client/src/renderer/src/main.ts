@@ -4,6 +4,7 @@
  */
 
 import * as UIKit from "@yourdash/uikit/src/core/index";
+import coreView from "./views/core/coreView";
 
 class ApplicationCore {
   electron: ( typeof window )["electron"];
@@ -11,8 +12,7 @@ class ApplicationCore {
 
   constructor() {
     this.electron = window.electron;
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    this.uiKitRoot = new UIKit.default( document.getElementById( "core-application" )! );
+    this.uiKitRoot = new UIKit.default( document.getElementById( "core-application" ) as HTMLDivElement );
 
     return this
   }
@@ -20,10 +20,7 @@ class ApplicationCore {
   init(): this {
     this.electron.ipcRenderer.postMessage( "core-log-renderer-startup", "ok" );
 
-    const headerMenu = this.uiKitRoot.createComponent( UIKit.Box, { noRounding: true, dimensions: { width: "100%" } } )
-
-    headerMenu.createComponent( UIKit.IconButton, { icon: "Apps", onClick() { return 0 } } )
-    headerMenu.createComponent( UIKit.Text, { content: "Hello World!" } )
+    this.uiKitRoot.createComponent( coreView )
 
     return this;
   }
