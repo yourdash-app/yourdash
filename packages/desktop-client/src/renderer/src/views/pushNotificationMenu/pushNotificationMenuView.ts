@@ -6,11 +6,13 @@
 import { UKSlotComponent } from "@yourdash/uikit/src/core/component";
 import * as UIKit from "@yourdash/uikit/src/core/index";
 import CoreView from "../core/coreView";
+import PushNotificationMenu from "./PushNotificationMenu";
 
 export default class PushNotificationMenuView extends UKSlotComponent<{ coreView: CoreView }> {
   containerComponent: UIKit.Col
   pushNotificationState: "silent" | "notified" | "none" = "none"
   pushNotificationMenuButton: UIKit.IconButton
+  pushNotificationMenu: PushNotificationMenu
 
   constructor( props: PushNotificationMenuView["props"] ) {
     super( props );
@@ -19,10 +21,23 @@ export default class PushNotificationMenuView extends UKSlotComponent<{ coreView
     const self = this;
 
     this.containerComponent = this.createComponent( UIKit.Col )
-    this.pushNotificationMenuButton = this.containerComponent.createComponent( UIKit.IconButton, { icon: "BellSlash", onClick() { self.setPushNotificationState( "notified" ) } } )
+    this.pushNotificationMenuButton = this.containerComponent.createComponent(
+      UIKit.IconButton,
+      {
+        icon: "BellSlash",
+        onClick() {
+          self.setPushNotificationState( "notified" )
+        }
+      }
+    )
+    this.pushNotificationMenu = this.createComponent( PushNotificationMenu )
     this.setPushNotificationState( "none" )
 
     return this
+  }
+
+  setPushNotificationMenuVisible( visible: boolean ) {
+    this.pushNotificationMenu.setVisible( visible )
   }
 
   setPushNotificationState( state: "silent" | "notified" | "none" ) {
@@ -39,15 +54,17 @@ export default class PushNotificationMenuView extends UKSlotComponent<{ coreView
       } )
       break;
     case "notified":
+      this.pushNotificationMenu.setVisible( true )
       this.pushNotificationMenuButton.setIcon( "BellFill" )
       this.pushNotificationMenuButton.setOnClick( () => {
         self.setPushNotificationState( "none" )
       } )
       break
     default:
+      this.pushNotificationMenu.setVisible( false )
       this.pushNotificationMenuButton.setIcon( "Bell" )
       this.pushNotificationMenuButton.setOnClick( () => {
-        self.setPushNotificationState( "silent" )
+        self.setPushNotificationState( "notified" )
       } )
       break
     }
