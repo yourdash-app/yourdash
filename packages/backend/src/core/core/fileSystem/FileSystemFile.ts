@@ -10,22 +10,22 @@ import { CoreApi } from "../coreApi.js";
 export default class FileSystemFile {
   path: string
   private readonly coreApi: CoreApi
-  
+
   constructor( coreApi: CoreApi, path: string ) {
     this.path = path
     this.coreApi = coreApi
-    
+
     return this
   }
-  
+
   getName(): string {
     return pth.basename( this.path )
   }
-  
+
   getExtension(): string {
     return pth.extname( this.path )
   }
-  
+
   getThumbnail( dimensions: { x: number, y: number } ): string {
     switch ( this.getExtension() ) {
     // TODO: create a wrapper around "new Sharp()"
@@ -34,11 +34,11 @@ export default class FileSystemFile {
       return "not implemented"
     }
   }
-  
+
   getMetadata() {
     return fs.stat( this.path )
   }
-  
+
   async read( as: "string" | "buffer" | "json" ) {
     switch ( as ) {
     case "string":
@@ -51,10 +51,10 @@ export default class FileSystemFile {
       throw new Error( `Unsupported read type: ${ as }` )
     }
   }
-  
+
   async write( data: string | Buffer ) {
     await fs.writeFile( this.path, data )
-  
+
     return
   }
 }
