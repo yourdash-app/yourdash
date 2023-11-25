@@ -29,7 +29,7 @@ import { YOURDASH_INSTANCE_DISCOVERY_STATUS } from "./types/discoveryStatus.js";
 import { userAvatarSize } from "./user/avatarSize.js";
 import YourDashUser from "./user/index.js";
 import { YOURDASH_SESSION_TYPE } from "./user/session.js";
-import CoreApiWebsocketManager from "./websocket/coreApiWebsocketManager.js";
+import CoreApiPersonalServerAccelerator from "./websocket/coreApiPersonalServerAccelerator.js";
 
 export class CoreApi {
   // core apis
@@ -43,7 +43,7 @@ export class CoreApi {
   readonly userDatabase: CoreApiUserDatabase;
   readonly panel: CoreApiPanel;
   readonly authenticatedImage: CoreApiAuthenticatedImage;
-  readonly websocketManager: CoreApiWebsocketManager;
+  readonly websocketManager: CoreApiPersonalServerAccelerator;
   // general vars
   readonly processArguments: minimist.ParsedArgs;
   readonly expressServer: ExpressApplication;
@@ -68,7 +68,7 @@ export class CoreApi {
     this.userDatabase = new CoreApiUserDatabase( this )
     this.panel = new CoreApiPanel( this )
     this.authenticatedImage = new CoreApiAuthenticatedImage( this )
-    this.websocketManager = new CoreApiWebsocketManager( this )
+    this.websocketManager = new CoreApiPersonalServerAccelerator( this )
 
     this.commands.registerCommand(
       "hello",
@@ -94,8 +94,8 @@ export class CoreApi {
         switch ( subCommand ) {
         case "set":
           this.globalDb.set( key, value );
-          this.log.info( "core:command", `set "${ key }" to "${ value }"` );
-          break;
+            this.log.info("core:command", `set "${key}" to "${value}"`);
+            break;
         case "get":
           this.log.info( "core:command", this.globalDb.get( key ) );
           break;
