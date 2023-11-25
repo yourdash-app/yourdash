@@ -33,7 +33,7 @@ export class UKSlotComponent<ComponentProps extends UKComponentProps = UKCompone
   props: ComponentProps;
 
   constructor( props: ComponentProps ) {
-    super( document.createElement( "div" ) );
+    super( document.createElement( "uk-empty-component" ) as HTMLDivElement );
 
     this.state = {} as ComponentState;
     this.props = props as ComponentProps;

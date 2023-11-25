@@ -12,7 +12,10 @@ export interface BoxProps {
   dimensions?: {
     width?: CSSStyleDeclaration["width"],
     height?: CSSStyleDeclaration["height"]
-  }
+  },
+  flex?: "row" | "column" | false,
+  alignItems?: CSSStyleDeclaration["alignItems"],
+  justifyContent?: CSSStyleDeclaration["justifyContent"]
 }
 
 export default class Box extends UKSlotComponent<BoxProps> {
@@ -30,6 +33,41 @@ export default class Box extends UKSlotComponent<BoxProps> {
 
     if ( props.dimensions !== undefined )
       this.setDimensions( props.dimensions );
+
+    if ( props.flex !== undefined )
+      this.setFlex( props.flex );
+
+    if ( props.alignItems !== undefined )
+      this.setAlignItems( props.alignItems );
+
+    if ( props.justifyContent !== undefined )
+      this.setJustifyContent( props.justifyContent );
+  }
+
+  setJustifyContent( justifyContent: Box["props"]["justifyContent"] ) {
+    if ( justifyContent ) {
+      this.domElement.style.justifyContent = justifyContent
+    }
+  }
+
+  setAlignItems( alignItems: Box["props"]["alignItems"] ) {
+    if ( alignItems ) {
+      this.domElement.style.alignItems = alignItems
+    }
+  }
+
+  setFlex( flex: Box["props"]["flex"] ) {
+    switch ( flex ) {
+    case "row":
+      this.domElement.classList.add( styles.flexRow )
+      break
+    case "column":
+      this.domElement.classList.add( styles.flexColumn )
+      break
+    default:
+      this.domElement.classList.remove( styles.flexRow )
+      this.domElement.classList.remove( styles.flexColumn )
+    }
   }
 
   setNoBorder( noBorder: Box["props"]["noBorder"] ) {
