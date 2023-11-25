@@ -1,0 +1,13 @@
+/*!
+ * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
+.menu {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0.5rem;
+  height: calc(100vh - 1rem - 100%);
+  width: 16rem;
+  transform-origin: top right;
+}
