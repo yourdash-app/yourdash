@@ -3,11 +3,11 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { UKComponent, UKComponentState, UKComponentSlots } from "../../component.ts";
+import { UKComponent, UKComponentSlots, UKComponentState } from "../../component.ts";
+import { UKIcon } from "../../icons/icons.ts";
+import State from "../../state.ts";
 import { ButtonProps } from "../button/button.ts";
 import styles from "./iconButton.module.scss";
-import State from "../../state.ts";
-import { UKIcon } from "../../icons/icons.ts";
 
 export interface IconButtonProps {
   icon: keyof typeof UKIcon,
@@ -163,28 +163,6 @@ export default class IconButton extends UKComponent<IconButtonProps, IconButtonS
     return this
   }
 
-
-  /*
-   ( useDefaultColor
-      ? {
-        backgroundImage: `url(${ icon })`,
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "cover"
-      }
-      : {
-        WebkitMaskImage: `url(${ icon })`,
-        WebkitMaskPosition: "center",
-        WebkitMaskRepeat: "no-repeat",
-        WebkitMaskSize: "cover",
-        backgroundColor: color || "currentColor",
-        maskImage: `url(${ icon })`,
-        maskPosition: "center",
-        maskRepeat: "no-repeat",
-        maskSize: "cover"
-      } )
-  */
-
   setUseDefaultColor( useDefaultColor: boolean ): this {
     this.props.useDefaultColor = useDefaultColor;
 
@@ -195,5 +173,11 @@ export default class IconButton extends UKComponent<IconButtonProps, IconButtonS
     this.props.onClick();
 
     return this;
+  }
+
+  setOnClick( onClick: () => void ): this {
+    this.props.onClick = onClick;
+
+    return this
   }
 }
