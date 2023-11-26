@@ -3,9 +3,9 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import coreApi from "backend/src/core/core/coreApi.js";
-import { authenticatedImageType } from "backend/src/core/core/coreApiAuthenticatedImage.js";
-import Module, { YourDashModuleArguments } from "backend/src/core/module.js";
+import coreApi from "backend/src/core/coreApi.js";
+import { authenticatedImageType } from "backend/src/core/coreApiAuthenticatedImage.js";
+import Module, { YourDashModuleArguments } from "packages/backend/src/core/moduleManager/module.js";
 import YourDashApplication, { getAllApplications } from "backend/src/helpers/applications.js";
 import { getInstanceLogoBase64 } from "backend/src/helpers/logo.js";
 import path from "path";

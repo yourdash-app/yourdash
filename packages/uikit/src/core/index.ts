@@ -6,7 +6,7 @@
 /** UIKit - a vanilla Typescript UI library (https://github.com/yourdash-app/yourdash/tree/main/packages/uikit) */
 
 import { ValidUKComponent } from "./component.ts";
-import defaultStyles from "./default.module.scss";
+import "./default.scss";
 
 // Modify the typescript global window object to contain the __uikit__ object
 declare global {
@@ -28,7 +28,7 @@ export default class UIKit {
     // @ts-ignore
     window.__uikit__["componentTree"].push( this )
     this.domElement = container
-    this.domElement.classList.add( defaultStyles.uikit )
+    this.domElement.classList.add( "__uikit__" )
 
     // define the accent color
     this.domElement.style.setProperty( "--accent-bg", "#469ff5" )
@@ -52,15 +52,17 @@ export default class UIKit {
   }
 
   enableAnimations() {
-    this.domElement.classList.remove( defaultStyles.noAnimations );
+    this.domElement.classList.remove( "__uikit__no-animations" );
   }
 
   disableAnimations() {
-    this.domElement.classList.add( defaultStyles.noAnimations );
+    this.domElement.classList.add( "__uikit__no-animations" );
   }
 
   createComponent<T extends ValidUKComponent>( component: new ( props: T["props"] ) => T, props: T["props"] = undefined ) {
     const comp = new component( props )
+    // @ts-ignore
+    // noinspection JSConstantReassignment
     comp.parentDomElement = this.domElement
     comp.parentDomElement.appendChild( comp.domElement )
 
@@ -74,4 +76,5 @@ export default class UIKit {
   }
 }
 
-export * from "./components/index.ts"
+export * as UK from "./components/index.ts"
+export { UKComponent, UKSlotComponent } from "./component.ts"

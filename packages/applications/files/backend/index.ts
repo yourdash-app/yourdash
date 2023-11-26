@@ -5,7 +5,7 @@
 
 import { promises as fs } from "fs";
 import path from "path";
-import Module, { YourDashModuleArguments } from "backend/src/core/module.js";
+import Module, { YourDashModuleArguments } from "packages/backend/src/core/moduleManager/module.js";
 
 export default class FilesModule extends Module {
   constructor( args: YourDashModuleArguments ) {
@@ -14,21 +14,21 @@ export default class FilesModule extends Module {
       const { username } = req.headers as {
       username: string
     };
-    
+
       if ( !req.body.path ) {
         return res.json( { files: [] } );
       }
-    
+
       const user = new YourDashUser( username );
-    
+
       let files: any[] = [];
-    
+
       try {
         files = await fs.readdir( path.join( user.path, "fs/", req.body.path ) );
       } catch ( _err ) {
         files = [];
       }
-    
+
       Promise.all(
         files.map( async file => {
           try {
@@ -38,7 +38,7 @@ export default class FilesModule extends Module {
               ? "file"
               : "directory";
             const name = path.basename( path.join( user.path, "fs/", req.body.path, file ) );
-          
+
             return {
               type,
               name
@@ -53,26 +53,26 @@ export default class FilesModule extends Module {
         } );
       } );
     } );
-  
+
     this.API.request.post( "/app/files/get/thumbnails-small", async ( req, res ) => {
       const { username } = req.headers as {
       username: string
     };
-    
+
       if ( !req.body.path ) {
         return res.json( { files: [] } );
       }
-    
+
       const user = new YourDashUser( username );
-    
+
       let files: string[];
-    
+
       try {
         files = await fs.readdir( path.join( user.path, "fs/", req.body.path ) );
       } catch ( _err ) {
         files = [];
       }
-    
+
       return res.json( {
         files: ( await Promise.all(
           files.map( async file => {
@@ -80,13 +80,13 @@ export default class FilesModule extends Module {
               const type = ( await fs.lstat( path.join( user.path, "fs/", req.body.path, file ) ) ).isFile()
                 ? "file"
                 : "directory";
-            
+
               const name = path.basename( path.join( user.path, "fs/", req.body.path, file ) );
-            
+
               const extension = path.extname( path.join( user.path, "fs/", req.body.path, file ) );
-            
+
               let icon = "";
-            
+
               switch ( extension ) {
               case ".png":
               case ".jpg":
@@ -101,14 +101,14 @@ export default class FilesModule extends Module {
                 } else {
                 // downscale the image
                   const image = sharp( path.join( user.path, "fs/", req.body.path, file ) ).resize( 96, 96 );
-                
+
                   icon = authenticatedImage( username, authenticatedImageType.BASE64, ( await image.toBuffer() ).toString( "base64" ) );
                 }
                 break;
               default:
                 break;
               }
-            
+
               return { type, name, icon };
             } catch ( _err ) {
               return false;
@@ -117,20 +117,20 @@ export default class FilesModule extends Module {
         ) ).filter( file => !!file )
       } );
     } );
-  
+
     this.API.request.post( "/app/files/get/file", async ( req, res ) => {
       const { username } = req.headers as {
       username: string
     };
-    
+
       if ( !req.body.path ) {
         return res.send( "[YOURDASH] Error: Unknown file" );
       }
-    
+
       const user = new YourDashUser( username );
-    
+
       const filePath = path.join( user.path, "fs/", req.body.path );
-    
+
       try {
         switch ( getFileType( filePath ) ) {
         case FileTypes.PlainText:
@@ -140,25 +140,25 @@ export default class FilesModule extends Module {
         default:
           return res.send( "[YOURDASH] Error: Unsupported file type" );
         }
-      
+
       } catch ( _err ) {
         return res.send( "[YOURDASH] Error: Unable to read file" );
       }
     } ); */
-    
+
     this.API.request.get( `/app/${this.API.applicationName}`, ( req, res ) => {
       return res.json( { message: `Hello world from ${this.API.applicationName}! 👋` } )
     } )
-    
+
     this.API.request.get( `/app/${this.API.applicationName}/list/dir/@/`, async ( req, res ) => {
       // path
       const p = "/"
-      
+
       const user = this.API.getUser( req );
-      
+
       try {
         const contents = await fs.readdir( path.join( user.path, "fs", p ) )
-      
+
         return res.json( {
           contents: contents
         } )
@@ -168,16 +168,16 @@ export default class FilesModule extends Module {
         } )
       }
     } )
-    
+
     this.API.request.get( `/app/${this.API.applicationName}/list/dir/@/:path`, async ( req, res ) => {
       // path
       const p = req.params.path
-      
+
       const user = this.API.getUser( req );
-      
+
       try {
         const contents = await fs.readdir( path.join( user.path, "fs", p ) )
-      
+
         return res.json( {
           contents: contents
         } )

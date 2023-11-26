@@ -70,7 +70,10 @@ export default class YourDashUser {
       .catch( err => console.error( err ) );
   }
 
-  async create() {
+  async verify() {
+    if ( !coreApi.globalDb.get( "defaults" ) )
+      return coreApi.log.error( "core:user", `the GlobalDatabase is not yet loaded! not creating user ${this.username}` )
+
     try {
       // "/"
       if ( !( await coreApi.fs.exists( this.path ) ) ) {
@@ -105,7 +108,7 @@ export default class YourDashUser {
               last: "User"
             },
             "core:user:username": this.username,
-            "core:panel:quickShortcuts": coreApi.globalDb.get( "defaults" ).user.quickShortcuts
+            "core:panel:quickShortcuts": coreApi.globalDb.get( "defaults" )?.user?.quickShortcuts || []
           } ) )
       )
       await this.setPassword( "password" );
@@ -121,9 +124,9 @@ export default class YourDashUser {
           permissions: [],
           version: 1
         } as IYourDashUserJson ) )
-      coreApi.log.info( "core", `Created user ${this.username}` )
+      coreApi.log.info( "core", `Verified user ${this.username}` )
     } catch ( e ) {
-      // console.error( e )
+      console.error( e )
       coreApi.log.error( "core", `Unable to create user ${this.username}` )
     }
   }

@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { UKComponent, UKComponentSlots, UKComponentState } from "../../component.ts";
+import { UKComponent } from "../../component.ts";
 import { UKIcon } from "../../icons/icons.ts";
 import State from "../../state.ts";
 import { ButtonProps } from "../button/button.ts";
@@ -20,20 +20,15 @@ export interface IconButtonProps {
   type?: "primary" | "secondary" | "tertiary"
 }
 
-export interface IconButtonState extends UKComponentState {
-  label: State<string>,
-}
-
-export default class IconButton extends UKComponent<IconButtonProps, IconButtonState, UKComponentSlots> {
+export default class IconButton extends UKComponent<IconButtonProps> {
   domElement: HTMLButtonElement;
   iconDomElement: HTMLDivElement;
+  label: State<string>
 
   constructor( props: IconButtonProps ) {
     super( props );
 
-    this.state = {
-      label: new State<string>( props.label )
-    };
+    this.label = new State<string>( props.label )
 
     this.domElement = document.createElement( "button" );
     this.domElement.classList.add( styles.component );
@@ -43,7 +38,7 @@ export default class IconButton extends UKComponent<IconButtonProps, IconButtonS
 
     this.domElement.appendChild( this.iconDomElement );
 
-    this.state.label.addListener( label => this.domElement.innerText = label );
+    this.label.addListener( label => this.domElement.innerText = label );
 
     if ( this.props.size ) {
       this.setSize( props.size );

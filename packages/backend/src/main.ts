@@ -26,7 +26,7 @@
 */
 
 import sourceMapSupport from "source-map-support";
-import coreApi from "./core/core/coreApi.js";
+import coreApi from "./core/coreApi.js";
 
 sourceMapSupport.install();
 

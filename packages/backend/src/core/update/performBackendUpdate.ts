@@ -5,7 +5,7 @@
 
 import { spawn } from "node:child_process";
 import path from "path";
-import coreApi from "../core/coreApi.js";
+import coreApi from "../coreApi.js";
 
 export async function performBackendUpdate() {
   // spawn a new process to perform the update and restart yourdash

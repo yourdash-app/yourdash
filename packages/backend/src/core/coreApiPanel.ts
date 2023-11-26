@@ -8,7 +8,7 @@ import path from "path";
 import IPanelApplicationsLauncherApplication from "shared/core/panel/applicationsLauncher/application.js";
 import sharp from "sharp";
 import YourDashApplication from "../../helpers/applications.js";
-import YourDashPanel from "../panel.js";
+import YourDashPanel from "./helpers/panel.js";
 import { CoreApi } from "./coreApi.js";
 import { authenticatedImageType } from "./coreApiAuthenticatedImage.js";
 
@@ -24,7 +24,7 @@ export default class CoreApiPanel {
       res.set( "Cache-Control", "no-store" );
       const { username } = req.headers as { username: string }
 
-      Promise.all( ( this.coreApi.globalDb.get( "installedApplications" ) || [] ).map( async ( app ) => {
+      Promise.all( ( this.coreApi.globalDb.get( "core:installedApplications" ) || [] ).map( async ( app ) => {
         const application = await new YourDashApplication( app ).read();
 
         return new Promise( async resolve => {

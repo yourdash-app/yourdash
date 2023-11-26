@@ -20,6 +20,11 @@
     font-size: 1.5rem;
     font-weight: var(--weight-semibold);
   }
+
+  & > *:not(:empty) {
+    visibility: hidden;
+    display: none;
+  }
 }
 
 .actionsSlot {

@@ -3,16 +3,16 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import * as UIKit from "@yourdash/uikit/src/core/index";
+import UIKit from "@yourdash/uikit/src/core/index";
 import coreView from "./views/core/coreView";
 
 class ApplicationCore {
   electron: ( typeof window )["electron"];
-  uiKitRoot: UIKit.default;
+  uiKitRoot: UIKit;
 
   constructor() {
     this.electron = window.electron;
-    this.uiKitRoot = new UIKit.default( document.getElementById( "core-application" ) as HTMLDivElement );
+    this.uiKitRoot = new UIKit( document.getElementById( "core-application" ) as HTMLDivElement );
 
     return this
   }

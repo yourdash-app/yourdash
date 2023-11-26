@@ -23,7 +23,7 @@ export interface CardSlots extends UKComponentSlots {
   headerExtras: UKComponentSlot,
 }
 
-export default class Card extends UKComponent<CardProps, never, CardSlots> {
+export default class Card extends UKComponent<CardProps, CardSlots> {
   private readonly titleDomElement: HTMLSpanElement
   private readonly headerDomElement: HTMLDivElement
 

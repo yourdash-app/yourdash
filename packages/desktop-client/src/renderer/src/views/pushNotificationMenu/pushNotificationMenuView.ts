@@ -4,14 +4,14 @@
  */
 
 import { UKSlotComponent } from "@yourdash/uikit/src/core/component";
-import * as UIKit from "@yourdash/uikit/src/core/index";
 import CoreView from "../core/coreView";
 import PushNotificationMenu from "./PushNotificationMenu";
+import { UK } from "@yourdash/uikit/src/core/index";
 
 export default class PushNotificationMenuView extends UKSlotComponent<{ coreView: CoreView }> {
-  containerComponent: UIKit.Col
+  containerComponent: UK.Col
   pushNotificationState: "silent" | "notified" | "none" = "none"
-  pushNotificationMenuButton: UIKit.IconButton
+  pushNotificationMenuButton: UK.IconButton
   pushNotificationMenu: PushNotificationMenu
 
   constructor( props: PushNotificationMenuView["props"] ) {
@@ -20,9 +20,9 @@ export default class PushNotificationMenuView extends UKSlotComponent<{ coreView
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const self = this;
 
-    this.containerComponent = this.createComponent( UIKit.Col )
+    this.containerComponent = this.createComponent( UK.Col )
     this.pushNotificationMenuButton = this.containerComponent.createComponent(
-      UIKit.IconButton,
+      UK.IconButton,
       {
         icon: "BellSlash",
         onClick() {
