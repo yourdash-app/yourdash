@@ -99,6 +99,8 @@ export default class CoreApiVerifyFileSystem {
           path.join( this.coreApi.fs.ROOT_PATH, "./global_database.json" )
         );
 
+        // load the newly copied global database file
+        await this.coreApi.globalDb.loadFromDisk( path.join( this.coreApi.fs.ROOT_PATH, "./global_database.json" ) );
       } catch ( e ) {
         console.log( e );
         this.coreApi.log.error( "core:verify_fs", "Unable to create the \"./fs/global_database.json\" file" );
@@ -117,7 +119,7 @@ export default class CoreApiVerifyFileSystem {
     const ADMIN_USER = await this.coreApi.users.create( "admin" );
 
     if ( !await ADMIN_USER.doesExist() ) {
-      await ADMIN_USER.create();
+      await ADMIN_USER.verify();
       await ADMIN_USER.setName( {
         first: "Admin",
         last: "istrator"

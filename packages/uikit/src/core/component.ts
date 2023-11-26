@@ -6,19 +6,19 @@
 import UKComponentSlot from "./slot.ts";
 import State from "./state.ts";
 
-export type UKComponentState = { [ key: string ]: State<any> } // eslint-disable-line @typescript-eslint/no-explicit-any
 export type UKComponentSlots = { [ key: string ]: State<ValidUKComponent> }
 export type UKComponentProps = { [ key: string ]: any } | undefined  // eslint-disable-line @typescript-eslint/no-explicit-any
 
-export class UKComponent<ComponentProps extends UKComponentProps = UKComponentProps, ComponentState extends UKComponentState = UKComponentState, ComponentSlots extends UKComponentSlots = UKComponentSlots> {
+export class UKComponent<
+  ComponentProps extends UKComponentProps = UKComponentProps,
+  ComponentSlots extends UKComponentSlots = UKComponentSlots
+> {
   domElement: HTMLElement;
-  declare parentDomElement: HTMLElement;
-  state: ComponentState;
+  declare readonly parentDomElement: HTMLElement;
   slots: ComponentSlots;
   props: ComponentProps;
 
   constructor( props: ComponentProps ) {
-    this.state = {} as ComponentState;
     this.slots = {} as ComponentSlots;
     this.props = props as ComponentProps;
     this.domElement = document.createElement( "uk-empty-component" ) as HTMLDivElement;
@@ -27,15 +27,16 @@ export class UKComponent<ComponentProps extends UKComponentProps = UKComponentPr
   }
 }
 
-export class UKSlotComponent<ComponentProps extends UKComponentProps = UKComponentProps, ComponentState extends UKComponentState = UKComponentState> extends UKComponentSlot {
-  declare parentDomElement: HTMLElement;
-  state: ComponentState;
+export class UKSlotComponent<
+  ComponentProps extends UKComponentProps = UKComponentProps
+>
+  extends UKComponentSlot {
+  declare readonly parentDomElement: HTMLElement;
   props: ComponentProps;
 
   constructor( props: ComponentProps ) {
     super( document.createElement( "uk-empty-component" ) as HTMLDivElement );
 
-    this.state = {} as ComponentState;
     this.props = props as ComponentProps;
 
     return this;

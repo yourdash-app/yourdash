@@ -6,7 +6,7 @@
 import { fetch } from "undici";
 import { IWeatherDataForLocation } from "../../shared/weatherDataForLocation.js";
 import parseWeatherCodes from "./parseWeatherState.js";
-import coreApi from "backend/src/core/core/coreApi.js";
+import coreApi from "backend/src/core/coreApi.js";
 
 export default async function getWeatherDataForLongitudeAndLatitude( id: string ): Promise<IWeatherDataForLocation | null> {
   try {
@@ -14,7 +14,7 @@ export default async function getWeatherDataForLongitudeAndLatitude( id: string 
     const locationResponse = await locationRequest.json() as IWeatherDataForLocation["location"] & {
       latitude: string, longitude: string
     };
-    
+
     const TIMEZONE = "Europe/London";
     let fetchRequest;
     try {
@@ -25,7 +25,7 @@ export default async function getWeatherDataForLongitudeAndLatitude( id: string 
     } catch ( e ) {
       coreApi.log.warning( "Could not fetch weather data", e );
     }
-    
+
     interface IRequestResponse {
       latitude: number;
       longitude: number;
@@ -50,9 +50,9 @@ export default async function getWeatherDataForLongitudeAndLatitude( id: string 
         time: string[]; weathercode: number[]; temperature_2m_max: number[]; temperature_2m_min: number[]; sunrise: string[]; sunset: string[]; uv_index_max: number[]; rain_sum: number[]; precipitation_hours: number[]; windspeed_10m_max: number[]; windgusts_10m_max: number[];
       };
     }
-    
+
     const requestResponse = await fetchRequest.json() as IRequestResponse;
-    
+
     const output: IWeatherDataForLocation = {
       location: {
         name: locationResponse.name,
@@ -108,11 +108,11 @@ export default async function getWeatherDataForLongitudeAndLatitude( id: string 
         sunrise: requestResponse.daily.sunrise,
         sunset: requestResponse.daily.sunset
       }
-      
+
     };
-    
+
     return output;
-    
+
   } catch ( e ) {
     coreApi.log.warning( "Could not fetch weather data", e );
     return null;

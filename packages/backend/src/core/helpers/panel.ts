@@ -5,7 +5,7 @@
 
 import { promises as fs } from "fs";
 import path from "path";
-import YourDashUser from "./core/user/index.js";
+import YourDashUser from "../user/index.js";
 
 export interface YourDashPanelQuickShortcut {
   displayName: string;
@@ -40,43 +40,43 @@ export default class YourDashPanel {
 
   async getQuickShortcuts(): Promise<string[]> {
     const user = new YourDashUser( this.username );
-  
+
     const db = await user.getDatabase()
-    
+
     return db.get( "core:panel:quickShortcuts" ) || []
   }
 
   async removeQuickShortcut( index: number ): Promise<this> {
     const user = new YourDashUser( this.username );
-  
+
     const db = await user.getDatabase()
-    
+
     const shortcuts = db.get( "core:panel:quickShortcuts" ) || []
-    
+
     shortcuts.splice( index, 1 )
-    
+
     db.set( "core:panel:quickShortcuts", shortcuts )
     user.saveDatabase()
-    
+
     return this
   }
 
   async createQuickShortcut( applicationID: string ): Promise<this> {
     const user = new YourDashUser( this.username );
-  
+
     const db = await user.getDatabase()
-    
+
     const shortcuts = db.get( "core:panel:quickShortcuts" ) || []
-    
+
     if ( shortcuts.indexOf( applicationID ) !== -1 ) {
       return this
     }
-    
+
     shortcuts.push( applicationID )
-    
+
     db.set( "core:panel:quickShortcuts", shortcuts )
     user.saveDatabase()
-    
+
     return this
   }
 

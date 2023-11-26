@@ -5,10 +5,10 @@
 
 import { Application as ExpressApplication, Request as ExpressRequest } from "express";
 import path from "path";
-import coreApi, { CoreApi } from "./core/coreApi.js";
-import { LOG_TYPE } from "./core/coreApiLog.js";
-import YourDashUser from "./core/user/index.js";
-import { WebsocketManager } from "./websocketManager.js";
+import coreApi, { CoreApi } from "../coreApi.js";
+import { LOG_TYPE } from "../coreApiLog.js";
+import YourDashUser from "../user/index.js";
+import { WebsocketManager } from "../helpers/websocketManager.js";
 
 export interface YourDashModuleArguments {
   moduleName: string,
@@ -31,7 +31,7 @@ export default class Module {
     path: string,
     modulePath: string
   };
-  
+
   constructor( args: YourDashModuleArguments ) {
     this.moduleName = args.moduleName;
     this.API = {
@@ -62,14 +62,14 @@ export default class Module {
       moduleName: args.moduleName,
       getUser( req: ExpressRequest ) {
         const username = req.headers.username as string;
-        
+
         return new YourDashUser( username );
       },
       core: coreApi,
       path: args.modulePath,
       modulePath: args.modulePath
     }
-    
+
     return this;
   }
 }
