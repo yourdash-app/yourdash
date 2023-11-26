@@ -18,6 +18,8 @@ export default class UKComponentSlot extends State<ValidUKComponent> {
   createComponent<T extends ValidUKComponent>( component: new ( props: T["props"] ) => T, props: T["props"] = {} ) {
     const comp = new component( props )
 
+    // @ts-ignore
+    // noinspection JSConstantReassignment
     comp.parentDomElement = this.domElement
     comp.parentDomElement.appendChild( comp.domElement )
 
@@ -25,6 +27,8 @@ export default class UKComponentSlot extends State<ValidUKComponent> {
   }
 
   add( component: ValidUKComponent ) {
+    // @ts-ignore
+    // noinspection JSConstantReassignment
     component.parentDomElement = this.domElement
     component.parentDomElement.appendChild( component.domElement )
 

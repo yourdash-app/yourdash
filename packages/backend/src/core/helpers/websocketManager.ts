@@ -5,7 +5,7 @@
 
 import { Server as SocketIOServer } from "socket.io"
 import * as http from "http";
-import coreApi from "./core/coreApi.js";
+import coreApi from "../coreApi.js";
 
 export class WebsocketManager {
   servers: {
@@ -16,14 +16,14 @@ export class WebsocketManager {
       }[]
     }
   };
-  
+
   httpServer: http.Server<typeof http.IncomingMessage, typeof http.ServerResponse>;
-  
+
   constructor( httpServer: http.Server<typeof http.IncomingMessage, typeof http.ServerResponse> ) {
     this.servers = {};
     this.httpServer = httpServer;
   }
-  
+
   _selfDestruct() {
     Object.keys( this.servers ).map( async appName => {
       if ( ( await this.servers[ appName ].server.fetchSockets() ).length === 0 ) {
@@ -35,7 +35,7 @@ export class WebsocketManager {
       }
     } );
   }
-  
+
   createServer( appName: string ) {
     const server = new SocketIOServer(
       this.httpServer,
@@ -44,21 +44,21 @@ export class WebsocketManager {
         cors: { origin: "*" }
       }
     );
-    
+
     this.servers[ appName ] = {
       server,
       connections: []
     };
-    
+
     coreApi.log.info( "core:websocket_manager", `${ appName } was created.` );
-    
+
     return server;
   }
-  
+
   getServer( appName: string ) {
     return this.servers[ appName ];
   }
-  
+
   closeServer( appName: string ) {
     this.servers[ appName ].server.close();
   }

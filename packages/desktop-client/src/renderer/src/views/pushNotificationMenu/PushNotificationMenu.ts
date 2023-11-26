@@ -3,11 +3,11 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import * as UIKit from "@yourdash/uikit/src/core/index";
+import { UK } from "@yourdash/uikit/src/core/index";
 import transitions from "@yourdash/uikit/src/core/transitions.module.scss";
 import styles from "./pushNotificationMenu.module.scss";
 
-export default class PushNotificationMenu extends UIKit.Box {
+export default class PushNotificationMenu extends UK.Box {
   constructor() {
     super( { flex: "column", alignItems: "center", justifyContent: "center" }  );
 

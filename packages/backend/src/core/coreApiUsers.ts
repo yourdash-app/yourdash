@@ -6,6 +6,7 @@
 import path from "path";
 import KeyValueDatabase from "../../helpers/keyValueDatabase.js";
 import { CoreApi } from "./coreApi.js";
+import { authenticatedImageType } from "./coreApiAuthenticatedImage.js";
 import YourDashUser from "./user/index.js";
 import { IYourDashSession } from "./user/session.js";
 
@@ -17,7 +18,7 @@ export default class CoreApiUsers {
   private readonly userDatabases: { [ username: string ]: { db: KeyValueDatabase, changed: boolean } };
   private readonly coreApi: CoreApi;
   private sessions: {
-    [ key: string ]: IYourDashSession<any>[]
+    [ key: string ]: IYourDashSession<any>[] // eslint-disable-line @typescript-eslint/no-explicit-any
   } = {};
 
   constructor( coreApi: CoreApi ) {
@@ -91,7 +92,7 @@ export default class CoreApiUsers {
   async create( username: string ) {
     const user = new YourDashUser( username );
 
-    await user.create()
+    await user.verify()
 
     return user
   }
@@ -128,5 +129,43 @@ export default class CoreApiUsers {
 
   async getAllUsers(): Promise<string[]> {
     return ( await this.coreApi.fs.getDirectory( path.join( this.coreApi.fs.ROOT_PATH, "./users" ) ) ).getChildren()
+  }
+
+  __internal__loadEndpoints() {
+    this.coreApi.expressServer.get( "/core/user/current/avatar/large", ( req, res ) => {
+      const { username } = req.headers as { username: string }
+
+      const unreadUser = new YourDashUser( username )
+      const avatarPath = path.join( unreadUser.path, "avatars/large_avatar.avif" )
+
+      return res.status( 200 ).type( "text/plain" ).send( this.coreApi.authenticatedImage.create( username, authenticatedImageType.FILE, avatarPath ) )
+    } )
+
+    this.coreApi.expressServer.get( "/core/user/current/avatar/medium", ( req, res ) => {
+      const { username } = req.headers as { username: string }
+
+      const unreadUser = new YourDashUser( username )
+      const avatarPath = path.join( unreadUser.path, "avatars/medium_avatar.avif" )
+
+      return res.status( 200 ).type( "text/plain" ).send( this.coreApi.authenticatedImage.create( username, authenticatedImageType.FILE, avatarPath ) )
+    } )
+
+    this.coreApi.expressServer.get( "/core/user/current/avatar/small", ( req, res ) => {
+      const { username } = req.headers as { username: string }
+
+      const unreadUser = new YourDashUser( username )
+      const avatarPath = path.join( unreadUser.path, "avatars/small_avatar.avif" )
+
+      return res.status( 200 ).type( "text/plain" ).send( this.coreApi.authenticatedImage.create( username, authenticatedImageType.FILE, avatarPath ) )
+    } )
+
+    this.coreApi.expressServer.get( "/core/user/current/avatar/original", ( req, res ) => {
+      const { username } = req.headers as { username: string }
+
+      const unreadUser = new YourDashUser( username )
+      const avatarPath = path.join( unreadUser.path, "avatars/original.avif" )
+
+      return res.status( 200 ).type( "text/plain" ).send( this.coreApi.authenticatedImage.create( username, authenticatedImageType.FILE, avatarPath ) )
+    } )
   }
 }

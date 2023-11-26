@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-.uikit {
+.__uikit__ {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   font-weight: 400;
   line-height: 1.5;
@@ -161,21 +161,28 @@
   --input-focus-outline-active: 0.25rem solid #5566aa;
 
   /* header levels */
-  --level0-font-size: 1.5rem;
-  --level0-font-weight: 700;
-  --level1-font-size: 1.25rem;
-  --level1-font-weight: 600;
-  --level2-font-size: 1rem;
-  --level2-font-weight: 500;
-  --level3-font-size: 0.75rem;
-  --level3-font-weight: 400;
+  --header-level0-font-size: 4rem;
+  --header-level0-font-weight: 900;
+  --header-level0-line-height: 5rem;
+  --header-level1-font-size: 2rem;
+  --header-level1-font-weight: 700;
+  --header-level1-line-height: 2.5rem;
+  --header-level2-font-size: 1.5rem;
+  --header-level2-font-weight: 500;
+  --header-level2-line-height: 1.25rem;
+  --header-level3-font-size: 1.25rem;
+  --header-level3-font-weight: 400;
+  --header-level3-line-height: 1rem;
+  --header-level4-font-size: 1rem;
+  --header-level4-font-weight: 300;
+  --header-level4-line-height: 0.75rem;
 
   * {
     font-family: "Inter", sans-serif;
   }
 }
 
-.noAnimations {
+.__uikit__no-animations {
   * {
     transition-duration: 0s !important;
   }

@@ -19,7 +19,7 @@ import CoreApiAuthenticatedImage from "./coreApiAuthenticatedImage.js";
 import CoreApiCommands from "./coreApiCommands.js";
 import CoreApiGlobalDb from "./coreApiGlobalDb.js";
 import CoreApiLog from "./coreApiLog.js";
-import CoreApiModuleManager from "./coreApiModuleManager.js";
+import CoreApiModuleManager from "./moduleManager/coreApiModuleManager.js";
 import CoreApiPanel from "./coreApiPanel.js";
 import CoreApiScheduler from "./coreApiScheduler.js";
 import CoreApiUserDatabase from "./coreApiUserDatabase.js";
@@ -29,7 +29,7 @@ import { YOURDASH_INSTANCE_DISCOVERY_STATUS } from "./types/discoveryStatus.js";
 import { userAvatarSize } from "./user/avatarSize.js";
 import YourDashUser from "./user/index.js";
 import { YOURDASH_SESSION_TYPE } from "./user/session.js";
-import CoreApiPersonalServerAccelerator from "./websocket/coreApiPersonalServerAccelerator.js";
+import CoreApiPersonalServerAccelerator from "./personalServerAccelerator/coreApiPersonalServerAccelerator.js";
 
 export class CoreApi {
   // core apis
@@ -50,17 +50,20 @@ export class CoreApi {
   readonly httpServer: http.Server;
 
   constructor() {
+    console.log( "---DEV_CLEAR---" )
+    this.log = new CoreApiLog()
+    this.log.info( "core:startup", "Beginning YourDash Startup" )
+
     // Fetch process arguments
     this.processArguments = minimist( process.argv.slice( 2 ) );
 
-    // Create the requests server
+    // Create the request server
     this.expressServer = express()
     this.httpServer = http.createServer( this.expressServer );
 
     // define core apis
     this.scheduler = new CoreApiScheduler( this )
     this.users = new CoreApiUsers( this )
-    this.log = new CoreApiLog()
     this.moduleManager = new CoreApiModuleManager( this )
     this.globalDb = new CoreApiGlobalDb( this )
     this.commands = new CoreApiCommands( this )
@@ -94,8 +97,8 @@ export class CoreApi {
         switch ( subCommand ) {
         case "set":
           this.globalDb.set( key, value );
-            this.log.info("core:command", `set "${key}" to "${value}"`);
-            break;
+          this.log.info( "core:command", `set "${key}" to "${value}"` );
+          break;
         case "get":
           this.log.info( "core:command", this.globalDb.get( key ) );
           break;
@@ -116,39 +119,40 @@ export class CoreApi {
   __internal__startInstance() {
     this.log.info( "core:startup", "Welcome to the YourDash Instance backend" )
 
-    this.fs.verifyFileSystem.verify()
-      .then( () => {
-        this.globalDb.loadFromDisk( path.join( this.fs.ROOT_PATH, "./global_database.json" ) )
-          .then( () => {
-            this.users.__internal__startUserDatabaseService()
-            this.users.__internal__startUserDeletionService()
+    this.fs.exists( path.join( this.fs.ROOT_PATH, "./global_database.json" ) ).then( async doesGlobalDatabaseFileExist => {
+      if ( doesGlobalDatabaseFileExist )
+        await this.globalDb.loadFromDisk( path.join( this.fs.ROOT_PATH, "./global_database.json" ) )
+
+      this.fs.verifyFileSystem.verify()
+        .then( () => {
+          this.users.__internal__startUserDatabaseService()
+          this.users.__internal__startUserDeletionService()
+
+          try {
+            killPort( 3563 ).then( () => {
+              this.log.info( "core:startup", "Killed port 3563" );
+              this.httpServer.listen( 3563, () => {
+                this.log.success( "core:startup", "server now listening on port 3563!" );
+                this.log.success( "core:startup", "YourDash initialization complete!" );
+                this.loadCoreEndpoints()
+              } );
+            } );
+          } catch ( reason ) {
+            this.log.warning( "Unable to kill port 3563", reason );
 
             try {
-              killPort( 3563 ).then( () => {
-                this.log.info( "core", "Killed port 3563" );
-                this.httpServer.listen( 3563, () => {
-                  this.log.success( "core", "server now listening on port 3563!" );
-                  this.log.success( "core", "Startup complete!" );
-                  this.loadCoreEndpoints()
-                } );
+              this.httpServer.listen( 3563, () => {
+                this.log.info( "core:startup", "server now listening on port 3563!" );
+                this.log.success( "core:startup", "Startup complete!" );
+                this.loadCoreEndpoints()
               } );
-            } catch ( reason ) {
-              this.log.warning( "Unable to kill port 3563", reason );
-
-              try {
-                this.httpServer.listen( 3563, () => {
-                  this.log.info( "core", "server now listening on port 3563!" );
-                  this.log.success( "core", "Startup complete!" );
-                  this.loadCoreEndpoints()
-                } );
-              } catch ( _err ) {
-                this.log.error( "core", "Unable to start server!" );
-                this.shutdownInstance();
-              }
+            } catch ( _err ) {
+              this.log.error( "core:startup", "Unable to start server!" );
+              this.shutdownInstance();
             }
-          } )
-
-      } )
+          }
+        } )
+    } )
     return this
   }
 
@@ -456,6 +460,7 @@ export class CoreApi {
 
     this.userDatabase.__internal__loadEndpoints()
     this.panel.__internal__loadEndpoints()
+    this.users.__internal__loadEndpoints()
   }
 
   // try not to use this method for production stability, instead prefer to reload a specific module if it works for your use-case.

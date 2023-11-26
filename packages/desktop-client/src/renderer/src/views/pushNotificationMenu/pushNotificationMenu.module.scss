@@ -5,9 +5,9 @@
 
 .menu {
   position: absolute;
-  top: calc(100% + 0.5rem);
-  right: 0.5rem;
-  height: calc(100vh - 1rem - 100%);
+  top: calc(100% + 0.25rem);
+  right: 0.25rem;
+  height: calc(100vh - 0.5rem - 100%);
   width: 16rem;
   transform-origin: top right;
 }
