@@ -4,7 +4,8 @@
  */
 
 import { UKSlotComponent } from "@yourdash/uikit/src/core/component";
-import * as UIKit from "@yourdash/uikit/src/core/index";
+import { UK } from "@yourdash/uikit/src/core/index";
+import HomeView from "../home/homeView";
 import PushNotificationMenuView from "../pushNotificationMenu/pushNotificationMenuView";
 
 export default class CoreView extends UKSlotComponent<undefined> {
@@ -13,14 +14,27 @@ export default class CoreView extends UKSlotComponent<undefined> {
   constructor() {
     super( undefined );
 
-    const headerMenu = this.createComponent( UIKit.Box, { noRounding: true, dimensions: { width: "100%" }, flex: "row", alignItems: "center", justifyContent: "space-between" } )
+    this.domElement.style.height = "100vh"
+    this.domElement.style.width = "100vw"
+    this.domElement.style.overflow = "auto"
+    this.domElement.style.display = "flex"
+    this.domElement.style.flexDirection = "column"
 
-    headerMenu.createComponent( UIKit.IconButton, { icon: "Apps", onClick() { /* Empty */ } } )
-    headerMenu.createComponent( UIKit.Header, { content: "Hello World!", level: 1 } )
+    const headerMenu = this.createComponent( UK.Box, { noRounding: true, dimensions: { width: "100%" }, flex: "row", alignItems: "center", justifyContent: "space-between" } )
+
+    headerMenu.createComponent( UK.IconButton, { icon: "Apps", onClick() { /* Empty */ } } )
+    headerMenu.createComponent( UK.Header, { text: "Hello World!", level: 3 } )
 
     headerMenu.domElement.style.position = "relative"
 
     this.pushNotificationMenu = this.createComponent( PushNotificationMenuView )
     headerMenu.add( this.pushNotificationMenu )
+
+    const content = this.createComponent( UK.Empty )
+    content.domElement.style.height = "100%"
+    content.domElement.style.width = "100%"
+    this.add( content )
+
+    content.createComponent( HomeView )
   }
 }

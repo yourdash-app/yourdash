@@ -7,11 +7,11 @@ import { UKSlotComponent } from "../../component.ts";
 import styles from "./header.module.scss";
 
 export interface HeaderProps {
-  content: string,
+  text: string,
   fontFamily?: CSSStyleDeclaration["fontFamily"],
   color?: CSSStyleDeclaration["color"],
   textAlign?: CSSStyleDeclaration["textAlign"]
-  level?: 0 | 1 | 2 | 3
+  level?: 0 | 1 | 2 | 3 | 4 | 5
 }
 
 export default class Header extends UKSlotComponent<HeaderProps> {
@@ -21,7 +21,7 @@ export default class Header extends UKSlotComponent<HeaderProps> {
     this.domElement = document.createElement( "span" )
     this.domElement.classList.add( styles.component )
 
-    this.setContent( props.content )
+    this.setContent( props.text )
 
     if ( props.fontFamily !== undefined )
       this.setFontFamily( props.fontFamily );
@@ -29,7 +29,7 @@ export default class Header extends UKSlotComponent<HeaderProps> {
     if ( props.level !== undefined ) {
       this.setLevel( props.level );
     } else {
-      this.setLevel( 0 )
+      this.setLevel( 2 )
     }
 
     if ( props.color !== undefined )
@@ -54,24 +54,47 @@ export default class Header extends UKSlotComponent<HeaderProps> {
       this.domElement.classList.remove( styles.level1 )
       this.domElement.classList.remove( styles.level2 )
       this.domElement.classList.remove( styles.level3 )
+      this.domElement.classList.remove( styles.level4 )
+      this.domElement.classList.remove( styles.level5 )
       break
     case 1:
       this.domElement.classList.add( styles.level1 )
       this.domElement.classList.remove( styles.level0 )
       this.domElement.classList.remove( styles.level2 )
       this.domElement.classList.remove( styles.level3 )
+      this.domElement.classList.remove( styles.level4 )
+      this.domElement.classList.remove( styles.level5 )
       break
     case 2:
       this.domElement.classList.add( styles.level2 )
       this.domElement.classList.remove( styles.level0 )
       this.domElement.classList.remove( styles.level1 )
       this.domElement.classList.remove( styles.level3 )
+      this.domElement.classList.remove( styles.level4 )
+      this.domElement.classList.remove( styles.level5 )
       break
     case 3:
       this.domElement.classList.add( styles.level3 )
       this.domElement.classList.remove( styles.level0 )
       this.domElement.classList.remove( styles.level1 )
       this.domElement.classList.remove( styles.level2 )
+      this.domElement.classList.remove( styles.level4 )
+      this.domElement.classList.remove( styles.level5 )
+      break
+    case 4:
+      this.domElement.classList.add( styles.level4 )
+      this.domElement.classList.remove( styles.level0 )
+      this.domElement.classList.remove( styles.level1 )
+      this.domElement.classList.remove( styles.level2 )
+      this.domElement.classList.remove( styles.level3 )
+      break
+    case 5:
+      this.domElement.classList.add( styles.level5 )
+      this.domElement.classList.remove( styles.level0 )
+      this.domElement.classList.remove( styles.level1 )
+      this.domElement.classList.remove( styles.level2 )
+      this.domElement.classList.remove( styles.level3 )
+      this.domElement.classList.remove( styles.level4 )
       break
     default:
       console.log( "Error: Unknown header level" );

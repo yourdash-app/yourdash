@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import coreApi from "backend/src/core/core/coreApi.js";
+import coreApi from "backend/src/core/coreApi.js";
 import YourDashApplication, { getAllApplications } from "backend/src/helpers/applications.js";
 
 export default async function getAllCategories(): Promise<string[]> {
@@ -13,13 +13,13 @@ export default async function getAllCategories(): Promise<string[]> {
 
   for ( const applicationName of applications ) {
     const unreadApplication = new YourDashApplication( applicationName );
-    
+
     if ( !( await unreadApplication.exists() ) ) {
       continue;
     }
-    
+
     const app = await unreadApplication.read();
-    
+
     try {
       categories[app.getCategory()] = true;
     } catch ( _err ) {
