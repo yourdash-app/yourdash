@@ -34,13 +34,13 @@ export default class PersonalServerAcceleratorConnection {
     this.websocketManager.__internal__removeSocketConnection( this )
   }
 
-  listenFor( path: string, callBack: ( data: any ) => void ) {
+  listenFor( path: string, callBack: () => void ) {
     this.socket.on( path, callBack );
 
     return this
   }
 
-  emit( path: string, data: any ) { // eslint-disable-line @typescript-eslint/no-explicit-any
+  emit( path: string, data: unknown ) {
     this.socket.emit( path, data );
 
     return this

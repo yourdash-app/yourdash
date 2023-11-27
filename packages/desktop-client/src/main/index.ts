@@ -17,7 +17,9 @@ function createWindow(): void {
     icon: APPLICATION_ICON,
     autoHideMenuBar: !is.dev,
     webPreferences: {
-      preload: join( __dirname, "../preload/index.js" ), sandbox: false
+      preload: join( __dirname, "../preload/index.js" ),
+      sandbox: false,
+      webviewTag: true
     }
   } );
 

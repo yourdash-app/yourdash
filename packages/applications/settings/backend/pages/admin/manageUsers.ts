@@ -4,7 +4,7 @@
  */
 
 import { YOURDASH_USER_PERMISSIONS } from "backend/src/core/user/permissions.js";
-import Module from "packages/backend/src/core/moduleManager/module.js";
+import Module from "backend/src/core/moduleManager/module.js";
 import coreApi from "backend/src/core/coreApi.js";
 
 export default function manageUsers( api: Module["API"] ) {

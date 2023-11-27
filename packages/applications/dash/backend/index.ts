@@ -4,7 +4,7 @@
  */
 
 import coreApi from "backend/src/core/coreApi.js";
-import Module, { YourDashModuleArguments } from "packages/backend/src/core/moduleManager/module.js";
+import Module, { YourDashModuleArguments } from "backend/src/core/moduleManager/module.js";
 
 export default class DashModule extends Module {
   constructor( args: YourDashModuleArguments ) {
@@ -22,8 +22,6 @@ export default class DashModule extends Module {
 
     // TODO: implement module system
     this.API.request.get( "/app/dash/modules", async ( req, res ) => {
-      const { username } = req.headers as { username: string };
-
       res.json( { success: true } );
     } );
   }

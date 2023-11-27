@@ -40,7 +40,7 @@ export function generateRandomStringOfLength( length: number ) {
   return Array.from( { length }, () => characters[Math.floor( Math.random() * characters.length )] ).join( "" );
 }
 
-export function hash( input: string ): Promise<string> {
+export function hashString( input: string ): Promise<string> {
   return new Promise( resolve => {
     const saltRounds = 10;
     bcrypt.hash( input, saltRounds, ( err, hash ) => {
@@ -53,7 +53,7 @@ export function hash( input: string ): Promise<string> {
   } );
 }
 
-export function compareHash( hash: string, input: string ): Promise<boolean> {
+export function compareHashString( hash: string, input: string ): Promise<boolean> {
   return new Promise( resolve => {
     bcrypt.compare( input, hash, ( err, response ) => {
       if ( err ) {
