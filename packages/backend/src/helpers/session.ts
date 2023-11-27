@@ -8,7 +8,7 @@ import path from "path";
 import coreApi from "../core/coreApi.js";
 import { SESSION_TOKEN_LENGTH } from "../core/coreApiUsers.js";
 import YourDashUser from "../core/user/index.js";
-import { IYourDashSession, YOURDASH_SESSION_TYPE } from "../core/user/session.js";
+import { IYourDashSession, YOURDASH_SESSION_TYPE } from "../../../shared/core/session.js";
 import { generateRandomStringOfLength } from "./encryption.js";
 
 export function getSessionsForUser( username: string ): IYourDashSession<any>[] { // eslint-disable-line @typescript-eslint/no-explicit-any

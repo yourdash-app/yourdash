@@ -5,7 +5,7 @@
 
 import coreApi from "backend/src/core/coreApi.js";
 import { authenticatedImageType } from "backend/src/core/coreApiAuthenticatedImage.js";
-import Module, { YourDashModuleArguments } from "packages/backend/src/core/moduleManager/module.js";
+import Module, { YourDashModuleArguments } from "backend/src/core/moduleManager/module.js";
 import YourDashApplication, { getAllApplications } from "backend/src/helpers/applications.js";
 import { getInstanceLogoBase64 } from "backend/src/helpers/logo.js";
 import path from "path";
@@ -157,7 +157,7 @@ export default class StoreModule extends Module {
       }
       const application = await applicationUnread.read();
 
-      coreApi.globalDb.set( "installedApplications", [ ...coreApi.globalDb.get( "installedApplications" ), id, ...application.getDependencies()] );
+      coreApi.globalDb.set( "core:installedApplications", [ ...coreApi.globalDb.get( "core:installedApplications" ), id, ...application.getDependencies()] );
       await coreApi.moduleManager.loadModule( id, path.join( process.cwd(), `../applications/${id}/backend/` ) );
       return res.json( { success: true } );
     } );
@@ -168,7 +168,7 @@ export default class StoreModule extends Module {
       if ( !application.exists() ) {
         return res.json( { error: true } );
       }
-      coreApi.globalDb.set( "installedApplications", coreApi.globalDb.get( "installedApplications" ).filter( app => app !== id ) );
+      coreApi.globalDb.set( "core:installedApplications", coreApi.globalDb.get( "core:installedApplications" ).filter( app => app !== id ) );
       return res.json( { success: true } );
     } );
 

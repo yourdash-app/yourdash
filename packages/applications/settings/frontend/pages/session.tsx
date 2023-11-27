@@ -11,9 +11,9 @@ import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
 
 const SettingsPageSession: React.FC = () => {
   const [reloadNum, setReloadNum] = useState( 0 );
-  const [sessions, setSessions] = useState<IYourDashSession<any>[]>( [] );
+  const [sessions, setSessions] = useState<IYourDashSession<YOURDASH_SESSION_TYPE>[]>( [] );
   const [personalServerAccelerationSessions, setPersonalServerAcceleration] = useState<IYourDashSession<YOURDASH_SESSION_TYPE.desktop>[]>( [] );
-  
+
   useEffect( () => {
     // setSessions( [
     //   {
@@ -44,12 +44,12 @@ const SettingsPageSession: React.FC = () => {
     csi.getJson( "/core/sessions", data => {
       setSessions( data.sessions );
     } );
-    
+
     csi.getJson( "/core/personal-server-accelerator/sessions", data => {
       setPersonalServerAcceleration( data.sessions );
     } );
   }, [reloadNum] );
-  
+
   return (
     <div className={"h-full overflow-auto"}>
       <h1
@@ -118,7 +118,7 @@ const SettingsPageSession: React.FC = () => {
                   <IconButton
                     icon={YourDashIcon.X}
                     onClick={() => {
-                      csi.deleteJson( `/core/session/${ session.id }`, data => {
+                      csi.deleteJson( `/core/session/${ session.id }`, () => {
                         setReloadNum( reloadNum + 1 );
                       } );
                     }}
@@ -128,7 +128,7 @@ const SettingsPageSession: React.FC = () => {
             ) )
           }
         </section>
-        
+
         <h2 className={"ml-auto mr-auto w-full max-w-5xl font-semibold text-4xl tracking-wide pb-2 pt-8"}>PSA Supported Sessions</h2>
         <section className={"gap-2 flex flex-wrap"}>
           {
@@ -148,7 +148,7 @@ const SettingsPageSession: React.FC = () => {
                   <IconButton
                     icon={YourDashIcon.X}
                     onClick={() => {
-                      csi.deleteJson( `/core/session/${ session.id }`, data => {
+                      csi.deleteJson( `/core/session/${ session.id }`, () => {
                         setReloadNum( reloadNum + 1 );
                       } );
                     }}

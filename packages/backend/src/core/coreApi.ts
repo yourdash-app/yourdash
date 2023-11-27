@@ -28,7 +28,7 @@ import CoreApiFileSystem from "./fileSystem/coreApiFileSystem.js";
 import { YOURDASH_INSTANCE_DISCOVERY_STATUS } from "./types/discoveryStatus.js";
 import { userAvatarSize } from "./user/avatarSize.js";
 import YourDashUser from "./user/index.js";
-import { YOURDASH_SESSION_TYPE } from "./user/session.js";
+import { YOURDASH_SESSION_TYPE } from "../../../shared/core/session.js";
 import CoreApiPersonalServerAccelerator from "./personalServerAccelerator/coreApiPersonalServerAccelerator.js";
 
 export class CoreApi {
