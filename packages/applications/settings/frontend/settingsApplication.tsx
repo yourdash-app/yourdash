@@ -49,7 +49,7 @@ const SettingsApplication: React.FC = () => {
     />
     <SettingCategoryComponent
       href={"/app/a/settings/developer"}
-      description={"Only for those who know what they're doing"}
+      description={"For development purposes only"}
       title={"Developer tools"}
       icon={YourDashIcon.Tools}
     />

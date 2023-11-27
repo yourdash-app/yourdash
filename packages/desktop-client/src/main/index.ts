@@ -4,6 +4,7 @@
  */
 
 import { electronApp, is } from "@electron-toolkit/utils";
+import { UK } from "@yourdash/uikit";
 import { app, BrowserWindow, ipcMain, Menu, MenuItem, shell } from "electron";
 import { join } from "path";
 import APPLICATION_ICON from "./resources/icon.png?asset";
@@ -31,8 +32,7 @@ function createWindow(): void {
       submenu: [
         {
           role: "reload",
-          accelerator: process.platform === "darwin" ? "Alt+Cmd+I" : "F5",
-          click: () => { console.log( "Electron rocks!" ) }
+          accelerator: process.platform === "darwin" ? "Alt+Cmd+I" : "F5"
         },
         {
           role: "forceReload",
@@ -61,10 +61,12 @@ function createWindow(): void {
 
   if ( is.dev && process.env[ "ELECTRON_RENDERER_URL" ] ) {
     // Load the internal vite server if in development mode
-    mainWindow.loadURL( process.env[ "ELECTRON_RENDERER_URL" ] );
+    // mainWindow.loadURL( process.env[ "ELECTRON_RENDERER_URL" ] );
+    mainWindow.loadURL( "http://localhost:5173/#/linker-desktop-client-startup" );
   } else {
     // Load the index.html when running the app in production
-    mainWindow.loadFile( join( __dirname, "../renderer/index.html" ) );
+    // mainWindow.loadFile( join( __dirname, "../renderer/index.html" ) );
+    mainWindow.loadURL( "https://ydsh.pages.dev/#/linker-desktop-client-startup" );
   }
 
   ipcMain.on( "core-log-renderer-startup", ( _event, msg ) => {

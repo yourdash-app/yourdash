@@ -1,21 +1,36 @@
 {
   "BANNER": {
-    "MESSAGE": "YourDash is a pre-alpha project"
+    "MESSAGE": {
+      "CONTENT": "YourDash is a pre-alpha project",
+      "CALL_TO_ACTION": "Learn more."
+    }
   },
   "SECTIONS": {
     "HOST_YOUR_OWN": {
-      "TITLE": "Host your own"
+      "TITLE": "Host your own",
+      "CONTENT": "Run a single command and you'll be up and running in minutes",
+      "ACTION": "Get started",
+      "DISCLAIMER": "Only on supported devices."
     },
     "LIMITLESS_PERSONALISATION": {
-      "TITLE": "Limitless personalization"
+      "TITLE": "Limitless personalization",
+      "CONTENT": "Easily download and create themes and plugins",
+      "ACTION": "Learn more"
     },
     "OPEN_SOURCED": {
-      "TITLE": "Open sourced"
+      "TITLE": "Open source",
+      "CONTENT": "See how YourDash works and help make it better for everyone",
+      "ACTION": "Learn more"
+    },
+    "PROJECTS": {
+      "TITLE": "Projects",
+      "CONTENT": "Check out some other YourDash projects",
+      "ACTION": "Learn more"
     }
   },
   "TAGLINES": [
-    "Manage your files with ease",
-    "Collaborate seamlessly",
+    "Manage your files easily",
+    "Seamless collaboration",
     "Make it your own"
   ]
 }
