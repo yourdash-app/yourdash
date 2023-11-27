@@ -26,7 +26,7 @@ export default class FileSystemFile {
     return pth.extname( this.path )
   }
 
-  getThumbnail( dimensions: { x: number, y: number } ): string {
+  getThumbnail( _dimensions: { x: number, y: number } ): string {
     switch ( this.getExtension() ) {
     // TODO: create a wrapper around "new Sharp()"
     //       This can then be part of the new CoreApi and can be used for thumbnail generation

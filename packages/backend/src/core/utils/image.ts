@@ -7,12 +7,14 @@ export default class ImageUtils {
   constructor() {
     return this;
   }
-  
-  loadFromBase64( data: string ) {
-  
+
+  // TODO: implement this class
+
+  loadFromBase64( _data: string ) {
+    return this
   }
-  
-  loadFromFile( path: string ) {
-  
+
+  loadFromFile( _path: string ) {
+    return this
   }
 }

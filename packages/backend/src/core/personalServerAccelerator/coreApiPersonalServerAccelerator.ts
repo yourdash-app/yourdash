@@ -17,7 +17,7 @@ export default class CoreApiPersonalServerAccelerator {
 
     this.socketIoServer = new socketIo.Server( this.coreApi.httpServer );
 
-    this.socketIoServer.on( "connection", ( socket: socketIo.Socket<any, any, any, any> ) => { // eslint-disable-line @typescript-eslint/no-explicit-any
+    this.socketIoServer.on( "connection", ( socket: socketIo.Socket<any, any, any> ) => { // eslint-disable-line @typescript-eslint/no-explicit-any
 
       const handshakeUsername = socket.handshake.query.username as string;
 
@@ -87,7 +87,7 @@ export default class CoreApiPersonalServerAccelerator {
     this.openSocketConnections.delete( `${connection.username}-${connection.session.id}` );
   }
 
-  getSocketConnection( username: string, sessionId: string ) {
+  getSocketConnection( username: string, sessionId: string ): PersonalServerAcceleratorConnection | undefined {
     return this.openSocketConnections.get( `${username}-${sessionId}` );
   }
 

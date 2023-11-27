@@ -20,7 +20,7 @@ export default class Module {
   private readonly expressApp: ExpressApplication;
   private readonly moduleName: string;
   protected API: {
-    websocket: CoreApi["websocketManager"],
+    websocket: CoreApi["personalServerAccelerator"],
     request: CoreApi["expressServer"],
     log( type: LOG_TYPE, ...message: any[] ): void, // eslint-disable-line @typescript-eslint/no-explicit-any
     getPath(): string,
@@ -35,7 +35,7 @@ export default class Module {
   constructor( args: YourDashModuleArguments ) {
     this.moduleName = args.moduleName;
     this.API = {
-      websocket: coreApi.websocketManager,
+      websocket: coreApi.personalServerAccelerator,
       request: coreApi.expressServer,
       log( type: LOG_TYPE, ...message: any[] ) { // eslint-disable-line @typescript-eslint/no-explicit-any
         switch( type ) {

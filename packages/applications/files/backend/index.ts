@@ -5,7 +5,7 @@
 
 import { promises as fs } from "fs";
 import path from "path";
-import Module, { YourDashModuleArguments } from "packages/backend/src/core/moduleManager/module.js";
+import Module, { YourDashModuleArguments } from "backend/src/core/moduleManager/module.js";
 
 export default class FilesModule extends Module {
   constructor( args: YourDashModuleArguments ) {

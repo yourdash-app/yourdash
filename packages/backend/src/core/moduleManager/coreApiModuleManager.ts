@@ -9,7 +9,7 @@ import Module from "./module.js";
 import { CoreApi } from "../coreApi.js";
 
 export default class CoreApiModuleManager {
-  private loadedModules: Module[];
+  private readonly loadedModules: Module[];
   private coreApi: CoreApi;
 
   constructor( coreApi: CoreApi ) {

@@ -83,7 +83,9 @@ export default class YourDashPanel {
   async setPanelPosition( position: YourDashPanelPosition ): Promise<this> {
     const user = new YourDashUser( this.username );
 
-    let panelConfig: any;
+    let panelConfig: {
+      position: YourDashPanelPosition
+    };
 
     try {
       panelConfig = JSON.parse(
@@ -107,7 +109,7 @@ export default class YourDashPanel {
   async getPanelPosition(): Promise<YourDashPanelPosition> {
     const user = new YourDashUser( this.username );
 
-    let panelConfig;
+    let panelConfig: { position: YourDashPanelPosition; launcher?: YourDashPanelLauncherType; };
 
     try {
       panelConfig = JSON.parse(
