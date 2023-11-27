@@ -54,14 +54,14 @@ export default class PushNotificationMenuView extends UKSlotComponent<{ coreView
       } )
       break;
     case "notified":
-      this.pushNotificationMenu.setVisible( true )
+      this.setPushNotificationMenuVisible( true )
       this.pushNotificationMenuButton.setIcon( "BellFill" )
       this.pushNotificationMenuButton.setOnClick( () => {
         self.setPushNotificationState( "none" )
       } )
       break
     default:
-      this.pushNotificationMenu.setVisible( false )
+      this.setPushNotificationMenuVisible( false )
       this.pushNotificationMenuButton.setIcon( "Bell" )
       this.pushNotificationMenuButton.setOnClick( () => {
         self.setPushNotificationState( "notified" )

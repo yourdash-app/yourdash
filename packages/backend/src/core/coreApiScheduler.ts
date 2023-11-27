@@ -5,17 +5,16 @@
 
 import schedule, { RecurrenceRule, RecurrenceSpecDateRange, RecurrenceSpecObjLit } from "node-schedule";
 import { CoreApi } from "./coreApi.js";
-import { LOG_TYPE } from "./coreApiLog.js";
 
 export default class CoreApiScheduler {
   private readonly coreApi: CoreApi
-  
+
   constructor( coreApi: CoreApi ) {
     this.coreApi = coreApi;
-    
+
     return this;
   }
-  
+
   scheduleTask( name: string, rule: RecurrenceRule | RecurrenceSpecDateRange | RecurrenceSpecObjLit | Date | string | number, task: () => Promise<void> ) {
     this.coreApi.log.info(
       "core:task_scheduler",

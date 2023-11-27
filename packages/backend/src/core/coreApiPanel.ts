@@ -7,7 +7,7 @@ import { promises as fs } from "fs";
 import path from "path";
 import IPanelApplicationsLauncherApplication from "shared/core/panel/applicationsLauncher/application.js";
 import sharp from "sharp";
-import YourDashApplication from "../../helpers/applications.js";
+import YourDashApplication from "../helpers/applications.js";
 import YourDashPanel from "./helpers/panel.js";
 import { CoreApi } from "./coreApi.js";
 import { authenticatedImageType } from "./coreApiAuthenticatedImage.js";

@@ -6,7 +6,7 @@
 import YourDashUser from "backend/src/core/user/index.js";
 import { YOURDASH_USER_PERMISSIONS } from "backend/src/core/user/permissions.js";
 import path from "path";
-import Module, { YourDashModuleArguments } from "packages/backend/src/core/moduleManager/module.js";
+import Module, { YourDashModuleArguments } from "backend/src/core/moduleManager/module.js";
 import coreApi from "backend/src/core/coreApi.js";
 
 export default class GlobalDbModule extends Module {

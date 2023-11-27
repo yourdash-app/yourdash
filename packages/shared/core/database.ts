@@ -5,7 +5,7 @@
 
 export default class KeyValueDatabase {
   keys: {
-    [ key: string ]: any
+    [ key: string ]: any // eslint-disable-line @typescript-eslint/no-explicit-any
   };
 
   constructor() {
@@ -16,7 +16,7 @@ export default class KeyValueDatabase {
     return this.keys[ key ];
   }
 
-  set( key: string, value: any ) {
+  set( key: string, value: any ) { // eslint-disable-line @typescript-eslint/no-explicit-any
     this.keys[ key ] = value;
   }
 
@@ -42,7 +42,7 @@ export default class KeyValueDatabase {
   }
 
   merge( keys: {
-    [ key: string ]: any
+    [ key: string ]: any // eslint-disable-line @typescript-eslint/no-explicit-any
   } ) {
     this.keys = Object.assign( this.keys, keys );
   }

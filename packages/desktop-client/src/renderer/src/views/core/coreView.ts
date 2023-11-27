@@ -5,7 +5,6 @@
 
 import { UKSlotComponent } from "@yourdash/uikit/src/core/component";
 import { UK } from "@yourdash/uikit/src/core/index";
-import HomeView from "../home/homeView";
 import PushNotificationMenuView from "../pushNotificationMenu/pushNotificationMenuView";
 
 export default class CoreView extends UKSlotComponent<undefined> {
@@ -35,6 +34,10 @@ export default class CoreView extends UKSlotComponent<undefined> {
     content.domElement.style.width = "100%"
     this.add( content )
 
-    content.createComponent( HomeView )
+    if ( process.env.NODE_ENV === "development" ) {
+      content.createComponent( UK.IFrame, { src: "http://localhost:5173/#/login" } )
+    } else {
+      content.createComponent( UK.IFrame, { src: "https://ydsh.pages.dev/#/login" } )
+    }
   }
 }
