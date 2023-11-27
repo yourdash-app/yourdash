@@ -13,7 +13,7 @@ import YourDashSession, { getSessionsForUser } from "../../helpers/session.js";
 import coreApi from "../coreApi.js";
 import { userAvatarSize } from "./avatarSize.js";
 import { yourDashUserPermission } from "./permissions.js";
-import { YOURDASH_SESSION_TYPE } from "./session.js";
+import { YOURDASH_SESSION_TYPE } from "../../../../shared/core/session.js";
 import IYourDashUserJson from "./userJson.js";
 
 export default class YourDashUser {
@@ -138,7 +138,10 @@ export default class YourDashUser {
       currentUserJson.name = { first, last }
       const db = await this.getDatabase()
       db.set( "core:user:name", { first, last } )
-      await coreApi.users.__internal__saveUserDatabaseInstantly( this.username ) // force the database to update instantly as it does not normally instantly update, so it can save the instance's performance
+
+      // force the database to update instantly
+      await coreApi.users.__internal__saveUserDatabaseInstantly( this.username )
+      // save the user.json
       await fs.writeFile( path.join( this.path, "core/user.json" ), JSON.stringify( currentUserJson ) )
     } catch( err ) {
       coreApi.log.error( `Unable to write / read ${this.username}'s core/user.json` )

@@ -8,7 +8,7 @@ import KeyValueDatabase from "../helpers/keyValueDatabase.js";
 import { CoreApi } from "./coreApi.js";
 import { authenticatedImageType } from "./coreApiAuthenticatedImage.js";
 import YourDashUser from "./user/index.js";
-import { IYourDashSession } from "./user/session.js";
+import { IYourDashSession } from "../../../shared/core/session.js";
 
 const SESSION_TOKEN_LENGTH = 128;
 export { SESSION_TOKEN_LENGTH }
