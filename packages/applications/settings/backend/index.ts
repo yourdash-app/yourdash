@@ -66,10 +66,10 @@ export default class SettingsModule extends Module {
       const installableApplications = ( await fs.readdir( "../applications" ) ).filter( app => app !== "node_modules" && app !== "package.json" && app !== "package-lock.json" );
 
       installableApplications.map( async app => {
-        if ( coreApi.globalDb.get( "installedApplications" ).includes( app ) )
+        if ( coreApi.globalDb.get( "core:installedApplications" ).includes( app ) )
           return;
 
-        coreApi.globalDb.set( "installedApplications", [ ...coreApi.globalDb.get( "installedApplications" ), app ] );
+        coreApi.globalDb.set( "core:installedApplications", [ ...coreApi.globalDb.get( "core:installedApplications" ), app ] );
         await coreApi.moduleManager.loadModule( app, path.join( process.cwd(), `../applications/${app}/backend/` ) );
       } )
 

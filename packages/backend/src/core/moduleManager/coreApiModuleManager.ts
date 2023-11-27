@@ -9,7 +9,7 @@ import Module from "./module.js";
 import { CoreApi } from "../coreApi.js";
 
 export default class CoreApiModuleManager {
-  private readonly loadedModules: Module[];
+  private loadedModules: Module[];
   private coreApi: CoreApi;
 
   constructor( coreApi: CoreApi ) {
@@ -49,14 +49,11 @@ export default class CoreApiModuleManager {
 
     try {
       const module = await import( `${modulePath}/index.js` );
-
       if ( !module.default ) {
         this.coreApi.log.error( "core", `Unable to load ${ moduleName }! This application does not contain a default export!` );
         return;
       }
-
       new module.default( { moduleName: moduleName, modulePath: modulePath } );
-
       this.loadedModules.push( module );
       this.coreApi.log.success( "core:module_manager", `Loaded module: "${ moduleName }"` )
     } catch ( e ) {

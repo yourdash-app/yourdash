@@ -4,7 +4,7 @@
  */
 
 import { Socket as SocketIoSocket } from "socket.io";
-import { IYourDashSession, YOURDASH_SESSION_TYPE } from "../user/session.js";
+import { IYourDashSession, YOURDASH_SESSION_TYPE } from "../../../../shared/core/session.js";
 import CoreApiPersonalServerAccelerator from "./coreApiPersonalServerAccelerator.js";
 
 export default class PersonalServerAcceleratorConnection {

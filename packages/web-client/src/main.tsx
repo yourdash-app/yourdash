@@ -24,6 +24,7 @@ import ProjectsIndexPage from "./root/projects/Index";
 import RootLayout from "./root/RootLayout";
 import "./tailwindcss.css";
 import ChipletUiRootIntegration from "./ui/RootIntegration";
+import LinkerDesktopClientStartupPage from "./root/linker-desktop-client-startup/Index";
 
 const AppRouter = loadable( () => import( "./app/AppRouter" ) );
 const DocsRouter = loadable( () => import( "./root/docs/DocsRouter" ) );
@@ -38,6 +39,10 @@ function main() {
             <Route
               errorElement={ <ErrorElement /> }
             >
+              <Route
+                path={"/linker-desktop-client-startup"}
+                element={<LinkerDesktopClientStartupPage/>}
+              />
               <Route
                 element={ <RootLayout /> }
               >

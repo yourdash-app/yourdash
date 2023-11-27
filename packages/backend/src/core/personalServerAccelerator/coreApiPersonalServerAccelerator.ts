@@ -4,7 +4,9 @@
  */
 
 import * as socketIo from "socket.io";
+import YourDashSession from "../../helpers/session.js";
 import { CoreApi } from "../coreApi.js";
+import { YOURDASH_SESSION_TYPE } from "../../../../shared/core/session.js";
 import PersonalServerAcceleratorConnection from "./personalServerAcceleratorConnection.js";
 
 export default class CoreApiPersonalServerAccelerator {
@@ -29,12 +31,17 @@ export default class CoreApiPersonalServerAccelerator {
         return;
       }
 
+      const session = this.coreApi.users.get( handshakeUsername ).getLoginSessionByToken( socket.handshake.query.sessionToken as string );
+
+      if ( session.type !== YOURDASH_SESSION_TYPE.desktop )
+        return socket.disconnect( true )
+
       // Add a new socket to the activeSockets
       this.openSocketConnections.set(
         `${handshakeUsername}-${socket.handshake.query.sessionId }`,
         new PersonalServerAcceleratorConnection(
           handshakeUsername,
-          this.coreApi.users.get( handshakeUsername ).getLoginSessionByToken( socket.handshake.query.sessionToken as string ),
+          session as YourDashSession<YOURDASH_SESSION_TYPE.desktop>,
           socket,
           this
         )
