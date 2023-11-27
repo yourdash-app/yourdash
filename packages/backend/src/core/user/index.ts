@@ -8,11 +8,12 @@ import { promises as fs } from "fs";
 import path from "path";
 import KeyValueDatabase from "shared/core/database.js";
 import sharp from "sharp";
-import { hash } from "../../../helpers/encryption.js";
-import YourDashSession, { getSessionsForUser } from "../../../helpers/session.js";
+import { hashString } from "../../helpers/encryption.js";
+import YourDashSession, { getSessionsForUser } from "../../helpers/session.js";
 import coreApi from "../coreApi.js";
 import { userAvatarSize } from "./avatarSize.js";
 import { yourDashUserPermission } from "./permissions.js";
+import { YOURDASH_SESSION_TYPE } from "./session.js";
 import IYourDashUserJson from "./userJson.js";
 
 export default class YourDashUser {
@@ -230,7 +231,7 @@ export default class YourDashUser {
   }
 
   async setPassword( password: string ) {
-    const hashedPassword = await hash( password );
+    const hashedPassword = await hashString( password );
 
     try {
       await fs.writeFile( path.join( this.path, "./core/password.enc" ), hashedPassword );
@@ -239,7 +240,7 @@ export default class YourDashUser {
     }
   }
 
-  getLoginSessionById( sessionId: number ): YourDashSession<any> | undefined {
+  getLoginSessionById( sessionId: number ): YourDashSession<YOURDASH_SESSION_TYPE> | undefined {
     try {
       // return a YourDashSession which has the sessionId as its id, find the correct session and use it as an input
       return new YourDashSession(
@@ -252,7 +253,7 @@ export default class YourDashUser {
     }
   }
 
-  getLoginSessionByToken( token: string ): YourDashSession<any> | undefined {
+  getLoginSessionByToken( token: string ): YourDashSession<YOURDASH_SESSION_TYPE> | undefined {
     try {
       // return a YourDashSession which has the sessionId as its id, find the correct session and use it as an input
       return new YourDashSession(

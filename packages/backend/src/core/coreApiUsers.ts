@@ -4,7 +4,7 @@
  */
 
 import path from "path";
-import KeyValueDatabase from "../../helpers/keyValueDatabase.js";
+import KeyValueDatabase from "../helpers/keyValueDatabase.js";
 import { CoreApi } from "./coreApi.js";
 import { authenticatedImageType } from "./coreApiAuthenticatedImage.js";
 import YourDashUser from "./user/index.js";

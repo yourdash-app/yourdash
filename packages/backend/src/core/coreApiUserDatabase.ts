@@ -32,7 +32,7 @@ export default class CoreApiUserDatabase {
     databases.map( async ( [ key, database ] ) => {
       const user = new YourDashUser( key )
 
-      this.coreApi.log.info( "core:userdatabase", `Saving database for '${ key }'` )
+      this.coreApi.log.info( "core:user_db", `Saving database for '${ key }'` )
 
       await fs.writeFile( path.join( user.path, "core/user_db.json" ), JSON.stringify( database ) )
     } )

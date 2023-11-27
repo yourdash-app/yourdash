@@ -13,8 +13,8 @@ import killPort from "kill-port";
 import minimist from "minimist";
 import path from "path";
 import { fetch } from "undici";
-import { compareHash } from "../../helpers/encryption.js";
-import { createSession } from "../../helpers/session.js";
+import { compareHashString } from "../helpers/encryption.js";
+import { createSession } from "../helpers/session.js";
 import CoreApiAuthenticatedImage from "./coreApiAuthenticatedImage.js";
 import CoreApiCommands from "./coreApiCommands.js";
 import CoreApiGlobalDb from "./coreApiGlobalDb.js";
@@ -43,7 +43,7 @@ export class CoreApi {
   readonly userDatabase: CoreApiUserDatabase;
   readonly panel: CoreApiPanel;
   readonly authenticatedImage: CoreApiAuthenticatedImage;
-  readonly websocketManager: CoreApiPersonalServerAccelerator;
+  readonly personalServerAccelerator: CoreApiPersonalServerAccelerator;
   // general vars
   readonly processArguments: minimist.ParsedArgs;
   readonly expressServer: ExpressApplication;
@@ -71,7 +71,7 @@ export class CoreApi {
     this.userDatabase = new CoreApiUserDatabase( this )
     this.panel = new CoreApiPanel( this )
     this.authenticatedImage = new CoreApiAuthenticatedImage( this )
-    this.websocketManager = new CoreApiPersonalServerAccelerator( this )
+    this.personalServerAccelerator = new CoreApiPersonalServerAccelerator( this )
 
     this.commands.registerCommand(
       "hello",
@@ -294,7 +294,7 @@ export class CoreApi {
 
       const savedHashedPassword = ( await fs.readFile( path.join( user.path, "core/password.enc" ) ) ).toString();
 
-      return compareHash( savedHashedPassword, password )
+      return compareHashString( savedHashedPassword, password )
         .then( async result => {
           if ( result ) {
             const session = await createSession(
@@ -398,6 +398,9 @@ export class CoreApi {
      */
 
     this.moduleManager.loadInstalledModules()
+      .then( () => {
+        this.log.info( "core:startup", "All modules loaded" )
+      } )
 
     this.expressServer.get( "/core/sessions", async ( req, res ) => {
       const { username } = req.headers as { username: string };

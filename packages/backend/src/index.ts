@@ -36,6 +36,7 @@ const args = minimist( process.argv.slice( 2 ) );
 
 console.log( `Starting with arguments: ${ JSON.stringify( args ) }` );
 
+// noinspection JSDeprecatedSymbols
 if ( !args.dev && args.compile ) {
   const childProcess = exec( "yarn run compile-all" );
 

@@ -3,10 +3,8 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import YourDashPanel from "packages/backend/src/core/helpers/panel.js";
-import Module, { YourDashModuleArguments } from "packages/backend/src/core/moduleManager/module.js";
-import YourDashUser from "backend/src/core/user/index.js";
-import { PersonalServerAcceleratorCommunication } from "backend/src/helpers/personalServerAccelerator.js";
+import YourDashPanel from "backend/src/core/helpers/panel.js";
+import Module, { YourDashModuleArguments } from "backend/src/core/moduleManager/module.js";
 import { promises as fs } from "fs";
 import coreApi from "backend/src/core/coreApi.js"
 import path from "path"
@@ -48,11 +46,11 @@ export default class SettingsModule extends Module {
       const { username } = req.headers as {
         username: string
       };
-      const user = new YourDashUser( username );
+      const user = this.API.core.users.get( username )
 
-      const psa = new PersonalServerAcceleratorCommunication( username, user.getLoginSessionById( parseInt( sessionId, 10 ) ) );
+      const psa = this.API.core.personalServerAccelerator.getSocketConnection( username, sessionId );
 
-      if ( !psa.socketConnection ) {
+      if ( psa === undefined ) {
         return res.json( { success: false } );
       }
 

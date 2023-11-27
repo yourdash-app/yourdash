@@ -5,7 +5,6 @@
 
 import sharp from "sharp";
 import coreApi from "../coreApi.js";
-import { LOG_TYPE } from "../coreApiLog.js";
 import fs from "fs"
 import path from "path"
 
@@ -17,7 +16,7 @@ export default function generateInstanceLogos() {
     .catch( err => {
       coreApi.log.error( `unable to create "fs/logo_panel_small.avif" ${ err }` );
     } );
-  
+
   sharp(
     fs.readFileSync( path.join( coreApi.fs.ROOT_PATH, "./instance_logo.avif" ) ) )
     .resize( 39, 39 )
@@ -25,7 +24,7 @@ export default function generateInstanceLogos() {
     .catch( err => {
       coreApi.log.error( `unable to create "fs/logo_panel_medium.avif" ${ err }` );
     } );
-  
+
   sharp(
     fs.readFileSync( path.join( coreApi.fs.ROOT_PATH, "./instance_logo.avif" ) ) )
     .resize( 55, 55 )
