@@ -12,7 +12,7 @@ import { useNavigate } from "react-router";
 
 const ApplicationList: React.FC<{ applications: IPanelApplicationsLauncherApplication[] }> = ( { applications } ) => {
   const navigate = useNavigate()
-  
+
   return <section className={styles.grid}>
     {
       applications.map( application => {
@@ -30,6 +30,13 @@ const ApplicationList: React.FC<{ applications: IPanelApplicationsLauncherApplic
                     return 0
                   }
                 )
+              }
+            },
+            {
+              name: "Open In New Tab",
+              onClick() {
+                window.open( `${ window.location.origin }${ window.location.pathname }#/app/a/${ application.name }`, "_blank" )
+                return 0
               }
             }
           ]}
