@@ -7,7 +7,7 @@ import path from "path-browserify";
 import React from "react";
 import { Button, MajorButton, SideBar, YourDashIcon } from "web-client/src/ui";
 import useTranslate from "web-client/src/helpers/i10n";
-import { SideBarItemType, SideBarState } from "web-client/src/ui/components/sideBar/SideBar";
+import { SIDEBAR_ITEM_TYPE, SIDEBAR_STATE } from "web-client/src/ui/components/sideBar/SideBar";
 import FilePane from "./views/filePane/FilePane";
 
 export interface IFilesLayout {
@@ -48,11 +48,11 @@ const FilesLayout: React.FC<IFilesLayout> = ( { children } ) => {
               )
           }
         </div> */}
-        
+
       <SideBar
         items={[
           {
-            type: SideBarItemType.Button,
+            type: SIDEBAR_ITEM_TYPE.Button,
             label: "Upload File",
             icon: YourDashIcon.Upload,
             onClick: () => {
@@ -60,7 +60,7 @@ const FilesLayout: React.FC<IFilesLayout> = ( { children } ) => {
             }
           },
           {
-            type: SideBarItemType.Separator,
+            type: SIDEBAR_ITEM_TYPE.Separator,
             label: "",
             icon: YourDashIcon.Plus,
             onClick: () => {
@@ -69,7 +69,7 @@ const FilesLayout: React.FC<IFilesLayout> = ( { children } ) => {
           }
         ]}
         title={"Files"}
-        defaultState={SideBarState.NormalExpanded}
+        defaultState={SIDEBAR_STATE.NormalExpanded}
       />
       <FilePane/>
     </div>

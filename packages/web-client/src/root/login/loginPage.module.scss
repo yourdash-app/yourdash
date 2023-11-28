@@ -4,12 +4,11 @@
  */
 
 .page {
-  @apply lg:grid-cols-[auto,1fr] lg:grid-rows-none;
+  @apply md:grid-rows-[auto,1fr] lg:grid-cols-[auto,1fr] lg:grid-rows-none;
 
   gap: 1rem;
   padding: 1rem;
   display: grid;
-  grid-template-rows: auto 1fr;
   background: var(--bg);
   width: 100%;
   height: 100%;
@@ -19,7 +18,7 @@
   transition: var(--transition-slower);
   overflow: hidden;
 
-  @media only screen and (min-height: 800px) {
+  @media only screen and (max-height: 800px) {
     display: none;
     visibility: hidden;
   }
