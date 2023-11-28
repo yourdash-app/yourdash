@@ -7,18 +7,21 @@ import React from "react";
 import { SideBar } from "web-client/src/ui";
 import { useNavigate } from "react-router-dom";
 import GlobalDbApplication from "applications/global_db/frontend/globalDbApplication";
+import { SIDEBAR_ITEM_TYPE, SIDEBAR_STATE } from "web-client/src/ui/components/sideBar/SideBar";
 import YourDevHome from "./YourDevHome";
 import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
 
 const YourDevApplication: React.FC = () => {
   const [page, setPage] = React.useState<"home" | "global_db" | "user_db">( "home" );
-  
+
   return (
     <main className={"h-full grid grid-cols-[auto,1fr]"}>
       <SideBar
         title={"YourDash Demo Application"}
+        defaultState={SIDEBAR_STATE.NormalMinimised}
         items={[
           {
+            type: SIDEBAR_ITEM_TYPE.Button,
             label: "Home",
             icon: YourDashIcon.Home,
             onClick: () => {
@@ -26,6 +29,7 @@ const YourDevApplication: React.FC = () => {
             }
           },
           {
+            type: SIDEBAR_ITEM_TYPE.Button,
             label: "Global DB",
             icon: YourDashIcon.Database,
             onClick: () => {
@@ -33,6 +37,7 @@ const YourDevApplication: React.FC = () => {
             }
           },
           {
+            type: SIDEBAR_ITEM_TYPE.Button,
             label: "User DB",
             icon: YourDashIcon.Person,
             onClick: () => {
@@ -44,7 +49,7 @@ const YourDevApplication: React.FC = () => {
       {page === "home" && <YourDevHome/>}
       {page === "global_db" && <GlobalDbApplication/>}
       {page === "user_db" && null}
-    
+
     </main>
   );
 };

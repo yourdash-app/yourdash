@@ -13,6 +13,20 @@
   position: relative;
   z-index: 50;
   user-select: none;
+
+  > * {
+    animation: panelFadeIn 0.25s 1s forwards ease-in-out;
+    opacity: 0;
+
+    @keyframes panelFadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+  }
 }
 
 @mixin horizontal {
