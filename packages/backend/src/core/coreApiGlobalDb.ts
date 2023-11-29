@@ -39,7 +39,7 @@ export default class CoreApiGlobalDb extends KeyValueDatabase {
   }
 
   __internal__startGlobalDatabaseService() {
-    this.coreApi.scheduler.scheduleTask( "core:userdb_write_to_disk", "*/1 * * * *", async () => {
+    this.coreApi.scheduler.scheduleTask( "core:globaldb_write_to_disk", "*/1 * * * *", async () => {
       await this.writeToDisk( path.join( this.coreApi.fs.ROOT_PATH, "./global_database.json" ) )
     } );
   }
