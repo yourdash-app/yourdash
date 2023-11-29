@@ -9,13 +9,13 @@ import { useNavigate } from "react-router";
 
 const OverviewPage: React.FC = () => {
   const navigate = useNavigate()
-  
+
   return (
     <div className={ "text-center" }>
       <h1 className={ "text-6xl font-semibold tracking-wide animate__animated animate__fadeIn mt-8" }>Overview</h1>
       <p className={ "animate__animated animate__fadeInDown animate__500ms mt-3" }>a quick and simple guide to the YourDash documentation</p>
-      
-      <section className={ "grid grid-cols-2 gap-2 max-w-5xl ml-auto mr-auto pt-8 pb-8" }>
+
+      <section className={ "grid grid-cols-2 gap-2 max-w-5xl ml-auto mr-auto p-4" }>
         {
           (
             [
@@ -46,7 +46,7 @@ const OverviewPage: React.FC = () => {
           } )
         }
       </section>
-      
+
       <footer className={ "w-full flex max-w-screen-2xl" }>
         <MajorButton className={ "ml-auto" }>{ "Next page" }</MajorButton>
       </footer>

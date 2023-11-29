@@ -16,7 +16,8 @@ const WeatherHourlyConditionsWidget: React.FC = () => {
   const [ locationData, setLocationData ] = useState<any>( null );
 
   useEffect( () => {
-    csi.getJson( "/app/weather/hourly/007", res => {
+    // fetch the user's defined location but default to London
+    csi.getJson( `/app/weather/hourly/${csi.userDB.get( "app:dash:widget:weather:location" ) || "2643743"}`, res => {
       setWeatherData( res.data );
       setLocationData( res.location );
       console.log( res );

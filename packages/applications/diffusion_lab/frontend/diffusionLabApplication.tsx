@@ -5,7 +5,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Icon, MajorButton, Button, DropdownButton, TextBox, Card, ResizeContainer } from "web-client/src/ui";
-import csi from "web-client/src/helpers/csi";
+import csi, { TJson } from "web-client/src/helpers/csi";
 import { IDiffusionLabImageGenerationData } from "shared/apps/diffusion_lab/image/generationData";
 import YourDashLogo from "web-client/public/assets/productLogos/yourdash.svg";
 import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
@@ -41,8 +41,6 @@ const DiffusionLabApplication: React.FC = () => {
       setGenerationData( { ...generationData, model: data.models[ 0 ] } );
       setModels( data.models );
     } );
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [] );
 
   return (
@@ -92,7 +90,7 @@ const DiffusionLabApplication: React.FC = () => {
                   onClick={() => {
                     setProgress( 1 );
 
-                    csi.postJson( "/app/diffusion_lab/generate", { ...generationData }, ( data: any ) => {
+                    csi.postJson( "/app/diffusion_lab/generate", { ...generationData as any as TJson }, ( data: any ) => {
                       setGenerationResult( data );
                       setProgress( 1 );
                     } );
@@ -139,7 +137,6 @@ const DiffusionLabApplication: React.FC = () => {
               {
                 generationResult.map( batch => {
                   return batch.map( image => {
-                    // eslint-disable-next-line jsx-a11y/img-redundant-alt
                     return <img key={image} src={image || YourDashLogo} alt="generated ai-image" className={"w-full h-full"} />;
                   } );
                 } )
