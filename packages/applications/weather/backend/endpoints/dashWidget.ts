@@ -7,6 +7,7 @@ import Module from "backend/src/core/moduleManager/module.js";
 
 export default function weatherDashWidget( api: Module["API"] ) {
   api.request.get( "/app/weather/hourly/:locationId", ( req, res ) => {
+    // TODO: actually return weather data
     return res.json( {
       status: 200
     } )
