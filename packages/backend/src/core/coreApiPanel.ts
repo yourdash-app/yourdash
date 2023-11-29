@@ -10,7 +10,7 @@ import sharp from "sharp";
 import YourDashApplication from "../helpers/applications.js";
 import YourDashPanel from "./helpers/panel.js";
 import { CoreApi } from "./coreApi.js";
-import { authenticatedImageType } from "./coreApiAuthenticatedImage.js";
+import { AUTHENTICATED_IMAGE_TYPE } from "./coreApiAuthenticatedImage.js";
 
 export default class CoreApiPanel {
   private coreApi: CoreApi
@@ -40,7 +40,7 @@ export default class CoreApiPanel {
                 displayName: application.getDisplayName(),
                 description: application.getDescription(),
                 // TODO: change from base 64 to file and pre-process defaults instead of at request time
-                icon: this.coreApi.authenticatedImage.create( username, authenticatedImageType.BASE64, buf.toString( "base64" ) )
+                icon: this.coreApi.authenticatedImage.create( username, AUTHENTICATED_IMAGE_TYPE.BASE64, buf.toString( "base64" ) )
               } );
             } );
         } );
@@ -61,7 +61,7 @@ export default class CoreApiPanel {
           name: shortcut,
           icon: this.coreApi.authenticatedImage.create(
             username,
-            authenticatedImageType.FILE,
+            AUTHENTICATED_IMAGE_TYPE.FILE,
             await application.getIconPath()
           )
         };
@@ -124,17 +124,17 @@ export default class CoreApiPanel {
       return res.json( {
         small: this.coreApi.authenticatedImage.create(
           username,
-          authenticatedImageType.FILE,
+          AUTHENTICATED_IMAGE_TYPE.FILE,
           path.join( this.coreApi.fs.ROOT_PATH, "./logo_panel_small.avif" )
         ),
         medium: this.coreApi.authenticatedImage.create(
           username,
-          authenticatedImageType.FILE,
+          AUTHENTICATED_IMAGE_TYPE.FILE,
           path.join( this.coreApi.fs.ROOT_PATH, "./logo_panel_medium.avif" )
         ),
         large: this.coreApi.authenticatedImage.create(
           username,
-          authenticatedImageType.FILE,
+          AUTHENTICATED_IMAGE_TYPE.FILE,
           path.join( this.coreApi.fs.ROOT_PATH, "./logo_panel_large.avif" )
         )
       } );

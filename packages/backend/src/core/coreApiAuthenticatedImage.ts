@@ -7,18 +7,20 @@ import crypto from "crypto";
 import path from "path";
 import { CoreApi } from "./coreApi.js";
 
-export enum authenticatedImageType {
-  BASE64, FILE
+export enum AUTHENTICATED_IMAGE_TYPE {
+  BASE64, FILE, BUFFER
+}
+
+interface IauthenticatedImage<T extends AUTHENTICATED_IMAGE_TYPE> {
+  type: T
+  value: T extends AUTHENTICATED_IMAGE_TYPE.BUFFER ? Buffer : string
 }
 
 export default class CoreApiAuthenticatedImage {
   private coreApi: CoreApi;
   private readonly AUTHENTICATED_IMAGES: {
     [ username: string ]: {
-      [ id: string ]: {
-        type: authenticatedImageType,
-        value: string
-      }
+      [ id: string ]: IauthenticatedImage<AUTHENTICATED_IMAGE_TYPE>
     }
   };
 
@@ -27,7 +29,11 @@ export default class CoreApiAuthenticatedImage {
     this.AUTHENTICATED_IMAGES = {}
   }
 
-  create( username: string, type: authenticatedImageType, value: string ): string {
+  create<ImageType extends AUTHENTICATED_IMAGE_TYPE>(
+    username: string,
+    type: AUTHENTICATED_IMAGE_TYPE,
+    value: IauthenticatedImage<ImageType>["value"]
+  ): string {
     const id = crypto.randomUUID()
 
     if ( !this.AUTHENTICATED_IMAGES[username] ) {
@@ -52,13 +58,17 @@ export default class CoreApiAuthenticatedImage {
         return res.sendFile( path.resolve( process.cwd(), "./src/defaults/default_avatar.avif" ) );
       }
 
-      if ( image.type === authenticatedImageType.BASE64 ) {
-        const buf = Buffer.from( image.value, "base64" );
+      if ( image.type === AUTHENTICATED_IMAGE_TYPE.BUFFER ) {
+        return res.send( image.value );
+      }
+
+      if ( image.type === AUTHENTICATED_IMAGE_TYPE.BASE64 ) {
+        const buf = Buffer.from( image.value as string, "base64" );
         return res.send( buf );
       }
 
-      if ( image.type === authenticatedImageType.FILE ) {
-        return res.sendFile( image.value );
+      if ( image.type === AUTHENTICATED_IMAGE_TYPE.FILE ) {
+        return res.sendFile( image.value as string );
       }
 
       return res.sendFile( path.resolve( process.cwd(), "./src/defaults/default_avatar.avif" ) );

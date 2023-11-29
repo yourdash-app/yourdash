@@ -6,6 +6,10 @@
 .page {
   @apply md:grid-rows-[auto,1fr] lg:grid-cols-[auto,1fr] lg:grid-rows-none;
 
+  @media only screen and (max-height: 800px) {
+    @apply md:grid-rows-[1fr] lg:grid-cols-[1fr];
+  }
+
   gap: 1rem;
   padding: 1rem;
   display: grid;
