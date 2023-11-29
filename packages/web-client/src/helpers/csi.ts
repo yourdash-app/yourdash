@@ -8,7 +8,7 @@ import KeyValueDatabase from "shared/core/database";
 
 type ITJson = boolean | number | string | null | TJson | boolean[] | number[] | string[] | null[] | TJson[]
 
-type TJson = {
+export type TJson = {
   [ key: string ]: ITJson
 }
 
@@ -85,7 +85,7 @@ class __internalClientServerInteraction {
   postJson(
     endpoint: string,
     body: TJson,
-    cb: ( response: any ) => void,
+    cb: ( response: unknown ) => void,
     error?: ( response: string ) => void,
     extraHeaders?: {
       [ key: string ]: string
@@ -317,7 +317,7 @@ class __internalClientServerInteraction {
         } );
     } )
   }
-  
+
   logout(): void {
     localStorage.removeItem( "username" );
     localStorage.removeItem( "session_token" );

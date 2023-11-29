@@ -15,21 +15,21 @@ import csi from "../../../../../helpers/csi";
 const ApplicationLauncher: React.FC<{ side: "top" | "right" | "bottom" | "left", visible: boolean }> = ( { side, visible } ) => {
   const navigate = useNavigate()
   const [apps, setApps] = useState<IPanelApplicationsLauncherApplication[]>( [] )
-  
+
   useEffect( () => {
     csi.getJson( "/core/panel/applications", ( data ) => {
       setApps( data )
     } )
   }, [] );
-  
+
   return <div
     className={
       clippy(
         styles.applicationLauncher,
-        side === "top" && `${styles.sideTop} animate__fadeInLeft`,
-        side === "right" && `${styles.sideRight} animate__fadeInDown`,
-        side === "bottom" && `${styles.sideBottom} animate__fadeInLeft`,
-        side === "left" && `${styles.sideLeft} animate__fadeInDown`,
+        side === "top" && `${styles.sideTop} animate__slideInLeft`,
+        side === "right" && `${styles.sideRight} animate__slideInDown`,
+        side === "bottom" && `${styles.sideBottom} animate__slideInLeft`,
+        side === "left" && `${styles.sideLeft} animate__slideInDown`,
         "animate__animated animate__duration_500ms",
         !visible && styles.invisible
       )

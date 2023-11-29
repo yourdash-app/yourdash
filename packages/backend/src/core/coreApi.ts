@@ -28,7 +28,7 @@ import CoreApiFileSystem from "./fileSystem/coreApiFileSystem.js";
 import { YOURDASH_INSTANCE_DISCOVERY_STATUS } from "./types/discoveryStatus.js";
 import { userAvatarSize } from "./user/avatarSize.js";
 import YourDashUser from "./user/index.js";
-import { YOURDASH_SESSION_TYPE } from "../../../shared/core/session.js";
+import { YOURDASH_SESSION_TYPE } from "shared/core/session.js";
 import CoreApiPersonalServerAccelerator from "./personalServerAccelerator/coreApiPersonalServerAccelerator.js";
 
 export class CoreApi {
@@ -127,6 +127,7 @@ export class CoreApi {
         .then( () => {
           this.users.__internal__startUserDatabaseService()
           this.users.__internal__startUserDeletionService()
+          this.globalDb.__internal__startGlobalDatabaseService()
 
           try {
             killPort( 3563 ).then( () => {
@@ -203,8 +204,7 @@ export class CoreApi {
     this.expressServer.use( express.json( { limit: "50mb" } ) );
     this.expressServer.use( expressCompression() );
     this.expressServer.use( ( _req, res, next ) => {
-
-      // remove the X-Powered-By header to prevent exploitation from knowing the request server
+      // remove the X-Powered-By header to prevent exploitation from knowing the software powering the request server
       // this is a security measure against exploiters who don't look into the project's source code
       res.removeHeader( "X-Powered-By" );
 
@@ -260,7 +260,6 @@ export class CoreApi {
         this.log.error( "core:self_ping_test", "CRITICAL ERROR!, unable to ping self" );
       } )
       .catch( () => {
-        // TODO: on failure we should alert the administrator, currently we only print to the log as PushNotification support has not yet been implemented
         this.log.error( "core:self_ping_test", "CRITICAL ERROR!, unable to ping self" );
       } );
 
@@ -325,9 +324,6 @@ export class CoreApi {
       if ( !this.users.__internal__getSessionsDoNotUseOutsideOfCore()[username] ) {
         try {
           const user = new YourDashUser( username );
-
-          // FIXME: This appears to be strange behaviour
-          //        (update: 2/11/23) [Ewsgit] What is strange?!?!?!
           this.users.__internal__getSessionsDoNotUseOutsideOfCore()[username] = ( await user.getAllLoginSessions() ) || [];
         } catch ( _err ) {
           return res.json( { error: true } );
@@ -340,7 +336,7 @@ export class CoreApi {
       return res.json( { error: true } );
     } );
 
-    this.expressServer.get( "/core/login/instance/metadata", ( req, res ) => {
+    this.expressServer.get( "/core/login/instance/metadata", ( _req, res ) => {
       return res.json( {
         title: this.globalDb.get( "core:instance:name" ) || "Placeholder name",
         message: this.globalDb.get( "core:instance:message" ) || "Placeholder message. Hey system admin, you should change this!",
@@ -494,7 +490,7 @@ export class CoreApi {
         try {
           this.globalDb.__internal__doNotUseOnlyIntendedForShutdownSequenceWriteToDisk( path.resolve( process.cwd(), "./fs/global_database.json" ) );
         } catch ( e ) {
-          this.log.error( "core", "[EXTREME SEVERITY] Shutdown Error! failed to save global database. User data will have been lost! (past 5 minutes)" );
+          this.log.error( "core:global_db", "[EXTREME SEVERITY] Shutdown Error! failed to save global database. User data will have been lost! (~past 5 minutes)" );
         }
       }
     );

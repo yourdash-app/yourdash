@@ -4,7 +4,7 @@
  */
 
 import coreApi from "backend/src/core/coreApi.js";
-import { authenticatedImageType } from "backend/src/core/coreApiAuthenticatedImage.js";
+import { AUTHENTICATED_IMAGE_TYPE } from "backend/src/core/coreApiAuthenticatedImage.js";
 import Module, { YourDashModuleArguments } from "backend/src/core/moduleManager/module.js";
 import YourDashApplication, { getAllApplications } from "backend/src/helpers/applications.js";
 import { getInstanceLogoBase64 } from "backend/src/helpers/logo.js";
@@ -77,7 +77,7 @@ export default class StoreModule extends Module {
             return {
               id: applicationName,
               displayName: application.getDisplayName() || applicationName,
-              icon: coreApi.authenticatedImage.create( username, authenticatedImageType.FILE, await application.getIconPath() )
+              icon: coreApi.authenticatedImage.create( username, AUTHENTICATED_IMAGE_TYPE.FILE, await application.getIconPath() )
             };
           } )
         )
@@ -110,7 +110,7 @@ export default class StoreModule extends Module {
         const application = await new YourDashApplication( app ).read();
         applicationsOutput.push( {
           name: application.getName(),
-          icon: coreApi.authenticatedImage.create( username, authenticatedImageType.FILE, await application.getIconPath() ),
+          icon: coreApi.authenticatedImage.create( username, AUTHENTICATED_IMAGE_TYPE.FILE, await application.getIconPath() ),
           displayName: application.getDisplayName()
         } );
       } ) );

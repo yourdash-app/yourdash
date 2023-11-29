@@ -6,6 +6,7 @@
 import path from "path";
 import KeyValueDatabase from "../helpers/keyValueDatabase.js";
 import { CoreApi } from "./coreApi.js";
+import YourDashUser from "./user/index.js";
 
 // TODO: rewrite this to use a KVD ( Key Value Database )
 
@@ -35,5 +36,11 @@ export default class CoreApiGlobalDb extends KeyValueDatabase {
     }
 
     return this
+  }
+
+  __internal__startGlobalDatabaseService() {
+    this.coreApi.scheduler.scheduleTask( "core:userdb_write_to_disk", "*/1 * * * *", async () => {
+      await this.writeToDisk( path.join( this.coreApi.fs.ROOT_PATH, "./global_database.json" ) )
+    } );
   }
 }
