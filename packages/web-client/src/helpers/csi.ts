@@ -85,7 +85,7 @@ class __internalClientServerInteraction {
   postJson(
     endpoint: string,
     body: TJson,
-    cb: ( response: unknown ) => void,
+    cb: ( response: any ) => void,
     error?: ( response: string ) => void,
     extraHeaders?: {
       [ key: string ]: string
