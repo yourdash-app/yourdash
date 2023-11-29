@@ -1,0 +1,1 @@
+import{j as s}from"./index-4cf28dcc.js";const c="_component_kzw0j_6",p="_toggled_kzw0j_25",t={component:c,toggled:p},m=({children:o,active:n,onClick:e})=>s.jsx("button",{type:"button",className:`${t.component} ${n?t.toggled:""}`,onClick:e,children:o});export{m as default};

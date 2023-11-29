@@ -1,0 +1,4 @@
+@charset "UTF-8";/*!
+ * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */._component_13sji_6{width:2.5rem;height:1.1rem;border-radius:.5rem;display:flex;align-items:center;justify-content:center;position:relative;transition:var(--transition);cursor:pointer}._component_13sji_6>._thumb_13sji_17{position:absolute;top:-.25rem;height:calc(100% + .5rem);border-radius:100rem;aspect-ratio:1/1;transition:var(--transition);pointer-events:none;background-color:rgb(var(--input-fg))}._component_13sji_6:hover>div{background-color:rgb(var(--input-hover-fg))}._component_13sji_6:active>div{background-color:rgb(var(--input-active-fg))}

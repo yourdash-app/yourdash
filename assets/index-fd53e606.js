@@ -1,0 +1,1 @@
+import{j as e,R as t,a as o}from"./index-4cf28dcc.js";import{G as s}from"./globalDbApplication-d7a5ba66.js";const i=()=>e.jsx(t,{children:e.jsx(o,{index:!0,element:e.jsx(s,{})})});export{i as default};

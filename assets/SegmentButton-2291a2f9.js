@@ -1,0 +1,1 @@
+import{j as n}from"./index-4cf28dcc.js";const s="_button_bbzto_6",c="_component_bbzto_57",o={button:s,component:c},m=({buttons:e})=>n.jsx("div",{className:o.component,children:e.map(t=>n.jsx("button",{onClick:t.onClick,className:o.button,children:t.label},t.label))});export{m as default};

@@ -1,0 +1,1 @@
+import{j as s}from"./index-4cf28dcc.js";const e="_component_632zp_6",m={component:e},p=({children:o,style:n,className:t})=>s.jsx("div",{style:n,className:`${m.component} ${t}`,children:o});export{p as default};

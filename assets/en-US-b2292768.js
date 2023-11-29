@@ -1,1 +1,0 @@
-const o={MESSAGE:"YourDash is a pre-alpha project"},e={HOST_YOUR_OWN:{TITLE:"Host your own"},LIMITLESS_PERSONALISATION:{TITLE:"Limitless personalization"},OPEN_SOURCED:{TITLE:"Open sourced"}},s=["Manage your files with ease","Collaborate seamlessly","Make it your own"],a={BANNER:o,SECTIONS:e,TAGLINES:s};export{o as BANNER,e as SECTIONS,s as TAGLINES,a as default};
