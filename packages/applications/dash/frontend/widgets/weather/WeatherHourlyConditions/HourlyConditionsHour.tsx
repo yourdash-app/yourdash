@@ -29,11 +29,7 @@ const HourlyConditionsHour: React.FC<IHourlyConditionsHour> = ( {
 } ) => {
   const trans = useTranslate( "weather" );
   const [ showTooltip, setShowTooltip ] = React.useState( false );
-  const {
-    refs,
-    floatingStyles,
-    context
-  } = useFloating( {
+  const { refs, floatingStyles, context } = useFloating( {
     open: showTooltip,
     onOpenChange: setShowTooltip,
     middleware: [
@@ -49,10 +45,7 @@ const HourlyConditionsHour: React.FC<IHourlyConditionsHour> = ( {
     whileElementsMounted: autoUpdate
   } );
 
-  const {
-    getReferenceProps,
-    getFloatingProps
-  } = useInteractions( [
+  const { getReferenceProps, getFloatingProps } = useInteractions( [
     useHover( context, { move: false } ),
     useFocus( context ),
     useDismiss( context ),

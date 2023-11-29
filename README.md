@@ -1,18 +1,19 @@
-## Notice: YourDash is under development
-
-You can find the current changes on the "dev" branch
+<h1 align="center" style="font-weight:900;color:#ff926c;">
+    Notice: YourDash is under development
+    You can find the current changes on the "dev" branch
+</h1>
 
 # YourDash
 
 https://yourdash-app.github.io
 
-# About
+## About
 
 - YourDash's goal is to be a more-performant nextcloud alternative which can achieve a good level of performance on a
   Raspberry Pi 4.
 - Built using Node.js, Vite, Express, Electron and Typescript
 
-# Projects
+## Projects
 
 This repository 'YourDash' is a collection of projects more commonly known as a monorepo
 
@@ -22,10 +23,18 @@ Some of the YourDash projects include
 - YourDash Web (web-client)
 - UIKit (uikit)
 
+## Recommended IDE Setup
+
+- [Webstorm](https://www.jetbrains.com/webstorm/) + [ESLint](https://eslint.org) + [Yarn](https://yarnpkg.com/getting-started/install)
+
 # See more in the docs
 
-https://yourdash-app.github.io/#/docs
+https://ydsh.pages.dev/#/docs
 
 # Credits
 
 - Created by [Ewsgit](https://github.com/ewsgit)
+
+## Top contributors
+
+%%__top_contributors_list__%%

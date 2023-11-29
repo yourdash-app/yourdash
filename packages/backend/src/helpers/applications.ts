@@ -5,80 +5,84 @@
 
 import { promises as fs } from "fs";
 import path from "path";
-import { Application as ExpressApplication } from "express";
-import { Server as SocketServer } from "socket.io";
 import { type IYourDashApplication } from "shared/core/application.js";
-import log, { logType } from "./log.js";
-import globalDatabase from "./globalDatabase.js";
+import coreApi from "../core/coreApi.js";
+
+// TODO: replace the module loading from names to paths to support loading modules outside of the project's codebase
 
 class YDApplication {
   private readonly name: string;
   private readonly application: IYourDashApplication;
-  
+
   constructor( application: IYourDashApplication ) {
     this.name = application.name;
     this.application = application;
     return this;
   }
-  
+
   // Returns a string containing the application's name ( this could be described as the application's ID )
   getName(): string {
     return this.application.name;
   }
-  
+
   // Returns a string containing the application's display name
   getDisplayName(): string {
     return this.application.displayName;
   }
-  
+
   // Returns a string containing the application's store description
   getDescription(): string {
     return this.application.description;
   }
-  
+
   // Returns a string array containing the application's dependency applications
   getDependencies(): string[] {
     return this.application.dependencies || [];
   }
-  
+
   // Returns a Buffer containing the data for the application's icon
-  getIcon(): Promise<Buffer> {
+  async getIcon(): Promise<Buffer> {
     try {
-      return fs.readFile( path.resolve( process.cwd(), `../applications/${ this.name }/icon.avif` ) );
+      return await fs.readFile( path.resolve( process.cwd(), `../applications/${ this.name }/icon.avif` ) );
     } catch ( _e ) {
-      return fs.readFile( path.resolve( process.cwd(), "./src/assets/placeholder_application_icon.png" ) );
+      return await fs.readFile( path.resolve( process.cwd(), "./src/defaults/placeholder_application_icon.png" ) );
     }
   }
-  
+
   // Returns a string with the path to the application's icon
-  getIconPath(): string {
-    return path.resolve( process.cwd(), `../applications/${ this.name }/icon.avif` );
+  async getIconPath(): Promise<string> {
+    try {
+      await fs.access( path.resolve( process.cwd(), `../applications/${ this.name }/icon.avif` ) )
+      return path.resolve( process.cwd(), `../applications/${ this.name }/icon.avif` );
+    } catch ( _e ) {
+      return path.resolve( process.cwd(), "./src/defaults/placeholder_application_icon.png" )
+    }
   }
-  
+
   // Returns a Buffer containing the data for the application's store page banner
   getStoreBackground(): Promise<Buffer> {
     try {
       // TODO: add support for custom application backgrounds
-      return fs.readFile( path.resolve( process.cwd(), "./src/assets/promoted_application_default_background.png" ) );
+      return fs.readFile( path.resolve( process.cwd(), "./src/defaults/promoted_application_default_background.png" ) );
     } catch ( _e ) {
-      return fs.readFile( path.resolve( process.cwd(), "./src/assets/promoted_application_default_background.png" ) );
+      return fs.readFile( path.resolve( process.cwd(), "./src/defaults/promoted_application_default_background.png" ) );
     }
   }
-  
+
   // Returns true if the application is installed, otherwise returns false
   isInstalled(): boolean {
-    return !!globalDatabase.get( "installedApplications" ).includes( this.name );
+    return !!coreApi.globalDb.get( "core:installedApplications" ).includes( this.name );
   }
-  
+
   getCategory(): string {
     return this.application.category;
   }
-  
+
   // Returns the path to the application
   getPath(): string {
     return path.resolve( process.cwd(), `../applications/${ this.name }/` );
   }
-  
+
   getRawApplicationData(): IYourDashApplication {
     return this.application;
   }
@@ -91,19 +95,19 @@ export async function getAllApplications(): Promise<string[]> {
       return ( app !== "package.json" ) && ( app !== "node_modules" );
     } );
   } catch ( _err ) {
-    log( logType.ERROR, "A problem occurred reading the ../applications/ directory" );
+    coreApi.log.error( "A problem occurred reading the ../applications/ directory" );
     return [];
   }
 }
 
 export default class YourDashApplication {
   private readonly name: string;
-  
+
   constructor( name: string ) {
     this.name = name;
     return this;
   }
-  
+
   // Returns a YourDashApplication class which is initialized with the application's data
   async read(): Promise<YDApplication | null> {
     try {
@@ -116,7 +120,7 @@ export default class YourDashApplication {
       return null;
     }
   }
-  
+
   // Returns true if the application exists in the ./src/apps/ directory
   async exists(): Promise<boolean> {
     try {
@@ -126,21 +130,9 @@ export default class YourDashApplication {
       return false;
     }
   }
-  
+
   // Return the path to the application
   getPath(): string {
     return path.resolve( process.cwd(), `../applications/${ this.name }/` );
   }
 }
-
-type YourDashApplicationServerPlugin = ( {
-  exp,
-  io,
-  pluginFilesystemPath
-}: {
-  exp: ExpressApplication,
-  io: SocketServer,
-  pluginFilesystemPath: string
-} ) => any;
-
-export { type YourDashApplicationServerPlugin };

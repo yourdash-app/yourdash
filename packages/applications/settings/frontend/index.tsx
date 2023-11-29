@@ -8,12 +8,13 @@ import { Routes, Route } from "react-router";
 import SettingsApplication from "./settingsApplication";
 import SessionIndexPage from "./pages/session";
 import SettingsLayout from "./settingsLayout";
-import DeveloperSettingsIndexPage from "./pages/developer";
 import PersonalizationIndexPage from "./pages/personalization/Index";
 import AdminToolsIndexPage from "./pages/admin/Index";
 import DashboardPersonalizationIndexPage from "./pages/personalization/dashboard/Index";
 import PanelPersonalizationIndexPage from "./pages/personalization/panel/Index";
 import ProfileIndexPage from "./pages/profile/Index";
+import DeveloperToolsIndexPage from "./pages/developer/Index"
+import AccessibilityIndexPage from "./pages/accessibility/Index"
 
 const SettingsRouter: React.FC = () => (
   <Routes>
@@ -31,13 +32,13 @@ const SettingsRouter: React.FC = () => (
         <Route index element={<SessionIndexPage/>}/>
       </Route>
       <Route path={"accessibility"}>
-        {/**/}
+        <Route index element={<AccessibilityIndexPage/>}/>
       </Route>
       <Route path={"admin"}>
         <Route index element={<AdminToolsIndexPage/>}/>
       </Route>
       <Route path={"developer"}>
-        <Route index element={<DeveloperSettingsIndexPage/>}/>
+        <Route index element={<DeveloperToolsIndexPage/>}/>
       </Route>
     </Route>
   </Routes>

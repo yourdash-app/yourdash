@@ -25,12 +25,6 @@ const Index: React.FC = () => (
       icon={YourDashIcon.Paintbrush}
     />
     <SettingCategoryComponent
-      href={"/app/a/settings/personalization/profile"}
-      description={"Personalize your profile"}
-      title={"Profile"}
-      icon={YourDashIcon.Login}
-    />
-    <SettingCategoryComponent
       href={"/app/a/settings/personalization/theme"}
       description={"Customize the look of YourDash"}
       title={"Theme"}

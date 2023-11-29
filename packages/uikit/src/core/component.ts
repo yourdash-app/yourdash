@@ -3,28 +3,45 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import UKComponentSlot from "./slot.ts";
 import State from "./state.ts";
 
-export type UKComponentProps = { [name: string]: any }
-export type UKComponentState = { [name: string]: State<any> }
-export type UKComponentSlots = { [name: string]: State<UKComponent<UKComponentProps, UKComponentState, UKComponentSlots>> }
+export type UKComponentSlots = { [ key: string ]: State<ValidUKComponent> }
+export type UKComponentProps = { [ key: string ]: any } | undefined  // eslint-disable-line @typescript-eslint/no-explicit-any
 
-export default class UKComponent<
-    ComponentProps extends UKComponentProps,
-    ComponentState extends UKComponentState,
-    ComponentSlots extends UKComponentSlots
+export class UKComponent<
+  ComponentProps extends UKComponentProps = UKComponentProps,
+  ComponentSlots extends UKComponentSlots = UKComponentSlots
 > {
-  declare domElement: HTMLElement;
-  declare parentDomElement: HTMLElement;
-  state: ComponentState
-  slots: ComponentSlots
-  props: ComponentProps
+  domElement: HTMLElement;
+  declare readonly parentDomElement: HTMLElement;
+  slots: ComponentSlots;
+  props: ComponentProps;
 
-  constructor(props: ComponentProps) {
-    this.props = props
-    this.state = {} as ComponentState
-    this.slots = {} as ComponentSlots
+  constructor( props: ComponentProps ) {
+    this.slots = {} as ComponentSlots;
+    this.props = props as ComponentProps;
+    this.domElement = document.createElement( "uk-empty-component" ) as HTMLDivElement;
 
-    return this
+    return this;
   }
 }
+
+export class UKSlotComponent<
+  ComponentProps extends UKComponentProps = UKComponentProps
+>
+  extends UKComponentSlot {
+  declare readonly parentDomElement: HTMLElement;
+  props: ComponentProps;
+
+  constructor( props: ComponentProps ) {
+    super( document.createElement( "uk-empty-component" ) as HTMLDivElement );
+
+    this.props = props as ComponentProps;
+
+    return this;
+  }
+}
+
+
+export type ValidUKComponent = UKComponent | UKSlotComponent

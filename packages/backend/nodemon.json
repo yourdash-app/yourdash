@@ -1,5 +1,7 @@
 {
   "watch": [
-    "src/**/*.js"
-  ]
+    "src/**/*",
+    "../applications/**/backend/**/*"
+  ],
+  "ext": "*.js"
 }

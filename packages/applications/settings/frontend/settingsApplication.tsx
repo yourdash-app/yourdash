@@ -43,8 +43,14 @@ const SettingsApplication: React.FC = () => {
     />
     <SettingCategoryComponent
       href={"/app/a/settings/admin"}
-      description={"Am Devloper"}
+      description={"Hiya, Admin 👋"}
       title={"Admin tools"}
+      icon={YourDashIcon.Tools}
+    />
+    <SettingCategoryComponent
+      href={"/app/a/settings/developer"}
+      description={"For development purposes only"}
+      title={"Developer tools"}
       icon={YourDashIcon.Tools}
     />
   </BasePageLayout>

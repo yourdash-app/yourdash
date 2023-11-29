@@ -19,7 +19,7 @@ const WeatherApplicationDaysCarousel: React.FC<{
 }> = ( { weatherData, setSelectedDay, selectedDay } ) => {
   const trans = useTranslate( "weather" );
   
-  return <Carousel className={ "sticky top-[5.75rem] flex gap-1 p-2 pl-10 pr-10 w-full" } compactControls>
+  return <Carousel className={ "sticky top-[5.75rem] flex gap-1 p-2 pl-10 pr-10 w-full pt-0" } compactControls>
     {
       weatherData.daily.time.map( ( dayDateTime, index ) => {
         const date = new Date( dayDateTime );
@@ -48,9 +48,9 @@ const WeatherApplicationDaysCarousel: React.FC<{
                 } after:font-light after:text-sm after:justify-self-start flex`
               }>{ date.getDate() }</span>
             </h2>
-            <img className={"w-12"} alt={""} src={getWeatherIconFromState( weatherData.daily.weatherState[index] )}/>
+            <img className={"w-20 -mr-2 -mt-4"} alt={""} src={getWeatherIconFromState( weatherData.daily.weatherState[index] )}/>
           </div>
-          <div>
+          <div className={"-mt-2"}>
             <div className={"font-black text-3xl flex gap-1 items-center"}>
               <Icon icon={ YourDashIcon.ChevronUp } className={"h-4"} color={"#43aa8b"}/>
               <span>{weatherData.daily.temperature.max[index]}</span><span className={"text-[#43aa8b]"}>{weatherData.units.daily.temperature.max}</span>

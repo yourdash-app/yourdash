@@ -3,9 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
-import { useTranslateHomePage } from "../../../../helpers/i10n";
+import React from "react";
 import { Link } from "react-router-dom";
 import FloatingApplications from "./FloatingApplications/FloatingApplications";
 import IndexPageHeroTaglines from "./Taglines";
@@ -14,9 +12,7 @@ const IndexPageHero: React.FC = () => {
   return <section
     className={ "animate__animated animate__fadeIn w-full h-[30rem] overflow-hidden relative bg-base-800 [clip-path:_polygon(0_0,_100%_0%,_100%_85%,_0%_100%);] grid md:grid-cols-2 grid-cols-1 gap-10 pb-4" }
   >
-    <div
-      className={ "flex flex-col items-end justify-center overflow-hidden md:ml-0 md:mr-0 ml-auto mr-auto" }
-    >
+    <div className={ "flex flex-col items-end justify-center overflow-hidden md:ml-0 md:mr-0 ml-auto mr-auto" }>
       <h1
         className={ "text-6xl font-bold text-base-50 animate__jackInTheBox animate__animated animate__250ms flex select-none" }
       >
@@ -37,7 +33,7 @@ const IndexPageHero: React.FC = () => {
           to={ "/login/signup" }
           className={ "hover:text-theme-500 active:text-theme-400 text-theme-200 transition-colors select-none cursor-pointer" }
         >
-          Signup
+          Placeholder Text
         </Link>
       </div>
     </div>

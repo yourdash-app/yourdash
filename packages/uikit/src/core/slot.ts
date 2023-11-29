@@ -3,30 +3,34 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import { ValidUKComponent } from "./component";
 import State from "./state";
-import UKComponent, { UKComponentProps, UKComponentSlots, UKComponentState } from "./component";
 
-export default class UKComponentSlot extends State<UKComponent<UKComponentProps, UKComponentState, UKComponentSlots>> {
+export default class UKComponentSlot extends State<ValidUKComponent> {
   domElement: HTMLElement
 
-  constructor(containingDomElement: HTMLElement) {
+  constructor( domElement: HTMLElement ) {
     super();
 
-    this.domElement = containingDomElement
+    this.domElement = domElement
   }
 
-  createComponent(component: typeof UKComponent<UKComponentProps, UKComponentState, UKComponentSlots>, props: UKComponentProps) {
-    const comp = new component(props)
+  createComponent<T extends ValidUKComponent>( component: new ( props: T["props"] ) => T, props: T["props"] = {} ) {
+    const comp = new component( props )
 
+    // @ts-ignore
+    // noinspection JSConstantReassignment
     comp.parentDomElement = this.domElement
-    comp.parentDomElement.appendChild(comp.domElement)
+    comp.parentDomElement.appendChild( comp.domElement )
 
     return comp
   }
 
-  addComponent(component: UKComponent<UKComponentProps, UKComponentState, UKComponentSlots>) {
+  add( component: ValidUKComponent ) {
+    // @ts-ignore
+    // noinspection JSConstantReassignment
     component.parentDomElement = this.domElement
-    component.parentDomElement.appendChild(component.domElement)
+    component.parentDomElement.appendChild( component.domElement )
 
     return component
   }

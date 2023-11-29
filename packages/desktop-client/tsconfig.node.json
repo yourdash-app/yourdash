@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "types": [
+      "electron-vite/node"
+    ],
+    "esModuleInterop": true
+  },
+  "include": [
+    "electron.vite.config.*",
+    "src/main/*",
+    "src/preload/*",
+    "../shared/**/*.ts",
+    "../applications/**/desktop-backend",
+    "../applications/**/shared"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

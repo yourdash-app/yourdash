@@ -17,6 +17,8 @@ export interface ITextInput extends React.HTMLProps<HTMLInputElement> {
   // @ts-ignore
   onKeyDown?: ( e: KeyboardEvent<HTMLInputElement> ) => void,
   defaultValue?: string
+  onValid?: ( value: string ) => void
+  autoComplete?: string
 }
 
 const TextInput: React.FC<ITextInput> = ( {
@@ -28,6 +30,8 @@ const TextInput: React.FC<ITextInput> = ( {
   className,
   onKeyDown,
   defaultValue,
+  onValid,
+  autoComplete,
   ...extraProps
 } ) => {
   const [valid, setValid] = useState( !mustMatchRegex );
@@ -42,6 +46,7 @@ const TextInput: React.FC<ITextInput> = ( {
       </span>
       <input
         {...extraProps}
+        autoComplete={autoComplete}
         placeholder={placeholder}
         className={`w-full pl-2 pt-1 pb-1 pr-2 outline-none relative z-0 rounded-button-rounding bg-base-700 transition-all ${
           mustMatchRegex
@@ -50,7 +55,7 @@ const TextInput: React.FC<ITextInput> = ( {
               : "border-2 border-red-400"
             : "border-2 border-base-600"
         }`}
-        type={"text"}
+        type={extraProps.type || "text"}
         onBlur={onBlur}
         defaultValue={defaultValue}
         onKeyDown={e => onKeyDown?.( e )}
@@ -63,6 +68,7 @@ const TextInput: React.FC<ITextInput> = ( {
              value.match( mustMatchRegex )?.length === 1 )
           ) {
             setValid( true );
+            onValid?.( value )
           } else {
             setValid( false );
           }

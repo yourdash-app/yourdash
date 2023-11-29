@@ -1,0 +1,47 @@
+/*!
+ * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
+.component {
+  text-align: left;
+  font-family: "Inter", sans-serif;
+  font-weight: var(--header-level0-font-weight);
+  font-size: var(--header-level0-font-size);
+}
+
+.level0 {
+  font-weight: var(--header-level0-font-weight);
+  font-size: var(--header-level0-font-size);
+  line-height: var(--header-level0-line-height);
+}
+
+.level1 {
+  font-weight: var(--header-level1-font-weight);
+  font-size: var(--header-level1-font-size);
+  line-height: var(--header-level1-line-height);
+}
+
+.level2 {
+  font-weight: var(--header-level2-font-weight);
+  font-size: var(--header-level2-font-size);
+  line-height: var(--header-level2-line-height);
+}
+
+.level3 {
+  font-weight: var(--header-level3-font-weight);
+  font-size: var(--header-level3-font-size);
+  line-height: var(--header-level3-line-height);
+}
+
+.level4 {
+  font-weight: var(--header-level4-font-weight);
+  font-size: var(--header-level4-font-size);
+  line-height: var(--header-level4-line-height);
+}
+
+.level5 {
+  font-weight: var(--header-level5-font-weight);
+  font-size: var(--header-level5-font-size);
+  line-height: var(--header-level5-line-height);
+}

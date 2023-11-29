@@ -4,40 +4,16 @@
  */
 
 import * as React from "react";
-import SettingCategoryComponent from "../../components/SettingCategoryComponent";
+import ComingSoon from "web-client/src/ComingSoon";
 import BasePageLayout from "../../components/BasePageLayout";
-import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
+import ManageUsers from "./sections/manageUsers/ManageUsers";
 
 const Index: React.FC = () => (
-  <BasePageLayout
-    title={"Admin tools"}
-  >
-    <SettingCategoryComponent
-      href={"https://google.com"}
-      description={"Sample text"}
-      title={"Sample text"}
-      icon={YourDashIcon.Paintbrush}
-      external
-    />
-    <SettingCategoryComponent
-      href={"/app/a/settings/session"}
-      description={"Sample text"}
-      title={"Sample text"}
-      icon={YourDashIcon.Login}
-      external
-    />
-    <SettingCategoryComponent
-      href={"/app/a/settings/accessibility"}
-      description={"Sample text"}
-      title={"Sample text"}
-      icon={YourDashIcon.Accessibility}
-    />
-    <SettingCategoryComponent
-      href={"/app/a/settings/admin"}
-      description={"Sample text"}
-      title={"Sample text"}
-      icon={YourDashIcon.Tools}
-    />
+  <BasePageLayout title={ "Admin tools" }>
+    <ManageUsers/>
+    <section className={ "w-full h-full flex flex-col items-center col-span-2" }>
+      <ComingSoon />
+    </section>
   </BasePageLayout>
 );
 

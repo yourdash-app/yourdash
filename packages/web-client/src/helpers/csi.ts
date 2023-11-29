@@ -8,7 +8,7 @@ import KeyValueDatabase from "shared/core/database";
 
 type ITJson = boolean | number | string | null | TJson | boolean[] | number[] | string[] | null[] | TJson[]
 
-type TJson = {
+export type TJson = {
   [ key: string ]: ITJson
 }
 
@@ -46,7 +46,7 @@ class __internalClientServerInteraction {
   ): void {
     const instanceUrl = localStorage.getItem( "current_server" ) || "https://example.com";
     const username = localStorage.getItem( "username" ) || "";
-    const sessiontoken = localStorage.getItem( "session_token" ) || "";
+    const sessionToken = localStorage.getItem( "session_token" ) || "";
 
     fetch( `${ instanceUrl }${ endpoint }`, {
       method: "GET",
@@ -56,7 +56,7 @@ class __internalClientServerInteraction {
         "Access-Control-Allow-Origin": "*",
         "Content-Type": "application/json",
         username,
-        token: sessiontoken,
+        token: sessionToken,
         ...( extraHeaders || {} )
       }
     } ).then( resp => {
@@ -93,7 +93,7 @@ class __internalClientServerInteraction {
   ): void {
     const instanceUrl = localStorage.getItem( "current_server" ) || "https://example.com";
     const username = localStorage.getItem( "username" ) || "";
-    const sessiontoken = localStorage.getItem( "session_token" ) || "";
+    const sessionToken = localStorage.getItem( "session_token" ) || "";
 
     fetch( `${ instanceUrl }${ endpoint }`, {
       method: "POST",
@@ -104,7 +104,7 @@ class __internalClientServerInteraction {
         "Access-Control-Allow-Origin": "*",
         "Content-Type": "application/json",
         username,
-        token: sessiontoken,
+        token: sessionToken,
         ...( extraHeaders || {} )
       }
     } ).then( resp => {
@@ -140,7 +140,7 @@ class __internalClientServerInteraction {
   ): void {
     const instanceUrl = localStorage.getItem( "current_server" ) || "https://example.com";
     const username = localStorage.getItem( "username" ) || "";
-    const sessiontoken = localStorage.getItem( "session_token" ) || "";
+    const sessionToken = localStorage.getItem( "session_token" ) || "";
 
     fetch( `${ instanceUrl }${ endpoint }`, {
       method: "DELETE",
@@ -150,7 +150,7 @@ class __internalClientServerInteraction {
         "Access-Control-Allow-Origin": "*",
         "Content-Type": "application/json",
         username,
-        token: sessiontoken
+        token: sessionToken
       }
     } ).then( resp => {
       if ( resp.headers.get( "Content-Type" ) === "application/json; charset=utf-8" ) {
@@ -185,7 +185,7 @@ class __internalClientServerInteraction {
   ): void {
     const instanceUrl = localStorage.getItem( "current_server" ) || "https://example.com";
     const username = localStorage.getItem( "username" ) || "";
-    const sessiontoken = localStorage.getItem( "session_token" ) || "";
+    const sessionToken = localStorage.getItem( "session_token" ) || "";
 
     fetch( `${ instanceUrl }${ endpoint }`, {
       method: "GET",
@@ -195,11 +195,11 @@ class __internalClientServerInteraction {
         "Access-Control-Allow-Origin": "*",
         "Content-Type": "text/plain",
         username,
-        token: sessiontoken,
+        token: sessionToken,
         ...( extraHeaders || {} )
       }
     } ).then( resp => {
-      if ( resp.headers.get( "Content-Type" ) === "text/plain; charset=utf-8" ) {
+      if ( resp.headers.get( "Content-Type" ) === "text/plain; charset=utf-8" || resp.headers.get( "Content-Type" ) === "text/html; charset=utf-8" ) {
         return resp.text();
       }
 
@@ -222,7 +222,7 @@ class __internalClientServerInteraction {
   ): void {
     const instanceUrl = localStorage.getItem( "current_server" ) || "https://example.com";
     const username = localStorage.getItem( "username" ) || "";
-    const sessiontoken = localStorage.getItem( "session_token" ) || "";
+    const sessionToken = localStorage.getItem( "session_token" ) || "";
 
     fetch( `${ instanceUrl }${ endpoint }`, {
       method: "POST",
@@ -233,7 +233,7 @@ class __internalClientServerInteraction {
         "Access-Control-Allow-Origin": "*",
         "Content-Type": "application/json",
         username,
-        token: sessiontoken,
+        token: sessionToken,
         ...( extraHeaders || {} )
       }
     } ).then( resp => resp.text() )
@@ -254,7 +254,7 @@ class __internalClientServerInteraction {
   ): void {
     const instanceUrl = localStorage.getItem( "current_server" ) || "https://example.com";
     const username = localStorage.getItem( "username" ) || "";
-    const sessiontoken = localStorage.getItem( "session_token" ) || "";
+    const sessionToken = localStorage.getItem( "session_token" ) || "";
 
     fetch( `${ instanceUrl }${ endpoint }`, {
       method: "DELETE",
@@ -264,7 +264,7 @@ class __internalClientServerInteraction {
         "Access-Control-Allow-Origin": "*",
         "Content-Type": "text/plain",
         username,
-        token: sessiontoken,
+        token: sessionToken,
         ...( extraHeaders || {} )
       }
     } ).then( resp => {
@@ -316,6 +316,11 @@ class __internalClientServerInteraction {
           reject( "Unable to save the user database to the server" )
         } );
     } )
+  }
+
+  logout(): void {
+    localStorage.removeItem( "username" );
+    localStorage.removeItem( "session_token" );
   }
 }
 

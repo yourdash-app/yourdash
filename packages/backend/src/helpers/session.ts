@@ -5,19 +5,18 @@
 
 import { promises as fs } from "fs";
 import path from "path";
-import { __internalGetSessionsDoNotUseOutsideOfCore, SESSION_TOKEN_LENGTH } from "../core/session.js";
-import { YOURDASH_SESSION_TYPE, type IYourDashSession } from "shared/core/session.js";
-import log, { logType } from "./log.js";
-import { generateRandomStringOfLength } from "./encryption.js";
+import coreApi from "../core/coreApi.js";
+import { SESSION_TOKEN_LENGTH } from "../core/coreApiUsers.js";
 import YourDashUser from "../core/user/index.js";
+import { IYourDashSession, YOURDASH_SESSION_TYPE } from "../../../shared/core/session.js";
+import { generateRandomStringOfLength } from "./encryption.js";
 
-
-export function getSessionsForUser( username: string ): IYourDashSession<any>[] {
-  return __internalGetSessionsDoNotUseOutsideOfCore()[username];
+export function getSessionsForUser( username: string ): IYourDashSession<any>[] { // eslint-disable-line @typescript-eslint/no-explicit-any
+  return coreApi.users.__internal__getSessionsDoNotUseOutsideOfCore()[username];
 }
 
 export function getSessionId( username: string, sessionToken: string ): number | null {
-  return __internalGetSessionsDoNotUseOutsideOfCore()[username].find( session => session.sessionToken === sessionToken )?.id || null;
+  return coreApi.users.__internal__getSessionsDoNotUseOutsideOfCore()[username].find( session => session.sessionToken === sessionToken )?.id || null;
 }
 
 export async function createSession<T extends YOURDASH_SESSION_TYPE>(
@@ -29,7 +28,7 @@ export async function createSession<T extends YOURDASH_SESSION_TYPE>(
   const user = new YourDashUser( username );
 
   try {
-    __internalGetSessionsDoNotUseOutsideOfCore()[username] =
+    coreApi.users.__internal__getSessionsDoNotUseOutsideOfCore()[username] =
       JSON.parse( ( await fs.readFile( path.join( user.path, "core/sessions.json" ) ) ).toString() );
   } catch ( _err ) { /* empty */ }
 
@@ -41,19 +40,19 @@ export async function createSession<T extends YOURDASH_SESSION_TYPE>(
     sessionToken
   };
 
-  if ( __internalGetSessionsDoNotUseOutsideOfCore()[username] ) {
-    __internalGetSessionsDoNotUseOutsideOfCore()[username].push( session );
+  if ( coreApi.users.__internal__getSessionsDoNotUseOutsideOfCore()[username] ) {
+    coreApi.users.__internal__getSessionsDoNotUseOutsideOfCore()[username].push( session );
   } else {
-    __internalGetSessionsDoNotUseOutsideOfCore()[username] = [session];
+    coreApi.users.__internal__getSessionsDoNotUseOutsideOfCore()[username] = [session];
   }
 
   try {
     await fs.writeFile(
       path.join( user.path, "core/sessions.json" ),
-      JSON.stringify( __internalGetSessionsDoNotUseOutsideOfCore()[username] )
+      JSON.stringify( coreApi.users.__internal__getSessionsDoNotUseOutsideOfCore()[username] )
     );
   } catch ( __e ) {
-    log( logType.ERROR, `Unable to write ${ username }/core/sessions.json` );
+    coreApi.log.error( `Unable to write ${ username }/core/sessions.json` );
 
     return session;
   }
@@ -82,17 +81,17 @@ export default class YourDashSession<T extends YOURDASH_SESSION_TYPE> {
     return false;
   }
 
-  invalidate() {
-    __internalGetSessionsDoNotUseOutsideOfCore()[this.username].splice(
-      __internalGetSessionsDoNotUseOutsideOfCore()[this.username].findIndex( val => val.id === this.id ),
+  async invalidate() {
+    coreApi.users.__internal__getSessionsDoNotUseOutsideOfCore()[this.username].splice(
+      coreApi.users.__internal__getSessionsDoNotUseOutsideOfCore()[this.username].findIndex( val => val.id === this.id ),
       1
     );
 
     const user = new YourDashUser( this.username );
     try {
-      fs.writeFile(
+      await fs.writeFile(
         path.join( user.path, "core/sessions.json" ),
-        JSON.stringify( __internalGetSessionsDoNotUseOutsideOfCore()[this.username] )
+        JSON.stringify( coreApi.users.__internal__getSessionsDoNotUseOutsideOfCore()[this.username] )
       );
     } catch ( _err ) {
       return;

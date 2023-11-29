@@ -1,0 +1,21 @@
+/*!
+ * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
+.view {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.file {
+  padding: 0.125rem 0.25rem;
+  background-color: #444;
+  transition: var(--transition);
+
+  &.odd {
+    background-color: #333;
+  }
+}

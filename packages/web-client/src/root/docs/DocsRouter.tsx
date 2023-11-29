@@ -5,17 +5,23 @@
 
 import React from "react";
 import { Routes, Route } from "react-router";
-import GetStartedPage from "./pages/get-started/page";
-import TranslationPage from "./pages/translation/page";
-import HowToHelp from "./pages/how-to-help/HowToHelp";
-import OverviewPage from "./pages/overview/OverviewPage";
+import ComingSoon from "../../ComingSoon";
+import FaqDocsIndex from "./pages/faq/Index";
+import GetStartedDocsIndex from "./pages/get-started/Index";
+import TranslationDocsIndex from "./pages/translation/Index";
+import ContributionDocsIndex from "./pages/contribution/Index";
+import OverviewDocsIndex from "./pages/overview/Index";
+import DevelopmentDocsIndex from "./pages/development/Index";
 
 const DocsRouter: React.FC = () => (
   <Routes>
-    <Route path={"/"} element={<OverviewPage/>}/>
-    <Route path={"get-started"} element={<GetStartedPage/>}/>
-    <Route path={"translation"} element={<TranslationPage/>}/>
-    <Route path={"how-to-help"} element={<HowToHelp/>}/>
+    <Route path={"/"} element={<OverviewDocsIndex/>}/>
+    <Route path={"faq"} element={<FaqDocsIndex/>}/>
+    <Route path={"get-started"} element={<GetStartedDocsIndex/>}/>
+    <Route path={"translation"} element={<TranslationDocsIndex/>}/>
+    <Route path={"contribution"} element={<ContributionDocsIndex/>}/>
+    <Route path={"development"} element={<DevelopmentDocsIndex/>}/>
+    <Route path={"*"} element={<ComingSoon/>}/>
   </Routes>
 );
 

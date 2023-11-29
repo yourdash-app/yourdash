@@ -4,9 +4,12 @@
  */
 
 import React from "react";
+import useTranslate from "web-client/src/helpers/i10n";
 import { IWeatherDataForLocation } from "../../shared/weatherDataForLocation";
 import { chunk } from "web-client/src/helpers/array";
 import { Card } from "web-client/src/ui/index";
+import { WEATHER_STATES } from "../../shared/weatherStates";
+import getWeatherConditionFromState from "../helpers/getWeatherConditionFromState";
 
 interface IWeatherConditionsForHour {
   weatherData: IWeatherDataForLocation,
@@ -19,82 +22,79 @@ const WeatherConditionsForHour: React.FC<IWeatherConditionsForHour> = ( {
   selectedDay,
   selectedHour
 } ) => {
-  const [selectedHourDate, setSelectedHourDate] = React.useState<Date | null>( null );
+  const trans = useTranslate( "weather" );
+  const [ selectedHourDate, setSelectedHourDate ] = React.useState<Date | null>( null );
   
   React.useEffect( () => {
-    if ( selectedHour !== undefined )
-      setSelectedHourDate(
-        new Date( chunk( weatherData.hourly.time, 24 )[selectedDay][selectedHour] )
-      )
-  }, [ selectedDay, selectedHour ] )
+    if ( selectedHour !== undefined ) {
+      setSelectedHourDate( new Date( chunk( weatherData.hourly.time, 24 )[ selectedDay ][ selectedHour ] ) );
+    }
+  }, [ selectedDay, selectedHour ] );
   
-  if ( !selectedHourDate || selectedHour === undefined )
-    return <Card className={ "col-span-2 flex items-center justify-center h-max" } showBorder>
+  if ( !selectedHourDate || selectedHour === null ) {
+    return <Card className={ "col-span-3 flex items-center justify-center h-max sticky top-4" } showBorder>
       <h1>Click an hour to show more information.</h1>
-    </Card>
+    </Card>;
+  }
   
   return <>
     <Card
-      className={"gap-2 flex text-xl col-span-3 items-center justify-center w-full"}
+      className={ "gap-2 flex col-span-3 items-center justify-center w-full sticky top-4" }
       showBorder
     >
-      <span>
-        {
-          selectedHourDate.toLocaleDateString( undefined, { dateStyle: "full" } )
-        }
+      <span className={ "text-3xl font-semibold tracking-wide" }>
+        { selectedHourDate.toLocaleDateString( undefined, { dateStyle: "full" } ) }
       </span>
-      <span>
-        {
-          selectedHourDate.getHours() < 9
-            ? `0${selectedHourDate.getHours() + 1}`
-            : selectedHourDate.getHours() + 1
-        }:00
+      <span className={ "text-3xl font-semibold tracking-wide" }>
+        { selectedHourDate.getHours() < 9 ? `0${ selectedHourDate.getHours() + 1 }` : selectedHourDate.getHours() + 1 }:00
       </span>
     </Card>
-    {/* Hourly metrics section */}
+    {/* Weather conditions description */ }
     <Card
-      className={"flex items-center justify-center flex-col gap-2"}
+      className={ "gap-2 flex col-span-3 items-center justify-center w-full" }
       showBorder
     >
-      <span className={"font-semibold text-2xl"}>
+      <span className={ "text-2xl tracking-wide" }>
+        { chunk( weatherData.hourly.temperature, 24 )[ selectedDay ][ selectedHour || 0 ] }
+        { weatherData.units.hourly.temperature }
+        { " " }
+        { chunk( weatherData.hourly.weatherState, 24 )[ selectedDay ][ selectedHour || 0 ] !== WEATHER_STATES.PARTLY_CLOUDY ? "with" : "and" }
+        { " " }
+        { trans( getWeatherConditionFromState( chunk( weatherData.hourly.weatherState, 24 )[ selectedDay ][ selectedHour || 0 ] ) ) }
+      </span>
+    </Card>
+    {/* Hourly metrics section */ }
+    <Card
+      className={ "flex items-center justify-center flex-col gap-2" }
+      showBorder
+    >
+      <span className={ "font-semibold text-2xl" }>
           Wind  speed
       </span>
-      {
-        chunk( weatherData.hourly.windSpeed, 24 )[selectedDay][selectedHour]
-      }
-      {
-        weatherData.units.hourly.windSpeed.replace( "mp/h", "mph" )
-      }
+      { chunk( weatherData.hourly.windSpeed, 24 )[ selectedDay ][ selectedHour || 0 ] }
+      { weatherData.units.hourly.windSpeed.replace( "mp/h", "mph" ) }
     </Card>
     <Card
-      className={"flex items-center justify-center flex-col gap-2"}
+      className={ "flex items-center justify-center flex-col gap-2" }
       showBorder
     >
-      <span className={"font-semibold text-2xl"}>
+      <span className={ "font-semibold text-2xl" }>
           Cloud cover
       </span>
-      {
-        chunk( weatherData.hourly.cloudCover, 24 )[selectedDay][selectedHour]
-      }
-      {
-        weatherData.units.hourly.cloudCover
-      }
+      { chunk( weatherData.hourly.cloudCover, 24 )[ selectedDay ][ selectedHour || 0 ] }
+      { weatherData.units.hourly.cloudCover }
     </Card>
     <Card
-      className={"flex items-center justify-center flex-col gap-2"}
+      className={ "flex items-center justify-center flex-col gap-2" }
       showBorder
     >
-      <span className={"font-semibold text-2xl"}>
+      <span className={ "font-semibold text-2xl" }>
           Rain  probability
       </span>
-      {
-        chunk( weatherData.hourly.precipitationProbability, 24 )[selectedDay][selectedHour]
-      }
-      {
-        weatherData.units.hourly.precipitationProbability
-      }
+      { chunk( weatherData.hourly.precipitationProbability, 24 )[ selectedDay ][ selectedHour || 0 ] }
+      { weatherData.units.hourly.precipitationProbability }
     </Card>
-  </>
+  </>;
 };
 
 export default WeatherConditionsForHour;

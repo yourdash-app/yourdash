@@ -7,6 +7,7 @@ import * as React from "react";
 import useTranslate from "web-client/src/helpers/i10n";
 import { IconButton, Chip, Row } from "web-client/src/ui";
 import { useNavigate } from "react-router-dom";
+import WeatherHourlyConditionsWidget from "../../widgets/weather/WeatherHourlyConditions/WeatherHourlyConditionsWidget";
 import styles from "./DashboardLayout.module.scss";
 import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
 
@@ -30,7 +31,7 @@ const DashboardLayout: React.FC<IDashboard> = ( {
     >
       <header className={"p-6 pl-8 pr-8 flex flex-col from-container-bg to-transparent bg-gradient-to-b"}>
         <Row>
-          <span className={"text-5xl font-bold"}>
+          <span className={"text-5xl font-bold [text-shadow:#242424bb_0_0_0.75rem,_#24242488_0_0_0.5rem,_#24242444_0_0_0.25rem]"}>
             {
               trans( "LOCALIZED_GREETING", [fullName.first, fullName.last] )
             }
@@ -58,18 +59,7 @@ const DashboardLayout: React.FC<IDashboard> = ( {
       </header>
       <section className={styles.content}>
         {/* Widgets */}
-        <div className={"bg-red-400 h-auto rounded-xl flex items-center justify-center font-bold text-4xl text-center p-4"}>
-          {"Placeholder Widget"}
-        </div>
-        <div className={"bg-red-400 h-auto rounded-xl flex items-center justify-center font-bold text-4xl text-center p-4"}>
-          {"Placeholder Widget"}
-        </div>
-        <div className={"bg-red-400 h-auto rounded-xl flex items-center justify-center font-bold text-4xl text-center p-4"}>
-          {"Placeholder Widget"}
-        </div>
-        <div className={"bg-red-400 h-auto rounded-xl flex items-center justify-center font-bold text-4xl text-center p-4"}>
-          {"Placeholder Widget"}
-        </div>
+        <WeatherHourlyConditionsWidget />
       </section>
     </main>
   );

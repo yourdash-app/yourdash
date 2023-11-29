@@ -6,6 +6,7 @@
 import "animate.css";
 import "./ui/ui.scss";
 import "./main.css";
+import { DevSupport } from "@react-buddy/ide-toolbox";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createRoutesFromElements, Route, RouterProvider } from "react-router";
@@ -14,61 +15,115 @@ import loadable from "@loadable/component";
 import ApplicationRedirectToDash from "./app/ApplicationRedirectToDash.jsx";
 import AppLayout from "./app/AppLayout";
 import ComingSoon from "./ComingSoon";
+import { ComponentPreviews, useInitial } from "./react-buddy-toolbox/index";
 import DocsLayout from "./root/docs/Layout";
 import ErrorElement from "./ErrorElement";
-import LoginPage from "./root/login/LoginPage.jsx";
-import ServerLoginPage from "./root/login/ServerLoginPage.jsx";
+import ServerLoginPage from "./root/login/Page";
 import Index from "./root/index/Index";
+import ProjectsIndexPage from "./root/projects/Index";
 import RootLayout from "./root/RootLayout";
-import RightClickMenuRootContainer from "./ui/components/rightClickMenu/RightClickMenuRootContainer.jsx";
 import "./tailwindcss.css";
+import ChipletUiRootIntegration from "./ui/RootIntegration";
+import LinkerDesktopClientStartupPage from "./root/linker-desktop-client-startup/Index";
 
 const AppRouter = loadable( () => import( "./app/AppRouter" ) );
-
 const DocsRouter = loadable( () => import( "./root/docs/DocsRouter" ) );
+const ProjectsRouter = loadable( () => import( "./root/projects/ProjectsRouter" ) );
 
 function main() {
   ReactDOM.createRoot( document.getElementById( "root" ) as HTMLElement ).render(
-    <RightClickMenuRootContainer>
+    <ChipletUiRootIntegration>
       <RouterProvider
-        router={createHashRouter(
+        router={ createHashRouter(
           createRoutesFromElements(
-            <Route errorElement={<ErrorElement/>}>
-              <Route element={<RootLayout/>}>
-                <Route index element={<Index/>}/>
-                <Route path={"/signup"} element={<ComingSoon/>}/>
-                <Route path={"docs/*"} element={<DocsLayout/>}>
+            <Route
+              errorElement={ <ErrorElement /> }
+            >
+              <Route
+                path={"/linker-desktop-client-startup"}
+                element={<LinkerDesktopClientStartupPage/>}
+              />
+              <Route
+                element={ <RootLayout /> }
+              >
+                <Route
+                  index
+                  element={ <Index /> }
+                />
+                <Route
+                  path={ "/signup" }
+                  element={ <ComingSoon /> }
+                />
+                <Route
+                  path={ "docs/*" }
+                  element={ <DocsLayout /> }
+                >
                   <Route
-                    path={"*"}
-                    element={(
-                      <DocsRouter/>
-                    )}
+                    path={ "*" }
+                    element={ (
+                      <DocsRouter />
+                    ) }
                   />
                 </Route>
+                <Route path={ "projects" } index element={ <ProjectsIndexPage /> } />
               </Route>
-              <Route path={"/login"}>
-                <Route index element={<LoginPage/>}/>
-                <Route path={"server"} element={<ServerLoginPage/>}/>
+              <Route
+                path={ "projects/*" }
+                element={ <ProjectsRouter /> }
+              />
+              <Route
+                path={ "project/*" }
+                element={ <ProjectsRouter /> }
+              />
+              <Route
+                path={ "proj/*" }
+                element={ <ProjectsRouter /> }
+              />
+              <Route path={ "/login" }>
+                <Route
+                  index
+                  element={ <ServerLoginPage /> }
+                />
               </Route>
-              <Route path={"app"}>
-                <Route element={<AppLayout/>}>
-                  <Route index element={<ApplicationRedirectToDash/>}/>
+              <Route
+                path={ "app" }
+              >
+                <Route
+                  element={ <AppLayout /> }
+                >
                   <Route
-                    path={"a/*"}
-                    element={<AppRouter/>}
+                    index
+                    element={ <ApplicationRedirectToDash /> }
+                  />
+                  <Route
+                    path={ "a/*" }
+                    element={ <DevSupport ComponentPreviews={ ComponentPreviews }
+                      useInitialHook={ useInitial }
+                    >
+                      <AppRouter />
+                    </DevSupport> }
                   />
                 </Route>
               </Route>
             </Route>
           )
-        )}
+        ) }
       />
-    </RightClickMenuRootContainer>
+    </ChipletUiRootIntegration>
   );
 }
 
-const element = document.getElementById( "root" ) as HTMLElement
+const element = document.getElementById( "root" ) as HTMLElement;
 
-element.innerHTML = "<h1>Loading YourDash...</h1>"
+const loadingElement = document.createElement( "h1" );
 
-main()
+loadingElement.style.display = "flex";
+loadingElement.style.width = "100%";
+loadingElement.style.height = "100%";
+loadingElement.style.justifyContent = "center";
+loadingElement.style.alignItems = "center";
+loadingElement.innerText = "Loading YourDash...";
+
+element.appendChild( loadingElement );
+
+main();

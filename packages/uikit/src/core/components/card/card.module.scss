@@ -5,25 +5,89 @@
 
 .component {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration-line: none;
-  vertical-align: middle;
+  flex-direction: column;
   margin: 0;
-  padding: var(--container-padding);
+  overflow: hidden;
 }
 
-.levelSecondary {
-  padding: var(--container-secondary-padding);
-  border-radius: var(--container-secondary-rounding);
+.header {
+  padding: 0.5rem 0.5rem 0 1rem;
+  display: flex;
+  align-items: center;
+
+  .title {
+    color: rgb(var(--container-fg));
+    font-size: 1.5rem;
+    font-weight: var(--weight-semibold);
+  }
+
+  & > *:not(:empty) {
+    visibility: hidden;
+    display: none;
+  }
 }
 
-.levelTertiary {
-  padding: var(--container-tertiary-padding);
-  border-radius: var(--container-tertiary-rounding);
+.actionsSlot {
+  padding: 0 0.5rem 0.5rem;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  gap: 0.25rem;
+
+  &:not(:has(> *)) {
+    visibility: hidden;
+    display: none;
+  }
 }
 
-.levelQuaternary {
-  padding: var(--container-quarternary-padding);
-  border-radius: var(--container-quarternary-rounding);
+.actionsFillWidth {
+  width: 100%;
+  justify-content: center;
+
+  & > * {
+    flex-grow: 1;
+  }
+}
+
+.contentSlot {
+  color: rgb(var(--container-secondary-fg));
+  display: flex;
+  gap: 0.25rem;
+  margin: var(--card-padding);
+
+  &:not(:has(> *)) {
+    visibility: hidden;
+    display: none;
+  }
+}
+
+.headerExtrasSlot {
+  height: 100%;
+  margin-left: auto;
+  width: max-content;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+}
+
+.cardLevel0 {
+  --card-padding: var(--container-padding);
+  --card-rounding: var(--container-rounding);
+  border-radius: var(--card-rounding);
+  background: rgb(var(--container-bg));
+}
+
+.cardLevel1 {
+  --card-padding: var(--container-secondary-padding);
+  --card-rounding: var(--container-secondary-rounding);
+  border-radius: var(--card-rounding);
+  background: rgb(var(--container-secondary-bg));
+}
+
+.cardLevel2 {
+  --card-padding: var(--container-tertiary-padding);
+  --card-rounding: var(--container-tertiary-rounding);
+  border-radius: var(--card-rounding);
+  background: rgb(var(--container-tertiary-bg));
 }

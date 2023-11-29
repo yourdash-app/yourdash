@@ -3,30 +3,64 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-export { default as Badge } from "./components/badge/Badge"
-export { default as Button } from "./components/button/Button"
-export { default as MajorButton } from "./components/majorButton/MajorButton"
-export { default as Card } from "./components/card/Card"
-export { default as DateInput } from "./components/dateInput/DateInput"
-export { default as Carousel } from "./components/carousel/Carousel"
-export { default as Chip } from "./components/chip/Chip"
-export { default as Column } from "./components/column/Column"
-export { default as Dialog } from "./components/dialog/Dialog"
-export { default as DropdownButton } from "./components/dropdownButton/DropdownButton"
-export { default as DropdownContainer } from "./components/dropdownContainer/DropdownContainer"
-export { default as DropdownIconButton } from "./components/dropdownIconButton/DropdownIconButton"
-export { default as NumberInput } from "./components/numberInput/NumberInput"
-export { default as Icon } from "./components/icon/Icon"
-export { YourDashIcon } from "./components/icon/iconDictionary"
-export { default as IconButton } from "./components/iconButton/IconButton"
-export { default as ProgressBar } from "./components/progressBar/ProgressBar"
-export { default as RightClickMenu } from "./components/rightClickMenu/RightClickMenu"
-export { default as Row } from "./components/row/Row"
-export { default as SegmentButton } from "./components/segmentButton/SegmentButton"
-export { default as SideBar } from "./components/sideBar/SideBar"
-export { default as Spinner } from "./components/spinner/Spinner"
-export { default as Tags } from "./components/tags/Tags"
-export { default as TextBox } from "./components/textBox/TextBox"
-export { default as TextInput } from "./components/textInput/TextInput"
-export { default as ToggleSwitch } from "./components/toggleSwitch/ToggleSwitch"
-export { default as ResizeContainer } from "./components/resizeContainer/ResizeContainer"
+import loadable from "@loadable/component"
+import { YourDashIcon } from "./components/icon/iconDictionary"
+
+const Badge = loadable( () => import( "./components/badge/Badge" ) )
+const Button = loadable( () => import( "./components/button/Button" ) )
+const MajorButton = loadable( () => import( "./components/majorButton/MajorButton" ) )
+const Card = loadable( () => import( "./components/card/Card" ) )
+const DateInput = loadable( () => import( "./components/dateInput/DateInput" ) )
+const Carousel = loadable( () => import( "./components/carousel/Carousel" ) )
+const Chip = loadable( () => import( "./components/chip/Chip" ) )
+const Column = loadable( () => import( "./components/column/Column" ) )
+const Dialog = loadable( () => import( "./components/dialog/Dialog" ) )
+const DropdownButton = loadable( () => import( "./components/dropdownButton/DropdownButton" ) )
+const DropdownContainer = loadable( () => import( "./components/dropdownContainer/DropdownContainer" ) )
+const DropdownIconButton = loadable( () => import( "./components/dropdownIconButton/DropdownIconButton" ) )
+const NumberInput = loadable( () => import( "./components/numberInput/NumberInput" ) )
+const Icon = loadable( () => import( "./components/icon/Icon" ) )
+const IconButton = loadable( () => import( "./components/iconButton/IconButton" ) )
+const ProgressBar = loadable( () => import( "./components/progressBar/ProgressBar" ) )
+const RightClickMenu = loadable( () => import( "./components/rightClickMenu/RightClickMenu" ) )
+const Row = loadable( () => import( "./components/row/Row" ) )
+const SegmentButton = loadable( () => import( "./components/segmentButton/SegmentButton" ) )
+const SideBar = loadable( () => import( "./components/sideBar/SideBar" ) )
+const Slides = loadable( () => import( "./components/slides/Slides" ) )
+const Spinner = loadable( () => import( "./components/spinner/Spinner" ) )
+const Tags = loadable( () => import( "./components/tags/Tags" ) )
+const TextBox = loadable( () => import( "./components/textBox/TextBox" ) )
+const TextInput = loadable( () => import( "./components/textInput/TextInput" ) )
+const ToggleSwitch = loadable( () => import( "./components/toggleSwitch/ToggleSwitch" ) )
+const ResizeContainer = loadable( () => import( "./components/resizeContainer/ResizeContainer" ) )
+
+export {
+  Badge,
+  Button,
+  MajorButton,
+  Card,
+  DateInput,
+  Carousel,
+  Chip,
+  Column,
+  Dialog,
+  DropdownButton,
+  DropdownContainer,
+  DropdownIconButton,
+  NumberInput,
+  Icon,
+  IconButton,
+  ProgressBar,
+  RightClickMenu,
+  Row,
+  SegmentButton,
+  SideBar,
+  Slides,
+  Spinner,
+  Tags,
+  TextBox,
+  TextInput,
+  ToggleSwitch,
+  ResizeContainer,
+  YourDashIcon
+}

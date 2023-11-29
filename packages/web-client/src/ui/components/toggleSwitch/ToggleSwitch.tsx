@@ -17,7 +17,7 @@ const ToggleSwitch: React.FC<IToggleSwitch> = ( {
   return (
     <>
       <div
-        className={`${styles.component} ${value && "bg-green-400"}`}
+        className={`${styles.component} ${value ? "bg-green-400" : "bg-red-400"}`}
         onClick={() => {
           setValue( !value );
         }}

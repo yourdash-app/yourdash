@@ -22,7 +22,7 @@ const BasePageLayout: React.FC<IBasePageLayout> = ( {
   const navigate = useNavigate();
   
   return (
-    <main className={"flex flex-col items-center ml-auto mr-auto w-full max-w-6xl pl-4 pr-4"}>
+    <main className={"flex flex-col items-center ml-auto mr-auto w-full max-w-6xl pl-4 pr-4 min-h-full"}>
       <section className={"flex items-center w-full gap-2 pt-8 pb-8 pl-4 pr-4 animate__animated animate__fadeIn animate__duration_250ms"}>
         {
           !noBack && (
@@ -34,9 +34,11 @@ const BasePageLayout: React.FC<IBasePageLayout> = ( {
             />
           )
         }
-        <h1 className={"font-bold text-container-fg text-4xl w-full text-left"}>{title}</h1>
+        <h1 className={"font-bold text-container-fg text-4xl w-full text-left"}>
+          {title}
+        </h1>
       </section>
-      <div className={"grid grid-cols-1 w-full xl:grid-cols-2 gap-2 animate__animated animate__fadeIn animate__100ms"}>
+      <div className={"grid grid-cols-1 w-full xl:grid-cols-2 gap-2 animate__animated animate__fadeIn animate__100ms h-full overflow-x-hidden overflow-y-auto auto-rows-max"}>
         {children}
       </div>
     </main>

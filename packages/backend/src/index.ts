@@ -6,7 +6,28 @@
 import { exec } from "child_process";
 import minimist from "minimist";
 import chalk from "chalk";
-import centerTerminalOutputOnLine from "backend/src/helpers/terminal/centerTerminalOutputOnLine.js";
+
+function getTerminalWidth(): number {
+  return process.stdout.columns || 80
+}
+
+function centerTerminalOutputOnLine( string: string ): string {
+  const TERMINAL_WIDTH = getTerminalWidth()
+  const STRING_LENGTH = string.length
+  const LINE_SIZE = ( TERMINAL_WIDTH - ( STRING_LENGTH + 12 ) ) / 2
+
+  let output = ""
+
+  for ( let i = 0; i < LINE_SIZE; i++ )
+    output += "-"
+
+  output += ` ${string} `
+
+  for ( let i = 0; i < LINE_SIZE; i++ )
+    output += "-"
+
+  return output
+}
 
 console.log( centerTerminalOutputOnLine( chalk.whiteBright( "YourDash CLI v0.0.1" ) ) );
 
@@ -15,9 +36,10 @@ const args = minimist( process.argv.slice( 2 ) );
 
 console.log( `Starting with arguments: ${ JSON.stringify( args ) }` );
 
+// noinspection JSDeprecatedSymbols
 if ( !args.dev && args.compile ) {
-  const childProcess = exec( "yarn run compile" );
-  
+  const childProcess = exec( "yarn run compile-all" );
+
   childProcess.stdout.on( "data", ( data: string ) => {
     if ( data.toString() === "$ tsc\n" ) {
       return;
@@ -28,10 +50,10 @@ if ( !args.dev && args.compile ) {
     if ( data.toString() === "" ) {
       return;
     }
-    
+
     console.log( `[${ chalk.bold.blue( "TSC" ) }]: ${ data.toString().replaceAll( "\n", "" ).replaceAll( "\x1Bc", "" ).replaceAll( "error", `${ chalk.bold.redBright( "ERROR" ) }` ) }` );
   } );
-  
+
   childProcess.stderr.on( "data", data => {
     if ( data.toString() === "$ tsc\n" ) {
       return;
@@ -42,7 +64,7 @@ if ( !args.dev && args.compile ) {
     if ( data.toString() === "" ) {
       return;
     }
-    
+
     console.log( `[${ chalk.bold.blue( "TSC ERROR" ) }]: ${
       data.toString()
         .replaceAll( "\n", "" )
@@ -50,10 +72,10 @@ if ( !args.dev && args.compile ) {
         .replaceAll( "error", `${ chalk.bold.redBright( "ERROR" ) }` )
     }` );
   } );
-  
+
   process.on( "exit", () => {
     console.log( `${ chalk.yellow.bold( "CORE" ) }: Server about to exit!` );
-    
+
     if ( childProcess && !childProcess.killed ) {
       console.log( `${ chalk.yellow.bold( "CORE" ) }: Killing child process [ ${ childProcess.pid } ] (${ chalk.bold.blue( "TSC" ) })` );
       childProcess.kill();
@@ -62,74 +84,87 @@ if ( !args.dev && args.compile ) {
 }
 
 function startDevServer() {
-  console.log( `[${ chalk.hex( "#fc6f45" ).bold( "DEV" ) }]: starting server \"node ./src/main.js --color=full ${ process.argv.slice(
-    2 ).join( " " ) }\"` );
-  
-  const devProcess = exec( `nodemon --signal SIGINT${ args.debug ? " --inspect-brk" : "" } ./src/main.js --color=full ${ process.argv.slice( 2 ).join( " " ) }` );
-  
-  const compilationProcess = exec( "yarn run compile --watch" );
-  
-  devProcess.on( "close", code => {
-    console.log( `child process exited with code ${ code }, will not auto-restart!` );
+  const COMPILE_COMMAND = "tsc --watch"
+  const DEV_COMMAND = `nodemon ./src/main.js -- ${ args.debug ? "--inspect-brk " : "" }--color=full ${ process.argv.slice( 2 ).join( " " ) }`
+  console.log( `[${ chalk.hex( "#fc6f45" ).bold( "DEV" ) }]: ${DEV_COMMAND}` );
+
+  const compileProcess = exec( COMPILE_COMMAND );
+  const devProcess = exec( DEV_COMMAND );
+
+  compileProcess.stdout.on( "data", ( data: string ) => {
+    if ( data.toString() === "$ tsc\n" ) {
+      return;
+    }
+    if ( data.toString() === "\x1Bc" ) {
+      return;
+    }
+    if ( data.toString() === "" ) {
+      return;
+    }
+
+    console.log( `[${ chalk.bold.blue( "TSC" ) }]: ${ data.toString().replaceAll( "\n", "" ).replaceAll( "\x1Bc", "" ) }` );
   } );
-  
+
+  compileProcess.stderr.on( "data", data => {
+    if ( data.toString() === "$ tsc\n" ) {
+      return;
+    }
+    if ( data.toString() === "\x1Bc" ) {
+      return;
+    }
+    if ( data.toString() === "" ) {
+      return;
+    }
+
+    console.log( `[${ chalk.bold.blue( "TSC ERROR" ) }]: ${
+      data.toString()
+        .replaceAll( "\n", "" )
+        .replaceAll( "\x1Bc", "" )
+        .replaceAll( "error", `${ chalk.bold.redBright( "ERROR" ) }` )
+    }` );
+  } );
+
+  compileProcess.on( "exit", code => {
+    console.log( `hot compilation process exited with code ${ code }, will not auto-restart!` );
+  } )
+
+  devProcess.on( "exit", code => {
+    console.log( `application process exited with code ${ code }, will not auto-restart!` );
+  } );
+
   devProcess.stdout.on( "data", data => {
     // remove all messages from nodemon
     if ( data.toString().includes( "[nodemon]" ) ) {
       return;
     }
-    
-    if ( data.toString().includes( "Shutting down... (restart of core should occur automatically)" ) ) {
-      devProcess.on( "close", () => {
-        console.log( devProcess.killed );
-        if (
-          compilationProcess.kill( "SIGTERM" )
-        ) {
-          startDevServer();
-        } else {
-          console.log( "Unable to kill child processes" );
-        }
-      } );
+
+    if ( data.toString().includes( "Shutting down... ( restart should occur automatically )" ) ) {
+      devProcess.stdin.write( "rs" )
     }
-    
+
     process.stdout.write( data );
+
+    if ( data.toString().startsWith( "---DEV_CLEAR---" ) ) {
+      console.clear()
+    }
   } );
-  
+
   devProcess.stderr.on( "data", data => {
     if ( data.toString().indexOf(
       "warning From Yarn 1.0 onwards, scripts don't require \"--\" for options to be forwarded. In a future version, any explicit \"--\" will be forwarded as-is to the scripts." ) !==
          -1 ) {
       return;
     }
-    
+
     process.stdout.write( data );
   } );
-  
+
   process.stdin.on( "data", chunk => {
     devProcess.stdin.write( chunk );
   } );
-  
+
   process.stdin.on( "end", () => {
     devProcess.stdin.end();
-  } );
-  
-  compilationProcess.on( "close", code => {
-    console.log( `compilation process exited with code ${ code }` );
-  } );
-  
-  compilationProcess.stdout.on( "data", data => {
-    if ( data.toString().includes( "\x1Bc" ) ) {
-      return;
-    }
-    if ( data.toString() === "\n" ) {
-      return;
-    }
-    
-    process.stdout.write( data );
-  } );
-  
-  compilationProcess.stderr.on( "data", data => {
-    process.stdout.write( data );
   } );
 }
 

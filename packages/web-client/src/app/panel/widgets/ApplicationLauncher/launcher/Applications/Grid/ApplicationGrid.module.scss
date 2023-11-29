@@ -14,11 +14,27 @@
 .itemIcon {
   width: 5.5rem;
   height: 5.5rem;
-  scale: 0.89;
+  scale: 0.85;
   transition: var(--transition);
 }
 
+.itemLabel {
+  text-align: center;
+  max-height: 1.5rem;
+  transition: var(--transition);
+  height: max-content;
+  overflow: hidden;
+}
+
 .item {
+  position: relative;
+  height: 8.25rem;
+  width: 100%;
+}
+
+.itemContent {
+  position: absolute;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -29,6 +45,10 @@
   border-radius: var(--container-secondary-rounding);
   background: rgb(var(--button-bg));
   transition: var(--transition);
+  height: 8.25rem;
+  overflow: hidden;
+  outline-color: rgb(var(--container-bg));
+  outline-style: solid;
 
   &:hover {
     .itemIcon {
@@ -36,8 +56,15 @@
       transition: var(--transition-fast);
     }
 
+    .itemLabel {
+      max-height: unset;
+    }
+
+    height: unset;
     transition: var(--transition-fast);
     background: rgb(var(--button-hover-bg));
+    z-index: 20;
+    outline-width: 0.5rem;
   }
 
   &:active {

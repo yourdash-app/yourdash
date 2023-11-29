@@ -3,6 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import React from "react";
 import IPanelApplicationsLauncherApplication from "shared/core/panel/applicationsLauncher/application";
 import csi from "../../../../../../../helpers/csi";
 import { RightClickMenu } from "../../../../../../../ui/index";
@@ -11,7 +12,7 @@ import { useNavigate } from "react-router";
 
 const ApplicationGrid: React.FC<{ applications: IPanelApplicationsLauncherApplication[] }> = ( { applications } ) => {
   const navigate = useNavigate()
-  
+
   return <section className={styles.grid}>
     {
       applications.map( application => {
@@ -30,6 +31,13 @@ const ApplicationGrid: React.FC<{ applications: IPanelApplicationsLauncherApplic
                   }
                 )
               }
+            },
+            {
+              name: "Open In New Tab",
+              onClick() {
+                window.open( `${ window.location.origin }${ window.location.pathname }#/app/a/${ application.name }`, "_blank" )
+                return 0
+              }
             }
           ]}
           className={styles.item}
@@ -38,12 +46,14 @@ const ApplicationGrid: React.FC<{ applications: IPanelApplicationsLauncherApplic
             navigate( `/app/a/${application.name}` )
           }}
         >
-          <img
-            className={styles.itemIcon}
-            src={application.icon}
-            alt=""
-          />
-          <span className={styles.itemLabel}>{application.name}</span>
+          <div className={styles.itemContent}>
+            <img
+              className={styles.itemIcon}
+              src={`${ csi.getInstanceUrl() }${application.icon}`}
+              alt=""
+            />
+            <span className={styles.itemLabel}>{application.displayName}</span>
+          </div>
         </RightClickMenu>
       } )
     }

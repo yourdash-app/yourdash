@@ -1,0 +1,75 @@
+/*!
+ * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
+.grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  width: 100%;
+  padding: 1rem;
+}
+
+.itemIcon {
+  width: 2.5rem;
+  height: 2.5rem;
+  scale: 0.85;
+  transition: var(--transition);
+}
+
+.itemLabel {
+  text-align: center;
+  max-height: 1.5rem;
+  transition: var(--transition);
+  height: max-content;
+  overflow: hidden;
+}
+
+.item {
+  position: relative;
+  height: 3rem;
+  width: 100%;
+}
+
+.itemContent {
+  position: absolute;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 0.25rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: var(--container-secondary-rounding);
+  background: rgb(var(--button-bg));
+  transition: var(--transition);
+  height: 100%;
+  overflow: hidden;
+  outline-color: rgb(var(--container-bg));
+  outline-style: solid;
+
+  &:hover {
+    .itemIcon {
+      scale: 1;
+      transition: var(--transition-fast);
+    }
+
+    .itemLabel {
+      max-height: unset;
+    }
+
+    transition: var(--transition-fast);
+    background: rgb(var(--button-hover-bg));
+    z-index: 20;
+    outline-width: 0.25rem;
+  }
+
+  &:active {
+    .itemIcon {
+      scale: 0.95;
+    }
+
+    background: rgb(var(--button-active-bg));
+  }
+}

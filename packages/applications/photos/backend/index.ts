@@ -3,9 +3,10 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import {type YourDashApplicationServerPlugin} from 'backend/src/helpers/applications.js';
-import log from 'backend/src/helpers/log.js';
+import Module, { YourDashModuleArguments } from "backend/src/core/moduleManager/module.js";
 
-const main: YourDashApplicationServerPlugin = () => 0;
-
-export default main;
+export default class PhotosModule extends Module {
+  constructor( args: YourDashModuleArguments ) {
+    super( args );
+  }
+}

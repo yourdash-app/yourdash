@@ -1,0 +1,29 @@
+/*!
+ * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
+.page {
+  @apply md:grid-rows-[auto,1fr] lg:grid-cols-[auto,1fr] lg:grid-rows-none;
+
+  @media only screen and (max-height: 800px) {
+    @apply md:grid-rows-[1fr] lg:grid-cols-[1fr];
+  }
+
+  gap: 1rem;
+  padding: 1rem;
+  display: grid;
+  background: var(--bg);
+  width: 100%;
+  height: 100%;
+}
+
+.secondary {
+  transition: var(--transition-slower);
+  overflow: hidden;
+
+  @media only screen and (max-height: 800px) {
+    display: none;
+    visibility: hidden;
+  }
+}

@@ -10,7 +10,7 @@
       "TITLE": "Host your own",
       "CONTENT": "Run a single command and be up-and-running within minutes",
       "ACTION": "Get started",
-      "DISCLAIMER": "On linux devices only"
+      "DISCLAIMER": "Only on supported devices."
     },
     "LIMITLESS_PERSONALISATION": {
       "TITLE": "Limitless personalisation",
@@ -20,6 +20,11 @@
     "OPEN_SOURCED": {
       "TITLE": "Open sourced",
       "CONTENT": "See how YourDash works and help improve it for everyone",
+      "ACTION": "Learn more"
+    },
+    "PROJECTS": {
+      "TITLE": "Projects",
+      "CONTENT": "Checkout some other YourDash projects",
       "ACTION": "Learn more"
     }
   },

@@ -4,70 +4,71 @@
  */
 
 import YourDashUser from "backend/src/core/user/index.js";
-import { YourDashCoreUserPermissions } from "backend/src/core/user/permissions.js";
-import { type YourDashApplicationServerPlugin } from "backend/src/helpers/applications.js";
-import globalDatabase from "backend/src/helpers/globalDatabase.js";
+import { YOURDASH_USER_PERMISSIONS } from "backend/src/core/user/permissions.js";
 import path from "path";
+import Module, { YourDashModuleArguments } from "backend/src/core/moduleManager/module.js";
+import coreApi from "backend/src/core/coreApi.js";
 
-const main: YourDashApplicationServerPlugin = ( { exp } ) => {
-  exp.get( "/app/global_db/db", async ( req, res ) => {
-    const { username } = req.headers as {
-      username: string
-    };
-    
-    const user = new YourDashUser( username );
-    
-    if ( await user.hasPermission( YourDashCoreUserPermissions.Administrator ) ) {
+export default class GlobalDbModule extends Module {
+  constructor( args: YourDashModuleArguments ) {
+    super( args );
+    this.API.request.get( "/app/global_db/db", async ( req, res ) => {
+      const { username } = req.headers as {
+        username: string
+      };
+
+      const user = new YourDashUser( username );
+
+      if ( await user.hasPermission( YOURDASH_USER_PERMISSIONS.Administrator ) ) {
+        return res.json( {
+          db: coreApi.globalDb.keys
+        } );
+      }
+
       return res.json( {
-        db: globalDatabase.keys
+        error: true
       } );
-    }
-    
-    return res.json( {
-      error: true
     } );
-  } );
-  
-  exp.post( "/app/global_db/db", async ( req, res ) => {
-    const { username } = req.headers as {
-      username: string
-    };
-    
-    const keys = req.body;
-    
-    const user = new YourDashUser( username );
-    
-    if ( await user.hasPermission( YourDashCoreUserPermissions.Administrator ) ) {
-      globalDatabase.merge( keys );
-      
-      return res.json( {
-        success: true
-      } );
-    }
-    
-    return res.json( { error: true } );
-  } );
-  
-  exp.post( "/app/global_db/db/force-write", async ( req, res ) => {
-    const { username } = req.headers as {
-      username: string
-    };
-    
-    const keys = req.body;
-    
-    const user = new YourDashUser( username );
-    
-    if ( await user.hasPermission( YourDashCoreUserPermissions.Administrator ) ) {
-      globalDatabase.merge( keys );
-      await globalDatabase.writeToDisk( path.resolve( process.cwd(), "./fs/globalDatabase.json" ) );
-      
-      return res.json( {
-        success: true
-      } );
-    }
-    
-    return res.json( { error: true } );
-  } );
-};
 
-export default main;
+    this.API.request.post( "/app/global_db/db", async ( req, res ) => {
+      const { username } = req.headers as {
+        username: string
+      };
+
+      const keys = req.body;
+
+      const user = new YourDashUser( username );
+
+      if ( await user.hasPermission( YOURDASH_USER_PERMISSIONS.Administrator ) ) {
+        coreApi.globalDb.merge( keys );
+
+        return res.json( {
+          success: true
+        } );
+      }
+
+      return res.json( { error: true } );
+    } );
+
+    this.API.request.post( "/app/global_db/db/force-write", async ( req, res ) => {
+      const { username } = req.headers as {
+        username: string
+      };
+
+      const keys = req.body;
+
+      const user = new YourDashUser( username );
+
+      if ( await user.hasPermission( YOURDASH_USER_PERMISSIONS.Administrator ) ) {
+        coreApi.globalDb.merge( keys );
+        await coreApi.globalDb.writeToDisk( path.resolve( process.cwd(), "./fs/globalDatabase.json" ) );
+
+        return res.json( {
+          success: true
+        } );
+      }
+
+      return res.json( { error: true } );
+    } );
+  }
+}

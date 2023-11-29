@@ -3,8 +3,14 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { type YourDashApplicationServerPlugin } from "backend/src/helpers/applications.js";
+import Module, { YourDashModuleArguments } from "backend/src/core/moduleManager/module.js";
 
-const main: YourDashApplicationServerPlugin = ( { exp } ) => 0;
+export default class YourDevModule extends Module {
+  constructor( args: YourDashModuleArguments ) {
+    super( args );
 
-export default main;
+    this.API.request.get( "/app/yourdev/", ( req, res ) => {
+      return res.json( { success: true } )
+    } )
+  }
+}

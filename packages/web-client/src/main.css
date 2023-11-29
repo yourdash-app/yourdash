@@ -22,7 +22,8 @@
     -webkit-text-size-adjust: 100%;
 
     /* Default theme's transitions */
-    --transition-slow: all 1000ms ease-in-out;
+    --transition-slow: all 500ms ease-in-out;
+    --transition-slower: all 250ms ease-in-out;
     --transition: all 100ms ease-in-out;
     --transition-fast: all 25ms ease-in-out;
 
@@ -280,5 +281,6 @@ body, #root {
     * {
         animation-delay: unset !important;
         animation-duration: 0s !important;
+        transition: all 0s !important;
     }
 }

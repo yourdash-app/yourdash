@@ -12,22 +12,24 @@ import loadable from "@loadable/component";
 import React from "react";
 import { Route, Routes } from "react-router";
 
-const Application0 = loadable( () => import( "applications/code_studio/frontend/index" ) );
-const Application1 = loadable( () => import( "applications/dash/frontend/index" ) );
-const Application2 = loadable( () => import( "applications/diffusion_lab/frontend/index" ) );
-const Application3 = loadable( () => import( "applications/endpoints/frontend/index" ) );
-const Application4 = loadable( () => import( "applications/files/frontend/index" ) );
-const Application5 = loadable( () => import( "applications/global_db/frontend/index" ) );
-const Application6 = loadable( () => import( "applications/photos/frontend/index" ) );
-const Application7 = loadable( () => import( "applications/settings/frontend/index" ) );
-const Application8 = loadable( () => import( "applications/store/frontend/index" ) );
-const Application9 = loadable( () => import( "applications/weather/frontend/index" ) );
-const Application10 = loadable( () => import( "applications/yourdev/frontend/index" ) );
+const Application1 = loadable( () => import( "applications/code_studio/frontend/index" ) );
+const Application2 = loadable( () => import( "applications/dash/frontend/index" ) );
+const Application3 = loadable( () => import( "applications/diffusion_lab/frontend/index" ) );
+const Application4 = loadable( () => import( "applications/endpoints/frontend/index" ) );
+const Application5 = loadable( () => import( "applications/files/frontend/index" ) );
+const Application6 = loadable( () => import( "applications/flowey/frontend/index" ) );
+const Application7 = loadable( () => import( "applications/global_db/frontend/index" ) );
+const Application10 = loadable( () => import( "applications/photos/frontend/index" ) );
+const Application11 = loadable( () => import( "applications/settings/frontend/index" ) );
+const Application12 = loadable( () => import( "applications/store/frontend/index" ) );
+const Application13 = loadable( () => import( "applications/weather/frontend/index" ) );
+const Application15 = loadable( () => import( "applications/yourdev/frontend/index" ) );
 
 const AppRouter = () => {
   return (
     <Routes>
-      <Route path={"code_studio/*"} element={<Application0/>}/><Route path={"dash/*"} element={<Application1/>}/><Route path={"diffusion_lab/*"} element={<Application2/>}/><Route path={"endpoints/*"} element={<Application3/>}/><Route path={"files/*"} element={<Application4/>}/><Route path={"global_db/*"} element={<Application5/>}/><Route path={"photos/*"} element={<Application6/>}/><Route path={"settings/*"} element={<Application7/>}/><Route path={"store/*"} element={<Application8/>}/><Route path={"weather/*"} element={<Application9/>}/><Route path={"yourdev/*"} element={<Application10/>}/>
+      
+      <Route path={"code_studio/*"} element={<Application1/>}/><Route path={"dash/*"} element={<Application2/>}/><Route path={"diffusion_lab/*"} element={<Application3/>}/><Route path={"endpoints/*"} element={<Application4/>}/><Route path={"files/*"} element={<Application5/>}/><Route path={"flowey/*"} element={<Application6/>}/><Route path={"global_db/*"} element={<Application7/>}/><Route path={"photos/*"} element={<Application10/>}/><Route path={"settings/*"} element={<Application11/>}/><Route path={"store/*"} element={<Application12/>}/><Route path={"weather/*"} element={<Application13/>}/><Route path={"yourdev/*"} element={<Application15/>}/>
     </Routes>
   );
 };

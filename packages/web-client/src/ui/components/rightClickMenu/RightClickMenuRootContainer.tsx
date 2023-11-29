@@ -12,10 +12,7 @@ import styles from "./RightClickMenuRootContainer.module.scss"
 const RightClickMenuRootContainer: React.FC<{ children: React.ReactNode }> = ( {
   children
 } ) => {
-  const [position, setPosition] = React.useState( {
-    x: 0,
-    y: 0
-  } )
+  const [position, setPosition] = React.useState( { x: 0, y: 0 } )
   const [visible, setVisible] = React.useState( false )
   const [items, setItems] = React.useState( [] as RightClickMenuItem[] )
   const ref = useRef<HTMLDivElement>( null )
