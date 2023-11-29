@@ -11,7 +11,7 @@ import styles from "./Toast.module.scss"
 
 const Toast: React.FC<IToast> = ( { message, type, params } ) => {
   return <Card className={clippy( styles.toast, "animate__animated animate__fadeInUp" )} showBorder data-type={type}>
-    <section>
+    <section className={styles.header}>
       { type }
     </section>
     { message }

@@ -6,9 +6,9 @@
 import path from "path";
 import KeyValueDatabase from "../helpers/keyValueDatabase.js";
 import { CoreApi } from "./coreApi.js";
-import { authenticatedImageType } from "./coreApiAuthenticatedImage.js";
+import { AUTHENTICATED_IMAGE_TYPE } from "./coreApiAuthenticatedImage.js";
 import YourDashUser from "./user/index.js";
-import { IYourDashSession } from "../../../shared/core/session.js";
+import { IYourDashSession } from "shared/core/session.js";
 
 const SESSION_TOKEN_LENGTH = 128;
 export { SESSION_TOKEN_LENGTH }
@@ -33,7 +33,7 @@ export default class CoreApiUsers {
   }
 
   __internal__startUserDatabaseService() {
-    this.coreApi.scheduler.scheduleTask( "core:userdb_write_to_disk", "*/5 * * * *", async () => {
+    this.coreApi.scheduler.scheduleTask( "core:userdb_write_to_disk", "*/1 * * * *", async () => {
       Object.keys( this.userDatabases ).map( async username => {
         if ( !this.userDatabases[ username ].changed ) {
           return;
@@ -138,7 +138,7 @@ export default class CoreApiUsers {
       const unreadUser = new YourDashUser( username )
       const avatarPath = path.join( unreadUser.path, "avatars/large_avatar.avif" )
 
-      return res.status( 200 ).type( "text/plain" ).send( this.coreApi.authenticatedImage.create( username, authenticatedImageType.FILE, avatarPath ) )
+      return res.status( 200 ).type( "text/plain" ).send( this.coreApi.authenticatedImage.create( username, AUTHENTICATED_IMAGE_TYPE.FILE, avatarPath ) )
     } )
 
     this.coreApi.expressServer.get( "/core/user/current/avatar/medium", ( req, res ) => {
@@ -147,7 +147,7 @@ export default class CoreApiUsers {
       const unreadUser = new YourDashUser( username )
       const avatarPath = path.join( unreadUser.path, "avatars/medium_avatar.avif" )
 
-      return res.status( 200 ).type( "text/plain" ).send( this.coreApi.authenticatedImage.create( username, authenticatedImageType.FILE, avatarPath ) )
+      return res.status( 200 ).type( "text/plain" ).send( this.coreApi.authenticatedImage.create( username, AUTHENTICATED_IMAGE_TYPE.FILE, avatarPath ) )
     } )
 
     this.coreApi.expressServer.get( "/core/user/current/avatar/small", ( req, res ) => {
@@ -156,7 +156,7 @@ export default class CoreApiUsers {
       const unreadUser = new YourDashUser( username )
       const avatarPath = path.join( unreadUser.path, "avatars/small_avatar.avif" )
 
-      return res.status( 200 ).type( "text/plain" ).send( this.coreApi.authenticatedImage.create( username, authenticatedImageType.FILE, avatarPath ) )
+      return res.status( 200 ).type( "text/plain" ).send( this.coreApi.authenticatedImage.create( username, AUTHENTICATED_IMAGE_TYPE.FILE, avatarPath ) )
     } )
 
     this.coreApi.expressServer.get( "/core/user/current/avatar/original", ( req, res ) => {
@@ -165,7 +165,7 @@ export default class CoreApiUsers {
       const unreadUser = new YourDashUser( username )
       const avatarPath = path.join( unreadUser.path, "avatars/original.avif" )
 
-      return res.status( 200 ).type( "text/plain" ).send( this.coreApi.authenticatedImage.create( username, authenticatedImageType.FILE, avatarPath ) )
+      return res.status( 200 ).type( "text/plain" ).send( this.coreApi.authenticatedImage.create( username, AUTHENTICATED_IMAGE_TYPE.FILE, avatarPath ) )
     } )
   }
 }

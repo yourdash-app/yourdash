@@ -13,10 +13,10 @@ import IndexPageHero from "./components/Hero/Hero";
 const Index: React.FC = () => {
   const trans = useTranslateHomePage( "index" );
   const navigate = useNavigate();
-  
+
   return ( <>
     <IndexPageHero />
-    <main className={ "max-w-6xl ml-auto mr-auto grid xl:grid-cols-3 gap-2 grid-cols-2 pb-12" }>
+    <section className={ "max-w-6xl ml-auto mr-auto grid xl:grid-cols-3 gap-2 grid-cols-2 pb-12" }>
       <section
         className={ "lg:flex-row flex-col pt-8 flex lg:justify-between items-center gap-4 w-full pl-8 pr-8 mb-10 xl:col-span-3 col-span-2" }
       >
@@ -41,7 +41,9 @@ const Index: React.FC = () => {
           </span>
         </div>
       </section>
-      {/* Key Points Cards */}
+    </section>
+    {/* Key Points Cards */}
+    <section className={"w-full p-4 pt-0 pb-0 gap-2 xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 grid mb-4"}>
       <KeyPointsCard
         title={ trans( "SECTIONS.LIMITLESS_PERSONALISATION.TITLE" ) }
         content={ trans( "SECTIONS.LIMITLESS_PERSONALISATION.CONTENT" ) }
@@ -72,7 +74,7 @@ const Index: React.FC = () => {
           }
         }}
       />
-    </main>
+    </section>
   </> );
 };
 

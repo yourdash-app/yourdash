@@ -5,66 +5,77 @@
 
 import React from "react";
 import { useNavigate } from "react-router";
-import ComingSoon from "../../../../ComingSoon";
 import { Card } from "../../../../ui/index";
 
 const FAQPage: React.FC = () => {
-  const navigate = useNavigate()
-  
-  return (
-    <div className={ "text-center" }>
-      TODO: modify contents and remove coming soon
-      <h3>What is YourDash?</h3>
-      <p>
-        YourDash is a personal cloud environment for project management, file sharing, and more
-        <br />
+  const navigate = useNavigate();
+
+  return ( <div className={ "flex flex-col text-center gap-4" }>
+    <h3 className={ "text-6xl font-semibold tracking-wide animate__animated animate__fadeIn mt-8" }>What is YourDash?</h3>
+    <p className={ "animate__animated animate__fadeInDown animate__500ms -mt-1" }>
+      YourDash is a personal cloud environment for project management, file sharing, and more
+    </p>
+    <ul className={"list-disc w-max ml-auto mr-auto text-left animate__animated animate__fadeIn"}>
+      <li>
         Some of the features of YourDash are:
-        <br />
+      </li>
+      <li>
         File management and sharing,
-        <br />
+      </li>
+      <li>
         Project management,
-        <br />
+      </li>
+      <li>
         Version controlled file backup and sync,
-        <br />
+      </li>
+      <li>
         personal cloud code editors,
-        <br />
+      </li>
+      <li>
         fully customizable using plugins
-      </p>
+      </li>
+    </ul>
+    <section>
+      TODO: implement an acordion in Chiplet
       <h3>Is YourDash free?</h3>
       <p>
-        Yes! YourDash is free to use for everyone.
-        See [installation instructions](#/docs/get-started)
+      Yes! YourDash is free to use for everyone.
+      See [installation instructions](#/docs/get-started)
         <br />
-        YourDash is free and open-source which means anyone can contribute to improve it's features and overall security.
+      YourDash is free and open-source which means anyone can contribute to collectively improve features and security.
       </p>
-      
-      <section>
-        <h2>UI Libraries</h2>
-        <p>YourDash uses two main UI Libraries</p>
-        
+    </section>
+
+    <section className={"p-4 gap-2 flex flex-col items-center justify-center w-full"}>
+      <h2 className={"text-4xl font-semibold tracking-wide animate__animated animate__fadeIn mt-4"}>UI Libraries</h2>
+      <p className={ "animate__animated animate__fadeInDown animate__500ms -mt-1" }>YourDash uses two main UI Libraries</p>
+
+      <div className={"grid lg:grid-cols-2 gap-2 grid-cols-1"}>
         <Card
+          className={"gap-2 flex flex-col"}
           showBorder
           onClick={ () => {
             navigate( "/docs/development/chiplet" );
           } }
         >
-          <span>Chiplet</span>
-          <p>(current UI Library)</p>
+          <h3 className={"text-3xl font-semibold tracking-wide animate__animated animate__fadeIn"}>Chiplet</h3>
+          <p className={ "animate__animated animate__fadeInDown animate__500ms -mt-1" }>(current UI Library)</p>
           <p>Based on React.JS</p>
         </Card>
         <Card
+          className={"gap-2 flex flex-col"}
           showBorder
           onClick={ () => {
             navigate( "/docs/development/chiplet" );
           } }
         >
-          <span>UIKit</span>
-          <p>(experimental UI Library)</p>
-          <p>Based on Vanilla Typescript</p>
+          <h3 className={"text-3xl font-semibold tracking-wide animate__animated animate__fadeIn"}>UIKit</h3>
+          <p className={ "animate__animated animate__fadeInDown animate__500ms -mt-1" }>(experimental UI Library)</p>
+          <p>Based on Vanilla Typescript with native DOM manipulation</p>
         </Card>
-      </section>
-    </div>
-  );
+      </div>
+    </section>
+  </div> );
 };
 
 export default FAQPage;

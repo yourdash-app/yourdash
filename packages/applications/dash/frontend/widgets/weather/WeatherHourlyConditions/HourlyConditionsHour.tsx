@@ -19,38 +19,38 @@ export interface IHourlyConditionsHour {
   conditionState: number
 }
 
-const HourlyConditionsHour: React.FC<IHourlyConditionsHour> = ({
+const HourlyConditionsHour: React.FC<IHourlyConditionsHour> = ( {
   time,
   conditionIcon,
   conditionState,
   temperature,
   feelsLike,
   rainChance
-}) => {
-  const trans = useTranslate("weather");
-  const [ showTooltip, setShowTooltip ] = React.useState(false);
-  const { refs, floatingStyles, context } = useFloating({
+} ) => {
+  const trans = useTranslate( "weather" );
+  const [ showTooltip, setShowTooltip ] = React.useState( false );
+  const { refs, floatingStyles, context } = useFloating( {
     open: showTooltip,
     onOpenChange: setShowTooltip,
     middleware: [
       // eslint-disable-next-line no-magic-numbers
-      offset(8),
+      offset( 8 ),
       shift(),
-      autoPlacement({
+      autoPlacement( {
         autoAlignment: true,
         padding: 8,
         altBoundary: true
-      })
+      } )
     ],
     whileElementsMounted: autoUpdate
-  });
+  } );
 
-  const { getReferenceProps, getFloatingProps } = useInteractions([
-    useHover(context, { move: false }),
-    useFocus(context),
-    useDismiss(context),
-    useRole(context, { role: "tooltip" })
-  ]);
+  const { getReferenceProps, getFloatingProps } = useInteractions( [
+    useHover( context, { move: false } ),
+    useFocus( context ),
+    useDismiss( context ),
+    useRole( context, { role: "tooltip" } )
+  ] );
 
   return (
     <>
@@ -63,7 +63,7 @@ const HourlyConditionsHour: React.FC<IHourlyConditionsHour> = ({
           >
             <Card showBorder>
               <span>{`${temperature}°C`}</span>
-              <div>{trans(getWeatherConditionFromState(conditionState))}</div>
+              <div>{trans( getWeatherConditionFromState( conditionState ) )}</div>
               <div className={"flex items-center justify-center"}>
                 <img className={"h-full"} src={DROPLET_ICON} alt={""} />
                 <span>{`Rain chance: ${rainChance}%`}</span>
@@ -82,7 +82,7 @@ const HourlyConditionsHour: React.FC<IHourlyConditionsHour> = ({
           className={"flex flex-col items-center justify-center"}
           onClick={() => {
             // TODO: implement logic on click of a "weather hour"
-            console.log("IMPLEMENT ME!!!");
+            console.log( "IMPLEMENT ME!!!" );
           }}
         >
           <span>{time}</span>
