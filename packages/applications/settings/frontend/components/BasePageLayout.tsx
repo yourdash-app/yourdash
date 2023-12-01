@@ -19,8 +19,6 @@ const BasePageLayout: React.FC<IBasePageLayout> = ( {
   title,
   noBack
 } ) => {
-  const navigate = useNavigate();
-  
   return (
     <main className={"flex flex-col items-center ml-auto mr-auto w-full max-w-6xl pl-4 pr-4 min-h-full"}>
       <section className={"flex items-center w-full gap-2 pt-8 pb-8 pl-4 pr-4 animate__animated animate__fadeIn animate__duration_250ms"}>
@@ -28,7 +26,7 @@ const BasePageLayout: React.FC<IBasePageLayout> = ( {
           !noBack && (
             <IconButton
               onClick={() => {
-                navigate( ".." );
+                window.history.back();
               }}
               icon={YourDashIcon.ChevronLeft}
             />

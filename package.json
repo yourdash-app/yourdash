@@ -19,7 +19,8 @@
     "yourdash:setup-project": "yarn && yarn --cwd ./packages/backend compile && yarn --cwd ./packages/backend compile-all",
     "yourdash:build-production": "yarn --cwd ./packages/backend compile-all && yarn --cwd ./packages/web-client build",
     "opengfx:dev": "yarn --cwd ./packages/opengfx-engine dev",
-    "yourdash:dev-desktop-client": "yarn --cwd ./packages/desktop-client/ dev"
+    "yourdash:dev-desktop-client": "yarn --cwd ./packages/desktop-client/ dev",
+    "yourdash:compile-backend": "yarn --cwd ./packages/backend compile"
   },
   "dependencies": {}
 }

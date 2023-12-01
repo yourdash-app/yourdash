@@ -13,7 +13,7 @@ import YourDashSession, { getSessionsForUser } from "../../helpers/session.js";
 import coreApi from "../coreApi.js";
 import { userAvatarSize } from "./avatarSize.js";
 import { yourDashUserPermission } from "./permissions.js";
-import { YOURDASH_SESSION_TYPE } from "../../../../shared/core/session.js";
+import { YOURDASH_SESSION_TYPE } from "shared/core/session.js";
 import IYourDashUserJson from "./userJson.js";
 
 export default class YourDashUser {
@@ -25,19 +25,8 @@ export default class YourDashUser {
     this.path = path.resolve( path.join( coreApi.fs.ROOT_PATH, `users/${ this.username }` ) );
   }
 
-  async saveUserDatabaseInstantly() {
-    await coreApi.users.__internal__saveUserDatabaseInstantly( this.username )
-
-    return this
-  }
-
-  async getUserDatabase( username: string ): Promise<KeyValueDatabase> {
-    return coreApi.users.__internal__getUserDatabase( username )
-  }
-
-  addUserDatabaseToSaveQueue( username: string ) {
-    coreApi.users.__internal__addUserDatabaseToSaveQueue( username )
-    return this
+  async getDatabase(): Promise<KeyValueDatabase> {
+    return coreApi.users.__internal__getUserDatabase( this.username )
   }
 
   getAvatar( size: userAvatarSize ): string {
@@ -91,6 +80,30 @@ export default class YourDashUser {
       // "/core/"
       if ( !( await coreApi.fs.exists( path.join( this.path, "/core" ) ) ) ) {
         await coreApi.fs.createDirectory( path.join( this.path, "/core" ) );
+
+        // "/core/user_db.json"
+        await coreApi.fs.createFile( path.join( this.path, "./core/user_db.json" ) )
+          .write( JSON.stringify( {
+            "core:user:name": {
+              first: "New",
+              last: "User"
+            },
+            "core:user:username": this.username,
+            "core:panel:quickShortcuts": coreApi.globalDb.get( "defaults" )?.user?.quickShortcuts || []
+          } ) )
+        await this.setPassword( "password" );
+        await this.setAvatar( path.join( process.cwd(), "./src/defaults/default_avatar.avif" ) );
+        await coreApi.fs.createFile( path.join( this.path, "core/user.json" ) )
+          .write( JSON.stringify( {
+            username: this.username,
+            "core:user:name": {
+              first: "New",
+              last: "User"
+            },
+            bio: "👋 I'm new to YourDash, say hi!",
+            permissions: [],
+            version: 1
+          } as IYourDashUserJson ) )
       }
       // "/fs/"
       if ( !( await coreApi.fs.exists( path.join( this.path, "/fs" ) ) ) ) {
@@ -100,31 +113,6 @@ export default class YourDashUser {
       if ( !( await coreApi.fs.exists( path.join( this.path, "/temp" ) ) ) ) {
         await coreApi.fs.createDirectory( path.join( this.path, "/temp" ) );
       }
-      // "/core/user_db.json"
-      await (
-        coreApi.fs.createFile( path.join( this.path, "./core/user_db.json" ) )
-          .write( JSON.stringify( {
-            "core:user:name": {
-              first: "New",
-              last: "User"
-            },
-            "core:user:username": this.username,
-            "core:panel:quickShortcuts": coreApi.globalDb.get( "defaults" )?.user?.quickShortcuts || []
-          } ) )
-      )
-      await this.setPassword( "password" );
-      await this.setAvatar( path.join( process.cwd(), "./src/defaults/default_avatar.avif" ) );
-      await coreApi.fs.createFile( path.join( this.path, "core/user.json" ) )
-        .write( JSON.stringify( {
-          username: this.username,
-          name: {
-            first: "New",
-            last: "User"
-          },
-          bio: "👋 I'm new to YourDash, say hi!",
-          permissions: [],
-          version: 1
-        } as IYourDashUserJson ) )
       coreApi.log.info( "core", `Verified user ${this.username}` )
     } catch ( e ) {
       console.error( e )
@@ -133,14 +121,15 @@ export default class YourDashUser {
   }
 
   async setName( { first, last }: { first: string, last: string } ) {
+    coreApi.log.info( "core", `set name to ${first} ${last} for ${this.username}` )
     try {
       const currentUserJson = JSON.parse( ( await fs.readFile( path.join( this.path, "core/user.json" ) ) ).toString() ) as IYourDashUserJson
-      currentUserJson.name = { first, last }
+      currentUserJson["core:user:name"] = { first, last }
       const db = await this.getDatabase()
       db.set( "core:user:name", { first, last } )
 
-      // force the database to update instantly
-      await coreApi.users.__internal__saveUserDatabaseInstantly( this.username )
+      await this.saveDatabaseInstantly()
+
       // save the user.json
       await fs.writeFile( path.join( this.path, "core/user.json" ), JSON.stringify( currentUserJson ) )
     } catch( err ) {
@@ -148,13 +137,8 @@ export default class YourDashUser {
     }
   }
 
-  async getName() {
-    try {
-      const currentUserJson = JSON.parse( ( await fs.readFile( path.join( this.path, "core/user.json" ) ) ).toString() ) as IYourDashUserJson
-      return currentUserJson.name
-    } catch( err ) {
-      coreApi.log.error( "core:user", `Unable to read ${this.username}'s core/user.json` )
-    }
+  async getName(): Promise<{ first: string, last: string }> {
+    return ( await this.getDatabase() ).get( "core:user:name" )
   }
 
   async setBio( bio: string ) {
@@ -273,12 +257,12 @@ export default class YourDashUser {
     return JSON.parse( ( await fs.readFile( path.resolve( this.path, "core/sessions.json" ) ) ).toString() );
   }
 
-  async getDatabase() {
-    return await coreApi.users.__internal__getUserDatabase( this.username );
-  }
-
   saveDatabase() {
     coreApi.users.__internal__addUserDatabaseToSaveQueue( this.username );
+  }
+
+  async saveDatabaseInstantly() {
+    await coreApi.users.__internal__saveUserDatabaseInstantly( this.username );
   }
 
   getAppDirectory( applicationName: string ): string {

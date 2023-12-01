@@ -9,7 +9,7 @@ import Module from "./module.js";
 import { CoreApi } from "../coreApi.js";
 
 export default class CoreApiModuleManager {
-  private loadedModules: Module[];
+  private readonly loadedModules: Module[];
   private coreApi: CoreApi;
 
   constructor( coreApi: CoreApi ) {
@@ -25,7 +25,7 @@ export default class CoreApiModuleManager {
       return false;
     }
 
-    // Not Required ( use 'placeholder.avif' instead)
+    // Not Required (use 'placeholder.avif' instead)
     if ( !this.coreApi.fs.exists( path.resolve( `${ modulePath }/icon.avif` ) ) ) {
       this.coreApi.log.warning( "core", `application ${ modulePath } does not contain an icon.avif file!` );
     }

@@ -7,7 +7,7 @@ import { yourDashUserPermission } from "./permissions.js";
 
 export default interface IYourDashUserJson {
   username: string,
-  name: {
+  "core:user:name": {
     first: string,
     last: string
   },

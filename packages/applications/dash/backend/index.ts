@@ -12,10 +12,12 @@ export default class DashModule extends Module {
 
     this.API.request.get( "/app/dash/user-full-name", async ( req, res ) => {
       const { username } = req.headers as {
-      username: string
-    };
+        username: string
+      };
 
       const user = coreApi.users.get( username )
+
+      console.log( await user.getName() );
 
       res.json( await user.getName() );
     } );

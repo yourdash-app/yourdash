@@ -4,7 +4,39 @@
  */
 
 .component {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: max-content;
+  gap: 0.5rem;
+}
 
+.content {
+  width: max-content;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.name {
+  display: flex;
+  flex-direction: column;
+  text-align: start;
+  margin-top: 0.5rem;
+
+  .fullName {
+    @apply font-semibold;
+    font-size: 2rem;
+    line-height: 100%;
+  }
+
+  .username {
+    font-weight: var(--weight-regular);
+    font-size: 1rem;
+    line-height: 100%;
+    color: rgb(var(--container-secondary-fg));
+  }
 }
 
 .avatar {
@@ -12,4 +44,31 @@
   max-width: 256px;
   max-height: 256px;
   border-radius: 0.5rem;
+}
+
+.link {
+  display: flex;
+  color: rgb(var(--theme-500));
+  transition: var(--transition);
+  align-items: center;
+  justify-content: start;
+  width: 100%;
+  gap: 0.25rem;
+
+  &:hover {
+    color: rgb(var(--theme-400));
+    transition: var(--transition-fast);
+  }
+
+  &:active {
+    color: rgb(var(--theme-600));
+  }
+
+  .icon {
+    height: 1rem;
+  }
+}
+
+.bio {
+  padding-top: 0.5rem;
 }

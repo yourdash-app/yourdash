@@ -4,18 +4,18 @@
  */
 
 import path from "path";
-import KeyValueDatabase from "../helpers/keyValueDatabase.js";
 import { CoreApi } from "./coreApi.js";
 import { AUTHENTICATED_IMAGE_TYPE } from "./coreApiAuthenticatedImage.js";
 import YourDashUser from "./user/index.js";
 import { IYourDashSession } from "shared/core/session.js";
+import UserDatabase from "./user/userDatabase.js";
 
 const SESSION_TOKEN_LENGTH = 128;
 export { SESSION_TOKEN_LENGTH }
 
 export default class CoreApiUsers {
   private usersMarkedForDeletion: string[] = [];
-  private readonly userDatabases: { [ username: string ]: { db: KeyValueDatabase, changed: boolean } };
+  private readonly userDatabases: { [ username: string ]: { db: UserDatabase, changed: boolean } };
   private readonly coreApi: CoreApi;
   private sessions: {
     [ key: string ]: IYourDashSession<any>[] // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -39,9 +39,12 @@ export default class CoreApiUsers {
           return;
         }
 
+        this.userDatabases[ username ].changed = false;
+
         const user = new YourDashUser( username );
 
         await this.userDatabases[ username ].db.writeToDisk( path.join( user.path, "core/user_db.json" ) );
+
       } );
     } );
   }
@@ -62,7 +65,7 @@ export default class CoreApiUsers {
     }
 
     this.userDatabases[ username ] = {
-      db: new KeyValueDatabase(),
+      db: new UserDatabase(),
       changed: false
     };
     const user = new YourDashUser( username );

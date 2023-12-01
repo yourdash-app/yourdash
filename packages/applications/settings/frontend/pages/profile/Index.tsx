@@ -14,16 +14,16 @@ const ProfileIndexPage: React.FC = () => {
     avatar: "abc",
     username: "admin",
     bio: "This is the user's sample bio",
-    url: "https://github.com/yourdash-app/yourdash"
+    link: { url: "https://github.com/yourdash-app/yourdash", label: "Click me" }
   } )
-  
+
   useEffect( () => {
     // get the user's data
     csi.getText( "/core/user/current/avatar/original", ( resp: string ) => {
       setUserData( { ...userData, avatar: `${csi.getInstanceUrl()}${resp}` } )
     } )
   }, [] )
-  
+
   return <BasePageLayout
     title={"Profile"}
   >
@@ -32,7 +32,7 @@ const ProfileIndexPage: React.FC = () => {
       avatar={userData.avatar}
       username={userData.username}
       bio={userData.bio}
-      url={userData.url}
+      link={userData.link}
     />
   </BasePageLayout>
 }
