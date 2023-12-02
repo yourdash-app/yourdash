@@ -54,7 +54,7 @@ const WeatherHourlyConditionsWidget: React.FC = () => {
             const condition = weatherData?.hourly.weatherState[ ind ];
             const conditionIcon = getWeatherIconFromState( condition );
             const rainChance = weatherData?.hourly.precipitationProbability[ ind ];
-            const feelsLike = weatherData?.hourly.temperature[ ind ];
+            const feelsLike = weatherData?.hourly.temperature[ ind ]; // TODO: request feel like temperatures from the API
             const date = new Date( hour );
             const currentDate = new Date();
             const conditionState = condition;

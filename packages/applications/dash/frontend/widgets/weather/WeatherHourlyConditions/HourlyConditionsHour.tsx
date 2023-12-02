@@ -62,13 +62,13 @@ const HourlyConditionsHour: React.FC<IHourlyConditionsHour> = ( {
             {...getFloatingProps()}
           >
             <Card showBorder>
-              <span>{`${temperature}°C`}</span>
+              <span>{`Temp: ${temperature}°C`}</span>
               <div>{trans( getWeatherConditionFromState( conditionState ) )}</div>
               <div className={"flex items-center justify-center"}>
                 <img className={"h-full"} src={DROPLET_ICON} alt={""} />
                 <span>{`Rain chance: ${rainChance}%`}</span>
               </div>
-              <span>{`${feelsLike}°C`}</span>
+              <span>{`Feels like: ${feelsLike}°C`}</span>
             </Card>
           </div>
         )

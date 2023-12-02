@@ -17,6 +17,14 @@
 
   &:hover {
     transition: var(--transition-fast);
+
+    .icon {
+      transition: var(--transition-fast);
+    }
+
+    .label {
+      transition: var(--transition-fast);
+    }
   }
 
   &:hover,
@@ -40,10 +48,12 @@
 .icon {
   width: 2rem;
   color: rgb(var(--container-bg));
+  transition: var(--transition);
 }
 
 .label {
   color: rgb(var(--container-bg));
   font-weight: 700;
   font-size: 1.5rem;
+  transition: var(--transition);
 }
