@@ -199,11 +199,7 @@ class __internalClientServerInteraction {
         ...( extraHeaders || {} )
       }
     } ).then( resp => {
-      if ( resp.headers.get( "Content-Type" ) === "text/plain; charset=utf-8" || resp.headers.get( "Content-Type" ) === "text/html; charset=utf-8" ) {
-        return resp.text();
-      }
-
-      throw new Error( "not a valid text response" );
+      return resp.text();
     } ).then( resp => {
       cb( resp );
     } ).catch( err => {

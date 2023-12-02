@@ -5,6 +5,7 @@
 
 import * as React from "react";
 import BasePageLayout from "../../components/BasePageLayout";
+import ChipletUIDemoPage from "./sections/ChipletUI";
 import SettingsPersonalServerAcceleratorSection from "./sections/SettingsPersonalServerAcceleratorSection";
 import SettingsStoreSection from "./sections/SettingsStoreSection";
 
@@ -14,6 +15,7 @@ const Index: React.FC = () => (
   >
     <SettingsPersonalServerAcceleratorSection/>
     <SettingsStoreSection/>
+    <ChipletUIDemoPage/>
   </BasePageLayout>
 );
 

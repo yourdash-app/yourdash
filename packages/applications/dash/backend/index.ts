@@ -17,8 +17,6 @@ export default class DashModule extends Module {
 
       const user = coreApi.users.get( username )
 
-      console.log( await user.getName() );
-
       res.json( await user.getName() );
     } );
 

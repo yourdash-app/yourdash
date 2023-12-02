@@ -12,6 +12,10 @@ import coreApi from "backend/src/core/coreApi.js";
 export default function geolocationApi( exp: ExpressApplication ) {
   const geolocationApiCache = new Map<string, ILocationAutocompleteSuggestion[]>()
 
+  exp.get( "/app/weather/geolocation/", ( req, res ) => {
+    return res.json( [] )
+  } )
+
   exp.get( "/app/weather/geolocation/:locationName", async ( req, res ) => {
     const locationName = req.params.locationName;
 
@@ -22,7 +26,7 @@ export default function geolocationApi( exp: ExpressApplication ) {
     if ( geolocationApiCache.get( req.params.locationName ) )
       return res.json( geolocationApiCache.get( req.params.locationName ) );
 
-    coreApi.log.info( `Fetching location suggestions for ${req.params.locationName}` );
+    coreApi.log.info( "app:weather", `Fetching location suggestions for ${req.params.locationName}` );
 
     const suggestions = await getGeolocationSuggestions( locationName, 8 )
 

@@ -14,7 +14,7 @@ export interface IUserPreview {
   username: string,
   avatar: string,
   bio?: string,
-  link?: { url: string, label: string }
+  links?: { url: string, label: string }[]
 }
 
 const UserPreview: React.FC<IUserPreview> = ( {
@@ -22,7 +22,7 @@ const UserPreview: React.FC<IUserPreview> = ( {
   username,
   avatar,
   bio,
-  link
+  links
 } ) => {
   return <Card className={styles.component}>
     <img
@@ -33,8 +33,7 @@ const UserPreview: React.FC<IUserPreview> = ( {
     <section className={styles.content}>
       <section className={styles.name}>
         <div className={styles.fullName}>
-          {name.first}
-          {name.last}
+          {name.first} {name.last}
         </div>
         <div className={styles.username}>
         @{username}
@@ -42,9 +41,10 @@ const UserPreview: React.FC<IUserPreview> = ( {
       </section>
       <p className={styles.bio}>{bio}</p>
       {
-        !!link && <a
+        !!links && links.map( link => <a
           href={link.url}
           className={styles.link}
+          key={link.label + link.url}
         >
           <Icon
             className={styles.icon}
@@ -52,6 +52,7 @@ const UserPreview: React.FC<IUserPreview> = ( {
           />
           { link.label }
         </a>
+        )
       }
     </section>
   </Card>

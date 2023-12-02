@@ -4,7 +4,7 @@
  */
 
 import coreApi from "backend/src/core/coreApi.js";
-import { fetch } from "undici";
+import { Response, fetch } from "undici";
 import { IWeatherDataForLocation } from "../../shared/weatherDataForLocation.js";
 import parseWeatherCodes from "./parseWeatherState.js";
 
@@ -16,7 +16,7 @@ export default async function getWeatherDataForLongitudeAndLatitude( id: string 
     };
 
     const TIMEZONE = "Europe/London";
-    let fetchRequest;
+    let fetchRequest: Response;
     try {
       // noinspection SpellCheckingInspection
       fetchRequest = await fetch( `https://api.open-meteo.com/v1/forecast?latitude=${ locationResponse.latitude }&longitude=${ locationResponse.longitude }&hourly=temperature_2m,precipitation_probability,weathercode,cloudcover,windspeed_80m&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max,rain_sum,precipitation_hours,windspeed_10m_max,windgusts_10m_max&current_weather=true&windspeed_unit=mph&timezone=${ TIMEZONE.replaceAll(

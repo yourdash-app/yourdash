@@ -11,23 +11,23 @@ export interface ITextBox extends React.ComponentPropsWithoutRef<"textarea"> {
   className?: string;
 }
 
-const TextBox: React.FC<ITextBox> = ({
+const TextBox: React.FC<ITextBox> = ( {
   children,
   defaultValue,
   className,
   ...inputProps
-}) => (
+} ) => (
   <textarea
     {...inputProps}
-    onKeyDown={e => {
-      if (e.key === "Tab") {
+    onKeyDown={( e ) => {
+      if ( e.key === "Tab" ) {
         e.preventDefault();
         e.stopPropagation();
 
         // insert tab into textarea
         const tab = "  ";
         const index = e.currentTarget.selectionStart;
-        e.currentTarget.value = e.currentTarget.value.substring(0, index) + tab + e.currentTarget.value.substring(index);
+        e.currentTarget.value = e.currentTarget.value.substring( 0, index ) + tab + e.currentTarget.value.substring( index );
         e.currentTarget.selectionEnd = index + tab.length;
       }
     }}

@@ -65,7 +65,7 @@ export default class CoreApiUsers {
     }
 
     this.userDatabases[ username ] = {
-      db: new UserDatabase(),
+      db: new UserDatabase( username ),
       changed: false
     };
     const user = new YourDashUser( username );

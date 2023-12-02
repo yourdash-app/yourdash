@@ -31,18 +31,18 @@ const StoreApplicationPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>( true );
   const [appData, setAppData] = useState<IYourDashStoreApplication>();
   const [showInstallationConfirmation, setShowInstallationConfirmation] = useState<boolean>( false );
-  
+
   useEffect( () => {
     setShowInstallationConfirmation( false );
     setIsLoading( true );
     requestApplication( applicationId || "dash", data => setAppData( data ), setIsLoading, navigate );
   }, [applicationId, navigate] );
-  
+
   if ( !applicationId ) {
     navigate( "/app/a/store" );
     return null;
   }
-  
+
   return ( <div className={ "h-full relative" }>
     { showInstallationConfirmation && ( <InstallationPopup
       applicationData={ appData }
@@ -53,7 +53,7 @@ const StoreApplicationPage: React.FC = () => {
             requestApplication( applicationId, setAppData, setIsLoading, navigate );
             ydsh.toast.success( `Installed "${appData?.name}" successfully` )
           }
-          
+
           // @ts-ignore
           window.__yourdashCorePanelReload();
         } );
@@ -115,7 +115,7 @@ const StoreApplicationPage: React.FC = () => {
                         requestApplication( applicationId, setAppData, setIsLoading, navigate );
                         ydsh.toast.success( `Uninstalled "${appData.name}" successfully` )
                       }
-                  
+
                       // @ts-ignore
                       window.__yourdashCorePanelReload();
                     } );
@@ -169,7 +169,7 @@ const StoreApplicationPage: React.FC = () => {
                 { appData.authors?.map( author => (
                   <Card
                     key={ author.avatarUrl }
-                    className={ "flex flex-col gap-2" }
+                    className={ "flex !flex-col gap-2" }
                     showBorder
                     onClick={ () => {
                       window.location.href = author.site;

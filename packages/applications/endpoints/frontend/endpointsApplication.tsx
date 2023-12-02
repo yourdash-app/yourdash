@@ -227,7 +227,7 @@ const EndpointsApplication: React.FC = () => {
               {
                 requestType === "JSON"
                   ? JSON.stringify( response, null, 2 )
-                  : response
+                  : response.toString()
               }
             </pre>
             {

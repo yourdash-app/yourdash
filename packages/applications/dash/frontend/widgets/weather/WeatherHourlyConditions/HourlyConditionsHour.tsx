@@ -5,7 +5,7 @@
 
 import React from "react";
 import { useFloating, offset, shift, autoUpdate, useHover, useFocus, useDismiss, useRole, useInteractions, autoPlacement } from "@floating-ui/react";
-import DROPLET_ICON from "applications/weather/frontend/weatherIcons/droplet.svg";
+import DROPLET_ICON from "applications/weather/frontend/assets/weatherIcons/droplet.svg";
 import { Card } from "web-client/src/ui";
 import getWeatherConditionFromState from "applications/weather/frontend/helpers/getWeatherConditionFromState";
 import useTranslate from "web-client/src/helpers/i10n";

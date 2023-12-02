@@ -6,10 +6,10 @@
 import React from "react";
 import { Card } from "web-client/src/ui/index";
 
-const BlankDashWidget: React.FC = () => {
+const PlaceholderDashWidget: React.FC = () => {
   return <Card showBorder className={"flex items-center justify-center"}>
     Failed to load widget
   </Card>;
 };
 
-export default BlankDashWidget;
+export default PlaceholderDashWidget;

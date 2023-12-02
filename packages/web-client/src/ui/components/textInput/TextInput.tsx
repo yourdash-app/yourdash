@@ -8,7 +8,7 @@ import React, { useState, FocusEventHandler } from "react";
 
 // @ts-ignore
 export interface ITextInput extends React.HTMLProps<HTMLInputElement> {
-  onChange: ( text: string ) => void;
+  onChange: ( text: string, e: React.FormEvent<HTMLInputElement> ) => void;
   onBlur?: FocusEventHandler<HTMLInputElement>;
   label?: string;
   mustMatchRegex?: RegExp;
@@ -61,7 +61,7 @@ const TextInput: React.FC<ITextInput> = ( {
         onKeyDown={e => onKeyDown?.( e )}
         onChange={e => {
           const value = e.currentTarget.value;
-          onChange( value );
+          onChange( value, e );
           if (
             !mustMatchRegex ||
             ( value.match( mustMatchRegex ) !== null &&

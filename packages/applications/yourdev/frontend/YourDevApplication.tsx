@@ -15,10 +15,10 @@ const YourDevApplication: React.FC = () => {
   const [page, setPage] = React.useState<"home" | "global_db" | "user_db">( "home" );
 
   return (
-    <main className={"h-full grid grid-cols-[auto,1fr]"}>
+    <main className={"h-full grid grid-cols-[auto,1fr] overflow-hidden gap-4 p-4 bg-bg"}>
       <SideBar
         title={"YourDash Demo Application"}
-        defaultState={SIDEBAR_STATE.NormalMinimised}
+        defaultState={SIDEBAR_STATE.FloatingMinimised}
         items={[
           {
             type: SIDEBAR_ITEM_TYPE.Button,

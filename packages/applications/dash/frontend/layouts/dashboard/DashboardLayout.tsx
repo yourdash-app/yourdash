@@ -7,6 +7,7 @@ import * as React from "react";
 import useTranslate from "web-client/src/helpers/i10n";
 import { IconButton, Chip, Row } from "web-client/src/ui";
 import { useNavigate } from "react-router-dom";
+import CreateDashWidget from "../../widgets/create/CreateDashWidget";
 import WeatherHourlyConditionsWidget from "../../widgets/weather/WeatherHourlyConditions/WeatherHourlyConditionsWidget";
 import styles from "./DashboardLayout.module.scss";
 import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
@@ -60,6 +61,7 @@ const DashboardLayout: React.FC<IDashboard> = ( {
       <section className={styles.content}>
         {/* Widgets */}
         <WeatherHourlyConditionsWidget />
+        <CreateDashWidget/>
       </section>
     </main>
   );

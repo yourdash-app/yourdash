@@ -7,8 +7,10 @@ import React, { useEffect, useState } from "react";
 import useTranslate from "web-client/src/helpers/i10n";
 import { Card } from "web-client/src/ui";
 import csi from "web-client/src/helpers/csi";
+import getWeatherIconFromState from "../../../../../weather/frontend/helpers/getWeatherIconFromState";
 import { IWeatherDataForLocation } from "../../../../../weather/shared/weatherDataForLocation";
-import BlankDashWidget from "../../blank/BlankDashWidget";
+import BlankDashWidget from "../../placeholder/PlaceholderDashWidget";
+import HourlyConditionsHour from "./HourlyConditionsHour";
 
 const WeatherHourlyConditionsWidget: React.FC = () => {
   const trans = useTranslate( "weather" );
@@ -17,8 +19,8 @@ const WeatherHourlyConditionsWidget: React.FC = () => {
 
   useEffect( () => {
     // fetch the user's defined location but default to London
-    csi.getJson( `/app/weather/hourly/${csi.userDB.get( "app:dash:widget:weather:location" ) || "2643743"}`, res => {
-      setWeatherData( res.data );
+    csi.getJson( `/app/weather/location/${csi.userDB.get( "app:dash:widget:weather:location" ) || "2643743"}`, res => {
+      setWeatherData( res );
       setLocationData( res.location );
       console.log( res );
     } );
@@ -46,18 +48,18 @@ const WeatherHourlyConditionsWidget: React.FC = () => {
         </span>
       </div>
       <main className={"flex h-full p-2 gap-2 overflow-x-auto max-w-full"}>
-        {/* {
-          weatherData?.hourly.time.map((hour: string, ind: number) => {
-            const temperature = weatherData?.hourly.temperature_2m[ ind ];
-            const condition = weatherData?.hourly.weathercode[ ind ];
-            const conditionIcon = getWeatherIconFromState(condition);
-            const rainChance = weatherData?.hourly.precipitation_probability[ ind ];
-            const feelsLike = weatherData?.hourly.apparent_temperature[ ind ];
-            const date = new Date(hour);
+        {
+          weatherData?.hourly.time.map( ( hour: string, ind: number ) => {
+            const temperature = weatherData?.hourly.temperature[ ind ];
+            const condition = weatherData?.hourly.weatherState[ ind ];
+            const conditionIcon = getWeatherIconFromState( condition );
+            const rainChance = weatherData?.hourly.precipitationProbability[ ind ];
+            const feelsLike = weatherData?.hourly.temperature[ ind ];
+            const date = new Date( hour );
             const currentDate = new Date();
             const conditionState = condition;
 
-            if (date.getHours() < currentDate.getHours()) {
+            if ( date.getHours() < currentDate.getHours() ) {
               return null;
             }
 
@@ -75,8 +77,8 @@ const WeatherHourlyConditionsWidget: React.FC = () => {
                 key={hour}
               />
             );
-          })
-        } */}
+          } )
+        }
       </main>
       <a href={"https://open-meteo.com"} className={"mt-auto ml-auto pr-1.5 pt-1 text-[#ffffff55] text-sm"}>
         {"Powered by open-meteo.com"}
