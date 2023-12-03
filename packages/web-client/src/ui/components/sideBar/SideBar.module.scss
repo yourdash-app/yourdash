@@ -154,7 +154,7 @@
 .floating {
   height: 100%;
   background: rgb(var(--container-bg));
-  border: 0.1rem solid rgb(var(--container-border));
+  border: solid 0.125rem rgb(var(--container-border));
   transition: var(--transition-slow);
   border-radius: var(--container-rounding);
 

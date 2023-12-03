@@ -4689,6 +4689,11 @@ mz@^2.7.0:
     object-assign "^4.0.1"
     thenify-all "^1.0.0"
 
+nan@^2.11.1, nan@^2.14.0, nan@^2.17.0, nan@^2.18.0:
+  version "2.18.0"
+  resolved "https://registry.yarnpkg.com/nan/-/nan-2.18.0.tgz#26a6faae7ffbeb293a39660e88a76b82e30b7554"
+  integrity sha512-W7tfG7vMOGtD30sHoZSSc/JVYiyDPEyQVso/Zz+/uQd0B0L46gtC+pHha5FFMRpil6fm/AoEcRWyOVi4+E/f8w==
+
 nanoid@^3.3.6:
   version "3.3.6"
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.6.tgz#443380c856d6e9f9824267d960b4236ad583ea4c"
@@ -6431,6 +6436,68 @@ tree-kill@^1.2.2:
   resolved "https://registry.yarnpkg.com/tree-kill/-/tree-kill-1.2.2.tgz#4ca09a9092c88b73a7cdc5e8a01b507b0790a0cc"
   integrity sha512-L0Orpi8qGpRG//Nd+H90vFB+3iHnue1zSSGmNOOCh1GLJ7rUKVwV2HvijphGQS2UmhUZewS9VgvxYIdgr+fG1A==
 
+tree-sitter-css@^0.20.0:
+  version "0.20.0"
+  resolved "https://registry.yarnpkg.com/tree-sitter-css/-/tree-sitter-css-0.20.0.tgz#7b2c19c11d1d8ff389162560734c2b57ebcc99e5"
+  integrity sha512-ammbs1bnIwHXPVtPGNc3T16rhPFRiK97pBgO4svlYWyt+fSEgGQzK3MSWB5vf3k3pSDWkpEFOTUxPPMR6k7N7Q==
+  dependencies:
+    nan "^2.18.0"
+
+tree-sitter-html@^0.20.0:
+  version "0.20.0"
+  resolved "https://registry.yarnpkg.com/tree-sitter-html/-/tree-sitter-html-0.20.0.tgz#d7a682bb92f4bce6ddbbb44fe2465b1610c1b64b"
+  integrity sha512-KoK3BR1o5KWeYFGax1Dy8j+NHHhdgD64pjFU/JgnBrZjmdp4CfJg2HJiWnmB8OmFYQeb30Mm+lDVps2dNFJMdw==
+  dependencies:
+    nan "^2.18.0"
+
+tree-sitter-javascript@^0.20.1:
+  version "0.20.1"
+  resolved "https://registry.yarnpkg.com/tree-sitter-javascript/-/tree-sitter-javascript-0.20.1.tgz#188c0f4c5ea5aa18be76b8f6b3668f5b5257eb9f"
+  integrity sha512-2LNRAw6vd6NDGf5DvAZTaIJDv0j7519bbDsQQ9jnT7uC91efvbn2BxOagNs7u41LSbmsuScjkM8VeN0mnya1iw==
+  dependencies:
+    nan "^2.17.0"
+
+tree-sitter-json@^0.20.1:
+  version "0.20.1"
+  resolved "https://registry.yarnpkg.com/tree-sitter-json/-/tree-sitter-json-0.20.1.tgz#d1fe6c59571dd3a987ebb3f5aeef404f37b3a453"
+  integrity sha512-482hf7J+aBwhksSw8yWaqI8nyP1DrSwnS4IMBShsnkFWD3SE8oalHnsEik59fEVi3orcTCUtMzSjZx+0Tpa6Vw==
+  dependencies:
+    nan "^2.18.0"
+
+tree-sitter-markdown@^0.7.1:
+  version "0.7.1"
+  resolved "https://registry.yarnpkg.com/tree-sitter-markdown/-/tree-sitter-markdown-0.7.1.tgz#9411df0b832a4798808eb1ce3434f1cfee3e2196"
+  integrity sha512-hB3sEm1JtfoRUzGvknL9RQrS/LJvbrdI9WfGbU8gE6xMjbbAKHfHrNzh4Oo9JxksfUf6UEMxy91acRajEIOnGQ==
+  dependencies:
+    nan "^2.14.0"
+
+tree-sitter-python@^0.20.4:
+  version "0.20.4"
+  resolved "https://registry.yarnpkg.com/tree-sitter-python/-/tree-sitter-python-0.20.4.tgz#58cd55fbeaeb171e859c4ba4d9308b70f8c69065"
+  integrity sha512-F+94q/t9+4J5yaQnmfAqEf4OZFjuhuyniRtb9P2jPaBwHrbyJL44RKFALovZxhF0syLFKpTQ7ODywyiGeB1YMg==
+  dependencies:
+    nan "^2.17.0"
+
+"tree-sitter-scss@https://github.com/serenadeai/tree-sitter-scss":
+  version "0.0.1"
+  resolved "https://github.com/serenadeai/tree-sitter-scss#c478c6868648eff49eb04a4df90d703dc45b312a"
+  dependencies:
+    nan "^2.11.1"
+
+tree-sitter-typescript@^0.20.3:
+  version "0.20.3"
+  resolved "https://registry.yarnpkg.com/tree-sitter-typescript/-/tree-sitter-typescript-0.20.3.tgz#454560314c419f5364cd4585a48d675e44f55edc"
+  integrity sha512-5+RZ9G3/VOxxSzyniVc5dfNhfan1eOxQvUdTgXhpsGIYlmSW3HwIuPEJ7r65FWH2WnJWirOu11Pm0usmkx2JOg==
+  dependencies:
+    nan "^2.14.0"
+
+tree-sitter-yaml@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/tree-sitter-yaml/-/tree-sitter-yaml-0.5.0.tgz#c617ba72837399d8105ec10cdb4c360e1ed76076"
+  integrity sha512-POJ4ZNXXSWIG/W4Rjuyg36MkUD4d769YRUGKRqN+sVaj/VCo6Dh6Pkssn1Rtewd5kybx+jT1BWMyWN0CijXnMA==
+  dependencies:
+    nan "^2.14.0"
+
 truncate-utf8-bytes@^1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/truncate-utf8-bytes/-/truncate-utf8-bytes-1.0.2.tgz#405923909592d56f78a5818434b0b78489ca5f2b"
@@ -6765,6 +6832,11 @@ weak-daemon@1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/weak-daemon/-/weak-daemon-1.0.3.tgz#d922b7c0dfb8f6bf027c463ea875584d2b085f19"
   integrity sha512-9OLYp5qQSxpnTIyuA1zJ7at3DV2DSBcbdXduC/3QFPeYjF30Lh1nfBrG+VLf4QUvZPz2lXFPu08oIRzWQfucVQ==
+
+web-tree-sitter@^0.20.8:
+  version "0.20.8"
+  resolved "https://registry.yarnpkg.com/web-tree-sitter/-/web-tree-sitter-0.20.8.tgz#1e371cb577584789cadd75cb49c7ddfbc99d04c8"
+  integrity sha512-weOVgZ3aAARgdnb220GqYuh7+rZU0Ka9k9yfKtGAzEYMa6GgiCzW9JjQRJyCJakvibQW+dfjJdihjInKuuCAUQ==
 
 webidl-conversions@^3.0.0:
   version "3.0.1"

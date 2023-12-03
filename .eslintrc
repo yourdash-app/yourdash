@@ -56,9 +56,24 @@
     "arrow-body-style": [
       "off"
     ],
-    "indent": ["warn", 2],
+    "indent": [
+      "warn",
+      2
+    ],
     "block-spacing": "warn",
     "spaced-comment": "warn",
-    "space-before-blocks": "warn"
+    "space-before-blocks": "warn",
+    "array-bracket-spacing": [
+      "warn",
+      "always"
+    ],
+    "space-before-function-paren": [
+      "error",
+      {
+        "anonymous": "never",
+        "named": "never",
+        "asyncArrow": "always"
+      }
+    ]
   }
 }

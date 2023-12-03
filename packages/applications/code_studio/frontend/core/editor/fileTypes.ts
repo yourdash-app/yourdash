@@ -4,5 +4,6 @@
  */
 
 export enum CodeStudioFileTypes {
-  PlainText
+  PlainText,
+  Javascript
 }

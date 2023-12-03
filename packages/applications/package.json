@@ -10,6 +10,15 @@
     "chart.js": "^4.4.0",
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "tree-sitter-css": "^0.20.0",
+    "tree-sitter-html": "^0.20.0",
+    "tree-sitter-javascript": "^0.20.1",
+    "tree-sitter-json": "^0.20.1",
+    "tree-sitter-markdown": "^0.7.1",
+    "tree-sitter-python": "^0.20.4",
+    "tree-sitter-scss": "https://github.com/serenadeai/tree-sitter-scss",
+    "tree-sitter-typescript": "^0.20.3",
+    "tree-sitter-yaml": "^0.5.0"
   }
 }
