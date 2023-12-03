@@ -28,9 +28,11 @@ export default class CoreApiPanel {
         .map( async ( applicationName: string ) => {
           const application = await new YourDashApplication( applicationName ).read()
 
-          const RESIZED_ICON_PATH = path.join( this.coreApi.fs.ROOT_PATH, "cache/applications/icons", `${application.getName()}`, "128.png" );
+          const RESIZED_ICON_PATH = path.join( this.coreApi.fs.ROOT_PATH, "cache/applications/icons", `${ application.getName() }`, "128.png" );
 
           if ( !await this.coreApi.fs.exists( RESIZED_ICON_PATH ) ) {
+            this.coreApi.log.info( "core:panel", `Generating 128x128 icon for ${ application.getName() }` );
+
             await this.coreApi.fs.createDirectory( path.dirname( RESIZED_ICON_PATH ) );
             await (
               this.coreApi.utils.image( await ( await this.coreApi.fs.getFile( await application.getIconPath() ) ).read( "buffer" ) )
@@ -63,9 +65,11 @@ export default class CoreApiPanel {
       return res.json( await Promise.all( ( await panel.getQuickShortcuts() ).map( async shortcut => {
         const application = await new YourDashApplication( shortcut ).read()
 
-        const RESIZED_ICON_PATH = path.join( this.coreApi.fs.ROOT_PATH, "cache/applications/icons", `${application.getName()}`, "64.png" );
+        const RESIZED_ICON_PATH = path.join( this.coreApi.fs.ROOT_PATH, "cache/applications/icons", `${ application.getName() }`, "64.png" );
 
         if ( !await this.coreApi.fs.exists( RESIZED_ICON_PATH ) ) {
+          this.coreApi.log.info( "core:panel", `Generating 64x64 icon for ${ application.getName() }` );
+
           await this.coreApi.fs.createDirectory( path.dirname( RESIZED_ICON_PATH ) );
           await (
             this.coreApi.utils.image( await ( await this.coreApi.fs.getFile( await application.getIconPath() ) ).read( "buffer" ) )
@@ -118,8 +122,8 @@ export default class CoreApiPanel {
       res.set( "Cache-Control", "no-store" );
 
       const { username } = req.headers as {
-      username: string
-    };
+        username: string
+      };
 
       const panel = new YourDashPanel( username );
 
@@ -133,6 +137,28 @@ export default class CoreApiPanel {
       const panel = new YourDashPanel( username );
 
       return res.json( { launcher: await panel.getLauncherType() } );
+    } );
+
+    this.coreApi.expressServer.get( "/core/panel/logo", ( req, res ) => {
+      const { username } = req.headers as { username: string };
+
+      return res.json( {
+        small: this.coreApi.authenticatedImage.create(
+          username,
+          AUTHENTICATED_IMAGE_TYPE.FILE,
+          path.join( this.coreApi.fs.ROOT_PATH, "./logo_panel_small.avif" )
+        ),
+        medium: this.coreApi.authenticatedImage.create(
+          username,
+          AUTHENTICATED_IMAGE_TYPE.FILE,
+          path.join( this.coreApi.fs.ROOT_PATH, "./logo_panel_medium.avif" )
+        ),
+        large: this.coreApi.authenticatedImage.create(
+          username,
+          AUTHENTICATED_IMAGE_TYPE.FILE,
+          path.join( this.coreApi.fs.ROOT_PATH, "./logo_panel_large.avif" )
+        )
+      } );
     } );
 
     this.coreApi.expressServer.get( "/core/panel/logo", ( req, res ) => {
