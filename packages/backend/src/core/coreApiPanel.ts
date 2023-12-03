@@ -24,27 +24,33 @@ export default class CoreApiPanel {
       res.set( "Cache-Control", "no-store" );
       const { username } = req.headers as { username: string }
 
-      Promise.all( ( this.coreApi.globalDb.get( "core:installedApplications" ) || [] ).map( async ( app ) => {
-        const application = await new YourDashApplication( app ).read();
+      return res.json( await Promise.all( ( this.coreApi.globalDb.get( "core:installedApplications" ) || [] )
+        .map( async ( applicationName: string ) => {
+          const application = await new YourDashApplication( applicationName ).read()
 
-        return new Promise( async resolve => {
-          sharp( await fs.readFile( await application.getIconPath() ) )
-            .resize( 128, 128 )
-            .toBuffer( ( err, buf ) => {
-              if ( err ) {
-                resolve( { error: true } );
-              }
+          const RESIZED_ICON_PATH = path.join( this.coreApi.fs.ROOT_PATH, "cache/applications/icons", `${application.getName()}`, "128.png" );
 
-              resolve( <IPanelApplicationsLauncherApplication>{
-                name: application.getName(),
-                displayName: application.getDisplayName(),
-                description: application.getDescription(),
-                // TODO: change from base 64 to file and pre-process defaults instead of at request time
-                icon: this.coreApi.authenticatedImage.create( username, AUTHENTICATED_IMAGE_TYPE.BASE64, buf.toString( "base64" ) )
-              } );
-            } );
-        } );
-      } ) ).then( resp => res.json( resp ) );
+          if ( !await this.coreApi.fs.exists( RESIZED_ICON_PATH ) ) {
+            await this.coreApi.fs.createDirectory( path.dirname( RESIZED_ICON_PATH ) );
+            await (
+              this.coreApi.utils.image( await ( await this.coreApi.fs.getFile( await application.getIconPath() ) ).read( "buffer" ) )
+                .resizeTo( 128, 128 )
+                .toFile( RESIZED_ICON_PATH )
+            )
+          }
+
+          return {
+            name: application.getName(),
+            displayName: application.getDisplayName(),
+            description: application.getDescription(),
+            icon: this.coreApi.authenticatedImage.create(
+              username,
+              AUTHENTICATED_IMAGE_TYPE.FILE,
+              RESIZED_ICON_PATH
+            )
+          };
+        } ) ) );
+
     } );
 
     this.coreApi.expressServer.get( "/core/panel/quick-shortcuts", async ( req, res ) => {

@@ -48,6 +48,7 @@ const ApplicationGrid: React.FC<{ applications: IPanelApplicationsLauncherApplic
         >
           <div className={styles.itemContent}>
             <img
+              loading={"lazy"}
               className={styles.itemIcon}
               src={`${ csi.getInstanceUrl() }${application.icon}`}
               alt=""

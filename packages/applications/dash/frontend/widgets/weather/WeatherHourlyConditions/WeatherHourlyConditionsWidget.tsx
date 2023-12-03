@@ -5,7 +5,7 @@
 
 import React, { useEffect, useState } from "react";
 import useTranslate from "web-client/src/helpers/i10n";
-import { Card } from "web-client/src/ui";
+import { Card, Spinner } from "web-client/src/ui";
 import csi from "web-client/src/helpers/csi";
 import getWeatherIconFromState from "../../../../../weather/frontend/helpers/getWeatherIconFromState";
 import { IWeatherDataForLocation } from "../../../../../weather/shared/weatherDataForLocation";
@@ -27,7 +27,7 @@ const WeatherHourlyConditionsWidget: React.FC = () => {
   }, [] );
 
   if ( !weatherData || !locationData ) {
-    return <BlankDashWidget/>;
+    return <Spinner/>;
   }
 
   return (
