@@ -14,7 +14,6 @@ export default class CoreApiLoadManagement {
 
     this.coreApi.scheduler.scheduleTask( "core:calculate_load_average", "* * * * *", async () => {
       this.getAverageLoad()
-      console.log( this.averageLoad )
       if ( this.averageLoad > 0.75 /* 75% */ ) {
         this.coreApi.log.warning( "core:load_management", "Load average is high: " + this.averageLoad )
       }

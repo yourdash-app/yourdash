@@ -463,10 +463,6 @@ export class CoreApi {
     this.userDatabase.__internal__loadEndpoints()
     this.panel.__internal__loadEndpoints()
     this.users.__internal__loadEndpoints()
-
-    setInterval( () => {
-      console.log( this.loadManagement.getAverageLoad() )
-    }, 500 )
   }
 
   // try not to use this method for production stability, instead prefer to reload a specific module if it works for your use-case.
