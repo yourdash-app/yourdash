@@ -25,6 +25,7 @@ import CoreApiScheduler from "./coreApiScheduler.js";
 import CoreApiUserDatabase from "./coreApiUserDatabase.js";
 import CoreApiUsers from "./coreApiUsers.js";
 import CoreApiFileSystem from "./fileSystem/coreApiFileSystem.js";
+import CoreApiLoadManagement from "./coreApiLoadManagement.js";
 import { YOURDASH_INSTANCE_DISCOVERY_STATUS } from "./types/discoveryStatus.js";
 import { userAvatarSize } from "./user/avatarSize.js";
 import YourDashUser from "./user/index.js";
@@ -44,6 +45,7 @@ export class CoreApi {
   readonly panel: CoreApiPanel;
   readonly authenticatedImage: CoreApiAuthenticatedImage;
   readonly personalServerAccelerator: CoreApiPersonalServerAccelerator;
+  readonly loadManagement: CoreApiLoadManagement
   // general vars
   readonly processArguments: minimist.ParsedArgs;
   readonly expressServer: ExpressApplication;
@@ -72,6 +74,7 @@ export class CoreApi {
     this.panel = new CoreApiPanel( this )
     this.authenticatedImage = new CoreApiAuthenticatedImage( this )
     this.personalServerAccelerator = new CoreApiPersonalServerAccelerator( this )
+    this.loadManagement = new CoreApiLoadManagement( this )
 
     this.commands.registerCommand(
       "hello",
@@ -460,6 +463,10 @@ export class CoreApi {
     this.userDatabase.__internal__loadEndpoints()
     this.panel.__internal__loadEndpoints()
     this.users.__internal__loadEndpoints()
+
+    setInterval( () => {
+      console.log( this.loadManagement.getAverageLoad() )
+    }, 500 )
   }
 
   // try not to use this method for production stability, instead prefer to reload a specific module if it works for your use-case.

@@ -30,6 +30,7 @@
     "file-url": "^4.0.0",
     "fkill": "^8.1.0",
     "kill-port": "^2.0.1",
+    "loadavg-windows": "^1.1.1",
     "minimist": "^1.2.8",
     "node-schedule": "^2.1.1",
     "nodemon": "^3.0.1",
