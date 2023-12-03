@@ -57,12 +57,22 @@ export default class CoreApiPanel {
       return res.json( await Promise.all( ( await panel.getQuickShortcuts() ).map( async shortcut => {
         const application = await new YourDashApplication( shortcut ).read()
 
+        const RESIZED_ICON_PATH = path.join( this.coreApi.fs.ROOT_PATH, "cache/applications/icons", `${application.getName()}`, "64.png" );
+
+        if ( !await this.coreApi.fs.exists( RESIZED_ICON_PATH ) ) {
+          await (
+            this.coreApi.utils.image( await ( await this.coreApi.fs.getFile( await application.getIconPath() ) ).read( "buffer" ) )
+              .resizeTo( 64, 64 )
+              .toFile( RESIZED_ICON_PATH )
+          )
+        }
+
         return {
           name: shortcut,
           icon: this.coreApi.authenticatedImage.create(
             username,
             AUTHENTICATED_IMAGE_TYPE.FILE,
-            await application.getIconPath()
+            RESIZED_ICON_PATH
           )
         };
       } ) ) );

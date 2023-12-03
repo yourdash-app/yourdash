@@ -7,7 +7,7 @@ import sharp, { Sharp } from "sharp";
 import coreApi from "../coreApi.js";
 import { AUTHENTICATED_IMAGE_TYPE } from "../coreApiAuthenticatedImage.js";
 
-export default class ImageUtils {
+export default class CoreApiUtilsImage {
   sharpInstance: Sharp
 
   constructor( imageDataOrUrl: string | Buffer ) {

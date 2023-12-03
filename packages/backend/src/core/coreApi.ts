@@ -31,6 +31,7 @@ import { userAvatarSize } from "./user/avatarSize.js";
 import YourDashUser from "./user/index.js";
 import { YOURDASH_SESSION_TYPE } from "shared/core/session.js";
 import CoreApiPersonalServerAccelerator from "./personalServerAccelerator/coreApiPersonalServerAccelerator.js";
+import CoreApiUtils from "./utils/utils.js";
 
 export class CoreApi {
   // core apis
@@ -46,6 +47,7 @@ export class CoreApi {
   readonly authenticatedImage: CoreApiAuthenticatedImage;
   readonly personalServerAccelerator: CoreApiPersonalServerAccelerator;
   readonly loadManagement: CoreApiLoadManagement
+  readonly utils: CoreApiUtils
   // general vars
   readonly processArguments: minimist.ParsedArgs;
   readonly expressServer: ExpressApplication;
@@ -75,6 +77,7 @@ export class CoreApi {
     this.authenticatedImage = new CoreApiAuthenticatedImage( this )
     this.personalServerAccelerator = new CoreApiPersonalServerAccelerator( this )
     this.loadManagement = new CoreApiLoadManagement( this )
+    this.utils = new CoreApiUtils( this )
 
     this.commands.registerCommand(
       "hello",
