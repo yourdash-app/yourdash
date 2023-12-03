@@ -48,7 +48,7 @@
   "scripts": {
     "compile": "tsc --skipLibCheck --resolveJsonModule --experimentalDecorators --esModuleInterop --lib esnext --module nodenext --moduleResolution nodenext ./src/index.ts",
     "compile-all": "tsc",
-    "start": "node ./dist/backend/src/index.js",
+    "start": "node ./src/index.js",
     "dev": "node ./src/index.js --dev"
   }
 }
