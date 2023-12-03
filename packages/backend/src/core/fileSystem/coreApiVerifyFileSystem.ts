@@ -45,6 +45,14 @@ export default class CoreApiVerifyFileSystem {
     if ( !( await this.coreApi.fs.exists( path.join( this.coreApi.fs.ROOT_PATH, "./cache" ) ) ) ) {
       await this.coreApi.fs.createDirectory( path.join( this.coreApi.fs.ROOT_PATH, "./cache" ) );
     }
+    // "/cache/applications/"
+    if ( !( await this.coreApi.fs.exists( path.join( this.coreApi.fs.ROOT_PATH, "./cache/applications" ) ) ) ) {
+      await this.coreApi.fs.createDirectory( path.join( this.coreApi.fs.ROOT_PATH, "./cache/applications" ) );
+    }
+    // "/cache/applications/icons"
+    if ( !( await this.coreApi.fs.exists( path.join( this.coreApi.fs.ROOT_PATH, "./cache/applications/icons" ) ) ) ) {
+      await this.coreApi.fs.createDirectory( path.join( this.coreApi.fs.ROOT_PATH, "./cache/applications/icons" ) );
+    }
     // "/config/"
     if ( !( await this.coreApi.fs.exists( path.join( this.coreApi.fs.ROOT_PATH, "./config" ) ) ) ) {
       await this.coreApi.fs.createDirectory( path.join( this.coreApi.fs.ROOT_PATH, "./config" ) );

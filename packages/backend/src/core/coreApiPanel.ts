@@ -60,6 +60,7 @@ export default class CoreApiPanel {
         const RESIZED_ICON_PATH = path.join( this.coreApi.fs.ROOT_PATH, "cache/applications/icons", `${application.getName()}`, "64.png" );
 
         if ( !await this.coreApi.fs.exists( RESIZED_ICON_PATH ) ) {
+          await this.coreApi.fs.createDirectory( path.dirname( RESIZED_ICON_PATH ) );
           await (
             this.coreApi.utils.image( await ( await this.coreApi.fs.getFile( await application.getIconPath() ) ).read( "buffer" ) )
               .resizeTo( 64, 64 )
