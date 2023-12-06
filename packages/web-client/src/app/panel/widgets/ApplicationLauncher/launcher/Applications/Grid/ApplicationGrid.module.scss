@@ -28,7 +28,7 @@
 
 .item {
   position: relative;
-  height: 8.25rem;
+  height: 8.5rem;
   width: 100%;
 }
 
@@ -42,13 +42,11 @@
   gap: 0.25rem;
   cursor: pointer;
   padding: 0.5rem;
-  border-radius: var(--container-secondary-rounding);
-  background: rgb(var(--button-bg));
   transition: var(--transition);
-  height: 8.25rem;
+  height: 8.5rem;
   overflow: hidden;
-  outline-color: rgb(var(--container-bg));
-  outline-style: solid;
+  background: rgb(var(--button-bg));
+  color: rgb(var(--button-fg));
 
   &:hover {
     .itemIcon {
@@ -62,9 +60,10 @@
 
     height: unset;
     transition: var(--transition-fast);
-    background: rgb(var(--button-hover-bg));
     z-index: 20;
-    outline-width: 0.5rem;
+
+    background: rgb(var(--button-hover-bg));
+    color: rgb(var(--button-hover-fg));
   }
 
   &:active {
@@ -73,5 +72,6 @@
     }
 
     background: rgb(var(--button-active-bg));
+    color: rgb(var(--button-active-fg));
   }
 }

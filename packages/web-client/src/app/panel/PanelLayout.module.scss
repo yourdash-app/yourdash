@@ -10,11 +10,16 @@
   overflow: hidden;
 }
 
-.content {
+.applicationFrame {
+  container-name: yourdash-application-frame;
+  container-type: inline-size;
+
+  overflow-x: hidden;
+  overflow-y: auto;
   height: 100%;
   width: 100%;
-  overflow: auto;
 }
+
 
 .top {
   flex-direction: column;

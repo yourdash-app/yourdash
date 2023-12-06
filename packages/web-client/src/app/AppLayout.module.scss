@@ -35,7 +35,10 @@
   width: 100%;
 }
 
-.content {
+.applicationFrame {
+  container-name: yourdash-application-frame;
+  container-type: inline-size;
+
   overflow-x: hidden;
   overflow-y: auto;
   height: 100%;

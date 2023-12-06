@@ -3,13 +3,15 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-interface ILocationAutocompleteSuggestion {
+interface ILocationSearchResult {
   id: string,
   address: {
     name?: string;
     admin1?: string;
     country?: string;
-  }
+  },
+  latitude: number,
+  longitude: number
 }
 
-export { type ILocationAutocompleteSuggestion }
+export { type ILocationSearchResult }

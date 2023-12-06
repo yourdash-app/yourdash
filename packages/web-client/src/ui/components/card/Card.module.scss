@@ -85,3 +85,7 @@
 .border {
   border: solid 0.125rem rgb(var(--container-border));
 }
+
+.noShadow {
+  box-shadow: none;
+}

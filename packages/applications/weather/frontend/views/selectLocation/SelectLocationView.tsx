@@ -10,7 +10,7 @@ import { Card, TextInput } from "web-client/src/ui/index";
 import useTranslate from "web-client/src/helpers/i10n";
 import APPLICATION_ICON from "../../assets/weatherIcons/partly_cloudy.svg"
 import clippy from "web-client/src/helpers/clippy";
-import { ILocationAutocompleteSuggestion } from "../../../shared/locationAutocompleteSuggestion";
+import { ILocationSearchResult } from "../../../shared/locationSearchResult";
 import THUNDER_BACKGROUND from "../../assets/weatherBackgrounds/thunder.jpg"
 import CLOUDY_BACKGROUND from "../../assets/weatherBackgrounds/cloudy1.jpg"
 import RAIN_BACKGROUND from "../../assets/weatherBackgrounds/rain1.jpg"
@@ -28,17 +28,17 @@ const BACKGROUND_IMAGES: string[] = [
 const SelectLocationView: React.FC = () => {
   const navigate = useNavigate();
   const trans = useTranslate( "weather" );
-  const [locationQuery, setLocationQuery] = useState<ILocationAutocompleteSuggestion[]>( [] );
-  const [ previousWeatherLocations, setPreviousWeatherLocations] = useState<{ name: string; id: number }[]>( [] );
-  const [backgroundImage, setBackgroundImage] = useState<string>( "" )
-  
+  const [ locationQuery, setLocationQuery ] = useState<ILocationSearchResult[]>( [] );
+  const [ previousWeatherLocations, setPreviousWeatherLocations ] = useState<{ name: string; id: number }[]>( [] );
+  const [ backgroundImage, setBackgroundImage ] = useState<string>( "" )
+
   useEffect( () => {
     csi.getJson( "/app/weather/previous/locations", resp => {
       setPreviousWeatherLocations( resp || [] );
     } );
-    
+
     const backgroundIndex = Math.floor( Math.random() * 5 )
-    
+
     setBackgroundImage( BACKGROUND_IMAGES[backgroundIndex] )
   }, [] );
 
@@ -131,7 +131,7 @@ const SelectLocationView: React.FC = () => {
         </div>
       </Card>*/}
       <a href="https://open-meteo.com/" className={"absolute bottom-0 right-0"}>
-        {trans( "POWERED_BY_WATERMARK", ["open-meteo.com"] )}
+        {trans( "POWERED_BY_WATERMARK", [ "open-meteo.com" ] )}
       </a>
     </main>
   );

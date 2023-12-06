@@ -13,7 +13,7 @@ const YourDevHome: React.FC = () => {
       <section className={"grid grid-cols-1 @6xl:grid-cols-2 gap-4"}>
         <section className={ "flex flex-col gap-4" }>
           <Card className={ "flex gap-2 flex-row items-center" } showBorder>
-            <Icon className={ "aspect-square h-12" } icon={ YourDashIcon.YourDashLogo } useDefaultColor />
+            <Icon className={ "aspect-square h-12" } icon={ YourDashIcon.YourDashLogo } preserveColor />
             <h1 className={ "text-3xl font-bold tracking-wide" }>{ "YourDash Dev" }</h1>
             <div className={ "ml-auto flex gap-2 items-center" }>
               <div className={ "flex flex-col gap-1 items-center justify-center" }>

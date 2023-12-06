@@ -5,12 +5,12 @@
 
 import { Application as ExpressApplication } from "express";
 
-import { ILocationAutocompleteSuggestion } from "../shared/locationAutocompleteSuggestion.js";
+import { ILocationSearchResult } from "../shared/locationSearchResult.js";
 import getGeolocationSuggestions from "./helpers/locationAutocompleteSuggestions.js";
 import coreApi from "backend/src/core/coreApi.js";
 
 export default function geolocationApi( exp: ExpressApplication ) {
-  const geolocationApiCache = new Map<string, ILocationAutocompleteSuggestion[]>()
+  const geolocationApiCache = new Map<string, ILocationSearchResult[]>()
 
   exp.get( "/app/weather/geolocation/", ( req, res ) => {
     return res.json( [] )

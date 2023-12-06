@@ -6,7 +6,7 @@
 import React from "react";
 import IPanelApplicationsLauncherApplication from "shared/core/panel/applicationsLauncher/application";
 import csi from "../../../../../../../helpers/csi";
-import { RightClickMenu } from "../../../../../../../ui/index";
+import { Card, RightClickMenu } from "../../../../../../../ui/index";
 import styles from "./ApplicationGrid.module.scss"
 import { useNavigate } from "react-router";
 
@@ -42,11 +42,14 @@ const ApplicationGrid: React.FC<{ applications: IPanelApplicationsLauncherApplic
           ]}
           className={styles.item}
           key={application.name}
-          onClick={() => {
-            navigate( `/app/a/${application.name}` )
-          }}
         >
-          <div className={styles.itemContent}>
+          <Card
+            onClick={() => {
+              navigate( `/app/a/${application.name}` )
+            }}
+            showBorder={true}
+            className={styles.itemContent}
+          >
             <img
               loading={"lazy"}
               className={styles.itemIcon}
@@ -54,7 +57,7 @@ const ApplicationGrid: React.FC<{ applications: IPanelApplicationsLauncherApplic
               alt=""
             />
             <span className={styles.itemLabel}>{application.displayName}</span>
-          </div>
+          </Card>
         </RightClickMenu>
       } )
     }

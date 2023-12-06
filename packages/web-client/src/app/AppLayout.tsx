@@ -8,9 +8,10 @@ import { Card, Spinner } from "../ui/index";
 import PanelLayout from "./panel/PanelLayout";
 import React, { memo, useEffect } from "react";
 import csi from "../helpers/csi";
+import styles from "./AppLayout.module.scss"
 
 const AppLayout: React.FC = () => {
-  const [loaded, setLoaded] = React.useState<boolean>( false );
+  const [ loaded, setLoaded ] = React.useState<boolean>( false );
   const isStandalone = new URLSearchParams( window.location.search ).has( "standalone" )
 
   useEffect( () => {
@@ -47,7 +48,9 @@ const AppLayout: React.FC = () => {
 
   // Standalone mode displays only the application and not the Panel
   if ( isStandalone ) {
-    return <Outlet />;
+    return <div className={styles.applicationFrame}>
+      <Outlet />
+    </div>;
   }
 
   return <PanelLayout />

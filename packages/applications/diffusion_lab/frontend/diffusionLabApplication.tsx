@@ -76,7 +76,7 @@ const DiffusionLabApplication: React.FC = () => {
         </section>
         <section className={"absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"}>
           <div className={"flex items-center justify-center h-full gap-1.5"}>
-            <Icon className={"h-9 aspect-square"} useDefaultColor icon={YourDashIcon.YourDashLogo} />
+            <Icon className={"h-9 aspect-square"} preserveColor icon={YourDashIcon.YourDashLogo} />
             <h2 className={"text-3xl font-semibold tracking-wide"}>
               {trans( "APPLICATION_NAME" )}
             </h2>

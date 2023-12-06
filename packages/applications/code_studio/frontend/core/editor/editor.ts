@@ -208,6 +208,9 @@ export default class CodeStudioEditor {
 
     renderToken( codeElement, parser.rootNode )
 
+    // REMEMBER!: only render visible ranges
+    // SRC: https://github.com/georgewfraser/vscode-tree-sitter/blob/master/src/colors.ts
+
     return parser
   }
 }

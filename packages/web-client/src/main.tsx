@@ -4,6 +4,7 @@
  */
 
 import "animate.css";
+import "./tailwindcss.css";
 import "./ui/ui.scss";
 import "./main.css";
 import { DevSupport } from "@react-buddy/ide-toolbox";
@@ -22,7 +23,6 @@ import ServerLoginPage from "./root/login/Page";
 import Index from "./root/index/Index";
 import ProjectsIndexPage from "./root/projects/Index";
 import RootLayout from "./root/RootLayout";
-import "./tailwindcss.css";
 import ChipletUiRootIntegration from "./ui/RootIntegration";
 import LinkerDesktopClientStartupPage from "./root/linker-desktop-client-startup/Index";
 
