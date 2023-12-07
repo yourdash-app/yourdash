@@ -11,6 +11,7 @@ import RAIN_BACKGROUND from "../../assets/weatherBackgrounds/rain1.jpg";
 import SNOW_BACKGROUND from "../../assets/weatherBackgrounds/snow.jpg";
 import THUNDER_BACKGROUND from "../../assets/weatherBackgrounds/thunder.jpg";
 import LocationSearchBar from "./components/LocationSearchBar/LocationSearchBar";
+import SavedLocationCard from "./components/SavedLocationCard/SavedLocationCard";
 import styles from "./MenuView.module.scss"
 import { useEffect, useState } from "react";
 
@@ -50,6 +51,10 @@ const MenuView: React.FC = () => {
     <Column className={"animate__animated animate__fadeIn animate__750ms"}>
       <LocationSearchBar/>
     </Column>
+    <h2>Saved Locations</h2>
+    <section className={"grid grid-cols-4"}>
+      <SavedLocationCard props={{ address: { name: "Your Location" }, id: "your-location", lat: 0, lon: 0 }}/>
+    </section>
   </Column>
 }
 

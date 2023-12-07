@@ -38,50 +38,6 @@ try {
 }
 
 /*
-/!*
- /////////////////
- //  SOCKET.IO  //            TODO: REFACTOR PENDING
- /////////////////
-*!/
-export interface ISocketActiveSocket {
-  id: string;
-  token: string;
-  socket: SocketIoSocket;
-}
-
-const ACTIVE_SOCKET_IO_SOCKETS: {                                 TODO: REFACTOR PENDING, CoreApiWebsocketManager
-  [ username: string ]: ISocketActiveSocket[];
-} = {};
-
-// Handle socket.io connections
-
-export { socketIo, ACTIVE_SOCKET_IO_SOCKETS };
-
-process.stdin.on( "data", ( data ) => {
-  const commandAndArgs = data.toString().replaceAll( "\n", "" ).replaceAll( "\r", "" ).split( " " );
-  const command = commandAndArgs[ 0 ];
-
-  switch ( command ) {
-  // Already implemented
-  default:
-    log( logType.ERROR, "core:command", `Unknown command: ${ command }` );
-  }
-} );
-
-// Load all endpoints which require no authentication
-startAuthenticatedImageHelper( exp );
-defineLoginEndpoints( exp );
-
-
-
-// define all core endpoints
-defineUserDatabaseRoutes( exp );
-defineCorePanelRoutes( exp );
-defineUserEndpoints( exp );
-
-// load applications
-applicationLoader( exp, httpServer );
-
 // if we are not running in development mode, start the check for updates task
 if ( !PROCESS_ARGUMENTS.dev ) {
   scheduleBackendUpdateChecker();
