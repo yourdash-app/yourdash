@@ -9,6 +9,7 @@ import { Card } from "web-client/src/ui/index";
 import { ILocationSearchResult } from "../../../../../../../shared/locationSearchResult";
 import { useNavigate } from "react-router-dom";
 import CLOUDY_BACKGROUND from "../../../../../../assets/weatherBackgrounds/cloudy1.jpg";
+import styles from "./HeroSearchResultCard.module.scss";
 
 const HeroSearchResultCard: React.FC<{ props: ILocationSearchResult }> = ( { props } ) => {
   const navigate = useNavigate()
@@ -21,7 +22,7 @@ const HeroSearchResultCard: React.FC<{ props: ILocationSearchResult }> = ( { pro
     className={
       clippy(
         "animate__animated animate__fadeIn",
-        "col-span-4 h-64 hover:bg-button-hover-bg active:bg-button-active-bg hover:text-button-hover-fg active:text-button-active-fg transition-[var(--transition)] cursor-pointer w-full bg-button-bg text-button-fg"
+        styles.component
       )
     }
     onClick={() => {

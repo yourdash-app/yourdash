@@ -24,7 +24,7 @@ export default class CoreApiLoadManagement {
 
   // returns the average cpu load over the past few secconds
   getAverageLoad(): number {
-    this.averageLoad = os.loadavg()[0]
+    this.averageLoad = os.loadavg()[0] / 100
     return this.averageLoad
   }
 }

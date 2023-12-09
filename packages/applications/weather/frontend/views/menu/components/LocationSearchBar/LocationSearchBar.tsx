@@ -28,9 +28,8 @@ const LocationSearchBar: React.FC = () => {
         placeholder={"Search Weather Locations"}
         onKeyDown={e => {
           if ( e.key === "Enter" ) {
-            if ( searchResults[0] ) {
+            if ( searchResults[0] )
               navigate( `/app/a/weather/${ searchResults[0].id }` );
-            }
           }
         }}
         onChange={( value: string ) => {

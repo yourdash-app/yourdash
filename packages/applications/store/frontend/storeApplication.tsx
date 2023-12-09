@@ -4,10 +4,8 @@
  */
 
 import * as React from "react";
-import { useNavigate } from "react-router-dom";
 import { type StorePromotedApplication } from "shared/apps/store/storePromotedApplication";
 import csi from "web-client/src/helpers/csi";
-import { Carousel, MajorButton } from "web-client/src/ui";
 import StoreCategoryComponent from "./component/StoreCategoryComponent";
 import StoreApplicationComponent from "./component/StoreApplicationComponent";
 import useTranslate from "web-client/src/helpers/i10n";

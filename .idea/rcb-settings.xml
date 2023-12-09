@@ -4,8 +4,12 @@
     <option name="devServerConfigs">
       <DevServerState>
         <option name="packageJsonPath" value="$PROJECT_DIR$/client/package.json" />
-        <option name="port" value="5174" />
         <option name="scriptName" value="dev" />
+      </DevServerState>
+      <DevServerState>
+        <option name="packageJsonPath" value="$PROJECT_DIR$/packages/web-client/package.json" />
+        <option name="scriptName" value="dev" />
+        <option name="url" value="http://localhost:5174" />
       </DevServerState>
     </option>
   </component>
