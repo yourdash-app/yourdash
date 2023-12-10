@@ -5,49 +5,36 @@
 
 import React, { useEffect, useState } from "react";
 import useTranslate from "web-client/src/helpers/i10n";
-import { Card, Spinner } from "web-client/src/ui";
+import { Card, Row, Spinner } from "web-client/src/ui";
 import csi from "web-client/src/helpers/csi";
-import getWeatherIconFromState from "../../../../../weather/frontend/helpers/getWeatherIconFromState";
-import { IWeatherDataForLocation } from "../../../../../weather/shared/weatherDataForLocation";
-import BlankDashWidget from "../../placeholder/PlaceholderDashWidget";
-import HourlyConditionsHour from "./HourlyConditionsHour";
+import generateWeatherDescriptionFromData from "applications/weather/frontend/helpers/generateWeatherDescriptionFromData";
+import getWeatherIconFromState from "applications/weather/frontend/helpers/getWeatherIconFromState";
+import { IWeatherDataForLocation } from "applications/weather/shared/weatherDataForLocation";
+import HourlyConditionsHour from "./components/HourlyConditionsHour";
+import styles from "./WeatherHourlyConditionsWidget.module.scss";
 
 const WeatherHourlyConditionsWidget: React.FC = () => {
   const trans = useTranslate( "weather" );
   const [ weatherData, setWeatherData ] = useState<IWeatherDataForLocation | null>( null );
-  const [ locationData, setLocationData ] = useState<any>( null );
 
   useEffect( () => {
     // fetch the user's defined location but default to London
     csi.getJson( `/app/weather/location/${csi.userDB.get( "app:dash:widget:weather:location" ) || "2643743"}`, res => {
       setWeatherData( res );
-      setLocationData( res.location );
       console.log( res );
     } );
   }, [] );
 
-  if ( !weatherData || !locationData ) {
+  if ( !weatherData ) {
     return <Spinner/>;
   }
 
   return (
-    <Card className={"flex flex-col col-span-2 p-1 max-w-full"}>
-      <div className={"flex pl-2.5 pt-2 pr-2 items-end gap-1 w-full text-left"}>
-        <span className={"font-bold text-4xl"}>
-          {`${locationData?.name}, `}
-        </span>
-        {
-          locationData?.admin1 && (
-            <span className={"opacity-95 text-xl"}>
-              {`${locationData?.admin1}, `}
-            </span>
-          )
-        }
-        <span className={"opacity-75"}>
-          {locationData?.country}
-        </span>
-      </div>
-      <main className={"flex h-full p-2 gap-2 overflow-x-auto max-w-full"}>
+    <Card className={styles.widget}>
+      <section className={styles.header}>
+        <div>{ generateWeatherDescriptionFromData( weatherData.currentWeather, false ) }</div>
+      </section>
+      <Row className={styles.hours}>
         {
           weatherData?.hourly.time.map( ( hour: string, ind: number ) => {
             const temperature = weatherData?.hourly.temperature[ ind ];
@@ -79,7 +66,7 @@ const WeatherHourlyConditionsWidget: React.FC = () => {
             );
           } )
         }
-      </main>
+      </Row>
       <a href={"https://open-meteo.com"} className={"mt-auto ml-auto pr-1.5 pt-1 text-[#ffffff55] text-sm"}>
         {"Powered by open-meteo.com"}
       </a>

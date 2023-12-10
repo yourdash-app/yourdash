@@ -15,7 +15,7 @@ export interface IconProps {
     color?: COLOR
 }
 
-export default class Icon extends UKComponent {
+export default class Icon extends UKComponent<IconProps> {
   constructor( props: IconProps ) {
     super( props );
 

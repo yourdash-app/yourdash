@@ -6,31 +6,31 @@
 import UIKit from "../core";
 import Image from "../core/components/image/image.ts";
 import createButtonsSection from "./sections/buttons/buttons.ts";
-import Icon from "../core/components/icon/icon.ts";
+import { UK } from "../core";
 import { UKIcon } from "../core/icons/icons.ts";
 
 function init() {
-  const ui = new UIKit( document.body );
+  const ui = new UIKit( document.body as HTMLDivElement );
 
   createButtonsSection( ui );
 
-  ui.createComponent( Icon, {
-    icon: UKIcon.Archive
+  ui.createComponent( UK.Icon, {
+    icon: UKIcon.Heart,
   } )
 
-  ui.createComponent( Icon, {
+  ui.createComponent( UK.Icon, {
     icon: UKIcon.Apps
   } )
 
-  ui.createComponent( Icon, {
+  ui.createComponent( UK.Icon, {
     icon: UKIcon.ArrowDown
   } )
 
-  ui.createComponent( Icon, {
+  ui.createComponent( UK.Icon, {
     icon: UKIcon.Browser
   } )
 
-  ui.createComponent( Icon, {
+  ui.createComponent( UK.Icon, {
     icon: UKIcon.Broadcast
   } )
 

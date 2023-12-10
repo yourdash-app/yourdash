@@ -7,11 +7,11 @@ import UKComponentSlot from "./slot.ts";
 import State from "./state.ts";
 
 export type UKComponentSlots = { [ key: string ]: State<ValidUKComponent> }
-export type UKComponentProps = { [ key: string ]: any } | undefined  // eslint-disable-line @typescript-eslint/no-explicit-any
+export type UKComponentProps = { [ key: string ]: unknown } | undefined
 
 export class UKComponent<
-  ComponentProps extends UKComponentProps = UKComponentProps,
-  ComponentSlots extends UKComponentSlots = UKComponentSlots
+  ComponentProps = UKComponentProps,
+  ComponentSlots = UKComponentSlots
 > {
   domElement: HTMLElement;
   declare readonly parentDomElement: HTMLElement;
@@ -28,7 +28,7 @@ export class UKComponent<
 }
 
 export class UKSlotComponent<
-  ComponentProps extends UKComponentProps = UKComponentProps
+  ComponentProps = UKComponentProps
 >
   extends UKComponentSlot {
   declare readonly parentDomElement: HTMLElement;
