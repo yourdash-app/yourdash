@@ -9,33 +9,27 @@ import State from "./state.ts";
 export type UKComponentSlots = { [ key: string ]: State<ValidUKComponent> }
 export type UKComponentProps = { [ key: string ]: unknown } | undefined
 
-export class UKComponent<
-  ComponentProps = UKComponentProps,
-  ComponentSlots = UKComponentSlots
-> {
+export class UKComponent<ComponentProps = UKComponentProps, ComponentSlots = UKComponentSlots> {
   domElement: HTMLElement;
   declare readonly parentDomElement: HTMLElement;
   slots: ComponentSlots;
   props: ComponentProps;
 
-  constructor( props: ComponentProps ) {
+  constructor(props: ComponentProps) {
     this.slots = {} as ComponentSlots;
     this.props = props as ComponentProps;
-    this.domElement = document.createElement( "uk-empty-component" ) as HTMLDivElement;
+    this.domElement = document.createElement("uk-empty-component") as HTMLDivElement;
 
     return this;
   }
 }
 
-export class UKSlotComponent<
-  ComponentProps = UKComponentProps
->
-  extends UKComponentSlot {
+export class UKSlotComponent<ComponentProps = UKComponentProps> extends UKComponentSlot {
   declare readonly parentDomElement: HTMLElement;
   props: ComponentProps;
 
-  constructor( props: ComponentProps ) {
-    super( document.createElement( "uk-empty-component" ) as HTMLDivElement );
+  constructor(props: ComponentProps) {
+    super(document.createElement("uk-empty-component") as HTMLDivElement);
 
     this.props = props as ComponentProps;
 

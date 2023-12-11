@@ -4,22 +4,21 @@
  */
 
 import UIKit from "../core";
-import Image from "../core/components/image/image.ts";
 import createButtonsSection from "./sections/buttons/buttons.ts";
 import { UK } from "../core";
 import { UKIcon } from "../core/icons/icons.ts";
 
 function init() {
-  const ui = new UIKit( document.body as HTMLDivElement );
+  const ui = new UIKit( document.body as HTMLBodyElement );
 
   createButtonsSection( ui );
 
-  ui.createComponent( UK.Icon, {
-    icon: UKIcon.Heart,
-  } )
+  ui.createComponent( UK.Button, { label: "Hello World!", onClick() { return 0 } } )
 
   ui.createComponent( UK.Icon, {
-    icon: UKIcon.Apps
+    icon: UKIcon.Apps,
+    color: "#ffffff",
+    useDefaultColor: false
   } )
 
   ui.createComponent( UK.Icon, {
@@ -34,9 +33,13 @@ function init() {
     icon: UKIcon.Broadcast
   } )
 
-  ui.createComponent( Image, {
+  ui.createComponent( UK.Icon, {
+    icon: UKIcon.Custom( "/vite.svg" )
+  } );
+
+  ui.createComponent( UK.Image, {
     src: "/vite.svg",
-    alt: "logo"
+    alt: "logo",
   } );
 }
 

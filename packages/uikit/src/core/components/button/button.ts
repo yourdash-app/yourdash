@@ -6,18 +6,16 @@
 import { UKComponent } from "../../component.ts";
 import styles from "./button.module.scss";
 
-export interface ButtonProps {
+export default class Button extends UKComponent<{
   label: string,
   onClick: () => void,
   size?: "small" | "medium" | "large",
   transparent?: boolean,
   disabled?: boolean,
   type?: "primary" | "secondary" | "tertiary",
-}
-
-export default class Button extends UKComponent<ButtonProps> {
-  constructor( props: ButtonProps ) {
-    super( props );
+}> {
+  constructor( props: Button["props"] ) {
+    super(props);
 
     this.domElement = document.createElement( "button" )
     this.setLabel( props.label )
@@ -41,7 +39,7 @@ export default class Button extends UKComponent<ButtonProps> {
     this.domElement.addEventListener( "click", this.click.bind( this ) )
   }
 
-  setDisabled( disabled: ButtonProps["disabled"] ): this {
+  setDisabled( disabled: Button["props"]["disabled"] ): this {
     if ( disabled ) {
       this.domElement.setAttribute( "disabled", "true" )
     } else {
@@ -51,7 +49,7 @@ export default class Button extends UKComponent<ButtonProps> {
     return this
   }
 
-  setTransparent( transparent: ButtonProps["transparent"] ): this {
+  setTransparent( transparent: Button["props"]["transparent"] ): this {
     if ( transparent ) {
       this.domElement.classList.add( styles.transparent )
     } else {
@@ -61,7 +59,7 @@ export default class Button extends UKComponent<ButtonProps> {
     return this
   }
 
-  setSize( size: Required<ButtonProps["size"]> ): this {
+  setSize( size: Required<Button["props"]["size"]> ): this {
     this.props.size = size
 
     this.domElement.classList.remove( styles.sizeSmall )
@@ -88,7 +86,7 @@ export default class Button extends UKComponent<ButtonProps> {
     return this
   }
 
-  setType( type: Required<ButtonProps["type"]> ): this {
+  setType( type: Required<Button["props"]["type"]> ): this {
     this.props.type = type
 
     this.domElement.classList.remove( styles.typePrimary )

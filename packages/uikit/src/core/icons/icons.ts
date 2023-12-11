@@ -285,4 +285,5 @@ export const UKIcon = {
   XCircleFill: new URL( "./assets/x-circle-fill.svg", import.meta.url ).href,
   YourDashLogo: new URL( "./assets/yourdash.svg", import.meta.url ).href,
   Zap: new URL( "./assets/zap.svg", import.meta.url ).href,
+  Custom( path: string ) { return new URL( path, import.meta.url ).href }
 }

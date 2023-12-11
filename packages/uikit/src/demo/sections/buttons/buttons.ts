@@ -9,10 +9,10 @@ import createTransparentButtons from "./transparentButtons.ts";
 import createButtons from "./normalButtons.ts";
 import Card from "../../../core/components/card/card.ts";
 
-export default function createButtonsSection( ui: UIKit ) {
-  const cardContainer = ui.createComponent( Card, {  } )
+export default function createButtonsSection(ui: UIKit) {
+  const cardContainer = ui.createComponent(Card, {})
 
-  createButtons( cardContainer as Card )
-  createTransparentButtons( cardContainer as Card )
-  createDisabledButtons( cardContainer as Card )
+  createButtons(cardContainer)
+  createTransparentButtons(cardContainer)
+  createDisabledButtons(cardContainer)
 }

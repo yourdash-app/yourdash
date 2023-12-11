@@ -5,15 +5,13 @@
 
 import { UKComponent } from "../../component.ts";
 
-export interface ImageProps {
+export default class Image extends UKComponent<{
   src: string;
   alt?: string;
-}
-
-export default class Image extends UKComponent<ImageProps> {
+}> {
   domElement: HTMLImageElement
 
-  constructor( props: ImageProps ) {
+  constructor( props: Image["props"] ) {
     super( props );
 
     this.domElement = document.createElement( "img" )
