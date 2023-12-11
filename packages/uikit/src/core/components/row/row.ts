@@ -6,7 +6,7 @@
 import { UKSlotComponent } from "../../component.ts";
 import styles from "./row.module.scss";
 
-export default class Row extends UKSlotComponent<undefined> {
+export default class Row extends UKSlotComponent {
   constructor() {
     super( undefined );
 

@@ -21,7 +21,7 @@
     font-weight: var(--weight-semibold);
   }
 
-  & > *:not(:empty) {
+  &:not(:has(> *:not(:empty))) {
     visibility: hidden;
     display: none;
   }

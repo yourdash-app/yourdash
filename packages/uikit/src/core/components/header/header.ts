@@ -6,16 +6,14 @@
 import { UKSlotComponent } from "../../component.ts";
 import styles from "./header.module.scss";
 
-export interface HeaderProps {
+export default class Header extends UKSlotComponent<{
   text: string,
   fontFamily?: CSSStyleDeclaration["fontFamily"],
   color?: CSSStyleDeclaration["color"],
   textAlign?: CSSStyleDeclaration["textAlign"]
   level?: 0 | 1 | 2 | 3 | 4 | 5
-}
-
-export default class Header extends UKSlotComponent<HeaderProps> {
-  constructor( props: HeaderProps ) {
+}> {
+  constructor( props: Header["props"] ) {
     super( props );
 
     this.domElement = document.createElement( "span" )

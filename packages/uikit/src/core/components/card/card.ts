@@ -3,31 +3,28 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { UKComponent, UKComponentSlots } from "../../component.ts";
+import { UKComponent } from "../../component.ts";
 import UKComponentSlot from "../../slot.ts";
 import styles from "./card.module.scss";
-import transitionStyles from "../../transitions.module.scss"
+import transitionStyles from "../../transitions.module.scss";
 
-export interface CardProps {
+export default class Card extends UKComponent<{
   title?: string,
   onClick?: () => void,
   level?: 0 | 1 | 2,
   actionsFillWidth?: boolean,
   contentNoPadding?: boolean,
-  noBorder?: boolean
-}
-
-export interface CardSlots extends UKComponentSlots {
+  noBorder?: boolean,
+  noAnimation?: boolean
+}, {
   actions: UKComponentSlot,
   content: UKComponentSlot,
   headerExtras: UKComponentSlot,
-}
+}> {
+  private readonly titleDomElement: HTMLSpanElement;
+  private readonly headerDomElement: HTMLDivElement;
 
-export default class Card extends UKComponent<CardProps, CardSlots> {
-  private readonly titleDomElement: HTMLSpanElement
-  private readonly headerDomElement: HTMLDivElement
-
-  constructor( props: CardProps ) {
+  constructor( props: Card["props"] ) {
     super( props );
 
     this.domElement = document.createElement( "div" );
@@ -35,17 +32,17 @@ export default class Card extends UKComponent<CardProps, CardSlots> {
     this.slots = {
       actions: new UKComponentSlot( document.createElement( "div" ) ),
       content: new UKComponentSlot( document.createElement( "div" ) ),
-      headerExtras: new UKComponentSlot( document.createElement( "div" ) ),
-    }
+      headerExtras: new UKComponentSlot( document.createElement( "div" ) )
+    };
 
     if ( props.level !== undefined ) {
-      this.setLevel( props.level )
+      this.setLevel( props[ "level" ] );
     } else {
-      this.setLevel( 0 )
+      this.setLevel( 0 );
     }
 
     if ( props.actionsFillWidth !== undefined ) {
-      this.setActionsFillWidth( props.actionsFillWidth )
+      this.setActionsFillWidth( props[ "actionsFillWidth" ] );
     }
 
     this.slots.actions.domElement.classList.add( styles.actionsSlot );
@@ -56,7 +53,7 @@ export default class Card extends UKComponent<CardProps, CardSlots> {
     this.headerDomElement.classList.add( styles.header );
     this.domElement.appendChild( this.headerDomElement );
 
-    this.titleDomElement = document.createElement( "div" )
+    this.titleDomElement = document.createElement( "div" );
     this.titleDomElement.innerText = this.props.title || "";
     this.titleDomElement.classList.add( styles.title );
 
@@ -70,11 +67,13 @@ export default class Card extends UKComponent<CardProps, CardSlots> {
     this.domElement.classList.add( styles.component );
     this.domElement.addEventListener( "click", this.click.bind( this ) );
 
-    this.slots.content.domElement.classList.add( transitionStyles.UKTransition_appear )
-    this.slots.headerExtras.domElement.classList.add( transitionStyles.UKTransition_appear )
-    this.slots.actions.domElement.classList.add( transitionStyles.UKTransition_appear )
+    if ( !props.noAnimation ) {
+      this.slots.content.domElement.classList.add( transitionStyles.UKTransition_appear );
+      this.slots.headerExtras.domElement.classList.add( transitionStyles.UKTransition_appear );
+      this.slots.actions.domElement.classList.add( transitionStyles.UKTransition_appear );
+    }
 
-    return this
+    return this;
   }
 
   setTitle( label: string ) {
@@ -88,32 +87,32 @@ export default class Card extends UKComponent<CardProps, CardSlots> {
   }
 
   setLevel( level: Required<Card["props"]["level"]> ) {
-    this.domElement.classList.remove( styles.cardLevel0 )
-    this.domElement.classList.remove( styles.cardLevel1 )
-    this.domElement.classList.remove( styles.cardLevel2 )
+    this.domElement.classList.remove( styles.cardLevel0 );
+    this.domElement.classList.remove( styles.cardLevel1 );
+    this.domElement.classList.remove( styles.cardLevel2 );
 
     switch ( level ) {
     case 0:
-      this.domElement.classList.add( styles.cardLevel0 )
-      break
+      this.domElement.classList.add( styles.cardLevel0 );
+      break;
     case 1:
-      this.domElement.classList.add( styles.cardLevel1 )
-      break
+      this.domElement.classList.add( styles.cardLevel1 );
+      break;
     case 2:
-      this.domElement.classList.add( styles.cardLevel2 )
-      break
+      this.domElement.classList.add( styles.cardLevel2 );
+      break;
     default:
-      console.warn( `Invalid UKCard level, ${level}` )
+      console.warn( `Invalid UKCard level, ${ level }` );
     }
 
-    return this
+    return this;
   }
 
   setActionsFillWidth( fillWidth: boolean ) {
     if ( fillWidth ) {
-      this.slots.actions.domElement.classList.add( styles.actionsFillWidth )
+      this.slots.actions.domElement.classList.add( styles.actionsFillWidth );
     } else {
-      this.slots.actions.domElement.classList.remove( styles.actionsFillWidth )
+      this.slots.actions.domElement.classList.remove( styles.actionsFillWidth );
     }
   }
 }

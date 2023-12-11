@@ -5,12 +5,9 @@
 
 import { UKComponent } from "../../component.ts";
 
-export interface IFrameProps {
-  src: string
-}
 
-export default class IFrame extends UKComponent<IFrameProps> {
-  constructor( props: IFrameProps ) {
+export default class IFrame extends UKComponent<{ src: string }> {
+  constructor( props: IFrame["props"] ) {
     super( props )
 
     this.domElement = document.createElement( "webview" )

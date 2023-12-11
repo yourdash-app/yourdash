@@ -37,6 +37,34 @@ function init() {
     icon: UKIcon.Custom( "/vite.svg" )
   } );
 
+  ui.createComponent( UK.Slider, {
+    onChange( value: number ) { console.log( value ) },
+  } );
+
+  ui.createComponent( UK.Slider, {
+    onChange( value: number ) { console.log( value ) },
+    stepSize: 5
+  } );
+
+  ui.createComponent( UK.Slider, {
+    onChange( value: number ) { console.log( value ) },
+    min: 0,
+    max: 50,
+    stepSize: 10
+  } );
+
+  ui.createComponent( UK.Slider, {
+    onChange( value: number ) { console.log( value ) },
+    min: -50,
+    stepSize: 5
+  } );
+
+  ui.createComponent( UK.Slider, {
+    onChange( value: number ) { console.log( value ) },
+    max: 50,
+    stepSize: 2
+  } );
+
   ui.createComponent( UK.Image, {
     src: "/vite.svg",
     alt: "logo",

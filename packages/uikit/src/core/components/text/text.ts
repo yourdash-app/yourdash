@@ -6,17 +6,15 @@
 import { UKSlotComponent } from "../../component.ts";
 import styles from "./text.module.scss";
 
-export interface TextProps {
+export default class Text extends UKSlotComponent<{
   content: string,
   fontFamily?: CSSStyleDeclaration["fontFamily"],
   fontSize?: CSSStyleDeclaration["fontSize"],
   color?: CSSStyleDeclaration["color"],
   textAlign?: CSSStyleDeclaration["textAlign"],
   fontWeight?: CSSStyleDeclaration["fontWeight"]
-}
-
-export default class Text extends UKSlotComponent<TextProps> {
-  constructor( props: TextProps ) {
+}> {
+  constructor( props: Text["props"] ) {
     super( props );
 
     this.domElement = document.createElement( "span" )

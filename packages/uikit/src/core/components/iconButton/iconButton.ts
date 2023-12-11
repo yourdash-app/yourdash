@@ -6,10 +6,9 @@
 import { UKComponent } from "../../component.ts";
 import { UKIcon } from "../../icons/icons.ts";
 import State from "../../state.ts";
-import { ButtonProps } from "../button/button.ts";
 import styles from "./iconButton.module.scss";
 
-export interface IconButtonProps {
+export default class IconButton extends UKComponent<{
   icon: keyof typeof UKIcon,
   onClick: () => void,
   size?: "small" | "medium" | "large",
@@ -18,14 +17,12 @@ export interface IconButtonProps {
   useDefaultColor?: boolean,
   label?: string // shown on hover,
   type?: "primary" | "secondary" | "tertiary"
-}
-
-export default class IconButton extends UKComponent<IconButtonProps> {
+}> {
   domElement: HTMLButtonElement;
   iconDomElement: HTMLDivElement;
   label: State<string>
 
-  constructor( props: IconButtonProps ) {
+  constructor( props: IconButton["props"] ) {
     super( props );
 
     this.label = new State<string>( props.label )
@@ -89,7 +86,7 @@ export default class IconButton extends UKComponent<IconButtonProps> {
     return this;
   }
 
-  setSize( size: Required<IconButtonProps["size"]> ): this {
+  setSize( size: Required<IconButton["props"]["size"]> ): this {
     this.props.size = size;
 
     this.domElement.classList.remove( styles.sizeSmall );
@@ -109,7 +106,7 @@ export default class IconButton extends UKComponent<IconButtonProps> {
     return this;
   }
 
-  setType( type: Required<ButtonProps["type"]> ): this {
+  setType( type: Required<IconButton["props"]["type"]> ): this {
     this.props.type = type;
 
     this.domElement.classList.remove( styles.typePrimary );
