@@ -4,8 +4,35 @@
  */
 
 .component {
-  font-weight: var(--text-font-weight);
-  text-align: left;
-  font-size: 1rem;
-  font-family: "Inter", sans-serif;
+  width: 8rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.innerSlider {
+  height: 2rem;
+  width: 100%;
+}
+
+.fillProgress {
+  background: palevioletred;
+  height: 100%;
+}
+
+.thumb {
+  --element-width: 2rem;
+
+  background: green;
+  width: var(--element-width);
+  height: var(--element-width);
+  position: absolute;
+  pointer-events: none;
+}
+
+.track {
+  background: blue;
+  height: 2rem;
 }

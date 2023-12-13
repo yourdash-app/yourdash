@@ -13,37 +13,81 @@ export default class Slider extends UKComponent<{
   stepSize?: number,
   accessibleName?: string
 }> {
-  protected domElement: HTMLInputElement
+  domElement: HTMLDivElement
+  sliderDomElement: HTMLInputElement
+  thumbDomElement: HTMLDivElement
+  trackDomElement: HTMLDivElement
+  fillProgressDomElement: HTMLDivElement
 
   constructor( props: Slider["props"] ) {
     super( props );
 
-    this.domElement = document.createElement( "input" )
-    this.domElement.type = "range"
+    this.domElement = document.createElement( "div" )
+    this.domElement.classList.add( styles.component )
 
-    this.domElement.onchange = () => {
-      const value = this.domElement.value
-      this.props.onChange( Number( value ) )
+    this.sliderDomElement = document.createElement( "input" )
+    this.sliderDomElement.type = "range"
+    this.domElement.appendChild( this.sliderDomElement )
+
+    this.thumbDomElement = document.createElement( "div" )
+    this.thumbDomElement.classList.add( styles.thumb )
+    this.domElement.appendChild( this.thumbDomElement )
+
+    this.trackDomElement = document.createElement( "div" )
+    this.trackDomElement.classList.add( styles.track )
+    this.domElement.appendChild( this.trackDomElement )
+
+    this.fillProgressDomElement = document.createElement( "div" )
+    this.fillProgressDomElement.classList.add( styles.fillProgress )
+    this.trackDomElement.appendChild( this.fillProgressDomElement )
+
+    this.sliderDomElement.oninput = () => {
+      const value = this.sliderDomElement.valueAsNumber
+      this.props.onChange( value )
+
+      const percentageFilled = this.getPercentageFilledFromValue( value )
+
+      this.fillProgressDomElement.style.width = `${ percentageFilled }%`
+      this.thumbDomElement.style.left = `calc(${ percentageFilled }% - calc(var(--element-width))`
     }
 
     if ( props.min ) {
-      this.domElement.min = props["min"]?.toString()
+      this.setMin( props["min"] )
     }
 
-    if ( props.max ) {
-      this.domElement.max = props["max"]?.toString()
-    }
+    if ( props.max )
+      this.setMax( props["max"] )
 
-    if ( props.stepSize ) {
-      this.domElement.step = props["stepSize"]?.toString()
-    }
+    if ( props.stepSize )
+      this.setStepSize( props["stepSize"] )
 
-    this.domElement.classList.add( styles.component )
+    this.sliderDomElement.classList.add( styles.innerSlider )
 
-    if ( props.accessibleName ) {
-      this.domElement.name = props.accessibleName
-    }
+    if ( props.accessibleName )
+      this.sliderDomElement.name = props["accessibleName"]
 
     return this
+  }
+
+  setStepSize( stepSize: number ) {
+    this.sliderDomElement.step = stepSize.toString()
+
+    return this
+  }
+
+  setMax( max: number ) {
+    this.sliderDomElement.max = max.toString()
+
+    return this
+  }
+
+  setMin( min: number ) {
+    this.sliderDomElement.min = min.toString()
+
+    return this
+  }
+
+  getPercentageFilledFromValue( value: number ) {
+    return ( value - Number( this.sliderDomElement.min || 0 ) ) / ( Number( this.sliderDomElement.max || 100 ) - Number(  this.sliderDomElement.min || 0 ) ) * 100
   }
 }

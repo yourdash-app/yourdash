@@ -10,7 +10,7 @@ export type UKComponentSlots = { [ key: string ]: State<ValidUKComponent> }
 export type UKComponentProps = { [ key: string ]: unknown } | undefined
 
 export class UKComponent<ComponentProps = UKComponentProps, ComponentSlots = UKComponentSlots> {
-  protected domElement: HTMLElement;
+  domElement: HTMLElement;
   declare readonly parentDomElement: HTMLElement;
   slots: ComponentSlots;
   props: ComponentProps;
@@ -25,6 +25,8 @@ export class UKComponent<ComponentProps = UKComponentProps, ComponentSlots = UKC
 }
 
 export class UKSlotComponent<ComponentProps = UKComponentProps> extends UKComponentSlot {
+  // @ts-ignore
+  domElement: HTMLElement;
   declare readonly parentDomElement: HTMLElement;
   props: ComponentProps;
 

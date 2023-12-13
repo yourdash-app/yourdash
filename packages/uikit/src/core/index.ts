@@ -5,7 +5,7 @@
 
 /** UIKit - a vanilla Typescript UI library (https://github.com/yourdash-app/yourdash/tree/main/packages/uikit) */
 
-import { ValidUKComponent } from "./component.ts";
+import { UKComponent, ValidUKComponent } from "./component.ts";
 import "./default.scss";
 
 // Modify the typescript global window object to contain the __uikit__ object
@@ -24,11 +24,13 @@ window.__uikit__ = {
   root: undefined! // eslint-disable-line @typescript-eslint/no-non-null-assertion
 };
 
-export default class UIKit {
+export default class UIKit extends UKComponent {
   domElement: HTMLDivElement | HTMLBodyElement;
   children: ValidUKComponent[] = [];
 
   constructor( container: HTMLDivElement | HTMLBodyElement ) {
+    super( {} )
+
     window.__uikit__.root = this;
     // @ts-ignore
     window.__uikit__[ "componentTree" ].push( this );
@@ -66,6 +68,7 @@ export default class UIKit {
 
   createComponent<T extends ValidUKComponent>( component: new( props: T["props"] ) => T, props: T["props"] ) {
     const comp = new component( props );
+
     // @ts-ignore
     // noinspection JSConstantReassignment
     comp.parentDomElement = this.domElement;
