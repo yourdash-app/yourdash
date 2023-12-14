@@ -46,9 +46,7 @@ export default class Slider extends UKComponent<{
       this.props.onChange( value )
 
       const percentageFilled = this.getPercentageFilledFromValue( value )
-
-      this.fillProgressDomElement.style.width = `${ percentageFilled }%`
-      this.thumbDomElement.style.left = `calc(${ percentageFilled }% - calc(var(--element-width))`
+      this.domElement.style.setProperty( "--percentage-filled", `${ percentageFilled }%` )
     }
 
     if ( props.min ) {

@@ -5,6 +5,7 @@
 
 .component {
   width: 8rem;
+  --component-height: 1.75rem;
   height: 2rem;
   display: flex;
   align-items: center;
@@ -13,26 +14,34 @@
 }
 
 .innerSlider {
-  height: 2rem;
+  height: var(--component-height);
   width: 100%;
 }
 
 .fillProgress {
+  pointer-events: none;
   background: palevioletred;
-  height: 100%;
+  height: var(--component-height);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--percentage-filled);
 }
 
 .thumb {
-  --element-width: 2rem;
+  --thumb-width: 1rem;
 
   background: green;
-  width: var(--element-width);
-  height: var(--element-width);
+  width: var(--thumb-width);
+  height: var(--component-height);
   position: absolute;
+  top: 0;
   pointer-events: none;
+  left: calc(calc(var(--thumb-width) + var(--percentage-filled)) - calc(var(--percentage-filled) * var(--thumb-width)));
 }
 
 .track {
   background: blue;
-  height: 2rem;
+  height: var(--component-height);
+  pointer-events: none;
 }

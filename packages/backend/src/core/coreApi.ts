@@ -217,8 +217,8 @@ export class CoreApi {
       next();
     } );
 
+    // INFO: This should not be used for detection of a YourDash Instance, instead use the '/test' endpoint
     this.expressServer.get( "/", ( _req, res ) => {
-      // INFO: This should not be used for detection of a YourDash Instance, instead use the '/test' endpoint
       return res.send( "Hello from the YourDash instance software! 👋" );
     } );
 
