@@ -4,44 +4,49 @@
  */
 
 .component {
-  width: 8rem;
+  --component-width: 8rem;
   --component-height: 1.75rem;
-  height: 2rem;
+  width: var(--component-width);
+  height: var(--component-height);
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
+  pointer-events: none;
 }
 
 .innerSlider {
   height: var(--component-height);
   width: 100%;
+  margin: 0;
+  opacity: 0;
+  pointer-events: all;
 }
 
 .fillProgress {
   pointer-events: none;
-  background: palevioletred;
+  background: rgb(var(--input-fg));
   height: var(--component-height);
   position: absolute;
   top: 0;
-  left: 0;
-  width: var(--percentage-filled);
-}
-
-.thumb {
-  --thumb-width: 1rem;
-
-  background: green;
-  width: var(--thumb-width);
-  height: var(--component-height);
-  position: absolute;
-  top: 0;
-  pointer-events: none;
-  left: calc(calc(var(--thumb-width) + var(--percentage-filled)) - calc(var(--percentage-filled) * var(--thumb-width)));
+  left: -5rem;
+  width: calc(var(--percentage-filled) + 5rem);
+  border-radius: var(--input-rounding);
+  transition: var(--transition-fast);
 }
 
 .track {
-  background: blue;
+  background: rgb(var(--input-bg));
   height: var(--component-height);
+  width: var(--component-width);
+  border-radius: var(--input-rounding);
+  position: absolute;
+  top: 0;
+  left: 0;
   pointer-events: none;
+  overflow: hidden;
+}
+
+.interval {
+
 }

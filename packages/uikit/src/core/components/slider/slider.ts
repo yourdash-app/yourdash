@@ -29,10 +29,6 @@ export default class Slider extends UKComponent<{
     this.sliderDomElement.type = "range"
     this.domElement.appendChild( this.sliderDomElement )
 
-    this.thumbDomElement = document.createElement( "div" )
-    this.thumbDomElement.classList.add( styles.thumb )
-    this.domElement.appendChild( this.thumbDomElement )
-
     this.trackDomElement = document.createElement( "div" )
     this.trackDomElement.classList.add( styles.track )
     this.domElement.appendChild( this.trackDomElement )
@@ -40,6 +36,10 @@ export default class Slider extends UKComponent<{
     this.fillProgressDomElement = document.createElement( "div" )
     this.fillProgressDomElement.classList.add( styles.fillProgress )
     this.trackDomElement.appendChild( this.fillProgressDomElement )
+
+    this.thumbDomElement = document.createElement( "div" )
+    this.thumbDomElement.classList.add( styles.thumb )
+    this.domElement.appendChild( this.thumbDomElement )
 
     this.sliderDomElement.oninput = () => {
       const value = this.sliderDomElement.valueAsNumber
@@ -64,6 +64,10 @@ export default class Slider extends UKComponent<{
     if ( props.accessibleName )
       this.sliderDomElement.name = props["accessibleName"]
 
+    const value = this.sliderDomElement.valueAsNumber
+    const percentageFilled = this.getPercentageFilledFromValue( value )
+    this.domElement.style.setProperty( "--percentage-filled", `${ percentageFilled }%` )
+
     return this
   }
 
@@ -75,17 +79,27 @@ export default class Slider extends UKComponent<{
 
   setMax( max: number ) {
     this.sliderDomElement.max = max.toString()
-
     return this
+  }
+
+  getMax() {
+    return this.sliderDomElement.max
   }
 
   setMin( min: number ) {
     this.sliderDomElement.min = min.toString()
-
     return this
   }
 
-  getPercentageFilledFromValue( value: number ) {
-    return ( value - Number( this.sliderDomElement.min || 0 ) ) / ( Number( this.sliderDomElement.max || 100 ) - Number(  this.sliderDomElement.min || 0 ) ) * 100
+  getMin() {
+    return this.sliderDomElement.min
+  }
+
+  private getPercentageFilledFromValue( value: number ) {
+    const min = Number( this.sliderDomElement.min || "0" )
+    const max = Number( this.sliderDomElement.max || "100" )
+
+    // return the position of the thumb on the range element "sliderDomElement"
+    return ( value - min ) / ( max - min ) * 100
   }
 }

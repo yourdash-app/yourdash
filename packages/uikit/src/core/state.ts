@@ -21,7 +21,6 @@ export default class State<T> {
 
   set( value: T ): void {
     this.value = value
-
     this.hooks.forEach( hook => {
       hook( this.value )
     } )
