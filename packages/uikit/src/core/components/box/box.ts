@@ -6,7 +6,7 @@
 import { UKSlotComponent } from "../../component.ts";
 import styles from "./box.module.scss";
 
-export interface BoxProps {
+export default class Box extends UKSlotComponent<{
   noBorder?: boolean | { top?: boolean, right?: boolean, bottom?: boolean, left?: boolean };
   noRounding?: boolean;
   dimensions?: {
@@ -16,10 +16,8 @@ export interface BoxProps {
   flex?: "row" | "column" | false,
   alignItems?: CSSStyleDeclaration["alignItems"],
   justifyContent?: CSSStyleDeclaration["justifyContent"]
-}
-
-export default class Box extends UKSlotComponent<BoxProps> {
-  constructor( props: BoxProps ) {
+}> {
+  constructor( props: Box["props"] ) {
     super( props );
 
     this.domElement = document.createElement( "div" )

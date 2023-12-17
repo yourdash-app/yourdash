@@ -31,6 +31,10 @@ export default class UIKit extends UKComponent {
   constructor( container: HTMLDivElement | HTMLBodyElement ) {
     super( {} )
 
+    if ( window.__uikit__.root ) {
+      throw new Error( "UIKit is already initialized! You should only have one instance of UIKit in your app and never use UIKit as a component." );
+    }
+
     window.__uikit__.root = this;
     // @ts-ignore
     window.__uikit__[ "componentTree" ].push( this );
@@ -66,7 +70,7 @@ export default class UIKit extends UKComponent {
     this.domElement.classList.add( "__uikit__no-animations" );
   }
 
-  createComponent<T extends ValidUKComponent>( component: new( props: T["props"] ) => T, props: T["props"] ) {
+  createComponent<T extends ValidUKComponent>( component: new ( props: T[ "props" ] ) => T, props: T[ "props" ] ) {
     const comp = new component( props );
 
     // @ts-ignore

@@ -4,20 +4,9 @@
  */
 
 import { UKComponentSlots, ValidUKComponent } from "./component.ts";
-import * as UIKit from "./index.ts";
 
-/* UKTree
-
-  <T extends ValidUKComponent>[ T, T["props"], T["slots"]][]
-
-  make slots optional
-
- */
-
-export type UKTree<T extends ValidUKComponent> = [ T, T["props"], T extends { slots: UKComponentSlots } ? T["slots"] : undefined ][]
-
-
-export default [
-  [ UIKit.Box, { noBorder: true }, undefined],
-  [ UIKit.Text as unknown as ValidUKComponent, { content: true }, undefined],
-] as UKTree<ValidUKComponent>;
+export interface UKTree<T extends ValidUKComponent = ValidUKComponent> {
+  component: new ( props: T["props"] ) => T,
+  props: T["props"];
+  slots: T extends { slots: UKComponentSlots } ? T["slots"] : undefined;
+}

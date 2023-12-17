@@ -6,32 +6,40 @@
 import { ValidUKComponent } from "./component";
 import State from "./state";
 
-export default class UKComponentSlot extends State<ValidUKComponent> {
+export default class UKComponentSlot<ValidComponentType extends ValidUKComponent = ValidUKComponent> extends State<ValidUKComponent> {
   protected domElement: HTMLElement
+  private component: ValidUKComponent | undefined
 
   constructor( domElement: HTMLElement ) {
     super();
 
     this.domElement = domElement
+    this.component = undefined;
   }
 
-  createComponent<T extends ValidUKComponent>( component: new ( props: T["props"] ) => T, props: T["props"] = {} ) {
-    const comp = new component( props )
+  createComponent<T extends ValidComponentType>( component: new ( props: T[ "props" ] ) => T, props: T[ "props" ] ) {
+    this.component = new component( props );
+    this.domElement.appendChild( this.component.domElement );
 
-    // @ts-ignore
-    // noinspection JSConstantReassignment
-    comp.parentDomElement = this.domElement
-    comp.parentDomElement.appendChild( comp.domElement )
-
-    return comp
+    return this.component;
   }
 
-  add( component: ValidUKComponent ) {
-    // @ts-ignore
-    // noinspection JSConstantReassignment
-    component.parentDomElement = this.domElement
-    component.parentDomElement.appendChild( component.domElement )
+  setComponent( component: ValidComponentType ) {
+    this.component = component;
+    this.domElement.innerHTML = "";
+    this.domElement.appendChild( component.domElement );
 
-    return component
+    return this.component;
+  }
+
+  getComponent() {
+    return this.component
+  }
+
+  clear() {
+    this.domElement.innerHTML = "";
+    this.component = undefined;
+
+    return this
   }
 }

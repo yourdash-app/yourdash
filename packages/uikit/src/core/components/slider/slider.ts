@@ -95,6 +95,15 @@ export default class Slider extends UKComponent<{
     return this.sliderDomElement.min
   }
 
+  setValue( value: number ) {
+    this.sliderDomElement.value = value.toString()
+    return this
+  }
+
+  getValue() {
+    return this.sliderDomElement.valueAsNumber
+  }
+
   private getPercentageFilledFromValue( value: number ) {
     const min = Number( this.sliderDomElement.min || "0" )
     const max = Number( this.sliderDomElement.max || "100" )

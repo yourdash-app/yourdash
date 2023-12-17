@@ -20,7 +20,7 @@ class ApplicationCore {
   init(): this {
     this.electron.ipcRenderer.postMessage( "core-log-renderer-startup", "ok" );
 
-    this.uiKitRoot.createComponent( coreView )
+    this.uiKitRoot.createComponent( coreView, {} )
 
     return this;
   }

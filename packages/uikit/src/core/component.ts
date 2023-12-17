@@ -4,12 +4,14 @@
  */
 
 import UKComponentSlot from "./slot.ts";
-import State from "./state.ts";
 
-export type UKComponentSlots = { [ key: string ]: State<ValidUKComponent> }
+export type UKComponentSlots = { [ key: string ]: UKComponentSlot } | undefined
 export type UKComponentProps = { [ key: string ]: unknown } | undefined
 
-export class UKComponent<ComponentProps = UKComponentProps, ComponentSlots = UKComponentSlots> {
+export class UKComponent<
+  ComponentProps extends UKComponentProps = UKComponentProps,
+  ComponentSlots extends UKComponentSlots = UKComponentSlots
+> {
   domElement: HTMLElement;
   declare readonly parentDomElement: HTMLElement;
   slots: ComponentSlots;
@@ -17,27 +19,29 @@ export class UKComponent<ComponentProps = UKComponentProps, ComponentSlots = UKC
 
   constructor( props: ComponentProps ) {
     this.slots = {} as ComponentSlots;
-    this.props = props as ComponentProps;
+    this.props = props as ComponentProps || {} as ComponentProps;
     this.domElement = document.createElement( "uk-empty-component" ) as HTMLDivElement;
 
     return this;
   }
 }
 
-export class UKSlotComponent<ComponentProps = UKComponentProps> extends UKComponentSlot {
+export class UKSlotComponent<
+  ComponentProps extends UKComponentProps = UKComponentProps
+> extends UKComponent<ComponentProps, undefined> {
   // @ts-ignore
   domElement: HTMLElement;
   declare readonly parentDomElement: HTMLElement;
-  props: ComponentProps;
 
   constructor( props: ComponentProps ) {
-    super( document.createElement( "uk-empty-component" ) as HTMLDivElement );
-
-    this.props = props as ComponentProps;
+    super( props );
 
     return this;
   }
 }
 
 
-export type ValidUKComponent = UKComponent | UKSlotComponent
+export type ValidUKComponent<
+  ComponentProps extends UKComponentProps = UKComponentProps,
+  ComponentSlots extends UKComponentSlots = UKComponentSlots
+> = UKComponent<ComponentProps, ComponentSlots> | UKSlotComponent<ComponentProps>

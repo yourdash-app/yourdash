@@ -4,7 +4,6 @@
  */
 
 import { electronApp, is } from "@electron-toolkit/utils";
-import { UK } from "@yourdash/uikit";
 import { app, BrowserWindow, ipcMain, Menu, MenuItem, shell } from "electron";
 import { join } from "path";
 import APPLICATION_ICON from "./resources/icon.png?asset";
@@ -55,18 +54,20 @@ function createWindow(): void {
   } );
 
   mainWindow.webContents.setWindowOpenHandler( ( details ) => {
-    shell.openExternal( details.url );
+    shell.openExternal( details.url ).then( () => 0 )
     return { action: "deny" };
   } );
 
   if ( is.dev && process.env[ "ELECTRON_RENDERER_URL" ] ) {
     // Load the internal vite server if in development mode
-    // mainWindow.loadURL( process.env[ "ELECTRON_RENDERER_URL" ] );
-    mainWindow.loadURL( "http://localhost:5173/#/linker-desktop-client-startup" );
+    // mainWindow.loadURL(process.env[ "ELECTRON_RENDERER_URL" ]);
+    mainWindow.loadURL( "http://localhost:5173/#/linker-desktop-client-startup" ).then( () => 0 );
   } else {
-    // Load the index.html when running the app in production
+    // Load the local web-client when running the app in production
     // mainWindow.loadFile( join( __dirname, "../renderer/index.html" ) );
-    mainWindow.loadURL( "https://ydsh.pages.dev/#/linker-desktop-client-startup" );
+
+    // TODO: replace with a local build of the web-client in the future
+    mainWindow.loadURL( "https://ydsh.pages.dev/#/linker-desktop-client-startup" ).then( () => 0 );
   }
 
   ipcMain.on( "core-log-renderer-startup", ( _event, msg ) => {
