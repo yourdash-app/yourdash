@@ -12,13 +12,13 @@ import csi from "../../helpers/csi";
 import panelLayout from "./PanelLayout";
 
 const Panel: React.FC<{ side: "top" | "right" | "bottom" | "left", setLayoutReloadNumber: ( num: number ) => void }> = ( { side, setLayoutReloadNumber } ) => {
-  const [widgets, setWidgets] = useState<string[]>( ["InstanceLogo", "ApplicationLauncher", "Separator", "QuickShortcuts"] )
-  const [panelSize, setPanelSize] = useState<"small" | "medium" | "large" | undefined>( undefined )
-  const [num, setNum] = useState<number>( 0 )
+  const [ widgets, setWidgets ] = useState<string[]>( [ "InstanceLogo", "ApplicationLauncher", "Separator", "QuickShortcuts" ] )
+  const [ panelSize, setPanelSize ] = useState<"small" | "medium" | "large" | undefined>( undefined )
+  const [ num, setNum ] = useState<number>( 0 )
 
   useEffect( () => {
     setPanelSize( csi.userDB.get( "core:panel:size" ) || "medium" )
-  }, [num] );
+  }, [ num ] );
 
   // @ts-ignore
   window.__yourdashCorePanelReload = () => {

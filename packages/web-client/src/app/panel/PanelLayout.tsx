@@ -18,6 +18,16 @@ const PanelLayout: React.FC = () => {
     setPanelSide( csi.userDB.get( "core:panel:side" ) || "left" );
   }, [ reloadNumber ] );
 
+  useEffect( () => {
+    window.addEventListener( "resize", () => {
+      if ( window.innerWidth < 768 ) {
+        setPanelSide( "bottom" );
+      } else {
+        setPanelSide( csi.userDB.get( "core:panel:side" ) || "left" );
+      }
+    } )
+  }, [] );
+
   if ( panelSide === undefined ) {
     return <></>;
   }
@@ -26,30 +36,30 @@ const PanelLayout: React.FC = () => {
   case "top":
     return <div className={ clippy( styles.layout, styles.top ) }>
       <Panel side={ "top" } setLayoutReloadNumber={ ( num ) => setReloadNumber( num ) } />
-      <div className={ styles.applicationFrame }>
-        <Outlet />
+      <div key={1} className={ styles.applicationFrame }>
+        <Outlet key={1} />
       </div>
     </div>;
   case "left":
     return <div className={ clippy( styles.layout, styles.left ) }>
       <Panel side={ "left" } setLayoutReloadNumber={ ( num ) => setReloadNumber( num ) } />
-      <div className={ styles.applicationFrame }>
-        <Outlet />
+      <div key={1} className={ styles.applicationFrame }>
+        <Outlet key={1} />
       </div>
     </div>;
   case "bottom":
     return <div className={ clippy( styles.layout, styles.bottom ) }>
-      <div className={ styles.applicationFrame }>
-        <Outlet />
-      </div>
       <Panel side={ "bottom" } setLayoutReloadNumber={ ( num ) => setReloadNumber( num ) } />
+      <div key={1} className={ styles.applicationFrame }>
+        <Outlet key={1} />
+      </div>
     </div>;
   case "right":
     return <div className={ clippy( styles.layout, styles.right ) }>
-      <div className={ styles.applicationFrame }>
-        <Outlet />
-      </div>
       <Panel side={ "right" } setLayoutReloadNumber={ ( num ) => setReloadNumber( num ) } />
+      <div key={1} className={ styles.applicationFrame }>
+        <Outlet key={1} />
+      </div>
     </div>;
   default:
     return <>An Unexpected Error Occurred</>;
