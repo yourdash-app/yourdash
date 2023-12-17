@@ -8,37 +8,25 @@ import State from "./state";
 
 export default class UKComponentSlot<ValidComponentType extends ValidUKComponent = ValidUKComponent> extends State<ValidUKComponent> {
   domElement: HTMLElement
-  private component: ValidUKComponent | undefined
+  __internal__component: ValidUKComponent | undefined
 
   constructor( domElement: HTMLElement ) {
     super();
 
     this.domElement = domElement
-    this.component = undefined;
+    this.__internal__component = undefined;
   }
 
   createComponent<T extends ValidComponentType>( component: new ( props: T[ "props" ] ) => T, props: T[ "props" ] ) {
-    this.component = new component( props );
-    this.domElement.appendChild( this.component.domElement );
+    this.__internal__component = new component( props );
+    this.domElement.appendChild( this.__internal__component.domElement );
 
-    return this.component;
-  }
-
-  setComponent( component: ValidComponentType ) {
-    this.component = component;
-    this.domElement.innerHTML = "";
-    this.domElement.appendChild( component.domElement );
-
-    return this.component;
-  }
-
-  getComponent() {
-    return this.component
+    return this.__internal__component;
   }
 
   clear() {
     this.domElement.innerHTML = "";
-    this.component = undefined;
+    this.__internal__component = undefined;
 
     return this
   }

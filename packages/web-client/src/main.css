@@ -116,8 +116,8 @@
 }
 
 ::-webkit-scrollbar {
-  width: 0.5rem;
-  height: 0.5rem;
+  width: 0.6rem;
+  height: 0.6rem;
   background-color: rgb(var(--container-secondary-bg));
   border-radius: 0.5rem;
 }

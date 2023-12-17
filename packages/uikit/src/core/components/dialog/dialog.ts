@@ -8,6 +8,7 @@ import { UKIcon } from "../../icons/icons.ts";
 import { UK } from "../../index.ts";
 import UKComponentSlot from "../../slot.ts";
 import { Empty } from "../index.ts";
+import styles from "./dialog.module.scss";
 
 export default class Dialog extends UKComponent<{
   closable?: boolean;
@@ -25,5 +26,26 @@ export default class Dialog extends UKComponent<{
 
   constructor( props: Dialog["props"] ) {
     super( props );
+
+    this.domElement = document.createElement( "div" );
+    this.domElement.classList.add( styles.component );
+
+    this.headlineElement = document.createElement( "h2" );
+    this.headlineElement.classList.add( styles.headline );
+
+    this.descriptionElement = document.createElement( "div" );
+    this.descriptionElement.classList.add( styles.description );
+
+    this.headlineIconComponent = new UK.Icon( {
+      icon: UKIcon.Heading
+    } );
+  }
+
+  setHeadline( headline: string ) {
+    this.headlineElement.textContent = headline;
+  }
+
+  setHeadlineIcon( icon: typeof UKIcon ) {
+    this.headlineIconComponent.setIcon( icon )
   }
 }

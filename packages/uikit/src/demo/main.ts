@@ -38,29 +38,29 @@ function init() {
   } );
 
   ui.createComponent( UK.Slider, {
-    onChange( value: number ) { console.log( value ) },
+    onChange() { return 0 },
   } );
 
   ui.createComponent( UK.Slider, {
-    onChange( value: number ) { console.log( value ) },
+    onChange() { return 0 },
     stepSize: 5
   } );
 
   ui.createComponent( UK.Slider, {
-    onChange( value: number ) { console.log( value ) },
+    onChange() { return 0 },
     min: 0,
     max: 50,
     stepSize: 10
   } );
 
   ui.createComponent( UK.Slider, {
-    onChange( value: number ) { console.log( value ) },
+    onChange() { return 0 },
     min: -50,
     stepSize: 5
   } );
 
   ui.createComponent( UK.Slider, {
-    onChange( value: number ) { console.log( value ) },
+    onChange() { return 0 },
     max: 50,
     stepSize: 2
   } );
@@ -69,6 +69,10 @@ function init() {
     src: "/vite.svg",
     alt: "logo",
   } );
+
+  ui.createComponent( UK.Dialog, {
+
+  } )
 }
 
 init();

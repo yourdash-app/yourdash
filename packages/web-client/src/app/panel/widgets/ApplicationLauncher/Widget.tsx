@@ -10,13 +10,13 @@ import ApplicationLauncher from "./launcher/Launcher";
 import { useLocation } from "react-router";
 
 const ApplicationLauncherWidget: React.FC<{ side: "top" | "right" | "bottom" | "left" }> = ( { side } ) => {
-  const [launcherVisible, setLauncherVisible] = React.useState<boolean>( false )
+  const [ launcherVisible, setLauncherVisible ] = React.useState<boolean>( false )
   const location = useLocation()
-  
+
   useEffect( () => {
     setLauncherVisible( false )
-  }, [location] );
-  
+  }, [ location ] );
+
   return <div className={styles.widgetContainer}>
     <IconButton
       icon={YourDashIcon.Apps}

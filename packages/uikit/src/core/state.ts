@@ -4,33 +4,33 @@
  */
 
 export default class State<T> {
-  private value: T;
-  private hooks: ( ( value: T ) => void )[]
+  __internal__value: T;
+  __internal__hooks: ( ( value: T ) => void )[]
 
   constructor( initialValue?: T ) {
     if ( initialValue ) {
-      this.value = initialValue
+      this.__internal__value = initialValue
     } else {
-      this.value = null as T
+      this.__internal__value = null as T
     }
 
-    this.hooks = []
+    this.__internal__hooks = []
 
     return this
   }
 
   set( value: T ): void {
-    this.value = value
-    this.hooks.forEach( hook => {
-      hook( this.value )
+    this.__internal__value = value
+    this.__internal__hooks.forEach( hook => {
+      hook( this.__internal__value )
     } )
   }
 
   get(): T {
-    return this.value
+    return this.__internal__value
   }
 
   addListener( callback: ( value: T ) => void ): void {
-    this.hooks.push( callback )
+    this.__internal__hooks.push( callback )
   }
 }

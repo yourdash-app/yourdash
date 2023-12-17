@@ -15,15 +15,49 @@
   overflow-y: auto;
 }
 
+.content {
+  @container(max-width: calc(100vw - var(--app-panel-size))) {
+    width: calc(100% - var(--app-panel-size));
+  }
+
+  @container(max-height: calc(100vh - var(--app-panel-size))) {
+    height: calc(100% - var(--app-panel-size));
+  }
+}
+
 @mixin horizontal {
   max-width: 75%;
   left: 0;
+
+  @media (max-width: 768px) {
+    max-width: unset;
+    width: 100%;
+    border-radius: 0;
+  }
+
+  @media (max-height: 768px) {
+    max-height: unset;
+    height: calc(100vh - var(--app-panel-size));
+    border-radius: 0;
+  }
 }
 
 @mixin vertical {
   max-height: 90%;
   min-height: max-content;
   top: 0;
+
+  @media (max-width: 768px) {
+    max-width: unset;
+    width: calc(100vw - var(--app-panel-size));
+    border-radius: 0;
+  }
+
+  @media (max-height: 768px) {
+    max-height: unset;
+    height: 100%;
+    border-radius: 0;
+  }
 }
 
 .sideTop {
