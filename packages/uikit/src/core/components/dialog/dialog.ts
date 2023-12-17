@@ -18,6 +18,11 @@ export default class Dialog extends UKComponent<{
   content?: UKComponentSlot<ValidUKComponent>,
   options?: UKComponentSlot<Empty | UK.Button /* TODO: implement this => UK.Link */>
 }> {
+  domElement: HTMLDivElement
+  headlineElement: HTMLHeadingElement
+  descriptionElement: HTMLDivElement
+  headlineIconComponent: UK.Icon
+
   constructor( props: Dialog["props"] ) {
     super( props );
   }

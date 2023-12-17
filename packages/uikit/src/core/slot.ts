@@ -7,7 +7,7 @@ import { ValidUKComponent } from "./component";
 import State from "./state";
 
 export default class UKComponentSlot<ValidComponentType extends ValidUKComponent = ValidUKComponent> extends State<ValidUKComponent> {
-  protected domElement: HTMLElement
+  domElement: HTMLElement
   private component: ValidUKComponent | undefined
 
   constructor( domElement: HTMLElement ) {
