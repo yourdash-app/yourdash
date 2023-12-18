@@ -5,15 +5,17 @@
 
 /** UIKit - a vanilla Typescript UI library (https://github.com/yourdash-app/yourdash/tree/main/packages/uikit) */
 
-import { UKComponent, ValidUKComponent } from "./component.ts";
+import { ValidUKComponent } from "./component.ts";
 import "./default.scss";
+import UKContext from "./context.ts";
+import domUtils from "./domUtils.ts";
 
 // Modify the typescript global window object to contain the __uikit__ object
 declare global {
   interface Window {
     __uikit__: {
       componentTree: ValidUKComponent[],
-      root: UIKit
+      root: UIKitCore
     };
   }
 }
@@ -24,13 +26,13 @@ window.__uikit__ = {
   root: undefined! // eslint-disable-line @typescript-eslint/no-non-null-assertion
 };
 
-export default class UIKit extends UKComponent {
-  domElement: HTMLDivElement | HTMLBodyElement;
-  children: ValidUKComponent[] = [];
+class UIKitCore {
+  contexts: UKContext[] = [];
+  dom = domUtils
 
-  constructor( container: HTMLDivElement | HTMLBodyElement ) {
-    super( {} )
+  areAnimationsEnabled = false
 
+  constructor() {
     if ( window.__uikit__.root ) {
       throw new Error( "UIKit is already initialized! You should only have one instance of UIKit in your app and never use UIKit as a component." );
     }
@@ -38,19 +40,6 @@ export default class UIKit extends UKComponent {
     window.__uikit__.root = this;
     // @ts-ignore
     window.__uikit__[ "componentTree" ].push( this );
-    this.domElement = container;
-    this.domElement.classList.add( "__uikit__" );
-
-    // define the accent color
-    this.domElement.style.setProperty( "--accent-bg", "#469ff5" );
-
-    // define the accent color text color either black or white depending on the accent color's contrast
-    this.domElement.style.setProperty(
-      "--accent-fg",
-      window.getComputedStyle( document.body ).getPropertyValue( "--accent-color" ) === "#469ff5"
-        ? "0, 0, 0"
-        : "255, 255, 255"
-    );
 
     // Support the prefers-reduced-motion media query
     if ( window.matchMedia( "(prefers-reduced-motion: reduce)" ).matches ) {
@@ -63,14 +52,45 @@ export default class UIKit extends UKComponent {
   }
 
   enableAnimations() {
-    this.domElement.classList.remove( "__uikit__no-animations" );
+    this.contexts.forEach( context => {
+      context.containerElement.classList.remove( "__uikit__no-animations" );
+    } )
+
+    this.areAnimationsEnabled = true
   }
 
   disableAnimations() {
-    this.domElement.classList.add( "__uikit__no-animations" );
+    this.contexts.forEach( context => {
+      context.containerElement.classList.add( "__uikit__no-animations" );
+    } )
+
+    this.areAnimationsEnabled = false
   }
 
-  createComponent<T extends ValidUKComponent>( component: new ( props: T[ "props" ] ) => T, props: T[ "props" ] ) {
+  distructAllContexts() {
+    this.contexts.forEach( context => {
+      context.containerElement.remove();
+    } );
+
+    console.warn( "UIKIT: Distructed all contexts!" );
+  }
+
+  createContext( containerElement: HTMLDivElement | HTMLBodyElement ) {
+    const context = new UKContext( containerElement );
+    context.containerElement.classList.add( "__uikit__" );
+
+    if ( this.areAnimationsEnabled ) {
+      context.containerElement.classList.remove( "__uikit__no-animations" );
+    } else {
+      context.containerElement.classList.add( "__uikit__no-animations" );
+    }
+
+    this.contexts.push( context );
+
+    return context
+  }
+
+  createComponent<T extends ValidUKComponent>( component: new ( props: T[ "props" ] ) => T, props: T[ "props" ], slots?: T[ "slots" ] ) {
     const comp = new component( props );
 
     // @ts-ignore
@@ -78,10 +98,21 @@ export default class UIKit extends UKComponent {
     comp.parentDomElement = this.domElement;
     comp.parentDomElement.appendChild( comp.domElement );
 
-    this.children.push( comp );
+    if ( slots ) {
+      Object.keys( slots ).forEach( key => {
+        // @ts-ignore
+        // noinspection JSConstantReassignment
+        comp.slots[ key ].set( slots[ key ] );
+      } )
+    }
+
     return comp;
   }
 }
+
+const UIKit = new UIKitCore();
+
+export default UIKit;
 
 export * as UK from "./components/index.ts";
 export { UKComponent, UKSlotComponent } from "./component.ts";

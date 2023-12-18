@@ -12,12 +12,12 @@ import styles from "./dialog.module.scss";
 
 export default class Dialog extends UKComponent<{
   closable?: boolean;
-  headlineIcon?: typeof UKIcon;
+  headlineIcon?: typeof UKIcon[keyof typeof UKIcon];
   headline?: string;
   description?: string;
 }, {
   content?: UKComponentSlot<ValidUKComponent>,
-  options?: UKComponentSlot<Empty | UK.Button /* TODO: implement this => UK.Link */>
+  options?: UKComponentSlot<UK.Button[] /* TODO: implement this => UK.Link */>
 }> {
   domElement: HTMLDivElement
   headlineElement: HTMLHeadingElement
@@ -39,13 +39,14 @@ export default class Dialog extends UKComponent<{
     this.headlineIconComponent = new UK.Icon( {
       icon: UKIcon.Heading
     } );
+    this.headlineIconComponent.domElement.classList.add( styles.headlineIcon );
   }
 
   setHeadline( headline: string ) {
     this.headlineElement.textContent = headline;
   }
 
-  setHeadlineIcon( icon: typeof UKIcon ) {
+  setHeadlineIcon( icon: keyof typeof UKIcon ) {
     this.headlineIconComponent.setIcon( icon )
   }
 }

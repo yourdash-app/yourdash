@@ -3,14 +3,14 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import UIKit from "../../../core";
+import UKContext from "../../../core/context.ts";
 import createDisabledButtons from "./disabledButtons.ts";
 import createTransparentButtons from "./transparentButtons.ts";
 import createButtons from "./normalButtons.ts";
-import Card from "../../../core/components/card/card.ts";
+import { UK } from "../../../core/index.ts";
 
-export default function createButtonsSection( ui: UIKit ) {
-  const cardContainer = ui.createComponent( Card, {} )
+export default function createButtonsSection( ui: UKContext ) {
+  const cardContainer = ui.createAndRenderComponent( UK.Card, {} )
 
   createButtons( cardContainer )
   createTransparentButtons( cardContainer )

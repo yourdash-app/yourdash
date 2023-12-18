@@ -6,9 +6,9 @@
 import { ValidUKComponent } from "./component";
 import State from "./state";
 
-export default class UKComponentSlot<ValidComponentType extends ValidUKComponent = ValidUKComponent> extends State<ValidUKComponent> {
+export default class UKComponentSlot<ValidComponentType extends ValidUKComponent | ValidUKComponent[] = ValidUKComponent> extends State<ValidComponentType> {
   domElement: HTMLElement
-  __internal__component: ValidUKComponent | undefined
+  __internal__component: ValidComponentType | undefined
 
   constructor( domElement: HTMLElement ) {
     super();

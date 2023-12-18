@@ -4,6 +4,7 @@
  */
 
 import { UKComponent } from "../../component.ts";
+import domUtils from "../../domUtils.ts";
 import styles from "./button.module.scss";
 
 export default class Button extends UKComponent<{
@@ -15,14 +16,14 @@ export default class Button extends UKComponent<{
   type?: "primary" | "secondary" | "tertiary",
 }> {
   constructor( props: Button["props"] ) {
-    super(props);
+    super( props );
 
     this.domElement = document.createElement( "button" )
     this.setLabel( props.label )
     this.domElement.classList.add( styles.component )
 
     if ( this.props.size )
-      this.setSize( this.props.size )
+      this.setSize( this.props[ "size" ] )
 
     if ( this.props.transparent )
       this.setTransparent( true )
@@ -33,7 +34,7 @@ export default class Button extends UKComponent<{
     if ( this.props.type === undefined ) {
       this.setType( "secondary" )
     } else {
-      this.setType( this.props.type )
+      this.setType( this.props[ "type" ] )
     }
 
     this.domElement.addEventListener( "click", this.click.bind( this ) )
@@ -62,15 +63,14 @@ export default class Button extends UKComponent<{
   setSize( size: Required<Button["props"]["size"]> ): this {
     this.props.size = size
 
-    this.domElement.classList.remove( styles.sizeSmall )
-    this.domElement.classList.remove( styles.sizeLarge )
+    const SIZE_CONFLICTS = [ styles.sizeLarge, styles.sizeSmall ]
 
     switch ( size ) {
     case "small":
-      this.domElement.classList.add( styles.sizeSmall )
+      domUtils.addClass( this.domElement, styles.sizeSmall, { confilcts: SIZE_CONFLICTS } )
       break;
     case "large":
-      this.domElement.classList.add( styles.sizeLarge )
+      domUtils.addClass( this.domElement, styles.sizeLarge, { confilcts: SIZE_CONFLICTS } )
       break;
     default:
       break;
@@ -89,19 +89,17 @@ export default class Button extends UKComponent<{
   setType( type: Required<Button["props"]["type"]> ): this {
     this.props.type = type
 
-    this.domElement.classList.remove( styles.typePrimary )
-    this.domElement.classList.remove( styles.typeSecondary )
-    this.domElement.classList.remove( styles.typeTertiary )
+    const TYPE_CONFLICTS = [ styles.typePrimary, styles.typeSecondary, styles.typeTertiary ]
 
     switch ( type ) {
     case "primary":
-      this.domElement.classList.add( styles.typePrimary )
+      domUtils.addClass( this.domElement, styles.typePrimary, { confilcts: TYPE_CONFLICTS } )
       break;
     case "secondary":
-      this.domElement.classList.add( styles.typeSecondary )
+      domUtils.addClass( this.domElement, styles.typeSecondary, { confilcts: TYPE_CONFLICTS } )
       break;
     case "tertiary":
-      this.domElement.classList.add( styles.typeTertiary )
+      domUtils.addClass( this.domElement, styles.typeTertiary, { confilcts: TYPE_CONFLICTS } )
       break;
     default:
       break;
