@@ -7,7 +7,6 @@ import { UKComponent, ValidUKComponent } from "../../component.ts";
 import { UKIcon } from "../../icons/icons.ts";
 import { UK } from "../../index.ts";
 import UKComponentSlot from "../../slot.ts";
-import { Empty } from "../index.ts";
 import styles from "./dialog.module.scss";
 
 export default class Dialog extends UKComponent<{
@@ -17,7 +16,7 @@ export default class Dialog extends UKComponent<{
   description?: string;
 }, {
   content?: UKComponentSlot<ValidUKComponent>,
-  options?: UKComponentSlot<UK.Button[] /* TODO: implement this => UK.Link */>
+  options?: UKComponentSlot<UK.Button /* TODO: implement this => UK.Link */>
 }> {
   domElement: HTMLDivElement
   headlineElement: HTMLHeadingElement
