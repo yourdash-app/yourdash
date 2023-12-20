@@ -15,10 +15,14 @@
     "tree-sitter-html": "^0.20.0",
     "tree-sitter-javascript": "^0.20.1",
     "tree-sitter-json": "^0.20.1",
-    "tree-sitter-markdown": "^0.7.1",
     "tree-sitter-python": "^0.20.4",
     "tree-sitter-scss": "https://github.com/serenadeai/tree-sitter-scss",
     "tree-sitter-typescript": "^0.20.3",
-    "tree-sitter-yaml": "^0.5.0"
+    "tree-sitter-yaml": "^0.5.0",
+    "gulp": "^4.0.2",
+    "gulp-cli": "^2.3.0"
+  },
+  "scripts": {
+    "postinstall": "yarn exec gulp"
   }
 }

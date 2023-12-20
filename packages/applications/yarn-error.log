@@ -1,0 +1,59 @@
+Arguments: 
+  /home/ewsgit/.nvm/versions/node/v18.16.1/bin/node /home/ewsgit/.nvm/versions/node/v18.16.1/bin/yarn add gulp
+
+PATH: 
+  /home/ewsgit/.pyenv/plugins/pyenv-virtualenv/shims:/home/ewsgit/.pyenv/shims:/home/ewsgit/.pyenv/bin:/home/ewsgit/path/:/home/ewsgit/.local/bin/:~/Path:/home/ewsgit/.vscode-server/bin/0ee08df0cf4527e40edc9aa28f4b5bd38bbff2b2/bin/remote-cli:/home/ewsgit/.local/bin:/home/ewsgit/.pyenv/plugins/pyenv-virtualenv/shims:/home/ewsgit/.pyenv/bin:/home/ewsgit/path/:/home/ewsgit/.local/bin/:~/Path:/home/ewsgit/.nvm/versions/node/v18.16.1/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/games:/usr/games:/usr/local/cuda-12.2/bin:/usr/local/cuda-12.2/bin
+
+Yarn version: 
+  1.22.19
+
+Node version: 
+  18.16.1
+
+Platform: 
+  linux arm64
+
+Trace: 
+  SyntaxError: /home/ewsgit/projects/yourdash/packages/applications/package.json: Unexpected token / in JSON at position 752
+      at JSON.parse (<anonymous>)
+      at /home/ewsgit/.nvm/versions/node/v18.16.1/lib/node_modules/yarn/lib/cli.js:1629:59
+      at Generator.next (<anonymous>)
+      at step (/home/ewsgit/.nvm/versions/node/v18.16.1/lib/node_modules/yarn/lib/cli.js:310:30)
+      at /home/ewsgit/.nvm/versions/node/v18.16.1/lib/node_modules/yarn/lib/cli.js:321:13
+
+npm manifest: 
+  {
+    "name": "applications",
+    "version": "1.0.0",
+    "main": "index.js",
+    "license": "MIT",
+    "type": "module",
+    "dependencies": {
+      "@types/react": "^18.2.21",
+      "@types/react-chartjs-2": "^2.5.7",
+      "chart.js": "^4.4.0",
+      "react": "^18.2.0",
+      "react-chartjs-2": "^5.2.0",
+      "react-dom": "^18.2.0",
+      "tree-sitter-css": "^0.20.0",
+      "tree-sitter-html": "^0.20.0",
+      "tree-sitter-javascript": "^0.20.1",
+      "tree-sitter-json": "^0.20.1",
+      "tree-sitter-python": "^0.20.4",
+      "tree-sitter-scss": "https://github.com/serenadeai/tree-sitter-scss",
+      "tree-sitter-typescript": "^0.20.3",
+      "tree-sitter-yaml": "^0.5.0",
+      "gulp": "^4.0.2",
+      "gulp-cli": "^2.3.0",
+      "gulp-run-command": "^0.0.10"
+    },
+    "scripts": {
+      // "postinstall": "gulp ./code_studio/gulpfile.js"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
