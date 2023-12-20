@@ -4,6 +4,11 @@
   "main": "index.js",
   "license": "MIT",
   "type": "module",
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-cli": "^2.3.0",
+    "tree-sitter-cli": "^0.20.8"
+  },
   "dependencies": {
     "@types/react": "^18.2.21",
     "@types/react-chartjs-2": "^2.5.7",
@@ -18,11 +23,9 @@
     "tree-sitter-python": "^0.20.4",
     "tree-sitter-scss": "https://github.com/serenadeai/tree-sitter-scss",
     "tree-sitter-typescript": "^0.20.3",
-    "tree-sitter-yaml": "^0.5.0",
-    "gulp": "^4.0.2",
-    "gulp-cli": "^2.3.0"
+    "tree-sitter-yaml": "^0.5.0"
   },
   "scripts": {
-    "postinstall": "yarn exec gulp"
+    "postinstall": "yarn gulp"
   }
 }

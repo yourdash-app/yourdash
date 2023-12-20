@@ -1,17 +1,47 @@
-import gulp from "gulp"
-import { exec } from "node:child_process"
-import os from "node:os"
+import gulp from "gulp";
+import { exec } from "node:child_process";
+import os from "node:os";
 
-export default function postinstall() {
+async function postinstall() {
   // code_studio
-  switch (os.platform()) {
+  async function codeStudio() {
+    switch ( os.platform() ) {
     case "win32":
-      return exec("cd ./code_studio/ && ./frontend/generate_treesitter_langs.ps1", { shell: "powershell" }, (error) => {
-        if (error) console.log(error)
-      })
+      return await new Promise( ( resolve, reject ) => {
+        let childProcessWin32 = exec( "cd ./code_studio/ && ./meta/generate_treesitter_langs.ps1", { shell: "pwsh" }, ( error, stdout ) => {
+          if ( error ) {
+            console.log( error );
+            reject( error );
+          }
+
+          resolve( stdout );
+        } );
+
+        childProcessWin32.stdout.on( "data", ( data ) => {
+          process.stdout.write( data );
+        } )
+      } )
     default:
-      return exec("cd ./code_studio/ && ./frontend/generate_treesitter_langs.sh", { shell: "bash" }, (error) => {
-        if (error) console.log(error)
-      })
+      return await new Promise( ( resolve, reject ) => {
+        let childProcess = exec( "cd ./code_studio/ && ./meta/generate_treesitter_langs.sh", { shell: "bash" }, ( error, stdout ) => {
+          if ( error ) {
+            console.log( error );
+            reject( error );
+          }
+
+          resolve( stdout );
+        } );
+
+        childProcess.stdout.on( "data", ( data ) => {
+          process.stdout.write( data );
+        } )
+      } )
+    }
   }
+
+  gulp.parallel(
+    codeStudio
+  )()
 }
+
+export default postinstall

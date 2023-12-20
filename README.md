@@ -23,9 +23,30 @@ Some of the YourDash projects include
 - YourDash Web (web-client)
 - UIKit (uikit)
 
-## Recommended IDE Setup
+## Development Setup
 
-- [Webstorm](https://www.jetbrains.com/webstorm/) + [ESLint](https://eslint.org) + [Yarn](https://yarnpkg.com/getting-started/install)
+### Requirements
+
+- Personal IDE of Choice
+    (Webstorm or VSCode is recommended)
+    - [Webstorm](https://www.jetbrains.com/webstorm/)
+    - [VSCode](https://code.visualstudio.com/)
+- Linting And Formatting
+  - [ESLint](https://eslint.org)
+- Package Manager
+  - [Yarn](https://yarnpkg.com/getting-started/install)
+- Runtimes
+  - [Node.js LTS 20.10](https://nodejs.org/en/)
+  - [Python 3.11.7](https://www.python.org/downloads/release/python-3117/)
+  - [Emscripten](https://emscripten.org/docs/getting_started/downloads.html)
+    - (Chocolately install method is prefered for windows)
+- Version Control
+  - [Git](https://git-scm.com/)
+
+
+#### Notes
+
+- Ensure Python 3.11.x is the default for installing yarn packages as 3.11.x+ will cause node-gyp errors during `yarn install`
 
 # See more in the docs
 
