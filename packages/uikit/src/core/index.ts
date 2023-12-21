@@ -90,8 +90,10 @@ class UIKitCore {
     return context
   }
 
-  createComponent<T extends ValidUKComponent>( component: new ( props: T[ "props" ] ) => T, props: T[ "props" ], slots?: T[ "slots" ] ) {
+  renderComponent<T extends ValidUKComponent>( component: new ( props: T[ "props" ] ) => T, props: T[ "props" ], slots?: T[ "slots" ] ) {
     const comp = new component( props );
+
+    console.log( comp, !!comp.domElement )
 
     // @ts-ignore
     // noinspection JSConstantReassignment

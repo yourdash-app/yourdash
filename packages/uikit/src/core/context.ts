@@ -16,7 +16,7 @@ export default class UKContext {
   }
 
   createComponent<T extends ValidUKComponent>( component: new ( props: T[ "props" ] ) => T, props: T[ "props" ], slots?: T[ "slots" ] ) {
-    return UIKit.createComponent( component, props, slots );
+    return UIKit.renderComponent( component, props, slots );
   }
 
   createAndRenderComponent<T extends ValidUKComponent>( component: new ( props: T[ "props" ] ) => T, props: T[ "props" ], slots?: T[ "slots" ] ) {

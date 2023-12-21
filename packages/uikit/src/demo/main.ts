@@ -4,8 +4,6 @@
  */
 
 import UIKit from "../core";
-import { Button, Empty } from "../core/components/index.ts";
-import UKComponentSlot from "../core/slot.ts";
 import createButtonsSection from "./sections/buttons/buttons.ts";
 import { UK } from "../core";
 import { UKIcon } from "../core/icons/icons.ts";
