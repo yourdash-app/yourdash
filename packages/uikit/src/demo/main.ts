@@ -4,6 +4,7 @@
  */
 
 import UIKit from "../core";
+import UKComponentSlot from "../core/slot.ts";
 import createButtonsSection from "./sections/buttons/buttons.ts";
 import { UK } from "../core";
 import { UKIcon } from "../core/icons/icons.ts";
@@ -62,28 +63,7 @@ function init() {
       headlineIcon: UKIcon.Apps,
       headline: "Hello World!",
       description: "This is a sample dialog description.",
-      closable: true
-    }, {
-      options: [
-        ui.createComponent(
-          UK.Button,
-          {
-            label: "Decline",
-            onClick() {
-              return 0
-            }
-          }
-        ),
-        ui.createComponent(
-          UK.Button,
-          {
-            label: "Accept",
-            onClick() {
-              return 0
-            }
-          }
-        )
-      ]
+      closable: true,
     } )
 }
 

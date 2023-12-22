@@ -14,9 +14,10 @@ export default class Dialog extends UKComponent<{
   headlineIcon?: typeof UKIcon[keyof typeof UKIcon];
   headline?: string;
   description?: string;
-}, {
-  content?: UKComponentSlot<ValidUKComponent>,
-  options?: UKComponentSlot<UK.Button /* TODO: implement this => UK.Link */>
+  slots: {
+    content?: UKComponentSlot<ValidUKComponent>,
+    options?: UKComponentSlot<ValidUKComponent /* TODO: implement this => UK.Link */>
+  }
 }> {
   domElement: HTMLDivElement
   headlineElement: HTMLHeadingElement

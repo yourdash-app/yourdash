@@ -15,20 +15,20 @@ export default class UKContext {
     this.containerElement = containerElement;
   }
 
-  createComponent<T extends ValidUKComponent>( component: new ( props: T[ "props" ] ) => T, props: T[ "props" ], slots?: T[ "slots" ] ) {
-    return UIKit.renderComponent( component, props, slots );
+  createComponent<T extends ValidUKComponent>( component: new ( props: T[ "props" ] ) => T, props: T[ "props" ] ) {
+    return UIKit.renderComponent( component, props );
   }
 
-  createAndRenderComponent<T extends ValidUKComponent>( component: new ( props: T[ "props" ] ) => T, props: T[ "props" ], slots?: T[ "slots" ] ) {
-    const comp = this.createComponent( component, props, slots );
+  createAndRenderComponent<T extends ValidUKComponent>( component: new ( props: T[ "props" ] ) => T, props: T[ "props" ] ) {
+    const comp = this.createComponent( component, props );
     this.children.push( comp );
     this.containerElement.appendChild( comp.domElement );
 
     return comp
   }
 
-  renderComponent<T extends ValidUKComponent>( component: new ( props: T[ "props" ] ) => T, props: T[ "props" ], slots?: T[ "slots" ] ) {
-    const comp = this.createComponent( component, props, slots );
+  renderComponent<T extends ValidUKComponent>( component: new ( props: T[ "props" ] ) => T, props: T[ "props" ] ) {
+    const comp = this.createComponent( component, props );
     this.children.push( comp );
     this.containerElement.appendChild( comp.domElement )
 

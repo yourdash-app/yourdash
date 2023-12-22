@@ -90,23 +90,14 @@ class UIKitCore {
     return context
   }
 
-  renderComponent<T extends ValidUKComponent>( component: new ( props: T[ "props" ] ) => T, props: T[ "props" ], slots?: T[ "slots" ] ) {
+  renderComponent<T extends ValidUKComponent>( component: new ( props: T[ "props" ] ) => T, props: T[ "props" ] ) {
     const comp = new component( props );
 
-    console.log( comp, !!comp.domElement )
-
+    // TODO: maybe this is problematic
     // @ts-ignore
     // noinspection JSConstantReassignment
     comp.parentDomElement = this.domElement;
     comp.parentDomElement.appendChild( comp.domElement );
-
-    if ( slots ) {
-      Object.keys( slots ).forEach( key => {
-        // @ts-ignore
-        // noinspection JSConstantReassignment
-        comp.slots[ key ].set( slots[ key ] );
-      } )
-    }
 
     return comp;
   }

@@ -3,22 +3,16 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import UKComponentSlot from "./slot.ts";
-
-export type UKComponentSlots = { [ key: string ]: UKComponentSlot } | undefined
-export type UKComponentProps = { [ key: string ]: unknown } | undefined
+export type UKComponentProps = ( { [ key: string ]: unknown } & { slots?: { [key: string]: ValidUKComponent }, __debug: boolean } ) | undefined
 
 export class UKComponent<
-  ComponentProps extends UKComponentProps = UKComponentProps,
-  ComponentSlots extends UKComponentSlots = UKComponentSlots
+  ComponentProps = UKComponentProps,
 > {
   domElement: HTMLElement;
   declare readonly parentDomElement: HTMLElement;
-  slots: ComponentSlots;
   props: ComponentProps;
 
   constructor( props: ComponentProps ) {
-    this.slots = {} as ComponentSlots;
     this.props = props as ComponentProps || {} as ComponentProps;
     this.domElement = document.createElement( "uk-empty-component" ) as HTMLDivElement;
 
@@ -27,8 +21,8 @@ export class UKComponent<
 }
 
 export class UKSlotComponent<
-  ComponentProps extends UKComponentProps = UKComponentProps
-> extends UKComponent<ComponentProps, undefined> {
+  ComponentProps = UKComponentProps
+> extends UKComponent<ComponentProps> {
   // @ts-ignore
   domElement: HTMLElement;
   declare readonly parentDomElement: HTMLElement;
@@ -41,7 +35,5 @@ export class UKSlotComponent<
 }
 
 
-export type ValidUKComponent<
-  ComponentProps extends UKComponentProps = UKComponentProps,
-  ComponentSlots extends UKComponentSlots = UKComponentSlots
-> = UKComponent<ComponentProps, ComponentSlots> | UKSlotComponent<ComponentProps>
+// TODO: REMOVE ME
+export type ValidUKComponent = UKComponent
