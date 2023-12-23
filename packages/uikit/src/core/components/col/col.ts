@@ -3,12 +3,12 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { UKSlotComponent } from "../../component.ts";
+import { UKComponent } from "../../component.ts";
 import styles from "./col.module.scss";
 
-export default class Col extends UKSlotComponent {
-  constructor() {
-    super( undefined );
+export default class Col extends UKComponent<{ slots: { main: UKComponent } }> {
+  constructor( props: Col["props"] ) {
+    super( props );
 
     this.domElement = document.createElement( "div" )
     this.domElement.classList.add( styles.component )

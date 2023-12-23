@@ -3,34 +3,36 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { UKComponent, ValidUKComponent } from "./component.ts";
+import { UKComponent } from "./component.ts";
 import domUtils from "./domUtils.ts";
 import UIKit from "./index.ts";
 
 export default class UKContext {
   containerElement: HTMLDivElement | HTMLBodyElement;
-  children: ValidUKComponent[] = []
+  children: UKComponent[] = []
 
   constructor( containerElement: UKContext["containerElement"] ) {
     this.containerElement = containerElement;
   }
 
-  createComponent<T extends ValidUKComponent>( component: new ( props: T[ "props" ] ) => T, props: T[ "props" ] ) {
-    return UIKit.renderComponent( component, props );
+  createComponent<T extends UKComponent>( component: new ( props: T[ "props" ] ) => T, props: T[ "props" ] ) {
+    return UIKit.createComponent( component, props );
   }
 
-  createAndRenderComponent<T extends ValidUKComponent>( component: new ( props: T[ "props" ] ) => T, props: T[ "props" ] ) {
+  createAndRenderComponent<T extends UKComponent>( component: new ( props: T[ "props" ] ) => T, props: T[ "props" ] ) {
     const comp = this.createComponent( component, props );
-    this.children.push( comp );
-    this.containerElement.appendChild( comp.domElement );
+
+    this.renderComponent( comp )
 
     return comp
   }
 
-  renderComponent<T extends ValidUKComponent>( component: new ( props: T[ "props" ] ) => T, props: T[ "props" ] ) {
-    const comp = this.createComponent( component, props );
-    this.children.push( comp );
-    this.containerElement.appendChild( comp.domElement )
+  renderComponent<T extends UKComponent>( component: T ) {
+    this.children.push( component );
+    // @ts-ignore
+    // noinspection JSConstantReassignment
+    component.parentDomElement = this.containerElement;
+    this.containerElement.appendChild( component.domElement )
 
     return this
   }

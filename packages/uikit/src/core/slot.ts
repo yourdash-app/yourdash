@@ -3,10 +3,10 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { ValidUKComponent } from "./component";
+import { UKComponent } from "./component";
 import State from "./state";
 
-export default class UKComponentSlot<ValidComponentType extends ValidUKComponent> extends State<ValidComponentType | undefined> {
+export default class UKComponentSlot<ValidComponentType extends UKComponent> extends State<ValidComponentType | undefined> {
   domElement: HTMLElement
   __internal__value: ValidComponentType | undefined
 

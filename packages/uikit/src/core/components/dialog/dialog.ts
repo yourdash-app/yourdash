@@ -3,10 +3,9 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { UKComponent, ValidUKComponent } from "../../component.ts";
+import { UKComponent } from "../../component.ts";
 import { UKIcon } from "../../icons/icons.ts";
 import { UK } from "../../index.ts";
-import UKComponentSlot from "../../slot.ts";
 import styles from "./dialog.module.scss";
 
 export default class Dialog extends UKComponent<{
@@ -15,8 +14,8 @@ export default class Dialog extends UKComponent<{
   headline?: string;
   description?: string;
   slots: {
-    content?: UKComponentSlot<ValidUKComponent>,
-    options?: UKComponentSlot<ValidUKComponent /* TODO: implement this => UK.Link */>
+    content?: UKComponent,
+    options?: UKComponent /* TODO: implement this => UK.Link */
   }
 }> {
   domElement: HTMLDivElement

@@ -3,10 +3,10 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { UKSlotComponent } from "../../component.ts";
+import { UKComponent } from "../../component.ts";
 import styles from "./box.module.scss";
 
-export default class Box extends UKSlotComponent<{
+export default class Box extends UKComponent<{
   noBorder?: boolean | { top?: boolean, right?: boolean, bottom?: boolean, left?: boolean };
   noRounding?: boolean;
   dimensions?: {

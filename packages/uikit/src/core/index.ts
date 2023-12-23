@@ -5,7 +5,7 @@
 
 /** UIKit - a vanilla Typescript UI library (https://github.com/yourdash-app/yourdash/tree/main/packages/uikit) */
 
-import { ValidUKComponent } from "./component.ts";
+import { UKComponent } from "./component.ts";
 import "./default.scss";
 import UKContext from "./context.ts";
 import domUtils from "./domUtils.ts";
@@ -14,7 +14,7 @@ import domUtils from "./domUtils.ts";
 declare global {
   interface Window {
     __uikit__: {
-      componentTree: ValidUKComponent[],
+      componentTree: UKComponent[],
       root: UIKitCore
     };
   }
@@ -90,16 +90,8 @@ class UIKitCore {
     return context
   }
 
-  renderComponent<T extends ValidUKComponent>( component: new ( props: T[ "props" ] ) => T, props: T[ "props" ] ) {
-    const comp = new component( props );
-
-    // TODO: maybe this is problematic
-    // @ts-ignore
-    // noinspection JSConstantReassignment
-    comp.parentDomElement = this.domElement;
-    comp.parentDomElement.appendChild( comp.domElement );
-
-    return comp;
+  createComponent<T extends UKComponent>( component: new ( props: T[ "props" ] ) => T, props: T[ "props" ] ) {
+    return new component( props );
   }
 }
 
@@ -108,4 +100,4 @@ const UIKit = new UIKitCore();
 export default UIKit;
 
 export * as UK from "./components/index.ts";
-export { UKComponent, UKSlotComponent } from "./component.ts";
+export { UKComponent } from "./component.ts";

@@ -3,10 +3,10 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { UKSlotComponent } from "../../component.ts";
+import { UKComponent } from "../../component.ts";
 import styles from "./header.module.scss";
 
-export default class Header extends UKSlotComponent<{
+export default class Header extends UKComponent<{
   text: string,
   fontFamily?: CSSStyleDeclaration["fontFamily"],
   color?: CSSStyleDeclaration["color"],
