@@ -35,7 +35,7 @@ export default class IconButton extends UKComponent<{
 
     this.domElement.appendChild( this.iconDomElement );
 
-    this.label.addListener( label => this.domElement.innerText = label );
+    this.label.onChange( label => this.domElement.innerText = label );
 
     if ( this.props.size ) {
       this.setSize( props.size );

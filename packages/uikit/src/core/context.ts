@@ -49,8 +49,8 @@ export default class UKContext {
   } */
 
   // create a component
-  createComponent<T extends UKComponent>( component: new ( props: T[ "props" ] ) => T, props: T[ "props" ] ) {
-    return UIKit.createComponent( component, props )
+  createComponent<T extends UKComponent>( component: new ( props: T[ "props" ] ) => T, props: T[ "props" ], slots?: T["slots"] ) {
+    return UIKit.createComponent( component, props, slots )
   }
 
   // render a pre-existing component
@@ -69,8 +69,8 @@ export default class UKContext {
   }
 
   // create and render a component
-  createAndRenderComponent<T extends UKComponent>( component : new ( props: T[ "props" ] ) => T, props: T[ "props" ] ) {
-    const comp = this.createComponent( component, props )
+  createAndRenderComponent<T extends UKComponent>( component : new ( props: T[ "props" ] ) => T, props: T[ "props" ], slots?: T["slots"] ) {
+    const comp = this.createComponent( component, props, slots )
     this.renderComponent( comp )
 
     return this

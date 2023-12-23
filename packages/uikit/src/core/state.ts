@@ -8,12 +8,7 @@ export default class State<T> {
   __internal__hooks: ( ( value: T ) => void )[]
 
   constructor( initialValue?: T ) {
-    if ( initialValue ) {
-      this.__internal__value = initialValue
-    } else {
-      this.__internal__value = null as T
-    }
-
+    this.__internal__value = initialValue || null as T
     this.__internal__hooks = []
 
     return this
@@ -30,7 +25,7 @@ export default class State<T> {
     return this.__internal__value
   }
 
-  addListener( callback: ( value: T ) => void ): void {
+  onChange( callback: ( value: T ) => void ): void {
     this.__internal__hooks.push( callback )
   }
 }

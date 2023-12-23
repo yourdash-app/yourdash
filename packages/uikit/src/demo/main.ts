@@ -9,13 +9,13 @@ import { UK } from "../core";
 function init() {
   const ui = UIKit.createContext( document.body as HTMLBodyElement );
 
-  ui.createAndRenderComponent( UK.Card, {
-    slots: {
+  ui.createAndRenderComponent( UK.Card, {},
+    {
       actions: UIKit.createComponent( UK.Button, { label: "Hello World!", onClick() { return 0 } } ),
       content: UIKit.createComponent( UK.Button, { label: "Hello World!", onClick() { return 0 } } ),
       headerExtras: UIKit.createComponent( UK.Button, { label: "Hello World!", onClick() { return 0 } } ),
-    },
-  } )
+    }
+  )
 
   // createButtonsSection( ui );
   //

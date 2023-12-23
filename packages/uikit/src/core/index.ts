@@ -91,16 +91,26 @@ class UIKitCore {
     return context
   }
 
-  createComponent<T extends UKComponent>( component: new ( props: T[ "props" ] ) => T, props: T[ "props" ] ) {
-    return new component( props );
+  createComponent<T extends UKComponent>( component: new ( props: T[ "props" ] ) => T, props: T[ "props" ], slots?: T["slots"] ) {
+    const comp = new component( props );
+
+    if ( slots ) {
+      const slotsAsArray = Object.keys( slots );
+
+      slotsAsArray.forEach( slot => {
+        comp.slots[ slot ].set( slots[ slot ] as unknown as UKComponent );
+      } )
+    }
+
+    return comp
   }
 
   renderComponent( component: UKComponent, containerElement: HTMLElement ) {
     containerElement.appendChild( component.domElement );
   }
 
-  createSlot<ValidComponentType extends UKComponent>( replaceContainer = true ) {
-    return new UKComponentSlot<ValidComponentType>( document.createElement( "!--" ) );
+  createSlot<ValidComponentType extends UKComponent>( htmlElement?: HTMLElement ) {
+    return new UKComponentSlot<ValidComponentType>( htmlElement || document.createElement( "uk-empty-element" ) );
   }
 }
 

@@ -4,6 +4,8 @@
  */
 
 import { UKComponent } from "../../component.ts";
+import UIKit from "../../index.ts";
+import UKComponentSlot from "../../slot.ts";
 import styles from "./card.module.scss";
 import transitionStyles from "../../transitions.module.scss";
 
@@ -14,12 +16,11 @@ export default class Card extends UKComponent<{
   actionsFillWidth?: boolean,
   contentNoPadding?: boolean,
   noBorder?: boolean,
-  noAnimation?: boolean,
-  slots: {
-    actions: UKComponent,
-    content: UKComponent,
-    headerExtras: UKComponent,
-  }
+  noAnimation?: boolean
+}, {
+  actions: UKComponentSlot<UKComponent>,
+  content: UKComponentSlot<UKComponent>,
+  headerExtras: UKComponentSlot<UKComponent>,
 }> {
   private readonly titleDomElement: HTMLSpanElement;
   private readonly headerDomElement: HTMLDivElement;
@@ -28,6 +29,12 @@ export default class Card extends UKComponent<{
     super( props );
 
     this.domElement = document.createElement( "div" );
+
+    this.slots = {
+      actions: UIKit.createSlot(),
+      content: UIKit.createSlot(),
+      headerExtras: UIKit.createSlot(),
+    }
 
     if ( props.level !== undefined ) {
       this.setLevel( props[ "level" ] );
@@ -39,9 +46,9 @@ export default class Card extends UKComponent<{
       this.setActionsFillWidth( props[ "actionsFillWidth" ] );
     }
 
-    this.props.slots.actions.domElement.classList.add( styles.actionsSlot );
-    this.props.slots.content.domElement.classList.add( styles.contentSlot );
-    this.props.slots.headerExtras.domElement.classList.add( styles.headerExtrasSlot );
+    this.slots.actions.containerDomElement.classList.add( styles.actionsSlot );
+    this.slots.content.containerDomElement.classList.add( styles.contentSlot );
+    this.slots.headerExtras.containerDomElement.classList.add( styles.headerExtrasSlot );
 
     this.headerDomElement = document.createElement( "div" );
     this.headerDomElement.classList.add( styles.header );
@@ -52,19 +59,19 @@ export default class Card extends UKComponent<{
     this.titleDomElement.classList.add( styles.title );
 
     this.headerDomElement.appendChild( this.titleDomElement );
-    this.headerDomElement.appendChild( this.props.slots.headerExtras.domElement );
+    this.headerDomElement.appendChild( this.slots.headerExtras.containerDomElement );
 
-    this.domElement.appendChild( this.props.slots.content.domElement );
+    this.domElement.appendChild( this.slots.content.containerDomElement );
 
-    this.domElement.appendChild( this.props.slots.actions.domElement );
+    this.domElement.appendChild( this.slots.actions.containerDomElement );
 
     this.domElement.classList.add( styles.component );
     this.domElement.addEventListener( "click", this.click.bind( this ) );
 
     if ( !props.noAnimation ) {
-      this.props.slots.content.domElement.classList.add( transitionStyles.UKTransition_appear );
-      this.props.slots.headerExtras.domElement.classList.add( transitionStyles.UKTransition_appear );
-      this.props.slots.actions.domElement.classList.add( transitionStyles.UKTransition_appear );
+      this.slots.content.containerDomElement.classList.add( transitionStyles.UKTransition_appear );
+      this.slots.headerExtras.containerDomElement.classList.add( transitionStyles.UKTransition_appear );
+      this.slots.actions.containerDomElement.classList.add( transitionStyles.UKTransition_appear );
     }
 
     return this;
@@ -104,9 +111,9 @@ export default class Card extends UKComponent<{
 
   setActionsFillWidth( fillWidth: boolean ) {
     if ( fillWidth ) {
-      this.props.slots.actions.domElement.classList.add( styles.actionsFillWidth );
+      this.slots.actions.containerDomElement.classList.add( styles.actionsFillWidth );
     } else {
-      this.props.slots.actions.domElement.classList.remove( styles.actionsFillWidth );
+      this.slots.actions.containerDomElement.classList.remove( styles.actionsFillWidth );
     }
   }
 }

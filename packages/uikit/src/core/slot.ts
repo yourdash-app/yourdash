@@ -4,30 +4,29 @@
  */
 
 import { UKComponent } from "./component";
+import UIKit from "./index.ts";
 import State from "./state";
 
 export default class UKComponentSlot<ValidComponentType extends UKComponent> extends State<ValidComponentType | undefined> {
-  placeholderDomElement: HTMLElement
   __internal__value: ValidComponentType | undefined
-  domElement: HTMLElement
+  containerDomElement: HTMLElement
 
-  constructor( placeholderDomElement: HTMLElement,  ) {
+  constructor( containerDomElement: HTMLElement,  ) {
     super();
 
-    this.placeholderDomElement = placeholderDomElement
-    this.domElement = this.placeholderDomElement
+    this.containerDomElement = containerDomElement
     this.__internal__value = undefined;
   }
 
-  createComponent<T extends ValidComponentType>( component: new ( props: T[ "props" ] ) => T, props: T[ "props" ] ) {
-    this.__internal__value = new component( props );
-    this.placeholderDomElement.appendChild( this.__internal__value.domElement );
+  createComponent<T extends ValidComponentType>( component: new ( props: T[ "props" ] ) => T, props: T[ "props" ], slots?: T["slots"] ) {
+    this.__internal__value = UIKit.createComponent( component, props, slots );
+    UIKit.renderComponent( this.__internal__value, this.containerDomElement );
 
     return this.__internal__value;
   }
 
   clear() {
-    this.placeholderDomElement.innerHTML = "";
+    this.containerDomElement.innerHTML = "";
     this.__internal__value = undefined;
 
     return this
