@@ -14,7 +14,7 @@ import { IStoreCategory } from "shared/apps/store/storeCategory.js";
 import { type StorePromotedApplication } from "shared/apps/store/storePromotedApplication.js";
 import getAllCategories, { getAllApplicationsFromCategory } from "./helpers/categories.js";
 
-const promotedApplications: string[] = ["dash", "store"];
+const promotedApplications: string[] = [ "dash", "store" ];
 
 export default class StoreModule extends Module {
 
@@ -37,9 +37,7 @@ export default class StoreModule extends Module {
     this.API.request.get( "/app/store/categories", async ( _req, res ) => {
       const applications = await getAllApplications();
 
-      const categories: {
-      [ key: string ]: boolean
-    } = {};
+      const categories: { [ key: string ]: boolean } = {};
 
       for ( const application of applications ) {
         const unreadApplication = new YourDashApplication( application );
@@ -157,7 +155,7 @@ export default class StoreModule extends Module {
       }
       const application = await applicationUnread.read();
 
-      coreApi.globalDb.set( "core:installedApplications", [ ...coreApi.globalDb.get( "core:installedApplications" ), id, ...application.getDependencies()] );
+      coreApi.globalDb.set( "core:installedApplications", [ ...coreApi.globalDb.get( "core:installedApplications" ), id, ...application.getDependencies() ] );
       await coreApi.moduleManager.loadModule( id, path.join( process.cwd(), `../applications/${id}/backend/` ) );
       return res.json( { success: true } );
     } );

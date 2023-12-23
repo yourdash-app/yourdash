@@ -92,7 +92,15 @@ class YDApplication {
 export async function getAllApplications(): Promise<string[]> {
   try {
     return ( await fs.readdir( path.resolve( process.cwd(), "../applications/" ) ) ).filter( app => {
-      return ( app !== "package.json" ) && ( app !== "node_modules" );
+      // Define all files / directories in /packages/applications which should be ignored
+      switch ( app ) {
+      case "package.json":
+      case "node_modules":
+      case "gulpfile.js":
+        return false;
+      default:
+        return true;
+      }
     } );
   } catch ( _err ) {
     coreApi.log.error( "A problem occurred reading the ../applications/ directory" );
