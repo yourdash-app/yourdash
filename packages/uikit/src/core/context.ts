@@ -15,7 +15,7 @@ export default class UKContext {
     this.containerElement = containerElement;
   }
 
-  createComponent<T extends UKComponent>( component: new ( props: T[ "props" ] ) => T, props: T[ "props" ] ) {
+  /*   createComponent<T extends UKComponent>( component: new ( props: T[ "props" ] ) => T, props: T[ "props" ] ) {
     return UIKit.createComponent( component, props );
   }
 
@@ -46,5 +46,33 @@ export default class UKContext {
 
   unrenderComponent( component: UKComponent ) {
     domUtils.removeElement( component.domElement )
+  } */
+
+  // create a component
+  createComponent<T extends UKComponent>( component: new ( props: T[ "props" ] ) => T, props: T[ "props" ] ) {
+    return UIKit.createComponent( component, props )
+  }
+
+  // render a pre-existing component
+  renderComponent<T extends UKComponent>( component: T ) {
+    UIKit.renderComponent( component, this.containerElement )
+    this.children.push( component )
+
+    return this
+  }
+
+  // unrender a component
+  unrenderComponent( component: UKComponent ) {
+    domUtils.removeElement( component.domElement )
+
+    return this
+  }
+
+  // create and render a component
+  createAndRenderComponent<T extends UKComponent>( component : new ( props: T[ "props" ] ) => T, props: T[ "props" ] ) {
+    const comp = this.createComponent( component, props )
+    this.renderComponent( comp )
+
+    return this
   }
 }

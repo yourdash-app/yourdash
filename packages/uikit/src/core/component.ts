@@ -6,27 +6,18 @@
 import UKComponentSlot from "./slot.ts";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type UKComponentProps = ( { [ key: string ]: any } & { slots?: UKComponentSlots, __debug?: boolean } ) | undefined
-export type UKComponentSlots = { [key: string]: UKComponent }
-export type UKComponentGeneratedSlots<Props extends UKComponentSlots> = { [ key in keyof Props ]: UKComponentSlot<Props[ key ]> | undefined }
+export type UKComponentProps = ( { [ key: string ]: any } & { slots?: { [key: string]: UKComponent }, __debug?: boolean } ) | undefined
 
-type UKComponentInternalProps<
-  Props extends UKComponentProps,
-  Slots extends UKComponentSlots | undefined
-> = Slots extends undefined
-      ? Props
-      /* @ts-ignore */
-      : Omit<Props, "slots"> & { slots: UKComponentGeneratedSlots<Slots> }
 
 export class UKComponent<
   ComponentProps extends UKComponentProps = UKComponentProps
 > {
   domElement: HTMLElement;
   declare readonly parentDomElement: HTMLElement;
-  props: UKComponentInternalProps<ComponentProps, ComponentProps extends { slots: UKComponentSlots } ? ComponentProps[ "slots" ] : undefined>;
+  props: ComponentProps
 
   constructor( props: ComponentProps ) {
-    this.props = props as UKComponentInternalProps<ComponentProps, ComponentProps extends { slots: UKComponentSlots } ? ComponentProps[ "slots" ] : undefined>;
+    this.props = props
     this.domElement = document.createElement( "uk-empty-component" ) as HTMLDivElement;
 
     if ( !this.props?.slots ) {

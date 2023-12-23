@@ -7,25 +7,27 @@ import { UKComponent } from "./component";
 import State from "./state";
 
 export default class UKComponentSlot<ValidComponentType extends UKComponent> extends State<ValidComponentType | undefined> {
-  domElement: HTMLElement
+  placeholderDomElement: HTMLElement
   __internal__value: ValidComponentType | undefined
+  domElement: HTMLElement
 
-  constructor( domElement: HTMLElement ) {
+  constructor( placeholderDomElement: HTMLElement,  ) {
     super();
 
-    this.domElement = domElement
+    this.placeholderDomElement = placeholderDomElement
+    this.domElement = this.placeholderDomElement
     this.__internal__value = undefined;
   }
 
   createComponent<T extends ValidComponentType>( component: new ( props: T[ "props" ] ) => T, props: T[ "props" ] ) {
     this.__internal__value = new component( props );
-    this.domElement.appendChild( this.__internal__value.domElement );
+    this.placeholderDomElement.appendChild( this.__internal__value.domElement );
 
     return this.__internal__value;
   }
 
   clear() {
-    this.domElement.innerHTML = "";
+    this.placeholderDomElement.innerHTML = "";
     this.__internal__value = undefined;
 
     return this

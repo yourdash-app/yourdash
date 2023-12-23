@@ -9,6 +9,7 @@ import { UKComponent } from "./component.ts";
 import "./default.scss";
 import UKContext from "./context.ts";
 import domUtils from "./domUtils.ts";
+import UKComponentSlot from "./slot.ts";
 
 // Modify the typescript global window object to contain the __uikit__ object
 declare global {
@@ -92,6 +93,14 @@ class UIKitCore {
 
   createComponent<T extends UKComponent>( component: new ( props: T[ "props" ] ) => T, props: T[ "props" ] ) {
     return new component( props );
+  }
+
+  renderComponent( component: UKComponent, containerElement: HTMLElement ) {
+    containerElement.appendChild( component.domElement );
+  }
+
+  createSlot<ValidComponentType extends UKComponent>( replaceContainer = true ) {
+    return new UKComponentSlot<ValidComponentType>( document.createElement( "!--" ) );
   }
 }
 
