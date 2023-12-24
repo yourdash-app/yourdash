@@ -5,7 +5,6 @@
 
 import { UKComponent } from "../../component.ts";
 import UIKit from "../../index.ts";
-import UKComponentSlot from "../../slot.ts";
 import styles from "./card.module.scss";
 import transitionStyles from "../../transitions.module.scss";
 
@@ -18,9 +17,9 @@ export default class Card extends UKComponent<{
   noBorder?: boolean,
   noAnimation?: boolean
 }, {
-  actions: UKComponentSlot<UKComponent>,
-  content: UKComponentSlot<UKComponent>,
-  headerExtras: UKComponentSlot<UKComponent>,
+  actions: UKComponent,
+  content: UKComponent,
+  headerExtras: UKComponent,
 }> {
   private readonly titleDomElement: HTMLSpanElement;
   private readonly headerDomElement: HTMLDivElement;
@@ -31,9 +30,9 @@ export default class Card extends UKComponent<{
     this.domElement = document.createElement( "div" );
 
     this.slots = {
-      actions: UIKit.createSlot(),
-      content: UIKit.createSlot(),
-      headerExtras: UIKit.createSlot(),
+      actions: UIKit.createSlot( document.createElement( "div" ) ),
+      content: UIKit.createSlot( document.createElement( "div" ) ),
+      headerExtras: UIKit.createSlot( document.createElement( "div" ) ),
     }
 
     if ( props.level !== undefined ) {

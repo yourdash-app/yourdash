@@ -5,7 +5,7 @@
 
 import { UKComponent } from "../../component.ts";
 import { UKIcon } from "../../icons/icons.ts";
-import { UK } from "../../index.ts";
+import UIKit, { UK } from "../../index.ts";
 import styles from "./dialog.module.scss";
 
 export default class Dialog extends UKComponent<{
@@ -13,10 +13,9 @@ export default class Dialog extends UKComponent<{
   headlineIcon?: typeof UKIcon[keyof typeof UKIcon];
   headline?: string;
   description?: string;
-  slots: {
-    content?: UKComponent,
-    options?: UKComponent /* TODO: implement this => UK.Link */
-  }
+}, {
+  content?: UKComponent,
+  options?: UKComponent /* TODO: implement this => UK.Link */
 }> {
   domElement: HTMLDivElement
   headlineElement: HTMLHeadingElement
@@ -28,6 +27,11 @@ export default class Dialog extends UKComponent<{
 
     this.domElement = document.createElement( "div" );
     this.domElement.classList.add( styles.component );
+
+    this.slots = {
+      options: UIKit.createSlot(),
+      content: UIKit.createSlot()
+    }
 
     this.headlineElement = document.createElement( "h2" );
     this.headlineElement.classList.add( styles.headline );

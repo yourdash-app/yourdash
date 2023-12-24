@@ -24,7 +24,7 @@ export default async function getWeatherDataForLongitudeAndLatitude( id: string 
         "%2F"
       ) }` );
     } catch ( e ) {
-      coreApi.log.warning( "Could not fetch weather data", e );
+      coreApi.log.warning( "app:weather", "Could not fetch weather data", e );
     }
 
     interface IRequestResponse {
@@ -109,11 +109,10 @@ export default async function getWeatherDataForLongitudeAndLatitude( id: string 
         sunrise: requestResponse.daily.sunrise,
         sunset: requestResponse.daily.sunset
       }
-
     };
 
   } catch ( e ) {
-    coreApi.log.warning( "Could not fetch weather data", e );
+    coreApi.log.warning( "app:weather", "Could not fetch weather data", e );
     return null;
   }
 }

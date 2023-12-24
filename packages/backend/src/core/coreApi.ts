@@ -56,7 +56,7 @@ export class CoreApi {
   constructor() {
     console.log( "---DEV_CLEAR---" )
     this.log = new CoreApiLog()
-    this.log.info( "core:startup", "Beginning YourDash Startup" )
+    this.log.info( "startup", "Beginning YourDash Startup" )
 
     // Fetch process arguments
     this.processArguments = minimist( process.argv.slice( 2 ) );
@@ -82,7 +82,7 @@ export class CoreApi {
     this.commands.registerCommand(
       "hello",
       () => {
-        this.log.info( "core:command", "Hello from YourDash!" )
+        this.log.info( "command", "Hello from YourDash!" )
       }
     )
 
@@ -103,17 +103,17 @@ export class CoreApi {
         switch ( subCommand ) {
         case "set":
           this.globalDb.set( key, value );
-          this.log.info( "core:command", `set "${key}" to "${value}"` );
+          this.log.info( "command", `set "${key}" to "${value}"` );
           break;
         case "get":
-          this.log.info( "core:command", this.globalDb.get( key ) );
+          this.log.info( "command", this.globalDb.get( key ) );
           break;
         case "delete":
           this.globalDb.removeValue( key );
-          this.log.info( "core:command", `deleted "${ key }"` );
+          this.log.info( "command", `deleted "${ key }"` );
           break;
         default:
-          this.log.info( "core:command", "gdb ( Global Database )\n- get: \"gdb get {key}\"\n- set: \"gdb set {key} {value}\"\n- delete: \"gdb delete {key}\"" );
+          this.log.info( "command", "gdb ( Global Database )\n- get: \"gdb get {key}\"\n- set: \"gdb set {key} {value}\"\n- delete: \"gdb delete {key}\"" );
         }
       }
     )
@@ -123,7 +123,7 @@ export class CoreApi {
 
   // start the YourDash Instance
   __internal__startInstance() {
-    this.log.info( "core:startup", "Welcome to the YourDash Instance backend" )
+    this.log.info( "startup", "Welcome to the YourDash Instance backend" )
 
     this.fs.exists( path.join( this.fs.ROOT_PATH, "./global_database.json" ) ).then( async doesGlobalDatabaseFileExist => {
       if ( doesGlobalDatabaseFileExist )
@@ -137,10 +137,10 @@ export class CoreApi {
 
           try {
             killPort( 3563 ).then( () => {
-              this.log.info( "core:startup", "Killed port 3563" );
+              this.log.info( "startup", "Killed port 3563" );
               this.httpServer.listen( 3563, () => {
-                this.log.success( "core:startup", "server now listening on port 3563!" );
-                this.log.success( "core:startup", "YourDash initialization complete!" );
+                this.log.success( "startup", "server now listening on port 3563!" );
+                this.log.success( "startup", "YourDash initialization complete!" );
                 this.loadCoreEndpoints()
               } );
             } );
@@ -149,12 +149,12 @@ export class CoreApi {
 
             try {
               this.httpServer.listen( 3563, () => {
-                this.log.info( "core:startup", "server now listening on port 3563!" );
-                this.log.success( "core:startup", "Startup complete!" );
+                this.log.info( "startup", "server now listening on port 3563!" );
+                this.log.success( "startup", "Startup complete!" );
                 this.loadCoreEndpoints()
               } );
             } catch ( _err ) {
-              this.log.error( "core:startup", "Unable to start server!" );
+              this.log.error( "startup", "Unable to start server!" );
               this.shutdownInstance();
             }
           }
@@ -167,26 +167,26 @@ export class CoreApi {
     this.expressServer.use( ( req, res, next ) => {
       switch ( req.method ) {
       case "GET":
-        this.log.info( "core:request_get", `${ chalk.bgGreen( chalk.black( " GET " ) ) } ${ res.statusCode } ${ req.path }` );
+        this.log.info( "request:get", `${ chalk.bgGreen( chalk.black( " GET " ) ) } ${ res.statusCode } ${ req.path }` );
         if ( JSON.stringify( req.query ) !== "{}" ) {
           this.log.info( JSON.stringify( req.query ) );
         }
         break;
       case "POST":
-        this.log.info( "core:request_post", `${ chalk.bgBlue( chalk.black( " POS " ) ) } ${ res.statusCode } ${ req.path }` );
+        this.log.info( "request:pos", `${ chalk.bgBlue( chalk.black( " POS " ) ) } ${ res.statusCode } ${ req.path }` );
         if ( JSON.stringify( req.query ) !== "{}" ) {
           this.log.info( JSON.stringify( req.query ) );
         }
         break;
       case "DELETE":
-        this.log.info( "core:request_delete", `${ chalk.bgRed( chalk.black( " DEL " ) ) } ${ res.statusCode } ${ req.path }` );
+        this.log.info( "request:del", `${ chalk.bgRed( chalk.black( " DEL " ) ) } ${ res.statusCode } ${ req.path }` );
         if ( JSON.stringify( req.query ) !== "{}" ) {
           this.log.info( JSON.stringify( req.query ) );
         }
         break;
       case "OPTIONS":
         if ( options.logOptionsRequests ) {
-          this.log.info( "core:request_options", `${ chalk.bgCyan( chalk.black( " OPT " ) ) } ${ res.statusCode } ${ req.path }` );
+          this.log.info( "request:opt", `${ chalk.bgCyan( chalk.black( " OPT " ) ) } ${ res.statusCode } ${ req.path }` );
           if ( JSON.stringify( req.query ) !== "{}" ) {
             this.log.info( JSON.stringify( req.query ) );
           }
@@ -217,7 +217,7 @@ export class CoreApi {
       next();
     } );
 
-    // INFO: This should not be used for detection of a YourDash Instance, instead use the '/test' endpoint
+    // INFO: This shouldn't be used for detection of a YourDash Instance, instead use the '/test' endpoint
     this.expressServer.get( "/", ( _req, res ) => {
       return res.send( "Hello from the YourDash instance software! 👋" );
     } );
@@ -247,7 +247,7 @@ export class CoreApi {
     } );
 
     this.expressServer.get( "/ping", ( _req, res ) => {
-      // INFO: This should not be used for detection of a YourDash Instance, instead use the '/test' endpoint
+      // INFO: This shouldn't be used for detection of a YourDash Instance, instead use the '/test' endpoint
       return res.send( "pong" );
     } );
 
@@ -401,7 +401,7 @@ export class CoreApi {
 
     this.moduleManager.loadInstalledModules()
       .then( () => {
-        this.log.info( "core:startup", "All modules loaded" )
+        this.log.info( "startup", "All modules loaded" )
       } )
 
     this.expressServer.get( "/core/sessions", async ( req, res ) => {

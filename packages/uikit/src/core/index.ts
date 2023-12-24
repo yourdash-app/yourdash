@@ -91,14 +91,14 @@ class UIKitCore {
     return context
   }
 
-  createComponent<T extends UKComponent>( component: new ( props: T[ "props" ] ) => T, props: T[ "props" ], slots?: T["slots"] ) {
+  createComponent<T extends UKComponent>( component: new ( props: T[ "props" ] ) => T, props: T[ "props" ], slots?: T["__tslots__"] ) {
     const comp = new component( props );
 
-    if ( slots ) {
-      const slotsAsArray = Object.keys( slots );
+    if ( !!slots ) {
+      const slotsAsArray = Object.keys( slots ) as string[];
 
       slotsAsArray.forEach( slot => {
-        comp.slots[ slot ].set( slots[ slot ] as unknown as UKComponent );
+        comp.slots[ slot ].set( slots[ slot ] );
       } )
     }
 
@@ -110,7 +110,7 @@ class UIKitCore {
   }
 
   createSlot<ValidComponentType extends UKComponent>( htmlElement?: HTMLElement ) {
-    return new UKComponentSlot<ValidComponentType>( htmlElement || document.createElement( "uk-empty-element" ) );
+    return new UKComponentSlot<ValidComponentType>( htmlElement || document.createElement( "div" ) );
   }
 }
 

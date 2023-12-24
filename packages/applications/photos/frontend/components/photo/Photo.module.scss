@@ -9,10 +9,18 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.25rem;
+  overflow: hidden;
+  border-radius: var(--container-rounding);
+  border: 0.125rem solid rgb(var(--container-border));
+  &:hover {
+    .photo {
+      transform: scale(1.1);
+    }
+  }
 }
 
 .photo {
-  border-radius: var(--container-rounding);
-  border: 0.125rem solid rgb(var(--container-border));
+  width: 100%;
+  height: 100%;
+  transition: var(--transition);
 }

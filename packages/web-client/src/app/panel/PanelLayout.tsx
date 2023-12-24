@@ -19,6 +19,12 @@ const PanelLayout: React.FC = () => {
   }, [ reloadNumber ] );
 
   useEffect( () => {
+    if ( window.innerWidth < 768 ) {
+      setPanelSide( "bottom" );
+    } else {
+      setPanelSide( csi.userDB.get( "core:panel:side" ) || "left" );
+    }
+
     window.addEventListener( "resize", () => {
       if ( window.innerWidth < 768 ) {
         setPanelSide( "bottom" );

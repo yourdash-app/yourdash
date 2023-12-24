@@ -9,7 +9,7 @@ import styles from "./Photo.module.scss";
 
 const Photo: React.FC<IPhoto> = ( { fileName, dimensions, tags, people, date, url } ) => {
   return <div className={styles.component}>
-    <img className={styles.photo} src={url} />
+    <img className={styles.photo} src={url} loading={"lazy"} />
   </div>
 }
 

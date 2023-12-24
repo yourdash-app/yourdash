@@ -15,41 +15,8 @@ export default class UKContext {
     this.containerElement = containerElement;
   }
 
-  /*   createComponent<T extends UKComponent>( component: new ( props: T[ "props" ] ) => T, props: T[ "props" ] ) {
-    return UIKit.createComponent( component, props );
-  }
-
-  createAndRenderComponent<T extends UKComponent>( component: new ( props: T[ "props" ] ) => T, props: T[ "props" ] ) {
-    const comp = this.createComponent( component, props );
-
-    this.renderComponent( comp )
-
-    return comp
-  }
-
-  renderComponent<T extends UKComponent>( component: T ) {
-    this.children.push( component );
-    // @ts-ignore
-    // noinspection JSConstantReassignment
-    component.parentDomElement = this.containerElement;
-    this.containerElement.appendChild( component.domElement )
-
-    return this
-  }
-
-  appendComponent( component: UKComponent ) {
-    this.children.push( component );
-    this.containerElement.appendChild( component.domElement );
-
-    return this
-  }
-
-  unrenderComponent( component: UKComponent ) {
-    domUtils.removeElement( component.domElement )
-  } */
-
   // create a component
-  createComponent<T extends UKComponent>( component: new ( props: T[ "props" ] ) => T, props: T[ "props" ], slots?: T["slots"] ) {
+  createComponent<T extends UKComponent>( component: new ( props: T[ "props" ] ) => T, props: T[ "props" ], slots?: T["__tslots__"] ) {
     return UIKit.createComponent( component, props, slots )
   }
 
@@ -69,7 +36,7 @@ export default class UKContext {
   }
 
   // create and render a component
-  createAndRenderComponent<T extends UKComponent>( component : new ( props: T[ "props" ] ) => T, props: T[ "props" ], slots?: T["slots"] ) {
+  createAndRenderComponent<T extends UKComponent>( component : new ( props: T[ "props" ] ) => T, props: T[ "props" ], slots?: T["__tslots__"] ) {
     const comp = this.createComponent( component, props, slots )
     this.renderComponent( comp )
 

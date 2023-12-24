@@ -40,24 +40,24 @@ export default class CoreApiModuleManager {
   }
 
   async loadModule( moduleName: string, modulePath: string ) {
-    // if the module is not valid or does not require a backend module, return
+    // if the module is not valid or doesn't require a backend module, return
     if ( !this.checkModule( modulePath ) ) {
       return;
     }
 
-    this.coreApi.log.info( "core:module_manager", `Loading module: "${ moduleName }"` )
+    this.coreApi.log.info( "module_manager", `Loading module: "${ moduleName }"` )
 
     try {
       const module = await import( `${modulePath}/index.js` );
       if ( !module.default ) {
-        this.coreApi.log.error( "core", `Unable to load ${ moduleName }! This application does not contain a default export!` );
+        this.coreApi.log.error( "module_manager", `Unable to load ${ moduleName }! This application does not contain a default export!` );
         return;
       }
       new module.default( { moduleName: moduleName, modulePath: modulePath } );
       this.loadedModules.push( module );
-      this.coreApi.log.success( "core:module_manager", `Loaded module: "${ moduleName }"` )
+      this.coreApi.log.success( "module_manager", `Loaded module: "${ moduleName }"` )
     } catch ( e ) {
-      this.coreApi.log.error( "core:module_manager", `Invalid module: "${ moduleName }"` );
+      this.coreApi.log.error( "module_manager", `Invalid module: "${ moduleName }"` );
     }
 
     return this;
@@ -89,10 +89,10 @@ export default class CoreApiModuleManager {
     }
 
     if ( this.getLoadedModules().length === 0 ) {
-      this.coreApi.log.warning( "core:module_manager", "No modules loaded!" )
+      this.coreApi.log.warning( "module_manager", "No modules loaded!" )
       return
     }
 
-    this.coreApi.log.info( "core:module_manager", `Loaded ${ this.getLoadedModules().length } modules` );
+    this.coreApi.log.info( "module_manager", `Loaded ${ this.getLoadedModules().length } modules` );
   }
 }

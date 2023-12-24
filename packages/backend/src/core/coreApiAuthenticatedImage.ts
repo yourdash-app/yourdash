@@ -45,7 +45,7 @@ export default class CoreApiAuthenticatedImage {
       value
     };
 
-    return `/core/authenticated-img/${ username }/${ id }`;
+    return `/core/auth-img/${ username }/${ id }`;
   }
 
   __internal__removeImage( username: string, id: string ) {
@@ -55,7 +55,7 @@ export default class CoreApiAuthenticatedImage {
   }
 
   __internal__loadEndpoints() {
-    this.coreApi.expressServer.get( "/core/authenticated-img/:username/:id", ( req, res ) => {
+    this.coreApi.expressServer.get( "/core/auth-img/:username/:id", ( req, res ) => {
       const { username, id } = req.params;
 
       const image = this.AUTHENTICATED_IMAGES?.[ username ]?.[ id ];

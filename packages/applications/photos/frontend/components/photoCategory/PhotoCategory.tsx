@@ -5,7 +5,7 @@
 
 import React from "react";
 import clippy from "web-client/src/helpers/clippy";
-import { Icon, IconButton, YourDashIcon } from "web-client/src/ui/index";
+import { Card, Icon, IconButton, YourDashIcon } from "web-client/src/ui/index";
 import { IPhotoCategory } from "../../../shared/types/photoCategory";
 import Photo from "../photo/Photo";
 import styles from "./PhotoCategory.module.scss"
@@ -13,7 +13,9 @@ import styles from "./PhotoCategory.module.scss"
 const PhotoCategory: React.FC<IPhotoCategory> = ( { name, items, id } ) => {
   const [ open, setOpen ] = React.useState<boolean>( true )
 
-  return <section className={styles.component}>
+  return <Card
+    className={styles.component}
+  >
     <div className={clippy( styles.header, open && styles.open )}>
       {
         open
@@ -41,7 +43,7 @@ const PhotoCategory: React.FC<IPhotoCategory> = ( { name, items, id } ) => {
         } )}
       </div>
     }
-  </section>
+  </Card>
 }
 
 export default PhotoCategory

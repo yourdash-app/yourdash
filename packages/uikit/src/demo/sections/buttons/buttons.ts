@@ -10,7 +10,8 @@ import createButtons from "./normalButtons.ts";
 import { UK } from "../../../core/index.ts";
 
 export default function createButtonsSection( ui: UKContext ) {
-  const cardContainer = ui.createAndRenderComponent( UK.Card, {} )
+  const cardContainer = ui.createComponent( UK.Card, {} )
+  ui.renderComponent( cardContainer )
 
   createButtons( cardContainer )
   createTransparentButtons( cardContainer )

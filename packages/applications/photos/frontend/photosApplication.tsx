@@ -37,7 +37,7 @@ const PhotosApplication: React.FC = () => {
   }, [] );
 
   return (
-    <div className={"grid grid-rows-[auto,1fr] h-full bg-bg overflow-auto"}>
+    <div className={"flex flex-col h-full bg-bg overflow-hidden overflow-y-auto p-4 gap-2"}>
       {
         photoCategories.map( photoCategory => {
           return <PhotoCategory key={photoCategory.id} name={photoCategory.name} items={photoCategory.items} id={photoCategory.id} />
