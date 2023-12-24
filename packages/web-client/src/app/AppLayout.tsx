@@ -39,10 +39,12 @@ const AppLayout: React.FC = () => {
         <h1 className={"text-5xl font-bold pl-4 pr-4"}>Loading YourDash</h1>
       </Card>
       <Card
-        className={"fixed bottom-4 text-center animate__animated animate__fadeInUp p-2 pl-4 pr-4"}
+        className={"fixed bottom-4 text-center animate__animated animate__fadeInUp"}
         showBorder
       >
+        <div className={"pl-2 pr-2"}>
         This should not take longer than 10 seconds
+        </div>
       </Card>
     </div>
 

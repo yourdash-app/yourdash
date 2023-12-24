@@ -256,17 +256,17 @@ export class CoreApi {
     } );
 
     // on startup, we ping ourselves to check if the webserver is running and accepting requests
-    this.log.info( "core:self_ping_test", "pinging self" );
+    this.log.info( "self_ping_test", "pinging self" );
     fetch( "http://localhost:3563/core/test/self-ping" )
       .then( res => res.json() )
       .then( ( data: { success?: boolean } ) => {
         if ( data?.success ) {
-          return this.log.success( "core:self_ping_test", "self ping successful - The server is receiving requests" );
+          return this.log.success( "self_ping_test", "self ping successful - The server is receiving requests" );
         }
-        this.log.error( "core:self_ping_test", "CRITICAL ERROR!, unable to ping self" );
+        this.log.error( "self_ping_test", "CRITICAL ERROR!, unable to ping self" );
       } )
       .catch( () => {
-        this.log.error( "core:self_ping_test", "CRITICAL ERROR!, unable to ping self" );
+        this.log.error( "self_ping_test", "CRITICAL ERROR!, unable to ping self" );
       } );
 
     this.expressServer.get( "/core/login/user/:username/avatar", ( req, res ) => {
@@ -496,7 +496,7 @@ export class CoreApi {
         try {
           this.globalDb.__internal__doNotUseOnlyIntendedForShutdownSequenceWriteToDisk( path.resolve( process.cwd(), "./fs/global_database.json" ) );
         } catch ( e ) {
-          this.log.error( "core:global_db", "[EXTREME SEVERITY] Shutdown Error! failed to save global database. User data will have been lost! (~past 5 minutes)" );
+          this.log.error( "global_db", "[EXTREME SEVERITY] Shutdown Error! failed to save global database. User data will have been lost! (~past 5 minutes)" );
         }
       }
     );

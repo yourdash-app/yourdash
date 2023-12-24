@@ -9,7 +9,7 @@ export enum LOG_TYPE {
   INFO, WARNING, ERROR, SUCCESS
 }
 
-const LOG_META_MAX_LENGTH = 38
+const LOG_META_MAX_LENGTH = 20
 
 export default class CoreApiLog {
   logHistory: { type: LOG_TYPE, level: string, message: ( string | Uint8Array )[] }[] = [];
@@ -21,13 +21,18 @@ export default class CoreApiLog {
   private log( type: LOG_TYPE, level: string, ...message: ( string | Uint8Array )[] ) { // eslint-disable-line @typescript-eslint/no-explicit-any
     this.logHistory.push( { type: type, level: level, message: message } );
 
+    process.stdout.write( message[0] );
+
     process.stdout.write(
-      chalk.bold( `${chalk.white( "[" )}${chalk.italic.yellow( level.toUpperCase() ) }${chalk.white( "]" )}` )
-        .substring( 0, LOG_META_MAX_LENGTH - 8 )
-        .padEnd( LOG_META_MAX_LENGTH - 8 )
+      chalk.bold( `${chalk.white( "[" )}${chalk.italic.yellow(
+        level
+          .toUpperCase()
+          .slice( 0, LOG_META_MAX_LENGTH )
+          .padEnd( LOG_META_MAX_LENGTH )
+      ) }${chalk.white( "]" )} ` )
     )
 
-    message.forEach( msg => {
+    message.slice( 1 ).forEach( msg => {
       process.stdout.write( msg );
     } );
 
@@ -40,7 +45,7 @@ export default class CoreApiLog {
     return this.log(
       LOG_TYPE.INFO,
       level,
-      chalk.bold( `${chalk.white( "[" )}${chalk.blue( "INF" )}${chalk.white( "]" )} ` ),
+      chalk.bold( `${chalk.white( "[" )}${chalk.blue( "INF" )}${chalk.white( "]" )}` ),
       ...message
     );
   }
@@ -49,7 +54,7 @@ export default class CoreApiLog {
     return this.log(
       LOG_TYPE.SUCCESS,
       level,
-      chalk.bold( `${chalk.white( "[" )}${chalk.green( "SUC" )}${chalk.white( "]" )} ` ),
+      chalk.bold( `${chalk.white( "[" )}${chalk.green( "SUC" )}${chalk.white( "]" )}` ),
       ...message
     );
   }
@@ -58,7 +63,7 @@ export default class CoreApiLog {
     return this.log(
       LOG_TYPE.WARNING,
       level,
-      chalk.bold( `${chalk.white( "[" )}${chalk.yellow( "WAR" )}${chalk.white( "]" )} ` ),
+      chalk.bold( `${chalk.white( "[" )}${chalk.yellow( "WAR" )}${chalk.white( "]" )}` ),
       ...message
     );
   }
@@ -67,7 +72,7 @@ export default class CoreApiLog {
     return this.log(
       LOG_TYPE.ERROR,
       level,
-      chalk.bold( `${chalk.white( "[" )}${chalk.red( "ERR" )}${chalk.white( "]" )} ` ),
+      chalk.bold( `${chalk.white( "[" )}${chalk.red( "ERR" )}${chalk.white( "]" )}` ),
       ...message
     );
   }

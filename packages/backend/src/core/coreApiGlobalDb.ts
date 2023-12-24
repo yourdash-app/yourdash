@@ -22,7 +22,7 @@ export default class CoreApiGlobalDb extends KeyValueDatabase {
   }
 
   async loadFromDisk( dbFilePath: string ) {
-    this.coreApi.log.info( "core:global_db", "Loading global database from disk..." )
+    this.coreApi.log.info( "global_db", "Loading global database from disk..." )
 
     if ( await this.coreApi.fs.exists( dbFilePath ) ) {
       await this.readFromDisk( dbFilePath )
@@ -32,7 +32,7 @@ export default class CoreApiGlobalDb extends KeyValueDatabase {
         await this.coreApi.restartInstance()
       }
     } else {
-      this.coreApi.log.warning( "core:global_db", "Unable to load the global database!" );
+      this.coreApi.log.warning( "global_db", "Unable to load the global database!" );
     }
 
     return this
