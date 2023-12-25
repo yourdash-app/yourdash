@@ -16,7 +16,6 @@ import loadable from "@loadable/component";
 import ApplicationRedirectToDash from "./app/ApplicationRedirectToDash.jsx";
 import AppLayout from "./app/AppLayout";
 import ComingSoon from "./ComingSoon";
-import { ComponentPreviews, useInitial } from "./react-buddy-toolbox/index";
 import DocsLayout from "./root/docs/Layout";
 import ErrorElement from "./ErrorElement";
 import ServerLoginPage from "./root/login/Page";
@@ -60,9 +59,7 @@ function main() {
                 >
                   <Route
                     path={ "*" }
-                    element={ (
-                      <DocsRouter />
-                    ) }
+                    element={ <DocsRouter /> }
                   />
                 </Route>
                 <Route path={ "projects" } index element={ <ProjectsIndexPage /> } />
@@ -97,11 +94,7 @@ function main() {
                   />
                   <Route
                     path={ "a/*" }
-                    element={ <DevSupport ComponentPreviews={ ComponentPreviews }
-                      useInitialHook={ useInitial }
-                    >
-                      <AppRouter />
-                    </DevSupport> }
+                    element={ <AppRouter /> }
                   />
                 </Route>
               </Route>

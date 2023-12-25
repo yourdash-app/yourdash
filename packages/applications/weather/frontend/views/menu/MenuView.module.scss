@@ -19,29 +19,36 @@
 
 .hero {
   //noinspection CssUnknownTarget
-  --background-image: url("/assets/background.jpg");
+  font-size: 4rem;
 
   // Hero background image
-  background: var(--background-image);
-  height: 16rem;
+  font-weight: 900;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-position: center;
+  height: 16rem;
+  background: var(--background-image);
   background-repeat: no-repeat;
-  background-size: cover;
+  background-position: center;
 
   // Hero Text Content
-  font-size: 4rem;
-  font-weight: 900;
+  background-size: cover;
+  --background-image: url("/assets/background.jpg");
 
   .text {
-    color: var(--container-fg);
-    max-width: 90%;
-    text-align: center;
-    text-shadow: 0 0 1rem #000000;
     line-height: 1;
     display: flex;
+    max-width: 90%;
+    text-align: center;
+    color: var(--container-fg);
+    text-shadow: 0 0 1rem #000000;
     gap: 0.5rem;
   }
+}
+
+.sectionHeader {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 2rem;
+  height: 2rem;
 }

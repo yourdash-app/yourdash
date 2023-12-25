@@ -6,9 +6,12 @@
 import * as React from "react";
 import { type StorePromotedApplication } from "shared/apps/store/storePromotedApplication";
 import csi from "web-client/src/helpers/csi";
+import { Card } from "web-client/src/ui/index";
 import StoreCategoryComponent from "./component/StoreCategoryComponent";
 import StoreApplicationComponent from "./component/StoreApplicationComponent";
 import useTranslate from "web-client/src/helpers/i10n";
+import STORE_APPLICATION_LOGO from "../icon.avif"
+import StoreHeader from "./component/storeHeader/StoreHeader";
 
 const StoreApplication: React.FC = () => {
   const trans = useTranslate( "store" );
@@ -35,44 +38,8 @@ const StoreApplication: React.FC = () => {
   }, [] );
 
   return (
-    <main>
-      <header
-        className={"w-full flex flex-col items-center justify-center pt-2 pb-2 bg-container-bg bg-opacity-40 backdrop-blur-lg animate__animated animate__fadeIn"}
-      >
-        <h2 className={"text-3xl font-semibold tracking-wide"}>{"YourDash Store"}</h2>
-        {/*         <Carousel>
-          {
-            promotedApplications.map( item => (
-              <div
-                key={item.name}
-                style={{
-                  backgroundImage: `url(${ item.backgroundImage })`
-                }}
-                className={"w-full h-full overflow-hidden rounded-2xl bg-center bg-cover flex items-center justify-end"}
-              >
-                <div
-                  className={"w-full pt-3 pb-3 pl-12 pr-12 flex items-center bg-container-bg bg-opacity-75 backdrop-blur-md mt-auto"}
-                >
-                  <img className={"h-12 aspect-square"} src={item.icon} alt=""/>
-                  <span className={"mr-auto pl-2 text-lg"}>
-                    {item.displayName}
-                  </span>
-                  <MajorButton
-                    disabled={item.installed}
-                    className={"h-max"}
-                  >
-                    {
-                      item.installed
-                        ? "Installed"
-                        : "Install"
-                    }
-                  </MajorButton>
-                </div>
-              </div>
-            ) )
-          }
-        </Carousel> */}
-      </header>
+    <main className={"p-4 flex flex-col gap-2"}>
+      <StoreHeader />
       <h2 className={"text-3xl font-semibold tracking-wide pt-2 pl-5 animate__animated animate__fadeIn animate__250ms"}>
         {
           trans(

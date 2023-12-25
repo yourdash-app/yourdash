@@ -3,6 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import useTranslate from "web-client/src/helpers/i10n";
 import { IWeatherDataForLocation } from "../../shared/weatherDataForLocation";
 import getWeatherConditionFromState from "./getWeatherConditionFromState";
 
@@ -69,5 +70,5 @@ export default function generateWeatherDescriptionFromData( currentWeatherData: 
   const temperature = Math.round( currentWeatherData.temperature )
   const windDescription = describeWind( currentWeatherData.windDirection, currentWeatherData.windSpeed )
 
-  return `Currently ${weatherState} at ${temperature}°C with ${windDescription}`
+  return `Currently ${ weatherState } at ${temperature}°C with ${windDescription}`
 }

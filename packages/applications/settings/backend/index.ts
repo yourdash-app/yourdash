@@ -62,8 +62,18 @@ export default class SettingsModule extends Module {
       } );
     } );
 
-    this.API.request.get( "/app/settings/developer/install_all_applications", async ( req, res ) => {
-      const installableApplications = ( await fs.readdir( "../applications" ) ).filter( app => app !== "node_modules" && app !== "package.json" && app !== "package-lock.json" );
+    this.API.request.get( "/app/settings/developer/install-all-applications", async ( req, res ) => {
+      const installableApplications = ( await fs.readdir( "../applications" ) ).filter( appName => {
+        switch ( appName ) {
+        case "package.json":
+        case "node_modules":
+        case "gulpfile.js":
+        case "README.md":
+          return false;
+        default:
+          return true;
+        }
+      } );
 
       installableApplications.map( async app => {
         if ( coreApi.globalDb.get( "core:installedApplications" ).includes( app ) )

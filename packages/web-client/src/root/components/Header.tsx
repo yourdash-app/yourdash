@@ -9,7 +9,7 @@ import { useTranslateHomePage } from "../../helpers/i10n";
 
 const Header: React.FC = () => {
   const trans = useTranslateHomePage( "index" )
-  
+
   return (
     <>
       <div
@@ -34,7 +34,7 @@ const Header: React.FC = () => {
             </Link>
             <Link
               to={ "/docs" }
-              className={ "hover:text-theme-500 active:text-theme-400 transition-colors cursor-pointer select-none animate__fadeInDown animate__animated animate__750ms" }
+              className={ "hover:text-theme-500 active:text-theme-400 transition-colors cursor-pointer select-none animate__fadeInDown animate__animated animate__750ms sm:block hidden" }
             >
               { "Docs" }
             </Link>

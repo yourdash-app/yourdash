@@ -6,6 +6,7 @@
         <entryData>
           <resourceRoots>
             <path value="file://$PROJECT_DIR$/client/public" />
+            <path value="file://$PROJECT_DIR$/packages/web-client/public" />
           </resourceRoots>
         </entryData>
       </entry>

@@ -37,7 +37,7 @@ interface ITranslateWindow extends Window {
 declare const window: ITranslateWindow
 
 export default function useTranslate( application: string ) {
-  const [messages, setMessages] = useState<ITranslation | undefined>( undefined );
+  const [ messages, setMessages ] = useState<ITranslation | undefined>( undefined );
 
   useEffect( () => {
     // @ts-ignore
@@ -58,7 +58,7 @@ export default function useTranslate( application: string ) {
 }
 
 export function useTranslateAppCoreUI() {
-  const [messages, setMessages] = useState<ITranslation | undefined>( undefined );
+  const [ messages, setMessages ] = useState<ITranslation | undefined>( undefined );
 
   useEffect( () => {
     // @ts-ignore
@@ -83,7 +83,7 @@ export function useTranslateAppCoreUI() {
 
 
 export function useTranslateHomePage( page: string ) {
-  const [messages, setMessages] = useState<ITranslation | undefined>( undefined );
+  const [ messages, setMessages ] = useState<ITranslation | undefined>( undefined );
 
   useEffect( () => {
     // @ts-ignore

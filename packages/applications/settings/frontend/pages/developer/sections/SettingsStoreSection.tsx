@@ -10,15 +10,15 @@ import { Button } from "web-client/src/ui/index";
 
 const SettingsStoreSection: React.FC = () => {
   const ydsh = useYourDashLib()
-  
+
   return <>
     <Button
       onClick={() => {
-        csi.getJson( "/app/settings/developer/install_all_applications", () => {
+        csi.getJson( "/app/settings/developer/install-all-applications", () => {
           // @ts-ignore
           window.__yourdashCorePanelReload();
           ydsh.toast.success( "Installed all applications" )
-          
+
           return 0;
         } ); }
       }

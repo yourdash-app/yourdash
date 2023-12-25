@@ -1,0 +1,28 @@
+/*!
+ * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
+.component {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.applicationLogo {
+  height: 2.5rem;
+}
+
+.brand {
+  > .yourdash {
+    font-size: 2rem;
+    font-weight: 900;
+    line-height: 2rem;
+  }
+
+  > .productName {
+    font-size: 1.5rem;
+    font-weight: 900;
+    line-height: 1.5rem;
+  }
+}

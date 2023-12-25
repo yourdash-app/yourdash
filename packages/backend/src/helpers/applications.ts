@@ -97,6 +97,7 @@ export async function getAllApplications(): Promise<string[]> {
       case "package.json":
       case "node_modules":
       case "gulpfile.js":
+      case "README.md":
         return false;
       default:
         return true;

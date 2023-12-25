@@ -19,7 +19,7 @@ const Page: React.FC = () => {
   useEffect( () => {
     if ( localStorage.getItem( "current_server" ) && localStorage.getItem( "current_server" ) !== instanceHostname )
       setInstanceHostname( localStorage.getItem( "current_server" ) as string )
-  } )
+  }, [] )
 
   return <main className={ styles.page }>
     <Card showBorder className={"[transition:var(--transition-slower)] min-w-[32rem] max-w-full w-full overflow-hidden animate__animated animate__fadeIn"}>
