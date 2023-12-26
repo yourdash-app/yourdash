@@ -22,7 +22,8 @@ export interface ITextInput extends React.HTMLProps<HTMLInputElement> {
   onValid?: ( value: string ) => void
   autoComplete?: string,
   inputClassName?: string,
-  icon?: YourDashIcon
+  icon?: YourDashIcon,
+  accessibleName: string
 }
 
 const TextInput: React.FC<ITextInput> = ( {
@@ -38,6 +39,7 @@ const TextInput: React.FC<ITextInput> = ( {
   autoComplete,
   inputClassName,
   icon,
+  accessibleName,
   ...extraProps
 } ) => {
   const [ valid, setValid ] = useState( !mustMatchRegex );
@@ -67,6 +69,7 @@ const TextInput: React.FC<ITextInput> = ( {
           {...extraProps}
           autoComplete={autoComplete}
           placeholder={placeholder}
+          name={accessibleName}
           className={clippy(
             "w-full h-full outline-none relative z-0 transition-all bg-transparent",
             inputClassName

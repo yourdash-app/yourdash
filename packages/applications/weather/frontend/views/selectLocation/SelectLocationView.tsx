@@ -53,6 +53,7 @@ const SelectLocationView: React.FC = () => {
       <Card className={"gap-2 flex flex-col p-4 w-full lg:max-w-4xl md:max-w-2xl max-w-[calc(100vw-1rem)] shadow-2xl"} showBorder>
         <div className={"flex gap-2 items-center justify-center w-full"}>
           <TextInput
+            accessibleName={"weather location"}
             className={"w-full font-semibold tracking-wide text-3xl"}
             autoComplete={"false"}
             onKeyDown={e => {
