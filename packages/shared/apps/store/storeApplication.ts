@@ -14,4 +14,5 @@ export interface IYourDashStoreApplication {
   installed: boolean;
   authors: IYourDashStoreAuthor[];
   dependencies: string[];
+  requiresBackend: boolean;
 }

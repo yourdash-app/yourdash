@@ -11,9 +11,9 @@ import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
 
 export interface IInstallationPopup {
   applicationData: IYourDashStoreApplication | undefined,
-  
+
   onClose(): void
-  
+
   onConfirm(): void
 }
 
@@ -32,6 +32,16 @@ const InstallationPopup: React.FC<IInstallationPopup> = ( {
         <div>
           { `Do you want to install ${ applicationData?.displayName }?` }
         </div>
+        {
+          applicationData?.requiresBackend && <Card
+            level={ "tertiary" }
+            className={ "flex flex-col gap-2" }
+          >
+            <div>
+              { "Installing this application will automatically load it's supplied backend module on startup." }
+            </div>
+          </Card>
+        }
         { ( applicationData?.dependencies && applicationData.dependencies?.length !== 0 ) && (
           <Card
             level={ "tertiary" }

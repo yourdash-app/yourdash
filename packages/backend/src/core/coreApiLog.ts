@@ -6,7 +6,7 @@
 import chalk from "chalk";
 
 export enum LOG_TYPE {
-  INFO, WARNING, ERROR, SUCCESS
+  INFO, WARNING, ERROR, SUCCESS, DEBUG
 }
 
 const LOG_META_MAX_LENGTH = 20
@@ -73,6 +73,15 @@ export default class CoreApiLog {
       LOG_TYPE.ERROR,
       level,
       chalk.bold( `${chalk.white( "[" )}${chalk.red( "ERR" )}${chalk.white( "]" )}` ),
+      ...message
+    );
+  }
+
+  debug( level: string, ...message: ( string | Uint8Array )[] ) {
+    return this.log(
+      LOG_TYPE.DEBUG,
+      level,
+      chalk.bold( `${chalk.white( "[" )}${chalk.magenta( "DBG" )}${chalk.white( "]" )}` ),
       ...message
     );
   }
