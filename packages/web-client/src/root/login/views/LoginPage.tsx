@@ -10,9 +10,9 @@ import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
-  const [failure, setFailure] = useState( false );
-  const [instanceUrl, setInstanceUrl] = useState( "http://example.com" );
-  
+  const [ failure, setFailure ] = useState( false );
+  const [ instanceUrl, setInstanceUrl ] = useState( "http://example.com" );
+
   useEffect( () => {
     if ( localStorage.getItem( "current_server" ) && localStorage.getItem( "current_server" ) !== "" ) {
       navigate( "/login/user" );
@@ -20,7 +20,7 @@ const LoginPage: React.FC = () => {
       localStorage.setItem( "current_server", "http://localhost:3563" );
     }
   }, [] );
-  
+
   return (
     <main className={"flex flex-col items-center justify-center h-full w-full"}>
       <h1 className={"text-3xl text-container-fg pb-3"}>
@@ -28,7 +28,7 @@ const LoginPage: React.FC = () => {
       </h1>
       <Card className={"gap-2 flex flex-col"}>
         <TextInput
-          label={"Instance URL"}
+          placeholder={"Instance URL (https://example.com)"}
           onChange={value => {
             if ( value.indexOf( ":" ) === -1 ) {
               setInstanceUrl( value );
@@ -39,7 +39,6 @@ const LoginPage: React.FC = () => {
           mustMatchRegex={
             /^(?:https?:\/\/)?(?:\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(?::\d+)?|localhost(?::\d+)?|(?!.*\.$)[\w.-]+\.[a-z]{2,})(?::\d+)?$/
           }
-          placeholder={"https://example.com"}
         />
         <MajorButton
           className={"w-full"}

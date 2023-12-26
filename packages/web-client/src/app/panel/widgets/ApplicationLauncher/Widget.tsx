@@ -19,7 +19,7 @@ const ApplicationLauncherWidget: React.FC<{ side: "top" | "right" | "bottom" | "
 
   return <div className={styles.widgetContainer}>
     <IconButton
-      icon={YourDashIcon.Apps}
+      icon={YourDashIcon.AppLauncher}
       className={styles.launcherButton}
       onClick={() => setLauncherVisible( !launcherVisible )}
     />

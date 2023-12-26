@@ -6,9 +6,9 @@
 .component {
   position: relative;
   overflow: hidden;
-  padding: 6rem 1rem 1rem;
   cursor: pointer;
   background: #333333;
+  height: 8rem;
 }
 
 .background {
@@ -41,14 +41,14 @@
 
 .label {
   font-size: 3rem;
-  line-height: 1;
+  line-height: 3rem;
   transition: var(--transition);
   transform-origin: bottom left;
   font-weight: 700;
   letter-spacing: 0.025rem;
   position: absolute;
-  left: 1rem;
   bottom: 1rem;
+  left: 1rem;
 }
 
 .component:hover .label,
