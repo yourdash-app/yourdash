@@ -14,15 +14,18 @@
 }
 
 .brand {
-  > .yourdash {
+  margin-right: auto;
+
+  > .productName {
     font-size: 2rem;
     font-weight: 900;
     line-height: 2rem;
   }
+}
 
-  > .productName {
-    font-size: 1.5rem;
-    font-weight: 900;
-    line-height: 1.5rem;
-  }
+.actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-direction: row;
 }

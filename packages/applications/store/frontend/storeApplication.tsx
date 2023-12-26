@@ -6,11 +6,10 @@
 import * as React from "react";
 import { type StorePromotedApplication } from "shared/apps/store/storePromotedApplication";
 import csi from "web-client/src/helpers/csi";
-import { Card } from "web-client/src/ui/index";
+import Heading from "web-client/src/ui/components/heading/Heading";
 import StoreCategoryComponent from "./component/StoreCategoryComponent";
 import StoreApplicationComponent from "./component/StoreApplicationComponent";
 import useTranslate from "web-client/src/helpers/i10n";
-import STORE_APPLICATION_LOGO from "../icon.avif"
 import StoreHeader from "./component/storeHeader/StoreHeader";
 
 const StoreApplication: React.FC = () => {
@@ -40,47 +39,41 @@ const StoreApplication: React.FC = () => {
   return (
     <main className={"p-4 flex flex-col gap-2"}>
       <StoreHeader />
-      <h2 className={"text-3xl font-semibold tracking-wide pt-2 pl-5 animate__animated animate__fadeIn animate__250ms"}>
-        {
-          trans(
-            "ALL_CATEGORIES_SECTION"
-          )
-        }
-      </h2>
+      <Heading
+        level={2}
+      >
+        { trans( "ALL_CATEGORIES_SECTION" ) }
+      </Heading>
       {
         categories.length !== 0 && (
           <section className={"p-4 grid 3xl:grid-cols-3 md:grid-cols-2 grid-cols-1 lg:gap-2 gap-1 animate__animated animate__fadeIn animate__250ms"}>
-            {
-              categories.map( category => (
-                <StoreCategoryComponent
-                  id={category}
-                  key={category}
-                />
-              ) )
-            }
+            { categories.map( category => (
+              <StoreCategoryComponent
+                id={category}
+                key={category}
+              />
+            ) ) }
           </section>
         )
       }
+      <Heading
+        level={2}
+      >
+        { trans( "ALL_APPLICATIONS_SECTION" ) }
+      </Heading>
       <h2 className={"text-3xl font-semibold tracking-wide pt-2 pl-5 animate__animated animate__fadeIn animate__500ms"}>
-        {
-          trans(
-            "ALL_APPLICATIONS_SECTION"
-          )
-        }
       </h2>
       {
         applications.length !== 0 && (
           <section className={"p-4 grid grid-cols-1 gap-2 animate__animated animate__fadeIn animate__500ms md:grid-cols-2 lg:grid-cols-3"}>
-            {
-              applications.map( application => (
-                <StoreApplicationComponent
-                  id={application.id}
-                  displayName={application.displayName}
-                  key={application.id}
-                  icon={application.icon}
-                />
-              ) )
-            }
+            { applications.map( application => (
+              <StoreApplicationComponent
+                id={application.id}
+                displayName={application.displayName}
+                key={application.id}
+                icon={application.icon}
+              />
+            ) ) }
           </section>
         )
       }
