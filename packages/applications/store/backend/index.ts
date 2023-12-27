@@ -55,9 +55,7 @@ export default class StoreModule extends Module {
     } );
 
     this.API.request.get( "/app/store/applications", async ( req, res ) => {
-      const { username } = req.headers as {
-      username: string
-    };
+      const { username } = req.headers as { username: string };
 
       const applications = await getAllApplications();
 
@@ -75,7 +73,8 @@ export default class StoreModule extends Module {
             return {
               id: applicationName,
               displayName: application.getDisplayName() || applicationName,
-              icon: coreApi.authenticatedImage.create( username, AUTHENTICATED_IMAGE_TYPE.FILE, await application.getIconPath() )
+              icon: coreApi.authenticatedImage.create( username, AUTHENTICATED_IMAGE_TYPE.FILE, await application.getIconPath() ),
+              installed: application.isInstalled()
             };
           } )
         )
@@ -99,10 +98,10 @@ export default class StoreModule extends Module {
       const categoryApplications = await getAllApplicationsFromCategory( id );
 
       const applicationsOutput: {
-      name: string,
-      icon: string,
-      displayName: string
-    }[] = [];
+        name: string,
+        icon: string,
+        displayName: string
+      }[] = [];
 
       await Promise.all( categoryApplications.map( async app => {
         const application = await new YourDashApplication( app ).read();
@@ -141,7 +140,8 @@ export default class StoreModule extends Module {
       const response: IYourDashStoreApplication = {
         ...application.getRawApplicationData(),
         icon: `data:image/avif;base64,${ ( await application.getIcon() ).toString( "base64" ) }`,
-        installed: application.isInstalled()
+        installed: application.isInstalled(),
+        requiresBackend: await application.requiresBackend()
       };
 
       return res.json( response );

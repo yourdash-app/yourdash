@@ -5,9 +5,9 @@
 
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Card } from "web-client/src/ui";
+import { Card } from "web-client/src/ui/index";
 import csi from "web-client/src/helpers/csi";
-import styles from "./StoreApplicationComponent.module.scss";
+import styles from "./StoreApplication.module.scss";
 
 export interface IStoreApplicationComponent {
   displayName: string;
@@ -15,7 +15,7 @@ export interface IStoreApplicationComponent {
   icon: string;
 }
 
-const StoreApplicationComponent: React.FC<IStoreApplicationComponent> = ( {
+const StoreApplication: React.FC<IStoreApplicationComponent> = ( {
   displayName,
   id,
   icon
@@ -37,4 +37,4 @@ const StoreApplicationComponent: React.FC<IStoreApplicationComponent> = ( {
   );
 };
 
-export default StoreApplicationComponent;
+export default StoreApplication;

@@ -15,11 +15,20 @@
 
 .brand {
   margin-right: auto;
+  opacity: 1;
+  width: max-content;
+  transition: var(--transition);
 
   > .productName {
     font-size: 2rem;
     font-weight: 900;
     line-height: 2rem;
+    white-space: nowrap;
+  }
+
+  @container yourdash-application-frame (width < 768px) {
+    opacity: 0;
+    width: 0;
   }
 }
 

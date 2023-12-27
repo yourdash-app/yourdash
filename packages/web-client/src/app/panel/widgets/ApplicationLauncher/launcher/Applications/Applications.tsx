@@ -6,7 +6,7 @@
 import React, { useEffect } from "react";
 import IPanelApplicationsLauncherApplication from "shared/core/panel/applicationsLauncher/application";
 import ApplicationGrid from "./Grid/ApplicationGrid";
-import { TextInput } from "../../../../../../ui/index";
+import { TextInput, YourDashIcon } from "../../../../../../ui/index";
 import styles from "./Applications.module.scss";
 import { useNavigate } from "react-router";
 import ApplicationList from "./List/ApplicationList";
@@ -17,14 +17,14 @@ const ApplicationsLauncherApplications: React.FC<{ apps: IPanelApplicationsLaunc
   const navigate = useNavigate();
   const [ layout, setLayout ] = React.useState<"grid" | "list">( "grid" );
   const [ applications, setApplications ] = React.useState<IPanelApplicationsLauncherApplication[]>( apps );
-  
+
   useEffect( () => {
     setApplications( apps );
-    
+
     // for development purposes only
     // setLayout( "list" )
   }, [ apps ] );
-  
+
   return <>
     <TextInput
       className={ styles.searchBar }
@@ -41,11 +41,12 @@ const ApplicationsLauncherApplications: React.FC<{ apps: IPanelApplicationsLaunc
                  application.description.toLowerCase().includes( val.toLowerCase() ) ||
                  application.displayName.toLowerCase().includes( val.toLowerCase() );
         } );
-        
+
         setApplications( filteredApplications );
       } }
+      icon={YourDashIcon.Search}
     />
-    
+
     { layout === "grid" && <ApplicationGrid applications={ applications } /> }
     { layout === "list" && <ApplicationList applications={ applications } /> }
   </>;

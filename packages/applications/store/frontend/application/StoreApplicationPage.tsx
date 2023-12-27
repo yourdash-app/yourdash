@@ -28,15 +28,15 @@ const StoreApplicationPage: React.FC = () => {
   const ydsh = useYourDashLib()
   const navigate = useNavigate();
   const { id: applicationId } = useParams();
-  const [isLoading, setIsLoading] = useState<boolean>( true );
-  const [appData, setAppData] = useState<IYourDashStoreApplication>();
-  const [showInstallationConfirmation, setShowInstallationConfirmation] = useState<boolean>( false );
+  const [ isLoading, setIsLoading ] = useState<boolean>( true );
+  const [ appData, setAppData ] = useState<IYourDashStoreApplication>();
+  const [ showInstallationConfirmation, setShowInstallationConfirmation ] = useState<boolean>( false );
 
   useEffect( () => {
     setShowInstallationConfirmation( false );
     setIsLoading( true );
     requestApplication( applicationId || "dash", data => setAppData( data ), setIsLoading, navigate );
-  }, [applicationId, navigate] );
+  }, [ applicationId, navigate ] );
 
   if ( !applicationId ) {
     navigate( "/app/a/store" );
@@ -145,6 +145,9 @@ const StoreApplicationPage: React.FC = () => {
               </div>
               <div>
                 { `ID: ${ appData.name }` }
+              </div>
+              <div>
+                { `Requires Backend: ${ appData.requiresBackend }` }
               </div>
               <br />
               <div>

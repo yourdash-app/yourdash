@@ -86,6 +86,10 @@ class YDApplication {
   getRawApplicationData(): IYourDashApplication {
     return this.application;
   }
+
+  async requiresBackend(): Promise<boolean> {
+    return !await coreApi.fs.exists( path.resolve( path.join( process.cwd(), this.getPath(), "backend/index.js" ) ) )
+  }
 }
 
 // Returns an array of strings with the name of each application that exists ( installed or not )

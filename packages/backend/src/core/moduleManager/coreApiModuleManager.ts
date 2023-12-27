@@ -4,6 +4,7 @@
  */
 
 import fileUrl from "file-url";
+import fs from "fs";
 import path from "path";
 import Module from "./module.js";
 import { CoreApi } from "../coreApi.js";
@@ -45,10 +46,15 @@ export default class CoreApiModuleManager {
       return;
     }
 
+    if ( !await this.coreApi.fs.exists( `${modulePath}/index.js` ) ) {
+      this.coreApi.log.info( "module_manager", `Skipped loading backend-less module: "${ moduleName }"` )
+      return;
+    }
+
     this.coreApi.log.info( "module_manager", `Loading module: "${ moduleName }"` )
 
     try {
-      const module = await import( `${modulePath}/index.js` );
+      const module = await import( `${fileUrl( modulePath )}/index.js` );
       if ( !module.default ) {
         this.coreApi.log.error( "module_manager", `Unable to load ${ moduleName }! This application does not contain a default export!` );
         return;
@@ -83,7 +89,7 @@ export default class CoreApiModuleManager {
     const installedApplications = this.coreApi.globalDb.get( "core:installedApplications" )
 
     for( const moduleName of installedApplications ) {
-      const modulePath = fileUrl( path.resolve( path.join( process.cwd(), "../applications", moduleName, "./backend" ) ) )
+      const modulePath = path.resolve( path.join( process.cwd(), "../applications", moduleName, "./backend" ) )
 
       await this.loadModule( moduleName, modulePath );
     }

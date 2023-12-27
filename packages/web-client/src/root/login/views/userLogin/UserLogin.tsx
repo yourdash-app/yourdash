@@ -20,13 +20,13 @@ interface IUserLogin {
 const UserLogin: React.FC<IUserLogin> = ( { setUsername, setPassword, password, username, setInstanceHostname } ) => {
   const navigate = useNavigate()
   const ydsh = useYourDashLib()
-  const [isValidUser, setIsValidUser] = React.useState<boolean>( false )
-  const [avatar, setAvatar] = React.useState<string>( "" )
-  const [fullName, setFullName] = React.useState<{ first: string, last: string }>( { first: "Err", last: "or" } )
-  
+  const [ isValidUser, setIsValidUser ] = React.useState<boolean>( false )
+  const [ avatar, setAvatar ] = React.useState<string>( "" )
+  const [ fullName, setFullName ] = React.useState<{ first: string, last: string }>( { first: "Err", last: "or" } )
+
   useEffect( () => {
     if ( username === "" ) return
-    
+
     fetch( `${csi.getInstanceUrl()}/core/login/user/${username}`, {
       mode: "cors",
       headers: {
@@ -45,13 +45,13 @@ const UserLogin: React.FC<IUserLogin> = ( { setUsername, setPassword, password, 
           setFullName( resp.name )
         }
       } )
-      .catch( err => {
+      .catch( () => {
         setAvatar( "" )
         setFullName( { first: "Err", last: "or" } )
         setIsValidUser( false )
       } )
-  }, [username] );
-  
+  }, [ username ] );
+
   if ( !isValidUser ) {
     return <div className={"w-full h-full flex items-center justify-center flex-col relative"}>
       <IconButton
@@ -65,14 +65,13 @@ const UserLogin: React.FC<IUserLogin> = ( { setUsername, setPassword, password, 
       <TextInput
         key={"username-input"}
         className={"animate__animated animate__fadeIn"}
-        label={"Username"}
+        placeholder={"Username"}
         onChange={value => setUsername( value )}
-        placeholder={""}
         value={username}
       />
     </div>
   }
-  
+
   return <div className={"w-full h-full flex items-center justify-center flex-col relative animate__animated animate__fadeIn gap-4"}>
     <IconButton
       icon={YourDashIcon.ChevronLeft}
@@ -93,20 +92,18 @@ const UserLogin: React.FC<IUserLogin> = ( { setUsername, setPassword, password, 
       <TextInput
         autoComplete={`yourdash-instance-login username instance-${csi.getInstanceUrl()}`}
         key={"username-input"}
-        label={"Username"}
+        placeholder={"Username"}
         onChange={value => setUsername( value )}
-        placeholder={""}
         value={username}
       />
       <TextInput
         autoComplete={`yourdash-instance-login password instance-${csi.getInstanceUrl()}`}
         key={"password-input"}
-        label={"Password"}
+        placeholder={"Password"}
         type={"password"}
         onChange={value => setPassword( value )}
-        placeholder={""}
         value={password}
-      
+
         onKeyDown={e => {
           if ( e.key === "Enter" ) {
             csi.postJson(

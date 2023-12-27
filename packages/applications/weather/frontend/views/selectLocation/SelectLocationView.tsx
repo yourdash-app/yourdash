@@ -54,7 +54,7 @@ const SelectLocationView: React.FC = () => {
         <div className={"flex gap-2 items-center justify-center w-full"}>
           <TextInput
             accessibleName={"weather location"}
-            className={"w-full font-semibold tracking-wide text-3xl"}
+            className={"w-full font-semibold tracking-wide text-3xl h-32"}
             autoComplete={"false"}
             onKeyDown={e => {
               if ( e.key === "Enter" ) {

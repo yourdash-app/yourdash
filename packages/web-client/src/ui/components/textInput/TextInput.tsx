@@ -12,7 +12,6 @@ import { YourDashIcon } from "../icon/iconDictionary";
 export interface ITextInput extends React.HTMLProps<HTMLInputElement> {
   onChange: ( text: string, e: React.FormEvent<HTMLInputElement> ) => void;
   onBlur?: FocusEventHandler<HTMLInputElement>;
-  label?: string;
   mustMatchRegex?: RegExp;
   placeholder?: string;
   className?: string;
@@ -29,7 +28,6 @@ export interface ITextInput extends React.HTMLProps<HTMLInputElement> {
 const TextInput: React.FC<ITextInput> = ( {
   onChange,
   onBlur,
-  label,
   mustMatchRegex,
   placeholder,
   className,
@@ -45,12 +43,7 @@ const TextInput: React.FC<ITextInput> = ( {
   const [ valid, setValid ] = useState( !mustMatchRegex );
 
   return (
-    <div className={clippy( "relative transition-all flex h-[2.25rem] box-content w-64", className )}>
-      <span
-        className={clippy( "pl-2 pr-2 bg-base-700 absolute -top-1 left-2.5 text-sm z-10 [line-height:.65rem] select-none text-base-400" )}
-      >
-        {label}
-      </span>
+    <div className={clippy( "relative transition-all flex min-h-[2.25rem] box-content min-w-48", className )}>
       <div className={clippy(
         "rounded-button-rounding bg-base-800 pl-2 pt-1 pb-1 pr-2 flex gap-1 items-center justify-center h-full w-full",
         mustMatchRegex
