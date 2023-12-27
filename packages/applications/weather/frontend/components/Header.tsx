@@ -4,6 +4,7 @@
  */
 
 import React from "react";
+import Heading from "web-client/src/ui/components/heading/Heading";
 import { IWeatherDataForLocation } from "../../shared/weatherDataForLocation";
 import { IconButton } from "web-client/src/ui/index";
 import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
@@ -31,15 +32,15 @@ const WeatherApplicationLocationPageHeader: React.FC<WeatherApplicationLocationP
 } ) => {
   const trans = useTranslate( "weather" );
   const navigate = useNavigate()
-  const [isStuck, setIsStuck] = React.useState<boolean>( false );
-  
+  const [ isStuck, setIsStuck ] = React.useState<boolean>( false );
+
   React.useEffect( () => {
     if ( !scrollContainerRef.current ) return
-    
+
     const element = scrollContainerRef.current as HTMLDivElement
-    
+
     const lastScrollTop = 0
-    
+
     function listener(): void {
       if ( element.scrollTop > lastScrollTop ) {
         setIsStuck( true )
@@ -49,14 +50,14 @@ const WeatherApplicationLocationPageHeader: React.FC<WeatherApplicationLocationP
         }
       }
     }
-    
+
     element.addEventListener( "scroll", listener )
 
     return () => {
       element.removeEventListener( "scroll", listener )
     }
   }, [] )
-  
+
   return <header
     style={ {
       backgroundImage: `url(${ getWeatherBackgroundForCondition(
@@ -92,7 +93,7 @@ const WeatherApplicationLocationPageHeader: React.FC<WeatherApplicationLocationP
       </section>
     </section>
     <section className={ clippy( styles.currentWeatherHeader, isStuck && styles.stuck ) }>
-      <span>Currently { weatherData.currentWeather.temperature }{ weatherData.units.hourly.temperature } {weatherData.currentWeather.weatherState !== WEATHER_STATES.PARTLY_CLOUDY ? "with" : "and"} { trans( getWeatherConditionFromState( weatherData.currentWeather.weatherState ) ) }</span>
+      <Heading>Currently { weatherData.currentWeather.temperature }{ weatherData.units.hourly.temperature } {weatherData.currentWeather.weatherState !== WEATHER_STATES.PARTLY_CLOUDY ? "with" : "and"} { trans( getWeatherConditionFromState( weatherData.currentWeather.weatherState ) ) }</Heading>
     </section>
     <WeatherApplicationDaysCarousel
       setSelectedDay={ ( day: number ) => {

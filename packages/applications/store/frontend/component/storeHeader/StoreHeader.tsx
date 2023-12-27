@@ -4,15 +4,30 @@
  */
 
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { Card, IconButton, TextInput, YourDashIcon } from "web-client/src/ui/index";
 import STORE_APPLICATION_LOGO from "../../../icon.avif";
 import styles from "./StoreHeader.module.scss"
 
-const StoreHeader: React.FC = () => {
+const StoreHeader: React.FC<{ showBackButton?: number }> = ( { showBackButton } ) => {
+  const navigate = useNavigate()
+
   return <Card
     showBorder
     className={ styles.component }
   >
+    {
+      showBackButton && <IconButton
+        icon={YourDashIcon.ChevronLeft}
+        onClick={() => {
+          let navigatePath = ""
+          for ( let i = 0; i < showBackButton; i++ ) {
+            navigatePath += "../"
+          }
+          navigate( navigatePath )
+        }}
+      />
+    }
     <img
       alt={ "YourDash Store Application Logo" }
       className={ styles.applicationLogo }
@@ -23,6 +38,7 @@ const StoreHeader: React.FC = () => {
     </div>
     <div className={styles.actions}>
       <TextInput
+        accessibleName={"Search Applications"}
         onChange={value => {
           return value
         }}

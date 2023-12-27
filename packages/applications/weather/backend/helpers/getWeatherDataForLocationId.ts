@@ -3,7 +3,6 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import core from "@yourdash/uikit/src/core/index.js";
 import coreApi from "backend/src/core/coreApi.js";
 import { Response, fetch } from "undici";
 import { IWeatherDataForLocation } from "../../shared/weatherDataForLocation.js";

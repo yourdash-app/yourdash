@@ -5,14 +5,18 @@
 
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import clippy from "web-client/src/helpers/clippy";
 import useYourDashLib from "web-client/src/helpers/ydsh";
-import { IconButton, Spinner, Card, Button, Icon, MajorButton, Carousel } from "web-client/src/ui";
+import { Spinner, Card, Button, Icon, MajorButton, Carousel } from "web-client/src/ui";
 import csi from "web-client/src/helpers/csi";
+import Heading from "web-client/src/ui/components/heading/Heading";
+import StoreHeader from "../component/storeHeader/StoreHeader";
 import StoreApplicationDefaultHeaderBackground from "./default_background.svg";
 import useTranslate from "web-client/src/helpers/i10n";
 import { type IYourDashStoreApplication } from "shared/apps/store/storeApplication";
 import InstallationPopup from "./components/InstallationPopup";
 import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
+import styles from "./StoreApplicationPage.module.scss";
 
 function requestApplication( applicationId: string, setAppData: ( data: IYourDashStoreApplication ) => void, setIsLoading: ( data: boolean ) => void, navigate: ( data: string ) => void ) {
   csi.getJson( `/app/store/application/${ applicationId }`, data => {
@@ -62,12 +66,15 @@ const StoreApplicationPage: React.FC = () => {
     /> ) }
     {
       isLoading
-        ? <div className={ "w-full h-full flex items-center justify-center" }>
+        ? <div className={ clippy( "w-full h-full flex items-center justify-center", styles.main ) }>
           <Spinner />
           { /* TODO: add a back button */ }
         </div>
-        : appData && ( <>
-          <header className={ "flex flex-col w-full bg-container-bg" }>
+        : appData && ( <div className={styles.main}>
+          <StoreHeader
+            showBackButton={2}
+          />
+          <header className={ "flex flex-col w-full bg-container-bg rounded-container-rounding overflow-hidden" }>
             <div
               style={ {
                 backgroundImage: `url(${ StoreApplicationDefaultHeaderBackground })`
@@ -80,26 +87,20 @@ const StoreApplicationPage: React.FC = () => {
                 draggable={ false }
                 alt=""
               />
-              <h1 className={ "text-5xl tracking-wider font-black drop-shadow-lg w-max" }>
+              <Heading className={ "drop-shadow-lg" }>
                 { appData.displayName }
-              </h1>
+              </Heading>
             </div>
             <section className={ "flex items-center p-4 gap-4 max-w-[50rem] w-full ml-auto mr-auto animate__animated animate__fadeIn animate__250ms" }>
-              <IconButton
-                icon={ YourDashIcon.ChevronLeft }
-                onClick={ () => {
-                  navigate( `/app/a/store/cat/${ appData?.category }` );
-                } }
-              />
               <img
                 className={ "w-24 aspect-square select-none" }
                 src={ appData.icon }
                 draggable={ false }
                 alt=""
               />
-              <h1 className={ "text-4xl font-semibold tracking-wide mr-auto" }>
+              <Heading level={2} className={ " mr-auto" }>
                 { appData.displayName }
-              </h1>
+              </Heading>
               <div className={ "flex gap-2" }>
                 { appData.installed && ( <MajorButton
                   onClick={ () => {
@@ -135,7 +136,7 @@ const StoreApplicationPage: React.FC = () => {
             <Card showBorder>
               { appData.description }
             </Card>
-            <h2 className={ "text-2xl font-medium" }>{ trans( "ABOUT_SECTION" ) }</h2>
+            <Heading level={3}>{ trans( "ABOUT_SECTION" ) }</Heading>
             <Card
               showBorder
               className={ "flex flex-col items-start" }
@@ -166,7 +167,7 @@ const StoreApplicationPage: React.FC = () => {
                 { "View Source" }
               </span>
             </Card>
-            <h2 className={ "text-2xl font-medium" }>{ trans( "AUTHORS_SECTION" ) }</h2>
+            <Heading level={3}>{ trans( "AUTHORS_SECTION" ) }</Heading>
             <section className={ "w-full" }>
               <Carousel>
                 { appData.authors?.map( author => (
@@ -195,7 +196,7 @@ const StoreApplicationPage: React.FC = () => {
               </Carousel>
             </section>
           </main>
-        </> ) }
+        </div> ) }
   </div> );
 };
 

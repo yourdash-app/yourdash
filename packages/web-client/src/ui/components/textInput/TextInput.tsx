@@ -45,7 +45,7 @@ const TextInput: React.FC<ITextInput> = ( {
   return (
     <div className={clippy( "relative transition-all flex min-h-[2.25rem] box-content min-w-48", className )}>
       <div className={clippy(
-        "rounded-button-rounding bg-base-800 pl-2 pt-1 pb-1 pr-2 flex gap-1 items-center justify-center h-full w-full",
+        "rounded-button-rounding bg-base-800 pl-2 pt-1 pb-1 pr-2 flex gap-1 items-center justify-center w-full",
         mustMatchRegex
           ? valid
             ? "hover:border-green-400 focus-within:border-green-400 border-2 border-base-600"

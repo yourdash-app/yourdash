@@ -8,11 +8,11 @@ import { type StorePromotedApplication } from "shared/apps/store/storePromotedAp
 import clippy from "web-client/src/helpers/clippy";
 import csi from "web-client/src/helpers/csi";
 import Heading from "web-client/src/ui/components/heading/Heading";
-import StoreCategory from "./component/storeCategory/StoreCategory";
-import StoreApplication from "./component/storeApplication/StoreApplication";
+import StoreCategory from "../../component/storeCategory/StoreCategory";
+import StoreApplication from "../../component/storeApplication/StoreApplication";
 import useTranslate from "web-client/src/helpers/i10n";
-import StoreHeader from "./component/storeHeader/StoreHeader";
-import styles from "./storeApplication.module.scss";
+import StoreHeader from "../../component/storeHeader/StoreHeader";
+import styles from "./HomeView.module.scss";
 
 const StoreApplicationRoot: React.FC = () => {
   const trans = useTranslate( "store" );

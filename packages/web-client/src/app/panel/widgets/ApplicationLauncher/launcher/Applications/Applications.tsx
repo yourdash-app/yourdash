@@ -27,6 +27,8 @@ const ApplicationsLauncherApplications: React.FC<{ apps: IPanelApplicationsLaunc
 
   return <>
     <TextInput
+      accessibleName={"Search Applications"}
+      placeholder={ "Search Applications" }
       className={ styles.searchBar }
       onKeyDown={ ( e ) => {
         if ( e.key === "Enter" ) {
