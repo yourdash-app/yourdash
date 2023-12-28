@@ -20,10 +20,10 @@ ChartJS.register( CategoryScale, LinearScale, PointElement, LineElement, Title, 
 
 const WeatherApplicationLocationPage: React.FC<IWeatherApplicationLocationPage> = ( { weatherData } ) => {
   const scrollContainerRef = React.useRef<HTMLDivElement>( null );
-  
+
   const [ selectedDay, setSelectedDay ] = useState<number>( 0 );
   const [ selectedHour, setSelectedHour ] = useState<number | null>( null );
-  
+
   // @ts-ignore
   return ( <div className={ "overflow-hidden h-full grid grid-rows-[auto,1fr] bg-bg" }>
     <WeatherApplicationLocationPageHeader
@@ -37,11 +37,11 @@ const WeatherApplicationLocationPage: React.FC<IWeatherApplicationLocationPage> 
         <section className={ "h-full pr-2 flex flex-col gap-2 w-full max-w-sm flex-wrap" }>
           { chunk( weatherData.hourly.time, 24 )[ selectedDay ].map( ( hourDate, ind ) => {
             const date = new Date( hourDate );
-            
+
             // return null if the date has already passed
             if ( date < new Date() )
               return null;
-            
+
             return <Card
               level={ "secondary" }
               key={ hourDate }

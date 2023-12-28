@@ -3,29 +3,21 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import clippy from "web-client/src/helpers/clippy";
-import useYourDashLib from "web-client/src/helpers/ydsh";
-import { Spinner, Card, Button, Icon, MajorButton, Carousel } from "web-client/src/ui";
-import csi from "web-client/src/helpers/csi";
-import Heading from "web-client/src/ui/components/heading/Heading";
-import StoreHeader from "../component/storeHeader/StoreHeader";
-import StoreApplicationDefaultHeaderBackground from "./default_background.svg";
-import useTranslate from "web-client/src/helpers/i10n";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { type IYourDashStoreApplication } from "shared/apps/store/storeApplication";
-import InstallationPopup from "./components/InstallationPopup";
+import clippy from "web-client/src/helpers/clippy";
+import csi from "web-client/src/helpers/csi";
+import useTranslate from "web-client/src/helpers/i10n";
+import useYourDashLib from "web-client/src/helpers/ydsh";
+import Heading from "web-client/src/ui/components/heading/Heading";
 import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
+import { Button, Card, Carousel, Icon, MajorButton, Spinner } from "web-client/src/ui/index";
+import StoreHeader from "../../component/storeHeader/StoreHeader";
+import StoreApplicationDefaultHeaderBackground from "./assets/default_background.svg";
+import InstallationPopup from "./components/InstallationPopup";
+import { requestApplication } from "./helpers/requestApplicationData";
 import styles from "./StoreApplicationPage.module.scss";
-
-function requestApplication( applicationId: string, setAppData: ( data: IYourDashStoreApplication ) => void, setIsLoading: ( data: boolean ) => void, navigate: ( data: string ) => void ) {
-  csi.getJson( `/app/store/application/${ applicationId }`, data => {
-    setAppData( data );
-    setIsLoading( false );
-  }, () => {
-    navigate( "/app/a/store" );
-  } );
-}
 
 const StoreApplicationPage: React.FC = () => {
   const trans = useTranslate( "store" );
@@ -150,10 +142,12 @@ const StoreApplicationPage: React.FC = () => {
               <div>
                 { `Requires Backend: ${ appData.requiresBackend }` }
               </div>
-              <br />
-              <div>
-                { "Created as part of the YourDash Project" }
-              </div>
+              <>
+                <br />
+                <div>
+                  { "Created as part of the YourDash Project" }
+                </div>
+              </>
             </Card>
             <Card
               showBorder

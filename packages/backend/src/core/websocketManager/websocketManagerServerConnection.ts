@@ -4,21 +4,21 @@
  */
 
 import { Socket as SocketIoSocket } from "socket.io";
-import { IYourDashSession, YOURDASH_SESSION_TYPE } from "../../../../shared/core/session.js";
-import CoreApiPersonalServerAccelerator from "./coreApiPersonalServerAccelerator.js";
+import { IYourDashSession, YOURDASH_SESSION_TYPE } from "shared/core/session.js";
+import WebsocketManager from "./websocketManager.js";
 
-export default class PersonalServerAcceleratorConnection {
+export default class WebsocketManagerServerConnection {
   username: string;
   session: IYourDashSession<YOURDASH_SESSION_TYPE.desktop>;
   private socket: SocketIoSocket | undefined;
-  private websocketManager: CoreApiPersonalServerAccelerator;
+  private websocketManager: WebsocketManager;
   id: `${string}-${number}` /* `[username]-[sessionId]` */;
 
   constructor(
     username: string,
     session: IYourDashSession<YOURDASH_SESSION_TYPE.desktop>,
     socket: SocketIoSocket,
-    websocketManager: CoreApiPersonalServerAccelerator
+    websocketManager: WebsocketManager
   ) {
     this.username = username;
     this.session = session;

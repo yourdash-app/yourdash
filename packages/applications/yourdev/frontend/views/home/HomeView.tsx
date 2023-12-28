@@ -4,10 +4,11 @@
  */
 
 import React from "react";
-import { Card, Icon, IconButton } from "web-client/src/ui";
+import { Card, Icon, IconButton } from "web-client/src/ui/index";
 import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
+import StatusIndicators from "./components/StatusIndicators/StatusIndicators";
 
-const YourDevHome: React.FC = () => {
+const HomeView: React.FC = () => {
   return (
     <div className={"@container"}>
       <section className={"grid grid-cols-1 @6xl:grid-cols-2 gap-4"}>
@@ -15,24 +16,7 @@ const YourDevHome: React.FC = () => {
           <Card className={ "flex gap-2 flex-row items-center" } showBorder>
             <Icon className={ "aspect-square h-12" } icon={ YourDashIcon.YourDashLogo } preserveColor />
             <h1 className={ "text-3xl font-bold tracking-wide" }>{ "YourDash Dev" }</h1>
-            <div className={ "ml-auto flex gap-2 items-center" }>
-              <div className={ "flex flex-col gap-1 items-center justify-center" }>
-                <IconButton icon={ YourDashIcon.Plug } />
-                <span>{ "20" }</span>
-              </div>
-              <div className={ "flex flex-col gap-1 items-center justify-center" }>
-                <IconButton icon={ YourDashIcon.Info } color={ "#32b3ff" } />
-                <span>{ "200" }</span>
-              </div>
-              <div className={ "flex flex-col gap-1 items-center justify-center" }>
-                <IconButton icon={ YourDashIcon.Alert } color={ "#eab842" } />
-                <span>{ "4" }</span>
-              </div>
-              <div className={ "flex flex-col gap-1 items-center justify-center" }>
-                <IconButton icon={ YourDashIcon.XCircle } color={ "#ff6633" } />
-                <span>{ "1" }</span>
-              </div>
-            </div>
+            <StatusIndicators />
           </Card>
           <Card className={ "h-full" } showBorder>
           Requests log
@@ -50,4 +34,4 @@ const YourDevHome: React.FC = () => {
   );
 };
 
-export default YourDevHome;
+export default HomeView;

@@ -8,7 +8,7 @@ import { Routes, Route } from "react-router";
 import StoreApplication from "./views/home/HomeView";
 import ComingSoon from "web-client/src/ComingSoon";
 import CategoryView from "./views/category/CategoryView";
-import StoreApplicationPage from "./application/StoreApplicationPage";
+import StoreApplicationPage from "./views/application/StoreApplicationPage";
 
 const StoreRouter: React.FC = () => (
   <Routes>

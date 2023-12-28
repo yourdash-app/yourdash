@@ -5,6 +5,7 @@
 
 // YourDash Client-Server interface Toolkit
 import KeyValueDatabase from "shared/core/database";
+import { Socket as SocketIoClient } from "socket.io-client"
 
 type ITJson = boolean | number | string | null | TJson | boolean[] | number[] | string[] | null[] | TJson[]
 
@@ -24,6 +25,19 @@ export class UserDatabase extends KeyValueDatabase {
     csi.postJson( "/core/user_db", this.keys, () => {
       return 0
     } )
+  }
+}
+
+class __internalClientServerWebsocketConnection {
+  endpointPath: string
+  connection: SocketIoClient
+
+  constructor( endpointPath: string ) {
+    this.endpointPath = endpointPath
+
+    this.connection = new SocketIoClient(  )
+
+    return this
   }
 }
 
@@ -280,6 +294,10 @@ class __internalClientServerInteraction {
     return localStorage.getItem( "current_server" ) || "https://example.com";
   }
 
+  getInstanceWebsocketUrl(): string {
+    return localStorage.getItem( "current_server" ) || "wss://example.com";
+  }
+
   getUserName(): string {
     return localStorage.getItem( "username" ) || "";
   }
@@ -317,6 +335,10 @@ class __internalClientServerInteraction {
   logout(): void {
     localStorage.removeItem( "username" );
     localStorage.removeItem( "session_token" );
+  }
+
+  openWebsocket( path: string ) {
+    return new __internalClientServerWebsocketConnection();
   }
 }
 

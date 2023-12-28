@@ -4,17 +4,25 @@
  */
 
 import chalk from "chalk";
+import { CoreApi } from "./coreApi.js";
 
 export enum LOG_TYPE {
-  INFO, WARNING, ERROR, SUCCESS, DEBUG
+  INFO,
+  WARNING,
+  ERROR,
+  SUCCESS,
+  DEBUG
 }
 
 const LOG_META_MAX_LENGTH = 20
 
 export default class CoreApiLog {
+  coreApi: CoreApi;
   logHistory: { type: LOG_TYPE, level: string, message: ( string | Uint8Array )[] }[] = [];
 
-  constructor() {
+  constructor( coreApi: CoreApi ) {
+    this.coreApi = coreApi;
+
     return this;
   }
 
@@ -32,16 +40,16 @@ export default class CoreApiLog {
       ) }${chalk.white( "]" )} ` )
     )
 
-    message.slice( 1 ).forEach( msg => {
-      process.stdout.write( msg );
-    } );
-
-    process.stdout.write( "\n" );
+    console.log( message.slice( 1 ).toString() );
 
     return this;
   }
 
   info( level: string, ...message: ( string | Uint8Array )[] ) {
+    if ( message.length === 0 ) {
+      throw new Error( "log message is empty" )
+    }
+
     return this.log(
       LOG_TYPE.INFO,
       level,
@@ -51,6 +59,10 @@ export default class CoreApiLog {
   }
 
   success( level: string, ...message: ( string | Uint8Array )[] ) {
+    if ( message.length === 0 ) {
+      throw new Error( "log message is empty" )
+    }
+
     return this.log(
       LOG_TYPE.SUCCESS,
       level,
@@ -60,6 +72,10 @@ export default class CoreApiLog {
   }
 
   warning( level: string, ...message: ( string | Uint8Array )[] ) {
+    if ( message.length === 0 ) {
+      throw new Error( "log message is empty" )
+    }
+
     return this.log(
       LOG_TYPE.WARNING,
       level,
@@ -69,6 +85,10 @@ export default class CoreApiLog {
   }
 
   error( level: string, ...message: ( string | Uint8Array )[] ) {
+    if ( message.length === 0 ) {
+      throw new Error( "log message is empty" )
+    }
+
     return this.log(
       LOG_TYPE.ERROR,
       level,
@@ -78,6 +98,10 @@ export default class CoreApiLog {
   }
 
   debug( level: string, ...message: ( string | Uint8Array )[] ) {
+    if ( message.length === 0 ) {
+      throw new Error( "log message is empty" )
+    }
+
     return this.log(
       LOG_TYPE.DEBUG,
       level,

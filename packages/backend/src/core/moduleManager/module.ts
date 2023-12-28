@@ -8,7 +8,7 @@ import path from "path";
 import coreApi, { CoreApi } from "../coreApi.js";
 import { LOG_TYPE } from "../coreApiLog.js";
 import YourDashUser from "../user/index.js";
-import { WebsocketManager } from "../helpers/websocketManager.js";
+import WebsocketManager from "../websocketManager/websocketManager.js";
 
 export interface YourDashModuleArguments {
   moduleName: string,
@@ -20,7 +20,7 @@ export default class Module {
   private readonly expressApp: ExpressApplication;
   private readonly moduleName: string;
   protected API: {
-    websocket: CoreApi["personalServerAccelerator"],
+    websocket: CoreApi["websocketManager"],
     request: CoreApi["expressServer"],
     log( type: LOG_TYPE, ...message: any[] ): void, // eslint-disable-line @typescript-eslint/no-explicit-any
     getPath(): string,
@@ -35,7 +35,7 @@ export default class Module {
   constructor( args: YourDashModuleArguments ) {
     this.moduleName = args.moduleName;
     this.API = {
-      websocket: coreApi.personalServerAccelerator,
+      websocket: coreApi.websocketManager,
       request: coreApi.expressServer,
       log( type: LOG_TYPE, ...message: any[] ) { // eslint-disable-line @typescript-eslint/no-explicit-any
         switch( type ) {

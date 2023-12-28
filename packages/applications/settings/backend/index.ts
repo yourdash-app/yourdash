@@ -48,7 +48,7 @@ export default class SettingsModule extends Module {
       };
       const user = this.API.core.users.get( username )
 
-      const psa = this.API.core.personalServerAccelerator.getSocketConnection( username, sessionId );
+      const psa = this.API.core.websocketManager.getSocketConnection( username, sessionId );
 
       if ( psa === undefined ) {
         return res.json( { success: false } );

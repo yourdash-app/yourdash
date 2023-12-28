@@ -6,7 +6,7 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import { type IYourDashStoreApplication } from "shared/apps/store/storeApplication";
-import { Button, Card, Dialog, IconButton, MajorButton } from "web-client/src/ui";
+import { Button, Card, Dialog, IconButton, MajorButton } from "web-client/src/ui/index";
 import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
 
 export interface IInstallationPopup {

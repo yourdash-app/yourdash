@@ -30,7 +30,7 @@ import { YOURDASH_INSTANCE_DISCOVERY_STATUS } from "./types/discoveryStatus.js";
 import { userAvatarSize } from "./user/avatarSize.js";
 import YourDashUser from "./user/index.js";
 import { YOURDASH_SESSION_TYPE } from "shared/core/session.js";
-import CoreApiPersonalServerAccelerator from "./personalServerAccelerator/coreApiPersonalServerAccelerator.js";
+import CoreApiWebsocketManager from "./coreApiWebsocketManager.js";
 import CoreApiUtils from "./utils/utils.js";
 
 export class CoreApi {
@@ -45,21 +45,27 @@ export class CoreApi {
   readonly userDatabase: CoreApiUserDatabase;
   readonly panel: CoreApiPanel;
   readonly authenticatedImage: CoreApiAuthenticatedImage;
-  readonly personalServerAccelerator: CoreApiPersonalServerAccelerator;
+  readonly websocketManager: CoreApiWebsocketManager;
   readonly loadManagement: CoreApiLoadManagement
   readonly utils: CoreApiUtils
   // general vars
   readonly processArguments: minimist.ParsedArgs;
   readonly expressServer: ExpressApplication;
   readonly httpServer: http.Server;
+  readonly isDebugMode: boolean;
+  readonly isDevMode: boolean;
 
   constructor() {
-    console.log( "---DEV_CLEAR---" )
-    this.log = new CoreApiLog()
-    this.log.info( "startup", "Beginning YourDash Startup" )
+    this.isDebugMode = typeof global.v8debug === "object" || /--debug|--inspect/.test( process.execArgv.join( " " ) );
+
+    this.log = new CoreApiLog( this )
 
     // Fetch process arguments
     this.processArguments = minimist( process.argv.slice( 2 ) );
+
+    this.isDevMode = !!this.processArguments.dev
+
+    this.log.info( "startup", "Beginning YourDash Startup with args: ", JSON.stringify( this.processArguments ) )
 
     // Create the request server
     this.expressServer = express()
@@ -75,9 +81,16 @@ export class CoreApi {
     this.userDatabase = new CoreApiUserDatabase( this )
     this.panel = new CoreApiPanel( this )
     this.authenticatedImage = new CoreApiAuthenticatedImage( this )
-    this.personalServerAccelerator = new CoreApiPersonalServerAccelerator( this )
     this.loadManagement = new CoreApiLoadManagement( this )
     this.utils = new CoreApiUtils( this )
+    this.websocketManager = new CoreApiWebsocketManager( this )
+
+    // TODO: implement WebDAV (outdated example -> https://github.com/LordEidi/fennel.js/)
+
+    // TODO: create the websocket manager, this will ease in creation of websocket servers with built-in authentication
+    //       each application that uses a websocket connection can use the manager to create it's own websocket server
+    //       on it's application's endpoint e.g: /app/yourdash/websocket-manager/websocket with the suffix
+    //       /websocket-manager/websocket being forced
 
     this.commands.registerCommand(
       "hello",
@@ -110,7 +123,7 @@ export class CoreApi {
           break;
         case "delete":
           this.globalDb.removeValue( key );
-          this.log.info( "command", `deleted "${ key }"` );
+          this.log.info( "command", `deleted "${key}"` );
           break;
         default:
           this.log.info( "command", "gdb ( Global Database )\n- get: \"gdb get {key}\"\n- set: \"gdb set {key} {value}\"\n- delete: \"gdb delete {key}\"" );
@@ -167,38 +180,40 @@ export class CoreApi {
     this.expressServer.use( ( req, res, next ) => {
       switch ( req.method ) {
       case "GET":
-        this.log.info( "request:get", `${ chalk.bgGreen( chalk.black( " GET " ) ) } ${ res.statusCode } ${ req.path }` );
-        if ( JSON.stringify( req.query ) !== "{}" ) {
+        this.log.info( "request:get", `${chalk.bgGreen( chalk.black( " GET " ) )} ${res.statusCode} ${req.path}` );
+        if ( this.processArguments[ "log-request-queryparams" ] && JSON.stringify( req.query ) !== "{}" ) {
           this.log.info( JSON.stringify( req.query ) );
         }
         break;
       case "POST":
-        this.log.info( "request:pos", `${ chalk.bgBlue( chalk.black( " POS " ) ) } ${ res.statusCode } ${ req.path }` );
-        if ( JSON.stringify( req.query ) !== "{}" ) {
+        this.log.info( "request:pos", `${chalk.bgBlue( chalk.black( " POS " ) )} ${res.statusCode} ${req.path}` );
+        if ( this.processArguments[ "log-request-queryparams" ] && JSON.stringify( req.query ) !== "{}" ) {
           this.log.info( JSON.stringify( req.query ) );
         }
         break;
       case "DELETE":
-        this.log.info( "request:del", `${ chalk.bgRed( chalk.black( " DEL " ) ) } ${ res.statusCode } ${ req.path }` );
-        if ( JSON.stringify( req.query ) !== "{}" ) {
+        this.log.info( "request:del", `${chalk.bgRed( chalk.black( " DEL " ) )} ${res.statusCode} ${req.path}` );
+        if ( this.processArguments[ "log-request-queryparams" ] && JSON.stringify( req.query ) !== "{}" ) {
           this.log.info( JSON.stringify( req.query ) );
         }
         break;
       case "OPTIONS":
         if ( options.logOptionsRequests ) {
-          this.log.info( "request:opt", `${ chalk.bgCyan( chalk.black( " OPT " ) ) } ${ res.statusCode } ${ req.path }` );
-          if ( JSON.stringify( req.query ) !== "{}" ) {
+          this.log.info( "request:opt", `${chalk.bgCyan( chalk.black( " OPT " ) )} ${res.statusCode} ${req.path}` );
+          if ( this.processArguments[ "log-request-queryparams" ] && JSON.stringify( req.query ) !== "{}" ) {
             this.log.info( JSON.stringify( req.query ) );
           }
         }
         break;
       default:
-        this.log.error( "core:requests", `ERROR IN REQUEST LOGGER, UNKNOWN REQUEST TYPE: ${ req.method }` );
+        this.log.error( "core:requests", `ERROR IN REQUEST LOGGER, UNKNOWN REQUEST TYPE: ${req.method}` );
       }
+
+      // run the next middleware / endpoint
       next();
     } );
 
-    this.log.success( "core:requests", `Started the requests logger${ options && " (logging options requests is also enabled)" }` );
+    this.log.success( "core:requests", `Started the requests logger${options && " (logging options requests is also enabled)"}` );
   }
 
   private loadCoreEndpoints() {
@@ -257,6 +272,7 @@ export class CoreApi {
 
     // on startup, we ping ourselves to check if the webserver is running and accepting requests
     this.log.info( "self_ping_test", "pinging self" );
+
     fetch( "http://localhost:3563/core/test/self-ping" )
       .then( res => res.json() )
       .then( ( data: { success?: boolean } ) => {
@@ -327,16 +343,16 @@ export class CoreApi {
       if ( !username || !token )
         return res.json( { error: true } );
 
-      if ( !this.users.__internal__getSessionsDoNotUseOutsideOfCore()[username] ) {
+      if ( !this.users.__internal__getSessionsDoNotUseOutsideOfCore()[ username ] ) {
         try {
           const user = new YourDashUser( username );
-          this.users.__internal__getSessionsDoNotUseOutsideOfCore()[username] = ( await user.getAllLoginSessions() ) || [];
+          this.users.__internal__getSessionsDoNotUseOutsideOfCore()[ username ] = ( await user.getAllLoginSessions() ) || [];
         } catch ( _err ) {
           return res.json( { error: true } );
         }
       }
 
-      if ( this.users.__internal__getSessionsDoNotUseOutsideOfCore()[username].find( session => session.sessionToken === token ) ) {
+      if ( this.users.__internal__getSessionsDoNotUseOutsideOfCore()[ username ].find( session => session.sessionToken === token ) ) {
         return res.json( { success: true } );
       }
       return res.json( { error: true } );
@@ -349,9 +365,9 @@ export class CoreApi {
       } )
     } )
 
-    this.expressServer.get( "/core/login/instance/background",( _req, res ) => {
+    this.expressServer.get( "/core/login/instance/background", ( _req, res ) => {
       res.set( "Content-Type", "image/avif" );
-      return res.sendFile( path.resolve( process.cwd(),"./fs/login_background.avif" ) );
+      return res.sendFile( path.resolve( process.cwd(), "./fs/login_background.avif" ) );
     } );
 
     this.authenticatedImage.__internal__loadEndpoints()
@@ -443,7 +459,7 @@ export class CoreApi {
         return JSON.parse( ( await fs.readFile( path.join( user.path, "personal_server_accelerator.json" ) ) ).toString() );
       } catch ( _err ) {
         return res.json( {
-          error: `Unable to read ${ username }/personal_server_accelerator.json`
+          error: `Unable to read ${username}/personal_server_accelerator.json`
         } );
       }
     } );
@@ -457,7 +473,7 @@ export class CoreApi {
       try {
         await fs.writeFile( path.join( user.path, "personal_server_accelerator.json" ), JSON.stringify( body ) );
       } catch ( _err ) {
-        return res.json( { error: `Unable to write to ${ username }/personal_server_accelerator.json` } );
+        return res.json( { error: `Unable to write to ${username}/personal_server_accelerator.json` } );
       }
 
       return res.json( { success: true } );
@@ -479,7 +495,7 @@ export class CoreApi {
     this.log.info( "core", "Shutting down... ( restart should occur automatically )" );
 
     const LOG_OUTPUT = this.log.logHistory.map( ( hist ) => {
-      return `${ hist.type }: ${ hist.message }`;
+      return `${hist.type}: ${hist.message}`;
     } ).join( "\n" );
 
     this.httpServer.close();
