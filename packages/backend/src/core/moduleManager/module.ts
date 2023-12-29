@@ -19,7 +19,7 @@ export default class Module {
   private readonly websocketManager: WebsocketManager;
   private readonly expressApp: ExpressApplication;
   private readonly moduleName: string;
-  protected API: {
+  private readonly API: {
     websocket: CoreApi["websocketManager"],
     request: CoreApi["expressServer"],
     log( type: LOG_TYPE, ...message: any[] ): void, // eslint-disable-line @typescript-eslint/no-explicit-any

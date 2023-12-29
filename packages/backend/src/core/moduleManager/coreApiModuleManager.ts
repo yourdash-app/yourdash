@@ -4,7 +4,6 @@
  */
 
 import fileUrl from "file-url";
-import fs from "fs";
 import path from "path";
 import Module from "./module.js";
 import { CoreApi } from "../coreApi.js";

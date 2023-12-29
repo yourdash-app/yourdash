@@ -19,6 +19,7 @@ import CoreApiAuthenticatedImage from "./coreApiAuthenticatedImage.js";
 import CoreApiCommands from "./coreApiCommands.js";
 import CoreApiGlobalDb from "./coreApiGlobalDb.js";
 import CoreApiLog from "./coreApiLog.js";
+import CoreApiWebDAV from "./webDAV/coreApiWebDAV.js";
 import CoreApiModuleManager from "./moduleManager/coreApiModuleManager.js";
 import CoreApiPanel from "./coreApiPanel.js";
 import CoreApiScheduler from "./coreApiScheduler.js";
@@ -48,6 +49,7 @@ export class CoreApi {
   readonly websocketManager: CoreApiWebsocketManager;
   readonly loadManagement: CoreApiLoadManagement
   readonly utils: CoreApiUtils
+  readonly webdav: CoreApiWebDAV;
   // general vars
   readonly processArguments: minimist.ParsedArgs;
   readonly expressServer: ExpressApplication;
@@ -84,6 +86,7 @@ export class CoreApi {
     this.loadManagement = new CoreApiLoadManagement( this )
     this.utils = new CoreApiUtils( this )
     this.websocketManager = new CoreApiWebsocketManager( this )
+    this.webdav = new CoreApiWebDAV( this )
 
     // TODO: implement WebDAV (outdated example -> https://github.com/LordEidi/fennel.js/)
 
@@ -176,31 +179,31 @@ export class CoreApi {
     return this
   }
 
-  private startRequestLogger( options: { logOptionsRequests?: boolean } ) {
+  private startRequestLogger( options: { logOptionsRequests?: boolean, logQueryParameters?: boolean } ) {
     this.expressServer.use( ( req, res, next ) => {
       switch ( req.method ) {
       case "GET":
         this.log.info( "request:get", `${chalk.bgGreen( chalk.black( " GET " ) )} ${res.statusCode} ${req.path}` );
-        if ( this.processArguments[ "log-request-queryparams" ] && JSON.stringify( req.query ) !== "{}" ) {
+        if ( options.logQueryParameters && JSON.stringify( req.query ) !== "{}" ) {
           this.log.info( JSON.stringify( req.query ) );
         }
         break;
       case "POST":
         this.log.info( "request:pos", `${chalk.bgBlue( chalk.black( " POS " ) )} ${res.statusCode} ${req.path}` );
-        if ( this.processArguments[ "log-request-queryparams" ] && JSON.stringify( req.query ) !== "{}" ) {
+        if ( options.logQueryParameters && JSON.stringify( req.query ) !== "{}" ) {
           this.log.info( JSON.stringify( req.query ) );
         }
         break;
       case "DELETE":
         this.log.info( "request:del", `${chalk.bgRed( chalk.black( " DEL " ) )} ${res.statusCode} ${req.path}` );
-        if ( this.processArguments[ "log-request-queryparams" ] && JSON.stringify( req.query ) !== "{}" ) {
+        if ( options.logQueryParameters && JSON.stringify( req.query ) !== "{}" ) {
           this.log.info( JSON.stringify( req.query ) );
         }
         break;
       case "OPTIONS":
         if ( options.logOptionsRequests ) {
           this.log.info( "request:opt", `${chalk.bgCyan( chalk.black( " OPT " ) )} ${res.statusCode} ${req.path}` );
-          if ( this.processArguments[ "log-request-queryparams" ] && JSON.stringify( req.query ) !== "{}" ) {
+          if ( options.logQueryParameters && JSON.stringify( req.query ) !== "{}" ) {
             this.log.info( JSON.stringify( req.query ) );
           }
         }
@@ -218,7 +221,7 @@ export class CoreApi {
 
   private loadCoreEndpoints() {
     if ( this.processArguments[ "log-requests" ] ) {
-      this.startRequestLogger( { logOptionsRequests: !!this.processArguments[ "log-options-requests" ] } );
+      this.startRequestLogger( { logOptionsRequests: !!this.processArguments[ "log-options-requests" ], logQueryParameters: !!this.processArguments[ "log-query-parameters" ] } );
     }
 
     this.expressServer.use( cors() );
@@ -370,6 +373,7 @@ export class CoreApi {
       return res.sendFile( path.resolve( process.cwd(), "./fs/login_background.avif" ) );
     } );
 
+    this.webdav.__internal__loadEndpoints()
     this.authenticatedImage.__internal__loadEndpoints()
 
     // ----- check for authentication ------
