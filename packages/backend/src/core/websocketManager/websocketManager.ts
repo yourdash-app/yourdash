@@ -13,34 +13,34 @@ export default class WebsocketManager {
   private openSocketConnections: Map<`${string}-${number | string}` /* `[username]-[sessionId]` */, WebsocketManagerServerConnection> = new Map();
   readonly socketIoServer: socketIo.Server;
 
-  constructor( rootPath: string ) {
-    this.socketIoServer = new socketIo.Server( coreApi.httpServer, {
+  constructor(rootPath: string) {
+    this.socketIoServer = new socketIo.Server(coreApi.httpServer, {
       cors: {
-        origin: "*" // TODO: update this to limit CORS to localhost:5173 and prod domains
+        origin: "*" // TODO: update this to limit CORS to localhost:5173 and prod domains ( add a setting to global_db for more domains )
       },
       path: `${rootPath}/websocket-manager/websocket`
-    } );
+    });
 
-    this.socketIoServer.on( "connection", ( socket: socketIo.Socket<any, any, any> ) => { // eslint-disable-line @typescript-eslint/no-explicit-any
+    this.socketIoServer.on("connection", (socket: socketIo.Socket<any, any, any>) => { // eslint-disable-line @typescript-eslint/no-explicit-any
 
       const handshakeUsername = socket.handshake.query.username as string;
 
       // Check that all required parameters are present
-      if ( !handshakeUsername || !socket.handshake.query.sessionToken || !socket.handshake.query.sessionId ) {
-        coreApi.log.error( "websocket_manager", "Closing connection! Missing required parameters!" );
+      if (!handshakeUsername || !socket.handshake.query.sessionToken || !socket.handshake.query.sessionId) {
+        coreApi.log.error("websocket_manager", "Closing connection! Missing required parameters!");
 
-        socket.disconnect( true );
+        socket.disconnect(true);
         return;
       }
 
-      const session = coreApi.users.get( handshakeUsername ).getLoginSessionByToken( socket.handshake.query.sessionToken as string );
+      const session = coreApi.users.get(handshakeUsername).getLoginSessionByToken(socket.handshake.query.sessionToken as string);
 
-      if ( session.type !== YOURDASH_SESSION_TYPE.desktop )
-        return socket.disconnect( true )
+      if (session.type !== YOURDASH_SESSION_TYPE.desktop)
+        return socket.disconnect(true)
 
       // Add a new socket to the activeSockets
       this.openSocketConnections.set(
-        `${handshakeUsername}-${socket.handshake.query.sessionId }`,
+        `${handshakeUsername}-${socket.handshake.query.sessionId}`,
         new WebsocketManagerServerConnection(
           handshakeUsername,
           session as YourDashSession<YOURDASH_SESSION_TYPE.desktop>,
@@ -49,58 +49,58 @@ export default class WebsocketManager {
         )
       )
 
-      socket.on( "execute-command-response", ( output: never ) => {
-        coreApi.log.info( "websocket_manager",output );
-      } );
+      socket.on("execute-command-response", (output: never) => {
+        coreApi.log.info("websocket_manager", output);
+      });
 
-      socket.on( "disconnect", () => {
-        this.__internal__removeSocketConnection( this.openSocketConnections.get( `${handshakeUsername}-${socket.handshake.query.sessionId }` ) );
+      socket.on("disconnect", () => {
+        this.__internal__removeSocketConnection(this.openSocketConnections.get(`${handshakeUsername}-${socket.handshake.query.sessionId}`));
 
-        coreApi.log.info( "websocket_manager","Closing Websocket connection" );
-      } );
+        coreApi.log.info("websocket_manager", "Closing Websocket connection");
+      });
 
       return;
-    } );
+    });
 
     // handle socket.io session authentication
-    this.socketIoServer.use( async ( socket: socketIo.Socket, next ) => {
+    this.socketIoServer.use(async (socket: socketIo.Socket, next) => {
       const {
         username,
         sessionToken
       } = socket.handshake.query as { username?: string, sessionToken?: string };
 
-      if ( !username || !sessionToken ) {
+      if (!username || !sessionToken) {
         return socket.disconnect();
       }
 
-      if ( !coreApi.users.__internal__getSessionsDoNotUseOutsideOfCore()[ username ] ) {
+      if (!coreApi.users.__internal__getSessionsDoNotUseOutsideOfCore()[ username ]) {
         try {
-          const user = coreApi.users.get( username );
-          coreApi.users.__internal__getSessionsDoNotUseOutsideOfCore()[ username ] = ( await user.getAllLoginSessions() ) || [];
-        } catch ( _err ) {
+          const user = coreApi.users.get(username);
+          coreApi.users.__internal__getSessionsDoNotUseOutsideOfCore()[ username ] = (await user.getAllLoginSessions()) || [];
+        } catch (_err) {
           return socket.disconnect();
         }
       }
 
-      if ( coreApi.users.__internal__getSessionsDoNotUseOutsideOfCore()[ username ].find( ( session ) => session.sessionToken === sessionToken ) ) {
+      if (coreApi.users.__internal__getSessionsDoNotUseOutsideOfCore()[ username ].find((session) => session.sessionToken === sessionToken)) {
         return next();
       }
 
       return socket.disconnect();
-    } );
+    });
 
     return this
   }
 
-  __internal__removeSocketConnection( connection: WebsocketManagerServerConnection ) {
-    this.openSocketConnections.delete( `${connection.username}-${connection.session.sessionId}` );
+  __internal__removeSocketConnection(connection: WebsocketManagerServerConnection) {
+    this.openSocketConnections.delete(`${connection.username}-${connection.session.sessionId}`);
   }
 
-  getSocketConnection( username: string, sessionId: string ): WebsocketManagerServerConnection | undefined {
-    return this.openSocketConnections.get( `${username}-${sessionId}` );
+  getSocketConnection(username: string, sessionId: string): WebsocketManagerServerConnection | undefined {
+    return this.openSocketConnections.get(`${username}-${sessionId}`);
   }
 
-  getAllSocketConnectionsForUser( username: string ) {
-    return Array.from( this.openSocketConnections.values() ).filter( connection => connection.username === username );
+  getAllSocketConnectionsForUser(username: string) {
+    return Array.from(this.openSocketConnections.values()).filter(connection => connection.username === username);
   }
 }

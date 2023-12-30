@@ -31,22 +31,22 @@ export default class WebsocketManagerServerConnection {
   close() {
     this.socket.disconnect()
 
-    this.websocketManager.__internal__removeSocketConnection( this )
+    this.websocketManager.__internal__removeSocketConnection(this)
   }
 
-  listenFor( path: string, callBack: () => void ) {
-    this.socket.on( path, callBack );
+  listenFor(path: string, callBack: () => void) {
+    this.socket.on(path, callBack);
 
     return this
   }
 
-  emit( path: string, data: unknown ) {
-    this.socket.emit( path, data );
+  emit(path: string, data: unknown) {
+    this.socket.emit(path, data);
 
     return this
   }
 
-  executeCommand( command: string ) {
-    this.emit( "core:execute_command", command )
+  executeCommand(command: string) {
+    this.emit("core:execute_command", command)
   }
 }

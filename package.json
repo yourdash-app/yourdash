@@ -14,15 +14,15 @@
     ]
   },
   "scripts": {
-    "yourdash:dev-web-client": "yarn --cwd ./packages/web-client dev",
-    "yourdash:start-backend": "yarn --cwd ./packages/backend start --log-requests",
-    "yourdash:dev-backend": "yarn --cwd ./packages/backend dev --log-requests",
-    "yourdash:setup-project": "yarn && yarn --cwd ./packages/backend compile && yarn --cwd ./packages/backend compile-all",
-    "yourdash:build-production": "yarn --cwd ./packages/backend compile-all && yarn --cwd ./packages/web-client build",
+    "yd:dev-web-client": "yarn --cwd ./packages/web-client dev",
+    "yd:dev-backend": "yarn --cwd ./packages/backend dev --log-requests",
+    "yd:start-backend": "yarn --cwd ./packages/backend start --log-requests",
+    "yd:setup-project": "yarn && yarn --cwd ./packages/backend compile && yarn --cwd ./packages/backend compile-all",
+    "yd:build-production": "yarn --cwd ./packages/backend compile-all && yarn --cwd ./packages/web-client build",
     "opengfx:dev": "yarn --cwd ./packages/opengfx-engine dev",
-    "uikit:dev": "yarn --cwd ./packages/uikit dev",
-    "yourdash:dev-desktop-client": "yarn --cwd ./packages/desktop-client/ dev",
-    "yourdash:compile-backend": "yarn --cwd ./packages/backend compile"
+    "yd:dev-desktop-client": "yarn --cwd ./packages/desktop-client/ dev",
+    "yd:compile-backend": "yarn --cwd ./packages/backend compile",
+    "yd:dev-compile-backend": "yarn --cwd ./packages/backend compile-dev"
   },
   "dependencies": {}
 }

@@ -10,28 +10,28 @@ import csi from "web-client/src/helpers/csi";
 import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
 
 const SettingsPersonalServerAcceleratorSection: React.FC = () => {
-  const [ psaSessions, setPsaSessions ] = useState<IYourDashSession<YOURDASH_SESSION_TYPE.desktop>[]>( [] );
-  const [ selectedSession, setSelectedSession ] = useState<IYourDashSession<YOURDASH_SESSION_TYPE.desktop> | null>( null );
+  const [ psaSessions, setPsaSessions ] = useState<IYourDashSession<YOURDASH_SESSION_TYPE.desktop>[]>([]);
+  const [ selectedSession, setSelectedSession ] = useState<IYourDashSession<YOURDASH_SESSION_TYPE.desktop> | null>(null);
 
-  useEffect( () => {
-    csi.getJson( "/core/personal-server-accelerator/sessions", data => {
-      setPsaSessions( data.sessions );
-    } );
-  }, [] );
+  useEffect(() => {
+    csi.getJson("/core/personal-server-accelerator/sessions", data => {
+      setPsaSessions(data.sessions);
+    });
+  }, []);
 
   return (
     <div>
       <h2>{"Personal Server Accelerator DEBUGGER"}</h2>
       <main>
         <section>
-          <h2>{`Select a session: Session ${ selectedSession?.sessionId || 0 } selected`}</h2>
+          <h2>{`Select a session: Session ${selectedSession?.sessionId || 0} selected`}</h2>
           <Row>
             {
-              psaSessions.map( session => {
+              psaSessions.map(session => {
                 return (
                   <Card
                     onClick={() => {
-                      setSelectedSession( session );
+                      setSelectedSession(session);
                     }}
                     className={"p-0 overflow-hidden flex flex-grow flex-col min-w-[14rem]"}
                     key={session.sessionId}
@@ -45,14 +45,13 @@ const SettingsPersonalServerAcceleratorSection: React.FC = () => {
                     </div>
                   </Card>
                 );
-              } )
+              })
             }
           </Row>
         </section>
         <Button onClick={() => {
-          csi.getJson( `/app/settings/debug/psa/update/${ selectedSession?.sessionId || 0 }`, data => {
-            return 0;
-          } );
+          // TODO: implement the backend api to trigger an update to a PSA client
+          console.log("IMPLEMENT ME!!")
         }}
         >{"Trigger update"}</Button>
       </main>

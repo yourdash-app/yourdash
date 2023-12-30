@@ -9,33 +9,33 @@ import coreApi from "backend/src/core/coreApi.js";
 
 const geolocationSuggestionsCache = new Map<string, ILocationSearchResult[]>();
 
-export default async function getGeolocationSuggestions( locationName: string, suggestionCount: number ): Promise<ILocationSearchResult[]> {
-  locationName = locationName.replaceAll( " ", "+" )
-  if ( locationName.endsWith( "+" ) ) locationName = locationName.slice( 0, -1 );
-  if ( locationName.startsWith( "+" ) ) locationName = locationName.slice( 1 );
-  if ( locationName.length < 3 ) return [];
+export default async function getGeolocationSuggestions(locationName: string, suggestionCount: number): Promise<ILocationSearchResult[]> {
+  locationName = locationName.replaceAll(" ", "+")
+  if (locationName.endsWith("+")) locationName = locationName.slice(0, -1);
+  if (locationName.startsWith("+")) locationName = locationName.slice(1);
+  if (locationName.length < 3) return [];
 
-  if ( geolocationSuggestionsCache.get( locationName ) ) {
-    coreApi.log.info( "app:weather", `Responding with cached location data for location '${locationName}'` );
-    return geolocationSuggestionsCache.get( locationName );
+  if (geolocationSuggestionsCache.get(locationName)) {
+    coreApi.log.info("app:weather", `Responding with cached location data for location '${locationName}'`);
+    return geolocationSuggestionsCache.get(locationName);
   }
 
-  coreApi.log.info( "app:weather", `Fetching location suggestions for ${locationName}` );
+  coreApi.log.info("app:weather", `Fetching location suggestions for ${locationName}`);
   const endpoint = `https://geocoding-api.open-meteo.com/v1/search?name=${locationName}&count=${suggestionCount}&language=en&format=json`;
 
   try {
-    const fetchRequest = await fetch( endpoint );
+    const fetchRequest = await fetch(endpoint);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const response = ( await fetchRequest.json() ) as any;
+    const response = (await fetchRequest.json()) as any;
 
-    if ( !response ) {
+    if (!response) {
       return [];
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const output = response.results.map( ( result: any ) => {
+    const output = response.results.map((result: any) => {
       return {
-        sessionId: result.id,
+        id: result.id,
         address: {
           name: result.name,
           admin1: result.admin1,
@@ -44,12 +44,12 @@ export default async function getGeolocationSuggestions( locationName: string, s
         latitude: result.latitude,
         longitude: result.longitude
       } as ILocationSearchResult;
-    } );
+    });
 
-    geolocationSuggestionsCache.set( locationName, output );
+    geolocationSuggestionsCache.set(locationName, output);
 
     return output;
-  } catch ( _err ) {
+  } catch (_err) {
     return []
   }
 }
