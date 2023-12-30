@@ -35,7 +35,7 @@ export default async function getGeolocationSuggestions( locationName: string, s
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const output = response.results.map( ( result: any ) => {
       return {
-        id: result.id,
+        sessionId: result.id,
         address: {
           name: result.name,
           admin1: result.admin1,

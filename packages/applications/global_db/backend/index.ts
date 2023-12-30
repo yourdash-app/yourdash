@@ -6,10 +6,10 @@
 import YourDashUser from "backend/src/core/user/index.js";
 import { YOURDASH_USER_PERMISSIONS } from "backend/src/core/user/permissions.js";
 import path from "path";
-import Module, { YourDashModuleArguments } from "backend/src/core/moduleManager/module.js";
+import BackendModule, { YourDashModuleArguments } from "backend/src/core/moduleManager/backendModule.js";
 import coreApi from "backend/src/core/coreApi.js";
 
-export default class GlobalDbModule extends Module {
+export default class GlobalDbModule extends BackendModule {
   constructor( args: YourDashModuleArguments ) {
     super( args );
     this.API.request.get( "/app/global_db/db", async ( req, res ) => {

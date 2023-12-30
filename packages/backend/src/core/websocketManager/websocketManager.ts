@@ -93,7 +93,7 @@ export default class WebsocketManager {
   }
 
   __internal__removeSocketConnection( connection: WebsocketManagerServerConnection ) {
-    this.openSocketConnections.delete( `${connection.username}-${connection.session.id}` );
+    this.openSocketConnections.delete( `${connection.username}-${connection.session.sessionId}` );
   }
 
   getSocketConnection( username: string, sessionId: string ): WebsocketManagerServerConnection | undefined {

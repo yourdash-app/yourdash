@@ -10,9 +10,9 @@ import { type IYourDashSession, YOURDASH_SESSION_TYPE } from "shared/core/sessio
 import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
 
 const SettingsPageSession: React.FC = () => {
-  const [reloadNum, setReloadNum] = useState( 0 );
-  const [sessions, setSessions] = useState<IYourDashSession<YOURDASH_SESSION_TYPE>[]>( [] );
-  const [personalServerAccelerationSessions, setPersonalServerAcceleration] = useState<IYourDashSession<YOURDASH_SESSION_TYPE.desktop>[]>( [] );
+  const [ reloadNum, setReloadNum ] = useState( 0 );
+  const [ sessions, setSessions ] = useState<IYourDashSession<YOURDASH_SESSION_TYPE>[]>( [] );
+  const [ personalServerAccelerationSessions, setPersonalServerAcceleration ] = useState<IYourDashSession<YOURDASH_SESSION_TYPE.desktop>[]>( [] );
 
   useEffect( () => {
     // setSessions( [
@@ -48,7 +48,7 @@ const SettingsPageSession: React.FC = () => {
     csi.getJson( "/core/personal-server-accelerator/sessions", data => {
       setPersonalServerAcceleration( data.sessions );
     } );
-  }, [reloadNum] );
+  }, [ reloadNum ] );
 
   return (
     <div className={"h-full overflow-auto"}>
@@ -62,10 +62,10 @@ const SettingsPageSession: React.FC = () => {
         <section className={"gap-2 flex flex-wrap"}>
           {
             sessions.map( session => (
-              <Card className={"p-0 overflow-hidden flex flex-grow flex-col min-w-[14rem]"} key={session.id}>
+              <Card className={"p-0 overflow-hidden flex flex-grow flex-col min-w-[14rem]"} key={session.sessionId}>
                 <div className={"font-semibold text-6xl text-container-fg pl-4 pt-2 pb-2 flex gap-4 w-full"}>
                   {
-                    session.id
+                    session.sessionId
                   }
                   {
                     session.type === YOURDASH_SESSION_TYPE.web && (
@@ -118,7 +118,7 @@ const SettingsPageSession: React.FC = () => {
                   <IconButton
                     icon={YourDashIcon.X}
                     onClick={() => {
-                      csi.deleteJson( `/core/session/${ session.id }`, () => {
+                      csi.deleteJson( `/core/session/${ session.sessionId }`, () => {
                         setReloadNum( reloadNum + 1 );
                       } );
                     }}
@@ -133,9 +133,9 @@ const SettingsPageSession: React.FC = () => {
         <section className={"gap-2 flex flex-wrap"}>
           {
             personalServerAccelerationSessions.map( session => (
-              <Card className={"p-0 overflow-hidden flex flex-grow flex-col min-w-[14rem]"} key={session.id}>
+              <Card className={"p-0 overflow-hidden flex flex-grow flex-col min-w-[14rem]"} key={session.sessionId}>
                 <div className={"font-semibold text-6xl text-container-fg pl-4 pt-2 pb-2 flex gap-4 w-full"}>
-                  {session.id}
+                  {session.sessionId}
                   <Icon
                     className={"aspect-square h-8 m-auto ml-0"}
                     icon={YourDashIcon.DeviceDesktop}
@@ -148,7 +148,7 @@ const SettingsPageSession: React.FC = () => {
                   <IconButton
                     icon={YourDashIcon.X}
                     onClick={() => {
-                      csi.deleteJson( `/core/session/${ session.id }`, () => {
+                      csi.deleteJson( `/core/session/${ session.sessionId }`, () => {
                         setReloadNum( reloadNum + 1 );
                       } );
                     }}

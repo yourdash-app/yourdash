@@ -7,7 +7,7 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import csi from "web-client/src/helpers/csi";
 import useYourDashLib from "../../../../helpers/ydsh";
-import { Button, IconButton, MajorButton, TextInput, YourDashIcon } from "../../../../ui/index";
+import { IconButton, MajorButton, TextInput, YourDashIcon } from "../../../../ui/index";
 
 interface IUserLogin {
   setUsername: React.Dispatch<React.SetStateAction<string>>;
@@ -63,6 +63,7 @@ const UserLogin: React.FC<IUserLogin> = ( { setUsername, setPassword, password, 
       />
       <span className={"animate__animated animate__fadeIn text-4xl font-semibold pb-4"}>Welcome Back</span>
       <TextInput
+        accessibleName="Username input"
         key={"username-input"}
         className={"animate__animated animate__fadeIn"}
         placeholder={"Username"}
@@ -90,6 +91,7 @@ const UserLogin: React.FC<IUserLogin> = ( { setUsername, setPassword, password, 
     <span className={"text-3xl font-semibold"}>{fullName.first} {fullName.last}</span>
     <form className={"flex-col flex items-center gap-4"}>
       <TextInput
+        accessibleName="Username input"
         autoComplete={`yourdash-instance-login username instance-${csi.getInstanceUrl()}`}
         key={"username-input"}
         placeholder={"Username"}
@@ -97,6 +99,7 @@ const UserLogin: React.FC<IUserLogin> = ( { setUsername, setPassword, password, 
         value={username}
       />
       <TextInput
+        accessibleName="Password input"
         autoComplete={`yourdash-instance-login password instance-${csi.getInstanceUrl()}`}
         key={"password-input"}
         placeholder={"Password"}
@@ -107,9 +110,10 @@ const UserLogin: React.FC<IUserLogin> = ( { setUsername, setPassword, password, 
         onKeyDown={e => {
           if ( e.key === "Enter" ) {
             csi.postJson(
-              `/core/login/user/${ username }/authenticate`,
+              `/core/login/user/${username}/authenticate`,
               { password },
               response => {
+                localStorage.setItem( "session_id", response.sessionId );
                 localStorage.setItem( "session_token", response.token );
                 localStorage.setItem( "username", username );
                 navigate( "/app" );
@@ -127,9 +131,10 @@ const UserLogin: React.FC<IUserLogin> = ( { setUsername, setPassword, password, 
       <MajorButton
         onClick={() => {
           csi.postJson(
-            `/core/login/user/${ username }/authenticate`,
+            `/core/login/user/${username}/authenticate`,
             { password },
             response => {
+              localStorage.setItem( "session_id", response.sessionId );
               localStorage.setItem( "session_token", response.token );
               localStorage.setItem( "username", username );
               navigate( "/app" );
@@ -143,7 +148,7 @@ const UserLogin: React.FC<IUserLogin> = ( { setUsername, setPassword, password, 
           );
         }}
       >
-      Continue
+        Continue
       </MajorButton>
     </form>
   </div>

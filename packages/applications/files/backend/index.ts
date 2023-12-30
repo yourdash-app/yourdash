@@ -5,9 +5,9 @@
 
 import { promises as fs } from "fs";
 import path from "path";
-import Module, { YourDashModuleArguments } from "backend/src/core/moduleManager/module.js";
+import BackendModule, { YourDashModuleArguments } from "backend/src/core/moduleManager/backendModule.js";
 
-export default class FilesModule extends Module {
+export default class FilesModule extends BackendModule {
   constructor( args: YourDashModuleArguments ) {
     super( args );
     /*     this.API.request.post( "/app/files/get", async ( req, res ) => {

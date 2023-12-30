@@ -29,7 +29,7 @@ const PhotosApplication: React.FC = () => {
               }
             } )
           ],
-          id: i.toString(),
+          sessionId: i.toString(),
           name: `Photos Cat ${ i }`,
         }
       }

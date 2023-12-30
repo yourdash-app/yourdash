@@ -4,9 +4,9 @@
  */
 
 import coreApi from "backend/src/core/coreApi.js";
-import Module, { YourDashModuleArguments } from "backend/src/core/moduleManager/module.js";
+import BackendModule, { YourDashModuleArguments } from "backend/src/core/moduleManager/backendModule.js";
 
-export default class DashModule extends Module {
+export default class DashModule extends BackendModule {
   constructor( args: YourDashModuleArguments ) {
     super( args );
 

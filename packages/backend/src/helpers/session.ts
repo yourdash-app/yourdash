@@ -16,7 +16,7 @@ export function getSessionsForUser( username: string ): IYourDashSession<any>[] 
 }
 
 export function getSessionId( username: string, sessionToken: string ): number | null {
-  return coreApi.users.__internal__getSessionsDoNotUseOutsideOfCore()[username].find( session => session.sessionToken === sessionToken )?.id || null;
+  return coreApi.users.__internal__getSessionsDoNotUseOutsideOfCore()[username].find( session => session.sessionToken === sessionToken )?.sessionId || null;
 }
 
 export async function createSession<T extends YOURDASH_SESSION_TYPE>(
@@ -36,14 +36,14 @@ export async function createSession<T extends YOURDASH_SESSION_TYPE>(
 
   const session: IYourDashSession<T> = {
     type,
-    id: newSessionId,
+    sessionId: newSessionId,
     sessionToken
   };
 
   if ( coreApi.users.__internal__getSessionsDoNotUseOutsideOfCore()[username] ) {
     coreApi.users.__internal__getSessionsDoNotUseOutsideOfCore()[username].push( session );
   } else {
-    coreApi.users.__internal__getSessionsDoNotUseOutsideOfCore()[username] = [session];
+    coreApi.users.__internal__getSessionsDoNotUseOutsideOfCore()[username] = [ session ];
   }
 
   try {
@@ -71,7 +71,7 @@ export default class YourDashSession<T extends YOURDASH_SESSION_TYPE> {
       throw new Error( "An invalid session was provided to YourDashSession" );
     }
 
-    this.id = session.id;
+    this.id = session.sessionId;
     this.type = session.type;
     this.sessionToken = session.sessionToken;
     this.username = username;
@@ -83,7 +83,7 @@ export default class YourDashSession<T extends YOURDASH_SESSION_TYPE> {
 
   async invalidate() {
     coreApi.users.__internal__getSessionsDoNotUseOutsideOfCore()[this.username].splice(
-      coreApi.users.__internal__getSessionsDoNotUseOutsideOfCore()[this.username].findIndex( val => val.id === this.id ),
+      coreApi.users.__internal__getSessionsDoNotUseOutsideOfCore()[this.username].findIndex( val => val.sessionId === this.id ),
       1
     );
 

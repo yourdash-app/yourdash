@@ -25,90 +25,90 @@ import RootLayout from "./root/RootLayout";
 import ChipletUiRootIntegration from "./ui/RootIntegration";
 import LinkerDesktopClientStartupPage from "./root/linker-desktop-client-startup/Index";
 
-const AppRouter = loadable( () => import( "./app/AppRouter" ) );
-const DocsRouter = loadable( () => import( "./root/docs/DocsRouter" ) );
-const ProjectsRouter = loadable( () => import( "./root/projects/ProjectsRouter" ) );
+const AppRouter = loadable(() => import("./app/AppRouter"));
+const DocsRouter = loadable(() => import("./root/docs/DocsRouter"));
+const ProjectsRouter = loadable(() => import("./root/projects/ProjectsRouter"));
 
 function main() {
-  ReactDOM.createRoot( document.getElementById( "root" ) as HTMLElement ).render(
+  ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <ChipletUiRootIntegration>
       <RouterProvider
-        router={ createHashRouter(
+        router={createHashRouter(
           createRoutesFromElements(
             <Route
-              errorElement={ <ErrorElement /> }
+              errorElement={<ErrorElement />}
             >
               <Route
                 path={"/linker-desktop-client-startup"}
-                element={<LinkerDesktopClientStartupPage/>}
+                element={<LinkerDesktopClientStartupPage />}
               />
               <Route
-                element={ <RootLayout /> }
+                element={<RootLayout />}
               >
                 <Route
                   index
-                  element={ <Index /> }
+                  element={<Index />}
                 />
                 <Route
-                  path={ "/signup" }
-                  element={ <ComingSoon /> }
+                  path={"/signup"}
+                  element={<ComingSoon />}
                 />
                 <Route
-                  path={ "docs/*" }
-                  element={ <DocsLayout /> }
+                  path={"docs/*"}
+                  element={<DocsLayout />}
                 >
                   <Route
-                    path={ "*" }
-                    element={ <DocsRouter /> }
+                    path={"*"}
+                    element={<DocsRouter />}
                   />
                 </Route>
-                <Route path={ "projects" } index element={ <ProjectsIndexPage /> } />
+                <Route path={"projects"} index element={<ProjectsIndexPage />} />
               </Route>
               <Route
-                path={ "projects/*" }
-                element={ <ProjectsRouter /> }
+                path={"projects/*"}
+                element={<ProjectsRouter />}
               />
               <Route
-                path={ "project/*" }
-                element={ <ProjectsRouter /> }
+                path={"project/*"}
+                element={<ProjectsRouter />}
               />
               <Route
-                path={ "proj/*" }
-                element={ <ProjectsRouter /> }
+                path={"proj/*"}
+                element={<ProjectsRouter />}
               />
-              <Route path={ "/login" }>
+              <Route path={"/login"}>
                 <Route
                   index
-                  element={ <ServerLoginPage /> }
+                  element={<ServerLoginPage />}
                 />
               </Route>
               <Route
-                path={ "app" }
+                path={"app"}
               >
                 <Route
-                  element={ <AppLayout /> }
+                  element={<AppLayout />}
                 >
                   <Route
                     index
-                    element={ <ApplicationRedirectToDash /> }
+                    element={<ApplicationRedirectToDash />}
                   />
                   <Route
-                    path={ "a/*" }
-                    element={ <AppRouter /> }
+                    path={"a/*"}
+                    element={<AppRouter />}
                   />
                 </Route>
               </Route>
             </Route>
           )
-        ) }
+        )}
       />
     </ChipletUiRootIntegration>
   );
 }
 
-const element = document.getElementById( "root" ) as HTMLElement;
+const element = document.getElementById("root") as HTMLElement;
 
-const loadingElement = document.createElement( "h1" );
+const loadingElement = document.createElement("h1");
 
 loadingElement.style.display = "flex";
 loadingElement.style.width = "100%";
@@ -117,6 +117,6 @@ loadingElement.style.justifyContent = "center";
 loadingElement.style.alignItems = "center";
 loadingElement.innerText = "Loading YourDash...";
 
-element.appendChild( loadingElement );
+element.appendChild(loadingElement);
 
 main();

@@ -55,4 +55,5 @@
 .component:focus-visible .label {
   transition: var(--transition-fast);
   scale: 1.05;
+  color: rgb(var(--container-bg));
 }

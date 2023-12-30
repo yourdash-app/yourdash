@@ -4,9 +4,10 @@
  */
 
 export interface IYourDashSession<T extends YOURDASH_SESSION_TYPE> {
-  id: number,
+  sessionId: number,
   type: T,
-  sessionToken: string
+  sessionToken: string,
+  isNodeJS?: boolean
 }
 
 export enum YOURDASH_SESSION_TYPE {

@@ -15,13 +15,13 @@ export interface YourDashModuleArguments {
   modulePath: string
 }
 
-export default class Module {
+export default class BackendModule {
   private readonly websocketManager: WebsocketManager;
   private readonly expressApp: ExpressApplication;
-  private readonly moduleName: string;
-  private readonly API: {
-    websocket: CoreApi["websocketManager"],
-    request: CoreApi["expressServer"],
+  readonly moduleName: string;
+  protected readonly API: {
+    websocket: CoreApi[ "websocketManager" ],
+    request: CoreApi[ "expressServer" ],
     log( type: LOG_TYPE, ...message: any[] ): void, // eslint-disable-line @typescript-eslint/no-explicit-any
     getPath(): string,
     applicationName: string,
@@ -31,6 +31,7 @@ export default class Module {
     path: string,
     modulePath: string
   };
+  public unload?: () => void;
 
   constructor( args: YourDashModuleArguments ) {
     this.moduleName = args.moduleName;
@@ -38,7 +39,7 @@ export default class Module {
       websocket: coreApi.websocketManager,
       request: coreApi.expressServer,
       log( type: LOG_TYPE, ...message: any[] ) { // eslint-disable-line @typescript-eslint/no-explicit-any
-        switch( type ) {
+        switch ( type ) {
         case LOG_TYPE.INFO:
           coreApi.log.info( `app:${this.moduleName}`, ...message );
           return;

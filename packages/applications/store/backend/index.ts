@@ -5,7 +5,7 @@
 
 import coreApi from "backend/src/core/coreApi.js";
 import { AUTHENTICATED_IMAGE_TYPE } from "backend/src/core/coreApiAuthenticatedImage.js";
-import Module, { YourDashModuleArguments } from "backend/src/core/moduleManager/module.js";
+import BackendModule, { YourDashModuleArguments } from "backend/src/core/moduleManager/backendModule.js";
 import YourDashApplication, { getAllApplications } from "backend/src/helpers/applications.js";
 import { getInstanceLogoBase64 } from "backend/src/helpers/logo.js";
 import path from "path";
@@ -16,8 +16,7 @@ import getAllCategories, { getAllApplicationsFromCategory } from "./helpers/cate
 
 const promotedApplications: string[] = [ "dash", "store" ];
 
-export default class StoreModule extends Module {
-
+export default class StoreModule extends BackendModule {
   constructor( args: YourDashModuleArguments ) {
     super( args );
     this.API.request.get( "/app/store/promoted/applications", ( _req, res ) => {
@@ -113,7 +112,7 @@ export default class StoreModule extends Module {
       } ) );
 
       return res.json( <IStoreCategory>{
-        id,
+        id: id,
         applications: applicationsOutput,
         icon: `data:image/avif;base64,${ getInstanceLogoBase64() }`,
         displayName: id.slice( 0, 1 ).toUpperCase() + id.slice( 1 ),

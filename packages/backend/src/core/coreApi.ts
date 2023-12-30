@@ -327,9 +327,10 @@ export class CoreApi {
                 ? YOURDASH_SESSION_TYPE.desktop
                 : YOURDASH_SESSION_TYPE.web
             );
+
             return res.json( {
               token: session.sessionToken,
-              id: session.id
+              sessionId: session.sessionId
             } );
           } else {
             return res.json( { error: "Incorrect password" } );
@@ -376,7 +377,7 @@ export class CoreApi {
     this.webdav.__internal__loadEndpoints()
     this.authenticatedImage.__internal__loadEndpoints()
 
-    // ----- check for authentication ------
+    // Check for authentication
     this.expressServer.use( async ( req, res, next ) => {
       const {
         username,
@@ -413,15 +414,18 @@ export class CoreApi {
       return res.json( { error: "authorization fail" } );
     } );
 
-    /*
-     * --------------------------------------------------------------
-     * WARNING: all endpoints require authentication after this point
-     * --------------------------------------------------------------
+    /**
+     *  ----------------------------------------------------------------
+     *   WARNING: all endpoints require authentication after this point
+     *  ----------------------------------------------------------------
      */
 
-    this.moduleManager.loadInstalledModules()
+    this.moduleManager.loadInstalledApplications()
       .then( () => {
-        this.log.info( "startup", "All modules loaded" )
+        this.log.info( "startup", "All modules loaded successfully" )
+      } )
+      .catch( err => {
+        this.log.error( "startup", "Failed to load all modules", err.toString() )
       } )
 
     this.expressServer.get( "/core/sessions", async ( req, res ) => {

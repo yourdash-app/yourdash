@@ -4,12 +4,12 @@
  */
 
 import YourDashPanel from "backend/src/core/helpers/panel.js";
-import Module, { YourDashModuleArguments } from "backend/src/core/moduleManager/module.js";
+import BackendModule, { YourDashModuleArguments } from "backend/src/core/moduleManager/backendModule.js";
 import { promises as fs } from "fs";
 import coreApi from "backend/src/core/coreApi.js"
 import path from "path"
 
-export default class SettingsModule extends Module {
+export default class SettingsModule extends BackendModule {
   constructor( args: YourDashModuleArguments ) {
     super( args );
 

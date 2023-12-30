@@ -232,7 +232,7 @@ export default class YourDashUser {
       // return a YourDashSession which has the sessionId as its id, find the correct session and use it as an input
       return new YourDashSession(
         this.username,
-        getSessionsForUser( this.username )[ getSessionsForUser( this.username ).findIndex( val => val.id === sessionId ) ]
+        getSessionsForUser( this.username )[ getSessionsForUser( this.username ).findIndex( val => val.sessionId === sessionId ) ]
       );
     } catch ( _err ) {
       coreApi.log.error( `${ chalk.yellow.bold( "CORE" ) }: unable to find session: ${ sessionId }` );
