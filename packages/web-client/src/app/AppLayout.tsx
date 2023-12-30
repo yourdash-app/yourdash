@@ -5,6 +5,7 @@
 
 import { Outlet } from "react-router";
 import { useNavigate } from "react-router-dom";
+import clippy from "../helpers/clippy";
 import { Button, Card, Heading, Spinner } from "../ui/index";
 import PanelLayout from "./panel/PanelLayout";
 import React, { memo, useEffect } from "react";
@@ -35,15 +36,24 @@ const AppLayout: React.FC = () => {
 
   if ( !loaded )
     return <div className={"w-full h-full flex items-center justify-center flex-col gap-4"}>
-      <Spinner />
+      {
+        !didTakeTooLong && <>
+          <Spinner />
+          <Card
+            className={"flex items-center justify-center"}
+            showBorder
+          >
+            <h1 className={"text-5xl font-bold pl-4 pr-4"}>Loading YourDash</h1>
+          </Card>
+        </>
+      }
       <Card
-        className={"flex items-center justify-center"}
-        showBorder
-      >
-        <h1 className={"text-5xl font-bold pl-4 pr-4"}>Loading YourDash</h1>
-      </Card>
-      <Card
-        className={"fixed bottom-4 text-center animate__animated animate__fadeInUp"}
+        className={clippy(
+          "text-center animate__animated animate__fadeInUp",
+          didTakeTooLong
+            ? ""
+            : "fixed bottom-4"
+        )}
         showBorder
       >
         <div className={"pl-2 pr-2"}>
