@@ -4,9 +4,9 @@
  */
 
 import React from "react";
-import useTranslate from "helpers/i18n";
+import useTranslate from "web-client/src/helpers/i18n";
 import { IWeatherDataForLocation } from "../../shared/weatherDataForLocation";
-import { chunk } from "helpers/array";
+import { chunk } from "web-client/src/helpers/array";
 import { Card } from "web-client/src/ui/index";
 import { WEATHER_STATES } from "../../shared/weatherStates";
 import getWeatherConditionFromState from "../helpers/getWeatherConditionFromState";

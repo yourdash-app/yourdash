@@ -4,7 +4,7 @@
  */
 
 import React, { useEffect, useState } from "react";
-import useTranslate from "helpers/i18n";
+import useTranslate from "web-client/src/helpers/i18n";
 import { Card, Row, Spinner } from "web-client/src/ui";
 import csi from "web-client/src/helpers/csi";
 import generateWeatherDescriptionFromData from "applications/weather/frontend/helpers/generateWeatherDescriptionFromData";

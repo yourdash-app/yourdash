@@ -4,7 +4,7 @@
  */
 
 import * as React from "react";
-import useTranslate from "helpers/i18n";
+import useTranslate from "web-client/src/helpers/i18n";
 import { IconButton, Chip, Row, Card, Icon } from "web-client/src/ui";
 import { useNavigate } from "react-router-dom";
 import WeatherHourlyConditionsWidget from "../../widgets/weather/WeatherHourlyConditions/WeatherHourlyConditionsWidget";

@@ -15,16 +15,24 @@
   }
 }
 
-.mainContent {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+.contentContainer {
+  display: flex;
   gap: 1rem;
-
-  @container yourdash-application-frame (width < 768px) {
-    grid-template-columns: 1fr;
-  }
+  flex-direction: row;
+  margin-left: auto;
+  margin-right: auto;
 
   @container yourdash-application-frame (width < 1024px) {
-    grid-template-columns: 1fr 1fr;
+    flex-direction: column;
+  }
+}
+
+.contentSection {
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+
+  @container yourdash-application-frame (width < 1024px) {
+    max-width: unset !important;
   }
 }

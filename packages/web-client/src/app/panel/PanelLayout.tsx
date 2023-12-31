@@ -6,9 +6,9 @@
 import React, { useEffect } from "react";
 import { Outlet } from "react-router";
 import Panel from "./Panel";
-import clippy from "../../helpers/clippy";
+import clippy from "web-client/src/helpers/clippy";
 import styles from "./PanelLayout.module.scss";
-import csi from "../../web-client/src/helpers/csi";
+import csi from "web-client/src/helpers/csi";
 
 const PanelLayout: React.FC = () => {
   const [ panelSide, setPanelSide ] = React.useState<"top" | "right" | "bottom" | "left" | undefined>( undefined );

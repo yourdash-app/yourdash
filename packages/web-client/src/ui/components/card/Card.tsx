@@ -6,7 +6,7 @@
 import React, { CSSProperties, MouseEventHandler } from "react";
 
 import styles from "./Card.module.scss";
-import clippy from "helpers/clippy";
+import clippy from "web-client/src/helpers/clippy";
 
 export interface ICard extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
   onClick?: MouseEventHandler<HTMLDivElement> | ( () => void );

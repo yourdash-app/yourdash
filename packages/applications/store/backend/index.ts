@@ -6,8 +6,8 @@
 import coreApi from "backend/src/core/coreApi.js";
 import { AUTHENTICATED_IMAGE_TYPE } from "backend/src/core/coreApiAuthenticatedImage.js";
 import BackendModule, { YourDashModuleArguments } from "backend/src/core/moduleManager/backendModule.js";
-import YourDashApplication, { getAllApplications } from "backend/helpers/applications.js";
-import { getInstanceLogoBase64 } from "backend/helpers/logo.js";
+import YourDashApplication, { getAllApplications } from "backend/src/helpers/applications.js";
+import { getInstanceLogoBase64 } from "backend/src/helpers/logo.js";
 import path from "path";
 import { IYourDashStoreApplication } from "shared/apps/store/storeApplication.js";
 import { IStoreCategory } from "shared/apps/store/storeCategory.js";

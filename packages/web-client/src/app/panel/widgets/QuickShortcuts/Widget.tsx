@@ -6,7 +6,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import clippy from "../../../../helpers/clippy";
-import csi from "../../../../web-client/src/helpers/csi";
+import csi from "web-client/src/helpers/csi";
 import styles from "./Widget.module.scss";
 import React from "react";
 

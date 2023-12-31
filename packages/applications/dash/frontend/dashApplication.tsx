@@ -5,7 +5,7 @@
 
 import * as React from "react";
 import csi from "web-client/src/helpers/csi";
-import useTranslate from "helpers/i18n";
+import useTranslate from "web-client/src/helpers/i18n";
 import loadable from "@loadable/component";
 import { IconButton, YourDashIcon } from "web-client/src/ui/index";
 import { useNavigate } from "react-router"

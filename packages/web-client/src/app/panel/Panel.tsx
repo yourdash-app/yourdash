@@ -4,10 +4,10 @@
  */
 
 import styles from "./Panel.module.scss"
-import clippy from "../../helpers/clippy";
+import clippy from "web-client/src/helpers/clippy";
 import React, { memo, useEffect, useState } from "react";
 import loadable from "@loadable/component";
-import csi from "../../web-client/src/helpers/csi";
+import csi from "web-client/src/helpers/csi";
 
 const Panel: React.FC<{ side: "top" | "right" | "bottom" | "left", setLayoutReloadNumber: ( num: number ) => void }> = ( { side, setLayoutReloadNumber } ) => {
   const [ widgets, setWidgets ] = useState<string[]>( [ "InstanceLogo", "ApplicationLauncher", "Separator", "QuickShortcuts" ] )

@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import clippy from "helpers/clippy";
+import clippy from "web-client/src/helpers/clippy";
 import React, { useState, FocusEventHandler, KeyboardEventHandler } from "react";
 import { Icon } from "../../index";
 import { YourDashIcon } from "../icon/iconDictionary";

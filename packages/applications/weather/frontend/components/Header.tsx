@@ -8,12 +8,13 @@ import Heading from "web-client/src/ui/components/heading/Heading";
 import { IWeatherDataForLocation } from "../../shared/weatherDataForLocation";
 import { IconButton } from "web-client/src/ui/index";
 import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
+import generateWeatherDescriptionFromData from "../helpers/generateWeatherDescriptionFromData";
 import getWeatherConditionFromState from "../helpers/getWeatherConditionFromState";
-import useTranslate from "helpers/i18n";
+import useTranslate from "web-client/src/helpers/i18n";
 import getWeatherBackgroundForCondition from "../helpers/getWeatherBackgroundForCondition";
 import WeatherApplicationDaysCarousel from "./DaysCarousel";
 import styles from "./Header.module.scss";
-import clippy from "helpers/clippy";
+import clippy from "web-client/src/helpers/clippy";
 import { WEATHER_STATES } from "../../shared/weatherStates";
 import { useNavigate } from "react-router"
 
@@ -93,7 +94,7 @@ const WeatherApplicationLocationPageHeader: React.FC<WeatherApplicationLocationP
       </section>
     </section>
     <section className={ clippy( styles.currentWeatherHeader, isStuck && styles.stuck ) }>
-      <Heading>Currently { weatherData.currentWeather.temperature }{ weatherData.units.hourly.temperature } {weatherData.currentWeather.weatherState !== WEATHER_STATES.PARTLY_CLOUDY ? "with" : "and"} { trans( getWeatherConditionFromState( weatherData.currentWeather.weatherState ) ) }</Heading>
+      <Heading>{generateWeatherDescriptionFromData( weatherData.currentWeather, false )}</Heading>
     </section>
     <WeatherApplicationDaysCarousel
       setSelectedDay={ ( day: number ) => {

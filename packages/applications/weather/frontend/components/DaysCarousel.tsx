@@ -7,10 +7,10 @@ import { IWeatherDataForLocation } from "../../shared/weatherDataForLocation";
 import React from "react";
 import { Card, Carousel, Icon } from "web-client/src/ui/index";
 import getDayNameForNumericDay from "../helpers/getDayNameForNumericDay";
-import useTranslate from "helpers/i18n";
+import useTranslate from "web-client/src/helpers/i18n";
 import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
 import getWeatherIconFromState from "../helpers/getWeatherIconFromState";
-import clippy from "helpers/clippy";
+import clippy from "web-client/src/helpers/clippy";
 
 const WeatherApplicationDaysCarousel: React.FC<{
   weatherData: IWeatherDataForLocation,

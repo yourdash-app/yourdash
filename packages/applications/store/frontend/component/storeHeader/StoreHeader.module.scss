@@ -10,6 +10,11 @@
   position: sticky;
   top: 1rem;
   z-index: 10;
+  transition: var(--transition-slow);
+
+  @container yourdash-application-frame (width < 768px) {
+    top: 0.5rem;
+  }
 }
 
 .applicationLogo {

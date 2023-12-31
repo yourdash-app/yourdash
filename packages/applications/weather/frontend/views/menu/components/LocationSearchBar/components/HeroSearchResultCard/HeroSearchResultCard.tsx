@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import clippy from "helpers/clippy";
+import clippy from "web-client/src/helpers/clippy";
 import { Card } from "web-client/src/ui/index";
 import { ILocationSearchResult } from "../../../../../../../shared/locationSearchResult";
 import { useNavigate } from "react-router-dom";
