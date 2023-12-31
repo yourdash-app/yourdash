@@ -9,22 +9,22 @@ import { Card, Carousel, IconButton } from "web-client/src/ui";
 import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
 
 const DashApplicationWelcome: React.FC = () => {
-  const [userFullName, setUserFullName] = useState( {
+  const [ userFullName, setUserFullName ] = useState( {
     first: "",
     last: ""
   } );
-  const [step, setStep] = useState( 0 );
-  
+  const [ step, setStep ] = useState( 0 );
+
   useEffect( () => {
     csi.getJson( "/core/panel/user-full-name", res => {
       setUserFullName( res );
     } );
   }, [] );
-  
+
   if ( userFullName.first === "" && userFullName.last === "" ) {
     return null;
   }
-  
+
   return (
     <div
       style={{

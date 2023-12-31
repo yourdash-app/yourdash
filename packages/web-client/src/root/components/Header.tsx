@@ -5,7 +5,7 @@
 
 import React from "react";
 import { Link } from "react-router-dom";
-import { useTranslateHomePage } from "../../helpers/i10n";
+import { useTranslateHomePage } from "../../helpers/i18n";
 
 const Header: React.FC = () => {
   const trans = useTranslateHomePage( "index" )

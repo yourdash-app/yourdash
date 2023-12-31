@@ -5,21 +5,20 @@
 
 import React, { useEffect } from "react";
 import csi, { TJson } from "web-client/src/helpers/csi";
-import useYourDashLib from "web-client/src/helpers/ydsh";
+import useYourDashLib from "helpers/ydsh";
 import { Button, Card, IconButton, Row, TextBox, TextInput, YourDashIcon } from "web-client/src/ui/index";
 import BasePageLayout from "../../components/BasePageLayout"
-import userLinkEditor from "./components/UserLinkEditor";
 import UserLinkEditor from "./components/UserLinkEditor";
 import UserPreview, { IUserPreview } from "./components/UserPreview";
 
 const ProfileIndexPage: React.FC = () => {
   const ydsh = useYourDashLib()
-  const [userData, setUserData] = React.useState<IUserPreview>( {
+  const [ userData, setUserData ] = React.useState<IUserPreview>( {
     name: { first: "Admin", last: "Istrator" },
     avatar: "abc",
     username: "admin",
     bio: "This is the user's sample bio",
-    links: [{ url: "https://github.com/yourdash-app/yourdash", label: "Click me" }]
+    links: [ { url: "https://github.com/yourdash-app/yourdash", label: "Click me" } ]
   } )
 
   useEffect( () => {
@@ -46,6 +45,7 @@ const ProfileIndexPage: React.FC = () => {
         <h2 className={ "-mb-2 font-semibold text-2xl" }>Name</h2>
         <Row className={ "child:flex-grow" }>
           <TextInput
+            accessibleName="First name"
             onChange={ ( value ) => {
               setUserData( { ...userData, name: { ...userData.name, first: value } } );
             } }
@@ -53,6 +53,7 @@ const ProfileIndexPage: React.FC = () => {
             label={ "FirstName" }
           />
           <TextInput
+            accessibleName="Last name"
             onChange={ ( value ) => {
               setUserData( { ...userData, name: { ...userData.name, last: value } } );
             } }
@@ -61,6 +62,7 @@ const ProfileIndexPage: React.FC = () => {
           />
         </Row>
         <TextInput
+          accessibleName="Username"
           onChange={ ( value ) => {
             setUserData( { ...userData, username: value } );
           } }
@@ -79,7 +81,7 @@ const ProfileIndexPage: React.FC = () => {
           <IconButton
             icon={YourDashIcon.Plus}
             onClick={ () => {
-              setUserData( { ...userData, links: [ ...( userData.links || [] ), { url: "https://example.com", label: `Example${( userData.links?.length || 0 ) + 1}` }] } );
+              setUserData( { ...userData, links: [ ...( userData.links || [] ), { url: "https://example.com", label: `Example${( userData.links?.length || 0 ) + 1}` } ] } );
             } }
           />
         </div>

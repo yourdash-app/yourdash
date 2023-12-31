@@ -14,3 +14,17 @@
     padding: 0.5rem;
   }
 }
+
+.mainContent {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+
+  @container yourdash-application-frame (width < 768px) {
+    grid-template-columns: 1fr;
+  }
+
+  @container yourdash-application-frame (width < 1024px) {
+    grid-template-columns: 1fr 1fr;
+  }
+}

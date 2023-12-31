@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import useTranslate from "web-client/src/helpers/i10n";
+import useTranslate from "helpers/i18n";
 import styles from "./BrowserLayout.module.scss";
 import { IconButton } from "web-client/src/ui";
 import { useNavigate } from "react-router-dom";
@@ -42,7 +42,7 @@ const BrowserLayout: React.FC<IBrowserLayout> = ( {
           "font-black text-container-fg 2xl:text-8xl xl:text-7xl lg:text-6xl md:text-5xl sm:text-4xl text-3xl translate-all animate__animated animate__fadeInUp [filter:_drop-shadow(0_10px_8px_rgb(0_0_0/0.04))_drop-shadow(0_4px_3px_rgb(0_0_0/0.1))_drop-shadow(0_10px_8px_rgb(0_0_0/0.04))_drop-shadow(0_4px_3px_rgb(0_0_0/0.1))_drop-shadow(0_10px_8px_rgb(0_0_0/0.04))_drop-shadow(0_4px_3px_rgb(0_0_0/0.1))] backdrop-blur-md bg-container-bg bg-opacity-75 p-4 pl-6 pr-6 rounded-3xl"
         }
       >
-        {trans( "LOCALIZED_GREETING", [fullName.first, fullName.last] )}
+        {trans( "LOCALIZED_GREETING", [ fullName.first, fullName.last ] )}
       </div>
       <section
         className={styles.content}

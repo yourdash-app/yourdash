@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import clippy from "web-client/src/helpers/clippy";
+import clippy from "helpers/clippy";
 import { Card, Icon, IconButton, YourDashIcon } from "web-client/src/ui/index";
 import { IPhotoCategory } from "../../../shared/types/photoCategory";
 import Photo from "../photo/Photo";

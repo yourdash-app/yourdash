@@ -7,9 +7,9 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import csi from "web-client/src/helpers/csi";
 import { Card, TextInput } from "web-client/src/ui/index";
-import useTranslate from "web-client/src/helpers/i10n";
+import useTranslate from "helpers/i18n";
 import APPLICATION_ICON from "../../assets/weatherIcons/partly_cloudy.svg"
-import clippy from "web-client/src/helpers/clippy";
+import clippy from "helpers/clippy";
 import { ILocationSearchResult } from "../../../shared/locationSearchResult";
 import THUNDER_BACKGROUND from "../../assets/weatherBackgrounds/thunder.jpg"
 import CLOUDY_BACKGROUND from "../../assets/weatherBackgrounds/cloudy1.jpg"

@@ -7,7 +7,7 @@ import styles from "./Panel.module.scss"
 import clippy from "../../helpers/clippy";
 import React, { memo, useEffect, useState } from "react";
 import loadable from "@loadable/component";
-import csi from "../../helpers/csi";
+import csi from "../../web-client/src/helpers/csi";
 
 const Panel: React.FC<{ side: "top" | "right" | "bottom" | "left", setLayoutReloadNumber: ( num: number ) => void }> = ( { side, setLayoutReloadNumber } ) => {
   const [ widgets, setWidgets ] = useState<string[]>( [ "InstanceLogo", "ApplicationLauncher", "Separator", "QuickShortcuts" ] )
@@ -49,4 +49,4 @@ const Panel: React.FC<{ side: "top" | "right" | "bottom" | "left", setLayoutRelo
   </section>
 }
 
-export default memo( Panel )
+export default memo( Panel, ( prevProps, nextProps ) => prevProps.side === nextProps.side )

@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-export interface IYourDashSession<T extends YOURDASH_SESSION_TYPE> {
+export interface IYourDashSession<T extends YOURDASH_SESSION_TYPE = YOURDASH_SESSION_TYPE> {
   sessionId: number,
   type: T,
   sessionToken: string,

@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import useTranslate from "web-client/src/helpers/i10n";
+import useTranslate from "helpers/i18n";
 import { IWeatherDataForLocation } from "../../shared/weatherDataForLocation";
 import getWeatherConditionFromState from "./getWeatherConditionFromState";
 

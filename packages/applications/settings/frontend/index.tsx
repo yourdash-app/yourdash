@@ -6,7 +6,7 @@
 import React from "react";
 import { Routes, Route } from "react-router";
 import SettingsApplication from "./settingsApplication";
-import SessionIndexPage from "./pages/session";
+import SessionIndexPage from "./pages/session/Index";
 import SettingsLayout from "./settingsLayout";
 import PersonalizationIndexPage from "./pages/personalization/Index";
 import AdminToolsIndexPage from "./pages/admin/Index";

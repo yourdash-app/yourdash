@@ -5,7 +5,7 @@
 
 import React, { useEffect, useState } from "react";
 import useYourDashLib from "web-client/src/helpers/ydsh";
-import csi from "../../../../helpers/csi";
+import csi from "web-client/src/helpers/csi";
 
 const InstanceInfo: React.FC = () => {
   const [ metadata, setMetadata ] = useState<{ title: string, message: string }>( {
@@ -13,7 +13,7 @@ const InstanceInfo: React.FC = () => {
     message: ""
   } );
   const ydsh = useYourDashLib();
-  
+
   useEffect( () => {
     csi.getJson(
       "/core/login/instance/metadata",
@@ -25,7 +25,7 @@ const InstanceInfo: React.FC = () => {
       }
     );
   }, [] );
-  
+
   if ( metadata.title === "" && metadata.message === "" ) {
     return <div className={ "flex items-center justify-center h-full w-full" }>
       <span className={ "text-4xl font-bold" }>
@@ -33,7 +33,7 @@ const InstanceInfo: React.FC = () => {
       </span>
     </div>;
   }
-  
+
   return <div
     className={ "flex flex-col w-[calc(100%+2rem)] h-[calc(100%+2rem)] bg-cover bg-center -ml-4 -mt-4" }
     style={ {

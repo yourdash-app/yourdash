@@ -5,34 +5,34 @@
 
 import * as React from "react";
 import csi from "web-client/src/helpers/csi";
-import useTranslate from "web-client/src/helpers/i10n";
+import useTranslate from "helpers/i18n";
 import { IconButton, Icon, RightClickMenu, Card } from "web-client/src/ui";
-import clippy from "web-client/src/helpers/clippy";
+import clippy from "helpers/clippy";
 import * as path from "path-browserify";
 import Preview from "./../views/preview/Preview";
 import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
 import styles from "./ThumbnailsSmallLayout.module.scss"
 
 const DetailsLayout: React.FC = () => {
-  const [currentPath, setCurrentPath] = React.useState( "/" );
-  const [files, setFiles] = React.useState<{
+  const [ currentPath, setCurrentPath ] = React.useState( "/" );
+  const [ files, setFiles ] = React.useState<{
     name: string,
     type: "dir" | "file",
     icon: string
   }[]>( [] );
   const trans = useTranslate( "files" );
-  
+
   React.useEffect( () => {
     // eslint-disable-next-line consistent-return
     csi.postJson( "/app/files/get/thumbnails-small", { path: currentPath }, resp => {
       if ( Object.keys( resp.files ).length === 0 ) {
         return setFiles( [] );
       }
-      
+
       setFiles( resp?.files || [] );
     } );
-  }, [currentPath] );
-  
+  }, [ currentPath ] );
+
   return (
     <>
       <section className={"p-2 flex flex-col bg-container-bg top-0 sticky gap-2 shadow-lg z-10"}>

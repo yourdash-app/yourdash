@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import clippy from "web-client/src/helpers/clippy";
+import clippy from "helpers/clippy";
 import { Card, Column } from "web-client/src/ui/index";
 import CLEAR_BACKGROUND from "../../assets/weatherBackgrounds/clear.jpg";
 import CLOUDY_BACKGROUND from "../../assets/weatherBackgrounds/cloudy1.jpg";

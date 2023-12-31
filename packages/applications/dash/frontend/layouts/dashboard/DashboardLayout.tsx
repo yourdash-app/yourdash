@@ -4,7 +4,7 @@
  */
 
 import * as React from "react";
-import useTranslate from "web-client/src/helpers/i10n";
+import useTranslate from "helpers/i18n";
 import { IconButton, Chip, Row, Card, Icon } from "web-client/src/ui";
 import { useNavigate } from "react-router-dom";
 import WeatherHourlyConditionsWidget from "../../widgets/weather/WeatherHourlyConditions/WeatherHourlyConditionsWidget";
@@ -24,8 +24,8 @@ const DashboardLayout: React.FC<IDashboard> = ( {
   username,
   fullName
 } ) => {
-  const [isEditMode, setIsEditMode] = useState<boolean>( false );
-  const [widgets, setWidgets] = useState<React.FC[]>( [WeatherHourlyConditionsWidget] );
+  const [ isEditMode, setIsEditMode ] = useState<boolean>( false );
+  const [ widgets, setWidgets ] = useState<React.FC[]>( [ WeatherHourlyConditionsWidget ] );
   const navigate = useNavigate();
   const trans = useTranslate( "dash" );
   return (
@@ -36,7 +36,7 @@ const DashboardLayout: React.FC<IDashboard> = ( {
         <Row>
           <span className={"text-5xl font-bold [text-shadow:#242424bb_0_0_0.75rem,_#24242488_0_0_0.5rem,_#24242444_0_0_0.25rem]"}>
             {
-              trans( "LOCALIZED_GREETING", [fullName.first, fullName.last] )
+              trans( "LOCALIZED_GREETING", [ fullName.first, fullName.last ] )
             }
           </span>
           <IconButton

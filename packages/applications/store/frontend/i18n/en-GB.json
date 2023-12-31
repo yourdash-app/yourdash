@@ -6,5 +6,6 @@
   "UNINSTALL": "Uninstall",
   "ABOUT_SECTION": "About",
   "SOURCE_CODE_SECTION": "Source code",
-  "AUTHORS_SECTION": "Authors"
+  "AUTHORS_SECTION": "Authors",
+  "DESCRIPTION_SECTION": "Description"
 }

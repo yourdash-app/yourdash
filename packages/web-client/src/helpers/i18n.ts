@@ -4,12 +4,7 @@
  */
 
 import { useEffect, useState } from "react";
-
-// @ts-ignore
-window.setTranslateLanguage = ( language: string ) => {
-  // @ts-ignore
-  window.translateLang = language;
-};
+import { Language } from "web-tree-sitter";
 
 interface ITranslation {
   [ key: string ]: string | ITranslation;
@@ -31,10 +26,15 @@ function getValue( obj: any, selector: string ): any {
 }
 
 interface ITranslateWindow extends Window {
-  setTranslateLanguage: ( language: string ) => void
+  setTranslateLanguage: ( language: string ) => void,
+  translateLang?: string
 }
 
 declare const window: ITranslateWindow
+
+window.setTranslateLanguage = ( language: string ) => {
+  window.translateLang = language;
+};
 
 export default function useTranslate( application: string ) {
   const [ messages, setMessages ] = useState<ITranslation | undefined>( undefined );
@@ -42,11 +42,13 @@ export default function useTranslate( application: string ) {
   useEffect( () => {
     // @ts-ignore
     const language = window.translateLang || navigator.language;
-    import( `../../../applications/${ application }/frontend/i10n/${ language }.json` ).then( response => setMessages( response.default ) ).catch( () => {
-      // the page is missing translation into your language :(
-      window.setTranslateLanguage( "en-GB" )
-    } );
-  }, [] );
+    import( `../../../applications/${ application }/frontend/i18n/${ language }.json` )
+      .then( response => setMessages( response.default ) )
+      .catch( () => {
+        // the page is missing translation into your language :(
+        window.setTranslateLanguage( "en-GB" )
+      } );
+  }, [ window.translateLang, navigator.language ] );
 
   return ( message: string, params?: string[] ) => {
     let output = getValue( messages, message ) || "";

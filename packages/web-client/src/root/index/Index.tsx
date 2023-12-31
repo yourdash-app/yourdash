@@ -5,7 +5,7 @@
 
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useTranslateHomePage } from "web-client/src/helpers/i10n";
+import { useTranslateHomePage } from "helpers/i18n";
 import { MajorButton } from "../../ui";
 import KeyPointsCard from "./components/content/KeyPointsCard";
 import IndexPageHero from "./components/Hero/Hero";

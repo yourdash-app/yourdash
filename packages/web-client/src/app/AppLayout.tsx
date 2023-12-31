@@ -9,7 +9,7 @@ import clippy from "../helpers/clippy";
 import { Button, Card, Heading, Spinner } from "../ui/index";
 import PanelLayout from "./panel/PanelLayout";
 import React, { memo, useEffect } from "react";
-import csi from "../helpers/csi";
+import csi from "../web-client/src/helpers/csi";
 import styles from "./AppLayout.module.scss"
 
 const AppLayout: React.FC = () => {
@@ -101,4 +101,4 @@ const AppLayout: React.FC = () => {
   return <PanelLayout />
 }
 
-export default memo( AppLayout )
+export default AppLayout

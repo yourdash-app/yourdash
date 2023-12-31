@@ -50,7 +50,7 @@ const CategoryView: React.FC = () => {
             </div>
           )
           : ( <>
-            <Heading level={1}>{`${ categoryData?.displayName }`}</Heading>
+            <Heading level={1} className={"p-6"}>{`${ categoryData?.displayName }`}</Heading>
             <div className={"w-full max-h-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 animate__animated animate__fadeIn animate__250ms"}>
               {
                 categoryData && categoryData.applications.map( application => (

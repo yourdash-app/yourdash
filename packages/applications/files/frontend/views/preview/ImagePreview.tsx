@@ -11,20 +11,20 @@ export interface IImagePreview {
 }
 
 const ImagePreview: React.FC<IImagePreview> = ( { path = "" } ) => {
-  const [image, setImage] = React.useState<string | null>( null );
-  
+  const [ image, setImage ] = React.useState<string | null>( null );
+
   React.useEffect( () => {
     // @ts-ignore
     csi.postText( "/app/files/get/file", { path }, resp => {
       setImage( resp );
     } );
-    
-  }, [path] );
-  
+
+  }, [ path ] );
+
   if ( !image ) {
     return null;
   }
-  
+
   return (
     <main className={"w-full h-full flex items-center justify-center overflow-auto"}>
       <img alt={""} src={`${ csi.getInstanceUrl() }${ image }`}/>

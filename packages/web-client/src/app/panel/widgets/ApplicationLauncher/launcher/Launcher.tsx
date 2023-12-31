@@ -10,7 +10,7 @@ import { IconButton, YourDashIcon } from "../../../../../ui/index";
 import React, { memo, useEffect, useState } from "react";
 import ApplicationsLauncherApplications from "./Applications/Applications";
 import IPanelApplicationsLauncherApplication from "shared/core/panel/applicationsLauncher/application";
-import csi from "../../../../../helpers/csi";
+import csi from "../../../../../web-client/src/helpers/csi";
 
 const ApplicationLauncher: React.FC<{ side: "top" | "right" | "bottom" | "left", visible: boolean }> = ( { side, visible } ) => {
   const navigate = useNavigate()

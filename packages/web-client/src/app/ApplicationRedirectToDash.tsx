@@ -4,7 +4,7 @@
  */
 
 import React, { useEffect } from "react";
-import csi from "../helpers/csi";
+import csi from "../web-client/src/helpers/csi";
 import { useNavigate } from "react-router-dom";
 
 const ApplicationRedirectToDash: React.FC = () => {

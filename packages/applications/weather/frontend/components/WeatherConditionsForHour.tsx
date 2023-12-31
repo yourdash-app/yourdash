@@ -4,9 +4,9 @@
  */
 
 import React from "react";
-import useTranslate from "web-client/src/helpers/i10n";
+import useTranslate from "helpers/i18n";
 import { IWeatherDataForLocation } from "../../shared/weatherDataForLocation";
-import { chunk } from "web-client/src/helpers/array";
+import { chunk } from "helpers/array";
 import { Card } from "web-client/src/ui/index";
 import { WEATHER_STATES } from "../../shared/weatherStates";
 import getWeatherConditionFromState from "../helpers/getWeatherConditionFromState";
@@ -24,19 +24,19 @@ const WeatherConditionsForHour: React.FC<IWeatherConditionsForHour> = ( {
 } ) => {
   const trans = useTranslate( "weather" );
   const [ selectedHourDate, setSelectedHourDate ] = React.useState<Date | null>( null );
-  
+
   React.useEffect( () => {
     if ( selectedHour !== undefined ) {
       setSelectedHourDate( new Date( chunk( weatherData.hourly.time, 24 )[ selectedDay ][ selectedHour ] ) );
     }
   }, [ selectedDay, selectedHour ] );
-  
+
   if ( !selectedHourDate || selectedHour === null ) {
     return <Card className={ "col-span-3 flex items-center justify-center h-max sticky top-4" } showBorder>
       <h1>Click an hour to show more information.</h1>
     </Card>;
   }
-  
+
   return <>
     <Card
       className={ "gap-2 flex col-span-3 items-center justify-center w-full sticky top-4" }

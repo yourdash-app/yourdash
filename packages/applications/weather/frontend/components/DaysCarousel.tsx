@@ -7,10 +7,10 @@ import { IWeatherDataForLocation } from "../../shared/weatherDataForLocation";
 import React from "react";
 import { Card, Carousel, Icon } from "web-client/src/ui/index";
 import getDayNameForNumericDay from "../helpers/getDayNameForNumericDay";
-import useTranslate from "web-client/src/helpers/i10n";
+import useTranslate from "helpers/i18n";
 import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
 import getWeatherIconFromState from "../helpers/getWeatherIconFromState";
-import clippy from "web-client/src/helpers/clippy";
+import clippy from "helpers/clippy";
 
 const WeatherApplicationDaysCarousel: React.FC<{
   weatherData: IWeatherDataForLocation,
@@ -18,12 +18,12 @@ const WeatherApplicationDaysCarousel: React.FC<{
   selectedDay: number
 }> = ( { weatherData, setSelectedDay, selectedDay } ) => {
   const trans = useTranslate( "weather" );
-  
+
   return <Carousel className={ "sticky top-[5.75rem] flex gap-1 p-2 pl-10 pr-10 w-full pt-0" } compactControls>
     {
       weatherData.daily.time.map( ( dayDateTime, index ) => {
         const date = new Date( dayDateTime );
-        
+
         return <Card
           onClick={ () => {
             setSelectedDay( index )

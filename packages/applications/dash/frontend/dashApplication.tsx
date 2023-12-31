@@ -5,7 +5,7 @@
 
 import * as React from "react";
 import csi from "web-client/src/helpers/csi";
-import useTranslate from "web-client/src/helpers/i10n";
+import useTranslate from "helpers/i18n";
 import loadable from "@loadable/component";
 import { IconButton, YourDashIcon } from "web-client/src/ui/index";
 import { useNavigate } from "react-router"
@@ -16,12 +16,12 @@ const BrowserLayout = loadable( () => import( "./layouts/browser/BrowserLayout" 
 const DashApplication: React.FC = () => {
   const navigate = useNavigate()
   const trans = useTranslate( "dash" );
-  const [userFullName, setUserFullName] = React.useState( {
+  const [ userFullName, setUserFullName ] = React.useState( {
     first: "",
     last: ""
   } );
-  const [userName, setUserName] = React.useState( "" );
-  const [layout, setLayout] = React.useState<"browser" | "dashboard">( "dashboard" );
+  const [ userName, setUserName ] = React.useState( "" );
+  const [ layout, setLayout ] = React.useState<"browser" | "dashboard">( "dashboard" );
 
   React.useEffect( () => {
     csi.getJson( "/app/dash/user-full-name", res => {

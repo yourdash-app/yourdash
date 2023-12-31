@@ -4,7 +4,7 @@
  */
 
 import coreApi from "backend/src/core/coreApi.js";
-import YourDashApplication, { getAllApplications } from "backend/src/helpers/applications.js";
+import YourDashApplication, { getAllApplications } from "backend/helpers/applications.js";
 
 export default async function getAllCategories(): Promise<string[]> {
   const applications = await getAllApplications();

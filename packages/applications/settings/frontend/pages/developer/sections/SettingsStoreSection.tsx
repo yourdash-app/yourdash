@@ -5,7 +5,7 @@
 
 import React from "react";
 import csi from "web-client/src/helpers/csi";
-import useYourDashLib from "web-client/src/helpers/ydsh";
+import useYourDashLib from "helpers/ydsh";
 import { Button } from "web-client/src/ui/index";
 
 const SettingsStoreSection: React.FC = () => {

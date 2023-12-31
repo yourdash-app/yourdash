@@ -8,7 +8,7 @@ import { useFloating, offset, shift, autoUpdate, useHover, useFocus, useDismiss,
 import DROPLET_ICON from "applications/weather/frontend/assets/weatherIcons/droplet.svg";
 import { Card } from "web-client/src/ui/index";
 import getWeatherConditionFromState from "applications/weather/frontend/helpers/getWeatherConditionFromState";
-import useTranslate from "web-client/src/helpers/i10n";
+import useTranslate from "helpers/i18n";
 
 export interface IHourlyConditionsHour {
   time: string,
