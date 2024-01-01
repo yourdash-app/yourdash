@@ -8,7 +8,7 @@ import { Icon, Button, DropdownButton, TextBox, Card } from "web-client/src/ui";
 import csi from "web-client/src/helpers/csi";
 import AutocompletedTextInput from "web-client/src/ui/components/autocompletedTextInput/AutocompletedTextInput";
 import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
-import useTranslate from "helpers/i18n";
+import useTranslate from "web-client/src/helpers/i18n";
 
 function loadPossibleEndpoints( setEndpoints: ( data: string[] ) => void ) {
   csi.getJson( "/app/endpoints/endpoints", ( data: any ) => { // eslint-disable-line @typescript-eslint/no-explicit-any

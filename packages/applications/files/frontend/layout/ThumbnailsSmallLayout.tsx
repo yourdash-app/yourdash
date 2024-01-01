@@ -5,10 +5,10 @@
 
 import * as React from "react";
 import csi from "web-client/src/helpers/csi";
-import useTranslate from "helpers/i18n";
+import useTranslate from "web-client/src/helpers/i18n";
 import { IconButton, Icon, RightClickMenu, Card } from "web-client/src/ui";
-import clippy from "helpers/clippy";
-import * as path from "path-browserify";
+import clippy from "web-client/src/helpers/clippy";
+import path from "path-browserify";
 import Preview from "./../views/preview/Preview";
 import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
 import styles from "./ThumbnailsSmallLayout.module.scss"

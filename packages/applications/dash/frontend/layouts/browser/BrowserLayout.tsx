@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import useTranslate from "helpers/i18n";
+import useTranslate from "web-client/src/helpers/i18n";
 import styles from "./BrowserLayout.module.scss";
 import { IconButton } from "web-client/src/ui";
 import { useNavigate } from "react-router-dom";

@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import clippy from "helpers/clippy";
+import clippy from "web-client/src/helpers/clippy";
 import styles from "./Slides.module.scss"
 
 export interface ISlides {

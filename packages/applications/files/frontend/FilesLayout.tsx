@@ -5,8 +5,8 @@
 
 import path from "path-browserify";
 import React from "react";
-import { Button, MajorButton, SideBar, YourDashIcon } from "web-client/src/ui";
-import useTranslate from "helpers/i18n";
+import { SideBar, YourDashIcon } from "web-client/src/ui";
+import useTranslate from "web-client/src/helpers/i18n";
 import { SIDEBAR_ITEM_TYPE, SIDEBAR_STATE } from "web-client/src/ui/components/sideBar/SideBar";
 import FilePane from "./views/filePane/FilePane";
 

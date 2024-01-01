@@ -38,6 +38,7 @@ window.setTranslateLanguage = ( language: string ) => {
 
 export default function useTranslate( application: string ) {
   const [ messages, setMessages ] = useState<ITranslation | undefined>( undefined );
+  const [ reloadNumber, setReloadNumber ] = useState<number>( 0 )
 
   useEffect( () => {
     // @ts-ignore
@@ -47,8 +48,9 @@ export default function useTranslate( application: string ) {
       .catch( () => {
         // the page is missing translation into your language :(
         window.setTranslateLanguage( "en-GB" )
+        setReloadNumber( reloadNumber + 1 )
       } );
-  }, [ window.translateLang, navigator.language ] );
+  }, [ reloadNumber ] );
 
   return ( message: string, params?: string[] ) => {
     let output = getValue( messages, message ) || "";

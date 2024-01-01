@@ -36,7 +36,7 @@ const DashboardLayout: React.FC<IDashboard> = ( {
         <Row>
           <span className={"text-5xl font-bold [text-shadow:#242424bb_0_0_0.75rem,_#24242488_0_0_0.5rem,_#24242444_0_0_0.25rem]"}>
             {
-              trans( "LOCALIZED_GREETING", [ fullName.first, fullName.last ] )
+              trans( "LOCALISED_GREETING", [ fullName.first, fullName.last ] )
             }
           </span>
           <IconButton

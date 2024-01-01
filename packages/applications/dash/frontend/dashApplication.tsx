@@ -15,7 +15,6 @@ const BrowserLayout = loadable( () => import( "./layouts/browser/BrowserLayout" 
 
 const DashApplication: React.FC = () => {
   const navigate = useNavigate()
-  const trans = useTranslate( "dash" );
   const [ userFullName, setUserFullName ] = React.useState( {
     first: "",
     last: ""

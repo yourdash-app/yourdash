@@ -3,7 +3,7 @@
     <package-json value="$PROJECT_DIR$/package.json" />
     <command value="run" />
     <scripts>
-      <script value="yourdash:setup-project" />
+      <script value="yd:setup-project" />
     </scripts>
     <node-interpreter value="project" />
     <envs />

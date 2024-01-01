@@ -5,7 +5,7 @@
 
 import React, { useEffect } from "react";
 import csi, { TJson } from "web-client/src/helpers/csi";
-import useYourDashLib from "helpers/ydsh";
+import useYourDashLib from "web-client/src/helpers/ydsh";
 import { Button, Card, IconButton, Row, TextBox, TextInput, YourDashIcon } from "web-client/src/ui/index";
 import BasePageLayout from "../../components/BasePageLayout"
 import UserLinkEditor from "./components/UserLinkEditor";
