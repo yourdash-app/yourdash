@@ -30,11 +30,15 @@ export default class CoreApiWebDAV {
   }
 
   __internal__loadEndpoints() {
-    this.coreApi.expressServer.get("/.well-known/caldav", (req, res) => {
+    this.coreApi.expressServer.use("/.well-known/webdav", (req, res) => {
       return res.redirect("/webdav");
     });
 
-    this.coreApi.expressServer.get("/.well-known/carddav", (req, res) => {
+    this.coreApi.expressServer.use("/.well-known/caldav", (req, res) => {
+      return res.redirect("/webdav");
+    });
+
+    this.coreApi.expressServer.use("/.well-known/carddav", (req, res) => {
       return res.redirect("/webdav");
     });
 
@@ -65,9 +69,18 @@ export default class CoreApiWebDAV {
 
       const [username, password] = Buffer.from(
         req.headers["authorization"].split(" ")[1],
+        "base64",
       )
         .toString("utf-8")
         .split(":");
+
+      this.coreApi.log.debug(
+        "webdav",
+        "username:",
+        username,
+        "password:",
+        password,
+      );
 
       const user = this.coreApi.users.get(username);
 
@@ -76,32 +89,32 @@ export default class CoreApiWebDAV {
       ).toString();
 
       if (!(await compareHashString(savedHashedPassword, password))) {
+        this.coreApi.log.error(
+          "webdav",
+          "passwords did not match!, password",
+          password,
+        );
         return failAuth();
       }
 
       // TODO: remove the documentation response and respond as according to doc
-      return res.send(`\
-        HTTP/1.1 207 Multi-Status
-  Content-Type: application/xml; charset="utf-8"
-  Content-Length: xxxx
-
-  <?xml version="1.0" encoding="utf-8" ?>
-  <D:multistatus xmlns:D="DAV:"
-          xmlns:Z="http://ns.example.com/standards/z39.50/">
-    <D:response>
-      <D:href>http://www.example.com/bar.html</D:href>
-      <D:propstat>
-        <D:prop><Z:Authors/></D:prop>
-        <D:status>HTTP/1.1 424 Failed Dependency</D:status>
-      </D:propstat>
-      <D:propstat>
-        <D:prop><Z:Copyright-Owner/></D:prop>
-        <D:status>HTTP/1.1 409 Conflict</D:status>
-      </D:propstat>
-      <D:responsedescription> Copyright Owner cannot be deleted or
-        altered.</D:responsedescription>
-    </D:response>
-  </D:multistatus>
+      return res.send(`
+<?xml version="1.0" encoding="utf-8" ?>
+<D:multistatus xmlns:D="DAV:" xmlns:Z="http://ns.example.com/standards/z39.50/">
+  <D:response>
+    <D:href>http://www.example.com/bar.html</D:href>
+    <D:propstat>
+      <D:prop><Z:Authors/></D:prop>
+      <D:status>HTTP/1.1 424 Failed Dependency</D:status>
+    </D:propstat>
+    <D:propstat>
+      <D:prop><Z:Copyright-Owner/></D:prop>
+      <D:status>HTTP/1.1 409 Conflict</D:status>
+    </D:propstat>
+    <D:responsedescription> Copyright Owner cannot be deleted or
+      altered.</D:responsedescription>
+  </D:response>
+</D:multistatus>
   `);
     });
   }

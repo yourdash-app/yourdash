@@ -256,6 +256,22 @@ export class CoreApi {
             }
           }
           break;
+        case "PROPFIND":
+          this.log.info(
+            "request:pfi",
+            `${chalk.bgCyan(chalk.black(" PFI "))} ${res.statusCode} ${
+              req.path
+            }`,
+          );
+          break;
+        case "PROPPATCH":
+          this.log.info(
+            "request:ppa",
+            `${chalk.bgCyan(chalk.black(" PPA "))} ${res.statusCode} ${
+              req.path
+            }`,
+          );
+          break;
         default:
           this.log.error(
             "core:requests",

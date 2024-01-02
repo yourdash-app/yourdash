@@ -11,102 +11,117 @@ export enum LOG_TYPE {
   WARNING,
   ERROR,
   SUCCESS,
-  DEBUG
+  DEBUG,
 }
 
-const LOG_META_MAX_LENGTH = 20
+const LOG_META_MAX_LENGTH = 20;
 
 export default class CoreApiLog {
-  coreApi: CoreApi;
-  logHistory: { type: LOG_TYPE, level: string, message: ( string | Uint8Array )[] }[] = [];
+  private readonly coreApi: CoreApi;
+  logHistory: {
+    type: LOG_TYPE;
+    level: string;
+    message: (string | Uint8Array)[];
+  }[] = [];
 
-  constructor( coreApi: CoreApi ) {
+  constructor(coreApi: CoreApi) {
     this.coreApi = coreApi;
 
     return this;
   }
 
-  private log( type: LOG_TYPE, level: string, ...message: ( string | Uint8Array )[] ) { // eslint-disable-line @typescript-eslint/no-explicit-any
-    this.logHistory.push( { type: type, level: level, message: message } );
+  private log(
+    type: LOG_TYPE,
+    level: string,
+    ...message: (string | Uint8Array)[]
+  ) {
+    // eslint-disable-line @typescript-eslint/no-explicit-any
+    this.logHistory.push({ type: type, level: level, message: message });
 
-    process.stdout.write( message[0] );
+    process.stdout.write(message[0]);
 
     process.stdout.write(
-      chalk.bold( `${chalk.white( "[" )}${chalk.italic.yellow(
-        level
-          .toUpperCase()
-          .slice( 0, LOG_META_MAX_LENGTH )
-          .padEnd( LOG_META_MAX_LENGTH )
-      ) }${chalk.white( "]" )} ` )
-    )
+      chalk.bold(
+        `${chalk.white("[")}${chalk.italic.yellow(
+          level
+            .toUpperCase()
+            .slice(0, LOG_META_MAX_LENGTH)
+            .padEnd(LOG_META_MAX_LENGTH),
+        )}${chalk.white("]")} `,
+      ),
+    );
 
-    console.log( message.slice( 1 ).toString() );
+    console.log(message.slice(1).join(" ").toString());
 
     return this;
   }
 
-  info( level: string, ...message: ( string | Uint8Array )[] ) {
-    if ( message.length === 0 ) {
-      throw new Error( "log message is empty" )
+  info(level: string, ...message: (string | Uint8Array)[]) {
+    if (message.length === 0) {
+      throw new Error("log message is empty");
     }
 
     return this.log(
       LOG_TYPE.INFO,
       level,
-      chalk.bold( `${chalk.white( "[" )}${chalk.blue( "INF" )}${chalk.white( "]" )}` ),
-      ...message
+      chalk.bold(`${chalk.white("[")}${chalk.blue("INF")}${chalk.white("]")}`),
+      ...message,
     );
   }
 
-  success( level: string, ...message: ( string | Uint8Array )[] ) {
-    if ( message.length === 0 ) {
-      throw new Error( "log message is empty" )
+  success(level: string, ...message: (string | Uint8Array)[]) {
+    if (message.length === 0) {
+      throw new Error("log message is empty");
     }
 
     return this.log(
       LOG_TYPE.SUCCESS,
       level,
-      chalk.bold( `${chalk.white( "[" )}${chalk.green( "SUC" )}${chalk.white( "]" )}` ),
-      ...message
+      chalk.bold(`${chalk.white("[")}${chalk.green("SUC")}${chalk.white("]")}`),
+      ...message,
     );
   }
 
-  warning( level: string, ...message: ( string | Uint8Array )[] ) {
-    if ( message.length === 0 ) {
-      throw new Error( "log message is empty" )
+  warning(level: string, ...message: (string | Uint8Array)[]) {
+    if (message.length === 0) {
+      throw new Error("log message is empty");
     }
 
     return this.log(
       LOG_TYPE.WARNING,
       level,
-      chalk.bold( `${chalk.white( "[" )}${chalk.yellow( "WAR" )}${chalk.white( "]" )}` ),
-      ...message
+      chalk.bold(
+        `${chalk.white("[")}${chalk.yellow("WAR")}${chalk.white("]")}`,
+      ),
+      ...message,
     );
   }
 
-  error( level: string, ...message: ( string | Uint8Array )[] ) {
-    if ( message.length === 0 ) {
-      throw new Error( "log message is empty" )
+  error(level: string, ...message: (string | Uint8Array)[]) {
+    if (message.length === 0) {
+      throw new Error("log message is empty");
     }
 
     return this.log(
       LOG_TYPE.ERROR,
       level,
-      chalk.bold( `${chalk.white( "[" )}${chalk.red( "ERR" )}${chalk.white( "]" )}` ),
-      ...message
+      chalk.bold(`${chalk.white("[")}${chalk.red("ERR")}${chalk.white("]")}`),
+      ...message,
     );
   }
 
-  debug( level: string, ...message: ( string | Uint8Array )[] ) {
-    if ( message.length === 0 ) {
-      throw new Error( "log message is empty" )
+  debug(level: string, ...message: (string | Uint8Array)[]) {
+    if (message.length === 0) {
+      throw new Error("log message is empty");
     }
 
     return this.log(
       LOG_TYPE.DEBUG,
       level,
-      chalk.bold( `${chalk.white( "[" )}${chalk.magenta( "DBG" )}${chalk.white( "]" )}` ),
-      ...message
+      chalk.bold(
+        `${chalk.white("[")}${chalk.magenta("DBG")}${chalk.white("]")}`,
+      ),
+      ...message,
     );
   }
 }
