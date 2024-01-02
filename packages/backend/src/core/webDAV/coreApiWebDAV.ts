@@ -5,9 +5,12 @@
 
 // YourDash WebDAV support
 
+import { promises as fs } from "fs";
+import path from "path";
+import { compareHashString } from "../../helpers/encryption.js";
 import { CoreApi } from "../coreApi.js";
 
-export enum NAMESPACE {
+export enum WD_NAMESPACE {
   WEBDAV = "DAV:",
   CALDAV = "urn:ietf:params:xml:ns:caldav",
   CARDDAV = "urn:ietf:params:xml:ns:carddav",
@@ -17,6 +20,7 @@ export enum NAMESPACE {
 
 // read://http_www.webdav.org/specs/rfc4918.html/?url=http%3A%2F%2Fwww.webdav.org%2Fspecs%2Frfc4918.html%23METHOD_PROPPATCH#METHOD_PROPPATCH
 // Sample implementation => https://github.com/nfarina/simpledav/blob/master/wsgi.py
+// https://datatracker.ietf.org/doc/html/rfc6764#section-5
 
 export default class CoreApiWebDAV {
   coreApi: CoreApi;
@@ -27,16 +31,56 @@ export default class CoreApiWebDAV {
 
   __internal__loadEndpoints() {
     this.coreApi.expressServer.get("/.well-known/caldav", (req, res) => {
-      return res.send("CalDAV server");
+      return res.redirect("/webdav");
     });
 
     this.coreApi.expressServer.get("/.well-known/carddav", (req, res) => {
-      return res.send("CardDAV server");
+      return res.redirect("/webdav");
     });
 
-    this.coreApi.expressServer.proppatch("/webdav", (req, res) => {
+    this.coreApi.expressServer.use("/webdav", async (req, res, next) => {
+      res.setHeader("DAV", "1,2");
+      res.setHeader("MS-Author-Via", "DAV");
+
+      if (req.method === "OPTIONS") {
+        res.setHeader(
+          "Allow",
+          "GET, PUT, DELETE, MKCOL, OPTIONS, COPY, MOVE, PROPFIND, PROPPATCH, LOCK, UNLOCK, HEAD",
+        );
+        res.setHeader("Content-Type", "httpd/unix-directory");
+      }
+
+      function failAuth() {
+        res.status(401);
+        res.setHeader("WWW-Authenticate", 'Basic realm="YourDash"');
+        return res.json({ error: "authorization fail" });
+      }
+
+      // Authorisation
+      if (!req.headers["authorization"]) return failAuth();
+
+      if (req.headers["authorization"].split(" ")[0] !== "Basic") {
+        return failAuth();
+      }
+
+      const [username, password] = Buffer.from(
+        req.headers["authorization"].split(" ")[1],
+      )
+        .toString("utf-8")
+        .split(":");
+
+      const user = this.coreApi.users.get(username);
+
+      const savedHashedPassword = (
+        await fs.readFile(path.join(user.path, "core/password.enc"))
+      ).toString();
+
+      if (!(await compareHashString(savedHashedPassword, password))) {
+        return failAuth();
+      }
+
       // TODO: remove the documentation response and respond as according to doc
-      return res.send(`
+      return res.send(`\
         HTTP/1.1 207 Multi-Status
   Content-Type: application/xml; charset="utf-8"
   Content-Length: xxxx

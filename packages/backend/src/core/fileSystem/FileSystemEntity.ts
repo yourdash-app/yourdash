@@ -4,10 +4,11 @@
  */
 
 // TODO: fix generics
+import FileSystemLock from "./FileSystemLock.js";
+
 interface FileSystemEntityIsLocked<T extends boolean = boolean> {
   locked: T;
-  reason: T extends true ? string : undefined;
-  lockedBy: T extends true ? string : undefined;
+  lockedBy: T extends true ? FileSystemLock[] : undefined;
 }
 
 export default class FileSystemEntity {
@@ -15,6 +16,10 @@ export default class FileSystemEntity {
 
   constructor() {
     return this;
+  }
+
+  createLock(): FileSystemLock {
+    return new FileSystemLock(this);
   }
 
   // TODO: implement locking functionality

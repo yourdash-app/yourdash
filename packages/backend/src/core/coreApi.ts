@@ -410,7 +410,12 @@ export class CoreApi {
             }
           })
           .catch(() => {
-            return res.json({ error: "Hash comparison failure" });
+            this.log.error(
+              "login",
+              `Hash comparison failed for user ${username}`,
+            );
+            res.status(500);
+            return res.json({ error: "Login failure" });
           });
       },
     );
@@ -471,8 +476,14 @@ export class CoreApi {
         token?: string;
       };
 
-      if (!username || !token) {
+      function failAuth() {
+        res.status(401);
+        res.setHeader("WWW-Authenticate", 'Basic realm="YourDash"');
         return res.json({ error: "authorization fail" });
+      }
+
+      if (!username || !token) {
+        return failAuth();
       }
 
       if (
@@ -500,7 +511,7 @@ export class CoreApi {
             );
           }
         } catch (_err) {
-          return res.json({ error: "authorization fail" });
+          return failAuth();
         }
       }
 
@@ -512,7 +523,7 @@ export class CoreApi {
         return next();
       }
 
-      return res.json({ error: "authorization fail" });
+      return failAuth();
     });
 
     /**
