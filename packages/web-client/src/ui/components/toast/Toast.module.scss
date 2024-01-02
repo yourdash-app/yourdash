@@ -9,6 +9,7 @@
   bottom: 5rem;
   right: 0;
   width: 16rem;
+  z-index: 10000;
 
   @for $n from 1 through 10 {
     &:nth-child(#{$n}) {
@@ -52,6 +53,7 @@
   gap: 0.5rem;
   flex-direction: column;
   width: max-content;
+  z-index: 10000;
 }
 
 .header {

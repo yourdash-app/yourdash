@@ -8,44 +8,66 @@ import useYourDashLib from "web-client/src/helpers/ydsh";
 import csi from "web-client/src/helpers/csi";
 
 const InstanceInfo: React.FC = () => {
-  const [ metadata, setMetadata ] = useState<{ title: string, message: string }>( {
+  const [metadata, setMetadata] = useState<{ title: string; message: string }>({
     title: "",
-    message: ""
-  } );
+    message: "",
+  });
   const ydsh = useYourDashLib();
 
-  useEffect( () => {
+  useEffect(() => {
     csi.getJson(
       "/core/login/instance/metadata",
-      ( json: { title: string, message: string } ) => {
-        setMetadata( json );
+      (json: { title: string; message: string }) => {
+        setMetadata(json);
       },
       () => {
-        ydsh.toast.error( "This instance is not available" );
-      }
+        ydsh.toast.error("Login Error", "This instance is not available");
+      },
     );
-  }, [] );
+  }, []);
 
-  if ( metadata.title === "" && metadata.message === "" ) {
-    return <div className={ "flex items-center justify-center h-full w-full" }>
-      <span className={ "text-4xl font-bold" }>
-        Loading...
-      </span>
-    </div>;
+  if (metadata.title === "" && metadata.message === "") {
+    return (
+      <div className={"flex items-center justify-center h-full w-full"}>
+        <span className={"text-4xl font-bold"}>Loading...</span>
+      </div>
+    );
   }
 
-  return <div
-    className={ "flex flex-col w-[calc(100%+2rem)] h-[calc(100%+2rem)] bg-cover bg-center -ml-4 -mt-4" }
-    style={ {
-      backgroundImage: `url(${ csi.getInstanceUrl() }/core/login/instance/background)`
-    } }
-  >
-    <section className={ "flex flex-col mt-auto w-full h-max pl-4 pr-4 pb-2 pt-32 from-base-800 to-transparent bg-gradient-to-t" }>
-      <h2 className={ "font-bold text-5xl text-container-fg w-full whitespace-normal text-ellipsis" }>{ metadata.title }</h2>
-      <p className={ "whitespace-normal overflow-hidden text-ellipsis w-full text-container-secondary-fg" }>{ metadata.message }</p>
-      <span className={ "text-sm font-light text-right" }>{ csi.getInstanceUrl() }</span>
-    </section>
-  </div>;
+  return (
+    <div
+      className={
+        "flex flex-col w-[calc(100%+2rem)] h-[calc(100%+2rem)] bg-cover bg-center -ml-4 -mt-4"
+      }
+      style={{
+        backgroundImage: `url(${csi.getInstanceUrl()}/core/login/instance/background)`,
+      }}
+    >
+      <section
+        className={
+          "flex flex-col mt-auto w-full h-max pl-4 pr-4 pb-2 pt-32 from-base-800 to-transparent bg-gradient-to-t"
+        }
+      >
+        <h2
+          className={
+            "font-bold text-5xl text-container-fg w-full whitespace-normal text-ellipsis"
+          }
+        >
+          {metadata.title}
+        </h2>
+        <p
+          className={
+            "whitespace-normal overflow-hidden text-ellipsis w-full text-container-secondary-fg"
+          }
+        >
+          {metadata.message}
+        </p>
+        <span className={"text-sm font-light text-right"}>
+          {csi.getInstanceUrl()}
+        </span>
+      </section>
+    </div>
+  );
 };
 
 export default InstanceInfo;

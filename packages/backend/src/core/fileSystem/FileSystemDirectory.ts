@@ -4,33 +4,35 @@
  */
 
 import pth from "path";
-import { promises as fs } from "fs"
+import { promises as fs } from "fs";
 import { CoreApi } from "../coreApi.js";
+import FileSystemEntity from "./FileSystemEntity.js";
 
-export default class FileSystemDirectory {
-  private readonly coreApi: CoreApi
-  path: string
-  
-  constructor( coreApi: CoreApi, path: string ) {
-    this.coreApi = coreApi
-    this.path = path
+export default class FileSystemDirectory extends FileSystemEntity {
+  private readonly coreApi: CoreApi;
+  path: string;
+
+  constructor(coreApi: CoreApi, path: string) {
+    super();
+    this.coreApi = coreApi;
+    this.path = path;
   }
-  
+
   getName(): string {
-    return pth.basename( this.path )
+    return pth.basename(this.path);
   }
-  
+
   getMetadata() {
-    return fs.stat( this.path )
+    return fs.stat(this.path);
   }
-  
+
   async getChildren(): Promise<string[]> {
     try {
-      return await fs.readdir( this.path )
-    } catch ( _err ) {
-      this.coreApi.log.error( `Unable to read directory: ${ this.path }` )
-      
-      return []
+      return await fs.readdir(this.path);
+    } catch (_err) {
+      this.coreApi.log.error(`Unable to read directory: ${this.path}`);
+
+      return [];
     }
   }
 }

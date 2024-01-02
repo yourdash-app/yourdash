@@ -12,30 +12,31 @@ export enum NAMESPACE {
   CALDAV = "urn:ietf:params:xml:ns:caldav",
   CARDDAV = "urn:ietf:params:xml:ns:carddav",
   APPLE_ICAL = "http://apple.com/ns/ical/",
-  CALENDARSERVER = "http://calendarserver.org/ns/"
+  CALENDARSERVER = "http://calendarserver.org/ns/",
 }
 
 // read://http_www.webdav.org/specs/rfc4918.html/?url=http%3A%2F%2Fwww.webdav.org%2Fspecs%2Frfc4918.html%23METHOD_PROPPATCH#METHOD_PROPPATCH
+// Sample implementation => https://github.com/nfarina/simpledav/blob/master/wsgi.py
 
 export default class CoreApiWebDAV {
-  coreApi: CoreApi
+  coreApi: CoreApi;
 
-  constructor( coreApi: CoreApi ) {
-    this.coreApi = coreApi
+  constructor(coreApi: CoreApi) {
+    this.coreApi = coreApi;
   }
 
   __internal__loadEndpoints() {
-    this.coreApi.expressServer.get( "/.well-known/caldav", ( req, res ) => {
-      return res.send( "CalDAV server" )
-    } )
+    this.coreApi.expressServer.get("/.well-known/caldav", (req, res) => {
+      return res.send("CalDAV server");
+    });
 
-    this.coreApi.expressServer.get( "/.well-known/carddav", ( req, res ) => {
-      return res.send( "CardDAV server" )
-    } )
+    this.coreApi.expressServer.get("/.well-known/carddav", (req, res) => {
+      return res.send("CardDAV server");
+    });
 
-    this.coreApi.expressServer.proppatch( "/webdav", ( req, res ) => {
+    this.coreApi.expressServer.proppatch("/webdav", (req, res) => {
       // TODO: remove the documentation response and respond as according to doc
-      return res.send( `
+      return res.send(`
         HTTP/1.1 207 Multi-Status
   Content-Type: application/xml; charset="utf-8"
   Content-Length: xxxx
@@ -57,7 +58,7 @@ export default class CoreApiWebDAV {
         altered.</D:responsedescription>
     </D:response>
   </D:multistatus>
-  ` )
-    } )
+  `);
+    });
   }
 }

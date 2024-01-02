@@ -24,5 +24,8 @@
     "yd:compile-backend": "yarn --cwd ./packages/backend compile",
     "yd:dev-compile-backend": "yarn --cwd ./packages/backend compile-dev"
   },
-  "dependencies": {}
+  "dependencies": {
+    "eslint-config-prettier": "^9.1.0",
+    "prettier": "^3.1.1"
+  }
 }

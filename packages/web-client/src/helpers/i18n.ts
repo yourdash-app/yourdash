@@ -4,108 +4,183 @@
  */
 
 import { useEffect, useState } from "react";
-import { Language } from "web-tree-sitter";
+import useYourDashLib from "./ydsh";
 
 interface ITranslation {
-  [ key: string ]: string | ITranslation;
+  [key: string]: string | ITranslation;
 }
 
-function getValue( obj: any, selector: string ): any {
-  const parsed = selector.split( "." );
+function getValue(obj: ITranslation, selector: string): string | undefined {
+  const parsed = selector.split(".");
   let result = obj || {};
 
-  for ( let i = 0; i < parsed.length; i++ ) {
-    if ( result[parsed[i]] ) {
-      result = result[parsed[i]];
+  for (let i = 0; i < parsed.length; i++) {
+    if (result[parsed[i]]) {
+      result = result[parsed[i]] as never;
     } else {
       return undefined;
     }
   }
 
-  return result;
+  return result as never;
 }
 
 interface ITranslateWindow extends Window {
-  setTranslateLanguage: ( language: string ) => void,
-  translateLang?: string
+  setTranslateLanguage: (language: string) => void;
+  translateLang?: string;
 }
 
-declare const window: ITranslateWindow
+declare const window: ITranslateWindow;
 
-window.setTranslateLanguage = ( language: string ) => {
+window.setTranslateLanguage = (language: string) => {
   window.translateLang = language;
+  console.log("set i18n language", language);
 };
 
-export default function useTranslate( application: string ) {
-  const [ messages, setMessages ] = useState<ITranslation | undefined>( undefined );
-  const [ reloadNumber, setReloadNumber ] = useState<number>( 0 )
+const LOADED_TRANSLATIONS = new Map<`${string}:${string}`, ITranslation>();
 
-  useEffect( () => {
+export default function useTranslate(application: string) {
+  const ydsh = useYourDashLib();
+  const [messages, setMessages] = useState<ITranslation | undefined>(undefined);
+  let languageOverride: string | undefined;
+
+  useEffect(() => {
     // @ts-ignore
-    const language = window.translateLang || navigator.language;
-    import( `../../../applications/${ application }/frontend/i18n/${ language }.json` )
-      .then( response => setMessages( response.default ) )
-      .catch( () => {
-        // the page is missing translation into your language :(
-        window.setTranslateLanguage( "en-GB" )
-        setReloadNumber( reloadNumber + 1 )
-      } );
-  }, [ reloadNumber ] );
+    const language =
+      languageOverride || window.translateLang || navigator.language;
 
-  return ( message: string, params?: string[] ) => {
-    let output = getValue( messages, message ) || "";
-    params?.forEach( ( p, i ) => {
-      output = output?.replace( `{${ i }}`, p );
-    } );
+    if (LOADED_TRANSLATIONS.has(`${application}:${language}`)) {
+      setMessages(LOADED_TRANSLATIONS.get(`${application}:${language}`));
+      return;
+    }
+
+    if (LOADED_TRANSLATIONS.has(`${application}:en-GB`)) {
+      setMessages(LOADED_TRANSLATIONS.get(`${application}:en-GB`));
+      return;
+    }
+
+    import(
+      `../../../applications/${application}/frontend/i18n/${language}.json`
+    )
+      .then((response) => {
+        setMessages(response.default);
+        LOADED_TRANSLATIONS.set(`${application}:${language}`, response.default);
+      })
+      .catch(() => {
+        if (language === "en-GB") {
+          console.error(
+            "No translation found for en-GB, application:",
+            application,
+          );
+          // the page is missing translation into the default language :(
+          ydsh.toast.error(
+            "Localization Error",
+            `This page is currently missing translation into your language (${language}) and the default fallback language (en-GB)`,
+          );
+          return;
+        }
+
+        // the page is missing translation into your language :(
+        languageOverride = "en-GB";
+        import(`../../../applications/${application}/frontend/i18n/en-GB.json`)
+          .then((response) => {
+            setMessages(response.default);
+            LOADED_TRANSLATIONS.set(`${application}:en-GB`, response.default);
+          })
+          .catch(() => {
+            console.error(
+              "No translation found for en-GB, application:",
+              application,
+            );
+            // the page is missing translation into the default language :(
+            ydsh.toast.error(
+              "Localization Error",
+              `This page is currently missing translation into your language (${language}) and the default fallback language (en-GB)`,
+            );
+          });
+      });
+  }, []);
+
+  return (message: string, params?: string[]) => {
+    if (!messages) {
+      return message;
+    }
+
+    let output = getValue(messages, message) || "";
+
+    if (output === "") {
+      console.error(
+        `I18N: No translation found for ${message} in ${application}`,
+      );
+      return message;
+    }
+
+    params?.forEach((p, i) => {
+      output = output?.replace(`{${i}}`, p);
+    });
     return output;
   };
 }
 
 export function useTranslateAppCoreUI() {
-  const [ messages, setMessages ] = useState<ITranslation | undefined>( undefined );
+  const [messages, setMessages] = useState<ITranslation | undefined>(undefined);
 
-  useEffect( () => {
+  useEffect(() => {
     // @ts-ignore
     const language = window.translateLang || navigator.language;
-    import( `../app/i10n/${ language }.json` ).then( response => setMessages( response.default ) ).catch( () => {
-      // eslint-disable-next-line no-alert
-      alert( `This page is currently missing translation into your language (${ language })` );
+    import(`../app/i10n/${language}.json`)
+      .then((response) => setMessages(response.default))
+      .catch(() => {
+        // eslint-disable-next-line no-alert
+        alert(
+          `This page is currently missing translation into your language (${language})`,
+        );
 
-      // @ts-ignore
-      window.setTranslateLanguage( "en-GB" )
-    } );
-  }, [] );
+        // @ts-ignore
+        window.setTranslateLanguage("en-GB");
+      });
+  }, []);
 
-  return ( message: string, params?: string[] ) => {
-    let output = getValue( messages, message ) || message;
-    params?.forEach( ( p, i ) => {
-      output = output?.replace( `{${ i }}`, p );
-    } );
+  return (message: string, params?: string[]) => {
+    if (!messages) {
+      return message;
+    }
+    let output = getValue(messages, message) || message;
+    params?.forEach((p, i) => {
+      output = output?.replace(`{${i}}`, p);
+    });
     return output;
   };
 }
 
+export function useTranslateHomePage(page: string) {
+  const [messages, setMessages] = useState<ITranslation | undefined>(undefined);
 
-export function useTranslateHomePage( page: string ) {
-  const [ messages, setMessages ] = useState<ITranslation | undefined>( undefined );
-
-  useEffect( () => {
+  useEffect(() => {
     // @ts-ignore
     const language = window.translateLang || navigator.language;
-    import( `../root/${ page }/i10n/${ language }.json` ).then( response => setMessages( response.default ) ).catch( () => {
-      // eslint-disable-next-line no-alert
-      alert( `This page is currently missing translation into your language (${ language })` );
+    import(`../root/${page}/i10n/${language}.json`)
+      .then((response) => setMessages(response.default))
+      .catch(() => {
+        // eslint-disable-next-line no-alert
+        alert(
+          `This page is currently missing translation into your language (${language})`,
+        );
 
-      // @ts-ignore
-      window.setTranslateLanguage( "en-GB" )
-    } );
-  }, [] );
+        // @ts-ignore
+        window.setTranslateLanguage("en-GB");
+      });
+  }, []);
 
-  return ( message: string, params?: string[] ) => {
-    let output = getValue( messages, message ) || message;
-    params?.forEach( ( p, i ) => {
-      output = output?.replace( `{${ i }}`, p );
-    } );
+  return (message: string, params?: string[]) => {
+    if (!messages) {
+      return message;
+    }
+
+    let output = getValue(messages, message) || message;
+    params?.forEach((p, i) => {
+      output = output?.replace(`{${i}}`, p);
+    });
     return output;
   };
 }
