@@ -6,15 +6,13 @@
 import { promises as fs } from "fs";
 import pth from "path";
 import { CoreApi } from "../coreApi.js";
-import FileSystemEntity from "./FileSystemEntity.js";
+import FileSystemEntity from "./fileSystemEntity.js";
 
 export default class FileSystemFile extends FileSystemEntity {
-  path: string;
   private readonly coreApi: CoreApi;
 
   constructor(coreApi: CoreApi, path: string) {
-    super();
-    this.path = path;
+    super(path);
     this.coreApi = coreApi;
 
     return this;
@@ -55,6 +53,10 @@ export default class FileSystemFile extends FileSystemEntity {
   }
 
   async write(data: string | Buffer) {
+    if (this.isLocked) {
+      throw new Error("File is locked");
+    }
+
     await fs.writeFile(this.path, data);
 
     return;

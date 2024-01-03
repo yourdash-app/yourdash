@@ -27,6 +27,13 @@ export default class CoreApiWebDAV {
 
   constructor(coreApi: CoreApi) {
     this.coreApi = coreApi;
+
+    const SAMPLE_XML = `<?xml version="1.0" encoding="utf-8"?>
+    <d:prop xmlns:d="DAV:">
+      <d:getetag />
+    </d:prop>`;
+
+    console.log();
   }
 
   __internal__loadEndpoints() {

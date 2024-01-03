@@ -23,6 +23,7 @@ import CoreApiAuthenticatedImage from "./coreApiAuthenticatedImage.js";
 import CoreApiCommands from "./coreApiCommands.js";
 import CoreApiGlobalDb from "./coreApiGlobalDb.js";
 import CoreApiLog from "./coreApiLog.js";
+import loadNextCloudSupportEndpoints from "./nextcloud/coreApiNextCloud.js";
 import CoreApiWebDAV from "./webDAV/coreApiWebDAV.js";
 import CoreApiModuleManager from "./moduleManager/coreApiModuleManager.js";
 import CoreApiPanel from "./coreApiPanel.js";
@@ -60,6 +61,7 @@ export class CoreApi {
   readonly httpServer: http.Server;
   readonly isDebugMode: boolean;
   readonly isDevMode: boolean;
+  isInMaintenance: boolean;
 
   constructor() {
     this.isDebugMode =
@@ -72,6 +74,9 @@ export class CoreApi {
     this.processArguments = minimist(process.argv.slice(2));
 
     this.isDevMode = !!this.processArguments.dev;
+
+    // TODO: implement this in globalDb
+    this.isInMaintenance = false;
 
     this.log.info(
       "startup",
@@ -484,6 +489,7 @@ export class CoreApi {
 
     this.webdav.__internal__loadEndpoints();
     this.authenticatedImage.__internal__loadEndpoints();
+    loadNextCloudSupportEndpoints();
 
     // Check for authentication
     this.expressServer.use(async (req, res, next) => {
