@@ -3,6 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import coreApi from "../coreApi.js";
 import FileSystemEntity from "./fileSystemEntity.js";
 
 export default class FileSystemLock {
@@ -14,8 +15,10 @@ export default class FileSystemLock {
   }
 
   removeLock() {
-    this.lockedEntity.isLocked.lockedBy =
-      this.lockedEntity.isLocked.lockedBy.filter((i) => i !== this);
+    coreApi.fs.__internal__fileSystemLocks.set(
+      this.lockedEntity.path,
+      this.lockedEntity.getAllLocks().filter((i) => i !== this),
+    );
 
     return true;
   }

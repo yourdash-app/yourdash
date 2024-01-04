@@ -7,6 +7,7 @@
 
 import { promises as fs } from "fs";
 import path from "path";
+import parseXMLTree from "shared/xml/parseXmlTree.js";
 import { compareHashString } from "../../helpers/encryption.js";
 import { CoreApi } from "../coreApi.js";
 
@@ -33,7 +34,7 @@ export default class CoreApiWebDAV {
       <d:getetag />
     </d:prop>`;
 
-    console.log();
+    console.log(parseXMLTree(SAMPLE_XML));
   }
 
   __internal__loadEndpoints() {
