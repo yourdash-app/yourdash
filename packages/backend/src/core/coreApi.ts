@@ -305,7 +305,14 @@ export class CoreApi {
     }
 
     this.expressServer.use(cors());
-    this.expressServer.use(express.json({ limit: "50mb" }));
+    this.expressServer.use((req, res, next) => {
+      if (req.path.startsWith("/webdav")) {
+        return next();
+      }
+
+      express.json({ limit: "50mb" });
+      return next();
+    });
     this.expressServer.use(expressCompression());
     this.expressServer.use((_req, res, next) => {
       // remove the X-Powered-By header to prevent exploitation from knowing the software powering the request server

@@ -1,0 +1,15 @@
+{
+  "APPLICATION_NAME": "Diffusion Lab",
+  "GENERATE_BUTTON": {
+    "LABEL": "Diffuse"
+  },
+  "STOP_BUTTON": {
+    "LABEL": "Stop Diffusion"
+  },
+  "PROMPT": {
+    "LABEL": "Prompt"
+  },
+  "NEGATIVE_PROMPT": {
+    "LABEL": "Negative Prompt"
+  }
+}

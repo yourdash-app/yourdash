@@ -7,6 +7,7 @@
 
 import { promises as fs } from "fs";
 import path from "path";
+import { parseStringPromise } from "xml2js";
 import { compareHashString } from "../../helpers/encryption.js";
 import { CoreApi } from "../coreApi.js";
 
@@ -27,11 +28,6 @@ export default class CoreApiWebDAV {
 
   constructor(coreApi: CoreApi) {
     this.coreApi = coreApi;
-
-    const SAMPLE_XML = `<?xml version="1.0" encoding="utf-8"?>
-    <d:prop xmlns:d="DAV:">
-      <d:getetag />
-    </d:prop>`;
 
     return this;
   }
@@ -103,6 +99,9 @@ export default class CoreApiWebDAV {
         );
         return failAuth();
       }
+
+      const reqXML = await parseStringPromise(req.body);
+      console.log(reqXML);
 
       // TODO: remove the documentation response and respond as according to doc
       return res.send(`
