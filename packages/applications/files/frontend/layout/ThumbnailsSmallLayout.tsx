@@ -5,7 +5,7 @@
 
 import * as React from "react";
 import csi from "web-client/src/helpers/csi";
-import useTranslate from "web-client/src/helpers/i18n";
+import useTranslate from "web-client/src/helpers/l18n";
 import { IconButton, Icon, RightClickMenu, Card } from "web-client/src/ui";
 import clippy from "web-client/src/helpers/clippy";
 import path from "path-browserify";

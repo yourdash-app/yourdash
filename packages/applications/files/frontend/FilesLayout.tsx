@@ -3,10 +3,8 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import path from "path-browserify";
 import React from "react";
 import { SideBar, YourDashIcon } from "web-client/src/ui";
-import useTranslate from "web-client/src/helpers/i18n";
 import { SIDEBAR_ITEM_TYPE, SIDEBAR_STATE } from "web-client/src/ui/components/sideBar/SideBar";
 import FilePane from "./views/filePane/FilePane";
 
@@ -19,7 +17,6 @@ const FilesLayout: React.FC<IFilesLayout> = ( { children } ) => {
     sidebarShortcuts,
     setSidebarShortcuts
   ] = React.useState<{ path: string, type: "directory" | "file" }[] | null>( null );
-  const trans = useTranslate( "files" );
 
   return (
     <div className={"grid grid-cols-[auto,1fr] h-full overflow-hidden"}>

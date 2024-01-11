@@ -7,9 +7,10 @@ import * as React from "react";
 import CodeStudioEditor from "applications/code_studio/frontend/core/editor/editor";
 import csi from "web-client/src/helpers/csi";
 import getParserForFileExtension from "applications/code_studio/frontend/core/editor/editor";
-import * as pathBrowserify from "path-browserify";
+import pathBrowserify from "path-browserify";
 import { IconButton } from "web-client/src/ui";
 import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
+import CodeStudioLanguageParser from "applications/code_studio/frontend/core/editor/core/languageParser";
 
 export interface ITextPreview {
   path: string;
@@ -17,7 +18,7 @@ export interface ITextPreview {
 
 const TextPreview: React.FC<ITextPreview> = ( { path = "" } ) => {
   const ref = React.useRef<HTMLDivElement>( null );
-  const [ formatJson, setFormatJson ] = React.useState( getParserForFileExtension( pathBrowserify.extname( path ).replace( ".", "" ) ) === "json" );
+  const [ fileParser, setFileParser ] = React.useState<CodeStudioLanguageParser>( getParserForFileExtension( pathBrowserify.extname( path ).replace( ".", "" ) ) );
 
   React.useEffect( () => {
     if ( !ref.current ) {
