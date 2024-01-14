@@ -1,23 +1,44 @@
-export default class CodeStudioLanguageParser<TLanguage extends string> {
-  private language: TLanguage;
+import CodeStudioLanguage from "./languages/language";
+import CodeStudioRenderableToken from "./renderableToken";
+
+export interface CodeStudioScope {
+  tokens: CodeStudioRenderableToken[];
+  startTokenIndex: number;
+  endTokenIndex: number;
+  // the root scope cannot have a parent scope, so we return null
+  parentScope: CodeStudioScope | null;
+}
+
+export default class CodeStudioLanguageParser {
+  private readonly language: CodeStudioLanguage;
   private currentTokenIndex = 0;
-  private currentParsedToken = "";
-  private currentScope = {
+  private currentParsedToken: CodeStudioRenderableToken | null = null;
+  private rootScope: CodeStudioScope = {
     tokens: [],
     startTokenIndex: 0,
     endTokenIndex: 0,
-    parentScope: CodeStudioScope,
-  }
+    parentScope: null,
+  };
+  private currentScope: CodeStudioScope = {
+    tokens: [],
+    startTokenIndex: 0,
+    endTokenIndex: 0,
+    parentScope: null,
+  };
 
-  constructor(language: TLanguage) {
+  constructor(language: CodeStudioLanguage) {
     this.language = language;
 
-    let devInterval = setInterval(() => {
-      this.step()
-    })
+    const devInterval = setInterval(() => {
+      this.step();
+
+      if (this.currentTokenIndex >= this.language.tokens.length) {
+        clearInterval(devInterval);
+      }
+    }, 500);
   }
 
-  getLanguage(): TLanguage {
+  getLanguage(): CodeStudioLanguage {
     return this.language;
   }
 
@@ -29,7 +50,7 @@ export default class CodeStudioLanguageParser<TLanguage extends string> {
     return this.currentTokenIndex;
   }
 
-  getCurrentParsedToken(): string {
-
+  getCurrentParsedToken() {
+    return this.currentParsedToken;
   }
 }
