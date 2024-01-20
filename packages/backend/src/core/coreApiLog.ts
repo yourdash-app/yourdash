@@ -99,7 +99,7 @@ export default class CoreApiLog {
 
   error(level: string, ...message: (string | Uint8Array)[]) {
     if (message.length === 0) {
-      throw new Error("log message is empty");
+      this.log(LOG_TYPE.ERROR, "log", new Error("log message is empty").stack);
     }
 
     return this.log(

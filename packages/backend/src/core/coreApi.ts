@@ -75,7 +75,7 @@ export class CoreApi {
 
     this.isDevMode = !!this.processArguments.dev;
 
-    // TODO: implement this in globalDb
+    // TODO: move this toggle to a value in globalDb
     this.isInMaintenance = false;
 
     this.log.info(
@@ -109,7 +109,6 @@ export class CoreApi {
     //       each application that uses a websocket connection can use the manager to create it's own websocket server
     //       on it's application's endpoint e.g: /app/yourdash/websocket-manager/websocket with the suffix
     //       /websocket-manager/websocket being forced
-
     this.commands.registerCommand("hello", () => {
       this.log.info("command", "Hello from YourDash!");
     });
@@ -385,23 +384,33 @@ export class CoreApi {
         );
       });
 
-    this.expressServer.get("/core/login/user/:username/avatar", (req, res) => {
+    this.expressServer.get("/login/user/:username/avatar", (req, res) => {
       const user = new YourDashUser(req.params.username);
       return res.sendFile(user.getAvatar(userAvatarSize.LARGE));
     });
 
-    this.expressServer.get("/core/login/user/:username", async (req, res) => {
+    this.expressServer.get("/login/user/:username", async (req, res) => {
       const user = new YourDashUser(req.params.username);
       if (await user.doesExist()) {
-        return res.json({ name: await user.getName() });
+        console.log("Does exist");
+        return res.json({
+          name: (await user.getName()) || {
+            first: "Name Not Found",
+            last: "Or Not Set",
+          },
+        });
       } else {
+        console.log("Does not exist");
         return res.json({ error: "Unknown user" });
       }
     });
 
     this.expressServer.post(
-      "/core/login/user/:username/authenticate",
+      "/login/user/:username/authenticate",
       async (req, res) => {
+        if (!req.body)
+          return res.status(400).json({ error: "Missing request body" });
+
         const username = req.params.username;
         const password = req.body.password;
 
@@ -448,7 +457,7 @@ export class CoreApi {
       },
     );
 
-    this.expressServer.get("/core/login/is-authenticated", async (req, res) => {
+    this.expressServer.get("/login/is-authenticated", async (req, res) => {
       const { username, token } = req.headers as {
         username?: string;
         token?: string;
@@ -478,7 +487,7 @@ export class CoreApi {
       return res.json({ error: true });
     });
 
-    this.expressServer.get("/core/login/instance/metadata", (_req, res) => {
+    this.expressServer.get("/login/instance/metadata", (_req, res) => {
       return res.json({
         title: this.globalDb.get("core:instance:name") || "Placeholder name",
         message:
@@ -487,7 +496,7 @@ export class CoreApi {
       });
     });
 
-    this.expressServer.get("/core/login/instance/background", (_req, res) => {
+    this.expressServer.get("/login/instance/background", (_req, res) => {
       res.set("Content-Type", "image/avif");
       return res.sendFile(
         path.resolve(process.cwd(), "./fs/login_background.avif"),

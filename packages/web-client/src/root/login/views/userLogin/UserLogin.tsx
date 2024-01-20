@@ -45,7 +45,7 @@ const UserLogin: React.FC<IUserLogin> = ({
     console.log(SAVED_USERNAME, SESSION_TOKEN);
 
     if (SAVED_USERNAME && SESSION_TOKEN) {
-      csi.getJson("/core/login/is-authenticated", (response) => {
+      csi.getJson("/login/is-authenticated", (response) => {
         if (response.error) {
           return;
         }
@@ -58,7 +58,7 @@ const UserLogin: React.FC<IUserLogin> = ({
   useEffect(() => {
     if (username === "") return;
 
-    fetch(`${csi.getInstanceUrl()}/core/login/user/${username}`, {
+    fetch(`${csi.getInstanceUrl()}/login/user/${username}`, {
       mode: "cors",
       headers: {
         "Access-Control-Allow-Origin": "*",
@@ -72,9 +72,7 @@ const UserLogin: React.FC<IUserLogin> = ({
           setIsValidUser(false);
         } else {
           setIsValidUser(true);
-          setAvatar(
-            `${csi.getInstanceUrl()}/core/login/user/${username}/avatar`,
-          );
+          setAvatar(`${csi.getInstanceUrl()}/login/user/${username}/avatar`);
           setFullName(resp.name);
         }
       })
@@ -162,7 +160,7 @@ const UserLogin: React.FC<IUserLogin> = ({
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               csi.postJson(
-                `/core/login/user/${username}/authenticate`,
+                `/login/user/${username}/authenticate`,
                 { password },
                 (response) => {
                   localStorage.setItem("session_id", response.sessionId);
@@ -185,7 +183,7 @@ const UserLogin: React.FC<IUserLogin> = ({
         <MajorButton
           onClick={() => {
             csi.postJson(
-              `/core/login/user/${username}/authenticate`,
+              `/login/user/${username}/authenticate`,
               { password },
               (response) => {
                 localStorage.setItem("session_id", response.sessionId);

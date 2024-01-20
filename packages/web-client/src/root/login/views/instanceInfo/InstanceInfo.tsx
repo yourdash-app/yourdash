@@ -16,7 +16,7 @@ const InstanceInfo: React.FC = () => {
 
   useEffect(() => {
     csi.getJson(
-      "/core/login/instance/metadata",
+      "/login/instance/metadata",
       (json: { title: string; message: string }) => {
         setMetadata(json);
       },
@@ -40,7 +40,7 @@ const InstanceInfo: React.FC = () => {
         "flex flex-col w-[calc(100%+2rem)] h-[calc(100%+2rem)] bg-cover bg-center -ml-4 -mt-4"
       }
       style={{
-        backgroundImage: `url(${csi.getInstanceUrl()}/core/login/instance/background)`,
+        backgroundImage: `url(${csi.getInstanceUrl()}/login/instance/background)`,
       }}
     >
       <section
