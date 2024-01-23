@@ -103,7 +103,7 @@ export class CoreApi {
     this.websocketManager = new CoreApiWebsocketManager(this);
     this.webdav = new CoreApiWebDAV(this);
 
-    // TODO: implement WebDAV (outdated example -> https://github.com/LordEidi/fennel.js/)
+    // TODO: implement WebDAV & CalDAV & CardDAV (outdated WebDAV example -> https://github.com/LordEidi/fennel.js/)
 
     // TODO: create the websocket manager, this will ease in creation of websocket servers with built-in authentication
     //       each application that uses a websocket connection can use the manager to create it's own websocket server
@@ -304,11 +304,9 @@ export class CoreApi {
     }
 
     this.expressServer.use(cors());
-    this.expressServer.use((req, res, next) => {
-      express.json({ limit: "50mb" });
-      return next();
-    });
-    this.expressServer.use(expressCompression());
+    this.expressServer.use(express.json({ limit: "50mb" }));
+    this.expressServer.use(express.urlencoded({ extended: true }));
+
     this.expressServer.use((_req, res, next) => {
       // remove the X-Powered-By header to prevent exploitation from knowing the software powering the request server
       // this is a security measure against exploiters who don't look into the project's source code
@@ -316,6 +314,7 @@ export class CoreApi {
 
       next();
     });
+    this.expressServer.use(expressCompression());
 
     // INFO: This shouldn't be used for detection of a YourDash Instance, instead use the '/test' endpoint
     this.expressServer.get("/", (_req, res) => {
@@ -469,6 +468,7 @@ export class CoreApi {
           this.users.__internal__getSessionsDoNotUseOutsideOfCore()[username] =
             (await user.getAllLoginSessions()) || [];
         } catch (_err) {
+          this.log.info("login", `User with username ${username} not found`);
           return res.json({ error: true });
         }
       }

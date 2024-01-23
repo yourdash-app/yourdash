@@ -9,23 +9,28 @@ import useYourDashLib from "web-client/src/helpers/ydsh";
 import { Button } from "web-client/src/ui/index";
 
 const SettingsStoreSection: React.FC = () => {
-  const ydsh = useYourDashLib()
+  const ydsh = useYourDashLib();
 
-  return <>
-    <Button
-      onClick={() => {
-        csi.getJson( "/app/settings/developer/install-all-applications", () => {
-          // @ts-ignore
-          window.__yourdashCorePanelReload();
-          ydsh.toast.success( "Installed all applications" )
+  return (
+    <>
+      <Button
+        onClick={() => {
+          csi.getJson(
+            "/app/settings/developer/install-all-applications",
+            () => {
+              // @ts-ignore
+              window.__yourdashCorePanelReload();
+              ydsh.toast.success("Devtools", "Installed all applications");
 
-          return 0;
-        } ); }
-      }
-    >
-      Install all applications
-    </Button>
-  </>
-}
+              return 0;
+            },
+          );
+        }}
+      >
+        Install all applications
+      </Button>
+    </>
+  );
+};
 
-export default SettingsStoreSection
+export default SettingsStoreSection;

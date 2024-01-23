@@ -29,6 +29,7 @@ const WeatherApplicationLocationPageHeader: React.FC<
   WeatherApplicationLocationPageHeaderProps
 > = ({ weatherData, scrollContainerRef, setSelectedDay, selectedDay }) => {
   const navigate = useNavigate();
+  const trans = useTranslate("weather");
   const [isStuck, setIsStuck] = React.useState<boolean>(false);
 
   React.useEffect(() => {
@@ -101,6 +102,7 @@ const WeatherApplicationLocationPageHeader: React.FC<
       >
         <Heading>
           {generateWeatherDescriptionFromData(
+            trans,
             weatherData.currentWeather,
             false,
           )}

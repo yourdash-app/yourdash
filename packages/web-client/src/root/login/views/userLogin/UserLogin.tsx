@@ -36,13 +36,11 @@ const UserLogin: React.FC<IUserLogin> = ({
   const [fullName, setFullName] = React.useState<{
     first: string;
     last: string;
-  }>({ first: "Err", last: "or" });
+  }>({ first: "Name", last: "Error" });
 
   useEffect(() => {
     const SAVED_USERNAME = localStorage.getItem("username");
     const SESSION_TOKEN = localStorage.getItem("session_token");
-
-    console.log(SAVED_USERNAME, SESSION_TOKEN);
 
     if (SAVED_USERNAME && SESSION_TOKEN) {
       csi.getJson("/login/is-authenticated", (response) => {
