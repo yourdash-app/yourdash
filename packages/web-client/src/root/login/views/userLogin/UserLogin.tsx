@@ -169,7 +169,7 @@ const UserLogin: React.FC<IUserLogin> = ({
                   navigate("/app");
                 },
                 () => {
-                  ydsh.toast.error("Invalid password");
+                  ydsh.toast.error("Login Error", "Invalid password");
                 },
                 {
                   type: localStorage.getItem("desktop_mode")
@@ -192,7 +192,7 @@ const UserLogin: React.FC<IUserLogin> = ({
                 navigate("/app");
               },
               () => {
-                ydsh.toast.error("Invalid password");
+                ydsh.toast.error("Login Error", "Invalid password");
               },
               {
                 type: localStorage.getItem("desktop_mode") ? "desktop" : "web",

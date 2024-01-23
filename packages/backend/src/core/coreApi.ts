@@ -305,10 +305,6 @@ export class CoreApi {
 
     this.expressServer.use(cors());
     this.expressServer.use((req, res, next) => {
-      if (req.path.startsWith("/webdav")) {
-        return next();
-      }
-
       express.json({ limit: "50mb" });
       return next();
     });
@@ -386,7 +382,7 @@ export class CoreApi {
 
     this.expressServer.get("/login/user/:username/avatar", (req, res) => {
       const user = new YourDashUser(req.params.username);
-      return res.sendFile(user.getAvatar(userAvatarSize.LARGE));
+      return res.sendFile(user.getAvatar(userAvatarSize.ExtraLarge));
     });
 
     this.expressServer.get("/login/user/:username", async (req, res) => {
@@ -516,7 +512,6 @@ export class CoreApi {
 
       function failAuth() {
         res.status(401);
-        res.setHeader("WWW-Authenticate", 'Basic realm="YourDash"');
         return res.json({ error: "authorization fail" });
       }
 

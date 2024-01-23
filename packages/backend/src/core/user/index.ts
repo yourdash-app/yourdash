@@ -7,13 +7,13 @@ import chalk from "chalk";
 import { promises as fs } from "fs";
 import path from "path";
 import KeyValueDatabase from "shared/core/database.js";
+import { YOURDASH_SESSION_TYPE } from "shared/core/session.js";
 import sharp from "sharp";
 import { hashString } from "../../helpers/encryption.js";
 import YourDashSession, { getSessionsForUser } from "../../helpers/session.js";
 import coreApi from "../coreApi.js";
 import { userAvatarSize } from "./avatarSize.js";
 import { yourDashUserPermission } from "./permissions.js";
-import { YOURDASH_SESSION_TYPE } from "shared/core/session.js";
 import IYourDashUserJson from "./userJson.js";
 
 export default class YourDashUser {
@@ -41,6 +41,10 @@ export default class YourDashUser {
         return path.join(this.path, "avatars/small.avif");
       case userAvatarSize.ORIGINAL:
         return path.join(this.path, "avatars/original.avif");
+      case userAvatarSize.ExtraLarge:
+        return path.join(this.path, "avatars/extraLarge.avif");
+      default:
+        return path.join(this.path, "avatars/medium.avif");
     }
   }
 
@@ -63,6 +67,10 @@ export default class YourDashUser {
       .resize(128, 128)
       .toFile(path.join(this.path, "avatars/large.avif"))
       .catch((err) => console.error(err));
+    sharp(newAvatarFile)
+      .resize(256, 256)
+      .toFile(path.join(this.path, "avatars/extraLarge.avif"))
+      .catch((err) => console.error(err));
   }
 
   async verify() {
@@ -74,76 +82,161 @@ export default class YourDashUser {
 
     try {
       // "/"
-      if (!(await coreApi.fs.exists(this.path))) {
+      if (!(await coreApi.fs.exists(this.path)))
         await coreApi.fs.createDirectory(this.path);
-      }
-      // "/apps/"
-      if (!(await coreApi.fs.exists(path.join(this.path, "/apps")))) {
-        await coreApi.fs.createDirectory(path.join(this.path, "/apps"));
-      }
-      // "/avatars/"
-      if (!(await coreApi.fs.exists(path.join(this.path, "/avatars")))) {
-        await coreApi.fs.createDirectory(path.join(this.path, "/avatars"));
-      }
-      // "/core/"
-      if (!(await coreApi.fs.exists(path.join(this.path, "/core")))) {
-        await coreApi.fs.createDirectory(path.join(this.path, "/core"));
-
-        try {
-          // "/core/user_db.json"
-          await coreApi.fs
-            .createFile(path.join(this.path, "./core/user_db.json"))
-            .write(
-              JSON.stringify({
-                "user:name": {
-                  first: "New",
-                  last: "User",
-                },
-                "user:username": this.username,
-                "core:panel:quickShortcuts":
-                  coreApi.globalDb.get("defaults")?.user?.quickShortcuts || [],
-              }),
-            );
-          await this.setPassword("password");
-          await this.setAvatar(
-            path.join(process.cwd(), "./src/defaults/default_avatar.avif"),
-          );
-          await coreApi.fs
-            .createFile(path.join(this.path, "core/user.json"))
-            .write(
-              JSON.stringify({
-                username: this.username,
-                "core:user:name": {
-                  first: "New",
-                  last: "User",
-                },
-                bio: "👋 I'm new to YourDash, say hi!",
-                url: "",
-                permissions: [],
-                version: 1,
-              } as IYourDashUserJson),
-            );
-        } catch (err) {
-          coreApi.log.error(
-            "user",
-            `username: ${this.username}, failed to generater core user data!`,
-            err,
-          );
-        }
-      }
-      // "/fs/"
-      if (!(await coreApi.fs.exists(path.join(this.path, "/fs")))) {
-        await coreApi.fs.createDirectory(path.join(this.path, "/fs"));
-      }
-      // "/temp/"
-      if (!(await coreApi.fs.exists(path.join(this.path, "/temp")))) {
-        await coreApi.fs.createDirectory(path.join(this.path, "/temp"));
-      }
-      coreApi.log.info("core", `Verified user ${this.username}`);
-    } catch (e) {
-      console.error(e);
-      coreApi.log.error("core", `Unable to create user ${this.username}`);
+    } catch (err) {
+      coreApi.log.error(
+        "core",
+        `Unable to create user root for ${this.username}`,
+      );
+      console.error(err);
+      return;
     }
+
+    try {
+      // "/apps/"
+      if (!(await coreApi.fs.exists(path.join(this.path, "/apps"))))
+        await coreApi.fs.createDirectory(path.join(this.path, "/apps"));
+    } catch (err) {
+      coreApi.log.error(
+        "user",
+        `username: ${this.username}, failed to create apps directory!`,
+      );
+      console.error(err);
+      return;
+    }
+
+    try {
+      // "/avatars/"
+      if (!(await coreApi.fs.exists(path.join(this.path, "/avatars"))))
+        await coreApi.fs.createDirectory(path.join(this.path, "/avatars"));
+    } catch (err) {
+      coreApi.log.error(
+        "user",
+        `username: ${this.username}, failed to create avatars directory!`,
+      );
+      console.error(err);
+      return;
+    }
+
+    try {
+      // "/core/"
+      if (!(await coreApi.fs.exists(path.join(this.path, "/core"))))
+        await coreApi.fs.createDirectory(path.join(this.path, "/core"));
+    } catch (err) {
+      coreApi.log.error(
+        "user",
+        `username: ${this.username}, failed to create core directory!`,
+      );
+      console.error(err);
+      return;
+    }
+
+    try {
+      // "/core/user_db.json"
+      await coreApi.fs
+        .createFile(path.join(this.path, "./core/user_db.json"))
+        .write(
+          JSON.stringify({
+            "user:name": {
+              first: "New",
+              last: "User",
+            },
+            "user:username": this.username,
+            "core:panel:quickShortcuts":
+              coreApi.globalDb.get("defaults")?.user?.quickShortcuts || [],
+          }),
+        );
+    } catch (err) {
+      coreApi.log.error(
+        "user",
+        `username: ${this.username}, failed to create user_db.json!`,
+        err,
+      );
+      console.error(err);
+      return;
+    }
+
+    try {
+      await this.setPassword("password");
+    } catch (err) {
+      coreApi.log.error(
+        "user",
+        `username: ${this.username}, failed to set password!`,
+        err,
+      );
+      console.error(err);
+      return;
+    }
+
+    try {
+      // set default avatar
+      await this.setAvatar(
+        path.join(process.cwd(), "./src/defaults/default_avatar.avif"),
+      );
+    } catch (err) {
+      coreApi.log.error(
+        "user",
+        `username: ${this.username}, failed to set default avatar!`,
+        err,
+      );
+      console.error(err);
+      return;
+    }
+
+    try {
+      await coreApi.fs.createFile(path.join(this.path, "core/user.json")).write(
+        JSON.stringify({
+          username: this.username,
+          "core:user:name": {
+            first: "New",
+            last: "User",
+          },
+          bio: "👋 I'm new to YourDash, say hi!",
+          url: "",
+          permissions: [],
+          version: 1,
+        } as IYourDashUserJson),
+      );
+    } catch (err) {
+      coreApi.log.error(
+        "user",
+        `username: ${this.username}, failed to create user.json!`,
+        err,
+      );
+      console.error(err);
+      return;
+    }
+
+    try {
+      // "/fs/"
+      if (!(await coreApi.fs.exists(path.join(this.path, "/fs"))))
+        await coreApi.fs.createDirectory(path.join(this.path, "/fs"));
+    } catch (err) {
+      coreApi.log.error(
+        "user",
+        `username: ${this.username}, failed to create fs directory!`,
+        err,
+      );
+      console.error(err);
+      return;
+    }
+
+    try {
+      // "/temp/"
+      if (!(await coreApi.fs.exists(path.join(this.path, "/temp"))))
+        await coreApi.fs.createDirectory(path.join(this.path, "/temp"));
+    } catch (err) {
+      coreApi.log.error(
+        "user",
+        `username: ${this.username}, failed to create temp directory!`,
+        err,
+      );
+      console.error(err);
+      return;
+    }
+
+    coreApi.log.info("core", `Verified user ${this.username}`);
   }
 
   async setName({ first, last }: { first: string; last: string }) {
@@ -255,6 +348,7 @@ export default class YourDashUser {
         "user:setPermissions",
         `Unable to write / read ${this.username}'s core/user.json`,
       );
+      console.error(err);
     }
   }
 

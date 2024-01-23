@@ -53,8 +53,8 @@ export default class FileSystemFile extends FileSystemEntity {
   }
 
   async write(data: string | Buffer) {
-    if (this.isLocked) {
-      throw new Error("File is locked");
+    if (this.isLocked().locked) {
+      throw new Error("YDSH: File is locked");
     }
 
     await fs.writeFile(this.path, data);
