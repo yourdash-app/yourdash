@@ -163,22 +163,34 @@ export class CoreApi {
           this.globalDb.__internal__startGlobalDatabaseService();
 
           try {
-            killPort(3563).then(() => {
-              this.log.info("startup", "Killed port 3563");
-              this.httpServer.listen(3563, () => {
-                this.log.success(
-                  "startup",
-                  "server now listening on port 3563!",
-                );
-                this.log.success(
-                  "startup",
-                  "YourDash initialization complete!",
-                );
-                this.loadCoreEndpoints();
+            killPort(3563)
+              .then(() => {
+                this.log.info("startup", "Killed port 3563");
+                this.httpServer.listen(3563, () => {
+                  this.log.success(
+                    "startup",
+                    "server now listening on port 3563!",
+                  );
+                  this.log.success(
+                    "startup",
+                    "YourDash initialization complete!",
+                  );
+                  this.loadCoreEndpoints();
+                });
+              })
+              .catch((err) => {
+                if (err.message === "No process running on port") {
+                  this.log.info(
+                    "startup",
+                    "Not killing port 3563, no process running currently using port 3563",
+                  );
+                  return;
+                }
+
+                this.log.warning("startup", "Unable to kill port 3563", err);
               });
-            });
           } catch (reason) {
-            this.log.warning("Unable to kill port 3563", reason);
+            this.log.warning("startup", "Unable to kill port 3563", reason);
 
             try {
               this.httpServer.listen(3563, () => {
