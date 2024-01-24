@@ -6,24 +6,24 @@
 import TreeSitterParser from "web-tree-sitter";
 import PLAINTEXT_TREESITTER_LANGUAGE from "web-tree-sitter/lib/languages/plaintext/plaintext.wasm?url";
 
+import TreeSitterParser from "web-tree-sitter";
+
 export default class CodeStudioLanguage {
-  tokens: { [key: string]: { italic: boolean; bold: boolean; color: string } } =
-    {};
+  tokens: Map<string, { italic: boolean; bold: boolean; color: string }> =
+    new Map();
   treesitterLanguage: TreeSitterParser.Language = PLAINTEXT_TREESITTER_LANGUAGE;
 
   constructor() {
     return this;
   }
 
-  parseFile() {
-    const languageTokenTheme = {};
-
+  syntaxNodeToRenderableToken(syntaxNode: TreeSitterParser.SyntaxNode) {
     return {
-      content: "",
+      content: syntaxNode.text,
       style: {
-        italic: false,
-        bold: false,
-        color: "",
+        italic: this.tokens.get(syntaxNode.type)?.italic || false,
+        bold: this.tokens.get(syntaxNode.type)?.bold || false,
+        color: this.tokens.get(syntaxNode.type)?.color || "#00ff00",
       },
     };
   }
