@@ -4,6 +4,7 @@
  */
 
 import React, { useEffect, useState } from "react";
+import useTranslate from "web-client/src/helpers/i18n";
 import { Card, Row, Spinner } from "web-client/src/ui";
 import csi from "web-client/src/helpers/csi";
 import generateWeatherDescriptionFromData from "applications/weather/frontend/helpers/generateWeatherDescriptionFromData";
@@ -13,6 +14,7 @@ import HourlyConditionsHour from "./components/HourlyConditionsHour";
 import styles from "./WeatherHourlyConditionsWidget.module.scss";
 
 const WeatherHourlyConditionsWidget: React.FC = () => {
+  const trans = useTranslate("weather");
   const [weatherData, setWeatherData] =
     useState<IWeatherDataForLocation | null>(null);
 
@@ -38,6 +40,7 @@ const WeatherHourlyConditionsWidget: React.FC = () => {
       <section className={styles.header}>
         <div>
           {generateWeatherDescriptionFromData(
+            trans,
             weatherData.currentWeather,
             false,
           )}

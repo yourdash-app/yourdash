@@ -11,7 +11,7 @@ export default async function registerLanguage(
 ): Promise<CodeStudioLanguage | null> {
   try {
     // noinspection JSPotentiallyInvalidConstructorUsage
-    return new (await import("./" + languageName + "/language.js")).default();
+    return new (await import(`./${languageName}/language.js`)).default();
   } catch (e) {
     return null;
   }

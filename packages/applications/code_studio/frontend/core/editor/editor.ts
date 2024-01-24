@@ -6,7 +6,10 @@
 import KeyboardInputManager from "./keyboardManager";
 import TreeSitterParser from "web-tree-sitter";
 import styles from "./editor.module.scss";
+import CodeStudioLanguage from "./languages/language";
+import languages from "./languages/languages";
 import CodeStudioLanguages from "./languages/languages";
+import Token from "./token/token";
 // @ts-ignore
 import TREESITTER_WASM from "./tree-sitter.wasm?url";
 // @ts-ignore
@@ -52,12 +55,16 @@ export default class CodeStudioEditor {
       ),
     );
 
-    return this.renderParsedString(parser.parse(rawCode));
+    return this.renderParsedString(parser.parse(rawCode), language);
   }
 
-  renderParsedString(parser: TreeSitterParser.Tree) {
+  renderParsedString(
+    parser: TreeSitterParser.Tree,
+    language: { language: string; parser: Promise<CodeStudioLanguage | null> },
+  ) {
     if (this.isDevMode) {
-      this.htmlContainer.innerHTML = "<div>Using Parser: " + parser + "</div>";
+      this.htmlContainer.innerHTML =
+        "<div>Using Parser: " + language + "</div>";
     } else {
       this.htmlContainer.innerHTML = "";
     }
@@ -93,143 +100,16 @@ export default class CodeStudioEditor {
         return;
       }
 
-      const tokenElement = document.createElement("span");
+      const token = new Token(
+        syntaxNode.text,
+        language.parser.tokens[syntaxNode.type],
+        {
+          col: syntaxNode.startPosition.column,
+          row: syntaxNode.startPosition.row,
+        },
+      );
 
-      tokenElement.innerText = syntaxNode.text;
-
-      switch (syntaxNode.type) {
-        case "type_identifier":
-        case "type_parameter":
-        case "type_parameters":
-          tokenElement.classList.add(styles.type_identifier);
-          break;
-        case "comment":
-          tokenElement.classList.add(styles.comment);
-          break;
-        case "string":
-        case "string_fragment":
-          tokenElement.classList.add(styles.string);
-          break;
-        case "number":
-          tokenElement.classList.add(styles.number);
-          break;
-        case "property_identifier":
-          tokenElement.classList.add(styles.propertyIdentifier);
-          break;
-        case "identifier":
-          tokenElement.classList.add(styles.identifier);
-          break;
-        case "operator":
-        case "+":
-        case "-":
-        case "=":
-        case "_":
-        case ">":
-        case "<":
-        case "<<":
-        case ">>":
-        case "--":
-        case "++":
-        case "&":
-        case "&&":
-        case "*":
-        case "^":
-        case "%":
-        case "$":
-        case "!":
-        case "!!":
-        case "|":
-        case "||":
-        case "`":
-        case "!=":
-        case "!==":
-        case "==":
-        case "===":
-        case "=>":
-        case ">=":
-        case "<=":
-        case "?":
-        case "...":
-          tokenElement.classList.add(styles.operator);
-          break;
-        case '"':
-        case ".":
-        case ",":
-        case "'":
-        case ";":
-        case ":":
-        case "}":
-        case "{":
-        case "[":
-        case "]":
-        case "(":
-        case ")":
-        case "${":
-        case "\\":
-        case "/":
-          tokenElement.classList.add(styles.punctuation);
-          break;
-        case "regex_pattern":
-        case "regex_flags":
-        case "extends":
-        case "async":
-        case "abstract":
-        case "do":
-        case "keyword":
-        case "module":
-        case "export":
-        case "function":
-        case "var":
-        case "let":
-        case "const":
-        case "class":
-        case "interface":
-        case "type":
-        case "if":
-        case "else":
-        case "for":
-        case "while":
-        case "switch":
-        case "case":
-        case "default":
-        case "try":
-        case "catch":
-        case "finally":
-        case "return":
-        case "break":
-        case "continue":
-        case "new":
-        case "delete":
-        case "typeof":
-        case "instanceof":
-        case "void":
-        case "null":
-        case "true":
-        case "false":
-        case "this":
-        case "undefined":
-        case "in":
-        case "yield":
-        case "await":
-        case "from":
-        case "import":
-        case "import_statement":
-        case "export_statement":
-          tokenElement.classList.add(styles.keyword);
-          break;
-        default:
-          console.log(syntaxNode.type);
-          const afterElement = document.createElement("span");
-          tokenElement.appendChild(afterElement);
-          afterElement.classList.add(styles.symbol);
-          afterElement.classList.add(styles.parseFailure);
-          afterElement.innerText = syntaxNode.type;
-          break;
-      }
-
-      tokenElement.classList.add(styles.symbol);
-
-      parentElement.appendChild(tokenElement);
+      parentElement.innerHTML += token.render();
     }
 
     renderToken(codeElement, parser.rootNode);

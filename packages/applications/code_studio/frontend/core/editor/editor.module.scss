@@ -43,33 +43,4 @@
   .keyword {
     --symbol-color: #cf8e6d;
   }
-
-  @keyframes tokenParseFailure {
-    0% {
-      opacity: 1;
-      background-position-x: 0%;
-    }
-    50% {
-      opacity: 0.5;
-      background-position-x: 100%;
-    }
-  }
-
-  .parseFailure {
-    color: white;
-    animation: tokenParseFailure 1s infinite ease-in-out;
-    border-radius: 0.25rem;
-    padding-left: 0.25rem;
-    padding-right: 0.25rem;
-    margin-left: 0.125rem;
-    margin-right: 0.125rem;
-    background: linear-gradient(
-        to right,
-        #f8be34,
-        #f86c6c
-    );
-    background-size: 100%;
-    background-position-y: 50%;
-    background-position-x: 0%;
-  }
 }

@@ -3,28 +3,22 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import TreeSitterParser from "web-tree-sitter";
-import PLAINTEXT_TREESITTER_LANGUAGE from "web-tree-sitter/lib/languages/plaintext/plaintext.wasm?url";
+import Token, { TokenType } from "../token/token";
+// @ts-ignore
+import PLAINTEXT_TREESITTER_LANGUAGE from "./markdown/markdown.wasm?url";
 
 export default class CodeStudioLanguage {
-  tokens: { [key: string]: { italic: boolean; bold: boolean; color: string } } =
-    {};
-  treesitterLanguage: TreeSitterParser.Language = PLAINTEXT_TREESITTER_LANGUAGE;
+  tokens: { [key: string]: TokenType } = {};
+  treesitterLanguage: string;
 
-  constructor() {
+  constructor(treesitterLanguagePath: string) {
+    this.treesitterLanguage =
+      treesitterLanguagePath || PLAINTEXT_TREESITTER_LANGUAGE;
+
     return this;
   }
 
-  parseFile() {
-    const languageTokenTheme = {};
-
-    return {
-      content: "",
-      style: {
-        italic: false,
-        bold: false,
-        color: "",
-      },
-    };
+  parseFile(content: string): Token {
+    return new Token(content, TokenType.OTHER, { col: 0, row: 0 });
   }
 }
