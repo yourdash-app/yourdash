@@ -28,7 +28,7 @@ export enum YourDashIcon {
   Briefcase = "/assets/icons/briefcase-16.svg",
   Broadcast = "/assets/icons/broadcast-16.svg",
   Browser = "/assets/icons/browser-16.svg",
-  bug = "/assets/icons/bug-16.svg",
+  Bug = "/assets/icons/bug-16.svg",
   Cache = "/assets/icons/cache-16.svg",
   Calendar = "/assets/icons/calendar-16.svg",
   Check = "/assets/icons/check-16.svg",

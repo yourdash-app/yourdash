@@ -4,10 +4,10 @@
  */
 
 import { YOURDASH_USER_PERMISSIONS } from "backend/src/core/user/permissions.js";
-import Module from "backend/src/core/moduleManager/module.js";
+import BackendModule from "backend/src/core/moduleManager/backendModule.js";
 import coreApi from "backend/src/core/coreApi.js";
 
-export default function manageUsers( api: Module["API"] ) {
+export default function manageUsers( api: BackendModule["API"] ) {
   api.request.use( `/app/${api.applicationName}/admin/manage-users`, async ( req, res, next ) => {
     const user = api.getUser( req );
 

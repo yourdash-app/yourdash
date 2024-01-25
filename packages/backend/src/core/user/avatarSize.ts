@@ -7,5 +7,6 @@ export enum userAvatarSize {
   SMALL,
   MEDIUM,
   LARGE,
-  ORIGINAL
+  ORIGINAL,
+  ExtraLarge,
 }

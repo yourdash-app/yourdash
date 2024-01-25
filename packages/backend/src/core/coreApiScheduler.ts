@@ -17,17 +17,17 @@ export default class CoreApiScheduler {
 
   scheduleTask( name: string, rule: RecurrenceRule | RecurrenceSpecDateRange | RecurrenceSpecObjLit | Date | string | number, task: () => Promise<void> ) {
     this.coreApi.log.info(
-      "core:task_scheduler",
+      "task_scheduler",
       `Scheduled Task ${name}`
     );
     schedule.scheduleJob( name, rule, async () => {
       this.coreApi.log.info(
-        "core:task_scheduler",
+        "task_scheduler",
         `Starting Task ${name}`
       );
       await task()
       this.coreApi.log.success(
-        "core:task_scheduler",
+        "task_scheduler",
         `Finished Task ${name}`
       );
     } )

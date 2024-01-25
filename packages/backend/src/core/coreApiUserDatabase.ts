@@ -23,7 +23,7 @@ export default class CoreApiUserDatabase {
     this.coreApi = coreApi
     this.USER_DATABASES = new Map<string, JSONFile>()
 
-
+    return this
   }
 
   async saveDatabases() {

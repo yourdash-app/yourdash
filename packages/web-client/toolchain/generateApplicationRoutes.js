@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { existsSync, promises as fs } from "fs";
+import { existsSync, promises as fs } from "node:fs";
 import path from "path";
 
 /*

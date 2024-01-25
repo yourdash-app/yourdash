@@ -16,6 +16,7 @@ export interface ICard extends React.DetailedHTMLProps<React.HTMLAttributes<HTML
   level?: "primary" | "secondary" | "tertiary";
   showBorder?: boolean;
   unStyledClickable?: boolean;
+  shadow?: boolean;
 }
 
 const Card: React.FC<ICard> = ( {
@@ -26,6 +27,7 @@ const Card: React.FC<ICard> = ( {
   level,
   showBorder,
   unStyledClickable: unStyledClickable,
+  shadow,
   ...extraProps
 } ) => {
   if ( onClick ) {
@@ -42,7 +44,8 @@ const Card: React.FC<ICard> = ( {
           level === "secondary" && styles.secondary,
           level === "tertiary" && styles.tertiary,
           className,
-          showBorder && styles.border
+          showBorder && styles.border,
+          shadow === false && styles.noShadow
         )}
       >
         {children}
@@ -55,7 +58,8 @@ const Card: React.FC<ICard> = ( {
         level === "secondary" && styles.secondary,
         level === "tertiary" && styles.tertiary,
         className,
-        showBorder && styles.border
+        showBorder && styles.border,
+        shadow === false && styles.noShadow
       )}>
         {children}
       </div>

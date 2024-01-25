@@ -1,0 +1,77 @@
+/*!
+ * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 1rem;
+}
+
+.itemIcon {
+  width: 5.5rem;
+  height: 5.5rem;
+  scale: 0.85;
+  transition: var(--transition);
+}
+
+.itemLabel {
+  text-align: center;
+  max-height: 1.5rem;
+  transition: var(--transition);
+  height: max-content;
+  overflow: hidden;
+}
+
+.item {
+  position: relative;
+  height: 8.5rem;
+  width: 100%;
+}
+
+.itemContent {
+  position: absolute;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0.25rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: var(--transition);
+  height: 8.5rem;
+  overflow: hidden;
+  background: rgb(var(--button-bg));
+  color: rgb(var(--button-fg));
+
+  &:hover {
+    .itemIcon {
+      scale: 1;
+      transition: var(--transition-fast);
+    }
+
+    .itemLabel {
+      max-height: unset;
+    }
+
+    height: unset;
+    transition: var(--transition-fast);
+    z-index: 20;
+
+    background: rgb(var(--button-hover-bg));
+    color: rgb(var(--button-hover-fg));
+  }
+
+  &:active {
+    .itemIcon {
+      scale: 0.95;
+    }
+
+    background: rgb(var(--button-active-bg));
+    color: rgb(var(--button-active-fg));
+  }
+}

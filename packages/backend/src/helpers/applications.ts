@@ -86,13 +86,26 @@ class YDApplication {
   getRawApplicationData(): IYourDashApplication {
     return this.application;
   }
+
+  async requiresBackend(): Promise<boolean> {
+    return !await coreApi.fs.exists( path.resolve( path.join( process.cwd(), this.getPath(), "backend/index.js" ) ) )
+  }
 }
 
 // Returns an array of strings with the name of each application that exists ( installed or not )
 export async function getAllApplications(): Promise<string[]> {
   try {
     return ( await fs.readdir( path.resolve( process.cwd(), "../applications/" ) ) ).filter( app => {
-      return ( app !== "package.json" ) && ( app !== "node_modules" );
+      // Define all files / directories in /packages/applications which should be ignored
+      switch ( app ) {
+      case "package.json":
+      case "node_modules":
+      case "gulpfile.js":
+      case "README.md":
+        return false;
+      default:
+        return true;
+      }
     } );
   } catch ( _err ) {
     coreApi.log.error( "A problem occurred reading the ../applications/ directory" );

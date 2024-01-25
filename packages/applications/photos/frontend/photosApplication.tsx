@@ -4,52 +4,45 @@
  */
 
 import React, { useEffect, useState } from "react";
-import { Icon, MajorButton } from "web-client/src/ui";
-import PhotoDay from "./components/photoDay";
-import useTranslate from "web-client/src/helpers/i10n";
-import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
+import { IPhotoCategory } from "../shared/types/photoCategory";
+import PhotoCategory from "./components/photoCategory/PhotoCategory";
 
 const PhotosApplication: React.FC = () => {
-  const trans = useTranslate("photos");
-  const [ photoCategories, setPhotoCategories ] = useState<{
-    photos: ""[],
-    date: string
-  }[]>([]);
+  const [ photoCategories, setPhotoCategories ] = useState<IPhotoCategory[]>( [] );
 
-  useEffect(() => {
-    setPhotoCategories([]);
-  }, []);
+  useEffect( () => {
+    setPhotoCategories(
+      Array.from( { length: 10 } ).map( ( _, i ) => {
+        return {
+          items: [
+            ...Array.from( { length: 10 } ).map( ( __, j ) => {
+              return {
+                fileName: `Photo ${ i }`,
+                dimensions: {
+                  width: 800,
+                  height: 600
+                },
+                tags: [],
+                people: [],
+                date: new Date().toISOString(),
+                url: `https://picsum.photos/${800}/${600}/?random=${i.toString() + j}`
+              }
+            } )
+          ],
+          sessionId: i.toString(),
+          name: `Photos Cat ${ i }`,
+        }
+      }
+      ) )
+  }, [] );
 
   return (
-    <div className={"grid grid-rows-[auto,1fr] h-full"}>
-      <div className={"pt-4 pb-4 pl-4 text-base-50 font-semibold text-3xl bg-container-bg"}>
-        <h2>
-          {trans("APPLICATION_NAME")}
-        </h2>
-      </div>
-      <main className={"p-2 flex flex-col h-full"}>
-        {
-          photoCategories.length !== 0
-            ? photoCategories.map(photoCategory => <PhotoDay key={photoCategory.date} photoCategory={photoCategory} />)
-            : (
-              <main className={"min-h-full w-full flex items-center justify-center flex-col gap-2"}>
-                <span className={"font-semibold text-3xl tracking-wide"}>
-                  {
-                    trans("NO_PHOTOS_MESSAGE")
-                  }
-                </span>
-                <MajorButton className={"flex items-center justify-center gap-2"}>
-                  <Icon className={"h-6"} icon={YourDashIcon.Upload} />
-                  <span className={"flex-nowrap whitespace-nowrap flex items-center justify-center"}>
-                    {
-                      trans("NO_PHOTOS_UPLOAD_PROMPT")
-                    }
-                  </span>
-                </MajorButton>
-              </main>
-            )
-        }
-      </main>
+    <div className={"flex flex-col h-full bg-bg overflow-hidden overflow-y-auto p-4 gap-2"}>
+      {
+        photoCategories.map( photoCategory => {
+          return <PhotoCategory key={photoCategory.id} name={photoCategory.name} items={photoCategory.items} id={photoCategory.id} />
+        } )
+      }
     </div>
   );
 };

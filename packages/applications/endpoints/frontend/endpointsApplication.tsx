@@ -8,13 +8,13 @@ import { Icon, Button, DropdownButton, TextBox, Card } from "web-client/src/ui";
 import csi from "web-client/src/helpers/csi";
 import AutocompletedTextInput from "web-client/src/ui/components/autocompletedTextInput/AutocompletedTextInput";
 import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
-import useTranslate from "web-client/src/helpers/i10n";
+import useTranslate from "web-client/src/helpers/i18n";
 
 function loadPossibleEndpoints( setEndpoints: ( data: string[] ) => void ) {
   csi.getJson( "/app/endpoints/endpoints", ( data: any ) => { // eslint-disable-line @typescript-eslint/no-explicit-any
     const endpoints: string[] = data.map( ( endpoint: any ) => endpoint?.route?.path || null ).filter( ( endpoint: any ) => endpoint !== null ); // eslint-disable-line @typescript-eslint/no-explicit-any
 
-    setEndpoints( [...new Set( endpoints )] );
+    setEndpoints( [ ...new Set( endpoints ) ] );
   } );
 }
 
@@ -90,7 +90,7 @@ const EndpointsApplication: React.FC = () => {
         </section>
         <section className={"absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"}>
           <div className={"flex items-center justify-center h-full gap-1.5"}>
-            <Icon className={"h-9 aspect-square"} useDefaultColor icon={YourDashIcon.YourDashLogo} />
+            <Icon className={"h-9 aspect-square"} preserveColor icon={YourDashIcon.YourDashLogo} />
             <h2 className={"text-3xl font-semibold tracking-wide"}>
               {trans( "APPLICATION_NAME" )}
             </h2>
@@ -227,7 +227,7 @@ const EndpointsApplication: React.FC = () => {
               {
                 requestType === "JSON"
                   ? JSON.stringify( response, null, 2 )
-                  : response
+                  : response.toString()
               }
             </pre>
             {

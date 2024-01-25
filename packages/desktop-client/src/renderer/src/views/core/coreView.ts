@@ -6,7 +6,7 @@
 import { UKSlotComponent } from "@yourdash/uikit/src/core/component";
 import { UK } from "@yourdash/uikit/src/core/index";
 
-export default class CoreView extends UKSlotComponent<undefined> {
+export default class CoreView extends UKSlotComponent {
   constructor() {
     super( undefined );
 

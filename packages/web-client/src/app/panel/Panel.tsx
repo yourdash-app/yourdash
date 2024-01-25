@@ -4,21 +4,19 @@
  */
 
 import styles from "./Panel.module.scss"
-import clippy from "../../helpers/clippy";
-import React, { useEffect, useState } from "react";
+import clippy from "web-client/src/helpers/clippy";
+import React, { memo, useEffect, useState } from "react";
 import loadable from "@loadable/component";
-import { YourDashIcon, IconButton } from "../../ui/index";
-import csi from "../../helpers/csi";
-import panelLayout from "./PanelLayout";
+import csi from "web-client/src/helpers/csi";
 
 const Panel: React.FC<{ side: "top" | "right" | "bottom" | "left", setLayoutReloadNumber: ( num: number ) => void }> = ( { side, setLayoutReloadNumber } ) => {
-  const [widgets, setWidgets] = useState<string[]>( ["InstanceLogo", "ApplicationLauncher", "Separator", "QuickShortcuts"] )
-  const [panelSize, setPanelSize] = useState<"small" | "medium" | "large" | undefined>( undefined )
-  const [num, setNum] = useState<number>( 0 )
+  const [ widgets, setWidgets ] = useState<string[]>( [ "InstanceLogo", "ApplicationLauncher", "Separator", "QuickShortcuts" ] )
+  const [ panelSize, setPanelSize ] = useState<"small" | "medium" | "large" | undefined>( undefined )
+  const [ num, setNum ] = useState<number>( 0 )
 
   useEffect( () => {
     setPanelSize( csi.userDB.get( "core:panel:size" ) || "medium" )
-  }, [num] );
+  }, [ num ] );
 
   // @ts-ignore
   window.__yourdashCorePanelReload = () => {
@@ -51,4 +49,4 @@ const Panel: React.FC<{ side: "top" | "right" | "bottom" | "left", setLayoutRelo
   </section>
 }
 
-export default Panel
+export default memo( Panel, ( prevProps, nextProps ) => prevProps.side === nextProps.side )

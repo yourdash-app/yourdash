@@ -5,7 +5,7 @@
 
 import coreApi from "backend/src/core/coreApi.js";
 import { AUTHENTICATED_IMAGE_TYPE } from "backend/src/core/coreApiAuthenticatedImage.js";
-import Module, { YourDashModuleArguments } from "backend/src/core/moduleManager/module.js";
+import BackendModule, { YourDashModuleArguments } from "backend/src/core/moduleManager/backendModule.js";
 import YourDashApplication, { getAllApplications } from "backend/src/helpers/applications.js";
 import { getInstanceLogoBase64 } from "backend/src/helpers/logo.js";
 import path from "path";
@@ -14,10 +14,9 @@ import { IStoreCategory } from "shared/apps/store/storeCategory.js";
 import { type StorePromotedApplication } from "shared/apps/store/storePromotedApplication.js";
 import getAllCategories, { getAllApplicationsFromCategory } from "./helpers/categories.js";
 
-const promotedApplications: string[] = ["dash", "store"];
+const promotedApplications: string[] = [ "dash", "store" ];
 
-export default class StoreModule extends Module {
-
+export default class StoreModule extends BackendModule {
   constructor( args: YourDashModuleArguments ) {
     super( args );
     this.API.request.get( "/app/store/promoted/applications", ( _req, res ) => {
@@ -37,9 +36,7 @@ export default class StoreModule extends Module {
     this.API.request.get( "/app/store/categories", async ( _req, res ) => {
       const applications = await getAllApplications();
 
-      const categories: {
-      [ key: string ]: boolean
-    } = {};
+      const categories: { [ key: string ]: boolean } = {};
 
       for ( const application of applications ) {
         const unreadApplication = new YourDashApplication( application );
@@ -57,9 +54,7 @@ export default class StoreModule extends Module {
     } );
 
     this.API.request.get( "/app/store/applications", async ( req, res ) => {
-      const { username } = req.headers as {
-      username: string
-    };
+      const { username } = req.headers as { username: string };
 
       const applications = await getAllApplications();
 
@@ -77,7 +72,8 @@ export default class StoreModule extends Module {
             return {
               id: applicationName,
               displayName: application.getDisplayName() || applicationName,
-              icon: coreApi.authenticatedImage.create( username, AUTHENTICATED_IMAGE_TYPE.FILE, await application.getIconPath() )
+              icon: coreApi.authenticatedImage.create( username, AUTHENTICATED_IMAGE_TYPE.FILE, await application.getIconPath() ),
+              installed: application.isInstalled()
             };
           } )
         )
@@ -101,10 +97,10 @@ export default class StoreModule extends Module {
       const categoryApplications = await getAllApplicationsFromCategory( id );
 
       const applicationsOutput: {
-      name: string,
-      icon: string,
-      displayName: string
-    }[] = [];
+        name: string,
+        icon: string,
+        displayName: string
+      }[] = [];
 
       await Promise.all( categoryApplications.map( async app => {
         const application = await new YourDashApplication( app ).read();
@@ -116,7 +112,7 @@ export default class StoreModule extends Module {
       } ) );
 
       return res.json( <IStoreCategory>{
-        id,
+        id: id,
         applications: applicationsOutput,
         icon: `data:image/avif;base64,${ getInstanceLogoBase64() }`,
         displayName: id.slice( 0, 1 ).toUpperCase() + id.slice( 1 ),
@@ -143,7 +139,8 @@ export default class StoreModule extends Module {
       const response: IYourDashStoreApplication = {
         ...application.getRawApplicationData(),
         icon: `data:image/avif;base64,${ ( await application.getIcon() ).toString( "base64" ) }`,
-        installed: application.isInstalled()
+        installed: application.isInstalled(),
+        requiresBackend: await application.requiresBackend()
       };
 
       return res.json( response );
@@ -157,7 +154,7 @@ export default class StoreModule extends Module {
       }
       const application = await applicationUnread.read();
 
-      coreApi.globalDb.set( "core:installedApplications", [ ...coreApi.globalDb.get( "core:installedApplications" ), id, ...application.getDependencies()] );
+      coreApi.globalDb.set( "core:installedApplications", [ ...coreApi.globalDb.get( "core:installedApplications" ), id, ...application.getDependencies() ] );
       await coreApi.moduleManager.loadModule( id, path.join( process.cwd(), `../applications/${id}/backend/` ) );
       return res.json( { success: true } );
     } );

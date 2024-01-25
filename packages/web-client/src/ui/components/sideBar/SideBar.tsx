@@ -89,7 +89,7 @@ const SideBar: React.FC<ISideBar> = ( { title, items, defaultState } ) => {
     </div>
   case SIDEBAR_STATE.FloatingToggleMinimised:
   case SIDEBAR_STATE.FloatingToggleExpanded:
-    return <div className={clippy( styles.normal, state === SIDEBAR_STATE.FloatingToggleMinimised ? styles.floatingToggleMinimised : styles.floatingToggleExpanded )}>
+    return <div className={clippy( styles.floatingToggle, state === SIDEBAR_STATE.FloatingToggleMinimised ? styles.floatingToggleMinimised : styles.floatingToggleExpanded )}>
       <section className={styles.header}>
         <IconButton
           className={styles.toggleButton}
@@ -108,7 +108,7 @@ const SideBar: React.FC<ISideBar> = ( { title, items, defaultState } ) => {
             }
           } }
         />
-        <span className={clippy( styles.title, "animate__animated animate__fadeInRight animate__500ms animate__duration_250ms" )}>{title}</span>
+        <span className={clippy( styles.title, "animate__animated animate__fadeInRight animate__500ms" )}>{title}</span>
       </section>
       <div className={styles.separator}/>
       <section className={styles.itemsContainer}>
@@ -143,18 +143,18 @@ const SideBar: React.FC<ISideBar> = ( { title, items, defaultState } ) => {
     </div>
   case SIDEBAR_STATE.FloatingExpanded:
   case SIDEBAR_STATE.FloatingMinimised:
-    return <div className={clippy( styles.normal, state === SIDEBAR_STATE.FloatingMinimised ? styles.floatingToggleMinimised : styles.floatingToggleExpanded )}>
-      <section className={styles.header}>
+    return <div className={ clippy( styles.floating, state === SIDEBAR_STATE.FloatingMinimised ? styles.floatingMinimised : styles.floatingExpanded ) }>
+      <section className={ styles.header }>
         <IconButton
-          className={styles.toggleButton}
-          icon={YourDashIcon.ThreeBars}
-          onClick={() => {
-            switch( state ) {
+          className={ styles.toggleButton }
+          icon={ YourDashIcon.ThreeBars }
+          onClick={ () => {
+            switch ( state ) {
             case SIDEBAR_STATE.FloatingExpanded:
-              setState( SIDEBAR_STATE.FloatingToggleMinimised );
+              setState( SIDEBAR_STATE.FloatingMinimised );
               break;
             case SIDEBAR_STATE.FloatingMinimised:
-              setState( SIDEBAR_STATE.FloatingToggleExpanded );
+              setState( SIDEBAR_STATE.FloatingExpanded );
               break;
             default:
               console.log( "this is unreachable (if you see this, please open an issue)" )
@@ -162,31 +162,31 @@ const SideBar: React.FC<ISideBar> = ( { title, items, defaultState } ) => {
             }
           } }
         />
-        <span className={clippy( styles.title, "animate__animated animate__fadeInRight animate__500ms animate__duration_250ms" )}>{title}</span>
+        <span className={ clippy( styles.title, "animate__animated animate__fadeInRight animate__500ms" ) }>{ title }</span>
       </section>
-      <div className={styles.separator}/>
-      <section className={styles.itemsContainer}>
+      <div className={ styles.separator } />
+      <section className={ styles.itemsContainer }>
         {
           items.map( i => {
             switch ( i.type ) {
             case SIDEBAR_ITEM_TYPE.Button:
               return <button
-                className={styles.itemButton}
-                key={i.label}
-                onClick={i.onClick}
+                className={ styles.itemButton }
+                key={ i.label }
+                onClick={ i.onClick }
               >
                 <Icon
-                  icon={i.icon}
-                  className={styles.itemIcon}
+                  icon={ i.icon }
+                  className={ styles.itemIcon }
                 />
                 {
                   state === SIDEBAR_STATE.FloatingExpanded
-                    ? <div className={clippy( styles.label, "animate__animated animate__fadeInRight animate__500ms" )}>{i.label}</div>
-                    : <div className={clippy( styles.label, "animate__animated animate__fadeIn animate__duration_250ms" )}>{i.label}</div>
+                    ? <div className={ clippy( styles.label, "animate__animated animate__fadeInRight animate__500ms" ) }>{ i.label }</div>
+                    : <div className={ clippy( styles.label, "animate__animated animate__fadeIn animate__duration_250ms" ) }>{ i.label }</div>
                 }
               </button>
             case SIDEBAR_ITEM_TYPE.Separator:
-              return <div key={i.label} className={styles.itemSeparator}/>
+              return <div key={ i.label } className={ styles.itemSeparator } />
             default:
               console.log( "this is unreachable (if you see this, please make sure to type your sidebar items)" )
               break;

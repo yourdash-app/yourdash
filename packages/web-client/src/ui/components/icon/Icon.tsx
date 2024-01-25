@@ -11,11 +11,11 @@ import { YourDashIcon } from "./iconDictionary.ts";
 type COLOR = `#${ string }` | `rgb(${ string })` | `rgba(${ string })` | `var(--${ string })` | "currentColor"
 
 export interface IIcon extends React.ComponentPropsWithoutRef<"div"> {
-  icon: YourDashIcon;
+  icon: YourDashIcon | string;
   style?: CSSProperties;
   className?: string;
   color?: COLOR | string;
-  useDefaultColor?: boolean;
+  preserveColor?: boolean;
 }
 
 const Icon: React.FC<IIcon> = ( {
@@ -23,14 +23,14 @@ const Icon: React.FC<IIcon> = ( {
   style,
   className,
   color,
-  useDefaultColor,
+  preserveColor,
   ...genericProps
 } ) => (
   <div
     {...genericProps}
     data-component-type-icon="true"
     style={{
-      ...( useDefaultColor
+      ...( preserveColor
         ? {
           backgroundImage: `url(${ icon })`,
           backgroundPosition: "center",

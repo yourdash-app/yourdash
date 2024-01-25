@@ -14,6 +14,7 @@
     "@types/sharp": "^0.32.0",
     "@types/source-map-support": "^0.5.7",
     "@types/tsc-watch": "^4.2.1",
+    "@types/xml2js": "^0.4.14",
     "array-includes": "^3.1.7",
     "bcrypt": "^5.1.1",
     "chalk": "^5.2.0",
@@ -30,6 +31,7 @@
     "file-url": "^4.0.0",
     "fkill": "^8.1.0",
     "kill-port": "^2.0.1",
+    "loadavg-windows": "^1.1.1",
     "minimist": "^1.2.8",
     "node-schedule": "^2.1.1",
     "nodemon": "^3.0.1",
@@ -41,13 +43,14 @@
     "tsc-watch": "^6.0.4",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.2.2",
-    "undici": "^5.24.0"
+    "undici": "^5.24.0",
+    "xml2js": "^0.6.2"
   },
   "type": "module",
   "scripts": {
-    "compile": "tsc --skipLibCheck --resolveJsonModule --experimentalDecorators --esModuleInterop --lib esnext --module nodenext --moduleResolution nodenext ./src/index.ts",
     "compile-all": "tsc",
-    "start": "node ./dist/backend/src/index.js",
-    "dev": "node ./src/index.js --dev"
+    "start": "node ./src/main.js --color=full --log-requests",
+    "dev": "node ./src/main.js --dev --log-requests",
+    "compile-dev": "tsc --watch"
   }
 }

@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { Card } from "web-client/src/ui/index";
+import { Card, Icon, YourDashIcon } from "web-client/src/ui/index";
 import styles from "./UserPreview.module.scss"
 
 export interface IUserPreview {
@@ -14,23 +14,47 @@ export interface IUserPreview {
   username: string,
   avatar: string,
   bio?: string,
-  url?: string
+  links?: { url: string, label: string }[]
 }
 
-const UserPreview: React.FC<IUserPreview> = ( { name, username, avatar, bio, url } ) => {
-  return <Card>
+const UserPreview: React.FC<IUserPreview> = ( {
+  name,
+  username,
+  avatar,
+  bio,
+  links
+} ) => {
+  return <Card className={styles.component}>
     <img
       src={avatar}
       alt=""
       className={styles.avatar}
     />
-    <div>
-      <span>{name.first}</span>
-      <span>{name.last}</span>
-    </div>
-    <div>@{username}</div>
-    <div>{bio}</div>
-    <a href={url}>{ url }</a>
+    <section className={styles.content}>
+      <section className={styles.name}>
+        <div className={styles.fullName}>
+          {name.first} {name.last}
+        </div>
+        <div className={styles.username}>
+        @{username}
+        </div>
+      </section>
+      <p className={styles.bio}>{bio}</p>
+      {
+        !!links && links.map( link => <a
+          href={link.url}
+          className={styles.link}
+          key={link.label + link.url}
+        >
+          <Icon
+            className={styles.icon}
+            icon={YourDashIcon.Link}
+          />
+          { link.label }
+        </a>
+        )
+      }
+    </section>
   </Card>
 }
 

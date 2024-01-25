@@ -8,11 +8,11 @@ import Scene from "./scene.ts";
 export default function loadScene( fileData: string ) {
   try {
     const sceneJson = JSON.parse( fileData )
-    
+
     const scene = new Scene( sceneJson )
-    
+
     return scene
   } catch ( e ) {
-    return new Scene( { id: "invalid", objects: [] } )
+    return new Scene( { sessionId: "invalid", objects: [] } )
   }
 }

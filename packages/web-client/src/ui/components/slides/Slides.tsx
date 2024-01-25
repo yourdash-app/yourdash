@@ -14,8 +14,8 @@ export interface ISlides {
 
 const Slides: React.FC<ISlides> = ( { slides, interval } ) => {
   let timeoutId = 0
-  const [currentSlideIndex, setCurrentSlideIndex] = React.useState( 0 )
-  
+  const [ currentSlideIndex, setCurrentSlideIndex ] = React.useState( 0 )
+
   React.useEffect( () => {
     // @ts-ignore
     timeoutId = setTimeout( () => {
@@ -25,12 +25,12 @@ const Slides: React.FC<ISlides> = ( { slides, interval } ) => {
         setCurrentSlideIndex( 0 )
       }
     }, interval || 2500 )
-  }, [currentSlideIndex] )
-  
+  }, [ currentSlideIndex ] )
+
   if ( slides.length === 0 ) {
     return <div>No Slides Provided</div>
   }
-  
+
   return <div className={"w-full h-full bg-bg relative overflow-hidden select-none"}>
     {
       currentSlideIndex !== 0

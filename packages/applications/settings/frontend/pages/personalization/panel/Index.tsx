@@ -11,8 +11,8 @@ import Panel from "web-client/src/app/panel/Panel"
 import DropdownSettingComponent from "../../../components/DropdownSettingComponent";
 
 const Index: React.FC = () => {
-  const [panelSize, setPanelSize] = useState<"small" | "medium" | "large">( csi.userDB.get( "core:panel:size" ) );
-  const [panelSide, setPanelSide] = useState<"top" | "right" | "bottom" | "left">( csi.userDB.get( "core:panel:side" ) );
+  const [ panelSize, setPanelSize ] = useState<"small" | "medium" | "large">( csi.userDB.get( "core:panel:size" ) );
+  const [ panelSide, setPanelSide ] = useState<"top" | "right" | "bottom" | "left">( csi.userDB.get( "core:panel:side" ) );
 
   return <BasePageLayout title={"Panel"}>
     <DropdownSettingComponent

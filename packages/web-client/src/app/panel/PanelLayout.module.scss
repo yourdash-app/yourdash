@@ -10,10 +10,25 @@
   overflow: hidden;
 }
 
-.content {
+@keyframes applicationFadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.applicationFrame {
+  container-name: yourdash-application-frame;
+  container-type: inline-size;
+
+  overflow-x: hidden;
+  overflow-y: auto;
   height: 100%;
   width: 100%;
-  overflow: auto;
+  transition: var(--transition);
+  animation: applicationFadeIn 0.5s forwards ease-in;
 }
 
 .top {
@@ -21,11 +36,11 @@
 }
 
 .right {
-  flex-direction: row;
+  flex-direction: row-reverse;
 }
 
 .bottom {
-  flex-direction: column;
+  flex-direction: column-reverse;
 }
 
 .left {

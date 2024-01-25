@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card } from "../../ui/index";
 import InstanceInfo from "./views/instanceInfo/InstanceInfo";
 import InstanceSelector from "./views/instanceSelector/InstanceSelector";
@@ -12,9 +12,14 @@ import YourDashLoginSlides from "./views/yourdashLoginSlides/YourDashLoginSlides
 import styles from "./loginPage.module.scss"
 
 const Page: React.FC = () => {
-  const [instanceHostname, setInstanceHostname] = useState<string>( "" );
-  const [username, setUsername] = useState<string>( "" );
-  const [password, setPassword] = useState<string>( "" );
+  const [ instanceHostname, setInstanceHostname ] = useState<string>( "" );
+  const [ username, setUsername ] = useState<string>( "" );
+  const [ password, setPassword ] = useState<string>( "" );
+
+  useEffect( () => {
+    if ( localStorage.getItem( "current_server" ) && localStorage.getItem( "current_server" ) !== instanceHostname )
+      setInstanceHostname( localStorage.getItem( "current_server" ) as string )
+  }, [] )
 
   return <main className={ styles.page }>
     <Card showBorder className={"[transition:var(--transition-slower)] min-w-[32rem] max-w-full w-full overflow-hidden animate__animated animate__fadeIn"}>

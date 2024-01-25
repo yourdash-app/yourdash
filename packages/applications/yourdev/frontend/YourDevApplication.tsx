@@ -8,17 +8,17 @@ import { SideBar } from "web-client/src/ui";
 import { useNavigate } from "react-router-dom";
 import GlobalDbApplication from "applications/global_db/frontend/globalDbApplication";
 import { SIDEBAR_ITEM_TYPE, SIDEBAR_STATE } from "web-client/src/ui/components/sideBar/SideBar";
-import YourDevHome from "./YourDevHome";
+import HomeView from "./views/home/HomeView";
 import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
 
 const YourDevApplication: React.FC = () => {
-  const [page, setPage] = React.useState<"home" | "global_db" | "user_db">( "home" );
+  const [ page, setPage ] = React.useState<"home" | "global_db" | "user_db">( "home" );
 
   return (
-    <main className={"h-full grid grid-cols-[auto,1fr]"}>
+    <main className={"h-full grid grid-cols-[auto,1fr] overflow-hidden gap-4 p-4 bg-bg"}>
       <SideBar
-        title={"YourDash Demo Application"}
-        defaultState={SIDEBAR_STATE.NormalMinimised}
+        title={"YourDev"}
+        defaultState={SIDEBAR_STATE.FloatingMinimised}
         items={[
           {
             type: SIDEBAR_ITEM_TYPE.Button,
@@ -46,7 +46,7 @@ const YourDevApplication: React.FC = () => {
           }
         ]}
       />
-      {page === "home" && <YourDevHome/>}
+      {page === "home" && <HomeView/>}
       {page === "global_db" && <GlobalDbApplication/>}
       {page === "user_db" && null}
 

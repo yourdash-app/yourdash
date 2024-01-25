@@ -6,30 +6,30 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import clippy from "../../../../helpers/clippy";
-import csi from "../../../../helpers/csi";
+import csi from "web-client/src/helpers/csi";
 import styles from "./Widget.module.scss";
 import React from "react";
 
 const QuickShortcuts: React.FC<{side: "top" | "right" | "bottom" | "left" }> = ( { side } ) => {
   const navigate = useNavigate()
-  
-  const [applications, setApplications] = useState<{
+
+  const [ applications, setApplications ] = useState<{
     name: string,
     icon: string
   }[]>( [] );
-  const [num, setNum] = React.useState<number>( 0 );
-  
+  const [ num, setNum ] = React.useState<number>( 0 );
+
   useEffect( () => {
     csi.getJson( "/core/panel/quick-shortcuts", ( data ) => {
       setApplications( data );
     } );
-  }, [num] );
-  
+  }, [ num ] );
+
   // @ts-ignore
   window.__yourdashCorePanelQuickShortcutsReload = () => {
     setNum( num + 1 )
   }
-  
+
   return <>
     {
       applications.map( application => {

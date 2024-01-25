@@ -3,10 +3,11 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-export interface IYourDashSession<T extends YOURDASH_SESSION_TYPE> {
-  id: number,
+export interface IYourDashSession<T extends YOURDASH_SESSION_TYPE = YOURDASH_SESSION_TYPE> {
+  sessionId: number,
   type: T,
-  sessionToken: string
+  sessionToken: string,
+  isNodeJS?: boolean
 }
 
 export enum YOURDASH_SESSION_TYPE {

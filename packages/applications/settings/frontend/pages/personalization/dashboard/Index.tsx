@@ -8,11 +8,10 @@ import BasePageLayout from "../../../components/BasePageLayout";
 import BooleanSettingComponent from "../../../components/BooleanSettingComponent";
 import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
 import csi from "web-client/src/helpers/csi";
-import KeyValueDatabase from "shared/core/database";
 
 const Index: React.FC = () => {
-  const [useBrowserLayout, setUseBrowserLayout] = React.useState<boolean>( csi.userDB.get( "dash:useBrowserLayout" ) || false );
-  
+  const [ useBrowserLayout, setUseBrowserLayout ] = React.useState<boolean>( csi.userDB.get( "dash:useBrowserLayout" ) || false );
+
   return (
     <BasePageLayout title={"Dashboard personalization"}>
       <BooleanSettingComponent

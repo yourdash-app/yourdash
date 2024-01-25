@@ -14,7 +14,7 @@ export interface IIconButton extends React.ComponentPropsWithoutRef<"button"> {
   icon: YourDashIcon;
   vibrant?: boolean;
   disabled?: boolean;
-  useDefaultColor?: boolean;
+  preserveColor?: boolean;
   className?: string;
   color?: string;
 }
@@ -23,7 +23,7 @@ const IconButton: React.FC<IIconButton> = ( {
   icon,
   vibrant,
   disabled,
-  useDefaultColor,
+  preserveColor,
   className,
   color,
   ...extraProps
@@ -34,7 +34,7 @@ const IconButton: React.FC<IIconButton> = ( {
     disabled={disabled}
     className={`${ styles.component } ${ vibrant && styles.vibrant } ${ className && className }`}
   >
-    <Icon useDefaultColor={useDefaultColor} color={color || "currentColor"} icon={icon}/>
+    <Icon preserveColor={preserveColor} color={color || "currentColor"} icon={icon}/>
   </button>
 );
 

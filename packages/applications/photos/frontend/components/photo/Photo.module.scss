@@ -1,0 +1,26 @@
+/*!
+ * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
+.component {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  overflow: hidden;
+  border-radius: var(--container-rounding);
+  border: 0.125rem solid rgb(var(--container-border));
+  &:hover {
+    .photo {
+      transform: scale(1.1);
+    }
+  }
+}
+
+.photo {
+  width: 100%;
+  height: 100%;
+  transition: var(--transition);
+}

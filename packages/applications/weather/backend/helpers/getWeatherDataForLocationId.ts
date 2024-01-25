@@ -4,27 +4,50 @@
  */
 
 import coreApi from "backend/src/core/coreApi.js";
-import { fetch } from "undici";
+import { Response, fetch } from "undici";
 import { IWeatherDataForLocation } from "../../shared/weatherDataForLocation.js";
 import parseWeatherCodes from "./parseWeatherState.js";
 
 export default async function getWeatherDataForLongitudeAndLatitude( id: string ): Promise<IWeatherDataForLocation | null> {
   try {
     const locationRequest = await fetch( `https://geocoding-api.open-meteo.com/v1/get?id=${ id }&language=en&format=json` );
-    const locationResponse = await locationRequest.json() as IWeatherDataForLocation["location"] & {
+
+    console.log( locationRequest.status )
+
+    if ( locationRequest.status !== 200 ) {
+      coreApi.log.error( "Non 200 request recieved!" )
+      return null
+    }
+
+    let locationResponse = {}  as IWeatherDataForLocation["location"] & {
       latitude: string, longitude: string
     };
+    try {
+      locationResponse = await locationRequest.json() as IWeatherDataForLocation["location"] & {
+        latitude: string,
+        longitude: string
+      };
+    } catch( e ) {
+      coreApi.log.error( "Could not parse location data" )
+      return null
+    }
 
     const TIMEZONE = "Europe/London";
-    let fetchRequest;
+    let fetchRequest: Response;
     try {
       // noinspection SpellCheckingInspection
       fetchRequest = await fetch( `https://api.open-meteo.com/v1/forecast?latitude=${ locationResponse.latitude }&longitude=${ locationResponse.longitude }&hourly=temperature_2m,precipitation_probability,weathercode,cloudcover,windspeed_80m&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max,rain_sum,precipitation_hours,windspeed_10m_max,windgusts_10m_max&current_weather=true&windspeed_unit=mph&timezone=${ TIMEZONE.replaceAll(
         "/",
         "%2F"
       ) }` );
+
+      if ( fetchRequest.status !== 200 ) {
+        coreApi.log.error( "Non 200 request recieved!" )
+        return null
+      }
     } catch ( e ) {
-      coreApi.log.warning( "Could not fetch weather data", e );
+      coreApi.log.error( "Could not fetch weather data => ", e )
+      return null
     }
 
     interface IRequestResponse {
@@ -52,7 +75,14 @@ export default async function getWeatherDataForLongitudeAndLatitude( id: string 
       };
     }
 
-    const requestResponse = await fetchRequest.json() as IRequestResponse;
+    let requestResponse = {} as IRequestResponse
+
+    try {
+      requestResponse = await fetchRequest.json() as IRequestResponse;
+    } catch( e ) {
+      coreApi.log.error( "Could not parse weather data" )
+      return null
+    }
 
     return {
       location: {
@@ -109,11 +139,10 @@ export default async function getWeatherDataForLongitudeAndLatitude( id: string 
         sunrise: requestResponse.daily.sunrise,
         sunset: requestResponse.daily.sunset
       }
-
     };
 
   } catch ( e ) {
-    coreApi.log.warning( "Could not fetch weather data", e );
+    coreApi.log.warning( "app:weather", "Could not fetch location data => ", e );
     return null;
   }
 }

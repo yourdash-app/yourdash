@@ -4,11 +4,11 @@
  */
 
 import React, { useEffect } from "react";
-import { useTranslateHomePage } from "../../../../helpers/i10n";
+import { useTranslateHomePage } from "../../../../helpers/i18n";
 
 const IndexPageHeroTaglines: React.FC = () => {
   const trans = useTranslateHomePage( "index" )
-  const [taglineIndex, setTaglineIndex] = React.useState<number>( 0 )
+  const [ taglineIndex, setTaglineIndex ] = React.useState<number>( 0 )
 
   useEffect( () => {
     setTimeout( () => {
@@ -18,7 +18,7 @@ const IndexPageHeroTaglines: React.FC = () => {
       }
       setTaglineIndex( taglineIndex + 1 )
     }, 2500 )
-  }, [taglineIndex] );
+  }, [ taglineIndex ] );
 
   return   <div
     className={ "relative whitespace-nowrap w-full animate__animated animate__slideInRight animate__500ms" }

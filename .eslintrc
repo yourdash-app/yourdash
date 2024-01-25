@@ -1,7 +1,8 @@
 {
   "parser": "@typescript-eslint/parser",
   "extends": [
-    "plugin:@typescript-eslint/recommended"
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
   ],
   "rules": {
     "import/no-unresolved": [
@@ -19,46 +20,12 @@
     "react-hooks/exhaustive-deps": [
       "off"
     ],
-    "no-use-before-define": "off",
     "@typescript-eslint/no-use-before-define": "error",
     "max-len": "off",
     "no-shadow": "off",
     "@typescript-eslint/no-shadow": "error",
     "complexity": "off",
     "no-nested-ternary": "off",
-    "import/order": "off",
-    "jsx-quotes": [
-      "warn",
-      "prefer-double"
-    ],
-    "quotes": [
-      "warn",
-      "double"
-    ],
-    "object-curly-spacing": [
-      "warn",
-      "always"
-    ],
-    "space-in-parens": [
-      "warn",
-      "always"
-    ],
-    "dot-location": [
-      "warn",
-      "property"
-    ],
-    "no-trailing-spaces": [
-      "warn",
-      {
-        "skipBlankLines": true
-      }
-    ],
-    "arrow-body-style": [
-      "off"
-    ],
-    "indent": ["warn", 2],
-    "block-spacing": "warn",
-    "spaced-comment": "warn",
-    "space-before-blocks": "warn"
+    "import/order": "off"
   }
 }

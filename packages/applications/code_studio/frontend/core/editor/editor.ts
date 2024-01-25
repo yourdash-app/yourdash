@@ -4,48 +4,125 @@
  */
 
 import KeyboardInputManager from "./keyboardManager";
-import { CodeStudioFileTypes } from "./fileTypes";
-import CodeStudioLanguageParser from "./languageParser/parser";
-import renderTokens from "./languageParser/renderTokens";
+import TreeSitterParser from "web-tree-sitter";
+import styles from "./editor.module.scss";
+import CodeStudioLanguage from "./languages/language";
+import CodeStudioLanguages from "./languages/languages";
+import Token, { TokenType } from "./token/token";
+// @ts-ignore
+import TREESITTER_WASM from "./tree-sitter.wasm?url";
+// @ts-ignore
+import TREESITTER_PLAINTEXT_WASM from "./languages/markdown/markdown.wasm?url";
 
 export default class CodeStudioEditor {
   keyboardInputManager: KeyboardInputManager;
   htmlContainer: HTMLDivElement;
-  debugMode?: boolean;
-  
-  constructor( containerElement: HTMLDivElement ) {
+  isDevMode = true;
+
+  constructor(containerElement: HTMLDivElement) {
     this.keyboardInputManager = new KeyboardInputManager();
     this.htmlContainer = containerElement;
-    
+
     return this;
   }
-  
-  // TODO: implement ME
-  loadRawCode( fileName: string, fileType: CodeStudioFileTypes, rawCode: string ) {
-    this._debugRenderParsedString( rawCode, new CodeStudioLanguageParser( "javascript" ) );
-    return;
+
+  async loadRawCode(
+    fileName: string,
+    fileType: keyof typeof CodeStudioLanguages,
+    rawCode: string,
+  ) {
+    await TreeSitterParser.init({
+      locateFile() {
+        return TREESITTER_WASM;
+      },
+    });
+    const parser = new TreeSitterParser();
+    const language = CodeStudioLanguages[fileType];
+
+    console.log(
+      "Loading parser for fileType:",
+      fileType,
+      `(${language.language})`,
+    );
+
+    parser.setLanguage(
+      await TreeSitterParser.Language.load(
+        (await language.parser)?.treesitterLanguage ||
+          TREESITTER_PLAINTEXT_WASM,
+      ),
+    );
+
+    return this.renderParsedString(parser.parse(rawCode), language);
   }
-  
-  _debugRenderParsedString( string: string, parser: CodeStudioLanguageParser ) {
-    this.htmlContainer.innerHTML = "<pre><code id=\"cs-text-output\"></code></pre>";
-    
-    if ( document.getElementById( "cs-text-output" ) ) {
-      // @ts-ignore
-      document.getElementById( "cs-text-output" ).style.fontFamily = "Jetbrains Mono, JetbrainsMono Nerd Font, Fira Code, Source Code Pro, monospace"
-      
-      const LINES_TO_PARSE = 256
-      const STARTING_LINE = 0
-      
-      const lines = string.split( "\n" );
-      
-      parser.onParse( tokens => {
-        renderTokens(
-          document.getElementById( "cs-text-output" ) as HTMLDivElement,
-          tokens
-        );
-      } );
-      
-      parser.parseString( lines.slice( STARTING_LINE, LINES_TO_PARSE ).join( "\n" ) );
+
+  async renderParsedString(
+    parser: TreeSitterParser.Tree,
+    language: { language: string; parser: Promise<CodeStudioLanguage | null> },
+  ) {
+    if (this.isDevMode) {
+      this.htmlContainer.innerHTML =
+        "<div>Using Parser: " + language.language + "</div>";
+    } else {
+      this.htmlContainer.innerHTML = "";
     }
+
+    this.htmlContainer.innerHTML +=
+      '<pre><code id="cs-text-output"></code></pre>';
+
+    const codeElement = document.getElementById(
+      "cs-text-output",
+    ) as HTMLDivElement;
+    codeElement.classList.add(styles.editor);
+
+    const rendered_items: TreeSitterParser.SyntaxNode[] = [];
+
+    if ((await language.parser) === null) {
+      codeElement.innerHTML = `<div><h1>Unable to find parser for language: ${language.language}</h1></div>`;
+
+      return parser;
+    }
+
+    async function renderToken(
+      parentElement: HTMLDivElement | HTMLSpanElement,
+      syntaxNode: TreeSitterParser.SyntaxNode,
+    ) {
+      if (rendered_items.indexOf(syntaxNode) !== -1) {
+        console.error("CIRCULAR REFERENCE");
+      }
+      rendered_items.push(syntaxNode);
+
+      if (syntaxNode.childCount > 0) {
+        const tokenElement = document.createElement("span");
+
+        parentElement.appendChild(tokenElement);
+
+        for (let i = 0; i < syntaxNode.childCount; i++) {
+          await renderToken(tokenElement, syntaxNode.child(i)!); // eslint-disable-line @typescript-eslint/no-non-null-assertion
+        }
+
+        return;
+      }
+
+      const languageParserTokens = (await language.parser)?.tokens;
+
+      const token = new Token(
+        syntaxNode.text,
+        (languageParserTokens?.[syntaxNode.type] as TokenType) ||
+          syntaxNode.type,
+        {
+          col: syntaxNode.startPosition.column,
+          row: syntaxNode.startPosition.row,
+        },
+      );
+
+      parentElement.innerHTML += token.render();
+    }
+
+    await renderToken(codeElement, parser.rootNode);
+
+    // REMEMBER!: only render visible ranges
+    // SRC: https://github.com/georgewfraser/vscode-tree-sitter/blob/master/src/colors.ts
+
+    return parser;
   }
 }

@@ -37,7 +37,7 @@ export class Engine {
   renderPipeline: GPURenderPipeline;
   renderPassDescriptor: GPURenderPassDescriptor;
   gpuCommandEncoder: GPUCommandEncoder;
-  
+
   constructor( webGpuDevice: GPUDevice, containerElement: HTMLElement ) {
     this.gpuDevice = webGpuDevice;
     console.debug( "OpenGFX engine started" );
@@ -47,7 +47,7 @@ export class Engine {
     this.containerElement.appendChild( this.canvasElement );
     this.screen = new Screen( this.containerElement, this.canvasElement, this );
     this.currentScene = new Scene( {
-      id: "default_scene",
+      sessionId: "default_scene",
       objects: []
     }, this.screen );
     containerElement.appendChild( this.containerElement );
@@ -55,9 +55,9 @@ export class Engine {
     this.canvasElement.style.outline = "solid #000 0.125rem";
     this.containerElement.style.width = "100%";
     this.containerElement.style.height = "100%";
-    
+
     this.screen.update();
-    
+
     // const box = new GFXObject( this.screen, this.currentScene, this )
     // this.currentScene.appendObject( box )
     //
@@ -120,33 +120,33 @@ export class Engine {
     //
     // this.currentScene.render();
   }
-  
+
   setScene( scene: Scene ): this {
     this.currentScene = scene;
     this.currentScene.render();
-    
+
     return this;
   }
-  
+
   render(): this {
     // Clear screen
     this.screen.context
-    
+
     console.debug( "rendering scene" );
     this.currentScene.render();
-    
+
     return this;
   }
 }
 
 export default async function initEngine( containerElement: HTMLElement ) {
   const webGPUAdapter = await navigator.gpu.requestAdapter( { powerPreference: "high-performance" } );
-  
+
   if ( !webGPUAdapter ) {
     throw new Error( "No GPU adapter found" );
   }
-  
+
   const webGpuDevice = await webGPUAdapter.requestDevice();
-  
+
   return new Engine( webGpuDevice, containerElement );
 }

@@ -4,16 +4,16 @@
  */
 
 import coreApi from "backend/src/core/coreApi.js";
-import Module, { YourDashModuleArguments } from "backend/src/core/moduleManager/module.js";
+import BackendModule, { YourDashModuleArguments } from "backend/src/core/moduleManager/backendModule.js";
 
-export default class DashModule extends Module {
+export default class DashModule extends BackendModule {
   constructor( args: YourDashModuleArguments ) {
     super( args );
 
     this.API.request.get( "/app/dash/user-full-name", async ( req, res ) => {
       const { username } = req.headers as {
-      username: string
-    };
+        username: string
+      };
 
       const user = coreApi.users.get( username )
 

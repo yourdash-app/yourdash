@@ -46,7 +46,7 @@ declare module "*.scss" {
 }
 
 declare module "*.json" {
-  const content: {[className: string]: string};
+  const content: { [className: string]: string };
   export default content;
 }
 
@@ -71,6 +71,11 @@ declare module "*.md" {
 }
 
 declare module "*.mdx" {
+  const value: string;
+  export default value;
+}
+
+declare module "*.wasm" {
   const value: string;
   export default value;
 }

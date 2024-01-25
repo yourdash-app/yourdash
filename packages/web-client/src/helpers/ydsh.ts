@@ -6,45 +6,56 @@
 import { useContext } from "react";
 import IToast from "../ui/components/toast/IToast";
 import ToastContext from "../ui/components/toast/ToastContext";
+import generateUUID from "./uuid";
 
 export default function useYourDashLib() {
   const toast = useContext( ToastContext )
-  
+
   return {
     toast: {
-      success: ( message: string, options?: IToast["params"] ) => {
+      success: ( title: string, message: string, options?: IToast["params"] ) => {
         toast( {
           message,
           type: "success",
-          params: options
+          params: options,
+          title,
+          uuid: generateUUID()
         } )
       },
-      error: ( message: string, options?: IToast["params"] ) => {
+      error: ( title: string, message: string, options?: IToast["params"] ) => {
         toast( {
           message,
           type: "error",
-          params: options
+          params: options,
+          title,
+          uuid: generateUUID()
         } )
       },
-      info: ( message: string, options?: IToast["params"] ) => {
+      info: ( title: string, message: string, options?: IToast["params"] ) => {
         toast( {
           message,
           type: "info",
-          params: options
+          params: options,
+          title,
+          uuid: generateUUID()
         } )
       },
-      warn: ( message: string, options?: IToast["params"] ) => {
+      warn: ( title: string, message: string, options?: IToast["params"] ) => {
         toast( {
           message,
           type: "warn",
-          params: options
+          params: options,
+          title,
+          uuid: generateUUID()
         } )
       },
-      silent: ( message: string, options?: IToast["params"] ) => {
+      silent: ( title: string, message: string, options?: IToast["params"] ) => {
         toast( {
           message,
           type: "silent",
-          params: options
+          params: options,
+          title,
+          uuid: generateUUID()
         } )
       }
     }

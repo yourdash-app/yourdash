@@ -22,7 +22,7 @@ export default class CoreApiCommands {
       const command = commandAndArgs[ 0 ];
 
       if ( !this.availableCommands[command] ) {
-        this.coreApi.log.error( "core:command", `Command '${command}' does not exist!` )
+        this.coreApi.log.error( "command", `Command '${command}' does not exist!` )
         return
       }
 
@@ -38,7 +38,7 @@ export default class CoreApiCommands {
       callback: callback
     }
 
-    this.coreApi.log.info( "core:command", `Registered command: '${commandName}'` )
+    this.coreApi.log.info( "command", `Registered command: '${commandName}'` )
 
     return this
   }
@@ -60,7 +60,7 @@ export default class CoreApiCommands {
 
   runCommand( commandName: string, args: string[] ) {
     if ( !this.availableCommands[commandName] ) {
-      this.coreApi.log.error( "core:command", `Command '${commandName}' does not exist!` )
+      this.coreApi.log.error( "command", `Command '${commandName}' does not exist!` )
       return false
     }
 

@@ -4,20 +4,20 @@
  */
 
 import { useNavigate } from "react-router";
-import csi from "../../../../helpers/csi";
+import csi from "web-client/src/helpers/csi";
 import styles from "./Widget.module.scss";
 import { memo, useEffect, useState } from "react";
 
 const InstanceLogoWidget: React.FC = () => {
   const navigate = useNavigate();
-  const [icons, setIcons] = useState<{ small: string, medium: string, large: string }>( { small: "", medium: "", large: "" } )
-  
+  const [ icons, setIcons ] = useState<{ small: string, medium: string, large: string }>( { small: "", medium: "", large: "" } )
+
   useEffect( () => {
     csi.getJson( "/core/panel/logo", ( data ) => {
       setIcons( data )
     } )
   }, [] )
-  
+
   return <img
     src={ `${csi.getInstanceUrl()}${icons.large}` }
     alt={ "Instance logo" }

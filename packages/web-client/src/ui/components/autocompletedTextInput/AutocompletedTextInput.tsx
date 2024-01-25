@@ -27,8 +27,8 @@ const AutocompletedTextInput: React.FC<IAutocompletedTextInput> = ( {
   className,
   onKeyDown
 } ) => {
-  const [valid, setValid] = useState( false )
-  const [possibleOptions, setPossibleOptions] = useState<string[]>( [] )
+  const [ valid, setValid ] = useState( false )
+  const [ possibleOptions, setPossibleOptions ] = useState<string[]>( [] )
   const ref = useRef<HTMLInputElement>( null )
 
   return (
@@ -65,7 +65,7 @@ const AutocompletedTextInput: React.FC<IAutocompletedTextInput> = ( {
 
           if ( !value )
             return setValid( false )
-          
+
           onChange( value )
 
           setPossibleOptions( options.filter( opt => {

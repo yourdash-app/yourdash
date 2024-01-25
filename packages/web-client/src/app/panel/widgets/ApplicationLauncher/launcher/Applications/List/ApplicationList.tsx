@@ -5,7 +5,7 @@
 
 import React from "react";
 import IPanelApplicationsLauncherApplication from "shared/core/panel/applicationsLauncher/application";
-import csi from "../../../../../../../helpers/csi";
+import csi from "web-client/src/helpers/csi";
 import { RightClickMenu } from "../../../../../../../ui/index";
 import styles from "./ApplicationList.module.scss"
 import { useNavigate } from "react-router";
@@ -48,6 +48,7 @@ const ApplicationList: React.FC<{ applications: IPanelApplicationsLauncherApplic
         >
           <div className={styles.itemContent}>
             <img
+              loading={"lazy"}
               className={styles.itemIcon}
               src={`${ csi.getInstanceUrl() }${application.icon}`}
               alt=""

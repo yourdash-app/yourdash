@@ -11,9 +11,9 @@ const FilesListView: React.FC<{ files: { type: "file" | "directory", name: strin
   return <section className={ styles.view }>
     { files.map( ( file, i ) => {
       const isOdd = i % 2 === 1;
-      
+
       console.log( isOdd );
-      
+
       return <div
         key={ file.name }
         className={ clippy( styles.file, isOdd && styles.odd ) }

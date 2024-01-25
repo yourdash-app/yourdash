@@ -6,20 +6,16 @@
 import React from "react";
 import IToast from "./IToast";
 import Toast from "./Toast";
-import styles from "./Toast.module.scss"
+import styles from "./Toast.module.scss";
 
-const ToastContainer: React.FC<{ toasts: IToast[]}> = ( { toasts } ) => {
-  return <div className={styles.toastsRootContainer}>
-    {
-      toasts.map( toast => {
-        return <Toast
-          key={ toast.message }
-          message={ toast.message }
-          type={ toast.type }
-        />
-      } )
-    }
-  </div>
-}
+const ToastContainer: React.FC<{ toasts: IToast[] }> = ({ toasts }) => {
+  return (
+    <div className={styles.toastsRootContainer}>
+      {toasts.map((toast) => {
+        return <Toast key={toast.uuid} message={toast.message} type={toast.type} title={toast.title} params={toast.params} uuid={toast.uuid} />;
+      })}
+    </div>
+  );
+};
 
-export default ToastContainer
+export default ToastContainer;
