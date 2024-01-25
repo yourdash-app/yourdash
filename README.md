@@ -5,7 +5,11 @@
 
 # YourDash
 
-https://yourdash-app.github.io
+
+## Links
+  - Website: https://ydsh.pages.dev or https://yourdash.pages.dev
+  - Discord: https://discord.gg/aY5CjDZTpG
+  - GitHub: https://github.com/yourdash-app/yourdash
 
 ## About
 
@@ -58,4 +62,5 @@ https://ydsh.pages.dev/#/docs
 
 ## Top contributors
 
+TODO: create a GH action to fetch top contributors and edit this list
 %%__top_contributors_list__%%

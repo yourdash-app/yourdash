@@ -6,7 +6,7 @@
 import styles from "./token.module.scss";
 
 export enum TokenType {
-  STRING,
+  STRING = 1,
   NUMBER,
   KEYWORD,
   PUNCTUATION,
@@ -18,10 +18,13 @@ export enum TokenType {
   TYPE,
   OTHER,
   PARSE_FAILURE,
+  XML_TAG,
+  XML_ATTRIBUTE_KEY,
+  XML_ATTRIBUTE_VALUE,
 }
 
 export default class Token {
-  type: TokenType;
+  type: TokenType | string;
   content: string;
   position: { col: number; row: number };
   overrides?: {
@@ -44,7 +47,7 @@ export default class Token {
   }
 
   render(): string {
-    const domNode = document.createElement("span");
+    const domNode = document.createElement("div");
 
     switch (this.type) {
       case TokenType.OTHER:
@@ -75,17 +78,32 @@ export default class Token {
         domNode.classList.add(styles.comment);
         break;
       case TokenType.STRING:
+        console.log(this);
         domNode.classList.add(styles.string);
         break;
       case TokenType.NUMBER:
         domNode.classList.add(styles.number);
         break;
+      case TokenType.XML_TAG:
+        domNode.classList.add(styles.xmlTag);
+        break;
+      case TokenType.XML_ATTRIBUTE_KEY:
+        domNode.classList.add(styles.xmlAttributeKey);
+        break;
+      case TokenType.XML_ATTRIBUTE_VALUE:
+        domNode.classList.add(styles.xmlAttributeValue);
+        break;
       case TokenType.PARSE_FAILURE:
+        domNode.classList.add(styles.parseFailure);
+        break;
+      default:
+        domNode.innerText = `<<${this.type}>>`;
         domNode.classList.add(styles.parseFailure);
         break;
     }
 
-    domNode.innerText = this.content;
+    domNode.classList.add(styles.token);
+    domNode.innerText += this.content;
 
     if (this.overrides?.background)
       domNode.style.backgroundColor = this.overrides.background;

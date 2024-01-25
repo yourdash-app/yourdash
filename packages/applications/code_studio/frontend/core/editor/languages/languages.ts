@@ -16,6 +16,7 @@ interface ICodeStudioLanguages {
 const CodeStudioLanguages: ICodeStudioLanguages = {
   txt: { language: "plaintext", parser: registerLanguage("plaintext") },
   js: { language: "javascript", parser: registerLanguage("javascript") },
+  ts: { language: "typescript", parser: registerLanguage("typescript") },
   md: { language: "markdown", parser: registerLanguage("markdown") },
 };
 

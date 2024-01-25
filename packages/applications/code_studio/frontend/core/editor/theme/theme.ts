@@ -60,5 +60,10 @@ export default class CodeStudioTheme {
       bold: false,
       color: "#c77dbb",
     },
+    xmlTag: {
+      italic: false,
+      bold: false,
+      color: "#d4b66b",
+    },
   };
 }

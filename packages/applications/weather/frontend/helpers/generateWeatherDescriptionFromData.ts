@@ -80,5 +80,5 @@ export default function generateWeatherDescriptionFromData(
 
   return `Currently ${trans(
     weatherState,
-  )} at ${temperature}°C with ${windDescription}`;
+  )} at ${temperature}°C with a ${windDescription}`;
 }

@@ -8,7 +8,7 @@ import TreeSitterParser from "web-tree-sitter";
 import styles from "./editor.module.scss";
 import CodeStudioLanguage from "./languages/language";
 import CodeStudioLanguages from "./languages/languages";
-import Token from "./token/token";
+import Token, { TokenType } from "./token/token";
 // @ts-ignore
 import TREESITTER_WASM from "./tree-sitter.wasm?url";
 // @ts-ignore
@@ -33,8 +33,6 @@ export default class CodeStudioEditor {
   ) {
     await TreeSitterParser.init({
       locateFile() {
-        console.log(TREESITTER_WASM);
-
         return TREESITTER_WASM;
       },
     });
@@ -78,10 +76,10 @@ export default class CodeStudioEditor {
 
     const rendered_items: TreeSitterParser.SyntaxNode[] = [];
 
-    if (!(await language.parser)) {
-      codeElement.innerHTML = `<div><h1>Unable to find parser for language: ${language.language}</h1></div>`
+    if ((await language.parser) === null) {
+      codeElement.innerHTML = `<div><h1>Unable to find parser for language: ${language.language}</h1></div>`;
 
-      return parser
+      return parser;
     }
 
     async function renderToken(
@@ -99,15 +97,18 @@ export default class CodeStudioEditor {
         parentElement.appendChild(tokenElement);
 
         for (let i = 0; i < syntaxNode.childCount; i++) {
-          renderToken(tokenElement, syntaxNode.child(i)!); // eslint-disable-line @typescript-eslint/no-non-null-assertion
+          await renderToken(tokenElement, syntaxNode.child(i)!); // eslint-disable-line @typescript-eslint/no-non-null-assertion
         }
 
         return;
       }
 
+      const languageParserTokens = (await language.parser)?.tokens;
+
       const token = new Token(
         syntaxNode.text,
-        (await language.parser)!.tokens[syntaxNode.type],
+        (languageParserTokens?.[syntaxNode.type] as TokenType) ||
+          syntaxNode.type,
         {
           col: syntaxNode.startPosition.column,
           row: syntaxNode.startPosition.row,
@@ -117,7 +118,7 @@ export default class CodeStudioEditor {
       parentElement.innerHTML += token.render();
     }
 
-    renderToken(codeElement, parser.rootNode);
+    await renderToken(codeElement, parser.rootNode);
 
     // REMEMBER!: only render visible ranges
     // SRC: https://github.com/georgewfraser/vscode-tree-sitter/blob/master/src/colors.ts

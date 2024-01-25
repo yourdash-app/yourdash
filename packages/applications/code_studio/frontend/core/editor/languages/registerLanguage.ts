@@ -10,8 +10,10 @@ export default async function registerLanguage(
   languageName: (typeof CodeStudioLanguages)[keyof typeof CodeStudioLanguages]["language"],
 ): Promise<CodeStudioLanguage | null> {
   try {
+    // prettier-ignore
     // noinspection JSPotentiallyInvalidConstructorUsage
-    return new (await import(`./${languageName}/language.js`)).default();
+    return new // @ts-ignore
+    ( await import.meta.glob(`./**/language.ts`)[`./${languageName}/language.ts`]()).default();
   } catch (e) {
     return null;
   }

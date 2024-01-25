@@ -4,44 +4,53 @@
  */
 
 .token {
-  display: inline-block;
+  display: inline;
   font-size: var(--codestudio-theme-editor-token-font-size);
   line-height: var(--codestudio-theme-editor-token-line-height);
 
   // PLACEHOLDER THEME VALUES FOR JETBRAINS DARCULA THEME
 
   --codestudio-theme-editor-token-keyword-color: #cf8e6d;
-  --codestudio-theme-editor-token-keyword-background: #2b2b2b;
+  --codestudio-theme-editor-token-keyword-background: #0000;
 
   --codestudio-theme-editor-token-string-color: #5caa66;
-  --codestudio-theme-editor-token-string-background: #2b2b2b;
+  --codestudio-theme-editor-token-string-background: #0000;
 
   --codestudio-theme-editor-token-number-color: #cf8e6d;
-  --codestudio-theme-editor-token-number-background: #2b2b2b;
+  --codestudio-theme-editor-token-number-background: #0000;
 
   --codestudio-theme-editor-token-punctuation-color: #bcbec4;
-  --codestudio-theme-editor-token-punctuation-background: #2b2b2b;
+  --codestudio-theme-editor-token-punctuation-background: #0000;
 
   --codestudio-theme-editor-token-operator-color: #bcbec4;
-  --codestudio-theme-editor-token-operator-background: #2b2b2b;
+  --codestudio-theme-editor-token-operator-background: #0000;
 
   --codestudio-theme-editor-token-comment-color: #6b7d74;
-  --codestudio-theme-editor-token-comment-background: #2b2b2b;
+  --codestudio-theme-editor-token-comment-background: #0000;
 
   --codestudio-theme-editor-token-parameter-color: #bcbec4;
-  --codestudio-theme-editor-token-parameter-background: #2b2b2b;
+  --codestudio-theme-editor-token-parameter-background: #0000;
 
   --codestudio-theme-editor-token-variable-color: #bcbec4;
-  --codestudio-theme-editor-token-variable-background: #2b2b2b;
+  --codestudio-theme-editor-token-variable-background: #0000;
 
   --codestudio-theme-editor-token-function-color: #cf8e6d;
-  --codestudio-theme-editor-token-function-background: #2b2b2b;
+  --codestudio-theme-editor-token-function-background: #0000;
 
   --codestudio-theme-editor-token-type-color: #cf8e6d;
-  --codestudio-theme-editor-token-type-background: #2b2b2b;
+  --codestudio-theme-editor-token-type-background: #0000;
 
   --codestudio-theme-editor-token-other-color: #bcbec4;
-  --codestudio-theme-editor-token-other-background: #2b2b2b;
+  --codestudio-theme-editor-token-other-background: #0000;
+
+  --codestudio-theme-editor-token-xml-tag-color: #d4b66b;
+  --codestudio-theme-editor-token-xml-tag-background: #0000;
+
+  --codestudio-theme-editor-token-xml-attribute-key-color: #bcbec4;
+  --codestudio-theme-editor-token-xml-attribute-key-background: #0000;
+
+  --codestudio-theme-editor-token-xml-attribute-value-color: #5caa66;
+  --codestudio-theme-editor-token-xml-attribute-value-background: #0000;
 }
 
 .other {
@@ -97,6 +106,21 @@
 .operator {
   color: var(--codestudio-theme-editor-token-operator-color);
   background: var(--codestudio-theme-editor-token-operator-background);
+}
+
+.xmlTag {
+  color: var(--codestudio-theme-editor-token-xml-tag-color);
+  background: var(--codestudio-theme-editor-token-xml-tag-background);
+}
+
+.xmlAttributeKey {
+  color: var(--codestudio-theme-editor-token-xml-attribute-key-color);
+  background: var(--codestudio-theme-editor-token-xml-attribute-key-background);
+}
+
+.xmlAttributeValue {
+  color: var(--codestudio-theme-editor-token-xml-attribute-value-color);
+  background: var(--codestudio-theme-editor-token-xml-attribute-value-background);
 }
 
 .parseFailure {

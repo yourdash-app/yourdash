@@ -5,7 +5,7 @@
 
 import CodeStudioLanguage from "../language";
 // @ts-ignore
-import PLAINTEXT_TREESITTER_LANGUAGE from "./markdown/markdown.wasm?url";
+import PLAINTEXT_TREESITTER_LANGUAGE from "../markdown/markdown.wasm?url";
 
 export default class CodeStudioLanguagePlaintext extends CodeStudioLanguage {
   constructor() {

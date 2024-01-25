@@ -5,7 +5,7 @@
 
 import CodeStudioLanguage from "../language";
 // @ts-ignore
-import JAVASCRIPT_TREESITTER_LANGUAGE from "./languages/javascript/javascript.wasm?url";
+import JAVASCRIPT_TREESITTER_LANGUAGE from "./javascript.wasm?url";
 
 export default class CodeStudioLanguageJavascript extends CodeStudioLanguage {
   constructor() {
