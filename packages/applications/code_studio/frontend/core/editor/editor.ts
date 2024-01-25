@@ -7,7 +7,6 @@ import KeyboardInputManager from "./keyboardManager";
 import TreeSitterParser from "web-tree-sitter";
 import styles from "./editor.module.scss";
 import CodeStudioLanguage from "./languages/language";
-import languages from "./languages/languages";
 import CodeStudioLanguages from "./languages/languages";
 import Token from "./token/token";
 // @ts-ignore
@@ -58,13 +57,13 @@ export default class CodeStudioEditor {
     return this.renderParsedString(parser.parse(rawCode), language);
   }
 
-  renderParsedString(
+  async renderParsedString(
     parser: TreeSitterParser.Tree,
     language: { language: string; parser: Promise<CodeStudioLanguage | null> },
   ) {
     if (this.isDevMode) {
       this.htmlContainer.innerHTML =
-        "<div>Using Parser: " + language + "</div>";
+        "<div>Using Parser: " + language.language + "</div>";
     } else {
       this.htmlContainer.innerHTML = "";
     }
@@ -79,7 +78,13 @@ export default class CodeStudioEditor {
 
     const rendered_items: TreeSitterParser.SyntaxNode[] = [];
 
-    function renderToken(
+    if (!(await language.parser)) {
+      codeElement.innerHTML = `<div><h1>Unable to find parser for language: ${language.language}</h1></div>`
+
+      return parser
+    }
+
+    async function renderToken(
       parentElement: HTMLDivElement | HTMLSpanElement,
       syntaxNode: TreeSitterParser.SyntaxNode,
     ) {
@@ -102,7 +107,7 @@ export default class CodeStudioEditor {
 
       const token = new Token(
         syntaxNode.text,
-        language.parser.tokens[syntaxNode.type],
+        (await language.parser)!.tokens[syntaxNode.type],
         {
           col: syntaxNode.startPosition.column,
           row: syntaxNode.startPosition.row,
