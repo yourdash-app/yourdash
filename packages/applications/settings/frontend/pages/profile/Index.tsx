@@ -6,117 +6,141 @@
 import React, { useEffect } from "react";
 import csi, { TJson } from "web-client/src/helpers/csi";
 import useYourDashLib from "web-client/src/helpers/ydsh";
-import { Button, Card, IconButton, Row, TextBox, TextInput, YourDashIcon } from "web-client/src/ui/index";
-import BasePageLayout from "../../components/BasePageLayout"
+import {
+  Button,
+  Card,
+  IconButton,
+  Row,
+  TextBox,
+  TextInput,
+  YourDashIcon,
+} from "web-client/src/ui/index";
+import BasePageLayout from "../../components/BasePageLayout";
 import UserLinkEditor from "./components/UserLinkEditor";
 import UserPreview, { IUserPreview } from "./components/UserPreview";
 
 const ProfileIndexPage: React.FC = () => {
-  const ydsh = useYourDashLib()
-  const [ userData, setUserData ] = React.useState<IUserPreview>( {
+  const ydsh = useYourDashLib();
+  const [userData, setUserData] = React.useState<IUserPreview>({
     name: { first: "Admin", last: "Istrator" },
     avatar: "abc",
     username: "admin",
     bio: "This is the user's sample bio",
-    links: [ { url: "https://github.com/yourdash-app/yourdash", label: "Click me" } ]
-  } )
+    links: [{ url: "https://github.com/yourdash/yourdash", label: "Click me" }],
+  });
 
-  useEffect( () => {
+  useEffect(() => {
     // get the user's data
-    csi.getText( "/core/user/current/avatar/original", ( resp: string ) => {
-      setUserData( { ...userData, avatar: `${csi.getInstanceUrl()}${resp}` } )
-    } )
-  }, [] )
+    csi.getText("/core/user/current/avatar/original", (resp: string) => {
+      setUserData({ ...userData, avatar: `${csi.getInstanceUrl()}${resp}` });
+    });
+  }, []);
 
-  return <BasePageLayout
-    title={"Profile"}
-  >
-    <section className={"grid grid-cols-[auto,1fr] w-full col-span-2 gap-4"}>
-      <div className={"h-full flex items-center justify-center"}>
-        <UserPreview
-          name={userData.name}
-          avatar={userData.avatar}
-          username={userData.username}
-          bio={userData.bio}
-          links={userData.links}
-        />
-      </div>
-      <Card className={ "gap-4 flex flex-col child:w-full" }>
-        <h2 className={ "-mb-2 font-semibold text-2xl" }>Name</h2>
-        <Row className={ "child:flex-grow" }>
-          <TextInput
-            accessibleName="First name"
-            onChange={ ( value ) => {
-              setUserData( { ...userData, name: { ...userData.name, first: value } } );
-            } }
-            defaultValue={ userData.name.first }
-            label={ "FirstName" }
-          />
-          <TextInput
-            accessibleName="Last name"
-            onChange={ ( value ) => {
-              setUserData( { ...userData, name: { ...userData.name, last: value } } );
-            } }
-            defaultValue={ userData.name.last }
-            label={ "LastName" }
-          />
-        </Row>
-        <TextInput
-          accessibleName="Username"
-          onChange={ ( value ) => {
-            setUserData( { ...userData, username: value } );
-          } }
-          defaultValue={ userData.username }
-          label={ "username" }
-        />
-        <h2 className={ "-mb-4 font-semibold text-2xl" }>Bio</h2>
-        <TextBox
-          defaultValue={ userData.bio }
-          onChange={ ( e ) => {
-            setUserData( { ...userData, bio: e.currentTarget.value } );
-          } }
-        />
-        <div className={"-mb-2 flex justify-between items-center"}>
-          <h2 className={ "font-semibold text-2xl" }>Links</h2>
-          <IconButton
-            icon={YourDashIcon.Plus}
-            onClick={ () => {
-              setUserData( { ...userData, links: [ ...( userData.links || [] ), { url: "https://example.com", label: `Example${( userData.links?.length || 0 ) + 1}` } ] } );
-            } }
+  return (
+    <BasePageLayout title={"Profile"}>
+      <section className={"grid grid-cols-[auto,1fr] w-full col-span-2 gap-4"}>
+        <div className={"h-full flex items-center justify-center"}>
+          <UserPreview
+            name={userData.name}
+            avatar={userData.avatar}
+            username={userData.username}
+            bio={userData.bio}
+            links={userData.links}
           />
         </div>
-        <>
-          {
-            userData.links?.map( ( link, ind ) => {
-              return <UserLinkEditor
-                links={userData.links || []}
-                setLinks={ ( links ) => {
-                  setUserData( { ...userData, links } );
-                } }
-                link={link}
-                key={link.url + link.label}
-              />
-            } )
-          }
-        </>
-        <Button
-          onClick={ () => {
-            csi.postJson(
-              "/core/user/current",
-              userData as unknown as TJson,
-              () => {
-                ydsh.toast.success( "Saved user data" );
-              } ,
-              () => {
-                ydsh.toast.error( "Failed to save user data" );
-              } )
-          } }
-        >
-          Save
-        </Button>
-      </Card>
-    </section>
-  </BasePageLayout>
-}
+        <Card className={"gap-4 flex flex-col child:w-full"}>
+          <h2 className={"-mb-2 font-semibold text-2xl"}>Name</h2>
+          <Row className={"child:flex-grow"}>
+            <TextInput
+              accessibleName="First name"
+              onChange={(value) => {
+                setUserData({
+                  ...userData,
+                  name: { ...userData.name, first: value },
+                });
+              }}
+              defaultValue={userData.name.first}
+              label={"FirstName"}
+            />
+            <TextInput
+              accessibleName="Last name"
+              onChange={(value) => {
+                setUserData({
+                  ...userData,
+                  name: { ...userData.name, last: value },
+                });
+              }}
+              defaultValue={userData.name.last}
+              label={"LastName"}
+            />
+          </Row>
+          <TextInput
+            accessibleName="Username"
+            onChange={(value) => {
+              setUserData({ ...userData, username: value });
+            }}
+            defaultValue={userData.username}
+            label={"username"}
+          />
+          <h2 className={"-mb-4 font-semibold text-2xl"}>Bio</h2>
+          <TextBox
+            defaultValue={userData.bio}
+            onChange={(e) => {
+              setUserData({ ...userData, bio: e.currentTarget.value });
+            }}
+          />
+          <div className={"-mb-2 flex justify-between items-center"}>
+            <h2 className={"font-semibold text-2xl"}>Links</h2>
+            <IconButton
+              icon={YourDashIcon.Plus}
+              onClick={() => {
+                setUserData({
+                  ...userData,
+                  links: [
+                    ...(userData.links || []),
+                    {
+                      url: "https://example.com",
+                      label: `Example${(userData.links?.length || 0) + 1}`,
+                    },
+                  ],
+                });
+              }}
+            />
+          </div>
+          <>
+            {userData.links?.map((link, ind) => {
+              return (
+                <UserLinkEditor
+                  links={userData.links || []}
+                  setLinks={(links) => {
+                    setUserData({ ...userData, links });
+                  }}
+                  link={link}
+                  key={link.url + link.label}
+                />
+              );
+            })}
+          </>
+          <Button
+            onClick={() => {
+              csi.postJson(
+                "/core/user/current",
+                userData as unknown as TJson,
+                () => {
+                  ydsh.toast.success("Saved user data");
+                },
+                () => {
+                  ydsh.toast.error("Failed to save user data");
+                },
+              );
+            }}
+          >
+            Save
+          </Button>
+        </Card>
+      </section>
+    </BasePageLayout>
+  );
+};
 
 export default ProfileIndexPage;
