@@ -4,52 +4,57 @@
  */
 
 import React, { useState } from "react";
+import clippy from "web-client/src/helpers/clippy";
 import {
   Heading,
   Icon,
   MajorButton,
   YourDashIcon,
 } from "web-client/src/ui/index";
-import {
-  CHATBOTS_STARTUP_MENU_PAGE,
-  IStartupMenuPageProps,
-} from "../../StartupMenu";
-import TutorialStartupMenuPage from "../tutorial/TutorialStartupMenuPage";
+import { IStartupMenuPageProps } from "../../StartupMenu";
 import styles from "./DefaultStartupMenuPage.module.scss";
+import { useNavigate } from "react-router-dom";
 
 const DefaultStartupMenuPage: React.FC<IStartupMenuPageProps> = ({
   setMenuPage,
 }) => {
-  const [completedTutorial, setCompletedTutorial] = useState<boolean>(false);
   const [acceptedTermsAndConditions, setAcceptedTermsAndConditions] =
     useState<boolean>(false);
   const [chatbots, setChatbots] = useState<string[]>([]);
-
-  if (!completedTutorial) {
-    return <TutorialStartupMenuPage setMenuPage={setMenuPage} />;
-  }
+  const navigate = useNavigate();
 
   return (
-    <>
+    <main className={"animate__animated animate__fadeIn"}>
       <Icon
-        className={styles.logo}
+        className={clippy(
+          styles.logo,
+          "animate__animated animate__fadeInUp animate__duration_1000ms",
+        )}
         icon={YourDashIcon.YourDashLogo}
         preserveColor={true}
       />
-      <Heading level={1}>YourDash Chatbots</Heading>
+      <Heading
+        level={1}
+        className={clippy(
+          styles.heading,
+          "animate__animated animate__fadeInDown animate__duration_1000ms",
+        )}
+      >
+        YourDash Chatbots
+      </Heading>
       <p className={styles.tagline}>
         Create and manage customised chatbots for external chat services
       </p>
       <section className={styles.options}>
         <MajorButton
           onClick={() => {
-            setMenuPage(CHATBOTS_STARTUP_MENU_PAGE.DEFAULT);
+            navigate("/app/a/chatbots/create-bot");
           }}
         >
           Get Started
         </MajorButton>
       </section>
-    </>
+    </main>
   );
 };
 

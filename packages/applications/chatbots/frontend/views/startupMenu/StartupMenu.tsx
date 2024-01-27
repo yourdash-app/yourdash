@@ -5,6 +5,7 @@
 
 import React, { useState } from "react";
 import DefaultStartupMenuPage from "./pages/default/DefaultStartupMenuPage";
+import TutorialStartupMenuPage from "./pages/tutorial/TutorialStartupMenuPage";
 
 export enum CHATBOTS_STARTUP_MENU_PAGE {
   DEFAULT,
@@ -18,12 +19,15 @@ export interface IStartupMenuPageProps {
 
 const StartupMenu: React.FC = () => {
   const [menuPage, setMenuPage] = useState<CHATBOTS_STARTUP_MENU_PAGE>(
-    CHATBOTS_STARTUP_MENU_PAGE.DEFAULT,
+    CHATBOTS_STARTUP_MENU_PAGE.TUTORIAL,
   );
 
   switch (menuPage) {
     case CHATBOTS_STARTUP_MENU_PAGE.DEFAULT:
       return <DefaultStartupMenuPage setMenuPage={setMenuPage} />;
+    case CHATBOTS_STARTUP_MENU_PAGE.TUTORIAL:
+      return <TutorialStartupMenuPage setMenuPage={setMenuPage} />;
+
     default:
       return <>UNKNOWN CHATBOTS_STARTUP_MENU_PAGE: {menuPage}</>;
   }

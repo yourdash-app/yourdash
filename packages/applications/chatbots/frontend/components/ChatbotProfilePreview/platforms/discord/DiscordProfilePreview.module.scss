@@ -1,0 +1,43 @@
+/*!
+ * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
+.container {
+  display: flex;
+  border-radius: 8px;
+  background: #232428;
+  gap: 1rem;
+}
+
+.header {
+  .coloredSegment {
+    background: #3b48d8;
+  }
+
+  .badges {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .avatarContainer {
+    position: relative;
+
+    .avatar {
+      height: 80px;
+      border-radius: 100rem;
+      aspect-ratio: 1 / 1;
+    }
+
+    .status {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      border-radius: 100rem;
+      height: 1.75rem;
+      aspect-ratio: 1 / 1;
+      background: #23a55a;
+      border: 0.375rem solid #232428;
+    }
+  }
+}

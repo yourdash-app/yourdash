@@ -19,7 +19,7 @@ const Editor: React.FC = () => {
     editor
       .loadRawCode(
         "name.js",
-        "md",
+        "ts",
         `import { Component } from "react";
 
 // YourDash Javascript parser test script

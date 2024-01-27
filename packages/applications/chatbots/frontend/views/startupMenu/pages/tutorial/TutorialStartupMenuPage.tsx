@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import { MajorButton } from "web-client/src/ui/index";
+import { Heading, MajorButton } from "web-client/src/ui/index";
 import {
   CHATBOTS_STARTUP_MENU_PAGE,
   IStartupMenuPageProps,
@@ -16,7 +16,14 @@ const TutorialStartupMenuPage: React.FC<IStartupMenuPageProps> = ({
 }) => {
   return (
     <div>
-      <h1>Tutorial Page</h1>
+      <Heading className={styles.heading} level={1}>
+        Welcome to YourDash Chatbots
+      </Heading>
+
+      <p className={styles.description}>
+        YourDash Chatbots is an application for creating and managing chatbots
+        across multiple social platforms.
+      </p>
 
       <div className={styles.options}>
         <MajorButton
@@ -24,7 +31,7 @@ const TutorialStartupMenuPage: React.FC<IStartupMenuPageProps> = ({
             setMenuPage(CHATBOTS_STARTUP_MENU_PAGE.DEFAULT);
           }}
         >
-          Get Started
+          Continue
         </MajorButton>
       </div>
     </div>
