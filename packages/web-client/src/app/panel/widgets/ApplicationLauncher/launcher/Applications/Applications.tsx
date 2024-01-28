@@ -5,6 +5,7 @@
 
 import React, { useEffect } from "react";
 import IPanelApplicationsLauncherApplication from "shared/core/panel/applicationsLauncher/application";
+import clippy from "../../../../../../helpers/clippy";
 import LargeApplicationGrid from "./LargeGrid/LargeApplicationGrid";
 import { TextInput, YourDashIcon } from "../../../../../../ui/index";
 import styles from "./Applications.module.scss";
@@ -34,7 +35,7 @@ const ApplicationsLauncherApplications: React.FC<{
       <TextInput
         accessibleName={"Search Applications"}
         placeholder={"Search Applications"}
-        className={styles.searchBar}
+        className={clippy(styles.searchBar, "top-0 sticky z-10")}
         onKeyDown={(e) => {
           if (e.key === "Enter") {
             if (filteredApplications.length === 1) {

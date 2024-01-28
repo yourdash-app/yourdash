@@ -7,7 +7,23 @@ import React from "react";
 import { TabsContainer } from "web-client/src/ui/index";
 import DiscordProfilePreview from "./platforms/discord/DiscordProfilePreview";
 
-const ChatbotProfilePreview: React.FC = () => {
+export interface IChatbotProfilePreviewProps {
+  username: string;
+  displayName: string;
+  bio: string;
+  avatarUrl: string;
+  status: string;
+  commands: string[];
+}
+
+const ChatbotProfilePreview: React.FC<IChatbotProfilePreviewProps> = ({
+  username,
+  displayName,
+  bio,
+  avatarUrl,
+  status,
+  commands,
+}) => {
   return (
     <div>
       <h1>Chatbot Profile Preview</h1>

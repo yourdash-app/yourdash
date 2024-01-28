@@ -53,17 +53,35 @@ const DiscordProfilePreview: React.FC<IDiscordProfilePreviewProps> = ({
         <div className={styles.separator}></div>
         <button className={styles.addAppButton}>
           <Icon icon={YourDashIcon.PlusCircle} className={styles.addAppIcon} />
+          Add App
         </button>
-        <span>{status}</span>
-        <p>{bio}</p>
-        <section>
+
+        <h3 className={styles.sectionHeader}>ABOUT ME</h3>
+        <p className={styles.bio}>{bio}</p>
+
+        <div className={styles.status}>{status}</div>
+
+        <h3 className={styles.sectionHeader}>TRY MY COMMANDS</h3>
+        <section className={styles.tryMyCommands}>
           {tryMyCommands.map((tag, index) => {
-            return <div key={index}>{tag}</div>;
+            return (
+              <div className={styles.command} key={index}>
+                /{tag}
+              </div>
+            );
           })}
         </section>
+        <h3 className={styles.sectionHeader}>NOTE</h3>
+        <div className={styles.clickToAddNote}>
+          <span className={styles.text}>Click to add a note</span>
+        </div>
+        <input
+          className={styles.message}
+          type={"text"}
+          placeholder={`Message @${username}`}
+        />
       </div>
     </div>
   );
 };
-
 export default DiscordProfilePreview;

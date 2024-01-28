@@ -100,16 +100,11 @@ const AppLayout: React.FC = () => {
 
   // Standalone mode displays only the application and not the Panel
   if (isStandalone) {
-    if (
-      JSON.parse(
-        localStorage.getItem("installed_applications")?.toString() || "[]",
-      ).contains("")
-    )
-      return (
-        <div className={styles.applicationFrame}>
-          <Outlet />
-        </div>
-      );
+    return (
+      <div className={styles.applicationFrame}>
+        <Outlet />
+      </div>
+    );
   }
 
   return <PanelLayout />;
