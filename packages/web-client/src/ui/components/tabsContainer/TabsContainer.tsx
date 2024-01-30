@@ -17,7 +17,7 @@ interface ITabsContainerProps {
 }
 
 const TabsContainer: React.FC<ITabsContainerProps> = ({ tabs }) => {
-  const [activeTab, setActiveTab] = useState<ITab>(tabs[0]);
+  const [activeTab, setActiveTab] = useState<number>(0);
   const [indicatorWidth, setIndicatorWidth] = useState<number>(0);
   const [indicatorPosition, setIndicatorPosition] = useState<number>(0);
   const firstTabRef = React.useRef<HTMLDivElement>(null);
@@ -51,11 +51,11 @@ const TabsContainer: React.FC<ITabsContainerProps> = ({ tabs }) => {
               <div
                 ref={index === 0 ? firstTabRef : null}
                 className={`${styles.tab} ${
-                  activeTab === tab ? styles.active : ""
+                  activeTab === index ? styles.active : ""
                 }`}
                 key={tab.displayName}
                 onClick={(e) => {
-                  setActiveTab(tab);
+                  setActiveTab(index);
                   if (e.currentTarget) {
                     setIndicatorWidth((e.currentTarget.clientWidth / 8) * 6);
                     setIndicatorPosition(
@@ -71,7 +71,9 @@ const TabsContainer: React.FC<ITabsContainerProps> = ({ tabs }) => {
           );
         })}
       </section>
-      <section className={styles.componentContent}>{activeTab.content}</section>
+      <section className={styles.componentContent}>
+        {tabs[activeTab].content}
+      </section>
     </div>
   );
 };
