@@ -26,25 +26,28 @@ const ChatbotProfilePreview: React.FC<IChatbotProfilePreviewProps> = ({
 }) => {
   return (
     <div>
-      <h1>Chatbot Profile Preview</h1>
       <TabsContainer
         tabs={[
           {
             content: (
               <DiscordProfilePreview
-                username={"discybot"}
-                displayName={"Discy"}
-                bio={"Discy discord bot created by @ewsgit"}
-                avatarUrl={"https://picsum.photos/512"}
-                status={"Watching you"}
-                tryMyCommands={["ping", "pong"]}
+                username={username}
+                displayName={displayName}
+                bio={bio}
+                avatarUrl={avatarUrl}
+                status={status}
+                tryMyCommands={commands}
               />
             ),
             displayName: "Discord",
           },
           {
             content: <h1>Coming Soon</h1>,
-            displayName: "Coming Soon",
+            displayName: "Universal",
+          },
+          {
+            content: <h1>Coming Soon</h1>,
+            displayName: "Twitter",
           },
         ]}
       />

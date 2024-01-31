@@ -4,15 +4,31 @@
  */
 
 .page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  max-width: 60rem;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  gap: 1rem;
 }
 
 .header {
   display: flex;
   gap: 0.5rem;
   align-items: center;
-  justify-content: center;
+  width: 100%;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 2rem;
+
+  grid-column: span 2;
+}
+
+.previewPane {
+  width: max-content;
+}
+
+.optionsPane {
+
 }

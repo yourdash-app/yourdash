@@ -6,12 +6,14 @@
 .component {
   display: flex;
   flex-direction: column;
+  gap: 0.5rem;
 }
 
 .tabsContainer {
   position: relative;
   display: flex;
   flex-direction: row;
+  width: 100%;
 }
 
 .activeTabIndicator {
@@ -29,6 +31,9 @@
   transition: var(--transition);
   color: rgb(var(--button-fg));
   background: rgb(var(--button-bg));
+  user-select: none;
+  flex-grow: 1;
+  text-align: center;
 
   &:nth-child(2) {
     border-radius: var(--button-rounding) 0 0 var(--button-rounding);
