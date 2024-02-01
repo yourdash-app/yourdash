@@ -4,6 +4,7 @@
  */
 
 import React, { useEffect, useState } from "react";
+import clippy from "../../../helpers/clippy";
 import styles from "./TabsContainer.module.scss";
 
 export interface ITab {
@@ -43,29 +44,25 @@ const TabsContainer: React.FC<ITabsContainerProps> = ({ tabs }) => {
         {tabs.map((tab, index) => {
           return (
             <>
-              {index !== 0 && (
-                <div className={styles.tabSeparator}>
-                  <div className={styles.sepatator} />
-                </div>
-              )}
               <div
                 ref={index === 0 ? firstTabRef : null}
                 className={`${styles.tab} ${
                   activeTab === index ? styles.active : ""
                 }`}
                 key={tab.displayName}
-                onClick={(e) => {
+                onClick={() => {
                   setActiveTab(index);
-                  if (e.currentTarget) {
-                    setIndicatorWidth((e.currentTarget.clientWidth / 8) * 6);
-                    setIndicatorPosition(
-                      e.currentTarget.offsetLeft +
-                        e.currentTarget.clientWidth / 8,
-                    );
-                  }
                 }}
               >
                 {tab.displayName}
+                {activeTab === index && (
+                  <div
+                    className={clippy(
+                      styles.activeTabIndicator,
+                      "animate__animated animate__fadeInUp animate__duration_250ms",
+                    )}
+                  ></div>
+                )}
               </div>
             </>
           );

@@ -18,6 +18,7 @@ import styles from "./CreateBotPage.module.scss";
 const CreateBotPage: React.FC = () => {
   const [username, setUsername] = useState<string>("");
   const [displayName, setDisplayName] = useState<string>("");
+  const [bio, setBio] = useState<string>("");
   const [avatarUrl, setAvatarUrl] = useState<string>(YourDashIcon.ServerError);
 
   return (
@@ -37,7 +38,7 @@ const CreateBotPage: React.FC = () => {
           username={username}
           displayName={displayName}
           avatarUrl={avatarUrl}
-          bio={"Bio"}
+          bio={bio}
           status={"Status"}
           commands={["ping", "pong", "foo", "bar"]}
         />
@@ -69,7 +70,20 @@ const CreateBotPage: React.FC = () => {
           accessibleName={"Bot Name"}
           placeholder={"Bot Name"}
         />
-        <TextBox placeholder={"Description"} />
+        <TextBox
+          placeholder={"Description"}
+          onChange={(e) => {
+            setBio(e.currentTarget.value);
+          }}
+        />
+        <TextInput
+          accessibleName={"Avatar URL"}
+          placeholder={"Avatar URL"}
+          defaultValue={"internal://ServerError"}
+          onChange={(value) => {
+            setAvatarUrl(value);
+          }}
+        />
       </Card>
     </main>
   );

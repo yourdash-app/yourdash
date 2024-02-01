@@ -19,10 +19,12 @@
 .activeTabIndicator {
   position: absolute;
   bottom: 0;
+  left: 25%;
   height: 0.2rem;
   transition: var(--transition);
   background: rgb(var(--theme-400));
   border-radius: 0.25rem;
+  width: 50%;
 }
 
 .tab {
@@ -34,6 +36,7 @@
   user-select: none;
   flex-grow: 1;
   text-align: center;
+  position: relative;
 
   &:nth-child(2) {
     border-radius: var(--button-rounding) 0 0 var(--button-rounding);
