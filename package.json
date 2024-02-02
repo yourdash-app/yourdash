@@ -5,14 +5,9 @@
   "author": "ewsgit <ewsgit@duck.com>",
   "license": "MIT",
   "private": true,
-  "workspaces": {
-    "packages": [
+  "workspaces": [
       "packages/*"
-    ],
-    "nohoist": [
-      "electron"
-    ]
-  },
+  ],
   "scripts": {
     "yd:dev-web-client": "yarn --cwd ./packages/web-client dev",
     "yd:dev-backend": "yarn --cwd ./packages/backend dev --log-requests",

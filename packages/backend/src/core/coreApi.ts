@@ -577,9 +577,12 @@ export class CoreApi {
      *  ----------------------------------------------------------------
      */
 
+    console.time("core:load_modules");
+
     this.moduleManager
       .loadInstalledApplications()
       .then(() => {
+        console.timeEnd("core:load_modules");
         this.log.info("startup", "All modules loaded successfully");
       })
       .catch((err) => {

@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Dev Backend" type="NodeJSConfigurationType" application-parameters="--dev --log-requests" node-parameters="--watch" path-to-js-file="src/main.js" working-dir="$PROJECT_DIR$/packages/backend/">
+  <configuration default="false" name="Dev Backend" type="NodeJSConfigurationType" application-parameters="--dev --log-requests" path-to-node="wsl://Ubuntu@/home/ewsgit/.bun/bin/bun" node-parameters="--watch" path-to-js-file="src/main.ts" working-dir="$PROJECT_DIR$/packages/backend/">
     <method v="2" />
   </configuration>
 </component>
