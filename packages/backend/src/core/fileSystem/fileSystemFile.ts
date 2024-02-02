@@ -39,8 +39,8 @@ export default class FileSystemFile extends FileSystemEntity {
     return fs.stat(this.path);
   }
 
-  async read(as: "string" | "buffer" | "json") {
-    switch (as) {
+  async read(readAs: "string" | "buffer" | "json") {
+    switch (readAs) {
       case "string":
         return (await fs.readFile(this.path)).toString();
       case "buffer":
@@ -48,7 +48,7 @@ export default class FileSystemFile extends FileSystemEntity {
       case "json":
         return JSON.parse((await fs.readFile(this.path)).toString());
       default:
-        throw new Error(`Unsupported read type: ${as}`);
+        throw new Error(`Unsupported read type: ${readAs}`);
     }
   }
 
@@ -57,7 +57,16 @@ export default class FileSystemFile extends FileSystemEntity {
       throw new Error("YDSH: File is locked");
     }
 
-    await fs.writeFile(this.path, data);
+    if (!(await this.exists())) {
+      await fs.mkdir(pth.dirname(this.path), { recursive: true });
+    }
+
+    try {
+      await fs.writeFile(this.path, data);
+    } catch (e) {
+      console.error(e);
+      this.coreApi.log.error(`unable to write to ${this.path}`);
+    }
 
     return;
   }

@@ -55,9 +55,13 @@ const DiscordProfilePreview: React.FC<IDiscordProfilePreviewProps> = ({
           <Icon icon={YourDashIcon.PlusCircle} className={styles.addAppIcon} />
           Add App
         </button>
-        <h3 className={styles.sectionHeader}>ABOUT ME</h3>
-        <p className={styles.bio}>{bio}</p>
-        <div className={styles.status}>{status}</div>
+        {bio && (
+          <>
+            <h3 className={styles.sectionHeader}>ABOUT ME</h3>
+            <p className={styles.bio}>{bio}</p>
+          </>
+        )}
+        {status && <div className={styles.status}>{status}</div>}
         <h3 className={styles.sectionHeader}>TRY MY COMMANDS</h3>
         <section className={styles.tryMyCommands}>
           {tryMyCommands.map((tag, index) => {

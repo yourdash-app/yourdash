@@ -27,27 +27,51 @@ export default class CoreApiFileSystem {
   }
 
   async get(path: string) {
-    if ((await this.getType(path)) === "directory") {
-      return new FileSystemDirectory(this.coreApi, path);
-    } else {
-      return new FileSystemFile(this.coreApi, path);
+    try {
+      if ((await this.getType(path)) === "directory") {
+        return new FileSystemDirectory(this.coreApi, path);
+      } else {
+        return new FileSystemFile(this.coreApi, path);
+      }
+    } catch (_err) {
+      return null;
     }
   }
 
-  async getFile(path: string) {
-    if ((await this.getType(path)) === "file") {
-      return new FileSystemFile(this.coreApi, path);
+  async getOrCreateFile(path: string) {
+    if (!(await this.exists(path))) {
+      await fs.mkdir(pth.dirname(path), { recursive: true });
+    }
+
+    return new FileSystemFile(this.coreApi, path);
+  }
+
+  async getFile(path: string): Promise<FileSystemFile | null> {
+    try {
+      if ((await this.getType(path)) === "file") {
+        return new FileSystemFile(this.coreApi, path);
+      }
+    } catch (_err) {
+      return null;
     }
 
     return null;
   }
 
   async getDirectory(path: string) {
-    if ((await this.getType(path)) === "directory") {
-      return new FileSystemDirectory(this.coreApi, path);
+    try {
+      if ((await this.getType(path)) === "directory") {
+        return new FileSystemDirectory(this.coreApi, path);
+      }
+    } catch (_err) {
+      return null;
     }
 
     return null;
+  }
+
+  getOrCreateDirectory(path: string) {
+    return new FileSystemDirectory(this.coreApi, path);
   }
 
   async getType(path: string): Promise<"file" | "directory"> {

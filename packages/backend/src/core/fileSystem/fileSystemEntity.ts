@@ -36,4 +36,8 @@ export default class FileSystemEntity {
   getAllLocks(): FileSystemLock[] {
     return coreApi.fs.__internal__fileSystemLocks.get(this.path);
   }
+
+  exists(): Promise<boolean> {
+    return coreApi.fs.exists(this.path);
+  }
 }

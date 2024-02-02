@@ -4,18 +4,23 @@
  */
 
 import React, { useState } from "react";
+import csi from "web-client/src/helpers/csi";
 import {
   Card,
   Heading,
   IconButton,
+  MajorButton,
   TextBox,
   TextInput,
   YourDashIcon,
 } from "web-client/src/ui/index";
 import ChatbotProfilePreview from "../../components/ChatbotProfilePreview/ChatbotProfilePreview";
 import styles from "./CreateBotPage.module.scss";
+import { useNavigate } from "react-router-dom";
 
 const CreateBotPage: React.FC = () => {
+  const navigate = useNavigate();
+
   const [username, setUsername] = useState<string>("");
   const [displayName, setDisplayName] = useState<string>("");
   const [bio, setBio] = useState<string>("");
@@ -33,7 +38,7 @@ const CreateBotPage: React.FC = () => {
         <Heading level={2}>Create Chatbot</Heading>
       </header>
       <Card showBorder={true} className={styles.previewPane}>
-        <Heading level={3}>Profile Preview</Heading>
+        <Heading level={2}>Profile Preview</Heading>
         <ChatbotProfilePreview
           username={username}
           displayName={displayName}
@@ -44,7 +49,8 @@ const CreateBotPage: React.FC = () => {
         />
       </Card>
       <Card showBorder={true} className={styles.optionsPane}>
-        <Heading level={3}>Profile Options</Heading>
+        <Heading level={2}>Profile Options</Heading>
+        <Heading level={4}>Bot Username</Heading>
         <TextInput
           preceedingInlay={
             username && (
@@ -63,6 +69,7 @@ const CreateBotPage: React.FC = () => {
           accessibleName={"Bot Username"}
           placeholder={"Bot Username"}
         />
+        <Heading level={4}>Bot Name</Heading>
         <TextInput
           onChange={(value) => {
             setDisplayName(value);
@@ -70,12 +77,14 @@ const CreateBotPage: React.FC = () => {
           accessibleName={"Bot Name"}
           placeholder={"Bot Name"}
         />
+        <Heading level={4}>Bot Description</Heading>
         <TextBox
           placeholder={"Description"}
           onChange={(e) => {
             setBio(e.currentTarget.value);
           }}
         />
+        <Heading level={4}>Bot Avatar</Heading>
         <TextInput
           accessibleName={"Avatar URL"}
           placeholder={"Avatar URL"}
@@ -84,6 +93,29 @@ const CreateBotPage: React.FC = () => {
             setAvatarUrl(value);
           }}
         />
+        <MajorButton
+          onClick={() => {
+            csi.postJson(
+              "/app/chatbots/integration/discord/create-bot",
+              {
+                username,
+                displayName,
+                bio,
+                avatarUrl,
+              },
+              () => {
+                navigate(
+                  `/app/a/chatbots/team/${csi.getUserName()}/manage/${username}`,
+                );
+              },
+              (error) => {
+                alert(error);
+              },
+            );
+          }}
+        >
+          Create bot
+        </MajorButton>
       </Card>
     </main>
   );
