@@ -12,103 +12,146 @@ export default class CoreApiModuleManager {
   private readonly loadedModules: BackendModule[];
   private coreApi: CoreApi;
 
-  constructor( coreApi: CoreApi ) {
+  constructor(coreApi: CoreApi) {
     this.coreApi = coreApi;
-    this.loadedModules = []
+    this.loadedModules = [];
 
     return this;
   }
 
-  checkModule( modulePath: string ) {
-    if ( !this.coreApi.fs.exists( path.resolve( `${modulePath}/application.json` ) ) ) {
-      this.coreApi.log.error( "core", `application ${modulePath} does not contain an application.json file!` );
+  checkModule(modulePath: string) {
+    if (
+      !this.coreApi.fs.exists(path.resolve(`${modulePath}/application.json`))
+    ) {
+      this.coreApi.log.error(
+        "core",
+        `application ${modulePath} does not contain an application.json file!`,
+      );
       return false;
     }
 
     // Not Required (use 'placeholder.avif' instead)
-    if ( !this.coreApi.fs.exists( path.resolve( `${modulePath}/icon.avif` ) ) ) {
-      this.coreApi.log.warning( "core", `application ${modulePath} does not contain an icon.avif file!` );
+    if (!this.coreApi.fs.exists(path.resolve(`${modulePath}/icon.avif`))) {
+      this.coreApi.log.warning(
+        "core",
+        `application ${modulePath} does not contain an icon.avif file!`,
+      );
     }
 
     // Only required if the application needs a backend
-    if ( !this.coreApi.fs.exists( path.resolve( `${modulePath}/backend` ) ) ) {
+    if (!this.coreApi.fs.exists(path.resolve(`${modulePath}/backend`))) {
       return false;
     }
 
     // Only required if the application needs a backend
-    return this.coreApi.fs.exists( path.resolve( `${modulePath}/backend/index.js` ) );
+    return this.coreApi.fs.exists(
+      path.resolve(`${modulePath}/backend/index.js`),
+    );
   }
 
-  async loadModule( moduleName: string, modulePath: string ) {
+  async loadModule(moduleName: string, modulePath: string) {
     // if the module is not valid or doesn't require a backend module, return
-    if ( !this.checkModule( modulePath ) ) {
+    if (!this.checkModule(modulePath)) {
       return;
     }
 
-    if ( !await this.coreApi.fs.exists( `${modulePath}/index.js` ) ) {
-      this.coreApi.log.info( "module_manager", `Skipped loading backend-less module: "${moduleName}"` )
+    if (!(await this.coreApi.fs.exists(`${modulePath}/index.ts`))) {
+      this.coreApi.log.info(
+        "module_manager",
+        `Skipped loading backend-less module: "${moduleName}"`,
+      );
       return;
     }
 
-    this.coreApi.log.info( "module_manager", `Loading module: "${moduleName}"` )
+    this.coreApi.log.info("module_manager", `Loading module: "${moduleName}"`);
 
     try {
-      const module = await import( `${fileUrl( modulePath )}/index.js` );
-      if ( !module.default ) {
-        this.coreApi.log.error( "module_manager", `Unable to load ${moduleName}! This application does not contain a default export!` );
+      const module = await import(`${fileUrl(modulePath)}/index.ts`);
+      if (!module.default) {
+        this.coreApi.log.error(
+          "module_manager",
+          `Unable to load ${moduleName}! This application does not contain a default export!`,
+        );
         return;
       }
-      new module.default( { moduleName: moduleName, modulePath: modulePath } );
-      this.loadedModules.push( module );
-      this.coreApi.log.success( "module_manager", `Loaded module: "${moduleName}"` )
-    } catch ( err ) {
-      this.coreApi.log.error( "module_manager", `Invalid module: "${moduleName}"`, err );
+      new module.default({ moduleName: moduleName, modulePath: modulePath });
+      this.loadedModules.push(module);
+      this.coreApi.log.success(
+        "module_manager",
+        `Loaded module: "${moduleName}"`,
+      );
+    } catch (err) {
+      this.coreApi.log.error(
+        "module_manager",
+        `Invalid module: "${moduleName}"`,
+        err,
+      );
     }
 
     return this;
   }
 
-  unloadModule( module: BackendModule ) {
-    const index = this.loadedModules.indexOf( module );
-    if ( index > -1 ) {
-      this.loadedModules.splice( index, 1 );
+  unloadModule(module: BackendModule) {
+    const index = this.loadedModules.indexOf(module);
+    if (index > -1) {
+      this.loadedModules.splice(index, 1);
     }
 
     // Each module should be able to have an unload method, but this is not required
     // we should check if it supports this and unload if it does. Otherwise, we should prompt the admin to restart the server
-    if ( module.unload ) {
+    if (module.unload) {
       module.unload();
-      this.coreApi.log.info( "module_manager", `Unloaded module: "${module.moduleName}"` )
-      return
+      this.coreApi.log.info(
+        "module_manager",
+        `Unloaded module: "${module.moduleName}"`,
+      );
+      return;
     }
 
-    this.coreApi.log.info( "module_manager", `A server restart is required to unload module: "${module.moduleName}"!` );
+    this.coreApi.log.info(
+      "module_manager",
+      `A server restart is required to unload module: "${module.moduleName}"!`,
+    );
 
     return this;
   }
 
   getLoadedModules(): BackendModule[] {
-    return this.loadedModules
+    return this.loadedModules;
   }
 
   async loadInstalledApplications() {
-    const installedApplications = this.coreApi.globalDb.get( "core:installedApplications" )
+    const installedApplications = this.coreApi.globalDb.get(
+      "core:installedApplications",
+    );
 
-    for ( const applicationName of installedApplications ) {
-      const modulePath = path.resolve( path.join( process.cwd(), "../applications", applicationName, "./backend" ) )
+    for (const applicationName of installedApplications) {
+      const modulePath = path.resolve(
+        path.join(
+          process.cwd(),
+          "../applications",
+          applicationName,
+          "./backend",
+        ),
+      );
 
-      await this.loadModule( applicationName, modulePath );
+      await this.loadModule(applicationName, modulePath);
     }
 
-    if ( this.getLoadedModules().length === 0 ) {
-      this.coreApi.log.warning( "module_manager", "No modules loaded!" )
-      return
+    if (this.getLoadedModules().length === 0) {
+      this.coreApi.log.warning("module_manager", "No modules loaded!");
+      return;
     }
 
-    this.coreApi.log.info( "module_manager", `Loaded ${this.getLoadedModules().length} modules` );
+    this.coreApi.log.info(
+      "module_manager",
+      `Loaded ${this.getLoadedModules().length} modules`,
+    );
   }
 
-  getModule( moduleName: string ): BackendModule | undefined {
-    return this.loadedModules.find( module => module.moduleName === moduleName )
+  getModule(moduleName: string): BackendModule | undefined {
+    return this.loadedModules.find(
+      (module) => module.moduleName === moduleName,
+    );
   }
 }
