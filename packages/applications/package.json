@@ -18,7 +18,9 @@
     "xml2js": "^0.6.2"
   },
   "scripts": {
-    "postinstall": "bun run gulp"
+    "postinstall": "run-script-os",
+    "postinstall:nix": "bun run gulp",
+    "postinstall:win32": "yarn run gulp"
   },
   "optionalDependencies": {
     "tree-sitter-css": "^0.20.0",
