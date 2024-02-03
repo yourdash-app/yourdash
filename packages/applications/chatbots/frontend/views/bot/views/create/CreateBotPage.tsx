@@ -14,7 +14,7 @@ import {
   TextInput,
   YourDashIcon,
 } from "web-client/src/ui/index";
-import ChatbotProfilePreview from "../../components/ChatbotProfilePreview/ChatbotProfilePreview";
+import ChatbotProfilePreview from "../../../../components/ChatbotProfilePreview/ChatbotProfilePreview";
 import styles from "./CreateBotPage.module.scss";
 import { useNavigate } from "react-router-dom";
 

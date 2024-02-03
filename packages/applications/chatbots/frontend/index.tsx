@@ -6,7 +6,7 @@
 import React from "react";
 import { Routes, Route } from "react-router";
 import ChatbotsApplication from "./chatbotsApplication";
-import CreateBotPage from "./views/createBot/CreateBotPage";
+import CreateBotPage from "./views/bot/views/create/CreateBotPage";
 
 const DiffusionLabRouter: React.FC = () => {
   return (
