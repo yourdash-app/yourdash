@@ -51,7 +51,7 @@
   },
   "type": "module",
   "scripts": {
-    "start": "bun ./src/main.js --color=full --log-requests",
-    "dev": "bun ./src/main.js --dev --log-requests"
+    "start": "bun ./src/main.ts --color=full --log-requests",
+    "dev": "bun ./src/main.ts --dev --log-requests"
   }
 }
