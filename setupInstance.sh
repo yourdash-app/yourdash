@@ -12,14 +12,14 @@ cd / || exit
 
 # does /yourdash exist?
 if [ ! -d /yourdash ]; then
-  git clone https://github.com/yourdash/yourdash.git
+  sudo git clone https://github.com/yourdash/yourdash.git
   cd yourdash || exit
 else
   cd yourdash || exit
-  git pull
+  sudo git pull
 fi
 
-bun install
+sudo bun install
 sudo cp /yourdash/packages/backend/src/defaults/yourdash.service /etc/systemd/system/yourdash.service
 sudo systemctl enable yourdash
 sudo systemctl start yourdash
