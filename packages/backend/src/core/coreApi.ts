@@ -184,6 +184,18 @@ export class CoreApi {
                     "startup",
                     "Attempted to kill port 3563, no process running was currently using port 3563",
                   );
+
+                  this.httpServer.listen(3563, () => {
+                    this.log.success(
+                      "startup",
+                      "server now listening on port 3563!",
+                    );
+                    this.log.success(
+                      "startup",
+                      "YourDash initialization complete!",
+                    );
+                    this.loadCoreEndpoints();
+                  });
                   return;
                 }
 
