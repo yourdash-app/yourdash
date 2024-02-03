@@ -72,19 +72,23 @@
 .top {
   @include horizontal;
   border-bottom: 1px rgb(var(--container-border)) solid;
+  padding-bottom: calc(var(--app-panel-padding) + 1px);
 }
 
 .right {
   @include vertical;
   border-left: 1px rgb(var(--container-border)) solid;
+  padding-left: calc(var(--app-panel-padding) + 1px);
 }
 
 .bottom {
   @include horizontal;
   border-top: 1px rgb(var(--container-border)) solid;
+  padding-top: calc(var(--app-panel-padding) + 1px);
 }
 
 .left {
   @include vertical;
   border-right: 1px rgb(var(--container-border)) solid;
+  padding-right: calc(var(--app-panel-padding) + 1px);
 }

@@ -5,7 +5,6 @@
 
 import * as React from "react";
 import csi from "web-client/src/helpers/csi";
-import useTranslate from "web-client/src/helpers/i18n";
 import loadable from "@loadable/component";
 import { IconButton, YourDashIcon } from "web-client/src/ui/index";
 import { useNavigate } from "react-router";
@@ -13,7 +12,8 @@ import { useNavigate } from "react-router";
 const DashboardLayout = loadable(
   () => import("./layouts/dashboard/DashboardLayout"),
 );
-const BrowserLayout = loadable(() => import("./layouts/browser/BrowserLayout"));
+// TODO: recreate the browserLayout
+// const BrowserLayout = loadable(() => import("./layouts/browser/BrowserLayout"));
 
 const DashApplication: React.FC = () => {
   const navigate = useNavigate();
