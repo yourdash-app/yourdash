@@ -182,7 +182,7 @@ export class CoreApi {
                 if (err.message === "No process running on port") {
                   this.log.info(
                     "startup",
-                    "Not killing port 3563, no process running currently using port 3563",
+                    "Attempted to kill port 3563, no process running was currently using port 3563",
                   );
                   return;
                 }
@@ -545,11 +545,9 @@ export class CoreApi {
           ).toString();
 
           if (database) {
-            (await this.users.__internal__getUserDatabase(username))
-              .clear()
-              .merge(JSON.parse(database));
+            (await user.getDatabase()).clear().merge(JSON.parse(database));
           } else {
-            (await this.users.__internal__getUserDatabase(username)).clear();
+            (await user.getDatabase()).clear();
             await fs.writeFile(
               path.join(user.path, "core/user_db.json"),
               JSON.stringify({}),
@@ -563,7 +561,7 @@ export class CoreApi {
       if (
         this.users
           .__internal__getSessionsDoNotUseOutsideOfCore()
-          [username].find((session) => session.sessionToken === token)
+          [username]?.find((session) => session.sessionToken === token)
       ) {
         return next();
       }
@@ -589,7 +587,7 @@ export class CoreApi {
         this.log.error("startup", "Failed to load all modules", err.toString());
       });
 
-    this.expressServer.get("/core/sessions", async (req, res) => {
+    this.expressServer.get("/user/sessions", async (req, res) => {
       const { username } = req.headers as { username: string };
 
       const user = this.users.get(username);

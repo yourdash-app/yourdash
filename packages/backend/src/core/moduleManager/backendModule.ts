@@ -70,7 +70,7 @@ export default class BackendModule {
       getUser(req: ExpressRequest) {
         const username = req.headers.username as string;
 
-        return new YourDashUser(username);
+        return coreApi.users.get(username);
       },
       core: coreApi,
       path: args.modulePath,
