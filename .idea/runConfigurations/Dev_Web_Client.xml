@@ -5,8 +5,7 @@
     <scripts>
       <script value="yd:dev-web-client" />
     </scripts>
-    <node-interpreter value="wsl://Ubuntu@/home/ewsgit/.bun/bin/bun" />
-    <package-manager value="\\wsl.localhost\Ubuntu\home\ewsgit\.bun\bin\bun" />
+    <node-interpreter value="project" />
     <envs />
     <method v="2" />
   </configuration>

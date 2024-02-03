@@ -1,5 +1,12 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Dev Backend" type="NodeJSConfigurationType" application-parameters="--dev --log-requests" path-to-node="wsl://Ubuntu@/home/ewsgit/.bun/bin/bun" node-parameters="--hot" path-to-js-file="src/main.ts" working-dir="$PROJECT_DIR$/packages/backend/">
+  <configuration default="false" name="Dev Backend" type="js.build_tools.npm">
+    <package-json value="$PROJECT_DIR$/package.json" />
+    <command value="run" />
+    <scripts>
+      <script value="yd:dev-backend" />
+    </scripts>
+    <node-interpreter value="project" />
+    <envs />
     <method v="2" />
   </configuration>
 </component>
