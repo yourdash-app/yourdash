@@ -16,10 +16,14 @@ if [ ! -d /yourdash ]; then
   cd yourdash || exit
 else
   cd yourdash || exit
-  sudo git pull
+  git pull
 fi
 
-sudo bun install
+git config --global --add safe.directory /yourdash
+
+sudo chmod 777 -R /yourdash
+
+bun install
 sudo cp /yourdash/packages/backend/src/defaults/yourdash.service /etc/systemd/system/yourdash.service
 sudo systemctl enable yourdash
 sudo systemctl start yourdash
