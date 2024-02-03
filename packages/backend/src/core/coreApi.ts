@@ -35,7 +35,7 @@ import CoreApiLoadManagement from "./coreApiLoadManagement.js";
 import { YOURDASH_INSTANCE_DISCOVERY_STATUS } from "./types/discoveryStatus.js";
 import { userAvatarSize } from "./user/avatarSize.js";
 import YourDashUser from "./user/index.js";
-import { YOURDASH_SESSION_TYPE } from "shared/core/session.js";
+import { YOURDASH_SESSION_TYPE } from "../../../shared/core/session.js";
 import CoreApiWebsocketManager from "./coreApiWebsocketManager.js";
 import CoreApiUtils from "./utils/utils.js";
 

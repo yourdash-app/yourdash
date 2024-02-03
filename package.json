@@ -6,7 +6,7 @@
   "license": "MIT",
   "private": true,
   "workspaces": [
-      "packages/*"
+    "packages/*"
   ],
   "scripts": {
     "yd:dev-web-client": "yarn --cwd ./packages/web-client dev",
@@ -20,7 +20,12 @@
     "yd:dev-compile-backend": "yarn --cwd ./packages/backend compile-dev"
   },
   "dependencies": {
+    "@discordjs/voice": "^0.16.1",
+    "bufferutil": "^4.0.8",
+    "discord.js": "^14.14.1",
     "eslint-config-prettier": "^9.1.0",
-    "prettier": "^3.1.1"
+    "prettier": "^3.1.1",
+    "utf-8-validate": "^6.0.3",
+    "zlib-sync": "^0.1.9"
   }
 }
