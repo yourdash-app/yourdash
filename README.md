@@ -51,7 +51,7 @@ Some of the YourDash projects include
 - Version Control
   - [Git](https://git-scm.com/)
 
-### Installation and setup
+### Installation and setup (Linux) (Recommended Development Method)
 
 #### Install bun
 ```shell
@@ -69,6 +69,25 @@ bun run yd:dev-backend
 #### Run YourDash web in dev mode
 ```shell
 bun run yd:dev-web-client
+```
+
+### Installation and setup (Windows)
+
+#### Install yarn
+```shell
+npm i -g yarn
+```
+#### Install npm dependencies
+```shell
+yarn install
+```
+#### Run YourDash backend in dev mode
+```shell
+yarn run yd:dev-backend
+```
+#### Run YourDash web in dev mode
+```shell
+yarn run yd:dev-web-client
 ```
 
 #### Notes
