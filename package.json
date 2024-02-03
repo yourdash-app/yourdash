@@ -15,9 +15,7 @@
     "yd:setup-project": "yarn && yarn --cwd ./packages/backend compile-all && yarn --cwd ./packages/web-client generate-application-routes",
     "yd:build-production": "yarn --cwd ./packages/backend compile-all && yarn --cwd ./packages/web-client build",
     "opengfx:dev": "yarn --cwd ./packages/opengfx-engine dev",
-    "yd:dev-desktop-client": "yarn --cwd ./packages/desktop-client/ dev",
-    "yd:compile-backend": "yarn --cwd ./packages/backend compile",
-    "yd:dev-compile-backend": "yarn --cwd ./packages/backend compile-dev"
+    "yd:dev-desktop-client": "yarn --cwd ./packages/desktop-client/ dev"
   },
   "dependencies": {
     "@discordjs/voice": "^0.16.1",

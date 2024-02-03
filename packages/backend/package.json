@@ -47,13 +47,11 @@
     "xml2js": "^0.6.2",
     "shared": "../shared",
     "applications": "../applications",
-    "backend": "../backend"
+    "backend": "."
   },
   "type": "module",
   "scripts": {
-    "compile-all": "tsc",
-    "start": "node ./src/main.js --color=full --log-requests",
-    "dev": "node ./src/main.js --dev --log-requests",
-    "compile-dev": "tsc --watch"
+    "start": "bun ./src/main.js --color=full --log-requests",
+    "dev": "bun ./src/main.js --dev --log-requests"
   }
 }
