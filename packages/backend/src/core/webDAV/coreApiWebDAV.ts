@@ -58,6 +58,8 @@ export default class CoreApiWebDAV {
       }
 
       function failAuth() {
+        console.warn("WEBDAV FAIL AUTH???");
+
         res.status(401);
         res.setHeader("WWW-Authenticate", 'Basic realm="YourDash"');
         return res.json({ error: "authorization fail" });

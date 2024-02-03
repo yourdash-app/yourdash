@@ -524,7 +524,6 @@ export class CoreApi {
 
       function failAuth() {
         res.status(401);
-        coreApi.log.info("REQUEST", "Unauthorized");
         return res.json({ error: "authorization fail" });
       }
 
