@@ -197,6 +197,8 @@ export default class CoreApiVerifyFileSystem {
     const ADMIN_USER = this.coreApi.users.get("admin");
 
     if (!(await ADMIN_USER.doesExist())) {
+      this.coreApi.log.warning("verify_fs", "Creating admin user...");
+
       await ADMIN_USER.verify();
       await ADMIN_USER.setName({
         first: "Admin",
@@ -205,6 +207,8 @@ export default class CoreApiVerifyFileSystem {
       await ADMIN_USER.setPermissions([
         YOURDASH_USER_PERMISSIONS.Administrator,
       ]);
+    } else {
+      this.coreApi.log.info("verify_fs", "Admin user already exists");
     }
 
     return 1;

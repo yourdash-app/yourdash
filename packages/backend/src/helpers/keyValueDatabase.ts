@@ -5,7 +5,7 @@
 
 import { promises as fs, writeFile } from "fs";
 
-import KVD from "../../../shared/core/database.js";
+import KVD from "shared/core/database.js";
 
 export default class KeyValueDatabase extends KVD {
   constructor() {

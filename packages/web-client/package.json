@@ -9,7 +9,9 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "visualize-bundle": "vite-bundle-visualizer",
-    "generate-application-routes": "node toolchain/generateApplicationRoutes.js"
+    "generate-application-routes": "run-script-os",
+    "generate-application-routes:nix": "bun toolchain/generateApplicationRoutes.js",
+    "generate-application-routes:win32": "node toolchain/generateApplicationRoutes.js"
   },
   "dependencies": {
     "@floating-ui/react": "^0.26.3",
@@ -52,8 +54,6 @@
     "vite-plugin-dynamic-import": "^1.5.0",
     "web-tree-sitter": "^0.20.8",
     "xml2js": "^0.6.2",
-    "yarn": "^1.22.19",
-    "shared": "../shared",
-    "applications": "../applications"
+    "yarn": "^1.22.19"
   }
 }

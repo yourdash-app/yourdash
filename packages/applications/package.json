@@ -11,15 +11,11 @@
   },
   "dependencies": {
     "@types/react": "^18.2.21",
-    "@types/react-chartjs-2": "^2.5.7",
     "chart.js": "^4.4.0",
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
-    "xml2js": "^0.6.2",
-    "backend": "../backend",
-    "web-client": "../web-client",
-    "shared": "../shared"
+    "xml2js": "^0.6.2"
   },
   "scripts": {
     "postinstall": "bun run gulp"
