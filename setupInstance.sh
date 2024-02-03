@@ -12,7 +12,7 @@ cd / || exit
 
 # does /yourdash exist?
 if [ ! -d /yourdash ]; then
-  sudo git clone https://github.com/yourdash/yourdash.git
+  sudo git clone https://github.com/yourdash/yourdash.git -b dev
   cd yourdash || exit
 else
   cd yourdash || exit
