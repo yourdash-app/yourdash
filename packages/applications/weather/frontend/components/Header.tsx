@@ -1,20 +1,20 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 @Ewsgit and YourDash contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 import React from "react";
-import Heading from "web-client/src/ui/components/heading/Heading";
+import Heading from "@yourdash/web-client/src/ui/components/heading/Heading";
 import { IWeatherDataForLocation } from "../../shared/weatherDataForLocation";
-import { IconButton } from "web-client/src/ui/index";
-import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
+import { IconButton } from "@yourdash/web-client/src/ui/index";
+import { YourDashIcon } from "@yourdash/web-client/src/ui/components/icon/iconDictionary";
 import generateWeatherDescriptionFromData from "../helpers/generateWeatherDescriptionFromData";
 import getWeatherConditionFromState from "../helpers/getWeatherConditionFromState";
-import useTranslate from "web-client/src/helpers/i18n";
+import useTranslate from "@yourdash/web-client/src/helpers/i18n";
 import getWeatherBackgroundForCondition from "../helpers/getWeatherBackgroundForCondition";
 import WeatherApplicationDaysCarousel from "./DaysCarousel";
 import styles from "./Header.module.scss";
-import clippy from "web-client/src/helpers/clippy";
+import clippy from "@yourdash/web-client/src/helpers/clippy";
 import { WEATHER_STATES } from "../../shared/weatherStates";
 import { useNavigate } from "react-router";
 
@@ -25,9 +25,12 @@ interface WeatherApplicationLocationPageHeaderProps {
   selectedDay: number;
 }
 
-const WeatherApplicationLocationPageHeader: React.FC<
-  WeatherApplicationLocationPageHeaderProps
-> = ({ weatherData, scrollContainerRef, setSelectedDay, selectedDay }) => {
+const WeatherApplicationLocationPageHeader: React.FC<WeatherApplicationLocationPageHeaderProps> = ({
+  weatherData,
+  scrollContainerRef,
+  setSelectedDay,
+  selectedDay,
+}) => {
   const navigate = useNavigate();
   const trans = useTranslate("weather");
   const [isStuck, setIsStuck] = React.useState<boolean>(false);
@@ -59,9 +62,7 @@ const WeatherApplicationLocationPageHeader: React.FC<
   return (
     <header
       style={{
-        backgroundImage: `url(${getWeatherBackgroundForCondition(
-          weatherData.currentWeather.weatherState,
-        )}`,
+        backgroundImage: `url(${getWeatherBackgroundForCondition(weatherData.currentWeather.weatherState)}`,
       }}
       className={"bg-cover bg-center sticky top-0 left-0 w-full"}
     >
@@ -78,9 +79,7 @@ const WeatherApplicationLocationPageHeader: React.FC<
             }}
           />
           <div className={"flex flex-col"}>
-            <h1 className={"tracking-wide font-bold text-5xl m-0"}>
-              {weatherData.location.name},
-            </h1>
+            <h1 className={"tracking-wide font-bold text-5xl m-0"}>{weatherData.location.name},</h1>
             <div className={"flex gap-2 text-xl"}>
               <span>{weatherData.location.admin1},</span>
               <span>{weatherData.location.country}</span>
@@ -97,16 +96,8 @@ const WeatherApplicationLocationPageHeader: React.FC<
           />
         </section>
       </section>
-      <section
-        className={clippy(styles.currentWeatherHeader, isStuck && styles.stuck)}
-      >
-        <Heading>
-          {generateWeatherDescriptionFromData(
-            trans,
-            weatherData.currentWeather,
-            false,
-          )}
-        </Heading>
+      <section className={clippy(styles.currentWeatherHeader, isStuck && styles.stuck)}>
+        <Heading>{generateWeatherDescriptionFromData(trans, weatherData.currentWeather, false)}</Heading>
       </section>
       <WeatherApplicationDaysCarousel
         setSelectedDay={(day: number) => {

@@ -1,34 +1,28 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 @Ewsgit and YourDash contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 import React, { useEffect, useState } from "react";
-import useTranslate from "web-client/src/helpers/i18n";
-import { Card, Row, Spinner } from "web-client/src/ui";
-import csi from "web-client/src/helpers/csi";
-import generateWeatherDescriptionFromData from "applications/weather/frontend/helpers/generateWeatherDescriptionFromData";
-import getWeatherIconFromState from "applications/weather/frontend/helpers/getWeatherIconFromState";
-import { IWeatherDataForLocation } from "applications/weather/shared/weatherDataForLocation";
+import useTranslate from "@yourdash/web-client/src/helpers/i18n";
+import { Card, Row, Spinner } from "@yourdash/web-client/src/ui";
+import csi from "@yourdash/web-client/src/helpers/csi";
+import generateWeatherDescriptionFromData from "@yourdash/applications/weather/frontend/helpers/generateWeatherDescriptionFromData";
+import getWeatherIconFromState from "@yourdash/applications/weather/frontend/helpers/getWeatherIconFromState";
+import { IWeatherDataForLocation } from "@yourdash/applications/weather/shared/weatherDataForLocation";
 import HourlyConditionsHour from "./components/HourlyConditionsHour";
 import styles from "./WeatherHourlyConditionsWidget.module.scss";
 
 const WeatherHourlyConditionsWidget: React.FC = () => {
   const trans = useTranslate("weather");
-  const [weatherData, setWeatherData] =
-    useState<IWeatherDataForLocation | null>(null);
+  const [weatherData, setWeatherData] = useState<IWeatherDataForLocation | null>(null);
 
   useEffect(() => {
     // fetch the user's defined location but default to London
-    csi.getJson(
-      `/app/weather/location/${
-        csi.userDB.get("app:dash:widget:weather:location") || "2643743"
-      }`,
-      (res) => {
-        setWeatherData(res);
-        console.log(res);
-      },
-    );
+    csi.getJson(`/app/weather/location/${csi.userDB.get("app:dash:widget:weather:location") || "2643743"}`, (res) => {
+      setWeatherData(res);
+      console.log(res);
+    });
   }, []);
 
   if (!weatherData) {
@@ -38,13 +32,7 @@ const WeatherHourlyConditionsWidget: React.FC = () => {
   return (
     <Card className={styles.widget}>
       <section className={styles.header}>
-        <div>
-          {generateWeatherDescriptionFromData(
-            trans,
-            weatherData.currentWeather,
-            false,
-          )}
-        </div>
+        <div>{generateWeatherDescriptionFromData(trans, weatherData.currentWeather, false)}</div>
       </section>
       <Row className={styles.hours}>
         {weatherData?.hourly.time.map((hour: string, ind: number) => {
@@ -62,9 +50,7 @@ const WeatherHourlyConditionsWidget: React.FC = () => {
           }
 
           // eslint-disable-next-line no-magic-numbers
-          const time = `${
-            date.getHours() < 10 ? `0${date.getHours()}` : date.getHours()
-          }:${
+          const time = `${date.getHours() < 10 ? `0${date.getHours()}` : date.getHours()}:${
             date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes()
           }`;
 
@@ -81,10 +67,7 @@ const WeatherHourlyConditionsWidget: React.FC = () => {
           );
         })}
       </Row>
-      <a
-        href={"https://open-meteo.com"}
-        className={"mt-auto ml-auto pr-1.5 pt-1 text-[#ffffff55] text-sm"}
-      >
+      <a href={"https://open-meteo.com"} className={"mt-auto ml-auto pr-1.5 pt-1 text-[#ffffff55] text-sm"}>
         {"Powered by open-meteo.com"}
       </a>
     </Card>

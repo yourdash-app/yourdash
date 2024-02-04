@@ -1,17 +1,15 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 @Ewsgit and YourDash contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 import * as React from "react";
 import SettingCategoryComponent from "../../components/SettingCategoryComponent";
 import BasePageLayout from "../../components/BasePageLayout";
-import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
+import { YourDashIcon } from "@yourdash/web-client/src/ui/components/icon/iconDictionary";
 
 const Index: React.FC = () => (
-  <BasePageLayout
-    title={"Personalization"}
-  >
+  <BasePageLayout title={"Personalization"}>
     <SettingCategoryComponent
       href={"/app/a/settings/personalization/panel"}
       description={"Customize your panel"}

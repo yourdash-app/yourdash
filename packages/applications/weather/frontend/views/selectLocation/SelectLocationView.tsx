@@ -1,15 +1,15 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 @Ewsgit and YourDash contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import csi from "web-client/src/helpers/csi";
-import { Card, TextInput } from "web-client/src/ui/index";
-import useTranslate from "web-client/src/helpers/i18n";
+import csi from "@yourdash/web-client/src/helpers/csi";
+import { Card, TextInput } from "@yourdash/web-client/src/ui/index";
+import useTranslate from "@yourdash/web-client/src/helpers/i18n";
 import APPLICATION_ICON from "../../assets/weatherIcons/partly_cloudy.svg";
-import clippy from "web-client/src/helpers/clippy";
+import clippy from "@yourdash/web-client/src/helpers/clippy";
 import { ILocationSearchResult } from "../../../shared/locationSearchResult";
 import THUNDER_BACKGROUND from "../../assets/weatherBackgrounds/thunder.jpg";
 import CLOUDY_BACKGROUND from "../../assets/weatherBackgrounds/cloudy1.jpg";
@@ -28,12 +28,8 @@ const BACKGROUND_IMAGES: string[] = [
 const SelectLocationView: React.FC = () => {
   const navigate = useNavigate();
   const trans = useTranslate("weather");
-  const [locationQuery, setLocationQuery] = useState<ILocationSearchResult[]>(
-    [],
-  );
-  const [previousWeatherLocations, setPreviousWeatherLocations] = useState<
-    { name: string; id: number }[]
-  >([]);
+  const [locationQuery, setLocationQuery] = useState<ILocationSearchResult[]>([]);
+  const [previousWeatherLocations, setPreviousWeatherLocations] = useState<{ name: string; id: number }[]>([]);
   const [backgroundImage, setBackgroundImage] = useState<string>("");
 
   useEffect(() => {
@@ -48,25 +44,15 @@ const SelectLocationView: React.FC = () => {
 
   return (
     <main
-      className={
-        "flex h-full w-full items-center justify-center overflow-auto relative flex-col bg-cover bg-center"
-      }
+      className={"flex h-full w-full items-center justify-center overflow-auto relative flex-col bg-cover bg-center"}
       style={{ backgroundImage: `url(${backgroundImage})` }}
     >
-      <header
-        className={
-          "pt-2 pb-2 pl-4 flex items-center absolute top-0 left-0 w-full gap-2"
-        }
-      >
+      <header className={"pt-2 pb-2 pl-4 flex items-center absolute top-0 left-0 w-full gap-2"}>
         <img src={APPLICATION_ICON} alt={""} className={"aspect-square h-16"} />
-        <h2 className={"text-base-50 font-semibold text-4xl drop-shadow-lg"}>
-          {trans("APPLICATION_BRANDING")}
-        </h2>
+        <h2 className={"text-base-50 font-semibold text-4xl drop-shadow-lg"}>{trans("APPLICATION_BRANDING")}</h2>
       </header>
       <Card
-        className={
-          "gap-2 flex flex-col p-4 w-full lg:max-w-4xl md:max-w-2xl max-w-[calc(100vw-1rem)] shadow-2xl"
-        }
+        className={"gap-2 flex flex-col p-4 w-full lg:max-w-4xl md:max-w-2xl max-w-[calc(100vw-1rem)] shadow-2xl"}
         showBorder
       >
         <div className={"flex gap-2 items-center justify-center w-full"}>
@@ -82,12 +68,9 @@ const SelectLocationView: React.FC = () => {
               }
             }}
             onChange={(value: string) => {
-              csi.getJson(
-                `/app/weather/geolocation/${value.replaceAll(" ", "+")}`,
-                (resp) => {
-                  setLocationQuery(resp || []);
-                },
-              );
+              csi.getJson(`/app/weather/geolocation/${value.replaceAll(" ", "+")}`, (resp) => {
+                setLocationQuery(resp || []);
+              });
             }}
             label={trans("LOCATION")}
           />
@@ -111,19 +94,13 @@ const SelectLocationView: React.FC = () => {
           {/* }}/>*/}
         </div>
         {locationQuery.length !== 0 && (
-          <div
-            className={clippy(
-              "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 w-full",
-            )}
-          >
+          <div className={clippy("grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 w-full")}>
             {locationQuery.map((item, ind) => (
               <Card
                 key={item.id}
                 className={clippy(
                   "hover:bg-button-hover-bg active:bg-button-active-bg hover:text-button-hover-fg active:text-button-active-fg transition-[var(--transition)] cursor-pointer w-full",
-                  ind === 0
-                    ? "bg-button-hover-bg text-button-hover-fg"
-                    : "bg-button-bg text-button-fg",
+                  ind === 0 ? "bg-button-hover-bg text-button-hover-fg" : "bg-button-bg text-button-fg",
                 )}
                 onClick={() => {
                   navigate(`/app/a/weather/${item.id}`);
@@ -134,10 +111,7 @@ const SelectLocationView: React.FC = () => {
                   {item.address.country !== item.address.name && ","}
                 </h2>
                 <span>{item.address.admin1 && `${item.address.admin1}, `}</span>
-                <span>
-                  {item.address.country !== item.address.name &&
-                    item.address.country}
-                </span>
+                <span>{item.address.country !== item.address.name && item.address.country}</span>
               </Card>
             ))}
           </div>

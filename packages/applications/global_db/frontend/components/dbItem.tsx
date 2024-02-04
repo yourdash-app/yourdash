@@ -1,11 +1,11 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 @Ewsgit and YourDash contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 import React, { useEffect, useState } from "react";
-import { TextBox, IconButton, TextInput, Card } from "web-client/src/ui";
-import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
+import { TextBox, IconButton, TextInput, Card } from "@yourdash/web-client/src/ui";
+import { YourDashIcon } from "@yourdash/web-client/src/ui/components/icon/iconDictionary";
 
 export interface IdbItem {
   currentItem: {
@@ -17,12 +17,7 @@ export interface IdbItem {
   setItems: (items: { [key: string]: string }) => void;
 }
 
-const DbItem: React.FC<IdbItem> = ({
-  currentItem,
-  setCurrentItemData,
-  items,
-  setItems,
-}) => {
+const DbItem: React.FC<IdbItem> = ({ currentItem, setCurrentItemData, items, setItems }) => {
   const [active, setActive] = useState<boolean>(false);
   const [key, setKey] = useState<string>("");
   const [content, setContent] = useState<string>("");
@@ -33,10 +28,7 @@ const DbItem: React.FC<IdbItem> = ({
   }, [currentItem]);
 
   return (
-    <Card
-      showBorder
-      className={"bg-container-bg text-container-fg flex gap-2 !p-2 rounded-xl"}
-    >
+    <Card showBorder className={"bg-container-bg text-container-fg flex gap-2 !p-2 rounded-xl"}>
       {active ? (
         <>
           <div className={"flex flex-col gap-2 mb-auto"}>
@@ -52,11 +44,7 @@ const DbItem: React.FC<IdbItem> = ({
               className={"flex-shrink-0"}
             />
             <div className={"flex flex-row gap-2 w-full child:flex-grow"}>
-              <IconButton
-                icon={YourDashIcon.X}
-                onClick={() => setActive(false)}
-                className={"flex-shrink-0"}
-              />
+              <IconButton icon={YourDashIcon.X} onClick={() => setActive(false)} className={"flex-shrink-0"} />
               <IconButton
                 icon={YourDashIcon.Check}
                 onClick={() => {

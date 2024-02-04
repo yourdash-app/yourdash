@@ -1,5 +1,5 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 @Ewsgit and YourDash contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -7,18 +7,18 @@ import path from "path";
 import { CoreApi } from "./coreApi.js";
 import { AUTHENTICATED_IMAGE_TYPE } from "./coreApiAuthenticatedImage.js";
 import YourDashUser from "./user/index.js";
-import { IYourDashSession } from "shared/core/session.js";
+import { IYourDashSession } from "@yourdash/shared/core/session.js";
 import UserDatabase from "./user/userDatabase.js";
 
 const SESSION_TOKEN_LENGTH = 128;
-export { SESSION_TOKEN_LENGTH }
+export { SESSION_TOKEN_LENGTH };
 
 export default class CoreApiUsers {
   private usersMarkedForDeletion: string[] = [];
-  private readonly userDatabases: { [ username: string ]: { db: UserDatabase, changed: boolean } };
+  private readonly userDatabases: { [username: string]: { db: UserDatabase; changed: boolean } };
   private readonly coreApi: CoreApi;
   private sessions: {
-    [ key: string ]: IYourDashSession<any>[] // eslint-disable-line @typescript-eslint/no-explicit-any
+    [key: string]: IYourDashSession<any>[]; // eslint-disable-line @typescript-eslint/no-explicit-any
   } = {};
 
   constructor(coreApi: CoreApi) {
@@ -34,56 +34,57 @@ export default class CoreApiUsers {
 
   __internal__startUserDatabaseService() {
     this.coreApi.scheduler.scheduleTask("core:userdb_write_to_disk", "*/1 * * * *", async () => {
-      Object.keys(this.userDatabases).map(async username => {
-        if (!this.userDatabases[ username ].changed) {
+      Object.keys(this.userDatabases).map(async (username) => {
+        if (!this.userDatabases[username].changed) {
           return;
         }
 
-        this.userDatabases[ username ].changed = false;
+        this.userDatabases[username].changed = false;
 
         const user = new YourDashUser(username);
 
-        await this.userDatabases[ username ].db.writeToDisk(path.join(user.path, "core/user_db.json"));
-
+        await this.userDatabases[username].db.writeToDisk(path.join(user.path, "core/user_db.json"));
       });
     });
   }
 
   __internal__startUserDeletionService() {
-    this.coreApi.scheduler.scheduleTask("core:users:delete_all_marked_users", "*/5 * * * *", /* every 5 minutes */
+    this.coreApi.scheduler.scheduleTask(
+      "core:users:delete_all_marked_users",
+      "*/5 * * * *" /* every 5 minutes */,
       async () => {
         for (const username of this.usersMarkedForDeletion) {
           await this.coreApi.users.forceDelete(username);
         }
-      }
+      },
     );
   }
 
   async __internal__getUserDatabase(username: string) {
-    if (this.userDatabases[ username ]) {
-      return this.userDatabases[ username ].db;
+    if (this.userDatabases[username]) {
+      return this.userDatabases[username].db;
     }
 
-    this.userDatabases[ username ] = {
+    this.userDatabases[username] = {
       db: new UserDatabase(username),
-      changed: false
+      changed: false,
     };
     const user = new YourDashUser(username);
-    await this.userDatabases[ username ].db.readFromDisk(path.join(user.path, "core/user_db.json"));
+    await this.userDatabases[username].db.readFromDisk(path.join(user.path, "core/user_db.json"));
 
-    return this.userDatabases[ username ].db;
+    return this.userDatabases[username].db;
   }
 
   __internal__addUserDatabaseToSaveQueue(username: string) {
-    this.userDatabases[ username ].changed = true;
+    this.userDatabases[username].changed = true;
   }
 
   async __internal__saveUserDatabaseInstantly(username: string) {
-    this.userDatabases[ username ].changed = false;
+    this.userDatabases[username].changed = false;
 
     const user = new YourDashUser(username);
 
-    await this.userDatabases[ username ].db.writeToDisk(path.join(user.path, "core/user_db.json"));
+    await this.userDatabases[username].db.writeToDisk(path.join(user.path, "core/user_db.json"));
 
     return this;
   }
@@ -95,9 +96,9 @@ export default class CoreApiUsers {
   async create(username: string) {
     const user = new YourDashUser(username);
 
-    await user.verify()
+    await user.verify();
 
-    return user
+    return user;
   }
 
   delete(username: string) {
@@ -113,7 +114,7 @@ export default class CoreApiUsers {
     // TODO: DELETE THE USER FROM THE FS
 
     await this.coreApi.fs.removePath(path.join(this.coreApi.fs.ROOT_PATH, `./users/${username}`));
-    delete this.userDatabases[ username ];
+    delete this.userDatabases[username];
 
     return this;
   }
@@ -131,44 +132,56 @@ export default class CoreApiUsers {
   }
 
   async getAllUsers(): Promise<string[]> {
-    return (await this.coreApi.fs.getDirectory(path.join(this.coreApi.fs.ROOT_PATH, "./users"))).getChildren()
+    return (await this.coreApi.fs.getDirectory(path.join(this.coreApi.fs.ROOT_PATH, "./users"))).getChildren();
   }
 
   __internal__loadEndpoints() {
     this.coreApi.expressServer.get("/core/user/current/avatar/large", (req, res) => {
-      const { username } = req.headers as { username: string }
+      const { username } = req.headers as { username: string };
 
-      const unreadUser = new YourDashUser(username)
-      const avatarPath = path.join(unreadUser.path, "avatars/large_avatar.avif")
+      const unreadUser = new YourDashUser(username);
+      const avatarPath = path.join(unreadUser.path, "avatars/large_avatar.avif");
 
-      return res.status(200).type("text/plain").send(this.coreApi.authenticatedImage.create(username, AUTHENTICATED_IMAGE_TYPE.FILE, avatarPath))
-    })
+      return res
+        .status(200)
+        .type("text/plain")
+        .send(this.coreApi.authenticatedImage.create(username, AUTHENTICATED_IMAGE_TYPE.FILE, avatarPath));
+    });
 
     this.coreApi.expressServer.get("/core/user/current/avatar/medium", (req, res) => {
-      const { username } = req.headers as { username: string }
+      const { username } = req.headers as { username: string };
 
-      const unreadUser = new YourDashUser(username)
-      const avatarPath = path.join(unreadUser.path, "avatars/medium_avatar.avif")
+      const unreadUser = new YourDashUser(username);
+      const avatarPath = path.join(unreadUser.path, "avatars/medium_avatar.avif");
 
-      return res.status(200).type("text/plain").send(this.coreApi.authenticatedImage.create(username, AUTHENTICATED_IMAGE_TYPE.FILE, avatarPath))
-    })
+      return res
+        .status(200)
+        .type("text/plain")
+        .send(this.coreApi.authenticatedImage.create(username, AUTHENTICATED_IMAGE_TYPE.FILE, avatarPath));
+    });
 
     this.coreApi.expressServer.get("/core/user/current/avatar/small", (req, res) => {
-      const { username } = req.headers as { username: string }
+      const { username } = req.headers as { username: string };
 
-      const unreadUser = new YourDashUser(username)
-      const avatarPath = path.join(unreadUser.path, "avatars/small_avatar.avif")
+      const unreadUser = new YourDashUser(username);
+      const avatarPath = path.join(unreadUser.path, "avatars/small_avatar.avif");
 
-      return res.status(200).type("text/plain").send(this.coreApi.authenticatedImage.create(username, AUTHENTICATED_IMAGE_TYPE.FILE, avatarPath))
-    })
+      return res
+        .status(200)
+        .type("text/plain")
+        .send(this.coreApi.authenticatedImage.create(username, AUTHENTICATED_IMAGE_TYPE.FILE, avatarPath));
+    });
 
     this.coreApi.expressServer.get("/core/user/current/avatar/original", (req, res) => {
-      const { username } = req.headers as { username: string }
+      const { username } = req.headers as { username: string };
 
-      const unreadUser = new YourDashUser(username)
-      const avatarPath = path.join(unreadUser.path, "avatars/original.avif")
+      const unreadUser = new YourDashUser(username);
+      const avatarPath = path.join(unreadUser.path, "avatars/original.avif");
 
-      return res.status(200).type("text/plain").send(this.coreApi.authenticatedImage.create(username, AUTHENTICATED_IMAGE_TYPE.FILE, avatarPath))
-    })
+      return res
+        .status(200)
+        .type("text/plain")
+        .send(this.coreApi.authenticatedImage.create(username, AUTHENTICATED_IMAGE_TYPE.FILE, avatarPath));
+    });
   }
 }

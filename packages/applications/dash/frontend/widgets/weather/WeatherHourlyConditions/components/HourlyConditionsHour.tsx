@@ -1,78 +1,83 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 @Ewsgit and YourDash contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 import React from "react";
-import { useFloating, offset, shift, autoUpdate, useHover, useFocus, useDismiss, useRole, useInteractions, autoPlacement } from "@floating-ui/react";
-import DROPLET_ICON from "applications/weather/frontend/assets/weatherIcons/droplet.svg";
-import { Card } from "web-client/src/ui/index";
-import getWeatherConditionFromState from "applications/weather/frontend/helpers/getWeatherConditionFromState";
-import useTranslate from "web-client/src/helpers/i18n";
+import {
+  useFloating,
+  offset,
+  shift,
+  autoUpdate,
+  useHover,
+  useFocus,
+  useDismiss,
+  useRole,
+  useInteractions,
+  autoPlacement,
+} from "@floating-ui/react";
+import DROPLET_ICON from "@yourdash/applications/weather/frontend/assets/weatherIcons/droplet.svg";
+import { Card } from "@yourdash/web-client/src/ui/index";
+import getWeatherConditionFromState from "@yourdash/applications/weather/frontend/helpers/getWeatherConditionFromState";
+import useTranslate from "@yourdash/web-client/src/helpers/i18n";
 
 export interface IHourlyConditionsHour {
-  time: string,
-  conditionIcon: string,
-  temperature: number,
-  feelsLike: number,
-  rainChance: number,
-  conditionState: number
+  time: string;
+  conditionIcon: string;
+  temperature: number;
+  feelsLike: number;
+  rainChance: number;
+  conditionState: number;
 }
 
-const HourlyConditionsHour: React.FC<IHourlyConditionsHour> = ( {
+const HourlyConditionsHour: React.FC<IHourlyConditionsHour> = ({
   time,
   conditionIcon,
   conditionState,
   temperature,
   feelsLike,
-  rainChance
-} ) => {
-  const trans = useTranslate( "weather" );
-  const [ showTooltip, setShowTooltip ] = React.useState( false );
-  const { refs, floatingStyles, context } = useFloating( {
+  rainChance,
+}) => {
+  const trans = useTranslate("weather");
+  const [showTooltip, setShowTooltip] = React.useState(false);
+  const { refs, floatingStyles, context } = useFloating({
     open: showTooltip,
     onOpenChange: setShowTooltip,
     middleware: [
       // eslint-disable-next-line no-magic-numbers
-      offset( 8 ),
+      offset(8),
       shift(),
-      autoPlacement( {
+      autoPlacement({
         autoAlignment: true,
         padding: 8,
-        altBoundary: true
-      } )
+        altBoundary: true,
+      }),
     ],
-    whileElementsMounted: autoUpdate
-  } );
+    whileElementsMounted: autoUpdate,
+  });
 
-  const { getReferenceProps, getFloatingProps } = useInteractions( [
-    useHover( context, { move: false } ),
-    useFocus( context ),
-    useDismiss( context ),
-    useRole( context, { role: "tooltip" } )
-  ] );
+  const { getReferenceProps, getFloatingProps } = useInteractions([
+    useHover(context, { move: false }),
+    useFocus(context),
+    useDismiss(context),
+    useRole(context, { role: "tooltip" }),
+  ]);
 
   return (
     <>
-      {
-        showTooltip && (
-          <div
-            ref={refs.setFloating}
-            style={floatingStyles}
-            {...getFloatingProps()}
-          >
-            <Card showBorder>
-              <span>{`Temp: ${temperature}°C`}</span>
-              <div>{trans( getWeatherConditionFromState( conditionState ) )}</div>
-              <div className={"flex items-center justify-center"}>
-                <img className={"h-full"} src={DROPLET_ICON} alt={""} />
-                <span>{`Rain chance: ${rainChance}%`}</span>
-              </div>
-              <span>{`Feels like: ${feelsLike}°C`}</span>
-            </Card>
-          </div>
-        )
-      }
+      {showTooltip && (
+        <div ref={refs.setFloating} style={floatingStyles} {...getFloatingProps()}>
+          <Card showBorder>
+            <span>{`Temp: ${temperature}°C`}</span>
+            <div>{trans(getWeatherConditionFromState(conditionState))}</div>
+            <div className={"flex items-center justify-center"}>
+              <img className={"h-full"} src={DROPLET_ICON} alt={""} />
+              <span>{`Rain chance: ${rainChance}%`}</span>
+            </div>
+            <span>{`Feels like: ${feelsLike}°C`}</span>
+          </Card>
+        </div>
+      )}
       <div
         ref={refs.setReference}
         {...getReferenceProps()}
@@ -82,7 +87,7 @@ const HourlyConditionsHour: React.FC<IHourlyConditionsHour> = ( {
           className={"flex flex-col items-center justify-center"}
           onClick={() => {
             // TODO: implement logic on click of a "weather hour"
-            console.log( "IMPLEMENT ME!!!" );
+            console.log("IMPLEMENT ME!!!");
           }}
         >
           <span>{time}</span>

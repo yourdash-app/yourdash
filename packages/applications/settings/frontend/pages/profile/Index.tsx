@@ -1,20 +1,12 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 @Ewsgit and YourDash contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 import React, { useEffect } from "react";
-import csi, { TJson } from "web-client/src/helpers/csi";
-import useYourDashLib from "web-client/src/helpers/ydsh";
-import {
-  Button,
-  Card,
-  IconButton,
-  Row,
-  TextBox,
-  TextInput,
-  YourDashIcon,
-} from "web-client/src/ui/index";
+import csi, { TJson } from "@yourdash/web-client/src/helpers/csi";
+import useYourDashLib from "@yourdash/web-client/src/helpers/ydsh";
+import { Button, Card, IconButton, Row, TextBox, TextInput, YourDashIcon } from "@yourdash/web-client/src/ui/index";
 import BasePageLayout from "../../components/BasePageLayout";
 import UserLinkEditor from "./components/UserLinkEditor";
 import UserPreview, { IUserPreview } from "./components/UserPreview";

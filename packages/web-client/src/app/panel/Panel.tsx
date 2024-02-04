@@ -1,13 +1,13 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 @Ewsgit and YourDash contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 import styles from "./Panel.module.scss";
-import clippy from "web-client/src/helpers/clippy";
+import clippy from "@yourdash/web-client/src/helpers/clippy";
 import React, { memo, useEffect, useState } from "react";
 import loadable from "@loadable/component";
-import csi from "web-client/src/helpers/csi";
+import csi from "@yourdash/web-client/src/helpers/csi";
 
 const Panel: React.FC<{
   side: "top" | "right" | "bottom" | "left";
@@ -20,9 +20,7 @@ const Panel: React.FC<{
     "QuickShortcuts",
     "LocalhostIndicator",
   ]);
-  const [panelSize, setPanelSize] = useState<
-    "small" | "medium" | "large" | undefined
-  >(undefined);
+  const [panelSize, setPanelSize] = useState<"small" | "medium" | "large" | undefined>(undefined);
   const [num, setNum] = useState<number>(0);
 
   useEffect(() => {
@@ -54,9 +52,7 @@ const Panel: React.FC<{
       )}
     >
       {widgets.map((widget) => {
-        const LoadableWidget = loadable(
-          () => import(`./widgets/${widget}/Widget`),
-        );
+        const LoadableWidget = loadable(() => import(`./widgets/${widget}/Widget`));
 
         return <LoadableWidget key={widget} side={side} />;
       })}
@@ -64,7 +60,4 @@ const Panel: React.FC<{
   );
 };
 
-export default memo(
-  Panel,
-  (prevProps, nextProps) => prevProps.side === nextProps.side,
-);
+export default memo(Panel, (prevProps, nextProps) => prevProps.side === nextProps.side);

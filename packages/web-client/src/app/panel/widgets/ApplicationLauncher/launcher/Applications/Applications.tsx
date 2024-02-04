@@ -1,10 +1,10 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 @Ewsgit and YourDash contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 import React, { useEffect } from "react";
-import IPanelApplicationsLauncherApplication from "shared/core/panel/applicationsLauncher/application";
+import IPanelApplicationsLauncherApplication from "@yourdash/shared/core/panel/applicationsLauncher/application";
 import clippy from "../../../../../../helpers/clippy";
 import LargeApplicationGrid from "./LargeGrid/LargeApplicationGrid";
 import { TextInput, YourDashIcon } from "../../../../../../ui/index";
@@ -20,8 +20,7 @@ const ApplicationsLauncherApplications: React.FC<{
   layout: "large-grid" | "small-grid" | "list";
 }> = ({ apps, layout }) => {
   const navigate = useNavigate();
-  const [applications, setApplications] =
-    React.useState<IPanelApplicationsLauncherApplication[]>(apps);
+  const [applications, setApplications] = React.useState<IPanelApplicationsLauncherApplication[]>(apps);
 
   useEffect(() => {
     setApplications(apps);
@@ -47,9 +46,7 @@ const ApplicationsLauncherApplications: React.FC<{
           filteredApplications = apps.filter((application) => {
             return (
               application.name.toLowerCase().includes(val.toLowerCase()) ||
-              application.description
-                .toLowerCase()
-                .includes(val.toLowerCase()) ||
+              application.description.toLowerCase().includes(val.toLowerCase()) ||
               application.displayName.toLowerCase().includes(val.toLowerCase())
             );
           });
@@ -59,12 +56,8 @@ const ApplicationsLauncherApplications: React.FC<{
         icon={YourDashIcon.Search}
       />
 
-      {layout === "large-grid" && (
-        <LargeApplicationGrid applications={applications} />
-      )}
-      {layout === "small-grid" && (
-        <SmallApplicationGrid applications={applications} />
-      )}
+      {layout === "large-grid" && <LargeApplicationGrid applications={applications} />}
+      {layout === "small-grid" && <SmallApplicationGrid applications={applications} />}
       {layout === "list" && <ApplicationList applications={applications} />}
     </>
   );

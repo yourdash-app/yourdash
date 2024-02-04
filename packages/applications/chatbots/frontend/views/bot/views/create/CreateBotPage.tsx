@@ -4,8 +4,9 @@
  */
 
 import React, { useState } from "react";
-import csi from "web-client/src/helpers/csi";
+import csi from "@yourdash/web-client/src/helpers/csi";
 import {
+  Button,
   Card,
   Heading,
   IconButton,
@@ -13,7 +14,7 @@ import {
   TextBox,
   TextInput,
   YourDashIcon,
-} from "web-client/src/ui/index";
+} from "@yourdash/web-client/src/ui/index";
 import ChatbotProfilePreview from "../../../../components/ChatbotProfilePreview/ChatbotProfilePreview";
 import styles from "./CreateBotPage.module.scss";
 import { useNavigate } from "react-router-dom";
@@ -53,15 +54,7 @@ const CreateBotPage: React.FC = () => {
         <Heading level={4}>Bot Username</Heading>
         <TextInput
           preceedingInlay={
-            username && (
-              <span
-                className={
-                  "animate__animated animate__slideInLeft animate__duration_500ms"
-                }
-              >
-                @
-              </span>
-            )
+            username && <span className={"animate__animated animate__slideInLeft animate__duration_500ms"}>@</span>
           }
           onChange={(value) => {
             setUsername(value);
@@ -104,9 +97,7 @@ const CreateBotPage: React.FC = () => {
                 avatarUrl,
               },
               () => {
-                navigate(
-                  `/app/a/chatbots/team/${csi.getUserName()}/manage/${username}`,
-                );
+                navigate(`/app/a/chatbots/team/${csi.getUserName()}/manage/${username}`);
               },
               (error) => {
                 alert(error);
@@ -116,6 +107,13 @@ const CreateBotPage: React.FC = () => {
         >
           Create bot
         </MajorButton>
+        <Button
+          onClick={() => {
+            navigate("/app/a/chatbots/manage/:botUUID:/all");
+          }}
+        >
+          DEVELOPER Nodes
+        </Button>
       </Card>
     </main>
   );

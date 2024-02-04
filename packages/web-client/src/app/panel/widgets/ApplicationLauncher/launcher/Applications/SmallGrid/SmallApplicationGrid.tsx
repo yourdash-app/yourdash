@@ -1,11 +1,11 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 @Ewsgit and YourDash contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 import React from "react";
-import IPanelApplicationsLauncherApplication from "shared/core/panel/applicationsLauncher/application";
-import csi from "web-client/src/helpers/csi";
+import IPanelApplicationsLauncherApplication from "@yourdash/shared/core/panel/applicationsLauncher/application";
+import csi from "@yourdash/web-client/src/helpers/csi";
 import { RightClickMenu } from "../../../../../../../ui/index";
 import styles from "./SmallApplicationGrid.module.scss";
 import { useNavigate } from "react-router";
@@ -24,15 +24,11 @@ const SmallApplicationGrid: React.FC<{
               {
                 name: "Pin To Panel",
                 onClick() {
-                  csi.postJson(
-                    "/core/panel/quick-shortcuts/create",
-                    { name: application.name },
-                    () => {
-                      // @ts-ignore
-                      window.__yourdashCorePanelQuickShortcutsReload?.();
-                      return 0;
-                    },
-                  );
+                  csi.postJson("/core/panel/quick-shortcuts/create", { name: application.name }, () => {
+                    // @ts-ignore
+                    window.__yourdashCorePanelQuickShortcutsReload?.();
+                    return 0;
+                  });
                 },
               },
               {
@@ -59,9 +55,7 @@ const SmallApplicationGrid: React.FC<{
                 src={`${csi.getInstanceUrl()}${application.icon}`}
                 alt=""
               />
-              <span className={styles.itemLabel}>
-                {application.displayName}
-              </span>
+              <span className={styles.itemLabel}>{application.displayName}</span>
             </div>
           </RightClickMenu>
         );

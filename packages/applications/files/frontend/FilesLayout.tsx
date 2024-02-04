@@ -1,22 +1,21 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 @Ewsgit and YourDash contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 import React from "react";
-import { SideBar, YourDashIcon } from "web-client/src/ui";
-import { SIDEBAR_ITEM_TYPE, SIDEBAR_STATE } from "web-client/src/ui/components/sideBar/SideBar";
+import { SideBar, YourDashIcon } from "@yourdash/web-client/src/ui";
+import { SIDEBAR_ITEM_TYPE, SIDEBAR_STATE } from "@yourdash/web-client/src/ui/components/sideBar/SideBar";
 import FilePane from "./views/filePane/FilePane";
 
 export interface IFilesLayout {
   children: React.ReactNode;
 }
 
-const FilesLayout: React.FC<IFilesLayout> = ( { children } ) => {
-  const [
-    sidebarShortcuts,
-    setSidebarShortcuts
-  ] = React.useState<{ path: string, type: "directory" | "file" }[] | null>( null );
+const FilesLayout: React.FC<IFilesLayout> = ({ children }) => {
+  const [sidebarShortcuts, setSidebarShortcuts] = React.useState<{ path: string; type: "directory" | "file" }[] | null>(
+    null,
+  );
 
   return (
     <div className={"grid grid-cols-[auto,1fr] h-full overflow-hidden"}>
@@ -53,22 +52,22 @@ const FilesLayout: React.FC<IFilesLayout> = ( { children } ) => {
             label: "Upload File",
             icon: YourDashIcon.Upload,
             onClick: () => {
-              return 0
-            }
+              return 0;
+            },
           },
           {
             type: SIDEBAR_ITEM_TYPE.Separator,
             label: "",
             icon: YourDashIcon.Plus,
             onClick: () => {
-              return 0
-            }
-          }
+              return 0;
+            },
+          },
         ]}
         title={"Files"}
         defaultState={SIDEBAR_STATE.NormalExpanded}
       />
-      <FilePane/>
+      <FilePane />
     </div>
   );
 };

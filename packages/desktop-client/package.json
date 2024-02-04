@@ -1,5 +1,5 @@
 {
-  "name": "desktop-client",
+  "name": "@yourdash/desktop-client",
   "version": "0.0.2",
   "description": "The YourDash Desktop Application",
   "main": "./out/main/index.js",

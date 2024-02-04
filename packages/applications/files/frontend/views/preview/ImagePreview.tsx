@@ -1,33 +1,32 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 @Ewsgit and YourDash contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 import * as React from "react";
-import csi from "web-client/src/helpers/csi";
+import csi from "@yourdash/web-client/src/helpers/csi";
 
 export interface IImagePreview {
   path: string;
 }
 
-const ImagePreview: React.FC<IImagePreview> = ( { path = "" } ) => {
-  const [ image, setImage ] = React.useState<string | null>( null );
+const ImagePreview: React.FC<IImagePreview> = ({ path = "" }) => {
+  const [image, setImage] = React.useState<string | null>(null);
 
-  React.useEffect( () => {
+  React.useEffect(() => {
     // @ts-ignore
-    csi.postText( "/app/files/get/file", { path }, resp => {
-      setImage( resp );
-    } );
+    csi.postText("/app/files/get/file", { path }, (resp) => {
+      setImage(resp);
+    });
+  }, [path]);
 
-  }, [ path ] );
-
-  if ( !image ) {
+  if (!image) {
     return null;
   }
 
   return (
     <main className={"w-full h-full flex items-center justify-center overflow-auto"}>
-      <img alt={""} src={`${ csi.getInstanceUrl() }${ image }`}/>
+      <img alt={""} src={`${csi.getInstanceUrl()}${image}`} />
     </main>
   );
 };

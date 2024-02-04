@@ -1,10 +1,10 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 @Ewsgit and YourDash contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 import * as React from "react";
-import { Card } from "web-client/src/ui/index";
+import { Card } from "@yourdash/web-client/src/ui/index";
 
 const StartupView: React.FC = () => {
   return (
@@ -14,10 +14,18 @@ const StartupView: React.FC = () => {
         style={{ backgroundImage: "url(/assets/background.jpg)" }}
       >
         <div className={"flex flex-col gap-1"}>
-          <h1 className={"text-6xl font-black tracking-wide [text-shadow:#242424bb_0_0_0.75rem,_#24242488_0_0_0.5rem,_#24242444_0_0_0.25rem]"}>
+          <h1
+            className={
+              "text-6xl font-black tracking-wide [text-shadow:#242424bb_0_0_0.75rem,_#24242488_0_0_0.5rem,_#24242444_0_0_0.25rem]"
+            }
+          >
             Flowey
           </h1>
-          <span className={"[text-shadow:#242424bb_0_0_0.75rem,_#24242488_0_0_0.5rem,_#24242444_0_0_0.25rem] font-semibold tracking-wide"}>
+          <span
+            className={
+              "[text-shadow:#242424bb_0_0_0.75rem,_#24242488_0_0_0.5rem,_#24242444_0_0_0.25rem] font-semibold tracking-wide"
+            }
+          >
             Flowchart and block-out tool
           </span>
           (Placeholder background)
@@ -27,7 +35,7 @@ const StartupView: React.FC = () => {
         <Card
           showBorder
           onClick={() => {
-            console.log( "Clicked!" )
+            console.log("Clicked!");
           }}
         >
           Create Flow
@@ -35,16 +43,13 @@ const StartupView: React.FC = () => {
         <Card
           showBorder
           onClick={() => {
-            console.log( "Clicked!" )
+            console.log("Clicked!");
           }}
         >
           Open Flow
         </Card>
       </div>
-      <Card
-        showBorder
-        className={"flex flex-col col-span-1 mr-4"}
-      >
+      <Card showBorder className={"flex flex-col col-span-1 mr-4"}>
         <h2>Recent Flows</h2>
         <div>Flow1</div>
         <div>Flow2</div>

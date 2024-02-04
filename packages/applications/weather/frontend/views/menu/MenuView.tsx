@@ -1,10 +1,10 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 @Ewsgit and YourDash contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import clippy from "web-client/src/helpers/clippy";
-import { Card, Column } from "web-client/src/ui/index";
+import clippy from "@yourdash/web-client/src/helpers/clippy";
+import { Card, Column } from "@yourdash/web-client/src/ui/index";
 import CLEAR_BACKGROUND from "../../assets/weatherBackgrounds/clear.jpg";
 import CLOUDY_BACKGROUND from "../../assets/weatherBackgrounds/cloudy1.jpg";
 import RAIN_BACKGROUND from "../../assets/weatherBackgrounds/rain1.jpg";
@@ -15,7 +15,13 @@ import SavedLocationCard from "./components/SavedLocationCard/SavedLocationCard"
 import styles from "./MenuView.module.scss";
 import React, { useEffect, useState } from "react";
 
-const BACKGROUND_IMAGES: string[] = [THUNDER_BACKGROUND, CLOUDY_BACKGROUND, RAIN_BACKGROUND, SNOW_BACKGROUND, CLEAR_BACKGROUND];
+const BACKGROUND_IMAGES: string[] = [
+  THUNDER_BACKGROUND,
+  CLOUDY_BACKGROUND,
+  RAIN_BACKGROUND,
+  SNOW_BACKGROUND,
+  CLEAR_BACKGROUND,
+];
 
 const MenuView: React.FC = () => {
   const [backgroundImage, setBackgroundImage] = useState<string>("");
@@ -43,7 +49,9 @@ const MenuView: React.FC = () => {
       </Column>
       <h2 className={styles.sectionHeader}>Saved Locations</h2>
       <section className={"grid grid-cols-4"}>
-        <SavedLocationCard props={{ address: { name: "Your Location" }, id: "your-location", latitude: 0, longitude: 0 }} />
+        <SavedLocationCard
+          props={{ address: { name: "Your Location" }, id: "your-location", latitude: 0, longitude: 0 }}
+        />
       </section>
     </Column>
   );

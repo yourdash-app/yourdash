@@ -1,16 +1,19 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 @Ewsgit and YourDash contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 import { type ILocationSearchResult } from "../../shared/locationSearchResult.js";
 import { fetch } from "undici";
-import coreApi from "backend/src/core/coreApi.js";
+import coreApi from "@yourdash/backend/src/core/coreApi.js";
 
 const geolocationSuggestionsCache = new Map<string, ILocationSearchResult[]>();
 
-export default async function getGeolocationSuggestions(locationName: string, suggestionCount: number): Promise<ILocationSearchResult[]> {
-  locationName = locationName.replaceAll(" ", "+")
+export default async function getGeolocationSuggestions(
+  locationName: string,
+  suggestionCount: number,
+): Promise<ILocationSearchResult[]> {
+  locationName = locationName.replaceAll(" ", "+");
   if (locationName.endsWith("+")) locationName = locationName.slice(0, -1);
   if (locationName.startsWith("+")) locationName = locationName.slice(1);
   if (locationName.length < 3) return [];
@@ -39,10 +42,10 @@ export default async function getGeolocationSuggestions(locationName: string, su
         address: {
           name: result.name,
           admin1: result.admin1,
-          country: result.country
+          country: result.country,
         },
         latitude: result.latitude,
-        longitude: result.longitude
+        longitude: result.longitude,
       } as ILocationSearchResult;
     });
 
@@ -50,6 +53,6 @@ export default async function getGeolocationSuggestions(locationName: string, su
 
     return output;
   } catch (_err) {
-    return []
+    return [];
   }
 }

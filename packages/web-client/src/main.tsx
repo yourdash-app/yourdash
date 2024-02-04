@@ -1,5 +1,5 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 @Ewsgit and YourDash contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -22,7 +22,7 @@ import ServerLoginPage from "./root/login/Page";
 import Index from "./root/index/Index";
 import ProjectsIndexPage from "./root/projects/Index";
 import RootLayout from "./root/RootLayout";
-import ChipletUiRootIntegration from "./ui/RootIntegration";
+import UIKitRootIntegration from "./ui/RootIntegration";
 import LinkerDesktopClientStartupPage from "./root/linker-desktop-client-startup/Index";
 
 const AppRouter = loadable(() => import("./app/AppRouter"));
@@ -31,78 +31,44 @@ const ProjectsRouter = loadable(() => import("./root/projects/ProjectsRouter"));
 
 function main() {
   ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-    <ChipletUiRootIntegration>
+    <UIKitRootIntegration>
       <RouterProvider
         router={createHashRouter(
           createRoutesFromElements(
-            <Route
-              errorElement={<ErrorElement />}
-            >
+            <Route errorElement={<ErrorElement />}>
               <Route
                 path={"/linker-desktop-client-startup"}
                 element={<LinkerDesktopClientStartupPage />}
               />
-              <Route
-                element={<RootLayout />}
-              >
-                <Route
-                  index
-                  element={<Index />}
-                />
-                <Route
-                  path={"/signup"}
-                  element={<ComingSoon />}
-                />
-                <Route
-                  path={"docs/*"}
-                  element={<DocsLayout />}
-                >
-                  <Route
-                    path={"*"}
-                    element={<DocsRouter />}
-                  />
+              <Route element={<RootLayout />}>
+                <Route index element={<Index />} />
+                <Route path={"/signup"} element={<ComingSoon />} />
+                <Route path={"docs/*"} element={<DocsLayout />}>
+                  <Route path={"*"} element={<DocsRouter />} />
                 </Route>
-                <Route path={"projects"} index element={<ProjectsIndexPage />} />
+                <Route
+                  path={"projects"}
+                  index
+                  element={<ProjectsIndexPage />}
+                />
               </Route>
-              <Route
-                path={"projects/*"}
-                element={<ProjectsRouter />}
-              />
-              <Route
-                path={"project/*"}
-                element={<ProjectsRouter />}
-              />
-              <Route
-                path={"proj/*"}
-                element={<ProjectsRouter />}
-              />
+              <Route path={"projects/*"} element={<ProjectsRouter />} />
+              <Route path={"project/*"} element={<ProjectsRouter />} />
+              <Route path={"proj/*"} element={<ProjectsRouter />} />
               <Route path={"/login"}>
-                <Route
-                  index
-                  element={<ServerLoginPage />}
-                />
+                <Route index element={<ServerLoginPage />} />
               </Route>
-              <Route
-                path={"app"}
-              >
-                <Route
-                  element={<AppLayout />}
-                >
-                  <Route
-                    index
-                    element={<ApplicationRedirectToDash />}
-                  />
-                  <Route
-                    path={"a/*"}
-                    element={<AppRouter />}
-                  />
+              <Route path={"app"}>
+                <Route element={<AppLayout />}>
+                  <Route index element={<ApplicationRedirectToDash />} />
+                  <Route path={"a/*"} element={<AppRouter />} />
                 </Route>
               </Route>
-            </Route>
-          )
+            </Route>,
+          ),
         )}
       />
-    </ChipletUiRootIntegration>
+    </UIKitRootIntegration>,
   );
 }
 

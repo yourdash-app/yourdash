@@ -1,18 +1,13 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 @Ewsgit and YourDash contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import csi from "web-client/src/helpers/csi";
+import csi from "@yourdash/web-client/src/helpers/csi";
 import useYourDashLib from "../../../../helpers/ydsh";
-import {
-  IconButton,
-  MajorButton,
-  TextInput,
-  YourDashIcon,
-} from "../../../../ui/index";
+import { IconButton, MajorButton, TextInput, YourDashIcon } from "../../../../ui/index";
 
 interface IUserLogin {
   setUsername: React.Dispatch<React.SetStateAction<string>>;
@@ -22,13 +17,7 @@ interface IUserLogin {
   setInstanceHostname: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const UserLogin: React.FC<IUserLogin> = ({
-  setUsername,
-  setPassword,
-  password,
-  username,
-  setInstanceHostname,
-}) => {
+const UserLogin: React.FC<IUserLogin> = ({ setUsername, setPassword, password, username, setInstanceHostname }) => {
   const navigate = useNavigate();
   const ydsh = useYourDashLib();
   const [isValidUser, setIsValidUser] = React.useState<boolean>(false);
@@ -83,27 +72,15 @@ const UserLogin: React.FC<IUserLogin> = ({
 
   if (!isValidUser) {
     return (
-      <div
-        className={
-          "w-full h-full flex items-center justify-center flex-col relative"
-        }
-      >
+      <div className={"w-full h-full flex items-center justify-center flex-col relative"}>
         <IconButton
           icon={YourDashIcon.ChevronLeft}
-          className={
-            "left-0 top-0 absolute animate__animated animate__fadeInLeft"
-          }
+          className={"left-0 top-0 absolute animate__animated animate__fadeInLeft"}
           onClick={() => {
             setInstanceHostname("");
           }}
         />
-        <span
-          className={
-            "animate__animated animate__fadeIn text-4xl font-semibold pb-4"
-          }
-        >
-          Welcome Back
-        </span>
+        <span className={"animate__animated animate__fadeIn text-4xl font-semibold pb-4"}>Welcome Back</span>
         <TextInput
           accessibleName="Username input"
           key={"username-input"}
@@ -124,9 +101,7 @@ const UserLogin: React.FC<IUserLogin> = ({
     >
       <IconButton
         icon={YourDashIcon.ChevronLeft}
-        className={
-          "left-0 top-0 absolute animate__animated animate__fadeInLeft"
-        }
+        className={"left-0 top-0 absolute animate__animated animate__fadeInLeft"}
         onClick={() => {
           setIsValidUser(false);
           setUsername("");
@@ -170,9 +145,7 @@ const UserLogin: React.FC<IUserLogin> = ({
                   ydsh.toast.error("Login Error", "Invalid password");
                 },
                 {
-                  type: localStorage.getItem("desktop_mode")
-                    ? "desktop"
-                    : "web",
+                  type: localStorage.getItem("desktop_mode") ? "desktop" : "web",
                 },
               );
             }

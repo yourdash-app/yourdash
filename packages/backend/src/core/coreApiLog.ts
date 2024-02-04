@@ -1,5 +1,5 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 @Ewsgit and YourDash contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -30,11 +30,7 @@ export default class CoreApiLog {
     return this;
   }
 
-  private log(
-    type: LOG_TYPE,
-    level: string,
-    ...message: (string | Uint8Array)[]
-  ) {
+  private log(type: LOG_TYPE, level: string, ...message: (string | Uint8Array)[]) {
     // eslint-disable-line @typescript-eslint/no-explicit-any
     this.logHistory.push({ type: type, level: level, message: message });
 
@@ -43,10 +39,7 @@ export default class CoreApiLog {
     process.stdout.write(
       chalk.bold(
         `${chalk.white("[")}${chalk.italic.yellow(
-          level
-            .toUpperCase()
-            .slice(0, LOG_META_MAX_LENGTH)
-            .padEnd(LOG_META_MAX_LENGTH),
+          level.toUpperCase().slice(0, LOG_META_MAX_LENGTH).padEnd(LOG_META_MAX_LENGTH),
         )}${chalk.white("]")} `,
       ),
     );
@@ -90,9 +83,7 @@ export default class CoreApiLog {
     return this.log(
       LOG_TYPE.WARNING,
       level,
-      chalk.bold(
-        `${chalk.white("[")}${chalk.yellow("WAR")}${chalk.white("]")}`,
-      ),
+      chalk.bold(`${chalk.white("[")}${chalk.yellow("WAR")}${chalk.white("]")}`),
       ...message,
     );
   }
@@ -101,6 +92,8 @@ export default class CoreApiLog {
     if (message.length === 0) {
       this.log(LOG_TYPE.ERROR, "log", new Error("log message is empty").stack);
     }
+
+    console.log(new Error().stack);
 
     return this.log(
       LOG_TYPE.ERROR,
@@ -118,9 +111,7 @@ export default class CoreApiLog {
     return this.log(
       LOG_TYPE.DEBUG,
       level,
-      chalk.bold(
-        `${chalk.white("[")}${chalk.magenta("DBG")}${chalk.white("]")}`,
-      ),
+      chalk.bold(`${chalk.white("[")}${chalk.magenta("DBG")}${chalk.white("]")}`),
       ...message,
     );
   }

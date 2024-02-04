@@ -1,15 +1,15 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 @Ewsgit and YourDash contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 import { promises as fs } from "fs";
 import path from "path";
-import BackendModule, { YourDashModuleArguments } from "backend/src/core/moduleManager/backendModule.js";
+import BackendModule, { YourDashModuleArguments } from "@yourdash/backend/src/core/moduleManager/backendModule.js";
 
 export default class FilesModule extends BackendModule {
-  constructor( args: YourDashModuleArguments ) {
-    super( args );
+  constructor(args: YourDashModuleArguments) {
+    super(args);
     /*     this.API.request.post( "/app/files/get", async ( req, res ) => {
       const { username } = req.headers as {
       username: string
@@ -146,46 +146,46 @@ export default class FilesModule extends BackendModule {
       }
     } ); */
 
-    this.API.request.get( `/app/${this.API.applicationName}`, ( req, res ) => {
-      return res.json( { message: `Hello world from ${this.API.applicationName}! 👋` } )
-    } )
+    this.API.request.get(`/app/${this.API.applicationName}`, (req, res) => {
+      return res.json({ message: `Hello world from ${this.API.applicationName}! 👋` });
+    });
 
-    this.API.request.get( `/app/${this.API.applicationName}/list/dir/@/`, async ( req, res ) => {
+    this.API.request.get(`/app/${this.API.applicationName}/list/dir/@/`, async (req, res) => {
       // path
-      const p = "/"
+      const p = "/";
 
-      const user = this.API.getUser( req );
+      const user = this.API.getUser(req);
 
       try {
-        const contents = await fs.readdir( path.join( user.path, "fs", p ) )
+        const contents = await fs.readdir(path.join(user.path, "fs", p));
 
-        return res.json( {
-          contents: contents
-        } )
-      } catch ( _err ) {
-        return res.json( {
-          contents: []
-        } )
+        return res.json({
+          contents: contents,
+        });
+      } catch (_err) {
+        return res.json({
+          contents: [],
+        });
       }
-    } )
+    });
 
-    this.API.request.get( `/app/${this.API.applicationName}/list/dir/@/:path`, async ( req, res ) => {
+    this.API.request.get(`/app/${this.API.applicationName}/list/dir/@/:path`, async (req, res) => {
       // path
-      const p = req.params.path
+      const p = req.params.path;
 
-      const user = this.API.getUser( req );
+      const user = this.API.getUser(req);
 
       try {
-        const contents = await fs.readdir( path.join( user.path, "fs", p ) )
+        const contents = await fs.readdir(path.join(user.path, "fs", p));
 
-        return res.json( {
-          contents: contents
-        } )
-      } catch ( _err ) {
-        return res.json( {
-          contents: []
-        } )
+        return res.json({
+          contents: contents,
+        });
+      } catch (_err) {
+        return res.json({
+          contents: [],
+        });
       }
-    } )
+    });
   }
 }

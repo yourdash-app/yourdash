@@ -1,5 +1,5 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 @Ewsgit and YourDash contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -7,8 +7,8 @@ import React from "react";
 import { IWeatherDataForLocation } from "../../../shared/weatherDataForLocation";
 import WeatherApplicationLocationPage from "./weatherForLocationView";
 import { useParams } from "react-router";
-import csi from "web-client/src/helpers/csi";
-import { Spinner } from "web-client/src/ui/index";
+import csi from "@yourdash/web-client/src/helpers/csi";
+import { Spinner } from "@yourdash/web-client/src/ui/index";
 
 const WeatherApplicationLocationById: React.FC = () => {
   const { id } = useParams();

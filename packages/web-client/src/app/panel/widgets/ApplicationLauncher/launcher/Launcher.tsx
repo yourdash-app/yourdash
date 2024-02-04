@@ -1,5 +1,5 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 @Ewsgit and YourDash contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -10,8 +10,8 @@ import clippy from "../../../../../helpers/clippy";
 import { IconButton, YourDashIcon } from "../../../../../ui/index";
 import React, { memo, useEffect, useState } from "react";
 import ApplicationsLauncherApplications from "./Applications/Applications";
-import IPanelApplicationsLauncherApplication from "shared/core/panel/applicationsLauncher/application";
-import csi from "web-client/src/helpers/csi";
+import IPanelApplicationsLauncherApplication from "@yourdash/shared/core/panel/applicationsLauncher/application";
+import csi from "@yourdash/web-client/src/helpers/csi";
 
 const ApplicationLauncher: React.FC<{
   side: "top" | "right" | "bottom" | "left";
@@ -19,9 +19,7 @@ const ApplicationLauncher: React.FC<{
 }> = ({ side, visible }) => {
   const navigate = useNavigate();
   const [apps, setApps] = useState<IPanelApplicationsLauncherApplication[]>([]);
-  const [layout, setLayout] = React.useState<
-    "large-grid" | "small-grid" | "list"
-  >("large-grid");
+  const [layout, setLayout] = React.useState<"large-grid" | "small-grid" | "list">("large-grid");
 
   useEffect(() => {
     csi.getJson("/core/panel/applications", (data) => {
@@ -54,25 +52,14 @@ const ApplicationLauncher: React.FC<{
           />
           <div>
             <img src={""} alt={""} />
-            <IconButton
-              icon={YourDashIcon.Person}
-              aria-label={"User Profile Settings"}
-            />
+            <IconButton icon={YourDashIcon.Person} aria-label={"User Profile Settings"} />
           </div>
-          <span>
-            {csi.userDB.get("core:user:name")?.first || "Unknown First Name"}
-          </span>
+          <span>{csi.userDB.get("core:user:name")?.first || "Unknown First Name"}</span>
           <IconButton
             className={"ml-auto"}
             icon={YourDashIcon.Filter}
             onClick={() => {
-              setLayout(
-                layout === "large-grid"
-                  ? "small-grid"
-                  : layout === "small-grid"
-                    ? "list"
-                    : "large-grid",
-              );
+              setLayout(layout === "large-grid" ? "small-grid" : layout === "small-grid" ? "list" : "large-grid");
             }}
           />
         </section>

@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import { TabsContainer } from "web-client/src/ui/index";
+import { TabsContainer } from "@yourdash/web-client/src/ui/index";
 import DiscordProfilePreview from "./platforms/discord/DiscordProfilePreview";
 
 export interface IChatbotProfilePreviewProps {

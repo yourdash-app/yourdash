@@ -1,20 +1,20 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 @Ewsgit and YourDash contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import coreApi from "backend/src/core/coreApi.js";
-import YourDashApplication, { getAllApplications } from "backend/src/helpers/applications.js";
+import coreApi from "@yourdash/backend/src/core/coreApi.js";
+import YourDashApplication, { getAllApplications } from "@yourdash/backend/src/helpers/applications.js";
 
 export default async function getAllCategories(): Promise<string[]> {
   const applications = await getAllApplications();
 
-  const categories: { [ key: string ]: boolean } = {};
+  const categories: { [key: string]: boolean } = {};
 
-  for ( const applicationName of applications ) {
-    const unreadApplication = new YourDashApplication( applicationName );
+  for (const applicationName of applications) {
+    const unreadApplication = new YourDashApplication(applicationName);
 
-    if ( !( await unreadApplication.exists() ) ) {
+    if (!(await unreadApplication.exists())) {
       continue;
     }
 
@@ -22,18 +22,20 @@ export default async function getAllCategories(): Promise<string[]> {
 
     try {
       categories[app.getCategory()] = true;
-    } catch ( _err ) {
-      coreApi.log.error( `application: ${ app?.getName() || applicationName } doesn't have a category defined` );
+    } catch (_err) {
+      coreApi.log.error(`application: ${app?.getName() || applicationName} doesn't have a category defined`);
     }
   }
 
-  return Object.keys( categories );
+  return Object.keys(categories);
 }
 
-export async function getAllApplicationsFromCategory( category: string ): Promise<string[]> {
+export async function getAllApplicationsFromCategory(category: string): Promise<string[]> {
   const applications = await getAllApplications();
 
-  const results = await Promise.all( applications.map( async application => await ( new YourDashApplication( application ).read() ) ) );
+  const results = await Promise.all(
+    applications.map(async (application) => await new YourDashApplication(application).read()),
+  );
 
-  return results.filter( app => app.getCategory() === category ).map( app => app.getName() );
+  return results.filter((app) => app.getCategory() === category).map((app) => app.getName());
 }

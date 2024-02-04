@@ -1,16 +1,16 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 @Ewsgit and YourDash contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 import { useEffect } from "react";
 import * as React from "react";
-import CodeStudioEditor from "applications/code_studio/frontend/core/editor/editor";
-import csi from "web-client/src/helpers/csi";
-import getParserForFileExtension from "applications/code_studio/frontend/core/editor/editor";
+import CodeStudioEditor from "@yourdash/applications/code_studio/frontend/core/editor/editor";
+import csi from "@yourdash/web-client/src/helpers/csi";
+import getParserForFileExtension from "@yourdash/applications/code_studio/frontend/core/editor/editor";
 import pathBrowserify from "path-browserify";
-import { IconButton } from "web-client/src/ui";
-import { YourDashIcon } from "web-client/src/ui/components/icon/iconDictionary";
+import { IconButton } from "@yourdash/web-client/src/ui";
+import { YourDashIcon } from "@yourdash/web-client/src/ui/components/icon/iconDictionary";
 import CodeStudioLanguage from "../../../../code_studio/frontend/core/editor/languages/language";
 import CodeStudioLanguages from "../../../../code_studio/frontend/core/editor/languages/languages";
 
@@ -20,14 +20,10 @@ export interface ITextPreview {
 
 const TextPreview: React.FC<ITextPreview> = ({ path = "" }) => {
   const ref = React.useRef<HTMLDivElement>(null);
-  const [fileParser, setFileParser] = React.useState<CodeStudioLanguage | null>(
-    null,
-  );
+  const [fileParser, setFileParser] = React.useState<CodeStudioLanguage | null>(null);
 
   useEffect(() => {
-    CodeStudioLanguages[
-      pathBrowserify.extname(path).replace(".", "")
-    ].parser.then((lang) => {
+    CodeStudioLanguages[pathBrowserify.extname(path).replace(".", "")].parser.then((lang) => {
       setFileParser(lang);
     });
   }, []);
@@ -64,11 +60,7 @@ const TextPreview: React.FC<ITextPreview> = ({ path = "" }) => {
           }}
         />
       </div>
-      <div
-        data-yourdash-codestudio-editor="true"
-        className={"overflow-auto w-full p-2"}
-        ref={ref}
-      />
+      <div data-yourdash-codestudio-editor="true" className={"overflow-auto w-full p-2"} ref={ref} />
     </section>
   );
 };

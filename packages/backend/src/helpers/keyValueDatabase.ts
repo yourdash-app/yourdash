@@ -1,21 +1,18 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 @Ewsgit and YourDash contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 import { promises as fs, writeFile } from "fs";
 
-import KVD from "shared/core/database.js";
+import KVD from "@yourdash/shared/core/database.js";
 
 export default class KeyValueDatabase extends KVD {
   constructor() {
     super();
   }
 
-  __internal__doNotUseOnlyIntendedForShutdownSequenceWriteToDisk(
-    path: string,
-    cb?: () => void,
-  ) {
+  __internal__doNotUseOnlyIntendedForShutdownSequenceWriteToDisk(path: string, cb?: () => void) {
     try {
       writeFile(path, JSON.stringify(this.keys), cb);
     } catch (_err) {

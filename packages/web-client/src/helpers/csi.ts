@@ -1,26 +1,13 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 @Ewsgit and YourDash contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 // YourDash Client-Server interface Toolkit
-import KeyValueDatabase from "shared/core/database";
-import {
-  io as SocketIoClient,
-  Socket as SocketIoSocket,
-} from "socket.io-client";
+import KeyValueDatabase from "@yourdash/shared/core/database";
+import { io as SocketIoClient, Socket as SocketIoSocket } from "socket.io-client";
 
-type ITJson =
-  | boolean
-  | number
-  | string
-  | null
-  | TJson
-  | boolean[]
-  | number[]
-  | string[]
-  | null[]
-  | TJson[];
+type ITJson = boolean | number | string | null | TJson | boolean[] | number[] | string[] | null[] | TJson[];
 
 export type TJson = {
   [key: string]: ITJson;
@@ -71,8 +58,7 @@ class __internalClientServerInteraction {
       [key: string]: string;
     },
   ): void {
-    const instanceUrl =
-      localStorage.getItem("current_server") || "https://example.com";
+    const instanceUrl = localStorage.getItem("current_server") || "https://example.com";
     const username = localStorage.getItem("username") || "";
     const sessionToken = localStorage.getItem("session_token") || "";
 
@@ -89,9 +75,7 @@ class __internalClientServerInteraction {
       },
     })
       .then((resp) => {
-        if (
-          resp.headers.get("Content-Type") === "application/json; charset=utf-8"
-        ) {
+        if (resp.headers.get("Content-Type") === "application/json; charset=utf-8") {
           return resp.json();
         }
 
@@ -105,19 +89,13 @@ class __internalClientServerInteraction {
             window.location.href = "/";
             return;
           }
-          console.error(
-            `Error fetching from instance: (json) GET ${endpoint}, Error:`,
-            resp.error,
-          );
+          console.error(`Error fetching from instance: (json) GET ${endpoint}, Error:`, resp.error);
           return;
         }
         cb(resp);
       })
       .catch((err) => {
-        console.error(
-          `Error parsing result from instance: (json) GET ${endpoint}`,
-          err,
-        );
+        console.error(`Error parsing result from instance: (json) GET ${endpoint}`, err);
       });
   }
 
@@ -130,8 +108,7 @@ class __internalClientServerInteraction {
       [key: string]: string;
     },
   ): void {
-    const instanceUrl =
-      localStorage.getItem("current_server") || "https://example.com";
+    const instanceUrl = localStorage.getItem("current_server") || "https://example.com";
     const username = localStorage.getItem("username") || "";
     const sessionToken = localStorage.getItem("session_token") || "";
 
@@ -149,9 +126,7 @@ class __internalClientServerInteraction {
       },
     })
       .then((resp) => {
-        if (
-          resp.headers.get("Content-Type") === "application/json; charset=utf-8"
-        ) {
+        if (resp.headers.get("Content-Type") === "application/json; charset=utf-8") {
           return resp.json();
         }
 
@@ -165,19 +140,13 @@ class __internalClientServerInteraction {
             window.location.href = "/";
             return;
           }
-          console.error(
-            `Error fetching from instance: (json) POST ${endpoint}, Error:`,
-            resp.error,
-          );
+          console.error(`Error fetching from instance: (json) POST ${endpoint}, Error:`, resp.error);
           return;
         }
         cb(resp);
       })
       .catch((err) => {
-        console.error(
-          `Error parsing result from instance: (json) POST ${endpoint}`,
-          err,
-        );
+        console.error(`Error parsing result from instance: (json) POST ${endpoint}`, err);
       });
   }
 
@@ -189,8 +158,7 @@ class __internalClientServerInteraction {
       [key: string]: string;
     },
   ): void {
-    const instanceUrl =
-      localStorage.getItem("current_server") || "https://example.com";
+    const instanceUrl = localStorage.getItem("current_server") || "https://example.com";
     const username = localStorage.getItem("username") || "";
     const sessionToken = localStorage.getItem("session_token") || "";
 
@@ -206,9 +174,7 @@ class __internalClientServerInteraction {
       },
     })
       .then((resp) => {
-        if (
-          resp.headers.get("Content-Type") === "application/json; charset=utf-8"
-        ) {
+        if (resp.headers.get("Content-Type") === "application/json; charset=utf-8") {
           return resp.json();
         }
 
@@ -222,19 +188,13 @@ class __internalClientServerInteraction {
             window.location.href = "/";
             return;
           }
-          console.error(
-            `Error fetching from instance: (json) DELETE ${endpoint}, Error:`,
-            resp.error,
-          );
+          console.error(`Error fetching from instance: (json) DELETE ${endpoint}, Error:`, resp.error);
           return;
         }
         cb(resp);
       })
       .catch((err) => {
-        console.error(
-          `Error parsing result from instance: (json) DELETE ${endpoint}`,
-          err,
-        );
+        console.error(`Error parsing result from instance: (json) DELETE ${endpoint}`, err);
       });
   }
 
@@ -246,8 +206,7 @@ class __internalClientServerInteraction {
       [key: string]: string;
     },
   ): void {
-    const instanceUrl =
-      localStorage.getItem("current_server") || "https://example.com";
+    const instanceUrl = localStorage.getItem("current_server") || "https://example.com";
     const username = localStorage.getItem("username") || "";
     const sessionToken = localStorage.getItem("session_token") || "";
 
@@ -270,10 +229,7 @@ class __internalClientServerInteraction {
         cb(resp);
       })
       .catch((err) => {
-        console.error(
-          `Error parsing result from instance: (txt) GET ${endpoint}`,
-          err,
-        );
+        console.error(`Error parsing result from instance: (txt) GET ${endpoint}`, err);
       });
   }
 
@@ -286,8 +242,7 @@ class __internalClientServerInteraction {
       [key: string]: string;
     },
   ): void {
-    const instanceUrl =
-      localStorage.getItem("current_server") || "https://example.com";
+    const instanceUrl = localStorage.getItem("current_server") || "https://example.com";
     const username = localStorage.getItem("username") || "";
     const sessionToken = localStorage.getItem("session_token") || "";
 
@@ -309,10 +264,7 @@ class __internalClientServerInteraction {
         cb(resp);
       })
       .catch((err) => {
-        console.error(
-          `Error parsing result from instance: (txt) POST ${endpoint}`,
-          err,
-        );
+        console.error(`Error parsing result from instance: (txt) POST ${endpoint}`, err);
       });
   }
 
@@ -324,8 +276,7 @@ class __internalClientServerInteraction {
       [key: string]: string;
     },
   ): void {
-    const instanceUrl =
-      localStorage.getItem("current_server") || "https://example.com";
+    const instanceUrl = localStorage.getItem("current_server") || "https://example.com";
     const username = localStorage.getItem("username") || "";
     const sessionToken = localStorage.getItem("session_token") || "";
 
@@ -352,10 +303,7 @@ class __internalClientServerInteraction {
         cb(resp);
       })
       .catch((err) => {
-        console.error(
-          `Error parsing result from instance: (txt) DELETE ${endpoint}`,
-          err,
-        );
+        console.error(`Error parsing result from instance: (txt) DELETE ${endpoint}`, err);
       });
   }
 

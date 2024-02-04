@@ -1,11 +1,11 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 @Ewsgit and YourDash contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 import React, { useEffect, useState } from "react";
-import useYourDashLib from "web-client/src/helpers/ydsh";
-import csi from "web-client/src/helpers/csi";
+import useYourDashLib from "@yourdash/web-client/src/helpers/ydsh";
+import csi from "@yourdash/web-client/src/helpers/csi";
 
 const InstanceInfo: React.FC = () => {
   const [metadata, setMetadata] = useState<{ title: string; message: string }>({
@@ -36,9 +36,7 @@ const InstanceInfo: React.FC = () => {
 
   return (
     <div
-      className={
-        "flex flex-col w-[calc(100%+2rem)] h-[calc(100%+2rem)] bg-cover bg-center -ml-4 -mt-4"
-      }
+      className={"flex flex-col w-[calc(100%+2rem)] h-[calc(100%+2rem)] bg-cover bg-center -ml-4 -mt-4"}
       style={{
         backgroundImage: `url(${csi.getInstanceUrl()}/login/instance/background)`,
       }}
@@ -48,23 +46,13 @@ const InstanceInfo: React.FC = () => {
           "flex flex-col mt-auto w-full h-max pl-4 pr-4 pb-2 pt-32 from-base-800 to-transparent bg-gradient-to-t"
         }
       >
-        <h2
-          className={
-            "font-bold text-5xl text-container-fg w-full whitespace-normal text-ellipsis"
-          }
-        >
+        <h2 className={"font-bold text-5xl text-container-fg w-full whitespace-normal text-ellipsis"}>
           {metadata.title}
         </h2>
-        <p
-          className={
-            "whitespace-normal overflow-hidden text-ellipsis w-full text-container-secondary-fg"
-          }
-        >
+        <p className={"whitespace-normal overflow-hidden text-ellipsis w-full text-container-secondary-fg"}>
           {metadata.message}
         </p>
-        <span className={"text-sm font-light text-right"}>
-          {csi.getInstanceUrl()}
-        </span>
+        <span className={"text-sm font-light text-right"}>{csi.getInstanceUrl()}</span>
       </section>
     </div>
   );

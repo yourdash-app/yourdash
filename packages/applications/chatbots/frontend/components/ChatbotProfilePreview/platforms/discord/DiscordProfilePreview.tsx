@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import { Icon, YourDashIcon } from "web-client/src/ui/index";
+import { Icon, YourDashIcon } from "@yourdash/web-client/src/ui/index";
 import styles from "./DiscordProfilePreview.module.scss";
 
 export interface IDiscordProfilePreviewProps {
@@ -42,10 +42,7 @@ const DiscordProfilePreview: React.FC<IDiscordProfilePreviewProps> = ({
           <span className={styles.username}>
             {username}
             <div className={styles.usernameBadge}>
-              <Icon
-                icon={YourDashIcon.Check}
-                className={styles.usernameBadgeIcon}
-              />
+              <Icon icon={YourDashIcon.Check} className={styles.usernameBadgeIcon} />
               BOT
             </div>
           </span>
@@ -76,11 +73,7 @@ const DiscordProfilePreview: React.FC<IDiscordProfilePreviewProps> = ({
         <div className={styles.clickToAddNote}>
           <span className={styles.text}>Click to add a note</span>
         </div>
-        <input
-          className={styles.message}
-          type={"text"}
-          placeholder={`Message @${username}`}
-        />
+        <input className={styles.message} type={"text"} placeholder={`Message @${username}`} />
       </div>
     </div>
   );

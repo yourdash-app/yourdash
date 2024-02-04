@@ -1,14 +1,10 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 @Ewsgit and YourDash contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import clippy from "web-client/src/helpers/clippy";
-import React, {
-  useState,
-  FocusEventHandler,
-  KeyboardEventHandler,
-} from "react";
+import clippy from "@yourdash/web-client/src/helpers/clippy";
+import React, { useState, FocusEventHandler, KeyboardEventHandler } from "react";
 import { Icon } from "../../index";
 import { YourDashIcon } from "../icon/iconDictionary";
 
@@ -51,12 +47,7 @@ const TextInput: React.FC<ITextInput> = ({
   const [valid, setValid] = useState(!mustMatchRegex);
 
   return (
-    <div
-      className={clippy(
-        "relative transition-all flex min-h-[2.25rem] box-content min-w-48",
-        className,
-      )}
-    >
+    <div className={clippy("relative transition-all flex min-h-[2.25rem] box-content min-w-48", className)}>
       <div
         className={clippy(
           "rounded-button-rounding bg-base-800 pl-2 pt-1 pb-1 pr-2 flex gap-1 items-center justify-center w-full",
@@ -74,10 +65,7 @@ const TextInput: React.FC<ITextInput> = ({
           autoComplete={autoComplete}
           placeholder={placeholder}
           name={accessibleName}
-          className={clippy(
-            "w-full h-full outline-none relative z-0 transition-all bg-transparent",
-            inputClassName,
-          )}
+          className={clippy("w-full h-full outline-none relative z-0 transition-all bg-transparent", inputClassName)}
           type={extraProps.type || "text"}
           onBlur={onBlur}
           defaultValue={defaultValue}
@@ -89,8 +77,7 @@ const TextInput: React.FC<ITextInput> = ({
             onChange(value, e);
             if (
               !mustMatchRegex ||
-              (value.match(mustMatchRegex) !== null &&
-                value.match(mustMatchRegex)?.length === 1)
+              (value.match(mustMatchRegex) !== null && value.match(mustMatchRegex)?.length === 1)
             ) {
               setValid(true);
               onValid?.(value);
