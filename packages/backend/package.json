@@ -1,5 +1,5 @@
 {
-  "name": "backend",
+  "name": "@yourdash/backend",
   "version": "1.0.0",
   "main": "index.js",
   "author": "Ewsgit <ewsgit@duck.com>",

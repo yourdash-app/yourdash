@@ -4,29 +4,20 @@
  */
 
 import React from "react";
-import Node, { INode } from "./components/node/Node";
+import Node, { INode, INodeData } from "./components/node/Node";
 
 export interface INodeView {
-  nodes: INode[];
-  possibleNodes: {
-    [typeId: string]: {
-      inputs?: {
-        [inputId: string]: string;
-      };
-      outputs?: {
-        [outputId: string]: string;
-      };
-      displayName: string;
-      content?: React.ReactNode;
-    };
+  nodesData: INodeData<INode>[];
+  nodes: {
+    [typeId: string]: INode;
   };
 }
 
-const NodesView: React.FC<INodeView> = ({ nodes }) => {
+const NodesView: React.FC<INodeView> = ({ nodesData, nodes }) => {
   return (
     <div>
-      {nodes.map((node) => (
-        <Node key={node.id} {...node} />
+      {nodesData.map((node) => (
+        <Node key={node.id} data={node} node={nodes[node.type]} />
       ))}
     </div>
   );

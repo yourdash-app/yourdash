@@ -24,19 +24,28 @@ const DiffusionLabRouter: React.FC = () => {
               index
               element={
                 <NodesView
-                  nodes={[
-                    {
-                      id: generateUUID(),
-                    },
-                  ]}
-                  possibleNodes={{
+                  nodes={{
                     "number-variable": {
+                      displayName: "Number",
                       outputs: {
                         value: "number",
                       },
-                      displayName: "Number Variable",
+                      exec: (inputs) => {
+                        return inputs;
+                      },
                     },
                   }}
+                  nodesData={[
+                    {
+                      id: generateUUID(),
+                      type: "number-variable",
+                      content: "Number Node",
+                      inputs: {},
+                      outputs: {
+                        value: "number",
+                      },
+                    },
+                  ]}
                 />
               }
             />

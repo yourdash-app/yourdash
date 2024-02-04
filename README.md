@@ -42,7 +42,8 @@ Some of the YourDash projects include
 - Linting And Formatting
   - [ESLint](https://eslint.org)
 - Package Manager
-  - [Bun](https://bun.sh)
+  - [Yarn](https://yarnpkg.com/) (Windows)
+  - [Bun](https://bun.sh/) (Linux)
 - Runtimes
   - [Bun ( Much faster Nodejs replacement )](https://bun.sh)
   - [Python 3.11.7](https://www.python.org/downloads/release/python-3117/)
@@ -53,10 +54,12 @@ Some of the YourDash projects include
 
 ### Installation and setup (Linux) (Recommended Development Method)
 
-#### Install bun
+#### Install Bun and Yarn
 ```shell
 curl -fsSL https://bun.sh/install | bash
 source ~/.bashrc
+
+npm i -g yarn
 ```
 #### Install npm dependencies
 ```shell
