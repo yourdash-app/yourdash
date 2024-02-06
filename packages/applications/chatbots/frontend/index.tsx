@@ -34,6 +34,16 @@ const DiffusionLabRouter: React.FC = () => {
                         return inputs;
                       },
                     },
+                    "log-to-console": {
+                      displayName: "Console Log",
+                      inputs: {
+                        value: "string",
+                      },
+                      exec: (inputs) => {
+                        console.log(inputs?.value);
+                        return inputs;
+                      },
+                    },
                   }}
                   nodesData={[
                     {
@@ -43,6 +53,36 @@ const DiffusionLabRouter: React.FC = () => {
                       inputs: {},
                       outputs: {
                         value: "number",
+                      },
+                      position: {
+                        x: 12,
+                        y: 60,
+                      },
+                    },
+                    {
+                      id: generateUUID(),
+                      type: "number-variable",
+                      content: "Number Node",
+                      inputs: {},
+                      outputs: {
+                        value: "number",
+                      },
+                      position: {
+                        x: 12,
+                        y: 60,
+                      },
+                    },
+                    {
+                      id: generateUUID(),
+                      type: "log-to-console",
+                      content: "Console Log",
+                      inputs: {
+                        value: "john doe",
+                      },
+                      outputs: {},
+                      position: {
+                        x: 12,
+                        y: 60,
                       },
                     },
                   ]}

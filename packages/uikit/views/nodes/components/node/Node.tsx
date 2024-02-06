@@ -29,6 +29,11 @@ export interface INodeData<T extends INode> {
   outputs: T["outputs"] extends Required<T["outputs"]>
     ? { [outputId in keyof T["outputs"]]: TypeFromString<T["outputs"][outputId]> }
     : never;
+  position: {
+    x: number;
+    y: number;
+    containingFrame: UUID;
+  };
 }
 
 export interface NodeProps {

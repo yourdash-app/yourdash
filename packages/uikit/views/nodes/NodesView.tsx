@@ -14,8 +14,10 @@ export interface INodeView {
 }
 
 const NodesView: React.FC<INodeView> = ({ nodesData, nodes }) => {
+  const nodeViewRef = React.useRef<HTMLDivElement>(null);
+
   return (
-    <div>
+    <div ref={nodeViewRef}>
       {nodesData.map((node) => (
         <Node key={node.id} data={node} node={nodes[node.type]} />
       ))}
