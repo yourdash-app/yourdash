@@ -3,25 +3,86 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import { UUID } from "@yourdash/shared/core/uuid";
+import generateUUID from "@yourdash/web-client/src/helpers/uuid";
 import React from "react";
-import Node, { INode, INodeData } from "./components/node/Node";
+import ReactInterconnect from "../../framework/ReactInterconnect";
+import Node, { INode, INodeData } from "./components/node/node";
+import styles from "./NodesView.module.scss";
 
 export interface INodeView {
-  nodesData: INodeData<INode>[];
   nodes: {
     [typeId: string]: INode;
   };
 }
 
-const NodesView: React.FC<INodeView> = ({ nodesData, nodes }) => {
-  const nodeViewRef = React.useRef<HTMLDivElement>(null);
-
+const NodesView: React.FC<INodeView> = ({ nodes }) => {
   return (
-    <div ref={nodeViewRef}>
-      {nodesData.map((node) => (
-        <Node key={node.id} data={node} node={nodes[node.type]} />
-      ))}
-    </div>
+    <ReactInterconnect
+      onLoad={(fw) => {
+        fw.containingElement.innerHTML = "";
+        fw.containingElement.classList.add(styles.container);
+
+        const ROOT_FRAME_ID = generateUUID();
+
+        const nodesData: { [id: UUID]: INodeData<INode> } = {};
+
+        const addLogNodeElement = document.createElement("button");
+        addLogNodeElement.innerText = "Add Log Node";
+        addLogNodeElement.onclick = () => {
+          const id = generateUUID();
+          nodesData[id] = {
+            id,
+            type: "log-to-console",
+            inputs: {},
+            outputs: {},
+            position: {
+              x: 0,
+              y: 0,
+              containingFrame: ROOT_FRAME_ID,
+            },
+          };
+
+          const n = new Node(nodesData[id], nodes[nodesData[id].type]);
+
+          fw.containingElement.appendChild(n.htmlElement);
+        };
+
+        fw.containingElement.appendChild(addLogNodeElement);
+
+        const addNumberNodeElement = document.createElement("button");
+        addNumberNodeElement.innerText = "Add Number Node";
+        addNumberNodeElement.onclick = () => {
+          const id = generateUUID();
+          nodesData[id] = {
+            id,
+            type: "number-variable",
+            inputs: {},
+            outputs: {},
+            position: {
+              x: 0,
+              y: 0,
+              containingFrame: ROOT_FRAME_ID,
+            },
+          };
+
+          console.log(nodesData[id]);
+
+          const n = new Node(nodesData[id], nodes[nodesData[id].type]);
+
+          fw.containingElement.appendChild(n.htmlElement);
+        };
+
+        fw.containingElement.appendChild(addNumberNodeElement);
+
+        Object.keys(nodesData).map((node) => {
+          // @ts-ignore
+          const n = new Node(nodesData[node], nodes[nodesData[node].type]);
+
+          fw.containingElement.appendChild(n.htmlElement);
+        });
+      }}
+    />
   );
 };
 

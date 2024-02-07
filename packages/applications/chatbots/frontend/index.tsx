@@ -5,7 +5,6 @@
 
 import NodesView from "@yourdash/uikit/views/nodes/NodesView";
 import ComingSoon from "@yourdash/web-client/src/ComingSoon";
-import generateUUID from "@yourdash/web-client/src/helpers/uuid";
 import React from "react";
 import { Routes, Route } from "react-router";
 import ChatbotsApplication from "./chatbotsApplication";
@@ -30,8 +29,12 @@ const DiffusionLabRouter: React.FC = () => {
                       outputs: {
                         value: "number",
                       },
+                      inputs: {},
                       exec: (inputs) => {
                         return inputs;
+                      },
+                      onInit: (node) => {
+                        node.setOutput("value", Math.random() * 100);
                       },
                     },
                     "log-to-console": {
@@ -39,53 +42,13 @@ const DiffusionLabRouter: React.FC = () => {
                       inputs: {
                         value: "string",
                       },
+                      outputs: {},
                       exec: (inputs) => {
                         console.log(inputs?.value);
                         return inputs;
                       },
                     },
                   }}
-                  nodesData={[
-                    {
-                      id: generateUUID(),
-                      type: "number-variable",
-                      content: "Number Node",
-                      inputs: {},
-                      outputs: {
-                        value: "number",
-                      },
-                      position: {
-                        x: 12,
-                        y: 60,
-                      },
-                    },
-                    {
-                      id: generateUUID(),
-                      type: "number-variable",
-                      content: "Number Node",
-                      inputs: {},
-                      outputs: {
-                        value: "number",
-                      },
-                      position: {
-                        x: 12,
-                        y: 60,
-                      },
-                    },
-                    {
-                      id: generateUUID(),
-                      type: "log-to-console",
-                      content: "Console Log",
-                      inputs: {
-                        value: "john doe",
-                      },
-                      outputs: {},
-                      position: {
-                        x: 12,
-                        y: 60,
-                      },
-                    },
-                  ]}
                 />
               }
             />

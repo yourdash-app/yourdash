@@ -1,0 +1,61 @@
+/*!
+ * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
+.node {
+  background-color: rgb(var(--container-bg));
+  color: rgb(var(--container-fg));
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem;
+
+  .title {
+    font-weight: 700;
+    flex-grow: 1;
+  }
+
+  .content {
+
+  }
+
+  .inner {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+  }
+}
+
+.slot {
+  --size: 0.75rem;
+
+  background-color: #444444;
+  border: 0.125rem solid #ffffff;
+  border-radius: 10rem;
+  height: var(--size);
+  width: var(--size);
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+
+.nodeInputs {
+  background-color: rgb(var(--container-secondary-bg));
+  color: rgb(var(--container-secondary-fg));
+  width: max-content;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  border-radius: 0.5rem;
+}
+
+.nodeOutputs {
+  background-color: rgb(var(--container-secondary-bg));
+  color: rgb(var(--container-secondary-fg));
+  width: max-content;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  border-radius: 0.5rem;
+}
