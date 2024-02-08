@@ -9,10 +9,11 @@ import React from "react";
 import ReactInterconnect from "../../framework/ReactInterconnect";
 import Node, { INode, INodeData } from "./components/node/node";
 import styles from "./NodesView.module.scss";
+import NodeWire from "./components/wire/wire";
 
 export interface INodeView {
   nodes: {
-    [typeId: string]: INode;
+    [ typeId: string ]: INode;
   };
 }
 
@@ -25,13 +26,15 @@ const NodesView: React.FC<INodeView> = ({ nodes }) => {
 
         const ROOT_FRAME_ID = generateUUID();
 
-        const nodesData: { [id: UUID]: INodeData<INode> } = {};
+        const nodesData: { [ id: UUID ]: INodeData<INode> } = {};
+        const wiresData: NodeWire[] = [];
+        const nodeWireElementContainer: HTMLElement = document.createElement("svg")
 
         const addLogNodeElement = document.createElement("button");
         addLogNodeElement.innerText = "Add Log Node";
         addLogNodeElement.onclick = () => {
           const id = generateUUID();
-          nodesData[id] = {
+          nodesData[ id ] = {
             id,
             type: "log-to-console",
             inputs: {},
@@ -43,7 +46,7 @@ const NodesView: React.FC<INodeView> = ({ nodes }) => {
             },
           };
 
-          const n = new Node(nodesData[id], nodes[nodesData[id].type]);
+          const n = new Node(nodesData[ id ], nodes[ nodesData[ id ].type ], wiresData, nodeWireElementContainer);
 
           fw.containingElement.appendChild(n.htmlElement);
         };
@@ -54,7 +57,7 @@ const NodesView: React.FC<INodeView> = ({ nodes }) => {
         addNumberNodeElement.innerText = "Add Number Node";
         addNumberNodeElement.onclick = () => {
           const id = generateUUID();
-          nodesData[id] = {
+          nodesData[ id ] = {
             id,
             type: "number-variable",
             inputs: {},
@@ -66,9 +69,9 @@ const NodesView: React.FC<INodeView> = ({ nodes }) => {
             },
           };
 
-          console.log(nodesData[id]);
+          console.log(nodesData[ id ]);
 
-          const n = new Node(nodesData[id], nodes[nodesData[id].type]);
+          const n = new Node(nodesData[ id ], nodes[ nodesData[ id ].type ], wiresData);
 
           fw.containingElement.appendChild(n.htmlElement);
         };
@@ -77,7 +80,7 @@ const NodesView: React.FC<INodeView> = ({ nodes }) => {
 
         Object.keys(nodesData).map((node) => {
           // @ts-ignore
-          const n = new Node(nodesData[node], nodes[nodesData[node].type]);
+          const n = new Node(nodesData[ node ], nodes[ nodesData[ node ].type ]);
 
           fw.containingElement.appendChild(n.htmlElement);
         });
