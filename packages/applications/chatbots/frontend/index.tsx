@@ -29,7 +29,9 @@ const DiffusionLabRouter: React.FC = () => {
                       outputs: {
                         value: "number",
                       },
-                      inputs: {},
+                      inputs: {
+                        test1: "number",
+                      },
                       exec: (inputs) => {
                         return inputs;
                       },

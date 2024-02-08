@@ -11,16 +11,19 @@ export default class NodeWire {
   start: { output: string; node: Node<INode> };
   end: { input: string; node: Node<INode> };
 
-  constructor(start: { output: string; node: Node<INode> }, end: { input: string; node: Node<INode> }, nodeWireContainer: HTMLElement) {
+  constructor(
+    start: { output: string; node: Node<INode> },
+    end: { input: string; node: Node<INode> },
+    nodeWireContainer: HTMLElement,
+  ) {
     this.start = start;
     this.end = end;
 
     this.htmlElement = document.createElementNS("http://www.w3.org/2000/svg", "line");
 
-    nodeWireContainer.appendChild(this.htmlElement)
+    nodeWireContainer.appendChild(this.htmlElement);
 
-    this.htmlElement.style.color = "#fff"
-    this.htmlElement.style.lineHeight = "0.5rem"
+    this.htmlElement.setAttribute("stroke", "white");
 
     this.render();
   }
@@ -28,12 +31,16 @@ export default class NodeWire {
   render() {
     this.htmlElement.setAttribute(
       "x1",
-      this.start.node.outputElements?.[ this.start.output ]?.getBoundingClientRect().x + "px",
+      this.start.node.outputElements?.[this.start.output]?.getBoundingClientRect().x + "",
     );
 
     this.htmlElement.setAttribute(
       "y1",
-      this.start.node.outputElements?.[ this.start.output ]?.getBoundingClientRect().y + "px",
+      this.start.node.outputElements?.[this.start.output]?.getBoundingClientRect().y + "",
     );
+
+    this.htmlElement.setAttribute("x2", this.end.node.inputElements?.[this.end.input]?.getBoundingClientRect().x + "");
+
+    this.htmlElement.setAttribute("y2", this.end.node.inputElements?.[this.end.input]?.getBoundingClientRect().y + "");
   }
 }

@@ -13,7 +13,7 @@ import NodeWire from "./components/wire/wire";
 
 export interface INodeView {
   nodes: {
-    [ typeId: string ]: INode;
+    [typeId: string]: INode;
   };
 }
 
@@ -26,15 +26,24 @@ const NodesView: React.FC<INodeView> = ({ nodes }) => {
 
         const ROOT_FRAME_ID = generateUUID();
 
-        const nodesData: { [ id: UUID ]: INodeData<INode> } = {};
+        const nodesData: { [id: UUID]: INodeData<INode> } = {};
         const wiresData: NodeWire[] = [];
-        const nodeWireElementContainer: HTMLElement = document.createElement("svg")
+        const nodeWireElementContainer: HTMLElement = document.createElement("svg");
+        fw.containingElement.appendChild(nodeWireElementContainer);
+        nodeWireElementContainer.outerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${fw.containingElement.getBoundingClientRect().width} ${fw.containingElement.getBoundingClientRect().height}"></svg>`;
+
+        nodeWireElementContainer.style.width = `${fw.containingElement.getBoundingClientRect().width}px`;
+        nodeWireElementContainer.style.height = `${fw.containingElement.getBoundingClientRect().height}px`;
+        nodeWireElementContainer.style.pointerEvents = "none";
+        nodeWireElementContainer.style.position = "absolute";
+        nodeWireElementContainer.style.top = "0";
+        nodeWireElementContainer.style.left = "0";
 
         const addLogNodeElement = document.createElement("button");
         addLogNodeElement.innerText = "Add Log Node";
         addLogNodeElement.onclick = () => {
           const id = generateUUID();
-          nodesData[ id ] = {
+          nodesData[id] = {
             id,
             type: "log-to-console",
             inputs: {},
@@ -46,7 +55,7 @@ const NodesView: React.FC<INodeView> = ({ nodes }) => {
             },
           };
 
-          const n = new Node(nodesData[ id ], nodes[ nodesData[ id ].type ], wiresData, nodeWireElementContainer);
+          const n = new Node(nodesData[id], nodes[nodesData[id].type], wiresData, nodeWireElementContainer);
 
           fw.containingElement.appendChild(n.htmlElement);
         };
@@ -57,7 +66,7 @@ const NodesView: React.FC<INodeView> = ({ nodes }) => {
         addNumberNodeElement.innerText = "Add Number Node";
         addNumberNodeElement.onclick = () => {
           const id = generateUUID();
-          nodesData[ id ] = {
+          nodesData[id] = {
             id,
             type: "number-variable",
             inputs: {},
@@ -69,9 +78,9 @@ const NodesView: React.FC<INodeView> = ({ nodes }) => {
             },
           };
 
-          console.log(nodesData[ id ]);
+          console.log(nodesData[id]);
 
-          const n = new Node(nodesData[ id ], nodes[ nodesData[ id ].type ], wiresData);
+          const n = new Node(nodesData[id], nodes[nodesData[id].type], wiresData, nodeWireElementContainer);
 
           fw.containingElement.appendChild(n.htmlElement);
         };
@@ -80,7 +89,7 @@ const NodesView: React.FC<INodeView> = ({ nodes }) => {
 
         Object.keys(nodesData).map((node) => {
           // @ts-ignore
-          const n = new Node(nodesData[ node ], nodes[ nodesData[ node ].type ]);
+          const n = new Node(nodesData[node], nodes[nodesData[node].type]);
 
           fw.containingElement.appendChild(n.htmlElement);
         });
