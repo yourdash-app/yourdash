@@ -11,12 +11,12 @@ import NodeWire from "../wire/wire";
 export interface INode {
   displayName: string;
   inputs: {
-    [ inputId: string ]: string;
+    [inputId: string]: string;
   };
   outputs: {
-    [ outputId: string ]: string;
+    [outputId: string]: string;
   };
-  exec: (inputs: INode[ "inputs" ]) => INode[ "outputs" ];
+  exec: (inputs: INode["inputs"]) => INode["outputs"];
   onInit?: (node: Node<any>) => void; // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 
@@ -24,8 +24,8 @@ export interface INodeData<T extends INode> {
   id: UUID;
   type: string;
   content?: HTMLDivElement;
-  inputs: { [ inputId in keyof T[ "inputs" ] ]: TypeFromString<T[ "inputs" ][ inputId ]> };
-  outputs: { [ outputId in keyof T[ "outputs" ] ]: TypeFromString<T[ "outputs" ][ outputId ]> };
+  inputs: { [inputId in keyof T["inputs"]]: TypeFromString<T["inputs"][inputId]> };
+  outputs: { [outputId in keyof T["outputs"]]: TypeFromString<T["outputs"][outputId]> };
   position: {
     x: number;
     y: number;
@@ -39,24 +39,29 @@ export interface NodeProps {
 }
 
 export default class Node<T extends INode> {
-  id: INodeData<T>[ "id" ];
-  type: INodeData<T>[ "type" ];
-  content?: INodeData<T>[ "content" ];
-  inputs: INodeData<T>[ "inputs" ];
-  outputs: INodeData<T>[ "outputs" ];
-  position: INodeData<T>[ "position" ];
-  onInit?: T[ "onInit" ];
+  id: INodeData<T>["id"];
+  type: INodeData<T>["type"];
+  content?: INodeData<T>["content"];
+  inputs: INodeData<T>["inputs"];
+  outputs: INodeData<T>["outputs"];
+  position: INodeData<T>["position"];
+  onInit?: T["onInit"];
   htmlElement: HTMLDivElement;
-  nodesViewWiresData: NodeWire[]
-  nodeWireElementContainer: HTMLElement
+  nodesViewWiresData: NodeWire[];
+  nodeWireElementContainer: SVGSVGElement;
 
   inputElementsContainer: HTMLDivElement;
   outputElementsContainer: HTMLDivElement;
 
-  inputElements: { [ inputId in keyof INodeData<T>[ "inputs" ] ]?: HTMLDivElement };
-  outputElements: { [ outputId in keyof INodeData<T>[ "outputs" ] ]?: HTMLDivElement };
+  inputElements: { [inputId in keyof INodeData<T>["inputs"]]?: HTMLDivElement };
+  outputElements: { [outputId in keyof INodeData<T>["outputs"]]?: HTMLDivElement };
 
-  constructor({ id, type, content, inputs, outputs, position }: INodeData<T>, nodeType: INode, wiresData: NodeWire[], nodeWireElementContainer: HTMLElement) {
+  constructor(
+    { id, type, content, inputs, outputs, position }: INodeData<T>,
+    nodeType: INode,
+    wiresData: NodeWire[],
+    nodeWireElementContainer: SVGSVGElement,
+  ) {
     console.log("New Node: ", { id, type, content, inputs, outputs, position });
 
     this.id = id;
@@ -67,9 +72,9 @@ export default class Node<T extends INode> {
     this.position = position;
     this.htmlElement = document.createElement("div");
     this.htmlElement.classList.add(styles.node);
-    this.nodeWireElementContainer = nodeWireElementContainer
+    this.nodeWireElementContainer = nodeWireElementContainer;
 
-    this.nodesViewWiresData = wiresData
+    this.nodesViewWiresData = wiresData;
 
     const titleElement = document.createElement("div");
     titleElement.classList.add(styles.title);
@@ -95,11 +100,11 @@ export default class Node<T extends INode> {
     this.outputElements = {};
 
     Object.keys(nodeType.inputs).forEach((input) => {
-      this.setInput(input, this.inputs?.[ input ] || ("" as any)); // eslint-disable-line @typescript-eslint/no-explicit-any
+      this.setInput(input, this.inputs?.[input] || ("" as any)); // eslint-disable-line @typescript-eslint/no-explicit-any
     });
 
     Object.keys(nodeType.outputs).forEach((output) => {
-      this.setOutput(output, this.outputs?.[ output ] || ("" as any)); // eslint-disable-line @typescript-eslint/no-explicit-any
+      this.setOutput(output, this.outputs?.[output] || ("" as any)); // eslint-disable-line @typescript-eslint/no-explicit-any
     });
 
     this.render();
@@ -113,60 +118,60 @@ export default class Node<T extends INode> {
     this.inputElementsContainer.innerHTML = "INPUT";
 
     Object.keys(this.inputs).forEach((input) => {
-      this.inputElementsContainer.appendChild(this.inputElements[ input ] || document.createElement("error"));
+      this.inputElementsContainer.appendChild(this.inputElements[input] || document.createElement("error"));
     });
 
     Object.keys(this.outputs).forEach((output) => {
-      this.outputElementsContainer.appendChild(this.outputElements[ output ] || document.createElement("error"));
+      this.outputElementsContainer.appendChild(this.outputElements[output] || document.createElement("error"));
     });
 
     return this;
   }
 
-  setContent(content: INodeData<T>[ "content" ]) {
+  setContent(content: INodeData<T>["content"]) {
     this.content = content;
 
     return this;
   }
 
-  setInput(input: keyof INodeData<T>[ "inputs" ], value: INodeData<T>[ "inputs" ][ keyof INodeData<T>[ "inputs" ] ]) {
-    this.inputs[ input ] = value;
+  setInput(input: keyof INodeData<T>["inputs"], value: INodeData<T>["inputs"][keyof INodeData<T>["inputs"]]) {
+    this.inputs[input] = value;
 
     const element = document.createElement("div");
-    this.inputElements[ input ] = element;
+    this.inputElements[input] = element;
     element.classList.add(styles.slot);
 
-    element.addEventListener("mouseup", (e) => {
-
-    })
+    element.addEventListener("mouseup", (e) => {});
 
     this.render();
 
     return this;
   }
 
-  setOutput(output: keyof INodeData<T>[ "outputs" ], value: INodeData<T>[ "outputs" ][ keyof INodeData<T>[ "outputs" ] ]) {
-    this.outputs[ output ] = value;
+  setOutput(output: keyof INodeData<T>["outputs"], value: INodeData<T>["outputs"][keyof INodeData<T>["outputs"]]) {
+    this.outputs[output] = value;
 
     const element = document.createElement("div");
-    this.outputElements[ output ] = element;
+    this.outputElements[output] = element;
     element.classList.add(styles.slot);
 
     element.addEventListener("mousedown", (e) => {
-      this.nodesViewWiresData.push(new NodeWire(
-        {
-          output: output as string,
-          node: this as unknown as Node<INode>
-        },
-        {
-          input: "test1" as string,
-          node: this as unknown as Node<INode>
-        },
-        this.nodeWireElementContainer
-      ))
+      this.nodesViewWiresData.push(
+        new NodeWire(
+          {
+            output: output as string,
+            node: this as unknown as Node<INode>,
+          },
+          {
+            input: "test1" as string,
+            node: this as unknown as Node<INode>,
+          },
+          this.nodeWireElementContainer,
+        ),
+      );
 
-      console.log(this.nodesViewWiresData)
-    })
+      console.log(this.nodesViewWiresData);
+    });
 
     this.render();
 

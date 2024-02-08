@@ -28,9 +28,14 @@ const NodesView: React.FC<INodeView> = ({ nodes }) => {
 
         const nodesData: { [id: UUID]: INodeData<INode> } = {};
         const wiresData: NodeWire[] = [];
-        const nodeWireElementContainer: HTMLElement = document.createElement("svg");
+        const nodeWireElementContainer = document.createElementNS("http://www.w3.org/2000/svg", "svg");
         fw.containingElement.appendChild(nodeWireElementContainer);
-        nodeWireElementContainer.outerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${fw.containingElement.getBoundingClientRect().width} ${fw.containingElement.getBoundingClientRect().height}"></svg>`;
+
+        nodeWireElementContainer.setAttributeNS(
+          "http://www.w3.org/2000/svg",
+          "viewBox",
+          `0 0 ${fw.containingElement.getBoundingClientRect().width} ${fw.containingElement.getBoundingClientRect().height}`,
+        );
 
         nodeWireElementContainer.style.width = `${fw.containingElement.getBoundingClientRect().width}px`;
         nodeWireElementContainer.style.height = `${fw.containingElement.getBoundingClientRect().height}px`;

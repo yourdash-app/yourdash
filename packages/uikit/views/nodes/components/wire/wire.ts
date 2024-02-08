@@ -14,7 +14,7 @@ export default class NodeWire {
   constructor(
     start: { output: string; node: Node<INode> },
     end: { input: string; node: Node<INode> },
-    nodeWireContainer: HTMLElement,
+    nodeWireContainer: SVGSVGElement,
   ) {
     this.start = start;
     this.end = end;
