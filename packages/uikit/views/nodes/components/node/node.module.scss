@@ -30,12 +30,18 @@
   --size: 0.75rem;
 
   background-color: #444444;
-  border: 0.125rem solid #ffffff;
   border-radius: 10rem;
   height: var(--size);
   width: var(--size);
+  margin: 2px;
   flex-grow: 0;
   flex-shrink: 0;
+  outline: 2px solid #fff;
+  transition: var(--transition);
+
+  &:hover {
+    outline: 4px solid #fff;
+  }
 }
 
 .nodeInputs {

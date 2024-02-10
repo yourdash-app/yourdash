@@ -93,8 +93,12 @@ const NodesView: React.FC<INodeView> = ({ nodes }) => {
         fw.containingElement.appendChild(addNumberNodeElement);
 
         Object.keys(nodesData).map((node) => {
-          // @ts-ignore
-          const n = new Node(nodesData[node], nodes[nodesData[node].type]);
+          const n = new Node(
+            nodesData[node as UUID],
+            nodes[nodesData[node as UUID].type],
+            wiresData,
+            nodeWireElementContainer,
+          );
 
           fw.containingElement.appendChild(n.htmlElement);
         });

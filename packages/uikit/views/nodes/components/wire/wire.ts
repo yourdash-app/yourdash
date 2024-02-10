@@ -7,17 +7,19 @@ import Node, { INode } from "../node/node";
 
 export default class NodeWire {
   htmlElement: SVGElement;
+  nodeWireContainer: SVGSVGElement;
 
   start: { output: string; node: Node<INode> };
-  end: { input: string; node: Node<INode> };
+  end: { input: string | undefined; node: Node<INode> | undefined };
 
   constructor(
     start: { output: string; node: Node<INode> },
-    end: { input: string; node: Node<INode> },
+    end: { input: string | undefined; node: Node<INode> | undefined },
     nodeWireContainer: SVGSVGElement,
   ) {
     this.start = start;
     this.end = end;
+    this.nodeWireContainer = nodeWireContainer;
 
     this.htmlElement = document.createElementNS("http://www.w3.org/2000/svg", "line");
 
@@ -29,18 +31,26 @@ export default class NodeWire {
   }
 
   render() {
+    const nodeBounds = this.nodeWireContainer.getBoundingClientRect();
+
     this.htmlElement.setAttribute(
       "x1",
-      this.start.node.outputElements?.[this.start.output]?.getBoundingClientRect().x + "",
+      `${(this.start.node.outputElements?.[this.start.output]?.getBoundingClientRect().x || 0) - nodeBounds.x + (this.start.node.outputElements?.[this.start.output]?.getBoundingClientRect().width || 0) / 2}`,
     );
 
     this.htmlElement.setAttribute(
       "y1",
-      this.start.node.outputElements?.[this.start.output]?.getBoundingClientRect().y + "",
+      `${(this.start.node.outputElements?.[this.start.output]?.getBoundingClientRect().y || 0) - nodeBounds.y + (this.start.node.outputElements?.[this.start.output]?.getBoundingClientRect().height || 0) / 2}`,
     );
 
-    this.htmlElement.setAttribute("x2", this.end.node.inputElements?.[this.end.input]?.getBoundingClientRect().x + "");
+    this.htmlElement.setAttribute(
+      "x2",
+      `${(this.end.node.inputElements?.[this.end.input]?.getBoundingClientRect().x || 0) - nodeBounds.x + (this.end.node.inputElements?.[this.end.input]?.getBoundingClientRect().width || 0) / 2}`,
+    );
 
-    this.htmlElement.setAttribute("y2", this.end.node.inputElements?.[this.end.input]?.getBoundingClientRect().y + "");
+    this.htmlElement.setAttribute(
+      "y2",
+      `${(this.end.node.inputElements?.[this.end.input]?.getBoundingClientRect().y || 0) - nodeBounds.y + (this.end.node.inputElements?.[this.end.input]?.getBoundingClientRect().height || 0) / 2}`,
+    );
   }
 }

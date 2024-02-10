@@ -4,9 +4,12 @@
  */
 
 import React, { useEffect } from "react";
-import UIKitFramework from "./index";
+import UIKitFramework, { UIKitFrameworkType } from "./index";
 
-const UIKitFrameworkReactInterconnect: React.FC<{ onLoad: (element: UIKitFramework) => void }> = ({ onLoad }) => {
+const UIKitFrameworkReactInterconnect: React.FC<{
+  frameworkType: UIKitFrameworkType;
+  onLoad: (element: UIKitFramework) => void;
+}> = ({ frameworkType, onLoad }) => {
   const ref = React.useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -14,10 +17,11 @@ const UIKitFrameworkReactInterconnect: React.FC<{ onLoad: (element: UIKitFramewo
       return;
     }
 
-    const uikit = new UIKitFramework(ref.current);
+    const uikit = new UIKitFramework(frameworkType, ref.current);
 
     onLoad(uikit);
   }, []);
+  UIKitFrameworkReactInterconnect.displayName;
 
   return <div ref={ref}>UIKit Framework React Interconnect</div>;
 };
