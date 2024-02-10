@@ -5,10 +5,9 @@
 
 import UIKitHTMLComponent from "../../../../../../framework/html/component";
 import NodeWire from "../../../wire/wire";
+import styles from "./connectionPoint.module.scss";
 
 export default class ConnectionPoint extends UIKitHTMLComponent {
-  connection: { start: string; end: string };
-
   constructor() {
     super({});
 
@@ -16,6 +15,12 @@ export default class ConnectionPoint extends UIKitHTMLComponent {
   }
 
   connect(wire: NodeWire) {
+    return this;
+  }
+
+  render() {
+    this.containerElement.classList.add(styles.connectionPoint);
+
     return this;
   }
 }

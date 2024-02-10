@@ -17,8 +17,13 @@
 import { UUID } from "@yourdash/shared/core/uuid";
 import UIKitFramework, { UIKitFrameworkType } from "./index";
 
+export type UIKitRawComponentGenericPropsType = Record<string, any>;
+export type UIKitRawComponentGenericPropsDefaultValue = Record<string, any>;
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export class UIKitRawComponent<TProps extends Record<string, any> = Record<string, never>> {
+export class UIKitRawComponent<
+  TProps extends UIKitRawComponentGenericPropsType = UIKitRawComponentGenericPropsDefaultValue,
+> {
   props: TProps;
   __internal__: {
     ukContext: UIKitFramework;
@@ -39,11 +44,6 @@ export class UIKitRawComponent<TProps extends Record<string, any> = Record<strin
     this.__internal__.type = frameworkType;
     this.props = props;
 
-    return this;
-  }
-
-  // called on component creation by its creator
-  onCreate() {
     return this;
   }
 

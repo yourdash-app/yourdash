@@ -3,13 +3,19 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { UIKitRawComponent } from "../component";
+import {
+  UIKitRawComponent,
+  UIKitRawComponentGenericPropsDefaultValue,
+  UIKitRawComponentGenericPropsType,
+} from "../component";
 import { UIKitFrameworkType } from "../index";
 
-export default class UIKitHTMLComponent extends UIKitRawComponent {
+export default class UIKitHTMLComponent<
+  PropType extends UIKitRawComponentGenericPropsType = UIKitRawComponentGenericPropsDefaultValue,
+> extends UIKitRawComponent<PropType> {
   containerElement: HTMLElement;
 
-  constructor(props: UIKitHTMLComponent["props"]) {
+  constructor(props: PropType) {
     super(props, UIKitFrameworkType.HTML);
 
     this.containerElement = document.createElement("div");
