@@ -7,7 +7,7 @@
  # Notes
 
  component types
- RAW ( inherited by all components )
+ - RAW ( inherited by all components )
  - AcceleratedGPU
  - HTML
 
@@ -18,8 +18,8 @@ import { UUID } from "@yourdash/shared/core/uuid";
 import UIKitFramework, { UIKitFrameworkType } from "./index";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export class UIKitRawComponent<TProps = Record<string, any>> {
-  readonly props: Readonly<TProps>;
+export class UIKitRawComponent<TProps extends Record<string, any> = Record<string, never>> {
+  props: TProps;
   __internal__: {
     ukContext: UIKitFramework;
     debug: {
@@ -40,12 +40,6 @@ export class UIKitRawComponent<TProps = Record<string, any>> {
     this.props = props;
 
     return this;
-  }
-
-  // load the desired component over this RAW component ( helps with reduction of prop spam )
-  __internal__overload(component: UIKitRawComponent<TProps>) {
-    if (this.__internal__.ukContext.frameworkType !== component.__internal__.type) {
-    }
   }
 
   // called on component creation by its creator

@@ -6,6 +6,7 @@
 import { UUID } from "@yourdash/shared/core/uuid";
 import generateUUID from "@yourdash/web-client/src/helpers/uuid";
 import React from "react";
+import { UIKitFrameworkType } from "../../framework/index";
 import ReactInterconnect from "../../framework/ReactInterconnect";
 import Node, { INode, INodeData } from "./components/node/node";
 import styles from "./NodesView.module.scss";
@@ -20,6 +21,7 @@ export interface INodeView {
 const NodesView: React.FC<INodeView> = ({ nodes }) => {
   return (
     <ReactInterconnect
+      frameworkType={UIKitFrameworkType.HTML}
       onLoad={(fw) => {
         fw.containingElement.innerHTML = "";
         fw.containingElement.classList.add(styles.container);
