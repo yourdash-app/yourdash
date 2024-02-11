@@ -21,7 +21,6 @@ const UIKitFrameworkReactInterconnect: React.FC<{
 
     onLoad(uikit);
   }, []);
-  UIKitFrameworkReactInterconnect.displayName;
 
   return <div ref={ref}>UIKit Framework React Interconnect</div>;
 };

@@ -15,34 +15,50 @@
  */
 
 import { UUID } from "@yourdash/shared/core/uuid";
+import generateUUID from "@yourdash/web-client/src/helpers/uuid";
 import UIKitFramework, { UIKitFrameworkType } from "./index";
-
-export type UIKitRawComponentGenericPropsType = Record<string, any>;
-export type UIKitRawComponentGenericPropsDefaultValue = Record<string, any>;
+import UIKitDataStore from "./store";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type UIKitRawComponentGenericPropsType = Record<string, any>;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type UIKitRawComponentGenericPropsDefaultValue = Record<string, any>;
+
+export interface UIKitRawComponentInternals {
+  ukContext: UIKitFramework;
+  debug: {
+    uuid: UUID;
+  };
+  type: UIKitFrameworkType;
+}
+
 export class UIKitRawComponent<
   TProps extends UIKitRawComponentGenericPropsType = UIKitRawComponentGenericPropsDefaultValue,
 > {
-  props: TProps;
-  __internal__: {
-    ukContext: UIKitFramework;
-    debug: {
-      uuid: UUID;
-    };
-    type: UIKitFrameworkType;
-  };
+  props: UIKitDataStore<TProps>;
+  __internal__: UIKitRawComponentInternals;
 
   constructor(props: TProps, frameworkType: UIKitFrameworkType = UIKitFrameworkType.HTML) {
-    const internalProps = props as { __internal__: UIKitRawComponent<TProps>["__internal__"] } & TProps;
+    // @ts-ignore
+    this.__internal__ = {};
+    this.__internal__.type = frameworkType;
+    this.props = new UIKitDataStore<TProps>(props);
 
-    if (!internalProps.__internal__) {
+    return this;
+  }
+
+  init() {
+    if (!this.__internal__) {
       throw new Error("Was the component initialized with a creator? UIKit is missing the __internal__ prop.");
     }
 
-    this.__internal__ = internalProps.__internal__;
-    this.__internal__.type = frameworkType;
-    this.props = props;
+    if (this.__internal__.debug) {
+      console.debug("Component initialized", this.__internal__.debug.uuid);
+
+      this.__internal__.debug = {
+        uuid: generateUUID(),
+      };
+    }
 
     return this;
   }

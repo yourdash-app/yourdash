@@ -3,7 +3,8 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { UIKitRawComponent } from "./component";
+import generateUUID from "@yourdash/web-client/src/helpers/uuid";
+import { UIKitRawComponent, UIKitRawComponentInternals } from "./component";
 
 export enum UIKitFrameworkType {
   AcceleratedGPU = 1,
@@ -23,7 +24,12 @@ export default class UIKitFramework {
     return this;
   }
 
-  add(component: UIKitRawComponent) {
+  add<TComponent extends UIKitRawComponent>(component: TComponent) {
+    component.__internal__.debug = { uuid: generateUUID() };
+    component.__internal__.ukContext = this;
+
+    component.init();
+
     this.components.push(component);
 
     return this;

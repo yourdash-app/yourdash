@@ -3,22 +3,20 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { UUID } from "@yourdash/shared/core/uuid";
-import generateUUID from "@yourdash/web-client/src/helpers/uuid";
 import React from "react";
 import { UIKitFrameworkType } from "../../framework/index";
 import ReactInterconnect from "../../framework/ReactInterconnect";
-import Node, { INode, INodeData } from "./components/node/node";
+import { NodeProps } from "./components/node/node";
+import NodesView from "./NodesView";
 import styles from "./NodesView.module.scss";
-import NodeWire from "./components/wire/wire";
 
 export interface INodeView {
   nodes: {
-    [typeId: string]: INode;
+    [typeId: string]: NodeProps;
   };
 }
 
-const NodesView: React.FC<INodeView> = ({ nodes }) => {
+const RINodesView: React.FC<INodeView> = ({}) => {
   return (
     <ReactInterconnect
       frameworkType={UIKitFrameworkType.HTML}
@@ -26,20 +24,10 @@ const NodesView: React.FC<INodeView> = ({ nodes }) => {
         fw.containingElement.innerHTML = "";
         fw.containingElement.classList.add(styles.container);
 
-        fw.add(
-          new Node({
-            id: generateUUID(),
-            data: {
-              type: "root",
-              name: "root",
-              x: 0,
-              y: 0,
-            },
-          }),
-        );
+        fw.add(new NodesView({ containerElement: fw.containingElement }));
       }}
     />
   );
 };
 
-export default NodesView;
+export default RINodesView;

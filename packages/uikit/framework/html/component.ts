@@ -22,4 +22,10 @@ export default class UIKitHTMLComponent<
 
     return this;
   }
+
+  init() {
+    this.__internal__.ukContext.containingElement.appendChild(this.containerElement);
+
+    return this;
+  }
 }

@@ -8,11 +8,11 @@ import UIKitHTMLComponent from "../../../../framework/html/component";
 
 export interface INodeConnection {
   id: string;
-  to: INode;
-  from: INode;
+  to: NodeProps;
+  from: NodeProps;
 }
 
-export interface INode {
+export interface NodeProps {
   id: UUID;
   type: string;
   position: { x: number; y: number };
@@ -22,8 +22,8 @@ export interface INode {
   };
 }
 
-export default class Node extends UIKitHTMLComponent<Omit<INode, "id">> {
-  constructor(data: INode) {
+export default class Node extends UIKitHTMLComponent<NodeProps> {
+  constructor(data: NodeProps) {
     super(data);
 
     return this;
