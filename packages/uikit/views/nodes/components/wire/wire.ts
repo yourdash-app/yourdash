@@ -16,7 +16,8 @@ export interface NodeWireProps {
 
 export default class NodeWire extends UIKitHTMLComponent<NodeWireProps> {
   htmlElement: SVGElement;
-  onMouseMove;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onMouseMove: { x?: any; y?: any } = { x: undefined, y: undefined };
 
   constructor(props: NodeWireProps) {
     super(props);
@@ -42,28 +43,26 @@ export default class NodeWire extends UIKitHTMLComponent<NodeWireProps> {
     const nodeBounds = this.props.get("nodeWireContainer").getBoundingClientRect();
 
     if (this.props.get("end")) {
+      this.props.get("nodesView").mouse.off("x", this.onMouseMove.x);
+      this.props.get("nodesView").mouse.off("y", this.onMouseMove.y);
     } else {
-      this.onMouseMove = this.props.get("nodesView").mouse;
+      this.onMouseMove = {
+        x: this.props.get("nodesView").mouse.on("x", (_, x) => {
+          this.htmlElement.setAttribute("x2", `${x - nodeBounds.x}`);
+        }),
+        y: this.props.get("nodesView").mouse.on("y", (_, y) => {
+          this.htmlElement.setAttribute("y2", `${y - nodeBounds.y}`);
+        }),
+      };
     }
 
-    // this.htmlElement.setAttribute(
-    //   "x1",
-    //   `${(this.props.get("start").node.outputElements?.[this.props.get("start").output]?.getBoundingClientRect().x || 0) - nodeBounds.x + (this.start.node.outputElements?.[this.start.output]?.getBoundingClientRect().width || 0) / 2}`,
-    // );
-    //
-    // this.htmlElement.setAttribute(
-    //   "y1",
-    //   `${(this.props.get("start").node.outputElements?.[this.props.get("start").output]?.getBoundingClientRect().y || 0) - nodeBounds.y + (this.start.node.outputElements?.[this.start.output]?.getBoundingClientRect().height || 0) / 2}`,
-    // );
-    //
-    // this.htmlElement.setAttribute(
-    //   "x2",
-    //   `${(this.props.get("end").node?.inputElements?.[this.props.get("end").input]?.getBoundingClientRect().x || 0) - nodeBounds.x + (this.end.node.inputElements?.[this.end.input]?.getBoundingClientRect().width || 0) / 2}`,
-    // );
-    //
-    // this.htmlElement.setAttribute(
-    //   "y2",
-    //   `${(this.props.get("end").node?.inputElements?.[this.props.get("end").input]?.getBoundingClientRect().y || 0) - nodeBounds.y + (this.end.node.inputElements?.[this.end.input]?.getBoundingClientRect().height || 0) / 2}`,
-    // );
+    this.htmlElement.setAttribute(
+      "x1",
+      `${this.props.get("start").node.outputElements?.[this.props.get("start").output]?.getBoundingClientRect().x || 0}`,
+    );
+    this.htmlElement.setAttribute(
+      "y1",
+      `${this.props.get("start").node.outputElements?.[this.props.get("start").output]?.getBoundingClientRect().y || 0}`,
+    );
   }
 }

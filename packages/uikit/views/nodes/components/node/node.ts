@@ -23,8 +23,8 @@ export interface NodeProps {
 }
 
 export default class Node extends UIKitHTMLComponent<NodeProps> {
-  constructor(data: NodeProps) {
-    super(data);
+  constructor(props: NodeProps) {
+    super(props);
 
     return this;
   }
