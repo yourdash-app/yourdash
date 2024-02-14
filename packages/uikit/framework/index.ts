@@ -4,7 +4,7 @@
  */
 
 import generateUUID from "@yourdash/web-client/src/helpers/uuid";
-import { UIKitRawComponent, UIKitRawComponentInternals } from "./component";
+import { UIKitRawComponent } from "./component";
 
 export enum UIKitFrameworkType {
   AcceleratedGPU = 1,
