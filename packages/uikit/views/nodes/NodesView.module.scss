@@ -10,4 +10,12 @@
   padding: 0.5rem;
   height: 100%;
   width: 100%;
+
+  --grid-size: 4rem;
+
+  background-position: center center;
+  background-size: var(--grid-size) var(--grid-size);
+  background-image:
+    linear-gradient(to right, #333 1px, transparent 1px),
+    linear-gradient(to bottom, #333 1px, transparent 1px);
 }

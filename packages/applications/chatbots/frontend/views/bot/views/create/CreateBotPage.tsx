@@ -109,7 +109,7 @@ const CreateBotPage: React.FC = () => {
         </MajorButton>
         <Button
           onClick={() => {
-            navigate("/app/a/chatbots/manage/:botUUID:/all");
+            navigate("/app/a/chatbots/bot/0/manage/nodes");
           }}
         >
           DEVELOPER Nodes

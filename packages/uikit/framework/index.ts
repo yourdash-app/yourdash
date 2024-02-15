@@ -5,6 +5,7 @@
 
 import generateUUID from "@yourdash/web-client/src/helpers/uuid";
 import { UIKitRawComponent } from "./component";
+import styles from "./index.module.scss";
 
 export enum UIKitFrameworkType {
   AcceleratedGPU = 1,
@@ -20,6 +21,9 @@ export default class UIKitFramework {
   constructor(frameworkType: UIKitFrameworkType, containingElement: HTMLDivElement) {
     this.containingElement = containingElement;
     this.frameworkType = frameworkType;
+    this.containingElement.innerHTML = "";
+    this.containingElement.setAttribute("uikit-root", "true");
+    this.containingElement.classList.add(styles.framework);
 
     return this;
   }
@@ -31,6 +35,7 @@ export default class UIKitFramework {
     component.init();
 
     this.components.push(component);
+    this.containingElement.appendChild(component.__internal__.containerElement);
 
     return this;
   }

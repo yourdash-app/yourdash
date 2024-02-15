@@ -13,19 +13,12 @@ import { UIKitFrameworkType } from "../index";
 export default class UIKitHTMLComponent<
   PropType extends UIKitRawComponentGenericPropsType = UIKitRawComponentGenericPropsDefaultValue,
 > extends UIKitRawComponent<PropType> {
-  containerElement: HTMLElement;
-
   constructor(props: PropType) {
     super(props, UIKitFrameworkType.HTML);
-
-    this.containerElement = document.createElement("div");
-
     return this;
   }
 
   init() {
-    this.__internal__.ukContext.containingElement.appendChild(this.containerElement);
-
     return this;
   }
 }

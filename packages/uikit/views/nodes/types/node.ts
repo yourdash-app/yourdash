@@ -60,6 +60,6 @@ const a: INodeData<N> = {
     outputs: 23,
   },
   data: {
-    value: 6,
+    value: 0,
   },
 };

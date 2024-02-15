@@ -30,6 +30,7 @@ export interface UIKitRawComponentInternals {
     uuid: UUID;
   };
   type: UIKitFrameworkType;
+  containerElement: HTMLElement;
 }
 
 export class UIKitRawComponent<
@@ -43,6 +44,7 @@ export class UIKitRawComponent<
     this.__internal__ = {};
     this.__internal__.type = frameworkType;
     this.props = new UIKitDataStore<TProps>(props);
+    this.__internal__.containerElement = document.createElement("div");
 
     return this;
   }

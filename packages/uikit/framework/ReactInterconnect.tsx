@@ -22,7 +22,7 @@ const UIKitFrameworkReactInterconnect: React.FC<{
     onLoad(uikit);
   }, []);
 
-  return <div ref={ref}>UIKit Framework React Interconnect</div>;
+  return <div ref={ref}>UIKit Framework React Interconnect (If you see this, something is wrong)</div>;
 };
 
 export default UIKitFrameworkReactInterconnect;
