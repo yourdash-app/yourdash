@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import csi from "@yourdash/web-client/src/helpers/csi";
+import csi from "@yourdash/csi/csi";
 import useYourDashLib from "@yourdash/web-client/src/helpers/ydsh";
 import { Button } from "@yourdash/web-client/src/ui/index";
 

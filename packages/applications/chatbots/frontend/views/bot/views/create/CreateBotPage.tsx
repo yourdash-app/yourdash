@@ -4,7 +4,7 @@
  */
 
 import React, { useState } from "react";
-import csi from "@yourdash/web-client/src/helpers/csi";
+import csi from "@yourdash/csi/csi";
 import {
   Button,
   Card,

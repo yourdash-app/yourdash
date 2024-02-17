@@ -5,7 +5,7 @@
 
 import React from "react";
 import IPanelApplicationsLauncherApplication from "@yourdash/shared/core/panel/applicationsLauncher/application";
-import csi from "@yourdash/web-client/src/helpers/csi";
+import csi from "@yourdash/csi/csi";
 import { RightClickMenu } from "../../../../../../../ui/index";
 import styles from "./SmallApplicationGrid.module.scss";
 import { useNavigate } from "react-router";
@@ -53,6 +53,7 @@ const SmallApplicationGrid: React.FC<{
                 loading={"lazy"}
                 className={styles.itemIcon}
                 src={`${csi.getInstanceUrl()}${application.icon}`}
+                draggable={false}
                 alt=""
               />
               <span className={styles.itemLabel}>{application.displayName}</span>

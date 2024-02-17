@@ -5,7 +5,7 @@
 
 import { useState } from "react";
 import BasePageLayout from "../../../components/BasePageLayout";
-import csi from "@yourdash/web-client/src/helpers/csi";
+import csi from "@yourdash/csi/csi";
 import { YourDashIcon } from "@yourdash/web-client/src/ui/index";
 import Panel from "@yourdash/web-client/src/app/panel/Panel";
 import DropdownSettingComponent from "../../../components/DropdownSettingComponent";

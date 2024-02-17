@@ -5,7 +5,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import csi from "@yourdash/web-client/src/helpers/csi";
+import csi from "@yourdash/csi/csi";
 import { type IStoreCategory } from "@yourdash/shared/apps/store/storeCategory";
 import Heading from "@yourdash/web-client/src/ui/components/heading/Heading";
 import { Spinner } from "@yourdash/web-client/src/ui/index";

@@ -5,11 +5,11 @@
 
 import { Outlet } from "react-router";
 import { useNavigate } from "react-router-dom";
+import csi from "../../../csi/csi";
 import clippy from "../helpers/clippy";
 import { Button, Card, Heading, Spinner } from "../ui/index";
 import PanelLayout from "./panel/PanelLayout";
 import React, { useEffect } from "react";
-import csi from "@yourdash/web-client/src/helpers/csi";
 import styles from "./AppLayout.module.scss";
 
 const AppLayout: React.FC = () => {

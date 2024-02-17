@@ -29,7 +29,7 @@ import CoreApiUsers from "./coreApiUsers.js";
 import CoreApiFileSystem from "./fileSystem/coreApiFileSystem.js";
 import CoreApiLoadManagement from "./coreApiLoadManagement.js";
 import { YOURDASH_INSTANCE_DISCOVERY_STATUS } from "./types/discoveryStatus.js";
-import { userAvatarSize } from "./user/avatarSize.js";
+import { USER_AVATAR_SIZE } from "@yourdash/shared/core/userAvatarSize.js";
 import YourDashUser from "./user/index.js";
 import { YOURDASH_SESSION_TYPE } from "@yourdash/shared/core/session.js";
 import CoreApiWebsocketManager from "./coreApiWebsocketManager.js";
@@ -320,7 +320,7 @@ export class CoreApi {
 
     this.expressServer.get("/login/user/:username/avatar", (req, res) => {
       const user = new YourDashUser(req.params.username);
-      return res.sendFile(user.getAvatar(userAvatarSize.ExtraLarge));
+      return res.sendFile(user.getAvatar(USER_AVATAR_SIZE.EXTRA_LARGE));
     });
 
     this.expressServer.get("/login/user/:username", async (req, res) => {

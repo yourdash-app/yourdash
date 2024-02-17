@@ -6,7 +6,7 @@
 import { useEffect } from "react";
 import * as React from "react";
 import CodeStudioEditor from "@yourdash/applications/code_studio/frontend/core/editor/editor";
-import csi from "@yourdash/web-client/src/helpers/csi";
+import csi from "@yourdash/csi/csi";
 import getParserForFileExtension from "@yourdash/applications/code_studio/frontend/core/editor/editor";
 import pathBrowserify from "path-browserify";
 import { IconButton } from "@yourdash/web-client/src/ui";

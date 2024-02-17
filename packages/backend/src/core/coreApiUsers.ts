@@ -3,11 +3,12 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import { IYourDashSession } from "@yourdash/shared/core/session.js";
+import { USER_AVATAR_SIZE } from "@yourdash/shared/core/userAvatarSize.js";
 import path from "path";
 import { CoreApi } from "./coreApi.js";
 import { AUTHENTICATED_IMAGE_TYPE } from "./coreApiAuthenticatedImage.js";
 import YourDashUser from "./user/index.js";
-import { IYourDashSession } from "@yourdash/shared/core/session.js";
 import UserDatabase from "./user/userDatabase.js";
 
 const SESSION_TOKEN_LENGTH = 128;
@@ -148,7 +149,7 @@ export default class CoreApiUsers {
         .send(this.coreApi.authenticatedImage.create(username, AUTHENTICATED_IMAGE_TYPE.FILE, avatarPath));
     });
 
-    this.coreApi.expressServer.get("/core/user/current/avatar/medium", (req, res) => {
+    this.coreApi.expressServer.get("/coqre/user/current/avatar/medium", (req, res) => {
       const { username } = req.headers as { username: string };
 
       const unreadUser = new YourDashUser(username);
@@ -182,6 +183,81 @@ export default class CoreApiUsers {
         .status(200)
         .type("text/plain")
         .send(this.coreApi.authenticatedImage.create(username, AUTHENTICATED_IMAGE_TYPE.FILE, avatarPath));
+    });
+
+    // NEW CSI ENDPOINTS
+
+    this.coreApi.expressServer.get(`/core/user/current/avatar/${USER_AVATAR_SIZE.SMALL}`, (req, res) => {
+      const { username } = req.headers as { username: string };
+
+      const avatarPath = new YourDashUser(username).getAvatar(USER_AVATAR_SIZE.LARGE);
+
+      return res
+        .status(200)
+        .type("text/plain")
+        .send(
+          this.coreApi.authenticatedImage.create(username, AUTHENTICATED_IMAGE_TYPE.FILE, path.resolve(avatarPath)),
+        );
+    });
+
+    this.coreApi.expressServer.get(`/core/user/current/avatar/${USER_AVATAR_SIZE.MEDIUM}`, (req, res) => {
+      const { username } = req.headers as { username: string };
+
+      const avatarPath = new YourDashUser(username).getAvatar(USER_AVATAR_SIZE.MEDIUM);
+
+      return res
+        .status(200)
+        .type("text/plain")
+        .send(
+          this.coreApi.authenticatedImage.create(username, AUTHENTICATED_IMAGE_TYPE.FILE, path.resolve(avatarPath)),
+        );
+    });
+
+    this.coreApi.expressServer.get(`/core/user/current/avatar/${USER_AVATAR_SIZE.LARGE}`, (req, res) => {
+      const { username } = req.headers as { username: string };
+
+      const avatarPath = new YourDashUser(username).getAvatar(USER_AVATAR_SIZE.LARGE);
+
+      return res
+        .status(200)
+        .type("text/plain")
+        .send(
+          this.coreApi.authenticatedImage.create(username, AUTHENTICATED_IMAGE_TYPE.FILE, path.resolve(avatarPath)),
+        );
+    });
+
+    this.coreApi.expressServer.get(`/core/user/current/avatar/${USER_AVATAR_SIZE.EXTRA_LARGE}`, (req, res) => {
+      const { username } = req.headers as { username: string };
+
+      const avatarPath = new YourDashUser(username).getAvatar(USER_AVATAR_SIZE.EXTRA_LARGE);
+
+      return res
+        .status(200)
+        .type("text/plain")
+        .send(
+          this.coreApi.authenticatedImage.create(username, AUTHENTICATED_IMAGE_TYPE.FILE, path.resolve(avatarPath)),
+        );
+    });
+
+    this.coreApi.expressServer.get(`/core/user/current/avatar/${USER_AVATAR_SIZE.ORIGINAL}`, (req, res) => {
+      const { username } = req.headers as { username: string };
+
+      const avatarPath = new YourDashUser(username).getAvatar(USER_AVATAR_SIZE.ORIGINAL);
+
+      return res
+        .status(200)
+        .type("text/plain")
+        .send(
+          this.coreApi.authenticatedImage.create(username, AUTHENTICATED_IMAGE_TYPE.FILE, path.resolve(avatarPath)),
+        );
+    });
+
+    this.coreApi.expressServer.get(`/core/user/current/fullname`, async (req, res) => {
+      const { username } = req.headers as { username: string };
+
+      const user = new YourDashUser(username);
+
+      return res.status(200).json(await user.getName());
     });
   }
 }

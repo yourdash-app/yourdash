@@ -36,3 +36,4 @@ export const TextBox = loadable(() => import("./components/textBox/TextBox"));
 export const TextInput = loadable(() => import("./components/textInput/TextInput"));
 export const ToggleSwitch = loadable(() => import("./components/toggleSwitch/ToggleSwitch"));
 export const TabsContainer = loadable(() => import("./components/tabsContainer/TabsContainer"));
+export const NavBar = loadable(() => import("./components/navBar/NavBar"));

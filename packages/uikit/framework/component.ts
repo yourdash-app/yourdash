@@ -30,21 +30,31 @@ export interface UIKitRawComponentInternals {
     uuid: UUID;
   };
   type: UIKitFrameworkType;
-  containerElement: HTMLElement;
+  htmlElement: HTMLElement;
+}
+
+export interface UIKitRawComponentInternals {
+  ukContext: UIKitFramework;
+  debug: {
+    uuid: UUID;
+  };
+  type: UIKitFrameworkType;
+  htmlElement: HTMLElement;
 }
 
 export class UIKitRawComponent<
   TProps extends UIKitRawComponentGenericPropsType = UIKitRawComponentGenericPropsDefaultValue,
+  TInternals extends UIKitRawComponentInternals = UIKitRawComponentInternals,
 > {
   props: UIKitDataStore<TProps>;
-  __internal__: UIKitRawComponentInternals;
+  __internal__: TInternals;
 
   constructor(props: TProps, frameworkType: UIKitFrameworkType = UIKitFrameworkType.HTML) {
     // @ts-ignore
     this.__internal__ = {};
     this.__internal__.type = frameworkType;
     this.props = new UIKitDataStore<TProps>(props);
-    this.__internal__.containerElement = document.createElement("div");
+    this.__internal__.htmlElement = document.createElement("div");
 
     return this;
   }

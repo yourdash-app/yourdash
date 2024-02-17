@@ -5,7 +5,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Icon, MajorButton, Button, DropdownButton, TextBox, Card, ResizeContainer } from "@yourdash/web-client/src/ui";
-import csi, { TJson } from "@yourdash/web-client/src/helpers/csi";
+import csi, { TJson } from "@yourdash/csi/csi";
 import { IDiffusionLabImageGenerationData } from "@yourdash/shared/apps/diffusion_lab/image/generationData";
 import YourDashLogo from "@yourdash/web-client/public/assets/productLogos/yourdash.svg";
 import { YourDashIcon } from "@yourdash/web-client/src/ui/components/icon/iconDictionary";

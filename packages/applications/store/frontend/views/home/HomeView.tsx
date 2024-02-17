@@ -6,7 +6,7 @@
 import * as React from "react";
 import { type StorePromotedApplication } from "@yourdash/shared/apps/store/storePromotedApplication";
 import clippy from "@yourdash/web-client/src/helpers/clippy";
-import csi from "@yourdash/web-client/src/helpers/csi";
+import csi from "@yourdash/csi/csi";
 import Heading from "@yourdash/web-client/src/ui/components/heading/Heading";
 import StoreCategory from "../../component/storeCategory/StoreCategory";
 import StoreApplication from "../../component/storeApplication/StoreApplication";

@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import csi from "@yourdash/web-client/src/helpers/csi";
+import csi from "@yourdash/csi/csi";
 import useTranslate from "helpers/l18n";
 import { IconButton, Icon, RightClickMenu, Button } from "@yourdash/web-client/src/ui";
 import clippy from "helpers/clippy";

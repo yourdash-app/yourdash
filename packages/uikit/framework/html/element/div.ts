@@ -1,18 +1,17 @@
-import UIKitDataStore from "../../store";
 import UIKitHTMLComponent from "../component";
 
-export interface UIKitHTMLDivElementProps {
-  children: UIKitHTMLComponent[],
-  className: string,
-  events: UIKitDataStore<UIKitHTMLElementEvents>
-}
+export interface UIKitHTMLDivElementProps {}
 
 export default class UIKitHTMLDivElement extends UIKitHTMLComponent<UIKitHTMLDivElementProps> {
   constructor(props: UIKitHTMLDivElementProps) {
-    super(props)
+    super(props);
 
-    this.props.set("className", "hello world")
+    this.__internal__.htmlElement = document.createElement("div");
 
-    return this
+    return this;
+  }
+
+  init() {
+    return this;
   }
 }

@@ -5,8 +5,8 @@
 
 import React, { useState } from "react";
 import clippy from "@yourdash/web-client/src/helpers/clippy";
-import { Heading, Icon, MajorButton, YourDashIcon } from "@yourdash/web-client/src/ui/index";
-import { IStartupMenuPageProps } from "../../StartupMenu";
+import { Button, Heading, Icon, MajorButton, YourDashIcon } from "@yourdash/web-client/src/ui/index";
+import { CHATBOTS_STARTUP_MENU_PAGE, IStartupMenuPageProps } from "../../StartupMenu";
 import styles from "./DefaultStartupMenuPage.module.scss";
 import { useNavigate } from "react-router-dom";
 
@@ -32,11 +32,18 @@ const DefaultStartupMenuPage: React.FC<IStartupMenuPageProps> = ({ setMenuPage }
       <section className={styles.options}>
         <MajorButton
           onClick={() => {
-            navigate("/app/a/chatbots/create-bot");
+            setMenuPage(CHATBOTS_STARTUP_MENU_PAGE.TUTORIAL);
           }}
         >
           Get Started
         </MajorButton>
+        <Button
+          onClick={() => {
+            navigate("/app/a/chatbots/list-bots");
+          }}
+        >
+          Skip Tutorial
+        </Button>
       </section>
     </main>
   );

@@ -5,7 +5,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Icon, Button, DropdownButton, TextBox, Card } from "@yourdash/web-client/src/ui";
-import csi from "@yourdash/web-client/src/helpers/csi";
+import csi from "@yourdash/csi/csi";
 import AutocompletedTextInput from "@yourdash/web-client/src/ui/components/autocompletedTextInput/AutocompletedTextInput";
 import { YourDashIcon } from "@yourdash/web-client/src/ui/components/icon/iconDictionary";
 import useTranslate from "@yourdash/web-client/src/helpers/i18n";

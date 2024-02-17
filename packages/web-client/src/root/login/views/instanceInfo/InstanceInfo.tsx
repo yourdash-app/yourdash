@@ -5,7 +5,7 @@
 
 import React, { useEffect, useState } from "react";
 import useYourDashLib from "@yourdash/web-client/src/helpers/ydsh";
-import csi from "@yourdash/web-client/src/helpers/csi";
+import csi from "@yourdash/csi/csi";
 
 const InstanceInfo: React.FC = () => {
   const [metadata, setMetadata] = useState<{ title: string; message: string }>({

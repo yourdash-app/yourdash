@@ -6,7 +6,7 @@
 import React, { useEffect, useState } from "react";
 import useTranslate from "@yourdash/web-client/src/helpers/i18n";
 import { Card, Row, Spinner } from "@yourdash/web-client/src/ui";
-import csi from "@yourdash/web-client/src/helpers/csi";
+import csi from "@yourdash/csi/csi";
 import generateWeatherDescriptionFromData from "@yourdash/applications/weather/frontend/helpers/generateWeatherDescriptionFromData";
 import getWeatherIconFromState from "@yourdash/applications/weather/frontend/helpers/getWeatherIconFromState";
 import { IWeatherDataForLocation } from "@yourdash/applications/weather/shared/weatherDataForLocation";

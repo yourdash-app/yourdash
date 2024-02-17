@@ -4,7 +4,7 @@
  */
 
 import React, { useEffect, useState } from "react";
-import csi from "@yourdash/web-client/src/helpers/csi";
+import csi from "@yourdash/csi/csi";
 import { Card, Carousel, IconButton } from "@yourdash/web-client/src/ui";
 import { YourDashIcon } from "@yourdash/web-client/src/ui/components/icon/iconDictionary";
 

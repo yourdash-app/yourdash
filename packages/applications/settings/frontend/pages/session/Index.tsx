@@ -5,7 +5,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Card, Icon, IconButton } from "@yourdash/web-client/src/ui/index";
-import csi from "@yourdash/web-client/src/helpers/csi";
+import csi from "@yourdash/csi/csi";
 import { type IYourDashSession, YOURDASH_SESSION_TYPE } from "@yourdash/shared/core/session";
 import { YourDashIcon } from "@yourdash/web-client/src/ui/components/icon/iconDictionary";
 import BasePageLayout from "../../components/BasePageLayout";

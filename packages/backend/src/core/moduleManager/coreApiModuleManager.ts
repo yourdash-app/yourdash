@@ -50,7 +50,7 @@ export default class CoreApiModuleManager {
       return;
     }
 
-    this.coreApi.log.info("module_manager", `Loading module: "${moduleName}"`);
+    const startTime = new Date();
 
     try {
       const module = await import(`${fileUrl(modulePath)}/index.js`);
@@ -63,7 +63,10 @@ export default class CoreApiModuleManager {
       }
       new module.default({ moduleName: moduleName, modulePath: modulePath });
       this.loadedModules.push(module);
-      this.coreApi.log.success("module_manager", `Loaded module: "${moduleName}"`);
+      this.coreApi.log.success(
+        "module_manager",
+        `Loaded module: "${moduleName}" in ${new Date().getTime() - startTime.getTime()}ms`,
+      );
     } catch (err) {
       this.coreApi.log.error("module_manager", `Invalid module: "${moduleName}"`, err);
     }

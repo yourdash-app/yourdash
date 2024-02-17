@@ -15,7 +15,7 @@
   user-select: none;
 
   > * {
-    animation: panelFadeIn 0.25s 1s forwards ease-in-out;
+    animation: panelFadeIn 0.25s 0.5s forwards ease-in-out;
     opacity: 0;
 
     @keyframes panelFadeIn {

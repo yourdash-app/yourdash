@@ -5,7 +5,7 @@
 
 import React from "react";
 import IPanelApplicationsLauncherApplication from "@yourdash/shared/core/panel/applicationsLauncher/application";
-import csi from "@yourdash/web-client/src/helpers/csi";
+import csi from "@yourdash/csi/csi";
 import { Card, RightClickMenu } from "../../../../../../../ui/index";
 import styles from "./LargeApplicationGrid.module.scss";
 import { useNavigate } from "react-router";
@@ -56,6 +56,7 @@ const LargeApplicationGrid: React.FC<{
                 loading={"lazy"}
                 className={styles.itemIcon}
                 src={`${csi.getInstanceUrl()}${application.icon}`}
+                draggable={false}
                 alt=""
               />
               <span className={styles.itemLabel}>{application.displayName}</span>

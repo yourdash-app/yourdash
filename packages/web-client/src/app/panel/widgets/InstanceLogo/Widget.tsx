@@ -4,7 +4,7 @@
  */
 
 import { useNavigate } from "react-router";
-import csi from "@yourdash/web-client/src/helpers/csi";
+import csi from "@yourdash/csi/csi";
 import styles from "./Widget.module.scss";
 import { memo, useEffect, useState } from "react";
 

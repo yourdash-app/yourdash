@@ -8,7 +8,7 @@ import { Outlet } from "react-router";
 import Panel from "./Panel";
 import clippy from "@yourdash/web-client/src/helpers/clippy";
 import styles from "./PanelLayout.module.scss";
-import csi from "@yourdash/web-client/src/helpers/csi";
+import csi from "@yourdash/csi/csi";
 
 const PanelLayout: React.FC = () => {
   const [panelSide, setPanelSide] = React.useState<"top" | "right" | "bottom" | "left" | undefined>(undefined);

@@ -35,7 +35,7 @@ export default class UIKitFramework {
     component.init();
 
     this.components.push(component);
-    this.containingElement.appendChild(component.__internal__.containerElement);
+    this.containingElement.appendChild(component.__internal__.htmlElement);
 
     return this;
   }

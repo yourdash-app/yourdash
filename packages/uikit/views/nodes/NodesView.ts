@@ -32,8 +32,8 @@ export default class NodesView extends UIKitHTMLComponent<NodesViewProps> {
   init() {
     super.init();
 
-    this.__internal__.containerElement = document.createElement("div");
-    this.__internal__.containerElement.classList.add(styles.container);
+    this.__internal__.htmlElement = document.createElement("div");
+    this.__internal__.htmlElement.classList.add(styles.container);
 
     return this;
   }

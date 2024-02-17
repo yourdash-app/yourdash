@@ -18,9 +18,7 @@ export interface IStartupMenuPageProps {
 }
 
 const StartupMenu: React.FC = () => {
-  const [menuPage, setMenuPage] = useState<CHATBOTS_STARTUP_MENU_PAGE>(
-    CHATBOTS_STARTUP_MENU_PAGE.TUTORIAL,
-  );
+  const [menuPage, setMenuPage] = useState<CHATBOTS_STARTUP_MENU_PAGE>(CHATBOTS_STARTUP_MENU_PAGE.DEFAULT);
 
   switch (menuPage) {
     case CHATBOTS_STARTUP_MENU_PAGE.DEFAULT:

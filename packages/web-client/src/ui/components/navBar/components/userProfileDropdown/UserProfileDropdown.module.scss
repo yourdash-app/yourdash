@@ -1,0 +1,35 @@
+/*!
+ * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
+.component {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  background: red;
+}
+
+.name {
+  font-weight: 500;
+  font-size: 1.25rem;
+  line-height: 1;
+  margin-bottom: -0.125rem;
+}
+
+.username {
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.avatar {
+  width: 2rem;
+  aspect-ratio: 1 / 1;
+}
+
+.nameContainer {
+  display: flex;
+  flex-direction: column;
+}

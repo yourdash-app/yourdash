@@ -7,7 +7,7 @@ import styles from "./Panel.module.scss";
 import clippy from "@yourdash/web-client/src/helpers/clippy";
 import React, { memo, useEffect, useState } from "react";
 import loadable from "@loadable/component";
-import csi from "@yourdash/web-client/src/helpers/csi";
+import csi from "@yourdash/csi/csi";
 
 const Panel: React.FC<{
   side: "top" | "right" | "bottom" | "left";
@@ -41,14 +41,13 @@ const Panel: React.FC<{
     <section
       className={clippy(
         styles.panel,
-        side === "top" && styles.top + " animate__fadeInDown",
-        side === "right" && styles.right + " animate__fadeInRight",
-        side === "bottom" && styles.bottom + " animate__fadeInUp",
-        side === "left" && styles.left + " animate__fadeInLeft",
+        side === "top" && styles.top,
+        side === "right" && styles.right,
+        side === "bottom" && styles.bottom,
+        side === "left" && styles.left,
         panelSize === "small" && styles.small,
         panelSize === "medium" && styles.medium,
         panelSize === "large" && styles.large,
-        "animate__animated",
       )}
     >
       {widgets.map((widget) => {

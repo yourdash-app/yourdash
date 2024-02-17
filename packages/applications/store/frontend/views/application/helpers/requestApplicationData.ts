@@ -4,7 +4,7 @@
  */
 
 import type { IYourDashStoreApplication } from "@yourdash/shared/apps/store/storeApplication";
-import csi from "@yourdash/web-client/src/helpers/csi";
+import csi from "@yourdash/csi/csi";
 
 export function requestApplication(
   applicationId: string,

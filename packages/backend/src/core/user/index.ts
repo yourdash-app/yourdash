@@ -12,7 +12,7 @@ import sharp from "sharp";
 import { hashString } from "../../helpers/encryption.js";
 import YourDashSession, { getSessionsForUser } from "../../helpers/session.js";
 import coreApi from "../coreApi.js";
-import { userAvatarSize } from "./avatarSize.js";
+import { USER_AVATAR_SIZE } from "@yourdash/shared/core/userAvatarSize.js";
 import { yourDashUserPermission } from "./permissions.js";
 import IYourDashUserJson from "./userJson.js";
 
@@ -29,17 +29,17 @@ export default class YourDashUser {
     return coreApi.users.__internal__getUserDatabase(this.username);
   }
 
-  getAvatar(size: userAvatarSize): string {
+  getAvatar(size: USER_AVATAR_SIZE): string {
     switch (size) {
-      case userAvatarSize.LARGE:
+      case USER_AVATAR_SIZE.LARGE:
         return path.join(this.path, "avatars/large.avif");
-      case userAvatarSize.MEDIUM:
+      case USER_AVATAR_SIZE.MEDIUM:
         return path.join(this.path, "avatars/medium.avif");
-      case userAvatarSize.SMALL:
+      case USER_AVATAR_SIZE.SMALL:
         return path.join(this.path, "avatars/small.avif");
-      case userAvatarSize.ORIGINAL:
+      case USER_AVATAR_SIZE.ORIGINAL:
         return path.join(this.path, "avatars/original.avif");
-      case userAvatarSize.ExtraLarge:
+      case USER_AVATAR_SIZE.EXTRA_LARGE:
         return path.join(this.path, "avatars/extraLarge.avif");
       default:
         return path.join(this.path, "avatars/medium.avif");

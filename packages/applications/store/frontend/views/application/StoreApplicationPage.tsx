@@ -7,7 +7,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { type IYourDashStoreApplication } from "@yourdash/shared/apps/store/storeApplication";
 import clippy from "@yourdash/web-client/src/helpers/clippy";
-import csi from "@yourdash/web-client/src/helpers/csi";
+import csi from "@yourdash/csi/csi";
 import useTranslate from "@yourdash/web-client/src/helpers/i18n";
 import useYourDashLib from "@yourdash/web-client/src/helpers/ydsh";
 import Heading from "@yourdash/web-client/src/ui/components/heading/Heading";

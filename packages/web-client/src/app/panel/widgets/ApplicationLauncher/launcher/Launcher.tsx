@@ -3,7 +3,6 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { list } from "postcss";
 import { useNavigate } from "react-router-dom";
 import styles from "./Launcher.module.scss";
 import clippy from "../../../../../helpers/clippy";
@@ -11,7 +10,7 @@ import { IconButton, YourDashIcon } from "../../../../../ui/index";
 import React, { memo, useEffect, useState } from "react";
 import ApplicationsLauncherApplications from "./Applications/Applications";
 import IPanelApplicationsLauncherApplication from "@yourdash/shared/core/panel/applicationsLauncher/application";
-import csi from "@yourdash/web-client/src/helpers/csi";
+import csi from "@yourdash/csi/csi";
 
 const ApplicationLauncher: React.FC<{
   side: "top" | "right" | "bottom" | "left";
@@ -41,29 +40,29 @@ const ApplicationLauncher: React.FC<{
     >
       <div className={styles.content}>
         <ApplicationsLauncherApplications apps={apps} layout={layout} />
-        <section className={styles.footer}>
-          <IconButton
-            className={styles.logoutButton}
-            icon={YourDashIcon.Logout}
-            onClick={() => {
-              csi.logout();
-              navigate("/login");
-            }}
-          />
-          <div>
-            <img src={""} alt={""} />
-            <IconButton icon={YourDashIcon.Person} aria-label={"User Profile Settings"} />
-          </div>
-          <span>{csi.userDB.get("core:user:name")?.first || "Unknown First Name"}</span>
-          <IconButton
-            className={"ml-auto"}
-            icon={YourDashIcon.Filter}
-            onClick={() => {
-              setLayout(layout === "large-grid" ? "small-grid" : layout === "small-grid" ? "list" : "large-grid");
-            }}
-          />
-        </section>
       </div>
+      <section className={styles.footer}>
+        <IconButton
+          className={styles.logoutButton}
+          icon={YourDashIcon.Logout}
+          onClick={() => {
+            csi.logout();
+            navigate("/login");
+          }}
+        />
+        <div>
+          <img src={""} alt={""} />
+          <IconButton icon={YourDashIcon.Person} aria-label={"User Profile Settings"} />
+        </div>
+        <span>{csi.userDB.get("user:name")?.first || "Unknown First Name"}</span>
+        <IconButton
+          className={"ml-auto"}
+          icon={YourDashIcon.Filter}
+          onClick={() => {
+            setLayout(layout === "large-grid" ? "small-grid" : layout === "small-grid" ? "list" : "large-grid");
+          }}
+        />
+      </section>
     </div>
   );
 };

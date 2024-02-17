@@ -6,7 +6,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Card } from "@yourdash/web-client/src/ui/index";
-import csi from "@yourdash/web-client/src/helpers/csi";
+import csi from "@yourdash/csi/csi";
 import styles from "./StoreApplication.module.scss";
 
 export interface IStoreApplicationComponent {

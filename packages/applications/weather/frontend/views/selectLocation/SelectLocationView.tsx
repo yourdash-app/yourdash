@@ -5,7 +5,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import csi from "@yourdash/web-client/src/helpers/csi";
+import csi from "@yourdash/csi/csi";
 import { Card, TextInput } from "@yourdash/web-client/src/ui/index";
 import useTranslate from "@yourdash/web-client/src/helpers/i18n";
 import APPLICATION_ICON from "../../assets/weatherIcons/partly_cloudy.svg";

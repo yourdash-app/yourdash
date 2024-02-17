@@ -7,7 +7,7 @@ import * as React from "react";
 import BasePageLayout from "../../../components/BasePageLayout";
 import BooleanSettingComponent from "../../../components/BooleanSettingComponent";
 import { YourDashIcon } from "@yourdash/web-client/src/ui/components/icon/iconDictionary";
-import csi from "@yourdash/web-client/src/helpers/csi";
+import csi from "@yourdash/csi/csi";
 
 const Index: React.FC = () => {
   const [useBrowserLayout, setUseBrowserLayout] = React.useState<boolean>(

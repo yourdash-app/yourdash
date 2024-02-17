@@ -6,6 +6,7 @@
 // YourDash Client-Server interface Toolkit
 import KeyValueDatabase from "@yourdash/shared/core/database";
 import { io as SocketIoClient, Socket as SocketIoSocket } from "socket.io-client";
+import CSIYourDashUser from "./user/user";
 
 type ITJson = boolean | number | string | null | TJson | boolean[] | number[] | string[] | null[] | TJson[];
 
@@ -18,7 +19,7 @@ export class UserDatabase extends KeyValueDatabase {
     super();
   }
 
-  set(key: string, value: any) {
+  set(key: string, value: ITJson) {
     super.set(key, value);
 
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
@@ -43,6 +44,7 @@ class __internalClientServerWebsocketConnection {
 
 class __internalClientServerInteraction {
   userDB: UserDatabase;
+  private user!: CSIYourDashUser;
 
   constructor() {
     this.userDB = new UserDatabase();
@@ -52,6 +54,7 @@ class __internalClientServerInteraction {
 
   getJson(
     endpoint: string,
+    // eslint-disable-next-line
     cb: (response: any) => void,
     error?: (response: string) => void,
     extraHeaders?: {
@@ -102,6 +105,7 @@ class __internalClientServerInteraction {
   postJson(
     endpoint: string,
     body: TJson,
+    // eslint-disable-next-line
     cb: (response: any) => void,
     error?: (response: string) => void,
     extraHeaders?: {
@@ -152,6 +156,7 @@ class __internalClientServerInteraction {
 
   deleteJson(
     endpoint: string,
+    // eslint-disable-next-line
     cb: (response: any) => void,
     error?: (response: string) => void,
     extraHeaders?: {
@@ -171,6 +176,7 @@ class __internalClientServerInteraction {
         "Content-Type": "application/json",
         username,
         token: sessionToken,
+        ...(extraHeaders || {}),
       },
     })
       .then((resp) => {
@@ -200,6 +206,7 @@ class __internalClientServerInteraction {
 
   getText(
     endpoint: string,
+    // eslint-disable-next-line
     cb: (response: any) => void,
     error?: (response: string) => void,
     extraHeaders?: {
@@ -236,6 +243,7 @@ class __internalClientServerInteraction {
   postText(
     endpoint: string,
     body: TJson,
+    // eslint-disable-next-line
     cb: (response: any) => void,
     error?: (response: string) => void,
     extraHeaders?: {
@@ -270,6 +278,7 @@ class __internalClientServerInteraction {
 
   deleteText(
     endpoint: string,
+    // eslint-disable-next-line
     cb: (response: any) => void,
     error?: (response: string) => void,
     extraHeaders?: {
@@ -323,6 +332,7 @@ class __internalClientServerInteraction {
     return new Promise((resolve) => {
       this.getJson("/core/user_db", (data) => {
         this.userDB.clear();
+        // @ts-ignore
         this.userDB.keys = data;
 
         resolve(this.userDB);
@@ -350,19 +360,25 @@ class __internalClientServerInteraction {
     });
   }
 
+  getUser() {
+    return this.user;
+  }
+
   logout(): void {
     localStorage.removeItem("username");
     localStorage.removeItem("session_token");
   }
 
-  openWebsocket(path: string) {
+  openWebsocketConnection(path: string) {
     return new __internalClientServerWebsocketConnection(path);
   }
 }
 
 const csi = new __internalClientServerInteraction();
+export default csi;
 
 // @ts-ignore
 window.csi = csi;
 
-export default csi;
+// @ts-ignore
+csi.user = new CSIYourDashUser();

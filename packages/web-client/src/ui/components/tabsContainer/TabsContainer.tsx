@@ -25,10 +25,7 @@ const TabsContainer: React.FC<ITabsContainerProps> = ({ tabs }) => {
 
   useEffect(() => {
     setIndicatorWidth(((firstTabRef.current?.clientWidth || 0) / 8) * 6);
-    setIndicatorPosition(
-      (firstTabRef.current?.offsetLeft || 0) +
-        (firstTabRef.current?.clientWidth || 0) / 8,
-    );
+    setIndicatorPosition((firstTabRef.current?.offsetLeft || 0) + (firstTabRef.current?.clientWidth || 0) / 8);
   }, []);
 
   return (
@@ -46,9 +43,7 @@ const TabsContainer: React.FC<ITabsContainerProps> = ({ tabs }) => {
             <>
               <div
                 ref={index === 0 ? firstTabRef : null}
-                className={`${styles.tab} ${
-                  activeTab === index ? styles.active : ""
-                }`}
+                className={`${styles.tab} ${activeTab === index ? styles.active : ""}`}
                 key={tab.displayName}
                 onClick={() => {
                   setActiveTab(index);
@@ -57,6 +52,7 @@ const TabsContainer: React.FC<ITabsContainerProps> = ({ tabs }) => {
                 {tab.displayName}
                 {activeTab === index && (
                   <div
+                    key={tab.displayName}
                     className={clippy(
                       styles.activeTabIndicator,
                       "animate__animated animate__fadeInUp animate__duration_250ms",
@@ -68,9 +64,7 @@ const TabsContainer: React.FC<ITabsContainerProps> = ({ tabs }) => {
           );
         })}
       </section>
-      <section className={styles.componentContent}>
-        {tabs[activeTab].content}
-      </section>
+      <section className={styles.componentContent}>{tabs[activeTab].content}</section>
     </div>
   );
 };

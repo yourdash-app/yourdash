@@ -7,29 +7,27 @@ import schedule, { RecurrenceRule, RecurrenceSpecDateRange, RecurrenceSpecObjLit
 import { CoreApi } from "./coreApi.js";
 
 export default class CoreApiScheduler {
-  private readonly coreApi: CoreApi
+  private readonly coreApi: CoreApi;
 
-  constructor( coreApi: CoreApi ) {
+  constructor(coreApi: CoreApi) {
     this.coreApi = coreApi;
 
     return this;
   }
 
-  scheduleTask( name: string, rule: RecurrenceRule | RecurrenceSpecDateRange | RecurrenceSpecObjLit | Date | string | number, task: () => Promise<void> ) {
-    this.coreApi.log.info(
-      "task_scheduler",
-      `Scheduled Task ${name}`
-    );
-    schedule.scheduleJob( name, rule, async () => {
-      this.coreApi.log.info(
-        "task_scheduler",
-        `Starting Task ${name}`
-      );
-      await task()
+  scheduleTask(
+    name: string,
+    rule: RecurrenceRule | RecurrenceSpecDateRange | RecurrenceSpecObjLit | Date | string | number,
+    task: () => Promise<void>,
+  ) {
+    this.coreApi.log.info("task_scheduler", `Scheduled Task ${name}`);
+    schedule.scheduleJob(name, rule, async () => {
+      const startTime = new Date();
+      await task();
       this.coreApi.log.success(
         "task_scheduler",
-        `Finished Task ${name}`
+        `Finished Task ${name} in ${new Date().getTime() - startTime.getTime()}ms`,
       );
-    } )
+    });
   }
 }

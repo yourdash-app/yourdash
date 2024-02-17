@@ -5,7 +5,7 @@
 
 import * as React from "react";
 import { Card } from "@yourdash/web-client/src/ui";
-import csi from "@yourdash/web-client/src/helpers/csi";
+import csi from "@yourdash/csi/csi";
 import Panel from "@yourdash/web-client/src/app/panel/Panel";
 import SettingsSectionPanelPosition from "./sections/SettingsSectionPanelPosition";
 import SettingCategoryComponent from "./components/SettingCategoryComponent";

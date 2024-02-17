@@ -4,7 +4,7 @@
  */
 
 import React, { useEffect, useState } from "react";
-import csi from "@yourdash/web-client/src/helpers/csi";
+import csi from "@yourdash/csi/csi";
 import DbItem from "./components/dbItem";
 import { Button, Card } from "@yourdash/web-client/src/ui";
 

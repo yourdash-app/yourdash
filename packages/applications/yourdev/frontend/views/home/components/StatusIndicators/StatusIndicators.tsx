@@ -6,7 +6,7 @@
 import React, { useEffect, useState } from "react";
 import { YourDashIcon } from "@yourdash/web-client/src/ui/index";
 import Indicator from "./components/indicator/Indicator";
-import csi from "@yourdash/web-client/src/helpers/csi";
+import csi from "@yourdash/csi/csi";
 import io from "socket.io-client";
 
 const StatusIndicators: React.FC = () => {

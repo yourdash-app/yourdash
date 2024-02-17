@@ -5,7 +5,7 @@
 
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import csi from "@yourdash/web-client/src/helpers/csi";
+import csi from "@yourdash/csi/csi";
 import useYourDashLib from "../../../../helpers/ydsh";
 import { IconButton, MajorButton, TextInput, YourDashIcon } from "../../../../ui/index";
 

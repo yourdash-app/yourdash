@@ -4,7 +4,7 @@
  */
 
 import * as React from "react";
-import csi from "@yourdash/web-client/src/helpers/csi";
+import csi from "@yourdash/csi/csi";
 import loadable from "@loadable/component";
 import { IconButton, YourDashIcon } from "@yourdash/web-client/src/ui/index";
 import { useNavigate } from "react-router";
