@@ -4,11 +4,15 @@
  */
 
 .component {
+  --component-padding: 0.5rem;
+
   display: flex;
   align-items: center;
   gap: 0.5rem;
   cursor: pointer;
-  background: red;
+  background: rgb(var(--button-bg));
+  padding: var(--component-padding);
+  border-radius: var(--button-rounding);
 }
 
 .name {
@@ -27,6 +31,7 @@
 .avatar {
   width: 2rem;
   aspect-ratio: 1 / 1;
+  border-radius: 100rem;
 }
 
 .nameContainer {

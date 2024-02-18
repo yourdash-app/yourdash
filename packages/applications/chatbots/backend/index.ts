@@ -83,6 +83,10 @@ export default class DiffusionLabModule extends BackendModule {
         return res.json({ success: false, error: _err });
       }
     });
+
+    this.API.request.get("/app/chatbots/authorize/check/discord", (_req, res) => {
+      return res.json({ authorized: false });
+    });
   }
 
   async getBotOwnerToken(req: ExpressRequest): Promise<string> {

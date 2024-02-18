@@ -266,7 +266,9 @@ export class CoreApi {
 
     // INFO: This shouldn't be used for detection of a YourDash Instance, instead use the '/test' endpoint
     this.expressServer.get("/", (_req, res) => {
-      return res.send("Hello from the YourDash instance software! 👋");
+      return res
+        .send("Hello from the YourDash instance software! 👋")
+        .redirect(`https://ydsh.pages.dev/#/login/${this.globalDb.get("core:instanceurl")}`);
     });
 
     // Server discovery endpoint

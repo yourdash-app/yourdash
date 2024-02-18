@@ -6,7 +6,10 @@
       <script value="yd:dev-backend" />
     </scripts>
     <node-interpreter value="project" />
-    <envs />
+    <envs>
+      <env name="BUN_INSTALL" value="&quot;$HOME/.bun&quot;" />
+      <env name="PATH" value="$BUN_INSTALL/bin:$PATH" />
+    </envs>
     <method v="2" />
   </configuration>
 </component>

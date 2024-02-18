@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 const UserProfileDropdown: React.FC = () => {
   const [userAvatar, setUserAvatar] = useState<string>("");
   const [userFullName, setUserFullName] = useState<{ first: string; last: string }>({ first: "Unknown", last: "User" });
+  const [userName, setUserName] = useState<string>("unknown");
 
   useEffect(() => {
     const user = csi.getUser();
@@ -22,6 +23,7 @@ const UserProfileDropdown: React.FC = () => {
     user.getFullName().then((res) => {
       setUserFullName(res);
     });
+    setUserName(csi.getUserName());
   }, []);
 
   return (
@@ -31,7 +33,7 @@ const UserProfileDropdown: React.FC = () => {
         <div className={styles.name}>
           {userFullName.first} {userFullName.last}
         </div>
-        <div className={styles.username}>username</div>
+        <div className={styles.username}>{userName}</div>
       </div>
     </div>
   );

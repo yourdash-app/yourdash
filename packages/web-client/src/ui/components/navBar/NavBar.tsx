@@ -17,9 +17,9 @@ export interface NavBarProps {
 
 const NavBar: React.FC<NavBarProps> = ({ title, iconUrl, onBrandingClick, extras, showUserProfileDropdown }) => {
   return (
-    <Card className={styles.component}>
-      <div>
-        {iconUrl && <img src={iconUrl} alt={""} onClick={onBrandingClick} />}
+    <Card className={styles.component} showBorder>
+      <div className={styles.left}>
+        {iconUrl && <img className={styles.icon} src={iconUrl} alt={""} onClick={onBrandingClick} />}
         {title && <Heading level={2}>{title}</Heading>}
       </div>
       <div className={styles.extras}>{extras}</div>

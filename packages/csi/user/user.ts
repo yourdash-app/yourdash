@@ -39,7 +39,7 @@ export default class CSIYourDashUser {
       csi.getJson(
         `/core/user/current/fullname`,
         (data) => {
-          this.cached.fullName = data?.fullName;
+          this.cached.fullName = data;
 
           return resolve(this.cached.fullName || { first: "Unknown", last: "User" });
         },

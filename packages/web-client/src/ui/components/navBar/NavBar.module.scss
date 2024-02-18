@@ -7,8 +7,26 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-radius: 0;
 }
 
 .extras {
   margin-left: auto;
+  display: flex;
+  gap: 0.5rem;
+  height: 100%;
+  width: max-content;
+}
+
+.icon {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.left {
+  display: flex;
+  gap: 0.5rem;
 }
