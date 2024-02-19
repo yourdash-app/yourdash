@@ -128,10 +128,6 @@ export default class CoreApiUsers {
     return this;
   }
 
-  getByUsername(username: string): YourDashUser {
-    return new YourDashUser(username);
-  }
-
   async getAllUsers(): Promise<string[]> {
     return (await this.coreApi.fs.getDirectory(path.join(this.coreApi.fs.ROOT_PATH, "./users"))).getChildren();
   }

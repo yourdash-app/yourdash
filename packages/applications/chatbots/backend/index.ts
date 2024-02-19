@@ -13,6 +13,7 @@ import { Request as ExpressRequest } from "express";
 export default class DiffusionLabModule extends BackendModule {
   constructor(args: YourDashModuleArguments) {
     super(args);
+
     this.API.request.post("/app/chatbots/integration/discord/authorize-user", async (req, res) => {
       const user = this.API.getUser(req);
 
@@ -86,6 +87,13 @@ export default class DiffusionLabModule extends BackendModule {
 
     this.API.request.get("/app/chatbots/authorize/check/discord", (_req, res) => {
       return res.json({ authorized: false });
+    });
+
+    this.API.request.get("/app/chatbots/team/:teamId/list-bots", (req, res) => {
+      const { username } = req.headers;
+      const { teamId } = req.params;
+
+      return res.json({});
     });
   }
 

@@ -70,7 +70,7 @@ export const DiscordConnectionServiceValues = [
 export interface IDiscordUserConnection {
   id: string;
   name: string;
-  type: DiscordConnectionService;
+  type: keyof typeof DiscordConnectionServiceValues;
   revoked?: boolean;
   integrations?: number[];
   verified: boolean;
@@ -97,4 +97,27 @@ export interface IDiscordUser {
   premium_type?: number;
   public_flags?: number;
   avatar_decoration?: string;
+}
+
+export default class DiscordUser {
+  is: DiscordSnowflake;
+  username: string;
+  discriminator: string;
+  avatar?: string;
+  bot?: boolean;
+  system?: boolean;
+  mfa_enabled?: boolean;
+  banner?: string;
+  accent_color?: number;
+  locale?: string;
+  verified?: boolean;
+  email?: string;
+  flags?: number;
+  premium_type?: number;
+  public_flags?: number;
+  avatar_decoration?: string;
+
+  constructor() {
+    return this;
+  }
 }

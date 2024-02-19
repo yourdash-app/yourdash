@@ -25,6 +25,10 @@ export default class YourDashUser {
     this.path = path.resolve(path.join(coreApi.fs.ROOT_PATH, `users/${this.username}`));
   }
 
+  getPath() {
+    return this.path;
+  }
+
   async getDatabase(): Promise<KeyValueDatabase> {
     return coreApi.users.__internal__getUserDatabase(this.username);
   }
@@ -71,6 +75,15 @@ export default class YourDashUser {
   async verify() {
     if (!coreApi.globalDb.get("defaults"))
       return coreApi.log.error("user", `the GlobalDatabase is not yet loaded! not creating user ${this.username}`);
+
+    try {
+      if (!(await (await coreApi.teams.get(`${this.username}-personal`)).doesExist()))
+        await coreApi.teams.create(`${this.username}-personal`);
+    } catch (err) {
+      coreApi.log.error("user", `Unable to create team for user ${this.username}`);
+      console.error(err);
+      return;
+    }
 
     try {
       // "/"

@@ -25,7 +25,7 @@ const ChatbotProfilePreview: React.FC<IChatbotProfilePreviewProps> = ({
   commands,
 }) => {
   return (
-    <div>
+    <>
       <TabsContainer
         tabs={[
           {
@@ -37,6 +37,7 @@ const ChatbotProfilePreview: React.FC<IChatbotProfilePreviewProps> = ({
                 avatarUrl={avatarUrl}
                 status={status}
                 tryMyCommands={commands}
+                discriminator={"1234"}
               />
             ),
             displayName: "Discord",
@@ -51,7 +52,7 @@ const ChatbotProfilePreview: React.FC<IChatbotProfilePreviewProps> = ({
           },
         ]}
       />
-    </div>
+    </>
   );
 };
 

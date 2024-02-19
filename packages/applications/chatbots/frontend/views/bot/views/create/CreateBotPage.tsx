@@ -8,6 +8,7 @@ import csi from "@yourdash/csi/csi";
 import {
   Button,
   Card,
+  DropdownButton,
   Heading,
   IconButton,
   MajorButton,
@@ -25,6 +26,8 @@ const CreateBotPage: React.FC = () => {
   const [username, setUsername] = useState<string>("");
   const [displayName, setDisplayName] = useState<string>("");
   const [bio, setBio] = useState<string>("");
+  const [statusLabel, setStatusLabel] = useState<string>("");
+  const [status, setStatus] = useState<string>("");
   const [avatarUrl, setAvatarUrl] = useState<string>(YourDashIcon.ServerError);
 
   return (
@@ -39,22 +42,26 @@ const CreateBotPage: React.FC = () => {
         <Heading level={2}>Create Chatbot</Heading>
       </header>
       <Card showBorder={true} className={styles.previewPane}>
-        <Heading level={2}>Profile Preview</Heading>
+        <Heading level={2} className={"pb-2"}>
+          Profile Preview
+        </Heading>
         <ChatbotProfilePreview
           username={username}
           displayName={displayName}
           avatarUrl={avatarUrl}
           bio={bio}
-          status={"Status"}
+          status={statusLabel + " " + status}
           commands={["ping", "pong", "foo", "bar"]}
         />
       </Card>
       <Card showBorder={true} className={styles.optionsPane}>
         <Heading level={2}>Profile Options</Heading>
-        <Heading level={4}>Bot Username</Heading>
+        <Heading level={3}>Bot Username</Heading>
         <TextInput
           preceedingInlay={
-            username && <span className={"animate__animated animate__slideInLeft animate__duration_500ms"}>@</span>
+            username && (
+              <span className={"animate__animated animate__slideInLeft animate__duration_500ms select-none"}>@</span>
+            )
           }
           onChange={(value) => {
             setUsername(value);
@@ -62,7 +69,7 @@ const CreateBotPage: React.FC = () => {
           accessibleName={"Bot Username"}
           placeholder={"Bot Username"}
         />
-        <Heading level={4}>Bot Name</Heading>
+        <Heading level={3}>Bot Name</Heading>
         <TextInput
           onChange={(value) => {
             setDisplayName(value);
@@ -70,14 +77,14 @@ const CreateBotPage: React.FC = () => {
           accessibleName={"Bot Name"}
           placeholder={"Bot Name"}
         />
-        <Heading level={4}>Bot Description</Heading>
+        <Heading level={3}>Bot Description</Heading>
         <TextBox
           placeholder={"Description"}
           onChange={(e) => {
             setBio(e.currentTarget.value);
           }}
         />
-        <Heading level={4}>Bot Avatar</Heading>
+        <Heading level={3}>Bot Avatar</Heading>
         <TextInput
           accessibleName={"Avatar URL"}
           placeholder={"Avatar URL"}
@@ -86,6 +93,47 @@ const CreateBotPage: React.FC = () => {
             setAvatarUrl(value);
           }}
         />
+        <Heading level={3}>Bot Status</Heading>
+        <div className={"flex gap-2 w-full"}>
+          <DropdownButton
+            items={[
+              {
+                name: "Playing",
+                onClick() {
+                  setStatusLabel("Playing");
+                },
+              },
+              {
+                name: "Streaming",
+                onClick() {
+                  setStatusLabel("Streaming");
+                },
+              },
+              {
+                name: "Watching",
+                onClick() {
+                  setStatusLabel("Watching");
+                },
+              },
+              {
+                name: "Listening",
+                onClick() {
+                  setStatusLabel("Listening");
+                },
+              },
+            ]}
+          >
+            Playing
+          </DropdownButton>
+          <TextInput
+            className={"flex-grow"}
+            onChange={(value) => {
+              setStatus(value);
+            }}
+            accessibleName={"Status"}
+            placeholder={"Status"}
+          />
+        </div>
         <MajorButton
           onClick={() => {
             csi.postJson(

@@ -3,6 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import clippy from "@yourdash/web-client/src/helpers/clippy";
 import React from "react";
 import { Icon, YourDashIcon } from "@yourdash/web-client/src/ui/index";
 import styles from "./DiscordProfilePreview.module.scss";
@@ -14,6 +15,8 @@ export interface IDiscordProfilePreviewProps {
   bio: string;
   status: string;
   tryMyCommands: string[];
+  discriminator: string;
+  showAddApplicationButton?: boolean;
 }
 
 const DiscordProfilePreview: React.FC<IDiscordProfilePreviewProps> = ({
@@ -23,13 +26,19 @@ const DiscordProfilePreview: React.FC<IDiscordProfilePreviewProps> = ({
   bio,
   status,
   tryMyCommands,
+  discriminator,
+  showAddApplicationButton,
 }) => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
         <div className={styles.coloredSegment}></div>
         <div className={styles.avatarContainer}>
-          <img alt={""} className={styles.avatar} src={avatarUrl} />
+          <img
+            alt={""}
+            className={styles.avatar}
+            src={avatarUrl === "internal://ServerError" ? "/assets/productLogos/yourdash.svg" : avatarUrl}
+          />
           <div className={styles.status} />
         </div>
         <div className={styles.badges}>
@@ -38,9 +47,11 @@ const DiscordProfilePreview: React.FC<IDiscordProfilePreviewProps> = ({
       </div>
       <div className={styles.content}>
         <div className={styles.name}>
-          <span className={styles.displayName}>{displayName}</span>
+          <span className={styles.displayName}>{displayName || "Unknown Bot"}</span>
           <span className={styles.username}>
-            {username}
+            {!discriminator && "@"}
+            {username || "unknown"}
+            {discriminator && `#${discriminator}`}
             <div className={styles.usernameBadge}>
               <Icon icon={YourDashIcon.Check} className={styles.usernameBadgeIcon} />
               BOT
@@ -48,10 +59,12 @@ const DiscordProfilePreview: React.FC<IDiscordProfilePreviewProps> = ({
           </span>
         </div>
         <div className={styles.separator}></div>
-        <button className={styles.addAppButton}>
-          <Icon icon={YourDashIcon.PlusCircle} className={styles.addAppIcon} />
-          Add App
-        </button>
+        {showAddApplicationButton && (
+          <button className={styles.addAppButton}>
+            <Icon icon={YourDashIcon.PlusCircle} className={styles.addAppIcon} />
+            Add App
+          </button>
+        )}
         {bio && (
           <>
             <h3 className={styles.sectionHeader}>ABOUT ME</h3>

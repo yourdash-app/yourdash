@@ -23,9 +23,7 @@ export default class CoreApiVerifyFileSystem {
 
     (
       await (
-        (await this.coreApi.fs.get(
-          path.join(this.coreApi.fs.ROOT_PATH, "./users"),
-        )) as FileSystemDirectory
+        (await this.coreApi.fs.get(path.join(this.coreApi.fs.ROOT_PATH, "./users"))) as FileSystemDirectory
       )?.getChildren()
     ).map((user: string) => {
       this.checkUserDirectory(user);
@@ -38,71 +36,31 @@ export default class CoreApiVerifyFileSystem {
       await this.coreApi.fs.createDirectory(this.coreApi.fs.ROOT_PATH);
     }
     // "/users/"
-    if (
-      !(await this.coreApi.fs.exists(
-        path.join(this.coreApi.fs.ROOT_PATH, "./users"),
-      ))
-    ) {
-      await this.coreApi.fs.createDirectory(
-        path.join(this.coreApi.fs.ROOT_PATH, "./users"),
-      );
+    if (!(await this.coreApi.fs.exists(path.join(this.coreApi.fs.ROOT_PATH, "./users")))) {
+      await this.coreApi.fs.createDirectory(path.join(this.coreApi.fs.ROOT_PATH, "./users"));
     }
     // "/defaults/"
-    if (
-      !(await this.coreApi.fs.exists(
-        path.join(this.coreApi.fs.ROOT_PATH, "./defaults"),
-      ))
-    ) {
-      await this.coreApi.fs.createDirectory(
-        path.join(this.coreApi.fs.ROOT_PATH, "./defaults"),
-      );
+    if (!(await this.coreApi.fs.exists(path.join(this.coreApi.fs.ROOT_PATH, "./defaults")))) {
+      await this.coreApi.fs.createDirectory(path.join(this.coreApi.fs.ROOT_PATH, "./defaults"));
     }
     // "/cache/"
-    if (
-      !(await this.coreApi.fs.exists(
-        path.join(this.coreApi.fs.ROOT_PATH, "./cache"),
-      ))
-    ) {
-      await this.coreApi.fs.createDirectory(
-        path.join(this.coreApi.fs.ROOT_PATH, "./cache"),
-      );
+    if (!(await this.coreApi.fs.exists(path.join(this.coreApi.fs.ROOT_PATH, "./cache")))) {
+      await this.coreApi.fs.createDirectory(path.join(this.coreApi.fs.ROOT_PATH, "./cache"));
     }
     // "/cache/applications/"
-    if (
-      !(await this.coreApi.fs.exists(
-        path.join(this.coreApi.fs.ROOT_PATH, "./cache/applications"),
-      ))
-    ) {
-      await this.coreApi.fs.createDirectory(
-        path.join(this.coreApi.fs.ROOT_PATH, "./cache/applications"),
-      );
+    if (!(await this.coreApi.fs.exists(path.join(this.coreApi.fs.ROOT_PATH, "./cache/applications")))) {
+      await this.coreApi.fs.createDirectory(path.join(this.coreApi.fs.ROOT_PATH, "./cache/applications"));
     }
     // "/cache/applications/icons"
-    if (
-      !(await this.coreApi.fs.exists(
-        path.join(this.coreApi.fs.ROOT_PATH, "./cache/applications/icons"),
-      ))
-    ) {
-      await this.coreApi.fs.createDirectory(
-        path.join(this.coreApi.fs.ROOT_PATH, "./cache/applications/icons"),
-      );
+    if (!(await this.coreApi.fs.exists(path.join(this.coreApi.fs.ROOT_PATH, "./cache/applications/icons")))) {
+      await this.coreApi.fs.createDirectory(path.join(this.coreApi.fs.ROOT_PATH, "./cache/applications/icons"));
     }
     // "/config/"
-    if (
-      !(await this.coreApi.fs.exists(
-        path.join(this.coreApi.fs.ROOT_PATH, "./config"),
-      ))
-    ) {
-      await this.coreApi.fs.createDirectory(
-        path.join(this.coreApi.fs.ROOT_PATH, "./config"),
-      );
+    if (!(await this.coreApi.fs.exists(path.join(this.coreApi.fs.ROOT_PATH, "./config")))) {
+      await this.coreApi.fs.createDirectory(path.join(this.coreApi.fs.ROOT_PATH, "./config"));
     }
 
-    if (
-      !(await this.coreApi.fs.exists(
-        path.join(this.coreApi.fs.ROOT_PATH, "./default_avatar.avif"),
-      ))
-    ) {
+    if (!(await this.coreApi.fs.exists(path.join(this.coreApi.fs.ROOT_PATH, "./default_avatar.avif")))) {
       // set the instance's default user avatar
       try {
         await this.coreApi.fs.copy(
@@ -115,11 +73,7 @@ export default class CoreApiVerifyFileSystem {
       }
     }
 
-    if (
-      !(await this.coreApi.fs.exists(
-        path.join(this.coreApi.fs.ROOT_PATH, "./instance_logo.avif"),
-      ))
-    ) {
+    if (!(await this.coreApi.fs.exists(path.join(this.coreApi.fs.ROOT_PATH, "./instance_logo.avif")))) {
       // set the instance's default logo
       try {
         await this.coreApi.fs.copy(
@@ -132,18 +86,11 @@ export default class CoreApiVerifyFileSystem {
       }
     }
 
-    if (
-      !(await this.coreApi.fs.exists(
-        path.join(this.coreApi.fs.ROOT_PATH, "./login_background.avif"),
-      ))
-    ) {
+    if (!(await this.coreApi.fs.exists(path.join(this.coreApi.fs.ROOT_PATH, "./login_background.avif")))) {
       // set the default login background
       try {
         await this.coreApi.fs.copy(
-          path.join(
-            process.cwd(),
-            "./src/defaults/default_login_background.avif",
-          ),
+          path.join(process.cwd(), "./src/defaults/default_login_background.avif"),
           path.join(this.coreApi.fs.ROOT_PATH, "./login_background.avif"),
         );
       } catch (e) {
@@ -151,37 +98,22 @@ export default class CoreApiVerifyFileSystem {
       }
     }
 
-    if (
-      !(await this.coreApi.fs.exists(
-        path.join(this.coreApi.fs.ROOT_PATH, "./global_database.json"),
-      ))
-    ) {
+    if (!(await this.coreApi.fs.exists(path.join(this.coreApi.fs.ROOT_PATH, "./global_database.json")))) {
       // create the global database
       try {
-        this.coreApi.log.info(
-          "verify_fs",
-          "The global database file does not exist, creating a new one",
-        );
+        this.coreApi.log.info("verify_fs", "The global database file does not exist, creating a new one");
 
         // write the default global database file
         await this.coreApi.fs.copy(
-          path.join(
-            process.cwd(),
-            "./src/defaults/default_global_database.json",
-          ),
+          path.join(process.cwd(), "./src/defaults/default_global_database.json"),
           path.join(this.coreApi.fs.ROOT_PATH, "./global_database.json"),
         );
 
         // load the newly copied global database file
-        await this.coreApi.globalDb.loadFromDisk(
-          path.join(this.coreApi.fs.ROOT_PATH, "./global_database.json"),
-        );
+        await this.coreApi.globalDb.loadFromDisk(path.join(this.coreApi.fs.ROOT_PATH, "./global_database.json"));
       } catch (e) {
         this.coreApi.log.error("verify_fs", e);
-        this.coreApi.log.error(
-          "verify_fs",
-          'Unable to create the "./fs/global_database.json" file',
-        );
+        this.coreApi.log.error("verify_fs", 'Unable to create the "./fs/global_database.json" file');
       }
     }
 
@@ -197,16 +129,14 @@ export default class CoreApiVerifyFileSystem {
     const ADMIN_USER = this.coreApi.users.get("admin");
 
     if (!(await ADMIN_USER.doesExist())) {
-      this.coreApi.log.warning("verify_fs", "Creating admin user...");
+      this.coreApi.log.info("verify_fs", "Creating admin user...");
 
       await ADMIN_USER.verify();
       await ADMIN_USER.setName({
         first: "Admin",
         last: "istrator",
       });
-      await ADMIN_USER.setPermissions([
-        YOURDASH_USER_PERMISSIONS.Administrator,
-      ]);
+      await ADMIN_USER.setPermissions([YOURDASH_USER_PERMISSIONS.Administrator]);
     } else {
       this.coreApi.log.info("verify_fs", "Admin user already exists");
     }
@@ -215,7 +145,7 @@ export default class CoreApiVerifyFileSystem {
   }
 
   async checkUserDirectory(username: string) {
-    await this.coreApi.users.create(username);
+    await this.coreApi.users.get(username).verify();
 
     return this;
   }

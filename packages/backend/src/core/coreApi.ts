@@ -19,6 +19,7 @@ import CoreApiAuthenticatedImage from "./coreApiAuthenticatedImage.js";
 import CoreApiCommands from "./coreApiCommands.js";
 import CoreApiGlobalDb from "./coreApiGlobalDb.js";
 import CoreApiLog from "./coreApiLog.js";
+import CoreApiTeams from "./coreApiTeams.js";
 import loadNextCloudSupportEndpoints from "./nextcloud/coreApiNextCloud.js";
 import CoreApiWebDAV from "./webDAV/coreApiWebDAV.js";
 import CoreApiModuleManager from "./moduleManager/coreApiModuleManager.js";
@@ -46,6 +47,7 @@ export class CoreApi {
   readonly scheduler: CoreApiScheduler;
   readonly userDatabase: CoreApiUserDatabase;
   readonly panel: CoreApiPanel;
+  readonly teams: CoreApiTeams;
   readonly authenticatedImage: CoreApiAuthenticatedImage;
   readonly websocketManager: CoreApiWebsocketManager;
   readonly loadManagement: CoreApiLoadManagement;
@@ -87,6 +89,7 @@ export class CoreApi {
     this.fs = new CoreApiFileSystem(this);
     this.userDatabase = new CoreApiUserDatabase(this);
     this.panel = new CoreApiPanel(this);
+    this.teams = new CoreApiTeams(this);
     this.authenticatedImage = new CoreApiAuthenticatedImage(this);
     this.loadManagement = new CoreApiLoadManagement(this);
     this.utils = new CoreApiUtils(this);
@@ -266,9 +269,7 @@ export class CoreApi {
 
     // INFO: This shouldn't be used for detection of a YourDash Instance, instead use the '/test' endpoint
     this.expressServer.get("/", (_req, res) => {
-      return res
-        .send("Hello from the YourDash instance software! 👋")
-        .redirect(`https://ydsh.pages.dev/#/login/${this.globalDb.get("core:instanceurl")}`);
+      return res.redirect(`https://ydsh.pages.dev/#/login/${this.globalDb.get("core:instanceurl")}`);
     });
 
     // Server discovery endpoint

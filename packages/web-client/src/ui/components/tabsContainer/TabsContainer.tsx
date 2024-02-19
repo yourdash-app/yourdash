@@ -44,7 +44,7 @@ const TabsContainer: React.FC<ITabsContainerProps> = ({ tabs }) => {
               <div
                 ref={index === 0 ? firstTabRef : null}
                 className={`${styles.tab} ${activeTab === index ? styles.active : ""}`}
-                key={tab.displayName}
+                key={tab.displayName + tab.closable}
                 onClick={() => {
                   setActiveTab(index);
                 }}
@@ -52,7 +52,7 @@ const TabsContainer: React.FC<ITabsContainerProps> = ({ tabs }) => {
                 {tab.displayName}
                 {activeTab === index && (
                   <div
-                    key={tab.displayName}
+                    key={tab.displayName + tab.closable}
                     className={clippy(
                       styles.activeTabIndicator,
                       "animate__animated animate__fadeInUp animate__duration_250ms",

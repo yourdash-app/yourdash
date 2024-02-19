@@ -4,6 +4,7 @@
  */
 
 import { Heading, MajorButton } from "@yourdash/web-client/src/ui/index";
+import DiscordOAuth from "../../../../shared/platforms/discord/oauth";
 
 const AuthorizeDiscordPage: React.FC = () => {
   return (
@@ -12,8 +13,10 @@ const AuthorizeDiscordPage: React.FC = () => {
       <p className={"-mt-16"}>To continue to YourDash Chatbots, you need to authorize your Discord account</p>
       <MajorButton
         onClick={() => {
-          window.location.href = `https://discord.com/oauth2/authorize?response_type=code&client_id=157730590492196864&scope=identify%20guilds.join&state=15773059ghq9183habn&redirect_uri=https%3A%2F%2Fnicememe.website&prompt=consent
-`;
+          const auth = new DiscordOAuth("1208110209403461803", ["email"]);
+          window.location.href = auth.getAuthorizationCodeUrl(
+            "http://localhost:5173/#/app/a/chatbots/authorize/discord/redirect",
+          );
         }}
       >
         Click to continue

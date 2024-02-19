@@ -6,20 +6,20 @@
 import KeyValueDatabase from "../../helpers/keyValueDatabase.js";
 import coreApi from "../coreApi.js";
 
-export default class UserDatabase extends KeyValueDatabase {
-  private userName: string;
+export default class TeamDatabase extends KeyValueDatabase {
+  private teamName: string;
 
-  constructor(userName: string) {
+  constructor(teamName: string) {
     super();
 
-    this.userName = userName;
+    this.teamName = teamName;
 
     return this;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public set(key: string, value: any) {
-    // eslint-disable-line @typescript-eslint/no-explicit-any
     super.set(key, value);
-    coreApi.users.get(this.userName).saveDatabase();
+    coreApi.users.get(this.teamName).saveDatabase();
   }
 }
