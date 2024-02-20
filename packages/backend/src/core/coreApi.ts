@@ -427,9 +427,23 @@ export class CoreApi {
       return res.sendFile(path.resolve(process.cwd(), "./fs/login_background.avif"));
     });
 
-    this.webdav.__internal__loadEndpoints();
-    this.authenticatedImage.__internal__loadEndpoints();
-    loadNextCloudSupportEndpoints();
+    try {
+      this.webdav.__internal__loadEndpoints();
+    } catch (e) {
+      this.log.error("webdav", "Error caught in loadWebdavEndpoints", e);
+    }
+
+    try {
+      this.authenticatedImage.__internal__loadEndpoints();
+    } catch (e) {
+      this.log.error("authenticatedImage", "Error caught in loadAuthenticatedImageEndpoints", e);
+    }
+
+    try {
+      loadNextCloudSupportEndpoints();
+    } catch (e) {
+      this.log.error("nextcloud", "Error caught in loadNextCloudSupportEndpoints", e);
+    }
 
     // Check for authentication
     this.expressServer.use(async (req, res, next) => {
@@ -479,9 +493,9 @@ export class CoreApi {
     });
 
     /**
-     *  ----------------------------------------------------------------
-     *   WARNING: all endpoints require authentication after this point
-     *  ----------------------------------------------------------------
+     *  ################################################################
+     *  # WARNING: all endpoints require authentication after this point
+     *  ################################################################
      */
 
     console.time("core:load_modules");
