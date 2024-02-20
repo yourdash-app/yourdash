@@ -13,7 +13,8 @@ import { hashString } from "../../helpers/encryption.js";
 import YourDashSession, { getSessionsForUser } from "../../helpers/session.js";
 import coreApi from "../coreApi.js";
 import { USER_AVATAR_SIZE } from "@yourdash/shared/core/userAvatarSize.js";
-import { yourDashUserPermission } from "./permissions.js";
+import { YourDashTeamPermission } from "../team/teamPermissions.js";
+import { YourDashUserPermission } from "./userPermissions.js";
 import IYourDashUserJson from "./userJson.js";
 
 export default class YourDashUser {
@@ -79,6 +80,7 @@ export default class YourDashUser {
     try {
       if (!(await (await coreApi.teams.get(`${this.username}-personal`)).doesExist()))
         await coreApi.teams.create(`${this.username}-personal`);
+      this.joinTeam(`${this.username}-personal`);
     } catch (err) {
       coreApi.log.error("user", `Unable to create team for user ${this.username}`);
       console.error(err);
@@ -221,6 +223,14 @@ export default class YourDashUser {
     }
   }
 
+  async joinTeam(teamName: string, permissions: YourDashTeamPermission[]) {
+    const team = await coreApi.teams.get(teamName);
+
+    if (!(await team.doesExist())) {
+      team.addMember(this.username, permissions);
+    }
+  }
+
   async getName(): Promise<{ first: string; last: string }> {
     return (await this.getDatabase()).get("user:name");
   }
@@ -271,7 +281,7 @@ export default class YourDashUser {
     }
   }
 
-  async setPermissions(permissions: yourDashUserPermission[]) {
+  async setPermissions(permissions: YourDashUserPermission[]) {
     try {
       const currentUserJson = JSON.parse(
         (await fs.readFile(path.join(this.path, "core/user.json"))).toString(),
@@ -295,7 +305,7 @@ export default class YourDashUser {
     }
   }
 
-  async hasPermission(permission: yourDashUserPermission): Promise<boolean> {
+  async hasPermission(permission: YourDashUserPermission): Promise<boolean> {
     try {
       const currentUserJson = JSON.parse(
         (await fs.readFile(path.join(this.path, "core/user.json"))).toString(),

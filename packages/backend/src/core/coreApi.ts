@@ -150,6 +150,7 @@ export class CoreApi {
         this.users.__internal__startUserDatabaseService();
         this.users.__internal__startUserDeletionService();
         this.globalDb.__internal__startGlobalDatabaseService();
+        this.teams.__internal__startUserDatabaseService();
 
         try {
           killPort(3563)

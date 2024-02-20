@@ -6,6 +6,7 @@
 import coreApi from "../coreApi.js";
 import TeamDatabase from "./teamDatabase.js";
 import path from "path";
+import { YourDashTeamPermission } from "./teamPermissions.js";
 
 export default class YourDashTeam {
   teamName: string;
@@ -67,6 +68,14 @@ export default class YourDashTeam {
   }
 
   setTeamDisplayName() {
+    return this;
+  }
+
+  addMember(userName: string, permissions: YourDashTeamPermission[]) {
+    // TODO: implement this next for full teams support
+
+    this.db.set("members", [...this.db.get("members"), { userName: userName, permissions: permissions }]);
+
     return this;
   }
 }

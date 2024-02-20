@@ -7,9 +7,9 @@ export enum YOURDASH_USER_PERMISSIONS {
   WriteFiles,
   ReadFiles,
   DeleteFiles,
-  Administrator
+  Administrator,
 }
 
-type yourDashUserPermission = YOURDASH_USER_PERMISSIONS | string;
+type YourDashUserPermission = YOURDASH_USER_PERMISSIONS | string;
 
-export type { yourDashUserPermission }
+export type { YourDashUserPermission };
