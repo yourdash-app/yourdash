@@ -13,7 +13,7 @@ import { hashString } from "../../helpers/encryption.js";
 import YourDashSession, { getSessionsForUser } from "../../helpers/session.js";
 import coreApi from "../coreApi.js";
 import { USER_AVATAR_SIZE } from "@yourdash/shared/core/userAvatarSize.js";
-import { YourDashTeamPermission } from "../team/teamPermissions.js";
+import { YOURDASH_TEAM_PERMISSIONS, YourDashTeamPermission } from "../team/teamPermissions.js";
 import { YourDashUserPermission } from "./userPermissions.js";
 import IYourDashUserJson from "./userJson.js";
 
@@ -80,7 +80,7 @@ export default class YourDashUser {
     try {
       if (!(await (await coreApi.teams.get(`${this.username}-personal`)).doesExist()))
         await coreApi.teams.create(`${this.username}-personal`);
-      this.joinTeam(`${this.username}-personal`);
+      await this.joinTeam(`${this.username}-personal`, [YOURDASH_TEAM_PERMISSIONS.ADMINISTRATOR]);
     } catch (err) {
       coreApi.log.error("user", `Unable to create team for user ${this.username}`);
       console.error(err);
@@ -228,6 +228,8 @@ export default class YourDashUser {
 
     if (!(await team.doesExist())) {
       team.addMember(this.username, permissions);
+      const db = await this.getDatabase();
+      db.set("teams", [...(db.get("teams") || []), { teamName: teamName, permissions: permissions }]);
     }
   }
 

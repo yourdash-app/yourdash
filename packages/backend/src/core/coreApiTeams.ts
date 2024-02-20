@@ -4,7 +4,7 @@
  */
 
 import path from "path";
-import coreApi, { CoreApi } from "./coreApi.js";
+import { CoreApi } from "./coreApi.js";
 import YourDashTeam from "./team/team.js";
 import YourDashUser from "./user/index.js";
 import { promises as fs } from "fs";
@@ -21,12 +21,15 @@ export default class CoreApiTeams {
 
   constructor(coreApi: CoreApi) {
     this.coreApi = coreApi;
+    this.teamDatabases = new Map();
 
     return this;
   }
 
   async create(teamName: string) {
     const newTeam = new YourDashTeam(teamName);
+
+    if (await newTeam.doesExist()) throw new Error(`Team '${teamName}' already exists`);
 
     await newTeam.verify();
 
@@ -39,16 +42,16 @@ export default class CoreApiTeams {
 
   __internal__startUserDatabaseService() {
     this.coreApi.scheduler.scheduleTask("core:teamdb_write_to_disk", "*/1 * * * *", async () => {
-      Object.keys(this.teamDatabases).map(async (username) => {
-        if (!this.teamDatabases[username].changed) {
+      Object.keys(this.teamDatabases).map(async (teamName) => {
+        if (!this.teamDatabases[teamName].changed) {
           return;
         }
 
-        this.teamDatabases[username].changed = false;
+        this.teamDatabases[teamName].changed = false;
 
-        const user = new YourDashUser(username);
+        const user = new YourDashUser(teamName);
 
-        await this.teamDatabases[username].db.writeToDisk(path.join(user.path, "core/user_db.json"));
+        await this.teamDatabases[teamName].db.writeToDisk(path.join(user.path, "core/team_db.json"));
       });
     });
   }

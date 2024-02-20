@@ -4,10 +4,23 @@
 # YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
 #
 
-echo "Installing YourDash"
+echo "Installing YourDash and dependencies"
+
+sudo apt update -y && sudo apt upgrade -y
+
+echo "Installing NodeJS"
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+
+echo "Reloading ~/.bashrc"
+# shellcheck disable=SC1090
+source ~/.bashrc
+
+echo "Installing LTS NodeJS"
+nvm install --lts
 
 echo "Attempting to Install / Update Bun"
 curl -fsSL https://bun.sh/install | bash
+
 echo "Re-sourcing ~/.bashrc"
 # shellcheck disable=SC1090
 source ~/.bashrc
@@ -33,7 +46,7 @@ sudo chmod 777 -R /yourdash
 
 echo "Installing YourDash dependencies"
 echo "if bun install fails, run this script again"
-bun install
+yarn install
 
 echo "Installing YourDash systemd service"
 sudo cp /yourdash/packages/backend/src/defaults/yourdash.service /etc/systemd/system/yourdash.service

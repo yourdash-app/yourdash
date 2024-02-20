@@ -74,7 +74,7 @@ export default class YourDashTeam {
   addMember(userName: string, permissions: YourDashTeamPermission[]) {
     // TODO: implement this next for full teams support
 
-    this.db.set("members", [...this.db.get("members"), { userName: userName, permissions: permissions }]);
+    this.db.set("members", [...(this.db.get("members") || []), { userName: userName, permissions: permissions }]);
 
     return this;
   }

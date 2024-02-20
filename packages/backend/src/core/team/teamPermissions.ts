@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-enum YOURDASH_TEAM_PERMISSIONS {
+export enum YOURDASH_TEAM_PERMISSIONS {
   ADMINISTRATOR,
 }
 
