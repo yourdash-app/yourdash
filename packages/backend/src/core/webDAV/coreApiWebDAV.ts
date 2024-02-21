@@ -45,15 +45,16 @@ export default class CoreApiWebDAV {
       return res.redirect("/webdav");
     });
 
-    this.coreApi.expressServer.use("/webdav", async (req, res, next) => {
+    this.coreApi.expressServer.get("/webdav", (_req, res) => {
+      return res.send(`This is the WebDAV endpoint of YourDash`);
+    });
+
+    this.coreApi.expressServer.use("/webdav/*", async (req, res, next) => {
       res.setHeader("DAV", "1,2");
       res.setHeader("MS-Author-Via", "DAV");
 
       if (req.method === "OPTIONS") {
-        res.setHeader(
-          "Allow",
-          "GET, PUT, DELETE, MKCOL, OPTIONS, COPY, MOVE, PROPFIND, PROPPATCH, LOCK, UNLOCK, HEAD",
-        );
+        res.setHeader("Allow", "GET, PUT, DELETE, MKCOL, OPTIONS, COPY, MOVE, PROPFIND, PROPPATCH, LOCK, UNLOCK, HEAD");
         res.setHeader("Content-Type", "httpd/unix-directory");
       }
 
@@ -72,58 +73,25 @@ export default class CoreApiWebDAV {
         return failAuth();
       }
 
-      const [username, password] = Buffer.from(
-        req.headers["authorization"].split(" ")[1],
-        "base64",
-      )
+      const [username, password] = Buffer.from(req.headers["authorization"].split(" ")[1], "base64")
         .toString("utf-8")
         .split(":");
 
-      this.coreApi.log.debug(
-        "webdav",
-        "username:",
-        username,
-        "password:",
-        password,
-      );
+      this.coreApi.log.debug("webdav", "username:", username, "password:", password);
 
       const user = this.coreApi.users.get(username);
 
-      const savedHashedPassword = (
-        await fs.readFile(path.join(user.path, "core/password.enc"))
-      ).toString();
+      const savedHashedPassword = (await fs.readFile(path.join(user.path, "core/password.enc"))).toString();
 
       if (!(await compareHashString(savedHashedPassword, password))) {
-        this.coreApi.log.error(
-          "webdav",
-          "passwords did not match!, password",
-          password,
-        );
+        this.coreApi.log.error("webdav", "passwords did not match!, password", password);
         return failAuth();
       }
 
       const reqXML = await parseStringPromise(req.body);
       console.log(reqXML);
 
-      // TODO: remove the documentation response and respond as according to doc
-      return res.send(`
-<?xml version="1.0" encoding="utf-8" ?>
-<D:multistatus xmlns:D="DAV:" xmlns:Z="http://ns.example.com/standards/z39.50/">
-  <D:response>
-    <D:href>http://www.example.com/bar.html</D:href>
-    <D:propstat>
-      <D:prop><Z:Authors/></D:prop>
-      <D:status>HTTP/1.1 424 Failed Dependency</D:status>
-    </D:propstat>
-    <D:propstat>
-      <D:prop><Z:Copyright-Owner/></D:prop>
-      <D:status>HTTP/1.1 409 Conflict</D:status>
-    </D:propstat>
-    <D:responsedescription> Copyright Owner cannot be deleted or
-      altered.</D:responsedescription>
-  </D:response>
-</D:multistatus>
-  `);
+      return next();
     });
   }
 }
