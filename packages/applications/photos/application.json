@@ -10,5 +10,8 @@
       "bio": "The creator of YourDash",
       "site": "https://ewsgit.github.io"
     }
+  ],
+  "dependencies": [
+    "files"
   ]
 }

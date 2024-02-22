@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import csi from "@yourdash/csi/csi";
 import {
   Button,
@@ -23,12 +23,16 @@ import { useNavigate } from "react-router-dom";
 const CreateBotPage: React.FC = () => {
   const navigate = useNavigate();
 
+  const [teams, setTeams] = useState<string[]>([`${csi.getUserName()}-personal`]);
+  const [team, setTeam] = useState<string>(teams[0]);
   const [username, setUsername] = useState<string>("");
   const [displayName, setDisplayName] = useState<string>("");
   const [bio, setBio] = useState<string>("");
   const [statusLabel, setStatusLabel] = useState<string>("");
   const [status, setStatus] = useState<string>("");
   const [avatarUrl, setAvatarUrl] = useState<string>(YourDashIcon.ServerError);
+
+  useEffect(() => {}, []);
 
   return (
     <main className={styles.page}>
@@ -137,7 +141,7 @@ const CreateBotPage: React.FC = () => {
         <MajorButton
           onClick={() => {
             csi.postJson(
-              "/app/chatbots/integration/discord/create-bot",
+              "/app/chatbots/team/:teamId/create-bot/:botId",
               {
                 username,
                 displayName,

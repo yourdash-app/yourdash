@@ -57,7 +57,7 @@ export default class FileSystemFile extends FileSystemEntity {
       throw new Error("YDSH: File is locked");
     }
 
-    if (!(await this.exists())) {
+    if (!(await this.doesExist())) {
       await fs.mkdir(pth.dirname(this.path), { recursive: true });
     }
 

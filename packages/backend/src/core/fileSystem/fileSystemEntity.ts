@@ -37,7 +37,7 @@ export default class FileSystemEntity {
     return coreApi.fs.__internal__fileSystemLocks.get(this.path);
   }
 
-  exists(): Promise<boolean> {
+  doesExist(): Promise<boolean> {
     return coreApi.fs.exists(this.path);
   }
 }

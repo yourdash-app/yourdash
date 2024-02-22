@@ -9,8 +9,15 @@ import BackendModule, { YourDashModuleArguments } from "@yourdash/backend/src/co
 import * as path from "path";
 import { fetch } from "undici";
 import { Request as ExpressRequest } from "express";
+import ChatbotsBot from "./bot.js";
 
-export default class DiffusionLabModule extends BackendModule {
+export default class ChatbotsModule extends BackendModule {
+  loadedBots: {
+    id: string;
+    ownerTeam: string;
+    bot: ChatbotsBot;
+  }[];
+
   constructor(args: YourDashModuleArguments) {
     super(args);
 
@@ -33,67 +40,68 @@ export default class DiffusionLabModule extends BackendModule {
       return res.json({ success: true });
     });
 
-    this.API.request.post("/app/chatbots/integration/discord/create-bot", async (req, res) => {
-      const { username, displayName, bio, avatarUrl } = req.body;
-
-      if (!username) {
-        return res.json({ success: false, error: "No username provided" });
-      }
-      if (!displayName) {
-        return res.json({
-          success: false,
-          error: "No display name provided",
-        });
-      }
-      if (!bio) {
-        return res.json({ success: false, error: "No bio provided" });
-      }
-      if (!avatarUrl) {
-        return res.json({ success: false, error: "No avatar url provided" });
-      }
-
-      const botOwnerToken = await this.getBotOwnerToken(req);
-
-      if (!botOwnerToken) {
-        return res.json({
-          success: false,
-          error: "No bot owner token provided",
-        });
-      }
-
-      try {
-        const response = await fetch("https://discord.com/api/v9/applications", {
-          headers: {
-            Origin: "https://discord.com",
-            Referer: "https://discord.com/developers/applications",
-            "User-Agent":
-              "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
-            "Content-Type": "application/json",
-            Authorization: botOwnerToken,
-          },
-          method: "POST",
-          body: JSON.stringify({
-            name: username,
-            team_id: null,
-          }),
-        });
-
-        this.API.log(LOG_TYPE.INFO, response.json());
-      } catch (_err) {
-        console.log(_err);
-        return res.json({ success: false, error: _err });
-      }
-    });
-
     this.API.request.get("/app/chatbots/authorize/check/discord", (_req, res) => {
       return res.json({ authorized: false });
     });
 
-    this.API.request.get("/app/chatbots/team/:teamId/list-bots", (req, res) => {
-      const { username } = req.headers;
+    this.API.request.use("/app/chatbots/team/:teamId/*", async (req, res, next) => {
+      const { username } = req.headers as { username: string };
       const { teamId } = req.params;
 
-      return res.json({});
+      const team = await coreApi.teams.get(teamId);
+
+      if (!(await team.doesExist())) {
+        return res.json({ error: `Invalid team: ${teamId}` });
+      }
+
+      if (!team.containsMember(username)) {
+        return res.json({ error: `You are not on the team: ${teamId}` });
+      }
+
+      return next();
+    });
+
+    this.API.request.post("/app/chatbots/team/:teamId/create-bot/:botId", async (req, res) => {
+      const { teamId, botId } = req.params;
+
+      const team = await coreApi.teams.get(teamId);
+      const teamBotsDirectory = await coreApi.fs.getDirectory(path.join(team.getPath(), "apps/chatbots/bots"));
+      const botDirectory = await coreApi.fs.createDirectory(path.join(teamBotsDirectory.path, botId));
+
+      await (
+        await coreApi.fs.getFile(path.join(botDirectory.path, "bot.json"))
+      ).write(
+        JSON.stringify({
+          id: botId,
+          ownerTeam: teamId,
+          token: undefined,
+        }),
+      );
+    });
+
+    this.API.request.get("/app/chatbots/team/:teamId/list-bots", async (req, res) => {
+      const { teamId } = req.params;
+
+      const team = await coreApi.teams.get(teamId);
+
+      const teamBotsDirectory = await coreApi.fs.getDirectory(path.join(team.getPath(), "apps/chatbots/bots"));
+
+      return res.json({ bots: await teamBotsDirectory.getChildren() });
+    });
+
+    this.API.request.get("/app/chatbots/team/:teamId/list/:botId", async (req, res) => {
+      const { teamId, botId } = req.params;
+
+      const team = await coreApi.teams.get(teamId);
+      const teamBotsDirectory = await coreApi.fs.getDirectory(path.join(team.getPath(), "apps/chatbots/bots/", botId));
+
+      if (!(await teamBotsDirectory.doesExist())) {
+        return res.json({ error: `Invalid bot: ${botId}` });
+      }
+
+      return res.json({
+        bots: await (await coreApi.fs.getFile(path.join(teamBotsDirectory.path, "bot.json"))).read("json"),
+      });
     });
   }
 

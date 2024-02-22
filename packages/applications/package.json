@@ -10,11 +10,15 @@
     "tree-sitter-cli": "^0.20.8"
   },
   "dependencies": {
+    "@discordjs/voice": "^0.16.1",
     "@types/react": "^18.2.21",
+    "bufferutil": "^4.0.8",
     "chart.js": "^4.4.0",
+    "discord.js": "^14.14.1",
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
+    "utf-8-validate": "^6.0.3",
     "xml2js": "^0.6.2"
   },
   "scripts": {

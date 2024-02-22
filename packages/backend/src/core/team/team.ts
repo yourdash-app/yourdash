@@ -72,10 +72,21 @@ export default class YourDashTeam {
   }
 
   addMember(userName: string, permissions: YourDashTeamPermission[]) {
-    // TODO: implement this next for full teams support
-
     this.db.set("members", [...(this.db.get("members") || []), { userName: userName, permissions: permissions }]);
 
     return this;
+  }
+
+  removeMember(userName: string) {
+    this.db.set(
+      "members",
+      this.db.get("members").filter((member: { userName: string }) => member.userName !== userName),
+    );
+
+    return this;
+  }
+
+  containsMember(userName: string): boolean {
+    return this.db.get("members").some((member: { userName: string }) => member.userName === userName);
   }
 }

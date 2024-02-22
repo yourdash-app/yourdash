@@ -35,7 +35,13 @@ const ChatbotProfilePreview: React.FC<IChatbotProfilePreviewProps> = ({
                 displayName={displayName}
                 bio={bio}
                 avatarUrl={avatarUrl}
-                status={status}
+                presence={{
+                  status: "online",
+                  activities: [{}],
+                  clientStatus: {
+                    desktop: "online",
+                  },
+                }}
                 tryMyCommands={commands}
                 discriminator={"1234"}
               />

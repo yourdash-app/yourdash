@@ -56,6 +56,16 @@ export default class CoreApiTeams {
     });
   }
 
+  __internal__loadEndpoints() {
+    this.coreApi.expressServer.get("/core/teams/get/current-user", async (req, res) => {
+      const { username } = req.headers as { username: string };
+
+      const user = new YourDashUser(username);
+
+      return res.json(await user.getTeams());
+    });
+  }
+
   async saveDatabases() {
     const databases = Array.from(this.teamDatabases);
 

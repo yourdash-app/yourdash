@@ -3,9 +3,9 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import clippy from "@yourdash/web-client/src/helpers/clippy";
 import React from "react";
 import { Icon, YourDashIcon } from "@yourdash/web-client/src/ui/index";
+import { IDiscordActivity } from "../../../../../shared/platforms/discord/activities";
 import styles from "./DiscordProfilePreview.module.scss";
 
 export interface IDiscordProfilePreviewProps {
@@ -13,7 +13,11 @@ export interface IDiscordProfilePreviewProps {
   displayName: string;
   avatarUrl: string;
   bio: string;
-  status: string;
+  presence: {
+    status: "idle" | "dnd" | "online" | "offile";
+    activities: IDiscordActivity[];
+    clientStatus?: { [key in "mobile" | "desktop" | "web"]?: string };
+  };
   tryMyCommands: string[];
   discriminator: string;
   showAddApplicationButton?: boolean;
@@ -24,7 +28,7 @@ const DiscordProfilePreview: React.FC<IDiscordProfilePreviewProps> = ({
   displayName,
   avatarUrl,
   bio,
-  status,
+  presence,
   tryMyCommands,
   discriminator,
   showAddApplicationButton,
@@ -71,7 +75,7 @@ const DiscordProfilePreview: React.FC<IDiscordProfilePreviewProps> = ({
             <p className={styles.bio}>{bio}</p>
           </>
         )}
-        {status && <div className={styles.status}>{status}</div>}
+        {presence.activities[0] && <div className={styles.status}>{presence.activities[0].state}</div>}
         <h3 className={styles.sectionHeader}>TRY MY COMMANDS</h3>
         <section className={styles.tryMyCommands}>
           {tryMyCommands.map((tag, index) => {

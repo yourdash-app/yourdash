@@ -233,6 +233,11 @@ export default class YourDashUser {
     }
   }
 
+  async getTeams() {
+    const db = await this.getDatabase();
+    return db.get("teams") || [];
+  }
+
   async getName(): Promise<{ first: string; last: string }> {
     return (await this.getDatabase()).get("user:name");
   }

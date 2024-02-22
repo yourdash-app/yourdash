@@ -3,6 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import csi from "@yourdash/csi/csi";
 import {
   Card,
   DropdownButton,
@@ -22,7 +23,7 @@ const ListBotsPage: React.FC = () => {
   const [visibleBots, setVisibleBots] = useState<IChatbotsBot[]>([]);
   const [bots, setBots] = useState<IChatbotsBot[]>([]);
   const [searchValue, setSearchValue] = useState<string>("");
-  const [teams, setTeams] = useState<string[]>(["ewsgit-personal"]);
+  const [teams, setTeams] = useState<string[]>([`${csi.getUserName()}-personal`]);
   const [currentTeam, setCurrentTeam] = useState<string>(teams[0]);
 
   useEffect(() => {
@@ -31,7 +32,31 @@ const ListBotsPage: React.FC = () => {
     } else {
       setVisibleBots(visibleBots.filter((bot) => bot.displayName.toLowerCase().includes(searchValue.toLowerCase())));
     }
-  }, [searchValue, bots, currentTeam]);
+  }, [searchValue, bots]);
+
+  useEffect(() => {
+    csi.getJson(
+      `/app/chatbots/team/${currentTeam}/list-bots`,
+      (b: IChatbotsBot[]) => {
+        b.map((botId) => {
+          csi.getJson(
+            `/app/chatbots/team/${currentTeam}/list/${botId}`,
+            (bot) => {
+              setBots([...bots, bot]);
+            },
+            () => {
+              console.log("failed to fetch data for bot: " + botId);
+              setBots([...bots]);
+            },
+          );
+        });
+        setBots(b);
+      },
+      () => {
+        setBots([]);
+      },
+    );
+  }, [currentTeam]);
 
   return (
     <>
