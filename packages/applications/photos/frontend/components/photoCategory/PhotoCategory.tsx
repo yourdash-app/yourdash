@@ -7,7 +7,7 @@ import React from "react";
 import clippy from "@yourdash/web-client/src/helpers/clippy";
 import { Card, IconButton, YourDashIcon } from "@yourdash/web-client/src/ui/index";
 import { IPhotoCategory } from "../../../shared/types/photoCategory";
-import Photo from "../photo/Photo";
+import PhotoGrid from "../../views/photoGrid/PhotoGrid";
 import styles from "./PhotoCategory.module.scss";
 
 const PhotoCategory: React.FC<IPhotoCategory> = ({ name, items, id }) => {
@@ -35,19 +35,7 @@ const PhotoCategory: React.FC<IPhotoCategory> = ({ name, items, id }) => {
       </div>
       {open && (
         <div className={styles.content}>
-          {items.map((photo, index) => {
-            return (
-              <Photo
-                key={index}
-                fileName={photo.fileName}
-                date={photo.date}
-                dimensions={photo.dimensions}
-                people={photo.people}
-                tags={photo.tags}
-                url={photo.url}
-              />
-            );
-          })}
+          <PhotoGrid photos={items} />
         </div>
       )}
     </Card>

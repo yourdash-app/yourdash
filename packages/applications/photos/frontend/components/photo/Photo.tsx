@@ -3,14 +3,30 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import clippy from "@yourdash/web-client/src/helpers/clippy";
 import React from "react";
 import { IPhoto } from "../../../shared/types/photo";
 import styles from "./Photo.module.scss";
 
-const Photo: React.FC<IPhoto> = ( { fileName, dimensions, tags, people, date, url } ) => {
-  return <div className={styles.component}>
-    <img className={styles.photo} src={url} loading={"lazy"} />
-  </div>
-}
+const Photo: React.FC<IPhoto & { className: string; displayWidth: number; displayHeight: number }> = ({
+  fileName,
+  dimensions,
+  tags,
+  people,
+  date,
+  url,
+  className,
+  displayHeight,
+  displayWidth,
+}) => {
+  return (
+    <div
+      className={clippy(styles.component, className)}
+      style={{ width: displayWidth + "px", height: displayHeight + "px" }}
+    >
+      <img className={styles.photo} src={url} loading={"lazy"} />
+    </div>
+  );
+};
 
-export default Photo
+export default Photo;

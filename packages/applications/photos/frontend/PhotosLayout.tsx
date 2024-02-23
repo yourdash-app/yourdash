@@ -5,11 +5,14 @@
 
 import { SIDEBAR_ITEM_TYPE, SIDEBAR_STATE } from "@yourdash/web-client/src/ui/components/sideBar/SideBar";
 import { SideBar, YourDashIcon } from "@yourdash/web-client/src/ui/index";
-import React from "react";
+import React, { useState } from "react";
+import { Outlet } from "react-router";
 
 const PhotosLayout: React.FC = () => {
+  const [currentPath, setCurrentPath] = useState<string>("/");
+
   return (
-    <div>
+    <div className={"h-full grid w-full grid-cols-[auto,1fr]"}>
       <SideBar
         title={"Select files"}
         items={[
@@ -37,6 +40,7 @@ const PhotosLayout: React.FC = () => {
         ]}
         defaultState={SIDEBAR_STATE.NormalExpanded}
       />
+      <Outlet />
     </div>
   );
 };

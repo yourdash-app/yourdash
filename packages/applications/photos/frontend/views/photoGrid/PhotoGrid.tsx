@@ -3,25 +3,30 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { IPhoto } from "../../../shared/types/photo";
 import { IPhotoCategory } from "../../../shared/types/photoCategory";
-import Photo from "../../components/photo/Photo";
 import styles from "../../components/photoCategory/PhotoCategory.module.scss";
+import PhotoGridRow from "./components/PhotoGridRow";
+import splitItemsIntoRows from "./splitItemsIntoRows";
 
-const PhotoGrid: React.FC<{ photos: IPhotoCategory["items"] }> = ( { photos } ) => {
-  return <div className={ styles.content }>
-    { photos.map( ( photo, index ) => {
-      return <Photo
-        key={ index }
-        fileName={ photo.fileName }
-        date={ photo.date }
-        dimensions={ photo.dimensions }
-        people={ photo.people }
-        tags={ photo.tags }
-        url={ photo.url }
-      />
-    } ) }
-  </div>
-}
+const PhotoGrid: React.FC<{ photos: IPhotoCategory["items"] }> = ({ photos }) => {
+  const ref = React.useRef<HTMLDivElement>(null);
+  const [rows, setRows] = useState<
+    { items: (IPhoto & { displayWidth: number; displayHeight: number })[]; height: number }[]
+  >([]);
 
-export default PhotoGrid
+  useEffect(() => {
+    setRows(splitItemsIntoRows(photos, ref.current?.getBoundingClientRect().width || 512, 256));
+  }, [photos]);
+
+  return (
+    <div className={styles.content} ref={ref}>
+      {rows.map((row, index) => {
+        return <PhotoGridRow key={index} items={row.items} height={row.height} />;
+      })}
+    </div>
+  );
+};
+
+export default PhotoGrid;

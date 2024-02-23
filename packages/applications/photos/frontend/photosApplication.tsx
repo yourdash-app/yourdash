@@ -8,41 +8,47 @@ import { IPhotoCategory } from "../shared/types/photoCategory";
 import PhotoCategory from "./components/photoCategory/PhotoCategory";
 
 const PhotosApplication: React.FC = () => {
-  const [ photoCategories, setPhotoCategories ] = useState<IPhotoCategory[]>( [] );
+  const [photoCategories, setPhotoCategories] = useState<IPhotoCategory[]>([]);
 
-  useEffect( () => {
+  useEffect(() => {
     setPhotoCategories(
-      Array.from( { length: 10 } ).map( ( _, i ) => {
+      Array.from({ length: 10 }).map((_, i) => {
         return {
           items: [
-            ...Array.from( { length: 10 } ).map( ( __, j ) => {
+            ...Array.from({ length: 10 }).map((__, j) => {
               return {
-                fileName: `Photo ${ i }`,
+                fileName: `Photo ${i}`,
                 dimensions: {
                   width: 800,
-                  height: 600
+                  height: 600,
                 },
                 tags: [],
                 people: [],
                 date: new Date().toISOString(),
-                url: `https://picsum.photos/${800}/${600}/?random=${i.toString() + j}`
-              }
-            } )
+                url: `https://picsum.photos/${800}/${600}/?random=${i.toString() + j}`,
+              };
+            }),
           ],
           sessionId: i.toString(),
-          name: `Photos Cat ${ i }`,
-        }
-      }
-      ) )
-  }, [] );
+          name: `Photos Cat ${i}`,
+          id: "cat" + i,
+        };
+      }),
+    );
+  }, []);
 
   return (
     <div className={"flex flex-col h-full bg-bg overflow-hidden overflow-y-auto p-4 gap-2"}>
-      {
-        photoCategories.map( photoCategory => {
-          return <PhotoCategory key={photoCategory.id} name={photoCategory.name} items={photoCategory.items} id={photoCategory.id} />
-        } )
-      }
+      {photoCategories.map((photoCategory) => {
+        return (
+          <PhotoCategory
+            key={photoCategory.id}
+            name={photoCategory.name}
+            items={photoCategory.items}
+            id={photoCategory.id}
+          />
+        );
+      })}
     </div>
   );
 };

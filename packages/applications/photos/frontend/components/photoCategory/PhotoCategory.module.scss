@@ -16,23 +16,11 @@
 
 .content {
   width: 100%;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
   transition: var(--transition-slow);
   padding-top: 0.5rem;
   gap: 0.25rem;
-
-  @container (max-width: 1200px) {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  @container (max-width: 768px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  @container (max-width: 576px) {
-    grid-template-columns: repeat(1, 1fr);
-  }
+  flex-wrap: wrap;
 }
 
 .label {
