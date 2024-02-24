@@ -52,6 +52,6 @@
     "start:win32": "node --no-warnings --loader ts-node/esm ./src/main.ts --color=full --log-requests",
     "dev": "run-script-os",
     "dev:nix": "bun --hot ./src/main.ts --dev --color=full --log-requests",
-    "dev:win32": "node --watch --no-warnings --loader ts-node/esm ./src/main.ts --dev --color=full --log-requests"
+    "dev:win32": "node --watch --watch-preserve-output --watch-path=./src --no-warnings --loader ts-node/esm ./src/main.ts --dev --color=full --log-requests"
   }
 }

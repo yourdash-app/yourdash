@@ -5,7 +5,7 @@
 
 import { IPhoto } from "../../../shared/types/photo";
 
-function calculateAspectRatio(item: IPhoto) {
+export function calculateAspectRatio(item: IPhoto) {
   return item.dimensions.width / item.dimensions.height;
 }
 

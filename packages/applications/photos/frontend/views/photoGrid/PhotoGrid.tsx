@@ -17,6 +17,14 @@ const PhotoGrid: React.FC<{ photos: IPhotoCategory["items"] }> = ({ photos }) =>
   >([]);
 
   useEffect(() => {
+    const resizeObserver = new ResizeObserver((entries) => {});
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  });
+
+  useEffect(() => {
     setRows(splitItemsIntoRows(photos, ref.current?.getBoundingClientRect().width || 512, 256));
   }, [photos]);
 

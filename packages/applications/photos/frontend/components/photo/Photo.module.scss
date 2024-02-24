@@ -16,8 +16,8 @@
   outline: rgb(var(--theme-400)) solid 0;
   transition: var(--transition);
 
-  &:hover,
-  &:active {
+  &:hover {
+    transition: var(--transition-fast);
     border-color: rgb(var(--theme-400));
     outline: rgb(var(--theme-400)) solid 0.25rem;
   }

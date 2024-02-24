@@ -3,28 +3,26 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import clippy from "@yourdash/web-client/src/helpers/clippy";
 import React from "react";
 import { IPhoto } from "../../../shared/types/photo";
+import { calculateAspectRatio } from "../../views/photoGrid/splitItemsIntoRows";
 import styles from "./Photo.module.scss";
 
-const Photo: React.FC<IPhoto & { className: string; displayWidth: number; displayHeight: number }> = ({
-  fileName,
-  dimensions,
-  tags,
-  people,
-  date,
-  url,
-  className,
-  displayHeight,
-  displayWidth,
-}) => {
+const Photo: React.FC<
+  IPhoto & { display: { rowHeight: number; height: number; width: number; aspectRatio: number } }
+> = ({ fileName, dimensions, tags, people, date, url, display }) => {
   return (
     <div
-      className={clippy(styles.component, className)}
-      style={{ width: displayWidth + "px", height: displayHeight + "px" }}
+      className={styles.component}
+      style={{
+        width:
+          display.width !== 0
+            ? `${display.rowHeight * calculateAspectRatio({ fileName, dimensions, tags, people, date, url })}px`
+            : "100%",
+        height: `${display.rowHeight}px`,
+      }}
     >
-      <img className={styles.photo} src={url} loading={"lazy"} />
+      <img alt={""} className={styles.photo} src={url} loading={"lazy"} />
     </div>
   );
 };

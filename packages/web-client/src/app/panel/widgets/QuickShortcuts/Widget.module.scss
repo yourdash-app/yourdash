@@ -28,6 +28,14 @@
   align-items: center;
   justify-content: center;
 
+  .applicationIcon {
+    transition: var(--transition);
+  }
+
+  .applicationLabel {
+    transition: var(--transition);
+  }
+
   &:hover {
     cursor: pointer;
 

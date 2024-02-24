@@ -6,6 +6,7 @@
 import React from "react";
 import { IPhoto } from "../../../../shared/types/photo";
 import Photo from "../../../components/photo/Photo";
+import { calculateAspectRatio } from "../splitItemsIntoRows";
 import styles from "./PhotoGridRow.module.scss";
 
 const PhotoGridRow: React.FC<{
@@ -24,9 +25,12 @@ const PhotoGridRow: React.FC<{
             people={item.people}
             date={item.date}
             url={item.url}
-            displayHeight={item.displayHeight}
-            displayWidth={item.displayWidth}
-            className={styles.photo}
+            display={{
+              rowHeight: height,
+              height: item.displayHeight,
+              width: item.displayWidth,
+              aspectRatio: calculateAspectRatio(item),
+            }}
           />
         );
       })}
