@@ -11,12 +11,12 @@
     "typecheck": "tsc --noEmit -p tsconfig.node.json --composite false && tsc --noEmit -p tsconfig.web.json --composite false",
     "start-production-build": "electron-vite preview",
     "dev": "electron-vite dev",
-    "build": "npm run typecheck && electron-vite build",
-    "electron-builder": "electron-builder",
-    "postinstall": "yarn electron-builder install-app-deps",
-    "build:win": "npm run build && electron-builder --win --config",
-    "build:mac": "npm run build && electron-builder --mac --config",
-    "build:linux": "npm run build && electron-builder --linux --config"
+    "build": "yarn run typecheck && electron-vite build",
+    "ebuilder": "electron-builder",
+    "install-deps": "electron-builder install-app-deps",
+    "build:win": "yarn run build && electron-builder --win --config",
+    "build:mac": "yarn run build && electron-builder --mac --config",
+    "build:linux": "yarn run build && electron-builder --linux --config"
   },
   "dependencies": {
     "@electron-toolkit/preload": "^2.0.0",
