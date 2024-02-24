@@ -10,6 +10,7 @@ import FileSystemEntity from "./fileSystemEntity.js";
 
 export default class FileSystemDirectory extends FileSystemEntity {
   private readonly coreApi: CoreApi;
+  isDirectory = true;
 
   constructor(coreApi: CoreApi, path: string) {
     super(path);

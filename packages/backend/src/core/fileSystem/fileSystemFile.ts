@@ -6,10 +6,12 @@
 import { promises as fs } from "fs";
 import pth from "path";
 import { CoreApi } from "../coreApi.js";
+import { AUTHENTICATED_IMAGE_TYPE } from "../coreApiAuthenticatedImage.js";
 import FileSystemEntity from "./fileSystemEntity.js";
 
 export default class FileSystemFile extends FileSystemEntity {
   private readonly coreApi: CoreApi;
+  isFile = true;
 
   constructor(coreApi: CoreApi, path: string) {
     super(path);
@@ -23,13 +25,48 @@ export default class FileSystemFile extends FileSystemEntity {
   }
 
   getExtension(): string {
-    return pth.extname(this.path);
+    return pth.extname(this.path).toLowerCase();
   }
 
-  getThumbnail(_dimensions: { x: number; y: number }): string {
+  getType(): string {
     switch (this.getExtension()) {
-      // TODO: create a wrapper around "new Sharp()"
-      //       This can then be part of the new CoreApi and can be used for thumbnail generation
+      case ".avif":
+      case ".png":
+      case ".jpeg":
+      case ".jpg":
+      case ".jfif":
+      case ".bmp":
+      case ".gif":
+      case ".tiff":
+      case ".webp":
+        return "image";
+      case ".mp4":
+      case ".webm":
+      case ".mov":
+      case ".m4v":
+      case ".mkv":
+      case ".avi":
+      case ".webv":
+      case ".wmv":
+        return "video";
+      case ".mp3":
+      case ".m4a":
+      case ".wav":
+      case ".ogg":
+      case ".flac":
+      case ".aac":
+      case ".opus":
+      case ".weba":
+        return "audio";
+      default:
+        return "unknown";
+    }
+  }
+
+  getThumbnail(username: string): string {
+    switch (this.getType()) {
+      case "image":
+        return this.coreApi.authenticatedImage.create(username, AUTHENTICATED_IMAGE_TYPE.FILE, pth.resolve(this.path));
       default:
         return "not implemented";
     }

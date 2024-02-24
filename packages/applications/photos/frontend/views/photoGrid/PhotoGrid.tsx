@@ -17,12 +17,23 @@ const PhotoGrid: React.FC<{ photos: IPhotoCategory["items"] }> = ({ photos }) =>
   >([]);
 
   useEffect(() => {
-    const resizeObserver = new ResizeObserver((entries) => {});
+    let timeout: NodeJS.Timeout;
+
+    const resizeObserver = new ResizeObserver(() => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        setRows(splitItemsIntoRows(photos, ref.current?.getBoundingClientRect().width || 512, 256));
+      }, 100);
+    });
+
+    setTimeout(() => {
+      resizeObserver.observe(ref.current!);
+    }, 2000);
 
     return () => {
       resizeObserver.disconnect();
     };
-  });
+  }, []);
 
   useEffect(() => {
     setRows(splitItemsIntoRows(photos, ref.current?.getBoundingClientRect().width || 512, 256));
