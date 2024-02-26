@@ -93,5 +93,11 @@ export default class CoreApiWebDAV {
 
       return next();
     });
+
+    this.coreApi.expressServer.propfind("/webdav/files/:path", (req, res) => {
+      const { path: reqPath } = req.params;
+
+      return res.send(`PATH: ${reqPath}`);
+    });
   }
 }

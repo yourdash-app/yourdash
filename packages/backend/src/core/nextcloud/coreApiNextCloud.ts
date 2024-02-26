@@ -3,9 +3,9 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import coreApi from "../coreApi.js";
+import { CoreApi } from "../coreApi.js";
 
-export default function loadNextCloudSupportEndpoints() {
+export default function loadNextCloudSupportEndpoints(coreApi: CoreApi) {
   coreApi.expressServer.get("/status.php", (req, res) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
 
@@ -19,5 +19,9 @@ export default function loadNextCloudSupportEndpoints() {
       productname: coreApi.globalDb.get("displayName"),
       extendedSupport: false,
     });
+  });
+
+  coreApi.expressServer.use("/remote.php/dav", (req, res, next) => {
+    return res.redirect(`${coreApi.globalDb.get("core:instanceUrl")}/dav/${req.path.replace("/remote.php/dav/", "")}`);
   });
 }

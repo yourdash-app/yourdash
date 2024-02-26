@@ -440,7 +440,7 @@ export class CoreApi {
     }
 
     try {
-      loadNextCloudSupportEndpoints();
+      loadNextCloudSupportEndpoints(this);
     } catch (e) {
       this.log.error("nextcloud", "Error caught in loadNextCloudSupportEndpoints", e);
     }
