@@ -11,7 +11,7 @@ import FileSystemEntity from "./fileSystemEntity.js";
 
 export default class FileSystemFile extends FileSystemEntity {
   private readonly coreApi: CoreApi;
-  isFile = true;
+  entityType = "file" as const;
 
   constructor(coreApi: CoreApi, path: string) {
     super(path);

@@ -23,12 +23,10 @@ const PhotoGrid: React.FC<{ photos: IPhotoCategory["items"] }> = ({ photos }) =>
       clearTimeout(timeout);
       timeout = setTimeout(() => {
         setRows(splitItemsIntoRows(photos, ref.current?.getBoundingClientRect().width || 512, 256));
-      }, 100);
+      }, 25);
     });
 
-    setTimeout(() => {
-      resizeObserver.observe(ref.current!);
-    }, 2000);
+    resizeObserver.observe(ref.current!);
 
     return () => {
       resizeObserver.disconnect();

@@ -16,15 +16,15 @@ export { SESSION_TOKEN_LENGTH };
 
 export default class CoreApiUsers {
   private usersMarkedForDeletion: string[] = [];
-  private readonly userDatabases: { [username: string]: { db: UserDatabase; changed: boolean } };
+  private readonly userDatabases: { [username: string]: { db: UserDatabase; changed: boolean } } = {};
   private readonly coreApi: CoreApi;
   private sessions: {
     [key: string]: IYourDashSession<any>[]; // eslint-disable-line @typescript-eslint/no-explicit-any
   } = {};
+  private onUserCreateListener: ((username: string) => void)[] = [];
 
   constructor(coreApi: CoreApi) {
     this.coreApi = coreApi;
-    this.userDatabases = {};
 
     return this;
   }
@@ -86,6 +86,12 @@ export default class CoreApiUsers {
     const user = new YourDashUser(username);
 
     await this.userDatabases[username].db.writeToDisk(path.join(user.path, "core/user_db.json"));
+
+    return this;
+  }
+
+  addUserCreateListener(listener: (username: string) => void) {
+    this.onUserCreateListener.push(listener);
 
     return this;
   }

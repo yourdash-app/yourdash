@@ -3,7 +3,9 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import csi from "@yourdash/csi/csi";
 import React, { useEffect, useState } from "react";
+import { IPhoto } from "../shared/types/photo";
 import { IPhotoCategory } from "../shared/types/photoCategory";
 import PhotoCategory from "./components/photoCategory/PhotoCategory";
 
@@ -11,31 +13,45 @@ const PhotosApplication: React.FC = () => {
   const [photoCategories, setPhotoCategories] = useState<IPhotoCategory[]>([]);
 
   useEffect(() => {
-    setPhotoCategories(
-      Array.from({ length: 10 }).map((_, i) => {
-        return {
-          items: [
-            ...Array.from({ length: 10 }).map((__, j) => {
-              return {
-                fileName: `Photo ${i}`,
-                dimensions: {
-                  width: 800,
-                  height: 600,
-                },
-                tags: [],
-                people: [],
-                date: new Date().toISOString(),
-                url: `https://picsum.photos/${800}/${600}/?random=${i.toString() + j}`,
-              };
-            }),
-          ],
-          sessionId: i.toString(),
-          name: `Photos Cat ${i}`,
-          id: "cat" + i,
-        };
-      }),
+    setPhotoCategories([]);
+
+    csi.getJson(
+      `/app/photos/categories`,
+      (categories: string[]) => {
+        categories.map((cat) => {
+          setPhotoCategories([
+            ...photoCategories,
+            {
+              id: cat,
+              name: cat,
+              items: (() => {
+                let photos: IPhoto[] = [];
+
+                csi.getJson(
+                  `/app/photos/category/${cat}`,
+                  (ps: IPhoto[]) => {
+                    photos = ps;
+                  },
+                  (error) => {
+                    console.log(error);
+                  },
+                );
+
+                return photos;
+              })(),
+            },
+          ]);
+        });
+      },
+      (error) => {
+        console.log(error);
+      },
     );
   }, []);
+
+  useEffect(() => {
+    console.log(photoCategories);
+  }, [photoCategories]);
 
   return (
     <div className={"flex flex-col h-full bg-bg overflow-hidden overflow-y-auto p-4 gap-2"}>

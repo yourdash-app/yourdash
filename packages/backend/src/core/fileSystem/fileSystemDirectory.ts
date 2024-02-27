@@ -10,7 +10,7 @@ import FileSystemEntity from "./fileSystemEntity.js";
 
 export default class FileSystemDirectory extends FileSystemEntity {
   private readonly coreApi: CoreApi;
-  isDirectory = true;
+  entityType = "directory" as const;
 
   constructor(coreApi: CoreApi, path: string) {
     super(path);
@@ -33,5 +33,9 @@ export default class FileSystemDirectory extends FileSystemEntity {
 
       return [];
     }
+  }
+
+  getChild(path: string) {
+    return this.coreApi.fs.get(pth.join(this.path, path));
   }
 }

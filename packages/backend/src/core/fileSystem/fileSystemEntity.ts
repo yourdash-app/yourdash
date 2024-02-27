@@ -14,6 +14,7 @@ interface FileSystemEntityIsLocked<T extends boolean = boolean> {
 
 export default class FileSystemEntity {
   path: string;
+  entityType: "file" | "directory";
 
   constructor(path: string) {
     this.path = path;

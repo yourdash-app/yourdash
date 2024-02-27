@@ -102,7 +102,11 @@ export default class CoreApiModuleManager {
 
     for (const applicationName of installedApplications) {
       const modulePath = path.resolve(path.join("../applications/", applicationName, "./backend"));
-      await this.loadModule(applicationName, modulePath);
+      try {
+        await this.loadModule(applicationName, modulePath);
+      } catch (err) {
+        this.coreApi.log.error("module_manager", `Failed to load module: ${applicationName}`, err);
+      }
     }
 
     if (this.getLoadedModules().length === 0) {

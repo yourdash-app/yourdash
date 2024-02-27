@@ -30,6 +30,10 @@ export default class YourDashUser {
     return this.path;
   }
 
+  getFsPath() {
+    return path.join(this.path, "fs");
+  }
+
   async getDatabase(): Promise<KeyValueDatabase> {
     return coreApi.users.__internal__getUserDatabase(this.username);
   }
