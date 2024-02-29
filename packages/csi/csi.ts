@@ -364,6 +364,13 @@ class __internalClientServerInteraction {
     return this.user;
   }
 
+  getTeam(teamName: string) {
+    // TODO: implement THIS next!!!!
+    //       @ewsgit
+
+    return teamName;
+  }
+
   logout(): void {
     localStorage.removeItem("username");
     localStorage.removeItem("session_token");

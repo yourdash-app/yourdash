@@ -55,7 +55,7 @@ export class CoreApi {
   readonly webdav: CoreApiWebDAV;
   // general vars
   readonly processArguments: minimist.ParsedArgs;
-  readonly expressServer: ExpressApplication;
+  readonly request: ExpressApplication;
   readonly httpServer: http.Server;
   readonly isDebugMode: boolean;
   readonly isDevMode: boolean;
@@ -74,8 +74,8 @@ export class CoreApi {
     this.log.info("startup", "Beginning YourDash Startup with args: ", JSON.stringify(this.processArguments));
 
     // Create the request server
-    this.expressServer = express();
-    this.httpServer = http.createServer(this.expressServer);
+    this.request = express();
+    this.httpServer = http.createServer(this.request);
 
     // define core apis
     this.scheduler = new CoreApiScheduler(this);
@@ -147,7 +147,7 @@ export class CoreApi {
         this.users.__internal__startUserDatabaseService();
         this.users.__internal__startUserDeletionService();
         this.globalDb.__internal__startGlobalDatabaseService();
-        this.teams.__internal__startUserDatabaseService();
+        this.teams.__internal__startTeamDatabaseService();
 
         try {
           killPort(3563)
@@ -196,7 +196,7 @@ export class CoreApi {
   }
 
   private startRequestLogger(options: { logOptionsRequests?: boolean; logQueryParameters?: boolean }) {
-    this.expressServer.use((req, res, next) => {
+    this.request.use((req, res, next) => {
       switch (req.method) {
         case "GET":
           this.log.info("request:get", `${chalk.bgGreen(chalk.black(" GET "))} ${res.statusCode} ${req.path}`);
@@ -252,26 +252,26 @@ export class CoreApi {
       });
     }
 
-    this.expressServer.use(cors());
-    this.expressServer.use(express.json({ limit: "50mb" }));
-    this.expressServer.use(express.urlencoded({ extended: true }));
+    this.request.use(cors());
+    this.request.use(express.json({ limit: "50mb" }));
+    this.request.use(express.urlencoded({ extended: true }));
 
-    this.expressServer.use((_req, res, next) => {
+    this.request.use((_req, res, next) => {
       // remove the X-Powered-By header to prevent exploitation from knowing the software powering the request server
       // this is a security measure against exploiters who don't look into the project's source code
       res.removeHeader("X-Powered-By");
 
       next();
     });
-    this.expressServer.use(expressCompression());
+    this.request.use(expressCompression());
 
     // INFO: This shouldn't be used for detection of a YourDash Instance, instead use the '/test' endpoint
-    this.expressServer.get("/", (_req, res) => {
+    this.request.get("/", (_req, res) => {
       return res.redirect(`https://ydsh.pages.dev/#/login/${this.globalDb.get("core:instanceurl")}`);
     });
 
     // Server discovery endpoint
-    this.expressServer.get("/test", (_req, res) => {
+    this.request.get("/test", (_req, res) => {
       switch (this.instanceStatus) {
         case YOURDASH_INSTANCE_STATUS.MAINTENANCE:
           return res.status(200).json({
@@ -292,12 +292,12 @@ export class CoreApi {
       }
     });
 
-    this.expressServer.get("/ping", (_req, res) => {
+    this.request.get("/ping", (_req, res) => {
       // INFO: This shouldn't be used for detection of a YourDash Instance, instead use the '/test' endpoint
       return res.send("pong");
     });
 
-    this.expressServer.get("/core/test/self-ping", (_req, res) => {
+    this.request.get("/core/test/self-ping", (_req, res) => {
       return res.json({ success: true });
     });
 
@@ -316,12 +316,12 @@ export class CoreApi {
         this.log.error("self_ping_test", "CRITICAL ERROR!, unable to ping self");
       });
 
-    this.expressServer.get("/login/user/:username/avatar", (req, res) => {
+    this.request.get("/login/user/:username/avatar", (req, res) => {
       const user = new YourDashUser(req.params.username);
       return res.sendFile(user.getAvatar(USER_AVATAR_SIZE.EXTRA_LARGE));
     });
 
-    this.expressServer.get("/login/user/:username", async (req, res) => {
+    this.request.get("/login/user/:username", async (req, res) => {
       const user = new YourDashUser(req.params.username);
       if (await user.doesExist()) {
         console.log("Does exist");
@@ -337,7 +337,7 @@ export class CoreApi {
       }
     });
 
-    this.expressServer.post("/login/user/:username/authenticate", async (req, res) => {
+    this.request.post("/login/user/:username/authenticate", async (req, res) => {
       if (!req.body) return res.status(400).json({ error: "Missing request body" });
 
       const username = req.params.username;
@@ -378,7 +378,7 @@ export class CoreApi {
         });
     });
 
-    this.expressServer.get("/login/is-authenticated", async (req, res) => {
+    this.request.get("/login/is-authenticated", async (req, res) => {
       const { username, token } = req.headers as {
         username?: string;
         token?: string;
@@ -407,7 +407,7 @@ export class CoreApi {
       return res.json({ error: true });
     });
 
-    this.expressServer.get("/login/instance/metadata", (_req, res) => {
+    this.request.get("/login/instance/metadata", (_req, res) => {
       return res.json({
         title: this.globalDb.get("core:instance:name") || "Placeholder name",
         message:
@@ -416,7 +416,7 @@ export class CoreApi {
       });
     });
 
-    this.expressServer.get("/login/instance/background", (_req, res) => {
+    this.request.get("/login/instance/background", (_req, res) => {
       res.set("Content-Type", "image/avif");
       return res.sendFile(path.resolve(process.cwd(), "./fs/login_background.avif"));
     });
@@ -440,7 +440,7 @@ export class CoreApi {
     }
 
     // Check for authentication
-    this.expressServer.use(async (req, res, next) => {
+    this.request.use(async (req, res, next) => {
       const { username, token } = req.headers as {
         username?: string;
         token?: string;
@@ -504,7 +504,7 @@ export class CoreApi {
         this.log.error("startup", "Failed to load all modules");
       });
 
-    this.expressServer.get("/user/sessions", async (req, res) => {
+    this.request.get("/user/sessions", async (req, res) => {
       const { username } = req.headers as { username: string };
 
       const user = this.users.get(username);
@@ -512,7 +512,7 @@ export class CoreApi {
       return res.json({ sessions: await user.getAllLoginSessions() });
     });
 
-    this.expressServer.delete("/core/session/:id", async (req, res) => {
+    this.request.delete("/core/session/:id", async (req, res) => {
       const { username } = req.headers as { username: string };
       const { id: sessionId } = req.params;
 
@@ -523,7 +523,7 @@ export class CoreApi {
       return res.json({ success: true });
     });
 
-    this.expressServer.get("/core/personal-server-accelerator/sessions", async (req, res) => {
+    this.request.get("/core/personal-server-accelerator/sessions", async (req, res) => {
       const { username } = req.headers as { username: string };
 
       const user = this.users.get(username);
@@ -536,7 +536,7 @@ export class CoreApi {
       });
     });
 
-    this.expressServer.get("/core/personal-server-accelerator/", async (req, res) => {
+    this.request.get("/core/personal-server-accelerator/", async (req, res) => {
       const { username } = req.headers as { username: string };
 
       const user = this.users.get(username);
@@ -550,7 +550,7 @@ export class CoreApi {
       }
     });
 
-    this.expressServer.post("/core/personal-server-accelerator/", async (req, res) => {
+    this.request.post("/core/personal-server-accelerator/", async (req, res) => {
       const { username } = req.headers as { username: string };
       const body = req.body;
 
@@ -570,6 +570,7 @@ export class CoreApi {
     this.userDatabase.__internal__loadEndpoints();
     this.panel.__internal__loadEndpoints();
     this.users.__internal__loadEndpoints();
+    this.teams.__internal__loadEndpoints();
   }
 
   // try not to use this method for production stability, instead prefer to reload a specific module if it works for your use-case.
@@ -602,7 +603,7 @@ export class CoreApi {
       } catch (e) {
         this.log.error(
           "global_db",
-          "[EXTREME SEVERITY] Shutdown Error! failed to save global database. User data will have been lost! (~past 5 minutes)",
+          "[EXTREME SEVERITY] Shutdown Error! failed to save global database. User data will have been lost! (<= past 5 minutes)",
         );
       }
     });

@@ -17,7 +17,7 @@ type JSONFile = {
 
 export default class CoreApiTeams {
   coreApi: CoreApi;
-  teamDatabases: Map<string, JSONFile>;
+  teamDatabases: Map<string, { data: JSONFile; changed: boolean }>;
 
   constructor(coreApi: CoreApi) {
     this.coreApi = coreApi;
@@ -26,6 +26,7 @@ export default class CoreApiTeams {
     return this;
   }
 
+  // Create a new YourDash Team and write it to disk
   async create(teamName: string) {
     const newTeam = new YourDashTeam(teamName);
 
@@ -36,28 +37,22 @@ export default class CoreApiTeams {
     return newTeam;
   }
 
+  // Get a team from its name
+  // Returns a YourDashTeam
   async get(teamName: string) {
     return new YourDashTeam(teamName);
   }
 
-  __internal__startUserDatabaseService() {
+  // Start the Team Database Service
+  __internal__startTeamDatabaseService() {
     this.coreApi.scheduler.scheduleTask("core:teamdb_write_to_disk", "*/1 * * * *", async () => {
-      Object.keys(this.teamDatabases).map(async (teamName) => {
-        if (!this.teamDatabases[teamName].changed) {
-          return;
-        }
-
-        this.teamDatabases[teamName].changed = false;
-
-        const user = new YourDashUser(teamName);
-
-        await this.teamDatabases[teamName].db.writeToDisk(path.join(user.path, "core/team_db.json"));
-      });
+      await this.saveDatabases();
     });
   }
 
+  // Load all team related endpoints
   __internal__loadEndpoints() {
-    this.coreApi.expressServer.get("/core/teams/get/current-user", async (req, res) => {
+    this.coreApi.request.get("/core/teams/get/current-user", async (req, res) => {
       const { username } = req.headers as { username: string };
 
       const user = new YourDashUser(username);
@@ -66,15 +61,27 @@ export default class CoreApiTeams {
     });
   }
 
+  // Flag the team's database to be saved when the server usage is low
+  // Returns true if the database was successfully flagged
+  async saveDatabase(teamName: string) {
+    if (!this.teamDatabases.has(teamName)) return false;
+
+    this.teamDatabases.get(teamName).changed = true;
+    return true;
+  }
+
+  // Save all team databases to disk instantly
   async saveDatabases() {
-    const databases = Array.from(this.teamDatabases);
+    Object.keys(this.teamDatabases).map(async (teamName) => {
+      if (!this.teamDatabases[teamName].changed) {
+        return;
+      }
 
-    databases.map(async ([key, database]) => {
-      const team = await this.get(key);
+      this.teamDatabases[teamName].changed = false;
 
-      this.coreApi.log.info("core:team_db", `Saving database for '${key}'`);
+      const user = new YourDashUser(teamName);
 
-      await fs.writeFile(path.join(team.getPath(), "core/team_db.json"), JSON.stringify(database));
+      await this.teamDatabases[teamName].db.writeToDisk(path.join(user.path, "core/team_db.json"));
     });
   }
 }

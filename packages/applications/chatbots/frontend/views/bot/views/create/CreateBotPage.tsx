@@ -24,7 +24,7 @@ const CreateBotPage: React.FC = () => {
   const navigate = useNavigate();
 
   const [teams, setTeams] = useState<string[]>([`${csi.getUserName()}-personal`]);
-  const [team, setTeam] = useState<string>(teams[0]);
+  const [team, setTeam] = useState<string>("");
   const [username, setUsername] = useState<string>("");
   const [displayName, setDisplayName] = useState<string>("");
   const [bio, setBio] = useState<string>("");
@@ -32,7 +32,12 @@ const CreateBotPage: React.FC = () => {
   const [status, setStatus] = useState<string>("");
   const [avatarUrl, setAvatarUrl] = useState<string>(YourDashIcon.ServerError);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    csi.getTeams().then((teams) => {
+      setTeams(teams);
+      setTeam(teams[0]);
+    });
+  }, []);
 
   return (
     <main className={styles.page}>

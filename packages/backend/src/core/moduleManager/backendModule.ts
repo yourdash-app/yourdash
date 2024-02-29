@@ -3,10 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import {
-  Application as ExpressApplication,
-  Request as ExpressRequest,
-} from "express";
+import { Application as ExpressApplication, Request as ExpressRequest } from "express";
 import path from "path";
 import coreApi, { CoreApi } from "../coreApi.js";
 import { LOG_TYPE } from "../coreApiLog.js";
@@ -24,7 +21,7 @@ export default class BackendModule {
   readonly moduleName: string;
   protected readonly API: {
     websocket: CoreApi["websocketManager"];
-    request: CoreApi["expressServer"];
+    request: CoreApi["request"];
     log(type: LOG_TYPE, ...message: any[]): void; // eslint-disable-line @typescript-eslint/no-explicit-any
     getPath(): string;
     applicationName: string;
@@ -40,7 +37,7 @@ export default class BackendModule {
     this.moduleName = args.moduleName;
     this.API = {
       websocket: coreApi.websocketManager,
-      request: coreApi.expressServer,
+      request: coreApi.request,
       log(type: LOG_TYPE, ...message: any[]) {
         // eslint-disable-line @typescript-eslint/no-explicit-any
         switch (type) {
@@ -61,9 +58,7 @@ export default class BackendModule {
         }
       },
       getPath() {
-        return path.resolve(
-          path.join(process.cwd(), "../applications", this.moduleName),
-        );
+        return path.resolve(path.join(process.cwd(), "../applications", this.moduleName));
       },
       applicationName: args.moduleName,
       moduleName: args.moduleName,

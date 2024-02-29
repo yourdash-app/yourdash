@@ -20,7 +20,7 @@ export default class CoreApiPanel {
   }
 
   __internal__loadEndpoints() {
-    this.coreApi.expressServer.get("/core/panel/applications", async (req, res) => {
+    this.coreApi.request.get("/core/panel/applications", async (req, res) => {
       res.set("Cache-Control", "no-store");
       const { username } = req.headers as { username: string };
 
@@ -57,7 +57,7 @@ export default class CoreApiPanel {
       );
     });
 
-    this.coreApi.expressServer.get("/core/panel/quick-shortcuts", async (req, res) => {
+    this.coreApi.request.get("/core/panel/quick-shortcuts", async (req, res) => {
       res.set("Cache-Control", "no-store");
 
       const { username } = req.headers as { username: string };
@@ -95,7 +95,7 @@ export default class CoreApiPanel {
       );
     });
 
-    this.coreApi.expressServer.delete("/core/panel/quick-shortcuts/:ind", async (req, res) => {
+    this.coreApi.request.delete("/core/panel/quick-shortcuts/:ind", async (req, res) => {
       res.set("Cache-Control", "");
 
       const { ind } = req.params;
@@ -111,7 +111,7 @@ export default class CoreApiPanel {
       return res.json({ success: true });
     });
 
-    this.coreApi.expressServer.post("/core/panel/quick-shortcuts/create", async (req, res) => {
+    this.coreApi.request.post("/core/panel/quick-shortcuts/create", async (req, res) => {
       res.set("Cache-Control", "no-store");
 
       const { username } = req.headers as { username: string };
@@ -124,7 +124,7 @@ export default class CoreApiPanel {
       return res.json({ success: true });
     });
 
-    this.coreApi.expressServer.get("/core/panel/position", async (req, res) => {
+    this.coreApi.request.get("/core/panel/position", async (req, res) => {
       res.set("Cache-Control", "no-store");
 
       const { username } = req.headers as {
@@ -136,7 +136,7 @@ export default class CoreApiPanel {
       return res.json({ position: await panel.getPanelPosition() });
     });
 
-    this.coreApi.expressServer.get("/core/panel/launcher-type", async (req, res) => {
+    this.coreApi.request.get("/core/panel/launcher-type", async (req, res) => {
       res.set("Cache-Control", "no-store");
       const { username } = req.headers as { username: string };
 
@@ -145,7 +145,7 @@ export default class CoreApiPanel {
       return res.json({ launcher: await panel.getLauncherType() });
     });
 
-    this.coreApi.expressServer.get("/core/panel/logo", (req, res) => {
+    this.coreApi.request.get("/core/panel/logo", (req, res) => {
       const { username } = req.headers as { username: string };
 
       return res.json({
@@ -167,7 +167,7 @@ export default class CoreApiPanel {
       });
     });
 
-    this.coreApi.expressServer.get("/core/panel/logo", (req, res) => {
+    this.coreApi.request.get("/core/panel/logo", (req, res) => {
       const { username } = req.headers as { username: string };
 
       return res.json({

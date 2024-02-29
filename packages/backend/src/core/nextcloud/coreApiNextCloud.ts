@@ -6,7 +6,7 @@
 import { CoreApi } from "../coreApi.js";
 
 export default function loadNextCloudSupportEndpoints(coreApi: CoreApi) {
-  coreApi.expressServer.get("/status.php", (req, res) => {
+  coreApi.request.get("/status.php", (req, res) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
 
     return res.json({
@@ -21,7 +21,7 @@ export default function loadNextCloudSupportEndpoints(coreApi: CoreApi) {
     });
   });
 
-  coreApi.expressServer.use("/remote.php/dav", (req, res, next) => {
+  coreApi.request.use("/remote.php/dav", (req, res, next) => {
     return res.redirect(`${coreApi.globalDb.get("core:instanceUrl")}/dav/${req.path.replace("/remote.php/dav/", "")}`);
   });
 }

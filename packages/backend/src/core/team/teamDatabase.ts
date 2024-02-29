@@ -4,7 +4,6 @@
  */
 
 import KeyValueDatabase from "../../helpers/keyValueDatabase.js";
-import coreApi from "../coreApi.js";
 
 export default class TeamDatabase extends KeyValueDatabase {
   private teamName: string;
@@ -20,6 +19,5 @@ export default class TeamDatabase extends KeyValueDatabase {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public set(key: string, value: any) {
     super.set(key, value);
-    coreApi.users.get(this.teamName).saveDatabase();
   }
 }

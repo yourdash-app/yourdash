@@ -139,7 +139,7 @@ export default class CoreApiUsers {
   }
 
   __internal__loadEndpoints() {
-    this.coreApi.expressServer.get("/core/user/current/avatar/large", (req, res) => {
+    this.coreApi.request.get("/core/user/current/avatar/large", (req, res) => {
       const { username } = req.headers as { username: string };
 
       const unreadUser = new YourDashUser(username);
@@ -151,7 +151,7 @@ export default class CoreApiUsers {
         .send(this.coreApi.authenticatedImage.create(username, AUTHENTICATED_IMAGE_TYPE.FILE, avatarPath));
     });
 
-    this.coreApi.expressServer.get("/coqre/user/current/avatar/medium", (req, res) => {
+    this.coreApi.request.get("/coqre/user/current/avatar/medium", (req, res) => {
       const { username } = req.headers as { username: string };
 
       const unreadUser = new YourDashUser(username);
@@ -163,7 +163,7 @@ export default class CoreApiUsers {
         .send(this.coreApi.authenticatedImage.create(username, AUTHENTICATED_IMAGE_TYPE.FILE, avatarPath));
     });
 
-    this.coreApi.expressServer.get("/core/user/current/avatar/small", (req, res) => {
+    this.coreApi.request.get("/core/user/current/avatar/small", (req, res) => {
       const { username } = req.headers as { username: string };
 
       const unreadUser = new YourDashUser(username);
@@ -175,7 +175,7 @@ export default class CoreApiUsers {
         .send(this.coreApi.authenticatedImage.create(username, AUTHENTICATED_IMAGE_TYPE.FILE, avatarPath));
     });
 
-    this.coreApi.expressServer.get("/core/user/current/avatar/original", (req, res) => {
+    this.coreApi.request.get("/core/user/current/avatar/original", (req, res) => {
       const { username } = req.headers as { username: string };
 
       const unreadUser = new YourDashUser(username);
@@ -189,7 +189,7 @@ export default class CoreApiUsers {
 
     // NEW CSI ENDPOINTS
 
-    this.coreApi.expressServer.get(`/core/user/current/avatar/${USER_AVATAR_SIZE.SMALL}`, (req, res) => {
+    this.coreApi.request.get(`/core/user/current/avatar/${USER_AVATAR_SIZE.SMALL}`, (req, res) => {
       const { username } = req.headers as { username: string };
 
       const avatarPath = new YourDashUser(username).getAvatar(USER_AVATAR_SIZE.LARGE);
@@ -202,7 +202,7 @@ export default class CoreApiUsers {
         );
     });
 
-    this.coreApi.expressServer.get(`/core/user/current/avatar/${USER_AVATAR_SIZE.MEDIUM}`, (req, res) => {
+    this.coreApi.request.get(`/core/user/current/avatar/${USER_AVATAR_SIZE.MEDIUM}`, (req, res) => {
       const { username } = req.headers as { username: string };
 
       const avatarPath = new YourDashUser(username).getAvatar(USER_AVATAR_SIZE.MEDIUM);
@@ -215,7 +215,7 @@ export default class CoreApiUsers {
         );
     });
 
-    this.coreApi.expressServer.get(`/core/user/current/avatar/${USER_AVATAR_SIZE.LARGE}`, (req, res) => {
+    this.coreApi.request.get(`/core/user/current/avatar/${USER_AVATAR_SIZE.LARGE}`, (req, res) => {
       const { username } = req.headers as { username: string };
 
       const avatarPath = new YourDashUser(username).getAvatar(USER_AVATAR_SIZE.LARGE);
@@ -228,7 +228,7 @@ export default class CoreApiUsers {
         );
     });
 
-    this.coreApi.expressServer.get(`/core/user/current/avatar/${USER_AVATAR_SIZE.EXTRA_LARGE}`, (req, res) => {
+    this.coreApi.request.get(`/core/user/current/avatar/${USER_AVATAR_SIZE.EXTRA_LARGE}`, (req, res) => {
       const { username } = req.headers as { username: string };
 
       const avatarPath = new YourDashUser(username).getAvatar(USER_AVATAR_SIZE.EXTRA_LARGE);
@@ -241,7 +241,7 @@ export default class CoreApiUsers {
         );
     });
 
-    this.coreApi.expressServer.get(`/core/user/current/avatar/${USER_AVATAR_SIZE.ORIGINAL}`, (req, res) => {
+    this.coreApi.request.get(`/core/user/current/avatar/${USER_AVATAR_SIZE.ORIGINAL}`, (req, res) => {
       const { username } = req.headers as { username: string };
 
       const avatarPath = new YourDashUser(username).getAvatar(USER_AVATAR_SIZE.ORIGINAL);
@@ -254,7 +254,7 @@ export default class CoreApiUsers {
         );
     });
 
-    this.coreApi.expressServer.get(`/core/user/current/fullname`, async (req, res) => {
+    this.coreApi.request.get(`/core/user/current/fullname`, async (req, res) => {
       const { username } = req.headers as { username: string };
 
       const user = new YourDashUser(username);

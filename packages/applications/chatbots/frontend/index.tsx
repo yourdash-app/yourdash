@@ -26,7 +26,7 @@ const DiffusionLabRouter: React.FC = () => {
       </Route>
       <Route path={"list-bots"} element={<ListBotsPage />} />
       <Route path={"bot"}>
-        <Route path={":bot-id"}>
+        <Route path={":botId"}>
           <Route index element={<IndexBotPage />} />
           <Route path={"manage"}>
             <Route path={"nodes"}>

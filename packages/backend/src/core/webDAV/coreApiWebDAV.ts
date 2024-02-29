@@ -33,23 +33,23 @@ export default class CoreApiWebDAV {
   }
 
   __internal__loadEndpoints() {
-    this.coreApi.expressServer.use("/.well-known/webdav", (req, res) => {
+    this.coreApi.request.use("/.well-known/webdav", (req, res) => {
       return res.redirect("/webdav");
     });
 
-    this.coreApi.expressServer.use("/.well-known/caldav", (req, res) => {
+    this.coreApi.request.use("/.well-known/caldav", (req, res) => {
       return res.redirect("/webdav");
     });
 
-    this.coreApi.expressServer.use("/.well-known/carddav", (req, res) => {
+    this.coreApi.request.use("/.well-known/carddav", (req, res) => {
       return res.redirect("/webdav");
     });
 
-    this.coreApi.expressServer.get("/webdav", (_req, res) => {
+    this.coreApi.request.get("/webdav", (_req, res) => {
       return res.send(`This is the WebDAV endpoint of YourDash`);
     });
 
-    this.coreApi.expressServer.use("/webdav/*", async (req, res, next) => {
+    this.coreApi.request.use("/webdav/*", async (req, res, next) => {
       res.setHeader("DAV", "1,2");
       res.setHeader("MS-Author-Via", "DAV");
 
@@ -94,9 +94,10 @@ export default class CoreApiWebDAV {
       return next();
     });
 
-    this.coreApi.expressServer.propfind("/webdav/files/:path", (req, res) => {
+    this.coreApi.request.propfind("/webdav/files/:path", (req, res) => {
       const { path: reqPath } = req.params;
 
+      // TODO: actually implement this
       return res.send(`PATH: ${reqPath}`);
     });
   }

@@ -53,7 +53,7 @@ export default class CoreApiUserDatabase {
   }
 
   __internal__loadEndpoints() {
-    this.coreApi.expressServer.get("/core/user_db", async (req, res) => {
+    this.coreApi.request.get("/core/user_db", async (req, res) => {
       const { username } = req.headers as { username: string };
 
       if (!this.userDatabases.get(username)) {
@@ -63,7 +63,7 @@ export default class CoreApiUserDatabase {
       return res.json(this.userDatabases.get(username) || {});
     });
 
-    this.coreApi.expressServer.post("/core/user_db", async (req, res) => {
+    this.coreApi.request.post("/core/user_db", async (req, res) => {
       const { username } = req.headers as { username: string };
 
       this.userDatabases.set(username, req.body);

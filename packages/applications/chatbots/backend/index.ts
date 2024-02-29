@@ -6,6 +6,7 @@
 import coreApi from "@yourdash/backend/src/core/coreApi.js";
 import { LOG_TYPE } from "@yourdash/backend/src/core/coreApiLog.js";
 import BackendModule, { YourDashModuleArguments } from "@yourdash/backend/src/core/moduleManager/backendModule.js";
+import generateUUID from "@yourdash/web-client/src/helpers/uuid.js";
 import * as path from "path";
 import { fetch } from "undici";
 import { Request as ExpressRequest } from "express";
@@ -61,8 +62,9 @@ export default class ChatbotsModule extends BackendModule {
       return next();
     });
 
-    this.API.request.post("/app/chatbots/team/:teamId/create-bot/:botId", async (req, res) => {
-      const { teamId, botId } = req.params;
+    this.API.request.post("/app/chatbots/team/:teamId/create-bot/", async (req, res) => {
+      const { teamId } = req.params;
+      const botId = generateUUID();
 
       const team = await coreApi.teams.get(teamId);
       const teamBotsDirectory = await coreApi.fs.getDirectory(path.join(team.getPath(), "apps/chatbots/bots"));
