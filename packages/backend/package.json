@@ -41,6 +41,7 @@
     "ts-node": "^10.9.1",
     "tsc-watch": "^6.0.4",
     "tsconfig-paths": "^4.2.0",
+    "tsx": "^4.7.1",
     "typescript": "^5.2.2",
     "undici": "^5.24.0",
     "xml2js": "^0.6.2"
@@ -48,10 +49,17 @@
   "type": "module",
   "scripts": {
     "start": "run-script-os",
-    "start:nix": "bun ./src/main.ts --color=full --log-requests",
-    "start:win32": "node --no-warnings --loader ts-node/esm ./src/main.ts --color=full --log-requests",
+    "start:nix": "tsx ./src/main.ts --color=full --log-requests",
+    "start:win32": "tsx ./src/main.ts --color=full --log-requests",
     "dev": "run-script-os",
-    "dev:nix": "bun --hot ./src/main.ts --dev --color=full --log-requests",
-    "dev:win32": "node --watch --watch-preserve-output --watch-path=./src --watch-path=../applications --no-warnings --loader ts-node/esm ./src/main.ts --dev --color=full --log-requests"
+    "dev:nix": "nodemon --exec \"tsx ./src/main.ts --dev --color=full --log-requests\"",
+    "dev:win32": "nodemon --exec \"tsx ./src/main.ts --dev --color=full --log-requests\""
+  },
+  "nodemonConfig": {
+    "ext": "ts",
+    "watch": [
+      "./src",
+      "../applications/**/backend"
+    ]
   }
 }

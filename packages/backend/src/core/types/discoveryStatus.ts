@@ -3,9 +3,11 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-enum YOURDASH_INSTANCE_DISCOVERY_STATUS {
+enum YOURDASH_INSTANCE_STATUS {
   // eslint-disable-next-line no-unused-vars
-  MAINTENANCE, NORMAL, INVISIBLE
+  MAINTENANCE,
+  NORMAL,
+  INVISIBLE,
 }
 
-export { YOURDASH_INSTANCE_DISCOVERY_STATUS };
+export { YOURDASH_INSTANCE_STATUS };

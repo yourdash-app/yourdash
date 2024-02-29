@@ -45,7 +45,7 @@ Some of the YourDash projects include
   - [Yarn](https://yarnpkg.com/) (Windows)
   - [Bun](https://bun.sh/) (Linux)
 - Runtimes
-  - [Bun ( Much faster Nodejs replacement )](https://bun.sh)
+  - [NodeJS](https://nodejs.org/)
   - [Python 3.11.7](https://www.python.org/downloads/release/python-3117/)
   - [Emscripten](https://emscripten.org/docs/getting_started/downloads.html)
     - (Chocolately install method is prefered for windows)

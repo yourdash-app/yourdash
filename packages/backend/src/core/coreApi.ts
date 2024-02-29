@@ -29,7 +29,7 @@ import CoreApiUserDatabase from "./coreApiUserDatabase.js";
 import CoreApiUsers from "./coreApiUsers.js";
 import CoreApiFileSystem from "./fileSystem/coreApiFileSystem.js";
 import CoreApiLoadManagement from "./coreApiLoadManagement.js";
-import { YOURDASH_INSTANCE_DISCOVERY_STATUS } from "./types/discoveryStatus.js";
+import { YOURDASH_INSTANCE_STATUS } from "./types/discoveryStatus.js";
 import { USER_AVATAR_SIZE } from "@yourdash/shared/core/userAvatarSize.js";
 import YourDashUser from "./user/index.js";
 import { YOURDASH_SESSION_TYPE } from "@yourdash/shared/core/session.js";
@@ -59,7 +59,7 @@ export class CoreApi {
   readonly httpServer: http.Server;
   readonly isDebugMode: boolean;
   readonly isDevMode: boolean;
-  isInMaintenance: boolean;
+  instanceStatus: YOURDASH_INSTANCE_STATUS = YOURDASH_INSTANCE_STATUS.NORMAL as YOURDASH_INSTANCE_STATUS;
 
   constructor() {
     this.isDebugMode = typeof global.v8debug === "object" || /--debug|--inspect/.test(process.execArgv.join(" "));
@@ -70,9 +70,6 @@ export class CoreApi {
     this.processArguments = minimist(process.argv.slice(2));
 
     this.isDevMode = !!this.processArguments.dev;
-
-    // TODO: move this toggle to a value in globalDb
-    this.isInMaintenance = false;
 
     this.log.info("startup", "Beginning YourDash Startup with args: ", JSON.stringify(this.processArguments));
 
@@ -275,24 +272,21 @@ export class CoreApi {
 
     // Server discovery endpoint
     this.expressServer.get("/test", (_req, res) => {
-      const discoveryStatus: YOURDASH_INSTANCE_DISCOVERY_STATUS =
-        YOURDASH_INSTANCE_DISCOVERY_STATUS.NORMAL as YOURDASH_INSTANCE_DISCOVERY_STATUS;
-
-      switch (discoveryStatus) {
-        case YOURDASH_INSTANCE_DISCOVERY_STATUS.MAINTENANCE:
+      switch (this.instanceStatus) {
+        case YOURDASH_INSTANCE_STATUS.MAINTENANCE:
           return res.status(200).json({
-            status: YOURDASH_INSTANCE_DISCOVERY_STATUS.MAINTENANCE,
+            status: YOURDASH_INSTANCE_STATUS.MAINTENANCE,
             type: "yourdash",
           });
-        case YOURDASH_INSTANCE_DISCOVERY_STATUS.NORMAL:
+        case YOURDASH_INSTANCE_STATUS.NORMAL:
           return res.status(200).json({
-            status: YOURDASH_INSTANCE_DISCOVERY_STATUS.NORMAL,
+            status: YOURDASH_INSTANCE_STATUS.NORMAL,
             type: "yourdash",
           });
         default:
           this.log.error("Discovery status returned an invalid value");
           return res.status(200).json({
-            status: YOURDASH_INSTANCE_DISCOVERY_STATUS.MAINTENANCE,
+            status: YOURDASH_INSTANCE_STATUS.MAINTENANCE,
             type: "yourdash",
           });
       }
