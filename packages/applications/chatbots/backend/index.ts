@@ -83,6 +83,7 @@ export default class ChatbotsModule extends BackendModule {
       const { teamId } = req.params;
 
       const team = await coreApi.teams.get(teamId);
+      if (!(await team.doesExist())) return res.json({ error: `Invalid team: ${teamId}` });
 
       const teamBotsDirectory = await coreApi.fs.getDirectory(path.join(team.getPath(), "apps/chatbots/bots"));
 
