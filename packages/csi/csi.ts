@@ -6,6 +6,7 @@
 // YourDash Client-Server interface Toolkit
 import KeyValueDatabase from "@yourdash/shared/core/database";
 import { io as SocketIoClient, Socket as SocketIoSocket } from "socket.io-client";
+import CSIYourDashTeam from "./team/team";
 import CSIYourDashUser from "./user/user";
 
 type ITJson = boolean | number | string | null | TJson | boolean[] | number[] | string[] | null[] | TJson[];
@@ -362,6 +363,20 @@ class __internalClientServerInteraction {
 
   getUser() {
     return this.user;
+  }
+
+  getTeams(): Promise<CSIYourDashTeam[]> {
+    return new Promise((resolve, reject) => {
+      this.getJson(
+        "/core/user/current/teams",
+        (data: string[]) => {
+          resolve(data.map((t) => new CSIYourDashTeam(t)));
+        },
+        () => {
+          reject([]);
+        },
+      );
+    });
   }
 
   getTeam(teamName: string) {

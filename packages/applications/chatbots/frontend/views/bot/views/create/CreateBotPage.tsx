@@ -23,7 +23,7 @@ import { useNavigate } from "react-router-dom";
 const CreateBotPage: React.FC = () => {
   const navigate = useNavigate();
 
-  const [teams, setTeams] = useState<string[]>([`${csi.getUserName()}-personal`]);
+  const [teams, setTeams] = useState<{ displayName: string; teamName: string }[]>([]);
   const [team, setTeam] = useState<string>("");
   const [username, setUsername] = useState<string>("");
   const [displayName, setDisplayName] = useState<string>("");
@@ -33,9 +33,15 @@ const CreateBotPage: React.FC = () => {
   const [avatarUrl, setAvatarUrl] = useState<string>(YourDashIcon.ServerError);
 
   useEffect(() => {
-    csi.getTeams().then((teams) => {
-      setTeams(teams);
-      setTeam(teams[0]);
+    csi.getTeams().then(async (t) => {
+      setTeams(
+        await Promise.all(
+          t.map(async (x) => {
+            return { teamName: x.teamName, displayName: await x.getDisplayName() };
+          }),
+        ),
+      );
+      setTeam(t[0].teamName);
     });
   }, []);
 
@@ -65,6 +71,22 @@ const CreateBotPage: React.FC = () => {
       </Card>
       <Card showBorder={true} className={styles.optionsPane}>
         <Heading level={2}>Profile Options</Heading>
+        <DropdownButton
+          items={
+            teams
+              ? teams.map((t) => {
+                  return {
+                    label: t.displayName,
+                    onClick() {
+                      setTeam(t.teamName);
+                    },
+                  };
+                })
+              : []
+          }
+        >
+          Select Team
+        </DropdownButton>
         <Heading level={3}>Bot Username</Heading>
         <TextInput
           preceedingInlay={

@@ -11,8 +11,8 @@ import { AUTHENTICATED_IMAGE_TYPE } from "./coreApiAuthenticatedImage.js";
 import YourDashUser from "./user/index.js";
 import UserDatabase from "./user/userDatabase.js";
 
-const SESSION_TOKEN_LENGTH = 128;
-export { SESSION_TOKEN_LENGTH };
+const YOURDASH_USER_SESSION_TOKEN_LENGTH = 128;
+export { YOURDASH_USER_SESSION_TOKEN_LENGTH };
 
 export default class CoreApiUsers {
   private usersMarkedForDeletion: string[] = [];
@@ -260,6 +260,14 @@ export default class CoreApiUsers {
       const user = new YourDashUser(username);
 
       return res.status(200).json(await user.getName());
+    });
+
+    this.coreApi.request.get("/core/user/current/teams", async (req, res) => {
+      const { username } = req.headers as { username: string };
+
+      const user = new YourDashUser(username);
+
+      return res.json(await user.getTeams());
     });
   }
 }

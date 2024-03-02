@@ -28,8 +28,16 @@ const NavBar: React.FC<NavBarProps> = ({
     <Card className={styles.component} showBorder>
       <div className={styles.left}>
         {iconUrl && <img className={styles.icon} src={iconUrl} alt={""} onClick={onBrandingClick} />}
-        {title && <Heading level={2}>{title}</Heading>}
-        {subtitle && <Heading level={2}>{subtitle}</Heading>}
+        {title && (
+          <Heading level={2} className={styles.title}>
+            {title}
+          </Heading>
+        )}
+        {subtitle && (
+          <Heading level={2} className={styles.subtitle}>
+            / {subtitle}
+          </Heading>
+        )}
       </div>
       <div className={styles.extras}>{extras}</div>
       {showUserProfileDropdown && <UserProfileDropdown />}

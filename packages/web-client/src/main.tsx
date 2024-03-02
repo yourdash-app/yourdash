@@ -7,8 +7,7 @@ import "animate.css";
 import "./tailwindcss.css";
 import "./ui/ui.scss";
 import "./main.css";
-import { DevSupport } from "@react-buddy/ide-toolbox";
-import React from "react";
+import React, { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import { createRoutesFromElements, Route, RouterProvider } from "react-router";
 import { createHashRouter } from "react-router-dom";
@@ -31,44 +30,39 @@ const ProjectsRouter = loadable(() => import("./root/projects/ProjectsRouter"));
 
 function main() {
   ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-    <UIKitRootIntegration>
-      <RouterProvider
-        router={createHashRouter(
-          createRoutesFromElements(
-            <Route errorElement={<ErrorElement />}>
-              <Route
-                path={"/linker-desktop-client-startup"}
-                element={<LinkerDesktopClientStartupPage />}
-              />
-              <Route element={<RootLayout />}>
-                <Route index element={<Index />} />
-                <Route path={"/signup"} element={<ComingSoon />} />
-                <Route path={"docs/*"} element={<DocsLayout />}>
-                  <Route path={"*"} element={<DocsRouter />} />
+    <StrictMode>
+      <UIKitRootIntegration>
+        <RouterProvider
+          router={createHashRouter(
+            createRoutesFromElements(
+              <Route errorElement={<ErrorElement />}>
+                <Route path={"/linker-desktop-client-startup"} element={<LinkerDesktopClientStartupPage />} />
+                <Route element={<RootLayout />}>
+                  <Route index element={<Index />} />
+                  <Route path={"/signup"} element={<ComingSoon />} />
+                  <Route path={"docs/*"} element={<DocsLayout />}>
+                    <Route path={"*"} element={<DocsRouter />} />
+                  </Route>
+                  <Route path={"projects"} index element={<ProjectsIndexPage />} />
                 </Route>
-                <Route
-                  path={"projects"}
-                  index
-                  element={<ProjectsIndexPage />}
-                />
-              </Route>
-              <Route path={"projects/*"} element={<ProjectsRouter />} />
-              <Route path={"project/*"} element={<ProjectsRouter />} />
-              <Route path={"proj/*"} element={<ProjectsRouter />} />
-              <Route path={"/login"}>
-                <Route index element={<ServerLoginPage />} />
-              </Route>
-              <Route path={"app"}>
-                <Route element={<AppLayout />}>
-                  <Route index element={<ApplicationRedirectToDash />} />
-                  <Route path={"a/*"} element={<AppRouter />} />
+                <Route path={"projects/*"} element={<ProjectsRouter />} />
+                <Route path={"project/*"} element={<ProjectsRouter />} />
+                <Route path={"proj/*"} element={<ProjectsRouter />} />
+                <Route path={"/login"}>
+                  <Route index element={<ServerLoginPage />} />
                 </Route>
-              </Route>
-            </Route>,
-          ),
-        )}
-      />
-    </UIKitRootIntegration>,
+                <Route path={"app"}>
+                  <Route element={<AppLayout />}>
+                    <Route index element={<ApplicationRedirectToDash />} />
+                    <Route path={"a/*"} element={<AppRouter />} />
+                  </Route>
+                </Route>
+              </Route>,
+            ),
+          )}
+        />
+      </UIKitRootIntegration>
+    </StrictMode>,
   );
 }
 

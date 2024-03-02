@@ -78,9 +78,9 @@ const DiscordProfilePreview: React.FC<IDiscordProfilePreviewProps> = ({
         {presence.activities[0] && <div className={styles.status}>{presence.activities[0].state}</div>}
         <h3 className={styles.sectionHeader}>TRY MY COMMANDS</h3>
         <section className={styles.tryMyCommands}>
-          {tryMyCommands.map((tag, index) => {
+          {tryMyCommands.map((tag) => {
             return (
-              <div className={styles.command} key={index}>
+              <div className={styles.command} key={tag}>
                 /{tag}
               </div>
             );

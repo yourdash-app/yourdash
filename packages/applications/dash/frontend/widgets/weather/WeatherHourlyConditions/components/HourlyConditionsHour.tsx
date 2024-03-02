@@ -4,18 +4,6 @@
  */
 
 import React from "react";
-import {
-  useFloating,
-  offset,
-  shift,
-  autoUpdate,
-  useHover,
-  useFocus,
-  useDismiss,
-  useRole,
-  useInteractions,
-  autoPlacement,
-} from "@floating-ui/react";
 import DROPLET_ICON from "@yourdash/applications/weather/frontend/assets/weatherIcons/droplet.svg";
 import { Card } from "@yourdash/web-client/src/ui/index";
 import getWeatherConditionFromState from "@yourdash/applications/weather/frontend/helpers/getWeatherConditionFromState";
@@ -40,49 +28,23 @@ const HourlyConditionsHour: React.FC<IHourlyConditionsHour> = ({
 }) => {
   const trans = useTranslate("weather");
   const [showTooltip, setShowTooltip] = React.useState(false);
-  const { refs, floatingStyles, context } = useFloating({
-    open: showTooltip,
-    onOpenChange: setShowTooltip,
-    middleware: [
-      // eslint-disable-next-line no-magic-numbers
-      offset(8),
-      shift(),
-      autoPlacement({
-        autoAlignment: true,
-        padding: 8,
-        altBoundary: true,
-      }),
-    ],
-    whileElementsMounted: autoUpdate,
-  });
-
-  const { getReferenceProps, getFloatingProps } = useInteractions([
-    useHover(context, { move: false }),
-    useFocus(context),
-    useDismiss(context),
-    useRole(context, { role: "tooltip" }),
-  ]);
 
   return (
     <>
-      {showTooltip && (
-        <div ref={refs.setFloating} style={floatingStyles} {...getFloatingProps()}>
-          <Card showBorder>
-            <span>{`Temp: ${temperature}°C`}</span>
-            <div>{trans(getWeatherConditionFromState(conditionState))}</div>
-            <div className={"flex items-center justify-center"}>
-              <img className={"h-full"} src={DROPLET_ICON} alt={""} />
-              <span>{`Rain chance: ${rainChance}%`}</span>
-            </div>
-            <span>{`Feels like: ${feelsLike}°C`}</span>
-          </Card>
-        </div>
-      )}
-      <div
-        ref={refs.setReference}
-        {...getReferenceProps()}
-        className={"h-max mt-auto mb-auto flex flex-col items-center justify-center"}
-      >
+      {/* {showTooltip && ( */}
+      {/*   <div> */}
+      {/*     <Card showBorder> */}
+      {/*       <span>{`Temp: ${temperature}°C`}</span> */}
+      {/*       <div>{trans(getWeatherConditionFromState(conditionState))}</div> */}
+      {/*       <div className={"flex items-center justify-center"}> */}
+      {/*         <img className={"h-full"} src={DROPLET_ICON} alt={""} /> */}
+      {/*         <span>{`Rain chance: ${rainChance}%`}</span> */}
+      {/*       </div> */}
+      {/*       <span>{`Feels like: ${feelsLike}°C`}</span> */}
+      {/*     </Card> */}
+      {/*   </div> */}
+      {/* )} */}
+      <div className={"h-max mt-auto mb-auto flex flex-col items-center justify-center"}>
         <Card
           className={"flex flex-col items-center justify-center"}
           onClick={() => {

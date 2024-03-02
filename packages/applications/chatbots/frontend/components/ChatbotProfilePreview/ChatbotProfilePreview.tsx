@@ -3,6 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import generateUUID from "@yourdash/web-client/src/helpers/uuid";
 import React from "react";
 import { TabsContainer } from "@yourdash/web-client/src/ui/index";
 import DiscordProfilePreview from "./platforms/discord/DiscordProfilePreview";
@@ -37,7 +38,7 @@ const ChatbotProfilePreview: React.FC<IChatbotProfilePreviewProps> = ({
                 avatarUrl={avatarUrl}
                 presence={{
                   status: "online",
-                  activities: [{}],
+                  activities: [],
                   clientStatus: {
                     desktop: "online",
                   },
@@ -47,14 +48,17 @@ const ChatbotProfilePreview: React.FC<IChatbotProfilePreviewProps> = ({
               />
             ),
             displayName: "Discord",
+            uuid: generateUUID(),
           },
           {
             content: <h1>Coming Soon</h1>,
             displayName: "Universal",
+            uuid: generateUUID(),
           },
           {
             content: <h1>Coming Soon</h1>,
             displayName: "Twitter",
+            uuid: generateUUID(),
           },
         ]}
       />

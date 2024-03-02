@@ -13,8 +13,23 @@
   border-radius: 0;
 }
 
+.title {
+  color: blue;
+  transition: var(--transition-slow);
+  transform: scaleX(1);
+  transform-origin: left;
+
+  @container (max-width: 600px) {
+    transform: scaleX(0);
+    width: 0;
+  }
+}
+
+.subtitle {
+  color: red;
+}
+
 .extras {
-  margin-left: auto;
   display: flex;
   gap: 0.5rem;
   height: 100%;
@@ -29,4 +44,7 @@
 .left {
   display: flex;
   gap: 0.5rem;
+  width: 100%;
+  container-name: left;
+  container-type: inline-size;
 }

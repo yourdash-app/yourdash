@@ -77,7 +77,9 @@ export default class PhotosModule extends BackendModule {
       if (await (await photosDirectory.getChild(categoryPath)).doesExist()) {
         const categoryFsEntity = await photosDirectory.getChild(categoryPath);
 
-        if (!(await categoryFsEntity.doesExist()) || categoryFsEntity.entityType !== "directory") return res.json([]);
+        if (!(await categoryFsEntity.doesExist()) || categoryFsEntity.entityType !== "directory") {
+          return res.json([]);
+        }
 
         return res.json(await categoryFsEntity.getChildren());
       }

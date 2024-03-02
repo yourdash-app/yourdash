@@ -23,7 +23,7 @@ const ListBotsPage: React.FC = () => {
   const [visibleBots, setVisibleBots] = useState<IChatbotsBot[]>([]);
   const [bots, setBots] = useState<IChatbotsBot[]>([]);
   const [searchValue, setSearchValue] = useState<string>("");
-  const [teams, setTeams] = useState<string[]>([`${csi.getUserName()}-personal`]);
+  const [teams, setTeams] = useState<string[]>([]);
   const [currentTeam, setCurrentTeam] = useState<string>(teams[0]);
 
   useEffect(() => {
@@ -61,7 +61,8 @@ const ListBotsPage: React.FC = () => {
   return (
     <>
       <NavBar
-        title={"Chatbots / Bots"}
+        title={"Chatbots"}
+        subtitle={"Bots"}
         iconUrl={"/assets/productLogos/yourdash.svg"}
         showUserProfileDropdown
         extras={
@@ -69,14 +70,14 @@ const ListBotsPage: React.FC = () => {
             <DropdownButton
               items={teams.map((team) => {
                 return {
-                  name: team,
+                  label: team,
                   onClick() {
                     setCurrentTeam(team);
                   },
                 };
               })}
             >
-              {currentTeam}
+              Select Team
             </DropdownButton>
             <TextInput
               accessibleName={"Search Bots"}

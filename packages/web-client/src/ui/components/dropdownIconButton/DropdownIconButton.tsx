@@ -18,60 +18,60 @@ export interface IDropdownIconButton {
   icon: YourDashIcon;
 }
 
-const DropdownIconButton: React.FC<IDropdownIconButton> = ( { items, className, icon } ) => {
-  const rootContainerContext = useContext( RightClickMenuContext );
-  
-  const [dropdownShown, setDropdownShown] = useState( false );
-  
+const DropdownIconButton: React.FC<IDropdownIconButton> = ({ items, className, icon }) => {
+  const rootContainerContext = useContext(RightClickMenuContext);
+
+  const [dropdownShown, setDropdownShown] = useState(false);
+
   return (
     <IconButton
       icon={icon}
       className={className}
-      onClick={e => {
+      onClick={(e) => {
         e.stopPropagation();
         e.preventDefault();
-        
+
         const clientRect = e.currentTarget.getBoundingClientRect();
-        
-        if ( dropdownShown ) {
-          rootContainerContext( 0, 0, clientRect.width, clientRect.height, false, [] );
-          
-          setDropdownShown( false );
+
+        if (dropdownShown) {
+          rootContainerContext(0, 0, clientRect.width, clientRect.height, false, []);
+
+          setDropdownShown(false);
           return;
         }
-        
+
         rootContainerContext(
           clientRect.left,
           clientRect.bottom,
           clientRect.width,
           clientRect.height,
           true,
-          items.map( item => {
+          items.map((item) => {
             return {
-              name: item.name,
+              label: item.name,
               onClick: () => {
                 item.onClick();
               },
-              shortcut: item.shortcut
+              shortcut: item.shortcut,
             };
-          } )
+          }),
         );
-        
-        setDropdownShown( true );
-        
-        const listener = ( ev: MouseEvent ) => {
+
+        setDropdownShown(true);
+
+        const listener = (ev: MouseEvent) => {
           ev.preventDefault();
-          
-          rootContainerContext( 0, 0, clientRect.width, clientRect.height, false, [] );
-          
-          setDropdownShown( false );
-          
-          window.removeEventListener( "click", listener );
-          window.removeEventListener( "contextmenu", listener );
+
+          rootContainerContext(0, 0, clientRect.width, clientRect.height, false, []);
+
+          setDropdownShown(false);
+
+          window.removeEventListener("click", listener);
+          window.removeEventListener("contextmenu", listener);
         };
-        
-        window.addEventListener( "click", listener );
-        window.addEventListener( "contextmenu", listener );
+
+        window.addEventListener("click", listener);
+        window.addEventListener("contextmenu", listener);
       }}
     />
   );

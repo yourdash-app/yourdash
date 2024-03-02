@@ -30,8 +30,14 @@ export default class CoreApiTeams {
   async create(teamName: string) {
     const newTeam = new YourDashTeam(teamName);
 
-    if (await newTeam.doesExist()) throw new Error(`Team '${teamName}' already exists`);
+    this.coreApi.log.info("teams", `attempting to create team ${teamName}`);
 
+    if (await newTeam.doesExist()) {
+      this.coreApi.log.info("teams", `team ${teamName} already exists`);
+      throw new Error(`Team '${teamName}' already exists`);
+    }
+
+    this.coreApi.log.info("teams", `creating team ${teamName}`);
     await newTeam.verify();
 
     return newTeam;

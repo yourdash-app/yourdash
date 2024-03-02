@@ -3,6 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import { UUID } from "@yourdash/shared/core/uuid";
 import React, { useEffect, useState } from "react";
 import clippy from "../../../helpers/clippy";
 import styles from "./TabsContainer.module.scss";
@@ -11,6 +12,7 @@ export interface ITab {
   displayName: string;
   content: React.ReactNode | React.ReactNode[];
   closable?: boolean;
+  uuid: UUID;
 }
 
 interface ITabsContainerProps {
@@ -44,7 +46,7 @@ const TabsContainer: React.FC<ITabsContainerProps> = ({ tabs }) => {
               <div
                 ref={index === 0 ? firstTabRef : null}
                 className={`${styles.tab} ${activeTab === index ? styles.active : ""}`}
-                key={tab.displayName + tab.closable}
+                key={tab.uuid}
                 onClick={() => {
                   setActiveTab(index);
                 }}
@@ -52,12 +54,11 @@ const TabsContainer: React.FC<ITabsContainerProps> = ({ tabs }) => {
                 {tab.displayName}
                 {activeTab === index && (
                   <div
-                    key={tab.displayName + tab.closable}
                     className={clippy(
                       styles.activeTabIndicator,
                       "animate__animated animate__fadeInUp animate__duration_250ms",
                     )}
-                  ></div>
+                  />
                 )}
               </div>
             </>

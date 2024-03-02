@@ -3,81 +3,73 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import * as React from "react"
-import { useEffect, useRef } from "react"
-import RightClickMenuContext from "./RightClickMenuContext"
-import RightClickMenuItem from "./RightClickMenuItem"
-import styles from "./RightClickMenuRootContainer.module.scss"
+import * as React from "react";
+import { useEffect, useRef } from "react";
+import RightClickMenuContext from "./RightClickMenuContext";
+import RightClickMenuItem from "./RightClickMenuItem";
+import styles from "./RightClickMenuRootContainer.module.scss";
 
-const RightClickMenuRootContainer: React.FC<{ children: React.ReactNode }> = ( {
-  children
-} ) => {
-  const [position, setPosition] = React.useState( { x: 0, y: 0 } )
-  const [visible, setVisible] = React.useState( false )
-  const [items, setItems] = React.useState( [] as RightClickMenuItem[] )
-  const ref = useRef<HTMLDivElement>( null )
+const RightClickMenuRootContainer: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [position, setPosition] = React.useState({ x: 0, y: 0 });
+  const [visible, setVisible] = React.useState(false);
+  const [items, setItems] = React.useState([] as RightClickMenuItem[]);
+  const ref = useRef<HTMLDivElement>(null);
 
-  useEffect( () => {
-    window.addEventListener( "resize", () => {
-      setVisible( false )
-    } )
-  }, [] )
+  useEffect(() => {
+    window.addEventListener("resize", () => {
+      setVisible(false);
+    });
+  }, []);
 
   return (
     <RightClickMenuContext.Provider
-      value={ ( x, y, width, height, visible, items ) => {
-        const screenWidth = window.innerWidth
-        const screenHeight = window.innerHeight
+      value={(x, y, width, height, vis, i) => {
+        const screenWidth = window.innerWidth;
+        const screenHeight = window.innerHeight;
 
-        const MENU_WIDTH = ref.current?.getBoundingClientRect().width || 200
-        const MENU_HEIGHT = ref.current?.getBoundingClientRect().height || 200
+        const MENU_WIDTH = ref.current?.getBoundingClientRect().width || 200;
+        const MENU_HEIGHT = ref.current?.getBoundingClientRect().height || 200;
 
-        let resultX = x
-        let resultY = y
+        let resultX = x;
+        let resultY = y;
 
-        if ( x + MENU_WIDTH >= screenWidth ) {
-          resultX = screenWidth - MENU_WIDTH
+        if (x + MENU_WIDTH >= screenWidth) {
+          resultX = screenWidth - MENU_WIDTH;
         }
 
-        if ( y + MENU_HEIGHT >= screenHeight ) {
-          resultY = screenHeight - MENU_HEIGHT
+        if (y + MENU_HEIGHT >= screenHeight) {
+          resultY = screenHeight - MENU_HEIGHT;
         }
 
-        setPosition( {
+        setPosition({
           x: resultX,
-          y: resultY
-        } )
+          y: resultY,
+        });
 
-        setVisible( visible )
-        setItems( items )
-      } }
+        setVisible(vis);
+        setItems(i);
+      }}
     >
       <div
-        ref={ ref }
-        style={ {
+        ref={ref}
+        style={{
           display: visible ? "flex" : "none",
           left: position.x,
-          top: position.y
-        } }
-        className={ styles.component }
+          top: position.y,
+        }}
+        className={styles.component}
       >
-        {items.map( item => {
+        {items.map((item) => {
           return (
-            <button
-              type="button"
-              onClick={ item.onClick }
-              key={ item.name }
-              /* eslint-disable-next-line jsx-a11y/tabindex-no-positive */
-              tabIndex={ 2 }
-            >
-              {item.name}
+            <button type="button" onClick={item.onClick} key={item.label} tabIndex={2}>
+              {item.label}
             </button>
-          )
-        } )}
+          );
+        })}
       </div>
       {children}
     </RightClickMenuContext.Provider>
-  )
-}
+  );
+};
 
-export default RightClickMenuRootContainer
+export default RightClickMenuRootContainer;

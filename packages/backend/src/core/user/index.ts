@@ -78,12 +78,14 @@ export default class YourDashUser {
   }
 
   async verify() {
-    if (!coreApi.globalDb.get("defaults"))
+    if (!coreApi.globalDb.get("defaults")) {
       return coreApi.log.error("user", `the GlobalDatabase is not yet loaded! not creating user ${this.username}`);
+    }
 
     try {
-      if (!(await (await coreApi.teams.get(`${this.username}-personal`)).doesExist()))
+      if (!(await (await coreApi.teams.get(`${this.username}-personal`)).doesExist())) {
         await coreApi.teams.create(`${this.username}-personal`);
+      }
       await this.joinTeam(`${this.username}-personal`, [YOURDASH_TEAM_PERMISSIONS.ADMINISTRATOR]);
     } catch (err) {
       coreApi.log.error("user", `Unable to create team for user ${this.username}`);
@@ -93,7 +95,9 @@ export default class YourDashUser {
 
     try {
       // "/"
-      if (!(await coreApi.fs.exists(this.path))) await coreApi.fs.createDirectory(this.path);
+      if (!(await coreApi.fs.exists(this.path))) {
+        await coreApi.fs.createDirectory(this.path);
+      }
     } catch (err) {
       coreApi.log.error("core", `Unable to create user root for ${this.username}`);
       console.error(err);
@@ -102,8 +106,9 @@ export default class YourDashUser {
 
     try {
       // "/apps/"
-      if (!(await coreApi.fs.exists(path.join(this.path, "/apps"))))
+      if (!(await coreApi.fs.exists(path.join(this.path, "/apps")))) {
         await coreApi.fs.createDirectory(path.join(this.path, "/apps"));
+      }
     } catch (err) {
       coreApi.log.error("user", `username: ${this.username}, failed to create apps directory!`);
       console.error(err);
@@ -112,8 +117,9 @@ export default class YourDashUser {
 
     try {
       // "/avatars/"
-      if (!(await coreApi.fs.exists(path.join(this.path, "/avatars"))))
+      if (!(await coreApi.fs.exists(path.join(this.path, "/avatars")))) {
         await coreApi.fs.createDirectory(path.join(this.path, "/avatars"));
+      }
     } catch (err) {
       coreApi.log.error("user", `username: ${this.username}, failed to create avatars directory!`);
       console.error(err);
@@ -122,8 +128,9 @@ export default class YourDashUser {
 
     try {
       // "/core/"
-      if (!(await coreApi.fs.exists(path.join(this.path, "/core"))))
+      if (!(await coreApi.fs.exists(path.join(this.path, "/core")))) {
         await coreApi.fs.createDirectory(path.join(this.path, "/core"));
+      }
     } catch (err) {
       coreApi.log.error("user", `username: ${this.username}, failed to create core directory!`);
       console.error(err);
@@ -187,8 +194,9 @@ export default class YourDashUser {
 
     try {
       // "/fs/"
-      if (!(await coreApi.fs.exists(path.join(this.path, "/fs"))))
+      if (!(await coreApi.fs.exists(path.join(this.path, "/fs")))) {
         await coreApi.fs.createDirectory(path.join(this.path, "/fs"));
+      }
     } catch (err) {
       coreApi.log.error("user", `username: ${this.username}, failed to create fs directory!`, err);
       console.error(err);
@@ -197,8 +205,9 @@ export default class YourDashUser {
 
     try {
       // "/temp/"
-      if (!(await coreApi.fs.exists(path.join(this.path, "/temp"))))
+      if (!(await coreApi.fs.exists(path.join(this.path, "/temp")))) {
         await coreApi.fs.createDirectory(path.join(this.path, "/temp"));
+      }
     } catch (err) {
       coreApi.log.error("user", `username: ${this.username}, failed to create temp directory!`, err);
       console.error(err);
@@ -231,10 +240,14 @@ export default class YourDashUser {
     const team = await coreApi.teams.get(teamName);
 
     if (!(await team.doesExist())) {
-      team.addMember(this.username, permissions);
-      const db = await this.getDatabase();
-      db.set("teams", [...(db.get("teams") || []), { teamName: teamName, permissions: permissions }]);
+      return false;
     }
+
+    team.addMember(this.username, permissions);
+    const db = await this.getDatabase();
+    db.set("teams", [...(db.get("teams") || []), { teamName: teamName, permissions: permissions }]);
+
+    return true;
   }
 
   async getTeams() {
