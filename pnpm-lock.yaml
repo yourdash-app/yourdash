@@ -48,20 +48,29 @@ importers:
         specifier: ^0.1.9
         version: 0.1.9
 
-  packages/application-generator:
-    dependencies:
-      yeoman-generator:
-        specifier: ^5.9.0
-        version: 5.10.0
-
-  packages/applications:
+  applications:
     dependencies:
       '@discordjs/voice':
         specifier: ^0.16.1
         version: 0.16.1(bufferutil@4.0.8)(utf-8-validate@6.0.3)
+      '@types/express':
+        specifier: ^4.17.21
+        version: 4.17.21
       '@types/react':
         specifier: ^18.2.21
         version: 18.2.61
+      '@yourdash/backend':
+        specifier: workspace:*
+        version: link:../main/backend
+      '@yourdash/csi':
+        specifier: workspace:*
+        version: link:../packages/csi
+      '@yourdash/shared':
+        specifier: workspace:*
+        version: link:../packages/shared
+      '@yourdash/uikit':
+        specifier: workspace:*
+        version: link:../packages/uikit
       bufferutil:
         specifier: ^4.0.8
         version: 4.0.8
@@ -71,6 +80,12 @@ importers:
       discord.js:
         specifier: ^14.14.1
         version: 14.14.1(bufferutil@4.0.8)(utf-8-validate@6.0.3)
+      express:
+        specifier: ^4.18.2
+        version: 4.18.3
+      path-browserify:
+        specifier: ^1.0.1
+        version: 1.0.1
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -80,9 +95,15 @@ importers:
       react-dom:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
+      undici:
+        specifier: ^5.28.3
+        version: 5.28.3
       utf-8-validate:
         specifier: ^6.0.3
         version: 6.0.3
+      web-tree-sitter:
+        specifier: ^0.20.8
+        version: 0.20.8
       xml2js:
         specifier: ^0.6.2
         version: 0.6.2
@@ -122,7 +143,7 @@ importers:
         specifier: ^0.20.8
         version: 0.20.8
 
-  packages/backend:
+  main/backend:
     dependencies:
       '@types/bcrypt':
         specifier: ^5.0.0
@@ -151,6 +172,9 @@ importers:
       '@types/xml2js':
         specifier: ^0.4.14
         version: 0.4.14
+      '@yourdash/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
       array-includes:
         specifier: ^3.1.7
         version: 3.1.7
@@ -248,15 +272,13 @@ importers:
         specifier: ^5.2.2
         version: 5.3.3
       undici:
-        specifier: ^5.24.0
+        specifier: ^5.28.3
         version: 5.28.3
       xml2js:
         specifier: ^0.6.2
         version: 0.6.2
 
-  packages/csi: {}
-
-  packages/desktop-client:
+  main/desktop-client:
     dependencies:
       '@electron-toolkit/preload':
         specifier: ^2.0.0
@@ -302,25 +324,7 @@ importers:
         specifier: ^4.4.9
         version: 4.5.2(@types/node@18.19.21)
 
-  packages/opengfx-engine:
-    dependencies:
-      '@webgpu/types':
-        specifier: ^0.1.40
-        version: 0.1.40
-      vite-plugin-dynamic-import:
-        specifier: ^1.5.0
-        version: 1.5.0
-    devDependencies:
-      typescript:
-        specifier: ^5.0.2
-        version: 5.3.3
-      vite:
-        specifier: ^4.4.5
-        version: 4.5.2(@types/node@20.11.24)(sass@1.71.1)
-
-  packages/shared: {}
-
-  packages/uikit:
+  main/web-client:
     dependencies:
       '@floating-ui/react':
         specifier: ^0.26.3
@@ -346,6 +350,9 @@ importers:
       '@types/path-browserify':
         specifier: ^1.0.0
         version: 1.0.2
+      '@types/react':
+        specifier: ^18.2.62
+        version: 18.2.62
       '@types/react-dom':
         specifier: ^18.2.7
         version: 18.2.19
@@ -358,6 +365,18 @@ importers:
       '@vitejs/plugin-react-swc':
         specifier: ^3.3.2
         version: 3.6.0(vite@4.5.2)
+      '@yourdash/applications':
+        specifier: workspace:*
+        version: link:../../applications
+      '@yourdash/csi':
+        specifier: workspace:*
+        version: link:../../packages/csi
+      '@yourdash/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
+      '@yourdash/uikit':
+        specifier: workspace:*
+        version: link:../../packages/uikit
       animate.css:
         specifier: ^4.1.1
         version: 4.1.1
@@ -373,6 +392,9 @@ importers:
       cross-env:
         specifier: ^7.0.3
         version: 7.0.3
+      electron:
+        specifier: ^27.1.3
+        version: 27.3.4
       es-abstract:
         specifier: ^1.22.1
         version: 1.22.5
@@ -440,7 +462,65 @@ importers:
         specifier: ^1.22.19
         version: 1.22.21
 
-  packages/web-client:
+  packages/application-generator:
+    dependencies:
+      yeoman-generator:
+        specifier: ^5.9.0
+        version: 5.10.0
+
+  packages/csi:
+    dependencies:
+      '@yourdash/applications':
+        specifier: workspace:*
+        version: link:../../applications
+      '@yourdash/shared':
+        specifier: workspace:*
+        version: link:../shared
+      socket.io-client:
+        specifier: ^4.7.4
+        version: 4.7.4(bufferutil@4.0.8)(utf-8-validate@6.0.3)
+
+  packages/opengfx-engine:
+    dependencies:
+      '@webgpu/types':
+        specifier: ^0.1.40
+        version: 0.1.40
+      vite-plugin-dynamic-import:
+        specifier: ^1.5.0
+        version: 1.5.0
+    devDependencies:
+      typescript:
+        specifier: ^5.0.2
+        version: 5.3.3
+      vite:
+        specifier: ^4.4.5
+        version: 4.5.2(@types/node@20.11.24)(sass@1.71.1)
+
+  packages/opengfx-engine/src/demo/2d/gfxts-one:
+    devDependencies:
+      typescript:
+        specifier: ^5.0.2
+        version: 5.3.3
+      vite:
+        specifier: ^4.4.5
+        version: 4.5.2(@types/node@20.11.24)(sass@1.71.1)
+
+  packages/shared:
+    dependencies:
+      '@types/react':
+        specifier: ^18.2.61
+        version: 18.2.61
+      '@yourdash/uikit':
+        specifier: workspace:*
+        version: link:../uikit
+      clsx:
+        specifier: ^2.1.0
+        version: 2.1.0
+      react:
+        specifier: ^18.2.0
+        version: 18.2.0
+
+  packages/uikit:
     dependencies:
       '@floating-ui/react':
         specifier: ^0.26.3
@@ -466,6 +546,9 @@ importers:
       '@types/path-browserify':
         specifier: ^1.0.0
         version: 1.0.2
+      '@types/react':
+        specifier: ^18.2.21
+        version: 18.2.61
       '@types/react-dom':
         specifier: ^18.2.7
         version: 18.2.19
@@ -478,6 +561,9 @@ importers:
       '@vitejs/plugin-react-swc':
         specifier: ^3.3.2
         version: 3.6.0(vite@4.5.2)
+      '@yourdash/shared':
+        specifier: workspace:*
+        version: link:../shared
       animate.css:
         specifier: ^4.1.1
         version: 4.1.1
@@ -493,9 +579,6 @@ importers:
       cross-env:
         specifier: ^7.0.3
         version: 7.0.3
-      electron:
-        specifier: ^27.1.3
-        version: 27.3.4
       es-abstract:
         specifier: ^1.22.1
         version: 1.22.5
@@ -2350,7 +2433,7 @@ packages:
   /@types/loadable__component@5.13.9:
     resolution: {integrity: sha512-QWOtIkwZqHNdQj3nixQ8oyihQiTMKZLk/DNuvNxMSbTfxf47w+kqcbnxlUeBgAxdOtW0Dh48dTAIp83iJKtnrQ==}
     dependencies:
-      '@types/react': 18.2.61
+      '@types/react': 18.2.62
     dev: false
 
   /@types/mime@1.3.5:
@@ -2421,11 +2504,19 @@ packages:
   /@types/react-dom@18.2.19:
     resolution: {integrity: sha512-aZvQL6uUbIJpjZk4U8JZGbau9KDeAwMfmhyWorxgBkqDIEf6ROjRozcmPIicqsUwPUjbkDfHKgGee1Lq65APcA==}
     dependencies:
-      '@types/react': 18.2.61
+      '@types/react': 18.2.62
     dev: false
 
   /@types/react@18.2.61:
     resolution: {integrity: sha512-NURTN0qNnJa7O/k4XUkEW2yfygA+NxS0V5h1+kp9jPwhzZy95q3ADoGMP0+JypMhrZBTTgjKAUlTctde1zzeQA==}
+    dependencies:
+      '@types/prop-types': 15.7.11
+      '@types/scheduler': 0.16.8
+      csstype: 3.1.3
+    dev: false
+
+  /@types/react@18.2.62:
+    resolution: {integrity: sha512-l3f57BbaEKP0xcFzf+5qRG8/PXykZiuVM6eEoPtqBPCp6dxO3HhDkLIgIyXPhPKNAeXn3KO2pEaNgzaEo/asaw==}
     dependencies:
       '@types/prop-types': 15.7.11
       '@types/scheduler': 0.16.8
@@ -2782,6 +2873,7 @@ packages:
   /@xmldom/xmldom@0.8.10:
     resolution: {integrity: sha512-2WALfTl4xo2SkGCYRt6rDTFfk9R1czmBvUQy12gK2KuRKIpWEhcbbzy8EZXtz/jkRqHX8bFEc6FC1HjX4TUWYw==}
     engines: {node: '>=10.0.0'}
+    requiresBuild: true
     dev: true
 
   /abbrev@1.1.1:
@@ -3257,6 +3349,7 @@ packages:
 
   /base64-js@1.5.1:
     resolution: {integrity: sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==}
+    requiresBuild: true
 
   /base64id@2.0.0:
     resolution: {integrity: sha512-lGe34o6EHj9y3Kts9R4ZYs/Gr+6N7MCaMlIFA3F1R2O5/m7K06AxfSeO5530PEERE6/WyEg3lsuyw4GHlPZHog==}
@@ -3977,11 +4070,6 @@ packages:
   /core-util-is@1.0.2:
     resolution: {integrity: sha512-3lqz5YjWTYnW6dlDa5TLaTCcShfar1e40rmcJVwCBJC6mWlFuj0eCHIElmG1g5kyuJ/GD+8Wn4FFCcz4gJPfaQ==}
     requiresBuild: true
-    dev: true
-    optional: true
-
-  /core-util-is@1.0.3:
-    resolution: {integrity: sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==}
     dev: true
 
   /cors@2.8.5:
@@ -6870,6 +6958,7 @@ packages:
   /mimic-response@3.1.0:
     resolution: {integrity: sha512-z0yWI+4FDrrweS8Zmt4Ej5HdJmky15+L2e6Wgn3+iK5fWzb6T3fhNFq2+MeTRb064c6Wr4N/wv0DzQTjNzHNGQ==}
     engines: {node: '>=10'}
+    requiresBuild: true
 
   /minimatch@3.1.2:
     resolution: {integrity: sha512-J7p63hRiAjw1NDEww1W7i37+ByIrOWO5XQQAzZ3VOcL0PNybwpfmV/N05zFAzwQ9USyEcX6t3UO+K5aqBQOIHw==}
@@ -8164,7 +8253,7 @@ packages:
   /readable-stream@2.3.8:
     resolution: {integrity: sha512-8p0AUk4XODgIewSi0l8Epjs+EVnWiK7NoDIEGU0HhE7+ZyY8D1IMY7odu5lRrFXGg71L15KG8QrPmum45RTtdA==}
     dependencies:
-      core-util-is: 1.0.3
+      core-util-is: 1.0.2
       inherits: 2.0.4
       isarray: 1.0.0
       process-nextick-args: 2.0.1
@@ -10156,6 +10245,7 @@ packages:
   /xmlbuilder@15.1.1:
     resolution: {integrity: sha512-yMqGBqtXyeN1e3TGYvgNgDVZ3j84W4cwkOXQswghol6APgZWaff9lnbvN7MHYJOiXsvGPXtjTYJEiC9J2wv9Eg==}
     engines: {node: '>=8.0'}
+    requiresBuild: true
     dev: true
 
   /xmlhttprequest-ssl@2.0.0:

@@ -9,13 +9,13 @@
     "pnpm": ">=8"
   },
   "scripts": {
-    "yd:dev-web-client": "yarn --cwd ./packages/web-client dev",
-    "yd:dev-backend": "yarn --cwd ./packages/backend dev",
-    "yd:start-backend": "yarn --cwd ./packages/backend start --log-requests",
-    "yd:setup-project": "yarn && yarn --cwd ./packages/web-client generate-application-routes",
-    "yd:build-production": "yarn --cwd ./packages/backend compile-all && yarn --cwd ./packages/web-client build",
+    "yd:dev-web-client": "yarn --cwd ./main/web-client dev",
+    "yd:dev-backend": "yarn --cwd ./main/backend dev",
+    "yd:start-backend": "yarn --cwd ./main/backend start --log-requests",
+    "yd:setup-project": "yarn && yarn --cwd ./main/web-client generate-application-routes",
+    "yd:build-production": "yarn --cwd ./main/backend compile-all && yarn --cwd ./packages/web-client build",
     "opengfx:dev": "yarn --cwd ./packages/opengfx-engine dev",
-    "yd:dev-desktop-client": "yarn --cwd ./packages/desktop-client/ dev"
+    "yd:dev-desktop-client": "yarn --cwd ./main/desktop-client/ dev"
   },
   "dependencies": {
     "@discordjs/voice": "^0.16.1",
@@ -29,7 +29,7 @@
     "run-script-os": "^1.1.6",
     "typescript-eslint": "^0.0.1-alpha.0",
     "utf-8-validate": "^6.0.3",
-    "zlib-sync": "^0.1.9",
-    "yarn": "^1.22.21"
+    "yarn": "^1.22.21",
+    "zlib-sync": "^0.1.9"
   }
 }
