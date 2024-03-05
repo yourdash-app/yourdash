@@ -14,7 +14,7 @@ import { createHashRouter } from "react-router-dom";
 import loadable from "@loadable/component";
 import ApplicationRedirectToDash from "./app/ApplicationRedirectToDash.jsx";
 import AppLayout from "./app/AppLayout";
-import ComingSoon from "./ComingSoon";
+import ComingSoon from "@yourdash/uikit/depChiplet/views/ComingSoon";
 import DocsLayout from "./root/docs/Layout";
 import ErrorElement from "./ErrorElement";
 import ServerLoginPage from "./root/login/Page";
