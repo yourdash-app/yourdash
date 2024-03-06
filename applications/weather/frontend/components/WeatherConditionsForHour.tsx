@@ -3,11 +3,11 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import { chunk } from "@yourdash/shared/web/helpers/array";
+import useTranslate from "@yourdash/shared/web/helpers/i18n";
+import Card from "@yourdash/uikit/depChiplet/components/card/Card";
 import React from "react";
-import useTranslate from "@yourdash/web-client/src/helpers/i18n";
 import { IWeatherDataForLocation } from "../../shared/weatherDataForLocation";
-import { chunk } from "@yourdash/web-client/src/helpers/array";
-import { Card } from "@yourdash/web-client/src/ui/index";
 import { WEATHER_STATES } from "../../shared/weatherStates";
 import getWeatherConditionFromState from "../helpers/getWeatherConditionFromState";
 

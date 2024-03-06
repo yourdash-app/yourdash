@@ -3,10 +3,11 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import clippy from "@yourdash/shared/web/helpers/clippy";
+import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
+import IconButton from "@yourdash/uikit/depChiplet/components/iconButton/IconButton";
 import { useNavigate } from "react-router-dom";
 import styles from "./Launcher.module.scss";
-import clippy from "../../../../../helpers/clippy";
-import { IconButton, YourDashIcon } from "../../../../../ui/index";
 import React, { memo, useEffect, useState } from "react";
 import ApplicationsLauncherApplications from "./Applications/Applications";
 import IPanelApplicationsLauncherApplication from "@yourdash/shared/core/panel/applicationsLauncher/application";

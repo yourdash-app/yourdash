@@ -3,19 +3,17 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import clippy from "@yourdash/shared/web/helpers/clippy";
+import useTranslate from "@yourdash/shared/web/helpers/i18n";
+import Heading from "@yourdash/uikit/depChiplet/components/heading/Heading";
+import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
+import IconButton from "@yourdash/uikit/depChiplet/components/iconButton/IconButton";
 import React from "react";
-import Heading from "@yourdash/web-client/src/ui/components/heading/Heading";
 import { IWeatherDataForLocation } from "../../shared/weatherDataForLocation";
-import { IconButton } from "@yourdash/web-client/src/ui/index";
-import { YourDashIcon } from "@yourdash/web-client/src/ui/components/icon/iconDictionary";
 import generateWeatherDescriptionFromData from "../helpers/generateWeatherDescriptionFromData";
-import getWeatherConditionFromState from "../helpers/getWeatherConditionFromState";
-import useTranslate from "@yourdash/web-client/src/helpers/i18n";
 import getWeatherBackgroundForCondition from "../helpers/getWeatherBackgroundForCondition";
 import WeatherApplicationDaysCarousel from "./DaysCarousel";
 import styles from "./Header.module.scss";
-import clippy from "@yourdash/web-client/src/helpers/clippy";
-import { WEATHER_STATES } from "../../shared/weatherStates";
 import { useNavigate } from "react-router";
 
 interface WeatherApplicationLocationPageHeaderProps {

@@ -3,10 +3,12 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import Card from "@yourdash/uikit/depChiplet/components/card/Card";
+import Carousel from "@yourdash/uikit/depChiplet/components/carousel/Carousel";
+import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
+import IconButton from "@yourdash/uikit/depChiplet/components/iconButton/IconButton";
 import React, { useEffect, useState } from "react";
 import csi from "@yourdash/csi/csi";
-import { Card, Carousel, IconButton } from "@yourdash/web-client/src/ui";
-import { YourDashIcon } from "@yourdash/web-client/src/ui/components/icon/iconDictionary";
 
 const DashApplicationWelcome: React.FC = () => {
   const [userFullName, setUserFullName] = useState({

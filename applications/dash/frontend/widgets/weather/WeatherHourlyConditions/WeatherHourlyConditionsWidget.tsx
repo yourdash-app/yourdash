@@ -3,9 +3,11 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import useTranslate from "@yourdash/shared/web/helpers/i18n";
+import Card from "@yourdash/uikit/depChiplet/components/card/Card";
+import Row from "@yourdash/uikit/depChiplet/components/row/Row";
+import Spinner from "@yourdash/uikit/depChiplet/components/spinner/Spinner";
 import React, { useEffect, useState } from "react";
-import useTranslate from "@yourdash/web-client/src/helpers/i18n";
-import { Card, Row, Spinner } from "@yourdash/web-client/src/ui";
 import csi from "@yourdash/csi/csi";
 import generateWeatherDescriptionFromData from "@yourdash/applications/weather/frontend/helpers/generateWeatherDescriptionFromData";
 import getWeatherIconFromState from "@yourdash/applications/weather/frontend/helpers/getWeatherIconFromState";

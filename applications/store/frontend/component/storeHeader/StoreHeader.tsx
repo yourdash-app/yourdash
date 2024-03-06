@@ -3,9 +3,12 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import Card from "@yourdash/uikit/depChiplet/components/card/Card";
+import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
+import IconButton from "@yourdash/uikit/depChiplet/components/iconButton/IconButton";
+import TextInput from "@yourdash/uikit/depChiplet/components/textInput/TextInput";
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Card, IconButton, TextInput, YourDashIcon } from "@yourdash/web-client/src/ui/index";
 import STORE_APPLICATION_LOGO from "../../../icon.avif";
 import styles from "./StoreHeader.module.scss";
 

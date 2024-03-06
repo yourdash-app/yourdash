@@ -35,7 +35,8 @@ export default class ConnectionPoint extends UIKitHTMLComponent<ConnectionPointP
   }
 
   render() {
-    this.containerElement.classList.add(styles.connectionPoint);
+    // FIXME: fixme
+    // this.containerElement.classList.add(styles.connectionPoint);
 
     return this;
   }

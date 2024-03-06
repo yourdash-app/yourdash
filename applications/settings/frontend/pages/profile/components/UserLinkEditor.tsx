@@ -3,7 +3,10 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { IconButton, Row, TextInput, YourDashIcon } from "@yourdash/web-client/src/ui/index";
+import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
+import IconButton from "@yourdash/uikit/depChiplet/components/iconButton/IconButton";
+import Row from "@yourdash/uikit/depChiplet/components/row/Row";
+import TextInput from "@yourdash/uikit/depChiplet/components/textInput/TextInput";
 
 const UserLinkEditor: React.FC<{
   link: { url: string; label: string };
@@ -13,20 +16,22 @@ const UserLinkEditor: React.FC<{
   return (
     <Row className={"child:flex-grow"} key={link.url + link.label}>
       <TextInput
-        onChange={(value, e) => {
+        onChange={(value) => {
           link.label = value;
           setLinks(links);
         }}
         defaultValue={link.label}
         label={"Label"}
+        accessibleName={"Label"}
       />
       <TextInput
-        onChange={(value, e) => {
+        onChange={(value) => {
           link.url = value;
           setLinks(links);
         }}
         defaultValue={link.url}
         label={"Url"}
+        accessibleName={"Url"}
       />
       <IconButton
         className={"aspect-square"}

@@ -43,7 +43,6 @@
     "vite-plugin-dynamic-import": "^1.5.0",
     "web-tree-sitter": "^0.20.8",
     "xml2js": "^0.6.2",
-    "yarn": "^1.22.19",
-    "@yourdash/shared": "workspace:*"
+    "yarn": "^1.22.19"
   }
 }

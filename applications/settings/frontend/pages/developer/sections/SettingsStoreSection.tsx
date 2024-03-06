@@ -3,10 +3,10 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import useYourDashLib from "@yourdash/shared/web/helpers/ydsh";
+import Button from "@yourdash/uikit/depChiplet/components/button/Button";
 import React from "react";
 import csi from "@yourdash/csi/csi";
-import useYourDashLib from "@yourdash/web-client/src/helpers/ydsh";
-import { Button } from "@yourdash/web-client/src/ui/index";
 
 const SettingsStoreSection: React.FC = () => {
   const ydsh = useYourDashLib();

@@ -15,7 +15,7 @@
  */
 
 import { UUID } from "@yourdash/shared/core/uuid";
-import generateUUID from "@yourdash/web-client/src/helpers/uuid";
+import generateUUID from "@yourdash/shared/web/helpers/uuid";
 import UIKitFramework, { UIKitFrameworkType } from "./index";
 import UIKitDataStore from "./store";
 

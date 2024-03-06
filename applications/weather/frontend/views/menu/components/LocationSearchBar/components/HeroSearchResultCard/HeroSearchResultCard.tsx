@@ -3,9 +3,9 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import clippy from "@yourdash/shared/web/helpers/clippy";
+import Card from "@yourdash/uikit/depChiplet/components/card/Card";
 import React from "react";
-import clippy from "@yourdash/web-client/src/helpers/clippy";
-import { Card } from "@yourdash/web-client/src/ui/index";
 import { ILocationSearchResult } from "../../../../../../../shared/locationSearchResult";
 import { useNavigate } from "react-router-dom";
 import CLOUDY_BACKGROUND from "../../../../../../assets/weatherBackgrounds/cloudy1.jpg";

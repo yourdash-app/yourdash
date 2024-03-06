@@ -3,15 +3,15 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import DropdownButton from "@yourdash/uikit/depChiplet/components/dropdownButton/DropdownButton";
 import BaseSettingComponent, { IBaseSettingComponent } from "./BaseSettingComponent";
 import * as React from "react";
-import { DropdownButton } from "@yourdash/web-client/src/ui";
 
 export interface IBooleanSettingComponent extends IBaseSettingComponent {
   setValue(value: string): void;
   value: string;
   options: {
-    name: string;
+    label: string;
     value: string;
   }[];
 }
@@ -26,7 +26,7 @@ const BooleanSettingComponent: React.FC<Omit<IBooleanSettingComponent, "children
     <DropdownButton
       items={options.map((option) => {
         return {
-          name: option.name,
+          label: option.label,
           onClick: () => {
             setValue(option.value);
           },

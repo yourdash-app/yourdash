@@ -4,6 +4,7 @@
  */
 
 import { CoreApi } from "../coreApi.js";
+import { YOURDASH_INSTANCE_STATUS } from "../types/discoveryStatus.js";
 
 export default function loadNextCloudSupportEndpoints(coreApi: CoreApi) {
   coreApi.request.get("/status.php", (req, res) => {
@@ -11,7 +12,7 @@ export default function loadNextCloudSupportEndpoints(coreApi: CoreApi) {
 
     return res.json({
       installed: true,
-      maintenance: coreApi.isInMaintenance,
+      maintenance: coreApi.instanceStatus === YOURDASH_INSTANCE_STATUS.MAINTENANCE,
       needsDbUpgrade: false,
       version: "28.0.0.11",
       versionstring: "28.0.0",

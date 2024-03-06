@@ -3,11 +3,13 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import Button from "@yourdash/uikit/depChiplet/components/button/Button";
+import Card from "@yourdash/uikit/depChiplet/components/card/Card";
+import Dialog from "@yourdash/uikit/depChiplet/components/dialog/Dialog";
+import MajorButton from "@yourdash/uikit/depChiplet/components/majorButton/MajorButton";
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import { type IYourDashStoreApplication } from "@yourdash/shared/apps/store/storeApplication";
-import { Button, Card, Dialog, IconButton, MajorButton } from "@yourdash/web-client/src/ui/index";
-import { YourDashIcon } from "@yourdash/web-client/src/ui/components/icon/iconDictionary";
 
 export interface IInstallationPopup {
   applicationData: IYourDashStoreApplication | undefined;

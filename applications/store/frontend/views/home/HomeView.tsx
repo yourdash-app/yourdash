@@ -3,14 +3,14 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import clippy from "@yourdash/shared/web/helpers/clippy";
+import useTranslate from "@yourdash/shared/web/helpers/i18n";
+import Heading from "@yourdash/uikit/depChiplet/components/heading/Heading";
 import * as React from "react";
 import { type StorePromotedApplication } from "@yourdash/shared/apps/store/storePromotedApplication";
-import clippy from "@yourdash/web-client/src/helpers/clippy";
 import csi from "@yourdash/csi/csi";
-import Heading from "@yourdash/web-client/src/ui/components/heading/Heading";
 import StoreCategory from "../../component/storeCategory/StoreCategory";
 import StoreApplication from "../../component/storeApplication/StoreApplication";
-import useTranslate from "@yourdash/web-client/src/helpers/i18n";
 import StoreHeader from "../../component/storeHeader/StoreHeader";
 import styles from "./HomeView.module.scss";
 

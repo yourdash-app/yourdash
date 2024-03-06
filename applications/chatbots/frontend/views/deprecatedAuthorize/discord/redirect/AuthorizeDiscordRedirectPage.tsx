@@ -3,10 +3,10 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { Heading, MajorButton } from "@yourdash/web-client/src/ui/index";
+import Heading from "@yourdash/uikit/depChiplet/components/heading/Heading";
+import MajorButton from "@yourdash/uikit/depChiplet/components/majorButton/MajorButton";
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
-import DiscordOAuth from "../../../../../shared/platforms/discord/oauth";
 
 const AuthorizeDiscordRedirectPage: React.FC = () => {
   const navigate = useNavigate();

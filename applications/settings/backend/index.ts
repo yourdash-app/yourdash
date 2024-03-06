@@ -42,7 +42,7 @@ export default class SettingsModule extends BackendModule {
     });
 
     this.API.request.get("/app/settings/developer/install-all-applications", async (req, res) => {
-      const installableApplications = (await fs.readdir("../applications")).filter((appName) => {
+      const installableApplications = (await fs.readdir("../../applications")).filter((appName) => {
         switch (appName) {
           case "package.json":
           case "node_modules":
@@ -61,7 +61,7 @@ export default class SettingsModule extends BackendModule {
           ...coreApi.globalDb.get("core:installedApplications"),
           app,
         ]);
-        await coreApi.moduleManager.loadModule(app, path.join(process.cwd(), `../applications/${app}/backend/`));
+        await coreApi.moduleManager.loadModule(app, path.join(process.cwd(), `../../applications/${app}/backend/`));
       });
 
       return res.json({ success: true });

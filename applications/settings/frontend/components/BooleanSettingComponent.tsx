@@ -3,9 +3,9 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import ToggleSwitch from "@yourdash/uikit/depChiplet/components/toggleSwitch/ToggleSwitch";
 import BaseSettingComponent, { IBaseSettingComponent } from "./BaseSettingComponent";
 import * as React from "react";
-import { ToggleSwitch } from "@yourdash/web-client/src/ui";
 
 export interface IBooleanSettingComponent extends IBaseSettingComponent {
   setValue(value: boolean): void;

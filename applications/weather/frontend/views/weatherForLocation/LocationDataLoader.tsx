@@ -3,12 +3,12 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import Spinner from "@yourdash/uikit/depChiplet/components/spinner/Spinner";
 import React from "react";
 import { IWeatherDataForLocation } from "../../../shared/weatherDataForLocation";
 import WeatherApplicationLocationPage from "./weatherForLocationView";
 import { useParams } from "react-router";
 import csi from "@yourdash/csi/csi";
-import { Spinner } from "@yourdash/web-client/src/ui/index";
 
 const WeatherApplicationLocationById: React.FC = () => {
   const { id } = useParams();

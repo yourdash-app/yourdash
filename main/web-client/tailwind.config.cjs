@@ -1,11 +1,11 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 @Ewsgit and YourDash contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 /** @type {import("tailwindcss").Config} */
 module.exports = {
-  content: ["./src/**/*.tsx", "./src/**/*.ts", "../applications/**/frontend/**/*.ts", "../applications/**/frontend/**/*.tsx"],
+  content: ["./src/**/*.tsx", "./src/**/*.ts", "../../applications/**/frontend/**/*.ts", "../../applications/**/frontend/**/*.tsx", "../../packages/uikit/**/*.tsx", "../../packages/uikit/**/*.ts"],
   theme: {
     extend: {
       screens: {

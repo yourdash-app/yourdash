@@ -3,8 +3,9 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import clippy from "@yourdash/web-client/src/helpers/clippy";
-import { Card, Column } from "@yourdash/web-client/src/ui/index";
+import clippy from "@yourdash/shared/web/helpers/clippy";
+import Card from "@yourdash/uikit/depChiplet/components/card/Card";
+import Column from "@yourdash/uikit/depChiplet/components/column/Column";
 import CLEAR_BACKGROUND from "../../assets/weatherBackgrounds/clear.jpg";
 import CLOUDY_BACKGROUND from "../../assets/weatherBackgrounds/cloudy1.jpg";
 import RAIN_BACKGROUND from "../../assets/weatherBackgrounds/rain1.jpg";

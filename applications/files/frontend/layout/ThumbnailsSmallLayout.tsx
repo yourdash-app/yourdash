@@ -3,14 +3,17 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import clippy from "@yourdash/shared/web/helpers/clippy";
+import useTranslate from "@yourdash/shared/web/helpers/i18n";
+import Card from "@yourdash/uikit/depChiplet/components/card/Card";
+import Icon from "@yourdash/uikit/depChiplet/components/icon/Icon";
+import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
+import IconButton from "@yourdash/uikit/depChiplet/components/iconButton/IconButton";
+import RightClickMenu from "@yourdash/uikit/depChiplet/components/rightClickMenu/RightClickMenu";
 import * as React from "react";
 import csi from "@yourdash/csi/csi";
-import useTranslate from "@yourdash/web-client/src/helpers/i18n";
-import { IconButton, Icon, RightClickMenu, Card } from "@yourdash/web-client/src/ui";
-import clippy from "@yourdash/web-client/src/helpers/clippy";
 import path from "path-browserify";
 import Preview from "./../views/preview/Preview";
-import { YourDashIcon } from "@yourdash/web-client/src/ui/components/icon/iconDictionary";
 import styles from "./ThumbnailsSmallLayout.module.scss";
 
 const DetailsLayout: React.FC = () => {
@@ -74,13 +77,13 @@ const DetailsLayout: React.FC = () => {
               key={file.name}
               items={[
                 {
-                  name: "Delete",
+                  label: "Delete",
                   onClick() {
                     return 0;
                   },
                 },
                 {
-                  name: "Pin to sidebar",
+                  label: "Pin to sidebar",
                   onClick() {
                     return 0;
                   },

@@ -1,5 +1,5 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 @Ewsgit and YourDash contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -117,7 +117,7 @@ export function useTranslateAppCoreUI() {
   useEffect(() => {
     // @ts-ignore
     const language = window.translateLang || navigator.language;
-    import(`../app/i10n/${language}.json`)
+    import(`../../../../main/web-client/src/app/i10n/${language}.json`)
       .then((response) => setMessages(response.default))
       .catch(() => {
         // eslint-disable-next-line no-alert
@@ -146,7 +146,7 @@ export function useTranslateHomePage(page: string) {
   useEffect(() => {
     // @ts-ignore
     const language = window.translateLang || navigator.language;
-    import(`../root/${page}/i10n/${language}.json`)
+    import(`../../../../main/web-client/src/root/${page}/i10n/${language}.json`)
       .then((response) => setMessages(response.default))
       .catch(() => {
         // eslint-disable-next-line no-alert

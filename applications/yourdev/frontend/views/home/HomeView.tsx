@@ -3,9 +3,10 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import Card from "@yourdash/uikit/depChiplet/components/card/Card";
+import Icon from "@yourdash/uikit/depChiplet/components/icon/Icon";
+import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
 import React from "react";
-import { Card, Icon, IconButton } from "@yourdash/web-client/src/ui/index";
-import { YourDashIcon } from "@yourdash/web-client/src/ui/components/icon/iconDictionary";
 import StatusIndicators from "./components/StatusIndicators/StatusIndicators";
 
 const HomeView: React.FC = () => {

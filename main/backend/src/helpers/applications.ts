@@ -43,7 +43,7 @@ class YDApplication {
   // Returns a Buffer containing the data for the application's icon
   async getIcon(): Promise<Buffer> {
     try {
-      return await fs.readFile(path.resolve(process.cwd(), `../applications/${this.name}/icon.avif`));
+      return await fs.readFile(path.resolve(process.cwd(), `../../applications/${this.name}/icon.avif`));
     } catch (_e) {
       return await fs.readFile(path.resolve(process.cwd(), "./src/defaults/placeholder_application_icon.png"));
     }
@@ -52,8 +52,8 @@ class YDApplication {
   // Returns a string with the path to the application's icon
   async getIconPath(): Promise<string> {
     try {
-      await fs.access(path.resolve(process.cwd(), `../applications/${this.name}/icon.avif`));
-      return path.resolve(process.cwd(), `../applications/${this.name}/icon.avif`);
+      await fs.access(path.resolve(process.cwd(), `../../applications/${this.name}/icon.avif`));
+      return path.resolve(process.cwd(), `../../applications/${this.name}/icon.avif`);
     } catch (_e) {
       return path.resolve(process.cwd(), "./src/defaults/placeholder_application_icon.png");
     }
@@ -80,7 +80,7 @@ class YDApplication {
 
   // Returns the path to the application
   getPath(): string {
-    return path.resolve(process.cwd(), `../applications/${this.name}/`);
+    return path.resolve(process.cwd(), `../../applications/${this.name}/`);
   }
 
   getRawApplicationData(): IYourDashApplication {
@@ -95,7 +95,7 @@ class YDApplication {
 // Returns an array of strings with the name of each application that exists ( installed or not )
 export async function getAllApplications(): Promise<string[]> {
   try {
-    return (await fs.readdir(path.resolve(process.cwd(), "../applications/"))).filter((app) => {
+    return (await fs.readdir(path.resolve(process.cwd(), "../../applications/"))).filter((app) => {
       // Define all files / directories in /packages/applications which should be ignored
       switch (app) {
         case "package.json":
@@ -127,7 +127,7 @@ export default class YourDashApplication {
       return new YDApplication(
         JSON.parse(
           (
-            await fs.readFile(path.resolve(process.cwd(), `../applications/${this.name}/application.json`))
+            await fs.readFile(path.resolve(process.cwd(), `../../applications/${this.name}/application.json`))
           ).toString() || "{}",
         ),
       );
@@ -139,7 +139,7 @@ export default class YourDashApplication {
   // Returns true if the application exists in the ./src/apps/ directory
   async exists(): Promise<boolean> {
     try {
-      await fs.readFile(path.resolve(process.cwd(), `../applications/${this.name}/application.json`));
+      await fs.readFile(path.resolve(process.cwd(), `../../applications/${this.name}/application.json`));
       return true;
     } catch (_err) {
       return false;
@@ -148,6 +148,6 @@ export default class YourDashApplication {
 
   // Return the path to the application
   getPath(): string {
-    return path.resolve(process.cwd(), `../applications/${this.name}/`);
+    return path.resolve(process.cwd(), `../../applications/${this.name}/`);
   }
 }

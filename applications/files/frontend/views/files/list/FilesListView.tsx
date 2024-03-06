@@ -3,8 +3,8 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import clippy from "@yourdash/shared/web/helpers/clippy";
 import React from "react";
-import clippy from "@yourdash/web-client/src/helpers/clippy";
 import styles from "./FilesListView.module.scss";
 
 const FilesListView: React.FC<{ files: { type: "file" | "directory"; name: string }[] }> = ({ files }) => {

@@ -3,11 +3,10 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import useTranslate from "@yourdash/shared/web/helpers/i18n";
+import Card from "@yourdash/uikit/depChiplet/components/card/Card";
 import React from "react";
 import DROPLET_ICON from "@yourdash/applications/weather/frontend/assets/weatherIcons/droplet.svg";
-import { Card } from "@yourdash/web-client/src/ui/index";
-import getWeatherConditionFromState from "@yourdash/applications/weather/frontend/helpers/getWeatherConditionFromState";
-import useTranslate from "@yourdash/web-client/src/helpers/i18n";
 
 export interface IHourlyConditionsHour {
   time: string;

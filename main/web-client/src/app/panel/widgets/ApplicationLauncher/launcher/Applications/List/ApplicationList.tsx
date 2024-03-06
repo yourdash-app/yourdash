@@ -3,10 +3,10 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import RightClickMenu from "@yourdash/uikit/depChiplet/components/rightClickMenu/RightClickMenu";
 import React from "react";
 import IPanelApplicationsLauncherApplication from "@yourdash/shared/core/panel/applicationsLauncher/application";
 import csi from "@yourdash/csi/csi";
-import { RightClickMenu } from "../../../../../../../ui/index";
 import styles from "./ApplicationList.module.scss";
 import { useNavigate } from "react-router";
 
@@ -20,7 +20,7 @@ const ApplicationList: React.FC<{ applications: IPanelApplicationsLauncherApplic
           <RightClickMenu
             items={[
               {
-                name: "Pin To Panel",
+                label: "Pin To Panel",
                 onClick() {
                   csi.postJson("/core/panel/quick-shortcuts/create", { name: application.name }, () => {
                     // @ts-ignore
@@ -30,7 +30,7 @@ const ApplicationList: React.FC<{ applications: IPanelApplicationsLauncherApplic
                 },
               },
               {
-                name: "Open In New Tab",
+                label: "Open In New Tab",
                 onClick() {
                   window.open(
                     `${window.location.origin}${window.location.pathname}#/app/a/${application.name}`,

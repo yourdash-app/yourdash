@@ -3,9 +3,13 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import clippy from "@yourdash/shared/web/helpers/clippy";
+import Button from "@yourdash/uikit/depChiplet/components/button/Button";
+import Heading from "@yourdash/uikit/depChiplet/components/heading/Heading";
+import Icon from "@yourdash/uikit/depChiplet/components/icon/Icon";
+import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
+import MajorButton from "@yourdash/uikit/depChiplet/components/majorButton/MajorButton";
 import React, { useState } from "react";
-import clippy from "@yourdash/web-client/src/helpers/clippy";
-import { Button, Heading, Icon, MajorButton, YourDashIcon } from "@yourdash/web-client/src/ui/index";
 import { CHATBOTS_STARTUP_MENU_PAGE, IStartupMenuPageProps } from "../../StartupMenu";
 import styles from "./DefaultStartupMenuPage.module.scss";
 import { useNavigate } from "react-router-dom";

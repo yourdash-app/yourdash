@@ -1,5 +1,5 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 @Ewsgit and YourDash contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -142,7 +142,7 @@ export enum YourDashIcon {
   IdBadge = "/assets/icons/id-badge-16.svg",
   Image = "/assets/icons/image-16.svg",
   Inbox = "/assets/icons/inbox-16.svg",
-  Infinity = "/assets/icons/infinity-16.svg",
+  InfinitySymbol = "/assets/icons/infinity-16.svg",
   Info = "/assets/icons/info-16.svg",
   IssueClosed = "/assets/icons/issue-closed-16.svg",
   IssueDraft = "/assets/icons/issue-draft-16.svg",
@@ -165,7 +165,7 @@ export enum YourDashIcon {
   Login = "/assets/icons/login.svg",
   LogoGist = "/assets/icons/logo-gist-16.svg",
   LogoGithub = "/assets/icons/logo-github-16.svg",
-  Logout= "/assets/icons/logout.svg",
+  Logout = "/assets/icons/logout.svg",
   Mail = "/assets/icons/mail-16.svg",
   MarkGithub = "/assets/icons/mark-github-16.svg",
   Markdown = "/assets/icons/markdown-16.svg",

@@ -3,8 +3,9 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import Icon from "@yourdash/uikit/depChiplet/components/icon/Icon";
+import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
 import React from "react";
-import { Icon, YourDashIcon } from "@yourdash/web-client/src/ui/index";
 import { IDiscordActivity } from "../../../../../shared/platforms/discord/activities";
 import styles from "./DiscordProfilePreview.module.scss";
 

@@ -3,14 +3,13 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
+import IconButton from "@yourdash/uikit/depChiplet/components/iconButton/IconButton";
 import { useEffect } from "react";
 import * as React from "react";
 import CodeStudioEditor from "@yourdash/applications/code_studio/frontend/core/editor/editor";
 import csi from "@yourdash/csi/csi";
-import getParserForFileExtension from "@yourdash/applications/code_studio/frontend/core/editor/editor";
 import pathBrowserify from "path-browserify";
-import { IconButton } from "@yourdash/web-client/src/ui";
-import { YourDashIcon } from "@yourdash/web-client/src/ui/components/icon/iconDictionary";
 import CodeStudioLanguage from "../../../../code_studio/frontend/core/editor/languages/language";
 import CodeStudioLanguages from "../../../../code_studio/frontend/core/editor/languages/languages";
 
@@ -39,16 +38,9 @@ const TextPreview: React.FC<ITextPreview> = ({ path = "" }) => {
     csi.postText("/app/files/get/file", { path }, (resp) => {
       const content = resp;
 
-      if (!parser) {
-        parser = new CodeStudioLanguageParser("plainText");
-      }
-
-      console.log(content);
-      console.log(parser);
-
-      editor.renderParsedString(content, parser);
+      // TODO: render the response
     });
-  }, [!!ref.current, path, formatJson]);
+  }, [!!ref.current, path]);
 
   return (
     <section className={"flex flex-col gap-2"}>
@@ -56,7 +48,7 @@ const TextPreview: React.FC<ITextPreview> = ({ path = "" }) => {
         <IconButton
           icon={YourDashIcon.ArrowSwitch}
           onClick={() => {
-            setFormatJson(!formatJson);
+            // TODO: fixme
           }}
         />
       </div>

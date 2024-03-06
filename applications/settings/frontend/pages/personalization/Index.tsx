@@ -3,10 +3,10 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
 import * as React from "react";
 import SettingCategoryComponent from "../../components/SettingCategoryComponent";
 import BasePageLayout from "../../components/BasePageLayout";
-import { YourDashIcon } from "@yourdash/web-client/src/ui/components/icon/iconDictionary";
 
 const Index: React.FC = () => (
   <BasePageLayout title={"Personalization"}>

@@ -3,9 +3,11 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import clippy from "@yourdash/shared/web/helpers/clippy";
+import Card from "@yourdash/uikit/depChiplet/components/card/Card";
+import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
+import IconButton from "@yourdash/uikit/depChiplet/components/iconButton/IconButton";
 import React from "react";
-import clippy from "@yourdash/web-client/src/helpers/clippy";
-import { Card, IconButton, YourDashIcon } from "@yourdash/web-client/src/ui/index";
 import { IPhotoCategory } from "../../../shared/types/photoCategory";
 import PhotoGrid from "../../views/photoGrid/PhotoGrid";
 import styles from "./PhotoCategory.module.scss";

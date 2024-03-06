@@ -3,9 +3,9 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import generateUUID from "@yourdash/web-client/src/helpers/uuid";
+import generateUUID from "@yourdash/shared/web/helpers/uuid";
+import TabsContainer from "@yourdash/uikit/depChiplet/components/tabsContainer/TabsContainer";
 import React from "react";
-import { TabsContainer } from "@yourdash/web-client/src/ui/index";
 import DiscordProfilePreview from "./platforms/discord/DiscordProfilePreview";
 
 export interface IChatbotProfilePreviewProps {

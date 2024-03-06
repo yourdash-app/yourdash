@@ -3,9 +3,9 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import csi from "@yourdash/csi/csi";
 import { USER_AVATAR_SIZE } from "@yourdash/shared/core/userAvatarSize";
 import * as React from "react";
-import csi from "../../../../../../../csi/csi";
 import styles from "./UserProfileDropdown.module.scss";
 import { useEffect, useState } from "react";
 

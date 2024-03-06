@@ -5,9 +5,11 @@
   "author": "ewsgit <ewsgit@duck.com>",
   "license": "MIT",
   "private": true,
-  "engines": {
-    "pnpm": ">=8"
-  },
+  "workspaces": [
+    "packages/*",
+    "main/*",
+    "applications"
+  ],
   "scripts": {
     "yd:dev-web-client": "yarn --cwd ./main/web-client dev",
     "yd:dev-backend": "yarn --cwd ./main/backend dev",

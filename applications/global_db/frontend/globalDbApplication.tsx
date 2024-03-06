@@ -3,10 +3,11 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import Button from "@yourdash/uikit/depChiplet/components/button/Button";
+import Card from "@yourdash/uikit/depChiplet/components/card/Card";
 import React, { useEffect, useState } from "react";
 import csi from "@yourdash/csi/csi";
 import DbItem from "./components/dbItem";
-import { Button, Card } from "@yourdash/web-client/src/ui";
 
 const GlobalDbApplication: React.FC = () => {
   const [keys, setKeys] = useState<{ [key: string]: string }>({});

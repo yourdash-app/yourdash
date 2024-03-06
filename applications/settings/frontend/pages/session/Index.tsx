@@ -3,11 +3,13 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import Card from "@yourdash/uikit/depChiplet/components/card/Card";
+import Icon from "@yourdash/uikit/depChiplet/components/icon/Icon";
+import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
+import IconButton from "@yourdash/uikit/depChiplet/components/iconButton/IconButton";
 import React, { useState, useEffect } from "react";
-import { Card, Icon, IconButton } from "@yourdash/web-client/src/ui/index";
 import csi from "@yourdash/csi/csi";
 import { type IYourDashSession, YOURDASH_SESSION_TYPE } from "@yourdash/shared/core/session";
-import { YourDashIcon } from "@yourdash/web-client/src/ui/components/icon/iconDictionary";
 import BasePageLayout from "../../components/BasePageLayout";
 
 const SettingsPageSession: React.FC = () => {

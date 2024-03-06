@@ -3,12 +3,16 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import useTranslate from "@yourdash/shared/web/helpers/i18n";
+import AutocompletedTextInput from "@yourdash/uikit/depChiplet/components/autocompletedTextInput/AutocompletedTextInput";
+import Button from "@yourdash/uikit/depChiplet/components/button/Button";
+import Card from "@yourdash/uikit/depChiplet/components/card/Card";
+import DropdownButton from "@yourdash/uikit/depChiplet/components/dropdownButton/DropdownButton";
+import Icon from "@yourdash/uikit/depChiplet/components/icon/Icon";
+import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
+import TextBox from "@yourdash/uikit/depChiplet/components/textBox/TextBox";
 import React, { useState, useEffect } from "react";
-import { Icon, Button, DropdownButton, TextBox, Card } from "@yourdash/web-client/src/ui";
 import csi from "@yourdash/csi/csi";
-import AutocompletedTextInput from "@yourdash/web-client/src/ui/components/autocompletedTextInput/AutocompletedTextInput";
-import { YourDashIcon } from "@yourdash/web-client/src/ui/components/icon/iconDictionary";
-import useTranslate from "@yourdash/web-client/src/helpers/i18n";
 
 function loadPossibleEndpoints(setEndpoints: (data: string[]) => void) {
   csi.getJson("/app/endpoints/endpoints", (data: any) => {
@@ -49,19 +53,19 @@ const EndpointsApplication: React.FC = () => {
           <DropdownButton
             items={[
               {
-                name: "Get",
+                label: "Get",
                 onClick() {
                   setRequestMethod("GET");
                 },
               },
               {
-                name: "Post",
+                label: "Post",
                 onClick() {
                   setRequestMethod("POST");
                 },
               },
               {
-                name: "Delete",
+                label: "Delete",
                 onClick() {
                   setRequestMethod("DELETE");
                 },
@@ -73,13 +77,13 @@ const EndpointsApplication: React.FC = () => {
           <DropdownButton
             items={[
               {
-                name: "Text",
+                label: "Text",
                 onClick() {
                   setRequestType("Text");
                 },
               },
               {
-                name: "JSON",
+                label: "JSON",
                 onClick() {
                   setRequestType("JSON");
                 },

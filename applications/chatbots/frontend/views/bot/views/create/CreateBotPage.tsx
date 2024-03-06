@@ -3,19 +3,17 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import Button from "@yourdash/uikit/depChiplet/components/button/Button";
+import Card from "@yourdash/uikit/depChiplet/components/card/Card";
+import DropdownButton from "@yourdash/uikit/depChiplet/components/dropdownButton/DropdownButton";
+import Heading from "@yourdash/uikit/depChiplet/components/heading/Heading";
+import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
+import IconButton from "@yourdash/uikit/depChiplet/components/iconButton/IconButton";
+import MajorButton from "@yourdash/uikit/depChiplet/components/majorButton/MajorButton";
+import TextBox from "@yourdash/uikit/depChiplet/components/textBox/TextBox";
+import TextInput from "@yourdash/uikit/depChiplet/components/textInput/TextInput";
 import React, { useEffect, useState } from "react";
 import csi from "@yourdash/csi/csi";
-import {
-  Button,
-  Card,
-  DropdownButton,
-  Heading,
-  IconButton,
-  MajorButton,
-  TextBox,
-  TextInput,
-  YourDashIcon,
-} from "@yourdash/web-client/src/ui/index";
 import ChatbotProfilePreview from "../../../../components/ChatbotProfilePreview/ChatbotProfilePreview";
 import styles from "./CreateBotPage.module.scss";
 import { useNavigate } from "react-router-dom";
@@ -129,25 +127,25 @@ const CreateBotPage: React.FC = () => {
           <DropdownButton
             items={[
               {
-                name: "Playing",
+                label: "Playing",
                 onClick() {
                   setStatusLabel("Playing");
                 },
               },
               {
-                name: "Streaming",
+                label: "Streaming",
                 onClick() {
                   setStatusLabel("Streaming");
                 },
               },
               {
-                name: "Watching",
+                label: "Watching",
                 onClick() {
                   setStatusLabel("Watching");
                 },
               },
               {
-                name: "Listening",
+                label: "Listening",
                 onClick() {
                   setStatusLabel("Listening");
                 },

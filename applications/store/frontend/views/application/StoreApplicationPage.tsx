@@ -3,21 +3,26 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import clippy from "@yourdash/shared/web/helpers/clippy";
+import useYourDashLib from "@yourdash/shared/web/helpers/ydsh";
+import Button from "@yourdash/uikit/depChiplet/components/button/Button";
+import Card from "@yourdash/uikit/depChiplet/components/card/Card";
+import Carousel from "@yourdash/uikit/depChiplet/components/carousel/Carousel";
+import Heading from "@yourdash/uikit/depChiplet/components/heading/Heading";
+import Icon from "@yourdash/uikit/depChiplet/components/icon/Icon";
+import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
+import MajorButton from "@yourdash/uikit/depChiplet/components/majorButton/MajorButton";
+import Spinner from "@yourdash/uikit/depChiplet/components/spinner/Spinner";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { type IYourDashStoreApplication } from "@yourdash/shared/apps/store/storeApplication";
-import clippy from "@yourdash/web-client/src/helpers/clippy";
 import csi from "@yourdash/csi/csi";
-import useTranslate from "@yourdash/web-client/src/helpers/i18n";
-import useYourDashLib from "@yourdash/web-client/src/helpers/ydsh";
-import Heading from "@yourdash/web-client/src/ui/components/heading/Heading";
-import { YourDashIcon } from "@yourdash/web-client/src/ui/components/icon/iconDictionary";
-import { Button, Card, Carousel, Icon, MajorButton, Spinner } from "@yourdash/web-client/src/ui/index";
 import StoreHeader from "../../component/storeHeader/StoreHeader";
 import StoreApplicationDefaultHeaderBackground from "./assets/default_background.svg";
 import InstallationPopup from "./components/InstallationPopup";
 import { requestApplication } from "./helpers/requestApplicationData";
 import styles from "./StoreApplicationPage.module.scss";
+import useTranslate from "@yourdash/shared/web/helpers/i18n";
 
 const StoreApplicationPage: React.FC = () => {
   const trans = useTranslate("store");
@@ -49,7 +54,7 @@ const StoreApplicationPage: React.FC = () => {
             csi.postJson(`/app/store/application/install/${appData?.name}`, {}, (resp) => {
               if (resp.success) {
                 requestApplication(applicationId, setAppData, setIsLoading, navigate);
-                ydsh.toast.success(`Installed "${appData?.name}" successfully`);
+                ydsh.toast.success("Installed Application", `Installed "${appData?.name}" successfully`);
               }
 
               // @ts-ignore
@@ -108,7 +113,7 @@ const StoreApplicationPage: React.FC = () => {
                         csi.postJson(`/app/store/application/uninstall/${appData.name}`, {}, (resp) => {
                           if (resp.success) {
                             requestApplication(applicationId, setAppData, setIsLoading, navigate);
-                            ydsh.toast.success(`Uninstalled "${appData.name}" successfully`);
+                            ydsh.toast.success("Uninstalled Application", `Uninstalled "${appData.name}" successfully`);
                           }
 
                           // @ts-ignore

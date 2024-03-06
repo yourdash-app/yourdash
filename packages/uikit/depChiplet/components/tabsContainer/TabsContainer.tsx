@@ -4,8 +4,8 @@
  */
 
 import { UUID } from "@yourdash/shared/core/uuid";
+import clippy from "@yourdash/shared/web/helpers/clippy";
 import React, { useEffect, useState } from "react";
-import clippy from "../../../helpers/clippy";
 import styles from "./TabsContainer.module.scss";
 
 export interface ITab {

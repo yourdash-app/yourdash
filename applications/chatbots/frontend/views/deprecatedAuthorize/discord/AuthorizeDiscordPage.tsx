@@ -3,8 +3,11 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { Heading, MajorButton } from "@yourdash/web-client/src/ui/index";
-import DiscordOAuth from "../../../../shared/platforms/discord/oauth";
+import Heading from "@yourdash/uikit/depChiplet/components/heading/Heading";
+import MajorButton from "@yourdash/uikit/depChiplet/components/majorButton/MajorButton";
+import React from "react";
+import getBotAuthorizationCodeUrl from "../../../../shared/platforms/discord/oauth";
+import { DiscordPermissions } from "../../../../shared/platforms/discord/permissions";
 
 const AuthorizeDiscordPage: React.FC = () => {
   return (
@@ -13,9 +16,10 @@ const AuthorizeDiscordPage: React.FC = () => {
       <p className={"-mt-16"}>To continue to YourDash Chatbots, you need to authorize your Discord account</p>
       <MajorButton
         onClick={() => {
-          const auth = new DiscordOAuth("1208110209403461803", ["email"]);
-          window.location.href = auth.getAuthorizationCodeUrl(
+          window.location.href = getBotAuthorizationCodeUrl(
+            "1208110209403461803",
             "http://localhost:5173/#/app/a/chatbots/authorize/discord/redirect",
+            [DiscordPermissions.ADMINISTRATOR],
           );
         }}
       >

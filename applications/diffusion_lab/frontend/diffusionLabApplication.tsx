@@ -3,13 +3,19 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import useTranslate from "@yourdash/shared/web/helpers/i18n";
+import Button from "@yourdash/uikit/depChiplet/components/button/Button";
+import Card from "@yourdash/uikit/depChiplet/components/card/Card";
+import DropdownButton from "@yourdash/uikit/depChiplet/components/dropdownButton/DropdownButton";
+import Icon from "@yourdash/uikit/depChiplet/components/icon/Icon";
+import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
+import MajorButton from "@yourdash/uikit/depChiplet/components/majorButton/MajorButton";
+import ResizeContainer from "@yourdash/uikit/depChiplet/components/resizeContainer/ResizeContainer";
+import TextBox from "@yourdash/uikit/depChiplet/components/textBox/TextBox";
 import React, { useState, useEffect } from "react";
-import { Icon, MajorButton, Button, DropdownButton, TextBox, Card, ResizeContainer } from "@yourdash/web-client/src/ui";
 import csi, { TJson } from "@yourdash/csi/csi";
 import { IDiffusionLabImageGenerationData } from "@yourdash/shared/apps/diffusion_lab/image/generationData";
 import YourDashLogo from "@yourdash/web-client/public/assets/productLogos/yourdash.svg";
-import { YourDashIcon } from "@yourdash/web-client/src/ui/components/icon/iconDictionary";
-import useTranslate from "@yourdash/web-client/src/helpers/i18n";
 
 const DiffusionLabApplication: React.FC = () => {
   const trans = useTranslate("diffusion_lab");
@@ -50,7 +56,7 @@ const DiffusionLabApplication: React.FC = () => {
           <DropdownButton
             items={models.map((model) => {
               return {
-                name: model.slice(0, 1).toUpperCase() + model.slice(1),
+                label: model.slice(0, 1).toUpperCase() + model.slice(1),
                 onClick: () => {
                   setGenerationData({ ...generationData, model });
                 },
@@ -62,7 +68,7 @@ const DiffusionLabApplication: React.FC = () => {
           <DropdownButton
             items={models.map((model) => {
               return {
-                name: model.slice(0, 1).toUpperCase() + model.slice(1),
+                label: model.slice(0, 1).toUpperCase() + model.slice(1),
                 onClick: () => {
                   setGenerationData({ ...generationData, model });
                 },

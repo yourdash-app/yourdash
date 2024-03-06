@@ -3,12 +3,12 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import useTranslate from "@yourdash/shared/web/helpers/i18n";
+import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
+import IconButton from "@yourdash/uikit/depChiplet/components/iconButton/IconButton";
 import React from "react";
-import useTranslate from "@yourdash/web-client/src/helpers/i18n";
 import styles from "./BrowserLayout.module.scss";
-import { IconButton } from "@yourdash/web-client/src/ui";
 import { useNavigate } from "react-router-dom";
-import { YourDashIcon } from "@yourdash/web-client/src/ui/components/icon/iconDictionary";
 
 export interface IBrowserLayout {
   username: string;

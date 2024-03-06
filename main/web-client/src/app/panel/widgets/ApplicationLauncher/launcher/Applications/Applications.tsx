@@ -3,11 +3,12 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import clippy from "@yourdash/shared/web/helpers/clippy";
+import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
+import TextInput from "@yourdash/uikit/depChiplet/components/textInput/TextInput";
 import React, { useEffect } from "react";
 import IPanelApplicationsLauncherApplication from "@yourdash/shared/core/panel/applicationsLauncher/application";
-import clippy from "../../../../../../helpers/clippy";
 import LargeApplicationGrid from "./LargeGrid/LargeApplicationGrid";
-import { TextInput, YourDashIcon } from "../../../../../../ui/index";
 import styles from "./Applications.module.scss";
 import { useNavigate } from "react-router";
 import SmallApplicationGrid from "./SmallGrid/SmallApplicationGrid";

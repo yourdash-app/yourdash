@@ -3,7 +3,9 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { Card, Heading } from "../../index";
+import React from "react";
+import Card from "../card/Card";
+import Heading from "../heading/Heading";
 import UserProfileDropdown from "./components/userProfileDropdown/UserProfileDropdown";
 import styles from "./NavBar.module.scss";
 

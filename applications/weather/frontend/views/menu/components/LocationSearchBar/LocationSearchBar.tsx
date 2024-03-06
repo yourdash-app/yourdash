@@ -3,9 +3,9 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import TextInput from "@yourdash/uikit/depChiplet/components/textInput/TextInput";
 import React, { useState } from "react";
 import csi from "@yourdash/csi/csi";
-import { TextInput } from "@yourdash/web-client/src/ui/index";
 import { ILocationSearchResult } from "../../../../../shared/locationSearchResult";
 import HeroSearchResultCard from "./components/HeroSearchResultCard/HeroSearchResultCard";
 import SearchResultCard from "./components/SearchResultCard/SearchResultCard";

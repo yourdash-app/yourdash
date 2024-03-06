@@ -3,8 +3,8 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
 import React, { useEffect, useState } from "react";
-import { YourDashIcon } from "@yourdash/web-client/src/ui/index";
 import Indicator from "./components/indicator/Indicator";
 import csi from "@yourdash/csi/csi";
 import io from "socket.io-client";

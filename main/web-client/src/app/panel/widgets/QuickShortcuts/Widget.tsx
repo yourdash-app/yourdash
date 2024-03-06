@@ -3,9 +3,9 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import clippy from "@yourdash/shared/web/helpers/clippy";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import clippy from "../../../../helpers/clippy";
 import csi from "@yourdash/csi/csi";
 import styles from "./Widget.module.scss";
 import React from "react";

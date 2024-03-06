@@ -3,14 +3,16 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import clippy from "@yourdash/shared/web/helpers/clippy";
+import useTranslate from "@yourdash/shared/web/helpers/i18n";
+import Card from "@yourdash/uikit/depChiplet/components/card/Card";
+import Carousel from "@yourdash/uikit/depChiplet/components/carousel/Carousel";
+import Icon from "@yourdash/uikit/depChiplet/components/icon/Icon";
+import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
 import { IWeatherDataForLocation } from "../../shared/weatherDataForLocation";
 import React from "react";
-import { Card, Carousel, Icon } from "@yourdash/web-client/src/ui/index";
 import getDayNameForNumericDay from "../helpers/getDayNameForNumericDay";
-import useTranslate from "@yourdash/web-client/src/helpers/i18n";
-import { YourDashIcon } from "@yourdash/web-client/src/ui/components/icon/iconDictionary";
 import getWeatherIconFromState from "../helpers/getWeatherIconFromState";
-import clippy from "@yourdash/web-client/src/helpers/clippy";
 
 const WeatherApplicationDaysCarousel: React.FC<{
   weatherData: IWeatherDataForLocation;

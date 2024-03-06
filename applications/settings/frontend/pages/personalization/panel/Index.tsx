@@ -3,11 +3,10 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { useState } from "react";
+import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
+import React, { useState } from "react";
 import BasePageLayout from "../../../components/BasePageLayout";
 import csi from "@yourdash/csi/csi";
-import { YourDashIcon } from "@yourdash/web-client/src/ui/index";
-import Panel from "@yourdash/web-client/src/app/panel/Panel";
 import DropdownSettingComponent from "../../../components/DropdownSettingComponent";
 
 const Index: React.FC = () => {
@@ -23,15 +22,15 @@ const Index: React.FC = () => {
         options={[
           {
             value: "small",
-            name: "Small",
+            label: "Small",
           },
           {
             value: "medium",
-            name: "Medium (Default)",
+            label: "Medium (Default)",
           },
           {
             value: "large",
-            name: "Large",
+            label: "Large",
           },
         ]}
         value={panelSize || "medium"}
@@ -49,19 +48,19 @@ const Index: React.FC = () => {
         options={[
           {
             value: "top",
-            name: "Top",
+            label: "Top",
           },
           {
             value: "right",
-            name: "Right",
+            label: "Right",
           },
           {
             value: "bottom",
-            name: "Bottom",
+            label: "Bottom",
           },
           {
             value: "left",
-            name: "Left (Default)",
+            label: "Left (Default)",
           },
         ]}
         value={panelSide || "left"}

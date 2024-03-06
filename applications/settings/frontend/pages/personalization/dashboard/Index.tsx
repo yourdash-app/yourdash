@@ -3,10 +3,10 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
 import * as React from "react";
 import BasePageLayout from "../../../components/BasePageLayout";
 import BooleanSettingComponent from "../../../components/BooleanSettingComponent";
-import { YourDashIcon } from "@yourdash/web-client/src/ui/components/icon/iconDictionary";
 import csi from "@yourdash/csi/csi";
 
 const Index: React.FC = () => {

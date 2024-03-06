@@ -3,8 +3,8 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import ComingSoon from "@yourdash/uikit/depChiplet/views/ComingSoon";
 import React from "react";
-import ComingSoon from "@yourdash/web-client/src/ComingSoon";
 import BasePageLayout from "../../components/BasePageLayout";
 
 const Index: React.FC = () => {

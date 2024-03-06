@@ -3,10 +3,9 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import Card from "@yourdash/uikit/depChiplet/components/card/Card";
 import * as React from "react";
-import { Card } from "@yourdash/web-client/src/ui";
 import csi from "@yourdash/csi/csi";
-import Panel from "@yourdash/web-client/src/app/panel/Panel";
 
 const SettingsSectionPanelPosition: React.FC = () => (
   <section className={"p-4"}>

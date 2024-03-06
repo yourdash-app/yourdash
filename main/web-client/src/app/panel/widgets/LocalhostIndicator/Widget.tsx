@@ -3,17 +3,15 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import clippy from "@yourdash/shared/web/helpers/clippy";
+import Icon from "@yourdash/uikit/depChiplet/components/icon/Icon";
+import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
 import React from "react";
-import clippy from "../../../../helpers/clippy";
-import { Icon, YourDashIcon } from "../../../../ui";
 
 const LocalhostIndicator: React.FC<{
   side: "top" | "right" | "bottom" | "left";
 }> = ({ side }) => {
-  if (
-    window.location.hostname !== "localhost" &&
-    window.location.hostname !== "127.0.0.1"
-  ) {
+  if (window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1") {
     return null;
   }
 
@@ -27,11 +25,7 @@ const LocalhostIndicator: React.FC<{
         side === "right" && "mt-auto",
       )}
     >
-      <Icon
-        icon={YourDashIcon.Location}
-        color={"currentColor"}
-        className={"h-6"}
-      />
+      <Icon icon={YourDashIcon.Location} color={"currentColor"} className={"h-6"} />
     </div>
   );
 };

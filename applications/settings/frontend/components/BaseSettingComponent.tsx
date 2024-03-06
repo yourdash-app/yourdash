@@ -3,9 +3,10 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import Card from "@yourdash/uikit/depChiplet/components/card/Card";
+import Icon from "@yourdash/uikit/depChiplet/components/icon/Icon";
+import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
 import * as React from "react";
-import { YourDashIcon } from "@yourdash/web-client/src/ui/components/icon/iconDictionary";
-import { Icon, Card } from "@yourdash/web-client/src/ui";
 import styles from "./BaseSettingComponent.module.scss";
 
 export interface IBaseSettingComponent {

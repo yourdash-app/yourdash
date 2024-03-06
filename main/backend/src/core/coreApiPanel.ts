@@ -3,10 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { promises as fs } from "fs";
 import path from "path";
-import IPanelApplicationsLauncherApplication from "@yourdash/shared/core/panel/applicationsLauncher/application.js";
-import sharp from "sharp";
 import YourDashApplication from "../helpers/applications.js";
 import YourDashPanel from "./helpers/panel.js";
 import { CoreApi } from "./coreApi.js";

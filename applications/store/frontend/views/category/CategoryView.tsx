@@ -3,12 +3,12 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import Heading from "@yourdash/uikit/depChiplet/components/heading/Heading";
+import Spinner from "@yourdash/uikit/depChiplet/components/spinner/Spinner";
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import csi from "@yourdash/csi/csi";
 import { type IStoreCategory } from "@yourdash/shared/apps/store/storeCategory";
-import Heading from "@yourdash/web-client/src/ui/components/heading/Heading";
-import { Spinner } from "@yourdash/web-client/src/ui/index";
 import StoreApplication from "../../component/storeApplication/StoreApplication";
 import StoreHeader from "../../component/storeHeader/StoreHeader";
 import styles from "./CategoryView.module.scss";

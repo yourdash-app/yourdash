@@ -3,9 +3,9 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import Card from "@yourdash/uikit/depChiplet/components/card/Card";
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Card } from "@yourdash/web-client/src/ui/index";
 import PLACEHOLDER_BACKGROUND from "../background.svg";
 import styles from "./StoreCategory.module.scss";
 

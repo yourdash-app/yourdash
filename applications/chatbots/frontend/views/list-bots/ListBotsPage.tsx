@@ -4,16 +4,14 @@
  */
 
 import csi from "@yourdash/csi/csi";
-import {
-  Card,
-  DropdownButton,
-  Heading,
-  IconButton,
-  NavBar,
-  TextInput,
-  YourDashIcon,
-} from "@yourdash/web-client/src/ui/index";
-import { useEffect, useState } from "react";
+import Card from "@yourdash/uikit/depChiplet/components/card/Card";
+import DropdownButton from "@yourdash/uikit/depChiplet/components/dropdownButton/DropdownButton";
+import Heading from "@yourdash/uikit/depChiplet/components/heading/Heading";
+import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
+import IconButton from "@yourdash/uikit/depChiplet/components/iconButton/IconButton";
+import NavBar from "@yourdash/uikit/depChiplet/components/navBar/NavBar";
+import TextInput from "@yourdash/uikit/depChiplet/components/textInput/TextInput";
+import React, { useEffect, useState } from "react";
 import { IChatbotsBot } from "../../../shared/bot";
 import styles from "./ListBotsPage.module.scss";
 import { useNavigate } from "react-router";

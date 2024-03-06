@@ -3,10 +3,16 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import useYourDashLib from "@yourdash/shared/web/helpers/ydsh";
+import Button from "@yourdash/uikit/depChiplet/components/button/Button";
+import Card from "@yourdash/uikit/depChiplet/components/card/Card";
+import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
+import IconButton from "@yourdash/uikit/depChiplet/components/iconButton/IconButton";
+import Row from "@yourdash/uikit/depChiplet/components/row/Row";
+import TextBox from "@yourdash/uikit/depChiplet/components/textBox/TextBox";
+import TextInput from "@yourdash/uikit/depChiplet/components/textInput/TextInput";
 import React, { useEffect } from "react";
 import csi, { TJson } from "@yourdash/csi/csi";
-import useYourDashLib from "@yourdash/web-client/src/helpers/ydsh";
-import { Button, Card, IconButton, Row, TextBox, TextInput, YourDashIcon } from "@yourdash/web-client/src/ui/index";
 import BasePageLayout from "../../components/BasePageLayout";
 import UserLinkEditor from "./components/UserLinkEditor";
 import UserPreview, { IUserPreview } from "./components/UserPreview";
@@ -119,10 +125,10 @@ const ProfileIndexPage: React.FC = () => {
                 "/core/user/current",
                 userData as unknown as TJson,
                 () => {
-                  ydsh.toast.success("Saved user data");
+                  ydsh.toast.success("Success", "Saved user data");
                 },
                 () => {
-                  ydsh.toast.error("Failed to save user data");
+                  ydsh.toast.error("Error", "Failed to save user data");
                 },
               );
             }}

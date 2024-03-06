@@ -3,8 +3,9 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import Heading from "@yourdash/uikit/depChiplet/components/heading/Heading";
+import MajorButton from "@yourdash/uikit/depChiplet/components/majorButton/MajorButton";
 import React from "react";
-import { Heading, MajorButton } from "@yourdash/web-client/src/ui/index";
 import { CHATBOTS_STARTUP_MENU_PAGE, IStartupMenuPageProps } from "../../StartupMenu";
 import styles from "./TutorialStartupMenuPage.module.scss";
 
