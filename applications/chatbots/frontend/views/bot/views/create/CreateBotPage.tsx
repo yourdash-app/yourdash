@@ -174,7 +174,7 @@ const CreateBotPage: React.FC = () => {
                 avatarUrl,
               },
               () => {
-                navigate(`/app/a/chatbots/team/${csi.getUserName()}/manage/${username}`);
+                navigate(`/app/a/chatbots/team/${csi.getUsername()}/manage/${username}`);
               },
               (error) => {
                 alert(error);

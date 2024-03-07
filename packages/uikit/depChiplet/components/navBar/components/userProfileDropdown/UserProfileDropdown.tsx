@@ -23,7 +23,7 @@ const UserProfileDropdown: React.FC = () => {
     user.getFullName().then((res) => {
       setUserFullName(res);
     });
-    setUserName(csi.getUserName());
+    setUserName(csi.getUsername());
   }, []);
 
   return (

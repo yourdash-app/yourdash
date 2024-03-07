@@ -325,8 +325,12 @@ class __internalClientServerInteraction {
     return localStorage.getItem("current_server") || "wss://example.com";
   }
 
-  getUserName(): string {
+  getUsername(): string {
     return localStorage.getItem("username") || "";
+  }
+
+  getUserToken(): string {
+    return localStorage.getItem("session_token") || "";
   }
 
   async getUserDB(): Promise<UserDatabase> {

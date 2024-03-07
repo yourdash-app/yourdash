@@ -19,12 +19,19 @@ const StatusIndicators: React.FC = () => {
   useEffect(() => {
     const socket = io(`${csi.getInstanceUrl().replace("https://", "wss://").replace("http://", "ws://")}`, {
       path: "/app/yourdev/websocket-manager/websocket",
+      auth: {
+        token: csi.getUserToken(),
+        username: csi.getUsername(),
+      },
     });
     socket.on("connect", () => {
-      return 1;
+      console.log("connected");
+      socket.emit("message", "hello");
     });
-    socket.on("info", () => {
+    socket.on("message", () => {
       setInfoLogs(infoLogs + 1);
+      socket.emit("hello");
+      console.log("hello");
     });
     socket.on("warning", () => {
       setWarningLogs(warningLogs + 1);

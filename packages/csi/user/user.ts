@@ -17,7 +17,7 @@ export default class CSIYourDashUser {
   username: string;
 
   constructor() {
-    this.username = csi.getUserName();
+    this.username = csi.getUsername();
 
     this.clearCachedResults();
 

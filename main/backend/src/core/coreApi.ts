@@ -33,7 +33,7 @@ import { YOURDASH_INSTANCE_STATUS } from "./types/discoveryStatus.js";
 import { USER_AVATAR_SIZE } from "@yourdash/shared/core/userAvatarSize.js";
 import YourDashUser from "./user/index.js";
 import { YOURDASH_SESSION_TYPE } from "@yourdash/shared/core/session.js";
-import CoreApiWebsocketManager from "./coreApiWebsocketManager.js";
+import CoreApiWebsocketManager from "./websocketManager/coreApiWebsocketManager.js";
 import CoreApiUtils from "./utils/utils.js";
 
 export class CoreApi {
@@ -437,6 +437,12 @@ export class CoreApi {
       loadNextCloudSupportEndpoints(this);
     } catch (e) {
       this.log.error("nextcloud", "Error caught in loadNextCloudSupportEndpoints", e);
+    }
+
+    try {
+      this.websocketManager.__internal__loadEndpoints();
+    } catch (e) {
+      this.log.error("websocketManager", "Error caught in loadWebsocketManagerEndpoints", e);
     }
 
     // Check for authentication
