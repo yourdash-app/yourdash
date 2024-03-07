@@ -25,6 +25,14 @@ const ListBotsPage: React.FC = () => {
   const [currentTeam, setCurrentTeam] = useState<string>(teams[0]);
 
   useEffect(() => {
+    csi.getTeams().then((ts) => {
+      console.log(ts.map((t) => t.teamName));
+      setTeams(ts.map((t) => t.teamName));
+      setCurrentTeam(ts.map((t) => t.teamName)[0]);
+    });
+  }, []);
+
+  useEffect(() => {
     if (searchValue === "") {
       setVisibleBots(visibleBots);
     } else {
@@ -93,7 +101,7 @@ const ListBotsPage: React.FC = () => {
             />
           </>
         }
-      ></NavBar>
+      />
       <section className={styles.grid}>
         {visibleBots.map((bot) => {
           return (

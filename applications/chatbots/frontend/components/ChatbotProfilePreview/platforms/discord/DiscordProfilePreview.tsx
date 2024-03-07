@@ -7,6 +7,7 @@ import Icon from "@yourdash/uikit/depChiplet/components/icon/Icon";
 import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
 import React from "react";
 import { IDiscordActivity } from "../../../../../shared/platforms/discord/activities";
+import { IDiscordUserPresence } from "../../../../../shared/platforms/discord/user";
 import styles from "./DiscordProfilePreview.module.scss";
 
 export interface IDiscordProfilePreviewProps {
@@ -14,11 +15,7 @@ export interface IDiscordProfilePreviewProps {
   displayName: string;
   avatarUrl: string;
   bio: string;
-  presence: {
-    status: "idle" | "dnd" | "online" | "offile";
-    activities: IDiscordActivity[];
-    clientStatus?: { [key in "mobile" | "desktop" | "web"]?: string };
-  };
+  presence: IDiscordUserPresence;
   tryMyCommands: string[];
   discriminator: string;
   showAddApplicationButton?: boolean;

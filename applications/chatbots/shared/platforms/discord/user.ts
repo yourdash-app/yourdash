@@ -3,6 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import { IDiscordActivity } from "./activities";
 import { DiscordSnowflake } from "./snowflake";
 
 export enum DiscordUserFlags {
@@ -97,6 +98,11 @@ export interface IDiscordUser {
   premium_type?: number;
   public_flags?: number;
   avatar_decoration?: string;
+}
+
+export interface IYDSHDiscordUserPresence {
+  activities: IDiscordActivity[];
+  clientStatus?: { [key in "mobile" | "desktop" | "web"]?: "online" | "dnd" | "idle" | "offline" };
 }
 
 export default class DiscordUser {

@@ -26,7 +26,8 @@ const CreateBotPage: React.FC = () => {
   const [username, setUsername] = useState<string>("");
   const [displayName, setDisplayName] = useState<string>("");
   const [bio, setBio] = useState<string>("");
-  const [statusLabel, setStatusLabel] = useState<string>("");
+  const [activityStatus, setActivityStatus] = useState<"offline" | "online" | "idle" | "dnd">("");
+  const [activityStatusLabel, setActivityStatusLabel] = useState<string>("");
   const [status, setStatus] = useState<string>("");
   const [avatarUrl, setAvatarUrl] = useState<string>(YourDashIcon.ServerError);
 
@@ -63,7 +64,13 @@ const CreateBotPage: React.FC = () => {
           displayName={displayName}
           avatarUrl={avatarUrl}
           bio={bio}
-          status={statusLabel + " " + status}
+          activityStatus={{
+            activities: [],
+            clientStatus: {
+              desktop: activityStatus,
+            },
+          }}
+          status={status}
           commands={["ping", "pong", "foo", "bar"]}
         />
       </Card>
@@ -122,32 +129,32 @@ const CreateBotPage: React.FC = () => {
             setAvatarUrl(value);
           }}
         />
-        <Heading level={3}>Bot Status</Heading>
+        <Heading level={3}>Bot Activity Status</Heading>
         <div className={"flex gap-2 w-full"}>
           <DropdownButton
             items={[
               {
                 label: "Playing",
                 onClick() {
-                  setStatusLabel("Playing");
+                  setActivityStatusLabel("Playing");
                 },
               },
               {
                 label: "Streaming",
                 onClick() {
-                  setStatusLabel("Streaming");
+                  setActivityStatusLabel("Streaming");
                 },
               },
               {
                 label: "Watching",
                 onClick() {
-                  setStatusLabel("Watching");
+                  setActivityStatusLabel("Watching");
                 },
               },
               {
                 label: "Listening",
                 onClick() {
-                  setStatusLabel("Listening");
+                  setActivityStatusLabel("Listening");
                 },
               },
             ]}
@@ -157,12 +164,43 @@ const CreateBotPage: React.FC = () => {
           <TextInput
             className={"flex-grow"}
             onChange={(value) => {
-              setStatus(value);
+              setActivityStatusLabel(value);
             }}
             accessibleName={"Status"}
             placeholder={"Status"}
           />
         </div>
+        <Heading level={3}>Bot Status</Heading>
+        <DropdownButton
+          items={[
+            {
+              label: "Online",
+              onClick() {
+                setActivityStatus("online");
+              },
+            },
+            {
+              label: "Idle",
+              onClick() {
+                setActivityStatus("idle");
+              },
+            },
+            {
+              label: "Do Not Disturb",
+              onClick() {
+                setActivityStatus("dnd");
+              },
+            },
+            {
+              label: "Invisible",
+              onClick() {
+                setActivityStatus("offline");
+              },
+            },
+          ]}
+        >
+          Online
+        </DropdownButton>
         <MajorButton
           onClick={() => {
             csi.postJson(

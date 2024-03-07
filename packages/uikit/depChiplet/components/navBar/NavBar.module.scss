@@ -14,19 +14,36 @@
 }
 
 .title {
-  color: blue;
+  color: rgb(var(--container-fg));
   transition: var(--transition-slow);
-  transform: scaleX(1);
+  transform: translateX(0);
   transform-origin: left;
 
   @container (max-width: 600px) {
-    transform: scaleX(0);
-    width: 0;
+    transform: translateX(-100%);
+    opacity: 0;
   }
 }
 
 .subtitle {
-  color: red;
+  color: rgb(var(--container-fg));
+  transition: var(--transition-slow);
+  transform: translateX(0);
+
+  @container (max-width: 600px) {
+    //noinspection CssInvalidFunction
+    transform: translateX(calc(var(--title-width) * -1));
+  }
+}
+
+.subtitleSlash {
+  opacity: 0.5;
+  margin-right: 0.5rem;
+  transition: var(--transition-slow);
+
+  @container (max-width: 600px) {
+    margin-left: -0.5rem;
+  }
 }
 
 .extras {
@@ -44,7 +61,8 @@
 .left {
   display: flex;
   gap: 0.5rem;
-  width: 100%;
+  flex-grow: 1;
   container-name: left;
   container-type: inline-size;
+  white-space: nowrap;
 }

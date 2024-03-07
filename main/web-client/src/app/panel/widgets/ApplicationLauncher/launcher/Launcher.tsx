@@ -60,7 +60,19 @@ const ApplicationLauncher: React.FC<{
           className={"ml-auto"}
           icon={YourDashIcon.Filter}
           onClick={() => {
-            setLayout(layout === "large-grid" ? "small-grid" : layout === "small-grid" ? "list" : "large-grid");
+            setLayout("small-grid");
+          }}
+        />
+        <IconButton
+          icon={YourDashIcon.Filter}
+          onClick={() => {
+            setLayout("large-grid");
+          }}
+        />
+        <IconButton
+          icon={YourDashIcon.Filter}
+          onClick={() => {
+            setLayout("list");
           }}
         />
       </section>

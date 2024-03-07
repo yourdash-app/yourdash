@@ -3,8 +3,8 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import Card from "@yourdash/uikit/depChiplet/components/card/Card";
 import * as React from "react";
-import { Card } from "@yourdash/web-client/src/ui/index";
 
 const StartupView: React.FC = () => {
   return (

@@ -374,7 +374,7 @@ class __internalClientServerInteraction {
       this.getJson(
         "/core/user/current/teams",
         (data: string[]) => {
-          resolve(data.map((t) => new CSIYourDashTeam(t)));
+          resolve(data.map((tn) => this.getTeam(tn)));
         },
         () => {
           reject([]);
@@ -384,10 +384,7 @@ class __internalClientServerInteraction {
   }
 
   getTeam(teamName: string) {
-    // TODO: implement THIS next!!!!
-    //       @ewsgit
-
-    return teamName;
+    return new CSIYourDashTeam(teamName);
   }
 
   logout(): void {

@@ -10,7 +10,7 @@ import { YourDashIcon } from "../icon/iconDictionary";
 
 export interface IDropdownIconButton {
   items: {
-    name: string;
+    label: string;
     shortcut?: string;
     onClick: () => void;
   }[];
@@ -48,7 +48,7 @@ const DropdownIconButton: React.FC<IDropdownIconButton> = ({ items, className, i
           true,
           items.map((item) => {
             return {
-              label: item.name,
+              label: item.label,
               onClick: () => {
                 item.onClick();
               },

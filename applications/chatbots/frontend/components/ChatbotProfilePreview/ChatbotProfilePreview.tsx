@@ -6,6 +6,7 @@
 import generateUUID from "@yourdash/shared/web/helpers/uuid";
 import TabsContainer from "@yourdash/uikit/depChiplet/components/tabsContainer/TabsContainer";
 import React from "react";
+import { IYDSHDiscordUserPresence } from "../../../shared/platforms/discord/user";
 import DiscordProfilePreview from "./platforms/discord/DiscordProfilePreview";
 
 export interface IChatbotProfilePreviewProps {
@@ -13,6 +14,7 @@ export interface IChatbotProfilePreviewProps {
   displayName: string;
   bio: string;
   avatarUrl: string;
+  activityStatus: IYDSHDiscordUserPresence;
   status: string;
   commands: string[];
 }
@@ -22,6 +24,7 @@ const ChatbotProfilePreview: React.FC<IChatbotProfilePreviewProps> = ({
   displayName,
   bio,
   avatarUrl,
+  activityStatus,
   status,
   commands,
 }) => {
@@ -36,13 +39,7 @@ const ChatbotProfilePreview: React.FC<IChatbotProfilePreviewProps> = ({
                 displayName={displayName}
                 bio={bio}
                 avatarUrl={avatarUrl}
-                presence={{
-                  status: "online",
-                  activities: [],
-                  clientStatus: {
-                    desktop: "online",
-                  },
-                }}
+                presence={activityStatus}
                 tryMyCommands={commands}
                 discriminator={"1234"}
               />
