@@ -88,7 +88,7 @@ class YDApplication {
   }
 
   async requiresBackend(): Promise<boolean> {
-    return !(await coreApi.fs.exists(path.resolve(path.join(process.cwd(), this.getPath(), "backend/index.js"))));
+    return !(await coreApi.fs.doesExist(path.resolve(path.join(process.cwd(), this.getPath(), "backend/index.js"))));
   }
 }
 

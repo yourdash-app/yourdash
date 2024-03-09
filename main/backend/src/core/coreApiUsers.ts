@@ -135,7 +135,9 @@ export default class CoreApiUsers {
   }
 
   async getAllUsers(): Promise<string[]> {
-    return (await this.coreApi.fs.getDirectory(path.join(this.coreApi.fs.ROOT_PATH, "./users"))).getChildren();
+    return (
+      await this.coreApi.fs.getDirectory(path.join(this.coreApi.fs.ROOT_PATH, "./users"))
+    ).getChildrenAsBaseName();
   }
 
   __internal__loadEndpoints() {

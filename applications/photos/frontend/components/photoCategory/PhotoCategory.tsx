@@ -8,11 +8,11 @@ import Card from "@yourdash/uikit/depChiplet/components/card/Card";
 import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
 import IconButton from "@yourdash/uikit/depChiplet/components/iconButton/IconButton";
 import React from "react";
-import { IPhotoCategory } from "../../../shared/types/photoCategory";
+import { IPhotoAlbum } from "../../../shared/types/photoAlbum";
 import PhotoGrid from "../../views/photoGrid/PhotoGrid";
 import styles from "./PhotoCategory.module.scss";
 
-const PhotoCategory: React.FC<IPhotoCategory> = ({ name, items, id }) => {
+const PhotoCategory: React.FC<IPhotoAlbum> = ({ name, items }) => {
   const [open, setOpen] = React.useState<boolean>(true);
 
   return (
@@ -37,7 +37,7 @@ const PhotoCategory: React.FC<IPhotoCategory> = ({ name, items, id }) => {
       </div>
       {open && (
         <div className={styles.content}>
-          <PhotoGrid photos={items} />
+          <PhotoGrid gridPhotoPaths={items.photos} />
         </div>
       )}
     </Card>

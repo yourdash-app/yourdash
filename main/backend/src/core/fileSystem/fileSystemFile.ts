@@ -28,7 +28,7 @@ export default class FileSystemFile extends FileSystemEntity {
     return pth.extname(this.path).toLowerCase();
   }
 
-  getType(): string {
+  getType(): "image" | "video" | "audio" | "unknown" {
     switch (this.getExtension()) {
       case ".avif":
       case ".png":

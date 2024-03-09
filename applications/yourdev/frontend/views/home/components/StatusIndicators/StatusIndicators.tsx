@@ -24,27 +24,37 @@ const StatusIndicators: React.FC = () => {
         username: csi.getUsername(),
       },
     });
+
     socket.on("connect", () => {
       console.log("connected");
       socket.emit("message", "hello");
     });
+
     socket.on("message", () => {
       setInfoLogs(infoLogs + 1);
-      socket.emit("hello");
+      socket.emit("message", "hello");
       console.log("hello");
     });
+
     socket.on("warning", () => {
       setWarningLogs(warningLogs + 1);
     });
+
     socket.on("error", () => {
       setErrorLogs(errorLogs + 1);
     });
+
     socket.on("debug", () => {
       setDebugLogs(debugLogs + 1);
     });
+
     socket.on("disconnect", () => {
       return 1;
     });
+
+    return () => {
+      socket.disconnect();
+    };
   }, []);
 
   return (

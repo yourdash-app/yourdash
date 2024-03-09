@@ -33,7 +33,7 @@ export default class CoreApiPanel {
               "128.png",
             );
 
-            if (!(await this.coreApi.fs.exists(RESIZED_ICON_PATH))) {
+            if (!(await this.coreApi.fs.doesExist(RESIZED_ICON_PATH))) {
               this.coreApi.log.info("core:panel", `Generating 128x128 icon for ${application.getName()}`);
 
               await this.coreApi.fs.createDirectory(path.dirname(RESIZED_ICON_PATH));
@@ -73,7 +73,7 @@ export default class CoreApiPanel {
               "64.png",
             );
 
-            if (!(await this.coreApi.fs.exists(RESIZED_ICON_PATH))) {
+            if (!(await this.coreApi.fs.doesExist(RESIZED_ICON_PATH))) {
               this.coreApi.log.info("core:panel", `Generating 64x64 icon for ${application.getName()}`);
 
               await this.coreApi.fs.createDirectory(path.dirname(RESIZED_ICON_PATH));

@@ -5,42 +5,38 @@
 
 import csi from "@yourdash/csi/csi";
 import React, { useEffect, useState } from "react";
-import { IPhoto } from "../shared/types/photo";
-import { IPhotoCategory } from "../shared/types/photoCategory";
+import { IPhotoAlbum } from "../shared/types/photoAlbum";
 import PhotoCategory from "./components/photoCategory/PhotoCategory";
+import pth from "path-browserify";
 
 const PhotosApplication: React.FC = () => {
-  const [photoCategories, setPhotoCategories] = useState<IPhotoCategory[]>([]);
+  const [photoCategories, setPhotoCategories] = useState<IPhotoAlbum[]>([]);
 
   useEffect(() => {
     setPhotoCategories([]);
 
     csi.getJson(
-      `/app/photos/categories`,
-      (categories: string[]) => {
-        categories.map((cat) => {
-          setPhotoCategories([
-            ...photoCategories,
-            {
-              id: cat,
-              name: cat,
-              items: (() => {
-                let photos: IPhoto[] = [];
+      `/app/photos/albums`,
+      (albums: string[]) => {
+        albums.map((a) => {
+          csi.getJson(
+            `/app/photos/album/${a}`,
+            (album: IPhotoAlbum) => {
+              console.log(album);
 
-                csi.getJson(
-                  `/app/photos/category/${cat}`,
-                  (ps: IPhoto[]) => {
-                    photos = ps;
-                  },
-                  (error) => {
-                    console.log(error);
-                  },
-                );
-
-                return photos;
-              })(),
+              setPhotoCategories([
+                ...photoCategories,
+                {
+                  path: a,
+                  name: pth.basename(a),
+                  items: album.items,
+                },
+              ]);
             },
-          ]);
+            (error) => {
+              console.log(error);
+            },
+          );
         });
       },
       (error) => {
@@ -49,19 +45,20 @@ const PhotosApplication: React.FC = () => {
     );
   }, []);
 
-  useEffect(() => {
-    console.log(photoCategories);
-  }, [photoCategories]);
-
   return (
     <div className={"flex flex-col h-full bg-bg overflow-hidden overflow-y-auto p-4 gap-2"}>
+      {photoCategories.length === 0 && (
+        <>
+          <div className={"text-3xl"}>No photos yet</div>
+        </>
+      )}
       {photoCategories.map((photoCategory) => {
         return (
           <PhotoCategory
-            key={photoCategory.id}
+            key={photoCategory.path}
             name={photoCategory.name}
             items={photoCategory.items}
-            id={photoCategory.id}
+            path={photoCategory.path}
           />
         );
       })}

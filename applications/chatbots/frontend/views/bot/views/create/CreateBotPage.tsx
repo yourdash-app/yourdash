@@ -26,7 +26,7 @@ const CreateBotPage: React.FC = () => {
   const [username, setUsername] = useState<string>("");
   const [displayName, setDisplayName] = useState<string>("");
   const [bio, setBio] = useState<string>("");
-  const [activityStatus, setActivityStatus] = useState<"offline" | "online" | "idle" | "dnd">("");
+  const [activityStatus, setActivityStatus] = useState<"offline" | "online" | "idle" | "dnd">("online");
   const [activityStatusLabel, setActivityStatusLabel] = useState<string>("");
   const [status, setStatus] = useState<string>("");
   const [avatarUrl, setAvatarUrl] = useState<string>(YourDashIcon.ServerError);

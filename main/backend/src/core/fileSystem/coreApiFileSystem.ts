@@ -28,7 +28,7 @@ export default class CoreApiFileSystem {
 
   async get(path: string) {
     try {
-      if ((await this.getType(path)) === "directory") {
+      if ((await this.getEntityType(path)) === "directory") {
         return new FileSystemDirectory(this.coreApi, path);
       } else {
         return new FileSystemFile(this.coreApi, path);
@@ -39,16 +39,16 @@ export default class CoreApiFileSystem {
   }
 
   async getOrCreateFile(path: string) {
-    if (!(await this.exists(path))) {
+    if (!(await this.doesExist(path))) {
       await fs.mkdir(pth.dirname(path), { recursive: true });
     }
 
     return new FileSystemFile(this.coreApi, path);
   }
 
-  async getFile(path: string): Promise<FileSystemFile | null> {
+  async getFile(path: string): Promise<FileSystemFile> | null {
     try {
-      if ((await this.getType(path)) === "file") {
+      if ((await this.getEntityType(path)) === "file") {
         return new FileSystemFile(this.coreApi, path);
       }
     } catch (_err) {
@@ -58,9 +58,9 @@ export default class CoreApiFileSystem {
     return null;
   }
 
-  async getDirectory(path: string) {
+  async getDirectory(path: string): Promise<FileSystemDirectory> | null {
     try {
-      if ((await this.getType(path)) === "directory") {
+      if ((await this.getEntityType(path)) === "directory") {
         return new FileSystemDirectory(this.coreApi, path);
       }
     } catch (_err) {
@@ -70,15 +70,21 @@ export default class CoreApiFileSystem {
     return null;
   }
 
-  getOrCreateDirectory(path: string) {
-    return new FileSystemDirectory(this.coreApi, path);
+  async getOrCreateDirectory(path: string) {
+    const dir = new FileSystemDirectory(this.coreApi, path);
+
+    if (!(await dir.doesExist())) {
+      await dir.create();
+    }
+
+    return dir;
   }
 
-  async getType(path: string): Promise<"file" | "directory"> {
+  async getEntityType(path: string): Promise<"file" | "directory"> {
     return (await fs.lstat(path)).isDirectory() ? "directory" : "file";
   }
 
-  async exists(path: string): Promise<boolean> {
+  async doesExist(path: string): Promise<boolean> {
     try {
       await fs.access(path);
       return true;
@@ -92,8 +98,9 @@ export default class CoreApiFileSystem {
   }
 
   async createDirectory(path: string) {
-    await fs.mkdir(path, { recursive: true });
-    return new FileSystemDirectory(this.coreApi, path);
+    const dir = new FileSystemDirectory(this.coreApi, path);
+    await dir.create();
+    return dir;
   }
 
   async removePath(path: string) {
@@ -106,12 +113,10 @@ export default class CoreApiFileSystem {
 
   async copy(source: string, destination: string) {
     try {
-      return await fs.cp(source, destination);
+      await fs.cp(source, destination);
+      return true;
     } catch (e) {
-      this.coreApi.log.error(
-        "core:fs",
-        "Unable to copy file: " + source + " to " + destination,
-      );
+      this.coreApi.log.error("core:fs", "Unable to copy file: " + source + " to " + destination);
       return false;
     }
   }

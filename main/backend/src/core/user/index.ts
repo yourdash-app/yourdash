@@ -95,7 +95,7 @@ export default class YourDashUser {
 
     try {
       // "/"
-      if (!(await coreApi.fs.exists(this.path))) {
+      if (!(await coreApi.fs.doesExist(this.path))) {
         await coreApi.fs.createDirectory(this.path);
       }
     } catch (err) {
@@ -106,7 +106,7 @@ export default class YourDashUser {
 
     try {
       // "/apps/"
-      if (!(await coreApi.fs.exists(path.join(this.path, "/apps")))) {
+      if (!(await coreApi.fs.doesExist(path.join(this.path, "/apps")))) {
         await coreApi.fs.createDirectory(path.join(this.path, "/apps"));
       }
     } catch (err) {
@@ -117,7 +117,7 @@ export default class YourDashUser {
 
     try {
       // "/avatars/"
-      if (!(await coreApi.fs.exists(path.join(this.path, "/avatars")))) {
+      if (!(await coreApi.fs.doesExist(path.join(this.path, "/avatars")))) {
         await coreApi.fs.createDirectory(path.join(this.path, "/avatars"));
       }
     } catch (err) {
@@ -128,7 +128,7 @@ export default class YourDashUser {
 
     try {
       // "/core/"
-      if (!(await coreApi.fs.exists(path.join(this.path, "/core")))) {
+      if (!(await coreApi.fs.doesExist(path.join(this.path, "/core")))) {
         await coreApi.fs.createDirectory(path.join(this.path, "/core"));
       }
     } catch (err) {
@@ -194,7 +194,7 @@ export default class YourDashUser {
 
     try {
       // "/fs/"
-      if (!(await coreApi.fs.exists(path.join(this.path, "/fs")))) {
+      if (!(await coreApi.fs.doesExist(path.join(this.path, "/fs")))) {
         await coreApi.fs.createDirectory(path.join(this.path, "/fs"));
       }
     } catch (err) {
@@ -205,7 +205,7 @@ export default class YourDashUser {
 
     try {
       // "/temp/"
-      if (!(await coreApi.fs.exists(path.join(this.path, "/temp")))) {
+      if (!(await coreApi.fs.doesExist(path.join(this.path, "/temp")))) {
         await coreApi.fs.createDirectory(path.join(this.path, "/temp"));
       }
     } catch (err) {

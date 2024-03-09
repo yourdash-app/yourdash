@@ -24,7 +24,7 @@ const PhotoGridRow: React.FC<{
             tags={item.tags}
             people={item.people}
             date={item.date}
-            url={item.url}
+            imageUrl={item.imageUrl}
             display={{
               rowHeight: height,
               height: item.displayHeight,

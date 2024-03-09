@@ -25,7 +25,13 @@ export default class FileSystemDirectory extends FileSystemEntity {
     return fs.stat(this.path);
   }
 
-  async getChildren(): Promise<string[]> {
+  async getChildren(): Promise<FileSystemEntity[]> {
+    const children = await this.getChildrenAsBaseName();
+
+    return await Promise.all(children.map(async (child) => await this.getChild(child)));
+  }
+
+  async getChildrenAsBaseName(): Promise<string[]> {
     try {
       return await fs.readdir(this.path);
     } catch (_err) {
@@ -33,6 +39,12 @@ export default class FileSystemDirectory extends FileSystemEntity {
 
       return [];
     }
+  }
+
+  async create() {
+    await this.coreApi.fs.createDirectory(this.path);
+
+    return this;
   }
 
   getChild(path: string) {

@@ -28,7 +28,7 @@ export default class YourDashTeam {
   // Returns true if the team exists
   async doesExist() {
     try {
-      return await coreApi.fs.exists(this.getPath());
+      return await coreApi.fs.doesExist(this.getPath());
     } catch (err) {
       return false;
     }
@@ -39,14 +39,14 @@ export default class YourDashTeam {
   // if it exists, fix any problems found
   async verify() {
     try {
-      if (!(await coreApi.fs.exists(this.getPath()))) await coreApi.fs.createDirectory(this.getPath());
+      if (!(await coreApi.fs.doesExist(this.getPath()))) await coreApi.fs.createDirectory(this.getPath());
     } catch (err) {
       coreApi.log.error("teams", `Unable to create team directory for ${this.teamName}`);
       return this;
     }
 
     try {
-      if (!(await coreApi.fs.exists(path.join(this.getPath(), "core"))))
+      if (!(await coreApi.fs.doesExist(path.join(this.getPath(), "core"))))
         await coreApi.fs.createDirectory(path.join(this.getPath(), "core"));
     } catch (err) {
       coreApi.log.error("teams", `Unable to create /core directory for ${this.teamName}`);
@@ -54,7 +54,7 @@ export default class YourDashTeam {
     }
 
     try {
-      if (!(await coreApi.fs.exists(path.join(this.getPath(), "cache"))))
+      if (!(await coreApi.fs.doesExist(path.join(this.getPath(), "cache"))))
         await coreApi.fs.createDirectory(path.join(this.getPath(), "cache"));
     } catch (err) {
       coreApi.log.error("teams", `Unable to create /cache directory for ${this.teamName}`);
@@ -62,7 +62,7 @@ export default class YourDashTeam {
     }
 
     try {
-      if (!(await coreApi.fs.exists(path.join(this.getPath(), "apps"))))
+      if (!(await coreApi.fs.doesExist(path.join(this.getPath(), "apps"))))
         await coreApi.fs.createDirectory(path.join(this.getPath(), "apps"));
     } catch (err) {
       coreApi.log.error("teams", `Unable to create /apps directory for ${this.teamName}`);

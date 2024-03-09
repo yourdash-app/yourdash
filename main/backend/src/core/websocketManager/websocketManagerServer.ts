@@ -15,6 +15,7 @@ export default class WebsocketManagerServer {
 
   constructor(coreApi: CoreApi, path: string) {
     this.coreApi = coreApi;
+    this.onConnectionListeners = [];
 
     this.server = new SocketIOServer(this.coreApi.httpServer, {
       path: `${path}/websocket-manager/websocket`,

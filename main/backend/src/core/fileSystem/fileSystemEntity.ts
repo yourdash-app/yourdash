@@ -39,6 +39,6 @@ export default class FileSystemEntity {
   }
 
   doesExist(): Promise<boolean> {
-    return coreApi.fs.exists(this.path);
+    return coreApi.fs.doesExist(this.path);
   }
 }

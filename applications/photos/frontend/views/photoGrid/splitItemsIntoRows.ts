@@ -34,6 +34,8 @@ export default function splitItemsIntoRows(items: IPhoto[], containerWidth: numb
   let currentRowNumber = 0;
   let currentRowItem = 0;
 
+  console.log(items);
+
   while (currentRowItem < items.length) {
     const rowItems = [];
 
@@ -58,8 +60,6 @@ export default function splitItemsIntoRows(items: IPhoto[], containerWidth: numb
 
     currentRowNumber += 1;
   }
-
-  console.log(rows);
 
   return rows;
 }

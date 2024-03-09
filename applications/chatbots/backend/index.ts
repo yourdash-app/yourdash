@@ -87,7 +87,7 @@ export default class ChatbotsModule extends BackendModule {
 
       const teamBotsDirectory = await coreApi.fs.getDirectory(path.join(team.getPath(), "apps/chatbots/bots"));
 
-      return res.json({ bots: await teamBotsDirectory.getChildren() });
+      return res.json({ bots: await teamBotsDirectory.getChildrenAsBaseName() });
     });
 
     this.API.request.get("/app/chatbots/team/:teamId/list/:botId", async (req, res) => {

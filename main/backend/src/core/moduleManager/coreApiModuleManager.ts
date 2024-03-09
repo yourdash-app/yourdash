@@ -20,23 +20,23 @@ export default class CoreApiModuleManager {
   }
 
   checkModule(modulePath: string) {
-    if (!this.coreApi.fs.exists(path.resolve(`${modulePath}/application.json`))) {
+    if (!this.coreApi.fs.doesExist(path.resolve(`${modulePath}/application.json`))) {
       this.coreApi.log.error("core", `application ${modulePath} does not contain an application.json file!`);
       return false;
     }
 
     // Not Required (use 'placeholder.avif' instead)
-    if (!this.coreApi.fs.exists(path.resolve(`${modulePath}/icon.avif`))) {
+    if (!this.coreApi.fs.doesExist(path.resolve(`${modulePath}/icon.avif`))) {
       this.coreApi.log.warning("core", `application ${modulePath} does not contain an icon.avif file!`);
     }
 
     // Only required if the application needs a backend
-    if (!this.coreApi.fs.exists(path.resolve(`${modulePath}/backend`))) {
+    if (!this.coreApi.fs.doesExist(path.resolve(`${modulePath}/backend`))) {
       return false;
     }
 
     // Only required if the application needs a backend
-    return this.coreApi.fs.exists(path.resolve(`${modulePath}/backend/index.ts`));
+    return this.coreApi.fs.doesExist(path.resolve(`${modulePath}/backend/index.ts`));
   }
 
   async loadModule(moduleName: string, modulePath: string) {
@@ -45,7 +45,7 @@ export default class CoreApiModuleManager {
       return;
     }
 
-    if (!(await this.coreApi.fs.exists(`${modulePath}/index.ts`))) {
+    if (!(await this.coreApi.fs.doesExist(`${modulePath}/index.ts`))) {
       this.coreApi.log.info("module_manager", `Skipped loading backend-less module: "${moduleName}"`);
       return;
     }

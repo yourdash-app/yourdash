@@ -6,11 +6,11 @@
 export interface IPhoto {
   fileName: string;
   dimensions: {
-    width: number,
-    height: number,
-  },
-  tags: string[],
-  people: string[],
-  date: string // new Date(string),
-  url?: string
+    width: number;
+    height: number;
+  };
+  tags: string[];
+  people: string[];
+  date: string; // new Date(string),
+  imageUrl?: string;
 }

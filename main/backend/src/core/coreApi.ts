@@ -139,59 +139,61 @@ export class CoreApi {
   __internal__startInstance() {
     this.log.info("startup", "Welcome to the YourDash Instance backend");
 
-    this.fs.exists(path.join(this.fs.ROOT_PATH, "./global_database.json")).then(async (doesGlobalDatabaseFileExist) => {
-      if (doesGlobalDatabaseFileExist)
-        await this.globalDb.loadFromDisk(path.join(this.fs.ROOT_PATH, "./global_database.json"));
+    this.fs
+      .doesExist(path.join(this.fs.ROOT_PATH, "./global_database.json"))
+      .then(async (doesGlobalDatabaseFileExist) => {
+        if (doesGlobalDatabaseFileExist)
+          await this.globalDb.loadFromDisk(path.join(this.fs.ROOT_PATH, "./global_database.json"));
 
-      this.fs.verifyFileSystem.verify().then(() => {
-        this.users.__internal__startUserDatabaseService();
-        this.users.__internal__startUserDeletionService();
-        this.globalDb.__internal__startGlobalDatabaseService();
-        this.teams.__internal__startTeamDatabaseService();
+        this.fs.verifyFileSystem.verify().then(() => {
+          this.users.__internal__startUserDatabaseService();
+          this.users.__internal__startUserDeletionService();
+          this.globalDb.__internal__startGlobalDatabaseService();
+          this.teams.__internal__startTeamDatabaseService();
 
-        try {
-          killPort(3563)
-            .then(() => {
-              this.log.info("startup", "Killed port 3563");
-              this.httpServer.listen(3563, () => {
-                this.log.success("startup", "server now listening on port 3563!");
-                this.log.success("startup", "YourDash initialization complete!");
-                this.loadCoreEndpoints();
-              });
-            })
-            .catch((err) => {
-              if (err.message === "No process running on port") {
-                this.log.info(
-                  "startup",
-                  "Attempted to kill port 3563, no process running was currently using port 3563",
-                );
-
+          try {
+            killPort(3563)
+              .then(() => {
+                this.log.info("startup", "Killed port 3563");
                 this.httpServer.listen(3563, () => {
                   this.log.success("startup", "server now listening on port 3563!");
                   this.log.success("startup", "YourDash initialization complete!");
                   this.loadCoreEndpoints();
                 });
-                return;
-              }
+              })
+              .catch((err) => {
+                if (err.message === "No process running on port") {
+                  this.log.info(
+                    "startup",
+                    "Attempted to kill port 3563, no process running was currently using port 3563",
+                  );
 
-              this.log.warning("startup", "Unable to kill port 3563", err);
-            });
-        } catch (reason) {
-          this.log.warning("startup", "Unable to kill port 3563", reason);
+                  this.httpServer.listen(3563, () => {
+                    this.log.success("startup", "server now listening on port 3563!");
+                    this.log.success("startup", "YourDash initialization complete!");
+                    this.loadCoreEndpoints();
+                  });
+                  return;
+                }
 
-          try {
-            this.httpServer.listen(3563, () => {
-              this.log.info("startup", "server now listening on port 3563!");
-              this.log.success("startup", "Startup complete!");
-              this.loadCoreEndpoints();
-            });
-          } catch (_err) {
-            this.log.error("startup", "Unable to start server!");
-            this.shutdownInstance();
+                this.log.warning("startup", "Unable to kill port 3563", err);
+              });
+          } catch (reason) {
+            this.log.warning("startup", "Unable to kill port 3563", reason);
+
+            try {
+              this.httpServer.listen(3563, () => {
+                this.log.info("startup", "server now listening on port 3563!");
+                this.log.success("startup", "Startup complete!");
+                this.loadCoreEndpoints();
+              });
+            } catch (_err) {
+              this.log.error("startup", "Unable to start server!");
+              this.shutdownInstance();
+            }
           }
-        }
+        });
       });
-    });
     return this;
   }
 
