@@ -97,6 +97,8 @@ export class CoreApi {
     // TODO: implement WebDAV & CalDAV & CardDAV (outdated WebDAV example -> https://github.com/LordEidi/fennel.js/)
     this.webdav = new CoreApiWebDAV(this);
 
+    this.log.info("core", `Process id is ${process.pid}`);
+
     this.commands.registerCommand("hello", () => {
       this.log.info("command", "Hello from YourDash!");
     });
@@ -433,7 +435,7 @@ export class CoreApi {
 
     this.request.get("/login/instance/background", (_req, res) => {
       res.set("Content-Type", "image/avif");
-      return res.sendFile(path.resolve(process.cwd(), "./fs/login_background.avif"));
+      return res.sendFile(path.resolve(this.fs.ROOT_PATH, "./login_background.avif"));
     });
 
     try {

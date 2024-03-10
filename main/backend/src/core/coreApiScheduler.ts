@@ -40,6 +40,7 @@ export default class CoreApiScheduler {
   }
 
   __internal__onShutdown() {
-    Object.keys(schedule.scheduledJobs).forEach((task) => this.unscheduleTask(task));
+    schedule.gracefulShutdown();
+    this.coreApi.log.info("scheduler", "Shutdown gracefully");
   }
 }
