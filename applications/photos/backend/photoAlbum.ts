@@ -6,7 +6,7 @@
 import coreApi from "@yourdash/backend/src/core/coreApi.js";
 import FileSystemFile from "@yourdash/backend/src/core/fileSystem/fileSystemFile.js";
 import pth from "path";
-import { IPhotoAlbum } from "../shared/types/photoAlbum.js";
+import { IPhotoAlbum } from "../shared/photoAlbum.js";
 
 export default class PhotoAlbum {
   path: string;
@@ -45,7 +45,7 @@ export default class PhotoAlbum {
     return {
       path: this.path,
       items: { photos: await this.getPhotos(), subAlbums: await this.getSubAlbumsPaths() },
-      name: pth.basename(this.path),
+      label: pth.basename(this.path),
     } as IPhotoAlbum;
   }
 }

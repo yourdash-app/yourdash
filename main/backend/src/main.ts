@@ -1,5 +1,5 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 @Ewsgit and YourDash contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -25,10 +25,7 @@
  * 9. Load post-startup services
  */
 
-import sourceMapSupport from "source-map-support";
 import coreApi from "./core/coreApi.js";
-
-sourceMapSupport.install();
 
 try {
   // Start the YourDash Instance

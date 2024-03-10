@@ -3,7 +3,8 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { IPhoto } from "../../../shared/types/photo";
+import { MAX_HEIGHT } from "../../../shared/gridPhoto";
+import { IPhoto } from "../../../shared/photo";
 
 export function calculateAspectRatio(item: IPhoto) {
   return item.dimensions.width / item.dimensions.height;
@@ -12,10 +13,10 @@ export function calculateAspectRatio(item: IPhoto) {
 function calculateRowHeight(items: IPhoto[], containerWidth: number, containerHeight: number, isLast: boolean) {
   const sumOfItemsRatio = items.map((item) => calculateAspectRatio(item)).reduce((sum, itemRatio) => sum + itemRatio);
 
-  let rowHeight = containerWidth / sumOfItemsRatio;
+  let rowHeight = Math.min(containerWidth / sumOfItemsRatio, MAX_HEIGHT);
 
   if (items.length === 1 && items[0].dimensions.width > containerWidth) {
-    rowHeight = containerWidth / calculateAspectRatio(items[0]);
+    rowHeight = Math.min(containerWidth / calculateAspectRatio(items[0]), MAX_HEIGHT);
   }
 
   if (isLast) {

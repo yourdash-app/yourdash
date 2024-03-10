@@ -15,7 +15,11 @@ const PanelLayout: React.FC = () => {
   const [reloadNumber, setReloadNumber] = React.useState<number>(0);
 
   useEffect(() => {
-    setPanelSide(csi.userDB.get("core:panel:side") || "left");
+    if (window.innerWidth < 768) {
+      setPanelSide("bottom");
+    } else {
+      setPanelSide(csi.userDB.get("core:panel:side") || "left");
+    }
   }, [reloadNumber]);
 
   useEffect(() => {

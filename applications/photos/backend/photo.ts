@@ -4,7 +4,7 @@
  */
 
 import { imageSize } from "image-size";
-import IGridPhoto from "../shared/types/gridPhoto.js";
+import IGridPhoto, { MAX_HEIGHT } from "../shared/gridPhoto.js";
 import { AUTHENTICATED_IMAGE_TYPE } from "@yourdash/backend/src/core/coreApiAuthenticatedImage.js";
 import pth from "path";
 import coreApi from "@yourdash/backend/src/core/coreApi.js";
@@ -29,14 +29,36 @@ export default class Photo {
     };
   }
 
-  getPhotoUrl(): string {
+  getRawPhotoUrl(): string {
     return coreApi.authenticatedImage.create(this.username, AUTHENTICATED_IMAGE_TYPE.FILE, pth.resolve(this.path));
   }
 
-  getIGridPhoto() {
+  async getPhotoUrl(dimensions?: { width: number; height: number }): Promise<string> {
+    if (!dimensions) {
+      return coreApi.authenticatedImage.create(this.username, AUTHENTICATED_IMAGE_TYPE.FILE, pth.resolve(this.path));
+    }
+
+    console.time(`photo+${this.path}-get-photo`);
+    const resizedImage = await coreApi.image.resizeTo(
+      pth.resolve(this.path),
+      dimensions.width,
+      dimensions.height,
+      "webp",
+    );
+    console.timeEnd(`photo+${this.path}-get-photo`);
+
+    return coreApi.authenticatedImage.create(this.username, AUTHENTICATED_IMAGE_TYPE.FILE, resizedImage);
+  }
+
+  async getIGridPhoto() {
+    const dimensions = this.getDimensions();
+
+    const aspectRatio = dimensions.width / dimensions.height;
+    const newWidth = MAX_HEIGHT * aspectRatio;
+
     return {
-      dimensions: this.getDimensions(),
-      imageUrl: this.getPhotoUrl(),
+      dimensions: dimensions,
+      imageUrl: await this.getPhotoUrl({ width: newWidth, height: MAX_HEIGHT }),
       path: this.path,
       tags: [],
     } as IGridPhoto;

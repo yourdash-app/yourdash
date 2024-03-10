@@ -1,5 +1,5 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 @Ewsgit and YourDash contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -155,9 +155,9 @@
   }
 }
 
-body, #root {
+body, #root, html {
   overflow: hidden;
-  height: 100vh;
+  height: 100%;
   color: rgb(var(--base-50));
   background-image: linear-gradient(to bottom right, rgb(var(--base-700) / 1), rgb(var(--base-900) / 1));
 }

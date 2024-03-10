@@ -15,12 +15,6 @@ export default class PhotosModule extends BackendModule {
   constructor(args: YourDashModuleArguments) {
     super(args);
 
-    this.API.core.users.addUserCreateListener(async (username) => {
-      const userRootFS = coreApi.users.get(username).getFsPath();
-
-      await coreApi.fs.createDirectory(path.join(userRootFS, "Photos"));
-    });
-
     this.API.request.get(`${this.rootPath}/albums`, async (req, res) => {
       const { username } = req.headers as { username: string };
 
@@ -44,9 +38,7 @@ export default class PhotosModule extends BackendModule {
 
       const photo = new Photo(username, photoPath);
 
-      // TODO: downscale images before sending them, match the aspect ratio but limit the height to 512
-
-      return res.json(photo.getIGridPhoto());
+      return res.json(await photo.getIGridPhoto());
     });
 
     this.API.request.get(`${this.rootPath}/photo/*`, async (req, res) => {

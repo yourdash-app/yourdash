@@ -1,5 +1,5 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 @Ewsgit and YourDash contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -46,6 +46,14 @@ export default class CoreApiVerifyFileSystem {
     // "/cache/"
     if (!(await this.coreApi.fs.doesExist(path.join(this.coreApi.fs.ROOT_PATH, "./cache")))) {
       await this.coreApi.fs.createDirectory(path.join(this.coreApi.fs.ROOT_PATH, "./cache"));
+    }
+    // "delete /temp/"
+    if (await this.coreApi.fs.doesExist(path.join(this.coreApi.fs.ROOT_PATH, "./temp"))) {
+      await this.coreApi.fs.removePath(path.join(this.coreApi.fs.ROOT_PATH, "./temp"));
+    }
+    // "/temp/"
+    if (!(await this.coreApi.fs.doesExist(path.join(this.coreApi.fs.ROOT_PATH, "./temp")))) {
+      await this.coreApi.fs.createDirectory(path.join(this.coreApi.fs.ROOT_PATH, "./temp"));
     }
     // "/cache/applications/"
     if (!(await this.coreApi.fs.doesExist(path.join(this.coreApi.fs.ROOT_PATH, "./cache/applications")))) {

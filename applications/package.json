@@ -28,7 +28,8 @@
     "undici": "^5.28.3",
     "utf-8-validate": "^6.0.3",
     "web-tree-sitter": "^0.20.8",
-    "xml2js": "^0.6.2"
+    "xml2js": "^0.6.2",
+    "sharp": "0.30.0"
   },
   "scripts": {
     "codestudio-install": "run-script-os",

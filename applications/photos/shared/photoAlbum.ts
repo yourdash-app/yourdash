@@ -3,12 +3,12 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-export default interface IGridPhoto {
-  imageUrl: string;
+export interface IPhotoAlbum {
   path: string;
-  tags: string[];
-  dimensions: {
-    width: number;
-    height: number;
+  // photo path array
+  items: {
+    photos: string[];
+    subAlbums: string[];
   };
+  label: string;
 }

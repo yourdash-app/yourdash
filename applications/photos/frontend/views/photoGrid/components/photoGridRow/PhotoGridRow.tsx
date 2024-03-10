@@ -4,9 +4,9 @@
  */
 
 import React from "react";
-import { IPhoto } from "../../../../shared/types/photo";
-import Photo from "../../../components/photo/Photo";
-import { calculateAspectRatio } from "../splitItemsIntoRows";
+import { IPhoto } from "../../../../../shared/photo";
+import Photo from "../photo/Photo";
+import { calculateAspectRatio } from "../../splitItemsIntoRows";
 import styles from "./PhotoGridRow.module.scss";
 
 const PhotoGridRow: React.FC<{
@@ -18,7 +18,7 @@ const PhotoGridRow: React.FC<{
       {items.map((item) => {
         return (
           <Photo
-            key={item.fileName}
+            key={item.imageUrl}
             fileName={item.fileName}
             dimensions={item.dimensions}
             tags={item.tags}

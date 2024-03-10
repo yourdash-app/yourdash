@@ -23,7 +23,7 @@ export default class YourDashUser {
 
   constructor(username: string) {
     this.username = username;
-    this.path = path.resolve(path.join(coreApi.fs.ROOT_PATH, `users/${this.username}`));
+    this.path = path.join(path.join(coreApi.fs.ROOT_PATH, `users/${this.username}`));
   }
 
   getPath() {

@@ -1,12 +1,12 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 @Ewsgit and YourDash contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 import csi from "@yourdash/csi/csi";
 import React from "react";
-import { IPhoto } from "../../../shared/types/photo";
-import { calculateAspectRatio } from "../../views/photoGrid/splitItemsIntoRows";
+import { IPhoto } from "../../../../../shared/photo";
+import { calculateAspectRatio } from "../../splitItemsIntoRows";
 import styles from "./Photo.module.scss";
 
 const Photo: React.FC<
@@ -23,7 +23,7 @@ const Photo: React.FC<
         height: `${display.rowHeight}px`,
       }}
     >
-      <img alt={""} className={styles.photo} src={csi.getInstanceUrl() + imageUrl} loading={"lazy"} />
+      <img alt={""} className={styles.photo} src={csi.getInstanceUrl() + imageUrl} />
     </div>
   );
 };

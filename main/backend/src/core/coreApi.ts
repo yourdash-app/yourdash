@@ -18,6 +18,7 @@ import { createSession } from "../helpers/session.js";
 import CoreApiAuthenticatedImage from "./coreApiAuthenticatedImage.js";
 import CoreApiCommands from "./coreApiCommands.js";
 import CoreApiGlobalDb from "./coreApiGlobalDb.js";
+import CoreApiImage from "./coreApiImage.js";
 import CoreApiLog from "./coreApiLog.js";
 import CoreApiTeams from "./coreApiTeams.js";
 import loadNextCloudSupportEndpoints from "./nextcloud/coreApiNextCloud.js";
@@ -46,6 +47,7 @@ export class CoreApi {
   readonly fs: CoreApiFileSystem;
   readonly scheduler: CoreApiScheduler;
   readonly userDatabase: CoreApiUserDatabase;
+  readonly image: CoreApiImage;
   readonly panel: CoreApiPanel;
   readonly teams: CoreApiTeams;
   readonly authenticatedImage: CoreApiAuthenticatedImage;
@@ -85,20 +87,16 @@ export class CoreApi {
     this.commands = new CoreApiCommands(this);
     this.fs = new CoreApiFileSystem(this);
     this.userDatabase = new CoreApiUserDatabase(this);
+    this.image = new CoreApiImage(this);
     this.panel = new CoreApiPanel(this);
     this.teams = new CoreApiTeams(this);
     this.authenticatedImage = new CoreApiAuthenticatedImage(this);
     this.loadManagement = new CoreApiLoadManagement(this);
     this.utils = new CoreApiUtils(this);
     this.websocketManager = new CoreApiWebsocketManager(this);
+    // TODO: implement WebDAV & CalDAV & CardDAV (outdated WebDAV example -> https://github.com/LordEidi/fennel.js/)
     this.webdav = new CoreApiWebDAV(this);
 
-    // TODO: implement WebDAV & CalDAV & CardDAV (outdated WebDAV example -> https://github.com/LordEidi/fennel.js/)
-
-    // TODO: create the websocket manager, this will ease in creation of websocket servers with built-in authentication
-    //       each application that uses a websocket connection can use the manager to create it's own websocket server
-    //       on it's application's endpoint e.g: /app/yourdash/websocket-manager/websocket with the suffix
-    //       /websocket-manager/websocket being forced
     this.commands.registerCommand("hello", () => {
       this.log.info("command", "Hello from YourDash!");
     });
@@ -130,6 +128,21 @@ export class CoreApi {
             'gdb ( Global Database )\n- get: "gdb get {key}"\n- set: "gdb set {key} {value}"\n- delete: "gdb delete {key}"',
           );
       }
+    });
+
+    process.on("SIGTERM", () => {
+      this.log.info("shutdown", "SIGTERM received, shutting down YourDash...");
+      this.shutdownInstance();
+    });
+
+    process.on("SIGINT", () => {
+      this.log.info("shutdown", "SIGTERM received, shutting down YourDash...");
+      this.shutdownInstance();
+    });
+
+    process.on("SIGHUP", () => {
+      this.log.info("shutdown", "SIGTERM received, shutting down YourDash...");
+      this.shutdownInstance();
     });
 
     return this;
@@ -583,25 +596,23 @@ export class CoreApi {
 
   // try not to use this method for production stability, instead prefer to reload a specific module if it works for your use-case.
   shutdownInstance() {
-    this.httpServer.close();
+    this.log.info("core", "Shutting down...");
 
-    this.commands.getAllCommands().forEach((command) => {
-      this.commands.removeCommand(command);
+    fsReaddirSync(path.resolve(this.fs.ROOT_PATH, "./users")).forEach(async (username) => {
+      await this.users.__internal__saveUserDatabaseInstantly(username);
     });
 
-    this.log.info("core", "Shutting down... ( restart should occur automatically )");
+    this.scheduler.__internal__onShutdown();
+
+    this.httpServer.close(() => {
+      this.log.info("core", "HTTP Server closed");
+    });
 
     const LOG_OUTPUT = this.log.logHistory
       .map((hist) => {
         return `${hist.type}: ${hist.message}`;
       })
       .join("\n");
-
-    this.httpServer.close();
-
-    fsReaddirSync(path.resolve(this.fs.ROOT_PATH, "./users")).forEach(async (username) => {
-      await this.users.__internal__saveUserDatabaseInstantly(username);
-    });
 
     fsWriteFile(path.resolve(process.cwd(), "./fs/log.log"), LOG_OUTPUT, () => {
       try {

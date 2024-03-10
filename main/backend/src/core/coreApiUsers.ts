@@ -21,7 +21,6 @@ export default class CoreApiUsers {
   private sessions: {
     [key: string]: IYourDashSession<any>[]; // eslint-disable-line @typescript-eslint/no-explicit-any
   } = {};
-  private onUserCreateListener: ((username: string) => void)[] = [];
 
   constructor(coreApi: CoreApi) {
     this.coreApi = coreApi;
@@ -86,12 +85,6 @@ export default class CoreApiUsers {
     const user = new YourDashUser(username);
 
     await this.userDatabases[username].db.writeToDisk(path.join(user.path, "core/user_db.json"));
-
-    return this;
-  }
-
-  addUserCreateListener(listener: (username: string) => void) {
-    this.onUserCreateListener.push(listener);
 
     return this;
   }

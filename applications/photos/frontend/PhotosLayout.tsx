@@ -5,11 +5,12 @@
 
 import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
 import SideBar, { SIDEBAR_ITEM_TYPE, SIDEBAR_STATE } from "@yourdash/uikit/depChiplet/components/sideBar/SideBar";
-import React, { useState } from "react";
+import React from "react";
 import { Outlet } from "react-router";
+import { useNavigate } from "react-router-dom";
 
 const PhotosLayout: React.FC = () => {
-  const [currentPath, setCurrentPath] = useState<string>("/");
+  const navigate = useNavigate();
 
   return (
     <div className={"h-full grid w-full grid-cols-[auto,1fr]"}>
@@ -19,10 +20,19 @@ const PhotosLayout: React.FC = () => {
           {
             label: "Home",
             onClick() {
-              setCurrentPath("/");
+              navigate("/app/photos/");
             },
             type: SIDEBAR_ITEM_TYPE.Button,
             icon: YourDashIcon.Home,
+          },
+          {
+            label: "Search",
+            onClick() {
+              navigate("/app/photos/search");
+              return 0;
+            },
+            type: SIDEBAR_ITEM_TYPE.Button,
+            icon: YourDashIcon.Search,
           },
           {
             type: SIDEBAR_ITEM_TYPE.Separator,
@@ -31,7 +41,7 @@ const PhotosLayout: React.FC = () => {
           {
             label: "Upload",
             onClick() {
-              // TODO: allow uploading of files
+              navigate("/app/photos/upload");
               return 0;
             },
             type: SIDEBAR_ITEM_TYPE.Button,

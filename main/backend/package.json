@@ -64,10 +64,10 @@
     "watch": [
       "./src/**/*",
       "./src/*",
-      "../applications/**/backend/**/*",
-      "../applications/**/backend/*"
+      "../../applications/**/backend/**/*",
+      "../../applications/**/backend/*"
     ],
-    "delay": 100,
+    "delay": 256,
     "colours": true,
     "signal": "SIGTERM"
   }

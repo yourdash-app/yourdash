@@ -1,21 +1,22 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 @Ewsgit and YourDash contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 import csi from "@yourdash/csi/csi";
 import React, { useEffect, useState } from "react";
-import { IPhoto } from "../../../shared/types/photo";
-import styles from "../../components/photoCategory/PhotoCategory.module.scss";
-import PhotoGridRow from "./components/PhotoGridRow";
+import { IPhoto } from "../../../shared/photo";
+import PhotoGridRow from "./components/photoGridRow/PhotoGridRow";
+import styles from "./PhotoGrid.module.scss";
 import splitItemsIntoRows from "./splitItemsIntoRows";
+
+let photos: IPhoto[] = [];
 
 const PhotoGrid: React.FC<{ gridPhotoPaths: string[] }> = ({ gridPhotoPaths }) => {
   const ref = React.useRef<HTMLDivElement>(null);
   const [rows, setRows] = useState<
     { items: (IPhoto & { displayWidth: number; displayHeight: number })[]; height: number }[]
   >([]);
-  const [photos, setPhotos] = useState<IPhoto[]>([]);
 
   useEffect(() => {
     let timeout: NodeJS.Timeout;
@@ -23,8 +24,10 @@ const PhotoGrid: React.FC<{ gridPhotoPaths: string[] }> = ({ gridPhotoPaths }) =
     const resizeObserver = new ResizeObserver((entries) => {
       clearTimeout(timeout);
       timeout = setTimeout(() => {
+        console.log("foo");
+
         setRows(splitItemsIntoRows(photos, ref.current?.getBoundingClientRect().width || 512, 256));
-      }, 25);
+      }, 100);
     });
 
     resizeObserver.observe(ref.current!, { box: "border-box" });
@@ -54,7 +57,7 @@ const PhotoGrid: React.FC<{ gridPhotoPaths: string[] }> = ({ gridPhotoPaths }) =
         });
       }),
     ).then((photosResult: any) => {
-      setPhotos(photosResult);
+      photos = photosResult;
       setRows(splitItemsIntoRows(photos, ref.current?.getBoundingClientRect().width || 512, 256));
     });
   }, [gridPhotoPaths]);

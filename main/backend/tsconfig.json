@@ -19,8 +19,8 @@
   },
   "include": [
     "./src/**/*.ts",
-    "../shared/**/*.ts",
-    "../applications/**/backend/**/*.ts"
+    "../../packages/shared/**/*.ts",
+    "../../applications/**/backend/**/*.ts"
   ],
   "exclude": [
     "node_modules"

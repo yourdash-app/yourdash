@@ -1,5 +1,5 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 @Ewsgit and YourDash contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -42,7 +42,7 @@ export default class FileSystemDirectory extends FileSystemEntity {
   }
 
   async create() {
-    await this.coreApi.fs.createDirectory(this.path);
+    await fs.mkdir(this.path, { recursive: true });
 
     return this;
   }

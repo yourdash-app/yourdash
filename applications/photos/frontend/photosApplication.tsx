@@ -1,11 +1,11 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 @Ewsgit and YourDash contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 import csi from "@yourdash/csi/csi";
 import React, { useEffect, useState } from "react";
-import { IPhotoAlbum } from "../shared/types/photoAlbum";
+import { IPhotoAlbum } from "../shared/photoAlbum";
 import PhotoCategory from "./components/photoCategory/PhotoCategory";
 import pth from "path-browserify";
 
@@ -28,7 +28,7 @@ const PhotosApplication: React.FC = () => {
                 ...photoCategories,
                 {
                   path: a,
-                  name: pth.basename(a),
+                  label: pth.basename(a),
                   items: album.items,
                 },
               ]);
@@ -56,7 +56,7 @@ const PhotosApplication: React.FC = () => {
         return (
           <PhotoCategory
             key={photoCategory.path}
-            name={photoCategory.name}
+            label={photoCategory.label}
             items={photoCategory.items}
             path={photoCategory.path}
           />
