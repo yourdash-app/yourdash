@@ -5,20 +5,26 @@
 
 import csi from "@yourdash/csi/csi";
 import React from "react";
-import { IPhoto } from "../../../../../shared/photo";
+import { useNavigate } from "react-router-dom";
+import IGridPhoto from "../../../../../shared/gridPhoto";
 import { calculateAspectRatio } from "../../splitItemsIntoRows";
 import styles from "./Photo.module.scss";
 
 const Photo: React.FC<
-  IPhoto & { display: { rowHeight: number; height: number; width: number; aspectRatio: number } }
-> = ({ fileName, dimensions, tags, people, date, imageUrl, display }) => {
+  IGridPhoto & { display: { rowHeight: number; height: number; width: number; aspectRatio: number } }
+> = ({ path, dimensions, tags, imageUrl, display }) => {
+  const navigate = useNavigate();
+
   return (
     <div
+      onClick={() => {
+        navigate("/app/a/photos/photo/" + path);
+      }}
       className={styles.component}
       style={{
         width:
           display.width !== 0
-            ? `${display.rowHeight * calculateAspectRatio({ fileName, dimensions, tags, people, date, imageUrl })}px`
+            ? `${display.rowHeight * calculateAspectRatio({ path, dimensions, tags, imageUrl })}px`
             : "100%",
         height: `${display.rowHeight}px`,
       }}

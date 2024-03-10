@@ -5,27 +5,26 @@
 
 import csi from "@yourdash/csi/csi";
 import React, { useEffect, useState } from "react";
+import IGridPhoto from "../../../shared/gridPhoto";
 import { IPhoto } from "../../../shared/photo";
 import PhotoGridRow from "./components/photoGridRow/PhotoGridRow";
 import styles from "./PhotoGrid.module.scss";
 import splitItemsIntoRows from "./splitItemsIntoRows";
 
-let photos: IPhoto[] = [];
+let photos: IGridPhoto[] = [];
 
 const PhotoGrid: React.FC<{ gridPhotoPaths: string[] }> = ({ gridPhotoPaths }) => {
   const ref = React.useRef<HTMLDivElement>(null);
   const [rows, setRows] = useState<
-    { items: (IPhoto & { displayWidth: number; displayHeight: number })[]; height: number }[]
+    { items: (IGridPhoto & { displayWidth: number; displayHeight: number })[]; height: number }[]
   >([]);
 
   useEffect(() => {
     let timeout: NodeJS.Timeout;
 
-    const resizeObserver = new ResizeObserver((entries) => {
+    const resizeObserver = new ResizeObserver(() => {
       clearTimeout(timeout);
       timeout = setTimeout(() => {
-        console.log("foo");
-
         setRows(splitItemsIntoRows(photos, ref.current?.getBoundingClientRect().width || 512, 256));
       }, 100);
     });
@@ -56,7 +55,8 @@ const PhotoGrid: React.FC<{ gridPhotoPaths: string[] }> = ({ gridPhotoPaths }) =
           );
         });
       }),
-    ).then((photosResult: any) => {
+      // @ts-ignore
+    ).then((photosResult: IGridPhoto[]) => {
       photos = photosResult;
       setRows(splitItemsIntoRows(photos, ref.current?.getBoundingClientRect().width || 512, 256));
     });

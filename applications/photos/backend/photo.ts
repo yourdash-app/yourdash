@@ -8,6 +8,7 @@ import IGridPhoto, { MAX_HEIGHT } from "../shared/gridPhoto.js";
 import { AUTHENTICATED_IMAGE_TYPE } from "@yourdash/backend/src/core/coreApiAuthenticatedImage.js";
 import pth from "path";
 import coreApi from "@yourdash/backend/src/core/coreApi.js";
+import { IPhoto } from "../shared/photo.js";
 
 export default class Photo {
   username: string;
@@ -62,5 +63,16 @@ export default class Photo {
       path: this.path,
       tags: [],
     } as IGridPhoto;
+  }
+
+  async getIPhoto() {
+    return {
+      dimensions: this.getDimensions(),
+      imageUrl: await this.getPhotoUrl(),
+      path: this.path,
+      tags: [],
+      date: "",
+      people: [],
+    } as IPhoto;
   }
 }

@@ -4,7 +4,7 @@
  */
 
 export interface IPhoto {
-  fileName: string;
+  path: string;
   dimensions: {
     width: number;
     height: number;

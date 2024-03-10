@@ -4,24 +4,25 @@
  */
 
 import csi from "@yourdash/csi/csi";
-import clippy from "@yourdash/shared/web/helpers/clippy";
 import Card from "@yourdash/uikit/depChiplet/components/card/Card";
 import Heading from "@yourdash/uikit/depChiplet/components/heading/Heading";
 import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
 import IconButton from "@yourdash/uikit/depChiplet/components/iconButton/IconButton";
 import pth from "path-browserify";
 import React, { useEffect } from "react";
-import { IPhotoAlbum } from "../../../shared/photoAlbum";
-import PhotoGrid from "../../views/photoGrid/PhotoGrid";
-import styles from "./PhotoCategory.module.scss";
+import { useNavigate, useParams } from "react-router-dom";
+import { IPhotoAlbum } from "../../shared/photoAlbum";
+import styles from "./AlbumPage.module.scss";
+import PhotoGrid from "../views/photoGrid/PhotoGrid";
 
-const PhotoCategory: React.FC<{ path: string }> = ({ path }) => {
-  const [open, setOpen] = React.useState<boolean>(false);
+const HomePage: React.FC = () => {
+  const albumPath = useParams()["*"];
+  const navigate = useNavigate();
   const [photoAlbum, setPhotoAlbum] = React.useState<IPhotoAlbum | null>(null);
 
   useEffect(() => {
     csi.getJson(
-      `/app/photos/album/${path}`,
+      `/app/photos/album/${albumPath}`,
       (album: IPhotoAlbum) => {
         setPhotoAlbum({
           label: pth.basename(album.path),
@@ -33,39 +34,32 @@ const PhotoCategory: React.FC<{ path: string }> = ({ path }) => {
         console.log(error);
       },
     );
-  }, []);
+  }, [albumPath]);
 
   if (photoAlbum === null) {
     return null;
   }
 
   return (
-    <div className={styles.component}>
-      <div className={clippy(styles.header, open && styles.open)}>
-        {open ? (
-          <IconButton
-            onClick={() => {
-              setOpen(false);
-            }}
-            icon={YourDashIcon.FoldUp}
-          />
-        ) : (
-          <IconButton
-            onClick={() => {
-              setOpen(true);
-            }}
-            icon={YourDashIcon.FoldDown}
-          />
-        )}
-        <Heading level={3} className={styles.label}>
+    <div className={"flex flex-col"}>
+      <div className={"flex flex-row items-center p-12 pl-4 pr-4"}>
+        <IconButton
+          icon={YourDashIcon.ChevronLeft}
+          onClick={() => {
+            navigate("..");
+          }}
+        />
+        <Heading level={1} className={"pl-4"}>
           {photoAlbum.label}
         </Heading>
-        <div className={"pl-2 gap-2 flex"}>
-          {photoAlbum.items.photos.length > 0 && <div>Photos: {photoAlbum.items.photos.length}</div>}
-          {photoAlbum.items.subAlbums.length > 0 && <div>Sub Albums: {photoAlbum.items.subAlbums.length}</div>}
+        <div className={"ml-auto gap-2 flex"}>
+          {photoAlbum.items.photos.length > 0 && <Heading level={4}>Photos: {photoAlbum.items.photos.length}</Heading>}
+          {photoAlbum.items.subAlbums.length > 0 && (
+            <Heading level={4}>Sub Albums: {photoAlbum.items.subAlbums.length}</Heading>
+          )}
         </div>
       </div>
-      {open && (
+      <div className={styles.component}>
         <div className={styles.content}>
           <div className={"flex w-full gap-2"}>
             {photoAlbum.items.subAlbums.map((album) => {
@@ -80,9 +74,9 @@ const PhotoCategory: React.FC<{ path: string }> = ({ path }) => {
           </div>
           <PhotoGrid gridPhotoPaths={photoAlbum.items.photos} />
         </div>
-      )}
+      </div>
     </div>
   );
 };
 
-export default PhotoCategory;
+export default HomePage;

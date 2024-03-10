@@ -3,14 +3,13 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { MAX_HEIGHT } from "../../../shared/gridPhoto";
-import { IPhoto } from "../../../shared/photo";
+import IGridPhoto, { MAX_HEIGHT } from "../../../shared/gridPhoto";
 
-export function calculateAspectRatio(item: IPhoto) {
+export function calculateAspectRatio(item: IGridPhoto) {
   return item.dimensions.width / item.dimensions.height;
 }
 
-function calculateRowHeight(items: IPhoto[], containerWidth: number, containerHeight: number, isLast: boolean) {
+function calculateRowHeight(items: IGridPhoto[], containerWidth: number, containerHeight: number, isLast: boolean) {
   const sumOfItemsRatio = items.map((item) => calculateAspectRatio(item)).reduce((sum, itemRatio) => sum + itemRatio);
 
   let rowHeight = Math.min(containerWidth / sumOfItemsRatio, MAX_HEIGHT);
@@ -26,16 +25,14 @@ function calculateRowHeight(items: IPhoto[], containerWidth: number, containerHe
   return rowHeight;
 }
 
-function calculateRowWidth(items: IPhoto[], containerHeight: number) {
+function calculateRowWidth(items: IGridPhoto[], containerHeight: number) {
   return items.map((item) => containerHeight * calculateAspectRatio(item)).reduce((sum, itemWidth) => sum + itemWidth);
 }
 
-export default function splitItemsIntoRows(items: IPhoto[], containerWidth: number, baseRowHeight: number) {
-  const rows: { items: (IPhoto & { displayWidth: number; displayHeight: number })[]; height: number }[] = [];
+export default function splitItemsIntoRows(items: IGridPhoto[], containerWidth: number, baseRowHeight: number) {
+  const rows: { items: (IGridPhoto & { displayWidth: number; displayHeight: number })[]; height: number }[] = [];
   let currentRowNumber = 0;
   let currentRowItem = 0;
-
-  console.log(items);
 
   while (currentRowItem < items.length) {
     const rowItems = [];

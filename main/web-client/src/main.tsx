@@ -19,6 +19,7 @@ import DocsLayout from "./root/docs/Layout";
 import ErrorElement from "./ErrorElement";
 import ServerLoginPage from "./root/login/Page";
 import Index from "./root/index/Index";
+import LoginRedirect from "./root/login/Redirect";
 import ProjectsIndexPage from "./root/projects/Index";
 import RootLayout from "./root/RootLayout";
 import UIKitRootIntegration from "@yourdash/uikit/depChiplet/RootIntegration";
@@ -49,6 +50,7 @@ function main() {
               <Route path={"proj/*"} element={<ProjectsRouter />} />
               <Route path={"/login"}>
                 <Route index element={<ServerLoginPage />} />
+                <Route path={"*"} element={<LoginRedirect />} />
               </Route>
               <Route path={"app"}>
                 <Route element={<AppLayout />}>

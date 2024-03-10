@@ -50,7 +50,9 @@ const PhotosLayout: React.FC = () => {
         ]}
         defaultState={SIDEBAR_STATE.NormalExpanded}
       />
-      <Outlet />
+      <div className={"flex flex-col w-full h-full overflow-y-auto bg-bg"}>
+        <Outlet />
+      </div>
     </div>
   );
 };

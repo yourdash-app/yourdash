@@ -47,7 +47,7 @@ export default class PhotosModule extends BackendModule {
 
       const photo = new Photo(username, photoPath);
 
-      return res.json(photo.getPhotoUrl());
+      return res.json(await photo.getIPhoto());
     });
 
     // this.API.request.get("/app/photos/photo/*", async (req, res) => {

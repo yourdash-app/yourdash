@@ -284,6 +284,10 @@ export class CoreApi {
 
     // INFO: This shouldn't be used for detection of a YourDash Instance, instead use the '/test' endpoint
     this.request.get("/", (_req, res) => {
+      if (this.isDevMode) {
+        return res.redirect(`http://localhost:5173/#/login/http://localhost:3563`);
+      }
+
       return res.redirect(`https://ydsh.pages.dev/#/login/${this.globalDb.get("core:instanceurl")}`);
     });
 
