@@ -1,17 +1,19 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 @Ewsgit and YourDash contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import ComingSoon from "@yourdash/uikit/depChiplet/views/ComingSoon";
 import React from "react";
-import ComingSoon from "../../../../ComingSoon";
 
 const Index: React.FC = () => (
   <div className={"text-center"}>
     <h1 className={"text-6xl font-semibold tracking-wide animate__animated animate__fadeIn mt-8"}>{"Translation"}</h1>
-    <p className={"animate__animated animate__fadeInDown animate__500ms mt-3"}>{"How to translate YourDash for other languages"}</p>
+    <p className={"animate__animated animate__fadeInDown animate__500ms mt-3"}>
+      {"How to translate YourDash for other languages"}
+    </p>
 
-    <ComingSoon/>
+    <ComingSoon />
   </div>
 );
 

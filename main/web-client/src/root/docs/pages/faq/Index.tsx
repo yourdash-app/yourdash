@@ -1,10 +1,10 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 @Ewsgit and YourDash contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import ComingSoon from "@yourdash/uikit/depChiplet/views/ComingSoon";
 import React from "react";
-import ComingSoon from "../../../../ComingSoon";
 
 const FAQPage: React.FC = () => (
   <div className={"text-center"}>
@@ -13,28 +13,28 @@ const FAQPage: React.FC = () => (
       <h3>What is YourDash?</h3>
       <p>
         YourDash is a personal cloud environment for project management, file sharing, and more
-        <br/>
+        <br />
         Some of the features of YourDash are:
-        <br/>
+        <br />
         File management and sharing,
-        <br/>
+        <br />
         Project management,
-        <br/>
+        <br />
         Version controlled file backup and sync,
-        <br/>
+        <br />
         personal cloud code editors,
-        <br/>
+        <br />
         fully customizable using plugins
       </p>
       <h3>Is YourDash free?</h3>
       <p>
-        Yes! YourDash is free to use for everyone.
-        See [installation instructions](#/docs/get-started)
-        <br/>
-        YourDash is free and open-source which means anyone can contribute to improve it's features and overall security.
+        Yes! YourDash is free to use for everyone. See [installation instructions](#/docs/get-started)
+        <br />
+        YourDash is free and open-source which means anyone can contribute to improve it's features and overall
+        security.
       </p>
     </>
-    <ComingSoon/>
+    <ComingSoon />
   </div>
 );
 

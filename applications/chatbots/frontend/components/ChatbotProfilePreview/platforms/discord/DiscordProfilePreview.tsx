@@ -6,8 +6,6 @@
 import Icon from "@yourdash/uikit/depChiplet/components/icon/Icon";
 import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
 import React from "react";
-import { IDiscordActivity } from "../../../../../shared/platforms/discord/activities";
-import { IDiscordUserPresence } from "../../../../../shared/platforms/discord/user";
 import styles from "./DiscordProfilePreview.module.scss";
 
 export interface IDiscordProfilePreviewProps {
@@ -15,7 +13,6 @@ export interface IDiscordProfilePreviewProps {
   displayName: string;
   avatarUrl: string;
   bio: string;
-  presence: IDiscordUserPresence;
   tryMyCommands: string[];
   discriminator: string;
   showAddApplicationButton?: boolean;
@@ -26,7 +23,6 @@ const DiscordProfilePreview: React.FC<IDiscordProfilePreviewProps> = ({
   displayName,
   avatarUrl,
   bio,
-  presence,
   tryMyCommands,
   discriminator,
   showAddApplicationButton,
@@ -73,7 +69,7 @@ const DiscordProfilePreview: React.FC<IDiscordProfilePreviewProps> = ({
             <p className={styles.bio}>{bio}</p>
           </>
         )}
-        {presence.activities[0] && <div className={styles.status}>{presence.activities[0].state}</div>}
+        {/* {presence.activities[0] && <div className={styles.status}>{presence.activities[0].state}</div>} */}
         <h3 className={styles.sectionHeader}>TRY MY COMMANDS</h3>
         <section className={styles.tryMyCommands}>
           {tryMyCommands.map((tag) => {
