@@ -4,6 +4,9 @@
   "main": "index.js",
   "author": "Ewsgit <ewsgit@duck.com>",
   "license": "MIT",
+  "engines": {
+    "node": ">=21.0.0"
+  },
   "dependencies": {
     "@types/bcrypt": "^5.0.0",
     "@types/compression": "^1.7.3",

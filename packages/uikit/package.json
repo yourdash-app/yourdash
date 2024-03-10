@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "license": "MIT",
   "type": "module",
+  "engines": {
+    "node": ">=21.0.0"
+  },
   "dependencies": {
     "@floating-ui/react": "^0.26.3",
     "@loadable/component": "^5.15.3",

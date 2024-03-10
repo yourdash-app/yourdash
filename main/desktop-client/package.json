@@ -6,6 +6,9 @@
   "author": "Ewsgit",
   "license": "MIT",
   "homepage": "https://yourdash.pages.dev",
+  "engines": {
+    "node": ">=21.0.0"
+  },
   "scripts": {
     "lint": "eslint . --ext .ts --fix",
     "typecheck": "tsc --noEmit -p tsconfig.node.json --composite false && tsc --noEmit -p tsconfig.web.json --composite false",

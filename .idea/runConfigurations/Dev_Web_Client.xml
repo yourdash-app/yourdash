@@ -5,7 +5,8 @@
     <scripts>
       <script value="yd:dev-web-client" />
     </scripts>
-    <node-interpreter value="project" />
+    <node-interpreter value="$USER_HOME$/.nvm/versions/node/v21.7.1/bin/node" />
+    <package-manager value="yarn" />
     <envs />
     <method v="2" />
   </configuration>

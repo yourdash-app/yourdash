@@ -4,6 +4,9 @@
   "name": "@yourdash/shared",
   "author": "Ewsgit <ewsgit@duck.com>",
   "license": "MIT",
+  "engines": {
+    "node": ">=21.0.0"
+  },
   "dependencies": {
     "react": "^18.2.0",
     "@types/react": "^18.2.61",

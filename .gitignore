@@ -1,5 +1,5 @@
 **/node_modules/
-/main/backend/fs/
+/fs/
 /main/backend/**/*.js
 /main/backend/**/*.js.map
 /applications/**/*.js

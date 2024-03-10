@@ -18,7 +18,7 @@ export default class CoreApiFileSystem {
   __internal__fileSystemLocks: Map<string, FileSystemLock[]>;
 
   constructor(coreApi: CoreApi) {
-    this.ROOT_PATH = pth.resolve(pth.join(process.cwd(), "./fs/"));
+    this.ROOT_PATH = pth.resolve(pth.join(process.cwd(), "./../../fs/"));
     this.coreApi = coreApi;
     this.verifyFileSystem = new CoreApiVerifyFileSystem(this.coreApi);
     this.__internal__fileSystemLocks = new Map<string, FileSystemLock[]>();

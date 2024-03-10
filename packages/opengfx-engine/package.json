@@ -4,6 +4,9 @@
   "version": "0.0.1",
   "type": "module",
   "license": "MIT",
+  "engines": {
+    "node": ">=21.0.0"
+  },
   "scripts": {
     "dev": "yarn dev:2d:gfxts-one",
     "dev:2d:gfxts-one": "yarn --cwd src/demo/2d/gfxts-one dev .",

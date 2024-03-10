@@ -5,7 +5,6 @@
   "license": "MIT",
   "type": "module",
   "engines": {
-    "pnpm": ">=7.18.0",
     "node": ">=21.0.0"
   },
   "devDependencies": {

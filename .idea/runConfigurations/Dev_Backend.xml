@@ -5,7 +5,8 @@
     <scripts>
       <script value="yd:dev-backend" />
     </scripts>
-    <node-interpreter value="project" />
+    <node-interpreter value="$USER_HOME$/.nvm/versions/node/v21.7.1/bin/node" />
+    <package-manager value="yarn" />
     <envs>
       <env name="BUN_INSTALL" value="&quot;$HOME/.bun&quot;" />
       <env name="PATH" value="$BUN_INSTALL/bin:$PATH" />

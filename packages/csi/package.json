@@ -4,6 +4,9 @@
   "name": "@yourdash/csi",
   "author": "Ewsgit <ewsgit@duck.com>",
   "license": "MIT",
+  "engines": {
+    "node": ">=21.0.0"
+  },
   "dependencies": {
     "socket.io-client": "^4.7.4"
   }
