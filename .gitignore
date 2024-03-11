@@ -1,10 +1,12 @@
 **/node_modules/
-/packages/backend/fs/
-/packages/backend/**/*.js
-/packages/backend/**/*.js.map
-/packages/applications/**/*.js
-/packages/applications/**/*.js.map
+/fs/
+/main/backend/**/*.js
+/main/backend/**/*.js.map
+/applications/**/*.js
+/applications/**/*.js.map
 /packages/shared/**/*.js
 /packages/shared/**/*.js.map
 /.idea/webServers.xml
 /.idea/deployment.xml
+/bun.lockb
+.turbo

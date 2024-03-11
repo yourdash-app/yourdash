@@ -1,9 +1,12 @@
 {
-  "name": "opengfx",
+  "name": "@yourdash/opengfx",
   "private": false,
   "version": "0.0.1",
   "type": "module",
   "license": "MIT",
+  "engines": {
+    "node": ">=21.0.0"
+  },
   "scripts": {
     "dev": "yarn dev:2d:gfxts-one",
     "dev:2d:gfxts-one": "yarn --cwd src/demo/2d/gfxts-one dev .",
@@ -15,7 +18,7 @@
     "vite": "^4.4.5"
   },
   "dependencies": {
-    "@webgpu/types": "^0.1.35",
+    "@webgpu/types": "^0.1.40",
     "vite-plugin-dynamic-import": "^1.5.0"
   }
 }

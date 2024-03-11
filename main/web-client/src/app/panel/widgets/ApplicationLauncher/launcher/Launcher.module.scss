@@ -1,0 +1,115 @@
+/*!
+ * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
+.applicationLauncher {
+  position: fixed;
+  background: rgb(var(--container-bg));
+  color: rgb(var(--container-fg));
+  z-index: -5;
+  width: 28rem;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgb(var(--container-border));
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.content {
+  @container(max-width: calc(100vw - var(--app-panel-size))) {
+    width: calc(100% - var(--app-panel-size));
+  }
+
+  @container(max-height: calc(100vh - var(--app-panel-size))) {
+    height: calc(100% - var(--app-panel-size));
+  }
+
+  overflow-y: auto;
+}
+
+@mixin horizontal {
+  max-width: 75%;
+  left: 0;
+
+  @media (max-width: 768px) {
+    max-width: unset;
+    width: 100%;
+    border-radius: 0;
+  }
+
+  @media (max-height: 768px) {
+    max-height: unset;
+    height: calc(100vh - var(--app-panel-size));
+    border-radius: 0;
+  }
+}
+
+@mixin vertical {
+  max-height: 90%;
+  min-height: max-content;
+  top: 0;
+
+  @media (max-width: 768px) {
+    max-width: unset;
+    width: calc(100vw - var(--app-panel-size));
+    border-radius: 0;
+  }
+
+  @media (max-height: 768px) {
+    max-height: unset;
+    height: 100%;
+    border-radius: 0;
+  }
+}
+
+.sideTop {
+  @include horizontal;
+  top: var(--app-panel-size);
+  border-top: none;
+  border-left: none;
+  border-radius: 0 0 var(--container-rounding) 0;
+}
+
+.sideRight {
+  @include vertical;
+  right: var(--app-panel-size);
+  border-top: none;
+  border-right: none;
+  border-radius: 0 0 0 var(--container-rounding);
+}
+
+.sideBottom {
+  @include horizontal;
+  bottom: var(--app-panel-size);
+  border-bottom: none;
+  border-left: none;
+  border-radius: 0 var(--container-rounding) 0 0;
+}
+
+.sideLeft {
+  @include vertical;
+  left: var(--app-panel-size);
+  border-top: none;
+  border-left: none;
+  border-radius: 0 0 var(--container-rounding) 0;
+}
+
+.invisible {
+  visibility: hidden;
+  display: none;
+}
+
+.footer {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  width: 100%;
+  padding: 1rem;
+}
+
+.logoutButton {
+  color: rgb(var(--container-secondary-fg));
+  background-color: rgb(var(--container-secondary-bg));
+}

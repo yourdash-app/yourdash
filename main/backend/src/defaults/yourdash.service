@@ -1,0 +1,12 @@
+[Unit]
+Description=YourDash Instance Backend
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/bash /yourdash/packages/backend/defaults/yourdashBackend.sh
+Restart=always
+Type=notify
+
+[Install]
+WantedBy=default.target
+RequiredBy=network.target

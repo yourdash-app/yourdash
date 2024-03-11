@@ -11,7 +11,8 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [20.5.1]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+        node-version: [21.7.1]
 
     steps:
       - uses: actions/checkout@v4
@@ -26,7 +27,7 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Build website
-        run: (cd ./packages/web-client && yarn build)
+        run: (cd ./main/web-client && yarn build)
 #
 #      - name: Deploy to external repository
 #        uses: cpina/github-action-push-to-another-repository@main

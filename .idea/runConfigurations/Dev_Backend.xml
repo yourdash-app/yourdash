@@ -1,5 +1,16 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Dev Backend" type="NodeJSConfigurationType" application-parameters="--dev --log-requests" node-parameters="--watch" path-to-js-file="src/main.js" working-dir="$PROJECT_DIR$/packages/backend/">
+  <configuration default="false" name="Dev Backend" type="js.build_tools.npm">
+    <package-json value="$PROJECT_DIR$/package.json" />
+    <command value="run" />
+    <scripts>
+      <script value="yd:dev-backend" />
+    </scripts>
+    <node-interpreter value="project" />
+    <package-manager value="yarn" />
+    <envs>
+      <env name="BUN_INSTALL" value="&quot;$HOME/.bun&quot;" />
+      <env name="PATH" value="$BUN_INSTALL/bin:$PATH" />
+    </envs>
     <method v="2" />
   </configuration>
 </component>

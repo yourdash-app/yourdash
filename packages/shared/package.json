@@ -1,7 +1,15 @@
 {
   "type": "module",
   "version": "0.0.1",
-  "name": "shared",
+  "name": "@yourdash/shared",
   "author": "Ewsgit <ewsgit@duck.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "engines": {
+    "node": ">=21.0.0"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "@types/react": "^18.2.61",
+    "clsx": "^2.1.0"
+  }
 }

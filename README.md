@@ -15,7 +15,7 @@
 
 - YourDash's goal is to be a more-performant nextcloud alternative which can achieve a good level of performance on a
   Raspberry Pi 4.
-- Built using Node.js, Vite, Express, Electron and Typescript
+- Built using Node.js, Vite, Express, Electron, Bun and Typescript
 
 ## Projects
 
@@ -27,30 +27,75 @@ Some of the YourDash projects include
 - YourDash Web (web-client)
 - UIKit (uikit)
 
+## Host Your Own YourDash Instance
+
+- [Docs](https://ydsh.pages.dev/#/docs)
+
 ## Development Setup
 
 ### Requirements
 
-- Personal IDE of Choice
+- Personal IDE / Text Editor of Choice
     (Webstorm or VSCode is recommended)
     - [Webstorm](https://www.jetbrains.com/webstorm/)
     - [VSCode](https://code.visualstudio.com/)
 - Linting And Formatting
   - [ESLint](https://eslint.org)
 - Package Manager
-  - [Yarn](https://yarnpkg.com/getting-started/install)
+  - [Yarn](https://yarnpkg.com/) (Windows)
+  - [Bun](https://bun.sh/) (Linux)
 - Runtimes
-  - [Node.js LTS 20.10](https://nodejs.org/en/)
+  - [NodeJS](https://nodejs.org/)
   - [Python 3.11.7](https://www.python.org/downloads/release/python-3117/)
   - [Emscripten](https://emscripten.org/docs/getting_started/downloads.html)
     - (Chocolately install method is prefered for windows)
 - Version Control
   - [Git](https://git-scm.com/)
 
+### Installation and setup (Linux) (Recommended Development Method)
+
+#### Install Bun and Yarn
+```shell
+curl -fsSL https://bun.sh/install | bash
+source ~/.bashrc
+
+npm i -g yarn
+```
+#### Install npm dependencies
+```shell
+bun install
+```
+#### Run YourDash backend in dev mode
+```shell
+bun run yd:dev-backend
+```
+#### Run YourDash web in dev mode
+```shell
+bun run yd:dev-web-client
+```
+
+### Installation and setup (Windows)
+
+#### Install yarn
+```shell
+npm i -g yarn
+```
+#### Install npm dependencies
+```shell
+yarn install
+```
+#### Run YourDash backend in dev mode
+```shell
+yarn run yd:dev-backend
+```
+#### Run YourDash web in dev mode
+```shell
+yarn run yd:dev-web-client
+```
 
 #### Notes
 
-- Ensure Python 3.11.x is the default for installing yarn packages as 3.11.x+ will cause node-gyp errors during `yarn install`
+- Ensure Python 3.11.x is the default for installing yarn packages as 3.11.x+ will cause node-gyp errors during `bun install`
 
 # See more in the docs
 
