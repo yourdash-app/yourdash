@@ -27,7 +27,7 @@ const PhotoGridRow: React.FC<{
               rowHeight: height,
               height: item.displayHeight,
               width: item.displayWidth,
-              aspectRatio: calculateAspectRatio(item),
+              aspectRatio: calculateAspectRatio(item.dimensions),
             }}
           />
         );

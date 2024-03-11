@@ -22,10 +22,7 @@ const Photo: React.FC<
       }}
       className={styles.component}
       style={{
-        width:
-          display.width !== 0
-            ? `${display.rowHeight * calculateAspectRatio({ path, dimensions, tags, imageUrl })}px`
-            : "100%",
+        width: display.width !== 0 ? `${display.rowHeight * calculateAspectRatio(dimensions)}px` : "100%",
         height: `${display.rowHeight}px`,
       }}
     >

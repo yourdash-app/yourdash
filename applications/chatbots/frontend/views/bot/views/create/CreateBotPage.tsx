@@ -64,12 +64,6 @@ const CreateBotPage: React.FC = () => {
           displayName={displayName}
           avatarUrl={avatarUrl}
           bio={bio}
-          activityStatus={{
-            activities: [],
-            clientStatus: {
-              desktop: activityStatus,
-            },
-          }}
           status={status}
           commands={["ping", "pong", "foo", "bar"]}
         />
