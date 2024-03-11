@@ -57,6 +57,7 @@ const HomePage: React.FC = () => {
           {photoAlbum.items.subAlbums.length > 0 && (
             <Heading level={4}>Sub Albums: {photoAlbum.items.subAlbums.length}</Heading>
           )}
+          {photoAlbum.items.videos.length > 0 && <Heading level={4}>Videos: {photoAlbum.items.videos.length}</Heading>}
         </div>
       </div>
       <div className={styles.component}>
@@ -64,9 +65,9 @@ const HomePage: React.FC = () => {
           <div className={"flex w-full gap-2"}>
             {photoAlbum.items.subAlbums.map((album) => {
               return (
-                <a href={"#/app/a/photos/album/" + album} key={album}>
-                  <Card>
-                    <Heading level={4}>{pth.basename(album)}</Heading>
+                <a href={"#/app/a/photos/album/" + album.path} key={album.path} className={"flex flex-grow"}>
+                  <Card onClick={() => 0} className={"flex flex-grow items-center text-center justify-center"}>
+                    <Heading level={4}>{album.displayName}</Heading>
                   </Card>
                 </a>
               );

@@ -8,7 +8,8 @@ export interface IPhotoAlbum {
   // photo path array
   items: {
     photos: string[];
-    subAlbums: string[];
+    subAlbums: { displayName: string; path: string }[];
+    videos: string[];
   };
   label: string;
 }

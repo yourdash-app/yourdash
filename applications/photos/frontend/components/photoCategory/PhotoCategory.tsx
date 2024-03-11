@@ -63,16 +63,17 @@ const PhotoCategory: React.FC<{ path: string }> = ({ path }) => {
         <div className={"pl-2 gap-2 flex"}>
           {photoAlbum.items.photos.length > 0 && <div>Photos: {photoAlbum.items.photos.length}</div>}
           {photoAlbum.items.subAlbums.length > 0 && <div>Sub Albums: {photoAlbum.items.subAlbums.length}</div>}
+          {photoAlbum.items.videos.length > 0 && <div>Videos: {photoAlbum.items.videos.length}</div>}
         </div>
       </div>
       {open && (
         <div className={styles.content}>
-          <div className={"flex w-full gap-2"}>
+          <div className={"flex w-full gap-2 flex-wrap"}>
             {photoAlbum.items.subAlbums.map((album) => {
               return (
-                <a href={"#/app/a/photos/album/" + album} key={album}>
-                  <Card>
-                    <Heading level={4}>{pth.basename(album)}</Heading>
+                <a href={"#/app/a/photos/album/" + album.path} key={album.path} className={"flex flex-grow"}>
+                  <Card onClick={() => 0} className={"flex flex-grow items-center text-center justify-center"}>
+                    <Heading level={4}>{album.displayName}</Heading>
                   </Card>
                 </a>
               );

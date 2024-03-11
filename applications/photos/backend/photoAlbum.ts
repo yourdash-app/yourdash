@@ -31,6 +31,18 @@ export default class PhotoAlbum {
       .map((child) => child.path);
   }
 
+  async getVideos(): Promise<string[]> {
+    const dir = await coreApi.fs.getDirectory(this.path);
+
+    if (!(await dir.doesExist())) {
+      return [];
+    }
+
+    return ((await dir.getChildren()).filter((child) => child.entityType === "file") as FileSystemFile[])
+      .filter((child) => child.getType() === "video")
+      .map((child) => child.path);
+  }
+
   async getSubAlbumsPaths(): Promise<string[]> {
     const dir = await coreApi.fs.getDirectory(this.path);
 
@@ -52,7 +64,16 @@ export default class PhotoAlbum {
   async getIPhotoAlbum() {
     return {
       path: this.path,
-      items: { photos: await this.getPhotos(), subAlbums: await this.getSubAlbumsPaths() },
+      items: {
+        photos: await this.getPhotos(),
+        videos: await this.getVideos(),
+        subAlbums: (await this.getSubAlbumsPaths()).map((p) => {
+          return {
+            path: p,
+            displayName: pth.basename(p),
+          };
+        }),
+      },
       label: pth.basename(this.path),
     } as IPhotoAlbum;
   }
