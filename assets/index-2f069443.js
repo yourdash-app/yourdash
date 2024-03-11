@@ -1,0 +1,1 @@
+import{j as t,R as e,a as o}from"./index-5bcd9038.js";import{G as s}from"./globalDbApplication-44a86211.js";import"./TextBox-56383e45.js";const m=()=>t.jsx(e,{children:t.jsx(o,{index:!0,element:t.jsx(s,{})})});export{m as default};

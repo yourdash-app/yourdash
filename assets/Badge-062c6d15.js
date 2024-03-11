@@ -1,1 +1,0 @@
-import{j as o}from"./index-4cf28dcc.js";const n="_component_3vc2o_6",a="_indicator_3vc2o_10",c={component:n,indicator:a},i=({children:t,badgeCount:s})=>s!==0?o.jsxs("div",{className:c.component,children:[o.jsx("span",{className:c.indicator,style:{...s<10?{aspectRatio:"1/1"}:{}},children:s>999?"999+":s}),t]}):o.jsx("div",{className:c.component,children:t});export{i as default};
