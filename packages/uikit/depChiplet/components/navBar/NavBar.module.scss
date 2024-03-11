@@ -51,6 +51,7 @@
   gap: 0.5rem;
   height: 100%;
   width: max-content;
+  align-items: center;
 }
 
 .icon {
@@ -65,4 +66,5 @@
   container-name: left;
   container-type: inline-size;
   white-space: nowrap;
+  align-items: center;
 }

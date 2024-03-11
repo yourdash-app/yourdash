@@ -22,6 +22,10 @@ export default class PhotoAlbum {
   async getPhotos(): Promise<string[]> {
     const dir = await coreApi.fs.getDirectory(this.path);
 
+    if (!(await dir.doesExist())) {
+      return [];
+    }
+
     return ((await dir.getChildren()).filter((child) => child.entityType === "file") as FileSystemFile[])
       .filter((child) => child.getType() === "image")
       .map((child) => child.path);
@@ -29,6 +33,10 @@ export default class PhotoAlbum {
 
   async getSubAlbumsPaths(): Promise<string[]> {
     const dir = await coreApi.fs.getDirectory(this.path);
+
+    if (!(await dir.doesExist())) {
+      return [];
+    }
 
     return (await dir.getChildren()).filter((child) => child.entityType === "directory").map((child) => child.path);
   }

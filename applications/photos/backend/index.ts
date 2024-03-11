@@ -5,6 +5,7 @@
 
 import coreApi from "@yourdash/backend/src/core/coreApi.js";
 import BackendModule, { YourDashModuleArguments } from "@yourdash/backend/src/core/moduleManager/backendModule.js";
+import pth from "path";
 import * as path from "path";
 import Photo from "./photo.js";
 import PhotoAlbum from "./photoAlbum.js";
@@ -46,6 +47,17 @@ export default class PhotosModule extends BackendModule {
       const { username } = req.headers as { username: string };
 
       const photo = new Photo(username, photoPath);
+
+      return res.json(await photo.getIPhoto());
+    });
+
+    this.API.request.get(`${this.rootPath}/download-photo/*`, async (req, res) => {
+      const photoPath = req.params["0"] as string;
+      const { username } = req.headers as { username: string };
+
+      const photo = new Photo(username, photoPath);
+
+      res.setHeader("Content-Disposition", `attachment; filename="${pth.basename(photoPath)}"`);
 
       return res.json(await photo.getIPhoto());
     });

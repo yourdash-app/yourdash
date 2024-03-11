@@ -5,17 +5,19 @@
 
 import IGridPhoto, { MAX_HEIGHT } from "../../../shared/gridPhoto";
 
-export function calculateAspectRatio(item: IGridPhoto) {
-  return item.dimensions.width / item.dimensions.height;
+export function calculateAspectRatio(dimensions: { width: number; height: number }) {
+  return dimensions.width / dimensions.height;
 }
 
 function calculateRowHeight(items: IGridPhoto[], containerWidth: number, containerHeight: number, isLast: boolean) {
-  const sumOfItemsRatio = items.map((item) => calculateAspectRatio(item)).reduce((sum, itemRatio) => sum + itemRatio);
+  const sumOfItemsRatio = items
+    .map((item) => calculateAspectRatio(item.dimensions))
+    .reduce((sum, itemRatio) => sum + itemRatio);
 
   let rowHeight = Math.min(containerWidth / sumOfItemsRatio, MAX_HEIGHT);
 
   if (items.length === 1 && items[0].dimensions.width > containerWidth) {
-    rowHeight = Math.min(containerWidth / calculateAspectRatio(items[0]), MAX_HEIGHT);
+    rowHeight = Math.min(containerWidth / calculateAspectRatio(items[0].dimensions), MAX_HEIGHT);
   }
 
   if (isLast) {
@@ -26,7 +28,9 @@ function calculateRowHeight(items: IGridPhoto[], containerWidth: number, contain
 }
 
 function calculateRowWidth(items: IGridPhoto[], containerHeight: number) {
-  return items.map((item) => containerHeight * calculateAspectRatio(item)).reduce((sum, itemWidth) => sum + itemWidth);
+  return items
+    .map((item) => containerHeight * calculateAspectRatio(item.dimensions))
+    .reduce((sum, itemWidth) => sum + itemWidth);
 }
 
 export default function splitItemsIntoRows(items: IGridPhoto[], containerWidth: number, baseRowHeight: number) {
@@ -50,7 +54,7 @@ export default function splitItemsIntoRows(items: IGridPhoto[], containerWidth: 
     rows[currentRowNumber] = {
       items: rowItems.map((item) => ({
         ...item,
-        displayWidth: rowHeight * calculateAspectRatio(item),
+        displayWidth: rowHeight * calculateAspectRatio(item.dimensions),
         displayHeight: rowHeight,
       })),
       height: rowHeight,

@@ -20,7 +20,7 @@ const PhotosLayout: React.FC = () => {
           {
             label: "Home",
             onClick() {
-              navigate("/app/photos/");
+              navigate("/app/a/photos/");
             },
             type: SIDEBAR_ITEM_TYPE.Button,
             icon: YourDashIcon.Home,
@@ -28,7 +28,7 @@ const PhotosLayout: React.FC = () => {
           {
             label: "Search",
             onClick() {
-              navigate("/app/photos/search");
+              navigate("/app/a/photos/search");
               return 0;
             },
             type: SIDEBAR_ITEM_TYPE.Button,
@@ -41,7 +41,7 @@ const PhotosLayout: React.FC = () => {
           {
             label: "Upload",
             onClick() {
-              navigate("/app/photos/upload");
+              navigate("/app/a/photos/upload");
               return 0;
             },
             type: SIDEBAR_ITEM_TYPE.Button,

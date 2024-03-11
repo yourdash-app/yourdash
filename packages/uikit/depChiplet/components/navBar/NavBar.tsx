@@ -6,6 +6,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import Card from "../card/Card";
 import Heading from "../heading/Heading";
+import Icon from "../icon/Icon";
+import { YourDashIcon } from "../icon/iconDictionary";
+import IconButton from "../iconButton/IconButton";
 import UserProfileDropdown from "./components/userProfileDropdown/UserProfileDropdown";
 import styles from "./NavBar.module.scss";
 
@@ -16,6 +19,7 @@ export interface NavBarProps {
   onBrandingClick?: () => void;
   extras?: React.ReactNode;
   showUserProfileDropdown?: boolean;
+  showBackButton?: boolean;
 }
 
 const NavBar: React.FC<NavBarProps> = ({
@@ -25,6 +29,7 @@ const NavBar: React.FC<NavBarProps> = ({
   onBrandingClick,
   extras,
   showUserProfileDropdown,
+  showBackButton,
 }) => {
   const [titleWidth, setTitleWidth] = useState<number>(0);
   const ref = useRef<HTMLDivElement>(null);
@@ -44,6 +49,14 @@ const NavBar: React.FC<NavBarProps> = ({
           "--title-width": `${titleWidth}px`,
         }}
       >
+        {showBackButton && (
+          <IconButton
+            icon={YourDashIcon.ChevronLeft}
+            onClick={() => {
+              window.history.back();
+            }}
+          />
+        )}
         {iconUrl && <img className={styles.icon} src={iconUrl} alt={""} onClick={onBrandingClick} />}
         {title && (
           <span ref={ref} className={styles.title}>
