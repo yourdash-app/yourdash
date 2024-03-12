@@ -4,9 +4,12 @@
 # YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
 #
 
-echo "Installing YourDash and dependencies"
+if [ "$EUID" -ne 0 ]; then
+  echo "Please run as root"
+  exit
+fi
 
-sudo su
+echo "Installing YourDash and dependencies"
 
 echo "Updating system packages"
 sudo apt update -y && sudo apt upgrade -y
