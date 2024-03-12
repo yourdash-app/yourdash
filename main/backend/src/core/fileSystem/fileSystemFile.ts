@@ -6,7 +6,7 @@
 import { promises as fs } from "fs";
 import pth from "path";
 import { CoreApi } from "../coreApi.js";
-import { AUTHENTICATED_IMAGE_TYPE } from "../coreApiAuthenticatedImage.js";
+import { AUTHENTICATED_IMAGE_TYPE } from "../coreApiImage.js";
 import FileSystemEntity from "./fileSystemEntity.js";
 
 export default class FileSystemFile extends FileSystemEntity {
@@ -66,7 +66,11 @@ export default class FileSystemFile extends FileSystemEntity {
   getThumbnail(username: string): string {
     switch (this.getType()) {
       case "image":
-        return this.coreApi.authenticatedImage.create(username, AUTHENTICATED_IMAGE_TYPE.FILE, pth.resolve(this.path));
+        return this.coreApi.image.createAuthenticatedImage(
+          username,
+          AUTHENTICATED_IMAGE_TYPE.FILE,
+          pth.resolve(this.path),
+        );
       default:
         return "not implemented";
     }

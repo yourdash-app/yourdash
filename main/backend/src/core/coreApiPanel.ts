@@ -5,9 +5,9 @@
 
 import path from "path";
 import YourDashApplication from "../helpers/applications.js";
+import { AUTHENTICATED_IMAGE_TYPE } from "./coreApiImage.js";
 import YourDashPanel from "./helpers/panel.js";
 import { CoreApi } from "./coreApi.js";
-import { AUTHENTICATED_IMAGE_TYPE } from "./coreApiAuthenticatedImage.js";
 
 export default class CoreApiPanel {
   private coreApi: CoreApi;
@@ -47,7 +47,11 @@ export default class CoreApiPanel {
               name: application.getName(),
               displayName: application.getDisplayName(),
               description: application.getDescription(),
-              icon: this.coreApi.authenticatedImage.create(username, AUTHENTICATED_IMAGE_TYPE.FILE, RESIZED_ICON_PATH),
+              icon: this.coreApi.image.createAuthenticatedImage(
+                username,
+                AUTHENTICATED_IMAGE_TYPE.FILE,
+                RESIZED_ICON_PATH,
+              ),
             };
           }),
         ),
@@ -85,7 +89,11 @@ export default class CoreApiPanel {
 
             return {
               name: shortcut,
-              icon: this.coreApi.authenticatedImage.create(username, AUTHENTICATED_IMAGE_TYPE.FILE, RESIZED_ICON_PATH),
+              icon: this.coreApi.image.createAuthenticatedImage(
+                username,
+                AUTHENTICATED_IMAGE_TYPE.FILE,
+                RESIZED_ICON_PATH,
+              ),
             };
           }),
         ),
@@ -146,17 +154,17 @@ export default class CoreApiPanel {
       const { username } = req.headers as { username: string };
 
       return res.json({
-        small: this.coreApi.authenticatedImage.create(
+        small: this.coreApi.image.createAuthenticatedImage(
           username,
           AUTHENTICATED_IMAGE_TYPE.FILE,
           path.join(this.coreApi.fs.ROOT_PATH, "./logo_panel_small.avif"),
         ),
-        medium: this.coreApi.authenticatedImage.create(
+        medium: this.coreApi.image.createAuthenticatedImage(
           username,
           AUTHENTICATED_IMAGE_TYPE.FILE,
           path.join(this.coreApi.fs.ROOT_PATH, "./logo_panel_medium.avif"),
         ),
-        large: this.coreApi.authenticatedImage.create(
+        large: this.coreApi.image.createAuthenticatedImage(
           username,
           AUTHENTICATED_IMAGE_TYPE.FILE,
           path.join(this.coreApi.fs.ROOT_PATH, "./logo_panel_large.avif"),
@@ -168,17 +176,17 @@ export default class CoreApiPanel {
       const { username } = req.headers as { username: string };
 
       return res.json({
-        small: this.coreApi.authenticatedImage.create(
+        small: this.coreApi.image.createAuthenticatedImage(
           username,
           AUTHENTICATED_IMAGE_TYPE.FILE,
           path.join(this.coreApi.fs.ROOT_PATH, "./logo_panel_small.avif"),
         ),
-        medium: this.coreApi.authenticatedImage.create(
+        medium: this.coreApi.image.createAuthenticatedImage(
           username,
           AUTHENTICATED_IMAGE_TYPE.FILE,
           path.join(this.coreApi.fs.ROOT_PATH, "./logo_panel_medium.avif"),
         ),
-        large: this.coreApi.authenticatedImage.create(
+        large: this.coreApi.image.createAuthenticatedImage(
           username,
           AUTHENTICATED_IMAGE_TYPE.FILE,
           path.join(this.coreApi.fs.ROOT_PATH, "./logo_panel_large.avif"),

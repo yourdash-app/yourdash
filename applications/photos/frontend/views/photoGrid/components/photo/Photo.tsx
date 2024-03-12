@@ -26,7 +26,7 @@ const Photo: React.FC<
         height: `${display.rowHeight}px`,
       }}
     >
-      <img alt={""} className={styles.photo} src={csi.getInstanceUrl() + imageUrl} />
+      <img alt={""} className={styles.photo} src={csi.getInstanceUrl() + imageUrl} loading={"lazy"} />
     </div>
   );
 };

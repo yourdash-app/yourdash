@@ -15,7 +15,6 @@ import path from "path";
 import { fetch } from "undici";
 import { compareHashString } from "../helpers/encryption.js";
 import { createSession } from "../helpers/session.js";
-import CoreApiAuthenticatedImage from "./coreApiAuthenticatedImage.js";
 import CoreApiCommands from "./coreApiCommands.js";
 import CoreApiGlobalDb from "./coreApiGlobalDb.js";
 import CoreApiImage from "./coreApiImage.js";
@@ -35,7 +34,6 @@ import { USER_AVATAR_SIZE } from "@yourdash/shared/core/userAvatarSize.js";
 import YourDashUser from "./user/index.js";
 import { YOURDASH_SESSION_TYPE } from "@yourdash/shared/core/session.js";
 import CoreApiWebsocketManager from "./websocketManager/coreApiWebsocketManager.js";
-import CoreApiUtils from "./utils/utils.js";
 
 export class CoreApi {
   // core apis
@@ -50,10 +48,8 @@ export class CoreApi {
   readonly image: CoreApiImage;
   readonly panel: CoreApiPanel;
   readonly teams: CoreApiTeams;
-  readonly authenticatedImage: CoreApiAuthenticatedImage;
   readonly websocketManager: CoreApiWebsocketManager;
   readonly loadManagement: CoreApiLoadManagement;
-  readonly utils: CoreApiUtils;
   readonly webdav: CoreApiWebDAV;
   // general vars
   readonly processArguments: minimist.ParsedArgs;
@@ -90,9 +86,7 @@ export class CoreApi {
     this.image = new CoreApiImage(this);
     this.panel = new CoreApiPanel(this);
     this.teams = new CoreApiTeams(this);
-    this.authenticatedImage = new CoreApiAuthenticatedImage(this);
     this.loadManagement = new CoreApiLoadManagement(this);
-    this.utils = new CoreApiUtils(this);
     this.websocketManager = new CoreApiWebsocketManager(this);
     // TODO: implement WebDAV & CalDAV & CardDAV (outdated WebDAV example -> https://github.com/LordEidi/fennel.js/)
     this.webdav = new CoreApiWebDAV(this);
@@ -449,9 +443,9 @@ export class CoreApi {
     }
 
     try {
-      this.authenticatedImage.__internal__loadEndpoints();
+      this.image.__internal__loadEndpoints();
     } catch (e) {
-      this.log.error("authenticatedImage", "Error caught in loadAuthenticatedImageEndpoints", e);
+      this.log.error("image", "Error caught in loadImageEndpoints", e);
     }
 
     try {

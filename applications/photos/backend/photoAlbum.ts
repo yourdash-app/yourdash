@@ -22,7 +22,7 @@ export default class PhotoAlbum {
   async getPhotos(): Promise<string[]> {
     const dir = await coreApi.fs.getDirectory(this.path);
 
-    if (!(await dir.doesExist())) {
+    if (dir === null || !(await dir.doesExist())) {
       return [];
     }
 
@@ -34,7 +34,7 @@ export default class PhotoAlbum {
   async getVideos(): Promise<string[]> {
     const dir = await coreApi.fs.getDirectory(this.path);
 
-    if (!(await dir.doesExist())) {
+    if (dir === null || !(await dir.doesExist())) {
       return [];
     }
 
@@ -46,7 +46,7 @@ export default class PhotoAlbum {
   async getSubAlbumsPaths(): Promise<string[]> {
     const dir = await coreApi.fs.getDirectory(this.path);
 
-    if (!(await dir.doesExist())) {
+    if (dir === null || !(await dir.doesExist())) {
       return [];
     }
 

@@ -4,7 +4,6 @@
  */
 
 import coreApi from "@yourdash/backend/src/core/coreApi.js";
-import { AUTHENTICATED_IMAGE_TYPE } from "@yourdash/backend/src/core/coreApiAuthenticatedImage.js";
 import BackendModule, { YourDashModuleArguments } from "@yourdash/backend/src/core/moduleManager/backendModule.js";
 import YourDashApplication, { getAllApplications } from "@yourdash/backend/src/helpers/applications.js";
 import { getInstanceLogoBase64 } from "@yourdash/backend/src/helpers/logo.js";
@@ -13,6 +12,7 @@ import { IYourDashStoreApplication } from "@yourdash/shared/apps/store/storeAppl
 import { IStoreCategory } from "@yourdash/shared/apps/store/storeCategory.js";
 import { type StorePromotedApplication } from "@yourdash/shared/apps/store/storePromotedApplication.js";
 import getAllCategories, { getAllApplicationsFromCategory } from "./helpers/categories.js";
+import { AUTHENTICATED_IMAGE_TYPE } from "@yourdash/backend/src/core/coreApiImage.js";
 
 const promotedApplications: string[] = ["dash", "store"];
 
@@ -73,7 +73,7 @@ export default class StoreModule extends BackendModule {
             return {
               id: applicationName,
               displayName: application.getDisplayName() || applicationName,
-              icon: coreApi.authenticatedImage.create(
+              icon: coreApi.image.createAuthenticatedImage(
                 username,
                 AUTHENTICATED_IMAGE_TYPE.FILE,
                 await application.getIconPath(),
@@ -112,7 +112,7 @@ export default class StoreModule extends BackendModule {
           const application = await new YourDashApplication(app).read();
           applicationsOutput.push({
             name: application.getName(),
-            icon: coreApi.authenticatedImage.create(
+            icon: coreApi.image.createAuthenticatedImage(
               username,
               AUTHENTICATED_IMAGE_TYPE.FILE,
               await application.getIconPath(),

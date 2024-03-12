@@ -12,6 +12,7 @@ import pth from "path-browserify";
 import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { IPhotoAlbum } from "../../shared/photoAlbum";
+import AlbumGrid from "../views/albumGrid/AlbumGrid";
 import styles from "./AlbumPage.module.scss";
 import PhotoGrid from "../views/photoGrid/PhotoGrid";
 
@@ -46,7 +47,7 @@ const HomePage: React.FC = () => {
         <IconButton
           icon={YourDashIcon.ChevronLeft}
           onClick={() => {
-            navigate("..");
+            window.history.back();
           }}
         />
         <Heading level={1} className={"pl-4"}>
@@ -62,17 +63,7 @@ const HomePage: React.FC = () => {
       </div>
       <div className={styles.component}>
         <div className={styles.content}>
-          <div className={"flex w-full gap-2"}>
-            {photoAlbum.items.subAlbums.map((album) => {
-              return (
-                <a href={"#/app/a/photos/album/" + album.path} key={album.path} className={"flex flex-grow"}>
-                  <Card onClick={() => 0} className={"flex flex-grow items-center text-center justify-center"}>
-                    <Heading level={4}>{album.displayName}</Heading>
-                  </Card>
-                </a>
-              );
-            })}
-          </div>
+          <AlbumGrid albums={photoAlbum.items.subAlbums} />
           <PhotoGrid gridPhotoPaths={photoAlbum.items.photos} />
         </div>
       </div>

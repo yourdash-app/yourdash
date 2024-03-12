@@ -5,13 +5,13 @@
 
 import csi from "@yourdash/csi/csi";
 import clippy from "@yourdash/shared/web/helpers/clippy";
-import Card from "@yourdash/uikit/depChiplet/components/card/Card";
 import Heading from "@yourdash/uikit/depChiplet/components/heading/Heading";
 import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
 import IconButton from "@yourdash/uikit/depChiplet/components/iconButton/IconButton";
 import pth from "path-browserify";
 import React, { useEffect } from "react";
 import { IPhotoAlbum } from "../../../shared/photoAlbum";
+import AlbumGrid from "../../views/albumGrid/AlbumGrid";
 import PhotoGrid from "../../views/photoGrid/PhotoGrid";
 import styles from "./PhotoCategory.module.scss";
 
@@ -68,17 +68,7 @@ const PhotoCategory: React.FC<{ path: string }> = ({ path }) => {
       </div>
       {open && (
         <div className={styles.content}>
-          <div className={"flex w-full gap-2 flex-wrap"}>
-            {photoAlbum.items.subAlbums.map((album) => {
-              return (
-                <a href={"#/app/a/photos/album/" + album.path} key={album.path} className={"flex flex-grow"}>
-                  <Card onClick={() => 0} className={"flex flex-grow items-center text-center justify-center"}>
-                    <Heading level={4}>{album.displayName}</Heading>
-                  </Card>
-                </a>
-              );
-            })}
-          </div>
+          <AlbumGrid albums={photoAlbum.items.subAlbums} />
           <PhotoGrid gridPhotoPaths={photoAlbum.items.photos} />
         </div>
       )}

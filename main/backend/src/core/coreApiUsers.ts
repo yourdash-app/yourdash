@@ -7,7 +7,7 @@ import { IYourDashSession } from "@yourdash/shared/core/session.js";
 import { USER_AVATAR_SIZE } from "@yourdash/shared/core/userAvatarSize.js";
 import path from "path";
 import { CoreApi } from "./coreApi.js";
-import { AUTHENTICATED_IMAGE_TYPE } from "./coreApiAuthenticatedImage.js";
+import { AUTHENTICATED_IMAGE_TYPE } from "./coreApiImage.js";
 import YourDashUser from "./user/index.js";
 import UserDatabase from "./user/userDatabase.js";
 
@@ -143,7 +143,7 @@ export default class CoreApiUsers {
       return res
         .status(200)
         .type("text/plain")
-        .send(this.coreApi.authenticatedImage.create(username, AUTHENTICATED_IMAGE_TYPE.FILE, avatarPath));
+        .send(this.coreApi.image.createAuthenticatedImage(username, AUTHENTICATED_IMAGE_TYPE.FILE, avatarPath));
     });
 
     this.coreApi.request.get("/coqre/user/current/avatar/medium", (req, res) => {
@@ -155,7 +155,7 @@ export default class CoreApiUsers {
       return res
         .status(200)
         .type("text/plain")
-        .send(this.coreApi.authenticatedImage.create(username, AUTHENTICATED_IMAGE_TYPE.FILE, avatarPath));
+        .send(this.coreApi.image.createAuthenticatedImage(username, AUTHENTICATED_IMAGE_TYPE.FILE, avatarPath));
     });
 
     this.coreApi.request.get("/core/user/current/avatar/small", (req, res) => {
@@ -167,7 +167,7 @@ export default class CoreApiUsers {
       return res
         .status(200)
         .type("text/plain")
-        .send(this.coreApi.authenticatedImage.create(username, AUTHENTICATED_IMAGE_TYPE.FILE, avatarPath));
+        .send(this.coreApi.image.createAuthenticatedImage(username, AUTHENTICATED_IMAGE_TYPE.FILE, avatarPath));
     });
 
     this.coreApi.request.get("/core/user/current/avatar/original", (req, res) => {
@@ -179,7 +179,7 @@ export default class CoreApiUsers {
       return res
         .status(200)
         .type("text/plain")
-        .send(this.coreApi.authenticatedImage.create(username, AUTHENTICATED_IMAGE_TYPE.FILE, avatarPath));
+        .send(this.coreApi.image.createAuthenticatedImage(username, AUTHENTICATED_IMAGE_TYPE.FILE, avatarPath));
     });
 
     // NEW CSI ENDPOINTS
@@ -193,7 +193,11 @@ export default class CoreApiUsers {
         .status(200)
         .type("text/plain")
         .send(
-          this.coreApi.authenticatedImage.create(username, AUTHENTICATED_IMAGE_TYPE.FILE, path.resolve(avatarPath)),
+          this.coreApi.image.createAuthenticatedImage(
+            username,
+            AUTHENTICATED_IMAGE_TYPE.FILE,
+            path.resolve(avatarPath),
+          ),
         );
     });
 
@@ -206,7 +210,11 @@ export default class CoreApiUsers {
         .status(200)
         .type("text/plain")
         .send(
-          this.coreApi.authenticatedImage.create(username, AUTHENTICATED_IMAGE_TYPE.FILE, path.resolve(avatarPath)),
+          this.coreApi.image.createAuthenticatedImage(
+            username,
+            AUTHENTICATED_IMAGE_TYPE.FILE,
+            path.resolve(avatarPath),
+          ),
         );
     });
 
@@ -219,7 +227,11 @@ export default class CoreApiUsers {
         .status(200)
         .type("text/plain")
         .send(
-          this.coreApi.authenticatedImage.create(username, AUTHENTICATED_IMAGE_TYPE.FILE, path.resolve(avatarPath)),
+          this.coreApi.image.createAuthenticatedImage(
+            username,
+            AUTHENTICATED_IMAGE_TYPE.FILE,
+            path.resolve(avatarPath),
+          ),
         );
     });
 
@@ -232,7 +244,11 @@ export default class CoreApiUsers {
         .status(200)
         .type("text/plain")
         .send(
-          this.coreApi.authenticatedImage.create(username, AUTHENTICATED_IMAGE_TYPE.FILE, path.resolve(avatarPath)),
+          this.coreApi.image.createAuthenticatedImage(
+            username,
+            AUTHENTICATED_IMAGE_TYPE.FILE,
+            path.resolve(avatarPath),
+          ),
         );
     });
 
@@ -245,7 +261,11 @@ export default class CoreApiUsers {
         .status(200)
         .type("text/plain")
         .send(
-          this.coreApi.authenticatedImage.create(username, AUTHENTICATED_IMAGE_TYPE.FILE, path.resolve(avatarPath)),
+          this.coreApi.image.createAuthenticatedImage(
+            username,
+            AUTHENTICATED_IMAGE_TYPE.FILE,
+            path.resolve(avatarPath),
+          ),
         );
     });
 

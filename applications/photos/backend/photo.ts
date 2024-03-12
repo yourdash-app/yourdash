@@ -5,10 +5,10 @@
 
 import { imageSize } from "image-size";
 import IGridPhoto, { MAX_HEIGHT } from "../shared/gridPhoto.js";
-import { AUTHENTICATED_IMAGE_TYPE } from "@yourdash/backend/src/core/coreApiAuthenticatedImage.js";
 import pth from "path";
 import coreApi from "@yourdash/backend/src/core/coreApi.js";
 import { IPhoto } from "../shared/photo.js";
+import { AUTHENTICATED_IMAGE_TYPE } from "@yourdash/backend/src/core/coreApiImage.js";
 
 export default class Photo {
   username: string;
@@ -31,24 +31,26 @@ export default class Photo {
   }
 
   getRawPhotoUrl(): string {
-    return coreApi.authenticatedImage.create(this.username, AUTHENTICATED_IMAGE_TYPE.FILE, pth.resolve(this.path));
+    return coreApi.image.createAuthenticatedImage(this.username, AUTHENTICATED_IMAGE_TYPE.FILE, pth.resolve(this.path));
   }
 
   async getPhotoUrl(dimensions?: { width: number; height: number }): Promise<string> {
     if (!dimensions) {
-      return coreApi.authenticatedImage.create(this.username, AUTHENTICATED_IMAGE_TYPE.FILE, pth.resolve(this.path));
+      return coreApi.image.createAuthenticatedImage(
+        this.username,
+        AUTHENTICATED_IMAGE_TYPE.FILE,
+        pth.resolve(this.path),
+      );
     }
 
-    console.time(`photo+${this.path}-get-photo`);
-    const resizedImage = await coreApi.image.resizeTo(
-      pth.resolve(this.path),
+    return coreApi.image.createResizedAuthenticatedImage(
+      this.username,
+      AUTHENTICATED_IMAGE_TYPE.FILE,
+      this.path,
       dimensions.width,
       dimensions.height,
       "webp",
     );
-    console.timeEnd(`photo+${this.path}-get-photo`);
-
-    return coreApi.authenticatedImage.create(this.username, AUTHENTICATED_IMAGE_TYPE.FILE, resizedImage);
   }
 
   async getIGridPhoto() {

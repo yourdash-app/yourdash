@@ -42,6 +42,24 @@ export default class PhotosModule extends BackendModule {
       return res.json(await photo.getIGridPhoto());
     });
 
+    this.API.request.get(`${this.rootPath}/grid-photos/:photoAmount/*`, async (req, res) => {
+      const photoPath = req.params["0"].split(";.;") as string[];
+      const photoAmount = Number(req.params.photoAmount);
+      const { username } = req.headers as { username: string };
+
+      const photos = [];
+      for (let i = 0; i < photoAmount; i++) {
+        if (photoPath[i] === undefined) {
+          break;
+        }
+
+        const photo = new Photo(username, photoPath[i]);
+        photos.push(await photo.getIGridPhoto());
+      }
+
+      return res.json(await Promise.all(photos));
+    });
+
     this.API.request.get(`${this.rootPath}/photo/*`, async (req, res) => {
       const photoPath = req.params["0"] as string;
       const { username } = req.headers as { username: string };
@@ -94,7 +112,7 @@ export default class PhotosModule extends BackendModule {
     //       width: imSize.width,
     //       height: imSize.height,
     //     },
-    //     url: this.API.core.authenticatedImage.create(username, AUTHENTICATED_IMAGE_TYPE.FILE, file.path),
+    //     url: this.API.core.image.createAuthenticatedImage(username, AUTHENTICATED_IMAGE_TYPE.FILE, file.path),
     //   } as IPhoto);
     // });
     //
