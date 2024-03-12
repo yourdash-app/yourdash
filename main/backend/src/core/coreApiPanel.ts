@@ -37,10 +37,13 @@ export default class CoreApiPanel {
               this.coreApi.log.info("core:panel", `Generating 128x128 icon for ${application.getName()}`);
 
               await this.coreApi.fs.createDirectory(path.dirname(RESIZED_ICON_PATH));
-              await this.coreApi.utils
-                .image(await (await this.coreApi.fs.getFile(await application.getIconPath())).read("buffer"))
-                .resizeTo(128, 128)
-                .toFile(RESIZED_ICON_PATH);
+              const resizedIconPath = await this.coreApi.image.resizeTo(
+                (await this.coreApi.fs.getFile(await application.getIconPath())).path,
+                128,
+                128,
+              );
+
+              await this.coreApi.fs.copy(resizedIconPath, RESIZED_ICON_PATH);
             }
 
             return {
@@ -81,10 +84,14 @@ export default class CoreApiPanel {
               this.coreApi.log.info("core:panel", `Generating 64x64 icon for ${application.getName()}`);
 
               await this.coreApi.fs.createDirectory(path.dirname(RESIZED_ICON_PATH));
-              await this.coreApi.utils
-                .image(await (await this.coreApi.fs.getFile(await application.getIconPath())).read("buffer"))
-                .resizeTo(64, 64)
-                .toFile(RESIZED_ICON_PATH);
+
+              const resizedIconPath = await this.coreApi.image.resizeTo(
+                (await this.coreApi.fs.getFile(await application.getIconPath())).path,
+                64,
+                64,
+              );
+
+              await this.coreApi.fs.copy(resizedIconPath, RESIZED_ICON_PATH);
             }
 
             return {
