@@ -6,6 +6,7 @@
 export interface ISubAlbum {
   displayName: string;
   path: string;
+  coverPhoto?: string;
 }
 
 export interface IPhotoAlbum {

@@ -7,6 +7,7 @@ import coreApi from "@yourdash/backend/src/core/coreApi.js";
 import FileSystemFile from "@yourdash/backend/src/core/fileSystem/fileSystemFile.js";
 import pth from "path";
 import { IPhotoAlbum } from "../shared/photoAlbum.js";
+import { AUTHENTICATED_IMAGE_TYPE } from "@yourdash/backend/src/core/coreApiImage.js";
 
 export default class PhotoAlbum {
   path: string;
@@ -43,6 +44,23 @@ export default class PhotoAlbum {
       .map((child) => child.path);
   }
 
+  async getCoverPhoto(): Promise<string | null> {
+    const coverPhotoPath = (await this.getPhotos())[0];
+    const coverPhotoFsEntity = await coreApi.fs.getFile(coverPhotoPath);
+    if (coverPhotoFsEntity === null || !(await coverPhotoFsEntity.doesExist())) {
+      return null;
+    }
+
+    return await coreApi.image.createResizedAuthenticatedImage(
+      this.username,
+      AUTHENTICATED_IMAGE_TYPE.FILE,
+      coverPhotoPath,
+      256,
+      256,
+      "webp",
+    );
+  }
+
   async getSubAlbumsPaths(): Promise<string[]> {
     const dir = await coreApi.fs.getDirectory(this.path);
 
@@ -67,12 +85,15 @@ export default class PhotoAlbum {
       items: {
         photos: await this.getPhotos(),
         videos: await this.getVideos(),
-        subAlbums: (await this.getSubAlbumsPaths()).map((p) => {
-          return {
-            path: p,
-            displayName: pth.basename(p),
-          };
-        }),
+        subAlbums: await Promise.all(
+          (await this.getSubAlbums()).map(async (subAlbum) => {
+            return {
+              path: subAlbum.path,
+              displayName: pth.basename(subAlbum.path),
+              coverPhoto: await subAlbum.getCoverPhoto(),
+            };
+          }),
+        ),
       },
       label: pth.basename(this.path),
     } as IPhotoAlbum;

@@ -4,17 +4,18 @@
  */
 
 .separator {
-  --border-color: rgb(var(--container-fg));
+  --border-color: rgb(var(--container-border));
+  --separator-width: 0.125rem;
 }
 
 .horizontal {
   height: 0;
   width: 100%;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: var(--separator-width) solid var(--border-color);
 }
 
 .vertical {
   height: 100%;
   width: 0;
-  border-right: 1px solid var(--border-color);
+  border-right: var(--separator-width) solid var(--border-color);
 }

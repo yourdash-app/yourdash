@@ -33,15 +33,30 @@ const HomePage: React.FC = () => {
     <div className={"flex flex-col h-full p-4 gap-2"}>
       <Heading level={1}>Home</Heading>
       <div className={"flex gap-2"}>
-        <Card className={"gap-2 flex flex-col"}>
+        <Card
+          className={"gap-2 flex flex-col"}
+          onClick={() => {
+            return 0;
+          }}
+        >
           <Icon icon={YourDashIcon.Search} className={"h-8"} />
           <Heading level={3}>Search</Heading>
         </Card>
-        <Card className={"gap-2 flex flex-col"}>
+        <Card
+          className={"gap-2 flex flex-col"}
+          onClick={() => {
+            return 0;
+          }}
+        >
           <Icon icon={YourDashIcon.Search} className={"h-8"} />
           <Heading level={3}>Search</Heading>
         </Card>
-        <Card className={"gap-2 flex flex-col"}>
+        <Card
+          className={"gap-2 flex flex-col"}
+          onClick={() => {
+            return 0;
+          }}
+        >
           <Icon icon={YourDashIcon.Search} className={"h-8"} />
           <Heading level={3}>Search</Heading>
         </Card>

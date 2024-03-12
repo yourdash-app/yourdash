@@ -3,6 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import csi from "@yourdash/csi/csi";
 import Card from "@yourdash/uikit/depChiplet/components/card/Card";
 import Heading from "@yourdash/uikit/depChiplet/components/heading/Heading";
 import React from "react";
@@ -19,8 +20,15 @@ const AlbumGrid: React.FC<{ albums: ISubAlbum[] }> = ({ albums }) => {
           <Card
             key={album.path}
             onClick={() => navigate("/app/a/photos/album/" + album.path)}
-            className={"flex flex-grow items-center text-center justify-center"}
+            className={"flex flex-grow items-center text-center justify-center flex-col gap-2"}
           >
+            {album.coverPhoto && (
+              <img
+                className={"max-w-[256px] aspect-square w-full rounded-xl"}
+                src={csi.getInstanceUrl() + album.coverPhoto}
+                alt={"Cover photo"}
+              />
+            )}
             <Heading level={4}>{album.displayName}</Heading>
           </Card>
         );
