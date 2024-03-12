@@ -106,7 +106,7 @@ export default class FileSystemFile extends FileSystemEntity {
       await fs.writeFile(this.path, data);
     } catch (e) {
       console.error(e);
-      this.coreApi.log.error(`unable to write to ${this.path}`);
+      this.coreApi.log.error("filesystem", `unable to write to ${this.path}`);
     }
 
     return;

@@ -35,7 +35,7 @@ export default class FileSystemDirectory extends FileSystemEntity {
     try {
       return await fs.readdir(this.path);
     } catch (_err) {
-      this.coreApi.log.error(`Unable to read directory: ${this.path}`);
+      this.coreApi.log.error("filesystem", `Unable to read directory: ${this.path}`);
 
       return [];
     }
