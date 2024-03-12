@@ -45,7 +45,9 @@ echo "Setting YourDash (\"/yourdash\") permissions"
 sudo chmod 777 -R /yourdash
 
 echo "Installing YourDash dependencies"
-echo "if bun install fails, run this script again"
+npm i -g yarn
+
+echo "if yarn install fails, run this script again"
 yarn install
 
 echo "Installing YourDash systemd service"
