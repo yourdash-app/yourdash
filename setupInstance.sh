@@ -6,6 +6,7 @@
 
 echo "Installing YourDash and dependencies"
 
+echo "Updating system packages"
 sudo apt update -y && sudo apt upgrade -y
 
 echo "Installing NodeJS"
@@ -16,10 +17,8 @@ echo "Reloading ~/.bashrc"
 source ~/.bashrc
 
 echo "Installing LTS NodeJS"
-nvm install --lts
-
-echo "Attempting to Install / Update Bun"
-curl -fsSL https://bun.sh/install | bash
+nvm install 21
+nvm alias default 21
 
 echo "Re-sourcing ~/.bashrc"
 # shellcheck disable=SC1090
@@ -35,11 +34,12 @@ if [ ! -d /yourdash ]; then
 else
   echo "Updating YourDash"
   cd yourdash || exit
-  git pull
+  sudo git stash
+  sudo git pull
 fi
 
 echo "Adding YourDash as a safe directory for git"
-git config --global --add safe.directory /yourdash
+sudo git config --global --add safe.directory /yourdash
 
 echo "Setting YourDash (\"/yourdash\") permissions"
 sudo chmod 777 -R /yourdash

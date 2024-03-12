@@ -20,6 +20,8 @@
   border-radius: var(--button-rounding);
   background-color: rgb(var(--button-bg));
   aspect-ratio: 1 / 1;
+  flex-grow: 0;
+  flex-shrink: 0;
 
   &:hover {
     transition: var(--transition-fast) !important;
