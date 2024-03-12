@@ -52,7 +52,7 @@ echo "if yarn install fails, run this script again"
 yarn install
 
 echo "Installing YourDash systemd service"
-sudo cp /yourdash/packages/backend/src/defaults/yourdash.service /etc/systemd/system/yourdash.service
+sudo cp /yourdash/main/backend/src/defaults/yourdash.service /etc/systemd/system/yourdash.service
 
 echo "Enabling YourDash systemd service"
 sudo systemctl enable yourdash
