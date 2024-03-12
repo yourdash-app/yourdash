@@ -19,6 +19,7 @@ source ~/.bashrc
 echo "Installing LTS NodeJS"
 nvm install 21
 nvm alias default 21
+nvm use 21
 
 echo "Re-sourcing ~/.bashrc"
 # shellcheck disable=SC1090
