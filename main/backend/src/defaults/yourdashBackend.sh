@@ -5,6 +5,7 @@
 #
 
 cd /yourdash || exit
-git pull
-bun install
-bun run yd:dev-backend
+sudo git pull
+yarn install
+cd main/backend || exit
+yarn run start
