@@ -6,6 +6,8 @@
 
 echo "Installing YourDash and dependencies"
 
+sudo su
+
 echo "Updating system packages"
 sudo apt update -y && sudo apt upgrade -y
 
