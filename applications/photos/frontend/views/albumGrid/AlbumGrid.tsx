@@ -24,6 +24,7 @@ const AlbumGrid: React.FC<{ albums: ISubAlbum[] }> = ({ albums }) => {
           >
             {album.coverPhoto && (
               <img
+                loading={"lazy"}
                 className={"max-w-[256px] aspect-square w-full rounded-xl"}
                 src={csi.getInstanceUrl() + album.coverPhoto}
                 alt={"Cover photo"}
