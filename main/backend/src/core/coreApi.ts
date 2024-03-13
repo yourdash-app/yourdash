@@ -525,6 +525,12 @@ export class CoreApi {
         this.log.error("startup", "Failed to load all modules");
       });
 
+    this.request.get("/core/hosted-applications/", async (req, res) => {
+      const hostedApplications = await this.fs.getDirectory(path.join(process.cwd(), "../../hostedApplications"));
+
+      return res.json({ applications: await hostedApplications.getChildrenAsBaseName() });
+    });
+
     this.request.get("/user/sessions", async (req, res) => {
       const { username } = req.headers as { username: string };
 

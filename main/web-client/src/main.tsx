@@ -24,6 +24,7 @@ import ProjectsIndexPage from "./root/projects/Index";
 import RootLayout from "./root/RootLayout";
 import UIKitRootIntegration from "@yourdash/uikit/depChiplet/RootIntegration";
 import LinkerDesktopClientStartupPage from "./root/linker-desktop-client-startup/Index";
+import HostedApplicationRouter from "./app/HostedApplicationRouter";
 
 const AppRouter = loadable(() => import("./app/AppRouter"));
 const DocsRouter = loadable(() => import("./root/docs/DocsRouter"));
@@ -56,6 +57,7 @@ function main() {
                 <Route element={<AppLayout />}>
                   <Route index element={<ApplicationRedirectToDash />} />
                   <Route path={"a/*"} element={<AppRouter />} />
+                  <Route path={"h/*"} element={<HostedApplicationRouter />} />
                 </Route>
               </Route>
             </Route>,

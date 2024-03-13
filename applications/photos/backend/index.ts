@@ -42,6 +42,17 @@ export default class PhotosModule extends BackendModule {
       return res.json(await photo.getIGridPhoto());
     });
 
+    this.API.request.get(`${this.rootPath}/grid-video/*`, async (req, res) => {
+      const photoPath = req.params["0"] as string;
+      const { username } = req.headers as { username: string };
+
+      // TODO: create video class
+      // FIXME: this does nothing of use yet
+      const photo = new Photo(username, photoPath);
+
+      return res.json(await photo.getIGridPhoto());
+    });
+
     this.API.request.get(`${this.rootPath}/grid-photos/:photoAmount/*`, async (req, res) => {
       const photoPath = req.params["0"].split(";.;") as string[];
       const photoAmount = Number(req.params.photoAmount);
