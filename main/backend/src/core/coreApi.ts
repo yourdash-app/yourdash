@@ -20,6 +20,7 @@ import CoreApiGlobalDb from "./coreApiGlobalDb.js";
 import CoreApiImage from "./coreApiImage.js";
 import CoreApiLog from "./coreApiLog.js";
 import CoreApiTeams from "./coreApiTeams.js";
+import CoreApiVideo from "./coreApiVideo.js";
 import loadNextCloudSupportEndpoints from "./nextcloud/coreApiNextCloud.js";
 import CoreApiWebDAV from "./webDAV/coreApiWebDAV.js";
 import CoreApiModuleManager from "./moduleManager/coreApiModuleManager.js";
@@ -48,6 +49,7 @@ export class CoreApi {
   readonly image: CoreApiImage;
   readonly panel: CoreApiPanel;
   readonly teams: CoreApiTeams;
+  readonly video: CoreApiVideo;
   readonly websocketManager: CoreApiWebsocketManager;
   readonly loadManagement: CoreApiLoadManagement;
   readonly webdav: CoreApiWebDAV;
@@ -86,6 +88,7 @@ export class CoreApi {
     this.image = new CoreApiImage(this);
     this.panel = new CoreApiPanel(this);
     this.teams = new CoreApiTeams(this);
+    this.video = new CoreApiVideo(this);
     this.loadManagement = new CoreApiLoadManagement(this);
     this.websocketManager = new CoreApiWebsocketManager(this);
     // TODO: implement WebDAV & CalDAV & CardDAV (outdated WebDAV example -> https://github.com/LordEidi/fennel.js/)
@@ -444,6 +447,12 @@ export class CoreApi {
 
     try {
       this.image.__internal__loadEndpoints();
+    } catch (e) {
+      this.log.error("image", "Error caught in loadImageEndpoints", e);
+    }
+
+    try {
+      this.video.__internal__loadEndpoints();
     } catch (e) {
       this.log.error("image", "Error caught in loadImageEndpoints", e);
     }

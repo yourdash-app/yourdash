@@ -4460,6 +4460,13 @@ get-value@^2.0.3, get-value@^2.0.6:
   resolved "https://registry.yarnpkg.com/get-value/-/get-value-2.0.6.tgz#dc15ca1c672387ca76bd37ac0a395ba2042a2c28"
   integrity sha512-Ln0UQDlxH1BapMu3GPtf7CuYNwRZf2gwCuPqbyG6pB8WfmFpzqcy4xtAaAMUhnNqjMKTiCPZG2oMT3YSx8U2NA==
 
+get-video-dimensions@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/get-video-dimensions/-/get-video-dimensions-1.0.0.tgz#fc7e5ac81c392441f5b86d50dd77838a9b53147a"
+  integrity sha512-ceq/GQySbquAdStqoejWWWCqBk8bDejcR6/0CbFUlXNAPBrqDMDKZVmGHU0PpzsK0SPYhX2jd/8tkAsbkUF4tw==
+  dependencies:
+    mz "^1.2.1"
+
 github-from-package@0.0.0:
   version "0.0.0"
   resolved "https://registry.yarnpkg.com/github-from-package/-/github-from-package-0.0.0.tgz#97fb5d96bfde8973313f20e8288ef9a167fa64ce"
@@ -6106,6 +6113,15 @@ mute-stdout@^1.0.0:
   resolved "https://registry.yarnpkg.com/mute-stdout/-/mute-stdout-1.0.1.tgz#acb0300eb4de23a7ddeec014e3e96044b3472331"
   integrity sha512-kDcwXR4PS7caBpuRYYBUz9iVixUk3anO3f5OYFiIPwK/20vCzKCHyKoulbiDY1S53zD2bxUpxN/IJ+TnXjfvxg==
 
+mz@^1.2.1:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/mz/-/mz-1.3.0.tgz#06f093fdd9956a06d37e1b1e81344e27478c42f0"
+  integrity sha512-x+R7YSsEySSpV5uEB+C47JTmxv+YKKNsW3W+hjvq8NbLn8ntLgYXGrR5RjQ3Fs0e7Chw8Rp/1e5eo0n5LP76cw==
+  dependencies:
+    native-or-bluebird "1"
+    thenify "3"
+    thenify-all "1"
+
 mz@^2.7.0:
   version "2.7.0"
   resolved "https://registry.yarnpkg.com/mz/-/mz-2.7.0.tgz#95008057a56cafadc2bc63dde7f9ff6955948e32"
@@ -6146,6 +6162,11 @@ napi-build-utils@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/napi-build-utils/-/napi-build-utils-1.0.2.tgz#b1fddc0b2c46e380a0b7a76f984dd47c41a13806"
   integrity sha512-ONmRUqK7zj7DWX0D9ADe03wbwOBZxNAfF20PlGfCWQcD3+/MakShIHrMqx9YwPTfxDdF1zLeL+RGZiR9kGMLdg==
+
+native-or-bluebird@1:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/native-or-bluebird/-/native-or-bluebird-1.2.0.tgz#39c47bfd7825d1fb9ffad32210ae25daadf101c9"
+  integrity sha512-0SH8UubxDfe382eYiwmd12qxAbiWGzlGZv6CkMA+DPojWa/Y0oH4hE0lRtFfFgJmPQFyKXeB8XxPbZz6TvvKaQ==
 
 natural-compare-lite@^1.4.0:
   version "1.4.0"
@@ -8307,14 +8328,14 @@ textextensions@^5.13.0:
   resolved "https://registry.yarnpkg.com/textextensions/-/textextensions-5.16.0.tgz#57dd60c305019bba321e848b1fdf0f99bfa59ec1"
   integrity sha512-7D/r3s6uPZyU//MCYrX6I14nzauDwJ5CxazouuRGNuvSCihW87ufN6VLoROLCrHg6FblLuJrT6N2BVaPVzqElw==
 
-thenify-all@^1.0.0:
+thenify-all@1, thenify-all@^1.0.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/thenify-all/-/thenify-all-1.6.0.tgz#1a1918d402d8fc3f98fbf234db0bcc8cc10e9726"
   integrity sha512-RNxQH/qI8/t3thXJDwcstUO4zeqo64+Uy/+sNVRBx4Xn2OX+OZ9oP+iJnNFqplFra2ZUVeKCSa2oVWi3T4uVmA==
   dependencies:
     thenify ">= 3.1.0 < 4"
 
-"thenify@>= 3.1.0 < 4":
+thenify@3, "thenify@>= 3.1.0 < 4":
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/thenify/-/thenify-3.3.1.tgz#8932e686a4066038a016dd9e2ca46add9838a95f"
   integrity sha512-RVZSIV5IG10Hk3enotrhvz0T9em6cyHBLkH/YAZuKqd8hRkKhSfCGIcP2KUY0EPxndzANBmNllzWPwak+bheSw==
