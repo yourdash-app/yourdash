@@ -27,7 +27,7 @@ import { Route, Routes } from "react-router";
 /* region loadable */const AppRouter=()=><Routes>{/* region routes */}</Routes>;export default AppRouter
 `;
 
-let applicationsPathNames = await fs.readdir(path.resolve(process.cwd(), "../applications/"));
+let applicationsPathNames = await fs.readdir(path.resolve(process.cwd(), "../../applications/"));
 
 applicationsPathNames = applicationsPathNames.filter((name) => name.indexOf(".") === -1);
 
@@ -36,7 +36,7 @@ let routeRegionReplacement = "";
 
 let applicationHasLoaded = false;
 applicationsPathNames.forEach((appName, ind) => {
-  if (existsSync(path.resolve(process.cwd(), `../applications/${appName}/frontend/index.tsx`))) {
+  if (existsSync(path.resolve(process.cwd(), `../../applications/${appName}/frontend/index.tsx`))) {
     loadableRegionReplacement += `const Application${ind}=loadable(()=>import("@yourdash/applications/${appName}/frontend/index"));`;
     if (applicationHasLoaded) {
       routeRegionReplacement += `<Route path={"${applicationsPathNames[ind]}/*"} element={<Application${ind}/>}/>`;

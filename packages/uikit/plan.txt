@@ -1,0 +1,13 @@
+UIKit
+
+Two separate packages:
+  - @yourdash/uikit
+  - @yourdash/uikit-opengfx
+
+===========
+ContentRoot
+===========
+  - local
+    allows for uikit to be added to any parts of another page, missing root integration unless loaded manually or a global contentRoot was loaded prior
+  - global
+    adds background and root support
