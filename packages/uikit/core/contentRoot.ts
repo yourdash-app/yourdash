@@ -4,23 +4,29 @@
  */
 
 import generateUUID from "@yourdash/shared/web/helpers/uuid";
-import { Component } from "react";
+import Component, { ComponentType } from "@yourdash/uikit/core/component";
 
 export default class ContentRoot {
   __internals: {
     debugId: string;
-    children: Component[];
+    children: Component<ComponentType>[];
+    element?: HTMLElement;
   };
 
-  constructor(props?: { debugId?: string }) {
+  constructor(props: { htmlElement: HTMLElement; debugId?: string }) {
     this.__internals = {
       debugId: generateUUID(),
       children: [],
     };
 
-    if (props) {
-      if (props.debugId) this.__internals.debugId = props.debugId;
-    }
+    if (props.debugId) this.__internals.debugId = props.debugId;
+    this.setHTMLElement(props.htmlElement);
+
+    return this;
+  }
+
+  setHTMLElement(element: HTMLElement) {
+    this.__internals.element = element;
 
     return this;
   }
@@ -29,16 +35,29 @@ export default class ContentRoot {
     return this.__internals.children;
   }
 
-  addChild(child: Component) {
+  addChild(child: Component<ComponentType>) {
     this.__internals.children.push(child);
+
+    return this;
   }
 
-  removeChild(child: Component) {
+  removeChild(child: Component<ComponentType>) {
     const index = this.__internals.children.indexOf(child);
     if (index > -1) {
       this.__internals.children.splice(index, 1);
     }
+
+    return this;
   }
 
-  fullRender() {}
+  fullRender() {
+    this.getChildren().forEach((child) => {
+      if (child.__internals.componentType === ComponentType.Container) {
+        child?.fullRender();
+        return;
+      }
+
+      child.render();
+    });
+  }
 }

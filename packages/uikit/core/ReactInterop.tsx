@@ -5,7 +5,6 @@
 
 import React, { useEffect, useRef } from "react";
 import ContentRoot from "./contentRoot";
-import UIKit from "./index";
 
 const UIKitReactInterop: React.FC<{ onLoad: (contentRoot: ContentRoot) => void }> = ({ onLoad }) => {
   const ref = useRef<HTMLDivElement>(null);
@@ -13,6 +12,7 @@ const UIKitReactInterop: React.FC<{ onLoad: (contentRoot: ContentRoot) => void }
   useEffect(() => {
     if (ref.current) {
       const contentRoot = new ContentRoot();
+      contentRoot.setHTMLElement(ref.current);
       onLoad(contentRoot);
     }
   }, [ref.current]);
