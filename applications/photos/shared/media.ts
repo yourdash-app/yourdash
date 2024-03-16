@@ -3,14 +3,15 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-export default interface IGridPhoto {
-  imageUrl: string;
+export default interface IMedia {
   path: string;
-  tags: string[];
   dimensions: {
     width: number;
     height: number;
   };
+  tags: string[];
+  people: string[];
+  date: string; // new Date(string),
+  itemUrl?: string;
+  type: "image" | "video";
 }
-
-export const MAX_HEIGHT = 320;

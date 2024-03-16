@@ -4,13 +4,13 @@
  */
 
 import React from "react";
-import IGridPhoto from "../../../../../shared/gridPhoto";
+import IGridItem from "../../../../../shared/grid";
 import Photo from "../photo/Photo";
 import { calculateAspectRatio } from "../../splitItemsIntoRows";
 import styles from "./PhotoGridRow.module.scss";
 
-const PhotoGridRow: React.FC<{
-  items: (IGridPhoto & { displayWidth: number; displayHeight: number })[];
+const GridItemRow: React.FC<{
+  items: (IGridItem & { displayWidth: number; displayHeight: number })[];
   height: number;
 }> = ({ items, height }) => {
   return (
@@ -18,11 +18,12 @@ const PhotoGridRow: React.FC<{
       {items.map((item) => {
         return (
           <Photo
-            key={item.imageUrl}
+            key={item.itemUrl}
             path={item.path}
             dimensions={item.dimensions}
             tags={item.tags}
-            imageUrl={item.imageUrl || ""}
+            type={item.type}
+            itemUrl={item.itemUrl || ""}
             display={{
               rowHeight: height,
               height: item.displayHeight,
@@ -36,4 +37,4 @@ const PhotoGridRow: React.FC<{
   );
 };
 
-export default PhotoGridRow;
+export default GridItemRow;

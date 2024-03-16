@@ -3,12 +3,11 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import IGridPhoto, { MAX_HEIGHT } from "../shared/gridPhoto.js";
 import pth from "path";
 import coreApi from "@yourdash/backend/src/core/coreApi.js";
-import { IPhoto } from "../shared/photo.js";
-import { AUTHENTICATED_IMAGE_TYPE } from "@yourdash/backend/src/core/coreApiImage.js";
-import { getDimensions as videoDimensions } from "get-video-dimensions";
+import { AUTHENTICATED_VIDEO_TYPE } from "@yourdash/backend/src/core/coreApiVideo.js";
+import ffmpeg from "fluent-ffmpeg";
+import IGridItem from "../shared/grid.js";
 
 export default class Video {
   username: string;
@@ -22,59 +21,49 @@ export default class Video {
   }
 
   async getDimensions(): Promise<{ width: number; height: number }> {
-    const dimensions = await videoDimensions(this.path);
+    return new Promise((resolve) => {
+      ffmpeg.ffprobe(this.path, (err, data) => {
+        if (err) {
+          console.log(err);
+        }
 
-    return {
-      width: dimensions.width || 0,
-      height: dimensions.height || 0,
-    };
+        return resolve({
+          width: data?.streams[0].width || 0,
+          height: data?.streams[0].height || 0,
+        });
+      });
+    });
   }
 
   getRawPhotoUrl(): string {
-    return coreApi.image.createAuthenticatedImage(this.username, AUTHENTICATED_IMAGE_TYPE.FILE, pth.resolve(this.path));
+    return coreApi.video.createAuthenticatedVideo(this.username, AUTHENTICATED_VIDEO_TYPE.FILE, pth.resolve(this.path));
   }
 
-  async getVideoUrl(dimensions?: { width: number; height: number }): Promise<string> {
-    if (!dimensions) {
-      return coreApi.image.createAuthenticatedImage(
-        this.username,
-        AUTHENTICATED_IMAGE_TYPE.FILE,
-        pth.resolve(this.path),
-      );
-    }
-
-    return coreApi.image.createResizedAuthenticatedImage(
-      this.username,
-      AUTHENTICATED_IMAGE_TYPE.FILE,
-      this.path,
-      dimensions.width,
-      dimensions.height,
-      "webp",
-    );
+  async getVideoUrl(): Promise<string> {
+    return coreApi.video.createAuthenticatedVideo(this.username, AUTHENTICATED_VIDEO_TYPE.FILE, pth.resolve(this.path));
   }
 
   async getIGridVideo() {
     const dimensions = await this.getDimensions();
 
-    const aspectRatio = dimensions.width / dimensions.height;
-    const newWidth = MAX_HEIGHT * aspectRatio;
-
     return {
       dimensions: dimensions,
-      imageUrl: await this.getVideoUrl({ width: newWidth, height: MAX_HEIGHT }),
+      itemUrl: await this.getVideoUrl(),
       path: this.path,
       tags: [],
-    } as IGridPhoto;
+      type: "video",
+    } as IGridItem;
   }
 
   async getIVideo() {
     return {
       dimensions: await this.getDimensions(),
-      imageUrl: await this.getVideoUrl(),
+      itemUrl: await this.getVideoUrl(),
       path: this.path,
       tags: [],
       date: "",
       people: [],
-    } as IPhoto;
+      type: "video",
+    } as IGridItem;
   }
 }

@@ -6,19 +6,23 @@
 import csi from "@yourdash/csi/csi";
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import IGridPhoto from "../../../../../shared/gridPhoto";
+import IGridItem from "../../../../../shared/grid";
 import { calculateAspectRatio } from "../../splitItemsIntoRows";
 import styles from "./Photo.module.scss";
 
 const Photo: React.FC<
-  IGridPhoto & { display: { rowHeight: number; height: number; width: number; aspectRatio: number } }
-> = ({ path, dimensions, tags, imageUrl, display }) => {
+  IGridItem & { display: { rowHeight: number; height: number; width: number; aspectRatio: number } }
+> = ({ path, dimensions, tags, type, itemUrl, display }) => {
   const navigate = useNavigate();
 
   return (
     <div
       onClick={() => {
-        navigate("/app/a/photos/photo/" + path);
+        if (type === "image") {
+          navigate("/app/a/photos/photo/" + path);
+        } else {
+          navigate("/app/a/photos/video/" + path);
+        }
       }}
       className={styles.component}
       style={{
@@ -26,7 +30,18 @@ const Photo: React.FC<
         height: `${display.rowHeight}px`,
       }}
     >
-      <img alt={""} className={styles.photo} src={csi.getInstanceUrl() + imageUrl} loading={"lazy"} />
+      {type === "image" ? (
+        <img alt={""} className={styles.photo} src={csi.getInstanceUrl() + itemUrl} loading={"lazy"} />
+      ) : (
+        <video
+          className={styles.photo}
+          src={csi.getInstanceUrl() + itemUrl}
+          autoPlay={true}
+          controls={false}
+          loop={true}
+          muted={true}
+        />
+      )}
     </div>
   );
 };

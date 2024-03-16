@@ -4,13 +4,12 @@
  */
 
 import csi from "@yourdash/csi/csi";
-import Card from "@yourdash/uikit/depChiplet/components/card/Card";
 import Heading from "@yourdash/uikit/depChiplet/components/heading/Heading";
 import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
 import IconButton from "@yourdash/uikit/depChiplet/components/iconButton/IconButton";
 import pth from "path-browserify";
 import React, { useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { IPhotoAlbum } from "../../shared/photoAlbum";
 import AlbumGrid from "../views/albumGrid/AlbumGrid";
 import styles from "./AlbumPage.module.scss";
@@ -18,7 +17,6 @@ import PhotoGrid from "../views/photoGrid/PhotoGrid";
 
 const HomePage: React.FC = () => {
   const albumPath = useParams()["*"];
-  const navigate = useNavigate();
   const [photoAlbum, setPhotoAlbum] = React.useState<IPhotoAlbum | null>(null);
 
   useEffect(() => {
@@ -64,7 +62,7 @@ const HomePage: React.FC = () => {
       <div className={styles.component}>
         <div className={styles.content}>
           <AlbumGrid albums={photoAlbum.items.subAlbums} />
-          <PhotoGrid gridPhotoPaths={photoAlbum.items.photos} />
+          <PhotoGrid gridItems={photoAlbum.items} />
         </div>
       </div>
     </div>

@@ -9,6 +9,7 @@ import pth from "path";
 import * as path from "path";
 import Photo from "./photo.js";
 import PhotoAlbum from "./photoAlbum.js";
+import Video from "./video.js";
 
 export default class PhotosModule extends BackendModule {
   rootPath: string = "/app/photos";
@@ -43,14 +44,12 @@ export default class PhotosModule extends BackendModule {
     });
 
     this.API.request.get(`${this.rootPath}/grid-video/*`, async (req, res) => {
-      const photoPath = req.params["0"] as string;
+      const videoPath = req.params["0"] as string;
       const { username } = req.headers as { username: string };
 
-      // TODO: create video class
-      // FIXME: this does nothing of use yet
-      const photo = new Photo(username, photoPath);
+      const video = new Video(username, videoPath);
 
-      return res.json(await photo.getIGridPhoto());
+      return res.json(await video.getIGridVideo());
     });
 
     this.API.request.get(`${this.rootPath}/grid-photos/:photoAmount/*`, async (req, res) => {
@@ -71,15 +70,51 @@ export default class PhotosModule extends BackendModule {
       return res.json(await Promise.all(photos));
     });
 
+    this.API.request.get(`${this.rootPath}/grid-videos/:videoAmount/*`, async (req, res) => {
+      const videoPath = req.params["0"].split(";.;") as string[];
+      const videoAmount = Number(req.params.videoAmount);
+      const { username } = req.headers as { username: string };
+
+      const videos = [];
+      for (let i = 0; i < videoAmount; i++) {
+        if (videoPath[i] === undefined) {
+          break;
+        }
+
+        const video = new Video(username, videoPath[i]);
+        videos.push(await video.getIGridVideo());
+      }
+
+      return res.json(await Promise.all(videos));
+    });
+
     this.API.request.get(`${this.rootPath}/photo/*`, async (req, res) => {
       const photoPath = req.params["0"] as string;
       const { username } = req.headers as { username: string };
 
       const photo = new Photo(username, photoPath);
 
-      return res.json(await photo.getIPhoto());
+      try {
+        return res.json(await photo.getIPhoto());
+      } catch (e) {
+        return res.json({ error: e });
+      }
     });
 
+    this.API.request.get(`${this.rootPath}/video/*`, async (req, res) => {
+      const videoPath = req.params["0"] as string;
+      const { username } = req.headers as { username: string };
+
+      const video = new Video(username, videoPath);
+
+      try {
+        return res.json(await video.getIVideo());
+      } catch (e) {
+        return res.json({ error: e });
+      }
+    });
+
+    // FIXME: allow access without authentication
     this.API.request.get(`${this.rootPath}/download-photo/*`, async (req, res) => {
       const photoPath = req.params["0"] as string;
       const { username } = req.headers as { username: string };

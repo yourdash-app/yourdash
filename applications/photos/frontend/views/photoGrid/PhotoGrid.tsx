@@ -7,18 +7,19 @@ import csi from "@yourdash/csi/csi";
 import { chunk } from "@yourdash/shared/web/helpers/array";
 import Spinner from "@yourdash/uikit/depChiplet/components/spinner/Spinner";
 import React, { useEffect, useState } from "react";
-import IGridPhoto from "../../../shared/gridPhoto";
-import { IPhoto } from "../../../shared/photo";
-import PhotoGridRow from "./components/photoGridRow/PhotoGridRow";
+import IGridItem from "../../../shared/grid";
+import IMedia from "../../../shared/media";
+import { IPhotoAlbum } from "../../../shared/photoAlbum";
+import GridItemRow from "./components/photoGridRow/GridItemRow";
 import styles from "./PhotoGrid.module.scss";
 import splitItemsIntoRows from "./splitItemsIntoRows";
 
-let photos: IGridPhoto[] = [];
+let currentGridItems: IGridItem[] = [];
 
-const PhotoGrid: React.FC<{ gridPhotoPaths: string[] }> = ({ gridPhotoPaths }) => {
+const PhotoGrid: React.FC<{ gridItems: IPhotoAlbum["items"] }> = ({ gridItems }) => {
   const ref = React.useRef<HTMLDivElement>(null);
   const [rows, setRows] = useState<
-    { items: (IGridPhoto & { displayWidth: number; displayHeight: number })[]; height: number }[]
+    { items: (IGridItem & { displayWidth: number; displayHeight: number })[]; height: number }[]
   >([]);
   const [notLoaded, setNotLoaded] = useState(true);
 
@@ -28,7 +29,7 @@ const PhotoGrid: React.FC<{ gridPhotoPaths: string[] }> = ({ gridPhotoPaths }) =
     const resizeObserver = new ResizeObserver(() => {
       clearTimeout(timeout);
       timeout = setTimeout(() => {
-        setRows(splitItemsIntoRows(photos, ref.current?.getBoundingClientRect().width || 512, 256));
+        setRows(splitItemsIntoRows(currentGridItems, ref.current?.getBoundingClientRect().width || 512, 256));
       }, 100);
     });
 
@@ -41,11 +42,11 @@ const PhotoGrid: React.FC<{ gridPhotoPaths: string[] }> = ({ gridPhotoPaths }) =
 
   useEffect(() => {
     Promise.all(
-      chunk(gridPhotoPaths, 16).map((pc) => {
+      chunk(gridItems.photos || [], 16).map((gridItem) => {
         return new Promise((resolve, reject) => {
           csi.getJson(
-            `/app/photos/grid-photos/16/${pc.join(";.;")}`,
-            (resPhotos: IPhoto[]) => {
+            `/app/photos/grid-photos/16/${gridItem.join(";.;")}`,
+            (resPhotos: IMedia[]) => {
               if (resPhotos) {
                 resolve(resPhotos);
               } else {
@@ -59,12 +60,33 @@ const PhotoGrid: React.FC<{ gridPhotoPaths: string[] }> = ({ gridPhotoPaths }) =
         });
       }),
       // @ts-ignore
-    ).then((photosResult: IGridPhoto[][]) => {
-      photos = photosResult.flat();
-      setNotLoaded(false);
-      setRows(splitItemsIntoRows(photos, ref.current?.getBoundingClientRect().width || 512, 256));
+    ).then((photosMediaResult: IGridItem[][]) => {
+      Promise.all(
+        chunk(gridItems.videos || [], 16).map((gridItem) => {
+          return new Promise((resolve, reject) => {
+            csi.getJson(
+              `/app/photos/grid-videos/16/${gridItem.join(";.;")}`,
+              (resVideos: IMedia[]) => {
+                if (resVideos) {
+                  resolve(resVideos);
+                } else {
+                  reject();
+                }
+              },
+              (error) => {
+                console.log(error);
+              },
+            );
+          });
+        }),
+        // @ts-ignore
+      ).then((videosMediaResult: IGridItem[][]) => {
+        currentGridItems = [...videosMediaResult.flat(), ...photosMediaResult.flat()];
+        setNotLoaded(false);
+        setRows(splitItemsIntoRows(currentGridItems, ref.current?.getBoundingClientRect().width || 512, 256));
+      });
     });
-  }, [gridPhotoPaths]);
+  }, [gridItems]);
 
   return (
     <div className={styles.content} ref={ref}>
@@ -74,7 +96,8 @@ const PhotoGrid: React.FC<{ gridPhotoPaths: string[] }> = ({ gridPhotoPaths }) =
         </div>
       ) : (
         rows.map((row) => {
-          return <PhotoGridRow key={row.items[0].imageUrl} items={row.items} height={row.height} />;
+          console.log(row);
+          return <GridItemRow key={row.items[0]?.path} items={row.items} height={row.height} />;
         })
       )}
     </div>

@@ -4,22 +4,17 @@
  */
 
 import crypto from "crypto";
-import { promises as fs } from "fs";
-import pth from "path";
 import path from "path";
 import { CoreApi } from "./coreApi.js";
-import { AUTHENTICATED_IMAGE_TYPE } from "./coreApiImage.js";
 
 export enum AUTHENTICATED_VIDEO_TYPE {
-  BASE64,
   FILE,
-  BUFFER,
 }
 
 interface IauthenticatedVideo<T extends AUTHENTICATED_VIDEO_TYPE> {
   type: T;
-  value: T extends AUTHENTICATED_VIDEO_TYPE.BUFFER ? Buffer : string;
-  resizeTo?: { width: number; height: number; resultingImageFormat?: "avif" | "png" | "jpg" | "webp" };
+  value: string;
+  lastAccess?: number;
 }
 
 export default class CoreApiVideo {
@@ -37,8 +32,23 @@ export default class CoreApiVideo {
     return this;
   }
 
-  resizeTo(filePath: string) {
-    return filePath;
+  createAuthenticatedVideo<VideoType extends AUTHENTICATED_VIDEO_TYPE>(
+    username: string,
+    type: AUTHENTICATED_VIDEO_TYPE,
+    value: IauthenticatedVideo<VideoType>["value"],
+  ): string {
+    const id = crypto.randomUUID();
+
+    if (!this.AUTHENTICATED_VIDEOS[username]) {
+      this.AUTHENTICATED_VIDEOS[username] = {};
+    }
+
+    this.AUTHENTICATED_VIDEOS[username][id] = {
+      type,
+      value,
+    };
+
+    return `/core/auth-video/${username}/${id}`;
   }
 
   __internal__removeAuthenticatedVideo(username: string, id: string) {
@@ -48,36 +58,30 @@ export default class CoreApiVideo {
   }
 
   __internal__loadEndpoints() {
-    this.coreApi.request.get("/core/auth-img/:username/:id", async (req, res) => {
+    this.coreApi.request.get("/core/auth-video/:username/:id", async (req, res) => {
       const { username, id } = req.params;
 
-      const image = this.AUTHENTICATED_VIDEOS?.[username]?.[id];
+      const video = this.AUTHENTICATED_VIDEOS?.[username]?.[id];
 
-      if (!image) {
+      if (!video) {
         return res.sendFile(path.resolve(process.cwd(), "./src/defaults/default_avatar.avif"));
       }
 
-      if (image.type === AUTHENTICATED_VIDEO_TYPE.BUFFER) {
-        return res.send(image.value);
+      if (video?.lastAccess === undefined) {
+        video.lastAccess = Date.now();
       }
 
-      if (image.type === AUTHENTICATED_VIDEO_TYPE.BASE64) {
-        const buf = Buffer.from(image.value as unknown as string, "base64");
+      if (video.type === AUTHENTICATED_VIDEO_TYPE.FILE) {
         this.__internal__removeAuthenticatedVideo(username, id);
-        return res.send(buf);
-      }
 
-      if (image.type === AUTHENTICATED_VIDEO_TYPE.FILE) {
-        if (!image.resizeTo) {
+        if (Date.now() - video.lastAccess < 5 * 60 * 1000) {
+          video.lastAccess = Date.now();
+          res.sendFile(video.value as unknown as string);
+        } else {
           this.__internal__removeAuthenticatedVideo(username, id);
-          return res.sendFile(image.value as unknown as string);
         }
 
-        const resizeTo = image.resizeTo;
-
-        const resizedPath = await this.resizeTo(image.value as string);
-        this.__internal__removeAuthenticatedVideo(username, id);
-        return res.sendFile(resizedPath);
+        return;
       }
 
       this.__internal__removeAuthenticatedVideo(username, id);

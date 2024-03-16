@@ -4,11 +4,11 @@
  */
 
 import { imageSize } from "image-size";
-import IGridPhoto, { MAX_HEIGHT } from "../shared/gridPhoto.js";
 import pth from "path";
 import coreApi from "@yourdash/backend/src/core/coreApi.js";
-import { IPhoto } from "../shared/photo.js";
+import IGridItem, { MAX_HEIGHT } from "../shared/grid.js";
 import { AUTHENTICATED_IMAGE_TYPE } from "@yourdash/backend/src/core/coreApiImage.js";
+import IMedia from "../shared/media.js";
 
 export default class Photo {
   username: string;
@@ -61,20 +61,22 @@ export default class Photo {
 
     return {
       dimensions: dimensions,
-      imageUrl: await this.getPhotoUrl({ width: newWidth, height: MAX_HEIGHT }),
+      itemUrl: await this.getPhotoUrl({ width: newWidth, height: MAX_HEIGHT }),
       path: this.path,
       tags: [],
-    } as IGridPhoto;
+      type: "image",
+    } as IGridItem;
   }
 
   async getIPhoto() {
     return {
       dimensions: this.getDimensions(),
-      imageUrl: await this.getPhotoUrl(),
+      itemUrl: await this.getPhotoUrl(),
       path: this.path,
       tags: [],
       date: "",
       people: [],
-    } as IPhoto;
+      type: "image",
+    } as IMedia;
   }
 }

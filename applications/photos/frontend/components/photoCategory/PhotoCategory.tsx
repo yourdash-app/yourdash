@@ -69,7 +69,7 @@ const PhotoCategory: React.FC<{ path: string }> = ({ path }) => {
       {open && (
         <div className={styles.content}>
           <AlbumGrid albums={photoAlbum.items.subAlbums} />
-          <PhotoGrid gridPhotoPaths={photoAlbum.items.photos} />
+          <PhotoGrid gridItems={photoAlbum.items.photos} />
         </div>
       )}
     </div>
