@@ -3,18 +3,17 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { UIKitFrameworkType } from "@yourdash/uikit/framework/index";
-import UIKitFrameworkReactInterconnect from "@yourdash/uikit/framework/ReactInterconnect";
+import UIKitReactInterop from "@yourdash/uikit/core/ReactInterop";
 import * as React from "react";
 
 const UIKitDemoApplication: React.FC = () => {
   return (
     <>
-      <UIKitFrameworkReactInterconnect
-        frameworkType={UIKitFrameworkType.HTML}
-        onLoad={(fw) => {
-          // do stuff
-          return fw;
+      <UIKitReactInterop
+        onLoad={(root) => {
+          console.log(root.__internals.debugId);
+
+          return root;
         }}
       />
     </>
