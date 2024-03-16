@@ -4,6 +4,7 @@
  */
 
 import crypto from "crypto";
+import pth from "path";
 import path from "path";
 import { CoreApi } from "./coreApi.js";
 
@@ -61,6 +62,11 @@ export default class CoreApiVideo {
     this.coreApi.request.get("/core/auth-video/:username/:id", async (req, res) => {
       const { username, id } = req.params;
 
+      this.coreApi.log.info(
+        "Authenticated video range requested",
+        JSON.stringify({ username, id, range: req.headers.range }),
+      );
+
       const video = this.AUTHENTICATED_VIDEOS?.[username]?.[id];
 
       if (!video) {
@@ -76,7 +82,11 @@ export default class CoreApiVideo {
 
         if (Date.now() - video.lastAccess < 5 * 60 * 1000) {
           video.lastAccess = Date.now();
-          res.sendFile(video.value as unknown as string);
+          try {
+            res.sendFile(video.value as unknown as string);
+          } catch (e) {
+            return;
+          }
         } else {
           this.__internal__removeAuthenticatedVideo(username, id);
         }
@@ -85,7 +95,14 @@ export default class CoreApiVideo {
       }
 
       this.__internal__removeAuthenticatedVideo(username, id);
-      return res.sendFile(path.resolve(process.cwd(), "./src/defaults/default_avatar.avif"));
+
+      try {
+        return res.sendFile(
+          pth.resolve(pth.join(process.cwd(), "./src/defaults/default_video.mp4")) as unknown as string,
+        );
+      } catch (e) {
+        return;
+      }
     });
   }
 }

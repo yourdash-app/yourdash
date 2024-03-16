@@ -4,6 +4,8 @@
  */
 
 import csi from "@yourdash/csi/csi";
+import Icon from "@yourdash/uikit/depChiplet/components/icon/Icon";
+import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import IGridItem from "../../../../../shared/grid";
@@ -31,16 +33,21 @@ const Photo: React.FC<
       }}
     >
       {type === "image" ? (
-        <img alt={""} className={styles.photo} src={csi.getInstanceUrl() + itemUrl} loading={"lazy"} />
+        <img alt={""} className={styles.media} src={csi.getInstanceUrl() + itemUrl} loading={"lazy"} />
       ) : (
-        <video
-          className={styles.photo}
-          src={csi.getInstanceUrl() + itemUrl}
-          autoPlay={true}
-          controls={false}
-          loop={true}
-          muted={true}
-        />
+        <>
+          <div className={styles.videoOverlay}>
+            <Icon icon={YourDashIcon.Video} className={styles.videoOverlayIcon} />
+          </div>
+          <video
+            className={styles.media}
+            src={csi.getInstanceUrl() + itemUrl}
+            autoPlay={true}
+            controls={false}
+            loop={true}
+            muted={true}
+          />
+        </>
       )}
     </div>
   );

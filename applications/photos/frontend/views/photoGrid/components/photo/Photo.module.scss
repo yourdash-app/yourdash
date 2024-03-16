@@ -15,6 +15,7 @@
   width: max-content;
   outline: rgb(var(--theme-400)) solid 0;
   transition: var(--transition);
+  position: relative;
 
   &:hover {
     transition: var(--transition-fast);
@@ -23,7 +24,21 @@
   }
 }
 
-.photo {
+.media {
   max-width: max-content;
   max-height: max-content;
+}
+
+.videoOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+}
+
+.videoOverlayIcon {
+  width: 2rem;
+  height: 2rem;
+  margin-left: 0.5rem;
+  margin-top: 0.25rem;
 }

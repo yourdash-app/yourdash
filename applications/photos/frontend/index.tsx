@@ -24,11 +24,11 @@ const PhotosRouter: React.FC = () => {
         </Route>
         <Route path={"photo"}>
           <Route index element={<Redirect to={"/app/a/photos"} />} />
-          <Route path={"*"} element={<PhotoPage />} />
+          <Route path={"*"} element={<PhotoPage isPhoto={true} />} />
         </Route>
         <Route path={"video"}>
           <Route index element={<Redirect to={"/app/a/photos"} />} />
-          <Route path={"*"} element={<PhotoPage />} />
+          <Route path={"*"} element={<PhotoPage isPhoto={false} />} />
         </Route>
       </Route>
     </Routes>
