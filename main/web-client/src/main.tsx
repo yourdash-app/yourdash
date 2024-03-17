@@ -22,7 +22,7 @@ import Index from "./root/index/Index";
 import LoginRedirect from "./root/login/Redirect";
 import ProjectsIndexPage from "./root/projects/Index";
 import RootLayout from "./root/RootLayout";
-import UIKitRootIntegration from "@yourdash/uikit/depChiplet/RootIntegration";
+import ChipletRootIntegration from "@yourdash/uikit/depChiplet/RootIntegration";
 import LinkerDesktopClientStartupPage from "./root/linker-desktop-client-startup/Index";
 import HostedApplicationRouter from "./app/HostedApplicationRouter";
 
@@ -32,7 +32,7 @@ const ProjectsRouter = loadable(() => import("./root/projects/ProjectsRouter"));
 
 function main() {
   ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-    <UIKitRootIntegration>
+    <ChipletRootIntegration>
       <RouterProvider
         router={createHashRouter(
           createRoutesFromElements(
@@ -64,7 +64,7 @@ function main() {
           ),
         )}
       />
-    </UIKitRootIntegration>,
+    </ChipletRootIntegration>,
   );
 }
 

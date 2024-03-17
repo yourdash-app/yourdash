@@ -7,9 +7,7 @@ import React from "react";
 import RightClickMenuRootContainer from "./components/rightClickMenu/RightClickMenuRootContainer";
 import ToastContextProvider from "./components/toast/ToastContextProvider";
 
-const UIKitRootIntegration: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+const ChipletRootIntegration: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <ToastContextProvider>
       <RightClickMenuRootContainer>{children}</RightClickMenuRootContainer>
@@ -17,4 +15,4 @@ const UIKitRootIntegration: React.FC<{ children: React.ReactNode }> = ({
   );
 };
 
-export default UIKitRootIntegration;
+export default ChipletRootIntegration;

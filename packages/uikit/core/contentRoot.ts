@@ -4,7 +4,12 @@
  */
 
 import generateUUID from "@yourdash/shared/web/helpers/uuid";
-import Component, { ComponentType } from "@yourdash/uikit/core/component";
+import Component, { ComponentType, ContainerComponent } from "@yourdash/uikit/core/component";
+
+export interface ContentRootProps {
+  htmlElement: HTMLElement;
+  debugId?: string;
+}
 
 export default class ContentRoot {
   __internals: {
@@ -13,7 +18,7 @@ export default class ContentRoot {
     element?: HTMLElement;
   };
 
-  constructor(props: { htmlElement: HTMLElement; debugId?: string }) {
+  constructor(props: ContentRootProps) {
     this.__internals = {
       debugId: generateUUID(),
       children: [],
@@ -21,6 +26,7 @@ export default class ContentRoot {
 
     if (props.debugId) this.__internals.debugId = props.debugId;
     this.setHTMLElement(props.htmlElement);
+    this.__internals.element?.setAttribute("uikit-content-root", "true");
 
     return this;
   }
@@ -35,7 +41,13 @@ export default class ContentRoot {
     return this.__internals.children;
   }
 
+  // add a child component to the content root
   addChild(child: Component<ComponentType>) {
+    // noinspection SuspiciousTypeOfGuard
+    if (!(child instanceof Component)) {
+      throw new Error("child must be an instance of a UIKit Component");
+    }
+
     this.__internals.children.push(child);
 
     return this;
@@ -50,14 +62,26 @@ export default class ContentRoot {
     return this;
   }
 
-  fullRender() {
-    this.getChildren().forEach((child) => {
-      if (child.__internals.componentType === ComponentType.Container) {
-        child?.fullRender();
+  render() {
+    function recursiveFullRender(child: Component<ComponentType>) {
+      if (child.__internals.componentType === ComponentType.Solo) {
+        child.render();
         return;
       }
 
+      const childContainerComponent: ContainerComponent = child as ContainerComponent;
+      childContainerComponent.render();
+
+      recursiveFullRender(childContainerComponent);
+
+      return;
+    }
+
+    this.getChildren().forEach((child) => {
       child.render();
+      recursiveFullRender(child);
     });
+
+    return this;
   }
 }

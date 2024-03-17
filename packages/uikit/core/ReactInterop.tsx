@@ -11,8 +11,15 @@ const UIKitReactInterop: React.FC<{ onLoad: (contentRoot: ContentRoot) => void }
 
   useEffect(() => {
     if (ref.current) {
-      const contentRoot = new ContentRoot();
+      if (!window.__uikit__?.uikit) {
+        console.error("UIKit is not yet loaded on this page");
+
+        return;
+      }
+
+      const contentRoot = window.__uikit__.uikit.createLooseContentRoot({ htmlElement: ref.current });
       contentRoot.setHTMLElement(ref.current);
+
       onLoad(contentRoot);
     }
   }, [ref.current]);

@@ -4,11 +4,17 @@
  */
 
 import UIKitReactInterop from "@yourdash/uikit/core/ReactInterop";
+import UIKitReactRoot from "@yourdash/uikit/core/ReactRoot";
 import * as React from "react";
 
 const UIKitDemoApplication: React.FC = () => {
   return (
     <>
+      <UIKitReactRoot
+        onLoad={(fw) => {
+          return fw;
+        }}
+      />
       <UIKitReactInterop
         onLoad={(root) => {
           console.log(root.__internals.debugId);
