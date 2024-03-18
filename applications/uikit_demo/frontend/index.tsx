@@ -5,6 +5,7 @@
 
 import UIKitReactInterop from "@yourdash/uikit/core/ReactInterop";
 import UIKitReactRoot from "@yourdash/uikit/core/ReactRoot";
+import Div from "@yourdash/uikit/html/div";
 import * as React from "react";
 
 const UIKitDemoApplication: React.FC = () => {
@@ -17,7 +18,10 @@ const UIKitDemoApplication: React.FC = () => {
       />
       <UIKitReactInterop
         onLoad={(root) => {
-          console.log(root.__internals.debugId);
+          const div = new Div();
+          root.addChild(div);
+
+          div.setStyle();
 
           return root;
         }}

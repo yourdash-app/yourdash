@@ -5,6 +5,7 @@
 
 import generateUUID from "@yourdash/shared/web/helpers/uuid";
 import Component, { ComponentType, ContainerComponent } from "@yourdash/uikit/core/component";
+import UIKitHTMLElement from "./htmlElement";
 
 export interface ContentRootProps {
   htmlElement: HTMLElement;
@@ -42,10 +43,16 @@ export default class ContentRoot {
   }
 
   // add a child component to the content root
-  addChild(child: Component<ComponentType>) {
+  addChild(child: Component<ComponentType> | UIKitHTMLElement) {
     // noinspection SuspiciousTypeOfGuard
     if (!(child instanceof Component)) {
-      throw new Error("child must be an instance of a UIKit Component");
+      // noinspection SuspiciousTypeOfGuard
+      if (!(child instanceof UIKitHTMLElement)) {
+        throw new Error("child must be an instance of a UIKit Component");
+      }
+
+      this.__internals.element?.appendChild(child.__internals.underlyingHTMLElement);
+      return this;
     }
 
     this.__internals.children.push(child);
