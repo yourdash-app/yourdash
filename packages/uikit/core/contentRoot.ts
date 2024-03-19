@@ -70,6 +70,12 @@ export default class ContentRoot {
   }
 
   render() {
+    if (!this.__internals.element) {
+      return this;
+    }
+
+    this.__internals.element.innerHTML = "";
+
     function recursiveFullRender(child: Component<ComponentType>) {
       if (child.__internals.componentType === ComponentType.Solo) {
         child.render();

@@ -21,7 +21,9 @@ const UIKitDemoApplication: React.FC = () => {
           const div = new Div();
           root.addChild(div);
 
-          div.setStyle();
+          div.setStyle("backgroundColor", "red");
+          div.setStyle("width", "10rem");
+          div.setStyle("height", "10rem");
 
           return root;
         }}
