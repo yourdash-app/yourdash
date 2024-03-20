@@ -30,17 +30,17 @@ export default class UIKitHTMLElement {
     return this;
   }
 
-  addClassName(className: string) {
-    if (!this.__internals.underlyingHTMLElement.classList.contains(className)) {
-      this.__internals.underlyingHTMLElement.classList.add(className);
+  addClass(name: string) {
+    if (!this.__internals.underlyingHTMLElement.classList.contains(name)) {
+      this.__internals.underlyingHTMLElement.classList.add(name);
     }
 
     return this;
   }
 
-  removeClassName(className: string) {
-    if (this.__internals.underlyingHTMLElement.classList.contains(className)) {
-      this.__internals.underlyingHTMLElement.classList.remove(className);
+  removeClass(name: string) {
+    if (this.__internals.underlyingHTMLElement.classList.contains(name)) {
+      this.__internals.underlyingHTMLElement.classList.remove(name);
     }
 
     return this;
@@ -48,6 +48,7 @@ export default class UIKitHTMLElement {
 
   setStyle<StyleName extends keyof CSSStyleDeclaration>(name: StyleName, value: CSSStyleDeclaration[StyleName]) {
     this.__internals.underlyingHTMLElement.style[name] = value;
+    return this;
   }
 
   getStyle<StyleName extends keyof CSSStyleDeclaration>(name: StyleName): CSSStyleDeclaration[StyleName] {
@@ -55,8 +56,9 @@ export default class UIKitHTMLElement {
   }
 
   setStyles(styles: Partial<CSSStyleDeclaration>) {
-    Object.keys(styles).forEach((key) => {
-      this.__internals.underlyingHTMLElement.style[key] = styles[key];
+    Object.keys(styles).forEach((key, _, arr) => {
+      // @ts-ignore
+      this.__internals.underlyingHTMLElement.style[key] = arr[key];
     });
 
     return this;
