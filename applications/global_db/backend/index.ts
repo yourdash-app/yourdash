@@ -12,6 +12,11 @@ import coreApi from "@yourdash/backend/src/core/coreApi.js";
 export default class GlobalDbModule extends BackendModule {
   constructor(args: YourDashModuleArguments) {
     super(args);
+  }
+
+  public loadEndpoints() {
+    super.loadEndpoints();
+
     this.API.request.get("/app/global_db/db", async (req, res) => {
       const { username } = req.headers as {
         username: string;

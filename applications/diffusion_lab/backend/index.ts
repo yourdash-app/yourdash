@@ -8,6 +8,11 @@ import BackendModule, { YourDashModuleArguments } from "@yourdash/backend/src/co
 export default class DiffusionLabModule extends BackendModule {
   constructor(args: YourDashModuleArguments) {
     super(args);
+  }
+
+  public loadEndpoints() {
+    super.loadEndpoints();
+
     this.API.request.get("/app/diffusion_lab/models", async (req, res) =>
       res.json({ models: ["everything v5", "stable diffusion 2.1", "blueberry mix"] }),
     );

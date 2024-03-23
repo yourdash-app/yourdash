@@ -19,6 +19,11 @@ const promotedApplications: string[] = ["dash", "store"];
 export default class StoreModule extends BackendModule {
   constructor(args: YourDashModuleArguments) {
     super(args);
+  }
+
+  public loadEndpoints() {
+    super.loadEndpoints();
+
     this.API.request.get("/app/store/promoted/applications", (_req, res) => {
       Promise.all(
         promotedApplications.map(async (app): Promise<StorePromotedApplication> => {

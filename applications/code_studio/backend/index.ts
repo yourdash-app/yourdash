@@ -8,6 +8,10 @@ import BackendModule, { YourDashModuleArguments } from "@yourdash/backend/src/co
 export default class CodeStudioModule extends BackendModule {
   constructor(args: YourDashModuleArguments) {
     super(args);
+  }
+
+  public loadEndpoints() {
+    super.loadEndpoints();
 
     this.API.request.get("/app/code_studio/", (req, res) => res.json({ success: true }));
   }

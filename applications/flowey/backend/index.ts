@@ -9,4 +9,12 @@ export default class FloweyModule extends BackendModule {
   constructor(args: YourDashModuleArguments) {
     super(args);
   }
+
+  public loadEndpoints() {
+    super.loadEndpoints();
+
+    this.API.request.get("/app/flowey", (_req, res) => {
+      res.send("Hello From Flowey!");
+    });
+  }
 }

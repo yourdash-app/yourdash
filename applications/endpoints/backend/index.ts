@@ -8,6 +8,10 @@ import BackendModule, { YourDashModuleArguments } from "@yourdash/backend/src/co
 export default class EndpointsModule extends BackendModule {
   constructor(args: YourDashModuleArguments) {
     super(args);
+  }
+
+  public loadEndpoints() {
+    super.loadEndpoints();
     this.API.request.get("/app/endpoints/endpoints", (req, res) => res.json(this.API.request._router.stack));
   }
 }

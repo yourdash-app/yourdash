@@ -39,7 +39,7 @@ export default class CoreApiModuleManager {
     return this.coreApi.fs.doesExist(path.resolve(`${modulePath}/backend/index.ts`));
   }
 
-  async loadModule(moduleName: string, modulePath: string) {
+  async loadModule(moduleName: string, modulePath: string): Promise<BackendModule | undefined> {
     // if the module is not valid or doesn't require a backend module, return
     if (!this.checkModule(modulePath)) {
       return;
@@ -53,25 +53,26 @@ export default class CoreApiModuleManager {
     const startTime = new Date();
 
     try {
-      const module = await import(`${fileUrl(modulePath)}/index.js`);
-      if (!module.default) {
+      const mod = await import(`${fileUrl(modulePath)}/index.js`);
+      if (!mod.default) {
         this.coreApi.log.error(
           "module_manager",
           `Unable to load ${moduleName}! This application does not contain a default export!`,
         );
         return;
       }
-      new module.default({ moduleName: moduleName, modulePath: modulePath });
-      this.loadedModules.push(module);
+
+      const initializedModule = new mod.default({ moduleName: moduleName, modulePath: modulePath });
+      this.loadedModules.push(mod);
       this.coreApi.log.success(
         "module_manager",
         `Loaded module: "${moduleName}" in ${new Date().getTime() - startTime.getTime()}ms`,
       );
+      return initializedModule;
     } catch (err) {
       this.coreApi.log.error("module_manager", `Invalid module: "${moduleName}"`, err);
+      return null;
     }
-
-    return this;
   }
 
   unloadModule(module: BackendModule) {
@@ -97,13 +98,14 @@ export default class CoreApiModuleManager {
     return this.loadedModules;
   }
 
-  async loadInstalledApplications() {
+  async loadInstalledApplications(): Promise<(BackendModule & undefined)[]> {
+    const loadedApplications: (BackendModule & undefined)[] = [];
     const installedApplications = this.coreApi.globalDb.get("core:installedApplications");
 
     for (const applicationName of installedApplications) {
       const modulePath = path.resolve(path.join("../../applications/", applicationName, "./backend"));
       try {
-        await this.loadModule(applicationName, modulePath);
+        loadedApplications.push(await this.loadModule(applicationName, modulePath));
       } catch (err) {
         this.coreApi.log.error("module_manager", `Failed to load module: ${applicationName}`, err);
       }
@@ -111,10 +113,11 @@ export default class CoreApiModuleManager {
 
     if (this.getLoadedModules().length === 0) {
       this.coreApi.log.warning("module_manager", "No modules loaded!");
-      return;
+      return [];
     }
 
     this.coreApi.log.info("module_manager", `Loaded ${this.getLoadedModules().length} modules`);
+    return loadedApplications;
   }
 
   getModule(moduleName: string): BackendModule | undefined {

@@ -21,6 +21,7 @@ import CoreApiImage from "./coreApiImage.js";
 import CoreApiLog from "./coreApiLog.js";
 import CoreApiTeams from "./coreApiTeams.js";
 import CoreApiVideo from "./coreApiVideo.js";
+import BackendModule from "./moduleManager/backendModule.js";
 import loadNextCloudSupportEndpoints from "./nextcloud/coreApiNextCloud.js";
 import CoreApiWebDAV from "./webDAV/coreApiWebDAV.js";
 import CoreApiModuleManager from "./moduleManager/coreApiModuleManager.js";
@@ -258,7 +259,7 @@ export class CoreApi {
     );
   }
 
-  private loadCoreEndpoints() {
+  private async loadCoreEndpoints() {
     if (this.processArguments["log-requests"]) {
       this.startRequestLogger({
         logOptionsRequests: !!this.processArguments["log-options-requests"],
@@ -469,6 +470,30 @@ export class CoreApi {
       this.log.error("websocketManager", "Error caught in loadWebsocketManagerEndpoints", e);
     }
 
+    let loadedModules: BackendModule[] = [];
+
+    try {
+      console.time("core:load_modules");
+      loadedModules = (await this.moduleManager.loadInstalledApplications()).filter((x) => x !== undefined);
+
+      console.timeEnd("core:load_modules");
+      this.log.info("startup", "All modules loaded successfully");
+    } catch (err) {
+      this.log.error("startup", "Failed to load all modules");
+    }
+
+    try {
+      loadedModules.map((mod) => {
+        try {
+          mod.loadPreAuthEndpoints();
+        } catch (err) {
+          this.log.error("startup", `Failed to load pre-auth endpoints for ${mod.moduleName}`, err);
+        }
+      });
+    } catch (err) {
+      this.log.error("startup", "Failed to load pre-auth endpoints for all modules", err);
+    }
+
     // Check for authentication
     this.request.use(async (req, res, next) => {
       const { username, token } = req.headers as {
@@ -517,22 +542,24 @@ export class CoreApi {
     });
 
     /**
-     *  ################################################################
-     *  # WARNING: all endpoints require authentication after this point
-     *  ################################################################
+     *  ##################################################################
+     *  # WARNING: all endpoints require authentication after this point #
+     *  ##################################################################
      */
 
     console.time("core:load_modules");
 
-    this.moduleManager
-      .loadInstalledApplications()
-      .then(() => {
-        console.timeEnd("core:load_modules");
-        this.log.info("startup", "All modules loaded successfully");
-      })
-      .catch(() => {
-        this.log.error("startup", "Failed to load all modules");
+    try {
+      loadedModules.map((mod) => {
+        try {
+          mod.loadEndpoints();
+        } catch (err) {
+          this.log.error("startup", `Failed to load post-auth endpoints for ${mod.moduleName}`, err);
+        }
       });
+    } catch (err) {
+      this.log.error("startup", "Failed to load post-auth endpoints for all modules", err);
+    }
 
     this.request.get("/core/hosted-applications/", async (req, res) => {
       const hostedApplications = await this.fs.getDirectory(path.join(process.cwd(), "../../hostedApplications"));
@@ -607,6 +634,11 @@ export class CoreApi {
     this.panel.__internal__loadEndpoints();
     this.users.__internal__loadEndpoints();
     this.teams.__internal__loadEndpoints();
+
+    this.request.use((req, res) => {
+      this.log.info("request:404", `${chalk.bgRed(chalk.black(" 404 "))} ${req.path}`);
+      return res.status(404).json({ error: "this endpoint does not exist!" });
+    });
   }
 
   // try not to use this method for production stability, instead prefer to reload a specific module if it works for your use-case.

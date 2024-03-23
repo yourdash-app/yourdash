@@ -3,12 +3,11 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { Application as ExpressApplication, Request as ExpressRequest } from "express";
+import { Request as ExpressRequest } from "express";
 import path from "path";
 import coreApi, { CoreApi } from "../coreApi.js";
 import { LOG_TYPE } from "../coreApiLog.js";
 import YourDashUser from "../user/index.js";
-import WebsocketManager from "../websocketManager/websocketManager.js";
 
 export interface YourDashModuleArguments {
   moduleName: string;
@@ -16,13 +15,12 @@ export interface YourDashModuleArguments {
 }
 
 export default class BackendModule {
-  private readonly websocketManager: WebsocketManager;
-  private readonly expressApp: ExpressApplication;
   readonly moduleName: string;
   protected readonly API: {
     websocket: CoreApi["websocketManager"];
     request: CoreApi["request"];
-    log(type: LOG_TYPE, ...message: any[]): void; // eslint-disable-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    log(type: LOG_TYPE, ...message: any[]): void;
     getPath(): string;
     applicationName: string;
     moduleName: string;
@@ -38,8 +36,8 @@ export default class BackendModule {
     this.API = {
       websocket: coreApi.websocketManager,
       request: coreApi.request,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       log(type: LOG_TYPE, ...message: any[]) {
-        // eslint-disable-line @typescript-eslint/no-explicit-any
         switch (type) {
           case LOG_TYPE.INFO:
             coreApi.log.info(`app:${this.moduleName}`, ...message);
@@ -74,4 +72,8 @@ export default class BackendModule {
 
     return this;
   }
+
+  loadEndpoints() {}
+
+  loadPreAuthEndpoints() {}
 }

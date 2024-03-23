@@ -8,6 +8,10 @@ import BackendModule, { YourDashModuleArguments } from "@yourdash/backend/src/co
 export default class YourDevModule extends BackendModule {
   constructor(args: YourDashModuleArguments) {
     super(args);
+  }
+
+  public loadEndpoints() {
+    super.loadEndpoints();
 
     this.API.request.get("/app/whiteboard/", (req, res) => {
       return res.json({ success: true });

@@ -3,9 +3,9 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { YOURDASH_USER_PERMISSIONS } from "packages/backend/src/core/user/userPermissions.js";
 import BackendModule from "@yourdash/backend/src/core/moduleManager/backendModule.js";
 import coreApi from "@yourdash/backend/src/core/coreApi.js";
+import { YOURDASH_USER_PERMISSIONS } from "@yourdash/backend/src/core/user/userPermissions.js";
 
 export default function manageUsers(api: BackendModule["API"]) {
   api.request.use(`/app/${api.applicationName}/admin/manage-users`, async (req, res, next) => {

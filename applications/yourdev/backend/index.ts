@@ -8,6 +8,10 @@ import BackendModule, { YourDashModuleArguments } from "@yourdash/backend/src/co
 export default class YourDevModule extends BackendModule {
   constructor(args: YourDashModuleArguments) {
     super(args);
+  }
+
+  public loadEndpoints() {
+    super.loadEndpoints();
 
     const wss = this.API.core.websocketManager.createServer("/app/yourdev");
     wss.onConnection((connection) => {

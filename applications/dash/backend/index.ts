@@ -8,6 +8,10 @@ import BackendModule, { YourDashModuleArguments } from "@yourdash/backend/src/co
 export default class DashModule extends BackendModule {
   constructor(args: YourDashModuleArguments) {
     super(args);
+  }
+
+  public loadEndpoints() {
+    super.loadEndpoints();
 
     this.API.request.get("/app/dash/user-full-name", async (req, res) => {
       res.json(

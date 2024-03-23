@@ -8,18 +8,22 @@ import BackendModule, { YourDashModuleArguments } from "@yourdash/backend/src/co
 import generateUUID from "@yourdash/shared/web/helpers/uuid.js";
 import * as path from "path";
 import { Request as ExpressRequest } from "express";
-import ChatbotsBot from "./bot.js";
+import ChatbotsBotApplication from "../shared/application.js";
 
 export default class ChatbotsModule extends BackendModule {
   loadedBots: {
     id: string;
     ownerTeam: string;
-    bot: ChatbotsBot;
+    bot: ChatbotsBotApplication;
   }[];
 
   constructor(args: YourDashModuleArguments) {
     super(args);
 
+    return this;
+  }
+
+  public loadEndpoints() {
     this.API.request.post("/app/chatbots/integration/discord/authorize-user", async (req, res) => {
       const user = this.API.getUser(req);
 
@@ -77,6 +81,10 @@ export default class ChatbotsModule extends BackendModule {
           token: undefined,
         }),
       );
+
+      return res.json({
+        success: true,
+      });
     });
 
     this.API.request.get("/app/chatbots/team/:teamId/list-bots", async (req, res) => {
@@ -104,12 +112,5 @@ export default class ChatbotsModule extends BackendModule {
         bots: await (await coreApi.fs.getFile(path.join(teamBotsDirectory.path, "bot.json"))).read("json"),
       });
     });
-  }
-
-  async getBotOwnerToken(req: ExpressRequest): Promise<string> {
-    const user = this.API.getUser(req);
-
-    return (await (await coreApi.fs.getFile(path.join(user.path, "fs/apps/chatbots/discord/key.json"))).read("json"))
-      .botOwnerToken;
   }
 }

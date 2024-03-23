@@ -10,141 +10,146 @@ import BackendModule, { YourDashModuleArguments } from "@yourdash/backend/src/co
 export default class FilesModule extends BackendModule {
   constructor(args: YourDashModuleArguments) {
     super(args);
+  }
+
+  public loadEndpoints() {
+    super.loadEndpoints();
+
     /*     this.API.request.post( "/app/files/get", async ( req, res ) => {
-      const { username } = req.headers as {
-      username: string
-    };
+        const { username } = req.headers as {
+        username: string
+      };
 
-      if ( !req.body.path ) {
-        return res.json( { files: [] } );
-      }
+        if ( !req.body.path ) {
+          return res.json( { files: [] } );
+        }
 
-      const user = new YourDashUser( username );
+        const user = new YourDashUser( username );
 
-      let files: any[] = [];
+        let files: any[] = [];
 
-      try {
-        files = await fs.readdir( path.join( user.path, "fs/", req.body.path ) );
-      } catch ( _err ) {
-        files = [];
-      }
+        try {
+          files = await fs.readdir( path.join( user.path, "fs/", req.body.path ) );
+        } catch ( _err ) {
+          files = [];
+        }
 
-      Promise.all(
-        files.map( async file => {
-          try {
-            const type = (
-              await fs.lstat( path.join( user.path, "fs/", req.body.path, file ) )
-            ).isFile()
-              ? "file"
-              : "directory";
-            const name = path.basename( path.join( user.path, "fs/", req.body.path, file ) );
-
-            return {
-              type,
-              name
-            };
-          } catch ( _err ) {
-            return false;
-          }
-        } )
-      ).then( outputFiles => {
-        return res.json( {
-          files: outputFiles.filter( file => !!file )
-        } );
-      } );
-    } );
-
-    this.API.request.post( "/app/files/get/thumbnails-small", async ( req, res ) => {
-      const { username } = req.headers as {
-      username: string
-    };
-
-      if ( !req.body.path ) {
-        return res.json( { files: [] } );
-      }
-
-      const user = new YourDashUser( username );
-
-      let files: string[];
-
-      try {
-        files = await fs.readdir( path.join( user.path, "fs/", req.body.path ) );
-      } catch ( _err ) {
-        files = [];
-      }
-
-      return res.json( {
-        files: ( await Promise.all(
+        Promise.all(
           files.map( async file => {
             try {
-              const type = ( await fs.lstat( path.join( user.path, "fs/", req.body.path, file ) ) ).isFile()
+              const type = (
+                await fs.lstat( path.join( user.path, "fs/", req.body.path, file ) )
+              ).isFile()
                 ? "file"
                 : "directory";
-
               const name = path.basename( path.join( user.path, "fs/", req.body.path, file ) );
 
-              const extension = path.extname( path.join( user.path, "fs/", req.body.path, file ) );
-
-              let icon = "";
-
-              switch ( extension ) {
-              case ".png":
-              case ".jpg":
-              case ".jpeg":
-              case ".webp":
-              case ".avif":
-              case ".svg":
-              case ".gif":
-                // check if the file size is more than 1mb, if so, ignore generating the thumbnail and return an empty string
-                if ( ( await fs.stat( path.join( user.path, "fs/", req.body.path, file ) ) ).size > 1024 * 1024 ) {
-                  icon = "";
-                } else {
-                // downscale the image
-                  const image = sharp( path.join( user.path, "fs/", req.body.path, file ) ).resize( 96, 96 );
-
-                  icon = authenticatedImage( username, authenticatedImageType.BASE64, ( await image.toBuffer() ).toString( "base64" ) );
-                }
-                break;
-              default:
-                break;
-              }
-
-              return { type, name, icon };
+              return {
+                type,
+                name
+              };
             } catch ( _err ) {
               return false;
             }
           } )
-        ) ).filter( file => !!file )
+        ).then( outputFiles => {
+          return res.json( {
+            files: outputFiles.filter( file => !!file )
+          } );
+        } );
       } );
-    } );
 
-    this.API.request.post( "/app/files/get/file", async ( req, res ) => {
-      const { username } = req.headers as {
-      username: string
-    };
+      this.API.request.post( "/app/files/get/thumbnails-small", async ( req, res ) => {
+        const { username } = req.headers as {
+        username: string
+      };
 
-      if ( !req.body.path ) {
-        return res.send( "[YOURDASH] Error: Unknown file" );
-      }
-
-      const user = new YourDashUser( username );
-
-      const filePath = path.join( user.path, "fs/", req.body.path );
-
-      try {
-        switch ( getFileType( filePath ) ) {
-        case FileTypes.PlainText:
-          return res.send( ( await fs.readFile( filePath ) ).toString() );
-        case FileTypes.Image:
-          return res.send( authenticatedImage( username, authenticatedImageType.FILE, filePath ) );
-        default:
-          return res.send( "[YOURDASH] Error: Unsupported file type" );
+        if ( !req.body.path ) {
+          return res.json( { files: [] } );
         }
 
-      } catch ( _err ) {
-        return res.send( "[YOURDASH] Error: Unable to read file" );
-      }
-    } ); */
+        const user = new YourDashUser( username );
+
+        let files: string[];
+
+        try {
+          files = await fs.readdir( path.join( user.path, "fs/", req.body.path ) );
+        } catch ( _err ) {
+          files = [];
+        }
+
+        return res.json( {
+          files: ( await Promise.all(
+            files.map( async file => {
+              try {
+                const type = ( await fs.lstat( path.join( user.path, "fs/", req.body.path, file ) ) ).isFile()
+                  ? "file"
+                  : "directory";
+
+                const name = path.basename( path.join( user.path, "fs/", req.body.path, file ) );
+
+                const extension = path.extname( path.join( user.path, "fs/", req.body.path, file ) );
+
+                let icon = "";
+
+                switch ( extension ) {
+                case ".png":
+                case ".jpg":
+                case ".jpeg":
+                case ".webp":
+                case ".avif":
+                case ".svg":
+                case ".gif":
+                  // check if the file size is more than 1mb, if so, ignore generating the thumbnail and return an empty string
+                  if ( ( await fs.stat( path.join( user.path, "fs/", req.body.path, file ) ) ).size > 1024 * 1024 ) {
+                    icon = "";
+                  } else {
+                  // downscale the image
+                    const image = sharp( path.join( user.path, "fs/", req.body.path, file ) ).resize( 96, 96 );
+
+                    icon = authenticatedImage( username, authenticatedImageType.BASE64, ( await image.toBuffer() ).toString( "base64" ) );
+                  }
+                  break;
+                default:
+                  break;
+                }
+
+                return { type, name, icon };
+              } catch ( _err ) {
+                return false;
+              }
+            } )
+          ) ).filter( file => !!file )
+        } );
+      } );
+
+      this.API.request.post( "/app/files/get/file", async ( req, res ) => {
+        const { username } = req.headers as {
+        username: string
+      };
+
+        if ( !req.body.path ) {
+          return res.send( "[YOURDASH] Error: Unknown file" );
+        }
+
+        const user = new YourDashUser( username );
+
+        const filePath = path.join( user.path, "fs/", req.body.path );
+
+        try {
+          switch ( getFileType( filePath ) ) {
+          case FileTypes.PlainText:
+            return res.send( ( await fs.readFile( filePath ) ).toString() );
+          case FileTypes.Image:
+            return res.send( authenticatedImage( username, authenticatedImageType.FILE, filePath ) );
+          default:
+            return res.send( "[YOURDASH] Error: Unsupported file type" );
+          }
+
+        } catch ( _err ) {
+          return res.send( "[YOURDASH] Error: Unable to read file" );
+        }
+      } ); */
 
     this.API.request.get(`/app/${this.API.applicationName}`, (req, res) => {
       return res.json({ message: `Hello world from ${this.API.applicationName}! 👋` });

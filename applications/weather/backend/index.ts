@@ -16,6 +16,10 @@ export const weatherForecastCache: { [key: string]: { cacheTime: number; data: u
 export default class WeatherModule extends BackendModule {
   constructor(args: YourDashModuleArguments) {
     super(args);
+  }
+
+  public loadEndpoints() {
+    super.loadEndpoints();
 
     geolocationApi(this.API.request);
 

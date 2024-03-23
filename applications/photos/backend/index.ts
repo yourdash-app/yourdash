@@ -16,6 +16,10 @@ export default class PhotosModule extends BackendModule {
 
   constructor(args: YourDashModuleArguments) {
     super(args);
+  }
+
+  public loadEndpoints() {
+    super.loadEndpoints();
 
     this.API.request.get(`${this.rootPath}/albums`, async (req, res) => {
       const { username } = req.headers as { username: string };

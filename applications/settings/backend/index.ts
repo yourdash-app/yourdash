@@ -12,7 +12,10 @@ import path from "path";
 export default class SettingsModule extends BackendModule {
   constructor(args: YourDashModuleArguments) {
     super(args);
+  }
 
+  public loadEndpoints() {
+    super.loadEndpoints();
     this.API.request.post("/app/settings/core/panel/position", async (req, res) => {
       const { username } = req.headers as {
         username: string;

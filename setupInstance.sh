@@ -53,14 +53,24 @@ sudo chmod 777 -R /yourdash
 echo "Installing YourDash dependencies"
 npm i -g yarn
 
-echo "if yarn install fails, run this script again"
+echo "IMPORTANT!: if yarn install fails, run this script again"
 yarn install
 
-echo "Installing YourDash systemd service"
-sudo cp /yourdash/main/backend/src/defaults/yourdash.service /etc/systemd/system/yourdash.service
+echo "Changing to root..."
+sudo su
 
-echo "Enabling YourDash systemd service"
-sudo systemctl enable yourdash
+echo "Installing pm2"
+yarn global add pm2
 
-echo "Starting YourDash systemd service"
-sudo systemctl start yourdash
+echo "Reloading ~/.bashrc"
+# shellcheck disable=SC1090
+source ~/.bashrc
+
+echo "Setting pm2 as a startup script"
+pm2 startup#
+
+echo "Removing YourDash from pm2"
+pm2 delete yourdashBackend
+
+echo "Adding YourDash to pm2"
+pm2 start /yourdash/main/backend/src/defaults/yourdashBackend.sh
