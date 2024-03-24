@@ -3,7 +3,6 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import UIKitReactRoot from "@yourdash/uikit/core/ReactRoot.js";
 import ReactUIKitView from "@yourdash/uikit/core/ReactUIKitView.js";
 import UIKitReactView from "@yourdash/uikit/core/UIKitReactView.js";
 import React from "react";

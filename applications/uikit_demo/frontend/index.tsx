@@ -4,18 +4,13 @@
  */
 
 import ReactUIKitView from "@yourdash/uikit/core/ReactUIKitView.js";
-import UIKitReactRoot from "@yourdash/uikit/core/ReactRoot";
 import Div from "@yourdash/uikit/html/div";
+import Main from "@yourdash/uikit/html/main.js";
 import * as React from "react";
 
 const UIKitDemoApplication: React.FC = () => {
   return (
     <>
-      <UIKitReactRoot
-        onLoad={(fw) => {
-          return fw;
-        }}
-      />
       <ReactUIKitView
         onLoad={(root) => {
           const div = new Div();
@@ -25,6 +20,10 @@ const UIKitDemoApplication: React.FC = () => {
           div.setStyle("width", "10rem");
           div.setStyle("height", "10rem");
           div.addClass("test");
+
+          div.addChild(new Main().setInnerText("Hello World!"));
+
+          div.render();
 
           return root;
         }}

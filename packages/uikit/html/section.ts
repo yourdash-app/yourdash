@@ -13,17 +13,17 @@ export default class Section extends UIKitHTMLElement {
   }
 
   addChild(childElement: UIKitHTMLElement) {
-    this.__internals.underlyingHTMLElement.appendChild(childElement.__internals.underlyingHTMLElement);
+    this.htmlElement.appendChild(childElement.htmlElement);
     return this;
   }
 
   setInnerText(text: string) {
-    this.__internals.underlyingHTMLElement.innerText = text;
+    this.htmlElement.innerText = text;
     return this;
   }
 
   dangerouslySetInnerHTML(html: string) {
-    this.__internals.underlyingHTMLElement.innerHTML = html;
+    this.htmlElement.innerHTML = html;
     return this;
   }
 }

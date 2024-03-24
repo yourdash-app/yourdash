@@ -6,7 +6,10 @@
 import React, { useEffect, useRef } from "react";
 import ContentRoot from "./contentRoot";
 
-const ReactUIKitView: React.FC<{ onLoad: (contentRoot: ContentRoot) => void }> = ({ onLoad }) => {
+const ReactUIKitView: React.FC<{ onLoad: (contentRoot: ContentRoot) => void; className?: string }> = ({
+  onLoad,
+  className,
+}) => {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -24,7 +27,7 @@ const ReactUIKitView: React.FC<{ onLoad: (contentRoot: ContentRoot) => void }> =
     }
   }, [ref.current]);
 
-  return <div ref={ref} />;
+  return <div ref={ref} className={className || ""} />;
 };
 
 export default ReactUIKitView;

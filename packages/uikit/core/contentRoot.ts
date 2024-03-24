@@ -44,16 +44,7 @@ export default class ContentRoot {
 
   // add a child component to the content root
   addChild(child: Component<ComponentType> | UIKitHTMLElement) {
-    // noinspection SuspiciousTypeOfGuard
-    if (!(child instanceof Component)) {
-      // noinspection SuspiciousTypeOfGuard
-      if (!(child instanceof UIKitHTMLElement)) {
-        throw new Error("child must be an instance of a UIKit Component");
-      }
-
-      this.__internals.element?.appendChild(child.__internals.underlyingHTMLElement);
-      return this;
-    }
+    this.__internals.element?.appendChild(child.htmlElement);
 
     this.__internals.children.push(child);
 
@@ -91,8 +82,8 @@ export default class ContentRoot {
     }
 
     this.getChildren().forEach((child) => {
-      this.__internals.element?.appendChild(child.htmlElement);
       child.render();
+      this.__internals.element?.appendChild(child.htmlElement);
       recursiveFullRender(child);
     });
 
