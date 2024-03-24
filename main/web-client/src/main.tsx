@@ -7,7 +7,8 @@ import "animate.css";
 import "./tailwindcss.css";
 import "@yourdash/uikit/depChiplet/ui.scss";
 import "./main.css";
-import React, { StrictMode } from "react";
+import UIKit from "@yourdash/uikit/core/index.js";
+import React from "react";
 import ReactDOM from "react-dom/client";
 import { createRoutesFromElements, Route, RouterProvider } from "react-router";
 import { createHashRouter } from "react-router-dom";
@@ -80,5 +81,7 @@ loadingElement.style.alignItems = "center";
 loadingElement.innerText = "Loading YourDash...";
 
 element.appendChild(loadingElement);
+
+new UIKit();
 
 main();

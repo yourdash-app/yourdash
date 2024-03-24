@@ -6,7 +6,7 @@
 import React, { useEffect, useRef } from "react";
 import ContentRoot from "./contentRoot";
 
-const UIKitReactInterop: React.FC<{ onLoad: (contentRoot: ContentRoot) => void }> = ({ onLoad }) => {
+const ReactUIKitView: React.FC<{ onLoad: (contentRoot: ContentRoot) => void }> = ({ onLoad }) => {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -27,4 +27,4 @@ const UIKitReactInterop: React.FC<{ onLoad: (contentRoot: ContentRoot) => void }
   return <div ref={ref} />;
 };
 
-export default UIKitReactInterop;
+export default ReactUIKitView;

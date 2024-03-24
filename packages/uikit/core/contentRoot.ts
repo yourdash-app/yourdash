@@ -91,6 +91,7 @@ export default class ContentRoot {
     }
 
     this.getChildren().forEach((child) => {
+      this.__internals.element?.appendChild(child.htmlElement);
       child.render();
       recursiveFullRender(child);
     });

@@ -18,6 +18,7 @@ export default class Component<Type extends ComponentType> {
     children: Type extends ContainerComponent ? AnyComponent[] : null;
     renderCount: number;
   };
+  htmlElement: HTMLElement;
 
   constructor(
     componentType: Type extends ComponentType.Container ? ComponentType.Container : ComponentType.Solo,
@@ -36,6 +37,9 @@ export default class Component<Type extends ComponentType> {
     if (props) {
       if (props.debugId) this.__internals.debugId = props.debugId;
     }
+
+    // by default, we use a div element as the component's html element
+    this.htmlElement = document.createElement("div");
 
     return this;
   }
