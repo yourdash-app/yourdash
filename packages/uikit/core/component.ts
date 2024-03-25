@@ -4,10 +4,15 @@
  */
 
 import generateUUID from "@yourdash/shared/web/helpers/uuid";
+import { UIKitTheme } from "../components/theme.js";
 
 export enum ComponentType {
   Container,
   Solo,
+}
+
+export interface DefaultComponentTreeContext {
+  theme?: UIKitTheme;
 }
 
 export default class Component<Type extends ComponentType> {
@@ -15,8 +20,10 @@ export default class Component<Type extends ComponentType> {
     componentType: ComponentType;
     debugId: string;
     parentComponent?: ContainerComponent;
-    children: Type extends ContainerComponent ? AnyComponent[] : null;
+    children: Type extends ComponentType.Container ? AnyComponent[] : undefined;
     renderCount: number;
+    treeContext: DefaultComponentTreeContext & object;
+    isInitialized: boolean;
   };
   htmlElement: HTMLElement;
 
@@ -26,12 +33,14 @@ export default class Component<Type extends ComponentType> {
   ) {
     this.__internals = {
       debugId: generateUUID(),
-      // When a component is created, it's creator should define it's parent
+      // When a component is created, it's creator should define its parent
       parentComponent: undefined,
       // @ts-ignore
-      children: componentType === ComponentType.Container ? [] : null,
+      children: componentType === ComponentType.Container ? [] : undefined,
       componentType: componentType,
       renderCount: 0,
+      isInitialized: false,
+      treeContext: {},
     };
 
     if (props) {
@@ -46,7 +55,7 @@ export default class Component<Type extends ComponentType> {
 
   render() {
     this.__internals.renderCount++;
-    console.debug("UIKIT:RENDER", `rendering component: <${this.__internals.debugId}>`);
+    console.debug("UIKIT:RENDER", `rendering component: <${this.__internals.debugId}>`, this);
 
     return this;
   }

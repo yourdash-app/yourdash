@@ -3,6 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import { AnyComponent, DefaultComponentTreeContext } from "./component.js";
 import ContentRoot, { ContentRootProps } from "./contentRoot";
 
 // override the global window object to add the __uikit__ object
@@ -16,6 +17,22 @@ declare global {
 
 export function getUIKit() {
   return window.__uikit__.uikit;
+}
+
+export function initializeComponent(component: AnyComponent, treeContext: object & DefaultComponentTreeContext) {
+  if (component.__internals.isInitialized) {
+    console.warn(
+      "UIKIT:COMPONENT_ALREADY_INITIALIZED",
+      `component ${component.__internals.debugId} already initialized`,
+    );
+
+    return component;
+  }
+
+  component.__internals.treeContext = treeContext;
+  component.__internals.isInitialized = true;
+
+  return component;
 }
 
 export default class UIKit {

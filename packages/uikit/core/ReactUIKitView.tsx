@@ -24,8 +24,9 @@ const ReactUIKitView: React.FC<{ onLoad: (contentRoot: ContentRoot) => void; cla
       contentRoot.setHTMLElement(ref.current);
 
       onLoad(contentRoot);
+      contentRoot.render();
     }
-  }, [ref.current]);
+  }, [!!ref.current]);
 
   return <div ref={ref} className={className || ""} />;
 };

@@ -5,8 +5,8 @@
 
 import ReactUIKitView from "@yourdash/uikit/core/ReactUIKitView.js";
 import Div from "@yourdash/uikit/html/div";
-import Main from "@yourdash/uikit/html/main.js";
 import * as React from "react";
+import Text from "@yourdash/uikit/components/text.js";
 
 const UIKitDemoApplication: React.FC = () => {
   return (
@@ -21,11 +21,7 @@ const UIKitDemoApplication: React.FC = () => {
           div.setStyle("height", "10rem");
           div.addClass("test");
 
-          div.addChild(new Main().setInnerText("Hello World!"));
-
-          div.render();
-
-          return root;
+          root.addChild(new Text().setText("Hello World!"));
         }}
       />
     </>

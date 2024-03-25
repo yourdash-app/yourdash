@@ -11,6 +11,8 @@ export default class Text extends Component<ComponentType.Solo> {
   constructor() {
     super(ComponentType.Solo, { debugId: "text-test-component" });
 
+    this.htmlElement = document.createElement("div");
+
     return this;
   }
 
@@ -23,7 +25,13 @@ export default class Text extends Component<ComponentType.Solo> {
 
   public render() {
     super.render();
+
+    console.log("RENDER CALLED!");
+
     this.htmlElement.innerText = this.textValue;
+    this.htmlElement.style.fontWeight = this.__internals.treeContext?.theme?.default.font.weight ?? "normal";
+    this.htmlElement.style.fontSize = this.__internals.treeContext?.theme?.default.font.size ?? "1rem";
+    this.htmlElement.style.fontFamily = this.__internals.treeContext?.theme?.default.font.family ?? "Inter";
 
     return this;
   }

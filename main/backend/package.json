@@ -51,6 +51,7 @@
     "tsc-watch": "^6.0.4",
     "tsconfig-paths": "^4.2.0",
     "tsx": "^4.7.1",
+    "type-fest": "^4.14.0",
     "typescript": "^5.2.2",
     "undici": "^5.28.3",
     "xml2js": "^0.6.2"

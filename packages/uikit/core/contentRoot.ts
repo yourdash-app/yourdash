@@ -4,8 +4,13 @@
  */
 
 import generateUUID from "@yourdash/shared/web/helpers/uuid";
-import Component, { ComponentType, ContainerComponent } from "@yourdash/uikit/core/component";
+import Component, {
+  ComponentType,
+  ContainerComponent,
+  DefaultComponentTreeContext,
+} from "@yourdash/uikit/core/component";
 import UIKitHTMLElement from "./htmlElement";
+import { initializeComponent } from "./index.js";
 
 export interface ContentRootProps {
   htmlElement: HTMLElement;
@@ -17,12 +22,14 @@ export default class ContentRoot {
     debugId: string;
     children: Component<ComponentType>[];
     element?: HTMLElement;
+    treeContext: object & DefaultComponentTreeContext;
   };
 
   constructor(props: ContentRootProps) {
     this.__internals = {
       debugId: generateUUID(),
       children: [],
+      treeContext: {},
     };
 
     if (props.debugId) this.__internals.debugId = props.debugId;
@@ -67,24 +74,37 @@ export default class ContentRoot {
 
     this.__internals.element.innerHTML = "";
 
-    function recursiveFullRender(child: Component<ComponentType>) {
-      if (child.__internals.componentType === ComponentType.Solo) {
-        child.render();
-        return;
+    function recursiveFullRender(
+      child: Component<ComponentType.Container>,
+      treeContext: object & DefaultComponentTreeContext,
+    ) {
+      if (!child.__internals.isInitialized) {
+        initializeComponent(child, treeContext);
       }
 
-      const childContainerComponent: ContainerComponent = child as ContainerComponent;
-      childContainerComponent.render();
+      child.__internals.children?.map((ch) => {
+        if (ch.__internals.componentType === ComponentType.Container) {
+          ch.render();
+          child.htmlElement?.appendChild(ch.htmlElement);
+          recursiveFullRender(ch, child.__internals.treeContext);
+        } else {
+          ch.render();
+          child.htmlElement?.appendChild(ch.htmlElement);
+        }
 
-      recursiveFullRender(childContainerComponent);
+        recursiveFullRender(child, child.__internals.treeContext);
 
-      return;
+        return;
+      });
     }
 
     this.getChildren().forEach((child) => {
       child.render();
       this.__internals.element?.appendChild(child.htmlElement);
-      recursiveFullRender(child);
+
+      if (child.__internals.componentType === ComponentType.Container) {
+        recursiveFullRender(child, child.__internals.treeContext);
+      }
     });
 
     return this;
