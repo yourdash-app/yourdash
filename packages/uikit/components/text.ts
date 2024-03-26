@@ -26,7 +26,7 @@ export default class Text extends Component<ComponentType.Solo> {
   public render() {
     super.render();
 
-    console.log("RENDER CALLED!");
+    console.log(this.__internals.treeContext);
 
     this.htmlElement.innerText = this.textValue;
     this.htmlElement.style.fontWeight = this.__internals.treeContext?.theme?.default.font.weight ?? "normal";

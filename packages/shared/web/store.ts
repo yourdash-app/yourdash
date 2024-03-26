@@ -21,7 +21,11 @@ export default class dataStore<ST extends StoreType> {
   }
 
   public set<Key extends keyof ST>(key: Key, value: ST[Key]) {
+    const previousValue = this.data[key];
+
     this.data[key] = value;
+
+    this.listeners[key]?.forEach((listener) => listener(previousValue, value));
 
     return this;
   }
@@ -40,5 +44,30 @@ export default class dataStore<ST extends StoreType> {
     this.data = this.defaultValue;
 
     return this;
+  }
+
+  on(key: keyof ST, listener: (previousValue: ST[keyof ST], newValue: ST[keyof ST]) => void) {
+    if (!this.listeners[key]) {
+      this.listeners[key] = [];
+    }
+
+    this.listeners[key]?.push(listener);
+
+    return this;
+  }
+
+  off(key: keyof ST, listener: (previousValue: ST[keyof ST], newValue: ST[keyof ST]) => void) {
+    this.listeners[key] = this.listeners[key]?.filter((l) => l !== listener);
+
+    return this;
+  }
+
+  once(key: keyof ST, listener: (previousValue: ST[keyof ST], newValue: ST[keyof ST]) => void) {
+    const wrappedListener = (previousValue: ST[keyof ST], newValue: ST[keyof ST]) => {
+      listener(previousValue, newValue);
+      this.off(key, wrappedListener);
+    };
+
+    return this.on(key, wrappedListener);
   }
 }

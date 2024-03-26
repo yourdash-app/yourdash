@@ -9,6 +9,7 @@ import Component, {
   ContainerComponent,
   DefaultComponentTreeContext,
 } from "@yourdash/uikit/core/component";
+import defaultTheme from "../components/theme.js";
 import UIKitHTMLElement from "./htmlElement";
 import { initializeComponent } from "./index.js";
 
@@ -29,7 +30,9 @@ export default class ContentRoot {
     this.__internals = {
       debugId: generateUUID(),
       children: [],
-      treeContext: {},
+      treeContext: {
+        theme: defaultTheme,
+      },
     };
 
     if (props.debugId) this.__internals.debugId = props.debugId;
@@ -99,11 +102,15 @@ export default class ContentRoot {
     }
 
     this.getChildren().forEach((child) => {
+      if (!child.__internals.isInitialized) {
+        initializeComponent(child, this.__internals.treeContext);
+      }
+
       child.render();
       this.__internals.element?.appendChild(child.htmlElement);
 
       if (child.__internals.componentType === ComponentType.Container) {
-        recursiveFullRender(child, child.__internals.treeContext);
+        recursiveFullRender(child, this.__internals.treeContext);
       }
     });
 

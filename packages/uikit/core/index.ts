@@ -29,6 +29,12 @@ export function initializeComponent(component: AnyComponent, treeContext: object
     return component;
   }
 
+  console.debug(
+    "UIKIT:COMPONENT_INITIALIZED",
+    `component ${component.__internals.debugId} initialized, with context`,
+    treeContext,
+  );
+
   component.__internals.treeContext = treeContext;
   component.__internals.isInitialized = true;
 
