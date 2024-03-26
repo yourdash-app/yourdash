@@ -3,11 +3,9 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import UIKitHTMLComponent from "../../framework/html/component";
-import UIKitDataStore from "../../framework/store";
+import dataStore from "@yourdash/shared/web/store.js";
+import Component, { ComponentType } from "../../core/component.js";
 import styles from "./NodesView.module.scss";
-
-export interface NodesViewProps {}
 
 export interface NodesViewMouse {
   x: number;
@@ -16,24 +14,19 @@ export interface NodesViewMouse {
   down: boolean;
 }
 
-export default class NodesView extends UIKitHTMLComponent<NodesViewProps> {
-  mouse: UIKitDataStore<NodesViewMouse> = new UIKitDataStore<NodesViewMouse>({
+export default class NodesView extends Component<ComponentType.Solo> {
+  mouse = new dataStore<NodesViewMouse>({
     x: 0,
     y: 0,
     up: false,
     down: false,
   });
 
-  constructor(props: NodesViewProps) {
-    super(props);
-    return this;
-  }
+  constructor() {
+    super(ComponentType.Solo);
 
-  init() {
-    super.init();
-
-    this.__internal__.htmlElement = document.createElement("div");
-    this.__internal__.htmlElement.classList.add(styles.container);
+    this.htmlElement = document.createElement("div");
+    this.htmlElement.classList.add(styles.container);
 
     return this;
   }
