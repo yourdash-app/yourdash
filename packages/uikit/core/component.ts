@@ -13,6 +13,7 @@ export enum ComponentType {
 
 export interface DefaultComponentTreeContext {
   theme?: UIKitTheme;
+  level: 0 | 1 | 2;
 }
 
 export default class Component<Type extends ComponentType> {

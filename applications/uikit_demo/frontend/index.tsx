@@ -3,6 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import Card from "@yourdash/uikit/components/card.js";
 import ReactUIKitView from "@yourdash/uikit/core/ReactUIKitView.js";
 import Div from "@yourdash/uikit/html/div";
 import * as React from "react";
@@ -21,6 +22,11 @@ const UIKitDemoApplication: React.FC = () => {
           div.setStyle("height", "10rem");
           div.addClass("test");
 
+          const card = new Card();
+
+          card.setLevel(0);
+
+          root.addChild(card);
           root.addChild(new Text().setText("Hello World!"));
         }}
       />

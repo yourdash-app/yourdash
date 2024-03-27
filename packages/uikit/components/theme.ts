@@ -44,6 +44,7 @@ interface UIKitThemeLevel {
       horizontal: string;
     };
   };
+  padding: string;
 }
 
 export interface UIKitTheme {
@@ -100,6 +101,7 @@ const defaultTheme: UIKitTheme = {
         horizontal: "0.5rem",
       },
     },
+    padding: "0.5rem",
   },
   level: {
     "0": {
@@ -143,6 +145,7 @@ const defaultTheme: UIKitTheme = {
           horizontal: "0.5rem",
         },
       },
+      padding: "0.5rem",
     },
     "1": {
       fg: "#fff",
@@ -185,6 +188,7 @@ const defaultTheme: UIKitTheme = {
           horizontal: "0.5rem",
         },
       },
+      padding: "0.75rem",
     },
     "2": {
       fg: "#fff",
@@ -227,6 +231,7 @@ const defaultTheme: UIKitTheme = {
           horizontal: "0.5rem",
         },
       },
+      padding: "1rem",
     },
   },
   author: "Ewsgit",
