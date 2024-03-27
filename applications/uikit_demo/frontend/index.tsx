@@ -26,6 +26,8 @@ const UIKitDemoApplication: React.FC = () => {
 
           card.setLevel(0);
 
+          card.addChild(new Text().setText("Hello World!"));
+
           root.addChild(card);
           root.addChild(new Text().setText("Hello World!"));
         }}

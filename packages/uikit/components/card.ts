@@ -6,11 +6,11 @@
 import Component, { ComponentType } from "../core/component";
 import defaultTheme from "./theme.js";
 
-export default class Card extends Component<ComponentType.Solo> {
+export default class Card extends Component<ComponentType.Container> {
   level: 0 | 1 | 2;
 
   constructor() {
-    super(ComponentType.Solo, { debugId: "text-test-component" });
+    super(ComponentType.Container, { debugId: "text-test-component" });
 
     this.htmlElement = document.createElement("div");
     this.level = 0;
@@ -28,16 +28,12 @@ export default class Card extends Component<ComponentType.Solo> {
     super.render();
 
     const treeContext = this.__internals.treeContext;
-    const level = this.level || treeContext.level;
-
-    console.log(this.__internals.treeContext);
+    const level = this.level ?? treeContext.level;
 
     this.htmlElement.style.boxSizing = "border-box";
-    this.htmlElement.style.fontWeight =
-      treeContext?.theme?.level[level].font.weight ?? defaultTheme.level[level].font.weight;
+    this.htmlElement.style.fontWeight = treeContext?.theme?.level[level].font.weight ?? defaultTheme.level[level].font.weight;
     this.htmlElement.style.fontSize = treeContext?.theme?.level[level].font.size ?? defaultTheme.level[level].font.size;
-    this.htmlElement.style.fontFamily =
-      treeContext?.theme?.level[level].font.family ?? defaultTheme.level[level].font.family;
+    this.htmlElement.style.fontFamily = treeContext?.theme?.level[level].font.family ?? defaultTheme.level[level].font.family;
     this.htmlElement.style.background = treeContext?.theme?.level[level].bg ?? defaultTheme.level[level].bg;
     this.htmlElement.style.border = treeContext?.theme?.level[level].border ?? defaultTheme.level[level].border;
     this.htmlElement.style.boxShadow = treeContext?.theme?.level[level].shadow ?? defaultTheme.level[level].shadow;

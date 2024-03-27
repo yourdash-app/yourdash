@@ -16,7 +16,7 @@ export interface DefaultComponentTreeContext {
   level: 0 | 1 | 2;
 }
 
-export default class Component<Type extends ComponentType> {
+export class SoloComponent<Type extends ComponentType = ComponentType.Solo> {
   __internals: {
     componentType: ComponentType;
     debugId: string;
@@ -28,10 +28,7 @@ export default class Component<Type extends ComponentType> {
   };
   htmlElement: HTMLElement;
 
-  constructor(
-    componentType: Type extends ComponentType.Container ? ComponentType.Container : ComponentType.Solo,
-    props?: { debugId?: string },
-  ) {
+  constructor(componentType: Type extends ComponentType.Container ? ComponentType.Container : ComponentType.Solo, props?: { debugId?: string }) {
     this.__internals = {
       debugId: generateUUID(),
       // When a component is created, it's creator should define its parent
@@ -41,7 +38,7 @@ export default class Component<Type extends ComponentType> {
       componentType: componentType,
       renderCount: 0,
       isInitialized: false,
-      treeContext: {},
+      treeContext: { level: 0 },
     };
 
     if (props) {
@@ -62,6 +59,15 @@ export default class Component<Type extends ComponentType> {
   }
 }
 
-export type AnyComponent = Component<ComponentType>;
-export type ContainerComponent = Component<ComponentType.Container>;
-export type SoloComponent = Component<ComponentType.Solo>;
+export class ContainerComponent extends SoloComponent<ComponentType.Container> {
+  constructor(props?: { debugId?: string }) {
+    super(ComponentType.Container, props);
+  }
+
+  addChild(child: AnyComponent) {
+    this.__internals.children?.push(child);
+    child.__internals.parentComponent = this;
+  }
+}
+
+export type AnyComponent = SoloComponent<ComponentType>;
