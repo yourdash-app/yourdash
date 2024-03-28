@@ -23,12 +23,13 @@ const UIKitDemoApplication: React.FC = () => {
           div.addClass("test");
 
           const card = new Card();
-
           card.setLevel(0);
-
           card.addChild(new Text().setText("Hello World!"));
-
+          card.addChild(new Text().setText("Hello World!"));
+          card.addChild(new Text().setText("Hello World!"));
+          card.addChild(new Text().setText("Hello World!"));
           root.addChild(card);
+
           root.addChild(new Text().setText("Hello World!"));
         }}
       />

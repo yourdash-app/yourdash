@@ -4,11 +4,7 @@
  */
 
 import generateUUID from "@yourdash/shared/web/helpers/uuid";
-import Component, {
-  ComponentType,
-  ContainerComponent,
-  DefaultComponentTreeContext,
-} from "@yourdash/uikit/core/component";
+import { ComponentType, DefaultComponentTreeContext, AnyComponent, ContainerComponent, ComponentTreeContext } from "@yourdash/uikit/core/component";
 import defaultTheme from "../components/theme.js";
 import UIKitHTMLElement from "./htmlElement";
 import { initializeComponent } from "./index.js";
@@ -21,7 +17,7 @@ export interface ContentRootProps {
 export default class ContentRoot {
   __internals: {
     debugId: string;
-    children: Component<ComponentType>[];
+    children: AnyComponent[];
     element?: HTMLElement;
     treeContext: object & DefaultComponentTreeContext;
   };
@@ -32,6 +28,7 @@ export default class ContentRoot {
       children: [],
       treeContext: {
         theme: defaultTheme,
+        level: 0,
       },
     };
 
@@ -53,15 +50,14 @@ export default class ContentRoot {
   }
 
   // add a child component to the content root
-  addChild(child: Component<ComponentType> | UIKitHTMLElement) {
+  addChild(child: AnyComponent | UIKitHTMLElement) {
     this.__internals.element?.appendChild(child.htmlElement);
-
     this.__internals.children.push(child);
 
     return this;
   }
 
-  removeChild(child: Component<ComponentType>) {
+  removeChild(child: AnyComponent) {
     const index = this.__internals.children.indexOf(child);
     if (index > -1) {
       this.__internals.children.splice(index, 1);
@@ -77,25 +73,23 @@ export default class ContentRoot {
 
     this.__internals.element.innerHTML = "";
 
-    function recursiveFullRender(
-      child: Component<ComponentType.Container>,
-      treeContext: object & DefaultComponentTreeContext,
-    ) {
-      if (!child.__internals.isInitialized) {
-        initializeComponent(child, treeContext);
+    function recursiveFullRender(recurseChild: ContainerComponent, treeContext: ComponentTreeContext) {
+      if (!recurseChild.__internals.isInitialized) {
+        initializeComponent(recurseChild, treeContext);
       }
 
-      child.__internals.children?.map((ch) => {
-        if (ch.__internals.componentType === ComponentType.Container) {
-          ch.render();
-          child.htmlElement?.appendChild(ch.htmlElement);
-          recursiveFullRender(ch, child.__internals.treeContext);
+      recurseChild.__internals.children?.map((child) => {
+        if (child.__internals.componentType === ComponentType.Container) {
+          const containerChild = child as ContainerComponent;
+          containerChild.render();
+          child.htmlElement?.appendChild(containerChild.htmlElement);
+          recursiveFullRender(containerChild, child.__internals.treeContext);
         } else {
-          ch.render();
-          child.htmlElement?.appendChild(ch.htmlElement);
+          child.render();
+          child.htmlElement?.appendChild(child.htmlElement);
         }
 
-        recursiveFullRender(child, child.__internals.treeContext);
+        recursiveFullRender(child as ContainerComponent, child.__internals.treeContext);
 
         return;
       });
@@ -110,7 +104,7 @@ export default class ContentRoot {
       this.__internals.element?.appendChild(child.htmlElement);
 
       if (child.__internals.componentType === ComponentType.Container) {
-        recursiveFullRender(child, this.__internals.treeContext);
+        recursiveFullRender(child as ContainerComponent, this.__internals.treeContext);
       }
     });
 

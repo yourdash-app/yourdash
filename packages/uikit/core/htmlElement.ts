@@ -3,11 +3,11 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import Component, { ComponentType } from "./component.js";
+import { ContainerComponent } from "./component.js";
 
-export default class UIKitHTMLElement extends Component<ComponentType.Container> {
+export default class UIKitHTMLElement extends ContainerComponent {
   constructor(htmlElement: HTMLElement) {
-    super(ComponentType.Container);
+    super();
 
     this.htmlElement = htmlElement;
 

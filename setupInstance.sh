@@ -12,7 +12,7 @@ fi
 echo "Installing YourDash and dependencies"
 
 echo "Updating system packages"
-sudo apt update -y && sudo apt upgrade -y
+apt update -y && apt upgrade -y
 
 echo "Installing NodeJS"
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
@@ -35,20 +35,20 @@ cd / || exit
 # does /yourdash exist?
 if [ ! -d /yourdash ]; then
   echo "Cloning YourDash"
-  sudo git clone https://github.com/yourdash/yourdash.git -b dev
+  git clone https://github.com/yourdash/yourdash.git -b dev
   cd yourdash || exit
 else
   echo "Updating YourDash"
   cd yourdash || exit
-  sudo git stash
-  sudo git pull
+  git stash
+  git pull
 fi
 
 echo "Adding YourDash as a safe directory for git"
-sudo git config --global --add safe.directory /yourdash
+git config --global --add safe.directory /yourdash
 
 echo "Setting YourDash (\"/yourdash\") permissions"
-sudo chmod 777 -R /yourdash
+chmod 777 -R /yourdash
 
 echo "Installing YourDash dependencies"
 npm i -g yarn
@@ -56,20 +56,17 @@ npm i -g yarn
 echo "IMPORTANT!: if yarn install fails, run this script again"
 yarn install
 
-echo "Changing to root..."
-sudo su
-
 echo "Installing pm2"
 yarn global add pm2
 
 echo "Reloading ~/.bashrc"
 # shellcheck disable=SC1090
-source ~/.bashrc
+source /root/.bashrc
 
 echo "Setting pm2 as a startup script"
-pm2 startup#
+pm2 startup
 
-echo "Removing YourDash from pm2"
+echo "Removing YourDash from pm2 (IGNORE IF AN ERROR OCCURS)"
 pm2 delete yourdashBackend
 
 echo "Adding YourDash to pm2"

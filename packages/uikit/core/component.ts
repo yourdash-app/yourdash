@@ -16,26 +16,27 @@ export interface DefaultComponentTreeContext {
   level: 0 | 1 | 2;
 }
 
-export class SoloComponent<Type extends ComponentType = ComponentType.Solo> {
-  __internals: {
-    componentType: ComponentType;
-    debugId: string;
-    parentComponent?: ContainerComponent;
-    children: Type extends ComponentType.Container ? AnyComponent[] : undefined;
-    renderCount: number;
-    treeContext: DefaultComponentTreeContext & object;
-    isInitialized: boolean;
-  };
+export type ComponentTreeContext = object & DefaultComponentTreeContext;
+
+export interface SoloComponentInternals {
+  componentType: ComponentType;
+  debugId: string;
+  parentComponent?: ContainerComponent;
+  renderCount: number;
+  treeContext: ComponentTreeContext;
+  isInitialized: boolean;
+}
+
+export class SoloComponent {
+  __internals: SoloComponentInternals;
   htmlElement: HTMLElement;
 
-  constructor(componentType: Type extends ComponentType.Container ? ComponentType.Container : ComponentType.Solo, props?: { debugId?: string }) {
+  constructor(props?: { debugId?: string }) {
     this.__internals = {
       debugId: generateUUID(),
       // When a component is created, it's creator should define its parent
       parentComponent: undefined,
-      // @ts-ignore
-      children: componentType === ComponentType.Container ? [] : undefined,
-      componentType: componentType,
+      componentType: ComponentType.Solo,
       renderCount: 0,
       isInitialized: false,
       treeContext: { level: 0 },
@@ -59,15 +60,51 @@ export class SoloComponent<Type extends ComponentType = ComponentType.Solo> {
   }
 }
 
-export class ContainerComponent extends SoloComponent<ComponentType.Container> {
+export interface ContainerComponentInternals extends SoloComponentInternals {
+  children: AnyComponent[];
+}
+
+export class ContainerComponent {
+  __internals: ContainerComponentInternals;
+  htmlElement: HTMLElement;
+
   constructor(props?: { debugId?: string }) {
-    super(ComponentType.Container, props);
+    this.__internals = {
+      debugId: generateUUID(),
+      // When a component is created, it's creator should define its parent
+      parentComponent: undefined,
+      children: [],
+      componentType: ComponentType.Solo,
+      renderCount: 0,
+      isInitialized: false,
+      treeContext: { level: 0 },
+    };
+
+    if (props) {
+      if (props.debugId) this.__internals.debugId = props.debugId;
+    }
+
+    // by default, we use a div element as the component's html element
+    this.htmlElement = document.createElement("div");
+
+    return this;
   }
 
   addChild(child: AnyComponent) {
     this.__internals.children?.push(child);
     child.__internals.parentComponent = this;
+
+    this.htmlElement?.appendChild(child.htmlElement);
+    child.render();
+  }
+
+  render() {
+    this.__internals.renderCount++;
+    console.debug("UIKIT:RENDER", `rendering component: <${this.__internals.debugId}>`, this);
+
+    return this;
   }
 }
 
-export type AnyComponent = SoloComponent<ComponentType>;
+export type AnyComponent = SoloComponent | ContainerComponent;
+export type AnyComponentInternals = SoloComponentInternals | ContainerComponentInternals;

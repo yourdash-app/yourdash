@@ -65,7 +65,7 @@ const defaultTheme: UIKitTheme = {
     accent: "#459",
     border: "1px solid #444",
     bg: "#222",
-    shadow: "0 0 0 0.5rem #000",
+    shadow: "0 0 0.5rem 0 #000",
     button: {
       fg: "#fff",
       bg: "#444",
@@ -76,7 +76,7 @@ const defaultTheme: UIKitTheme = {
         weight: "400",
       },
       radius: "0.5rem",
-      shadow: "0 0 0 0.5rem #000",
+      shadow: "0 0 0.5rem 0 #000",
       accent: "#459",
       padding: {
         vertical: "0.25rem",
@@ -108,7 +108,7 @@ const defaultTheme: UIKitTheme = {
       fg: "#fff",
       bg: "#333",
       border: "1px solid #555",
-      shadow: "0 0 0 0.5rem #000",
+      shadow: "0 0 0.5rem 0 #000",
       accent: "#459",
       radius: "0.5rem",
       font: {
@@ -138,7 +138,7 @@ const defaultTheme: UIKitTheme = {
           weight: "400",
         },
         radius: "0.25rem",
-        shadow: "0 0 0 0.5rem #000",
+        shadow: "0 0 0.5rem 0 #000",
         accent: "#459",
         padding: {
           vertical: "0.25rem",
@@ -151,7 +151,7 @@ const defaultTheme: UIKitTheme = {
       fg: "#fff",
       bg: "#444",
       border: "1px solid #555",
-      shadow: "0 0 0 0.5rem #000",
+      shadow: "0 0 0.5rem 0 #000",
       accent: "#459",
       radius: "0.5rem",
       font: {
@@ -181,7 +181,7 @@ const defaultTheme: UIKitTheme = {
           weight: "400",
         },
         radius: "0.25rem",
-        shadow: "0 0 0 0.5rem #000",
+        shadow: "0 0 0.5rem 0 #000",
         accent: "#459",
         padding: {
           vertical: "0.25rem",
@@ -194,7 +194,7 @@ const defaultTheme: UIKitTheme = {
       fg: "#fff",
       bg: "#555",
       border: "1px solid #555",
-      shadow: "0 0 0 0.5rem #000",
+      shadow: "0 0 0.5rem 0 #000",
       accent: "#459",
       radius: "0.5rem",
       font: {
@@ -224,7 +224,7 @@ const defaultTheme: UIKitTheme = {
           weight: "400",
         },
         radius: "0.25rem",
-        shadow: "0 0 0 0.5rem #000",
+        shadow: "0 0 0.5rem 0 #000",
         accent: "#459",
         padding: {
           vertical: "0.25rem",

@@ -3,13 +3,13 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import Component, { ComponentType } from "../core/component";
+import { SoloComponent } from "../core/component";
 
-export default class Text extends Component<ComponentType.Solo> {
+export default class Text extends SoloComponent {
   textValue: string = "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus, nobis?";
 
   constructor() {
-    super(ComponentType.Solo, { debugId: "text-test-component" });
+    super({ debugId: "text-test-component" });
 
     this.htmlElement = document.createElement("div");
 
@@ -25,8 +25,6 @@ export default class Text extends Component<ComponentType.Solo> {
 
   public render() {
     super.render();
-
-    console.log(this.__internals.treeContext);
 
     this.htmlElement.innerText = this.textValue;
     this.htmlElement.style.fontWeight = this.__internals.treeContext?.theme?.default.font.weight ?? "normal";

@@ -3,14 +3,14 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import Component, { ComponentType } from "../core/component";
+import { ContainerComponent } from "../core/component";
 import defaultTheme from "./theme.js";
 
-export default class Card extends Component<ComponentType.Container> {
+export default class Card extends ContainerComponent {
   level: 0 | 1 | 2;
 
   constructor() {
-    super(ComponentType.Container, { debugId: "text-test-component" });
+    super({ debugId: "text-test-component" });
 
     this.htmlElement = document.createElement("div");
     this.level = 0;

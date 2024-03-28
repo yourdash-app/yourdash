@@ -4,14 +4,14 @@
  */
 
 import React from "react";
-import Component, { ComponentType } from "./component.js";
 import ReactDOM from "react-dom/client";
+import { SoloComponent } from "./component.js";
 
-export default class UIKitReactView extends Component<ComponentType.Solo> {
+export default class UIKitReactView extends SoloComponent {
   reactComponent: React.ReactNode;
 
   constructor(props: { reactComponent: React.ReactNode }) {
-    super(ComponentType.Solo);
+    super();
 
     this.reactComponent = props.reactComponent;
 
