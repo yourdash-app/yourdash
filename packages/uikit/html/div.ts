@@ -12,18 +12,13 @@ export default class Div extends UIKitHTMLElement {
     return this;
   }
 
-  addChild(childElement: UIKitHTMLElement) {
-    this.htmlElement.appendChild(childElement.htmlElement);
-    return this;
-  }
-
   setInnerText(text: string) {
-    this.htmlElement.innerText = text;
+    this.rawHtmlElement.innerText = text;
     return this;
   }
 
   dangerouslySetInnerHTML(html: string) {
-    this.htmlElement.innerHTML = html;
+    this.rawHtmlElement.innerHTML = html;
     return this;
   }
 }

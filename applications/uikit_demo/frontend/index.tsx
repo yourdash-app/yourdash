@@ -12,6 +12,7 @@ import Text from "@yourdash/uikit/components/text.js";
 const UIKitDemoApplication: React.FC = () => {
   return (
     <>
+      <title>YourDash | UIKit Demo</title>
       <ReactUIKitView
         onLoad={(root) => {
           const div = new Div();

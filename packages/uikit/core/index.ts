@@ -3,8 +3,9 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { AnyComponent, ComponentTreeContext } from "./component.js";
+import { AnyComponent, AnyComponentOrHTMLElement, ComponentTreeContext, ComponentType } from "./component.js";
 import ContentRoot, { ContentRootProps } from "./contentRoot";
+import UIKitHTMLElement from "./htmlElement.js";
 
 // override the global window object to add the __uikit__ object
 declare global {
@@ -19,19 +20,29 @@ export function getUIKit() {
   return window.__uikit__.uikit;
 }
 
-export function initializeComponent(component: AnyComponent, treeContext: ComponentTreeContext) {
+export function initializeComponent(component: AnyComponentOrHTMLElement) {
   if (component.__internals.isInitialized) {
     console.warn("UIKIT:COMPONENT_ALREADY_INITIALIZED", `component ${component.__internals.debugId} already initialized`);
 
     return component;
   }
 
-  console.debug("UIKIT:COMPONENT_INITIALIZED", `component ${component.__internals.debugId} initialized, with context`, treeContext);
+  console.debug("UIKIT:COMPONENT_INITIALIZED", `component ${component.__internals.debugId} initialized`);
 
-  component.__internals.treeContext = treeContext;
   component.__internals.isInitialized = true;
 
   return component;
+}
+
+export function appendComponentToElement(element: HTMLElement, component: AnyComponentOrHTMLElement) {
+  if (component.__internals.componentType === ComponentType.HTMLElement) {
+    const childComponent = component as UIKitHTMLElement;
+    element.appendChild(childComponent.rawHtmlElement);
+    return;
+  }
+
+  const childComponent = component as AnyComponent;
+  element.appendChild(childComponent.htmlElement.rawHtmlElement);
 }
 
 export default class UIKit {

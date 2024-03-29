@@ -4,15 +4,16 @@
  */
 
 import { ContainerComponent } from "../core/component";
-import defaultTheme from "./theme.js";
+import Div from "../html/div.js";
+import styles from "./card.module.scss";
 
-export default class Card extends ContainerComponent {
-  level: 0 | 1 | 2;
+export default class Card extends ContainerComponent<["actions"]> {
+  level: "default" | 0 | 1 | 2;
 
   constructor() {
-    super({ debugId: "text-test-component" });
+    super(["actions"]);
 
-    this.htmlElement = document.createElement("div");
+    this.htmlElement = new Div();
     this.level = 0;
 
     return this;
@@ -30,15 +31,21 @@ export default class Card extends ContainerComponent {
     const treeContext = this.__internals.treeContext;
     const level = this.level ?? treeContext.level;
 
-    this.htmlElement.style.boxSizing = "border-box";
-    this.htmlElement.style.fontWeight = treeContext?.theme?.level[level].font.weight ?? defaultTheme.level[level].font.weight;
-    this.htmlElement.style.fontSize = treeContext?.theme?.level[level].font.size ?? defaultTheme.level[level].font.size;
-    this.htmlElement.style.fontFamily = treeContext?.theme?.level[level].font.family ?? defaultTheme.level[level].font.family;
-    this.htmlElement.style.background = treeContext?.theme?.level[level].bg ?? defaultTheme.level[level].bg;
-    this.htmlElement.style.border = treeContext?.theme?.level[level].border ?? defaultTheme.level[level].border;
-    this.htmlElement.style.boxShadow = treeContext?.theme?.level[level].shadow ?? defaultTheme.level[level].shadow;
-    this.htmlElement.style.padding = treeContext?.theme?.level[level].padding ?? defaultTheme.level[level].padding;
-    this.htmlElement.style.borderRadius = treeContext?.theme?.level[level].radius ?? defaultTheme.level[level].radius;
+    this.htmlElement.addClass(styles.component);
+
+    switch (level) {
+      case 0:
+        this.htmlElement.addClass(styles.level0);
+        break;
+      case 1:
+        this.htmlElement.addClass(styles.level1);
+        break;
+      case 2:
+        this.htmlElement.addClass(styles.level2);
+        break;
+      default:
+        this.htmlElement.addClass(styles.levelDefault);
+    }
 
     return this;
   }

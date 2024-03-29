@@ -5,10 +5,16 @@
 
 import generateUUID from "@yourdash/shared/web/helpers/uuid";
 import { UIKitTheme } from "../components/theme.js";
+import Comment from "../html/comment.js";
+import Div from "../html/div.js";
+import UIKitHTMLElement from "./htmlElement.js";
+import { appendComponentToElement, initializeComponent } from "./index.js";
 
 export enum ComponentType {
   Container,
   Solo,
+  HTMLElement,
+  Slot,
 }
 
 export interface DefaultComponentTreeContext {
@@ -21,7 +27,7 @@ export type ComponentTreeContext = object & DefaultComponentTreeContext;
 export interface SoloComponentInternals {
   componentType: ComponentType;
   debugId: string;
-  parentComponent?: ContainerComponent;
+  parentComponent?: ContainerComponent | UIKitHTMLElement;
   renderCount: number;
   treeContext: ComponentTreeContext;
   isInitialized: boolean;
@@ -29,7 +35,7 @@ export interface SoloComponentInternals {
 
 export class SoloComponent {
   __internals: SoloComponentInternals;
-  htmlElement: HTMLElement;
+  htmlElement: UIKitHTMLElement;
 
   constructor(props?: { debugId?: string }) {
     this.__internals = {
@@ -47,12 +53,16 @@ export class SoloComponent {
     }
 
     // by default, we use a div element as the component's html element
-    this.htmlElement = document.createElement("div");
+    this.htmlElement = new Div();
 
     return this;
   }
 
   render() {
+    if (!this.__internals.isInitialized) {
+      initializeComponent(this);
+    }
+
     this.__internals.renderCount++;
     console.debug("UIKIT:RENDER", `rendering component: <${this.__internals.debugId}>`, this);
 
@@ -60,24 +70,26 @@ export class SoloComponent {
   }
 }
 
-export interface ContainerComponentInternals extends SoloComponentInternals {
+export interface ContainerComponentInternals<ComponentSlots extends string[] = []> extends SoloComponentInternals {
   children: AnyComponent[];
+  slots: { [slotName in keyof ComponentSlots]: AnyComponentOrHTMLElement | undefined };
 }
 
-export class ContainerComponent {
-  __internals: ContainerComponentInternals;
-  htmlElement: HTMLElement;
+export class ContainerComponent<ComponentSlots extends string[] = []> {
+  __internals: ContainerComponentInternals<ComponentSlots>;
+  htmlElement: UIKitHTMLElement;
 
-  constructor(props?: { debugId?: string }) {
+  constructor(slots?: ComponentSlots, props?: { debugId?: string }) {
     this.__internals = {
       debugId: generateUUID(),
       // When a component is created, it's creator should define its parent
       parentComponent: undefined,
       children: [],
-      componentType: ComponentType.Solo,
+      componentType: ComponentType.Container,
       renderCount: 0,
       isInitialized: false,
       treeContext: { level: 0 },
+      slots: {} as { [slotName in keyof ComponentSlots]: AnyComponentOrHTMLElement | undefined },
     };
 
     if (props) {
@@ -85,26 +97,60 @@ export class ContainerComponent {
     }
 
     // by default, we use a div element as the component's html element
-    this.htmlElement = document.createElement("div");
+    this.htmlElement = new Div();
 
     return this;
   }
 
-  addChild(child: AnyComponent) {
-    this.__internals.children?.push(child);
-    child.__internals.parentComponent = this;
+  addChild(child: AnyComponentOrHTMLElement) {
+    if (child.__internals.componentType === ComponentType.HTMLElement) {
+      const childComponent = child as UIKitHTMLElement;
+      this.htmlElement.addChild(childComponent);
 
-    this.htmlElement?.appendChild(child.htmlElement);
+      return;
+    }
+
+    const childComponent = child as AnyComponent;
+
+    this.__internals.children?.push(childComponent);
+    child.__internals.parentComponent = this as unknown as ContainerComponent;
+
+    this.htmlElement?.addChild(childComponent.htmlElement);
     child.render();
   }
 
   render() {
+    if (!this.__internals.isInitialized) {
+      initializeComponent(this);
+    }
+
     this.__internals.renderCount++;
     console.debug("UIKIT:RENDER", `rendering component: <${this.__internals.debugId}>`, this);
+
+    this.__internals.children.map((child) => {
+      appendComponentToElement(this.htmlElement.rawHtmlElement, child);
+
+      child.render();
+    });
 
     return this;
   }
 }
 
+export class ComponentSlot extends ContainerComponent {
+  constructor(props?: { debugId?: string }) {
+    super([], props);
+
+    this.__internals.componentType = ComponentType.Slot;
+
+    this.htmlElement = new Comment();
+  }
+
+  render() {
+    return super.render();
+  }
+}
+
 export type AnyComponent = SoloComponent | ContainerComponent;
+export type AnyComponentOrHTMLElement = AnyComponent | UIKitHTMLElement;
 export type AnyComponentInternals = SoloComponentInternals | ContainerComponentInternals;

@@ -13,17 +13,17 @@ export default class Main extends UIKitHTMLElement {
   }
 
   addChild(childElement: UIKitHTMLElement) {
-    this.htmlElement.appendChild(childElement.htmlElement);
+    this.rawHtmlElement.appendChild(childElement.rawHtmlElement);
     return this;
   }
 
   setInnerText(text: string) {
-    this.htmlElement.innerText = text;
+    this.rawHtmlElement.innerText = text;
     return this;
   }
 
   dangerouslySetInnerHTML(html: string) {
-    this.htmlElement.innerHTML = html;
+    this.rawHtmlElement.innerHTML = html;
     return this;
   }
 }
