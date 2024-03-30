@@ -5,8 +5,8 @@
 
 import generateUUID from "@yourdash/shared/web/helpers/uuid";
 import { UIKitTheme } from "../components/theme.js";
-import Comment from "../html/comment.js";
-import Div from "../html/div.js";
+import CommentElement from "../html/commentElement.js";
+import DivElement from "../html/divElement";
 import UIKitHTMLElement from "./htmlElement.js";
 import { appendComponentToElement, initializeComponent } from "./index.js";
 
@@ -19,7 +19,7 @@ export enum ComponentType {
 
 export interface DefaultComponentTreeContext {
   theme?: UIKitTheme;
-  level: 0 | 1 | 2;
+  level: 0 | 1 | 2 | "default";
 }
 
 export type ComponentTreeContext = object & DefaultComponentTreeContext;
@@ -53,7 +53,7 @@ export class SoloComponent {
     }
 
     // by default, we use a div element as the component's html element
-    this.htmlElement = new Div();
+    this.htmlElement = new DivElement();
 
     return this;
   }
@@ -97,7 +97,7 @@ export class ContainerComponent<ComponentSlots extends string[] = []> {
     }
 
     // by default, we use a div element as the component's html element
-    this.htmlElement = new Div();
+    this.htmlElement = new DivElement();
 
     return this;
   }
@@ -143,7 +143,7 @@ export class ComponentSlot extends ContainerComponent {
 
     this.__internals.componentType = ComponentType.Slot;
 
-    this.htmlElement = new Comment();
+    this.htmlElement = new CommentElement();
   }
 
   render() {

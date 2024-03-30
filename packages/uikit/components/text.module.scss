@@ -1,0 +1,14 @@
+/*!
+ * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
+.component {
+  display: inline-block;
+}
+
+.levelDefault {
+  font-weight: var(--ukt-default-font-weight);
+  font-size: var(--ukt-default-font-size);
+  font-family: var(--ukt-default-font-family);
+}

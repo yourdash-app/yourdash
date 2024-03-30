@@ -5,7 +5,7 @@
 
 import UIKitHTMLElement from "../core/htmlElement";
 
-export default class Main extends UIKitHTMLElement {
+export default class MainElement extends UIKitHTMLElement {
   constructor() {
     super(document.createElement("main"));
 

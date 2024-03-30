@@ -4,16 +4,17 @@
  */
 
 import { SoloComponent } from "../core/component";
-import Div from "../html/div.js";
+import DivElement from "../html/divElement";
+import styles from "./text.module.scss";
 
 export default class Text extends SoloComponent {
-  htmlElement: Div;
+  htmlElement: DivElement;
   textValue: string = "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus, nobis?";
 
   constructor() {
     super({ debugId: "text-test-component" });
 
-    this.htmlElement = new Div();
+    this.htmlElement = new DivElement();
 
     return this;
   }
@@ -29,9 +30,25 @@ export default class Text extends SoloComponent {
     super.render();
 
     this.htmlElement.setInnerText(this.textValue);
-    this.htmlElement.setStyle("fontWeight", this.__internals.treeContext?.theme?.default.font.weight ?? "normal");
-    this.htmlElement.setStyle("fontSize", this.__internals.treeContext?.theme?.default.font.size ?? "1rem");
-    this.htmlElement.setStyle("fontFamily", this.__internals.treeContext?.theme?.default.font.family ?? "Inter");
+
+    const treeContext = this.__internals.treeContext;
+    const level = this.__internals.treeContext.level ?? treeContext.level;
+
+    this.htmlElement.addClass(styles.component);
+
+    switch (level) {
+      case 0:
+        this.htmlElement.addClass(styles.level0);
+        break;
+      case 1:
+        this.htmlElement.addClass(styles.level1);
+        break;
+      case 2:
+        this.htmlElement.addClass(styles.level2);
+        break;
+      default:
+        this.htmlElement.addClass(styles.levelDefault);
+    }
 
     return this;
   }

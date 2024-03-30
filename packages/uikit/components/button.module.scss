@@ -1,0 +1,111 @@
+/*!
+ * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
+.component {
+  /* idk */
+  font-family: var(--ukt-0-font-family);
+  text-align: center;
+  min-width: 6rem;
+}
+
+.level0 {
+  padding: var(--ukt-0-button-padding-vertical) var(--ukt-0-button-padding-horizontal);
+  color: var(--ukt-0-button-fg);
+  border: var(--ukt-0-button-border);
+  border-radius: var(--ukt-0-button-radius);
+  background: var(--ukt-0-button-bg);
+  box-shadow: var(--ukt-0-button-shadow);
+
+  &:hover {
+    color: var(--ukt-0-button-hover-fg);
+    border: var(--ukt-0-button-hover-border);
+    border-radius: var(--ukt-0-button-hover-radius);
+    background: var(--ukt-0-button-hover-bg);
+    box-shadow: var(--ukt-0-button-hover-shadow);
+  }
+
+  &:active {
+    color: var(--ukt-0-button-active-fg);
+    border: var(--ukt-0-button-active-border);
+    border-radius: var(--ukt-0-button-active-radius);
+    background: var(--ukt-0-button-active-bg);
+    box-shadow: var(--ukt-0-button-active-shadow);
+  }
+}
+
+.level1 {
+  padding: var(--ukt-1-button-padding-vertical) var(--ukt-1-button-padding-horizontal);
+  color: var(--ukt-1-button-fg);
+  border: var(--ukt-1-button-border);
+  border-radius: var(--ukt-1-button-radius);
+  background: var(--ukt-1-button-bg);
+  box-shadow: var(--ukt-1-button-shadow);
+
+  &:hover {
+    color: var(--ukt-1-button-hover-fg);
+    border: var(--ukt-1-button-hover-border);
+    border-radius: var(--ukt-1-button-hover-radius);
+    background: var(--ukt-1-button-hover-bg);
+    box-shadow: var(--ukt-1-button-hover-shadow);
+  }
+
+  &:active {
+    color: var(--ukt-1-button-active-fg);
+    border: var(--ukt-1-button-active-border);
+    border-radius: var(--ukt-1-button-active-radius);
+    background: var(--ukt-1-button-active-bg);
+    box-shadow: var(--ukt-1-button-active-shadow);
+  }
+}
+
+.level2 {
+  padding: var(--ukt-2-button-padding-vertical) var(--ukt-2-button-padding-horizontal);
+  color: var(--ukt-2-button-fg);
+  border: var(--ukt-2-button-border);
+  border-radius: var(--ukt-2-button-radius);
+  background: var(--ukt-2-button-bg);
+  box-shadow: var(--ukt-2-button-shadow);
+
+  &:hover {
+    color: var(--ukt-2-button-hover-fg);
+    border: var(--ukt-2-button-hover-border);
+    border-radius: var(--ukt-2-button-hover-radius);
+    background: var(--ukt-2-button-hover-bg);
+    box-shadow: var(--ukt-2-button-hover-shadow);
+  }
+
+  &:active {
+    color: var(--ukt-2-button-active-fg);
+    border: var(--ukt-2-button-active-border);
+    border-radius: var(--ukt-2-button-active-radius);
+    background: var(--ukt-2-button-active-bg);
+    box-shadow: var(--ukt-2-button-active-shadow);
+  }
+}
+
+.levelDefault {
+  padding: var(--ukt-default-button-padding-horizontal) var(--ukt-default-button-padding-vertical);
+  color: var(--ukt-default-button-fg);
+  border: var(--ukt-default-button-border);
+  border-radius: var(--ukt-default-button-radius);
+  background: var(--ukt-default-button-bg);
+  box-shadow: var(--ukt-default-button-shadow);
+
+  &:hover {
+    color: var(--ukt-default-button-hover-fg);
+    border: var(--ukt-default-button-hover-border);
+    border-radius: var(--ukt-default-button-hover-radius);
+    background: var(--ukt-default-button-hover-bg);
+    box-shadow: var(--ukt-default-button-hover-shadow);
+  }
+
+  &:active {
+    color: var(--ukt-default-button-active-fg);
+    border: var(--ukt-default-button-active-border);
+    border-radius: var(--ukt-default-button-active-radius);
+    background: var(--ukt-default-button-active-bg);
+    box-shadow: var(--ukt-default-button-active-shadow);
+  }
+}

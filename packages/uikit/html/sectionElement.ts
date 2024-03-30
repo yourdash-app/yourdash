@@ -5,10 +5,15 @@
 
 import UIKitHTMLElement from "../core/htmlElement";
 
-export default class Comment extends UIKitHTMLElement {
+export default class SectionElement extends UIKitHTMLElement {
   constructor() {
-    super(document.createElement("comment"));
+    super(document.createElement("section"));
 
+    return this;
+  }
+
+  addChild(childElement: UIKitHTMLElement) {
+    this.rawHtmlElement.appendChild(childElement.rawHtmlElement);
     return this;
   }
 

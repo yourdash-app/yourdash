@@ -3,20 +3,34 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { ContainerComponent } from "../core/component";
-import DivElement from "../html/divElement";
-import styles from "./card.module.scss";
+import { SoloComponent } from "../core/component.js";
+import ButtonElement from "../html/buttonElement.js";
+import styles from "./button.module.scss";
 
-export default class Card extends ContainerComponent<["actions"]> {
+export default class Button extends SoloComponent {
+  htmlElement: ButtonElement;
+
   constructor() {
-    super(["actions"]);
+    super();
 
-    this.htmlElement = new DivElement();
+    this.htmlElement = new ButtonElement();
 
     return this;
   }
 
-  public render() {
+  onClick(cb: () => void) {
+    this.htmlElement.onClick(cb);
+
+    return this;
+  }
+
+  setText(text: string) {
+    this.htmlElement.setInnerText(text);
+
+    return this;
+  }
+
+  render() {
     super.render();
 
     const treeContext = this.__internals.treeContext;

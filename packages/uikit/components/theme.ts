@@ -10,6 +10,7 @@ interface UIKitThemeLevel {
   shadow: string;
   accent: string;
   radius: string;
+  gap: string;
   font: {
     family: string;
     size: string;
@@ -38,10 +39,23 @@ interface UIKitThemeLevel {
     };
     radius: string;
     shadow: string;
-    accent: string;
     padding: {
       vertical: string;
       horizontal: string;
+    };
+    hover: {
+      fg: string;
+      bg: string;
+      border: string;
+      radius: string;
+      shadow: string;
+    };
+    active: {
+      fg: string;
+      bg: string;
+      border: string;
+      radius: string;
+      shadow: string;
     };
   };
   padding: string;
@@ -77,10 +91,23 @@ const defaultTheme: UIKitTheme = {
       },
       radius: "0.5rem",
       shadow: "0 0 0.5rem 0 #000",
-      accent: "#459",
       padding: {
         vertical: "0.25rem",
         horizontal: "0.5rem",
+      },
+      hover: {
+        fg: "#fff",
+        bg: "#555",
+        border: "1px solid #555",
+        radius: "0.5rem",
+        shadow: "0 0 0.5rem 0 #000",
+      },
+      active: {
+        fg: "#fff",
+        bg: "#555",
+        border: "1px solid #555",
+        radius: "0.5rem",
+        shadow: "0 0 0.5rem 0 #000",
       },
     },
     font: {
@@ -102,6 +129,7 @@ const defaultTheme: UIKitTheme = {
       },
     },
     padding: "0.5rem",
+    gap: "0.5rem",
   },
   level: {
     "0": {
@@ -137,15 +165,29 @@ const defaultTheme: UIKitTheme = {
           size: "0.9rem",
           weight: "400",
         },
-        radius: "0.25rem",
+        radius: "0.5rem",
         shadow: "0 0 0.5rem 0 #000",
-        accent: "#459",
         padding: {
           vertical: "0.25rem",
           horizontal: "0.5rem",
         },
+        hover: {
+          fg: "#fff",
+          bg: "#555",
+          border: "1px solid #555",
+          radius: "0.5rem",
+          shadow: "0 0 0.5rem 0 #000",
+        },
+        active: {
+          fg: "#000",
+          bg: "#666",
+          border: "1px solid #555",
+          radius: "0.5rem",
+          shadow: "0 0 0.5rem 0 #000",
+        },
       },
       padding: "0.5rem",
+      gap: "0.5rem",
     },
     "1": {
       fg: "#fff",
@@ -182,13 +224,27 @@ const defaultTheme: UIKitTheme = {
         },
         radius: "0.25rem",
         shadow: "0 0 0.5rem 0 #000",
-        accent: "#459",
         padding: {
           vertical: "0.25rem",
           horizontal: "0.5rem",
         },
+        hover: {
+          fg: "#fff",
+          bg: "#666",
+          border: "1px solid #666",
+          radius: "0.25rem",
+          shadow: "0 0 0.5rem 0 #000",
+        },
+        active: {
+          fg: "#fff",
+          bg: "#666",
+          border: "1px solid #666",
+          radius: "0.25rem",
+          shadow: "0 0 0.5rem 0 #000",
+        },
       },
       padding: "0.75rem",
+      gap: "0.75rem",
     },
     "2": {
       fg: "#fff",
@@ -225,13 +281,27 @@ const defaultTheme: UIKitTheme = {
         },
         radius: "0.25rem",
         shadow: "0 0 0.5rem 0 #000",
-        accent: "#459",
         padding: {
           vertical: "0.25rem",
           horizontal: "0.5rem",
         },
+        hover: {
+          fg: "#fff",
+          bg: "#777",
+          border: "1px solid #777",
+          radius: "0.25rem",
+          shadow: "0 0 0.5rem 0 #000",
+        },
+        active: {
+          fg: "#fff",
+          bg: "#777",
+          border: "1px solid #777",
+          radius: "0.25rem",
+          shadow: "0 0 0.5rem 0 #000",
+        },
       },
       padding: "1rem",
+      gap: "1rem",
     },
   },
   author: "Ewsgit",

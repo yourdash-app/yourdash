@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { AnyComponent, AnyComponentOrHTMLElement, ComponentTreeContext, ComponentType } from "./component.js";
+import { AnyComponent, AnyComponentOrHTMLElement, ComponentType } from "./component.js";
 import ContentRoot, { ContentRootProps } from "./contentRoot";
 import UIKitHTMLElement from "./htmlElement.js";
 

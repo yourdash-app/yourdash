@@ -4,9 +4,19 @@
  */
 
 import generateUUID from "@yourdash/shared/web/helpers/uuid.js";
-import { OverrideProperties } from "type-fest";
-import { AnyComponent, ComponentType, ContainerComponentInternals } from "./component.js";
+import { Merge } from "type-fest";
+import { AnyComponent, AnyComponentOrHTMLElement, ComponentType, ContainerComponentInternals } from "./component.js";
 import { appendComponentToElement, initializeComponent } from "./index.js";
+
+type OverrideProperties<
+  TOriginal,
+  // This first bit where we use `Partial` is to enable autocomplete
+  // and the second bit with the mapped type is what enforces that we don't try
+  // to override properties that doesn't exist in the original type.
+  TOverride extends Partial<Record<keyof TOriginal, unknown>> & {
+    [Key in keyof TOverride]: Key extends keyof TOriginal ? TOverride[Key] : never;
+  },
+> = Merge<TOriginal, TOverride>;
 
 export default class UIKitHTMLElement {
   __internals: OverrideProperties<ContainerComponentInternals, { children: (AnyComponent | UIKitHTMLElement)[] }>;
@@ -109,6 +119,16 @@ export default class UIKitHTMLElement {
     child.render();
   }
 
+  setInnerText(text: string) {
+    this.rawHtmlElement.innerText = text;
+    return this;
+  }
+
+  dangerouslySetInnerHTML(html: string) {
+    this.rawHtmlElement.innerHTML = html;
+    return this;
+  }
+
   render() {
     if (!this.__internals.isInitialized) {
       initializeComponent(this);
@@ -117,7 +137,7 @@ export default class UIKitHTMLElement {
     this.__internals.renderCount++;
     console.debug("UIKIT:RENDER", `rendering component: <${this.__internals.debugId}>`, this);
 
-    this.__internals.children.map((child) => {
+    this.__internals.children.map((child: AnyComponentOrHTMLElement) => {
       appendComponentToElement(this.rawHtmlElement, child);
 
       child.render();

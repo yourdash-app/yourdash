@@ -5,7 +5,7 @@
 
 import UIKitHTMLElement from "../core/htmlElement";
 
-export default class Div extends UIKitHTMLElement {
+export default class DivElement extends UIKitHTMLElement {
   constructor() {
     super(document.createElement("div"));
 

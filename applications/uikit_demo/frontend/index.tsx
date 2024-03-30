@@ -3,9 +3,9 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import Button from "@yourdash/uikit/components/button.js";
 import Card from "@yourdash/uikit/components/card.js";
 import ReactUIKitView from "@yourdash/uikit/core/ReactUIKitView.js";
-import Div from "@yourdash/uikit/html/div";
 import * as React from "react";
 import Text from "@yourdash/uikit/components/text.js";
 
@@ -15,17 +15,17 @@ const UIKitDemoApplication: React.FC = () => {
       <title>YourDash | UIKit Demo</title>
       <ReactUIKitView
         onLoad={(root) => {
-          const div = new Div();
-          root.addChild(div);
-
-          div.setStyle("backgroundColor", "red");
-          div.setStyle("width", "10rem");
-          div.setStyle("height", "10rem");
-          div.addClass("test");
-
           const card = new Card();
-          card.setLevel(0);
-          card.addChild(new Text().setText("Hello World!"));
+          card.addChild(
+            new Button().setText("Hello World!").onClick(() => {
+              console.log("button clicked");
+            }),
+          );
+          card.addChild(
+            new Button().setText("Hello World!").onClick(() => {
+              console.log("button clicked");
+            }),
+          );
           card.addChild(new Text().setText("Hello World!"));
           card.addChild(new Text().setText("Hello World!"));
           card.addChild(new Text().setText("Hello World!"));

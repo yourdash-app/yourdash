@@ -61,6 +61,7 @@ export default class ContentRoot {
       this.__internals.element.style.setProperty(`${varName}accent`, themeAccessor.accent);
       this.__internals.element.style.setProperty(`${varName}radius`, themeAccessor.radius);
       this.__internals.element.style.setProperty(`${varName}padding`, themeAccessor.padding);
+      this.__internals.element.style.setProperty(`${varName}gap`, themeAccessor.gap);
 
       // font
       this.__internals.element.style.setProperty(`${varName}font-family`, themeAccessor.font.family);
@@ -85,7 +86,6 @@ export default class ContentRoot {
       this.__internals.element.style.setProperty(`${varName}button-border`, themeAccessor.button.border);
       this.__internals.element.style.setProperty(`${varName}button-radius`, themeAccessor.button.radius);
       this.__internals.element.style.setProperty(`${varName}button-shadow`, themeAccessor.button.shadow);
-      this.__internals.element.style.setProperty(`${varName}button-accent`, themeAccessor.button.accent);
 
       // button font
       this.__internals.element.style.setProperty(`${varName}button-font-family`, themeAccessor.button.font.family);
@@ -95,6 +95,20 @@ export default class ContentRoot {
       // button padding
       this.__internals.element.style.setProperty(`${varName}button-padding-vertical`, themeAccessor.button.padding.vertical);
       this.__internals.element.style.setProperty(`${varName}button-padding-horizontal`, themeAccessor.button.padding.horizontal);
+
+      // button hover
+      this.__internals.element.style.setProperty(`${varName}button-hover-fg`, themeAccessor.button.hover.fg);
+      this.__internals.element.style.setProperty(`${varName}button-hover-bg`, themeAccessor.button.hover.bg);
+      this.__internals.element.style.setProperty(`${varName}button-hover-border`, themeAccessor.button.hover.border);
+      this.__internals.element.style.setProperty(`${varName}button-hover-shadow`, themeAccessor.button.hover.shadow);
+      this.__internals.element.style.setProperty(`${varName}button-hover-radius`, themeAccessor.button.hover.radius);
+
+      // button active
+      this.__internals.element.style.setProperty(`${varName}button-active-fg`, themeAccessor.button.active.fg);
+      this.__internals.element.style.setProperty(`${varName}button-active-bg`, themeAccessor.button.active.bg);
+      this.__internals.element.style.setProperty(`${varName}button-active-border`, themeAccessor.button.active.border);
+      this.__internals.element.style.setProperty(`${varName}button-active-shadow`, themeAccessor.button.active.shadow);
+      this.__internals.element.style.setProperty(`${varName}button-active-radius`, themeAccessor.button.active.radius);
     };
 
     loadLevel("default");
@@ -117,15 +131,8 @@ export default class ContentRoot {
 
   // add a child component to the content root
   addChild(child: AnyComponentOrHTMLElement) {
-    if (child.__internals.componentType === ComponentType.HTMLElement) {
-      const childComponent = child as UIKitHTMLElement;
-      this.__internals.element?.appendChild(childComponent.rawHtmlElement);
-      return;
-    }
-
-    const childComponent = child as AnyComponent;
-    this.__internals.element?.appendChild(childComponent.htmlElement.rawHtmlElement);
-    this.__internals.children.push(childComponent);
+    appendComponentToElement(this.__internals.element as HTMLElement, child);
+    this.__internals.children.push(child);
 
     return this;
   }

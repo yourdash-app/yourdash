@@ -5,7 +5,8 @@
 
 .component {
   box-sizing: border-box;
-
+  display: flex;
+  flex-direction: column;
 }
 
 .levelDefault {
@@ -17,6 +18,7 @@
   box-shadow: var(--ukt-default-shadow);
   padding: var(--ukt-default-padding);
   border-radius: var(--ukt-default-radius);
+  gap: var(--ukt-default-gap);
 }
 
 .level0 {
@@ -28,6 +30,7 @@
   box-shadow: var(--ukt-0-shadow);
   padding: var(--ukt-0-padding);
   border-radius: var(--ukt-0-radius);
+  gap: var(--ukt-0-gap);
 }
 
 .level1 {
@@ -39,6 +42,7 @@
   box-shadow: var(--ukt-1-shadow);
   padding: var(--ukt-1-padding);
   border-radius: var(--ukt-1-radius);
+  gap: var(--ukt-1-gap);
 }
 
 .level2 {
@@ -50,4 +54,5 @@
   box-shadow: var(--ukt-2-shadow);
   padding: var(--ukt-2-padding);
   border-radius: var(--ukt-2-radius);
+  gap: var(--ukt-2-gap);
 }
