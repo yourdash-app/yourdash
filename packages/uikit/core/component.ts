@@ -10,6 +10,21 @@ import DivElement from "../html/divElement";
 import UIKitHTMLElement from "./htmlElement.js";
 import { appendComponentToElement, initializeComponent } from "./index.js";
 
+export function incrementLevel(component: AnyComponentOrHTMLElement) {
+  if (component.__internals?.treeContext?.level === "default") {
+    component.__internals.treeContext.level = 0;
+  } else if (component.__internals?.treeContext?.level === 0) {
+    component.__internals.treeContext.level = 1;
+  } else if (component.__internals?.treeContext?.level === 1) {
+    component.__internals.treeContext.level = 2;
+  } else if (component.__internals?.treeContext?.level === 2) {
+    // do nothing - max level reached
+    return;
+  }
+
+  return;
+}
+
 export enum ComponentType {
   Container,
   Solo,
@@ -63,6 +78,8 @@ export class SoloComponent {
       initializeComponent(this);
     }
 
+    this.htmlElement.setAttribute("ukid", this.__internals.debugId);
+
     this.__internals.renderCount++;
     console.debug("UIKIT:RENDER", `rendering component: <${this.__internals.debugId}>`, this);
 
@@ -107,7 +124,7 @@ export class ContainerComponent<ComponentSlots extends string[] = []> {
       const childComponent = child as UIKitHTMLElement;
       this.htmlElement.addChild(childComponent);
 
-      return;
+      return this;
     }
 
     const childComponent = child as AnyComponent;
@@ -117,12 +134,16 @@ export class ContainerComponent<ComponentSlots extends string[] = []> {
 
     this.htmlElement?.addChild(childComponent.htmlElement);
     child.render();
+
+    return this;
   }
 
   render() {
     if (!this.__internals.isInitialized) {
       initializeComponent(this);
     }
+
+    this.htmlElement.setAttribute("ukid", this.__internals.debugId);
 
     this.__internals.renderCount++;
     console.debug("UIKIT:RENDER", `rendering component: <${this.__internals.debugId}>`, this);
@@ -147,7 +168,9 @@ export class ComponentSlot extends ContainerComponent {
   }
 
   render() {
-    return super.render();
+    super.render();
+    this.htmlElement.setAttribute("ukid", this.__internals.debugId);
+    return this;
   }
 }
 

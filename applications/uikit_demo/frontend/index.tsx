@@ -21,10 +21,27 @@ const UIKitDemoApplication: React.FC = () => {
               console.log("button clicked");
             }),
           );
+          card.addChild(new Card().addChild(new Button().setText("Hello world")));
           card.addChild(
             new Button().setText("Hello World!").onClick(() => {
               console.log("button clicked");
             }),
+          );
+          card.addChild(
+            new Card().addChild(
+              new Button().setText("Hello World!").onClick(() => {
+                console.log("button clicked");
+              }),
+            ),
+          );
+          card.addChild(
+            new Card().addChild(
+              new Card().addChild(
+                new Button().setText("Hello World!").onClick(() => {
+                  console.log("button clicked");
+                }),
+              ),
+            ),
           );
           card.addChild(new Text().setText("Hello World!"));
           card.addChild(new Text().setText("Hello World!"));

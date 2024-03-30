@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { ContainerComponent } from "../core/component";
+import { ContainerComponent, incrementLevel } from "../core/component";
 import DivElement from "../html/divElement";
 import styles from "./card.module.scss";
 
@@ -21,6 +21,8 @@ export default class Card extends ContainerComponent<["actions"]> {
 
     const treeContext = this.__internals.treeContext;
     const level = treeContext.level;
+
+    incrementLevel(this);
 
     this.htmlElement.addClass(styles.component);
 

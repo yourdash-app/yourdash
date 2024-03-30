@@ -4,9 +4,8 @@
  */
 
 import generateUUID from "@yourdash/shared/web/helpers/uuid";
-import { ComponentType, DefaultComponentTreeContext, AnyComponent, AnyComponentOrHTMLElement } from "@yourdash/uikit/core/component";
+import { DefaultComponentTreeContext, AnyComponent, AnyComponentOrHTMLElement } from "@yourdash/uikit/core/component";
 import defaultTheme, { UIKitTheme } from "../components/theme.js";
-import UIKitHTMLElement from "./htmlElement";
 import { appendComponentToElement } from "./index.js";
 
 export interface ContentRootProps {

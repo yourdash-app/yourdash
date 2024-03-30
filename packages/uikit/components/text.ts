@@ -12,7 +12,7 @@ export default class Text extends SoloComponent {
   textValue: string = "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus, nobis?";
 
   constructor() {
-    super({ debugId: "text-test-component" });
+    super();
 
     this.htmlElement = new DivElement();
 
