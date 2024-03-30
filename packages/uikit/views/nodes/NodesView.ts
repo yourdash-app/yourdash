@@ -4,7 +4,8 @@
  */
 
 import dataStore from "@yourdash/shared/web/store.js";
-import Component, { ComponentType } from "../../core/component.js";
+import { SoloComponent } from "../../core/component.js";
+import DivElement from "../../html/divElement.js";
 import styles from "./NodesView.module.scss";
 
 export interface NodesViewMouse {
@@ -14,19 +15,20 @@ export interface NodesViewMouse {
   down: boolean;
 }
 
-export default class NodesView extends Component<ComponentType.Solo> {
+export default class NodesView extends SoloComponent {
   mouse = new dataStore<NodesViewMouse>({
     x: 0,
     y: 0,
     up: false,
     down: false,
   });
+  htmlElement: DivElement;
 
   constructor() {
-    super(ComponentType.Solo);
+    super();
 
-    this.htmlElement = document.createElement("div");
-    this.htmlElement.classList.add(styles.container);
+    this.htmlElement = new DivElement();
+    this.htmlElement.addClass(styles.container);
 
     return this;
   }

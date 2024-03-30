@@ -6,9 +6,10 @@
 import React, { useEffect, useRef } from "react";
 import ContentRoot from "./contentRoot";
 
-const ReactUIKitView: React.FC<{ onLoad: (contentRoot: ContentRoot) => void; className?: string }> = ({
+const ReactUIKitView: React.FC<{ onLoad: (contentRoot: ContentRoot) => void; className?: string; fillSpace?: boolean }> = ({
   onLoad,
   className,
+  fillSpace,
 }) => {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -20,7 +21,7 @@ const ReactUIKitView: React.FC<{ onLoad: (contentRoot: ContentRoot) => void; cla
         return;
       }
 
-      const contentRoot = window.__uikit__.uikit.createLooseContentRoot({ htmlElement: ref.current });
+      const contentRoot = window.__uikit__.uikit.createLooseContentRoot({ htmlElement: ref.current, fillSpace: fillSpace });
       contentRoot.setHTMLElement(ref.current);
 
       onLoad(contentRoot);

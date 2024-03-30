@@ -11,6 +11,7 @@ import { appendComponentToElement } from "./index.js";
 export interface ContentRootProps {
   htmlElement: HTMLElement;
   debugId?: string;
+  fillSpace?: boolean;
 }
 
 export default class ContentRoot {
@@ -35,6 +36,13 @@ export default class ContentRoot {
     this.setHTMLElement(props.htmlElement);
     this.__internals.element?.setAttribute("uikit-content-root", "true");
     this.loadTheme(defaultTheme);
+
+    if (props.fillSpace) {
+      if (!this.__internals.element) return this;
+
+      this.__internals.element.style.width = "100%";
+      this.__internals.element.style.height = "100%";
+    }
 
     return this;
   }

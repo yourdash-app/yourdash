@@ -9,6 +9,7 @@ import NodesView from "@yourdash/uikit/views/nodes/NodesView";
 const ManageBotNodesPage: React.FC = () => {
   return (
     <ReactUIKitView
+      fillSpace
       onLoad={(fw) => {
         fw.addChild(new NodesView());
       }}
