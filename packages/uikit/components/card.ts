@@ -3,9 +3,11 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { ContainerComponent, incrementLevel } from "../core/component";
+import { ContainerComponent } from "../core/component/containerComponent.js";
+import { incrementLevel } from "../core/component/incrementLevel.js";
 import DivElement from "../html/divElement";
 import styles from "./card.module.scss";
+import { loadThemeLevel } from "./theme.js";
 
 export default class Card extends ContainerComponent<["actions"]> {
   constructor() {
@@ -19,26 +21,16 @@ export default class Card extends ContainerComponent<["actions"]> {
   public render() {
     super.render();
 
-    const treeContext = this.__internals.treeContext;
-    const level = treeContext.level;
+    // FIXME: this should not return! an issue with contextTree propagation is lurkling somewhere...
+    if (!this.__internals.treeContext.theme) return this;
 
+    console.log("BEFORE: ", this.__internals.treeContext.level);
     incrementLevel(this);
+    console.log("AFTER: ", this.__internals.treeContext.level);
+    loadThemeLevel(this.__internals.treeContext.theme, this.htmlElement.rawHtmlElement, this.__internals.treeContext.level);
 
+    this.htmlElement.setAttribute("uk-level", this.__internals.treeContext.level.toString());
     this.htmlElement.addClass(styles.component);
-
-    switch (level) {
-      case 0:
-        this.htmlElement.addClass(styles.level0);
-        break;
-      case 1:
-        this.htmlElement.addClass(styles.level1);
-        break;
-      case 2:
-        this.htmlElement.addClass(styles.level2);
-        break;
-      default:
-        this.htmlElement.addClass(styles.levelDefault);
-    }
 
     return this;
   }

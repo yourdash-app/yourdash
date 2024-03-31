@@ -3,7 +3,8 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { AnyComponent, AnyComponentOrHTMLElement, ComponentType } from "./component.js";
+import { ComponentType } from "./component/componentType.js";
+import { AnyComponent, AnyComponentOrHTMLElement } from "./component/type.js";
 import ContentRoot, { ContentRootProps } from "./contentRoot";
 import UIKitHTMLElement from "./htmlElement.js";
 
@@ -26,8 +27,6 @@ export function initializeComponent(component: AnyComponentOrHTMLElement) {
 
     return component;
   }
-
-  console.debug("UIKIT:COMPONENT_INITIALIZED", `component ${component.__internals.debugId} initialized`);
 
   component.__internals.isInitialized = true;
 

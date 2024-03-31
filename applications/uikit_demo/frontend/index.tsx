@@ -8,6 +8,7 @@ import Card from "@yourdash/uikit/components/card.js";
 import ReactUIKitView from "@yourdash/uikit/core/ReactUIKitView.js";
 import * as React from "react";
 import Text from "@yourdash/uikit/components/text.js";
+import Image from "@yourdash/uikit/components/image";
 
 const UIKitDemoApplication: React.FC = () => {
   return (
@@ -46,6 +47,7 @@ const UIKitDemoApplication: React.FC = () => {
           card.addChild(new Text().setText("Hello World!"));
           card.addChild(new Text().setText("Hello World!"));
           card.addChild(new Text().setText("Hello World!"));
+          card.addChild(new Image().setSrc("https://picsum.photos/200/300"));
           root.addChild(card);
 
           root.addChild(new Text().setText("Hello World!"));

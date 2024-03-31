@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { SoloComponent } from "../core/component.js";
+import { SoloComponent } from "../core/component/soloComponent.js";
 import ButtonElement from "../html/buttonElement.js";
 import styles from "./button.module.scss";
 
@@ -33,24 +33,7 @@ export default class Button extends SoloComponent {
   render() {
     super.render();
 
-    const treeContext = this.__internals.treeContext;
-    const level = treeContext.level;
-
     this.htmlElement.addClass(styles.component);
-
-    switch (level) {
-      case 0:
-        this.htmlElement.addClass(styles.level0);
-        break;
-      case 1:
-        this.htmlElement.addClass(styles.level1);
-        break;
-      case 2:
-        this.htmlElement.addClass(styles.level2);
-        break;
-      default:
-        this.htmlElement.addClass(styles.levelDefault);
-    }
 
     return this;
   }

@@ -5,7 +5,8 @@
 
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { SoloComponent } from "./component.js";
+
+import { SoloComponent } from "./component/soloComponent.js";
 
 export default class UIKitReactView extends SoloComponent {
   reactComponent: React.ReactNode;

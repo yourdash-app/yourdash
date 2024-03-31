@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { SoloComponent } from "../core/component";
+import { SoloComponent } from "../core/component/soloComponent.js";
 import DivElement from "../html/divElement";
 import styles from "./text.module.scss";
 

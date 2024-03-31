@@ -1,0 +1,106 @@
+/*
+ * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
+import generateUUID from "@yourdash/shared/web/helpers/uuid.js";
+import DivElement from "../../html/divElement.js";
+import UIKitHTMLElement from "../htmlElement.js";
+import { appendComponentToElement, initializeComponent } from "../index.js";
+import { ComponentType } from "./componentType.js";
+import { BaseComponentInternals } from "./internals.js";
+import { AnyComponent, AnyComponentOrHTMLElement } from "./type.js";
+
+export interface ContainerComponentInternals<ComponentSlots extends string[] = []> extends BaseComponentInternals {
+  children: AnyComponentOrHTMLElement[];
+  slots: { [slotName in keyof ComponentSlots]: AnyComponentOrHTMLElement | undefined };
+}
+
+export class ContainerComponent<ComponentSlots extends string[] = []> {
+  __internals: ContainerComponentInternals<ComponentSlots>;
+  htmlElement: UIKitHTMLElement;
+
+  constructor(slots?: ComponentSlots, props?: { debugId?: string }) {
+    this.__internals = {
+      debugId: generateUUID(),
+      // When a component is created, it's creator should define its parent
+      parentComponent: undefined,
+      children: [],
+      componentType: ComponentType.Container,
+      renderCount: 0,
+      isInitialized: false,
+      treeContext: { level: 0 },
+      slots: {} as { [slotName in keyof ComponentSlots]: AnyComponentOrHTMLElement | undefined },
+    };
+
+    if (props) {
+      if (props.debugId) this.__internals.debugId = props.debugId;
+    }
+
+    // by default, we use a div element as the component's html element
+    this.htmlElement = new DivElement();
+
+    return this;
+  }
+
+  addChild(child: AnyComponentOrHTMLElement) {
+    if (child.__internals.componentType === ComponentType.HTMLElement) {
+      const childComponent = child as UIKitHTMLElement;
+      child.__internals.parentComponent = this as unknown as ContainerComponent;
+      child.__internals.treeContext = this.__internals.treeContext;
+      this.__internals.children?.push(childComponent);
+
+      if (this.__internals.treeContextChildOverrides) {
+        Object.keys(this.__internals.treeContextChildOverrides).map((override) => {
+          // @ts-ignore
+          child.__internals.treeContext[override] = this.__internals.treeContextChildOverrides[override];
+        });
+      }
+
+      this.htmlElement.addChild(childComponent);
+
+      return this;
+    }
+
+    const childComponent = child as AnyComponent;
+
+    child.__internals.parentComponent = this as unknown as ContainerComponent;
+    child.__internals.treeContext = this.__internals.treeContext;
+    this.__internals.children?.push(childComponent);
+
+    console.log(this.__internals.treeContextChildOverrides);
+
+    console.log(`Before overrides: `, this.__internals.treeContext);
+
+    if (this.__internals.treeContextChildOverrides) {
+      Object.keys(this.__internals.treeContextChildOverrides).map((override) => {
+        // @ts-ignore
+        child.__internals.treeContext[override] = this.__internals.treeContextChildOverrides[override];
+      });
+    }
+
+    console.log(`After overrides: `, this.__internals.treeContext);
+
+    this.htmlElement?.addChild(childComponent.htmlElement);
+    child.render();
+
+    return this;
+  }
+
+  render() {
+    if (!this.__internals.isInitialized) {
+      initializeComponent(this);
+    }
+
+    this.__internals.renderCount++;
+    console.debug("UIKIT:RENDER", this);
+
+    this.__internals.children.map((child) => {
+      appendComponentToElement(this.htmlElement.rawHtmlElement, child);
+
+      child.render();
+    });
+
+    return this;
+  }
+}

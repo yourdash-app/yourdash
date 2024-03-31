@@ -4,8 +4,12 @@
  */
 
 import generateUUID from "@yourdash/shared/web/helpers/uuid";
-import { DefaultComponentTreeContext, AnyComponent, AnyComponentOrHTMLElement } from "@yourdash/uikit/core/component";
-import defaultTheme, { UIKitTheme } from "../components/theme.js";
+import defaultTheme, { loadThemeLevel, UIKitTheme } from "../components/theme.js";
+import { ComponentType } from "./component/componentType.js";
+import { ContainerComponent } from "./component/containerComponent.js";
+import { DefaultComponentTreeContext } from "./component/treeContext.js";
+import { AnyComponent, AnyComponentOrHTMLElement } from "./component/type.js";
+import UIKitHTMLElement from "./htmlElement.js";
 import { appendComponentToElement } from "./index.js";
 
 export interface ContentRootProps {
@@ -28,7 +32,7 @@ export default class ContentRoot {
       children: [],
       treeContext: {
         theme: defaultTheme,
-        level: 0,
+        level: "def",
       },
     };
 
@@ -36,6 +40,8 @@ export default class ContentRoot {
     this.setHTMLElement(props.htmlElement);
     this.__internals.element?.setAttribute("uikit-content-root", "true");
     this.loadTheme(defaultTheme);
+
+    console.log(this.__internals.treeContext);
 
     if (props.fillSpace) {
       if (!this.__internals.element) return this;
@@ -51,77 +57,7 @@ export default class ContentRoot {
     this.__internals.treeContext.theme = theme;
     if (!this.__internals.element) return;
 
-    const loadLevel = (levelName: "default" | 0 | 1 | 2) => {
-      if (!this.__internals.element) return;
-
-      const varName = `--ukt-${levelName}-`;
-      let themeAccessor = theme.level[levelName as keyof typeof theme.level];
-      if (levelName === "default") {
-        themeAccessor = theme.default;
-      }
-
-      // various
-      this.__internals.element.style.setProperty(`${varName}fg`, themeAccessor.fg);
-      this.__internals.element.style.setProperty(`${varName}bg`, themeAccessor.bg);
-      this.__internals.element.style.setProperty(`${varName}border`, themeAccessor.border);
-      this.__internals.element.style.setProperty(`${varName}shadow`, themeAccessor.shadow);
-      this.__internals.element.style.setProperty(`${varName}accent`, themeAccessor.accent);
-      this.__internals.element.style.setProperty(`${varName}radius`, themeAccessor.radius);
-      this.__internals.element.style.setProperty(`${varName}padding`, themeAccessor.padding);
-      this.__internals.element.style.setProperty(`${varName}gap`, themeAccessor.gap);
-
-      // font
-      this.__internals.element.style.setProperty(`${varName}font-family`, themeAccessor.font.family);
-      this.__internals.element.style.setProperty(`${varName}font-size`, themeAccessor.font.size);
-      this.__internals.element.style.setProperty(`${varName}font-weight`, themeAccessor.font.weight);
-
-      // header various
-      this.__internals.element.style.setProperty(`${varName}header-fg`, themeAccessor.header.fg);
-
-      // header font
-      this.__internals.element.style.setProperty(`${varName}header-font-family`, themeAccessor.header.font.family);
-      this.__internals.element.style.setProperty(`${varName}header-font-size`, themeAccessor.header.font.size);
-      this.__internals.element.style.setProperty(`${varName}header-font-weight`, themeAccessor.header.font.weight);
-
-      // header padding
-      this.__internals.element.style.setProperty(`${varName}header-padding-vertical`, themeAccessor.header.padding.vertical);
-      this.__internals.element.style.setProperty(`${varName}header-padding-horizontal`, themeAccessor.header.padding.horizontal);
-
-      // button various
-      this.__internals.element.style.setProperty(`${varName}button-fg`, themeAccessor.button.fg);
-      this.__internals.element.style.setProperty(`${varName}button-bg`, themeAccessor.button.bg);
-      this.__internals.element.style.setProperty(`${varName}button-border`, themeAccessor.button.border);
-      this.__internals.element.style.setProperty(`${varName}button-radius`, themeAccessor.button.radius);
-      this.__internals.element.style.setProperty(`${varName}button-shadow`, themeAccessor.button.shadow);
-
-      // button font
-      this.__internals.element.style.setProperty(`${varName}button-font-family`, themeAccessor.button.font.family);
-      this.__internals.element.style.setProperty(`${varName}button-font-size`, themeAccessor.button.font.size);
-      this.__internals.element.style.setProperty(`${varName}button-font-weight`, themeAccessor.button.font.weight);
-
-      // button padding
-      this.__internals.element.style.setProperty(`${varName}button-padding-vertical`, themeAccessor.button.padding.vertical);
-      this.__internals.element.style.setProperty(`${varName}button-padding-horizontal`, themeAccessor.button.padding.horizontal);
-
-      // button hover
-      this.__internals.element.style.setProperty(`${varName}button-hover-fg`, themeAccessor.button.hover.fg);
-      this.__internals.element.style.setProperty(`${varName}button-hover-bg`, themeAccessor.button.hover.bg);
-      this.__internals.element.style.setProperty(`${varName}button-hover-border`, themeAccessor.button.hover.border);
-      this.__internals.element.style.setProperty(`${varName}button-hover-shadow`, themeAccessor.button.hover.shadow);
-      this.__internals.element.style.setProperty(`${varName}button-hover-radius`, themeAccessor.button.hover.radius);
-
-      // button active
-      this.__internals.element.style.setProperty(`${varName}button-active-fg`, themeAccessor.button.active.fg);
-      this.__internals.element.style.setProperty(`${varName}button-active-bg`, themeAccessor.button.active.bg);
-      this.__internals.element.style.setProperty(`${varName}button-active-border`, themeAccessor.button.active.border);
-      this.__internals.element.style.setProperty(`${varName}button-active-shadow`, themeAccessor.button.active.shadow);
-      this.__internals.element.style.setProperty(`${varName}button-active-radius`, themeAccessor.button.active.radius);
-    };
-
-    loadLevel("default");
-    loadLevel(0);
-    loadLevel(1);
-    loadLevel(2);
+    loadThemeLevel(theme, this.__internals.element, "def");
 
     return this;
   }
@@ -138,8 +74,23 @@ export default class ContentRoot {
 
   // add a child component to the content root
   addChild(child: AnyComponentOrHTMLElement) {
-    appendComponentToElement(this.__internals.element as HTMLElement, child);
-    this.__internals.children.push(child);
+    if (child.__internals.componentType === ComponentType.HTMLElement) {
+      const childComponent = child as UIKitHTMLElement;
+      child.__internals.parentComponent = this as unknown as ContainerComponent;
+      child.__internals.treeContext = this.__internals.treeContext;
+      this.__internals.element?.appendChild(childComponent.rawHtmlElement);
+
+      return this;
+    }
+
+    const childComponent = child as AnyComponent;
+
+    child.__internals.parentComponent = this as unknown as ContainerComponent;
+    child.__internals.treeContext = this.__internals.treeContext;
+    this.__internals.children?.push(childComponent);
+
+    this.__internals.element?.appendChild(childComponent.htmlElement.rawHtmlElement);
+    child.render();
 
     return this;
   }

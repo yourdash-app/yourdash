@@ -7,52 +7,14 @@
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-}
 
-.levelDefault {
-  font-weight: var(--ukt-default-font-weight);
-  font-size: var(--ukt-default-font-size);
-  font-family: var(--ukt-default-font-family);
-  background: var(--ukt-default-bg);
-  border: var(--ukt-default-border);
-  box-shadow: var(--ukt-default-shadow);
-  padding: var(--ukt-default-padding);
-  border-radius: var(--ukt-default-radius);
-  gap: var(--ukt-default-gap);
-}
-
-.level0 {
-  font-weight: var(--ukt-0-font-weight);
-  font-size: var(--ukt-0-font-size);
-  font-family: var(--ukt-0-font-family);
-  background: var(--ukt-0-bg);
-  border: var(--ukt-0-border);
-  box-shadow: var(--ukt-0-shadow);
-  padding: var(--ukt-0-padding);
-  border-radius: var(--ukt-0-radius);
-  gap: var(--ukt-0-gap);
-}
-
-.level1 {
-  font-weight: var(--ukt-1-font-weight);
-  font-size: var(--ukt-1-font-size);
-  font-family: var(--ukt-1-font-family);
-  background: var(--ukt-1-bg);
-  border: var(--ukt-1-border);
-  box-shadow: var(--ukt-1-shadow);
-  padding: var(--ukt-1-padding);
-  border-radius: var(--ukt-1-radius);
-  gap: var(--ukt-1-gap);
-}
-
-.level2 {
-  font-weight: var(--ukt-2-font-weight);
-  font-size: var(--ukt-2-font-size);
-  font-family: var(--ukt-2-font-family);
-  background: var(--ukt-2-bg);
-  border: var(--ukt-2-border);
-  box-shadow: var(--ukt-2-shadow);
-  padding: var(--ukt-2-padding);
-  border-radius: var(--ukt-2-radius);
-  gap: var(--ukt-2-gap);
+  font-weight: var(--ukt-font-weight);
+  font-size: var(--ukt-font-size);
+  font-family: var(--ukt-font-family);
+  background: var(--ukt-bg);
+  border: var(--ukt-border);
+  box-shadow: var(--ukt-shadow);
+  padding: var(--ukt-padding);
+  border-radius: var(--ukt-radius);
+  gap: var(--ukt-gap);
 }

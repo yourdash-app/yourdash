@@ -5,7 +5,9 @@
 
 import generateUUID from "@yourdash/shared/web/helpers/uuid.js";
 import { Merge } from "type-fest";
-import { AnyComponent, AnyComponentOrHTMLElement, ComponentType, ContainerComponentInternals } from "./component.js";
+import { ComponentType } from "./component/componentType.js";
+import { ContainerComponentInternals } from "./component/containerComponent.js";
+import { AnyComponent, AnyComponentOrHTMLElement } from "./component/type.js";
 import { appendComponentToElement, initializeComponent } from "./index.js";
 
 type OverrideProperties<
@@ -135,7 +137,7 @@ export default class UIKitHTMLElement {
     }
 
     this.__internals.renderCount++;
-    console.debug("UIKIT:RENDER", `rendering component: <${this.__internals.debugId}>`, this);
+    console.debug("UIKIT:RENDER", this);
 
     this.__internals.children.map((child: AnyComponentOrHTMLElement) => {
       appendComponentToElement(this.rawHtmlElement, child);

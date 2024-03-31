@@ -4,7 +4,8 @@
  */
 
 import dataStore from "@yourdash/shared/web/store.js";
-import { SoloComponent } from "../../core/component.js";
+
+import { SoloComponent } from "../../core/component/soloComponent.js";
 import DivElement from "../../html/divElement.js";
 import styles from "./NodesView.module.scss";
 
