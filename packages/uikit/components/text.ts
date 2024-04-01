@@ -27,28 +27,11 @@ export default class Text extends SoloComponent {
   }
 
   public render() {
-    super.render();
+    super.render(() => {
+      this.htmlElement.setInnerText(this.textValue);
 
-    this.htmlElement.setInnerText(this.textValue);
-
-    const treeContext = this.__internals.treeContext;
-    const level = this.__internals.treeContext.level ?? treeContext.level;
-
-    this.htmlElement.addClass(styles.component);
-
-    switch (level) {
-      case 0:
-        this.htmlElement.addClass(styles.level0);
-        break;
-      case 1:
-        this.htmlElement.addClass(styles.level1);
-        break;
-      case 2:
-        this.htmlElement.addClass(styles.level2);
-        break;
-      default:
-        this.htmlElement.addClass(styles.levelDefault);
-    }
+      this.htmlElement.addClass(styles.component);
+    });
 
     return this;
   }

@@ -6,7 +6,7 @@
 import generateUUID from "@yourdash/shared/web/helpers/uuid.js";
 import DivElement from "../../html/divElement.js";
 import UIKitHTMLElement from "../htmlElement.js";
-import { initializeComponent } from "../index.js";
+import { getUIKit, initializeComponent } from "../index.js";
 import { ComponentType } from "./componentType.js";
 import { BaseComponentInternals } from "./internals.js";
 
@@ -39,13 +39,17 @@ export class SoloComponent {
     return this;
   }
 
-  render() {
-    if (!this.__internals.isInitialized) {
-      initializeComponent(this);
-    }
+  render(callback: () => void) {
+    getUIKit().addToRenderQueue(ComponentType.Solo, () => {
+      if (!this.__internals.isInitialized) {
+        initializeComponent(this);
+      }
 
-    this.__internals.renderCount++;
-    console.debug("UIKIT:RENDER", this);
+      this.__internals.renderCount++;
+      console.debug("UIKIT:RENDER", this);
+
+      callback();
+    });
 
     return this;
   }

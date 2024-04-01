@@ -36,9 +36,9 @@ export default class Image extends SoloComponent {
   }
 
   render() {
-    super.render();
-
-    this.htmlElement.addClass(styles.component);
+    super.render(() => {
+      this.htmlElement.addClass(styles.component);
+    });
 
     return this;
   }

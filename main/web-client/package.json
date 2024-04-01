@@ -14,7 +14,7 @@
     "visualize-bundle": "vite-bundle-visualizer",
     "generate-application-routes": "run-script-os",
     "generate-application-routes:nix": "bun toolchain/generateApplicationRoutes.js",
-    "generate-application-routes:win32": "node toolchain/generateApplicationRoutes.js"
+    "generate-application-routes:win32": "bun toolchain/generateApplicationRoutes.js"
   },
   "dependencies": {
     "@floating-ui/react": "^0.26.3",

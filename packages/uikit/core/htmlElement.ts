@@ -112,13 +112,13 @@ export default class UIKitHTMLElement {
       const childComponent = child as UIKitHTMLElement;
       this.rawHtmlElement.appendChild(childComponent.rawHtmlElement);
 
-      return;
+      return this;
     }
 
     const childComponent = child as AnyComponent;
     this.rawHtmlElement.appendChild(childComponent.htmlElement.rawHtmlElement);
 
-    child.render();
+    return this;
   }
 
   setInnerText(text: string) {

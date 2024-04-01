@@ -46,6 +46,7 @@ export function appendComponentToElement(element: HTMLElement, component: AnyCom
 
 export default class UIKit {
   looseRoots: ContentRoot[] = [];
+  renderQueue: { type: ComponentType; cb: () => void }[] = [];
 
   constructor() {
     this.looseRoots = [];
@@ -58,5 +59,28 @@ export default class UIKit {
     const contentRoot = new ContentRoot(props);
     this.looseRoots.push(contentRoot);
     return contentRoot;
+  }
+
+  addToRenderQueue(type: ComponentType, cb: () => void) {
+    this.renderQueue.push({ type, cb });
+
+    return this;
+  }
+
+  renderComponentFromQueue() {
+    if (this.renderQueue.length === 0) {
+      return this;
+    }
+
+    const currentQueueItem = this.renderQueue.shift();
+
+    if (!currentQueueItem) {
+      return this;
+    }
+
+    switch (currentQueueItem.type) {
+      case ComponentType.Solo:
+        return currentQueueItem.cb();
+    }
   }
 }
