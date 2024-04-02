@@ -69,5 +69,11 @@ pm2 startup
 echo "Removing YourDash from pm2 (IGNORE IF AN ERROR OCCURS)"
 pm2 delete yourdashBackend
 
-echo "Adding YourDash to pm2"
-pm2 start /yourdash/main/backend/src/defaults/yourdashBackend.sh
+echo "Adding YourDash Backend to pm2"
+pm2 start /yourdash/toolchain/yourdashBackend.sh
+
+echo "Removing YourDash Dev WebClient from pm2 (IGNORE IF AN ERROR OCCURS)"
+pm2 delete yourdashDevWebClient
+
+echo "Adding YourDash Dev WebClient to pm2"
+pm2 start /yourdash/toolchain/yourdashDevWebClient.sh
