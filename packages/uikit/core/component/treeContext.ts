@@ -3,11 +3,8 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { UIKitTheme } from "../../components/theme.js";
-
 export interface DefaultComponentTreeContext {
-  theme?: UIKitTheme;
-  level: 0 | 1 | 2 | "def";
+  level: 0 | 1 | 2 | 3;
 }
 
 export type ComponentTreeContext = object & DefaultComponentTreeContext;

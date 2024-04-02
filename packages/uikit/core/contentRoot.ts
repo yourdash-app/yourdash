@@ -4,7 +4,7 @@
  */
 
 import generateUUID from "@yourdash/shared/web/helpers/uuid";
-import defaultTheme, { loadThemeLevel, UIKitTheme } from "../components/theme.js";
+import { getThemeMeta } from "../components/theme.js";
 import { ComponentType } from "./component/componentType.js";
 import { ContainerComponent } from "./component/containerComponent.js";
 import { DefaultComponentTreeContext } from "./component/treeContext.js";
@@ -31,15 +31,14 @@ export default class ContentRoot {
       debugId: generateUUID(),
       children: [],
       treeContext: {
-        theme: defaultTheme,
-        level: "def",
+        level: 0,
       },
     };
 
     if (props.debugId) this.__internals.debugId = props.debugId;
     this.setHTMLElement(props.htmlElement);
+    getThemeMeta(this.__internals.element as HTMLElement);
     this.__internals.element?.setAttribute("uikit-content-root", "true");
-    this.loadTheme(defaultTheme);
 
     console.log(this.__internals.treeContext);
 
@@ -49,15 +48,6 @@ export default class ContentRoot {
       this.__internals.element.style.width = "100%";
       this.__internals.element.style.height = "100%";
     }
-
-    return this;
-  }
-
-  loadTheme(theme: UIKitTheme) {
-    this.__internals.treeContext.theme = theme;
-    if (!this.__internals.element) return;
-
-    loadThemeLevel(theme, this.__internals.element, "def");
 
     return this;
   }

@@ -10,7 +10,6 @@ import ReactUIKitView from "@yourdash/uikit/core/ReactUIKitView.js";
 import * as React from "react";
 import Text from "@yourdash/uikit/components/text.js";
 import Image from "@yourdash/uikit/components/image";
-import ChipletButton from "@yourdash/uikit/depChiplet/components/button/Button";
 
 const UIKitDemoApplication: React.FC = () => {
   return (
@@ -19,6 +18,7 @@ const UIKitDemoApplication: React.FC = () => {
       <ReactUIKitView
         onLoad={(root) => {
           const card = new Card();
+          root.addChild(card);
           card.addChild(
             new Button().setText("Hello World!").onClick(() => {
               console.log("button clicked");
@@ -50,18 +50,10 @@ const UIKitDemoApplication: React.FC = () => {
           card.addChild(new Text().setText("Hello World!"));
           card.addChild(new Text().setText("Hello World!"));
           card.addChild(new Image().setSrc("https://picsum.photos/768/256"));
-          root.addChild(card);
 
           root.addChild(new Text().setText("Hello World!"));
         }}
       />
-      <ChipletButton
-        onClick={() => {
-          getUIKit().renderComponentFromQueue();
-        }}
-      >
-        DEBUG: render next component in queue
-      </ChipletButton>
     </>
   );
 };

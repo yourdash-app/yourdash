@@ -39,17 +39,13 @@ export class SoloComponent {
     return this;
   }
 
-  render(callback: () => void) {
-    getUIKit().addToRenderQueue(ComponentType.Solo, () => {
-      if (!this.__internals.isInitialized) {
-        initializeComponent(this);
-      }
+  render() {
+    if (!this.__internals.isInitialized) {
+      initializeComponent(this);
+    }
 
-      this.__internals.renderCount++;
-      console.debug("UIKIT:RENDER", this);
-
-      callback();
-    });
+    this.__internals.renderCount++;
+    console.debug("UIKIT:RENDER", this);
 
     return this;
   }

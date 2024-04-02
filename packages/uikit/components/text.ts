@@ -27,11 +27,9 @@ export default class Text extends SoloComponent {
   }
 
   public render() {
-    super.render(() => {
-      this.htmlElement.setInnerText(this.textValue);
+    this.htmlElement.setInnerText(this.textValue);
 
-      this.htmlElement.addClass(styles.component);
-    });
+    this.htmlElement.addClass(styles.component);
 
     return this;
   }

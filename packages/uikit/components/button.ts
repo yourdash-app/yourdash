@@ -31,9 +31,7 @@ export default class Button extends SoloComponent {
   }
 
   render() {
-    super.render(() => {
-      this.htmlElement.addClass(styles.component);
-    });
+    this.htmlElement.addClass(styles.component);
 
     return this;
   }

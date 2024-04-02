@@ -1,0 +1,262 @@
+/*!
+ * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
+$theme: "--ut";
+$button: "btn";
+$hover: "hvr";
+$active: "atv";
+$padding: "pdn";
+$border: "brd";
+$radius: "rad";
+$shadow: "shd";
+$accent: "acn";
+$color: "col";
+$background: "bgn";
+$gap: "gap";
+$transition: "trn";
+$font: "fnt";
+$size: "siz";
+$weight: "wgt";
+$family: "fam";
+$vertical: "vrt";
+$horizontal: "hrt";
+$header: "hed";
+
+.theme {
+  #{$theme}-author: "Ewsgit";
+  #{$theme}-name: "YourDash Classic Dark";
+  #{$theme}-version: "0.0.1";
+}
+
+.level0 {
+  #{$theme}#{$color}: #ffffff;
+  #{$theme}#{$background}: #222222;
+  #{$theme}#{$accent}: #445599;
+  #{$theme}#{$border}: 1px solid #444444;
+  #{$theme}#{$shadow}: 0 0 0.5rem 0 #000000;
+  #{$theme}#{$radius}: 0.5rem;
+  #{$theme}#{$padding}: 0.5rem;
+  #{$theme}#{$gap}: 0.5rem;
+  #{$theme}#{$transition}: all 200ms ease-in-out;
+
+  // button
+  #{$theme}#{$button}#{$color}: #ffffff;
+  #{$theme}#{$button}#{$background}: #444444;
+  #{$theme}#{$button}#{$border}: 1px solid #444444;
+  #{$theme}#{$button}#{$font}#{$size}: 0.9rem;
+  #{$theme}#{$button}#{$font}#{$weight}: 400;
+  #{$theme}#{$button}#{$radius}: 0.5rem;
+  #{$theme}#{$button}#{$shadow}: 0 0 0.5rem 0 #000000;
+  #{$theme}#{$button}#{$padding}#{$vertical}: 0.25rem;
+  #{$theme}#{$button}#{$padding}#{$horizontal}: 0.5rem;
+  #{$theme}#{$button}#{$transition}: all 0.2s ease-in-out;
+  // hover
+  #{$theme}#{$button}#{$hover}#{$color}: #ffffff;
+  #{$theme}#{$button}#{$hover}#{$background}: #555555;
+  #{$theme}#{$button}#{$hover}#{$border}: 1px solid #555555;
+  #{$theme}#{$button}#{$hover}#{$radius}: 0.5rem;
+  #{$theme}#{$button}#{$hover}#{$shadow}: 0 0 0.5rem 0 #000000;
+  #{$theme}#{$button}#{$hover}#{$transition}: all 0.2s ease-in-out;
+  // active
+  #{$theme}#{$button}#{$active}#{$color}: #ffffff;
+  #{$theme}#{$button}#{$active}#{$background}: #555555;
+  #{$theme}#{$button}#{$active}#{$border}: 1px solid #555555;
+  #{$theme}#{$button}#{$active}#{$radius}: 0.5rem;
+  #{$theme}#{$button}#{$active}#{$shadow}: 0 0 0.5rem 0 #000000;
+  #{$theme}#{$button}#{$active}#{$transition}: all 0.2s ease-in-out;
+
+  // font
+  #{$theme}#{$font}#{$family}: Inter;
+  #{$theme}#{$font}#{$size}: 0.9rem;
+  #{$theme}#{$font}#{$weight}: 400;
+
+  // header
+  #{$theme}#{$header}#{$color}: #ffffff;
+  #{$theme}#{$header}#{$font}#{$family}: Inter;
+  #{$theme}#{$header}#{$font}#{$size}: 1.2rem;
+  #{$theme}#{$header}#{$font}#{$weight}: 700;
+  #{$theme}#{$header}#{$padding}#{$vertical}: 1rem;
+  #{$theme}#{$header}#{$padding}#{$horizontal}: 0.5rem;
+}
+
+.level1 {
+  --#{$theme}-fg: #ffffff;
+  --#{$theme}-bg: #333333;
+  --#{$theme}-border: 1px solid #555555;
+  --#{$theme}-shadow: 0 0 0.5rem 0 #000000;
+  --#{$theme}-accent: #445599;
+  --#{$theme}-radius: 0.5rem;
+  font: {
+    family: Inter;
+    size: 0.9rem;
+    weight: 400;
+  };
+  header: {
+    fg: #ffffff;
+    font: {
+      family: Inter;
+      size: 1.2rem;
+      weight: 700;
+    };
+    padding: {
+      vertical: 0.5rem;
+      horizontal: 0.25rem;
+    };
+  };
+  btn: {
+    fg: #ffffff;
+    bg: #444444;
+    border: 1px solid #444444;
+    font: {
+      family: Inter;
+      size: 0.9rem;
+      weight: 400;
+    };
+    radius: 0.5rem;
+    shadow: 0 0 0.5rem 0 #000000;
+    padding: {
+      vertical: 0.25rem;
+      horizontal: 0.5rem;
+    };
+    hover: {
+      fg: #ffffff;
+      bg: #555555;
+      border: 1px solid #555555;
+      radius: 0.5rem;
+      shadow: 0 0 0.5rem 0 #000000;
+      transition: all 100ms ease-in-out;
+    };
+    active: {
+      fg: #000000;
+      bg: #666666;
+      border: 1px solid #555555;
+      radius: 0.5rem;
+      shadow: 0 0 0.5rem 0 #000000;
+    };
+  };
+  padding: 0.5rem;
+  gap: 0.5rem;
+  transition: all 200ms ease-in-out;
+}
+
+.level2 {
+  fg: #ffffff;
+  bg: #444444;
+  border: 1px solid #555555;
+  shadow: 0 0 0.5rem 0 #000000;
+  accent: #445599;
+  radius: 0.5rem;
+  font: {
+    family: Inter;
+    size: 0.9rem;
+    weight: 400;
+  };
+  header: {
+    fg: #ffffff;
+    font: {
+      family: Inter;
+      size: 1.2rem;
+      weight: 700;
+    };
+    padding: {
+      vertical: 0.5rem;
+      horizontal: 0.25rem;
+    };
+  };
+  btn: {
+    fg: #ffffff;
+    bg: #555555;
+    border: 1px solid #555555;
+    font: {
+      family: Inter;
+      size: 0.9rem;
+      weight: 400;
+    };
+    radius: 0.25rem;
+    shadow: 0 0 0.5rem 0 #000000;
+    padding: {
+      vertical: 0.25rem;
+      horizontal: 0.5rem;
+    };
+    hover: {
+      fg: #ffffff;
+      bg: #666666;
+      border: 1px solid #666666;
+      radius: 0.25rem;
+      shadow: 0 0 0.5rem 0 #000000;
+      transition: all 100ms ease-in-out;
+    };
+    active: {
+      fg: #ffffff;
+      bg: #666666;
+      border: 1px solid #666666;
+      radius: 0.25rem;
+      shadow: 0 0 0.5rem 0 #000000;
+    };
+  };
+  padding: 0.75rem;
+  gap: 0.75rem;
+  transition: all 200ms ease-in-out;
+}
+
+.level3 {
+  fg: #ffffff;
+  bg: #555555;
+  border: 1px solid #555555;
+  shadow: 0 0 0.5rem 0 #000000;
+  accent: #445599;
+  radius: 0.5rem;
+  font: {
+    family: Inter;
+    size: 0.9rem;
+    weight: 400;
+  };
+  header: {
+    fg: #ffffff;
+    font: {
+      family: Inter;
+      size: 1.2rem;
+      weight: 700;
+    };
+    padding: {
+      vertical: 0.5rem;
+      horizontal: 0.25rem;
+    };
+  };
+  btn: {
+    fg: #ffffff;
+    bg: #666666;
+    border: 1px solid #666666;
+    font: {
+      family: Inter;
+      size: 0.9rem;
+      weight: 400;
+    };
+    radius: 0.25rem;
+    shadow: 0 0 0.5rem 0 #000000;
+    padding: {
+      vertical: 0.25rem;
+      horizontal: 0.5rem;
+    };
+    hover: {
+      fg: #ffffff;
+      bg: #777777;
+      border: 1px solid #777777;
+      radius: 0.25rem;
+      shadow: 0 0 0.5rem 0 #000000;
+      transition: all 100ms ease-in-out;
+    };
+    active: {
+      fg: #ffffff;
+      bg: #777777;
+      border: 1px solid #777777;
+      radius: 0.25rem;
+      shadow: 0 0 0.5rem 0 #000000;
+    };
+  };
+  padding: 1rem;
+  gap: 1rem;
+  transition: all 200ms ease-in-out;
+}
