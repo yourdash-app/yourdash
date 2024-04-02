@@ -5,11 +5,10 @@
 
 import Button from "@yourdash/uikit/components/button.js";
 import Card from "@yourdash/uikit/components/card.js";
-import { getUIKit } from "@yourdash/uikit/core/index.js";
+import Image from "@yourdash/uikit/components/image";
+import Text from "@yourdash/uikit/components/text.js";
 import ReactUIKitView from "@yourdash/uikit/core/ReactUIKitView.js";
 import * as React from "react";
-import Text from "@yourdash/uikit/components/text.js";
-import Image from "@yourdash/uikit/components/image";
 
 const UIKitDemoApplication: React.FC = () => {
   return (
@@ -24,32 +23,33 @@ const UIKitDemoApplication: React.FC = () => {
               console.log("button clicked");
             }),
           );
-          card.addChild(new Card().addChild(new Button().setText("Hello world")));
-          card.addChild(
-            new Button().setText("Hello World!").onClick(() => {
-              console.log("button clicked");
-            }),
-          );
-          card.addChild(
-            new Card().addChild(
+          card
+            .addChild(new Card().addChild(new Button().setText("Hello world")))
+            .addChild(
               new Button().setText("Hello World!").onClick(() => {
                 console.log("button clicked");
               }),
-            ),
-          );
-          card.addChild(
-            new Card().addChild(
+            )
+            .addChild(
               new Card().addChild(
                 new Button().setText("Hello World!").onClick(() => {
                   console.log("button clicked");
                 }),
               ),
-            ),
-          );
-          card.addChild(new Text().setText("Hello World!"));
-          card.addChild(new Text().setText("Hello World!"));
-          card.addChild(new Text().setText("Hello World!"));
-          card.addChild(new Image().setSrc("https://picsum.photos/768/256"));
+            )
+            .addChild(
+              new Card().addChild(
+                new Card().addChild(
+                  new Button().setText("Hello World!").onClick(() => {
+                    console.log("button clicked");
+                  }),
+                ),
+              ),
+            )
+            .addChild(new Text().setText("Hello World!"))
+            .addChild(new Text().setText("Hello World!"))
+            .addChild(new Text().setText("Hello World!"))
+            .addChild(new Image().setSrc("https://picsum.photos/768/256"));
 
           root.addChild(new Text().setText("Hello World!"));
         }}

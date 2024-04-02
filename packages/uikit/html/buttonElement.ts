@@ -17,4 +17,10 @@ export default class ButtonElement extends UIKitHTMLElement {
 
     return this;
   }
+
+  click() {
+    this.rawHtmlElement.click();
+
+    return this;
+  }
 }

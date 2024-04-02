@@ -3,18 +3,20 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+@import "../core/themeValues";
+
 .component {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
 
-  font-weight: var(--ukt-font-weight);
-  font-size: var(--ukt-font-size);
-  font-family: var(--ukt-font-family);
-  background: var(--ukt-bg);
-  border: var(--ukt-border);
-  box-shadow: var(--ukt-shadow);
-  padding: var(--ukt-padding);
-  border-radius: var(--ukt-radius);
-  gap: var(--ukt-gap);
+  font-weight: var(#{$theme}#{$font}#{$weight});
+  font-size: var(#{$theme}#{$font}#{$size});
+  font-family: var(#{$theme}#{$font}#{$family});
+  background: var(#{$theme}#{$background});
+  border: var(#{$theme}#{$border});
+  box-shadow: var(#{$theme}#{$shadow});
+  padding: var(#{$theme}#{$padding});
+  border-radius: var(#{$theme}#{$radius});
+  gap: var(#{$theme}#{$gap});
 }

@@ -3,26 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-$theme: "--ut";
-$button: "btn";
-$hover: "hvr";
-$active: "atv";
-$padding: "pdn";
-$border: "brd";
-$radius: "rad";
-$shadow: "shd";
-$accent: "acn";
-$color: "col";
-$background: "bgn";
-$gap: "gap";
-$transition: "trn";
-$font: "fnt";
-$size: "siz";
-$weight: "wgt";
-$family: "fam";
-$vertical: "vrt";
-$horizontal: "hrt";
-$header: "hed";
+@import "themeValues";
 
 .theme {
   #{$theme}-author: "Ewsgit";
@@ -82,17 +63,15 @@ $header: "hed";
 }
 
 .level1 {
-  --#{$theme}-fg: #ffffff;
-  --#{$theme}-bg: #333333;
-  --#{$theme}-border: 1px solid #555555;
-  --#{$theme}-shadow: 0 0 0.5rem 0 #000000;
-  --#{$theme}-accent: #445599;
-  --#{$theme}-radius: 0.5rem;
-  font: {
-    family: Inter;
-    size: 0.9rem;
-    weight: 400;
-  };
+  #{$theme}#{$color}: #ffffff;
+  #{$theme}#{$background}: #333333;
+  #{$theme}#{$border}: 1px solid #555555;
+  #{$theme}#{$shadow}: 0 0 0.5rem 0 #000000;
+  #{$theme}#{$accent}: #445599;
+  #{$theme}#{$radius}: 0.5rem;
+  #{$theme}#{$font}#{$family}: Inter;
+  #{$theme}#{$font}#{$radius}: 0.9rem;
+  #{$theme}#{$font}#{$weight}: 400;
   header: {
     fg: #ffffff;
     font: {

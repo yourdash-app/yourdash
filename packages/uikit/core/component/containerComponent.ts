@@ -30,6 +30,7 @@ export class ContainerComponent<ComponentSlots extends string[] = []> {
       renderCount: 0,
       isInitialized: false,
       treeContext: { level: 0 },
+      // @ts-ignore
       treeContextChildOverrides: {},
       slots: {} as { [slotName in keyof ComponentSlots]: AnyComponentOrHTMLElement | undefined },
     };
@@ -45,40 +46,15 @@ export class ContainerComponent<ComponentSlots extends string[] = []> {
   }
 
   addChild(child: AnyComponentOrHTMLElement) {
-    console.log(this.__internals.treeContext);
+    this.__internals.children?.push(child);
 
     if (child.__internals.componentType === ComponentType.HTMLElement) {
       const childComponent = child as UIKitHTMLElement;
-      childComponent.__internals.parentComponent = this as unknown as ContainerComponent;
-      childComponent.__internals.treeContext = this.__internals.treeContext;
-      this.__internals.children?.push(childComponent);
-
-      if (this.__internals.treeContextChildOverrides) {
-        Object.keys(this.__internals.treeContextChildOverrides).map((override) => {
-          // @ts-ignore
-          child.__internals.treeContext[override] = this.__internals.treeContextChildOverrides[override];
-        });
-      }
-
-      this.htmlElement.addChild(childComponent);
-
-      return this;
+      this.htmlElement?.addChild(childComponent);
+    } else {
+      const childComponent = child as ContainerComponent;
+      this.htmlElement?.addChild(childComponent.htmlElement);
     }
-
-    const childComponent = child as AnyComponent;
-
-    childComponent.__internals.parentComponent = this as unknown as ContainerComponent;
-    childComponent.__internals.treeContext = this.__internals.treeContext;
-    this.__internals.children?.push(childComponent);
-
-    if (this.__internals.treeContextChildOverrides) {
-      Object.keys(this.__internals.treeContextChildOverrides).map((override) => {
-        // @ts-ignore
-        child.__internals.treeContext[override] = this.__internals.treeContextChildOverrides[override];
-      });
-    }
-
-    this.htmlElement?.addChild(childComponent.htmlElement);
 
     return this;
   }
@@ -93,6 +69,33 @@ export class ContainerComponent<ComponentSlots extends string[] = []> {
 
     this.__internals.children.map((child) => {
       appendComponentToElement(this.htmlElement.rawHtmlElement, child);
+
+      if (child.__internals.componentType === ComponentType.HTMLElement) {
+        const childComponent = child as UIKitHTMLElement;
+        childComponent.__internals.parentComponent = this as unknown as ContainerComponent;
+        childComponent.__internals.treeContext = this.__internals.treeContext;
+
+        if (this.__internals.treeContextChildOverrides) {
+          Object.keys(this.__internals.treeContextChildOverrides).map((override) => {
+            // @ts-ignore
+            child.__internals.treeContext[override] = this.__internals.treeContextChildOverrides[override];
+          });
+        }
+
+        return this;
+      }
+
+      const childComponent = child as AnyComponent;
+
+      childComponent.__internals.parentComponent = this as unknown as ContainerComponent;
+      childComponent.__internals.treeContext = this.__internals.treeContext;
+
+      if (this.__internals.treeContextChildOverrides) {
+        Object.keys(this.__internals.treeContextChildOverrides).map((override) => {
+          // @ts-ignore
+          child.__internals.treeContext[override] = this.__internals.treeContextChildOverrides[override];
+        });
+      }
 
       child.render();
     });

@@ -22,6 +22,11 @@ export default class Card extends ContainerComponent<["actions"]> {
 
     loadThemeLevel(this.htmlElement.rawHtmlElement, this.__internals.treeContext.level);
 
+    if (this.__internals.treeContext.level <= 3) {
+      // @ts-ignore
+      this.__internals.treeContextChildOverrides.level = this.__internals.treeContext.level + 1;
+    }
+
     this.htmlElement.setAttribute("uk-level", this.__internals.treeContext.level.toString());
     this.htmlElement.addClass(styles.component);
 

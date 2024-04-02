@@ -14,6 +14,6 @@ export interface BaseComponentInternals {
   parentComponent?: ContainerComponent | UIKitHTMLElement;
   renderCount: number;
   treeContext: ComponentTreeContext;
-  treeContextChildOverrides?: Partial<ComponentTreeContext>;
+  treeContextChildOverrides: ComponentTreeContext;
   isInitialized: boolean;
 }

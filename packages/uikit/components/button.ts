@@ -24,6 +24,10 @@ export default class Button extends SoloComponent {
     return this;
   }
 
+  click() {
+    this.htmlElement.click();
+  }
+
   setText(text: string) {
     this.htmlElement.setInnerText(text);
 
