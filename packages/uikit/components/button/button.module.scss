@@ -9,13 +9,15 @@
   font-family: var(#{$theme}#{$font}#{$family});
   text-align: center;
   min-width: 6rem;
-  padding: var(#{$theme}#{$button}#{$padding}#{$horizontal}) var(#{$theme}#{$button}#{$padding}#{$vertical});
+  padding: 0 var(#{$theme}#{$button}#{$padding}#{$horizontal});
   color: var(#{$theme}#{$button}#{$color});
   border: var(#{$theme}#{$button}#{$border});
   border-radius: var(#{$theme}#{$button}#{$radius});
   background: var(#{$theme}#{$button}#{$background});
   box-shadow: var(#{$theme}#{$button}#{$shadow});
   transition: var(#{$theme}#{$button}#{$transition});
+  height: var(#{$theme}#{$button}#{$height});
+  width: max-content;
 
   &:hover {
     color: var(#{$theme}#{$button}#{$hover}#{$color});

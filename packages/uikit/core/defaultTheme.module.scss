@@ -32,7 +32,7 @@
   #{$theme}#{$button}#{$font}#{$weight}: 400;
   #{$theme}#{$button}#{$radius}: 0.5rem;
   #{$theme}#{$button}#{$shadow}: 0 0 0.5rem 0 #000000;
-  #{$theme}#{$button}#{$padding}#{$vertical}: 0.25rem;
+  #{$theme}#{$button}#{$height}: 1.75rem;
   #{$theme}#{$button}#{$padding}#{$horizontal}: 0.5rem;
   #{$theme}#{$button}#{$transition}: all 0.2s ease-in-out;
   // hover
@@ -43,7 +43,7 @@
   #{$theme}#{$button}#{$hover}#{$shadow}: 0 0 0.5rem 0 #000000;
   #{$theme}#{$button}#{$hover}#{$transition}: all 0.2s ease-in-out;
   // active
-  #{$theme}#{$button}#{$active}#{$color}: #ffffff;
+  #{$theme}#{$button}#{$active}#{$color}: #000000;
   #{$theme}#{$button}#{$active}#{$background}: #555555;
   #{$theme}#{$button}#{$active}#{$border}: 1px solid #555555;
   #{$theme}#{$button}#{$active}#{$radius}: 0.5rem;
@@ -88,7 +88,7 @@
   #{$theme}#{$button}#{$font}#{$weight}: 400;
   #{$theme}#{$button}#{$radius}: 0.5rem;
   #{$theme}#{$button}#{$shadow}: 0 0 0.5rem 0 #000000;
-  #{$theme}#{$button}#{$padding}#{$vertical}: 0.25rem;
+  #{$theme}#{$button}#{$height}: 1.75rem;
   #{$theme}#{$button}#{$padding}#{$horizontal}: 0.5rem;
   #{$theme}#{$button}#{$transition}: all 0.2s ease-in-out;
 
@@ -118,14 +118,13 @@
 }
 
 .level2 {
-
   // IMPORTANT!: REMEMBER TO ADD THE SEPARATOR TO THIS LEVEL WHEN CREATING IT!
-  fg: #ffffff;
-  bg: #444444;
-  border: 1px solid #555555;
-  shadow: 0 0 0.5rem 0 #000000;
-  accent: #445599;
-  radius: 0.5rem;
+  #{$theme}#{$color}: #ffffff;
+  #{$theme}#{$background}: #444444;
+  #{$theme}#{$border}: 1px solid #555555;
+  #{$theme}#{$shadow}: 0 0 0.5rem 0 #000000;
+  #{$theme}#{$accent}: #445599;
+  #{$theme}#{$radius}: 0.5rem;
   font: {
     family: Inter;
     size: 0.9rem;
@@ -154,8 +153,8 @@
     };
     radius: 0.25rem;
     shadow: 0 0 0.5rem 0 #000000;
+    height: 1rem;
     padding: {
-      vertical: 0.25rem;
       horizontal: 0.5rem;
     };
     hover: {

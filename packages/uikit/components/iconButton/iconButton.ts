@@ -20,7 +20,7 @@ export default class IconButton extends SoloComponent {
     this.icon = new Icon();
     this.htmlElement.addChild(this.icon);
 
-    this.icon.setSize("1.5rem");
+    this.icon.setSize("1.25rem");
 
     return this;
   }
