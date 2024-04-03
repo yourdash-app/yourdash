@@ -4,13 +4,13 @@
  */
 
 import useYourDashLib from "@yourdash/shared/web/helpers/ydsh";
-import Button from "@yourdash/uikit/depChiplet/components/button/Button";
-import Card from "@yourdash/uikit/depChiplet/components/card/Card";
-import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
-import IconButton from "@yourdash/uikit/depChiplet/components/iconButton/IconButton";
-import Row from "@yourdash/uikit/depChiplet/components/row/Row";
-import TextBox from "@yourdash/uikit/depChiplet/components/textBox/TextBox";
-import TextInput from "@yourdash/uikit/depChiplet/components/textInput/TextInput";
+import Button from "@yourdash/chiplet/components/button/Button";
+import Card from "@yourdash/chiplet/components/card/Card";
+import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
+import IconButton from "@yourdash/chiplet/components/iconButton/IconButton";
+import Row from "@yourdash/chiplet/components/row/Row";
+import TextBox from "@yourdash/chiplet/components/textBox/TextBox";
+import TextInput from "@yourdash/chiplet/components/textInput/TextInput";
 import React, { useEffect } from "react";
 import csi, { TJson } from "@yourdash/csi/csi";
 import BasePageLayout from "../../components/BasePageLayout";
@@ -38,13 +38,7 @@ const ProfileIndexPage: React.FC = () => {
     <BasePageLayout title={"Profile"}>
       <section className={"grid grid-cols-[auto,1fr] w-full col-span-2 gap-4"}>
         <div className={"h-full flex items-center justify-center"}>
-          <UserPreview
-            name={userData.name}
-            avatar={userData.avatar}
-            username={userData.username}
-            bio={userData.bio}
-            links={userData.links}
-          />
+          <UserPreview name={userData.name} avatar={userData.avatar} username={userData.username} bio={userData.bio} links={userData.links} />
         </div>
         <Card className={"gap-4 flex flex-col child:w-full"}>
           <h2 className={"-mb-2 font-semibold text-2xl"}>Name</h2>
@@ -90,7 +84,7 @@ const ProfileIndexPage: React.FC = () => {
           <div className={"-mb-2 flex justify-between items-center"}>
             <h2 className={"font-semibold text-2xl"}>Links</h2>
             <IconButton
-              icon={YourDashIcon.Plus}
+              icon={UKIcon.Plus}
               onClick={() => {
                 setUserData({
                   ...userData,

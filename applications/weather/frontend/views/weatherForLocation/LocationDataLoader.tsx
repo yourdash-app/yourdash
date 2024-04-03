@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import Spinner from "@yourdash/uikit/depChiplet/components/spinner/Spinner";
+import Spinner from "@yourdash/chiplet/components/spinner/Spinner";
 import React from "react";
 import { IWeatherDataForLocation } from "../../../shared/weatherDataForLocation";
 import WeatherApplicationLocationPage from "./weatherForLocationView";

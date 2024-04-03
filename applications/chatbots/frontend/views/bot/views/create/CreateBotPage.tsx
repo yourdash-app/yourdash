@@ -3,15 +3,15 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import Button from "@yourdash/uikit/depChiplet/components/button/Button";
-import Card from "@yourdash/uikit/depChiplet/components/card/Card";
-import DropdownButton from "@yourdash/uikit/depChiplet/components/dropdownButton/DropdownButton";
-import Heading from "@yourdash/uikit/depChiplet/components/heading/Heading";
-import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
-import IconButton from "@yourdash/uikit/depChiplet/components/iconButton/IconButton";
-import MajorButton from "@yourdash/uikit/depChiplet/components/majorButton/MajorButton";
-import TextBox from "@yourdash/uikit/depChiplet/components/textBox/TextBox";
-import TextInput from "@yourdash/uikit/depChiplet/components/textInput/TextInput";
+import Button from "@yourdash/chiplet/components/button/Button";
+import Card from "@yourdash/chiplet/components/card/Card";
+import DropdownButton from "@yourdash/chiplet/components/dropdownButton/DropdownButton";
+import Heading from "@yourdash/chiplet/components/heading/Heading";
+import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
+import IconButton from "@yourdash/chiplet/components/iconButton/IconButton";
+import MajorButton from "@yourdash/chiplet/components/majorButton/MajorButton";
+import TextBox from "@yourdash/chiplet/components/textBox/TextBox";
+import TextInput from "@yourdash/chiplet/components/textInput/TextInput";
 import React, { useEffect, useState } from "react";
 import csi from "@yourdash/csi/csi";
 import ChatbotProfilePreview from "../../../../components/ChatbotProfilePreview/ChatbotProfilePreview";
@@ -29,7 +29,7 @@ const CreateBotPage: React.FC = () => {
   const [activityStatus, setActivityStatus] = useState<"offline" | "online" | "idle" | "dnd">("online");
   const [activityStatusLabel, setActivityStatusLabel] = useState<string>("");
   const [status, setStatus] = useState<string>("");
-  const [avatarUrl, setAvatarUrl] = useState<string>(YourDashIcon.ServerError);
+  const [avatarUrl, setAvatarUrl] = useState<string>(UKIcon.ServerError);
 
   useEffect(() => {
     csi.getTeams().then(async (t) => {
@@ -48,7 +48,7 @@ const CreateBotPage: React.FC = () => {
     <main className={styles.page}>
       <header className={styles.header}>
         <IconButton
-          icon={YourDashIcon.ChevronLeft}
+          icon={UKIcon.ChevronLeft}
           onClick={() => {
             window.history.back();
           }}
@@ -88,11 +88,7 @@ const CreateBotPage: React.FC = () => {
         </DropdownButton>
         <Heading level={3}>Bot Username</Heading>
         <TextInput
-          preceedingInlay={
-            username && (
-              <span className={"animate__animated animate__slideInLeft animate__duration_500ms select-none"}>@</span>
-            )
-          }
+          preceedingInlay={username && <span className={"animate__animated animate__slideInLeft animate__duration_500ms select-none"}>@</span>}
           onChange={(value) => {
             setUsername(value);
           }}

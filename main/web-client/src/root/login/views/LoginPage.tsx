@@ -3,12 +3,12 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import Button from "@yourdash/uikit/depChiplet/components/button/Button";
-import Card from "@yourdash/uikit/depChiplet/components/card/Card";
-import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
-import IconButton from "@yourdash/uikit/depChiplet/components/iconButton/IconButton";
-import MajorButton from "@yourdash/uikit/depChiplet/components/majorButton/MajorButton";
-import TextInput from "@yourdash/uikit/depChiplet/components/textInput/TextInput";
+import Button from "@yourdash/chiplet/components/button/Button";
+import Card from "@yourdash/chiplet/components/card/Card";
+import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
+import IconButton from "@yourdash/chiplet/components/iconButton/IconButton";
+import MajorButton from "@yourdash/chiplet/components/majorButton/MajorButton";
+import TextInput from "@yourdash/chiplet/components/textInput/TextInput";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -38,9 +38,7 @@ const LoginPage: React.FC = () => {
               setInstanceUrl(`${value}:3563`);
             }
           }}
-          mustMatchRegex={
-            /^(?:https?:\/\/)?(?:\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(?::\d+)?|localhost(?::\d+)?|(?!.*\.$)[\w.-]+\.[a-z]{2,})(?::\d+)?$/
-          }
+          mustMatchRegex={/^(?:https?:\/\/)?(?:\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(?::\d+)?|localhost(?::\d+)?|(?!.*\.$)[\w.-]+\.[a-z]{2,})(?::\d+)?$/}
           accessibleName={"Instance URL"}
         />
         <MajorButton
@@ -65,7 +63,7 @@ const LoginPage: React.FC = () => {
         </MajorButton>
       </Card>
       <header className={"absolute top-0 left-0 w-full h-16 flex items-center justify-center gap-2"}>
-        <IconButton icon={YourDashIcon.ChevronLeft} className={"mr-auto ml-3.5"} />
+        <IconButton icon={UKIcon.ChevronLeft} className={"mr-auto ml-3.5"} />
       </header>
       <footer className={"absolute bottom-0 left-0 w-full h-16 flex items-center gap-2 pl-3 bg-container-bg"}>
         <img src={"/assets/productLogos/yourdash.svg"} className={"h-full pt-3 pb-3"} alt={""} />

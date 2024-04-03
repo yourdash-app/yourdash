@@ -3,16 +3,16 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import UIKitHTMLElement from "../core/htmlElement";
+import UKHTMLElement from "../core/htmlElement";
 
-export default class SectionElement extends UIKitHTMLElement {
+export default class SectionElement extends UKHTMLElement {
   constructor() {
     super(document.createElement("section"));
 
     return this;
   }
 
-  addChild(childElement: UIKitHTMLElement) {
+  addChild(childElement: UKHTMLElement) {
     this.rawHtmlElement.appendChild(childElement.rawHtmlElement);
     return this;
   }

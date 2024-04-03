@@ -3,9 +3,9 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import Heading from "@yourdash/uikit/depChiplet/components/heading/Heading";
-import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
-import TextInput from "@yourdash/uikit/depChiplet/components/textInput/TextInput";
+import Heading from "@yourdash/chiplet/components/heading/Heading";
+import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
+import TextInput from "@yourdash/chiplet/components/textInput/TextInput";
 import React from "react";
 
 const SearchPage: React.FC = () => {
@@ -17,7 +17,7 @@ const SearchPage: React.FC = () => {
         onChange={(val) => {
           return 0;
         }}
-        icon={YourDashIcon.Search}
+        icon={UKIcon.Search}
         placeholder={"Search Photos"}
       />
     </div>

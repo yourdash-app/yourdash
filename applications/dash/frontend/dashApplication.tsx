@@ -3,8 +3,8 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
-import IconButton from "@yourdash/uikit/depChiplet/components/iconButton/IconButton";
+import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
+import IconButton from "@yourdash/chiplet/components/iconButton/IconButton";
 import * as React from "react";
 import csi from "@yourdash/csi/csi";
 import loadable from "@loadable/component";
@@ -48,7 +48,7 @@ const DashApplication: React.FC = () => {
       ) : (
         <>
           <IconButton
-            icon={YourDashIcon.Gear}
+            icon={UKIcon.Gear}
             onClick={() => {
               navigate("/app/a/settings/personalization/dashboard");
             }}

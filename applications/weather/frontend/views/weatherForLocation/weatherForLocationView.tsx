@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import Card from "@yourdash/uikit/depChiplet/components/card/Card";
+import Card from "@yourdash/chiplet/components/card/Card";
 import React, { useState } from "react";
 import { IWeatherDataForLocation } from "../../../shared/weatherDataForLocation";
 import WeatherApplicationLocationPageHeader from "../../components/Header";
@@ -57,11 +57,7 @@ const WeatherApplicationLocationPage: React.FC<IWeatherApplicationLocationPage> 
                     alt={""}
                   />
                   <span className={"font-semibold text-4xl"}>
-                    {date.getHours() + 1 < 10
-                      ? `0${date.getHours() + 1}`
-                      : date.getHours() === 23
-                        ? "00"
-                        : date.getHours() + 1}
+                    {date.getHours() + 1 < 10 ? `0${date.getHours() + 1}` : date.getHours() === 23 ? "00" : date.getHours() + 1}
                     :00
                   </span>
                   <span className={"ml-auto text-xl"}>
@@ -73,16 +69,8 @@ const WeatherApplicationLocationPage: React.FC<IWeatherApplicationLocationPage> 
             })}
           </section>
           <section className={"w-full h-full grid grid-cols-3 gap-2 grid-rows-[auto,1fr]"}>
-            {
-              <WeatherConditionsForHour
-                selectedHour={selectedHour as number | undefined}
-                selectedDay={selectedDay}
-                weatherData={weatherData}
-              />
-            }
-            <div className={"relative w-full hidden lg:block h-96"}>
-              {/* TODO: create a graphing library for UIKit */}
-            </div>
+            {<WeatherConditionsForHour selectedHour={selectedHour as number | undefined} selectedDay={selectedDay} weatherData={weatherData} />}
+            <div className={"relative w-full hidden lg:block h-96"}>{/* TODO: create a graphing library for UIKit */}</div>
           </section>
         </div>
       </div>

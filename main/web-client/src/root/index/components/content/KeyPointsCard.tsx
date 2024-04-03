@@ -3,8 +3,8 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import Button from "@yourdash/uikit/depChiplet/components/button/Button";
-import Card from "@yourdash/uikit/depChiplet/components/card/Card";
+import Button from "@yourdash/chiplet/components/button/Button";
+import Card from "@yourdash/chiplet/components/card/Card";
 
 interface IKeyPointsCard {
   title: string;
@@ -20,9 +20,7 @@ const KeyPointsCard: React.FC<IKeyPointsCard> = ({ title, content, action }) => 
   return (
     <Card
       showBorder={true}
-      className={
-        "flex flex-col lg:justify-between items-center gap-4 w-full animate__animated animate__fadeIn animate__1500ms animate__slow overflow-hidden"
-      }
+      className={"flex flex-col lg:justify-between items-center gap-4 w-full animate__animated animate__fadeIn animate__1500ms animate__slow overflow-hidden"}
     >
       <h3 className={"text-4xl text-center font-semibold"}>{title}</h3>
       <div className={"flex items-center gap-4 flex-col"}>

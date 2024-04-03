@@ -3,10 +3,10 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import Card from "@yourdash/uikit/depChiplet/components/card/Card";
-import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
-import IconButton from "@yourdash/uikit/depChiplet/components/iconButton/IconButton";
-import TextInput from "@yourdash/uikit/depChiplet/components/textInput/TextInput";
+import Card from "@yourdash/chiplet/components/card/Card";
+import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
+import IconButton from "@yourdash/chiplet/components/iconButton/IconButton";
+import TextInput from "@yourdash/chiplet/components/textInput/TextInput";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import STORE_APPLICATION_LOGO from "../../../icon.avif";
@@ -19,7 +19,7 @@ const StoreHeader: React.FC<{ showBackButton?: number }> = ({ showBackButton }) 
     <Card showBorder className={styles.component}>
       {showBackButton && (
         <IconButton
-          icon={YourDashIcon.ChevronLeft}
+          icon={UKIcon.ChevronLeft}
           onClick={() => {
             let navigatePath = "";
             for (let i = 0; i < showBackButton; i++) {
@@ -41,16 +41,16 @@ const StoreHeader: React.FC<{ showBackButton?: number }> = ({ showBackButton }) 
           }}
           placeholder={"Search Applications"}
           className={styles.searchInput}
-          icon={YourDashIcon.Search}
+          icon={UKIcon.Search}
         />
         <IconButton
-          icon={YourDashIcon.Database}
+          icon={UKIcon.Database}
           onClick={() => {
             console.log("Implement me!");
           }}
         />
         <IconButton
-          icon={YourDashIcon.Download}
+          icon={UKIcon.Download}
           onClick={() => {
             console.log("Implement me!");
           }}

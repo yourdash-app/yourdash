@@ -4,9 +4,9 @@
  */
 
 import csi from "@yourdash/csi/csi";
-import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
-import IconButton from "@yourdash/uikit/depChiplet/components/iconButton/IconButton";
-import NavBar from "@yourdash/uikit/depChiplet/components/navBar/NavBar";
+import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
+import IconButton from "@yourdash/chiplet/components/iconButton/IconButton";
+import NavBar from "@yourdash/chiplet/components/navBar/NavBar";
 import React from "react";
 import { useParams } from "react-router-dom";
 import IMedia from "../../shared/media";
@@ -55,7 +55,7 @@ const PhotoPage: React.FC<{ isPhoto: boolean }> = ({ isPhoto }) => {
         extras={
           <>
             <IconButton
-              icon={YourDashIcon.Download}
+              icon={UKIcon.Download}
               onClick={() => {
                 if (isPhoto) {
                   window.open(csi.getInstanceUrl() + "/app/photos/download-photo/" + mediaId, "_blank");
@@ -71,13 +71,7 @@ const PhotoPage: React.FC<{ isPhoto: boolean }> = ({ isPhoto }) => {
         {isPhoto ? (
           <img className={styles.photo} src={csi.getInstanceUrl() + mediaData.itemUrl} alt={""} />
         ) : (
-          <video
-            className={styles.photo}
-            src={csi.getInstanceUrl() + mediaData.itemUrl}
-            autoPlay={true}
-            controls={true}
-            loop={true}
-          />
+          <video className={styles.photo} src={csi.getInstanceUrl() + mediaData.itemUrl} autoPlay={true} controls={true} loop={true} />
         )}
       </div>
     </div>

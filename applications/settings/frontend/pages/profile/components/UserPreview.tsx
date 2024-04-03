@@ -3,9 +3,9 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import Card from "@yourdash/uikit/depChiplet/components/card/Card";
-import Icon from "@yourdash/uikit/depChiplet/components/icon/Icon";
-import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
+import Card from "@yourdash/chiplet/components/card/Card";
+import Icon from "@yourdash/chiplet/components/icon/Icon";
+import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
 import React from "react";
 import styles from "./UserPreview.module.scss";
 
@@ -35,7 +35,7 @@ const UserPreview: React.FC<IUserPreview> = ({ name, username, avatar, bio, link
         {!!links &&
           links.map((link) => (
             <a href={link.url} className={styles.link} key={link.label + link.url}>
-              <Icon className={styles.icon} icon={YourDashIcon.Link} />
+              <Icon className={styles.icon} icon={UKIcon.Link} />
               {link.label}
             </a>
           ))}

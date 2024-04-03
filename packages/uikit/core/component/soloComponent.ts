@@ -5,8 +5,8 @@
 
 import generateUUID from "@yourdash/shared/web/helpers/uuid.js";
 import DivElement from "../../html/divElement.js";
-import UIKitHTMLElement from "../htmlElement.js";
-import { getUIKit, initializeComponent } from "../index.js";
+import UKHTMLElement from "../htmlElement.js";
+import { initializeComponent } from "../index.js";
 import { ComponentType } from "./componentType.js";
 import { BaseComponentInternals } from "./internals.js";
 
@@ -14,7 +14,7 @@ export interface SoloComponentInternals extends BaseComponentInternals {}
 
 export class SoloComponent {
   __internals: SoloComponentInternals;
-  htmlElement: UIKitHTMLElement;
+  htmlElement: UKHTMLElement;
 
   constructor(props?: { debugId?: string }) {
     this.__internals = {
@@ -36,6 +36,11 @@ export class SoloComponent {
     // by default, we use a div element as the component's html element
     this.htmlElement = new DivElement();
 
+    return this;
+  }
+
+  $(cb: (component: this) => void) {
+    cb(this);
     return this;
   }
 

@@ -3,8 +3,8 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import Card from "@yourdash/uikit/depChiplet/components/card/Card";
-import MajorButton from "@yourdash/uikit/depChiplet/components/majorButton/MajorButton";
+import Card from "@yourdash/chiplet/components/card/Card";
+import MajorButton from "@yourdash/chiplet/components/majorButton/MajorButton";
 import React from "react";
 import { useNavigate } from "react-router";
 
@@ -14,9 +14,7 @@ const OverviewPage: React.FC = () => {
   return (
     <div className={"text-center"}>
       <h1 className={"text-6xl font-semibold tracking-wide animate__animated animate__fadeIn mt-8"}>Overview</h1>
-      <p className={"animate__animated animate__fadeInDown animate__500ms mt-3"}>
-        a quick and simple guide to the YourDash documentation
-      </p>
+      <p className={"animate__animated animate__fadeInDown animate__500ms mt-3"}>a quick and simple guide to the YourDash documentation</p>
 
       <section className={"grid grid-cols-2 gap-2 max-w-5xl ml-auto mr-auto p-4"}>
         {(

@@ -6,7 +6,7 @@
 import { ComponentType } from "./component/componentType.js";
 import { AnyComponent, AnyComponentOrHTMLElement } from "./component/type.js";
 import ContentRoot, { ContentRootProps } from "./contentRoot";
-import UIKitHTMLElement from "./htmlElement.js";
+import UKHTMLElement from "./htmlElement.js";
 
 // override the global window object to add the __uikit__ object
 declare global {
@@ -35,7 +35,7 @@ export function initializeComponent(component: AnyComponentOrHTMLElement) {
 
 export function appendComponentToElement(element: HTMLElement, component: AnyComponentOrHTMLElement) {
   if (component.__internals.componentType === ComponentType.HTMLElement) {
-    const childComponent = component as UIKitHTMLElement;
+    const childComponent = component as UKHTMLElement;
     element.appendChild(childComponent.rawHtmlElement);
     return;
   }

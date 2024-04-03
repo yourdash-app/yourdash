@@ -3,8 +3,8 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
-import IconButton from "@yourdash/uikit/depChiplet/components/iconButton/IconButton";
+import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
+import IconButton from "@yourdash/chiplet/components/iconButton/IconButton";
 import { useEffect } from "react";
 import * as React from "react";
 import CodeStudioEditor from "@yourdash/applications/code_studio/frontend/core/editor/editor";
@@ -46,7 +46,7 @@ const TextPreview: React.FC<ITextPreview> = ({ path = "" }) => {
     <section className={"flex flex-col gap-2"}>
       <div className={"flex gap-1"}>
         <IconButton
-          icon={YourDashIcon.ArrowSwitch}
+          icon={UKIcon.ArrowSwitch}
           onClick={() => {
             // TODO: fixme
           }}

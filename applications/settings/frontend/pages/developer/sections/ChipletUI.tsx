@@ -3,8 +3,8 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
-import SideBar, { SIDEBAR_ITEM_TYPE, SIDEBAR_STATE } from "@yourdash/uikit/depChiplet/components/sideBar/SideBar";
+import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
+import SideBar, { SIDEBAR_ITEM_TYPE, SIDEBAR_STATE } from "@yourdash/chiplet/components/sideBar/SideBar";
 import React from "react";
 
 const ChipletUIDemoPage: React.FC = () => {
@@ -16,7 +16,7 @@ const ChipletUIDemoPage: React.FC = () => {
           {
             type: SIDEBAR_ITEM_TYPE.Button,
             label: "Button",
-            icon: YourDashIcon.FileBadge,
+            icon: UKIcon.FileBadge,
             onClick: () => {
               return 0;
             },
@@ -30,7 +30,7 @@ const ChipletUIDemoPage: React.FC = () => {
           {
             type: SIDEBAR_ITEM_TYPE.Button,
             label: "Button",
-            icon: YourDashIcon.FileBadge,
+            icon: UKIcon.FileBadge,
             onClick: () => {
               return 0;
             },
@@ -44,7 +44,7 @@ const ChipletUIDemoPage: React.FC = () => {
           {
             type: SIDEBAR_ITEM_TYPE.Button,
             label: "Button",
-            icon: YourDashIcon.FileBadge,
+            icon: UKIcon.FileBadge,
             onClick: () => {
               return 0;
             },

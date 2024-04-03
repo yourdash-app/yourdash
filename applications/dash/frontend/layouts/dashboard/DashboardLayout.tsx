@@ -4,12 +4,12 @@
  */
 
 import useTranslate from "@yourdash/shared/web/helpers/i18n";
-import Card from "@yourdash/uikit/depChiplet/components/card/Card";
-import Chip from "@yourdash/uikit/depChiplet/components/chip/Chip";
-import Icon from "@yourdash/uikit/depChiplet/components/icon/Icon";
-import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
-import IconButton from "@yourdash/uikit/depChiplet/components/iconButton/IconButton";
-import Row from "@yourdash/uikit/depChiplet/components/row/Row";
+import Card from "@yourdash/chiplet/components/card/Card";
+import Chip from "@yourdash/chiplet/components/chip/Chip";
+import Icon from "@yourdash/chiplet/components/icon/Icon";
+import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
+import IconButton from "@yourdash/chiplet/components/iconButton/IconButton";
+import Row from "@yourdash/chiplet/components/row/Row";
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import WeatherHourlyConditionsWidget from "../../widgets/weather/WeatherHourlyConditions/WeatherHourlyConditionsWidget";
@@ -33,22 +33,18 @@ const DashboardLayout: React.FC<IDashboard> = ({ username, fullName }) => {
     <main className={"flex flex-col w-full min-h-full h-full overflow-y-auto"}>
       <header className={"p-6 pl-8 pr-8 flex flex-col from-container-bg to-transparent bg-gradient-to-b"}>
         <Row>
-          <span
-            className={
-              "text-5xl font-bold [text-shadow:#242424bb_0_0_0.75rem,_#24242488_0_0_0.5rem,_#24242444_0_0_0.25rem]"
-            }
-          >
+          <span className={"text-5xl font-bold [text-shadow:#242424bb_0_0_0.75rem,_#24242488_0_0_0.5rem,_#24242444_0_0_0.25rem]"}>
             {trans("LOCALISED_GREETING", [fullName.first, fullName.last])}
           </span>
           <IconButton
             className={"ml-auto"}
-            icon={YourDashIcon.Pencil}
+            icon={UKIcon.Pencil}
             onClick={() => {
               setIsEditMode(!isEditMode);
             }}
           />
           <IconButton
-            icon={YourDashIcon.Gear}
+            icon={UKIcon.Gear}
             onClick={() => {
               navigate("/app/a/settings/personalization/dashboard");
             }}
@@ -69,16 +65,12 @@ const DashboardLayout: React.FC<IDashboard> = ({ username, fullName }) => {
           if (isEditMode) {
             return (
               <div className={"@container"} key={Widget.name + index}>
-                <Card
-                  showBorder
-                  key={Widget.name}
-                  className={"flex items-center justify-center @lg:flex-row flex-col gap-2"}
-                >
+                <Card showBorder key={Widget.name} className={"flex items-center justify-center @lg:flex-row flex-col gap-2"}>
                   <h3>{Widget.displayName || Widget.name}</h3>
                   <Row>
                     {index !== 0 && (
                       <IconButton
-                        icon={YourDashIcon.ChevronLeft}
+                        icon={UKIcon.ChevronLeft}
                         onClick={() => {
                           // move left in array
                           setWidgets(widgets.slice(0, index - 1).concat(widgets.slice(index)));
@@ -86,14 +78,14 @@ const DashboardLayout: React.FC<IDashboard> = ({ username, fullName }) => {
                       />
                     )}
                     <IconButton
-                      icon={YourDashIcon.Trash}
+                      icon={UKIcon.Trash}
                       onClick={() => {
                         setWidgets(widgets.slice(0, index).concat(widgets.slice(index + 1)));
                       }}
                     />
                     {index !== widgets.length - 1 && (
                       <IconButton
-                        icon={YourDashIcon.ChevronRight}
+                        icon={UKIcon.ChevronRight}
                         onClick={() => {
                           // move right in array
                           setWidgets(
@@ -120,7 +112,7 @@ const DashboardLayout: React.FC<IDashboard> = ({ username, fullName }) => {
               setWidgets(widgets.concat(WeatherHourlyConditionsWidget));
             }}
           >
-            <Icon className={styles.icon} icon={YourDashIcon.Plus} />
+            <Icon className={styles.icon} icon={UKIcon.Plus} />
             <div className={styles.label}>Add widget</div>
           </div>
         )}

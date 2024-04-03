@@ -3,8 +3,8 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
-import SideBar, { SIDEBAR_ITEM_TYPE, SIDEBAR_STATE } from "@yourdash/uikit/depChiplet/components/sideBar/SideBar";
+import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
+import SideBar, { SIDEBAR_ITEM_TYPE, SIDEBAR_STATE } from "@yourdash/chiplet/components/sideBar/SideBar";
 import React from "react";
 import GlobalDbApplication from "../../global_db/frontend/globalDbApplication";
 import HomeView from "./views/home/HomeView";
@@ -21,7 +21,7 @@ const YourDevApplication: React.FC = () => {
           {
             type: SIDEBAR_ITEM_TYPE.Button,
             label: "Home",
-            icon: YourDashIcon.Home,
+            icon: UKIcon.Home,
             onClick: () => {
               setPage("home");
             },
@@ -29,7 +29,7 @@ const YourDevApplication: React.FC = () => {
           {
             type: SIDEBAR_ITEM_TYPE.Button,
             label: "Global DB",
-            icon: YourDashIcon.Database,
+            icon: UKIcon.Database,
             onClick: () => {
               setPage("global_db");
             },
@@ -37,7 +37,7 @@ const YourDevApplication: React.FC = () => {
           {
             type: SIDEBAR_ITEM_TYPE.Button,
             label: "User DB",
-            icon: YourDashIcon.Person,
+            icon: UKIcon.Person,
             onClick: () => {
               setPage("user_db");
             },

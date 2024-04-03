@@ -3,8 +3,8 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import Heading from "@yourdash/uikit/depChiplet/components/heading/Heading";
-import Spinner from "@yourdash/uikit/depChiplet/components/spinner/Spinner";
+import Heading from "@yourdash/chiplet/components/heading/Heading";
+import Spinner from "@yourdash/chiplet/components/spinner/Spinner";
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import csi from "@yourdash/csi/csi";
@@ -47,19 +47,10 @@ const CategoryView: React.FC = () => {
       ) : (
         <>
           <Heading level={1} className={"p-6"}>{`${categoryData?.displayName}`}</Heading>
-          <div
-            className={
-              "w-full max-h-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 animate__animated animate__fadeIn animate__250ms"
-            }
-          >
+          <div className={"w-full max-h-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 animate__animated animate__fadeIn animate__250ms"}>
             {categoryData &&
               categoryData.applications.map((application) => (
-                <StoreApplication
-                  key={application.name}
-                  displayName={application.displayName}
-                  id={application.name}
-                  icon={application.icon}
-                />
+                <StoreApplication key={application.name} displayName={application.displayName} id={application.name} icon={application.icon} />
               ))}
           </div>
         </>

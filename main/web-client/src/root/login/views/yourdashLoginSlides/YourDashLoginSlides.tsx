@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import Slides from "@yourdash/uikit/depChiplet/components/slides/Slides";
+import Slides from "@yourdash/chiplet/components/slides/Slides";
 import React from "react";
 
 const YourDashLoginSlides: React.FC = () => {

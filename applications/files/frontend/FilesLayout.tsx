@@ -3,8 +3,8 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
-import SideBar, { SIDEBAR_ITEM_TYPE, SIDEBAR_STATE } from "@yourdash/uikit/depChiplet/components/sideBar/SideBar";
+import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
+import SideBar, { SIDEBAR_ITEM_TYPE, SIDEBAR_STATE } from "@yourdash/chiplet/components/sideBar/SideBar";
 import React from "react";
 import FilePane from "./views/filePane/FilePane";
 
@@ -13,9 +13,7 @@ export interface IFilesLayout {
 }
 
 const FilesLayout: React.FC<IFilesLayout> = ({ children }) => {
-  const [sidebarShortcuts, setSidebarShortcuts] = React.useState<{ path: string; type: "directory" | "file" }[] | null>(
-    null,
-  );
+  const [sidebarShortcuts, setSidebarShortcuts] = React.useState<{ path: string; type: "directory" | "file" }[] | null>(null);
 
   return (
     <div className={"grid grid-cols-[auto,1fr] h-full overflow-hidden"}>
@@ -50,7 +48,7 @@ const FilesLayout: React.FC<IFilesLayout> = ({ children }) => {
           {
             type: SIDEBAR_ITEM_TYPE.Button,
             label: "Upload File",
-            icon: YourDashIcon.Upload,
+            icon: UKIcon.Upload,
             onClick: () => {
               return 0;
             },

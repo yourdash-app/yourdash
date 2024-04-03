@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import ComingSoon from "@yourdash/uikit/depChiplet/views/ComingSoon";
+import ComingSoon from "@yourdash/chiplet/views/ComingSoon";
 import React from "react";
 import { Routes, Route } from "react-router";
 import FaqDocsIndex from "./pages/faq/Index";

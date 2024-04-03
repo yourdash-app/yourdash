@@ -5,7 +5,7 @@
 
 import csi from "@yourdash/csi/csi";
 import { chunk } from "@yourdash/shared/web/helpers/array";
-import Spinner from "@yourdash/uikit/depChiplet/components/spinner/Spinner";
+import Spinner from "@yourdash/chiplet/components/spinner/Spinner";
 import React, { useEffect, useState } from "react";
 import IGridItem from "../../../shared/grid";
 import IMedia from "../../../shared/media";
@@ -18,9 +18,7 @@ let currentGridItems: IGridItem[] = [];
 
 const PhotoGrid: React.FC<{ gridItems: IPhotoAlbum["items"] }> = ({ gridItems }) => {
   const ref = React.useRef<HTMLDivElement>(null);
-  const [rows, setRows] = useState<
-    { items: (IGridItem & { displayWidth: number; displayHeight: number })[]; height: number }[]
-  >([]);
+  const [rows, setRows] = useState<{ items: (IGridItem & { displayWidth: number; displayHeight: number })[]; height: number }[]>([]);
   const [notLoaded, setNotLoaded] = useState(true);
 
   useEffect(() => {

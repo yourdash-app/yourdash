@@ -4,8 +4,8 @@
  */
 
 import useTranslate from "@yourdash/shared/web/helpers/i18n";
-import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
-import IconButton from "@yourdash/uikit/depChiplet/components/iconButton/IconButton";
+import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
+import IconButton from "@yourdash/chiplet/components/iconButton/IconButton";
 import React from "react";
 import styles from "./BrowserLayout.module.scss";
 import { useNavigate } from "react-router-dom";
@@ -25,7 +25,7 @@ const BrowserLayout: React.FC<IBrowserLayout> = ({ username, fullName }) => {
     <div className={"flex items-center justify-center flex-col h-full w-full bg-center bg-cover gap-4"}>
       <IconButton
         className={"fixed top-4 right-4"}
-        icon={YourDashIcon.Gear}
+        icon={UKIcon.Gear}
         onClick={() => {
           navigate("/app/a/settings/personalization/dashboard");
         }}

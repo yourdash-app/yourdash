@@ -5,10 +5,10 @@
 
 import clippy from "@yourdash/shared/web/helpers/clippy";
 import useTranslate from "@yourdash/shared/web/helpers/i18n";
-import Card from "@yourdash/uikit/depChiplet/components/card/Card";
-import Carousel from "@yourdash/uikit/depChiplet/components/carousel/Carousel";
-import Icon from "@yourdash/uikit/depChiplet/components/icon/Icon";
-import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
+import Card from "@yourdash/chiplet/components/card/Card";
+import Carousel from "@yourdash/chiplet/components/carousel/Carousel";
+import Icon from "@yourdash/chiplet/components/icon/Icon";
+import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
 import { IWeatherDataForLocation } from "../../shared/weatherDataForLocation";
 import React from "react";
 import getDayNameForNumericDay from "../helpers/getDayNameForNumericDay";
@@ -51,20 +51,16 @@ const WeatherApplicationDaysCarousel: React.FC<{
                   {date.getDate()}
                 </span>
               </h2>
-              <img
-                className={"w-20 -mr-2 -mt-4"}
-                alt={""}
-                src={getWeatherIconFromState(weatherData.daily.weatherState[index])}
-              />
+              <img className={"w-20 -mr-2 -mt-4"} alt={""} src={getWeatherIconFromState(weatherData.daily.weatherState[index])} />
             </div>
             <div className={"-mt-2"}>
               <div className={"font-black text-3xl flex gap-1 items-center"}>
-                <Icon icon={YourDashIcon.ChevronUp} className={"h-4"} color={"#43aa8b"} />
+                <Icon icon={UKIcon.ChevronUp} className={"h-4"} color={"#43aa8b"} />
                 <span>{weatherData.daily.temperature.max[index]}</span>
                 <span className={"text-[#43aa8b]"}>{weatherData.units.daily.temperature.max}</span>
               </div>
               <div className={"text-xl flex gap-1 items-center"}>
-                <Icon icon={YourDashIcon.ChevronDown} className={"h-4"} color={"#f94144"} />
+                <Icon icon={UKIcon.ChevronDown} className={"h-4"} color={"#f94144"} />
                 <span>{weatherData.daily.temperature.min[index]}</span>
                 <span className={"text-[#f94144]"}>{weatherData.units.daily.temperature.min}</span>
               </div>

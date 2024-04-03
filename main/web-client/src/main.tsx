@@ -5,7 +5,7 @@
 
 import "animate.css";
 import "./tailwindcss.css";
-import "@yourdash/uikit/depChiplet/ui.scss";
+import "@yourdash/chiplet/ui.scss";
 import "./main.css";
 import UIKit from "@yourdash/uikit/core/index.js";
 import React from "react";
@@ -15,7 +15,7 @@ import { createHashRouter } from "react-router-dom";
 import loadable from "@loadable/component";
 import ApplicationRedirectToDash from "./app/ApplicationRedirectToDash.jsx";
 import AppLayout from "./app/AppLayout";
-import ComingSoon from "@yourdash/uikit/depChiplet/views/ComingSoon";
+import ComingSoon from "@yourdash/chiplet/views/ComingSoon.jsx";
 import DocsLayout from "./root/docs/Layout";
 import ErrorElement from "./ErrorElement";
 import ServerLoginPage from "./root/login/Page";
@@ -23,7 +23,7 @@ import Index from "./root/index/Index";
 import LoginRedirect from "./root/login/Redirect";
 import ProjectsIndexPage from "./root/projects/Index";
 import RootLayout from "./root/RootLayout";
-import ChipletRootIntegration from "@yourdash/uikit/depChiplet/RootIntegration";
+import ChipletRootIntegration from "@yourdash/chiplet/RootIntegration";
 import LinkerDesktopClientStartupPage from "./root/linker-desktop-client-startup/Index";
 import HostedApplicationRouter from "./app/HostedApplicationRouter";
 

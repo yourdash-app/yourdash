@@ -4,7 +4,7 @@
  */
 
 import useTranslate from "@yourdash/shared/web/helpers/i18n";
-import Card from "@yourdash/uikit/depChiplet/components/card/Card";
+import Card from "@yourdash/chiplet/components/card/Card";
 import React from "react";
 import DROPLET_ICON from "@yourdash/applications/weather/frontend/assets/weatherIcons/droplet.svg";
 
@@ -17,14 +17,7 @@ export interface IHourlyConditionsHour {
   conditionState: number;
 }
 
-const HourlyConditionsHour: React.FC<IHourlyConditionsHour> = ({
-  time,
-  conditionIcon,
-  conditionState,
-  temperature,
-  feelsLike,
-  rainChance,
-}) => {
+const HourlyConditionsHour: React.FC<IHourlyConditionsHour> = ({ time, conditionIcon, conditionState, temperature, feelsLike, rainChance }) => {
   const trans = useTranslate("weather");
   const [showTooltip, setShowTooltip] = React.useState(false);
 

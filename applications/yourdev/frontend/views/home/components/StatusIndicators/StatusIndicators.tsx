@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
+import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
 import React, { useEffect, useState } from "react";
 import Indicator from "./components/indicator/Indicator";
 import csi from "@yourdash/csi/csi";
@@ -59,16 +59,11 @@ const StatusIndicators: React.FC = () => {
 
   return (
     <div className={"ml-auto flex gap-2 items-center"}>
-      <Indicator icon={YourDashIcon.Info} color={"#32b3ff"} displayName={"Info Logs"} value={infoLogs} />
-      <Indicator
-        icon={YourDashIcon.Plug}
-        color={"#ffffff"}
-        displayName={"Websocket Connections"}
-        value={webSocketConnections}
-      />
-      <Indicator icon={YourDashIcon.Alert} color={"#eab842"} displayName={"Warning Logs"} value={warningLogs} />
-      <Indicator icon={YourDashIcon.XCircle} color={"#ff6633"} displayName={"Error Logs"} value={errorLogs} />
-      <Indicator icon={YourDashIcon.Bug} color={"#0ac700"} displayName={"Debug Logs"} value={debugLogs} />
+      <Indicator icon={UKIcon.Info} color={"#32b3ff"} displayName={"Info Logs"} value={infoLogs} />
+      <Indicator icon={UKIcon.Plug} color={"#ffffff"} displayName={"Websocket Connections"} value={webSocketConnections} />
+      <Indicator icon={UKIcon.Alert} color={"#eab842"} displayName={"Warning Logs"} value={warningLogs} />
+      <Indicator icon={UKIcon.XCircle} color={"#ff6633"} displayName={"Error Logs"} value={errorLogs} />
+      <Indicator icon={UKIcon.Bug} color={"#0ac700"} displayName={"Debug Logs"} value={debugLogs} />
     </div>
   );
 };

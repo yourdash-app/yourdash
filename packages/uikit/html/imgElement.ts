@@ -3,9 +3,9 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import UIKitHTMLElement from "../core/htmlElement";
+import UKHTMLElement from "../core/htmlElement";
 
-export default class ImgElement extends UIKitHTMLElement {
+export default class ImgElement extends UKHTMLElement {
   declare rawHtmlElement: HTMLImageElement;
 
   constructor() {

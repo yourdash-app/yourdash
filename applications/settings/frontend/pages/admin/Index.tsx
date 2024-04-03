@@ -4,7 +4,7 @@
  */
 
 import * as React from "react";
-import ComingSoon from "@yourdash/uikit/depChiplet/views/ComingSoon";
+import ComingSoon from "@yourdash/chiplet/views/ComingSoon";
 import BasePageLayout from "../../components/BasePageLayout";
 import ManageUsers from "./sections/manageUsers/ManageUsers";
 

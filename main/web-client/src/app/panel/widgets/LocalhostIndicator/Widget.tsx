@@ -4,8 +4,8 @@
  */
 
 import clippy from "@yourdash/shared/web/helpers/clippy";
-import Icon from "@yourdash/uikit/depChiplet/components/icon/Icon";
-import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
+import Icon from "@yourdash/chiplet/components/icon/Icon";
+import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
 import React from "react";
 
 const LocalhostIndicator: React.FC<{
@@ -25,7 +25,7 @@ const LocalhostIndicator: React.FC<{
         side === "right" && "mt-auto",
       )}
     >
-      <Icon icon={YourDashIcon.Location} color={"currentColor"} className={"h-6"} />
+      <Icon icon={UKIcon.Location} color={"currentColor"} className={"h-6"} />
     </div>
   );
 };

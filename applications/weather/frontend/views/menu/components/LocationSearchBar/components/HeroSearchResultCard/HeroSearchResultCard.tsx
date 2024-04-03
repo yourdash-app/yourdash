@@ -4,7 +4,7 @@
  */
 
 import clippy from "@yourdash/shared/web/helpers/clippy";
-import Card from "@yourdash/uikit/depChiplet/components/card/Card";
+import Card from "@yourdash/chiplet/components/card/Card";
 import React from "react";
 import { ILocationSearchResult } from "../../../../../../../shared/locationSearchResult";
 import { useNavigate } from "react-router-dom";

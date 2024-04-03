@@ -4,8 +4,8 @@
  */
 
 import clippy from "@yourdash/shared/web/helpers/clippy";
-import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
-import TextInput from "@yourdash/uikit/depChiplet/components/textInput/TextInput";
+import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
+import TextInput from "@yourdash/chiplet/components/textInput/TextInput";
 import React, { useEffect } from "react";
 import IPanelApplicationsLauncherApplication from "@yourdash/shared/core/panel/applicationsLauncher/application";
 import LargeApplicationGrid from "./LargeGrid/LargeApplicationGrid";
@@ -54,7 +54,7 @@ const ApplicationsLauncherApplications: React.FC<{
 
           setApplications(filteredApplications);
         }}
-        icon={YourDashIcon.Search}
+        icon={UKIcon.Search}
       />
 
       {layout === "large-grid" && <LargeApplicationGrid applications={applications} />}

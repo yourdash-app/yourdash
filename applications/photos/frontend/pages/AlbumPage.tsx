@@ -4,9 +4,9 @@
  */
 
 import csi from "@yourdash/csi/csi";
-import Heading from "@yourdash/uikit/depChiplet/components/heading/Heading";
-import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
-import IconButton from "@yourdash/uikit/depChiplet/components/iconButton/IconButton";
+import Heading from "@yourdash/chiplet/components/heading/Heading";
+import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
+import IconButton from "@yourdash/chiplet/components/iconButton/IconButton";
 import pth from "path-browserify";
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
@@ -43,7 +43,7 @@ const HomePage: React.FC = () => {
     <div className={"flex flex-col"}>
       <div className={"flex flex-row items-center p-12 pl-4 pr-4"}>
         <IconButton
-          icon={YourDashIcon.ChevronLeft}
+          icon={UKIcon.ChevronLeft}
           onClick={() => {
             window.history.back();
           }}
@@ -53,9 +53,7 @@ const HomePage: React.FC = () => {
         </Heading>
         <div className={"ml-auto gap-2 flex"}>
           {photoAlbum.items.photos.length > 0 && <Heading level={4}>Photos: {photoAlbum.items.photos.length}</Heading>}
-          {photoAlbum.items.subAlbums.length > 0 && (
-            <Heading level={4}>Sub Albums: {photoAlbum.items.subAlbums.length}</Heading>
-          )}
+          {photoAlbum.items.subAlbums.length > 0 && <Heading level={4}>Sub Albums: {photoAlbum.items.subAlbums.length}</Heading>}
           {photoAlbum.items.videos.length > 0 && <Heading level={4}>Videos: {photoAlbum.items.videos.length}</Heading>}
         </div>
       </div>

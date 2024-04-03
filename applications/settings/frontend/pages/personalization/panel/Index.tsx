@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
+import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
 import React, { useState } from "react";
 import BasePageLayout from "../../../components/BasePageLayout";
 import csi from "@yourdash/csi/csi";
@@ -17,7 +17,7 @@ const Index: React.FC = () => {
     <BasePageLayout title={"Panel"}>
       <DropdownSettingComponent
         title={"Panel Size"}
-        icon={YourDashIcon.Gear}
+        icon={UKIcon.Gear}
         description={"Set the size of the panel and it's widgets"}
         options={[
           {
@@ -43,7 +43,7 @@ const Index: React.FC = () => {
       />
       <DropdownSettingComponent
         title={"Panel Side"}
-        icon={YourDashIcon.Gear}
+        icon={UKIcon.Gear}
         description={"Set the side that the panel is on the screen"}
         options={[
           {

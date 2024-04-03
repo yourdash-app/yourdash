@@ -6,10 +6,10 @@
 import csi from "@yourdash/csi/csi";
 import clippy from "@yourdash/shared/web/helpers/clippy";
 import useTranslate from "@yourdash/shared/web/helpers/i18n";
-import Icon from "@yourdash/uikit/depChiplet/components/icon/Icon";
-import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
-import IconButton from "@yourdash/uikit/depChiplet/components/iconButton/IconButton";
-import RightClickMenu from "@yourdash/uikit/depChiplet/components/rightClickMenu/RightClickMenu";
+import Icon from "@yourdash/chiplet/components/icon/Icon";
+import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
+import IconButton from "@yourdash/chiplet/components/iconButton/IconButton";
+import RightClickMenu from "@yourdash/chiplet/components/rightClickMenu/RightClickMenu";
 import * as path from "path";
 import React from "react";
 
@@ -42,7 +42,7 @@ const DetailsLayout: React.FC = () => {
             onClick={() => {
               setCurrentPath(path.join(currentPath, ".."));
             }}
-            icon={YourDashIcon.ChevronLeft}
+            icon={UKIcon.ChevronLeft}
           />
           <span>{currentPath}</span>
         </div>
@@ -51,11 +51,7 @@ const DetailsLayout: React.FC = () => {
             "bg-container-bg pl-2 pr-2 pt-0.5 pb-0.5 text-left transition-colors [transition:var(--transition)] hover:[transition:var(--transition-fast)] flex items-center",
           )}
         >
-          <Icon
-            icon={YourDashIcon.Info}
-            className={"h-[calc(100%-0.35rem)] mr-1.5"}
-            color={"rgb(var(--container-fg))"}
-          />
+          <Icon icon={UKIcon.Info} className={"h-[calc(100%-0.35rem)] mr-1.5"} color={"rgb(var(--container-fg))"} />
           <span className={"mr-auto"}>{trans("NAME")}</span>
           <span>{trans("TYPE")}</span>
         </div>
@@ -89,7 +85,7 @@ const DetailsLayout: React.FC = () => {
               )}
             >
               <Icon
-                icon={file.type === "file" ? YourDashIcon.File : YourDashIcon.FileDirectory}
+                icon={file.type === "file" ? UKIcon.File : UKIcon.FileDirectory}
                 className={"h-[calc(100%-0.35rem)] mr-1.5"}
                 color={"rgb(var(--container-fg))"}
               />

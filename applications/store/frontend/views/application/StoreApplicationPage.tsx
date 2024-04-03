@@ -5,14 +5,14 @@
 
 import clippy from "@yourdash/shared/web/helpers/clippy";
 import useYourDashLib from "@yourdash/shared/web/helpers/ydsh";
-import Button from "@yourdash/uikit/depChiplet/components/button/Button";
-import Card from "@yourdash/uikit/depChiplet/components/card/Card";
-import Carousel from "@yourdash/uikit/depChiplet/components/carousel/Carousel";
-import Heading from "@yourdash/uikit/depChiplet/components/heading/Heading";
-import Icon from "@yourdash/uikit/depChiplet/components/icon/Icon";
-import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
-import MajorButton from "@yourdash/uikit/depChiplet/components/majorButton/MajorButton";
-import Spinner from "@yourdash/uikit/depChiplet/components/spinner/Spinner";
+import Button from "@yourdash/chiplet/components/button/Button";
+import Card from "@yourdash/chiplet/components/card/Card";
+import Carousel from "@yourdash/chiplet/components/carousel/Carousel";
+import Heading from "@yourdash/chiplet/components/heading/Heading";
+import Icon from "@yourdash/chiplet/components/icon/Icon";
+import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
+import MajorButton from "@yourdash/chiplet/components/majorButton/MajorButton";
+import Spinner from "@yourdash/chiplet/components/spinner/Spinner";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { type IYourDashStoreApplication } from "@yourdash/shared/apps/store/storeApplication";
@@ -80,19 +80,10 @@ const StoreApplicationPage: React.FC = () => {
                 }}
                 className="sm:h-64 h-32 transition-all bg-cover bg-center flex select-none items-center justify-center flex-row gap-3 animate__animated animate__fadeIn"
               >
-                <img
-                  className={"aspect-square drop-shadow-lg sm:w-24 w-0 transition-all"}
-                  src={appData.icon}
-                  draggable={false}
-                  alt=""
-                />
+                <img className={"aspect-square drop-shadow-lg sm:w-24 w-0 transition-all"} src={appData.icon} draggable={false} alt="" />
                 <Heading className={"drop-shadow-lg"}>{appData.displayName}</Heading>
               </div>
-              <section
-                className={
-                  "flex items-center p-4 gap-4 max-w-[50rem] w-full ml-auto mr-auto animate__animated animate__fadeIn animate__250ms"
-                }
-              >
+              <section className={"flex items-center p-4 gap-4 max-w-[50rem] w-full ml-auto mr-auto animate__animated animate__fadeIn animate__250ms"}>
                 <img className={"w-24 aspect-square select-none"} src={appData.icon} draggable={false} alt="" />
                 <Heading level={2} className={" mr-auto"}>
                   {appData.displayName}
@@ -152,7 +143,7 @@ const StoreApplicationPage: React.FC = () => {
                   }}
                   className={"flex gap-1 items-center"}
                 >
-                  <Icon className={"h-5"} icon={YourDashIcon.Link} />
+                  <Icon className={"h-5"} icon={UKIcon.Link} />
                   <span>{"View Source"}</span>
                 </Card>
                 <section className={"w-full"}>
@@ -167,11 +158,7 @@ const StoreApplicationPage: React.FC = () => {
                           window.location.href = author.site;
                         }}
                       >
-                        <img
-                          className={"h-24 aspect-square rounded-container-rounding"}
-                          src={author.avatarUrl}
-                          alt={author.avatarUrl}
-                        />
+                        <img className={"h-24 aspect-square rounded-container-rounding"} src={author.avatarUrl} alt={author.avatarUrl} />
                         <div className={"flex items-center justify-between gap-2 flex-col w-full"}>
                           <span>{author.displayName}</span>
                           {author.role && (

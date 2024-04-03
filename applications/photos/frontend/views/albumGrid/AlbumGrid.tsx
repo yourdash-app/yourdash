@@ -4,8 +4,8 @@
  */
 
 import csi from "@yourdash/csi/csi";
-import Card from "@yourdash/uikit/depChiplet/components/card/Card";
-import Heading from "@yourdash/uikit/depChiplet/components/heading/Heading";
+import Card from "@yourdash/chiplet/components/card/Card";
+import Heading from "@yourdash/chiplet/components/heading/Heading";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { ISubAlbum } from "../../../shared/photoAlbum";

@@ -4,8 +4,8 @@
  */
 
 import clippy from "@yourdash/shared/web/helpers/clippy";
-import Card from "@yourdash/uikit/depChiplet/components/card/Card";
-import Column from "@yourdash/uikit/depChiplet/components/column/Column";
+import Card from "@yourdash/chiplet/components/card/Card";
+import Column from "@yourdash/chiplet/components/column/Column";
 import CLEAR_BACKGROUND from "../../assets/weatherBackgrounds/clear.jpg";
 import CLOUDY_BACKGROUND from "../../assets/weatherBackgrounds/cloudy1.jpg";
 import RAIN_BACKGROUND from "../../assets/weatherBackgrounds/rain1.jpg";
@@ -16,13 +16,7 @@ import SavedLocationCard from "./components/SavedLocationCard/SavedLocationCard"
 import styles from "./MenuView.module.scss";
 import React, { useEffect, useState } from "react";
 
-const BACKGROUND_IMAGES: string[] = [
-  THUNDER_BACKGROUND,
-  CLOUDY_BACKGROUND,
-  RAIN_BACKGROUND,
-  SNOW_BACKGROUND,
-  CLEAR_BACKGROUND,
-];
+const BACKGROUND_IMAGES: string[] = [THUNDER_BACKGROUND, CLOUDY_BACKGROUND, RAIN_BACKGROUND, SNOW_BACKGROUND, CLEAR_BACKGROUND];
 
 const MenuView: React.FC = () => {
   const [backgroundImage, setBackgroundImage] = useState<string>("");
@@ -50,9 +44,7 @@ const MenuView: React.FC = () => {
       </Column>
       <h2 className={styles.sectionHeader}>Saved Locations</h2>
       <section className={"grid grid-cols-4"}>
-        <SavedLocationCard
-          props={{ address: { name: "Your Location" }, id: "your-location", latitude: 0, longitude: 0 }}
-        />
+        <SavedLocationCard props={{ address: { name: "Your Location" }, id: "your-location", latitude: 0, longitude: 0 }} />
       </section>
     </Column>
   );

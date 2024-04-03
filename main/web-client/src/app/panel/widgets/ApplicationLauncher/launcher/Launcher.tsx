@@ -4,8 +4,8 @@
  */
 
 import clippy from "@yourdash/shared/web/helpers/clippy";
-import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
-import IconButton from "@yourdash/uikit/depChiplet/components/iconButton/IconButton";
+import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
+import IconButton from "@yourdash/chiplet/components/iconButton/IconButton";
 import { useNavigate } from "react-router-dom";
 import styles from "./Launcher.module.scss";
 import React, { memo, useEffect, useState } from "react";
@@ -45,7 +45,7 @@ const ApplicationLauncher: React.FC<{
       <section className={styles.footer}>
         <IconButton
           className={styles.logoutButton}
-          icon={YourDashIcon.Logout}
+          icon={UKIcon.Logout}
           onClick={() => {
             csi.logout();
             navigate("/login");
@@ -53,24 +53,24 @@ const ApplicationLauncher: React.FC<{
         />
         <div>
           <img src={""} alt={""} />
-          <IconButton icon={YourDashIcon.Person} aria-label={"User Profile Settings"} />
+          <IconButton icon={UKIcon.Person} aria-label={"User Profile Settings"} />
         </div>
         <span>{csi.userDB.get("user:name")?.first || "Unknown First Name"}</span>
         <IconButton
           className={"ml-auto"}
-          icon={YourDashIcon.Filter}
+          icon={UKIcon.Filter}
           onClick={() => {
             setLayout("small-grid");
           }}
         />
         <IconButton
-          icon={YourDashIcon.Filter}
+          icon={UKIcon.Filter}
           onClick={() => {
             setLayout("large-grid");
           }}
         />
         <IconButton
-          icon={YourDashIcon.Filter}
+          icon={UKIcon.Filter}
           onClick={() => {
             setLayout("list");
           }}

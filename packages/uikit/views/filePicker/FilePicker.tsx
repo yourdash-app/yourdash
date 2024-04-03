@@ -4,9 +4,9 @@
  */
 
 import React, { useState } from "react";
-import Dialog from "../../depChiplet/components/dialog/Dialog";
-import { YourDashIcon } from "../../depChiplet/components/icon/iconDictionary";
-import SideBar, { SIDEBAR_ITEM_TYPE, SIDEBAR_STATE } from "../../depChiplet/components/sideBar/SideBar";
+import Dialog from "../../../chiplet/components/dialog/Dialog";
+import { UKIcon } from "../../../chiplet/components/icon/iconDictionary";
+import SideBar, { SIDEBAR_ITEM_TYPE, SIDEBAR_STATE } from "../../../chiplet/components/sideBar/SideBar";
 
 export interface FilePickerProps {
   acceptedFileTypes?: string[];
@@ -30,7 +30,7 @@ const FilePicker: React.FC<FilePickerProps> = ({ acceptedFileTypes, onFileSelect
               setCurrentPath("/");
             },
             type: SIDEBAR_ITEM_TYPE.Button,
-            icon: YourDashIcon.Home,
+            icon: UKIcon.Home,
           },
           {
             type: SIDEBAR_ITEM_TYPE.Separator,
@@ -43,7 +43,7 @@ const FilePicker: React.FC<FilePickerProps> = ({ acceptedFileTypes, onFileSelect
               return 0;
             },
             type: SIDEBAR_ITEM_TYPE.Button,
-            icon: YourDashIcon.Upload,
+            icon: UKIcon.Upload,
           },
         ]}
         defaultState={SIDEBAR_STATE.NormalExpanded}

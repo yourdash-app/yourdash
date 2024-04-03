@@ -5,9 +5,9 @@
 
 import clippy from "@yourdash/shared/web/helpers/clippy";
 import useTranslate from "@yourdash/shared/web/helpers/i18n";
-import Heading from "@yourdash/uikit/depChiplet/components/heading/Heading";
-import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
-import IconButton from "@yourdash/uikit/depChiplet/components/iconButton/IconButton";
+import Heading from "@yourdash/chiplet/components/heading/Heading";
+import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
+import IconButton from "@yourdash/chiplet/components/iconButton/IconButton";
 import React from "react";
 import { IWeatherDataForLocation } from "../../shared/weatherDataForLocation";
 import generateWeatherDescriptionFromData from "../helpers/generateWeatherDescriptionFromData";
@@ -64,14 +64,10 @@ const WeatherApplicationLocationPageHeader: React.FC<WeatherApplicationLocationP
       }}
       className={"bg-cover bg-center sticky top-0 left-0 w-full"}
     >
-      <section
-        className={
-          "p-4 flex gap-2 h-28 items-center justify-between from-base-700 to-transparent bg-gradient-to-b child:flex child:items-center"
-        }
-      >
+      <section className={"p-4 flex gap-2 h-28 items-center justify-between from-base-700 to-transparent bg-gradient-to-b child:flex child:items-center"}>
         <section className={"flex gap-2"}>
           <IconButton
-            icon={YourDashIcon.ChevronLeft}
+            icon={UKIcon.ChevronLeft}
             onClick={() => {
               navigate("/app/a/weather");
             }}
@@ -85,9 +81,9 @@ const WeatherApplicationLocationPageHeader: React.FC<WeatherApplicationLocationP
           </div>
         </section>
         <section className={"gap-2 flex"}>
-          <IconButton icon={YourDashIcon.Bookmark} />
+          <IconButton icon={UKIcon.Bookmark} />
           <IconButton
-            icon={isStuck ? YourDashIcon.ChevronDown : YourDashIcon.ChevronUp}
+            icon={isStuck ? UKIcon.ChevronDown : UKIcon.ChevronUp}
             onClick={() => {
               setIsStuck(!isStuck);
             }}

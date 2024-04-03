@@ -3,10 +3,10 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
-import IconButton from "@yourdash/uikit/depChiplet/components/iconButton/IconButton";
-import Row from "@yourdash/uikit/depChiplet/components/row/Row";
-import TextInput from "@yourdash/uikit/depChiplet/components/textInput/TextInput";
+import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
+import IconButton from "@yourdash/chiplet/components/iconButton/IconButton";
+import Row from "@yourdash/chiplet/components/row/Row";
+import TextInput from "@yourdash/chiplet/components/textInput/TextInput";
 
 const UserLinkEditor: React.FC<{
   link: { url: string; label: string };
@@ -35,7 +35,7 @@ const UserLinkEditor: React.FC<{
       />
       <IconButton
         className={"aspect-square"}
-        icon={YourDashIcon.Dash}
+        icon={UKIcon.Dash}
         onClick={() => {
           setLinks(links?.filter((l) => l !== link));
         }}

@@ -5,7 +5,7 @@
 
 import generateUUID from "@yourdash/shared/web/helpers/uuid.js";
 import DivElement from "../../html/divElement.js";
-import UIKitHTMLElement from "../htmlElement.js";
+import UKHTMLElement from "../htmlElement.js";
 import { appendComponentToElement, initializeComponent } from "../index.js";
 import { ComponentType } from "./componentType.js";
 import { BaseComponentInternals } from "./internals.js";
@@ -18,7 +18,7 @@ export interface ContainerComponentInternals<ComponentSlots extends string[] = [
 
 export class ContainerComponent<ComponentSlots extends string[] = []> {
   __internals: ContainerComponentInternals<ComponentSlots>;
-  htmlElement: UIKitHTMLElement;
+  htmlElement: UKHTMLElement;
 
   constructor(slots?: ComponentSlots, props?: { debugId?: string }) {
     this.__internals = {
@@ -45,11 +45,16 @@ export class ContainerComponent<ComponentSlots extends string[] = []> {
     return this;
   }
 
+  $(cb: (component: this) => void) {
+    cb(this);
+    return this;
+  }
+
   addChild(child: AnyComponentOrHTMLElement) {
     this.__internals.children?.push(child);
 
     if (child.__internals.componentType === ComponentType.HTMLElement) {
-      const childComponent = child as UIKitHTMLElement;
+      const childComponent = child as UKHTMLElement;
       this.htmlElement?.addChild(childComponent);
     } else {
       const childComponent = child as ContainerComponent;
@@ -71,9 +76,9 @@ export class ContainerComponent<ComponentSlots extends string[] = []> {
       appendComponentToElement(this.htmlElement.rawHtmlElement, child);
 
       if (child.__internals.componentType === ComponentType.HTMLElement) {
-        const childComponent = child as UIKitHTMLElement;
+        const childComponent = child as UKHTMLElement;
         childComponent.__internals.parentComponent = this as unknown as ContainerComponent;
-        childComponent.__internals.treeContext = this.__internals.treeContext;
+        childComponent.__internals.treeContext = { ...this.__internals.treeContext };
 
         if (this.__internals.treeContextChildOverrides) {
           Object.keys(this.__internals.treeContextChildOverrides).map((override) => {
@@ -88,7 +93,7 @@ export class ContainerComponent<ComponentSlots extends string[] = []> {
       const childComponent = child as AnyComponent;
 
       childComponent.__internals.parentComponent = this as unknown as ContainerComponent;
-      childComponent.__internals.treeContext = this.__internals.treeContext;
+      childComponent.__internals.treeContext = { ...this.__internals.treeContext };
 
       if (this.__internals.treeContextChildOverrides) {
         Object.keys(this.__internals.treeContextChildOverrides).map((override) => {

@@ -4,7 +4,7 @@
  */
 
 import generateUUID from "@yourdash/shared/web/helpers/uuid";
-import TabsContainer from "@yourdash/uikit/depChiplet/components/tabsContainer/TabsContainer";
+import TabsContainer from "@yourdash/chiplet/components/tabsContainer/TabsContainer";
 import React from "react";
 import DiscordProfilePreview from "./platforms/discord/DiscordProfilePreview";
 
@@ -17,14 +17,7 @@ export interface IChatbotProfilePreviewProps {
   commands: string[];
 }
 
-const ChatbotProfilePreview: React.FC<IChatbotProfilePreviewProps> = ({
-  username,
-  displayName,
-  bio,
-  avatarUrl,
-  status,
-  commands,
-}) => {
+const ChatbotProfilePreview: React.FC<IChatbotProfilePreviewProps> = ({ username, displayName, bio, avatarUrl, status, commands }) => {
   return (
     <>
       <TabsContainer

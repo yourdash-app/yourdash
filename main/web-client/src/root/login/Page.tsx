@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import Card from "@yourdash/uikit/depChiplet/components/card/Card";
+import Card from "@yourdash/chiplet/components/card/Card";
 import React, { useEffect, useState } from "react";
 import InstanceInfo from "./views/instanceInfo/InstanceInfo";
 import InstanceSelector from "./views/instanceSelector/InstanceSelector";
@@ -23,20 +23,9 @@ const Page: React.FC = () => {
 
   return (
     <main className={styles.page}>
-      <Card
-        showBorder
-        className={
-          "[transition:var(--transition-slower)] min-w-[32rem] max-w-full w-full overflow-hidden animate__animated animate__fadeIn"
-        }
-      >
+      <Card showBorder className={"[transition:var(--transition-slower)] min-w-[32rem] max-w-full w-full overflow-hidden animate__animated animate__fadeIn"}>
         {instanceHostname ? (
-          <UserLogin
-            password={password}
-            setPassword={setPassword}
-            setUsername={setUsername}
-            setInstanceHostname={setInstanceHostname}
-            username={username}
-          />
+          <UserLogin password={password} setPassword={setPassword} setUsername={setUsername} setInstanceHostname={setInstanceHostname} username={username} />
         ) : (
           <InstanceSelector
             setInstanceUrl={(value) => {

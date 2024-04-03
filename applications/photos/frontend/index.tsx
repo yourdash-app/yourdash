@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import Redirect from "@yourdash/uikit/depChiplet/components/redirect/Redirect";
+import Redirect from "@yourdash/chiplet/components/redirect/Redirect";
 import React from "react";
 import { Routes, Route } from "react-router";
 import AlbumPage from "./pages/AlbumPage";

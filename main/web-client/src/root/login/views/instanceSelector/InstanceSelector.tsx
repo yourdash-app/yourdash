@@ -3,10 +3,10 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
-import IconButton from "@yourdash/uikit/depChiplet/components/iconButton/IconButton";
-import MajorButton from "@yourdash/uikit/depChiplet/components/majorButton/MajorButton";
-import TextInput from "@yourdash/uikit/depChiplet/components/textInput/TextInput";
+import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
+import IconButton from "@yourdash/chiplet/components/iconButton/IconButton";
+import MajorButton from "@yourdash/chiplet/components/majorButton/MajorButton";
+import TextInput from "@yourdash/chiplet/components/textInput/TextInput";
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
 
@@ -23,7 +23,7 @@ const InstanceSelector: React.FC<IInstanceSelector> = ({ setInstanceUrl }) => {
     <section className={"w-full h-full flex items-center justify-center flex-col gap-4 relative"}>
       <IconButton
         className={"absolute left-0 top-0"}
-        icon={YourDashIcon.ChevronLeft}
+        icon={UKIcon.ChevronLeft}
         onClick={() => {
           navigate("/");
         }}
@@ -57,9 +57,7 @@ const InstanceSelector: React.FC<IInstanceSelector> = ({ setInstanceUrl }) => {
                 alert("This is not a valid YourDash instance");
               });
           }}
-          mustMatchRegex={
-            /^(?:https?:\/\/)?(?:\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(?::\d+)?|localhost(?::\d+)?|(?!.*\.$)[\w.-]+\.[a-z]{2,})(?::\d+)?$/
-          }
+          mustMatchRegex={/^(?:https?:\/\/)?(?:\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(?::\d+)?|localhost(?::\d+)?|(?!.*\.$)[\w.-]+\.[a-z]{2,})(?::\d+)?$/}
           placeholder={"https://example.com"}
         />
         <MajorButton

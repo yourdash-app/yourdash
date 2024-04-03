@@ -3,8 +3,8 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
-import SideBar, { SIDEBAR_ITEM_TYPE, SIDEBAR_STATE } from "@yourdash/uikit/depChiplet/components/sideBar/SideBar";
+import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
+import SideBar, { SIDEBAR_ITEM_TYPE, SIDEBAR_STATE } from "@yourdash/chiplet/components/sideBar/SideBar";
 import React from "react";
 import { Outlet } from "react-router";
 import { useNavigate } from "react-router-dom";
@@ -23,7 +23,7 @@ const PhotosLayout: React.FC = () => {
               navigate("/app/a/photos/");
             },
             type: SIDEBAR_ITEM_TYPE.Button,
-            icon: YourDashIcon.Home,
+            icon: UKIcon.Home,
           },
           {
             label: "Search",
@@ -32,7 +32,7 @@ const PhotosLayout: React.FC = () => {
               return 0;
             },
             type: SIDEBAR_ITEM_TYPE.Button,
-            icon: YourDashIcon.Search,
+            icon: UKIcon.Search,
           },
           {
             type: SIDEBAR_ITEM_TYPE.Separator,
@@ -45,7 +45,7 @@ const PhotosLayout: React.FC = () => {
               return 0;
             },
             type: SIDEBAR_ITEM_TYPE.Button,
-            icon: YourDashIcon.Upload,
+            icon: UKIcon.Upload,
           },
         ]}
         defaultState={SIDEBAR_STATE.NormalExpanded}

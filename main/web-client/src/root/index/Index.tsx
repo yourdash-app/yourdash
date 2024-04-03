@@ -6,7 +6,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslateHomePage } from "@yourdash/shared/web/helpers/i18n";
-import MajorButton from "@yourdash/uikit/depChiplet/components/majorButton/MajorButton";
+import MajorButton from "@yourdash/chiplet/components/majorButton/MajorButton";
 import KeyPointsCard from "./components/content/KeyPointsCard";
 import IndexPageHero from "./components/Hero/Hero";
 
@@ -18,23 +18,11 @@ const Index: React.FC = () => {
     <>
       <IndexPageHero />
       <section className={"max-w-6xl ml-auto mr-auto grid xl:grid-cols-3 gap-2 grid-cols-2 pb-12"}>
-        <section
-          className={
-            "lg:flex-row flex-col pt-8 flex lg:justify-between items-center gap-4 w-full pl-8 pr-8 mb-10 xl:col-span-3 col-span-2"
-          }
-        >
-          <h3
-            className={
-              "text-7xl lg:text-left text-center font-black animate__animated animate__fadeInLeft animate__500ms animate__slow"
-            }
-          >
+        <section className={"lg:flex-row flex-col pt-8 flex lg:justify-between items-center gap-4 w-full pl-8 pr-8 mb-10 xl:col-span-3 col-span-2"}>
+          <h3 className={"text-7xl lg:text-left text-center font-black animate__animated animate__fadeInLeft animate__500ms animate__slow"}>
             {trans("SECTIONS.HOST_YOUR_OWN.TITLE")}
           </h3>
-          <div
-            className={
-              "flex lg:items-end items-center gap-4 flex-col animate__animated animate__fadeInRight animate__500ms animate__slow relative"
-            }
-          >
+          <div className={"flex lg:items-end items-center gap-4 flex-col animate__animated animate__fadeInRight animate__500ms animate__slow relative"}>
             <span className={"lg:w-72 lg:text-right text-center text-2xl"}>
               {trans("SECTIONS.HOST_YOUR_OWN.CONTENT")}
               <span className={"text-base font-thin text-gray-300"}>*</span>
@@ -46,9 +34,7 @@ const Index: React.FC = () => {
             >
               {trans("SECTIONS.HOST_YOUR_OWN.ACTION")}
             </MajorButton>
-            <span className={"text-xs text-gray-400 absolute top-full mt-2"}>
-              *{trans("SECTIONS.HOST_YOUR_OWN.DISCLAIMER")}
-            </span>
+            <span className={"text-xs text-gray-400 absolute top-full mt-2"}>*{trans("SECTIONS.HOST_YOUR_OWN.DISCLAIMER")}</span>
           </div>
         </section>
       </section>

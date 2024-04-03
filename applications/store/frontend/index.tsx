@@ -6,7 +6,7 @@
 import * as React from "react";
 import { Routes, Route } from "react-router";
 import StoreApplication from "./views/home/HomeView";
-import ComingSoon from "@yourdash/uikit/depChiplet/views/ComingSoon";
+import ComingSoon from "@yourdash/chiplet/views/ComingSoon";
 import CategoryView from "./views/category/CategoryView";
 import StoreApplicationPage from "./views/application/StoreApplicationPage";
 

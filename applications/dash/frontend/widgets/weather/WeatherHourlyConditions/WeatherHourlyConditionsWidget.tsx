@@ -4,9 +4,9 @@
  */
 
 import useTranslate from "@yourdash/shared/web/helpers/i18n";
-import Card from "@yourdash/uikit/depChiplet/components/card/Card";
-import Row from "@yourdash/uikit/depChiplet/components/row/Row";
-import Spinner from "@yourdash/uikit/depChiplet/components/spinner/Spinner";
+import Card from "@yourdash/chiplet/components/card/Card";
+import Row from "@yourdash/chiplet/components/row/Row";
+import Spinner from "@yourdash/chiplet/components/spinner/Spinner";
 import React, { useEffect, useState } from "react";
 import csi from "@yourdash/csi/csi";
 import generateWeatherDescriptionFromData from "@yourdash/applications/weather/frontend/helpers/generateWeatherDescriptionFromData";

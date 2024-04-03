@@ -3,11 +3,11 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import Card from "@yourdash/uikit/depChiplet/components/card/Card";
-import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
-import IconButton from "@yourdash/uikit/depChiplet/components/iconButton/IconButton";
-import TextBox from "@yourdash/uikit/depChiplet/components/textBox/TextBox";
-import TextInput from "@yourdash/uikit/depChiplet/components/textInput/TextInput";
+import Card from "@yourdash/chiplet/components/card/Card";
+import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
+import IconButton from "@yourdash/chiplet/components/iconButton/IconButton";
+import TextBox from "@yourdash/chiplet/components/textBox/TextBox";
+import TextInput from "@yourdash/chiplet/components/textInput/TextInput";
 import React, { useEffect, useState } from "react";
 
 export interface IdbItem {
@@ -47,9 +47,9 @@ const DbItem: React.FC<IdbItem> = ({ currentItem, setCurrentItemData, items, set
               className={"flex-shrink-0"}
             />
             <div className={"flex flex-row gap-2 w-full child:flex-grow"}>
-              <IconButton icon={YourDashIcon.X} onClick={() => setActive(false)} className={"flex-shrink-0"} />
+              <IconButton icon={UKIcon.X} onClick={() => setActive(false)} className={"flex-shrink-0"} />
               <IconButton
-                icon={YourDashIcon.Check}
+                icon={UKIcon.Check}
                 onClick={() => {
                   if (key === "" || content === "") {
                     return;
@@ -75,7 +75,7 @@ const DbItem: React.FC<IdbItem> = ({ currentItem, setCurrentItemData, items, set
                 className={"flex-shrink-0"}
               />
               <IconButton
-                icon={YourDashIcon.Trash}
+                icon={UKIcon.Trash}
                 onClick={() => {
                   // remove key from items
                   const newItems = items;
@@ -98,11 +98,7 @@ const DbItem: React.FC<IdbItem> = ({ currentItem, setCurrentItemData, items, set
       ) : (
         <>
           <div className={"flex flex-col gap-2"}>
-            <IconButton
-              icon={active ? YourDashIcon.ChevronUp : YourDashIcon.ChevronDown}
-              onClick={() => setActive(!active)}
-              className={"flex-shrink-0"}
-            />
+            <IconButton icon={active ? UKIcon.ChevronUp : UKIcon.ChevronDown} onClick={() => setActive(!active)} className={"flex-shrink-0"} />
           </div>
           <span className={"mt-auto mb-auto"}>{key}</span>
         </>

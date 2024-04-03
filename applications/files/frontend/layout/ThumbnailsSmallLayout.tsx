@@ -5,11 +5,11 @@
 
 import clippy from "@yourdash/shared/web/helpers/clippy";
 import useTranslate from "@yourdash/shared/web/helpers/i18n";
-import Card from "@yourdash/uikit/depChiplet/components/card/Card";
-import Icon from "@yourdash/uikit/depChiplet/components/icon/Icon";
-import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
-import IconButton from "@yourdash/uikit/depChiplet/components/iconButton/IconButton";
-import RightClickMenu from "@yourdash/uikit/depChiplet/components/rightClickMenu/RightClickMenu";
+import Card from "@yourdash/chiplet/components/card/Card";
+import Icon from "@yourdash/chiplet/components/icon/Icon";
+import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
+import IconButton from "@yourdash/chiplet/components/iconButton/IconButton";
+import RightClickMenu from "@yourdash/chiplet/components/rightClickMenu/RightClickMenu";
 import * as React from "react";
 import csi from "@yourdash/csi/csi";
 import path from "path-browserify";
@@ -47,7 +47,7 @@ const DetailsLayout: React.FC = () => {
             onClick={() => {
               setCurrentPath(path.join(currentPath, ".."));
             }}
-            icon={YourDashIcon.ChevronLeft}
+            icon={UKIcon.ChevronLeft}
           />
           <span>{currentPath}</span>
         </div>
@@ -57,11 +57,7 @@ const DetailsLayout: React.FC = () => {
               "bg-container-bg pl-2 pr-2 text-left transition-colors [transition:var(--transition)] hover:[transition:var(--transition-fast)] flex items-center",
             )}
           >
-            <Icon
-              icon={YourDashIcon.Info}
-              className={"h-[calc(100%-0.35rem)] mr-1.5"}
-              color={"rgb(var(--container-fg))"}
-            />
+            <Icon icon={UKIcon.Info} className={"h-[calc(100%-0.35rem)] mr-1.5"} color={"rgb(var(--container-fg))"} />
             <span className={"mr-auto"}>{trans("NAME")}</span>
             <span>{trans("TYPE")}</span>
           </div>
@@ -99,9 +95,9 @@ const DetailsLayout: React.FC = () => {
               >
                 {file.icon === "" ? (
                   file.type === "dir" ? (
-                    <Icon className={styles.itemIcon} icon={YourDashIcon.FileDirectory} />
+                    <Icon className={styles.itemIcon} icon={UKIcon.FileDirectory} />
                   ) : (
-                    <Icon className={styles.itemIcon} icon={YourDashIcon.File} />
+                    <Icon className={styles.itemIcon} icon={UKIcon.File} />
                   )
                 ) : (
                   <img className={styles.itemIcon} alt={""} src={`${csi.getInstanceUrl()}${file.icon}`} />

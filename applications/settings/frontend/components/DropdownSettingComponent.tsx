@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import DropdownButton from "@yourdash/uikit/depChiplet/components/dropdownButton/DropdownButton";
+import DropdownButton from "@yourdash/chiplet/components/dropdownButton/DropdownButton";
 import BaseSettingComponent, { IBaseSettingComponent } from "./BaseSettingComponent";
 import * as React from "react";
 
@@ -16,12 +16,7 @@ export interface IBooleanSettingComponent extends IBaseSettingComponent {
   }[];
 }
 
-const BooleanSettingComponent: React.FC<Omit<IBooleanSettingComponent, "children">> = ({
-  value,
-  setValue,
-  options,
-  ...baseSettingComponentProps
-}) => (
+const BooleanSettingComponent: React.FC<Omit<IBooleanSettingComponent, "children">> = ({ value, setValue, options, ...baseSettingComponentProps }) => (
   <BaseSettingComponent {...baseSettingComponentProps}>
     <DropdownButton
       items={options.map((option) => {

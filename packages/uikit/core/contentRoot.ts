@@ -4,12 +4,12 @@
  */
 
 import generateUUID from "@yourdash/shared/web/helpers/uuid";
-import { getThemeMeta } from "../components/theme.js";
+import { getThemeMeta } from "./theme.js";
 import { ComponentType } from "./component/componentType.js";
 import { ContainerComponent } from "./component/containerComponent.js";
 import { DefaultComponentTreeContext } from "./component/treeContext.js";
 import { AnyComponent, AnyComponentOrHTMLElement } from "./component/type.js";
-import UIKitHTMLElement from "./htmlElement.js";
+import UKHTMLElement from "./htmlElement.js";
 import { appendComponentToElement } from "./index.js";
 
 export interface ContentRootProps {
@@ -65,9 +65,9 @@ export default class ContentRoot {
   // add a child component to the content root
   addChild(child: AnyComponentOrHTMLElement) {
     if (child.__internals.componentType === ComponentType.HTMLElement) {
-      const childComponent = child as UIKitHTMLElement;
+      const childComponent = child as UKHTMLElement;
       child.__internals.parentComponent = this as unknown as ContainerComponent;
-      child.__internals.treeContext = this.__internals.treeContext;
+      child.__internals.treeContext = { ...this.__internals.treeContext };
       this.__internals.element?.appendChild(childComponent.rawHtmlElement);
 
       return this;
@@ -76,7 +76,7 @@ export default class ContentRoot {
     const childComponent = child as AnyComponent;
 
     child.__internals.parentComponent = this as unknown as ContainerComponent;
-    child.__internals.treeContext = this.__internals.treeContext;
+    child.__internals.treeContext = { ...this.__internals.treeContext };
     this.__internals.children?.push(childComponent);
 
     this.__internals.element?.appendChild(childComponent.htmlElement.rawHtmlElement);

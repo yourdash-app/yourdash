@@ -4,7 +4,7 @@
  */
 
 import useYourDashLib from "@yourdash/shared/web/helpers/ydsh";
-import Button from "@yourdash/uikit/depChiplet/components/button/Button";
+import Button from "@yourdash/chiplet/components/button/Button";
 import React from "react";
 import csi from "@yourdash/csi/csi";
 

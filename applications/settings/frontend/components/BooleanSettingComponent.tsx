@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import ToggleSwitch from "@yourdash/uikit/depChiplet/components/toggleSwitch/ToggleSwitch";
+import ToggleSwitch from "@yourdash/chiplet/components/toggleSwitch/ToggleSwitch";
 import BaseSettingComponent, { IBaseSettingComponent } from "./BaseSettingComponent";
 import * as React from "react";
 
@@ -13,11 +13,7 @@ export interface IBooleanSettingComponent extends IBaseSettingComponent {
   value: boolean;
 }
 
-const BooleanSettingComponent: React.FC<Omit<IBooleanSettingComponent, "children">> = ({
-  value,
-  setValue,
-  ...baseSettingComponentProps
-}) => (
+const BooleanSettingComponent: React.FC<Omit<IBooleanSettingComponent, "children">> = ({ value, setValue, ...baseSettingComponentProps }) => (
   <BaseSettingComponent {...baseSettingComponentProps}>
     <ToggleSwitch setValue={(val) => setValue(val)} value={value} />
   </BaseSettingComponent>

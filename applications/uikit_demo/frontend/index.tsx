@@ -3,10 +3,13 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import Button from "@yourdash/uikit/components/button.js";
-import Card from "@yourdash/uikit/components/card.js";
-import Image from "@yourdash/uikit/components/image";
-import Text from "@yourdash/uikit/components/text.js";
+import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary.js";
+import Button from "@yourdash/uikit/components/button/button.js";
+import Card from "@yourdash/uikit/components/card/card.js";
+import Icon from "@yourdash/uikit/components/icon/icon.js";
+import IconButton from "@yourdash/uikit/components/iconButton/iconButton.js";
+import Image from "@yourdash/uikit/components/image/image.js";
+import Text from "@yourdash/uikit/components/text/text.js";
 import ReactUIKitView from "@yourdash/uikit/core/ReactUIKitView.js";
 import * as React from "react";
 
@@ -18,6 +21,7 @@ const UIKitDemoApplication: React.FC = () => {
         onLoad={(root) => {
           const card = new Card();
           root.addChild(card);
+
           card.addChild(
             new Button().setText("Hello World!").onClick(() => {
               console.log("button clicked");
@@ -52,6 +56,14 @@ const UIKitDemoApplication: React.FC = () => {
             .addChild(new Image().setSrc("https://picsum.photos/768/256"));
 
           root.addChild(new Text().setText("Hello World!"));
+
+          root.addChild(
+            new Card().addChild(new Icon().setIcon(UKIcon.Accessibility).setSize("2.5rem")).addChild(
+              new IconButton().$((c) => {
+                c.icon.setIcon(UKIcon.Beaker);
+              }),
+            ),
+          );
         }}
       />
     </>

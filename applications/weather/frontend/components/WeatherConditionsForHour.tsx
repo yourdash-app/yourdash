@@ -5,7 +5,7 @@
 
 import { chunk } from "@yourdash/shared/web/helpers/array";
 import useTranslate from "@yourdash/shared/web/helpers/i18n";
-import Card from "@yourdash/uikit/depChiplet/components/card/Card";
+import Card from "@yourdash/chiplet/components/card/Card";
 import React from "react";
 import { IWeatherDataForLocation } from "../../shared/weatherDataForLocation";
 import { WEATHER_STATES } from "../../shared/weatherStates";
@@ -38,9 +38,7 @@ const WeatherConditionsForHour: React.FC<IWeatherConditionsForHour> = ({ weather
   return (
     <>
       <Card className={"gap-2 flex col-span-3 items-center justify-center w-full sticky top-4"} showBorder>
-        <span className={"text-3xl font-semibold tracking-wide"}>
-          {selectedHourDate.toLocaleDateString(undefined, { dateStyle: "full" })}
-        </span>
+        <span className={"text-3xl font-semibold tracking-wide"}>{selectedHourDate.toLocaleDateString(undefined, { dateStyle: "full" })}</span>
         <span className={"text-3xl font-semibold tracking-wide"}>
           {selectedHourDate.getHours() < 9 ? `0${selectedHourDate.getHours() + 1}` : selectedHourDate.getHours() + 1}:00
         </span>
@@ -50,12 +48,8 @@ const WeatherConditionsForHour: React.FC<IWeatherConditionsForHour> = ({ weather
         <span className={"text-2xl tracking-wide"}>
           {chunk(weatherData.hourly.temperature, 24)[selectedDay][selectedHour || 0]}
           {weatherData.units.hourly.temperature}{" "}
-          {chunk(weatherData.hourly.weatherState, 24)[selectedDay][selectedHour || 0] !== WEATHER_STATES.PARTLY_CLOUDY
-            ? "with"
-            : "and"}{" "}
-          {trans(
-            getWeatherConditionFromState(chunk(weatherData.hourly.weatherState, 24)[selectedDay][selectedHour || 0]),
-          )}
+          {chunk(weatherData.hourly.weatherState, 24)[selectedDay][selectedHour || 0] !== WEATHER_STATES.PARTLY_CLOUDY ? "with" : "and"}{" "}
+          {trans(getWeatherConditionFromState(chunk(weatherData.hourly.weatherState, 24)[selectedDay][selectedHour || 0]))}
         </span>
       </Card>
       {/* Hourly metrics section */}

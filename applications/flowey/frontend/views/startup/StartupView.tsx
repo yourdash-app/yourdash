@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import Card from "@yourdash/uikit/depChiplet/components/card/Card";
+import Card from "@yourdash/chiplet/components/card/Card";
 import * as React from "react";
 
 const StartupView: React.FC = () => {
@@ -14,18 +14,8 @@ const StartupView: React.FC = () => {
         style={{ backgroundImage: "url(/assets/background.jpg)" }}
       >
         <div className={"flex flex-col gap-1"}>
-          <h1
-            className={
-              "text-6xl font-black tracking-wide [text-shadow:#242424bb_0_0_0.75rem,_#24242488_0_0_0.5rem,_#24242444_0_0_0.25rem]"
-            }
-          >
-            Flowey
-          </h1>
-          <span
-            className={
-              "[text-shadow:#242424bb_0_0_0.75rem,_#24242488_0_0_0.5rem,_#24242444_0_0_0.25rem] font-semibold tracking-wide"
-            }
-          >
+          <h1 className={"text-6xl font-black tracking-wide [text-shadow:#242424bb_0_0_0.75rem,_#24242488_0_0_0.5rem,_#24242444_0_0_0.25rem]"}>Flowey</h1>
+          <span className={"[text-shadow:#242424bb_0_0_0.75rem,_#24242488_0_0_0.5rem,_#24242444_0_0_0.25rem] font-semibold tracking-wide"}>
             Flowchart and block-out tool
           </span>
           (Placeholder background)

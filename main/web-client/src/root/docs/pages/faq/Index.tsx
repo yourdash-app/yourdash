@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import ComingSoon from "@yourdash/uikit/depChiplet/views/ComingSoon";
+import ComingSoon from "@yourdash/chiplet/views/ComingSoon";
 import React from "react";
 
 const FAQPage: React.FC = () => (
@@ -30,8 +30,7 @@ const FAQPage: React.FC = () => (
       <p>
         Yes! YourDash is free to use for everyone. See [installation instructions](#/docs/get-started)
         <br />
-        YourDash is free and open-source which means anyone can contribute to improve it's features and overall
-        security.
+        YourDash is free and open-source which means anyone can contribute to improve it's features and overall security.
       </p>
     </>
     <ComingSoon />

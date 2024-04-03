@@ -4,11 +4,11 @@
  */
 
 import csi from "@yourdash/csi/csi";
-import Card from "@yourdash/uikit/depChiplet/components/card/Card";
-import Heading from "@yourdash/uikit/depChiplet/components/heading/Heading";
-import Icon from "@yourdash/uikit/depChiplet/components/icon/Icon";
-import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
-import Separator from "@yourdash/uikit/depChiplet/components/separator/Separator";
+import Card from "@yourdash/chiplet/components/card/Card";
+import Heading from "@yourdash/chiplet/components/heading/Heading";
+import Icon from "@yourdash/chiplet/components/icon/Icon";
+import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
+import Separator from "@yourdash/chiplet/components/separator/Separator";
 import React, { useEffect, useState } from "react";
 import PhotoCategory from "../components/photoCategory/PhotoCategory";
 
@@ -39,7 +39,7 @@ const HomePage: React.FC = () => {
             return 0;
           }}
         >
-          <Icon icon={YourDashIcon.Search} className={"h-8"} />
+          <Icon icon={UKIcon.Search} className={"h-8"} />
           <Heading level={3}>Search</Heading>
         </Card>
         <Card
@@ -48,7 +48,7 @@ const HomePage: React.FC = () => {
             return 0;
           }}
         >
-          <Icon icon={YourDashIcon.Search} className={"h-8"} />
+          <Icon icon={UKIcon.Search} className={"h-8"} />
           <Heading level={3}>Search</Heading>
         </Card>
         <Card
@@ -57,7 +57,7 @@ const HomePage: React.FC = () => {
             return 0;
           }}
         >
-          <Icon icon={YourDashIcon.Search} className={"h-8"} />
+          <Icon icon={UKIcon.Search} className={"h-8"} />
           <Heading level={3}>Search</Heading>
         </Card>
       </div>

@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import Card from "@yourdash/uikit/depChiplet/components/card/Card";
+import Card from "@yourdash/chiplet/components/card/Card";
 import React from "react";
 
 const PROJECTS: {
@@ -41,11 +41,7 @@ const ProjectsIndexPage: React.FC = () => {
       <div className={"grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 lg:gap-4 p-4 max-w-7xl ml-auto mr-auto"}>
         {PROJECTS.map((project) => {
           return (
-            <Card
-              showBorder={true}
-              className={"flex items-center justify-center flex-col gap-2"}
-              onClick={() => window.open(project.link, "_blank")}
-            >
+            <Card showBorder={true} className={"flex items-center justify-center flex-col gap-2"} onClick={() => window.open(project.link, "_blank")}>
               <img className={"h-24 aspect-square"} src={project.icon} alt={""} />
               <span className={"font-semibold text-3xl"}>{project.name}</span>
               <p>{project.description}</p>

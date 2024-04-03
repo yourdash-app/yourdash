@@ -3,8 +3,8 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import Icon from "@yourdash/uikit/depChiplet/components/icon/Icon";
-import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
+import Icon from "@yourdash/chiplet/components/icon/Icon";
+import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
 import React from "react";
 import styles from "./DiscordProfilePreview.module.scss";
 
@@ -32,11 +32,7 @@ const DiscordProfilePreview: React.FC<IDiscordProfilePreviewProps> = ({
       <div className={styles.header}>
         <div className={styles.coloredSegment}></div>
         <div className={styles.avatarContainer}>
-          <img
-            alt={""}
-            className={styles.avatar}
-            src={avatarUrl === "internal://ServerError" ? "/assets/productLogos/yourdash.svg" : avatarUrl}
-          />
+          <img alt={""} className={styles.avatar} src={avatarUrl === "internal://ServerError" ? "/assets/productLogos/yourdash.svg" : avatarUrl} />
           <div className={styles.status} />
         </div>
         <div className={styles.badges}>
@@ -51,7 +47,7 @@ const DiscordProfilePreview: React.FC<IDiscordProfilePreviewProps> = ({
             {username || "unknown"}
             {discriminator && `#${discriminator}`}
             <div className={styles.usernameBadge}>
-              <Icon icon={YourDashIcon.Check} className={styles.usernameBadgeIcon} />
+              <Icon icon={UKIcon.Check} className={styles.usernameBadgeIcon} />
               BOT
             </div>
           </span>
@@ -59,7 +55,7 @@ const DiscordProfilePreview: React.FC<IDiscordProfilePreviewProps> = ({
         <div className={styles.separator}></div>
         {showAddApplicationButton && (
           <button className={styles.addAppButton}>
-            <Icon icon={YourDashIcon.PlusCircle} className={styles.addAppIcon} />
+            <Icon icon={UKIcon.PlusCircle} className={styles.addAppIcon} />
             Add App
           </button>
         )}

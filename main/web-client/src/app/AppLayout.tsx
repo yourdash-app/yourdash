@@ -3,14 +3,14 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import Card from "@yourdash/uikit/depChiplet/components/card/Card";
-import Heading from "@yourdash/uikit/depChiplet/components/heading/Heading";
-import Spinner from "@yourdash/uikit/depChiplet/components/spinner/Spinner";
+import Card from "@yourdash/chiplet/components/card/Card";
+import Heading from "@yourdash/chiplet/components/heading/Heading";
+import Spinner from "@yourdash/chiplet/components/spinner/Spinner";
 import { Outlet } from "react-router";
 import { useNavigate } from "react-router-dom";
 import csi from "@yourdash/csi/csi";
 import clippy from "@yourdash/shared/web/helpers/clippy";
-import Button from "@yourdash/uikit/depChiplet/components/button/Button";
+import Button from "@yourdash/chiplet/components/button/Button";
 import PanelLayout from "./panel/PanelLayout";
 import React, { useEffect } from "react";
 import styles from "./AppLayout.module.scss";
@@ -48,10 +48,7 @@ const AppLayout: React.FC = () => {
             </Card>
           </>
         )}
-        <Card
-          className={clippy("text-center animate__animated animate__fadeInUp", didTakeTooLong ? "" : "fixed bottom-4")}
-          showBorder
-        >
+        <Card className={clippy("text-center animate__animated animate__fadeInUp", didTakeTooLong ? "" : "fixed bottom-4")} showBorder>
           <div className={"pl-2 pr-2"}>
             {didTakeTooLong ? (
               <div className={"flex gap-2 flex-col -ml-2 -mr-2 items-center justify-center"}>

@@ -3,8 +3,8 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import Card from "@yourdash/uikit/depChiplet/components/card/Card";
-import Heading from "@yourdash/uikit/depChiplet/components/heading/Heading";
+import Card from "@yourdash/chiplet/components/card/Card";
+import Heading from "@yourdash/chiplet/components/heading/Heading";
 import React from "react";
 
 const IndexBotPage: React.FC = () => {

@@ -3,10 +3,10 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
-import IconButton from "@yourdash/uikit/depChiplet/components/iconButton/IconButton";
-import MajorButton from "@yourdash/uikit/depChiplet/components/majorButton/MajorButton";
-import TextInput from "@yourdash/uikit/depChiplet/components/textInput/TextInput";
+import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
+import IconButton from "@yourdash/chiplet/components/iconButton/IconButton";
+import MajorButton from "@yourdash/chiplet/components/majorButton/MajorButton";
+import TextInput from "@yourdash/chiplet/components/textInput/TextInput";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import csi from "@yourdash/csi/csi";
@@ -77,7 +77,7 @@ const UserLogin: React.FC<IUserLogin> = ({ setUsername, setPassword, password, u
     return (
       <div className={"w-full h-full flex items-center justify-center flex-col relative"}>
         <IconButton
-          icon={YourDashIcon.ChevronLeft}
+          icon={UKIcon.ChevronLeft}
           className={"left-0 top-0 absolute animate__animated animate__fadeInLeft"}
           onClick={() => {
             setInstanceHostname("");
@@ -97,13 +97,9 @@ const UserLogin: React.FC<IUserLogin> = ({ setUsername, setPassword, password, u
   }
 
   return (
-    <div
-      className={
-        "w-full h-full flex items-center justify-center flex-col relative animate__animated animate__fadeIn gap-4"
-      }
-    >
+    <div className={"w-full h-full flex items-center justify-center flex-col relative animate__animated animate__fadeIn gap-4"}>
       <IconButton
-        icon={YourDashIcon.ChevronLeft}
+        icon={UKIcon.ChevronLeft}
         className={"left-0 top-0 absolute animate__animated animate__fadeInLeft"}
         onClick={() => {
           setIsValidUser(false);

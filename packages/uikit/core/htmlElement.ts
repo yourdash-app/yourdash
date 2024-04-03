@@ -20,8 +20,8 @@ type OverrideProperties<
   },
 > = Merge<TOriginal, TOverride>;
 
-export default class UIKitHTMLElement {
-  __internals: OverrideProperties<ContainerComponentInternals, { children: (AnyComponent | UIKitHTMLElement)[] }>;
+export default class UKHTMLElement {
+  __internals: OverrideProperties<ContainerComponentInternals, { children: (AnyComponent | UKHTMLElement)[] }>;
   rawHtmlElement: HTMLElement;
 
   constructor(htmlElement: HTMLElement, props?: { debugId?: string }) {
@@ -43,6 +43,11 @@ export default class UIKitHTMLElement {
 
     this.rawHtmlElement = htmlElement;
 
+    return this;
+  }
+
+  $(cb: (component: this) => void) {
+    cb(this);
     return this;
   }
 
@@ -81,8 +86,22 @@ export default class UIKitHTMLElement {
     return this;
   }
 
+  setStyleVariable(name: string, value: string) {
+    this.rawHtmlElement.style.setProperty(name, value);
+    return this;
+  }
+
+  clearStyleVariable(name: string) {
+    this.rawHtmlElement.style.removeProperty(name);
+    return this;
+  }
+
   getStyle<StyleName extends keyof CSSStyleDeclaration>(name: StyleName): CSSStyleDeclaration[StyleName] {
     return this.rawHtmlElement.style[name];
+  }
+
+  getStyleVariable(name: string): string {
+    return getComputedStyle(this.rawHtmlElement).getPropertyValue(name);
   }
 
   setStyles(styles: Partial<CSSStyleDeclaration>) {
@@ -104,12 +123,12 @@ export default class UIKitHTMLElement {
     return this;
   }
 
-  addChild(child: AnyComponent | UIKitHTMLElement) {
+  addChild(child: AnyComponent | UKHTMLElement) {
     this.__internals.children?.push(child);
     child.__internals.parentComponent = this;
 
     if (child.__internals.componentType === ComponentType.HTMLElement) {
-      const childComponent = child as UIKitHTMLElement;
+      const childComponent = child as UKHTMLElement;
       this.rawHtmlElement.appendChild(childComponent.rawHtmlElement);
 
       return this;

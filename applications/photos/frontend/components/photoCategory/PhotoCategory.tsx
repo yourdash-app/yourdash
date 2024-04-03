@@ -5,9 +5,9 @@
 
 import csi from "@yourdash/csi/csi";
 import clippy from "@yourdash/shared/web/helpers/clippy";
-import Heading from "@yourdash/uikit/depChiplet/components/heading/Heading";
-import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
-import IconButton from "@yourdash/uikit/depChiplet/components/iconButton/IconButton";
+import Heading from "@yourdash/chiplet/components/heading/Heading";
+import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
+import IconButton from "@yourdash/chiplet/components/iconButton/IconButton";
 import pth from "path-browserify";
 import React, { useEffect } from "react";
 import { IPhotoAlbum } from "../../../shared/photoAlbum";
@@ -47,14 +47,14 @@ const PhotoCategory: React.FC<{ path: string }> = ({ path }) => {
             onClick={() => {
               setOpen(false);
             }}
-            icon={YourDashIcon.FoldUp}
+            icon={UKIcon.FoldUp}
           />
         ) : (
           <IconButton
             onClick={() => {
               setOpen(true);
             }}
-            icon={YourDashIcon.FoldDown}
+            icon={UKIcon.FoldDown}
           />
         )}
         <Heading level={3} className={styles.label}>

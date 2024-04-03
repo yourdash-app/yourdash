@@ -4,13 +4,13 @@
  */
 
 import csi from "@yourdash/csi/csi";
-import Card from "@yourdash/uikit/depChiplet/components/card/Card";
-import DropdownButton from "@yourdash/uikit/depChiplet/components/dropdownButton/DropdownButton";
-import Heading from "@yourdash/uikit/depChiplet/components/heading/Heading";
-import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
-import IconButton from "@yourdash/uikit/depChiplet/components/iconButton/IconButton";
-import NavBar from "@yourdash/uikit/depChiplet/components/navBar/NavBar";
-import TextInput from "@yourdash/uikit/depChiplet/components/textInput/TextInput";
+import Card from "@yourdash/chiplet/components/card/Card";
+import DropdownButton from "@yourdash/chiplet/components/dropdownButton/DropdownButton";
+import Heading from "@yourdash/chiplet/components/heading/Heading";
+import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
+import IconButton from "@yourdash/chiplet/components/iconButton/IconButton";
+import NavBar from "@yourdash/chiplet/components/navBar/NavBar";
+import TextInput from "@yourdash/chiplet/components/textInput/TextInput";
 import React, { useEffect, useState } from "react";
 import styles from "./ListBotsPage.module.scss";
 import { useNavigate } from "react-router";
@@ -87,14 +87,14 @@ const ListBotsPage: React.FC = () => {
             </DropdownButton>
             <TextInput
               accessibleName={"Search Bots"}
-              icon={YourDashIcon.Search}
+              icon={UKIcon.Search}
               placeholder={"Search"}
               onChange={(value) => {
                 setSearchValue(value);
               }}
             />
             <IconButton
-              icon={YourDashIcon.Plus}
+              icon={UKIcon.Plus}
               onClick={() => {
                 navigate("/app/a/chatbots/create-bot");
               }}

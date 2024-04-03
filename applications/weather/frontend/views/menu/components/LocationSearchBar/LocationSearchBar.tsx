@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import TextInput from "@yourdash/uikit/depChiplet/components/textInput/TextInput";
+import TextInput from "@yourdash/chiplet/components/textInput/TextInput";
 import React, { useState } from "react";
 import csi from "@yourdash/csi/csi";
 import { ILocationSearchResult } from "../../../../../shared/locationSearchResult";
@@ -61,9 +61,7 @@ const LocationSearchBar: React.FC = () => {
           ) : (
             searchQuery !== "" && (
               <section className={styles.results}>
-                <div className={"col-span-4 text-3xl text-center font-semibold pt-4 pb-4"}>
-                  Invalid location &quot;{searchQuery}&quot;
-                </div>
+                <div className={"col-span-4 text-3xl text-center font-semibold pt-4 pb-4"}>Invalid location &quot;{searchQuery}&quot;</div>
               </section>
             )
           )

@@ -4,14 +4,14 @@
  */
 
 import useTranslate from "@yourdash/shared/web/helpers/i18n";
-import Button from "@yourdash/uikit/depChiplet/components/button/Button";
-import Card from "@yourdash/uikit/depChiplet/components/card/Card";
-import DropdownButton from "@yourdash/uikit/depChiplet/components/dropdownButton/DropdownButton";
-import Icon from "@yourdash/uikit/depChiplet/components/icon/Icon";
-import { YourDashIcon } from "@yourdash/uikit/depChiplet/components/icon/iconDictionary";
-import MajorButton from "@yourdash/uikit/depChiplet/components/majorButton/MajorButton";
-import ResizeContainer from "@yourdash/uikit/depChiplet/components/resizeContainer/ResizeContainer";
-import TextBox from "@yourdash/uikit/depChiplet/components/textBox/TextBox";
+import Button from "@yourdash/chiplet/components/button/Button";
+import Card from "@yourdash/chiplet/components/card/Card";
+import DropdownButton from "@yourdash/chiplet/components/dropdownButton/DropdownButton";
+import Icon from "@yourdash/chiplet/components/icon/Icon";
+import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
+import MajorButton from "@yourdash/chiplet/components/majorButton/MajorButton";
+import ResizeContainer from "@yourdash/chiplet/components/resizeContainer/ResizeContainer";
+import TextBox from "@yourdash/chiplet/components/textBox/TextBox";
 import React, { useState, useEffect } from "react";
 import csi, { TJson } from "@yourdash/csi/csi";
 import { IDiffusionLabImageGenerationData } from "@yourdash/shared/apps/diffusion_lab/image/generationData";
@@ -80,7 +80,7 @@ const DiffusionLabApplication: React.FC = () => {
         </section>
         <section className={"absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"}>
           <div className={"flex items-center justify-center h-full gap-1.5"}>
-            <Icon className={"h-9 aspect-square"} preserveColor icon={YourDashIcon.YourDashLogo} />
+            <Icon className={"h-9 aspect-square"} preserveColor icon={UKIcon.YourDashLogo} />
             <h2 className={"text-3xl font-semibold tracking-wide"}>{trans("APPLICATION_NAME")}</h2>
           </div>
         </section>
@@ -142,9 +142,7 @@ const DiffusionLabApplication: React.FC = () => {
             >
               {generationResult.map((batch) => {
                 return batch.map((image) => {
-                  return (
-                    <img key={image} src={image || YourDashLogo} alt="generated ai-image" className={"w-full h-full"} />
-                  );
+                  return <img key={image} src={image || YourDashLogo} alt="generated ai-image" className={"w-full h-full"} />;
                 });
               })}
             </div>
