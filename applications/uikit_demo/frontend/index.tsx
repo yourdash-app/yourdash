@@ -1,11 +1,12 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary.js";
 import Button from "@yourdash/uikit/components/button/button.js";
 import Card from "@yourdash/uikit/components/card/card.js";
+import Flex from "@yourdash/uikit/components/flex/flex.js";
 import Icon from "@yourdash/uikit/components/icon/icon.js";
 import IconButton from "@yourdash/uikit/components/iconButton/iconButton.js";
 import Image from "@yourdash/uikit/components/image/image.js";
@@ -59,9 +60,27 @@ const UIKitDemoApplication: React.FC = () => {
 
           root.addChild(
             new Card().addChild(new Icon().setIcon(UKIcon.Accessibility).setSize("2.5rem")).addChild(
-              new IconButton().$((c) => {
-                c.icon.setIcon(UKIcon.Beaker);
-              }),
+              new Flex()
+                .addChild(
+                  new IconButton().$((c) => {
+                    c.icon.setIcon(UKIcon.Beaker);
+                  }),
+                )
+                .addChild(
+                  new IconButton().$((c) => {
+                    c.icon.setIcon(UKIcon.Beaker);
+                  }),
+                )
+                .addChild(
+                  new Button().setText("Hello World!").onClick(() => {
+                    console.log("button clicked");
+                  }),
+                )
+                .addChild(
+                  new IconButton().$((c) => {
+                    c.icon.setIcon(UKIcon.Beaker);
+                  }),
+                ),
             ),
           );
         }}

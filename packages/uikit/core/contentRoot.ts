@@ -1,9 +1,10 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 import generateUUID from "@yourdash/shared/web/helpers/uuid";
+import theme from "./defaultTheme.module.scss";
 import { getThemeMeta } from "./theme.js";
 import { ComponentType } from "./component/componentType.js";
 import { ContainerComponent } from "./component/containerComponent.js";
@@ -40,13 +41,15 @@ export default class ContentRoot {
     getThemeMeta(this.__internals__.element as HTMLElement);
     this.__internals__.element?.setAttribute("uikit-content-root", "true");
 
-    console.log(this.__internals__.treeContext);
-
     if (props.fillSpace) {
       if (!this.__internals__.element) return this;
 
       this.__internals__.element.style.width = "100%";
       this.__internals__.element.style.height = "100%";
+    }
+
+    if (window.__uikit__.isMobile) {
+      this.setDeviceType("mobile");
     }
 
     return this;
@@ -92,6 +95,18 @@ export default class ContentRoot {
     }
 
     return this;
+  }
+
+  setDeviceType(deviceType: "mobile" | "desktop") {
+    this.__internals__.element?.classList.remove(theme.mobile);
+    this.__internals__.element?.removeAttribute("uikit-device");
+
+    if (deviceType === "mobile") {
+      this.__internals__.element?.classList.add(theme.mobile);
+      this.__internals__.element?.setAttribute("uikit-device", "mobile");
+    } else {
+      this.__internals__.element?.setAttribute("uikit-device", "desktop");
+    }
   }
 
   render() {

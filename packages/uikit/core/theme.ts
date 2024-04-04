@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -22,10 +22,7 @@ export function loadThemeLevel(element: HTMLElement, levelName: 0 | 1 | 2 | 3) {
   element?.classList.add(theme.theme);
   element.classList.add(themeLevels[levelName]);
 
-  if (window.__uikit__.isMobile) {
-    element?.setAttribute("uikit-mobile", "true");
-    element?.classList.add(theme.mobile);
-  }
-
   return;
 }
+
+export { theme };

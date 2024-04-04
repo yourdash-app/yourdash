@@ -1,0 +1,28 @@
+/*!
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
+@import "../../core/defaultTheme.module.scss";
+
+.component {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: var(#{$theme}#{$gap});
+}
+
+.row {
+  flex-direction: row;
+}
+
+.column {
+  flex-direction: column;
+}
+
+.wrap {
+  flex-wrap: wrap;
+}
+
+.noGap {
+  gap: 0;
+}

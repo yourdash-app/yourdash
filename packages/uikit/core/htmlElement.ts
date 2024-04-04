@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -77,6 +77,14 @@ export default class UKHTMLElement {
     if (this.rawHtmlElement.classList.contains(name)) {
       this.rawHtmlElement.classList.remove(name);
     }
+
+    return this;
+  }
+
+  removeClasses(name: string[]) {
+    name.forEach((n: string) => {
+      if (this.rawHtmlElement.classList.contains(n)) this.removeClass(n);
+    });
 
     return this;
   }
