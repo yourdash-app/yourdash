@@ -19,7 +19,7 @@ export interface ContentRootProps {
 }
 
 export default class ContentRoot {
-  __internals: {
+  __internals__: {
     debugId: string;
     children: AnyComponentOrHTMLElement[];
     element?: HTMLElement;
@@ -27,7 +27,7 @@ export default class ContentRoot {
   };
 
   constructor(props: ContentRootProps) {
-    this.__internals = {
+    this.__internals__ = {
       debugId: generateUUID(),
       children: [],
       treeContext: {
@@ -35,31 +35,31 @@ export default class ContentRoot {
       },
     };
 
-    if (props.debugId) this.__internals.debugId = props.debugId;
+    if (props.debugId) this.__internals__.debugId = props.debugId;
     this.setHTMLElement(props.htmlElement);
-    getThemeMeta(this.__internals.element as HTMLElement);
-    this.__internals.element?.setAttribute("uikit-content-root", "true");
+    getThemeMeta(this.__internals__.element as HTMLElement);
+    this.__internals__.element?.setAttribute("uikit-content-root", "true");
 
-    console.log(this.__internals.treeContext);
+    console.log(this.__internals__.treeContext);
 
     if (props.fillSpace) {
-      if (!this.__internals.element) return this;
+      if (!this.__internals__.element) return this;
 
-      this.__internals.element.style.width = "100%";
-      this.__internals.element.style.height = "100%";
+      this.__internals__.element.style.width = "100%";
+      this.__internals__.element.style.height = "100%";
     }
 
     return this;
   }
 
   setHTMLElement(element: HTMLElement) {
-    this.__internals.element = element;
+    this.__internals__.element = element;
 
     return this;
   }
 
   getChildren() {
-    return this.__internals.children;
+    return this.__internals__.children;
   }
 
   // add a child component to the content root
@@ -67,8 +67,8 @@ export default class ContentRoot {
     if (child.__internals.componentType === ComponentType.HTMLElement) {
       const childComponent = child as UKHTMLElement;
       child.__internals.parentComponent = this as unknown as ContainerComponent;
-      child.__internals.treeContext = { ...this.__internals.treeContext };
-      this.__internals.element?.appendChild(childComponent.rawHtmlElement);
+      child.__internals.treeContext = { ...this.__internals__.treeContext };
+      this.__internals__.element?.appendChild(childComponent.rawHtmlElement);
 
       return this;
     }
@@ -76,33 +76,33 @@ export default class ContentRoot {
     const childComponent = child as AnyComponent;
 
     child.__internals.parentComponent = this as unknown as ContainerComponent;
-    child.__internals.treeContext = { ...this.__internals.treeContext };
-    this.__internals.children?.push(childComponent);
+    child.__internals.treeContext = { ...this.__internals__.treeContext };
+    this.__internals__.children?.push(childComponent);
 
-    this.__internals.element?.appendChild(childComponent.htmlElement.rawHtmlElement);
+    this.__internals__.element?.appendChild(childComponent.htmlElement.rawHtmlElement);
     child.render();
 
     return this;
   }
 
   removeChild(child: AnyComponent) {
-    const index = this.__internals.children.indexOf(child);
+    const index = this.__internals__.children.indexOf(child);
     if (index > -1) {
-      this.__internals.children.splice(index, 1);
+      this.__internals__.children.splice(index, 1);
     }
 
     return this;
   }
 
   render() {
-    if (!this.__internals.element) {
+    if (!this.__internals__.element) {
       return this;
     }
 
-    this.__internals.element.innerHTML = "";
+    this.__internals__.element.innerHTML = "";
 
     this.getChildren().map((child) => {
-      appendComponentToElement(this.__internals.element as HTMLElement, child);
+      appendComponentToElement(this.__internals__.element as HTMLElement, child);
 
       child.render();
     });

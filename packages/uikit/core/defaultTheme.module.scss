@@ -91,16 +91,14 @@
   #{$theme}#{$button}#{$height}: 1.75rem;
   #{$theme}#{$button}#{$padding}#{$horizontal}: 0.5rem;
   #{$theme}#{$button}#{$transition}: all 0.2s ease-in-out;
-
-  // button hover
+  // hover
   #{$theme}#{$button}#{$hover}#{$color}: #ffffff;
   #{$theme}#{$button}#{$hover}#{$background}: #555555;
   #{$theme}#{$button}#{$hover}#{$border}: 1px solid #555555;
   #{$theme}#{$button}#{$hover}#{$radius}: 0.5rem;
   #{$theme}#{$button}#{$hover}#{$shadow}: 0 0 0.5rem 0 #000000;
   #{$theme}#{$button}#{$hover}#{$transition}: all 100ms ease-in-out;
-
-  // button active
+  // active
   #{$theme}#{$button}#{$active}#{$color}: #000000;
   #{$theme}#{$button}#{$active}#{$background}: #666666;
   #{$theme}#{$button}#{$active}#{$border}: 1px solid #555555;
@@ -112,128 +110,129 @@
   #{$theme}#{$header}#{$font}#{$family}: Inter;
   #{$theme}#{$header}#{$font}#{$size}: 1.2rem;
   #{$theme}#{$header}#{$font}#{$weight}: 700;
-
   #{$theme}#{$header}#{$padding}#{$vertical}: 0.5rem;
   #{$theme}#{$header}#{$padding}#{$horizontal}: 0.25rem;
 }
 
 .level2 {
-  // IMPORTANT!: REMEMBER TO ADD THE SEPARATOR TO THIS LEVEL WHEN CREATING IT!
   #{$theme}#{$color}: #ffffff;
   #{$theme}#{$background}: #444444;
   #{$theme}#{$border}: 1px solid #555555;
   #{$theme}#{$shadow}: 0 0 0.5rem 0 #000000;
   #{$theme}#{$accent}: #445599;
   #{$theme}#{$radius}: 0.5rem;
-  font: {
-    family: Inter;
-    size: 0.9rem;
-    weight: 400;
-  };
-  header: {
-    fg: #ffffff;
-    font: {
-      family: Inter;
-      size: 1.2rem;
-      weight: 700;
-    };
-    padding: {
-      vertical: 0.5rem;
-      horizontal: 0.25rem;
-    };
-  };
-  btn: {
-    fg: #ffffff;
-    bg: #555555;
-    border: 1px solid #555555;
-    font: {
-      family: Inter;
-      size: 0.9rem;
-      weight: 400;
-    };
-    radius: 0.25rem;
-    shadow: 0 0 0.5rem 0 #000000;
-    height: 1rem;
-    padding: {
-      horizontal: 0.5rem;
-    };
-    hover: {
-      fg: #ffffff;
-      bg: #666666;
-      border: 1px solid #666666;
-      radius: 0.25rem;
-      shadow: 0 0 0.5rem 0 #000000;
-      transition: all 100ms ease-in-out;
-    };
-    active: {
-      fg: #ffffff;
-      bg: #666666;
-      border: 1px solid #666666;
-      radius: 0.25rem;
-      shadow: 0 0 0.5rem 0 #000000;
-    };
-  };
-  padding: 0.75rem;
-  gap: 0.75rem;
-  transition: all 200ms ease-in-out;
+  #{$theme}#{$padding}: 0.75rem;
+  #{$theme}#{$gap}: 0.75rem;
+  #{$theme}#{$transition}: all 200ms ease-in-out;
+  #{$theme}#{$separator}#{$size}: 0.125rem;
+  #{$theme}#{$separator}#{$color}: #555555;
+
+  // font
+  #{$theme}#{$font}#{$family}: Inter;
+  #{$theme}#{$font}#{$size}: 0.9rem;
+  #{$theme}#{$font}#{$weight}: 400;
+
+  // button
+  #{$theme}#{$button}#{$color}: #ffffff;
+  #{$theme}#{$button}#{$background}: #555555;
+  #{$theme}#{$button}#{$border}: 1px solid #555555;
+  #{$theme}#{$button}#{$font}#{$family}: Inter;
+  #{$theme}#{$button}#{$font}#{$size}: 0.9rem;
+  #{$theme}#{$button}#{$font}#{$weight}: 400;
+  #{$theme}#{$button}#{$radius}: 0.25rem;
+  #{$theme}#{$button}#{$shadow}: 0 0 0.5rem 0 #000000;
+  #{$theme}#{$button}#{$height}: 1.75rem;
+  #{$theme}#{$button}#{$padding}#{$horizontal}: 0.5rem;
+  #{$theme}#{$button}#{$transition}: all 0.2s ease-in-out;
+  // hover
+  #{$theme}#{$button}#{$hover}#{$color}: #ffffff;
+  #{$theme}#{$button}#{$hover}#{$background}: #666666;
+  #{$theme}#{$button}#{$hover}#{$border}: 1px solid #666666;
+  #{$theme}#{$button}#{$hover}#{$radius}: 0.25rem;
+  #{$theme}#{$button}#{$hover}#{$shadow}: 0 0 0.5rem 0 #000000;
+  #{$theme}#{$button}#{$hover}#{$transition}: all 100ms ease-in-out;
+  // active
+  #{$theme}#{$button}#{$active}#{$color}: #000000;
+  #{$theme}#{$button}#{$active}#{$background}bg: #666666;
+  #{$theme}#{$button}#{$active}#{$border}: 1px solid #666666;
+  #{$theme}#{$button}#{$active}#{$radius}: 0.25rem;
+  #{$theme}#{$button}#{$active}#{$shadow}: 0 0 0.5rem 0 #000000;
+
+  // header
+  #{$theme}#{$header}#{$color}: #ffffff;
+  #{$theme}#{$header}#{$font}#{$family}: Inter;
+  #{$theme}#{$header}#{$font}#{$size}: 1.2rem;
+  #{$theme}#{$header}#{$font}#{$weight}: 700;
+  #{$theme}#{$header}#{$padding}#{$vertical}: 0.5rem;
+  #{$theme}#{$header}#{$padding}#{$horizontal}: 0.25rem;
 }
 
 .level3 {
-  fg: #ffffff;
-  bg: #555555;
-  border: 1px solid #555555;
-  shadow: 0 0 0.5rem 0 #000000;
-  accent: #445599;
-  radius: 0.5rem;
-  font: {
-    family: Inter;
-    size: 0.9rem;
-    weight: 400;
-  };
-  header: {
-    fg: #ffffff;
-    font: {
-      family: Inter;
-      size: 1.2rem;
-      weight: 700;
-    };
-    padding: {
-      vertical: 0.5rem;
-      horizontal: 0.25rem;
-    };
-  };
-  btn: {
-    fg: #ffffff;
-    bg: #666666;
-    border: 1px solid #666666;
-    font: {
-      family: Inter;
-      size: 0.9rem;
-      weight: 400;
-    };
-    radius: 0.25rem;
-    shadow: 0 0 0.5rem 0 #000000;
-    padding: {
-      vertical: 0.25rem;
-      horizontal: 0.5rem;
-    };
-    hover: {
-      fg: #ffffff;
-      bg: #777777;
-      border: 1px solid #777777;
-      radius: 0.25rem;
-      shadow: 0 0 0.5rem 0 #000000;
-      transition: all 100ms ease-in-out;
-    };
-    active: {
-      fg: #ffffff;
-      bg: #777777;
-      border: 1px solid #777777;
-      radius: 0.25rem;
-      shadow: 0 0 0.5rem 0 #000000;
-    };
-  };
-  padding: 1rem;
-  gap: 1rem;
-  transition: all 200ms ease-in-out;
+  #{$theme}#{$color}: #ffffff;
+  #{$theme}#{$background}: #555555;
+  #{$theme}#{$background}: 1px solid #555555;
+  #{$theme}#{$shadow}: 0 0 0.5rem 0 #000000;
+  #{$theme}#{$accent}: #445599;
+  #{$theme}#{$radius}: 0.5rem;
+  #{$theme}#{$padding}: 1rem;
+  #{$theme}#{$gap}: 1rem;
+  #{$theme}#{$transition}: all 200ms ease-in-out;
+  #{$theme}#{$separator}#{$size}: 0.125rem;
+  #{$theme}#{$separator}#{$color}: #555555;
+
+  // font
+  #{$theme}#{$family}: Inter;
+  #{$theme}#{$size}: 0.9rem;
+  #{$theme}#{$weight}: 400;
+
+  // button
+  #{$theme}#{$color}: #ffffff;
+  #{$theme}#{$background}: #666666;
+  #{$theme}#{$border}: 1px solid #666666;
+  #{$theme}#{$font}#{$family}: Inter;
+  #{$theme}#{$font}#{$size}: 0.9rem;
+  #{$theme}#{$font}#{$weight}: 400;
+  #{$theme}#{$radius}: 0.25rem;
+  #{$theme}#{$shadow}: 0 0 0.5rem 0 #000000;
+  #{$theme}#{$button}#{$height}: 1.75rem;
+  #{$theme}#{$padding}#{$horizontal}: 0.5rem;
+  // hover
+  #{$theme}#{$button}#{$hover}#{$color}: #ffffff;
+  #{$theme}#{$button}#{$hover}#{$background}: #777777;
+  #{$theme}#{$button}#{$hover}#{$border}: 1px solid #777777;
+  #{$theme}#{$button}#{$hover}#{$radius}: 0.25rem;
+  #{$theme}#{$button}#{$hover}#{$shadow}: 0 0 0.5rem 0 #000000;
+  #{$theme}#{$button}#{$hover}#{$transition}: all 100ms ease-in-out;
+  // active
+  #{$theme}#{$button}#{$active}#{$color}: #000000;
+  #{$theme}#{$button}#{$active}#{$background}: #777777;
+  #{$theme}#{$button}#{$active}#{$border}: 1px solid #777777;
+  #{$theme}#{$button}#{$active}#{$radius}: 0.25rem;
+  #{$theme}#{$button}#{$active}#{$shadow}: 0 0 0.5rem 0 #000000;
+
+  // header
+  #{$theme}#{$header}#{$color}: #ffffff;
+  #{$theme}#{$header}#{$font}#{$family}: Inter;
+  #{$theme}#{$header}#{$font}#{$size}: 1.2rem;
+  #{$theme}#{$header}#{$font}#{$weight}: 700;
+  #{$theme}#{$header}#{$padding}#{$vertical}: 0.5rem;
+  #{$theme}#{$header}#{$padding}#{$horizontal}: 0.25rem;
+}
+
+.mobile {
+  .level0 {
+    #{$theme}#{$button}#{$height}: 2.5rem;
+  }
+
+  .level1 {
+    #{$theme}#{$button}#{$height}: 2.5rem;
+  }
+
+  .level2 {
+    #{$theme}#{$button}#{$height}: 2.5rem;
+  }
+
+  .level3 {
+    #{$theme}#{$button}#{$height}: 2.5rem;
+  }
 }

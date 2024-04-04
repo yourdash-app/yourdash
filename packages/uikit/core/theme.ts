@@ -19,7 +19,13 @@ export function loadThemeLevel(element: HTMLElement, levelName: 0 | 1 | 2 | 3) {
     3: theme.level3,
   };
 
+  element?.classList.add(theme.theme);
   element.classList.add(themeLevels[levelName]);
+
+  if (window.__uikit__.isMobile) {
+    element?.setAttribute("uikit-mobile", "true");
+    element?.classList.add(theme.mobile);
+  }
 
   return;
 }

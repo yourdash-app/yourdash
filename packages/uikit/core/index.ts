@@ -3,6 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import isMobileDevice from "@yourdash/shared/web/helpers/isPhone.js";
 import { ComponentType } from "./component/componentType.js";
 import { AnyComponent, AnyComponentOrHTMLElement } from "./component/type.js";
 import ContentRoot, { ContentRootProps } from "./contentRoot";
@@ -13,6 +14,7 @@ declare global {
   interface Window {
     __uikit__: {
       uikit: UIKit;
+      isMobile: boolean;
     };
   }
 }
@@ -50,7 +52,14 @@ export default class UIKit {
 
   constructor() {
     this.looseRoots = [];
-    window.__uikit__ = { uikit: this };
+    window.__uikit__ = { uikit: this, isMobile: false };
+
+    // DEBUG!
+    window.__uikit__.isMobile = true;
+
+    if (isMobileDevice()) {
+      window.__uikit__.isMobile = true;
+    }
 
     return this;
   }
