@@ -148,6 +148,11 @@ export default class UKHTMLElement {
     return this;
   }
 
+  clearChildren() {
+    this.rawHtmlElement.innerHTML = "";
+    return this;
+  }
+
   setInnerText(text: string) {
     this.rawHtmlElement.innerText = text;
     return this;

@@ -12,6 +12,7 @@ import IconButton from "@yourdash/uikit/components/iconButton/iconButton.js";
 import Image from "@yourdash/uikit/components/image/image.js";
 import Text from "@yourdash/uikit/components/text/text.js";
 import ReactUIKitView from "@yourdash/uikit/core/ReactUIKitView.js";
+import UKRouter from "@yourdash/uikit/core/router/router.js";
 import * as React from "react";
 
 const UIKitDemoApplication: React.FC = () => {
@@ -78,11 +79,24 @@ const UIKitDemoApplication: React.FC = () => {
                 )
                 .addChild(
                   new IconButton().$((c) => {
-                    c.icon.setIcon(UKIcon.Beaker);
+                    c.icon.setIcon(UKIcon.ChevronRight);
+                    c.onClick(() => {
+                      window.location.hash = "#/app/a/uikit_demo/test";
+                    });
+                  }),
+                )
+                .addChild(
+                  new IconButton().$((c) => {
+                    c.icon.setIcon(UKIcon.ChevronLeft);
+                    c.onClick(() => {
+                      window.location.hash = "#/app/a/uikit_demo";
+                    });
                   }),
                 ),
             ),
           );
+
+          root.addChild(new UKRouter().setBasePath("/app/a/uikit_demo").addRoute("/test", new Text().setText("Hello World from /test!")));
         }}
       />
     </>

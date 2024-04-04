@@ -41,14 +41,14 @@
   #{$theme}#{$button}#{$hover}#{$border}: 1px solid #555555;
   #{$theme}#{$button}#{$hover}#{$radius}: 0.5rem;
   #{$theme}#{$button}#{$hover}#{$shadow}: 0 0 0.5rem 0 #000000;
-  #{$theme}#{$button}#{$hover}#{$transition}: all 0.2s ease-in-out;
+  #{$theme}#{$button}#{$hover}#{$transition}: all 100ms ease-in-out;
   // active
   #{$theme}#{$button}#{$active}#{$color}: #000000;
   #{$theme}#{$button}#{$active}#{$background}: #555555;
   #{$theme}#{$button}#{$active}#{$border}: 1px solid #555555;
   #{$theme}#{$button}#{$active}#{$radius}: 0.5rem;
   #{$theme}#{$button}#{$active}#{$shadow}: 0 0 0.5rem 0 #000000;
-  #{$theme}#{$button}#{$active}#{$transition}: all 0.2s ease-in-out;
+  #{$theme}#{$button}#{$active}#{$transition}: all 50ms ease-in-out;
 
   // font
   #{$theme}#{$font}#{$family}: Inter;

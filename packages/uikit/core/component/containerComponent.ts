@@ -65,6 +65,8 @@ export class ContainerComponent<ComponentSlots extends string[] = []> {
   }
 
   render() {
+    this.htmlElement.clearChildren();
+
     if (!this.__internals.isInitialized) {
       initializeComponent(this);
     }
