@@ -13,22 +13,21 @@ export default class Card extends ContainerComponent<["actions"]> {
     super(["actions"]);
 
     this.htmlElement = new DivElement();
-
-    return this;
-  }
-
-  public render() {
     if (this.__internals.treeContext.level <= 3) {
       // @ts-ignore
       this.__internals.treeContextChildOverrides.level = this.__internals.treeContext.level + 1;
     }
 
-    super.render();
-
     loadThemeLevel(this.htmlElement.rawHtmlElement, this.__internals.treeContext.level);
 
     this.htmlElement.setAttribute("uk-level", this.__internals.treeContext.level.toString());
     this.htmlElement.addClass(styles.component);
+
+    return this;
+  }
+
+  public render() {
+    super.render();
 
     return this;
   }

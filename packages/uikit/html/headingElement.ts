@@ -5,9 +5,21 @@
 
 import UKHTMLElement from "../core/htmlElement.js";
 
-export default class SpanElement extends UKHTMLElement {
+export default class HeadingElement extends UKHTMLElement<HTMLHeadingElement> {
+  level: 1 | 2 | 3 | 4 | 5 | 6 = 1;
+
   constructor() {
-    super(document.createElement("span"));
+    super(document.createElement("h1"));
+
+    this.setLevel(1);
+
+    return this;
+  }
+
+  setLevel(level: HeadingElement["level"]) {
+    this.level = level;
+
+    this.rawHtmlElement = document.createElement(`h${level}`);
 
     return this;
   }

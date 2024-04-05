@@ -1,9 +1,9 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import UKHTMLElement from "../core/htmlElement";
+import UKHTMLElement from "../core/htmlElement.js";
 
 export default class CommentElement extends UKHTMLElement {
   constructor() {

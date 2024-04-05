@@ -3,9 +3,12 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import Card from "../../components/card/card.js";
 import DivElement from "../../html/divElement.js";
 import { ContainerComponent } from "../component/containerComponent.js";
 import { AnyComponentOrHTMLElement } from "../component/type.js";
+import Text from "../../components/text/text.js";
+import styles from "./router.module.scss";
 
 export default class UKRouter extends ContainerComponent {
   private readonly urlChangeListener: () => void;
@@ -63,6 +66,15 @@ export default class UKRouter extends ContainerComponent {
 
     if (!this.routes[path]) {
       console.warn(`Route '${path}' not found!`);
+      this.__internals.children.push(
+        new DivElement().$((c) => {
+          c.addClass(styles.pageNotFound);
+          c.addChild(new Card().addChild(new Text().setText(`Route '${path}' not found!`).htmlElement.setStyle("color", "red")));
+        }),
+      );
+
+      this.render();
+
       return this;
     }
 

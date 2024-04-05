@@ -22,40 +22,10 @@ const UIKitDemoApplication: React.FC = () => {
       <ReactUIKitView
         onLoad={(root) => {
           const card = new Card();
-          root.addChild(card);
 
-          card.addChild(
-            new Button().setText("Hello World!").onClick(() => {
-              console.log("button clicked");
-            }),
-          );
-          card
-            .addChild(new Card().addChild(new Button().setText("Hello world")))
-            .addChild(
-              new Button().setText("Hello World!").onClick(() => {
-                console.log("button clicked");
-              }),
-            )
-            .addChild(
-              new Card().addChild(
-                new Button().setText("Hello World!").onClick(() => {
-                  console.log("button clicked");
-                }),
-              ),
-            )
-            .addChild(
-              new Card().addChild(
-                new Card().addChild(
-                  new Button().setText("Hello World!").onClick(() => {
-                    console.log("button clicked");
-                  }),
-                ),
-              ),
-            )
-            .addChild(new Text().setText("Hello World!"))
-            .addChild(new Text().setText("Hello World!"))
-            .addChild(new Text().setText("Hello World!"))
-            .addChild(new Image().setSrc("https://picsum.photos/768/256"));
+          card.addChild(new Icon().setIcon(UKIcon.Accessibility).setSize("2.5rem"));
+
+          root.addChild(card).addChild(new Text().setText("Hello World!")).addChild(new Image().setSrc("https://picsum.photos/768/256"));
 
           root.addChild(new Text().setText("Hello World!"));
 
@@ -79,17 +49,17 @@ const UIKitDemoApplication: React.FC = () => {
                 )
                 .addChild(
                   new IconButton().$((c) => {
-                    c.icon.setIcon(UKIcon.ChevronRight);
+                    c.icon.setIcon(UKIcon.ChevronLeft);
                     c.onClick(() => {
-                      window.location.hash = "#/app/a/uikit_demo/test";
+                      window.location.hash = "#/app/a/uikit_demo";
                     });
                   }),
                 )
                 .addChild(
                   new IconButton().$((c) => {
-                    c.icon.setIcon(UKIcon.ChevronLeft);
+                    c.icon.setIcon(UKIcon.ChevronRight);
                     c.onClick(() => {
-                      window.location.hash = "#/app/a/uikit_demo";
+                      window.location.hash = "#/app/a/uikit_demo/test";
                     });
                   }),
                 ),

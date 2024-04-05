@@ -6,7 +6,7 @@
 import generateUUID from "@yourdash/shared/web/helpers/uuid.js";
 import { Merge } from "type-fest";
 import { ComponentType } from "./component/componentType.js";
-import { ContainerComponentInternals } from "./component/containerComponent.js";
+import { ContainerComponent, ContainerComponentInternals } from "./component/containerComponent.js";
 import { AnyComponent, AnyComponentOrHTMLElement } from "./component/type.js";
 import { appendComponentToElement, initializeComponent } from "./index.js";
 
@@ -20,11 +20,11 @@ type OverrideProperties<
   },
 > = Merge<TOriginal, TOverride>;
 
-export default class UKHTMLElement {
+export default class UKHTMLElement<HTMLRawElement extends HTMLElement = HTMLElement> {
   __internals: OverrideProperties<ContainerComponentInternals, { children: (AnyComponent | UKHTMLElement)[] }>;
-  rawHtmlElement: HTMLElement;
+  rawHtmlElement: HTMLRawElement;
 
-  constructor(htmlElement: HTMLElement, props?: { debugId?: string }) {
+  constructor(htmlElement: HTMLRawElement, props?: { debugId?: string }) {
     this.__internals = {
       debugId: generateUUID(),
       // When a component is created, it's creator should define its parent
@@ -69,6 +69,14 @@ export default class UKHTMLElement {
     if (!this.rawHtmlElement.classList.contains(name)) {
       this.rawHtmlElement.classList.add(name);
     }
+
+    return this;
+  }
+
+  addClasses(name: string[]) {
+    name.forEach((n: string) => {
+      if (!this.rawHtmlElement.classList.contains(n)) this.addClass(n);
+    });
 
     return this;
   }
@@ -164,6 +172,8 @@ export default class UKHTMLElement {
   }
 
   render() {
+    this.clearChildren();
+
     if (!this.__internals.isInitialized) {
       initializeComponent(this);
     }
@@ -171,8 +181,35 @@ export default class UKHTMLElement {
     this.__internals.renderCount++;
     console.debug("UIKIT:RENDER", this);
 
-    this.__internals.children.map((child: AnyComponentOrHTMLElement) => {
+    this.__internals.children.map((child) => {
       appendComponentToElement(this.rawHtmlElement, child);
+
+      if (child.__internals.componentType === ComponentType.HTMLElement) {
+        const childComponent = child as UKHTMLElement;
+        childComponent.__internals.parentComponent = this as unknown as ContainerComponent;
+        childComponent.__internals.treeContext = { ...this.__internals.treeContext };
+
+        if (this.__internals.treeContextChildOverrides) {
+          Object.keys(this.__internals.treeContextChildOverrides).map((override) => {
+            // @ts-ignore
+            child.__internals.treeContext[override] = this.__internals.treeContextChildOverrides[override];
+          });
+        }
+
+        return this;
+      }
+
+      const childComponent = child as AnyComponent;
+
+      childComponent.__internals.parentComponent = this as unknown as ContainerComponent;
+      childComponent.__internals.treeContext = { ...this.__internals.treeContext };
+
+      if (this.__internals.treeContextChildOverrides) {
+        Object.keys(this.__internals.treeContextChildOverrides).map((override) => {
+          // @ts-ignore
+          child.__internals.treeContext[override] = this.__internals.treeContextChildOverrides[override];
+        });
+      }
 
       child.render();
     });
