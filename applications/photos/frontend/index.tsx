@@ -15,8 +15,9 @@ const PhotosRouter: React.FC = () => {
         const router = new UKRouter();
         router.setBasePath("/app/a/photos");
 
-        router.addRoute("/test", new Text().setText("Hello World!"));
-        router.addRoute("/test/:hello/world", new Text().setText("Hello World!"));
+        router.addRoute("/", () => new Text().setText("Hello World from /!"));
+        router.addRoute("/test", () => new Text().setText("Hello World from test!"));
+        router.addRoute("/test/:hello/world/", () => new Text().setText(`Hello World! ${router.params}`));
         cr.addChild(router);
 
         router.reloadRoutes();

@@ -3,6 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import loginPage from "@yourdash/web-client/src/root/login/views/LoginPage.js";
 import Card from "../../components/card/card.js";
 import Heading from "../../components/heading/heading.js";
 import DivElement from "../../html/divElement.js";
@@ -11,7 +12,7 @@ import { AnyComponentOrHTMLElement } from "../component/type.js";
 import styles from "./router.module.scss";
 
 interface Route {
-  component: AnyComponentOrHTMLElement;
+  component: () => AnyComponentOrHTMLElement;
   segments: { type: "normal" | "param"; value: string }[];
 }
 
@@ -54,11 +55,15 @@ export default class UKRouter extends ContainerComponent {
     return path
       .split("/")
       .filter((s) => s !== "")
-      .map((s) => ({ type: s[0] === ":" ? "param" : ("normal" as "normal" | "param"), value: s[0] === ":" ? s.slice(1) : s }));
+      .map((s) => ({ type: s[0] === ":" ? "param" : ("normal" as "normal" | "param"), value: s[0] === ":" ? s.slice(1) : s }))
+      .filter((s) => s.value !== "");
   }
 
-  addRoute(path: string, component: AnyComponentOrHTMLElement) {
-    const fullPath = this.basePath + path;
+  addRoute(path: string, component: () => AnyComponentOrHTMLElement) {
+    let fullPath = this.basePath + path;
+
+    if (path === "/") fullPath = this.basePath;
+
     this.routes[fullPath] = { component: component, segments: this.splitPathIntoSegments(fullPath) };
 
     console.log(this.routes[fullPath]);
@@ -76,17 +81,21 @@ export default class UKRouter extends ContainerComponent {
       const pathSegmentSplit = remainingPath.split("/");
 
       if (segment.type === "param") {
+        console.log(`setting param for ${segment.value}: ${pathSegmentSplit[0]}`);
+
         params[segment.value] = pathSegmentSplit[0];
         remainingPath = pathSegmentSplit[1];
 
         continue;
       }
 
-      if (segment.type === pathSegmentSplit[0]) {
+      if (segment.value === pathSegmentSplit[0]) {
         remainingPath = pathSegmentSplit[1];
-      } else {
-        return false;
+
+        continue;
       }
+
+      return false;
     }
 
     return params;
@@ -95,13 +104,16 @@ export default class UKRouter extends ContainerComponent {
   private trimPossibleRoutes(path: string): Route[] {
     const trimmedRoutes = Object.values(this.routes).map((val) => {
       const firstSegment = val.segments[0];
+      const firstPathSegment = path.split("/")[1].split("/")[0];
+
+      console.log(val.segments);
 
       // count as a match if the first segment is a param (this is ok as this method is only to trim the amount of possible routes)
       if (firstSegment.type === "param") {
         return val;
       }
 
-      if (path.startsWith(firstSegment.value)) {
+      if (firstPathSegment === firstSegment.value) {
         return val;
       }
 
@@ -111,17 +123,27 @@ export default class UKRouter extends ContainerComponent {
     return trimmedRoutes.filter((route) => route !== undefined) as Route[];
   }
 
+  private getRouteForPath(path: string): Route | undefined {
+    const possibleRoutes = this.trimPossibleRoutes(path);
+
+    possibleRoutes.map((route) => {
+      console.log(this.doesPathMatchSegments(path, route.segments));
+
+      if (this.doesPathMatchSegments(path, route.segments)) return route;
+    });
+
+    return undefined;
+  }
+
   private loadRoute(path: string) {
     this.__internals.children = [];
     this.htmlElement.clearChildren();
 
-    const possibleRoutes = this.trimPossibleRoutes(path);
-    console.log({ possibleRoutes });
-    possibleRoutes.forEach((route) => {
-      console.log({ "doesMatch?": this.doesPathMatchSegments(path, route.segments) });
-    });
+    const route = this.getRouteForPath(path);
 
-    if (!this.routes[path]) {
+    console.log(route);
+
+    if (!route) {
       console.warn(`Route for '${path}' not found!`);
       this.__internals.children.push(
         new DivElement().$((c) => {
@@ -142,7 +164,7 @@ export default class UKRouter extends ContainerComponent {
       return this;
     }
 
-    this.__internals.children.push(this.routes[path].component);
+    this.__internals.children.push(this.routes[path].component());
 
     this.render();
 
