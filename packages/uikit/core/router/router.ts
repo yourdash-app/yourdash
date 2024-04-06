@@ -3,7 +3,6 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { pathToRegexp } from "path-to-regexp";
 import Card from "../../components/card/card.js";
 import Heading from "../../components/heading/heading.js";
 import DivElement from "../../html/divElement.js";
@@ -11,10 +10,15 @@ import { ContainerComponent } from "../component/containerComponent.js";
 import { AnyComponentOrHTMLElement } from "../component/type.js";
 import styles from "./router.module.scss";
 
+interface Route {
+  component: AnyComponentOrHTMLElement;
+  segments: { type: "normal" | "param"; value: string }[];
+}
+
 export default class UKRouter extends ContainerComponent {
   private readonly urlChangeListener: () => void;
   private basePath: string = "";
-  private routes: { [route: string]: AnyComponentOrHTMLElement } = {};
+  private routes: { [route: string]: Route } = {};
   private currentRoute: string = "";
   params: { [key: string]: string } = {};
 
@@ -46,54 +50,79 @@ export default class UKRouter extends ContainerComponent {
     return this.basePath;
   }
 
-  addRoute(path: string, component: AnyComponentOrHTMLElement) {
-    this.routes[this.basePath + path] = component;
+  private splitPathIntoSegments(path: string) {
+    return path
+      .split("/")
+      .filter((s) => s !== "")
+      .map((s) => ({ type: s[0] === ":" ? "param" : ("normal" as "normal" | "param"), value: s[0] === ":" ? s.slice(1) : s }));
+  }
 
-    console.log(`Route '${this.basePath}${path}' added!`);
+  addRoute(path: string, component: AnyComponentOrHTMLElement) {
+    const fullPath = this.basePath + path;
+    this.routes[fullPath] = { component: component, segments: this.splitPathIntoSegments(fullPath) };
+
+    console.log(this.routes[fullPath]);
+
+    console.log(`Route '${fullPath}' added!`);
 
     return this;
   }
 
-  // insp: https://github.com/expressjs/express/blob/master/lib/router/layer.js
+  private doesPathMatchSegments(path: string, segments: { type: "normal" | "param"; value: string }[]) {
+    let remainingPath = path;
+    const params: { [name: string]: string } = {};
 
-  private findRoute(path: string) {
-    if (path === null) return "";
+    for (const segment of segments) {
+      const pathSegmentSplit = remainingPath.split("/");
 
-    Object.keys(this.routes).forEach((key) => {
-      const regexp = pathToRegexp(key, []);
+      if (segment.type === "param") {
+        params[segment.value] = pathSegmentSplit[0];
+        remainingPath = pathSegmentSplit[1];
 
-      const regexMatch = regexp.exec(path);
-
-      if (regexMatch) {
-        console.log(regexMatch, path, key);
-        console.log(regexMatch.length);
-
-        // this.params = regexMatch[0];
-        this.currentRoute = key;
+        continue;
       }
-    });
-  }
 
-  loadRoute(path: string) {
-    const foundRoute = this.findRoute(path) || "";
-
-    if (foundRoute === "") {
-      console.warn(`Route for '${path}' not found!`);
-
-      return this;
+      if (segment.type === pathSegmentSplit[0]) {
+        remainingPath = pathSegmentSplit[1];
+      } else {
+        return false;
+      }
     }
 
-    this.__loadRoute(foundRoute);
-
-    return this;
+    return params;
   }
 
-  private __loadRoute(path: string) {
+  private trimPossibleRoutes(path: string): Route[] {
+    const trimmedRoutes = Object.values(this.routes).map((val) => {
+      const firstSegment = val.segments[0];
+
+      // count as a match if the first segment is a param (this is ok as this method is only to trim the amount of possible routes)
+      if (firstSegment.type === "param") {
+        return val;
+      }
+
+      if (path.startsWith(firstSegment.value)) {
+        return val;
+      }
+
+      return undefined;
+    });
+
+    return trimmedRoutes.filter((route) => route !== undefined) as Route[];
+  }
+
+  private loadRoute(path: string) {
     this.__internals.children = [];
     this.htmlElement.clearChildren();
 
+    const possibleRoutes = this.trimPossibleRoutes(path);
+    console.log({ possibleRoutes });
+    possibleRoutes.forEach((route) => {
+      console.log({ "doesMatch?": this.doesPathMatchSegments(path, route.segments) });
+    });
+
     if (!this.routes[path]) {
-      console.warn(`Route '${path}' not found!`);
+      console.warn(`Route for '${path}' not found!`);
       this.__internals.children.push(
         new DivElement().$((c) => {
           c.addClass(styles.pageNotFound);
@@ -113,7 +142,7 @@ export default class UKRouter extends ContainerComponent {
       return this;
     }
 
-    this.__internals.children.push(this.routes[path]);
+    this.__internals.children.push(this.routes[path].component);
 
     this.render();
 

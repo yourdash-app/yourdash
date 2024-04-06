@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -55,7 +55,7 @@ const StoreApplicationRoot: React.FC = () => {
       {applications.length !== 0 && (
         <section className={"grid grid-cols-1 gap-2 animate__animated animate__fadeIn animate__500ms md:grid-cols-2 lg:grid-cols-3"}>
           {applications.map((application) => (
-            <StoreApplication id={application.id} displayName={application.displayName} key={application.id} icon={application.icon} />
+            <StoreApplication id={application.value} displayName={application.displayName} key={application.value} icon={application.icon} />
           ))}
         </section>
       )}

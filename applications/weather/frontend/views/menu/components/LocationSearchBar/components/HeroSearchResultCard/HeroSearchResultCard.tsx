@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -22,7 +22,7 @@ const HeroSearchResultCard: React.FC<{ props: ILocationSearchResult }> = ({ prop
       }}
       className={clippy("animate__animated animate__fadeIn", styles.component)}
       onClick={() => {
-        navigate(`/app/a/weather/${props.id}`);
+        navigate(`/app/a/weather/${props.value}`);
       }}
     >
       <h2 className={"text-4xl font-bold tracking-wide"}>

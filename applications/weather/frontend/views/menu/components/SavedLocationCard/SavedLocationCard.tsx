@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -20,7 +20,7 @@ const SavedLocationCard: React.FC<{ props: ILocationSearchResult }> = ({ props }
         "hover:bg-button-hover-bg active:bg-button-active-bg hover:text-button-hover-fg active:text-button-active-fg transition-[var(--transition)] cursor-pointer w-full bg-button-bg text-button-fg",
       )}
       onClick={() => {
-        navigate(`/app/a/weather/${props.id}`);
+        navigate(`/app/a/weather/${props.value}`);
       }}
     >
       <h2 className={"text-2xl font-semibold tracking-wide"}>

@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -30,7 +30,7 @@ const LocationSearchBar: React.FC = () => {
           placeholder={"Search Weather Locations"}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
-              if (searchResults[0]) navigate(`/app/a/weather/${searchResults[0].id}`);
+              if (searchResults[0]) navigate(`/app/a/weather/${searchResults[0].value}`);
             }
           }}
           onChange={(value: string) => {
@@ -53,9 +53,9 @@ const LocationSearchBar: React.FC = () => {
           hasRecievedResonse && searchResults.length !== 0 ? (
             <section className={styles.results}>
               {searchResults.map((result, index) => {
-                if (index === 0) return <HeroSearchResultCard key={result.id} props={result} />;
+                if (index === 0) return <HeroSearchResultCard key={result.value} props={result} />;
 
-                return <SearchResultCard key={result.id} props={result} />;
+                return <SearchResultCard key={result.value} props={result} />;
               })}
             </section>
           ) : (

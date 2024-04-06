@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -55,7 +55,7 @@ const FilesLayout: React.FC<IFilesLayout> = ({ children }) => {
           },
           {
             type: SIDEBAR_ITEM_TYPE.Separator,
-            id: "sep1",
+            value: "sep1",
           },
         ]}
         title={"Files"}

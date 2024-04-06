@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -70,19 +70,15 @@ export default class StoreModule extends BackendModule {
             const unreadApplication = new YourDashApplication(applicationName);
 
             if (!(await unreadApplication.exists())) {
-              return { id: applicationName };
+              return { value: applicationName };
             }
 
             const application = await unreadApplication.read();
 
             return {
-              id: applicationName,
+              value: applicationName,
               displayName: application.getDisplayName() || applicationName,
-              icon: coreApi.image.createAuthenticatedImage(
-                username,
-                AUTHENTICATED_IMAGE_TYPE.FILE,
-                await application.getIconPath(),
-              ),
+              icon: coreApi.image.createAuthenticatedImage(username, AUTHENTICATED_IMAGE_TYPE.FILE, await application.getIconPath()),
               installed: application.isInstalled(),
             };
           }),
@@ -117,18 +113,14 @@ export default class StoreModule extends BackendModule {
           const application = await new YourDashApplication(app).read();
           applicationsOutput.push({
             name: application.getName(),
-            icon: coreApi.image.createAuthenticatedImage(
-              username,
-              AUTHENTICATED_IMAGE_TYPE.FILE,
-              await application.getIconPath(),
-            ),
+            icon: coreApi.image.createAuthenticatedImage(username, AUTHENTICATED_IMAGE_TYPE.FILE, await application.getIconPath()),
             displayName: application.getDisplayName(),
           });
         }),
       );
 
       return res.json(<IStoreCategory>{
-        id: id,
+        value: id,
         applications: applicationsOutput,
         icon: `data:image/avif;base64,${getInstanceLogoBase64()}`,
         displayName: id.slice(0, 1).toUpperCase() + id.slice(1),
@@ -170,11 +162,7 @@ export default class StoreModule extends BackendModule {
       }
       const application = await applicationUnread.read();
 
-      coreApi.globalDb.set("core:installedApplications", [
-        ...coreApi.globalDb.get("core:installedApplications"),
-        id,
-        ...application.getDependencies(),
-      ]);
+      coreApi.globalDb.set("core:installedApplications", [...coreApi.globalDb.get("core:installedApplications"), id, ...application.getDependencies()]);
       await coreApi.moduleManager.loadModule(id, path.join(process.cwd(), `../applications/${id}/backend/`));
       return res.json({ success: true });
     });

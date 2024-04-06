@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -76,7 +76,7 @@ export default class ChatbotsModule extends BackendModule {
         await coreApi.fs.getFile(path.join(botDirectory.path, "bot.json"))
       ).write(
         JSON.stringify({
-          id: botId,
+          value: botId,
           ownerTeam: teamId,
           token: undefined,
         }),

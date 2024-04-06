@@ -1,5 +1,5 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -86,7 +86,7 @@ const SideBar: React.FC<ISideBar> = ({ title, items, defaultState }) => {
                     </button>
                   );
                 case SIDEBAR_ITEM_TYPE.Separator:
-                  return <div key={i.id} className={styles.itemSeparator} />;
+                  return <div key={i.value} className={styles.itemSeparator} />;
                 default:
                   console.log("this is unreachable (if you see this, please make sure to type your sidebar items)");
                   break;
@@ -140,7 +140,7 @@ const SideBar: React.FC<ISideBar> = ({ title, items, defaultState }) => {
                     </button>
                   );
                 case SIDEBAR_ITEM_TYPE.Separator:
-                  return <div key={i.id} className={styles.itemSeparator} />;
+                  return <div key={i.value} className={styles.itemSeparator} />;
                 default:
                   console.log("this is unreachable (if you see this, please make sure to type your sidebar items)");
                   break;
@@ -189,7 +189,7 @@ const SideBar: React.FC<ISideBar> = ({ title, items, defaultState }) => {
                     </button>
                   );
                 case SIDEBAR_ITEM_TYPE.Separator:
-                  return <div key={i.id} className={styles.itemSeparator} />;
+                  return <div key={i.value} className={styles.itemSeparator} />;
                 default:
                   console.log("this is unreachable (if you see this, please make sure to type your sidebar items)");
                   break;

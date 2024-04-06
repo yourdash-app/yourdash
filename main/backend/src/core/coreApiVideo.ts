@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -62,10 +62,7 @@ export default class CoreApiVideo {
     this.coreApi.request.get("/core/auth-video/:username/:id", async (req, res) => {
       const { username, id } = req.params;
 
-      this.coreApi.log.info(
-        "Authenticated video range requested",
-        JSON.stringify({ username, id, range: req.headers.range }),
-      );
+      this.coreApi.log.info("Authenticated video range requested", JSON.stringify({ username, id: value, range: req.headers.range }));
 
       const video = this.AUTHENTICATED_VIDEOS?.[username]?.[id];
 
@@ -97,9 +94,7 @@ export default class CoreApiVideo {
       this.__internal__removeAuthenticatedVideo(username, id);
 
       try {
-        return res.sendFile(
-          pth.resolve(pth.join(process.cwd(), "./src/defaults/default_video.mp4")) as unknown as string,
-        );
+        return res.sendFile(pth.resolve(pth.join(process.cwd(), "./src/defaults/default_video.mp4")) as unknown as string);
       } catch (e) {
         return;
       }

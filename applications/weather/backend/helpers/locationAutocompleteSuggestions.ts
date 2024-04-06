@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -9,10 +9,7 @@ import coreApi from "@yourdash/backend/src/core/coreApi.js";
 
 const geolocationSuggestionsCache = new Map<string, ILocationSearchResult[]>();
 
-export default async function getGeolocationSuggestions(
-  locationName: string,
-  suggestionCount: number,
-): Promise<ILocationSearchResult[]> {
+export default async function getGeolocationSuggestions(locationName: string, suggestionCount: number): Promise<ILocationSearchResult[]> {
   locationName = locationName.replaceAll(" ", "+");
   if (locationName.endsWith("+")) locationName = locationName.slice(0, -1);
   if (locationName.startsWith("+")) locationName = locationName.slice(1);
@@ -38,7 +35,7 @@ export default async function getGeolocationSuggestions(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const output = response.results.map((result: any) => {
       return {
-        id: result.id,
+        value: result.value,
         address: {
           name: result.name,
           admin1: result.admin1,

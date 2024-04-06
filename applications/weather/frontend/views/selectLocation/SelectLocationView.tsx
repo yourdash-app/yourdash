@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -17,13 +17,7 @@ import RAIN_BACKGROUND from "../../assets/weatherBackgrounds/rain1.jpg";
 import SNOW_BACKGROUND from "../../assets/weatherBackgrounds/snow.jpg";
 import CLEAR_BACKGROUND from "../../assets/weatherBackgrounds/clear.jpg";
 
-const BACKGROUND_IMAGES: string[] = [
-  THUNDER_BACKGROUND,
-  CLOUDY_BACKGROUND,
-  RAIN_BACKGROUND,
-  SNOW_BACKGROUND,
-  CLEAR_BACKGROUND,
-];
+const BACKGROUND_IMAGES: string[] = [THUNDER_BACKGROUND, CLOUDY_BACKGROUND, RAIN_BACKGROUND, SNOW_BACKGROUND, CLEAR_BACKGROUND];
 
 const SelectLocationView: React.FC = () => {
   const navigate = useNavigate();
@@ -51,10 +45,7 @@ const SelectLocationView: React.FC = () => {
         <img src={APPLICATION_ICON} alt={""} className={"aspect-square h-16"} />
         <h2 className={"text-base-50 font-semibold text-4xl drop-shadow-lg"}>{trans("APPLICATION_BRANDING")}</h2>
       </header>
-      <Card
-        className={"gap-2 flex flex-col p-4 w-full lg:max-w-4xl md:max-w-2xl max-w-[calc(100vw-1rem)] shadow-2xl"}
-        showBorder
-      >
+      <Card className={"gap-2 flex flex-col p-4 w-full lg:max-w-4xl md:max-w-2xl max-w-[calc(100vw-1rem)] shadow-2xl"} showBorder>
         <div className={"flex gap-2 items-center justify-center w-full"}>
           <TextInput
             accessibleName={"weather location"}
@@ -63,7 +54,7 @@ const SelectLocationView: React.FC = () => {
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 if (locationQuery[0]) {
-                  navigate(`/app/a/weather/${locationQuery[0].id}`);
+                  navigate(`/app/a/weather/${locationQuery[0].value}`);
                 }
               }
             }}
@@ -97,13 +88,13 @@ const SelectLocationView: React.FC = () => {
           <div className={clippy("grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 w-full")}>
             {locationQuery.map((item, ind) => (
               <Card
-                key={item.id}
+                key={item.value}
                 className={clippy(
                   "hover:bg-button-hover-bg active:bg-button-active-bg hover:text-button-hover-fg active:text-button-active-fg transition-[var(--transition)] cursor-pointer w-full",
                   ind === 0 ? "bg-button-hover-bg text-button-hover-fg" : "bg-button-bg text-button-fg",
                 )}
                 onClick={() => {
-                  navigate(`/app/a/weather/${item.id}`);
+                  navigate(`/app/a/weather/${item.value}`);
                 }}
               >
                 <h2 className={"text-2xl font-semibold tracking-wide"}>
