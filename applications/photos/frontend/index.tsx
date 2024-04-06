@@ -3,35 +3,25 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import Redirect from "@yourdash/chiplet/components/redirect/Redirect";
+import ReactUIKitView from "@yourdash/uikit/core/ReactUIKitView.js";
+import UKRouter from "@yourdash/uikit/core/router/router.js";
 import React from "react";
-import { Routes, Route } from "react-router";
-import AlbumPage from "./pages/AlbumPage";
-import HomePage from "./pages/HomePage";
-import PhotoPage from "./pages/PhotoPage";
-import SearchPage from "./pages/SearchPage";
-import PhotosLayout from "./PhotosLayout";
+import Text from "@yourdash/uikit/components/text/text.js";
 
 const PhotosRouter: React.FC = () => {
   return (
-    <Routes>
-      <Route element={<PhotosLayout />}>
-        <Route index element={<HomePage />} />
-        <Route path={"search"} element={<SearchPage />} />
-        <Route path={"album"}>
-          <Route index element={<Redirect to={"/app/a/photos"} />} />
-          <Route path={"*"} element={<AlbumPage />} />
-        </Route>
-        <Route path={"photo"}>
-          <Route index element={<Redirect to={"/app/a/photos"} />} />
-          <Route path={"*"} element={<PhotoPage isPhoto={true} />} />
-        </Route>
-        <Route path={"video"}>
-          <Route index element={<Redirect to={"/app/a/photos"} />} />
-          <Route path={"*"} element={<PhotoPage isPhoto={false} />} />
-        </Route>
-      </Route>
-    </Routes>
+    <ReactUIKitView
+      onLoad={(cr) => {
+        const router = new UKRouter();
+        router.setBasePath("/app/a/photos");
+
+        router.addRoute("/test", new Text().setText("Hello World!"));
+        router.addRoute("/test/:hello/world", new Text().setText("Hello World!"));
+        cr.addChild(router);
+
+        router.reloadRoutes();
+      }}
+    />
   );
 };
 

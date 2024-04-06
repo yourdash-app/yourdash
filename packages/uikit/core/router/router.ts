@@ -3,18 +3,20 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import { pathToRegexp } from "path-to-regexp";
 import Card from "../../components/card/card.js";
+import Heading from "../../components/heading/heading.js";
 import DivElement from "../../html/divElement.js";
 import { ContainerComponent } from "../component/containerComponent.js";
 import { AnyComponentOrHTMLElement } from "../component/type.js";
-import Text from "../../components/text/text.js";
 import styles from "./router.module.scss";
 
 export default class UKRouter extends ContainerComponent {
   private readonly urlChangeListener: () => void;
   private basePath: string = "";
-  private routes: { [path: string]: AnyComponentOrHTMLElement } = {};
+  private routes: { [route: string]: AnyComponentOrHTMLElement } = {};
   private currentRoute: string = "";
+  params: { [key: string]: string } = {};
 
   constructor() {
     super();
@@ -28,8 +30,8 @@ export default class UKRouter extends ContainerComponent {
       this.loadRoute(location);
     };
 
+    // when the HashURL changes, load the new route or do nothing if it's the same
     window.addEventListener("hashchange", () => this.urlChangeListener());
-    this.urlChangeListener();
 
     return this;
   }
@@ -45,17 +47,43 @@ export default class UKRouter extends ContainerComponent {
   }
 
   addRoute(path: string, component: AnyComponentOrHTMLElement) {
-    this.routes[`${this.basePath}${path}`] = component;
+    this.routes[this.basePath + path] = component;
 
     console.log(`Route '${this.basePath}${path}' added!`);
 
     return this;
   }
 
-  loadRoute(path: string) {
-    this.currentRoute = path;
+  // insp: https://github.com/expressjs/express/blob/master/lib/router/layer.js
 
-    this.__loadRoute(this.currentRoute);
+  private findRoute(path: string) {
+    if (path === null) return "";
+
+    Object.keys(this.routes).forEach((key) => {
+      const regexp = pathToRegexp(key, []);
+
+      const regexMatch = regexp.exec(path);
+
+      if (regexMatch) {
+        console.log(regexMatch, path, key);
+        console.log(regexMatch.length);
+
+        // this.params = regexMatch[0];
+        this.currentRoute = key;
+      }
+    });
+  }
+
+  loadRoute(path: string) {
+    const foundRoute = this.findRoute(path) || "";
+
+    if (foundRoute === "") {
+      console.warn(`Route for '${path}' not found!`);
+
+      return this;
+    }
+
+    this.__loadRoute(foundRoute);
 
     return this;
   }
@@ -69,7 +97,14 @@ export default class UKRouter extends ContainerComponent {
       this.__internals.children.push(
         new DivElement().$((c) => {
           c.addClass(styles.pageNotFound);
-          c.addChild(new Card().addChild(new Text().setText(`Route '${path}' not found!`).htmlElement.setStyle("color", "red")));
+          c.addChild(
+            new Card().addChild(
+              new Heading().$((hc) => {
+                hc.setText(`-----=====-----\n404!\n-----=====-----\n\n'${path}' not found!`);
+                hc.htmlElement.addClass(styles.heading);
+              }),
+            ),
+          );
         }),
       );
 
@@ -85,8 +120,8 @@ export default class UKRouter extends ContainerComponent {
     return this;
   }
 
-  render() {
-    super.render();
+  reloadRoutes() {
+    this.urlChangeListener();
 
     return this;
   }

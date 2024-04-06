@@ -11,6 +11,7 @@ import Icon from "@yourdash/uikit/components/icon/icon.js";
 import IconButton from "@yourdash/uikit/components/iconButton/iconButton.js";
 import Image from "@yourdash/uikit/components/image/image.js";
 import Text from "@yourdash/uikit/components/text/text.js";
+import TextInput from "@yourdash/uikit/components/textInput/textInput.js";
 import ReactUIKitView from "@yourdash/uikit/core/ReactUIKitView.js";
 import UKRouter from "@yourdash/uikit/core/router/router.js";
 import * as React from "react";
@@ -59,6 +60,14 @@ const UIKitDemoApplication: React.FC = () => {
                   new IconButton().$((c) => {
                     c.icon.setIcon(UKIcon.ChevronRight);
                     c.onClick(() => {
+                      window.location.hash = "#/app/a/uikit_demo/test";
+                    });
+                  }),
+                )
+                .addChild(
+                  new TextInput().$((c) => {
+                    c.icon.setIcon(UKIcon.ChevronRight);
+                    c.onChange(() => {
                       window.location.hash = "#/app/a/uikit_demo/test";
                     });
                   }),

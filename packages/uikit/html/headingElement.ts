@@ -19,7 +19,12 @@ export default class HeadingElement extends UKHTMLElement<HTMLHeadingElement> {
   setLevel(level: HeadingElement["level"]) {
     this.level = level;
 
-    this.rawHtmlElement = document.createElement(`h${level}`);
+    const previousElement = this.rawHtmlElement;
+    this.rawHtmlElement = document.createElement(`h${this.level}`);
+
+    previousElement.getAttributeNames().forEach((name) => {
+      this.rawHtmlElement.setAttribute(name, previousElement.getAttribute(name) as string);
+    });
 
     return this;
   }

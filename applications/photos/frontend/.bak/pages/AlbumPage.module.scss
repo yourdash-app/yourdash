@@ -12,6 +12,7 @@
   container-type: inline-size;
   height: max-content;
   flex-grow: 0;
+  padding: 1rem;
 }
 
 .content {
@@ -29,7 +30,7 @@
   padding-left: 0.5rem;
 }
 
-.header {
+.heading {
   display: flex;
   flex-direction: row;
   width: 100%;

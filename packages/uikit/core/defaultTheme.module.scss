@@ -24,6 +24,35 @@
   #{$theme}#{$separator}#{$size}: 0.125rem;
   #{$theme}#{$separator}#{$color}: #444444;
 
+  // heading
+  #{$theme}#{$heading}#{$h1}#{$weight}: 900;
+  #{$theme}#{$heading}#{$h1}#{$size}: 3rem;
+  #{$theme}#{$heading}#{$h2}#{$weight}: 700;
+  #{$theme}#{$heading}#{$h2}#{$size}: 2rem;
+  #{$theme}#{$heading}#{$h3}#{$weight}: 600;
+  #{$theme}#{$heading}#{$h3}#{$size}: 1.5rem;
+  #{$theme}#{$heading}#{$h4}#{$weight}: 500;
+  #{$theme}#{$heading}#{$h4}#{$size}: 1.25rem;
+  #{$theme}#{$heading}#{$h5}#{$weight}: 500;
+  #{$theme}#{$heading}#{$h5}#{$size}: 1rem;
+  #{$theme}#{$heading}#{$h6}#{$weight}: 500;
+  #{$theme}#{$heading}#{$h6}#{$size}: 0.875rem;
+
+  // input
+  #{$theme}#{$input}#{$color}: #ffffff;
+  #{$theme}#{$input}#{$background}: #222222;
+  #{$theme}#{$input}#{$border}: 1px solid #444444;
+  #{$theme}#{$input}#{$radius}: 0.5rem;
+  #{$theme}#{$input}#{$shadow}: 0 0 0.5rem 0 #000000;
+  #{$theme}#{$input}#{$height}: 1.75rem;
+  #{$theme}#{$input}#{$padding}#{$horizontal}: 0.5rem;
+  #{$theme}#{$input}#{$transition}: all 0.2s ease-in-out;
+  // focus
+  #{$theme}#{$input}#{$focus}#{$color}: #ffffff;
+  #{$theme}#{$input}#{$focus}#{$background}: #333333;
+  #{$theme}#{$input}#{$focus}#{$border}: 1px solid #555555;
+  #{$theme}#{$input}#{$focus}#{$shadow}: 0 0 0.5rem 0 #000000;
+
   // button
   #{$theme}#{$button}#{$color}: #ffffff;
   #{$theme}#{$button}#{$background}: #444444;
@@ -80,6 +109,35 @@
   #{$theme}#{$separator}#{$size}: 0.125rem;
   #{$theme}#{$separator}#{$color}: #555555;
 
+  // heading
+  #{$theme}#{$heading}#{$h1}#{$weight}: 900;
+  #{$theme}#{$heading}#{$h1}#{$size}: 3rem;
+  #{$theme}#{$heading}#{$h2}#{$weight}: 700;
+  #{$theme}#{$heading}#{$h2}#{$size}: 2rem;
+  #{$theme}#{$heading}#{$h3}#{$weight}: 600;
+  #{$theme}#{$heading}#{$h3}#{$size}: 1.5rem;
+  #{$theme}#{$heading}#{$h4}#{$weight}: 500;
+  #{$theme}#{$heading}#{$h4}#{$size}: 1.25rem;
+  #{$theme}#{$heading}#{$h5}#{$weight}: 500;
+  #{$theme}#{$heading}#{$h5}#{$size}: 1rem;
+  #{$theme}#{$heading}#{$h6}#{$weight}: 500;
+  #{$theme}#{$heading}#{$h6}#{$size}: 0.875rem;
+
+  // input
+  #{$theme}#{$input}#{$color}: #ffffff;
+  #{$theme}#{$input}#{$background}: #222222;
+  #{$theme}#{$input}#{$border}: 1px solid #444444;
+  #{$theme}#{$input}#{$radius}: 0.5rem;
+  #{$theme}#{$input}#{$shadow}: 0 0 0.5rem 0 #000000;
+  #{$theme}#{$input}#{$height}: 1.75rem;
+  #{$theme}#{$input}#{$padding}#{$horizontal}: 0.5rem;
+  #{$theme}#{$input}#{$transition}: all 0.2s ease-in-out;
+  // focus
+  #{$theme}#{$input}#{$focus}#{$color}: #ffffff;
+  #{$theme}#{$input}#{$focus}#{$background}: #333333;
+  #{$theme}#{$input}#{$focus}#{$border}: 1px solid #555555;
+  #{$theme}#{$input}#{$focus}#{$shadow}: 0 0 0.5rem 0 #000000;
+
   // button
   #{$theme}#{$button}#{$color}: #ffffff;
   #{$theme}#{$button}#{$background}: #444444;
@@ -127,10 +185,39 @@
   #{$theme}#{$separator}#{$size}: 0.125rem;
   #{$theme}#{$separator}#{$color}: #555555;
 
+  // heading
+  #{$theme}#{$heading}#{$h1}#{$weight}: 900;
+  #{$theme}#{$heading}#{$h1}#{$size}: 3rem;
+  #{$theme}#{$heading}#{$h2}#{$weight}: 700;
+  #{$theme}#{$heading}#{$h2}#{$size}: 2rem;
+  #{$theme}#{$heading}#{$h3}#{$weight}: 600;
+  #{$theme}#{$heading}#{$h3}#{$size}: 1.5rem;
+  #{$theme}#{$heading}#{$h4}#{$weight}: 500;
+  #{$theme}#{$heading}#{$h4}#{$size}: 1.25rem;
+  #{$theme}#{$heading}#{$h5}#{$weight}: 500;
+  #{$theme}#{$heading}#{$h5}#{$size}: 1rem;
+  #{$theme}#{$heading}#{$h6}#{$weight}: 500;
+  #{$theme}#{$heading}#{$h6}#{$size}: 0.875rem;
+
   // font
   #{$theme}#{$font}#{$family}: Inter;
   #{$theme}#{$font}#{$size}: 0.9rem;
   #{$theme}#{$font}#{$weight}: 400;
+
+  // input
+  #{$theme}#{$input}#{$color}: #ffffff;
+  #{$theme}#{$input}#{$background}: #222222;
+  #{$theme}#{$input}#{$border}: 1px solid #444444;
+  #{$theme}#{$input}#{$radius}: 0.5rem;
+  #{$theme}#{$input}#{$shadow}: 0 0 0.5rem 0 #000000;
+  #{$theme}#{$input}#{$height}: 1.75rem;
+  #{$theme}#{$input}#{$padding}#{$horizontal}: 0.5rem;
+  #{$theme}#{$input}#{$transition}: all 0.2s ease-in-out;
+  // focus
+  #{$theme}#{$input}#{$focus}#{$color}: #ffffff;
+  #{$theme}#{$input}#{$focus}#{$background}: #333333;
+  #{$theme}#{$input}#{$focus}#{$border}: 1px solid #555555;
+  #{$theme}#{$input}#{$focus}#{$shadow}: 0 0 0.5rem 0 #000000;
 
   // button
   #{$theme}#{$button}#{$color}: #ffffff;
@@ -180,10 +267,39 @@
   #{$theme}#{$separator}#{$size}: 0.125rem;
   #{$theme}#{$separator}#{$color}: #555555;
 
+  // heading
+  #{$theme}#{$heading}#{$h1}#{$weight}: 900;
+  #{$theme}#{$heading}#{$h1}#{$size}: 3rem;
+  #{$theme}#{$heading}#{$h2}#{$weight}: 700;
+  #{$theme}#{$heading}#{$h2}#{$size}: 2rem;
+  #{$theme}#{$heading}#{$h3}#{$weight}: 600;
+  #{$theme}#{$heading}#{$h3}#{$size}: 1.5rem;
+  #{$theme}#{$heading}#{$h4}#{$weight}: 500;
+  #{$theme}#{$heading}#{$h4}#{$size}: 1.25rem;
+  #{$theme}#{$heading}#{$h5}#{$weight}: 500;
+  #{$theme}#{$heading}#{$h5}#{$size}: 1rem;
+  #{$theme}#{$heading}#{$h6}#{$weight}: 500;
+  #{$theme}#{$heading}#{$h6}#{$size}: 0.875rem;
+
   // font
   #{$theme}#{$family}: Inter;
   #{$theme}#{$size}: 0.9rem;
   #{$theme}#{$weight}: 400;
+
+  // input
+  #{$theme}#{$input}#{$color}: #ffffff;
+  #{$theme}#{$input}#{$background}: #222222;
+  #{$theme}#{$input}#{$border}: 1px solid #444444;
+  #{$theme}#{$input}#{$radius}: 0.5rem;
+  #{$theme}#{$input}#{$shadow}: 0 0 0.5rem 0 #000000;
+  #{$theme}#{$input}#{$height}: 1.75rem;
+  #{$theme}#{$input}#{$padding}#{$horizontal}: 0.5rem;
+  #{$theme}#{$input}#{$transition}: all 0.2s ease-in-out;
+  // focus
+  #{$theme}#{$input}#{$focus}#{$color}: #ffffff;
+  #{$theme}#{$input}#{$focus}#{$background}: #333333;
+  #{$theme}#{$input}#{$focus}#{$border}: 1px solid #555555;
+  #{$theme}#{$input}#{$focus}#{$shadow}: 0 0 0.5rem 0 #000000;
 
   // button
   #{$theme}#{$color}: #ffffff;

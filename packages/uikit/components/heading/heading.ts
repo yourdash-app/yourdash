@@ -4,11 +4,11 @@
  */
 
 import { SoloComponent } from "../../core/component/soloComponent.js";
-import DivElement from "../../html/divElement.js";
-import styles from "./text.module.scss";
+import HeadingElement from "../../html/headingElement.js";
+import styles from "./heading.module.scss";
 
 export default class Heading extends SoloComponent {
-  htmlElement: DivElement;
+  htmlElement: HeadingElement;
   textValue: string = "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus, nobis?";
   level: 1 | 2 | 3 | 4 | 5 | 6 = 1;
 
@@ -18,6 +18,13 @@ export default class Heading extends SoloComponent {
     this.htmlElement = new HeadingElement();
     this.htmlElement.setInnerText(this.textValue);
     this.htmlElement.addClass(styles.component);
+    this.setLevel(1);
+
+    return this;
+  }
+
+  setLevel(level: Heading["level"]) {
+    this.htmlElement.setLevel(level);
 
     return this;
   }

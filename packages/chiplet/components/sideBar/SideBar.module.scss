@@ -15,7 +15,7 @@
   border-right: 0.1rem solid rgb(var(--container-border));
   transition: var(--transition-slow);
 
-  .header {
+  .heading {
     display: flex;
     width: 100%;
     height: 3.25rem;
@@ -108,7 +108,7 @@
 .normalMinimised {
   width: 3.5rem;
 
-  .header {
+  .heading {
     .toggleButton {
       margin-left: auto;
       margin-right: auto;
@@ -158,7 +158,7 @@
   transition: var(--transition-slow);
   border-radius: var(--container-rounding);
 
-  .header {
+  .heading {
     display: flex;
     width: 100%;
     height: 3.25rem;
@@ -250,7 +250,7 @@
 .floatingMinimised {
   width: 3.5rem;
 
-  .header {
+  .heading {
     .toggleButton {
       margin-left: auto;
       margin-right: auto;

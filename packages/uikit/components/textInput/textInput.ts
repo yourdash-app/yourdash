@@ -4,16 +4,57 @@
  */
 
 import { SoloComponent } from "../../core/component/soloComponent.js";
+import DivElement from "../../html/divElement.js";
 import InputElement from "../../html/inputElement.js";
+import Icon from "../icon/icon.js";
+import styles from "./textInput.module.scss";
 
 export default class TextInput extends SoloComponent {
-  htmlElement: InputElement;
+  htmlElement: DivElement;
+  inputElement: InputElement;
+  icon: Icon;
 
   constructor() {
     super();
 
-    this.htmlElement = new InputElement();
-    this.htmlElement.rawHtmlElement.type = "text";
+    this.htmlElement = new DivElement();
+    this.htmlElement.addClass(styles.component);
+    this.icon = new Icon();
+    this.icon.htmlElement.addClass(styles.icon);
+    this.inputElement = new InputElement();
+    this.inputElement.rawHtmlElement.type = "text";
+    this.inputElement.addClass(styles.input);
+    this.htmlElement.addChild(this.icon).addChild(this.inputElement);
+
+    this.htmlElement.addEventListener("click", () => {
+      this.inputElement.rawHtmlElement.focus();
+    });
+
+    return this;
+  }
+
+  onChange(cb: (value: string) => void) {
+    this.inputElement.rawHtmlElement.addEventListener("change", (e) => {
+      cb((e.target as HTMLInputElement).value);
+    });
+  }
+
+  offChange(cb: (value: string) => void) {
+    this.inputElement.rawHtmlElement.removeEventListener("change", (e) => {
+      cb((e.target as HTMLInputElement).value);
+    });
+  }
+
+  setValue(value: string) {
+    this.inputElement.rawHtmlElement.value = value;
+  }
+
+  getValue() {
+    return this.inputElement.rawHtmlElement.value;
+  }
+
+  setPlaceholder(text: string) {
+    this.inputElement.rawHtmlElement.placeholder = text;
 
     return this;
   }
