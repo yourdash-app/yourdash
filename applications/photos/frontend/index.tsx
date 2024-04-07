@@ -1,8 +1,9 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import platformSelector from "@yourdash/uikit/core/platformSelector.js";
 import ReactUIKitView from "@yourdash/uikit/core/ReactUIKitView.js";
 import UKRouter from "@yourdash/uikit/core/router/router.js";
 import React from "react";
@@ -13,14 +14,38 @@ const PhotosRouter: React.FC = () => {
     <ReactUIKitView
       onLoad={(cr) => {
         const router = new UKRouter();
-        router.setBasePath("/app/a/photos");
 
-        router.addRoute("/", () => new Text().setText("Hello World from /!"));
-        router.addRoute("/test", () => new Text().setText("Hello World from test!"));
-        router.addRoute("/test/:hello/world/", () => new Text().setText(`Hello World! ${router.params}`));
+        router.addRoute(
+          router
+            .createRoute({
+              path: "/app/a/photos/",
+            })
+            .addRoute(
+              router.createRoute({
+                index: true,
+                component: () =>
+                  platformSelector(
+                    () => new Text().setText("Hello World from /!"),
+                    () => new Text().setText("Hello World from /, mobile device!"),
+                  ),
+              }),
+            )
+            .addRoute(
+              router.createRoute({
+                path: "test",
+                component: () => new Text().setText("Hello World from test!"),
+              }),
+            )
+            .addRoute(
+              router.createRoute({
+                path: "test/:hello/world/",
+                component: (params) => new Text().setText(`Hello World! ${JSON.stringify(params)}`),
+              }),
+            ),
+        );
+
         cr.addChild(router);
-
-        router.reloadRoutes();
+        router.init();
       }}
     />
   );

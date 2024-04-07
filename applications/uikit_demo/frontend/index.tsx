@@ -52,7 +52,7 @@ const UIKitDemoApplication: React.FC = () => {
                   new IconButton().$((c) => {
                     c.icon.setIcon(UKIcon.ChevronLeft);
                     c.onClick(() => {
-                      window.location.hash = "#/app/a/uikit_demo";
+                      window.location.hash = "/app/a/uikit_demo";
                     });
                   }),
                 )
@@ -60,7 +60,7 @@ const UIKitDemoApplication: React.FC = () => {
                   new IconButton().$((c) => {
                     c.icon.setIcon(UKIcon.ChevronRight);
                     c.onClick(() => {
-                      window.location.hash = "#/app/a/uikit_demo/test";
+                      window.location.hash = "/app/a/uikit_demo/test";
                     });
                   }),
                 )
@@ -68,7 +68,7 @@ const UIKitDemoApplication: React.FC = () => {
                   new TextInput().$((c) => {
                     c.icon.setIcon(UKIcon.ChevronRight);
                     c.onChange(() => {
-                      window.location.hash = "#/app/a/uikit_demo/test";
+                      window.location.hash = "/app/a/uikit_demo/test";
                     });
                   }),
                 ),

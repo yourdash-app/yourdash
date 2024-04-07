@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -28,7 +28,7 @@ const FAQPage: React.FC = () => (
       </p>
       <h3>Is YourDash free?</h3>
       <p>
-        Yes! YourDash is free to use for everyone. See [installation instructions](#/docs/get-started)
+        Yes! YourDash is free to use for everyone. See [installation instructions](/docs/get-started)
         <br />
         YourDash is free and open-source which means anyone can contribute to improve it's features and overall security.
       </p>

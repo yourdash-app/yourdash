@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -35,7 +35,7 @@ const LargeApplicationGrid: React.FC<{
               {
                 label: "Open In New Tab",
                 onClick() {
-                  window.open(`${window.location.origin}${window.location.pathname}#/app/a/${application.name}`, "_blank");
+                  window.open(`${window.location.origin}${window.location.pathname}/app/a/${application.name}`, "_blank");
                   return 0;
                 },
               },

@@ -9,6 +9,7 @@
   "dependencies": {
     "@floating-ui/react": "^0.26.3",
     "@loadable/component": "^5.15.3",
+    "@remix-run/router": "^1.15.3",
     "@tailwindcss/container-queries": "^0.1.1",
     "@types/express": "^4.17.21",
     "@types/loadable__component": "^5.13.7",

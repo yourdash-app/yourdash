@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -11,7 +11,7 @@ import UIKit from "@yourdash/uikit/core/index.js";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createRoutesFromElements, Route, RouterProvider } from "react-router";
-import { createHashRouter } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import loadable from "@loadable/component";
 import ApplicationRedirectToDash from "./app/ApplicationRedirectToDash.jsx";
 import AppLayout from "./app/AppLayout";
@@ -35,7 +35,7 @@ function main() {
   ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <ChipletRootIntegration>
       <RouterProvider
-        router={createHashRouter(
+        router={createBrowserRouter(
           createRoutesFromElements(
             <Route errorElement={<ErrorElement />}>
               <Route path={"/linker-desktop-client-startup"} element={<LinkerDesktopClientStartupPage />} />
