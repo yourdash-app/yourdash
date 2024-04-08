@@ -6,9 +6,8 @@
 import generateUUID from "@yourdash/shared/web/helpers/uuid.js";
 import { Merge } from "type-fest";
 import { ComponentType } from "./component/componentType.js";
-import { ContainerComponent, ContainerComponentInternals } from "./component/containerComponent.js";
-import { AnyComponent, AnyComponentOrHTMLElement } from "./component/type.js";
-import { appendComponentToElement, initializeComponent } from "./index.js";
+import { ContainerComponentInternals } from "./component/containerComponent.js";
+import { AnyComponent } from "./component/type.js";
 
 type OverrideProperties<
   TOriginal,
@@ -21,7 +20,10 @@ type OverrideProperties<
 > = Merge<TOriginal, TOverride>;
 
 export default class UKHTMLElement<HTMLRawElement extends HTMLElement = HTMLElement> {
-  __internals: OverrideProperties<ContainerComponentInternals, { children: (AnyComponent | UKHTMLElement)[] }>;
+  __internals: Omit<
+    OverrideProperties<ContainerComponentInternals, { children: (AnyComponent | UKHTMLElement)[] }>,
+    "treeContext" | "treeContextChildOverrides"
+  >;
   rawHtmlElement: HTMLRawElement;
 
   constructor(htmlElement: HTMLRawElement, props?: { debugId?: string }) {
@@ -31,9 +33,7 @@ export default class UKHTMLElement<HTMLRawElement extends HTMLElement = HTMLElem
       parentComponent: undefined,
       children: [],
       componentType: ComponentType.HTMLElement,
-      renderCount: 0,
       isInitialized: false,
-      treeContext: { level: 0 },
       slots: [],
     };
 
@@ -139,18 +139,10 @@ export default class UKHTMLElement<HTMLRawElement extends HTMLElement = HTMLElem
     return this;
   }
 
-  addChild(child: AnyComponent | UKHTMLElement) {
+  addChild(child: AnyComponent | UKHTMLElement, calledFromParent?: boolean) {
     this.__internals.children?.push(child);
-    child.__internals.parentComponent = this;
 
-    child.__internals.treeContext = { ...this.__internals.treeContext };
-
-    if (this.__internals.treeContextChildOverrides) {
-      Object.keys(this.__internals.treeContextChildOverrides).map((override) => {
-        // @ts-ignore
-        child.__internals.treeContext[override] = this.__internals.treeContextChildOverrides[override];
-      });
-    }
+    if (!calledFromParent) child.__internals.parentComponent = this;
 
     if (child.__internals.componentType === ComponentType.HTMLElement) {
       const childComponent = child as UKHTMLElement;
@@ -160,8 +152,8 @@ export default class UKHTMLElement<HTMLRawElement extends HTMLElement = HTMLElem
     }
 
     const childComponent = child as AnyComponent;
-    childComponent.init();
     this.rawHtmlElement.appendChild(childComponent.htmlElement.rawHtmlElement);
+    childComponent.init();
 
     return this;
   }
@@ -178,36 +170,6 @@ export default class UKHTMLElement<HTMLRawElement extends HTMLElement = HTMLElem
 
   dangerouslySetInnerHTML(html: string) {
     this.rawHtmlElement.innerHTML = html;
-    return this;
-  }
-
-  render() {
-    this.clearChildren();
-
-    if (!this.__internals.isInitialized) {
-      initializeComponent(this);
-    }
-
-    this.__internals.renderCount++;
-    console.debug("UIKIT:RENDER", this);
-
-    this.__internals.children.map((child) => {
-      appendComponentToElement(this.rawHtmlElement, child);
-
-      if (child.__internals.componentType === ComponentType.HTMLElement) {
-        const childComponent = child as UKHTMLElement;
-        childComponent.__internals.parentComponent = this as unknown as ContainerComponent;
-
-        return this;
-      }
-
-      const childComponent = child as AnyComponent;
-
-      childComponent.__internals.parentComponent = this as unknown as ContainerComponent;
-
-      child.render();
-    });
-
     return this;
   }
 }

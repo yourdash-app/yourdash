@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -11,9 +11,9 @@ import { ComponentTreeContext } from "./treeContext.js";
 export interface BaseComponentInternals {
   componentType: ComponentType;
   debugId: string;
-  parentComponent?: ContainerComponent | UKHTMLElement;
-  renderCount: number;
-  treeContext: ComponentTreeContext;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  parentComponent?: ContainerComponent<any> | UKHTMLElement;
+  treeContext?: ComponentTreeContext;
   treeContextChildOverrides?: ComponentTreeContext;
   isInitialized: boolean;
 }

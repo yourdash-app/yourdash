@@ -12,6 +12,7 @@ export default class Flex extends ContainerComponent {
     super();
 
     this.htmlElement = new DivElement();
+    this.htmlElement.setAttribute("flexbutwhy", "");
     this.htmlElement.addClass(styles.component);
 
     if (direction) this.setDirection(direction);

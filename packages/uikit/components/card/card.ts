@@ -13,15 +13,6 @@ export default class Card extends ContainerComponent<["actions"]> {
     super(["actions"]);
 
     this.htmlElement = new DivElement();
-    if (this.__internals.treeContext.level <= 3) {
-      // @ts-ignore
-      this.__internals.treeContextChildOverrides.level = this.__internals.treeContext.level + 1;
-    }
-
-    loadThemeLevel(this.htmlElement.rawHtmlElement, this.__internals.treeContext.level);
-
-    this.htmlElement.setAttribute("uk-level", this.__internals.treeContext.level.toString());
-    this.htmlElement.addClass(styles.component);
 
     return this;
   }
@@ -33,9 +24,18 @@ export default class Card extends ContainerComponent<["actions"]> {
     });
   }
 
-  public render() {
-    super.render();
+  init() {
+    super.init();
 
-    return this;
+    if (!this.__internals.treeContext) return;
+    if (this.__internals.treeContext.level <= 3) {
+      // @ts-ignore
+      this.__internals.treeContextChildOverrides.level = this.__internals.treeContext.level + 1;
+    }
+
+    loadThemeLevel(this.htmlElement.rawHtmlElement, this.__internals.treeContext.level);
+
+    this.htmlElement.setAttribute("uk-level", this.__internals.treeContext.level.toString());
+    this.htmlElement.addClass(styles.component);
   }
 }

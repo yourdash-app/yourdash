@@ -6,9 +6,9 @@
 import generateUUID from "@yourdash/shared/web/helpers/uuid.js";
 import DivElement from "../../html/divElement.js";
 import UKHTMLElement from "../htmlElement.js";
-import { initializeComponent } from "../index.js";
 import { ComponentType } from "./componentType.js";
 import { BaseComponentInternals } from "./internals.js";
+import { AnyComponentOrHTMLElement } from "./type.js";
 
 export interface SoloComponentInternals extends BaseComponentInternals {}
 
@@ -22,7 +22,6 @@ export class SoloComponent {
       // When a component is created, it's creator should define its parent
       parentComponent: undefined,
       componentType: ComponentType.Solo,
-      renderCount: 0,
       isInitialized: false,
       treeContext: { level: 0 },
     };
@@ -45,17 +44,21 @@ export class SoloComponent {
   }
 
   init() {
-    // allow for custom logic to be executed before the component is rendered
-  }
+    function findNearestTreeContext(parent: AnyComponentOrHTMLElement) {
+      if (parent instanceof UKHTMLElement) {
+        if (parent.__internals.parentComponent) return findNearestTreeContext(parent.__internals.parentComponent);
 
-  render() {
-    if (!this.__internals.isInitialized) {
-      initializeComponent(this);
+        return { level: 0, unableToFindTreeContext: "welp :(" };
+      } else {
+        if (parent.__internals.treeContext) return parent.__internals.treeContext;
+
+        if (parent.__internals.parentComponent) return findNearestTreeContext(parent.__internals.parentComponent);
+
+        return { level: 0, unableToFindTreeContext: "welp :(" };
+      }
     }
 
-    this.__internals.renderCount++;
-    console.debug("UIKIT:RENDER", this);
-
-    return this;
+    // @ts-ignore
+    this.__internals.treeContext = findNearestTreeContext(this);
   }
 }

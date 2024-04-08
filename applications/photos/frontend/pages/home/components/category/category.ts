@@ -48,6 +48,8 @@ export default class Category extends ContainerComponent {
   }
 
   async init() {
+    super.init();
+
     loadThemeLevel(this.htmlElement.rawHtmlElement, 1);
 
     this.data = await this.fetch();

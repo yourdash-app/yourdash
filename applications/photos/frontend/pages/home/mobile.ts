@@ -22,13 +22,17 @@ export default class MobileHomePage extends ContainerComponent {
   }
 
   async init() {
+    super.init();
+
+    console.log(this.__internals.parentComponent?.__internals);
+
     this.htmlElement.addClass(styles.page);
 
     this.addChild(
       new DivElement().$((e) => {
         e.addClass(styles.hero);
         e.addChild(new Heading("All Photos"));
-        this.itemCounter = new Subtext().setText("2,000 items");
+        this.itemCounter = new Subtext("0 items");
         e.addChild(this.itemCounter);
       }),
     );
@@ -42,17 +46,15 @@ export default class MobileHomePage extends ContainerComponent {
     this.categories.map((cat) => {
       const category = new Category(cat);
 
-      this.addChild(category);
-
       category.setOnFetch(() => {
-        console.log("ONFETCH", category.data);
-
         itemCount += category.data?.items.photos.length || 0;
         itemCount += category.data?.items.subAlbums.length || 0;
         itemCount += category.data?.items.videos.length || 0;
 
         this.itemCounter.setText(itemCount + " items");
       });
+
+      this.addChild(category);
     });
   }
 }

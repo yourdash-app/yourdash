@@ -15,7 +15,7 @@
   #{$theme}#{$color}: #ffffff;
   #{$theme}#{$background}: #222222;
   #{$theme}#{$accent}: #445599;
-  #{$theme}#{$border}: 1px solid #444444;
+  #{$theme}#{$border}: 0.125rem solid #444444;
   #{$theme}#{$shadow}: 0 0 0.5rem 0 #000000;
   #{$theme}#{$radius}: 0.5rem;
   #{$theme}#{$padding}: 0.5rem;
@@ -41,7 +41,7 @@
   // input
   #{$theme}#{$input}#{$color}: #ffffff;
   #{$theme}#{$input}#{$background}: #222222;
-  #{$theme}#{$input}#{$border}: 1px solid #444444;
+  #{$theme}#{$input}#{$border}: 0.125rem solid #444444;
   #{$theme}#{$input}#{$radius}: 0.5rem;
   #{$theme}#{$input}#{$shadow}: 0 0 0.5rem 0 #000000;
   #{$theme}#{$input}#{$height}: 1.75rem;
@@ -50,13 +50,13 @@
   // focus
   #{$theme}#{$input}#{$focus}#{$color}: #ffffff;
   #{$theme}#{$input}#{$focus}#{$background}: #333333;
-  #{$theme}#{$input}#{$focus}#{$border}: 1px solid #555555;
+  #{$theme}#{$input}#{$focus}#{$border}: 0.125rem solid #555555;
   #{$theme}#{$input}#{$focus}#{$shadow}: 0 0 0.5rem 0 #000000;
 
   // button
   #{$theme}#{$button}#{$color}: #ffffff;
   #{$theme}#{$button}#{$background}: #444444;
-  #{$theme}#{$button}#{$border}: 1px solid #444444;
+  #{$theme}#{$button}#{$border}: 0.125rem solid #555555;
   #{$theme}#{$button}#{$font}#{$size}: 0.9rem;
   #{$theme}#{$button}#{$font}#{$weight}: 400;
   #{$theme}#{$button}#{$radius}: 0.5rem;
@@ -67,14 +67,14 @@
   // hover
   #{$theme}#{$button}#{$hover}#{$color}: #ffffff;
   #{$theme}#{$button}#{$hover}#{$background}: #555555;
-  #{$theme}#{$button}#{$hover}#{$border}: 1px solid #555555;
+  #{$theme}#{$button}#{$hover}#{$border}: 0.125rem solid #666666;
   #{$theme}#{$button}#{$hover}#{$radius}: 0.5rem;
   #{$theme}#{$button}#{$hover}#{$shadow}: 0 0 0.5rem 0 #000000;
   #{$theme}#{$button}#{$hover}#{$transition}: all 50ms ease-in-out;
   // active
   #{$theme}#{$button}#{$active}#{$color}: #000000;
-  #{$theme}#{$button}#{$active}#{$background}: #555555;
-  #{$theme}#{$button}#{$active}#{$border}: 1px solid #555555;
+  #{$theme}#{$button}#{$active}#{$background}: #666666;
+  #{$theme}#{$button}#{$active}#{$border}: 0.125rem solid #777777;
   #{$theme}#{$button}#{$active}#{$radius}: 0.5rem;
   #{$theme}#{$button}#{$active}#{$shadow}: 0 0 0.5rem 0 #000000;
   #{$theme}#{$button}#{$active}#{$transition}: all 50ms ease-in-out;
@@ -96,7 +96,7 @@
 .level1 {
   #{$theme}#{$color}: #ffffff;
   #{$theme}#{$background}: #333333;
-  #{$theme}#{$border}: 1px solid #555555;
+  #{$theme}#{$border}: 0.125rem solid #555555;
   #{$theme}#{$shadow}: 0 0 0.5rem 0 #000000;
   #{$theme}#{$accent}: #445599;
   #{$theme}#{$radius}: 0.5rem;
@@ -126,7 +126,7 @@
   // input
   #{$theme}#{$input}#{$color}: #ffffff;
   #{$theme}#{$input}#{$background}: #222222;
-  #{$theme}#{$input}#{$border}: 1px solid #444444;
+  #{$theme}#{$input}#{$border}: 0.125rem solid #444444;
   #{$theme}#{$input}#{$radius}: 0.5rem;
   #{$theme}#{$input}#{$shadow}: 0 0 0.5rem 0 #000000;
   #{$theme}#{$input}#{$height}: 1.75rem;
@@ -135,13 +135,13 @@
   // focus
   #{$theme}#{$input}#{$focus}#{$color}: #ffffff;
   #{$theme}#{$input}#{$focus}#{$background}: #333333;
-  #{$theme}#{$input}#{$focus}#{$border}: 1px solid #555555;
+  #{$theme}#{$input}#{$focus}#{$border}: 0.125rem solid #555555;
   #{$theme}#{$input}#{$focus}#{$shadow}: 0 0 0.5rem 0 #000000;
 
   // button
   #{$theme}#{$button}#{$color}: #ffffff;
   #{$theme}#{$button}#{$background}: #444444;
-  #{$theme}#{$button}#{$border}: 1px solid #444444;
+  #{$theme}#{$button}#{$border}: 0.125rem solid #444444;
   #{$theme}#{$button}#{$font}#{$size}: 0.9rem;
   #{$theme}#{$button}#{$font}#{$weight}: 400;
   #{$theme}#{$button}#{$radius}: 0.5rem;
@@ -152,14 +152,14 @@
   // hover
   #{$theme}#{$button}#{$hover}#{$color}: #ffffff;
   #{$theme}#{$button}#{$hover}#{$background}: #555555;
-  #{$theme}#{$button}#{$hover}#{$border}: 1px solid #555555;
+  #{$theme}#{$button}#{$hover}#{$border}: 0.125rem solid #555555;
   #{$theme}#{$button}#{$hover}#{$radius}: 0.5rem;
   #{$theme}#{$button}#{$hover}#{$shadow}: 0 0 0.5rem 0 #000000;
   #{$theme}#{$button}#{$hover}#{$transition}: all 50ms ease-in-out;
   // active
   #{$theme}#{$button}#{$active}#{$color}: #000000;
   #{$theme}#{$button}#{$active}#{$background}: #666666;
-  #{$theme}#{$button}#{$active}#{$border}: 1px solid #555555;
+  #{$theme}#{$button}#{$active}#{$border}: 0.125rem solid #555555;
   #{$theme}#{$button}#{$active}#{$radius}: 0.5rem;
   #{$theme}#{$button}#{$active}#{$shadow}: 0 0 0.5rem 0 #000000;
 
@@ -175,7 +175,7 @@
 .level2 {
   #{$theme}#{$color}: #ffffff;
   #{$theme}#{$background}: #444444;
-  #{$theme}#{$border}: 1px solid #555555;
+  #{$theme}#{$border}: 0.125rem solid #555555;
   #{$theme}#{$shadow}: 0 0 0.5rem 0 #000000;
   #{$theme}#{$accent}: #445599;
   #{$theme}#{$radius}: 0.5rem;
@@ -207,7 +207,7 @@
   // input
   #{$theme}#{$input}#{$color}: #ffffff;
   #{$theme}#{$input}#{$background}: #222222;
-  #{$theme}#{$input}#{$border}: 1px solid #444444;
+  #{$theme}#{$input}#{$border}: 0.125rem solid #444444;
   #{$theme}#{$input}#{$radius}: 0.5rem;
   #{$theme}#{$input}#{$shadow}: 0 0 0.5rem 0 #000000;
   #{$theme}#{$input}#{$height}: 1.75rem;
@@ -216,13 +216,13 @@
   // focus
   #{$theme}#{$input}#{$focus}#{$color}: #ffffff;
   #{$theme}#{$input}#{$focus}#{$background}: #333333;
-  #{$theme}#{$input}#{$focus}#{$border}: 1px solid #555555;
+  #{$theme}#{$input}#{$focus}#{$border}: 0.125rem solid #555555;
   #{$theme}#{$input}#{$focus}#{$shadow}: 0 0 0.5rem 0 #000000;
 
   // button
   #{$theme}#{$button}#{$color}: #ffffff;
   #{$theme}#{$button}#{$background}: #555555;
-  #{$theme}#{$button}#{$border}: 1px solid #555555;
+  #{$theme}#{$button}#{$border}: 0.125rem solid #555555;
   #{$theme}#{$button}#{$font}#{$family}: Inter;
   #{$theme}#{$button}#{$font}#{$size}: 0.9rem;
   #{$theme}#{$button}#{$font}#{$weight}: 400;
@@ -234,14 +234,14 @@
   // hover
   #{$theme}#{$button}#{$hover}#{$color}: #ffffff;
   #{$theme}#{$button}#{$hover}#{$background}: #666666;
-  #{$theme}#{$button}#{$hover}#{$border}: 1px solid #666666;
+  #{$theme}#{$button}#{$hover}#{$border}: 0.125rem solid #666666;
   #{$theme}#{$button}#{$hover}#{$radius}: 0.25rem;
   #{$theme}#{$button}#{$hover}#{$shadow}: 0 0 0.5rem 0 #000000;
   #{$theme}#{$button}#{$hover}#{$transition}: all 50ms ease-in-out;
   // active
   #{$theme}#{$button}#{$active}#{$color}: #000000;
   #{$theme}#{$button}#{$active}#{$background}bg: #666666;
-  #{$theme}#{$button}#{$active}#{$border}: 1px solid #666666;
+  #{$theme}#{$button}#{$active}#{$border}: 0.125rem solid #666666;
   #{$theme}#{$button}#{$active}#{$radius}: 0.25rem;
   #{$theme}#{$button}#{$active}#{$shadow}: 0 0 0.5rem 0 #000000;
 
@@ -257,7 +257,7 @@
 .level3 {
   #{$theme}#{$color}: #ffffff;
   #{$theme}#{$background}: #555555;
-  #{$theme}#{$background}: 1px solid #555555;
+  #{$theme}#{$background}: 0.125rem solid #555555;
   #{$theme}#{$shadow}: 0 0 0.5rem 0 #000000;
   #{$theme}#{$accent}: #445599;
   #{$theme}#{$radius}: 0.5rem;
@@ -289,7 +289,7 @@
   // input
   #{$theme}#{$input}#{$color}: #ffffff;
   #{$theme}#{$input}#{$background}: #222222;
-  #{$theme}#{$input}#{$border}: 1px solid #444444;
+  #{$theme}#{$input}#{$border}: 0.125rem solid #444444;
   #{$theme}#{$input}#{$radius}: 0.5rem;
   #{$theme}#{$input}#{$shadow}: 0 0 0.5rem 0 #000000;
   #{$theme}#{$input}#{$height}: 1.75rem;
@@ -298,13 +298,13 @@
   // focus
   #{$theme}#{$input}#{$focus}#{$color}: #ffffff;
   #{$theme}#{$input}#{$focus}#{$background}: #333333;
-  #{$theme}#{$input}#{$focus}#{$border}: 1px solid #555555;
+  #{$theme}#{$input}#{$focus}#{$border}: 0.125rem solid #555555;
   #{$theme}#{$input}#{$focus}#{$shadow}: 0 0 0.5rem 0 #000000;
 
   // button
   #{$theme}#{$color}: #ffffff;
   #{$theme}#{$background}: #666666;
-  #{$theme}#{$border}: 1px solid #666666;
+  #{$theme}#{$border}: 0.125rem solid #666666;
   #{$theme}#{$font}#{$family}: Inter;
   #{$theme}#{$font}#{$size}: 0.9rem;
   #{$theme}#{$font}#{$weight}: 400;
@@ -315,14 +315,14 @@
   // hover
   #{$theme}#{$button}#{$hover}#{$color}: #ffffff;
   #{$theme}#{$button}#{$hover}#{$background}: #777777;
-  #{$theme}#{$button}#{$hover}#{$border}: 1px solid #777777;
+  #{$theme}#{$button}#{$hover}#{$border}: 0.125rem solid #777777;
   #{$theme}#{$button}#{$hover}#{$radius}: 0.25rem;
   #{$theme}#{$button}#{$hover}#{$shadow}: 0 0 0.5rem 0 #000000;
   #{$theme}#{$button}#{$hover}#{$transition}: all 50ms ease-in-out;
   // active
   #{$theme}#{$button}#{$active}#{$color}: #000000;
   #{$theme}#{$button}#{$active}#{$background}: #777777;
-  #{$theme}#{$button}#{$active}#{$border}: 1px solid #777777;
+  #{$theme}#{$button}#{$active}#{$border}: 0.125rem solid #777777;
   #{$theme}#{$button}#{$active}#{$radius}: 0.25rem;
   #{$theme}#{$button}#{$active}#{$shadow}: 0 0 0.5rem 0 #000000;
 

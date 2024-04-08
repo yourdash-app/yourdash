@@ -4,14 +4,13 @@
  */
 
 import generateUUID from "@yourdash/shared/web/helpers/uuid";
+import { ContainerComponent } from "./component/containerComponent.js";
 import theme from "./defaultTheme.module.scss";
 import { getThemeMeta, loadThemeLevel } from "./theme.js";
 import { ComponentType } from "./component/componentType.js";
-import { ContainerComponent } from "./component/containerComponent.js";
 import { DefaultComponentTreeContext } from "./component/treeContext.js";
 import { AnyComponent, AnyComponentOrHTMLElement } from "./component/type.js";
 import UKHTMLElement from "./htmlElement.js";
-import { appendComponentToElement } from "./index.js";
 import styles from "./contentRoot.module.scss";
 
 export interface ContentRootProps {
@@ -70,23 +69,19 @@ export default class ContentRoot {
 
   // add a child component to the content root
   addChild(child: AnyComponentOrHTMLElement) {
+    this.__internals__.children?.push(child);
+    child.__internals.parentComponent = this as unknown as ContainerComponent;
+
     if (child.__internals.componentType === ComponentType.HTMLElement) {
       const childComponent = child as UKHTMLElement;
-      child.__internals.parentComponent = this as unknown as ContainerComponent;
-      child.__internals.treeContext = { ...this.__internals__.treeContext };
       this.__internals__.element?.appendChild(childComponent.rawHtmlElement);
 
       return this;
     }
 
     const childComponent = child as AnyComponent;
-
-    child.__internals.parentComponent = this as unknown as ContainerComponent;
-    child.__internals.treeContext = { ...this.__internals__.treeContext };
-    this.__internals__.children?.push(childComponent);
-
     this.__internals__.element?.appendChild(childComponent.htmlElement.rawHtmlElement);
-    child.render();
+    childComponent.init();
 
     return this;
   }
@@ -110,21 +105,5 @@ export default class ContentRoot {
     } else {
       this.__internals__.element?.setAttribute("uikit-device", "desktop");
     }
-  }
-
-  render() {
-    if (!this.__internals__.element) {
-      return this;
-    }
-
-    this.__internals__.element.innerHTML = "";
-
-    this.getChildren().map((child) => {
-      appendComponentToElement(this.__internals__.element as HTMLElement, child);
-
-      child.render();
-    });
-
-    return this;
   }
 }

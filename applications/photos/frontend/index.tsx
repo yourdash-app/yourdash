@@ -17,8 +17,6 @@ const PhotosRouter: React.FC = () => {
       onLoad={(cr) => {
         const router = new UKRouter();
 
-        console.log(router.__internals.treeContext);
-
         router.addRoute(
           router
             .createRoute({
@@ -51,7 +49,6 @@ const PhotosRouter: React.FC = () => {
         );
 
         cr.addChild(router);
-        router.init();
       }}
     />
   );

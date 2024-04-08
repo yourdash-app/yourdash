@@ -8,4 +8,5 @@
 .contentRoot {
   color: var(#{$theme}#{$color});
   background: var(#{$theme}#{$background});
+  overflow: auto;
 }

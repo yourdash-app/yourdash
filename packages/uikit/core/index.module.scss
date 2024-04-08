@@ -1,0 +1,22 @@
+/*!
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
+.flash {
+  outline: 0.5rem solid orangered;
+  outline-offset: -0.25rem;
+  animation: ukdebugflash 1000ms infinite forwards linear;
+
+  @keyframes ukdebugflash {
+    0% {
+      outline-color: gold;
+    }
+    50% {
+      outline-color: orangered;
+    }
+    100% {
+      outline-color: gold;
+    }
+  }
+}

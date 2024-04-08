@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -9,13 +9,13 @@ import DivElement from "../../html/divElement.js";
 import styles from "./icon.module.scss";
 
 export default class Icon extends SoloComponent {
-  icon: UKIcon = UKIcon.Alert;
-
-  constructor() {
+  constructor(icon?: UKIcon) {
     super();
 
     this.htmlElement = new DivElement();
     this.htmlElement.addClass(styles.component);
+
+    if (icon) this.setIcon(icon);
 
     return this;
   }

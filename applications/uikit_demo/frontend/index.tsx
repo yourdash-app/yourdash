@@ -25,44 +25,33 @@ const UIKitDemoApplication: React.FC = () => {
           const router = new UKRouter();
           const card = new Card();
 
-          card.addChild(new Icon().setIcon(UKIcon.Accessibility).setSize("2.5rem"));
+          card.addChild(new Icon(UKIcon.Accessibility).setSize("2.5rem"));
 
-          root.addChild(card).addChild(new Text().setText("Hello World!")).addChild(new Image().setSrc("https://picsum.photos/768/256"));
+          root
+            .addChild(card)
+            .addChild(new Text().setText("Hello World!"))
+            .addChild(new Image().setSrc("https://picsum.photos/768/256"));
 
-          root.addChild(new Text().setText("Hello World!"));
+          root.addChild(new Text("Hello World!"));
 
           root.addChild(
             new Card().addChild(new Icon().setIcon(UKIcon.Accessibility).setSize("2.5rem")).addChild(
               new Flex()
+                .addChild(new IconButton(UKIcon.Beaker))
+                .addChild(new IconButton(UKIcon.Beaker))
                 .addChild(
-                  new IconButton().$((c) => {
-                    c.icon.setIcon(UKIcon.Beaker);
-                  }),
-                )
-                .addChild(
-                  new IconButton().$((c) => {
-                    c.icon.setIcon(UKIcon.Beaker);
-                  }),
-                )
-                .addChild(
-                  new Button().setText("Hello World!").onClick(() => {
+                  new Button("Hello World!", () => {
                     console.log("button clicked");
                   }),
                 )
                 .addChild(
-                  new IconButton().$((c) => {
-                    c.icon.setIcon(UKIcon.ChevronLeft);
-                    c.onClick(() => {
-                      router.navigate("/app/a/uikit_demo");
-                    });
+                  new IconButton(UKIcon.ChevronLeft, () => {
+                    router.navigate("/app/a/uikit_demo");
                   }),
                 )
                 .addChild(
-                  new IconButton().$((c) => {
-                    c.icon.setIcon(UKIcon.ChevronRight);
-                    c.onClick(() => {
-                      router.navigate("/app/a/uikit_demo/test");
-                    });
+                  new IconButton(UKIcon.ChevronRight, () => {
+                    router.navigate("/app/a/uikit_demo/test");
                   }),
                 )
                 .addChild(
@@ -72,6 +61,11 @@ const UIKitDemoApplication: React.FC = () => {
                       return 0;
                     });
                   }),
+                )
+                .addChild(
+                  new IconButton(UKIcon.ServerError, () => {
+                    window.__uikit__.uikit._debug_getBreakInTreeContextPropagation();
+                  }),
                 ),
             ),
           );
@@ -79,11 +73,16 @@ const UIKitDemoApplication: React.FC = () => {
           router.addRoute(
             router
               .createRoute({ path: "/app/a/uikit_demo" })
-              .addRoute(router.createRoute({ path: "test", component: () => new Text().setText("Hello World from /test!") })),
+              .addRoute(
+                router.createRoute({ path: "test", component: () => new Text().setText("Hello World from /test!") }),
+              ),
           );
 
           root.addChild(router);
-          router.init();
+
+          setTimeout(() => {
+            window.__uikit__.uikit._debug_getBreakInTreeContextPropagation();
+          }, 1000);
         }}
       />
     </>

@@ -6,7 +6,6 @@
 import generateUUID from "@yourdash/shared/web/helpers/uuid.js";
 import DivElement from "../../html/divElement.js";
 import UKHTMLElement from "../htmlElement.js";
-import { appendComponentToElement, initializeComponent } from "../index.js";
 import { ComponentType } from "./componentType.js";
 import { BaseComponentInternals } from "./internals.js";
 import { AnyComponent, AnyComponentOrHTMLElement } from "./type.js";
@@ -27,9 +26,8 @@ export class ContainerComponent<ComponentSlots extends string[] = []> {
       parentComponent: undefined,
       children: [],
       componentType: ComponentType.Container,
-      renderCount: 0,
       isInitialized: false,
-      treeContext: { level: 0 },
+      treeContext: undefined,
       // @ts-ignore
       treeContextChildOverrides: {},
       slots: {} as { [slotName in keyof ComponentSlots]: AnyComponentOrHTMLElement | undefined },
@@ -52,52 +50,45 @@ export class ContainerComponent<ComponentSlots extends string[] = []> {
 
   addChild(child: AnyComponentOrHTMLElement) {
     this.__internals.children?.push(child);
+    child.__internals.parentComponent = this;
 
-    child.__internals.treeContext = { ...this.__internals.treeContext };
+    if (child.__internals.componentType === ComponentType.HTMLElement) {
+      const childComponent = child as UKHTMLElement;
+      this.htmlElement.rawHtmlElement.appendChild(childComponent.rawHtmlElement);
 
-    if (this.__internals.treeContextChildOverrides) {
-      Object.keys(this.__internals.treeContextChildOverrides).map((override) => {
-        // @ts-ignore
-        child.__internals.treeContext[override] = this.__internals.treeContextChildOverrides[override];
-      });
+      return this;
     }
 
-    this.htmlElement?.addChild(child);
+    const childComponent = child as AnyComponent;
+    this.htmlElement.rawHtmlElement.appendChild(childComponent.htmlElement.rawHtmlElement);
+    childComponent.init();
 
     return this;
   }
 
   init() {
-    // allow for custom logic to be executed before the component is rendered
-  }
+    this.__internals.children = [];
 
-  render() {
-    this.htmlElement.clearChildren();
+    function findNearestTreeContext(parent: AnyComponentOrHTMLElement) {
+      if (parent instanceof UKHTMLElement) {
+        if (parent.__internals.parentComponent) return findNearestTreeContext(parent.__internals.parentComponent);
 
-    if (!this.__internals.isInitialized) {
-      initializeComponent(this);
+        return { level: 0, unableToFindTreeContext: "welp :(" };
+      } else {
+        if (!parent) return { level: 0, unableToFindTreeContext: "welp :(" };
+
+        if (parent.__internals.treeContext) {
+          console.log("TREE CONTEXT", parent.__internals.treeContext);
+          return parent.__internals.treeContext;
+        }
+
+        if (parent.__internals.parentComponent) return findNearestTreeContext(parent.__internals.parentComponent);
+
+        return { level: 0, unableToFindTreeContext: "welp :(" };
+      }
     }
 
-    this.__internals.renderCount++;
-    console.debug("UIKIT:RENDER", this);
-
-    this.__internals.children.map((child) => {
-      appendComponentToElement(this.htmlElement.rawHtmlElement, child);
-
-      if (child.__internals.componentType === ComponentType.HTMLElement) {
-        const childComponent = child as UKHTMLElement;
-        childComponent.__internals.parentComponent = this as unknown as ContainerComponent;
-
-        return this;
-      }
-
-      const childComponent = child as AnyComponent;
-
-      childComponent.__internals.parentComponent = this as unknown as ContainerComponent;
-
-      child.render();
-    });
-
-    return this;
+    // @ts-ignore
+    this.__internals.treeContext = findNearestTreeContext(this);
   }
 }

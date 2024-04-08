@@ -4,10 +4,12 @@
  */
 
 import isMobileDevice from "@yourdash/shared/web/helpers/isPhone.js";
+import generateUUID from "@yourdash/shared/web/helpers/uuid.js";
 import { ComponentType } from "./component/componentType.js";
 import { AnyComponent, AnyComponentOrHTMLElement } from "./component/type.js";
 import ContentRoot, { ContentRootProps } from "./contentRoot";
 import UKHTMLElement from "./htmlElement.js";
+import styles from "./index.module.scss";
 
 // override the global window object to add the __uikit__ object
 declare global {
@@ -25,7 +27,10 @@ export function getUIKit() {
 
 export function initializeComponent(component: AnyComponentOrHTMLElement) {
   if (component.__internals.isInitialized) {
-    console.warn("UIKIT:COMPONENT_ALREADY_INITIALIZED", `component ${component.__internals.debugId} already initialized`);
+    console.warn(
+      "UIKIT:COMPONENT_ALREADY_INITIALIZED",
+      `component ${component.__internals.debugId} already initialized`,
+    );
 
     return component;
   }
@@ -63,7 +68,49 @@ export default class UIKit {
 
   createLooseContentRoot(props: ContentRootProps) {
     const contentRoot = new ContentRoot(props);
+    // @ts-ignore
+    contentRoot.__internals__.treeContext.debugId = generateUUID();
     this.looseRoots.push(contentRoot);
     return contentRoot;
+  }
+
+  _debug_getBreakInTreeContextPropagation() {
+    this.looseRoots.forEach((root) => {
+      // @ts-ignore
+      const rootId = root.__internals__.treeContext.debugId;
+
+      // loop through all decendants
+      function loop(children: AnyComponentOrHTMLElement[]) {
+        children.forEach((child) => {
+          // @ts-ignore
+          const childId = child.__internals.treeContext.debugId;
+
+          if (rootId !== childId) {
+            console.log("%cBREAK IN TREE CONTEXT PROPAGATION", "color: red; font-weight: 900; font-size: 2rem;");
+
+            if (child.__internals.componentType === ComponentType.HTMLElement) {
+              const c = child as UKHTMLElement;
+              c.rawHtmlElement.setAttribute("ukid", c.__internals.debugId);
+              c.rawHtmlElement.classList.add(styles.flash);
+            } else {
+              const c = child as AnyComponent;
+              c.htmlElement.setAttribute("ukid", c.__internals.debugId);
+              c.htmlElement.addClass(styles.flash);
+            }
+
+            console.log(child.__internals.componentType, child, childId, rootId);
+            return;
+          }
+
+          // @ts-ignore
+          if (child.__internals?.children) {
+            // @ts-ignore
+            loop(child.__internals?.children);
+          }
+        });
+      }
+
+      loop(root.__internals__.children);
+    });
   }
 }

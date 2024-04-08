@@ -53,9 +53,8 @@ export default class UKRouter extends ContainerComponent {
   constructor() {
     super();
 
-    this.__internals.treeContext.router = this;
-
     this.htmlElement = new DivElement();
+
     this.htmlElement.setAttribute("uk-router", "");
 
     this.router = createRouter({
@@ -90,8 +89,14 @@ export default class UKRouter extends ContainerComponent {
   }
 
   private onPathChange() {
+    super.init();
+
+    return this;
+  }
+
+  public addChild(child: AnyComponentOrHTMLElement) {
     this.__internals.children = [];
-    this.htmlElement.clearChildren();
+    super.addChild(child);
 
     return this;
   }
@@ -110,7 +115,6 @@ export default class UKRouter extends ContainerComponent {
           // @ts-ignore
           loader: ({ params }) => {
             self.onPathChange();
-            console.log(`ROUTE REACHED!, ${child.__internalRoute.path}`, child.__internalRoute);
 
             if (!!child.__internalRoute.component) self.addChild(child.__internalRoute.component(params));
           },
@@ -127,7 +131,9 @@ export default class UKRouter extends ContainerComponent {
         this.onPathChange();
         console.log(`ROUTE REACHED!, ${route.__internalRoute.path}`, route.__internalRoute);
 
-        if (!!route.__internalRoute.component) this.addChild(route.__internalRoute.component(params));
+        if (!!route.__internalRoute.component) {
+          this.addChild(route.__internalRoute.component(params));
+        }
       },
       children: convertChildrenToDataRoute(route.__internalRoute.children),
     });
@@ -141,6 +147,9 @@ export default class UKRouter extends ContainerComponent {
 
   // This must be run after new routes are added to the UKRouter
   init() {
+    super.init();
+    // @ts-ignore
+    this.__internals.treeContext.router = this;
     this.router.revalidate();
 
     return this;

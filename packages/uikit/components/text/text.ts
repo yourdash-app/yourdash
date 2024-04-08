@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -11,12 +11,14 @@ export default class Text extends SoloComponent {
   htmlElement: DivElement;
   textValue: string = "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus, nobis?";
 
-  constructor() {
+  constructor(text?: string) {
     super();
 
     this.htmlElement = new DivElement();
     this.htmlElement.setInnerText(this.textValue);
     this.htmlElement.addClass(styles.component);
+
+    if (text) this.setText(text);
 
     return this;
   }

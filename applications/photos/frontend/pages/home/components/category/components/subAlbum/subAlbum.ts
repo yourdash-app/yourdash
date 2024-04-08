@@ -21,6 +21,8 @@ export default class SubAlbum extends Card {
   }
 
   async init() {
+    super.init();
+
     this.htmlElement.addClass(styles.component);
 
     this.onClick(() => {

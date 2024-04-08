@@ -28,7 +28,6 @@ const ReactUIKitView: React.FC<{
       contentRoot.setHTMLElement(ref.current);
 
       onLoad(contentRoot);
-      contentRoot.render();
     }
   }, [!!ref.current]);
 
