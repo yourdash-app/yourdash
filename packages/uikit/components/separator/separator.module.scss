@@ -1,0 +1,27 @@
+/*!
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
+@import "../../core/themeValues";
+
+.component {
+  display: flex;
+
+  border: var(#{$theme}#{$border});
+  border-radius: var(#{$theme}#{$radius});
+}
+
+.row {
+  width: 0.125rem;
+  height: calc(100% - calc(var(#{$theme}#{$gap})) * 2);
+
+  margin: var(#{$theme}#{$gap});
+}
+
+.column {
+  width: calc(100% - calc(var(#{$theme}#{$gap})) * 2);
+  height: 0.125rem;
+
+  margin: var(#{$theme}#{$gap});
+}

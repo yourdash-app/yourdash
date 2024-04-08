@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -61,7 +61,15 @@ export default class CoreApiImage {
     value: IauthenticatedImage<ImageType>["value"],
     extras?: { resizeTo?: { width: number; height: number; resultingImageFormat?: "avif" | "png" | "jpg" | "webp" } },
   ): string {
-    const id = crypto.randomUUID();
+    let resultingExtension = "";
+
+    if (extras?.resizeTo) {
+      resultingExtension = `.${extras.resizeTo.resultingImageFormat || "webp"}`;
+    } else if (type === AUTHENTICATED_IMAGE_TYPE.FILE) {
+      resultingExtension = path.extname(value as string);
+    }
+
+    const id = crypto.randomUUID() + resultingExtension;
 
     if (!this.AUTHENTICATED_IMAGES[username]) {
       this.AUTHENTICATED_IMAGES[username] = {};

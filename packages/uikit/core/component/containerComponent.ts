@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -53,15 +53,22 @@ export class ContainerComponent<ComponentSlots extends string[] = []> {
   addChild(child: AnyComponentOrHTMLElement) {
     this.__internals.children?.push(child);
 
-    if (child.__internals.componentType === ComponentType.HTMLElement) {
-      const childComponent = child as UKHTMLElement;
-      this.htmlElement?.addChild(childComponent);
-    } else {
-      const childComponent = child as ContainerComponent;
-      this.htmlElement?.addChild(childComponent.htmlElement);
+    child.__internals.treeContext = { ...this.__internals.treeContext };
+
+    if (this.__internals.treeContextChildOverrides) {
+      Object.keys(this.__internals.treeContextChildOverrides).map((override) => {
+        // @ts-ignore
+        child.__internals.treeContext[override] = this.__internals.treeContextChildOverrides[override];
+      });
     }
 
+    this.htmlElement?.addChild(child);
+
     return this;
+  }
+
+  init() {
+    // allow for custom logic to be executed before the component is rendered
   }
 
   render() {
@@ -80,14 +87,6 @@ export class ContainerComponent<ComponentSlots extends string[] = []> {
       if (child.__internals.componentType === ComponentType.HTMLElement) {
         const childComponent = child as UKHTMLElement;
         childComponent.__internals.parentComponent = this as unknown as ContainerComponent;
-        childComponent.__internals.treeContext = { ...this.__internals.treeContext };
-
-        if (this.__internals.treeContextChildOverrides) {
-          Object.keys(this.__internals.treeContextChildOverrides).map((override) => {
-            // @ts-ignore
-            child.__internals.treeContext[override] = this.__internals.treeContextChildOverrides[override];
-          });
-        }
 
         return this;
       }
@@ -95,14 +94,6 @@ export class ContainerComponent<ComponentSlots extends string[] = []> {
       const childComponent = child as AnyComponent;
 
       childComponent.__internals.parentComponent = this as unknown as ContainerComponent;
-      childComponent.__internals.treeContext = { ...this.__internals.treeContext };
-
-      if (this.__internals.treeContextChildOverrides) {
-        Object.keys(this.__internals.treeContextChildOverrides).map((override) => {
-          // @ts-ignore
-          child.__internals.treeContext[override] = this.__internals.treeContextChildOverrides[override];
-        });
-      }
 
       child.render();
     });

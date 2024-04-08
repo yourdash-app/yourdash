@@ -11,12 +11,14 @@ export default class Subtext extends SoloComponent {
   htmlElement: DivElement;
   textValue: string = "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus, nobis?";
 
-  constructor() {
+  constructor(text?: string) {
     super();
 
     this.htmlElement = new DivElement();
     this.htmlElement.setInnerText(this.textValue);
     this.htmlElement.addClass(styles.component);
+
+    if (text) this.setText(text);
 
     return this;
   }

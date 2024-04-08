@@ -1,5 +1,5 @@
 /*!
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -70,7 +70,7 @@
   #{$theme}#{$button}#{$hover}#{$border}: 1px solid #555555;
   #{$theme}#{$button}#{$hover}#{$radius}: 0.5rem;
   #{$theme}#{$button}#{$hover}#{$shadow}: 0 0 0.5rem 0 #000000;
-  #{$theme}#{$button}#{$hover}#{$transition}: all 100ms ease-in-out;
+  #{$theme}#{$button}#{$hover}#{$transition}: all 50ms ease-in-out;
   // active
   #{$theme}#{$button}#{$active}#{$color}: #000000;
   #{$theme}#{$button}#{$active}#{$background}: #555555;
@@ -110,14 +110,14 @@
   #{$theme}#{$separator}#{$color}: #555555;
 
   // heading
-  #{$theme}#{$heading}#{$h1}#{$weight}: 900;
+  #{$theme}#{$heading}#{$h1}#{$weight}: 800;
   #{$theme}#{$heading}#{$h1}#{$size}: 3rem;
   #{$theme}#{$heading}#{$h2}#{$weight}: 700;
-  #{$theme}#{$heading}#{$h2}#{$size}: 2rem;
+  #{$theme}#{$heading}#{$h2}#{$size}: 2.5rem;
   #{$theme}#{$heading}#{$h3}#{$weight}: 600;
-  #{$theme}#{$heading}#{$h3}#{$size}: 1.5rem;
+  #{$theme}#{$heading}#{$h3}#{$size}: 2rem;
   #{$theme}#{$heading}#{$h4}#{$weight}: 500;
-  #{$theme}#{$heading}#{$h4}#{$size}: 1.25rem;
+  #{$theme}#{$heading}#{$h4}#{$size}: 1.5rem;
   #{$theme}#{$heading}#{$h5}#{$weight}: 500;
   #{$theme}#{$heading}#{$h5}#{$size}: 1rem;
   #{$theme}#{$heading}#{$h6}#{$weight}: 500;
@@ -155,7 +155,7 @@
   #{$theme}#{$button}#{$hover}#{$border}: 1px solid #555555;
   #{$theme}#{$button}#{$hover}#{$radius}: 0.5rem;
   #{$theme}#{$button}#{$hover}#{$shadow}: 0 0 0.5rem 0 #000000;
-  #{$theme}#{$button}#{$hover}#{$transition}: all 100ms ease-in-out;
+  #{$theme}#{$button}#{$hover}#{$transition}: all 50ms ease-in-out;
   // active
   #{$theme}#{$button}#{$active}#{$color}: #000000;
   #{$theme}#{$button}#{$active}#{$background}: #666666;
@@ -237,7 +237,7 @@
   #{$theme}#{$button}#{$hover}#{$border}: 1px solid #666666;
   #{$theme}#{$button}#{$hover}#{$radius}: 0.25rem;
   #{$theme}#{$button}#{$hover}#{$shadow}: 0 0 0.5rem 0 #000000;
-  #{$theme}#{$button}#{$hover}#{$transition}: all 100ms ease-in-out;
+  #{$theme}#{$button}#{$hover}#{$transition}: all 50ms ease-in-out;
   // active
   #{$theme}#{$button}#{$active}#{$color}: #000000;
   #{$theme}#{$button}#{$active}#{$background}bg: #666666;
@@ -318,7 +318,7 @@
   #{$theme}#{$button}#{$hover}#{$border}: 1px solid #777777;
   #{$theme}#{$button}#{$hover}#{$radius}: 0.25rem;
   #{$theme}#{$button}#{$hover}#{$shadow}: 0 0 0.5rem 0 #000000;
-  #{$theme}#{$button}#{$hover}#{$transition}: all 100ms ease-in-out;
+  #{$theme}#{$button}#{$hover}#{$transition}: all 50ms ease-in-out;
   // active
   #{$theme}#{$button}#{$active}#{$color}: #000000;
   #{$theme}#{$button}#{$active}#{$background}: #777777;

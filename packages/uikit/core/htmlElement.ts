@@ -143,6 +143,15 @@ export default class UKHTMLElement<HTMLRawElement extends HTMLElement = HTMLElem
     this.__internals.children?.push(child);
     child.__internals.parentComponent = this;
 
+    child.__internals.treeContext = { ...this.__internals.treeContext };
+
+    if (this.__internals.treeContextChildOverrides) {
+      Object.keys(this.__internals.treeContextChildOverrides).map((override) => {
+        // @ts-ignore
+        child.__internals.treeContext[override] = this.__internals.treeContextChildOverrides[override];
+      });
+    }
+
     if (child.__internals.componentType === ComponentType.HTMLElement) {
       const childComponent = child as UKHTMLElement;
       this.rawHtmlElement.appendChild(childComponent.rawHtmlElement);
@@ -151,6 +160,7 @@ export default class UKHTMLElement<HTMLRawElement extends HTMLElement = HTMLElem
     }
 
     const childComponent = child as AnyComponent;
+    childComponent.init();
     this.rawHtmlElement.appendChild(childComponent.htmlElement.rawHtmlElement);
 
     return this;
@@ -187,14 +197,6 @@ export default class UKHTMLElement<HTMLRawElement extends HTMLElement = HTMLElem
       if (child.__internals.componentType === ComponentType.HTMLElement) {
         const childComponent = child as UKHTMLElement;
         childComponent.__internals.parentComponent = this as unknown as ContainerComponent;
-        childComponent.__internals.treeContext = { ...this.__internals.treeContext };
-
-        if (this.__internals.treeContextChildOverrides) {
-          Object.keys(this.__internals.treeContextChildOverrides).map((override) => {
-            // @ts-ignore
-            child.__internals.treeContext[override] = this.__internals.treeContextChildOverrides[override];
-          });
-        }
 
         return this;
       }
@@ -202,14 +204,6 @@ export default class UKHTMLElement<HTMLRawElement extends HTMLElement = HTMLElem
       const childComponent = child as AnyComponent;
 
       childComponent.__internals.parentComponent = this as unknown as ContainerComponent;
-      childComponent.__internals.treeContext = { ...this.__internals.treeContext };
-
-      if (this.__internals.treeContextChildOverrides) {
-        Object.keys(this.__internals.treeContextChildOverrides).map((override) => {
-          // @ts-ignore
-          child.__internals.treeContext[override] = this.__internals.treeContextChildOverrides[override];
-        });
-      }
 
       child.render();
     });

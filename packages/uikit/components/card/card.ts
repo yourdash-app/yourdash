@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -24,6 +24,13 @@ export default class Card extends ContainerComponent<["actions"]> {
     this.htmlElement.addClass(styles.component);
 
     return this;
+  }
+
+  onClick(cb: () => void) {
+    this.htmlElement.addClass(styles.clickable);
+    this.htmlElement.addEventListener("click", () => {
+      cb();
+    });
   }
 
   public render() {

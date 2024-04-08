@@ -14,6 +14,9 @@ interface NavigatorExtended extends Navigator {
 export default function isMobileDevice(): boolean {
   const nav: NavigatorExtended = navigator;
 
+  const searchParams = new URLSearchParams(window.location.search);
+  if (searchParams.has("ukmobile")) return true;
+
   // Check if UA Client Hints are supported
   if (nav.userAgentData) {
     return nav.userAgentData.mobile;

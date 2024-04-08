@@ -8,11 +8,13 @@ import DivElement from "../../html/divElement.js";
 import styles from "./flex.module.scss";
 
 export default class Flex extends ContainerComponent {
-  constructor() {
+  constructor(direction?: "row" | "column") {
     super();
 
     this.htmlElement = new DivElement();
     this.htmlElement.addClass(styles.component);
+
+    if (direction) this.setDirection(direction);
 
     return this;
   }
@@ -30,6 +32,8 @@ export default class Flex extends ContainerComponent {
       default:
         break;
     }
+
+    return this;
   }
 
   setWrap(wrap: boolean) {
@@ -38,6 +42,8 @@ export default class Flex extends ContainerComponent {
     } else {
       this.htmlElement.removeClass(styles.wrap);
     }
+
+    return this;
   }
 
   setGap(gap: boolean) {
@@ -46,5 +52,7 @@ export default class Flex extends ContainerComponent {
     } else {
       this.htmlElement.addClass(styles.noGap);
     }
+
+    return this;
   }
 }

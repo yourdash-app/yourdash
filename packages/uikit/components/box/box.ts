@@ -5,7 +5,7 @@
 
 import { ContainerComponent } from "../../core/component/containerComponent.js";
 import DivElement from "../../html/divElement.js";
-import styles from "./card.module.scss";
+import styles from "./box.module.scss";
 import { loadThemeLevel } from "../../core/theme.js";
 
 export default class Box extends ContainerComponent<["actions"]> {

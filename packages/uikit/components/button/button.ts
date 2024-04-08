@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -12,13 +12,16 @@ export default class Button extends SoloComponent {
   htmlElement: ButtonElement;
   labelElement: SpanElement;
 
-  constructor() {
+  constructor(text?: string, onClick?: () => void) {
     super();
 
     this.htmlElement = new ButtonElement();
     this.htmlElement.addClass(styles.component);
     this.labelElement = new SpanElement();
     this.htmlElement.addChild(this.labelElement);
+
+    if (text) this.setText(text);
+    if (onClick) this.onClick(onClick);
 
     return this;
   }

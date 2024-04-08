@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -12,7 +12,7 @@ export default class Heading extends SoloComponent {
   textValue: string = "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus, nobis?";
   level: 1 | 2 | 3 | 4 | 5 | 6 = 1;
 
-  constructor() {
+  constructor(text?: string, level?: Heading["level"]) {
     super();
 
     this.htmlElement = new HeadingElement();
@@ -20,11 +20,15 @@ export default class Heading extends SoloComponent {
     this.htmlElement.addClass(styles.component);
     this.setLevel(1);
 
+    if (text) this.setText(text);
+    if (level) this.setLevel(level);
+
     return this;
   }
 
   setLevel(level: Heading["level"]) {
     this.htmlElement.setLevel(level);
+    this.htmlElement.setInnerText(this.textValue);
 
     return this;
   }

@@ -26,7 +26,9 @@ class UKRoute {
     this.__internalRoute = props;
 
     if (!props.path && !props.index) {
-      console.warn(`UKRouter: @${window.location.pathname} A route was created without a path and was not an index route!`);
+      console.warn(
+        `UKRouter: @${window.location.pathname} A route was created without a path and was not an index route!`,
+      );
 
       return this;
     }
@@ -51,7 +53,10 @@ export default class UKRouter extends ContainerComponent {
   constructor() {
     super();
 
+    this.__internals.treeContext.router = this;
+
     this.htmlElement = new DivElement();
+    this.htmlElement.setAttribute("uk-router", "");
 
     this.router = createRouter({
       routes: [
@@ -137,6 +142,12 @@ export default class UKRouter extends ContainerComponent {
   // This must be run after new routes are added to the UKRouter
   init() {
     this.router.revalidate();
+
+    return this;
+  }
+
+  navigate(path: string) {
+    this.router.navigate(path);
 
     return this;
   }

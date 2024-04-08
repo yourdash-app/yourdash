@@ -1,0 +1,39 @@
+/*!
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
+@import "@yourdash/uikit/core/themeValues";
+
+.component {
+  display: flex;
+  flex-direction: column;
+  gap: var(#{$theme}#{$gap});
+
+  > img {
+    width: 256px;
+    aspect-ratio: 1 / 1;
+
+    @media (max-width: $sizeLargeTablet) {
+      width: 192px;
+    }
+
+    @media (max-width: $sizeTablet) {
+      width: 128px;
+    }
+  }
+
+  > div {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 256px;
+
+    @media (max-width: $sizeLargeTablet) {
+      width: 192px;
+    }
+
+    @media (max-width: $sizeTablet) {
+      width: 128px;
+    }
+  }
+}

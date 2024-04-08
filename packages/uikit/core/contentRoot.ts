@@ -5,18 +5,19 @@
 
 import generateUUID from "@yourdash/shared/web/helpers/uuid";
 import theme from "./defaultTheme.module.scss";
-import { getThemeMeta } from "./theme.js";
+import { getThemeMeta, loadThemeLevel } from "./theme.js";
 import { ComponentType } from "./component/componentType.js";
 import { ContainerComponent } from "./component/containerComponent.js";
 import { DefaultComponentTreeContext } from "./component/treeContext.js";
 import { AnyComponent, AnyComponentOrHTMLElement } from "./component/type.js";
 import UKHTMLElement from "./htmlElement.js";
 import { appendComponentToElement } from "./index.js";
+import styles from "./contentRoot.module.scss";
 
 export interface ContentRootProps {
   htmlElement: HTMLElement;
   debugId?: string;
-  fillSpace?: boolean;
+  dontFillSpace?: boolean;
 }
 
 export default class ContentRoot {
@@ -39,9 +40,11 @@ export default class ContentRoot {
     if (props.debugId) this.__internals__.debugId = props.debugId;
     this.setHTMLElement(props.htmlElement);
     getThemeMeta(this.__internals__.element as HTMLElement);
+    this.__internals__.element?.classList.add(styles.contentRoot);
+    loadThemeLevel(this.__internals__.element as HTMLElement, 0);
     this.__internals__.element?.setAttribute("uikit-content-root", "true");
 
-    if (props.fillSpace) {
+    if (!props.dontFillSpace) {
       if (!this.__internals__.element) return this;
 
       this.__internals__.element.style.width = "100%";

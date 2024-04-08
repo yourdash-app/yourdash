@@ -22,6 +22,7 @@ const UIKitDemoApplication: React.FC = () => {
       <title>YourDash | UIKit Demo</title>
       <ReactUIKitView
         onLoad={(root) => {
+          const router = new UKRouter();
           const card = new Card();
 
           card.addChild(new Icon().setIcon(UKIcon.Accessibility).setSize("2.5rem"));
@@ -52,7 +53,7 @@ const UIKitDemoApplication: React.FC = () => {
                   new IconButton().$((c) => {
                     c.icon.setIcon(UKIcon.ChevronLeft);
                     c.onClick(() => {
-                      window.location.hash = "/app/a/uikit_demo";
+                      router.navigate("/app/a/uikit_demo");
                     });
                   }),
                 )
@@ -60,7 +61,7 @@ const UIKitDemoApplication: React.FC = () => {
                   new IconButton().$((c) => {
                     c.icon.setIcon(UKIcon.ChevronRight);
                     c.onClick(() => {
-                      window.location.hash = "/app/a/uikit_demo/test";
+                      router.navigate("/app/a/uikit_demo/test");
                     });
                   }),
                 )
@@ -68,14 +69,21 @@ const UIKitDemoApplication: React.FC = () => {
                   new TextInput().$((c) => {
                     c.icon.setIcon(UKIcon.ChevronRight);
                     c.onChange(() => {
-                      window.location.hash = "/app/a/uikit_demo/test";
+                      return 0;
                     });
                   }),
                 ),
             ),
           );
 
-          root.addChild(new UKRouter().setBasePath("/app/a/uikit_demo").addRoute("/test", new Text().setText("Hello World from /test!")));
+          router.addRoute(
+            router
+              .createRoute({ path: "/app/a/uikit_demo" })
+              .addRoute(router.createRoute({ path: "test", component: () => new Text().setText("Hello World from /test!") })),
+          );
+
+          root.addChild(router);
+          router.init();
         }}
       />
     </>
