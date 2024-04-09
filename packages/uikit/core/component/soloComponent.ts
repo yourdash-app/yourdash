@@ -6,6 +6,7 @@
 import generateUUID from "@yourdash/shared/web/helpers/uuid.js";
 import DivElement from "../../html/divElement.js";
 import UKHTMLElement from "../htmlElement.js";
+import { propagateTreeContext } from "../treeContext.js";
 import { ComponentType } from "./componentType.js";
 import { BaseComponentInternals } from "./internals.js";
 import { AnyComponentOrHTMLElement } from "./type.js";
@@ -44,21 +45,7 @@ export class SoloComponent {
   }
 
   init() {
-    function findNearestTreeContext(parent: AnyComponentOrHTMLElement) {
-      if (parent instanceof UKHTMLElement) {
-        if (parent.__internals.parentComponent) return findNearestTreeContext(parent.__internals.parentComponent);
-
-        return { level: 0, unableToFindTreeContext: "welp :(" };
-      } else {
-        if (parent.__internals.treeContext) return parent.__internals.treeContext;
-
-        if (parent.__internals.parentComponent) return findNearestTreeContext(parent.__internals.parentComponent);
-
-        return { level: 0, unableToFindTreeContext: "welp :(" };
-      }
-    }
-
     // @ts-ignore
-    this.__internals.treeContext = findNearestTreeContext(this);
+    this.__internals.treeContext = propagateTreeContext(this.__internals.parentComponent);
   }
 }

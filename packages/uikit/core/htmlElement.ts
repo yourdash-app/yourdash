@@ -7,7 +7,8 @@ import generateUUID from "@yourdash/shared/web/helpers/uuid.js";
 import { Merge } from "type-fest";
 import { ComponentType } from "./component/componentType.js";
 import { ContainerComponentInternals } from "./component/containerComponent.js";
-import { AnyComponent } from "./component/type.js";
+import { AnyComponent, AnyComponentOrHTMLElement } from "./component/type.js";
+import { propagateTreeContext } from "./treeContext.js";
 
 type OverrideProperties<
   TOriginal,
@@ -20,10 +21,7 @@ type OverrideProperties<
 > = Merge<TOriginal, TOverride>;
 
 export default class UKHTMLElement<HTMLRawElement extends HTMLElement = HTMLElement> {
-  __internals: Omit<
-    OverrideProperties<ContainerComponentInternals, { children: (AnyComponent | UKHTMLElement)[] }>,
-    "treeContext" | "treeContextChildOverrides"
-  >;
+  __internals: OverrideProperties<ContainerComponentInternals, { children: (AnyComponent | UKHTMLElement)[] }>;
   rawHtmlElement: HTMLRawElement;
 
   constructor(htmlElement: HTMLRawElement, props?: { debugId?: string }) {
@@ -171,5 +169,12 @@ export default class UKHTMLElement<HTMLRawElement extends HTMLElement = HTMLElem
   dangerouslySetInnerHTML(html: string) {
     this.rawHtmlElement.innerHTML = html;
     return this;
+  }
+
+  init() {
+    this.__internals.children = [];
+    this.clearChildren();
+    // @ts-ignore
+    this.__internals.treeContext = propagateTreeContext(this.__internals.parentComponent);
   }
 }

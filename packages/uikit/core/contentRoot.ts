@@ -20,7 +20,7 @@ export interface ContentRootProps {
 }
 
 export default class ContentRoot {
-  __internals__: {
+  __internals: {
     debugId: string;
     children: AnyComponentOrHTMLElement[];
     element?: HTMLElement;
@@ -28,7 +28,7 @@ export default class ContentRoot {
   };
 
   constructor(props: ContentRootProps) {
-    this.__internals__ = {
+    this.__internals = {
       debugId: generateUUID(),
       children: [],
       treeContext: {
@@ -36,18 +36,18 @@ export default class ContentRoot {
       },
     };
 
-    if (props.debugId) this.__internals__.debugId = props.debugId;
+    if (props.debugId) this.__internals.debugId = props.debugId;
     this.setHTMLElement(props.htmlElement);
-    getThemeMeta(this.__internals__.element as HTMLElement);
-    this.__internals__.element?.classList.add(styles.contentRoot);
-    loadThemeLevel(this.__internals__.element as HTMLElement, 0);
-    this.__internals__.element?.setAttribute("uikit-content-root", "true");
+    getThemeMeta(this.__internals.element as HTMLElement);
+    this.__internals.element?.classList.add(styles.contentRoot);
+    loadThemeLevel(this.__internals.element as HTMLElement, 0);
+    this.__internals.element?.setAttribute("uikit-content-root", "true");
 
     if (!props.dontFillSpace) {
-      if (!this.__internals__.element) return this;
+      if (!this.__internals.element) return this;
 
-      this.__internals__.element.style.width = "100%";
-      this.__internals__.element.style.height = "100%";
+      this.__internals.element.style.width = "100%";
+      this.__internals.element.style.height = "100%";
     }
 
     if (window.__uikit__.isMobile) {
@@ -58,52 +58,53 @@ export default class ContentRoot {
   }
 
   setHTMLElement(element: HTMLElement) {
-    this.__internals__.element = element;
+    this.__internals.element = element;
 
     return this;
   }
 
   getChildren() {
-    return this.__internals__.children;
+    return this.__internals.children;
   }
 
   // add a child component to the content root
   addChild(child: AnyComponentOrHTMLElement) {
-    this.__internals__.children?.push(child);
+    this.__internals.children?.push(child);
     child.__internals.parentComponent = this as unknown as ContainerComponent;
 
     if (child.__internals.componentType === ComponentType.HTMLElement) {
       const childComponent = child as UKHTMLElement;
-      this.__internals__.element?.appendChild(childComponent.rawHtmlElement);
+      this.__internals.element?.appendChild(childComponent.rawHtmlElement);
+      childComponent.init();
 
       return this;
     }
 
     const childComponent = child as AnyComponent;
-    this.__internals__.element?.appendChild(childComponent.htmlElement.rawHtmlElement);
+    this.__internals.element?.appendChild(childComponent.htmlElement.rawHtmlElement);
     childComponent.init();
 
     return this;
   }
 
   removeChild(child: AnyComponent) {
-    const index = this.__internals__.children.indexOf(child);
+    const index = this.__internals.children.indexOf(child);
     if (index > -1) {
-      this.__internals__.children.splice(index, 1);
+      this.__internals.children.splice(index, 1);
     }
 
     return this;
   }
 
   setDeviceType(deviceType: "mobile" | "desktop") {
-    this.__internals__.element?.classList.remove(theme.mobile);
-    this.__internals__.element?.removeAttribute("uikit-device");
+    this.__internals.element?.classList.remove(theme.mobile);
+    this.__internals.element?.removeAttribute("uikit-device");
 
     if (deviceType === "mobile") {
-      this.__internals__.element?.classList.add(theme.mobile);
-      this.__internals__.element?.setAttribute("uikit-device", "mobile");
+      this.__internals.element?.classList.add(theme.mobile);
+      this.__internals.element?.setAttribute("uikit-device", "mobile");
     } else {
-      this.__internals__.element?.setAttribute("uikit-device", "desktop");
+      this.__internals.element?.setAttribute("uikit-device", "desktop");
     }
   }
 }

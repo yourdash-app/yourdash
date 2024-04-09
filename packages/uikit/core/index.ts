@@ -69,7 +69,7 @@ export default class UIKit {
   createLooseContentRoot(props: ContentRootProps) {
     const contentRoot = new ContentRoot(props);
     // @ts-ignore
-    contentRoot.__internals__.treeContext.debugId = generateUUID();
+    contentRoot.__internals.treeContext.debugId = generateUUID();
     this.looseRoots.push(contentRoot);
     return contentRoot;
   }
@@ -77,13 +77,14 @@ export default class UIKit {
   _debug_getBreakInTreeContextPropagation() {
     this.looseRoots.forEach((root) => {
       // @ts-ignore
-      const rootId = root.__internals__.treeContext.debugId;
+      const rootId = root.__internals.treeContext.debugId;
+      console.log(rootId);
 
       // loop through all decendants
       function loop(children: AnyComponentOrHTMLElement[]) {
         children.forEach((child) => {
           // @ts-ignore
-          const childId = child.__internals.treeContext.debugId;
+          const childId = child.__internals.treeContext?.debugId || "";
 
           if (rootId !== childId) {
             console.log("%cBREAK IN TREE CONTEXT PROPAGATION", "color: red; font-weight: 900; font-size: 2rem;");
@@ -91,10 +92,12 @@ export default class UIKit {
             if (child.__internals.componentType === ComponentType.HTMLElement) {
               const c = child as UKHTMLElement;
               c.rawHtmlElement.setAttribute("ukid", c.__internals.debugId);
+              c.rawHtmlElement.classList.remove(styles.flash);
               c.rawHtmlElement.classList.add(styles.flash);
             } else {
               const c = child as AnyComponent;
               c.htmlElement.setAttribute("ukid", c.__internals.debugId);
+              c.htmlElement.removeClass(styles.flash);
               c.htmlElement.addClass(styles.flash);
             }
 
@@ -110,7 +113,7 @@ export default class UIKit {
         });
       }
 
-      loop(root.__internals__.children);
+      loop(root.__internals.children);
     });
   }
 }
