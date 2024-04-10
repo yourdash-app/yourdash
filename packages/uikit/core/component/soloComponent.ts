@@ -7,17 +7,18 @@ import generateUUID from "@yourdash/shared/web/helpers/uuid.js";
 import DivElement from "../../html/divElement.js";
 import UKHTMLElement from "../htmlElement.js";
 import { propagateTreeContext } from "../treeContext.js";
+import { ComponentProps } from "./componentProps.js";
 import { ComponentType } from "./componentType.js";
 import { BaseComponentInternals } from "./internals.js";
-import { AnyComponentOrHTMLElement } from "./type.js";
 
 export interface SoloComponentInternals extends BaseComponentInternals {}
 
 export class SoloComponent {
   __internals: SoloComponentInternals;
   htmlElement: UKHTMLElement;
+  props: ComponentProps;
 
-  constructor(props?: { debugId?: string }) {
+  constructor(props: SoloComponent["props"] = {}, debugProps?: { debugId?: string }) {
     this.__internals = {
       debugId: generateUUID(),
       // When a component is created, it's creator should define its parent
@@ -27,9 +28,11 @@ export class SoloComponent {
       treeContext: { level: 0 },
     };
 
-    if (props) {
-      if (props.debugId) {
-        this.__internals.debugId = props.debugId;
+    this.props = props;
+
+    if (debugProps) {
+      if (debugProps.debugId) {
+        this.__internals.debugId = debugProps.debugId;
       }
     }
 

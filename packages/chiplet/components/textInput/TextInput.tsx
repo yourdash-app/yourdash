@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -59,7 +59,12 @@ const TextInput: React.FC<ITextInput> = ({
         )}
       >
         {preceedingInlay}
-        {icon && <Icon icon={icon} className={"h-4"} />}
+        {icon && (
+          <Icon
+            icon={icon}
+            className={"h-4"}
+          />
+        )}
         <input
           {...extraProps}
           autoComplete={autoComplete}
@@ -75,7 +80,10 @@ const TextInput: React.FC<ITextInput> = ({
           onChange={(e) => {
             const value = e.currentTarget.value;
             onChange(value, e);
-            if (!mustMatchRegex || (value.match(mustMatchRegex) !== null && value.match(mustMatchRegex)?.length === 1)) {
+            if (
+              !mustMatchRegex ||
+              (value.match(mustMatchRegex) !== null && value.match(mustMatchRegex)?.length === 1)
+            ) {
               setValid(true);
               onValid?.(value);
             } else {

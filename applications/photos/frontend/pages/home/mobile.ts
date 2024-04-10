@@ -13,38 +13,37 @@ import fetchCategories from "./lib/fetchCategories.js";
 import styles from "./mobile.module.scss";
 
 export default class MobileHomePage extends ContainerComponent {
+  htmlElement: DivElement;
   categories: string[] = [];
   itemCounter!: Subtext;
 
   constructor() {
     super();
+
+    this.htmlElement = new DivElement();
+
     return this;
   }
 
   async init() {
     super.init();
 
-    console.log(this.__internals.parentComponent?.__internals);
-
     this.htmlElement.addClass(styles.page);
 
-    this.addChild(
-      new DivElement().$((e) => {
-        e.addClass(styles.hero);
-        e.addChild(new Heading("All Photos"));
-        this.itemCounter = new Subtext("0 items");
-        e.addChild(this.itemCounter);
-      }),
-    );
+    this.addChild(DivElement).$((e) => {
+      e.addClass(styles.hero);
+      e.addChild(Heading, { text: "All Photos" });
+      this.itemCounter = e.addChild(Subtext, { text: "0 items" });
+    });
 
-    this.addChild(new Separator().setDirection("column"));
+    this.addChild(Separator, { direction: "column" });
 
     this.categories = await fetchCategories();
 
     let itemCount = 0;
 
     this.categories.map((cat) => {
-      const category = new Category(cat);
+      const category = this.addChild(Category, { path: cat });
 
       category.setOnFetch(() => {
         itemCount += category.data?.items.photos.length || 0;
@@ -53,8 +52,6 @@ export default class MobileHomePage extends ContainerComponent {
 
         this.itemCounter.setText(itemCount + " items");
       });
-
-      this.addChild(category);
     });
   }
 }

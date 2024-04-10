@@ -12,11 +12,6 @@ export default class MainElement extends UKHTMLElement {
     return this;
   }
 
-  addChild(childElement: UKHTMLElement) {
-    this.rawHtmlElement.appendChild(childElement.rawHtmlElement);
-    return this;
-  }
-
   setInnerText(text: string) {
     this.rawHtmlElement.innerText = text;
     return this;

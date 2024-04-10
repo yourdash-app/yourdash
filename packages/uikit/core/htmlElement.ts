@@ -4,7 +4,7 @@
  */
 
 import generateUUID from "@yourdash/shared/web/helpers/uuid.js";
-import { Merge } from "type-fest";
+import { Constructor, Merge } from "type-fest";
 import { ComponentType } from "./component/componentType.js";
 import { ContainerComponentInternals } from "./component/containerComponent.js";
 import { AnyComponent, AnyComponentOrHTMLElement } from "./component/type.js";
@@ -12,9 +12,6 @@ import { propagateTreeContext } from "./treeContext.js";
 
 type OverrideProperties<
   TOriginal,
-  // This first bit where we use `Partial` is to enable autocomplete
-  // and the second bit with the mapped type is what enforces that we don't try
-  // to override properties that doesn't exist in the original type.
   TOverride extends Partial<Record<keyof TOriginal, unknown>> & {
     [Key in keyof TOverride]: Key extends keyof TOriginal ? TOverride[Key] : never;
   },
@@ -32,6 +29,7 @@ export default class UKHTMLElement<HTMLRawElement extends HTMLElement = HTMLElem
       children: [],
       componentType: ComponentType.HTMLElement,
       isInitialized: false,
+      treeContext: { level: 0 },
       slots: [],
     };
 
@@ -137,23 +135,28 @@ export default class UKHTMLElement<HTMLRawElement extends HTMLElement = HTMLElem
     return this;
   }
 
-  addChild(child: AnyComponent | UKHTMLElement, calledFromParent?: boolean) {
-    this.__internals.children?.push(child);
+  addChild<Comp extends AnyComponentOrHTMLElement>(
+    component: Constructor<Comp>,
+    // @ts-ignore
+    props: Comp extends AnyComponent ? Comp["props"] : object = {},
+  ): Comp {
+    const child = new component(props);
 
-    if (!calledFromParent) child.__internals.parentComponent = this;
+    this.__internals.children?.push(child);
 
     if (child.__internals.componentType === ComponentType.HTMLElement) {
       const childComponent = child as UKHTMLElement;
       this.rawHtmlElement.appendChild(childComponent.rawHtmlElement);
+      childComponent.init();
 
-      return this;
+      return childComponent as Comp;
     }
 
     const childComponent = child as AnyComponent;
     this.rawHtmlElement.appendChild(childComponent.htmlElement.rawHtmlElement);
     childComponent.init();
 
-    return this;
+    return childComponent as Comp;
   }
 
   clearChildren() {
@@ -173,7 +176,7 @@ export default class UKHTMLElement<HTMLRawElement extends HTMLElement = HTMLElem
 
   init() {
     this.__internals.children = [];
-    this.clearChildren();
+
     // @ts-ignore
     this.__internals.treeContext = propagateTreeContext(this.__internals.parentComponent);
   }

@@ -11,12 +11,8 @@
   gap: var(#{$theme}#{$gap});
 
   > img {
-    width: 256px;
     aspect-ratio: 1 / 1;
-
-    @media (max-width: $sizeLargeTablet) {
-      width: 192px;
-    }
+    width: 192px;
 
     @media (max-width: $sizeTablet) {
       width: 128px;
@@ -26,11 +22,7 @@
   > div {
     text-overflow: ellipsis;
     overflow: hidden;
-    width: 256px;
-
-    @media (max-width: $sizeLargeTablet) {
-      width: 192px;
-    }
+    width: 192px;
 
     @media (max-width: $sizeTablet) {
       width: 128px;

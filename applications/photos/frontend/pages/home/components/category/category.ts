@@ -15,15 +15,14 @@ import SubAlbum from "./components/subAlbum/subAlbum.js";
 import styles from "./category.module.scss";
 
 export default class Category extends ContainerComponent {
-  path: string;
+  declare props: { path: string };
   data?: IPhotoAlbum;
   toggleButton!: IconButton;
   content!: DivElement;
   onFetch?: () => void;
 
-  constructor(path: string) {
-    super();
-    this.path = path;
+  constructor(props: Category["props"]) {
+    super(props);
 
     return this;
   }
@@ -36,7 +35,7 @@ export default class Category extends ContainerComponent {
   fetch(): Promise<IPhotoAlbum> {
     return new Promise<IPhotoAlbum>((resolve) => {
       csi.getJson(
-        `/app/photos/album/${this.path}`,
+        `/app/photos/album/${this.props.path}`,
         (album: IPhotoAlbum) => {
           resolve(album);
         },
@@ -57,25 +56,25 @@ export default class Category extends ContainerComponent {
 
     console.log(this.data);
 
-    const header = new DivElement();
+    const header = this.addChild(DivElement);
     header.addClass(styles.header);
 
-    header.addChild(new Heading(this.data.label, 2));
+    header.addChild(Heading, { text: this.data.label, level: 2 });
 
-    this.toggleButton = new IconButton(UKIcon.ChevronDown, () => {
-      this.collapse();
+    this.toggleButton = header.addChild(IconButton, {
+      icon: UKIcon.ChevronDown,
+      onClick: () => {
+        this.collapse();
+      },
     });
-    header.addChild(this.toggleButton);
-    this.addChild(header);
 
-    this.content = new DivElement();
+    this.content = this.addChild(DivElement);
     this.content.addClass(styles.content);
 
     this.data.items.subAlbums.map((album) => {
-      this.content.addChild(new SubAlbum(album));
+      console.log(album);
+      this.content.addChild(SubAlbum, { data: album });
     });
-
-    this.addChild(this.content);
   }
 
   expand() {

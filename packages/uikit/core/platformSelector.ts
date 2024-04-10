@@ -3,9 +3,12 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { AnyComponentOrHTMLElement } from "./component/type.js";
+import { UKRouteComponent } from "./router/router.js";
 
-export default function platformSelector(desktop: () => AnyComponentOrHTMLElement, mobile: () => AnyComponentOrHTMLElement): AnyComponentOrHTMLElement {
+export default function platformSelector(
+  desktop: () => UKRouteComponent,
+  mobile: () => UKRouteComponent,
+): UKRouteComponent {
   const isMobile = window.__uikit__.isMobile;
 
   if (isMobile) return mobile();

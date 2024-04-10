@@ -12,6 +12,7 @@ import { DefaultComponentTreeContext } from "./component/treeContext.js";
 import { AnyComponent, AnyComponentOrHTMLElement } from "./component/type.js";
 import UKHTMLElement from "./htmlElement.js";
 import styles from "./contentRoot.module.scss";
+import { Constructor } from "type-fest";
 
 export interface ContentRootProps {
   htmlElement: HTMLElement;
@@ -23,7 +24,7 @@ export default class ContentRoot {
   __internals: {
     debugId: string;
     children: AnyComponentOrHTMLElement[];
-    element?: HTMLElement;
+    element: HTMLElement;
     treeContext: object & DefaultComponentTreeContext;
   };
 
@@ -34,6 +35,8 @@ export default class ContentRoot {
       treeContext: {
         level: 0,
       },
+      // @ts-ignore
+      element: null,
     };
 
     if (props.debugId) this.__internals.debugId = props.debugId;
@@ -68,7 +71,11 @@ export default class ContentRoot {
   }
 
   // add a child component to the content root
-  addChild(child: AnyComponentOrHTMLElement) {
+  addChild<Comp extends AnyComponentOrHTMLElement>(
+    component: Constructor<Comp>,
+    props: Comp extends AnyComponent ? Comp["props"] : undefined,
+  ): Comp {
+    const child = new component(props);
     this.__internals.children?.push(child);
     child.__internals.parentComponent = this as unknown as ContainerComponent;
 
@@ -77,14 +84,14 @@ export default class ContentRoot {
       this.__internals.element?.appendChild(childComponent.rawHtmlElement);
       childComponent.init();
 
-      return this;
+      return childComponent as Comp;
     }
 
     const childComponent = child as AnyComponent;
     this.__internals.element?.appendChild(childComponent.htmlElement.rawHtmlElement);
     childComponent.init();
 
-    return this;
+    return childComponent as Comp;
   }
 
   removeChild(child: AnyComponent) {
@@ -106,5 +113,10 @@ export default class ContentRoot {
     } else {
       this.__internals.element?.setAttribute("uikit-device", "desktop");
     }
+  }
+
+  init() {
+    this.__internals.element.innerHTML = "";
+    this.__internals.children = [];
   }
 }

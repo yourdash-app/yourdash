@@ -9,16 +9,13 @@ import styles from "./text.module.scss";
 
 export default class Text extends SoloComponent {
   htmlElement: DivElement;
+  declare props: { text?: string };
   textValue: string = "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus, nobis?";
 
-  constructor(text?: string) {
-    super();
+  constructor(props: Text["props"] = {}) {
+    super(props);
 
     this.htmlElement = new DivElement();
-    this.htmlElement.setInnerText(this.textValue);
-    this.htmlElement.addClass(styles.component);
-
-    if (text) this.setText(text);
 
     return this;
   }
@@ -28,5 +25,16 @@ export default class Text extends SoloComponent {
     this.htmlElement.setInnerText(this.textValue);
 
     return this;
+  }
+
+  init() {
+    super.init();
+
+    const props = this.props;
+
+    this.htmlElement.setInnerText(this.textValue);
+    this.htmlElement.addClass(styles.component);
+
+    if (props.text) this.setText(props.text);
   }
 }

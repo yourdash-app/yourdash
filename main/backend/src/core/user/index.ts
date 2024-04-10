@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -62,23 +62,23 @@ export default class YourDashUser {
     sharp(newAvatarFile)
       .resize(32, 32)
       .toFile(path.join(this.path, "avatars/small.avif"))
-      .catch((err) => console.error(err));
+      .catch((err: string) => console.error(err));
     sharp(newAvatarFile)
       .resize(64, 64)
       .toFile(path.join(this.path, "avatars/medium.avif"))
-      .catch((err) => console.error(err));
+      .catch((err: string) => console.error(err));
     sharp(newAvatarFile)
       .resize(128, 128)
       .toFile(path.join(this.path, "avatars/large.avif"))
-      .catch((err) => console.error(err));
+      .catch((err: string) => console.error(err));
     sharp(newAvatarFile)
       .resize(256, 256)
       .toFile(path.join(this.path, "avatars/extraLarge.avif"))
-      .catch((err) => console.error(err));
+      .catch((err: string) => console.error(err));
   }
 
   async verify() {
-    if (!coreApi.globalDb.get("defaults")) {
+    if (!coreApi.globalDb.get("core:defaults")) {
       return coreApi.log.error("user", `the GlobalDatabase is not yet loaded! not creating user ${this.username}`);
     }
 
@@ -146,7 +146,7 @@ export default class YourDashUser {
             last: "User",
           },
           "user:username": this.username,
-          "core:panel:quickShortcuts": coreApi.globalDb.get("defaults")?.user?.quickShortcuts || [],
+          "core:panel:quickShortcuts": coreApi.globalDb.get("core:defaults")?.user?.quickShortcuts || [],
         }),
       );
     } catch (err) {

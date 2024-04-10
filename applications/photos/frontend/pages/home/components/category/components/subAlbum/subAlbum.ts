@@ -6,16 +6,19 @@
 import Card from "@yourdash/uikit/components/card/card.js";
 import Image from "@yourdash/uikit/components/image/image.js";
 import Subtext from "@yourdash/uikit/components/subtext/subtext.js";
+import { ContainerComponent } from "@yourdash/uikit/core/component/containerComponent.js";
 import getRouter from "@yourdash/uikit/core/router/getRouter.js";
 import { ISubPhotoAlbum } from "../../../../../../../shared/photoAlbum.js";
 import styles from "./subAlbum.module.scss";
 
-export default class SubAlbum extends Card {
-  data?: ISubPhotoAlbum;
+export default class SubAlbum extends ContainerComponent {
+  props: { data: ISubPhotoAlbum };
+  card!: Card;
 
-  constructor(data: ISubPhotoAlbum) {
+  constructor(props: SubAlbum["props"]) {
     super();
-    this.data = data;
+
+    this.props = props;
 
     return this;
   }
@@ -25,12 +28,18 @@ export default class SubAlbum extends Card {
 
     this.htmlElement.addClass(styles.component);
 
-    this.onClick(() => {
+    this.card = this.addChild(Card);
+
+    this.card.onClick(() => {
       console.log(this.__internals.treeContext);
-      getRouter(this)?.navigate(`/app/a/photos/album/${this.data?.path}`);
+      getRouter(this).navigate(`/app/a/photos/album/${this.props.data.path}`);
     });
 
-    this.addChild(new Image(this.data?.coverPhoto, true, true));
-    this.addChild(new Subtext(this.data?.displayName));
+    if (this.props.data.coverPhoto) {
+      this.card.addChild(Image, { src: this.props.data.coverPhoto, lazy: true, isAuthenticated: true });
+    } else {
+      this.card.addChild(Image, { src: "/assets/icons/no-entry-24.svg", lazy: true });
+    }
+    this.card.addChild(Subtext, { text: this.props.data.displayName });
   }
 }

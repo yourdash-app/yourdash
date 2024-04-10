@@ -3,6 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary.js";
 import { SoloComponent } from "../../core/component/soloComponent.js";
 import ButtonElement from "../../html/buttonElement.js";
 import Icon from "../icon/icon.js";
@@ -10,25 +11,18 @@ import styles from "./iconButton.module.scss";
 
 export default class IconButton extends SoloComponent {
   htmlElement: ButtonElement;
-  icon: Icon;
+  declare props: { icon?: UKIcon; onClick?: () => void };
+  icon!: Icon;
 
-  constructor(icon?: IconButton["icon"]["icon"], onClick?: () => void) {
-    super();
+  constructor(props: IconButton["props"] = {}) {
+    super(props);
 
     this.htmlElement = new ButtonElement();
-    this.htmlElement.addClass(styles.component);
-    this.icon = new Icon();
-    this.htmlElement.addChild(this.icon);
-
-    this.icon.setSize("1.25rem");
-
-    if (icon) this.setIcon(icon);
-    if (onClick) this.onClick(onClick);
 
     return this;
   }
 
-  setIcon(icon: IconButton["icon"]["icon"]) {
+  setIcon(icon: UKIcon) {
     this.icon.setIcon(icon);
 
     return this;
@@ -42,5 +36,18 @@ export default class IconButton extends SoloComponent {
 
   click() {
     this.htmlElement.click();
+  }
+
+  init() {
+    super.init();
+
+    const props = this.props;
+
+    this.htmlElement.addClass(styles.component);
+    this.icon = this.htmlElement.addChild(Icon);
+    this.icon.setSize("1.25rem");
+
+    if (props.icon) this.setIcon(props.icon);
+    if (props.onClick) this.onClick(props.onClick);
   }
 }

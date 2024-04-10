@@ -10,16 +10,12 @@ import styles from "./image.module.scss";
 
 export default class Image extends SoloComponent {
   htmlElement: ImgElement;
+  declare props: { src?: string; lazy?: boolean; isAuthenticated?: boolean };
 
-  constructor(src?: string, lazy?: boolean, isAuthenticated?: boolean) {
-    super();
+  constructor(props: Image["props"] = {}) {
+    super(props);
 
     this.htmlElement = new ImgElement();
-    this.setDraggable(false);
-    this.htmlElement.addClass(styles.component);
-
-    if (lazy) this.setLazy(lazy);
-    if (src) this.setSrc(src, isAuthenticated);
 
     return this;
   }
@@ -57,5 +53,17 @@ export default class Image extends SoloComponent {
     this.htmlElement.setSrcSet(srcSet.map((ss) => createSrc(ss)).join(", "));
 
     return this;
+  }
+
+  init() {
+    super.init();
+
+    const props = this.props;
+
+    this.setDraggable(false);
+    this.htmlElement.addClass(styles.component);
+
+    if (props.lazy) this.setLazy(props.lazy);
+    if (props.src) this.setSrc(props.src, props.isAuthenticated);
   }
 }

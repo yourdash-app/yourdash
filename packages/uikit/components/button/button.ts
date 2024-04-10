@@ -10,18 +10,13 @@ import styles from "./button.module.scss";
 
 export default class Button extends SoloComponent {
   htmlElement: ButtonElement;
-  labelElement: SpanElement;
+  declare props: { text?: string; onClick?: () => void };
+  labelElement!: SpanElement;
 
-  constructor(text?: string, onClick?: () => void) {
-    super();
+  constructor(props: Button["props"] = {}) {
+    super(props);
 
     this.htmlElement = new ButtonElement();
-    this.htmlElement.addClass(styles.component);
-    this.labelElement = new SpanElement();
-    this.htmlElement.addChild(this.labelElement);
-
-    if (text) this.setText(text);
-    if (onClick) this.onClick(onClick);
 
     return this;
   }
@@ -40,5 +35,18 @@ export default class Button extends SoloComponent {
     this.labelElement.setInnerText(text);
 
     return this;
+  }
+
+  init() {
+    super.init();
+
+    const props = this.props;
+
+    this.htmlElement.addClass(styles.component);
+    this.labelElement = new SpanElement();
+    this.htmlElement.addChild(this.labelElement);
+
+    if (props.text) this.setText(props.text);
+    if (props.onClick) this.onClick(props.onClick);
   }
 }

@@ -10,7 +10,7 @@ export default class DesktopHomePage extends ContainerComponent {
   constructor() {
     super();
 
-    this.addChild(new Text().setText("Coming Soon to desktop..."));
+    this.addChild(new Text({ text: "Coming Soon to desktop..." }));
 
     return this;
   }

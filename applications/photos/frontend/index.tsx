@@ -15,40 +15,52 @@ const PhotosRouter: React.FC = () => {
   return (
     <ReactUIKitView
       onLoad={(cr) => {
-        const router = new UKRouter();
+        const router = cr.addChild(UKRouter, {});
 
         router.addRoute(
           router
             .createRoute({
               path: "/app/a/photos/",
-              // TODO: implement an outlet for layout routes
-              component: () => new Text().setText("Hello World!"),
             })
             .addRoute(
               router.createRoute({
                 index: true,
                 component: () =>
                   platformSelector(
-                    () => new DesktopHomePage(),
-                    () => new MobileHomePage(),
+                    () => {
+                      return {
+                        component: DesktopHomePage,
+                        props: {},
+                      };
+                    },
+                    () => {
+                      return {
+                        component: MobileHomePage,
+                        props: {},
+                      };
+                    },
                   ),
               }),
             )
             .addRoute(
               router.createRoute({
                 path: "test",
-                component: () => new Text().setText("Hello World from test!"),
+                component: () => {
+                  return { component: Text, props: { text: "Hello World from test!" } };
+                },
               }),
             )
             .addRoute(
               router.createRoute({
                 path: "test/:hello/world/",
-                component: (params) => new Text().setText(`Hello World! ${JSON.stringify(params)}`),
+                component: (params) => {
+                  return { component: Text, props: { text: `Hello World! ${JSON.stringify(params)}` } };
+                },
               }),
             ),
         );
 
-        cr.addChild(router);
+        router.revalidate();
       }}
     />
   );

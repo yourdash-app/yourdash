@@ -8,14 +8,13 @@ import DivElement from "../../html/divElement.js";
 import styles from "./flex.module.scss";
 
 export default class Flex extends ContainerComponent {
-  constructor(direction?: "row" | "column") {
-    super();
+  htmlElement: DivElement;
+  declare props: { direction?: "row" | "column" };
+
+  constructor(props: Flex["props"] = {}) {
+    super(props);
 
     this.htmlElement = new DivElement();
-    this.htmlElement.setAttribute("flexbutwhy", "");
-    this.htmlElement.addClass(styles.component);
-
-    if (direction) this.setDirection(direction);
 
     return this;
   }
@@ -55,5 +54,16 @@ export default class Flex extends ContainerComponent {
     }
 
     return this;
+  }
+
+  init() {
+    super.init();
+
+    const props = this.props;
+
+    this.htmlElement.setAttribute("flexbutwhy", "");
+    this.htmlElement.addClass(styles.component);
+
+    if (props.direction) this.setDirection(props.direction);
   }
 }

@@ -7,20 +7,27 @@ import generateUUID from "@yourdash/shared/web/helpers/uuid.js";
 import DivElement from "../../html/divElement.js";
 import UKHTMLElement from "../htmlElement.js";
 import { propagateTreeContext } from "../treeContext.js";
+import { ComponentProps } from "./componentProps.js";
 import { ComponentType } from "./componentType.js";
 import { BaseComponentInternals } from "./internals.js";
 import { AnyComponent, AnyComponentOrHTMLElement } from "./type.js";
+import { Constructor } from "type-fest/source/basic.js";
 
 export interface ContainerComponentInternals<ComponentSlots extends string[] = []> extends BaseComponentInternals {
   children: AnyComponentOrHTMLElement[];
   slots: { [slotName in keyof ComponentSlots]: AnyComponentOrHTMLElement | undefined };
 }
 
+export interface SoloComponentInternals extends BaseComponentInternals {}
+
 export class ContainerComponent<ComponentSlots extends string[] = []> {
   __internals: ContainerComponentInternals<ComponentSlots>;
   htmlElement: UKHTMLElement;
+  props: ComponentProps;
 
-  constructor(slots?: ComponentSlots, props?: { debugId?: string }) {
+  // @ts-ignore
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  constructor(props: ContainerComponent["props"] = {}, slots?: ComponentSlots, debugProps?: { debugId?: string }) {
     this.__internals = {
       debugId: generateUUID(),
       // When a component is created, it's creator should define its parent
@@ -28,14 +35,16 @@ export class ContainerComponent<ComponentSlots extends string[] = []> {
       children: [],
       componentType: ComponentType.Container,
       isInitialized: false,
-      treeContext: undefined,
+      treeContext: { level: 0 },
       // @ts-ignore
       treeContextChildOverrides: {},
       slots: {} as { [slotName in keyof ComponentSlots]: AnyComponentOrHTMLElement | undefined },
     };
 
-    if (props) {
-      if (props.debugId) this.__internals.debugId = props.debugId;
+    this.props = props;
+
+    if (debugProps) {
+      if (debugProps.debugId) this.__internals.debugId = debugProps.debugId;
     }
 
     // by default, we use a div element as the component's html element
@@ -49,7 +58,13 @@ export class ContainerComponent<ComponentSlots extends string[] = []> {
     return this;
   }
 
-  addChild(child: AnyComponentOrHTMLElement) {
+  addChild<Comp extends AnyComponentOrHTMLElement>(
+    component: Constructor<Comp>,
+    // @ts-ignore
+    props: Comp extends AnyComponent ? Comp["props"] : object = {},
+  ): Comp {
+    const child = new component(props);
+
     this.__internals.children?.push(child);
     child.__internals.parentComponent = this;
 
@@ -58,14 +73,14 @@ export class ContainerComponent<ComponentSlots extends string[] = []> {
       this.htmlElement.rawHtmlElement.appendChild(childComponent.rawHtmlElement);
       childComponent.init();
 
-      return this;
+      return childComponent as Comp;
     }
 
     const childComponent = child as AnyComponent;
     this.htmlElement.rawHtmlElement.appendChild(childComponent.htmlElement.rawHtmlElement);
     childComponent.init();
 
-    return this;
+    return childComponent as Comp;
   }
 
   init() {

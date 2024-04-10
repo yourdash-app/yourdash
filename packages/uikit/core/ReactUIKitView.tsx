@@ -25,7 +25,9 @@ const ReactUIKitView: React.FC<{
         htmlElement: ref.current,
         dontFillSpace: fillSpace,
       });
+
       contentRoot.setHTMLElement(ref.current);
+      contentRoot.init();
 
       onLoad(contentRoot);
     }

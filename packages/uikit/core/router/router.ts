@@ -8,18 +8,25 @@ import Card from "../../components/card/card.js";
 import Heading from "../../components/heading/heading.js";
 import DivElement from "../../html/divElement.js";
 import { ContainerComponent } from "../component/containerComponent.js";
-import { AnyComponentOrHTMLElement } from "../component/type.js";
+import { AnyComponent, AnyComponentOrHTMLElement } from "../component/type.js";
 import styles from "./router.module.scss";
 import { createBrowserHistory, createRouter, Params } from "@remix-run/router";
+import { Constructor } from "type-fest";
 
 type UKRouteProps = Omit<UKRoute["__internalRoute"], "children">;
+
+// @ts-ignore
+export type UKRouteComponent<T extends AnyComponentOrHTMLElement = AnyComponentOrHTMLElement> = {
+  component: Constructor<T>;
+  props: T extends AnyComponent ? T["props"] : object;
+};
 
 class UKRoute {
   __internalRoute: {
     children?: UKRoute[];
     path?: string;
     index?: boolean;
-    component?: (params: Params) => AnyComponentOrHTMLElement;
+    component?: (params: Params) => UKRouteComponent;
   };
 
   constructor(props: UKRouteProps) {
@@ -66,37 +73,29 @@ export default class UKRouter extends ContainerComponent {
             console.log(`ROUTER 404: cannot find: ${window.location.pathname}`);
 
             this.onPathChange();
-            this.addChild(
-              new DivElement().$((c) => {
-                c.addClass(styles.pageNotFound);
-                c.addChild(
-                  new Card().addChild(
-                    new Heading().$((hc) => {
-                      hc.setText(`-----=====-----\n404!\n-----=====-----\n\n'${window.location.pathname}' not found!`);
-                      hc.htmlElement.addClass(styles.heading);
-                    }),
-                  ),
-                );
-              }),
-            );
+            this.addChild(DivElement).$((c) => {
+              c.addClass(styles.pageNotFound);
+              c.addChild(Card)
+                .addChild(Heading)
+                .$((hc) => {
+                  hc.setText(`-----=====-----\n404!\n-----=====-----\n\n'${window.location.pathname}' not found!`);
+                  hc.htmlElement.addClass(styles.heading);
+                });
+            });
           },
         },
       ],
       history: createBrowserHistory({ window: window }),
     });
 
+    this.__internals.treeContext.router = this;
+
     return this;
   }
 
   private onPathChange() {
-    super.init();
-
-    return this;
-  }
-
-  public addChild(child: AnyComponentOrHTMLElement) {
     this.__internals.children = [];
-    super.addChild(child);
+    this.htmlElement.clearChildren();
 
     return this;
   }
@@ -116,7 +115,10 @@ export default class UKRouter extends ContainerComponent {
           loader: ({ params }) => {
             self.onPathChange();
 
-            if (!!child.__internalRoute.component) self.addChild(child.__internalRoute.component(params));
+            if (!!child.__internalRoute.component) {
+              const comp = child.__internalRoute.component(params);
+              self.addChild(comp.component, comp.props);
+            }
           },
           children: convertChildrenToDataRoute(child.__internalRoute.children),
         };
@@ -132,7 +134,8 @@ export default class UKRouter extends ContainerComponent {
         console.log(`ROUTE REACHED!, ${route.__internalRoute.path}`, route.__internalRoute);
 
         if (!!route.__internalRoute.component) {
-          this.addChild(route.__internalRoute.component(params));
+          const comp = route.__internalRoute.component(params);
+          self.addChild(comp.component, comp.props);
         }
       },
       children: convertChildrenToDataRoute(route.__internalRoute.children),
@@ -145,12 +148,15 @@ export default class UKRouter extends ContainerComponent {
     return new UKRoute(props);
   }
 
+  revalidate() {
+    this.router.revalidate();
+
+    return this;
+  }
+
   // This must be run after new routes are added to the UKRouter
   init() {
     super.init();
-    // @ts-ignore
-    this.__internals.treeContext.router = this;
-    this.router.revalidate();
 
     return this;
   }

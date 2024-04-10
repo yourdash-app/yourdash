@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -10,18 +10,19 @@ import { SoloComponent } from "./component/soloComponent.js";
 
 export default class UIKitReactView extends SoloComponent {
   reactComponent: React.ReactNode;
+  declare props: { reactComponent: React.ReactNode };
 
-  constructor(props: { reactComponent: React.ReactNode }) {
-    super();
+  constructor(props: UIKitReactView["props"]) {
+    super(props);
 
     this.reactComponent = props.reactComponent;
 
     return this;
   }
 
-  render() {
-    super.render();
-    ReactDOM.createRoot(this.htmlElement).render(this.reactComponent);
+  init() {
+    super.init();
+    ReactDOM.createRoot(this.htmlElement.rawHtmlElement).render(this.reactComponent);
 
     return this;
   }

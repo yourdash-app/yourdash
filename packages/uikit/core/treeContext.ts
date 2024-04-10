@@ -5,9 +5,10 @@
 
 import { ComponentType } from "./component/componentType.js";
 import { AnyComponentOrHTMLElement } from "./component/type.js";
-import UKHTMLElement from "./htmlElement.js";
 
 export function propagateTreeContext(node: AnyComponentOrHTMLElement) {
+  if (!node?.__internals) return { level: 0, unableToFindTreeContext: "welp :(" };
+
   if (node.__internals.componentType === ComponentType.HTMLElement) {
     if (node.__internals.treeContext) return node.__internals.treeContext;
 

@@ -9,13 +9,13 @@ import DivElement from "../../html/divElement.js";
 import styles from "./icon.module.scss";
 
 export default class Icon extends SoloComponent {
-  constructor(icon?: UKIcon) {
-    super();
+  htmlElement: DivElement;
+  declare props: { icon?: UKIcon };
+
+  constructor(props: Icon["props"] = {}) {
+    super(props);
 
     this.htmlElement = new DivElement();
-    this.htmlElement.addClass(styles.component);
-
-    if (icon) this.setIcon(icon);
 
     return this;
   }
@@ -51,5 +51,15 @@ export default class Icon extends SoloComponent {
     this.htmlElement.setStyleVariable("--size", size);
 
     return this;
+  }
+
+  init() {
+    super.init();
+
+    const props = this.props;
+
+    this.htmlElement.addClass(styles.component);
+
+    if (props.icon) this.setIcon(props.icon);
   }
 }

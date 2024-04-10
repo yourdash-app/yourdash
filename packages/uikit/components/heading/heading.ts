@@ -11,24 +11,19 @@ export default class Heading extends SoloComponent {
   htmlElement: HeadingElement;
   textValue: string = "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus, nobis?";
   level: 1 | 2 | 3 | 4 | 5 | 6 = 1;
+  declare props: { text?: string; level?: Heading["level"] };
 
-  constructor(text?: string, level?: Heading["level"]) {
-    super();
+  constructor(props: Heading["props"] = {}) {
+    super(props);
 
     this.htmlElement = new HeadingElement();
-    this.htmlElement.setInnerText(this.textValue);
-    this.htmlElement.addClass(styles.component);
-    this.setLevel(1);
-
-    if (text) this.setText(text);
-    if (level) this.setLevel(level);
 
     return this;
   }
 
   setLevel(level: Heading["level"]) {
     this.htmlElement.setLevel(level);
-    this.htmlElement.setInnerText(this.textValue);
+    this.setText(this.textValue);
 
     return this;
   }
@@ -38,5 +33,16 @@ export default class Heading extends SoloComponent {
     this.htmlElement.setInnerText(this.textValue);
 
     return this;
+  }
+
+  init() {
+    super.init();
+
+    const props = this.props;
+
+    this.htmlElement.addClass(styles.component);
+
+    if (props.text) this.setText(props.text);
+    if (props.level) this.setLevel(props.level);
   }
 }

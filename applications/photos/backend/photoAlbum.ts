@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -44,11 +44,11 @@ export default class PhotoAlbum {
       .map((child) => child.path);
   }
 
-  async getCoverPhoto(): Promise<string | null> {
+  async getCoverPhoto(): Promise<string | undefined> {
     const coverPhotoPath = (await this.getPhotos())[0];
     const coverPhotoFsEntity = await coreApi.fs.getFile(coverPhotoPath);
     if (coverPhotoFsEntity === null || !(await coverPhotoFsEntity.doesExist())) {
-      return null;
+      return undefined;
     }
 
     return await coreApi.image.createResizedAuthenticatedImage(
@@ -89,8 +89,8 @@ export default class PhotoAlbum {
           (await this.getSubAlbums()).map(async (subAlbum) => {
             return {
               path: subAlbum.path,
-              displayName: pth.basename(subAlbum.path),
-              coverPhoto: await subAlbum.getCoverPhoto(),
+              displayName: pth.basename(subAlbum.path) || "SERVER ERROR",
+              coverPhoto: (await subAlbum.getCoverPhoto()) || "",
             };
           }),
         ),

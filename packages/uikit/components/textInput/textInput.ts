@@ -11,24 +11,13 @@ import styles from "./textInput.module.scss";
 
 export default class TextInput extends SoloComponent {
   htmlElement: DivElement;
-  inputElement: InputElement;
-  icon: Icon;
+  inputElement!: InputElement;
+  icon!: Icon;
 
   constructor() {
-    super();
+    super({});
 
     this.htmlElement = new DivElement();
-    this.htmlElement.addClass(styles.component);
-    this.icon = new Icon();
-    this.icon.htmlElement.addClass(styles.icon);
-    this.inputElement = new InputElement();
-    this.inputElement.rawHtmlElement.type = "text";
-    this.inputElement.addClass(styles.input);
-    this.htmlElement.addChild(this.icon).addChild(this.inputElement);
-
-    this.htmlElement.addEventListener("click", () => {
-      this.inputElement.rawHtmlElement.focus();
-    });
 
     return this;
   }
@@ -57,5 +46,21 @@ export default class TextInput extends SoloComponent {
     this.inputElement.rawHtmlElement.placeholder = text;
 
     return this;
+  }
+
+  init() {
+    super.init();
+
+    this.htmlElement.addClass(styles.component);
+    this.icon = new Icon();
+    this.icon.htmlElement.addClass(styles.icon);
+    this.inputElement = new InputElement();
+    this.inputElement.rawHtmlElement.type = "text";
+    this.inputElement.addClass(styles.input);
+    this.htmlElement.addChild(this.icon).addChild(this.inputElement);
+
+    this.htmlElement.addEventListener("click", () => {
+      this.inputElement.rawHtmlElement.focus();
+    });
   }
 }

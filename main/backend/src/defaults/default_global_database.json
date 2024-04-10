@@ -1,6 +1,6 @@
 {
-  "displayName": "YourDash Instance",
-  "administratorDetails": {
+  "core:displayName": "YourDash Instance",
+  "core:administratorDetails": {
     "name": "[ADMINISTRATOR NAME]",
     "contactDetails": {
       "phone": false,
@@ -15,7 +15,7 @@
     "store",
     "weather"
   ],
-  "defaults": {
+  "core:defaults": {
     "user": {
       "quickShortcuts": [
         "dash",

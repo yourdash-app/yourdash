@@ -13,7 +13,7 @@ export interface BaseComponentInternals {
   debugId: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   parentComponent?: ContainerComponent<any> | UKHTMLElement;
-  treeContext?: ComponentTreeContext;
+  treeContext: ComponentTreeContext;
   treeContextChildOverrides?: ComponentTreeContext;
   isInitialized: boolean;
 }

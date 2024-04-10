@@ -22,9 +22,9 @@ export default class HeadingElement extends UKHTMLElement<HTMLHeadingElement> {
     const previousElement = this.rawHtmlElement;
     this.rawHtmlElement = document.createElement(`h${this.level}`);
 
-    previousElement.getAttributeNames().forEach((name) => {
+    for (const name of previousElement.getAttributeNames()) {
       this.rawHtmlElement.setAttribute(name, previousElement.getAttribute(name) as string);
-    });
+    }
 
     return this;
   }

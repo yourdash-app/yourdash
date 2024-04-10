@@ -10,7 +10,7 @@ import { loadThemeLevel } from "../../core/theme.js";
 
 export default class Card extends ContainerComponent<["actions"]> {
   constructor() {
-    super(["actions"]);
+    super(undefined, ["actions"]);
 
     this.htmlElement = new DivElement();
 
