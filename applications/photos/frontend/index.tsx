@@ -6,54 +6,17 @@
 import Redirect from "@yourdash/chiplet/components/redirect/Redirect.js";
 import React from "react";
 import { Routes, Route } from "react-router";
-import AlbumPage from "./pages/AlbumPage.js";
-import HomePage from "./pages/HomePage.js";
-import PhotoPage from "./pages/PhotoPage.js";
-import SearchPage from "./pages/SearchPage.js";
-import PhotosLayout from "./PhotosLayout.js";
+import Layout from "./Layout.js";
+import IndexRoute from "./routes/index.js";
 
 const PhotosRouter: React.FC = () => {
   return (
     <Routes>
-      <Route element={<PhotosLayout />}>
+      <Route element={<Layout />}>
         <Route
           index
-          element={<HomePage />}
+          element={<IndexRoute />}
         />
-        <Route
-          path={"search"}
-          element={<SearchPage />}
-        />
-        <Route path={"album"}>
-          <Route
-            index
-            element={<Redirect to={"/app/a/photos"} />}
-          />
-          <Route
-            path={"*"}
-            element={<AlbumPage />}
-          />
-        </Route>
-        <Route path={"photo"}>
-          <Route
-            index
-            element={<Redirect to={"/app/a/photos"} />}
-          />
-          <Route
-            path={"*"}
-            element={<PhotoPage isPhoto={true} />}
-          />
-        </Route>
-        <Route path={"video"}>
-          <Route
-            index
-            element={<Redirect to={"/app/a/photos"} />}
-          />
-          <Route
-            path={"*"}
-            element={<PhotoPage isPhoto={false} />}
-          />
-        </Route>
       </Route>
     </Routes>
   );

@@ -4,10 +4,7 @@
  */
 
 import csi from "@yourdash/csi/csi";
-import Card from "@yourdash/chiplet/components/card/Card";
 import Heading from "@yourdash/chiplet/components/heading/Heading";
-import Icon from "@yourdash/chiplet/components/icon/Icon";
-import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
 import Separator from "@yourdash/chiplet/components/separator/Separator";
 import React, { useEffect, useState } from "react";
 import PhotoCategory from "../components/photoCategory/PhotoCategory";
@@ -32,35 +29,6 @@ const HomePage: React.FC = () => {
   return (
     <div className={"flex flex-col h-full p-4 gap-2"}>
       <Heading level={1}>Home</Heading>
-      <div className={"flex gap-2"}>
-        <Card
-          className={"gap-2 flex flex-col"}
-          onClick={() => {
-            return 0;
-          }}
-        >
-          <Icon icon={UKIcon.Search} className={"h-8"} />
-          <Heading level={3}>Search</Heading>
-        </Card>
-        <Card
-          className={"gap-2 flex flex-col"}
-          onClick={() => {
-            return 0;
-          }}
-        >
-          <Icon icon={UKIcon.Search} className={"h-8"} />
-          <Heading level={3}>Search</Heading>
-        </Card>
-        <Card
-          className={"gap-2 flex flex-col"}
-          onClick={() => {
-            return 0;
-          }}
-        >
-          <Icon icon={UKIcon.Search} className={"h-8"} />
-          <Heading level={3}>Search</Heading>
-        </Card>
-      </div>
       <Separator direction={"horizontal"} />
       {photoAlbums.length === 0 && (
         <>
@@ -68,7 +36,12 @@ const HomePage: React.FC = () => {
         </>
       )}
       {photoAlbums.map((photoCategory) => {
-        return <PhotoCategory key={photoCategory} path={photoCategory} />;
+        return (
+          <PhotoCategory
+            key={photoCategory}
+            path={photoCategory}
+          />
+        );
       })}
     </div>
   );

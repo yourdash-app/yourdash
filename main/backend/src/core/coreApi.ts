@@ -123,7 +123,10 @@ export class CoreApi {
           this.log.info("command", `deleted "${key}"`);
           break;
         default:
-          this.log.info("command", 'gdb ( Global Database )\n- get: "gdb get {key}"\n- set: "gdb set {key} {value}"\n- delete: "gdb delete {key}"');
+          this.log.info(
+            "command",
+            'gdb ( Global Database )\n- get: "gdb get {key}"\n- set: "gdb set {key} {value}"\n- delete: "gdb delete {key}"',
+          );
       }
     });
 
@@ -149,44 +152,50 @@ export class CoreApi {
   __internal__startInstance() {
     this.log.info("startup", "Welcome to the YourDash Instance backend");
 
-    this.fs.doesExist(path.join(this.fs.ROOT_PATH, "./global_database.json")).then(async (doesGlobalDatabaseFileExist) => {
-      if (doesGlobalDatabaseFileExist) await this.globalDb.loadFromDisk(path.join(this.fs.ROOT_PATH, "./global_database.json"));
+    this.fs
+      .doesExist(path.join(this.fs.ROOT_PATH, "./global_database.json"))
+      .then(async (doesGlobalDatabaseFileExist) => {
+        if (doesGlobalDatabaseFileExist)
+          await this.globalDb.loadFromDisk(path.join(this.fs.ROOT_PATH, "./global_database.json"));
 
-      this.fs.verifyFileSystem.verify().then(async () => {
-        this.users.__internal__startUserDatabaseService();
-        this.users.__internal__startUserDeletionService();
-        this.globalDb.__internal__startGlobalDatabaseService();
-        this.teams.__internal__startTeamDatabaseService();
+        this.fs.verifyFileSystem.verify().then(async () => {
+          this.users.__internal__startUserDatabaseService();
+          this.users.__internal__startUserDeletionService();
+          this.globalDb.__internal__startGlobalDatabaseService();
+          this.teams.__internal__startTeamDatabaseService();
 
-        const attemptToListen = async () => {
-          try {
-            await killPort(3563);
-            this.log.info("startup", "Killed port 3563");
-            this.httpServer.listen(3563, () => {
-              this.log.success("startup", "server now listening on port 3563!");
-              this.log.success("startup", "YourDash initialization complete!");
-              this.loadCoreEndpoints();
-            });
-          } catch (err) {
-            if (err.message === "No process running on port") {
-              this.log.info("startup", "Attempted to kill port 3563, no process running was currently using port 3563");
-
+          const attemptToListen = async () => {
+            try {
+              await killPort(3563);
+              this.log.info("startup", "Killed port 3563");
               this.httpServer.listen(3563, () => {
                 this.log.success("startup", "server now listening on port 3563!");
                 this.log.success("startup", "YourDash initialization complete!");
                 this.loadCoreEndpoints();
               });
-              return;
+            } catch (err) {
+              if (err.message === "No process running on port") {
+                this.log.info(
+                  "startup",
+                  "Attempted to kill port 3563, no process running was currently using port 3563",
+                );
+
+                this.httpServer.listen(3563, () => {
+                  this.log.success("startup", "server now listening on port 3563!");
+                  this.log.success("startup", "YourDash initialization complete!");
+                  this.loadCoreEndpoints();
+                });
+                return;
+              }
+
+              this.log.warning("startup", "Unable to kill port 3563", err);
+              await attemptToListen();
             }
+          };
 
-            this.log.warning("startup", "Unable to kill port 3563", err);
-            await attemptToListen();
-          }
-        };
-
-        await attemptToListen();
+          await attemptToListen();
+        });
       });
-    });
     return this;
   }
 
@@ -233,7 +242,10 @@ export class CoreApi {
       next();
     });
 
-    this.log.success("core:requests", `Started the requests logger${options && " (logging options requests is also enabled)"}`);
+    this.log.success(
+      "core:requests",
+      `Started the requests logger${options && " (logging options requests is also enabled)"}`,
+    );
   }
 
   private async loadCoreEndpoints() {
@@ -255,6 +267,7 @@ export class CoreApi {
 
       next();
     });
+
     this.request.use(expressCompression());
 
     // INFO: This shouldn't be used for detection of a YourDash Instance, instead use the '/test' endpoint
@@ -354,7 +367,10 @@ export class CoreApi {
       return compareHashString(savedHashedPassword, password)
         .then(async (result) => {
           if (result) {
-            const session = await createSession(username, req.headers?.type === "desktop" ? YOURDASH_SESSION_TYPE.desktop : YOURDASH_SESSION_TYPE.web);
+            const session = await createSession(
+              username,
+              req.headers?.type === "desktop" ? YOURDASH_SESSION_TYPE.desktop : YOURDASH_SESSION_TYPE.web,
+            );
 
             return res.json({
               token: session.sessionToken,
@@ -382,14 +398,19 @@ export class CoreApi {
       if (!this.users.__internal__getSessionsDoNotUseOutsideOfCore()[username]) {
         try {
           const user = new YourDashUser(username);
-          this.users.__internal__getSessionsDoNotUseOutsideOfCore()[username] = (await user.getAllLoginSessions()) || [];
+          this.users.__internal__getSessionsDoNotUseOutsideOfCore()[username] =
+            (await user.getAllLoginSessions()) || [];
         } catch (_err) {
           this.log.info("login", `User with username ${username} not found`);
           return res.json({ error: true });
         }
       }
 
-      if (this.users.__internal__getSessionsDoNotUseOutsideOfCore()[username].find((session) => session.sessionToken === token)) {
+      if (
+        this.users
+          .__internal__getSessionsDoNotUseOutsideOfCore()
+          [username].find((session) => session.sessionToken === token)
+      ) {
         return res.json({ success: true });
       }
       return res.json({ error: true });
@@ -398,7 +419,9 @@ export class CoreApi {
     this.request.get("/login/instance/metadata", (_req, res) => {
       return res.json({
         title: this.globalDb.get("core:instance:name") || "Placeholder name",
-        message: this.globalDb.get("core:instance:message") || "Placeholder message. Hey system admin, you should change this!",
+        message:
+          this.globalDb.get("core:instance:message") ||
+          "Placeholder message. Hey system admin, you should change this!",
       });
     });
 
@@ -481,7 +504,8 @@ export class CoreApi {
         try {
           const user = this.users.get(username);
 
-          this.users.__internal__getSessionsDoNotUseOutsideOfCore()[username] = (await user.getAllLoginSessions()) || [];
+          this.users.__internal__getSessionsDoNotUseOutsideOfCore()[username] =
+            (await user.getAllLoginSessions()) || [];
 
           const database = (await fs.readFile(path.join(user.path, "core/user_db.json"))).toString();
 
@@ -496,7 +520,11 @@ export class CoreApi {
         }
       }
 
-      if (this.users.__internal__getSessionsDoNotUseOutsideOfCore()[username]?.find((session) => session.sessionToken === token)) {
+      if (
+        this.users
+          .__internal__getSessionsDoNotUseOutsideOfCore()
+          [username]?.find((session) => session.sessionToken === token)
+      ) {
         return next();
       }
 
@@ -555,7 +583,9 @@ export class CoreApi {
 
       return res.json({
         // all desktop sessions should support the PSA api
-        sessions: (await user.getAllLoginSessions()).filter((session: { type: YOURDASH_SESSION_TYPE }) => session.type === YOURDASH_SESSION_TYPE.desktop),
+        sessions: (await user.getAllLoginSessions()).filter(
+          (session: { type: YOURDASH_SESSION_TYPE }) => session.type === YOURDASH_SESSION_TYPE.desktop,
+        ),
       });
     });
 
@@ -596,7 +626,10 @@ export class CoreApi {
     this.teams.__internal__loadEndpoints();
 
     this.request.use((req, res) => {
-      this.log.info("request:404", `${chalk.bgRed(chalk.black(" 404 "))} ${req.path}`);
+      this.log.info(
+        "request:404",
+        `${chalk.bgRed(chalk.black(" 404 "))} ${req.path} (the path was not answered by the backend)`,
+      );
       return res.status(404).json({ error: "this endpoint does not exist!" });
     });
   }
@@ -623,9 +656,14 @@ export class CoreApi {
 
     fsWriteFile(path.resolve(process.cwd(), "./fs/log.log"), LOG_OUTPUT, () => {
       try {
-        this.globalDb.__internal__doNotUseOnlyIntendedForShutdownSequenceWriteToDisk(path.resolve(process.cwd(), "./fs/global_database.json"));
+        this.globalDb.__internal__doNotUseOnlyIntendedForShutdownSequenceWriteToDisk(
+          path.resolve(process.cwd(), "./fs/global_database.json"),
+        );
       } catch (e) {
-        this.log.error("global_db", "[EXTREME SEVERITY] Shutdown Error! failed to save global database. User data will have been lost! (<= past 5 minutes)");
+        this.log.error(
+          "global_db",
+          "[EXTREME SEVERITY] Shutdown Error! failed to save global database. User data will have been lost! (<= past 5 minutes)",
+        );
       }
     });
 
