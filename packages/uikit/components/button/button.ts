@@ -43,8 +43,7 @@ export default class Button extends SoloComponent {
     const props = this.props;
 
     this.htmlElement.addClass(styles.component);
-    this.labelElement = new SpanElement();
-    this.htmlElement.addChild(this.labelElement);
+    this.labelElement = this.htmlElement.addChild(SpanElement);
 
     if (props.text) this.setText(props.text);
     if (props.onClick) this.onClick(props.onClick);

@@ -52,12 +52,11 @@ export default class TextInput extends SoloComponent {
     super.init();
 
     this.htmlElement.addClass(styles.component);
-    this.icon = new Icon();
+    this.icon = this.htmlElement.addChild(Icon);
     this.icon.htmlElement.addClass(styles.icon);
-    this.inputElement = new InputElement();
+    this.inputElement = this.htmlElement.addChild(InputElement);
     this.inputElement.rawHtmlElement.type = "text";
     this.inputElement.addClass(styles.input);
-    this.htmlElement.addChild(this.icon).addChild(this.inputElement);
 
     this.htmlElement.addEventListener("click", () => {
       this.inputElement.rawHtmlElement.focus();

@@ -3,66 +3,59 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import platformSelector from "@yourdash/uikit/core/platformSelector.js";
-import ReactUIKitView from "@yourdash/uikit/core/ReactUIKitView.js";
-import UKRouter from "@yourdash/uikit/core/router/router.js";
+import Redirect from "@yourdash/chiplet/components/redirect/Redirect.js";
 import React from "react";
-import Text from "@yourdash/uikit/components/text/text.js";
-import DesktopHomePage from "./pages/home/desktop.js";
-import MobileHomePage from "./pages/home/mobile.js";
+import { Routes, Route } from "react-router";
+import AlbumPage from "./pages/AlbumPage.js";
+import HomePage from "./pages/HomePage.js";
+import PhotoPage from "./pages/PhotoPage.js";
+import SearchPage from "./pages/SearchPage.js";
+import PhotosLayout from "./PhotosLayout.js";
 
 const PhotosRouter: React.FC = () => {
   return (
-    <ReactUIKitView
-      onLoad={(cr) => {
-        const router = cr.addChild(UKRouter, {});
-
-        router.addRoute(
-          router
-            .createRoute({
-              path: "/app/a/photos/",
-            })
-            .addRoute(
-              router.createRoute({
-                index: true,
-                component: () =>
-                  platformSelector(
-                    () => {
-                      return {
-                        component: DesktopHomePage,
-                        props: {},
-                      };
-                    },
-                    () => {
-                      return {
-                        component: MobileHomePage,
-                        props: {},
-                      };
-                    },
-                  ),
-              }),
-            )
-            .addRoute(
-              router.createRoute({
-                path: "test",
-                component: () => {
-                  return { component: Text, props: { text: "Hello World from test!" } };
-                },
-              }),
-            )
-            .addRoute(
-              router.createRoute({
-                path: "test/:hello/world/",
-                component: (params) => {
-                  return { component: Text, props: { text: `Hello World! ${JSON.stringify(params)}` } };
-                },
-              }),
-            ),
-        );
-
-        router.revalidate();
-      }}
-    />
+    <Routes>
+      <Route element={<PhotosLayout />}>
+        <Route
+          index
+          element={<HomePage />}
+        />
+        <Route
+          path={"search"}
+          element={<SearchPage />}
+        />
+        <Route path={"album"}>
+          <Route
+            index
+            element={<Redirect to={"/app/a/photos"} />}
+          />
+          <Route
+            path={"*"}
+            element={<AlbumPage />}
+          />
+        </Route>
+        <Route path={"photo"}>
+          <Route
+            index
+            element={<Redirect to={"/app/a/photos"} />}
+          />
+          <Route
+            path={"*"}
+            element={<PhotoPage isPhoto={true} />}
+          />
+        </Route>
+        <Route path={"video"}>
+          <Route
+            index
+            element={<Redirect to={"/app/a/photos"} />}
+          />
+          <Route
+            path={"*"}
+            element={<PhotoPage isPhoto={false} />}
+          />
+        </Route>
+      </Route>
+    </Routes>
   );
 };
 

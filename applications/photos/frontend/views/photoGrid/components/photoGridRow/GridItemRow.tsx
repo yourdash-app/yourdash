@@ -5,8 +5,8 @@
 
 import React from "react";
 import IGridItem from "../../../../../shared/grid";
-import Photo from "../photo/Photo";
-import { calculateAspectRatio } from "../../splitItemsIntoRows";
+import Photo from "../photo/Photo.js";
+import { calculateAspectRatio } from "../../splitItemsIntoRows.js";
 import styles from "./PhotoGridRow.module.scss";
 
 const GridItemRow: React.FC<{
@@ -14,7 +14,10 @@ const GridItemRow: React.FC<{
   height: number;
 }> = ({ items, height }) => {
   return (
-    <div className={styles.row} style={{ height: height + "px" }}>
+    <div
+      className={styles.row}
+      style={{ height: height + "px" }}
+    >
       {items.map((item) => {
         return (
           <Photo

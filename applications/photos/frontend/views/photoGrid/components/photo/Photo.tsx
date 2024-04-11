@@ -12,14 +12,9 @@ import IGridItem from "../../../../../shared/grid";
 import { calculateAspectRatio } from "../../splitItemsIntoRows";
 import styles from "./Photo.module.scss";
 
-const Photo: React.FC<IGridItem & { display: { rowHeight: number; height: number; width: number; aspectRatio: number } }> = ({
-  path,
-  dimensions,
-  tags,
-  type,
-  itemUrl,
-  display,
-}) => {
+const Photo: React.FC<
+  IGridItem & { display: { rowHeight: number; height: number; width: number; aspectRatio: number } }
+> = ({ path, dimensions, tags, type, itemUrl, display }) => {
   const navigate = useNavigate();
 
   return (
@@ -38,13 +33,34 @@ const Photo: React.FC<IGridItem & { display: { rowHeight: number; height: number
       }}
     >
       {type === "image" ? (
-        <img alt={""} className={styles.media} src={csi.getInstanceUrl() + itemUrl} loading={"lazy"} />
+        <img
+          alt={""}
+          className={styles.media}
+          src={csi.getInstanceUrl() + itemUrl}
+          loading={"lazy"}
+        />
       ) : (
         <>
           <div className={styles.videoOverlay}>
-            <Icon icon={UKIcon.Video} className={styles.videoOverlayIcon} />
+            <Icon
+              icon={UKIcon.Video}
+              className={styles.videoOverlayIcon}
+            />
           </div>
-          <video className={styles.media} src={csi.getInstanceUrl() + itemUrl} autoPlay={true} controls={false} loop={true} muted={true} />
+          <video
+            className={styles.media}
+            src={csi.getInstanceUrl() + itemUrl}
+            onMouseEnter={(e) => {
+              e.currentTarget.play();
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.pause();
+            }}
+            autoPlay={false}
+            controls={false}
+            loop={true}
+            muted={true}
+          />
         </>
       )}
     </div>

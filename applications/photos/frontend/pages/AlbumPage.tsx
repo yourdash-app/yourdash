@@ -3,6 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import Separator from "@yourdash/chiplet/components/separator/Separator.js";
 import csi from "@yourdash/csi/csi";
 import Heading from "@yourdash/chiplet/components/heading/Heading";
 import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
@@ -41,22 +42,28 @@ const HomePage: React.FC = () => {
 
   return (
     <div className={"flex flex-col"}>
-      <div className={"flex flex-row items-center p-12 pl-4 pr-4"}>
+      <div className={"flex flex-row items-center p-6 pl-4 pr-4"}>
         <IconButton
           icon={UKIcon.ChevronLeft}
           onClick={() => {
             window.history.back();
           }}
         />
-        <Heading level={1} className={"pl-4"}>
+        <Heading
+          level={1}
+          className={"pl-4"}
+        >
           {photoAlbum.label}
         </Heading>
         <div className={"ml-auto gap-2 flex"}>
           {photoAlbum.items.photos.length > 0 && <Heading level={4}>Photos: {photoAlbum.items.photos.length}</Heading>}
-          {photoAlbum.items.subAlbums.length > 0 && <Heading level={4}>Sub Albums: {photoAlbum.items.subAlbums.length}</Heading>}
+          {photoAlbum.items.subAlbums.length > 0 && (
+            <Heading level={4}>Sub Albums: {photoAlbum.items.subAlbums.length}</Heading>
+          )}
           {photoAlbum.items.videos.length > 0 && <Heading level={4}>Videos: {photoAlbum.items.videos.length}</Heading>}
         </div>
       </div>
+      <Separator direction={"horizontal"} />
       <div className={styles.component}>
         <div className={styles.content}>
           <AlbumGrid albums={photoAlbum.items.subAlbums} />

@@ -36,7 +36,7 @@ const PhotosLayout: React.FC = () => {
           },
           {
             type: SIDEBAR_ITEM_TYPE.Separator,
-            value: "sep1",
+            id: "sep1",
           },
           {
             label: "Upload",

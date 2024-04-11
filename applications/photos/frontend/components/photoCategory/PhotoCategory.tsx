@@ -57,7 +57,10 @@ const PhotoCategory: React.FC<{ path: string }> = ({ path }) => {
             icon={UKIcon.FoldDown}
           />
         )}
-        <Heading level={3} className={styles.label}>
+        <Heading
+          level={3}
+          className={styles.label}
+        >
           {photoAlbum.label}
         </Heading>
         <div className={"pl-2 gap-2 flex"}>
@@ -69,7 +72,7 @@ const PhotoCategory: React.FC<{ path: string }> = ({ path }) => {
       {open && (
         <div className={styles.content}>
           <AlbumGrid albums={photoAlbum.items.subAlbums} />
-          <PhotoGrid gridItems={photoAlbum.items.photos} />
+          <PhotoGrid gridItems={photoAlbum.items} />
         </div>
       )}
     </div>

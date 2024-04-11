@@ -3,9 +3,10 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import Card from "@yourdash/chiplet/components/card/Card.js";
+import Icon from "@yourdash/chiplet/components/icon/Icon.js";
+import { YourDashIcon } from "@yourdash/uikit/components/icon/iconDictionary.js";
 import React, { useState } from "react";
-import { Card, Icon } from "@yourdash/web-client/src/ui";
-import { YourDashIcon } from "@yourdash/web-client/src/ui/components/icon/iconDictionary";
 
 const PhotoDay: React.FC<{
   photoCategory: {
@@ -16,7 +17,10 @@ const PhotoDay: React.FC<{
   const [isOpen, setIsOpen] = useState<boolean>(true);
 
   return (
-    <div key={photoCategory.date} className={"flex flex-col gap-1"}>
+    <div
+      key={photoCategory.date}
+      className={"flex flex-col gap-1"}
+    >
       <button
         onClick={() => {
           setIsOpen(!isOpen);
@@ -36,7 +40,11 @@ const PhotoDay: React.FC<{
       {isOpen && (
         <Card>
           {photoCategory.photos.map((photo) => (
-            <img src={photo} key={photo} alt={""} />
+            <img
+              src={photo}
+              key={photo}
+              alt={""}
+            />
           ))}
         </Card>
       )}

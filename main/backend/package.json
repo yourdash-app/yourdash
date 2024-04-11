@@ -58,12 +58,9 @@
   },
   "type": "module",
   "scripts": {
-    "start": "run-script-os",
-    "start:nix": "tsx ./src/main.ts --color=full --log-requests",
-    "start:win32": "tsx ./src/main.ts --color=full --log-requests",
-    "dev": "run-script-os",
-    "dev:nix": "nodemon --exec \"tsx ./src/main.ts --dev --color=full --log-requests\"",
-    "dev:win32": "nodemon --exec \"tsx ./src/main.ts --dev --color=full --log-requests\""
+    "start": "tsx ./src/main.ts --color=full --log-requests",
+    "dev": "tsx watch ./src/main.ts --dev --color=full --log-requests",
+    "debug": "echo \"Currently only available in webstorm run configurations\""
   },
   "nodemonConfig": {
     "ext": "ts",

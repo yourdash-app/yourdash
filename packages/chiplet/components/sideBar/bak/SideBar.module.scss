@@ -62,6 +62,7 @@
 
   &:hover {
     background-color: rgb(var(--button-hover-bg));
+    transition: var(--transition-fast);
 
     .itemLabel {
       transition: var(--transition-fast);

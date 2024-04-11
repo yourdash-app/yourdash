@@ -43,15 +43,20 @@ export default class CoreApiImage {
 
       const resizedImagePath = pth.resolve(pth.join(TEMP_DIR, crypto.randomUUID()));
 
-      sharp(await fs.readFile(filePath), { sequentialRead: true })
-        .resize(Math.floor(width), Math.floor(height))
-        .toFormat(resultingImageFormat || "webp")
-        .toFile(resizedImagePath)
-        .then(() => resolve(resizedImagePath))
-        .catch((err: string) => {
-          this.coreApi.log.error("image", `unable to resize image "${filePath}" ${err}`);
-          resolve(`unable to resize image "${filePath}"`);
-        });
+      try {
+        sharp(await fs.readFile(filePath), { sequentialRead: true })
+          .resize(Math.floor(width), Math.floor(height))
+          .toFormat(resultingImageFormat || "webp")
+          .toFile(resizedImagePath)
+          .then(() => resolve(resizedImagePath))
+          .catch((err: string) => {
+            this.coreApi.log.error("image", `unable to resize image "${filePath}" ${err}`);
+            resolve(`unable to resize image "${filePath}"`);
+          });
+      } catch (err) {
+        this.coreApi.log.error("image", `unable to resize image "${filePath}" ${err}`);
+        resolve(`unable to resize image "${filePath}"`);
+      }
     });
   }
 
@@ -149,7 +154,12 @@ export default class CoreApiImage {
           resizeTo.resultingImageFormat,
         );
         this.__internal__removeAuthenticatedImage(username, id);
-        return res.sendFile(resizedPath);
+
+        try {
+          return res.sendFile(resizedPath);
+        } catch (e) {
+          return res.sendFile(path.resolve(process.cwd(), "./src/defaults/default_avatar.avif"));
+        }
       }
 
       this.__internal__removeAuthenticatedImage(username, id);

@@ -22,12 +22,21 @@ export default class Photo {
   }
 
   getDimensions(): { width: number; height: number } {
-    const dimensions = imageSize(this.path);
+    try {
+      const dimensions = imageSize(this.path);
 
-    return {
-      width: dimensions.width || 0,
-      height: dimensions.height || 0,
-    };
+      return {
+        width: dimensions.width || 0,
+        height: dimensions.height || 0,
+      };
+    } catch (e) {
+      coreApi.log.warning("app:photos", `Failed to get dimensions of ${this.path}: ${e}`);
+
+      return {
+        width: 69,
+        height: 420,
+      };
+    }
   }
 
   getRawPhotoUrl(): string {

@@ -8,9 +8,9 @@ import Card from "@yourdash/chiplet/components/card/Card";
 import Heading from "@yourdash/chiplet/components/heading/Heading";
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { ISubAlbum } from "../../../shared/photoAlbum";
+import { ISubPhotoAlbum } from "../../../shared/photoAlbum.js";
 
-const AlbumGrid: React.FC<{ albums: ISubAlbum[] }> = ({ albums }) => {
+const AlbumGrid: React.FC<{ albums: ISubPhotoAlbum[] }> = ({ albums }) => {
   const navigate = useNavigate();
 
   return (

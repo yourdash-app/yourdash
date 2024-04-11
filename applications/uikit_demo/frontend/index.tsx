@@ -22,76 +22,64 @@ const UIKitDemoApplication: React.FC = () => {
       <title>YourDash | UIKit Demo</title>
       <ReactUIKitView
         onLoad={(root) => {
-          const router = new UKRouter();
-          const card = new Card();
+          const router = root.addChild(UKRouter, {});
+          const card = root.addChild(Card, {});
 
-          card.addChild(new Icon({ icon: UKIcon.Accessibility }).setSize("2.5rem"));
+          card.addChild(Icon, { icon: UKIcon.Accessibility }).setSize("2.5rem");
 
-          root
-            .addChild(card)
-            .addChild(new Text().setText("Hello World!"))
-            .addChild(new Image().setSrc("https://picsum.photos/768/256"));
+          root.addChild(Text, {}).setText("Hello World!");
+          root.addChild(Image, {}).setSrc("https://picsum.photos/768/256");
 
-          root.addChild(new Text({ text: "Hello World!" }));
+          root.addChild(Text, { text: "Hello World!" });
 
-          root.addChild(
-            new Card().addChild(new Icon().setIcon(UKIcon.Accessibility).setSize("2.5rem")).addChild(
-              new Flex()
-                .addChild(new IconButton({ icon: UKIcon.Beaker }))
-                .addChild(new IconButton({ icon: UKIcon.Beaker }))
-                .addChild(
-                  new Button({
-                    text: "Hello World!",
-                    onClick: () => {
-                      console.log("button clicked");
-                    },
-                  }),
-                )
-                .addChild(
-                  new IconButton({
-                    icon: UKIcon.ChevronLeft,
-                    onClick: () => {
-                      router.navigate("/app/a/uikit_demo");
-                    },
-                  }),
-                )
-                .addChild(
-                  new IconButton({
-                    icon: UKIcon.ChevronRight,
-                    onClick: () => {
-                      router.navigate("/app/a/uikit_demo/test");
-                    },
-                  }),
-                )
-                .addChild(
-                  new TextInput().$((c) => {
-                    c.icon.setIcon(UKIcon.ChevronRight);
-                    c.onChange(() => {
-                      return 0;
-                    });
-                  }),
-                )
-                .addChild(
-                  new IconButton({
-                    icon: UKIcon.ServerError,
-                    onClick: () => {
-                      // @ts-ignore
-                      window.__uikit__.uikit._debug_getBreakInTreeContextPropagation();
-                    },
-                  }),
-                ),
-            ),
-          );
+          root.addChild(Card, {});
+          root.addChild(Icon, { icon: UKIcon.Accessibility }).setSize("2.5rem");
+          root.addChild(Flex, {}).$((c) => {
+            c.addChild(IconButton, { icon: UKIcon.Beaker });
+            c.addChild(IconButton, { icon: UKIcon.Beaker });
+            c.addChild(Button, {
+              text: "Hello World!",
+              onClick: () => {
+                console.log("button clicked");
+              },
+            });
+            c.addChild(IconButton, {
+              icon: UKIcon.ChevronLeft,
+              onClick: () => {
+                router.navigate("/app/a/uikit_demo");
+              },
+            });
+            c.addChild(IconButton, {
+              icon: UKIcon.ChevronRight,
+              onClick: () => {
+                router.navigate("/app/a/uikit_demo/test");
+              },
+            });
+            c.addChild(TextInput, {}).$((c) => {
+              c.icon.setIcon(UKIcon.ChevronRight);
+              c.onChange(() => {
+                return 0;
+              });
+            });
+            c.addChild(IconButton, {
+              icon: UKIcon.ServerError,
+              onClick: () => {
+                // @ts-ignore
+                window.__uikit__.uikit._debug_getBreakInTreeContextPropagation();
+              },
+            });
+          });
 
           router.addRoute(
-            router
-              .createRoute({ path: "/app/a/uikit_demo" })
-              .addRoute(
-                router.createRoute({ path: "test", component: () => new Text().setText("Hello World from /test!") }),
-              ),
+            router.createRoute({ path: "/app/a/uikit_demo" }).addRoute(
+              router.createRoute({
+                path: "test",
+                component: () => {
+                  return { component: Text, props: { text: "Hello World from /test!" } };
+                },
+              }),
+            ),
           );
-
-          root.addChild(router);
 
           setTimeout(() => {
             // @ts-ignore
