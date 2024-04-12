@@ -12,9 +12,4 @@
     "noEmit": true,
     "isolatedModules": true,
   },
-  "include": [
-    "./**/*",
-    "../applications/**/frontend/**/*",
-    "../shared/**/*"
-  ]
 }
