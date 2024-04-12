@@ -5,9 +5,7 @@
 
 import "animate.css";
 import "./tailwindcss.css";
-import "@yourdash/chiplet/ui.scss";
 import "./main.css";
-import UIKit from "@yourdash/uikit/core/index.js";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createRoutesFromElements, Route, RouterProvider } from "react-router";
@@ -38,27 +36,70 @@ function main() {
         router={createBrowserRouter(
           createRoutesFromElements(
             <Route errorElement={<ErrorElement />}>
-              <Route path={"/linker-desktop-client-startup"} element={<LinkerDesktopClientStartupPage />} />
+              <Route
+                path={"/linker-desktop-client-startup"}
+                element={<LinkerDesktopClientStartupPage />}
+              />
               <Route element={<RootLayout />}>
-                <Route index element={<Index />} />
-                <Route path={"/signup"} element={<ComingSoon />} />
-                <Route path={"docs/*"} element={<DocsLayout />}>
-                  <Route path={"*"} element={<DocsRouter />} />
+                <Route
+                  index
+                  element={<Index />}
+                />
+                <Route
+                  path={"/signup"}
+                  element={<ComingSoon />}
+                />
+                <Route
+                  path={"docs/*"}
+                  element={<DocsLayout />}
+                >
+                  <Route
+                    path={"*"}
+                    element={<DocsRouter />}
+                  />
                 </Route>
-                <Route path={"projects"} index element={<ProjectsIndexPage />} />
+                <Route
+                  path={"projects"}
+                  index
+                  element={<ProjectsIndexPage />}
+                />
               </Route>
-              <Route path={"projects/*"} element={<ProjectsRouter />} />
-              <Route path={"project/*"} element={<ProjectsRouter />} />
-              <Route path={"proj/*"} element={<ProjectsRouter />} />
+              <Route
+                path={"projects/*"}
+                element={<ProjectsRouter />}
+              />
+              <Route
+                path={"project/*"}
+                element={<ProjectsRouter />}
+              />
+              <Route
+                path={"proj/*"}
+                element={<ProjectsRouter />}
+              />
               <Route path={"/login"}>
-                <Route index element={<ServerLoginPage />} />
-                <Route path={"*"} element={<LoginRedirect />} />
+                <Route
+                  index
+                  element={<ServerLoginPage />}
+                />
+                <Route
+                  path={"*"}
+                  element={<LoginRedirect />}
+                />
               </Route>
               <Route path={"app"}>
                 <Route element={<AppLayout />}>
-                  <Route index element={<ApplicationRedirectToDash />} />
-                  <Route path={"a/*"} element={<AppRouter />} />
-                  <Route path={"h/*"} element={<HostedApplicationRouter />} />
+                  <Route
+                    index
+                    element={<ApplicationRedirectToDash />}
+                  />
+                  <Route
+                    path={"a/*"}
+                    element={<AppRouter />}
+                  />
+                  <Route
+                    path={"h/*"}
+                    element={<HostedApplicationRouter />}
+                  />
                 </Route>
               </Route>
             </Route>,
@@ -81,7 +122,5 @@ loadingElement.style.alignItems = "center";
 loadingElement.innerText = "Loading YourDash...";
 
 element.appendChild(loadingElement);
-
-new UIKit();
 
 main();

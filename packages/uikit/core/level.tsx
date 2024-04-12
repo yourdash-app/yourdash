@@ -3,7 +3,9 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { createContext } from "solid-js";
+import { createContext, useContext } from "solid-js";
 
-const LevelProvider = createContext(0);
-export default LevelProvider;
+const LevelContext = createContext(0);
+export default LevelContext;
+
+export const useLevel = () => useContext(LevelContext);
