@@ -11,6 +11,7 @@ const Button: Component<{ onClick: () => void; text: string }> = ({ onClick, tex
     <button
       class={styles.component}
       onClick={onClick}
+      aria-label={text}
     >
       {text}
     </button>

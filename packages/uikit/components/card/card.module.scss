@@ -14,6 +14,7 @@
   font-size: var(#{$theme}#{$font}#{$size});
   font-family: var(#{$theme}#{$font}#{$family});
   background: var(#{$theme}#{$background});
+  color: var(#{$theme}#{$color});
   border: var(#{$theme}#{$border});
   box-shadow: var(#{$theme}#{$shadow});
   padding: var(#{$theme}#{$padding});

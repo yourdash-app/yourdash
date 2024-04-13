@@ -6,16 +6,6 @@
 }
 
 .logo {
-  animation: logo-spin infinite 10s linear;
-  height: 50rem;
+  height: 25rem;
   pointer-events: none;
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }

@@ -3,20 +3,21 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-@import '../../core/themeValues';
+@import '../../theme/themeValues';
 
 .component {
   display: flex;
   position: relative;
+  box-sizing: border-box;
 
   color: var(#{$theme}#{$input}#{$color});
   background: var(#{$theme}#{$input}#{$background});
   border: var(#{$theme}#{$input}#{$border});
   border-radius: var(#{$theme}#{$input}#{$radius});
-  padding: 0 var(#{$theme}#{$input}#{$padding}#{$horizontal});
   box-shadow: var(#{$theme}#{$input}#{$shadow});
   transition: var(#{$theme}#{$input}#{$transition});
-  padding-left: 0;
+  padding: 0;
+  height: var(#{$theme}#{$input}#{$height});
 
   &:focus,
   &:focus-within {
@@ -37,7 +38,11 @@
 
 .input {
   background: transparent;
-  padding-left: calc(var(#{$theme}#{$input}#{$padding}#{$horizontal}) + calc(var(#{$theme}#{$input}#{$height}) - 0.5rem));
+  color: var(#{$theme+$input+$color});
+  padding-left: calc(var(#{$theme+$input+$padding+$horizontal}) + calc(var(#{$theme+$input+$height}) - 0.5rem));
+  width: 100%;
+  margin: 0;
+  border: none;
 
   &:focus, &:focus-within {
     outline: none;

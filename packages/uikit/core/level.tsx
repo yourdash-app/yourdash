@@ -4,8 +4,24 @@
  */
 
 import { createContext, useContext } from "solid-js";
+import styles from "./../theme/defaultTheme.module.scss";
 
 const LevelContext = createContext(0);
 export default LevelContext;
 
 export const useLevel = () => useContext(LevelContext);
+
+export const useLevelClass = (level: number): string => {
+  switch (level) {
+    case 0:
+      return styles.level0;
+    case 1:
+      return styles.level1;
+    case 2:
+      return styles.level2;
+    case 3:
+      return styles.level3;
+    default:
+      return styles.level0;
+  }
+};

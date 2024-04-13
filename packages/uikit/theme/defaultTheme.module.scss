@@ -9,6 +9,9 @@
   #{$theme}-author: "Ewsgit";
   #{$theme}-name: "YourDash Classic Dark";
   #{$theme}-version: "0.0.1";
+
+  background: var(#{$theme}#{$background});
+  height: 100%;
 }
 
 .level0 {
@@ -17,8 +20,8 @@
   #{$theme}#{$accent}: #445599;
   #{$theme}#{$border}: 0.125rem solid #444444;
   #{$theme}#{$shadow}: 0 0 0.5rem 0 #000000;
-  #{$theme}#{$radius}: 0.5rem;
-  #{$theme}#{$padding}: 0.5rem;
+  #{$theme}#{$radius}: 1rem;
+  #{$theme}#{$padding}: 1rem;
   #{$theme}#{$gap}: 0.5rem;
   #{$theme}#{$transition}: all 200ms ease-in-out;
   #{$theme}#{$separator}#{$size}: 0.125rem;
@@ -103,7 +106,7 @@
   #{$theme}#{$font}#{$family}: Inter;
   #{$theme}#{$font}#{$radius}: 0.9rem;
   #{$theme}#{$font}#{$weight}: 400;
-  #{$theme}#{$padding}: 0.5rem;
+  #{$theme}#{$padding}: 0.75rem;
   #{$theme}#{$gap}: 0.5rem;
   #{$theme}#{$transition}: all 200ms ease-in-out;
   #{$theme}#{$separator}#{$size}: 0.125rem;
@@ -178,8 +181,8 @@
   #{$theme}#{$border}: 0.125rem solid #555555;
   #{$theme}#{$shadow}: 0 0 0.5rem 0 #000000;
   #{$theme}#{$accent}: #445599;
-  #{$theme}#{$radius}: 0.5rem;
-  #{$theme}#{$padding}: 0.75rem;
+  #{$theme}#{$radius}: 0.25rem;
+  #{$theme}#{$padding}: 0.5rem;
   #{$theme}#{$gap}: 0.75rem;
   #{$theme}#{$transition}: all 200ms ease-in-out;
   #{$theme}#{$separator}#{$size}: 0.125rem;
@@ -257,11 +260,11 @@
 .level3 {
   #{$theme}#{$color}: #ffffff;
   #{$theme}#{$background}: #555555;
-  #{$theme}#{$background}: 0.125rem solid #555555;
+  #{$theme}#{$border}: 0.125rem solid #666666;
   #{$theme}#{$shadow}: 0 0 0.5rem 0 #000000;
   #{$theme}#{$accent}: #445599;
-  #{$theme}#{$radius}: 0.5rem;
-  #{$theme}#{$padding}: 1rem;
+  #{$theme}#{$radius}: 0.125rem;
+  #{$theme}#{$padding}: 0.5rem;
   #{$theme}#{$gap}: 1rem;
   #{$theme}#{$transition}: all 200ms ease-in-out;
   #{$theme}#{$separator}#{$size}: 0.125rem;
@@ -302,16 +305,16 @@
   #{$theme}#{$input}#{$focus}#{$shadow}: 0 0 0.5rem 0 #000000;
 
   // button
-  #{$theme}#{$color}: #ffffff;
-  #{$theme}#{$background}: #666666;
-  #{$theme}#{$border}: 0.125rem solid #666666;
-  #{$theme}#{$font}#{$family}: Inter;
-  #{$theme}#{$font}#{$size}: 0.9rem;
-  #{$theme}#{$font}#{$weight}: 400;
-  #{$theme}#{$radius}: 0.25rem;
-  #{$theme}#{$shadow}: 0 0 0.5rem 0 #000000;
-  #{$theme}#{$button}#{$height}: 1.75rem;
-  #{$theme}#{$padding}#{$horizontal}: 0.5rem;
+  #{$theme}#{$button}#{$color}: #ffffff;
+  #{$theme}#{$button}#{$background}: #666666;
+  #{$theme}#{$button}#{$border}: 0.125rem solid #666666;
+  #{$theme}#{$button}#{$font}#{$family}: Inter;
+  #{$theme}#{$button}#{$font}#{$size}: 0.9rem;
+  #{$theme}#{$button}#{$font}#{$weight}: 400;
+  #{$theme}#{$button}#{$radius}: 0.25rem;
+  #{$theme}#{$button}#{$shadow}: 0 0 0.5rem 0 #000000;
+  #{$theme}#{$button}#{$button}#{$height}: 1.75rem;
+  #{$theme}#{$button}#{$padding}#{$horizontal}: 0.5rem;
   // hover
   #{$theme}#{$button}#{$hover}#{$color}: #ffffff;
   #{$theme}#{$button}#{$hover}#{$background}: #777777;

@@ -5,14 +5,14 @@
 
 import { Component, ParentProps } from "solid-js";
 import IncrementLevel from "../../core/incrementLevel.js";
-import { useLevel } from "../../core/level.js";
+import { useLevel, useLevelClass } from "../../core/level.js";
 import styles from "./card.module.scss";
 
-const Card: Component<ParentProps> = ({ children }) => {
-  const level = useLevel();
+const Card: Component<ParentProps & { level?: 0 | 1 | 2 | 3 }> = ({ children, level: levelOverride }) => {
+  const level = levelOverride || useLevel();
   return (
     <>
-      <div class={styles.component}>
+      <div class={`${styles.component} ${useLevelClass(level)}`}>
         <span>level: {level}</span>
         <IncrementLevel>{children}</IncrementLevel>
       </div>

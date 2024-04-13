@@ -3,11 +3,10 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-@import "../../core/defaultTheme.module.scss";
+@import "../../theme/themeValues";
 
 .component {
   display: flex;
-  flex-wrap: nowrap;
   gap: var(#{$theme}#{$gap});
 }
 
@@ -17,12 +16,4 @@
 
 .column {
   flex-direction: column;
-}
-
-.wrap {
-  flex-wrap: wrap;
-}
-
-.noGap {
-  gap: 0;
 }

@@ -5,7 +5,7 @@
 
 import Card from "@yourdash/chiplet/components/card/Card.js";
 import Icon from "@yourdash/chiplet/components/icon/Icon.js";
-import { YourDashIcon } from "@yourdash/uikit/components/icon/iconDictionary.js";
+import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary.js";
 import React, { useState } from "react";
 
 const PhotoDay: React.FC<{
@@ -32,7 +32,7 @@ const PhotoDay: React.FC<{
       >
         <h3>{photoCategory.date}</h3>
         <Icon
-          icon={isOpen ? YourDashIcon.ChevronDown : YourDashIcon.ChevronUp}
+          icon={isOpen ? UKIcon.ChevronDown : UKIcon.ChevronUp}
           className={"h-5"}
           color={"rgb(var(--button-fg))"}
         />
