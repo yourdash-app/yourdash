@@ -6,8 +6,8 @@
 import { Component, ParentProps } from "solid-js";
 import styles from "./box.module.scss";
 
-const Box: Component<ParentProps> = ({ children }) => {
-  return <div class={styles.component}>{children}</div>;
+const Box: Component<ParentProps & { extraClass?: string }> = ({ children, extraClass }) => {
+  return <div class={`${styles.component} ${extraClass}`}>{children}</div>;
 };
 
 export default Box;

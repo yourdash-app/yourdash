@@ -4,21 +4,22 @@
  */
 
 import { Component } from "solid-js";
-import styles from "./image.module.scss";
+import styles from "./textButton.module.scss";
 
-const Image: Component<{ src: string; accessibleLabel: string; extraClass?: string }> = ({
-  src,
-  accessibleLabel,
+const TextButton: Component<{ onClick: () => void; text: string; extraClass?: string }> = ({
+  onClick,
+  text,
   extraClass,
 }) => {
   return (
-    <img
+    <button
       class={`${styles.component} ${extraClass}`}
-      src={src}
-      draggable={false}
-      alt={accessibleLabel}
-    />
+      onClick={onClick}
+      aria-label={text}
+    >
+      {text}
+    </button>
   );
 };
 
-export default Image;
+export default TextButton;
