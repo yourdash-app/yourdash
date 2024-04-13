@@ -87,6 +87,7 @@ import IconDuplicate from "./icons/duplicate-16.svg?url";
 import IconEllipsis from "./icons/ellipsis-16.svg?url";
 import IconEye from "./icons/eye-16.svg?url";
 import IconEyeClosed from "./icons/eye-closed-16.svg?url";
+import IconEwsgit from "./icons/ewsgit.svg?url";
 import IconFeedDiscussion from "./icons/feed-discussion-16.svg?url";
 import IconFeedForked from "./icons/feed-forked-16.svg?url";
 import IconFeedHeart from "./icons/feed-heart-16.svg?url";
@@ -371,6 +372,7 @@ export enum UKIcon {
   Ellipsis = IconEllipsis as unknown as number,
   Eye = IconEye as unknown as number,
   EyeClosed = IconEyeClosed as unknown as number,
+  Ewsgit = IconEwsgit as unknown as number,
   FeedDiscussion = IconFeedDiscussion as unknown as number,
   FeedForked = IconFeedForked as unknown as number,
   FeedHeart = IconFeedHeart as unknown as number,

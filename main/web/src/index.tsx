@@ -24,8 +24,13 @@ render(() => {
       <Router>
         <Route
           path="/"
-          component={lazy(() => import("./root/index"))}
-        />
+          component={lazy(() => import("./root/layout"))}
+        >
+          <Route
+            path={"/"}
+            component={lazy(() => import("./root/index"))}
+          />
+        </Route>
         <Route
           path={"/docs"}
           component={lazy(() => import("./docs/layout"))}

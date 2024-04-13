@@ -6,13 +6,13 @@
 import { Component, ParentProps } from "solid-js";
 import Navigation from "../components/navigation/navigation.js";
 
-const Layout: Component<ParentProps> = ({ children }) => {
+const RootLayout: Component<ParentProps> = ({ children }) => {
   return (
-    <div>
-      <Navigation subtitle={"Docs"} />
+    <>
+      <Navigation />
       {children}
-    </div>
+    </>
   );
 };
 
-export default Layout;
+export default RootLayout;

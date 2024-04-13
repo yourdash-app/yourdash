@@ -7,15 +7,19 @@
   aspect-ratio: 1 / 1;
   width: var(--size);
 
+  background-color: currentColor;
   -webkit-mask-image: var(--icon);
   -webkit-mask-position: center;
   -webkit-mask-repeat: no-repeat;
   -webkit-mask-size: cover;
-  background-color: var(--color, currentColor);
   mask-image: var(--icon);
   mask-position: center;
   mask-repeat: no-repeat;
-  mask-size: cover
+  mask-size: cover;
+
+  &.preserveColor {
+    background-color: var(--color);
+  }
 }
 
 .preserveColor {

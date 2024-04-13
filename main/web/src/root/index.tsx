@@ -6,7 +6,11 @@
 import { Component } from "solid-js";
 
 const IndexPage: Component = () => {
-  return <div>Hello Index</div>;
+  return (
+    <div>
+      <h1>Index Page</h1>
+    </div>
+  );
 };
 
 export default IndexPage;

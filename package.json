@@ -15,6 +15,7 @@
   ],
   "scripts": {
     "yd:dev-web-client": "yarn --cwd ./main/web-client dev",
+    "yd:dev-web": "yarn --cwd ./main/web dev",
     "yd:dev-backend": "yarn --cwd ./main/backend dev",
     "yd:start-backend": "yarn --cwd ./main/backend start --log-requests",
     "yd:setup-project": "yarn && yarn --cwd ./main/web-client generate-application-routes",

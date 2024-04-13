@@ -16,7 +16,7 @@ const Icon: Component<{
 }> = ({ icon, size, color, preserveColor, extraClass }) => {
   return (
     <div
-      class={`${styles.component} ${extraClass}`}
+      class={`${styles.component} ${extraClass} ${preserveColor ? styles.preserveColor : ""}`}
       style={{ "--icon": `url(${icon})`, ...(!preserveColor ? { "--color": color } : {}), "--size": size }}
     />
   );
