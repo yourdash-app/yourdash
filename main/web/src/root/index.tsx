@@ -4,11 +4,13 @@
  */
 
 import { Component } from "solid-js";
+import Hero from "./components/hero/hero.js";
+import styles from "./index.module.scss";
 
 const IndexPage: Component = () => {
   return (
-    <div>
-      <h1>Index Page</h1>
+    <div class={styles.page}>
+      <Hero />
     </div>
   );
 };

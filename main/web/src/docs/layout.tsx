@@ -7,12 +7,7 @@ import { Component, ParentProps } from "solid-js";
 import Navigation from "../components/navigation/navigation.js";
 
 const Layout: Component<ParentProps> = ({ children }) => {
-  return (
-    <div>
-      <Navigation subtitle={"Docs"} />
-      {children}
-    </div>
-  );
+  return <Navigation subtitle={"Docs"}>{children}</Navigation>;
 };
 
 export default Layout;

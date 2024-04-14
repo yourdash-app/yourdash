@@ -1,5 +1,5 @@
 /*!
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -7,7 +7,7 @@
   aspect-ratio: 1 / 1;
   width: var(--size);
 
-  background-color: currentColor;
+  background-color: var(--color, currentColor);
   -webkit-mask-image: var(--icon);
   -webkit-mask-position: center;
   -webkit-mask-repeat: no-repeat;
@@ -16,10 +16,6 @@
   mask-position: center;
   mask-repeat: no-repeat;
   mask-size: cover;
-
-  &.preserveColor {
-    background-color: var(--color);
-  }
 }
 
 .preserveColor {

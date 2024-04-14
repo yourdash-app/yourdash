@@ -9,11 +9,12 @@
   display: flex;
 
   border: var(#{$theme}#{$border});
+  border-bottom: none;
   border-radius: var(#{$theme}#{$radius});
 }
 
 .row {
-  width: 0.125rem;
+  width: 0;
   height: calc(100% - calc(var(#{$theme}#{$gap})) * 2);
 
   margin: var(#{$theme}#{$gap});
@@ -21,7 +22,7 @@
 
 .column {
   width: calc(100% - calc(var(#{$theme}#{$gap})) * 2);
-  height: 0.125rem;
+  height: 0;
 
   margin: var(#{$theme}#{$gap});
 }

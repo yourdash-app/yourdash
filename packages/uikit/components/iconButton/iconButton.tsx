@@ -8,19 +8,22 @@ import Icon from "../icon/icon.js";
 import { UKIcon } from "../icon/iconDictionary.js";
 import styles from "./iconButton.module.scss";
 
-const IconButton: Component<{ icon: UKIcon; accessibleLabel: string; onClick: () => void }> = ({
-  icon,
-  accessibleLabel,
-  onClick,
-}) => {
+const IconButton: Component<{
+  icon: UKIcon;
+  accessibleLabel: string;
+  onClick: () => void;
+  extraClass?: string;
+  preserveColor?: boolean;
+}> = ({ icon, accessibleLabel, onClick, extraClass, preserveColor }) => {
   return (
     <button
       onClick={onClick}
       aria-label={accessibleLabel}
-      class={styles.component}
+      class={`${styles.component} ${extraClass}`}
     >
       <Icon
         size={"1.25rem"}
+        preserveColor={preserveColor}
         icon={icon}
       />
     </button>

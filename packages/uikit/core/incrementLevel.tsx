@@ -7,9 +7,7 @@ import { Component, ParentProps } from "solid-js";
 import LevelContext, { useLevel } from "./level";
 
 const IncrementLevel: Component<ParentProps> = ({ children }) => {
-  const level = useLevel();
-
-  return <LevelContext.Provider value={level + 1}>{children}</LevelContext.Provider>;
+  return <LevelContext.Provider value={useLevel() + 1}>{children}</LevelContext.Provider>;
 };
 
 export default IncrementLevel;

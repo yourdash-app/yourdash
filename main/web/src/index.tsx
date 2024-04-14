@@ -11,6 +11,7 @@ import { render } from "solid-js/web";
 import "./index.css";
 import { Router, Route } from "@solidjs/router";
 import { lazy } from "solid-js";
+import "animate.css";
 
 const root = document.getElementById("root");
 

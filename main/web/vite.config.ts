@@ -16,4 +16,6 @@ export default defineConfig({
   build: {
     target: "esnext",
   },
+  appType: "spa",
+  root: ".",
 });

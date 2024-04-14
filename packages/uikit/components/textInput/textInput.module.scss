@@ -14,7 +14,6 @@
   background: var(#{$theme}#{$input}#{$background});
   border: var(#{$theme}#{$input}#{$border});
   border-radius: var(#{$theme}#{$input}#{$radius});
-  box-shadow: var(#{$theme}#{$input}#{$shadow});
   transition: var(#{$theme}#{$input}#{$transition});
   padding: 0;
   height: var(#{$theme}#{$input}#{$height});
@@ -24,7 +23,6 @@
     color: var(#{$theme}#{$input}#{$focus}#{$color});
     background: var(#{$theme}#{$input}#{$focus}#{$background});
     border: var(#{$theme}#{$input}#{$focus}#{$border});
-    box-shadow: var(#{$theme}#{$input}#{$focus}#{$shadow});
   }
 }
 

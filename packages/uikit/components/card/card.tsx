@@ -8,12 +8,15 @@ import IncrementLevel from "../../core/incrementLevel.js";
 import { useLevel, useLevelClass } from "../../core/level.js";
 import styles from "./card.module.scss";
 
-const Card: Component<ParentProps & { level?: 0 | 1 | 2 | 3 }> = ({ children, level: levelOverride }) => {
+const Card: Component<ParentProps & { level?: 0 | 1 | 2 | 3; extraClass?: string }> = ({
+  children,
+  level: levelOverride,
+  extraClass,
+}) => {
   const level = levelOverride || useLevel();
   return (
     <>
-      <div class={`${styles.component} ${useLevelClass(level)}`}>
-        <span>level: {level}</span>
+      <div class={`${styles.component} ${useLevelClass(level)} ${extraClass}`}>
         <IncrementLevel>{children}</IncrementLevel>
       </div>
     </>

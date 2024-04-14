@@ -4,10 +4,22 @@
  */
 
 import { Component, ParentProps } from "solid-js";
+import IncrementLevel from "../../core/incrementLevel.js";
+import { useLevel, useLevelClass } from "../../core/level.js";
 import styles from "./box.module.scss";
 
-const Box: Component<ParentProps & { extraClass?: string }> = ({ children, extraClass }) => {
-  return <div class={`${styles.component} ${extraClass}`}>{children}</div>;
+const Box: Component<ParentProps & { extraClass?: string; level?: 0 | 1 | 2 | 3 }> = ({
+  children,
+  extraClass,
+  level: levelOverride,
+}) => {
+  const level = levelOverride || useLevel();
+
+  return (
+    <div class={`${styles.component} ${extraClass} ${useLevelClass(level)}`}>
+      <IncrementLevel>{children}</IncrementLevel>
+    </div>
+  );
 };
 
 export default Box;
