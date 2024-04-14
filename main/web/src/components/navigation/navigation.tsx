@@ -4,7 +4,6 @@
  */
 
 import Box from "@yourdash/uikit/components/box/box.js";
-import Button from "@yourdash/uikit/components/button/button.js";
 import Flex from "@yourdash/uikit/components/flex/flex.js";
 import Heading from "@yourdash/uikit/components/heading/heading.js";
 import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary.js";
@@ -22,7 +21,7 @@ const Navigation: Component<ParentProps & { subtitle?: string }> = ({ children, 
   const navigate = useNavigate();
 
   return (
-    <div>
+    <>
       <Box extraClass={styles.navigationBar}>
         <Image
           src={"/assets/branding/yourdash.svg"}
@@ -129,7 +128,7 @@ const Navigation: Component<ParentProps & { subtitle?: string }> = ({ children, 
           />
         </Flex>
       </Box>
-    </div>
+    </>
   );
 };
 

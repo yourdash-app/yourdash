@@ -3,10 +3,8 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+@import "@yourdash/uikit/theme/themeValues";
+
 .page {
-
-}
-
-.hero {
-
+  background: var(#{$theme+$background});
 }
