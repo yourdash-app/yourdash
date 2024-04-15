@@ -62,9 +62,9 @@ class __internalClientServerInteraction {
       [key: string]: string;
     },
   ): void {
-    const instanceUrl = localStorage.getItem("current_server") || "https://example.com";
-    const username = localStorage.getItem("username") || "";
-    const sessionToken = localStorage.getItem("session_token") || "";
+    const instanceUrl = this.getInstanceUrl();
+    const username = this.getUsername();
+    const sessionToken = this.getUserToken();
 
     fetch(`${instanceUrl}${endpoint}`, {
       method: "GET",
@@ -113,9 +113,9 @@ class __internalClientServerInteraction {
       [key: string]: string;
     },
   ): void {
-    const instanceUrl = localStorage.getItem("current_server") || "https://example.com";
-    const username = localStorage.getItem("username") || "";
-    const sessionToken = localStorage.getItem("session_token") || "";
+    const instanceUrl = this.getInstanceUrl();
+    const username = this.getUsername();
+    const sessionToken = this.getUserToken();
 
     fetch(`${instanceUrl}${endpoint}`, {
       method: "POST",
@@ -164,9 +164,9 @@ class __internalClientServerInteraction {
       [key: string]: string;
     },
   ): void {
-    const instanceUrl = localStorage.getItem("current_server") || "https://example.com";
-    const username = localStorage.getItem("username") || "";
-    const sessionToken = localStorage.getItem("session_token") || "";
+    const instanceUrl = this.getInstanceUrl();
+    const username = this.getUsername();
+    const sessionToken = this.getUserToken();
 
     fetch(`${instanceUrl}${endpoint}`, {
       method: "DELETE",
@@ -214,9 +214,9 @@ class __internalClientServerInteraction {
       [key: string]: string;
     },
   ): void {
-    const instanceUrl = localStorage.getItem("current_server") || "https://example.com";
-    const username = localStorage.getItem("username") || "";
-    const sessionToken = localStorage.getItem("session_token") || "";
+    const instanceUrl = this.getInstanceUrl();
+    const username = this.getUsername();
+    const sessionToken = this.getUserToken();
 
     fetch(`${instanceUrl}${endpoint}`, {
       method: "GET",
@@ -251,9 +251,9 @@ class __internalClientServerInteraction {
       [key: string]: string;
     },
   ): void {
-    const instanceUrl = localStorage.getItem("current_server") || "https://example.com";
-    const username = localStorage.getItem("username") || "";
-    const sessionToken = localStorage.getItem("session_token") || "";
+    const instanceUrl = this.getInstanceUrl();
+    const username = this.getUsername();
+    const sessionToken = this.getUserToken();
 
     fetch(`${instanceUrl}${endpoint}`, {
       method: "POST",
@@ -286,9 +286,9 @@ class __internalClientServerInteraction {
       [key: string]: string;
     },
   ): void {
-    const instanceUrl = localStorage.getItem("current_server") || "https://example.com";
-    const username = localStorage.getItem("username") || "";
-    const sessionToken = localStorage.getItem("session_token") || "";
+    const instanceUrl = this.getInstanceUrl();
+    const username = this.getUsername();
+    const sessionToken = this.getUserToken();
 
     fetch(`${instanceUrl}${endpoint}`, {
       method: "DELETE",
@@ -317,22 +317,61 @@ class __internalClientServerInteraction {
       });
   }
 
+  // returns the URL of the current instance
   getInstanceUrl(): string {
-    return localStorage.getItem("current_server") || "https://example.com";
+    return localStorage.getItem("instance_url") || "https://example.com";
   }
 
+  // returns the Websocket version of the URL of the current instance
   getInstanceWebsocketUrl(): string {
-    return localStorage.getItem("current_server") || "wss://example.com";
+    return localStorage.getItem("instance_url") || "wss://example.com";
   }
 
+  // returns the list of saved instance's urls
+  getSavedInstances(): string[] {
+    return JSON.parse(localStorage.getItem("saved_instances") || "[]");
+  }
+
+  // adds an instance to the list of saved instances
+  addSavedInstance(instanceUrl: string) {
+    const savedInstances = this.getSavedInstances();
+    if (!savedInstances.includes(instanceUrl)) {
+      savedInstances.push(instanceUrl);
+      localStorage.setItem("saved_instances", JSON.stringify(savedInstances));
+    }
+  }
+
+  // removes an instance from the list of saved instances by its url
+  removeSavedInstance(instanceUrl: string) {
+    const savedInstances = this.getSavedInstances();
+    if (savedInstances.includes(instanceUrl)) {
+      savedInstances.splice(savedInstances.indexOf(instanceUrl), 1);
+      localStorage.setItem("saved_instances", JSON.stringify(savedInstances));
+    }
+  }
+
+  // clears the list of saved instances
+  clearSavedInstances() {
+    localStorage.setItem("saved_instances", "[]");
+  }
+
+  // returns an array of usernames that have previously logged in with this instance
+  getSavedLoginsForInstance(instanceUrl: string): string[] {
+    const savedLogins = localStorage.getItem(`saved_logins_for_${instanceUrl}`) || "[]";
+    return JSON.parse(savedLogins);
+  }
+
+  // get the username of the currently logged-in user
   getUsername(): string {
-    return localStorage.getItem("username") || "";
+    return localStorage.getItem("current_user_username") || "";
   }
 
+  // get the login session token of the currently logged-in user
   getUserToken(): string {
-    return localStorage.getItem("session_token") || "";
+    return sessionStorage.getItem("session_token") || "";
   }
 
+  // get the user database for the currently logged-in user
   async getUserDB(): Promise<UserDatabase> {
     return new Promise((resolve) => {
       this.getJson("/core/user_db", (data) => {
@@ -345,6 +384,7 @@ class __internalClientServerInteraction {
     });
   }
 
+  // set a key in the currently logged-in user's database
   setUserDB(database: KeyValueDatabase): Promise<KeyValueDatabase> {
     return new Promise<KeyValueDatabase>((resolve, reject) => {
       const previousKeys = this.userDB.keys;
@@ -365,10 +405,12 @@ class __internalClientServerInteraction {
     });
   }
 
+  // get the currently logged-in user
   getUser() {
     return this.user;
   }
 
+  // returns a list of teams that the current user is a part of
   getTeams(): Promise<CSIYourDashTeam[]> {
     return new Promise((resolve, reject) => {
       this.getJson(
@@ -383,13 +425,15 @@ class __internalClientServerInteraction {
     });
   }
 
-  getTeam(teamName: string) {
-    return new CSIYourDashTeam(teamName);
+  // get a YourDash team by its id
+  getTeam(teamId: string) {
+    return new CSIYourDashTeam(teamId);
   }
 
+  // logout the current user
   logout(): void {
-    localStorage.removeItem("username");
-    localStorage.removeItem("session_token");
+    localStorage.removeItem("current_user_username");
+    sessionStorage.removeItem("session_token");
   }
 
   openWebsocketConnection(path: string) {

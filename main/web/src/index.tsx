@@ -23,8 +23,22 @@ render(() => {
   return (
     <UIKitRoot>
       <Router>
+        <Route path={"/login"}>
+          <Route
+            path={"/"}
+            component={lazy(() => import("./login/index"))}
+          />
+          <Route
+            path={"/instance"}
+            component={lazy(() => import("./login/instance/index"))}
+          />
+          <Route
+            path={"/signup"}
+            component={lazy(() => import("./login/signup/index"))}
+          />
+        </Route>
         <Route
-          path="/"
+          path="/*"
           component={lazy(() => import("./root/layout"))}
         >
           <Route

@@ -46,7 +46,7 @@
     "xml2js": "^0.6.2",
     "yarn": "^1.22.19",
     "solid-devtools": "^0.29.2",
-    "solid-js": "^0.29.2",
+    "solid-js": "^1.8.16",
     "vite-plugin-solid": "^2.8.2"
   }
 }

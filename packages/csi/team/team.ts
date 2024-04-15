@@ -15,8 +15,8 @@ export default class CSIYourDashTeam {
   };
   teamName: string;
 
-  constructor(teamName: string) {
-    this.teamName = teamName;
+  constructor(teamId: string) {
+    this.teamName = teamId;
 
     this.clearCachedResults();
 

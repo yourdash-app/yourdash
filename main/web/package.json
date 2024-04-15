@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "start": "vite",
-    "dev": "vite",
+    "dev": "cross-env DEV=true vite",
     "build": "vite build",
     "serve": "vite preview"
   },
@@ -14,10 +14,11 @@
     "solid-devtools": "^0.29.2",
     "typescript": "^5.3.3",
     "vite": "^5.0.11",
-    "vite-plugin-solid": "^2.8.2"
+    "vite-plugin-solid": "^2.8.2",
+    "cross-env": "^7.0.3"
   },
   "dependencies": {
     "@solidjs/router": "^0.13.2",
-    "solid-js": "^1.8.11"
+    "solid-js": "^1.8.16"
   }
 }
