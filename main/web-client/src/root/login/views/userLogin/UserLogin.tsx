@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -97,7 +97,11 @@ const UserLogin: React.FC<IUserLogin> = ({ setUsername, setPassword, password, u
   }
 
   return (
-    <div className={"w-full h-full flex items-center justify-center flex-col relative animate__animated animate__fadeIn gap-4"}>
+    <div
+      className={
+        "w-full h-full flex items-center justify-center flex-col relative animate__animated animate__fadeIn gap-4"
+      }
+    >
       <IconButton
         icon={UKIcon.ChevronLeft}
         className={"left-0 top-0 absolute animate__animated animate__fadeInLeft"}
@@ -108,7 +112,10 @@ const UserLogin: React.FC<IUserLogin> = ({ setUsername, setPassword, password, u
           setAvatar("");
         }}
       />
-      <img src={avatar} className={"w-64 aspect-square rounded-3xl"} />
+      <img
+        src={avatar}
+        className={"w-64 aspect-square rounded-3xl"}
+      />
       <span className={"text-3xl font-semibold"}>
         {fullName.first} {fullName.last}
       </span>
@@ -135,6 +142,7 @@ const UserLogin: React.FC<IUserLogin> = ({ setUsername, setPassword, password, u
                 `/login/user/${username}/authenticate`,
                 { password },
                 (response) => {
+                  // WARNING: USE NEW CSI NAMES!!!
                   localStorage.setItem("session_id", response.sessionId);
                   localStorage.setItem("session_token", response.token);
                   localStorage.setItem("username", username);
@@ -156,6 +164,7 @@ const UserLogin: React.FC<IUserLogin> = ({ setUsername, setPassword, password, u
               `/login/user/${username}/authenticate`,
               { password },
               (response) => {
+                // WARNING: USE NEW CSI NAMES!!!
                 localStorage.setItem("session_id", response.sessionId);
                 localStorage.setItem("session_token", response.token);
                 localStorage.setItem("username", username);

@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "description": "",
   "scripts": {
-    "start": "vite",
-    "dev": "cross-env DEV=true vite",
+    "start": "vite --host",
+    "dev": "cross-env DEV=true vite --host",
     "build": "vite build",
     "serve": "vite preview"
   },

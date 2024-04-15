@@ -27,11 +27,11 @@
 }
 
 .icon {
-  height: calc(var(#{$theme}#{$input}#{$height}) - 0.5rem);
+  height: calc(var(#{$theme}#{$input}#{$height}) - 0.75rem);
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  margin-left: calc(var(#{$theme}#{$input}#{$padding}#{$horizontal}) / 2);
+  margin-left: calc(var(#{$theme}#{$input}#{$padding}#{$horizontal}));
 }
 
 .input {

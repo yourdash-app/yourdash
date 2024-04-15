@@ -5,13 +5,26 @@
 
 import Box from "@yourdash/uikit/components/box/box.js";
 import Heading from "@yourdash/uikit/components/heading/heading.js";
+import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary.js";
+import TextInput from "@yourdash/uikit/components/textInput/textInput.js";
 import { Component } from "solid-js";
 import styles from "./index.module.scss";
+import Text from "@yourdash/uikit/components/text/text.js";
 
 const LoginInstancePage: Component = () => {
   return (
     <div class={styles.page}>
-      <Box extraClass={styles.panel}></Box>
+      <Box extraClass={styles.panel}>
+        <Heading
+          level={3}
+          text={"To continue, please enter your instance's Url"}
+        />
+        <TextInput
+          placeholder={"https:// or http://"}
+          onChange={() => {}}
+          icon={UKIcon.Link}
+        />
+      </Box>
       <div class={styles.info}>
         <Heading
           level={1}
@@ -22,9 +35,18 @@ const LoginInstancePage: Component = () => {
           text={"The following are the steps required to get started"}
         />
         <ul class={styles.bullets}>
-          <li>Enter your instance's URL</li>
-          <li>Enter your username</li>
-          <li>Enter your password or create one for your new account</li>
+          <li>
+            <Text text={"Enter your instance's URL"} />
+          </li>
+          <li>
+            <Text text={"Enter your username"} />
+          </li>
+          <li>
+            <Text text={"Enter your password or create one for a new account"} />
+          </li>
+          <li>
+            <Text text={"If you have any issues, please contact your instance's admin"} />
+          </li>
         </ul>
       </div>
     </div>

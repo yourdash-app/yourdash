@@ -6,7 +6,6 @@
 import clippy from "@yourdash/shared/web/helpers/clippy.js";
 import Button from "@yourdash/uikit/components/button/button.js";
 import Heading from "@yourdash/uikit/components/heading/heading.js";
-import Link from "@yourdash/uikit/components/link/link.js";
 import { Component } from "solid-js";
 import IndexPageHeroTaglines from "./components/taglines/taglines.js";
 import styles from "./hero.module.scss";

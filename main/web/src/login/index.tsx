@@ -5,9 +5,16 @@
 
 import csi from "@yourdash/csi/csi.js";
 import { Component } from "solid-js";
+import isValidInstance from "./lib/isValidInstance.js";
+import { useNavigate } from "@solidjs/router";
 
 const LoginIndexPage: Component = () => {
+  const navigate = useNavigate();
   const instanceUrl = csi.getInstanceUrl();
+
+  if (!isValidInstance(instanceUrl)) {
+    navigate("/login/instance");
+  }
 
   return <>Login Page</>;
 };
