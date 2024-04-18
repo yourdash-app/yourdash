@@ -29,7 +29,7 @@ const IndexPageHero: Component = () => {
         />
         {/* Taglines scroller */}
         <IndexPageHeroTaglines />
-        <div class={"flex gap-2 pt-7 items-center justify-center animate__animated animate__fadeIn animate__750ms"}>
+        <div class={"flex gap-2 pt-8 items-center justify-center animate__animated animate__fadeIn animate__750ms"}>
           <Button
             onClick={() => navigate("/login")}
             extraClass={

@@ -23,9 +23,43 @@
   flex-direction: column;
   gap: var(#{$theme+$gap});
 
+  .title {
+    text-align: start;
+  }
+
+  .subtitle {
+    text-align: start;
+    color: var(#{$theme+$heading+$h2+$color});
+    opacity: 80%;
+  }
+
   .bullets {
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    padding-top: 2rem;
+    padding-left: 3rem;
+
+    > li {
+      --bullet-size: 1.25rem;
+
+      position: relative;
+      padding-left: calc(var(--bullet-size) + 1rem);
+      font-size: var(#{$theme+$heading+$h3+$size});
+      font-weight: var(#{$theme+$heading+$h3+$weight});
+
+      &::before {
+        content: "";
+        width: var(--bullet-size);
+        height: var(--bullet-size);
+        background-color: var(#{$theme+$color});
+        border-radius: 100rem;
+        position: absolute;
+        top: 50%;
+        left: 0;
+        opacity: 50%;
+        transform: translateY(-50%);
+      }
+    }
   }
 }
