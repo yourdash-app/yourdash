@@ -3,8 +3,8 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import { INSTANCE_STATUS } from "@yourdash/shared/core/instanceStatus.js";
 import { CoreApi } from "../coreApi.js";
-import { YOURDASH_INSTANCE_STATUS } from "../types/discoveryStatus.js";
 
 export const MIMICED_NEXTCLOUD_VERSION = {
   major: 28,
@@ -26,7 +26,7 @@ export default function loadNextCloudSupportEndpoints(coreApi: CoreApi) {
 
     return res.json({
       installed: true,
-      maintenance: coreApi.instanceStatus === YOURDASH_INSTANCE_STATUS.MAINTENANCE,
+      maintenance: coreApi.instanceStatus === INSTANCE_STATUS.MAINTENANCE,
       needsDbUpgrade: false,
       version: "28.0.0.11",
       versionstring: MIMICED_NEXTCLOUD_VERSION.string,

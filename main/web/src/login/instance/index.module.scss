@@ -11,17 +11,14 @@
   height: 100%;
 }
 
-.panel {
-  border-top: none;
-  border-left: none;
-  border-bottom: none;
-}
-
 .info {
   padding: 2rem;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   gap: var(#{$theme+$gap});
+  width: 100%;
 
   .title {
     text-align: start;
@@ -61,5 +58,10 @@
         transform: translateY(-50%);
       }
     }
+  }
+
+  @media (max-width: 1060px) {
+    display: none;
+    visibility: hidden;
   }
 }

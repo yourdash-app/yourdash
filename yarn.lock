@@ -7828,7 +7828,7 @@ solid-devtools@^0.29.2:
     "@solid-devtools/debugger" "^0.23.3"
     "@solid-devtools/shared" "^0.13.1"
 
-solid-js@^0.29.2, solid-js@^1.8.11:
+solid-js@^1.8.16:
   version "1.8.16"
   resolved "https://registry.yarnpkg.com/solid-js/-/solid-js-1.8.16.tgz#33ce9bff617154d5f4b889e1b2fb89d682b7a422"
   integrity sha512-rja94MNU9flF3qQRLNsu60QHKBDKBkVE1DldJZPIfn2ypIn3NV2WpSbGTQIvsyGPBo+9E2IMjwqnqpbgfWuzeg==

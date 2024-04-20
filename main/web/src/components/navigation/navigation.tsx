@@ -3,6 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import clippy from "@yourdash/shared/web/helpers/clippy.js";
 import Box from "@yourdash/uikit/components/box/box.js";
 import Flex from "@yourdash/uikit/components/flex/flex.js";
 import Heading from "@yourdash/uikit/components/heading/heading.js";
@@ -53,7 +54,7 @@ const Navigation: Component<ParentProps & { subtitle?: string }> = ({ children, 
           }}
         />
         <TextButton
-          extraClass={styles.link}
+          extraClass={clippy(styles.link, styles.source)}
           text={"Source"}
           onClick={() => {
             window.location.href = "https://github.com/yourdash/yourdash";

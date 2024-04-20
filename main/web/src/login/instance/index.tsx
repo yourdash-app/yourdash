@@ -3,27 +3,15 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import Box from "@yourdash/uikit/components/box/box.js";
 import Heading from "@yourdash/uikit/components/heading/heading.js";
-import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary.js";
-import TextInput from "@yourdash/uikit/components/textInput/textInput.js";
 import { Component } from "solid-js";
 import styles from "./index.module.scss";
+import Panel from "./components/panel/panel.jsx";
 
 const LoginInstancePage: Component = () => {
   return (
     <div class={styles.page}>
-      <Box extraClass={styles.panel}>
-        <Heading
-          level={3}
-          text={"Instance's Url"}
-        />
-        <TextInput
-          placeholder={"https:// or http://"}
-          onChange={() => {}}
-          icon={UKIcon.Link}
-        />
-      </Box>
+      <Panel />
       <div class={styles.info}>
         <Heading
           extraClass={styles.title}

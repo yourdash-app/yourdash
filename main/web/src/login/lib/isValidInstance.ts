@@ -6,10 +6,23 @@
 import { INSTANCE_STATUS } from "@yourdash/shared/core/instanceStatus";
 
 export default function isValidInstance(instanceUrl: string): Promise<boolean> {
+  const instanceUrlWithoutProtocol = instanceUrl?.split("://")[1];
+  const doesContainPort = instanceUrlWithoutProtocol?.split(":")[1] !== undefined;
+
   return new Promise<boolean>(async (resolve) => {
-    fetch(`${instanceUrl}/test`)
+    if (instanceUrl === "") {
+      return resolve(false);
+    }
+
+    if (!instanceUrl.startsWith("http://") || !instanceUrl.startsWith("https://")) {
+      return resolve(false);
+    }
+
+    fetch(`${instanceUrl}${doesContainPort ? "" : ":3563"}/test`)
       .then((response) => {
         if (response.ok) return response.json();
+
+        resolve(false);
       })
       .then((jsonResponse) => {
         if (jsonResponse.type === "yourdash" && jsonResponse.status === INSTANCE_STATUS.OK) {

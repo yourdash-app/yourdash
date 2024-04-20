@@ -3,12 +3,12 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { Component, createEffect, createSignal, onCleanup, onMount } from "solid-js";
+import { Component, createSignal, onCleanup, onMount } from "solid-js";
 
 const IndexPageHeroTaglines: Component = () => {
   const [taglineIndex, setTaglineIndex] = createSignal(0);
 
-  let interval: number;
+  let interval: NodeJS.Timeout;
 
   onMount(() => {
     interval = setInterval(() => {

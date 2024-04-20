@@ -4,16 +4,24 @@
  */
 
 import csi from "@yourdash/csi/csi.js";
-import { Component } from "solid-js";
+import { Component, createSignal } from "solid-js";
 import isValidInstance from "./lib/isValidInstance.js";
 import { useNavigate } from "@solidjs/router";
 
 const LoginIndexPage: Component = () => {
   const navigate = useNavigate();
-  const instanceUrl = csi.getInstanceUrl();
+  const [validInstance, setValidInstance] = createSignal<boolean>(false);
 
-  if (!isValidInstance(instanceUrl)) {
-    navigate("/login/instance");
+  isValidInstance(csi.getInstanceUrl()).then((isValid) => {
+    setValidInstance(isValid);
+
+    if (!isValid) {
+      navigate("/login/instance");
+    }
+  });
+
+  if (validInstance() === false) {
+    return <>checking if instance is valid</>;
   }
 
   return <>Login Page</>;

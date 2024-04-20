@@ -22,13 +22,11 @@
   }
 
   .title {
-    margin: 0;
-    margin-left: calc(var(#{$theme+$gap}) / 2 * -1);
+    margin: 0 0 0 calc(var(#{$theme+$gap}) / 2 * -1);
   }
 
   .subtitle {
-    margin: 0;
-    margin-right: var(--side-spacing);
+    margin: 0 var(--side-spacing) 0 0;
     width: 10ch;
     text-align: left;
     font-weight: 300;
@@ -62,6 +60,25 @@
     &:last-child {
       padding-right: 0;
     }
+
+  }
+    .source {
+      @media (max-width: $sizeTablet) {
+        display: none;
+        visibility: hidden;
+      }
+    }
+
+  @media (max-width: $sizeLargeTablet) {
+    --side-spacing: 5rem;
+  }
+
+  @media (max-width: $sizeLargeMobile) {
+    --side-spacing: 3rem;
+  }
+
+  @media (max-width: $sizeMobile) {
+    --side-spacing: 0;
   }
 }
 

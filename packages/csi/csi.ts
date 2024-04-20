@@ -319,12 +319,12 @@ class __internalClientServerInteraction {
 
   // returns the URL of the current instance
   getInstanceUrl(): string {
-    return localStorage.getItem("instance_url") || "https://example.com";
+    return localStorage.getItem("instance_url") || "";
   }
 
   // returns the Websocket version of the URL of the current instance
   getInstanceWebsocketUrl(): string {
-    return localStorage.getItem("instance_url") || "wss://example.com";
+    return localStorage.getItem("instance_url") || "";
   }
 
   // returns the list of saved instance's urls

@@ -336,17 +336,21 @@
 .mobile {
   .level0 {
     #{$theme}#{$button}#{$height}: 2.5rem;
+    #{$theme+$input+$height}: 2.5rem;
   }
 
   .level1 {
     #{$theme}#{$button}#{$height}: 2.5rem;
+    #{$theme+$input+$height}: 2.5rem;
   }
 
   .level2 {
     #{$theme}#{$button}#{$height}: 2.5rem;
+    #{$theme+$input+$height}: 2.5rem;
   }
 
   .level3 {
     #{$theme}#{$button}#{$height}: 2.5rem;
+    #{$theme+$input+$height}: 2.5rem;
   }
 }

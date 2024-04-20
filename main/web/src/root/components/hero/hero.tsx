@@ -18,7 +18,7 @@ const IndexPageHero: Component = () => {
   return (
     <section
       class={
-        "animate__animated animate__fadeIn w-full h-[30rem] overflow-hidden relative bg-base-800 [clip-path:_polygon(0_0,_100%_0%,_100%_85%,_0%_100%);] grid lg:grid-cols-2 grid-cols-1 grid-rows-1 gap-10 pb-4"
+        "animate__animated animate__fadeIn w-full h-[30rem] overflow-hidden relative bg-base-800 [clip-path:_polygon(0_0,_100%_0%,_100%_85%,_0%_100%);] grid lg:grid-cols-[auto,auto] grid-cols-1 grid-rows-1 gap-10 pb-4"
       }
     >
       <div class={"flex flex-col items-end justify-center overflow-hidden lg:ml-0 lg:mr-0 ml-auto mr-auto"}>
