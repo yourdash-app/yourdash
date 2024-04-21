@@ -322,6 +322,13 @@ class __internalClientServerInteraction {
     return localStorage.getItem("instance_url") || "";
   }
 
+  // sets the URL of the current instance
+  setInstanceUrl(url: string) {
+    localStorage.setItem("instance_url", url || "ERROR");
+
+    return this;
+  }
+
   // returns the Websocket version of the URL of the current instance
   getInstanceWebsocketUrl(): string {
     return localStorage.getItem("instance_url") || "";

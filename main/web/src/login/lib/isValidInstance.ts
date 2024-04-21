@@ -14,7 +14,7 @@ export default function isValidInstance(instanceUrl: string): Promise<boolean> {
       return resolve(false);
     }
 
-    if (!instanceUrl.startsWith("http://") || !instanceUrl.startsWith("https://")) {
+    if (!(instanceUrl.startsWith("http://") || instanceUrl.startsWith("https://"))) {
       return resolve(false);
     }
 
@@ -27,7 +27,10 @@ export default function isValidInstance(instanceUrl: string): Promise<boolean> {
       .then((jsonResponse) => {
         if (jsonResponse.type === "yourdash" && jsonResponse.status === INSTANCE_STATUS.OK) {
           resolve(true);
+          return;
         }
+
+        resolve(false);
       });
   });
 }
