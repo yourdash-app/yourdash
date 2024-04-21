@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -41,11 +41,11 @@ const ListBotsPage: React.FC = () => {
   }, [searchValue, bots]);
 
   useEffect(() => {
-    csi.getJson(
+    csi.syncGetJson(
       `/app/chatbots/team/${currentTeam}/list-bots`,
       (b: unknown[]) => {
         b.map((botId) => {
-          csi.getJson(
+          csi.syncGetJson(
             `/app/chatbots/team/${currentTeam}/list/${botId}`,
             (bot) => {
               setBots([...bots, bot]);

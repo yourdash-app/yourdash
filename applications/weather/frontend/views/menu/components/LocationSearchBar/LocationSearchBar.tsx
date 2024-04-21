@@ -36,7 +36,7 @@ const LocationSearchBar: React.FC = () => {
           onChange={(value: string) => {
             setSearchQuery(value);
 
-            csi.getJson(
+            csi.syncGetJson(
               `/app/weather/geolocation/${value.replaceAll(" ", "+")}`,
               (response) => {
                 setSearchResults(response);
@@ -53,15 +53,28 @@ const LocationSearchBar: React.FC = () => {
           hasRecievedResonse && searchResults.length !== 0 ? (
             <section className={styles.results}>
               {searchResults.map((result, index) => {
-                if (index === 0) return <HeroSearchResultCard key={result.value} props={result} />;
+                if (index === 0)
+                  return (
+                    <HeroSearchResultCard
+                      key={result.value}
+                      props={result}
+                    />
+                  );
 
-                return <SearchResultCard key={result.value} props={result} />;
+                return (
+                  <SearchResultCard
+                    key={result.value}
+                    props={result}
+                  />
+                );
               })}
             </section>
           ) : (
             searchQuery !== "" && (
               <section className={styles.results}>
-                <div className={"col-span-4 text-3xl text-center font-semibold pt-4 pb-4"}>Invalid location &quot;{searchQuery}&quot;</div>
+                <div className={"col-span-4 text-3xl text-center font-semibold pt-4 pb-4"}>
+                  Invalid location &quot;{searchQuery}&quot;
+                </div>
               </section>
             )
           )

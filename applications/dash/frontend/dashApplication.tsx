@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -24,7 +24,7 @@ const DashApplication: React.FC = () => {
   const [layout, setLayout] = React.useState<"browser" | "dashboard">("dashboard");
 
   React.useEffect(() => {
-    csi.getJson("/app/dash/user-full-name", (res) => {
+    csi.syncGetJson("/app/dash/user-full-name", (res) => {
       setUserFullName(res);
     });
 
@@ -44,7 +44,10 @@ const DashApplication: React.FC = () => {
       }}
     >
       {layout === "dashboard" ? (
-        <DashboardLayout username={userName} fullName={userFullName} />
+        <DashboardLayout
+          username={userName}
+          fullName={userFullName}
+        />
       ) : (
         <>
           <IconButton

@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -36,7 +36,7 @@ export default class CSIYourDashUser {
     if (this.cached.fullName) return this.cached.fullName;
 
     return new Promise((resolve, reject) => {
-      csi.getJson(
+      csi.syncGetJson(
         `/core/user/current/fullname`,
         (data) => {
           this.cached.fullName = data;
@@ -72,7 +72,7 @@ export default class CSIYourDashUser {
 
   async getActiveStatus(): Promise<USER_ACTIVE_STATUS> {
     return new Promise((resolve) => {
-      csi.getJson(`/core/user/${this.username}/active_status`, (data) => {
+      csi.syncGetJson(`/core/user/${this.username}/active_status`, (data) => {
         return resolve(data?.activeStatus || USER_ACTIVE_STATUS.OFFLINE);
       });
     });

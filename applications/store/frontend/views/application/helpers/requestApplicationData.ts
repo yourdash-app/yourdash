@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -12,7 +12,7 @@ export function requestApplication(
   setIsLoading: (data: boolean) => void,
   navigate: (data: string) => void,
 ) {
-  csi.getJson(
+  csi.syncGetJson(
     `/app/store/application/${applicationId}`,
     (data) => {
       setAppData(data);

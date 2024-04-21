@@ -27,15 +27,15 @@ const StoreApplicationRoot: React.FC = () => {
   >([]);
 
   React.useEffect(() => {
-    csi.getJson("/app/store/promoted/applications", (data) => {
+    csi.syncGetJson("/app/store/promoted/applications", (data) => {
       setPromotedApplications(data);
     });
 
-    csi.getJson("/app/store/categories", (data) => {
+    csi.syncGetJson("/app/store/categories", (data) => {
       setCategories(data);
     });
 
-    csi.getJson("/app/store/applications", (data) => {
+    csi.syncGetJson("/app/store/applications", (data) => {
       setApplications(data);
     });
   }, []);
@@ -45,17 +45,33 @@ const StoreApplicationRoot: React.FC = () => {
       <StoreHeader />
       <Heading level={2}>{trans("ALL_CATEGORIES_SECTION")}</Heading>
       {categories.length !== 0 && (
-        <section className={"grid 3xl:grid-cols-3 md:grid-cols-2 grid-cols-1 lg:gap-2 gap-2 animate__animated animate__fadeIn animate__250ms"}>
+        <section
+          className={
+            "grid 3xl:grid-cols-3 md:grid-cols-2 grid-cols-1 lg:gap-2 gap-2 animate__animated animate__fadeIn animate__250ms"
+          }
+        >
           {categories.map((category) => (
-            <StoreCategory id={category} key={category} />
+            <StoreCategory
+              id={category}
+              key={category}
+            />
           ))}
         </section>
       )}
       <Heading level={2}>{trans("ALL_APPLICATIONS_SECTION")}</Heading>
       {applications.length !== 0 && (
-        <section className={"grid grid-cols-1 gap-2 animate__animated animate__fadeIn animate__500ms md:grid-cols-2 lg:grid-cols-3"}>
+        <section
+          className={
+            "grid grid-cols-1 gap-2 animate__animated animate__fadeIn animate__500ms md:grid-cols-2 lg:grid-cols-3"
+          }
+        >
           {applications.map((application) => (
-            <StoreApplication id={application.value} displayName={application.displayName} key={application.value} icon={application.icon} />
+            <StoreApplication
+              id={application.value}
+              displayName={application.displayName}
+              key={application.value}
+              icon={application.icon}
+            />
           ))}
         </section>
       )}

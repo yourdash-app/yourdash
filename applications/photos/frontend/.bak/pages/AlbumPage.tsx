@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -21,7 +21,7 @@ const HomePage: React.FC = () => {
   const [photoAlbum, setPhotoAlbum] = React.useState<IPhotoAlbum | null>(null);
 
   useEffect(() => {
-    csi.getJson(
+    csi.syncGetJson(
       `/app/photos/album/${albumPath}`,
       (album: IPhotoAlbum) => {
         setPhotoAlbum({

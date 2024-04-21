@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -19,7 +19,7 @@ const PhotoPage: React.FC<{ isPhoto: boolean }> = ({ isPhoto }) => {
 
   React.useEffect(() => {
     if (isPhoto) {
-      csi.getJson(
+      csi.syncGetJson(
         "/app/photos/photo/" + mediaId,
         (media: IMedia) => {
           setMediaData(media);
@@ -29,7 +29,7 @@ const PhotoPage: React.FC<{ isPhoto: boolean }> = ({ isPhoto }) => {
         },
       );
     } else {
-      csi.getJson(
+      csi.syncGetJson(
         "/app/photos/video/" + mediaId,
         (media: IMedia) => {
           setMediaData(media);
@@ -69,9 +69,19 @@ const PhotoPage: React.FC<{ isPhoto: boolean }> = ({ isPhoto }) => {
       />
       <div className={styles.photoContainer}>
         {isPhoto ? (
-          <img className={styles.photo} src={csi.getInstanceUrl() + mediaData.itemUrl} alt={""} />
+          <img
+            className={styles.photo}
+            src={csi.getInstanceUrl() + mediaData.itemUrl}
+            alt={""}
+          />
         ) : (
-          <video className={styles.photo} src={csi.getInstanceUrl() + mediaData.itemUrl} autoPlay={true} controls={true} loop={true} />
+          <video
+            className={styles.photo}
+            src={csi.getInstanceUrl() + mediaData.itemUrl}
+            autoPlay={true}
+            controls={true}
+            loop={true}
+          />
         )}
       </div>
     </div>

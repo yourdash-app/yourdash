@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -13,7 +13,7 @@ const HostedApplicationRouter: React.FC = () => {
   const [application, setApplication] = useState<string>("");
 
   useEffect(() => {
-    csi.getJson("/core/hosted-applications", (resHostedApplciations) => {
+    csi.syncGetJson("/core/hosted-applications", (resHostedApplciations) => {
       console.log(resHostedApplciations);
       setHostedApplications(resHostedApplciations.applications);
     });
