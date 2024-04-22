@@ -17,6 +17,16 @@ import { YOURDASH_TEAM_PERMISSIONS, YourDashTeamPermission } from "../team/teamP
 import { YourDashUserPermission } from "./userPermissions.js";
 import IYourDashUserJson from "./userJson.js";
 
+const USER_PATHS = {
+  FS: "./fs/",
+  ROOT: ".",
+  AVATARS: "./avatars/",
+  CORE: "./core/",
+  PASSWORD: path.join(this.CORE, "password.enc"),
+};
+
+export { USER_PATHS };
+
 export default class YourDashUser {
   username: string;
   path: string;

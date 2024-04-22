@@ -3,26 +3,11 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-/*
+/**
  * # The YourDash project
  *  - https://github.com/yourdash/yourdash
  *  - https://yourdash.pages.dev
  *  - https://ydsh.pages.dev
- *
- * # ----- Server Startup steps -----
- * 1. Fetch process arguments
- * 2. Load the global database
- * 3. Init express
- * 4. Load authentication service
- * 5. Start core services
- * 6. Begin listening for requests
- * 7. Start startup services
- *    - request logger
- *    - authenticated image
- *    - user sanitization
- *    - caching service
- * 8. Load applications
- * 9. Load post-startup services
  */
 
 import coreApi from "./core/coreApi.js";

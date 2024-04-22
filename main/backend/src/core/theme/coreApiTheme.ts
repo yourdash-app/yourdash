@@ -13,4 +13,10 @@ export default class CoreApiTheme {
 
     return this;
   }
+
+  fetchForUser(username: string) {
+    const user = this.coreApi.users.get(username);
+
+    return user.getTheme();
+  }
 }

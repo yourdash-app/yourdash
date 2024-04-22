@@ -63,6 +63,13 @@ export class CoreApi {
   instanceStatus: INSTANCE_STATUS = INSTANCE_STATUS.OK;
 
   constructor() {
+    const rawConsoleLog = globalThis.console.log;
+
+    // eslint-disable-next-line
+    globalThis.console.log = (message?: any, ...optionalParams: any[]) => {
+      rawConsoleLog(chalk.bold.yellowBright("RAW CONSOLE: ") + message, ...optionalParams);
+    };
+
     this.isDebugMode = typeof global.v8debug === "object" || /--debug|--inspect/.test(process.execArgv.join(" "));
 
     this.log = new CoreApiLog(this);
@@ -203,39 +210,39 @@ export class CoreApi {
     this.request.use((req, res, next) => {
       switch (req.method) {
         case "GET":
-          this.log.info("request:get", `${chalk.bgGreen(chalk.black(" GET "))} ${res.statusCode} ${req.path}`);
-          if (options.logQueryParameters && JSON.stringify(req.query) !== "{}") {
-            this.log.info(JSON.stringify(req.query));
-          }
+          this.log.info(
+            "request",
+            `${chalk.bgGreen(chalk.black(" GET "))} ${req.path} ${options.logQueryParameters && JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query)}`,
+          );
           break;
         case "POST":
-          this.log.info("request:pos", `${chalk.bgBlue(chalk.black(" POS "))} ${res.statusCode} ${req.path}`);
-          if (options.logQueryParameters && JSON.stringify(req.query) !== "{}") {
-            this.log.info(JSON.stringify(req.query));
-          }
+          this.log.info(
+            "request",
+            `${chalk.bgBlue(chalk.black(" POS "))} ${req.path} ${options.logQueryParameters && JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query)}`,
+          );
           break;
         case "DELETE":
-          this.log.info("request:del", `${chalk.bgRed(chalk.black(" DEL "))} ${res.statusCode} ${req.path}`);
-          if (options.logQueryParameters && JSON.stringify(req.query) !== "{}") {
-            this.log.info(JSON.stringify(req.query));
-          }
+          this.log.info(
+            "request",
+            `${chalk.bgRed(chalk.black(" DEL "))} ${req.path} ${options.logQueryParameters && JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query)}`,
+          );
           break;
         case "OPTIONS":
           if (options.logOptionsRequests) {
-            this.log.info("request:opt", `${chalk.bgCyan(chalk.black(" OPT "))} ${res.statusCode} ${req.path}`);
-            if (options.logQueryParameters && JSON.stringify(req.query) !== "{}") {
-              this.log.info(JSON.stringify(req.query));
-            }
+            this.log.info(
+              "request",
+              `${chalk.bgCyan(chalk.black(" OPT "))} ${req.path} ${options.logQueryParameters && JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query)}`,
+            );
           }
           break;
         case "PROPFIND":
-          this.log.info("request:pfi", `${chalk.bgCyan(chalk.black(" PFI "))} ${res.statusCode} ${req.path}`);
+          this.log.info("request", `${chalk.bgCyan(chalk.black(" PFI "))} ${req.path}`);
           break;
         case "PROPPATCH":
-          this.log.info("request:ppa", `${chalk.bgCyan(chalk.black(" PPA "))} ${res.statusCode} ${req.path}`);
+          this.log.info("request", `${chalk.bgCyan(chalk.black(" PPA "))} ${req.path}`);
           break;
         default:
-          this.log.error("core:requests", `ERROR IN REQUEST LOGGER, UNKNOWN REQUEST TYPE: ${req.method}`);
+          this.log.error("core:requests", `ERROR IN REQUEST LOGGER, UNKNOWN REQUEST TYPE: ${req.method}, ${req.path}`);
       }
 
       // run the next middleware / endpoint
@@ -648,7 +655,7 @@ export class CoreApi {
       } catch (e) {
         this.log.error(
           "global_db",
-          "[EXTREME SEVERITY] Shutdown Error! failed to save global database. User data will have been lost! (<= past 5 minutes)",
+          "[EXTREME SEVERITY] Shutdown Error! failed to save global database. User data will have been lost! (approx < past 5 minutes)",
         );
       }
     });

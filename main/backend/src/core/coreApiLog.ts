@@ -44,7 +44,7 @@ export default class CoreApiLog {
       ),
     );
 
-    console.log(message.slice(1).join(" ").toString());
+    process.stdout.write(message.slice(1).join(" ").toString() + "\n");
 
     return this;
   }
