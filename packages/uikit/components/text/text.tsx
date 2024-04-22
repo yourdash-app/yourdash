@@ -6,8 +6,8 @@
 import { Component } from "solid-js";
 import styles from "./text.module.scss";
 
-const Text: Component<{ text: string }> = ({ text }) => {
-  return <div class={styles.component}>{text}</div>;
+const Text: Component<{ text: string }> = (props) => {
+  return <div class={styles.component}>{props.text}</div>;
 };
 
 export default Text;

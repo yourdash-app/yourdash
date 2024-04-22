@@ -7,18 +7,14 @@ import clippy from "@yourdash/shared/web/helpers/clippy.js";
 import { Component } from "solid-js";
 import styles from "./button.module.scss";
 
-const Button: Component<{ onClick: () => void; text: string; extraClass?: string }> = ({
-  onClick,
-  text,
-  extraClass,
-}) => {
+const Button: Component<{ onClick: () => void; text: string; extraClass?: string }> = (props) => {
   return (
     <button
-      class={clippy(styles.component, extraClass)}
-      onClick={onClick}
-      aria-label={text}
+      class={clippy(styles.component, props.extraClass)}
+      onClick={props.onClick}
+      aria-label={props.text}
     >
-      {text}
+      {props.text}
     </button>
   );
 };

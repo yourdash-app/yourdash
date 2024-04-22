@@ -7,13 +7,13 @@ import clippy from "@yourdash/shared/web/helpers/clippy.js";
 import { Component } from "solid-js";
 import styles from "./link.module.scss";
 
-const Link: Component<{ text: string; to: string; extraClass?: string }> = ({ text, to, extraClass }) => {
+const Link: Component<{ text: string; to: string; extraClass?: string }> = (props) => {
   return (
     <a
-      href={to}
-      class={clippy(styles.component, extraClass)}
+      href={props.to}
+      class={clippy(styles.component, props.extraClass)}
     >
-      {text}
+      {props.text}
     </a>
   );
 };

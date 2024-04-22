@@ -6,17 +6,13 @@
 import { Component } from "solid-js";
 import styles from "./image.module.scss";
 
-const Image: Component<{ src: string; accessibleLabel: string; extraClass?: string }> = ({
-  src,
-  accessibleLabel,
-  extraClass,
-}) => {
+const Image: Component<{ src: string; accessibleLabel: string; extraClass?: string }> = (props) => {
   return (
     <img
-      class={`${styles.component} ${extraClass}`}
-      src={src}
+      class={`${styles.component} ${props.extraClass}`}
+      src={props.src}
       draggable={false}
-      alt={accessibleLabel}
+      alt={props.accessibleLabel}
     />
   );
 };

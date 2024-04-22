@@ -3,6 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import clippy from "@yourdash/shared/web/helpers/clippy.js";
 import { Component } from "solid-js";
 import Icon from "../icon/icon.js";
 import { UKIcon } from "../icon/iconDictionary.js";
@@ -13,25 +14,25 @@ const TextInput: Component<{
   placeholder: string;
   icon?: UKIcon;
   onEnter?: (value: string) => void;
-}> = ({ onChange, placeholder, icon, onEnter }) => {
+}> = (props) => {
   return (
     <div class={styles.component}>
-      {icon && (
+      {props.icon && (
         <Icon
           extraClass={styles.icon}
-          icon={icon}
+          icon={props.icon}
         />
       )}
       <input
-        class={styles.input}
-        placeholder={placeholder}
+        class={clippy(styles.input, !props.icon && styles.noIcon)}
+        placeholder={props.placeholder}
         type="text"
-        onChange={(e) => onChange(e.target.value)}
+        onChange={(e) => props.onChange(e.target.value)}
         onKeyPress={(e) => {
           if (e.key === "Enter") {
             e.preventDefault();
 
-            onEnter?.(e.currentTarget.value);
+            props.onEnter?.(e.currentTarget.value);
           }
         }}
       />

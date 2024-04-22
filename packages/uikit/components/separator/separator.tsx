@@ -6,8 +6,8 @@
 import { Component } from "solid-js";
 import styles from "./separator.module.scss";
 
-const Separator: Component<{ direction: "column" | "row" }> = ({ direction }) => {
-  return <div class={`${styles.component} ${styles[direction]}`} />;
+const Separator: Component<{ direction: "column" | "row" }> = (props) => {
+  return <div class={`${styles.component} ${styles[props.direction]}`} />;
 };
 
 export default Separator;

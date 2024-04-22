@@ -53,17 +53,17 @@ class __internalClientServerInteraction {
     return this;
   }
 
-  async getJson(
+  async getJson<ResponseType extends ITJson = ITJson>(
     endpoint: string,
     extraHeaders?: {
       [key: string]: string;
     },
-  ): Promise<TJson> {
+  ): Promise<ResponseType> {
     const instanceUrl = this.getInstanceUrl();
     const username = this.getUsername();
     const sessionToken = this.getUserToken();
 
-    return new Promise<TJson>((resolve, reject) => {
+    return new Promise<ResponseType>((resolve, reject) => {
       console.log(`${instanceUrl}${endpoint}`);
       fetch(`${instanceUrl}${endpoint}`, {
         method: "GET",

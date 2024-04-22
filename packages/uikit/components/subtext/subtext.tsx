@@ -6,8 +6,8 @@
 import { Component } from "solid-js";
 import styles from "./subtext.module.scss";
 
-const Subtext: Component<{ text: string }> = ({ text }) => {
-  return <div class={styles.component}>{text}</div>;
+const Subtext: Component<{ text: string }> = (props) => {
+  return <div class={styles.component}>{props.text}</div>;
 };
 
 export default Subtext;

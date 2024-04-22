@@ -13,11 +13,15 @@ const Icon: Component<{
   color?: string;
   preserveColor?: boolean;
   extraClass?: string;
-}> = ({ icon, size, color, preserveColor, extraClass }) => {
+}> = (props) => {
   return (
     <div
-      class={`${styles.component} ${extraClass} ${preserveColor ? styles.preserveColor : ""}`}
-      style={{ "--icon": `url(${icon})`, ...(!preserveColor ? { "--color": color } : {}), "--size": size }}
+      class={`${styles.component} ${props.extraClass} ${props.preserveColor ? styles.preserveColor : ""}`}
+      style={{
+        "--icon": `url(${props.icon})`,
+        ...(!props.preserveColor ? { "--color": props.color } : {}),
+        "--size": props.size,
+      }}
     />
   );
 };

@@ -42,6 +42,10 @@
   margin: 0;
   border: none;
 
+  &.noIcon {
+    padding-left: var(#{$theme+$input+$padding+$horizontal});
+  }
+
   &:focus, &:focus-within {
     outline: none;
   }

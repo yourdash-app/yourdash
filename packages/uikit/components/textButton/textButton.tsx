@@ -6,18 +6,14 @@
 import { Component } from "solid-js";
 import styles from "./textButton.module.scss";
 
-const TextButton: Component<{ onClick: () => void; text: string; extraClass?: string }> = ({
-  onClick,
-  text,
-  extraClass,
-}) => {
+const TextButton: Component<{ onClick: () => void; text: string; extraClass?: string }> = (props) => {
   return (
     <button
-      class={`${styles.component} ${extraClass}`}
-      onClick={onClick}
-      aria-label={text}
+      class={`${styles.component} ${props.extraClass}`}
+      onClick={props.onClick}
+      aria-label={props.text}
     >
-      {text}
+      {props.text}
     </button>
   );
 };

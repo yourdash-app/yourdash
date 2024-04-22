@@ -9,7 +9,7 @@ import { Component, createSignal, onMount, ParentProps } from "solid-js";
 import LevelContext from "./level.js";
 import styles from "./../theme/defaultTheme.module.scss";
 
-const UIKitRoot: Component<ParentProps> = ({ children }) => {
+const UIKitRoot: Component<ParentProps> = (props) => {
   const [isMobile, setIsMobile] = createSignal<boolean>(false);
 
   onMount(() => {
@@ -18,7 +18,7 @@ const UIKitRoot: Component<ParentProps> = ({ children }) => {
 
   return (
     <div class={clippy(styles.theme, styles.level0, isMobile() && styles.mobile)}>
-      <LevelContext.Provider value={0}>{children}</LevelContext.Provider>
+      <LevelContext.Provider value={0}>{props.children}</LevelContext.Provider>
     </div>
   );
 };

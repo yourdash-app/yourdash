@@ -14,17 +14,17 @@ const IconButton: Component<{
   onClick: () => void;
   extraClass?: string;
   preserveColor?: boolean;
-}> = ({ icon, accessibleLabel, onClick, extraClass, preserveColor }) => {
+}> = (props) => {
   return (
     <button
-      onClick={onClick}
-      aria-label={accessibleLabel}
-      class={`${styles.component} ${extraClass}`}
+      onClick={props.onClick}
+      aria-label={props.accessibleLabel}
+      class={`${styles.component} ${props.extraClass}`}
     >
       <Icon
         size={"1.25rem"}
-        preserveColor={preserveColor}
-        icon={icon}
+        preserveColor={props.preserveColor}
+        icon={props.icon}
       />
     </button>
   );

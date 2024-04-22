@@ -22,7 +22,8 @@ const USER_PATHS = {
   ROOT: ".",
   AVATARS: "./avatars/",
   CORE: "./core/",
-  PASSWORD: path.join(this.CORE, "password.enc"),
+  PASSWORD: "./core/password.enc",
+  CACHE: "./cache/",
 };
 
 export { USER_PATHS };

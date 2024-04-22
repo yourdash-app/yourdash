@@ -6,12 +6,8 @@
 import { Component, ParentProps } from "solid-js";
 import styles from "./flex.module.scss";
 
-const Flex: Component<ParentProps & { direction: "row" | "column"; extraClass?: string }> = ({
-  direction,
-  children,
-  extraClass,
-}) => {
-  return <div class={`${styles.component} ${styles[direction]} ${extraClass}`}>{children}</div>;
+const Flex: Component<ParentProps & { direction: "row" | "column"; extraClass?: string }> = (props) => {
+  return <div class={`${styles.component} ${styles[props.direction]} ${props.extraClass}`}>{props.children}</div>;
 };
 
 export default Flex;
