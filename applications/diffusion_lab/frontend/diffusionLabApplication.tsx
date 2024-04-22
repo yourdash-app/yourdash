@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -43,7 +43,7 @@ const DiffusionLabApplication: React.FC = () => {
   const [generationResult, setGenerationResult] = useState<string[][]>([]);
 
   useEffect(() => {
-    csi.getJson("/app/diffusion_lab/models", (data: { models: string[] }) => {
+    csi.syncGetJson("/app/diffusion_lab/models", (data: { models: string[] }) => {
       setGenerationData({ ...generationData, model: data.models[0] });
       setModels(data.models);
     });
@@ -80,7 +80,11 @@ const DiffusionLabApplication: React.FC = () => {
         </section>
         <section className={"absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"}>
           <div className={"flex items-center justify-center h-full gap-1.5"}>
-            <Icon className={"h-9 aspect-square"} preserveColor icon={UKIcon.YourDashLogo} />
+            <Icon
+              className={"h-9 aspect-square"}
+              preserveColor
+              icon={UKIcon.YourDashLogo}
+            />
             <h2 className={"text-3xl font-semibold tracking-wide"}>{trans("APPLICATION_NAME")}</h2>
           </div>
         </section>
@@ -109,7 +113,10 @@ const DiffusionLabApplication: React.FC = () => {
           )}
         </section>
       </header>
-      <ResizeContainer className={"flex gap-3"} direction={"row"}>
+      <ResizeContainer
+        className={"flex gap-3"}
+        direction={"row"}
+      >
         <section className={"flex flex-col flex-grow pl-3 pt-3 pb-3"}>
           <Card>
             <span>{trans("PROMPT.LABEL")}</span>
@@ -142,7 +149,14 @@ const DiffusionLabApplication: React.FC = () => {
             >
               {generationResult.map((batch) => {
                 return batch.map((image) => {
-                  return <img key={image} src={image || YourDashLogo} alt="generated ai-image" className={"w-full h-full"} />;
+                  return (
+                    <img
+                      key={image}
+                      src={image || YourDashLogo}
+                      alt="generated ai-image"
+                      className={"w-full h-full"}
+                    />
+                  );
                 });
               })}
             </div>

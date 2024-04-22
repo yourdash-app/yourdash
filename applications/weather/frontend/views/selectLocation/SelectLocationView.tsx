@@ -17,7 +17,13 @@ import RAIN_BACKGROUND from "../../assets/weatherBackgrounds/rain1.jpg";
 import SNOW_BACKGROUND from "../../assets/weatherBackgrounds/snow.jpg";
 import CLEAR_BACKGROUND from "../../assets/weatherBackgrounds/clear.jpg";
 
-const BACKGROUND_IMAGES: string[] = [THUNDER_BACKGROUND, CLOUDY_BACKGROUND, RAIN_BACKGROUND, SNOW_BACKGROUND, CLEAR_BACKGROUND];
+const BACKGROUND_IMAGES: string[] = [
+  THUNDER_BACKGROUND,
+  CLOUDY_BACKGROUND,
+  RAIN_BACKGROUND,
+  SNOW_BACKGROUND,
+  CLEAR_BACKGROUND,
+];
 
 const SelectLocationView: React.FC = () => {
   const navigate = useNavigate();
@@ -27,7 +33,7 @@ const SelectLocationView: React.FC = () => {
   const [backgroundImage, setBackgroundImage] = useState<string>("");
 
   useEffect(() => {
-    csi.getJson("/app/weather/previous/locations", (resp) => {
+    csi.syncGetJson("/app/weather/previous/locations", (resp) => {
       setPreviousWeatherLocations(resp || []);
     });
 
@@ -42,10 +48,17 @@ const SelectLocationView: React.FC = () => {
       style={{ backgroundImage: `url(${backgroundImage})` }}
     >
       <header className={"pt-2 pb-2 pl-4 flex items-center absolute top-0 left-0 w-full gap-2"}>
-        <img src={APPLICATION_ICON} alt={""} className={"aspect-square h-16"} />
+        <img
+          src={APPLICATION_ICON}
+          alt={""}
+          className={"aspect-square h-16"}
+        />
         <h2 className={"text-base-50 font-semibold text-4xl drop-shadow-lg"}>{trans("APPLICATION_BRANDING")}</h2>
       </header>
-      <Card className={"gap-2 flex flex-col p-4 w-full lg:max-w-4xl md:max-w-2xl max-w-[calc(100vw-1rem)] shadow-2xl"} showBorder>
+      <Card
+        className={"gap-2 flex flex-col p-4 w-full lg:max-w-4xl md:max-w-2xl max-w-[calc(100vw-1rem)] shadow-2xl"}
+        showBorder
+      >
         <div className={"flex gap-2 items-center justify-center w-full"}>
           <TextInput
             accessibleName={"weather location"}
@@ -59,7 +72,7 @@ const SelectLocationView: React.FC = () => {
               }
             }}
             onChange={(value: string) => {
-              csi.getJson(`/app/weather/geolocation/${value.replaceAll(" ", "+")}`, (resp) => {
+              csi.syncGetJson(`/app/weather/geolocation/${value.replaceAll(" ", "+")}`, (resp) => {
                 setLocationQuery(resp || []);
               });
             }}
@@ -129,7 +142,10 @@ const SelectLocationView: React.FC = () => {
           </Card>
         </div>
       </Card>*/}
-      <a href="https://open-meteo.com/" className={"absolute bottom-0 right-0"}>
+      <a
+        href="https://open-meteo.com/"
+        className={"absolute bottom-0 right-0"}
+      >
         {trans("POWERED_BY_WATERMARK", ["open-meteo.com"])}
       </a>
     </main>

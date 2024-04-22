@@ -26,7 +26,7 @@ render(() => {
         <Route path={"/login"}>
           <Route
             path={"/"}
-            component={lazy(() => import("./login/index"))}
+            component={lazy(() => import("./login/index.preload"))}
           />
           <Route
             path={"/instance"}

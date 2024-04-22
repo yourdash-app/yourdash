@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -21,10 +21,13 @@ const WeatherHourlyConditionsWidget: React.FC = () => {
 
   useEffect(() => {
     // fetch the user's defined location but default to London
-    csi.getJson(`/app/weather/location/${csi.userDB.get("app:dash:widget:weather:location") || "2643743"}`, (res) => {
-      setWeatherData(res);
-      console.log(res);
-    });
+    csi.syncGetJson(
+      `/app/weather/location/${csi.userDB.get("app:dash:widget:weather:location") || "2643743"}`,
+      (res) => {
+        setWeatherData(res);
+        console.log(res);
+      },
+    );
   }, []);
 
   if (!weatherData) {
@@ -69,7 +72,10 @@ const WeatherHourlyConditionsWidget: React.FC = () => {
           );
         })}
       </Row>
-      <a href={"https://open-meteo.com"} className={"mt-auto ml-auto pr-1.5 pt-1 text-[#ffffff55] text-sm"}>
+      <a
+        href={"https://open-meteo.com"}
+        className={"mt-auto ml-auto pr-1.5 pt-1 text-[#ffffff55] text-sm"}
+      >
         {"Powered by open-meteo.com"}
       </a>
     </Card>

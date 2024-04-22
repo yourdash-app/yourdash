@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -16,7 +16,7 @@ const ApplicationRedirectToDash: React.FC = () => {
       }, 1000);
       navigate("/login");
     } else {
-      csi.getJson(
+      csi.syncGetJson(
         "/login/is-authenticated",
         () => {
           navigate("/app/a/dash");

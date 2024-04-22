@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -13,7 +13,7 @@ const GlobalDbApplication: React.FC = () => {
   const [keys, setKeys] = useState<{ [key: string]: string }>({});
 
   useEffect(() => {
-    csi.getJson("/app/global_db/db", (data) => {
+    csi.syncGetJson("/app/global_db/db", (data) => {
       if (!data.db) {
         return;
       }
@@ -58,7 +58,10 @@ const GlobalDbApplication: React.FC = () => {
           {"Create Database Key"}
         </Button>
       </div>
-      <Card showBorder className={"w-full flex gap-2 absolute bottom-0 left-0"}>
+      <Card
+        showBorder
+        className={"w-full flex gap-2 absolute bottom-0 left-0"}
+      >
         <Button
           onClick={() => {
             csi.postJson("/app/global_db/db", keys, () => {
@@ -70,7 +73,7 @@ const GlobalDbApplication: React.FC = () => {
         </Button>
         <Button
           onClick={() => {
-            csi.getJson("/app/global_db/db", (data) => {
+            csi.syncGetJson("/app/global_db/db", (data) => {
               if (!data.db) {
                 return;
               }

@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -22,7 +22,7 @@ const QuickShortcuts: React.FC<{ side: "top" | "right" | "bottom" | "left" }> = 
   const [num, setNum] = React.useState<number>(0);
 
   useEffect(() => {
-    csi.getJson("/core/panel/quick-shortcuts", (data) => {
+    csi.syncGetJson("/core/panel/quick-shortcuts", (data) => {
       setApplications(data);
     });
   }, [num]);
@@ -49,7 +49,11 @@ const QuickShortcuts: React.FC<{ side: "top" | "right" | "bottom" | "left" }> = 
               side === "left" && styles.left,
             )}
           >
-            <img className={styles.applicationIcon} src={`${csi.getInstanceUrl()}${application.icon}`} alt={""} />
+            <img
+              className={styles.applicationIcon}
+              src={`${csi.getInstanceUrl()}${application.icon}`}
+              alt={""}
+            />
             <span className={styles.applicationLabel}>{application.name}</span>
           </div>
         );

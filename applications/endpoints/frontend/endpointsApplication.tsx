@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -15,9 +15,11 @@ import React, { useState, useEffect } from "react";
 import csi from "@yourdash/csi/csi";
 
 function loadPossibleEndpoints(setEndpoints: (data: string[]) => void) {
-  csi.getJson("/app/endpoints/endpoints", (data: any) => {
+  csi.syncGetJson("/app/endpoints/endpoints", (data: any) => {
     // eslint-disable-line @typescript-eslint/no-explicit-any
-    const endpoints: string[] = data.map((endpoint: any) => endpoint?.route?.path || null).filter((endpoint: any) => endpoint !== null); // eslint-disable-line @typescript-eslint/no-explicit-any
+    const endpoints: string[] = data
+      .map((endpoint: any) => endpoint?.route?.path || null)
+      .filter((endpoint: any) => endpoint !== null); // eslint-disable-line @typescript-eslint/no-explicit-any
 
     setEndpoints([...new Set(endpoints)]);
   });
@@ -41,7 +43,12 @@ const EndpointsApplication: React.FC = () => {
 
   return (
     <main className={"grid grid-cols-2 p-2 gap-2"}>
-      <Card showBorder={true} className={"w-full p-3 flex items-center justify-between sticky top-0 bg-container-bg text-container-fg col-span-2"}>
+      <Card
+        showBorder={true}
+        className={
+          "w-full p-3 flex items-center justify-between sticky top-0 bg-container-bg text-container-fg col-span-2"
+        }
+      >
         <section className={"flex items-center justify-center h-full gap-2"}>
           <DropdownButton
             items={[
@@ -88,7 +95,11 @@ const EndpointsApplication: React.FC = () => {
         </section>
         <section className={"absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"}>
           <div className={"flex items-center justify-center h-full gap-1.5"}>
-            <Icon className={"h-9 aspect-square"} preserveColor icon={UKIcon.YourDashLogo} />
+            <Icon
+              className={"h-9 aspect-square"}
+              preserveColor
+              icon={UKIcon.YourDashLogo}
+            />
             <h2 className={"text-3xl font-semibold tracking-wide"}>{trans("APPLICATION_NAME")}</h2>
           </div>
         </section>
@@ -116,7 +127,7 @@ const EndpointsApplication: React.FC = () => {
                       );
                       break;
                     case "JSON":
-                      csi.getJson(
+                      csi.syncGetJson(
                         selectedEndpoint,
                         (data: any) => {
                           setResponse(data);
@@ -212,7 +223,10 @@ const EndpointsApplication: React.FC = () => {
           </Button>
         </section>
       </Card>
-      <Card showBorder className={"bg-container-bg text-container-fg rounded-container-rounding p-2 h-max flex flex-col"}>
+      <Card
+        showBorder
+        className={"bg-container-bg text-container-fg rounded-container-rounding p-2 h-max flex flex-col"}
+      >
         <AutocompletedTextInput
           options={endpoints}
           label={"Request Endpoint"}
@@ -241,11 +255,18 @@ const EndpointsApplication: React.FC = () => {
         />
       </Card>
       {!loading && (
-        <Card className={"overflow-x-auto w-auto"} showBorder>
-          <pre className={"bg-container-secondary-bg text-container-fg p-4 rounded-container-secondary-rounding w-auto"}>
+        <Card
+          className={"overflow-x-auto w-auto"}
+          showBorder
+        >
+          <pre
+            className={"bg-container-secondary-bg text-container-fg p-4 rounded-container-secondary-rounding w-auto"}
+          >
             {requestType === "JSON" ? JSON.stringify(response, null, 2) : response.toString()}
           </pre>
-          {didError && <pre className={"bg-container-tertiary-bg text-red-400 p-4 rounded-container-rounding"}>{didError}</pre>}
+          {didError && (
+            <pre className={"bg-container-tertiary-bg text-red-400 p-4 rounded-container-rounding"}>{didError}</pre>
+          )}
         </Card>
       )}
     </main>

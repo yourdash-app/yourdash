@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -22,7 +22,7 @@ const ApplicationLauncher: React.FC<{
   const [layout, setLayout] = React.useState<"large-grid" | "small-grid" | "list">("large-grid");
 
   useEffect(() => {
-    csi.getJson("/core/panel/applications", (data) => {
+    csi.syncGetJson("/core/panel/applications", (data) => {
       setApps(data);
     });
   }, []);
@@ -40,7 +40,10 @@ const ApplicationLauncher: React.FC<{
       )}
     >
       <div className={styles.content}>
-        <ApplicationsLauncherApplications apps={apps} layout={layout} />
+        <ApplicationsLauncherApplications
+          apps={apps}
+          layout={layout}
+        />
       </div>
       <section className={styles.footer}>
         <IconButton
@@ -52,8 +55,14 @@ const ApplicationLauncher: React.FC<{
           }}
         />
         <div>
-          <img src={""} alt={""} />
-          <IconButton icon={UKIcon.Person} aria-label={"User Profile Settings"} />
+          <img
+            src={""}
+            alt={""}
+          />
+          <IconButton
+            icon={UKIcon.Person}
+            aria-label={"User Profile Settings"}
+          />
         </div>
         <span>{csi.userDB.get("user:name")?.first || "Unknown First Name"}</span>
         <IconButton

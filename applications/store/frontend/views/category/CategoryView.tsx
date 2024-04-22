@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -20,7 +20,7 @@ const CategoryView: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    csi.getJson(
+    csi.syncGetJson(
       `/app/store/category/${categoryId}`,
       (data) => {
         setCategoryData(data);
@@ -46,11 +46,23 @@ const CategoryView: React.FC = () => {
         </div>
       ) : (
         <>
-          <Heading level={1} className={"p-6"}>{`${categoryData?.displayName}`}</Heading>
-          <div className={"w-full max-h-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 animate__animated animate__fadeIn animate__250ms"}>
+          <Heading
+            level={1}
+            className={"p-6"}
+          >{`${categoryData?.displayName}`}</Heading>
+          <div
+            className={
+              "w-full max-h-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 animate__animated animate__fadeIn animate__250ms"
+            }
+          >
             {categoryData &&
               categoryData.applications.map((application) => (
-                <StoreApplication key={application.name} displayName={application.displayName} id={application.name} icon={application.icon} />
+                <StoreApplication
+                  key={application.name}
+                  displayName={application.displayName}
+                  id={application.name}
+                  icon={application.icon}
+                />
               ))}
           </div>
         </>

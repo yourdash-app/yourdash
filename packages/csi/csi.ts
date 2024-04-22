@@ -53,7 +53,60 @@ class __internalClientServerInteraction {
     return this;
   }
 
-  getJson(
+  async getJson(
+    endpoint: string,
+    extraHeaders?: {
+      [key: string]: string;
+    },
+  ): Promise<TJson> {
+    const instanceUrl = this.getInstanceUrl();
+    const username = this.getUsername();
+    const sessionToken = this.getUserToken();
+
+    return new Promise<TJson>((resolve, reject) => {
+      console.log(`${instanceUrl}${endpoint}`);
+      fetch(`${instanceUrl}${endpoint}`, {
+        method: "GET",
+        mode: "cors",
+        // @ts-ignore
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json",
+          username,
+          token: sessionToken,
+          ...(extraHeaders || {}),
+        },
+      })
+        .then((resp) => {
+          if (resp.headers.get("Content-Type") === "application/json; charset=utf-8") {
+            return resp.json();
+          }
+
+          reject("not a valid JSON response");
+        })
+        .then((resp) => {
+          if (resp?.error) {
+            reject(resp.error);
+            if (resp.error === "authorization fail") {
+              console.error("unauthorized request ", endpoint);
+              window.location.href = "/";
+              return;
+            }
+            console.error(`Error fetching from instance: (json) GET ${endpoint}, Error:`, resp.error);
+            return;
+          }
+
+          resolve(resp);
+        })
+        .catch((err) => {
+          console.error(`Error parsing result from instance: (json) GET ${endpoint}`, err);
+
+          reject(err);
+        });
+    });
+  }
+
+  syncGetJson(
     endpoint: string,
     // eslint-disable-next-line
     cb: (response: any) => void,
@@ -322,6 +375,24 @@ class __internalClientServerInteraction {
     return localStorage.getItem("instance_url") || "";
   }
 
+  // FIXME: a bug is present where the default port is not appended to the URL or a slash is present at the end!!!
+  // sets the URL of the current instance
+  setInstanceUrl(url: string) {
+    let newInstanceUrl = url;
+
+    if (newInstanceUrl.endsWith("/")) {
+      newInstanceUrl = newInstanceUrl.slice(0, -1);
+    }
+
+    if (!newInstanceUrl.includes(":")) {
+      newInstanceUrl += ":3563";
+    }
+
+    localStorage.setItem("instance_url", newInstanceUrl || "ERROR");
+
+    return this;
+  }
+
   // returns the Websocket version of the URL of the current instance
   getInstanceWebsocketUrl(): string {
     return localStorage.getItem("instance_url") || "";
@@ -374,7 +445,7 @@ class __internalClientServerInteraction {
   // get the user database for the currently logged-in user
   async getUserDB(): Promise<UserDatabase> {
     return new Promise((resolve) => {
-      this.getJson("/core/user_db", (data) => {
+      this.syncGetJson("/core/user_db", (data) => {
         this.userDB.clear();
         // @ts-ignore
         this.userDB.keys = data;
@@ -413,7 +484,7 @@ class __internalClientServerInteraction {
   // returns a list of teams that the current user is a part of
   getTeams(): Promise<CSIYourDashTeam[]> {
     return new Promise((resolve, reject) => {
-      this.getJson(
+      this.syncGetJson(
         "/core/user/current/teams",
         (data: string[]) => {
           resolve(data.map((tn) => this.getTeam(tn)));

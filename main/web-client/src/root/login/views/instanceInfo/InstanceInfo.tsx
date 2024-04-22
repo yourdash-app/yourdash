@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -15,7 +15,7 @@ const InstanceInfo: React.FC = () => {
   const ydsh = useYourDashLib();
 
   useEffect(() => {
-    csi.getJson(
+    csi.syncGetJson(
       "/login/instance/metadata",
       (json: { title: string; message: string }) => {
         setMetadata(json);

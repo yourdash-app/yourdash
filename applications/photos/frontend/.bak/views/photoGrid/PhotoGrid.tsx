@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -18,7 +18,9 @@ let currentGridItems: IGridItem[] = [];
 
 const PhotoGrid: React.FC<{ gridItems: IPhotoAlbum["items"] }> = ({ gridItems }) => {
   const ref = React.useRef<HTMLDivElement>(null);
-  const [rows, setRows] = useState<{ items: (IGridItem & { displayWidth: number; displayHeight: number })[]; height: number }[]>([]);
+  const [rows, setRows] = useState<
+    { items: (IGridItem & { displayWidth: number; displayHeight: number })[]; height: number }[]
+  >([]);
   const [notLoaded, setNotLoaded] = useState(true);
 
   useEffect(() => {
@@ -42,7 +44,7 @@ const PhotoGrid: React.FC<{ gridItems: IPhotoAlbum["items"] }> = ({ gridItems })
     Promise.all(
       chunk(gridItems.photos || [], 16).map((gridItem) => {
         return new Promise((resolve, reject) => {
-          csi.getJson(
+          csi.syncGetJson(
             `/app/photos/grid-photos/16/${gridItem.join(";.;")}`,
             (resPhotos: IMedia[]) => {
               if (resPhotos) {
@@ -62,7 +64,7 @@ const PhotoGrid: React.FC<{ gridItems: IPhotoAlbum["items"] }> = ({ gridItems })
       Promise.all(
         chunk(gridItems.videos || [], 16).map((gridItem) => {
           return new Promise((resolve, reject) => {
-            csi.getJson(
+            csi.syncGetJson(
               `/app/photos/grid-videos/16/${gridItem.join(";.;")}`,
               (resVideos: IMedia[]) => {
                 if (resVideos) {
@@ -87,7 +89,10 @@ const PhotoGrid: React.FC<{ gridItems: IPhotoAlbum["items"] }> = ({ gridItems })
   }, [gridItems]);
 
   return (
-    <div className={styles.content} ref={ref}>
+    <div
+      className={styles.content}
+      ref={ref}
+    >
       {rows.length === 0 && notLoaded ? (
         <div className={"flex w-full h-64 items-center justify-center"}>
           <Spinner />
@@ -95,7 +100,13 @@ const PhotoGrid: React.FC<{ gridItems: IPhotoAlbum["items"] }> = ({ gridItems })
       ) : (
         rows.map((row) => {
           console.log(row);
-          return <GridItemRow key={row.items[0]?.path} items={row.items} height={row.height} />;
+          return (
+            <GridItemRow
+              key={row.items[0]?.path}
+              items={row.items}
+              height={row.height}
+            />
+          );
         })
       )}
     </div>
