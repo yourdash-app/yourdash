@@ -11,11 +11,11 @@
   "license": "MIT",
   "type": "module",
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "solid-devtools": "^0.29.2",
     "typescript": "^5.3.3",
     "vite": "^5.0.11",
-    "vite-plugin-solid": "^2.8.2",
-    "cross-env": "^7.0.3"
+    "vite-plugin-solid": "^2.8.2"
   },
   "dependencies": {
     "@solidjs/router": "^0.13.2",

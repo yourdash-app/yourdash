@@ -6,6 +6,7 @@
 import UIKitRoot from "@yourdash/uikit/core/root.js";
 /* @refresh reload */
 import { render } from "solid-js/web";
+// @ts-ignore
 
 // begin imports here
 import "./index.css";

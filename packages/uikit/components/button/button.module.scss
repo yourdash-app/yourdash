@@ -34,4 +34,14 @@
     background: var(#{$theme}#{$button}#{$active}#{$background});
     transition: var(#{$theme}#{$button}#{$active}#{$transition});
   }
+
+  &:disabled {
+    opacity: 0.8;
+
+    color: var(#{$theme}#{$button}#{$color});
+    border: var(#{$theme}#{$button}#{$border});
+    border-radius: var(#{$theme}#{$button}#{$radius});
+    background: var(#{$theme}#{$button}#{$background});
+    cursor: not-allowed;
+  }
 }

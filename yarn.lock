@@ -7092,6 +7092,11 @@ react-router@6.22.2, react-router@^6.15.0:
   dependencies:
     "@remix-run/router" "1.15.2"
 
+react-solid-bridge@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/react-solid-bridge/-/react-solid-bridge-1.0.1.tgz#0b68c06f71f11144584698f945aee86ea9f5b72e"
+  integrity sha512-y0WWQlJOfAlwus7rZDHfJ2o7hYAiOwpggvLpu0nmcJRhzGZQEcAG07R1tG4IeVnt6AjC24WJRNJBQo8+i2fssw==
+
 react@^18.2.0:
   version "18.2.0"
   resolved "https://registry.yarnpkg.com/react/-/react-18.2.0.tgz#555bd98592883255fa00de14f1151a917b5d77d5"

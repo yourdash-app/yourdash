@@ -3,14 +3,17 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import csi from "@yourdash/csi/csi.js";
 import { Component } from "solid-js";
 import styles from "./image.module.scss";
 
-const Image: Component<{ src: string; accessibleLabel: string; extraClass?: string }> = (props) => {
+const Image: Component<{ src: string; accessibleLabel: string; extraClass?: string; authenticatedImage?: boolean }> = (
+  props,
+) => {
   return (
     <img
       class={`${styles.component} ${props.extraClass}`}
-      src={props.src}
+      src={(props.authenticatedImage ? csi.getInstanceUrl() : "") + props.src}
       draggable={false}
       alt={props.accessibleLabel}
     />

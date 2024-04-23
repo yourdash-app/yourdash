@@ -375,7 +375,6 @@ class __internalClientServerInteraction {
     return localStorage.getItem("instance_url") || "";
   }
 
-  // FIXME: a bug is present where the default port is not appended to the URL or a slash is present at the end!!!
   // sets the URL of the current instance
   setInstanceUrl(url: string) {
     let newInstanceUrl = url;
@@ -384,8 +383,8 @@ class __internalClientServerInteraction {
       newInstanceUrl = newInstanceUrl.slice(0, -1);
     }
 
-    if (!newInstanceUrl.includes(":")) {
-      newInstanceUrl += ":3563";
+    if (!new RegExp(":\\d{1,5}$").test(newInstanceUrl)) {
+      newInstanceUrl = newInstanceUrl + ":3563";
     }
 
     localStorage.setItem("instance_url", newInstanceUrl || "ERROR");

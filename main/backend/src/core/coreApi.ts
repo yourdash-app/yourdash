@@ -4,6 +4,8 @@
  */
 
 import { INSTANCE_STATUS } from "@yourdash/shared/core/instanceStatus.js";
+import { LoginLayout } from "@yourdash/shared/core/login/loginLayout.js";
+import EndpointResponseLoginInstanceMetadata from "@yourdash/shared/endpoints/login/instance/metadata.js";
 import chalk from "chalk";
 import expressCompression from "compression";
 import cors from "cors";
@@ -22,6 +24,7 @@ import CoreApiImage from "./coreApiImage.js";
 import CoreApiLog from "./coreApiLog.js";
 import CoreApiTeams from "./coreApiTeams.js";
 import CoreApiVideo from "./coreApiVideo.js";
+import endpointLoginInstanceMetadata from "./endpoints/login/instance/metadata.js";
 import BackendModule from "./moduleManager/backendModule.js";
 import loadNextCloudSupportEndpoints from "./nextcloud/coreApiNextCloud.js";
 import CoreApiWebDAV from "./webDAV/coreApiWebDAV.js";
@@ -410,11 +413,12 @@ export class CoreApi {
     });
 
     this.request.get("/login/instance/metadata", (_req, res) => {
-      return res.json({
+      return res.json(<EndpointResponseLoginInstanceMetadata>{
         title: this.globalDb.get("core:instance:name") || "Placeholder name",
         message:
           this.globalDb.get("core:instance:message") ||
           "Placeholder message. Hey system admin, you should change this!",
+        loginLayout: this.globalDb.get("core:instance:login:layout") || LoginLayout.CARDS,
       });
     });
 
