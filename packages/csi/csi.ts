@@ -436,9 +436,27 @@ class __internalClientServerInteraction {
     return localStorage.getItem("current_user_username") || "";
   }
 
+  setUsername(username: string) {
+    localStorage.setItem("current_user_username", username);
+
+    return this;
+  }
+
   // get the login session token of the currently logged-in user
   getUserToken(): string {
     return sessionStorage.getItem("session_token") || "";
+  }
+
+  setUserToken(token: string) {
+    sessionStorage.setItem("session_token", token);
+
+    return this;
+  }
+
+  setUserSessionId(sessionId: string) {
+    sessionStorage.setItem("session_id", sessionId);
+
+    return this;
   }
 
   // get the user database for the currently logged-in user

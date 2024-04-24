@@ -37,7 +37,15 @@ render(() => {
             path={"/signup"}
             component={lazy(() => import("./login/signup/index"))}
           />
+          <Route
+            path={"/success"}
+            component={lazy(() => import("./login/success/index"))}
+          />
         </Route>
+        <Route
+          path={"/app/*"}
+          component={lazy(() => import("./app/index.preload"))}
+        />
         <Route
           path="/*"
           component={lazy(() => import("./root/layout"))}

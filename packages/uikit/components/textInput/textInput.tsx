@@ -10,10 +10,12 @@ import { UKIcon } from "../icon/iconDictionary.js";
 import styles from "./textInput.module.scss";
 
 const TextInput: Component<{
-  onChange: (value: string) => void;
+  onChange?: (value: string) => void;
+  onSubmit?: (value: string) => void;
   placeholder: string;
   icon?: UKIcon;
   onEnter?: (value: string) => void;
+  defaultValue?: string;
 }> = (props) => {
   return (
     <div class={styles.component}>
@@ -24,10 +26,14 @@ const TextInput: Component<{
         />
       )}
       <input
+        value={props.defaultValue || ""}
         class={clippy(styles.input, !props.icon && styles.noIcon)}
         placeholder={props.placeholder}
         type="text"
-        onChange={(e) => props.onChange(e.target.value)}
+        onKeyUp={(e) => {
+          props.onChange?.(e.currentTarget.value);
+        }}
+        onChange={(e) => props.onSubmit?.(e.currentTarget.value)}
         onKeyPress={(e) => {
           if (e.key === "Enter") {
             e.preventDefault();

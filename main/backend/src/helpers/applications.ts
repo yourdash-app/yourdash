@@ -1,20 +1,20 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 import { promises as fs } from "fs";
 import path from "path";
-import { type IYourDashApplication } from "@yourdash/shared/core/application.js";
+import { type IYourDashApplicationConfig } from "@yourdash/shared/core/application.js";
 import coreApi from "../core/coreApi.js";
 
 // TODO: replace the module loading from names to paths to support loading modules outside of the project's codebase
 
 class YDApplication {
   private readonly name: string;
-  private readonly application: IYourDashApplication;
+  private readonly application: IYourDashApplicationConfig;
 
-  constructor(application: IYourDashApplication) {
+  constructor(application: IYourDashApplicationConfig) {
     this.name = application.name;
     this.application = application;
     return this;
@@ -83,7 +83,7 @@ class YDApplication {
     return path.resolve(process.cwd(), `../../applications/${this.name}/`);
   }
 
-  getRawApplicationData(): IYourDashApplication {
+  getRawApplicationData(): IYourDashApplicationConfig {
     return this.application;
   }
 

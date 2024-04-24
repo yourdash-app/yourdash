@@ -16,6 +16,7 @@ import TextInput from "@yourdash/uikit/components/textInput/textInput.js";
 import { Component, createSignal } from "solid-js";
 import styles from "./index.cards.module.scss";
 import { useNavigate } from "@solidjs/router";
+import loginUser from "./lib/loginUser.js";
 
 const IndexCardsPage: Component<{ metadata?: EndpointResponseLoginInstanceMetadata }> = (props) => {
   const navigate = useNavigate();
@@ -28,6 +29,31 @@ const IndexCardsPage: Component<{ metadata?: EndpointResponseLoginInstanceMetada
     },
   );
   const [password, setPassword] = createSignal("");
+
+  if (csi.getUsername() !== "") {
+    setUsername(csi.getUsername());
+    fetch(`${csi.getInstanceUrl()}/login/user/${csi.getUsername()}`, {
+      mode: "cors",
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
+    })
+      .then((res) => res.json())
+      .then((resp) => {
+        if (resp.error) {
+          setUser({ avatar: "", fullName: { first: "", last: "" }, isValid: false });
+        } else {
+          setUser({
+            avatar: `/login/user/${csi.getUsername()}/avatar`,
+            fullName: resp.name,
+            isValid: true,
+          });
+        }
+      })
+      .catch(() => {
+        setUser({ avatar: "", fullName: { first: "", last: "" }, isValid: false });
+      });
+  }
 
   return (
     <div class={styles.page}>
@@ -53,6 +79,7 @@ const IndexCardsPage: Component<{ metadata?: EndpointResponseLoginInstanceMetada
         )}
         <TextInput
           placeholder={"Username"}
+          defaultValue={csi.getUsername() || ""}
           onChange={(val) => {
             fetch(`${csi.getInstanceUrl()}/login/user/${val}`, {
               mode: "cors",
@@ -84,13 +111,29 @@ const IndexCardsPage: Component<{ metadata?: EndpointResponseLoginInstanceMetada
           onChange={(val) => {
             setPassword(val);
           }}
+          onEnter={() => {
+            if (!(username() === "" || password() === "" || !user().isValid))
+              loginUser(username(), password())
+                .then(() => {
+                  navigate("/login/success");
+                })
+                .catch(() => {
+                  console.log("TODO: implement a toast notification here for a failed login!");
+                });
+          }}
         />
         <Button
           extraClass={styles.button}
           text={"Login"}
           disabled={username() === "" || password() === "" || !user().isValid}
           onClick={() => {
-            navigate("/login/success");
+            loginUser(username(), password())
+              .then(() => {
+                navigate("/login/success");
+              })
+              .catch(() => {
+                console.log("TODO: implement a toast notification here for a failed login!");
+              });
           }}
         />
       </Card>
