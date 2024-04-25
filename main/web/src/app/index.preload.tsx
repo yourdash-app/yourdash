@@ -16,6 +16,10 @@ const ApplicationIndexPreload: Component = () => {
 
   return (
     <Suspense fallback={<LoginSuccessPage />}>
+      <Route
+        path={"*"}
+        component={() => <>COMP</>}
+      />
       <Route path={"/"} />
       {applications()?.applications.map((app) => {
         switch (app.type) {
