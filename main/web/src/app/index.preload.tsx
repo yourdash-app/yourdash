@@ -8,14 +8,14 @@ import csi from "@yourdash/csi/csi.js";
 import { APPLICATION_TYPE } from "@yourdash/shared/core/application.js";
 import EndpointResponseApplications from "@yourdash/shared/endpoints/applications.js";
 import { Component, Suspense, createResource, lazy } from "solid-js";
-import LoginSuccessPage from "../login/success/index.js";
+import LoadingScreen from "./loading.js";
 
 const ApplicationIndexPreload: Component = () => {
   // @ts-ignore
   const [applications] = createResource(async () => await csi.getJson<EndpointResponseApplications>("/applications"));
 
   return (
-    <Suspense fallback={<LoginSuccessPage />}>
+    <Suspense fallback={<LoadingScreen />}>
       <Route
         path={"*"}
         component={() => <>COMP</>}

@@ -14,7 +14,7 @@ export default defineConfig({
     port: 5173,
   },
   build: {
-    target: "esnext",
+    target: "modules",
   },
   appType: "spa",
   root: ".",

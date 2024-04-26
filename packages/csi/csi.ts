@@ -53,7 +53,7 @@ class __internalClientServerInteraction {
     return this;
   }
 
-  async getJson<ResponseType extends ITJson = ITJson>(
+  async getJson<ResponseType extends object>(
     endpoint: string,
     extraHeaders?: {
       [key: string]: string;

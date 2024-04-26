@@ -15,13 +15,43 @@
   width: 100%;
 }
 
+.notice {
+  padding: 0;
+  min-width: 20rem;
+  max-width: max-content;
+  max-height: max-content;
+  overflow: hidden;
 
-.heading {
-  font-size: 6rem;
-  line-height: 1.2;
-  padding-bottom: 5rem;
-}
+  .header {
+    border-left: none;
+    border-top: none;
+    border-right: none;
+    text-align: center;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 1.5rem;
 
-.loadingText {
-  padding-top: var(#{$theme+$gap});
+    .heading {
+      line-height: 1;
+    }
+  }
+
+  .message {
+    text-align: center;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .author {
+    text-align: center;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .footer {
+    border-left: none;
+    border-bottom: none;
+    border-right: none;
+    place-items: end;
+  }
 }

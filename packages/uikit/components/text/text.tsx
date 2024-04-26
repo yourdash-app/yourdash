@@ -3,11 +3,12 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import clippy from "@yourdash/shared/web/helpers/clippy.js";
 import { Component } from "solid-js";
 import styles from "./text.module.scss";
 
-const Text: Component<{ text: string }> = (props) => {
-  return <div class={styles.component}>{props.text}</div>;
+const Text: Component<{ text: string; extraClass?: string }> = (props) => {
+  return <div class={clippy(styles.component, props.extraClass)}>{props.text}</div>;
 };
 
 export default Text;

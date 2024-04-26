@@ -5,6 +5,7 @@
 
 import { INSTANCE_STATUS } from "@yourdash/shared/core/instanceStatus.js";
 import { LoginLayout } from "@yourdash/shared/core/login/loginLayout.js";
+import EndpointResponseCoreLoginNotice from "@yourdash/shared/endpoints/core/login/notice.js";
 import EndpointResponseLoginInstanceMetadata from "@yourdash/shared/endpoints/login/instance/metadata.js";
 import chalk from "chalk";
 import expressCompression from "compression";
@@ -25,6 +26,7 @@ import CoreApiLog from "./coreApiLog.js";
 import CoreApiTeams from "./coreApiTeams.js";
 import CoreApiVideo from "./coreApiVideo.js";
 import endpointLoginInstanceMetadata from "./endpoints/login/instance/metadata.js";
+import GlobalDBCoreLoginNotice from "./login/loginNotice.js";
 import BackendModule from "./moduleManager/backendModule.js";
 import loadNextCloudSupportEndpoints from "./nextcloud/coreApiNextCloud.js";
 import CoreApiWebDAV from "./webDAV/coreApiWebDAV.js";
@@ -425,6 +427,26 @@ export class CoreApi {
     this.request.get("/login/instance/background", (_req, res) => {
       res.set("Content-Type", "image/avif");
       return res.sendFile(path.resolve(this.fs.ROOT_PATH, "./login_background.avif"));
+    });
+
+    this.request.get("/core/login/notice", (req, res) => {
+      const notice = this.globalDb.get<GlobalDBCoreLoginNotice>("core:login:notice");
+
+      if (!notice) {
+        return res.json(<EndpointResponseCoreLoginNotice>{
+          author: undefined,
+          message: undefined,
+          timestamp: undefined,
+          display: false,
+        });
+      }
+
+      return res.json(<EndpointResponseCoreLoginNotice>{
+        author: notice.author ?? "admin",
+        display: true,
+        message: notice.message ?? "Placeholder message. Hey system admin, you should change this!",
+        timestamp: notice.timestamp ?? new Date().getTime(),
+      });
     });
 
     try {

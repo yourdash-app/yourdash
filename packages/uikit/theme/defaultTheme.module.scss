@@ -18,6 +18,7 @@
   color: var(#{$theme+$color});
 
   #{$theme+$color}: #ffffff;
+  #{$theme+$subcolor}: #bbbbbb;
   #{$theme+$background}: #222222;
   #{$theme+$accent}: #768ce7;
   #{$theme+$border}: 0.125rem solid #444444;

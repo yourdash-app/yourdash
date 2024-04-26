@@ -6,6 +6,7 @@
 @import "../../theme/themeValues";
 
 .component {
+  color: var(#{$theme+$subcolor});
   display: inline-block;
 }
 
