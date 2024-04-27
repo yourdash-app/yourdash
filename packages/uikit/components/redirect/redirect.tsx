@@ -6,10 +6,10 @@
 import { Component } from "solid-js";
 import { useNavigate } from "@solidjs/router";
 
-const Redirect: Component<{ to: string }> = (props) => {
+const Redirect: Component<{ to: string | null }> = (props) => {
   const navigate = useNavigate();
 
-  navigate(props.to);
+  if (props.to !== null) navigate(props.to);
 
   return <>Redirecting to {props.to}</>;
 };

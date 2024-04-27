@@ -33,7 +33,7 @@ const LoginSuccessPage: Component = () => {
             <Subtext text={"authored: " + new Date(notice()?.timestamp || 0).toLocaleDateString()} />
           </Box>
           <Text
-            extraClass={styles.message}¬
+            extraClass={styles.message}
             text={notice()?.message || "No message..."}
           />
           <Subtext

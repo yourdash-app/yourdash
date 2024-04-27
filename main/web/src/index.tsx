@@ -13,6 +13,7 @@ import "./index.css";
 import { Router, Route } from "@solidjs/router";
 import { lazy } from "solid-js";
 import "animate.css";
+import ApplicationIndexPreload from "./app/index.preload.js";
 
 const root = document.getElementById("root");
 
@@ -42,10 +43,9 @@ render(() => {
             component={lazy(() => import("./login/success/index"))}
           />
         </Route>
-        <Route
-          path={"/app/*"}
-          component={lazy(() => import("./app/index.preload"))}
-        />
+        <Route path={"/app/*"}>
+          <ApplicationIndexPreload />
+        </Route>
         <Route
           path="/*"
           component={lazy(() => import("./root/layout"))}
