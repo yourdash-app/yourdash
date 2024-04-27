@@ -4,11 +4,14 @@
  */
 
 import React from "react";
-import { Card } from "@yourdash/web-client/src/ui/index";
+import { Card } from "@yourdash/web/src/ui/index";
 
 const PlaceholderDashWidget: React.FC = () => {
   return (
-    <Card showBorder className={"flex items-center justify-center"}>
+    <Card
+      showBorder
+      className={"flex items-center justify-center"}
+    >
       Failed to load widget
     </Card>
   );

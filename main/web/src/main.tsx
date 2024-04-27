@@ -19,6 +19,7 @@ import ErrorElement from "./ErrorElement";
 import ServerLoginPage from "./root/login/Page";
 import Index from "./root/index/Index";
 import LoginRedirect from "./root/login/Redirect";
+import LoginSuccessPage from "./root/login/success/index.js";
 import ProjectsIndexPage from "./root/projects/Index";
 import RootLayout from "./root/RootLayout";
 import ChipletRootIntegration from "@yourdash/chiplet/RootIntegration";
@@ -82,9 +83,23 @@ function main() {
                   element={<ServerLoginPage />}
                 />
                 <Route
-                  path={"*"}
-                  element={<LoginRedirect />}
+                  path={"success"}
+                  element={<LoginSuccessPage />}
                 />
+                <Route
+                  path={"signup"}
+                  element={<>TODO: implement me</>}
+                />
+                <Route path={"instance"}>
+                  <Route
+                    index
+                    element={<>TODO: implement me</>}
+                  />
+                  <Route
+                    path={"*"}
+                    element={<LoginRedirect />}
+                  />
+                </Route>
               </Route>
               <Route path={"app"}>
                 <Route element={<AppLayout />}>

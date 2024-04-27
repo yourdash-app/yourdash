@@ -4,24 +4,24 @@
  */
 
 import clippy from "@yourdash/shared/web/helpers/clippy.js";
-import { Component } from "solid-js";
 import styles from "./spinner.module.scss";
+import { FC } from "react";
 
-const Spinner: Component<{
+const Spinner: FC<{
   // eslint-disable-next-line
   style?: any;
 }> = (props) => {
   return (
     <div
-      class={styles.component}
+      className={styles.component}
       style={props.style}
     >
-      <section class={styles.container}>
-        <div class={styles.spinnerBorder} />
-        <div class={styles.spinnerBack} />
-        <div class={styles.spinnerCutoutContainer}>
-          <div class={clippy(styles.spinnerCutoutOne, styles.spinnerCutout)} />
-          <div class={clippy(styles.spinnerCutoutTwo, styles.spinnerCutout)} />
+      <section className={styles.container}>
+        <div className={styles.spinnerBorder} />
+        <div className={styles.spinnerBack} />
+        <div className={styles.spinnerCutoutContainer}>
+          <div className={clippy(styles.spinnerCutoutOne, styles.spinnerCutout)} />
+          <div className={clippy(styles.spinnerCutoutTwo, styles.spinnerCutout)} />
         </div>
       </section>
     </div>

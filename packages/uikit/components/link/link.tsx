@@ -4,14 +4,14 @@
  */
 
 import clippy from "@yourdash/shared/web/helpers/clippy.js";
-import { Component } from "solid-js";
 import styles from "./link.module.scss";
+import { FC } from "react";
 
-const Link: Component<{ text: string; to: string; extraClass?: string }> = (props) => {
+const Link: FC<{ text: string; to: string; extraClass?: string }> = (props) => {
   return (
     <a
       href={props.to}
-      class={clippy(styles.component, props.extraClass)}
+      className={clippy(styles.component, props.extraClass)}
     >
       {props.text}
     </a>

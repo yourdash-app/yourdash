@@ -3,16 +3,18 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { Component, ParentProps } from "solid-js";
 import IncrementLevel from "../../core/incrementLevel.js";
 import { useLevel, useLevelClass } from "../../core/level.js";
 import styles from "./card.module.scss";
+import { FC } from "react";
 
-const Card: Component<ParentProps & { level?: 0 | 1 | 2 | 3; extraClass?: string }> = (props) => {
+const Card: FC<{ level?: 0 | 1 | 2 | 3; extraClass?: string; children: React.ReactNode | React.ReactNode[] }> = (
+  props,
+) => {
   const level = props.level || useLevel();
   return (
     <>
-      <div class={`${styles.component} ${useLevelClass(level)} ${props.extraClass}`}>
+      <div className={`${styles.component} ${useLevelClass(level)} ${props.extraClass}`}>
         <IncrementLevel>{props.children}</IncrementLevel>
       </div>
     </>

@@ -4,12 +4,12 @@
  */
 
 import clippy from "@yourdash/shared/web/helpers/clippy.js";
-import { Component } from "solid-js";
 import Icon from "../icon/icon.js";
 import { UKIcon } from "../icon/iconDictionary.js";
 import styles from "./textInput.module.scss";
+import { FC } from "react";
 
-const TextInput: Component<{
+const TextInput: FC<{
   onChange?: (value: string) => void;
   onSubmit?: (value: string) => void;
   placeholder: string;
@@ -18,7 +18,7 @@ const TextInput: Component<{
   defaultValue?: string;
 }> = (props) => {
   return (
-    <div class={styles.component}>
+    <div className={styles.component}>
       {props.icon && (
         <Icon
           extraClass={styles.icon}
@@ -27,7 +27,7 @@ const TextInput: Component<{
       )}
       <input
         value={props.defaultValue || ""}
-        class={clippy(styles.input, !props.icon && styles.noIcon)}
+        className={clippy(styles.input, !props.icon && styles.noIcon)}
         placeholder={props.placeholder}
         type="text"
         onKeyUp={(e) => {

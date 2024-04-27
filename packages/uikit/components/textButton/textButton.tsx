@@ -3,13 +3,14 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { Component } from "solid-js";
+import clippy from "@yourdash/shared/web/helpers/clippy.js";
 import styles from "./textButton.module.scss";
+import { FC } from "react";
 
-const TextButton: Component<{ onClick: () => void; text: string; extraClass?: string }> = (props) => {
+const TextButton: FC<{ onClick: () => void; text: string; extraClass?: string }> = (props) => {
   return (
     <button
-      class={`${styles.component} ${props.extraClass}`}
+      className={clippy(styles.component, props.extraClass)}
       onClick={props.onClick}
       aria-label={props.text}
     >

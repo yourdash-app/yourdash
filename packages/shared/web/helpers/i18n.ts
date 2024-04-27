@@ -58,7 +58,7 @@ export default function useTranslate(application: string) {
       return;
     }
 
-    import(`../../../../applications/${application}/frontend/i18n/${language}.json`)
+    import(`@yourdash/applications/${application}/frontend/i18n/${language}.json`)
       .then((response) => {
         setMessages(response.default);
         LOADED_TRANSLATIONS.set(`${application}:${language}`, response.default);
@@ -76,7 +76,7 @@ export default function useTranslate(application: string) {
 
         // the page is missing translation into your language :(
         languageOverride = "en-GB";
-        import(`../../../../applications/${application}/frontend/i18n/en-GB.json`)
+        import(`@yourdash/applications/${application}/frontend/i18n/en-GB.json`)
           .then((response) => {
             setMessages(response.default);
             LOADED_TRANSLATIONS.set(`${application}:en-GB`, response.default);
@@ -117,7 +117,7 @@ export function useTranslateAppCoreUI() {
   useEffect(() => {
     // @ts-ignore
     const language = window.translateLang || navigator.language;
-    import(`../../../../main/web-client/src/app/i10n/${language}.json`)
+    import(`@yourdash/web/src/app/i10n/${language}.json`)
       .then((response) => setMessages(response.default))
       .catch(() => {
         // eslint-disable-next-line no-alert
@@ -146,7 +146,7 @@ export function useTranslateHomePage(page: string) {
   useEffect(() => {
     // @ts-ignore
     const language = window.translateLang || navigator.language;
-    import(`../../../../main/web-client/src/root/${page}/i10n/${language}.json`)
+    import(`@yourdash/web/src/root/${page}/i10n/${language}.json`)
       .then((response) => setMessages(response.default))
       .catch(() => {
         // eslint-disable-next-line no-alert

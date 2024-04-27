@@ -3,10 +3,10 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { Component } from "solid-js";
 import { useNavigate } from "@solidjs/router";
+import { FC } from "react";
 
-const Redirect: Component<{ to: string | null }> = (props) => {
+const Redirect: FC<{ to: string | null }> = (props) => {
   const navigate = useNavigate();
 
   if (props.to !== null) navigate(props.to);

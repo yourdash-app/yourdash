@@ -3,16 +3,17 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { Component, ParentProps } from "solid-js";
+import clippy from "@yourdash/shared/web/helpers/clippy.js";
+import { FC, ReactNode } from "react";
 import IncrementLevel from "../../core/incrementLevel.js";
 import { useLevel, useLevelClass } from "../../core/level.js";
 import styles from "./box.module.scss";
 
-const Box: Component<ParentProps & { extraClass?: string; level?: 0 | 1 | 2 | 3 }> = (props) => {
+const Box: FC<{ extraClass?: string; level?: 0 | 1 | 2 | 3; children: ReactNode | ReactNode[] }> = (props) => {
   const level = props.level || useLevel();
 
   return (
-    <div class={`${styles.component} ${props.extraClass} ${useLevelClass(level)}`}>
+    <div className={clippy(styles.component, props.extraClass, useLevelClass(level))}>
       <IncrementLevel>{props.children}</IncrementLevel>
     </div>
   );

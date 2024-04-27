@@ -14,11 +14,11 @@
     "applications"
   ],
   "scripts": {
-    "yd:dev-web-client": "yarn --cwd ./main/web-client dev",
-    "yd:dev-web": "yarn --cwd ./main/web dev",
+    "yd:dev-web": "yarn --cwd main/web dev",
+    "yd:dev-deprecated-web": "yarn --cwd ./main/deprecated-web dev",
     "yd:dev-backend": "yarn --cwd ./main/backend dev",
     "yd:start-backend": "yarn --cwd ./main/backend start --log-requests",
-    "yd:setup-project": "yarn && yarn --cwd ./main/web-client generate-application-routes",
+    "yd:setup-project": "yarn && yarn --cwd main/web generate-application-routes",
     "yd:build-production": "yarn --cwd ./main/backend compile-all && yarn --cwd ./packages/web-client build",
     "opengfx:dev": "yarn --cwd ./packages/opengfx-engine dev",
     "yd:dev-desktop-client": "yarn --cwd ./main/desktop-client/ dev"

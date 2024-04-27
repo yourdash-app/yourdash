@@ -15,7 +15,7 @@ import TextBox from "@yourdash/chiplet/components/textBox/TextBox";
 import React, { useState, useEffect } from "react";
 import csi, { TJson } from "@yourdash/csi/csi";
 import { IDiffusionLabImageGenerationData } from "@yourdash/shared/apps/diffusion_lab/image/generationData";
-import YourDashLogo from "@yourdash/web-client/public/assets/productLogos/yourdash.svg";
+import YourDashLogo from "@yourdash/web/public/assets/productLogos/yourdash.svg";
 
 const DiffusionLabApplication: React.FC = () => {
   const trans = useTranslate("diffusion_lab");

@@ -3,11 +3,11 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { Component } from "solid-js";
 import { UKIcon } from "./iconDictionary.js";
 import styles from "./icon.module.scss";
+import { FC } from "react";
 
-const Icon: Component<{
+const Icon: FC<{
   icon: UKIcon;
   size?: string;
   color?: string;

@@ -3,12 +3,13 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { Component } from "solid-js";
+import clippy from "@yourdash/shared/web/helpers/clippy.js";
 import Icon from "../icon/icon.js";
 import { UKIcon } from "../icon/iconDictionary.js";
 import styles from "./iconButton.module.scss";
+import { FC } from "react";
 
-const IconButton: Component<{
+const IconButton: FC<{
   icon: UKIcon;
   accessibleLabel: string;
   onClick: () => void;
@@ -19,7 +20,7 @@ const IconButton: Component<{
     <button
       onClick={props.onClick}
       aria-label={props.accessibleLabel}
-      class={`${styles.component} ${props.extraClass}`}
+      className={clippy(styles.component, props.extraClass)}
     >
       <Icon
         size={"1.25rem"}

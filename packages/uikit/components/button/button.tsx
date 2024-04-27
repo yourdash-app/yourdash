@@ -4,13 +4,13 @@
  */
 
 import clippy from "@yourdash/shared/web/helpers/clippy.js";
-import { Component } from "solid-js";
 import styles from "./button.module.scss";
+import { FC } from "react";
 
-const Button: Component<{ onClick: () => void; text: string; extraClass?: string; disabled?: boolean }> = (props) => {
+const Button: FC<{ onClick: () => void; text: string; extraClass?: string; disabled?: boolean }> = (props) => {
   return (
     <button
-      class={clippy(styles.component, props.extraClass)}
+      className={clippy(styles.component, props.extraClass)}
       onClick={props.onClick}
       aria-label={props.text}
       disabled={props.disabled}

@@ -1,11 +1,12 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Dev Web" type="js.build_tools.npm" activateToolWindowBeforeRun="false">
+  <configuration default="false" name="Dev Web" type="js.build_tools.npm">
     <package-json value="$PROJECT_DIR$/package.json" />
     <command value="run" />
     <scripts>
       <script value="yd:dev-web" />
     </scripts>
     <node-interpreter value="project" />
+    <package-manager value="yarn" />
     <envs />
     <method v="2" />
   </configuration>

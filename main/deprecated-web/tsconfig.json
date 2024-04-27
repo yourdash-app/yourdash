@@ -7,13 +7,13 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "jsx": "preserve",
-    "jsxImportSource": "react",
+    "jsxImportSource": "solid-js",
     "types": ["vite/client"],
     "noEmit": true,
-    "isolatedModules": true,
+    "isolatedModules": true
   },
   "include": [
-    "./**/*",
+    "src/**/*",
     "../applications/**/frontend/**/*",
     "../shared/**/*"
   ]

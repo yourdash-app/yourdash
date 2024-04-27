@@ -3,11 +3,12 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { Component } from "solid-js";
+import clippy from "@yourdash/shared/web/helpers/clippy.js";
 import styles from "./separator.module.scss";
+import { FC } from "react";
 
-const Separator: Component<{ direction: "column" | "row" }> = (props) => {
-  return <div class={`${styles.component} ${styles[props.direction]}`} />;
+const Separator: FC<{ direction: "column" | "row" }> = (props) => {
+  return <div className={clippy(styles.component, styles[props.direction])} />;
 };
 
 export default Separator;

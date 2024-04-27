@@ -32,7 +32,7 @@
     "path-browserify": "^1.0.1",
     "path-to-regexp": "^6.2.1",
     "postcss": "^8.4.27",
-    "react": "^18.2.0",
+    "react": "^18.3.1",
     "react-dom": "^18.2.0",
     "react-router": "^6.15.0",
     "react-router-dom": "^6.15.0",
@@ -44,9 +44,6 @@
     "vite-plugin-dynamic-import": "^1.5.0",
     "web-tree-sitter": "^0.20.8",
     "xml2js": "^0.6.2",
-    "yarn": "^1.22.19",
-    "solid-devtools": "^0.29.2",
-    "solid-js": "^1.8.16",
-    "vite-plugin-solid": "^2.8.2"
+    "yarn": "^1.22.19"
   }
 }

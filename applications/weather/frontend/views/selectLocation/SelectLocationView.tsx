@@ -6,10 +6,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import csi from "@yourdash/csi/csi";
-import { Card, TextInput } from "@yourdash/web-client/src/ui/index";
-import useTranslate from "@yourdash/web-client/src/helpers/i18n";
+import { Card, TextInput } from "@yourdash/web/src/ui/index";
+import useTranslate from "@yourdash/web/src/helpers/i18n";
 import APPLICATION_ICON from "../../assets/weatherIcons/partly_cloudy.svg";
-import clippy from "@yourdash/web-client/src/helpers/clippy";
+import clippy from "@yourdash/web/src/helpers/clippy";
 import { ILocationSearchResult } from "../../../shared/locationSearchResult";
 import THUNDER_BACKGROUND from "../../assets/weatherBackgrounds/thunder.jpg";
 import CLOUDY_BACKGROUND from "../../assets/weatherBackgrounds/cloudy1.jpg";

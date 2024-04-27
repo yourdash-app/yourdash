@@ -5,11 +5,10 @@
 
 import { Route } from "@solidjs/router";
 import csi from "@yourdash/csi/csi.js";
-import { APPLICATION_TYPE } from "@yourdash/shared/core/application.js";
 import EndpointResponseCoreApplications from "@yourdash/shared/endpoints/core/applications.js";
 import EndpointResponseCoreHomeApplication from "@yourdash/shared/endpoints/core/homeApplication.js";
 import Redirect from "@yourdash/uikit/components/redirect/redirect.js";
-import { Component, Suspense, createResource, lazy } from "solid-js";
+import { Component, Suspense, createResource } from "solid-js";
 import LoadingScreen from "./loadingScreen.js";
 
 const ApplicationIndexPreload: Component = () => {
@@ -23,7 +22,7 @@ const ApplicationIndexPreload: Component = () => {
   return (
     <>
       <Route
-        path={""}
+        path={"/"}
         component={() => <Redirect to={homeApplication() ? `/app/${homeApplication()?.applicationId || ""}` : null} />}
       />
       {/* {applications()?.applications.map((app) => {

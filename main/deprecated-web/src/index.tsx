@@ -3,6 +3,8 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import csi from "@yourdash/csi/csi.js";
+import EndpointResponseCoreApplicationRouter from "@yourdash/shared/endpoints/core/applicationRouter.js";
 import UIKitRoot from "@yourdash/uikit/core/root.js";
 /* @refresh reload */
 import { render } from "solid-js/web";
@@ -11,9 +13,9 @@ import { render } from "solid-js/web";
 // begin imports here
 import "./index.css";
 import { Router, Route } from "@solidjs/router";
-import { lazy } from "solid-js";
+import { createResource, lazy } from "solid-js";
 import "animate.css";
-import ApplicationIndexPreload from "./app/index.preload.js";
+import ApplicationRoute from "./app/applicationRoute.js";
 
 const root = document.getElementById("root");
 
@@ -43,8 +45,8 @@ render(() => {
             component={lazy(() => import("./login/success/index"))}
           />
         </Route>
-        <Route path={"/app/*"}>
-          <ApplicationIndexPreload />
+        <Route path={"/app/:applicationId"}>
+          <ApplicationRoute applicationId={"dash"} />
         </Route>
         <Route
           path="/*"

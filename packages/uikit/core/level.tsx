@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { createContext, useContext } from "solid-js";
+import { createContext, useContext } from "react";
 import styles from "./../theme/defaultTheme.module.scss";
 
 const LevelContext = createContext(0);

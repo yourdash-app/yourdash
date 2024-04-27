@@ -27,7 +27,6 @@ import CoreApiImage from "./coreApiImage.js";
 import CoreApiLog from "./coreApiLog.js";
 import CoreApiTeams from "./coreApiTeams.js";
 import CoreApiVideo from "./coreApiVideo.js";
-import endpointLoginInstanceMetadata from "./endpoints/login/instance/metadata.js";
 import GlobalDBCoreLoginNotice from "./login/loginNotice.js";
 import BackendModule from "./moduleManager/backendModule.js";
 import loadNextCloudSupportEndpoints from "./nextcloud/coreApiNextCloud.js";

@@ -3,10 +3,10 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { Component, ParentProps } from "solid-js";
 import LevelContext, { useLevel } from "./level";
+import { FC } from "react";
 
-const IncrementLevel: Component<ParentProps> = (props) => {
+const IncrementLevel: FC<{ children: React.ReactNode | React.ReactNode[] }> = (props) => {
   return <LevelContext.Provider value={useLevel() + 1}>{props.children}</LevelContext.Provider>;
 };
 
