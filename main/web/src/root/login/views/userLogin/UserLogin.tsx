@@ -36,7 +36,7 @@ const UserLogin: React.FC<IUserLogin> = ({ setUsername, setPassword, password, u
 
     if (SAVED_USERNAME && SESSION_TOKEN) {
       csi.syncGetJson("/login/is-authenticated", (response) => {
-        if (response.error) {
+        if (response.error || response.success === false) {
           return;
         }
 

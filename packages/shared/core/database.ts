@@ -1,5 +1,5 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -12,21 +12,25 @@ export default class KeyValueDatabase {
     this.keys = {};
   }
 
-  get<ResponseType = unknown>(key: string): ResponseType {
+  get<ResponseType = unknown>(key: string): ResponseType | undefined {
     const resp = this.keys[key];
 
     if (!resp) console.warn(`Key "${key}" not found in database`);
 
-    return resp;
+    return resp || undefined;
   }
 
+  // eslint-disable-line @typescript-eslint/no-explicit-any
   set(key: string, value: any) {
-    // eslint-disable-line @typescript-eslint/no-explicit-any
     this.keys[key] = value;
+
+    return this;
   }
 
   removeValue(key: string) {
     delete this.keys[key];
+
+    return this;
   }
 
   clear() {

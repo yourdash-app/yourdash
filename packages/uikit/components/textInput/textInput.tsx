@@ -26,7 +26,7 @@ const TextInput: FC<{
         />
       )}
       <input
-        value={props.defaultValue || ""}
+        value={props.defaultValue}
         className={clippy(styles.input, !props.icon && styles.noIcon)}
         placeholder={props.placeholder}
         type="text"
@@ -34,7 +34,7 @@ const TextInput: FC<{
           props.onChange?.(e.currentTarget.value);
         }}
         onChange={(e) => props.onSubmit?.(e.currentTarget.value)}
-        onKeyPress={(e) => {
+        onKeyDown={(e) => {
           if (e.key === "Enter") {
             e.preventDefault();
 

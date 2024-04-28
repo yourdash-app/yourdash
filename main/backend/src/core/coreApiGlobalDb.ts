@@ -1,10 +1,10 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 import path from "path";
-import KeyValueDatabase from "../helpers/keyValueDatabase.js";
+import KeyValueDatabase from "../lib/keyValueDatabase.js";
 import { CoreApi } from "./coreApi.js";
 
 // TODO: rewrite this to use a KVD ( Key Value Database )

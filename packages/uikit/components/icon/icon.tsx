@@ -16,10 +16,11 @@ const Icon: FC<{
 }> = (props) => {
   return (
     <div
-      class={`${styles.component} ${props.extraClass} ${props.preserveColor ? styles.preserveColor : ""}`}
+      className={`${styles.component} ${props.extraClass} ${props.preserveColor ? styles.preserveColor : ""}`}
       style={{
         "--icon": `url(${props.icon})`,
         ...(!props.preserveColor ? { "--color": props.color } : {}),
+        // @ts-ignore
         "--size": props.size,
       }}
     />

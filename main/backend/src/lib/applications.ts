@@ -10,7 +10,7 @@ import coreApi from "../core/coreApi.js";
 
 // TODO: replace the module loading from names to paths to support loading modules outside of the project's codebase
 
-class YDApplication {
+class ValidYourDashApplication {
   private readonly name: string;
   private readonly application: IYourDashApplicationConfig;
 
@@ -71,7 +71,7 @@ class YDApplication {
 
   // Returns true if the application is installed, otherwise returns false
   isInstalled(): boolean {
-    return !!coreApi.globalDb.get("core:installedApplications").includes(this.name);
+    return !!coreApi.globalDb.get<string[]>("core:installedApplications").includes(this.name);
   }
 
   getCategory(): string {
@@ -122,9 +122,9 @@ export default class YourDashApplication {
   }
 
   // Returns a YourDashApplication class which is initialized with the application's data
-  async read(): Promise<YDApplication | null> {
+  async read(): Promise<ValidYourDashApplication | null> {
     try {
-      return new YDApplication(
+      return new ValidYourDashApplication(
         JSON.parse(
           (
             await fs.readFile(path.resolve(process.cwd(), `../../applications/${this.name}/application.json`))
@@ -132,6 +132,7 @@ export default class YourDashApplication {
         ),
       );
     } catch (_err) {
+      coreApi.log.error("core:applications", `Unable to read application ${this.name}!, does it exist?`);
       return null;
     }
   }

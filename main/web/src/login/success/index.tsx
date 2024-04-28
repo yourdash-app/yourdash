@@ -3,16 +3,16 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import csi from "@yourdash/csi/csi.js";
-import EndpointResponseCoreLoginNotice from "@yourdash/shared/endpoints/core/login/notice.js";
-import Box from "@yourdash/uikit/components/box/box.js";
-import Button from "@yourdash/uikit/components/button/button.js";
-import Card from "@yourdash/uikit/components/card/card.js";
-import Heading from "@yourdash/uikit/components/heading/heading.js";
-import Redirect from "@yourdash/uikit/components/redirect/redirect.js";
-import Subtext from "@yourdash/uikit/components/subtext/subtext.js";
-import Text from "@yourdash/uikit/components/text/text.js";
-import createResource from "../../../lib/createResource.js";
+import csi from "@yourdash/csi/csi";
+import EndpointResponseCoreLoginNotice from "@yourdash/shared/endpoints/core/login/notice";
+import Box from "@yourdash/uikit/components/box/box";
+import Button from "@yourdash/uikit/components/button/button";
+import Card from "@yourdash/uikit/components/card/card";
+import Heading from "@yourdash/uikit/components/heading/heading";
+import Redirect from "@yourdash/uikit/components/redirect/redirect";
+import Subtext from "@yourdash/uikit/components/subtext/subtext";
+import Text from "@yourdash/uikit/components/text/text";
+import createResource from "../../lib/createResource";
 import styles from "./index.module.scss";
 import { FC } from "react";
 import { useNavigate } from "react-router";

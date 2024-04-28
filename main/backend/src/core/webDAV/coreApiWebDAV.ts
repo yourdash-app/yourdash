@@ -1,5 +1,5 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -8,7 +8,7 @@
 import { promises as fs } from "fs";
 import path from "path";
 import { parseStringPromise } from "xml2js";
-import { compareHashString } from "../../helpers/encryption.js";
+import { compareHashString } from "../../lib/encryption.js";
 import { CoreApi } from "../coreApi.js";
 
 export enum WD_NAMESPACE {

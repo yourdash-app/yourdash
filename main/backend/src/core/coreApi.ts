@@ -19,8 +19,8 @@ import killPort from "kill-port";
 import minimist from "minimist";
 import path from "path";
 import { fetch } from "undici";
-import { compareHashString } from "../helpers/encryption.js";
-import { createSession } from "../helpers/session.js";
+import { compareHashString } from "../lib/encryption.js";
+import { createSession } from "../lib/session.js";
 import CoreApiCommands from "./coreApiCommands.js";
 import CoreApiGlobalDb from "./coreApiGlobalDb.js";
 import CoreApiImage from "./coreApiImage.js";
@@ -392,7 +392,7 @@ export class CoreApi {
         token?: string;
       };
 
-      if (!username || !token) return res.json({ error: true });
+      if (!username || !token) return res.json({ success: false });
 
       if (!this.users.__internal__getSessionsDoNotUseOutsideOfCore()[username]) {
         try {
@@ -412,7 +412,8 @@ export class CoreApi {
       ) {
         return res.json({ success: true });
       }
-      return res.json({ error: true });
+
+      return res.json({ success: false });
     });
 
     this.request.get("/login/instance/metadata", (_req, res) => {

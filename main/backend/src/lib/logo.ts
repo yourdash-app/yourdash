@@ -1,5 +1,5 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -8,5 +8,5 @@ import path from "path";
 import coreApi from "../core/coreApi.js";
 
 export function getInstanceLogoBase64(): string {
-  return fs.readFileSync( path.join( coreApi.fs.ROOT_PATH, "./instance_logo.avif" ) ).toString( "base64" );
+  return fs.readFileSync(path.join(coreApi.fs.ROOT_PATH, "./instance_logo.avif")).toString("base64");
 }

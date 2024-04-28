@@ -5,19 +5,19 @@
 
 import clippy from "@yourdash/shared/web/helpers/clippy.js";
 import isMobileDevice from "@yourdash/shared/web/helpers/isPhone.js";
-import { Component, createSignal, onMount, ParentProps } from "solid-js";
 import LevelContext from "./level.js";
 import styles from "./../theme/defaultTheme.module.scss";
+import React, { FC, useEffect, useState } from "react";
 
-const UIKitRoot: Component<ParentProps> = (props) => {
-  const [isMobile, setIsMobile] = createSignal<boolean>(false);
+const UIKitRoot: FC<{ children: React.ReactNode | React.ReactNode[] }> = (props) => {
+  const [isMobile, setIsMobile] = useState<boolean>(false);
 
-  onMount(() => {
+  useEffect(() => {
     setIsMobile(isMobileDevice());
-  });
+  }, []);
 
   return (
-    <div class={clippy(styles.theme, styles.level0, isMobile() && styles.mobile)}>
+    <div className={clippy(styles.theme, styles.level0, isMobile && styles.mobile)}>
       <LevelContext.Provider value={0}>{props.children}</LevelContext.Provider>
     </div>
   );
