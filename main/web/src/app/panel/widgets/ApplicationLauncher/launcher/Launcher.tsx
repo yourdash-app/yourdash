@@ -4,8 +4,9 @@
  */
 
 import clippy from "@yourdash/shared/web/helpers/clippy";
-import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
-import IconButton from "@yourdash/chiplet/components/iconButton/IconButton";
+import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary.js";
+import IconButton from "@yourdash/uikit/components/iconButton/iconButton";
+import Box from "@yourdash/uikit/components/box/box.js";
 import { useNavigate } from "react-router-dom";
 import styles from "./Launcher.module.scss";
 import React, { memo, useEffect, useState } from "react";
@@ -39,14 +40,15 @@ const ApplicationLauncher: React.FC<{
         !visible && styles.invisible,
       )}
     >
-      <div className={styles.content}>
+      <Box className={styles.content}>
         <ApplicationsLauncherApplications
           apps={apps}
           layout={layout}
         />
-      </div>
-      <section className={styles.footer}>
+      </Box>
+      <Box className={styles.footer}>
         <IconButton
+          accessibleLabel={"Logout"}
           className={styles.logoutButton}
           icon={UKIcon.Logout}
           onClick={() => {
@@ -60,12 +62,14 @@ const ApplicationLauncher: React.FC<{
             alt={""}
           />
           <IconButton
+            accessibleLabel={"Profile"}
             icon={UKIcon.Person}
             aria-label={"User Profile Settings"}
           />
         </div>
         <span>{csi.userDB.get("user:name")?.first || "Unknown First Name"}</span>
         <IconButton
+          accessibleLabel={"Filter small grid"}
           className={"ml-auto"}
           icon={UKIcon.Filter}
           onClick={() => {
@@ -73,18 +77,20 @@ const ApplicationLauncher: React.FC<{
           }}
         />
         <IconButton
+          accessibleLabel={"Filter large grid"}
           icon={UKIcon.Filter}
           onClick={() => {
             setLayout("large-grid");
           }}
         />
         <IconButton
+          accessibleLabel={"Filter list"}
           icon={UKIcon.Filter}
           onClick={() => {
             setLayout("list");
           }}
         />
-      </section>
+      </Box>
     </div>
   );
 };

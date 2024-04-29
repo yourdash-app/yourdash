@@ -57,7 +57,7 @@ const IndexCardsPage: FC<{ metadata?: EndpointResponseLoginInstanceMetadata }> =
 
   return (
     <div className={styles.page}>
-      <Card className={clippy(styles.card, styles.formCard)}>
+      <Card className={clippy(styles.formCard)}>
         {user.isValid ? (
           <>
             <Image
@@ -78,6 +78,7 @@ const IndexCardsPage: FC<{ metadata?: EndpointResponseLoginInstanceMetadata }> =
           />
         )}
         <TextInput
+          accessibleName={"Username"}
           placeholder={"Username"}
           defaultValue={csi.getUsername() || ""}
           onChange={(val) => {
@@ -107,6 +108,7 @@ const IndexCardsPage: FC<{ metadata?: EndpointResponseLoginInstanceMetadata }> =
           }}
         />
         <TextInput
+          accessibleName={"Password"}
           placeholder={"Password"}
           onChange={(val) => {
             setPassword(val);
@@ -136,8 +138,12 @@ const IndexCardsPage: FC<{ metadata?: EndpointResponseLoginInstanceMetadata }> =
               });
           }}
         />
+        <Subtext
+          className={styles.instanceUrl}
+          text={csi.getInstanceUrl()}
+        />
       </Card>
-      <Card className={styles.card}>
+      <Card className={styles.metadataCard}>
         <Image
           className={styles.backgroundImage}
           src={"/login/instance/background"}

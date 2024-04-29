@@ -1,12 +1,12 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 import clippy from "@yourdash/shared/web/helpers/clippy.js";
+import ButtonLink from "@yourdash/uikit/components/buttonLink/buttonLink.js";
 import Heading from "@yourdash/uikit/components/heading/heading.js";
 import React from "react";
-import { Link } from "react-router-dom";
 import FloatingApplications from "./FloatingApplications/FloatingApplications";
 import IndexPageHeroTaglines from "./Taglines";
 import styles from "./Hero.module.scss";
@@ -27,23 +27,15 @@ const IndexPageHero: React.FC = () => {
         />
         {/* Taglines scroller */}
         <IndexPageHeroTaglines />
-        <div className={"flex gap-4 pt-7 items-center justify-center animate__animated animate__fadeIn animate__750ms"}>
-          <Link
+        <div className={"flex gap-2 pt-7 items-center justify-center animate__animated animate__fadeIn animate__750ms"}>
+          <ButtonLink
             to={"/login"}
-            className={
-              "pl-4 pr-4 pb-1.5 pt-1.5 hover:bg-theme-500 active:bg-theme-400 bg-theme-600 transition-colors select-none cursor-pointer rounded-full animate__animated animate__tada animate__1s"
-            }
-          >
-            Login
-          </Link>
-          <Link
+            text={"Login"}
+          />
+          <ButtonLink
             to={"/login/signup"}
-            className={
-              "hover:text-theme-500 active:text-theme-400 text-theme-200 transition-colors select-none cursor-pointer"
-            }
-          >
-            Placeholder Text
-          </Link>
+            text={"Signup"}
+          />
         </div>
       </div>
       <FloatingApplications />

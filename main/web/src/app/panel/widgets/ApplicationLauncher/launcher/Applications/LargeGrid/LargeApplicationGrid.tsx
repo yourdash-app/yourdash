@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import Card from "@yourdash/chiplet/components/card/Card";
+import Card from "@yourdash/uikit/components/card/card";
 import RightClickMenu from "@yourdash/chiplet/components/rightClickMenu/RightClickMenu";
 import React from "react";
 import IPanelApplicationsLauncherApplication from "@yourdash/shared/core/panel/applicationsLauncher/application";
@@ -35,7 +35,10 @@ const LargeApplicationGrid: React.FC<{
               {
                 label: "Open In New Tab",
                 onClick() {
-                  window.open(`${window.location.origin}${window.location.pathname}/app/a/${application.name}`, "_blank");
+                  window.open(
+                    `${window.location.origin}${window.location.pathname}/app/a/${application.name}`,
+                    "_blank",
+                  );
                   return 0;
                 },
               },
@@ -47,10 +50,15 @@ const LargeApplicationGrid: React.FC<{
               onClick={() => {
                 navigate(`/app/a/${application.name}`);
               }}
-              showBorder={true}
               className={styles.itemContent}
             >
-              <img loading={"lazy"} className={styles.itemIcon} src={`${csi.getInstanceUrl()}${application.icon}`} draggable={false} alt="" />
+              <img
+                loading={"lazy"}
+                className={styles.itemIcon}
+                src={`${csi.getInstanceUrl()}${application.icon}`}
+                draggable={false}
+                alt=""
+              />
               <span className={styles.itemLabel}>{application.displayName}</span>
             </Card>
           </RightClickMenu>

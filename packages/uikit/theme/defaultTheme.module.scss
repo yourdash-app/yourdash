@@ -50,7 +50,7 @@
   #{$theme+$input+$background}: #222222;
   #{$theme+$input+$border}: 0.125rem solid #444444;
   #{$theme+$input+$radius}: 0.5rem;
-  #{$theme+$input+$height}: 1.75rem;
+  #{$theme+$input+$height}: 2rem;
   #{$theme+$input+$padding+$horizontal}: 0.5rem;
   #{$theme+$input+$transition}: all 0.2s ease-in-out;
   // focus
@@ -65,7 +65,6 @@
   #{$theme}#{$button}#{$font}#{$size}: 0.9rem;
   #{$theme}#{$button}#{$font}#{$weight}: 400;
   #{$theme}#{$button}#{$radius}: 0.5rem;
-  #{$theme}#{$button}#{$height}: 1.75rem;
   #{$theme}#{$button}#{$padding}#{$horizontal}: 0.5rem;
   #{$theme}#{$button}#{$transition}: all 0.2s ease-in-out;
   // hover
@@ -134,7 +133,7 @@
   #{$theme}#{$input}#{$background}: #222222;
   #{$theme}#{$input}#{$border}: 0.125rem solid #444444;
   #{$theme}#{$input}#{$radius}: 0.5rem;
-  #{$theme}#{$input}#{$height}: 1.75rem;
+  #{$theme}#{$input}#{$height}: 2rem;
   #{$theme}#{$input}#{$padding}#{$horizontal}: 0.5rem;
   #{$theme}#{$input}#{$transition}: all 0.2s ease-in-out;
   // focus
@@ -149,7 +148,6 @@
   #{$theme}#{$button}#{$font}#{$size}: 0.9rem;
   #{$theme}#{$button}#{$font}#{$weight}: 400;
   #{$theme}#{$button}#{$radius}: 0.5rem;
-  #{$theme}#{$button}#{$height}: 1.75rem;
   #{$theme}#{$button}#{$padding}#{$horizontal}: 0.5rem;
   #{$theme}#{$button}#{$transition}: all 0.2s ease-in-out;
   // hover
@@ -214,7 +212,7 @@
   #{$theme}#{$input}#{$background}: #222222;
   #{$theme}#{$input}#{$border}: 0.125rem solid #444444;
   #{$theme}#{$input}#{$radius}: 0.5rem;
-  #{$theme}#{$input}#{$height}: 1.75rem;
+  #{$theme}#{$input}#{$height}: 2rem;
   #{$theme}#{$input}#{$padding}#{$horizontal}: 0.5rem;
   #{$theme}#{$input}#{$transition}: all 0.2s ease-in-out;
   // focus
@@ -230,7 +228,6 @@
   #{$theme}#{$button}#{$font}#{$size}: 0.9rem;
   #{$theme}#{$button}#{$font}#{$weight}: 400;
   #{$theme}#{$button}#{$radius}: 0.25rem;
-  #{$theme}#{$button}#{$height}: 1.75rem;
   #{$theme}#{$button}#{$padding}#{$horizontal}: 0.5rem;
   #{$theme}#{$button}#{$transition}: all 0.2s ease-in-out;
   // hover
@@ -282,10 +279,8 @@
   #{$theme}#{$heading}#{$h6}#{$weight}: 500;
   #{$theme}#{$heading}#{$h6}#{$size}: 0.875rem;
 
-
   // text button
   #{$theme+$textbutton+$font+$weight}: 700;
-
 
   // font
   #{$theme}#{$family}: Inter;
@@ -297,7 +292,7 @@
   #{$theme}#{$input}#{$background}: #222222;
   #{$theme}#{$input}#{$border}: 0.125rem solid #444444;
   #{$theme}#{$input}#{$radius}: 0.5rem;
-  #{$theme}#{$input}#{$height}: 1.75rem;
+  #{$theme}#{$input}#{$height}: 2rem;
   #{$theme}#{$input}#{$padding}#{$horizontal}: 0.5rem;
   #{$theme}#{$input}#{$transition}: all 0.2s ease-in-out;
   // focus
@@ -313,7 +308,6 @@
   #{$theme}#{$button}#{$font}#{$size}: 0.9rem;
   #{$theme}#{$button}#{$font}#{$weight}: 400;
   #{$theme}#{$button}#{$radius}: 0.25rem;
-  #{$theme}#{$button}#{$button}#{$height}: 1.75rem;
   #{$theme}#{$button}#{$padding}#{$horizontal}: 0.5rem;
   // hover
   #{$theme}#{$button}#{$hover}#{$color}: #ffffff;
@@ -338,22 +332,18 @@
 
 .mobile {
   .level0 {
-    #{$theme}#{$button}#{$height}: 2.5rem;
     #{$theme+$input+$height}: 2.5rem;
   }
 
   .level1 {
-    #{$theme}#{$button}#{$height}: 2.5rem;
     #{$theme+$input+$height}: 2.5rem;
   }
 
   .level2 {
-    #{$theme}#{$button}#{$height}: 2.5rem;
     #{$theme+$input+$height}: 2.5rem;
   }
 
   .level3 {
-    #{$theme}#{$button}#{$height}: 2.5rem;
     #{$theme+$input+$height}: 2.5rem;
   }
 }

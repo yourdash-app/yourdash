@@ -24,15 +24,30 @@ const LoginSuccessPage: FC = () => {
   return (
     <div className={styles.page}>
       {notice ? (
-        <Card className={styles.notice}>
-          <Box className={styles.header}>
-            <Heading
-              className={styles.heading}
-              level={1}
-              text={"Notice"}
-            />
-            <Subtext text={"authored: " + new Date(notice?.timestamp || 0).toLocaleDateString()} />
-          </Box>
+        <Card
+          containerClassName={styles.notice}
+          headerClassName={styles.noticeHeader}
+          actions={
+            <>
+              <Button
+                onClick={() => {
+                  navigate("/app");
+                }}
+                text={"Continue"}
+              />
+            </>
+          }
+          header={
+            <>
+              <Heading
+                className={styles.heading}
+                level={1}
+                text={"Notice"}
+              />
+              <Subtext text={"authored: " + new Date(notice?.timestamp || 0).toLocaleDateString()} />
+            </>
+          }
+        >
           <Text
             className={styles.message}
             text={notice?.message || "No message..."}
@@ -41,14 +56,6 @@ const LoginSuccessPage: FC = () => {
             className={styles.author}
             text={`- ${notice?.author || "Unknown author"}`}
           />
-          <Box className={styles.footer}>
-            <Button
-              onClick={() => {
-                navigate("/app");
-              }}
-              text={"Continue"}
-            />
-          </Box>
         </Card>
       ) : (
         // @ts-ignore

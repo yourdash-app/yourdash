@@ -24,44 +24,53 @@ export default class CoreApiPanel {
       console.log(this.coreApi.globalDb.get<string[]>("core:installedApplications"));
 
       return res.json(
-        await Promise.all(
-          (this.coreApi.globalDb.get<string[]>("core:installedApplications") || []).map(
-            async (applicationName: string) => {
-              const application = await new YourDashApplication(applicationName).read();
+        (
+          await Promise.all(
+            (this.coreApi.globalDb.get<string[]>("core:installedApplications") || []).map(
+              async (applicationName: string) => {
+                // FIXME: CHECK BEFORE .READ
+                const unreadApplication = new YourDashApplication(applicationName);
 
-              const RESIZED_ICON_PATH = path.join(
-                this.coreApi.fs.ROOT_PATH,
-                "cache/applications/icons",
-                `${application.getName()}`,
-                "128.png",
-              );
+                if (!(await unreadApplication.exists())) return undefined;
 
-              if (!(await this.coreApi.fs.doesExist(RESIZED_ICON_PATH))) {
-                this.coreApi.log.info("core:panel", `Generating 128x128 icon for ${application.getName()}`);
+                const application = await unreadApplication.read();
 
-                await this.coreApi.fs.createDirectory(path.dirname(RESIZED_ICON_PATH));
-                const resizedIconPath = await this.coreApi.image.resizeTo(
-                  (await this.coreApi.fs.getFile(await application.getIconPath())).path,
-                  128,
-                  128,
+                const RESIZED_ICON_PATH = path.join(
+                  this.coreApi.fs.ROOT_PATH,
+                  "cache/applications/icons",
+                  `${application.getName()}`,
+                  "128.png",
                 );
 
-                await this.coreApi.fs.copy(resizedIconPath, RESIZED_ICON_PATH);
-              }
+                if (!(await this.coreApi.fs.doesExist(RESIZED_ICON_PATH))) {
+                  this.coreApi.log.info("core:panel", `Generating 128x128 icon for ${application.getName()}`);
 
-              return {
-                name: application.getName(),
-                displayName: application.getDisplayName(),
-                description: application.getDescription(),
-                icon: this.coreApi.image.createAuthenticatedImage(
-                  username,
-                  AUTHENTICATED_IMAGE_TYPE.FILE,
-                  RESIZED_ICON_PATH,
-                ),
-              };
-            },
-          ),
-        ),
+                  await this.coreApi.fs.createDirectory(path.dirname(RESIZED_ICON_PATH));
+                  const resizedIconPath = await this.coreApi.image.resizeTo(
+                    (await this.coreApi.fs.getFile(await application.getIconPath())).path,
+                    128,
+                    128,
+                  );
+
+                  await this.coreApi.fs.copy(resizedIconPath, RESIZED_ICON_PATH);
+                }
+
+                return {
+                  name: application.getName(),
+                  displayName: application.getDisplayName(),
+                  description: application.getDescription(),
+                  icon: this.coreApi.image.createAuthenticatedImage(
+                    username,
+                    AUTHENTICATED_IMAGE_TYPE.FILE,
+                    RESIZED_ICON_PATH,
+                  ),
+                };
+              },
+            ),
+          )
+        ).filter((x) => {
+          return x !== undefined;
+        }),
       );
     });
 

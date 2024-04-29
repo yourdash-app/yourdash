@@ -21,7 +21,7 @@
 }
 
 .formCard {
-  display: flex;
+  position: relative;
   align-items: center;
   justify-content: center;
 
@@ -35,7 +35,14 @@
   }
 }
 
-.card {
+.instanceUrl {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.metadataCard {
   position: relative;
 }
 
@@ -55,6 +62,9 @@
   left: 0;
   width: 100%;
   padding: 1rem;
+  padding-top: 6rem;
+  background: linear-gradient(180deg, #00000000 0%, #000000cc 100%);
+
 
   .title {
     text-align: start;

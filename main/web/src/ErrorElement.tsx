@@ -1,5 +1,5 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -16,7 +16,7 @@ const ErrorElement: React.FC = () => {
 
   return (
     <div className={styles.page}>
-      <Card className={styles.error}>
+      <Card containerClassName={styles.error}>
         <Heading
           level={1}
           text={"An error has occurred"}

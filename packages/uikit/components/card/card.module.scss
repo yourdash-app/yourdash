@@ -9,16 +9,15 @@
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-
   font-weight: var(#{$theme+$font+$weight});
   font-size: var(#{$theme+$font+$size});
   font-family: var(#{$theme+$font+$family});
   background: var(#{$theme+$background});
   color: var(#{$theme+$color});
   border: var(#{$theme+$border});
-  padding: var(#{$theme+$padding});
+  padding: 0;
   border-radius: var(#{$theme+$radius});
-  gap: var(#{$theme+$gap});
+  overflow: hidden;
 }
 
 .clickable {
@@ -60,5 +59,18 @@
   border-left: none;
   border-right: none;
   border-bottom: none;
+  display: flex;
+  align-items: end;
+  width: 100%;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(#{$theme+$gap});
+  padding: var(#{$theme+$padding});
+  padding-top: var(#{$theme+$gap});
+  padding-bottom: var(#{$theme+$gap});
+  height: 100%;
   width: 100%;
 }

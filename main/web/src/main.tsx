@@ -49,10 +49,8 @@ function main() {
                     index
                     element={<Index />}
                   />
-                  <Route
-                    path={"/signup"}
-                    element={<ComingSoon />}
-                  />
+                </Route>
+                <Route element={<Navigation subtitle={"Docs"} />}>
                   <Route
                     path={"docs/*"}
                     element={<DocsLayout />}
@@ -62,6 +60,8 @@ function main() {
                       element={<DocsRouter />}
                     />
                   </Route>
+                </Route>
+                <Route element={<Navigation subtitle={"Projects"} />}>
                   <Route
                     path={"projects"}
                     index

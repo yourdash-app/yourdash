@@ -14,7 +14,7 @@
   border-radius: var(#{$theme}#{$button}#{$radius});
   background: var(#{$theme}#{$button}#{$background});
   transition: var(#{$theme}#{$button}#{$transition});
-  height: var(#{$theme}#{$button}#{$height});
+  height: var(#{$theme+$input+$height});
   width: max-content;
   display: flex;
   align-items: center;

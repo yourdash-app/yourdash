@@ -16,9 +16,11 @@ const TextInput: FC<{
   icon?: UKIcon;
   onEnter?: (value: string) => void;
   defaultValue?: string;
+  accessibleName: string;
+  className?: string;
 }> = (props) => {
   return (
-    <div className={styles.component}>
+    <div className={clippy(styles.component, props.className)}>
       {props.icon && (
         <Icon
           className={styles.icon}
@@ -26,6 +28,7 @@ const TextInput: FC<{
         />
       )}
       <input
+        aria-label={props.accessibleName}
         defaultValue={props.defaultValue}
         className={clippy(styles.input, !props.icon && styles.noIcon)}
         placeholder={props.placeholder}

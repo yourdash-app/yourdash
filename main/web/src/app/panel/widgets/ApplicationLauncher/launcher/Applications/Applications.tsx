@@ -1,11 +1,11 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 import clippy from "@yourdash/shared/web/helpers/clippy";
-import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
-import TextInput from "@yourdash/chiplet/components/textInput/TextInput";
+import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary.js";
+import TextInput from "@yourdash/uikit/components/textInput/textInput.js";
 import React, { useEffect } from "react";
 import IPanelApplicationsLauncherApplication from "@yourdash/shared/core/panel/applicationsLauncher/application";
 import LargeApplicationGrid from "./LargeGrid/LargeApplicationGrid";
@@ -36,11 +36,9 @@ const ApplicationsLauncherApplications: React.FC<{
         accessibleName={"Search Applications"}
         placeholder={"Search Applications"}
         className={clippy(styles.searchBar, "top-0 sticky z-10")}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") {
-            if (filteredApplications.length === 1) {
-              navigate(`/app/a/${filteredApplications[0].name}`);
-            }
+        onEnter={() => {
+          if (filteredApplications.length === 1) {
+            navigate(`/app/a/${filteredApplications[0].name}`);
           }
         }}
         onChange={(val) => {
