@@ -7,10 +7,10 @@ import clippy from "@yourdash/shared/web/helpers/clippy.js";
 import styles from "./textButton.module.scss";
 import { FC } from "react";
 
-const TextButton: FC<{ onClick: () => void; text: string; extraClass?: string }> = (props) => {
+const TextButton: FC<{ onClick: () => void; text: string; className?: string }> = (props) => {
   return (
     <button
-      className={clippy(styles.component, props.extraClass)}
+      className={clippy(styles.component, props.className)}
       onClick={props.onClick}
       aria-label={props.text}
     >

@@ -23,24 +23,24 @@ const LoginSuccessPage: Component = () => {
   return (
     <div class={styles.page}>
       {notice() ? (
-        <Card extraClass={styles.notice}>
-          <Box extraClass={styles.header}>
+        <Card className={styles.notice}>
+          <Box className={styles.header}>
             <Heading
-              extraClass={styles.heading}
+              className={styles.heading}
               level={1}
               text={"Notice"}
             />
             <Subtext text={"authored: " + new Date(notice()?.timestamp || 0).toLocaleDateString()} />
           </Box>
           <Text
-            extraClass={styles.message}
+            className={styles.message}
             text={notice()?.message || "No message..."}
           />
           <Subtext
-            extraClass={styles.author}
+            className={styles.author}
             text={`- ${notice()?.author || "Unknown author"}`}
           />
-          <Box extraClass={styles.footer}>
+          <Box className={styles.footer}>
             <Button
               onClick={() => {
                 navigate("/app");

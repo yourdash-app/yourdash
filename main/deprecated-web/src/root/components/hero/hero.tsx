@@ -25,21 +25,21 @@ const IndexPageHero: Component = () => {
         <Heading
           level={1}
           text={"YourDash"}
-          extraClass={clippy("animate__jackInTheBox animate__animated animate__250ms", styles.brandName)}
+          className={clippy("animate__jackInTheBox animate__animated animate__250ms", styles.brandName)}
         />
         {/* Taglines scroller */}
         <IndexPageHeroTaglines />
         <div class={"flex gap-2 pt-8 items-center justify-center animate__animated animate__fadeIn animate__750ms"}>
           <Button
             onClick={() => navigate("/login")}
-            extraClass={
+            className={
               "pl-4 pr-4 pb-1.5 pt-1.5 hover:bg-theme-500 active:bg-theme-400 bg-theme-600 transition-colors select-none cursor-pointer rounded-full animate__animated animate__tada animate__1s"
             }
             text={"Login"}
           />
           <Button
             onClick={() => navigate("/login/signup")}
-            extraClass={
+            className={
               "hover:text-theme-500 active:text-theme-400 text-theme-200 transition-colors select-none cursor-pointer"
             }
             text={"Signup"}

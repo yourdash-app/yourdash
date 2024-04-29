@@ -3,65 +3,65 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import clippy from "@yourdash/shared/web/helpers/clippy.js";
-import Box from "@yourdash/uikit/components/box/box.js";
-import Flex from "@yourdash/uikit/components/flex/flex.js";
-import Heading from "@yourdash/uikit/components/heading/heading.js";
-import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary.js";
-import IconButton from "@yourdash/uikit/components/iconButton/iconButton.js";
-import Image from "@yourdash/uikit/components/image/image.js";
-import Link from "@yourdash/uikit/components/link/link.js";
-import Separator from "@yourdash/uikit/components/separator/separator.js";
-import Text from "@yourdash/uikit/components/text/text.js";
-import TextButton from "@yourdash/uikit/components/textButton/textButton.js";
-import { Component, ParentProps } from "solid-js";
+import clippy from "@yourdash/shared/web/helpers/clippy";
+import Box from "@yourdash/uikit/components/box/box";
+import Flex from "@yourdash/uikit/components/flex/flex";
+import Heading from "@yourdash/uikit/components/heading/heading";
+import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary";
+import IconButton from "@yourdash/uikit/components/iconButton/iconButton";
+import Image from "@yourdash/uikit/components/image/image";
+import Link from "@yourdash/uikit/components/link/link";
+import Separator from "@yourdash/uikit/components/separator/separator";
+import Text from "@yourdash/uikit/components/text/text";
+import TextButton from "@yourdash/uikit/components/textButton/textButton";
 import styles from "./navigation.module.scss";
-import { useNavigate } from "@solidjs/router";
+import { FC } from "react";
+import { Outlet, useNavigate } from "react-router";
 
-const Navigation: Component<ParentProps & { subtitle?: string }> = ({ children, subtitle }) => {
+const Navigation: FC<{ subtitle?: string }> = ({ subtitle }) => {
   const navigate = useNavigate();
 
   return (
     <>
-      <Box extraClass={styles.navigationBar}>
+      <Box className={styles.navigationBar}>
         <Image
           src={"/assets/branding/yourdash.svg"}
           accessibleLabel={"YourDash Logo"}
-          extraClass={styles.logo}
+          className={styles.logo}
         />
         <Heading
           level={2}
-          extraClass={styles.title}
+          className={styles.title}
           text={"YourDash"}
         />
         <Heading
           level={2}
-          extraClass={styles.subtitle}
+          className={styles.subtitle}
           text={subtitle ? `/ ${subtitle}` : ""}
         />
         <TextButton
-          extraClass={styles.link}
+          className={styles.link}
           text={"Home"}
           onClick={() => {
             navigate("/");
           }}
         />
         <TextButton
-          extraClass={styles.link}
+          className={styles.link}
           text={"Docs"}
           onClick={() => {
             navigate("/docs");
           }}
         />
         <TextButton
-          extraClass={clippy(styles.link, styles.source)}
+          className={clippy(styles.link, styles.source)}
           text={"Source"}
           onClick={() => {
             window.location.href = "https://github.com/yourdash/yourdash";
           }}
         />
         <TextButton
-          extraClass={styles.link}
+          className={styles.link}
           text={"Login"}
           onClick={() => {
             navigate("/login");
@@ -70,7 +70,7 @@ const Navigation: Component<ParentProps & { subtitle?: string }> = ({ children, 
       </Box>
       <Box
         level={1}
-        extraClass={styles.notice}
+        className={styles.notice}
       >
         <Text text={"YourDash is a pre-alpha project. "} />
         <Link
@@ -78,28 +78,28 @@ const Navigation: Component<ParentProps & { subtitle?: string }> = ({ children, 
           text={"Learn more"}
         />
       </Box>
-      {children}
-      <Box extraClass={styles.footer}>
+      <Outlet />
+      <Box className={styles.footer}>
         <Flex
-          extraClass={styles.brand}
+          className={styles.brand}
           direction={"row"}
         >
           <Image
             src={"/assets/branding/yourdash.svg"}
             accessibleLabel={"YourDash Logo"}
-            extraClass={styles.logo}
+            className={styles.logo}
           />
           <Heading
             level={2}
-            extraClass={styles.name}
+            className={styles.name}
             text={"YourDash"}
           />
           <Flex
             direction={"row"}
-            extraClass={styles.socials}
+            className={styles.socials}
           >
             <IconButton
-              extraClass={styles.icon}
+              className={styles.icon}
               preserveColor
               accessibleLabel={"Ewsgit on GitHub"}
               icon={UKIcon.Ewsgit}
@@ -109,7 +109,7 @@ const Navigation: Component<ParentProps & { subtitle?: string }> = ({ children, 
             />
             <IconButton
               accessibleLabel={"YourDash on GitHub"}
-              extraClass={styles.icon}
+              className={styles.icon}
               icon={UKIcon.LinkExternal}
               onClick={() => {
                 navigate("");
@@ -120,7 +120,7 @@ const Navigation: Component<ParentProps & { subtitle?: string }> = ({ children, 
         <Separator direction={"column"} />
         <Flex
           direction={"row"}
-          extraClass={styles.license}
+          className={styles.license}
         >
           <Text text={"©2022-2024 Ewsgit and YourDash Contributors."} />
           <Link

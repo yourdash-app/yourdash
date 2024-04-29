@@ -3,20 +3,32 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import Card from "@yourdash/uikit/components/card/card.js";
+import Heading from "@yourdash/uikit/components/heading/heading.js";
+import Text from "@yourdash/uikit/components/text/text.js";
 import React from "react";
 import { useRouteError } from "react-router-dom";
+import styles from "./ErrorElement.module.scss";
 
 const ErrorElement: React.FC = () => {
-  const error = useRouteError() as { message: string };
+  // @ts-ignore
+  const error = (useRouteError()?.error as Error) || ({} as Partial<Error>);
 
   return (
-    <div
-      className={
-        "fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-2xl bg-base-800 p-6 border-4 border-red-400"
-      }
-    >
-      <h2 className={"text-4xl font-semibold text-center"}>An error has occurred</h2>
-      {error.message && <p className={"mt-4"}>{error.message}</p>}
+    <div className={styles.page}>
+      <Card className={styles.error}>
+        <Heading
+          level={1}
+          text={"An error has occurred"}
+        />
+        {error.message && (
+          <Heading
+            level={3}
+            text={error.message}
+          />
+        )}
+        {error.stack && <Text text={error.stack} />}
+      </Card>
     </div>
   );
 };

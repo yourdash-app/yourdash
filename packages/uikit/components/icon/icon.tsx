@@ -12,11 +12,11 @@ const Icon: FC<{
   size?: string;
   color?: string;
   preserveColor?: boolean;
-  extraClass?: string;
+  className?: string;
 }> = (props) => {
   return (
     <div
-      className={`${styles.component} ${props.extraClass} ${props.preserveColor ? styles.preserveColor : ""}`}
+      className={`${styles.component} ${props.className} ${props.preserveColor ? styles.preserveColor : ""}`}
       style={{
         "--icon": `url(${props.icon})`,
         ...(!props.preserveColor ? { "--color": props.color } : {}),

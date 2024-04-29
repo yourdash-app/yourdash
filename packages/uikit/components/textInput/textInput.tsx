@@ -21,12 +21,12 @@ const TextInput: FC<{
     <div className={styles.component}>
       {props.icon && (
         <Icon
-          extraClass={styles.icon}
+          className={styles.icon}
           icon={props.icon}
         />
       )}
       <input
-        value={props.defaultValue}
+        defaultValue={props.defaultValue}
         className={clippy(styles.input, !props.icon && styles.noIcon)}
         placeholder={props.placeholder}
         type="text"

@@ -57,11 +57,11 @@ const IndexCardsPage: Component<{ metadata?: EndpointResponseLoginInstanceMetada
 
   return (
     <div class={styles.page}>
-      <Card extraClass={clippy(styles.card, styles.formCard)}>
+      <Card className={clippy(styles.card, styles.formCard)}>
         {user().isValid ? (
           <>
             <Image
-              extraClass={styles.avatar}
+              className={styles.avatar}
               authenticatedImage
               src={user().avatar}
               accessibleLabel={"Your Avatar"}
@@ -123,7 +123,7 @@ const IndexCardsPage: Component<{ metadata?: EndpointResponseLoginInstanceMetada
           }}
         />
         <Button
-          extraClass={styles.button}
+          className={styles.button}
           text={"Login"}
           disabled={username() === "" || password() === "" || !user().isValid}
           onClick={() => {
@@ -137,25 +137,25 @@ const IndexCardsPage: Component<{ metadata?: EndpointResponseLoginInstanceMetada
           }}
         />
       </Card>
-      <Card extraClass={styles.card}>
+      <Card className={styles.card}>
         <Image
-          extraClass={styles.backgroundImage}
+          className={styles.backgroundImage}
           src={"/login/instance/background"}
           authenticatedImage
           accessibleLabel={""}
         />
         <Flex
           direction={"column"}
-          extraClass={styles.metadata}
+          className={styles.metadata}
         >
           <Heading
             level={1}
             text={props.metadata?.title || "Unknown instance title"}
-            extraClass={styles.title}
+            className={styles.title}
           />
           {props.metadata?.message && (
             <Subtext
-              extraClass={styles.message}
+              className={styles.message}
               text={props.metadata.message}
             />
           )}

@@ -31,13 +31,13 @@ const Panel: Component = () => {
   }
 
   return (
-    <Box extraClass={styles.component}>
+    <Box className={styles.component}>
       <IconButton
         icon={UKIcon.ChevronLeft}
         onClick={() => {
           navigate("/");
         }}
-        extraClass={styles.backButton}
+        className={styles.backButton}
         accessibleLabel={"Go Back"}
       />
       <Heading

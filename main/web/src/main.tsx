@@ -17,16 +17,15 @@ import AppLayout from "./app/AppLayout";
 import ComingSoon from "@yourdash/chiplet/views/ComingSoon.jsx";
 import LoginIndexPagePreload from "./login/index.preload.js";
 import LoginInstancePage from "./login/instance/index.js";
+import Navigation from "./root/components/navigation/navigation.js";
 import DocsLayout from "./root/docs/Layout";
 import ErrorElement from "./ErrorElement";
-import ServerLoginPage from "./root/login/Page";
 import Index from "./root/index/Index";
-import LoginRedirect from "./root/login/Redirect";
+import LoginRedirect from "./deprecatedLogin/Redirect";
 import LoginSuccessPage from "./login/success/index.js";
 import ProjectsIndexPage from "./root/projects/Index";
-import RootLayout from "./root/RootLayout";
 import ChipletRootIntegration from "@yourdash/chiplet/RootIntegration";
-import LinkerDesktopClientStartupPage from "./root/linker-desktop-client-startup/Index";
+import LinkerDesktopClientStartupPage from "./root/linkerDesktopClientStartup/Index";
 import HostedApplicationRouter from "./app/HostedApplicationRouter";
 
 const AppRouter = loadable(() => import("./app/AppRouter"));
@@ -45,7 +44,7 @@ function main() {
                   path={"/linker-desktop-client-startup"}
                   element={<LinkerDesktopClientStartupPage />}
                 />
-                <Route element={<RootLayout />}>
+                <Route element={<Navigation />}>
                   <Route
                     index
                     element={<Index />}

@@ -7,12 +7,12 @@ import csi from "@yourdash/csi/csi.js";
 import styles from "./image.module.scss";
 import { FC } from "react";
 
-const Image: FC<{ src: string; accessibleLabel: string; extraClass?: string; authenticatedImage?: boolean }> = (
+const Image: FC<{ src: string; accessibleLabel: string; className?: string; authenticatedImage?: boolean }> = (
   props,
 ) => {
   return (
     <img
-      className={`${styles.component} ${props.extraClass}`}
+      className={`${styles.component} ${props.className}`}
       src={(props.authenticatedImage ? csi.getInstanceUrl() : "") + props.src}
       draggable={false}
       alt={props.accessibleLabel}

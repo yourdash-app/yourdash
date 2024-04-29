@@ -7,11 +7,11 @@ import clippy from "@yourdash/shared/web/helpers/clippy.js";
 import styles from "./link.module.scss";
 import { FC } from "react";
 
-const Link: FC<{ text: string; to: string; extraClass?: string }> = (props) => {
+const Link: FC<{ text: string; to: string; className?: string }> = (props) => {
   return (
     <a
       href={props.to}
-      className={clippy(styles.component, props.extraClass)}
+      className={clippy(styles.component, props.className)}
     >
       {props.text}
     </a>

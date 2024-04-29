@@ -12,6 +12,8 @@
 
   background: var(#{$theme+$background});
   height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .level0 {

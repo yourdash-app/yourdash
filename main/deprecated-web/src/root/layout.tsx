@@ -4,7 +4,7 @@
  */
 
 import { Component, ParentProps } from "solid-js";
-import Navigation from "../components/navigation/navigation.js";
+import Navigation from "../../../web/src/root/components/navigation/navigation.js";
 
 const RootLayout: Component<ParentProps> = ({ children }) => {
   return <Navigation>{children}</Navigation>;

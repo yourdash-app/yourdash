@@ -13,14 +13,14 @@ const IconButton: FC<{
   icon: UKIcon;
   accessibleLabel: string;
   onClick: () => void;
-  extraClass?: string;
+  className?: string;
   preserveColor?: boolean;
 }> = (props) => {
   return (
     <button
       onClick={props.onClick}
       aria-label={props.accessibleLabel}
-      className={clippy(styles.component, props.extraClass)}
+      className={clippy(styles.component, props.className)}
     >
       <Icon
         size={"1.25rem"}

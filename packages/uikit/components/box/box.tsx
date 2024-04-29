@@ -9,11 +9,11 @@ import IncrementLevel from "../../core/incrementLevel.js";
 import { useLevel, useLevelClass } from "../../core/level.js";
 import styles from "./box.module.scss";
 
-const Box: FC<{ extraClass?: string; level?: 0 | 1 | 2 | 3; children: ReactNode | ReactNode[] }> = (props) => {
+const Box: FC<{ className?: string; level?: 0 | 1 | 2 | 3; children: ReactNode | ReactNode[] }> = (props) => {
   const level = props.level || useLevel();
 
   return (
-    <div className={clippy(styles.component, props.extraClass, useLevelClass(level))}>
+    <div className={clippy(styles.component, props.className, useLevelClass(level))}>
       <IncrementLevel>{props.children}</IncrementLevel>
     </div>
   );
