@@ -14,33 +14,36 @@ applications
 ├── [applicationid]
 │   ├── README.md
 │   ├── application.json
-|   ├── icon.avif
+│   ├── icon.avif
 │   ?── crossCompat
-│   |   └── [compat applicationid]
-│   |       ├── web
-│   |       ├── backend
-│   |       └── assets
-|   ?── web
+│   │   └── [compat applicationid]
+│   │       ├── web
+│   │       ├── backend
+│   │       └── assets
+│   │
+│   ?── web
 │   │   ├── assets              // Application's web assets
 │   │   ├── i18n                // Application's i18n translation files
-│   │   |   └── en-GB.json      // Default language
+│   │   │   └── en-GB.json      // Default language
 │   │   ├── routes              // Application's Routes as defined in /frontend/index.tsx (should map to folder structure)
-│   │   |   └── index.tsx       // Application's Index page
+│   │   │   └── index.tsx       // Application's Index page
 │   │   ├── lib                 // Web client library files
 │   │   └── index.tsx           // React router
+│   │
 │   ?── backend
 │   │   ├── services            // Application's i18n translation files
-│   │   |   └── en-GB.json      // Default language
+│   │   │   └── en-GB.json      // Default language
 │   │   ├── module              // Application's Backend module
-│   │   |   └── index.ts        // Backend module entrypoint file
+│   │   │   └── index.ts        // Backend module entrypoint file
 │   │   ├── defaults            // Backend's default configs and assets
 │   │   └── lib                 // Backend library files
+│   │
 │   ?── shared                  // Structure depending on the application
 │   │   ├── assets              // Shared assets
 │   │   ├── lib                 // Shared libraries
 │   │   └── types               // Shared types
 │   └── tsconfig.json
-|
+│
 ├── package.json                // Contains all depenedencies for applications
 └── gulpfile.js                 // Executes post installation scripts for each YourDash application
 ```
