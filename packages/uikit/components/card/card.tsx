@@ -22,15 +22,28 @@ const Card: FC<{
   header?: React.ReactNode | React.ReactNode[];
 }> = (props) => {
   const level = props.level || useLevel();
+
+  if (props.onClick) {
+    return (
+      <>
+        <button
+          className={clippy(styles.component, useLevelClass(level), props.containerClassName, styles.clickable)}
+          onClick={props.onClick}
+        >
+          <IncrementLevel>
+            {props.header && <Box className={clippy(styles.header, props.headerClassName)}>{props.header}</Box>}
+            <div className={clippy(styles.content, props.className)}>{props.children}</div>
+            {props.actions && <Box className={clippy(styles.actions, props.actionsClassName)}>{props.actions}</Box>}
+          </IncrementLevel>
+        </button>
+      </>
+    );
+  }
+
   return (
     <>
       <div
-        className={clippy(
-          styles.component,
-          useLevelClass(level),
-          props.containerClassName,
-          props.onClick && styles.clickable,
-        )}
+        className={clippy(styles.component, useLevelClass(level), props.containerClassName)}
         onClick={props.onClick}
       >
         <IncrementLevel>

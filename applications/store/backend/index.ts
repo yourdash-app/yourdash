@@ -5,8 +5,8 @@
 
 import coreApi from "@yourdash/backend/src/core/coreApi.js";
 import BackendModule, { YourDashModuleArguments } from "@yourdash/backend/src/core/moduleManager/backendModule.js";
-import YourDashApplication, { getAllApplications } from "@yourdash/backend/src/helpers/applications.js";
-import { getInstanceLogoBase64 } from "@yourdash/backend/src/helpers/logo.js";
+import YourDashApplication, { getAllApplications } from "@yourdash/backend/src/lib/applications.js";
+import { getInstanceLogoBase64 } from "@yourdash/backend/src/lib/logo.js";
 import path from "path";
 import { IYourDashStoreApplication } from "@yourdash/shared/apps/store/storeApplication.js";
 import { IStoreCategory } from "@yourdash/shared/apps/store/storeCategory.js";
@@ -78,7 +78,11 @@ export default class StoreModule extends BackendModule {
             return {
               value: applicationName,
               displayName: application.getDisplayName() || applicationName,
-              icon: coreApi.image.createAuthenticatedImage(username, AUTHENTICATED_IMAGE_TYPE.FILE, await application.getIconPath()),
+              icon: coreApi.image.createAuthenticatedImage(
+                username,
+                AUTHENTICATED_IMAGE_TYPE.FILE,
+                await application.getIconPath(),
+              ),
               installed: application.isInstalled(),
             };
           }),
@@ -113,14 +117,18 @@ export default class StoreModule extends BackendModule {
           const application = await new YourDashApplication(app).read();
           applicationsOutput.push({
             name: application.getName(),
-            icon: coreApi.image.createAuthenticatedImage(username, AUTHENTICATED_IMAGE_TYPE.FILE, await application.getIconPath()),
+            icon: coreApi.image.createAuthenticatedImage(
+              username,
+              AUTHENTICATED_IMAGE_TYPE.FILE,
+              await application.getIconPath(),
+            ),
             displayName: application.getDisplayName(),
           });
         }),
       );
 
       return res.json(<IStoreCategory>{
-        value: id,
+        id: id,
         applications: applicationsOutput,
         icon: `data:image/avif;base64,${getInstanceLogoBase64()}`,
         displayName: id.slice(0, 1).toUpperCase() + id.slice(1),
@@ -162,7 +170,11 @@ export default class StoreModule extends BackendModule {
       }
       const application = await applicationUnread.read();
 
-      coreApi.globalDb.set("core:installedApplications", [...coreApi.globalDb.get("core:installedApplications"), id, ...application.getDependencies()]);
+      coreApi.globalDb.set("core:installedApplications", [
+        ...coreApi.globalDb.get<string[]>("core:installedApplications"),
+        id,
+        ...application.getDependencies(),
+      ]);
       await coreApi.moduleManager.loadModule(id, path.join(process.cwd(), `../applications/${id}/backend/`));
       return res.json({ success: true });
     });
@@ -175,7 +187,7 @@ export default class StoreModule extends BackendModule {
       }
       coreApi.globalDb.set(
         "core:installedApplications",
-        coreApi.globalDb.get("core:installedApplications").filter((app) => app !== id),
+        coreApi.globalDb.get<string[]>("core:installedApplications").filter((app) => app !== id),
       );
       return res.json({ success: true });
     });

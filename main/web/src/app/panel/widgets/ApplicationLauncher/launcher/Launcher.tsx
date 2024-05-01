@@ -65,6 +65,9 @@ const ApplicationLauncher: React.FC<{
             accessibleLabel={"Profile"}
             icon={UKIcon.Person}
             aria-label={"User Profile Settings"}
+            onClick={() => {
+              navigate("/app/a/settings/profile");
+            }}
           />
         </div>
         <span>{csi.userDB.get("user:name")?.first || "Unknown First Name"}</span>
