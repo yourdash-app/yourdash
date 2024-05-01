@@ -7,12 +7,10 @@ import { FC } from "react";
 import contextMenuRootContext from "./contextMenuRootContext.js";
 
 const ContextMenu: FC<{
-  items: { label: string; onClick: () => void };
+  items: { label: string; onClick: () => void }[];
   children: React.ReactNode | React.ReactNode[];
   className?: string;
 }> = ({ items, children, className }) => {
-  console.log(items);
-
   return (
     <contextMenuRootContext.Consumer>
       {(rootContext) => {
@@ -30,12 +28,13 @@ const ContextMenu: FC<{
                 y: e.pageY,
                 width: menuRect.width,
                 height: menuRect.height,
+                items: items,
               });
 
               const listener = (ev: MouseEvent) => {
                 ev.preventDefault();
 
-                rootContext(0, 0, clientRect.width, clientRect.height, false, []);
+                rootContext.destroyMenu();
 
                 window.removeEventListener("click", listener);
                 window.removeEventListener("contextmenu", listener);

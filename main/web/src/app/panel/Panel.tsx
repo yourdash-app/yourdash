@@ -1,9 +1,10 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 import clippy from "@yourdash/shared/web/helpers/clippy";
+import Box from "@yourdash/uikit/components/box/box.js";
 import styles from "./Panel.module.scss";
 import React, { memo, useEffect, useState } from "react";
 import loadable from "@loadable/component";
@@ -38,7 +39,7 @@ const Panel: React.FC<{
   }
 
   return (
-    <section
+    <Box
       className={clippy(
         styles.panel,
         side === "top" && styles.top,
@@ -53,9 +54,14 @@ const Panel: React.FC<{
       {widgets.map((widget) => {
         const LoadableWidget = loadable(() => import(`./widgets/${widget}/Widget`));
 
-        return <LoadableWidget key={widget} side={side} />;
+        return (
+          <LoadableWidget
+            key={widget}
+            side={side}
+          />
+        );
       })}
-    </section>
+    </Box>
   );
 };
 

@@ -8,7 +8,7 @@ import IncrementLevel from "../../core/incrementLevel.js";
 import { useLevel, useLevelClass } from "../../core/level.js";
 import Box from "../box/box.js";
 import styles from "./card.module.scss";
-import { FC } from "react";
+import { FC, Ref } from "react";
 
 const Card: FC<{
   level?: 0 | 1 | 2 | 3;
@@ -20,6 +20,7 @@ const Card: FC<{
   children: React.ReactNode | React.ReactNode[];
   actions?: React.ReactNode | React.ReactNode[];
   header?: React.ReactNode | React.ReactNode[];
+  style?: React.CSSProperties;
 }> = (props) => {
   const level = props.level || useLevel();
 
@@ -27,6 +28,7 @@ const Card: FC<{
     return (
       <>
         <button
+          style={props.style}
           className={clippy(styles.component, useLevelClass(level), props.containerClassName, styles.clickable)}
           onClick={props.onClick}
         >
@@ -43,8 +45,8 @@ const Card: FC<{
   return (
     <>
       <div
+        style={props.style}
         className={clippy(styles.component, useLevelClass(level), props.containerClassName)}
-        onClick={props.onClick}
       >
         <IncrementLevel>
           {props.header && <Box className={clippy(styles.header, props.headerClassName)}>{props.header}</Box>}

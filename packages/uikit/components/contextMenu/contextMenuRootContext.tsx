@@ -12,7 +12,7 @@ export default createContext({
     y: number;
     width: number;
     height: number;
-    items: { label: string; onClick: () => void };
+    items: { label: string; onClick: () => void }[];
   }) => {
     /* empty function */
   },

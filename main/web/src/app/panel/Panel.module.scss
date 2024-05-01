@@ -1,15 +1,12 @@
 /*!
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 .panel {
   display: flex;
-  gap: 0.25rem;
   box-sizing: border-box;
-  transition: var(--transition);
-  background: rgb(var(--container-bg));
-  padding: var(--app-panel-padding);
+  padding: 0.5rem !important;
   position: relative;
   z-index: 50;
   user-select: none;
