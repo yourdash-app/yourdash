@@ -21,6 +21,8 @@
 }
 
 .clickable {
+  display: flex;
+  width: 100%;
   cursor: pointer;
 
   color: var(#{$theme+$button+$color});

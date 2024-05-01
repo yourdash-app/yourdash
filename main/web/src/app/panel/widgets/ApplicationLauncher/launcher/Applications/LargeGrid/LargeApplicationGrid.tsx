@@ -5,6 +5,7 @@
 
 import Card from "@yourdash/uikit/components/card/card";
 import RightClickMenu from "@yourdash/chiplet/components/rightClickMenu/RightClickMenu";
+import ContextMenu from "@yourdash/uikit/components/contextMenu/contextMenu.js";
 import React from "react";
 import IPanelApplicationsLauncherApplication from "@yourdash/shared/core/panel/applicationsLauncher/application";
 import csi from "@yourdash/csi/csi";
@@ -20,7 +21,7 @@ const LargeApplicationGrid: React.FC<{
     <section className={styles.grid}>
       {applications.map((application) => {
         return (
-          <RightClickMenu
+          <ContextMenu
             items={[
               {
                 label: "Pin To Panel",
@@ -53,7 +54,6 @@ const LargeApplicationGrid: React.FC<{
               className={styles.itemContent}
             >
               <img
-                loading={"lazy"}
                 className={styles.itemIcon}
                 src={`${csi.getInstanceUrl()}${application.icon}`}
                 draggable={false}
@@ -61,7 +61,7 @@ const LargeApplicationGrid: React.FC<{
               />
               <span className={styles.itemLabel}>{application.displayName}</span>
             </Card>
-          </RightClickMenu>
+          </ContextMenu>
         );
       })}
     </section>

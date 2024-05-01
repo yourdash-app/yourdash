@@ -38,8 +38,12 @@ export default class YourDashService {
   }
 
   // this function will be called when the service is initialized by the YourDashCoreServiceManager
-  onInit() {}
+  onInit() {
+    /* empty function */
+  }
 
   // this function will be called when the service is unloaded by the YourDashCoreServiceManager
-  onUnload() {}
+  onUnload() {
+    /* empty function */
+  }
 }
