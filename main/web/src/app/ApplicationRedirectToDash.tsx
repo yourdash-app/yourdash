@@ -10,10 +10,7 @@ import { useNavigate } from "react-router-dom";
 const ApplicationRedirectToDash: React.FC = () => {
   const navigate = useNavigate();
   useEffect(() => {
-    if (!localStorage.getItem("current_server")) {
-      setTimeout(() => {
-        console.clear();
-      }, 1000);
+    if (!localStorage.getItem("instance_url")) {
       navigate("/login");
     } else {
       csi.syncGetJson(
@@ -22,10 +19,7 @@ const ApplicationRedirectToDash: React.FC = () => {
           navigate("/app/a/dash");
         },
         () => {
-          setTimeout(() => {
-            console.clear();
-          }, 1000);
-          localStorage.removeItem("session_token");
+          sessionStorage.removeItem("session_token");
           navigate("/login");
         },
       );

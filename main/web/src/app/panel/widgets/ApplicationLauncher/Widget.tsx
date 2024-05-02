@@ -3,8 +3,10 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import Icon from "@yourdash/uikit/components/icon/icon.js";
 import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary.js";
 import IconButton from "@yourdash/uikit/components/iconButton/iconButton.js";
+import DecrementLevel from "@yourdash/uikit/core/decrementLevel.js";
 import React, { useEffect } from "react";
 import styles from "./Widget.module.scss";
 import ApplicationLauncher from "./launcher/Launcher";
@@ -19,18 +21,24 @@ const ApplicationLauncherWidget: React.FC<{ side: "top" | "right" | "bottom" | "
   }, [location]);
 
   return (
-    <div className={styles.widgetContainer}>
-      <IconButton
-        accessibleLabel="Application Launcher"
-        icon={UKIcon.AppLauncher}
-        className={styles.launcherButton}
-        onClick={() => setLauncherVisible(!launcherVisible)}
-      />
-      <ApplicationLauncher
-        side={side}
-        visible={launcherVisible}
-      />
-    </div>
+    <DecrementLevel>
+      <div className={styles.widgetContainer}>
+        <button
+          aria-label={"Application Launcher"}
+          className={styles.launcherButton}
+          onClick={() => setLauncherVisible(!launcherVisible)}
+        >
+          <Icon
+            icon={UKIcon.AppLauncher}
+            className={styles.launcherButtonIcon}
+          />
+        </button>
+        <ApplicationLauncher
+          side={side}
+          visible={launcherVisible}
+        />
+      </div>
+    </DecrementLevel>
   );
 };
 

@@ -218,26 +218,34 @@ export class CoreApi {
         case "GET":
           this.log.info(
             "request",
-            `${chalk.bgGreen(chalk.black(" GET "))} ${req.path} ${options.logQueryParameters && JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query)}`,
+            `${chalk.bgGreen(chalk.black(" GET "))} ${req.path} ${
+              options.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""
+            }`,
           );
           break;
         case "POST":
           this.log.info(
             "request",
-            `${chalk.bgBlue(chalk.black(" POS "))} ${req.path} ${options.logQueryParameters && JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query)}`,
+            `${chalk.bgBlue(chalk.black(" POS "))} ${req.path} ${
+              options.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""
+            }`,
           );
           break;
         case "DELETE":
           this.log.info(
             "request",
-            `${chalk.bgRed(chalk.black(" DEL "))} ${req.path} ${options.logQueryParameters && JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query)}`,
+            `${chalk.bgRed(chalk.black(" DEL "))} ${req.path} ${
+              options.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""
+            }`,
           );
           break;
         case "OPTIONS":
           if (options.logOptionsRequests) {
             this.log.info(
               "request",
-              `${chalk.bgCyan(chalk.black(" OPT "))} ${req.path} ${options.logQueryParameters && JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query)}`,
+              `${chalk.bgCyan(chalk.black(" OPT "))} ${req.path} ${
+                options.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""
+              }`,
             );
           }
           break;

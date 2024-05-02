@@ -4,9 +4,8 @@
  */
 
 import clippy from "@yourdash/shared/web/helpers/clippy";
-import Icon from "@yourdash/chiplet/components/icon/Icon";
-import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
 import React from "react";
+import Text from "@yourdash/uikit/components/text/text";
 
 const LocalhostIndicator: React.FC<{
   side: "top" | "right" | "bottom" | "left";
@@ -18,14 +17,23 @@ const LocalhostIndicator: React.FC<{
   return (
     <div
       className={clippy(
-        "bg-red-400 w-10 h-10 rounded-button-rounding flex items-center justify-center",
+        "flex items-center justify-center h-[var(--app-panel-size)] w-[var(--app-panel-size)] -m-[var(--app-panel-padding)]",
         side === "top" && "ml-auto",
         side === "bottom" && "ml-auto",
         side === "left" && "mt-auto",
         side === "right" && "mt-auto",
       )}
     >
-      <Icon icon={UKIcon.Location} color={"currentColor"} className={"h-6"} />
+      <Text
+        text={"Localhost"}
+        className={clippy(
+          "!text-xs",
+          side === "top" && "rotate-45",
+          side === "bottom" && "-rotate-45",
+          side === "left" && "-rotate-45",
+          side === "right" && "rotate-45",
+        )}
+      />
     </div>
   );
 };

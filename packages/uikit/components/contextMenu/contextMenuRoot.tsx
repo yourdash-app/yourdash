@@ -3,10 +3,9 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import React, { ReactNode, forwardRef } from "react";
+import React, { ReactNode } from "react";
 import { FC, useEffect, useRef } from "react";
 import Button from "../button/button.js";
-import Card from "../card/card.js";
 import ContextMenuRootContext from "./contextMenuRootContext.js";
 import styles from "./contextMenuRoot.module.scss";
 
