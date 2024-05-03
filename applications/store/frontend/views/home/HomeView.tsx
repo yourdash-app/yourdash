@@ -18,13 +18,7 @@ const StoreApplicationRoot: React.FC = () => {
   const trans = useTranslate("store");
   const [promotedApplications, setPromotedApplications] = React.useState<StorePromotedApplication[]>([]);
   const [categories, setCategories] = React.useState<string[]>([]);
-  const [applications, setApplications] = React.useState<
-    {
-      id: string;
-      displayName: string;
-      icon: string;
-    }[]
-  >([]);
+  const [applications, setApplications] = React.useState([]);
 
   React.useEffect(() => {
     csi.syncGetJson("/app/store/promoted/applications", (data) => {
@@ -65,11 +59,16 @@ const StoreApplicationRoot: React.FC = () => {
             "grid grid-cols-1 gap-2 animate__animated animate__fadeIn animate__500ms md:grid-cols-2 lg:grid-cols-3"
           }
         >
+          {/* TODO: type this */}
           {applications.map((application) => (
             <StoreApplication
+              // @ts-ignore
               id={application.value}
+              // @ts-ignore
               displayName={application.displayName}
+              // @ts-ignore
               key={application.value}
+              // @ts-ignore
               icon={application.icon}
             />
           ))}

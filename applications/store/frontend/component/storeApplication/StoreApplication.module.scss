@@ -7,6 +7,9 @@
   padding: 1rem;
   gap: 1rem;
   display: flex;
+  flex-direction: row;
+  text-align: start;
+  align-items: center;
   position: relative;
   overflow: hidden;
   cursor: pointer;

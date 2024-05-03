@@ -1,0 +1,31 @@
+/*!
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
+.container {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 10000;
+}
+
+.component {
+  border-radius: 0.5rem;
+}
+
+.success {
+  border-color: #2ea967;
+}
+
+.error {
+  border-color: #ff4500;
+}
+
+.warning {
+  border-color: #daa520;
+}
+
+.info {
+  border-color: #00b8ff;
+}

@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import Card from "@yourdash/chiplet/components/card/Card";
+import Card from "@yourdash/uikit/components/card/card.js";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import csi from "@yourdash/csi/csi";
@@ -19,8 +19,16 @@ const StoreApplication: React.FC<IStoreApplicationComponent> = ({ displayName, i
   const navigate = useNavigate();
 
   return (
-    <Card onClick={() => navigate(`/app/a/store/app/${id}`)} className={styles.component}>
-      <img loading={"lazy"} src={`${csi.getInstanceUrl()}${icon}`} className={"aspect-square h-16"} alt={""} />
+    <Card
+      onClick={() => navigate(`/app/a/store/app/${id}`)}
+      className={styles.component}
+    >
+      <img
+        loading={"lazy"}
+        src={`${csi.getInstanceUrl()}${icon}`}
+        className={"aspect-square h-16"}
+        alt={""}
+      />
       <div className={styles.section}>
         <span className={styles.label}>{displayName}</span>
       </div>
