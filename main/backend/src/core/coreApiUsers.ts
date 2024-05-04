@@ -146,7 +146,7 @@ export default class CoreApiUsers {
         .send(this.coreApi.image.createAuthenticatedImage(username, AUTHENTICATED_IMAGE_TYPE.FILE, avatarPath));
     });
 
-    this.coreApi.request.get("/coqre/user/current/avatar/medium", (req, res) => {
+    this.coreApi.request.get("/core/user/current/avatar/medium", (req, res) => {
       const { username } = req.headers as { username: string };
 
       const unreadUser = new YourDashUser(username);

@@ -39,46 +39,62 @@ const AppLayout: React.FC = () => {
 
   if (!loaded)
     return (
-      <div className={"w-full h-full flex items-center justify-center flex-col gap-4"}>
-        {!didTakeTooLong && (
-          <>
-            <Spinner />
-            <Card className={"flex items-center justify-center"} showBorder>
-              <h1 className={"text-5xl font-bold pl-4 pr-4"}>Loading YourDash</h1>
-            </Card>
-          </>
-        )}
-        <Card className={clippy("text-center animate__animated animate__fadeInUp", didTakeTooLong ? "" : "fixed bottom-4")} showBorder>
-          <div className={"pl-2 pr-2"}>
-            {didTakeTooLong ? (
-              <div className={"flex gap-2 flex-col -ml-2 -mr-2 items-center justify-center"}>
-                <div className={"flex items-center justify-center"}>
-                  <Heading level={3}>Your instance took too long to load</Heading>
-                </div>
-                <div className={"flex gap-2"}>
-                  <Button
-                    onClick={() => {
-                      window.location.reload();
-                    }}
-                  >
-                    Retry
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      localStorage.clear();
-                      navigate("/login");
-                    }}
-                  >
-                    Change Instance
-                  </Button>
-                </div>
-              </div>
-            ) : (
-              <>This should not take longer than 5 seconds</>
+      <>
+        <link
+          type={"text/css"}
+          rel={"stylesheet"}
+          href={`${csi.getInstanceUrl()}/core/theme/${csi.getUsername()}`}
+        />
+        <div className={"w-full h-full flex items-center justify-center flex-col gap-4"}>
+          {!didTakeTooLong && (
+            <>
+              <Spinner />
+              <Card
+                className={"flex items-center justify-center"}
+                showBorder
+              >
+                <h1 className={"text-5xl font-bold pl-4 pr-4"}>Loading YourDash</h1>
+              </Card>
+            </>
+          )}
+          <Card
+            className={clippy(
+              "text-center animate__animated animate__fadeInUp",
+              didTakeTooLong ? "" : "fixed bottom-4",
             )}
-          </div>
-        </Card>
-      </div>
+            showBorder
+          >
+            <div className={"pl-2 pr-2"}>
+              {didTakeTooLong ? (
+                <div className={"flex gap-2 flex-col -ml-2 -mr-2 items-center justify-center"}>
+                  <div className={"flex items-center justify-center"}>
+                    <Heading level={3}>Your instance took too long to load</Heading>
+                  </div>
+                  <div className={"flex gap-2"}>
+                    <Button
+                      onClick={() => {
+                        window.location.reload();
+                      }}
+                    >
+                      Retry
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        localStorage.clear();
+                        navigate("/login");
+                      }}
+                    >
+                      Change Instance
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <>This should not take longer than 5 seconds</>
+              )}
+            </div>
+          </Card>
+        </div>
+      </>
     );
 
   // Standalone mode displays only the application and not the Panel

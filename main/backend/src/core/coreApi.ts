@@ -424,6 +424,17 @@ export class CoreApi {
       return res.json({ success: false });
     });
 
+    this.request.get("/core/theme/:username", (req, res) => {
+      const username = req.params.username;
+      const user = this.users.get(username);
+
+      if (!user || !user.doesExist()) {
+        return res.json({ error: "User not found" });
+      }
+
+      return res.sendFile(user.getThemePath());
+    });
+
     this.request.get("/login/instance/metadata", (_req, res) => {
       return res.json(<EndpointResponseLoginInstanceMetadata>{
         title: this.globalDb.get("core:instance:name") || "Placeholder name",

@@ -14,6 +14,7 @@ import YourDashSession, { getSessionsForUser } from "../../lib/session.js";
 import coreApi from "../coreApi.js";
 import { USER_AVATAR_SIZE } from "@yourdash/shared/core/userAvatarSize.js";
 import { YOURDASH_TEAM_PERMISSIONS, YourDashTeamPermission } from "../team/teamPermissions.js";
+import UserDatabase from "./userDatabase.js";
 import { YourDashUserPermission } from "./userPermissions.js";
 import IYourDashUserJson from "./userJson.js";
 
@@ -45,7 +46,7 @@ export default class YourDashUser {
     return path.join(this.path, "fs");
   }
 
-  async getDatabase(): Promise<KeyValueDatabase> {
+  async getDatabase(): Promise<UserDatabase> {
     return coreApi.users.__internal__getUserDatabase(this.username);
   }
 
@@ -350,6 +351,10 @@ export default class YourDashUser {
       coreApi.log.error("user", `Unable to read ${this.username}'s core/user.json`);
       return false;
     }
+  }
+
+  getThemePath(): string {
+    return path.join(this.path, "core/theme.css");
   }
 
   async doesExist(): Promise<boolean> {
