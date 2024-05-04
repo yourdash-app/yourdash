@@ -5,7 +5,7 @@ A central repository for all YourDash approved applications.
 Note: other applications can be copied into this folder to appear in the YourDash Store for a local instance.
 
 ## Development
-For first-time setup for a new application, create a `frontend/index.tsx` file and run `node packages/web-client/toolchain/generateApplicationRoutes.js`
+For first-time setup for a new application, create a `web/index.tsx` file and run `node packages/web/toolchain/generateApplicationRoutes.js`
 without this, the application would not render to the web-client as it needs to be imported bu
 
 ## Directory Structure

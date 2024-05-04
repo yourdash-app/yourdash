@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -36,8 +36,8 @@ let routeRegionReplacement = "";
 
 let applicationHasLoaded = false;
 applicationsPathNames.forEach((appName, ind) => {
-  if (existsSync(path.resolve(process.cwd(), `../../applications/${appName}/frontend/index.tsx`))) {
-    loadableRegionReplacement += `const Application${ind}=loadable(()=>import("@yourdash/applications/${appName}/frontend/index"));`;
+  if (existsSync(path.resolve(process.cwd(), `../../applications/${appName}/web/index.tsx`))) {
+    loadableRegionReplacement += `const Application${ind}=loadable(()=>import("@yourdash/applications/${appName}/web/index"));`;
     if (applicationHasLoaded) {
       routeRegionReplacement += `<Route path={"${applicationsPathNames[ind]}/*"} element={<Application${ind}/>}/>`;
     } else {
