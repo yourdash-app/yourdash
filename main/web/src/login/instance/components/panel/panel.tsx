@@ -28,13 +28,13 @@ const Panel: FC = () => {
   }
 
   return (
-    <Box extraClass={styles.component}>
+    <Box className={styles.component}>
       <IconButton
         icon={UKIcon.ChevronLeft}
         onClick={() => {
           navigate("/");
         }}
-        extraClass={styles.backButton}
+        className={styles.backButton}
         accessibleLabel={"Go Back"}
       />
       <Heading
@@ -42,6 +42,7 @@ const Panel: FC = () => {
         text={"Instance's Url"}
       />
       <TextInput
+        accessibleName={"Instance url"}
         placeholder={"https:// or http://"}
         onChange={(val) => {
           setInputValue(val);

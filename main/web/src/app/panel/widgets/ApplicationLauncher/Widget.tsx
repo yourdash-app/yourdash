@@ -5,7 +5,6 @@
 
 import Icon from "@yourdash/uikit/components/icon/icon.js";
 import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary.js";
-import IconButton from "@yourdash/uikit/components/iconButton/iconButton.js";
 import DecrementLevel from "@yourdash/uikit/core/decrementLevel.js";
 import React, { useEffect } from "react";
 import styles from "./Widget.module.scss";
