@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -151,15 +151,15 @@ export default class FilesModule extends BackendModule {
         }
       } ); */
 
-    this.API.request.get(`/app/${this.API.applicationName}`, (req, res) => {
-      return res.json({ message: `Hello world from ${this.API.applicationName}! 👋` });
+    this.api.request.get(`/app/${this.api.applicationName}`, (req, res) => {
+      return res.json({ message: `Hello world from ${this.api.applicationName}! 👋` });
     });
 
-    this.API.request.get(`/app/${this.API.applicationName}/list/dir/@/`, async (req, res) => {
+    this.api.request.get(`/app/${this.api.applicationName}/list/dir/@/`, async (req, res) => {
       // path
       const p = "/";
 
-      const user = this.API.getUser(req);
+      const user = this.api.getUser(req);
 
       try {
         const contents = await fs.readdir(path.join(user.path, "fs", p));
@@ -174,11 +174,11 @@ export default class FilesModule extends BackendModule {
       }
     });
 
-    this.API.request.get(`/app/${this.API.applicationName}/list/dir/@/:path`, async (req, res) => {
+    this.api.request.get(`/app/${this.api.applicationName}/list/dir/@/:path`, async (req, res) => {
       // path
       const p = req.params.path;
 
-      const user = this.API.getUser(req);
+      const user = this.api.getUser(req);
 
       try {
         const contents = await fs.readdir(path.join(user.path, "fs", p));

@@ -5,22 +5,25 @@
 
 import { type ILocationSearchResult } from "../../shared/locationSearchResult.js";
 import { fetch } from "undici";
-import coreApi from "@yourdash/backend/src/core/coreApi.js";
+import core from "@yourdash/backend/src/core/core.js";
 
 const geolocationSuggestionsCache = new Map<string, ILocationSearchResult[]>();
 
-export default async function getGeolocationSuggestions(locationName: string, suggestionCount: number): Promise<ILocationSearchResult[]> {
+export default async function getGeolocationSuggestions(
+  locationName: string,
+  suggestionCount: number,
+): Promise<ILocationSearchResult[]> {
   locationName = locationName.replaceAll(" ", "+");
   if (locationName.endsWith("+")) locationName = locationName.slice(0, -1);
   if (locationName.startsWith("+")) locationName = locationName.slice(1);
   if (locationName.length < 3) return [];
 
   if (geolocationSuggestionsCache.get(locationName)) {
-    coreApi.log.info("app:weather", `Responding with cached location data for location '${locationName}'`);
+    core.log.info("app:weather", `Responding with cached location data for location '${locationName}'`);
     return geolocationSuggestionsCache.get(locationName);
   }
 
-  coreApi.log.info("app:weather", `Fetching location suggestions for ${locationName}`);
+  core.log.info("app:weather", `Fetching location suggestions for ${locationName}`);
   const endpoint = `https://geocoding-api.open-meteo.com/v1/search?name=${locationName}&count=${suggestionCount}&language=en&format=json`;
 
   try {

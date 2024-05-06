@@ -1,29 +1,29 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 import { IYourDashSession } from "@yourdash/shared/core/session.js";
 import { USER_AVATAR_SIZE } from "@yourdash/shared/core/userAvatarSize.js";
 import path from "path";
-import { CoreApi } from "./coreApi.js";
-import { AUTHENTICATED_IMAGE_TYPE } from "./coreApiImage.js";
+import { Core } from "./core.js";
+import { AUTHENTICATED_IMAGE_TYPE } from "./coreImage.js";
 import YourDashUser from "./user/index.js";
 import UserDatabase from "./user/userDatabase.js";
 
 const YOURDASH_USER_SESSION_TOKEN_LENGTH = 128;
 export { YOURDASH_USER_SESSION_TOKEN_LENGTH };
 
-export default class CoreApiUsers {
+export default class CoreUsers {
   private usersMarkedForDeletion: string[] = [];
   private readonly userDatabases: { [username: string]: { db: UserDatabase; changed: boolean } } = {};
-  private readonly coreApi: CoreApi;
+  private readonly core: Core;
   private sessions: {
     [key: string]: IYourDashSession<any>[]; // eslint-disable-line @typescript-eslint/no-explicit-any
   } = {};
 
-  constructor(coreApi: CoreApi) {
-    this.coreApi = coreApi;
+  constructor(core: Core) {
+    this.core = core;
 
     return this;
   }
@@ -33,7 +33,7 @@ export default class CoreApiUsers {
   }
 
   __internal__startUserDatabaseService() {
-    this.coreApi.scheduler.scheduleTask("core:userdb_write_to_disk", "*/1 * * * *", async () => {
+    this.core.scheduler.scheduleTask("core:userdb_write_to_disk", "*/1 * * * *", async () => {
       Object.keys(this.userDatabases).map(async (username) => {
         if (!this.userDatabases[username].changed) {
           return;
@@ -49,12 +49,12 @@ export default class CoreApiUsers {
   }
 
   __internal__startUserDeletionService() {
-    this.coreApi.scheduler.scheduleTask(
+    this.core.scheduler.scheduleTask(
       "core:users:delete_all_marked_users",
       "*/5 * * * *" /* every 5 minutes */,
       async () => {
         for (const username of this.usersMarkedForDeletion) {
-          await this.coreApi.users.forceDelete(username);
+          await this.core.users.forceDelete(username);
         }
       },
     );
@@ -113,7 +113,7 @@ export default class CoreApiUsers {
 
     // TODO: DELETE THE USER FROM THE FS
 
-    await this.coreApi.fs.removePath(path.join(this.coreApi.fs.ROOT_PATH, `./users/${username}`));
+    await this.core.fs.removePath(path.join(this.core.fs.ROOT_PATH, `./users/${username}`));
     delete this.userDatabases[username];
 
     return this;
@@ -128,13 +128,11 @@ export default class CoreApiUsers {
   }
 
   async getAllUsers(): Promise<string[]> {
-    return (
-      await this.coreApi.fs.getDirectory(path.join(this.coreApi.fs.ROOT_PATH, "./users"))
-    ).getChildrenAsBaseName();
+    return (await this.core.fs.getDirectory(path.join(this.core.fs.ROOT_PATH, "./users"))).getChildrenAsBaseName();
   }
 
   __internal__loadEndpoints() {
-    this.coreApi.request.get("/core/user/current/avatar/large", (req, res) => {
+    this.core.request.get("/core/user/current/avatar/large", (req, res) => {
       const { username } = req.headers as { username: string };
 
       const unreadUser = new YourDashUser(username);
@@ -143,10 +141,10 @@ export default class CoreApiUsers {
       return res
         .status(200)
         .type("text/plain")
-        .send(this.coreApi.image.createAuthenticatedImage(username, AUTHENTICATED_IMAGE_TYPE.FILE, avatarPath));
+        .send(this.core.image.createAuthenticatedImage(username, AUTHENTICATED_IMAGE_TYPE.FILE, avatarPath));
     });
 
-    this.coreApi.request.get("/core/user/current/avatar/medium", (req, res) => {
+    this.core.request.get("/core/user/current/avatar/medium", (req, res) => {
       const { username } = req.headers as { username: string };
 
       const unreadUser = new YourDashUser(username);
@@ -155,10 +153,10 @@ export default class CoreApiUsers {
       return res
         .status(200)
         .type("text/plain")
-        .send(this.coreApi.image.createAuthenticatedImage(username, AUTHENTICATED_IMAGE_TYPE.FILE, avatarPath));
+        .send(this.core.image.createAuthenticatedImage(username, AUTHENTICATED_IMAGE_TYPE.FILE, avatarPath));
     });
 
-    this.coreApi.request.get("/core/user/current/avatar/small", (req, res) => {
+    this.core.request.get("/core/user/current/avatar/small", (req, res) => {
       const { username } = req.headers as { username: string };
 
       const unreadUser = new YourDashUser(username);
@@ -167,10 +165,10 @@ export default class CoreApiUsers {
       return res
         .status(200)
         .type("text/plain")
-        .send(this.coreApi.image.createAuthenticatedImage(username, AUTHENTICATED_IMAGE_TYPE.FILE, avatarPath));
+        .send(this.core.image.createAuthenticatedImage(username, AUTHENTICATED_IMAGE_TYPE.FILE, avatarPath));
     });
 
-    this.coreApi.request.get("/core/user/current/avatar/original", (req, res) => {
+    this.core.request.get("/core/user/current/avatar/original", (req, res) => {
       const { username } = req.headers as { username: string };
 
       const unreadUser = new YourDashUser(username);
@@ -179,12 +177,12 @@ export default class CoreApiUsers {
       return res
         .status(200)
         .type("text/plain")
-        .send(this.coreApi.image.createAuthenticatedImage(username, AUTHENTICATED_IMAGE_TYPE.FILE, avatarPath));
+        .send(this.core.image.createAuthenticatedImage(username, AUTHENTICATED_IMAGE_TYPE.FILE, avatarPath));
     });
 
     // NEW CSI ENDPOINTS
 
-    this.coreApi.request.get(`/core/user/current/avatar/${USER_AVATAR_SIZE.SMALL}`, (req, res) => {
+    this.core.request.get(`/core/user/current/avatar/${USER_AVATAR_SIZE.SMALL}`, (req, res) => {
       const { username } = req.headers as { username: string };
 
       const avatarPath = new YourDashUser(username).getAvatar(USER_AVATAR_SIZE.LARGE);
@@ -193,15 +191,11 @@ export default class CoreApiUsers {
         .status(200)
         .type("text/plain")
         .send(
-          this.coreApi.image.createAuthenticatedImage(
-            username,
-            AUTHENTICATED_IMAGE_TYPE.FILE,
-            path.resolve(avatarPath),
-          ),
+          this.core.image.createAuthenticatedImage(username, AUTHENTICATED_IMAGE_TYPE.FILE, path.resolve(avatarPath)),
         );
     });
 
-    this.coreApi.request.get(`/core/user/current/avatar/${USER_AVATAR_SIZE.MEDIUM}`, (req, res) => {
+    this.core.request.get(`/core/user/current/avatar/${USER_AVATAR_SIZE.MEDIUM}`, (req, res) => {
       const { username } = req.headers as { username: string };
 
       const avatarPath = new YourDashUser(username).getAvatar(USER_AVATAR_SIZE.MEDIUM);
@@ -210,15 +204,11 @@ export default class CoreApiUsers {
         .status(200)
         .type("text/plain")
         .send(
-          this.coreApi.image.createAuthenticatedImage(
-            username,
-            AUTHENTICATED_IMAGE_TYPE.FILE,
-            path.resolve(avatarPath),
-          ),
+          this.core.image.createAuthenticatedImage(username, AUTHENTICATED_IMAGE_TYPE.FILE, path.resolve(avatarPath)),
         );
     });
 
-    this.coreApi.request.get(`/core/user/current/avatar/${USER_AVATAR_SIZE.LARGE}`, (req, res) => {
+    this.core.request.get(`/core/user/current/avatar/${USER_AVATAR_SIZE.LARGE}`, (req, res) => {
       const { username } = req.headers as { username: string };
 
       const avatarPath = new YourDashUser(username).getAvatar(USER_AVATAR_SIZE.LARGE);
@@ -227,15 +217,11 @@ export default class CoreApiUsers {
         .status(200)
         .type("text/plain")
         .send(
-          this.coreApi.image.createAuthenticatedImage(
-            username,
-            AUTHENTICATED_IMAGE_TYPE.FILE,
-            path.resolve(avatarPath),
-          ),
+          this.core.image.createAuthenticatedImage(username, AUTHENTICATED_IMAGE_TYPE.FILE, path.resolve(avatarPath)),
         );
     });
 
-    this.coreApi.request.get(`/core/user/current/avatar/${USER_AVATAR_SIZE.EXTRA_LARGE}`, (req, res) => {
+    this.core.request.get(`/core/user/current/avatar/${USER_AVATAR_SIZE.EXTRA_LARGE}`, (req, res) => {
       const { username } = req.headers as { username: string };
 
       const avatarPath = new YourDashUser(username).getAvatar(USER_AVATAR_SIZE.EXTRA_LARGE);
@@ -244,15 +230,11 @@ export default class CoreApiUsers {
         .status(200)
         .type("text/plain")
         .send(
-          this.coreApi.image.createAuthenticatedImage(
-            username,
-            AUTHENTICATED_IMAGE_TYPE.FILE,
-            path.resolve(avatarPath),
-          ),
+          this.core.image.createAuthenticatedImage(username, AUTHENTICATED_IMAGE_TYPE.FILE, path.resolve(avatarPath)),
         );
     });
 
-    this.coreApi.request.get(`/core/user/current/avatar/${USER_AVATAR_SIZE.ORIGINAL}`, (req, res) => {
+    this.core.request.get(`/core/user/current/avatar/${USER_AVATAR_SIZE.ORIGINAL}`, (req, res) => {
       const { username } = req.headers as { username: string };
 
       const avatarPath = new YourDashUser(username).getAvatar(USER_AVATAR_SIZE.ORIGINAL);
@@ -261,15 +243,11 @@ export default class CoreApiUsers {
         .status(200)
         .type("text/plain")
         .send(
-          this.coreApi.image.createAuthenticatedImage(
-            username,
-            AUTHENTICATED_IMAGE_TYPE.FILE,
-            path.resolve(avatarPath),
-          ),
+          this.core.image.createAuthenticatedImage(username, AUTHENTICATED_IMAGE_TYPE.FILE, path.resolve(avatarPath)),
         );
     });
 
-    this.coreApi.request.get(`/core/user/current/fullname`, async (req, res) => {
+    this.core.request.get(`/core/user/current/fullname`, async (req, res) => {
       const { username } = req.headers as { username: string };
 
       const user = new YourDashUser(username);
@@ -277,7 +255,7 @@ export default class CoreApiUsers {
       return res.status(200).json(await user.getName());
     });
 
-    this.coreApi.request.get("/core/user/current/teams", async (req, res) => {
+    this.core.request.get("/core/user/current/teams", async (req, res) => {
       const { username } = req.headers as { username: string };
 
       const user = new YourDashUser(username);

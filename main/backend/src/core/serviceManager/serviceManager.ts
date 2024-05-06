@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import coreApi from "../coreApi.js";
+import core from "../core.js";
 import YourDashService from "./service.js";
 import YourDashServiceStartupType from "./serviceStartupType.js";
 import { Constructor } from "type-fest/source/basic.js";
@@ -13,11 +13,11 @@ export default class YourDashCoreServiceManager {
   activeServices: Map<string, YourDashService>;
   // arrays of registered service's IDs with their paths
   registeredServices: {
-    // run before coreApi initialization, no access to any coreApi methods
+    // run before core initialization, no access to any core methods
     preinit: YourDashService[];
-    // run before authentication middleware but with access to all coreApi methods
+    // run before authentication middleware but with access to all core methods
     preauth: YourDashService[];
-    // default for services, runs after authentication middleware and has access to all coreApi methods
+    // default for services, runs after authentication middleware and has access to all core methods
     default: YourDashService[];
   };
 
@@ -79,7 +79,7 @@ export default class YourDashCoreServiceManager {
         return true;
       }
     } catch (err) {
-      coreApi.log.error(`Failed to register service: ${servicePath}`, err);
+      core.log.error(`Failed to register service: ${servicePath}`, err);
 
       return false;
     }

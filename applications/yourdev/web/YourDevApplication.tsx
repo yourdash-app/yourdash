@@ -6,7 +6,7 @@
 import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
 import SideBar, { SIDEBAR_ITEM_TYPE, SIDEBAR_STATE } from "@yourdash/chiplet/components/sideBar/SideBar";
 import React from "react";
-import GlobalDbApplication from "../../global_db/frontend/globalDbApplication";
+import GlobalDbApplication from "../../global_db/web/globalDbApplication";
 import HomeView from "./views/home/HomeView";
 
 const YourDevApplication: React.FC = () => {

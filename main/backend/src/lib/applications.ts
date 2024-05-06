@@ -6,7 +6,7 @@
 import { promises as fs } from "fs";
 import path from "path";
 import { type IYourDashApplicationConfig } from "@yourdash/shared/core/application.js";
-import coreApi from "../core/coreApi.js";
+import core from "../core/core.js";
 
 // TODO: replace the module loading from names to paths to support loading modules outside of the project's codebase
 
@@ -71,7 +71,7 @@ class ValidYourDashApplication {
 
   // Returns true if the application is installed, otherwise returns false
   isInstalled(): boolean {
-    return !!coreApi.globalDb.get<string[]>("core:installedApplications").includes(this.name);
+    return !!core.globalDb.get<string[]>("core:installedApplications").includes(this.name);
   }
 
   getCategory(): string {
@@ -88,7 +88,7 @@ class ValidYourDashApplication {
   }
 
   async requiresBackend(): Promise<boolean> {
-    return !(await coreApi.fs.doesExist(path.resolve(path.join(process.cwd(), this.getPath(), "backend/index.js"))));
+    return !(await core.fs.doesExist(path.resolve(path.join(process.cwd(), this.getPath(), "backend/index.js"))));
   }
 }
 
@@ -108,7 +108,7 @@ export async function getAllApplications(): Promise<string[]> {
       }
     });
   } catch (_err) {
-    coreApi.log.error("A problem occurred reading the ../applications/ directory");
+    core.log.error("A problem occurred reading the ../applications/ directory");
     return [];
   }
 }
@@ -132,7 +132,7 @@ export default class YourDashApplication {
         ),
       );
     } catch (_err) {
-      coreApi.log.error("core:applications", `Unable to read application ${this.name}!, does it exist?`);
+      core.log.error("core:applications", `Unable to read application ${this.name}!, does it exist?`);
       return null;
     }
   }

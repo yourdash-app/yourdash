@@ -20,8 +20,7 @@ export default class KeyValueDatabase {
     return resp || undefined;
   }
 
-  // eslint-disable-line @typescript-eslint/no-explicit-any
-  set(key: string, value: any) {
+  set(key: string, value: unknown) {
     this.keys[key] = value;
 
     return this;

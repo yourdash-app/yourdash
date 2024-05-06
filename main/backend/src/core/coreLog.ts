@@ -1,10 +1,10 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 import chalk from "chalk";
-import { CoreApi } from "./coreApi.js";
+import { Core } from "./core.js";
 
 export enum LOG_TYPE {
   INFO,
@@ -16,16 +16,16 @@ export enum LOG_TYPE {
 
 const LOG_META_MAX_LENGTH = 20;
 
-export default class CoreApiLog {
-  private readonly coreApi: CoreApi;
+export default class CoreLog {
+  private readonly core: Core;
   logHistory: {
     type: LOG_TYPE;
     level: string;
     message: (string | Uint8Array)[];
   }[] = [];
 
-  constructor(coreApi: CoreApi) {
-    this.coreApi = coreApi;
+  constructor(core: Core) {
+    this.core = core;
 
     return this;
   }

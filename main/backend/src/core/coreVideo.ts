@@ -6,7 +6,7 @@
 import crypto from "crypto";
 import pth from "path";
 import path from "path";
-import { CoreApi } from "./coreApi.js";
+import { Core } from "./core.js";
 
 export enum AUTHENTICATED_VIDEO_TYPE {
   FILE,
@@ -18,16 +18,16 @@ interface IauthenticatedVideo<T extends AUTHENTICATED_VIDEO_TYPE> {
   lastAccess?: number;
 }
 
-export default class CoreApiVideo {
-  coreApi: CoreApi;
+export default class CoreVideo {
+  core: Core;
   private readonly AUTHENTICATED_VIDEOS: {
     [username: string]: {
       [id: string]: IauthenticatedVideo<AUTHENTICATED_VIDEO_TYPE>;
     };
   };
 
-  constructor(coreApi: CoreApi) {
-    this.coreApi = coreApi;
+  constructor(core: Core) {
+    this.core = core;
     this.AUTHENTICATED_VIDEOS = {};
 
     return this;
@@ -59,10 +59,10 @@ export default class CoreApiVideo {
   }
 
   __internal__loadEndpoints() {
-    this.coreApi.request.get("/core/auth-video/:username/:id", async (req, res) => {
+    this.core.request.get("/core/auth-video/:username/:id", async (req, res) => {
       const { username, id } = req.params;
 
-      this.coreApi.log.info(
+      this.core.log.info(
         "Authenticated video range requested",
         JSON.stringify({ username, id, range: req.headers.range }),
       );

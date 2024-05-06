@@ -3,19 +3,19 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { CoreApi } from "../coreApi.js";
+import { Core } from "../core.js";
 
-export default class CoreApiTheme {
-  coreApi: CoreApi;
+export default class coreTheme {
+  core: Core;
 
-  constructor(coreApi: CoreApi) {
-    this.coreApi = coreApi;
+  constructor(core: Core) {
+    this.core = core;
 
     return this;
   }
 
   fetchForUser(username: string) {
-    const user = this.coreApi.users.get(username);
+    const user = this.core.users.get(username);
 
     return user.getTheme();
   }

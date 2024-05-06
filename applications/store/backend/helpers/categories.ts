@@ -1,9 +1,9 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import coreApi from "@yourdash/backend/src/core/coreApi.js";
+import core from "@yourdash/backend/src/core/core.js";
 import YourDashApplication, { getAllApplications } from "@yourdash/backend/src/lib/applications.js";
 
 export default async function getAllCategories(): Promise<string[]> {
@@ -23,7 +23,7 @@ export default async function getAllCategories(): Promise<string[]> {
     try {
       categories[app.getCategory()] = true;
     } catch (_err) {
-      coreApi.log.error(`application: ${app?.getName() || applicationName} doesn't have a category defined`);
+      core.log.error(`application: ${app?.getName() || applicationName} doesn't have a category defined`);
     }
   }
 

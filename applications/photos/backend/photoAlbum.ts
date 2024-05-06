@@ -3,11 +3,11 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import coreApi from "@yourdash/backend/src/core/coreApi.js";
+import core from "@yourdash/backend/src/core/core.js";
 import FileSystemFile from "@yourdash/backend/src/core/fileSystem/fileSystemFile.js";
 import pth from "path";
 import { IPhotoAlbum } from "../shared/photoAlbum.js";
-import { AUTHENTICATED_IMAGE_TYPE } from "@yourdash/backend/src/core/coreApiImage.js";
+import { AUTHENTICATED_IMAGE_TYPE } from "@yourdash/backend/src/core/coreImage.js";
 
 export default class PhotoAlbum {
   path: string;
@@ -21,7 +21,7 @@ export default class PhotoAlbum {
   }
 
   async getPhotos(): Promise<string[]> {
-    const dir = await coreApi.fs.getDirectory(this.path);
+    const dir = await core.fs.getDirectory(this.path);
 
     if (dir === null || !(await dir.doesExist())) {
       return [];
@@ -33,7 +33,7 @@ export default class PhotoAlbum {
   }
 
   async getVideos(): Promise<string[]> {
-    const dir = await coreApi.fs.getDirectory(this.path);
+    const dir = await core.fs.getDirectory(this.path);
 
     if (dir === null || !(await dir.doesExist())) {
       return [];
@@ -46,12 +46,12 @@ export default class PhotoAlbum {
 
   async getCoverPhoto(): Promise<string | undefined> {
     const coverPhotoPath = (await this.getPhotos())[0];
-    const coverPhotoFsEntity = await coreApi.fs.getFile(coverPhotoPath);
+    const coverPhotoFsEntity = await core.fs.getFile(coverPhotoPath);
     if (coverPhotoFsEntity === null || !(await coverPhotoFsEntity.doesExist())) {
       return undefined;
     }
 
-    return await coreApi.image.createResizedAuthenticatedImage(
+    return await core.image.createResizedAuthenticatedImage(
       this.username,
       AUTHENTICATED_IMAGE_TYPE.FILE,
       coverPhotoPath,
@@ -62,7 +62,7 @@ export default class PhotoAlbum {
   }
 
   async getSubAlbumsPaths(): Promise<string[]> {
-    const dir = await coreApi.fs.getDirectory(this.path);
+    const dir = await core.fs.getDirectory(this.path);
 
     if (dir === null || !(await dir.doesExist())) {
       return [];
@@ -72,7 +72,7 @@ export default class PhotoAlbum {
   }
 
   async getSubAlbums(): Promise<PhotoAlbum[]> {
-    const dir = await coreApi.fs.getDirectory(this.path);
+    const dir = await core.fs.getDirectory(this.path);
 
     return (await dir.getChildren())
       .filter((child) => child.entityType === "directory")

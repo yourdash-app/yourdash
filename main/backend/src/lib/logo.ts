@@ -5,8 +5,8 @@
 
 import fs from "fs";
 import path from "path";
-import coreApi from "../core/coreApi.js";
+import core from "../core/core.js";
 
 export function getInstanceLogoBase64(): string {
-  return fs.readFileSync(path.join(coreApi.fs.ROOT_PATH, "./instance_logo.avif")).toString("base64");
+  return fs.readFileSync(path.join(core.fs.ROOT_PATH, "./instance_logo.avif")).toString("base64");
 }

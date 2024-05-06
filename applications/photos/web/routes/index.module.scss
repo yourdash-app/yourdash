@@ -1,0 +1,23 @@
+/*!
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
+@import "@yourdash/uikit/theme/themeValues";
+
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: var(#{$theme+$padding});
+}
+
+.brandName {
+  line-height: 1;
+}
+
+.brandLogo {
+  height: 2.5rem;
+  aspect-ratio: 1 / 1;
+  border-radius: 0;
+}

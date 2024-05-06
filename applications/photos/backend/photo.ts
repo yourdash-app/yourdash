@@ -1,13 +1,13 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 import { imageSize } from "image-size";
 import pth from "path";
-import coreApi from "@yourdash/backend/src/core/coreApi.js";
+import core from "@yourdash/backend/src/core/core.js";
 import IGridItem, { MAX_HEIGHT } from "../shared/grid.js";
-import { AUTHENTICATED_IMAGE_TYPE } from "@yourdash/backend/src/core/coreApiImage.js";
+import { AUTHENTICATED_IMAGE_TYPE } from "@yourdash/backend/src/core/coreImage.js";
 import IMedia from "../shared/media.js";
 
 export default class Photo {
@@ -30,7 +30,7 @@ export default class Photo {
         height: dimensions.height || 0,
       };
     } catch (e) {
-      coreApi.log.warning("app:photos", `Failed to get dimensions of ${this.path}: ${e}`);
+      core.log.warning("app:photos", `Failed to get dimensions of ${this.path}: ${e}`);
 
       return {
         width: 69,
@@ -40,19 +40,15 @@ export default class Photo {
   }
 
   getRawPhotoUrl(): string {
-    return coreApi.image.createAuthenticatedImage(this.username, AUTHENTICATED_IMAGE_TYPE.FILE, pth.resolve(this.path));
+    return core.image.createAuthenticatedImage(this.username, AUTHENTICATED_IMAGE_TYPE.FILE, pth.resolve(this.path));
   }
 
   async getPhotoUrl(dimensions?: { width: number; height: number }): Promise<string> {
     if (!dimensions) {
-      return coreApi.image.createAuthenticatedImage(
-        this.username,
-        AUTHENTICATED_IMAGE_TYPE.FILE,
-        pth.resolve(this.path),
-      );
+      return core.image.createAuthenticatedImage(this.username, AUTHENTICATED_IMAGE_TYPE.FILE, pth.resolve(this.path));
     }
 
-    return coreApi.image.createResizedAuthenticatedImage(
+    return core.image.createResizedAuthenticatedImage(
       this.username,
       AUTHENTICATED_IMAGE_TYPE.FILE,
       this.path,

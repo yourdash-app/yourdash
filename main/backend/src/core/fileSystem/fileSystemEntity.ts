@@ -1,9 +1,9 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import coreApi from "../coreApi.js";
+import core from "../core.js";
 import FileSystemLock from "./fileSystemLock.js";
 
 // TODO: fix generics
@@ -22,7 +22,7 @@ export default class FileSystemEntity {
   }
 
   isLocked(): FileSystemEntityIsLocked {
-    const lockData = coreApi.fs.__internal__fileSystemLocks.get(this.path);
+    const lockData = core.fs.__internal__fileSystemLocks.get(this.path);
 
     return {
       locked: !!lockData,
@@ -35,10 +35,10 @@ export default class FileSystemEntity {
   }
 
   getAllLocks(): FileSystemLock[] {
-    return coreApi.fs.__internal__fileSystemLocks.get(this.path);
+    return core.fs.__internal__fileSystemLocks.get(this.path);
   }
 
   doesExist(): Promise<boolean> {
-    return coreApi.fs.doesExist(this.path);
+    return core.fs.doesExist(this.path);
   }
 }

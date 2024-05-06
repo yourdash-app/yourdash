@@ -3,14 +3,16 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { useEffect, useState } from "react";
+import { useRef, useEffect } from "react";
 
-export default function createResource<T>(resource: () => Promise<T>) {
-  const [data, setData] = useState<T | null>(null);
+const useFirstRender = () => {
+  const isFirstRender = useRef(true);
 
   useEffect(() => {
-    resource().then((d) => setData(d));
+    isFirstRender.current = false;
   }, []);
 
-  return data;
-}
+  return isFirstRender.current;
+};
+
+export default useFirstRender;

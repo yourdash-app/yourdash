@@ -1,21 +1,21 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 import { promises as fs } from "fs";
 import pth from "path";
-import { CoreApi } from "../coreApi.js";
-import { AUTHENTICATED_IMAGE_TYPE } from "../coreApiImage.js";
+import { Core } from "../core.js";
+import { AUTHENTICATED_IMAGE_TYPE } from "../coreImage.js";
 import FileSystemEntity from "./fileSystemEntity.js";
 
 export default class FileSystemFile extends FileSystemEntity {
-  private readonly coreApi: CoreApi;
+  private readonly core: Core;
   entityType = "file" as const;
 
-  constructor(coreApi: CoreApi, path: string) {
+  constructor(core: Core, path: string) {
     super(path);
-    this.coreApi = coreApi;
+    this.core = core;
 
     return this;
   }
@@ -66,7 +66,7 @@ export default class FileSystemFile extends FileSystemEntity {
   getThumbnail(username: string): string {
     switch (this.getType()) {
       case "image":
-        return this.coreApi.image.createAuthenticatedImage(
+        return this.core.image.createAuthenticatedImage(
           username,
           AUTHENTICATED_IMAGE_TYPE.FILE,
           pth.resolve(this.path),
@@ -106,7 +106,7 @@ export default class FileSystemFile extends FileSystemEntity {
       await fs.writeFile(this.path, data);
     } catch (e) {
       console.error(e);
-      this.coreApi.log.error("filesystem", `unable to write to ${this.path}`);
+      this.core.log.error("filesystem", `unable to write to ${this.path}`);
     }
 
     return;

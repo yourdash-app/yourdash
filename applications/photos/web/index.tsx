@@ -3,23 +3,27 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import Redirect from "@yourdash/chiplet/components/redirect/Redirect.js";
-import React from "react";
 import { Routes, Route } from "react-router";
-import Layout from "./Layout.js";
-import IndexRoute from "./routes/index.js";
+import Layout from "./layout.js";
+import { FC } from "react";
+import IndexPage from "./routes/index.js";
+import SearchIndexPage from "./routes/search/index.js";
 
-const PhotosRouter: React.FC = () => {
+const ApplicationRoutes: FC = () => {
   return (
     <Routes>
       <Route element={<Layout />}>
         <Route
           index
-          element={<IndexRoute />}
+          element={<IndexPage />}
+        />
+        <Route
+          path={"search"}
+          element={<SearchIndexPage />}
         />
       </Route>
     </Routes>
   );
 };
 
-export default PhotosRouter;
+export default ApplicationRoutes;

@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -13,6 +13,6 @@ export default class CodeStudioModule extends BackendModule {
   public loadEndpoints() {
     super.loadEndpoints();
 
-    this.API.request.get("/app/code_studio/", (req, res) => res.json({ success: true }));
+    this.api.request.get("/app/code_studio/", (req, res) => res.json({ success: true }));
   }
 }

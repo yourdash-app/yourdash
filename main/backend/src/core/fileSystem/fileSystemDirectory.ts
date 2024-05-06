@@ -1,20 +1,20 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 import pth from "path";
 import { promises as fs } from "fs";
-import { CoreApi } from "../coreApi.js";
+import { Core } from "../core.js";
 import FileSystemEntity from "./fileSystemEntity.js";
 
 export default class FileSystemDirectory extends FileSystemEntity {
-  private readonly coreApi: CoreApi;
+  private readonly core: Core;
   entityType = "directory" as const;
 
-  constructor(coreApi: CoreApi, path: string) {
+  constructor(core: Core, path: string) {
     super(path);
-    this.coreApi = coreApi;
+    this.core = core;
   }
 
   getName(): string {
@@ -35,7 +35,7 @@ export default class FileSystemDirectory extends FileSystemEntity {
     try {
       return await fs.readdir(this.path);
     } catch (_err) {
-      this.coreApi.log.error("filesystem", `Unable to read directory: ${this.path}`);
+      this.core.log.error("filesystem", `Unable to read directory: ${this.path}`);
 
       return [];
     }
@@ -48,6 +48,6 @@ export default class FileSystemDirectory extends FileSystemEntity {
   }
 
   getChild(path: string) {
-    return this.coreApi.fs.get(pth.join(this.path, path));
+    return this.core.fs.get(pth.join(this.path, path));
   }
 }

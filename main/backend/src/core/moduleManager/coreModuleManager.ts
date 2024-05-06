@@ -1,42 +1,42 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 import fileUrl from "file-url";
 import path from "path";
 import BackendModule from "./backendModule.js";
-import { CoreApi } from "../coreApi.js";
+import { Core } from "../core.js";
 
-export default class CoreApiModuleManager {
+export default class CoreModuleManager {
   private readonly loadedModules: BackendModule[];
-  private coreApi: CoreApi;
+  private core: Core;
 
-  constructor(coreApi: CoreApi) {
-    this.coreApi = coreApi;
+  constructor(core: Core) {
+    this.core = core;
     this.loadedModules = [];
 
     return this;
   }
 
   checkModule(modulePath: string) {
-    if (!this.coreApi.fs.doesExist(path.resolve(`${modulePath}/application.json`))) {
-      this.coreApi.log.error("core", `application ${modulePath} does not contain an application.json file!`);
+    if (!this.core.fs.doesExist(path.resolve(`${modulePath}/application.json`))) {
+      this.core.log.error("core", `application ${modulePath} does not contain an application.json file!`);
       return false;
     }
 
     // Not Required (use 'placeholder.avif' instead)
-    if (!this.coreApi.fs.doesExist(path.resolve(`${modulePath}/icon.avif`))) {
-      this.coreApi.log.warning("core", `application ${modulePath} does not contain an icon.avif file!`);
+    if (!this.core.fs.doesExist(path.resolve(`${modulePath}/icon.avif`))) {
+      this.core.log.warning("core", `application ${modulePath} does not contain an icon.avif file!`);
     }
 
     // Only required if the application needs a backend
-    if (!this.coreApi.fs.doesExist(path.resolve(`${modulePath}/backend`))) {
+    if (!this.core.fs.doesExist(path.resolve(`${modulePath}/backend`))) {
       return false;
     }
 
     // Only required if the application needs a backend
-    return this.coreApi.fs.doesExist(path.resolve(`${modulePath}/backend/index.ts`));
+    return this.core.fs.doesExist(path.resolve(`${modulePath}/backend/index.ts`));
   }
 
   async loadModule(moduleName: string, modulePath: string): Promise<BackendModule | undefined> {
@@ -45,8 +45,8 @@ export default class CoreApiModuleManager {
       return;
     }
 
-    if (!(await this.coreApi.fs.doesExist(`${modulePath}/index.ts`))) {
-      this.coreApi.log.info("module_manager", `Skipped loading backend-less module: "${moduleName}"`);
+    if (!(await this.core.fs.doesExist(`${modulePath}/index.ts`))) {
+      this.core.log.info("module_manager", `Skipped loading backend-less module: "${moduleName}"`);
       return;
     }
 
@@ -55,7 +55,7 @@ export default class CoreApiModuleManager {
     try {
       const mod = await import(`${fileUrl(modulePath)}/index.js`);
       if (!mod.default) {
-        this.coreApi.log.error(
+        this.core.log.error(
           "module_manager",
           `Unable to load ${moduleName}! This application does not contain a default export!`,
         );
@@ -64,13 +64,13 @@ export default class CoreApiModuleManager {
 
       const initializedModule = new mod.default({ moduleName: moduleName, modulePath: modulePath });
       this.loadedModules.push(mod);
-      this.coreApi.log.success(
+      this.core.log.success(
         "module_manager",
         `Loaded module: "${moduleName}" in ${new Date().getTime() - startTime.getTime()}ms`,
       );
       return initializedModule;
     } catch (err) {
-      this.coreApi.log.error("module_manager", `Invalid module: "${moduleName}"`, err);
+      this.core.log.error("module_manager", `Invalid module: "${moduleName}"`, err);
       return null;
     }
   }
@@ -85,11 +85,11 @@ export default class CoreApiModuleManager {
     // we should check if it supports this and unload if it does. Otherwise, we should prompt the admin to restart the server
     if (module.unload) {
       module.unload();
-      this.coreApi.log.info("module_manager", `Unloaded module: "${module.moduleName}"`);
+      this.core.log.info("module_manager", `Unloaded module: "${module.moduleName}"`);
       return;
     }
 
-    this.coreApi.log.info("module_manager", `A server restart is required to unload module: "${module.moduleName}"!`);
+    this.core.log.info("module_manager", `A server restart is required to unload module: "${module.moduleName}"!`);
 
     return this;
   }
@@ -98,25 +98,25 @@ export default class CoreApiModuleManager {
     return this.loadedModules;
   }
 
-  async loadInstalledApplications(): Promise<(BackendModule & undefined)[]> {
-    const loadedApplications: (BackendModule & undefined)[] = [];
-    const installedApplications = this.coreApi.globalDb.get("core:installedApplications");
+  async loadInstalledApplications(): Promise<BackendModule[]> {
+    const loadedApplications: BackendModule[] = [];
+    const installedApplications = this.core.globalDb.get<string[]>("core:installedApplications");
 
     for (const applicationName of installedApplications) {
       const modulePath = path.resolve(path.join("../../applications/", applicationName, "./backend"));
       try {
         loadedApplications.push(await this.loadModule(applicationName, modulePath));
       } catch (err) {
-        this.coreApi.log.error("module_manager", `Failed to load module: ${applicationName}`, err);
+        this.core.log.error("module_manager", `Failed to load module: ${applicationName}`, err);
       }
     }
 
     if (this.getLoadedModules().length === 0) {
-      this.coreApi.log.warning("module_manager", "No modules loaded!");
+      this.core.log.warning("module_manager", "No modules loaded!");
       return [];
     }
 
-    this.coreApi.log.info("module_manager", `Loaded ${this.getLoadedModules().length} modules`);
+    this.core.log.info("module_manager", `Loaded ${this.getLoadedModules().length} modules`);
     return loadedApplications;
   }
 

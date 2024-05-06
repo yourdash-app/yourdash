@@ -9,6 +9,8 @@ import { UKIcon } from "../icon/iconDictionary.js";
 import styles from "./textInput.module.scss";
 import { FC } from "react";
 
+// TODO: maybe remove onEnter for onSubmit
+
 const TextInput: FC<{
   onChange?: (value: string) => void;
   onSubmit?: (value: string) => void;

@@ -21,48 +21,51 @@ import path from "path";
 import { fetch } from "undici";
 import { compareHashString } from "../lib/encryption.js";
 import { createSession } from "../lib/session.js";
-import CoreApiCommands from "./coreApiCommands.js";
-import CoreApiGlobalDb from "./coreApiGlobalDb.js";
-import CoreApiImage from "./coreApiImage.js";
-import CoreApiLog from "./coreApiLog.js";
-import CoreApiTeams from "./coreApiTeams.js";
-import CoreApiVideo from "./coreApiVideo.js";
+import CoreCommands from "./coreCommands.js";
+import CoreGlobalDb from "./coreGlobalDb.js";
+import CoreImage from "./coreImage.js";
+import CoreLog from "./coreLog.js";
+import CoreRequest from "./coreRequest.js";
+import CoreTeams from "./coreTeams.js";
+import CoreVideo from "./coreVideo.js";
 import GlobalDBCoreLoginNotice from "./login/loginNotice.js";
 import BackendModule from "./moduleManager/backendModule.js";
-import loadNextCloudSupportEndpoints from "./nextcloud/coreApiNextCloud.js";
-import CoreApiWebDAV from "./webDAV/coreApiWebDAV.js";
-import CoreApiModuleManager from "./moduleManager/coreApiModuleManager.js";
-import CoreApiPanel from "./coreApiPanel.js";
-import CoreApiScheduler from "./coreApiScheduler.js";
-import CoreApiUserDatabase from "./coreApiUserDatabase.js";
-import CoreApiUsers from "./coreApiUsers.js";
-import CoreApiFileSystem from "./fileSystem/coreApiFileSystem.js";
-import CoreApiLoadManagement from "./coreApiLoadManagement.js";
+import loadNextCloudSupportEndpoints from "./nextcloud/coreNextCloud.js";
+import CoreWebDAV from "./webDAV/coreWebDAV.js";
+import CoreModuleManager from "./moduleManager/coreModuleManager.js";
+import CorePanel from "./corePanel.js";
+import CoreScheduler from "./coreScheduler.js";
+import CoreUserDatabase from "./coreUserDatabase.js";
+import CoreUsers from "./coreUsers.js";
+import CoreFileSystem from "./fileSystem/coreFileSystem.js";
+import CoreLoadManagement from "./coreLoadManagement.js";
 import { USER_AVATAR_SIZE } from "@yourdash/shared/core/userAvatarSize.js";
 import YourDashUser from "./user/index.js";
 import { YOURDASH_SESSION_TYPE } from "@yourdash/shared/core/session.js";
-import CoreApiWebsocketManager from "./websocketManager/coreApiWebsocketManager.js";
+import CoreWebsocketManager from "./websocketManager/coreWebsocketManager.js";
 
-export class CoreApi {
+export class Core {
   // core apis
-  readonly users: CoreApiUsers;
-  readonly log: CoreApiLog;
-  readonly moduleManager: CoreApiModuleManager;
-  readonly globalDb: CoreApiGlobalDb;
-  readonly commands: CoreApiCommands;
-  readonly fs: CoreApiFileSystem;
-  readonly scheduler: CoreApiScheduler;
-  readonly userDatabase: CoreApiUserDatabase;
-  readonly image: CoreApiImage;
-  readonly panel: CoreApiPanel;
-  readonly teams: CoreApiTeams;
-  readonly video: CoreApiVideo;
-  readonly websocketManager: CoreApiWebsocketManager;
-  readonly loadManagement: CoreApiLoadManagement;
-  readonly webdav: CoreApiWebDAV;
+  readonly request: CoreRequest;
+  readonly users: CoreUsers;
+  readonly log: CoreLog;
+  readonly moduleManager: CoreModuleManager;
+  readonly globalDb: CoreGlobalDb;
+  readonly commands: CoreCommands;
+  readonly fs: CoreFileSystem;
+  readonly scheduler: CoreScheduler;
+  readonly userDatabase: CoreUserDatabase;
+  readonly image: CoreImage;
+  readonly panel: CorePanel;
+  readonly teams: CoreTeams;
+  readonly video: CoreVideo;
+  readonly websocketManager: CoreWebsocketManager;
+  readonly loadManagement: CoreLoadManagement;
+  readonly webdav: CoreWebDAV;
+
   // general vars
   readonly processArguments: minimist.ParsedArgs;
-  readonly request: ExpressApplication;
+  readonly rawExpressJs: ExpressApplication;
   readonly httpServer: http.Server;
   readonly isDebugMode: boolean;
   readonly isDevMode: boolean;
@@ -78,7 +81,7 @@ export class CoreApi {
 
     this.isDebugMode = typeof global.v8debug === "object" || /--debug|--inspect/.test(process.execArgv.join(" "));
 
-    this.log = new CoreApiLog(this);
+    this.log = new CoreLog(this);
 
     // Fetch process arguments
     this.processArguments = minimist(process.argv.slice(2));
@@ -87,26 +90,28 @@ export class CoreApi {
 
     this.log.info("startup", "Beginning YourDash Startup with args: ", JSON.stringify(this.processArguments));
 
-    // Create the request server
-    this.request = express();
-    this.httpServer = http.createServer(this.request);
+    // Create the rawExpressJs server
+    this.rawExpressJs = express();
+    this.httpServer = http.createServer(this.rawExpressJs);
 
     // define core apis
-    this.scheduler = new CoreApiScheduler(this);
-    this.users = new CoreApiUsers(this);
-    this.moduleManager = new CoreApiModuleManager(this);
-    this.globalDb = new CoreApiGlobalDb(this);
-    this.commands = new CoreApiCommands(this);
-    this.fs = new CoreApiFileSystem(this);
-    this.userDatabase = new CoreApiUserDatabase(this);
-    this.image = new CoreApiImage(this);
-    this.panel = new CoreApiPanel(this);
-    this.teams = new CoreApiTeams(this);
-    this.video = new CoreApiVideo(this);
-    this.loadManagement = new CoreApiLoadManagement(this);
-    this.websocketManager = new CoreApiWebsocketManager(this);
+    this.request = new CoreRequest(this);
+    this.scheduler = new CoreScheduler(this);
+    this.users = new CoreUsers(this);
+    this.moduleManager = new CoreModuleManager(this);
+    this.globalDb = new CoreGlobalDb(this);
+    this.commands = new CoreCommands(this);
+    this.fs = new CoreFileSystem(this);
+    this.userDatabase = new CoreUserDatabase(this);
+    this.image = new CoreImage(this);
+    this.panel = new CorePanel(this);
+    this.teams = new CoreTeams(this);
+    this.video = new CoreVideo(this);
+    this.loadManagement = new CoreLoadManagement(this);
+    this.websocketManager = new CoreWebsocketManager(this);
+
     // TODO: implement WebDAV & CalDAV & CardDAV (outdated WebDAV example -> https://github.com/LordEidi/fennel.js/)
-    this.webdav = new CoreApiWebDAV(this);
+    this.webdav = new CoreWebDAV(this);
 
     this.log.info("core", `Process id is ${process.pid}`);
 
@@ -563,6 +568,8 @@ export class CoreApi {
       loadedModules.map((mod) => {
         try {
           mod.loadEndpoints();
+          this.request.setNamespace("");
+          this.log.success("module_manager", `Loaded endpoints for ${mod.moduleName}`);
         } catch (err) {
           this.log.error("startup", `Failed to load post-auth endpoints for ${mod.moduleName}`, err);
         }
@@ -733,6 +740,6 @@ export class CoreApi {
   }
 }
 
-const coreApi = new CoreApi();
+const core = new Core();
 
-export default coreApi;
+export default core;

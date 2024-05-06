@@ -20,7 +20,7 @@ const Application4 = loadable(() => import("@yourdash/applications/endpoints/web
 const Application5 = loadable(() => import("@yourdash/applications/files/web/index"));
 const Application6 = loadable(() => import("@yourdash/applications/flowey/web/index"));
 const Application7 = loadable(() => import("@yourdash/applications/global_db/web/index"));
-const Application11 = loadable(() => import("@yourdash/applications/photos/web/index"));
+const Application11 = loadable(() => import("@yourdash/applications/photos/web/index.js"));
 const Application12 = loadable(() => import("@yourdash/applications/settings/web/index"));
 const Application13 = loadable(() => import("@yourdash/applications/store/web/index"));
 const Application14 = loadable(() => import("@yourdash/applications/weather/web/index"));

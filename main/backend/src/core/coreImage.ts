@@ -7,7 +7,7 @@ import crypto from "crypto";
 import { promises as fs } from "fs";
 import path from "path";
 import pth from "path";
-import { CoreApi } from "./coreApi.js";
+import { Core } from "./core.js";
 import sharp from "sharp";
 
 export enum AUTHENTICATED_IMAGE_TYPE {
@@ -22,16 +22,16 @@ interface IauthenticatedImage<T extends AUTHENTICATED_IMAGE_TYPE> {
   resizeTo?: { width: number; height: number; resultingImageFormat?: "avif" | "png" | "jpg" | "webp" };
 }
 
-export default class CoreApiImage {
-  private coreApi: CoreApi;
+export default class CoreImage {
+  private core: Core;
   private readonly AUTHENTICATED_IMAGES: {
     [username: string]: {
       [id: string]: IauthenticatedImage<AUTHENTICATED_IMAGE_TYPE>;
     };
   };
 
-  constructor(coreApi: CoreApi) {
-    this.coreApi = coreApi;
+  constructor(core: Core) {
+    this.core = core;
     this.AUTHENTICATED_IMAGES = {};
 
     return this;
@@ -39,7 +39,7 @@ export default class CoreApiImage {
 
   resizeTo(filePath: string, width: number, height: number, resultingImageFormat?: "avif" | "png" | "jpg" | "webp") {
     return new Promise<string>(async (resolve) => {
-      const TEMP_DIR = pth.join(this.coreApi.fs.ROOT_PATH, "temp");
+      const TEMP_DIR = pth.join(this.core.fs.ROOT_PATH, "temp");
 
       const resizedImagePath = pth.resolve(pth.join(TEMP_DIR, crypto.randomUUID()));
 
@@ -50,11 +50,11 @@ export default class CoreApiImage {
           .toFile(resizedImagePath)
           .then(() => resolve(resizedImagePath))
           .catch((err: string) => {
-            this.coreApi.log.error("image", `unable to resize image "${filePath}" ${err}`);
+            this.core.log.error("image", `unable to resize image "${filePath}" ${err}`);
             resolve(`unable to resize image "${filePath}"`);
           });
       } catch (err) {
-        this.coreApi.log.error("image", `unable to resize image "${filePath}" ${err}`);
+        this.core.log.error("image", `unable to resize image "${filePath}" ${err}`);
         resolve(`unable to resize image "${filePath}"`);
       }
     });
@@ -120,7 +120,7 @@ export default class CoreApiImage {
   }
 
   __internal__loadEndpoints() {
-    this.coreApi.request.get("/core/auth-img/:username/:id", async (req, res) => {
+    this.core.request.get("/core/auth-img/:username/:id", async (req, res) => {
       const { username, id } = req.params;
 
       const image = this.AUTHENTICATED_IMAGES?.[username]?.[id];

@@ -1,20 +1,20 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { CoreApi } from "../coreApi.js";
+import { Core } from "../core.js";
 import WebsocketManagerServer from "./websocketManagerServer.js";
 
-export default class CoreApiWebsocketManager {
-  coreApi: CoreApi;
+export default class coreWebsocketManager {
+  core: Core;
   servers: {
     [path: string]: WebsocketManagerServer;
   };
 
-  constructor(coreApi: CoreApi) {
+  constructor(core: Core) {
     this.servers = {};
-    this.coreApi = coreApi;
+    this.core = core;
   }
 
   _selfDestruct() {
@@ -22,9 +22,9 @@ export default class CoreApiWebsocketManager {
       if ((await this.servers[path].server.fetchSockets()).length === 0) {
         this.servers[path].server.close();
         delete this.servers[path];
-        this.coreApi.log.info("websocket_manager", `${path} was closed as it has no clients connected.`);
+        this.core.log.info("websocket_manager", `${path} was closed as it has no clients connected.`);
       } else {
-        this.coreApi.log.info(
+        this.core.log.info(
           "websocket_manager",
           `${path} is connected with ${Object.keys(this.servers[path].server.fetchSockets()).length} clients.`,
         );
@@ -33,9 +33,9 @@ export default class CoreApiWebsocketManager {
   }
 
   createServer(path: string) {
-    this.servers[path] = new WebsocketManagerServer(this.coreApi, path);
+    this.servers[path] = new WebsocketManagerServer(this.core, path);
 
-    this.coreApi.log.info("websocket_manager", `${path} was created.`);
+    this.core.log.info("websocket_manager", `${path} was created.`);
 
     return this.servers[path];
   }
@@ -49,7 +49,7 @@ export default class CoreApiWebsocketManager {
   }
 
   __internal__loadEndpoints() {
-    this.coreApi.request.use("/websocket-manager/*", (req, res) => {
+    this.core.request.usePath("/websocket-manager/*", (req, res) => {
       res.status(404).send("Not Found");
     });
   }

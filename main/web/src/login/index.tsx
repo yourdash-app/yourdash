@@ -6,13 +6,13 @@
 import csi from "@yourdash/csi/csi.js";
 import { LoginLayout } from "@yourdash/shared/core/login/loginLayout.js";
 import Spinner from "@yourdash/uikit/components/spinner/spinner.js";
-import createResource from "../lib/createResource.js";
+import useResource from "../lib/useResource";
 import IndexCardsPage from "./index.cards.js";
 import styles from "./index.module.scss";
 import { FC, Suspense } from "react";
 
 const LoginIndexPage: FC = () => {
-  const instanceMetadata = createResource(async () =>
+  const instanceMetadata = useResource(async () =>
     csi.getJson<{ title: string; message?: string; loginLayout: LoginLayout }>("/login/instance/metadata"),
   );
 

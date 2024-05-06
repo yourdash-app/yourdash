@@ -58,7 +58,7 @@ export default function useTranslate(application: string) {
       return;
     }
 
-    import(`../../../../applications/${application}/frontend/i18n/${language}.json`)
+    import(`../../../../applications/${application}/web/i18n/${language}.json`)
       .then((response) => {
         setMessages(response.default);
         LOADED_TRANSLATIONS.set(`${application}:${language}`, response.default);
@@ -76,7 +76,7 @@ export default function useTranslate(application: string) {
 
         // the page is missing translation into your language :(
         languageOverride = "en-GB";
-        import(`../../../../applications/${application}/frontend/i18n/en-GB.json`)
+        import(`../../../../applications/${application}/web/i18n/en-GB.json`)
           .then((response) => {
             setMessages(response.default);
             LOADED_TRANSLATIONS.set(`${application}:en-GB`, response.default);

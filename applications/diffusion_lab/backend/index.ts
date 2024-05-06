@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -13,7 +13,7 @@ export default class DiffusionLabModule extends BackendModule {
   public loadEndpoints() {
     super.loadEndpoints();
 
-    this.API.request.get("/app/diffusion_lab/models", async (req, res) =>
+    this.api.request.get("/app/diffusion_lab/models", async (req, res) =>
       res.json({ models: ["everything v5", "stable diffusion 2.1", "blueberry mix"] }),
     );
   }

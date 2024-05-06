@@ -4,7 +4,7 @@
  */
 
 import { INSTANCE_STATUS } from "@yourdash/shared/core/instanceStatus.js";
-import { CoreApi } from "../coreApi.js";
+import { Core } from "../core.js";
 
 export const MIMICED_NEXTCLOUD_VERSION = {
   major: 28,
@@ -15,8 +15,8 @@ export const MIMICED_NEXTCLOUD_VERSION = {
   extendedSupport: false,
 };
 
-export default function loadNextCloudSupportEndpoints(coreApi: CoreApi) {
-  coreApi.request.get("/status.php", (req, res) => {
+export default function loadNextCloudSupportEndpoints(core: Core) {
+  core.request.get("/status.php", (req, res) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
 
     switch (req.header("Content-Type")) {
@@ -26,21 +26,21 @@ export default function loadNextCloudSupportEndpoints(coreApi: CoreApi) {
 
     return res.json({
       installed: true,
-      maintenance: coreApi.instanceStatus === INSTANCE_STATUS.MAINTENANCE,
+      maintenance: core.instanceStatus === INSTANCE_STATUS.MAINTENANCE,
       needsDbUpgrade: false,
       version: "28.0.0.11",
       versionstring: MIMICED_NEXTCLOUD_VERSION.string,
       edition: MIMICED_NEXTCLOUD_VERSION.edition,
-      productname: coreApi.globalDb.get("core:displayName"),
+      productname: core.globalDb.get("core:displayName"),
       extendedSupport: MIMICED_NEXTCLOUD_VERSION.extendedSupport,
     });
   });
 
-  coreApi.request.use("/remote.php/dav", (req, res, next) => {
-    return res.redirect(`${coreApi.globalDb.get("core:instanceUrl")}/dav/${req.path.replace("/remote.php/dav/", "")}`);
+  core.request.usePath("/remote.php/dav", (req, res) => {
+    return res.redirect(`${core.globalDb.get("core:instanceUrl")}/dav/${req.path.replace("/remote.php/dav/", "")}`);
   });
 
-  coreApi.request.get("/ocs/v2.php/cloud/capabilities", (req, res) => {
+  core.request.get("/ocs/v2.php/cloud/capabilities", (req, res) => {
     if (req.query.format === "json") {
       return res.json({
         ocs: {
@@ -64,9 +64,9 @@ export default function loadNextCloudSupportEndpoints(coreApi: CoreApi) {
                 "allow-listed": false,
               },
               theming: {
-                name: coreApi.globalDb.get("core:displayName") || "YourDash",
-                url: coreApi.globalDb.get("core:instanceUrl") || "https://localhost:3563",
-                slogan: coreApi.globalDb.get("core:login:message"),
+                name: core.globalDb.get("core:displayName") || "YourDash",
+                url: core.globalDb.get("core:instanceUrl") || "https://localhost:3563",
+                slogan: core.globalDb.get("core:login:message"),
                 color: "#00679e",
                 "color-text": "#ffffff",
                 "color-element": "#00679e",

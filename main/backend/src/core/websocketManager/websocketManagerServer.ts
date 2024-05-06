@@ -1,23 +1,23 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 import { Server as SocketIOServer } from "socket.io";
-import { CoreApi } from "../coreApi.js";
+import { Core } from "../core.js";
 import WebsocketManagerConnection from "./websocketManagerConnection.js";
 
 export default class WebsocketManagerServer {
-  coreApi: CoreApi;
+  core: Core;
   server: SocketIOServer;
   connections: WebsocketManagerConnection[];
   private onConnectionListeners: ((connection: WebsocketManagerConnection) => void)[];
 
-  constructor(coreApi: CoreApi, path: string) {
-    this.coreApi = coreApi;
+  constructor(core: Core, path: string) {
+    this.core = core;
     this.onConnectionListeners = [];
 
-    this.server = new SocketIOServer(this.coreApi.httpServer, {
+    this.server = new SocketIOServer(this.core.httpServer, {
       path: `${path}/websocket-manager/websocket`,
       cors: { origin: "*" },
     });

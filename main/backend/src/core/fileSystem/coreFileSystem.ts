@@ -1,26 +1,26 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 import { promises as fs } from "fs";
 import pth from "path";
-import { CoreApi } from "../coreApi.js";
-import CoreApiVerifyFileSystem from "./coreApiVerifyFileSystem.js";
+import { Core } from "../core.js";
+import coreVerifyFileSystem from "./coreVerifyFileSystem.js";
 import FileSystemDirectory from "./fileSystemDirectory.js";
 import FileSystemFile from "./fileSystemFile.js";
 import FileSystemLock from "./fileSystemLock.js";
 
-export default class CoreApiFileSystem {
+export default class coreFileSystem {
   ROOT_PATH: string;
-  coreApi: CoreApi;
-  readonly verifyFileSystem: CoreApiVerifyFileSystem;
+  core: Core;
+  readonly verifyFileSystem: coreVerifyFileSystem;
   __internal__fileSystemLocks: Map<string, FileSystemLock[]>;
 
-  constructor(coreApi: CoreApi) {
+  constructor(core: Core) {
     this.ROOT_PATH = pth.resolve(pth.join(process.cwd(), "./../../fs/"));
-    this.coreApi = coreApi;
-    this.verifyFileSystem = new CoreApiVerifyFileSystem(this.coreApi);
+    this.core = core;
+    this.verifyFileSystem = new coreVerifyFileSystem(this.core);
     this.__internal__fileSystemLocks = new Map<string, FileSystemLock[]>();
 
     return this;
@@ -29,9 +29,9 @@ export default class CoreApiFileSystem {
   async get(path: string) {
     try {
       if ((await this.getEntityType(path)) === "directory") {
-        return new FileSystemDirectory(this.coreApi, path);
+        return new FileSystemDirectory(this.core, path);
       } else {
-        return new FileSystemFile(this.coreApi, path);
+        return new FileSystemFile(this.core, path);
       }
     } catch (_err) {
       return null;
@@ -43,13 +43,13 @@ export default class CoreApiFileSystem {
       await fs.mkdir(pth.dirname(path), { recursive: true });
     }
 
-    return new FileSystemFile(this.coreApi, path);
+    return new FileSystemFile(this.core, path);
   }
 
   async getFile(path: string): Promise<FileSystemFile> | null {
     try {
       if ((await this.getEntityType(path)) === "file") {
-        return new FileSystemFile(this.coreApi, path);
+        return new FileSystemFile(this.core, path);
       }
     } catch (_err) {
       return null;
@@ -61,7 +61,7 @@ export default class CoreApiFileSystem {
   async getDirectory(path: string): Promise<FileSystemDirectory> | null {
     try {
       if ((await this.getEntityType(path)) === "directory") {
-        return new FileSystemDirectory(this.coreApi, path);
+        return new FileSystemDirectory(this.core, path);
       }
     } catch (_err) {
       return null;
@@ -71,7 +71,7 @@ export default class CoreApiFileSystem {
   }
 
   async getOrCreateDirectory(path: string) {
-    const dir = new FileSystemDirectory(this.coreApi, path);
+    const dir = new FileSystemDirectory(this.core, path);
 
     if (!(await dir.doesExist())) {
       await dir.create();
@@ -94,11 +94,11 @@ export default class CoreApiFileSystem {
   }
 
   createFile(path: string) {
-    return new FileSystemFile(this.coreApi, path);
+    return new FileSystemFile(this.core, path);
   }
 
   async createDirectory(path: string) {
-    const dir = new FileSystemDirectory(this.coreApi, path);
+    const dir = new FileSystemDirectory(this.core, path);
     await dir.create();
     return dir;
   }
@@ -116,7 +116,7 @@ export default class CoreApiFileSystem {
       await fs.cp(source, destination);
       return true;
     } catch (e) {
-      this.coreApi.log.error("core:fs", "Unable to copy file: " + source + " to " + destination);
+      this.core.log.error("core:fs", "Unable to copy file: " + source + " to " + destination);
       return false;
     }
   }

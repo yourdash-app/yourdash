@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -13,7 +13,7 @@ export default class YourDevModule extends BackendModule {
   public loadEndpoints() {
     super.loadEndpoints();
 
-    const wss = this.API.core.websocketManager.createServer("/app/yourdev");
+    const wss = this.api.core.websocketManager.createServer("/app/yourdev");
     wss.onConnection((connection) => {
       connection.onChannel("message", (message) => {
         console.log(message);
@@ -21,7 +21,7 @@ export default class YourDevModule extends BackendModule {
       });
     });
 
-    this.API.request.get("/app/yourdev/", (req, res) => {
+    this.api.request.get("/app/yourdev/", (req, res) => {
       return res.json({ success: true });
     });
   }

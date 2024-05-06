@@ -12,14 +12,14 @@ import Heading from "@yourdash/uikit/components/heading/heading";
 import Redirect from "@yourdash/uikit/components/redirect/redirect";
 import Subtext from "@yourdash/uikit/components/subtext/subtext";
 import Text from "@yourdash/uikit/components/text/text";
-import createResource from "../../lib/createResource";
+import useResource from "../../lib/useResource";
 import styles from "./index.module.scss";
 import { FC } from "react";
 import { useNavigate } from "react-router";
 
 const LoginSuccessPage: FC = () => {
   const navigate = useNavigate();
-  const notice = createResource(() => csi.getJson<EndpointResponseCoreLoginNotice>("/core/login/notice"));
+  const notice = useResource(() => csi.getJson<EndpointResponseCoreLoginNotice>("/core/login/notice"));
 
   return (
     <div className={styles.page}>

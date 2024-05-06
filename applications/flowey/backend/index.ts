@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -13,7 +13,7 @@ export default class FloweyModule extends BackendModule {
   public loadEndpoints() {
     super.loadEndpoints();
 
-    this.API.request.get("/app/flowey", (_req, res) => {
+    this.api.request.get("/app/flowey", (_req, res) => {
       res.send("Hello From Flowey!");
     });
   }

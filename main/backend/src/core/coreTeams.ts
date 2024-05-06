@@ -1,13 +1,12 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 import path from "path";
-import { CoreApi } from "./coreApi.js";
+import { Core } from "./core.js";
 import YourDashTeam from "./team/team.js";
 import YourDashUser from "./user/index.js";
-import { promises as fs } from "fs";
 
 type JSONValue = boolean | number | string | null | JSONFile;
 
@@ -15,12 +14,12 @@ type JSONFile = {
   [key: string]: JSONValue;
 };
 
-export default class CoreApiTeams {
-  coreApi: CoreApi;
+export default class CoreTeams {
+  core: Core;
   teamDatabases: Map<string, { data: JSONFile; changed: boolean }>;
 
-  constructor(coreApi: CoreApi) {
-    this.coreApi = coreApi;
+  constructor(core: Core) {
+    this.core = core;
     this.teamDatabases = new Map();
 
     return this;
@@ -30,14 +29,14 @@ export default class CoreApiTeams {
   async create(teamName: string) {
     const newTeam = new YourDashTeam(teamName);
 
-    this.coreApi.log.info("teams", `attempting to create team ${teamName}`);
+    this.core.log.info("teams", `attempting to create team ${teamName}`);
 
     if (await newTeam.doesExist()) {
-      this.coreApi.log.info("teams", `team ${teamName} already exists`);
+      this.core.log.info("teams", `team ${teamName} already exists`);
       throw new Error(`Team '${teamName}' already exists`);
     }
 
-    this.coreApi.log.info("teams", `creating team ${teamName}`);
+    this.core.log.info("teams", `creating team ${teamName}`);
     await newTeam.verify();
 
     return newTeam;
@@ -51,14 +50,14 @@ export default class CoreApiTeams {
 
   // Start the Team Database Service
   __internal__startTeamDatabaseService() {
-    this.coreApi.scheduler.scheduleTask("core:teamdb_write_to_disk", "*/1 * * * *", async () => {
+    this.core.scheduler.scheduleTask("core:teamdb_write_to_disk", "*/1 * * * *", async () => {
       await this.saveDatabases();
     });
   }
 
   // Load all team related endpoints
   __internal__loadEndpoints() {
-    this.coreApi.request.get("/core/teams/get/current-user", async (req, res) => {
+    this.core.request.get("/core/teams/get/current-user", async (req, res) => {
       const { username } = req.headers as { username: string };
 
       const user = new YourDashUser(username);

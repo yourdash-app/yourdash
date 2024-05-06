@@ -1,9 +1,9 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import coreApi from "@yourdash/backend/src/core/coreApi.js";
+import core from "@yourdash/backend/src/core/core.js";
 import { Response, fetch } from "undici";
 import { IWeatherDataForLocation } from "../../shared/weatherDataForLocation.js";
 import parseWeatherCodes from "./parseWeatherState.js";
@@ -17,7 +17,7 @@ export default async function getWeatherDataForLongitudeAndLatitude(
     console.log(locationRequest.status);
 
     if (locationRequest.status !== 200) {
-      coreApi.log.error("Non 200 request recieved!");
+      core.log.error("Non 200 request recieved!");
       return null;
     }
 
@@ -31,7 +31,7 @@ export default async function getWeatherDataForLongitudeAndLatitude(
         longitude: string;
       };
     } catch (e) {
-      coreApi.log.error("Could not parse location data");
+      core.log.error("Could not parse location data");
       return null;
     }
 
@@ -47,11 +47,11 @@ export default async function getWeatherDataForLongitudeAndLatitude(
       );
 
       if (fetchRequest.status !== 200) {
-        coreApi.log.error("Non 200 request recieved!");
+        core.log.error("Non 200 request recieved!");
         return null;
       }
     } catch (e) {
-      coreApi.log.error("Could not fetch weather data => ", e);
+      core.log.error("Could not fetch weather data => ", e);
       return null;
     }
 
@@ -120,7 +120,7 @@ export default async function getWeatherDataForLongitudeAndLatitude(
     try {
       requestResponse = (await fetchRequest.json()) as IRequestResponse;
     } catch (e) {
-      coreApi.log.error("Could not parse weather data");
+      core.log.error("Could not parse weather data");
       return null;
     }
 
@@ -181,7 +181,7 @@ export default async function getWeatherDataForLongitudeAndLatitude(
       },
     };
   } catch (e) {
-    coreApi.log.warning("app:weather", "Could not fetch location data => ", e);
+    core.log.warning("app:weather", "Could not fetch location data => ", e);
     return null;
   }
 }

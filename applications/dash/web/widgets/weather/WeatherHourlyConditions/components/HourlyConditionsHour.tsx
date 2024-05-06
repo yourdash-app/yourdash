@@ -6,7 +6,7 @@
 import useTranslate from "@yourdash/shared/web/helpers/i18n";
 import Card from "@yourdash/chiplet/components/card/Card";
 import React from "react";
-import DROPLET_ICON from "@yourdash/applications/weather/frontend/assets/weatherIcons/droplet.svg";
+import DROPLET_ICON from "@yourdash/applications/weather/web/assets/weatherIcons/droplet.svg";
 
 export interface IHourlyConditionsHour {
   time: string;
@@ -17,7 +17,14 @@ export interface IHourlyConditionsHour {
   conditionState: number;
 }
 
-const HourlyConditionsHour: React.FC<IHourlyConditionsHour> = ({ time, conditionIcon, conditionState, temperature, feelsLike, rainChance }) => {
+const HourlyConditionsHour: React.FC<IHourlyConditionsHour> = ({
+  time,
+  conditionIcon,
+  conditionState,
+  temperature,
+  feelsLike,
+  rainChance,
+}) => {
   const trans = useTranslate("weather");
   const [showTooltip, setShowTooltip] = React.useState(false);
 
@@ -45,10 +52,18 @@ const HourlyConditionsHour: React.FC<IHourlyConditionsHour> = ({ time, condition
           }}
         >
           <span>{time}</span>
-          <img alt={""} className={"aspect-square h-16"} src={conditionIcon} />
+          <img
+            alt={""}
+            className={"aspect-square h-16"}
+            src={conditionIcon}
+          />
           <span>{`${temperature}°C`}</span>
           <div className={"flex items-center justify-center"}>
-            <img className={"h-full"} src={DROPLET_ICON} alt={""} />
+            <img
+              className={"h-full"}
+              src={DROPLET_ICON}
+              alt={""}
+            />
             <span>{`${rainChance}%`}</span>
           </div>
           <span>{`${feelsLike}°C`}</span>

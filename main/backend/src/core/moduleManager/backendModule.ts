@@ -1,12 +1,12 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 import { Request as ExpressRequest } from "express";
 import path from "path";
-import coreApi, { CoreApi } from "../coreApi.js";
-import { LOG_TYPE } from "../coreApiLog.js";
+import core, { Core } from "../core.js";
+import { LOG_TYPE } from "../coreLog.js";
 import YourDashUser from "../user/index.js";
 
 export interface YourDashModuleArguments {
@@ -16,16 +16,15 @@ export interface YourDashModuleArguments {
 
 export default class BackendModule {
   readonly moduleName: string;
-  protected readonly API: {
-    websocket: CoreApi["websocketManager"];
-    request: CoreApi["request"];
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    log(type: LOG_TYPE, ...message: any[]): void;
+  protected readonly api: {
+    websocket: Core["websocketManager"];
+    request: Core["request"];
+    log(type: LOG_TYPE, ...message: unknown[]): void;
     getPath(): string;
     applicationName: string;
     moduleName: string;
     getUser(req: ExpressRequest): YourDashUser;
-    core: CoreApi;
+    core: Core;
     path: string;
     modulePath: string;
   };
@@ -33,26 +32,25 @@ export default class BackendModule {
 
   constructor(args: YourDashModuleArguments) {
     this.moduleName = args.moduleName;
-    this.API = {
-      websocket: coreApi.websocketManager,
-      request: coreApi.request,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      log(type: LOG_TYPE, ...message: any[]) {
+    this.api = {
+      websocket: core.websocketManager,
+      request: core.request,
+      log(type: LOG_TYPE, ...message: (string | Uint8Array)[]) {
         switch (type) {
           case LOG_TYPE.INFO:
-            coreApi.log.info(`app:${this.moduleName}`, ...message);
+            core.log.info(`app:${this.moduleName}`, ...message);
             return;
           case LOG_TYPE.ERROR:
-            coreApi.log.error(`app:${this.moduleName}`, ...message);
+            core.log.error(`app:${this.moduleName}`, ...message);
             return;
           case LOG_TYPE.SUCCESS:
-            coreApi.log.success(`app:${this.moduleName}`, ...message);
+            core.log.success(`app:${this.moduleName}`, ...message);
             return;
           case LOG_TYPE.WARNING:
-            coreApi.log.warning(`app:${this.moduleName}`, ...message);
+            core.log.warning(`app:${this.moduleName}`, ...message);
             return;
           default:
-            coreApi.log.info(`app:${this.moduleName}`, ...message);
+            core.log.info(`app:${this.moduleName}`, ...message);
         }
       },
       getPath() {
@@ -63,9 +61,9 @@ export default class BackendModule {
       getUser(req: ExpressRequest) {
         const username = req.headers.username as string;
 
-        return coreApi.users.get(username);
+        return core.users.get(username);
       },
-      core: coreApi,
+      core: core,
       path: args.modulePath,
       modulePath: args.modulePath,
     };

@@ -4,7 +4,7 @@
  */
 
 import KeyValueDatabase from "../../lib/keyValueDatabase.js";
-import coreApi from "../coreApi.js";
+import core from "../core.js";
 
 export default class UserDatabase extends KeyValueDatabase {
   private userName: string;
@@ -17,9 +17,10 @@ export default class UserDatabase extends KeyValueDatabase {
     return this;
   }
 
-  public set(key: string, value: any) {
-    // eslint-disable-line @typescript-eslint/no-explicit-any
+  public set(key: string, value: unknown) {
     super.set(key, value);
-    coreApi.users.get(this.userName).saveDatabase();
+    core.users.get(this.userName).saveDatabase();
+
+    return this;
   }
 }

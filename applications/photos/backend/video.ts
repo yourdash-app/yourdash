@@ -1,11 +1,11 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 import pth from "path";
-import coreApi from "@yourdash/backend/src/core/coreApi.js";
-import { AUTHENTICATED_VIDEO_TYPE } from "@yourdash/backend/src/core/coreApiVideo.js";
+import core from "@yourdash/backend/src/core/core.js";
+import { AUTHENTICATED_VIDEO_TYPE } from "@yourdash/backend/src/core/coreVideo.js";
 import ffmpeg from "fluent-ffmpeg";
 import IGridItem from "../shared/grid.js";
 
@@ -36,11 +36,11 @@ export default class Video {
   }
 
   getRawPhotoUrl(): string {
-    return coreApi.video.createAuthenticatedVideo(this.username, AUTHENTICATED_VIDEO_TYPE.FILE, pth.resolve(this.path));
+    return core.video.createAuthenticatedVideo(this.username, AUTHENTICATED_VIDEO_TYPE.FILE, pth.resolve(this.path));
   }
 
   async getVideoUrl(): Promise<string> {
-    return coreApi.video.createAuthenticatedVideo(this.username, AUTHENTICATED_VIDEO_TYPE.FILE, pth.resolve(this.path));
+    return core.video.createAuthenticatedVideo(this.username, AUTHENTICATED_VIDEO_TYPE.FILE, pth.resolve(this.path));
   }
 
   async getIGridVideo() {

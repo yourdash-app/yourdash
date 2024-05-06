@@ -9,7 +9,7 @@ import { promises as fs } from "fs";
 import path from "path";
 import { parseStringPromise } from "xml2js";
 import { compareHashString } from "../../lib/encryption.js";
-import { CoreApi } from "../coreApi.js";
+import { Core } from "../core.js";
 
 export enum WD_NAMESPACE {
   WEBDAV = "DAV:",
@@ -23,33 +23,33 @@ export enum WD_NAMESPACE {
 // Sample implementation => https://github.com/nfarina/simpledav/blob/master/wsgi.py
 // https://datatracker.ietf.org/doc/html/rfc6764#section-5
 
-export default class CoreApiWebDAV {
-  coreApi: CoreApi;
+export default class coreWebDAV {
+  core: Core;
 
-  constructor(coreApi: CoreApi) {
-    this.coreApi = coreApi;
+  constructor(core: Core) {
+    this.core = core;
 
     return this;
   }
 
   __internal__loadEndpoints() {
-    this.coreApi.request.use("/.well-known/webdav", (req, res) => {
+    this.core.request.usePath("/.well-known/webdav", (req, res) => {
       return res.redirect("/webdav");
     });
 
-    this.coreApi.request.use("/.well-known/caldav", (req, res) => {
+    this.core.request.usePath("/.well-known/caldav", (req, res) => {
       return res.redirect("/webdav");
     });
 
-    this.coreApi.request.use("/.well-known/carddav", (req, res) => {
+    this.core.request.usePath("/.well-known/carddav", (req, res) => {
       return res.redirect("/webdav");
     });
 
-    this.coreApi.request.get("/webdav", (_req, res) => {
+    this.core.request.get("/webdav", (_req, res) => {
       return res.send(`This is the WebDAV endpoint of YourDash`);
     });
 
-    this.coreApi.request.use("/webdav/*", async (req, res, next) => {
+    this.core.request.usePath("/webdav/*", async (req, res, next) => {
       res.setHeader("DAV", "1,2");
       res.setHeader("MS-Author-Via", "DAV");
 
@@ -77,14 +77,14 @@ export default class CoreApiWebDAV {
         .toString("utf-8")
         .split(":");
 
-      this.coreApi.log.debug("webdav", "username:", username, "password:", password);
+      this.core.log.debug("webdav", "username:", username, "password:", password);
 
-      const user = this.coreApi.users.get(username);
+      const user = this.core.users.get(username);
 
       const savedHashedPassword = (await fs.readFile(path.join(user.path, "core/password.enc"))).toString();
 
       if (!(await compareHashString(savedHashedPassword, password))) {
-        this.coreApi.log.error("webdav", "passwords did not match!, password", password);
+        this.core.log.error("webdav", "passwords did not match!, password", password);
         return failAuth();
       }
 
@@ -94,7 +94,7 @@ export default class CoreApiWebDAV {
       return next();
     });
 
-    this.coreApi.request.propfind("/webdav/files/:path", (req, res) => {
+    this.core.request.rawExpress.propfind("/webdav/files/:path", (req, res) => {
       const { path: reqPath } = req.params;
 
       // TODO: actually implement this

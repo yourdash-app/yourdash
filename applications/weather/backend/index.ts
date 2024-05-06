@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -21,16 +21,16 @@ export default class WeatherModule extends BackendModule {
   public loadEndpoints() {
     super.loadEndpoints();
 
-    geolocationApi(this.API.request);
+    geolocationApi(this.api.request);
 
-    this.API.request.get("/app/weather/location/:id", async (req, res) => {
+    this.api.request.get("/app/weather/location/:id", async (req, res) => {
       const { id } = req.params;
 
       if (weatherForecastCache[id]) {
         const currentTime = Math.floor(new Date().getTime() / 1_000);
 
         if (currentTime > weatherForecastCache[id].cacheTime + 1_800_000 /* 30 minutes */) {
-          this.API.core.log.info("app:weather", `Responding with cached weather data for location '${id}'`);
+          this.api.core.log.info("app:weather", `Responding with cached weather data for location '${id}'`);
           return res.json({
             ...(weatherForecastCache[id].data as object),
             collectedAt: weatherForecastCache[id].cacheTime,
@@ -43,10 +43,10 @@ export default class WeatherModule extends BackendModule {
       return res.json(await getWeatherDataForLocationId(id));
     });
 
-    this.API.request.get("/app/weather/previous/locations", (req, res) => {
+    this.api.request.get("/app/weather/previous/locations", (req, res) => {
       return res.json([]);
     });
 
-    weatherPredictionEngine(this.API.request);
+    weatherPredictionEngine(this.api.request);
   }
 }
