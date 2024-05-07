@@ -37,7 +37,15 @@ export default class CoreRequest {
     this.rawExpress.get(
       (this.currentNamespace ? "/" : "") + this.currentNamespace + path,
       (req: ExpressRequest, res: ExpressResponse) => {
-        callback(req, res);
+        try {
+          try {
+            callback(req, res);
+          } catch (err) {
+            this.core.log.error("request_error", `Request error not caught: ${err.message}`);
+          }
+        } catch (err) {
+          this.core.log.error("request_error", `Request error not caught: ${err.message}`);
+        }
       },
     );
 
@@ -48,7 +56,11 @@ export default class CoreRequest {
     this.rawExpress.post(
       (this.currentNamespace ? "/" : "") + this.currentNamespace + path,
       (req: ExpressRequest, res: ExpressResponse) => {
-        callback(req, res);
+        try {
+          callback(req, res);
+        } catch (err) {
+          this.core.log.error("request_error", `Request error not caught: ${err.message}`);
+        }
       },
     );
 
@@ -59,7 +71,11 @@ export default class CoreRequest {
     this.rawExpress.put(
       (this.currentNamespace ? "/" : "") + this.currentNamespace + path,
       (req: ExpressRequest, res: ExpressResponse) => {
-        callback(req, res);
+        try {
+          callback(req, res);
+        } catch (err) {
+          this.core.log.error("request_error", `Request error not caught: ${err.message}`);
+        }
       },
     );
 
@@ -70,7 +86,11 @@ export default class CoreRequest {
     this.rawExpress.delete(
       (this.currentNamespace ? "/" : "") + this.currentNamespace + path,
       (req: ExpressRequest, res: ExpressResponse) => {
-        callback(req, res);
+        try {
+          callback(req, res);
+        } catch (err) {
+          this.core.log.error("request_error", `Request error not caught: ${err.message}`);
+        }
       },
     );
 
@@ -81,7 +101,11 @@ export default class CoreRequest {
     this.rawExpress.patch(
       (this.currentNamespace ? "/" : "") + this.currentNamespace + path,
       (req: ExpressRequest, res: ExpressResponse) => {
-        callback(req, res);
+        try {
+          callback(req, res);
+        } catch (err) {
+          this.core.log.error("request_error", `Request error not caught: ${err.message}`);
+        }
       },
     );
 
@@ -92,7 +116,11 @@ export default class CoreRequest {
     this.rawExpress.options(
       (this.currentNamespace ? "/" : "") + this.currentNamespace + path,
       (req: ExpressRequest, res: ExpressResponse) => {
-        callback(req, res);
+        try {
+          callback(req, res);
+        } catch (err) {
+          this.core.log.error("request_error", `Request error not caught: ${err.message}`);
+        }
       },
     );
 

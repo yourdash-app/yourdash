@@ -31,7 +31,12 @@ const IndexPage: FC = () => {
         />
       </Box>
       {albums.map((album) => {
-        return <Text text={album} />;
+        return (
+          <Text
+            text={album}
+            key={album}
+          />
+        );
       })}
     </>
   );

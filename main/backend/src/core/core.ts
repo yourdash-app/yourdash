@@ -557,9 +557,11 @@ export class Core {
     });
 
     /**
-     *  ##################################################################
-     *  # WARNING: all endpoints require authentication after this point #
-     *  ##################################################################
+     *  ######################################################################
+     *  #                                                                    #
+     *  #   WARNING: all endpoints require authentication after this point   #
+     *  #                                                                    #
+     *  ######################################################################
      */
 
     console.time("core:load_modules");

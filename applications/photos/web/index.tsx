@@ -6,6 +6,7 @@
 import { Routes, Route } from "react-router";
 import Layout from "./layout.js";
 import { FC } from "react";
+import AlbumPathPage from "./routes/album/[path].js";
 import IndexPage from "./routes/index.js";
 import SearchIndexPage from "./routes/search/index.js";
 
@@ -21,6 +22,12 @@ const ApplicationRoutes: FC = () => {
           path={"search"}
           element={<SearchIndexPage />}
         />
+        <Route path={"album"}>
+          <Route
+            path={"@/*"}
+            element={<AlbumPathPage />}
+          />
+        </Route>
       </Route>
     </Routes>
   );
