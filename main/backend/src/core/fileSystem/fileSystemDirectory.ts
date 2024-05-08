@@ -6,15 +6,17 @@
 import pth from "path";
 import { promises as fs } from "fs";
 import { Core } from "../core.js";
-import FileSystemEntity from "./fileSystemEntity.js";
+import FileSystemEntity, { FILESYSTEM_ENTITY_TYPE } from "./fileSystemEntity.js";
 
 export default class FileSystemDirectory extends FileSystemEntity {
   private readonly core: Core;
-  entityType = "directory" as const;
+  entityType = FILESYSTEM_ENTITY_TYPE.DIRECTORY as const;
 
   constructor(core: Core, path: string) {
     super(path);
     this.core = core;
+
+    return this;
   }
 
   getName(): string {

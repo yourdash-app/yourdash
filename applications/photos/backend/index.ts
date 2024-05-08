@@ -8,6 +8,7 @@ import path from "path";
 import { MediaAlbumLargeGrid } from "../shared/types/endpoints/media/album/large-grid.js";
 import { MEDIA_TYPE } from "../shared/types/mediaType.js";
 import { AUTHENTICATED_IMAGE_TYPE } from "@yourdash/backend/src/core/coreImage.js";
+import { FILESYSTEM_ENTITY_TYPE } from "@yourdash/backend/src/core/fileSystem/fileSystemEntity.js";
 
 export default class PhotosBackend extends BackendModule {
   rootPath: string = "/app/photos";
@@ -21,14 +22,18 @@ export default class PhotosBackend extends BackendModule {
 
     this.api.request.setNamespace("app::photos");
 
-    this.api.request.get("/albums/@/:albumPath", async (req, res) => {
+    this.api.request.get("/albums/@/*", async (req, res) => {
+      const albumPath = req.params["0"] as string;
+
       const user = this.api.getUser(req);
 
-      const albumDirectory = await this.api.core.fs.getDirectory(user.getFsPath().split(user.getFsPath())[1]);
+      const albumDirectory = await this.api.core.fs.getDirectory(albumPath.split(user.getFsPath())[1]);
+
+      console.log(albumDirectory);
 
       return res.json(
         (await albumDirectory.getChildren())
-          .filter((child) => child.entityType === "directory")
+          .filter((child) => child.entityType === FILESYSTEM_ENTITY_TYPE.DIRECTORY)
           .map((child) => child.path),
       );
     });
@@ -43,11 +48,11 @@ export default class PhotosBackend extends BackendModule {
 
       let childType: MEDIA_TYPE;
 
-      if (item.entityType === "directory") {
+      if (item.entityType === FILESYSTEM_ENTITY_TYPE.DIRECTORY) {
         childType = MEDIA_TYPE.ALBUM;
       }
 
-      if (item.entityType === "file") {
+      if (item.entityType === FILESYSTEM_ENTITY_TYPE.FILE) {
         childType = MEDIA_TYPE.IMAGE;
       }
 

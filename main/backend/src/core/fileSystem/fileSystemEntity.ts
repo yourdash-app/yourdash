@@ -12,12 +12,19 @@ interface FileSystemEntityIsLocked<T extends boolean = boolean> {
   lockedBy: T extends true ? FileSystemLock[] : undefined;
 }
 
+export enum FILESYSTEM_ENTITY_TYPE {
+  FILE,
+  DIRECTORY,
+  NULL,
+}
+
 export default class FileSystemEntity {
   path: string;
-  entityType: "file" | "directory";
+  entityType: FILESYSTEM_ENTITY_TYPE;
 
   constructor(path: string) {
     this.path = path;
+
     return this;
   }
 

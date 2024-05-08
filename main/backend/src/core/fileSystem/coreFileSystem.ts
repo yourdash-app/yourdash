@@ -10,6 +10,7 @@ import coreVerifyFileSystem from "./coreVerifyFileSystem.js";
 import FileSystemDirectory from "./fileSystemDirectory.js";
 import FileSystemFile from "./fileSystemFile.js";
 import FileSystemLock from "./fileSystemLock.js";
+import FileSystemNull from "./fileSystemNull.js";
 
 export default class coreFileSystem {
   ROOT_PATH: string;
@@ -34,7 +35,7 @@ export default class coreFileSystem {
         return new FileSystemFile(this.core, path);
       }
     } catch (_err) {
-      return null;
+      return new FileSystemNull(this.core);
     }
   }
 

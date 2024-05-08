@@ -7,11 +7,11 @@ import { promises as fs } from "fs";
 import pth from "path";
 import { Core } from "../core.js";
 import { AUTHENTICATED_IMAGE_TYPE } from "../coreImage.js";
-import FileSystemEntity from "./fileSystemEntity.js";
+import FileSystemEntity, { FILESYSTEM_ENTITY_TYPE } from "./fileSystemEntity.js";
 
 export default class FileSystemFile extends FileSystemEntity {
   private readonly core: Core;
-  entityType = "file" as const;
+  entityType = FILESYSTEM_ENTITY_TYPE.FILE as const;
 
   constructor(core: Core, path: string) {
     super(path);
