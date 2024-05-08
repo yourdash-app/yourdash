@@ -4,7 +4,6 @@
  */
 
 import Card from "@yourdash/uikit/components/card/card";
-import RightClickMenu from "@yourdash/chiplet/components/rightClickMenu/RightClickMenu";
 import ContextMenu from "@yourdash/uikit/components/contextMenu/contextMenu.js";
 import React from "react";
 import IPanelApplicationsLauncherApplication from "@yourdash/shared/core/panel/applicationsLauncher/application";
@@ -57,6 +56,7 @@ const LargeApplicationGrid: React.FC<{
                 className={styles.itemIcon}
                 src={`${csi.getInstanceUrl()}${application.icon}`}
                 draggable={false}
+                loading={"lazy"}
                 alt=""
               />
               <span className={styles.itemLabel}>{application.displayName}</span>

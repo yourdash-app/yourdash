@@ -5,7 +5,7 @@
 
 import BackendModule, { YourDashModuleArguments } from "@yourdash/backend/src/core/moduleManager/backendModule.js";
 import path from "path";
-import { MediaAlbumLargeGrid } from "../shared/types/endpoints/media/album/large-grid.js";
+import { MediaAlbumLargeGridItem } from "../shared/types/endpoints/media/album/large-grid.js";
 import { MEDIA_TYPE } from "../shared/types/mediaType.js";
 import { AUTHENTICATED_IMAGE_TYPE } from "@yourdash/backend/src/core/coreImage.js";
 import { FILESYSTEM_ENTITY_TYPE } from "@yourdash/backend/src/core/fileSystem/fileSystemEntity.js";
@@ -27,9 +27,12 @@ export default class PhotosBackend extends BackendModule {
 
       const user = this.api.getUser(req);
 
-      const albumDirectory = await this.api.core.fs.getDirectory(albumPath.split(user.getFsPath())[1]);
+      const albumDirectory = await this.api.core.fs.get(path.join(user.getFsPath(), albumPath));
 
-      console.log(albumDirectory);
+      if (!(await albumDirectory?.doesExist())) return res.json({ error: "Not found" });
+
+      if (albumDirectory?.entityType !== FILESYSTEM_ENTITY_TYPE.DIRECTORY)
+        return res.json({ error: "Not a directory" });
 
       return res.json(
         (await albumDirectory.getChildren())
@@ -42,47 +45,55 @@ export default class PhotosBackend extends BackendModule {
       const itemPath = req.params["0"] as string;
       const user = this.api.getUser(req);
 
-      const item = await this.api.core.fs.get(itemPath.split(user.getFsPath())[1]);
+      const item = await this.api.core.fs.get(path.join(user.getFsPath(), itemPath));
 
       if (!(await item.doesExist())) return res.json({ error: true });
 
-      let childType: MEDIA_TYPE;
+      if (item.entityType !== FILESYSTEM_ENTITY_TYPE.DIRECTORY) return res.json({ error: true });
 
-      if (item.entityType === FILESYSTEM_ENTITY_TYPE.DIRECTORY) {
-        childType = MEDIA_TYPE.ALBUM;
-      }
+      return res.json(
+        await Promise.all(
+          (await item.getChildren()).map((child) => {
+            let childType: MEDIA_TYPE;
 
-      if (item.entityType === FILESYSTEM_ENTITY_TYPE.FILE) {
-        childType = MEDIA_TYPE.IMAGE;
-      }
+            if (child.entityType === FILESYSTEM_ENTITY_TYPE.DIRECTORY) {
+              childType = MEDIA_TYPE.ALBUM;
+            }
 
-      switch (childType) {
-        case MEDIA_TYPE.VIDEO:
-          return res.json(<MediaAlbumLargeGrid<MEDIA_TYPE.VIDEO>>{
-            type: MEDIA_TYPE.VIDEO,
-            path: item.path,
-            mediaUrl: this.api.core.image.createAuthenticatedImage(
-              user.username,
-              AUTHENTICATED_IMAGE_TYPE.FILE,
-              item.path,
-            ),
-          });
-        case MEDIA_TYPE.IMAGE:
-          return res.json(<MediaAlbumLargeGrid<MEDIA_TYPE.IMAGE>>{
-            type: MEDIA_TYPE.IMAGE,
-            path: item.path,
-            mediaUrl: this.api.core.image.createAuthenticatedImage(
-              user.username,
-              AUTHENTICATED_IMAGE_TYPE.FILE,
-              item.path,
-            ),
-          });
-        case MEDIA_TYPE.ALBUM:
-          return res.json(<MediaAlbumLargeGrid<MEDIA_TYPE.ALBUM>>{
-            type: MEDIA_TYPE.ALBUM,
-            path: item.path,
-          });
-      }
+            if (child.entityType === FILESYSTEM_ENTITY_TYPE.FILE) {
+              childType = MEDIA_TYPE.IMAGE;
+            }
+
+            switch (childType) {
+              case MEDIA_TYPE.VIDEO:
+                return <MediaAlbumLargeGridItem<MEDIA_TYPE.VIDEO>>{
+                  type: MEDIA_TYPE.VIDEO,
+                  path: child.path,
+                  mediaUrl: this.api.core.image.createAuthenticatedImage(
+                    user.username,
+                    AUTHENTICATED_IMAGE_TYPE.FILE,
+                    child.path,
+                  ),
+                };
+              case MEDIA_TYPE.IMAGE:
+                return <MediaAlbumLargeGridItem<MEDIA_TYPE.IMAGE>>{
+                  type: MEDIA_TYPE.IMAGE,
+                  path: child.path,
+                  mediaUrl: this.api.core.image.createAuthenticatedImage(
+                    user.username,
+                    AUTHENTICATED_IMAGE_TYPE.FILE,
+                    child.path,
+                  ),
+                };
+              case MEDIA_TYPE.ALBUM:
+                return <MediaAlbumLargeGridItem<MEDIA_TYPE.ALBUM>>{
+                  type: MEDIA_TYPE.ALBUM,
+                  path: child.path,
+                };
+            }
+          }),
+        ),
+      );
     });
 
     // this.API.request.get(`${this.rootPath}/albums`, async (req, res) => {
