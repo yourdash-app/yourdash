@@ -11,8 +11,6 @@ import { AUTHENTICATED_IMAGE_TYPE } from "@yourdash/backend/src/core/coreImage.j
 import { FILESYSTEM_ENTITY_TYPE } from "@yourdash/backend/src/core/fileSystem/fileSystemEntity.js";
 
 export default class PhotosBackend extends BackendModule {
-  rootPath: string = "/app/photos";
-
   constructor(args: YourDashModuleArguments) {
     super(args);
   }
@@ -27,7 +25,7 @@ export default class PhotosBackend extends BackendModule {
 
       const user = this.api.getUser(req);
 
-      const albumDirectory = await this.api.core.fs.get(path.join(user.getFsPath(), albumPath));
+      const albumDirectory = await this.api.core.fs.get(path.join(user.getFsPath(), "photos", albumPath));
 
       if (!(await albumDirectory?.doesExist())) return res.json({ error: "Not found" });
 
@@ -45,7 +43,7 @@ export default class PhotosBackend extends BackendModule {
       const itemPath = req.params["0"] as string;
       const user = this.api.getUser(req);
 
-      const item = await this.api.core.fs.get(path.join(user.getFsPath(), itemPath));
+      const item = await this.api.core.fs.get(path.join(user.getFsPath(), "photos", itemPath));
 
       if (!(await item.doesExist())) return res.json({ error: true });
 
