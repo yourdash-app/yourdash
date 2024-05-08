@@ -74,12 +74,17 @@ export class Core {
   constructor() {
     const rawConsoleLog = globalThis.console.log;
 
-    // eslint-disable-next-line
-    globalThis.console.log = (message?: any, ...optionalParams: any[]) => {
-      rawConsoleLog(chalk.bold.yellowBright("RAW CONSOLE: ") + message, ...optionalParams);
-    };
+    this.isDebugMode =
+      typeof global.v8debug === "object" ||
+      /--debug|--inspect/.test(process.execArgv.join(" ")) ||
+      process.env.NODE_OPTIONS?.includes("javascript-debugger");
 
-    this.isDebugMode = typeof global.v8debug === "object" || /--debug|--inspect/.test(process.execArgv.join(" "));
+    if (!this.isDebugMode) {
+      // eslint-disable-next-line
+      globalThis.console.log = (message?: any, ...optionalParams: any[]) => {
+        rawConsoleLog(chalk.bold.yellowBright("RAW CONSOLE: ") + message, ...optionalParams);
+      };
+    }
 
     this.log = new CoreLog(this);
 
@@ -218,12 +223,12 @@ export class Core {
   }
 
   private startRequestLogger(options: { logOptionsRequests?: boolean; logQueryParameters?: boolean }) {
-    this.request.use((req, res, next) => {
+    this.request.use(async (req, _res, next) => {
       switch (req.method) {
         case "GET":
           this.log.info(
             "request",
-            `${chalk.bgGreen(chalk.black(" GET "))} ${req.path} ${
+            `${chalk.bgBlack(chalk.green(" GET "))} ${req.path} ${
               options.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""
             }`,
           );
@@ -231,7 +236,7 @@ export class Core {
         case "POST":
           this.log.info(
             "request",
-            `${chalk.bgBlue(chalk.black(" POS "))} ${req.path} ${
+            `${chalk.bgBlack(chalk.blue(" POS "))} ${req.path} ${
               options.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""
             }`,
           );
@@ -239,7 +244,7 @@ export class Core {
         case "DELETE":
           this.log.info(
             "request",
-            `${chalk.bgRed(chalk.black(" DEL "))} ${req.path} ${
+            `${chalk.bgBlack(chalk.red(" DEL "))} ${req.path} ${
               options.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""
             }`,
           );
@@ -248,17 +253,17 @@ export class Core {
           if (options.logOptionsRequests) {
             this.log.info(
               "request",
-              `${chalk.bgCyan(chalk.black(" OPT "))} ${req.path} ${
+              `${chalk.bgBlack(chalk.cyan(" OPT "))} ${req.path} ${
                 options.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""
               }`,
             );
           }
           break;
         case "PROPFIND":
-          this.log.info("request", `${chalk.bgCyan(chalk.black(" PFI "))} ${req.path}`);
+          this.log.info("request", `${chalk.bgBlack(chalk.cyan(" PFI "))} ${req.path}`);
           break;
         case "PROPPATCH":
-          this.log.info("request", `${chalk.bgCyan(chalk.black(" PPA "))} ${req.path}`);
+          this.log.info("request", `${chalk.bgCyan(chalk.cyan(" PPA "))} ${req.path}`);
           break;
         default:
           this.log.error("core:requests", `ERROR IN REQUEST LOGGER, UNKNOWN REQUEST TYPE: ${req.method}, ${req.path}`);
@@ -282,22 +287,22 @@ export class Core {
       });
     }
 
-    this.request.use(cors());
-    this.request.use(express.json({ limit: "50mb" }));
-    this.request.use(express.urlencoded({ extended: true }));
+    this.request.use(async (req, res, next) => cors()(req, res, next));
+    this.request.use(async (req, res, next) => express.json({ limit: "50mb" })(req, res, next));
+    this.request.use(async (req, res, next) => express.urlencoded({ extended: true })(req, res, next));
 
-    this.request.use((_req, res, next) => {
+    this.request.use(async (_req, res, next) => {
       // remove the X-Powered-By header to prevent exploitation from knowing the software powering the request server
       // this is a security measure against exploiters who don't look into the project's source code
       res.removeHeader("X-Powered-By");
 
-      next();
+      return next();
     });
 
-    this.request.use(expressCompression());
+    this.request.use(async (req, res, next) => expressCompression()(req, res, next));
 
     // INFO: This shouldn't be used for detection of a YourDash Instance, instead use the '/test' endpoint
-    this.request.get("/", (_req, res) => {
+    this.request.get("/", async (_req, res) => {
       if (this.isDevMode) {
         return res.redirect(`http://localhost:5173/login/http://localhost:3563`);
       }
@@ -306,19 +311,19 @@ export class Core {
     });
 
     // Server discovery endpoint
-    this.request.get("/test", (_req, res) => {
+    this.request.get("/test", async (_req, res) => {
       return res.status(200).json({
         status: this.instanceStatus,
         type: "yourdash",
       });
     });
 
-    this.request.get("/ping", (_req, res) => {
+    this.request.get("/ping", async (_req, res) => {
       // INFO: This shouldn't be used for detection of a YourDash Instance, instead use the '/test' endpoint
       return res.send("pong");
     });
 
-    this.request.get("/core/test/self-ping", (_req, res) => {
+    this.request.get("/core/test/self-ping", async (_req, res) => {
       return res.json({ success: true });
     });
 
@@ -337,7 +342,7 @@ export class Core {
         this.log.error("self_ping_test", "CRITICAL ERROR!, unable to ping self");
       });
 
-    this.request.get("/login/user/:username/avatar", (req, res) => {
+    this.request.get("/login/user/:username/avatar", async (req, res) => {
       const user = new YourDashUser(req.params.username);
       return res.sendFile(user.getAvatar(USER_AVATAR_SIZE.EXTRA_LARGE));
     });
@@ -429,18 +434,18 @@ export class Core {
       return res.json({ success: false });
     });
 
-    this.request.get("/core/theme/:username", (req, res) => {
+    this.request.get("/core/theme/:username", async (req, res) => {
       const username = req.params.username;
       const user = this.users.get(username);
 
-      if (!user || !user.doesExist()) {
+      if (!user || !(await user.doesExist())) {
         return res.json({ error: "User not found" });
       }
 
       return res.sendFile(user.getThemePath());
     });
 
-    this.request.get("/login/instance/metadata", (_req, res) => {
+    this.request.get("/login/instance/metadata", async (_req, res) => {
       return res.json(<EndpointResponseLoginInstanceMetadata>{
         title: this.globalDb.get("core:instance:name") || "Placeholder name",
         message:
@@ -450,7 +455,7 @@ export class Core {
       });
     });
 
-    this.request.get("/login/instance/background", (_req, res) => {
+    this.request.get("/login/instance/background", async (_req, res) => {
       res.set("Content-Type", "image/avif");
       return res.sendFile(path.resolve(this.fs.ROOT_PATH, "./login_background.avif"));
     });
@@ -580,7 +585,7 @@ export class Core {
       this.log.error("startup", "Failed to load post-auth endpoints for all modules", err);
     }
 
-    this.request.get("/core/login/notice", (_req, res) => {
+    this.request.get("/core/login/notice", async (_req, res) => {
       const notice = this.globalDb.get<GlobalDBCoreLoginNotice>("core:login:notice");
 
       if (!notice) {
@@ -614,7 +619,7 @@ export class Core {
       });
     });
 
-    this.request.get("/core/hosted-applications/", async (req, res) => {
+    this.request.get("/core/hosted-applications/", async (_req, res) => {
       const hostedApplications = await this.fs.getDirectory(path.join(process.cwd(), "../../hostedApplications"));
 
       return res.json({ applications: await hostedApplications.getChildrenAsBaseName() });
@@ -688,7 +693,7 @@ export class Core {
     this.users.__internal__loadEndpoints();
     this.teams.__internal__loadEndpoints();
 
-    this.request.use((req, res) => {
+    this.request.use(async (req, res) => {
       this.log.info(
         "request:404",
         `${chalk.bgRed(chalk.black(" 404 "))} ${req.path} (the path was not answered by the backend)`,

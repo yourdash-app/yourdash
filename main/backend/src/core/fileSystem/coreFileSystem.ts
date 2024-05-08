@@ -47,6 +47,7 @@ export default class coreFileSystem {
     return new FileSystemFile(this.core, path);
   }
 
+  // @DEPRECATED
   async getFile(path: string): Promise<FileSystemFile> | null {
     try {
       if ((await this.getEntityType(path)) === "file") {
@@ -59,6 +60,7 @@ export default class coreFileSystem {
     return null;
   }
 
+  // @DEPRECATED
   async getDirectory(path: string): Promise<FileSystemDirectory> | null {
     try {
       if ((await this.getEntityType(path)) === "directory") {

@@ -31,6 +31,22 @@ export default class CoreLog {
   }
 
   private log(type: LOG_TYPE, level: string, ...message: (string | Uint8Array)[]) {
+    if (this.core.isDebugMode) {
+      this.logHistory.push({ type: type, level: level, message: message });
+
+      console.log(
+        message[0],
+        chalk.bold(
+          `${chalk.white("[")}${chalk.italic.yellow(
+            level.toUpperCase().slice(0, LOG_META_MAX_LENGTH).padEnd(LOG_META_MAX_LENGTH),
+          )}${chalk.white("]")} `,
+        ),
+        message.slice(1).join(" ").toString(),
+      );
+
+      return this;
+    }
+
     // eslint-disable-line @typescript-eslint/no-explicit-any
     this.logHistory.push({ type: type, level: level, message: message });
 

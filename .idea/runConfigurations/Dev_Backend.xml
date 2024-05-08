@@ -7,10 +7,7 @@
     </scripts>
     <node-interpreter value="project" />
     <package-manager value="yarn" />
-    <envs>
-      <env name="BUN_INSTALL" value="&quot;$HOME/.bun&quot;" />
-      <env name="PATH" value="$BUN_INSTALL/bin:$PATH" />
-    </envs>
+    <envs />
     <method v="2" />
   </configuration>
 </component>

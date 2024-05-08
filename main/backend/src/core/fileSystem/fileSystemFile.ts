@@ -8,6 +8,7 @@ import pth from "path";
 import { Core } from "../core.js";
 import { AUTHENTICATED_IMAGE_TYPE } from "../coreImage.js";
 import FileSystemEntity, { FILESYSTEM_ENTITY_TYPE } from "./fileSystemEntity.js";
+import FileSystemError, { FILESYSTEM_ERROR } from "./fileSystemError.js";
 
 export default class FileSystemFile extends FileSystemEntity {
   private readonly core: Core;
@@ -95,7 +96,7 @@ export default class FileSystemFile extends FileSystemEntity {
 
   async write(data: string | Buffer) {
     if (this.isLocked().locked) {
-      throw new Error("YDSH: File is locked");
+      throw new FileSystemError(FILESYSTEM_ERROR.NOT_A_FILE);
     }
 
     if (!(await this.doesExist())) {
