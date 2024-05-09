@@ -4,18 +4,12 @@
  */
 
 import { useEffect, useState } from "react";
-import useFirstRender from "./useFirstRender.js";
 
-export default function useResource<T>(resource: () => Promise<T>, deps: unknown[] = [], sendInitialRequest = true) {
+export default function useResource<T>(resource: () => Promise<T>, deps: unknown[] = []) {
   const [data, setData] = useState<T | null>(null);
-  const isInitial = useFirstRender();
 
   useEffect(() => {
-    if (sendInitialRequest) {
-      resource().then((d) => setData(d));
-    } else if (!isInitial) {
-      resource().then((d) => setData(d));
-    }
+    resource().then((d) => setData(d));
   }, deps);
 
   return data;

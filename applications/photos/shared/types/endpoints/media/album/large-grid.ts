@@ -18,6 +18,6 @@ export type MediaAlbumLargeGridItem<Type extends MEDIA_TYPE> = Type extends MEDI
       mediaUrl: string;
     };
 
-type EndpointMediaAlbumLargeGrid = MediaAlbumLargeGridItem<MEDIA_TYPE.IMAGE | MEDIA_TYPE.VIDEO>[];
+type EndpointMediaAlbumLargeGrid = MediaAlbumLargeGridItem<MEDIA_TYPE>[];
 
 export default EndpointMediaAlbumLargeGrid;

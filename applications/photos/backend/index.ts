@@ -35,7 +35,7 @@ export default class PhotosBackend extends BackendModule {
       return res.json(
         (await albumDirectory.getChildren())
           .filter((child) => child.entityType === FILESYSTEM_ENTITY_TYPE.DIRECTORY)
-          .map((child) => child.path),
+          .map((child) => child.path.replace(user.getFsPath(), "")),
       );
     });
 
@@ -43,7 +43,7 @@ export default class PhotosBackend extends BackendModule {
       const itemPath = req.params["0"] as string;
       const user = this.api.getUser(req);
 
-      const item = await this.api.core.fs.get(path.join(user.getFsPath(), "photos", itemPath));
+      const item = await this.api.core.fs.get(path.join(user.getFsPath(), itemPath));
 
       if (!(await item.doesExist())) return res.json({ error: true });
 
@@ -66,7 +66,7 @@ export default class PhotosBackend extends BackendModule {
               case MEDIA_TYPE.VIDEO:
                 return <MediaAlbumLargeGridItem<MEDIA_TYPE.VIDEO>>{
                   type: MEDIA_TYPE.VIDEO,
-                  path: child.path,
+                  path: child.path.replace(user.getFsPath(), ""),
                   mediaUrl: this.api.core.image.createAuthenticatedImage(
                     user.username,
                     AUTHENTICATED_IMAGE_TYPE.FILE,
@@ -76,7 +76,7 @@ export default class PhotosBackend extends BackendModule {
               case MEDIA_TYPE.IMAGE:
                 return <MediaAlbumLargeGridItem<MEDIA_TYPE.IMAGE>>{
                   type: MEDIA_TYPE.IMAGE,
-                  path: child.path,
+                  path: child.path.replace(user.getFsPath(), ""),
                   mediaUrl: this.api.core.image.createAuthenticatedImage(
                     user.username,
                     AUTHENTICATED_IMAGE_TYPE.FILE,
@@ -86,7 +86,7 @@ export default class PhotosBackend extends BackendModule {
               case MEDIA_TYPE.ALBUM:
                 return <MediaAlbumLargeGridItem<MEDIA_TYPE.ALBUM>>{
                   type: MEDIA_TYPE.ALBUM,
-                  path: child.path,
+                  path: child.path.replace(user.getFsPath(), ""),
                 };
             }
           }),
