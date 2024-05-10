@@ -6,7 +6,7 @@
 import React from "react";
 import IGridItem from "../../../../../shared/grid";
 import Photo from "../photo/Photo.js";
-import { calculateAspectRatio } from "../../splitItemsIntoRows.js";
+import { calculateAspectRatio } from "../../../../../lib/splitItemsIntoRows";
 import styles from "./PhotoGridRow.module.scss";
 
 const GridItemRow: React.FC<{

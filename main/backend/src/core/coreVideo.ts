@@ -7,6 +7,7 @@ import crypto from "crypto";
 import pth from "path";
 import path from "path";
 import { Core } from "./core.js";
+import ffmpeg from "fluent-ffmpeg";
 
 export enum AUTHENTICATED_VIDEO_TYPE {
   FILE,
@@ -31,6 +32,14 @@ export default class CoreVideo {
     this.AUTHENTICATED_VIDEOS = {};
 
     return this;
+  }
+
+  getVideoDimensions(videoPath: string): Promise<{ width: number; height: number }> {
+    return new Promise<{ width: number; height: number }>((resolve) => {
+      ffmpeg.ffprobe(videoPath, (err, data) => {
+        return resolve({ width: data.streams[0].width, height: data.streams[0].height });
+      });
+    });
   }
 
   createAuthenticatedVideo<VideoType extends AUTHENTICATED_VIDEO_TYPE>(

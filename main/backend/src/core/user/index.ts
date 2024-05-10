@@ -161,7 +161,8 @@ export default class YourDashUser {
             last: "User",
           },
           "user:username": this.username,
-          "core:panel:quickShortcuts": core.globalDb.get("core:defaults")?.user?.quickShortcuts || [],
+          "core:panel:quickShortcuts":
+            core.globalDb.get<{ user: { quickShortcuts: string[] } }>("core:defaults")?.user?.quickShortcuts || [],
         }),
       );
     } catch (err) {
@@ -260,7 +261,7 @@ export default class YourDashUser {
 
     team.addMember(this.username, permissions);
     const db = await this.getDatabase();
-    db.set("teams", [...(db.get("teams") || []), { teamName: teamName, permissions: permissions }]);
+    db.set("teams", [...(db.get<string[]>("teams") || []), { teamName: teamName, permissions: permissions }]);
 
     return true;
   }

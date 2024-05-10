@@ -4,19 +4,18 @@
  */
 
 import csi from "@yourdash/csi/csi.js";
+import { chunk } from "@yourdash/shared/web/helpers/array";
 import Box from "@yourdash/uikit/components/box/box.js";
-import Card from "@yourdash/uikit/components/card/card.js";
 import Heading from "@yourdash/uikit/components/heading/heading.js";
 import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary.js";
 import IconButton from "@yourdash/uikit/components/iconButton/iconButton.js";
-import Image from "@yourdash/uikit/components/image/image.js";
 import useResource from "@yourdash/web/src/lib/useResource.js";
 import { FC } from "react";
 import EndpointMediaAlbumLargeGrid from "../../../shared/types/endpoints/media/album/large-grid.js";
 import { useParams, useNavigate } from "react-router-dom";
-import { MEDIA_TYPE } from "../../../shared/types/mediaType.js";
 import path from "path-browserify";
 import styles from "./[path].module.scss";
+import AlbumGrid from "./components/albumGrid/albumGrid";
 
 const AlbumPathPage: FC = () => {
   const navigate = useNavigate();
@@ -42,34 +41,9 @@ const AlbumPathPage: FC = () => {
           text={path.basename(albumPath)}
         />
       </Box>
-      {albumData.map((data) => {
-        switch (data.type) {
-          case MEDIA_TYPE.IMAGE:
-            return (
-              <>
-                <Image
-                  key={data.path}
-                  accessibleLabel={path.basename(data.path)}
-                  authenticatedImage
-                  src={data.mediaUrl}
-                />
-              </>
-            );
-          case MEDIA_TYPE.VIDEO:
-            return <div key={data.path}>Video not supported</div>;
-          case MEDIA_TYPE.ALBUM:
-            return (
-              <Card
-                key={data.path}
-                onClick={() => {
-                  navigate("/app/a/photos/album/@" + data.path);
-                }}
-              >
-                {path.basename(data.path)}
-              </Card>
-            );
-        }
-      })}
+      <div>
+        <AlbumGrid items={albumData} />
+      </div>
     </>
   );
 };

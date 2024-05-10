@@ -9,7 +9,7 @@ import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import IGridItem from "../../../../../shared/grid";
-import { calculateAspectRatio } from "../../splitItemsIntoRows";
+import { calculateAspectRatio } from "../../../../../lib/splitItemsIntoRows";
 import styles from "./Photo.module.scss";
 
 const Photo: React.FC<

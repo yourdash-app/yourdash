@@ -9,6 +9,9 @@ import { MediaAlbumLargeGridItem } from "../shared/types/endpoints/media/album/l
 import { MEDIA_TYPE } from "../shared/types/mediaType.js";
 import { AUTHENTICATED_IMAGE_TYPE } from "@yourdash/backend/src/core/coreImage.js";
 import { FILESYSTEM_ENTITY_TYPE } from "@yourdash/backend/src/core/fileSystem/fileSystemEntity.js";
+import core from "@yourdash/backend/src/core/core.js";
+import { AUTHENTICATED_VIDEO_TYPE } from "@yourdash/backend/src/core/coreVideo.js";
+import FileSystemFile from "@yourdash/backend/src/core/fileSystem/fileSystemFile.js";
 
 export default class PhotosBackend extends BackendModule {
   constructor(args: YourDashModuleArguments) {
@@ -20,12 +23,12 @@ export default class PhotosBackend extends BackendModule {
 
     this.api.request.setNamespace("app::photos");
 
-    this.api.request.get("/albums/@/*", async (req, res) => {
+    this.api.request.get("/album/@/*", async (req, res) => {
       const albumPath = req.params["0"] as string;
 
       const user = this.api.getUser(req);
 
-      const albumDirectory = await this.api.core.fs.get(path.join(user.getFsPath(), "photos", albumPath));
+      const albumDirectory = await this.api.core.fs.get(path.join(user.getFsPath(), albumPath));
 
       if (!(await albumDirectory?.doesExist())) return res.json({ error: "Not found" });
 
@@ -51,7 +54,7 @@ export default class PhotosBackend extends BackendModule {
 
       return res.json(
         await Promise.all(
-          (await item.getChildren()).map((child) => {
+          (await item.getChildren()).map(async (child) => {
             let childType: MEDIA_TYPE;
 
             if (child.entityType === FILESYSTEM_ENTITY_TYPE.DIRECTORY) {
@@ -59,29 +62,52 @@ export default class PhotosBackend extends BackendModule {
             }
 
             if (child.entityType === FILESYSTEM_ENTITY_TYPE.FILE) {
-              childType = MEDIA_TYPE.IMAGE;
+              const c = child as unknown as FileSystemFile;
+              switch (c.getType()) {
+                case "image":
+                  childType = MEDIA_TYPE.IMAGE;
+                  break;
+                case "video":
+                  childType = MEDIA_TYPE.VIDEO;
+                  break;
+                default:
+                  childType = MEDIA_TYPE.IMAGE;
+              }
             }
 
             switch (childType) {
               case MEDIA_TYPE.VIDEO:
+                console.log(await core.video.getVideoDimensions(child.path));
+
                 return <MediaAlbumLargeGridItem<MEDIA_TYPE.VIDEO>>{
                   type: MEDIA_TYPE.VIDEO,
                   path: child.path.replace(user.getFsPath(), ""),
-                  mediaUrl: this.api.core.image.createAuthenticatedImage(
+                  mediaUrl: this.api.core.video.createAuthenticatedVideo(
                     user.username,
-                    AUTHENTICATED_IMAGE_TYPE.FILE,
+                    AUTHENTICATED_VIDEO_TYPE.FILE,
                     child.path,
                   ),
+                  metadata: {
+                    width: (await core.video.getVideoDimensions(child.path)).width,
+                    height: (await core.video.getVideoDimensions(child.path)).height,
+                  },
                 };
               case MEDIA_TYPE.IMAGE:
                 return <MediaAlbumLargeGridItem<MEDIA_TYPE.IMAGE>>{
                   type: MEDIA_TYPE.IMAGE,
                   path: child.path.replace(user.getFsPath(), ""),
-                  mediaUrl: this.api.core.image.createAuthenticatedImage(
+                  mediaUrl: await this.api.core.image.createResizedAuthenticatedImage(
                     user.username,
                     AUTHENTICATED_IMAGE_TYPE.FILE,
                     child.path,
+                    256,
+                    512,
+                    "webp",
                   ),
+                  metadata: {
+                    width: (await core.image.getImageDimensions(child.path)).width,
+                    height: (await core.image.getImageDimensions(child.path)).height,
+                  },
                 };
               case MEDIA_TYPE.ALBUM:
                 return <MediaAlbumLargeGridItem<MEDIA_TYPE.ALBUM>>{

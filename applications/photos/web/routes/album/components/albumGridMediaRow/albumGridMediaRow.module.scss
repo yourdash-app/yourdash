@@ -5,25 +5,9 @@
 
 @import "@yourdash/uikit/theme/themeValues";
 
-.navigation {
+.component {
   display: flex;
   flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  padding: var(#{$theme+$padding});
+  gap: var(#{$theme+$gap});
   width: 100%;
-}
-
-.applicationFrame {
-  height: 100%;
-  width: 100%;
-  overflow: auto;
-  display: grid;
-  grid-template-rows: 1fr auto;
-}
-
-.application {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
 }

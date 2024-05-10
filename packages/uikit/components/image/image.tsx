@@ -15,6 +15,7 @@ const Image: FC<{ src: string; accessibleLabel: string; className?: string; auth
       className={`${styles.component} ${props.className}`}
       src={(props.authenticatedImage ? csi.getInstanceUrl() : "") + props.src}
       draggable={false}
+      loading="lazy"
       alt={props.accessibleLabel}
     />
   );

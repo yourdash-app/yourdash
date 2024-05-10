@@ -37,6 +37,18 @@ export default class CoreImage {
     return this;
   }
 
+  getImageDimensions(filePath: string) {
+    return new Promise<{ width: number; height: number }>(async (resolve) => {
+      try {
+        const image = sharp(await fs.readFile(filePath));
+        const { width, height } = await image.metadata();
+        resolve({ width, height });
+      } catch (err) {
+        resolve({ width: 0, height: 0 });
+      }
+    });
+  }
+
   resizeTo(filePath: string, width: number, height: number, resultingImageFormat?: "avif" | "png" | "jpg" | "webp") {
     return new Promise<string>(async (resolve) => {
       const TEMP_DIR = pth.join(this.core.fs.ROOT_PATH, "temp");

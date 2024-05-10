@@ -9,16 +9,13 @@ import TextInput from "@yourdash/uikit/components/textInput/textInput.js";
 import useResource from "@yourdash/web/src/lib/useResource.js";
 import React, { FC } from "react";
 import EndpointMediaSearch from "../../../shared/types/endpoints/media/search.js";
+import Albums from "./components/albums.js";
 import SearchPageResults from "./components/results.js";
 import styles from "./index.module.scss";
 
 const SearchIndexPage: FC = () => {
   const [query, setQuery] = React.useState<string>("");
-  const searchResults = useResource(
-    () => csi.getJson<EndpointMediaSearch>(`/app/photos/media/search/`),
-    [query],
-    false,
-  );
+  const searchResults = useResource(() => csi.getJson<EndpointMediaSearch>(`/app::photos/media/search/`), [query]);
 
   return (
     <div className={styles.page}>
@@ -32,6 +29,7 @@ const SearchIndexPage: FC = () => {
         icon={UKIcon.Search}
       />
       {searchResults && <SearchPageResults results={searchResults} />}
+      <Albums />
     </div>
   );
 };

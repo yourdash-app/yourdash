@@ -15,30 +15,34 @@ const Layout: FC = () => {
 
   return (
     <>
-      <Outlet />
-      <Box className={styles.navigation}>
-        <IconButton
-          accessibleLabel={"Home"}
-          icon={UKIcon.Home}
-          onClick={() => {
-            navigate("/app/a/photos/");
-          }}
-        />
-        <IconButton
-          accessibleLabel={"Search"}
-          icon={UKIcon.Search}
-          onClick={() => {
-            navigate("/app/a/photos/search/");
-          }}
-        />
-        <IconButton
-          accessibleLabel={"Profile"}
-          icon={UKIcon.Person}
-          onClick={() => {
-            navigate("/app/a/photos/profile/");
-          }}
-        />
-      </Box>
+      <div className={styles.applicationFrame}>
+        <div className={styles.application}>
+          <Outlet />
+        </div>
+        <Box className={styles.navigation}>
+          <IconButton
+            accessibleLabel={"Home"}
+            icon={UKIcon.Home}
+            onClick={() => {
+              navigate("/app/a/photos/");
+            }}
+          />
+          <IconButton
+            accessibleLabel={"Search"}
+            icon={UKIcon.Search}
+            onClick={() => {
+              navigate("/app/a/photos/search/");
+            }}
+          />
+          <IconButton
+            accessibleLabel={"Profile"}
+            icon={UKIcon.Person}
+            onClick={() => {
+              navigate("/app/a/photos/profile/");
+            }}
+          />
+        </Box>
+      </div>
     </>
   );
 };

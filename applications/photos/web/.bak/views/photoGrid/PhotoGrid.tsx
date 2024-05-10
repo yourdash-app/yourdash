@@ -12,7 +12,7 @@ import IMedia from "../../../shared/media";
 import { IPhotoAlbum } from "../../../shared/photoAlbum";
 import GridItemRow from "./components/photoGridRow/GridItemRow";
 import styles from "./PhotoGrid.module.scss";
-import splitItemsIntoRows from "./splitItemsIntoRows";
+import splitItemsIntoRows from "../../../lib/splitItemsIntoRows";
 
 let currentGridItems: IGridItem[] = [];
 
