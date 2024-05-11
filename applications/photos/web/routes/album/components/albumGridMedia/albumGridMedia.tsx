@@ -1,3 +1,8 @@
+/*
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
 import csi from "@yourdash/csi/csi";
 import Card from "@yourdash/uikit/components/card/card.js";
 import Image from "@yourdash/uikit/components/image/image.js";
@@ -22,7 +27,7 @@ const AlbumGridMedia: FC<{
         <div
           className={styles.component}
           style={{
-            width: `${displayWidth}px`,
+            width: displayWidth !== 0 ? `${rowHeight * aspectRatio}px` : "100%",
             height: `${rowHeight}px`,
           }}
         >

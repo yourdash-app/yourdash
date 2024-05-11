@@ -47,7 +47,7 @@ const AlbumGrid: FC<{
     return () => {
       resizeObserver.disconnect();
     };
-  }, [!ref.current, items]);
+  }, [items]);
 
   return (
     <div

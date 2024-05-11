@@ -6,7 +6,10 @@
 .component {
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  align-items: center;
   width: 100%;
+  gap: 0.25rem;
+  container-type: inline-size;
+  height: max-content;
   flex-grow: 0;
 }

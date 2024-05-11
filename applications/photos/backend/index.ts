@@ -71,14 +71,12 @@ export default class PhotosBackend extends BackendModule {
                   childType = MEDIA_TYPE.VIDEO;
                   break;
                 default:
-                  childType = MEDIA_TYPE.IMAGE;
+                  return undefined;
               }
             }
 
             switch (childType) {
               case MEDIA_TYPE.VIDEO:
-                console.log(await core.video.getVideoDimensions(child.path));
-
                 return <MediaAlbumLargeGridItem<MEDIA_TYPE.VIDEO>>{
                   type: MEDIA_TYPE.VIDEO,
                   path: child.path.replace(user.getFsPath(), ""),

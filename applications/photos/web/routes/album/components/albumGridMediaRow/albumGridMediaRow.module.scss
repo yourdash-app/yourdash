@@ -7,8 +7,8 @@
 
 .component {
   display: flex;
-  flex-direction: row;
-  gap: var(#{$theme+$gap});
   width: 100%;
-  overflow: hidden;
+  gap: 0.5rem;
+  justify-content: center;
+  transition: var(--transition);
 }

@@ -24,15 +24,19 @@ interface IauthenticatedImage<T extends AUTHENTICATED_IMAGE_TYPE> {
 
 export default class CoreImage {
   private core: Core;
-  private readonly AUTHENTICATED_IMAGES: {
-    [username: string]: {
-      [id: string]: IauthenticatedImage<AUTHENTICATED_IMAGE_TYPE>;
-    };
-  };
+  // private readonly AUTHENTICATED_IMAGES: {
+  //   [username: string]: {
+  //     [id: string]: IauthenticatedImage<AUTHENTICATED_IMAGE_TYPE>;
+  //   };
+  // };
+  private readonly authenticatedImages: Map<
+    string,
+    Map<number, Map<string, IauthenticatedImage<AUTHENTICATED_IMAGE_TYPE>>>
+  >;
 
   constructor(core: Core) {
     this.core = core;
-    this.AUTHENTICATED_IMAGES = {};
+    this.authenticatedImages = new Map();
 
     return this;
   }
@@ -74,6 +78,7 @@ export default class CoreImage {
 
   createAuthenticatedImage<ImageType extends AUTHENTICATED_IMAGE_TYPE>(
     username: string,
+    sessionId: number,
     type: AUTHENTICATED_IMAGE_TYPE,
     value: IauthenticatedImage<ImageType>["value"],
     extras?: { resizeTo?: { width: number; height: number; resultingImageFormat?: "avif" | "png" | "jpg" | "webp" } },
@@ -88,21 +93,28 @@ export default class CoreImage {
 
     const id = crypto.randomUUID() + resultingExtension;
 
-    if (!this.AUTHENTICATED_IMAGES[username]) {
-      this.AUTHENTICATED_IMAGES[username] = {};
+    if (!this.authenticatedImages.get(username)) {
+      this.authenticatedImages.set(username, new Map());
     }
 
-    this.AUTHENTICATED_IMAGES[username][id] = {
+    const user = this.authenticatedImages.get(username);
+
+    if (!user.get(sessionId)) {
+      user.set(sessionId, new Map());
+    }
+
+    user.get(sessionId).set(id, {
       type,
       value,
       resizeTo: extras?.resizeTo,
-    };
+    });
 
-    return `/core/auth-img/${username}/${id}`;
+    return `/core::auth-img/${username}/${id}`;
   }
 
   async createPreResizedAuthenticatedImage<ImageType extends AUTHENTICATED_IMAGE_TYPE.FILE>(
     username: string,
+    sessionId: number,
     type: AUTHENTICATED_IMAGE_TYPE,
     value: IauthenticatedImage<ImageType>["value"],
     width: number,
@@ -111,7 +123,7 @@ export default class CoreImage {
   ) {
     const resizedPath = await this.resizeTo(value, width, height, resultingImageFormat);
 
-    return this.createAuthenticatedImage(username, type, resizedPath);
+    return this.createAuthenticatedImage(username, sessionId, type, resizedPath);
   }
 
   async createResizedAuthenticatedImage<ImageType extends AUTHENTICATED_IMAGE_TYPE.FILE>(
@@ -125,18 +137,22 @@ export default class CoreImage {
     return this.createAuthenticatedImage(username, type, value, { resizeTo: { width, height, resultingImageFormat } });
   }
 
-  __internal__removeAuthenticatedImage(username: string, id: string) {
-    delete this.AUTHENTICATED_IMAGES[username][id];
+  // removes an image from the authenticated image lookup
+  __internal__removeAuthenticatedImage(username: string, sessionId: number, id: string) {
+    this.authenticatedImages.get(username).get(sessionId).delete(id);
 
     return this;
   }
 
   __internal__loadEndpoints() {
-    this.core.request.get("/core/auth-img/:username/:id", async (req, res) => {
-      const { username, id } = req.params;
+    this.core.request.setNamespace("core::auth-img");
 
-      const image = this.AUTHENTICATED_IMAGES?.[username]?.[id];
+    this.core.request.get("/:username/:sessionId/:id", async (req, res) => {
+      const { username, sessionId, id } = req.params;
 
+      const image = this.authenticatedImages.get(username).get(Number(sessionId))?.get(id);
+
+      // if image is not found, return default image
       if (!image) {
         return res.sendFile(path.resolve(process.cwd(), "./src/defaults/default_avatar.avif"));
       }
@@ -145,6 +161,7 @@ export default class CoreImage {
         return res.send(image.value);
       }
 
+      // if image is base64, return it (bad practice to use base64)
       if (image.type === AUTHENTICATED_IMAGE_TYPE.BASE64) {
         const buf = Buffer.from(image.value as unknown as string, "base64");
         this.__internal__removeAuthenticatedImage(username, id);
@@ -152,6 +169,7 @@ export default class CoreImage {
       }
 
       if (image.type === AUTHENTICATED_IMAGE_TYPE.FILE) {
+        // if image is not to be resized, return it
         if (!image.resizeTo) {
           this.__internal__removeAuthenticatedImage(username, id);
           return res.sendFile(image.value as unknown as string);
