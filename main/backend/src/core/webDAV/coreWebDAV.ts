@@ -33,19 +33,19 @@ export default class coreWebDAV {
   }
 
   __internal__loadEndpoints() {
-    this.core.request.usePath("/.well-known/webdav", (req, res) => {
+    this.core.request.usePath("/.well-known/webdav", async (req, res) => {
       return res.redirect("/webdav");
     });
 
-    this.core.request.usePath("/.well-known/caldav", (req, res) => {
+    this.core.request.usePath("/.well-known/caldav", async (req, res) => {
       return res.redirect("/webdav");
     });
 
-    this.core.request.usePath("/.well-known/carddav", (req, res) => {
+    this.core.request.usePath("/.well-known/carddav", async (req, res) => {
       return res.redirect("/webdav");
     });
 
-    this.core.request.get("/webdav", (_req, res) => {
+    this.core.request.get("/webdav", async (_req, res) => {
       return res.send(`This is the WebDAV endpoint of YourDash`);
     });
 

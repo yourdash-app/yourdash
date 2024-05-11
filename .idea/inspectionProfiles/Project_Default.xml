@@ -8,6 +8,10 @@
         <language minSize="221" name="TypeScript" />
       </Languages>
     </inspection_tool>
+    <inspection_tool class="ES6MissingAwait" enabled="true" level="ERROR" enabled_by_default="true" editorAttributes="ERRORS_ATTRIBUTES">
+      <option name="myReportForPromises" value="true" />
+    </inspection_tool>
+    <inspection_tool class="ES6PossiblyAsyncFunction" enabled="true" level="ERROR" enabled_by_default="true" editorAttributes="ERRORS_ATTRIBUTES" />
     <inspection_tool class="Eslint" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="HtmlUnknownAttribute" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="myValues">
@@ -49,13 +53,6 @@
           <option value="http://tiles.apache.org/" />
           <option value="http://" />
         </list>
-      </option>
-    </inspection_tool>
-    <inspection_tool class="IncorrectHttpHeaderInspection" enabled="true" level="WARNING" enabled_by_default="true">
-      <option name="customHeaders">
-        <set>
-          <option value="OCS-APIREQUEST" />
-        </set>
       </option>
     </inspection_tool>
     <inspection_tool class="JSUnresolvedReference" enabled="false" level="WEAK WARNING" enabled_by_default="false" />

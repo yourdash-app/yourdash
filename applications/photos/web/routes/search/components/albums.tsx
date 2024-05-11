@@ -10,6 +10,7 @@ import useResource from "@yourdash/web/src/lib/useResource.js";
 import { FC } from "react";
 import { EndpointAlbums } from "../../../../shared/types/endpoints/endpointAlbums.js";
 import { useNavigate } from "react-router-dom";
+import path from "path-browserify";
 
 const Albums: FC = () => {
   const navigate = useNavigate();
@@ -22,11 +23,12 @@ const Albums: FC = () => {
       {albums.map((album) => {
         return (
           <Card
+            key={album}
             onClick={() => {
               navigate("/app/a/photos/album/@" + album);
             }}
           >
-            <Text text={album} />
+            <Text text={path.basename(album)} />
           </Card>
         );
       })}

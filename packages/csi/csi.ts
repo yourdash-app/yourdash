@@ -20,13 +20,15 @@ export class UserDatabase extends KeyValueDatabase {
     super();
   }
 
-  set(key: string, value: ITJson) {
+  set(key: string, value: unknown) {
     super.set(key, value);
 
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
     csi.postJson("/core/user_db", this.keys, () => {
       return 0;
     });
+
+    return this;
   }
 }
 
@@ -62,17 +64,18 @@ class __internalClientServerInteraction {
     const instanceUrl = this.getInstanceUrl();
     const username = this.getUsername();
     const sessionToken = this.getUserToken();
+    const sessionId = this.getSessionId();
 
     return new Promise<ResponseType>((resolve, reject) => {
       console.log(`${instanceUrl}${endpoint}`);
       fetch(`${instanceUrl}${endpoint}`, {
         method: "GET",
         mode: "cors",
-        // @ts-ignore
         headers: {
           "Access-Control-Allow-Origin": "*",
           "Content-Type": "application/json",
           username,
+          sessionId: sessionId,
           token: sessionToken,
           ...(extraHeaders || {}),
         },
@@ -118,16 +121,17 @@ class __internalClientServerInteraction {
     const instanceUrl = this.getInstanceUrl();
     const username = this.getUsername();
     const sessionToken = this.getUserToken();
+    const sessionId = this.getSessionId();
 
     fetch(`${instanceUrl}${endpoint}`, {
       method: "GET",
       mode: "cors",
-      // @ts-ignore
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Content-Type": "application/json",
         username,
         token: sessionToken,
+        sessionId: sessionId,
         ...(extraHeaders || {}),
       },
     })
@@ -169,16 +173,17 @@ class __internalClientServerInteraction {
     const instanceUrl = this.getInstanceUrl();
     const username = this.getUsername();
     const sessionToken = this.getUserToken();
+    const sessionId = this.getSessionId();
 
     fetch(`${instanceUrl}${endpoint}`, {
       method: "POST",
       mode: "cors",
       body: JSON.stringify(body),
-      // @ts-ignore
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Content-Type": "application/json",
         username,
+        sessionId: sessionId,
         token: sessionToken,
         ...(extraHeaders || {}),
       },
@@ -220,15 +225,16 @@ class __internalClientServerInteraction {
     const instanceUrl = this.getInstanceUrl();
     const username = this.getUsername();
     const sessionToken = this.getUserToken();
+    const sessionId = this.getSessionId();
 
     fetch(`${instanceUrl}${endpoint}`, {
       method: "DELETE",
       mode: "cors",
-      // @ts-ignore
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Content-Type": "application/json",
         username,
+        sessionId: sessionId,
         token: sessionToken,
         ...(extraHeaders || {}),
       },
@@ -270,15 +276,16 @@ class __internalClientServerInteraction {
     const instanceUrl = this.getInstanceUrl();
     const username = this.getUsername();
     const sessionToken = this.getUserToken();
+    const sessionId = this.getSessionId();
 
     fetch(`${instanceUrl}${endpoint}`, {
       method: "GET",
       mode: "cors",
-      // @ts-ignore
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Content-Type": "text/plain",
         username,
+        sessionId: sessionId,
         token: sessionToken,
         ...(extraHeaders || {}),
       },
@@ -307,16 +314,17 @@ class __internalClientServerInteraction {
     const instanceUrl = this.getInstanceUrl();
     const username = this.getUsername();
     const sessionToken = this.getUserToken();
+    const sessionId = this.getSessionId();
 
     fetch(`${instanceUrl}${endpoint}`, {
       method: "POST",
       mode: "cors",
       body: JSON.stringify(body),
-      // @ts-ignore
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Content-Type": "application/json",
         username,
+        sessionId: sessionId,
         token: sessionToken,
         ...(extraHeaders || {}),
       },
@@ -342,15 +350,16 @@ class __internalClientServerInteraction {
     const instanceUrl = this.getInstanceUrl();
     const username = this.getUsername();
     const sessionToken = this.getUserToken();
+    const sessionId = this.getSessionId();
 
     fetch(`${instanceUrl}${endpoint}`, {
       method: "DELETE",
       mode: "cors",
-      // @ts-ignore
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Content-Type": "text/plain",
         username,
+        sessionId: sessionId,
         token: sessionToken,
         ...(extraHeaders || {}),
       },
@@ -442,6 +451,16 @@ class __internalClientServerInteraction {
     return this;
   }
 
+  getSessionId(): string {
+    return sessionStorage.getItem("session_id") || "0";
+  }
+
+  setSessionId(sessionId: string) {
+    sessionStorage.setItem("session_id", sessionId);
+
+    return this;
+  }
+
   // get the login session token of the currently logged-in user
   getUserToken(): string {
     return sessionStorage.getItem("session_token") || "";
@@ -453,18 +472,11 @@ class __internalClientServerInteraction {
     return this;
   }
 
-  setUserSessionId(sessionId: string) {
-    sessionStorage.setItem("session_id", sessionId);
-
-    return this;
-  }
-
   // get the user database for the currently logged-in user
   async getUserDB(): Promise<UserDatabase> {
     return new Promise((resolve) => {
       this.syncGetJson("/core/user_db", (data) => {
         this.userDB.clear();
-        // @ts-ignore
         this.userDB.keys = data;
 
         resolve(this.userDB);

@@ -44,6 +44,13 @@ import YourDashUser from "./user/index.js";
 import { YOURDASH_SESSION_TYPE } from "@yourdash/shared/core/session.js";
 import CoreWebsocketManager from "./websocketManager/coreWebsocketManager.js";
 
+declare global {
+  const globalThis: {
+    // eslint-disable-next-line
+    rawConsoleLog: (message?: any, ...optionalParams: any[]) => void;
+  };
+}
+
 export class Core {
   // core apis
   readonly request: CoreRequest;
@@ -72,7 +79,7 @@ export class Core {
   instanceStatus: INSTANCE_STATUS = INSTANCE_STATUS.OK;
 
   constructor() {
-    const rawConsoleLog = globalThis.console.log;
+    globalThis.rawConsoleLog = globalThis.console.log;
 
     this.isDebugMode =
       typeof global.v8debug === "object" ||
@@ -82,7 +89,7 @@ export class Core {
     if (!this.isDebugMode) {
       // eslint-disable-next-line
       globalThis.console.log = (message?: any, ...optionalParams: any[]) => {
-        rawConsoleLog(chalk.bold.yellowBright("RAW CONSOLE: ") + message, ...optionalParams);
+        globalThis.rawConsoleLog(chalk.bold.yellowBright("RAW CONSOLE: ") + message, ...optionalParams);
       };
     }
 
@@ -288,7 +295,7 @@ export class Core {
     }
 
     this.request.use(async (req, res, next) => cors()(req, res, next));
-    this.request.use(async (req, res, next) => express.json({ limit: "50mb" })(req, res, next));
+    this.request.use(async (req, res, next) => express.json({ limit: 50_000_000 })(req, res, next));
     this.request.use(async (req, res, next) => express.urlencoded({ extended: true })(req, res, next));
 
     this.request.use(async (_req, res, next) => {
@@ -626,7 +633,7 @@ export class Core {
     });
 
     this.request.get("/user/sessions", async (req, res) => {
-      const { username } = req.headers as { username: string };
+      const { username } = req.headers;
 
       const user = this.users.get(username);
 
@@ -634,7 +641,7 @@ export class Core {
     });
 
     this.request.delete("/core/session/:id", async (req, res) => {
-      const { username } = req.headers as { username: string };
+      const { username } = req.headers;
       const { id: sessionId } = req.params;
 
       const user = this.users.get(username);
@@ -645,7 +652,7 @@ export class Core {
     });
 
     this.request.get("/core/personal-server-accelerator/sessions", async (req, res) => {
-      const { username } = req.headers as { username: string };
+      const { username } = req.headers;
 
       const user = this.users.get(username);
 
@@ -658,7 +665,7 @@ export class Core {
     });
 
     this.request.get("/core/personal-server-accelerator/", async (req, res) => {
-      const { username } = req.headers as { username: string };
+      const { username } = req.headers;
 
       const user = this.users.get(username);
 
@@ -672,7 +679,7 @@ export class Core {
     });
 
     this.request.post("/core/personal-server-accelerator/", async (req, res) => {
-      const { username } = req.headers as { username: string };
+      const { username } = req.headers;
       const body = req.body;
 
       const user = this.users.get(username);

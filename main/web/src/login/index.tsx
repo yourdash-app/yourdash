@@ -12,7 +12,7 @@ import styles from "./index.module.scss";
 import { FC, Suspense } from "react";
 
 const LoginIndexPage: FC = () => {
-  const instanceMetadata = useResource(async () =>
+  const instanceMetadata = useResource(() =>
     csi.getJson<{ title: string; message?: string; loginLayout: LoginLayout }>("/login/instance/metadata"),
   );
 

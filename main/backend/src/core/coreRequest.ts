@@ -11,6 +11,8 @@ import {
 } from "express";
 import { Core } from "./core.js";
 
+export type RequestHeaders = { username: string; sessionid: string };
+
 export default class CoreRequest {
   rawExpress: ExpressApplication;
   private core: Core;
@@ -30,8 +32,11 @@ export default class CoreRequest {
 
   get(
     path: string,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    callback: (req: ExpressRequest, res: ExpressResponse) => Promise<ExpressResponse<any, Record<string, any>> | void>,
+    callback: (
+      req: ExpressRequest & { headers: RequestHeaders },
+      res: ExpressResponse,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ) => Promise<ExpressResponse<any, Record<string, any>> | void>,
   ): this {
     this.core.log.info(
       "core_request",
@@ -40,7 +45,7 @@ export default class CoreRequest {
 
     this.rawExpress.get(
       (this.currentNamespace ? "/" : "") + this.currentNamespace + path,
-      async (req: ExpressRequest, res: ExpressResponse) => {
+      async (req: ExpressRequest & { headers: RequestHeaders }, res: ExpressResponse) => {
         try {
           await callback(req, res);
         } catch (err) {
@@ -54,12 +59,15 @@ export default class CoreRequest {
 
   post(
     path: string,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    callback: (req: ExpressRequest, res: ExpressResponse) => Promise<ExpressResponse<any, Record<string, any>> | void>,
+    callback: (
+      req: ExpressRequest & { headers: RequestHeaders },
+      res: ExpressResponse,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ) => Promise<ExpressResponse<any, Record<string, any>> | void>,
   ): this {
     this.rawExpress.post(
       (this.currentNamespace ? "/" : "") + this.currentNamespace + path,
-      async (req: ExpressRequest, res: ExpressResponse) => {
+      async (req: ExpressRequest & { headers: RequestHeaders }, res: ExpressResponse) => {
         try {
           await callback(req, res);
         } catch (err) {
@@ -73,12 +81,15 @@ export default class CoreRequest {
 
   put(
     path: string,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    callback: (req: ExpressRequest, res: ExpressResponse) => Promise<ExpressResponse<any, Record<string, any>> | void>,
+    callback: (
+      req: ExpressRequest & { headers: RequestHeaders },
+      res: ExpressResponse,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ) => Promise<ExpressResponse<any, Record<string, any>> | void>,
   ): this {
     this.rawExpress.put(
       (this.currentNamespace ? "/" : "") + this.currentNamespace + path,
-      async (req: ExpressRequest, res: ExpressResponse) => {
+      async (req: ExpressRequest & { headers: RequestHeaders }, res: ExpressResponse) => {
         try {
           await callback(req, res);
         } catch (err) {
@@ -92,12 +103,15 @@ export default class CoreRequest {
 
   delete(
     path: string,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    callback: (req: ExpressRequest, res: ExpressResponse) => Promise<ExpressResponse<any, Record<string, any>> | void>,
+    callback: (
+      req: ExpressRequest & { headers: RequestHeaders },
+      res: ExpressResponse,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ) => Promise<ExpressResponse<any, Record<string, any>> | void>,
   ): this {
     this.rawExpress.delete(
       (this.currentNamespace ? "/" : "") + this.currentNamespace + path,
-      async (req: ExpressRequest, res: ExpressResponse) => {
+      async (req: ExpressRequest & { headers: RequestHeaders }, res: ExpressResponse) => {
         try {
           await callback(req, res);
         } catch (err) {
@@ -111,12 +125,15 @@ export default class CoreRequest {
 
   patch(
     path: string,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    callback: (req: ExpressRequest, res: ExpressResponse) => Promise<ExpressResponse<any, Record<string, any>> | void>,
+    callback: (
+      req: ExpressRequest & { headers: RequestHeaders },
+      res: ExpressResponse,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ) => Promise<ExpressResponse<any, Record<string, any>> | void>,
   ): this {
     this.rawExpress.patch(
       (this.currentNamespace ? "/" : "") + this.currentNamespace + path,
-      async (req: ExpressRequest, res: ExpressResponse) => {
+      async (req: ExpressRequest & { headers: RequestHeaders }, res: ExpressResponse) => {
         try {
           await callback(req, res);
         } catch (err) {
@@ -130,12 +147,15 @@ export default class CoreRequest {
 
   options(
     path: string,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    callback: (req: ExpressRequest, res: ExpressResponse) => Promise<ExpressResponse<any, Record<string, any>> | void>,
+    callback: (
+      req: ExpressRequest & { headers: RequestHeaders },
+      res: ExpressResponse,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ) => Promise<ExpressResponse<any, Record<string, any>> | void>,
   ): this {
     this.rawExpress.options(
       (this.currentNamespace ? "/" : "") + this.currentNamespace + path,
-      async (req: ExpressRequest, res: ExpressResponse) => {
+      async (req: ExpressRequest & { headers: RequestHeaders }, res: ExpressResponse) => {
         try {
           await callback(req, res);
         } catch (err) {
@@ -149,19 +169,21 @@ export default class CoreRequest {
 
   use(
     callback: (
-      req: ExpressRequest,
+      req: ExpressRequest & { headers: RequestHeaders },
       res: ExpressResponse,
       next: ExpressNextFunction,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ) => Promise<any>,
   ): this {
-    this.rawExpress.use(async (req: ExpressRequest, res: ExpressResponse, next: ExpressNextFunction) => {
-      try {
-        await callback(req, res, next);
-      } catch (err) {
-        this.core.log.error("request_error", `Request error not caught: ${err.message}`);
-      }
-    });
+    this.rawExpress.use(
+      async (req: ExpressRequest & { headers: RequestHeaders }, res: ExpressResponse, next: ExpressNextFunction) => {
+        try {
+          await callback(req, res, next);
+        } catch (err) {
+          this.core.log.error("request_error", `Request error not caught: ${err.message}`);
+        }
+      },
+    );
 
     return this;
   }
@@ -169,19 +191,22 @@ export default class CoreRequest {
   usePath(
     path: string,
     callback: (
-      req: ExpressRequest,
+      req: ExpressRequest & { headers: RequestHeaders },
       res: ExpressResponse,
       next: ExpressNextFunction,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ) => Promise<any>,
   ): this {
-    this.rawExpress.use(path, async (req: ExpressRequest, res: ExpressResponse, next: ExpressNextFunction) => {
-      try {
-        await callback(req, res, next);
-      } catch (err) {
-        this.core.log.error("request_error", `Request error not caught: ${err.message}`);
-      }
-    });
+    this.rawExpress.use(
+      path,
+      async (req: ExpressRequest & { headers: RequestHeaders }, res: ExpressResponse, next: ExpressNextFunction) => {
+        try {
+          await callback(req, res, next);
+        } catch (err) {
+          this.core.log.error("request_error", `Request error not caught: ${err.message}`);
+        }
+      },
+    );
 
     return this;
   }

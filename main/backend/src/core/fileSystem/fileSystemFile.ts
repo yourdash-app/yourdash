@@ -64,11 +64,12 @@ export default class FileSystemFile extends FileSystemEntity {
     }
   }
 
-  getThumbnail(username: string): string {
+  getThumbnail(username: string, sessionId: number): string {
     switch (this.getType()) {
       case "image":
         return this.core.image.createAuthenticatedImage(
           username,
+          sessionId,
           AUTHENTICATED_IMAGE_TYPE.FILE,
           pth.resolve(this.path),
         );

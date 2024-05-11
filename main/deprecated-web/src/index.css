@@ -9,6 +9,7 @@
 
 @font-face {
   font-family: 'Inter';
+  /*noinspection CssUnknownTarget*/
   src: url('/Inter.ttf');
 }
 

@@ -11,7 +11,7 @@ export default function loginUser(username: string, password: string) {
       `/login/user/${username}/authenticate`,
       { password: password },
       (response) => {
-        csi.setUserSessionId(response.sessionId);
+        csi.setSessionId(response.sessionId);
         csi.setUserToken(response.token);
         csi.setUsername(username);
         resolve();

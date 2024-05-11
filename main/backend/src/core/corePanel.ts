@@ -19,7 +19,7 @@ export default class CorePanel {
   __internal__loadEndpoints() {
     this.core.request.get("/core/panel/applications", async (req, res) => {
       res.set("Cache-Control", "no-store");
-      const { username } = req.headers as { username: string };
+      const { username, sessionid } = req.headers;
 
       console.log(this.core.globalDb.get<string[]>("core:installedApplications"));
 
@@ -61,6 +61,7 @@ export default class CorePanel {
                   description: application.getDescription(),
                   icon: this.core.image.createAuthenticatedImage(
                     username,
+                    sessionid,
                     AUTHENTICATED_IMAGE_TYPE.FILE,
                     RESIZED_ICON_PATH,
                   ),
@@ -77,7 +78,7 @@ export default class CorePanel {
     this.core.request.get("/core/panel/quick-shortcuts", async (req, res) => {
       res.set("Cache-Control", "no-store");
 
-      const { username } = req.headers as { username: string };
+      const { username, sessionid } = req.headers;
 
       const panel = new YourDashPanel(username);
 
@@ -111,6 +112,7 @@ export default class CorePanel {
               name: shortcut,
               icon: this.core.image.createAuthenticatedImage(
                 username,
+                sessionid,
                 AUTHENTICATED_IMAGE_TYPE.FILE,
                 RESIZED_ICON_PATH,
               ),
@@ -124,7 +126,7 @@ export default class CorePanel {
       res.set("Cache-Control", "");
 
       const { ind } = req.params;
-      const { username } = req.headers as { username: string };
+      const { username } = req.headers;
 
       const panel = new YourDashPanel(username);
       try {
@@ -139,7 +141,7 @@ export default class CorePanel {
     this.core.request.post("/core/panel/quick-shortcuts/create", async (req, res) => {
       res.set("Cache-Control", "no-store");
 
-      const { username } = req.headers as { username: string };
+      const { username } = req.headers;
       const { name } = req.body as { name: string };
 
       const panel = new YourDashPanel(username);
@@ -163,51 +165,57 @@ export default class CorePanel {
 
     this.core.request.get("/core/panel/launcher-type", async (req, res) => {
       res.set("Cache-Control", "no-store");
-      const { username } = req.headers as { username: string };
+      const { username } = req.headers;
 
       const panel = new YourDashPanel(username);
 
       return res.json({ launcher: await panel.getLauncherType() });
     });
 
-    this.core.request.get("/core/panel/logo", (req, res) => {
-      const { username } = req.headers as { username: string };
+    this.core.request.get("/core/panel/logo", async (req, res) => {
+      const { username, sessionid } = req.headers;
 
       return res.json({
         small: this.core.image.createAuthenticatedImage(
           username,
+          sessionid,
           AUTHENTICATED_IMAGE_TYPE.FILE,
           path.join(this.core.fs.ROOT_PATH, "./logo_panel_small.avif"),
         ),
         medium: this.core.image.createAuthenticatedImage(
           username,
+          sessionid,
           AUTHENTICATED_IMAGE_TYPE.FILE,
           path.join(this.core.fs.ROOT_PATH, "./logo_panel_medium.avif"),
         ),
         large: this.core.image.createAuthenticatedImage(
           username,
+          sessionid,
           AUTHENTICATED_IMAGE_TYPE.FILE,
           path.join(this.core.fs.ROOT_PATH, "./logo_panel_large.avif"),
         ),
       });
     });
 
-    this.core.request.get("/core/panel/logo", (req, res) => {
-      const { username } = req.headers as { username: string };
+    this.core.request.get("/core/panel/logo", async (req, res) => {
+      const { username, sessionid } = req.headers;
 
       return res.json({
         small: this.core.image.createAuthenticatedImage(
           username,
+          sessionid,
           AUTHENTICATED_IMAGE_TYPE.FILE,
           path.join(this.core.fs.ROOT_PATH, "./logo_panel_small.avif"),
         ),
         medium: this.core.image.createAuthenticatedImage(
           username,
+          sessionid,
           AUTHENTICATED_IMAGE_TYPE.FILE,
           path.join(this.core.fs.ROOT_PATH, "./logo_panel_medium.avif"),
         ),
         large: this.core.image.createAuthenticatedImage(
           username,
+          sessionid,
           AUTHENTICATED_IMAGE_TYPE.FILE,
           path.join(this.core.fs.ROOT_PATH, "./logo_panel_large.avif"),
         ),

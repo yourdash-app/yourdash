@@ -46,7 +46,7 @@ export default class YourDashUser {
   }
 
   async getDatabase(): Promise<UserDatabase> {
-    return core.users.__internal__getUserDatabase(this.username);
+    return await core.users.__internal__getUserDatabase(this.username);
   }
 
   getAvatar(size: USER_AVATAR_SIZE): string {

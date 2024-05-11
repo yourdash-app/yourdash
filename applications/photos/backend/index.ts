@@ -43,6 +43,7 @@ export default class PhotosBackend extends BackendModule {
     });
 
     this.api.request.get("/media/album/large-grid/@/*", async (req, res) => {
+      const { sessionid } = req.headers;
       const itemPath = req.params["0"] as string;
       const user = this.api.getUser(req);
 
@@ -96,6 +97,7 @@ export default class PhotosBackend extends BackendModule {
                   path: child.path.replace(user.getFsPath(), ""),
                   mediaUrl: await this.api.core.image.createResizedAuthenticatedImage(
                     user.username,
+                    sessionid,
                     AUTHENTICATED_IMAGE_TYPE.FILE,
                     child.path,
                     256,
@@ -119,7 +121,7 @@ export default class PhotosBackend extends BackendModule {
     });
 
     // this.API.request.get(`${this.rootPath}/albums`, async (req, res) => {
-    //   const { username } = req.headers as { username: string };
+    //   const { username } = req.headers;
     //
     //   const userFsPath = core.users.get(username).getFsPath();
     //   const album = new PhotoAlbum(username, path.join(userFsPath, "Photos"));
@@ -129,7 +131,7 @@ export default class PhotosBackend extends BackendModule {
     //
     // this.API.request.get(`${this.rootPath}/album/*`, async (req, res) => {
     //   const albumPath = req.params["0"] as string;
-    //   const { username } = req.headers as { username: string };
+    //   const { username } = req.headers;
     //   const album = new PhotoAlbum(username, albumPath);
     //
     //   return res.json(await album.getIPhotoAlbum());
@@ -137,7 +139,7 @@ export default class PhotosBackend extends BackendModule {
     //
     // this.API.request.get(`${this.rootPath}/grid-photo/*`, async (req, res) => {
     //   const photoPath = req.params["0"] as string;
-    //   const { username } = req.headers as { username: string };
+    //   const { username } = req.headers;
     //
     //   const photo = new Photo(username, photoPath);
     //
@@ -146,7 +148,7 @@ export default class PhotosBackend extends BackendModule {
     //
     // this.API.request.get(`${this.rootPath}/grid-video/*`, async (req, res) => {
     //   const videoPath = req.params["0"] as string;
-    //   const { username } = req.headers as { username: string };
+    //   const { username } = req.headers;
     //
     //   const video = new Video(username, videoPath);
     //
@@ -156,7 +158,7 @@ export default class PhotosBackend extends BackendModule {
     // this.API.request.get(`${this.rootPath}/grid-photos/:photoAmount/*`, async (req, res) => {
     //   const photoPath = req.params["0"].split(";.;") as string[];
     //   const photoAmount = Number(req.params.photoAmount);
-    //   const { username } = req.headers as { username: string };
+    //   const { username } = req.headers;
     //
     //   const photos = [];
     //   for (let i = 0; i < photoAmount; i++) {
@@ -174,7 +176,7 @@ export default class PhotosBackend extends BackendModule {
     // this.API.request.get(`${this.rootPath}/grid-videos/:videoAmount/*`, async (req, res) => {
     //   const videoPath = req.params["0"].split(";.;") as string[];
     //   const videoAmount = Number(req.params.videoAmount);
-    //   const { username } = req.headers as { username: string };
+    //   const { username } = req.headers;
     //
     //   const videos = [];
     //   for (let i = 0; i < videoAmount; i++) {
@@ -191,7 +193,7 @@ export default class PhotosBackend extends BackendModule {
     //
     // this.API.request.get(`${this.rootPath}/photo/*`, async (req, res) => {
     //   const photoPath = req.params["0"] as string;
-    //   const { username } = req.headers as { username: string };
+    //   const { username } = req.headers;
     //
     //   const photo = new Photo(username, photoPath);
     //
@@ -204,7 +206,7 @@ export default class PhotosBackend extends BackendModule {
     //
     // this.API.request.get(`${this.rootPath}/video/*`, async (req, res) => {
     //   const videoPath = req.params["0"] as string;
-    //   const { username } = req.headers as { username: string };
+    //   const { username } = req.headers;
     //
     //   const video = new Video(username, videoPath);
     //
@@ -218,7 +220,7 @@ export default class PhotosBackend extends BackendModule {
     // // FIXME: allow access without authentication
     // this.API.request.get(`${this.rootPath}/download-photo/*`, async (req, res) => {
     //   const photoPath = req.params["0"] as string;
-    //   const { username } = req.headers as { username: string };
+    //   const { username } = req.headers;
     //
     //   const photo = new Photo(username, photoPath);
     //
@@ -229,7 +231,7 @@ export default class PhotosBackend extends BackendModule {
 
     // this.API.request.get("/app/photos/photo/*", async (req, res) => {
     //   const reqPath = req.params["0"] as string;
-    //   const { username } = req.headers as { username: string };
+    //   const { username } = req.headers;
     //
     //   const userFsPath = core.users.get(username).getFsPath();
     //   const file = await core.fs.get(path.join(userFsPath, "Photos", reqPath));
@@ -264,7 +266,7 @@ export default class PhotosBackend extends BackendModule {
     // });
     //
     // this.API.request.get("/app/photos/categories", async (req, res) => {
-    //   const { username } = req.headers as { username: string };
+    //   const { username } = req.headers;
     //
     //   const userFsPath = core.users.get(username).getFsPath();
     //   const photosDirectory = await core.fs.getDirectory(path.join(userFsPath, "Photos"));
@@ -292,7 +294,7 @@ export default class PhotosBackend extends BackendModule {
     //
     // this.API.request.get("/app/photos/category/:categoryPath", async (req, res) => {
     //   const { categoryPath } = req.params;
-    //   const { username } = req.headers as { username: string };
+    //   const { username } = req.headers;
     //
     //   const userFsPath = core.users.get(username).getFsPath();
     //   const photosDirectory = await core.fs.getDirectory(path.join(userFsPath, "Photos"));

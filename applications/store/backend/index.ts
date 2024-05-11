@@ -24,7 +24,7 @@ export default class StoreModule extends BackendModule {
   public loadEndpoints() {
     super.loadEndpoints();
 
-    this.api.request.get("/app/store/promoted/applications", (_req, res) => {
+    this.api.request.get("/app/store/promoted/applications", async (_req, res) => {
       Promise.all(
         promotedApplications.map(async (app): Promise<StorePromotedApplication> => {
           const application = await new YourDashApplication(app).read();
@@ -60,7 +60,7 @@ export default class StoreModule extends BackendModule {
     });
 
     this.api.request.get("/app/store/applications", async (req, res) => {
-      const { username } = req.headers as { username: string };
+      const { username, sessionid } = req.headers;
 
       const applications = await getAllApplications();
 
@@ -80,6 +80,7 @@ export default class StoreModule extends BackendModule {
               displayName: application.getDisplayName() || applicationName,
               icon: core.image.createAuthenticatedImage(
                 username,
+                sessionid,
                 AUTHENTICATED_IMAGE_TYPE.FILE,
                 await application.getIconPath(),
               ),
@@ -91,7 +92,7 @@ export default class StoreModule extends BackendModule {
     });
 
     this.api.request.get("/app/store/category/:id", async (req, res) => {
-      const { username } = req.headers as { username: string };
+      const { username, sessionid } = req.headers;
       const { id } = req.params;
 
       if (!id) {
@@ -119,6 +120,7 @@ export default class StoreModule extends BackendModule {
             name: application.getName(),
             icon: core.image.createAuthenticatedImage(
               username,
+              sessionid,
               AUTHENTICATED_IMAGE_TYPE.FILE,
               await application.getIconPath(),
             ),
@@ -179,16 +181,19 @@ export default class StoreModule extends BackendModule {
       return res.json({ success: true });
     });
 
-    this.api.request.post("/app/store/application/uninstall/:id", (req, res) => {
+    this.api.request.post("/app/store/application/uninstall/:id", async (req, res) => {
       const { id } = req.params;
       const application = new YourDashApplication(id);
-      if (!application.exists()) {
+
+      if (!(await application.exists())) {
         return res.json({ error: true });
       }
+
       core.globalDb.set(
         "core:installedApplications",
         core.globalDb.get<string[]>("core:installedApplications").filter((app) => app !== id),
       );
+
       return res.json({ success: true });
     });
 

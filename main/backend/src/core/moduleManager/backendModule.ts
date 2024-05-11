@@ -71,7 +71,11 @@ export default class BackendModule {
     return this;
   }
 
-  loadEndpoints() {}
+  loadEndpoints() {
+    /* empty */
+  }
 
-  loadPreAuthEndpoints() {}
+  loadPreAuthEndpoints() {
+    /* empty */
+  }
 }

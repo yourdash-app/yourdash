@@ -58,7 +58,7 @@ export default class CoreTeams {
   // Load all team related endpoints
   __internal__loadEndpoints() {
     this.core.request.get("/core/teams/get/current-user", async (req, res) => {
-      const { username } = req.headers as { username: string };
+      const { username } = req.headers;
 
       const user = new YourDashUser(username);
 

@@ -10,7 +10,7 @@ type listeners<ST extends StoreType> = { [Key in keyof ST]?: ((previousValue: ST
 export default class dataStore<ST extends StoreType> {
   private data: ST;
   private readonly defaultValue: ST;
-  private listeners: listeners<ST>;
+  private readonly listeners: listeners<ST>;
 
   constructor(defaultValue: ST) {
     this.defaultValue = defaultValue;

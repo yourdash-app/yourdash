@@ -47,7 +47,7 @@ export default class ChatbotsModule extends BackendModule {
     });
 
     this.api.request.usePath("/app/chatbots/team/:teamId/*", async (req, res, next) => {
-      const { username } = req.headers as { username: string };
+      const { username } = req.headers;
       const { teamId } = req.params;
 
       const team = await core.teams.get(teamId);

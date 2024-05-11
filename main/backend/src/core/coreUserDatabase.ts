@@ -54,7 +54,7 @@ export default class CoreUserDatabase {
 
   __internal__loadEndpoints() {
     this.core.request.get("/core/user_db", async (req, res) => {
-      const { username } = req.headers as { username: string };
+      const { username } = req.headers;
 
       if (!this.userDatabases.get(username)) {
         this.userDatabases.set(username, await this.loadUserDatabase(username));
@@ -64,7 +64,7 @@ export default class CoreUserDatabase {
     });
 
     this.core.request.post("/core/user_db", async (req, res) => {
-      const { username } = req.headers as { username: string };
+      const { username } = req.headers;
 
       this.userDatabases.set(username, req.body);
 

@@ -3,22 +3,17 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import React, {CSSProperties, ReactNode, useState} from 'react';
-import styles from './ResizeContainer.module.scss';
+import React, { CSSProperties, ReactNode, useState } from "react";
+import styles from "./ResizeContainer.module.scss";
 
 interface IResizeContainerProps {
   style?: CSSProperties;
   className?: string;
   children: [ReactNode, ReactNode];
-  direction: 'column' | 'row';
+  direction: "column" | "row";
 }
 
-const ResizeContainer: React.FC<IResizeContainerProps> = ({
-  children,
-  style,
-  className,
-  direction
-}) => {
+const ResizeContainer: React.FC<IResizeContainerProps> = ({ children, style, className, direction }) => {
   const [dragging, setDragging] = useState(false);
   const [containerSize, setContainerSize] = useState(0);
   const [resizeStart, setResizeStart] = useState(0);
@@ -32,15 +27,26 @@ const ResizeContainer: React.FC<IResizeContainerProps> = ({
 
     event.preventDefault();
     setDragging(true);
-    setContainerSize(direction === 'row' ? event.clientX - ref.current.getBoundingClientRect().left : event.clientY - ref.current.getBoundingClientRect().top);
-    setResizeStart(direction === 'row' ? event.clientX - ref.current.getBoundingClientRect().left : event.clientY - ref.current.getBoundingClientRect().top);
+    setContainerSize(
+      direction === "row"
+        ? event.clientX - ref.current.getBoundingClientRect().left
+        : event.clientY - ref.current.getBoundingClientRect().top,
+    );
+    setResizeStart(
+      direction === "row"
+        ? event.clientX - ref.current.getBoundingClientRect().left
+        : event.clientY - ref.current.getBoundingClientRect().top,
+    );
   };
 
   const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
     if (!ref.current || !dragging) {
       return;
     }
-    const currentPos = direction === 'row' ? event.clientX - ref.current.getBoundingClientRect().left : event.clientY - ref.current.getBoundingClientRect().top;
+    const currentPos =
+      direction === "row"
+        ? event.clientX - ref.current.getBoundingClientRect().left
+        : event.clientY - ref.current.getBoundingClientRect().top;
     const delta = currentPos - resizeStart;
     setResizeStart(currentPos);
     setContainerSize(containerSize + delta);
@@ -56,47 +62,47 @@ const ResizeContainer: React.FC<IResizeContainerProps> = ({
       style={{
         ...style,
         flexDirection: direction,
-        padding: 0
+        padding: 0,
       }}
-      className={`${ styles.component } ${ className }`}
+      className={`${styles.component} ${className}`}
       onMouseMove={handleMouseMove}
     >
-      <div style={{
-        [direction === 'row' ? 'width' : 'height']: containerSize
-      }}
+      <div
+        style={{
+          [direction === "row" ? "width" : "height"]: containerSize,
+        }}
       >
         {children[0]}
       </div>
-      {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
       <div
         style={
-          direction === 'row'
+          direction === "row"
             ? {
-              left: `${ containerSize - 4 }px`,
-              cursor: 'col-resize',
-              top: 0,
-              height: '100%',
-              width: '0.5rem',
-              ...dragging
-                ? {
-                  backgroundColor: 'rgb(var(--theme-500))',
-                  transition: 'none'
-                }
-                : {}
-            }
+                left: `${containerSize - 4}px`,
+                cursor: "col-resize",
+                top: 0,
+                height: "100%",
+                width: "0.5rem",
+                ...(dragging
+                  ? {
+                      backgroundColor: "rgb(var(--theme-500))",
+                      transition: "none",
+                    }
+                  : {}),
+              }
             : {
-              left: 0,
-              cursor: 'row-resize',
-              top: `${ containerSize - 4 }px`,
-              width: '100%',
-              height: '0.5rem',
-              ...dragging
-                ? {
-                  backgroundColor: 'rgb(var(--theme-500))',
-                  transition: 'none'
-                }
-                : {}
-            }
+                left: 0,
+                cursor: "row-resize",
+                top: `${containerSize - 4}px`,
+                width: "100%",
+                height: "0.5rem",
+                ...(dragging
+                  ? {
+                      backgroundColor: "rgb(var(--theme-500))",
+                      transition: "none",
+                    }
+                  : {}),
+              }
         }
         className={styles.handle}
         onMouseDown={handleMouseDown}

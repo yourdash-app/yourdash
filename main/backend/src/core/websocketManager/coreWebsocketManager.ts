@@ -49,7 +49,7 @@ export default class coreWebsocketManager {
   }
 
   __internal__loadEndpoints() {
-    this.core.request.usePath("/websocket-manager/*", (req, res) => {
+    this.core.request.usePath("/websocket-manager/*", async (req, res) => {
       res.status(404).send("Not Found");
     });
   }

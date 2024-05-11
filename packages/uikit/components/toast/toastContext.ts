@@ -6,8 +6,9 @@
 import React from "react";
 
 const ToastContext = React.createContext({
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  showToast: (data: { type: "success" | "error" | "warning" | "info"; content: string; persist?: boolean }) => {},
+  showToast: (data: { type: "success" | "error" | "warning" | "info"; content: string; persist?: boolean }) => {
+    /* empty */
+  },
 });
 
 export default ToastContext;

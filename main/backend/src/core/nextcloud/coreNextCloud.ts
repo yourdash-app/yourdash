@@ -16,7 +16,7 @@ export const MIMICED_NEXTCLOUD_VERSION = {
 };
 
 export default function loadNextCloudSupportEndpoints(core: Core) {
-  core.request.get("/status.php", (req, res) => {
+  core.request.get("/status.php", async (req, res) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
 
     switch (req.header("Content-Type")) {
@@ -36,11 +36,11 @@ export default function loadNextCloudSupportEndpoints(core: Core) {
     });
   });
 
-  core.request.usePath("/remote.php/dav", (req, res) => {
+  core.request.usePath("/remote.php/dav", async (req, res) => {
     return res.redirect(`${core.globalDb.get("core:instanceUrl")}/dav/${req.path.replace("/remote.php/dav/", "")}`);
   });
 
-  core.request.get("/ocs/v2.php/cloud/capabilities", (req, res) => {
+  core.request.get("/ocs/v2.php/cloud/capabilities", async (req, res) => {
     if (req.query.format === "json") {
       return res.json({
         ocs: {
