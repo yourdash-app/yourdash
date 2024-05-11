@@ -3,17 +3,28 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import Card from "@yourdash/uikit/components/card/card";
+import Text from "@yourdash/uikit/components/text/text";
 import { FC, useEffect, useRef, useState } from "react";
 import { MediaAlbumLargeGridItem } from "../../../../../shared/types/endpoints/media/album/large-grid";
 import { MEDIA_TYPE } from "../../../../../shared/types/mediaType";
-import splitItemsIntoRows, { calculateRowHeight } from "../../../../lib/splitItemsIntoRows";
+import splitItemsIntoRows from "../../../../lib/splitItemsIntoRows";
 import AlbumGridMediaRow from "../albumGridMediaRow/albumGridMediaRow";
 import styles from "./albumGrid.module.scss";
+import path from "path-browserify";
+import { useNavigate } from "react-router-dom";
 
-const AlbumGrid: FC<{ items: MediaAlbumLargeGridItem<MEDIA_TYPE>[] }> = ({ items }) => {
+const AlbumGrid: FC<{
+  items: MediaAlbumLargeGridItem<MEDIA_TYPE.IMAGE | MEDIA_TYPE.VIDEO>[];
+  albums: MediaAlbumLargeGridItem<MEDIA_TYPE.ALBUM>[];
+}> = ({ items, albums }) => {
+  const navigate = useNavigate();
   const ref = useRef<HTMLDivElement>(null);
   const [rows, setRows] = useState<
-    { items: MediaAlbumLargeGridItem<MEDIA_TYPE> & { displayWidth: number }; height: number }[]
+    {
+      items: (MediaAlbumLargeGridItem<MEDIA_TYPE.IMAGE | MEDIA_TYPE.VIDEO> & { displayWidth: number })[];
+      height: number;
+    }[]
   >([]);
 
   useEffect(() => {
@@ -21,17 +32,46 @@ const AlbumGrid: FC<{ items: MediaAlbumLargeGridItem<MEDIA_TYPE>[] }> = ({ items
       return;
     }
 
+    let timeout: NodeJS.Timeout;
+
+    const resizeObserver = new ResizeObserver(() => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        setRows(splitItemsIntoRows(items, ref.current?.getBoundingClientRect().width || 512, 256));
+      }, 100);
+    });
+
+    resizeObserver.observe(ref.current, { box: "border-box" });
     setRows(splitItemsIntoRows(items, ref.current.getBoundingClientRect().width || 512, 256));
-  }, [items]);
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [!ref.current, items]);
 
   return (
     <div
       className={styles.component}
       ref={ref}
     >
-      {rows.map((row, i) => {
+      <div>
+        {albums.map((subAlbum) => {
+          return (
+            <Card
+              key={subAlbum.path}
+              onClick={() => {
+                navigate("/app/a/photos/album/@" + subAlbum.path);
+              }}
+            >
+              <Text text={path.basename(subAlbum.path)} />
+            </Card>
+          );
+        })}
+      </div>
+      {rows.map((row) => {
         return (
           <AlbumGridMediaRow
+            key={row.items[0].path}
             items={row.items}
             rowHeight={row.height}
           />

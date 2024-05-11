@@ -51,7 +51,10 @@ export default function splitItemsIntoRows(
   containerWidth: number,
   baseRowHeight: number,
 ) {
-  const rows: { height: number; items: MediaAlbumLargeGridItem<MEDIA_TYPE> & { displayWidth: number } }[] = [];
+  const rows: {
+    height: number;
+    items: (MediaAlbumLargeGridItem<MEDIA_TYPE.IMAGE | MEDIA_TYPE.VIDEO> & { displayWidth: number })[];
+  }[] = [];
   let currentRowNumber = 0;
   let currentRowItem = 0;
 

@@ -12,7 +12,8 @@ const AlbumGridMedia: FC<{
   data: MediaAlbumLargeGridItem<MEDIA_TYPE>;
   aspectRatio: number;
   rowHeight: number;
-}> = ({ data, aspectRatio, rowHeight }) => {
+  displayWidth: number;
+}> = ({ data, aspectRatio, rowHeight, displayWidth }) => {
   const navigate = useNavigate();
 
   switch (data.type) {
@@ -21,11 +22,12 @@ const AlbumGridMedia: FC<{
         <div
           className={styles.component}
           style={{
-            width: `${rowHeight * aspectRatio}px`,
+            width: `${displayWidth}px`,
             height: `${rowHeight}px`,
           }}
         >
           <Image
+            disableLazyLoading={true}
             accessibleLabel={"User Photo"}
             src={data.mediaUrl}
             authenticatedImage
@@ -34,7 +36,14 @@ const AlbumGridMedia: FC<{
       );
     case MEDIA_TYPE.VIDEO:
       return (
-        <div key={data.path}>
+        <div
+          key={data.path}
+          className={styles.component}
+          style={{
+            width: `${displayWidth}px`,
+            height: `${rowHeight}px`,
+          }}
+        >
           <video
             src={csi.getInstanceUrl() + data.mediaUrl}
             autoPlay={false}

@@ -7,15 +7,19 @@ import csi from "@yourdash/csi/csi.js";
 import styles from "./image.module.scss";
 import { FC } from "react";
 
-const Image: FC<{ src: string; accessibleLabel: string; className?: string; authenticatedImage?: boolean }> = (
-  props,
-) => {
+const Image: FC<{
+  src: string;
+  accessibleLabel: string;
+  className?: string;
+  authenticatedImage?: boolean;
+  disableLazyLoading?: boolean;
+}> = (props) => {
   return (
     <img
       className={`${styles.component} ${props.className}`}
       src={(props.authenticatedImage ? csi.getInstanceUrl() : "") + props.src}
       draggable={false}
-      loading="lazy"
+      loading={props.disableLazyLoading ? "eager" : "lazy"}
       alt={props.accessibleLabel}
     />
   );

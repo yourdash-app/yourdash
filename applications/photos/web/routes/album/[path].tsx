@@ -11,9 +11,12 @@ import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary.js";
 import IconButton from "@yourdash/uikit/components/iconButton/iconButton.js";
 import useResource from "@yourdash/web/src/lib/useResource.js";
 import { FC } from "react";
-import EndpointMediaAlbumLargeGrid from "../../../shared/types/endpoints/media/album/large-grid.js";
+import EndpointMediaAlbumLargeGrid, {
+  MediaAlbumLargeGridItem,
+} from "../../../shared/types/endpoints/media/album/large-grid.js";
 import { useParams, useNavigate } from "react-router-dom";
 import path from "path-browserify";
+import { MEDIA_TYPE } from "../../../shared/types/mediaType";
 import styles from "./[path].module.scss";
 import AlbumGrid from "./components/albumGrid/albumGrid";
 
@@ -41,8 +44,15 @@ const AlbumPathPage: FC = () => {
           text={path.basename(albumPath)}
         />
       </Box>
-      <div>
-        <AlbumGrid items={albumData} />
+      <div className={styles.albumGrid}>
+        <AlbumGrid
+          items={
+            albumData.filter(
+              (i) => i.type === MEDIA_TYPE.IMAGE || i.type === MEDIA_TYPE.VIDEO,
+            ) as MediaAlbumLargeGridItem<MEDIA_TYPE.IMAGE | MEDIA_TYPE.VIDEO>[]
+          }
+          albums={albumData.filter((i) => i.type === MEDIA_TYPE.ALBUM) as MediaAlbumLargeGridItem<MEDIA_TYPE.ALBUM>[]}
+        />
       </div>
     </>
   );

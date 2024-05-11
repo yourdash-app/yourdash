@@ -10,4 +10,5 @@
   flex-direction: row;
   gap: var(#{$theme+$gap});
   width: 100%;
+  overflow: hidden;
 }

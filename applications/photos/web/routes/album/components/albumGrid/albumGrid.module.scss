@@ -6,4 +6,7 @@
 .component {
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+  width: 100%;
+  flex-grow: 0;
 }
