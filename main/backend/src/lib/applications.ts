@@ -43,7 +43,7 @@ class ValidYourDashApplication {
   // Returns a Buffer containing the data for the application's icon
   async getIcon(): Promise<Buffer> {
     try {
-      return await fs.readFile(path.resolve(process.cwd(), `../../applications/${this.name}/icon.avif`));
+      return await fs.readFile(path.resolve(process.cwd().replaceAll(), `../../applications/${this.name}/icon.avif`));
     } catch (_e) {
       return await fs.readFile(path.resolve(process.cwd(), "./src/defaults/placeholder_application_icon.png"));
     }

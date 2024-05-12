@@ -180,6 +180,9 @@ export default class YourDashUser {
     }
 
     try {
+      console.log(path.join(process.cwd(), "./src/defaults/default_avatar.avif"));
+      console.log(path.join(process.cwd()));
+
       // set default avatar
       await this.setAvatar(path.join(process.cwd(), "./src/defaults/default_avatar.avif"));
     } catch (err) {

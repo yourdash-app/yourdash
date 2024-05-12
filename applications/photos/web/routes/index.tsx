@@ -14,7 +14,7 @@ import PHOTOS_LOGO from "../assets/photosLogo.png";
 import styles from "./index.module.scss";
 
 const IndexPage: FC = () => {
-  const albums = useResource<string[]>(() => csi.getJson("/app::photos/albums/@/photos/")) || [];
+  const albums = useResource<string[]>(() => csi.getJson("/app::photos/album/@/photos/")) || [];
 
   return (
     <>

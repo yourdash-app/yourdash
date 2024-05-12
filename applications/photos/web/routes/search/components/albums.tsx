@@ -25,7 +25,7 @@ const Albums: FC = () => {
           <Card
             key={album}
             onClick={() => {
-              navigate("/app/a/photos/album/@" + album);
+              navigate("/app/a/photos/album/?p=" + album);
             }}
           >
             <Text text={path.basename(album)} />

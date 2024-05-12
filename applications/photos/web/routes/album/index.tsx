@@ -4,7 +4,6 @@
  */
 
 import csi from "@yourdash/csi/csi.js";
-import { chunk } from "@yourdash/shared/web/helpers/array";
 import Box from "@yourdash/uikit/components/box/box.js";
 import Heading from "@yourdash/uikit/components/heading/heading.js";
 import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary.js";
@@ -14,19 +13,20 @@ import { FC } from "react";
 import EndpointMediaAlbumLargeGrid, {
   MediaAlbumLargeGridItem,
 } from "../../../shared/types/endpoints/media/album/large-grid.js";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import path from "path-browserify";
 import { MEDIA_TYPE } from "../../../shared/types/mediaType";
-import styles from "./[path].module.scss";
+import styles from "./index.module.scss";
 import AlbumGrid from "./components/albumGrid/albumGrid";
 
 const AlbumPathPage: FC = () => {
   const navigate = useNavigate();
-  const albumPath = useParams()["*"] || "";
+  const [searchParams] = useSearchParams();
+  const albumPath = () => searchParams.get("p") || "";
   const albumData =
     useResource<EndpointMediaAlbumLargeGrid>(
-      () => csi.getJson(`/app::photos/media/album/large-grid/@/${albumPath}`),
-      [albumPath],
+      () => csi.getJson(`/app::photos/media/album/large-grid/@/${albumPath()}`),
+      [albumPath()],
     ) || [];
 
   return (
@@ -36,20 +36,20 @@ const AlbumPathPage: FC = () => {
           accessibleLabel={"Go back"}
           icon={UKIcon.ChevronLeft}
           onClick={() => {
-            navigate(`/app/a/photos/album/@/${albumPath.split("/").slice(0, -1).join("/")}`);
+            navigate(`/app/a/photos/album/?p=${path.join(albumPath(), "..")}`);
           }}
         />
         <Heading
           level={1}
-          text={path.basename(albumPath)}
+          text={path.basename(albumPath())}
         />
       </Box>
       <div className={styles.albumGrid}>
         <AlbumGrid
           items={
-            albumData.filter(
-              (i) => i.type === MEDIA_TYPE.IMAGE || i.type === MEDIA_TYPE.VIDEO,
-            ) as MediaAlbumLargeGridItem<MEDIA_TYPE.IMAGE | MEDIA_TYPE.VIDEO>[]
+            albumData.filter((i) => {
+              return i.type === MEDIA_TYPE.IMAGE || i.type === MEDIA_TYPE.VIDEO;
+            }) as MediaAlbumLargeGridItem<MEDIA_TYPE.IMAGE | MEDIA_TYPE.VIDEO>[]
           }
           albums={albumData.filter((i) => i.type === MEDIA_TYPE.ALBUM) as MediaAlbumLargeGridItem<MEDIA_TYPE.ALBUM>[]}
         />

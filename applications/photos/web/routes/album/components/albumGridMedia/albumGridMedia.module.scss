@@ -25,3 +25,16 @@
     outline: var(#{$theme+$accent}) solid 0.25rem;
   }
 }
+
+.videoOverlay {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  background: var(#{$theme+$background});
+  border-radius: 0.25rem;
+
+  .videoIcon {
+    width: 1.5rem;
+  }
+}

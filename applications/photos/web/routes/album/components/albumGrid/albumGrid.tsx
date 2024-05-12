@@ -4,6 +4,7 @@
  */
 
 import Card from "@yourdash/uikit/components/card/card";
+import Separator from "@yourdash/uikit/components/separator/separator.js";
 import Text from "@yourdash/uikit/components/text/text";
 import { FC, useEffect, useRef, useState } from "react";
 import { MediaAlbumLargeGridItem } from "../../../../../shared/types/endpoints/media/album/large-grid";
@@ -54,20 +55,19 @@ const AlbumGrid: FC<{
       className={styles.component}
       ref={ref}
     >
-      <div>
-        {albums.map((subAlbum) => {
-          return (
-            <Card
-              key={subAlbum.path}
-              onClick={() => {
-                navigate("/app/a/photos/album/@" + subAlbum.path);
-              }}
-            >
-              <Text text={path.basename(subAlbum.path)} />
-            </Card>
-          );
-        })}
-      </div>
+      {albums.map((subAlbum) => {
+        return (
+          <Card
+            key={subAlbum.path}
+            onClick={() => {
+              navigate("/app/a/photos/album/?p=" + subAlbum.path);
+            }}
+          >
+            <Text text={path.basename(subAlbum.path)} />
+          </Card>
+        );
+      })}
+      {albums.length > 0 && rows.length > 0 && <Separator direction={"column"} />}
       {rows.map((row) => {
         return (
           <AlbumGridMediaRow

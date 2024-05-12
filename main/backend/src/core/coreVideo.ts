@@ -34,6 +34,20 @@ export default class CoreVideo {
     return this;
   }
 
+  async createThumbnail(videoPath: string): Promise<string> {
+    const cacheDir = pth.resolve(pth.join(this.core.fs.ROOT_PATH, "./cache/"));
+
+    return await new Promise<string>((resolve) => {
+      const fileName = `${crypto.randomUUID()}.video-thumbnail.png`;
+
+      ffmpeg(videoPath)
+        .thumbnail({ count: 1, filename: fileName }, cacheDir)
+        .on("end", () => {
+          resolve(pth.join(cacheDir, fileName));
+        });
+    });
+  }
+
   getVideoDimensions(videoPath: string): Promise<{ width: number; height: number }> {
     return new Promise<{ width: number; height: number }>((resolve) => {
       ffmpeg.ffprobe(videoPath, (err, data) => {
@@ -58,7 +72,7 @@ export default class CoreVideo {
       value,
     };
 
-    return `/core/auth-video/${username}/${id}`;
+    return `/core::auth-video/${username}/${id}`;
   }
 
   __internal__removeAuthenticatedVideo(username: string, id: string) {
@@ -68,7 +82,9 @@ export default class CoreVideo {
   }
 
   __internal__loadEndpoints() {
-    this.core.request.get("/core/auth-video/:username/:id", async (req, res) => {
+    this.core.request.setNamespace("core::auth-video");
+
+    this.core.request.get("/:username/:id", async (req, res) => {
       const { username, id } = req.params;
 
       this.core.log.info(

@@ -6,9 +6,10 @@
 import { Routes, Route } from "react-router";
 import Layout from "./layout.js";
 import { FC } from "react";
-import AlbumPathPage from "./routes/album/[path].js";
+import AlbumPathPage from "./routes/album/index.js";
 import IndexPage from "./routes/index.js";
 import SearchIndexPage from "./routes/search/index.js";
+import ViewPathPage from "./routes/view/index";
 
 const ApplicationRoutes: FC = () => {
   return (
@@ -22,12 +23,14 @@ const ApplicationRoutes: FC = () => {
           path={"search"}
           element={<SearchIndexPage />}
         />
-        <Route path={"album"}>
-          <Route
-            path={"@/*"}
-            element={<AlbumPathPage />}
-          />
-        </Route>
+        <Route
+          path={"album"}
+          element={<AlbumPathPage />}
+        />
+        <Route
+          path={"view"}
+          element={<ViewPathPage />}
+        />
       </Route>
     </Routes>
   );

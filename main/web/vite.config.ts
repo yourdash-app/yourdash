@@ -16,5 +16,6 @@ export default defineConfig({
     // enable for https tests. `mkcert()`
   ],
   appType: "spa",
-  root: ".",
+  root: "./",
+  base: "./",
 });
