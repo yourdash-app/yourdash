@@ -7,5 +7,5 @@
 cd /yourdash || exit
 sudo git pull
 yarn install
-cd main/web-client || exit
+cd main/web || exit
 yarn run dev
