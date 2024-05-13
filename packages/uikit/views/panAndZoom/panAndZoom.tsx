@@ -29,7 +29,6 @@ const PanAndZoom: FC<{ children: React.ReactNode; minZoom?: number; maxZoom?: nu
     const startY = event.clientY;
     const startTranslateX = translateX;
     const startTranslateY = translateY;
-    event.currentTarget.style.cursor = "grabbing";
 
     // eslint-disable-next-line @typescript-eslint/no-shadow
     const handleMouseMove = (event: MouseEvent) => {
@@ -42,7 +41,6 @@ const PanAndZoom: FC<{ children: React.ReactNode; minZoom?: number; maxZoom?: nu
 
     const handleMouseUp = () => {
       event.stopPropagation();
-      event.currentTarget.style.cursor = "default";
       document.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseup", handleMouseUp);
     };
@@ -56,7 +54,6 @@ const PanAndZoom: FC<{ children: React.ReactNode; minZoom?: number; maxZoom?: nu
     const startTouches = event.touches;
     const startTranslateX = translateX;
     const startTranslateY = translateY;
-    event.currentTarget.style.cursor = "grabbing";
 
     // eslint-disable-next-line @typescript-eslint/no-shadow
     const handleTouchMove = (event: TouchEvent) => {
@@ -70,7 +67,6 @@ const PanAndZoom: FC<{ children: React.ReactNode; minZoom?: number; maxZoom?: nu
 
     const handleTouchEnd = () => {
       event.stopPropagation();
-      event.currentTarget.style.cursor = "default";
       document.removeEventListener("touchmove", handleTouchMove);
       document.removeEventListener("touchend", handleTouchEnd);
     };
@@ -93,12 +89,21 @@ const PanAndZoom: FC<{ children: React.ReactNode; minZoom?: number; maxZoom?: nu
       onWheel={handleWheel as unknown as React.WheelEventHandler<HTMLDivElement>}
       onMouseDown={handleMouseDown}
       onTouchStart={handleTouchStart}
+      onDragStart={(event) => {
+        event.stopPropagation();
+        event.preventDefault();
+      }}
+      onContextMenu={(event) => {
+        event.preventDefault();
+        event.stopPropagation();
+      }}
     >
       <div
         style={{
           transform: `translate(${translateX}px, ${translateY}px) scale(${scale})`,
           transformOrigin: "center center",
           maxWidth: "max-content",
+          pointerEvents: "none",
         }}
       >
         {children}

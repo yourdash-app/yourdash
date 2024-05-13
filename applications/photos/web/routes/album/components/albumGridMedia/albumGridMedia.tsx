@@ -3,22 +3,17 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import csi from "@yourdash/csi/csi";
-import Card from "@yourdash/uikit/components/card/card.js";
 import Icon from "@yourdash/uikit/components/icon/icon.js";
 import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary.js";
 import Image from "@yourdash/uikit/components/image/image.js";
-import DecrementLevel from "@yourdash/uikit/core/decrementLevel.js";
-import IncrementLevel from "@yourdash/uikit/core/incrementLevel.js";
 import { FC } from "react";
 import { MediaAlbumLargeGridItem } from "../../../../../shared/types/endpoints/media/album/large-grid.js";
 import { MEDIA_TYPE } from "../../../../../shared/types/mediaType.js";
 import { useNavigate } from "react-router-dom";
-import pth from "path-browserify";
 import styles from "./albumGridMedia.module.scss";
 
 const AlbumGridMedia: FC<{
-  data: MediaAlbumLargeGridItem<MEDIA_TYPE>;
+  data: MediaAlbumLargeGridItem<MEDIA_TYPE.IMAGE | MEDIA_TYPE.VIDEO>;
   aspectRatio: number;
   rowHeight: number;
   displayWidth: number;
@@ -54,17 +49,6 @@ const AlbumGridMedia: FC<{
             authenticatedImage
           />
         </div>
-      );
-    case MEDIA_TYPE.ALBUM:
-      return (
-        <Card
-          key={data.path}
-          onClick={() => {
-            navigate("/app/a/photos/album/?p=" + data.path);
-          }}
-        >
-          {pth.basename(data.path)}
-        </Card>
       );
     default:
       return <>MEDIA RENDERING ERROR</>;

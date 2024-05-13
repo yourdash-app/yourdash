@@ -16,20 +16,23 @@ export enum AUTHENTICATED_VIDEO_TYPE {
 interface IauthenticatedVideo<T extends AUTHENTICATED_VIDEO_TYPE> {
   type: T;
   value: string;
-  lastAccess?: number;
 }
 
 export default class CoreVideo {
   core: Core;
-  private readonly AUTHENTICATED_VIDEOS: {
-    [username: string]: {
-      [id: string]: IauthenticatedVideo<AUTHENTICATED_VIDEO_TYPE>;
-    };
-  };
+  // private readonly AUTHENTICATED_VIDEOS: {
+  //   [username: string]: {
+  //     [id: string]: IauthenticatedVideo<AUTHENTICATED_VIDEO_TYPE>;
+  //   };
+  // };
+  private readonly authenticatedVideos: Map<
+    string,
+    Map<string, Map<string, IauthenticatedVideo<AUTHENTICATED_VIDEO_TYPE>>>
+  >;
 
   constructor(core: Core) {
     this.core = core;
-    this.AUTHENTICATED_VIDEOS = {};
+    this.authenticatedVideos = new Map();
 
     return this;
   }
@@ -58,25 +61,38 @@ export default class CoreVideo {
 
   createAuthenticatedVideo<VideoType extends AUTHENTICATED_VIDEO_TYPE>(
     username: string,
+    sessionId: string,
     type: AUTHENTICATED_VIDEO_TYPE,
     value: IauthenticatedVideo<VideoType>["value"],
   ): string {
-    const id = crypto.randomUUID();
+    let resultingExtension = "";
 
-    if (!this.AUTHENTICATED_VIDEOS[username]) {
-      this.AUTHENTICATED_VIDEOS[username] = {};
+    if (type === AUTHENTICATED_VIDEO_TYPE.FILE) {
+      resultingExtension = path.extname(value as string);
     }
 
-    this.AUTHENTICATED_VIDEOS[username][id] = {
+    const id = crypto.randomUUID() + resultingExtension;
+
+    if (!this.authenticatedVideos.get(username)) {
+      this.authenticatedVideos.set(username, new Map());
+    }
+
+    const user = this.authenticatedVideos.get(username);
+
+    if (!user.has(sessionId)) {
+      user.set(sessionId, new Map());
+    }
+
+    user.get(sessionId).set(id, {
       type,
       value,
-    };
+    });
 
-    return `/core::auth-video/${username}/${id}`;
+    return `/core::auth-video/${username}/${sessionId}/${id}`;
   }
 
-  __internal__removeAuthenticatedVideo(username: string, id: string) {
-    delete this.AUTHENTICATED_VIDEOS[username][id];
+  __internal__removeAuthenticatedVideo(username: string, sessionId: string, id: string) {
+    this.authenticatedVideos.get(username).get(sessionId).delete(id);
 
     return this;
   }
@@ -84,49 +100,32 @@ export default class CoreVideo {
   __internal__loadEndpoints() {
     this.core.request.setNamespace("core::auth-video");
 
-    this.core.request.get("/:username/:id", async (req, res) => {
-      const { username, id } = req.params;
+    this.core.request.get("/:username/:sessionId/:id", async (req, res) => {
+      const { username, sessionId, id } = req.params;
 
-      this.core.log.info(
-        "Authenticated video range requested",
-        JSON.stringify({ username, id, range: req.headers.range }),
-      );
-
-      const video = this.AUTHENTICATED_VIDEOS?.[username]?.[id];
+      const video = this.authenticatedVideos.get(username)?.get(sessionId)?.get(id);
 
       if (!video) {
-        return res.sendFile(path.resolve(process.cwd(), "./src/defaults/default_avatar.avif"));
-      }
-
-      if (video?.lastAccess === undefined) {
-        video.lastAccess = Date.now();
+        return res.sendFile(path.resolve(process.cwd(), "./src/defaults/default_video.mp4"));
       }
 
       if (video.type === AUTHENTICATED_VIDEO_TYPE.FILE) {
-        this.__internal__removeAuthenticatedVideo(username, id);
-
-        if (Date.now() - video.lastAccess < 5 * 60 * 1000) {
-          video.lastAccess = Date.now();
-          try {
-            res.sendFile(video.value as unknown as string);
-          } catch (e) {
-            return;
-          }
-        } else {
-          this.__internal__removeAuthenticatedVideo(username, id);
+        try {
+          return res.sendFile(
+            pth.resolve(video.value) ||
+              (pth.resolve(pth.join(process.cwd(), "./src/defaults/default_video.mp4")) as unknown as string),
+          );
+        } catch (e) {
+          return;
         }
-
-        return;
-      }
-
-      this.__internal__removeAuthenticatedVideo(username, id);
-
-      try {
-        return res.sendFile(
-          pth.resolve(pth.join(process.cwd(), "./src/defaults/default_video.mp4")) as unknown as string,
-        );
-      } catch (e) {
-        return;
+      } else {
+        try {
+          return res.sendFile(
+            pth.resolve(pth.join(process.cwd(), "./src/defaults/default_video.mp4")) as unknown as string,
+          );
+        } catch (e) {
+          return;
+        }
       }
     });
   }

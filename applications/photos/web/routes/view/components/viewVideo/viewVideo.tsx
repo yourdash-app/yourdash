@@ -10,6 +10,7 @@ import styles from "./viewVideo.module.scss";
 const ViewVideo: FC<{ mediaUrl: string }> = ({ mediaUrl }) => {
   return (
     <video
+      draggable={false}
       className={styles.viewVideo}
       src={csi.getInstanceUrl() + mediaUrl}
     />

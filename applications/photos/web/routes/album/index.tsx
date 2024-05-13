@@ -36,12 +36,20 @@ const AlbumPathPage: FC = () => {
           accessibleLabel={"Go back"}
           icon={UKIcon.ChevronLeft}
           onClick={() => {
-            navigate(`/app/a/photos/album/?p=${path.join(albumPath(), "..")}`);
+            const newPath = path.join(albumPath(), "..");
+
+            if (newPath === "/" && albumPath() === "/") {
+              navigate("/app/a/photos/");
+
+              return;
+            }
+
+            navigate(`/app/a/photos/album/?p=${newPath}`);
           }}
         />
         <Heading
           level={1}
-          text={path.basename(albumPath())}
+          text={path.basename(albumPath()) || albumPath()}
         />
       </Box>
       <div className={styles.albumGrid}>

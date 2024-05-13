@@ -33,7 +33,7 @@ const IndexPage: FC = () => {
       {albums.map((album) => {
         return (
           <Text
-            text={album}
+            text={csi.path.toUnix(album)}
             key={album}
           />
         );

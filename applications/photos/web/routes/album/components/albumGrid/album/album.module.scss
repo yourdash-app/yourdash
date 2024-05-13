@@ -3,11 +3,10 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-.viewImage {
-  border-radius: 0;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  pointer-events: none;
+.album {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: max-content;
 }

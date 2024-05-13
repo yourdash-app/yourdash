@@ -5,12 +5,14 @@
 
 import csi from "@yourdash/csi/csi.js";
 import Card from "@yourdash/uikit/components/card/card.js";
+import Heading from "@yourdash/uikit/components/heading/heading.js";
 import Text from "@yourdash/uikit/components/text/text.js";
 import useResource from "@yourdash/web/src/lib/useResource.js";
 import { FC } from "react";
 import { EndpointAlbums } from "../../../../shared/types/endpoints/endpointAlbums.js";
 import { useNavigate } from "react-router-dom";
 import path from "path-browserify";
+import styles from "./albums.module.scss";
 
 const Albums: FC = () => {
   const navigate = useNavigate();
@@ -20,18 +22,26 @@ const Albums: FC = () => {
 
   return (
     <>
-      {albums.map((album) => {
-        return (
-          <Card
-            key={album}
-            onClick={() => {
-              navigate("/app/a/photos/album/?p=" + album);
-            }}
-          >
-            <Text text={path.basename(album)} />
-          </Card>
-        );
-      })}
+      <Heading
+        className={styles.heading}
+        level={2}
+        text={"Albums"}
+      />
+      <div className={styles.component}>
+        {albums.map((album) => {
+          return (
+            <Card
+              containerClassName={styles.album}
+              key={album}
+              onClick={() => {
+                navigate("/app/a/photos/album/?p=" + csi.path.toUnix(album));
+              }}
+            >
+              <Text text={path.basename(csi.path.toUnix(album))} />
+            </Card>
+          );
+        })}
+      </div>
     </>
   );
 };

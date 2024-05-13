@@ -3,6 +3,8 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+@import "@yourdash/uikit/theme/themeValues";
+
 .component {
   display: flex;
   flex-direction: column;
@@ -15,4 +17,13 @@
   height: 100%;
   overflow: hidden;
   overflow-y: auto;
+}
+
+.albumContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: var(#{$theme}#{$gap});
 }

@@ -14,7 +14,7 @@
   overflow: hidden;
   border-radius: var(#{$theme+$button+$radius});
   border: 1px solid rgb(var(--container-border));
-  width: max-content;
+  width: 100%;
   outline: var(#{$theme+$accent}) solid 0;
   transition: var(--transition);
   position: relative;
