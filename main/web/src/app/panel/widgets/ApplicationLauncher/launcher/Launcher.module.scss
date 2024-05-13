@@ -3,6 +3,8 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+@import "@yourdash/uikit/theme/themeValues";
+
 .applicationLauncher {
   position: fixed;
   background: rgb(var(--container-bg));
@@ -12,9 +14,10 @@
   max-height: 100%;
   display: flex;
   flex-direction: column;
-  border: 1px solid rgb(var(--container-border));
+  border: var(#{$theme+$border});
   overflow-x: hidden;
   overflow-y: auto;
+  box-shadow: #00000088 0 0 1rem;
 }
 
 .content {

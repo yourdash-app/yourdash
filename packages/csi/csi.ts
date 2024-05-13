@@ -6,6 +6,7 @@
 // YourDash Client-Server interface Toolkit
 import KeyValueDatabase from "@yourdash/shared/core/database";
 import { io as SocketIoClient, Socket as SocketIoSocket } from "socket.io-client";
+import BrowserPath from "./browserPath.js";
 import CSIYourDashTeam from "./team/team";
 import CSIYourDashUser from "./user/user";
 
@@ -47,10 +48,12 @@ class __internalClientServerWebsocketConnection {
 
 class __internalClientServerInteraction {
   userDB: UserDatabase;
+  path: BrowserPath;
   private user!: CSIYourDashUser;
 
   constructor() {
     this.userDB = new UserDatabase();
+    this.path = new BrowserPath();
 
     return this;
   }

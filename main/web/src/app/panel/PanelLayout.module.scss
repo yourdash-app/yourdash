@@ -23,12 +23,11 @@
   container-name: yourdash-application-frame;
   container-type: inline-size;
 
-  overflow-x: hidden;
-  overflow-y: auto;
+  overflow: hidden;
   height: 100%;
   width: 100%;
   transition: var(--transition);
-  animation: applicationFadeIn 0.5s forwards ease-in;
+  animation: applicationFadeIn 0.25s forwards ease-in;
 }
 
 .top {

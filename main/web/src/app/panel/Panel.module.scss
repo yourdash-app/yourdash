@@ -3,6 +3,8 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+@import "@yourdash/uikit/theme/themeValues";
+
 .panel {
   display: flex;
   box-sizing: border-box;
@@ -10,6 +12,7 @@
   position: relative;
   z-index: 50;
   user-select: none;
+  border: none;
 
   > * {
     animation: panelFadeIn 0.25s 0.5s forwards ease-in-out;
@@ -68,24 +71,24 @@
 
 .top {
   @include horizontal;
-  border-bottom: 1px rgb(var(--container-border)) solid;
+  border-bottom: var(#{$theme+$border});
   padding-bottom: calc(var(--app-panel-padding) + 1px);
 }
 
 .right {
   @include vertical;
-  border-left: 1px rgb(var(--container-border)) solid;
+  border-left: var(#{$theme+$border});
   padding-left: calc(var(--app-panel-padding) + 1px);
 }
 
 .bottom {
   @include horizontal;
-  border-top: 1px rgb(var(--container-border)) solid;
+  border-top: var(#{$theme+$border});
   padding-top: calc(var(--app-panel-padding) + 1px);
 }
 
 .left {
   @include vertical;
-  border-right: 1px rgb(var(--container-border)) solid;
+  border-right: var(#{$theme+$border});
   padding-right: calc(var(--app-panel-padding) + 1px);
 }
