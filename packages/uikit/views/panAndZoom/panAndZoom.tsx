@@ -16,7 +16,6 @@ const PanAndZoom: FC<{ children: React.ReactNode; minZoom?: number; maxZoom?: nu
   const [scale, setScale] = useState(1);
 
   const handleWheel = (event: WheelEvent) => {
-    event.preventDefault();
     event.stopPropagation();
     const delta = event.deltaY;
     const newScale = scale + delta / 1000;

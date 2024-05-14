@@ -40,10 +40,10 @@ const ViewPathPage: FC = () => {
         />
       </Box>
       {media && (
-        <PanAndZoom>
+        <>
           {media.type === MEDIA_TYPE.IMAGE && <ViewImage mediaUrl={media.mediaUrl} />}
           {media.type === MEDIA_TYPE.VIDEO && <ViewVideo mediaUrl={media.mediaUrl} />}
-        </PanAndZoom>
+        </>
       )}
     </div>
   );

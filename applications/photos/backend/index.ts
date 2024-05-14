@@ -166,6 +166,7 @@ export default class PhotosBackend extends BackendModule {
             path: item.path.replace(user.getFsPath(), ""),
             mediaUrl: this.api.core.video.createAuthenticatedVideo(
               user.username,
+              sessionid,
               AUTHENTICATED_VIDEO_TYPE.FILE,
               item.path,
             ),
