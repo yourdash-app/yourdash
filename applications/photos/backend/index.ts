@@ -24,28 +24,6 @@ export default class PhotosBackend extends BackendModule {
 
     this.api.request.setNamespace("app::photos");
 
-    this.api.request.get("/album/@/*", async (req, res) => {
-      const albumPath = req.params["0"] as string;
-
-      const user = this.api.getUser(req);
-
-      const albumDirectory = await this.api.core.fs.get(path.join(user.getFsPath(), albumPath));
-
-      if (!(await albumDirectory?.doesExist())) return res.json({ error: "Not found" });
-
-      if (albumDirectory?.entityType !== FILESYSTEM_ENTITY_TYPE.DIRECTORY)
-        return res.json({ error: "Not a directory" });
-
-      return res.json(
-        (await albumDirectory.getChildren())
-          .filter((child) => child.entityType === FILESYSTEM_ENTITY_TYPE.DIRECTORY)
-          .map((child) => {
-            console.log(child.path, user.getFsPath());
-            return child.path.replace(user.getFsPath(), "");
-          }),
-      );
-    });
-
     this.api.request.get("/media/album/large-grid/@/*", async (req, res) => {
       const { sessionid } = req.headers;
       const itemPath = req.params["0"] as string;
@@ -84,6 +62,9 @@ export default class PhotosBackend extends BackendModule {
 
               switch (childType) {
                 case MEDIA_TYPE.VIDEO:
+                  const thumbnail = await this.api.core.video.createThumbnail(child.path);
+                  const dimensions = await core.image.getImageDimensions(thumbnail);
+
                   return <MediaAlbumLargeGridItem<MEDIA_TYPE.VIDEO>>{
                     type: MEDIA_TYPE.VIDEO,
                     path: child.path.replace(user.getFsPath(), ""),
@@ -91,14 +72,14 @@ export default class PhotosBackend extends BackendModule {
                       user.username,
                       sessionid,
                       AUTHENTICATED_IMAGE_TYPE.FILE,
-                      await this.api.core.video.createThumbnail(child.path),
+                      thumbnail,
                       256,
                       512,
                       "webp",
                     ),
                     metadata: {
-                      width: (await core.video.getVideoDimensions(child.path)).width,
-                      height: (await core.video.getVideoDimensions(child.path)).height,
+                      width: dimensions.width,
+                      height: dimensions.height,
                     },
                   };
                 case MEDIA_TYPE.IMAGE:
@@ -131,67 +112,94 @@ export default class PhotosBackend extends BackendModule {
       );
     });
 
-    this.api.request.get("/media/raw/@/*", async (req, res) => {
-      const { sessionid } = req.headers;
-      const itemPath = req.params["0"] as string;
+    this.api.request.get("/album/@/*", async (req, res) => {
+      const albumPath = req.params["0"] as string;
+
       const user = this.api.getUser(req);
 
-      const item = await this.api.core.fs.get(path.join(user.getFsPath(), itemPath));
+      const albumDirectory = await this.api.core.fs.get(path.join(user.getFsPath(), albumPath));
 
-      if (!(await item.doesExist())) return res.json({ error: true });
+      if (!(await albumDirectory?.doesExist())) return res.json({ error: "Not found" });
 
-      if (item.entityType !== FILESYSTEM_ENTITY_TYPE.FILE)
-        return res.json({ error: "The path supplied is not a file." });
+      if (albumDirectory?.entityType !== FILESYSTEM_ENTITY_TYPE.DIRECTORY)
+        return res.json({ error: "Not a directory" });
 
-      let itemType: MEDIA_TYPE;
-
-      if (item.entityType === FILESYSTEM_ENTITY_TYPE.FILE) {
-        const c = item as unknown as FileSystemFile;
-        switch (c.getType()) {
-          case "image":
-            itemType = MEDIA_TYPE.IMAGE;
-            break;
-          case "video":
-            itemType = MEDIA_TYPE.VIDEO;
-            break;
-          default:
-            return undefined;
-        }
-      }
-
-      switch (itemType) {
-        case MEDIA_TYPE.VIDEO:
-          return res.json(<EndpointMediaRaw>{
-            type: MEDIA_TYPE.VIDEO,
-            path: item.path.replace(user.getFsPath(), ""),
-            mediaUrl: this.api.core.video.createAuthenticatedVideo(
-              user.username,
-              sessionid,
-              AUTHENTICATED_VIDEO_TYPE.FILE,
-              item.path,
-            ),
-            metadata: {
-              width: (await core.video.getVideoDimensions(item.path)).width,
-              height: (await core.video.getVideoDimensions(item.path)).height,
-            },
-          });
-        case MEDIA_TYPE.IMAGE:
-          return res.json(<EndpointMediaRaw>{
-            type: MEDIA_TYPE.IMAGE,
-            path: item.path.replace(user.getFsPath(), ""),
-            mediaUrl: this.api.core.image.createAuthenticatedImage(
-              user.username,
-              sessionid,
-              AUTHENTICATED_IMAGE_TYPE.FILE,
-              item.path,
-            ),
-            metadata: {
-              width: (await core.image.getImageDimensions(item.path)).width,
-              height: (await core.image.getImageDimensions(item.path)).height,
-            },
-          });
-      }
+      return res.json(
+        (await albumDirectory.getChildren())
+          .filter((child) => child.entityType === FILESYSTEM_ENTITY_TYPE.DIRECTORY)
+          .map((child) => {
+            console.log(child.path, user.getFsPath());
+            return child.path.replace(user.getFsPath(), "");
+          }),
+      );
     });
+
+    this.api.request.get(
+      "/media/raw/@/*",
+      async (req, res) => {
+        const { sessionid } = req.headers;
+        const itemPath = req.params["0"] as string;
+        const user = this.api.getUser(req);
+
+        const item = await this.api.core.fs.get(path.join(user.getFsPath(), itemPath));
+
+        if (!(await item.doesExist())) return res.json({ error: true });
+
+        if (item.entityType !== FILESYSTEM_ENTITY_TYPE.FILE)
+          return res.json({ error: "The path supplied is not a file." });
+
+        let itemType: MEDIA_TYPE;
+
+        if (item.entityType === FILESYSTEM_ENTITY_TYPE.FILE) {
+          const c = item as unknown as FileSystemFile;
+          switch (c.getType()) {
+            case "image":
+              itemType = MEDIA_TYPE.IMAGE;
+              break;
+            case "video":
+              itemType = MEDIA_TYPE.VIDEO;
+              break;
+            default:
+              return undefined;
+          }
+        }
+
+        switch (itemType) {
+          case MEDIA_TYPE.VIDEO:
+            return res.json(<EndpointMediaRaw>{
+              type: MEDIA_TYPE.VIDEO,
+              path: item.path.replace(user.getFsPath(), ""),
+              mediaUrl: this.api.core.video.createAuthenticatedVideo(
+                user.username,
+                sessionid,
+                AUTHENTICATED_VIDEO_TYPE.FILE,
+                item.path,
+              ),
+              metadata: {
+                width: (await core.video.getVideoDimensions(item.path)).width,
+                height: (await core.video.getVideoDimensions(item.path)).height,
+              },
+            });
+          case MEDIA_TYPE.IMAGE:
+            return res.json(<EndpointMediaRaw>{
+              type: MEDIA_TYPE.IMAGE,
+              path: item.path.replace(user.getFsPath(), ""),
+              mediaUrl: this.api.core.image.createAuthenticatedImage(
+                user.username,
+                sessionid,
+                AUTHENTICATED_IMAGE_TYPE.FILE,
+                item.path,
+              ),
+              metadata: {
+                width: (await core.image.getImageDimensions(item.path)).width,
+                height: (await core.image.getImageDimensions(item.path)).height,
+              },
+            });
+        }
+      },
+      // TODO: fixme
+      { debugTimer: true },
+    );
 
     // this.API.request.get(`${this.rootPath}/albums`, async (req, res) => {
     //   const { username } = req.headers;

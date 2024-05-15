@@ -37,11 +37,34 @@ export default class CoreRequest {
       res: ExpressResponse,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ) => Promise<ExpressResponse<any, Record<string, any>> | void>,
+    options?: { debugTimer: boolean },
   ): this {
-    this.core.log.info(
-      "core_request",
-      "Request created: " + (this.currentNamespace ? "/" : "") + this.currentNamespace + path,
-    );
+    if (this.core.isDebugMode) {
+      this.core.log.info(
+        "core_request",
+        "Request created: " + (this.currentNamespace ? "/" : "") + this.currentNamespace + path,
+      );
+    }
+
+    // TODO: fixme
+    if (options?.debugTimer) {
+      this.rawExpress.get(
+        (this.currentNamespace ? "/" : "") + this.currentNamespace + path,
+        async (req: ExpressRequest & { headers: RequestHeaders }, res: ExpressResponse) => {
+          try {
+            const startTime = performance.now();
+            await callback(req, res);
+            const endTime = performance.now();
+
+            this.core.log.debug("response_time", `${req.path} took ${(endTime / 1000 - startTime / 1000).toFixed()}μs`);
+          } catch (err) {
+            this.core.log.error("request_error", `Request error not caught: ${err.message}`);
+          }
+        },
+      );
+
+      return this;
+    }
 
     this.rawExpress.get(
       (this.currentNamespace ? "/" : "") + this.currentNamespace + path,

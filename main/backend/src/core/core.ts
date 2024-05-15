@@ -233,6 +233,9 @@ export class Core {
     this.request.use(async (req, _res, next) => {
       switch (req.method) {
         case "GET":
+          if (req.path.includes("core::auth-img")) return next();
+          if (req.path.includes("core::auth-video")) return next();
+
           this.log.info(
             "request",
             `${chalk.bgBlack(chalk.green(" GET "))} ${req.path} ${

@@ -120,6 +120,10 @@ export default class CoreLog {
   }
 
   debug(level: string, ...message: (string | Uint8Array)[]) {
+    if (!this.core.isDebugMode) {
+      return this;
+    }
+
     if (message.length === 0) {
       throw new Error("log message is empty");
     }

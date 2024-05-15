@@ -44,10 +44,12 @@ export default class CoreVideo {
       const fileName = `${crypto.randomUUID()}.video-thumbnail.png`;
 
       ffmpeg(videoPath)
-        .thumbnail({ count: 1, filename: fileName }, cacheDir)
+        .output(path.join(cacheDir, fileName))
+        .outputOptions("-frames:v", "1")
         .on("end", () => {
           resolve(pth.join(cacheDir, fileName));
-        });
+        })
+        .run();
     });
   }
 
