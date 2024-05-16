@@ -43,13 +43,11 @@ export default class CoreVideo {
     return await new Promise<string>((resolve) => {
       const fileName = `${crypto.randomUUID()}.video-thumbnail.png`;
 
-      ffmpeg(videoPath)
-        .output(path.join(cacheDir, fileName))
-        .outputOptions("-frames:v", "1")
-        .on("end", () => {
-          resolve(pth.join(cacheDir, fileName));
-        })
-        .run();
+      this.core.execute
+        .exec(`ffmpeg -i ${videoPath} -frames:v 1 -ss 00:00:1 ${path.join(cacheDir, fileName)}`)
+        .on("exit", () => {
+          resolve(path.join(cacheDir, fileName));
+        });
     });
   }
 

@@ -22,6 +22,7 @@ import { fetch } from "undici";
 import { compareHashString } from "../lib/encryption.js";
 import { createSession } from "../lib/session.js";
 import CoreCommands from "./coreCommands.js";
+import CoreExecute from "./coreExecute.js";
 import CoreGlobalDb from "./coreGlobalDb.js";
 import CoreImage from "./coreImage.js";
 import CoreLog from "./coreLog.js";
@@ -69,6 +70,7 @@ export class Core {
   readonly websocketManager: CoreWebsocketManager;
   readonly loadManagement: CoreLoadManagement;
   readonly webdav: CoreWebDAV;
+  readonly execute: CoreExecute;
 
   // general vars
   readonly processArguments: minimist.ParsedArgs;
@@ -79,12 +81,16 @@ export class Core {
   instanceStatus: INSTANCE_STATUS = INSTANCE_STATUS.OK;
 
   constructor() {
+    // Fetch process arguments
+    this.processArguments = minimist(process.argv.slice(2));
+
     globalThis.rawConsoleLog = globalThis.console.log;
 
     this.isDebugMode =
       typeof global.v8debug === "object" ||
       /--debug|--inspect/.test(process.execArgv.join(" ")) ||
-      process.env.NODE_OPTIONS?.includes("javascript-debugger");
+      process.env.NODE_OPTIONS?.includes("javascript-debugger") ||
+      !!this.processArguments.dev;
 
     if (!this.isDebugMode) {
       // eslint-disable-next-line
@@ -94,9 +100,6 @@ export class Core {
     }
 
     this.log = new CoreLog(this);
-
-    // Fetch process arguments
-    this.processArguments = minimist(process.argv.slice(2));
 
     this.isDevMode = !!this.processArguments.dev;
 
@@ -121,6 +124,7 @@ export class Core {
     this.video = new CoreVideo(this);
     this.loadManagement = new CoreLoadManagement(this);
     this.websocketManager = new CoreWebsocketManager(this);
+    this.execute = new CoreExecute(this);
 
     // TODO: implement WebDAV & CalDAV & CardDAV (outdated WebDAV example -> https://github.com/LordEidi/fennel.js/)
     this.webdav = new CoreWebDAV(this);

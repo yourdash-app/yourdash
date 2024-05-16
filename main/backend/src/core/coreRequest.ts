@@ -9,6 +9,7 @@ import {
   Request as ExpressRequest,
   Response as ExpressResponse,
 } from "express";
+import timeMethod from "../lib/time.js";
 import { Core } from "./core.js";
 
 export type RequestHeaders = { username: string; sessionid: string };
@@ -46,17 +47,14 @@ export default class CoreRequest {
       );
     }
 
-    // TODO: fixme
     if (options?.debugTimer) {
       this.rawExpress.get(
         (this.currentNamespace ? "/" : "") + this.currentNamespace + path,
         async (req: ExpressRequest & { headers: RequestHeaders }, res: ExpressResponse) => {
           try {
-            const startTime = performance.now();
-            await callback(req, res);
-            const endTime = performance.now();
+            const time = await timeMethod(() => callback(req, res));
 
-            this.core.log.debug("response_time", `${req.path} took ${(endTime / 1000 - startTime / 1000).toFixed()}μs`);
+            this.core.log.debug("response_time", `${req.path} took ${time.formattedMicrosecconds}μs`);
           } catch (err) {
             this.core.log.error("request_error", `Request error not caught: ${err.message}`);
           }
