@@ -1,15 +1,16 @@
 {
-  "type": "module",
-  "version": "0.0.1",
   "name": "@yourdash/shared",
-  "author": "Ewsgit <ewsgit@duck.com>",
+  "version": "1.0.0",
   "license": "MIT",
+  "type": "module",
+  "author": "Ewsgit <ewsgit@duck.com>",
   "engines": {
     "node": ">=21.0.0"
   },
   "dependencies": {
     "react": "^18.2.0",
     "@types/react": "^18.2.61",
-    "clsx": "^2.1.0"
+    "clsx": "^2.1.0",
+    "typescript": "^5.0.2"
   }
 }

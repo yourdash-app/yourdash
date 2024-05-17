@@ -1,11 +1,12 @@
 {
   "name": "@yourdash/uikit",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "MIT",
   "type": "module",
   "engines": {
     "node": ">=21.0.0"
   },
+  "author": "Ewsgit <ewsgit@duck.com>",
   "dependencies": {
     "@loadable/component": "^5.15.3",
     "@remix-run/router": "^1.15.3",
@@ -44,6 +45,7 @@
     "vite-plugin-dynamic-import": "^1.5.0",
     "web-tree-sitter": "^0.20.8",
     "xml2js": "^0.6.2",
-    "yarn": "^1.22.19"
+    "yarn": "^1.22.19",
+    "@yourdash/shared": "^1.0.0"
   }
 }
