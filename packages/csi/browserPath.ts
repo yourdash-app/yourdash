@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import pth from "path-browserify";
+import * as pth from "path-browserify";
 
 function convertSeparator(path: string) {
   return path.replace(/\\/g, "/");
