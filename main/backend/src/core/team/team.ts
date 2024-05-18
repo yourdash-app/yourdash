@@ -21,7 +21,7 @@ export default class YourDashTeam {
 
   // Get the team's FileSystem path
   getPath() {
-    return path.resolve(path.join(core.fs.ROOT_PATH, "teams", this.teamName));
+    return path.join("teams", this.teamName);
   }
 
   // Does the team exist

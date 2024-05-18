@@ -34,7 +34,7 @@ export default class YourDashUser {
 
   constructor(username: string) {
     this.username = username;
-    this.path = path.join(path.join(core.fs.ROOT_PATH, `users/${this.username}`));
+    this.path = `users/${this.username}`;
   }
 
   getPath() {
@@ -71,24 +71,24 @@ export default class YourDashUser {
   }
 
   async setAvatar(filePath: string) {
-    await fs.cp(path.resolve(filePath), path.join(this.path, "avatars/original.avif"));
-    const newAvatarFile = await fs.readFile(path.resolve(filePath));
+    await core.fs.copy(filePath, path.join(this.path, "avatars/original.avif"));
+    const newAvatarFile = await (await core.fs.getFile(filePath)).read("buffer");
 
     sharp(newAvatarFile)
       .resize(32, 32)
-      .toFile(path.join(this.path, "avatars/small.avif"))
+      .toFile(path.join(path.join(core.fs.ROOT_PATH, this.path), "avatars/small.avif"))
       .catch((err: string) => console.error(err));
     sharp(newAvatarFile)
       .resize(64, 64)
-      .toFile(path.join(this.path, "avatars/medium.avif"))
+      .toFile(path.join(path.join(core.fs.ROOT_PATH, this.path), "avatars/medium.avif"))
       .catch((err: string) => console.error(err));
     sharp(newAvatarFile)
       .resize(128, 128)
-      .toFile(path.join(this.path, "avatars/large.avif"))
+      .toFile(path.join(path.join(core.fs.ROOT_PATH, this.path), "avatars/large.avif"))
       .catch((err: string) => console.error(err));
     sharp(newAvatarFile)
       .resize(256, 256)
-      .toFile(path.join(this.path, "avatars/extraLarge.avif"))
+      .toFile(path.join(path.join(core.fs.ROOT_PATH, this.path), "avatars/extraLarge.avif"))
       .catch((err: string) => console.error(err));
   }
 
@@ -180,11 +180,8 @@ export default class YourDashUser {
     }
 
     try {
-      console.log(path.join(process.cwd(), "./src/defaults/default_avatar.avif"));
-      console.log(path.join(process.cwd()));
-
       // set default avatar
-      await this.setAvatar(path.join(process.cwd(), "./src/defaults/default_avatar.avif"));
+      await this.setAvatar("./default_avatar.avif");
     } catch (err) {
       core.log.error("user", `username: ${this.username}, failed to set default avatar!`, err);
       console.error(err);
@@ -240,7 +237,7 @@ export default class YourDashUser {
     core.log.info("core", `set name to ${first} ${last} for ${this.username}`);
     try {
       const currentUserJson = JSON.parse(
-        (await fs.readFile(path.join(this.path, "core/user.json"))).toString(),
+        await (await core.fs.getFile(path.join(this.path, "core/user.json"))).read("string"),
       ) as IYourDashUserJson;
       currentUserJson["user:name"] = { first, last };
       const db = await this.getDatabase();
@@ -249,7 +246,7 @@ export default class YourDashUser {
       await this.saveDatabaseInstantly();
 
       // save the user.json
-      await fs.writeFile(path.join(this.path, "core/user.json"), JSON.stringify(currentUserJson));
+      await (await core.fs.getFile(path.join(this.path, "core/user.json"))).write(JSON.stringify(currentUserJson));
     } catch (err) {
       core.log.error("user", `Unable to write / read ${this.username}'s core/user.json`);
     }
@@ -281,10 +278,10 @@ export default class YourDashUser {
   async setBio(bio: string) {
     try {
       const currentUserJson = JSON.parse(
-        (await fs.readFile(path.join(this.path, "core/user.json"))).toString(),
+        await (await core.fs.getFile(path.join(this.path, "core/user.json"))).read("string"),
       ) as IYourDashUserJson;
       currentUserJson.bio = bio;
-      await fs.writeFile(path.join(this.path, "core/user.json"), JSON.stringify(currentUserJson));
+      await (await core.fs.getFile(path.join(this.path, "core/user.json"))).write(JSON.stringify(currentUserJson));
     } catch (err) {
       core.log.error(`Unable to write / read ${this.username}'s core/user.json`);
     }
@@ -293,7 +290,7 @@ export default class YourDashUser {
   async getBio() {
     try {
       const currentUserJson = JSON.parse(
-        (await fs.readFile(path.join(this.path, "core/user.json"))).toString(),
+        await (await core.fs.getFile(path.join(this.path, "core/user.json"))).read("string"),
       ) as IYourDashUserJson;
       return currentUserJson.bio;
     } catch (err) {
@@ -304,10 +301,10 @@ export default class YourDashUser {
   async setUrl(url: string) {
     try {
       const currentUserJson = JSON.parse(
-        (await fs.readFile(path.join(this.path, "core/user.json"))).toString(),
+        await (await core.fs.getFile(path.join(this.path, "core/user.json"))).read("string"),
       ) as IYourDashUserJson;
       currentUserJson.url = url;
-      await fs.writeFile(path.join(this.path, "core/user.json"), JSON.stringify(currentUserJson));
+      await (await core.fs.getFile(path.join(this.path, "core/user.json"))).write(JSON.stringify(currentUserJson));
     } catch (err) {
       core.log.error(`Unable to write / read ${this.username}'s core/user.json`);
     }
@@ -316,7 +313,7 @@ export default class YourDashUser {
   async getUrl() {
     try {
       const currentUserJson = JSON.parse(
-        (await fs.readFile(path.join(this.path, "core/user.json"))).toString(),
+        await (await core.fs.getFile(path.join(this.path, "core/user.json"))).read("string"),
       ) as IYourDashUserJson;
       return currentUserJson.url;
     } catch (err) {
@@ -327,10 +324,10 @@ export default class YourDashUser {
   async setPermissions(permissions: YourDashUserPermission[]) {
     try {
       const currentUserJson = JSON.parse(
-        (await fs.readFile(path.join(this.path, "core/user.json"))).toString(),
+        await (await core.fs.getFile(path.join(this.path, "core/user.json"))).read("string"),
       ) as IYourDashUserJson;
       currentUserJson.permissions = permissions;
-      await fs.writeFile(path.join(this.path, "core/user.json"), JSON.stringify(currentUserJson));
+      await (await core.fs.getFile(path.join(this.path, "core/user.json"))).write(JSON.stringify(currentUserJson));
     } catch (err) {
       core.log.error("user:setPermissions", `Unable to write / read ${this.username}'s core/user.json`);
       console.error(err);
@@ -340,7 +337,7 @@ export default class YourDashUser {
   async getPermissions() {
     try {
       const currentUserJson = JSON.parse(
-        (await fs.readFile(path.join(this.path, "core/user.json"))).toString(),
+        await (await core.fs.getFile(path.join(this.path, "core/user.json"))).read("string"),
       ) as IYourDashUserJson;
       return currentUserJson.permissions;
     } catch (err) {
@@ -351,7 +348,7 @@ export default class YourDashUser {
   async hasPermission(permission: YourDashUserPermission): Promise<boolean> {
     try {
       const currentUserJson = JSON.parse(
-        (await fs.readFile(path.join(this.path, "core/user.json"))).toString(),
+        await (await core.fs.getFile(path.join(this.path, "core/user.json"))).read("string"),
       ) as IYourDashUserJson;
       return currentUserJson.permissions.indexOf(permission) !== -1;
     } catch (err) {
@@ -366,7 +363,7 @@ export default class YourDashUser {
 
   async doesExist(): Promise<boolean> {
     try {
-      await fs.access(this.path);
+      await core.fs.doesExist(this.path);
       return true;
     } catch (_err) {
       return false;
@@ -377,7 +374,7 @@ export default class YourDashUser {
     const hashedPassword = await hashString(password);
 
     try {
-      await fs.writeFile(path.join(this.path, "./core/password.enc"), hashedPassword);
+      await (await core.fs.getFile(path.join(this.path, "./core/password.enc"))).write(hashedPassword);
     } catch (e) {
       core.log.error(`unable to create a new password for user ${this.username}`);
     }
@@ -414,7 +411,7 @@ export default class YourDashUser {
   }
 
   async getAllLoginSessions() {
-    return JSON.parse((await fs.readFile(path.resolve(this.path, "core/sessions.json"))).toString());
+    return JSON.parse(await (await core.fs.getFile(path.resolve(this.path, "core/sessions.json"))).read("string"));
   }
 
   saveDatabase() {
@@ -431,7 +428,7 @@ export default class YourDashUser {
 
   async update() {
     const currentUserJson = JSON.parse(
-      (await fs.readFile(path.join(this.path, "core/user.json"))).toString(),
+      await (await core.fs.getFile(path.join(this.path, "core/user.json"))).read("string"),
     ) as IYourDashUserJson;
 
     // noinspection FallThroughInSwitchStatementJS

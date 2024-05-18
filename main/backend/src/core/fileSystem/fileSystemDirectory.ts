@@ -3,10 +3,10 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import pth from "path";
 import { promises as fs } from "fs";
 import { Core } from "../core.js";
 import FileSystemEntity, { FILESYSTEM_ENTITY_TYPE } from "./fileSystemEntity.js";
+import pth from "path";
 
 export default class FileSystemDirectory extends FileSystemEntity {
   private readonly core: Core;
@@ -24,7 +24,7 @@ export default class FileSystemDirectory extends FileSystemEntity {
   }
 
   getMetadata() {
-    return fs.stat(this.path);
+    return fs.stat(pth.join(this.core.fs.ROOT_PATH, this.path));
   }
 
   async getChildren(): Promise<FileSystemEntity[]> {
@@ -35,7 +35,7 @@ export default class FileSystemDirectory extends FileSystemEntity {
 
   async getChildrenAsBaseName(): Promise<string[]> {
     try {
-      return await fs.readdir(this.path);
+      return await fs.readdir(pth.join(this.core.fs.ROOT_PATH, this.path));
     } catch (_err) {
       this.core.log.error("filesystem", `Unable to read directory: ${this.path}`);
 
@@ -44,7 +44,7 @@ export default class FileSystemDirectory extends FileSystemEntity {
   }
 
   async create() {
-    await fs.mkdir(this.path, { recursive: true });
+    await fs.mkdir(pth.join(this.core.fs.ROOT_PATH, this.path), { recursive: true });
 
     return this;
   }

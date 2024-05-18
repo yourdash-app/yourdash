@@ -64,14 +64,14 @@ export default class FileSystemFile extends FileSystemEntity {
     }
   }
 
-  getThumbnail(username: string, sessionId: number): string {
+  getThumbnail(username: string, sessionId: string): string {
     switch (this.getType()) {
       case "image":
         return this.core.image.createAuthenticatedImage(
           username,
           sessionId,
           AUTHENTICATED_IMAGE_TYPE.FILE,
-          pth.resolve(this.path),
+          pth.resolve(pth.join(this.core.fs.ROOT_PATH, this.path)),
         );
       default:
         return "not implemented";
@@ -85,11 +85,11 @@ export default class FileSystemFile extends FileSystemEntity {
   async read(readAs: "string" | "buffer" | "json") {
     switch (readAs) {
       case "string":
-        return (await fs.readFile(this.path)).toString();
+        return (await fs.readFile(pth.join(this.core.fs.ROOT_PATH, this.path))).toString();
       case "buffer":
-        return await fs.readFile(this.path);
+        return await fs.readFile(pth.join(this.core.fs.ROOT_PATH, this.path));
       case "json":
-        return JSON.parse((await fs.readFile(this.path)).toString());
+        return JSON.parse((await fs.readFile(pth.join(this.core.fs.ROOT_PATH, this.path))).toString());
       default:
         throw new Error(`Unsupported read type: ${readAs}`);
     }
@@ -105,7 +105,7 @@ export default class FileSystemFile extends FileSystemEntity {
     }
 
     try {
-      await fs.writeFile(this.path, data);
+      await fs.writeFile(pth.join(this.core.fs.ROOT_PATH, this.path), data);
     } catch (e) {
       console.error(e);
       this.core.log.error("filesystem", `unable to write to ${this.path}`);

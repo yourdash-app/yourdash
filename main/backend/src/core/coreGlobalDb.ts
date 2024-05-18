@@ -3,11 +3,8 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import path from "path";
 import KeyValueDatabase from "../lib/keyValueDatabase.js";
 import { Core } from "./core.js";
-
-// TODO: rewrite this to use a KVD ( Key Value Database )
 
 export default class CoreGlobalDb extends KeyValueDatabase {
   private readonly core: Core;
@@ -27,7 +24,7 @@ export default class CoreGlobalDb extends KeyValueDatabase {
       await this.readFromDisk(dbFilePath);
 
       if (JSON.stringify(this.keys) === JSON.stringify({})) {
-        await this.core.fs.removePath(path.join(this.core.fs.ROOT_PATH, "./global_database.json"));
+        await this.core.fs.removePath("./global_database.json");
         await this.core.restartInstance();
       }
     } else {
@@ -39,7 +36,7 @@ export default class CoreGlobalDb extends KeyValueDatabase {
 
   __internal__startGlobalDatabaseService() {
     this.core.scheduler.scheduleTask("core:globaldb_write_to_disk", "*/1 * * * *", async () => {
-      await this.writeToDisk(path.join(this.core.fs.ROOT_PATH, "./global_database.json"));
+      await this.writeToDisk("./global_database.json");
     });
   }
 }

@@ -34,7 +34,7 @@ export async function createSession<T extends YOURDASH_SESSION_TYPE>(
 
   try {
     core.users.__internal__getSessionsDoNotUseOutsideOfCore()[username] = JSON.parse(
-      (await fs.readFile(path.join(user.path, "core/sessions.json"))).toString(),
+      await (await this.core.fs.getFile(path.join(user.path, "core/sessions.json"))).read("string"),
     );
   } catch (_err) {
     /* empty */
@@ -55,10 +55,9 @@ export async function createSession<T extends YOURDASH_SESSION_TYPE>(
   }
 
   try {
-    await fs.writeFile(
-      path.join(user.path, "core/sessions.json"),
-      JSON.stringify(core.users.__internal__getSessionsDoNotUseOutsideOfCore()[username]),
-    );
+    await this.core.fs
+      .getFile(path.join(user.path, "core/sessions.json"))
+      .write(JSON.stringify(core.users.__internal__getSessionsDoNotUseOutsideOfCore()[username]));
   } catch (__e) {
     core.log.error(`Unable to write ${username}/core/sessions.json`);
 
@@ -99,10 +98,9 @@ export default class YourDashSession<T extends YOURDASH_SESSION_TYPE> {
 
     const user = new YourDashUser(this.username);
     try {
-      await fs.writeFile(
-        path.join(user.path, "core/sessions.json"),
-        JSON.stringify(core.users.__internal__getSessionsDoNotUseOutsideOfCore()[this.username]),
-      );
+      await (
+        await core.fs.getFile(path.join(user.path, "core/sessions.json"))
+      ).write(JSON.stringify(core.users.__internal__getSessionsDoNotUseOutsideOfCore()[this.username]));
     } catch (_err) {
       return;
     }

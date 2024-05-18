@@ -69,6 +69,7 @@ export default class CoreUsers {
       db: new UserDatabase(username),
       changed: false,
     };
+
     const user = new YourDashUser(username);
     await this.userDatabases[username].db.readFromDisk(path.join(user.path, "core/user_db.json"));
 
@@ -80,6 +81,13 @@ export default class CoreUsers {
   }
 
   async __internal__saveUserDatabaseInstantly(username: string) {
+    if (!this.userDatabases[username]) {
+      this.userDatabases[username] = {
+        db: new UserDatabase(username),
+        changed: false,
+      };
+    }
+
     this.userDatabases[username].changed = false;
 
     const user = new YourDashUser(username);

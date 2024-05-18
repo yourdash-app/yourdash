@@ -3,18 +3,18 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { promises as fs, writeFile } from "fs";
-
 import KVD from "@yourdash/shared/core/database.js";
+import core from "../core/core.js";
 
 export default class KeyValueDatabase extends KVD {
   constructor() {
     super();
   }
 
-  __internal__doNotUseOnlyIntendedForShutdownSequenceWriteToDisk(path: string, cb?: () => void) {
+  async __internal__doNotUseOnlyIntendedForShutdownSequenceWriteToDisk(path: string, cb?: () => void) {
     try {
-      writeFile(path, JSON.stringify(this.keys), cb);
+      await (await core.fs.getFile(path)).write(JSON.stringify(this.keys));
+      if (cb) cb();
     } catch (_err) {
       /* empty */
     }
@@ -22,7 +22,7 @@ export default class KeyValueDatabase extends KVD {
 
   async writeToDisk(path: string): Promise<boolean> {
     try {
-      await fs.writeFile(path, JSON.stringify(this.keys));
+      await (await core.fs.getFile(path)).write(JSON.stringify(this.keys));
       return true;
     } catch (_err) {
       return false;
@@ -31,7 +31,8 @@ export default class KeyValueDatabase extends KVD {
 
   async readFromDisk(path: string) {
     try {
-      const data = await fs.readFile(path, "utf8");
+      const data = await (await core.fs.getFile(path)).read("string");
+      console.log("DB", data);
       this.keys = JSON.parse(data);
       return true;
     } catch (_err) {

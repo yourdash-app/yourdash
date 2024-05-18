@@ -55,7 +55,7 @@ export default class CoreImage {
 
   resizeTo(filePath: string, width: number, height: number, resultingImageFormat?: "avif" | "png" | "jpg" | "webp") {
     return new Promise<string>(async (resolve) => {
-      const TEMP_DIR = pth.join(this.core.fs.ROOT_PATH, "temp");
+      const TEMP_DIR = "/temp";
 
       const resizedImagePath = pth.resolve(pth.join(TEMP_DIR, crypto.randomUUID()));
 
@@ -84,11 +84,14 @@ export default class CoreImage {
     extras?: { resizeTo?: { width: number; height: number; resultingImageFormat?: "avif" | "png" | "jpg" | "webp" } },
   ): string {
     let resultingExtension = "";
+    let val = value;
 
     if (extras?.resizeTo) {
       resultingExtension = `.${extras.resizeTo.resultingImageFormat || "webp"}`;
     } else if (type === AUTHENTICATED_IMAGE_TYPE.FILE) {
       resultingExtension = path.extname(value as string);
+      // @ts-ignore
+      val = path.resolve(path.join(this.core.fs.ROOT_PATH, value as string));
     }
 
     const id = crypto.randomUUID() + resultingExtension;
@@ -105,7 +108,8 @@ export default class CoreImage {
 
     user.get(sessionId).set(id, {
       type,
-      value,
+      // @ts-ignore
+      val,
       resizeTo: extras?.resizeTo,
     });
 

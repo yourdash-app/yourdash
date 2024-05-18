@@ -40,12 +40,13 @@ export default class CoreRequest {
     ) => Promise<ExpressResponse<any, Record<string, any>> | void>,
     options?: { debugTimer: boolean },
   ): this {
-    if (this.core.isDebugMode) {
-      this.core.log.info(
-        "core_request",
-        "Request created: " + (this.currentNamespace ? "/" : "") + this.currentNamespace + path,
-      );
-    }
+    // TODO: add a cli flag to re-enable this
+    // if (this.core.isDebugMode) {
+    //   this.core.log.info(
+    //     "core_request",
+    //     "Request created: " + (this.currentNamespace ? "/" : "") + this.currentNamespace + path,
+    //   );
+    // }
 
     if (options?.debugTimer) {
       this.rawExpress.get(

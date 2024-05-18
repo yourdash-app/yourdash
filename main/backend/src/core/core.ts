@@ -13,7 +13,7 @@ import chalk from "chalk";
 import expressCompression from "compression";
 import cors from "cors";
 import express, { Application as ExpressApplication } from "express";
-import { promises as fs, readdirSync as fsReaddirSync, writeFile as fsWriteFile } from "fs";
+import { readdirSync as fsReaddirSync, writeFile as fsWriteFile } from "fs";
 import http from "http";
 import killPort from "kill-port";
 import minimist from "minimist";
@@ -186,50 +186,44 @@ export class Core {
   __internal__startInstance() {
     this.log.info("startup", "Welcome to the YourDash Instance backend");
 
-    this.fs
-      .doesExist(path.join(this.fs.ROOT_PATH, "./global_database.json"))
-      .then(async (doesGlobalDatabaseFileExist) => {
-        if (doesGlobalDatabaseFileExist)
-          await this.globalDb.loadFromDisk(path.join(this.fs.ROOT_PATH, "./global_database.json"));
+    this.fs.doesExist("./global_database.json").then(async (doesGlobalDatabaseFileExist) => {
+      if (doesGlobalDatabaseFileExist) await this.globalDb.loadFromDisk("./global_database.json");
 
-        this.fs.verifyFileSystem.verify().then(async () => {
-          this.users.__internal__startUserDatabaseService();
-          this.users.__internal__startUserDeletionService();
-          this.globalDb.__internal__startGlobalDatabaseService();
-          this.teams.__internal__startTeamDatabaseService();
+      this.fs.verifyFileSystem.verify().then(async () => {
+        this.users.__internal__startUserDatabaseService();
+        this.users.__internal__startUserDeletionService();
+        this.globalDb.__internal__startGlobalDatabaseService();
+        this.teams.__internal__startTeamDatabaseService();
 
-          const attemptToListen = async () => {
-            try {
-              await killPort(3563);
-              this.log.info("startup", "Killed port 3563");
+        const attemptToListen = async () => {
+          try {
+            await killPort(3563);
+            this.log.info("startup", "Killed port 3563");
+            this.httpServer.listen(3563, () => {
+              this.log.success("startup", "server now listening on port 3563!");
+              this.log.success("startup", "YourDash initialization complete!");
+              this.loadCoreEndpoints();
+            });
+          } catch (err) {
+            if (err.message === "No process running on port") {
+              this.log.info("startup", "Attempted to kill port 3563, no process running was currently using port 3563");
+
               this.httpServer.listen(3563, () => {
                 this.log.success("startup", "server now listening on port 3563!");
                 this.log.success("startup", "YourDash initialization complete!");
                 this.loadCoreEndpoints();
               });
-            } catch (err) {
-              if (err.message === "No process running on port") {
-                this.log.info(
-                  "startup",
-                  "Attempted to kill port 3563, no process running was currently using port 3563",
-                );
-
-                this.httpServer.listen(3563, () => {
-                  this.log.success("startup", "server now listening on port 3563!");
-                  this.log.success("startup", "YourDash initialization complete!");
-                  this.loadCoreEndpoints();
-                });
-                return;
-              }
-
-              this.log.warning("startup", "Unable to kill port 3563", err);
-              await attemptToListen();
+              return;
             }
-          };
 
-          await attemptToListen();
-        });
+            this.log.warning("startup", "Unable to kill port 3563", err);
+            await attemptToListen();
+          }
+        };
+
+        await attemptToListen();
       });
+    });
     return this;
   }
 
@@ -358,7 +352,7 @@ export class Core {
 
     this.request.get("/login/user/:username/avatar", async (req, res) => {
       const user = new YourDashUser(req.params.username);
-      return res.sendFile(user.getAvatar(USER_AVATAR_SIZE.EXTRA_LARGE));
+      return res.sendFile(path.join(this.fs.ROOT_PATH, user.getAvatar(USER_AVATAR_SIZE.EXTRA_LARGE)));
     });
 
     this.request.get("/login/user/:username", async (req, res) => {
@@ -393,7 +387,9 @@ export class Core {
 
       const user = new YourDashUser(username);
 
-      const savedHashedPassword = (await fs.readFile(path.join(user.path, "core/password.enc"))).toString();
+      const savedHashedPassword = await (
+        await this.fs.getFile(path.join(user.path, "core/password.enc"))
+      ).read("string");
 
       return compareHashString(savedHashedPassword, password)
         .then(async (result) => {
@@ -551,13 +547,13 @@ export class Core {
           this.users.__internal__getSessionsDoNotUseOutsideOfCore()[username] =
             (await user.getAllLoginSessions()) || [];
 
-          const database = (await fs.readFile(path.join(user.path, "core/user_db.json"))).toString();
+          const database = await (await this.fs.getFile(path.join(user.path, "core/user_db.json"))).read("string");
 
           if (database) {
             (await user.getDatabase()).clear().merge(JSON.parse(database));
           } else {
             (await user.getDatabase()).clear();
-            await fs.writeFile(path.join(user.path, "core/user_db.json"), JSON.stringify({}));
+            await (await this.fs.getFile(path.join(user.path, "core/user_db.json"))).write("{}");
           }
         } catch (_err) {
           return failAuth();
@@ -576,12 +572,12 @@ export class Core {
     });
 
     /**
-     *  ######################################################################
-     *  #                                                                    #
-     *  #   WARNING: all endpoints require authentication after this point   #
-     *  #                                                                    #
-     *  ######################################################################
-     */
+          ########################################################################
+         ##                                                                    ##
+        ##   WARNING: all endpoints require authentication after this point   ##
+       ##                                                                    ##
+      ########################################################################
+    */
 
     console.time("core:load_modules");
 
@@ -654,50 +650,6 @@ export class Core {
       const user = this.users.get(username);
 
       await user.getLoginSessionById(parseInt(sessionId, 10)).invalidate();
-
-      return res.json({ success: true });
-    });
-
-    this.request.get("/core/personal-server-accelerator/sessions", async (req, res) => {
-      const { username } = req.headers;
-
-      const user = this.users.get(username);
-
-      return res.json({
-        // all desktop sessions should support the PSA api
-        sessions: (await user.getAllLoginSessions()).filter(
-          (session: { type: YOURDASH_SESSION_TYPE }) => session.type === YOURDASH_SESSION_TYPE.desktop,
-        ),
-      });
-    });
-
-    this.request.get("/core/personal-server-accelerator/", async (req, res) => {
-      const { username } = req.headers;
-
-      const user = this.users.get(username);
-
-      try {
-        return JSON.parse((await fs.readFile(path.join(user.path, "personal_server_accelerator.json"))).toString());
-      } catch (_err) {
-        return res.json({
-          error: `Unable to read ${username}/personal_server_accelerator.json`,
-        });
-      }
-    });
-
-    this.request.post("/core/personal-server-accelerator/", async (req, res) => {
-      const { username } = req.headers;
-      const body = req.body;
-
-      const user = this.users.get(username);
-
-      try {
-        await fs.writeFile(path.join(user.path, "personal_server_accelerator.json"), JSON.stringify(body));
-      } catch (_err) {
-        return res.json({
-          error: `Unable to write to ${username}/personal_server_accelerator.json`,
-        });
-      }
 
       return res.json({ success: true });
     });

@@ -38,15 +38,21 @@ export default class CoreVideo {
   }
 
   async createThumbnail(videoPath: string): Promise<string> {
-    const cacheDir = pth.resolve(pth.join(this.core.fs.ROOT_PATH, "./cache/"));
+    const cacheDir = pth.resolve(pth.join(this.core.fs.ROOT_PATH, "./cache/core/video/thumbnails"));
+
+    if (await this.core.fs.doesExist(`${path.join(cacheDir, videoPath)}.png`)) {
+      return path.join(cacheDir, `${path.join(cacheDir, videoPath)}.png`);
+    }
+
+    if (!(await this.core.fs.doesExist(cacheDir))) {
+      await this.core.fs.createDirectory(cacheDir);
+    }
 
     return await new Promise<string>((resolve) => {
-      const fileName = `${crypto.randomUUID()}.video-thumbnail.png`;
-
       this.core.execute
-        .exec(`ffmpeg -i ${videoPath} -ss 00:00:1 -frames:v 1 ${path.join(cacheDir, fileName)}`)
+        .exec(`ffmpeg -i ${videoPath} -ss 00:00:1 -frames:v 1 ${path.join(cacheDir, videoPath)}.png`)
         .on("exit", () => {
-          resolve(path.join(cacheDir, fileName));
+          resolve(path.join(cacheDir, `${path.join(cacheDir, videoPath)}.png`));
         });
     });
   }

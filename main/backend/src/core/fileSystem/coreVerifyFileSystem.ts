@@ -8,6 +8,7 @@ import { Core } from "../core.js";
 import generateInstanceLogos from "../helpers/generateInstanceLogos.js";
 import { YOURDASH_USER_PERMISSIONS } from "../user/userPermissions.js";
 import FileSystemDirectory from "./fileSystemDirectory.js";
+import { promises as fs } from "fs";
 
 export default class coreVerifyFileSystem {
   private readonly core: Core;
@@ -21,59 +22,57 @@ export default class coreVerifyFileSystem {
   async verify() {
     await this.checkRootDirectory();
 
-    (
-      await (
-        (await this.core.fs.get(path.join(this.core.fs.ROOT_PATH, "./users"))) as FileSystemDirectory
-      )?.getChildrenAsBaseName()
-    ).map((user: string) => {
-      this.checkUserDirectory(user);
-    });
+    (await ((await this.core.fs.get("./users")) as FileSystemDirectory)?.getChildrenAsBaseName()).map(
+      (user: string) => {
+        this.checkUserDirectory(user);
+      },
+    );
   }
 
   async checkRootDirectory() {
     // "/"
-    if (!(await this.core.fs.doesExist(this.core.fs.ROOT_PATH))) {
-      await this.core.fs.createDirectory(this.core.fs.ROOT_PATH);
+    if (!(await this.core.fs.doesExist("."))) {
+      await this.core.fs.createDirectory(".");
     }
     // "/users/"
-    if (!(await this.core.fs.doesExist(path.join(this.core.fs.ROOT_PATH, "./users")))) {
-      await this.core.fs.createDirectory(path.join(this.core.fs.ROOT_PATH, "./users"));
+    if (!(await this.core.fs.doesExist("./users"))) {
+      await this.core.fs.createDirectory("./users");
     }
     // "/defaults/"
-    if (!(await this.core.fs.doesExist(path.join(this.core.fs.ROOT_PATH, "./defaults")))) {
-      await this.core.fs.createDirectory(path.join(this.core.fs.ROOT_PATH, "./defaults"));
+    if (!(await this.core.fs.doesExist("./defaults"))) {
+      await this.core.fs.createDirectory("./defaults");
     }
     // "/cache/"
-    if (!(await this.core.fs.doesExist(path.join(this.core.fs.ROOT_PATH, "./cache")))) {
-      await this.core.fs.createDirectory(path.join(this.core.fs.ROOT_PATH, "./cache"));
+    if (!(await this.core.fs.doesExist("./cache"))) {
+      await this.core.fs.createDirectory("./cache");
     }
     // "delete /temp/"
-    if (await this.core.fs.doesExist(path.join(this.core.fs.ROOT_PATH, "./temp"))) {
-      await this.core.fs.removePath(path.join(this.core.fs.ROOT_PATH, "./temp"));
+    if (await this.core.fs.doesExist("./temp")) {
+      await this.core.fs.removePath("./temp");
     }
     // "/temp/"
-    if (!(await this.core.fs.doesExist(path.join(this.core.fs.ROOT_PATH, "./temp")))) {
-      await this.core.fs.createDirectory(path.join(this.core.fs.ROOT_PATH, "./temp"));
+    if (!(await this.core.fs.doesExist("./temp"))) {
+      await this.core.fs.createDirectory("./temp");
     }
     // "/cache/applications/"
-    if (!(await this.core.fs.doesExist(path.join(this.core.fs.ROOT_PATH, "./cache/applications")))) {
-      await this.core.fs.createDirectory(path.join(this.core.fs.ROOT_PATH, "./cache/applications"));
+    if (!(await this.core.fs.doesExist("./cache/applications"))) {
+      await this.core.fs.createDirectory("./cache/applications");
     }
     // "/cache/applications/icons"
-    if (!(await this.core.fs.doesExist(path.join(this.core.fs.ROOT_PATH, "./cache/applications/icons")))) {
-      await this.core.fs.createDirectory(path.join(this.core.fs.ROOT_PATH, "./cache/applications/icons"));
+    if (!(await this.core.fs.doesExist("./cache/applications/icons"))) {
+      await this.core.fs.createDirectory("./cache/applications/icons");
     }
     // "/config/"
-    if (!(await this.core.fs.doesExist(path.join(this.core.fs.ROOT_PATH, "./config")))) {
-      await this.core.fs.createDirectory(path.join(this.core.fs.ROOT_PATH, "./config"));
+    if (!(await this.core.fs.doesExist("./config"))) {
+      await this.core.fs.createDirectory("./config");
     }
 
-    if (!(await this.core.fs.doesExist(path.join(this.core.fs.ROOT_PATH, "./default_avatar.avif")))) {
+    if (!(await this.core.fs.doesExist("./default_avatar.avif"))) {
       // set the instance's default user avatar
       try {
-        await this.core.fs.copy(
+        await fs.copyFile(
           path.join(process.cwd(), "./src/defaults/default_avatar.avif"),
-          path.join(this.core.fs.ROOT_PATH, "./default_avatar.avif"),
+          path.join(this.core.fs.ROOT_PATH, "./defaults/default_avatar.avif"),
         );
       } catch (e) {
         this.core.log.error("Unable to copy the default user avatar");
@@ -81,10 +80,10 @@ export default class coreVerifyFileSystem {
       }
     }
 
-    if (!(await this.core.fs.doesExist(path.join(this.core.fs.ROOT_PATH, "./instance_logo.avif")))) {
+    if (!(await this.core.fs.doesExist("./instance_logo.avif"))) {
       // set the instance's default logo
       try {
-        await this.core.fs.copy(
+        await fs.copyFile(
           path.join(process.cwd(), "./src/defaults/default_instance_logo.avif"),
           path.join(this.core.fs.ROOT_PATH, "./instance_logo.avif"),
         );
@@ -94,10 +93,10 @@ export default class coreVerifyFileSystem {
       }
     }
 
-    if (!(await this.core.fs.doesExist(path.join(this.core.fs.ROOT_PATH, "./login_background.avif")))) {
+    if (!(await this.core.fs.doesExist("./login_background.avif"))) {
       // set the default login background
       try {
-        await this.core.fs.copy(
+        await fs.copyFile(
           path.join(process.cwd(), "./src/defaults/default_login_background.avif"),
           path.join(this.core.fs.ROOT_PATH, "./login_background.avif"),
         );
@@ -106,19 +105,19 @@ export default class coreVerifyFileSystem {
       }
     }
 
-    if (!(await this.core.fs.doesExist(path.join(this.core.fs.ROOT_PATH, "./global_database.json")))) {
+    if (!(await this.core.fs.doesExist("./global_database.json"))) {
       // create the global database
       try {
         this.core.log.info("verify_fs", "The global database file does not exist, creating a new one");
 
         // write the default global database file
-        await this.core.fs.copy(
+        await fs.copyFile(
           path.join(process.cwd(), "./src/defaults/default_global_database.json"),
           path.join(this.core.fs.ROOT_PATH, "./global_database.json"),
         );
 
         // load the newly copied global database file
-        await this.core.globalDb.loadFromDisk(path.join(this.core.fs.ROOT_PATH, "./global_database.json"));
+        await this.core.globalDb.loadFromDisk("./global_database.json");
       } catch (e) {
         this.core.log.error("verify_fs", e);
         this.core.log.error("verify_fs", 'Unable to create the "./fs/global_database.json" file');

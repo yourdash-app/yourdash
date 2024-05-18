@@ -84,12 +84,12 @@ export default class coreFileSystem {
   }
 
   async getEntityType(path: string): Promise<"file" | "directory"> {
-    return (await fs.lstat(path)).isDirectory() ? "directory" : "file";
+    return (await fs.lstat(pth.join(this.ROOT_PATH, path))).isDirectory() ? "directory" : "file";
   }
 
   async doesExist(path: string): Promise<boolean> {
     try {
-      await fs.access(path);
+      await fs.access(pth.join(this.ROOT_PATH, path));
       return true;
     } catch (_err) {
       return false;
@@ -107,7 +107,7 @@ export default class coreFileSystem {
   }
 
   async removePath(path: string) {
-    return await fs.rm(path, {
+    return await fs.rm(pth.join(this.ROOT_PATH, path), {
       recursive: true,
       maxRetries: 2,
       retryDelay: 500,
@@ -116,7 +116,7 @@ export default class coreFileSystem {
 
   async copy(source: string, destination: string) {
     try {
-      await fs.cp(source, destination);
+      await fs.cp(pth.join(this.ROOT_PATH, source), pth.join(this.ROOT_PATH, destination));
       return true;
     } catch (e) {
       this.core.log.error("core:fs", "Unable to copy file: " + source + " to " + destination);
