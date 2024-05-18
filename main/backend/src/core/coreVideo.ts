@@ -44,7 +44,7 @@ export default class CoreVideo {
       const fileName = `${crypto.randomUUID()}.video-thumbnail.png`;
 
       this.core.execute
-        .exec(`ffmpeg -i ${videoPath} -frames:v 1 -ss 00:00:1 ${path.join(cacheDir, fileName)}`)
+        .exec(`ffmpeg -i ${videoPath} -ss 00:00:1 -frames:v 1 ${path.join(cacheDir, fileName)}`)
         .on("exit", () => {
           resolve(path.join(cacheDir, fileName));
         });
