@@ -57,7 +57,8 @@ export default class CoreRequest {
 
             this.core.log.debug("response_time", `${req.path} took ${time.formattedMicrosecconds}μs`);
           } catch (err) {
-            this.core.log.error("request_error", `Request error not caught: ${err.message}`);
+            this.core.log.error(`request_error`, new Error().stack);
+            this.core.log.error("request_error", `${req.path}; Request error not caught: ${err.message}`);
           }
         },
       );
@@ -71,7 +72,8 @@ export default class CoreRequest {
         try {
           await callback(req, res);
         } catch (err) {
-          this.core.log.error("request_error", `Request error not caught: ${err.message}`);
+          this.core.log.error(`request_error`, new Error().stack);
+          this.core.log.error("request_error", `${req.path}; Request error not caught: ${err.message}`);
         }
       },
     );
@@ -93,7 +95,8 @@ export default class CoreRequest {
         try {
           await callback(req, res);
         } catch (err) {
-          this.core.log.error("request_error", `Request error not caught: ${err.message}`);
+          this.core.log.error(`request_error`, new Error().stack);
+          this.core.log.error("request_error", `${req.path}; Request error not caught: ${err.message}`);
         }
       },
     );
@@ -115,7 +118,8 @@ export default class CoreRequest {
         try {
           await callback(req, res);
         } catch (err) {
-          this.core.log.error("request_error", `Request error not caught: ${err.message}`);
+          this.core.log.error(`request_error`, new Error().stack);
+          this.core.log.error("request_error", `${req.path}; Request error not caught: ${err.message}`);
         }
       },
     );
@@ -137,7 +141,8 @@ export default class CoreRequest {
         try {
           await callback(req, res);
         } catch (err) {
-          this.core.log.error("request_error", `Request error not caught: ${err.message}`);
+          this.core.log.error(`request_error`, new Error().stack);
+          this.core.log.error("request_error", `${req.path}; Request error not caught: ${err.message}`);
         }
       },
     );
@@ -159,7 +164,8 @@ export default class CoreRequest {
         try {
           await callback(req, res);
         } catch (err) {
-          this.core.log.error("request_error", `Request error not caught: ${err.message}`);
+          this.core.log.error(`request_error`, new Error().stack);
+          this.core.log.error("request_error", `${req.path}; Request error not caught: ${err.message}`);
         }
       },
     );
@@ -181,7 +187,8 @@ export default class CoreRequest {
         try {
           await callback(req, res);
         } catch (err) {
-          this.core.log.error("request_error", `Request error not caught: ${err.message}`);
+          this.core.log.error(`request_error`, new Error().stack);
+          this.core.log.error("request_error", `${req.path}; Request error not caught: ${err.message}`);
         }
       },
     );
@@ -202,7 +209,8 @@ export default class CoreRequest {
         try {
           await callback(req, res, next);
         } catch (err) {
-          this.core.log.error("request_error", `Request error not caught: ${err.message}`);
+          this.core.log.error(`request_error`, new Error().stack);
+          this.core.log.error("request_error", `${req.path}; Request error not caught: ${err.message}`);
         }
       },
     );
@@ -225,7 +233,8 @@ export default class CoreRequest {
         try {
           await callback(req, res, next);
         } catch (err) {
-          this.core.log.error("request_error", `Request error not caught: ${err.message}`);
+          this.core.log.error(`request_error`, new Error().stack);
+          this.core.log.error("request_error", `${req.path}; Request error not caught: ${err.message}`);
         }
       },
     );

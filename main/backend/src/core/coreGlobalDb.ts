@@ -3,6 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import path from "path";
 import KeyValueDatabase from "../lib/keyValueDatabase.js";
 import { Core } from "./core.js";
 
@@ -25,7 +26,7 @@ export default class CoreGlobalDb extends KeyValueDatabase {
 
       if (JSON.stringify(this.keys) === JSON.stringify({})) {
         await this.core.fs.removePath("./global_database.json");
-        await this.core.restartInstance();
+        await this.core.fs.verifyFileSystem.checkRootDirectory();
       }
     } else {
       this.core.log.warning("global_db", "Unable to load the global database!");

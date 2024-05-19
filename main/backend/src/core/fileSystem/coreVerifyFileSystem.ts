@@ -67,6 +67,19 @@ export default class coreVerifyFileSystem {
       await this.core.fs.createDirectory("./config");
     }
 
+    if (!(await this.core.fs.doesExist("./defaults/theme.css"))) {
+      // set the instance's default user avatar
+      try {
+        await fs.copyFile(
+          path.join(process.cwd(), "./src/defaults/theme.css"),
+          path.join(this.core.fs.ROOT_PATH, "./defaults/theme.css"),
+        );
+      } catch (e) {
+        this.core.log.error("Unable to copy the default theme");
+        console.trace(e);
+      }
+    }
+
     if (!(await this.core.fs.doesExist("./default_avatar.avif"))) {
       // set the instance's default user avatar
       try {

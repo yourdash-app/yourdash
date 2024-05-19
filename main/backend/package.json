@@ -62,7 +62,7 @@
   "scripts": {
     "start": "tsx ./src/main.ts --color=full --log-requests",
     "dev": "tsx watch ./src/main.ts --dev --color=full --log-requests",
-    "debug": "echo \"Currently only available in webstorm run configurations\""
+    "debug": "tsx --inspect-brk ./src/main.ts --dev --color=full --log-requests"
   },
   "nodemonConfig": {
     "ext": "ts",

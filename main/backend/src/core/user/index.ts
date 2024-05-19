@@ -153,6 +153,17 @@ export default class YourDashUser {
     }
 
     try {
+      // "/core/theme.css"
+      if (!(await core.fs.doesExist(path.join(this.path, "/core/theme.css")))) {
+        await core.fs.copy("./defaults/theme.css", path.join(this.path, "/core/theme.css"));
+      }
+    } catch (err) {
+      core.log.error("user", `username: ${this.username}, failed to copy default user theme!`, err);
+      console.error(err);
+      return;
+    }
+
+    try {
       // "/core/user_db.json"
       await core.fs.createFile(path.join(this.path, "./core/user_db.json")).write(
         JSON.stringify({

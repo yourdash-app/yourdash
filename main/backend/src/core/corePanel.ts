@@ -35,12 +35,7 @@ export default class CorePanel {
 
                 const application = await unreadApplication.read();
 
-                const RESIZED_ICON_PATH = path.join(
-                  this.core.fs.ROOT_PATH,
-                  "cache/applications/icons",
-                  `${application.getName()}`,
-                  "128.png",
-                );
+                const RESIZED_ICON_PATH = path.join("cache/applications/icons", `${application.getName()}`, "128.png");
 
                 if (!(await this.core.fs.doesExist(RESIZED_ICON_PATH))) {
                   this.core.log.info("core:panel", `Generating 128x128 icon for ${application.getName()}`);
@@ -87,12 +82,7 @@ export default class CorePanel {
           (await panel.getQuickShortcuts()).map(async (shortcut) => {
             const application = await new YourDashApplication(shortcut).read();
 
-            const RESIZED_ICON_PATH = path.join(
-              this.core.fs.ROOT_PATH,
-              "cache/applications/icons",
-              `${application.getName()}`,
-              "64.png",
-            );
+            const RESIZED_ICON_PATH = path.join("cache/applications/icons", `${application.getName()}`, "64.png");
 
             if (!(await this.core.fs.doesExist(RESIZED_ICON_PATH))) {
               this.core.log.info("core:panel", `Generating 64x64 icon for ${application.getName()}`);

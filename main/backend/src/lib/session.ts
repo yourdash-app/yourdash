@@ -3,7 +3,6 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { promises as fs } from "fs";
 import path from "path";
 import core from "../core/core.js";
 import { YOURDASH_USER_SESSION_TOKEN_LENGTH } from "../core/coreUsers.js";
@@ -33,11 +32,13 @@ export async function createSession<T extends YOURDASH_SESSION_TYPE>(
   const user = new YourDashUser(username);
 
   try {
-    core.users.__internal__getSessionsDoNotUseOutsideOfCore()[username] = JSON.parse(
-      await (await this.core.fs.getFile(path.join(user.path, "core/sessions.json"))).read("string"),
-    );
-  } catch (_err) {
-    /* empty */
+    // @ts-ignore
+    core.users.__internal__getSessionsDoNotUseOutsideOfCore()[username] = await (
+      await core.fs.getFile(path.join(user.path, "core/sessions.json"))
+    ).read("json");
+  } catch (err) {
+    console.log(err);
+    console.log("create_session", `unable to read /users/${username}/core/sessions.json`);
   }
 
   const newSessionId = getSessionsForUser(username) ? getSessionsForUser(username).length + 1 : 1;
@@ -55,11 +56,11 @@ export async function createSession<T extends YOURDASH_SESSION_TYPE>(
   }
 
   try {
-    await this.core.fs
-      .getFile(path.join(user.path, "core/sessions.json"))
-      .write(JSON.stringify(core.users.__internal__getSessionsDoNotUseOutsideOfCore()[username]));
+    await (
+      await core.fs.getFile(path.join(user.path, "core/sessions.json"))
+    ).write(JSON.stringify(core.users.__internal__getSessionsDoNotUseOutsideOfCore()[username]));
   } catch (__e) {
-    core.log.error(`Unable to write ${username}/core/sessions.json`);
+    core.log.error("session_manager", `Unable to write /users/${username}/core/sessions.json`);
 
     return session;
   }

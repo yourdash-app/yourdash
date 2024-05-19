@@ -121,7 +121,7 @@ export default class CoreUsers {
 
     // TODO: DELETE THE USER FROM THE FS
 
-    await this.core.fs.removePath(path.join(this.core.fs.ROOT_PATH, `./users/${username}`));
+    await this.core.fs.removePath(path.join(`./users/${username}`));
     delete this.userDatabases[username];
 
     return this;
@@ -136,9 +136,7 @@ export default class CoreUsers {
   }
 
   async getAllUsers(): Promise<string[]> {
-    return await (
-      await this.core.fs.getDirectory(path.join(this.core.fs.ROOT_PATH, "./users"))
-    ).getChildrenAsBaseName();
+    return await (await this.core.fs.getDirectory("./users")).getChildrenAsBaseName();
   }
 
   __internal__loadEndpoints() {

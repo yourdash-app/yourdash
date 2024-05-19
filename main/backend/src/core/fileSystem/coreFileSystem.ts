@@ -87,9 +87,13 @@ export default class coreFileSystem {
     return (await fs.lstat(pth.join(this.ROOT_PATH, path))).isDirectory() ? "directory" : "file";
   }
 
-  async doesExist(path: string): Promise<boolean> {
+  async doesExist(path: string, dontLimitToRootPath = false): Promise<boolean> {
     try {
-      await fs.access(pth.join(this.ROOT_PATH, path));
+      if (dontLimitToRootPath) {
+        await fs.access(path);
+      } else {
+        await fs.access(pth.join(this.ROOT_PATH, path));
+      }
       return true;
     } catch (_err) {
       return false;

@@ -358,7 +358,6 @@ export class Core {
     this.request.get("/login/user/:username", async (req, res) => {
       const user = new YourDashUser(req.params.username);
       if (await user.doesExist()) {
-        console.log("Does exist");
         return res.json({
           name: (await user.getName()) || {
             first: "Name Not Found",
@@ -452,7 +451,7 @@ export class Core {
         return res.json({ error: "User not found" });
       }
 
-      return res.sendFile(user.getThemePath());
+      return res.sendFile(path.join(this.fs.ROOT_PATH, user.getThemePath()));
     });
 
     this.request.get("/login/instance/metadata", async (_req, res) => {

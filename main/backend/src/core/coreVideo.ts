@@ -8,6 +8,7 @@ import pth from "path";
 import path from "path";
 import { Core } from "./core.js";
 import ffmpeg from "fluent-ffmpeg";
+import timeMethod from "../lib/time.js";
 
 export enum AUTHENTICATED_VIDEO_TYPE {
   FILE,
@@ -38,7 +39,7 @@ export default class CoreVideo {
   }
 
   async createThumbnail(videoPath: string): Promise<string> {
-    const cacheDir = pth.resolve(pth.join(this.core.fs.ROOT_PATH, "./cache/core/video/thumbnails"));
+    const cacheDir = "./cache/core/video/thumbnails";
 
     if (await this.core.fs.doesExist(`${path.join(cacheDir, videoPath)}.png`)) {
       return path.join(cacheDir, `${path.join(cacheDir, videoPath)}.png`);
@@ -49,11 +50,19 @@ export default class CoreVideo {
     }
 
     return await new Promise<string>((resolve) => {
-      this.core.execute
-        .exec(`ffmpeg -i ${videoPath} -ss 00:00:1 -frames:v 1 ${path.join(cacheDir, videoPath)}.png`)
-        .on("exit", () => {
-          resolve(path.join(cacheDir, `${path.join(cacheDir, videoPath)}.png`));
+      const fileName = `${crypto.randomUUID()}.video-thumbnail.png`;
+
+      // very slow on windows
+      timeMethod(async () => {
+        return new Promise((resolveTime) => {
+          this.core.execute
+            .exec(`ffmpeg -i ${videoPath} -ss 00:00:1 -frames:v 1 ${path.join(cacheDir, fileName)}`)
+            .on("exit", () => {
+              resolveTime(null);
+              resolve(path.join(cacheDir, `${path.join(cacheDir, videoPath)}.png`));
+            });
         });
+      }, "createVideoThumbnail");
     });
   }
 

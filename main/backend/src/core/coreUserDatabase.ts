@@ -3,7 +3,6 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { promises as fs } from "fs";
 import path from "path";
 import { Core } from "./core.js";
 import YourDashUser from "./user/index.js";
@@ -34,7 +33,7 @@ export default class CoreUserDatabase {
 
       this.core.log.info("core:user_db", `Saving database for '${key}'`);
 
-      await fs.writeFile(path.join(user.path, "core/user_db.json"), JSON.stringify(database));
+      await (await this.core.fs.getFile(path.join(user.path, "core/user_db.json"))).write(JSON.stringify(database));
     });
   }
 
@@ -43,7 +42,7 @@ export default class CoreUserDatabase {
 
     try {
       // attempt to parse json data from "user_db.json"
-      return JSON.parse((await fs.readFile(path.join(user.path, "core/user_db.json"))).toString());
+      return JSON.parse(await (await this.core.fs.getFile(path.join(user.path, "core/user_db.json"))).read("string"));
     } catch (_err) {
       this.core.log.warning("core:userdb", `Unable to parse "${username}"'s user database.`);
 

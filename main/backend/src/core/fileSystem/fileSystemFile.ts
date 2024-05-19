@@ -82,14 +82,24 @@ export default class FileSystemFile extends FileSystemEntity {
     return fs.stat(this.path);
   }
 
-  async read(readAs: "string" | "buffer" | "json") {
+  async read<ReadFileType extends "string" | "buffer" | "json">(
+    readAs: ReadFileType,
+  ): Promise<ReadFileType extends "string" ? string : ReadFileType extends "buffer" ? Buffer : object> {
     switch (readAs) {
       case "string":
+        // @ts-ignore
         return (await fs.readFile(pth.join(this.core.fs.ROOT_PATH, this.path))).toString();
       case "buffer":
+        // @ts-ignore
         return await fs.readFile(pth.join(this.core.fs.ROOT_PATH, this.path));
       case "json":
-        return JSON.parse((await fs.readFile(pth.join(this.core.fs.ROOT_PATH, this.path))).toString());
+        try {
+          return JSON.parse((await fs.readFile(pth.join(this.core.fs.ROOT_PATH, this.path))).toString());
+        } catch (err) {
+          this.core.log.error("filesystem", "cannot read file ${this.path} as JSON");
+          // @ts-ignore
+          return {};
+        }
       default:
         throw new Error(`Unsupported read type: ${readAs}`);
     }

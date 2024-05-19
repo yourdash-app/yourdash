@@ -35,7 +35,7 @@ export function decrypt(text: string) {
 }
 
 export function generateRandomStringOfLength(length: number) {
-  const characters = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890";
+  const characters = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890-/+=_-~#@'!$%^&*(){}[]<>?¬`|\\.,:;";
 
   return Array.from({ length }, () => characters[Math.floor(Math.random() * characters.length)]).join("");
 }

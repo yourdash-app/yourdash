@@ -109,7 +109,7 @@ export default class CoreImage {
     user.get(sessionId).set(id, {
       type,
       // @ts-ignore
-      val,
+      value: val,
       resizeTo: extras?.resizeTo,
     });
 
@@ -157,18 +157,19 @@ export default class CoreImage {
     this.core.request.get("/:username/:sessionId/:id", async (req, res) => {
       const { username, sessionId, id } = req.params;
 
-      const image = this.authenticatedImages.get(username).get(sessionId)?.get(id);
+      const image = this.authenticatedImages.get(username)?.get(sessionId)?.get(id);
 
       // if image is not found, return default image
       if (!image) {
         return res.sendFile(path.resolve(process.cwd(), "./src/defaults/default_avatar.avif"));
       }
 
+      // if the image is a buffer, return it
       if (image.type === AUTHENTICATED_IMAGE_TYPE.BUFFER) {
         return res.send(image.value);
       }
 
-      // if image is base64, return it (bad practice to use base64)
+      // if image is base64, return it (bad practice to use base64 as it is slow)
       if (image.type === AUTHENTICATED_IMAGE_TYPE.BASE64) {
         const buf = Buffer.from(image.value as unknown as string, "base64");
         return res.send(buf);
