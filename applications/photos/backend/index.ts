@@ -70,6 +70,8 @@ export default class PhotosBackend extends BackendModule {
                     ).callbackResult;
                     const dimensions = await core.image.getImageDimensions(thumbnail);
 
+                    console.log("THUMBNAIL PATH: " + child.path);
+
                     return <MediaAlbumLargeGridItem<MEDIA_TYPE.VIDEO>>{
                       type: MEDIA_TYPE.VIDEO,
                       path: child.path.replace(user.getFsPath(), ""),
@@ -89,6 +91,9 @@ export default class PhotosBackend extends BackendModule {
                     };
                   case MEDIA_TYPE.IMAGE:
                     const imageDimensions = await core.image.getImageDimensions(child.path);
+
+                    console.log("IMAGE PATH: " + child.path);
+
                     const resizedImage = (
                       await timeMethod(
                         () =>

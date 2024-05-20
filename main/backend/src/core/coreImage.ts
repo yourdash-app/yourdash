@@ -60,7 +60,7 @@ export default class CoreImage {
       const resizedImagePath = pth.resolve(pth.join(TEMP_DIR, crypto.randomUUID()));
 
       try {
-        sharp(await fs.readFile(filePath), { sequentialRead: true })
+        sharp(await fs.readFile(path.join(this.core.fs.ROOT_PATH, filePath)), { sequentialRead: true })
           .resize(Math.floor(width), Math.floor(height))
           .toFormat(resultingImageFormat || "webp")
           .toFile(resizedImagePath)
