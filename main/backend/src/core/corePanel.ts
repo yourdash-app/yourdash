@@ -170,19 +170,19 @@ export default class CorePanel {
           username,
           sessionid,
           AUTHENTICATED_IMAGE_TYPE.FILE,
-          path.join(this.core.fs.ROOT_PATH, "./logo_panel_small.avif"),
+          path.join("./logo_panel_small.avif"),
         ),
         medium: this.core.image.createAuthenticatedImage(
           username,
           sessionid,
           AUTHENTICATED_IMAGE_TYPE.FILE,
-          path.join(this.core.fs.ROOT_PATH, "./logo_panel_medium.avif"),
+          path.join("./logo_panel_medium.avif"),
         ),
         large: this.core.image.createAuthenticatedImage(
           username,
           sessionid,
           AUTHENTICATED_IMAGE_TYPE.FILE,
-          path.join(this.core.fs.ROOT_PATH, "./logo_panel_large.avif"),
+          path.join("./logo_panel_large.avif"),
         ),
       });
     });

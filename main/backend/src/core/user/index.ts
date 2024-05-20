@@ -15,7 +15,7 @@ import { USER_AVATAR_SIZE } from "@yourdash/shared/core/userAvatarSize.js";
 import { YOURDASH_TEAM_PERMISSIONS, YourDashTeamPermission } from "../team/teamPermissions.js";
 import UserDatabase from "./userDatabase.js";
 import { YourDashUserPermission } from "./userPermissions.js";
-import IYourDashUserJson from "./userJson.js";
+import IYourDashUserDatabase from "./userJson.js";
 
 const USER_PATHS = {
   FS: "./fs/",
@@ -192,7 +192,7 @@ export default class YourDashUser {
 
     try {
       // set default avatar
-      await this.setAvatar("./default_avatar.avif");
+      await this.setAvatar("./defaults/default_avatar.avif");
     } catch (err) {
       core.log.error("user", `username: ${this.username}, failed to set default avatar!`, err);
       console.error(err);
@@ -211,7 +211,7 @@ export default class YourDashUser {
           url: "",
           permissions: [],
           version: 1,
-        } as IYourDashUserJson),
+        } as IYourDashUserDatabase),
       );
     } catch (err) {
       core.log.error("user", `username: ${this.username}, failed to create user.json!`, err);
@@ -249,7 +249,7 @@ export default class YourDashUser {
     try {
       const currentUserJson = JSON.parse(
         await (await core.fs.getFile(path.join(this.path, "core/user.json"))).read("string"),
-      ) as IYourDashUserJson;
+      ) as IYourDashUserDatabase;
       currentUserJson["user:name"] = { first, last };
       const db = await this.getDatabase();
       db.set("user:name", { first, last });
@@ -290,7 +290,7 @@ export default class YourDashUser {
     try {
       const currentUserJson = JSON.parse(
         await (await core.fs.getFile(path.join(this.path, "core/user.json"))).read("string"),
-      ) as IYourDashUserJson;
+      ) as IYourDashUserDatabase;
       currentUserJson.bio = bio;
       await (await core.fs.getFile(path.join(this.path, "core/user.json"))).write(JSON.stringify(currentUserJson));
     } catch (err) {
@@ -302,7 +302,7 @@ export default class YourDashUser {
     try {
       const currentUserJson = JSON.parse(
         await (await core.fs.getFile(path.join(this.path, "core/user.json"))).read("string"),
-      ) as IYourDashUserJson;
+      ) as IYourDashUserDatabase;
       return currentUserJson.bio;
     } catch (err) {
       core.log.error("user", `Unable to read ${this.username}'s core/user.json`);
@@ -313,7 +313,7 @@ export default class YourDashUser {
     try {
       const currentUserJson = JSON.parse(
         await (await core.fs.getFile(path.join(this.path, "core/user.json"))).read("string"),
-      ) as IYourDashUserJson;
+      ) as IYourDashUserDatabase;
       currentUserJson.url = url;
       await (await core.fs.getFile(path.join(this.path, "core/user.json"))).write(JSON.stringify(currentUserJson));
     } catch (err) {
@@ -325,7 +325,7 @@ export default class YourDashUser {
     try {
       const currentUserJson = JSON.parse(
         await (await core.fs.getFile(path.join(this.path, "core/user.json"))).read("string"),
-      ) as IYourDashUserJson;
+      ) as IYourDashUserDatabase;
       return currentUserJson.url;
     } catch (err) {
       core.log.error("user", `Unable to read ${this.username}'s core/user.json`);
@@ -336,7 +336,7 @@ export default class YourDashUser {
     try {
       const currentUserJson = JSON.parse(
         await (await core.fs.getFile(path.join(this.path, "core/user.json"))).read("string"),
-      ) as IYourDashUserJson;
+      ) as IYourDashUserDatabase;
       currentUserJson.permissions = permissions;
       await (await core.fs.getFile(path.join(this.path, "core/user.json"))).write(JSON.stringify(currentUserJson));
     } catch (err) {
@@ -349,7 +349,7 @@ export default class YourDashUser {
     try {
       const currentUserJson = JSON.parse(
         await (await core.fs.getFile(path.join(this.path, "core/user.json"))).read("string"),
-      ) as IYourDashUserJson;
+      ) as IYourDashUserDatabase;
       return currentUserJson.permissions;
     } catch (err) {
       core.log.error("user", `Unable to read ${this.username}'s core/user.json`);
@@ -360,7 +360,7 @@ export default class YourDashUser {
     try {
       const currentUserJson = JSON.parse(
         await (await core.fs.getFile(path.join(this.path, "core/user.json"))).read("string"),
-      ) as IYourDashUserJson;
+      ) as IYourDashUserDatabase;
       return currentUserJson.permissions.indexOf(permission) !== -1;
     } catch (err) {
       core.log.error("user", `Unable to read ${this.username}'s core/user.json`);
@@ -422,7 +422,7 @@ export default class YourDashUser {
   }
 
   async getAllLoginSessions() {
-    return JSON.parse(await (await core.fs.getFile(path.resolve(this.path, "core/sessions.json"))).read("string"));
+    return await (await core.fs.getFile(path.resolve(this.path, "core/sessions.json"))).read("json");
   }
 
   saveDatabase() {
@@ -438,9 +438,9 @@ export default class YourDashUser {
   }
 
   async update() {
-    const currentUserJson = JSON.parse(
-      await (await core.fs.getFile(path.join(this.path, "core/user.json"))).read("string"),
-    ) as IYourDashUserJson;
+    const currentUserJson = (await (
+      await core.fs.getFile(path.join(this.path, "core/user.json"))
+    ).read("json")) as IYourDashUserDatabase;
 
     // noinspection FallThroughInSwitchStatementJS
     switch (currentUserJson.version) {

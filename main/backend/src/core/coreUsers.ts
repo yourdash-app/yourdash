@@ -11,6 +11,7 @@ import { AUTHENTICATED_IMAGE_TYPE } from "./coreImage.js";
 import YourDashUser from "./user/index.js";
 import UserDatabase from "./user/userDatabase.js";
 
+// increase for drastically better security but slightly slower performance for high quantities of user sessions
 const YOURDASH_USER_SESSION_TOKEN_LENGTH = 128;
 export { YOURDASH_USER_SESSION_TOKEN_LENGTH };
 

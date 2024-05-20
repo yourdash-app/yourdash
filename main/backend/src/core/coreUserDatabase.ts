@@ -42,7 +42,7 @@ export default class CoreUserDatabase {
 
     try {
       // attempt to parse json data from "user_db.json"
-      return JSON.parse(await (await this.core.fs.getFile(path.join(user.path, "core/user_db.json"))).read("string"));
+      return (await (await this.core.fs.getFile(path.join(user.path, "core/user_db.json"))).read("json")) as JSONFile;
     } catch (_err) {
       this.core.log.warning("core:userdb", `Unable to parse "${username}"'s user database.`);
 

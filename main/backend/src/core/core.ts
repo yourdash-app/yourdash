@@ -371,7 +371,7 @@ export class Core {
     });
 
     this.request.post("/login/user/:username/authenticate", async (req, res) => {
-      if (!req.body) return res.status(400).json({ error: "Missing request body" });
+      if (!req.body) return res.status(400).json({ error: "Invalid or missing request body" });
 
       const username = req.params.username;
       const password = req.body.password;
@@ -403,6 +403,7 @@ export class Core {
               sessionId: session.sessionId,
             });
           } else {
+            this.log.info("login", `Incorrect password provided for user ${username}`);
             return res.json({ error: "Incorrect password" });
           }
         })
