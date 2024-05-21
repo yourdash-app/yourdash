@@ -43,6 +43,7 @@ const AlbumGridMedia: FC<{
             </div>
           )}
           <Image
+            className={styles.image}
             disableLazyLoading={true}
             accessibleLabel={"User Photo"}
             src={data.mediaUrl}

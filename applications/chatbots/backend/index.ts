@@ -28,7 +28,7 @@ export default class ChatbotsModule extends BackendModule {
 
       try {
         await (
-          await core.fs.getOrCreateFile(path.join(user.path, "apps/chatbots/discord/key.json"))
+          await core.fs.getFile(path.join(user.path, "apps/chatbots/discord/key.json"))
         ).write(
           JSON.stringify({
             botOwnerToken: req.body.token,

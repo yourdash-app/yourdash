@@ -85,8 +85,8 @@ export default class PhotosBackend extends BackendModule {
                         "webp",
                       ),
                       metadata: {
-                        width: dimensions.width,
-                        height: dimensions.height,
+                        width: dimensions.width || 400,
+                        height: dimensions.height || 400,
                       },
                     };
                   case MEDIA_TYPE.IMAGE:
@@ -115,8 +115,8 @@ export default class PhotosBackend extends BackendModule {
                       path: child.path.replace(user.getFsPath(), ""),
                       mediaUrl: resizedImage,
                       metadata: {
-                        width: imageDimensions.width,
-                        height: imageDimensions.height,
+                        width: imageDimensions.width || 400,
+                        height: imageDimensions.height || 400,
                       },
                     };
                   case MEDIA_TYPE.ALBUM:
@@ -195,8 +195,8 @@ export default class PhotosBackend extends BackendModule {
               item.path,
             ),
             metadata: {
-              width: (await core.video.getVideoDimensions(item.path)).width,
-              height: (await core.video.getVideoDimensions(item.path)).height,
+              width: (await core.video.getVideoDimensions(item.path)).width || 400,
+              height: (await core.video.getVideoDimensions(item.path)).height || 400,
             },
           });
         case MEDIA_TYPE.IMAGE:
@@ -210,8 +210,8 @@ export default class PhotosBackend extends BackendModule {
               item.path,
             ),
             metadata: {
-              width: (await core.image.getImageDimensions(item.path)).width,
-              height: (await core.image.getImageDimensions(item.path)).height,
+              width: (await core.image.getImageDimensions(item.path)).width || 400,
+              height: (await core.image.getImageDimensions(item.path)).height || 400,
             },
           });
       }

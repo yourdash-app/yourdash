@@ -24,6 +24,10 @@
     border-color: rgb(var(--theme-400));
     outline: var(#{$theme+$accent}) solid 0.25rem;
   }
+
+  .image {
+    max-height: 400px;
+  }
 }
 
 .videoOverlay {

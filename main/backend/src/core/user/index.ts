@@ -4,7 +4,6 @@
  */
 
 import chalk from "chalk";
-import { promises as fs } from "fs";
 import path from "path";
 import { YOURDASH_SESSION_TYPE } from "@yourdash/shared/core/session.js";
 import sharp from "sharp";
@@ -70,6 +69,10 @@ export default class YourDashUser {
     return path.resolve(path.join(this.getFsPath(), "core/theme.css"));
   }
 
+  async doesHaveAvatar(): Promise<boolean> {
+    return await core.fs.doesExist(this.getAvatar(USER_AVATAR_SIZE.ORIGINAL));
+  }
+
   async setAvatar(filePath: string) {
     await core.fs.copy(filePath, path.join(this.path, "avatars/original.avif"));
     const newAvatarFile = await (await core.fs.getFile(filePath)).read("buffer");
@@ -100,11 +103,10 @@ export default class YourDashUser {
     try {
       if (!(await (await core.teams.get(`${this.username}-personal`)).doesExist())) {
         await core.teams.create(`${this.username}-personal`);
+        await this.joinTeam(`${this.username}-personal`, [YOURDASH_TEAM_PERMISSIONS.ADMINISTRATOR]);
       }
-      await this.joinTeam(`${this.username}-personal`, [YOURDASH_TEAM_PERMISSIONS.ADMINISTRATOR]);
     } catch (err) {
       core.log.error("user", `Unable to create team for user ${this.username}`);
-      console.error(err);
       return;
     }
 
@@ -115,7 +117,6 @@ export default class YourDashUser {
       }
     } catch (err) {
       core.log.error("core", `Unable to create user root for ${this.username}`);
-      console.error(err);
       return;
     }
 
@@ -126,7 +127,6 @@ export default class YourDashUser {
       }
     } catch (err) {
       core.log.error("user", `username: ${this.username}, failed to create apps directory!`);
-      console.error(err);
       return;
     }
 
@@ -137,7 +137,6 @@ export default class YourDashUser {
       }
     } catch (err) {
       core.log.error("user", `username: ${this.username}, failed to create avatars directory!`);
-      console.error(err);
       return;
     }
 
@@ -148,7 +147,6 @@ export default class YourDashUser {
       }
     } catch (err) {
       core.log.error("user", `username: ${this.username}, failed to create core directory!`);
-      console.error(err);
       return;
     }
 
@@ -159,63 +157,68 @@ export default class YourDashUser {
       }
     } catch (err) {
       core.log.error("user", `username: ${this.username}, failed to copy default user theme!`, err);
-      console.error(err);
       return;
     }
 
     try {
       // "/core/user_db.json"
-      await core.fs.createFile(path.join(this.path, "./core/user_db.json")).write(
-        JSON.stringify({
-          "user:name": {
-            first: "New",
-            last: "User",
-          },
-          "user:username": this.username,
-          "core:panel:quickShortcuts":
-            core.globalDb.get<{ user: { quickShortcuts: string[] } }>("core:defaults")?.user?.quickShortcuts || [],
-        }),
-      );
+
+      // if the user does not have a database, create one
+      if (!(await core.fs.doesExist(path.join(this.path, "core/user_db.json")))) {
+        await core.fs.createFile(path.join(this.path, "./core/user_db.json")).write(
+          JSON.stringify({
+            "user:name": {
+              first: "New",
+              last: "User",
+            },
+            "user:username": this.username,
+            "core:panel:pinned":
+              core.globalDb.get<{ user: { quickShortcuts: string[] } }>("core:defaults")?.user?.quickShortcuts || [],
+          }),
+        );
+      }
     } catch (err) {
       core.log.error("user", `username: ${this.username}, failed to create user_db.json!`, err);
-      console.error(err);
       return;
     }
 
     try {
-      await this.setPassword("password");
+      if (!(await core.fs.doesExist(path.join(this.path, "core/password.enc")))) {
+        await this.setPassword("password");
+      }
     } catch (err) {
       core.log.error("user", `username: ${this.username}, failed to set password!`, err);
-      console.error(err);
       return;
     }
 
     try {
-      // set default avatar
-      await this.setAvatar("./defaults/default_avatar.avif");
+      // if the user has no avatar, set the default
+      if (!(await this.doesHaveAvatar())) {
+        await this.setAvatar("./defaults/default_avatar.avif");
+      }
     } catch (err) {
       core.log.error("user", `username: ${this.username}, failed to set default avatar!`, err);
-      console.error(err);
       return;
     }
 
     try {
-      await core.fs.createFile(path.join(this.path, "core/user.json")).write(
-        JSON.stringify({
-          username: this.username,
-          "core:user:name": {
-            first: "New",
-            last: "User",
-          },
-          bio: "👋 I'm new to YourDash, say hi!",
-          url: "",
-          permissions: [],
-          version: 1,
-        } as IYourDashUserDatabase),
-      );
+      if (!(await core.fs.doesExist(path.join(this.path, "core/user.json")))) {
+        await core.fs.createFile(path.join(this.path, "core/user.json")).write(
+          JSON.stringify({
+            username: this.username,
+            "core:user:name": {
+              first: "New",
+              last: "User",
+            },
+            bio: "👋 I'm new to YourDash, say hi!",
+            url: "",
+            permissions: [],
+            version: 1,
+          } as IYourDashUserDatabase),
+        );
+      }
     } catch (err) {
       core.log.error("user", `username: ${this.username}, failed to create user.json!`, err);
-      console.error(err);
       return;
     }
 
@@ -241,11 +244,11 @@ export default class YourDashUser {
       return;
     }
 
-    core.log.info("core", `Verified user ${this.username}`);
+    core.log.info("user", `Verified user ${this.username}`);
   }
 
   async setName({ first, last }: { first: string; last: string }) {
-    core.log.info("core", `set name to ${first} ${last} for ${this.username}`);
+    core.log.info("user", `set name to "${first} ${last}" for ${this.username}`);
     try {
       const currentUserJson = JSON.parse(
         await (await core.fs.getFile(path.join(this.path, "core/user.json"))).read("string"),
@@ -373,12 +376,7 @@ export default class YourDashUser {
   }
 
   async doesExist(): Promise<boolean> {
-    try {
-      await core.fs.doesExist(this.path);
-      return true;
-    } catch (_err) {
-      return false;
-    }
+    return await core.fs.doesExist(this.path);
   }
 
   async setPassword(password: string) {
@@ -386,8 +384,8 @@ export default class YourDashUser {
 
     try {
       await (await core.fs.getFile(path.join(this.path, "./core/password.enc"))).write(hashedPassword);
-    } catch (e) {
-      core.log.error(`unable to create a new password for user ${this.username}`);
+    } catch (err) {
+      core.log.error("user", `unable to create a new password for user ${this.username};${err}`);
     }
   }
 
@@ -401,7 +399,7 @@ export default class YourDashUser {
         ],
       );
     } catch (_err) {
-      core.log.error(`${chalk.yellow.bold("CORE")}: unable to find session: ${sessionId}`);
+      core.log.error("user", ` unable to find session: ${sessionId}`);
       return undefined;
     }
   }
