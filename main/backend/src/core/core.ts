@@ -103,7 +103,7 @@ export class Core {
 
     this.isDevMode = !!this.processArguments.dev;
 
-    this.log.info("startup", "Beginning YourDash Startup with args: ", JSON.stringify(this.processArguments));
+    this.log.info("startup", "YourDash Starting-up with arguments: ", JSON.stringify(this.processArguments));
 
     // Create the rawExpressJs server
     this.rawExpressJs = express();
@@ -128,8 +128,6 @@ export class Core {
 
     // TODO: implement WebDAV & CalDAV & CardDAV (outdated WebDAV example -> https://github.com/LordEidi/fennel.js/)
     this.webdav = new CoreWebDAV(this);
-
-    this.log.info("core", `Process id is ${process.pid}`);
 
     this.commands.registerCommand("hello", () => {
       this.log.info("command", "Hello from YourDash!");
@@ -691,18 +689,26 @@ export class Core {
       })
       .join("\n");
 
-    fsWriteFile(path.resolve(process.cwd(), "./fs/log.log"), LOG_OUTPUT, () => {
-      try {
-        this.globalDb.__internal__doNotUseOnlyIntendedForShutdownSequenceWriteToDisk(
-          path.resolve(process.cwd(), "./fs/global_database.json"),
-        );
-      } catch (e) {
-        this.log.error(
-          "global_db",
-          "[EXTREME SEVERITY] Shutdown Error! failed to save global database. User data will have been lost! (approx < past 5 minutes)",
-        );
+    fsWriteFile(path.resolve(process.cwd(), "./fs/log.log"), LOG_OUTPUT, (err) => {
+      if (err) {
+        this.log.error("core", `Failed to save log file; ${err}`);
       }
     });
+
+    try {
+      this.globalDb
+        .__internal__doNotUseOnlyIntendedForShutdownSequenceWriteToDisk(
+          path.resolve(process.cwd(), "./fs/global_database.json"),
+        )
+        .then(() => {
+          this.log.info("global_db", "Successfully saved global database");
+        });
+    } catch (e) {
+      this.log.error(
+        "global_db",
+        "[EXTREME SEVERITY] Shutdown Error! failed to save global database. User data will have been lost! (approx < past 5 minutes)",
+      );
+    }
 
     return this;
   }

@@ -40,7 +40,8 @@ export default class CoreScheduler {
   }
 
   __internal__onShutdown() {
-    schedule.gracefulShutdown();
-    this.core.log.info("scheduler", "Shutdown gracefully");
+    schedule.gracefulShutdown().then(() => {
+      this.core.log.info("scheduler", "Shutdown gracefully");
+    });
   }
 }

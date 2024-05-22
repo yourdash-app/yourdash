@@ -32,6 +32,8 @@ export async function createSession<T extends YOURDASH_SESSION_TYPE>(
   const user = new YourDashUser(username);
 
   try {
+    console.log(`loading user sessions from ${path.join(user.path, "core/sessions.json")}`);
+
     // @ts-ignore
     core.users.__internal__getSessionsDoNotUseOutsideOfCore()[username] = await (
       await core.fs.getFile(path.join(user.path, "core/sessions.json"))
