@@ -425,6 +425,7 @@ export class Core {
       if (!this.users.__internal__getSessionsDoNotUseOutsideOfCore()[username]) {
         try {
           const user = new YourDashUser(username);
+          // @ts-ignore
           this.users.__internal__getSessionsDoNotUseOutsideOfCore()[username] =
             (await user.getAllLoginSessions()) || [];
         } catch (_err) {
@@ -524,7 +525,7 @@ export class Core {
       this.log.error("startup", "Failed to load pre-auth endpoints for all modules", err);
     }
 
-    // Check for authentication
+    // Check for user authentication
     this.request.use(async (req, res, next) => {
       const { username, token } = req.headers as {
         username?: string;
@@ -537,6 +538,7 @@ export class Core {
       }
 
       if (!username || !token) {
+        this.log.warning("authentication", `Request was made without authentication, ${username} ${req.path}`);
         return failAuth();
       }
 
@@ -544,6 +546,7 @@ export class Core {
         try {
           const user = this.users.get(username);
 
+          // @ts-ignore
           this.users.__internal__getSessionsDoNotUseOutsideOfCore()[username] =
             (await user.getAllLoginSessions()) || [];
 

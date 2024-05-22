@@ -59,7 +59,7 @@ export default class CoreVideo {
             .exec(`ffmpeg -i ${videoPath} -ss 00:00:1 -frames:v 1 ${path.join(cacheDir, fileName)}`)
             .on("exit", () => {
               resolveTime(null);
-              resolve(path.join(cacheDir, `${path.join(cacheDir, videoPath)}.png`));
+              resolve(path.join(cacheDir, fileName));
             });
         });
       }, "createVideoThumbnail");
