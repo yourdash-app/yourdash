@@ -69,7 +69,16 @@ export default class CoreVideo {
   getVideoDimensions(videoPath: string): Promise<{ width: number; height: number }> {
     return new Promise<{ width: number; height: number }>((resolve) => {
       ffmpeg.ffprobe(videoPath, (err, data) => {
-        return resolve({ width: data.streams[0].width, height: data.streams[0].height });
+        if (err) {
+          this.core.log.warning("video", "Failed to get video dimensions: " + err.message);
+          return resolve({ width: 512, height: 768 });
+        }
+
+        if (!data) {
+          this.core.log.warning("video", "Failed to get video dimensions: no data");
+        }
+
+        return resolve({ width: data?.streams?.[0]?.width || 512, height: data?.streams?.[0]?.height || 768 });
       });
     });
   }

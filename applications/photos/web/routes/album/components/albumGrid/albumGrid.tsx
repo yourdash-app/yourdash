@@ -4,6 +4,7 @@
  */
 
 import Separator from "@yourdash/uikit/components/separator/separator.js";
+import Spinner from "@yourdash/uikit/components/spinner/spinner";
 import { FC, useEffect, useRef, useState } from "react";
 import { MediaAlbumLargeGridItem } from "../../../../../shared/types/endpoints/media/album/large-grid";
 import { MEDIA_TYPE } from "../../../../../shared/types/mediaType";
@@ -18,7 +19,6 @@ const AlbumGrid: FC<{
   items: MediaAlbumLargeGridItem<MEDIA_TYPE.IMAGE | MEDIA_TYPE.VIDEO>[];
   albums: MediaAlbumLargeGridItem<MEDIA_TYPE.ALBUM>[];
 }> = ({ items, albums }) => {
-  const navigate = useNavigate();
   const ref = useRef<HTMLDivElement>(null);
   const [rows, setRows] = useState<
     {
@@ -54,6 +54,7 @@ const AlbumGrid: FC<{
       className={styles.component}
       ref={ref}
     >
+      {rows.length === 0 && albums.length === 0 && <Spinner />}
       {albums.length > 0 && (
         <>
           <div className={styles.albumContainer}>

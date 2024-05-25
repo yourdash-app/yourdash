@@ -18,6 +18,20 @@ import timeMethod from "@yourdash/backend/src/lib/time.js";
 export default class PhotosBackend extends BackendModule {
   constructor(args: YourDashModuleArguments) {
     super(args);
+
+    this.api.core.users.getAllUsers().then((users) => {
+      users.forEach((u) => {
+        const userFsPath = this.api.core.users.get(u).getFsPath();
+
+        this.api.core.fs.doesExist(path.join()).then((exists) => {
+          if (!exists) {
+            this.api.core.fs.createDirectory(path.join(userFsPath, "photos")).then(() => {});
+          }
+        });
+      });
+    });
+
+    return this;
   }
 
   public loadEndpoints() {

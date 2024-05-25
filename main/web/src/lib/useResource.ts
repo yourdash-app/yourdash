@@ -9,6 +9,7 @@ export default function useResource<T>(resource: () => Promise<T>, deps: unknown
   const [data, setData] = useState<T | null>(null);
 
   useEffect(() => {
+    setData(null);
     resource().then((d) => setData(d));
   }, deps);
 
