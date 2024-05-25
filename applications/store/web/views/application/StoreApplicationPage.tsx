@@ -13,6 +13,7 @@ import Icon from "@yourdash/chiplet/components/icon/Icon";
 import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
 import MajorButton from "@yourdash/chiplet/components/majorButton/MajorButton";
 import Spinner from "@yourdash/chiplet/components/spinner/Spinner";
+import Image from "@yourdash/uikit/components/image/image";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { type IYourDashStoreApplication } from "@yourdash/shared/apps/store/storeApplication";
@@ -80,12 +81,29 @@ const StoreApplicationPage: React.FC = () => {
                 }}
                 className="sm:h-64 h-32 transition-all bg-cover bg-center flex select-none items-center justify-center flex-row gap-3 animate__animated animate__fadeIn"
               >
-                <img className={"aspect-square drop-shadow-lg sm:w-24 w-0 transition-all"} src={appData.icon} draggable={false} alt="" />
+                <Image
+                  authenticatedImage
+                  className={"aspect-square drop-shadow-lg sm:w-24 w-0 transition-all"}
+                  src={appData.icon}
+                  accessibleLabel={"Application icon"}
+                />
                 <Heading className={"drop-shadow-lg"}>{appData.displayName}</Heading>
               </div>
-              <section className={"flex items-center p-4 gap-4 max-w-[50rem] w-full ml-auto mr-auto animate__animated animate__fadeIn animate__250ms"}>
-                <img className={"w-24 aspect-square select-none"} src={appData.icon} draggable={false} alt="" />
-                <Heading level={2} className={" mr-auto"}>
+              <section
+                className={
+                  "flex items-center p-4 gap-4 max-w-[50rem] w-full ml-auto mr-auto animate__animated animate__fadeIn animate__250ms"
+                }
+              >
+                <Image
+                  authenticatedImage
+                  className={"w-24 aspect-square select-none"}
+                  src={appData.icon}
+                  accessibleLabel={"Application icon"}
+                />
+                <Heading
+                  level={2}
+                  className={"mr-auto"}
+                >
                   {appData.displayName}
                 </Heading>
                 <div className={"flex gap-2"}>
@@ -122,11 +140,17 @@ const StoreApplicationPage: React.FC = () => {
             </header>
             <div className={styles.contentContainer}>
               <section className={clippy(styles.contentSection, "max-w-3xl w-full")}>
-                <Card showBorder className={"col-span-2"}>
+                <Card
+                  showBorder
+                  className={"col-span-2"}
+                >
                   <Heading level={3}>{trans("DESCRIPTION_SECTION")}</Heading>
                   {appData.description}
                 </Card>
-                <Card showBorder className={"flex flex-col items-start col-span-2 child:w-full"}>
+                <Card
+                  showBorder
+                  className={"flex flex-col items-start col-span-2 child:w-full"}
+                >
                   <Heading level={3}>{trans("ABOUT_SECTION")}</Heading>
                   <div>{`Category: ${appData.category}`}</div>
                   <div>{`ID: ${appData.name}`}</div>
@@ -143,7 +167,10 @@ const StoreApplicationPage: React.FC = () => {
                   }}
                   className={"flex gap-1 items-center"}
                 >
-                  <Icon className={"h-5"} icon={UKIcon.Link} />
+                  <Icon
+                    className={"h-5"}
+                    icon={UKIcon.Link}
+                  />
                   <span>{"View Source"}</span>
                 </Card>
                 <section className={"w-full"}>
@@ -158,7 +185,11 @@ const StoreApplicationPage: React.FC = () => {
                           window.location.href = author.site;
                         }}
                       >
-                        <img className={"h-24 aspect-square rounded-container-rounding"} src={author.avatarUrl} alt={author.avatarUrl} />
+                        <img
+                          className={"h-24 aspect-square rounded-container-rounding"}
+                          src={author.avatarUrl}
+                          alt={author.avatarUrl}
+                        />
                         <div className={"flex items-center justify-between gap-2 flex-col w-full"}>
                           <span>{author.displayName}</span>
                           {author.role && (

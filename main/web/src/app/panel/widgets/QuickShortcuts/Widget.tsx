@@ -4,6 +4,9 @@
  */
 
 import clippy from "@yourdash/shared/web/helpers/clippy";
+import Image from "@yourdash/uikit/components/image/image";
+import IncrementLevel from "@yourdash/uikit/core/incrementLevel";
+import { useLevel, useLevelClass } from "@yourdash/uikit/core/level";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import csi from "@yourdash/csi/csi";
@@ -36,26 +39,30 @@ const QuickShortcuts: React.FC<{ side: "top" | "right" | "bottom" | "left" }> = 
     <>
       {applications.map((application) => {
         return (
-          <div
-            key={application.name}
-            onClick={() => {
-              navigate(`/app/a/${application.name}`);
-            }}
-            className={clippy(
-              styles.application,
-              side === "top" && styles.top,
-              side === "right" && styles.right,
-              side === "bottom" && styles.bottom,
-              side === "left" && styles.left,
-            )}
-          >
-            <img
-              className={styles.applicationIcon}
-              src={`${csi.getInstanceUrl()}${application.icon}`}
-              alt={""}
-            />
-            <span className={styles.applicationLabel}>{application.name}</span>
-          </div>
+          <IncrementLevel key={application.name}>
+            <div
+              key={application.name}
+              onClick={() => {
+                navigate(`/app/a/${application.name}`);
+              }}
+              className={clippy(
+                styles.application,
+                side === "top" && styles.top,
+                side === "right" && styles.right,
+                side === "bottom" && styles.bottom,
+                side === "left" && styles.left,
+                useLevelClass(1),
+              )}
+            >
+              <Image
+                authenticatedImage
+                className={styles.applicationIcon}
+                src={application.icon}
+                accessibleLabel={application.name}
+              />
+              <span className={styles.applicationLabel}>{application.name}</span>
+            </div>
+          </IncrementLevel>
         );
       })}
     </>

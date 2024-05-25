@@ -161,6 +161,18 @@ export default class YourDashUser {
     }
 
     try {
+      // "/core/sessions.json"
+
+      // if the user does not have a sessions.json, create one
+      if (!(await (await core.fs.getFile(path.join(this.path, "core/sessions.json"))).doesExist())) {
+        await (await core.fs.getFile(path.join(this.path, "core/sessions.json"))).write("[]");
+      }
+    } catch (err) {
+      core.log.error("user", `username: ${this.username}, failed to create sessions.json!`, err);
+      return;
+    }
+
+    try {
       // "/core/user_db.json"
 
       // if the user does not have a database, create one
@@ -420,7 +432,7 @@ export default class YourDashUser {
   }
 
   async getAllLoginSessions() {
-    return await (await core.fs.getFile(path.resolve(this.path, "core/sessions.json"))).read("json");
+    return await (await core.fs.getFile(path.join(this.path, "core/sessions.json"))).read("json");
   }
 
   saveDatabase() {

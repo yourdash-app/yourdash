@@ -23,12 +23,7 @@ export function getSessionId(username: string, sessionToken: string): number | n
   );
 }
 
-export async function createSession<T extends YOURDASH_SESSION_TYPE>(
-  username: string,
-  type: T,
-): Promise<IYourDashSession<T>> {
-  const sessionToken = generateRandomStringOfLength(YOURDASH_USER_SESSION_TOKEN_LENGTH);
-
+export async function loadSessionsForUser(username: string) {
   const user = new YourDashUser(username);
 
   try {
@@ -42,6 +37,17 @@ export async function createSession<T extends YOURDASH_SESSION_TYPE>(
     console.log(err);
     console.log("create_session", `unable to read /users/${username}/core/sessions.json`);
   }
+}
+
+export async function createSession<T extends YOURDASH_SESSION_TYPE>(
+  username: string,
+  type: T,
+): Promise<IYourDashSession<T>> {
+  const sessionToken = generateRandomStringOfLength(YOURDASH_USER_SESSION_TOKEN_LENGTH);
+
+  const user = new YourDashUser(username);
+
+  await loadSessionsForUser(username);
 
   const newSessionId = getSessionsForUser(username) ? getSessionsForUser(username).length + 1 : 1;
 
@@ -87,6 +93,7 @@ export default class YourDashSession<T extends YOURDASH_SESSION_TYPE> {
     this.username = username;
   }
 
+  // TODO: implement online validation
   isOnline(): boolean {
     return false;
   }

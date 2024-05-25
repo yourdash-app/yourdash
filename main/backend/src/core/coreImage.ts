@@ -14,6 +14,7 @@ export enum AUTHENTICATED_IMAGE_TYPE {
   BASE64,
   FILE,
   BUFFER,
+  ABSOLUTELY_PATHED_FILE,
 }
 
 interface IauthenticatedImage<T extends AUTHENTICATED_IMAGE_TYPE> {
@@ -53,17 +54,25 @@ export default class CoreImage {
     });
   }
 
-  resizeTo(filePath: string, width: number, height: number, resultingImageFormat?: "avif" | "png" | "jpg" | "webp") {
+  resizeTo(
+    filePath: string,
+    width: number,
+    height: number,
+    resultingImageFormat?: "avif" | "png" | "jpg" | "webp",
+    useAbsolutePath?: boolean,
+  ) {
     return new Promise<string>(async (resolve) => {
       const TEMP_DIR = "/temp";
 
-      const resizedImagePath = pth.resolve(pth.join(TEMP_DIR, crypto.randomUUID()));
+      const resizedImagePath = pth.join(pth.join(TEMP_DIR, crypto.randomUUID()));
 
       try {
-        sharp(await fs.readFile(path.join(this.core.fs.ROOT_PATH, filePath)), { sequentialRead: true })
+        sharp(await fs.readFile(useAbsolutePath ? filePath : path.join(this.core.fs.ROOT_PATH, filePath)), {
+          sequentialRead: true,
+        })
           .resize(Math.floor(width), Math.floor(height))
           .toFormat(resultingImageFormat || "webp")
-          .toFile(resizedImagePath)
+          .toFile(pth.join(this.core.fs.ROOT_PATH, resizedImagePath))
           .then(() => resolve(resizedImagePath))
           .catch((err: string) => {
             this.core.log.error("image", `unable to resize image "${filePath}" ${err}`);
@@ -173,6 +182,29 @@ export default class CoreImage {
       if (image.type === AUTHENTICATED_IMAGE_TYPE.BASE64) {
         const buf = Buffer.from(image.value as unknown as string, "base64");
         return res.send(buf);
+      }
+
+      if (image.type === AUTHENTICATED_IMAGE_TYPE.ABSOLUTELY_PATHED_FILE) {
+        // if image is not to be resized, return it
+        if (!image.resizeTo) {
+          return res.sendFile(image.value as unknown as string);
+        }
+
+        const resizeTo = image.resizeTo;
+
+        const resizedPath = await this.resizeTo(
+          image.value as string,
+          resizeTo.width,
+          resizeTo.height,
+          resizeTo.resultingImageFormat,
+          true,
+        );
+
+        try {
+          return res.sendFile(resizedPath);
+        } catch (e) {
+          return res.sendFile(path.resolve(process.cwd(), "./src/defaults/default_avatar.avif"));
+        }
       }
 
       if (image.type === AUTHENTICATED_IMAGE_TYPE.FILE) {

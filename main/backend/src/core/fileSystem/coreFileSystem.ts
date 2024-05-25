@@ -52,7 +52,13 @@ export default class coreFileSystem {
       if ((await this.getEntityType(path)) === "file") {
         return new FileSystemFile(this.core, path);
       }
-    } catch (_err) {
+    } catch (err) {
+      if (err.code === "ENOENT") {
+        return this.createFile(path);
+      }
+
+      console.error(err);
+
       return null;
     }
 

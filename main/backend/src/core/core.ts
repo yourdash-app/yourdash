@@ -20,7 +20,7 @@ import minimist from "minimist";
 import path from "path";
 import { fetch } from "undici";
 import { compareHashString } from "../lib/encryption.js";
-import { createSession } from "../lib/session.js";
+import { createSession, loadSessionsForUser } from "../lib/session.js";
 import CoreCommands from "./coreCommands.js";
 import CoreExecute from "./coreExecute.js";
 import CoreGlobalDb from "./coreGlobalDb.js";
@@ -286,6 +286,10 @@ export class Core {
   }
 
   private async loadCoreEndpoints() {
+    if (this.isDevMode) {
+      loadSessionsForUser("admin").then(() => this.log.success("devmode", "Loaded sessions for admin user"));
+    }
+
     if (this.processArguments["log-requests"]) {
       this.startRequestLogger({
         logOptionsRequests: !!this.processArguments["log-options-requests"],

@@ -4,15 +4,15 @@
  */
 
 import core from "@yourdash/backend/src/core/core.js";
+import { AUTHENTICATED_IMAGE_TYPE } from "@yourdash/backend/src/core/coreImage.js";
 import BackendModule, { YourDashModuleArguments } from "@yourdash/backend/src/core/moduleManager/backendModule.js";
 import YourDashApplication, { getAllApplications } from "@yourdash/backend/src/lib/applications.js";
 import { getInstanceLogoBase64 } from "@yourdash/backend/src/lib/logo.js";
-import path from "path";
 import { IYourDashStoreApplication } from "@yourdash/shared/apps/store/storeApplication.js";
 import { IStoreCategory } from "@yourdash/shared/apps/store/storeCategory.js";
 import { type StorePromotedApplication } from "@yourdash/shared/apps/store/storePromotedApplication.js";
+import path from "path";
 import getAllCategories, { getAllApplicationsFromCategory } from "./helpers/categories.js";
-import { AUTHENTICATED_IMAGE_TYPE } from "@yourdash/backend/src/core/coreImage.js";
 
 const promotedApplications: string[] = ["dash", "store"];
 
@@ -81,7 +81,7 @@ export default class StoreModule extends BackendModule {
               icon: core.image.createAuthenticatedImage(
                 username,
                 sessionid,
-                AUTHENTICATED_IMAGE_TYPE.FILE,
+                AUTHENTICATED_IMAGE_TYPE.ABSOLUTELY_PATHED_FILE,
                 await application.getIconPath(),
               ),
               installed: application.isInstalled(),
@@ -121,7 +121,7 @@ export default class StoreModule extends BackendModule {
             icon: core.image.createAuthenticatedImage(
               username,
               sessionid,
-              AUTHENTICATED_IMAGE_TYPE.FILE,
+              AUTHENTICATED_IMAGE_TYPE.ABSOLUTELY_PATHED_FILE,
               await application.getIconPath(),
             ),
             displayName: application.getDisplayName(),
@@ -140,6 +140,7 @@ export default class StoreModule extends BackendModule {
     });
 
     this.api.request.get("/app/store/application/:id", async (req, res) => {
+      const { username, sessionid } = req.headers;
       const { id } = req.params;
 
       if (!id) {
@@ -154,9 +155,19 @@ export default class StoreModule extends BackendModule {
 
       const application = await unreadApplication.read();
 
+      console.log(await application.getIconPath());
+
       const response: IYourDashStoreApplication = {
         ...application.getRawApplicationData(),
-        icon: `data:image/avif;base64,${(await application.getIcon()).toString("base64")}`,
+        icon: await this.api.core.image.createResizedAuthenticatedImage(
+          username,
+          sessionid,
+          AUTHENTICATED_IMAGE_TYPE.ABSOLUTELY_PATHED_FILE,
+          await application.getIconPath(),
+          256,
+          256,
+          "webp",
+        ),
         installed: application.isInstalled(),
         requiresBackend: await application.requiresBackend(),
       };

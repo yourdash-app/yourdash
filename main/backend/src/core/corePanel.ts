@@ -21,14 +21,11 @@ export default class CorePanel {
       res.set("Cache-Control", "no-store");
       const { username, sessionid } = req.headers;
 
-      console.log(this.core.globalDb.get<string[]>("core:installedApplications"));
-
       return res.json(
         (
           await Promise.all(
             (this.core.globalDb.get<string[]>("core:installedApplications") || []).map(
               async (applicationName: string) => {
-                // FIXME: CHECK BEFORE .READ
                 const unreadApplication = new YourDashApplication(applicationName);
 
                 if (!(await unreadApplication.exists())) return undefined;
@@ -41,10 +38,13 @@ export default class CorePanel {
                   this.core.log.info("core:panel", `Generating 128x128 icon for ${application.getName()}`);
 
                   await this.core.fs.createDirectory(path.dirname(RESIZED_ICON_PATH));
+
                   const resizedIconPath = await this.core.image.resizeTo(
                     (await this.core.fs.getFile(await application.getIconPath())).path,
                     128,
                     128,
+                    "webp",
+                    true,
                   );
 
                   await this.core.fs.copy(resizedIconPath, RESIZED_ICON_PATH);
@@ -93,6 +93,8 @@ export default class CorePanel {
                 (await this.core.fs.getFile(await application.getIconPath())).path,
                 64,
                 64,
+                "webp",
+                true,
               );
 
               await this.core.fs.copy(resizedIconPath, RESIZED_ICON_PATH);
