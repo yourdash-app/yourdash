@@ -10,6 +10,13 @@
   border-left: none;
   border-top: none;
   border-right: none;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+
+  .heading {
+    line-height: 1;
+  }
 }
 
 .albumGrid {

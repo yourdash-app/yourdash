@@ -26,7 +26,12 @@ export default class FileSystemFile extends FileSystemEntity {
   }
 
   getExtension(): string {
-    return pth.extname(this.path).toLowerCase();
+    try {
+      return pth.extname(this.path).toLowerCase();
+    } catch (err) {
+      this.core.log.error("filesystem", `unable to get extension of ${this.path}`);
+      return "";
+    }
   }
 
   getType(): "image" | "video" | "audio" | "unknown" {
@@ -117,8 +122,7 @@ export default class FileSystemFile extends FileSystemEntity {
     try {
       await fs.writeFile(pth.join(this.core.fs.ROOT_PATH, this.path), data);
     } catch (e) {
-      console.error(e);
-      this.core.log.error("filesystem", `unable to write to ${this.path}`);
+      this.core.log.error("filesystem", `unable to write to ${this.path}`, e);
     }
 
     return;

@@ -5,6 +5,17 @@
 
 @import "../../theme/themeValues";
 
+.componentContainer {
+  position: relative;
+}
+
 .component {
   border-radius: var(#{$theme}#{$radius});
+}
+
+.spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }

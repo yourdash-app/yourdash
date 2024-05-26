@@ -54,10 +54,11 @@ export default class coreFileSystem {
       }
     } catch (err) {
       if (err.code === "ENOENT") {
+        this.core.log.warning("filesystem", `unable to get file ${path}, creating it...`);
         return this.createFile(path);
       }
 
-      console.error(err);
+      this.core.log.error("filesystem", err);
 
       return null;
     }
@@ -127,7 +128,7 @@ export default class coreFileSystem {
       await fs.cp(pth.join(this.ROOT_PATH, source), pth.join(this.ROOT_PATH, destination));
       return true;
     } catch (e) {
-      this.core.log.error("core:fs", "Unable to copy file: " + source + " to " + destination);
+      this.core.log.error("filesystem", "Unable to copy file: " + source + " to " + destination);
       return false;
     }
   }

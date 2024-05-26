@@ -34,6 +34,13 @@ const AlbumGridMedia: FC<{
             navigate("/app/a/photos/view/?p=" + data.path);
           }}
         >
+          <Image
+            className={styles.image}
+            disableLazyLoading={true}
+            accessibleLabel={"User Photo"}
+            src={data.mediaUrl}
+            authenticatedImage
+          />
           {data.type === MEDIA_TYPE.VIDEO && (
             <div className={styles.videoOverlay}>
               <Icon
@@ -42,13 +49,14 @@ const AlbumGridMedia: FC<{
               />
             </div>
           )}
-          <Image
-            className={styles.image}
-            disableLazyLoading={true}
-            accessibleLabel={"User Photo"}
-            src={data.mediaUrl}
-            authenticatedImage
-          />
+          {data.type === MEDIA_TYPE.IMAGE && (
+            <div
+              className={styles.dimensionOverlay}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {data.metadata.width}x{data.metadata.height}
+            </div>
+          )}
         </div>
       );
     default:

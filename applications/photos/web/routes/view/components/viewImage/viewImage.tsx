@@ -4,6 +4,7 @@
  */
 
 import Image from "@yourdash/uikit/components/image/image.js";
+import Spinner from "@yourdash/uikit/components/spinner/spinner";
 import { FC } from "react";
 import styles from "./viewImage.module.scss";
 import PanAndZoom from "@yourdash/uikit/views/panAndZoom/panAndZoom";

@@ -38,6 +38,14 @@ const ViewPathPage: FC = () => {
           className={styles.heading}
           text={"View Media"}
         />
+        <div className={styles.spacer}></div>
+        <IconButton
+          accessibleLabel={"Download media"}
+          icon={UKIcon.Download}
+          onClick={() => {
+            window.open(`${csi.getInstanceUrl()}${media?.mediaUrl}`, "_blank");
+          }}
+        />
       </Box>
       {media && (
         <>

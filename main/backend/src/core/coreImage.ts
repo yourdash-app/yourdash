@@ -45,23 +45,24 @@ export default class CoreImage {
   getImageDimensions(filePath: string) {
     return new Promise<{ width: number; height: number }>(async (resolve) => {
       try {
-        const image = sharp(await fs.readFile(filePath));
+        const image = sharp(await fs.readFile(path.join(this.core.fs.ROOT_PATH, filePath)));
         const { width, height } = await image.metadata();
         resolve({ width, height });
       } catch (err) {
+        this.core.log.error("image", "failed to get image dimensions for " + filePath);
         resolve({ width: 0, height: 0 });
       }
     });
   }
 
-  resizeTo(
+  async resizeTo(
     filePath: string,
     width: number,
     height: number,
     resultingImageFormat?: "avif" | "png" | "jpg" | "webp",
     useAbsolutePath?: boolean,
   ) {
-    return new Promise<string>(async (resolve) => {
+    return await new Promise<string>(async (resolve) => {
       const TEMP_DIR = "/temp";
 
       const resizedImagePath = pth.join(pth.join(TEMP_DIR, crypto.randomUUID()));
@@ -92,37 +93,43 @@ export default class CoreImage {
     value: IauthenticatedImage<ImageType>["value"],
     extras?: { resizeTo?: { width: number; height: number; resultingImageFormat?: "avif" | "png" | "jpg" | "webp" } },
   ): string {
-    let resultingExtension = "";
-    let val = value;
+    try {
+      let resultingExtension = "";
+      let val = value;
 
-    if (extras?.resizeTo) {
-      resultingExtension = `.${extras.resizeTo.resultingImageFormat || "webp"}`;
-    } else if (type === AUTHENTICATED_IMAGE_TYPE.FILE) {
-      resultingExtension = path.extname(value as string);
-      // @ts-ignore
-      val = path.resolve(path.join(this.core.fs.ROOT_PATH, value as string));
+      if (extras?.resizeTo) {
+        resultingExtension = `.${extras.resizeTo.resultingImageFormat || "webp"}`;
+      } else if (type === AUTHENTICATED_IMAGE_TYPE.FILE) {
+        resultingExtension = path.extname(value as string);
+        // @ts-ignore
+        val = path.resolve(path.join(this.core.fs.ROOT_PATH, value as string));
+      }
+
+      const id = crypto.randomUUID() + resultingExtension;
+
+      if (!this.authenticatedImages.get(username)) {
+        this.authenticatedImages.set(username, new Map());
+      }
+
+      const user = this.authenticatedImages.get(username);
+
+      if (!user.has(sessionId)) {
+        user.set(sessionId, new Map());
+      }
+
+      user.get(sessionId).set(id, {
+        type,
+        // @ts-ignore
+        value: val,
+        resizeTo: extras?.resizeTo,
+      });
+
+      return `/core::auth-img/${username}/${sessionId}/${id}`;
+    } catch (err) {
+      this.core.log.error("image", "failed to create authenticated image", err);
+
+      return "";
     }
-
-    const id = crypto.randomUUID() + resultingExtension;
-
-    if (!this.authenticatedImages.get(username)) {
-      this.authenticatedImages.set(username, new Map());
-    }
-
-    const user = this.authenticatedImages.get(username);
-
-    if (!user.has(sessionId)) {
-      user.set(sessionId, new Map());
-    }
-
-    user.get(sessionId).set(id, {
-      type,
-      // @ts-ignore
-      value: val,
-      resizeTo: extras?.resizeTo,
-    });
-
-    return `/core::auth-img/${username}/${sessionId}/${id}`;
   }
 
   async createPreResizedAuthenticatedImage<ImageType extends AUTHENTICATED_IMAGE_TYPE.FILE>(

@@ -25,6 +25,7 @@ const Navigation: FC<{ subtitle?: string }> = ({ subtitle }) => {
     <>
       <Box className={styles.navigationBar}>
         <Image
+          disableSpinner={true}
           src={"/assets/branding/yourdash.svg"}
           accessibleLabel={"YourDash Logo"}
           className={styles.logo}
@@ -85,6 +86,7 @@ const Navigation: FC<{ subtitle?: string }> = ({ subtitle }) => {
           direction={"row"}
         >
           <Image
+            disableSpinner={true}
             src={"/assets/branding/yourdash.svg"}
             accessibleLabel={"YourDash Logo"}
             className={styles.logo}

@@ -469,7 +469,6 @@ export class Core {
     });
 
     this.request.get("/login/instance/background", async (_req, res) => {
-      res.set("Content-Type", "image/avif");
       return res.sendFile(path.resolve(this.fs.ROOT_PATH, "./login_background.avif"));
     });
 

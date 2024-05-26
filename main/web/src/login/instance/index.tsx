@@ -14,12 +14,12 @@ const LoginInstancePage: FC = () => {
       <Panel />
       <div className={styles.info}>
         <Heading
-          extraClass={styles.title}
+          className={styles.title}
           level={1}
           text={"Welcome to YourDash!"}
         />
         <Heading
-          extraClass={styles.subtitle}
+          className={styles.subtitle}
           level={2}
           text={"The following are the steps required to get started"}
         />

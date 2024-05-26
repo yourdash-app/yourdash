@@ -27,6 +27,8 @@
 
   .image {
     max-height: 400px;
+    height: 100%;
+    border-radius: 0;
   }
 }
 
@@ -34,11 +36,23 @@
   position: absolute;
   top: 0.25rem;
   right: 0.25rem;
-  padding: 0.25rem 0.5rem;
+  padding: 0.125rem 0.25rem;
   background: var(#{$theme+$background});
   border-radius: 0.25rem;
+  border: var(#{$theme+$border});
 
   .videoIcon {
-    width: 1.5rem;
+    width: 1.25rem;
   }
+}
+
+.dimensionOverlay {
+  position: absolute;
+  bottom: 0.25rem;
+  left: 0.25rem;
+  padding: 0.125rem 0.25rem;
+  background: var(#{$theme+$background});
+  border-radius: 0.25rem;
+  border: var(#{$theme+$border});
+  font-size: 0.75rem;
 }

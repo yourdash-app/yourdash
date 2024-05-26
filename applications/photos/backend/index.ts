@@ -3,6 +3,9 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+// TODO: generate video thumbnails into a subfolder of the thumbnails cache folder and
+//  save a copy of them pre-resized alongside the photos as resizing images is also costly
+
 import core from "@yourdash/backend/src/core/core.js";
 import { AUTHENTICATED_IMAGE_TYPE } from "@yourdash/backend/src/core/coreImage.js";
 import { FILESYSTEM_ENTITY_TYPE } from "@yourdash/backend/src/core/fileSystem/fileSystemEntity.js";
@@ -53,6 +56,13 @@ export default class PhotosBackend extends BackendModule {
         if (item.entityType !== FILESYSTEM_ENTITY_TYPE.DIRECTORY)
           return res.json({ error: "The path supplied is not a directory." });
 
+        const thumbnailsDirectory = path.join(item.path, ".yd-thumbnails");
+
+        if (!(await this.api.core.fs.doesExist(thumbnailsDirectory))) {
+          await this.api.core.fs.createDirectory(thumbnailsDirectory);
+          this.api.core.log.success("app:photos", `Created thumbnails directory: ${thumbnailsDirectory}`);
+        }
+
         return res.json(
           (
             await Promise.all(
@@ -77,67 +87,145 @@ export default class PhotosBackend extends BackendModule {
                   }
                 }
 
-                switch (childType) {
-                  case MEDIA_TYPE.VIDEO:
-                    const thumbnail = (
-                      await timeMethod(() => this.api.core.video.createThumbnail(child.path), "createVideoThumbnail")
-                    ).callbackResult;
-                    const dimensions = await core.image.getImageDimensions(thumbnail);
+                const childPath = child.path;
+                const childThumbnailPath = path.join(thumbnailsDirectory, path.basename(childPath)) + ".webp";
 
-                    console.log("THUMBNAIL PATH: " + child.path);
+                switch (childType) {
+                  case MEDIA_TYPE.VIDEO: {
+                    // if a thumbnail already exists, return it
+                    if (await this.api.core.fs.doesExist(childThumbnailPath)) {
+                      const dimensions = await core.image.getImageDimensions(childThumbnailPath);
+
+                      return <MediaAlbumLargeGridItem<MEDIA_TYPE.VIDEO>>{
+                        type: MEDIA_TYPE.VIDEO,
+                        path: childPath.replace(user.getFsPath(), ""),
+                        mediaUrl: this.api.core.image.createAuthenticatedImage(
+                          user.username,
+                          sessionid,
+                          AUTHENTICATED_IMAGE_TYPE.FILE,
+                          childThumbnailPath,
+                        ),
+                        metadata: {
+                          width: dimensions.width || 400,
+                          height: dimensions.height || 400,
+                        },
+                      };
+                    }
+
+                    // create the thumbnail
+                    console.log("creating video thumb for " + childPath);
+
+                    const thumbnailPath = (
+                      await timeMethod(() => this.api.core.video.createThumbnail(childPath), "createVideoThumbnail")
+                    ).callbackResult;
+
+                    const dimensions = await core.image.getImageDimensions(childPath);
+
+                    const resizedThumbnailPath = await this.api.core.image.resizeTo(
+                      thumbnailPath,
+                      320 * (dimensions.width / dimensions.height) || 200,
+                      320,
+                      "webp",
+                    );
+
+                    // remove the original thumbnail
+                    await this.api.core.fs.removePath(thumbnailPath);
+
+                    // copy the thumbnail to the thumbnails subdirectory
+                    await this.api.core.fs.copy(resizedThumbnailPath, childThumbnailPath);
+
+                    // remove the resized thumbnail
+                    await this.api.core.fs.removePath(resizedThumbnailPath);
 
                     return <MediaAlbumLargeGridItem<MEDIA_TYPE.VIDEO>>{
                       type: MEDIA_TYPE.VIDEO,
-                      path: child.path.replace(user.getFsPath(), ""),
-                      mediaUrl: await this.api.core.image.createResizedAuthenticatedImage(
+                      path: childPath.replace(user.getFsPath(), ""),
+                      mediaUrl: this.api.core.image.createAuthenticatedImage(
                         user.username,
                         sessionid,
                         AUTHENTICATED_IMAGE_TYPE.FILE,
-                        thumbnail,
-                        256,
-                        512,
-                        "webp",
+                        childThumbnailPath,
                       ),
                       metadata: {
                         width: dimensions.width || 400,
                         height: dimensions.height || 400,
                       },
                     };
-                  case MEDIA_TYPE.IMAGE:
-                    const imageDimensions = await core.image.getImageDimensions(child.path);
+                  }
+                  case MEDIA_TYPE.IMAGE: {
+                    // use cached thumbnails if they exist
+                    if (await this.api.core.fs.doesExist(childThumbnailPath)) {
+                      const dimensions = await core.image.getImageDimensions(childPath);
 
-                    console.log("IMAGE PATH: " + child.path);
+                      return <MediaAlbumLargeGridItem<MEDIA_TYPE.VIDEO>>{
+                        type: MEDIA_TYPE.VIDEO,
+                        path: childPath.replace(user.getFsPath(), ""),
+                        mediaUrl: await this.api.core.image.createResizedAuthenticatedImage(
+                          user.username,
+                          sessionid,
+                          AUTHENTICATED_IMAGE_TYPE.FILE,
+                          childThumbnailPath,
+                          320 * (dimensions.width / dimensions.height) || 200,
+                          320,
+                          "webp",
+                        ),
+                        metadata: {
+                          width: dimensions.width || 400,
+                          height: dimensions.height || 400,
+                        },
+                      };
+                    }
 
-                    const resizedImage = (
+                    console.log("creating image thumb for " + childPath);
+
+                    const imageDimensions = await core.image.getImageDimensions(childPath);
+                    console.log(childPath);
+
+                    // create the thumbnail from the video's first frame
+                    const thumbnail = (
                       await timeMethod(
                         () =>
-                          this.api.core.image.createResizedAuthenticatedImage(
-                            user.username,
-                            sessionid,
-                            AUTHENTICATED_IMAGE_TYPE.FILE,
-                            child.path,
-                            256,
-                            512,
+                          this.api.core.image.resizeTo(
+                            childPath,
+                            320 * (imageDimensions.width / imageDimensions.height) || 200,
+                            320,
                             "webp",
                           ),
                         "createResizedAuthenticatedImage",
                       )
                     ).callbackResult;
 
+                    // copy the thumbnail to the thumbnails subdirectory
+                    await this.api.core.fs.copy(thumbnail, childThumbnailPath);
+
+                    // remove the original thumbnail
+                    await this.api.core.fs.removePath(thumbnail);
+
                     return <MediaAlbumLargeGridItem<MEDIA_TYPE.IMAGE>>{
                       type: MEDIA_TYPE.IMAGE,
-                      path: child.path.replace(user.getFsPath(), ""),
-                      mediaUrl: resizedImage,
+                      path: childPath.replace(user.getFsPath(), ""),
+                      mediaUrl: this.api.core.image.createAuthenticatedImage(
+                        user.username,
+                        sessionid,
+                        AUTHENTICATED_IMAGE_TYPE.FILE,
+                        childThumbnailPath,
+                      ),
                       metadata: {
                         width: imageDimensions.width || 400,
                         height: imageDimensions.height || 400,
                       },
                     };
-                  case MEDIA_TYPE.ALBUM:
+                  }
+                  case MEDIA_TYPE.ALBUM: {
+                    if (path.basename(childPath) === ".yd-thumbnails") {
+                      return undefined;
+                    }
+
                     return <MediaAlbumLargeGridItem<MEDIA_TYPE.ALBUM>>{
                       type: MEDIA_TYPE.ALBUM,
-                      path: child.path.replace(user.getFsPath(), ""),
+                      path: childPath.replace(user.getFsPath(), ""),
                     };
+                  }
                 }
               }),
             )
@@ -162,8 +250,8 @@ export default class PhotosBackend extends BackendModule {
       return res.json(
         (await albumDirectory.getChildren())
           .filter((child) => child.entityType === FILESYSTEM_ENTITY_TYPE.DIRECTORY)
+          .filter((i) => path.basename(i.path) !== ".yd-thumbnails")
           .map((child) => {
-            console.log(child.path, user.getFsPath());
             return child.path.replace(user.getFsPath(), "");
           }),
       );
@@ -193,12 +281,14 @@ export default class PhotosBackend extends BackendModule {
             itemType = MEDIA_TYPE.VIDEO;
             break;
           default:
-            return undefined;
+            return res.json({ error: true });
         }
       }
 
       switch (itemType) {
-        case MEDIA_TYPE.VIDEO:
+        case MEDIA_TYPE.VIDEO: {
+          const dimensions = await core.video.getVideoDimensions(item.path);
+
           return res.json(<EndpointMediaRaw>{
             type: MEDIA_TYPE.VIDEO,
             path: item.path.replace(user.getFsPath(), ""),
@@ -209,11 +299,14 @@ export default class PhotosBackend extends BackendModule {
               item.path,
             ),
             metadata: {
-              width: (await core.video.getVideoDimensions(item.path)).width || 400,
-              height: (await core.video.getVideoDimensions(item.path)).height || 400,
+              width: dimensions.width || 400,
+              height: dimensions.height || 400,
             },
           });
-        case MEDIA_TYPE.IMAGE:
+        }
+        case MEDIA_TYPE.IMAGE: {
+          const dimensions = await core.image.getImageDimensions(item.path);
+
           return res.json(<EndpointMediaRaw>{
             type: MEDIA_TYPE.IMAGE,
             path: item.path.replace(user.getFsPath(), ""),
@@ -224,201 +317,12 @@ export default class PhotosBackend extends BackendModule {
               item.path,
             ),
             metadata: {
-              width: (await core.image.getImageDimensions(item.path)).width || 400,
-              height: (await core.image.getImageDimensions(item.path)).height || 400,
+              width: dimensions.width || 400,
+              height: dimensions.height || 400,
             },
           });
+        }
       }
     });
-
-    // this.API.request.get(`${this.rootPath}/albums`, async (req, res) => {
-    //   const { username } = req.headers;
-    //
-    //   const userFsPath = core.users.get(username).getFsPath();
-    //   const album = new PhotoAlbum(username, path.join(userFsPath, "Photos"));
-    //
-    //   return res.json(await album.getSubAlbumsPaths());
-    // });
-    //
-    // this.API.request.get(`${this.rootPath}/album/*`, async (req, res) => {
-    //   const albumPath = req.params["0"] as string;
-    //   const { username } = req.headers;
-    //   const album = new PhotoAlbum(username, albumPath);
-    //
-    //   return res.json(await album.getIPhotoAlbum());
-    // });
-    //
-    // this.API.request.get(`${this.rootPath}/grid-photo/*`, async (req, res) => {
-    //   const photoPath = req.params["0"] as string;
-    //   const { username } = req.headers;
-    //
-    //   const photo = new Photo(username, photoPath);
-    //
-    //   return res.json(await photo.getIGridPhoto());
-    // });
-    //
-    // this.API.request.get(`${this.rootPath}/grid-video/*`, async (req, res) => {
-    //   const videoPath = req.params["0"] as string;
-    //   const { username } = req.headers;
-    //
-    //   const video = new Video(username, videoPath);
-    //
-    //   return res.json(await video.getIGridVideo());
-    // });
-    //
-    // this.API.request.get(`${this.rootPath}/grid-photos/:photoAmount/*`, async (req, res) => {
-    //   const photoPath = req.params["0"].split(";.;") as string[];
-    //   const photoAmount = Number(req.params.photoAmount);
-    //   const { username } = req.headers;
-    //
-    //   const photos = [];
-    //   for (let i = 0; i < photoAmount; i++) {
-    //     if (photoPath[i] === undefined) {
-    //       break;
-    //     }
-    //
-    //     const photo = new Photo(username, photoPath[i]);
-    //     photos.push(await photo.getIGridPhoto());
-    //   }
-    //
-    //   return res.json(await Promise.all(photos));
-    // });
-    //
-    // this.API.request.get(`${this.rootPath}/grid-videos/:videoAmount/*`, async (req, res) => {
-    //   const videoPath = req.params["0"].split(";.;") as string[];
-    //   const videoAmount = Number(req.params.videoAmount);
-    //   const { username } = req.headers;
-    //
-    //   const videos = [];
-    //   for (let i = 0; i < videoAmount; i++) {
-    //     if (videoPath[i] === undefined) {
-    //       break;
-    //     }
-    //
-    //     const video = new Video(username, videoPath[i]);
-    //     videos.push(await video.getIGridVideo());
-    //   }
-    //
-    //   return res.json(await Promise.all(videos));
-    // });
-    //
-    // this.API.request.get(`${this.rootPath}/photo/*`, async (req, res) => {
-    //   const photoPath = req.params["0"] as string;
-    //   const { username } = req.headers;
-    //
-    //   const photo = new Photo(username, photoPath);
-    //
-    //   try {
-    //     return res.json(await photo.getIPhoto());
-    //   } catch (e) {
-    //     return res.json({ error: e });
-    //   }
-    // });
-    //
-    // this.API.request.get(`${this.rootPath}/video/*`, async (req, res) => {
-    //   const videoPath = req.params["0"] as string;
-    //   const { username } = req.headers;
-    //
-    //   const video = new Video(username, videoPath);
-    //
-    //   try {
-    //     return res.json(await video.getIVideo());
-    //   } catch (e) {
-    //     return res.json({ error: e });
-    //   }
-    // });
-    //
-    // // FIXME: allow access without authentication
-    // this.API.request.get(`${this.rootPath}/download-photo/*`, async (req, res) => {
-    //   const photoPath = req.params["0"] as string;
-    //   const { username } = req.headers;
-    //
-    //   const photo = new Photo(username, photoPath);
-    //
-    //   res.setHeader("Content-Disposition", `attachment; filename="${pth.basename(photoPath)}"`);
-    //
-    //   return res.json(await photo.getIPhoto());
-    // });
-
-    // this.API.request.get("/app/photos/photo/*", async (req, res) => {
-    //   const reqPath = req.params["0"] as string;
-    //   const { username } = req.headers;
-    //
-    //   const userFsPath = core.users.get(username).getFsPath();
-    //   const file = await core.fs.get(path.join(userFsPath, "Photos", reqPath));
-    //
-    //   if (!(await file?.doesExist()) || file === null) {
-    //     console.log(path.join(userFsPath, "Photos", reqPath));
-    //     console.log("Unknown dir");
-    //     return res.json({ error: true });
-    //   }
-    //
-    //   if (file.entityType === "directory") {
-    //     return res.json({
-    //       error: true,
-    //     });
-    //   }
-    //
-    //   if (file.getType() !== "image") {
-    //     return res.json({ error: true });
-    //   }
-    //
-    //   const imSize = imageSize(file.path);
-    //
-    //   return res.json({
-    //     fileName: file.getName(),
-    //     date: new Date((await file.getMetadata()).birthtime).toString(),
-    //     dimensions: {
-    //       width: imSize.width,
-    //       height: imSize.height,
-    //     },
-    //     url: this.API.core.image.createAuthenticatedImage(username, AUTHENTICATED_IMAGE_TYPE.FILE, file.path),
-    //   } as IPhoto);
-    // });
-    //
-    // this.API.request.get("/app/photos/categories", async (req, res) => {
-    //   const { username } = req.headers;
-    //
-    //   const userFsPath = core.users.get(username).getFsPath();
-    //   const photosDirectory = await core.fs.getDirectory(path.join(userFsPath, "Photos"));
-    //
-    //   if (!(await photosDirectory?.doesExist()) || photosDirectory === null) {
-    //     return res.json([]);
-    //   }
-    //
-    //   const photosDirectoryChildren = await photosDirectory.getChildren();
-    //   const categories = (
-    //     await Promise.all(
-    //       photosDirectoryChildren.map(async (fsEntityPath) => {
-    //         const fsEntity = await photosDirectory.getChild(fsEntityPath);
-    //         if (fsEntity.entityType === "directory") {
-    //           return fsEntity.getName();
-    //         }
-    //
-    //         return "";
-    //       }),
-    //     )
-    //   ).filter((x) => x !== "");
-    //
-    //   return res.json(categories);
-    // });
-    //
-    // this.API.request.get("/app/photos/category/:categoryPath", async (req, res) => {
-    //   const { categoryPath } = req.params;
-    //   const { username } = req.headers;
-    //
-    //   const userFsPath = core.users.get(username).getFsPath();
-    //   const photosDirectory = await core.fs.getDirectory(path.join(userFsPath, "Photos"));
-    //
-    //   if (await (await photosDirectory.getChild(categoryPath)).doesExist()) {
-    //     const categoryFsEntity = await photosDirectory.getChild(categoryPath);
-    //
-    //     if (!(await categoryFsEntity.doesExist()) || categoryFsEntity.entityType !== "directory") {
-    //       return res.json([]);
-    //     }
-    //
-    //     return res.json((await categoryFsEntity.getChildren()).map((c) => path.join(categoryPath, c)));
-    //   }
-    // });
   }
 }

@@ -55,7 +55,7 @@ export default class CoreRequest {
           try {
             const time = await timeMethod(() => callback(req, res));
 
-            this.core.log.debug("response_time", `${req.path} took ${time.formattedMicrosecconds}μs`);
+            this.core.log.debug("response_time", `${req.path} took ${time.formattedMicrosecconds}`);
           } catch (err) {
             this.core.log.error(`request_error`, new Error().stack);
             this.core.log.error("request_error", `${req.path}; Request error not caught: ${err.message}`);

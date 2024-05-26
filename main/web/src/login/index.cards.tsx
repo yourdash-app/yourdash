@@ -145,6 +145,7 @@ const IndexCardsPage: FC<{ metadata?: EndpointResponseLoginInstanceMetadata }> =
       </Card>
       <Card className={styles.metadataCard}>
         <Image
+          containerClassName={styles.backgroundImageContainer}
           className={styles.backgroundImage}
           src={"/login/instance/background"}
           authenticatedImage

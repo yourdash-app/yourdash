@@ -56,7 +56,9 @@ export default class CoreVideo {
       timeMethod(async () => {
         return new Promise((resolveTime) => {
           this.core.execute
-            .exec(`ffmpeg -i ${videoPath} -ss 00:00:1 -frames:v 1 ${path.join(cacheDir, fileName)}`)
+            .exec(
+              `ffmpeg -i ${path.join(this.core.fs.ROOT_PATH, videoPath)} -ss 00:00:1 -frames:v 1 ${path.join(cacheDir, fileName)}`,
+            )
             .on("exit", () => {
               resolveTime(null);
               resolve(path.join(cacheDir, fileName));
@@ -68,7 +70,7 @@ export default class CoreVideo {
 
   getVideoDimensions(videoPath: string): Promise<{ width: number; height: number }> {
     return new Promise<{ width: number; height: number }>((resolve) => {
-      ffmpeg.ffprobe(videoPath, (err, data) => {
+      ffmpeg.ffprobe(path.join(this.core.fs.ROOT_PATH, videoPath), (err, data) => {
         if (err) {
           this.core.log.warning("video", "Failed to get video dimensions: " + err.message);
           return resolve({ width: 512, height: 768 });
@@ -83,36 +85,60 @@ export default class CoreVideo {
     });
   }
 
+  getVideoDuration(videoPath: string): Promise<number> {
+    return new Promise<number>((resolve) => {
+      ffmpeg.ffprobe(path.join(this.core.fs.ROOT_PATH, videoPath), (err, data) => {
+        if (err) {
+          this.core.log.warning("video", "Failed to get video duration: " + err.message);
+        }
+
+        if (!data) {
+          this.core.log.warning("video", "Failed to get video duration: no data");
+        }
+
+        return resolve(data?.format?.duration || 0);
+      });
+    });
+  }
+
   createAuthenticatedVideo<VideoType extends AUTHENTICATED_VIDEO_TYPE>(
     username: string,
     sessionId: string,
     type: AUTHENTICATED_VIDEO_TYPE,
     value: IauthenticatedVideo<VideoType>["value"],
   ): string {
-    let resultingExtension = "";
+    try {
+      let resultingExtension = "";
+      let val = value;
 
-    if (type === AUTHENTICATED_VIDEO_TYPE.FILE) {
-      resultingExtension = path.extname(value as string);
+      if (type === AUTHENTICATED_VIDEO_TYPE.FILE) {
+        resultingExtension = path.extname(value as string);
+        val = path.resolve(path.join(this.core.fs.ROOT_PATH, value as string));
+      }
+
+      const id = crypto.randomUUID() + resultingExtension;
+
+      if (!this.authenticatedVideos.get(username)) {
+        this.authenticatedVideos.set(username, new Map());
+      }
+
+      const user = this.authenticatedVideos.get(username);
+
+      if (!user.has(sessionId)) {
+        user.set(sessionId, new Map());
+      }
+
+      user.get(sessionId).set(id, {
+        type,
+        value: val,
+      });
+
+      return `/core::auth-video/${username}/${sessionId}/${id}`;
+    } catch (err) {
+      this.core.log.error("video", "failed to create authenticated video", err);
+
+      return "";
     }
-
-    const id = crypto.randomUUID() + resultingExtension;
-
-    if (!this.authenticatedVideos.get(username)) {
-      this.authenticatedVideos.set(username, new Map());
-    }
-
-    const user = this.authenticatedVideos.get(username);
-
-    if (!user.has(sessionId)) {
-      user.set(sessionId, new Map());
-    }
-
-    user.get(sessionId).set(id, {
-      type,
-      value,
-    });
-
-    return `/core::auth-video/${username}/${sessionId}/${id}`;
   }
 
   __internal__removeAuthenticatedVideo(username: string, sessionId: string, id: string) {

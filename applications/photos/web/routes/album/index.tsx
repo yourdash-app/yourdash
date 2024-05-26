@@ -48,6 +48,7 @@ const AlbumPathPage: FC = () => {
           }}
         />
         <Heading
+          className={styles.heading}
           level={1}
           text={path.basename(albumPath()) || albumPath()}
         />
