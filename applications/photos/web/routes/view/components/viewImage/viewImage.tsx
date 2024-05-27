@@ -4,7 +4,6 @@
  */
 
 import Image from "@yourdash/uikit/components/image/image.js";
-import Spinner from "@yourdash/uikit/components/spinner/spinner";
 import { FC } from "react";
 import styles from "./viewImage.module.scss";
 import PanAndZoom from "@yourdash/uikit/views/panAndZoom/panAndZoom";
@@ -16,6 +15,7 @@ const ViewImage: FC<{ mediaUrl: string }> = ({ mediaUrl }) => {
         className={styles.viewImage}
         src={mediaUrl}
         authenticatedImage
+        disableSpinner={false}
         accessibleLabel={""}
       />
     </PanAndZoom>

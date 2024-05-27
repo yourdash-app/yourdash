@@ -119,7 +119,7 @@ export default class PhotosBackend extends BackendModule {
                       await timeMethod(() => this.api.core.video.createThumbnail(childPath), "createVideoThumbnail")
                     ).callbackResult;
 
-                    const dimensions = await core.image.getImageDimensions(childPath);
+                    const dimensions = await core.image.getImageDimensions(thumbnailPath);
 
                     const resizedThumbnailPath = await this.api.core.image.resizeTo(
                       thumbnailPath,
@@ -157,8 +157,8 @@ export default class PhotosBackend extends BackendModule {
                     if (await this.api.core.fs.doesExist(childThumbnailPath)) {
                       const dimensions = await core.image.getImageDimensions(childPath);
 
-                      return <MediaAlbumLargeGridItem<MEDIA_TYPE.VIDEO>>{
-                        type: MEDIA_TYPE.VIDEO,
+                      return <MediaAlbumLargeGridItem<MEDIA_TYPE.IMAGE>>{
+                        type: MEDIA_TYPE.IMAGE,
                         path: childPath.replace(user.getFsPath(), ""),
                         mediaUrl: await this.api.core.image.createResizedAuthenticatedImage(
                           user.username,
@@ -182,7 +182,7 @@ export default class PhotosBackend extends BackendModule {
                     console.log(childPath);
 
                     // create the thumbnail from the video's first frame
-                    const thumbnail = (
+                    const thumbnail: string | null = (
                       await timeMethod(
                         () =>
                           this.api.core.image.resizeTo(
@@ -194,6 +194,23 @@ export default class PhotosBackend extends BackendModule {
                         "createResizedAuthenticatedImage",
                       )
                     ).callbackResult;
+
+                    if (!thumbnail) {
+                      return <MediaAlbumLargeGridItem<MEDIA_TYPE.IMAGE>>{
+                        type: MEDIA_TYPE.IMAGE,
+                        path: childPath.replace(user.getFsPath(), ""),
+                        mediaUrl: this.api.core.image.createAuthenticatedImage(
+                          user.username,
+                          sessionid,
+                          AUTHENTICATED_IMAGE_TYPE.FILE,
+                          "defaults/default_avatar.avif",
+                        ),
+                        metadata: {
+                          width: imageDimensions.width || 400,
+                          height: imageDimensions.height || 400,
+                        },
+                      };
+                    }
 
                     // copy the thumbnail to the thumbnails subdirectory
                     await this.api.core.fs.copy(thumbnail, childThumbnailPath);

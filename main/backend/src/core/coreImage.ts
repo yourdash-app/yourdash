@@ -61,7 +61,7 @@ export default class CoreImage {
     height: number,
     resultingImageFormat?: "avif" | "png" | "jpg" | "webp",
     useAbsolutePath?: boolean,
-  ) {
+  ): Promise<string | null> {
     return await new Promise<string>(async (resolve) => {
       const TEMP_DIR = "/temp";
 
@@ -77,11 +77,11 @@ export default class CoreImage {
           .then(() => resolve(resizedImagePath))
           .catch((err: string) => {
             this.core.log.error("image", `unable to resize image "${filePath}" ${err}`);
-            resolve(`unable to resize image "${filePath}"`);
+            resolve(null);
           });
       } catch (err) {
         this.core.log.error("image", `unable to resize image "${filePath}" ${err}`);
-        resolve(`unable to resize image "${filePath}"`);
+        resolve(null);
       }
     });
   }

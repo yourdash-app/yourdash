@@ -36,7 +36,6 @@ const AlbumGridMedia: FC<{
         >
           <Image
             className={styles.image}
-            disableLazyLoading={true}
             accessibleLabel={"User Photo"}
             src={data.mediaUrl}
             authenticatedImage

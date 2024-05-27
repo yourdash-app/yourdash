@@ -12,8 +12,6 @@ import splitItemsIntoRows from "../../../../lib/splitItemsIntoRows";
 import AlbumGridMediaRow from "../albumGridMediaRow/albumGridMediaRow";
 import Album from "./album/album.js";
 import styles from "./albumGrid.module.scss";
-import path from "path-browserify";
-import { useNavigate } from "react-router-dom";
 
 const AlbumGrid: FC<{
   items: MediaAlbumLargeGridItem<MEDIA_TYPE.IMAGE | MEDIA_TYPE.VIDEO>[];
@@ -59,7 +57,12 @@ const AlbumGrid: FC<{
         <>
           <div className={styles.albumContainer}>
             {albums.map((subAlbum) => {
-              return <Album album={subAlbum} />;
+              return (
+                <Album
+                  album={subAlbum}
+                  key={subAlbum.path}
+                />
+              );
             })}
           </div>
           {rows.length > 0 && <Separator direction={"column"} />}

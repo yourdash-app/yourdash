@@ -23,17 +23,14 @@ const Image: FC<{
   return (
     <div className={clippy(styles.componentContainer, props.containerClassName)}>
       <img
-        className={clippy(styles.component, props.className)}
-        src={(props.authenticatedImage ? csi.getInstanceUrl() : "") + props.src}
+        className={clippy(styles.component, props.className, loaded && styles.loaded)}
         draggable={false}
         loading={props.disableLazyLoading ? "eager" : "lazy"}
         alt={props.accessibleLabel}
-        onLoad={() => {
-          setLoaded(true);
+        onLoad={(e) => {
+          setLoaded(e.currentTarget.complete);
         }}
-        onLoadStart={() => {
-          setLoaded(true);
-        }}
+        src={(props.authenticatedImage ? csi.getInstanceUrl() : "") + props.src}
       />
       {!loaded && !props.disableSpinner && (
         <div className={clippy(styles.spinner)}>

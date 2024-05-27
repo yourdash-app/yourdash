@@ -3,6 +3,8 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+@import "@yourdash/uikit/theme/themeValues";
+
 .page {
   display: grid;
   grid-template-rows: auto 1fr;
@@ -18,6 +20,12 @@
   border-left: none;
   border-top: none;
   border-right: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 100%;
+  padding: var(#{$theme+$padding});
 }
 
 .heading {

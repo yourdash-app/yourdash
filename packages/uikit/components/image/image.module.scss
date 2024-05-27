@@ -11,6 +11,12 @@
 
 .component {
   border-radius: var(#{$theme}#{$radius});
+  opacity: 0;
+}
+
+.loaded {
+  transition: opacity 750ms linear;
+  opacity: 1;
 }
 
 .spinner {

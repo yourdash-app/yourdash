@@ -4,6 +4,7 @@
  */
 
 import Box from "@yourdash/uikit/components/box/box.js";
+import ButtonWithIcon from "@yourdash/uikit/components/buttonWithIcon/buttonWithIcon";
 import Heading from "@yourdash/uikit/components/heading/heading.js";
 import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary.js";
 import IconButton from "@yourdash/uikit/components/iconButton/iconButton";
@@ -26,27 +27,23 @@ const ViewPathPage: FC = () => {
 
   return (
     <div className={styles.page}>
-      <Box className={styles.header}>
-        <IconButton
-          accessibleLabel={"Go Back"}
+      <div className={styles.header}>
+        <ButtonWithIcon
+          text={"Go Back"}
           icon={UKIcon.ChevronLeft}
           onClick={() => {
             navigate(-1);
           }}
         />
-        <Heading
-          className={styles.heading}
-          text={"View Media"}
-        />
-        <div className={styles.spacer}></div>
-        <IconButton
-          accessibleLabel={"Download media"}
+        <div className={styles.spacer} />
+        <ButtonWithIcon
+          text={"Download"}
           icon={UKIcon.Download}
           onClick={() => {
             window.open(`${csi.getInstanceUrl()}${media?.mediaUrl}`, "_blank");
           }}
         />
-      </Box>
+      </div>
       {media && (
         <>
           {media.type === MEDIA_TYPE.IMAGE && <ViewImage mediaUrl={media.mediaUrl} />}

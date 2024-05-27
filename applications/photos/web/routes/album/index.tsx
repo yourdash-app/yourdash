@@ -22,11 +22,11 @@ import AlbumGrid from "./components/albumGrid/albumGrid";
 const AlbumPathPage: FC = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const albumPath = () => searchParams.get("p") || "";
+  const albumPath = searchParams.get("p") || "";
   const albumData =
     useResource<EndpointMediaAlbumLargeGrid>(
-      () => csi.getJson(`/app::photos/media/album/large-grid/@/${albumPath()}`),
-      [albumPath()],
+      () => csi.getJson(`/app::photos/media/album/large-grid/@/${albumPath}`),
+      [albumPath],
     ) || [];
 
   return (
@@ -36,9 +36,9 @@ const AlbumPathPage: FC = () => {
           accessibleLabel={"Go back"}
           icon={UKIcon.ChevronLeft}
           onClick={() => {
-            const newPath = path.join(albumPath(), "..");
+            const newPath = path.join(albumPath, "..");
 
-            if (newPath === "/" && albumPath() === "/") {
+            if (newPath === "/" && albumPath === "/") {
               navigate("/app/a/photos/");
 
               return;
@@ -50,7 +50,7 @@ const AlbumPathPage: FC = () => {
         <Heading
           className={styles.heading}
           level={1}
-          text={path.basename(albumPath()) || albumPath()}
+          text={path.basename(albumPath) || albumPath}
         />
       </Box>
       <div className={styles.albumGrid}>
