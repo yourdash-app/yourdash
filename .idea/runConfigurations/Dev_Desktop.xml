@@ -1,9 +1,9 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Visualize Web Client Bundle" type="js.build_tools.npm">
-    <package-json value="$PROJECT_DIR$/packages/web-client/package.json" />
+  <configuration default="false" name="Dev Desktop" type="js.build_tools.npm">
+    <package-json value="$PROJECT_DIR$/package.json" />
     <command value="run" />
     <scripts>
-      <script value="visualize-bundle" />
+      <script value="dev-desktop" />
     </scripts>
     <node-interpreter value="project" />
     <envs />

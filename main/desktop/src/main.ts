@@ -15,6 +15,7 @@ const createWindow = () => {
   const mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
+    resizable: false,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
     },
@@ -32,7 +33,7 @@ const createWindow = () => {
   }
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
 
   mainWindow.on("ready-to-show", () => {
     mainWindow.show();
@@ -49,7 +50,7 @@ app.on("ready", () => {
 
   globalShortcut.register("f5", () => {
     win.setPosition(0, 0, false);
-    win.setSize(1920, 256);
+    win.setSize(1920, 32);
     console.log("Electron loves global shortcuts!");
   });
 });

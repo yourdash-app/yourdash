@@ -4,6 +4,11 @@
  */
 
 import { createRoot } from "react-dom/client";
+import MenuBar from "./modules/darwin/menubar/menubar";
 
 const root = createRoot(document.getElementById("root"));
-root.render(<div>Hello from React!</div>);
+root.render(
+  <div>
+    <MenuBar />
+  </div>,
+);
