@@ -3,7 +3,9 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { app, BrowserWindow, globalShortcut } from "electron";
+import { app, BrowserWindow, globalShortcut, screen } from "electron";
+import win32 from "win32-api";
+import wallpaper from "wallpaper";
 import path from "path";
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require("electron-squirrel-startup")) {
@@ -13,16 +15,20 @@ if (require("electron-squirrel-startup")) {
 const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
-    resizable: false,
+    width: 512,
+    height: 32,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
+      nodeIntegration: true,
     },
     frame: false,
     roundedCorners: false,
     show: false,
     transparent: true,
+    alwaysOnTop: true,
+    resizable: false,
+    minimizable: false,
+    // skipTaskbar: true,
   });
 
   // and load the index.html of the app.
@@ -48,10 +54,25 @@ const createWindow = () => {
 app.on("ready", () => {
   const win = createWindow();
 
-  globalShortcut.register("f5", () => {
-    win.setPosition(0, 0, false);
-    win.setSize(1920, 32);
-    console.log("Electron loves global shortcuts!");
+  win.setPosition(screen.getPrimaryDisplay().nativeOrigin.x, screen.getPrimaryDisplay().nativeOrigin.y);
+  win.setShape([{ width: screen.getPrimaryDisplay().size.width, height: 32, x: 0, y: 0 }]);
+  win.setSize(screen.getPrimaryDisplay().size.width, 32);
+
+  globalShortcut.register("f5", async () => {
+    win.webContents.reload();
+    win.setPosition(screen.getPrimaryDisplay().nativeOrigin.x, screen.getPrimaryDisplay().nativeOrigin.y);
+    win.setShape([{ width: screen.getPrimaryDisplay().size.width, height: 32, x: 0, y: 0 }]);
+    win.setSize(screen.getPrimaryDisplay().size.width, 32);
+  });
+
+  globalShortcut.register("f12", () => {
+    const devtoolsWindow = new BrowserWindow({
+      width: 512,
+      height: 768,
+      y: 32,
+    });
+
+    win.webContents.setDevToolsWebContents(devtoolsWindow.webContents);
   });
 });
 

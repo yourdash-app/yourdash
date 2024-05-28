@@ -6,13 +6,27 @@
 import React, { FC, useEffect, useState } from "react";
 import ClockWidget from "./widgets/clock/widget";
 import styles from "./menubar.module.scss";
+import { getWallpaper } from "wallpaper";
 
 const MenuBar: FC = () => {
   const [widgets, setWidgets] = useState<React.ReactNode[]>([<ClockWidget />]);
+  const [wallpaperPath, setWallpaperPath] = useState<string>("");
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    getWallpaper({ screen: "main" }).then((wallpaper) => {
+      console.log(wallpaper);
+      setWallpaperPath(wallpaper);
+    });
+  }, []);
 
-  return <div className={styles.menubar}>{widgets}</div>;
+  return (
+    <div
+      className={styles.menubar}
+      style={{ backgroundImage: `url(file://${wallpaperPath})` }}
+    >
+      {widgets}
+    </div>
+  );
 };
 
 export default MenuBar;

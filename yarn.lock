@@ -2035,6 +2035,11 @@
   resolved "https://registry.yarnpkg.com/@vladfrangu/async_event_emitter/-/async_event_emitter-2.2.4.tgz#d3537432c6db6444680a596271dff8ea407343b3"
   integrity sha512-ButUPz9E9cXMLgvAW8aLAKKJJsPu1dY1/l/E8xzLFuysowXygs6GBcyunK9rnGC4zTsnIc2mQo71rGw9U+Ykug==
 
+"@waiting/shared-types@^20.11.0":
+  version "20.13.0"
+  resolved "https://registry.yarnpkg.com/@waiting/shared-types/-/shared-types-20.13.0.tgz#5da3ac8b28faae242ae700973989cb1ebb356392"
+  integrity sha512-OiMocNStZbtkf8LEwrbtAuiI3WtwXo+Aoqhz6jP6i9KSogNDsEMccJRz5wq+gVeO2qEcymn5J2NyK7vR/icgBg==
+
 "@webgpu/types@^0.1.40":
   version "0.1.40"
   resolved "https://registry.yarnpkg.com/@webgpu/types/-/types-0.1.40.tgz#cf72d1df6f9f8adc5d39556041f20ff2e8a58885"
@@ -10038,6 +10043,11 @@ vite@^5.0.12:
   optionalDependencies:
     fsevents "~2.3.3"
 
+wallpaper@^7.2.1:
+  version "7.2.1"
+  resolved "https://registry.yarnpkg.com/wallpaper/-/wallpaper-7.2.1.tgz#f6ee0314d3d2ca7b53990f1f4a64b1e725966698"
+  integrity sha512-fqAhFSF/BVg+F7Hj+9xOnDWZMM20rjuDTYtietso4P8gYOPOBzJyzbJEDocDfoCgzDV5a1x68u54/ICr70mpPw==
+
 wcwidth@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/wcwidth/-/wcwidth-1.0.1.tgz#f0b0dcf915bc5ff1528afadb2c0e17b532da2fe8"
@@ -10145,6 +10155,20 @@ wide-align@^1.1.2, wide-align@^1.1.5:
   integrity sha512-eDMORYaPNZ4sQIuuYPDHdQvf4gyCF9rEEV/yPxGfwPkRodwEgiMUUXTx/dex+Me0wxx53S+NgUHaP7y3MGlDmg==
   dependencies:
     string-width "^1.0.2 || 2 || 3 || 4"
+
+win32-api@^20.4.1:
+  version "20.4.1"
+  resolved "https://registry.yarnpkg.com/win32-api/-/win32-api-20.4.1.tgz#eaeac2ed813bcc3e16824aee23b9970cf4c434ec"
+  integrity sha512-STbeoFsVndgc5eMmXcvmuuoWM2S8mOh/0V2w/gmYAFSI+FPoYDjGhvntrvhvoFMec8AC2ReI2LSkb8KGyEqhPQ==
+  dependencies:
+    win32-def "^20.4.1"
+
+win32-def@^20.4.1:
+  version "20.4.1"
+  resolved "https://registry.yarnpkg.com/win32-def/-/win32-def-20.4.1.tgz#3b55a736de7d4ff63ffc0cb3373817b3e9904c23"
+  integrity sha512-d2y6pN/ebLU4Vsu4JepzeEtdWTVcAkJIiAFZiPjT/mjac2YYvhM4jM2bGKdt8usJNxAI2o7YiF0ytdVDQO6Qdg==
+  dependencies:
+    "@waiting/shared-types" "^20.11.0"
 
 word-wrap@^1.2.3:
   version "1.2.5"

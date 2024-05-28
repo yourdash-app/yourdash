@@ -4,6 +4,7 @@
  */
 
 import { useEffect, useState } from "react";
+import styles from "./widget.module.scss";
 
 let interval: NodeJS.Timer;
 
@@ -20,7 +21,7 @@ const ClockWidget = () => {
     };
   }, []);
 
-  return <>{time}</>;
+  return <div className={styles.clockWidget}>{time}</div>;
 };
 
 export default ClockWidget;
