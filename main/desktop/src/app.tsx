@@ -3,12 +3,13 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import UIKitRoot from "@yourdash/uikit/core/root";
 import { createRoot } from "react-dom/client";
 import MenuBar from "./modules/darwin/menubar/menubar";
 
 const root = createRoot(document.getElementById("root"));
 root.render(
-  <div>
+  <UIKitRoot>
     <MenuBar />
-  </div>,
+  </UIKitRoot>,
 );

@@ -23,13 +23,13 @@ export function getBuildConfig(env: ConfigEnv<"build">): UserConfig {
     mode,
     build: {
       // Prevent multiple builds from interfering with each other.
-      emptyOutDir: false,
+      emptyOutDir: true,
       // 🚧 Multiple builds may conflict.
       outDir: ".vite/build",
       watch: command === "serve" ? {} : null,
       minify: command === "build",
     },
-    clearScreen: false,
+    clearScreen: true,
   };
 }
 
@@ -60,6 +60,7 @@ export function getBuildDefine(env: ConfigEnv<"build">) {
       };
       return { ...acc, ...def };
     },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     {} as Record<string, any>,
   );
 

@@ -3,23 +3,26 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { app, BrowserWindow, globalShortcut, screen } from "electron";
-import win32 from "win32-api";
-import wallpaper from "wallpaper";
+import { app, BrowserWindow, globalShortcut, screen, ipcMain, protocol, net } from "electron";
 import path from "path";
+import "./modules";
+
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
-if (require("electron-squirrel-startup")) {
-  app.quit();
-}
+import("electron-squirrel-startup").then((mod) => {
+  if (mod.default) {
+    app.quit();
+  }
+});
 
 const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 512,
     height: 32,
+    minHeight: 16,
+    minWidth: 16,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
-      nodeIntegration: true,
     },
     frame: false,
     roundedCorners: false,
@@ -28,7 +31,9 @@ const createWindow = () => {
     alwaysOnTop: true,
     resizable: false,
     minimizable: false,
-    // skipTaskbar: true,
+    skipTaskbar: true,
+    // backgroundMaterial: "mica",
+    titleBarStyle: "hidden",
   });
 
   // and load the index.html of the app.
@@ -52,27 +57,39 @@ const createWindow = () => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on("ready", () => {
-  const win = createWindow();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  protocol.handle("local", async (request) => {
+    const filePath = request.url.replace(`local://`, "file://");
 
-  win.setPosition(screen.getPrimaryDisplay().nativeOrigin.x, screen.getPrimaryDisplay().nativeOrigin.y);
-  win.setShape([{ width: screen.getPrimaryDisplay().size.width, height: 32, x: 0, y: 0 }]);
-  win.setSize(screen.getPrimaryDisplay().size.width, 32);
+    console.log(filePath);
 
-  globalShortcut.register("f5", async () => {
-    win.webContents.reload();
-    win.setPosition(screen.getPrimaryDisplay().nativeOrigin.x, screen.getPrimaryDisplay().nativeOrigin.y);
-    win.setShape([{ width: screen.getPrimaryDisplay().size.width, height: 32, x: 0, y: 0 }]);
-    win.setSize(screen.getPrimaryDisplay().size.width, 32);
+    try {
+      return await net.fetch(filePath);
+    } catch (error) {
+      console.error(error, "replacing with default image");
+      return await net.fetch("https://www.bing.com/favicon.ico");
+    }
   });
 
-  globalShortcut.register("f12", () => {
-    const devtoolsWindow = new BrowserWindow({
-      width: 512,
-      height: 768,
-      y: 32,
+  const win = createWindow();
+  win.on("ready-to-show", () => {
+    const HEIGHT = 32;
+    const display = screen.getPrimaryDisplay();
+    const { x, y, width } = display.bounds;
+
+    win.setMinimumSize(width, HEIGHT);
+    win.setShape([{ width: width, height: HEIGHT, y: 0, x: 0 }]);
+    win.setBounds({ x, y, width, height: HEIGHT });
+
+    globalShortcut.register("f5", () => {
+      console.log("Reloading window, resetting position and size");
+      win.webContents.reload();
+      win.setBounds({ x, y, width, height: HEIGHT });
     });
 
-    win.webContents.setDevToolsWebContents(devtoolsWindow.webContents);
+    globalShortcut.register("ctrl+f12", () => {
+      win.webContents.openDevTools({ mode: "detach" });
+    });
   });
 });
 
@@ -95,3 +112,27 @@ app.on("activate", () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
+
+ipcMain.on(
+  "set-wallpaper",
+  (event, path: string, scale: "auto" | "fill" | "fit" | "stretch" | "center" | "tile" | "span") => {
+    // TODO: map to the correct values depending on the operating system
+    //       macOS Values: "auto", "fill", "fit", "stretch", "center".
+    //       Windows Values: "stretch", "center", "tile", "span", "max", "crop-to-fit", "keep-aspect-ratio".
+
+    import("wallpaper").then((mod) => {
+      const { setWallpaper } = mod;
+      setWallpaper(path, { scale });
+    });
+  },
+);
+
+ipcMain.on("get-wallpaper", (event) => {
+  import("wallpaper").then(async (mod) => {
+    const { getWallpaper } = mod;
+
+    const wallpaper = (await getWallpaper({ screen: "main" })).replaceAll("\\", "/");
+
+    event.reply("get-wallpaper", wallpaper);
+  });
+});

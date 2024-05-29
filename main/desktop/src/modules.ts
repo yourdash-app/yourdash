@@ -3,10 +3,4 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
-    Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  background: red;
-}
+import "./modules/darwin/index";

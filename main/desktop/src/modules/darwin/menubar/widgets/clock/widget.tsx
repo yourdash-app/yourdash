@@ -9,7 +9,7 @@ import styles from "./widget.module.scss";
 let interval: NodeJS.Timer;
 
 const ClockWidget = () => {
-  const [time, setTime] = useState("");
+  const [time, setTime] = useState("00:00:00");
 
   useEffect(() => {
     interval = setInterval(() => {
