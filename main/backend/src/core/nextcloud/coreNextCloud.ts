@@ -31,7 +31,7 @@ export default function loadNextCloudSupportEndpoints(core: Core) {
       version: "28.0.0.11",
       versionstring: MIMICED_NEXTCLOUD_VERSION.string,
       edition: MIMICED_NEXTCLOUD_VERSION.edition,
-      productname: core.globalDb.get("core:displayName"),
+      productname: core.globalDb.get("core:instance:name"),
       extendedSupport: MIMICED_NEXTCLOUD_VERSION.extendedSupport,
     });
   });
@@ -64,7 +64,7 @@ export default function loadNextCloudSupportEndpoints(core: Core) {
                 "allow-listed": false,
               },
               theming: {
-                name: core.globalDb.get("core:displayName") || "YourDash",
+                name: core.globalDb.get("core:instance:name") || "YourDash",
                 url: core.globalDb.get("core:instanceUrl") || "https://localhost:3563",
                 slogan: core.globalDb.get("core:login:message"),
                 color: "#00679e",

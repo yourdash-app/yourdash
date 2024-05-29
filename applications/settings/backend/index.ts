@@ -5,13 +5,38 @@
 
 import YourDashPanel from "@yourdash/backend/src/core/helpers/panel.js";
 import BackendModule, { YourDashModuleArguments } from "@yourdash/backend/src/core/moduleManager/backendModule.js";
-import { promises as fs } from "fs";
+import { promises as fs, readdirSync } from "fs";
 import core from "@yourdash/backend/src/core/core.js";
-import path from "path";
+
+/*
+ *   Future settings plans
+ *
+ *   - each server module can add settings to a settings.json file
+ *   - every setting will be put into a category
+ *   - the frontend will request a category or list of categories from the server
+ *   - the server will then return all settings in that category
+ *   - setting shared include: SETTING_TYPE
+ * */
 
 export default class SettingsModule extends BackendModule {
+  installableApplications: string[] = [];
+
   constructor(args: YourDashModuleArguments) {
     super(args);
+
+    this.installableApplications = readdirSync("../../applications").filter((appName) => {
+      switch (appName) {
+        case "package.json":
+        case "node_modules":
+        case "gulpfile.js":
+        case "README.md":
+          return false;
+        default:
+          return true;
+      }
+    });
+
+    return this;
   }
 
   public loadEndpoints() {
@@ -45,26 +70,20 @@ export default class SettingsModule extends BackendModule {
     });
 
     this.api.request.get("/app/settings/developer/install-all-applications", async (req, res) => {
-      const installableApplications = (await fs.readdir("../../applications")).filter((appName) => {
-        switch (appName) {
-          case "package.json":
-          case "node_modules":
-          case "gulpfile.js":
-          case "README.md":
-            return false;
-          default:
-            return true;
-        }
-      });
+      this.installableApplications.map(async (app) => {
+        if (core.globalDb.get<string[]>("core:installedApplications").includes(app)) return;
 
-      installableApplications.map(async (app) => {
-        if (core.globalDb.get("core:installedApplications").includes(app)) return;
+        core.globalDb.set("core:installedApplications", [
+          ...core.globalDb.get<string[]>("core:installedApplications"),
+          app,
+        ]);
 
-        core.globalDb.set("core:installedApplications", [...core.globalDb.get("core:installedApplications"), app]);
-        await core.moduleManager.loadModule(app, path.join(process.cwd(), `../../applications/${app}/backend/`));
+        await this.api.core.restartInstance();
       });
 
       return res.json({ success: true });
     });
+
+    this.api.request.setNamespace("app::settings");
   }
 }

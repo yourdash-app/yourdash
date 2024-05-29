@@ -1,7 +1,6 @@
 {
-  "core:displayName": "YourDash Instance",
   "core:administratorDetails": {
-    "name": "[ADMINISTRATOR NAME]",
+    "name": "Admin istrator",
     "contactDetails": {
       "phone": false,
       "email": "admin@example.com",
@@ -13,7 +12,8 @@
     "settings",
     "files",
     "store",
-    "weather"
+    "weather",
+    "photos"
   ],
   "core:defaults": {
     "user": {
@@ -22,10 +22,11 @@
         "settings",
         "files",
         "store",
-        "weather"
+        "weather",
+        "photos"
       ]
     }
   },
-  "core:instance:name": "Placeholder name",
+  "core:instance:name": "YourDash Instance",
   "core:instance:message": "Placeholder message. Hey system admin, you should change this!"
 }

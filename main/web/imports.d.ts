@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-// Declare common file imports as types for the Typescript Language Server
+// Declare common file imports as shared for the Typescript Language Server
 
 declare module "*.module.css" {
   const content: { [className: string]: string };
