@@ -94,7 +94,15 @@ export default class PhotosBackend extends BackendModule {
                   case MEDIA_TYPE.VIDEO: {
                     // if a thumbnail already exists, return it
                     if (await this.api.core.fs.doesExist(childThumbnailPath)) {
+                      // Error could occur here
                       const dimensions = await core.image.getImageDimensions(childThumbnailPath);
+
+                      if (dimensions.width === 0 || dimensions.height === 0) {
+                        this.api.core.log.error(
+                          "app:photos",
+                          `Failed to get dimensions for video pre-generated thumbnail: ${childThumbnailPath}`,
+                        );
+                      }
 
                       return <MediaAlbumLargeGridItem<MEDIA_TYPE.VIDEO>>{
                         type: MEDIA_TYPE.VIDEO,
@@ -113,7 +121,7 @@ export default class PhotosBackend extends BackendModule {
                     }
 
                     // create the thumbnail
-                    console.log("creating video thumb for " + childPath);
+                    this.api.core.log.info("app:photos", "creating video thumb for " + childPath);
 
                     const thumbnailPath = (
                       await timeMethod(() => this.api.core.video.createThumbnail(childPath), "createVideoThumbnail")

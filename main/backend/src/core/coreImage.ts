@@ -43,14 +43,14 @@ export default class CoreImage {
   }
 
   getImageDimensions(filePath: string) {
-    return new Promise<{ width: number; height: number }>(async (resolve) => {
+    return new Promise<{ width: number; height: number }>(async (resolve, reject) => {
       try {
         const image = sharp(await fs.readFile(path.join(this.core.fs.ROOT_PATH, filePath)));
         const { width, height } = await image.metadata();
         resolve({ width, height });
       } catch (err) {
         this.core.log.error("image", "failed to get image dimensions for " + filePath);
-        resolve({ width: 0, height: 0 });
+        reject();
       }
     });
   }

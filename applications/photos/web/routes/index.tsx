@@ -16,6 +16,8 @@ const IndexPage: FC = () => {
     <>
       <Box className={styles.header}>
         <Image
+          disableSpinner={true}
+          disableLazyLoading={true}
           accessibleLabel={"Photos logo"}
           src={PHOTOS_LOGO}
           className={styles.brandLogo}
@@ -26,7 +28,9 @@ const IndexPage: FC = () => {
           level={3}
         />
       </Box>
-      <Albums />
+      <div className={styles.page}>
+        <Albums />
+      </div>
     </>
   );
 };

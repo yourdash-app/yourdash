@@ -60,20 +60,8 @@
   },
   "type": "module",
   "scripts": {
-    "start": "tsx ./src/main.ts --color=full --log-requests",
-    "dev": "tsx watch ./src/main.ts --dev --color=full --log-requests",
-    "debug": "tsx --inspect-brk ./src/main.ts --dev --color=full --log-requests"
-  },
-  "nodemonConfig": {
-    "ext": "ts",
-    "watch": [
-      "./src/**/*",
-      "./src/*",
-      "../../applications/**/backend/**/*",
-      "../../applications/**/backend/*"
-    ],
-    "delay": 256,
-    "colours": true,
-    "signal": "SIGTERM"
+    "start": "bun ./src/main.ts --color=full --log-requests",
+    "dev": "bun ./src/main.ts --dev --color=full --log-requests",
+    "debug": "bun --inspect-brk ./src/main.ts --dev --color=full --log-requests"
   }
 }

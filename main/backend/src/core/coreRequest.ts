@@ -58,7 +58,10 @@ export default class CoreRequest {
             this.core.log.debug("response_time", `${req.path} took ${time.formattedMicrosecconds}`);
           } catch (err) {
             this.core.log.error(`request_error`, new Error().stack);
-            this.core.log.error("request_error", `${req.path}; Request error not caught: ${err.message}`);
+            this.core.log.error(
+              "request_error",
+              `${req.path}; Request error not caught: ${err?.message || "No error message provided"}`,
+            );
           }
         },
       );
