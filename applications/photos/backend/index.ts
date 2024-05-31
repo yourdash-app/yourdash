@@ -11,6 +11,7 @@ import { AUTHENTICATED_IMAGE_TYPE } from "@yourdash/backend/src/core/coreImage.j
 import { FILESYSTEM_ENTITY_TYPE } from "@yourdash/backend/src/core/fileSystem/fileSystemEntity.js";
 import FileSystemFile from "@yourdash/backend/src/core/fileSystem/fileSystemFile.js";
 import BackendModule, { YourDashModuleArguments } from "@yourdash/backend/src/core/moduleManager/backendModule.js";
+import { chunk } from "@yourdash/shared/web/helpers/array.js";
 import path from "path";
 import { MediaAlbumLargeGridItem } from "../shared/types/endpoints/media/album/large-grid.js";
 import EndpointMediaRaw from "../shared/types/endpoints/media/album/raw.js";
@@ -43,11 +44,14 @@ export default class PhotosBackend extends BackendModule {
     this.api.request.setNamespace("app::photos");
 
     this.api.request.get(
-      "/media/album/large-grid/@/*",
+      "/media/album/large-grid/:page/@/*",
       async (req, res) => {
         const { sessionid } = req.headers;
         const itemPath = req.params["0"] as string;
+        const page = Number(req.params.page);
         const user = this.api.getUser(req);
+
+        if (typeof page !== "number" || page < 0) return res.json({ error: "a page must be provided" });
 
         const item = await this.api.core.fs.get(path.join(user.getFsPath(), itemPath));
 
@@ -63,10 +67,12 @@ export default class PhotosBackend extends BackendModule {
           this.api.core.log.success("app:photos", `Created thumbnails directory: ${thumbnailsDirectory}`);
         }
 
+        const PAGE_SIZE = 64;
+
         return res.json(
           (
             await Promise.all(
-              (await item.getChildren()).map(async (child) => {
+              chunk(await item.getChildren(), PAGE_SIZE)?.[page]?.map(async (child) => {
                 let childType: MEDIA_TYPE;
 
                 if (child.entityType === FILESYSTEM_ENTITY_TYPE.DIRECTORY) {

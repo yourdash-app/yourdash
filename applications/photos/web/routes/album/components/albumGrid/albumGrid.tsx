@@ -5,7 +5,7 @@
 
 import Separator from "@yourdash/uikit/components/separator/separator.js";
 import Spinner from "@yourdash/uikit/components/spinner/spinner";
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, ReactNode, useEffect, useRef, useState } from "react";
 import { MediaAlbumLargeGridItem } from "../../../../../shared/types/endpoints/media/album/large-grid";
 import { MEDIA_TYPE } from "../../../../../shared/types/mediaType";
 import splitItemsIntoRows from "../../../../lib/splitItemsIntoRows";
