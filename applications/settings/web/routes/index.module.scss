@@ -34,7 +34,8 @@
 .title {
   text-align: start;
   padding-left: var(#{$theme+$padding});
-  column-span: all;
+  grid-column-start: 1;
+  grid-column-end: 3;
 }
 
 .cardHeader {

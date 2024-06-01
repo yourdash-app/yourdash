@@ -80,6 +80,7 @@ const IndexCardsPage: FC<{ metadata?: EndpointResponseLoginInstanceMetadata }> =
         <TextInput
           accessibleName={"Username"}
           placeholder={"Username"}
+          type={"username"}
           defaultValue={csi.getUsername() || ""}
           onChange={(val) => {
             fetch(`${csi.getInstanceUrl()}/login/user/${val}`, {
