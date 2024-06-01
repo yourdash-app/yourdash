@@ -9,14 +9,14 @@ import Heading from "@yourdash/uikit/components/heading/heading.js";
 import Text from "@yourdash/uikit/components/text/text.js";
 import useResource from "@yourdash/web/src/lib/useResource.js";
 import { FC } from "react";
-import { EndpointAlbums } from "../../../../shared/types/endpoints/endpointAlbums.js";
+import { Albums } from "../../../../shared/types/endpoints/albums";
 import { useNavigate } from "react-router-dom";
 import path from "path-browserify";
 import styles from "./albums.module.scss";
 
 const Albums: FC = () => {
   const navigate = useNavigate();
-  const albums = useResource<EndpointAlbums>(() => csi.getJson("/app::photos/album/@/photos"), []);
+  const albums = useResource<Albums>(() => csi.getJson("/app::photos/album/@/photos"), []);
 
   if (!albums) return null;
 

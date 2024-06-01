@@ -6,7 +6,7 @@
       <script value="dev-backend" />
     </scripts>
     <node-interpreter value="project" />
-    <package-manager value="yarn" />
+    <package-manager value="$USER_HOME$/.nvm/versions/node/v21.7.3/bin/yarn" />
     <envs />
     <method v="2" />
   </configuration>
