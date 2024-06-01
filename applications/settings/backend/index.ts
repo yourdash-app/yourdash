@@ -85,5 +85,13 @@ export default class SettingsModule extends BackendModule {
     });
 
     this.api.request.setNamespace("app::settings");
+
+    this.api.request.get("/setting/:category/:setting", async (req, res) => {
+      const { category, setting } = req.params;
+
+      return res.json({
+        error: "not implemented",
+      });
+    });
   }
 }

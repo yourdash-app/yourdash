@@ -110,6 +110,7 @@ const IndexCardsPage: FC<{ metadata?: EndpointResponseLoginInstanceMetadata }> =
         <TextInput
           accessibleName={"Password"}
           placeholder={"Password"}
+          type={"password"}
           onChange={(val) => {
             setPassword(val);
           }}

@@ -44,3 +44,5 @@ ipcMain.on("remove-workspace", (event, workspace) => {
 
   return event.reply("remove-workspace", true);
 });
+
+// detect when a new application window is opened

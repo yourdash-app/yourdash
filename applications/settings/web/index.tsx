@@ -5,7 +5,7 @@
 
 import React from "react";
 import { Routes, Route } from "react-router";
-import IndexPage from "./routes/Index";
+import IndexPage from "./routes/index";
 import SessionIndexPage from "./pages/session/Index";
 import SettingsLayout from "./settingsLayout";
 import PersonalizationIndexPage from "./pages/personalization/Index";

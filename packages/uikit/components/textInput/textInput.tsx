@@ -20,6 +20,7 @@ const TextInput: FC<{
   defaultValue?: string;
   accessibleName: string;
   className?: string;
+  type?: string;
 }> = (props) => {
   return (
     <div className={clippy(styles.component, props.className)}>
@@ -30,11 +31,11 @@ const TextInput: FC<{
         />
       )}
       <input
+        type={props.type || "text"}
         aria-label={props.accessibleName}
         defaultValue={props.defaultValue}
         className={clippy(styles.input, !props.icon && styles.noIcon)}
         placeholder={props.placeholder}
-        type="text"
         onKeyUp={(e) => {
           props.onChange?.(e.currentTarget.value);
         }}
