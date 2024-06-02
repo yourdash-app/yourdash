@@ -692,7 +692,7 @@ export class Core {
       })
       .join("\n");
 
-    fsWriteFile(path.resolve(process.cwd(), "./fs/log.log"), LOG_OUTPUT, (err) => {
+    fsWriteFile(path.join(this.fs.ROOT_PATH, "./log.log"), LOG_OUTPUT, (err) => {
       if (err) {
         this.log.error("core", `Failed to save log file; ${err}`);
       }
