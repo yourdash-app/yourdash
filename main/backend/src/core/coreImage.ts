@@ -208,7 +208,7 @@ export default class CoreImage {
         );
 
         try {
-          return res.sendFile(resizedPath);
+          return res.sendFile(path.join(this.core.fs.ROOT_PATH, resizedPath));
         } catch (e) {
           return res.sendFile(path.resolve(process.cwd(), "./src/defaults/default_avatar.avif"));
         }
