@@ -5,8 +5,10 @@
 
 import YourDashPanel from "@yourdash/backend/src/core/helpers/panel.js";
 import BackendModule, { YourDashModuleArguments } from "@yourdash/backend/src/core/moduleManager/backendModule.js";
-import { promises as fs, readdirSync } from "fs";
+import { readdirSync } from "fs";
 import core from "@yourdash/backend/src/core/core.js";
+import EndpointSettingCategorySetting from "../shared/types/endpoints/setting/category/setting.js";
+import SETTING_TYPE from "../shared/types/settingType.js";
 
 /*
  *   Future settings plans
@@ -41,6 +43,8 @@ export default class SettingsModule extends BackendModule {
 
   public loadEndpoints() {
     super.loadEndpoints();
+
+    // legacy endpoints
     this.api.request.post("/app/settings/core/panel/position", async (req, res) => {
       const { username } = req.headers as {
         username: string;
@@ -89,8 +93,12 @@ export default class SettingsModule extends BackendModule {
     this.api.request.get("/setting/:category/:setting", async (req, res) => {
       const { category, setting } = req.params;
 
-      return res.json({
-        error: "not implemented",
+      const settingType: SETTING_TYPE = SETTING_TYPE.BOOLEAN;
+      const settingValue = (await this.api.getUser(req).getDatabase()).get(`settings:${category}:${setting}`);
+
+      return res.json(<EndpointSettingCategorySetting<SETTING_TYPE>>{
+        type: settingType,
+        value: settingValue,
       });
     });
   }
