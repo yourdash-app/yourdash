@@ -60,7 +60,7 @@ const IndexPage: FC = () => {
               />
               <Text text={"You're all up to date!"} />
             </Flex>
-            <Flex direction={"column"}>
+            <Flex direction={"row"}>
               <Text text={"Last checked 2 days ago"} />
               <Button
                 text={"Check for updates"}
@@ -68,8 +68,8 @@ const IndexPage: FC = () => {
                   return 0;
                 }}
               />
-              <Text text={"currently version: 1.0.0"} />
             </Flex>
+            <Text text={"currently version: 1.0.0"} />
           </Card>
         </div>
         <div className={styles.column}>
