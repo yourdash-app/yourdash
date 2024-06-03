@@ -27,33 +27,33 @@ const Card: FC<{
   if (props.onClick) {
     return (
       <>
-        <button
-          style={props.style}
-          className={clippy(styles.component, useLevelClass(level), props.containerClassName, styles.clickable)}
-          onClick={props.onClick}
-        >
-          <IncrementLevel>
+        <IncrementLevel>
+          <button
+            style={props.style}
+            className={clippy(styles.component, useLevelClass(level), props.containerClassName, styles.clickable)}
+            onClick={props.onClick}
+          >
             {props.header && <Box className={clippy(styles.header, props.headerClassName)}>{props.header}</Box>}
             <div className={clippy(styles.content, props.className)}>{props.children}</div>
             {props.actions && <Box className={clippy(styles.actions, props.actionsClassName)}>{props.actions}</Box>}
-          </IncrementLevel>
-        </button>
+          </button>
+        </IncrementLevel>
       </>
     );
   }
 
   return (
     <>
-      <div
-        style={props.style}
-        className={clippy(styles.component, useLevelClass(level), props.containerClassName)}
-      >
-        <IncrementLevel>
+      <IncrementLevel>
+        <div
+          style={props.style}
+          className={clippy(styles.component, useLevelClass(level), props.containerClassName)}
+        >
           {props.header && <Box className={clippy(styles.header, props.headerClassName)}>{props.header}</Box>}
           <div className={clippy(styles.content, props.className)}>{props.children}</div>
           {props.actions && <Box className={clippy(styles.actions, props.actionsClassName)}>{props.actions}</Box>}
-        </IncrementLevel>
-      </div>
+        </div>
+      </IncrementLevel>
     </>
   );
 };

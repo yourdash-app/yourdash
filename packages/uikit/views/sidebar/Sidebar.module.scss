@@ -1,0 +1,59 @@
+/*!
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
+@import "@yourdash/uikit/theme/themeValues";
+
+.component {
+  height: 100%;
+  background: var(#{$theme+$background});
+  border: 0;
+  padding: 0;
+  pointer-events: none;
+  opacity: 0;
+  width: 0;
+  transition: var(#{$theme+$transition});
+  flex-direction: column;
+
+  @media (max-width: $sizeTablet) {
+    width: 100%;
+    height: max-content;
+  }
+}
+
+@keyframes animate-in {
+  0% {
+    opacity: 0;
+    width: auto;
+    padding: var(#{$theme+$padding});
+    border: var(#{$theme+$border});
+    border-top: 0;
+    border-bottom: 0;
+    border-left: 0;
+  }
+  50% {
+    opacity: 0;
+    width: auto;
+    padding: var(#{$theme+$padding});
+    border: var(#{$theme+$border});
+    border-top: 0;
+    border-bottom: 0;
+    border-left: 0;
+  }
+  100% {
+    opacity: 1;
+    width: auto;
+    padding: var(#{$theme+$padding});
+    border: var(#{$theme+$border});
+    border-top: 0;
+    border-bottom: 0;
+    border-left: 0;
+  }
+}
+
+.open {
+  pointer-events: all;
+
+  animation: animate-in 0.25s ease-in-out forwards;
+}
