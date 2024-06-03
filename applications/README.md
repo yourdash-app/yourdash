@@ -6,7 +6,7 @@ Note: other applications can be copied into this folder to appear in the YourDas
 
 ## Development
 For first-time setup for a new application, create a `web/index.tsx` file and run `node packages/web/toolchain/generateApplicationRoutes.js`
-without this, the application would not render to the web-client as it needs to be imported bu
+without this, the application would not render to the web as it needs to be imported bu
 
 ## Directory Structure
 ```txt

@@ -19,7 +19,7 @@
     "dev-backend": "yarn --cwd ./main/backend dev",
     "start-backend": "yarn --cwd ./main/backend start --log-requests",
     "setup-project": "yarn && yarn --cwd main/web generate-application-routes",
-    "build-production": "yarn --cwd ./main/backend compile-all && yarn --cwd ./packages/web-client build",
+    "build-production": "yarn --cwd ./main/backend compile-all && yarn --cwd ./packages/web build",
     "dev-desktop": "yarn --cwd ./main/desktop/ start",
     "opengfx:dev": "yarn --cwd ./packages/opengfx-engine dev"
   },

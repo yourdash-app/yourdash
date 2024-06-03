@@ -24,7 +24,7 @@ This repository 'YourDash' is a collection of projects more commonly known as a 
 Some of the YourDash projects include
 
 - YourDash Backend (backend)
-- YourDash Web (web-client)
+- YourDash Web (web)
 - UIKit (uikit)
 
 ## Host Your Own YourDash Instance
@@ -85,7 +85,7 @@ yarn run yd:dev-backend
 ```
 #### Run YourDash web in dev mode
 ```shell
-yarn run yd:dev-web-client
+yarn run yd:dev-web
 ```
 
 ### Installation and setup for development (Windows)
@@ -104,7 +104,7 @@ yarn run yd:dev-backend
 ```
 #### Run YourDash web in dev mode
 ```shell
-yarn run yd:dev-web-client
+yarn run yd:dev-web
 ```
 
 #### Notes
