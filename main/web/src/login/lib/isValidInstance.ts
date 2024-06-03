@@ -31,6 +31,10 @@ export default function isValidInstance(instanceUrl: string): Promise<boolean> {
         }
 
         resolve(false);
+      })
+      .catch(() => {
+        // if the server does not respond return false
+        resolve(false);
       });
   });
 }

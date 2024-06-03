@@ -24,6 +24,11 @@ const Panel: FC = () => {
   function checkUrl() {
     isValidInstance(inputValue).then((bool) => {
       setIsValid(bool);
+
+      if (bool) {
+        csi.setInstanceUrl(inputValue);
+        navigate("/login");
+      }
     });
   }
 
@@ -58,26 +63,12 @@ const Panel: FC = () => {
           <Subtext text={"Invalid instance!"} />
         </>
       )}
-      {!isValid && (
-        <Button
-          text={"Check url"}
-          onClick={() => {
-            checkUrl();
-          }}
-        />
-      )}
-      {isValid && (
-        <>
-          <Subtext text={"Instance is valid!"} />
-          <Button
-            text={"Continue"}
-            onClick={() => {
-              csi.setInstanceUrl(inputValue);
-              navigate("/login");
-            }}
-          />
-        </>
-      )}
+      <Button
+        text={"Check url"}
+        onClick={() => {
+          checkUrl();
+        }}
+      />
     </Box>
   );
 };
