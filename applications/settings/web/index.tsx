@@ -1,10 +1,13 @@
 /*
- * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
- * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ * Copyright ©2024 Ewsgit<https://ewsgit.uk> and YourDash<https://yourdash.ewsgit.uk> contributors.
+ * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
+import Redirect from "@yourdash/uikit/components/redirect/redirect";
 import React from "react";
 import { Routes, Route } from "react-router";
+import CategoryNamePage from "./routes/cat/categoryName";
+import SingleSettingPage from "./routes/cat/singleSettingPage";
 import IndexPage from "./routes/index";
 import SessionIndexPage from "./pages/session/Index";
 import SettingsLayout from "./settingsLayout";
@@ -23,6 +26,24 @@ const SettingsRouter: React.FC = () => (
         index
         element={<IndexPage />}
       />
+      <Route path={"cat"}>
+        <Route
+          index
+          element={<Redirect to={"/app/a/settings/"} />}
+        />
+        {/* Category Name */}
+        <Route path={":categoryName"}>
+          <Route
+            index
+            element={<CategoryNamePage />}
+          />
+          <Route
+            path={":settingName"}
+            // TODO: implement this for showing just one setting
+            element={<SingleSettingPage />}
+          />
+        </Route>
+      </Route>
       <Route path={"profile"}>
         <Route
           index

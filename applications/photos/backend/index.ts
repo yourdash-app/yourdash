@@ -1,6 +1,6 @@
 /*
- * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
- * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ * Copyright ©2024 Ewsgit<https://ewsgit.uk> and YourDash<https://yourdash.ewsgit.uk> contributors.
+ * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
 // TODO: generate video thumbnails into a subfolder of the thumbnails cache folder and
@@ -101,7 +101,10 @@ export default class PhotosBackend extends BackendModule {
                     // if a thumbnail already exists, return it
                     if (await this.api.core.fs.doesExist(childThumbnailPath)) {
                       // Error could occur here
-                      const dimensions = await core.image.getImageDimensions(childThumbnailPath);
+                      const dimensions = (await core.image.getImageDimensions(childThumbnailPath)) || {
+                        width: 0,
+                        height: 0,
+                      };
 
                       if (dimensions.width === 0 || dimensions.height === 0) {
                         this.api.core.log.error(
@@ -133,7 +136,7 @@ export default class PhotosBackend extends BackendModule {
                       await timeMethod(() => this.api.core.video.createThumbnail(childPath), "createVideoThumbnail")
                     ).callbackResult;
 
-                    const dimensions = await core.image.getImageDimensions(thumbnailPath);
+                    const dimensions = (await core.image.getImageDimensions(thumbnailPath)) || { width: 0, height: 0 };
 
                     const resizedThumbnailPath = await this.api.core.image.resizeTo(
                       thumbnailPath,
@@ -169,7 +172,7 @@ export default class PhotosBackend extends BackendModule {
                   case MEDIA_TYPE.IMAGE: {
                     // use cached thumbnails if they exist
                     if (await this.api.core.fs.doesExist(childThumbnailPath)) {
-                      const dimensions = await core.image.getImageDimensions(childPath);
+                      const dimensions = (await core.image.getImageDimensions(childPath)) || { width: 0, height: 0 };
 
                       return <MediaAlbumLargeGridItem<MEDIA_TYPE.IMAGE>>{
                         type: MEDIA_TYPE.IMAGE,
@@ -192,7 +195,7 @@ export default class PhotosBackend extends BackendModule {
 
                     console.log("creating image thumb for " + childPath);
 
-                    const imageDimensions = await core.image.getImageDimensions(childPath);
+                    const imageDimensions = (await core.image.getImageDimensions(childPath)) || { width: 0, height: 0 };
                     console.log(childPath);
 
                     // create the thumbnail from the video's first frame
@@ -336,7 +339,7 @@ export default class PhotosBackend extends BackendModule {
           });
         }
         case MEDIA_TYPE.IMAGE: {
-          const dimensions = await core.image.getImageDimensions(item.path);
+          const dimensions = (await core.image.getImageDimensions(item.path)) || { width: 0, height: 0 };
 
           return res.json(<EndpointMediaRaw>{
             type: MEDIA_TYPE.IMAGE,

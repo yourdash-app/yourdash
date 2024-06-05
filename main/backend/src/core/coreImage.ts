@@ -1,6 +1,6 @@
 /*
- * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
- * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ * Copyright ©2024 Ewsgit<https://ewsgit.uk> and YourDash<https://yourdash.ewsgit.uk> contributors.
+ * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
 import crypto from "crypto";
@@ -50,7 +50,7 @@ export default class CoreImage {
         resolve({ width, height });
       } catch (err) {
         this.core.log.error("image", "failed to get image dimensions for " + filePath);
-        reject();
+        reject({ width: 0, height: 0 });
       }
     });
   }

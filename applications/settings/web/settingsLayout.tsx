@@ -1,6 +1,6 @@
 /*
- * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
- * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ * Copyright ©2024 Ewsgit<https://ewsgit.uk> and YourDash<https://yourdash.ewsgit.uk> contributors.
+ * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
 import Button from "@yourdash/uikit/components/button/button";
@@ -90,6 +90,19 @@ const SettingsLayout: React.FC = () => {
         <Button
           text={"Developer Tools"}
           onClick={() => navigate("/app/a/settings/developer")}
+        />
+        <Separator direction={"column"} />
+        <Heading
+          text={"Dev"}
+          level={4}
+        />
+        <Button
+          text={"Test Category"}
+          onClick={() => navigate("/app/a/settings/cat/test")}
+        />
+        <Button
+          text={"Test Solo Setting"}
+          onClick={() => navigate("/app/a/settings/cat/test/test-setting")}
         />
       </Sidebar>
       <Outlet />

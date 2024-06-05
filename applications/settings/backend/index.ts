@@ -1,12 +1,13 @@
 /*
- * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
- * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ * Copyright ©2024 Ewsgit<https://ewsgit.uk> and YourDash<https://yourdash.ewsgit.uk> contributors.
+ * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
 import YourDashPanel from "@yourdash/backend/src/core/helpers/panel.js";
 import BackendModule, { YourDashModuleArguments } from "@yourdash/backend/src/core/moduleManager/backendModule.js";
 import { readdirSync } from "fs";
 import core from "@yourdash/backend/src/core/core.js";
+import EndpointSettingsCategory from "../shared/types/endpoints/setting/category.js";
 import EndpointSettingCategorySetting from "../shared/types/endpoints/setting/category/setting.js";
 import SETTING_TYPE from "../shared/types/settingType.js";
 
@@ -17,8 +18,7 @@ import SETTING_TYPE from "../shared/types/settingType.js";
  *   - every setting will be put into a category
  *   - the frontend will request a category or list of categories from the server
  *   - the server will then return all settings in that category
- *   - setting shared include: SETTING_TYPE
- * */
+ */
 
 export default class SettingsModule extends BackendModule {
   installableApplications: string[] = [];
@@ -89,6 +89,26 @@ export default class SettingsModule extends BackendModule {
     });
 
     this.api.request.setNamespace("app::settings");
+
+    this.api.request.get("/cat/:categoryid", async (req, res) => {
+      const { categoryid } = req.params;
+
+      // TODO: implement this
+
+      return res.json(<EndpointSettingsCategory>{
+        displayName: "TEST CATEGORY NAME",
+        name: categoryid,
+        settings: [
+          {
+            displayName: "TEST SETTING NAME",
+            id: "test-setting",
+            type: SETTING_TYPE.BOOLEAN,
+            value: true,
+            description: "Hello world this is a description",
+          },
+        ],
+      });
+    });
 
     this.api.request.get("/setting/:category/:setting", async (req, res) => {
       const { category, setting } = req.params;

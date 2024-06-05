@@ -1,6 +1,6 @@
 /*
- * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
- * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ * Copyright ©2024 Ewsgit<https://ewsgit.uk> and YourDash<https://yourdash.ewsgit.uk> contributors.
+ * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
 import { APPLICATION_TYPE } from "@yourdash/shared/core/application.js";
@@ -663,13 +663,15 @@ export class Core {
     this.users.__internal__loadEndpoints();
     this.teams.__internal__loadEndpoints();
 
-    this.request.use(async (req, res) => {
-      this.log.info(
-        "request:404",
-        `${chalk.bgRed(chalk.black(" 404 "))} ${req.path} (the path was not answered by the backend)`,
-      );
-      return res.status(404).json({ error: "this endpoint does not exist!" });
-    });
+    if (!this.isDevMode) {
+      this.request.use(async (req, res) => {
+        this.log.info(
+          "request:404",
+          `${chalk.bgRed(chalk.black(" 404 "))} ${req.path} (the path was not answered by the backend)`,
+        );
+        return res.status(404).json({ error: "this endpoint does not exist!" });
+      });
+    }
   }
 
   // try not to use this method for production stability, instead prefer to reload a specific module if it works for your use-case.
