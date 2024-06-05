@@ -1,8 +1,9 @@
 /*
- * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
- * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ * Copyright ©2024 Ewsgit<https://ewsgit.uk> and YourDash<https://yourdash.ewsgit.uk> contributors.
+ * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
+import clippy from "@yourdash/shared/web/helpers/clippy";
 import Box from "@yourdash/uikit/components/box/box.js";
 import ButtonWithIcon from "@yourdash/uikit/components/buttonWithIcon/buttonWithIcon";
 import Heading from "@yourdash/uikit/components/heading/heading.js";
@@ -26,7 +27,7 @@ const ViewPathPage: FC = () => {
   const media = useResource<EndpointMediaRaw>(() => csi.getJson(`/app::photos/media/raw/@/${mediaPath}`), [mediaPath]);
 
   return (
-    <div className={styles.page}>
+    <div className={clippy(styles.page, media?.type === MEDIA_TYPE.VIDEO && styles.video)}>
       <div className={styles.header}>
         <ButtonWithIcon
           text={"Go Back"}

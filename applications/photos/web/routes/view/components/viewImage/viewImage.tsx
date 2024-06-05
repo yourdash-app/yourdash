@@ -1,6 +1,6 @@
 /*
- * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
- * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ * Copyright ©2024 Ewsgit<https://ewsgit.uk> and YourDash<https://yourdash.ewsgit.uk> contributors.
+ * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
 import Image from "@yourdash/uikit/components/image/image.js";
@@ -10,15 +10,17 @@ import PanAndZoom from "@yourdash/uikit/views/panAndZoom/panAndZoom";
 
 const ViewImage: FC<{ mediaUrl: string }> = ({ mediaUrl }) => {
   return (
-    <PanAndZoom>
-      <Image
-        className={styles.viewImage}
-        src={mediaUrl}
-        authenticatedImage
-        disableSpinner={false}
-        accessibleLabel={""}
-      />
-    </PanAndZoom>
+    <>
+      <PanAndZoom>
+        <Image
+          className={styles.viewImage}
+          src={mediaUrl}
+          authenticatedImage
+          disableSpinner={false}
+          accessibleLabel={""}
+        />
+      </PanAndZoom>
+    </>
   );
 };
 
