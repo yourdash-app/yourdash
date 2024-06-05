@@ -3,11 +3,10 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
 import Button from "@yourdash/uikit/components/button/button";
 import Heading from "@yourdash/uikit/components/heading/heading";
 import Separator from "@yourdash/uikit/components/separator/separator";
-import SideBar from "@yourdash/uikit/views/sideBar/SideBar";
+import Sidebar from "@yourdash/uikit/views/sidebar/Sidebar";
 import SidebarContainer from "@yourdash/uikit/views/sidebar/SidebarContainer";
 import * as React from "react";
 import { Outlet, useNavigate } from "react-router-dom";
@@ -66,7 +65,7 @@ const SettingsLayout: React.FC = () => {
     //   <Outlet />
     // </main>
     <SidebarContainer showSidebarByDefault>
-      <SideBar>
+      <Sidebar>
         <Heading
           level={2}
           text={"Settings"}
@@ -92,7 +91,7 @@ const SettingsLayout: React.FC = () => {
           text={"Developer Tools"}
           onClick={() => navigate("/app/a/settings/developer")}
         />
-      </SideBar>
+      </Sidebar>
       <Outlet />
     </SidebarContainer>
   );
