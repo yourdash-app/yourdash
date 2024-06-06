@@ -10,3 +10,5 @@
 /.idea/deployment.xml
 /bun.lockb
 .turbo
+/.idea/csv-editor.xml
+/.idea/csv-plugin.xml

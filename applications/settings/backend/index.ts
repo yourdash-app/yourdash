@@ -22,6 +22,7 @@ import SETTING_TYPE from "../shared/types/settingType.js";
 
 export default class SettingsModule extends BackendModule {
   installableApplications: string[] = [];
+  settingsCategories: <SettingsCategory>[] = []
 
   constructor(args: YourDashModuleArguments) {
     super(args);
