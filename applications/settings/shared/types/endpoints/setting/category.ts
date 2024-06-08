@@ -7,8 +7,9 @@ import ISetting from "../../setting.js";
 
 export default interface EndpointSettingsCategory {
   displayName: string;
-  name: string;
+  id: string;
   // UNUSED but possible future idea
   icon?: string;
+  description?: string;
   settings: ISetting<never>[];
 }

@@ -42,7 +42,7 @@ export default class CoreModuleManager {
   async loadModule(moduleName: string, modulePath: string): Promise<BackendModule | undefined> {
     // if the module is not valid or doesn't require a backend module, return
     if (!this.checkModule(modulePath)) {
-      return;
+      throw "Invalid module";
     }
 
     if (!(await this.core.fs.doesExist(`${modulePath}/index.ts`, true))) {
@@ -55,23 +55,18 @@ export default class CoreModuleManager {
     try {
       const mod = await import(`${fileUrl(modulePath)}/index.js`);
       if (!mod.default) {
-        this.core.log.error(
-          "module_manager",
-          `Unable to load ${moduleName}! This application does not contain a default export!`,
-        );
+        this.core.log.error("module_manager", `Unable to load ${moduleName}! This application does not contain a default export!`);
         return;
       }
 
       const initializedModule = new mod.default({ moduleName: moduleName, modulePath: modulePath });
       this.loadedModules.push(mod);
-      this.core.log.success(
-        "module_manager",
-        `Loaded module: "${moduleName}" in ${new Date().getTime() - startTime.getTime()}ms`,
-      );
+      this.core.log.success("module_manager", `Loaded module: "${moduleName}" in ${new Date().getTime() - startTime.getTime()}ms`);
+      this.loadedModules.push(initializedModule);
       return initializedModule;
     } catch (err) {
       this.core.log.error("module_manager", `Invalid module: "${moduleName}"`, err);
-      return null;
+      return;
     }
   }
 
@@ -120,7 +115,7 @@ export default class CoreModuleManager {
     return loadedApplications;
   }
 
-  getModule(moduleName: string): BackendModule | undefined {
-    return this.loadedModules.find((module) => module.moduleName === moduleName);
+  getModule<T extends BackendModule>(moduleName: string): T | undefined {
+    return this.loadedModules.find((module) => module.moduleName === moduleName) as T | undefined;
   }
 }

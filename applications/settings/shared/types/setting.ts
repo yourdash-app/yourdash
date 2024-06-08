@@ -14,4 +14,5 @@ export default interface ISetting<T extends SETTING_TYPE> {
   type: T;
   value: TsTypeForSettingType<T>;
   description?: string;
+  category: string;
 }

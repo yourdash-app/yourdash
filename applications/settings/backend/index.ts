@@ -7,9 +7,14 @@ import YourDashPanel from "@yourdash/backend/src/core/helpers/panel.js";
 import BackendModule, { YourDashModuleArguments } from "@yourdash/backend/src/core/moduleManager/backendModule.js";
 import { readdirSync } from "fs";
 import core from "@yourdash/backend/src/core/core.js";
+import SettingsCategory from "../shared/types/category.js";
 import EndpointSettingsCategory from "../shared/types/endpoints/setting/category.js";
 import EndpointSettingCategorySetting from "../shared/types/endpoints/setting/category/setting.js";
+import ISetting from "../shared/types/setting.js";
 import SETTING_TYPE from "../shared/types/settingType.js";
+import StoreBackendModule from "@yourdash/applications/store/backend/index.js";
+import { readFileSync } from "fs";
+import path from "path";
 
 /*
  *   Future settings plans
@@ -22,7 +27,7 @@ import SETTING_TYPE from "../shared/types/settingType.js";
 
 export default class SettingsModule extends BackendModule {
   installableApplications: string[] = [];
-  settingsCategories: <SettingsCategory>[] = []
+  settingsCategories: { [category: string]: SettingsCategory } = {};
 
   constructor(args: YourDashModuleArguments) {
     super(args);
@@ -42,8 +47,26 @@ export default class SettingsModule extends BackendModule {
     return this;
   }
 
-  public loadEndpoints() {
+  public async loadEndpoints() {
     super.loadEndpoints();
+
+    // get installed applications
+    const installedApplications = this.api.core.moduleManager.getModule<StoreBackendModule>("store").getInstalledApplications();
+
+    // rework this to create an object with an array for each category with an array of all it's settings
+    this.settingsCategories = {};
+
+    await Promise.all(
+      installedApplications.map(async (application) => {
+        const applicationSettings = JSON.parse(
+          readFileSync(path.join(process.cwd(), "../../applications/" + application + "/settings.json")).toString(),
+        ) as ISetting<SETTING_TYPE>[];
+
+        applicationSettings.forEach((setting) => {
+          console.log(setting);
+        });
+      }),
+    );
 
     // legacy endpoints
     this.api.request.post("/app/settings/core/panel/position", async (req, res) => {
@@ -78,10 +101,7 @@ export default class SettingsModule extends BackendModule {
       this.installableApplications.map(async (app) => {
         if (core.globalDb.get<string[]>("core:installedApplications").includes(app)) return;
 
-        core.globalDb.set("core:installedApplications", [
-          ...core.globalDb.get<string[]>("core:installedApplications"),
-          app,
-        ]);
+        core.globalDb.set("core:installedApplications", [...core.globalDb.get<string[]>("core:installedApplications"), app]);
 
         await this.api.core.restartInstance();
       });
@@ -94,21 +114,7 @@ export default class SettingsModule extends BackendModule {
     this.api.request.get("/cat/:categoryid", async (req, res) => {
       const { categoryid } = req.params;
 
-      // TODO: implement this
-
-      return res.json(<EndpointSettingsCategory>{
-        displayName: "TEST CATEGORY NAME",
-        name: categoryid,
-        settings: [
-          {
-            displayName: "TEST SETTING NAME",
-            id: "test-setting",
-            type: SETTING_TYPE.BOOLEAN,
-            value: true,
-            description: "Hello world this is a description",
-          },
-        ],
-      });
+      return res.json(<EndpointSettingsCategory>this.settingsCategories[categoryid]);
     });
 
     this.api.request.get("/setting/:category/:setting", async (req, res) => {

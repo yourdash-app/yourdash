@@ -22,7 +22,12 @@ export default class KeyValueDatabase extends KVD {
 
   async writeToDisk(path: string): Promise<boolean> {
     try {
-      await (await core.fs.getFile(path)).write(JSON.stringify(this.keys));
+      if (core.isDevMode) {
+        await (await core.fs.getFile(path)).write(JSON.stringify(this.keys, null, 2));
+      } else {
+        await (await core.fs.getFile(path)).write(JSON.stringify(this.keys));
+      }
+
       return true;
     } catch (_err) {
       return false;

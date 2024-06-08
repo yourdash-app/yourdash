@@ -1,0 +1,17 @@
+[
+  {
+    "id": "setting-test-id-1",
+    "type": "boolean",
+    "defaultValue": false
+  },
+  {
+    "id": "setting-test-id-string",
+    "type": "string",
+    "defaultValue": "default string value"
+  },
+  {
+    "id": "setting-test-id-date",
+    "type": "date",
+    "defaultValue": 0
+  }
+]

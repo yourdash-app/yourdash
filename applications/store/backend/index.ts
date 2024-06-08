@@ -21,6 +21,10 @@ export default class StoreModule extends BackendModule {
     super(args);
   }
 
+  getInstalledApplications(): string[] {
+    return this.api.core.globalDb.get<string[]>("core:installedApplications");
+  }
+
   public loadEndpoints() {
     super.loadEndpoints();
 

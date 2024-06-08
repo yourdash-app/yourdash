@@ -506,7 +506,9 @@ export class Core {
 
     try {
       console.time("core:load_modules");
-      loadedModules = (await this.moduleManager.loadInstalledApplications()).filter((x) => x !== undefined);
+      loadedModules = (await this.moduleManager.loadInstalledApplications()).filter(
+        (x) => x !== undefined && x !== null,
+      );
 
       console.timeEnd("core:load_modules");
       this.log.info("startup", "All modules loaded successfully");

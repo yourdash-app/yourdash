@@ -66,6 +66,10 @@ export default class CoreLog {
   }
 
   info(level: string, ...message: (string | Uint8Array)[]) {
+    if (level.length === 0) {
+      throw new Error("log level is empty");
+    }
+
     if (message.length === 0) {
       throw new Error("log message is empty");
     }
@@ -79,6 +83,10 @@ export default class CoreLog {
   }
 
   success(level: string, ...message: (string | Uint8Array)[]) {
+    if (level.length === 0) {
+      throw new Error("log level is empty");
+    }
+
     if (message.length === 0) {
       throw new Error("log message is empty");
     }
@@ -92,6 +100,10 @@ export default class CoreLog {
   }
 
   warning(level: string, ...message: (string | Uint8Array)[]) {
+    if (level.length === 0) {
+      throw new Error("log level is empty");
+    }
+
     if (message.length === 0) {
       throw new Error("log message is empty");
     }
@@ -122,6 +134,10 @@ export default class CoreLog {
   debug(level: string, ...message: (string | Uint8Array)[]) {
     if (!this.core.isDebugMode) {
       return this;
+    }
+
+    if (level.length === 0) {
+      throw new Error("log level is empty");
     }
 
     if (message.length === 0) {
