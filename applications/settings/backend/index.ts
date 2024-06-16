@@ -3,18 +3,17 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
+import StoreBackendModule from "@yourdash/applications/store/backend/index.js";
+import core from "@yourdash/backend/src/core/core.js";
 import YourDashPanel from "@yourdash/backend/src/core/helpers/panel.js";
 import BackendModule, { YourDashModuleArguments } from "@yourdash/backend/src/core/moduleManager/backendModule.js";
-import { readdirSync } from "fs";
-import core from "@yourdash/backend/src/core/core.js";
+import { readdirSync, readFileSync } from "fs";
+import path from "path";
 import SettingsCategory from "../shared/types/category.js";
 import EndpointSettingsCategory from "../shared/types/endpoints/setting/category.js";
 import EndpointSettingCategorySetting from "../shared/types/endpoints/setting/category/setting.js";
 import ISetting from "../shared/types/setting.js";
 import SETTING_TYPE from "../shared/types/settingType.js";
-import StoreBackendModule from "@yourdash/applications/store/backend/index.js";
-import { readFileSync } from "fs";
-import path from "path";
 
 /*
  *   Future settings plans
@@ -56,17 +55,30 @@ export default class SettingsModule extends BackendModule {
     // rework this to create an object with an array for each category with an array of all it's settings
     this.settingsCategories = {};
 
-    await Promise.all(
-      installedApplications.map(async (application) => {
-        const applicationSettings = JSON.parse(
-          readFileSync(path.join(process.cwd(), "../../applications/" + application + "/settings.json")).toString(),
-        ) as ISetting<SETTING_TYPE>[];
+    (
+      await Promise.all(
+        installedApplications.map(async (application) => {
+          let applicationSettingsFile: string;
 
-        applicationSettings.forEach((setting) => {
-          console.log(setting);
-        });
-      }),
-    );
+          try {
+            applicationSettingsFile =
+              readFileSync(path.join(process.cwd(), "../../applications/" + application + "/settings.json")).toString() || "[]";
+
+            if (applicationSettingsFile == "[]") {
+              return undefined;
+            }
+          } catch (err) {
+            return undefined;
+          }
+
+          return JSON.parse(applicationSettingsFile) as ISetting<SETTING_TYPE>[];
+        }),
+      )
+    )
+      .flat()
+      .map(async (settingCategory) => {
+        this.settingsCategories[settingCategory.category] = settingCategory;
+      });
 
     // legacy endpoints
     this.api.request.post("/app/settings/core/panel/position", async (req, res) => {
@@ -121,7 +133,7 @@ export default class SettingsModule extends BackendModule {
       const { category, setting } = req.params;
 
       const settingType: SETTING_TYPE = SETTING_TYPE.BOOLEAN;
-      const settingValue = (await this.api.getUser(req).getDatabase()).get(`settings:${category}:${setting}`);
+      const settingValue = (await this.api.getUser(req).getDatabase()).get(`settings:${category}:${setting}`) || undefined;
 
       return res.json(<EndpointSettingCategorySetting<SETTING_TYPE>>{
         type: settingType,
