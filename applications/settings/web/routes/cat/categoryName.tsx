@@ -12,33 +12,45 @@ import React from "react";
 import { useParams } from "react-router";
 import EndpointSettingsCategory from "../../../shared/types/endpoints/setting/category";
 import SETTING_TYPE from "../../../shared/types/settingType";
-import BaseSetting from "../../components/setting/baseSetting";
 import BooleanSetting from "../../components/setting/BooleanSetting";
+import StringSetting from "../../components/setting/StringSetting";
 
 const CategoryNamePage: React.FC = () => {
   const { categoryName } = useParams();
 
-  const categoryData = useResource(
-    () => csi.getJson<EndpointSettingsCategory>(`/app::settings/cat/${categoryName}`),
-    [categoryName],
-  );
+  const categoryData = useResource(() => csi.getJson<EndpointSettingsCategory>(`/app::settings/cat/${categoryName}`), [categoryName]);
 
   return (
     <div>
       <SidebarToggleButton />
-      <Heading text={`Category Name: ${categoryName}`} />
+      <Heading text={categoryData?.id || categoryName || "Invalid category name"} />
       {!categoryData ? (
         <Spinner />
       ) : (
-        categoryData.settings.map((setting) => {
+        Object.keys(categoryData.settings).map((settingId) => {
+          console.log(settingId);
+          const setting = categoryData.settings[settingId];
+
           switch (setting.type) {
             case SETTING_TYPE.BOOLEAN:
-              return <BooleanSetting setting={setting} />;
+              return (
+                <BooleanSetting
+                  key={settingId}
+                  setting={setting}
+                />
+              );
+            case SETTING_TYPE.STRING:
+              return (
+                <StringSetting
+                  key={settingId}
+                  setting={setting}
+                />
+              );
           }
 
           return (
             <>
-              <div>Setting: {JSON.stringify(setting)}</div>
+              <div key={setting.id}>Setting: {JSON.stringify(setting)}</div>
             </>
           );
         })

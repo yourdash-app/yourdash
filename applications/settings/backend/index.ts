@@ -75,10 +75,87 @@ export default class SettingsModule extends BackendModule {
         }),
       )
     )
-      .flat()
-      .map(async (settingCategory) => {
-        this.settingsCategories[settingCategory.category] = settingCategory;
+      .flat() // array of all categories
+      .map(async (setting) => {
+        // validate setting
+        if (setting === undefined) {
+          return undefined;
+        }
+        if (setting.category === undefined) {
+          return undefined;
+        }
+        if (setting.id === undefined) {
+          return undefined;
+        }
+        if (setting.type === undefined) {
+          return undefined;
+        }
+        // noinspection PointlessBooleanExpressionJS
+        if (setting.value === undefined) {
+          return undefined;
+        }
+        if (setting.type === SETTING_TYPE.BOOLEAN && typeof setting.value !== "boolean") {
+          this.api.core.log.error(
+            "app::settings",
+            `Setting '${setting.id}' has the type '${typeof setting.value}' but it's default value is expected to be of type 'boolean'`,
+          );
+          return undefined;
+        }
+        if (setting.type === SETTING_TYPE.STRING && typeof setting.value !== "string") {
+          this.api.core.log.error(
+            "app::settings",
+            `Setting '${setting.id}' has the type '${typeof setting.value}' but it's default value is expected to be of type 'string'`,
+          );
+          return undefined;
+        }
+        if (setting.type === SETTING_TYPE.DATE && typeof setting.value !== "number") {
+          this.api.core.log.error(
+            "app::settings",
+            `Setting '${setting.id}' has the type '${typeof setting.value}' but it's default value is expected to be of type 'number' (unix epoch time)`,
+          );
+          return undefined;
+        }
+        if (setting.type === SETTING_TYPE.INT && typeof setting.value !== "number" && !setting.type.toString().includes(".")) {
+          this.api.core.log.error(
+            "app::settings",
+            `Setting '${setting.id}' has the type '${typeof setting.value}' but it's default value is expected to be of type 'number' (must contain a decimal)`,
+          );
+          return undefined;
+        }
+        if (setting.type === SETTING_TYPE.FILE && typeof setting.value !== "string") {
+          this.api.core.log.error(
+            "app::settings",
+            `Setting '${setting.id}' has the type '${typeof setting.value}' but it's default value is expected to be of type 'string'`,
+          );
+          return undefined;
+        }
+        if (
+          setting.type === SETTING_TYPE.COLOR &&
+          typeof setting.value !== "string" &&
+          (!setting.type.toString().includes("#") || !(setting.type.toString().includes("rgb(") && setting.type.toString().includes(")")))
+        ) {
+          this.api.core.log.error(
+            "app::settings",
+            `Setting '${setting.id}' has the type '${typeof setting.value}' but it's default value is expected to be of type 'string' (css 'hex', 'rgb' or 'rgba')`,
+          );
+          return undefined;
+        }
+
+        // TODO: finish settings default value checks
+
+        if (!this.settingsCategories[setting.category]) {
+          this.settingsCategories[setting.category] = {
+            settings: {},
+            id: setting.category,
+            description: "Settings category descriptions are not yet implemented!",
+            displayName: setting.category,
+          };
+        }
+
+        this.settingsCategories[setting.category].settings[setting.id] = setting;
       });
+
+    this.api.core.log.info("app::settings", "Loaded settings from all applications.");
 
     // legacy endpoints
     this.api.request.post("/app/settings/core/panel/position", async (req, res) => {

@@ -22,7 +22,7 @@ const BaseSetting: React.FC<{ children: React.ReactNode | React.ReactNode[]; set
       <Flex direction={"column"}>
         <Heading
           level={5}
-          text={setting.displayName}
+          text={setting.displayName || setting.id}
         />
         {setting.description && <Subtext text={setting.description} />}
         <Text text={setting.type} />

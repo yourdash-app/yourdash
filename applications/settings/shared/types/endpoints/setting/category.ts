@@ -11,5 +11,5 @@ export default interface EndpointSettingsCategory {
   // UNUSED but possible future idea
   icon?: string;
   description?: string;
-  settings: ISetting<never>[];
+  settings: { [key: string]: ISetting<never> };
 }

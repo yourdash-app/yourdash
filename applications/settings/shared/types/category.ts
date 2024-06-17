@@ -10,5 +10,5 @@ export default interface SettingsCategory {
   id: string;
   displayName: string;
   description: string;
-  settings: ISetting<SETTING_TYPE>[];
+  settings: { [key: string]: ISetting<SETTING_TYPE> };
 }

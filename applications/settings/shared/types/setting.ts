@@ -8,7 +8,8 @@ import TsTypeForSettingType from "./tsTypeForSettingType.js";
 
 export default interface ISetting<T extends SETTING_TYPE> {
   id: string;
-  displayName: string;
+  // use the id if no display name is set
+  displayName?: string;
   // POSSIBLE FUTURE IDEA
   icon?: string;
   type: T;

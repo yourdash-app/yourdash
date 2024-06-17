@@ -1,13 +1,13 @@
 /*
- * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
- * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ * Copyright ©2024 Ewsgit<https://ewsgit.uk> and YourDash<https://yourdash.ewsgit.uk> contributors.
+ * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
 import clippy from "@yourdash/shared/web/helpers/clippy.js";
 import Icon from "../icon/icon.js";
 import { UKIcon } from "../icon/iconDictionary.js";
 import styles from "./textInput.module.scss";
-import { FC } from "react";
+import { FC, useState } from "react";
 
 // TODO: maybe remove onEnter for onSubmit
 
@@ -22,6 +22,8 @@ const TextInput: FC<{
   className?: string;
   type?: string;
 }> = (props) => {
+  const [value, setValue] = useState(props.defaultValue);
+
   return (
     <div className={clippy(styles.component, props.className)}>
       {props.icon && (
@@ -33,7 +35,7 @@ const TextInput: FC<{
       <input
         type={props.type || "text"}
         aria-label={props.accessibleName}
-        defaultValue={props.defaultValue}
+        value={value}
         className={clippy(styles.input, !props.icon && styles.noIcon)}
         placeholder={props.placeholder}
         onKeyUp={(e) => {
@@ -41,6 +43,8 @@ const TextInput: FC<{
         }}
         onChange={(e) => props.onSubmit?.(e.currentTarget.value)}
         onKeyDown={(e) => {
+          setValue(e.currentTarget.value);
+
           if (e.key === "Enter") {
             e.preventDefault();
 

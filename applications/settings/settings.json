@@ -2,16 +2,19 @@
   {
     "id": "setting-test-id-1",
     "type": "boolean",
-    "defaultValue": false
+    "value": false,
+    "category": "test"
   },
   {
     "id": "setting-test-id-string",
     "type": "string",
-    "defaultValue": "default string value"
+    "value": "default string value",
+    "category": "test"
   },
   {
     "id": "setting-test-id-date",
     "type": "date",
-    "defaultValue": 0
+    "value": 0,
+    "category": "test"
   }
 ]
