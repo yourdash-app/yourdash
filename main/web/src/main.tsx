@@ -14,7 +14,6 @@ import { createBrowserRouter } from "react-router-dom";
 import loadable from "@loadable/component";
 import ApplicationRedirectToDash from "./app/ApplicationRedirectToDash.jsx";
 import AppLayout from "./app/AppLayout";
-import ComingSoon from "@yourdash/chiplet/views/ComingSoon.jsx";
 import LoginIndexPagePreload from "./login/index.preload.js";
 import LoginInstancePage from "./login/instance/index.js";
 import Navigation from "./root/components/navigation/navigation.js";
