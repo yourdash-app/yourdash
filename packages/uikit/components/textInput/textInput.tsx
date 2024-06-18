@@ -7,7 +7,7 @@ import clippy from "@yourdash/shared/web/helpers/clippy.js";
 import Icon from "../icon/icon.js";
 import { UKIcon } from "../icon/iconDictionary.js";
 import styles from "./textInput.module.scss";
-import { FC, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 
 // TODO: maybe remove onEnter for onSubmit
 
@@ -18,11 +18,23 @@ const TextInput: FC<{
   icon?: UKIcon;
   onEnter?: (value: string) => void;
   defaultValue?: string;
+  value?: string;
   accessibleName: string;
   className?: string;
   type?: string;
 }> = (props) => {
-  const [value, setValue] = useState(props.defaultValue);
+  const ref = useRef<HTMLInputElement>(null);
+  const [value, setValue] = useState(props.defaultValue || "");
+
+  useEffect(() => {
+    if (props.value) setValue(props.value);
+  }, [props.value]);
+
+  useEffect(() => {
+    if (!ref.current) return;
+
+    ref.current.value = value;
+  }, [value]);
 
   return (
     <div className={clippy(styles.component, props.className)}>
@@ -33,18 +45,17 @@ const TextInput: FC<{
         />
       )}
       <input
+        ref={ref}
         type={props.type || "text"}
         aria-label={props.accessibleName}
-        value={value}
         className={clippy(styles.input, !props.icon && styles.noIcon)}
         placeholder={props.placeholder}
         onKeyUp={(e) => {
+          setValue(e.currentTarget.value);
           props.onChange?.(e.currentTarget.value);
         }}
         onChange={(e) => props.onSubmit?.(e.currentTarget.value)}
         onKeyDown={(e) => {
-          setValue(e.currentTarget.value);
-
           if (e.key === "Enter") {
             e.preventDefault();
 

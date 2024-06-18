@@ -16,10 +16,11 @@
     <inspection_tool class="HtmlUnknownAttribute" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="myValues">
         <value>
-          <list size="3">
+          <list size="4">
             <item index="0" class="java.lang.String" itemvalue="license" />
             <item index="1" class="java.lang.String" itemvalue="class" />
             <item index="2" class="java.lang.String" itemvalue="className" />
+            <item index="3" class="java.lang.String" itemvalue="ref" />
           </list>
         </value>
       </option>
