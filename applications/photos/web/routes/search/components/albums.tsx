@@ -7,7 +7,7 @@ import csi from "@yourdash/csi/csi.js";
 import Card from "@yourdash/uikit/components/card/card.js";
 import Heading from "@yourdash/uikit/components/heading/heading.js";
 import Text from "@yourdash/uikit/components/text/text.js";
-import useResource from "@yourdash/web/src/lib/useResource.js";
+import useResource from "@yourdash/csi/useResource";
 import { FC } from "react";
 import { Albums } from "../../../../shared/types/endpoints/albums";
 import { useNavigate } from "react-router-dom";

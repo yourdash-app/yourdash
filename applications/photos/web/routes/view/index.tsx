@@ -10,7 +10,7 @@ import Heading from "@yourdash/uikit/components/heading/heading.js";
 import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary.js";
 import IconButton from "@yourdash/uikit/components/iconButton/iconButton";
 import PanAndZoom from "@yourdash/uikit/views/panAndZoom/panAndZoom.js";
-import useResource from "@yourdash/web/src/lib/useResource.js";
+import useResource from "@yourdash/csi/useResource";
 import { FC } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import EndpointMediaRaw from "../../../shared/types/endpoints/media/album/raw.js";

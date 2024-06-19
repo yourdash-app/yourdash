@@ -12,7 +12,7 @@ import Heading from "@yourdash/uikit/components/heading/heading";
 import Redirect from "@yourdash/uikit/components/redirect/redirect";
 import Subtext from "@yourdash/uikit/components/subtext/subtext";
 import Text from "@yourdash/uikit/components/text/text";
-import useResource from "../../lib/useResource";
+import useResource from "@yourdash/csi/useResource";
 import styles from "./index.module.scss";
 import { FC } from "react";
 import { useNavigate } from "react-router";

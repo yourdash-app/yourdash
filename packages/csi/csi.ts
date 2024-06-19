@@ -406,7 +406,9 @@ class __internalClientServerInteraction {
 
   // returns the Websocket version of the URL of the current instance
   getInstanceWebsocketUrl(): string {
-    return localStorage.getItem("instance_url") || "";
+    console.log(localStorage.getItem("instance_url"));
+
+    return localStorage.getItem("instance_url")?.replace("http", "ws").replace("https", "wss") || "";
   }
 
   // returns the list of saved instance's urls

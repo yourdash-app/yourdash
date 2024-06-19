@@ -6,7 +6,7 @@
 import csi from "@yourdash/csi/csi.js";
 import { LoginLayout } from "@yourdash/shared/core/login/loginLayout.js";
 import Spinner from "@yourdash/uikit/components/spinner/spinner.js";
-import useResource from "../lib/useResource";
+import useResource from "@yourdash/csi/useResource";
 import IndexCardsPage from "./index.cards.js";
 import styles from "./index.module.scss";
 import { FC, Suspense } from "react";

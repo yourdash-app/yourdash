@@ -5,6 +5,7 @@
 
 import chalk from "chalk";
 import { Core } from "./core.js";
+import WebsocketManagerServer from "./websocketManager/websocketManagerServer.js";
 
 export enum LOG_TYPE {
   INFO,
@@ -23,6 +24,7 @@ export default class CoreLog {
     level: string;
     message: (string | Uint8Array)[];
   }[] = [];
+  private websocketServer: WebsocketManagerServer;
 
   constructor(core: Core) {
     this.core = core;
@@ -62,6 +64,8 @@ export default class CoreLog {
 
     process.stdout.write(message.slice(1).join(" ").toString() + "\n");
 
+    this.websocketServer.emit(type.toString(), [level, ...message]);
+
     return this;
   }
 
@@ -74,12 +78,7 @@ export default class CoreLog {
       throw new Error("log message is empty");
     }
 
-    return this.log(
-      LOG_TYPE.INFO,
-      level,
-      chalk.bold(`${chalk.white("[")}${chalk.blue("INF")}${chalk.white("]")}`),
-      ...message,
-    );
+    return this.log(LOG_TYPE.INFO, level, chalk.bold(`${chalk.white("[")}${chalk.blue("INF")}${chalk.white("]")}`), ...message);
   }
 
   success(level: string, ...message: (string | Uint8Array)[]) {
@@ -91,12 +90,7 @@ export default class CoreLog {
       throw new Error("log message is empty");
     }
 
-    return this.log(
-      LOG_TYPE.SUCCESS,
-      level,
-      chalk.bold(`${chalk.white("[")}${chalk.green("SUC")}${chalk.white("]")}`),
-      ...message,
-    );
+    return this.log(LOG_TYPE.SUCCESS, level, chalk.bold(`${chalk.white("[")}${chalk.green("SUC")}${chalk.white("]")}`), ...message);
   }
 
   warning(level: string, ...message: (string | Uint8Array)[]) {
@@ -108,12 +102,7 @@ export default class CoreLog {
       throw new Error("log message is empty");
     }
 
-    return this.log(
-      LOG_TYPE.WARNING,
-      level,
-      chalk.bold(`${chalk.white("[")}${chalk.yellow("WAR")}${chalk.white("]")}`),
-      ...message,
-    );
+    return this.log(LOG_TYPE.WARNING, level, chalk.bold(`${chalk.white("[")}${chalk.yellow("WAR")}${chalk.white("]")}`), ...message);
   }
 
   error(level: string, ...message: (string | Uint8Array)[]) {
@@ -123,12 +112,7 @@ export default class CoreLog {
 
     console.log(new Error().stack);
 
-    return this.log(
-      LOG_TYPE.ERROR,
-      level,
-      chalk.bold(`${chalk.white("[")}${chalk.red("ERR")}${chalk.white("]")}`),
-      ...message,
-    );
+    return this.log(LOG_TYPE.ERROR, level, chalk.bold(`${chalk.white("[")}${chalk.red("ERR")}${chalk.white("]")}`), ...message);
   }
 
   debug(level: string, ...message: (string | Uint8Array)[]) {
@@ -144,11 +128,10 @@ export default class CoreLog {
       throw new Error("log message is empty");
     }
 
-    return this.log(
-      LOG_TYPE.DEBUG,
-      level,
-      chalk.bold(`${chalk.white("[")}${chalk.magenta("DBG")}${chalk.white("]")}`),
-      ...message,
-    );
+    return this.log(LOG_TYPE.DEBUG, level, chalk.bold(`${chalk.white("[")}${chalk.magenta("DBG")}${chalk.white("]")}`), ...message);
+  }
+
+  __internal__loadEndpoints() {
+    this.websocketServer = this.core.websocketManager.createServer("/core::log/");
   }
 }

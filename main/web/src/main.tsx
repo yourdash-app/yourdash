@@ -26,6 +26,7 @@ import ProjectsIndexPage from "./root/projects/Index";
 import ChipletRootIntegration from "@yourdash/chiplet/RootIntegration";
 import LinkerDesktopClientStartupPage from "./root/linkerDesktopClientStartup/Index";
 import HostedApplicationRouter from "./app/HostedApplicationRouter";
+import WebsocketToasts from "./WebsocketToasts";
 
 const AppRouter = loadable(() => import("./app/AppRouter"));
 const DocsRouter = loadable(() => import("./root/docs/DocsRouter"));
@@ -35,6 +36,7 @@ function main() {
   ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <ChipletRootIntegration>
       <UIKitRoot>
+        <WebsocketToasts />
         <RouterProvider
           router={createBrowserRouter(
             createRoutesFromElements(

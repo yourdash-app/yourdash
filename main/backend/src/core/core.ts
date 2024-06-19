@@ -279,10 +279,7 @@ export class Core {
       next();
     });
 
-    this.log.success(
-      "core:requests",
-      `Started the requests logger${options && " (logging options requests is also enabled)"}`,
-    );
+    this.log.success("core:requests", `Started the requests logger${options && " (logging options requests is also enabled)"}`);
   }
 
   private async loadCoreEndpoints() {
@@ -388,9 +385,7 @@ export class Core {
 
       const user = new YourDashUser(username);
 
-      const savedHashedPassword = await (
-        await this.fs.getFile(path.join(user.path, "core/password.enc"))
-      ).read("string");
+      const savedHashedPassword = await (await this.fs.getFile(path.join(user.path, "core/password.enc"))).read("string");
 
       return compareHashString(savedHashedPassword, password)
         .then(async (result) => {
@@ -428,19 +423,14 @@ export class Core {
         try {
           const user = new YourDashUser(username);
           // @ts-ignore
-          this.users.__internal__getSessionsDoNotUseOutsideOfCore()[username] =
-            (await user.getAllLoginSessions()) || [];
+          this.users.__internal__getSessionsDoNotUseOutsideOfCore()[username] = (await user.getAllLoginSessions()) || [];
         } catch (_err) {
           this.log.info("login", `User with username ${username} not found`);
           return res.json({ error: true });
         }
       }
 
-      if (
-        this.users
-          .__internal__getSessionsDoNotUseOutsideOfCore()
-          [username].find((session) => session.sessionToken === token)
-      ) {
+      if (this.users.__internal__getSessionsDoNotUseOutsideOfCore()[username].find((session) => session.sessionToken === token)) {
         return res.json({ success: true });
       }
 
@@ -461,9 +451,7 @@ export class Core {
     this.request.get("/login/instance/metadata", async (_req, res) => {
       return res.json(<EndpointResponseLoginInstanceMetadata>{
         title: this.globalDb.get("core:instance:name") || "Placeholder name",
-        message:
-          this.globalDb.get("core:instance:message") ||
-          "Placeholder message. Hey system admin, you should change this!",
+        message: this.globalDb.get("core:instance:message") || "Placeholder message. Hey system admin, you should change this!",
         loginLayout: this.globalDb.get("core:instance:login:layout") || LoginLayout.CARDS,
       });
     });
@@ -475,19 +463,25 @@ export class Core {
     try {
       this.webdav.__internal__loadEndpoints();
     } catch (e) {
-      this.log.error("webdav", "Error caught in loadWebdavEndpoints", e);
+      this.log.error("webdav", "Error caught in webdav.__internal__loadEndpoints(); ", e);
     }
 
     try {
       this.image.__internal__loadEndpoints();
     } catch (e) {
-      this.log.error("image", "Error caught in loadImageEndpoints", e);
+      this.log.error("image", "Error caught in image.__internal__loadEndpoints(); ", e);
     }
 
     try {
       this.video.__internal__loadEndpoints();
     } catch (e) {
-      this.log.error("image", "Error caught in loadImageEndpoints", e);
+      this.log.error("video", "Error caught in video.__internal__loadEndpoints(); ", e);
+    }
+
+    try {
+      this.log.__internal__loadEndpoints();
+    } catch (e) {
+      this.log.error("log", "Error caught in log.__internal__loadEndpoints(); ", e);
     }
 
     try {
@@ -506,9 +500,7 @@ export class Core {
 
     try {
       console.time("core:load_modules");
-      loadedModules = (await this.moduleManager.loadInstalledApplications()).filter(
-        (x) => x !== undefined && x !== null,
-      );
+      loadedModules = (await this.moduleManager.loadInstalledApplications()).filter((x) => x !== undefined && x !== null);
 
       console.timeEnd("core:load_modules");
       this.log.info("startup", "All modules loaded successfully");
@@ -550,8 +542,7 @@ export class Core {
           const user = this.users.get(username);
 
           // @ts-ignore
-          this.users.__internal__getSessionsDoNotUseOutsideOfCore()[username] =
-            (await user.getAllLoginSessions()) || [];
+          this.users.__internal__getSessionsDoNotUseOutsideOfCore()[username] = (await user.getAllLoginSessions()) || [];
 
           const database = await (await this.fs.getFile(path.join(user.path, "core/user_db.json"))).read("string");
 
@@ -566,11 +557,7 @@ export class Core {
         }
       }
 
-      if (
-        this.users
-          .__internal__getSessionsDoNotUseOutsideOfCore()
-          [username]?.find((session) => session.sessionToken === token)
-      ) {
+      if (this.users.__internal__getSessionsDoNotUseOutsideOfCore()[username]?.find((session) => session.sessionToken === token)) {
         return next();
       }
 
@@ -623,9 +610,7 @@ export class Core {
 
     this.request.get("/core/applications", async (_req, res) => {
       return res.json(<EndpointResponseCoreApplications>{
-        applications: (
-          await (await this.fs.getDirectory(path.join(process.cwd(), "../../applications/"))).getChildren()
-        ).map((app) => {
+        applications: (await (await this.fs.getDirectory(path.join(process.cwd(), "../../applications/"))).getChildren()).map((app) => {
           return {
             id: path.basename(app.path) || "unknown",
             // TODO: support other types of applications
@@ -667,10 +652,7 @@ export class Core {
 
     if (!this.isDevMode) {
       this.request.use(async (req, res) => {
-        this.log.info(
-          "request:404",
-          `${chalk.bgRed(chalk.black(" 404 "))} ${req.path} (the path was not answered by the backend)`,
-        );
+        this.log.info("request:404", `${chalk.bgRed(chalk.black(" 404 "))} ${req.path} (the path was not answered by the backend)`);
         return res.status(404).json({ error: "this endpoint does not exist!" });
       });
     }
@@ -704,16 +686,14 @@ export class Core {
 
     try {
       this.globalDb
-        .__internal__doNotUseOnlyIntendedForShutdownSequenceWriteToDisk(
-          path.resolve(process.cwd(), "./fs/global_database.json"),
-        )
+        .__internal__doNotUseOnlyIntendedForShutdownSequenceWriteToDisk(path.resolve(process.cwd(), "./fs/global_database.json"))
         .then(() => {
           this.log.info("global_db", "Successfully saved global database");
         });
     } catch (e) {
       this.log.error(
         "global_db",
-        "[EXTREME SEVERITY] Shutdown Error! failed to save global database. User data will have been lost! (approx < past 5 minutes)",
+        "[EXTREME SEVERITY] Shutdown Error! failed to save global database. User data will have been lost! (approx <= past 5 minutes)",
       );
     }
 

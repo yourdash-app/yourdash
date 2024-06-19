@@ -6,7 +6,7 @@
 import csi from "@yourdash/csi/csi.js";
 import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary.js";
 import TextInput from "@yourdash/uikit/components/textInput/textInput.js";
-import useResource from "@yourdash/web/src/lib/useResource.js";
+import useResource from "@yourdash/csi/useResource";
 import React, { FC } from "react";
 import EndpointMediaSearch from "../../../shared/types/endpoints/media/search.js";
 import Albums from "./components/albums.js";

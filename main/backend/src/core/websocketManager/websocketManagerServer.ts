@@ -25,13 +25,15 @@ export default class WebsocketManagerServer {
     this.server.on("connection", (socketConnection) => {
       // TODO: check for auth (token, username)
 
-      this.onConnectionListeners.forEach((listener) =>
-        listener(new WebsocketManagerConnection(this.server, socketConnection)),
-      );
+      this.onConnectionListeners.forEach((listener) => listener(new WebsocketManagerConnection(this.server, socketConnection)));
     });
   }
 
   onConnection(cb: (connection: WebsocketManagerConnection) => void) {
     this.onConnectionListeners.push(cb);
+  }
+
+  emit(channel: string, ...args: unknown[]) {
+    this.server.emit(channel, args);
   }
 }

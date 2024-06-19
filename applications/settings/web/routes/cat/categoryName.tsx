@@ -7,7 +7,7 @@ import csi from "@yourdash/csi/csi";
 import Heading from "@yourdash/uikit/components/heading/heading";
 import Spinner from "@yourdash/uikit/components/spinner/spinner";
 import SidebarToggleButton from "@yourdash/uikit/views/sidebar/SidebarToggleButton";
-import useResource from "@yourdash/web/src/lib/useResource";
+import useResource from "@yourdash/csi/useResource";
 import React from "react";
 import { useParams } from "react-router";
 import EndpointSettingsCategory from "../../../shared/types/endpoints/setting/category";
