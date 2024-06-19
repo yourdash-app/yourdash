@@ -6,7 +6,7 @@
 import React from "react";
 
 const ToastContext = React.createContext({
-  showToast: (data: { type: "success" | "error" | "warning" | "info"; content: string; persist?: boolean }) => {
+  showToast: (data: { type: "success" | "error" | "warning" | "info" | "debug"; content: string; persist?: boolean }) => {
     /* empty */
   },
 });

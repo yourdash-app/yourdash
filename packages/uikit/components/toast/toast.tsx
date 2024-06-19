@@ -15,14 +15,14 @@ import styles from "./toast.module.scss";
 
 const Toast: FC<{ children: React.ReactNode | React.ReactNode[] }> = ({ children }) => {
   const [toasts, setToasts] = useState<
-    { type: "success" | "error" | "warning" | "info"; content: string; persist?: boolean; timestamp: number }[]
+    { type: "success" | "error" | "warning" | "info" | "debug"; content: string; persist?: boolean; timestamp: number }[]
   >([]);
 
   return (
     <>
       <ToastContext.Provider
         value={{
-          showToast: (data: { type: "success" | "error" | "warning" | "info"; content: string; persist?: boolean }) => {
+          showToast: (data: { type: "success" | "error" | "warning" | "info" | "debug"; content: string; persist?: boolean }) => {
             const timestamp = Date.now();
 
             setToasts([...toasts, { ...data, timestamp: timestamp }]);

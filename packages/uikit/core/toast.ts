@@ -10,7 +10,7 @@ export default function useToast() {
   const toastCtx = React.useContext(ToastContext);
 
   return {
-    create(data: { type: "success" | "error" | "warning" | "info"; content: string; persist?: boolean }) {
+    create(data: { type: "success" | "error" | "warning" | "info" | "debug"; content: string; persist?: boolean }) {
       toastCtx.showToast(data);
     },
   };

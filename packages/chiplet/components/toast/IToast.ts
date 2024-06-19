@@ -6,11 +6,11 @@
 export default interface IToast {
   message: string;
   title: string;
-  type: "success" | "error" | "info" | "warn" | "silent";
+  type: "success" | "error" | "info" | "warn" | "silent" | "debug";
   params?: {
-    options?: {name: string, cb: () => void}[],
-    noAutoClose?: boolean,
-    onClose?: () => void,
-  },
-  uuid: string
+    options?: { name: string; cb: () => void }[];
+    noAutoClose?: boolean;
+    onClose?: () => void;
+  };
+  uuid: string;
 }

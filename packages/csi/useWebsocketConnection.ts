@@ -11,7 +11,15 @@ const useWebsocketConnection = (path: string) => {
   const [connection, setConnection] = useState<Socket | undefined>(undefined);
 
   useEffect(() => {
-    setConnection(io(csi.getInstanceWebsocketUrl(), { path: path + "/websocket-manager/websocket" }));
+    setConnection(
+      io(`${csi.getInstanceUrl().replace("https://", "wss://").replace("http://", "ws://")}`, {
+        path: `${path}/websocket-manager/websocket`,
+        auth: {
+          token: csi.getUserToken(),
+          username: csi.getUsername(),
+        },
+      }),
+    );
 
     return () => {
       connection?.close();

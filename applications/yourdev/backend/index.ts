@@ -21,7 +21,7 @@ export default class YourDevModule extends BackendModule {
       });
     });
 
-    this.api.request.get("/app/yourdev/", (req, res) => {
+    this.api.request.get("/app/yourdev/", (_req, res) => {
       return res.json({ success: true });
     });
   }

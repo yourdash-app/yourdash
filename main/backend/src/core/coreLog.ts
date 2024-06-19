@@ -46,10 +46,11 @@ export default class CoreLog {
         message.slice(1).join(" ").toString(),
       );
 
+      this.websocketServer?.emit(type.toString(), [level, ...message]);
+
       return this;
     }
 
-    // eslint-disable-line @typescript-eslint/no-explicit-any
     this.logHistory.push({ type: type, level: level, message: message });
 
     process.stdout.write(message[0]);
@@ -64,7 +65,7 @@ export default class CoreLog {
 
     process.stdout.write(message.slice(1).join(" ").toString() + "\n");
 
-    this.websocketServer.emit(type.toString(), [level, ...message]);
+    this.websocketServer?.emit(type.toString(), [level, ...message]);
 
     return this;
   }
@@ -132,6 +133,8 @@ export default class CoreLog {
   }
 
   __internal__loadEndpoints() {
-    this.websocketServer = this.core.websocketManager.createServer("/core::log/");
+    this.websocketServer = this.core.websocketManager.createServer("/core::log");
+
+    return this;
   }
 }

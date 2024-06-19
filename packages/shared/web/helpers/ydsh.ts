@@ -31,6 +31,15 @@ export default function useYourDashLib() {
           uuid: generateUUID(),
         });
       },
+      debug: (title: string, message: string, options?: IToast["params"]) => {
+        toast({
+          message,
+          type: "debug",
+          params: options,
+          title,
+          uuid: generateUUID(),
+        });
+      },
       info: (title: string, message: string, options?: IToast["params"]) => {
         toast({
           message,
