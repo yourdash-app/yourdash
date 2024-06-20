@@ -3,9 +3,10 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
+import generateUUID from "@yourdash/shared/web/helpers/uuid";
 import type ToastInterface from "./toast";
 import clippy from "@yourdash/shared/web/helpers/clippy.js";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import Card from "../card/card.js";
 import { UKIcon } from "../icon/iconDictionary.js";
 import IconButton from "../iconButton/iconButton.js";
@@ -16,20 +17,20 @@ import * as React from "react";
 import styles from "./toast.module.scss";
 
 const Toast: FC<{ children: React.ReactNode | React.ReactNode[] }> = ({ children }) => {
-  const [toasts, setToasts] = useState<(ToastInterface & { timestamp: number })[]>([]);
+  const [toasts, setToasts] = useState<(ToastInterface & { uuid: string })[]>([]);
 
   return (
     <>
       <ToastContext.Provider
         value={{
           showToast: (data: ToastInterface) => {
-            const timestamp = Date.now();
+            const uuid = generateUUID();
 
-            setToasts([...toasts, { ...data, timestamp: timestamp }]);
+            setToasts([...toasts, { ...data, uuid: uuid }]);
 
             if (!data.persist) {
               setTimeout(() => {
-                setToasts(toasts.filter((t) => t.timestamp !== timestamp));
+                setToasts([...toasts.filter((t) => t.uuid !== uuid)]);
               }, 5000);
             }
           },
@@ -39,13 +40,13 @@ const Toast: FC<{ children: React.ReactNode | React.ReactNode[] }> = ({ children
           {toasts.map((t) => {
             return (
               <Card
-                key={t.timestamp}
+                key={t.uuid}
                 actions={
                   t.persist ? (
                     <IconButton
                       accessibleLabel={"Close toast"}
                       icon={UKIcon.X}
-                      onClick={() => setToasts(toasts.filter((x) => x.timestamp !== t.timestamp))}
+                      onClick={() => setToasts(toasts.filter((x) => x.uuid !== t.uuid))}
                     />
                   ) : null
                 }
