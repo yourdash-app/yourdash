@@ -4,7 +4,7 @@
  */
 
 import useWebsocketConnection from "@yourdash/csi/useWebsocketConnection";
-import useYourDashLib from "@yourdash/shared/web/helpers/ydsh";
+import useToast from "@yourdash/uikit/core/toast";
 import React, { useEffect } from "react";
 import stripAnsi from "strip-ansi";
 
@@ -18,7 +18,7 @@ enum LOG_TYPE {
 
 const WebsocketToasts: React.FC = () => {
   const wsc = useWebsocketConnection("/core::log");
-  const ydsh = useYourDashLib();
+  const toast = useToast();
 
   useEffect(() => {
     if (!wsc) return;
@@ -28,23 +28,23 @@ const WebsocketToasts: React.FC = () => {
     });
 
     wsc.on(LOG_TYPE.INFO.toString(), (data: string[]) => {
-      ydsh.toast.info(data[0], stripAnsi(data.slice(1).join("\n")).replaceAll("", ""));
+      toast.create({ type: "info", content: { title: data[0], body: stripAnsi(data.slice(1).join("\n")).replaceAll("", "") } });
     });
 
     wsc.on(LOG_TYPE.WARNING.toString(), (data: string[]) => {
-      ydsh.toast.warn(data[0], stripAnsi(data.slice(1).join("\n")).replaceAll("", ""));
+      toast.create({ type: "warning", content: { title: data[0], body: stripAnsi(data.slice(1).join("\n")).replaceAll("", "") } });
     });
 
     wsc.on(LOG_TYPE.ERROR.toString(), (data: string[]) => {
-      ydsh.toast.error(data[0], stripAnsi(data.slice(1).join("\n")).replaceAll("", ""));
+      toast.create({ type: "error", content: { title: data[0], body: stripAnsi(data.slice(1).join("\n")).replaceAll("", "") } });
     });
 
     wsc.on(LOG_TYPE.SUCCESS.toString(), (data: string[]) => {
-      ydsh.toast.success(data[0], stripAnsi(data.slice(1).join("\n")).replaceAll("", ""));
+      toast.create({ type: "success", content: { title: data[0], body: stripAnsi(data.slice(1).join("\n")).replaceAll("", "") } });
     });
 
     wsc.on(LOG_TYPE.DEBUG.toString(), (data: string[]) => {
-      ydsh.toast.debug(data[0], stripAnsi(data.slice(1).join("\n")).replaceAll("", ""));
+      toast.create({ type: "debug", content: { title: data[0], body: stripAnsi(data.slice(1).join("\n")).replaceAll("", "") } });
     });
   }, [wsc]);
 

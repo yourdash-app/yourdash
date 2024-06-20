@@ -1,12 +1,12 @@
 /*
- * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
- * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ * Copyright ©2024 Ewsgit<https://ewsgit.uk> and YourDash<https://yourdash.ewsgit.uk> contributors.
+ * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
 import clippy from "@yourdash/shared/web/helpers/clippy.js";
 import isMobileDevice from "@yourdash/shared/web/helpers/isPhone.js";
 import ContextMenuRoot from "../components/contextMenu/contextMenuRoot.js";
-import Toast from "../components/toast/toast.js";
+import Toast from "../components/toast/toast.jsx";
 import LevelContext from "./level.js";
 import styles from "./../theme/defaultTheme.module.scss";
 import React, { FC, useEffect, useState } from "react";

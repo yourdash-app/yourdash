@@ -1,8 +1,9 @@
 /*
- * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
- * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ * Copyright ©2024 Ewsgit<https://ewsgit.uk> and YourDash<https://yourdash.ewsgit.uk> contributors.
+ * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
+import type ToastInterface from "./toast";
 import clippy from "@yourdash/shared/web/helpers/clippy.js";
 import { FC, useState } from "react";
 import Card from "../card/card.js";
@@ -10,19 +11,18 @@ import { UKIcon } from "../icon/iconDictionary.js";
 import IconButton from "../iconButton/iconButton.js";
 import Text from "../text/text.js";
 import ToastContext from "./toastContext.js";
-import React from "react";
+import * as React from "react";
+// @ts-ignore
 import styles from "./toast.module.scss";
 
 const Toast: FC<{ children: React.ReactNode | React.ReactNode[] }> = ({ children }) => {
-  const [toasts, setToasts] = useState<
-    { type: "success" | "error" | "warning" | "info" | "debug"; content: string; persist?: boolean; timestamp: number }[]
-  >([]);
+  const [toasts, setToasts] = useState<(ToastInterface & { timestamp: number })[]>([]);
 
   return (
     <>
       <ToastContext.Provider
         value={{
-          showToast: (data: { type: "success" | "error" | "warning" | "info" | "debug"; content: string; persist?: boolean }) => {
+          showToast: (data: ToastInterface) => {
             const timestamp = Date.now();
 
             setToasts([...toasts, { ...data, timestamp: timestamp }]);
@@ -51,7 +51,8 @@ const Toast: FC<{ children: React.ReactNode | React.ReactNode[] }> = ({ children
                 }
                 containerClassName={clippy(styles.component, t.type && styles[t.type])}
               >
-                <Text text={t.content} />
+                <Text text={t.content.title} />
+                <Text text={t.content.body} />
               </Card>
             );
           })}
