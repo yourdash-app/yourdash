@@ -38,6 +38,22 @@ export default class PhotosBackend extends BackendModule {
     return this;
   }
 
+  async deduplicatePhotos() {
+    const userHashes: Map<string, Set<string>> = new Map();
+
+    const users = await this.api.core.users.getAllUsers();
+
+    users.map((u) => {
+      userHashes.set(u, new Set());
+
+      // get user's photos
+      // hash every photo
+      // if a hash already exists, flag the conflicting paths and put in array
+      // save conflicts to a database
+      // send push notif to user
+    });
+  }
+
   public loadEndpoints() {
     super.loadEndpoints();
 
@@ -57,8 +73,7 @@ export default class PhotosBackend extends BackendModule {
 
         if (!(await item.doesExist())) return res.json({ error: true });
 
-        if (item.entityType !== FILESYSTEM_ENTITY_TYPE.DIRECTORY)
-          return res.json({ error: "The path supplied is not a directory." });
+        if (item.entityType !== FILESYSTEM_ENTITY_TYPE.DIRECTORY) return res.json({ error: "The path supplied is not a directory." });
 
         const thumbnailsDirectory = path.join(item.path, ".yd-thumbnails");
 
@@ -132,9 +147,8 @@ export default class PhotosBackend extends BackendModule {
                     // create the thumbnail
                     this.api.core.log.info("app:photos", "creating video thumb for " + childPath);
 
-                    const thumbnailPath = (
-                      await timeMethod(() => this.api.core.video.createThumbnail(childPath), "createVideoThumbnail")
-                    ).callbackResult;
+                    const thumbnailPath = (await timeMethod(() => this.api.core.video.createThumbnail(childPath), "createVideoThumbnail"))
+                      .callbackResult;
 
                     const dimensions = (await core.image.getImageDimensions(thumbnailPath)) || { width: 0, height: 0 };
 
@@ -278,8 +292,7 @@ export default class PhotosBackend extends BackendModule {
 
       if (!(await albumDirectory?.doesExist())) return res.json({ error: "Not found" });
 
-      if (albumDirectory?.entityType !== FILESYSTEM_ENTITY_TYPE.DIRECTORY)
-        return res.json({ error: "Not a directory" });
+      if (albumDirectory?.entityType !== FILESYSTEM_ENTITY_TYPE.DIRECTORY) return res.json({ error: "Not a directory" });
 
       return res.json(
         (await albumDirectory.getChildren())
@@ -300,8 +313,7 @@ export default class PhotosBackend extends BackendModule {
 
       if (!(await item.doesExist())) return res.json({ error: true });
 
-      if (item.entityType !== FILESYSTEM_ENTITY_TYPE.FILE)
-        return res.json({ error: "The path supplied is not a file." });
+      if (item.entityType !== FILESYSTEM_ENTITY_TYPE.FILE) return res.json({ error: "The path supplied is not a file." });
 
       let itemType: MEDIA_TYPE;
 
@@ -326,12 +338,7 @@ export default class PhotosBackend extends BackendModule {
           return res.json(<EndpointMediaRaw>{
             type: MEDIA_TYPE.VIDEO,
             path: item.path.replace(user.getFsPath(), ""),
-            mediaUrl: this.api.core.video.createAuthenticatedVideo(
-              user.username,
-              sessionid,
-              AUTHENTICATED_VIDEO_TYPE.FILE,
-              item.path,
-            ),
+            mediaUrl: this.api.core.video.createAuthenticatedVideo(user.username, sessionid, AUTHENTICATED_VIDEO_TYPE.FILE, item.path),
             metadata: {
               width: dimensions.width || 400,
               height: dimensions.height || 400,
@@ -344,12 +351,7 @@ export default class PhotosBackend extends BackendModule {
           return res.json(<EndpointMediaRaw>{
             type: MEDIA_TYPE.IMAGE,
             path: item.path.replace(user.getFsPath(), ""),
-            mediaUrl: this.api.core.image.createAuthenticatedImage(
-              user.username,
-              sessionid,
-              AUTHENTICATED_IMAGE_TYPE.FILE,
-              item.path,
-            ),
+            mediaUrl: this.api.core.image.createAuthenticatedImage(user.username, sessionid, AUTHENTICATED_IMAGE_TYPE.FILE, item.path),
             metadata: {
               width: dimensions.width || 400,
               height: dimensions.height || 400,

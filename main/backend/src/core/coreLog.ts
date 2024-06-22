@@ -46,7 +46,7 @@ export default class CoreLog {
         message.slice(1).join(" ").toString(),
       );
 
-      this.websocketServer?.emit(type.toString(), [level, ...message]);
+      this.websocketServer?.emit(type.toString(), [level, ...message.slice(1)]);
 
       return this;
     }

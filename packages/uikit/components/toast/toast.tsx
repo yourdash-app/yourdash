@@ -6,7 +6,7 @@
 import generateUUID from "@yourdash/shared/web/helpers/uuid";
 import type ToastInterface from "./toast";
 import clippy from "@yourdash/shared/web/helpers/clippy.js";
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import Card from "../card/card.js";
 import { UKIcon } from "../icon/iconDictionary.js";
 import IconButton from "../iconButton/iconButton.js";
