@@ -39,19 +39,60 @@ export default class PhotosBackend extends BackendModule {
   }
 
   async deduplicatePhotos() {
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
+    const self = this;
     const userHashes: Map<string, Set<string>> = new Map();
 
     const users = await this.api.core.users.getAllUsers();
 
-    users.map((u) => {
-      userHashes.set(u, new Set());
+    await Promise.all(
+      users.map(async (u) => {
+        userHashes.set(u, new Set());
 
-      // get user's photos
-      // hash every photo
-      // if a hash already exists, flag the conflicting paths and put in array
-      // save conflicts to a database
-      // send push notif to user
-    });
+        // get user's photos
+        let usersPhotos: string[];
+
+        this.api.core.log.info("Finding users photos");
+
+        const PHOTOS_FS_PATH = path.join(this.api.core.users.get(u).getFsPath(), "photos");
+
+        // recursively get all photos
+        async function getPhotosRecursively(dirPath: string) {
+          const dir = await self.api.core.fs.getDirectory(dirPath);
+
+          for (const p of await dir.getChildFiles()) {
+            if (p.getType() === "image") {
+              usersPhotos.push(p.path);
+            }
+          }
+
+          for (const d of await dir.getChildDirectories()) {
+            await getPhotosRecursively(d.path);
+          }
+        }
+
+        await getPhotosRecursively(PHOTOS_FS_PATH);
+
+        // hash every photo
+        await Promise.all(
+          usersPhotos.map(async (p) => {
+            const fileHash = await (await self.api.core.fs.getFile(p)).getContentHash();
+
+            // if a hash already exists, flag the conflicting paths and put in array
+            if (userHashes.get(u).has(fileHash)) {
+              console.log(`Duplicate photo detected: ${p}`);
+
+              return;
+            }
+
+            userHashes.get(u).add(fileHash);
+          }),
+        );
+
+        // TODO: save conflicts to a database
+        //       send push notif to user
+      }),
+    );
   }
 
   public loadEndpoints() {

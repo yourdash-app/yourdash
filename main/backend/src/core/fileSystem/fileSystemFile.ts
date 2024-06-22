@@ -1,6 +1,6 @@
 /*
- * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
- * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ * Copyright ©2024 Ewsgit<https://ewsgit.uk> and YourDash<https://yourdash.ewsgit.uk> contributors.
+ * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
 import { promises as fs } from "fs";
@@ -9,6 +9,7 @@ import { Core } from "../core.js";
 import { AUTHENTICATED_IMAGE_TYPE } from "../coreImage.js";
 import FileSystemEntity, { FILESYSTEM_ENTITY_TYPE } from "./fileSystemEntity.js";
 import FileSystemError, { FILESYSTEM_ERROR } from "./fileSystemError.js";
+import crypto from "crypto";
 
 export default class FileSystemFile extends FileSystemEntity {
   private readonly core: Core;
@@ -67,6 +68,14 @@ export default class FileSystemFile extends FileSystemEntity {
       default:
         return "unknown";
     }
+  }
+
+  // returns a sha256 hash of the file
+  async getContentHash(): Promise<string> {
+    return crypto
+      .createHash("sha256")
+      .update(await (await this.core.fs.getFile(this.path)).read("buffer"))
+      .digest("hex");
   }
 
   getThumbnail(username: string, sessionId: string): string {
