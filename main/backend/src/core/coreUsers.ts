@@ -1,6 +1,6 @@
 /*
- * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
- * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ * Copyright ©2024 Ewsgit<https://ewsgit.uk> and YourDash<https://yourdash.ewsgit.uk> contributors.
+ * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
 import { IYourDashSession } from "@yourdash/shared/core/session.js";
@@ -50,15 +50,11 @@ export default class CoreUsers {
   }
 
   __internal__startUserDeletionService() {
-    this.core.scheduler.scheduleTask(
-      "core:users:delete_all_marked_users",
-      "*/5 * * * *" /* every 5 minutes */,
-      async () => {
-        for (const username of this.usersMarkedForDeletion) {
-          await this.core.users.forceDelete(username);
-        }
-      },
-    );
+    this.core.scheduler.scheduleTask("core:users:delete_all_marked_users", "*/5 * * * *" /* every 5 minutes */, async () => {
+      for (const username of this.usersMarkedForDeletion) {
+        await this.core.users.forceDelete(username);
+      }
+    });
   }
 
   async __internal__getUserDatabase(username: string) {
@@ -199,14 +195,7 @@ export default class CoreUsers {
       return res
         .status(200)
         .type("text/plain")
-        .send(
-          this.core.image.createAuthenticatedImage(
-            username,
-            sessionid,
-            AUTHENTICATED_IMAGE_TYPE.FILE,
-            path.resolve(avatarPath),
-          ),
-        );
+        .send(this.core.image.createAuthenticatedImage(username, sessionid, AUTHENTICATED_IMAGE_TYPE.FILE, path.resolve(avatarPath)));
     });
 
     this.core.request.get(`/core/user/current/avatar/${USER_AVATAR_SIZE.MEDIUM}`, async (req, res) => {
@@ -217,14 +206,7 @@ export default class CoreUsers {
       return res
         .status(200)
         .type("text/plain")
-        .send(
-          this.core.image.createAuthenticatedImage(
-            username,
-            sessionid,
-            AUTHENTICATED_IMAGE_TYPE.FILE,
-            path.resolve(avatarPath),
-          ),
-        );
+        .send(this.core.image.createAuthenticatedImage(username, sessionid, AUTHENTICATED_IMAGE_TYPE.FILE, path.resolve(avatarPath)));
     });
 
     this.core.request.get(`/core/user/current/avatar/${USER_AVATAR_SIZE.LARGE}`, async (req, res) => {
@@ -235,14 +217,7 @@ export default class CoreUsers {
       return res
         .status(200)
         .type("text/plain")
-        .send(
-          this.core.image.createAuthenticatedImage(
-            username,
-            sessionid,
-            AUTHENTICATED_IMAGE_TYPE.FILE,
-            path.resolve(avatarPath),
-          ),
-        );
+        .send(this.core.image.createAuthenticatedImage(username, sessionid, AUTHENTICATED_IMAGE_TYPE.FILE, path.resolve(avatarPath)));
     });
 
     this.core.request.get(`/core/user/current/avatar/${USER_AVATAR_SIZE.EXTRA_LARGE}`, async (req, res) => {
@@ -253,14 +228,7 @@ export default class CoreUsers {
       return res
         .status(200)
         .type("text/plain")
-        .send(
-          this.core.image.createAuthenticatedImage(
-            username,
-            sessionid,
-            AUTHENTICATED_IMAGE_TYPE.FILE,
-            path.resolve(avatarPath),
-          ),
-        );
+        .send(this.core.image.createAuthenticatedImage(username, sessionid, AUTHENTICATED_IMAGE_TYPE.FILE, path.resolve(avatarPath)));
     });
 
     this.core.request.get(`/core/user/current/avatar/${USER_AVATAR_SIZE.ORIGINAL}`, async (req, res) => {
@@ -271,20 +239,16 @@ export default class CoreUsers {
       return res
         .status(200)
         .type("text/plain")
-        .send(
-          this.core.image.createAuthenticatedImage(
-            username,
-            sessionid,
-            AUTHENTICATED_IMAGE_TYPE.FILE,
-            path.resolve(avatarPath),
-          ),
-        );
+        .send(this.core.image.createAuthenticatedImage(username, sessionid, AUTHENTICATED_IMAGE_TYPE.FILE, path.resolve(avatarPath)));
     });
 
     this.core.request.get(`/core/user/current/fullname`, async (req, res) => {
       const { username } = req.headers;
 
       const user = new YourDashUser(username);
+
+      console.log(await user.getName());
+      console.log((await user.getDatabase()).getKeys());
 
       return res.status(200).json(await user.getName());
     });

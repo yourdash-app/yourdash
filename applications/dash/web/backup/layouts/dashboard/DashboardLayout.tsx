@@ -1,6 +1,6 @@
 /*
- * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
- * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ * Copyright ©2024 Ewsgit<https://ewsgit.uk> and YourDash<https://yourdash.ewsgit.uk> contributors.
+ * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
 import useTranslate from "@yourdash/shared/web/helpers/i18n";
@@ -53,7 +53,10 @@ const DashboardLayout: React.FC<IDashboard> = ({ username, fullName }) => {
         <Row className={"pt-6 flex-wrap child:flex-grow md:child:flex-grow-0"}>
           {/* Chips */}
           <Chip onClick={() => 0}>{"Weather 20°C"}</Chip>
-          <Chip onClick={() => 0} active>
+          <Chip
+            onClick={() => 0}
+            active
+          >
             {"Rain at 3pm"}
           </Chip>
           <Chip onClick={() => 0}>{"You have 76 unread notifications"}</Chip>
@@ -64,8 +67,15 @@ const DashboardLayout: React.FC<IDashboard> = ({ username, fullName }) => {
         {widgets.map((Widget, index) => {
           if (isEditMode) {
             return (
-              <div className={"@container"} key={Widget.name + index}>
-                <Card showBorder key={Widget.name} className={"flex items-center justify-center @lg:flex-row flex-col gap-2"}>
+              <div
+                className={"@container"}
+                key={Widget.name + index}
+              >
+                <Card
+                  showBorder
+                  key={Widget.name}
+                  className={"flex items-center justify-center @lg:flex-row flex-col gap-2"}
+                >
                   <h3>{Widget.displayName || Widget.name}</h3>
                   <Row>
                     {index !== 0 && (
@@ -112,7 +122,10 @@ const DashboardLayout: React.FC<IDashboard> = ({ username, fullName }) => {
               setWidgets(widgets.concat(WeatherHourlyConditionsWidget));
             }}
           >
-            <Icon className={styles.icon} icon={UKIcon.Plus} />
+            <Icon
+              className={styles.icon}
+              icon={UKIcon.Plus}
+            />
             <div className={styles.label}>Add widget</div>
           </div>
         )}

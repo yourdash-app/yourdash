@@ -4,6 +4,7 @@
  */
 
 import generateUUID from "@yourdash/shared/web/helpers/uuid";
+import Heading from "../heading/heading";
 import type ToastInterface from "./toast";
 import clippy from "@yourdash/shared/web/helpers/clippy.js";
 import { FC, useState } from "react";
@@ -52,7 +53,10 @@ const Toast: FC<{ children: React.ReactNode | React.ReactNode[] }> = ({ children
                 }
                 containerClassName={clippy(styles.component, t.type && styles[t.type])}
               >
-                <Text text={t.content.title} />
+                <Heading
+                  level={3}
+                  text={t.content.title}
+                />
                 <Text text={t.content.body} />
               </Card>
             );
