@@ -1,6 +1,6 @@
 /*
- * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
- * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ * Copyright ©2024 Ewsgit<https://ewsgit.uk> and YourDash<https://yourdash.ewsgit.uk> contributors.
+ * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
 import Card from "@yourdash/chiplet/components/card/Card";
@@ -30,14 +30,12 @@ const DashApplicationWelcome: React.FC = () => {
   return (
     <div
       style={{
-        backgroundImage: `url(${localStorage.getItem("current_server")}/login/instance/background)`,
+        backgroundImage: `url(${csi.getInstanceUrl()}/login/instance/background)`,
       }}
       className={"flex items-center justify-center flex-col h-full w-full bg-center bg-cover relative"}
     >
       <Card className={"w-full max-w-[60rem] flex flex-col gap-6 pt-8 pb-8"}>
-        <h1
-          className={"text-5xl font-semibold text-center"}
-        >{`Welcome to YourDash, ${csi.userDB.get("user:full_name").first}`}</h1>
+        <h1 className={"text-5xl font-semibold text-center"}>{`Welcome to YourDash, ${csi.userDB.get("user:full_name").first}`}</h1>
         <Carousel>
           <main className={"w-full flex items-center justify-center gap-4"}>
             <Card

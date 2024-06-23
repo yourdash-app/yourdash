@@ -24,6 +24,7 @@ const WebsocketToasts: React.FC = () => {
     if (!wsc) return;
 
     wsc.on(LOG_TYPE.INFO.toString(), (data: string[]) => {
+      console.log(data);
       toast.create({ type: "info", content: { title: data[0], body: stripAnsi(data.slice(1).join("\n")).replaceAll("", "") } });
     });
 
