@@ -20,7 +20,7 @@ const SearchResultCard: React.FC<{ props: ILocationSearchResult }> = ({ props })
         "hover:bg-button-hover-bg active:bg-button-active-bg hover:text-button-hover-fg active:text-button-active-fg transition-[var(--transition)] cursor-pointer w-full bg-button-bg text-button-fg",
       )}
       onClick={() => {
-        navigate(`/app/a/weather/${props.value}`);
+        navigate(`/app/a/weather/${props.id}`);
       }}
     >
       <h2 className={"text-2xl font-semibold tracking-wide"}>

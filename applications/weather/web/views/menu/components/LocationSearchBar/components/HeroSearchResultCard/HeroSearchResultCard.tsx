@@ -22,7 +22,7 @@ const HeroSearchResultCard: React.FC<{ props: ILocationSearchResult }> = ({ prop
       }}
       className={clippy("animate__animated animate__fadeIn", styles.component)}
       onClick={() => {
-        navigate(`/app/a/weather/${props.value}`);
+        navigate(`/app/a/weather/${props.id}`);
       }}
     >
       <h2 className={"text-4xl font-bold tracking-wide"}>

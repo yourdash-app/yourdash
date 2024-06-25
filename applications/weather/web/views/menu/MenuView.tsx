@@ -44,7 +44,7 @@ const MenuView: React.FC = () => {
       </Column>
       <h2 className={styles.sectionHeader}>Saved Locations</h2>
       <section className={"grid grid-cols-4"}>
-        <SavedLocationCard props={{ address: { name: "Your Location" }, value: "your-location", latitude: 0, longitude: 0 }} />
+        <SavedLocationCard props={{ address: { name: "Your Location" }, id: "your-location", latitude: 0, longitude: 0 }} />
       </section>
     </Column>
   );

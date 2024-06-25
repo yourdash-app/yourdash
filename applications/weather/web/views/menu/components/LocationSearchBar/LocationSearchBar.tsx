@@ -30,7 +30,7 @@ const LocationSearchBar: React.FC = () => {
           placeholder={"Search Weather Locations"}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
-              if (searchResults[0]) navigate(`/app/a/weather/${searchResults[0].value}`);
+              if (searchResults[0]) navigate(`/app/a/weather/${searchResults[0].id}`);
             }
           }}
           onChange={(value: string) => {
@@ -56,14 +56,14 @@ const LocationSearchBar: React.FC = () => {
                 if (index === 0)
                   return (
                     <HeroSearchResultCard
-                      key={result.value}
+                      key={result.id}
                       props={result}
                     />
                   );
 
                 return (
                   <SearchResultCard
-                    key={result.value}
+                    key={result.id}
                     props={result}
                   />
                 );
@@ -72,9 +72,7 @@ const LocationSearchBar: React.FC = () => {
           ) : (
             searchQuery !== "" && (
               <section className={styles.results}>
-                <div className={"col-span-4 text-3xl text-center font-semibold pt-4 pb-4"}>
-                  Invalid location &quot;{searchQuery}&quot;
-                </div>
+                <div className={"col-span-4 text-3xl text-center font-semibold pt-4 pb-4"}>Invalid location &quot;{searchQuery}&quot;</div>
               </section>
             )
           )

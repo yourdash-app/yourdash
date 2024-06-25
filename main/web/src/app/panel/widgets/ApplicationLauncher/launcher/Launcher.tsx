@@ -70,7 +70,7 @@ const ApplicationLauncher: React.FC<{
             }}
           />
         </div>
-        <span>{csi.userDB.get("user:name")?.first || "Unknown First Name"}</span>
+        <span>{csi.userDB.get<{ first: string; last: string }>("user:name")?.first || "Unknown First Name"}</span>
         <IconButton
           accessibleLabel={"Filter small grid"}
           className={"ml-auto"}
