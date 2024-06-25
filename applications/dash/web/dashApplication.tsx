@@ -7,24 +7,106 @@ import csi from "@yourdash/csi/csi";
 import useResource from "@yourdash/csi/useResource";
 import Flex from "@yourdash/uikit/components/flex/flex";
 import Heading from "@yourdash/uikit/components/heading/heading";
-import React from "react";
-import styles from "./dashApplication.module.scss"
-import { IWidgetGrid } from "../shared/types/widgetGrid"
+import React, { useState } from "react";
+import styles from "./dashApplication.module.scss";
+import { IWidgetGrid } from "../shared/types/widgetGrid";
 
 const DashApplication: React.FC = () => {
   const username = useResource(() => csi.getUser().getFullName());
-  const widgetPages: IWidgetGrid[] = []
+  const [currentWidgetPage, setCurrentWidgetPage] = useState<number>(0);
+  const widgetPages: IWidgetGrid[] = [
+    {
+      widgets: [
+        {
+          position: {
+            x: 0,
+            y: 0,
+          },
+          id: "url-shortcut",
+          size: {
+            preferred: {
+              width: 2,
+              height: 2,
+            },
+            min: {
+              width: 1,
+              height: 1,
+            },
+            max: {
+              width: 2,
+              height: 3,
+            },
+          },
+        },
+        {
+          position: {
+            x: 0,
+            y: 0,
+          },
+          id: "url-shortcut",
+          size: {
+            preferred: {
+              width: 2,
+              height: 2,
+            },
+            min: {
+              width: 1,
+              height: 1,
+            },
+            max: {
+              width: 2,
+              height: 3,
+            },
+          },
+        },
+        {
+          position: {
+            x: 0,
+            y: 0,
+          },
+          id: "url-shortcut",
+          size: {
+            preferred: {
+              width: 2,
+              height: 2,
+            },
+            min: {
+              width: 1,
+              height: 1,
+            },
+            max: {
+              width: 2,
+              height: 3,
+            },
+          },
+        },
+      ],
+    },
+  ];
 
   return (
     <div className={styles.page}>
-      <Flex className={styles.header} direction={"row"}>
+      <Flex
+        className={styles.header}
+        direction={"row"}
+      >
         <Heading
           text={`Hiya, ${username?.first}`}
           level={1}
         />
       </Flex>
-      <div className={styles.widgetGrid}>grid</div>
-      <Flex className={styles.footer} direction={"row"}>
+      <div className={styles.widgetGrid}>
+        {widgetPages[currentWidgetPage].widgets.map((widget, i) => (
+          <div>
+            <div>widget contents</div>
+            <div>{widget.id}</div>
+          </div>
+        ))}
+      </div>
+      <Flex
+        className={styles.footer}
+        direction={"row"}
+      >
         <div>page indicator</div>
         <div className={styles.actions}>actions</div>
       </Flex>

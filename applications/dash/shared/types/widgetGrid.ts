@@ -3,14 +3,8 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
+import { IWidget } from "./widget";
+
 export interface IWidgetGrid {
-  widgets: {
-    position: { x: number; y: number };
-    id: string;
-    size: {
-      preferred: { width: number; height: number };
-      min: { width: number; height: number };
-      max: { width: number; height: number };
-    };
-  }[];
+  widgets: IWidget[];
 }
