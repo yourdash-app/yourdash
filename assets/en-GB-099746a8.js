@@ -1,1 +1,0 @@
-const O="Photos",P="Upload photos",o="😥 You have no photos",_={APPLICATION_NAME:O,NO_PHOTOS_UPLOAD_PROMPT:P,NO_PHOTOS_MESSAGE:o};export{O as APPLICATION_NAME,o as NO_PHOTOS_MESSAGE,P as NO_PHOTOS_UPLOAD_PROMPT,_ as default};

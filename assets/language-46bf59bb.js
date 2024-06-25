@@ -1,1 +1,0 @@
-import t from"./language-de8f0870.js";import"./editor-3c445f98.js";import"./index-5bcd9038.js";const a="/assets/javascript-262afd1a.wasm";class i extends t{constructor(){return super(a),this}}export{i as default};

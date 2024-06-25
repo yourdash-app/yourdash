@@ -1,1 +1,0 @@
-const t="Upload",A="Create",T="Files",o="Shortcuts",s="Name",N="Type",c={UPLOAD:t,CREATE:A,APPLICATION_BRANDING:T,SHORTCUTS:o,NAME:s,TYPE:N};export{T as APPLICATION_BRANDING,A as CREATE,s as NAME,o as SHORTCUTS,N as TYPE,t as UPLOAD,c as default};

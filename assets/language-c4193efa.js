@@ -1,1 +1,0 @@
-import{P as e,b as t}from"./editor-3c445f98.js";import a from"./language-de8f0870.js";import"./index-5bcd9038.js";class s extends a{constructor(){return super(e),this.tokens={text:t.OTHER,html_tag_name:t.XML_TAG,soft_line_break:t.OTHER,html_attribute_key:t.XML_ATTRIBUTE_KEY,html_attribute_value:t.XML_ATTRIBUTE_VALUE},this}}export{s as default};

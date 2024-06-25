@@ -1,1 +1,0 @@
-import{j as s}from"./index-5bcd9038.js";const e="_component_1j5gk_6",c={component:e},p=({children:o,style:n,className:t})=>s.jsx("div",{style:n,className:`${c.component} ${t}`,children:o});export{p as R};
