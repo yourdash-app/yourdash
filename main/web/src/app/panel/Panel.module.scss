@@ -1,0 +1,94 @@
+/*!
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
+@import "@yourdash/uikit/theme/themeValues";
+
+.panel {
+  display: flex;
+  box-sizing: border-box;
+  padding: 0.5rem !important;
+  position: relative;
+  z-index: 50;
+  user-select: none;
+  border: none;
+
+  > * {
+    animation: panelFadeIn 0.25s 0.5s forwards ease-in-out;
+    opacity: 0;
+
+    @keyframes panelFadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+@mixin horizontal {
+  flex-direction: row;
+  height: var(--app-panel-size);
+
+  &.small {
+    --app-panel-size: 2.5rem;
+    --app-panel-padding: 0.25rem;
+  }
+
+  &.medium {
+    --app-panel-size: 3.5rem;
+    --app-panel-padding: 0.5rem;
+  }
+
+  &.large {
+    --app-panel-size: 5rem;
+    --app-panel-padding: 0.75rem;
+  }
+}
+
+@mixin vertical {
+  flex-direction: column;
+  width: var(--app-panel-size);
+
+  &.small {
+    --app-panel-size: 2.5rem;
+    --app-panel-padding: 0.25rem;
+  }
+
+  &.medium {
+    --app-panel-size: 3.5rem;
+    --app-panel-padding: 0.5rem;
+  }
+
+  &.large {
+    --app-panel-size: 5rem;
+    --app-panel-padding: 0.75rem;
+  }
+}
+
+.top {
+  @include horizontal;
+  border-bottom: var(#{$theme+$border});
+  padding-bottom: calc(var(--app-panel-padding) + 1px);
+}
+
+.right {
+  @include vertical;
+  border-left: var(#{$theme+$border});
+  padding-left: calc(var(--app-panel-padding) + 1px);
+}
+
+.bottom {
+  @include horizontal;
+  border-top: var(#{$theme+$border});
+  padding-top: calc(var(--app-panel-padding) + 1px);
+}
+
+.left {
+  @include vertical;
+  border-right: var(#{$theme+$border});
+  padding-right: calc(var(--app-panel-padding) + 1px);
+}

@@ -1,21 +1,23 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
- * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ * Copyright ©2024 Ewsgit<https://ewsgit.uk> and YourDash<https://yourdash.ewsgit.uk> contributors.
+ * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
 import { promises as fs } from "fs";
 import pth from "path";
-import { CoreApi } from "../coreApi.js";
-import { AUTHENTICATED_IMAGE_TYPE } from "../coreApiAuthenticatedImage.js";
-import FileSystemEntity from "./fileSystemEntity.js";
+import { Core } from "../core.js";
+import { AUTHENTICATED_IMAGE_TYPE } from "../coreImage.js";
+import FileSystemEntity, { FILESYSTEM_ENTITY_TYPE } from "./fileSystemEntity.js";
+import FileSystemError, { FILESYSTEM_ERROR } from "./fileSystemError.js";
+import crypto from "crypto";
 
 export default class FileSystemFile extends FileSystemEntity {
-  private readonly coreApi: CoreApi;
-  entityType = "file" as const;
+  private readonly core: Core;
+  entityType = FILESYSTEM_ENTITY_TYPE.FILE as const;
 
-  constructor(coreApi: CoreApi, path: string) {
+  constructor(core: Core, path: string) {
     super(path);
-    this.coreApi = coreApi;
+    this.core = core;
 
     return this;
   }
@@ -25,7 +27,12 @@ export default class FileSystemFile extends FileSystemEntity {
   }
 
   getExtension(): string {
-    return pth.extname(this.path).toLowerCase();
+    try {
+      return pth.extname(this.path).toLowerCase();
+    } catch (err) {
+      this.core.log.error("filesystem", `unable to get extension of ${this.path}`);
+      return "";
+    }
   }
 
   getType(): "image" | "video" | "audio" | "unknown" {
@@ -63,10 +70,23 @@ export default class FileSystemFile extends FileSystemEntity {
     }
   }
 
-  getThumbnail(username: string): string {
+  // returns a sha256 hash of the file
+  async getContentHash(): Promise<string> {
+    return crypto
+      .createHash("sha256")
+      .update(await (await this.core.fs.getFile(this.path)).read("buffer"))
+      .digest("hex");
+  }
+
+  getThumbnail(username: string, sessionId: string): string {
     switch (this.getType()) {
       case "image":
-        return this.coreApi.authenticatedImage.create(username, AUTHENTICATED_IMAGE_TYPE.FILE, pth.resolve(this.path));
+        return this.core.image.createAuthenticatedImage(
+          username,
+          sessionId,
+          AUTHENTICATED_IMAGE_TYPE.FILE,
+          pth.resolve(pth.join(this.core.fs.ROOT_PATH, this.path)),
+        );
       default:
         return "not implemented";
     }
@@ -76,14 +96,24 @@ export default class FileSystemFile extends FileSystemEntity {
     return fs.stat(this.path);
   }
 
-  async read(readAs: "string" | "buffer" | "json") {
+  async read<ReadFileType extends "string" | "buffer" | "json">(
+    readAs: ReadFileType,
+  ): Promise<ReadFileType extends "string" ? string : ReadFileType extends "buffer" ? Buffer : object> {
     switch (readAs) {
       case "string":
-        return (await fs.readFile(this.path)).toString();
+        // @ts-ignore
+        return (await fs.readFile(pth.join(this.core.fs.ROOT_PATH, this.path))).toString();
       case "buffer":
-        return await fs.readFile(this.path);
+        // @ts-ignore
+        return await fs.readFile(pth.join(this.core.fs.ROOT_PATH, this.path));
       case "json":
-        return JSON.parse((await fs.readFile(this.path)).toString());
+        try {
+          return JSON.parse((await fs.readFile(pth.join(this.core.fs.ROOT_PATH, this.path))).toString());
+        } catch (err) {
+          this.core.log.error("filesystem", `cannot read file ${this.path} as JSON`);
+          // @ts-ignore
+          return {};
+        }
       default:
         throw new Error(`Unsupported read type: ${readAs}`);
     }
@@ -91,7 +121,7 @@ export default class FileSystemFile extends FileSystemEntity {
 
   async write(data: string | Buffer) {
     if (this.isLocked().locked) {
-      throw new Error("YDSH: File is locked");
+      throw new FileSystemError(FILESYSTEM_ERROR.NOT_A_FILE);
     }
 
     if (!(await this.doesExist())) {
@@ -99,10 +129,9 @@ export default class FileSystemFile extends FileSystemEntity {
     }
 
     try {
-      await fs.writeFile(this.path, data);
+      await fs.writeFile(pth.join(this.core.fs.ROOT_PATH, this.path), data);
     } catch (e) {
-      console.error(e);
-      this.coreApi.log.error(`unable to write to ${this.path}`);
+      this.core.log.error("filesystem", `unable to write to ${this.path}`, e);
     }
 
     return;

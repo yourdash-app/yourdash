@@ -1,10 +1,10 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import KeyValueDatabase from "../../helpers/keyValueDatabase.js";
-import coreApi from "../coreApi.js";
+import KeyValueDatabase from "../../lib/keyValueDatabase.js";
+import core from "../core.js";
 
 export default class UserDatabase extends KeyValueDatabase {
   private userName: string;
@@ -17,9 +17,10 @@ export default class UserDatabase extends KeyValueDatabase {
     return this;
   }
 
-  public set(key: string, value: any) {
-    // eslint-disable-line @typescript-eslint/no-explicit-any
+  public set(key: string, value: unknown) {
     super.set(key, value);
-    coreApi.users.get(this.userName).saveDatabase();
+    core.users.get(this.userName).saveDatabase();
+
+    return this;
   }
 }

@@ -1,9 +1,9 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { WD_NAMESPACE } from "./coreApiWebDAV.js";
+import { WD_NAMESPACE } from "./coreWebDAV.js";
 
 export default class WebDAVProperty {
   namespace: WD_NAMESPACE;

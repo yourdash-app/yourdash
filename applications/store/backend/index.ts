@@ -1,17 +1,17 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import coreApi from "@yourdash/backend/src/core/coreApi.js";
-import { AUTHENTICATED_IMAGE_TYPE } from "@yourdash/backend/src/core/coreApiAuthenticatedImage.js";
+import core from "@yourdash/backend/src/core/core.js";
+import { AUTHENTICATED_IMAGE_TYPE } from "@yourdash/backend/src/core/coreImage.js";
 import BackendModule, { YourDashModuleArguments } from "@yourdash/backend/src/core/moduleManager/backendModule.js";
-import YourDashApplication, { getAllApplications } from "@yourdash/backend/src/helpers/applications.js";
-import { getInstanceLogoBase64 } from "@yourdash/backend/src/helpers/logo.js";
-import path from "path";
+import YourDashApplication, { getAllApplications } from "@yourdash/backend/src/lib/applications.js";
+import { getInstanceLogoBase64 } from "@yourdash/backend/src/lib/logo.js";
 import { IYourDashStoreApplication } from "@yourdash/shared/apps/store/storeApplication.js";
 import { IStoreCategory } from "@yourdash/shared/apps/store/storeCategory.js";
 import { type StorePromotedApplication } from "@yourdash/shared/apps/store/storePromotedApplication.js";
+import path from "path";
 import getAllCategories, { getAllApplicationsFromCategory } from "./helpers/categories.js";
 
 const promotedApplications: string[] = ["dash", "store"];
@@ -19,7 +19,16 @@ const promotedApplications: string[] = ["dash", "store"];
 export default class StoreModule extends BackendModule {
   constructor(args: YourDashModuleArguments) {
     super(args);
-    this.API.request.get("/app/store/promoted/applications", (_req, res) => {
+  }
+
+  getInstalledApplications(): string[] {
+    return this.api.core.globalDb.get<string[]>("core:installedApplications");
+  }
+
+  public loadEndpoints() {
+    super.loadEndpoints();
+
+    this.api.request.get("/app/store/promoted/applications", async (_req, res) => {
       Promise.all(
         promotedApplications.map(async (app): Promise<StorePromotedApplication> => {
           const application = await new YourDashApplication(app).read();
@@ -34,7 +43,7 @@ export default class StoreModule extends BackendModule {
       ).then((out) => res.json(out));
     });
 
-    this.API.request.get("/app/store/categories", async (_req, res) => {
+    this.api.request.get("/app/store/categories", async (_req, res) => {
       const applications = await getAllApplications();
 
       const categories: { [key: string]: boolean } = {};
@@ -54,8 +63,8 @@ export default class StoreModule extends BackendModule {
       return res.json(Object.keys(categories));
     });
 
-    this.API.request.get("/app/store/applications", async (req, res) => {
-      const { username } = req.headers as { username: string };
+    this.api.request.get("/app/store/applications", async (req, res) => {
+      const { username, sessionid } = req.headers;
 
       const applications = await getAllApplications();
 
@@ -65,17 +74,18 @@ export default class StoreModule extends BackendModule {
             const unreadApplication = new YourDashApplication(applicationName);
 
             if (!(await unreadApplication.exists())) {
-              return { id: applicationName };
+              return { value: applicationName };
             }
 
             const application = await unreadApplication.read();
 
             return {
-              id: applicationName,
+              value: applicationName,
               displayName: application.getDisplayName() || applicationName,
-              icon: coreApi.authenticatedImage.create(
+              icon: core.image.createAuthenticatedImage(
                 username,
-                AUTHENTICATED_IMAGE_TYPE.FILE,
+                sessionid,
+                AUTHENTICATED_IMAGE_TYPE.ABSOLUTELY_PATHED_FILE,
                 await application.getIconPath(),
               ),
               installed: application.isInstalled(),
@@ -85,8 +95,8 @@ export default class StoreModule extends BackendModule {
       );
     });
 
-    this.API.request.get("/app/store/category/:id", async (req, res) => {
-      const { username } = req.headers as { username: string };
+    this.api.request.get("/app/store/category/:id", async (req, res) => {
+      const { username, sessionid } = req.headers;
       const { id } = req.params;
 
       if (!id) {
@@ -112,9 +122,10 @@ export default class StoreModule extends BackendModule {
           const application = await new YourDashApplication(app).read();
           applicationsOutput.push({
             name: application.getName(),
-            icon: coreApi.authenticatedImage.create(
+            icon: core.image.createAuthenticatedImage(
               username,
-              AUTHENTICATED_IMAGE_TYPE.FILE,
+              sessionid,
+              AUTHENTICATED_IMAGE_TYPE.ABSOLUTELY_PATHED_FILE,
               await application.getIconPath(),
             ),
             displayName: application.getDisplayName(),
@@ -132,7 +143,8 @@ export default class StoreModule extends BackendModule {
       });
     });
 
-    this.API.request.get("/app/store/application/:id", async (req, res) => {
+    this.api.request.get("/app/store/application/:id", async (req, res) => {
+      const { username, sessionid } = req.headers;
       const { id } = req.params;
 
       if (!id) {
@@ -147,9 +159,19 @@ export default class StoreModule extends BackendModule {
 
       const application = await unreadApplication.read();
 
+      console.log(await application.getIconPath());
+
       const response: IYourDashStoreApplication = {
         ...application.getRawApplicationData(),
-        icon: `data:image/avif;base64,${(await application.getIcon()).toString("base64")}`,
+        icon: await this.api.core.image.createResizedAuthenticatedImage(
+          username,
+          sessionid,
+          AUTHENTICATED_IMAGE_TYPE.ABSOLUTELY_PATHED_FILE,
+          await application.getIconPath(),
+          256,
+          256,
+          "webp",
+        ),
         installed: application.isInstalled(),
         requiresBackend: await application.requiresBackend(),
       };
@@ -157,7 +179,7 @@ export default class StoreModule extends BackendModule {
       return res.json(response);
     });
 
-    this.API.request.post("/app/store/application/install/:id", async (req, res) => {
+    this.api.request.post("/app/store/application/install/:id", async (req, res) => {
       const { id } = req.params;
       const applicationUnread = new YourDashApplication(id);
       if (!(await applicationUnread.exists())) {
@@ -165,29 +187,32 @@ export default class StoreModule extends BackendModule {
       }
       const application = await applicationUnread.read();
 
-      coreApi.globalDb.set("core:installedApplications", [
-        ...coreApi.globalDb.get("core:installedApplications"),
+      core.globalDb.set("core:installedApplications", [
+        ...core.globalDb.get<string[]>("core:installedApplications"),
         id,
         ...application.getDependencies(),
       ]);
-      await coreApi.moduleManager.loadModule(id, path.join(process.cwd(), `../applications/${id}/backend/`));
+      await core.moduleManager.loadModule(id, path.join(process.cwd(), `../applications/${id}/backend/`));
       return res.json({ success: true });
     });
 
-    this.API.request.post("/app/store/application/uninstall/:id", (req, res) => {
+    this.api.request.post("/app/store/application/uninstall/:id", async (req, res) => {
       const { id } = req.params;
       const application = new YourDashApplication(id);
-      if (!application.exists()) {
+
+      if (!(await application.exists())) {
         return res.json({ error: true });
       }
-      coreApi.globalDb.set(
+
+      core.globalDb.set(
         "core:installedApplications",
-        coreApi.globalDb.get("core:installedApplications").filter((app) => app !== id),
+        core.globalDb.get<string[]>("core:installedApplications").filter((app) => app !== id),
       );
+
       return res.json({ success: true });
     });
 
-    this.API.request.get("/app/store/application/:id/icon", async (req, res) => {
+    this.api.request.get("/app/store/application/:id/icon", async (req, res) => {
       const { id } = req.params;
       const unreadApplication = new YourDashApplication(id);
       if (!(await unreadApplication.exists())) {

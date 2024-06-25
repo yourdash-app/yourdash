@@ -1,0 +1,27 @@
+/*!
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
+@import "../../theme/themeValues";
+
+.componentContainer {
+  position: relative;
+}
+
+.component {
+  border-radius: var(#{$theme}#{$radius});
+  opacity: 0;
+}
+
+.loaded {
+  transition: opacity 750ms linear;
+  opacity: 1;
+}
+
+.spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

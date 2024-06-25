@@ -1,0 +1,21 @@
+/*!
+ * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
+.separator {
+  border-radius: 100rem;
+  background: rgb(var(--container-border));
+}
+
+.horizontal {
+  height: calc(var(--app-panel-size) - calc(var(--app-panel-padding) * 2));
+  margin-right: 0.25rem;
+  margin-left: 0.25rem;
+}
+
+.vertical {
+  height: 0.25rem;
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+}

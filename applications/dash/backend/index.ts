@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -8,10 +8,16 @@ import BackendModule, { YourDashModuleArguments } from "@yourdash/backend/src/co
 export default class DashModule extends BackendModule {
   constructor(args: YourDashModuleArguments) {
     super(args);
+  }
 
-    this.API.request.get("/app/dash/user-full-name", async (req, res) => {
+  public loadEndpoints() {
+    super.loadEndpoints();
+
+    this.api.request.setNamespace("app::dash");
+
+    this.api.request.get("/user-full-name", async (req, res) => {
       res.json(
-        (await this.API.getUser(req).getName()) || {
+        (await this.api.getUser(req).getName()) || {
           first: "Unknown",
           last: "User",
         },
@@ -19,7 +25,7 @@ export default class DashModule extends BackendModule {
     });
 
     // TODO: implement module system
-    this.API.request.get("/app/dash/modules", async (req, res) => {
+    this.api.request.get("/modules", async (req, res) => {
       res.json({ success: true });
     });
   }

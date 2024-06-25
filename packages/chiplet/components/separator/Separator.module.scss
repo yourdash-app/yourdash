@@ -1,0 +1,21 @@
+/*!
+ * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
+.separator {
+  --border-color: rgb(var(--container-border));
+  --separator-width: 0.125rem;
+}
+
+.horizontal {
+  height: 0;
+  width: 100%;
+  border-bottom: var(--separator-width) solid var(--border-color);
+}
+
+.vertical {
+  height: 100%;
+  width: 0;
+  border-right: var(--separator-width) solid var(--border-color);
+}

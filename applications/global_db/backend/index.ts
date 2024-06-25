@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -7,12 +7,17 @@ import YourDashUser from "@yourdash/backend/src/core/user/index.js";
 import { YOURDASH_USER_PERMISSIONS } from "@yourdash/backend/src/core/user/userPermissions.js";
 import path from "path";
 import BackendModule, { YourDashModuleArguments } from "@yourdash/backend/src/core/moduleManager/backendModule.js";
-import coreApi from "@yourdash/backend/src/core/coreApi.js";
+import core from "@yourdash/backend/src/core/core.js";
 
 export default class GlobalDbModule extends BackendModule {
   constructor(args: YourDashModuleArguments) {
     super(args);
-    this.API.request.get("/app/global_db/db", async (req, res) => {
+  }
+
+  public loadEndpoints() {
+    super.loadEndpoints();
+
+    this.api.request.get("/app/global_db/db", async (req, res) => {
       const { username } = req.headers as {
         username: string;
       };
@@ -21,7 +26,7 @@ export default class GlobalDbModule extends BackendModule {
 
       if (await user.hasPermission(YOURDASH_USER_PERMISSIONS.Administrator)) {
         return res.json({
-          db: coreApi.globalDb.keys,
+          db: core.globalDb.keys,
         });
       }
 
@@ -30,7 +35,7 @@ export default class GlobalDbModule extends BackendModule {
       });
     });
 
-    this.API.request.post("/app/global_db/db", async (req, res) => {
+    this.api.request.post("/app/global_db/db", async (req, res) => {
       const { username } = req.headers as {
         username: string;
       };
@@ -40,7 +45,7 @@ export default class GlobalDbModule extends BackendModule {
       const user = new YourDashUser(username);
 
       if (await user.hasPermission(YOURDASH_USER_PERMISSIONS.Administrator)) {
-        coreApi.globalDb.merge(keys);
+        core.globalDb.merge(keys);
 
         return res.json({
           success: true,
@@ -50,7 +55,7 @@ export default class GlobalDbModule extends BackendModule {
       return res.json({ error: true });
     });
 
-    this.API.request.post("/app/global_db/db/force-write", async (req, res) => {
+    this.api.request.post("/app/global_db/db/force-write", async (req, res) => {
       const { username } = req.headers as {
         username: string;
       };
@@ -60,8 +65,8 @@ export default class GlobalDbModule extends BackendModule {
       const user = new YourDashUser(username);
 
       if (await user.hasPermission(YOURDASH_USER_PERMISSIONS.Administrator)) {
-        coreApi.globalDb.merge(keys);
-        await coreApi.globalDb.writeToDisk(path.resolve(process.cwd(), "./fs/globalDatabase.json"));
+        core.globalDb.merge(keys);
+        await core.globalDb.writeToDisk(path.join(process.cwd(), "./fs/globalDatabase.json"));
 
         return res.json({
           success: true,

@@ -1,20 +1,23 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
- * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ * Copyright ©2024 Ewsgit<https://ewsgit.uk> and YourDash<https://yourdash.ewsgit.uk> contributors.
+ * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import pth from "path";
 import { promises as fs } from "fs";
-import { CoreApi } from "../coreApi.js";
-import FileSystemEntity from "./fileSystemEntity.js";
+import { Core } from "../core.js";
+import FileSystemEntity, { FILESYSTEM_ENTITY_TYPE } from "./fileSystemEntity.js";
+import pth from "path";
+import FileSystemFile from "./fileSystemFile.js";
 
 export default class FileSystemDirectory extends FileSystemEntity {
-  private readonly coreApi: CoreApi;
-  entityType = "directory" as const;
+  private readonly core: Core;
+  entityType = FILESYSTEM_ENTITY_TYPE.DIRECTORY as const;
 
-  constructor(coreApi: CoreApi, path: string) {
+  constructor(core: Core, path: string) {
     super(path);
-    this.coreApi = coreApi;
+    this.core = core;
+
+    return this;
   }
 
   getName(): string {
@@ -22,7 +25,7 @@ export default class FileSystemDirectory extends FileSystemEntity {
   }
 
   getMetadata() {
-    return fs.stat(this.path);
+    return fs.stat(pth.join(this.core.fs.ROOT_PATH, this.path));
   }
 
   async getChildren(): Promise<FileSystemEntity[]> {
@@ -31,23 +34,31 @@ export default class FileSystemDirectory extends FileSystemEntity {
     return await Promise.all(children.map(async (child) => await this.getChild(child)));
   }
 
+  async getChildDirectories(): Promise<FileSystemDirectory[]> {
+    return (await this.getChildren()).filter((entity) => entity.entityType === FILESYSTEM_ENTITY_TYPE.DIRECTORY) as FileSystemDirectory[];
+  }
+
+  async getChildFiles(): Promise<FileSystemFile[]> {
+    return (await this.getChildren()).filter((entity) => entity.entityType === FILESYSTEM_ENTITY_TYPE.FILE) as FileSystemFile[];
+  }
+
   async getChildrenAsBaseName(): Promise<string[]> {
     try {
-      return await fs.readdir(this.path);
+      return await fs.readdir(pth.join(this.core.fs.ROOT_PATH, this.path));
     } catch (_err) {
-      this.coreApi.log.error(`Unable to read directory: ${this.path}`);
+      this.core.log.error("filesystem", `Unable to read directory: ${this.path}`);
 
       return [];
     }
   }
 
   async create() {
-    await fs.mkdir(this.path, { recursive: true });
+    await fs.mkdir(pth.join(this.core.fs.ROOT_PATH, this.path), { recursive: true });
 
     return this;
   }
 
   getChild(path: string) {
-    return this.coreApi.fs.get(pth.join(this.path, path));
+    return this.core.fs.get(pth.join(this.path, path));
   }
 }

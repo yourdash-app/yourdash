@@ -1,9 +1,9 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import coreApi from "../coreApi.js";
+import core from "../core.js";
 import FileSystemEntity from "./fileSystemEntity.js";
 
 export default class FileSystemLock {
@@ -15,7 +15,7 @@ export default class FileSystemLock {
   }
 
   removeLock() {
-    coreApi.fs.__internal__fileSystemLocks.set(
+    core.fs.__internal__fileSystemLocks.set(
       this.lockedEntity.path,
       this.lockedEntity.getAllLocks().filter((i) => i !== this),
     );

@@ -24,7 +24,7 @@ This repository 'YourDash' is a collection of projects more commonly known as a 
 Some of the YourDash projects include
 
 - YourDash Backend (backend)
-- YourDash Web (web-client)
+- YourDash Web (web)
 - UIKit (uikit)
 
 ## Host Your Own YourDash Instance
@@ -52,29 +52,43 @@ Some of the YourDash projects include
 - Version Control
   - [Git](https://git-scm.com/)
 
-### Installation and setup (Linux) (Recommended Development Method)
-
-#### Install Bun and Yarn
+### Installation and setup for deployment (Linux only)
 ```shell
-curl -fsSL https://bun.sh/install | bash
-source ~/.bashrc
-
-npm i -g yarn
+curl -L https://raw.githubusercontent.com/yourdash/yourdash/main/toolchain/setupInstance.sh | bash
 ```
-#### Install npm dependencies
+
+### Installation and setup for development (Linux)
+
+#### Install NodeJS with Node Version Manager and Yarn
+  - Install Node Version Manager
+    - ```shell
+      curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+      source ~/.nvm/nvm.sh
+      ```
+  - Install Node v21
+    - ```shell
+      nvm install 21
+      source ~/.nvm/nvm.sh
+      ```
+  - Install Yarn
+    - ```shell
+      npm i -g yarn
+      ```
+
+#### Install dependencies
 ```shell
-bun install
+yarn install
 ```
 #### Run YourDash backend in dev mode
 ```shell
-bun run yd:dev-backend
+yarn run yd:dev-backend
 ```
 #### Run YourDash web in dev mode
 ```shell
-bun run yd:dev-web-client
+yarn run yd:dev-web
 ```
 
-### Installation and setup (Windows)
+### Installation and setup for development (Windows)
 
 #### Install yarn
 ```shell
@@ -90,7 +104,7 @@ yarn run yd:dev-backend
 ```
 #### Run YourDash web in dev mode
 ```shell
-yarn run yd:dev-web-client
+yarn run yd:dev-web
 ```
 
 #### Notes

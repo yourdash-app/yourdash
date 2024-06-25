@@ -9,13 +9,14 @@
       "ESNext"
     ],
     "allowJs": false,
-    "skipLibCheck": true,
+    "skipLibCheck": false,
     "esModuleInterop": true,
     "sourceMap": true,
-    "rootDir": "..",
     "removeComments": true,
     "resolveJsonModule": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "rootDir": "../..",
+    "traceResolution": true
   },
   "include": [
     "./src/**/*.ts",

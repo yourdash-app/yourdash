@@ -3,8 +3,8 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { UUID } from "@yourdash/shared/core/uuid";
+import { UUID } from "@yourdash/shared/core/uuid.js";
 
-export interface ChatbotsApplication {
+export default interface ChatbotsBotApplication {
   id: UUID;
 }

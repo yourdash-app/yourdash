@@ -1,46 +1,46 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 export interface task {
-  execute: () => void,
-  timestamp: string,
-  id: string,
-  subTasks?: task[],
-  completed?: boolean
+  execute: () => void;
+  timestamp: string;
+  id: string;
+  subTasks?: task[];
+  completed?: boolean;
 }
 
 export default class TaskQueue {
   queue: task[];
 
   constructor() {
-    this.queue = []
+    this.queue = [];
 
-    return this
+    return this;
   }
 
-  addTask( task: task ) {
-    this.queue.push( task )
+  addTask(task: task) {
+    this.queue.push(task);
 
-    return this
+    return this;
   }
 
   getQueue() {
-    return this.queue
+    return this.queue;
   }
 
   clearQueue() {
-    this.queue = []
+    this.queue = [];
 
-    return this
+    return this;
   }
 
   getQueueLength() {
-    return this.queue.length
+    return this.queue.length;
   }
 
-  getTaskById( id: string ) {
-    return this.queue.find( task => task.id === id )
+  getTaskById(id: string) {
+    return this.queue.find((task) => task.value === id);
   }
 }

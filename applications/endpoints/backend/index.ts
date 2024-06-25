@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -8,6 +8,11 @@ import BackendModule, { YourDashModuleArguments } from "@yourdash/backend/src/co
 export default class EndpointsModule extends BackendModule {
   constructor(args: YourDashModuleArguments) {
     super(args);
-    this.API.request.get("/app/endpoints/endpoints", (req, res) => res.json(this.API.request._router.stack));
+  }
+
+  public loadEndpoints() {
+    super.loadEndpoints();
+
+    this.api.request.get("/app/endpoints/endpoints", (req, res) => res.json(this.api.request.rawExpress._router.stack));
   }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -8,8 +8,12 @@ import BackendModule, { YourDashModuleArguments } from "@yourdash/backend/src/co
 export default class YourDevModule extends BackendModule {
   constructor(args: YourDashModuleArguments) {
     super(args);
+  }
 
-    this.API.request.get("/app/whiteboard/", (req, res) => {
+  public loadEndpoints() {
+    super.loadEndpoints();
+
+    this.api.request.get("/app/whiteboard/", (req, res) => {
       return res.json({ success: true });
     });
   }

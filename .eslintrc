@@ -23,7 +23,7 @@
     "@typescript-eslint/no-use-before-define": "error",
     "max-len": "off",
     "no-shadow": "off",
-    "@typescript-eslint/no-shadow": "error",
+    "@typescript-eslint/no-shadow": "off",
     "complexity": "off",
     "no-nested-ternary": "off",
     "import/order": "off"

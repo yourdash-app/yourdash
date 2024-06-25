@@ -6,7 +6,7 @@
   "license": "MIT",
   "private": true,
   "engines": {
-    "node": ">=21.0.0"
+    "yarn": ">=1.22.0"
   },
   "workspaces": [
     "packages/*",
@@ -14,13 +14,14 @@
     "applications"
   ],
   "scripts": {
-    "yd:dev-web-client": "yarn --cwd ./main/web-client dev",
-    "yd:dev-backend": "yarn --cwd ./main/backend dev",
-    "yd:start-backend": "yarn --cwd ./main/backend start --log-requests",
-    "yd:setup-project": "yarn && yarn --cwd ./main/web-client generate-application-routes",
-    "yd:build-production": "yarn --cwd ./main/backend compile-all && yarn --cwd ./packages/web-client build",
-    "opengfx:dev": "yarn --cwd ./packages/opengfx-engine dev",
-    "yd:dev-desktop-client": "yarn --cwd ./main/desktop-client/ dev"
+    "dev-web": "yarn --cwd main/web dev",
+    "dev-deprecated-web": "yarn --cwd ./main/deprecated-web dev",
+    "dev-backend": "yarn --cwd ./main/backend dev",
+    "start-backend": "yarn --cwd ./main/backend start --log-requests",
+    "setup-project": "yarn && yarn --cwd main/web generate-application-routes",
+    "build-production": "yarn --cwd ./main/backend compile-all && yarn --cwd ./packages/web build",
+    "dev-desktop": "yarn --cwd ./main/desktop/ start",
+    "opengfx:dev": "yarn --cwd ./packages/opengfx-engine dev"
   },
   "dependencies": {
     "@discordjs/voice": "^0.16.1",

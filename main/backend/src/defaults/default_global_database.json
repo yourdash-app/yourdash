@@ -1,7 +1,6 @@
 {
-  "displayName": "YourDash Instance",
-  "administratorDetails": {
-    "name": "[ADMINISTRATOR NAME]",
+  "core:administratorDetails": {
+    "name": "Admin istrator",
     "contactDetails": {
       "phone": false,
       "email": "admin@example.com",
@@ -13,19 +12,21 @@
     "settings",
     "files",
     "store",
-    "weather"
+    "weather",
+    "photos"
   ],
-  "defaults": {
+  "core:defaults": {
     "user": {
       "quickShortcuts": [
         "dash",
         "settings",
         "files",
         "store",
-        "weather"
+        "weather",
+        "photos"
       ]
     }
   },
-  "core:instance:name": "Placeholder name",
+  "core:instance:name": "YourDash Instance",
   "core:instance:message": "Placeholder message. Hey system admin, you should change this!"
 }

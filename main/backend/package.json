@@ -11,6 +11,8 @@
     "@types/bcrypt": "^5.0.0",
     "@types/compression": "^1.7.3",
     "@types/express": "^4.17.17",
+    "@types/ffmpeg": "^1.0.7",
+    "@types/fluent-ffmpeg": "^2.1.24",
     "@types/kill-port": "^2.0.1",
     "@types/node": "^20.6.2",
     "@types/node-schedule": "^2.1.0",
@@ -30,8 +32,10 @@
     "esm": "^3.2.25",
     "execa": "^8.0.1",
     "express": "^4.18.2",
+    "ffmpeg": "^0.0.4",
     "file-url": "^4.0.0",
     "fkill": "^8.1.0",
+    "fluent-ffmpeg": "^2.1.2",
     "image-size": "^1.1.1",
     "kill-port": "^2.0.1",
     "libvips": "^0.0.2",
@@ -49,29 +53,15 @@
     "tsc-watch": "^6.0.4",
     "tsconfig-paths": "^4.2.0",
     "tsx": "^4.7.1",
+    "type-fest": "^4.14.0",
     "typescript": "^5.2.2",
     "undici": "^5.28.3",
     "xml2js": "^0.6.2"
   },
   "type": "module",
   "scripts": {
-    "start": "run-script-os",
-    "start:nix": "tsx ./src/main.ts --color=full --log-requests",
-    "start:win32": "tsx ./src/main.ts --color=full --log-requests",
-    "dev": "run-script-os",
-    "dev:nix": "nodemon --exec \"tsx ./src/main.ts --dev --color=full --log-requests\"",
-    "dev:win32": "nodemon --exec \"tsx ./src/main.ts --dev --color=full --log-requests\""
-  },
-  "nodemonConfig": {
-    "ext": "ts",
-    "watch": [
-      "./src/**/*",
-      "./src/*",
-      "../../applications/**/backend/**/*",
-      "../../applications/**/backend/*"
-    ],
-    "delay": 256,
-    "colours": true,
-    "signal": "SIGTERM"
+    "start": "bun ./src/main.ts --color=full --log-requests",
+    "dev": "bun ./src/main.ts --dev --color=full --log-requests",
+    "debug": "bun --inspect-brk ./src/main.ts --dev --color=full --log-requests"
   }
 }

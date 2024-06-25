@@ -4,8 +4,8 @@
  */
 
 import { useContext } from "react";
-import IToast from "@yourdash/uikit/depChiplet/components/toast/IToast";
-import ToastContext from "@yourdash/uikit/depChiplet/components/toast/ToastContext";
+import IToast from "@yourdash/chiplet/components/toast/IToast";
+import ToastContext from "@yourdash/chiplet/components/toast/ToastContext";
 import generateUUID from "./uuid";
 
 export default function useYourDashLib() {
@@ -26,6 +26,15 @@ export default function useYourDashLib() {
         toast({
           message,
           type: "error",
+          params: options,
+          title,
+          uuid: generateUUID(),
+        });
+      },
+      debug: (title: string, message: string, options?: IToast["params"]) => {
+        toast({
+          message,
+          type: "debug",
           params: options,
           title,
           uuid: generateUUID(),

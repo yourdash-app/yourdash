@@ -1,0 +1,281 @@
+/*
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
+.theme {
+  --ut-author: "Ewsgit";
+  --ut-name: "YourDash Classic Dark";
+  --ut-version: "0.0.1";
+  background: var(--utbgn);
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.level0 {
+  color: var(--utcol);
+  --utcol: #ffffff;
+  --utscl: #bbbbbb;
+  --utbgn: #222222;
+  --utacn: #768ce7;
+  --utbrd: 0.125rem solid #444444;
+  --utrad: 1rem;
+  --utpdn: 1rem;
+  --utgap: 0.5rem;
+  --uttrn: all 200ms ease-in-out;
+  --utsepsiz: 0.125rem;
+  --utsepcol: #444444;
+  --uthedhe1wgt: 900;
+  --uthedhe1siz: 3rem;
+  --uthedhe2wgt: 700;
+  --uthedhe2siz: 2rem;
+  --uthedhe3wgt: 600;
+  --uthedhe3siz: 1.5rem;
+  --uthedhe4wgt: 500;
+  --uthedhe4siz: 1.25rem;
+  --uthedhe5wgt: 500;
+  --uthedhe5siz: 1rem;
+  --uthedhe6wgt: 500;
+  --uthedhe6siz: 0.875rem;
+  --utinpcol: #ffffff;
+  --utinpbgn: #222222;
+  --utinpbrd: 0.125rem solid #444444;
+  --utinprad: 0.5rem;
+  --utinphei: 2rem;
+  --utinppdnhrt: 0.5rem;
+  --utinptrn: all 0.2s ease-in-out;
+  --utinpfoccol: #ffffff;
+  --utinpfocbgn: #333333;
+  --utinpfocbrd: 0.125rem solid #555555;
+  --utbtncol: #ffffff;
+  --utbtnbgn: #444444;
+  --utbtnbrd: 0.125rem solid #555555;
+  --utbtnfntsiz: 0.9rem;
+  --utbtnfntwgt: 400;
+  --utbtnrad: 0.5rem;
+  --utbtnpdnhrt: 0.5rem;
+  --utbtntrn: all 0.2s ease-in-out;
+  --utbtnhvrcol: #ffffff;
+  --utbtnhvrbgn: #555555;
+  --utbtnhvrbrd: 0.125rem solid #666666;
+  --utbtnhvrrad: 0.5rem;
+  --utbtnhvrtrn: all 50ms ease-in-out;
+  --utbtnatvcol: #000000;
+  --utbtnatvbgn: #666666;
+  --utbtnatvbrd: 0.125rem solid #777777;
+  --utbtnatvrad: 0.5rem;
+  --utbtnatvtrn: all 50ms ease-in-out;
+  --uttxbfntwgt: 700;
+  --utfntfam: Inter;
+  --utfntsiz: 0.9rem;
+  --utfntwgt: 400;
+  --uthedcol: #ffffff;
+  --uthedfntfam: Inter;
+  --uthedfntsiz: 1.2rem;
+  --uthedfntwgt: 700;
+  --uthedpdnvrt: 1rem;
+  --uthedpdnhrt: 0.5rem;
+}
+
+.level1 {
+  color: var(--utcol);
+  --utcol: #ffffff;
+  --utbgn: #333333;
+  --utbrd: 0.125rem solid #555555;
+  --utacn: #768ce7;
+  --utrad: 0.5rem;
+  --utfntfam: Inter;
+  --utfntrad: 0.9rem;
+  --utfntwgt: 400;
+  --utpdn: 0.75rem;
+  --utgap: 0.5rem;
+  --uttrn: all 200ms ease-in-out;
+  --utsepsiz: 0.125rem;
+  --utsepcol: #555555;
+  --uthedhe1wgt: 800;
+  --uthedhe1siz: 3rem;
+  --uthedhe2wgt: 700;
+  --uthedhe2siz: 2.5rem;
+  --uthedhe3wgt: 600;
+  --uthedhe3siz: 2rem;
+  --uthedhe4wgt: 500;
+  --uthedhe4siz: 1.5rem;
+  --uthedhe5wgt: 500;
+  --uthedhe5siz: 1rem;
+  --uthedhe6wgt: 500;
+  --uthedhe6siz: 0.875rem;
+  --utinpcol: #ffffff;
+  --utinpbgn: #222222;
+  --utinpbrd: 0.125rem solid #444444;
+  --utinprad: 0.5rem;
+  --utinphei: 2rem;
+  --utinppdnhrt: 0.5rem;
+  --utinptrn: all 0.2s ease-in-out;
+  --utinpfoccol: #ffffff;
+  --utinpfocbgn: #333333;
+  --utinpfocbrd: 0.125rem solid #555555;
+  --utbtncol: #ffffff;
+  --utbtnbgn: #444444;
+  --utbtnbrd: 0.125rem solid #444444;
+  --utbtnfntsiz: 0.9rem;
+  --utbtnfntwgt: 400;
+  --utbtnrad: 0.5rem;
+  --utbtnpdnhrt: 0.5rem;
+  --utbtntrn: all 0.2s ease-in-out;
+  --utbtnhvrcol: #ffffff;
+  --utbtnhvrbgn: #555555;
+  --utbtnhvrbrd: 0.125rem solid #555555;
+  --utbtnhvrrad: 0.5rem;
+  --utbtnhvrtrn: all 50ms ease-in-out;
+  --utbtnatvcol: #000000;
+  --utbtnatvbgn: #666666;
+  --utbtnatvbrd: 0.125rem solid #555555;
+  --utbtnatvrad: 0.5rem;
+  --uthedcol: #ffffff;
+  --uthedfntfam: Inter;
+  --uthedfntsiz: 1.2rem;
+  --uthedfntwgt: 700;
+  --uthedpdnvrt: 0.5rem;
+  --uthedpdnhrt: 0.25rem;
+}
+
+.level2 {
+  color: var(--utcol);
+  --utcol: #ffffff;
+  --utbgn: #444444;
+  --utbrd: 0.125rem solid #555555;
+  --utacn: #768ce7;
+  --utrad: 0.25rem;
+  --utpdn: 0.5rem;
+  --utgap: 0.75rem;
+  --uttrn: all 200ms ease-in-out;
+  --utsepsiz: 0.125rem;
+  --utsepcol: #555555;
+  --uthedhe1wgt: 900;
+  --uthedhe1siz: 3rem;
+  --uthedhe2wgt: 700;
+  --uthedhe2siz: 2rem;
+  --uthedhe3wgt: 600;
+  --uthedhe3siz: 1.5rem;
+  --uthedhe4wgt: 500;
+  --uthedhe4siz: 1.25rem;
+  --uthedhe5wgt: 500;
+  --uthedhe5siz: 1rem;
+  --uthedhe6wgt: 500;
+  --uthedhe6siz: 0.875rem;
+  --uttxbfntwgt: 700;
+  --utfntfam: Inter;
+  --utfntsiz: 0.9rem;
+  --utfntwgt: 400;
+  --utinpcol: #ffffff;
+  --utinpbgn: #222222;
+  --utinpbrd: 0.125rem solid #444444;
+  --utinprad: 0.5rem;
+  --utinphei: 2rem;
+  --utinppdnhrt: 0.5rem;
+  --utinptrn: all 0.2s ease-in-out;
+  --utinpfoccol: #ffffff;
+  --utinpfocbgn: #333333;
+  --utinpfocbrd: 0.125rem solid #555555;
+  --utbtncol: #ffffff;
+  --utbtnbgn: #555555;
+  --utbtnbrd: 0.125rem solid #555555;
+  --utbtnfntfam: Inter;
+  --utbtnfntsiz: 0.9rem;
+  --utbtnfntwgt: 400;
+  --utbtnrad: 0.25rem;
+  --utbtnpdnhrt: 0.5rem;
+  --utbtntrn: all 0.2s ease-in-out;
+  --utbtnhvrcol: #ffffff;
+  --utbtnhvrbgn: #666666;
+  --utbtnhvrbrd: 0.125rem solid #666666;
+  --utbtnhvrrad: 0.25rem;
+  --utbtnhvrtrn: all 50ms ease-in-out;
+  --utbtnatvcol: #000000;
+  --utbtnatvbgnbg: #666666;
+  --utbtnatvbrd: 0.125rem solid #666666;
+  --utbtnatvrad: 0.25rem;
+  --uthedcol: #ffffff;
+  --uthedfntfam: Inter;
+  --uthedfntsiz: 1.2rem;
+  --uthedfntwgt: 700;
+  --uthedpdnvrt: 0.5rem;
+  --uthedpdnhrt: 0.25rem;
+}
+
+.level3 {
+  color: var(--utcol);
+  --utcol: #ffffff;
+  --utbgn: #555555;
+  --utbrd: 0.125rem solid #666666;
+  --utacn: #768ce7;
+  --utrad: 0.125rem;
+  --utpdn: 0.5rem;
+  --utgap: 1rem;
+  --uttrn: all 200ms ease-in-out;
+  --utsepsiz: 0.125rem;
+  --utsepcol: #555555;
+  --uthedhe1wgt: 900;
+  --uthedhe1siz: 3rem;
+  --uthedhe2wgt: 700;
+  --uthedhe2siz: 2rem;
+  --uthedhe3wgt: 600;
+  --uthedhe3siz: 1.5rem;
+  --uthedhe4wgt: 500;
+  --uthedhe4siz: 1.25rem;
+  --uthedhe5wgt: 500;
+  --uthedhe5siz: 1rem;
+  --uthedhe6wgt: 500;
+  --uthedhe6siz: 0.875rem;
+  --uttxbfntwgt: 700;
+  --utfam: Inter;
+  --utsiz: 0.9rem;
+  --utwgt: 400;
+  --utinpcol: #ffffff;
+  --utinpbgn: #222222;
+  --utinpbrd: 0.125rem solid #444444;
+  --utinprad: 0.5rem;
+  --utinphei: 2rem;
+  --utinppdnhrt: 0.5rem;
+  --utinptrn: all 0.2s ease-in-out;
+  --utinpfoccol: #ffffff;
+  --utinpfocbgn: #333333;
+  --utinpfocbrd: 0.125rem solid #555555;
+  --utbtncol: #ffffff;
+  --utbtnbgn: #666666;
+  --utbtnbrd: 0.125rem solid #666666;
+  --utbtnfntfam: Inter;
+  --utbtnfntsiz: 0.9rem;
+  --utbtnfntwgt: 400;
+  --utbtnrad: 0.25rem;
+  --utbtnpdnhrt: 0.5rem;
+  --utbtnhvrcol: #ffffff;
+  --utbtnhvrbgn: #777777;
+  --utbtnhvrbrd: 0.125rem solid #777777;
+  --utbtnhvrrad: 0.25rem;
+  --utbtnhvrtrn: all 50ms ease-in-out;
+  --utbtnatvcol: #000000;
+  --utbtnatvbgn: #777777;
+  --utbtnatvbrd: 0.125rem solid #777777;
+  --utbtnatvrad: 0.25rem;
+  --uthedcol: #ffffff;
+  --uthedfntfam: Inter;
+  --uthedfntsiz: 1.2rem;
+  --uthedfntwgt: 700;
+  --uthedpdnvrt: 0.5rem;
+  --uthedpdnhrt: 0.25rem;
+}
+
+.mobile .level0 {
+  --utinphei: 2.5rem;
+}
+.mobile .level1 {
+  --utinphei: 2.5rem;
+}
+.mobile .level2 {
+  --utinphei: 2.5rem;
+}
+.mobile .level3 {
+  --utinphei: 2.5rem;
+}

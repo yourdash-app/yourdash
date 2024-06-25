@@ -1,11 +1,11 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 import { type ILocationSearchResult } from "../../shared/locationSearchResult.js";
 import { fetch } from "undici";
-import coreApi from "@yourdash/backend/src/core/coreApi.js";
+import core from "@yourdash/backend/src/core/core.js";
 
 const geolocationSuggestionsCache = new Map<string, ILocationSearchResult[]>();
 
@@ -19,11 +19,11 @@ export default async function getGeolocationSuggestions(
   if (locationName.length < 3) return [];
 
   if (geolocationSuggestionsCache.get(locationName)) {
-    coreApi.log.info("app:weather", `Responding with cached location data for location '${locationName}'`);
+    core.log.info("app:weather", `Responding with cached location data for location '${locationName}'`);
     return geolocationSuggestionsCache.get(locationName);
   }
 
-  coreApi.log.info("app:weather", `Fetching location suggestions for ${locationName}`);
+  core.log.info("app:weather", `Fetching location suggestions for ${locationName}`);
   const endpoint = `https://geocoding-api.open-meteo.com/v1/search?name=${locationName}&count=${suggestionCount}&language=en&format=json`;
 
   try {
@@ -38,7 +38,7 @@ export default async function getGeolocationSuggestions(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const output = response.results.map((result: any) => {
       return {
-        id: result.id,
+        value: result.value,
         address: {
           name: result.name,
           admin1: result.admin1,

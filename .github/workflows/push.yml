@@ -29,14 +29,14 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Build website
-        run: (cd ./main/web-client && yarn build)
+        run: (cd ./main/web && yarn build)
 
       - name: Deploy to "yourdash.pages.dev" and "yourdash-app.github.io"
         uses: cpina/github-action-push-to-another-repository@main
         env:
           SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY }}
         with:
-          source-directory: main/web-client/dist/
+          source-directory: main/web/dist/
           destination-github-username: yourdash-app
           destination-repository-name: "yourdash-app.github.io"
           user-email: ewsgit@duck.com
@@ -47,5 +47,5 @@ jobs:
         env:
           REPO: self
           BRANCH: gh-pages
-          FOLDER: main/web-client/dist/
+          FOLDER: main/web/dist/
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

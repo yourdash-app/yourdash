@@ -1,21 +1,31 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 import chalk from "chalk";
-import { promises as fs } from "fs";
 import path from "path";
-import KeyValueDatabase from "@yourdash/shared/core/database.js";
 import { YOURDASH_SESSION_TYPE } from "@yourdash/shared/core/session.js";
 import sharp from "sharp";
-import { hashString } from "../../helpers/encryption.js";
-import YourDashSession, { getSessionsForUser } from "../../helpers/session.js";
-import coreApi from "../coreApi.js";
+import { hashString } from "../../lib/encryption.js";
+import YourDashSession, { getSessionsForUser } from "../../lib/session.js";
+import core from "../core.js";
 import { USER_AVATAR_SIZE } from "@yourdash/shared/core/userAvatarSize.js";
 import { YOURDASH_TEAM_PERMISSIONS, YourDashTeamPermission } from "../team/teamPermissions.js";
+import UserDatabase from "./userDatabase.js";
 import { YourDashUserPermission } from "./userPermissions.js";
-import IYourDashUserJson from "./userJson.js";
+import IYourDashUserDatabase from "./userJson.js";
+
+const USER_PATHS = {
+  FS: "./fs/",
+  ROOT: ".",
+  AVATARS: "./avatars/",
+  CORE: "./core/",
+  PASSWORD: "./core/password.enc",
+  CACHE: "./cache/",
+};
+
+export { USER_PATHS };
 
 export default class YourDashUser {
   username: string;
@@ -23,7 +33,7 @@ export default class YourDashUser {
 
   constructor(username: string) {
     this.username = username;
-    this.path = path.join(path.join(coreApi.fs.ROOT_PATH, `users/${this.username}`));
+    this.path = `users/${this.username}`;
   }
 
   getPath() {
@@ -34,8 +44,8 @@ export default class YourDashUser {
     return path.join(this.path, "fs");
   }
 
-  async getDatabase(): Promise<KeyValueDatabase> {
-    return coreApi.users.__internal__getUserDatabase(this.username);
+  async getDatabase(): Promise<UserDatabase> {
+    return await core.users.__internal__getUserDatabase(this.username);
   }
 
   getAvatar(size: USER_AVATAR_SIZE): string {
@@ -55,174 +65,206 @@ export default class YourDashUser {
     }
   }
 
+  getTheme(): string {
+    return path.resolve(path.join(this.getFsPath(), "core/theme.css"));
+  }
+
+  async doesHaveAvatar(): Promise<boolean> {
+    return await core.fs.doesExist(this.getAvatar(USER_AVATAR_SIZE.ORIGINAL));
+  }
+
   async setAvatar(filePath: string) {
-    await fs.cp(path.resolve(filePath), path.join(this.path, "avatars/original.avif"));
-    const newAvatarFile = await fs.readFile(path.resolve(filePath));
+    await core.fs.copy(filePath, path.join(this.path, "avatars/original.avif"));
+    const newAvatarFile = await (await core.fs.getFile(filePath)).read("buffer");
 
     sharp(newAvatarFile)
       .resize(32, 32)
-      .toFile(path.join(this.path, "avatars/small.avif"))
-      .catch((err) => console.error(err));
+      .toFile(path.join(path.join(core.fs.ROOT_PATH, this.path), "avatars/small.avif"))
+      .catch((err: string) => console.error(err));
     sharp(newAvatarFile)
       .resize(64, 64)
-      .toFile(path.join(this.path, "avatars/medium.avif"))
-      .catch((err) => console.error(err));
+      .toFile(path.join(path.join(core.fs.ROOT_PATH, this.path), "avatars/medium.avif"))
+      .catch((err: string) => console.error(err));
     sharp(newAvatarFile)
       .resize(128, 128)
-      .toFile(path.join(this.path, "avatars/large.avif"))
-      .catch((err) => console.error(err));
+      .toFile(path.join(path.join(core.fs.ROOT_PATH, this.path), "avatars/large.avif"))
+      .catch((err: string) => console.error(err));
     sharp(newAvatarFile)
       .resize(256, 256)
-      .toFile(path.join(this.path, "avatars/extraLarge.avif"))
-      .catch((err) => console.error(err));
+      .toFile(path.join(path.join(core.fs.ROOT_PATH, this.path), "avatars/extraLarge.avif"))
+      .catch((err: string) => console.error(err));
   }
 
   async verify() {
-    if (!coreApi.globalDb.get("defaults")) {
-      return coreApi.log.error("user", `the GlobalDatabase is not yet loaded! not creating user ${this.username}`);
+    if (!core.globalDb.get("core:defaults")) {
+      return core.log.error("user", `the GlobalDatabase is not yet loaded! not creating user ${this.username}`);
     }
 
     try {
-      if (!(await (await coreApi.teams.get(`${this.username}-personal`)).doesExist())) {
-        await coreApi.teams.create(`${this.username}-personal`);
+      if (!(await (await core.teams.get(`${this.username}-personal`)).doesExist())) {
+        await core.teams.create(`${this.username}-personal`);
+        await this.joinTeam(`${this.username}-personal`, [YOURDASH_TEAM_PERMISSIONS.ADMINISTRATOR]);
       }
-      await this.joinTeam(`${this.username}-personal`, [YOURDASH_TEAM_PERMISSIONS.ADMINISTRATOR]);
     } catch (err) {
-      coreApi.log.error("user", `Unable to create team for user ${this.username}`);
-      console.error(err);
+      core.log.error("user", `Unable to create team for user ${this.username}`);
       return;
     }
 
     try {
       // "/"
-      if (!(await coreApi.fs.doesExist(this.path))) {
-        await coreApi.fs.createDirectory(this.path);
+      if (!(await core.fs.doesExist(this.path))) {
+        await core.fs.createDirectory(this.path);
       }
     } catch (err) {
-      coreApi.log.error("core", `Unable to create user root for ${this.username}`);
-      console.error(err);
+      core.log.error("core", `Unable to create user root for ${this.username}`);
       return;
     }
 
     try {
       // "/apps/"
-      if (!(await coreApi.fs.doesExist(path.join(this.path, "/apps")))) {
-        await coreApi.fs.createDirectory(path.join(this.path, "/apps"));
+      if (!(await core.fs.doesExist(path.join(this.path, "/apps")))) {
+        await core.fs.createDirectory(path.join(this.path, "/apps"));
       }
     } catch (err) {
-      coreApi.log.error("user", `username: ${this.username}, failed to create apps directory!`);
-      console.error(err);
+      core.log.error("user", `username: ${this.username}, failed to create apps directory!`);
       return;
     }
 
     try {
       // "/avatars/"
-      if (!(await coreApi.fs.doesExist(path.join(this.path, "/avatars")))) {
-        await coreApi.fs.createDirectory(path.join(this.path, "/avatars"));
+      if (!(await core.fs.doesExist(path.join(this.path, "/avatars")))) {
+        await core.fs.createDirectory(path.join(this.path, "/avatars"));
       }
     } catch (err) {
-      coreApi.log.error("user", `username: ${this.username}, failed to create avatars directory!`);
-      console.error(err);
+      core.log.error("user", `username: ${this.username}, failed to create avatars directory!`);
       return;
     }
 
     try {
       // "/core/"
-      if (!(await coreApi.fs.doesExist(path.join(this.path, "/core")))) {
-        await coreApi.fs.createDirectory(path.join(this.path, "/core"));
+      if (!(await core.fs.doesExist(path.join(this.path, "/core")))) {
+        await core.fs.createDirectory(path.join(this.path, "/core"));
       }
     } catch (err) {
-      coreApi.log.error("user", `username: ${this.username}, failed to create core directory!`);
-      console.error(err);
+      core.log.error("user", `username: ${this.username}, failed to create core directory!`);
+      return;
+    }
+
+    try {
+      // "/core/theme.css"
+      if (!(await core.fs.doesExist(path.join(this.path, "/core/theme.css")))) {
+        await core.fs.copy("./defaults/theme.css", path.join(this.path, "/core/theme.css"));
+      }
+    } catch (err) {
+      core.log.error("user", `username: ${this.username}, failed to copy default user theme!`, err);
+      return;
+    }
+
+    try {
+      // "/core/sessions.json"
+
+      // if the user does not have a sessions.json, create one
+      if (!(await (await core.fs.getFile(path.join(this.path, "core/sessions.json"))).doesExist())) {
+        await (await core.fs.getFile(path.join(this.path, "core/sessions.json"))).write("[]");
+      }
+    } catch (err) {
+      core.log.error("user", `username: ${this.username}, failed to create sessions.json!`, err);
       return;
     }
 
     try {
       // "/core/user_db.json"
-      await coreApi.fs.createFile(path.join(this.path, "./core/user_db.json")).write(
-        JSON.stringify({
-          "user:name": {
-            first: "New",
-            last: "User",
-          },
-          "user:username": this.username,
-          "core:panel:quickShortcuts": coreApi.globalDb.get("defaults")?.user?.quickShortcuts || [],
-        }),
-      );
+
+      // if the user does not have a database, create one
+      if (!(await core.fs.doesExist(path.join(this.path, "core/user_db.json")))) {
+        await core.fs.createFile(path.join(this.path, "./core/user_db.json")).write(
+          JSON.stringify({
+            "user:name": {
+              first: "New",
+              last: "User",
+            },
+            "user:username": this.username,
+            "core:panel:pinned":
+              core.globalDb.get<{ user: { quickShortcuts: string[] } }>("core:defaults")?.user?.quickShortcuts || [],
+          }),
+        );
+      }
     } catch (err) {
-      coreApi.log.error("user", `username: ${this.username}, failed to create user_db.json!`, err);
-      console.error(err);
+      core.log.error("user", `username: ${this.username}, failed to create user_db.json!`, err);
       return;
     }
 
     try {
-      await this.setPassword("password");
+      if (!(await core.fs.doesExist(path.join(this.path, "core/password.enc")))) {
+        await this.setPassword("password");
+      }
     } catch (err) {
-      coreApi.log.error("user", `username: ${this.username}, failed to set password!`, err);
-      console.error(err);
+      core.log.error("user", `username: ${this.username}, failed to set password!`, err);
       return;
     }
 
     try {
-      // set default avatar
-      await this.setAvatar(path.join(process.cwd(), "./src/defaults/default_avatar.avif"));
+      // if the user has no avatar, set the default
+      if (!(await this.doesHaveAvatar())) {
+        await this.setAvatar("./defaults/default_avatar.avif");
+      }
     } catch (err) {
-      coreApi.log.error("user", `username: ${this.username}, failed to set default avatar!`, err);
-      console.error(err);
+      core.log.error("user", `username: ${this.username}, failed to set default avatar!`, err);
       return;
     }
 
     try {
-      await coreApi.fs.createFile(path.join(this.path, "core/user.json")).write(
-        JSON.stringify({
-          username: this.username,
-          "core:user:name": {
-            first: "New",
-            last: "User",
-          },
-          bio: "👋 I'm new to YourDash, say hi!",
-          url: "",
-          permissions: [],
-          version: 1,
-        } as IYourDashUserJson),
-      );
+      if (!(await core.fs.doesExist(path.join(this.path, "core/user.json")))) {
+        await core.fs.createFile(path.join(this.path, "core/user.json")).write(
+          JSON.stringify({
+            username: this.username,
+            "core:user:name": {
+              first: "New",
+              last: "User",
+            },
+            bio: "👋 I'm new to YourDash, say hi!",
+            url: "",
+            permissions: [],
+            version: 1,
+          } as IYourDashUserDatabase),
+        );
+      }
     } catch (err) {
-      coreApi.log.error("user", `username: ${this.username}, failed to create user.json!`, err);
-      console.error(err);
+      core.log.error("user", `username: ${this.username}, failed to create user.json!`, err);
       return;
     }
 
     try {
       // "/fs/"
-      if (!(await coreApi.fs.doesExist(path.join(this.path, "/fs")))) {
-        await coreApi.fs.createDirectory(path.join(this.path, "/fs"));
+      if (!(await core.fs.doesExist(path.join(this.path, "/fs")))) {
+        await core.fs.createDirectory(path.join(this.path, "/fs"));
       }
     } catch (err) {
-      coreApi.log.error("user", `username: ${this.username}, failed to create fs directory!`, err);
+      core.log.error("user", `username: ${this.username}, failed to create fs directory!`, err);
       console.error(err);
       return;
     }
 
     try {
       // "/temp/"
-      if (!(await coreApi.fs.doesExist(path.join(this.path, "/temp")))) {
-        await coreApi.fs.createDirectory(path.join(this.path, "/temp"));
+      if (!(await core.fs.doesExist(path.join(this.path, "/temp")))) {
+        await core.fs.createDirectory(path.join(this.path, "/temp"));
       }
     } catch (err) {
-      coreApi.log.error("user", `username: ${this.username}, failed to create temp directory!`, err);
+      core.log.error("user", `username: ${this.username}, failed to create temp directory!`, err);
       console.error(err);
       return;
     }
 
-    coreApi.log.info("core", `Verified user ${this.username}`);
+    core.log.info("user", `Verified user ${this.username}`);
   }
 
   async setName({ first, last }: { first: string; last: string }) {
-    coreApi.log.info("core", `set name to ${first} ${last} for ${this.username}`);
+    core.log.info("user", `set name to "${first} ${last}" for ${this.username}`);
     try {
       const currentUserJson = JSON.parse(
-        (await fs.readFile(path.join(this.path, "core/user.json"))).toString(),
-      ) as IYourDashUserJson;
+        await (await core.fs.getFile(path.join(this.path, "core/user.json"))).read("string"),
+      ) as IYourDashUserDatabase;
       currentUserJson["user:name"] = { first, last };
       const db = await this.getDatabase();
       db.set("user:name", { first, last });
@@ -230,14 +272,14 @@ export default class YourDashUser {
       await this.saveDatabaseInstantly();
 
       // save the user.json
-      await fs.writeFile(path.join(this.path, "core/user.json"), JSON.stringify(currentUserJson));
+      await (await core.fs.getFile(path.join(this.path, "core/user.json"))).write(JSON.stringify(currentUserJson));
     } catch (err) {
-      coreApi.log.error("user", `Unable to write / read ${this.username}'s core/user.json`);
+      core.log.error("user", `Unable to write / read ${this.username}'s core/user.json`);
     }
   }
 
   async joinTeam(teamName: string, permissions: YourDashTeamPermission[]) {
-    const team = await coreApi.teams.get(teamName);
+    const team = await core.teams.get(teamName);
 
     if (!(await team.doesExist())) {
       return false;
@@ -245,7 +287,7 @@ export default class YourDashUser {
 
     team.addMember(this.username, permissions);
     const db = await this.getDatabase();
-    db.set("teams", [...(db.get("teams") || []), { teamName: teamName, permissions: permissions }]);
+    db.set("teams", [...(db.get<string[]>("teams") || []), { teamName: teamName, permissions: permissions }]);
 
     return true;
   }
@@ -262,58 +304,58 @@ export default class YourDashUser {
   async setBio(bio: string) {
     try {
       const currentUserJson = JSON.parse(
-        (await fs.readFile(path.join(this.path, "core/user.json"))).toString(),
-      ) as IYourDashUserJson;
+        await (await core.fs.getFile(path.join(this.path, "core/user.json"))).read("string"),
+      ) as IYourDashUserDatabase;
       currentUserJson.bio = bio;
-      await fs.writeFile(path.join(this.path, "core/user.json"), JSON.stringify(currentUserJson));
+      await (await core.fs.getFile(path.join(this.path, "core/user.json"))).write(JSON.stringify(currentUserJson));
     } catch (err) {
-      coreApi.log.error(`Unable to write / read ${this.username}'s core/user.json`);
+      core.log.error(`Unable to write / read ${this.username}'s core/user.json`);
     }
   }
 
   async getBio() {
     try {
       const currentUserJson = JSON.parse(
-        (await fs.readFile(path.join(this.path, "core/user.json"))).toString(),
-      ) as IYourDashUserJson;
+        await (await core.fs.getFile(path.join(this.path, "core/user.json"))).read("string"),
+      ) as IYourDashUserDatabase;
       return currentUserJson.bio;
     } catch (err) {
-      coreApi.log.error("user", `Unable to read ${this.username}'s core/user.json`);
+      core.log.error("user", `Unable to read ${this.username}'s core/user.json`);
     }
   }
 
   async setUrl(url: string) {
     try {
       const currentUserJson = JSON.parse(
-        (await fs.readFile(path.join(this.path, "core/user.json"))).toString(),
-      ) as IYourDashUserJson;
+        await (await core.fs.getFile(path.join(this.path, "core/user.json"))).read("string"),
+      ) as IYourDashUserDatabase;
       currentUserJson.url = url;
-      await fs.writeFile(path.join(this.path, "core/user.json"), JSON.stringify(currentUserJson));
+      await (await core.fs.getFile(path.join(this.path, "core/user.json"))).write(JSON.stringify(currentUserJson));
     } catch (err) {
-      coreApi.log.error(`Unable to write / read ${this.username}'s core/user.json`);
+      core.log.error(`Unable to write / read ${this.username}'s core/user.json`);
     }
   }
 
   async getUrl() {
     try {
       const currentUserJson = JSON.parse(
-        (await fs.readFile(path.join(this.path, "core/user.json"))).toString(),
-      ) as IYourDashUserJson;
+        await (await core.fs.getFile(path.join(this.path, "core/user.json"))).read("string"),
+      ) as IYourDashUserDatabase;
       return currentUserJson.url;
     } catch (err) {
-      coreApi.log.error("user", `Unable to read ${this.username}'s core/user.json`);
+      core.log.error("user", `Unable to read ${this.username}'s core/user.json`);
     }
   }
 
   async setPermissions(permissions: YourDashUserPermission[]) {
     try {
       const currentUserJson = JSON.parse(
-        (await fs.readFile(path.join(this.path, "core/user.json"))).toString(),
-      ) as IYourDashUserJson;
+        await (await core.fs.getFile(path.join(this.path, "core/user.json"))).read("string"),
+      ) as IYourDashUserDatabase;
       currentUserJson.permissions = permissions;
-      await fs.writeFile(path.join(this.path, "core/user.json"), JSON.stringify(currentUserJson));
+      await (await core.fs.getFile(path.join(this.path, "core/user.json"))).write(JSON.stringify(currentUserJson));
     } catch (err) {
-      coreApi.log.error("user:setPermissions", `Unable to write / read ${this.username}'s core/user.json`);
+      core.log.error("user:setPermissions", `Unable to write / read ${this.username}'s core/user.json`);
       console.error(err);
     }
   }
@@ -321,42 +363,41 @@ export default class YourDashUser {
   async getPermissions() {
     try {
       const currentUserJson = JSON.parse(
-        (await fs.readFile(path.join(this.path, "core/user.json"))).toString(),
-      ) as IYourDashUserJson;
+        await (await core.fs.getFile(path.join(this.path, "core/user.json"))).read("string"),
+      ) as IYourDashUserDatabase;
       return currentUserJson.permissions;
     } catch (err) {
-      coreApi.log.error("user", `Unable to read ${this.username}'s core/user.json`);
+      core.log.error("user", `Unable to read ${this.username}'s core/user.json`);
     }
   }
 
   async hasPermission(permission: YourDashUserPermission): Promise<boolean> {
     try {
       const currentUserJson = JSON.parse(
-        (await fs.readFile(path.join(this.path, "core/user.json"))).toString(),
-      ) as IYourDashUserJson;
+        await (await core.fs.getFile(path.join(this.path, "core/user.json"))).read("string"),
+      ) as IYourDashUserDatabase;
       return currentUserJson.permissions.indexOf(permission) !== -1;
     } catch (err) {
-      coreApi.log.error("user", `Unable to read ${this.username}'s core/user.json`);
+      core.log.error("user", `Unable to read ${this.username}'s core/user.json`);
       return false;
     }
   }
 
+  getThemePath(): string {
+    return path.join(this.path, "core/theme.css");
+  }
+
   async doesExist(): Promise<boolean> {
-    try {
-      await fs.access(this.path);
-      return true;
-    } catch (_err) {
-      return false;
-    }
+    return await core.fs.doesExist(this.path);
   }
 
   async setPassword(password: string) {
     const hashedPassword = await hashString(password);
 
     try {
-      await fs.writeFile(path.join(this.path, "./core/password.enc"), hashedPassword);
-    } catch (e) {
-      coreApi.log.error(`unable to create a new password for user ${this.username}`);
+      await (await core.fs.getFile(path.join(this.path, "./core/password.enc"))).write(hashedPassword);
+    } catch (err) {
+      core.log.error("user", `unable to create a new password for user ${this.username};${err}`);
     }
   }
 
@@ -370,7 +411,7 @@ export default class YourDashUser {
         ],
       );
     } catch (_err) {
-      coreApi.log.error(`${chalk.yellow.bold("CORE")}: unable to find session: ${sessionId}`);
+      core.log.error("user", ` unable to find session: ${sessionId}`);
       return undefined;
     }
   }
@@ -385,21 +426,21 @@ export default class YourDashUser {
         ],
       );
     } catch (_err) {
-      coreApi.log.error(`${chalk.yellow.bold("CORE")}: unable to find session: ${token}`);
+      core.log.error(`${chalk.yellow.bold("CORE")}: unable to find session: ${token}`);
       return undefined;
     }
   }
 
   async getAllLoginSessions() {
-    return JSON.parse((await fs.readFile(path.resolve(this.path, "core/sessions.json"))).toString());
+    return await (await core.fs.getFile(path.join(this.path, "core/sessions.json"))).read("json");
   }
 
   saveDatabase() {
-    coreApi.users.__internal__addUserDatabaseToSaveQueue(this.username);
+    core.users.__internal__addUserDatabaseToSaveQueue(this.username);
   }
 
   async saveDatabaseInstantly() {
-    await coreApi.users.__internal__saveUserDatabaseInstantly(this.username);
+    await core.users.__internal__saveUserDatabaseInstantly(this.username);
   }
 
   getAppDirectory(applicationName: string): string {
@@ -407,9 +448,9 @@ export default class YourDashUser {
   }
 
   async update() {
-    const currentUserJson = JSON.parse(
-      (await fs.readFile(path.join(this.path, "core/user.json"))).toString(),
-    ) as IYourDashUserJson;
+    const currentUserJson = (await (
+      await core.fs.getFile(path.join(this.path, "core/user.json"))
+    ).read("json")) as IYourDashUserDatabase;
 
     // noinspection FallThroughInSwitchStatementJS
     switch (currentUserJson.version) {

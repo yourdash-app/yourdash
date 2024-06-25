@@ -1,5 +1,5 @@
 /*
- * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -45,7 +45,7 @@ export class Engine {
     this.screen = new Screen(this.containerElement, this.canvasElement, this);
     this.currentScene = new Scene(
       {
-        id: "default_scene",
+        value: "default_scene",
         objects: [],
       },
       this.screen,
