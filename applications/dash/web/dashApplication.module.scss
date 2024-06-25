@@ -20,6 +20,19 @@
 .widgetGrid {
   width: 100%;
   height: 100%;
+  display: grid;
+  gap: 0.5rem;
+  max-width: 64rem;
+  max-height: 48rem;
+  margin: auto;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+}
+
+.widgetGridWidget {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .actions {

@@ -41,7 +41,7 @@ const DashApplication: React.FC = () => {
         },
         {
           position: {
-            x: 0,
+            x: 2,
             y: 0,
           },
           id: "url-shortcut",
@@ -64,7 +64,7 @@ const DashApplication: React.FC = () => {
         {
           position: {
             x: 0,
-            y: 0,
+            y: 2,
           },
           id: "url-shortcut",
           size: {
@@ -87,6 +87,7 @@ const DashApplication: React.FC = () => {
     },
   ];
 
+  // @ts-ignore
   return (
     <div className={styles.page}>
       <Flex
@@ -100,7 +101,12 @@ const DashApplication: React.FC = () => {
       </Flex>
       <div className={styles.widgetGrid}>
         {widgetPages[currentWidgetPage].widgets.map((widget, i) => (
-          <div>
+          <div
+            key={widget.id + JSON.stringify(widget.position)}
+            /*@ts-ignore*/
+            style={{ "--position-x": widget.position.x, "--position-y": widget.position.y }}
+            className={styles.widgetGridWidget}
+          >
             <div>widget contents</div>
             <div>{widget.id}</div>
           </div>
