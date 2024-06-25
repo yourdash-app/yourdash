@@ -23,7 +23,9 @@
   "include": [
     "src/**/*",
     "../applications/**/frontend/**/*",
-    "../shared/**/*"
+    "../packages/shared/**/*",
+    "../packages/csi/**/*",
+    "../packages/uikit/**/*"
   ],
   "references": [
     {
