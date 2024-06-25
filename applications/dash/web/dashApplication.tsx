@@ -37,6 +37,7 @@ const DashApplication: React.FC = () => {
               height: 3,
             },
           },
+          extraData: {},
         },
         {
           position: {
@@ -58,6 +59,7 @@ const DashApplication: React.FC = () => {
               height: 3,
             },
           },
+          extraData: {},
         },
         {
           position: {
@@ -79,6 +81,7 @@ const DashApplication: React.FC = () => {
               height: 3,
             },
           },
+          extraData: {},
         },
       ],
     },
