@@ -100,7 +100,7 @@ const DashApplication: React.FC = () => {
         />
       </Flex>
       <div className={styles.widgetGrid}>
-        {widgetPages[currentWidgetPage].widgets.map((widget, i) => (
+        {widgetPages[currentWidgetPage].widgets.map((widget) => (
           <div
             key={widget.id + JSON.stringify(widget.position)}
             /*@ts-ignore*/
@@ -122,5 +122,4 @@ const DashApplication: React.FC = () => {
     </div>
   );
 };
-
 export default DashApplication;
