@@ -10,6 +10,7 @@ import Heading from "@yourdash/uikit/components/heading/heading";
 import React, { useState } from "react";
 import styles from "./dashApplication.module.scss";
 import { IWidgetGrid } from "../shared/types/widgetGrid";
+import loadable from "@loadable/component";
 
 const DashApplication: React.FC = () => {
   const username = useResource(() => csi.getUser().getFullName());
@@ -22,7 +23,7 @@ const DashApplication: React.FC = () => {
             x: 0,
             y: 0,
           },
-          id: "url-shortcut",
+          id: "applicationShortcut",
           size: {
             preferred: {
               width: 2,
@@ -44,7 +45,7 @@ const DashApplication: React.FC = () => {
             x: 2,
             y: 0,
           },
-          id: "url-shortcut",
+          id: "applicationShortcut",
           size: {
             preferred: {
               width: 2,
@@ -66,7 +67,51 @@ const DashApplication: React.FC = () => {
             x: 0,
             y: 2,
           },
-          id: "url-shortcut",
+          id: "applicationShortcut",
+          size: {
+            preferred: {
+              width: 2,
+              height: 2,
+            },
+            min: {
+              width: 1,
+              height: 1,
+            },
+            max: {
+              width: 2,
+              height: 3,
+            },
+          },
+          extraData: {},
+        },
+        {
+          position: {
+            x: 0,
+            y: 4,
+          },
+          id: "applicationShortcut",
+          size: {
+            preferred: {
+              width: 2,
+              height: 2,
+            },
+            min: {
+              width: 1,
+              height: 1,
+            },
+            max: {
+              width: 2,
+              height: 3,
+            },
+          },
+          extraData: {},
+        },
+        {
+          position: {
+            x: 2,
+            y: 2,
+          },
+          id: "applicationShortcut",
           size: {
             preferred: {
               width: 2,
@@ -100,17 +145,23 @@ const DashApplication: React.FC = () => {
         />
       </Flex>
       <div className={styles.widgetGrid}>
-        {widgetPages[currentWidgetPage].widgets.map((widget) => (
-          <div
-            key={widget.id + JSON.stringify(widget.position)}
-            /*@ts-ignore*/
-            style={{ "--position-x": widget.position.x, "--position-y": widget.position.y }}
-            className={styles.widgetGridWidget}
-          >
-            <div>widget contents</div>
-            <div>{widget.id}</div>
-          </div>
-        ))}
+        {widgetPages[currentWidgetPage].widgets.map((widget) => {
+          const Widget = loadable(() => import(`./widgets/${widget.id}/widget.tsx`));
+
+          return (
+            <div
+              key={widget.id + JSON.stringify(widget.position)}
+              /*@ts-ignore*/
+              style={{ "--position-x": widget.position.x, "--position-y": widget.position.y }}
+              className={styles.widgetGridWidget}
+            >
+              <div>
+                <Widget />
+              </div>
+              <div>{widget.id}</div>
+            </div>
+          );
+        })}
       </div>
       <Flex
         className={styles.footer}

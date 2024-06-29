@@ -48,26 +48,24 @@ export default class CoreRequest {
     //   );
     // }
 
-    if (options?.debugTimer) {
-      this.rawExpress.get(
-        (this.currentNamespace ? "/" : "") + this.currentNamespace + path,
-        async (req: ExpressRequest & { headers: RequestHeaders }, res: ExpressResponse) => {
-          try {
-            const time = await timeMethod(() => callback(req, res));
+    if (this.core.processArguments)
+      if (options?.debugTimer) {
+        this.rawExpress.get(
+          (this.currentNamespace ? "/" : "") + this.currentNamespace + path,
+          async (req: ExpressRequest & { headers: RequestHeaders }, res: ExpressResponse) => {
+            try {
+              const time = await timeMethod(() => callback(req, res));
 
-            this.core.log.debug("response_time", `${req.path} took ${time.formattedMicrosecconds}`);
-          } catch (err) {
-            this.core.log.error(`request_error`, new Error().stack);
-            this.core.log.error(
-              "request_error",
-              `${req.path}; Request error not caught: ${err?.message || "No error message provided"}`,
-            );
-          }
-        },
-      );
+              this.core.log.debug("response_time", `${req.path} took ${time.formattedMicrosecconds}`);
+            } catch (err) {
+              this.core.log.error(`request_error`, new Error().stack);
+              this.core.log.error("request_error", `${req.path}; Request error not caught: ${err?.message || "No error message provided"}`);
+            }
+          },
+        );
 
-      return this;
-    }
+        return this;
+      }
 
     this.rawExpress.get(
       (this.currentNamespace ? "/" : "") + this.currentNamespace + path,
@@ -207,16 +205,14 @@ export default class CoreRequest {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ) => Promise<any>,
   ): this {
-    this.rawExpress.use(
-      async (req: ExpressRequest & { headers: RequestHeaders }, res: ExpressResponse, next: ExpressNextFunction) => {
-        try {
-          await callback(req, res, next);
-        } catch (err) {
-          this.core.log.error(`request_error`, new Error().stack);
-          this.core.log.error("request_error", `${req.path}; Request error not caught: ${err.message}`);
-        }
-      },
-    );
+    this.rawExpress.use(async (req: ExpressRequest & { headers: RequestHeaders }, res: ExpressResponse, next: ExpressNextFunction) => {
+      try {
+        await callback(req, res, next);
+      } catch (err) {
+        this.core.log.error(`request_error`, new Error().stack);
+        this.core.log.error("request_error", `${req.path}; Request error not caught: ${err.message}`);
+      }
+    });
 
     return this;
   }

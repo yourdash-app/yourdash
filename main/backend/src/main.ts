@@ -6,7 +6,7 @@
 /**
  * # The YourDash project
  *  - https://github.com/yourdash/yourdash
- *  - https://yourdash.pages.dev
+ *  - https://yourdash.ewsgit.uk
  *  - https://ydsh.pages.dev
  */
 
