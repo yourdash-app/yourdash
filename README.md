@@ -7,9 +7,9 @@
 
 
 ## Links
-  - Website: https://ydsh.pages.dev or https://yourdash.pages.dev
+  - Website: https://ydsh.ewsgit.uk or https://yourdash.ewsgit.uk
   - Discord: https://discord.gg/aY5CjDZTpG
-  - GitHub: https://github.com/yourdash-app/yourdash
+  - GitHub: https://github.com/yourdash/yourdash
 
 ## About
 
@@ -19,17 +19,19 @@
 
 ## Projects
 
-This repository 'YourDash' is a collection of projects more commonly known as a monorepo
+This repository 'yourdash' is a monorepo containing YourDash and it's related projects
 
 Some of the YourDash projects include
 
 - YourDash Backend (backend)
 - YourDash Web (web)
+- YourDash Desktop (desktop)
 - UIKit (uikit)
+- OpenGFX Engine (opengfx-engine)
 
 ## Host Your Own YourDash Instance
 
-- [Docs](https://ydsh.pages.dev/#/docs)
+- [Docs](https://ydsh.ewsgit.uk/docs)
 
 ## Development Setup
 
@@ -40,26 +42,27 @@ Some of the YourDash projects include
     - [Webstorm](https://www.jetbrains.com/webstorm/)
     - [VSCode](https://code.visualstudio.com/)
 - Linting And Formatting
-  - [ESLint](https://eslint.org)
+  - [Prettier](https://prettier.io/)
+  - [ESLint](https://eslint.org/)
 - Package Manager
   - [Yarn](https://yarnpkg.com/) (Windows)
-  - [Bun](https://bun.sh/) (Linux)
 - Runtimes
   - [NodeJS](https://nodejs.org/)
+  - [Bun](https://bun.sh/)
   - [Python 3.11.7](https://www.python.org/downloads/release/python-3117/)
   - [Emscripten](https://emscripten.org/docs/getting_started/downloads.html)
     - (Chocolately install method is prefered for windows)
 - Version Control
   - [Git](https://git-scm.com/)
 
-### Installation and setup for deployment (Linux only)
+### Automated setup for deployment (Only supports Linux)
 ```shell
 curl -L https://raw.githubusercontent.com/yourdash/yourdash/main/toolchain/setupInstance.sh | bash
 ```
 
 ### Installation and setup for development (Linux)
 
-#### Install NodeJS with Node Version Manager and Yarn
+#### Install Node.js with Node Version Manager and Yarn
   - Install Node Version Manager
     - ```shell
       curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash

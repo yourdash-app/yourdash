@@ -4,10 +4,11 @@
  */
 
 import React from "react";
+import styles from "./widget.module.scss";
 
 const Widget: React.FC = () => {
   return (
-    <div>
+    <div className={styles.widget}>
       <img src={"/assets/productLogos/yourdash.svg"} />
     </div>
   );

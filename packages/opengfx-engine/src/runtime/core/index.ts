@@ -45,7 +45,7 @@ export class Engine {
     this.screen = new Screen(this.containerElement, this.canvasElement, this);
     this.currentScene = new Scene(
       {
-        value: "default_scene",
+        id: "default_scene",
         objects: [],
       },
       this.screen,

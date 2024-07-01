@@ -24,8 +24,16 @@ export default class DashModule extends BackendModule {
       );
     });
 
+    this.api.request.get("/widget/pages", async (req, res) => {
+      // return the number of widget pages a user has
+
+      return res.json({
+        pageCount: 3,
+      });
+    });
+
     // TODO: implement module system
-    this.api.request.get("/modules", async (req, res) => {
+    this.api.request.get("/widgets/:page", async (req, res) => {
       res.json({ success: true });
     });
   }

@@ -1,3 +1,0 @@
-<component name="DependencyValidationManager">
-  <scope name="Web-Client" pattern="((file[YourDash]:main/web-client//*||file[YourDash]:applications/**/frontend//*)&amp;&amp;!file:**/*.js&amp;&amp;!file:**/*.js.map&amp;&amp;!file:**/*.jsx||file[YourDash]:packages/shared//*)&amp;&amp;!file[YourDash]:packages/uikit//*||file[YourDash]:packages/csi//*||file[YourDash]:packages/chiplet//*" />
-</component>

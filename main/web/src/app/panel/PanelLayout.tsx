@@ -46,8 +46,14 @@ const PanelLayout: React.FC = () => {
     case "top":
       return (
         <div className={clippy(styles.layout, styles.top)}>
-          <Panel side={"top"} setLayoutReloadNumber={(num) => setReloadNumber(num)} />
-          <div key={1} className={styles.applicationFrame}>
+          <Panel
+            side={"top"}
+            setLayoutReloadNumber={(num) => setReloadNumber(num)}
+          />
+          <div
+            key={1}
+            className={styles.applicationFrame}
+          >
             <Outlet key={1} />
           </div>
         </div>
@@ -55,8 +61,14 @@ const PanelLayout: React.FC = () => {
     case "left":
       return (
         <div className={clippy(styles.layout, styles.left)}>
-          <Panel side={"left"} setLayoutReloadNumber={(num) => setReloadNumber(num)} />
-          <div key={1} className={styles.applicationFrame}>
+          <Panel
+            side={"left"}
+            setLayoutReloadNumber={(num) => setReloadNumber(num)}
+          />
+          <div
+            key={1}
+            className={styles.applicationFrame}
+          >
             <Outlet key={1} />
           </div>
         </div>
@@ -64,19 +76,31 @@ const PanelLayout: React.FC = () => {
     case "bottom":
       return (
         <div className={clippy(styles.layout, styles.bottom)}>
-          <Panel side={"bottom"} setLayoutReloadNumber={(num) => setReloadNumber(num)} />
-          <div key={1} className={styles.applicationFrame}>
+          <div
+            key={1}
+            className={styles.applicationFrame}
+          >
             <Outlet key={1} />
           </div>
+          <Panel
+            side={"bottom"}
+            setLayoutReloadNumber={(num) => setReloadNumber(num)}
+          />
         </div>
       );
     case "right":
       return (
         <div className={clippy(styles.layout, styles.right)}>
-          <Panel side={"right"} setLayoutReloadNumber={(num) => setReloadNumber(num)} />
-          <div key={1} className={styles.applicationFrame}>
+          <div
+            key={1}
+            className={styles.applicationFrame}
+          >
             <Outlet key={1} />
           </div>
+          <Panel
+            side={"right"}
+            setLayoutReloadNumber={(num) => setReloadNumber(num)}
+          />
         </div>
       );
     default:

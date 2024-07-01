@@ -14,6 +14,7 @@ import loadable from "@loadable/component";
 
 const DashApplication: React.FC = () => {
   const username = useResource(() => csi.getUser().getFullName());
+  const { pageCount } = useResource<{ pageCount: number }>(() => csi.getJson("/app::dash/widget/pages")) || { pageCount: 0 };
   const [currentWidgetPage, setCurrentWidgetPage] = useState<number>(0);
   const widgetPages: IWidgetGrid[] = [
     {
@@ -155,9 +156,7 @@ const DashApplication: React.FC = () => {
               style={{ "--position-x": widget.position.x, "--position-y": widget.position.y }}
               className={styles.widgetGridWidget}
             >
-              <div>
-                <Widget />
-              </div>
+              <Widget />
               <div>{widget.id}</div>
             </div>
           );
@@ -167,7 +166,19 @@ const DashApplication: React.FC = () => {
         className={styles.footer}
         direction={"row"}
       >
-        <div>page indicator</div>
+        <div>
+          {Array(pageCount).map((_, index) => {
+            return (
+              <div
+                key={index}
+                className={currentWidgetPage === index ? styles.active : undefined}
+                onClick={() => setCurrentWidgetPage(index)}
+              >
+                {index + 1}
+              </div>
+            );
+          })}
+        </div>
         <div className={styles.actions}>actions</div>
       </Flex>
     </div>

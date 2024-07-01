@@ -14,6 +14,7 @@ const Button: FC<{ onClick: () => void; text: string; className?: string; disabl
       onClick={props.onClick}
       aria-label={props.text}
       disabled={props.disabled}
+      type={"button"}
     >
       {props.text}
     </button>
