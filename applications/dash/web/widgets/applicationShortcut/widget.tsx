@@ -9,7 +9,10 @@ import styles from "./widget.module.scss";
 const Widget: React.FC = () => {
   return (
     <div className={styles.widget}>
-      <img src={"/assets/productLogos/yourdash.svg"} />
+      <img
+        src={"/assets/productLogos/yourdash.svg"}
+        alt={""}
+      />
     </div>
   );
 };
