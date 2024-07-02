@@ -1,0 +1,14 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="YourDash Backend" type="BunRunConfiguration" focusToolWindowBeforeRun="true">
+    <option name="applicationParameters">
+      <list>
+        <option value="--dev" />
+        <option value="--color=full" />
+        <option value="--log-requests" />
+      </list>
+    </option>
+    <option name="program" value="src/main.ts" />
+    <option name="workingDirectory" value="$PROJECT_DIR$/main/backend" />
+    <method v="2" />
+  </configuration>
+</component>
