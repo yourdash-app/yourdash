@@ -3,6 +3,18 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-.widget {
+@import "@yourdash/uikit/theme/themeValues";
 
+.widget {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  aspect-ratio: 1 / 1;
+  transition: scale 250ms ease-in-out;
+
+  &:hover {
+    scale: 1.2;
+    transition: scale 50ms ease-in-out;
+  }
 }
