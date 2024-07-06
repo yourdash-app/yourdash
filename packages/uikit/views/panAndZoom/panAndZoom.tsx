@@ -3,17 +3,24 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import React, { FC, useRef, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 
-const PanAndZoom: FC<{ children: React.ReactNode; minZoom?: number; maxZoom?: number }> = ({
+const PanAndZoom: FC<{ children: React.ReactNode; minZoom?: number; maxZoom?: number; onScaleChange?: (scale: number) => void }> = ({
   children,
   minZoom,
   maxZoom,
+  onScaleChange,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [translateX, setTranslateX] = useState(0);
   const [translateY, setTranslateY] = useState(0);
   const [scale, setScale] = useState(1);
+
+  if (onScaleChange) {
+    useEffect(() => {
+      onScaleChange(scale);
+    }, [scale]);
+  }
 
   const handleWheel = (event: WheelEvent) => {
     event.stopPropagation();

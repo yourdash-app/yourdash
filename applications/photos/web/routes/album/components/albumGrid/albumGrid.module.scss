@@ -20,10 +20,9 @@
 }
 
 .albumContainer {
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
   justify-content: center;
-  flex-wrap: wrap;
   width: 100%;
   gap: var(#{$theme}#{$gap});
 }

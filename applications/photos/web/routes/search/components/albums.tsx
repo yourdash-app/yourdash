@@ -16,7 +16,7 @@ import styles from "./albums.module.scss";
 
 const Albums: FC = () => {
   const navigate = useNavigate();
-  const albums = useResource<EndpointAlbums>(() => csi.getJson("/app::photos/album/@/photos"), []);
+  const albums = useResource<EndpointAlbums>(() => csi.getJson<EndpointAlbums>("/app::photos/album/@/photos"), []);
 
   if (!albums) return null;
 

@@ -100,8 +100,34 @@ export default class PhotosBackend extends BackendModule {
 
     this.api.request.setNamespace("app::photos");
 
+    this.api.request.get("/media/album/subAlbums/@/*", async (req, res) => {
+      const itemPath = req.params["0"] as string;
+      const user = this.api.getUser(req);
+
+      const item = await this.api.core.fs.get(path.join(user.getFsPath(), itemPath));
+
+      if (item.entityType !== FILESYSTEM_ENTITY_TYPE.DIRECTORY)
+        return res.status(400).json({ error: "The path supplied is not a directory." });
+
+      item.getChildDirectories().then((dirs) => {
+        return res.json(
+          dirs
+            .map((d) => {
+              if (d.getName() === ".yd-thumbnails") return null;
+
+              return {
+                path: d.path.replace(user.getFsPath(), ""),
+                displayName: d.getName(),
+              };
+            })
+            .filter((d) => d !== null),
+        );
+      });
+    });
+
+    //
     this.api.request.get(
-      "/media/album/large-grid/:page/@/*",
+      "/media/album/:page/@/*",
       async (req, res) => {
         const { sessionid } = req.headers;
         const itemPath = req.params["0"] as string;
@@ -130,10 +156,6 @@ export default class PhotosBackend extends BackendModule {
             await Promise.all(
               chunk(await item.getChildren(), PAGE_SIZE)?.[page]?.map(async (child) => {
                 let childType: MEDIA_TYPE;
-
-                if (child.entityType === FILESYSTEM_ENTITY_TYPE.DIRECTORY) {
-                  childType = MEDIA_TYPE.ALBUM;
-                }
 
                 if (child.entityType === FILESYSTEM_ENTITY_TYPE.FILE) {
                   const c = child as unknown as FileSystemFile;
@@ -303,16 +325,6 @@ export default class PhotosBackend extends BackendModule {
                         width: imageDimensions.width || 400,
                         height: imageDimensions.height || 400,
                       },
-                    };
-                  }
-                  case MEDIA_TYPE.ALBUM: {
-                    if (path.basename(childPath) === ".yd-thumbnails") {
-                      return undefined;
-                    }
-
-                    return <MediaAlbumLargeGridItem<MEDIA_TYPE.ALBUM>>{
-                      type: MEDIA_TYPE.ALBUM,
-                      path: childPath.replace(user.getFsPath(), ""),
                     };
                   }
                 }

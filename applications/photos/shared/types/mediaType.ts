@@ -6,5 +6,4 @@
 export enum MEDIA_TYPE {
   IMAGE,
   VIDEO,
-  ALBUM,
 }

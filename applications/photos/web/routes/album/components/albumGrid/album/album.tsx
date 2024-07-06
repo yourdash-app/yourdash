@@ -7,13 +7,11 @@ import csi from "@yourdash/csi/csi.js";
 import Card from "@yourdash/uikit/components/card/card.js";
 import Text from "@yourdash/uikit/components/text/text.js";
 import { FC } from "react";
-import { MediaAlbumLargeGridItem } from "../../../../../../shared/types/endpoints/media/album/large-grid.js";
-import { MEDIA_TYPE } from "../../../../../../shared/types/mediaType.js";
 import path from "path-browserify";
 import { useNavigate } from "react-router-dom";
 import styles from "./album.module.scss";
 
-const Album: FC<{ album: MediaAlbumLargeGridItem<MEDIA_TYPE.ALBUM> }> = ({ album }) => {
+const Album: FC<{ album: { path: string; displayName: string } }> = ({ album }) => {
   const navigate = useNavigate();
 
   return (

@@ -11,6 +11,7 @@ export default class CoreCommands {
       callback(args: string[]): void;
     };
   };
+  private lastCommandAndArgs: string[];
   private readonly core: Core;
 
   constructor(core: Core) {
@@ -18,11 +19,16 @@ export default class CoreCommands {
     this.core = core;
 
     process.stdin.on("data", (data) => {
-      const commandAndArgs = data.toString().replaceAll("\n", "").replaceAll("\r", "").split(" ");
+      const commandAndArgs =
+        data.toString() === "" ? this.lastCommandAndArgs : data.toString().replaceAll("\n", "").replaceAll("\r", "").split(" ");
       const command = commandAndArgs[0];
 
+      this.lastCommandAndArgs = commandAndArgs;
+      process.stdout.moveCursor(0, -1);
+      process.stdout.clearLine(1);
+
       if (!this.availableCommands[command]) {
-        this.core.log.error("command", `Command '${command}' does not exist!`);
+        this.core.log.warning("command", `Command '${command}' does not exist!`);
         return;
       }
 

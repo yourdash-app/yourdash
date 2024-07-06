@@ -12,7 +12,6 @@
       <excludeFolder url="file://$MODULE_DIR$/backup/electron/node_modules" />
       <excludeFolder url="file://$MODULE_DIR$/packages/application-generator" />
       <excludeFolder url="file://$MODULE_DIR$/packages/desktop-client/out" />
-      <excludeFolder url="file://$MODULE_DIR$/fs" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

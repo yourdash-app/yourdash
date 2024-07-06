@@ -3,15 +3,19 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
+import Card from "@yourdash/uikit/components/card/card";
 import Image from "@yourdash/uikit/components/image/image.js";
-import { FC } from "react";
+import Text from "@yourdash/uikit/components/text/text";
+import { FC, useState } from "react";
 import styles from "./viewImage.module.scss";
 import PanAndZoom from "@yourdash/uikit/views/panAndZoom/panAndZoom";
 
 const ViewImage: FC<{ mediaUrl: string }> = ({ mediaUrl }) => {
+  const [scale, setScale] = useState(1);
+
   return (
     <>
-      <PanAndZoom>
+      <PanAndZoom onScaleChange={(s) => setScale(s)}>
         <Image
           className={styles.viewImage}
           src={mediaUrl}
@@ -19,6 +23,9 @@ const ViewImage: FC<{ mediaUrl: string }> = ({ mediaUrl }) => {
           disableSpinner={false}
           accessibleLabel={""}
         />
+        <Card className={styles.scale}>
+          <Text text={`${scale * 100}% scale`} />
+        </Card>
       </PanAndZoom>
     </>
   );
