@@ -125,7 +125,7 @@ export default class PhotosBackend extends BackendModule {
       });
     });
 
-    //
+    // return dimensions of each image and video with their fs path
     this.api.request.get(
       "/media/album/:page/@/*",
       async (req, res) => {
@@ -134,19 +134,25 @@ export default class PhotosBackend extends BackendModule {
         const page = Number(req.params.page);
         const user = this.api.getUser(req);
 
-        if (typeof page !== "number" || page < 0) return res.json({ error: "a page must be provided" });
+        if (page < 0) return res.json({ error: "a valid page must be provided" });
 
         const item = await this.api.core.fs.get(path.join(user.getFsPath(), itemPath));
 
-        if (!(await item.doesExist())) return res.json({ error: true });
+        if (!(await item.doesExist())) {
+          return res.json({
+            error: true,
+          });
+        }
 
-        if (item.entityType !== FILESYSTEM_ENTITY_TYPE.DIRECTORY) return res.json({ error: "The path supplied is not a directory." });
+        if (item.entityType !== FILESYSTEM_ENTITY_TYPE.DIRECTORY) {
+          return res.json({ error: "The path supplied is not a directory." });
+        }
 
         const thumbnailsDirectory = path.join(item.path, ".yd-thumbnails");
 
         if (!(await this.api.core.fs.doesExist(thumbnailsDirectory))) {
           await this.api.core.fs.createDirectory(thumbnailsDirectory);
-          this.api.core.log.success("app:photos", `Created thumbnails directory: ${thumbnailsDirectory}`);
+          this.api.core.log.success("app::photos", `Created thumbnails directory: ${thumbnailsDirectory}`);
         }
 
         const PAGE_SIZE = 64;

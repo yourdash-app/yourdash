@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import childProcess from "child_process";
+import childProcess from "node:child_process";
 import { Core } from "./core.js";
 
 export default class CoreExecute {
