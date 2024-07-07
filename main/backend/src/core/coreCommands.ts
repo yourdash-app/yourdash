@@ -108,14 +108,18 @@ export default class CoreCommands {
     this.stdout.clearLine(0);
 
     this.currentCommandInput = "";
-    this.stdout.cursorTo(this.prompt.length);
 
     if (!this.availableCommands[command]) {
+      this.stdout.cursorTo(0);
       this.core.log.warning("command", `Command '${command}' does not exist!`);
       return;
     }
 
+    this.stdout.cursorTo(0);
+
     this.runCommand(command, commandAndArgs.slice(1));
+
+    return this;
   }
 
   registerCommand(commandName: string | string[], callback: (args: string[]) => void) {

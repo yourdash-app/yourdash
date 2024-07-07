@@ -13,6 +13,7 @@ import timeMethod from "../lib/time.js";
 import { Core } from "./core.js";
 
 export type RequestHeaders = { username: string; sessionid: string };
+export type RequestExtras = { headers: RequestHeaders; sessionId: string; username: string };
 
 export default class CoreRequest {
   rawExpress: ExpressApplication;
@@ -32,49 +33,64 @@ export default class CoreRequest {
   }
 
   get(
-    path: string,
+    path: string | string[],
     callback: (
-      req: ExpressRequest & { headers: RequestHeaders },
+      req: ExpressRequest & RequestExtras,
       res: ExpressResponse,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ) => Promise<ExpressResponse<any, Record<string, any>> | void>,
     options?: { debugTimer: boolean },
   ): this {
+    let endpointPath: string[] = [];
+
     // TODO: add a cli flag to re-enable this
     // if (this.core.isDebugMode) {
-    this.core.log.info("core_request", "Request created: " + (this.currentNamespace ? "/" : "") + this.currentNamespace + path);
+    // this.core.log.info("core_request", "Request created: " + (this.currentNamespace ? "/" : "") + this.currentNamespace + path);
     // }
 
-    if (this.core.processArguments)
-      if (options?.debugTimer) {
-        this.rawExpress.get(
-          (this.currentNamespace ? "/" : "") + this.currentNamespace + path,
-          async (req: ExpressRequest & { headers: RequestHeaders }, res: ExpressResponse) => {
-            try {
-              const time = await timeMethod(() => callback(req, res));
+    if (typeof path === "string") {
+      endpointPath = [path];
+    } else {
+      endpointPath = path;
+    }
 
-              this.core.log.debug("response_time", `${req.path} took ${time.formattedMicrosecconds}`);
-            } catch (err) {
-              this.core.log.error(`request_error`, new Error().stack);
-              this.core.log.error("request_error", `${req.path}; Request error not caught: ${err?.message || "No error message provided"}`);
-            }
-          },
-        );
+    for (const path of endpointPath) {
+      if (this.core.processArguments)
+        if (options?.debugTimer) {
+          this.rawExpress.get(
+            (this.currentNamespace ? "/" : "") + this.currentNamespace + path,
+            async (req: ExpressRequest, res: ExpressResponse) => {
+              try {
+                const time = await timeMethod(() =>
+                  callback({ ...req, sessionId: req.headers.sessionid as string, username: req.headers.username as string } as never, res),
+                );
 
-        return this;
-      }
+                this.core.log.debug("response_time", `${req.path} took ${time.formattedMicrosecconds}`);
+              } catch (err) {
+                this.core.log.error(`request_error`, new Error().stack);
+                this.core.log.error(
+                  "request_error",
+                  `${req.path}; Request error not caught: ${err?.message || "No error message provided"}`,
+                );
+              }
+            },
+          );
 
-    this.rawExpress.get(
-      (this.currentNamespace ? "/" : "") + this.currentNamespace + path,
-      async (req: ExpressRequest & { headers: RequestHeaders }, res: ExpressResponse) => {
-        try {
-          await callback(req, res);
-        } catch (err) {
-          this.core.log.error(`request_error`, new Error().stack);
-          this.core.log.error("request_error", `${req.path}; Request error not caught: ${err.message}`);
+          return this;
         }
-      },
-    );
+
+      this.rawExpress.get(
+        (this.currentNamespace ? "/" : "") + this.currentNamespace + path,
+        async (req: ExpressRequest, res: ExpressResponse) => {
+          try {
+            await callback({ ...req, sessionId: req.headers.sessionid as string, username: req.headers.username as string } as never, res);
+          } catch (err) {
+            this.core.log.error(`request_error`, new Error().stack);
+            this.core.log.error("request_error", `${req.path}; Request error not caught: ${err.message}`);
+          }
+        },
+      );
+    }
 
     return this;
   }

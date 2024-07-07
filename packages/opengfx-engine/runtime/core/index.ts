@@ -20,6 +20,7 @@ export class Engine {
   constructor(engineRuntime: ENGINE_RUNTIMES, containerElement: HTMLElement) {
     console.debug("OpenGFX engine starting up");
     console.time("OpenGFX_engine_startup");
+    // @ts-ignore
     this.runtime = import.meta.glob("../runtime/**/index.ts")[engineRuntime];
     console.debug("OpenGFX engine started");
 
@@ -30,7 +31,7 @@ export class Engine {
     this.screen = new Screen(this.containerElement, this.canvasElement, this);
     this.currentScene = new Scene(
       {
-        sessionId: "default_scene",
+        id: "default_scene",
         objects: [],
       },
       this.screen,
@@ -63,6 +64,7 @@ export class Engine {
 }
 
 export default async function initEngine(containerElement: HTMLElement) {
+  // @ts-ignore
   const webGPUAdapter = await navigator.gpu.requestAdapter({ powerPreference: "high-performance" });
 
   if (!webGPUAdapter) {
