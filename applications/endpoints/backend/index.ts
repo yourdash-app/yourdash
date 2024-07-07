@@ -13,6 +13,6 @@ export default class EndpointsModule extends BackendModule {
   public loadEndpoints() {
     super.loadEndpoints();
 
-    this.api.request.get("/app/endpoints/endpoints", (req, res) => res.json(this.api.request.rawExpress._router.stack));
+    this.api.request.get("/app/endpoints/endpoints", async (req, res) => res.json(this.api.request.rawExpress._router.stack));
   }
 }

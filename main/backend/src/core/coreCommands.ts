@@ -11,40 +11,127 @@ export default class CoreCommands {
       callback(args: string[]): void;
     };
   };
+  private stdout = process.stdout;
+  private stdin = process.stdin;
+  private currentCommandInput: string;
   private lastCommandAndArgs: string[];
+  prompt: string;
   private readonly core: Core;
 
   constructor(core: Core) {
     this.availableCommands = {};
     this.core = core;
+    this.currentCommandInput = "";
+    this.prompt = "> ";
 
-    process.stdin.on("data", (data) => {
-      const commandAndArgs =
-        data.toString() === "" ? this.lastCommandAndArgs : data.toString().replaceAll("\n", "").replaceAll("\r", "").split(" ");
-      const command = commandAndArgs[0];
+    this.stdin.setRawMode(true);
+    this.stdin.setEncoding("utf8");
+    this.stdin.resume();
 
-      this.lastCommandAndArgs = commandAndArgs;
-      process.stdout.moveCursor(0, -1);
-      process.stdout.clearLine(1);
+    this.stdout.cursorTo(0, this.stdout.rows);
 
-      if (!this.availableCommands[command]) {
-        this.core.log.warning("command", `Command '${command}' does not exist!`);
+    let cursorPosition: number = 0;
+
+    this.stdin.on("data", (data) => {
+      const stringData = data.toString("utf8");
+      this.stdout.write(stringData);
+      if (stringData === "\u0003") {
+        this.core.shutdownInstance();
+        return;
+      }
+      if (stringData === /* enter */ "\r") {
+        this.onSubmit();
+        return;
+      }
+      if (stringData === /* backspace */ "\b") {
+        if (cursorPosition === 0) {
+          this.stdout.clearLine(0);
+          this.stdout.cursorTo(0);
+          this.stdout.write("> " + this.currentCommandInput);
+          this.stdout.cursorTo(this.prompt.length);
+          return;
+        }
+
+        this.currentCommandInput = this.currentCommandInput.slice(0, cursorPosition - 1) + this.currentCommandInput.slice(cursorPosition);
+        cursorPosition--;
+        this.stdout.clearLine(0);
+        this.stdout.cursorTo(0);
+        this.stdout.write("> " + this.currentCommandInput);
+        this.stdout.cursorTo(cursorPosition + this.prompt.length);
+        return;
+      }
+      if (stringData === /* arrow left */ "\u001b[D") {
+        if (cursorPosition === 0) {
+          return;
+        }
+        cursorPosition--;
+        this.stdout.cursorTo(cursorPosition + this.prompt.length);
+        return;
+      }
+      if (stringData === /* arrow right */ "\u001b[C") {
+        if (cursorPosition === this.currentCommandInput.length) {
+          return;
+        }
+
+        cursorPosition++;
+        this.stdout.cursorTo(cursorPosition + this.prompt.length);
+        return;
+      }
+      if (stringData === /* arrow up */ "\u001b[A") {
+        this.stdout.cursorTo(0, this.stdout.rows);
+        return;
+      }
+      if (stringData === /* arrow down */ "\u001b[B") {
+        this.stdout.cursorTo(0, this.stdout.rows);
         return;
       }
 
-      this.runCommand(command, commandAndArgs.slice(1));
+      this.currentCommandInput += stringData;
+      cursorPosition++;
+      this.stdout.clearLine(0);
+      this.stdout.cursorTo(0);
+      this.stdout.write("> " + this.currentCommandInput);
+      this.stdout.cursorTo(cursorPosition + this.prompt.length);
     });
 
     return this;
   }
 
-  registerCommand(commandName: string, callback: (args: string[]) => void) {
-    // Placeholder function
-    this.availableCommands[commandName] = {
-      callback: callback,
-    };
+  onSubmit() {
+    const commandAndArgs =
+      this.currentCommandInput === ""
+        ? this.lastCommandAndArgs
+        : this.currentCommandInput.replaceAll("\n", "").replaceAll("\r", "").split(" ");
+    const command = commandAndArgs[0];
 
-    this.core.log.info("command", `Registered command: '${commandName}'`);
+    this.lastCommandAndArgs = commandAndArgs;
+    this.stdout.clearLine(0);
+
+    this.currentCommandInput = "";
+    this.stdout.cursorTo(this.prompt.length);
+
+    if (!this.availableCommands[command]) {
+      this.core.log.warning("command", `Command '${command}' does not exist!`);
+      return;
+    }
+
+    this.runCommand(command, commandAndArgs.slice(1));
+  }
+
+  registerCommand(commandName: string | string[], callback: (args: string[]) => void) {
+    if (typeof commandName === "string") {
+      this.availableCommands[commandName] = {
+        callback: callback,
+      };
+      this.core.log.info("command", `Registered command: '${commandName}'`);
+    } else {
+      for (const name of commandName) {
+        this.availableCommands[name] = {
+          callback: callback,
+        };
+        this.core.log.info("command", `Registered command: '${name}'`);
+      }
+    }
 
     return this;
   }

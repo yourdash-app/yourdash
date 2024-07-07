@@ -13,7 +13,7 @@ export default class DashModule extends BackendModule {
   public loadEndpoints() {
     super.loadEndpoints();
 
-    this.api.request.setNamespace("app::dash");
+    this.api.request.setNamespace("app:dash");
 
     this.api.request.get("/user-full-name", async (req, res) => {
       res.json(

@@ -134,7 +134,24 @@ export class Core {
     });
 
     this.commands.registerCommand("restart", async () => {
-      await this.restartInstance();
+      this.restartInstance();
+    });
+
+    this.commands.registerCommand(["exit", "stop", "shutdown"], async () => {
+      this.shutdownInstance();
+    });
+
+    this.commands.registerCommand("help", () => {
+      this.log.success(
+        "help",
+        `YourDash Help
+- Coming soon
+`,
+      );
+    });
+
+    this.commands.registerCommand("listEndpoints", () => {
+      this.log.success("listEndpoints", JSON.stringify(this.rawExpressJs?._router?.stack || []));
     });
 
     this.commands.registerCommand("gdb", (args) => {
@@ -182,7 +199,8 @@ export class Core {
 
   // start the YourDash Instance
   __internal__startInstance() {
-    this.log.info("startup", "Welcome to the YourDash Instance backend");
+    console.time("core:startup");
+    this.log.info("startup", "Welcome to the YourDash Instance backend! created by Ewsgit -> https://ewsgit.uk");
 
     this.fs.doesExist("./global_database.json").then(async (doesGlobalDatabaseFileExist) => {
       if (doesGlobalDatabaseFileExist) await this.globalDb.loadFromDisk("./global_database.json");
@@ -229,8 +247,8 @@ export class Core {
     this.request.use(async (req, _res, next) => {
       switch (req.method) {
         case "GET":
-          if (req.path.includes("core::auth-img")) return next();
-          if (req.path.includes("core::auth-video")) return next();
+          if (req.path.includes("core:auth-img")) return next();
+          if (req.path.includes("core:auth-video")) return next();
 
           this.log.info(
             "request",
@@ -520,6 +538,14 @@ export class Core {
       this.log.error("startup", "Failed to load pre-auth endpoints for all modules", err);
     }
 
+    /**
+     ########################################################################
+     ##                                                                    ##
+     ##   WARNING: all endpoints require authentication after this point   ##
+     ##                                                                    ##
+     ########################################################################
+     */
+
     // Check for user authentication
     this.request.use(async (req, res, next) => {
       const { username, token } = req.headers as {
@@ -564,14 +590,6 @@ export class Core {
       return failAuth();
     });
 
-    /**
-          ########################################################################
-         ##                                                                    ##
-        ##   WARNING: all endpoints require authentication after this point   ##
-       ##                                                                    ##
-      ########################################################################
-    */
-
     console.time("core:load_modules");
 
     try {
@@ -601,10 +619,10 @@ export class Core {
       }
 
       return res.json(<EndpointResponseCoreLoginNotice>{
-        author: notice.author ?? "admin",
+        author: notice.author ?? "Instance Administrator",
         display: true,
         message: notice.message ?? "Placeholder message. Hey system admin, you should change this!",
-        timestamp: notice.timestamp ?? new Date().getTime(),
+        timestamp: notice.timestamp ?? 1,
       });
     });
 
@@ -656,10 +674,12 @@ export class Core {
         return res.status(404).json({ error: "this endpoint does not exist!" });
       });
     }
+
+    console.timeEnd("core:startup");
   }
 
-  // try not to use this method for production stability, instead prefer to reload a specific module if it works for your use-case.
-  shutdownInstance() {
+  // gracefully shutdown the YourDash Instance, optionally keep the process running
+  shutdownInstance(dontExitProcess: boolean = false) {
     this.log.info("core", "Shutting down...");
 
     fsReaddirSync(path.resolve(this.fs.ROOT_PATH, "./users")).forEach(async (username) => {
@@ -685,11 +705,9 @@ export class Core {
     });
 
     try {
-      this.globalDb
-        .__internal__doNotUseOnlyIntendedForShutdownSequenceWriteToDisk(path.resolve(process.cwd(), "./fs/global_database.json"))
-        .then(() => {
-          this.log.info("global_db", "Successfully saved global database");
-        });
+      this.globalDb.__internal__doNotUseOnlyIntendedForShutdownSequenceWriteToDisk(path.join("./global_database.json")).then(() => {
+        this.log.info("global_db", "Successfully saved global database");
+      });
     } catch (e) {
       this.log.error(
         "global_db",
@@ -697,12 +715,12 @@ export class Core {
       );
     }
 
-    return this;
+    if (!dontExitProcess) process.exit(0);
   }
 
-  // shutdown and startup the YourDash Instance
-  async restartInstance() {
-    this.shutdownInstance();
+  // gracefully shutdown and restart the YourDash Instance
+  restartInstance() {
+    this.shutdownInstance(true);
     this.__internal__startInstance();
 
     return this;

@@ -137,56 +137,6 @@ export default class CoreUsers {
   }
 
   __internal__loadEndpoints() {
-    this.core.request.get("/core/user/current/avatar/large", async (req, res) => {
-      const { username, sessionid } = req.headers;
-
-      const unreadUser = new YourDashUser(username);
-      const avatarPath = path.join(unreadUser.path, "avatars/large_avatar.avif");
-
-      return res
-        .status(200)
-        .type("text/plain")
-        .send(this.core.image.createAuthenticatedImage(username, sessionid, AUTHENTICATED_IMAGE_TYPE.FILE, avatarPath));
-    });
-
-    this.core.request.get("/core/user/current/avatar/medium", async (req, res) => {
-      const { username, sessionid } = req.headers;
-
-      const unreadUser = new YourDashUser(username);
-      const avatarPath = path.join(unreadUser.path, "avatars/medium_avatar.avif");
-
-      return res
-        .status(200)
-        .type("text/plain")
-        .send(this.core.image.createAuthenticatedImage(username, sessionid, AUTHENTICATED_IMAGE_TYPE.FILE, avatarPath));
-    });
-
-    this.core.request.get("/core/user/current/avatar/small", async (req, res) => {
-      const { username, sessionid } = req.headers;
-
-      const unreadUser = new YourDashUser(username);
-      const avatarPath = path.join(unreadUser.path, "avatars/small_avatar.avif");
-
-      return res
-        .status(200)
-        .type("text/plain")
-        .send(this.core.image.createAuthenticatedImage(username, sessionid, AUTHENTICATED_IMAGE_TYPE.FILE, avatarPath));
-    });
-
-    this.core.request.get("/core/user/current/avatar/original", async (req, res) => {
-      const { username, sessionid } = req.headers;
-
-      const unreadUser = new YourDashUser(username);
-      const avatarPath = path.join(unreadUser.path, "avatars/original.avif");
-
-      return res
-        .status(200)
-        .type("text/plain")
-        .send(this.core.image.createAuthenticatedImage(username, sessionid, AUTHENTICATED_IMAGE_TYPE.FILE, avatarPath));
-    });
-
-    // NEW CSI ENDPOINTS
-
     this.core.request.get(`/core/user/current/avatar/${USER_AVATAR_SIZE.SMALL}`, async (req, res) => {
       const { username, sessionid } = req.headers;
 

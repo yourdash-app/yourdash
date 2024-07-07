@@ -13,20 +13,20 @@ export default function generateInstanceLogos() {
     .resize(31, 31)
     .toFile(path.join(core.fs.ROOT_PATH, "./logo_panel_small.avif"))
     .catch((err: string) => {
-      core.log.error(`unable to create "fs/logo_panel_small.avif" ${err}`);
+      core.log.error("core:generate_instance_logos", `unable to create "fs/logo_panel_small.avif" ${err}`);
     });
 
   sharp(fs.readFileSync(path.join(core.fs.ROOT_PATH, "./instance_logo.avif")))
     .resize(39, 39)
     .toFile(path.join(core.fs.ROOT_PATH, "./logo_panel_medium.avif"))
     .catch((err: string) => {
-      core.log.error(`unable to create "fs/logo_panel_medium.avif" ${err}`);
+      core.log.error("core:generate_instance_logos", `unable to create "fs/logo_panel_medium.avif" ${err}`);
     });
 
   sharp(fs.readFileSync(path.join(core.fs.ROOT_PATH, "./instance_logo.avif")))
     .resize(55, 55)
     .toFile(path.join(core.fs.ROOT_PATH, "./logo_panel_large.avif"))
     .catch((err: string) => {
-      core.log.error(`unable to create "fs/logo_panel_large.avif" ${err}`);
+      core.log.error("core:generate_instance_logos", `unable to create "fs/logo_panel_large.avif" ${err}`);
     });
 }

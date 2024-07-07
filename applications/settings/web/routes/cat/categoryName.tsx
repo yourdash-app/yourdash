@@ -18,7 +18,7 @@ import StringSetting from "../../components/setting/StringSetting";
 const CategoryNamePage: React.FC = () => {
   const { categoryName } = useParams();
 
-  const categoryData = useResource(() => csi.getJson<EndpointSettingsCategory>(`/app::settings/cat/${categoryName}`), [categoryName]);
+  const categoryData = useResource(() => csi.getJson<EndpointSettingsCategory>(`/app:settings/cat/${categoryName}`), [categoryName]);
 
   return (
     <div>

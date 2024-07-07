@@ -9,6 +9,7 @@ import path from "path";
 import { Core } from "./core.js";
 import ffmpeg from "fluent-ffmpeg";
 import timeMethod from "../lib/time.js";
+import { $ } from "bun";
 
 export enum AUTHENTICATED_VIDEO_TYPE {
   FILE,
@@ -26,10 +27,7 @@ export default class CoreVideo {
   //     [id: string]: IauthenticatedVideo<AUTHENTICATED_VIDEO_TYPE>;
   //   };
   // };
-  private readonly authenticatedVideos: Map<
-    string,
-    Map<string, Map<string, IauthenticatedVideo<AUTHENTICATED_VIDEO_TYPE>>>
-  >;
+  private readonly authenticatedVideos: Map<string, Map<string, Map<string, IauthenticatedVideo<AUTHENTICATED_VIDEO_TYPE>>>>;
 
   constructor(core: Core) {
     this.core = core;
@@ -55,14 +53,10 @@ export default class CoreVideo {
       // very slow on windows
       timeMethod(async () => {
         return new Promise((resolveTime) => {
-          this.core.execute
-            .exec(
-              `ffmpeg -i ${path.join(this.core.fs.ROOT_PATH, videoPath)} -ss 00:00:1 -frames:v 1 ${path.join(cacheDir, fileName)}`,
-            )
-            .on("exit", () => {
-              resolveTime(null);
-              resolve(path.join(cacheDir, fileName));
-            });
+          $`ffmpeg -i ${path.join(this.core.fs.ROOT_PATH, videoPath)} -ss 00:00:1 -frames:v 1 ${path.join(cacheDir, fileName)}`.then(() => {
+            resolveTime(null);
+            resolve(path.join(cacheDir, fileName));
+          });
         });
       }, "createVideoThumbnail");
     });
@@ -133,7 +127,7 @@ export default class CoreVideo {
         value: val,
       });
 
-      return `/core::auth-video/${username}/${sessionId}/${id}`;
+      return `/core:auth-video/${username}/${sessionId}/${id}`;
     } catch (err) {
       this.core.log.error("video", "failed to create authenticated video", err);
 
@@ -148,7 +142,7 @@ export default class CoreVideo {
   }
 
   __internal__loadEndpoints() {
-    this.core.request.setNamespace("core::auth-video");
+    this.core.request.setNamespace("core:auth-video");
 
     this.core.request.get("/:username/:sessionId/:id", async (req, res) => {
       const { username, sessionId, id } = req.params;
@@ -162,17 +156,14 @@ export default class CoreVideo {
       if (video.type === AUTHENTICATED_VIDEO_TYPE.FILE) {
         try {
           return res.sendFile(
-            pth.resolve(video.value) ||
-              (pth.resolve(pth.join(process.cwd(), "./src/defaults/default_video.mp4")) as unknown as string),
+            pth.resolve(video.value) || (pth.resolve(pth.join(process.cwd(), "./src/defaults/default_video.mp4")) as unknown as string),
           );
         } catch (e) {
           return;
         }
       } else {
         try {
-          return res.sendFile(
-            pth.resolve(pth.join(process.cwd(), "./src/defaults/default_video.mp4")) as unknown as string,
-          );
+          return res.sendFile(pth.resolve(pth.join(process.cwd(), "./src/defaults/default_video.mp4")) as unknown as string);
         } catch (e) {
           return;
         }

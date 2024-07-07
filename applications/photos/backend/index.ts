@@ -98,7 +98,7 @@ export default class PhotosBackend extends BackendModule {
   public loadEndpoints() {
     super.loadEndpoints();
 
-    this.api.request.setNamespace("app::photos");
+    this.api.request.setNamespace("app:photos");
 
     this.api.request.get("/media/album/subAlbums/@/*", async (req, res) => {
       const itemPath = req.params["0"] as string;
@@ -152,7 +152,7 @@ export default class PhotosBackend extends BackendModule {
 
         if (!(await this.api.core.fs.doesExist(thumbnailsDirectory))) {
           await this.api.core.fs.createDirectory(thumbnailsDirectory);
-          this.api.core.log.success("app::photos", `Created thumbnails directory: ${thumbnailsDirectory}`);
+          this.api.core.log.success("app:photos", `Created thumbnails directory: ${thumbnailsDirectory}`);
         }
 
         const PAGE_SIZE = 64;

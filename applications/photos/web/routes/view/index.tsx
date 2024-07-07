@@ -24,7 +24,7 @@ const ViewPathPage: FC = () => {
   const [searchParams] = useSearchParams();
   const mediaPath = searchParams.get("p") || "";
   const navigate = useNavigate();
-  const media = useResource<EndpointMediaRaw>(() => csi.getJson(`/app::photos/media/raw/@/${mediaPath}`), [mediaPath]);
+  const media = useResource<EndpointMediaRaw>(() => csi.getJson(`/app:photos/media/raw/@/${mediaPath}`), [mediaPath]);
 
   return (
     <div className={clippy(styles.page, media?.type === MEDIA_TYPE.VIDEO && styles.video)}>

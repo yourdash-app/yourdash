@@ -14,7 +14,7 @@ import loadable from "@loadable/component";
 
 const DashApplication: React.FC = () => {
   const username = useResource(() => csi.getUser().getFullName());
-  const { pageCount } = useResource<{ pageCount: number }>(() => csi.getJson("/app::dash/widget/pages")) || { pageCount: 0 };
+  const { pageCount } = useResource<{ pageCount: number }>(() => csi.getJson("/app:dash/widget/pages")) || { pageCount: 0 };
   const [currentWidgetPage, setCurrentWidgetPage] = useState<number>(0);
   const widgetPages: IWidgetGrid[] = [
     {

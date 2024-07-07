@@ -24,45 +24,38 @@ export default class CorePanel {
       return res.json(
         (
           await Promise.all(
-            (this.core.globalDb.get<string[]>("core:installedApplications") || []).map(
-              async (applicationName: string) => {
-                const unreadApplication = new YourDashApplication(applicationName);
+            (this.core.globalDb.get<string[]>("core:installedApplications") || []).map(async (applicationName: string) => {
+              const unreadApplication = new YourDashApplication(applicationName);
 
-                if (!(await unreadApplication.exists())) return undefined;
+              if (!(await unreadApplication.exists())) return undefined;
 
-                const application = await unreadApplication.read();
+              const application = await unreadApplication.read();
 
-                const RESIZED_ICON_PATH = path.join("cache/applications/icons", `${application.getName()}`, "128.png");
+              const RESIZED_ICON_PATH = path.join("cache/applications/icons", `${application.getName()}`, "128.png");
 
-                if (!(await this.core.fs.doesExist(RESIZED_ICON_PATH))) {
-                  this.core.log.info("core:panel", `Generating 128x128 icon for ${application.getName()}`);
+              if (!(await this.core.fs.doesExist(RESIZED_ICON_PATH))) {
+                this.core.log.info("core:panel", `Generating 128x128 icon for ${application.getName()}`);
 
-                  await this.core.fs.createDirectory(path.dirname(RESIZED_ICON_PATH));
+                await this.core.fs.createDirectory(path.dirname(RESIZED_ICON_PATH));
 
-                  const resizedIconPath = await this.core.image.resizeTo(
-                    (await this.core.fs.getFile(await application.getIconPath())).path,
-                    128,
-                    128,
-                    "webp",
-                    true,
-                  );
+                const resizedIconPath = await this.core.image.resizeTo(
+                  (await this.core.fs.getFile(await application.getIconPath())).path,
+                  128,
+                  128,
+                  "webp",
+                  true,
+                );
 
-                  await this.core.fs.copy(resizedIconPath, RESIZED_ICON_PATH);
-                }
+                await this.core.fs.copy(resizedIconPath, RESIZED_ICON_PATH);
+              }
 
-                return {
-                  name: application.getName(),
-                  displayName: application.getDisplayName(),
-                  description: application.getDescription(),
-                  icon: this.core.image.createAuthenticatedImage(
-                    username,
-                    sessionid,
-                    AUTHENTICATED_IMAGE_TYPE.FILE,
-                    RESIZED_ICON_PATH,
-                  ),
-                };
-              },
-            ),
+              return {
+                name: application.getName(),
+                displayName: application.getDisplayName(),
+                description: application.getDescription(),
+                icon: this.core.image.createAuthenticatedImage(username, sessionid, AUTHENTICATED_IMAGE_TYPE.FILE, RESIZED_ICON_PATH),
+              };
+            }),
           )
         ).filter((x) => {
           return x !== undefined;
@@ -102,12 +95,7 @@ export default class CorePanel {
 
             return {
               name: shortcut,
-              icon: this.core.image.createAuthenticatedImage(
-                username,
-                sessionid,
-                AUTHENTICATED_IMAGE_TYPE.FILE,
-                RESIZED_ICON_PATH,
-              ),
+              icon: this.core.image.createAuthenticatedImage(username, sessionid, AUTHENTICATED_IMAGE_TYPE.FILE, RESIZED_ICON_PATH),
             };
           }),
         ),
@@ -185,31 +173,6 @@ export default class CorePanel {
           sessionid,
           AUTHENTICATED_IMAGE_TYPE.FILE,
           path.join("./logo_panel_large.avif"),
-        ),
-      });
-    });
-
-    this.core.request.get("/core/panel/logo", async (req, res) => {
-      const { username, sessionid } = req.headers;
-
-      return res.json({
-        small: this.core.image.createAuthenticatedImage(
-          username,
-          sessionid,
-          AUTHENTICATED_IMAGE_TYPE.FILE,
-          path.join(this.core.fs.ROOT_PATH, "./logo_panel_small.avif"),
-        ),
-        medium: this.core.image.createAuthenticatedImage(
-          username,
-          sessionid,
-          AUTHENTICATED_IMAGE_TYPE.FILE,
-          path.join(this.core.fs.ROOT_PATH, "./logo_panel_medium.avif"),
-        ),
-        large: this.core.image.createAuthenticatedImage(
-          username,
-          sessionid,
-          AUTHENTICATED_IMAGE_TYPE.FILE,
-          path.join(this.core.fs.ROOT_PATH, "./logo_panel_large.avif"),
         ),
       });
     });

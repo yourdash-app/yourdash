@@ -30,10 +30,7 @@ export default class CoreImage {
   //     [id: string]: IauthenticatedImage<AUTHENTICATED_IMAGE_TYPE>;
   //   };
   // };
-  private readonly authenticatedImages: Map<
-    string,
-    Map<string, Map<string, IauthenticatedImage<AUTHENTICATED_IMAGE_TYPE>>>
-  >;
+  private readonly authenticatedImages: Map<string, Map<string, Map<string, IauthenticatedImage<AUTHENTICATED_IMAGE_TYPE>>>>;
 
   constructor(core: Core) {
     this.core = core;
@@ -124,7 +121,7 @@ export default class CoreImage {
         resizeTo: extras?.resizeTo,
       });
 
-      return `/core::auth-img/${username}/${sessionId}/${id}`;
+      return `/core:auth-img/${username}/${sessionId}/${id}`;
     } catch (err) {
       this.core.log.error("image", "failed to create authenticated image", err);
 
@@ -168,7 +165,7 @@ export default class CoreImage {
   }
 
   __internal__loadEndpoints() {
-    this.core.request.setNamespace("core::auth-img");
+    this.core.request.setNamespace("core:auth-img");
 
     this.core.request.get("/:username/:sessionId/:id", async (req, res) => {
       const { username, sessionId, id } = req.params;
@@ -222,12 +219,7 @@ export default class CoreImage {
 
         const resizeTo = image.resizeTo;
 
-        const resizedPath = await this.resizeTo(
-          image.value as string,
-          resizeTo.width,
-          resizeTo.height,
-          resizeTo.resultingImageFormat,
-        );
+        const resizedPath = await this.resizeTo(image.value as string, resizeTo.width, resizeTo.height, resizeTo.resultingImageFormat);
 
         try {
           return res.sendFile(path.join(this.core.fs.ROOT_PATH, resizedPath));
