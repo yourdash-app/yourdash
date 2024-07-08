@@ -37,6 +37,18 @@ export default class FileSystemEntity {
     };
   }
 
+  isNull(): boolean {
+    return this.entityType === FILESYSTEM_ENTITY_TYPE.NULL;
+  }
+
+  isFile(): boolean {
+    return this.entityType === FILESYSTEM_ENTITY_TYPE.FILE;
+  }
+
+  isDirectory(): boolean {
+    return this.entityType === FILESYSTEM_ENTITY_TYPE.DIRECTORY;
+  }
+
   createLock(): FileSystemLock {
     return new FileSystemLock(this);
   }

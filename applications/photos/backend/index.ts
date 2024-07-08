@@ -6,18 +6,11 @@
 // TODO: generate video thumbnails into a subfolder of the thumbnails cache folder and
 //  save a copy of them pre-resized alongside the photos as resizing images is also costly
 
-import core from "@yourdash/backend/src/core/core.js";
 import { AUTHENTICATED_IMAGE_TYPE } from "@yourdash/backend/src/core/coreImage.js";
-import { FILESYSTEM_ENTITY_TYPE } from "@yourdash/backend/src/core/fileSystem/fileSystemEntity.js";
-import FileSystemFile from "@yourdash/backend/src/core/fileSystem/fileSystemFile.js";
-import BackendModule, { YourDashModuleArguments } from "@yourdash/backend/src/core/moduleManager/backendModule.js";
-import { chunk } from "@yourdash/shared/web/helpers/array.js";
 import path from "path";
-import { MediaAlbumLargeGridItem } from "../shared/types/endpoints/media/album/large-grid.js";
-import EndpointMediaRaw from "../shared/types/endpoints/media/album/raw.js";
-import { MEDIA_TYPE } from "../shared/types/mediaType.js";
-import { AUTHENTICATED_VIDEO_TYPE } from "@yourdash/backend/src/core/coreVideo.js";
-import timeMethod from "@yourdash/backend/src/lib/time.js";
+import FileSystemDirectory from "@yourdash/backend/src/core/fileSystem/fileSystemDirectory.js";
+import BackendModule, { YourDashModuleArguments } from "@yourdash/backend/src/core/moduleManager/backendModule.js";
+import FileSystemFile from "@yourdash/backend/src/core/fileSystem/fileSystemFile.js";
 
 export default class PhotosBackend extends BackendModule {
   constructor(args: YourDashModuleArguments) {
@@ -58,7 +51,9 @@ export default class PhotosBackend extends BackendModule {
 
         // recursively get all photos
         async function getPhotosRecursively(dirPath: string) {
-          const dir = await self.api.core.fs.getDirectory(dirPath);
+          const dir = (await self.api.core.fs.getDirectory(dirPath)) as FileSystemDirectory;
+
+          if (dir.isNull()) return;
 
           for (const p of await dir.getChildFiles()) {
             if (p.getType() === "image") {
@@ -76,7 +71,7 @@ export default class PhotosBackend extends BackendModule {
         // hash every photo
         await Promise.all(
           usersPhotos.map(async (p) => {
-            const fileHash = await (await self.api.core.fs.getFile(p)).getContentHash();
+            const fileHash = await ((await self.api.core.fs.getFile(p)) as FileSystemFile).getContentHash();
 
             // if a hash already exists, flag the conflicting paths and put in array
             if (userHashes.get(u).has(fileHash)) {
@@ -421,7 +416,7 @@ export default class PhotosBackend extends BackendModule {
     // });
 
     this.api.request.get("/album/@/*", async (req, res) => {
-      const { sessionid } = req.headers;
+      const sessionId = req.sessionId;
       const albumPath = req.params["0"] as string;
       const user = this.api.getUser(req);
 
@@ -430,9 +425,31 @@ export default class PhotosBackend extends BackendModule {
       });
     });
 
-    this.api.request.get(["/album/sub/@/*", "/albums"], async (req, res) => {
+    this.api.request.get("/album/sub/@/*", async (req, res) => {
+      const sessionId = req.sessionId;
+      const albumPath = (req.params["0"] as string) || "./photos/";
+      const user = this.api.getUser(req);
+
+      const albumEntity = (await this.api.core.fs.getDirectory(path.join(user.getFsPath(), albumPath))) as FileSystemDirectory;
+
+      if (albumEntity.isNull()) {
+        return res.json({ error: "Not found" });
+      }
+
+      let headerImagePath = "./instance_logo.avif";
+
+      for (const entity of await albumEntity.getChildFiles()) {
+        if (entity.getType() === "image") {
+          headerImagePath = entity.path;
+          break;
+        }
+      }
+
       res.json({
-        error: "Not implemented",
+        displayName: path.basename(albumPath),
+        path: albumPath,
+        size: (await albumEntity.getChildren()).length,
+        thumbnail: this.api.core.image.createAuthenticatedImage(user.username, sessionId, AUTHENTICATED_IMAGE_TYPE.FILE, headerImagePath),
       });
     });
 

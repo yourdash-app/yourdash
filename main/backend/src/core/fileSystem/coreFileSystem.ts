@@ -47,7 +47,7 @@ export default class coreFileSystem {
     return new FileSystemFile(this.core, path);
   }
 
-  async getFile(path: string): Promise<FileSystemFile> | null {
+  async getFile(path: string): Promise<FileSystemFile | FileSystemNull> {
     try {
       if ((await this.getEntityType(path)) === "file") {
         return new FileSystemFile(this.core, path);
@@ -60,22 +60,22 @@ export default class coreFileSystem {
 
       this.core.log.error("filesystem", err);
 
-      return null;
+      return new FileSystemNull(this.core);
     }
 
     return this.createFile(path);
   }
 
-  async getDirectory(path: string): Promise<FileSystemDirectory> | null {
+  async getDirectory(path: string): Promise<FileSystemDirectory | FileSystemNull> {
     try {
       if ((await this.getEntityType(path)) === "directory") {
         return new FileSystemDirectory(this.core, path);
       }
     } catch (_err) {
-      return null;
+      return new FileSystemNull(this.core);
     }
 
-    return null;
+    return await this.createDirectory(path);
   }
 
   async getOrCreateDirectory(path: string) {

@@ -45,7 +45,7 @@ export default class CoreRequest {
 
     // TODO: add a cli flag to re-enable this
     // if (this.core.isDebugMode) {
-    // this.core.log.info("core_request", "Request created: " + (this.currentNamespace ? "/" : "") + this.currentNamespace + path);
+    this.core.log.info("core_request", "Request created: " + (this.currentNamespace ? "/" : "") + this.currentNamespace + path);
     // }
 
     if (typeof path === "string") {
