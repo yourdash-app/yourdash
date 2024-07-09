@@ -23,7 +23,7 @@ const AlbumPathPage: FC = () => {
   const [searchParams] = useSearchParams();
   const albumPath = searchParams.get("p") || "";
   const albumSubAlbums =
-    useResource(() => csi.getJson<EndpointMediaAlbumSubAlbums>(`/app:photos/media/album/subAlbums/@/${albumPath}`), [albumPath]) || [];
+    useResource(() => csi.getJson<EndpointMediaAlbumSubAlbums>(`/app/photos/media/album/subAlbums/@/${albumPath}`), [albumPath]) || [];
 
   return (
     <>

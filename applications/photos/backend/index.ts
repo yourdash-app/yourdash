@@ -22,7 +22,9 @@ export default class PhotosBackend extends BackendModule {
 
         this.api.core.fs.doesExist(path.join()).then((exists) => {
           if (!exists) {
-            this.api.core.fs.createDirectory(path.join(userFsPath, "photos")).then(() => {});
+            this.api.core.fs.createDirectory(path.join(userFsPath, "photos")).then(() => {
+              this.api.core.log.info("app/photos", `Created user photos directory: ${userFsPath}/photos`);
+            });
           }
         });
       });
@@ -31,7 +33,7 @@ export default class PhotosBackend extends BackendModule {
     return this;
   }
 
-  async deduplicatePhotos() {
+  async deDuplicatePhotos() {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const self = this;
     const userHashes: Map<string, Set<string>> = new Map();
@@ -93,7 +95,7 @@ export default class PhotosBackend extends BackendModule {
   public loadEndpoints() {
     super.loadEndpoints();
 
-    this.api.request.setNamespace("app:photos");
+    this.api.request.setNamespace("app/photos");
 
     // this.api.request.get("/media/album/subAlbums/@/*", async (req, res) => {
     //   const itemPath = req.params["0"] as string;
@@ -147,7 +149,7 @@ export default class PhotosBackend extends BackendModule {
     //
     //     if (!(await this.api.core.fs.doesExist(thumbnailsDirectory))) {
     //       await this.api.core.fs.createDirectory(thumbnailsDirectory);
-    //       this.api.core.log.success("app:photos", `Created thumbnails directory: ${thumbnailsDirectory}`);
+    //       this.api.core.log.success("app/photos", `Created thumbnails directory: ${thumbnailsDirectory}`);
     //     }
     //
     //     const PAGE_SIZE = 64;
@@ -187,7 +189,7 @@ export default class PhotosBackend extends BackendModule {
     //
     //                   if (dimensions.width === 0 || dimensions.height === 0) {
     //                     this.api.core.log.error(
-    //                       "app:photos",
+    //                       "app/photos",
     //                       `Failed to get dimensions for video pre-generated thumbnail: ${childThumbnailPath}`,
     //                     );
     //                   }
@@ -209,7 +211,7 @@ export default class PhotosBackend extends BackendModule {
     //                 }
     //
     //                 // create the thumbnail
-    //                 this.api.core.log.info("app:photos", "creating video thumb for " + childPath);
+    //                 this.api.core.log.info("app/photos", "creating video thumb for " + childPath);
     //
     //                 const thumbnailPath = (await timeMethod(() => this.api.core.video.createThumbnail(childPath), "createVideoThumbnail"))
     //                   .callbackResult;
@@ -426,7 +428,7 @@ export default class PhotosBackend extends BackendModule {
     });
 
     this.api.request.get("/album/sub/@/*", async (req, res) => {
-      const sessionId = req.sessionId;
+      const sessionId = req.headers.sessionid;
       const albumPath = (req.params["0"] as string) || "./photos/";
       const user = this.api.getUser(req);
 

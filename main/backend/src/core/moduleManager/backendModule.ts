@@ -38,19 +38,19 @@ export default class BackendModule {
       log(type: LOG_TYPE, ...message: (string | Uint8Array)[]) {
         switch (type) {
           case LOG_TYPE.INFO:
-            core.log.info(`app:${this.moduleName}`, ...message);
+            core.log.info(`app/${this.moduleName}`, ...message);
             return;
           case LOG_TYPE.ERROR:
-            core.log.error(`app:${this.moduleName}`, ...message);
+            core.log.error(`app/${this.moduleName}`, ...message);
             return;
           case LOG_TYPE.SUCCESS:
-            core.log.success(`app:${this.moduleName}`, ...message);
+            core.log.success(`app/${this.moduleName}`, ...message);
             return;
           case LOG_TYPE.WARNING:
-            core.log.warning(`app:${this.moduleName}`, ...message);
+            core.log.warning(`app/${this.moduleName}`, ...message);
             return;
           default:
-            core.log.info(`app:${this.moduleName}`, ...message);
+            core.log.info(`app/${this.moduleName}`, ...message);
         }
       },
       getPath() {

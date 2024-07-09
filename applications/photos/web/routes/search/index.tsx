@@ -15,7 +15,7 @@ import styles from "./index.module.scss";
 
 const SearchIndexPage: FC = () => {
   const [query, setQuery] = React.useState<string>("");
-  const searchResults = useResource(() => csi.getJson<EndpointMediaSearch>(`/app:photos/media/search/`), [query]);
+  const searchResults = useResource(() => csi.getJson<EndpointMediaSearch>(`/app/photos/media/search/`), [query]);
 
   return (
     <div className={styles.page}>

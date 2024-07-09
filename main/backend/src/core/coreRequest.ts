@@ -19,17 +19,23 @@ export default class CoreRequest {
   rawExpress: ExpressApplication;
   private core: Core;
   private currentNamespace: string;
+  endpoints: string[];
 
   constructor(core: Core) {
     this.rawExpress = core.rawExpressJs;
     this.core = core;
     this.currentNamespace = "";
+    this.endpoints = [];
   }
 
   setNamespace(namespace: string): this {
     this.currentNamespace = namespace;
 
     return this;
+  }
+
+  private endpointFromPath(path: string): string {
+    return (this.currentNamespace ? "/" : "") + this.currentNamespace + path;
   }
 
   get(
@@ -41,11 +47,11 @@ export default class CoreRequest {
     ) => Promise<ExpressResponse<any, Record<string, any>> | void>,
     options?: { debugTimer: boolean },
   ): this {
-    let endpointPath: string[] = [];
+    let endpointPath: string[];
 
     // TODO: add a cli flag to re-enable this
     // if (this.core.isDebugMode) {
-    this.core.log.info("core_request", "Request created: " + (this.currentNamespace ? "/" : "") + this.currentNamespace + path);
+    this.core.log.info("core_request", "Request created: " + this.endpointFromPath(path));
     // }
 
     if (typeof path === "string") {

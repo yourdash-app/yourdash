@@ -29,6 +29,8 @@ import CoreLog from "./coreLog.js";
 import CoreRequest from "./coreRequest.js";
 import CoreTeams from "./coreTeams.js";
 import CoreVideo from "./coreVideo.js";
+import FileSystemDirectory from "./fileSystem/fileSystemDirectory.js";
+import FileSystemFile from "./fileSystem/fileSystemFile.js";
 import GlobalDBCoreLoginNotice from "./login/loginNotice.js";
 import BackendModule from "./moduleManager/backendModule.js";
 import loadNextCloudSupportEndpoints from "./nextcloud/coreNextCloud.js";
@@ -44,6 +46,7 @@ import { USER_AVATAR_SIZE } from "@yourdash/shared/core/userAvatarSize.js";
 import YourDashUser from "./user/index.js";
 import { YOURDASH_SESSION_TYPE } from "@yourdash/shared/core/session.js";
 import CoreWebsocketManager from "./websocketManager/coreWebsocketManager.js";
+import expressListEndpoints from "express-list-endpoints";
 
 declare global {
   const globalThis: {
@@ -150,8 +153,8 @@ export class Core {
       );
     });
 
-    this.commands.registerCommand("listEndpoints", () => {
-      this.log.success("listEndpoints", JSON.stringify(this.rawExpressJs?._router?.stack || []));
+    this.commands.registerCommand("list_endpoints", () => {
+      this.log.success("list_endpoints", JSON.stringify(this.request.endpoints));
     });
 
     this.commands.registerCommand("gdb", (args) => {
@@ -403,7 +406,9 @@ export class Core {
 
       const user = new YourDashUser(username);
 
-      const savedHashedPassword = await (await this.fs.getFile(path.join(user.path, "core/password.enc"))).read("string");
+      const savedHashedPassword = await ((await this.fs.getFile(path.join(user.path, "core/password.enc"))) as FileSystemFile).read(
+        "string",
+      );
 
       return compareHashString(savedHashedPassword, password)
         .then(async (result) => {
@@ -570,13 +575,13 @@ export class Core {
           // @ts-ignore
           this.users.__internal__getSessionsDoNotUseOutsideOfCore()[username] = (await user.getAllLoginSessions()) || [];
 
-          const database = await (await this.fs.getFile(path.join(user.path, "core/user_db.json"))).read("string");
+          const database = await ((await this.fs.getFile(path.join(user.path, "core/user_db.json"))) as FileSystemFile).read("string");
 
           if (database) {
             (await user.getDatabase()).clear().merge(JSON.parse(database));
           } else {
             (await user.getDatabase()).clear();
-            await (await this.fs.getFile(path.join(user.path, "core/user_db.json"))).write("{}");
+            await ((await this.fs.getFile(path.join(user.path, "core/user_db.json"))) as FileSystemFile).write("{}");
           }
         } catch (_err) {
           return failAuth();
@@ -628,7 +633,9 @@ export class Core {
 
     this.request.get("/core/applications", async (_req, res) => {
       return res.json(<EndpointResponseCoreApplications>{
-        applications: (await (await this.fs.getDirectory(path.join(process.cwd(), "../../applications/"))).getChildren()).map((app) => {
+        applications: (
+          await ((await this.fs.getDirectory(path.join(process.cwd(), "../../applications/"))) as FileSystemDirectory).getChildren()
+        ).map((app) => {
           return {
             id: path.basename(app.path) || "unknown",
             // TODO: support other types of applications
@@ -639,7 +646,7 @@ export class Core {
     });
 
     this.request.get("/core/hosted-applications/", async (_req, res) => {
-      const hostedApplications = await this.fs.getDirectory(path.join(process.cwd(), "../../hostedApplications"));
+      const hostedApplications = (await this.fs.getDirectory(path.join(process.cwd(), "../../hostedApplications"))) as FileSystemDirectory;
 
       return res.json({ applications: await hostedApplications.getChildrenAsBaseName() });
     });
@@ -679,7 +686,7 @@ export class Core {
   }
 
   // gracefully shutdown the YourDash Instance, optionally keep the process running
-  shutdownInstance(dontExitProcess: boolean = false) {
+  shutdownInstance(dontExitProcess = false) {
     this.log.info("core", "Shutting down...");
 
     fsReaddirSync(path.resolve(this.fs.ROOT_PATH, "./users")).forEach(async (username) => {

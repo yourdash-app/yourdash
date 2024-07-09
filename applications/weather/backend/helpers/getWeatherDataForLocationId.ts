@@ -8,9 +8,7 @@ import { Response, fetch } from "undici";
 import { IWeatherDataForLocation } from "../../shared/weatherDataForLocation.js";
 import parseWeatherCodes from "./parseWeatherState.js";
 
-export default async function getWeatherDataForLongitudeAndLatitude(
-  id: string,
-): Promise<IWeatherDataForLocation | null> {
+export default async function getWeatherDataForLongitudeAndLatitude(id: string): Promise<IWeatherDataForLocation | null> {
   try {
     const locationRequest = await fetch(`https://geocoding-api.open-meteo.com/v1/get?id=${id}&language=en&format=json`);
 
@@ -181,7 +179,7 @@ export default async function getWeatherDataForLongitudeAndLatitude(
       },
     };
   } catch (e) {
-    core.log.warning("app:weather", "Could not fetch location data => ", e);
+    core.log.warning("app/weather", "Could not fetch location data => ", e);
     return null;
   }
 }

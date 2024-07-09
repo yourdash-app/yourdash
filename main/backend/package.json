@@ -33,6 +33,7 @@
     "esm": "^3.2.25",
     "execa": "^8.0.1",
     "express": "5.0.0-beta.3",
+    "express-list-endpoints": "^7.1.0",
     "ffmpeg": "^0.0.4",
     "file-url": "^4.0.0",
     "fkill": "^8.1.0",

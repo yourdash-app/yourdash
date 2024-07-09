@@ -30,7 +30,7 @@ export default class WeatherModule extends BackendModule {
         const currentTime = Math.floor(new Date().getTime() / 1_000);
 
         if (currentTime > weatherForecastCache[id].cacheTime + 1_800_000 /* 30 minutes */) {
-          this.api.core.log.info("app:weather", `Responding with cached weather data for location '${id}'`);
+          this.api.core.log.info("app/weather", `Responding with cached weather data for location '${id}'`);
           return res.json({
             ...(weatherForecastCache[id].data as object),
             collectedAt: weatherForecastCache[id].cacheTime,

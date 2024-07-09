@@ -21,7 +21,7 @@ const WeatherHourlyConditionsWidget: React.FC = () => {
 
   useEffect(() => {
     // fetch the user's defined location but default to London
-    csi.syncGetJson(`/app/weather/location/${csi.userDB.get("app:dash:widget:weather:location") || "2643743"}`, (res) => {
+    csi.syncGetJson(`/app/weather/location/${csi.userDB.get("app/dash:widget:weather:location") || "2643743"}`, (res) => {
       setWeatherData(res);
       console.log(res);
     });

@@ -163,7 +163,63 @@ class __internalClientServerInteraction {
       });
   }
 
-  postJson(
+  postJson<ResponseType extends object>(
+    endpoint: string,
+    body: TJson,
+    // eslint-disable-next-line
+    cb: (response: any) => void,
+    error?: (response: string) => void,
+    extraHeaders?: {
+      [key: string]: string;
+    },
+  ): Promise<ResponseType> {
+    const instanceUrl = this.getInstanceUrl();
+    const username = this.getUsername();
+    const sessionToken = this.getUserToken();
+    const sessionId = this.getSessionId();
+
+    return new Promise<ResponseType>((resolve, reject) => {
+      fetch(`${instanceUrl}${endpoint}`, {
+        method: "POST",
+        mode: "cors",
+        body: JSON.stringify(body),
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json",
+          username,
+          sessionId: sessionId,
+          token: sessionToken,
+          ...(extraHeaders || {}),
+        },
+      })
+        .then((resp) => {
+          if (resp.headers.get("Content-Type") === "application/json; charset=utf-8") {
+            return resp.json();
+          }
+
+          reject("not a valid JSON response");
+        })
+        .then((resp) => {
+          if (resp?.error) {
+            error?.(resp);
+            if (resp.error === "authorization fail") {
+              console.error("unauthorized request ", endpoint);
+              window.location.href = "/";
+              return;
+            }
+            console.error(`Error fetching from instance: (json) POST ${endpoint}, Error:`, resp.error);
+            return;
+          }
+
+          resolve(resp);
+        })
+        .catch((err) => {
+          console.error(`Error parsing result from instance: (json) POST ${endpoint}`, err);
+        });
+    });
+  }
+
+  syncPostJson(
     endpoint: string,
     body: TJson,
     // eslint-disable-next-line
@@ -209,6 +265,7 @@ class __internalClientServerInteraction {
           console.error(`Error fetching from instance: (json) POST ${endpoint}, Error:`, resp.error);
           return;
         }
+
         cb(resp);
       })
       .catch((err) => {
