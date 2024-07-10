@@ -12,6 +12,7 @@ import path from "path";
 import FileSystemDirectory from "@yourdash/backend/src/core/fileSystem/fileSystemDirectory.js";
 import BackendModule, { YourDashModuleArguments } from "@yourdash/backend/src/core/moduleManager/backendModule.js";
 import FileSystemFile from "@yourdash/backend/src/core/fileSystem/fileSystemFile.js";
+import { EndpointAlbumSubPath } from "../shared/types/endpoints/album/sub/path.js";
 
 export default class PhotosBackend extends BackendModule {
   constructor(args: YourDashModuleArguments) {
@@ -56,7 +57,7 @@ export default class PhotosBackend extends BackendModule {
         async function getPhotosRecursively(dirPath: string) {
           const dir = (await self.api.core.fs.getDirectory(dirPath)) as FileSystemDirectory;
 
-          if (dir.isNull()) return;
+          if (!dir) return;
 
           for (const p of await dir.getChildFiles()) {
             if (p.getType() === "image") {
@@ -428,7 +429,8 @@ export default class PhotosBackend extends BackendModule {
       });
     });
 
-    this.api.request.get("/album/sub/@/*", async (req, res) => {
+    // returns the subAlbums of a given album
+    this.api.request.get<EndpointAlbumSubPath | { error: string }>("/album/sub/@/*", async (req, res) => {
       const sessionId = req.headers.sessionid;
       const albumPath = (req.params["0"] as string) || "./photos/";
       const user = this.api.getUser(req);
@@ -440,34 +442,38 @@ export default class PhotosBackend extends BackendModule {
 
         await this.api.core.fs.createDirectory(path.join(user.getFsPath(), albumPath));
 
-        return res.json({
-          displayName: "Photos",
-          path: albumPath,
-          size: 0,
-          thumbnail: this.api.core.image.createAuthenticatedImage(
+        return res.json([]);
+      }
+
+      const output: { displayName: string; path: string; size: number; thumbnail: string }[] = [];
+
+      for (const subAlbum of await albumEntity.getChildDirectories()) {
+        let headerImagePath = "./instance_logo.avif";
+
+        for (const subAlbumChild of await subAlbum.getChildFiles()) {
+          if (subAlbumChild.getType() === "image") {
+            headerImagePath = subAlbumChild.path;
+            break;
+          }
+        }
+
+        output.push({
+          displayName: path.basename(subAlbum.path),
+          path: subAlbum.path,
+          size: (await subAlbum.getChildFiles()).length,
+          thumbnail: await this.api.core.image.createResizedAuthenticatedImage(
             user.username,
             sessionId,
             AUTHENTICATED_IMAGE_TYPE.FILE,
-            "./instance_logo.avif",
+            headerImagePath,
+            400,
+            400,
+            "webp",
           ),
         });
       }
 
-      let headerImagePath = "./instance_logo.avif";
-
-      for (const entity of await albumEntity.getChildFiles()) {
-        if (entity.getType() === "image") {
-          headerImagePath = entity.path;
-          break;
-        }
-      }
-
-      res.json({
-        displayName: path.basename(albumPath),
-        path: albumPath,
-        size: (await albumEntity.getChildren()).length,
-        thumbnail: this.api.core.image.createAuthenticatedImage(user.username, sessionId, AUTHENTICATED_IMAGE_TYPE.FILE, headerImagePath),
-      });
+      res.json(output);
     });
 
     this.api.request.get("/media/thumbnail/:size/@/*", async (req, res) => {

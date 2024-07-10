@@ -38,13 +38,14 @@ export default class CoreRequest {
     return (this.currentNamespace ? "/" : "") + this.currentNamespace + path;
   }
 
-  get(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  get<TResponse = any>(
     path: string | string[],
     callback: (
       req: ExpressRequest & RequestExtras,
       res: ExpressResponse,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ) => Promise<ExpressResponse<any, Record<string, any>> | void>,
+    ) => Promise<ExpressResponse<TResponse, Record<string, any>> | void>,
     options?: { debugTimer: boolean },
   ): this {
     let endpointPath: string[];
@@ -101,13 +102,14 @@ export default class CoreRequest {
     return this;
   }
 
-  post(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  post<TResponse = any>(
     path: string,
     callback: (
       req: ExpressRequest & { headers: RequestHeaders },
       res: ExpressResponse,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ) => Promise<ExpressResponse<any, Record<string, any>> | void>,
+    ) => Promise<ExpressResponse<TResponse, Record<string, any>> | void>,
   ): this {
     this.rawExpress.post(
       (this.currentNamespace ? "/" : "") + this.currentNamespace + path,
@@ -124,13 +126,14 @@ export default class CoreRequest {
     return this;
   }
 
-  put(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  put<TResponse = any>(
     path: string,
     callback: (
       req: ExpressRequest & { headers: RequestHeaders },
       res: ExpressResponse,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ) => Promise<ExpressResponse<any, Record<string, any>> | void>,
+    ) => Promise<ExpressResponse<TResponse, Record<string, any>> | void>,
   ): this {
     this.rawExpress.put(
       (this.currentNamespace ? "/" : "") + this.currentNamespace + path,
@@ -147,13 +150,13 @@ export default class CoreRequest {
     return this;
   }
 
-  delete(
+  delete<TResponse = any>(
     path: string,
     callback: (
       req: ExpressRequest & { headers: RequestHeaders },
       res: ExpressResponse,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ) => Promise<ExpressResponse<any, Record<string, any>> | void>,
+    ) => Promise<ExpressResponse<TResponse, Record<string, any>> | void>,
   ): this {
     this.rawExpress.delete(
       (this.currentNamespace ? "/" : "") + this.currentNamespace + path,
@@ -170,13 +173,14 @@ export default class CoreRequest {
     return this;
   }
 
-  patch(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  patch<TResponse = any>(
     path: string,
     callback: (
       req: ExpressRequest & { headers: RequestHeaders },
       res: ExpressResponse,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ) => Promise<ExpressResponse<any, Record<string, any>> | void>,
+    ) => Promise<ExpressResponse<TResponse, Record<string, any>> | void>,
   ): this {
     this.rawExpress.patch(
       (this.currentNamespace ? "/" : "") + this.currentNamespace + path,
@@ -193,13 +197,14 @@ export default class CoreRequest {
     return this;
   }
 
-  options(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  options<TResponse = any>(
     path: string,
     callback: (
       req: ExpressRequest & { headers: RequestHeaders },
       res: ExpressResponse,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ) => Promise<ExpressResponse<any, Record<string, any>> | void>,
+    ) => Promise<ExpressResponse<TResponse, Record<string, any>> | void>,
   ): this {
     this.rawExpress.options(
       (this.currentNamespace ? "/" : "") + this.currentNamespace + path,

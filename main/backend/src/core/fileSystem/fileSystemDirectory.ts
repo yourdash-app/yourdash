@@ -28,18 +28,18 @@ export default class FileSystemDirectory extends FileSystemEntity {
     return fs.stat(pth.join(this.core.fs.ROOT_PATH, this.path));
   }
 
-  async getChildren(): Promise<FileSystemEntity[]> {
+  async getChildren(): Promise<(FileSystemEntity | null)[]> {
     const children = await this.getChildrenAsBaseName();
 
     return await Promise.all(children.map(async (child) => await this.getChild(child)));
   }
 
   async getChildDirectories(): Promise<FileSystemDirectory[]> {
-    return (await this.getChildren()).filter((entity) => entity.entityType === FILESYSTEM_ENTITY_TYPE.DIRECTORY) as FileSystemDirectory[];
+    return (await this.getChildren()).filter((entity) => entity?.entityType === FILESYSTEM_ENTITY_TYPE.DIRECTORY) as FileSystemDirectory[];
   }
 
   async getChildFiles(): Promise<FileSystemFile[]> {
-    return (await this.getChildren()).filter((entity) => entity.entityType === FILESYSTEM_ENTITY_TYPE.FILE) as FileSystemFile[];
+    return (await this.getChildren()).filter((entity) => entity?.entityType === FILESYSTEM_ENTITY_TYPE.FILE) as FileSystemFile[];
   }
 
   async getChildrenAsBaseName(): Promise<string[]> {

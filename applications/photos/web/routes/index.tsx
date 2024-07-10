@@ -8,8 +8,8 @@ import Heading from "@yourdash/uikit/components/heading/heading.js";
 import Image from "@yourdash/uikit/components/image/image.js";
 import { FC } from "react";
 import PHOTOS_LOGO from "../assets/photosLogo.png";
+import SubAlbums from "../components/SubAlbums/SubAlbums";
 import styles from "./index.module.scss";
-import Albums from "./search/components/albums";
 
 const IndexPage: FC = () => {
   return (
@@ -29,7 +29,7 @@ const IndexPage: FC = () => {
         />
       </Box>
       <div className={styles.page}>
-        <Albums />
+        <SubAlbums path={"/"} />
       </div>
     </>
   );
