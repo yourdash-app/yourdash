@@ -15,7 +15,6 @@ interface FileSystemEntityIsLocked<T extends boolean = boolean> {
 export enum FILESYSTEM_ENTITY_TYPE {
   FILE,
   DIRECTORY,
-  NULL,
 }
 
 export default class FileSystemEntity {
@@ -35,10 +34,6 @@ export default class FileSystemEntity {
       locked: !!lockData,
       lockedBy: lockData,
     };
-  }
-
-  isNull(): boolean {
-    return this.entityType === FILESYSTEM_ENTITY_TYPE.NULL;
   }
 
   isFile(): boolean {

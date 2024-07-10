@@ -166,9 +166,6 @@ class __internalClientServerInteraction {
   postJson<ResponseType extends object>(
     endpoint: string,
     body: TJson,
-    // eslint-disable-next-line
-    cb: (response: any) => void,
-    error?: (response: string) => void,
     extraHeaders?: {
       [key: string]: string;
     },
@@ -201,7 +198,8 @@ class __internalClientServerInteraction {
         })
         .then((resp) => {
           if (resp?.error) {
-            error?.(resp);
+            reject(resp.error);
+
             if (resp.error === "authorization fail") {
               console.error("unauthorized request ", endpoint);
               window.location.href = "/";
@@ -215,6 +213,8 @@ class __internalClientServerInteraction {
         })
         .catch((err) => {
           console.error(`Error parsing result from instance: (json) POST ${endpoint}`, err);
+
+          reject(err);
         });
     });
   }

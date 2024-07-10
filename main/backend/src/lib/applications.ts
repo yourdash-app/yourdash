@@ -125,14 +125,10 @@ export default class YourDashApplication {
   async read(): Promise<ValidYourDashApplication | null> {
     try {
       return new ValidYourDashApplication(
-        JSON.parse(
-          (
-            await fs.readFile(path.resolve(process.cwd(), `../../applications/${this.name}/application.json`))
-          ).toString() || "{}",
-        ),
+        JSON.parse((await fs.readFile(path.resolve(process.cwd(), `../../applications/${this.name}/application.json`))).toString() || "{}"),
       );
     } catch (_err) {
-      core.log.error("core:applications", `Unable to read application ${this.name}!, does it exist?`);
+      core.log.error("core_applications", `Unable to read application ${this.name}!, does it exist?`);
       return null;
     }
   }

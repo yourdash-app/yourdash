@@ -202,7 +202,7 @@ export class Core {
 
   // start the YourDash Instance
   __internal__startInstance() {
-    console.time("core:startup");
+    console.time("core_startup");
     this.log.info("startup", "Welcome to the YourDash Instance backend! created by Ewsgit -> https://ewsgit.uk");
 
     this.fs.doesExist("./global_database.json").then(async (doesGlobalDatabaseFileExist) => {
@@ -250,8 +250,8 @@ export class Core {
     this.request.use(async (req, _res, next) => {
       switch (req.method) {
         case "GET":
-          if (req.path.includes("core:auth-img")) return next();
-          if (req.path.includes("core:auth-video")) return next();
+          if (req.path.includes("core/auth-img")) return next();
+          if (req.path.includes("core/auth-video")) return next();
 
           this.log.info(
             "request",
@@ -293,14 +293,14 @@ export class Core {
           this.log.info("request", `${chalk.bgCyan(chalk.cyan(" PPA "))} ${req.path}`);
           break;
         default:
-          this.log.error("core:requests", `ERROR IN REQUEST LOGGER, UNKNOWN REQUEST TYPE: ${req.method}, ${req.path}`);
+          this.log.error("core_requests", `ERROR IN REQUEST LOGGER, UNKNOWN REQUEST TYPE: ${req.method}, ${req.path}`);
       }
 
       // run the next middleware / endpoint
       next();
     });
 
-    this.log.success("core:requests", `Started the requests logger${options && " (logging options requests is also enabled)"}`);
+    this.log.success("requests", `Started the requests logger${options && " (logging options requests is also enabled)"}`);
   }
 
   private async loadCoreEndpoints() {
@@ -522,7 +522,7 @@ export class Core {
     let loadedModules: BackendModule[] = [];
 
     try {
-      console.time("core:load_modules");
+      console.time("core_load_modules");
       loadedModules = (await this.moduleManager.loadInstalledApplications()).filter((x) => x !== undefined && x !== null);
 
       console.timeEnd("core:load_modules");
@@ -675,12 +675,10 @@ export class Core {
     this.users.__internal__loadEndpoints();
     this.teams.__internal__loadEndpoints();
 
-    if (!this.isDevMode) {
-      this.request.use(async (req, res) => {
-        this.log.info("request:404", `${chalk.bgRed(chalk.black(" 404 "))} ${req.path} (the path was not answered by the backend)`);
-        return res.status(404).json({ error: "this endpoint does not exist!" });
-      });
-    }
+    this.request.use(async (req, res) => {
+      this.log.info("request:404", `${chalk.bgRed(chalk.black(" 404 "))} ${req.path} (the path was not answered by the backend)`);
+      return res.status(404).json({ error: "this endpoint does not exist!" });
+    });
 
     console.timeEnd("core:startup");
   }

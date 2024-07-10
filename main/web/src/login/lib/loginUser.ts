@@ -7,7 +7,7 @@ import csi from "@yourdash/csi/csi.js";
 
 export default function loginUser(username: string, password: string) {
   return new Promise<void>((resolve, reject) => {
-    csi.postJson(
+    csi.syncPostJson(
       `/login/user/${username}/authenticate`,
       { password: password },
       (response) => {

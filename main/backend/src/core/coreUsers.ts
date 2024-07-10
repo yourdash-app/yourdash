@@ -34,7 +34,7 @@ export default class CoreUsers {
   }
 
   __internal__startUserDatabaseService() {
-    this.core.scheduler.scheduleTask("core:userdb_write_to_disk", "*/1 * * * *", async () => {
+    this.core.scheduler.scheduleTask("core_userdb_write_to_disk", "*/1 * * * *", async () => {
       Object.keys(this.userDatabases).map(async (username) => {
         if (!this.userDatabases[username].changed) {
           return;
@@ -50,7 +50,7 @@ export default class CoreUsers {
   }
 
   __internal__startUserDeletionService() {
-    this.core.scheduler.scheduleTask("core:users:delete_all_marked_users", "*/5 * * * *" /* every 5 minutes */, async () => {
+    this.core.scheduler.scheduleTask("core_users_delete_all_marked_users", "*/5 * * * *" /* every 5 minutes */, async () => {
       for (const username of this.usersMarkedForDeletion) {
         await this.core.users.forceDelete(username);
       }

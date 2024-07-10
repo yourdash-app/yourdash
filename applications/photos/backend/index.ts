@@ -7,6 +7,7 @@
 //  save a copy of them pre-resized alongside the photos as resizing images is also costly
 
 import { AUTHENTICATED_IMAGE_TYPE } from "@yourdash/backend/src/core/coreImage.js";
+import * as console from "node:console";
 import path from "path";
 import FileSystemDirectory from "@yourdash/backend/src/core/fileSystem/fileSystemDirectory.js";
 import BackendModule, { YourDashModuleArguments } from "@yourdash/backend/src/core/moduleManager/backendModule.js";
@@ -434,8 +435,22 @@ export default class PhotosBackend extends BackendModule {
 
       const albumEntity = (await this.api.core.fs.getDirectory(path.join(user.getFsPath(), albumPath))) as FileSystemDirectory;
 
-      if (albumEntity.isNull()) {
-        return res.json({ error: "Not found" });
+      if (albumEntity === null) {
+        if (albumPath !== "./photos/") return res.json({ error: "Not found" });
+
+        await this.api.core.fs.createDirectory(path.join(user.getFsPath(), albumPath));
+
+        return res.json({
+          displayName: "Photos",
+          path: albumPath,
+          size: 0,
+          thumbnail: this.api.core.image.createAuthenticatedImage(
+            user.username,
+            sessionId,
+            AUTHENTICATED_IMAGE_TYPE.FILE,
+            "./instance_logo.avif",
+          ),
+        });
       }
 
       let headerImagePath = "./instance_logo.avif";

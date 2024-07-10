@@ -127,7 +127,7 @@ export default class CoreVideo {
         value: val,
       });
 
-      return `/core:auth-video/${username}/${sessionId}/${id}`;
+      return `/core/auth-video/${username}/${sessionId}/${id}`;
     } catch (err) {
       this.core.log.error("video", "failed to create authenticated video", err);
 
@@ -142,7 +142,7 @@ export default class CoreVideo {
   }
 
   __internal__loadEndpoints() {
-    this.core.request.setNamespace("core:auth-video");
+    this.core.request.setNamespace("core/auth-video");
 
     this.core.request.get("/:username/:sessionId/:id", async (req, res) => {
       const { username, sessionId, id } = req.params;

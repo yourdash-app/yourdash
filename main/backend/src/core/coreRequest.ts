@@ -49,11 +49,6 @@ export default class CoreRequest {
   ): this {
     let endpointPath: string[];
 
-    // TODO: add a cli flag to re-enable this
-    // if (this.core.isDebugMode) {
-    this.core.log.info("core_request", "Request created: " + this.endpointFromPath(path));
-    // }
-
     if (typeof path === "string") {
       endpointPath = [path];
     } else {
@@ -61,6 +56,11 @@ export default class CoreRequest {
     }
 
     for (const path of endpointPath) {
+      // TODO: add a cli flag to re-enable this
+      // if (this.core.isDebugMode) {
+      this.core.log.info("request", "Request created: " + this.endpointFromPath(path));
+      // }
+
       if (this.core.processArguments)
         if (options?.debugTimer) {
           this.rawExpress.get(

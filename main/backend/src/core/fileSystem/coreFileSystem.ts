@@ -10,7 +10,6 @@ import coreVerifyFileSystem from "./coreVerifyFileSystem.js";
 import FileSystemDirectory from "./fileSystemDirectory.js";
 import FileSystemFile from "./fileSystemFile.js";
 import FileSystemLock from "./fileSystemLock.js";
-import FileSystemNull from "./fileSystemNull.js";
 
 export default class coreFileSystem {
   ROOT_PATH: string;
@@ -35,44 +34,47 @@ export default class coreFileSystem {
         return new FileSystemFile(this.core, path);
       }
     } catch (_err) {
-      return new FileSystemNull(this.core);
+      return null;
     }
   }
 
   async getOrCreateFile(path: string) {
     if (!(await this.doesExist(path))) {
-      await fs.mkdir(pth.dirname(path), { recursive: true });
+      await fs.writeFile(pth.dirname(path), "");
     }
 
     return new FileSystemFile(this.core, path);
   }
 
-  async getFile(path: string): Promise<FileSystemFile | FileSystemNull> {
+  async getFile(path: string): Promise<FileSystemFile | null> {
     try {
       if ((await this.getEntityType(path)) === "file") {
         return new FileSystemFile(this.core, path);
       }
     } catch (err) {
       if (err.code === "ENOENT") {
-        this.core.log.warning("filesystem", `unable to get file ${path}, creating it...`);
-        return this.createFile(path);
+        this.core.log.warning("filesystem", `unable to get file at ${path} because it does not exist.`);
       }
 
       this.core.log.error("filesystem", err);
 
-      return new FileSystemNull(this.core);
+      return null;
     }
 
     return this.createFile(path);
   }
 
-  async getDirectory(path: string): Promise<FileSystemDirectory | FileSystemNull> {
+  async getDirectory(path: string): Promise<FileSystemDirectory | null> {
     try {
       if ((await this.getEntityType(path)) === "directory") {
         return new FileSystemDirectory(this.core, path);
       }
-    } catch (_err) {
-      return new FileSystemNull(this.core);
+    } catch (err) {
+      if (err.code === "ENOENT") {
+        this.core.log.warning("filesystem", `unable to get directory at ${path} because it does not exist.`);
+      }
+
+      return null;
     }
 
     return await this.createDirectory(path);

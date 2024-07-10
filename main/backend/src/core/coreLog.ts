@@ -133,7 +133,7 @@ export default class CoreLog {
   }
 
   __internal__loadEndpoints() {
-    this.websocketServer = this.core.websocketManager.createServer("/core:log");
+    this.websocketServer = this.core.websocketManager.createServer("/core/log");
 
     return this;
   }

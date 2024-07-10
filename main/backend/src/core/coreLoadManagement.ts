@@ -17,10 +17,10 @@ export default class CoreLoadManagement {
 
     this.getAverageLoad();
 
-    this.core.scheduler.scheduleTask("core:calculate_load_average", "* * * * *", async () => {
+    this.core.scheduler.scheduleTask("core_calculate_load_average", "* * * * *", async () => {
       this.getAverageLoad();
       if (this.averageLoad > 0.75 /* 75% */) {
-        this.core.log.warning("core:load_management", "Load average is high: " + this.averageLoad);
+        this.core.log.warning("core_load_management", "Load average is high: " + this.averageLoad);
       }
     });
 

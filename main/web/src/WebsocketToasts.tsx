@@ -17,7 +17,7 @@ enum LOG_TYPE {
 }
 
 const WebsocketToasts: React.FC = () => {
-  const wsc = useWebsocketConnection("/core:log");
+  const wsc = useWebsocketConnection("/core/log");
   const toast = useToast();
 
   useEffect(() => {

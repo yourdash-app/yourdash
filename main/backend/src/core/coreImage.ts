@@ -121,7 +121,7 @@ export default class CoreImage {
         resizeTo: extras?.resizeTo,
       });
 
-      return `/core:auth-img/${username}/${sessionId}/${id}`;
+      return `/core/auth-img/${username}/${sessionId}/${id}`;
     } catch (err) {
       this.core.log.error("image", "failed to create authenticated image", err);
 
@@ -165,7 +165,7 @@ export default class CoreImage {
   }
 
   __internal__loadEndpoints() {
-    this.core.request.setNamespace("core:auth-img");
+    this.core.request.setNamespace("core/auth-img");
 
     this.core.request.get("/:username/:sessionId/:id", async (req, res) => {
       const { username, sessionId, id } = req.params;

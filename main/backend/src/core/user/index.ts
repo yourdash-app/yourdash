@@ -23,6 +23,7 @@ const USER_PATHS = {
   CORE: "./core/",
   PASSWORD: "./core/password.enc",
   CACHE: "./cache/",
+  APPLICATIONS: "./applications/",
 };
 
 export { USER_PATHS };
@@ -184,8 +185,7 @@ export default class YourDashUser {
               last: "User",
             },
             "user:username": this.username,
-            "core:panel:pinned":
-              core.globalDb.get<{ user: { quickShortcuts: string[] } }>("core:defaults")?.user?.quickShortcuts || [],
+            "core:panel:pinned": core.globalDb.get<{ user: { quickShortcuts: string[] } }>("core:defaults")?.user?.quickShortcuts || [],
           }),
         );
       }
@@ -406,9 +406,7 @@ export default class YourDashUser {
       // return a YourDashSession which has the sessionId as its id, find the correct session and use it as an input
       return new YourDashSession(
         this.username,
-        getSessionsForUser(this.username)[
-          getSessionsForUser(this.username).findIndex((val) => val.sessionId === sessionId)
-        ],
+        getSessionsForUser(this.username)[getSessionsForUser(this.username).findIndex((val) => val.sessionId === sessionId)],
       );
     } catch (_err) {
       core.log.error("user", ` unable to find session: ${sessionId}`);
@@ -421,9 +419,7 @@ export default class YourDashUser {
       // return a YourDashSession which has the sessionId as its id, find the correct session and use it as an input
       return new YourDashSession(
         this.username,
-        getSessionsForUser(this.username)[
-          getSessionsForUser(this.username).findIndex((val) => val.sessionToken === token)
-        ],
+        getSessionsForUser(this.username)[getSessionsForUser(this.username).findIndex((val) => val.sessionToken === token)],
       );
     } catch (_err) {
       core.log.error(`${chalk.yellow.bold("CORE")}: unable to find session: ${token}`);
@@ -448,9 +444,7 @@ export default class YourDashUser {
   }
 
   async update() {
-    const currentUserJson = (await (
-      await core.fs.getFile(path.join(this.path, "core/user.json"))
-    ).read("json")) as IYourDashUserDatabase;
+    const currentUserJson = (await (await core.fs.getFile(path.join(this.path, "core/user.json"))).read("json")) as IYourDashUserDatabase;
 
     // noinspection FallThroughInSwitchStatementJS
     switch (currentUserJson.version) {
