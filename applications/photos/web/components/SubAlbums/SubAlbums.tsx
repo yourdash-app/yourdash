@@ -4,22 +4,43 @@
  */
 
 import csi from "@yourdash/csi/csi";
-import useResource from "@yourdash/csi/useResource";
+import { chunk } from "@yourdash/shared/web/helpers/array";
 import Card from "@yourdash/uikit/components/card/card";
 import Image from "@yourdash/uikit/components/image/image";
 import Text from "@yourdash/uikit/components/text/text";
-import React from "react";
+import InfiniteScroll from "@yourdash/uikit/views/infiniteScroll/infiniteScroll";
+import React, { useEffect, useState } from "react";
 import { EndpointAlbumSubPath } from "../../../shared/types/endpoints/album/sub/path";
 import styles from "./SubAlbums.module.scss";
 import { useNavigate } from "react-router";
 
 const SubAlbums: React.FC<{ path: string }> = ({ path }) => {
   const navigate = useNavigate();
-  const albums = useResource(() => csi.getJson<EndpointAlbumSubPath>(`/app/photos/album/sub/@${path}`), [path]);
+  const [albums, setAlbums] = useState<EndpointAlbumSubPath>([]);
+
+  useEffect(() => {
+    csi.getJson<EndpointAlbumSubPath>(`/app/photos/album/sub/0/@` + path).then((data) => {
+      console.log(data);
+
+      setAlbums(data);
+    });
+  }, []);
+
   if (!albums) return null;
 
   return (
-    <div className={styles.component}>
+    <InfiniteScroll
+      hasMore={true}
+      dataLength={albums.length}
+      fetchData={() => {
+        csi.getJson<EndpointAlbumSubPath>(`/app/photos/album/sub/${chunk(albums, 24).length}/@` + path).then((data) => {
+          setAlbums([...albums, ...data]);
+        });
+      }}
+      loader={<h4>Loading...</h4>}
+      className={styles.component}
+      containerClassName={styles.container}
+    >
       {albums.map((album) => {
         return (
           <Card
@@ -40,7 +61,7 @@ const SubAlbums: React.FC<{ path: string }> = ({ path }) => {
           </Card>
         );
       })}
-    </div>
+    </InfiniteScroll>
   );
 };
 

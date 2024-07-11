@@ -29,7 +29,7 @@ const SearchIndexPage: FC = () => {
         icon={UKIcon.Search}
       />
       {searchResults && <SearchPageResults results={searchResults} />}
-      <SubAlbums path={"/photos/"} />
+      <SubAlbums path={"/photos/media/Instander"} />
     </div>
   );
 };

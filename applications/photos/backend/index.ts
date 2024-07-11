@@ -7,6 +7,7 @@
 //  save a copy of them pre-resized alongside the photos as resizing images is also costly
 
 import { AUTHENTICATED_IMAGE_TYPE } from "@yourdash/backend/src/core/coreImage.js";
+import { chunk } from "@yourdash/shared/web/helpers/array.js";
 import * as console from "node:console";
 import path from "path";
 import FileSystemDirectory from "@yourdash/backend/src/core/fileSystem/fileSystemDirectory.js";
@@ -15,8 +16,11 @@ import FileSystemFile from "@yourdash/backend/src/core/fileSystem/fileSystemFile
 import { EndpointAlbumSubPath } from "../shared/types/endpoints/album/sub/path.js";
 
 export default class PhotosBackend extends BackendModule {
+  PAGE_SIZE: number;
+
   constructor(args: YourDashModuleArguments) {
     super(args);
+    this.PAGE_SIZE = 24;
 
     this.api.core.users.getAllUsers().then((users) => {
       users.forEach((u) => {
@@ -430,9 +434,10 @@ export default class PhotosBackend extends BackendModule {
     });
 
     // returns the subAlbums of a given album
-    this.api.request.get<EndpointAlbumSubPath | { error: string }>("/album/sub/@/*", async (req, res) => {
+    this.api.request.get<EndpointAlbumSubPath | { error: string }>("/album/sub/:page/@/*", async (req, res) => {
       const sessionId = req.headers.sessionid;
       const albumPath = (req.params["0"] as string) || "./photos/";
+      const page = Number(req.params.page || "0");
       const user = this.api.getUser(req);
 
       const albumEntity = (await this.api.core.fs.getDirectory(path.join(user.getFsPath(), albumPath))) as FileSystemDirectory;
@@ -447,7 +452,7 @@ export default class PhotosBackend extends BackendModule {
 
       const output: { displayName: string; path: string; size: number; thumbnail: string }[] = [];
 
-      for (const subAlbum of await albumEntity.getChildDirectories()) {
+      for (const subAlbum of chunk(await albumEntity.getChildDirectories(), this.PAGE_SIZE)[page]) {
         let headerImagePath = "./instance_logo.avif";
 
         for (const subAlbumChild of await subAlbum.getChildFiles()) {

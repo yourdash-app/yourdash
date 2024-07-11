@@ -38,11 +38,7 @@ export default class CoreLog {
 
       console.log(
         message[0],
-        chalk.bold(
-          `${chalk.white("[")}${chalk.italic.yellow(
-            level.toUpperCase().slice(0, LOG_META_MAX_LENGTH).padEnd(LOG_META_MAX_LENGTH),
-          )}${chalk.white("]")} `,
-        ),
+        chalk.bold(`${chalk.yellow(level.toUpperCase().slice(0, LOG_META_MAX_LENGTH).padEnd(LOG_META_MAX_LENGTH))} `),
         message.slice(1).join(" ").toString(),
       );
 
