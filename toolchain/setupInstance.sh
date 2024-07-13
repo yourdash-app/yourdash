@@ -30,6 +30,13 @@ echo "Re-sourcing ~/.bashrc"
 # shellcheck disable=SC1090
 source ~/.bashrc
 
+echo "Installing Bun"
+curl -fsSL https://bun.sh/install | bash
+
+echo "Re-sourcing ~/.bashrc"
+# shellcheck disable=SC1090
+source ~/.bashrc
+
 cd / || exit
 
 # does /yourdash exist?
@@ -56,24 +63,4 @@ npm i -g yarn
 echo "IMPORTANT!: if yarn install fails, run this script again"
 yarn install
 
-echo "Installing pm2"
-yarn global add pm2
-
-echo "Reloading ~/.bashrc"
-# shellcheck disable=SC1090
-source /root/.bashrc
-
-echo "Setting pm2 as a startup script"
-pm2 startup
-
-echo "Removing YourDash from pm2 (IGNORE IF AN ERROR OCCURS)"
-pm2 delete yourdashBackend
-
-echo "Adding YourDash Backend to pm2"
-pm2 start /yourdash/toolchain/yourdashBackend.sh
-
-echo "Removing YourDash Dev WebClient from pm2 (IGNORE IF AN ERROR OCCURS)"
-pm2 delete yourdashDevWebClient
-
-echo "Adding YourDash Dev WebClient to pm2"
-pm2 start /yourdash/toolchain/yourdashDevWebClient.sh
+echo "YourDash has been installed along with it's dependencies!"
