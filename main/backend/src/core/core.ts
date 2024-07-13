@@ -255,7 +255,7 @@ export class Core {
 
           this.log.info(
             "request",
-            `${chalk.bgBlack(chalk.green(" GET "))} ${req.path} ${
+            `${chalk.bgBlack(chalk.green(" GET "))} ${chalk.bold(req.path)} ${
               options.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""
             }`,
           );
@@ -263,7 +263,7 @@ export class Core {
         case "POST":
           this.log.info(
             "request",
-            `${chalk.bgBlack(chalk.blue(" POS "))} ${req.path} ${
+            `${chalk.bgBlack(chalk.blue(" POS "))} ${chalk.bold(req.path)} ${
               options.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""
             }`,
           );
@@ -271,7 +271,7 @@ export class Core {
         case "DELETE":
           this.log.info(
             "request",
-            `${chalk.bgBlack(chalk.red(" DEL "))} ${req.path} ${
+            `${chalk.bgBlack(chalk.red(" DEL "))} ${chalk.bold(req.path)} ${
               options.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""
             }`,
           );
@@ -280,20 +280,35 @@ export class Core {
           if (options.logOptionsRequests) {
             this.log.info(
               "request",
-              `${chalk.bgBlack(chalk.cyan(" OPT "))} ${req.path} ${
+              `${chalk.bgBlack(chalk.cyan(" OPT "))} ${chalk.bold(req.path)} ${
                 options.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""
               }`,
             );
           }
           break;
         case "PROPFIND":
-          this.log.info("request", `${chalk.bgBlack(chalk.cyan(" PFI "))} ${req.path}`);
+          this.log.info(
+            "request",
+            `${chalk.bgBlack(chalk.cyan(" PFI "))} ${chalk.bold(req.path)} ${
+              options.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""
+            }`,
+          );
           break;
         case "PROPPATCH":
-          this.log.info("request", `${chalk.bgCyan(chalk.cyan(" PPA "))} ${req.path}`);
+          this.log.info(
+            "request",
+            `${chalk.bgCyan(chalk.cyan(" PPA "))} ${chalk.bold(req.path)} ${
+              options.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""
+            }`,
+          );
           break;
         default:
-          this.log.error("core_requests", `ERROR IN REQUEST LOGGER, UNKNOWN REQUEST TYPE: ${req.method}, ${req.path}`);
+          this.log.error(
+            "core_requests",
+            `ERROR IN REQUEST LOGGER, UNKNOWN REQUEST TYPE: ${req.method}, ${chalk.bold(req.path)} ${
+              options.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""
+            }`,
+          );
       }
 
       // run the next middleware / endpoint

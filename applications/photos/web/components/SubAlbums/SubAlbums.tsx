@@ -5,6 +5,7 @@
 
 import csi from "@yourdash/csi/csi";
 import { chunk } from "@yourdash/shared/web/helpers/array";
+import clippy from "@yourdash/shared/web/helpers/clippy";
 import Card from "@yourdash/uikit/components/card/card";
 import Image from "@yourdash/uikit/components/image/image";
 import Text from "@yourdash/uikit/components/text/text";
@@ -14,32 +15,20 @@ import { EndpointAlbumSubPath } from "../../../shared/types/endpoints/album/sub/
 import styles from "./SubAlbums.module.scss";
 import { useNavigate } from "react-router";
 
-const SubAlbums: React.FC<{ path: string }> = ({ path }) => {
+const SubAlbums: React.FC<{ path: string; scrollerClassName?: string }> = ({ path, scrollerClassName }) => {
   const navigate = useNavigate();
   const [albums, setAlbums] = useState<EndpointAlbumSubPath>([]);
-
-  useEffect(() => {
-    csi.getJson<EndpointAlbumSubPath>(`/app/photos/album/sub/0/@` + path).then((data) => {
-      console.log(data);
-
-      setAlbums(data);
-    });
-  }, []);
 
   if (!albums) return null;
 
   return (
     <InfiniteScroll
-      hasMore={true}
-      dataLength={albums.length}
-      fetchData={() => {
-        csi.getJson<EndpointAlbumSubPath>(`/app/photos/album/sub/${chunk(albums, 24).length}/@` + path).then((data) => {
-          setAlbums([...albums, ...data]);
-        });
+      hasMorePages={true}
+      fetchNextPage={async (nextPageNumber) => {
+        const data = await csi.getJson<EndpointAlbumSubPath>(`/app/photos/album/sub/${nextPageNumber}/@` + path);
+        setAlbums((previousAlbums) => [...previousAlbums, ...data]);
       }}
-      loader={<h4>Loading...</h4>}
-      className={styles.component}
-      containerClassName={styles.container}
+      className={clippy(styles.component, scrollerClassName)}
     >
       {albums.map((album) => {
         return (

@@ -29,7 +29,10 @@ const SearchIndexPage: FC = () => {
         icon={UKIcon.Search}
       />
       {searchResults && <SearchPageResults results={searchResults} />}
-      <SubAlbums path={"/photos/media/Instander"} />
+      <SubAlbums
+        scrollerClassName={styles.subAlbums}
+        path={"/photos/media/Instander"}
+      />
     </div>
   );
 };
