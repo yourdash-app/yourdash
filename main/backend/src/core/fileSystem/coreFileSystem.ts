@@ -18,7 +18,7 @@ export default class coreFileSystem {
   __internal__fileSystemLocks: Map<string, FileSystemLock[]>;
 
   constructor(core: Core) {
-    this.ROOT_PATH = pth.resolve(core.processArguments["--root-fs"]) || pth.resolve(pth.join(process.cwd(), "./../../fs/"));
+    this.ROOT_PATH = pth.resolve(core.processArguments?.["fs-root"] || pth.join(process.cwd(), "./../../fs/"));
     this.core = core;
     this.verifyFileSystem = new coreVerifyFileSystem(this.core);
     this.__internal__fileSystemLocks = new Map<string, FileSystemLock[]>();
