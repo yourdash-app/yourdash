@@ -9,7 +9,7 @@ import ContextMenuRoot from "../components/contextMenu/contextMenuRoot.js";
 import Toast from "../components/toast/toast.jsx";
 import LevelContext from "./level.js";
 import styles from "./../theme/defaultTheme.module.scss";
-import React from "react";
+import * as React from "react";
 
 const UIKitRoot: React.FC<{ children: React.ReactNode | React.ReactNode[] }> = (props) => {
   const [isMobile, setIsMobile] = React.useState<boolean>(false);
