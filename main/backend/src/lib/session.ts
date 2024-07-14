@@ -17,9 +17,8 @@ export function getSessionsForUser(username: string): IYourDashSession[] {
 
 export function getSessionId(username: string, sessionToken: string): number | null {
   return (
-    core.users
-      .__internal__getSessionsDoNotUseOutsideOfCore()
-      [username].find((session) => session.sessionToken === sessionToken)?.sessionId || null
+    core.users.__internal__getSessionsDoNotUseOutsideOfCore()[username].find((session) => session.sessionToken === sessionToken)
+      ?.sessionId || null
   );
 }
 
@@ -29,20 +28,15 @@ export async function loadSessionsForUser(username: string) {
   try {
     console.log(`loading user sessions from ${path.join(user.path, "core/sessions.json")}`);
 
-    // @ts-ignore
-    core.users.__internal__getSessionsDoNotUseOutsideOfCore()[username] = await (
+    core.users.__internal__getSessionsDoNotUseOutsideOfCore()[username] = (await (
       await core.fs.getFile(path.join(user.path, "core/sessions.json"))
-    ).read("json");
+    ).read("json")) as [];
   } catch (err) {
-    console.log(err);
-    console.log("create_session", `unable to read /users/${username}/core/sessions.json`);
+    core.log.error("create_session", `unable to read /users/${username}/core/sessions.json`, err);
   }
 }
 
-export async function createSession<T extends YOURDASH_SESSION_TYPE>(
-  username: string,
-  type: T,
-): Promise<IYourDashSession<T>> {
+export async function createSession<T extends YOURDASH_SESSION_TYPE>(username: string, type: T): Promise<IYourDashSession<T>> {
   const sessionToken = generateRandomStringOfLength(YOURDASH_USER_SESSION_TOKEN_LENGTH);
 
   const user = new YourDashUser(username);
@@ -52,9 +46,9 @@ export async function createSession<T extends YOURDASH_SESSION_TYPE>(
   const newSessionId = getSessionsForUser(username) ? getSessionsForUser(username).length + 1 : 1;
 
   const session: IYourDashSession<T> = {
-    type,
+    type: type,
     sessionId: newSessionId,
-    sessionToken,
+    sessionToken: sessionToken,
   };
 
   if (core.users.__internal__getSessionsDoNotUseOutsideOfCore()[username]) {
@@ -100,9 +94,7 @@ export default class YourDashSession<T extends YOURDASH_SESSION_TYPE> {
 
   async invalidate() {
     core.users.__internal__getSessionsDoNotUseOutsideOfCore()[this.username].splice(
-      core.users
-        .__internal__getSessionsDoNotUseOutsideOfCore()
-        [this.username].findIndex((val) => val.sessionId === this.sessionId),
+      core.users.__internal__getSessionsDoNotUseOutsideOfCore()[this.username].findIndex((val) => val.sessionId === this.sessionId),
       1,
     );
 

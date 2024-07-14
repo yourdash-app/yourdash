@@ -11,6 +11,7 @@ import { hashString } from "../../lib/encryption.js";
 import YourDashSession, { getSessionsForUser } from "../../lib/session.js";
 import core from "../core.js";
 import { USER_AVATAR_SIZE } from "@yourdash/shared/core/userAvatarSize.js";
+import FileSystemError from "../fileSystem/fileSystemError.js";
 import { YOURDASH_TEAM_PERMISSIONS, YourDashTeamPermission } from "../team/teamPermissions.js";
 import UserDatabase from "./userDatabase.js";
 import { YourDashUserPermission } from "./userPermissions.js";
@@ -76,21 +77,27 @@ export default class YourDashUser {
 
   async setAvatar(filePath: string) {
     await core.fs.copy(filePath, path.join(this.path, "avatars/original.avif"));
-    const newAvatarFile = await (await core.fs.getFile(filePath)).read("buffer");
+    const newAvatarFile = await core.fs.getFile(filePath);
 
-    sharp(newAvatarFile)
+    if (!newAvatarFile) {
+      return;
+    }
+
+    const newAvatarBuffer = await newAvatarFile.read("buffer");
+
+    sharp(newAvatarBuffer)
       .resize(32, 32)
       .toFile(path.join(path.join(core.fs.ROOT_PATH, this.path), "avatars/small.avif"))
       .catch((err: string) => console.error(err));
-    sharp(newAvatarFile)
+    sharp(newAvatarBuffer)
       .resize(64, 64)
       .toFile(path.join(path.join(core.fs.ROOT_PATH, this.path), "avatars/medium.avif"))
       .catch((err: string) => console.error(err));
-    sharp(newAvatarFile)
+    sharp(newAvatarBuffer)
       .resize(128, 128)
       .toFile(path.join(path.join(core.fs.ROOT_PATH, this.path), "avatars/large.avif"))
       .catch((err: string) => console.error(err));
-    sharp(newAvatarFile)
+    sharp(newAvatarBuffer)
       .resize(256, 256)
       .toFile(path.join(path.join(core.fs.ROOT_PATH, this.path), "avatars/extraLarge.avif"))
       .catch((err: string) => console.error(err));
@@ -98,7 +105,7 @@ export default class YourDashUser {
 
   async verify() {
     if (!core.globalDb.get("core:defaults")) {
-      return core.log.error("user", `the GlobalDatabase is not yet loaded! not creating user ${this.username}`);
+      return core.log.error("user", `the GlobalDatabase is not yet loaded! not creating user ${this.username}!`);
     }
 
     try {
@@ -165,8 +172,15 @@ export default class YourDashUser {
       // "/core/sessions.json"
 
       // if the user does not have a sessions.json, create one
-      if (!(await (await core.fs.getFile(path.join(this.path, "core/sessions.json"))).doesExist())) {
-        await (await core.fs.getFile(path.join(this.path, "core/sessions.json"))).write("[]");
+      if (!(await core.fs.doesExist(path.join(this.path, "core/sessions.json")))) {
+        const sessionsFile = await core.fs.createFile(path.join(this.path, "core/sessions.json"));
+
+        if (sessionsFile instanceof FileSystemError) {
+          core.log.error("user", `username: ${this.username}, failed to create sessions.json!`, sessionsFile);
+          return;
+        }
+
+        await sessionsFile.write("[]");
       }
     } catch (err) {
       core.log.error("user", `username: ${this.username}, failed to create sessions.json!`, err);
@@ -178,6 +192,8 @@ export default class YourDashUser {
 
       // if the user does not have a database, create one
       if (!(await core.fs.doesExist(path.join(this.path, "core/user_db.json")))) {
+        const userDbFile = await core.fs.createFile(path.join(this.path, "core/user_db.json"));
+
         await core.fs.createFile(path.join(this.path, "./core/user_db.json")).write(
           JSON.stringify({
             "user:name": {
@@ -218,7 +234,7 @@ export default class YourDashUser {
         await core.fs.createFile(path.join(this.path, "core/user.json")).write(
           JSON.stringify({
             username: this.username,
-            "core:user:name": {
+            name: {
               first: "New",
               last: "User",
             },
@@ -262,17 +278,20 @@ export default class YourDashUser {
   async setName({ first, last }: { first: string; last: string }) {
     core.log.info("user", `set name to "${first} ${last}" for ${this.username}`);
     try {
-      const currentUserJson = JSON.parse(
-        await (await core.fs.getFile(path.join(this.path, "core/user.json"))).read("string"),
-      ) as IYourDashUserDatabase;
-      currentUserJson["user:name"] = { first, last };
+      // TODO: remove all usages of user.json in favour of userDB
+      const userJsonFile = await core.fs.getFile(path.join(this.path, "core/user.json"));
+
+      if (!userJsonFile?.doesExist()) return;
+
+      const userJson = JSON.parse(await userJsonFile.read("string")) as IYourDashUserDatabase;
+      userJson.name = { first, last };
       const db = await this.getDatabase();
       db.set("user:name", { first, last });
 
       await this.saveDatabaseInstantly();
 
       // save the user.json
-      await (await core.fs.getFile(path.join(this.path, "core/user.json"))).write(JSON.stringify(currentUserJson));
+      await userJsonFile.write(JSON.stringify(userJson));
     } catch (err) {
       core.log.error("user", `Unable to write / read ${this.username}'s core/user.json`);
     }
@@ -298,16 +317,18 @@ export default class YourDashUser {
   }
 
   async getName(): Promise<{ first: string; last: string }> {
-    return (await this.getDatabase()).get("user:name");
+    return (await this.getDatabase()).get("name") || { first: "Unknown", last: "User" };
   }
 
   async setBio(bio: string) {
     try {
-      const currentUserJson = JSON.parse(
-        await (await core.fs.getFile(path.join(this.path, "core/user.json"))).read("string"),
-      ) as IYourDashUserDatabase;
-      currentUserJson.bio = bio;
-      await (await core.fs.getFile(path.join(this.path, "core/user.json"))).write(JSON.stringify(currentUserJson));
+      const userJsonFile = await core.fs.getFile(path.join(this.path, "core/user.json"));
+
+      if (!userJsonFile?.doesExist()) return;
+
+      const userJson = JSON.parse(await userJsonFile.read("string")) as IYourDashUserDatabase;
+      userJson.bio = bio;
+      await userJsonFile.write(JSON.stringify(userJson));
     } catch (err) {
       core.log.error(`Unable to write / read ${this.username}'s core/user.json`);
     }
@@ -315,10 +336,12 @@ export default class YourDashUser {
 
   async getBio() {
     try {
-      const currentUserJson = JSON.parse(
-        await (await core.fs.getFile(path.join(this.path, "core/user.json"))).read("string"),
-      ) as IYourDashUserDatabase;
-      return currentUserJson.bio;
+      const userJsonFile = await core.fs.getFile(path.join(this.path, "core/user.json"));
+
+      if (!userJsonFile?.doesExist()) return "Non-existent user.json";
+
+      const userJson = JSON.parse(await userJsonFile.read("string")) as IYourDashUserDatabase;
+      return userJson.bio;
     } catch (err) {
       core.log.error("user", `Unable to read ${this.username}'s core/user.json`);
     }
@@ -326,11 +349,13 @@ export default class YourDashUser {
 
   async setUrl(url: string) {
     try {
-      const currentUserJson = JSON.parse(
-        await (await core.fs.getFile(path.join(this.path, "core/user.json"))).read("string"),
-      ) as IYourDashUserDatabase;
-      currentUserJson.url = url;
-      await (await core.fs.getFile(path.join(this.path, "core/user.json"))).write(JSON.stringify(currentUserJson));
+      const userJsonFile = await core.fs.getFile(path.join(this.path, "core/user.json"));
+
+      if (!userJsonFile?.doesExist()) return;
+
+      const userJson = JSON.parse(await userJsonFile.read("string")) as IYourDashUserDatabase;
+      userJson.url = url;
+      await userJsonFile.write(JSON.stringify(userJson));
     } catch (err) {
       core.log.error(`Unable to write / read ${this.username}'s core/user.json`);
     }
@@ -338,10 +363,12 @@ export default class YourDashUser {
 
   async getUrl() {
     try {
-      const currentUserJson = JSON.parse(
-        await (await core.fs.getFile(path.join(this.path, "core/user.json"))).read("string"),
-      ) as IYourDashUserDatabase;
-      return currentUserJson.url;
+      const userJsonFile = await core.fs.getFile(path.join(this.path, "core/user.json"));
+
+      if (!userJsonFile?.doesExist()) return;
+
+      const userJson = JSON.parse(await userJsonFile.read("string")) as IYourDashUserDatabase;
+      return userJson.url;
     } catch (err) {
       core.log.error("user", `Unable to read ${this.username}'s core/user.json`);
     }
@@ -349,11 +376,13 @@ export default class YourDashUser {
 
   async setPermissions(permissions: YourDashUserPermission[]) {
     try {
-      const currentUserJson = JSON.parse(
-        await (await core.fs.getFile(path.join(this.path, "core/user.json"))).read("string"),
-      ) as IYourDashUserDatabase;
+      const userJsonFile = await core.fs.getFile(path.join(this.path, "core/user.json"));
+
+      if (!userJsonFile?.doesExist()) return;
+
+      const currentUserJson = JSON.parse(await userJsonFile.read("string")) as IYourDashUserDatabase;
       currentUserJson.permissions = permissions;
-      await (await core.fs.getFile(path.join(this.path, "core/user.json"))).write(JSON.stringify(currentUserJson));
+      await userJsonFile.write(JSON.stringify(currentUserJson));
     } catch (err) {
       core.log.error("user:setPermissions", `Unable to write / read ${this.username}'s core/user.json`);
       console.error(err);
@@ -362,9 +391,11 @@ export default class YourDashUser {
 
   async getPermissions() {
     try {
-      const currentUserJson = JSON.parse(
-        await (await core.fs.getFile(path.join(this.path, "core/user.json"))).read("string"),
-      ) as IYourDashUserDatabase;
+      const userJsonFile = await core.fs.getFile(path.join(this.path, "core/user.json"));
+
+      if (!userJsonFile?.doesExist()) return;
+
+      const currentUserJson = JSON.parse(await userJsonFile.read("string")) as IYourDashUserDatabase;
       return currentUserJson.permissions;
     } catch (err) {
       core.log.error("user", `Unable to read ${this.username}'s core/user.json`);
@@ -373,9 +404,11 @@ export default class YourDashUser {
 
   async hasPermission(permission: YourDashUserPermission): Promise<boolean> {
     try {
-      const currentUserJson = JSON.parse(
-        await (await core.fs.getFile(path.join(this.path, "core/user.json"))).read("string"),
-      ) as IYourDashUserDatabase;
+      const userJsonFile = await core.fs.getFile(path.join(this.path, "core/user.json"));
+
+      if (!userJsonFile?.doesExist()) return false;
+
+      const currentUserJson = JSON.parse(await userJsonFile.read("string")) as IYourDashUserDatabase;
       return currentUserJson.permissions.indexOf(permission) !== -1;
     } catch (err) {
       core.log.error("user", `Unable to read ${this.username}'s core/user.json`);
@@ -395,7 +428,11 @@ export default class YourDashUser {
     const hashedPassword = await hashString(password);
 
     try {
-      await (await core.fs.getFile(path.join(this.path, "./core/password.enc"))).write(hashedPassword);
+      const userPasswordFile = await core.fs.getFile(path.join(this.path, "./core/password.enc"));
+
+      if (!userPasswordFile?.doesExist()) return;
+
+      await userPasswordFile.write(hashedPassword);
     } catch (err) {
       core.log.error("user", `unable to create a new password for user ${this.username};${err}`);
     }
@@ -428,7 +465,13 @@ export default class YourDashUser {
   }
 
   async getAllLoginSessions() {
-    return await (await core.fs.getFile(path.join(this.path, "core/sessions.json"))).read("json");
+    const sessionFile = await core.fs.getFile(path.join(this.path, "core/sessions.json"));
+
+    if (!sessionFile?.doesExist()) {
+      return [];
+    }
+
+    return await sessionFile.read("json");
   }
 
   saveDatabase() {
@@ -444,14 +487,20 @@ export default class YourDashUser {
   }
 
   async update() {
-    const currentUserJson = (await (await core.fs.getFile(path.join(this.path, "core/user.json"))).read("json")) as IYourDashUserDatabase;
+    const userJsonFile = await core.fs.getFile(path.join(this.path, "core/user.json"));
 
-    // noinspection FallThroughInSwitchStatementJS
-    switch (currentUserJson.version) {
-      case undefined:
-        currentUserJson.version = 1;
+    if (!userJsonFile?.doesExist()) return false;
+
+    const userJson = (await userJsonFile.read("json")) as IYourDashUserDatabase;
+
+    if (userJson.version === undefined) {
+      userJson.version = 1;
+    }
+
+    switch (userJson.version) {
       case 1:
-      // add code to update from version 1 to 2 when version 2 is implemented
+        // add code to update from version 1 to 2 when version 2 is implemented
+        return;
       default:
         return;
     }

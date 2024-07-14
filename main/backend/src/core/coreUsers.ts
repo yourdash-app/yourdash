@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import { IYourDashSession } from "@yourdash/shared/core/session.js";
+import { IYourDashSession, type YOURDASH_SESSION_TYPE } from "@yourdash/shared/core/session.js";
 import { USER_AVATAR_SIZE } from "@yourdash/shared/core/userAvatarSize.js";
 import path from "path";
 import { Core } from "./core.js";
@@ -20,7 +20,7 @@ export default class CoreUsers {
   private readonly userDatabases: { [username: string]: { db: UserDatabase; changed: boolean } } = {};
   private readonly core: Core;
   private sessions: {
-    [key: string]: IYourDashSession<any>[]; // eslint-disable-line @typescript-eslint/no-explicit-any
+    [key: string]: IYourDashSession<YOURDASH_SESSION_TYPE>[];
   } = {};
 
   constructor(core: Core) {
@@ -94,6 +94,10 @@ export default class CoreUsers {
     return this;
   }
 
+  doesExist(username: string) {
+    return !!this.userDatabases[username];
+  }
+
   get(username: string) {
     return new YourDashUser(username);
   }
@@ -125,15 +129,19 @@ export default class CoreUsers {
   }
 
   update() {
+    this.core.log.error("users", "Not implemented!");
+
     return this;
   }
 
   read() {
+    this.core.log.error("users", "Not implemented!");
+
     return this;
   }
 
   async getAllUsers(): Promise<string[]> {
-    return await (await this.core.fs.getDirectory("./users")).getChildrenAsBaseName();
+    return await (await this.core.fs.getOrCreateDirectory("./users")).getChildrenAsBaseName();
   }
 
   __internal__loadEndpoints() {

@@ -51,7 +51,7 @@ export default class PhotosBackend extends BackendModule {
         userHashes.set(u, new Set());
 
         // get user's photos
-        let usersPhotos: string[];
+        const userPhotos: string[] = [];
 
         this.api.core.log.info("Finding users photos");
 
@@ -65,7 +65,7 @@ export default class PhotosBackend extends BackendModule {
 
           for (const p of await dir.getChildFiles()) {
             if (p.getType() === "image") {
-              usersPhotos.push(p.path);
+              userPhotos.push(p.path);
             }
           }
 
@@ -78,17 +78,17 @@ export default class PhotosBackend extends BackendModule {
 
         // hash every photo
         await Promise.all(
-          usersPhotos.map(async (p) => {
+          userPhotos.map(async (p) => {
             const fileHash = await ((await self.api.core.fs.getFile(p)) as FileSystemFile).getContentHash();
 
             // if a hash already exists, flag the conflicting paths and put in array
-            if (userHashes.get(u).has(fileHash)) {
+            if (userHashes.get(u)!.has(fileHash)) {
               console.log(`Duplicate photo detected: ${p}`);
 
               return;
             }
 
-            userHashes.get(u).add(fileHash);
+            userHashes.get(u)!.add(fileHash);
           }),
         );
 

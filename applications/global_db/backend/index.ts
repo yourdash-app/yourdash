@@ -66,7 +66,7 @@ export default class GlobalDbModule extends BackendModule {
 
       if (await user.hasPermission(YOURDASH_USER_PERMISSIONS.Administrator)) {
         core.globalDb.merge(keys);
-        await core.globalDb.writeToDisk(path.join(process.cwd(), "./fs/globalDatabase.json"));
+        await core.globalDb.writeToDisk(path.join(core.fs.ROOT_PATH, "./globalDatabase.json"));
 
         return res.json({
           success: true,

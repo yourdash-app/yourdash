@@ -216,7 +216,7 @@ export default class StoreModule extends BackendModule {
       const { id } = req.params;
       const unreadApplication = new YourDashApplication(id);
       if (!(await unreadApplication.exists())) {
-        return res.sendFile(path.resolve(process.cwd(), "./defaults/placeholder_application_icon.png"));
+        return res.sendFile(path.resolve(process.cwd(), "./src/defaults/placeholder_application_icon.png"));
       }
       const application = await unreadApplication.read();
       return res.sendFile(await application.getIconPath());

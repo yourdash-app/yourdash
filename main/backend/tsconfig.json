@@ -16,7 +16,8 @@
     "resolveJsonModule": true,
     "experimentalDecorators": true,
     "rootDir": "../..",
-    "traceResolution": true
+    "traceResolution": true,
+    "strict": true
   },
   "include": [
     "./src/**/*.ts",

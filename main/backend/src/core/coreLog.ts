@@ -24,7 +24,7 @@ export default class CoreLog {
     level: string;
     message: (string | Uint8Array)[];
   }[] = [];
-  private websocketServer: WebsocketManagerServer;
+  private websocketServer!: WebsocketManagerServer;
 
   constructor(core: Core) {
     this.core = core;
@@ -32,7 +32,8 @@ export default class CoreLog {
     return this;
   }
 
-  private log(type: LOG_TYPE, level: string, ...message: (string | Uint8Array)[]) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private log(type: LOG_TYPE, level: string, ...message: any[]): this {
     if (this.core.isDebugMode) {
       this.logHistory.push({ type: type, level: level, message: message });
 
@@ -102,14 +103,17 @@ export default class CoreLog {
     return this.log(LOG_TYPE.WARNING, level, chalk.bold(`${chalk.white("[")}${chalk.yellow("WAR")}${chalk.white("]")}`), ...message);
   }
 
-  error(level: string, ...message: (string | Uint8Array)[]) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  error(level: string, ...message: any[]) {
     if (message.length === 0) {
       this.log(LOG_TYPE.ERROR, "log", new Error("log message is empty").stack);
     }
 
+    this.log(LOG_TYPE.ERROR, level, chalk.bold(`${chalk.white("[")}${chalk.red("ERR")}${chalk.white("]")}`), ...message);
+
     console.log(new Error().stack);
 
-    return this.log(LOG_TYPE.ERROR, level, chalk.bold(`${chalk.white("[")}${chalk.red("ERR")}${chalk.white("]")}`), ...message);
+    return this;
   }
 
   debug(level: string, ...message: (string | Uint8Array)[]) {

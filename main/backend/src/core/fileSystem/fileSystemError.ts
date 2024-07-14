@@ -8,6 +8,7 @@ export enum FILESYSTEM_ERROR {
   DOES_NOT_EXIST,
   NOT_A_FILE,
   NOT_A_DIRECTORY,
+  ALREADY_EXISTS,
 }
 
 export default class FileSystemError {

@@ -59,7 +59,7 @@ export default class CoreRequest {
     for (const path of endpointPath) {
       // TODO: add a cli flag to re-enable this
       // if (this.core.isDebugMode) {
-      this.core.log.info("request", "Request created: " + this.endpointFromPath(path));
+      // this.core.log.info("request", "Request created: " + this.endpointFromPath(path));
       // }
 
       if (this.core.processArguments)
@@ -74,11 +74,13 @@ export default class CoreRequest {
 
                 this.core.log.debug("response_time", `${req.path} took ${time.formattedMicrosecconds}`);
               } catch (err) {
-                this.core.log.error(`request_error`, new Error().stack);
-                this.core.log.error(
-                  "request_error",
-                  `${req.path}; Request error not caught: ${err?.message || "No error message provided"}`,
-                );
+                if (err instanceof Error) {
+                  this.core.log.error(`request_error`, new Error().stack);
+                  this.core.log.error(
+                    "request_error",
+                    `${req.path}; Request error not caught: ${err?.message || "No error message provided"}`,
+                  );
+                }
               }
             },
           );
@@ -92,8 +94,10 @@ export default class CoreRequest {
           try {
             await callback({ ...req, sessionId: req.headers.sessionid as string, username: req.headers.username as string } as never, res);
           } catch (err) {
-            this.core.log.error(`request_error`, new Error().stack);
-            this.core.log.error("request_error", `${req.path}; Request error not caught: ${err.message}`);
+            if (err instanceof Error) {
+              this.core.log.error(`request_error`, new Error().stack);
+              this.core.log.error("request_error", `${req.path}; Request error not caught: ${err.message}`);
+            }
           }
         },
       );
@@ -105,20 +109,19 @@ export default class CoreRequest {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   post<TResponse = any>(
     path: string,
-    callback: (
-      req: ExpressRequest & { headers: RequestHeaders },
-      res: ExpressResponse,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ) => Promise<ExpressResponse<TResponse, Record<string, any>> | void>,
+    callback: (req: ExpressRequest & RequestExtras, res: ExpressResponse) => Promise<ExpressResponse<TResponse> | void>,
   ): this {
     this.rawExpress.post(
       (this.currentNamespace ? "/" : "") + this.currentNamespace + path,
-      async (req: ExpressRequest & { headers: RequestHeaders }, res: ExpressResponse) => {
+      // @ts-ignore
+      async (req: ExpressRequest & RequestExtras, res: ExpressResponse) => {
         try {
           await callback(req, res);
         } catch (err) {
-          this.core.log.error(`request_error`, new Error().stack);
-          this.core.log.error("request_error", `${req.path}; Request error not caught: ${err.message}`);
+          if (err instanceof Error) {
+            this.core.log.error(`request_error`, new Error());
+            this.core.log.error("request_error", `${req.path}\nRequest error not caught: ${err?.message || ""}`);
+          }
         }
       },
     );
@@ -130,19 +133,22 @@ export default class CoreRequest {
   put<TResponse = any>(
     path: string,
     callback: (
-      req: ExpressRequest & { headers: RequestHeaders },
+      req: ExpressRequest & RequestExtras,
       res: ExpressResponse,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ) => Promise<ExpressResponse<TResponse, Record<string, any>> | void>,
   ): this {
     this.rawExpress.put(
       (this.currentNamespace ? "/" : "") + this.currentNamespace + path,
-      async (req: ExpressRequest & { headers: RequestHeaders }, res: ExpressResponse) => {
+      // @ts-ignore
+      async (req: ExpressRequest & RequestExtras, res: ExpressResponse) => {
         try {
           await callback(req, res);
         } catch (err) {
-          this.core.log.error(`request_error`, new Error().stack);
-          this.core.log.error("request_error", `${req.path}; Request error not caught: ${err.message}`);
+          if (err instanceof Error) {
+            this.core.log.error(`request_error`, new Error().stack);
+            this.core.log.error("request_error", `${req.path}; Request error not caught: ${err.message}`);
+          }
         }
       },
     );
@@ -150,22 +156,26 @@ export default class CoreRequest {
     return this;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   delete<TResponse = any>(
     path: string,
     callback: (
-      req: ExpressRequest & { headers: RequestHeaders },
+      req: ExpressRequest & RequestExtras,
       res: ExpressResponse,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ) => Promise<ExpressResponse<TResponse, Record<string, any>> | void>,
   ): this {
     this.rawExpress.delete(
       (this.currentNamespace ? "/" : "") + this.currentNamespace + path,
-      async (req: ExpressRequest & { headers: RequestHeaders }, res: ExpressResponse) => {
+      // @ts-ignore
+      async (req: ExpressRequest & RequestExtras, res: ExpressResponse) => {
         try {
           await callback(req, res);
         } catch (err) {
-          this.core.log.error(`request_error`, new Error().stack);
-          this.core.log.error("request_error", `${req.path}; Request error not caught: ${err.message}`);
+          if (err instanceof Error) {
+            this.core.log.error(`request_error`, new Error().stack);
+            this.core.log.error("request_error", `${req.path}; Request error not caught: ${err.message}`);
+          }
         }
       },
     );
@@ -177,19 +187,22 @@ export default class CoreRequest {
   patch<TResponse = any>(
     path: string,
     callback: (
-      req: ExpressRequest & { headers: RequestHeaders },
+      req: ExpressRequest & RequestExtras,
       res: ExpressResponse,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ) => Promise<ExpressResponse<TResponse, Record<string, any>> | void>,
   ): this {
     this.rawExpress.patch(
       (this.currentNamespace ? "/" : "") + this.currentNamespace + path,
-      async (req: ExpressRequest & { headers: RequestHeaders }, res: ExpressResponse) => {
+      // @ts-ignore
+      async (req: ExpressRequest & RequestExtras, res: ExpressResponse) => {
         try {
           await callback(req, res);
         } catch (err) {
-          this.core.log.error(`request_error`, new Error().stack);
-          this.core.log.error("request_error", `${req.path}; Request error not caught: ${err.message}`);
+          if (err instanceof Error) {
+            this.core.log.error(`request_error`, new Error().stack);
+            this.core.log.error("request_error", `${req.path}; Request error not caught: ${err.message}`);
+          }
         }
       },
     );
@@ -201,19 +214,22 @@ export default class CoreRequest {
   options<TResponse = any>(
     path: string,
     callback: (
-      req: ExpressRequest & { headers: RequestHeaders },
+      req: ExpressRequest & RequestExtras,
       res: ExpressResponse,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ) => Promise<ExpressResponse<TResponse, Record<string, any>> | void>,
   ): this {
     this.rawExpress.options(
       (this.currentNamespace ? "/" : "") + this.currentNamespace + path,
-      async (req: ExpressRequest & { headers: RequestHeaders }, res: ExpressResponse) => {
+      // @ts-ignore
+      async (req: ExpressRequest & RequestExtras, res: ExpressResponse) => {
         try {
           await callback(req, res);
         } catch (err) {
-          this.core.log.error(`request_error`, new Error().stack);
-          this.core.log.error("request_error", `${req.path}; Request error not caught: ${err.message}`);
+          if (err instanceof Error) {
+            this.core.log.error(`request_error`, new Error().stack);
+            this.core.log.error("request_error", `${req.path}; Request error not caught: ${err.message}`);
+          }
         }
       },
     );
@@ -223,18 +239,21 @@ export default class CoreRequest {
 
   use(
     callback: (
-      req: ExpressRequest & { headers: RequestHeaders },
+      req: ExpressRequest & RequestExtras,
       res: ExpressResponse,
       next: ExpressNextFunction,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ) => Promise<any>,
   ): this {
-    this.rawExpress.use(async (req: ExpressRequest & { headers: RequestHeaders }, res: ExpressResponse, next: ExpressNextFunction) => {
+    // @ts-ignore
+    this.rawExpress.use(async (req: ExpressRequest & RequestExtras, res: ExpressResponse, next: ExpressNextFunction) => {
       try {
         await callback(req, res, next);
       } catch (err) {
-        this.core.log.error(`request_error`, new Error().stack);
-        this.core.log.error("request_error", `${req.path}; Request error not caught: ${err.message}`);
+        if (err instanceof Error) {
+          this.core.log.error(`request_error`, new Error().stack);
+          this.core.log.error("request_error", `${req.path}; Request error not caught: ${err.message}`);
+        }
       }
     });
 
@@ -244,7 +263,7 @@ export default class CoreRequest {
   usePath(
     path: string,
     callback: (
-      req: ExpressRequest & { headers: RequestHeaders },
+      req: ExpressRequest & RequestExtras,
       res: ExpressResponse,
       next: ExpressNextFunction,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -252,12 +271,15 @@ export default class CoreRequest {
   ): this {
     this.rawExpress.use(
       path,
-      async (req: ExpressRequest & { headers: RequestHeaders }, res: ExpressResponse, next: ExpressNextFunction) => {
+      // @ts-ignore
+      async (req: ExpressRequest & RequestExtras, res: ExpressResponse, next: ExpressNextFunction) => {
         try {
           await callback(req, res, next);
         } catch (err) {
-          this.core.log.error(`request_error`, new Error().stack);
-          this.core.log.error("request_error", `${req.path}; Request error not caught: ${err.message}`);
+          if (err instanceof Error) {
+            this.core.log.error(`request_error`, new Error().stack);
+            this.core.log.error("request_error", `${req.path}; Request error not caught: ${err.message}`);
+          }
         }
       },
     );
