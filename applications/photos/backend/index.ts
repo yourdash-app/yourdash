@@ -10,9 +10,9 @@ import { AUTHENTICATED_IMAGE_TYPE } from "@yourdash/backend/src/core/coreImage.j
 import { chunk } from "@yourdash/shared/web/helpers/array.js";
 import * as console from "node:console";
 import path from "path";
-import FileSystemDirectory from "@yourdash/backend/src/core/fileSystem/fileSystemDirectory.js";
+import FSDirectory from "main/backend/src/core/fileSystem/FSDirectory.js";
 import BackendModule, { YourDashModuleArguments } from "@yourdash/backend/src/core/moduleManager/backendModule.js";
-import FileSystemFile from "@yourdash/backend/src/core/fileSystem/fileSystemFile.js";
+import FSFile from "main/backend/src/core/fileSystem/FSFile.js";
 import { EndpointAlbumSubPath } from "../shared/types/endpoints/album/sub/path.js";
 
 export default class PhotosBackend extends BackendModule {
@@ -59,7 +59,7 @@ export default class PhotosBackend extends BackendModule {
 
         // recursively get all photos
         async function getPhotosRecursively(dirPath: string) {
-          const dir = (await self.api.core.fs.getDirectory(dirPath)) as FileSystemDirectory;
+          const dir = (await self.api.core.fs.getDirectory(dirPath)) as FSDirectory;
 
           if (!dir) return;
 
@@ -79,7 +79,7 @@ export default class PhotosBackend extends BackendModule {
         // hash every photo
         await Promise.all(
           userPhotos.map(async (p) => {
-            const fileHash = await ((await self.api.core.fs.getFile(p)) as FileSystemFile).getContentHash();
+            const fileHash = await ((await self.api.core.fs.getFile(p)) as FSFile).getContentHash();
 
             // if a hash already exists, flag the conflicting paths and put in array
             if (userHashes.get(u)!.has(fileHash)) {
@@ -440,7 +440,7 @@ export default class PhotosBackend extends BackendModule {
       const page = Number(req.params.page || "0");
       const user = this.api.getUser(req);
 
-      const albumEntity = (await this.api.core.fs.getDirectory(path.join(user.getFsPath(), albumPath))) as FileSystemDirectory;
+      const albumEntity = (await this.api.core.fs.getDirectory(path.join(user.getFsPath(), albumPath))) as FSDirectory;
 
       if (albumEntity === null) {
         if (albumPath !== "./photos/") return res.json({ error: "Not found" });

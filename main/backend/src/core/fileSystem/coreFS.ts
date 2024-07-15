@@ -7,22 +7,22 @@ import { promises as fs } from "fs";
 import pth from "path";
 import { Core } from "../core.js";
 import coreVerifyFileSystem from "./coreVerifyFileSystem.js";
-import FileSystemDirectory from "./fileSystemDirectory.js";
-import FileSystemError, { FILESYSTEM_ERROR } from "./fileSystemError.js";
-import FileSystemFile from "./fileSystemFile.js";
-import FileSystemLock from "./fileSystemLock.js";
+import FSDirectory from "./FSDirectory.js";
+import FSError, { FS_ERROR_TYPE } from "./FSError.js";
+import FSFile from "./FSFile.js";
+import FSLock from "./FSLock.js";
 
-export default class coreFileSystem {
+export default class coreFS {
   ROOT_PATH: string;
   core: Core;
   readonly verifyFileSystem: coreVerifyFileSystem;
-  __internal__fileSystemLocks: Map<string, FileSystemLock[]>;
+  __internal__fileSystemLocks: Map<string, FSLock[]>;
 
   constructor(core: Core) {
     this.ROOT_PATH = pth.resolve(core.processArguments?.["fs-root"] || pth.join(process.cwd(), "./../../fs/"));
     this.core = core;
     this.verifyFileSystem = new coreVerifyFileSystem(this.core);
-    this.__internal__fileSystemLocks = new Map<string, FileSystemLock[]>();
+    this.__internal__fileSystemLocks = new Map<string, FSLock[]>();
 
     return this;
   }
@@ -30,43 +30,43 @@ export default class coreFileSystem {
   async get(path: string) {
     try {
       if ((await this.getEntityType(path)) === "directory") {
-        return new FileSystemDirectory(this.core, path);
+        return new FSDirectory(this.core, path);
       } else {
-        return new FileSystemFile(this.core, path);
+        return new FSFile(this.core, path);
       }
     } catch (_err) {
-      return null;
+      return new FSError(FS_ERROR_TYPE.NO_REASON_PROVIDED);
     }
   }
 
   async getOrCreateFile(path: string) {
     const file = await this.getFile(path);
 
-    if (file instanceof FileSystemError) {
-      if (file.reason === FILESYSTEM_ERROR.DOES_NOT_EXIST) {
-        return this.createFile(path);
+    if (file instanceof FSError) {
+      if (file.reason === FS_ERROR_TYPE.DOES_NOT_EXIST) {
+        return await this.createFile(path);
       }
     }
 
-    if (!(await file)) {
+    if (!file) {
       await fs.writeFile(pth.dirname(path), "");
     }
 
     return file;
   }
 
-  async getFile(path: string): Promise<FileSystemFile | FileSystemError | null> {
+  async getFile(path: string): Promise<FSFile | FSError> {
     try {
       if ((await this.getEntityType(path)) === "file") {
-        return new FileSystemFile(this.core, path);
+        return new FSFile(this.core, path);
       }
     } catch (err) {
-      if (err instanceof FileSystemError) {
-        if (err.reason === FILESYSTEM_ERROR.DOES_NOT_EXIST) {
+      if (err instanceof FSError) {
+        if (err.reason === FS_ERROR_TYPE.DOES_NOT_EXIST) {
           this.core.log.warning("filesystem", `unable to get file at ${path} because it does not exist.`);
         }
 
-        if (err.reason === FILESYSTEM_ERROR.NOT_A_FILE) {
+        if (err.reason === FS_ERROR_TYPE.NOT_A_FILE) {
           this.core.log.warning("filesystem", `Unable to get file as ${path} because is is not a file.`);
         }
 
@@ -74,38 +74,40 @@ export default class coreFileSystem {
         return err;
       }
 
-      return null;
+      this.core.log.error("filesystem", "generic filesystem error", err);
+      return new FSError(FS_ERROR_TYPE.NO_REASON_PROVIDED);
     }
 
-    return this.createFile(path);
+    return await this.createFile(path);
   }
 
-  async getDirectory(path: string): Promise<FileSystemDirectory | FileSystemError | null> {
+  async getDirectory(path: string): Promise<FSDirectory | FSError> {
     try {
       if ((await this.getEntityType(path)) === "directory") {
-        return new FileSystemDirectory(this.core, path);
+        return new FSDirectory(this.core, path);
       }
     } catch (err) {
-      if (err instanceof FileSystemError) {
-        if (err.reason === FILESYSTEM_ERROR.DOES_NOT_EXIST) {
+      if (err instanceof FSError) {
+        if (err.reason === FS_ERROR_TYPE.DOES_NOT_EXIST) {
           this.core.log.warning("filesystem", `unable to get directory at ${path} because it does not exist.`);
         }
 
-        if (err.reason === FILESYSTEM_ERROR.NOT_A_DIRECTORY) {
+        if (err.reason === FS_ERROR_TYPE.NOT_A_DIRECTORY) {
           this.core.log.warning("filesystem", `Unable to get directory at ${path} because is is not a directory.`);
         }
 
         return err;
       }
 
-      return null;
+      this.core.log.error("filesystem", "generic filesystem error", err);
+      return new FSError(FS_ERROR_TYPE.NO_REASON_PROVIDED);
     }
 
     return await this.createDirectory(path);
   }
 
   async getOrCreateDirectory(path: string) {
-    const dir = new FileSystemDirectory(this.core, path);
+    const dir = new FSDirectory(this.core, path);
 
     if (!(await dir.doesExist())) {
       await dir.create();
@@ -131,11 +133,11 @@ export default class coreFileSystem {
     }
   }
 
-  async createFile(path: string): Promise<FileSystemFile | FileSystemError> {
-    const file = new FileSystemFile(this.core, path);
+  async createFile(path: string): Promise<FSFile | FSError> {
+    const file = new FSFile(this.core, path);
 
     if (await file.doesExist()) {
-      return new FileSystemError(FILESYSTEM_ERROR.ALREADY_EXISTS);
+      return new FSError(FS_ERROR_TYPE.ALREADY_EXISTS);
     }
 
     await file.write("");
@@ -144,7 +146,7 @@ export default class coreFileSystem {
   }
 
   async createDirectory(path: string) {
-    const dir = new FileSystemDirectory(this.core, path);
+    const dir = new FSDirectory(this.core, path);
     await dir.create();
     return dir;
   }

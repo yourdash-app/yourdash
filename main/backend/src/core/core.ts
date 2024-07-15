@@ -29,8 +29,8 @@ import CoreLog from "./coreLog.js";
 import CoreRequest from "./coreRequest.js";
 import CoreTeams from "./coreTeams.js";
 import CoreVideo from "./coreVideo.js";
-import FileSystemDirectory from "./fileSystem/fileSystemDirectory.js";
-import FileSystemFile from "./fileSystem/fileSystemFile.js";
+import FSDirectory from "./fileSystem/FSDirectory.js";
+import FSFile from "./fileSystem/FSFile.js";
 import GlobalDBCoreLoginNotice from "./login/loginNotice.js";
 import BackendModule from "./moduleManager/backendModule.js";
 import loadNextCloudSupportEndpoints from "./nextcloud/coreNextCloud.js";
@@ -40,7 +40,7 @@ import CorePanel from "./corePanel.js";
 import CoreScheduler from "./coreScheduler.js";
 import CoreUserDatabase from "./coreUserDatabase.js";
 import CoreUsers from "./coreUsers.js";
-import CoreFileSystem from "./fileSystem/coreFileSystem.js";
+import CoreFileSystem from "./fileSystem/coreFS.js";
 import CoreLoadManagement from "./coreLoadManagement.js";
 import { USER_AVATAR_SIZE } from "@yourdash/shared/core/userAvatarSize.js";
 import YourDashUser from "./user/index.js";
@@ -421,9 +421,7 @@ export class Core {
 
       const user = new YourDashUser(username);
 
-      const savedHashedPassword = await ((await this.fs.getFile(path.join(user.path, "core/password.enc"))) as FileSystemFile).read(
-        "string",
-      );
+      const savedHashedPassword = await ((await this.fs.getFile(path.join(user.path, "core/password.enc"))) as FSFile).read("string");
 
       return compareHashString(savedHashedPassword, password)
         .then(async (result) => {
@@ -590,13 +588,13 @@ export class Core {
           // @ts-ignore
           this.users.__internal__getSessionsDoNotUseOutsideOfCore()[username] = (await user.getAllLoginSessions()) || [];
 
-          const database = await ((await this.fs.getFile(path.join(user.path, "core/user_db.json"))) as FileSystemFile).read("string");
+          const database = await ((await this.fs.getFile(path.join(user.path, "core/user_db.json"))) as FSFile).read("string");
 
           if (database) {
             (await user.getDatabase()).clear().merge(JSON.parse(database));
           } else {
             (await user.getDatabase()).clear();
-            await ((await this.fs.getFile(path.join(user.path, "core/user_db.json"))) as FileSystemFile).write("{}");
+            await ((await this.fs.getFile(path.join(user.path, "core/user_db.json"))) as FSFile).write("{}");
           }
         } catch (_err) {
           return failAuth();
@@ -649,7 +647,7 @@ export class Core {
     this.request.get("/core/applications", async (_req, res) => {
       return res.json(<EndpointResponseCoreApplications>{
         applications: (
-          await ((await this.fs.getDirectory(path.join(process.cwd(), "../../applications/"))) as FileSystemDirectory).getChildren()
+          await ((await this.fs.getDirectory(path.join(process.cwd(), "../../applications/"))) as FSDirectory).getChildren()
         ).map((app) => {
           return {
             id: path.basename(app.path) || "unknown",
@@ -661,7 +659,7 @@ export class Core {
     });
 
     this.request.get("/core/hosted-applications/", async (_req, res) => {
-      const hostedApplications = (await this.fs.getDirectory(path.join(process.cwd(), "../../hostedApplications"))) as FileSystemDirectory;
+      const hostedApplications = (await this.fs.getDirectory(path.join(process.cwd(), "../../hostedApplications"))) as FSDirectory;
 
       return res.json({ applications: await hostedApplications.getChildrenAsBaseName() });
     });

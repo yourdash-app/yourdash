@@ -11,7 +11,7 @@ import { hashString } from "../../lib/encryption.js";
 import YourDashSession, { getSessionsForUser } from "../../lib/session.js";
 import core from "../core.js";
 import { USER_AVATAR_SIZE } from "@yourdash/shared/core/userAvatarSize.js";
-import FileSystemError from "../fileSystem/fileSystemError.js";
+import FSError from "../fileSystem/FSError.js";
 import { YOURDASH_TEAM_PERMISSIONS, YourDashTeamPermission } from "../team/teamPermissions.js";
 import UserDatabase from "./userDatabase.js";
 import { YourDashUserPermission } from "./userPermissions.js";
@@ -80,6 +80,12 @@ export default class YourDashUser {
     const newAvatarFile = await core.fs.getFile(filePath);
 
     if (!newAvatarFile) {
+      core.log.error("user", `unable to set avatar: ${filePath}`);
+      return;
+    }
+
+    if (newAvatarFile instanceof FSError) {
+      core.log.error("user", `unable to set avatar: ${newAvatarFile.getReasonString()}`);
       return;
     }
 
@@ -88,19 +94,22 @@ export default class YourDashUser {
     sharp(newAvatarBuffer)
       .resize(32, 32)
       .toFile(path.join(path.join(core.fs.ROOT_PATH, this.path), "avatars/small.avif"))
-      .catch((err: string) => console.error(err));
+      .catch((err: string) => core.log.error("user.set_avatar", err));
+
     sharp(newAvatarBuffer)
       .resize(64, 64)
       .toFile(path.join(path.join(core.fs.ROOT_PATH, this.path), "avatars/medium.avif"))
-      .catch((err: string) => console.error(err));
+      .catch((err: string) => core.log.error("user.set_avatar", err));
+
     sharp(newAvatarBuffer)
       .resize(128, 128)
       .toFile(path.join(path.join(core.fs.ROOT_PATH, this.path), "avatars/large.avif"))
-      .catch((err: string) => console.error(err));
+      .catch((err: string) => core.log.error("user.set_avatar", err));
+
     sharp(newAvatarBuffer)
       .resize(256, 256)
       .toFile(path.join(path.join(core.fs.ROOT_PATH, this.path), "avatars/extraLarge.avif"))
-      .catch((err: string) => console.error(err));
+      .catch((err: string) => core.log.error("user.set_avatar", err));
   }
 
   async verify() {
@@ -175,7 +184,7 @@ export default class YourDashUser {
       if (!(await core.fs.doesExist(path.join(this.path, "core/sessions.json")))) {
         const sessionsFile = await core.fs.createFile(path.join(this.path, "core/sessions.json"));
 
-        if (sessionsFile instanceof FileSystemError) {
+        if (sessionsFile instanceof FSError) {
           core.log.error("user", `username: ${this.username}, failed to create sessions.json!`, sessionsFile);
           return;
         }
@@ -194,7 +203,13 @@ export default class YourDashUser {
       if (!(await core.fs.doesExist(path.join(this.path, "core/user_db.json")))) {
         const userDbFile = await core.fs.createFile(path.join(this.path, "core/user_db.json"));
 
-        await core.fs.createFile(path.join(this.path, "./core/user_db.json")).write(
+        if (userDbFile instanceof FSError) {
+          core.log.error("user", `username: ${this.username}, failed to create user_db.json!`, userDbFile);
+
+          return;
+        }
+
+        await userDbFile.write(
           JSON.stringify({
             "user:name": {
               first: "New",
@@ -230,8 +245,10 @@ export default class YourDashUser {
     }
 
     try {
-      if (!(await core.fs.doesExist(path.join(this.path, "core/user.json")))) {
-        await core.fs.createFile(path.join(this.path, "core/user.json")).write(
+      const userJsonFile = await core.fs.getOrCreateFile(path.join(this.path, "core/user.json"));
+
+      if (!(userJsonFile instanceof FSError)) {
+        await userJsonFile!.write(
           JSON.stringify({
             username: this.username,
             name: {
@@ -257,7 +274,6 @@ export default class YourDashUser {
       }
     } catch (err) {
       core.log.error("user", `username: ${this.username}, failed to create fs directory!`, err);
-      console.error(err);
       return;
     }
 
@@ -268,7 +284,6 @@ export default class YourDashUser {
       }
     } catch (err) {
       core.log.error("user", `username: ${this.username}, failed to create temp directory!`, err);
-      console.error(err);
       return;
     }
 
@@ -281,7 +296,10 @@ export default class YourDashUser {
       // TODO: remove all usages of user.json in favour of userDB
       const userJsonFile = await core.fs.getFile(path.join(this.path, "core/user.json"));
 
-      if (!userJsonFile?.doesExist()) return;
+      if (userJsonFile instanceof FSError) {
+        core.log.warning("user", `Unable to read ${this.username}'s core/user.json`, userJsonFile.getReasonString());
+        return;
+      }
 
       const userJson = JSON.parse(await userJsonFile.read("string")) as IYourDashUserDatabase;
       userJson.name = { first, last };

@@ -7,7 +7,7 @@ import path from "path";
 import core, { Core } from "../core.js";
 import generateInstanceLogos from "../helpers/generateInstanceLogos.js";
 import { YOURDASH_USER_PERMISSIONS } from "../user/userPermissions.js";
-import FileSystemDirectory from "./fileSystemDirectory.js";
+import FSDirectory from "./FSDirectory.js";
 import { promises as fs } from "fs";
 
 export default class coreVerifyFileSystem {
@@ -22,7 +22,7 @@ export default class coreVerifyFileSystem {
   async verify() {
     await this.checkRootDirectory();
 
-    (await ((await this.core.fs.get("./users")) as FileSystemDirectory)?.getChildrenAsBaseName()).map((user: string) => {
+    (await ((await this.core.fs.get("./users")) as FSDirectory)?.getChildrenAsBaseName()).map((user: string) => {
       this.checkUserDirectory(user);
     });
   }

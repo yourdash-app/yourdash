@@ -4,12 +4,12 @@
  */
 
 import core from "../core.js";
-import FileSystemEntity from "./fileSystemEntity.js";
+import FSEntity from "./FSEntity.js";
 
-export default class FileSystemLock {
-  private lockedEntity: FileSystemEntity;
+export default class FSLock {
+  private lockedEntity: FSEntity;
 
-  constructor(entity: FileSystemEntity) {
+  constructor(entity: FSEntity) {
     this.lockedEntity = entity;
     return this;
   }

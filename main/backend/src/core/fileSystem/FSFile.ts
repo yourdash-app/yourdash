@@ -7,11 +7,11 @@ import { promises as fs } from "fs";
 import pth from "path";
 import { Core } from "../core.js";
 import { AUTHENTICATED_IMAGE_TYPE } from "../coreImage.js";
-import FileSystemEntity, { FILESYSTEM_ENTITY_TYPE } from "./fileSystemEntity.js";
-import FileSystemError, { FILESYSTEM_ERROR } from "./fileSystemError.js";
+import FSEntity, { FILESYSTEM_ENTITY_TYPE } from "./FSEntity.js";
+import FSError, { FS_ERROR_TYPE } from "./FSError.js";
 import crypto from "crypto";
 
-export default class FileSystemFile extends FileSystemEntity {
+export default class FSFile extends FSEntity {
   private readonly core: Core;
   entityType = FILESYSTEM_ENTITY_TYPE.FILE as const;
 
@@ -72,9 +72,16 @@ export default class FileSystemFile extends FileSystemEntity {
 
   // returns a sha256 hash of the file
   async getContentHash(): Promise<string> {
+    const file = await this.core.fs.getFile(this.path);
+
+    if (file instanceof FSError) {
+      this.core.log.warning("filesystem", `unable to get content hash of ${this.path}`);
+      return "";
+    }
+
     return crypto
       .createHash("sha256")
-      .update(await (await this.core.fs.getFile(this.path)).read("buffer"))
+      .update(await file.read("buffer"))
       .digest("hex");
   }
 
@@ -121,7 +128,7 @@ export default class FileSystemFile extends FileSystemEntity {
 
   async write(data: string | Buffer) {
     if (this.isLocked().locked) {
-      throw new FileSystemError(FILESYSTEM_ERROR.NOT_A_FILE);
+      throw new FSError(FS_ERROR_TYPE.NOT_A_FILE);
     }
 
     if (!(await this.doesExist())) {

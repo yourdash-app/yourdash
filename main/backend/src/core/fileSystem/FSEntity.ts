@@ -4,12 +4,12 @@
  */
 
 import core from "../core.js";
-import FileSystemLock from "./fileSystemLock.js";
+import FSLock from "./FSLock.js";
 
-// TODO: fix generics
+// TODO: fix typescript generics errors
 interface FileSystemEntityIsLocked<T extends boolean = boolean> {
   locked: T;
-  lockedBy: T extends true ? FileSystemLock[] : undefined;
+  lockedBy: T extends true ? FSLock[] : undefined;
 }
 
 export enum FILESYSTEM_ENTITY_TYPE {
@@ -17,12 +17,13 @@ export enum FILESYSTEM_ENTITY_TYPE {
   DIRECTORY,
 }
 
-export default class FileSystemEntity {
+export default class FSEntity {
   path: string;
   entityType: FILESYSTEM_ENTITY_TYPE;
 
   constructor(path: string) {
     this.path = path;
+    this.entityType = FILESYSTEM_ENTITY_TYPE.FILE;
 
     return this;
   }
@@ -44,12 +45,13 @@ export default class FileSystemEntity {
     return this.entityType === FILESYSTEM_ENTITY_TYPE.DIRECTORY;
   }
 
-  createLock(): FileSystemLock {
-    return new FileSystemLock(this);
+  createLock(): FSLock {
+    return new FSLock(this);
   }
 
-  getAllLocks(): FileSystemLock[] {
-    return core.fs.__internal__fileSystemLocks.get(this.path);
+  // get all locks for this FSEntity
+  getAllLocks(): FSLock[] {
+    return core.fs.__internal__fileSystemLocks.get(this.path) || [];
   }
 
   doesExist(): Promise<boolean> {
