@@ -22,6 +22,7 @@ export default class CoreCommands {
     this.availableCommands = {};
     this.core = core;
     this.currentCommandInput = "";
+    this.lastCommandAndArgs = [];
     this.prompt = "> ";
 
     this.stdin.setRawMode(true);
@@ -30,7 +31,7 @@ export default class CoreCommands {
 
     this.stdout.cursorTo(0, this.stdout.rows);
 
-    let cursorPosition: number = 0;
+    let cursorPosition = 0;
 
     this.stdin.on("data", (data) => {
       const stringData = data.toString("utf8");

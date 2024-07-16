@@ -25,6 +25,7 @@ const USER_PATHS = {
   PASSWORD: "./core/password.enc",
   CACHE: "./cache/",
   APPLICATIONS: "./applications/",
+  TEMP: "./temp/",
 };
 
 export { USER_PATHS };
@@ -342,7 +343,7 @@ export default class YourDashUser {
     try {
       const userJsonFile = await core.fs.getFile(path.join(this.path, "core/user.json"));
 
-      if (!userJsonFile?.doesExist()) return;
+      if (userJsonFile instanceof FSError) return;
 
       const userJson = JSON.parse(await userJsonFile.read("string")) as IYourDashUserDatabase;
       userJson.bio = bio;
@@ -356,7 +357,7 @@ export default class YourDashUser {
     try {
       const userJsonFile = await core.fs.getFile(path.join(this.path, "core/user.json"));
 
-      if (!userJsonFile?.doesExist()) return "Non-existent user.json";
+      if (userJsonFile instanceof FSError) return "Unknown";
 
       const userJson = JSON.parse(await userJsonFile.read("string")) as IYourDashUserDatabase;
       return userJson.bio;
@@ -369,7 +370,7 @@ export default class YourDashUser {
     try {
       const userJsonFile = await core.fs.getFile(path.join(this.path, "core/user.json"));
 
-      if (!userJsonFile?.doesExist()) return;
+      if (userJsonFile instanceof FSError) return;
 
       const userJson = JSON.parse(await userJsonFile.read("string")) as IYourDashUserDatabase;
       userJson.url = url;
@@ -383,7 +384,7 @@ export default class YourDashUser {
     try {
       const userJsonFile = await core.fs.getFile(path.join(this.path, "core/user.json"));
 
-      if (!userJsonFile?.doesExist()) return;
+      if (userJsonFile instanceof FSError) return;
 
       const userJson = JSON.parse(await userJsonFile.read("string")) as IYourDashUserDatabase;
       return userJson.url;
@@ -396,7 +397,7 @@ export default class YourDashUser {
     try {
       const userJsonFile = await core.fs.getFile(path.join(this.path, "core/user.json"));
 
-      if (!userJsonFile?.doesExist()) return;
+      if (userJsonFile instanceof FSError) return;
 
       const currentUserJson = JSON.parse(await userJsonFile.read("string")) as IYourDashUserDatabase;
       currentUserJson.permissions = permissions;
@@ -411,7 +412,7 @@ export default class YourDashUser {
     try {
       const userJsonFile = await core.fs.getFile(path.join(this.path, "core/user.json"));
 
-      if (!userJsonFile?.doesExist()) return;
+      if (userJsonFile instanceof FSError) return;
 
       const currentUserJson = JSON.parse(await userJsonFile.read("string")) as IYourDashUserDatabase;
       return currentUserJson.permissions;
@@ -424,7 +425,7 @@ export default class YourDashUser {
     try {
       const userJsonFile = await core.fs.getFile(path.join(this.path, "core/user.json"));
 
-      if (!userJsonFile?.doesExist()) return false;
+      if (userJsonFile instanceof FSError) return false;
 
       const currentUserJson = JSON.parse(await userJsonFile.read("string")) as IYourDashUserDatabase;
       return currentUserJson.permissions.indexOf(permission) !== -1;
@@ -448,7 +449,7 @@ export default class YourDashUser {
     try {
       const userPasswordFile = await core.fs.getFile(path.join(this.path, "./core/password.enc"));
 
-      if (!userPasswordFile?.doesExist()) return;
+      if (userPasswordFile instanceof FSError) return;
 
       await userPasswordFile.write(hashedPassword);
     } catch (err) {
@@ -485,7 +486,7 @@ export default class YourDashUser {
   async getAllLoginSessions() {
     const sessionFile = await core.fs.getFile(path.join(this.path, "core/sessions.json"));
 
-    if (!sessionFile?.doesExist()) {
+    if (sessionFile instanceof FSError) {
       return [];
     }
 
@@ -507,7 +508,7 @@ export default class YourDashUser {
   async update() {
     const userJsonFile = await core.fs.getFile(path.join(this.path, "core/user.json"));
 
-    if (!userJsonFile?.doesExist()) return false;
+    if (userJsonFile instanceof FSError) return;
 
     const userJson = (await userJsonFile.read("json")) as IYourDashUserDatabase;
 

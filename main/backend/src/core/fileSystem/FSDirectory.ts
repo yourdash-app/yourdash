@@ -7,6 +7,7 @@ import { promises as fs } from "fs";
 import { Core } from "../core.js";
 import FSEntity, { FILESYSTEM_ENTITY_TYPE } from "./FSEntity.js";
 import pth from "path";
+import FSError from "./FSError.js";
 import FSFile from "./FSFile.js";
 
 export default class FSDirectory extends FSEntity {
@@ -28,10 +29,22 @@ export default class FSDirectory extends FSEntity {
     return fs.stat(pth.join(this.core.fs.ROOT_PATH, this.path));
   }
 
-  async getChildren(): Promise<(FSEntity | null)[]> {
+  async getChildren(): Promise<FSEntity[]> {
     const children = await this.getChildrenAsBaseName();
 
-    return await Promise.all(children.map(async (child) => await this.getChild(child)));
+    return (
+      await Promise.all(
+        children.map(async (childPath) => {
+          const child = await this.getChild(childPath);
+
+          if (child instanceof FSError) {
+            return null;
+          }
+
+          return child;
+        }),
+      )
+    ).filter(Boolean) as FSEntity[];
   }
 
   async getChildDirectories(): Promise<FSDirectory[]> {
@@ -48,6 +61,7 @@ export default class FSDirectory extends FSEntity {
     } catch (_err) {
       this.core.log.error("filesystem", `Unable to read directory: ${this.path}`);
 
+      // an FSError has occurred, but we send an empty array instead
       return [];
     }
   }

@@ -132,7 +132,7 @@ export default class coreVerifyFileSystem {
 
     // create the default instance logos
     try {
-      let shouldGenerateInstanceLogos: boolean = false;
+      let shouldGenerateInstanceLogos = false;
       if (!(await this.core.fs.doesExist(path.join(core.fs.ROOT_PATH, "./logo_panel_small.avif")))) shouldGenerateInstanceLogos = true;
       if (!(await this.core.fs.doesExist(path.join(core.fs.ROOT_PATH, "./logo_panel_medium.avif")))) shouldGenerateInstanceLogos = true;
       if (!(await this.core.fs.doesExist(path.join(core.fs.ROOT_PATH, "./logo_panel_large.avif")))) shouldGenerateInstanceLogos = true;

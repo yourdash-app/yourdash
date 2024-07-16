@@ -15,7 +15,7 @@ export default class CoreExecute {
     return this;
   }
 
-  exec(command: string, cwd?: string) {
-    return childProcess.exec(command, { cwd: cwd || this.core.fs.ROOT_PATH });
+  exec(command: string, cwd: string = this.core.fs.ROOT_PATH) {
+    return childProcess.exec(command, { cwd });
   }
 }

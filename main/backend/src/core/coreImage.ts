@@ -9,6 +9,7 @@ import path from "path";
 import pth from "path";
 import { Core } from "./core.js";
 import sharp from "sharp";
+import { USER_PATHS } from "./user/index.js";
 
 export enum AUTHENTICATED_IMAGE_TYPE {
   BASE64,
@@ -44,7 +45,7 @@ export default class CoreImage {
       try {
         const image = sharp(await fs.readFile(path.join(this.core.fs.ROOT_PATH, filePath)));
         const { width, height } = await image.metadata();
-        resolve({ width, height });
+        resolve({ width: width || 0, height: height || 0 });
       } catch (err) {
         this.core.log.error("image", "failed to get image dimensions for " + filePath);
         reject({ width: 0, height: 0 });
@@ -58,11 +59,9 @@ export default class CoreImage {
     height: number,
     resultingImageFormat?: "avif" | "png" | "jpg" | "webp",
     useAbsolutePath?: boolean,
-  ): Promise<string | null> {
+  ): Promise<string> {
     return await new Promise<string>(async (resolve) => {
-      const TEMP_DIR = "/temp";
-
-      const resizedImagePath = pth.join(pth.join(TEMP_DIR, crypto.randomUUID()));
+      const resizedImagePath = pth.join(pth.join(USER_PATHS.TEMP, crypto.randomUUID()));
 
       try {
         sharp(await fs.readFile(useAbsolutePath ? filePath : path.join(this.core.fs.ROOT_PATH, filePath)), {
@@ -74,11 +73,11 @@ export default class CoreImage {
           .then(() => resolve(resizedImagePath))
           .catch((err: string) => {
             this.core.log.error("image", `unable to resize image "${filePath}" ${err}`);
-            resolve(null);
+            resolve("null");
           });
       } catch (err) {
         this.core.log.error("image", `unable to resize image "${filePath}" ${err}`);
-        resolve(null);
+        resolve("null");
       }
     });
   }
@@ -110,11 +109,13 @@ export default class CoreImage {
 
       const user = this.authenticatedImages.get(username);
 
+      if (!user) return "";
+
       if (!user.has(sessionId)) {
         user.set(sessionId, new Map());
       }
 
-      user.get(sessionId).set(id, {
+      user.get(sessionId)?.set(id, {
         type,
         // @ts-ignore
         value: val,
@@ -159,7 +160,7 @@ export default class CoreImage {
 
   // removes an image from the authenticated image lookup
   __internal__removeAuthenticatedImage(username: string, sessionId: string, id: string) {
-    this.authenticatedImages.get(username).get(sessionId).delete(id);
+    this.authenticatedImages.get(username)?.get(sessionId)?.delete(id);
 
     return this;
   }
