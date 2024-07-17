@@ -21,7 +21,7 @@ To develop for / with YourDash, you will need the following dependencies:
 
 #### Windows
 
-```bash
+```powershell
 winget install --id Git.Git -e --source winget
 ```
 
@@ -65,8 +65,8 @@ sudo pacman -S git
 
 ### Windows
 
-```bash
-winget install --id Git.Git -e --source winget
+```powershell
+powershell -c "irm bun.sh/install.powershell | iex"
 ```
 
 </details>
@@ -82,7 +82,8 @@ winget install --id Git.Git -e --source winget
 <summary>Ubuntu / Debian</summary>
 
 ```bash
-sudo apt install git
+sudo apt install curl
+curl -fsSL https://bun.sh/install | bash
 ```
 
 </details>
@@ -92,7 +93,8 @@ sudo apt install git
 <summary>Arch Linux</summary>
 
 ```bash
-sudo pacman -S git
+sudo pacman -S curl
+curl -fsSL https://bun.sh/install | bash
 ```
 
 </details>
@@ -109,8 +111,9 @@ sudo pacman -S git
 
 ### Windows
 
-```bash
-winget install --id Git.Git -e --source winget
+```powershell
+winget install Schniz.fnm
+fnm use --install-if-missing --lts
 ```
 
 </details>
@@ -126,7 +129,9 @@ winget install --id Git.Git -e --source winget
 <summary>Ubuntu / Debian</summary>
 
 ```bash
-sudo apt install git
+sudo apt install curl
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+nvm install --lts
 ```
 
 </details>
@@ -136,7 +141,9 @@ sudo apt install git
 <summary>Arch Linux</summary>
 
 ```bash
-sudo pacman -S git
+sudo pacman -S curl
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+nvm install --lts
 ```
 
 </details>
@@ -153,8 +160,8 @@ sudo pacman -S git
 
 ### Windows
 
-```bash
-winget install --id Git.Git -e --source winget
+```powershell
+npm i -g yarn
 ```
 
 </details>
@@ -170,7 +177,7 @@ winget install --id Git.Git -e --source winget
 <summary>Ubuntu / Debian</summary>
 
 ```bash
-sudo apt install git
+npm i -g yarn
 ```
 
 </details>
@@ -180,7 +187,7 @@ sudo apt install git
 <summary>Arch Linux</summary>
 
 ```bash
-sudo pacman -S git
+npm i -g yarn
 ```
 
 </details>
@@ -191,51 +198,31 @@ sudo pacman -S git
 
 ### 1.5 Installing Emscripten (Windows only)
 
-<details closed>
+> This step is for Windows only.
 
-<summary>Windows</summary>
-
-### Windows
-
-```bash
-winget install --id Git.Git -e --source winget
-```
-
-</details>
-
-<details closed>
-
-<summary>Linux</summary>
-
-### Linux
-
-<details closed>
-
-<summary>Ubuntu / Debian</summary>
-
-```bash
-sudo apt install git
-```
-
-</details>
-
-<details closed>
-
-<summary>Arch Linux</summary>
-
-```bash
-sudo pacman -S git
-```
-
-</details>
-
-</details>
+<a href="https://emscripten.org/docs/getting_started/downloads.html">Download And Install Emscripten</a>
 
 ---
 
-### 1.6 Installing A Recommended IDE or Text Editor
+### 1.6 Installing An IDE / Text Editor
 
 > This step can be skipped if you prefer to use another IDE or text editor.
+
+### Webstorm (recommended but paid)
+
+[Download Webstorm](https://www.jetbrains.com/webstorm/download/)
+
+### Visual Studio Code (free and open source)
+
+[Download Visual Studio Code](https://code.visualstudio.com/Download)
+
+## 2. Restart your computer
+
+> To help to avoid any issues, restart your computer before proceeding.
+
+## 3. Clone YourDash From GitHub
+
+### Main Branch
 
 <details closed>
 
@@ -243,8 +230,8 @@ sudo pacman -S git
 
 ### Windows
 
-```bash
-winget install --id Git.Git -e --source winget
+```powershell
+git clone git@github.com:yourdash/yourdash.git
 ```
 
 </details>
@@ -255,31 +242,34 @@ winget install --id Git.Git -e --source winget
 
 ### Linux
 
+```bash
+git clone git@github.com:yourdash/yourdash.git
+```
+
+</details>
+
+### Dev Branch
+
 <details closed>
 
-<summary>Ubuntu / Debian</summary>
+<summary>Windows</summary>
 
-```bash
-sudo apt install git
+### Windows
+
+```powershell
+git clone git@github.com:yourdash/yourdash.git -b dev
 ```
 
 </details>
 
 <details closed>
 
-<summary>Arch Linux</summary>
+<summary>Linux</summary>
+
+### Linux
 
 ```bash
-sudo pacman -S git
+git clone git@github.com:yourdash/yourdash.git -b dev
 ```
 
 </details>
-
-</details>
-
-2. Configure dependencies
-3. Test everything is setup correctly
-
-```
-
-```
