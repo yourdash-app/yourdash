@@ -273,3 +273,29 @@ git clone git@github.com:yourdash/yourdash.git -b dev
 ```
 
 </details>
+
+## 4. Install YourDash's npm dependencies with Yarn
+
+<details closed>
+
+<summary>Windows</summary>
+
+### Windows
+
+```powershell
+yarn install
+```
+
+</details>
+
+<details closed>
+
+<summary>Linux</summary>
+
+### Linux
+
+```bash
+yarn install
+```
+
+</details>

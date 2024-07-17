@@ -1,21 +1,19 @@
-# YourDash Application and Module Development
+# YourDash Application and Module Development remaining sections
 
-sections:
+## Creating an application template
 
-Setup development environment
-(node bun git emscripten)
+  Using an appliction template
 
-Installing YourDash
+  Setting required values (config, application.json)
 
-Using an appliction template
+  Code structure recomendations
 
-Setting required values (config, application.json)
-
-Code structure recomendations
+## Handling external authentication
 
 Single-Click YourDash authentication (external integration)
 
---- backend
+---
+## backend
 
 how applications are loaded
 and how their lifecycle is managed
@@ -38,7 +36,8 @@ the FileSystemAPI and how Paths work and handling errors
 
 the user database
 
---- web (frontend)
+---
+## web (frontend)
 
 uikit components / views and suggested use-case guidelines
 
