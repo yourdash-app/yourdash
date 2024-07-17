@@ -138,7 +138,7 @@ export default class FSFile extends FSEntity {
     try {
       await fs.writeFile(pth.join(this.core.fs.ROOT_PATH, this.path), data);
     } catch (e) {
-      this.core.log.error("filesystem", `unable to write to ${this.path}`, e);
+      this.core.log.error("filesystem", `unable to write to ${this.path}`, e, pth.join(this.core.fs.ROOT_PATH, this.path));
     }
 
     return;

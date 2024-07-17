@@ -5,6 +5,7 @@
 
 import path from "path";
 import { Core } from "./core.js";
+import FSError from "./fileSystem/FSError.js";
 import YourDashUser from "./user/index.js";
 
 type JSONValue = boolean | number | string | null | JSONFile;
@@ -33,7 +34,14 @@ export default class CoreUserDatabase {
 
       this.core.log.info("core_userdb", `Saving database for '${key}'`);
 
-      await (await this.core.fs.getFile(path.join(user.path, "core/user_db.json"))).write(JSON.stringify(database));
+      const userDbFile = await this.core.fs.getFile(path.join(user.path, "core/user_db.json"));
+
+      if (userDbFile instanceof FSError) {
+        this.core.log.info("core_userdb", `Unable to save user_db.json which doesn't exist`);
+        return false;
+      }
+
+      await userDbFile.write(JSON.stringify(database));
     });
   }
 
@@ -41,8 +49,15 @@ export default class CoreUserDatabase {
     const user = new YourDashUser(username);
 
     try {
+      const userDbFile = await this.core.fs.getFile(path.join(user.path, "core/user_db.json"));
+
+      if (userDbFile instanceof FSError) {
+        this.core.log.info("core_userdb", `Unable to read a user_db.json which doesn't exist`);
+        return {};
+      }
+
       // attempt to parse json data from "user_db.json"
-      return (await (await this.core.fs.getFile(path.join(user.path, "core/user_db.json"))).read("json")) as JSONFile;
+      return (await userDbFile.read("json")) as JSONFile;
     } catch (_err) {
       this.core.log.warning("core_userdb", `Unable to parse "${username}"'s user database.`);
 

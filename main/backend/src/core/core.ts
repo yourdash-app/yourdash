@@ -46,7 +46,6 @@ import { USER_AVATAR_SIZE } from "@yourdash/shared/core/userAvatarSize.js";
 import YourDashUser from "./user/index.js";
 import { YOURDASH_SESSION_TYPE } from "@yourdash/shared/core/session.js";
 import CoreWebsocketManager from "./websocketManager/coreWebsocketManager.js";
-import expressListEndpoints from "express-list-endpoints";
 
 declare global {
   const globalThis: {
@@ -87,9 +86,11 @@ export class Core {
     // Fetch process arguments
     this.processArguments = minimist(process.argv.slice(2));
 
+    // @ts-ignore
     globalThis.rawConsoleLog = globalThis.console.log;
 
     this.isDebugMode =
+      // @ts-ignore
       typeof global.v8debug === "object" ||
       /--debug|--inspect/.test(process.execArgv.join(" ")) ||
       process.env.NODE_OPTIONS?.includes("javascript-debugger") ||
@@ -98,6 +99,7 @@ export class Core {
     if (!this.isDebugMode) {
       // eslint-disable-next-line
       globalThis.console.log = (message?: any, ...optionalParams: any[]) => {
+        // @ts-ignore
         globalThis.rawConsoleLog(chalk.bold.yellowBright("RAW CONSOLE: ") + message, ...optionalParams);
       };
     }
@@ -106,7 +108,11 @@ export class Core {
 
     this.isDevMode = !!this.processArguments.dev;
 
-    this.log.info("startup", "YourDash Starting-up with arguments: ", JSON.stringify(this.processArguments));
+    this.log.info(
+      "startup",
+      "YourDash Starting-up with arguments: ",
+      JSON.stringify(this.processArguments, null, 2).replace('  "_": [],\n', ""),
+    );
 
     // Create the rawExpressJs server
     this.rawExpressJs = express();
@@ -168,7 +174,7 @@ export class Core {
           this.log.info("command", `set "${key}" to "${value}"`);
           break;
         case "get":
-          this.log.info("command", this.globalDb.get(key));
+          this.log.info("command", this.globalDb.get(key) || "undefined");
           break;
         case "delete":
           this.globalDb.removeValue(key);
@@ -224,6 +230,8 @@ export class Core {
               this.loadCoreEndpoints();
             });
           } catch (err) {
+            if (!(err instanceof Error)) return this.log.error("startup", "err is not an error", err);
+
             if (err.message === "No process running on port") {
               this.log.info("startup", "Attempted to kill port 3563, no process running was currently using port 3563");
 
@@ -235,7 +243,7 @@ export class Core {
               return;
             }
 
-            this.log.warning("startup", "Unable to kill port 3563", err);
+            this.log.warning("startup", "Unable to kill port 3563", JSON.stringify(err));
             await attemptToListen();
           }
         };
@@ -375,6 +383,7 @@ export class Core {
 
     fetch("http://localhost:3563/core/test/self-ping")
       .then((res) => res.json())
+      // @ts-ignore
       .then((data: { success?: boolean }) => {
         if (data?.success) {
           return this.log.success("self_ping_test", "self ping successful - The server is receiving requests");
@@ -678,7 +687,9 @@ export class Core {
 
       const user = this.users.get(username);
 
-      await user.getLoginSessionById(parseInt(sessionId, 10)).invalidate();
+      const sessionIdInt = parseInt(sessionId, 10);
+
+      await user.getLoginSessionById(sessionIdInt)?.invalidate();
 
       return res.json({ success: true });
     });

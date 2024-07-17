@@ -97,15 +97,29 @@ export default class CoreModuleManager {
     const loadedApplications: BackendModule[] = [];
     const installedApplications = this.core.globalDb.get<string[]>("core:installedApplications");
 
+    // if no applications are installed, log an error and return an empty array.
+    if (!installedApplications) {
+      this.core.log.error("module_manager", "No applications installed!");
+      return [];
+    }
+
     for (const applicationName of installedApplications) {
       const modulePath = path.resolve(path.join("../../applications/", applicationName, "./backend"));
       try {
-        loadedApplications.push(await this.loadModule(applicationName, modulePath));
+        const module = await this.loadModule(applicationName, modulePath);
+
+        // if the module does not exist, continue.
+        if (!module) {
+          continue;
+        }
+
+        loadedApplications.push(module);
       } catch (err) {
         this.core.log.error("module_manager", `Failed to load module: ${applicationName}`, err);
       }
     }
 
+    // if no modules were loaded, log an error and return an empty array.
     if (this.getLoadedModules().length === 0) {
       this.core.log.warning("module_manager", "No modules loaded!");
       return [];
