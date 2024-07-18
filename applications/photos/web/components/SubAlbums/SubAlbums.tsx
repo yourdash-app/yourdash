@@ -19,6 +19,12 @@ const SubAlbums: React.FC<{ path: string; scrollerClassName?: string }> = ({ pat
   const navigate = useNavigate();
   const [albums, setAlbums] = useState<EndpointAlbumSubPath>([]);
 
+  useEffect(() => {
+    csi.getJson<EndpointAlbumSubPath>(`/app/photos/album/sub/0/@` + path).then((data) => {
+      setAlbums(() => data);
+    });
+  }, [path]);
+
   if (!albums) return null;
 
   return (

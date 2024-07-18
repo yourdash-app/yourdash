@@ -116,13 +116,13 @@ export default class CoreVideo {
         this.authenticatedVideos.set(username, new Map());
       }
 
-      const user = this.authenticatedVideos.get(username);
+      const user = this.authenticatedVideos.get(username)!;
 
       if (!user.has(sessionId)) {
         user.set(sessionId, new Map());
       }
 
-      user.get(sessionId).set(id, {
+      user.get(sessionId)!.set(id, {
         type,
         value: val,
       });
@@ -136,7 +136,7 @@ export default class CoreVideo {
   }
 
   __internal__removeAuthenticatedVideo(username: string, sessionId: string, id: string) {
-    this.authenticatedVideos.get(username).get(sessionId).delete(id);
+    this.authenticatedVideos.get(username)?.get(sessionId)?.delete(id);
 
     return this;
   }

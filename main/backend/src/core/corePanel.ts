@@ -6,6 +6,7 @@
 import path from "path";
 import YourDashApplication from "../lib/applications.js";
 import { AUTHENTICATED_IMAGE_TYPE } from "./coreImage.js";
+import FSError from "./fileSystem/FSError.js";
 import YourDashPanel from "./helpers/panel.js";
 import { Core } from "./core.js";
 
@@ -31,6 +32,8 @@ export default class CorePanel {
 
               const application = await unreadApplication.read();
 
+              if (!application) return undefined;
+
               const RESIZED_ICON_PATH = path.join("cache/applications/icons", `${application.getName()}`, "128.png");
 
               if (!(await this.core.fs.doesExist(RESIZED_ICON_PATH))) {
@@ -38,13 +41,11 @@ export default class CorePanel {
 
                 await this.core.fs.createDirectory(path.dirname(RESIZED_ICON_PATH));
 
-                const resizedIconPath = await this.core.image.resizeTo(
-                  (await this.core.fs.getFile(await application.getIconPath())).path,
-                  128,
-                  128,
-                  "webp",
-                  true,
-                );
+                const iconFile = await this.core.fs.getFile(await application.getIconPath());
+
+                if (iconFile instanceof FSError) return undefined;
+
+                const resizedIconPath = await this.core.image.resizeTo(iconFile.path, 128, 128, "webp", true);
 
                 await this.core.fs.copy(resizedIconPath, RESIZED_ICON_PATH);
               }
@@ -75,6 +76,8 @@ export default class CorePanel {
           (await panel.getQuickShortcuts()).map(async (shortcut) => {
             const application = await new YourDashApplication(shortcut).read();
 
+            if (!application) return undefined;
+
             const RESIZED_ICON_PATH = path.join("cache/applications/icons", `${application.getName()}`, "64.png");
 
             if (!(await this.core.fs.doesExist(RESIZED_ICON_PATH))) {
@@ -82,13 +85,11 @@ export default class CorePanel {
 
               await this.core.fs.createDirectory(path.dirname(RESIZED_ICON_PATH));
 
-              const resizedIconPath = await this.core.image.resizeTo(
-                (await this.core.fs.getFile(await application.getIconPath())).path,
-                64,
-                64,
-                "webp",
-                true,
-              );
+              const iconFile = await this.core.fs.getFile(await application.getIconPath());
+
+              if (iconFile instanceof FSError) return undefined;
+
+              const resizedIconPath = await this.core.image.resizeTo(iconFile.path, 64, 64, "webp", true);
 
               await this.core.fs.copy(resizedIconPath, RESIZED_ICON_PATH);
             }

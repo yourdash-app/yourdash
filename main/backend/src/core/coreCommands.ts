@@ -29,8 +29,6 @@ export default class CoreCommands {
     this.stdin.setEncoding("utf8");
     this.stdin.resume();
 
-    this.stdout.cursorTo(0, this.stdout.rows);
-
     let cursorPosition = 0;
 
     this.stdin.on("data", (data) => {
@@ -172,5 +170,12 @@ export default class CoreCommands {
     };
 
     return this;
+  }
+
+  displayPrompt() {
+    this.stdout.clearLine(0);
+    this.stdout.cursorTo(0);
+    this.stdout.write("> " + this.currentCommandInput);
+    this.stdout.cursorTo(this.prompt.length);
   }
 }

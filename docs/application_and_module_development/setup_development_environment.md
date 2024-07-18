@@ -299,3 +299,43 @@ yarn install
 ```
 
 </details>
+
+## 5. Start YourDash from the command line
+
+> The following commands must only be run from the directory which YourDash was cloned to.
+
+<details closed>
+
+<summary>Windows</summary>
+
+### Windows
+
+#### Start the backend in development mode
+```powershell
+yarn run dev-backend
+```
+
+#### Start the web client in development mode
+```powershell
+yarn run dev-web
+```
+
+</details>
+
+<details closed>
+
+<summary>Linux</summary>
+
+### Linux
+
+#### Start the backend in development mode
+```bash
+yarn run dev-backend
+```
+
+#### Start the web client in development mode
+```bash
+yarn run dev-web
+```
+
+</details>

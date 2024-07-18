@@ -15,8 +15,8 @@
   ],
   "scripts": {
     "dev-web": "yarn --cwd main/web dev",
-    "dev-deprecated-web": "yarn --cwd ./main/deprecated-web dev",
     "dev-backend": "yarn --cwd ./main/backend dev",
+    "debug-backend": "yarn --cwd ./main/backend debug",
     "start-backend": "yarn --cwd ./main/backend start --log-requests",
     "setup-project": "yarn && yarn --cwd main/web generate-application-routes",
     "build-production": "yarn --cwd ./main/backend compile-all && yarn --cwd ./packages/web build",

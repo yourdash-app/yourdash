@@ -50,7 +50,11 @@ export default class SettingsModule extends BackendModule {
     super.loadEndpoints();
 
     // get installed applications
-    const installedApplications = this.api.core.moduleManager.getModule<StoreBackendModule>("store").getInstalledApplications();
+    const installedApplications = this.api.core.moduleManager.getModule<StoreBackendModule>("store")?.getInstalledApplications();
+
+    if (installedApplications === undefined) {
+      return;
+    }
 
     // rework this to create an object with an array for each category with an array of all it's settings
     this.settingsCategories = {};
@@ -188,11 +192,11 @@ export default class SettingsModule extends BackendModule {
 
     this.api.request.get("/app/settings/developer/install-all-applications", async (req, res) => {
       this.installableApplications.map(async (app) => {
-        if (core.globalDb.get<string[]>("core:installedApplications").includes(app)) return;
+        if (core.globalDb.get<string[]>("core:installedApplications")?.includes(app)) return;
 
-        core.globalDb.set("core:installedApplications", [...core.globalDb.get<string[]>("core:installedApplications"), app]);
+        core.globalDb.set("core:installedApplications", [...(core.globalDb.get<string[]>("core:installedApplications") || []), app]);
 
-        await this.api.core.restartInstance();
+        this.api.core.restartInstance();
       });
 
       return res.json({ success: true });
@@ -203,7 +207,16 @@ export default class SettingsModule extends BackendModule {
     this.api.request.get("/cat/:categoryid", async (req, res) => {
       const { categoryid } = req.params;
 
-      return res.json(<EndpointSettingsCategory>this.settingsCategories[categoryid]);
+      return res.json(
+        <EndpointSettingsCategory>this.settingsCategories[categoryid] || {
+          displayName: "Unknown Category",
+          id: "unknown",
+          // UNUSED but possible future idea
+          icon: "",
+          description: "This category does not exist.",
+          settings: {},
+        },
+      );
     });
 
     this.api.request.get("/setting/:category/:setting", async (req, res) => {

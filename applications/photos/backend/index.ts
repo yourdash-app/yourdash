@@ -10,10 +10,10 @@ import { AUTHENTICATED_IMAGE_TYPE } from "@yourdash/backend/src/core/coreImage.j
 import { chunk } from "@yourdash/shared/web/helpers/array.js";
 import * as console from "node:console";
 import path from "path";
-import FSDirectory from "main/backend/src/core/fileSystem/FSDirectory.js";
 import BackendModule, { YourDashModuleArguments } from "@yourdash/backend/src/core/moduleManager/backendModule.js";
-import FSFile from "main/backend/src/core/fileSystem/FSFile.js";
 import { EndpointAlbumSubPath } from "../shared/types/endpoints/album/sub/path.js";
+import FSError from "@yourdash/backend/src/core/fileSystem/FSError.js";
+import FSFile from "@yourdash/backend/src/core/fileSystem/FSFile.js";
 
 export default class PhotosBackend extends BackendModule {
   PAGE_SIZE: number;
@@ -59,9 +59,9 @@ export default class PhotosBackend extends BackendModule {
 
         // recursively get all photos
         async function getPhotosRecursively(dirPath: string) {
-          const dir = (await self.api.core.fs.getDirectory(dirPath)) as FSDirectory;
+          const dir = await self.api.core.fs.getDirectory(dirPath);
 
-          if (!dir) return;
+          if (dir instanceof FSError) return;
 
           for (const p of await dir.getChildFiles()) {
             if (p.getType() === "image") {
@@ -440,10 +440,11 @@ export default class PhotosBackend extends BackendModule {
       const page = Number(req.params.page || "0");
       const user = this.api.getUser(req);
 
-      const albumEntity = (await this.api.core.fs.getDirectory(path.join(user.getFsPath(), albumPath))) as FSDirectory;
+      const albumEntity = await this.api.core.fs.getDirectory(path.join(user.getFsPath(), albumPath));
 
-      if (albumEntity === null) {
-        if (albumPath !== "./photos/") return res.json({ error: "Not found" });
+      if (albumEntity instanceof FSError) {
+        // don't send an error, instead send an empty array
+        if (albumPath !== "./photos/") return res.json([]);
 
         await this.api.core.fs.createDirectory(path.join(user.getFsPath(), albumPath));
 
@@ -452,7 +453,11 @@ export default class PhotosBackend extends BackendModule {
 
       const output: { displayName: string; path: string; size: number; thumbnail: string }[] = [];
 
-      for (const subAlbum of chunk(await albumEntity.getChildDirectories(), this.PAGE_SIZE)[page]) {
+      const chunks = chunk(await albumEntity.getChildDirectories(), this.PAGE_SIZE);
+
+      if (page >= chunks.length) return res.json([]);
+
+      for (const subAlbum of chunks[page]) {
         let headerImagePath = "./instance_logo.avif";
 
         for (const subAlbumChild of await subAlbum.getChildFiles()) {
@@ -464,7 +469,7 @@ export default class PhotosBackend extends BackendModule {
 
         output.push({
           displayName: path.basename(subAlbum.path),
-          path: subAlbum.path,
+          path: subAlbum.path.replace(`${user.getFsPath()}`, ""),
           size: (await subAlbum.getChildFiles()).length,
           thumbnail: await this.api.core.image.createResizedAuthenticatedImage(
             user.username,

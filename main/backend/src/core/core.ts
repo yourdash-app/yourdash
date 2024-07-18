@@ -142,6 +142,12 @@ export class Core {
       this.log.info("command", "Hello from YourDash!");
     });
 
+    this.commands.registerCommand(["clear", "cl", "cls"], () => {
+      process.stdout.cursorTo(0, 0);
+      process.stdout.clearScreenDown();
+      this.commands.displayPrompt();
+    });
+
     this.commands.registerCommand("restart", async () => {
       this.restartInstance();
     });
@@ -546,6 +552,36 @@ export class Core {
     try {
       console.time("core_load_modules");
       loadedModules = (await this.moduleManager.loadInstalledApplications()).filter((x) => x !== undefined && x !== null);
+
+      const externalModules: string | string[] = this.processArguments["load-external-application"];
+
+      this.log.info("external_modules", "Loading external module(s):", externalModules.toString());
+
+      if (externalModules) {
+        if (typeof externalModules === "string") {
+          // external Modules is a string
+          try {
+            const backendModule = await this.moduleManager.loadModule(path.basename(externalModules), externalModules);
+            if (backendModule) loadedModules.push(backendModule);
+          } catch (err) {
+            if (err instanceof Error) {
+              this.log.error("startup", `Failed to load external module ${externalModules}`, err);
+            }
+          }
+        } else {
+          // externalModules must be an array
+          for (const externalModule of externalModules) {
+            try {
+              const backendModule = await this.moduleManager.loadModule(path.basename(externalModule), externalModule);
+              if (backendModule) loadedModules.push(backendModule);
+            } catch (err) {
+              if (err instanceof Error) {
+                this.log.error("startup", `Failed to load external module ${externalModule}`, err);
+              }
+            }
+          }
+        }
+      }
 
       console.timeEnd("core:load_modules");
       this.log.info("startup", "All modules loaded successfully");

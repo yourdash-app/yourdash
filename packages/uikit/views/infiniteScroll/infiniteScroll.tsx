@@ -18,7 +18,7 @@ const InfiniteScroll: React.FC<{
 }> = ({ children, fetchNextPage, containerClassName, className, hasMorePages }) => {
   const ref = React.useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const nextPage = React.useRef<number>(0);
+  const nextPage = React.useRef<number>(-1);
 
   const fetchNextPageWrapper = async () => {
     nextPage.current++;

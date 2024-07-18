@@ -86,7 +86,7 @@ export default class coreFS {
             break;
         }
 
-        this.core.log.error("filesystem", "generic filesystem error", err);
+        this.core.log.error("filesystem", `generic filesystem error @ getFile(${path})`, err);
         return err;
       }
 
@@ -115,7 +115,7 @@ export default class coreFS {
         return err;
       }
 
-      this.core.log.error("filesystem", "generic filesystem error", err);
+      this.core.log.error("filesystem", `generic filesystem error @ getDirectory(${path})`, err);
       return new FSError(FS_ERROR_TYPE.NO_REASON_PROVIDED);
     }
 
@@ -136,7 +136,13 @@ export default class coreFS {
     try {
       return (await fs.stat(pth.join(this.ROOT_PATH, path))).isDirectory() ? "directory" : "file";
     } catch (err) {
-      this.core.log.error("filesystem", `generic filesystem error at '${path}'`, err);
+      if (err instanceof Error) {
+        if (err.message.startsWith("ENOENT")) {
+          return new FSError(FS_ERROR_TYPE.DOES_NOT_EXIST);
+        }
+      }
+
+      this.core.log.error("filesystem", `generic filesystem error @ getEntityType(${path})`, err);
       return new FSError(FS_ERROR_TYPE.NO_REASON_PROVIDED);
     }
   }
