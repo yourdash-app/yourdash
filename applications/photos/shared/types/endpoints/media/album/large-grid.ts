@@ -4,15 +4,15 @@
  */
 
 import { MediaMetadata } from "../../../mediaMetadata.js";
-import { MEDIA_TYPE } from "../../../mediaType.js";
+import { PHOTOS_MEDIA_TYPE } from "../../../mediaType.js";
 
-export type MediaAlbumLargeGridItem<Type extends MEDIA_TYPE> = {
+export type MediaAlbumLargeGridItem<Type extends PHOTOS_MEDIA_TYPE> = {
   path: string;
   type: Type;
   metadata: MediaMetadata<Type>;
   mediaUrl: string;
 };
 
-type EndpointMediaAlbumLargeGrid = MediaAlbumLargeGridItem<MEDIA_TYPE>[];
+type EndpointMediaAlbumLargeGrid = MediaAlbumLargeGridItem<PHOTOS_MEDIA_TYPE>[];
 
 export default EndpointMediaAlbumLargeGrid;

@@ -8,12 +8,12 @@ import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary.js";
 import Image from "@yourdash/uikit/components/image/image.js";
 import { FC } from "react";
 import { MediaAlbumLargeGridItem } from "../../../../../shared/types/endpoints/media/album/large-grid.js";
-import { MEDIA_TYPE } from "../../../../../shared/types/mediaType.js";
+import { PHOTOS_MEDIA_TYPE } from "../../../../../shared/types/mediaType.js";
 import { useNavigate } from "react-router-dom";
 import styles from "./albumGridMedia.module.scss";
 
 const AlbumGridMedia: FC<{
-  data: MediaAlbumLargeGridItem<MEDIA_TYPE.IMAGE | MEDIA_TYPE.VIDEO>;
+  data: MediaAlbumLargeGridItem<PHOTOS_MEDIA_TYPE.Image | PHOTOS_MEDIA_TYPE.Video>;
   aspectRatio: number;
   rowHeight: number;
   displayWidth: number;
@@ -21,8 +21,8 @@ const AlbumGridMedia: FC<{
   const navigate = useNavigate();
 
   switch (data.type) {
-    case MEDIA_TYPE.IMAGE:
-    case MEDIA_TYPE.VIDEO:
+    case PHOTOS_MEDIA_TYPE.Image:
+    case PHOTOS_MEDIA_TYPE.Video:
       return (
         <div
           className={styles.component}
@@ -40,7 +40,7 @@ const AlbumGridMedia: FC<{
             src={data.mediaUrl}
             authenticatedImage
           />
-          {data.type === MEDIA_TYPE.VIDEO && (
+          {data.type === PHOTOS_MEDIA_TYPE.Video && (
             <div className={styles.videoOverlay}>
               <Icon
                 icon={UKIcon.Video}
@@ -48,7 +48,7 @@ const AlbumGridMedia: FC<{
               />
             </div>
           )}
-          {data.type === MEDIA_TYPE.IMAGE && (
+          {data.type === PHOTOS_MEDIA_TYPE.Image && (
             <div
               className={styles.dimensionOverlay}
               onClick={(e) => e.stopPropagation()}

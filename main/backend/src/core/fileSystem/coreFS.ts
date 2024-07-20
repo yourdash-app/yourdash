@@ -35,7 +35,7 @@ export default class coreFS {
         return new FSFile(this.core, path);
       }
     } catch (_err) {
-      return new FSError(FS_ERROR_TYPE.NO_REASON_PROVIDED);
+      throw new FSError(FS_ERROR_TYPE.NO_REASON_PROVIDED);
     }
   }
 
@@ -86,12 +86,12 @@ export default class coreFS {
             break;
         }
 
-        this.core.log.error("filesystem", `generic filesystem error @ getFile(${path})`, err);
+        this.core.log.error("filesystem", `generic filesystem error @ getFile(${path})`, JSON.stringify(err));
         return err;
       }
 
       this.core.log.error("filesystem", `generic filesystem error when getting file at ${path}, this was not an FSError!`, err);
-      return new FSError(FS_ERROR_TYPE.NO_REASON_PROVIDED);
+      throw new FSError(FS_ERROR_TYPE.NO_REASON_PROVIDED);
     }
 
     return await this.createFile(path);
@@ -116,7 +116,7 @@ export default class coreFS {
       }
 
       this.core.log.error("filesystem", `generic filesystem error @ getDirectory(${path})`, err);
-      return new FSError(FS_ERROR_TYPE.NO_REASON_PROVIDED);
+      throw new FSError(FS_ERROR_TYPE.NO_REASON_PROVIDED);
     }
 
     return await this.createDirectory(path);
@@ -137,13 +137,13 @@ export default class coreFS {
       return (await fs.stat(pth.join(this.ROOT_PATH, path))).isDirectory() ? "directory" : "file";
     } catch (err) {
       if (err instanceof Error) {
-        if (err.message.startsWith("ENOENT")) {
-          return new FSError(FS_ERROR_TYPE.DOES_NOT_EXIST);
+        if (err.name === "ENOENT") {
+          throw new FSError(FS_ERROR_TYPE.DOES_NOT_EXIST);
         }
       }
 
       this.core.log.error("filesystem", `generic filesystem error @ getEntityType(${path})`, err);
-      return new FSError(FS_ERROR_TYPE.NO_REASON_PROVIDED);
+      throw new FSError(FS_ERROR_TYPE.NO_REASON_PROVIDED);
     }
   }
 
@@ -164,7 +164,7 @@ export default class coreFS {
     const file = new FSFile(this.core, path);
 
     if (await file.doesExist()) {
-      return new FSError(FS_ERROR_TYPE.ALREADY_EXISTS);
+      throw new FSError(FS_ERROR_TYPE.ALREADY_EXISTS);
     }
 
     await file.write("");

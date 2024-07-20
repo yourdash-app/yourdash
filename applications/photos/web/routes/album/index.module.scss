@@ -3,6 +3,8 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+@import "@yourdash/uikit/theme/themeValues";
+
 .header {
   display: flex;
   flex-direction: row;
@@ -19,11 +21,10 @@
   }
 }
 
-.albumGrid {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  overflow: hidden;
-  flex-grow: 0;
-  flex-shrink: 0;
+.subAlbums {
+  padding: var(#{$theme+$padding});
+}
+
+.mediaGrid {
+  padding: var(#{$theme+$padding});
 }

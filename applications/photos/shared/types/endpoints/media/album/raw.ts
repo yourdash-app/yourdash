@@ -4,15 +4,15 @@
  */
 
 import { MediaMetadata } from "../../../mediaMetadata.js";
-import { MEDIA_TYPE } from "../../../mediaType.js";
+import { PHOTOS_MEDIA_TYPE } from "../../../mediaType.js";
 
-export type MediaRaw<Type extends MEDIA_TYPE.IMAGE | MEDIA_TYPE.VIDEO> = {
+export type MediaRaw<Type extends PHOTOS_MEDIA_TYPE.Image | PHOTOS_MEDIA_TYPE.Video> = {
   path: string;
   type: Type;
   metadata: MediaMetadata<Type>;
   mediaUrl: string;
 };
 
-type EndpointMediaRaw = MediaRaw<MEDIA_TYPE.IMAGE | MEDIA_TYPE.VIDEO>;
+type EndpointMediaRaw = MediaRaw<PHOTOS_MEDIA_TYPE.Image | PHOTOS_MEDIA_TYPE.Video>;
 
 export default EndpointMediaRaw;

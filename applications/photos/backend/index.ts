@@ -7,20 +7,27 @@
 //  save a copy of them pre-resized alongside the photos as resizing images is also costly
 
 import { AUTHENTICATED_IMAGE_TYPE } from "@yourdash/backend/src/core/coreImage.js";
+import FSError, { FS_ERROR_TYPE } from "@yourdash/backend/src/core/fileSystem/FSError.js";
+import FSFile from "@yourdash/backend/src/core/fileSystem/FSFile.js";
+import BackendModule, { YourDashModuleArguments } from "@yourdash/backend/src/core/moduleManager/backendModule.js";
 import { chunk } from "@yourdash/shared/web/helpers/array.js";
 import * as console from "node:console";
 import path from "path";
-import BackendModule, { YourDashModuleArguments } from "@yourdash/backend/src/core/moduleManager/backendModule.js";
+// @ts-ignore
+import sharp from "sharp";
+import EndpointAlbumMediaPath, { AlbumMediaPath } from "../shared/types/endpoints/album/media/path.js";
 import { EndpointAlbumSubPath } from "../shared/types/endpoints/album/sub/path.js";
-import FSError from "@yourdash/backend/src/core/fileSystem/FSError.js";
-import FSFile from "@yourdash/backend/src/core/fileSystem/FSFile.js";
+import { PHOTOS_MEDIA_TYPE } from "../shared/types/mediaType.js";
 
 export default class PhotosBackend extends BackendModule {
   PAGE_SIZE: number;
+  THUMBNAIL_CACHE_LOCATION = "/cache/photos/thumbnails";
 
   constructor(args: YourDashModuleArguments) {
     super(args);
     this.PAGE_SIZE = 24;
+
+    this.api.core.fs.createDirectory(this.THUMBNAIL_CACHE_LOCATION);
 
     this.api.core.users.getAllUsers().then((users) => {
       users.forEach((u) => {
@@ -98,6 +105,71 @@ export default class PhotosBackend extends BackendModule {
     );
   }
 
+  async generateMediaThumbnails(mediaPath: string): Promise<boolean> {
+    const fileRawThumbnail = await this.api.core.fs.getFile(path.join(this.THUMBNAIL_CACHE_LOCATION, `${mediaPath}.raw.webp`));
+
+    if (!(fileRawThumbnail instanceof FSFile)) {
+      if (fileRawThumbnail.reason === FS_ERROR_TYPE.DOES_NOT_EXIST) {
+        const file = await this.api.core.fs.getFile(mediaPath);
+
+        if (file instanceof FSError) {
+          return false;
+        }
+
+        switch (file.getType()) {
+          case "image":
+            try {
+              await this.api.core.fs.createDirectory(
+                path.join(this.THUMBNAIL_CACHE_LOCATION, mediaPath.replace(path.basename(mediaPath), "")),
+              );
+
+              await sharp(file.path)
+                .toFormat("webp")
+                .toFile(path.join(this.THUMBNAIL_CACHE_LOCATION, `${mediaPath}.raw.webp`));
+            } catch (err) {
+              console.log(`ERROR With Output Path: ${path.join(this.THUMBNAIL_CACHE_LOCATION, `${mediaPath}.raw.webp`)}`);
+            }
+
+            break;
+          default:
+            console.log(`UNKNOWN TYPE: ${file.getType()}`);
+            return false;
+        }
+      }
+
+      return false;
+    }
+
+    // lowres
+    await sharp(fileRawThumbnail.path)
+      .resize({
+        width: 120,
+        height: 100,
+      })
+      .toFormat("webp")
+      .toFile(path.join(this.THUMBNAIL_CACHE_LOCATION, `${mediaPath}.lowres.webp`));
+
+    // medres
+    await sharp(fileRawThumbnail.path)
+      .resize({
+        width: 400,
+        height: 100,
+      })
+      .toFormat("webp")
+      .toFile(path.join(this.THUMBNAIL_CACHE_LOCATION, `${mediaPath}.medres.webp`));
+
+    // hires
+    await sharp(fileRawThumbnail.path)
+      .resize({
+        width: 512,
+        height: 100,
+      })
+      .toFormat("webp")
+      .toFile(path.join(this.THUMBNAIL_CACHE_LOCATION, `${mediaPath}.hires.webp`));
+
+    return true;
+  }
+
   public loadEndpoints() {
     super.loadEndpoints();
 
@@ -116,7 +188,7 @@ export default class PhotosBackend extends BackendModule {
     //     return res.json(
     //       dirs
     //         .map((d) => {
-    //           if (d.getName() === ".yd-thumbnails") return null;
+    //           if (d.getName() === ".yd-thumbnailss") return null;
     //
     //           return {
     //             path: d.path.replace(user.getFsPath(), ""),
@@ -151,7 +223,7 @@ export default class PhotosBackend extends BackendModule {
     //       return res.json({ error: "The path supplied is not a directory." });
     //     }
     //
-    //     const thumbnailsDirectory = path.join(item.path, ".yd-thumbnails");
+    //     const thumbnailsDirectory = path.join(item.path, ".yd-thumbnailss");
     //
     //     if (!(await this.api.core.fs.doesExist(thumbnailsDirectory))) {
     //       await this.api.core.fs.createDirectory(thumbnailsDirectory);
@@ -359,7 +431,7 @@ export default class PhotosBackend extends BackendModule {
     //   return res.json(
     //     (await albumDirectory.getChildren())
     //       .filter((child) => child.entityType === FILESYSTEM_ENTITY_TYPE.DIRECTORY)
-    //       .filter((i) => path.basename(i.path) !== ".yd-thumbnails")
+    //       .filter((i) => path.basename(i.path) !== ".yd-thumbnailss")
     //       .map((child) => {
     //         return child.path.replace(user.getFsPath(), "");
     //       }),
@@ -486,9 +558,39 @@ export default class PhotosBackend extends BackendModule {
       res.json(output);
     });
 
-    this.api.request.get("/media/thumbnail/:size/@/*", async (req, res) => {
+    this.api.request.get("/media/thumbnail/:res/@/*", async (req, res) => {
+      const { res: resolution } = req.params;
+      const mediaPath = req.params["0"] as string;
+
+      let thumbnailPath: string;
+
+      // only allow lowres, medres, hires
+      switch (resolution) {
+        case "lowres":
+          thumbnailPath = path.join(this.THUMBNAIL_CACHE_LOCATION, `${mediaPath}.lowres.webp`);
+          break;
+        case "medres":
+          thumbnailPath = path.join(this.THUMBNAIL_CACHE_LOCATION, `${mediaPath}.medres.webp`);
+          break;
+        case "hires":
+          thumbnailPath = path.join(this.THUMBNAIL_CACHE_LOCATION, `${mediaPath}.hires.webp`);
+          break;
+        default:
+          return res.json({
+            error: true,
+          });
+      }
+
+      const file = await this.api.core.fs.getFile(thumbnailPath);
+
+      if (file instanceof FSError) {
+        return res.json({
+          error: true,
+        });
+      }
+
       res.json({
-        error: "Not implemented",
+        image: this.api.core.image.createAuthenticatedImage(req.username, req.sessionId, AUTHENTICATED_IMAGE_TYPE.FILE, thumbnailPath),
       });
     });
 
@@ -498,10 +600,66 @@ export default class PhotosBackend extends BackendModule {
       });
     });
 
-    this.api.request.get("/album/media/:page/@/*", async (req, res) => {
-      res.json({
-        error: "Not implemented",
-      });
+    this.api.request.get<EndpointAlbumMediaPath>("/album/media/:page/@/*", async (req, res) => {
+      const sessionId = req.headers.sessionid;
+      const albumPath = (req.params["0"] as string) || "./photos/";
+      const page = Number(req.params.page || "0");
+      const user = this.api.getUser(req);
+
+      const albumEntity = await this.api.core.fs.getDirectory(path.join(user.getFsPath(), albumPath));
+
+      if (albumEntity instanceof FSError) {
+        // don't send an error, instead send an empty array
+        if (albumPath !== "./photos/") return res.json([]);
+
+        await this.api.core.fs.createDirectory(path.join(user.getFsPath(), albumPath));
+
+        return res.json([]);
+      }
+
+      const output: {
+        mediaType: PHOTOS_MEDIA_TYPE;
+        path: string;
+        resolution: { width: number; height: number };
+        metadata?: { people?: string[] };
+      }[] = [];
+
+      const chunks = chunk(await albumEntity.getChildFiles(), this.PAGE_SIZE);
+
+      if (page >= chunks.length) return res.json([]);
+
+      for (const albumMedia of chunks[page]) {
+        await this.generateMediaThumbnails(albumMedia.path);
+
+        let mediaType: PHOTOS_MEDIA_TYPE;
+
+        switch (albumMedia.getType()) {
+          case "image":
+            mediaType = PHOTOS_MEDIA_TYPE.Image;
+            break;
+          case "video":
+            mediaType = PHOTOS_MEDIA_TYPE.Video;
+            break;
+          default:
+            mediaType = PHOTOS_MEDIA_TYPE.Unknown;
+            break;
+        }
+
+        const mediaDimensions = await this.api.core.image.getImageDimensions(
+          path.join(this.THUMBNAIL_CACHE_LOCATION, `${albumMedia.path}.raw.webp`),
+        );
+
+        output.push(<AlbumMediaPath>{
+          path: albumMedia.path.replace(user.getFsPath(), ""),
+          resolution: { width: mediaDimensions.width, height: mediaDimensions.height },
+          mediaType: mediaType,
+          metadata: {
+            people: ["TEST_PERSON1", "TEST_PERSON2"],
+          },
+        });
+      }
+
+      res.json(output);
     });
   }
 }

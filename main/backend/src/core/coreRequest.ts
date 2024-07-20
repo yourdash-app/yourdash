@@ -39,7 +39,7 @@ export default class CoreRequest {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  get<TResponse = any>(
+  get<TResponse = unknown>(
     path: string | string[],
     callback: (
       req: ExpressRequest & RequestExtras,
@@ -95,8 +95,8 @@ export default class CoreRequest {
             await callback({ ...req, sessionId: req.headers.sessionid as string, username: req.headers.username as string } as never, res);
           } catch (err) {
             if (err instanceof Error) {
-              this.core.log.error(`request_error`, new Error().stack);
               this.core.log.error("request_error", `${req.path}; Request error not caught: ${err.message}`);
+              this.core.log.error(`request_error`, "\t\t\t\t" + new Error().stack);
             }
           }
         },

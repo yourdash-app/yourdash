@@ -10,16 +10,18 @@ import Image from "@yourdash/uikit/components/image/image";
 import Text from "@yourdash/uikit/components/text/text";
 import InfiniteScroll from "@yourdash/uikit/views/infiniteScroll/infiniteScroll";
 import React, { useEffect, useState } from "react";
+import EndpointAlbumMediaPath from "../../../shared/types/endpoints/album/media/path";
 import { EndpointAlbumSubPath } from "../../../shared/types/endpoints/album/sub/path";
-import styles from "./SubAlbums.module.scss";
+import AlbumMedia from "../AlbumMedia/AlbumMedia";
+import styles from "./AlbumMediaGrid.module.scss";
 import { useNavigate } from "react-router";
 
-const SubAlbums: React.FC<{ path: string; scrollerClassName?: string }> = ({ path, scrollerClassName }) => {
+const AlbumMediaGrid: React.FC<{ path: string; scrollerClassName?: string }> = ({ path, scrollerClassName }) => {
   const navigate = useNavigate();
-  const [albums, setAlbums] = useState<EndpointAlbumSubPath>([]);
+  const [albums, setAlbums] = useState<EndpointAlbumMediaPath>([]);
 
   useEffect(() => {
-    csi.getJson<EndpointAlbumSubPath>(`/app/photos/album/sub/0/@` + path).then((data) => {
+    csi.getJson<EndpointAlbumMediaPath>(`/app/photos/album/media/0/@` + path).then((data) => {
       setAlbums(() => data);
     });
   }, [path]);
@@ -31,33 +33,16 @@ const SubAlbums: React.FC<{ path: string; scrollerClassName?: string }> = ({ pat
       hasMorePages={true}
       resetState={path}
       fetchNextPage={async (nextPageNumber) => {
-        const data = await csi.getJson<EndpointAlbumSubPath>(`/app/photos/album/sub/${nextPageNumber}/@` + path);
+        const data = await csi.getJson<EndpointAlbumMediaPath>(`/app/photos/album/media/${nextPageNumber}/@` + path);
         setAlbums((previousAlbums) => [...previousAlbums, ...data]);
       }}
       className={clippy(styles.component, scrollerClassName)}
     >
       {albums.map((album) => {
-        return (
-          <Card
-            containerClassName={styles.album}
-            key={album.path}
-            onClick={() => {
-              navigate("/app/a/photos/album/?p=" + csi.path.toUnix(album.path));
-            }}
-          >
-            <Image
-              containerClassName={styles.thumbnailContainer}
-              className={styles.thumbnail}
-              accessibleLabel={""}
-              authenticatedImage={true}
-              src={album.thumbnail}
-            />
-            <Text text={album.displayName} />
-          </Card>
-        );
+        return <AlbumMedia />;
       })}
     </InfiniteScroll>
   );
 };
 
-export default SubAlbums;
+export default AlbumMediaGrid;

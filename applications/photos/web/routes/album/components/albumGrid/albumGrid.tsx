@@ -8,7 +8,7 @@ import Spinner from "@yourdash/uikit/components/spinner/spinner";
 import { FC, useEffect, useRef, useState } from "react";
 import { MediaAlbumLargeGridItem } from "../../../../../shared/types/endpoints/media/album/large-grid";
 import { EndpointMediaAlbumSubAlbums } from "../../../../../shared/types/endpoints/media/album/subAlbums";
-import { MEDIA_TYPE } from "../../../../../shared/types/mediaType";
+import { PHOTOS_MEDIA_TYPE } from "../../../../../shared/types/mediaType";
 import splitItemsIntoRows from "../../../../lib/splitItemsIntoRows";
 import AlbumGridMediaRow from "../albumGridMediaRow/albumGridMediaRow";
 import Album from "./album/album.js";
@@ -22,7 +22,7 @@ const AlbumGrid: FC<{
   const ref = useRef<HTMLDivElement>(null);
   const [rows, setRows] = useState<
     {
-      items: (MediaAlbumLargeGridItem<MEDIA_TYPE.IMAGE | MEDIA_TYPE.VIDEO> & { displayWidth: number })[];
+      items: (MediaAlbumLargeGridItem<PHOTOS_MEDIA_TYPE.Image | PHOTOS_MEDIA_TYPE.Video> & { displayWidth: number })[];
       height: number;
     }[]
   >([]);

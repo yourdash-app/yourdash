@@ -5,14 +5,14 @@
 
 import { FC } from "react";
 import { MediaAlbumLargeGridItem } from "../../../../../shared/types/endpoints/media/album/large-grid";
-import { MEDIA_TYPE } from "../../../../../shared/types/mediaType";
+import { PHOTOS_MEDIA_TYPE } from "../../../../../shared/types/mediaType";
 import { calculateAspectRatio } from "../../../../lib/splitItemsIntoRows";
 import AlbumGridMedia from "../albumGridMedia/albumGridMedia";
 import styles from "./albumGridMediaRow.module.scss";
 
 const AlbumGridMediaRow: FC<{
   rowHeight: number;
-  items: (MediaAlbumLargeGridItem<MEDIA_TYPE.IMAGE | MEDIA_TYPE.VIDEO> & { displayWidth: number })[];
+  items: (MediaAlbumLargeGridItem<PHOTOS_MEDIA_TYPE.Image | PHOTOS_MEDIA_TYPE.Video> & { displayWidth: number })[];
 }> = ({ rowHeight, items }) => {
   return (
     <div

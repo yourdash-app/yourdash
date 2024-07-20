@@ -10,6 +10,7 @@ import IconButton from "@yourdash/uikit/components/iconButton/iconButton.js";
 import { FC } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import path from "path-browserify";
+import AlbumMediaGrid from "../../components/AlbumMediaGrid/AlbumMediaGrid";
 import SubAlbums from "../../components/SubAlbums/SubAlbums";
 import styles from "./index.module.scss";
 
@@ -42,7 +43,14 @@ const AlbumPathPage: FC = () => {
           text={path.basename(albumPath) || albumPath}
         />
       </Box>
-      <SubAlbums path={albumPath || "/"} />
+      <SubAlbums
+        scrollerClassName={styles.subAlbums}
+        path={albumPath || "/"}
+      />
+      <AlbumMediaGrid
+        scrollerClassName={styles.mediaGrid}
+        path={albumPath || "/"}
+      />
     </>
   );
 };

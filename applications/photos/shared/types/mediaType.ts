@@ -3,7 +3,8 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-export enum MEDIA_TYPE {
-  IMAGE,
-  VIDEO,
+export enum PHOTOS_MEDIA_TYPE {
+  Image,
+  Video,
+  Unknown,
 }

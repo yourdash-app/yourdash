@@ -5,14 +5,14 @@
 
 import { MAX_HEIGHT } from "../../shared/grid";
 import { MediaAlbumLargeGridItem } from "../../shared/types/endpoints/media/album/large-grid";
-import { MEDIA_TYPE } from "../../shared/types/mediaType";
+import { PHOTOS_MEDIA_TYPE } from "../../shared/types/mediaType";
 
 export function calculateAspectRatio(dimensions: { width: number; height: number }) {
   return dimensions.width / dimensions.height;
 }
 
 function calculateRowHeight(
-  items: MediaAlbumLargeGridItem<MEDIA_TYPE.IMAGE | MEDIA_TYPE.VIDEO>[],
+  items: MediaAlbumLargeGridItem<PHOTOS_MEDIA_TYPE.Image | PHOTOS_MEDIA_TYPE.Video>[],
   containerWidth: number,
   containerHeight: number,
   isLast: boolean,
@@ -37,23 +37,20 @@ function calculateRowHeight(
   return rowHeight;
 }
 
-function calculateRowWidth(
-  items: MediaAlbumLargeGridItem<MEDIA_TYPE.IMAGE | MEDIA_TYPE.VIDEO>[],
-  containerHeight: number,
-) {
+function calculateRowWidth(items: MediaAlbumLargeGridItem<PHOTOS_MEDIA_TYPE.Image | PHOTOS_MEDIA_TYPE.Video>[], containerHeight: number) {
   return items
     .map((item) => containerHeight * calculateAspectRatio({ width: item.metadata.width, height: item.metadata.height }))
     .reduce((sum, itemWidth) => sum + itemWidth);
 }
 
 export default function splitItemsIntoRows(
-  items: MediaAlbumLargeGridItem<MEDIA_TYPE.IMAGE | MEDIA_TYPE.VIDEO>[],
+  items: MediaAlbumLargeGridItem<PHOTOS_MEDIA_TYPE.Image | PHOTOS_MEDIA_TYPE.Video>[],
   containerWidth: number,
   baseRowHeight: number,
 ) {
   const rows: {
     height: number;
-    items: (MediaAlbumLargeGridItem<MEDIA_TYPE.IMAGE | MEDIA_TYPE.VIDEO> & { displayWidth: number })[];
+    items: (MediaAlbumLargeGridItem<PHOTOS_MEDIA_TYPE.Image | PHOTOS_MEDIA_TYPE.Video> & { displayWidth: number })[];
   }[] = [];
   let currentRowNumber = 0;
   let currentRowItem = 0;
@@ -64,10 +61,7 @@ export default function splitItemsIntoRows(
     do {
       // @ts-ignore
       rowItems.push(items[currentRowItem++]);
-    } while (
-      currentRowItem < items.length &&
-      calculateRowWidth([...rowItems, items[currentRowItem]], baseRowHeight) <= containerWidth
-    );
+    } while (currentRowItem < items.length && calculateRowWidth([...rowItems, items[currentRowItem]], baseRowHeight) <= containerWidth);
 
     const rowHeight = calculateRowHeight(rowItems, containerWidth, baseRowHeight, items.length === currentRowItem);
 

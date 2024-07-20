@@ -17,7 +17,7 @@ import EndpointMediaRaw from "../../../shared/types/endpoints/media/album/raw.js
 import ViewVideo from "./components/viewVideo/viewVideo.js";
 import styles from "./index.module.scss";
 import ViewImage from "./components/viewImage/viewImage.js";
-import { MEDIA_TYPE } from "../../../shared/types/mediaType.js";
+import { PHOTOS_MEDIA_TYPE } from "../../../shared/types/mediaType.js";
 import csi from "@yourdash/csi/csi.js";
 
 const ViewPathPage: FC = () => {
@@ -27,7 +27,7 @@ const ViewPathPage: FC = () => {
   const media = useResource<EndpointMediaRaw>(() => csi.getJson(`/app/photos/media/raw/@/${mediaPath}`), [mediaPath]);
 
   return (
-    <div className={clippy(styles.page, media?.type === MEDIA_TYPE.VIDEO && styles.video)}>
+    <div className={clippy(styles.page, media?.type === PHOTOS_MEDIA_TYPE.Video && styles.video)}>
       <div className={styles.header}>
         <ButtonWithIcon
           text={"Go Back"}
@@ -47,8 +47,8 @@ const ViewPathPage: FC = () => {
       </div>
       {media && (
         <>
-          {media.type === MEDIA_TYPE.IMAGE && <ViewImage mediaUrl={media.mediaUrl} />}
-          {media.type === MEDIA_TYPE.VIDEO && <ViewVideo mediaUrl={media.mediaUrl} />}
+          {media.type === PHOTOS_MEDIA_TYPE.Image && <ViewImage mediaUrl={media.mediaUrl} />}
+          {media.type === PHOTOS_MEDIA_TYPE.Video && <ViewVideo mediaUrl={media.mediaUrl} />}
         </>
       )}
     </div>
