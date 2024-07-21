@@ -60,7 +60,6 @@ export default class CoreModuleManager {
       }
 
       const initializedModule = new mod.default({ moduleName: moduleName, modulePath: modulePath });
-      this.loadedModules.push(mod);
       this.core.log.success("module_manager", `Loaded module: "${moduleName}" in ${new Date().getTime() - startTime.getTime()}ms`);
       this.loadedModules.push(initializedModule);
       return initializedModule;

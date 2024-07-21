@@ -151,7 +151,7 @@ export default class FilesModule extends BackendModule {
         }
       } ); */
 
-    this.api.request.get(`/app/${this.api.applicationName}`, (req, res) => {
+    this.api.request.get(`/app/${this.api.applicationName}`, async (req, res) => {
       return res.json({ message: `Hello world from ${this.api.applicationName}! 👋` });
     });
 

@@ -9,6 +9,7 @@ import TextInput from "@yourdash/uikit/components/textInput/textInput.js";
 import useResource from "@yourdash/csi/useResource";
 import React, { FC } from "react";
 import EndpointMediaSearch from "../../../shared/types/endpoints/media/search.js";
+import AlbumMediaGrid from "../../components/AlbumMediaGrid/AlbumMediaGrid";
 import SubAlbums from "../../components/SubAlbums/SubAlbums";
 import SearchPageResults from "./components/results.js";
 import styles from "./index.module.scss";
@@ -31,7 +32,11 @@ const SearchIndexPage: FC = () => {
       {searchResults && <SearchPageResults results={searchResults} />}
       <SubAlbums
         scrollerClassName={styles.subAlbums}
-        path={"/photos/media/Instander"}
+        path={"/photos"}
+      />
+      <AlbumMediaGrid
+        scrollerClassName={styles.subAlbums}
+        path={"/photos"}
       />
     </div>
   );

@@ -5,6 +5,7 @@
 
 import KVD from "@yourdash/shared/core/database.js";
 import core from "../core/core.js";
+import FSError from "../core/fileSystem/FSError.js";
 
 export default class KeyValueDatabase extends KVD {
   constructor() {
@@ -13,7 +14,14 @@ export default class KeyValueDatabase extends KVD {
 
   async __internal__doNotUseOnlyIntendedForShutdownSequenceWriteToDisk(path: string, cb?: () => void) {
     try {
-      await (await core.fs.getFile(path)).write(JSON.stringify(this.keys));
+      const dbFile = await core.fs.getFile(path);
+
+      if (dbFile instanceof FSError) {
+        core.log.error("key_value_database", "could not be found!");
+        return false;
+      }
+
+      await dbFile.write(JSON.stringify(this.keys));
       if (cb) cb();
     } catch (_err) {
       /* empty */
@@ -23,9 +31,23 @@ export default class KeyValueDatabase extends KVD {
   async writeToDisk(path: string): Promise<boolean> {
     try {
       if (core.isDevMode) {
-        await (await core.fs.getFile(path)).write(JSON.stringify(this.keys, null, 2));
+        const dbFile = await core.fs.getFile(path);
+
+        if (dbFile instanceof FSError) {
+          core.log.error("key_value_database", "could not be found!");
+          return false;
+        }
+
+        await dbFile.write(JSON.stringify(this.keys, null, 2));
       } else {
-        await (await core.fs.getFile(path)).write(JSON.stringify(this.keys));
+        const dbFile = await core.fs.getFile(path);
+
+        if (dbFile instanceof FSError) {
+          core.log.error("key_value_database", "could not be found!");
+          return false;
+        }
+
+        await dbFile.write(JSON.stringify(this.keys));
       }
 
       return true;
@@ -36,8 +58,14 @@ export default class KeyValueDatabase extends KVD {
 
   async readFromDisk(path: string) {
     try {
-      const data = await (await core.fs.getFile(path)).read("string");
-      console.log("DB", data);
+      const dbFile = await core.fs.getFile(path);
+
+      if (dbFile instanceof FSError) {
+        core.log.error("key_value_database", "could not be found!");
+        return false;
+      }
+
+      const data = await dbFile.read("string");
       this.keys = JSON.parse(data);
       return true;
     } catch (_err) {

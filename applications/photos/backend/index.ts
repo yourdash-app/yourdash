@@ -535,7 +535,6 @@ export default class PhotosBackend extends BackendModule {
         for (const subAlbumChild of await subAlbum.getChildFiles()) {
           if (subAlbumChild.getType() === "image") {
             headerImagePath = subAlbumChild.path;
-            break;
           }
         }
 

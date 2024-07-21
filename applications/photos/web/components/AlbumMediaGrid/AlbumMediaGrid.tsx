@@ -5,13 +5,9 @@
 
 import csi from "@yourdash/csi/csi";
 import clippy from "@yourdash/shared/web/helpers/clippy";
-import Card from "@yourdash/uikit/components/card/card";
-import Image from "@yourdash/uikit/components/image/image";
-import Text from "@yourdash/uikit/components/text/text";
 import InfiniteScroll from "@yourdash/uikit/views/infiniteScroll/infiniteScroll";
 import React, { useEffect, useState } from "react";
 import EndpointAlbumMediaPath from "../../../shared/types/endpoints/album/media/path";
-import { EndpointAlbumSubPath } from "../../../shared/types/endpoints/album/sub/path";
 import AlbumMedia from "../AlbumMedia/AlbumMedia";
 import styles from "./AlbumMediaGrid.module.scss";
 import { useNavigate } from "react-router";

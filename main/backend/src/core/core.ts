@@ -46,6 +46,7 @@ import { USER_AVATAR_SIZE } from "@yourdash/shared/core/userAvatarSize.js";
 import YourDashUser from "./user/index.js";
 import { YOURDASH_SESSION_TYPE } from "@yourdash/shared/core/session.js";
 import CoreWebsocketManager from "./websocketManager/coreWebsocketManager.js";
+import CoreApplicationManager from "./coreApplicationManager.js";
 
 declare global {
   const globalThis: {
@@ -60,6 +61,7 @@ export class Core {
   readonly users: CoreUsers;
   readonly log: CoreLog;
   readonly moduleManager: CoreModuleManager;
+  readonly applicationManager: CoreApplicationManager;
   readonly globalDb: CoreGlobalDb;
   readonly commands: CoreCommands;
   readonly fs: CoreFileSystem;
@@ -123,6 +125,7 @@ export class Core {
     this.scheduler = new CoreScheduler(this);
     this.users = new CoreUsers(this);
     this.moduleManager = new CoreModuleManager(this);
+    this.applicationManager = new CoreApplicationManager(this);
     this.globalDb = new CoreGlobalDb(this);
     this.commands = new CoreCommands(this);
     this.fs = new CoreFileSystem(this);
@@ -135,7 +138,7 @@ export class Core {
     this.websocketManager = new CoreWebsocketManager(this);
     this.execute = new CoreExecute(this);
 
-    // TODO: implement WebDAV & CalDAV & CardDAV (outdated WebDAV example -> https://github.com/LordEidi/fennel.js/)
+    // TODO: implement WebDAV, CalDAV & CardDAV (outdated WebDAV example -> https://github.com/LordEidi/fennel.js/)
     this.webdav = new CoreWebDAV(this);
 
     this.commands.registerCommand("hello", () => {
@@ -329,7 +332,7 @@ export class Core {
       next();
     });
 
-    this.log.success("requests", `Started the requests logger${options && " (logging options requests is also enabled)"}`);
+    this.log.success("requests", `Started the requests logger${options && " (options request logging is enabled)"}`);
   }
 
   private async loadCoreEndpoints() {
@@ -553,9 +556,10 @@ export class Core {
       console.time("core_load_modules");
       loadedModules = (await this.moduleManager.loadInstalledApplications()).filter((x) => x !== undefined && x !== null);
 
-      const externalModules: string | string[] = this.processArguments["load-external-application"];
+      const externalModules: string | string[] = this.processArguments["load-external-application"] || [];
 
-      this.log.info("external_modules", "Loading external module(s):", externalModules.toString());
+      if (externalModules.length > 0)
+        this.log.info("external_modules", "Loading external module(s): ", JSON.stringify(externalModules, null, 2));
 
       if (externalModules) {
         if (typeof externalModules === "string") {
@@ -586,6 +590,7 @@ export class Core {
       console.timeEnd("core:load_modules");
       this.log.info("startup", "All modules loaded successfully");
     } catch (err) {
+      console.log(err);
       this.log.error("startup", "Failed to load all modules");
     }
 

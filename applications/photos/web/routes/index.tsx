@@ -8,6 +8,7 @@ import Heading from "@yourdash/uikit/components/heading/heading.js";
 import Image from "@yourdash/uikit/components/image/image.js";
 import { FC } from "react";
 import PHOTOS_LOGO from "../assets/photosLogo.png";
+import AlbumMediaGrid from "../components/AlbumMediaGrid/AlbumMediaGrid";
 import SubAlbums from "../components/SubAlbums/SubAlbums";
 import styles from "./index.module.scss";
 
@@ -29,7 +30,8 @@ const IndexPage: FC = () => {
         />
       </Box>
       <div className={styles.page}>
-        <SubAlbums path={"/"} />
+        <SubAlbums path={"/photos"} />
+        <AlbumMediaGrid path={"/photos"} />
       </div>
     </>
   );

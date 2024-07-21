@@ -22,7 +22,7 @@ export default class StoreModule extends BackendModule {
   }
 
   getInstalledApplications(): string[] {
-    return this.api.core.globalDb.get<string[]>("core:installedApplications");
+    return this.api.core.globalDb.get<string[]>("core:installedApplications") || [];
   }
 
   public loadEndpoints() {
@@ -32,6 +32,16 @@ export default class StoreModule extends BackendModule {
       Promise.all(
         promotedApplications.map(async (app): Promise<StorePromotedApplication> => {
           const application = await new YourDashApplication(app).read();
+
+          if (!application)
+            return {
+              name: "unknown_application",
+              backgroundImage: "",
+              icon: "",
+              displayName: "Unknown Application",
+              installed: false,
+            };
+
           return {
             name: application.getName(),
             backgroundImage: `data:image/png;base64,${(await application.getStoreBackground()).toString("base64")}`,
@@ -57,6 +67,8 @@ export default class StoreModule extends BackendModule {
 
         const app = await unreadApplication.read();
 
+        if (!app) continue;
+
         categories[app.getCategory()] = true;
       }
 
@@ -78,6 +90,15 @@ export default class StoreModule extends BackendModule {
             }
 
             const application = await unreadApplication.read();
+
+            if (!application)
+              return {
+                name: "unknown_application",
+                backgroundImage: "",
+                icon: "",
+                displayName: "Unknown Application",
+                installed: false,
+              };
 
             return {
               value: applicationName,
@@ -120,6 +141,9 @@ export default class StoreModule extends BackendModule {
       await Promise.all(
         categoryApplications.map(async (app) => {
           const application = await new YourDashApplication(app).read();
+
+          if (!application) return;
+
           applicationsOutput.push({
             name: application.getName(),
             icon: core.image.createAuthenticatedImage(
@@ -159,7 +183,7 @@ export default class StoreModule extends BackendModule {
 
       const application = await unreadApplication.read();
 
-      console.log(await application.getIconPath());
+      if (!application) return res.json({ error: true });
 
       const response: IYourDashStoreApplication = {
         ...application.getRawApplicationData(),
@@ -187,8 +211,10 @@ export default class StoreModule extends BackendModule {
       }
       const application = await applicationUnread.read();
 
+      if (!application) return res.json({ error: "No such application exists" });
+
       core.globalDb.set("core:installedApplications", [
-        ...core.globalDb.get<string[]>("core:installedApplications"),
+        ...(core.globalDb.get<string[]>("core:installedApplications") || []),
         id,
         ...application.getDependencies(),
       ]);
@@ -206,7 +232,7 @@ export default class StoreModule extends BackendModule {
 
       core.globalDb.set(
         "core:installedApplications",
-        core.globalDb.get<string[]>("core:installedApplications").filter((app) => app !== id),
+        (core.globalDb.get<string[]>("core:installedApplications") || []).filter((app) => app !== id),
       );
 
       return res.json({ success: true });
@@ -219,6 +245,9 @@ export default class StoreModule extends BackendModule {
         return res.sendFile(path.resolve(process.cwd(), "./src/defaults/placeholder_application_icon.png"));
       }
       const application = await unreadApplication.read();
+
+      if (!application) return res.json({ error: "No such application exists" });
+
       return res.sendFile(await application.getIconPath());
     });
   }
