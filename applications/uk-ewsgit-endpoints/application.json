@@ -1,0 +1,14 @@
+{
+  "name": "uk-ewsgit-endpoints",
+  "displayName": "Endpoint Tester",
+  "description": "For use in testing and developing YourDash endpoints in the core project and independent applications",
+  "category": "devtools",
+  "authors": [
+    {
+      "displayName": "Ewsgit",
+      "avatarUrl": "https://avatars.githubusercontent.com/u/69800526?v=4",
+      "bio": "The creator of YourDash",
+      "site": "https://ewsgit.github.io"
+    }
+  ]
+}

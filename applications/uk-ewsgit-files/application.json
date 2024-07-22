@@ -1,0 +1,14 @@
+{
+  "name": "uk-ewsgit-files",
+  "displayName": "Files",
+  "description": "This is the default application description, you can edit this information in this application's 'application.json'",
+  "category": "core",
+  "authors": [
+    {
+      "displayName": "Ewsgit",
+      "avatarUrl": "https://avatars.githubusercontent.com/u/69800526?v=4",
+      "bio": "The creator of YourDash",
+      "site": "https://ewsgit.github.io"
+    }
+  ]
+}
