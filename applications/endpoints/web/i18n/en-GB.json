@@ -1,7 +1,0 @@
-{
-  "APPLICATION_NAME": "YourDash Endpoint Tester",
-  "INTERNAL_ERROR": "[INTERNAL] This should never happen",
-  "SEND_REQUEST": {
-    "LABEL": "Send Request"
-  }
-}

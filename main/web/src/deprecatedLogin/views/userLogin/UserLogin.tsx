@@ -40,7 +40,7 @@ const UserLogin: React.FC<IUserLogin> = ({ setUsername, setPassword, password, u
           return;
         }
 
-        navigate("/app/a/dash");
+        navigate("/app/a/uk-ewsgit-dash");
       });
     }
   }, []);
@@ -97,11 +97,7 @@ const UserLogin: React.FC<IUserLogin> = ({ setUsername, setPassword, password, u
   }
 
   return (
-    <div
-      className={
-        "w-full h-full flex items-center justify-center flex-col relative animate__animated animate__fadeIn gap-4"
-      }
-    >
+    <div className={"w-full h-full flex items-center justify-center flex-col relative animate__animated animate__fadeIn gap-4"}>
       <IconButton
         icon={UKIcon.ChevronLeft}
         className={"left-0 top-0 absolute animate__animated animate__fadeInLeft"}

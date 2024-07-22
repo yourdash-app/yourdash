@@ -29,7 +29,7 @@ const InstanceLogoWidget: React.FC = () => {
       draggable={false}
       className={styles.icon}
       onClick={() => {
-        navigate("/app/a/dash");
+        navigate("/app/a/uk-ewsgit-dash");
       }}
     />
   );

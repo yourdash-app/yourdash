@@ -16,7 +16,7 @@ const ApplicationRedirectToDash: React.FC = () => {
       csi.syncGetJson(
         "/login/is-authenticated",
         () => {
-          navigate("/app/a/dash");
+          navigate("/app/a/uk-ewsgit-dash");
         },
         () => {
           sessionStorage.removeItem("session_token");

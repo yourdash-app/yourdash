@@ -1,7 +1,0 @@
-
-{
-  "extends": "../../../main/web/tsconfig.json",
-  "include": ["./**/*.ts", "./**/*.tsx",
-    "../../../main/web/imports.d.ts"
-  ]
-}

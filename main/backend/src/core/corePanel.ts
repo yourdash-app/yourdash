@@ -41,11 +41,7 @@ export default class CorePanel {
 
                 await this.core.fs.createDirectory(path.dirname(RESIZED_ICON_PATH));
 
-                const iconFile = await this.core.fs.getFile(await application.getIconPath());
-
-                if (iconFile instanceof FSError) return undefined;
-
-                const resizedIconPath = await this.core.image.resizeTo(iconFile.path, 128, 128, "webp", true);
+                const resizedIconPath = await this.core.image.resizeTo(await application.getIconPath(), 128, 128, "webp", true);
 
                 await this.core.fs.copy(resizedIconPath, RESIZED_ICON_PATH);
               }
@@ -85,11 +81,7 @@ export default class CorePanel {
 
               await this.core.fs.createDirectory(path.dirname(RESIZED_ICON_PATH));
 
-              const iconFile = await this.core.fs.getFile(await application.getIconPath());
-
-              if (iconFile instanceof FSError) return undefined;
-
-              const resizedIconPath = await this.core.image.resizeTo(iconFile.path, 64, 64, "webp", true);
+              const resizedIconPath = await this.core.image.resizeTo(await application.getIconPath(), 64, 64, "webp", true);
 
               await this.core.fs.copy(resizedIconPath, RESIZED_ICON_PATH);
             }

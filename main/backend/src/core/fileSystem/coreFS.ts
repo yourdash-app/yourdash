@@ -65,25 +65,25 @@ export default class coreFS {
         switch (err.reason) {
           case FS_ERROR_TYPE.DOES_NOT_EXIST:
             this.core.log.warning("filesystem", `unable to get file at '${path}' because it does not exist.`);
-            break;
+            return err;
           case FS_ERROR_TYPE.NOT_A_FILE:
             this.core.log.warning("filesystem", `Unable to get file as '${path}' because is is not a file.`);
-            break;
+            return err;
           case FS_ERROR_TYPE.NO_REASON_PROVIDED:
             this.core.log.warning("filesystem", `A filesystem error has occurred but no reason was provided for '${path}'.`);
-            break;
+            return err;
           case FS_ERROR_TYPE.ALREADY_EXISTS:
             this.core.log.warning(
               "filesystem",
               `Unable to get file at '${path}' because it already exists. (This should not happen as we are not writing to this path!)`,
             );
-            break;
+            return err;
           case FS_ERROR_TYPE.LOCKED:
             this.core.log.warning(
               "filesystem",
               `Unable to get file at '${path}' because it is locked. (This should not happen as we are not writing to this path!)`,
             );
-            break;
+            return err;
         }
 
         this.core.log.error("filesystem", `generic filesystem error @ getFile(${path})`, JSON.stringify(err));

@@ -66,7 +66,7 @@ const ApplicationLauncher: React.FC<{
             icon={UKIcon.Person}
             aria-label={"User Profile Settings"}
             onClick={() => {
-              navigate("/app/a/settings/profile");
+              navigate("/app/a/uk-ewsgit-settings/profile");
             }}
           />
         </div>
