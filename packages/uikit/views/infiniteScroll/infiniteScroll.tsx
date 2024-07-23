@@ -27,6 +27,8 @@ const InfiniteScroll: React.FC<{
   }, [resetState]);
 
   const fetchNextPageWrapper = async () => {
+    if (!hasMorePages) return;
+
     nextPage.current++;
     setLoading(true);
     await fetchNextPage(nextPage.current);

@@ -17,8 +17,11 @@ import { useNavigate } from "react-router";
 const SubAlbums: React.FC<{ path: string; scrollerClassName?: string }> = ({ path, scrollerClassName }) => {
   const navigate = useNavigate();
   const [albums, setAlbums] = useState<EndpointAlbumSubPath>([]);
+  const [hasMorePages, setHasMorePages] = useState(true);
 
   useEffect(() => {
+    setHasMorePages(true);
+
     csi.getJson<EndpointAlbumSubPath>(`/app/photos/album/sub/0/@` + path).then((data) => {
       setAlbums(() => data);
     });
@@ -28,10 +31,15 @@ const SubAlbums: React.FC<{ path: string; scrollerClassName?: string }> = ({ pat
 
   return (
     <InfiniteScroll
-      hasMorePages={true}
+      hasMorePages={hasMorePages}
       resetState={path}
       fetchNextPage={async (nextPageNumber) => {
         const data = await csi.getJson<EndpointAlbumSubPath>(`/app/photos/album/sub/${nextPageNumber}/@` + path);
+
+        if (data?.length === 0) {
+          setHasMorePages(false);
+        }
+
         setAlbums((previousAlbums) => [...previousAlbums, ...data]);
       }}
       className={clippy(styles.component, scrollerClassName)}
