@@ -505,6 +505,7 @@ export default class PhotosBackend extends BackendModule {
       });
     });
 
+    // FIXME: SOMETHING CAUSES THIS REQUEST TO TIMEOUT
     // returns the subAlbums of a given album
     this.api.request.get<EndpointAlbumSubPath | { error: string }>("/album/sub/:page/@/*", async (req, res) => {
       const sessionId = req.headers.sessionid;
@@ -516,7 +517,7 @@ export default class PhotosBackend extends BackendModule {
 
       if (albumEntity instanceof FSError) {
         // don't send an error, instead send an empty array
-        if (albumPath !== "./photos/") return res.json([]);
+        if (albumPath !== "./photos/") return res.status(404).json({ error: "Not found" });
 
         await this.api.core.fs.createDirectory(path.join(user.getFsPath(), albumPath));
 
@@ -524,6 +525,8 @@ export default class PhotosBackend extends BackendModule {
       }
 
       const output: { displayName: string; path: string; size: number; thumbnail: string }[] = [];
+
+      this.api.core.log.debug("app/photos", `album: ${albumPath} page: ${page} subAlbums: ${await albumEntity.getChildDirectories()}`);
 
       const chunks = chunk(await albumEntity.getChildDirectories(), this.PAGE_SIZE);
 
@@ -535,6 +538,7 @@ export default class PhotosBackend extends BackendModule {
         for (const subAlbumChild of await subAlbum.getChildFiles()) {
           if (subAlbumChild.getType() === "image") {
             headerImagePath = subAlbumChild.path;
+            break;
           }
         }
 
