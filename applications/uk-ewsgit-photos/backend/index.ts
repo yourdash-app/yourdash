@@ -18,7 +18,6 @@ import sharp from "sharp";
 import EndpointAlbumMediaPath, { AlbumMediaPath } from "../shared/types/endpoints/album/media/path.js";
 import { EndpointAlbumSubPath } from "../shared/types/endpoints/album/sub/path.js";
 import { PHOTOS_MEDIA_TYPE } from "../shared/types/mediaType.js";
-import timeMethod from "@yourdash/backend/src/lib/time.js";
 
 export default class PhotosBackend extends BackendModule {
   PAGE_SIZE: number;
@@ -28,7 +27,9 @@ export default class PhotosBackend extends BackendModule {
     super(args);
     this.PAGE_SIZE = 24;
 
-    this.api.core.fs.createDirectory(this.THUMBNAIL_CACHE_LOCATION);
+    this.api.core.fs.createDirectory(this.THUMBNAIL_CACHE_LOCATION).then(() => {
+      this.api.core.log.success("app/photos", "Successfully created the thumbnail cache directory");
+    });
 
     this.api.core.users.getAllUsers().then((users) => {
       users.forEach((u) => {
@@ -175,6 +176,7 @@ export default class PhotosBackend extends BackendModule {
 
     this.api.request.setNamespace("app/photos");
 
+    // Deprecated!
     // this.api.request.get("/media/album/subAlbums/@/*", async (req, res) => {
     //   const itemPath = req.params["0"] as string;
     //   const user = this.api.getUser(req);

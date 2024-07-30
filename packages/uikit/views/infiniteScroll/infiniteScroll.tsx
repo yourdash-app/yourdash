@@ -7,8 +7,6 @@ import clippy from "@yourdash/shared/web/helpers/clippy";
 import React, { useEffect, useState } from "react";
 import styles from "./infiniteScroll.module.scss";
 
-const SCROLL_FETCH_PERCENTAGE = 0.25;
-
 const InfiniteScroll: React.FC<{
   children: React.ReactNode | React.ReactNode[];
   fetchNextPage: (nextPageNumber: number) => Promise<void>;
@@ -16,8 +14,9 @@ const InfiniteScroll: React.FC<{
   className?: string;
   hasMorePages: boolean;
   resetState?: string;
-}> = ({ children, fetchNextPage, containerClassName, className, hasMorePages, resetState }) => {
-  const ref = React.useRef<HTMLDivElement>(null);
+  dontShowNoMoreItems?: boolean;
+}> = ({ children, fetchNextPage, containerClassName, className, hasMorePages, resetState, dontShowNoMoreItems }) => {
+  const endOfItemsRef = React.useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const nextPage = React.useRef<number>(-1);
 
@@ -35,38 +34,35 @@ const InfiniteScroll: React.FC<{
     setLoading(false);
   };
 
-  const scrollListener = () => {
-    if (!ref.current) return;
-
-    const element: HTMLDivElement = ref.current;
-    const shouldFetchNextPage = Math.abs(element.scrollHeight - element.clientHeight - element.scrollTop) <= 1 - SCROLL_FETCH_PERCENTAGE;
-
-    if (shouldFetchNextPage && hasMorePages) {
-      fetchNextPageWrapper();
-    }
-  };
-
   useEffect(() => {
-    if (!ref.current) return;
+    if (!endOfItemsRef.current) return;
 
     fetchNextPageWrapper();
 
-    const element: HTMLDivElement = ref.current;
-    element.addEventListener("scroll", scrollListener);
+    const element: HTMLDivElement = endOfItemsRef.current;
 
-    return () => {
-      element.removeEventListener("scroll", scrollListener);
-    };
+    const observer = new IntersectionObserver((elem) => {
+      if (elem[0].isIntersecting) {
+        fetchNextPageWrapper();
+      }
+    });
+
+    observer.observe(element);
   }, []);
 
+  // TODO: Use interaction observer to detect when the last item is shown on the screen and fetch the next page
+
   return (
-    <div
-      ref={ref}
-      className={clippy(containerClassName, styles.component)}
-    >
+    <div className={clippy(containerClassName, styles.component)}>
       <div className={clippy(className, styles.items)}>{children}</div>
       {loading && <div>Loading more content</div>}
       {!hasMorePages && <div>No More Pages Exist</div>}
+      <div
+        ref={endOfItemsRef}
+        className={styles.endOfItems}
+      >
+        {!dontShowNoMoreItems ?? "No more items to load"}
+      </div>
     </div>
   );
 };

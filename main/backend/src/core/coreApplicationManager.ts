@@ -380,7 +380,7 @@ export default class CoreApplicationManager {
       return false;
     } else {
       // @ts-ignore
-      if (!Array.isArray(applicationConfig.modules!.backend)) {
+      if (!Array.isArray(applicationConfig.modules?.backend)) {
         this.core.log.error(
           "application_manager",
           `Invalid application: "${applicationPath}", the backend modules property was not provided! This should be an array!`,
@@ -388,7 +388,7 @@ export default class CoreApplicationManager {
         return false;
       } else {
         // @ts-ignore
-        applicationConfig.modules!.backend.map((mod) => {
+        applicationConfig.modules?.backend.map((mod) => {
           if (typeof mod.id !== "string") {
             this.core.log.error(
               "application_manager",
@@ -415,7 +415,7 @@ export default class CoreApplicationManager {
         });
       }
       // @ts-ignore
-      if (!Array.isArray(applicationConfig.modules!.frontend)) {
+      if (!Array.isArray(applicationConfig.modules?.frontend)) {
         this.core.log.error(
           "application_manager",
           `Invalid application: "${applicationPath}", the frontend modules property was not provided! This should be an array!`,
@@ -423,7 +423,7 @@ export default class CoreApplicationManager {
         return false;
       } else {
         // @ts-ignore
-        applicationConfig.modules!.frontend.map((mod) => {
+        applicationConfig.modules?.frontend.map((mod) => {
           if (typeof mod.id !== "string") {
             this.core.log.error(
               "application_manager",
@@ -475,9 +475,9 @@ export default class CoreApplicationManager {
       }
 
       // @ts-ignore
-      if (Array.isArray(applicationConfig.modules!.officialFrontend)) {
+      if (Array.isArray(applicationConfig.modules?.officialFrontend)) {
         // @ts-ignore
-        applicationConfig.modules!.officialFrontend.map((mod) => {
+        applicationConfig.modules?.officialFrontend.map((mod) => {
           // @ts-ignore
           if (typeof mod.id !== "string") {
             this.core.log.error(
@@ -519,6 +519,7 @@ export default class CoreApplicationManager {
             return false;
           }
           // @ts-ignore
+          // noinspection SuspiciousTypeOfGuard
           if (typeof mod.description !== "string") {
             this.core.log.error(
               "application_manager",
