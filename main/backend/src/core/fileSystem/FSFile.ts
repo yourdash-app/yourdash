@@ -35,7 +35,7 @@ export default class FSFile extends FSEntity {
     }
   }
 
-  getType(): "image" | "video" | "audio" | "unknown" {
+  getType(): "image" | "video" | "audio" | "link" | "unknown" {
     switch (this.getExtension()) {
       case ".avif":
       case ".png":
@@ -65,6 +65,8 @@ export default class FSFile extends FSEntity {
       case ".opus":
       case ".weba":
         return "audio";
+      case ".lnk":
+        return "link";
       default:
         return "unknown";
     }
@@ -128,7 +130,7 @@ export default class FSFile extends FSEntity {
 
   async write(data: string | Buffer) {
     if (this.isLocked().locked) {
-      throw new FSError(FS_ERROR_TYPE.NOT_A_FILE);
+      throw new FSError(FS_ERROR_TYPE.LOCKED, this.path);
     }
 
     if (!(await this.doesExist())) {

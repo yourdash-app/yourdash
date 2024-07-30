@@ -16,7 +16,7 @@ const Layout: FC = () => {
   return (
     <>
       <div className={styles.applicationFrame}>
-        <div className={styles.application}>
+        <div className={styles.applicationView}>
           <Outlet />
         </div>
         <Box className={styles.navigation}>

@@ -13,12 +13,11 @@ import splitItemsIntoRows from "../../../../lib/splitItemsIntoRows";
 import AlbumGridMediaRow from "../albumGridMediaRow/albumGridMediaRow";
 import Album from "./album/album.js";
 import styles from "./albumGrid.module.scss";
-import InfiniteScroll from "react-infinite-scroll-component";
 
 const AlbumGrid: FC<{
   albums: EndpointMediaAlbumSubAlbums;
   path: string;
-}> = ({ path, albums }) => {
+}> = ({ albums }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [rows, setRows] = useState<
     {
@@ -32,22 +31,22 @@ const AlbumGrid: FC<{
       return;
     }
 
-    let timeout: NodeJS.Timeout;
+    let timeout: Timer;
 
     const resizeObserver = new ResizeObserver(() => {
       clearTimeout(timeout);
       timeout = setTimeout(() => {
-        setRows(splitItemsIntoRows(items, ref.current?.getBoundingClientRect().width || 512, 256));
+        setRows(splitItemsIntoRows(albums, ref.current?.getBoundingClientRect().width || 512, 256));
       }, 100);
     });
 
     resizeObserver.observe(ref.current, { box: "border-box" });
-    setRows(splitItemsIntoRows(items, ref.current.getBoundingClientRect().width || 512, 256));
+    setRows(splitItemsIntoRows(albums, ref.current.getBoundingClientRect().width || 512, 256));
 
     return () => {
       resizeObserver.disconnect();
     };
-  }, [items]);
+  }, [albums]);
 
   return (
     <div
@@ -70,17 +69,15 @@ const AlbumGrid: FC<{
           {rows.length > 0 && <Separator direction={"column"} />}
         </>
       )}
-      <InfiniteScroll>
-        {rows.map((row) => {
-          return (
-            <AlbumGridMediaRow
-              key={row.items[0].path}
-              items={row.items}
-              rowHeight={row.height}
-            />
-          );
-        })}
-      </InfiniteScroll>
+      {rows.map((row) => {
+        return (
+          <AlbumGridMediaRow
+            key={row.items[0].path}
+            items={row.items}
+            rowHeight={row.height}
+          />
+        );
+      })}
     </div>
   );
 };

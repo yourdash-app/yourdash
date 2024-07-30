@@ -20,8 +20,8 @@ const AlbumPathPage: FC = () => {
   const albumPath = searchParams.get("p") || "";
 
   return (
-    <>
-      <Box className={styles.header}>
+    <div className={styles.page}>
+      <div className={styles.header}>
         <IconButton
           accessibleLabel={"Go back"}
           icon={UKIcon.ChevronLeft}
@@ -42,7 +42,7 @@ const AlbumPathPage: FC = () => {
           level={1}
           text={path.basename(albumPath) || albumPath}
         />
-      </Box>
+      </div>
       <SubAlbums
         scrollerClassName={styles.subAlbums}
         path={albumPath || "/"}
@@ -51,7 +51,7 @@ const AlbumPathPage: FC = () => {
         scrollerClassName={styles.mediaGrid}
         path={albumPath || "/"}
       />
-    </>
+    </div>
   );
 };
 

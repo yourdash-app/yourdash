@@ -21,10 +21,7 @@ const SubAlbums: React.FC<{ path: string; scrollerClassName?: string }> = ({ pat
 
   useEffect(() => {
     setHasMorePages(true);
-
-    csi.getJson<EndpointAlbumSubPath>(`/app/photos/album/sub/0/@` + path).then((data) => {
-      setAlbums(() => data);
-    });
+    setAlbums([]);
   }, [path]);
 
   if (!albums) return null;

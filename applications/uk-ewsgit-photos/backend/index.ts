@@ -18,6 +18,7 @@ import sharp from "sharp";
 import EndpointAlbumMediaPath, { AlbumMediaPath } from "../shared/types/endpoints/album/media/path.js";
 import { EndpointAlbumSubPath } from "../shared/types/endpoints/album/sub/path.js";
 import { PHOTOS_MEDIA_TYPE } from "../shared/types/mediaType.js";
+import timeMethod from "@yourdash/backend/src/lib/time.js";
 
 export default class PhotosBackend extends BackendModule {
   PAGE_SIZE: number;
@@ -90,7 +91,7 @@ export default class PhotosBackend extends BackendModule {
 
             // if a hash already exists, flag the conflicting paths and put in array
             if (userHashes.get(u)!.has(fileHash)) {
-              console.log(`Duplicate photo detected: ${p}`);
+              this.api.core.log.warning("app/photos", `Duplicate photo detected: ${p}`);
 
               return;
             }
@@ -107,7 +108,6 @@ export default class PhotosBackend extends BackendModule {
 
   async generateMediaThumbnails(mediaPath: string): Promise<boolean> {
     const fileRawThumbnail = await this.api.core.fs.getFile(path.join(this.THUMBNAIL_CACHE_LOCATION, `${mediaPath}.raw.webp`));
-
     if (!(fileRawThumbnail instanceof FSFile)) {
       if (fileRawThumbnail.reason === FS_ERROR_TYPE.DOES_NOT_EXIST) {
         const file = await this.api.core.fs.getFile(mediaPath);
@@ -505,7 +505,6 @@ export default class PhotosBackend extends BackendModule {
       });
     });
 
-    // FIXME: SOMETHING CAUSES THIS REQUEST TO TIMEOUT
     // returns the subAlbums of a given album
     this.api.request.get<EndpointAlbumSubPath | { error: string }>("/album/sub/:page/@/*", async (req, res) => {
       const sessionId = req.headers.sessionid;
@@ -535,12 +534,51 @@ export default class PhotosBackend extends BackendModule {
       for (const subAlbum of chunks[page]) {
         let headerImagePath = "./instance_logo.avif";
 
-        for (const subAlbumChild of await subAlbum.getChildFiles()) {
-          if (subAlbumChild.getType() === "image") {
-            headerImagePath = subAlbumChild.path;
-            break;
+        const fetchHeaderImage = async (path: string) => {
+          try {
+            const pathDirectory = await this.api.core.fs.getDirectory(path);
+
+            if (pathDirectory instanceof FSError) {
+              this.api.core.log.error("app/photos", `Error getting child files: ${pathDirectory.getReasonString()}`);
+              return;
+            }
+
+            const childFiles = await pathDirectory.getChildFiles();
+
+            if (childFiles instanceof FSError) {
+              this.api.core.log.error("app/photos", `Error getting child files: ${childFiles.getReasonString()}`);
+
+              return;
+            }
+
+            for (const subAlbumChild of childFiles) {
+              console.log("CHILD ITEM", subAlbumChild.path, subAlbumChild.getType());
+              if (subAlbumChild.getType() === "image") {
+                headerImagePath = subAlbumChild.path;
+                return;
+              }
+            }
+
+            const childDirs = await pathDirectory.getChildDirectories();
+
+            this.api.core.log.debug("app/photos", `thumbnail childDirs: ${childDirs}`);
+
+            for (const childDir of childDirs) {
+              if (headerImagePath === "./instance_logo.avif") {
+                console.log("Searching for header image", headerImagePath, childDir.path);
+                await fetchHeaderImage(childDir.path);
+              }
+
+              return;
+            }
+
+            return;
+          } catch (err) {
+            this.api.core.log.error("app/photos", `Error getting child files: ${err}`);
           }
-        }
+        };
+
+        await fetchHeaderImage(subAlbum.path);
 
         output.push({
           displayName: path.basename(subAlbum.path),

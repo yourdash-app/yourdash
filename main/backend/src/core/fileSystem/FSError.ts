@@ -14,9 +14,26 @@ export enum FS_ERROR_TYPE {
 
 export default class FSError {
   reason: FS_ERROR_TYPE;
+  reasonString: string;
+  stackTrace: string;
+  path: string;
 
-  constructor(reason: FS_ERROR_TYPE) {
+  constructor(reason: FS_ERROR_TYPE, path: string) {
     this.reason = reason;
+    this.path = path;
+    this.reasonString = this.getReasonString();
+    const stackTrace = new Error().stack;
+
+    if (!stackTrace) {
+      this.stackTrace = "No stack trace available";
+      return this;
+    }
+
+    // remove FSError from stack trace
+    const stackTraceArray = stackTrace.split("\n");
+    stackTraceArray.splice(0, 2);
+
+    this.stackTrace = stackTraceArray.join("\n");
 
     return this;
   }

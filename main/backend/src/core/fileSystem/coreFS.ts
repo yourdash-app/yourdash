@@ -34,8 +34,14 @@ export default class coreFS {
       } else {
         return new FSFile(this.core, path);
       }
-    } catch (_err) {
-      throw new FSError(FS_ERROR_TYPE.NO_REASON_PROVIDED);
+    } catch (err) {
+      if (err instanceof FSError) {
+        return err;
+      }
+
+      // @ts-ignore
+      this.core.log.debug("filesystem", "generic filesystem error @ get()", err.toString());
+      return null;
     }
   }
 
@@ -45,6 +51,9 @@ export default class coreFS {
     if (file instanceof FSError) {
       if (file.reason === FS_ERROR_TYPE.DOES_NOT_EXIST) {
         return await this.createFile(path);
+      }
+      if (file.reason === FS_ERROR_TYPE.NOT_A_FILE) {
+        return file;
       }
     }
 
@@ -91,7 +100,7 @@ export default class coreFS {
       }
 
       this.core.log.error("filesystem", `generic filesystem error when getting file at ${path}, this was not an FSError!`, err);
-      throw new FSError(FS_ERROR_TYPE.NO_REASON_PROVIDED);
+      throw new FSError(FS_ERROR_TYPE.NO_REASON_PROVIDED, path);
     }
 
     return await this.createFile(path);
@@ -116,7 +125,7 @@ export default class coreFS {
       }
 
       this.core.log.error("filesystem", `generic filesystem error @ getDirectory(${path})`, err);
-      throw new FSError(FS_ERROR_TYPE.NO_REASON_PROVIDED);
+      throw new FSError(FS_ERROR_TYPE.NO_REASON_PROVIDED, path);
     }
 
     return await this.createDirectory(path);
@@ -138,12 +147,12 @@ export default class coreFS {
     } catch (err) {
       if (err instanceof Error) {
         if (err.name === "ENOENT") {
-          throw new FSError(FS_ERROR_TYPE.DOES_NOT_EXIST);
+          throw new FSError(FS_ERROR_TYPE.DOES_NOT_EXIST, path);
         }
       }
 
       this.core.log.error("filesystem", `generic filesystem error @ getEntityType(${path})`, err);
-      throw new FSError(FS_ERROR_TYPE.NO_REASON_PROVIDED);
+      throw new FSError(FS_ERROR_TYPE.NO_REASON_PROVIDED, path);
     }
   }
 
@@ -164,7 +173,7 @@ export default class coreFS {
     const file = new FSFile(this.core, path);
 
     if (await file.doesExist()) {
-      throw new FSError(FS_ERROR_TYPE.ALREADY_EXISTS);
+      throw new FSError(FS_ERROR_TYPE.ALREADY_EXISTS, path);
     }
 
     await file.write("");

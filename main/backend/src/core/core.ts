@@ -590,7 +590,7 @@ export class Core {
       console.timeEnd("core:load_modules");
       this.log.info("startup", "All modules loaded successfully");
     } catch (err) {
-      console.log(err);
+      this.log.error("startup", err);
       this.log.error("startup", "Failed to load all modules");
     }
 
