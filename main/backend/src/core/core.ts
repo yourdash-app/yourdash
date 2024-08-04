@@ -3,10 +3,8 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import { APPLICATION_TYPE } from "@yourdash/shared/core/application.js";
 import { INSTANCE_STATUS } from "@yourdash/shared/core/instanceStatus.js";
 import { LoginLayout } from "@yourdash/shared/core/login/loginLayout.js";
-import EndpointResponseCoreApplications from "@yourdash/shared/endpoints/core/applications.js";
 import EndpointResponseCoreLoginNotice from "@yourdash/shared/endpoints/core/login/notice.js";
 import EndpointResponseLoginInstanceMetadata from "@yourdash/shared/endpoints/login/instance/metadata.js";
 import chalk from "chalk";
@@ -32,10 +30,8 @@ import CoreVideo from "./coreVideo.js";
 import FSDirectory from "./fileSystem/FSDirectory.js";
 import FSFile from "./fileSystem/FSFile.js";
 import GlobalDBCoreLoginNotice from "./login/loginNotice.js";
-import BackendModule from "./moduleManager/backendModule.js";
 import loadNextCloudSupportEndpoints from "./nextcloud/coreNextCloud.js";
 import CoreWebDAV from "./webDAV/coreWebDAV.js";
-import CoreModuleManager from "./moduleManager/coreModuleManager.js";
 import CorePanel from "./corePanel.js";
 import CoreScheduler from "./coreScheduler.js";
 import CoreUserDatabase from "./coreUserDatabase.js";
@@ -55,12 +51,20 @@ declare global {
   };
 }
 
+/**
+ *  # YourDash Planned Changes
+ *
+ *   - implement flagForRestart (requestingApplicationName: string, reason: string)
+ *       This will prompt the admin user with a notification to restart the instance, the notification will provide the administrator with
+ *       the reason for the restart along with the application which has requested it.
+ * */
+
 export class Core {
   // core apis
   readonly request: CoreRequest;
   readonly users: CoreUsers;
   readonly log: CoreLog;
-  readonly moduleManager: CoreModuleManager;
+  // readonly moduleManager: CoreModuleManager;
   readonly applicationManager: CoreApplicationManager;
   readonly globalDb: CoreGlobalDb;
   readonly commands: CoreCommands;
@@ -124,7 +128,7 @@ export class Core {
     this.request = new CoreRequest(this);
     this.scheduler = new CoreScheduler(this);
     this.users = new CoreUsers(this);
-    this.moduleManager = new CoreModuleManager(this);
+    // this.moduleManager = new CoreModuleManager(this);
     this.applicationManager = new CoreApplicationManager(this);
     this.globalDb = new CoreGlobalDb(this);
     this.commands = new CoreCommands(this);
@@ -550,34 +554,30 @@ export class Core {
       this.log.error("websocketManager", "Error caught in loadWebsocketManagerEndpoints", e);
     }
 
-    let loadedModules: BackendModule[] = [];
-
     try {
       console.time("core_load_modules");
-      loadedModules = (await this.moduleManager.loadInstalledApplications()).filter((x) => x !== undefined && x !== null);
+      await this.applicationManager.loadInstalledApplications();
 
-      const externalModules: string | string[] = this.processArguments["load-external-application"] || [];
+      const externalApplications: string | string[] = this.processArguments["load-external-application"] || [];
 
-      if (externalModules.length > 0)
-        this.log.info("external_modules", "Loading external module(s): ", JSON.stringify(externalModules, null, 2));
+      if (externalApplications.length > 0)
+        this.log.info("external_modules", "Loading external module(s): ", JSON.stringify(externalApplications, null, 2));
 
-      if (externalModules) {
-        if (typeof externalModules === "string") {
+      if (externalApplications) {
+        if (typeof externalApplications === "string") {
           // external Modules is a string
           try {
-            const backendModule = await this.moduleManager.loadModule(path.basename(externalModules), externalModules);
-            if (backendModule) loadedModules.push(backendModule);
+            await this.applicationManager.loadApplication(externalApplications);
           } catch (err) {
             if (err instanceof Error) {
-              this.log.error("startup", `Failed to load external module ${externalModules}`, err);
+              this.log.error("startup", `Failed to load external module ${externalApplications}`, err);
             }
           }
         } else {
-          // externalModules must be an array
-          for (const externalModule of externalModules) {
+          // externalApplications must be an array
+          for (const externalModule of externalApplications) {
             try {
-              const backendModule = await this.moduleManager.loadModule(path.basename(externalModule), externalModule);
-              if (backendModule) loadedModules.push(backendModule);
+              await this.applicationManager.loadApplication(externalModule);
             } catch (err) {
               if (err instanceof Error) {
                 this.log.error("startup", `Failed to load external module ${externalModule}`, err);
@@ -595,11 +595,11 @@ export class Core {
     }
 
     try {
-      loadedModules.map((mod) => {
+      this.applicationManager.loadedModules.backend.map((mod) => {
         try {
-          mod.loadPreAuthEndpoints();
+          mod.module.loadPreAuthEndpoints();
         } catch (err) {
-          this.log.error("startup", `Failed to load pre-auth endpoints for ${mod.moduleName}`, err);
+          this.log.error("startup", `Failed to load pre-auth endpoints for ${mod.config.id}`, err);
         }
       });
     } catch (err) {
@@ -661,13 +661,13 @@ export class Core {
     console.time("core:load_modules");
 
     try {
-      loadedModules.map((mod) => {
+      this.applicationManager.loadedModules.backend.map((mod) => {
         try {
-          mod.loadEndpoints();
+          mod.module.loadEndpoints();
           this.request.setNamespace("");
-          this.log.success("module_manager", `Loaded endpoints for ${mod.moduleName}`);
+          this.log.success("module_manager", `Loaded endpoints for ${mod.config.id}`);
         } catch (err) {
-          this.log.error("startup", `Failed to load post-auth endpoints for ${mod.moduleName}`, err);
+          this.log.error("startup", `Failed to load post-auth endpoints for ${mod.config.id}`, err);
         }
       });
     } catch (err) {
@@ -691,20 +691,6 @@ export class Core {
         display: true,
         message: notice.message ?? "Placeholder message. Hey system admin, you should change this!",
         timestamp: notice.timestamp ?? 1,
-      });
-    });
-
-    this.request.get("/core/applications", async (_req, res) => {
-      return res.json(<EndpointResponseCoreApplications>{
-        applications: (
-          await ((await this.fs.getDirectory(path.join(process.cwd(), "../../applications/"))) as FSDirectory).getChildren()
-        ).map((app) => {
-          return {
-            id: path.basename(app.path) || "unknown",
-            // TODO: support other types of applications
-            type: APPLICATION_TYPE.LOCAL,
-          };
-        }),
       });
     });
 

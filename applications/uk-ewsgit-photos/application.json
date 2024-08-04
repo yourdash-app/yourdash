@@ -1,17 +1,29 @@
 {
-  "name": "uk-ewsgit-photos",
+  "id": "uk-ewsgit-photos",
   "displayName": "Photos",
   "description": "This is the default application description, you can edit this information in this application's 'application.json'",
   "category": "core",
-  "authors": [
+  "license": "MIT",
+  "maintainers": [
     {
-      "displayName": "Ewsgit",
+      "name": "Ewsgit",
       "avatarUrl": "https://avatars.githubusercontent.com/u/69800526?v=4",
       "bio": "The creator of YourDash",
-      "site": "https://ewsgit.github.io"
+      "url": "https://ewsgit.uk"
     }
   ],
-  "dependencies": [
-    "files"
-  ]
+  "authors": [
+    {
+      "name": "Ewsgit",
+      "avatarUrl": "https://avatars.githubusercontent.com/u/69800526?v=4",
+      "bio": "The creator of YourDash",
+      "url": "https://ewsgit.uk"
+    }
+  ],
+  "modules": {
+    "backend": [],
+    "frontend": [],
+    "officialFrontend": []
+  },
+  "shouldInstanceRestartOnInstall": true
 }

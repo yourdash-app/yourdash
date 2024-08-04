@@ -119,7 +119,11 @@ export default class FSFile extends FSEntity {
         try {
           return JSON.parse((await fs.readFile(pth.join(this.core.fs.ROOT_PATH, this.path))).toString());
         } catch (err) {
-          this.core.log.error("filesystem", `cannot read file ${this.path} as JSON`);
+          this.core.log.error(
+            "filesystem",
+            `cannot read file '${this.path}' as JSON. absolute path: ${pth.join(this.core.fs.ROOT_PATH, this.path)}`,
+            err,
+          );
           // @ts-ignore
           return {};
         }
