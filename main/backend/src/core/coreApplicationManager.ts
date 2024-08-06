@@ -202,7 +202,7 @@ export default class CoreApplicationManager {
     this.core.log.success("application_manager", `Application ${applicationConfig.id}'s config was successfully verified!`);
 
     for (const mod of applicationConfig.modules.frontend) {
-      if (!(await this.verifyApplicationModule("frontend", mod))) {
+      if (!(await this.verifyApplicationModule(applicationPath, "frontend", mod))) {
         this.core.log.error("application_manager", `Invalid application module for: "${applicationPath}", module ${mod.id} was invalid`);
 
         continue;
@@ -212,7 +212,7 @@ export default class CoreApplicationManager {
     }
 
     for (const mod of applicationConfig.modules.backend) {
-      if (!(await this.verifyApplicationModule("backend", mod))) {
+      if (!(await this.verifyApplicationModule(applicationPath, "backend", mod))) {
         this.core.log.error("application_manager", `Invalid application module for: "${applicationPath}", module ${mod.id} was invalid`);
 
         continue;
@@ -223,7 +223,7 @@ export default class CoreApplicationManager {
     }
 
     for (const mod of applicationConfig.modules.officialFrontend) {
-      if (!(await this.verifyApplicationModule("officialFrontend", mod))) {
+      if (!(await this.verifyApplicationModule(applicationPath, "officialFrontend", mod))) {
         this.core.log.error("application_manager", `Invalid application module for: "${applicationPath}", module ${mod.id} was invalid`);
 
         continue;
@@ -234,6 +234,7 @@ export default class CoreApplicationManager {
   }
 
   async verifyApplicationModule(
+    applicationPath: string,
     moduleType: "backend" | "frontend" | "officialFrontend",
     applicationModule:
       | IYourDashApplicationConfigJson["modules"]["frontend"][0]
@@ -243,6 +244,7 @@ export default class CoreApplicationManager {
     switch (moduleType) {
       case "backend": {
         const appModule = applicationModule as IYourDashApplicationConfigJson["modules"]["backend"][0];
+
         if (this.loadedModules.backend.find((m) => m.config.id === appModule.id)) {
           this.core.log.error(
             "application_manager",
@@ -251,7 +253,7 @@ export default class CoreApplicationManager {
           return false;
         }
 
-        const mainFile = await this.core.fs.doesExist(appModule.main);
+        const mainFile = await this.core.fs.doesExist(path.join(applicationPath, appModule.main));
 
         if (!mainFile) {
           this.core.log.error(
@@ -277,6 +279,7 @@ export default class CoreApplicationManager {
       }
       case "frontend": {
         const appModule = applicationModule as IYourDashApplicationConfigJson["modules"]["frontend"][0];
+
         if (this.loadedModules.frontend.find((m) => m.config.id === appModule.id)) {
           this.core.log.error(
             "application_manager",
@@ -308,7 +311,7 @@ export default class CoreApplicationManager {
           return false;
         }
 
-        const mainFile = await this.core.fs.doesExist(appModule.main);
+        const mainFile = await this.core.fs.doesExist(path.join(applicationPath, appModule.main));
 
         if (!mainFile) {
           this.core.log.error(
@@ -350,6 +353,7 @@ export default class CoreApplicationManager {
   async verifyApplication(applicationPath: string): Promise<boolean> {
     const applicationConfigFile = await this.core.fs.getFile(`${applicationPath}/application.json`);
     if (applicationConfigFile instanceof FSError) {
+      console.log(applicationConfigFile);
       this.core.log.error("application_manager", `Invalid application: "${applicationPath}", no application.json was found`);
       return false;
     }
