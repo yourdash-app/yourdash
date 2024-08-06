@@ -202,15 +202,33 @@ export default class CoreApplicationManager {
     this.core.log.success("application_manager", `Application ${applicationConfig.id}'s config was successfully verified!`);
 
     for (const mod of applicationConfig.modules.frontend) {
+      if (!(await this.verifyApplicationModule("frontend", mod))) {
+        this.core.log.error("application_manager", `Invalid application module for: "${applicationPath}", module ${mod.id} was invalid`);
+
+        continue;
+      }
+
       this.loadedModules.frontend.push({ config: mod });
     }
 
     for (const mod of applicationConfig.modules.backend) {
+      if (!(await this.verifyApplicationModule("backend", mod))) {
+        this.core.log.error("application_manager", `Invalid application module for: "${applicationPath}", module ${mod.id} was invalid`);
+
+        continue;
+      }
+
       // noinspection JSPotentiallyInvalidConstructorUsage
       this.loadedModules.backend.push({ config: mod, module: new (await import(mod.main)).default() });
     }
 
     for (const mod of applicationConfig.modules.officialFrontend) {
+      if (!(await this.verifyApplicationModule("officialFrontend", mod))) {
+        this.core.log.error("application_manager", `Invalid application module for: "${applicationPath}", module ${mod.id} was invalid`);
+
+        continue;
+      }
+
       this.loadedModules.officialFrontend.push({ config: mod });
     }
   }
@@ -640,7 +658,6 @@ export default class CoreApplicationManager {
             return false;
           }
         });
-        return false;
       }
     }
 
