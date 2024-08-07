@@ -5,9 +5,12 @@
 
 import { INSTANCE_STATUS } from "@yourdash/shared/core/instanceStatus.js";
 import { LoginLayout } from "@yourdash/shared/core/login/loginLayout.js";
+import { YOURDASH_SESSION_TYPE } from "@yourdash/shared/core/session.js";
+import { USER_AVATAR_SIZE } from "@yourdash/shared/core/userAvatarSize.js";
 import EndpointResponseCoreLoginNotice from "@yourdash/shared/endpoints/core/login/notice.js";
 import EndpointResponseLoginInstanceMetadata from "@yourdash/shared/endpoints/login/instance/metadata.js";
 import chalk from "chalk";
+import childProcess from "child_process";
 import expressCompression from "compression";
 import cors from "cors";
 import express, { Application as ExpressApplication } from "express";
@@ -19,30 +22,28 @@ import path from "path";
 import { fetch } from "undici";
 import { compareHashString } from "../lib/encryption.js";
 import { createSession, loadSessionsForUser } from "../lib/session.js";
+import CoreApplicationManager from "./coreApplicationManager.js";
 import CoreCommands from "./coreCommands.js";
 import CoreExecute from "./coreExecute.js";
 import CoreGlobalDb from "./coreGlobalDb.js";
 import CoreImage from "./coreImage.js";
+import CoreLoadManagement from "./coreLoadManagement.js";
 import CoreLog from "./coreLog.js";
+import CorePanel from "./corePanel.js";
 import CoreRequest from "./coreRequest.js";
+import CoreScheduler from "./coreScheduler.js";
 import CoreTeams from "./coreTeams.js";
+import CoreUserDatabase from "./coreUserDatabase.js";
+import CoreUsers from "./coreUsers.js";
 import CoreVideo from "./coreVideo.js";
 import FSDirectory from "./fileSystem/FSDirectory.js";
 import FSFile from "./fileSystem/FSFile.js";
+import CoreFileSystem from "./fileSystem/coreFS.js";
 import GlobalDBCoreLoginNotice from "./login/loginNotice.js";
 import loadNextCloudSupportEndpoints from "./nextcloud/coreNextCloud.js";
-import CoreWebDAV from "./webDAV/coreWebDAV.js";
-import CorePanel from "./corePanel.js";
-import CoreScheduler from "./coreScheduler.js";
-import CoreUserDatabase from "./coreUserDatabase.js";
-import CoreUsers from "./coreUsers.js";
-import CoreFileSystem from "./fileSystem/coreFS.js";
-import CoreLoadManagement from "./coreLoadManagement.js";
-import { USER_AVATAR_SIZE } from "@yourdash/shared/core/userAvatarSize.js";
 import YourDashUser from "./user/index.js";
-import { YOURDASH_SESSION_TYPE } from "@yourdash/shared/core/session.js";
+import CoreWebDAV from "./webDAV/coreWebDAV.js";
 import CoreWebsocketManager from "./websocketManager/coreWebsocketManager.js";
-import CoreApplicationManager from "./coreApplicationManager.js";
 
 declare global {
   const globalThis: {
@@ -233,37 +234,85 @@ export class Core {
         this.globalDb.__internal__startGlobalDatabaseService();
         this.teams.__internal__startTeamDatabaseService();
 
-        const attemptToListen = async () => {
-          try {
-            await killPort(3563);
-            this.log.info("startup", "Killed port 3563");
+        await this.__internal__startExpressServer();
+        await this.__internal__startViteServer();
+        await this.loadCoreEndpoints();
+      });
+    });
+    return this;
+  }
+
+  // start the backend's request server
+  async __internal__startExpressServer() {
+    return new Promise<void>(async (resolve) => {
+      try {
+        await killPort(3563);
+        this.log.info("startup", "Killed port 3563");
+        this.httpServer.listen(3563, () => {
+          this.log.success("startup", "server now listening on port 3563!");
+          this.log.success("startup", "YourDash initialization complete!");
+          resolve();
+        });
+      } catch (err) {
+        if (err instanceof Error) {
+          if (err.message === "No process running on port") {
+            this.log.info("startup", "Attempted to kill port 3563, no process running was currently using port 3563");
+
             this.httpServer.listen(3563, () => {
               this.log.success("startup", "server now listening on port 3563!");
               this.log.success("startup", "YourDash initialization complete!");
-              this.loadCoreEndpoints();
+              resolve();
             });
-          } catch (err) {
-            if (!(err instanceof Error)) return this.log.error("startup", "err is not an error", err);
 
-            if (err.message === "No process running on port") {
-              this.log.info("startup", "Attempted to kill port 3563, no process running was currently using port 3563");
-
-              this.httpServer.listen(3563, () => {
-                this.log.success("startup", "server now listening on port 3563!");
-                this.log.success("startup", "YourDash initialization complete!");
-                this.loadCoreEndpoints();
-              });
-              return;
-            }
-
-            this.log.warning("startup", "Unable to kill port 3563", JSON.stringify(err));
-            await attemptToListen();
+            return;
           }
-        };
 
-        await attemptToListen();
-      });
+          this.log.warning("startup", "Unable to kill port 3563", JSON.stringify(err));
+          return;
+        }
+
+        this.log.info("startup", "Retrying to kill port 3563");
+        await this.__internal__startExpressServer();
+      }
     });
+  }
+
+  // start the frontend's vite server
+  // This will be used when a resource doesn't exist on the public frontend
+  async __internal__startViteServer() {
+    this.log.info("startup", "Starting vite server...");
+
+    const process = childProcess.spawn("yarn", ["run", "dev"], { cwd: "../web/", shell: true });
+
+    process.on("message", (message) => {
+      if (message === "VITE_SERVER_STARTED") {
+        this.log.success("startup", "Vite server started!");
+        return;
+      }
+
+      this.log.info("vite", message.toString());
+    });
+
+    process.on("error", (error) => {
+      this.log.error("vite", error.toString());
+    });
+
+    process.on("exit", (code) => {
+      this.log.info("vite", `Vite server exited with code ${code}`);
+    });
+
+    process.on("close", (code) => {
+      this.log.info("vite", `Vite server closed with code ${code}`);
+    });
+
+    process.on("uncaughtException", (error) => {
+      this.log.error("vite", error.toString());
+    });
+
+    process.on("unhandledRejection", (error) => {
+      this.log.error("vite", error.toString());
+    });
+
     return this;
   }
 
