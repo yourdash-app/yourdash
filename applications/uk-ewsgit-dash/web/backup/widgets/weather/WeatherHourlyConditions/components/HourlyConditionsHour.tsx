@@ -25,7 +25,7 @@ const HourlyConditionsHour: React.FC<IHourlyConditionsHour> = ({
   feelsLike,
   rainChance,
 }) => {
-  const trans = useTranslate("weather");
+  const trans = useTranslate("uk-ewsgit-weather");
   const [showTooltip, setShowTooltip] = React.useState(false);
 
   return (

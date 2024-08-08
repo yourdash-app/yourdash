@@ -30,7 +30,7 @@ const WeatherApplicationLocationPageHeader: React.FC<WeatherApplicationLocationP
   selectedDay,
 }) => {
   const navigate = useNavigate();
-  const trans = useTranslate("weather");
+  const trans = useTranslate("uk-ewsgit-weather");
   const [isStuck, setIsStuck] = React.useState<boolean>(false);
 
   React.useEffect(() => {

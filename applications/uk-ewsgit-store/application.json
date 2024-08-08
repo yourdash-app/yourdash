@@ -21,9 +21,30 @@
     }
   ],
   "modules": {
-    "backend": [],
+    "backend": [
+      {
+        "dependencies": [],
+        "description": "The backend for the Store application",
+        "id": "uk-ewsgit-store-backend",
+        "main": "./backend/index.ts"
+      }
+    ],
     "frontend": [],
-    "officialFrontend": []
+    "officialFrontend": [
+      {
+        "id": "uk-ewsgit-store-frontend",
+        "main": "./web/index.tsx",
+        "displayName": "Store",
+        "iconPath": "./icon.avif",
+        "description": "",
+        "dependencies": [
+          {
+            "moduleType": "backend",
+            "id": "uk-ewsgit-store-backend"
+          }
+        ]
+      }
+    ]
   },
   "shouldInstanceRestartOnInstall": true
 }

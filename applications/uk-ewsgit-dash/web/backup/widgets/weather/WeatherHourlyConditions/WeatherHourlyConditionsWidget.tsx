@@ -16,7 +16,7 @@ import HourlyConditionsHour from "./components/HourlyConditionsHour";
 import styles from "./WeatherHourlyConditionsWidget.module.scss";
 
 const WeatherHourlyConditionsWidget: React.FC = () => {
-  const trans = useTranslate("weather");
+  const trans = useTranslate("uk-ewsgit-weather");
   const [weatherData, setWeatherData] = useState<IWeatherDataForLocation | null>(null);
 
   useEffect(() => {

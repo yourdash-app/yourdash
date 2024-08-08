@@ -21,9 +21,30 @@
     }
   ],
   "modules": {
-    "backend": [],
+    "backend": [
+      {
+        "dependencies": [],
+        "description": "The backend for the Weather application",
+        "id": "uk-ewsgit-weather-backend",
+        "main": "./backend/index.ts"
+      }
+    ],
     "frontend": [],
-    "officialFrontend": []
+    "officialFrontend": [
+      {
+        "id": "uk-ewsgit-weather-frontend",
+        "main": "./web/index.tsx",
+        "displayName": "Weather",
+        "iconPath": "./icon.avif",
+        "description": "",
+        "dependencies": [
+          {
+            "moduleType": "backend",
+            "id": "uk-ewsgit-weather-backend"
+          }
+        ]
+      }
+    ]
   },
   "shouldInstanceRestartOnInstall": true
 }

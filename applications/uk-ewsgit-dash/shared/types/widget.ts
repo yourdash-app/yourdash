@@ -3,7 +3,8 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-export interface IWidget {
+// eslint-disable-next-line
+export interface IWidget<ExtraData extends { [key: string]: any }> {
   position: { x: number; y: number };
   id: string;
   size: {
@@ -11,6 +12,5 @@ export interface IWidget {
     min: { width: number; height: number };
     max: { width: number; height: number };
   };
-  // eslint-disable-next-line
-  extraData: { [key: string]: any };
+  extraData: ExtraData;
 }

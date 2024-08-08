@@ -17,7 +17,7 @@ export default async function getGeolocationSuggestions(locationName: string, su
 
   if (geolocationSuggestionsCache.get(locationName)) {
     core.log.info("app/weather", `Responding with cached location data for location '${locationName}'`);
-    return geolocationSuggestionsCache.get(locationName);
+    return geolocationSuggestionsCache.get(locationName)!;
   }
 
   core.log.info("app/weather", `Fetching location suggestions for ${locationName}`);
@@ -35,7 +35,7 @@ export default async function getGeolocationSuggestions(locationName: string, su
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const output = response.results.map((result: any) => {
       return {
-        value: result.value,
+        id: result.id,
         address: {
           name: result.name,
           admin1: result.admin1,

@@ -18,7 +18,7 @@ interface IWeatherConditionsForHour {
 }
 
 const WeatherConditionsForHour: React.FC<IWeatherConditionsForHour> = ({ weatherData, selectedDay, selectedHour }) => {
-  const trans = useTranslate("weather");
+  const trans = useTranslate("uk-ewsgit-weather");
   const [selectedHourDate, setSelectedHourDate] = React.useState<Date | null>(null);
 
   React.useEffect(() => {
@@ -29,7 +29,10 @@ const WeatherConditionsForHour: React.FC<IWeatherConditionsForHour> = ({ weather
 
   if (!selectedHourDate || selectedHour === null) {
     return (
-      <Card className={"col-span-3 flex items-center justify-center h-max sticky top-4"} showBorder>
+      <Card
+        className={"col-span-3 flex items-center justify-center h-max sticky top-4"}
+        showBorder
+      >
         <h1>Click an hour to show more information.</h1>
       </Card>
     );
@@ -37,14 +40,22 @@ const WeatherConditionsForHour: React.FC<IWeatherConditionsForHour> = ({ weather
 
   return (
     <>
-      <Card className={"gap-2 flex col-span-3 items-center justify-center w-full sticky top-4"} showBorder>
-        <span className={"text-3xl font-semibold tracking-wide"}>{selectedHourDate.toLocaleDateString(undefined, { dateStyle: "full" })}</span>
+      <Card
+        className={"gap-2 flex col-span-3 items-center justify-center w-full sticky top-4"}
+        showBorder
+      >
+        <span className={"text-3xl font-semibold tracking-wide"}>
+          {selectedHourDate.toLocaleDateString(undefined, { dateStyle: "full" })}
+        </span>
         <span className={"text-3xl font-semibold tracking-wide"}>
           {selectedHourDate.getHours() < 9 ? `0${selectedHourDate.getHours() + 1}` : selectedHourDate.getHours() + 1}:00
         </span>
       </Card>
       {/* Weather conditions description */}
-      <Card className={"gap-2 flex col-span-3 items-center justify-center w-full"} showBorder>
+      <Card
+        className={"gap-2 flex col-span-3 items-center justify-center w-full"}
+        showBorder
+      >
         <span className={"text-2xl tracking-wide"}>
           {chunk(weatherData.hourly.temperature, 24)[selectedDay][selectedHour || 0]}
           {weatherData.units.hourly.temperature}{" "}
@@ -53,17 +64,26 @@ const WeatherConditionsForHour: React.FC<IWeatherConditionsForHour> = ({ weather
         </span>
       </Card>
       {/* Hourly metrics section */}
-      <Card className={"flex items-center justify-center flex-col gap-2"} showBorder>
+      <Card
+        className={"flex items-center justify-center flex-col gap-2"}
+        showBorder
+      >
         <span className={"font-semibold text-2xl"}>Wind speed</span>
         {chunk(weatherData.hourly.windSpeed, 24)[selectedDay][selectedHour || 0]}
         {weatherData.units.hourly.windSpeed.replace("mp/h", "mph")}
       </Card>
-      <Card className={"flex items-center justify-center flex-col gap-2"} showBorder>
+      <Card
+        className={"flex items-center justify-center flex-col gap-2"}
+        showBorder
+      >
         <span className={"font-semibold text-2xl"}>Cloud cover</span>
         {chunk(weatherData.hourly.cloudCover, 24)[selectedDay][selectedHour || 0]}
         {weatherData.units.hourly.cloudCover}
       </Card>
-      <Card className={"flex items-center justify-center flex-col gap-2"} showBorder>
+      <Card
+        className={"flex items-center justify-center flex-col gap-2"}
+        showBorder
+      >
         <span className={"font-semibold text-2xl"}>Rain probability</span>
         {chunk(weatherData.hourly.precipitationProbability, 24)[selectedDay][selectedHour || 0]}
         {weatherData.units.hourly.precipitationProbability}

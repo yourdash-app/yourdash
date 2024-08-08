@@ -3,13 +3,14 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import clippy from "@yourdash/shared/web/helpers/clippy";
+import useTranslate from "@yourdash/shared/web/helpers/i18n";
+import Card from "@yourdash/uikit/components/card/card";
+import TextInput from "@yourdash/uikit/components/textInput/textInput";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import csi from "@yourdash/csi/csi";
-import { Card, TextInput } from "@yourdash/web/src/ui/index";
-import useTranslate from "@yourdash/web/src/helpers/i18n";
 import APPLICATION_ICON from "../../assets/weatherIcons/partly_cloudy.svg";
-import clippy from "@yourdash/web/src/helpers/clippy";
 import { ILocationSearchResult } from "../../../shared/locationSearchResult";
 import THUNDER_BACKGROUND from "../../assets/weatherBackgrounds/thunder.jpg";
 import CLOUDY_BACKGROUND from "../../assets/weatherBackgrounds/cloudy1.jpg";
@@ -21,7 +22,7 @@ const BACKGROUND_IMAGES: string[] = [THUNDER_BACKGROUND, CLOUDY_BACKGROUND, RAIN
 
 const SelectLocationView: React.FC = () => {
   const navigate = useNavigate();
-  const trans = useTranslate("weather");
+  const trans = useTranslate("uk-ewsgit-weather");
   const [locationQuery, setLocationQuery] = useState<ILocationSearchResult[]>([]);
   const [previousWeatherLocations, setPreviousWeatherLocations] = useState<{ name: string; id: number }[]>([]);
   const [backgroundImage, setBackgroundImage] = useState<string>("");
@@ -49,20 +50,14 @@ const SelectLocationView: React.FC = () => {
         />
         <h2 className={"text-base-50 font-semibold text-4xl drop-shadow-lg"}>{trans("APPLICATION_BRANDING")}</h2>
       </header>
-      <Card
-        className={"gap-2 flex flex-col p-4 w-full lg:max-w-4xl md:max-w-2xl max-w-[calc(100vw-1rem)] shadow-2xl"}
-        showBorder
-      >
+      <Card className={"gap-2 flex flex-col p-4 w-full lg:max-w-4xl md:max-w-2xl max-w-[calc(100vw-1rem)] shadow-2xl"}>
         <div className={"flex gap-2 items-center justify-center w-full"}>
           <TextInput
             accessibleName={"weather location"}
             className={"w-full font-semibold tracking-wide text-3xl h-32"}
-            autoComplete={"false"}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                if (locationQuery[0]) {
-                  navigate(`/app/a/uk-ewsgit-weather/${locationQuery[0].value}`);
-                }
+            onSubmit={() => {
+              if (locationQuery[0]) {
+                navigate(`/app/a/uk-ewsgit-weather/${locationQuery[0].id}`);
               }
             }}
             onChange={(value: string) => {
@@ -70,7 +65,7 @@ const SelectLocationView: React.FC = () => {
                 setLocationQuery(resp || []);
               });
             }}
-            label={trans("LOCATION")}
+            placeholder={trans("LOCATION")}
           />
           {/* <IconButton icon={YourDashIcon.Pin} onClick={( e ) => {*/}
           {/*  if ( navigator.geolocation ) {*/}
@@ -95,13 +90,13 @@ const SelectLocationView: React.FC = () => {
           <div className={clippy("grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 w-full")}>
             {locationQuery.map((item, ind) => (
               <Card
-                key={item.value}
+                key={item.id}
                 className={clippy(
                   "hover:bg-button-hover-bg active:bg-button-active-bg hover:text-button-hover-fg active:text-button-active-fg transition-[var(--transition)] cursor-pointer w-full",
                   ind === 0 ? "bg-button-hover-bg text-button-hover-fg" : "bg-button-bg text-button-fg",
                 )}
                 onClick={() => {
-                  navigate(`/app/a/uk-ewsgit-weather/${item.value}`);
+                  navigate(`/app/a/uk-ewsgit-weather/${item.id}`);
                 }}
               >
                 <h2 className={"text-2xl font-semibold tracking-wide"}>

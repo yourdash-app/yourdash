@@ -179,7 +179,9 @@ export default async function getWeatherDataForLongitudeAndLatitude(id: string):
       },
     };
   } catch (e) {
-    core.log.warning("app/weather", "Could not fetch location data => ", e);
+    if (!(e instanceof Error)) return null;
+
+    core.log.warning("app/weather", "Could not fetch location data => ", e.toString());
     return null;
   }
 }

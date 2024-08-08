@@ -4,6 +4,7 @@
  */
 
 import BackendModule, { YourDashModuleArguments } from "@yourdash/backend/src/core/moduleManager/backendModule.js";
+import { IWidgetGrid } from "../shared/types/widgetGrid.js";
 
 export default class DashModule extends BackendModule {
   constructor(args: YourDashModuleArguments) {
@@ -13,7 +14,7 @@ export default class DashModule extends BackendModule {
   public loadEndpoints() {
     super.loadEndpoints();
 
-    this.api.request.setNamespace("app/dash");
+    this.api.request.setNamespace("app/uk-ewsgit-dash");
 
     this.api.request.get("/user-full-name", async (req, res) => {
       res.json(
@@ -24,17 +25,140 @@ export default class DashModule extends BackendModule {
       );
     });
 
+    const WIDGET_PAGES: IWidgetGrid[] = [
+      {
+        widgets: [
+          {
+            position: {
+              x: 0,
+              y: 0,
+            },
+            id: "applicationShortcut",
+            size: {
+              preferred: {
+                width: 2,
+                height: 2,
+              },
+              min: {
+                width: 1,
+                height: 1,
+              },
+              max: {
+                width: 2,
+                height: 3,
+              },
+            },
+            extraData: {
+              id: "uk-ewsgit-dash",
+              url: "https://ewsgit.uk",
+              name: "YourDash",
+              icon: "https://ewsgit.uk/favicon.png",
+            },
+          },
+          {
+            position: {
+              x: 2,
+              y: 0,
+            },
+            id: "applicationShortcut",
+            size: {
+              preferred: {
+                width: 2,
+                height: 2,
+              },
+              min: {
+                width: 1,
+                height: 1,
+              },
+              max: {
+                width: 2,
+                height: 3,
+              },
+            },
+            extraData: {},
+          },
+          {
+            position: {
+              x: 0,
+              y: 2,
+            },
+            id: "applicationShortcut",
+            size: {
+              preferred: {
+                width: 2,
+                height: 2,
+              },
+              min: {
+                width: 1,
+                height: 1,
+              },
+              max: {
+                width: 2,
+                height: 3,
+              },
+            },
+            extraData: {},
+          },
+          {
+            position: {
+              x: 0,
+              y: 4,
+            },
+            id: "applicationShortcut",
+            size: {
+              preferred: {
+                width: 2,
+                height: 2,
+              },
+              min: {
+                width: 1,
+                height: 1,
+              },
+              max: {
+                width: 2,
+                height: 3,
+              },
+            },
+            extraData: {},
+          },
+          {
+            position: {
+              x: 2,
+              y: 2,
+            },
+            id: "applicationShortcut",
+            size: {
+              preferred: {
+                width: 2,
+                height: 2,
+              },
+              min: {
+                width: 1,
+                height: 1,
+              },
+              max: {
+                width: 2,
+                height: 3,
+              },
+            },
+            extraData: {},
+          },
+        ],
+      },
+    ];
+
     this.api.request.get("/widget/pages", async (req, res) => {
       // return the number of widget pages a user has
 
       return res.json({
-        pageCount: 3,
+        pageCount: WIDGET_PAGES.length,
       });
     });
 
-    // TODO: implement module system
     this.api.request.get("/widgets/:page", async (req, res) => {
-      res.json({ success: true });
+      const page = req.params.page as string;
+
+      res.json(WIDGET_PAGES[Number(page)]);
     });
   }
 }

@@ -21,7 +21,7 @@ export default class WeatherModule extends BackendModule {
   public loadEndpoints() {
     super.loadEndpoints();
 
-    geolocationApi(this.api.request);
+    geolocationApi(this.api.request.rawExpress);
 
     this.api.request.get("/app/weather/location/:id", async (req, res) => {
       const { id } = req.params;
@@ -47,6 +47,6 @@ export default class WeatherModule extends BackendModule {
       return res.json([]);
     });
 
-    weatherPredictionEngine(this.api.request);
+    weatherPredictionEngine(this.api.request.rawExpress);
   }
 }

@@ -19,10 +19,13 @@ const WeatherApplicationDaysCarousel: React.FC<{
   setSelectedDay: (day: number) => void;
   selectedDay: number;
 }> = ({ weatherData, setSelectedDay, selectedDay }) => {
-  const trans = useTranslate("weather");
+  const trans = useTranslate("uk-ewsgit-weather");
 
   return (
-    <Carousel className={"sticky top-[5.75rem] flex gap-1 p-2 pl-10 pr-10 w-full pt-0"} compactControls>
+    <Carousel
+      className={"sticky top-[5.75rem] flex gap-1 p-2 pl-10 pr-10 w-full pt-0"}
+      compactControls
+    >
       {weatherData.daily.time.map((dayDateTime, index) => {
         const date = new Date(dayDateTime);
 
@@ -51,16 +54,28 @@ const WeatherApplicationDaysCarousel: React.FC<{
                   {date.getDate()}
                 </span>
               </h2>
-              <img className={"w-20 -mr-2 -mt-4"} alt={""} src={getWeatherIconFromState(weatherData.daily.weatherState[index])} />
+              <img
+                className={"w-20 -mr-2 -mt-4"}
+                alt={""}
+                src={getWeatherIconFromState(weatherData.daily.weatherState[index])}
+              />
             </div>
             <div className={"-mt-2"}>
               <div className={"font-black text-3xl flex gap-1 items-center"}>
-                <Icon icon={UKIcon.ChevronUp} className={"h-4"} color={"#43aa8b"} />
+                <Icon
+                  icon={UKIcon.ChevronUp}
+                  className={"h-4"}
+                  color={"#43aa8b"}
+                />
                 <span>{weatherData.daily.temperature.max[index]}</span>
                 <span className={"text-[#43aa8b]"}>{weatherData.units.daily.temperature.max}</span>
               </div>
               <div className={"text-xl flex gap-1 items-center"}>
-                <Icon icon={UKIcon.ChevronDown} className={"h-4"} color={"#f94144"} />
+                <Icon
+                  icon={UKIcon.ChevronDown}
+                  className={"h-4"}
+                  color={"#f94144"}
+                />
                 <span>{weatherData.daily.temperature.min[index]}</span>
                 <span className={"text-[#f94144]"}>{weatherData.units.daily.temperature.min}</span>
               </div>

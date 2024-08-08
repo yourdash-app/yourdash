@@ -14,124 +14,14 @@ import loadable from "@loadable/component";
 
 const DashApplication: React.FC = () => {
   const username = useResource(() => csi.getUser().getFullName());
-  const { pageCount } = useResource<{ pageCount: number }>(() => csi.getJson("/app/dash/widget/pages")) || { pageCount: 0 };
+  const { pageCount } = useResource<{ pageCount: number }>(() => csi.getJson("/app/uk-ewsgit-dash/widget/pages")) || { pageCount: 0 };
   const [currentWidgetPage, setCurrentWidgetPage] = useState<number>(0);
-  const widgetPages: IWidgetGrid[] = [
-    {
-      widgets: [
-        {
-          position: {
-            x: 0,
-            y: 0,
-          },
-          id: "applicationShortcut",
-          size: {
-            preferred: {
-              width: 2,
-              height: 2,
-            },
-            min: {
-              width: 1,
-              height: 1,
-            },
-            max: {
-              width: 2,
-              height: 3,
-            },
-          },
-          extraData: {},
-        },
-        {
-          position: {
-            x: 2,
-            y: 0,
-          },
-          id: "applicationShortcut",
-          size: {
-            preferred: {
-              width: 2,
-              height: 2,
-            },
-            min: {
-              width: 1,
-              height: 1,
-            },
-            max: {
-              width: 2,
-              height: 3,
-            },
-          },
-          extraData: {},
-        },
-        {
-          position: {
-            x: 0,
-            y: 2,
-          },
-          id: "applicationShortcut",
-          size: {
-            preferred: {
-              width: 2,
-              height: 2,
-            },
-            min: {
-              width: 1,
-              height: 1,
-            },
-            max: {
-              width: 2,
-              height: 3,
-            },
-          },
-          extraData: {},
-        },
-        {
-          position: {
-            x: 0,
-            y: 4,
-          },
-          id: "applicationShortcut",
-          size: {
-            preferred: {
-              width: 2,
-              height: 2,
-            },
-            min: {
-              width: 1,
-              height: 1,
-            },
-            max: {
-              width: 2,
-              height: 3,
-            },
-          },
-          extraData: {},
-        },
-        {
-          position: {
-            x: 2,
-            y: 2,
-          },
-          id: "applicationShortcut",
-          size: {
-            preferred: {
-              width: 2,
-              height: 2,
-            },
-            min: {
-              width: 1,
-              height: 1,
-            },
-            max: {
-              width: 2,
-              height: 3,
-            },
-          },
-          extraData: {},
-        },
-      ],
-    },
-  ];
+  const widgetPage = useResource<IWidgetGrid>(
+    () => csi.getJson(`/app/uk-ewsgit-dash/widgets/${currentWidgetPage}`),
+    [currentWidgetPage],
+  ) || {
+    widgets: [],
+  };
 
   // @ts-ignore
   return (
@@ -146,7 +36,7 @@ const DashApplication: React.FC = () => {
         />
       </Flex>
       <div className={styles.widgetGrid}>
-        {widgetPages[currentWidgetPage].widgets.map((widget) => {
+        {widgetPage.widgets.map((widget) => {
           const Widget = loadable(() => import(`./widgets/${widget.id}/widget.tsx`));
 
           return (
