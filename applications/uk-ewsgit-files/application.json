@@ -21,9 +21,30 @@
     }
   ],
   "modules": {
-    "backend": [],
+    "backend": [
+      {
+        "dependencies": [],
+        "description": "The backend for the Dash application",
+        "id": "uk-ewsgit-files-backend",
+        "main": "./backend/index.ts"
+      }
+    ],
     "frontend": [],
-    "officialFrontend": []
+    "officialFrontend": [
+      {
+        "id": "uk-ewsgit-files-frontend",
+        "main": "./web/index.tsx",
+        "displayName": "Files",
+        "iconPath": "./icon.avif",
+        "description": "",
+        "dependencies": [
+          {
+            "moduleType": "backend",
+            "id": "uk-ewsgit-files-backend"
+          }
+        ]
+      }
+    ]
   },
   "shouldInstanceRestartOnInstall": true
 }

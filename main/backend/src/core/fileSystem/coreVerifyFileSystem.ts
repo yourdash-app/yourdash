@@ -4,7 +4,7 @@
  */
 
 import path from "path";
-import core, { Core } from "../core.js";
+import { Core } from "../core.js";
 import generateInstanceLogos from "../helpers/generateInstanceLogos.js";
 import { YOURDASH_USER_PERMISSIONS } from "../user/userPermissions.js";
 import FSDirectory from "./FSDirectory.js";

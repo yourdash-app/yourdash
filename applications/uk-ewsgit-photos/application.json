@@ -21,9 +21,30 @@
     }
   ],
   "modules": {
-    "backend": [],
+    "backend": [
+      {
+        "dependencies": [],
+        "description": "The backend for the Photos application",
+        "id": "uk-ewsgit-photos-backend",
+        "main": "./backend/index.ts"
+      }
+    ],
     "frontend": [],
-    "officialFrontend": []
+    "officialFrontend": [
+      {
+        "id": "uk-ewsgit-photos-frontend",
+        "main": "./web/index.tsx",
+        "displayName": "Photos",
+        "iconPath": "./icon.avif",
+        "description": "",
+        "dependencies": [
+          {
+            "moduleType": "backend",
+            "id": "uk-ewsgit-photos-backend"
+          }
+        ]
+      }
+    ]
   },
   "shouldInstanceRestartOnInstall": true
 }

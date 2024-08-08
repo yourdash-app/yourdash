@@ -32,6 +32,9 @@
           },
           "type": "array"
         },
+        "category": {
+          "type": "string"
+        },
         "description": {
           "type": "string"
         },

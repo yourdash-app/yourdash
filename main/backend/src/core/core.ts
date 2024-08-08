@@ -284,13 +284,35 @@ export class Core {
 
     const process = childProcess.spawn("yarn", ["run", "dev"], { cwd: "../web/", shell: true });
 
-    process.on("message", (message) => {
-      if (message === "VITE_SERVER_STARTED") {
-        this.log.success("startup", "Vite server started!");
+    let portInUse: boolean = false;
+
+    process.stdout.on("data", (data) => {
+      if (data.toString() === "$ vite --host\n") return;
+
+      if (data.toString().includes("is in use, trying another one...")) {
+        if (portInUse) return;
+
+        portInUse = true;
+
+        process.kill("SIGTERM");
+        this.log.info("vite", "The YourDash frontend's port was already in use, killing the process on port '5173' and trying again...");
+
+        killPort(5173)
+          .then(() => {
+            this.__internal__startViteServer();
+          })
+          .catch(() => {
+            this.log.error("vite", "Unable to kill port 5173");
+          });
+
         return;
       }
 
-      this.log.info("vite", message.toString());
+      this.log.info("vite", data.toString().replaceAll("\n", "\n                            "));
+    });
+
+    process.stderr.on("data", (data) => {
+      this.log.error("vite", data.toString());
     });
 
     process.on("error", (error) => {
@@ -492,7 +514,12 @@ export class Core {
 
       const user = new YourDashUser(username);
 
-      const savedHashedPassword = await ((await this.fs.getFile(path.join(user.path, "core/password.enc"))) as FSFile).read("string");
+      let savedHashedPassword: string = "";
+      try {
+        savedHashedPassword = await ((await this.fs.getFile(path.join(user.path, "core/password.enc"))) as FSFile).read("string");
+      } catch (e) {
+        this.log.error("authentication", "Unable to read password from disk", e);
+      }
 
       return compareHashString(savedHashedPassword, password)
         .then(async (result) => {
@@ -647,6 +674,7 @@ export class Core {
       this.applicationManager.loadedModules.backend.map((mod) => {
         try {
           mod.module.loadPreAuthEndpoints();
+          this.log.success("startup", `Loaded pre-auth endpoints for ${mod.config.id}`);
         } catch (err) {
           this.log.error("startup", `Failed to load pre-auth endpoints for ${mod.config.id}`, err);
         }
@@ -737,7 +765,7 @@ export class Core {
 
       return res.json(<EndpointResponseCoreLoginNotice>{
         author: notice.author ?? "Instance Administrator",
-        display: true,
+        display: notice.displayType === "onLogin" ?? true,
         message: notice.message ?? "Placeholder message. Hey system admin, you should change this!",
         timestamp: notice.timestamp ?? 1,
       });

@@ -3,19 +3,20 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import { YOURDASH_SESSION_TYPE } from "@yourdash/shared/core/session.js";
+import { USER_AVATAR_SIZE } from "@yourdash/shared/core/userAvatarSize.js";
 import chalk from "chalk";
 import path from "path";
-import { YOURDASH_SESSION_TYPE } from "@yourdash/shared/core/session.js";
 import sharp from "sharp";
 import { hashString } from "../../lib/encryption.js";
 import YourDashSession, { getSessionsForUser } from "../../lib/session.js";
 import core from "../core.js";
-import { USER_AVATAR_SIZE } from "@yourdash/shared/core/userAvatarSize.js";
-import FSError from "../fileSystem/FSError.js";
+import FSError, { FS_ERROR_TYPE } from "../fileSystem/FSError.js";
+import FSFile from "../fileSystem/FSFile.js";
 import { YOURDASH_TEAM_PERMISSIONS, YourDashTeamPermission } from "../team/teamPermissions.js";
 import UserDatabase from "./userDatabase.js";
-import { YourDashUserPermission } from "./userPermissions.js";
 import IYourDashUserDatabase from "./userJson.js";
+import { YourDashUserPermission } from "./userPermissions.js";
 
 const USER_PATHS = {
   FS: "./fs/",
@@ -227,7 +228,7 @@ export default class YourDashUser {
     }
 
     try {
-      if (!(await core.fs.doesExist(path.join(this.path, "core/password.enc")))) {
+      if (!(await core.fs.doesExist(path.join(this.path, USER_PATHS.PASSWORD)))) {
         await this.setPassword("password");
       }
     } catch (err) {
@@ -449,9 +450,18 @@ export default class YourDashUser {
     try {
       const userPasswordFile = await core.fs.getFile(path.join(this.path, "./core/password.enc"));
 
-      if (userPasswordFile instanceof FSError) return;
+      if (userPasswordFile instanceof FSError) {
+        if (userPasswordFile.reason === FS_ERROR_TYPE.DOES_NOT_EXIST) {
+          const newUserPasswordFile = await core.fs.createFile(path.join(this.path, "./core/password.enc"));
 
-      await userPasswordFile.write(hashedPassword);
+          if (newUserPasswordFile instanceof FSError) return;
+
+          await newUserPasswordFile.write(hashedPassword);
+          return;
+        }
+      }
+
+      await (userPasswordFile as FSFile).write(hashedPassword);
     } catch (err) {
       core.log.error("user", `unable to create a new password for user ${this.username};${err}`);
     }

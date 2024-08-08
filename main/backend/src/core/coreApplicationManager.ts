@@ -14,6 +14,7 @@ import { Request as ExpressRequest } from "express";
 interface IYourDashApplicationConfigJson {
   id: string;
   displayName: string;
+  category: string;
   authors: { name: string; url: string; bio: string; avatarUrl: string }[];
   maintainers: { name: string; url: string; bio: string; avatarUrl: string }[];
   description: string;
@@ -219,7 +220,13 @@ export default class CoreApplicationManager {
       }
 
       // noinspection JSPotentiallyInvalidConstructorUsage
-      this.loadedModules.backend.push({ config: mod, module: new (await import(mod.main)).default() });
+      this.loadedModules.backend.push({
+        config: mod,
+        module: new (await import(path.join(this.core.fs.ROOT_PATH, applicationPath, mod.main))).default({
+          moduleName: mod.id,
+          modulePath: path.join(this.core.fs.ROOT_PATH, applicationPath, mod.main),
+        } as YourDashModuleArguments),
+      });
     }
 
     for (const mod of applicationConfig.modules.officialFrontend) {
@@ -321,7 +328,7 @@ export default class CoreApplicationManager {
           return false;
         }
 
-        const iconFile = await this.core.fs.doesExist(appModule.iconPath);
+        const iconFile = await this.core.fs.doesExist(path.join(applicationPath, appModule.iconPath));
 
         if (!iconFile) {
           this.core.log.warning(
@@ -397,6 +404,14 @@ export default class CoreApplicationManager {
       this.core.log.error(
         "application_manager",
         `Invalid application: "${applicationPath}", the license property was not provided! This should be a string!`,
+      );
+      return false;
+    }
+
+    if (typeof applicationConfig.category !== "string") {
+      this.core.log.error(
+        "application_manager",
+        `Invalid application: "${applicationPath}", the category property was not provided! This should be a string!`,
       );
       return false;
     }
