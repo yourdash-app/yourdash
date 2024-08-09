@@ -7,12 +7,12 @@ import DropdownIconButton from "@yourdash/chiplet/components/dropdownIconButton/
 import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
 import RightClickMenu from "@yourdash/chiplet/components/rightClickMenu/RightClickMenu";
 import React from "react";
-import IPanelApplicationsLauncherApplication from "@yourdash/shared/core/panel/applicationsLauncher/application";
+import IPanelApplicationsLauncherFrontendModule from "@yourdash/shared/core/panel/applicationsLauncher/application";
 import csi from "@yourdash/csi/csi";
 import styles from "./ApplicationList.module.scss";
 import { useNavigate } from "react-router";
 
-const ApplicationList: React.FC<{ applications: IPanelApplicationsLauncherApplication[] }> = ({ applications }) => {
+const ApplicationList: React.FC<{ applications: IPanelApplicationsLauncherFrontendModule[] }> = ({ applications }) => {
   const navigate = useNavigate();
 
   return (

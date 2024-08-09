@@ -3,10 +3,10 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import IPanelApplicationsLauncherFrontendModule from "@yourdash/shared/core/panel/applicationsLauncher/application.js";
 import path from "path";
 import YourDashApplication from "../lib/applications.js";
 import { AUTHENTICATED_IMAGE_TYPE } from "./coreImage.js";
-import FSError from "./fileSystem/FSError.js";
 import YourDashPanel from "./helpers/panel.js";
 import { Core } from "./core.js";
 
@@ -25,34 +25,29 @@ export default class CorePanel {
       return res.json(
         (
           await Promise.all(
-            (this.core.globalDb.get<string[]>("core:installedApplications") || []).map(async (applicationName: string) => {
-              const unreadApplication = new YourDashApplication(applicationName);
+            [...this.core.applicationManager.loadedModules.officialFrontend, ...this.core.applicationManager.loadedModules.frontend].map(
+              async (module) => {
+                const RESIZED_ICON_PATH = path.join("cache/applications/icons", `${module.config.id}`, "128.png");
 
-              if (!(await unreadApplication.exists())) return undefined;
+                if (!(await this.core.fs.doesExist(RESIZED_ICON_PATH))) {
+                  this.core.log.info("core:panel", `Generating 128x128 icon for ${module.config.id}`);
 
-              const application = await unreadApplication.read();
+                  await this.core.fs.createDirectory(path.dirname(RESIZED_ICON_PATH));
 
-              if (!application) return undefined;
+                  const resizedIconPath = await this.core.image.resizeTo(await application.getIconPath(), 128, 128, "webp", true);
 
-              const RESIZED_ICON_PATH = path.join("cache/applications/icons", `${application.getName()}`, "128.png");
+                  await this.core.fs.copy(resizedIconPath, RESIZED_ICON_PATH);
+                }
 
-              if (!(await this.core.fs.doesExist(RESIZED_ICON_PATH))) {
-                this.core.log.info("core:panel", `Generating 128x128 icon for ${application.getName()}`);
-
-                await this.core.fs.createDirectory(path.dirname(RESIZED_ICON_PATH));
-
-                const resizedIconPath = await this.core.image.resizeTo(await application.getIconPath(), 128, 128, "webp", true);
-
-                await this.core.fs.copy(resizedIconPath, RESIZED_ICON_PATH);
-              }
-
-              return {
-                name: application.getName(),
-                displayName: application.getDisplayName(),
-                description: application.getDescription(),
-                icon: this.core.image.createAuthenticatedImage(username, sessionid, AUTHENTICATED_IMAGE_TYPE.FILE, RESIZED_ICON_PATH),
-              };
-            }),
+                return {
+                  id: module.config.id,
+                  displayName: module.config.displayName,
+                  description: module.config.description,
+                  url: module.config?.url || `/app/a/${module.config.id}`,
+                  icon: this.core.image.createAuthenticatedImage(username, sessionid, AUTHENTICATED_IMAGE_TYPE.FILE, RESIZED_ICON_PATH),
+                } satisfies IPanelApplicationsLauncherFrontendModule;
+              },
+            ),
           )
         ).filter((x) => {
           return x !== undefined;

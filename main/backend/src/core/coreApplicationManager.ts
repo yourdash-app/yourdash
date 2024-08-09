@@ -691,6 +691,20 @@ export default class CoreApplicationManager {
 
     return true;
   }
+
+  getModuleIcon(moduleType: "frontend" | "officialFrontend", id: string) {
+    const iconPath = this.loadedModules[moduleType].find((m) => m.config.id === id)?.config.iconPath;
+
+    if (!iconPath) {
+      return "null";
+    }
+
+    if (!this.core.fs.doesExist(iconPath)) {
+      return "null";
+    }
+
+    return iconPath;
+  }
 }
 
 /*

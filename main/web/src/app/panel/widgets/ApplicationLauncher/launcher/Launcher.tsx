@@ -3,6 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import useResource from "@yourdash/csi/useResource";
 import clippy from "@yourdash/shared/web/helpers/clippy";
 import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary.js";
 import IconButton from "@yourdash/uikit/components/iconButton/iconButton";
@@ -11,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 import styles from "./Launcher.module.scss";
 import React, { memo, useEffect, useState } from "react";
 import ApplicationsLauncherApplications from "./Applications/Applications";
-import IPanelApplicationsLauncherApplication from "@yourdash/shared/core/panel/applicationsLauncher/application";
+import IPanelApplicationsLauncherFrontendModule from "@yourdash/shared/core/panel/applicationsLauncher/application";
 import csi from "@yourdash/csi/csi";
 
 const ApplicationLauncher: React.FC<{
@@ -19,14 +20,8 @@ const ApplicationLauncher: React.FC<{
   visible: boolean;
 }> = ({ side, visible }) => {
   const navigate = useNavigate();
-  const [apps, setApps] = useState<IPanelApplicationsLauncherApplication[]>([]);
+  const apps = useResource<IPanelApplicationsLauncherFrontendModule[]>(() => csi.getJson("/core/panel/applications"), []) || [];
   const [layout, setLayout] = React.useState<"large-grid" | "small-grid" | "list">("large-grid");
-
-  useEffect(() => {
-    csi.syncGetJson("/core/panel/applications", (data) => {
-      setApps(data);
-    });
-  }, []);
 
   return (
     <div

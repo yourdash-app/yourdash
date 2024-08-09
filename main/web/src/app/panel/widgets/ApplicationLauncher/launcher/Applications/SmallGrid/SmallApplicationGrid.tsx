@@ -5,13 +5,13 @@
 
 import RightClickMenu from "@yourdash/chiplet/components/rightClickMenu/RightClickMenu";
 import React from "react";
-import IPanelApplicationsLauncherApplication from "@yourdash/shared/core/panel/applicationsLauncher/application";
+import IPanelApplicationsLauncherFrontendModule from "@yourdash/shared/core/panel/applicationsLauncher/application";
 import csi from "@yourdash/csi/csi";
 import styles from "./SmallApplicationGrid.module.scss";
 import { useNavigate } from "react-router";
 
 const SmallApplicationGrid: React.FC<{
-  applications: IPanelApplicationsLauncherApplication[];
+  applications: IPanelApplicationsLauncherFrontendModule[];
 }> = ({ applications }) => {
   const navigate = useNavigate();
 

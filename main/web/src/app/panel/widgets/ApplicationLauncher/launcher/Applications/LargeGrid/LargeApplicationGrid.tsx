@@ -6,13 +6,13 @@
 import Card from "@yourdash/uikit/components/card/card";
 import ContextMenu from "@yourdash/uikit/components/contextMenu/contextMenu.js";
 import React from "react";
-import IPanelApplicationsLauncherApplication from "@yourdash/shared/core/panel/applicationsLauncher/application";
+import IPanelApplicationsLauncherFrontendModule from "@yourdash/shared/core/panel/applicationsLauncher/application";
 import csi from "@yourdash/csi/csi";
 import styles from "./LargeApplicationGrid.module.scss";
 import { useNavigate } from "react-router";
 
 const LargeApplicationGrid: React.FC<{
-  applications: IPanelApplicationsLauncherApplication[];
+  applications: IPanelApplicationsLauncherFrontendModule[];
 }> = ({ applications }) => {
   const navigate = useNavigate();
 
@@ -36,7 +36,7 @@ const LargeApplicationGrid: React.FC<{
                 label: "Open In New Tab",
                 onClick() {
                   window.open(
-                    `${window.location.origin}${window.location.pathname}/app/a/${application.name}`,
+                    `${window.location.origin}${window.location.pathname}/app/a/${application.id}`,
                     "_blank",
                   );
                   return 0;

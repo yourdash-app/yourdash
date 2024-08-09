@@ -7,21 +7,21 @@ import clippy from "@yourdash/shared/web/helpers/clippy";
 import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary.js";
 import TextInput from "@yourdash/uikit/components/textInput/textInput.js";
 import React, { useEffect } from "react";
-import IPanelApplicationsLauncherApplication from "@yourdash/shared/core/panel/applicationsLauncher/application";
+import IPanelApplicationsLauncherFrontendModule from "@yourdash/shared/core/panel/applicationsLauncher/application";
 import LargeApplicationGrid from "./LargeGrid/LargeApplicationGrid";
 import styles from "./Applications.module.scss";
 import { useNavigate } from "react-router";
 import SmallApplicationGrid from "./SmallGrid/SmallApplicationGrid";
 import ApplicationList from "./List/ApplicationList";
 
-let filteredApplications: IPanelApplicationsLauncherApplication[] = [];
+let filteredApplications: IPanelApplicationsLauncherFrontendModule[] = [];
 
 const ApplicationsLauncherApplications: React.FC<{
-  apps: IPanelApplicationsLauncherApplication[];
+  apps: IPanelApplicationsLauncherFrontendModule[];
   layout: "large-grid" | "small-grid" | "list";
 }> = ({ apps, layout }) => {
   const navigate = useNavigate();
-  const [applications, setApplications] = React.useState<IPanelApplicationsLauncherApplication[]>(apps);
+  const [applications, setApplications] = React.useState<IPanelApplicationsLauncherFrontendModule[]>(apps);
 
   useEffect(() => {
     setApplications(apps);
