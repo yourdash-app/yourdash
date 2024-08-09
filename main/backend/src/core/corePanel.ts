@@ -5,7 +5,6 @@
 
 import IPanelApplicationsLauncherFrontendModule from "@yourdash/shared/core/panel/applicationsLauncher/application.js";
 import path from "path";
-import YourDashApplication from "../lib/applications.js";
 import { AUTHENTICATED_IMAGE_TYPE } from "./coreImage.js";
 import YourDashPanel from "./helpers/panel.js";
 import { Core } from "./core.js";
@@ -25,29 +24,44 @@ export default class CorePanel {
       return res.json(
         (
           await Promise.all(
-            [...this.core.applicationManager.loadedModules.officialFrontend, ...this.core.applicationManager.loadedModules.frontend].map(
-              async (module) => {
-                const RESIZED_ICON_PATH = path.join("cache/applications/icons", `${module.config.id}`, "128.png");
+            [
+              ...this.core.applicationManager.loadedModules.officialFrontend.map((mod) => {
+                return { ...mod, moduleType: "officialFrontend" };
+              }),
+              ...this.core.applicationManager.loadedModules.frontend.map((mod) => {
+                return { ...mod, moduleType: "frontend" };
+              }),
+            ].map(async (module) => {
+              const RESIZED_ICON_PATH = path.join("cache/applications/icons", `${module.config.id}`, "128.png");
 
-                if (!(await this.core.fs.doesExist(RESIZED_ICON_PATH))) {
-                  this.core.log.info("core:panel", `Generating 128x128 icon for ${module.config.id}`);
+              if (!(await this.core.fs.doesExist(RESIZED_ICON_PATH))) {
+                this.core.log.info("core:panel", `Generating 128x128 icon for ${module.config.id}`);
 
-                  await this.core.fs.createDirectory(path.dirname(RESIZED_ICON_PATH));
+                await this.core.fs.createDirectory(path.dirname(RESIZED_ICON_PATH));
 
-                  const resizedIconPath = await this.core.image.resizeTo(await application.getIconPath(), 128, 128, "webp", true);
+                const resizedIconPath = await this.core.image.resizeTo(
+                  this.core.applicationManager.getModuleIcon(module.moduleType as "officialFrontend" | "frontend", module.config.id),
+                  128,
+                  128,
+                  "webp",
+                );
 
-                  await this.core.fs.copy(resizedIconPath, RESIZED_ICON_PATH);
-                }
+                await this.core.fs.copy(resizedIconPath, RESIZED_ICON_PATH);
+              }
 
-                return {
-                  id: module.config.id,
-                  displayName: module.config.displayName,
-                  description: module.config.description,
-                  url: module.config?.url || `/app/a/${module.config.id}`,
-                  icon: this.core.image.createAuthenticatedImage(username, sessionid, AUTHENTICATED_IMAGE_TYPE.FILE, RESIZED_ICON_PATH),
-                } satisfies IPanelApplicationsLauncherFrontendModule;
-              },
-            ),
+              return {
+                id: module.config.id,
+                displayName: module.config.displayName,
+                description: module.config.description,
+                type: module.moduleType as "officialFrontend" | "frontend",
+                url: this.core.isDevMode
+                  ? // @ts-ignore
+                    module.config?.devUrl || `/app/a/${module.config.id}`
+                  : // @ts-ignore
+                    module.config?.url || `/app/a/${module.config.id}`,
+                icon: this.core.image.createAuthenticatedImage(username, sessionid, AUTHENTICATED_IMAGE_TYPE.FILE, RESIZED_ICON_PATH),
+              } satisfies IPanelApplicationsLauncherFrontendModule;
+            }),
           )
         ).filter((x) => {
           return x !== undefined;
@@ -65,18 +79,26 @@ export default class CorePanel {
       return res.json(
         await Promise.all(
           (await panel.getQuickShortcuts()).map(async (shortcut) => {
-            const application = await new YourDashApplication(shortcut).read();
+            const module = this.core.applicationManager.loadedModules[shortcut.moduleType].find((mod) => mod.config.id === shortcut.id);
 
-            if (!application) return undefined;
+            if (!module) {
+              return;
+            }
 
-            const RESIZED_ICON_PATH = path.join("cache/applications/icons", `${application.getName()}`, "64.png");
+            const RESIZED_ICON_PATH = path.join("cache/applications/icons", `${module.config.id}`, "64.png");
 
             if (!(await this.core.fs.doesExist(RESIZED_ICON_PATH))) {
-              this.core.log.info("core:panel", `Generating 64x64 icon for ${application.getName()}`);
+              this.core.log.info("core:panel", `Generating 64x64 icon for ${module.config.id}`);
 
               await this.core.fs.createDirectory(path.dirname(RESIZED_ICON_PATH));
 
-              const resizedIconPath = await this.core.image.resizeTo(await application.getIconPath(), 64, 64, "webp", true);
+              const resizedIconPath = await this.core.image.resizeTo(
+                this.core.applicationManager.getModuleIcon(shortcut.moduleType, shortcut.id),
+                64,
+                64,
+                "webp",
+                true,
+              );
 
               await this.core.fs.copy(resizedIconPath, RESIZED_ICON_PATH);
             }
@@ -107,14 +129,12 @@ export default class CorePanel {
     });
 
     this.core.request.post("/core/panel/quick-shortcuts/create", async (req, res) => {
-      res.set("Cache-Control", "no-store");
-
       const { username } = req.headers;
-      const { name } = req.body as { name: string };
+      const { id, moduleType } = req.body as { id: string; moduleType: "frontend" | "officialFrontend" };
 
       const panel = new YourDashPanel(username);
 
-      await panel.createQuickShortcut(name);
+      await panel.createQuickShortcut({ id: id, moduleType: moduleType });
 
       return res.json({ success: true });
     });

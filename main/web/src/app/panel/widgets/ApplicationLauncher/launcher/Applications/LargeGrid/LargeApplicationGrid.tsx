@@ -24,31 +24,27 @@ const LargeApplicationGrid: React.FC<{
             items={[
               {
                 label: "Pin To Panel",
-                onClick() {
-                  csi.postJson("/core/panel/quick-shortcuts/create", { name: application.name }, () => {
-                    // @ts-ignore
-                    window.__yourdashCorePanelQuickShortcutsReload?.();
-                    return 0;
-                  });
+                async onClick() {
+                  await csi.postJson("/core/panel/quick-shortcuts/create", { id: application.id, moduleType: application.type });
+                  // @ts-ignore
+                  window.__yourdashCorePanelQuickShortcutsReload?.();
+                  return 0;
                 },
               },
               {
                 label: "Open In New Tab",
                 onClick() {
-                  window.open(
-                    `${window.location.origin}${window.location.pathname}/app/a/${application.id}`,
-                    "_blank",
-                  );
+                  window.open(`${window.location.origin}${window.location.pathname}/app/a/${application.id}`, "_blank");
                   return 0;
                 },
               },
             ]}
             className={styles.item}
-            key={application.name}
+            key={application.id}
           >
             <Card
               onClick={() => {
-                navigate(`/app/a/${application.name}`);
+                navigate(application.url);
               }}
               className={styles.itemContent}
             >

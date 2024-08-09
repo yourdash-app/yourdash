@@ -38,12 +38,12 @@ export default class YourDashPanel {
     return this;
   }
 
-  async getQuickShortcuts(): Promise<string[]> {
+  async getQuickShortcuts(): Promise<{ moduleType: "frontend" | "officialFrontend"; id: string }[]> {
     const user = new YourDashUser(this.username);
 
     const db = await user.getDatabase();
 
-    return db.get("core:panel:pinned") || [];
+    return db.get<{ moduleType: "frontend" | "officialFrontend"; id: string }[]>("core:panel:pinned") || [];
   }
 
   async removeQuickShortcut(index: number): Promise<this> {
@@ -51,7 +51,7 @@ export default class YourDashPanel {
 
     const db = await user.getDatabase();
 
-    const shortcuts = db.get("core:panel:pinned") || [];
+    const shortcuts = db.get<{ moduleType: "frontend" | "officialFrontend"; id: string }[]>("core:panel:pinned") || [];
 
     shortcuts.splice(index, 1);
 
@@ -61,18 +61,18 @@ export default class YourDashPanel {
     return this;
   }
 
-  async createQuickShortcut(applicationID: string): Promise<this> {
+  async createQuickShortcut(module: { moduleType: "frontend" | "officialFrontend"; id: string }): Promise<this> {
     const user = new YourDashUser(this.username);
 
     const db = await user.getDatabase();
 
-    const shortcuts = db.get("core:panel:pinned") || [];
+    const shortcuts = db.get<{ moduleType: "frontend" | "officialFrontend"; id: string }[]>("core:panel:pinned") || [];
 
-    if (shortcuts.indexOf(applicationID) !== -1) {
+    if (shortcuts.indexOf(module) !== -1) {
       return this;
     }
 
-    shortcuts.push(applicationID);
+    shortcuts.push(module);
 
     db.set("core:panel:pinned", shortcuts);
     user.saveDatabase();

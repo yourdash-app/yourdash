@@ -11,7 +11,10 @@ import { FC } from "react";
 
 const ButtonLink: FC<{ text: string; to: string; className?: string }> = (props) => {
   return (
-    <Link to={props.to}>
+    <Link
+      to={props.to}
+      className={styles.link}
+    >
       <Button
         onClick={() => {
           return 0;

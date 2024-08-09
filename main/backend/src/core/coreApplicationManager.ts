@@ -49,6 +49,7 @@ interface IYourDashApplicationConfigJson {
 
 export class YourDashBackendModule {
   readonly moduleName: string;
+  public unload?: () => void;
   protected readonly api: {
     websocket: Core["websocketManager"];
     request: Core["request"];
@@ -61,7 +62,6 @@ export class YourDashBackendModule {
     path: string;
     modulePath: string;
   };
-  public unload?: () => void;
 
   constructor(args: YourDashModuleArguments) {
     this.moduleName = args.moduleName;
@@ -122,10 +122,18 @@ export default class CoreApplicationManager {
   // the applicationid's that are currently loaded
   loadedApplications: string[];
   loadedModules: {
-    frontend: { config: IYourDashApplicationConfigJson["modules"]["frontend"][0] }[];
-    backend: { config: IYourDashApplicationConfigJson["modules"]["backend"][0]; module: YourDashBackendModule }[];
+    frontend: {
+      config: IYourDashApplicationConfigJson["modules"]["frontend"][0];
+      applicationPath: string;
+    }[];
+    backend: {
+      config: IYourDashApplicationConfigJson["modules"]["backend"][0];
+      module: YourDashBackendModule;
+      applicationPath: string;
+    }[];
     officialFrontend: {
       config: IYourDashApplicationConfigJson["modules"]["officialFrontend"][0];
+      applicationPath: string;
     }[];
   };
 
@@ -209,7 +217,7 @@ export default class CoreApplicationManager {
         continue;
       }
 
-      this.loadedModules.frontend.push({ config: mod });
+      this.loadedModules.frontend.push({ config: mod, applicationPath: applicationPath });
     }
 
     for (const mod of applicationConfig.modules.backend) {
@@ -226,6 +234,7 @@ export default class CoreApplicationManager {
           moduleName: mod.id,
           modulePath: path.join(this.core.fs.ROOT_PATH, applicationPath, mod.main),
         } as YourDashModuleArguments),
+        applicationPath: applicationPath,
       });
     }
 
@@ -236,7 +245,7 @@ export default class CoreApplicationManager {
         continue;
       }
 
-      this.loadedModules.officialFrontend.push({ config: mod });
+      this.loadedModules.officialFrontend.push({ config: mod, applicationPath: applicationPath });
     }
   }
 
@@ -693,7 +702,8 @@ export default class CoreApplicationManager {
   }
 
   getModuleIcon(moduleType: "frontend" | "officialFrontend", id: string) {
-    const iconPath = this.loadedModules[moduleType].find((m) => m.config.id === id)?.config.iconPath;
+    const applicationPath = this.loadedModules[moduleType].find((m) => m.config.id === id)?.applicationPath as string;
+    const iconPath = this.loadedModules[moduleType].find((m) => m.config.id === id)?.config.iconPath as string;
 
     if (!iconPath) {
       return "null";
@@ -703,7 +713,7 @@ export default class CoreApplicationManager {
       return "null";
     }
 
-    return iconPath;
+    return path.join(applicationPath, iconPath);
   }
 }
 

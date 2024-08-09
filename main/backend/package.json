@@ -65,7 +65,7 @@
   "type": "module",
   "scripts": {
     "start": "bun ./src/main.ts --color=full --log-requests",
-    "dev": "bun ./src/main.ts --dev --color=full --log-requests",
+    "dev": "bun --watch ./src/main.ts --dev --color=full --log-requests",
     "debug": "bun --inspect-brk ./src/main.ts --dev --color=full --log-requests",
     "generate-json-schema": "ts-json-schema-generator"
   }

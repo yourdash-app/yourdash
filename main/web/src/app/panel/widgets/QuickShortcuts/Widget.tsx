@@ -3,11 +3,11 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import useResource from "@yourdash/csi/useResource";
 import clippy from "@yourdash/shared/web/helpers/clippy";
 import Image from "@yourdash/uikit/components/image/image";
 import IncrementLevel from "@yourdash/uikit/core/incrementLevel";
-import { useLevel, useLevelClass } from "@yourdash/uikit/core/level";
-import { useEffect, useState } from "react";
+import { useLevelClass } from "@yourdash/uikit/core/level";
 import { useNavigate } from "react-router-dom";
 import csi from "@yourdash/csi/csi";
 import styles from "./Widget.module.scss";
@@ -16,19 +16,15 @@ import React from "react";
 const QuickShortcuts: React.FC<{ side: "top" | "right" | "bottom" | "left" }> = ({ side }) => {
   const navigate = useNavigate();
 
-  const [applications, setApplications] = useState<
-    {
-      name: string;
-      icon: string;
-    }[]
-  >([]);
   const [num, setNum] = React.useState<number>(0);
-
-  useEffect(() => {
-    csi.syncGetJson("/core/panel/quick-shortcuts", (data) => {
-      setApplications(data);
-    });
-  }, [num]);
+  const modules =
+    useResource<
+      {
+        name: string;
+        icon: string;
+        url: string;
+      }[]
+    >(() => csi.getJson("/core/panel/quick-shortcuts"), [num]) || [];
 
   // @ts-ignore
   window.__yourdashCorePanelQuickShortcutsReload = () => {
@@ -37,13 +33,15 @@ const QuickShortcuts: React.FC<{ side: "top" | "right" | "bottom" | "left" }> = 
 
   return (
     <>
-      {applications.map((application) => {
+      {modules.map((application) => {
+        console.log(application);
+
         return (
           <IncrementLevel key={application.name}>
             <div
               key={application.name}
               onClick={() => {
-                navigate(`/app/a/${application.name}`);
+                navigate(application.url);
               }}
               className={clippy(
                 styles.application,
