@@ -14,7 +14,7 @@ export default class DashModule extends BackendModule {
   public loadEndpoints() {
     super.loadEndpoints();
 
-    this.api.request.setNamespace("app/uk-ewsgit-dash-frontend");
+    this.api.request.setNamespace("app/uk-ewsgit-dash");
 
     this.api.request.get("/user-full-name", async (req, res) => {
       res.json(
@@ -30,7 +30,7 @@ export default class DashModule extends BackendModule {
         widgets: [
           {
             position: {
-              x: 0,
+              x: 1,
               y: 0,
             },
             id: "applicationShortcut",

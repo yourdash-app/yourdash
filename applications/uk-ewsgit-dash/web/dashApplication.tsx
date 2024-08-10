@@ -5,16 +5,21 @@
 
 import csi from "@yourdash/csi/csi";
 import useResource from "@yourdash/csi/useResource";
+import ButtonWithIcon from "@yourdash/uikit/components/buttonWithIcon/buttonWithIcon";
 import Flex from "@yourdash/uikit/components/flex/flex";
 import Heading from "@yourdash/uikit/components/heading/heading";
+import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary";
 import React, { useState } from "react";
 import styles from "./dashApplication.module.scss";
 import { IWidgetGrid } from "../shared/types/widgetGrid";
 import loadable from "@loadable/component";
 
 const DashApplication: React.FC = () => {
-  const username = useResource(() => csi.getUser().getFullName());
-  const { pageCount } = useResource<{ pageCount: number }>(() => csi.getJson("/app/uk-ewsgit-dash-frontend/widget/pages")) || {
+  const username = useResource(() => csi.getJson<{ first: string; last: string }>("/app/uk-ewsgit-dash/user-full-name")) || {
+    first: "Unknown",
+    last: "User",
+  };
+  const { pageCount } = useResource<{ pageCount: number }>(() => csi.getJson("/app/uk-ewsgit-dash/widget/pages")) || {
     pageCount: 0,
   };
   const [currentWidgetPage, setCurrentWidgetPage] = useState<number>(0);
@@ -69,7 +74,15 @@ const DashApplication: React.FC = () => {
             );
           })}
         </div>
-        <div className={styles.actions}>actions</div>
+        <div className={styles.actions}>
+          <ButtonWithIcon
+            text={"Edit Widgets"}
+            icon={UKIcon.Pencil}
+            onClick={() => {
+              console.log("Edit widgets page");
+            }}
+          />
+        </div>
       </Flex>
     </div>
   );
