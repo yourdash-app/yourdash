@@ -140,7 +140,7 @@ export default class CoreApplicationManager {
   constructor(core: Core) {
     this.core = core;
     this.DEFAULT_APPLICATIONS = [
-      "../applications/uk-ewsgit-dash",
+      "../applications/uk-ewsgit-dash-frontend",
       "../applications/uk-ewsgit-photos",
       "../applications/uk-ewsgit-settings",
       "../applications/uk-ewsgit-store",

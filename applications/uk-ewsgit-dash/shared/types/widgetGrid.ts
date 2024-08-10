@@ -4,8 +4,8 @@
  */
 
 import { IWidget } from "./widget";
-import { IApplicationShortcutWidget } from "./widgets/applicationShortcut";
+import type { IApplicationShortcutWidget } from "./widgets/applicationShortcut";
 
 export interface IWidgetGrid {
-  widgets: IWidget<IApplicationShortcutWidget>[];
+  widgets: IWidget<IApplicationShortcutWidget["id"], IApplicationShortcutWidget["data"]>[];
 }

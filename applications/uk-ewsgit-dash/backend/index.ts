@@ -4,7 +4,7 @@
  */
 
 import BackendModule, { YourDashModuleArguments } from "@yourdash/backend/src/core/moduleManager/backendModule.js";
-import { IWidgetGrid } from "../shared/types/widgetGrid.js";
+import type { IWidgetGrid } from "../shared/types/widgetGrid.js";
 
 export default class DashModule extends BackendModule {
   constructor(args: YourDashModuleArguments) {
@@ -14,7 +14,7 @@ export default class DashModule extends BackendModule {
   public loadEndpoints() {
     super.loadEndpoints();
 
-    this.api.request.setNamespace("app/uk-ewsgit-dash");
+    this.api.request.setNamespace("app/uk-ewsgit-dash-frontend");
 
     this.api.request.get("/user-full-name", async (req, res) => {
       res.json(
@@ -48,8 +48,8 @@ export default class DashModule extends BackendModule {
                 height: 3,
               },
             },
-            extraData: {
-              id: "uk-ewsgit-dash",
+            data: {
+              id: "uk-ewsgit-dash-frontend",
               url: "https://ewsgit.uk",
               name: "YourDash",
               icon: "https://ewsgit.uk/favicon.png",
@@ -75,7 +75,7 @@ export default class DashModule extends BackendModule {
                 height: 3,
               },
             },
-            extraData: {},
+            data: {},
           },
           {
             position: {
@@ -97,7 +97,7 @@ export default class DashModule extends BackendModule {
                 height: 3,
               },
             },
-            extraData: {},
+            data: {},
           },
           {
             position: {
@@ -119,7 +119,7 @@ export default class DashModule extends BackendModule {
                 height: 3,
               },
             },
-            extraData: {},
+            data: {},
           },
           {
             position: {
@@ -141,7 +141,7 @@ export default class DashModule extends BackendModule {
                 height: 3,
               },
             },
-            extraData: {},
+            data: {},
           },
         ],
       },
@@ -158,7 +158,7 @@ export default class DashModule extends BackendModule {
     this.api.request.get("/widgets/:page", async (req, res) => {
       const page = req.params.page as string;
 
-      res.json(WIDGET_PAGES[Number(page)]);
+      res.json(WIDGET_PAGES[Number(page)] satisfies IWidgetGrid);
     });
   }
 }

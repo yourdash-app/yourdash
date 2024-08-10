@@ -299,7 +299,7 @@ import { Route, Routes } from "react-router";
       let routeRegionReplacement = "";
 
       this.applicationManager.loadedModules.officialFrontend.forEach((mod, ind) => {
-        loadableRegionReplacement += `const Application${ind}=loadable(()=>import("@yourdash/applications/${path.posix.join(path.basename(mod.applicationPath), mod.config.main)}"));`;
+        loadableRegionReplacement += `const Application${ind}=loadable(()=>import("@yourdash/applications/${path.posix.join(path.basename(mod.applicationPath), mod.config.main.replace(".tsx", ""))}"));`;
         routeRegionReplacement += `<Route path={"${mod.config.id}/*"} element={<Application${ind}/>}/>`;
       });
 
@@ -311,9 +311,15 @@ import { Route, Routes } from "react-router";
       });
     })();
 
-    this.log.info("startup", "Starting vite server...");
+    if (this.isDevMode) {
+      this.log.info("startup", "Not starting Vite server as we are in dev mode");
 
-    const viteProcess = childProcess.spawn("yarn", ["run", "dev"], { cwd: "../web/", shell: true });
+      return this;
+    }
+
+    this.log.info("startup", "Starting Vite server...");
+
+    const viteProcess = childProcess.spawn("yarn", ["run", "start"], { cwd: "../web/", shell: true });
 
     let portInUse: boolean = false;
 

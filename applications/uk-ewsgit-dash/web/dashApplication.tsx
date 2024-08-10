@@ -14,16 +14,17 @@ import loadable from "@loadable/component";
 
 const DashApplication: React.FC = () => {
   const username = useResource(() => csi.getUser().getFullName());
-  const { pageCount } = useResource<{ pageCount: number }>(() => csi.getJson("/app/uk-ewsgit-dash/widget/pages")) || { pageCount: 0 };
+  const { pageCount } = useResource<{ pageCount: number }>(() => csi.getJson("/app/uk-ewsgit-dash-frontend/widget/pages")) || {
+    pageCount: 0,
+  };
   const [currentWidgetPage, setCurrentWidgetPage] = useState<number>(0);
   const widgetPage = useResource<IWidgetGrid>(
-    () => csi.getJson(`/app/uk-ewsgit-dash/widgets/${currentWidgetPage}`),
+    () => csi.getJson(`/app/uk-ewsgit-dash-frontend/widgets/${currentWidgetPage}`),
     [currentWidgetPage],
   ) || {
     widgets: [],
   };
 
-  // @ts-ignore
   return (
     <div className={styles.page}>
       <Flex
@@ -46,8 +47,7 @@ const DashApplication: React.FC = () => {
               style={{ "--position-x": widget.position.x, "--position-y": widget.position.y }}
               className={styles.widgetGridWidget}
             >
-              <Widget />
-              <div>{widget.id}</div>
+              <Widget data={widget.data} />
             </div>
           );
         })}

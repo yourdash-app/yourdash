@@ -40,7 +40,7 @@ const UserLogin: React.FC<IUserLogin> = ({ setUsername, setPassword, password, u
           return;
         }
 
-        navigate("/app/a/uk-ewsgit-dash");
+        navigate("/app/a/uk-ewsgit-dash-frontend");
       });
     }
   }, []);

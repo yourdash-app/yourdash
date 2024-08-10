@@ -10,11 +10,16 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  aspect-ratio: 1 / 1;
-  transition: scale 250ms ease-in-out;
 
   &:hover {
+    & > .img {
     scale: 1.2;
     transition: scale 50ms ease-in-out;
+    }
   }
+}
+
+.img {
+  transition: scale 250ms ease-in-out;
+  aspect-ratio: 1 / 1;
 }
