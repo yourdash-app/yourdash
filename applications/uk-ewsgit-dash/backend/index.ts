@@ -3,10 +3,11 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import BackendModule, { YourDashModuleArguments } from "@yourdash/backend/src/core/moduleManager/backendModule.js";
+import { YourDashBackendModule, YourDashModuleArguments } from "@yourdash/backend/src/core/coreApplicationManager.js";
 import type { IWidgetGrid } from "../shared/types/widgetGrid.js";
+import core from "@yourdash/backend/src/core/core.js";
 
-export default class DashModule extends BackendModule {
+export default class DashModule extends YourDashBackendModule {
   constructor(args: YourDashModuleArguments) {
     super(args);
   }
@@ -14,11 +15,11 @@ export default class DashModule extends BackendModule {
   public loadEndpoints() {
     super.loadEndpoints();
 
-    this.api.request.setNamespace("app/uk-ewsgit-dash");
+    core.request.setNamespace("app/uk-ewsgit-dash");
 
-    this.api.request.get("/user-full-name", async (req, res) => {
+    core.request.get("/user-full-name", async (req, res) => {
       res.json(
-        (await this.api.getUser(req).getName()) || {
+        (await core.users.get(req.username).getName()) || {
           first: "Unknown",
           last: "User",
         },
@@ -147,7 +148,7 @@ export default class DashModule extends BackendModule {
       },
     ];
 
-    this.api.request.get("/widget/pages", async (req, res) => {
+    core.request.get("/widget/pages", async (req, res) => {
       // return the number of widget pages a user has
 
       return res.json({
@@ -155,7 +156,7 @@ export default class DashModule extends BackendModule {
       });
     });
 
-    this.api.request.get("/widgets/:page", async (req, res) => {
+    core.request.get("/widgets/:page", async (req, res) => {
       const page = req.params.page as string;
 
       res.json(WIDGET_PAGES[Number(page)] satisfies IWidgetGrid);

@@ -132,7 +132,14 @@ export default class FSFile extends FSEntity {
     }
   }
 
-  async write(data: string | Buffer) {
+  /**
+   *
+   * @param {string | Buffer} data
+   * @returns {Promise<void>}
+   * @throws {FSError}
+   *
+   */
+  async write(data: string | Buffer): Promise<void> {
     if (this.isLocked().locked) {
       throw new FSError(FS_ERROR_TYPE.LOCKED, this.path);
     }

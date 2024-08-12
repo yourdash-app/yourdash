@@ -31,7 +31,7 @@ const SubAlbums: React.FC<{ path: string; scrollerClassName?: string }> = ({ pat
       hasMorePages={hasMorePages}
       resetState={path}
       fetchNextPage={async (nextPageNumber) => {
-        const data = await csi.getJson<EndpointAlbumSubPath>(`/app/photos/album/sub/${nextPageNumber}/@` + path);
+        const data = await csi.getJson<EndpointAlbumSubPath>(`/app/uk-ewsgit-photos/album/sub/${nextPageNumber}/@` + path);
 
         if (data?.length === 0) {
           setHasMorePages(false);
@@ -47,7 +47,7 @@ const SubAlbums: React.FC<{ path: string; scrollerClassName?: string }> = ({ pat
             containerClassName={styles.album}
             key={album.path}
             onClick={() => {
-              navigate("/app/a/uk-ewsgit-photos/album/?p=" + csi.path.toUnix(album.path));
+              navigate("/app/a/uk-ewsgit-photos-frontend/album/?p=" + csi.path.toUnix(album.path));
             }}
           >
             <Image

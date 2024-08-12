@@ -24,21 +24,21 @@ const Layout: FC = () => {
             accessibleLabel={"Home"}
             icon={UKIcon.Home}
             onClick={() => {
-              navigate("/app/a/uk-ewsgit-photos/");
+              navigate("/app/a/uk-ewsgit-photos-frontend/");
             }}
           />
           <IconButton
             accessibleLabel={"Search"}
             icon={UKIcon.Search}
             onClick={() => {
-              navigate("/app/a/uk-ewsgit-photos/search/");
+              navigate("/app/a/uk-ewsgit-photos-frontend/search/");
             }}
           />
           <IconButton
             accessibleLabel={"Profile"}
             icon={UKIcon.Person}
             onClick={() => {
-              navigate("/app/a/uk-ewsgit-photos/profile/");
+              navigate("/app/a/uk-ewsgit-photos-frontend/profile/");
             }}
           />
         </Box>

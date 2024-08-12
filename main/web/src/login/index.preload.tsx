@@ -3,6 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import Dialog from "@yourdash/chiplet/components/dialog/Dialog";
 import csi from "@yourdash/csi/csi.js";
 import LoginIndexPage from "./index.js";
 import isValidInstance from "./lib/isValidInstance.js";
@@ -24,7 +25,12 @@ const LoginIndexPagePreload: FC = () => {
   return (
     <>
       {validInstance === undefined ? (
-        <>checking if instance is valid</>
+        <Dialog
+          title={"Logging in..."}
+          hideCloseButton={true}
+        >
+          checking if instance is valid
+        </Dialog>
       ) : (
         <>
           <LoginIndexPage />

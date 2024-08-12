@@ -6,14 +6,15 @@
 // WORK IN PROGRESS APPLICATION
 // https://open-meteo.com/en/docs#***REMOVED***&hourly=temperature_2m,precipitation_probability,weathercode,cloudcover,windspeed_80m&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max,rain_sum,precipitation_hours,windspeed_10m_max,windgusts_10m_max&current_weather=true&windspeed_unit=mph&timezone=Europe%2FLondon
 
-import BackendModule, { YourDashModuleArguments } from "@yourdash/backend/src/core/moduleManager/backendModule.js";
 import weatherPredictionEngine from "./endpoints/predictionEngine.js";
 import getWeatherDataForLocationId from "./helpers/getWeatherDataForLocationId.js";
 import geolocationApi from "./geolocationApi.js";
+import { YourDashBackendModule, YourDashModuleArguments } from "@yourdash/backend/src/core/coreApplicationManager.js";
+import core from "@yourdash/backend/src/core/core.js";
 
 export const weatherForecastCache: { [key: string]: { cacheTime: number; data: unknown } } = {};
 
-export default class WeatherModule extends BackendModule {
+export default class WeatherModule extends YourDashBackendModule {
   constructor(args: YourDashModuleArguments) {
     super(args);
   }
@@ -21,9 +22,11 @@ export default class WeatherModule extends BackendModule {
   public loadEndpoints() {
     super.loadEndpoints();
 
-    geolocationApi(this.api.request.rawExpress);
+    geolocationApi(core.rawExpressJs);
 
-    this.api.request.get("/app/weather/location/:id", async (req, res) => {
+    core.request.setNamespace(`app/${this.api.moduleId}`);
+
+    core.request.get("/location/:id", async (req, res) => {
       const { id } = req.params;
 
       if (weatherForecastCache[id]) {
@@ -43,10 +46,10 @@ export default class WeatherModule extends BackendModule {
       return res.json(await getWeatherDataForLocationId(id));
     });
 
-    this.api.request.get("/app/weather/previous/locations", (req, res) => {
+    core.request.get("/previous/locations", async (req, res) => {
       return res.json([]);
     });
 
-    weatherPredictionEngine(this.api.request.rawExpress);
+    weatherPredictionEngine(core.request.rawExpress);
   }
 }

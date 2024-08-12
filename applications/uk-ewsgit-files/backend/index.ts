@@ -5,9 +5,10 @@
 
 import { promises as fs } from "fs";
 import path from "path";
-import BackendModule, { YourDashModuleArguments } from "@yourdash/backend/src/core/moduleManager/backendModule.js";
+import { YourDashBackendModule, YourDashModuleArguments } from "@yourdash/backend/src/core/coreApplicationManager.js";
+import core from "@yourdash/backend/src/core/core.js";
 
-export default class FilesModule extends BackendModule {
+export default class FilesModule extends YourDashBackendModule {
   constructor(args: YourDashModuleArguments) {
     super(args);
   }
@@ -151,15 +152,15 @@ export default class FilesModule extends BackendModule {
         }
       } ); */
 
-    this.api.request.get(`/app/${this.api.applicationName}`, async (req, res) => {
-      return res.json({ message: `Hello world from ${this.api.applicationName}! 👋` });
+    core.request.get(`/app/${this.api.moduleId}`, async (req, res) => {
+      return res.json({ message: `Hello world from ${this.api.applicationId}! 👋` });
     });
 
-    this.api.request.get(`/app/${this.api.applicationName}/list/dir/@/`, async (req, res) => {
+    core.request.get(`/app/${this.api.moduleId}/list/dir/@/`, async (req, res) => {
       // path
       const p = "/";
 
-      const user = this.api.getUser(req);
+      const user = core.users.get(req.username);
 
       try {
         const contents = await fs.readdir(path.join(user.path, "fs", p));
@@ -174,11 +175,11 @@ export default class FilesModule extends BackendModule {
       }
     });
 
-    this.api.request.get(`/app/${this.api.applicationName}/list/dir/@/:path`, async (req, res) => {
+    core.request.get(`/app/${this.api.moduleId}/list/dir/@/:path`, async (req, res) => {
       // path
       const p = req.params.path;
 
-      const user = this.api.getUser(req);
+      const user = core.users.get(req.username);
 
       try {
         const contents = await fs.readdir(path.join(user.path, "fs", p));

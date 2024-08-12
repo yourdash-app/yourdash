@@ -9,7 +9,6 @@
 import { AUTHENTICATED_IMAGE_TYPE } from "@yourdash/backend/src/core/coreImage.js";
 import FSError, { FS_ERROR_TYPE } from "@yourdash/backend/src/core/fileSystem/FSError.js";
 import FSFile from "@yourdash/backend/src/core/fileSystem/FSFile.js";
-import BackendModule, { YourDashModuleArguments } from "@yourdash/backend/src/core/moduleManager/backendModule.js";
 import { chunk } from "@yourdash/shared/web/helpers/array.js";
 import * as console from "node:console";
 import path from "path";
@@ -18,8 +17,10 @@ import sharp from "sharp";
 import EndpointAlbumMediaPath, { AlbumMediaPath } from "../shared/types/endpoints/album/media/path.js";
 import { EndpointAlbumSubPath } from "../shared/types/endpoints/album/sub/path.js";
 import { PHOTOS_MEDIA_TYPE } from "../shared/types/mediaType.js";
+import { YourDashBackendModule, YourDashModuleArguments } from "@yourdash/backend/src/core/coreApplicationManager.js";
+import core from "@yourdash/backend/src/core/core.js";
 
-export default class PhotosBackend extends BackendModule {
+export default class PhotosBackend extends YourDashBackendModule {
   PAGE_SIZE: number;
   THUMBNAIL_CACHE_LOCATION = "/cache/photos/thumbnails";
 
@@ -28,7 +29,7 @@ export default class PhotosBackend extends BackendModule {
     this.PAGE_SIZE = 24;
 
     this.api.core.fs.createDirectory(this.THUMBNAIL_CACHE_LOCATION).then(() => {
-      this.api.core.log.success("app/photos", "Successfully created the thumbnail cache directory");
+      this.api.core.log.success("Successfully created the thumbnail cache directory");
     });
 
     this.api.core.users.getAllUsers().then((users) => {
@@ -38,7 +39,7 @@ export default class PhotosBackend extends BackendModule {
         this.api.core.fs.doesExist(path.join()).then((exists) => {
           if (!exists) {
             this.api.core.fs.createDirectory(path.join(userFsPath, "photos")).then(() => {
-              this.api.core.log.info("app/photos", `Created user photos directory: ${userFsPath}/photos`);
+              this.api.log.info("app/photos", `Created user photos directory: ${userFsPath}/photos`);
             });
           }
         });
@@ -62,7 +63,7 @@ export default class PhotosBackend extends BackendModule {
         // get user's photos
         const userPhotos: string[] = [];
 
-        this.api.core.log.info("Finding users photos");
+        this.api.log.info("Finding users photos");
 
         const PHOTOS_FS_PATH = path.join(this.api.core.users.get(u).getFsPath(), "photos");
 
@@ -174,12 +175,12 @@ export default class PhotosBackend extends BackendModule {
   public loadEndpoints() {
     super.loadEndpoints();
 
-    this.api.request.setNamespace("app/photos");
+    core.request.setNamespace(`app/${this.api.moduleId}`);
 
     // Deprecated!
-    // this.api.request.get("/media/album/subAlbums/@/*", async (req, res) => {
+    // core.request.get("/media/album/subAlbums/@/*", async (req, res) => {
     //   const itemPath = req.params["0"] as string;
-    //   const user = this.api.getUser(req);
+    //   const user = core.users.get(req.username);
     //
     //   const item = await this.api.core.fs.get(path.join(user.getFsPath(), itemPath));
     //
@@ -203,13 +204,13 @@ export default class PhotosBackend extends BackendModule {
     // });
     //
     // // return dimensions of each image and video with their fs path
-    // this.api.request.get(
+    // core.request.get(
     //   "/media/album/:page/@/*",
     //   async (req, res) => {
     //     const { sessionid } = req.headers;
     //     const itemPath = req.params["0"] as string;
     //     const page = Number(req.params.page);
-    //     const user = this.api.getUser(req);
+    //     const user = core.users.get(req.username);
     //
     //     if (page < 0) return res.json({ error: "a valid page must be provided" });
     //
@@ -291,7 +292,7 @@ export default class PhotosBackend extends BackendModule {
     //                 }
     //
     //                 // create the thumbnail
-    //                 this.api.core.log.info("app/photos", "creating video thumb for " + childPath);
+    //                 this.api.log.info("creating video thumb for " + childPath);
     //
     //                 const thumbnailPath = (await timeMethod(() => this.api.core.video.createThumbnail(childPath), "createVideoThumbnail"))
     //                   .callbackResult;
@@ -419,10 +420,10 @@ export default class PhotosBackend extends BackendModule {
     //   { debugTimer: true },
     // );
     //
-    // this.api.request.get("/album/@/*", async (req, res) => {
+    // core.request.get("/album/@/*", async (req, res) => {
     //   const albumPath = req.params["0"] as string;
     //
-    //   const user = this.api.getUser(req);
+    //   const user = core.users.get(req.username);
     //
     //   const albumDirectory = await this.api.core.fs.get(path.join(user.getFsPath(), albumPath));
     //
@@ -440,10 +441,10 @@ export default class PhotosBackend extends BackendModule {
     //   );
     // });
     //
-    // this.api.request.get("/media/raw/@/*", async (req, res) => {
+    // core.request.get("/media/raw/@/*", async (req, res) => {
     //   const { sessionid } = req.headers;
     //   const itemPath = req.params["0"] as string;
-    //   const user = this.api.getUser(req);
+    //   const user = core.users.get(req.username);
     //
     //   const item = await this.api.core.fs.get(path.join(user.getFsPath(), itemPath));
     //
@@ -497,10 +498,10 @@ export default class PhotosBackend extends BackendModule {
     //   }
     // });
 
-    this.api.request.get("/album/@/*", async (req, res) => {
-      const sessionId = req.sessionId;
-      const albumPath = req.params["0"] as string;
-      const user = this.api.getUser(req);
+    core.request.get("/album/@/*", async (req, res) => {
+      // const sessionId = req.sessionId;
+      // const albumPath = req.params["0"] as string;
+      // const user = core.users.get(req.username);
 
       res.json({
         error: "Not implemented",
@@ -508,11 +509,11 @@ export default class PhotosBackend extends BackendModule {
     });
 
     // returns the subAlbums of a given album
-    this.api.request.get<EndpointAlbumSubPath | { error: string }>("/album/sub/:page/@/*", async (req, res) => {
+    core.request.get<EndpointAlbumSubPath | { error: string }>("/album/sub/:page/@/*", async (req, res) => {
       const sessionId = req.headers.sessionid;
       const albumPath = (req.params["0"] as string) || "./photos/";
       const page = Number(req.params.page || "0");
-      const user = this.api.getUser(req);
+      const user = core.users.get(req.username);
 
       const albumEntity = await this.api.core.fs.getDirectory(path.join(user.getFsPath(), albumPath));
 
@@ -601,7 +602,7 @@ export default class PhotosBackend extends BackendModule {
       res.json(output);
     });
 
-    this.api.request.get("/media/thumbnail/:res/@/*", async (req, res) => {
+    core.request.get("/media/thumbnail/:res/@/*", async (req, res) => {
       const { res: resolution } = req.params;
       const mediaPath = req.params["0"] as string;
 
@@ -637,17 +638,16 @@ export default class PhotosBackend extends BackendModule {
       });
     });
 
-    this.api.request.get("/media/raw/@/*", async (req, res) => {
+    core.request.get("/media/raw/@/*", async (req, res) => {
       res.json({
         error: "Not implemented",
       });
     });
 
-    this.api.request.get<EndpointAlbumMediaPath>("/album/media/:page/@/*", async (req, res) => {
-      const sessionId = req.headers.sessionid;
+    core.request.get<EndpointAlbumMediaPath>("/album/media/:page/@/*", async (req, res) => {
       const albumPath = (req.params["0"] as string) || "./photos/";
       const page = Number(req.params.page || "0");
-      const user = this.api.getUser(req);
+      const user = core.users.get(req.username);
 
       const albumEntity = await this.api.core.fs.getDirectory(path.join(user.getFsPath(), albumPath));
 

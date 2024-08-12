@@ -5,7 +5,6 @@
 
 import core from "@yourdash/backend/src/core/core.js";
 import { AUTHENTICATED_IMAGE_TYPE } from "@yourdash/backend/src/core/coreImage.js";
-import BackendModule, { YourDashModuleArguments } from "@yourdash/backend/src/core/moduleManager/backendModule.js";
 import YourDashApplication, { getAllApplications } from "@yourdash/backend/src/lib/applications.js";
 import { getInstanceLogoBase64 } from "@yourdash/backend/src/lib/logo.js";
 import { IYourDashStoreApplication } from "@yourdash/shared/apps/store/storeApplication.js";
@@ -13,10 +12,11 @@ import { IStoreCategory } from "@yourdash/shared/apps/store/storeCategory.js";
 import { type StorePromotedApplication } from "@yourdash/shared/apps/store/storePromotedApplication.js";
 import path from "path";
 import getAllCategories, { getAllApplicationsFromCategory } from "./helpers/categories.js";
+import { YourDashBackendModule, YourDashModuleArguments } from "@yourdash/backend/src/core/coreApplicationManager.js";
 
 const promotedApplications: string[] = ["dash", "store"];
 
-export default class StoreModule extends BackendModule {
+export default class StoreModule extends YourDashBackendModule {
   constructor(args: YourDashModuleArguments) {
     super(args);
   }
@@ -28,7 +28,7 @@ export default class StoreModule extends BackendModule {
   public loadEndpoints() {
     super.loadEndpoints();
 
-    this.api.request.get("/app/store/promoted/applications", async (_req, res) => {
+    core.request.get("/app/store/promoted/applications", async (_req, res) => {
       Promise.all(
         promotedApplications.map(async (app): Promise<StorePromotedApplication> => {
           const application = await new YourDashApplication(app).read();
@@ -53,7 +53,7 @@ export default class StoreModule extends BackendModule {
       ).then((out) => res.json(out));
     });
 
-    this.api.request.get("/app/store/categories", async (_req, res) => {
+    core.request.get("/app/store/categories", async (_req, res) => {
       const applications = await getAllApplications();
 
       const categories: { [key: string]: boolean } = {};
@@ -75,7 +75,7 @@ export default class StoreModule extends BackendModule {
       return res.json(Object.keys(categories));
     });
 
-    this.api.request.get("/app/store/applications", async (req, res) => {
+    core.request.get("/app/store/applications", async (req, res) => {
       const { username, sessionid } = req.headers;
 
       const applications = await getAllApplications();
@@ -116,7 +116,7 @@ export default class StoreModule extends BackendModule {
       );
     });
 
-    this.api.request.get("/app/store/category/:id", async (req, res) => {
+    core.request.get("/app/store/category/:id", async (req, res) => {
       const { username, sessionid } = req.headers;
       const { id } = req.params;
 
@@ -167,7 +167,7 @@ export default class StoreModule extends BackendModule {
       });
     });
 
-    this.api.request.get("/app/store/application/:id", async (req, res) => {
+    core.request.get("/app/store/application/:id", async (req, res) => {
       const { username, sessionid } = req.headers;
       const { id } = req.params;
 
@@ -203,7 +203,7 @@ export default class StoreModule extends BackendModule {
       return res.json(response);
     });
 
-    this.api.request.post("/app/store/application/install/:id", async (req, res) => {
+    core.request.post("/app/store/application/install/:id", async (req, res) => {
       const { id } = req.params;
       const applicationUnread = new YourDashApplication(id);
       if (!(await applicationUnread.exists())) {
@@ -218,11 +218,11 @@ export default class StoreModule extends BackendModule {
         id,
         ...application.getDependencies(),
       ]);
-      await core.moduleManager.loadModule(id, path.join(process.cwd(), `../applications/${id}/backend/`));
+      await core.applicationManager.installApplication(path.join(process.cwd(), `../applications/${id}/`));
       return res.json({ success: true });
     });
 
-    this.api.request.post("/app/store/application/uninstall/:id", async (req, res) => {
+    core.request.post("/app/store/application/uninstall/:id", async (req, res) => {
       const { id } = req.params;
       const application = new YourDashApplication(id);
 
@@ -238,7 +238,7 @@ export default class StoreModule extends BackendModule {
       return res.json({ success: true });
     });
 
-    this.api.request.get("/app/store/application/:id/icon", async (req, res) => {
+    core.request.get("/app/store/application/:id/icon", async (req, res) => {
       const { id } = req.params;
       const unreadApplication = new YourDashApplication(id);
       if (!(await unreadApplication.exists())) {

@@ -5,11 +5,7 @@
 
 import path from "path";
 import core, { Core } from "./core.js";
-import { LOG_TYPE } from "./coreLog.js";
 import FSError from "./fileSystem/FSError.js";
-import { YourDashModuleArguments } from "./moduleManager/backendModule.js";
-import YourDashUser from "./user/index.js";
-import { Request as ExpressRequest } from "express";
 
 interface IYourDashApplicationConfigJson {
   id: string;
@@ -34,6 +30,7 @@ interface IYourDashApplicationConfigJson {
       devUrl: string;
       description: string;
       dependencies: { moduleType: "backend" | "frontend" | "officialFrontend"; id: string }[];
+      main: string;
     }[];
     officialFrontend: {
       id: string;
@@ -47,69 +44,69 @@ interface IYourDashApplicationConfigJson {
   shouldInstanceRestartOnInstall: boolean;
 }
 
+export interface YourDashModuleArguments {
+  applicationId: string;
+  moduleId: string;
+  modulePath: string;
+  moduleConfig: IYourDashApplicationConfigJson["modules"]["backend"][0];
+  applicationConfig: IYourDashApplicationConfigJson;
+  applicationPath: string;
+}
+
 export class YourDashBackendModule {
-  readonly moduleName: string;
   public unload?: () => void;
   protected readonly api: {
-    websocket: Core["websocketManager"];
-    request: Core["request"];
-    log(type: LOG_TYPE, ...message: unknown[]): void;
-    getPath(): string;
-    applicationName: string;
-    moduleName: string;
-    getUser(req: ExpressRequest): YourDashUser;
     core: Core;
-    path: string;
-    modulePath: string;
+    log: {
+      info(...message: (string | Uint8Array)[]): void;
+      error(...message: (string | Uint8Array)[]): void;
+      warning(...message: (string | Uint8Array)[]): void;
+      success(...message: (string | Uint8Array)[]): void;
+      debug(...message: (string | Uint8Array)[]): void;
+    };
+    moduleId: string;
+    applicationId: string;
+    moduleConfig: IYourDashApplicationConfigJson["modules"]["backend"][0];
+    applicationConfig: IYourDashApplicationConfigJson;
+    applicationPath: string;
   };
 
   constructor(args: YourDashModuleArguments) {
-    this.moduleName = args.moduleName;
     this.api = {
-      websocket: core.websocketManager,
-      request: core.request,
-      log(type: LOG_TYPE, ...message: (string | Uint8Array)[]) {
-        switch (type) {
-          case LOG_TYPE.INFO:
-            core.log.info(`app/${this.moduleName}`, ...message);
-            return;
-          case LOG_TYPE.ERROR:
-            core.log.error(`app/${this.moduleName}`, ...message);
-            return;
-          case LOG_TYPE.SUCCESS:
-            core.log.success(`app/${this.moduleName}`, ...message);
-            return;
-          case LOG_TYPE.WARNING:
-            core.log.warning(`app/${this.moduleName}`, ...message);
-            return;
-          default:
-            core.log.info(`app/${this.moduleName}`, ...message);
-        }
-      },
-      getPath() {
-        return path.resolve(path.join(process.cwd(), "../applications", this.moduleName));
-      },
-      applicationName: args.moduleName,
-      moduleName: args.moduleName,
-      getUser(req: ExpressRequest) {
-        const username = req.headers.username as string;
-
-        return core.users.get(username);
+      log: {
+        info(...message) {
+          core.log.info(`${args.moduleId}`, ...message);
+        },
+        error(...message) {
+          core.log.error(`${args.moduleId}`, ...message);
+        },
+        warning(...message) {
+          core.log.warning(`${args.moduleId}`, ...message);
+        },
+        success(...message) {
+          core.log.success(`${args.moduleId}`, ...message);
+        },
+        debug(...message) {
+          core.log.debug(`${args.moduleId}`, ...message);
+        },
       },
       core: core,
-      path: args.modulePath,
-      modulePath: args.modulePath,
+      moduleId: args.moduleId,
+      applicationId: args.applicationId,
+      moduleConfig: args.moduleConfig,
+      applicationConfig: args.applicationConfig,
+      applicationPath: args.applicationPath,
     };
 
     return this;
   }
 
   loadEndpoints() {
-    /* empty */
+    this.api.log.info("Loading endpoints...");
   }
 
   loadPreAuthEndpoints() {
-    /* empty */
+    this.api.log.info("Loading pre-authentication endpoints...");
   }
 }
 
@@ -120,7 +117,7 @@ export default class CoreApplicationManager {
   // application id's for the default applications
   DEFAULT_APPLICATIONS: string[];
   // the applicationid's that are currently loaded
-  loadedApplications: string[];
+  loadedApplications: { id: string; path: string; config: IYourDashApplicationConfigJson }[];
   loadedModules: {
     frontend: {
       config: IYourDashApplicationConfigJson["modules"]["frontend"][0];
@@ -140,7 +137,7 @@ export default class CoreApplicationManager {
   constructor(core: Core) {
     this.core = core;
     this.DEFAULT_APPLICATIONS = [
-      "../applications/uk-ewsgit-dash-frontend",
+      "../applications/uk-ewsgit-dash",
       "../applications/uk-ewsgit-photos",
       "../applications/uk-ewsgit-settings",
       "../applications/uk-ewsgit-store",
@@ -210,6 +207,8 @@ export default class CoreApplicationManager {
 
     this.core.log.success("application_manager", `Application ${applicationConfig.id}'s config was successfully verified!`);
 
+    this.loadedApplications.push({ path: applicationPath, id: applicationConfig.id, config: applicationConfig });
+
     for (const mod of applicationConfig.modules.frontend) {
       if (!(await this.verifyApplicationModule(applicationPath, "frontend", mod))) {
         this.core.log.error("application_manager", `Invalid application module for: "${applicationPath}", module ${mod.id} was invalid`);
@@ -231,7 +230,7 @@ export default class CoreApplicationManager {
       this.loadedModules.backend.push({
         config: mod,
         module: new (await import(path.join(this.core.fs.ROOT_PATH, applicationPath, mod.main))).default({
-          moduleName: mod.id,
+          moduleId: mod.id,
           modulePath: path.join(this.core.fs.ROOT_PATH, applicationPath, mod.main),
         } as YourDashModuleArguments),
         applicationPath: applicationPath,

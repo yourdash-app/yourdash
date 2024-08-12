@@ -15,7 +15,7 @@ export enum LOG_TYPE {
   DEBUG,
 }
 
-const LOG_META_MAX_LENGTH = 20;
+const LOG_META_MAX_LENGTH = 28;
 
 export default class CoreLog {
   private readonly core: Core;

@@ -24,7 +24,7 @@ const DashApplication: React.FC = () => {
   };
   const [currentWidgetPage, setCurrentWidgetPage] = useState<number>(0);
   const widgetPage = useResource<IWidgetGrid>(
-    () => csi.getJson(`/app/uk-ewsgit-dash-frontend/widgets/${currentWidgetPage}`),
+    () => csi.getJson(`/app/uk-ewsgit-dash/widgets/${currentWidgetPage}`),
     [currentWidgetPage],
   ) || {
     widgets: [],

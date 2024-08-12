@@ -26,7 +26,7 @@
       {
         "dependencies": [],
         "description": "The backend for the Dash application",
-        "id": "uk-ewsgit-dash-frontend-backend",
+        "id": "uk-ewsgit-dash-backend",
         "main": "./backend/index.ts"
       }
     ],
@@ -41,7 +41,7 @@
         "dependencies": [
           {
             "moduleType": "backend",
-            "id": "uk-ewsgit-dash-frontend-backend"
+            "id": "uk-ewsgit-dash-backend"
           }
         ]
       }

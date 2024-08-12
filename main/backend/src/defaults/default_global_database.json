@@ -9,7 +9,7 @@
     }
   },
   "core:installedApplications": [
-    "../applications/uk-ewsgit-dash-frontend",
+    "../applications/uk-ewsgit-dash",
     "../applications/uk-ewsgit-settings",
     "../applications/uk-ewsgit-files",
     "../applications/uk-ewsgit-store",
@@ -19,7 +19,7 @@
   "core:defaults": {
     "user": {
       "quickShortcuts": [
-        "uk-ewsgit-dash-frontend",
+        "uk-ewsgit-dash",
         "uk-ewsgit-settings",
         "uk-ewsgit-files",
         "uk-ewsgit-store",
