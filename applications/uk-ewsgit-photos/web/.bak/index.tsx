@@ -4,8 +4,10 @@
  */
 
 import Redirect from "@yourdash/chiplet/components/redirect/Redirect.js";
-import React from "react";
+import UseCurrentModuleId from "@yourdash/shared/core/useCurrentModuleId";
+import * as React from "react";
 import { Routes, Route } from "react-router";
+import applicationMeta from "../meta.yourdash";
 import AlbumPage from "./pages/AlbumPage.js";
 import HomePage from "./pages/HomePage.js";
 import PhotoPage from "./pages/PhotoPage.js";
@@ -13,6 +15,8 @@ import SearchPage from "./pages/SearchPage.js";
 import PhotosLayout from "./PhotosLayout.js";
 
 const PhotosRouter: React.FC = () => {
+  const moduleId = UseCurrentModuleId(applicationMeta);
+
   return (
     <Routes>
       <Route element={<PhotosLayout />}>
@@ -27,7 +31,7 @@ const PhotosRouter: React.FC = () => {
         <Route path={"album"}>
           <Route
             index
-            element={<Redirect to={"/app/a/uk-ewsgit-photos"} />}
+            element={<Redirect to={`/app/a/${moduleId}`} />}
           />
           <Route
             path={"*"}
@@ -37,7 +41,7 @@ const PhotosRouter: React.FC = () => {
         <Route path={"photo"}>
           <Route
             index
-            element={<Redirect to={"/app/a/uk-ewsgit-photos"} />}
+            element={<Redirect to={`/app/a/${moduleId}`} />}
           />
           <Route
             path={"*"}
@@ -47,7 +51,7 @@ const PhotosRouter: React.FC = () => {
         <Route path={"video"}>
           <Route
             index
-            element={<Redirect to={"/app/a/uk-ewsgit-photos"} />}
+            element={<Redirect to={`/app/a/${moduleId}`} />}
           />
           <Route
             path={"*"}

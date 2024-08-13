@@ -6,12 +6,12 @@
 import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
 import React, { useState } from "react";
 import BasePageLayout from "../../../components/BasePageLayout";
-import csi from "@yourdash/csi/csi";
+import coreCSI from "@yourdash/csi/coreCSI";
 import DropdownSettingComponent from "../../../components/DropdownSettingComponent";
 
 const Index: React.FC = () => {
-  const [panelSize, setPanelSize] = useState<"small" | "medium" | "large">(csi.userDB.get("core:panel:size") || "medium");
-  const [panelSide, setPanelSide] = useState<"top" | "right" | "bottom" | "left">(csi.userDB.get("core:panel:side") || "left");
+  const [panelSize, setPanelSize] = useState<"small" | "medium" | "large">(coreCSI.userDB.get("core:panel:size") || "medium");
+  const [panelSide, setPanelSide] = useState<"top" | "right" | "bottom" | "left">(coreCSI.userDB.get("core:panel:side") || "left");
 
   return (
     <BasePageLayout title={"Panel"}>
@@ -36,7 +36,7 @@ const Index: React.FC = () => {
         value={panelSize || "medium"}
         setValue={(val) => {
           setPanelSize(val as "small" | "medium" | "large");
-          csi.userDB.set("core:panel:size", val);
+          coreCSI.userDB.set("core:panel:size", val);
           // @ts-ignore
           window.__yourdashCorePanelReload();
         }}
@@ -66,7 +66,7 @@ const Index: React.FC = () => {
         value={panelSide || "left"}
         setValue={(val) => {
           setPanelSide(val as "top" | "right" | "bottom" | "left");
-          csi.userDB.set("core:panel:side", val);
+          coreCSI.userDB.set("core:panel:side", val);
           // @ts-ignore
           window.__yourdashCorePanelReload();
         }}

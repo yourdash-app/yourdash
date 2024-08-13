@@ -4,7 +4,7 @@
  */
 
 import { USER_AVATAR_SIZE } from "@yourdash/shared/core/userAvatarSize";
-import csi from "../csi";
+import coreCSI from "../coreCSI";
 
 export default class CSIYourDashTeam {
   cached!: {
@@ -35,7 +35,7 @@ export default class CSIYourDashTeam {
     if (this.cached.displayName) return this.cached.displayName;
 
     return new Promise((resolve, reject) => {
-      csi.syncGetJson(
+      coreCSI.syncGetJson(
         `/core/team/${this.teamName}/displayName`,
         (data) => {
           this.cached.displayName = data;
@@ -55,10 +55,10 @@ export default class CSIYourDashTeam {
     }
 
     return new Promise((resolve, reject) => {
-      csi.getText(
+      coreCSI.getText(
         `/core/team/${this.teamName}/avatar/${avatarSize}`,
         (data) => {
-          this.cached.avatar[avatarSize] = `${csi.getInstanceUrl()}${data}`;
+          this.cached.avatar[avatarSize] = `${coreCSI.getInstanceUrl()}${data}`;
 
           return resolve(this.cached.avatar[avatarSize] || "");
         },

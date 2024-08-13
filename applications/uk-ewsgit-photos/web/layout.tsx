@@ -7,11 +7,12 @@ import Box from "@yourdash/uikit/components/box/box.js";
 import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary.js";
 import IconButton from "@yourdash/uikit/components/iconButton/iconButton.js";
 import { FC } from "react";
-import { Outlet, useNavigate } from "react-router";
+import { Outlet } from "react-router";
 import styles from "./layout.module.scss";
+import { useNavigateTo } from "./meta.yourdash";
 
 const Layout: FC = () => {
-  const navigate = useNavigate();
+  const navigateTo = useNavigateTo();
 
   return (
     <>
@@ -24,21 +25,21 @@ const Layout: FC = () => {
             accessibleLabel={"Home"}
             icon={UKIcon.Home}
             onClick={() => {
-              navigate("/app/a/uk-ewsgit-photos-frontend/");
+              navigateTo(`/`);
             }}
           />
           <IconButton
             accessibleLabel={"Search"}
             icon={UKIcon.Search}
             onClick={() => {
-              navigate("/app/a/uk-ewsgit-photos-frontend/search/");
+              navigateTo(`/search/`);
             }}
           />
           <IconButton
             accessibleLabel={"Profile"}
             icon={UKIcon.Person}
             onClick={() => {
-              navigate("/app/a/uk-ewsgit-photos-frontend/profile/");
+              navigateTo(`/profile/`);
             }}
           />
         </Box>

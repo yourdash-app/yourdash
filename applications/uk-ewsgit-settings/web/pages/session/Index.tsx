@@ -8,23 +8,23 @@ import Icon from "@yourdash/chiplet/components/icon/Icon";
 import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
 import IconButton from "@yourdash/chiplet/components/iconButton/IconButton";
 import React, { useState, useEffect } from "react";
-import csi from "@yourdash/csi/csi";
+import coreCSI from "@yourdash/csi/coreCSI";
 import { type IYourDashSession, YOURDASH_SESSION_TYPE } from "@yourdash/shared/core/session";
 import BasePageLayout from "../../components/BasePageLayout";
 
 const SettingsPageSession: React.FC = () => {
   const [reloadNum, setReloadNum] = useState(0);
   const [sessions, setSessions] = useState<IYourDashSession[]>([]);
-  const [personalServerAccelerationSessions, setPersonalServerAcceleration] = useState<
-    IYourDashSession<YOURDASH_SESSION_TYPE.desktop>[]
-  >([]);
+  const [personalServerAccelerationSessions, setPersonalServerAcceleration] = useState<IYourDashSession<YOURDASH_SESSION_TYPE.desktop>[]>(
+    [],
+  );
 
   useEffect(() => {
-    csi.syncGetJson("/user/sessions", (data) => {
+    coreCSI.syncGetJson("/user/sessions", (data) => {
       setSessions(data.sessions);
     });
 
-    csi.syncGetJson("/core/personal-server-accelerator/sessions", (data) => {
+    coreCSI.syncGetJson("/core/personal-server-accelerator/sessions", (data) => {
       setPersonalServerAcceleration(data.sessions);
     });
   }, [reloadNum]);
@@ -56,11 +56,7 @@ const SettingsPageSession: React.FC = () => {
                   }
                 />
               </div>
-              <div
-                className={
-                  "w-full bg-container-secondary-bg pl-4 p-3 flex text-container-fg items-center justify-between"
-                }
-              >
+              <div className={"w-full bg-container-secondary-bg pl-4 p-3 flex text-container-fg items-center justify-between"}>
                 <div className={"flex flex-col gap-1"}>
                   <div>
                     Type: {session.type === YOURDASH_SESSION_TYPE.web && "Web"}
@@ -73,7 +69,7 @@ const SettingsPageSession: React.FC = () => {
                 <IconButton
                   icon={UKIcon.X}
                   onClick={() => {
-                    csi.deleteJson(`/core/session/${session.sessionId}`, () => {
+                    coreCSI.deleteJson(`/core/session/${session.sessionId}`, () => {
                       setReloadNum(reloadNum + 1);
                     });
                   }}

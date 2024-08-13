@@ -6,7 +6,7 @@
 import Card from "@yourdash/uikit/components/card/card.js";
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import csi from "@yourdash/csi/csi";
+import coreCSI from "@yourdash/csi/coreCSI";
 import styles from "./StoreApplication.module.scss";
 
 export interface IStoreApplicationComponent {
@@ -25,7 +25,7 @@ const StoreApplication: React.FC<IStoreApplicationComponent> = ({ displayName, i
     >
       <img
         loading={"lazy"}
-        src={`${csi.getInstanceUrl()}${icon}`}
+        src={`${coreCSI.getInstanceUrl()}${icon}`}
         className={"aspect-square h-16"}
         alt={""}
       />

@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import csi from "@yourdash/csi/csi";
+import coreCSI from "@yourdash/csi/coreCSI";
 import Card from "@yourdash/chiplet/components/card/Card";
 import DropdownButton from "@yourdash/chiplet/components/dropdownButton/DropdownButton";
 import Heading from "@yourdash/chiplet/components/heading/Heading";
@@ -24,7 +24,7 @@ const ListBotsPage: React.FC = () => {
   const [currentTeam, setCurrentTeam] = useState<string>(teams[0]);
 
   useEffect(() => {
-    csi.getTeams().then((ts) => {
+    coreCSI.getTeams().then((ts) => {
       console.log(ts.map((t) => t.teamName));
       setTeams(ts.map((t) => t.teamName));
       setCurrentTeam(ts.map((t) => t.teamName)[0]);
@@ -41,11 +41,11 @@ const ListBotsPage: React.FC = () => {
   }, [searchValue, bots]);
 
   useEffect(() => {
-    csi.syncGetJson(
+    coreCSI.syncGetJson(
       `/app/chatbots/team/${currentTeam}/list-bots`,
       (b: unknown[]) => {
         b.map((botId) => {
-          csi.syncGetJson(
+          coreCSI.syncGetJson(
             `/app/chatbots/team/${currentTeam}/list/${botId}`,
             (bot) => {
               setBots([...bots, bot]);

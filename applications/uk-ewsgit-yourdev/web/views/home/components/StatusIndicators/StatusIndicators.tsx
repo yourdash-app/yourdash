@@ -6,7 +6,7 @@
 import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
 import React, { useEffect, useState } from "react";
 import Indicator from "./components/indicator/Indicator";
-import csi from "@yourdash/csi/csi";
+import coreCSI from "@yourdash/csi/coreCSI";
 import io from "socket.io-client";
 
 const StatusIndicators: React.FC = () => {
@@ -17,11 +17,11 @@ const StatusIndicators: React.FC = () => {
   const [debugLogs, setDebugLogs] = useState(0);
 
   useEffect(() => {
-    const socket = io(`${csi.getInstanceUrl().replace("https://", "wss://").replace("http://", "ws://")}`, {
+    const socket = io(`${coreCSI.getInstanceUrl().replace("https://", "wss://").replace("http://", "ws://")}`, {
       path: "/app/yourdev/websocket-manager/websocket",
       auth: {
-        token: csi.getUserToken(),
-        username: csi.getUsername(),
+        token: coreCSI.getUserSessionToken(),
+        username: coreCSI.getUsername(),
       },
     });
 
@@ -59,11 +59,36 @@ const StatusIndicators: React.FC = () => {
 
   return (
     <div className={"ml-auto flex gap-2 items-center"}>
-      <Indicator icon={UKIcon.Info} color={"#32b3ff"} displayName={"Info Logs"} value={infoLogs} />
-      <Indicator icon={UKIcon.Plug} color={"#ffffff"} displayName={"Websocket Connections"} value={webSocketConnections} />
-      <Indicator icon={UKIcon.Alert} color={"#eab842"} displayName={"Warning Logs"} value={warningLogs} />
-      <Indicator icon={UKIcon.XCircle} color={"#ff6633"} displayName={"Error Logs"} value={errorLogs} />
-      <Indicator icon={UKIcon.Bug} color={"#0ac700"} displayName={"Debug Logs"} value={debugLogs} />
+      <Indicator
+        icon={UKIcon.Info}
+        color={"#32b3ff"}
+        displayName={"Info Logs"}
+        value={infoLogs}
+      />
+      <Indicator
+        icon={UKIcon.Plug}
+        color={"#ffffff"}
+        displayName={"Websocket Connections"}
+        value={webSocketConnections}
+      />
+      <Indicator
+        icon={UKIcon.Alert}
+        color={"#eab842"}
+        displayName={"Warning Logs"}
+        value={warningLogs}
+      />
+      <Indicator
+        icon={UKIcon.XCircle}
+        color={"#ff6633"}
+        displayName={"Error Logs"}
+        value={errorLogs}
+      />
+      <Indicator
+        icon={UKIcon.Bug}
+        color={"#0ac700"}
+        displayName={"Debug Logs"}
+        value={debugLogs}
+      />
     </div>
   );
 };

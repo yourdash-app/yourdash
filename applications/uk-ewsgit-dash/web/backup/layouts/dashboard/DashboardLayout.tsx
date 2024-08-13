@@ -46,7 +46,7 @@ const DashboardLayout: React.FC<IDashboard> = ({ username, fullName }) => {
           <IconButton
             icon={UKIcon.Gear}
             onClick={() => {
-              navigate("/app/a/uk-ewsgit-settings/personalization/dashboard");
+              navigate("${modulePath}/personalization/dashboard");
             }}
           />
         </Row>

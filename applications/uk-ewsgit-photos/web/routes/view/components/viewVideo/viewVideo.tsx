@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import csi from "@yourdash/csi/csi.js";
+import coreCSI from "@yourdash/csi/coreCSI";
 import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary";
 import IconButton from "@yourdash/uikit/components/iconButton/iconButton";
 import ProgressBar from "@yourdash/uikit/components/progressBar/progressBar";
@@ -41,7 +41,7 @@ const ViewVideo: FC<{ mediaUrl: string }> = ({ mediaUrl }) => {
           draggable={false}
           autoPlay={true}
           className={styles.viewVideo}
-          src={csi.getInstanceUrl() + mediaUrl}
+          src={coreCSI.getInstanceUrl() + mediaUrl}
         />
       </PanAndZoom>
       {hasLoaded && (

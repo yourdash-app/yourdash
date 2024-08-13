@@ -13,14 +13,14 @@ import styles from "./Launcher.module.scss";
 import React, { memo, useEffect, useState } from "react";
 import ApplicationsLauncherApplications from "./Applications/Applications";
 import IPanelApplicationsLauncherFrontendModule from "@yourdash/shared/core/panel/applicationsLauncher/application";
-import csi from "@yourdash/csi/csi";
+import coreCSI from "@yourdash/csi/coreCSI";
 
 const ApplicationLauncher: React.FC<{
   side: "top" | "right" | "bottom" | "left";
   visible: boolean;
 }> = ({ side, visible }) => {
   const navigate = useNavigate();
-  const apps = useResource<IPanelApplicationsLauncherFrontendModule[]>(() => csi.getJson("/core/panel/applications"), []) || [];
+  const apps = useResource<IPanelApplicationsLauncherFrontendModule[]>(() => coreCSI.getJson("/core/panel/applications"), []) || [];
   const [layout, setLayout] = React.useState<"large-grid" | "small-grid" | "list">("large-grid");
 
   return (
@@ -47,7 +47,7 @@ const ApplicationLauncher: React.FC<{
           className={styles.logoutButton}
           icon={UKIcon.Logout}
           onClick={() => {
-            csi.logout();
+            coreCSI.logout();
             navigate("/login");
           }}
         />
@@ -61,11 +61,11 @@ const ApplicationLauncher: React.FC<{
             icon={UKIcon.Person}
             aria-label={"User Profile Settings"}
             onClick={() => {
-              navigate("/app/a/uk-ewsgit-settings/profile");
+              navigate("${modulePath}/profile");
             }}
           />
         </div>
-        <span>{csi.userDB.get<{ first: string; last: string }>("user:name")?.first || "Unknown First Name"}</span>
+        <span>{coreCSI.userDB.get<{ first: string; last: string }>("user:name")?.first || "Unknown First Name"}</span>
         <IconButton
           accessibleLabel={"Filter small grid"}
           className={"ml-auto"}

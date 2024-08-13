@@ -6,6 +6,7 @@
 import Redirect from "@yourdash/uikit/components/redirect/redirect";
 import React from "react";
 import { Routes, Route } from "react-router";
+import { modulePath } from "./meta.yourdash";
 import CategoryNamePage from "./routes/cat/categoryName";
 import SingleSettingPage from "./routes/cat/singleSettingPage";
 import IndexPage from "./routes/index";
@@ -29,7 +30,7 @@ const SettingsRouter: React.FC = () => (
       <Route path={"cat"}>
         <Route
           index
-          element={<Redirect to={"/app/a/uk-ewsgit-settings/"} />}
+          element={<Redirect to={`${modulePath}/`} />}
         />
         {/* Category Name */}
         <Route path={":categoryName"}>

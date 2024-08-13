@@ -5,7 +5,7 @@
 
 import TextInput from "@yourdash/chiplet/components/textInput/TextInput";
 import React, { useState } from "react";
-import csi from "@yourdash/csi/csi";
+import coreCSI from "@yourdash/csi/coreCSI";
 import { ILocationSearchResult } from "../../../../../shared/locationSearchResult";
 import HeroSearchResultCard from "./components/HeroSearchResultCard/HeroSearchResultCard";
 import SearchResultCard from "./components/SearchResultCard/SearchResultCard";
@@ -36,7 +36,7 @@ const LocationSearchBar: React.FC = () => {
           onChange={(value: string) => {
             setSearchQuery(value);
 
-            csi.syncGetJson(
+            coreCSI.syncGetJson(
               `/app/weather/geolocation/${value.replaceAll(" ", "+")}`,
               (response) => {
                 setSearchResults(response);

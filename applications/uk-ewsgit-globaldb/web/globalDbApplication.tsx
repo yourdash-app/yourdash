@@ -6,14 +6,14 @@
 import Button from "@yourdash/chiplet/components/button/Button";
 import Card from "@yourdash/chiplet/components/card/Card";
 import React, { useEffect, useState } from "react";
-import csi from "@yourdash/csi/csi";
+import coreCSI from "@yourdash/csi/coreCSI";
 import DbItem from "./components/dbItem";
 
 const GlobalDbApplication: React.FC = () => {
   const [keys, setKeys] = useState<{ [key: string]: string }>({});
 
   useEffect(() => {
-    csi.syncGetJson("/app/global_db/db", (data) => {
+    coreCSI.syncGetJson("/app/global_db/db", (data) => {
       if (!data.db) {
         return;
       }
@@ -64,7 +64,7 @@ const GlobalDbApplication: React.FC = () => {
       >
         <Button
           onClick={() => {
-            csi.postJson("/app/global_db/db", keys, () => {
+            coreCSI.postJson("/app/global_db/db", keys, () => {
               /* empty */
             });
           }}
@@ -73,7 +73,7 @@ const GlobalDbApplication: React.FC = () => {
         </Button>
         <Button
           onClick={() => {
-            csi.syncGetJson("/app/global_db/db", (data) => {
+            coreCSI.syncGetJson("/app/global_db/db", (data) => {
               if (!data.db) {
                 return;
               }
@@ -86,7 +86,7 @@ const GlobalDbApplication: React.FC = () => {
         </Button>
         <Button
           onClick={() => {
-            csi.postJson("/app/global_db/db/force-write", keys, () => {
+            coreCSI.postJson("/app/global_db/db/force-write", keys, () => {
               /* empty */
             });
           }}

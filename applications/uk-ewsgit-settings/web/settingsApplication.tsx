@@ -7,6 +7,7 @@ import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
 import * as React from "react";
 import SettingCategoryComponent from "./components/SettingCategoryComponent";
 import BasePageLayout from "./components/BasePageLayout";
+import { modulePath } from "./meta.yourdash";
 
 const SettingsApplication: React.FC = () => {
   return (
@@ -15,39 +16,39 @@ const SettingsApplication: React.FC = () => {
       title={"YourDash Settings"}
     >
       <SettingCategoryComponent
-        href={"/app/a/uk-ewsgit-settings/profile"}
+        href={`${modulePath}/profile`}
         description={"Manage your user profile"}
         title={"Profile"}
         icon={UKIcon.Person}
       />
       <SettingCategoryComponent
-        href={"/app/a/uk-ewsgit-settings/personalization"}
-        description={"Customize your experience"}
-        title={"Personalization"}
+        href={`${modulePath}/personalization`}
+        description={`Customize your experience`}
+        title={`Personalization`}
         icon={UKIcon.Paintbrush}
       />
       <SettingCategoryComponent
-        href={"/app/a/uk-ewsgit-settings/session"}
-        description={"Manage your login sessions"}
-        title={"Login sessions"}
+        href={`${modulePath}/session`}
+        description={`Manage your login sessions`}
+        title={`Login sessions`}
         icon={UKIcon.Login}
       />
       <SettingCategoryComponent
-        href={"/app/a/uk-ewsgit-settings/accessibility"}
-        description={"Toggle QOL features"}
-        title={"Accessibility"}
+        href={`${modulePath}/accessibility`}
+        description={`Toggle QOL features`}
+        title={`Accessibility`}
         icon={UKIcon.Accessibility}
       />
       <SettingCategoryComponent
-        href={"/app/a/uk-ewsgit-settings/admin"}
-        description={"Hiya, Admin 👋"}
-        title={"Admin tools"}
+        href={`${modulePath}/admin`}
+        description={`Hiya, Admin 👋`}
+        title={`Admin tools`}
         icon={UKIcon.Tools}
       />
       <SettingCategoryComponent
-        href={"/app/a/uk-ewsgit-settings/developer"}
-        description={"For development purposes only"}
-        title={"Developer tools"}
+        href={`${modulePath}/developer`}
+        description={`For development purposes only`}
+        title={`Developer tools`}
         icon={UKIcon.Tools}
       />
     </BasePageLayout>

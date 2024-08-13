@@ -314,6 +314,7 @@ import { Route, Routes } from "react-router";
 
     // generate meta.yourdash.ts files for every officialFrontendModule & frontendModule
     for (const application of this.applicationManager.loadedApplications) {
+      // TODO: generate meta files for non-officialFrontend applicationModules
       for (const mod of application.config.modules.officialFrontend) {
         await (async () => {
           let fileTemplate = `/**
@@ -322,42 +323,7 @@ import { Route, Routes } from "react-router";
 /* region code */
 `;
 
-          const codeRegionReplacement = `const applicationMeta: {
-  id: string;
-  displayName: string;
-  category: string;
-  authors: { name: string; url: string; bio: string; avatarUrl: string }[];
-  maintainers: { name: string; url: string; bio: string; avatarUrl: string }[];
-  description: string;
-  license: string;
-  modules: {
-    backend: {
-      id: string;
-      main: string;
-      description: string;
-      dependencies: { moduleType: "backend" | "frontend" | "officialFrontend"; id: string }[];
-    }[];
-    frontend: {
-      id: string;
-      displayName: string;
-      iconPath: string;
-      url: string;
-      devUrl: string;
-      description: string;
-      dependencies: { moduleType: "backend" | "frontend" | "officialFrontend"; id: string }[];
-      main: string;
-    }[];
-    officialFrontend: {
-      id: string;
-      main: string;
-      displayName: string;
-      iconPath: string;
-      description: string;
-      dependencies: { moduleType: "backend" | "frontend" | "officialFrontend"; id: string }[];
-    }[];
-  };
-  shouldInstanceRestartOnInstall: boolean;
-} = ${JSON.stringify(application.config)}; export default applicationMeta`;
+          const codeRegionReplacement = `import {ClientServerInteraction} from "@yourdash/csi/coreCSI.js";import {useNavigate} from "react-router-dom";const applicationMeta: {id: string;displayName:string;category:string;authors:{name:string;url:string;bio:string;avatarUrl:string}[];maintainers:{name:string;url:string;bio:string;avatarUrl:string}[];description:string;license:string;modules:{backend:{id:string;main:string;description:string;dependencies:{moduleType:"backend"|"frontend"|"officialFrontend";id:string}[];}[];frontend:{id:string;displayName:string;iconPath:string;url:string;devUrl:string;description:string;dependencies:{moduleType:"backend"|"frontend"|"officialFrontend";id:string}[];main:string;}[];officialFrontend:{id:string;main:string;displayName:string;iconPath:string;description:string;dependencies:{moduleType:"backend"|"frontend"|"officialFrontend";id:string}[];}[];};shouldInstanceRestartOnInstall:boolean;__internal__generatedFor:"frontend"|"officialFrontend";}=${JSON.stringify({ ...application.config, __internal__generatedFor: "officialFrontend" })};export default applicationMeta;const acsi=new ClientServerInteraction("/app/${application.config.modules.backend[0].id}");const useNavigateTo=()=>{const navigate=useNavigate();return (path: string)=>navigate("/app/a/${application.config.modules.officialFrontend[0].id}"+path)};const modulePath = "/app/a/${application.config.modules.officialFrontend[0].id}";export{acsi,useNavigateTo,modulePath};`;
 
           fileTemplate = fileTemplate.replace("/* region code */", codeRegionReplacement);
 

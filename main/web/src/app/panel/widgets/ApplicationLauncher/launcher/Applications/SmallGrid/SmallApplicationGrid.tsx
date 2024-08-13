@@ -6,7 +6,7 @@
 import RightClickMenu from "@yourdash/chiplet/components/rightClickMenu/RightClickMenu";
 import React from "react";
 import IPanelApplicationsLauncherFrontendModule from "@yourdash/shared/core/panel/applicationsLauncher/application";
-import csi from "@yourdash/csi/csi";
+import coreCSI from "@yourdash/csi/coreCSI";
 import styles from "./SmallApplicationGrid.module.scss";
 import { useNavigate } from "react-router";
 
@@ -24,7 +24,7 @@ const SmallApplicationGrid: React.FC<{
               {
                 label: "Pin To Panel",
                 async onClick() {
-                  await csi.postJson("/core/panel/quick-shortcuts/create", { id: application.id, moduleType: application.type });
+                  await coreCSI.postJson("/core/panel/quick-shortcuts/create", { id: application.id, moduleType: application.type });
                   // @ts-ignore
                   window.__yourdashCorePanelQuickShortcutsReload?.();
                   return 0;
@@ -48,7 +48,7 @@ const SmallApplicationGrid: React.FC<{
               <img
                 loading={"lazy"}
                 className={styles.itemIcon}
-                src={`${csi.getInstanceUrl()}${application.icon}`}
+                src={`${coreCSI.getInstanceUrl()}${application.icon}`}
                 draggable={false}
                 alt=""
               />

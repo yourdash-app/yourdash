@@ -6,7 +6,7 @@
 import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
 import IconButton from "@yourdash/chiplet/components/iconButton/IconButton";
 import * as React from "react";
-import csi from "@yourdash/csi/csi";
+import coreCSI from "@yourdash/csi/coreCSI";
 import loadable from "@loadable/component";
 import { useNavigate } from "react-router-dom";
 
@@ -24,12 +24,12 @@ const DashApplication: React.FC = () => {
   const [layout, setLayout] = React.useState<"browser" | "dashboard">("dashboard");
 
   React.useEffect(() => {
-    csi.syncGetJson("/app/dash/user-full-name", (res) => {
+    coreCSI.syncGetJson("/app/dash/user-full-name", (res) => {
       setUserFullName(res);
     });
 
     setUserName(localStorage.getItem("username") || "ERROR");
-    setLayout(csi.userDB.get("dash:useBrowserLayout") ? "browser" : "dashboard");
+    setLayout(coreCSI.userDB.get("dash:useBrowserLayout") ? "browser" : "dashboard");
   }, []);
 
   if (userFullName.first === "" && userFullName.last === "") {
@@ -40,7 +40,7 @@ const DashApplication: React.FC = () => {
     <div
       className={"overflow-hidden bg-cover bg-center h-full w-full"}
       style={{
-        backgroundImage: `url(${csi.getInstanceUrl()}/login/instance/background)`,
+        backgroundImage: `url(${coreCSI.getInstanceUrl()}/login/instance/background)`,
       }}
     >
       {layout === "dashboard" ? (
@@ -53,7 +53,7 @@ const DashApplication: React.FC = () => {
           <IconButton
             icon={UKIcon.Gear}
             onClick={() => {
-              navigate("/app/a/uk-ewsgit-settings/personalization/dashboard");
+              navigate("${modulePath}/personalization/dashboard");
             }}
           />
           "Browser Layout is temporarily disabled"

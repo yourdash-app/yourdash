@@ -5,11 +5,14 @@
 
 import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
 import SideBar, { SIDEBAR_ITEM_TYPE, SIDEBAR_STATE } from "@yourdash/chiplet/components/sideBar/SideBar";
+import useCurrentModuleId from "@yourdash/shared/core/useCurrentModuleId";
 import * as React from "react";
 import { Outlet } from "react-router";
 import { useNavigate } from "react-router-dom";
+import applicationMeta from "../meta.yourdash";
 
 const PhotosLayout: React.FC = () => {
+  const moduleId = useCurrentModuleId(applicationMeta);
   const navigate = useNavigate();
 
   return (
@@ -20,7 +23,7 @@ const PhotosLayout: React.FC = () => {
           {
             label: "Home",
             onClick() {
-              navigate("/app/a/uk-ewsgit-photos/");
+              navigate(`/app/a/${moduleId}/`);
             },
             type: SIDEBAR_ITEM_TYPE.Button,
             icon: UKIcon.Home,
@@ -28,7 +31,7 @@ const PhotosLayout: React.FC = () => {
           {
             label: "Search",
             onClick() {
-              navigate("/app/a/uk-ewsgit-photos/search");
+              navigate(`/app/a/${moduleId}/search`);
               return 0;
             },
             type: SIDEBAR_ITEM_TYPE.Button,
@@ -41,7 +44,7 @@ const PhotosLayout: React.FC = () => {
           {
             label: "Upload",
             onClick() {
-              navigate("/app/a/uk-ewsgit-photos/upload");
+              navigate(`/app/a/${moduleId}/upload`);
               return 0;
             },
             type: SIDEBAR_ITEM_TYPE.Button,

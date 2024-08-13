@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import csi from "@yourdash/csi/csi.js";
+import coreCSI from "@yourdash/csi/coreCSI";
 import Spinner from "../spinner/spinner";
 import styles from "./image.module.scss";
 import { FC, useState } from "react";
@@ -30,7 +30,7 @@ const Image: FC<{
         onLoad={(e) => {
           setLoaded(e.currentTarget.complete);
         }}
-        src={(props.authenticatedImage ? csi.getInstanceUrl() : "") + props.src}
+        src={(props.authenticatedImage ? coreCSI.getInstanceUrl() : "") + props.src}
       />
       {!loaded && !props.disableSpinner && (
         <div className={clippy(styles.spinner)}>

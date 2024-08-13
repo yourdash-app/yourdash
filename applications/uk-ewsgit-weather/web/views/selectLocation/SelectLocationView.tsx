@@ -9,7 +9,7 @@ import Card from "@yourdash/uikit/components/card/card";
 import TextInput from "@yourdash/uikit/components/textInput/textInput";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import csi from "@yourdash/csi/csi";
+import coreCSI from "@yourdash/csi/coreCSI";
 import APPLICATION_ICON from "../../assets/weatherIcons/partly_cloudy.svg";
 import { ILocationSearchResult } from "../../../shared/locationSearchResult";
 import THUNDER_BACKGROUND from "../../assets/weatherBackgrounds/thunder.jpg";
@@ -28,7 +28,7 @@ const SelectLocationView: React.FC = () => {
   const [backgroundImage, setBackgroundImage] = useState<string>("");
 
   useEffect(() => {
-    csi.syncGetJson("/app/weather/previous/locations", (resp) => {
+    coreCSI.syncGetJson("/app/weather/previous/locations", (resp) => {
       setPreviousWeatherLocations(resp || []);
     });
 
@@ -61,7 +61,7 @@ const SelectLocationView: React.FC = () => {
               }
             }}
             onChange={(value: string) => {
-              csi.syncGetJson(`/app/weather/geolocation/${value.replaceAll(" ", "+")}`, (resp) => {
+              coreCSI.syncGetJson(`/app/weather/geolocation/${value.replaceAll(" ", "+")}`, (resp) => {
                 setLocationQuery(resp || []);
               });
             }}

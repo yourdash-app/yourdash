@@ -27,7 +27,7 @@ const BrowserLayout: React.FC<IBrowserLayout> = ({ username, fullName }) => {
         className={"fixed top-4 right-4"}
         icon={UKIcon.Gear}
         onClick={() => {
-          navigate("/app/a/uk-ewsgit-settings/personalization/dashboard");
+          navigate("${modulePath}/personalization/dashboard");
         }}
       />
       <div

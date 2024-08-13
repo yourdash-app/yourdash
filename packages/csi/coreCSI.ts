@@ -25,9 +25,7 @@ export class UserDatabase extends KeyValueDatabase {
     super.set(key, value);
 
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
-    csi.postJson("/core/user_db", this.keys, () => {
-      return 0;
-    });
+    coreCSI.postJson("/core/user_db", this.keys);
 
     return this;
   }
@@ -46,14 +44,65 @@ class __internalClientServerWebsocketConnection {
   }
 }
 
-class __internalClientServerInteraction {
-  userDB: UserDatabase;
-  path: BrowserPath;
-  private user!: CSIYourDashUser;
+export class ClientServerInteraction {
+  private _internal_baseRequestPath;
 
-  constructor() {
-    this.userDB = new UserDatabase();
-    this.path = new BrowserPath();
+  constructor(baseRequestPath: string) {
+    this._internal_baseRequestPath = baseRequestPath;
+
+    return this;
+  }
+
+  // returns the URL of the current instance
+  getInstanceUrl(): string {
+    return localStorage.getItem("instance_url") || "";
+  }
+
+  // sets the URL of the current instance
+  setInstanceUrl(url: string) {
+    let newInstanceUrl = url;
+
+    if (newInstanceUrl.endsWith("/")) {
+      newInstanceUrl = newInstanceUrl.slice(0, -1);
+    }
+
+    if (!new RegExp(":\\d{1,5}$").test(newInstanceUrl)) {
+      newInstanceUrl = newInstanceUrl + ":3563";
+    }
+
+    localStorage.setItem("instance_url", newInstanceUrl || "ERROR");
+
+    return this;
+  }
+
+  // get the username of the currently logged-in user
+  getUsername(): string {
+    return localStorage.getItem("current_user_username") || "";
+  }
+
+  setUsername(username: string) {
+    localStorage.setItem("current_user_username", username);
+
+    return this;
+  }
+
+  getSessionId(): string {
+    return sessionStorage.getItem("session_id") || "0";
+  }
+
+  setSessionId(sessionId: string) {
+    sessionStorage.setItem("session_id", sessionId);
+
+    return this;
+  }
+
+  // get the login session token of the currently logged-in user
+  getUserSessionToken(): string {
+    return sessionStorage.getItem("session_token") || "";
+  }
+
+  setUserToken(token: string) {
+    sessionStorage.setItem("session_token", token);
 
     return this;
   }
@@ -66,12 +115,12 @@ class __internalClientServerInteraction {
   ): Promise<ResponseType> {
     const instanceUrl = this.getInstanceUrl();
     const username = this.getUsername();
-    const sessionToken = this.getUserToken();
+    const sessionToken = this.getUserSessionToken();
     const sessionId = this.getSessionId();
 
     return new Promise<ResponseType>((resolve, reject) => {
-      console.log(`${instanceUrl}${endpoint}`);
-      fetch(`${instanceUrl}${endpoint}`, {
+      console.log(`${instanceUrl}${this._internal_baseRequestPath}${endpoint}`);
+      fetch(`${instanceUrl}${this._internal_baseRequestPath}${endpoint}`, {
         method: "GET",
         mode: "cors",
         headers: {
@@ -123,10 +172,10 @@ class __internalClientServerInteraction {
   ): void {
     const instanceUrl = this.getInstanceUrl();
     const username = this.getUsername();
-    const sessionToken = this.getUserToken();
+    const sessionToken = this.getUserSessionToken();
     const sessionId = this.getSessionId();
 
-    fetch(`${instanceUrl}${endpoint}`, {
+    fetch(`${instanceUrl}${this._internal_baseRequestPath}${endpoint}`, {
       method: "GET",
       mode: "cors",
       headers: {
@@ -172,11 +221,11 @@ class __internalClientServerInteraction {
   ): Promise<ResponseType> {
     const instanceUrl = this.getInstanceUrl();
     const username = this.getUsername();
-    const sessionToken = this.getUserToken();
+    const sessionToken = this.getUserSessionToken();
     const sessionId = this.getSessionId();
 
     return new Promise<ResponseType>((resolve, reject) => {
-      fetch(`${instanceUrl}${endpoint}`, {
+      fetch(`${instanceUrl}${this._internal_baseRequestPath}${endpoint}`, {
         method: "POST",
         mode: "cors",
         body: JSON.stringify(body),
@@ -231,10 +280,10 @@ class __internalClientServerInteraction {
   ): void {
     const instanceUrl = this.getInstanceUrl();
     const username = this.getUsername();
-    const sessionToken = this.getUserToken();
+    const sessionToken = this.getUserSessionToken();
     const sessionId = this.getSessionId();
 
-    fetch(`${instanceUrl}${endpoint}`, {
+    fetch(`${instanceUrl}${this._internal_baseRequestPath}${endpoint}`, {
       method: "POST",
       mode: "cors",
       body: JSON.stringify(body),
@@ -284,10 +333,10 @@ class __internalClientServerInteraction {
   ): void {
     const instanceUrl = this.getInstanceUrl();
     const username = this.getUsername();
-    const sessionToken = this.getUserToken();
+    const sessionToken = this.getUserSessionToken();
     const sessionId = this.getSessionId();
 
-    fetch(`${instanceUrl}${endpoint}`, {
+    fetch(`${instanceUrl}${this._internal_baseRequestPath}${endpoint}`, {
       method: "DELETE",
       mode: "cors",
       headers: {
@@ -335,10 +384,10 @@ class __internalClientServerInteraction {
   ): void {
     const instanceUrl = this.getInstanceUrl();
     const username = this.getUsername();
-    const sessionToken = this.getUserToken();
+    const sessionToken = this.getUserSessionToken();
     const sessionId = this.getSessionId();
 
-    fetch(`${instanceUrl}${endpoint}`, {
+    fetch(`${instanceUrl}${this._internal_baseRequestPath}${endpoint}`, {
       method: "GET",
       mode: "cors",
       headers: {
@@ -373,10 +422,10 @@ class __internalClientServerInteraction {
   ): void {
     const instanceUrl = this.getInstanceUrl();
     const username = this.getUsername();
-    const sessionToken = this.getUserToken();
+    const sessionToken = this.getUserSessionToken();
     const sessionId = this.getSessionId();
 
-    fetch(`${instanceUrl}${endpoint}`, {
+    fetch(`${instanceUrl}${this._internal_baseRequestPath}${endpoint}`, {
       method: "POST",
       mode: "cors",
       body: JSON.stringify(body),
@@ -409,10 +458,10 @@ class __internalClientServerInteraction {
   ): void {
     const instanceUrl = this.getInstanceUrl();
     const username = this.getUsername();
-    const sessionToken = this.getUserToken();
+    const sessionToken = this.getUserSessionToken();
     const sessionId = this.getSessionId();
 
-    fetch(`${instanceUrl}${endpoint}`, {
+    fetch(`${instanceUrl}${this._internal_baseRequestPath}${endpoint}`, {
       method: "DELETE",
       mode: "cors",
       headers: {
@@ -438,25 +487,18 @@ class __internalClientServerInteraction {
         console.error(`Error parsing result from instance: (txt) DELETE ${endpoint}`, err);
       });
   }
+}
 
-  // returns the URL of the current instance
-  getInstanceUrl(): string {
-    return localStorage.getItem("instance_url") || "";
-  }
+class __internalClientServerInteraction extends ClientServerInteraction {
+  userDB: UserDatabase;
+  path: BrowserPath;
+  private user!: CSIYourDashUser;
 
-  // sets the URL of the current instance
-  setInstanceUrl(url: string) {
-    let newInstanceUrl = url;
+  constructor() {
+    super("");
 
-    if (newInstanceUrl.endsWith("/")) {
-      newInstanceUrl = newInstanceUrl.slice(0, -1);
-    }
-
-    if (!new RegExp(":\\d{1,5}$").test(newInstanceUrl)) {
-      newInstanceUrl = newInstanceUrl + ":3563";
-    }
-
-    localStorage.setItem("instance_url", newInstanceUrl || "ERROR");
+    this.userDB = new UserDatabase();
+    this.path = new BrowserPath();
 
     return this;
   }
@@ -502,38 +544,6 @@ class __internalClientServerInteraction {
     return JSON.parse(savedLogins);
   }
 
-  // get the username of the currently logged-in user
-  getUsername(): string {
-    return localStorage.getItem("current_user_username") || "";
-  }
-
-  setUsername(username: string) {
-    localStorage.setItem("current_user_username", username);
-
-    return this;
-  }
-
-  getSessionId(): string {
-    return sessionStorage.getItem("session_id") || "0";
-  }
-
-  setSessionId(sessionId: string) {
-    sessionStorage.setItem("session_id", sessionId);
-
-    return this;
-  }
-
-  // get the login session token of the currently logged-in user
-  getUserToken(): string {
-    return sessionStorage.getItem("session_token") || "";
-  }
-
-  setUserToken(token: string) {
-    sessionStorage.setItem("session_token", token);
-
-    return this;
-  }
-
   // get the user database for the currently logged-in user
   async getUserDB(): Promise<UserDatabase> {
     return new Promise((resolve) => {
@@ -550,7 +560,7 @@ class __internalClientServerInteraction {
   setUserDB(database: KeyValueDatabase): Promise<KeyValueDatabase> {
     return new Promise<KeyValueDatabase>((resolve, reject) => {
       const previousKeys = this.userDB.keys;
-      this.postJson(
+      this.syncPostJson(
         "/core/user_db",
         database.keys,
         () => {
@@ -601,13 +611,53 @@ class __internalClientServerInteraction {
   openWebsocketConnection(path: string) {
     return new __internalClientServerWebsocketConnection(path);
   }
+
+  getCurrentModuleId(applicationMeta: {
+    id: string;
+    displayName: string;
+    category: string;
+    authors: { name: string; url: string; bio: string; avatarUrl: string }[];
+    maintainers: { name: string; url: string; bio: string; avatarUrl: string }[];
+    description: string;
+    license: string;
+    modules: {
+      backend: {
+        id: string;
+        main: string;
+        description: string;
+        dependencies: { moduleType: "backend" | "frontend" | "officialFrontend"; id: string }[];
+      }[];
+      frontend: {
+        id: string;
+        displayName: string;
+        iconPath: string;
+        url: string;
+        devUrl: string;
+        description: string;
+        dependencies: { moduleType: "backend" | "frontend" | "officialFrontend"; id: string }[];
+        main: string;
+      }[];
+      officialFrontend: {
+        id: string;
+        main: string;
+        displayName: string;
+        iconPath: string;
+        description: string;
+        dependencies: { moduleType: "backend" | "frontend" | "officialFrontend"; id: string }[];
+      }[];
+    };
+    shouldInstanceRestartOnInstall: boolean;
+    __internal__generatedFor: "frontend" | "officialFrontend";
+  }) {
+    return (applicationMeta.modules[applicationMeta.__internal__generatedFor][0].id as string) || "unknown-module-id";
+  }
 }
 
-const csi = new __internalClientServerInteraction();
-export default csi;
+const coreCSI = new __internalClientServerInteraction();
+export default coreCSI;
 
 // @ts-ignore
-window.csi = csi;
+window.csi = coreCSI;
 
 // @ts-ignore
-csi.user = new CSIYourDashUser();
+coreCSI.user = new CSIYourDashUser();

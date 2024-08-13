@@ -8,7 +8,7 @@ import React from "react";
 import { IWeatherDataForLocation } from "../../../shared/weatherDataForLocation";
 import WeatherApplicationLocationPage from "./weatherForLocationView";
 import { useParams } from "react-router";
-import csi from "@yourdash/csi/csi";
+import coreCSI from "@yourdash/csi/coreCSI";
 
 const WeatherApplicationLocationById: React.FC = () => {
   const { id } = useParams();
@@ -16,7 +16,7 @@ const WeatherApplicationLocationById: React.FC = () => {
   const [locationData, setLocationData] = React.useState<null | IWeatherDataForLocation>(null);
 
   React.useEffect(() => {
-    csi.syncGetJson(`/app/weather/location/${id}`, (data) => {
+    coreCSI.syncGetJson(`/app/weather/location/${id}`, (data) => {
       setLocationData(data);
     });
   }, [id]);

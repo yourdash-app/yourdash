@@ -7,7 +7,7 @@ import Heading from "@yourdash/chiplet/components/heading/Heading";
 import Spinner from "@yourdash/chiplet/components/spinner/Spinner";
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import csi from "@yourdash/csi/csi";
+import coreCSI from "@yourdash/csi/coreCSI";
 import { type IStoreCategory } from "@yourdash/shared/apps/store/storeCategory";
 import StoreApplication from "../../component/storeApplication/StoreApplication";
 import StoreHeader from "../../component/storeHeader/StoreHeader";
@@ -20,7 +20,7 @@ const CategoryView: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    csi.syncGetJson(
+    coreCSI.syncGetJson(
       `/app/store/category/${categoryId}`,
       (data) => {
         setCategoryData(data);

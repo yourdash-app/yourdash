@@ -6,7 +6,7 @@
 import useYourDashLib from "@yourdash/shared/web/helpers/ydsh";
 import Button from "@yourdash/chiplet/components/button/Button";
 import React from "react";
-import csi from "@yourdash/csi/csi";
+import coreCSI from "@yourdash/csi/coreCSI";
 
 const SettingsStoreSection: React.FC = () => {
   const ydsh = useYourDashLib();
@@ -15,7 +15,7 @@ const SettingsStoreSection: React.FC = () => {
     <>
       <Button
         onClick={() => {
-          csi.syncGetJson("/app/settings/developer/install-all-applications", () => {
+          coreCSI.syncGetJson("/app/settings/developer/install-all-applications", () => {
             // @ts-ignore
             window.__yourdashCorePanelReload();
             ydsh.toast.success("Devtools", "Installed all applications");

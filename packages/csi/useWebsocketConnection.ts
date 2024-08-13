@@ -4,7 +4,7 @@
  */
 
 import { useState, useEffect } from "react";
-import csi from "./csi";
+import coreCSI from "./coreCSI";
 import { io, Socket } from "socket.io-client";
 
 const useWebsocketConnection = (path: string) => {
@@ -12,11 +12,11 @@ const useWebsocketConnection = (path: string) => {
 
   useEffect(() => {
     setConnection(
-      io(`${csi.getInstanceUrl().replace("https://", "wss://").replace("http://", "ws://")}`, {
+      io(`${coreCSI.getInstanceUrl().replace("https://", "wss://").replace("http://", "ws://")}`, {
         path: `${path}/websocket-manager/websocket`,
         auth: {
-          token: csi.getUserToken(),
-          username: csi.getUsername(),
+          token: coreCSI.getUserSessionToken(),
+          username: coreCSI.getUsername(),
         },
       }),
     );

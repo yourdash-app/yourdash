@@ -5,7 +5,7 @@
 
 import { USER_ACTIVE_STATUS } from "@yourdash/shared/core/userActiveStatus";
 import { USER_AVATAR_SIZE } from "@yourdash/shared/core/userAvatarSize";
-import csi from "../csi";
+import coreCSI from "../coreCSI";
 
 export default class CSIYourDashUser {
   cached!: {
@@ -17,7 +17,7 @@ export default class CSIYourDashUser {
   username: string;
 
   constructor() {
-    this.username = csi.getUsername();
+    this.username = coreCSI.getUsername();
 
     this.clearCachedResults();
 
@@ -36,7 +36,7 @@ export default class CSIYourDashUser {
     if (this.cached.fullName) return this.cached.fullName;
 
     return new Promise((resolve, reject) => {
-      csi.syncGetJson(
+      coreCSI.syncGetJson(
         `/core/user/current/fullname`,
         (data) => {
           console.log(data);
@@ -57,10 +57,10 @@ export default class CSIYourDashUser {
     }
 
     return new Promise((resolve, reject) => {
-      csi.getText(
+      coreCSI.getText(
         `/core/user/current/avatar/${avatarSize}`,
         (data) => {
-          this.cached.avatar[avatarSize] = `${csi.getInstanceUrl()}${data}`;
+          this.cached.avatar[avatarSize] = `${coreCSI.getInstanceUrl()}${data}`;
 
           return resolve(this.cached.avatar[avatarSize] || "");
         },
@@ -73,7 +73,7 @@ export default class CSIYourDashUser {
 
   async getActiveStatus(): Promise<USER_ACTIVE_STATUS> {
     return new Promise((resolve) => {
-      csi.syncGetJson(`/core/user/${this.username}/active_status`, (data) => {
+      coreCSI.syncGetJson(`/core/user/${this.username}/active_status`, (data) => {
         return resolve(data?.activeStatus || USER_ACTIVE_STATUS.OFFLINE);
       });
     });

@@ -3,14 +3,17 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import csi from "@yourdash/csi/csi";
+import coreCSI from "@yourdash/csi/coreCSI";
 import Card from "@yourdash/chiplet/components/card/Card";
 import Heading from "@yourdash/chiplet/components/heading/Heading";
-import React from "react";
+import useCurrentModuleId from "@yourdash/shared/core/useCurrentModuleId";
+import * as React from "react";
 import { useNavigate } from "react-router-dom";
-import { ISubPhotoAlbum } from "../../../shared/photoAlbum.js";
+import { ISubPhotoAlbum } from "../../../../shared/photoAlbum";
+import applicationMeta from "../../../meta.yourdash";
 
 const AlbumGrid: React.FC<{ albums: ISubPhotoAlbum[] }> = ({ albums }) => {
+  const moduleId = useCurrentModuleId(applicationMeta);
   const navigate = useNavigate();
 
   return (
@@ -19,14 +22,14 @@ const AlbumGrid: React.FC<{ albums: ISubPhotoAlbum[] }> = ({ albums }) => {
         return (
           <Card
             key={album.path}
-            onClick={() => navigate("/app/a/uk-ewsgit-photos/album/" + album.path)}
+            onClick={() => navigate(`/app/a/${moduleId}/album/` + album.path)}
             className={"flex flex-grow items-center text-center justify-center flex-col gap-2"}
           >
             {album.coverPhoto && (
               <img
                 loading={"lazy"}
                 className={"max-w-[256px] aspect-square w-full rounded-xl"}
-                src={csi.getInstanceUrl() + album.coverPhoto}
+                src={coreCSI.getInstanceUrl() + album.coverPhoto}
                 alt={"Cover photo"}
               />
             )}

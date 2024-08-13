@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import csi from "@yourdash/csi/csi.js";
+import coreCSI from "@yourdash/csi/coreCSI";
 import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary.js";
 import TextInput from "@yourdash/uikit/components/textInput/textInput.js";
 import useResource from "@yourdash/csi/useResource";
@@ -16,7 +16,7 @@ import styles from "./index.module.scss";
 
 const SearchIndexPage: FC = () => {
   const [query, setQuery] = React.useState<string>("");
-  const searchResults = useResource(() => csi.getJson<EndpointMediaSearch>(`/app/photos/media/search/`), [query]);
+  const searchResults = useResource(() => coreCSI.getJson<EndpointMediaSearch>(`/app/photos/media/search/`), [query]);
 
   return (
     <div className={styles.page}>

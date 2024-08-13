@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import csi from "@yourdash/csi/csi";
+import coreCSI from "@yourdash/csi/coreCSI";
 import { chunk } from "@yourdash/shared/web/helpers/array";
 import Spinner from "@yourdash/chiplet/components/spinner/Spinner";
 import React, { useEffect, useState } from "react";
@@ -18,9 +18,7 @@ let currentGridItems: IGridItem[] = [];
 
 const PhotoGrid: React.FC<{ gridItems: IPhotoAlbum["items"] }> = ({ gridItems }) => {
   const ref = React.useRef<HTMLDivElement>(null);
-  const [rows, setRows] = useState<
-    { items: (IGridItem & { displayWidth: number; displayHeight: number })[]; height: number }[]
-  >([]);
+  const [rows, setRows] = useState<{ items: (IGridItem & { displayWidth: number; displayHeight: number })[]; height: number }[]>([]);
   const [notLoaded, setNotLoaded] = useState(true);
 
   useEffect(() => {
@@ -44,7 +42,7 @@ const PhotoGrid: React.FC<{ gridItems: IPhotoAlbum["items"] }> = ({ gridItems })
     Promise.all(
       chunk(gridItems.photos || [], 16).map((gridItem) => {
         return new Promise((resolve, reject) => {
-          csi.syncGetJson(
+          coreCSI.syncGetJson(
             `/app/photos/grid-photos/16/${gridItem.join(";.;")}`,
             (resPhotos: IMedia[]) => {
               if (resPhotos) {
@@ -64,7 +62,7 @@ const PhotoGrid: React.FC<{ gridItems: IPhotoAlbum["items"] }> = ({ gridItems })
       Promise.all(
         chunk(gridItems.videos || [], 16).map((gridItem) => {
           return new Promise((resolve, reject) => {
-            csi.syncGetJson(
+            coreCSI.syncGetJson(
               `/app/photos/grid-videos/16/${gridItem.join(";.;")}`,
               (resVideos: IMedia[]) => {
                 if (resVideos) {

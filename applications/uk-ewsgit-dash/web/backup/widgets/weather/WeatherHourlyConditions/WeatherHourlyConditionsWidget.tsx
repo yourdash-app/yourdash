@@ -8,7 +8,7 @@ import Card from "@yourdash/chiplet/components/card/Card";
 import Row from "@yourdash/chiplet/components/row/Row";
 import Spinner from "@yourdash/chiplet/components/spinner/Spinner";
 import React, { useEffect, useState } from "react";
-import csi from "@yourdash/csi/csi";
+import coreCSI from "@yourdash/csi/coreCSI";
 import generateWeatherDescriptionFromData from "@yourdash/applications/weather/web/helpers/generateWeatherDescriptionFromData";
 import getWeatherIconFromState from "@yourdash/applications/weather/web/helpers/getWeatherIconFromState";
 import { IWeatherDataForLocation } from "@yourdash/applications/weather/shared/weatherDataForLocation";
@@ -21,7 +21,7 @@ const WeatherHourlyConditionsWidget: React.FC = () => {
 
   useEffect(() => {
     // fetch the user's defined location but default to London
-    csi.syncGetJson(`/app/weather/location/${csi.userDB.get("app/dash:widget:weather:location") || "2643743"}`, (res) => {
+    coreCSI.syncGetJson(`/app/weather/location/${coreCSI.userDB.get("app/dash:widget:weather:location") || "2643743"}`, (res) => {
       setWeatherData(res);
       console.log(res);
     });

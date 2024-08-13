@@ -4,7 +4,7 @@
  */
 
 import Separator from "@yourdash/chiplet/components/separator/Separator.js";
-import csi from "@yourdash/csi/csi";
+import coreCSI from "@yourdash/csi/coreCSI";
 import Heading from "@yourdash/chiplet/components/heading/Heading";
 import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
 import IconButton from "@yourdash/chiplet/components/iconButton/IconButton";
@@ -21,7 +21,7 @@ const HomePage: React.FC = () => {
   const [photoAlbum, setPhotoAlbum] = React.useState<IPhotoAlbum | null>(null);
 
   useEffect(() => {
-    csi.syncGetJson(
+    coreCSI.syncGetJson(
       `/app/photos/album/${albumPath}`,
       (album: IPhotoAlbum) => {
         setPhotoAlbum({
@@ -57,9 +57,7 @@ const HomePage: React.FC = () => {
         </Heading>
         <div className={"ml-auto gap-2 flex"}>
           {photoAlbum.items.photos.length > 0 && <Heading level={4}>Photos: {photoAlbum.items.photos.length}</Heading>}
-          {photoAlbum.items.subAlbums.length > 0 && (
-            <Heading level={4}>Sub Albums: {photoAlbum.items.subAlbums.length}</Heading>
-          )}
+          {photoAlbum.items.subAlbums.length > 0 && <Heading level={4}>Sub Albums: {photoAlbum.items.subAlbums.length}</Heading>}
           {photoAlbum.items.videos.length > 0 && <Heading level={4}>Videos: {photoAlbum.items.videos.length}</Heading>}
         </div>
       </div>

@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import csi from "@yourdash/csi/csi";
+import coreCSI from "@yourdash/csi/coreCSI";
 import clippy from "@yourdash/shared/web/helpers/clippy";
 import Card from "@yourdash/uikit/components/card/card";
 import Image from "@yourdash/uikit/components/image/image";
@@ -11,10 +11,12 @@ import Text from "@yourdash/uikit/components/text/text";
 import InfiniteScroll from "@yourdash/uikit/views/infiniteScroll/infiniteScroll";
 import React, { useEffect, useState } from "react";
 import { EndpointAlbumSubPath } from "../../../shared/types/endpoints/album/sub/path";
+import applicationMeta, { acsi } from "../../meta.yourdash";
 import styles from "./SubAlbums.module.scss";
 import { useNavigate } from "react-router";
 
 const SubAlbums: React.FC<{ path: string; scrollerClassName?: string }> = ({ path, scrollerClassName }) => {
+  const moduleId = coreCSI.getCurrentModuleId(applicationMeta);
   const navigate = useNavigate();
   const [albums, setAlbums] = useState<EndpointAlbumSubPath>([]);
   const [hasMorePages, setHasMorePages] = useState(true);
@@ -31,7 +33,7 @@ const SubAlbums: React.FC<{ path: string; scrollerClassName?: string }> = ({ pat
       hasMorePages={hasMorePages}
       resetState={path}
       fetchNextPage={async (nextPageNumber) => {
-        const data = await csi.getJson<EndpointAlbumSubPath>(`/app/uk-ewsgit-photos/album/sub/${nextPageNumber}/@` + path);
+        const data = await acsi.getJson<EndpointAlbumSubPath>(`/album/sub/${nextPageNumber}/@` + path);
 
         if (data?.length === 0) {
           setHasMorePages(false);
@@ -47,7 +49,7 @@ const SubAlbums: React.FC<{ path: string; scrollerClassName?: string }> = ({ pat
             containerClassName={styles.album}
             key={album.path}
             onClick={() => {
-              navigate("/app/a/uk-ewsgit-photos-frontend/album/?p=" + csi.path.toUnix(album.path));
+              navigate(`/app/a/${moduleId}/album/?p=` + coreCSI.path.toUnix(album.path));
             }}
           >
             <Image

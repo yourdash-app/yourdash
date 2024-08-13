@@ -4,7 +4,7 @@
  */
 
 import Dialog from "@yourdash/chiplet/components/dialog/Dialog";
-import csi from "@yourdash/csi/csi.js";
+import coreCSI from "@yourdash/csi/coreCSI";
 import LoginIndexPage from "./index.js";
 import isValidInstance from "./lib/isValidInstance.js";
 import { FC, useState } from "react";
@@ -14,7 +14,7 @@ const LoginIndexPagePreload: FC = () => {
   const navigate = useNavigate();
   const [validInstance, setValidInstance] = useState<boolean | undefined>(undefined);
 
-  isValidInstance(csi.getInstanceUrl()).then((isValid) => {
+  isValidInstance(coreCSI.getInstanceUrl()).then((isValid) => {
     setValidInstance(isValid);
 
     if (!isValid) {

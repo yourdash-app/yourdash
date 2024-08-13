@@ -73,23 +73,23 @@ const SettingsLayout: React.FC = () => {
         <Separator direction={"column"} />
         <Button
           text={"Home"}
-          onClick={() => navigate("/app/a/uk-ewsgit-settings/")}
+          onClick={() => navigate("${modulePath}/")}
         />
         <Button
           text={"Personalisation"}
-          onClick={() => navigate("/app/a/uk-ewsgit-settings/personalization")}
+          onClick={() => navigate("${modulePath}/personalization")}
         />
         <Button
           text={"Login Sessions"}
-          onClick={() => navigate("/app/a/uk-ewsgit-settings/session")}
+          onClick={() => navigate("${modulePath}/session")}
         />
         <Button
           text={"Administrator Tools"}
-          onClick={() => navigate("/app/a/uk-ewsgit-settings/admin")}
+          onClick={() => navigate("${modulePath}/admin")}
         />
         <Button
           text={"Developer Tools"}
-          onClick={() => navigate("/app/a/uk-ewsgit-settings/developer")}
+          onClick={() => navigate("${modulePath}/developer")}
         />
         <Separator direction={"column"} />
         <Heading
@@ -98,11 +98,11 @@ const SettingsLayout: React.FC = () => {
         />
         <Button
           text={"Test Category"}
-          onClick={() => navigate("/app/a/uk-ewsgit-settings/cat/test")}
+          onClick={() => navigate("${modulePath}/cat/test")}
         />
         <Button
           text={"Test Solo Setting"}
-          onClick={() => navigate("/app/a/uk-ewsgit-settings/cat/test/test-setting")}
+          onClick={() => navigate("${modulePath}/cat/test/test-setting")}
         />
       </Sidebar>
       <Outlet />

@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import csi from "@yourdash/csi/csi";
+import coreCSI from "@yourdash/csi/coreCSI";
 import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
 import IconButton from "@yourdash/chiplet/components/iconButton/IconButton";
 import NavBar from "@yourdash/chiplet/components/navBar/NavBar";
@@ -19,7 +19,7 @@ const PhotoPage: React.FC<{ isPhoto: boolean }> = ({ isPhoto }) => {
 
   React.useEffect(() => {
     if (isPhoto) {
-      csi.syncGetJson(
+      coreCSI.syncGetJson(
         "/app/photos/photo/" + mediaId,
         (media: IMedia) => {
           setMediaData(media);
@@ -29,7 +29,7 @@ const PhotoPage: React.FC<{ isPhoto: boolean }> = ({ isPhoto }) => {
         },
       );
     } else {
-      csi.syncGetJson(
+      coreCSI.syncGetJson(
         "/app/photos/video/" + mediaId,
         (media: IMedia) => {
           setMediaData(media);
@@ -58,9 +58,9 @@ const PhotoPage: React.FC<{ isPhoto: boolean }> = ({ isPhoto }) => {
               icon={UKIcon.Download}
               onClick={() => {
                 if (isPhoto) {
-                  window.open(csi.getInstanceUrl() + "/app/photos/download-photo/" + mediaId, "_blank");
+                  window.open(coreCSI.getInstanceUrl() + "/app/photos/download-photo/" + mediaId, "_blank");
                 } else {
-                  window.open(csi.getInstanceUrl() + "/app/photos/download-video/" + mediaId, "_blank");
+                  window.open(coreCSI.getInstanceUrl() + "/app/photos/download-video/" + mediaId, "_blank");
                 }
               }}
             />
@@ -71,13 +71,13 @@ const PhotoPage: React.FC<{ isPhoto: boolean }> = ({ isPhoto }) => {
         {isPhoto ? (
           <img
             className={styles.photo}
-            src={csi.getInstanceUrl() + mediaData.itemUrl}
+            src={coreCSI.getInstanceUrl() + mediaData.itemUrl}
             alt={""}
           />
         ) : (
           <video
             className={styles.photo}
-            src={csi.getInstanceUrl() + mediaData.itemUrl}
+            src={coreCSI.getInstanceUrl() + mediaData.itemUrl}
             autoPlay={true}
             controls={true}
             loop={true}

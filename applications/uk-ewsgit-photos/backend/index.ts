@@ -29,7 +29,7 @@ export default class PhotosBackend extends YourDashBackendModule {
     this.PAGE_SIZE = 24;
 
     this.api.core.fs.createDirectory(this.THUMBNAIL_CACHE_LOCATION).then(() => {
-      this.api.core.log.success("Successfully created the thumbnail cache directory");
+      this.api.log.success("Successfully created the thumbnail cache directory");
     });
 
     this.api.core.users.getAllUsers().then((users) => {

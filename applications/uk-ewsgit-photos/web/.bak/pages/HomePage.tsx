@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import csi from "@yourdash/csi/csi";
+import coreCSI from "@yourdash/csi/coreCSI";
 import Heading from "@yourdash/chiplet/components/heading/Heading";
 import Separator from "@yourdash/chiplet/components/separator/Separator";
 import React, { useEffect, useState } from "react";
@@ -15,7 +15,7 @@ const HomePage: React.FC = () => {
   useEffect(() => {
     setPhotoAlbums([]);
 
-    csi.syncGetJson(
+    coreCSI.syncGetJson(
       `/app/photos/albums`,
       (albums: string[]) => {
         setPhotoAlbums(albums);

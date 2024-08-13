@@ -3,10 +3,8 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import StoreBackendModule from "@yourdash/applications/store/backend/index.js";
 import core from "@yourdash/backend/src/core/core.js";
 import YourDashPanel from "@yourdash/backend/src/core/helpers/panel.js";
-import BackendModule, { YourDashModuleArguments } from "@yourdash/backend/src/core/moduleManager/backendModule.js";
 import { readdirSync, readFileSync } from "fs";
 import path from "path";
 import SettingsCategory from "../shared/types/category.js";
@@ -14,6 +12,7 @@ import EndpointSettingsCategory from "../shared/types/endpoints/setting/category
 import EndpointSettingCategorySetting from "../shared/types/endpoints/setting/category/setting.js";
 import ISetting from "../shared/types/setting.js";
 import SETTING_TYPE from "../shared/types/settingType.js";
+import { YourDashBackendModule, YourDashModuleArguments } from "@yourdash/backend/src/core/coreApplicationManager.js";
 
 /*
  *   Future settings plans
@@ -24,7 +23,7 @@ import SETTING_TYPE from "../shared/types/settingType.js";
  *   - the server will then return all settings in that category
  */
 
-export default class SettingsModule extends BackendModule {
+export default class SettingsModule extends YourDashBackendModule {
   installableApplications: string[] = [];
   settingsCategories: { [category: string]: SettingsCategory } = {};
 
@@ -50,7 +49,7 @@ export default class SettingsModule extends BackendModule {
     super.loadEndpoints();
 
     // get installed applications
-    const installedApplications = this.api.core.moduleManager.getModule<StoreBackendModule>("store")?.getInstalledApplications();
+    const installedApplications = core.applicationManager.getInstalledApplications();
 
     if (installedApplications === undefined) {
       return;
@@ -162,7 +161,7 @@ export default class SettingsModule extends BackendModule {
     this.api.core.log.info("app/settings", "Loaded settings from all applications.");
 
     // legacy endpoints
-    this.api.request.post("/app/settings/core/panel/position", async (req, res) => {
+    core.request.post("/app/settings/core/panel/position", async (req, res) => {
       const { username } = req.headers as {
         username: string;
       };
@@ -177,7 +176,7 @@ export default class SettingsModule extends BackendModule {
       });
     });
 
-    this.api.request.post("/app/settings/core/panel/quick-shortcuts", async (req, res) => {
+    core.request.post("/app/settings/core/panel/quick-shortcuts", async (req, res) => {
       const { username } = req.headers as {
         username: string;
       };
@@ -190,7 +189,7 @@ export default class SettingsModule extends BackendModule {
       return res.json({ success: true });
     });
 
-    this.api.request.get("/app/settings/developer/install-all-applications", async (req, res) => {
+    core.request.get("/app/settings/developer/install-all-applications", async (req, res) => {
       this.installableApplications.map(async (app) => {
         if (core.globalDb.get<string[]>("core:installedApplications")?.includes(app)) return;
 
@@ -202,9 +201,9 @@ export default class SettingsModule extends BackendModule {
       return res.json({ success: true });
     });
 
-    this.api.request.setNamespace("app/settings");
+    core.request.setNamespace("app/settings");
 
-    this.api.request.get("/cat/:categoryid", async (req, res) => {
+    core.request.get("/cat/:categoryid", async (req, res) => {
       const { categoryid } = req.params;
 
       return res.json(
@@ -219,11 +218,11 @@ export default class SettingsModule extends BackendModule {
       );
     });
 
-    this.api.request.get("/setting/:category/:setting", async (req, res) => {
+    core.request.get("/setting/:category/:setting", async (req, res) => {
       const { category, setting } = req.params;
 
       const settingType: SETTING_TYPE = SETTING_TYPE.BOOLEAN;
-      const settingValue = (await this.api.getUser(req).getDatabase()).get(`settings:${category}:${setting}`) || undefined;
+      const settingValue = (await core.users.get(req.username).getDatabase()).get(`settings:${category}:${setting}`) || undefined;
 
       return res.json(<EndpointSettingCategorySetting<SETTING_TYPE>>{
         type: settingType,

@@ -79,7 +79,7 @@ export default class CorePanel {
       return res.json(
         await Promise.all(
           (await panel.getQuickShortcuts()).map(async (shortcut) => {
-            const module = this.core.applicationManager.loadedModules[shortcut.moduleType].find((mod) => mod.config.id === shortcut.id);
+            const module = this.core.applicationManager.loadedModules[shortcut.moduleType]?.find((mod) => mod.config.id === shortcut.id);
 
             if (!module) {
               return;

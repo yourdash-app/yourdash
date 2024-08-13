@@ -9,7 +9,7 @@ import Image from "@yourdash/uikit/components/image/image";
 import IncrementLevel from "@yourdash/uikit/core/incrementLevel";
 import { useLevelClass } from "@yourdash/uikit/core/level";
 import { useNavigate } from "react-router-dom";
-import csi from "@yourdash/csi/csi";
+import coreCSI from "@yourdash/csi/coreCSI";
 import styles from "./Widget.module.scss";
 import React from "react";
 
@@ -24,7 +24,7 @@ const QuickShortcuts: React.FC<{ side: "top" | "right" | "bottom" | "left" }> = 
         icon: string;
         url: string;
       }[]
-    >(() => csi.getJson("/core/panel/quick-shortcuts"), [num]) || [];
+    >(() => coreCSI.getJson("/core/panel/quick-shortcuts"), [num]) || [];
 
   // @ts-ignore
   window.__yourdashCorePanelQuickShortcutsReload = () => {
@@ -34,7 +34,7 @@ const QuickShortcuts: React.FC<{ side: "top" | "right" | "bottom" | "left" }> = 
   return (
     <>
       {modules.map((application) => {
-        console.log(application);
+        if (!application) return <>Invalid Application</>;
 
         return (
           <IncrementLevel key={application.name}>

@@ -15,7 +15,7 @@ export default class DashModule extends YourDashBackendModule {
   public loadEndpoints() {
     super.loadEndpoints();
 
-    core.request.setNamespace("app/uk-ewsgit-dash");
+    core.request.setNamespace(`app/${this.api.moduleId}`);
 
     core.request.get("/user-full-name", async (req, res) => {
       res.json(

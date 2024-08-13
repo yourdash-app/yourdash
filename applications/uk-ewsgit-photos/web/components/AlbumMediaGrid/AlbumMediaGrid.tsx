@@ -3,11 +3,11 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import csi from "@yourdash/csi/csi";
 import clippy from "@yourdash/shared/web/helpers/clippy";
 import InfiniteScroll from "@yourdash/uikit/views/infiniteScroll/infiniteScroll";
 import React, { useEffect, useState } from "react";
 import EndpointAlbumMediaPath from "../../../shared/types/endpoints/album/media/path";
+import { acsi } from "../../meta.yourdash";
 import AlbumMedia from "../AlbumMedia/AlbumMedia";
 import styles from "./AlbumMediaGrid.module.scss";
 import { useNavigate } from "react-router";
@@ -27,7 +27,7 @@ const AlbumMediaGrid: React.FC<{ path: string; scrollerClassName?: string }> = (
       hasMorePages={hasMorePages}
       resetState={path}
       fetchNextPage={async (nextPageNumber) => {
-        const data = await csi.getJson<EndpointAlbumMediaPath>(`/app/photos/album/media/${nextPageNumber}/@` + path);
+        const data = await acsi.getJson<EndpointAlbumMediaPath>(`/album/media/${nextPageNumber}/@` + path);
         setAlbums((previousAlbums) => [...previousAlbums, ...data]);
       }}
       className={clippy(styles.component, scrollerClassName)}

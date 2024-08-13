@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import csi from "@yourdash/csi/csi";
+import coreCSI from "@yourdash/csi/coreCSI";
 import useResource from "@yourdash/csi/useResource";
 import ButtonWithIcon from "@yourdash/uikit/components/buttonWithIcon/buttonWithIcon";
 import Flex from "@yourdash/uikit/components/flex/flex";
@@ -15,16 +15,16 @@ import { IWidgetGrid } from "../shared/types/widgetGrid";
 import loadable from "@loadable/component";
 
 const DashApplication: React.FC = () => {
-  const username = useResource(() => csi.getJson<{ first: string; last: string }>("/app/uk-ewsgit-dash/user-full-name")) || {
+  const username = useResource(() => coreCSI.getJson<{ first: string; last: string }>("/app/uk-ewsgit-dash/user-full-name")) || {
     first: "Unknown",
     last: "User",
   };
-  const { pageCount } = useResource<{ pageCount: number }>(() => csi.getJson("/app/uk-ewsgit-dash/widget/pages")) || {
+  const { pageCount } = useResource<{ pageCount: number }>(() => coreCSI.getJson("/app/uk-ewsgit-dash/widget/pages")) || {
     pageCount: 0,
   };
   const [currentWidgetPage, setCurrentWidgetPage] = useState<number>(0);
   const widgetPage = useResource<IWidgetGrid>(
-    () => csi.getJson(`/app/uk-ewsgit-dash/widgets/${currentWidgetPage}`),
+    () => coreCSI.getJson(`/app/uk-ewsgit-dash/widgets/${currentWidgetPage}`),
     [currentWidgetPage],
   ) || {
     widgets: [],

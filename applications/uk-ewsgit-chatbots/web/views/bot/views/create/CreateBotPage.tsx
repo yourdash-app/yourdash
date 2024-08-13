@@ -13,7 +13,7 @@ import MajorButton from "@yourdash/chiplet/components/majorButton/MajorButton";
 import TextBox from "@yourdash/chiplet/components/textBox/TextBox";
 import TextInput from "@yourdash/chiplet/components/textInput/TextInput";
 import React, { useEffect, useState } from "react";
-import csi from "@yourdash/csi/csi";
+import coreCSI from "@yourdash/csi/coreCSI";
 import ChatbotProfilePreview from "../../../../components/ChatbotProfilePreview/ChatbotProfilePreview";
 import styles from "./CreateBotPage.module.scss";
 import { useNavigate } from "react-router-dom";
@@ -32,7 +32,7 @@ const CreateBotPage: React.FC = () => {
   const [avatarUrl, setAvatarUrl] = useState<string>(UKIcon.ServerError);
 
   useEffect(() => {
-    csi.getTeams().then(async (t) => {
+    coreCSI.getTeams().then(async (t) => {
       setTeams(
         await Promise.all(
           t.map(async (x) => {
@@ -204,7 +204,7 @@ const CreateBotPage: React.FC = () => {
         </DropdownButton>
         <MajorButton
           onClick={() => {
-            csi.postJson(
+            coreCSI.postJson(
               "/app/chatbots/team/:teamId/create-bot/:botId",
               {
                 username,
@@ -213,7 +213,7 @@ const CreateBotPage: React.FC = () => {
                 avatarUrl,
               },
               () => {
-                navigate(`/app/a/uk-ewsgit-chatbots/team/${csi.getUsername()}/manage/${username}`);
+                navigate(`/app/a/uk-ewsgit-chatbots/team/${coreCSI.getUsername()}/manage/${username}`);
               },
               (error) => {
                 alert(error);

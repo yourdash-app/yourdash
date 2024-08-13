@@ -12,14 +12,12 @@ import Icon from "@yourdash/chiplet/components/icon/Icon";
 import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
 import TextBox from "@yourdash/chiplet/components/textBox/TextBox";
 import React, { useState, useEffect } from "react";
-import csi from "@yourdash/csi/csi";
+import coreCSI from "@yourdash/csi/coreCSI";
 
 function loadPossibleEndpoints(setEndpoints: (data: string[]) => void) {
-  csi.syncGetJson("/app/endpoints/endpoints", (data: any) => {
+  coreCSI.syncGetJson("/app/endpoints/endpoints", (data: any) => {
     // eslint-disable-line @typescript-eslint/no-explicit-any
-    const endpoints: string[] = data
-      .map((endpoint: any) => endpoint?.route?.path || null)
-      .filter((endpoint: any) => endpoint !== null); // eslint-disable-line @typescript-eslint/no-explicit-any
+    const endpoints: string[] = data.map((endpoint: any) => endpoint?.route?.path || null).filter((endpoint: any) => endpoint !== null); // eslint-disable-line @typescript-eslint/no-explicit-any
 
     setEndpoints([...new Set(endpoints)]);
   });
@@ -45,9 +43,7 @@ const EndpointsApplication: React.FC = () => {
     <main className={"grid grid-cols-2 p-2 gap-2"}>
       <Card
         showBorder={true}
-        className={
-          "w-full p-3 flex items-center justify-between sticky top-0 bg-container-bg text-container-fg col-span-2"
-        }
+        className={"w-full p-3 flex items-center justify-between sticky top-0 bg-container-bg text-container-fg col-span-2"}
       >
         <section className={"flex items-center justify-center h-full gap-2"}>
           <DropdownButton
@@ -113,7 +109,7 @@ const EndpointsApplication: React.FC = () => {
                 case "GET":
                   switch (requestType) {
                     case "Text":
-                      csi.getText(
+                      coreCSI.getText(
                         selectedEndpoint,
                         (data: any) => {
                           setResponse(data);
@@ -127,7 +123,7 @@ const EndpointsApplication: React.FC = () => {
                       );
                       break;
                     case "JSON":
-                      csi.syncGetJson(
+                      coreCSI.syncGetJson(
                         selectedEndpoint,
                         (data: any) => {
                           setResponse(data);
@@ -147,7 +143,7 @@ const EndpointsApplication: React.FC = () => {
                 case "POST":
                   switch (requestType) {
                     case "Text":
-                      csi.postText(
+                      coreCSI.postText(
                         selectedEndpoint,
                         JSON.parse(requestBody),
                         (data: any) => {
@@ -162,7 +158,7 @@ const EndpointsApplication: React.FC = () => {
                       );
                       break;
                     case "JSON":
-                      csi.postJson(
+                      coreCSI.postJson(
                         selectedEndpoint,
                         JSON.parse(requestBody),
                         (data: any) => {
@@ -183,7 +179,7 @@ const EndpointsApplication: React.FC = () => {
                 case "DELETE":
                   switch (requestType) {
                     case "Text":
-                      csi.deleteText(
+                      coreCSI.deleteText(
                         selectedEndpoint,
                         (data: any) => {
                           setResponse(data);
@@ -197,7 +193,7 @@ const EndpointsApplication: React.FC = () => {
                       );
                       break;
                     case "JSON":
-                      csi.deleteJson(
+                      coreCSI.deleteJson(
                         selectedEndpoint,
                         (data: any) => {
                           setResponse(data);
@@ -259,14 +255,10 @@ const EndpointsApplication: React.FC = () => {
           className={"overflow-x-auto w-auto"}
           showBorder
         >
-          <pre
-            className={"bg-container-secondary-bg text-container-fg p-4 rounded-container-secondary-rounding w-auto"}
-          >
+          <pre className={"bg-container-secondary-bg text-container-fg p-4 rounded-container-secondary-rounding w-auto"}>
             {requestType === "JSON" ? JSON.stringify(response, null, 2) : response.toString()}
           </pre>
-          {didError && (
-            <pre className={"bg-container-tertiary-bg text-red-400 p-4 rounded-container-rounding"}>{didError}</pre>
-          )}
+          {didError && <pre className={"bg-container-tertiary-bg text-red-400 p-4 rounded-container-rounding"}>{didError}</pre>}
         </Card>
       )}
     </main>

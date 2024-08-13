@@ -18,13 +18,13 @@ import ViewVideo from "./components/viewVideo/viewVideo.js";
 import styles from "./index.module.scss";
 import ViewImage from "./components/viewImage/viewImage.js";
 import { PHOTOS_MEDIA_TYPE } from "../../../shared/types/mediaType.js";
-import csi from "@yourdash/csi/csi.js";
+import coreCSI from "@yourdash/csi/coreCSI";
 
 const ViewPathPage: FC = () => {
   const [searchParams] = useSearchParams();
   const mediaPath = searchParams.get("p") || "";
   const navigate = useNavigate();
-  const media = useResource<EndpointMediaRaw>(() => csi.getJson(`/app/photos/media/raw/@/${mediaPath}`), [mediaPath]);
+  const media = useResource<EndpointMediaRaw>(() => coreCSI.getJson(`/app/photos/media/raw/@/${mediaPath}`), [mediaPath]);
 
   return (
     <div className={clippy(styles.page, media?.type === PHOTOS_MEDIA_TYPE.Video && styles.video)}>
@@ -41,7 +41,7 @@ const ViewPathPage: FC = () => {
           text={"Download"}
           icon={UKIcon.Download}
           onClick={() => {
-            window.open(`${csi.getInstanceUrl()}${media?.mediaUrl}`, "_blank");
+            window.open(`${coreCSI.getInstanceUrl()}${media?.mediaUrl}`, "_blank");
           }}
         />
       </div>

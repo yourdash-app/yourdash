@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import csi from "@yourdash/csi/csi.js";
+import coreCSI from "@yourdash/csi/coreCSI";
 import { LoginLayout } from "@yourdash/shared/core/login/loginLayout.js";
 import Spinner from "@yourdash/uikit/components/spinner/spinner.js";
 import useResource from "@yourdash/csi/useResource";
@@ -13,7 +13,7 @@ import { FC, Suspense } from "react";
 
 const LoginIndexPage: FC = () => {
   const instanceMetadata = useResource(() =>
-    csi.getJson<{ title: string; message?: string; loginLayout: LoginLayout }>("/login/instance/metadata"),
+    coreCSI.getJson<{ title: string; message?: string; loginLayout: LoginLayout }>("/login/instance/metadata"),
   );
 
   return (

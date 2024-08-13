@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import csi from "@yourdash/csi/csi";
+import coreCSI from "@yourdash/csi/coreCSI";
 import clippy from "@yourdash/shared/web/helpers/clippy";
 import Heading from "@yourdash/chiplet/components/heading/Heading";
 import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
@@ -20,7 +20,7 @@ const PhotoCategory: React.FC<{ path: string }> = ({ path }) => {
   const [photoAlbum, setPhotoAlbum] = React.useState<IPhotoAlbum | null>(null);
 
   useEffect(() => {
-    csi.syncGetJson(
+    coreCSI.syncGetJson(
       `/app/photos/album/${path}`,
       (album: IPhotoAlbum) => {
         setPhotoAlbum({

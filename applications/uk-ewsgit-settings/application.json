@@ -21,9 +21,30 @@
     }
   ],
   "modules": {
-    "backend": [],
+    "backend": [
+      {
+        "dependencies": [],
+        "description": "The backend for the Settings application",
+        "id": "uk-ewsgit-settings-backend",
+        "main": "./backend/index.ts"
+      }
+    ],
     "frontend": [],
-    "officialFrontend": []
+    "officialFrontend": [
+      {
+        "id": "uk-ewsgit-settings-frontend",
+        "main": "./web/index.tsx",
+        "displayName": "Settings",
+        "iconPath": "./icon.avif",
+        "description": "",
+        "dependencies": [
+          {
+            "moduleType": "backend",
+            "id": "uk-ewsgit-settings-backend"
+          }
+        ]
+      }
+    ]
   },
   "shouldInstanceRestartOnInstall": true
 }

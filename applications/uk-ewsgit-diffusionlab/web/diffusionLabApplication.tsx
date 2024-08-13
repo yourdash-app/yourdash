@@ -13,7 +13,7 @@ import MajorButton from "@yourdash/chiplet/components/majorButton/MajorButton";
 import ResizeContainer from "@yourdash/chiplet/components/resizeContainer/ResizeContainer";
 import TextBox from "@yourdash/chiplet/components/textBox/TextBox";
 import React, { useState, useEffect } from "react";
-import csi, { TJson } from "@yourdash/csi/csi";
+import coreCSI, { TJson } from "@yourdash/csi/coreCSI";
 import { IDiffusionLabImageGenerationData } from "@yourdash/shared/apps/diffusion_lab/image/generationData";
 import YourDashLogo from "@yourdash/web/public/assets/productLogos/yourdash.svg";
 
@@ -43,7 +43,7 @@ const DiffusionLabApplication: React.FC = () => {
   const [generationResult, setGenerationResult] = useState<string[][]>([]);
 
   useEffect(() => {
-    csi.syncGetJson("/app/diffusion_lab/models", (data: { models: string[] }) => {
+    coreCSI.syncGetJson("/app/diffusion_lab/models", (data: { models: string[] }) => {
       setGenerationData({ ...generationData, model: data.models[0] });
       setModels(data.models);
     });
@@ -94,7 +94,7 @@ const DiffusionLabApplication: React.FC = () => {
               onClick={() => {
                 setProgress(1);
 
-                csi.postJson("/app/diffusion_lab/generate", { ...(generationData as any as TJson) }, (data: any) => {
+                coreCSI.postJson("/app/diffusion_lab/generate", { ...(generationData as any as TJson) }, (data: any) => {
                   setGenerationResult(data);
                   setProgress(1);
                 });

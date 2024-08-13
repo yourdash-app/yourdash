@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import csi from "@yourdash/csi/csi";
+import coreCSI from "@yourdash/csi/coreCSI";
 import Heading from "@yourdash/uikit/components/heading/heading";
 import Spinner from "@yourdash/uikit/components/spinner/spinner";
 import SidebarToggleButton from "@yourdash/uikit/views/sidebar/SidebarToggleButton";
@@ -18,7 +18,7 @@ import StringSetting from "../../components/setting/StringSetting";
 const CategoryNamePage: React.FC = () => {
   const { categoryName } = useParams();
 
-  const categoryData = useResource(() => csi.getJson<EndpointSettingsCategory>(`/app/settings/cat/${categoryName}`), [categoryName]);
+  const categoryData = useResource(() => coreCSI.getJson<EndpointSettingsCategory>(`/app/settings/cat/${categoryName}`), [categoryName]);
 
   return (
     <div>

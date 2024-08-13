@@ -4,7 +4,7 @@
  */
 
 import type { IYourDashStoreApplication } from "@yourdash/shared/apps/store/storeApplication";
-import csi from "@yourdash/csi/csi";
+import coreCSI from "@yourdash/csi/coreCSI";
 
 export function requestApplication(
   applicationId: string,
@@ -12,7 +12,7 @@ export function requestApplication(
   setIsLoading: (data: boolean) => void,
   navigate: (data: string) => void,
 ) {
-  csi.syncGetJson(
+  coreCSI.syncGetJson(
     `/app/store/application/${applicationId}`,
     (data) => {
       setAppData(data);

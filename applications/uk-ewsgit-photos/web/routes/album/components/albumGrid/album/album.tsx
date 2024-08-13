@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import csi from "@yourdash/csi/csi.js";
+import coreCSI from "@yourdash/csi/coreCSI";
 import Card from "@yourdash/uikit/components/card/card.js";
 import Text from "@yourdash/uikit/components/text/text.js";
 import { FC } from "react";
@@ -19,10 +19,10 @@ const Album: FC<{ album: { path: string; displayName: string } }> = ({ album }) 
       containerClassName={styles.album}
       key={album.path}
       onClick={() => {
-        navigate("/app/a/uk-ewsgit-photos/album/?p=" + csi.path.toUnix(album.path));
+        navigate("/app/a/uk-ewsgit-photos/album/?p=" + coreCSI.path.toUnix(album.path));
       }}
     >
-      <Text text={path.basename(csi.path.toUnix(album.path))} />
+      <Text text={path.basename(coreCSI.path.toUnix(album.path))} />
     </Card>
   );
 };

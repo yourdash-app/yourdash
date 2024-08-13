@@ -38,11 +38,12 @@ export default class CoreCommands {
         this.core.shutdownInstance();
         return;
       }
+
       if (stringData === /* enter */ "\r") {
         this.onSubmit();
         return;
       }
-      if (stringData === /* backspace */ "\b") {
+      if (stringData === /* backspace */ "\b" || stringData === /* backspace */ "") {
         if (cursorPosition === 0) {
           this.stdout.clearLine(0);
           this.stdout.cursorTo(0);

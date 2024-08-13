@@ -8,7 +8,7 @@ import Heading from "@yourdash/chiplet/components/heading/Heading";
 import Spinner from "@yourdash/chiplet/components/spinner/Spinner";
 import { Outlet } from "react-router";
 import { useNavigate } from "react-router-dom";
-import csi from "@yourdash/csi/csi";
+import coreCSI from "@yourdash/csi/coreCSI";
 import clippy from "@yourdash/shared/web/helpers/clippy";
 import Button from "@yourdash/chiplet/components/button/Button";
 import PanelLayout from "./panel/PanelLayout";
@@ -27,7 +27,7 @@ const AppLayout: React.FC = () => {
       setDidTakeTooLong(true);
     }, 5_000 /* 5 secconds */);
 
-    csi.getUserDB().then(() => {
+    coreCSI.getUserDB().then(() => {
       setLoaded(true);
       clearTimeout(timer);
     });
@@ -43,7 +43,7 @@ const AppLayout: React.FC = () => {
         <link
           type={"text/css"}
           rel={"stylesheet"}
-          href={`${csi.getInstanceUrl()}/core/theme/${csi.getUsername()}`}
+          href={`${coreCSI.getInstanceUrl()}/core/theme/${coreCSI.getUsername()}`}
         />
         <div className={"w-full h-full flex items-center justify-center flex-col gap-4"}>
           {!didTakeTooLong && (
@@ -58,10 +58,7 @@ const AppLayout: React.FC = () => {
             </>
           )}
           <Card
-            className={clippy(
-              "text-center animate__animated animate__fadeInUp",
-              didTakeTooLong ? "" : "fixed bottom-4",
-            )}
+            className={clippy("text-center animate__animated animate__fadeInUp", didTakeTooLong ? "" : "fixed bottom-4")}
             showBorder
           >
             <div className={"pl-2 pr-2"}>

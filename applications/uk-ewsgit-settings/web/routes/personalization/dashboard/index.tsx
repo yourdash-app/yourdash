@@ -7,10 +7,10 @@ import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
 import * as React from "react";
 import BasePageLayout from "../../../components/BasePageLayout";
 import BooleanSettingComponent from "../../../components/BooleanSettingComponent";
-import csi from "@yourdash/csi/csi";
+import coreCSI from "@yourdash/csi/coreCSI";
 
 const Index: React.FC = () => {
-  const [useBrowserLayout, setUseBrowserLayout] = React.useState<boolean>(csi.userDB.get("dash:useBrowserLayout") || false);
+  const [useBrowserLayout, setUseBrowserLayout] = React.useState<boolean>(coreCSI.userDB.get("dash:useBrowserLayout") || false);
 
   return (
     <BasePageLayout title={"Dashboard personalization"}>
@@ -20,7 +20,7 @@ const Index: React.FC = () => {
         description={'Use the "browser" layout instead of the "dashboard" layout'}
         value={useBrowserLayout}
         setValue={(val) => {
-          csi.userDB.set("dash:useBrowserLayout", val);
+          coreCSI.userDB.set("dash:useBrowserLayout", val);
           setUseBrowserLayout(val);
         }}
       />

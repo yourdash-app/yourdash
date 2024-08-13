@@ -17,7 +17,7 @@ import Image from "@yourdash/uikit/components/image/image";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { type IYourDashStoreApplication } from "@yourdash/shared/apps/store/storeApplication";
-import csi from "@yourdash/csi/csi";
+import coreCSI from "@yourdash/csi/coreCSI";
 import StoreHeader from "../../component/storeHeader/StoreHeader";
 import StoreApplicationDefaultHeaderBackground from "./assets/default_background.svg";
 import InstallationPopup from "./components/InstallationPopup";
@@ -52,7 +52,7 @@ const StoreApplicationPage: React.FC = () => {
           applicationData={appData}
           onClose={() => setShowInstallationConfirmation(false)}
           onConfirm={() => {
-            csi.postJson(`/app/store/application/install/${appData?.name}`, {}, (resp) => {
+            coreCSI.postJson(`/app/store/application/install/${appData?.name}`, {}, (resp) => {
               if (resp.success) {
                 requestApplication(applicationId, setAppData, setIsLoading, navigate);
                 ydsh.toast.success("Installed Application", `Installed "${appData?.name}" successfully`);
@@ -119,7 +119,7 @@ const StoreApplicationPage: React.FC = () => {
                   <Button
                     onClick={() => {
                       if (appData.installed) {
-                        csi.postJson(`/app/store/application/uninstall/${appData.name}`, {}, (resp) => {
+                        coreCSI.postJson(`/app/store/application/uninstall/${appData.name}`, {}, (resp) => {
                           if (resp.success) {
                             requestApplication(applicationId, setAppData, setIsLoading, navigate);
                             ydsh.toast.success("Uninstalled Application", `Uninstalled "${appData.name}" successfully`);

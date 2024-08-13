@@ -7,17 +7,18 @@ import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
 import * as React from "react";
 import SettingCategoryComponent from "../../components/SettingCategoryComponent";
 import BasePageLayout from "../../components/BasePageLayout";
+import { modulePath } from "../../meta.yourdash";
 
 const Index: React.FC = () => (
   <BasePageLayout title={"Personalization"}>
     <SettingCategoryComponent
-      href={"/app/a/uk-ewsgit-settings/personalization/panel"}
+      href={`${modulePath}/personalization/panel`}
       description={"Customize your panel"}
       title={"Panel"}
       icon={UKIcon.Paintbrush}
     />
     <SettingCategoryComponent
-      href={"/app/a/uk-ewsgit-settings/personalization/theme"}
+      href={`${modulePath}/personalization/theme`}
       description={"Customize the look of YourDash"}
       title={"Theme"}
       icon={UKIcon.Accessibility}
