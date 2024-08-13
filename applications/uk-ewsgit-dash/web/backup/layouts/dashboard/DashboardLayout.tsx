@@ -12,6 +12,7 @@ import IconButton from "@yourdash/chiplet/components/iconButton/IconButton";
 import Row from "@yourdash/chiplet/components/row/Row";
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
+import { modulePath } from "../../../meta.yourdash";
 import WeatherHourlyConditionsWidget from "../../widgets/weather/WeatherHourlyConditions/WeatherHourlyConditionsWidget";
 import styles from "./DashboardLayout.module.scss";
 import { useState } from "react";
@@ -46,7 +47,7 @@ const DashboardLayout: React.FC<IDashboard> = ({ username, fullName }) => {
           <IconButton
             icon={UKIcon.Gear}
             onClick={() => {
-              navigate("${modulePath}/personalization/dashboard");
+              navigate(`${modulePath}/personalization/dashboard`);
             }}
           />
         </Row>

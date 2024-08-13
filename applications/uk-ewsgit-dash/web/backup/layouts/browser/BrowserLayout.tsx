@@ -7,6 +7,7 @@ import useTranslate from "@yourdash/shared/web/helpers/i18n";
 import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
 import IconButton from "@yourdash/chiplet/components/iconButton/IconButton";
 import React from "react";
+import { modulePath } from "../../../meta.yourdash";
 import styles from "./BrowserLayout.module.scss";
 import { useNavigate } from "react-router-dom";
 
@@ -27,7 +28,7 @@ const BrowserLayout: React.FC<IBrowserLayout> = ({ username, fullName }) => {
         className={"fixed top-4 right-4"}
         icon={UKIcon.Gear}
         onClick={() => {
-          navigate("${modulePath}/personalization/dashboard");
+          navigate(`${modulePath}/personalization/dashboard`);
         }}
       />
       <div

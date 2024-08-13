@@ -9,6 +9,7 @@ import * as React from "react";
 import coreCSI from "@yourdash/csi/coreCSI";
 import loadable from "@loadable/component";
 import { useNavigate } from "react-router-dom";
+import { modulePath } from "../meta.yourdash";
 
 const DashboardLayout = loadable(() => import("./layouts/dashboard/DashboardLayout"));
 // TODO: recreate the browserLayout
@@ -53,7 +54,7 @@ const DashApplication: React.FC = () => {
           <IconButton
             icon={UKIcon.Gear}
             onClick={() => {
-              navigate("${modulePath}/personalization/dashboard");
+              navigate(`${modulePath}/personalization/dashboard`);
             }}
           />
           "Browser Layout is temporarily disabled"

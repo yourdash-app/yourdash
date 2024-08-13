@@ -13,20 +13,14 @@ import React, { useState } from "react";
 import styles from "./dashApplication.module.scss";
 import { IWidgetGrid } from "../shared/types/widgetGrid";
 import loadable from "@loadable/component";
+import { acsi } from "./meta.yourdash";
 
 const DashApplication: React.FC = () => {
-  const username = useResource(() => coreCSI.getJson<{ first: string; last: string }>("/app/uk-ewsgit-dash/user-full-name")) || {
-    first: "Unknown",
-    last: "User",
-  };
-  const { pageCount } = useResource<{ pageCount: number }>(() => coreCSI.getJson("/app/uk-ewsgit-dash/widget/pages")) || {
+  const { pageCount } = useResource<{ pageCount: number }>(() => acsi.getJson("/widget/pages")) || {
     pageCount: 0,
   };
   const [currentWidgetPage, setCurrentWidgetPage] = useState<number>(0);
-  const widgetPage = useResource<IWidgetGrid>(
-    () => coreCSI.getJson(`/app/uk-ewsgit-dash/widgets/${currentWidgetPage}`),
-    [currentWidgetPage],
-  ) || {
+  const widgetPage = useResource<IWidgetGrid>(() => acsi.getJson(`/widgets/${currentWidgetPage}`), [currentWidgetPage]) || {
     widgets: [],
   };
 
@@ -37,7 +31,7 @@ const DashApplication: React.FC = () => {
         direction={"row"}
       >
         <Heading
-          text={`Hiya, ${username?.first}`}
+          text={`Hiya, ${coreCSI.userDB.get<{ first: string; last: string }>("user:name")?.first}`}
           level={1}
         />
       </Flex>

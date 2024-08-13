@@ -10,60 +10,12 @@ import Sidebar from "@yourdash/uikit/views/sidebar/Sidebar";
 import SidebarContainer from "@yourdash/uikit/views/sidebar/SidebarContainer";
 import * as React from "react";
 import { Outlet, useNavigate } from "react-router-dom";
+import { modulePath } from "./meta.yourdash";
 
 const SettingsLayout: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    // <main className={"grid grid-cols-1 grid-rows-[auto,1fr] md:grid-rows-none md:grid-cols-[auto,1fr] h-full w-full bg-bg"}>
-    //   <SideBar
-    //     defaultState={SIDEBAR_STATE.NormalMinimised}
-    //     title={"Settings"}
-    //     items={[
-    //       {
-    //         type: SIDEBAR_ITEM_TYPE.Button,
-    //         icon: UKIcon.Home,
-    //         label: "Home",
-    //         onClick() {
-    //           navigate("/app/a/settings/");
-    //         },
-    //       },
-    //       {
-    //         type: SIDEBAR_ITEM_TYPE.Button,
-    //         icon: UKIcon.Paintbrush,
-    //         label: "Personalization",
-    //         onClick() {
-    //           navigate("/app/a/settings/personalization");
-    //         },
-    //       },
-    //       {
-    //         type: SIDEBAR_ITEM_TYPE.Button,
-    //         icon: UKIcon.Login,
-    //         label: "Login sessions",
-    //         onClick() {
-    //           navigate("/app/a/settings/session");
-    //         },
-    //       },
-    //       {
-    //         type: SIDEBAR_ITEM_TYPE.Button,
-    //         icon: UKIcon.Accessibility,
-    //         label: "Accessibility",
-    //         onClick() {
-    //           navigate("/app/a/settings/accessibility");
-    //         },
-    //       },
-    //       {
-    //         type: SIDEBAR_ITEM_TYPE.Button,
-    //         icon: UKIcon.Tools,
-    //         label: "Admin tools",
-    //         onClick() {
-    //           navigate("/app/a/settings/admin");
-    //         },
-    //       },
-    //     ]}
-    //   />
-    //   <Outlet />
-    // </main>
     <SidebarContainer showSidebarByDefault>
       <Sidebar>
         <Heading
@@ -73,23 +25,23 @@ const SettingsLayout: React.FC = () => {
         <Separator direction={"column"} />
         <Button
           text={"Home"}
-          onClick={() => navigate("${modulePath}/")}
+          onClick={() => navigate(`${modulePath}/`)}
         />
         <Button
           text={"Personalisation"}
-          onClick={() => navigate("${modulePath}/personalization")}
+          onClick={() => navigate(`${modulePath}/personalization`)}
         />
         <Button
           text={"Login Sessions"}
-          onClick={() => navigate("${modulePath}/session")}
+          onClick={() => navigate(`${modulePath}/session`)}
         />
         <Button
           text={"Administrator Tools"}
-          onClick={() => navigate("${modulePath}/admin")}
+          onClick={() => navigate(`${modulePath}/admin`)}
         />
         <Button
           text={"Developer Tools"}
-          onClick={() => navigate("${modulePath}/developer")}
+          onClick={() => navigate(`${modulePath}/developer`)}
         />
         <Separator direction={"column"} />
         <Heading
@@ -98,11 +50,11 @@ const SettingsLayout: React.FC = () => {
         />
         <Button
           text={"Test Category"}
-          onClick={() => navigate("${modulePath}/cat/test")}
+          onClick={() => navigate(`${modulePath}/cat/test`)}
         />
         <Button
           text={"Test Solo Setting"}
-          onClick={() => navigate("${modulePath}/cat/test/test-setting")}
+          onClick={() => navigate(`${modulePath}/cat/test/test-setting`)}
         />
       </Sidebar>
       <Outlet />

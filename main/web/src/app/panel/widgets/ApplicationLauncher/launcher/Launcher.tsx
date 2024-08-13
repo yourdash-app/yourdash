@@ -10,7 +10,7 @@ import IconButton from "@yourdash/uikit/components/iconButton/iconButton";
 import Box from "@yourdash/uikit/components/box/box.js";
 import { useNavigate } from "react-router-dom";
 import styles from "./Launcher.module.scss";
-import React, { memo, useEffect, useState } from "react";
+import React, { memo } from "react";
 import ApplicationsLauncherApplications from "./Applications/Applications";
 import IPanelApplicationsLauncherFrontendModule from "@yourdash/shared/core/panel/applicationsLauncher/application";
 import coreCSI from "@yourdash/csi/coreCSI";
@@ -52,16 +52,12 @@ const ApplicationLauncher: React.FC<{
           }}
         />
         <div>
-          <img
-            src={""}
-            alt={""}
-          />
           <IconButton
             accessibleLabel={"Profile"}
             icon={UKIcon.Person}
             aria-label={"User Profile Settings"}
             onClick={() => {
-              navigate("${modulePath}/profile");
+              navigate(`/instance-profiles/me`);
             }}
           />
         </div>
