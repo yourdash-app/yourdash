@@ -61,23 +61,21 @@ export default class CoreImage {
     useAbsolutePath?: boolean,
   ): Promise<string> {
     return await new Promise<string>(async (resolve) => {
-      const resizedImagePath = pth.join(pth.join(USER_PATHS.TEMP, crypto.randomUUID()));
+      const resizedImagePath = pth.join(USER_PATHS.TEMP, crypto.randomUUID());
 
       try {
-        sharp(await fs.readFile(useAbsolutePath ? filePath : path.join(this.core.fs.ROOT_PATH, filePath)), {
-          sequentialRead: true,
-        })
+        sharp(await fs.readFile(useAbsolutePath ? filePath : path.join(this.core.fs.ROOT_PATH, filePath)))
           .resize(Math.floor(width), Math.floor(height))
-          .toFormat(resultingImageFormat || "webp")
+          .toFormat(resultingImageFormat || "webp") // use avif when it is better supported by sharp
           .toFile(pth.join(this.core.fs.ROOT_PATH, resizedImagePath))
           .then(() => resolve(resizedImagePath))
           .catch((err: string) => {
-            this.core.log.error("image", `unable to resize image "${filePath}" ${err}`);
-            resolve("null");
+            this.core.log.error("image", `unable to resize image "${path.resolve(this.core.fs.ROOT_PATH, filePath)}" ${err}`);
+            resolve("null file path");
           });
       } catch (err) {
         this.core.log.error("image", `unable to resize image "${filePath}" ${err}`);
-        resolve("null");
+        resolve("unable to resize image");
       }
     });
   }

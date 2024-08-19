@@ -1,28 +1,23 @@
 /*
- * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
- * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
- */
+* Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+* YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+*/
 
 import core from "@yourdash/backend/src/core/core.js";
-import { AUTHENTICATED_IMAGE_TYPE } from "@yourdash/backend/src/core/coreImage.js";
-import YourDashApplication, { getAllApplications } from "@yourdash/backend/src/lib/applications.js";
-import { getInstanceLogoBase64 } from "@yourdash/backend/src/lib/logo.js";
-import { IYourDashStoreApplication } from "@yourdash/shared/apps/store/storeApplication.js";
-import { IStoreCategory } from "@yourdash/shared/apps/store/storeCategory.js";
-import { type StorePromotedApplication } from "@yourdash/shared/apps/store/storePromotedApplication.js";
-import path from "path";
-import getAllCategories, { getAllApplicationsFromCategory } from "./helpers/categories.js";
 import { YourDashBackendModule, YourDashModuleArguments } from "@yourdash/backend/src/core/coreApplicationManager.js";
-
-const promotedApplications: string[] = ["uk-ewsgit-dash", "uk-ewsgit-store"];
+import { EndpointStoreHomePromotedApplications } from "../shared/types/endpoints/home/promotedApplications.js"
+import { EndpointStoreHomeCategoryCategoryId } from './../shared/types/endpoints/home/category/categoryId.js';
+import { EndpointStoreHomeApplicationApplicationId } from "../shared/types/endpoints/home/application/applicationId.js";
 
 export default class StoreModule extends YourDashBackendModule {
+  private applicationCategories: { [ categoryId: string ]: { applications: string[], modules: string[], displayName: string, id: string } }
+
   constructor(args: YourDashModuleArguments) {
     super(args);
-  }
 
-  getInstalledApplications(): string[] {
-    return this.api.core.globalDb.get<string[]>("core:installedApplications") || [];
+    this.applicationCategories = {}
+
+    return this;
   }
 
   public loadEndpoints() {
@@ -30,227 +25,39 @@ export default class StoreModule extends YourDashBackendModule {
 
     core.request.setNamespace(`/app/${this.api.moduleId}`);
 
-    core.request.get("/promoted/applications", async (_req, res) => {
-      Promise.all(
-        promotedApplications.map(async (app): Promise<StorePromotedApplication> => {
-          const application = await new YourDashApplication(app).read();
+    core.request.get("/home/promotedApplications", async (req, res) => {
+      return res.json([ {
+        displayName: "displayName",
+        bannerBackground: "bannerBackground",
+        developer: "developer inc",
+        icon: "/assets/productLogos/yourdash.svg",
+        id: "com-example-test",
+        tags: [ "development", "stupidity" ]
+      } ] satisfies EndpointStoreHomePromotedApplications)
+    })
 
-          if (!application)
-            return {
-              name: "unknown_application",
-              backgroundImage: "",
-              icon: "",
-              displayName: "Unknown Application",
-              installed: false,
-            };
+    core.request.get("/home/category/:categoryId", async (req, res) => {
+      const categoryId = req.params.categoryId
 
-          return {
-            name: application.getName(),
-            backgroundImage: `data:image/png;base64,${(await application.getStoreBackground()).toString("base64")}`,
-            icon: `data:image/avif;base64,${(await application.getIcon()).toString("base64")}`,
-            displayName: application.getDisplayName(),
-            installed: application.isInstalled(),
-          };
-        }),
-      ).then((out) => res.json(out));
-    });
+      if (!this.applicationCategories[categoryId]) return res.status(404).json({ error: "Unknown category"})
 
-    core.request.get("/categories", async (_req, res) => {
-      const applications = await getAllApplications();
+      return res.json({
+        applications: this.applicationCategories[categoryId].applications,
+        displayName: this.applicationCategories[categoryId].displayName
+      } satisfies EndpointStoreHomeCategoryCategoryId)
+    })
 
-      const categories: { [key: string]: boolean } = {};
+    core.request.get("/home/application/:applicationId", async (req, res) => {
+      const applicationId = req.params.applicationId
 
-      for (const application of applications) {
-        const unreadApplication = new YourDashApplication(application);
-
-        if (!(await unreadApplication.exists())) {
-          continue;
-        }
-
-        const app = await unreadApplication.read();
-
-        if (!app) continue;
-
-        categories[app.getCategory()] = true;
-      }
-
-      return res.json(Object.keys(categories));
-    });
-
-    core.request.get("/applications", async (req, res) => {
-      const { username, sessionid } = req.headers;
-
-      const applications = await getAllApplications();
-
-      return res.json(
-        await Promise.all(
-          applications.map(async (applicationName) => {
-            const unreadApplication = new YourDashApplication(applicationName);
-
-            if (!(await unreadApplication.exists())) {
-              return { value: applicationName };
-            }
-
-            const application = await unreadApplication.read();
-
-            if (!application)
-              return {
-                name: "unknown_application",
-                backgroundImage: "",
-                icon: "",
-                displayName: "Unknown Application",
-                installed: false,
-              };
-
-            return {
-              value: applicationName,
-              displayName: application.getDisplayName() || applicationName,
-              icon: core.image.createAuthenticatedImage(
-                username,
-                sessionid,
-                AUTHENTICATED_IMAGE_TYPE.ABSOLUTELY_PATHED_FILE,
-                await application.getIconPath(),
-              ),
-              installed: application.isInstalled(),
-            };
-          }),
-        ),
-      );
-    });
-
-    core.request.get("/category/:id", async (req, res) => {
-      const { username, sessionid } = req.headers;
-      const { id } = req.params;
-
-      if (!id) {
-        return res.json({ error: true });
-      }
-
-      const categories = await getAllCategories();
-
-      if (!categories.includes(id)) {
-        return res.json({ error: `unknown category ${id}` });
-      }
-
-      const categoryApplications = await getAllApplicationsFromCategory(id);
-
-      const applicationsOutput: {
-        name: string;
-        icon: string;
-        displayName: string;
-      }[] = [];
-
-      await Promise.all(
-        categoryApplications.map(async (app) => {
-          const application = await new YourDashApplication(app).read();
-
-          if (!application) return;
-
-          applicationsOutput.push({
-            name: application.getName(),
-            icon: core.image.createAuthenticatedImage(
-              username,
-              sessionid,
-              AUTHENTICATED_IMAGE_TYPE.ABSOLUTELY_PATHED_FILE,
-              await application.getIconPath(),
-            ),
-            displayName: application.getDisplayName(),
-          });
-        }),
-      );
-
-      return res.json(<IStoreCategory>{
-        id: id,
-        applications: applicationsOutput,
-        icon: `data:image/avif;base64,${getInstanceLogoBase64()}`,
-        displayName: id.slice(0, 1).toUpperCase() + id.slice(1),
-        promotedApplications,
-        bannerImage: `data:image/avif;base64,${getInstanceLogoBase64()}`,
-      });
-    });
-
-    core.request.get("/application/:id", async (req, res) => {
-      const { username, sessionid } = req.headers;
-      const { id } = req.params;
-
-      if (!id) {
-        return res.json({ error: true });
-      }
-
-      const unreadApplication = new YourDashApplication(id);
-
-      if (!(await unreadApplication.exists())) {
-        return res.json({ error: true });
-      }
-
-      const application = await unreadApplication.read();
-
-      if (!application) return res.json({ error: true });
-
-      const response: IYourDashStoreApplication = {
-        ...application.getRawApplicationData(),
-        icon: await this.api.core.image.createResizedAuthenticatedImage(
-          username,
-          sessionid,
-          AUTHENTICATED_IMAGE_TYPE.ABSOLUTELY_PATHED_FILE,
-          await application.getIconPath(),
-          256,
-          256,
-          "webp",
-        ),
-        installed: application.isInstalled(),
-        requiresBackend: await application.requiresBackend(),
-      };
-
-      return res.json(response);
-    });
-
-    core.request.post("/application/install/:id", async (req, res) => {
-      const { id } = req.params;
-      const applicationUnread = new YourDashApplication(id);
-      if (!(await applicationUnread.exists())) {
-        return res.json({ error: true });
-      }
-      const application = await applicationUnread.read();
-
-      if (!application) return res.json({ error: "No such application exists" });
-
-      core.globalDb.set("core:installedApplications", [
-        ...(core.globalDb.get<string[]>("core:installedApplications") || []),
-        id,
-        ...application.getDependencies(),
-      ]);
-      await core.applicationManager.installApplication(path.join(process.cwd(), `../applications/${id}/`));
-      return res.json({ success: true });
-    });
-
-    core.request.post("/application/uninstall/:id", async (req, res) => {
-      const { id } = req.params;
-      const application = new YourDashApplication(id);
-
-      if (!(await application.exists())) {
-        return res.json({ error: true });
-      }
-
-      core.globalDb.set(
-        "core:installedApplications",
-        (core.globalDb.get<string[]>("core:installedApplications") || []).filter((app) => app !== id),
-      );
-
-      return res.json({ success: true });
-    });
-
-    core.request.get("/application/:id/icon", async (req, res) => {
-      const { id } = req.params;
-      const unreadApplication = new YourDashApplication(id);
-      if (!(await unreadApplication.exists())) {
-        return res.sendFile(path.resolve(process.cwd(), "./src/defaults/placeholder_application_icon.png"));
-      }
-      const application = await unreadApplication.read();
-
-      if (!application) return res.json({ error: "No such application exists" });
-
-      return res.sendFile(await application.getIconPath());
-    });
+      return res.json({
+        description: "Sample application description",
+        displayName: "Sample Display Name",
+        developer: "ewsgit.uk",
+        id: applicationId,
+        moduleCount: 2
+      } satisfies EndpointStoreHomeApplicationApplicationId
+    )
+    })
   }
 }

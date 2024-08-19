@@ -8,6 +8,7 @@ import path from "path";
 import { AUTHENTICATED_IMAGE_TYPE } from "./coreImage.js";
 import YourDashPanel from "./helpers/panel.js";
 import { Core } from "./core.js";
+import { EndpointCorePanelQuickShortcuts } from "@yourdash/shared/endpoints/core/panel/quickShortcuts.js";
 
 export default class CorePanel {
   private core: Core;
@@ -32,7 +33,7 @@ export default class CorePanel {
                 return { ...mod, moduleType: "frontend" };
               }),
             ].map(async (module) => {
-              const RESIZED_ICON_PATH = path.join("cache/applications/icons", `${module.config.id}`, "128.png");
+              const RESIZED_ICON_PATH = path.join("cache/modules/icons", `${module.config.id}`, "128.png");
 
               if (!(await this.core.fs.doesExist(RESIZED_ICON_PATH))) {
                 this.core.log.info("core:panel", `Generating 128x128 icon for ${module.config.id}`);
@@ -43,7 +44,7 @@ export default class CorePanel {
                   this.core.applicationManager.getModuleIcon(module.moduleType as "officialFrontend" | "frontend", module.config.id),
                   128,
                   128,
-                  "webp",
+                  "webp"
                 );
 
                 await this.core.fs.copy(resizedIconPath, RESIZED_ICON_PATH);
@@ -85,7 +86,7 @@ export default class CorePanel {
               return;
             }
 
-            const RESIZED_ICON_PATH = path.join("cache/applications/icons", `${module.config.id}`, "64.png");
+            const RESIZED_ICON_PATH = path.join("cache/modules/icons", `${module.config.id}`, "64.png");
 
             if (!(await this.core.fs.doesExist(RESIZED_ICON_PATH))) {
               this.core.log.info("core:panel", `Generating 64x64 icon for ${module.config.id}`);
@@ -96,17 +97,27 @@ export default class CorePanel {
                 this.core.applicationManager.getModuleIcon(shortcut.moduleType, shortcut.id),
                 64,
                 64,
-                "webp",
-                true,
+                "webp"
               );
 
               await this.core.fs.copy(resizedIconPath, RESIZED_ICON_PATH);
+              await this.core.fs.removePath(resizedIconPath)
+            }
+
+            let isOfficialFrontend: "frontend" | "officialFrontend" = "officialFrontend"
+
+            // @ts-ignore
+            if (module.config.url || module.config.devUrl) {
+              isOfficialFrontend = "frontend"
             }
 
             return {
-              name: shortcut,
+              name: module?.config.displayName || "Undefined name",
+              module: shortcut,
               icon: this.core.image.createAuthenticatedImage(username, sessionid, AUTHENTICATED_IMAGE_TYPE.FILE, RESIZED_ICON_PATH),
-            };
+              // @ts-ignore
+              url: isOfficialFrontend === "officialFrontend" ? `/app/a/${module.config.id}` : this.core.isDevMode ? (module?.config?.devUrl) : (module?.config?.url || "")
+            } satisfies EndpointCorePanelQuickShortcuts[0];
           }),
         ),
       );

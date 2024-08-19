@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import coreCSI from "@yourdash/csi/coreCSI";
 import styles from "./Widget.module.scss";
 import React from "react";
+import { EndpointCorePanelQuickShortcuts } from "@yourdash/shared/endpoints/core/panel/quickShortcuts"
 
 const QuickShortcuts: React.FC<{ side: "top" | "right" | "bottom" | "left" }> = ({ side }) => {
   const navigate = useNavigate();
@@ -19,11 +20,7 @@ const QuickShortcuts: React.FC<{ side: "top" | "right" | "bottom" | "left" }> = 
   const [num, setNum] = React.useState<number>(0);
   const modules =
     useResource<
-      {
-        name: string;
-        icon: string;
-        url: string;
-      }[]
+      EndpointCorePanelQuickShortcuts
     >(() => coreCSI.getJson("/core/panel/quick-shortcuts"), [num]) || [];
 
   // @ts-ignore
@@ -33,15 +30,15 @@ const QuickShortcuts: React.FC<{ side: "top" | "right" | "bottom" | "left" }> = 
 
   return (
     <>
-      {modules.map((application) => {
-        if (!application) return <>Invalid Application</>;
+      {modules.map((module) => {
+        if (!module) return <>Invalid Module</>;
 
         return (
-          <IncrementLevel key={application.name}>
+          <IncrementLevel key={module.name}>
             <div
-              key={application.name}
+              key={module.name}
               onClick={() => {
-                navigate(application.url);
+                navigate(module.url);
               }}
               className={clippy(
                 styles.application,
@@ -55,10 +52,10 @@ const QuickShortcuts: React.FC<{ side: "top" | "right" | "bottom" | "left" }> = 
               <Image
                 authenticatedImage
                 className={styles.applicationIcon}
-                src={application.icon}
-                accessibleLabel={application.name}
+                src={module.icon}
+                accessibleLabel={module.name}
               />
-              <span className={styles.applicationLabel}>{application.name}</span>
+              <span className={styles.applicationLabel}>{module.name}</span>
             </div>
           </IncrementLevel>
         );

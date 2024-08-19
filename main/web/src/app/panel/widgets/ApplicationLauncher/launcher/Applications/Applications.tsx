@@ -55,7 +55,7 @@ const ApplicationsLauncherApplications: React.FC<{
         icon={UKIcon.Search}
       />
 
-      {layout === "large-grid" && <LargeApplicationGrid applications={applications} />}
+      {layout === "large-grid" && <LargeApplicationGrid modules={applications} />}
       {layout === "small-grid" && <SmallApplicationGrid applications={applications} />}
       {layout === "list" && <ApplicationList applications={applications} />}
     </>

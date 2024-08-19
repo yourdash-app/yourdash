@@ -18,9 +18,5 @@
 
   @media (max-width: $sizeTablet) {
     flex-direction: column;
-
-    &[dir=rtl] {
-      flex-direction: column-reverse;
-    }
   }
 }

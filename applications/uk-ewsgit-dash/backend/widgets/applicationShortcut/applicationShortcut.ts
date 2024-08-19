@@ -3,10 +3,10 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
+import core from "@yourdash/backend/src/core/core.js";
 import { YourDashBackendModule } from "@yourdash/backend/src/core/coreApplicationManager.js";
 
 export default function ApplicationShortcut(api: YourDashBackendModule["api"]) {
-  api;
-
+  // TODO: implement widget
   return null;
 }

@@ -14,43 +14,79 @@ import styles from "./dashApplication.module.scss";
 import { IWidgetGrid } from "../shared/types/widgetGrid";
 import loadable from "@loadable/component";
 import { acsi } from "./meta.yourdash";
+import Button from "@yourdash/uikit/components/button/button"
+import clippy from "@yourdash/shared/web/helpers/clippy";
 
 const DashApplication: React.FC = () => {
   const { pageCount } = useResource<{ pageCount: number }>(() => acsi.getJson("/widget/pages")) || {
     pageCount: 0,
   };
-  const [currentWidgetPage, setCurrentWidgetPage] = useState<number>(0);
-  const widgetPage = useResource<IWidgetGrid>(() => acsi.getJson(`/widgets/${currentWidgetPage}`), [currentWidgetPage]) || {
+  const [ currentWidgetPage, setCurrentWidgetPage ] = useState<number>(0);
+  const widgetPage = useResource<IWidgetGrid>(() => acsi.getJson(`/widgets/${currentWidgetPage}`), [ currentWidgetPage ]) || {
     widgets: [],
   };
+  const [ isWidgetEditMode, setIsWidgetEditMode ] = useState(false);
+  const [ tallHeader, setTallHeader ] = useState(false)
 
   return (
     <div className={styles.page}>
       <Flex
-        className={styles.header}
+        className={clippy(styles.header, tallHeader && styles.tallHeader, isWidgetEditMode && styles.headerEditMode)}
         direction={"row"}
       >
         <Heading
           text={`Hiya, ${coreCSI.userDB.get<{ first: string; last: string }>("user:name")?.first}`}
           level={1}
         />
+        {
+          isWidgetEditMode && <>
+            <Flex direction="row" className={styles.headerActions}>
+              {
+                tallHeader ?
+                  <ButtonWithIcon
+                    text="Use small header"
+                    icon={UKIcon.SidebarCollapse}
+                    onClick={() => {
+                      setTallHeader(false)
+                    }}
+                  />
+                  : <ButtonWithIcon
+                    text="Use tall header"
+                    icon={UKIcon.SidebarExpand}
+                    onClick={() => {
+                      setTallHeader(true)
+                    }}
+                  />
+              }
+            </Flex>
+          </>
+        }
       </Flex>
-      <div className={styles.widgetGrid}>
-        {widgetPage.widgets.map((widget) => {
-          const Widget = loadable(() => import(`./widgets/${widget.id}/widget.tsx`));
+      {
+        isWidgetEditMode
+          ? <div className={styles.centeredContent}>
+            <Heading text="Edit widgets" />
+            <Button text="Edit" onClick={() => {
+              console.log("Edit widgets dialog")
+            }} />
+          </div>
+          : <div className={styles.widgetGrid}>
+            {widgetPage.widgets.map((widget) => {
+              const Widget = loadable(() => import(`./widgets/${widget.id}/widget.tsx`));
 
-          return (
-            <div
-              key={widget.id + JSON.stringify(widget.position)}
-              /*@ts-ignore*/
-              style={{ "--position-x": widget.position.x, "--position-y": widget.position.y }}
-              className={styles.widgetGridWidget}
-            >
-              <Widget data={widget.data} />
-            </div>
-          );
-        })}
-      </div>
+              return (
+                <div
+                  key={widget.id + JSON.stringify(widget.position)}
+                  /*@ts-ignore*/
+                  style={{ "--position-x": widget.position.x, "--position-y": widget.position.y }}
+                  className={styles.widgetGridWidget}
+                >
+                  <Widget data={widget.data} />
+                </div>
+              );
+            })}
+          </div>
+      }
       <Flex
         className={styles.footer}
         direction={"row"}
@@ -69,13 +105,28 @@ const DashApplication: React.FC = () => {
           })}
         </div>
         <div className={styles.actions}>
-          <ButtonWithIcon
-            text={"Edit Widgets"}
-            icon={UKIcon.Pencil}
-            onClick={() => {
-              console.log("Edit widgets page");
-            }}
-          />
+          {
+            isWidgetEditMode ?
+              <>
+                <ButtonWithIcon
+                  text={"Confirm edits"}
+                  icon={UKIcon.Check}
+                  onClick={() => {
+                    setIsWidgetEditMode(false)
+                  }}
+                />
+              </>
+              :
+              <>
+                <ButtonWithIcon
+                  text={"Edit"}
+                  icon={UKIcon.Pencil}
+                  onClick={() => {
+                    setIsWidgetEditMode(true)
+                  }}
+                />
+              </>
+          }
         </div>
       </Flex>
     </div>

@@ -705,11 +705,11 @@ export default class CoreApplicationManager {
     const iconPath = this.loadedModules[moduleType].find((m) => m.config.id === id)?.config.iconPath as string;
 
     if (!iconPath) {
-      return "null";
+      return "null icon path";
     }
 
     if (!this.core.fs.doesExist(iconPath)) {
-      return "null";
+      return "icon path does not exist";
     }
 
     return path.join(applicationPath, iconPath);
@@ -719,5 +719,4 @@ export default class CoreApplicationManager {
 /*
  * ApplicationManager TODOs
  *   1 - remove all references to CoreModuleManager
- *
  */

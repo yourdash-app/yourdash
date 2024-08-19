@@ -4,9 +4,10 @@
  */
 
 import Redirect from "@yourdash/uikit/components/redirect/redirect";
+import OnBoarding from "@yourdash/uikit/views/onBoarding/onBoarding"
 import React from "react";
 import { Routes, Route } from "react-router";
-import { modulePath } from "./meta.yourdash";
+import applicationMeta, { modulePath } from "./meta.yourdash";
 import CategoryNamePage from "./routes/cat/categoryName";
 import SingleSettingPage from "./routes/cat/singleSettingPage";
 import IndexPage from "./routes/index";
@@ -19,9 +20,27 @@ import PanelPersonalizationIndexPage from "./routes/personalization/panel/index"
 import ProfileIndexPage from "./pages/profile/Index";
 import DeveloperToolsIndexPage from "./pages/developer/Index";
 import AccessibilityIndexPage from "./pages/accessibility/Index";
+import SETTINGS_ICON from "./../icon.avif"
 
 const SettingsRouter: React.FC = () => (
   <Routes>
+    <Route element={<OnBoarding
+      meta={applicationMeta}
+      pages={ [
+        {
+          headerImage: SETTINGS_ICON,
+          header: "YourDash Settings",
+          body: "Configure YourDash and it's applications",
+          actions: [
+            {
+              label: "Continue",
+              onClick: () => { },
+              changeTo: "next"
+            }
+          ]
+        }
+      ] }
+    />}>
     <Route element={<SettingsLayout />}>
       <Route
         index
@@ -89,6 +108,7 @@ const SettingsRouter: React.FC = () => (
           element={<DeveloperToolsIndexPage />}
         />
       </Route>
+    </Route>
     </Route>
   </Routes>
 );

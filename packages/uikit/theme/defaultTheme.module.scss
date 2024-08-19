@@ -37,6 +37,7 @@
   #{$theme+$padding}: 1rem;
   #{$theme+$gap}: 0.5rem;
   #{$theme+$transition}: all 200ms ease-in-out;
+  #{$theme+$transition+$transition}: 200ms ease-in-out;
   #{$theme+$separator+$size}: 0.125rem;
   #{$theme+$separator+$color}: #444444;
   #{$theme+$scrollbar+$width}: 0.4rem;

@@ -159,7 +159,11 @@ export default class DashModule extends YourDashBackendModule {
     core.request.get("/widgets/:page", async (req, res) => {
       const page = req.params.page as string;
 
-      res.json(WIDGET_PAGES[Number(page)] satisfies IWidgetGrid);
+      return res.json(WIDGET_PAGES[Number(page)] satisfies IWidgetGrid);
     });
+
+    core.request.get("/api-version", async (req, res) => {
+      return res.json({ version: 1 })
+    })
   }
 }

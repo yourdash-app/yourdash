@@ -1,3 +1,4 @@
+import useToast from '@yourdash/uikit/core/toast';
 /*
  * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
@@ -40,7 +41,7 @@ window.setTranslateLanguage = (language: string) => {
 const LOADED_TRANSLATIONS = new Map<`${string}:${string}`, ITranslation>();
 
 export default function useTranslate(application: string) {
-  const ydsh = useYourDashLib();
+  const toast = useToast();
   const [messages, setMessages] = useState<ITranslation | undefined>(undefined);
   let languageOverride: string | undefined;
 
@@ -67,10 +68,13 @@ export default function useTranslate(application: string) {
         if (language === "en-GB") {
           console.error("No translation found for en-GB, application:", application);
           // the page is missing translation into the default language :(
-          ydsh.toast.error(
-            "Localization Error",
-            `This page is currently missing translation into your language (${language}) and the default fallback language (en-GB)`,
-          );
+          toast.create({
+            type: "error",
+            content: {
+              body: `This page is currently missing translation into your language (${language}) and the default fallback language (en-GB)`,
+              title: "Localization Error"
+            }
+          });
           return;
         }
 
@@ -84,10 +88,13 @@ export default function useTranslate(application: string) {
           .catch(() => {
             console.error("No translation found for en-GB, application:", application);
             // the page is missing translation into the default language :(
-            ydsh.toast.error(
-              "Localization Error",
-              `This page is currently missing translation into your language (${language}) and the default fallback language (en-GB)`,
-            );
+            toast.create({
+              type: "error",
+              content: {
+                body: `This page is currently missing translation into your language (${language}) and the default fallback language (en-GB)`,
+                title: "Localization Error",
+              },
+            });
           });
       });
   }, []);

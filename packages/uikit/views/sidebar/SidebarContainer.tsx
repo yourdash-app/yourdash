@@ -11,7 +11,7 @@ const SidebarContainer: FC<{ children: React.ReactNode | React.ReactNode[]; show
   children,
   showSidebarByDefault,
 }) => {
-  const [showSidebar, setShowSidebar] = useState(showSidebarByDefault || false);
+  const [showSidebar, setShowSidebar] = useState<boolean>(showSidebarByDefault || true);
 
   return (
     <SidebarContext.Provider

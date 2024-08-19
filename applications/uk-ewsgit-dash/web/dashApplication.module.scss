@@ -12,11 +12,33 @@
 }
 
 .header {
+  --bottom-padding: 0.5rem;
+  --bottom-padding-value: var(--bottom-padding);
   display: flex;
   padding: 0.5rem;
+  padding-bottom: var(--bottom-padding-value);
   justify-content: center;
   align-items: center;
   background: linear-gradient(-45deg, #ff8093aa, #ffd264aa);
+  transition: var(#{$theme+$transition});
+  position: relative;
+}
+
+.tallHeader {
+  padding-top: 4rem;
+  --bottom-padding: 4rem;
+  --bottom-padding-value: var(--bottom-padding);
+}
+
+.headerEditMode {
+  --bottom-padding-value: calc(var(--bottom-padding) + 2rem)
+}
+
+.headerActions {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: var(#{$theme+$padding});
 }
 
 .widgetGrid {
@@ -54,4 +76,12 @@
   justify-content: center;
   align-items: center;
   gap: var(#{$theme+$gap});
+}
+
+.centeredContent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: var(#{$theme+$padding});
 }

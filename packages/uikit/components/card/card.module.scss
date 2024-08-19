@@ -58,12 +58,11 @@
 }
 
 .actions {
-  border-left: none;
-  border-right: none;
-  border-bottom: none;
+  border: none;
   display: flex;
   align-items: flex-end;
   width: 100%;
+  background: transparent;
 }
 
 .content {

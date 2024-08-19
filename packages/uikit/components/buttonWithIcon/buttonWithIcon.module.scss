@@ -20,6 +20,7 @@
   transition: var(#{$theme}#{$button}#{$transition});
   height: var(#{$theme+$input+$height});
   width: max-content;
+  gap: var(#{$theme+$input+$padding+$horizontal});
   cursor: pointer;
 
   &:hover {

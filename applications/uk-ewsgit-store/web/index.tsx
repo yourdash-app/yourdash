@@ -5,25 +5,43 @@
 
 import * as React from "react";
 import { Routes, Route } from "react-router";
-import StoreApplication from "./views/home/HomeView";
-import ComingSoon from "@yourdash/chiplet/views/ComingSoon";
-import CategoryView from "./views/category/CategoryView";
-import StoreApplicationPage from "./views/application/StoreApplicationPage";
+import OnBoarding from "@yourdash/uikit/views/onBoarding/onBoarding"
+import applicationMeta from "./meta.yourdash";
+import STORE_ICON from "./../icon.avif"
+import ApplicationIndexPage from "./routes/index";
+import ApplicationLayout from "./routes/layout";
 
 const StoreRouter: React.FC = () => (
   <Routes>
-    <Route index element={<StoreApplication />} />
-    <Route path={"cat"}>
-      <Route index element={<ComingSoon />} />
-      <Route path={":id"} element={<CategoryView />} />
-    </Route>
-    <Route path={"category"}>
-      <Route index element={<StoreApplication />} />
-      <Route path={":id"} element={<CategoryView />} />
-    </Route>
-    <Route path={"app"}>
-      <Route index element={<ComingSoon />} />
-      <Route path={":id"} element={<StoreApplicationPage />} />
+    <Route element={<OnBoarding meta={applicationMeta} pages={[
+      {
+        headerImage: STORE_ICON,
+        header: "YourDash Store",
+        body: "Manage and install YourDash Applications & modules.",
+        actions: [
+          {
+            label: "Continue",
+            changeTo: "next",
+            onClick() { }
+          }
+        ]
+      }
+    ]} />}>
+      <Route element={<ApplicationLayout />}>
+        <Route index element={<ApplicationIndexPage />} />
+        <Route path={"search"} element={"Search ui"}>
+          <Route path={":query"} element={"Search query response"} />
+        </Route>
+        <Route path={"category"} element={"Category selector"}>
+          <Route path={":category"} element={"Category applications and modules"} />
+        </Route>
+        <Route path={"module"} element={"redirect to index"}>
+          <Route path={":module"} element={"Store page for module"} />
+        </Route>
+        <Route path={"application"} element={"redirect to index"}>
+          <Route path={":application"} element={"Store page for application"} />
+        </Route>
+      </Route>
     </Route>
   </Routes>
 );

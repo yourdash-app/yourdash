@@ -12,20 +12,20 @@ import styles from "./LargeApplicationGrid.module.scss";
 import { useNavigate } from "react-router";
 
 const LargeApplicationGrid: React.FC<{
-  applications: IPanelApplicationsLauncherFrontendModule[];
-}> = ({ applications }) => {
+  modules: IPanelApplicationsLauncherFrontendModule[];
+}> = ({ modules }) => {
   const navigate = useNavigate();
 
   return (
     <section className={styles.grid}>
-      {applications.map((application) => {
+      {modules.map((module) => {
         return (
           <ContextMenu
             items={[
               {
                 label: "Pin To Panel",
                 async onClick() {
-                  await coreCSI.postJson("/core/panel/quick-shortcuts/create", { id: application.id, moduleType: application.type });
+                  await coreCSI.postJson("/core/panel/quick-shortcuts/create", { id: module.id, moduleType: module.type });
                   // @ts-ignore
                   window.__yourdashCorePanelQuickShortcutsReload?.();
                   return 0;
@@ -34,28 +34,28 @@ const LargeApplicationGrid: React.FC<{
               {
                 label: "Open In New Tab",
                 onClick() {
-                  window.open(`${window.location.origin}${window.location.pathname}/app/a/${application.id}`, "_blank");
+                  window.open(`${window.location.origin}${window.location.pathname}/app/a/${module.id}`, "_blank");
                   return 0;
                 },
               },
             ]}
             className={styles.item}
-            key={application.id}
+            key={module.id}
           >
             <Card
               onClick={() => {
-                navigate(application.url);
+                navigate(module.url);
               }}
               className={styles.itemContent}
             >
               <img
                 className={styles.itemIcon}
-                src={`${coreCSI.getInstanceUrl()}${application.icon}`}
+                src={`${coreCSI.getInstanceUrl()}${module.icon}`}
                 draggable={false}
                 loading={"lazy"}
                 alt=""
               />
-              <span className={styles.itemLabel}>{application.displayName}</span>
+              <span className={styles.itemLabel}>{module.displayName}</span>
             </Card>
           </ContextMenu>
         );

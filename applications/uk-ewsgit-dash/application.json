@@ -1,6 +1,6 @@
 {
   "$schema": "../../main/backend/src/core/YourDashApplicationConfigJson.json",
-  "id": "uk-ewsgit-dash-frontend",
+  "id": "uk-ewsgit-dash",
   "displayName": "Dash",
   "description": "This is the default application description, you can edit this information in this application's 'application.json'",
   "category": "core",
