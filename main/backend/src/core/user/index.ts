@@ -69,6 +69,7 @@ export default class YourDashUser {
     }
   }
 
+  // returns the path to the user's thene.css
   getTheme(): string {
     return path.resolve(path.join(this.getFsPath(), "core/theme.css"));
   }
@@ -114,11 +115,13 @@ export default class YourDashUser {
       .catch((err: string) => core.log.error("user.set_avatar", err));
   }
 
+  // verify the user's filesystem structure and create any missing files (does not currently check the file's content)
   async verify() {
     if (!core.globalDb.get("core:defaults")) {
       return core.log.error("user", `the GlobalDatabase is not yet loaded! not creating user ${this.username}!`);
     }
 
+    // does the user have a personal team, if not create it
     try {
       if (!(await (await core.teams.get(`${this.username}-personal`)).doesExist())) {
         await core.teams.create(`${this.username}-personal`);

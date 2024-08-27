@@ -4,25 +4,47 @@
  */
 
 import React from "react";
-import {Routes, Route} from "react-router-dom"
+import { Routes, Route } from "react-router-dom";
 import applicationMeta from "./meta.yourdash";
-import OnBoarding from "@yourdash/uikit/views/onBoarding/onBoarding"
+import OnBoarding from "@yourdash/uikit/views/onBoarding/onBoarding";
+import ApplicationLayout from "./layout";
 
-const FilesRouter: React.FC = () => <Routes>
-    <Route element={<OnBoarding meta={applicationMeta} pages={[ {
-        headerImage: "/assets/productLogos/yourdash.svg",
-        header: "YourDash Files",
-        subHeading: "Hello world",
-        body: "This is some sample text",
-        actions: [ {
-            label: "Next page",
-            changeTo: "next",
-            onClick: () => {}
-        }]
-    } ]} />}>
-        <Route index element={<h1>Page Content For YourDash Files's Index</h1>}
+const FilesRouter: React.FC = () => (
+  <Routes>
+    <Route
+      element={
+        <OnBoarding
+          meta={applicationMeta}
+          pages={[
+            {
+              headerImage: "/assets/productLogos/yourdash.svg",
+              header: "YourDash Files",
+              body: "Create and manage your files with ease.",
+              actions: [
+                {
+                  label: "Continue",
+                  changeTo: "next",
+                  onClick: () => {},
+                },
+                {
+                  label: "Skip and use defaults",
+                  changeTo: "completed",
+                  onClick: () => {
+                    // set default options
+                  },
+                },
+              ],
+            },
+          ]}
         />
+      }
+    >
+      <Route
+        index
+        element={<ApplicationLayout />}
+      />
     </Route>
-</Routes>;
+  </Routes>
+);
 
 export default FilesRouter;

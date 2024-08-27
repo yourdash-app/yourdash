@@ -32,15 +32,16 @@ const StoreRouter: React.FC = () => (
         <Route path={"search"} element={"Search ui"}>
           <Route path={":query"} element={"Search query response"} />
         </Route>
-        <Route path={"category"} element={"Category selector"}>
+        <Route path={"categories"} element={"Category selector"}>
           <Route path={":category"} element={"Category applications and modules"} />
         </Route>
-        <Route path={"module"} element={"redirect to index"}>
+        <Route path={"modules"} element={"Modules selector"}>
           <Route path={":module"} element={"Store page for module"} />
         </Route>
-        <Route path={"application"} element={"redirect to index"}>
+        <Route path={"applications"} element={"Applications selector"}>
           <Route path={":application"} element={"Store page for application"} />
         </Route>
+        <Route path={"/manage"} element={"Manage installed applications & modules"}/>
       </Route>
     </Route>
   </Routes>

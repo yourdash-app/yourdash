@@ -6,10 +6,12 @@
 import React, { FC, useState } from "react";
 import SidebarContext from "./SidebarContext";
 import styles from "./SidebarContainer.module.scss";
+import clippy from "@yourdash/shared/web/helpers/clippy";
 
-const SidebarContainer: FC<{ children: React.ReactNode | React.ReactNode[]; showSidebarByDefault?: boolean }> = ({
+const SidebarContainer: FC<{ children: React.ReactNode | React.ReactNode[]; showSidebarByDefault?: boolean; className?: string }> = ({
   children,
   showSidebarByDefault,
+  className
 }) => {
   const [showSidebar, setShowSidebar] = useState<boolean>(showSidebarByDefault || true);
 
@@ -28,7 +30,7 @@ const SidebarContainer: FC<{ children: React.ReactNode | React.ReactNode[]; show
         isOpen: showSidebar,
       }}
     >
-      <div className={styles.component}>{children}</div>
+      <div className={clippy(styles.component, className)}>{children}</div>
     </SidebarContext.Provider>
   );
 };

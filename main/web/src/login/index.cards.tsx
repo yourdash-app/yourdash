@@ -67,8 +67,8 @@ const IndexCardsPage: FC<{ metadata?: EndpointResponseLoginInstanceMetadata }> =
               accessibleLabel={"Your Avatar"}
             />
             <Heading
-              level={3}
-              text={`Hello, ${user.fullName.first}!`}
+              level={2}
+              text={`${user.fullName.first} ${user.fullName.last}`}
             />
           </>
         ) : (
