@@ -7,15 +7,14 @@ import clippy from "@yourdash/shared/web/helpers/clippy.js";
 import styles from "./progressBar.module.scss";
 import { FC } from "react";
 
-const ProgressBar: FC<{ value: number; className?: string }> = ({ value, className }) => {
+// TODO: rewrite this component to use the HTML progress bar
+const ProgressBar: FC<{ maxValue?: number; value: number; className?: string }> = ({ maxValue, value, className }) => {
   return (
-    <div className={clippy(styles.component, className)}>
-      <div
-        className={styles.bar}
-        /* @ts-ignore */
-        style={{ "--ukcomp-progress": `${value * 100}%` }}
-      />
-    </div>
+    <progress
+      max={maxValue}
+      value={value}
+      className={className}
+    />
   );
 };
 

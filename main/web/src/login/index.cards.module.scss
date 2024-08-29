@@ -42,6 +42,7 @@
   bottom: 0.5rem;
   left: 50%;
   transform: translateX(-50%);
+  text-wrap: nowrap;
 }
 
 .metadataCard {
@@ -69,8 +70,7 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  padding: 1rem;
-  padding-top: 6rem;
+  padding: 6rem 1rem 1rem;
   background: linear-gradient(180deg, #00000000 0%, #000000cc 100%);
 
 

@@ -7,6 +7,7 @@ import { promises as fs } from "fs";
 import path from "path";
 import { YourDashBackendModule, YourDashModuleArguments } from "@yourdash/backend/src/core/coreApplicationManager.js";
 import core from "@yourdash/backend/src/core/core.js";
+import EndpointTabViewHome from "../shared/types/endpoints/tabView/home.js";
 
 export default class FilesModule extends YourDashBackendModule {
   constructor(args: YourDashModuleArguments) {
@@ -16,147 +17,13 @@ export default class FilesModule extends YourDashBackendModule {
   public loadEndpoints() {
     super.loadEndpoints();
 
-    /*     this.API.request.post( "/app/files/get", async ( req, res ) => {
-        const { username } = req.headers as {
-        username: string
-      };
+    core.request.setNamespace(`app/${this.api.moduleId}`);
 
-        if ( !req.body.path ) {
-          return res.json( { files: [] } );
-        }
-
-        const user = new YourDashUser( username );
-
-        let files: any[] = [];
-
-        try {
-          files = await fs.readdir( path.join( user.path, "fs/", req.body.path ) );
-        } catch ( _err ) {
-          files = [];
-        }
-
-        Promise.all(
-          files.map( async file => {
-            try {
-              const type = (
-                await fs.lstat( path.join( user.path, "fs/", req.body.path, file ) )
-              ).isFile()
-                ? "file"
-                : "directory";
-              const name = path.basename( path.join( user.path, "fs/", req.body.path, file ) );
-
-              return {
-                type,
-                name
-              };
-            } catch ( _err ) {
-              return false;
-            }
-          } )
-        ).then( outputFiles => {
-          return res.json( {
-            files: outputFiles.filter( file => !!file )
-          } );
-        } );
-      } );
-
-      this.API.request.post( "/app/files/get/thumbnails-small", async ( req, res ) => {
-        const { username } = req.headers as {
-        username: string
-      };
-
-        if ( !req.body.path ) {
-          return res.json( { files: [] } );
-        }
-
-        const user = new YourDashUser( username );
-
-        let files: string[];
-
-        try {
-          files = await fs.readdir( path.join( user.path, "fs/", req.body.path ) );
-        } catch ( _err ) {
-          files = [];
-        }
-
-        return res.json( {
-          files: ( await Promise.all(
-            files.map( async file => {
-              try {
-                const type = ( await fs.lstat( path.join( user.path, "fs/", req.body.path, file ) ) ).isFile()
-                  ? "file"
-                  : "directory";
-
-                const name = path.basename( path.join( user.path, "fs/", req.body.path, file ) );
-
-                const extension = path.extname( path.join( user.path, "fs/", req.body.path, file ) );
-
-                let icon = "";
-
-                switch ( extension ) {
-                case ".png":
-                case ".jpg":
-                case ".jpeg":
-                case ".webp":
-                case ".avif":
-                case ".svg":
-                case ".gif":
-                  // check if the file size is more than 1mb, if so, ignore generating the thumbnail and return an empty string
-                  if ( ( await fs.stat( path.join( user.path, "fs/", req.body.path, file ) ) ).size > 1024 * 1024 ) {
-                    icon = "";
-                  } else {
-                  // downscale the image
-                    const image = sharp( path.join( user.path, "fs/", req.body.path, file ) ).resize( 96, 96 );
-
-                    icon = authenticatedImage( username, authenticatedImageType.BASE64, ( await image.toBuffer() ).toString( "base64" ) );
-                  }
-                  break;
-                default:
-                  break;
-                }
-
-                return { type, name, icon };
-              } catch ( _err ) {
-                return false;
-              }
-            } )
-          ) ).filter( file => !!file )
-        } );
-      } );
-
-      this.API.request.post( "/app/files/get/file", async ( req, res ) => {
-        const { username } = req.headers as {
-        username: string
-      };
-
-        if ( !req.body.path ) {
-          return res.send( "[YOURDASH] Error: Unknown file" );
-        }
-
-        const user = new YourDashUser( username );
-
-        const filePath = path.join( user.path, "fs/", req.body.path );
-
-        try {
-          switch ( getFileType( filePath ) ) {
-          case FileTypes.PlainText:
-            return res.send( ( await fs.readFile( filePath ) ).toString() );
-          case FileTypes.Image:
-            return res.send( authenticatedImage( username, authenticatedImageType.FILE, filePath ) );
-          default:
-            return res.send( "[YOURDASH] Error: Unsupported file type" );
-          }
-
-        } catch ( _err ) {
-          return res.send( "[YOURDASH] Error: Unable to read file" );
-        }
-      } ); */
-
-    core.request.get(`/app/${this.api.moduleId}`, async (req, res) => {
-      return res.json({ message: `Hello world from ${this.api.applicationId}! 👋` });
+    core.request.get(`/`, async (req, res) => {
+      return res.json({ message: `Hello world from ${this.api.moduleId}! 👋` });
     });
 
-    core.request.get(`/app/${this.api.moduleId}/list/dir/@/`, async (req, res) => {
+    core.request.get(`/list/dir/@/`, async (req, res) => {
       // path
       const p = "/";
 
@@ -175,7 +42,7 @@ export default class FilesModule extends YourDashBackendModule {
       }
     });
 
-    core.request.get(`/app/${this.api.moduleId}/list/dir/@/:path`, async (req, res) => {
+    core.request.get(`/list/dir/@/:path`, async (req, res) => {
       // path
       const p = req.params.path;
 
@@ -192,6 +59,23 @@ export default class FilesModule extends YourDashBackendModule {
           contents: [],
         });
       }
+    });
+
+    core.request.get("/tabView/home", async (req, res) => {
+      return res.json({
+        recentFiles: [],
+        sharedFiles: [],
+        connections: [
+          {
+            serviceName: "Google Drive",
+            description: "Google cloud storage platform",
+            url: "https://drive.google.com",
+            quota: { max: 5, usage: Math.random() * 5, unit: "GB" },
+            id: "1000",
+            serviceLogo: undefined,
+          },
+        ],
+      } satisfies EndpointTabViewHome);
     });
   }
 }

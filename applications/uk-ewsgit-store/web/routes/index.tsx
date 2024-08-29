@@ -1,15 +1,14 @@
 import React from "react";
 import PromotedApplications from "./(components)/sections/promotedApplications/promotedApplications";
 import Heading from "@yourdash/uikit/components/heading/heading";
-import SidebarToggleButton from "@yourdash/uikit/views/sidebar/SidebarToggleButton";
+import styles from "./index.module.scss";
 
 const ApplicationIndexPage: React.FC = () => {
   return (
-    <>
-      <SidebarToggleButton />
+    <div className={styles.page}>
       <Heading text={"YourDash Store"} />
       <PromotedApplications />
-    </>
+    </div>
   );
 };
 

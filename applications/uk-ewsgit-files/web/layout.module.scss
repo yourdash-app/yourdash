@@ -10,3 +10,18 @@
   grid-template-rows: 1fr;
   background: purple;
 }
+
+.tab {
+  background: green;
+
+  &.active {
+    background: palevioletred;
+  }
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
