@@ -74,6 +74,22 @@ export default class FilesModule extends YourDashBackendModule {
             id: "1000",
             serviceLogo: undefined,
           },
+          {
+            serviceName: "Google Drive 2",
+            description: "Google cloud storage platform",
+            url: "https://drive.google.com",
+            quota: { max: 5, usage: Math.random() * 5, unit: "GB" },
+            id: "1000",
+            serviceLogo: undefined,
+          },
+          {
+            serviceName: "Google Drive 3",
+            description: "Google cloud storage platform",
+            url: "https://drive.google.com",
+            quota: { max: 5, usage: Math.random() * 5, unit: "GB" },
+            id: "1000",
+            serviceLogo: undefined,
+          },
         ],
       } satisfies EndpointTabViewHome);
     });

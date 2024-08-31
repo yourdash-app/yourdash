@@ -3,24 +3,19 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
+@import "@yourdash/uikit/theme/themeValues";
+
 .component {
   display: flex;
-  flex-direction: column;
-  flex-grow: 1;
+  padding: 0.25rem;
+  background: hotpink;
+  border-radius: calc(var(#{$theme+$radius}) / 2);
 }
 
-.icon {
-  height: 4rem;
+.odd {
+  background: lightpink;
 }
 
-.label {
-
-}
-
-.description {
-
-}
-
-.quota {
-
+.even {
+  background: lightblue;
 }

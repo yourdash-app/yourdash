@@ -1,4 +1,8 @@
 import clippy from "@yourdash/shared/web/helpers/clippy";
+import Heading from "@yourdash/uikit/components/heading/heading";
+import Sidebar from "@yourdash/uikit/views/sidebar/Sidebar";
+import SidebarContainer from "@yourdash/uikit/views/sidebar/SidebarContainer";
+import SidebarToggleButton from "@yourdash/uikit/views/sidebar/SidebarToggleButton";
 import React, { useEffect, useState } from "react";
 import Button from "@yourdash/uikit/components/button/button";
 import TabView from "./views/tab/tabView";
@@ -31,37 +35,49 @@ const ApplicationLayout: React.FC = () => {
   }, [tabs]);
 
   return (
-    <div className={styles.page}>
-      <section className={styles.tabBar}>
-        {tabs.map((tab) => {
-          return (
-            <Button
-              className={clippy(styles.tab, activeTabId === tab.id && styles.active)}
-              key={tab.id}
-              text={tab.displayName}
-              onClick={() => {
-                setActiveTabId(tab.id);
-              }}
-            />
-          );
-        })}
-        <IconButton
-          icon={UKIcon.Plus}
+    <SidebarContainer>
+      <Sidebar>
+        <Heading text={"Files"} />
+        <Button
+          text={"Hello world"}
           onClick={() => {
-            setTabs([...tabs, homeTab()]);
+            return 0;
           }}
-          accessibleLabel="New tab"
         />
-      </section>
-      {tabs.find((tab) => tab.id === activeTabId)?.view !== undefined ? (
-        <section className={styles.tabViewContainer}>
-          {/* eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain */}
-          <TabView view={tabs.find((tab) => tab.id === activeTabId)?.view!} />
+      </Sidebar>
+      <div className={styles.page}>
+        <section className={styles.tabBar}>
+          <SidebarToggleButton />
+          {tabs.map((tab) => {
+            return (
+              <Button
+                className={clippy(styles.tab, activeTabId === tab.id && styles.active)}
+                key={tab.id}
+                text={tab.displayName}
+                onClick={() => {
+                  setActiveTabId(tab.id);
+                }}
+              />
+            );
+          })}
+          <IconButton
+            icon={UKIcon.Plus}
+            onClick={() => {
+              setTabs([...tabs, homeTab()]);
+            }}
+            accessibleLabel="New tab"
+          />
         </section>
-      ) : (
-        <>UNKNOWN VIEW ERROR</>
-      )}
-    </div>
+        {tabs.find((tab) => tab.id === activeTabId)?.view !== undefined ? (
+          <section className={styles.tabViewContainer}>
+            {/* eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain */}
+            <TabView view={tabs.find((tab) => tab.id === activeTabId)?.view!} />
+          </section>
+        ) : (
+          <>UNKNOWN VIEW ERROR</>
+        )}
+      </div>
+    </SidebarContainer>
   );
 };
 
