@@ -4,7 +4,6 @@
  */
 
 import coreCSI from "@yourdash/csi/coreCSI";
-import Spinner from "../spinner/spinner";
 import styles from "./image.module.scss";
 import { FC, useState } from "react";
 import clippy from "@yourdash/shared/web/helpers/clippy";
@@ -16,12 +15,11 @@ const Image: FC<{
   className?: string;
   authenticatedImage?: boolean;
   disableLazyLoading?: boolean;
-  disableSpinner?: boolean;
 }> = (props) => {
   const [loaded, setLoaded] = useState(false);
 
   return (
-    <div className={clippy(styles.componentContainer, props.containerClassName)}>
+    <div className={clippy(styles.componentContainer, props.containerClassName, !loaded && styles.loading)}>
       <img
         className={clippy(styles.component, props.className, loaded && styles.loaded)}
         draggable={false}
@@ -32,11 +30,6 @@ const Image: FC<{
         }}
         src={(props.authenticatedImage ? coreCSI.getInstanceUrl() : "") + props.src}
       />
-      {!loaded && !props.disableSpinner && (
-        <div className={clippy(styles.spinner)}>
-          <Spinner />
-        </div>
-      )}
     </div>
   );
 };

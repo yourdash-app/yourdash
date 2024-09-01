@@ -13,8 +13,8 @@
 
   &:hover {
     & > .img {
-    scale: 1.2;
-    transition: scale 50ms ease-in-out;
+      transition: scale 50ms ease-in-out;
+      scale: 1.2;
     }
   }
 }
