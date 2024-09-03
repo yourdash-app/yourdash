@@ -22,6 +22,7 @@ const Widget: React.FC<{ data: IApplicationShortcutWidget["data"] }> = ({ data }
       }}
     >
       <Image
+        noRounding={true}
         className={styles.img}
         src={data.icon}
         authenticatedImage={true}

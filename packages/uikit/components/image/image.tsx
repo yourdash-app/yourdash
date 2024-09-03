@@ -15,13 +15,14 @@ const Image: FC<{
   className?: string;
   authenticatedImage?: boolean;
   disableLazyLoading?: boolean;
+  noRounding?: boolean;
 }> = (props) => {
   const [loaded, setLoaded] = useState(false);
 
   return (
     <div className={clippy(styles.componentContainer, props.containerClassName, !loaded && styles.loading)}>
       <img
-        className={clippy(styles.component, props.className, loaded && styles.loaded)}
+        className={clippy(styles.component, props.className, loaded && styles.loaded, props.noRounding && styles.noRounding)}
         draggable={false}
         loading={props.disableLazyLoading ? "eager" : "lazy"}
         alt={props.accessibleLabel}
