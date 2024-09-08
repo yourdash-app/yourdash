@@ -6,10 +6,17 @@
 import { YourDashBackendModule, YourDashModuleArguments } from "@yourdash/backend/src/core/coreApplicationManager.js";
 import type { IWidgetGrid } from "../shared/types/widgetGrid.js";
 import core from "@yourdash/backend/src/core/core.js";
+import DashWidget from "./widget.js";
 
 export default class DashModule extends YourDashBackendModule {
+  widgets: DashWidget<string, object>[];
+
   constructor(args: YourDashModuleArguments) {
     super(args);
+
+    this.widgets = [];
+
+    return this;
   }
 
   public loadEndpoints() {
@@ -163,7 +170,7 @@ export default class DashModule extends YourDashBackendModule {
     });
 
     core.request.get("/api-version", async (req, res) => {
-      return res.json({ version: 1 })
-    })
+      return res.json({ version: 1 });
+    });
   }
 }

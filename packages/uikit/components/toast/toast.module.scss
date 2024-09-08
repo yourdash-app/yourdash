@@ -5,31 +5,59 @@
 
 .container {
   position: fixed;
-  bottom: 1rem;
-  right: 1rem;
+  top: 0.5rem;
+  right: 0.5rem;
   z-index: 10000;
   text-align: start;
+  opacity: 0.75;
+  overflow: hidden;
+  pointer-events: none;
+  gap: 0.5rem;
+  display: flex;
+  flex-direction: column;
 }
 
 .component {
   border-radius: 0.5rem;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 1rem;
+  pointer-events: none;
+  backdrop-filter: blur(1rem);
+  max-width: 32rem;
+}
+
+.cardContent {
+  gap: 0;
+  margin-right: -0.5rem;
 }
 
 .success {
-  border-color: #2ea967;
+  border-right: 0.5rem solid #2ea967;
 }
 
 .error {
-  border-color: #ff4500;
+  border-right: 0.5rem solid #ff4500;
 }
 
 .warning {
-  border-color: #daa520;
+  border-right: 0.5rem solid #daa520;
 }
 
 .info {
-  border-color: #00b8ff;
+  border-right: 0.5rem solid #00b8ff;
+}
+
+.heading {
+  text-align: left;
+  line-height: 1;
+  padding-top: 0.25rem;
+}
+
+.body {
+
+}
+
+.pointerEvents {
+  pointer-events: all;
 }

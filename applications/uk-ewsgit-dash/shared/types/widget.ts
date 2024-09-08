@@ -4,11 +4,12 @@
  */
 
 // eslint-disable-next-line
-export interface IWidget<WidgetType extends string, Data extends { [key: string]: any }> {
+export interface IWidget<WidgetId extends string, Data extends { [key: string]: any }> {
   position: { x: number; y: number };
-  id: WidgetType;
-  size: {
-    preferred: { width: number; height: number };
+  size: { width: number; height: number };
+  widgetType: WidgetId;
+  allowedSize: {
+    default: { width: number; height: number };
     min: { width: number; height: number };
     max: { width: number; height: number };
   };
