@@ -1,12 +1,11 @@
 import React, { useRef } from "react";
 import Card from "../../components/card/card";
 import Container from "../../components/container/container";
-import remToPx from "../../core/remToPx";
 import styles from "./carousel.module.scss";
 import clippy from "@yourdash/shared/web/helpers/clippy";
 
 const Carousel: React.FC<{
-  items: React.ReactElement[];
+  items: { element: React.ReactElement; id: string }[];
   className?: string;
 }> = ({ items, className }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -18,7 +17,14 @@ const Carousel: React.FC<{
         ref={scrollRef}
       >
         {items.map((child) => {
-          return <div className={styles.page}>{child}</div>;
+          return (
+            <div
+              key={child.id}
+              className={styles.page}
+            >
+              {child.element}
+            </div>
+          );
         })}
         <Card
           containerClassName={styles.indicatorContainer}
@@ -29,10 +35,25 @@ const Carousel: React.FC<{
               <button
                 className={styles.pageIndicator}
                 onClick={() => {
-                  scrollRef.current?.scrollIntoView({ behavior: "smooth" });
-                  scrollRef.current?.scrollTo({
+                  const scrollElement = scrollRef.current;
+
+                  if (!scrollElement) {
+                    return;
+                  }
+
+                  scrollElement.scrollIntoView({ behavior: "smooth" });
+
+                  const carouselTargetPage = scrollElement.children[index] as HTMLDivElement;
+                  console.log("Current Scroll Left: ", scrollElement.scrollLeft);
+                  console.log("Current Page ScrollLeft: ", carouselTargetPage.offsetLeft);
+                  console.log("Current Page Scroll Position: ", carouselTargetPage.offsetLeft + scrollElement.scrollLeft);
+
+                  scrollElement.scrollTo({
                     behavior: "smooth",
-                    left: (index + 1) * ((scrollRef.current.clientWidth / items.length - remToPx(0.5) * (items.length - 1)) * 0.8),
+                    left:
+                      carouselTargetPage.getBoundingClientRect().left -
+                      scrollElement.getBoundingClientRect().left +
+                      carouselTargetPage.scrollLeft,
                   });
                 }}
               />
