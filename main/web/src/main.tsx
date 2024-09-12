@@ -22,6 +22,7 @@ import ErrorElement from "./ErrorElement";
 import Index from "./root/index/Index";
 import LoginRedirect from "./deprecatedLogin/Redirect";
 import LoginSuccessPage from "./login/success/index.js";
+import NotFoundPage from "./root/notFound/notFound";
 import ProjectsIndexPage from "./root/projects/Index";
 import ChipletRootIntegration from "@yourdash/chiplet/RootIntegration";
 import LinkerDesktopClientStartupPage from "./root/linkerDesktopClientStartup/Index";
@@ -49,6 +50,10 @@ function main() {
                   <Route
                     index
                     element={<Index />}
+                  />
+                  <Route
+                    path={"*"}
+                    element={<NotFoundPage />}
                   />
                 </Route>
                 <Route element={<Navigation subtitle={"Docs"} />}>
@@ -92,7 +97,7 @@ function main() {
                   />
                   <Route
                     path={"signup"}
-                    element={<>TODO: implement me</>}
+                    element={<>TODO: implement me @ewsgit</>}
                   />
                   <Route path={"instance"}>
                     <Route

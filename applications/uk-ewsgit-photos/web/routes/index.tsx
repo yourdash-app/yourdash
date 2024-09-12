@@ -17,7 +17,6 @@ const IndexPage: FC = () => {
     <>
       <Box className={styles.header}>
         <Image
-          disableSpinner={true}
           disableLazyLoading={true}
           accessibleLabel={"Photos logo"}
           src={PHOTOS_LOGO}

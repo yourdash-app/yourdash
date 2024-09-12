@@ -5,6 +5,7 @@
 
 import Button from "@yourdash/uikit/components/button/button.js";
 import Card from "@yourdash/uikit/components/card/card.js";
+import Heading from "@yourdash/uikit/components/heading/heading";
 import Text from "@yourdash/uikit/components/text/text.js";
 
 interface IKeyPointsCard {
@@ -29,9 +30,13 @@ const KeyPointsCard: React.FC<IKeyPointsCard> = ({ title, content, action }) => 
         </>
       }
     >
-      <h3 className={"text-4xl text-center font-semibold"}>{title}</h3>
+      <Heading
+        level={2}
+        text={title}
+        className={"!text-4xl font-semibold !text-start font-semibold pt-4"}
+      />
       <Text
-        className={"text-2xl text-center"}
+        className={"text-start"}
         text={content}
       />
     </Card>

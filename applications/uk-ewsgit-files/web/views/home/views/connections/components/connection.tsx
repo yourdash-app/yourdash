@@ -18,7 +18,6 @@ const Connection: React.FC<IHomeConnection> = ({ description, quota, url, servic
   return (
     <Card className={styles.component}>
       <Image
-        disableSpinner
         className={styles.icon}
         accessibleLabel={""}
         src={serviceLogo || "/assets/productLogos/yourdash.svg"}

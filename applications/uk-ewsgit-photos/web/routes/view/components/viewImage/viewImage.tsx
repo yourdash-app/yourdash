@@ -20,7 +20,6 @@ const ViewImage: FC<{ mediaUrl: string }> = ({ mediaUrl }) => {
           className={styles.viewImage}
           src={mediaUrl}
           authenticatedImage
-          disableSpinner={false}
           accessibleLabel={""}
         />
         <Card className={styles.scale}>

@@ -41,7 +41,6 @@ const OnBoarding: React.FC<{
         />
       )}
       <Image
-        disableSpinner
         className={styles.headerImage}
         src={page.headerImage}
         accessibleLabel=""
