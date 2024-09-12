@@ -44,6 +44,7 @@ const Carousel: React.FC<{
                   scrollElement.scrollIntoView({ behavior: "smooth" });
 
                   const carouselTargetPage = scrollElement.children[index] as HTMLDivElement;
+
                   console.log("Current Scroll Left: ", scrollElement.scrollLeft);
                   console.log("Current Page ScrollLeft: ", carouselTargetPage.offsetLeft);
                   console.log("Current Page Scroll Position: ", carouselTargetPage.offsetLeft + scrollElement.scrollLeft);

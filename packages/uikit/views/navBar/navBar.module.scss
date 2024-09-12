@@ -1,7 +1,7 @@
 @import "@yourdash/uikit/theme/themeValues";
 
 .component {
-    --nav-height: 2.5rem;
+    --nav-height: calc(2rem + var(#{$theme+$padding}));
 
     width: 100%;
     height: calc(var(--nav-height) + calc(var(#{$theme+$padding}) * 2));

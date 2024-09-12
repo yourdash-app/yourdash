@@ -5,14 +5,14 @@
 
 .container {
   position: fixed;
-  top: 0.5rem;
-  right: 0.5rem;
+  top: 0;
+  right: 0;
   z-index: 10000;
   text-align: start;
   opacity: 0.75;
   overflow: hidden;
   pointer-events: none;
-  gap: 0.5rem;
+  gap: 0.25rem;
   display: flex;
   flex-direction: column;
 }
@@ -25,6 +25,11 @@
   pointer-events: none;
   backdrop-filter: blur(1rem);
   max-width: 32rem;
+  margin-right: 0.5rem;
+
+  &:first-child {
+    margin-top: 0.5rem;
+  }
 }
 
 .cardContent {

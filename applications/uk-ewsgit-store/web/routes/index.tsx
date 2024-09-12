@@ -6,8 +6,9 @@ import styles from "./index.module.scss";
 const ApplicationIndexPage: React.FC = () => {
   return (
     <div className={styles.page}>
-      <Heading text={"YourDash Store"} />
+      <Heading text={"Recommended Applications"} />
       <PromotedApplications />
+      <Heading text={"Categories"} />
     </div>
   );
 };
