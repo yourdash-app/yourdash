@@ -24,7 +24,6 @@ import LoginRedirect from "./deprecatedLogin/Redirect";
 import LoginSuccessPage from "./login/success/index.js";
 import NotFoundPage from "./root/notFound/notFound";
 import ProjectsIndexPage from "./root/projects/Index";
-import ChipletRootIntegration from "@yourdash/chiplet/RootIntegration";
 import LinkerDesktopClientStartupPage from "./root/linkerDesktopClientStartup/Index";
 import HostedApplicationRouter from "./app/HostedApplicationRouter";
 import WebsocketToasts from "./WebsocketToasts";
@@ -32,106 +31,6 @@ import WebsocketToasts from "./WebsocketToasts";
 const AppRouter = loadable(() => import("./app/AppRouter"));
 const DocsRouter = loadable(() => import("./root/docs/DocsRouter"));
 const ProjectsRouter = loadable(() => import("./root/projects/ProjectsRouter"));
-
-function main() {
-  ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-    <UIKitRoot>
-      <WebsocketToasts />
-      <RouterProvider
-        router={createBrowserRouter(
-          createRoutesFromElements(
-            <Route errorElement={<ErrorElement />}>
-              <Route
-                path={"/linker-desktop-client-startup"}
-                element={<LinkerDesktopClientStartupPage />}
-              />
-              <Route element={<Navigation />}>
-                <Route
-                  index
-                  element={<Index />}
-                />
-                <Route
-                  path={"*"}
-                  element={<NotFoundPage />}
-                />
-              </Route>
-              <Route element={<Navigation subtitle={"Docs"} />}>
-                <Route
-                  path={"docs/*"}
-                  element={<DocsLayout />}
-                >
-                  <Route
-                    path={"*"}
-                    element={<DocsRouter />}
-                  />
-                </Route>
-              </Route>
-              <Route element={<Navigation subtitle={"Projects"} />}>
-                <Route
-                  path={"projects"}
-                  index
-                  element={<ProjectsIndexPage />}
-                />
-              </Route>
-              <Route
-                path={"projects/*"}
-                element={<ProjectsRouter />}
-              />
-              <Route
-                path={"project/*"}
-                element={<ProjectsRouter />}
-              />
-              <Route
-                path={"proj/*"}
-                element={<ProjectsRouter />}
-              />
-              <Route path={"login"}>
-                <Route
-                  index
-                  element={<LoginIndexPagePreload />}
-                />
-                <Route
-                  path={"success"}
-                  element={<LoginSuccessPage />}
-                />
-                <Route
-                  path={"signup"}
-                  element={<>TODO: implement me @ewsgit</>}
-                />
-                <Route path={"instance"}>
-                  <Route
-                    index
-                    element={<LoginInstancePage />}
-                  />
-                  <Route
-                    path={"*"}
-                    element={<LoginRedirect />}
-                  />
-                </Route>
-              </Route>
-              <Route path={"app"}>
-                <Route element={<AppLayout />}>
-                  <Route
-                    index
-                    element={<ApplicationRedirectToDash />}
-                  />
-                  <Route
-                    path={"a/*"}
-                    element={<AppRouter />}
-                  />
-                  <Route
-                    path={"h/*"}
-                    element={<HostedApplicationRouter />}
-                  />
-                </Route>
-              </Route>
-            </Route>,
-          ),
-        )}
-      />
-    </UIKitRoot>,
-  );
-}
 
 const element = document.getElementById("root") as HTMLElement;
 
@@ -146,4 +45,102 @@ loadingElement.innerText = "Loading YourDash...";
 
 element.appendChild(loadingElement);
 
-main();
+console.log(element);
+
+ReactDOM.createRoot(element).render(
+  <UIKitRoot>
+    <WebsocketToasts />
+    <RouterProvider
+      router={createBrowserRouter(
+        createRoutesFromElements(
+          <Route errorElement={<ErrorElement />}>
+            <Route
+              path={"/linker-desktop-client-startup"}
+              element={<LinkerDesktopClientStartupPage />}
+            />
+            <Route element={<Navigation />}>
+              <Route
+                index
+                element={<Index />}
+              />
+              <Route
+                path={"*"}
+                element={<NotFoundPage />}
+              />
+            </Route>
+            <Route element={<Navigation subtitle={"Docs"} />}>
+              <Route
+                path={"docs/*"}
+                element={<DocsLayout />}
+              >
+                <Route
+                  path={"*"}
+                  element={<DocsRouter />}
+                />
+              </Route>
+            </Route>
+            <Route element={<Navigation subtitle={"Projects"} />}>
+              <Route
+                path={"projects"}
+                index
+                element={<ProjectsIndexPage />}
+              />
+            </Route>
+            <Route
+              path={"projects/*"}
+              element={<ProjectsRouter />}
+            />
+            <Route
+              path={"project/*"}
+              element={<ProjectsRouter />}
+            />
+            <Route
+              path={"proj/*"}
+              element={<ProjectsRouter />}
+            />
+            <Route path={"login"}>
+              <Route
+                index
+                element={<LoginIndexPagePreload />}
+              />
+              <Route
+                path={"success"}
+                element={<LoginSuccessPage />}
+              />
+              <Route
+                path={"signup"}
+                element={<>TODO: implement me @ewsgit</>}
+              />
+              <Route path={"instance"}>
+                <Route
+                  index
+                  element={<LoginInstancePage />}
+                />
+                <Route
+                  path={"*"}
+                  element={<LoginRedirect />}
+                />
+              </Route>
+            </Route>
+            <Route path={"app"}>
+              <Route element={<AppLayout />}>
+                <Route
+                  index
+                  element={<ApplicationRedirectToDash />}
+                />
+                <Route
+                  path={"a/*"}
+                  element={<AppRouter />}
+                />
+                <Route
+                  path={"h/*"}
+                  element={<HostedApplicationRouter />}
+                />
+              </Route>
+            </Route>
+          </Route>,
+        ),
+      )}
+    />
+  </UIKitRoot>,
+);

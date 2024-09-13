@@ -4,7 +4,7 @@
  */
 
 import Redirect from "@yourdash/uikit/components/redirect/redirect";
-import OnBoarding from "@yourdash/uikit/views/onBoarding/onBoarding"
+import OnBoarding from "@yourdash/uikit/views/onBoarding/onBoarding";
 import React from "react";
 import { Routes, Route } from "react-router";
 import applicationMeta, { modulePath } from "./meta.yourdash";
@@ -20,95 +20,99 @@ import PanelPersonalizationIndexPage from "./routes/personalization/panel/index"
 import ProfileIndexPage from "./pages/profile/Index";
 import DeveloperToolsIndexPage from "./pages/developer/Index";
 import AccessibilityIndexPage from "./pages/accessibility/Index";
-import SETTINGS_ICON from "./../icon.avif"
+import SETTINGS_ICON from "./../icon.avif";
 
 const SettingsRouter: React.FC = () => (
   <Routes>
-    <Route element={<OnBoarding
-      meta={applicationMeta}
-      pages={ [
-        {
-          headerImage: SETTINGS_ICON,
-          header: "YourDash Settings",
-          body: "Configure YourDash and it's applications",
-          actions: [
+    <Route
+      element={
+        <OnBoarding
+          meta={applicationMeta}
+          pages={[
             {
-              label: "Continue",
-              onClick: () => { },
-              changeTo: "next"
-            }
-          ]
-        }
-      ] }
-    />}>
-    <Route element={<SettingsLayout />}>
-      <Route
-        index
-        element={<IndexPage />}
-      />
-      <Route path={"cat"}>
+              headerImage: SETTINGS_ICON,
+              header: "YourDash Settings",
+              body: "Configure YourDash and it's applications",
+              actions: [
+                {
+                  label: "Continue",
+                  onClick: () => {},
+                  changeTo: "next",
+                },
+              ],
+            },
+          ]}
+        />
+      }
+    >
+      <Route element={<SettingsLayout />}>
         <Route
           index
-          element={<Redirect to={`${modulePath}/`} />}
+          element={<IndexPage />}
         />
-        {/* Category Name */}
-        <Route path={":categoryName"}>
+        <Route path={"cat"}>
           <Route
             index
-            element={<CategoryNamePage />}
+            element={<Redirect to={`${modulePath}/`} />}
+          />
+          {/* Category Name */}
+          <Route path={":categoryName"}>
+            <Route
+              index
+              element={<CategoryNamePage />}
+            />
+            <Route
+              path={":settingName"}
+              // TODO: implement this for showing just one setting
+              element={<SingleSettingPage />}
+            />
+          </Route>
+        </Route>
+        <Route path={"profile"}>
+          <Route
+            index
+            element={<ProfileIndexPage />}
+          />
+        </Route>
+        <Route path={"personalization"}>
+          <Route
+            index
+            element={<PersonalizationIndexPage />}
           />
           <Route
-            path={":settingName"}
-            // TODO: implement this for showing just one setting
-            element={<SingleSettingPage />}
+            path={"dashboard"}
+            element={<DashboardPersonalizationIndexPage />}
+          />
+          <Route
+            path={"panel"}
+            element={<PanelPersonalizationIndexPage />}
+          />
+        </Route>
+        <Route path={"session"}>
+          <Route
+            index
+            element={<SessionIndexPage />}
+          />
+        </Route>
+        <Route path={"accessibility"}>
+          <Route
+            index
+            element={<AccessibilityIndexPage />}
+          />
+        </Route>
+        <Route path={"admin"}>
+          <Route
+            index
+            element={<AdminToolsIndexPage />}
+          />
+        </Route>
+        <Route path={"developer"}>
+          <Route
+            index
+            element={<DeveloperToolsIndexPage />}
           />
         </Route>
       </Route>
-      <Route path={"profile"}>
-        <Route
-          index
-          element={<ProfileIndexPage />}
-        />
-      </Route>
-      <Route path={"personalization"}>
-        <Route
-          index
-          element={<PersonalizationIndexPage />}
-        />
-        <Route
-          path={"dashboard"}
-          element={<DashboardPersonalizationIndexPage />}
-        />
-        <Route
-          path={"panel"}
-          element={<PanelPersonalizationIndexPage />}
-        />
-      </Route>
-      <Route path={"session"}>
-        <Route
-          index
-          element={<SessionIndexPage />}
-        />
-      </Route>
-      <Route path={"accessibility"}>
-        <Route
-          index
-          element={<AccessibilityIndexPage />}
-        />
-      </Route>
-      <Route path={"admin"}>
-        <Route
-          index
-          element={<AdminToolsIndexPage />}
-        />
-      </Route>
-      <Route path={"developer"}>
-        <Route
-          index
-          element={<DeveloperToolsIndexPage />}
-        />
-      </Route>
-    </Route>
     </Route>
   </Routes>
 );

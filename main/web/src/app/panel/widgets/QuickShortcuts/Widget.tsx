@@ -12,16 +12,13 @@ import { useNavigate } from "react-router-dom";
 import coreCSI from "@yourdash/csi/coreCSI";
 import styles from "./Widget.module.scss";
 import React from "react";
-import { EndpointCorePanelQuickShortcuts } from "@yourdash/shared/endpoints/core/panel/quickShortcuts"
+import { EndpointCorePanelQuickShortcuts } from "@yourdash/shared/endpoints/core/panel/quickShortcuts";
 
 const QuickShortcuts: React.FC<{ side: "top" | "right" | "bottom" | "left" }> = ({ side }) => {
   const navigate = useNavigate();
 
   const [num, setNum] = React.useState<number>(0);
-  const modules =
-    useResource<
-      EndpointCorePanelQuickShortcuts
-    >(() => coreCSI.getJson("/core/panel/quick-shortcuts"), [num]) || [];
+  const modules = useResource<EndpointCorePanelQuickShortcuts>(() => coreCSI.getJson("/core/panel/quick-shortcuts"), [num]) || [];
 
   // @ts-ignore
   window.__yourdashCorePanelQuickShortcutsReload = () => {

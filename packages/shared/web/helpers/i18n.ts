@@ -1,4 +1,4 @@
-import useToast from '@yourdash/uikit/core/toast';
+import useToast from "@yourdash/uikit/core/toast";
 /*
  * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
@@ -72,8 +72,8 @@ export default function useTranslate(application: string) {
             type: "error",
             content: {
               body: `This page is currently missing translation into your language (${language}) and the default fallback language (en-GB)`,
-              title: "Localization Error"
-            }
+              title: "Localization Error",
+            },
           });
           return;
         }

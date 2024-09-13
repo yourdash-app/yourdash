@@ -5,11 +5,11 @@ import Sidebar from "@yourdash/uikit/views/sidebar/Sidebar";
 import Button from "@yourdash/uikit/components/button/button";
 import { useNavigateTo } from "../meta.yourdash";
 import NavBar from "@yourdash/uikit/views/navBar/navBar";
-import STORE_ICON from "../../icon.avif"
-import NavImage from "@yourdash/uikit/views/navBar/components/navImage/navImage"
-import NavTitle from "@yourdash/uikit/views/navBar/components/navTitle/navTitle"
+import STORE_ICON from "../../icon.avif";
+import NavImage from "@yourdash/uikit/views/navBar/components/navImage/navImage";
+import NavTitle from "@yourdash/uikit/views/navBar/components/navTitle/navTitle";
 import SidebarToggleButton from "@yourdash/uikit/views/sidebar/SidebarToggleButton";
-import styles from "./layout.module.scss"
+import styles from "./layout.module.scss";
 
 const ApplicationLayout: React.FC = () => {
   const navigateTo = useNavigateTo();
@@ -27,38 +27,38 @@ const ApplicationLayout: React.FC = () => {
           }
         />
         <div className={styles.content}>
-        <Sidebar>
-          <Button
-            text={"Home"}
-            onClick={() => {
-              navigateTo("/");
-            }}
-          />
-          <Button
-            text={"Search"}
-            onClick={() => {
-              navigateTo("/search");
-            }}
-          />
-          <Button
-            text={"Applications"}
-            onClick={() => {
-              navigateTo("/applications");
-            }}
-          />
-          <Button
-            text={"Modules"}
-            onClick={() => {
-              navigateTo("/modules");
-            }}
-          />
-          <Button
-            text={"Manage Installed"}
-            onClick={() => {
-              navigateTo("/manage");
-            }}
-          />
-        </Sidebar>
+          <Sidebar>
+            <Button
+              text={"Home"}
+              onClick={() => {
+                navigateTo("/");
+              }}
+            />
+            <Button
+              text={"Search"}
+              onClick={() => {
+                navigateTo("/search");
+              }}
+            />
+            <Button
+              text={"Applications"}
+              onClick={() => {
+                navigateTo("/applications");
+              }}
+            />
+            <Button
+              text={"Modules"}
+              onClick={() => {
+                navigateTo("/modules");
+              }}
+            />
+            <Button
+              text={"Manage Installed"}
+              onClick={() => {
+                navigateTo("/manage");
+              }}
+            />
+          </Sidebar>
           <Outlet />
         </div>
       </SidebarContainer>
