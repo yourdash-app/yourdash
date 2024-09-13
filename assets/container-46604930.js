@@ -1,0 +1,1 @@
+import{Q as t,b as s,g as c,q as l,p as o}from"./index-5c94e495.js";const a="_component_td4gi_10",m={component:a},r=e=>{const n=e.level||t();return s.jsx("div",{className:c(m.component,e.className,l(n)),children:s.jsx(o,{children:e.children})})};export{r as C};

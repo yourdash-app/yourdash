@@ -1,1 +1,0 @@
-import{j as t,R as e,a as o}from"./index-35df064e.js";const s=()=>t.jsx(t.Fragment,{children:"Code Studio Application (WIP)"}),n=()=>t.jsx(e,{children:t.jsx(o,{index:!0,element:t.jsx(s,{})})});export{n as default};
