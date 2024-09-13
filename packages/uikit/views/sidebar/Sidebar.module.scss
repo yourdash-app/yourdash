@@ -8,52 +8,40 @@
 .component {
   height: 100%;
   background: var(#{$theme+$background});
-  border: 0;
-  padding: 0;
   pointer-events: none;
   opacity: 0;
-  width: 0;
-  transition: var(#{$theme+$transition});
+  border: var(#{$theme+$border});
+  border-top: 0;
+  border-bottom: 0;
+  border-left: 0;
   flex-direction: column;
+  max-height: 100%;
+  max-width: 0;
+  transition: transform var(#{$theme+$transition+$transition}), max-height var(#{$theme+$transition+$transition});
+  transform: translateX(-100%);
+  visibility: hidden;
+  padding: 0;
 
   @media (max-width: $sizeTablet) {
-    width: 100%;
+    max-width: 100%;
+    max-height: 0;
     height: max-content;
   }
-}
 
-@keyframes animate-in {
-  0% {
-    opacity: 0;
-    width: auto;
-    padding: var(#{$theme+$padding});
-    border: var(#{$theme+$border});
-    border-top: 0;
-    border-bottom: 0;
-    border-left: 0;
-  }
-  50% {
-    opacity: 0;
-    width: auto;
-    padding: var(#{$theme+$padding});
-    border: var(#{$theme+$border});
-    border-top: 0;
-    border-bottom: 0;
-    border-left: 0;
-  }
-  100% {
-    opacity: 1;
-    width: auto;
-    padding: var(#{$theme+$padding});
-    border: var(#{$theme+$border});
-    border-top: 0;
-    border-bottom: 0;
-    border-left: 0;
+  >*[type="button"] {
+    min-width: 100%;
   }
 }
 
 .open {
   pointer-events: all;
+  opacity: 1;
+  transform: translateX(0);
+  visibility: visible;
+  max-width: 32rem;
+  padding: var(#{$theme+$padding});
 
-  animation: animate-in 0.25s ease-in-out forwards;
+  @media (max-width: $sizeTablet) {
+    height: max-content;
+  }
 }

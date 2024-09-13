@@ -3,7 +3,7 @@
     <package-json value="$PROJECT_DIR$/packages/opengfx-engine/package.json" />
     <command value="run" />
     <scripts>
-      <script value="2d:gfxts-one" />
+      <script value="dev:2d:gfxts-one" />
     </scripts>
     <node-interpreter value="project" />
     <envs />

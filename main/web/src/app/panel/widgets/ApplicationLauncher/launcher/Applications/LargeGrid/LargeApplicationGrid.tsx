@@ -6,60 +6,56 @@
 import Card from "@yourdash/uikit/components/card/card";
 import ContextMenu from "@yourdash/uikit/components/contextMenu/contextMenu.js";
 import React from "react";
-import IPanelApplicationsLauncherApplication from "@yourdash/shared/core/panel/applicationsLauncher/application";
-import csi from "@yourdash/csi/csi";
+import IPanelApplicationsLauncherFrontendModule from "@yourdash/shared/core/panel/applicationsLauncher/application";
+import coreCSI from "@yourdash/csi/coreCSI";
 import styles from "./LargeApplicationGrid.module.scss";
 import { useNavigate } from "react-router";
 
 const LargeApplicationGrid: React.FC<{
-  applications: IPanelApplicationsLauncherApplication[];
-}> = ({ applications }) => {
+  modules: IPanelApplicationsLauncherFrontendModule[];
+}> = ({ modules }) => {
   const navigate = useNavigate();
 
   return (
     <section className={styles.grid}>
-      {applications.map((application) => {
+      {modules.map((module) => {
         return (
           <ContextMenu
             items={[
               {
                 label: "Pin To Panel",
-                onClick() {
-                  csi.postJson("/core/panel/quick-shortcuts/create", { name: application.name }, () => {
-                    // @ts-ignore
-                    window.__yourdashCorePanelQuickShortcutsReload?.();
-                    return 0;
-                  });
+                async onClick() {
+                  await coreCSI.postJson("/core/panel/quick-shortcuts/create", { id: module.id, moduleType: module.type });
+                  // @ts-ignore
+                  window.__yourdashCorePanelQuickShortcutsReload?.();
+                  return 0;
                 },
               },
               {
                 label: "Open In New Tab",
                 onClick() {
-                  window.open(
-                    `${window.location.origin}${window.location.pathname}/app/a/${application.name}`,
-                    "_blank",
-                  );
+                  window.open(`${window.location.origin}${window.location.pathname}/app/a/${module.id}`, "_blank");
                   return 0;
                 },
               },
             ]}
             className={styles.item}
-            key={application.name}
+            key={module.id}
           >
             <Card
               onClick={() => {
-                navigate(`/app/a/${application.name}`);
+                navigate(module.url);
               }}
               className={styles.itemContent}
             >
               <img
                 className={styles.itemIcon}
-                src={`${csi.getInstanceUrl()}${application.icon}`}
+                src={`${coreCSI.getInstanceUrl()}${module.icon}`}
                 draggable={false}
                 loading={"lazy"}
                 alt=""
               />
-              <span className={styles.itemLabel}>{application.displayName}</span>
+              <span className={styles.itemLabel}>{module.displayName}</span>
             </Card>
           </ContextMenu>
         );

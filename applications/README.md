@@ -16,8 +16,9 @@ applications
 │   ├── application.json
 │   ├── icon.avif
 │   ?── crossCompat
-│   │   └── [compat applicationid]
+│   │   └── [applicationid]
 │   │       ├── web
+│   │       ├── shared
 │   │       ├── backend
 │   │       └── assets
 │   │

@@ -1,0 +1,10 @@
+enum FILES_VIEW_TYPE {
+  LIST,
+  GRID,
+  CAROUSEL,
+  HOME,
+  PEOPLE,
+  PANES,
+}
+
+export default FILES_VIEW_TYPE;

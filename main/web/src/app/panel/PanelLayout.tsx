@@ -8,7 +8,7 @@ import { Outlet } from "react-router";
 import Panel from "./Panel";
 import clippy from "@yourdash/shared/web/helpers/clippy";
 import styles from "./PanelLayout.module.scss";
-import csi from "@yourdash/csi/csi";
+import coreCSI from "@yourdash/csi/coreCSI";
 
 const PanelLayout: React.FC = () => {
   const [panelSide, setPanelSide] = React.useState<"top" | "right" | "bottom" | "left" | undefined>(undefined);
@@ -18,7 +18,7 @@ const PanelLayout: React.FC = () => {
     if (window.innerWidth < 768) {
       setPanelSide("bottom");
     } else {
-      setPanelSide(csi.userDB.get("core:panel:side") || "left");
+      setPanelSide(coreCSI.userDB.get("core:panel:side") || "left");
     }
   }, [reloadNumber]);
 
@@ -26,14 +26,14 @@ const PanelLayout: React.FC = () => {
     if (window.innerWidth < 768) {
       setPanelSide("bottom");
     } else {
-      setPanelSide(csi.userDB.get("core:panel:side") || "left");
+      setPanelSide(coreCSI.userDB.get("core:panel:side") || "left");
     }
 
     window.addEventListener("resize", () => {
       if (window.innerWidth < 768) {
         setPanelSide("bottom");
       } else {
-        setPanelSide(csi.userDB.get("core:panel:side") || "left");
+        setPanelSide(coreCSI.userDB.get("core:panel:side") || "left");
       }
     });
   }, []);
@@ -46,8 +46,14 @@ const PanelLayout: React.FC = () => {
     case "top":
       return (
         <div className={clippy(styles.layout, styles.top)}>
-          <Panel side={"top"} setLayoutReloadNumber={(num) => setReloadNumber(num)} />
-          <div key={1} className={styles.applicationFrame}>
+          <Panel
+            side={"top"}
+            setLayoutReloadNumber={(num) => setReloadNumber(num)}
+          />
+          <div
+            key={1}
+            className={styles.applicationFrame}
+          >
             <Outlet key={1} />
           </div>
         </div>
@@ -55,8 +61,14 @@ const PanelLayout: React.FC = () => {
     case "left":
       return (
         <div className={clippy(styles.layout, styles.left)}>
-          <Panel side={"left"} setLayoutReloadNumber={(num) => setReloadNumber(num)} />
-          <div key={1} className={styles.applicationFrame}>
+          <Panel
+            side={"left"}
+            setLayoutReloadNumber={(num) => setReloadNumber(num)}
+          />
+          <div
+            key={1}
+            className={styles.applicationFrame}
+          >
             <Outlet key={1} />
           </div>
         </div>
@@ -64,19 +76,31 @@ const PanelLayout: React.FC = () => {
     case "bottom":
       return (
         <div className={clippy(styles.layout, styles.bottom)}>
-          <Panel side={"bottom"} setLayoutReloadNumber={(num) => setReloadNumber(num)} />
-          <div key={1} className={styles.applicationFrame}>
+          <div
+            key={1}
+            className={styles.applicationFrame}
+          >
             <Outlet key={1} />
           </div>
+          <Panel
+            side={"bottom"}
+            setLayoutReloadNumber={(num) => setReloadNumber(num)}
+          />
         </div>
       );
     case "right":
       return (
         <div className={clippy(styles.layout, styles.right)}>
-          <Panel side={"right"} setLayoutReloadNumber={(num) => setReloadNumber(num)} />
-          <div key={1} className={styles.applicationFrame}>
+          <div
+            key={1}
+            className={styles.applicationFrame}
+          >
             <Outlet key={1} />
           </div>
+          <Panel
+            side={"right"}
+            setLayoutReloadNumber={(num) => setReloadNumber(num)}
+          />
         </div>
       );
     default:

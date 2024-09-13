@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import csi from "@yourdash/csi/csi.js";
+import coreCSI from "@yourdash/csi/coreCSI";
 import EndpointResponseLoginInstanceMetadata from "@yourdash/shared/endpoints/login/instance/metadata.js";
 import clippy from "@yourdash/shared/web/helpers/clippy.js";
 import Button from "@yourdash/uikit/components/button/button.js";
@@ -29,9 +29,9 @@ const IndexCardsPage: FC<{ metadata?: EndpointResponseLoginInstanceMetadata }> =
   const [password, setPassword] = useState("");
 
   useEffect(() => {
-    if (csi.getUsername() !== "") {
-      setUsername(csi.getUsername());
-      fetch(`${csi.getInstanceUrl()}/login/user/${csi.getUsername()}`, {
+    if (coreCSI.getUsername() !== "") {
+      setUsername(coreCSI.getUsername());
+      fetch(`${coreCSI.getInstanceUrl()}/login/user/${coreCSI.getUsername()}`, {
         mode: "cors",
         headers: {
           "Access-Control-Allow-Origin": "*",
@@ -43,7 +43,7 @@ const IndexCardsPage: FC<{ metadata?: EndpointResponseLoginInstanceMetadata }> =
             setUser({ avatar: "", fullName: { first: "", last: "" }, isValid: false });
           } else {
             setUser({
-              avatar: `/login/user/${csi.getUsername()}/avatar`,
+              avatar: `/login/user/${coreCSI.getUsername()}/avatar`,
               fullName: resp.name,
               isValid: true,
             });
@@ -67,8 +67,8 @@ const IndexCardsPage: FC<{ metadata?: EndpointResponseLoginInstanceMetadata }> =
               accessibleLabel={"Your Avatar"}
             />
             <Heading
-              level={3}
-              text={`Hello, ${user.fullName.first}!`}
+              level={2}
+              text={`${user.fullName.first} ${user.fullName.last}`}
             />
           </>
         ) : (
@@ -81,9 +81,9 @@ const IndexCardsPage: FC<{ metadata?: EndpointResponseLoginInstanceMetadata }> =
           accessibleName={"Username"}
           placeholder={"Username"}
           type={"username"}
-          defaultValue={csi.getUsername() || ""}
+          defaultValue={coreCSI.getUsername() || ""}
           onChange={(val) => {
-            fetch(`${csi.getInstanceUrl()}/login/user/${val}`, {
+            fetch(`${coreCSI.getInstanceUrl()}/login/user/${val}`, {
               mode: "cors",
               headers: {
                 "Access-Control-Allow-Origin": "*",
@@ -142,7 +142,7 @@ const IndexCardsPage: FC<{ metadata?: EndpointResponseLoginInstanceMetadata }> =
         />
         <Subtext
           className={styles.instanceUrl}
-          text={csi.getInstanceUrl()}
+          text={coreCSI.getInstanceUrl()}
         />
       </Card>
       <Card className={styles.metadataCard}>

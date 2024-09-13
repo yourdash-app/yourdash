@@ -27,7 +27,7 @@ const IndexPageHero: React.FC = () => {
         />
         {/* Taglines scroller */}
         <IndexPageHeroTaglines />
-        <div className={"flex gap-2 pt-7 items-center justify-center animate__animated animate__fadeIn animate__750ms"}>
+        <div className={"flex gap-2 pt-7 justify-end animate__animated animate__fadeIn animate__750ms"}>
           <ButtonLink
             to={"/login"}
             text={"Login"}

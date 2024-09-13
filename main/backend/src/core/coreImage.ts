@@ -9,6 +9,7 @@ import path from "path";
 import pth from "path";
 import { Core } from "./core.js";
 import sharp from "sharp";
+import { USER_PATHS } from "./user/index.js";
 
 export enum AUTHENTICATED_IMAGE_TYPE {
   BASE64,
@@ -30,10 +31,7 @@ export default class CoreImage {
   //     [id: string]: IauthenticatedImage<AUTHENTICATED_IMAGE_TYPE>;
   //   };
   // };
-  private readonly authenticatedImages: Map<
-    string,
-    Map<string, Map<string, IauthenticatedImage<AUTHENTICATED_IMAGE_TYPE>>>
-  >;
+  private readonly authenticatedImages: Map<string, Map<string, Map<string, IauthenticatedImage<AUTHENTICATED_IMAGE_TYPE>>>>;
 
   constructor(core: Core) {
     this.core = core;
@@ -47,7 +45,7 @@ export default class CoreImage {
       try {
         const image = sharp(await fs.readFile(path.join(this.core.fs.ROOT_PATH, filePath)));
         const { width, height } = await image.metadata();
-        resolve({ width, height });
+        resolve({ width: width || 0, height: height || 0 });
       } catch (err) {
         this.core.log.error("image", "failed to get image dimensions for " + filePath);
         reject({ width: 0, height: 0 });
@@ -61,27 +59,23 @@ export default class CoreImage {
     height: number,
     resultingImageFormat?: "avif" | "png" | "jpg" | "webp",
     useAbsolutePath?: boolean,
-  ): Promise<string | null> {
+  ): Promise<string> {
     return await new Promise<string>(async (resolve) => {
-      const TEMP_DIR = "/temp";
-
-      const resizedImagePath = pth.join(pth.join(TEMP_DIR, crypto.randomUUID()));
+      const resizedImagePath = pth.join(USER_PATHS.TEMP, crypto.randomUUID());
 
       try {
-        sharp(await fs.readFile(useAbsolutePath ? filePath : path.join(this.core.fs.ROOT_PATH, filePath)), {
-          sequentialRead: true,
-        })
+        sharp(await fs.readFile(useAbsolutePath ? filePath : path.join(this.core.fs.ROOT_PATH, filePath)))
           .resize(Math.floor(width), Math.floor(height))
-          .toFormat(resultingImageFormat || "webp")
+          .toFormat(resultingImageFormat || "webp") // use avif when it is better supported by sharp
           .toFile(pth.join(this.core.fs.ROOT_PATH, resizedImagePath))
           .then(() => resolve(resizedImagePath))
           .catch((err: string) => {
-            this.core.log.error("image", `unable to resize image "${filePath}" ${err}`);
-            resolve(null);
+            this.core.log.error("image", `unable to resize image "${path.resolve(this.core.fs.ROOT_PATH, filePath)}" ${err}`);
+            resolve("null file path");
           });
       } catch (err) {
         this.core.log.error("image", `unable to resize image "${filePath}" ${err}`);
-        resolve(null);
+        resolve("unable to resize image");
       }
     });
   }
@@ -113,18 +107,20 @@ export default class CoreImage {
 
       const user = this.authenticatedImages.get(username);
 
+      if (!user) return "";
+
       if (!user.has(sessionId)) {
         user.set(sessionId, new Map());
       }
 
-      user.get(sessionId).set(id, {
+      user.get(sessionId)?.set(id, {
         type,
         // @ts-ignore
         value: val,
         resizeTo: extras?.resizeTo,
       });
 
-      return `/core::auth-img/${username}/${sessionId}/${id}`;
+      return `/core/auth-img/${username}/${sessionId}/${id}`;
     } catch (err) {
       this.core.log.error("image", "failed to create authenticated image", err);
 
@@ -162,13 +158,13 @@ export default class CoreImage {
 
   // removes an image from the authenticated image lookup
   __internal__removeAuthenticatedImage(username: string, sessionId: string, id: string) {
-    this.authenticatedImages.get(username).get(sessionId).delete(id);
+    this.authenticatedImages.get(username)?.get(sessionId)?.delete(id);
 
     return this;
   }
 
   __internal__loadEndpoints() {
-    this.core.request.setNamespace("core::auth-img");
+    this.core.request.setNamespace("core/auth-img");
 
     this.core.request.get("/:username/:sessionId/:id", async (req, res) => {
       const { username, sessionId, id } = req.params;
@@ -222,12 +218,7 @@ export default class CoreImage {
 
         const resizeTo = image.resizeTo;
 
-        const resizedPath = await this.resizeTo(
-          image.value as string,
-          resizeTo.width,
-          resizeTo.height,
-          resizeTo.resultingImageFormat,
-        );
+        const resizedPath = await this.resizeTo(image.value as string, resizeTo.width, resizeTo.height, resizeTo.resultingImageFormat);
 
         try {
           return res.sendFile(path.join(this.core.fs.ROOT_PATH, resizedPath));

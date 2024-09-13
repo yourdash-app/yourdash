@@ -18,9 +18,11 @@
     "@types/path-browserify": "^1.0.0",
     "@types/react": "^18.2.21",
     "@types/react-dom": "^18.2.7",
+    "@types/throttle-debounce": "^5.0.2",
     "@typescript-eslint/eslint-plugin": "^5.59.11",
     "@typescript-eslint/parser": "^5.59.11",
     "@vitejs/plugin-react-swc": "^3.3.2",
+    "@yourdash/shared": "^1.0.0",
     "animate.css": "^4.1.1",
     "autoprefixer": "^10.4.15",
     "clsx": "^2.0.0",
@@ -39,13 +41,13 @@
     "react-router-dom": "^6.15.0",
     "sass": "^1.65.1",
     "socket.io-client": "^4.6.1",
+    "throttle-debounce": "^5.0.2",
     "type-fest": "^4.14.0",
     "typescript": "^5.0.4",
     "vite": "^4.4.9",
     "vite-plugin-dynamic-import": "^1.5.0",
     "web-tree-sitter": "^0.20.8",
     "xml2js": "^0.6.2",
-    "yarn": "^1.22.19",
-    "@yourdash/shared": "^1.0.0"
+    "yarn": "^1.22.19"
   }
 }

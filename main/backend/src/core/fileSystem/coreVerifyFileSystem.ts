@@ -7,7 +7,7 @@ import path from "path";
 import { Core } from "../core.js";
 import generateInstanceLogos from "../helpers/generateInstanceLogos.js";
 import { YOURDASH_USER_PERMISSIONS } from "../user/userPermissions.js";
-import FileSystemDirectory from "./fileSystemDirectory.js";
+import FSDirectory from "./FSDirectory.js";
 import { promises as fs } from "fs";
 
 export default class coreVerifyFileSystem {
@@ -22,11 +22,9 @@ export default class coreVerifyFileSystem {
   async verify() {
     await this.checkRootDirectory();
 
-    (await ((await this.core.fs.get("./users")) as FileSystemDirectory)?.getChildrenAsBaseName()).map(
-      (user: string) => {
-        this.checkUserDirectory(user);
-      },
-    );
+    (await ((await this.core.fs.get("./users")) as FSDirectory)?.getChildrenAsBaseName()).map((user: string) => {
+      this.checkUserDirectory(user);
+    });
   }
 
   async checkRootDirectory() {
@@ -50,7 +48,7 @@ export default class coreVerifyFileSystem {
     if (await this.core.fs.doesExist("./temp")) {
       await this.core.fs.removePath("./temp");
     }
-    // "/temp/"
+    // create "/temp/"
     if (!(await this.core.fs.doesExist("./temp"))) {
       await this.core.fs.createDirectory("./temp");
     }
@@ -70,26 +68,22 @@ export default class coreVerifyFileSystem {
     if (!(await this.core.fs.doesExist("./defaults/theme.css"))) {
       // set the instance's default user avatar
       try {
-        await fs.copyFile(
-          path.join(process.cwd(), "./src/defaults/theme.css"),
-          path.join(this.core.fs.ROOT_PATH, "./defaults/theme.css"),
-        );
+        await fs.copyFile(path.join(process.cwd(), "./src/defaults/theme.css"), path.join(this.core.fs.ROOT_PATH, "./defaults/theme.css"));
       } catch (e) {
         this.core.log.error("Unable to copy the default theme");
         console.trace(e);
       }
     }
 
-    if (!(await this.core.fs.doesExist("./default_avatar.avif"))) {
+    if (!(await this.core.fs.doesExist("./defaults/default_avatar.avif"))) {
       // set the instance's default user avatar
       try {
         await fs.copyFile(
           path.join(process.cwd(), "./src/defaults/default_avatar.avif"),
           path.join(this.core.fs.ROOT_PATH, "./defaults/default_avatar.avif"),
         );
-      } catch (e) {
-        this.core.log.error("Unable to copy the default user avatar");
-        console.trace(e);
+      } catch (err) {
+        this.core.log.error("Unable to copy the default user avatar", err);
       }
     }
 
@@ -132,33 +126,33 @@ export default class coreVerifyFileSystem {
         // load the newly copied global database file
         await this.core.globalDb.loadFromDisk("./global_database.json");
       } catch (e) {
-        this.core.log.error("verify_fs", e);
-        this.core.log.error("verify_fs", 'Unable to create the "./fs/global_database.json" file');
+        this.core.log.error("verify_fs", 'Unable to create the "./fs/global_database.json" file', e);
       }
     }
 
     // create the default instance logos
     try {
-      generateInstanceLogos();
+      let shouldGenerateInstanceLogos = false;
+      if (!(await this.core.fs.doesExist("./logo_panel_small.avif"))) shouldGenerateInstanceLogos = true;
+      if (!(await this.core.fs.doesExist("./logo_panel_medium.avif"))) shouldGenerateInstanceLogos = true;
+      if (!(await this.core.fs.doesExist("./logo_panel_large.avif"))) shouldGenerateInstanceLogos = true;
+
+      if (shouldGenerateInstanceLogos) generateInstanceLogos();
     } catch (e) {
-      this.core.log.error("Unable to generate logo defaults");
+      this.core.log.error("verify_fs", "Unable to generate the instance's logo assets.");
     }
 
     // if the administrator user doesn't exist,
     // create a new user "admin" with the administrator permission
-    const ADMIN_USER = this.core.users.get("admin");
-
-    if (!(await ADMIN_USER.doesExist())) {
+    if (!this.core.users.doesExist("admin")) {
       this.core.log.info("verify_fs", "Creating admin user...");
 
-      await ADMIN_USER.verify();
-      await ADMIN_USER.setName({
+      const adminUser = await this.core.users.create("admin");
+      await adminUser.setName({
         first: "Admin",
         last: "istrator",
       });
-      await ADMIN_USER.setPermissions([YOURDASH_USER_PERMISSIONS.Administrator]);
-    } else {
-      this.core.log.info("verify_fs", "Admin user already exists");
+      await adminUser.setPermissions([YOURDASH_USER_PERMISSIONS.Administrator]);
     }
 
     return 1;

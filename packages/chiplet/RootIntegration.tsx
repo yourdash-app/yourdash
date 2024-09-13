@@ -4,15 +4,9 @@
  */
 
 import React from "react";
-import RightClickMenuRootContainer from "./components/rightClickMenu/RightClickMenuRootContainer.js";
-import ToastContextProvider from "./components/toast/ToastContextProvider.js";
 
 const ChipletRootIntegration: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  return (
-    <ToastContextProvider>
-      <RightClickMenuRootContainer>{children}</RightClickMenuRootContainer>
-    </ToastContextProvider>
-  );
+  return <>chiplet is deprecated</>;
 };
 
 export default ChipletRootIntegration;

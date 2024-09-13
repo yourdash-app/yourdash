@@ -36,6 +36,15 @@ const TextInput: FC<{
     ref.current.value = value;
   }, [value]);
 
+  useEffect(() => {
+    setTimeout(() => {
+      if (ref.current?.value !== props.defaultValue) {
+        ref.current?.onkeyup?.({ currentTarget: ref.current } as unknown as KeyboardEvent);
+        ref.current?.onchange?.({ currentTarget: ref.current } as unknown as Event);
+      }
+    }, 500);
+  }, []);
+
   return (
     <div className={clippy(styles.component, props.className)}>
       {props.icon && (

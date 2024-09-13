@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@types/bcrypt": "^5.0.0",
+    "@types/bun": "^1.1.6",
     "@types/compression": "^1.7.3",
     "@types/express": "^4.17.17",
     "@types/ffmpeg": "^1.0.7",
@@ -31,7 +32,8 @@
     "eslint": "^8.49.0",
     "esm": "^3.2.25",
     "execa": "^8.0.1",
-    "express": "^4.18.2",
+    "express": "4.19.2",
+    "express-list-endpoints": "^7.1.0",
     "ffmpeg": "^0.0.4",
     "file-url": "^4.0.0",
     "fkill": "^8.1.0",
@@ -45,23 +47,26 @@
     "node-gyp": "^10.0.1",
     "node-schedule": "^2.1.1",
     "nodemon": "^3.0.1",
+    "pg": "^8.12.0",
     "postcss": "^8.4.29",
-    "sharp": "0.30.0",
+    "sharp": "0.32.6",
     "socket.io": "^4.6.1",
     "source-map-support": "^0.5.21",
+    "ts-json-schema-generator": "^2.3.0",
     "ts-node": "^10.9.1",
     "tsc-watch": "^6.0.4",
     "tsconfig-paths": "^4.2.0",
     "tsx": "^4.7.1",
     "type-fest": "^4.14.0",
     "typescript": "^5.2.2",
-    "undici": "^5.28.3",
+    "undici": "6.11.1",
     "xml2js": "^0.6.2"
   },
   "type": "module",
   "scripts": {
     "start": "bun ./src/main.ts --color=full --log-requests",
-    "dev": "bun ./src/main.ts --dev --color=full --log-requests",
-    "debug": "bun --inspect-brk ./src/main.ts --dev --color=full --log-requests"
+    "dev": "bun --watch ./src/main.ts --dev --color=full --log-requests",
+    "debug": "bun --inspect-brk ./src/main.ts --dev --color=full --log-requests",
+    "generate-json-schema": "ts-json-schema-generator"
   }
 }

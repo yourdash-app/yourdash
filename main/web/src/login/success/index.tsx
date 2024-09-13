@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import csi from "@yourdash/csi/csi";
+import coreCSI from "@yourdash/csi/coreCSI";
 import EndpointResponseCoreLoginNotice from "@yourdash/shared/endpoints/core/login/notice";
 import Box from "@yourdash/uikit/components/box/box";
 import Button from "@yourdash/uikit/components/button/button";
@@ -19,7 +19,7 @@ import { useNavigate } from "react-router";
 
 const LoginSuccessPage: FC = () => {
   const navigate = useNavigate();
-  const notice = useResource(() => csi.getJson<EndpointResponseCoreLoginNotice>("/core/login/notice"));
+  const notice = useResource(() => coreCSI.getJson<EndpointResponseCoreLoginNotice>("/core/login/notice"));
 
   return (
     <div className={styles.page}>

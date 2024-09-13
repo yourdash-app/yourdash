@@ -10,7 +10,9 @@ export default function useResource<T>(resource: () => Promise<T>, deps: unknown
 
   useEffect(() => {
     setData(null);
-    resource().then((d) => setData(d));
+    resource().then((d) => {
+      setData(d);
+    });
   }, deps);
 
   return data;

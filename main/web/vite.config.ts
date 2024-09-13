@@ -1,6 +1,6 @@
 /*
- * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
- * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ * Copyright ©2024 Ewsgit<https://ewsgit.uk> and YourDash<https://yourdash.ewsgit.uk> contributors.
+ * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
 import react from "@vitejs/plugin-react-swc";

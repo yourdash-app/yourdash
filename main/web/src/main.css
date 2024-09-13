@@ -9,6 +9,13 @@
   src: url("/Inter.ttf");
 }
 
+*::-moz-focus-inner {
+  padding: 0;
+  border: 0;
+  margin-top:-1px;
+  margin-bottom:-1px;
+}
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   font-weight: 400;

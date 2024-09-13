@@ -25,7 +25,6 @@ const Navigation: FC<{ subtitle?: string }> = ({ subtitle }) => {
     <>
       <Box className={styles.navigationBar}>
         <Image
-          disableSpinner={true}
           src={"/assets/branding/yourdash.svg"}
           accessibleLabel={"YourDash Logo"}
           className={styles.logo}
@@ -75,7 +74,7 @@ const Navigation: FC<{ subtitle?: string }> = ({ subtitle }) => {
       >
         <Text text={"YourDash is a pre-alpha project. "} />
         <Link
-          to={"/"}
+          to={"/docs/pre-alpha"}
           text={"Learn more"}
         />
       </Box>
@@ -86,7 +85,6 @@ const Navigation: FC<{ subtitle?: string }> = ({ subtitle }) => {
           direction={"row"}
         >
           <Image
-            disableSpinner={true}
             src={"/assets/branding/yourdash.svg"}
             accessibleLabel={"YourDash Logo"}
             className={styles.logo}

@@ -8,7 +8,7 @@ import Box from "@yourdash/uikit/components/box/box.js";
 import styles from "./Panel.module.scss";
 import React, { memo, useEffect, useState } from "react";
 import loadable from "@loadable/component";
-import csi from "@yourdash/csi/csi";
+import coreCSI from "@yourdash/csi/coreCSI";
 
 const Panel: React.FC<{
   side: "top" | "right" | "bottom" | "left";
@@ -25,7 +25,7 @@ const Panel: React.FC<{
   const [num, setNum] = useState<number>(0);
 
   useEffect(() => {
-    setPanelSize(csi.userDB.get("core:panel:size") || "medium");
+    setPanelSize(coreCSI.userDB.get("core:panel:size") || "medium");
   }, [num]);
 
   // @ts-ignore

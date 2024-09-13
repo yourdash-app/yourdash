@@ -3,17 +3,18 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import { APPLICATION_TYPE } from "@yourdash/shared/core/application.js";
 import { INSTANCE_STATUS } from "@yourdash/shared/core/instanceStatus.js";
 import { LoginLayout } from "@yourdash/shared/core/login/loginLayout.js";
-import EndpointResponseCoreApplications from "@yourdash/shared/endpoints/core/applications.js";
+import { YOURDASH_SESSION_TYPE } from "@yourdash/shared/core/session.js";
+import { USER_AVATAR_SIZE } from "@yourdash/shared/core/userAvatarSize.js";
 import EndpointResponseCoreLoginNotice from "@yourdash/shared/endpoints/core/login/notice.js";
 import EndpointResponseLoginInstanceMetadata from "@yourdash/shared/endpoints/login/instance/metadata.js";
 import chalk from "chalk";
+import childProcess from "child_process";
 import expressCompression from "compression";
 import cors from "cors";
 import express, { Application as ExpressApplication } from "express";
-import { readdirSync as fsReaddirSync, writeFile as fsWriteFile } from "fs";
+import { promises as fs, readdirSync as fsReaddirSync, writeFile as fsWriteFile } from "fs";
 import http from "http";
 import killPort from "kill-port";
 import minimist from "minimist";
@@ -21,28 +22,28 @@ import path from "path";
 import { fetch } from "undici";
 import { compareHashString } from "../lib/encryption.js";
 import { createSession, loadSessionsForUser } from "../lib/session.js";
+import CoreApplicationManager from "./coreApplicationManager.js";
 import CoreCommands from "./coreCommands.js";
 import CoreExecute from "./coreExecute.js";
 import CoreGlobalDb from "./coreGlobalDb.js";
 import CoreImage from "./coreImage.js";
+import CoreLoadManagement from "./coreLoadManagement.js";
 import CoreLog from "./coreLog.js";
-import CoreRequest from "./coreRequest.js";
-import CoreTeams from "./coreTeams.js";
-import CoreVideo from "./coreVideo.js";
-import GlobalDBCoreLoginNotice from "./login/loginNotice.js";
-import BackendModule from "./moduleManager/backendModule.js";
-import loadNextCloudSupportEndpoints from "./nextcloud/coreNextCloud.js";
-import CoreWebDAV from "./webDAV/coreWebDAV.js";
-import CoreModuleManager from "./moduleManager/coreModuleManager.js";
 import CorePanel from "./corePanel.js";
+import CoreRequest from "./coreRequest.js";
 import CoreScheduler from "./coreScheduler.js";
+import CoreTeams from "./coreTeams.js";
 import CoreUserDatabase from "./coreUserDatabase.js";
 import CoreUsers from "./coreUsers.js";
-import CoreFileSystem from "./fileSystem/coreFileSystem.js";
-import CoreLoadManagement from "./coreLoadManagement.js";
-import { USER_AVATAR_SIZE } from "@yourdash/shared/core/userAvatarSize.js";
+import CoreVideo from "./coreVideo.js";
+import FSDirectory from "./fileSystem/FSDirectory.js";
+import FSError from "./fileSystem/FSError.js";
+import FSFile from "./fileSystem/FSFile.js";
+import CoreFileSystem from "./fileSystem/coreFS.js";
+import GlobalDBCoreLoginNotice from "./login/loginNotice.js";
+import loadNextCloudSupportEndpoints from "./nextcloud/coreNextCloud.js";
 import YourDashUser from "./user/index.js";
-import { YOURDASH_SESSION_TYPE } from "@yourdash/shared/core/session.js";
+import CoreWebDAV from "./webDAV/coreWebDAV.js";
 import CoreWebsocketManager from "./websocketManager/coreWebsocketManager.js";
 
 declare global {
@@ -52,12 +53,21 @@ declare global {
   };
 }
 
+/**
+ *  # YourDash Planned Changes
+ *
+ *   - implement flagForRestart (requestingApplicationName: string, reason: string)
+ *       This will prompt the admin user with a notification to restart the instance, the notification will provide the administrator with
+ *       the reason for the restart along with the application which has requested it.
+ * */
+
 export class Core {
   // core apis
   readonly request: CoreRequest;
   readonly users: CoreUsers;
   readonly log: CoreLog;
-  readonly moduleManager: CoreModuleManager;
+  // readonly moduleManager: CoreModuleManager;
+  readonly applicationManager: CoreApplicationManager;
   readonly globalDb: CoreGlobalDb;
   readonly commands: CoreCommands;
   readonly fs: CoreFileSystem;
@@ -84,9 +94,11 @@ export class Core {
     // Fetch process arguments
     this.processArguments = minimist(process.argv.slice(2));
 
+    // @ts-ignore
     globalThis.rawConsoleLog = globalThis.console.log;
 
     this.isDebugMode =
+      // @ts-ignore
       typeof global.v8debug === "object" ||
       /--debug|--inspect/.test(process.execArgv.join(" ")) ||
       process.env.NODE_OPTIONS?.includes("javascript-debugger") ||
@@ -95,6 +107,7 @@ export class Core {
     if (!this.isDebugMode) {
       // eslint-disable-next-line
       globalThis.console.log = (message?: any, ...optionalParams: any[]) => {
+        // @ts-ignore
         globalThis.rawConsoleLog(chalk.bold.yellowBright("RAW CONSOLE: ") + message, ...optionalParams);
       };
     }
@@ -103,7 +116,11 @@ export class Core {
 
     this.isDevMode = !!this.processArguments.dev;
 
-    this.log.info("startup", "YourDash Starting-up with arguments: ", JSON.stringify(this.processArguments));
+    this.log.info(
+      "startup",
+      "YourDash Starting-up with arguments: ",
+      JSON.stringify(this.processArguments, null, 2).replace('  "_": [],\n', ""),
+    );
 
     // Create the rawExpressJs server
     this.rawExpressJs = express();
@@ -113,7 +130,8 @@ export class Core {
     this.request = new CoreRequest(this);
     this.scheduler = new CoreScheduler(this);
     this.users = new CoreUsers(this);
-    this.moduleManager = new CoreModuleManager(this);
+    // this.moduleManager = new CoreModuleManager(this);
+    this.applicationManager = new CoreApplicationManager(this);
     this.globalDb = new CoreGlobalDb(this);
     this.commands = new CoreCommands(this);
     this.fs = new CoreFileSystem(this);
@@ -126,15 +144,38 @@ export class Core {
     this.websocketManager = new CoreWebsocketManager(this);
     this.execute = new CoreExecute(this);
 
-    // TODO: implement WebDAV & CalDAV & CardDAV (outdated WebDAV example -> https://github.com/LordEidi/fennel.js/)
+    // TODO: implement WebDAV, CalDAV & CardDAV (outdated WebDAV example -> https://github.com/LordEidi/fennel.js/)
     this.webdav = new CoreWebDAV(this);
 
     this.commands.registerCommand("hello", () => {
       this.log.info("command", "Hello from YourDash!");
     });
 
+    this.commands.registerCommand(["clear", "cl", "cls"], () => {
+      process.stdout.cursorTo(0, 0);
+      process.stdout.clearScreenDown();
+      this.commands.displayPrompt();
+    });
+
     this.commands.registerCommand("restart", async () => {
-      await this.restartInstance();
+      this.restartInstance();
+    });
+
+    this.commands.registerCommand(["exit", "stop", "shutdown"], async () => {
+      this.shutdownInstance();
+    });
+
+    this.commands.registerCommand("help", () => {
+      this.log.success(
+        "help",
+        `YourDash Help
+- Coming soon
+`,
+      );
+    });
+
+    this.commands.registerCommand("list_endpoints", () => {
+      this.log.success("list_endpoints", JSON.stringify(this.request.endpoints));
     });
 
     this.commands.registerCommand("gdb", (args) => {
@@ -148,7 +189,7 @@ export class Core {
           this.log.info("command", `set "${key}" to "${value}"`);
           break;
         case "get":
-          this.log.info("command", this.globalDb.get(key));
+          this.log.info("command", this.globalDb.get(key) || "undefined");
           break;
         case "delete":
           this.globalDb.removeValue(key);
@@ -182,7 +223,8 @@ export class Core {
 
   // start the YourDash Instance
   __internal__startInstance() {
-    this.log.info("startup", "Welcome to the YourDash Instance backend");
+    console.time("core_startup");
+    this.log.info("startup", "Welcome to the YourDash Instance backend! created by Ewsgit -> https://ewsgit.uk");
 
     this.fs.doesExist("./global_database.json").then(async (doesGlobalDatabaseFileExist) => {
       if (doesGlobalDatabaseFileExist) await this.globalDb.loadFromDisk("./global_database.json");
@@ -193,35 +235,176 @@ export class Core {
         this.globalDb.__internal__startGlobalDatabaseService();
         this.teams.__internal__startTeamDatabaseService();
 
-        const attemptToListen = async () => {
-          try {
-            await killPort(3563);
-            this.log.info("startup", "Killed port 3563");
+        await this.__internal__startExpressServer();
+        await this.loadCoreEndpoints();
+        await this.__internal__startViteServer();
+      });
+    });
+    return this;
+  }
+
+  // start the backend's request server
+  async __internal__startExpressServer() {
+    return new Promise<void>(async (resolve) => {
+      try {
+        await killPort(3563);
+        this.log.info("startup", "Killed port 3563");
+        this.httpServer.listen(3563, () => {
+          this.log.success("startup", "server now listening on port 3563!");
+          this.log.success("startup", "YourDash initialization complete!");
+          resolve();
+        });
+      } catch (err) {
+        if (err instanceof Error) {
+          if (err.message === "No process running on port") {
+            this.log.info("startup", "Attempted to kill port 3563, no process running was currently using port 3563");
+
             this.httpServer.listen(3563, () => {
               this.log.success("startup", "server now listening on port 3563!");
               this.log.success("startup", "YourDash initialization complete!");
-              this.loadCoreEndpoints();
+              resolve();
             });
-          } catch (err) {
-            if (err.message === "No process running on port") {
-              this.log.info("startup", "Attempted to kill port 3563, no process running was currently using port 3563");
 
-              this.httpServer.listen(3563, () => {
-                this.log.success("startup", "server now listening on port 3563!");
-                this.log.success("startup", "YourDash initialization complete!");
-                this.loadCoreEndpoints();
-              });
-              return;
-            }
-
-            this.log.warning("startup", "Unable to kill port 3563", err);
-            await attemptToListen();
+            return;
           }
-        };
 
-        await attemptToListen();
-      });
+          this.log.warning("startup", "Unable to kill port 3563", JSON.stringify(err));
+          return;
+        }
+
+        this.log.info("startup", "Retrying to kill port 3563");
+        await this.__internal__startExpressServer();
+      }
     });
+  }
+
+  // start the frontend's vite server
+  // This will be used when a resource doesn't exist on the public frontend
+  async __internal__startViteServer() {
+    this.log.info("startup", "Generating officialFrotend routes...");
+
+    // generate the appRouter
+    await (async () => {
+      let fileTemplate = `/**
+ * This file is auto-generated by backend/src/core.ts during vite server startup don't edit this file for any reason
+*/
+
+import loadable from "@loadable/component";
+import React from "react";
+import { Route, Routes } from "react-router";
+
+/* region loadable */const AppRouter=()=><Routes>{/* region routes */}</Routes>;export default AppRouter
+`;
+
+      let loadableRegionReplacement = "";
+      let routeRegionReplacement = "";
+
+      this.applicationManager.loadedModules.officialFrontend.forEach((mod, ind) => {
+        loadableRegionReplacement += `const Application${ind}=loadable(()=>import("@yourdash/applications/${path.posix.join(path.basename(mod.applicationPath), mod.config.main.replace(".tsx", ""))}"));`;
+        routeRegionReplacement += `<Route path={"${mod.config.id}/*"} element={<Application${ind}/>}/>`;
+      });
+
+      fileTemplate = fileTemplate.replace("/* region loadable */", loadableRegionReplacement);
+      fileTemplate = fileTemplate.replace("{/* region routes */}", routeRegionReplacement);
+
+      fs.writeFile(path.resolve(process.cwd(), "../web/src/app/AppRouter.tsx"), fileTemplate).then(() => {
+        console.log("Generated AppRouter.tsx Successfully");
+      });
+    })();
+
+    // generate meta.yourdash.ts files for every officialFrontendModule & frontendModule
+    for (const application of this.applicationManager.loadedApplications) {
+      // TODO: generate meta files for non-officialFrontend applicationModules
+      for (const mod of application.config.modules.officialFrontend) {
+        await (async () => {
+          let fileTemplate = `/**
+ * This file is auto-generated by backend/src/core.ts during vite server startup don't edit this file for any reason
+*/
+/* region code */
+`;
+
+          const codeRegionReplacement = `import {ClientServerInteraction} from "@yourdash/csi/coreCSI.js";import {useNavigate} from "react-router-dom";const applicationMeta:{$schema:string;id:string;displayName:string;category:string;authors:{name:string;url:string;bio:string;avatarUrl:string}[];maintainers:{name:string;url:string;bio:string;avatarUrl:string}[];description:string;license:string;modules:{backend:{id:string;main:string;description:string;dependencies:{moduleType:"backend"|"frontend"|"officialFrontend";id:string}[];}[];frontend:{id:string;displayName:string;iconPath:string;url:string;devUrl:string;description:string;dependencies:{moduleType:"backend"|"frontend"|"officialFrontend";id:string}[];main:string;}[];officialFrontend:{id:string;main:string;displayName:string;iconPath:string;description:string;dependencies:{moduleType:"backend"|"frontend"|"officialFrontend";id:string}[];}[];};shouldInstanceRestartOnInstall:boolean;__internal__generatedFor:"frontend"|"officialFrontend";}=${JSON.stringify({ ...application.config, __internal__generatedFor: "officialFrontend" })};export default applicationMeta;const acsi=new ClientServerInteraction("/app/${application.config.modules.backend[0].id}");const useNavigateTo=()=>{const navigate=useNavigate();return (path: string)=>navigate("/app/a/${application.config.modules.officialFrontend[0].id}"+path)};const modulePath = "/app/a/${application.config.modules.officialFrontend[0].id}";export{acsi,useNavigateTo,modulePath};`;
+
+          fileTemplate = fileTemplate.replace("/* region code */", codeRegionReplacement);
+
+          const file = await this.fs.getOrCreateFile(
+            path.join(application.path, mod.main.replace(path.basename(mod.main), ""), "meta.yourdash.ts"),
+          );
+
+          if (file instanceof FSError) {
+            this.log.error("startup", `Failed to generate meta.yourdash.ts for application: "${application.id}"`, file);
+            return;
+          }
+
+          await file.write(fileTemplate);
+        })();
+      }
+    }
+
+    if (this.isDevMode) {
+      this.log.info("startup", "Not starting Vite server as we are in dev mode");
+
+      return this;
+    }
+
+    this.log.info("startup", "Starting Vite server...");
+
+    const viteProcess = childProcess.spawn("yarn", ["run", "start"], { cwd: "../web/", shell: true });
+
+    let portInUse: boolean = false;
+
+    viteProcess.stdout.on("data", (data) => {
+      if (data.toString() === "$ vite --host\n") return;
+
+      if (data.toString().includes("is in use, trying another one...")) {
+        if (portInUse) return;
+
+        portInUse = true;
+
+        viteProcess.kill("SIGTERM");
+        this.log.info(
+          "vite",
+          "The YourDash frontend's port was already in use, killing the viteProcess on port '5173' and trying again...",
+        );
+
+        killPort(5173)
+          .then(() => {
+            this.__internal__startViteServer();
+          })
+          .catch(() => {
+            this.log.error("vite", "Unable to kill port 5173");
+          });
+
+        return;
+      }
+
+      this.log.info("vite", data.toString().replaceAll("\n", "\n                            "));
+    });
+
+    viteProcess.stderr.on("data", (data) => {
+      this.log.error("vite", data.toString());
+    });
+
+    viteProcess.on("error", (error) => {
+      this.log.error("vite", error.toString());
+    });
+
+    viteProcess.on("exit", (code) => {
+      this.log.info("vite", `Vite server exited with code ${code}`);
+    });
+
+    viteProcess.on("close", (code) => {
+      this.log.info("vite", `Vite server closed with code ${code}`);
+    });
+
+    viteProcess.on("uncaughtException", (error) => {
+      this.log.error("vite", error.toString());
+    });
+
+    viteProcess.on("unhandledRejection", (error) => {
+      this.log.error("vite", error.toString());
+    });
+
     return this;
   }
 
@@ -229,12 +412,12 @@ export class Core {
     this.request.use(async (req, _res, next) => {
       switch (req.method) {
         case "GET":
-          if (req.path.includes("core::auth-img")) return next();
-          if (req.path.includes("core::auth-video")) return next();
+          if (req.path.includes("core/auth-img")) return next();
+          if (req.path.includes("core/auth-video")) return next();
 
           this.log.info(
             "request",
-            `${chalk.bgBlack(chalk.green(" GET "))} ${req.path} ${
+            `${chalk.bgBlack(chalk.green(" GET "))} ${chalk.bold(req.path)} ${
               options.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""
             }`,
           );
@@ -242,7 +425,7 @@ export class Core {
         case "POST":
           this.log.info(
             "request",
-            `${chalk.bgBlack(chalk.blue(" POS "))} ${req.path} ${
+            `${chalk.bgBlack(chalk.blue(" POS "))} ${chalk.bold(req.path)} ${
               options.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""
             }`,
           );
@@ -250,7 +433,7 @@ export class Core {
         case "DELETE":
           this.log.info(
             "request",
-            `${chalk.bgBlack(chalk.red(" DEL "))} ${req.path} ${
+            `${chalk.bgBlack(chalk.red(" DEL "))} ${chalk.bold(req.path)} ${
               options.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""
             }`,
           );
@@ -259,27 +442,42 @@ export class Core {
           if (options.logOptionsRequests) {
             this.log.info(
               "request",
-              `${chalk.bgBlack(chalk.cyan(" OPT "))} ${req.path} ${
+              `${chalk.bgBlack(chalk.cyan(" OPT "))} ${chalk.bold(req.path)} ${
                 options.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""
               }`,
             );
           }
           break;
         case "PROPFIND":
-          this.log.info("request", `${chalk.bgBlack(chalk.cyan(" PFI "))} ${req.path}`);
+          this.log.info(
+            "request",
+            `${chalk.bgBlack(chalk.cyan(" PFI "))} ${chalk.bold(req.path)} ${
+              options.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""
+            }`,
+          );
           break;
         case "PROPPATCH":
-          this.log.info("request", `${chalk.bgCyan(chalk.cyan(" PPA "))} ${req.path}`);
+          this.log.info(
+            "request",
+            `${chalk.bgCyan(chalk.cyan(" PPA "))} ${chalk.bold(req.path)} ${
+              options.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""
+            }`,
+          );
           break;
         default:
-          this.log.error("core:requests", `ERROR IN REQUEST LOGGER, UNKNOWN REQUEST TYPE: ${req.method}, ${req.path}`);
+          this.log.error(
+            "core_requests",
+            `ERROR IN REQUEST LOGGER, UNKNOWN REQUEST TYPE: ${req.method}, ${chalk.bold(req.path)} ${
+              options.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""
+            }`,
+          );
       }
 
       // run the next middleware / endpoint
       next();
     });
 
-    this.log.success("core:requests", `Started the requests logger${options && " (logging options requests is also enabled)"}`);
+    this.log.success("requests", `Started the requests logger${options && " (options request logging is enabled)"}`);
   }
 
   private async loadCoreEndpoints() {
@@ -339,6 +537,7 @@ export class Core {
 
     fetch("http://localhost:3563/core/test/self-ping")
       .then((res) => res.json())
+      // @ts-ignore
       .then((data: { success?: boolean }) => {
         if (data?.success) {
           return this.log.success("self_ping_test", "self ping successful - The server is receiving requests");
@@ -385,7 +584,12 @@ export class Core {
 
       const user = new YourDashUser(username);
 
-      const savedHashedPassword = await (await this.fs.getFile(path.join(user.path, "core/password.enc"))).read("string");
+      let savedHashedPassword: string = "";
+      try {
+        savedHashedPassword = await ((await this.fs.getFile(path.join(user.path, "core/password.enc"))) as FSFile).read("string");
+      } catch (e) {
+        this.log.error("authentication", "Unable to read password from disk", e);
+      }
 
       return compareHashString(savedHashedPassword, password)
         .then(async (result) => {
@@ -496,29 +700,66 @@ export class Core {
       this.log.error("websocketManager", "Error caught in loadWebsocketManagerEndpoints", e);
     }
 
-    let loadedModules: BackendModule[] = [];
-
     try {
-      console.time("core:load_modules");
-      loadedModules = (await this.moduleManager.loadInstalledApplications()).filter((x) => x !== undefined && x !== null);
+      console.time("core_load_modules");
+      await this.applicationManager.loadInstalledApplications();
+
+      const externalApplications: string | string[] = this.processArguments["load-external-application"] || [];
+
+      if (externalApplications.length > 0)
+        this.log.info("external_modules", "Loading external module(s): ", JSON.stringify(externalApplications, null, 2));
+
+      if (externalApplications) {
+        if (typeof externalApplications === "string") {
+          // external Modules is a string
+          try {
+            await this.applicationManager.loadApplication(externalApplications);
+          } catch (err) {
+            if (err instanceof Error) {
+              this.log.error("startup", `Failed to load external module ${externalApplications}`, err);
+            }
+          }
+        } else {
+          // externalApplications must be an array
+          for (const externalModule of externalApplications) {
+            try {
+              await this.applicationManager.loadApplication(externalModule);
+            } catch (err) {
+              if (err instanceof Error) {
+                this.log.error("startup", `Failed to load external module ${externalModule}`, err);
+              }
+            }
+          }
+        }
+      }
 
       console.timeEnd("core:load_modules");
       this.log.info("startup", "All modules loaded successfully");
     } catch (err) {
+      this.log.error("startup", err);
       this.log.error("startup", "Failed to load all modules");
     }
 
     try {
-      loadedModules.map((mod) => {
+      this.applicationManager.loadedModules.backend.map((mod) => {
         try {
-          mod.loadPreAuthEndpoints();
+          mod.module.loadPreAuthEndpoints();
+          this.log.success("startup", `Loaded pre-auth endpoints for ${mod.config.id}`);
         } catch (err) {
-          this.log.error("startup", `Failed to load pre-auth endpoints for ${mod.moduleName}`, err);
+          this.log.error("startup", `Failed to load pre-auth endpoints for ${mod.config.id}`, err);
         }
       });
     } catch (err) {
       this.log.error("startup", "Failed to load pre-auth endpoints for all modules", err);
     }
+
+    /**
+     ########################################################################
+     ##                                                                    ##
+     ##   WARNING: all endpoints require authentication after this point   ##
+     ##                                                                    ##
+     ########################################################################
+     */
 
     // Check for user authentication
     this.request.use(async (req, res, next) => {
@@ -544,13 +785,13 @@ export class Core {
           // @ts-ignore
           this.users.__internal__getSessionsDoNotUseOutsideOfCore()[username] = (await user.getAllLoginSessions()) || [];
 
-          const database = await (await this.fs.getFile(path.join(user.path, "core/user_db.json"))).read("string");
+          const database = await ((await this.fs.getFile(path.join(user.path, "core/user_db.json"))) as FSFile).read("string");
 
           if (database) {
             (await user.getDatabase()).clear().merge(JSON.parse(database));
           } else {
             (await user.getDatabase()).clear();
-            await (await this.fs.getFile(path.join(user.path, "core/user_db.json"))).write("{}");
+            await ((await this.fs.getFile(path.join(user.path, "core/user_db.json"))) as FSFile).write("{}");
           }
         } catch (_err) {
           return failAuth();
@@ -564,24 +805,16 @@ export class Core {
       return failAuth();
     });
 
-    /**
-          ########################################################################
-         ##                                                                    ##
-        ##   WARNING: all endpoints require authentication after this point   ##
-       ##                                                                    ##
-      ########################################################################
-    */
-
     console.time("core:load_modules");
 
     try {
-      loadedModules.map((mod) => {
+      this.applicationManager.loadedModules.backend.map((mod) => {
         try {
-          mod.loadEndpoints();
+          mod.module.loadEndpoints();
           this.request.setNamespace("");
-          this.log.success("module_manager", `Loaded endpoints for ${mod.moduleName}`);
+          this.log.success("module_manager", `Loaded endpoints for ${mod.config.id}`);
         } catch (err) {
-          this.log.error("startup", `Failed to load post-auth endpoints for ${mod.moduleName}`, err);
+          this.log.error("startup", `Failed to load post-auth endpoints for ${mod.config.id}`, err);
         }
       });
     } catch (err) {
@@ -601,27 +834,15 @@ export class Core {
       }
 
       return res.json(<EndpointResponseCoreLoginNotice>{
-        author: notice.author ?? "admin",
-        display: true,
+        author: notice.author ?? "Instance Administrator",
+        display: notice.displayType === "onLogin" ?? true,
         message: notice.message ?? "Placeholder message. Hey system admin, you should change this!",
-        timestamp: notice.timestamp ?? new Date().getTime(),
-      });
-    });
-
-    this.request.get("/core/applications", async (_req, res) => {
-      return res.json(<EndpointResponseCoreApplications>{
-        applications: (await (await this.fs.getDirectory(path.join(process.cwd(), "../../applications/"))).getChildren()).map((app) => {
-          return {
-            id: path.basename(app.path) || "unknown",
-            // TODO: support other types of applications
-            type: APPLICATION_TYPE.LOCAL,
-          };
-        }),
+        timestamp: notice.timestamp ?? 1,
       });
     });
 
     this.request.get("/core/hosted-applications/", async (_req, res) => {
-      const hostedApplications = await this.fs.getDirectory(path.join(process.cwd(), "../../hostedApplications"));
+      const hostedApplications = (await this.fs.getDirectory(path.join(process.cwd(), "../../hostedApplications"))) as FSDirectory;
 
       return res.json({ applications: await hostedApplications.getChildrenAsBaseName() });
     });
@@ -640,7 +861,9 @@ export class Core {
 
       const user = this.users.get(username);
 
-      await user.getLoginSessionById(parseInt(sessionId, 10)).invalidate();
+      const sessionIdInt = parseInt(sessionId, 10);
+
+      await user.getLoginSessionById(sessionIdInt)?.invalidate();
 
       return res.json({ success: true });
     });
@@ -650,16 +873,16 @@ export class Core {
     this.users.__internal__loadEndpoints();
     this.teams.__internal__loadEndpoints();
 
-    if (!this.isDevMode) {
-      this.request.use(async (req, res) => {
-        this.log.info("request:404", `${chalk.bgRed(chalk.black(" 404 "))} ${req.path} (the path was not answered by the backend)`);
-        return res.status(404).json({ error: "this endpoint does not exist!" });
-      });
-    }
+    this.request.use(async (req, res) => {
+      this.log.info("request:404", `${chalk.bgRed(chalk.black(" 404 "))} ${req.path} (the path was not answered by the backend)`);
+      return res.status(404).json({ error: "this endpoint does not exist!" });
+    });
+
+    console.timeEnd("core:startup");
   }
 
-  // try not to use this method for production stability, instead prefer to reload a specific module if it works for your use-case.
-  shutdownInstance() {
+  // gracefully shutdown the YourDash Instance, optionally keep the process running
+  shutdownInstance(dontExitProcess = false) {
     this.log.info("core", "Shutting down...");
 
     fsReaddirSync(path.resolve(this.fs.ROOT_PATH, "./users")).forEach(async (username) => {
@@ -685,11 +908,9 @@ export class Core {
     });
 
     try {
-      this.globalDb
-        .__internal__doNotUseOnlyIntendedForShutdownSequenceWriteToDisk(path.resolve(process.cwd(), "./fs/global_database.json"))
-        .then(() => {
-          this.log.info("global_db", "Successfully saved global database");
-        });
+      this.globalDb.__internal__doNotUseOnlyIntendedForShutdownSequenceWriteToDisk(path.join("./global_database.json")).then(() => {
+        this.log.info("global_db", "Successfully saved global database");
+      });
     } catch (e) {
       this.log.error(
         "global_db",
@@ -697,12 +918,12 @@ export class Core {
       );
     }
 
-    return this;
+    if (!dontExitProcess) process.exit(0);
   }
 
-  // shutdown and startup the YourDash Instance
-  async restartInstance() {
-    this.shutdownInstance();
+  // gracefully shutdown and restart the YourDash Instance
+  restartInstance() {
+    this.shutdownInstance(true);
     this.__internal__startInstance();
 
     return this;

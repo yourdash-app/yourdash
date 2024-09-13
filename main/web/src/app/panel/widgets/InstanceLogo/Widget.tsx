@@ -4,7 +4,7 @@
  */
 
 import { useNavigate } from "react-router";
-import csi from "@yourdash/csi/csi";
+import coreCSI from "@yourdash/csi/coreCSI";
 import styles from "./Widget.module.scss";
 import { memo, useEffect, useState } from "react";
 
@@ -17,19 +17,19 @@ const InstanceLogoWidget: React.FC = () => {
   });
 
   useEffect(() => {
-    csi.syncGetJson("/core/panel/logo", (data) => {
+    coreCSI.syncGetJson("/core/panel/logo", (data) => {
       setIcons(data);
     });
   }, []);
 
   return (
     <img
-      src={`${csi.getInstanceUrl()}${icons.large}`}
+      src={`${coreCSI.getInstanceUrl()}${icons.large}`}
       alt={"Instance logo"}
       draggable={false}
       className={styles.icon}
       onClick={() => {
-        navigate("/app/a/dash");
+        navigate("/app/a/uk-ewsgit-dash-frontend");
       }}
     />
   );

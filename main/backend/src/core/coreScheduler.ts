@@ -29,7 +29,7 @@ export default class CoreScheduler {
       await task();
       this.core.log.success(
         "task_scheduler",
-        `Finished Task ${name} in ${new Date().getTime() - startTime.getTime()}ms`,
+        `Finished Task ${name} in ${new Date().getTime() - startTime.getTime()}ms @ ${new Date().toLocaleTimeString()}`,
       );
     });
   }

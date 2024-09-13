@@ -50,7 +50,7 @@ export default class CoreTeams {
 
   // Start the Team Database Service
   __internal__startTeamDatabaseService() {
-    this.core.scheduler.scheduleTask("core:teamdb_write_to_disk", "*/1 * * * *", async () => {
+    this.core.scheduler.scheduleTask("core_teamdb_write_to_disk", "*/1 * * * *", async () => {
       await this.saveDatabases();
     });
   }

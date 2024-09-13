@@ -3,30 +3,25 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import useResource from "@yourdash/csi/useResource";
 import clippy from "@yourdash/shared/web/helpers/clippy";
 import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary.js";
 import IconButton from "@yourdash/uikit/components/iconButton/iconButton";
 import Box from "@yourdash/uikit/components/box/box.js";
 import { useNavigate } from "react-router-dom";
 import styles from "./Launcher.module.scss";
-import React, { memo, useEffect, useState } from "react";
+import React, { memo } from "react";
 import ApplicationsLauncherApplications from "./Applications/Applications";
-import IPanelApplicationsLauncherApplication from "@yourdash/shared/core/panel/applicationsLauncher/application";
-import csi from "@yourdash/csi/csi";
+import IPanelApplicationsLauncherFrontendModule from "@yourdash/shared/core/panel/applicationsLauncher/application";
+import coreCSI from "@yourdash/csi/coreCSI";
 
 const ApplicationLauncher: React.FC<{
   side: "top" | "right" | "bottom" | "left";
   visible: boolean;
 }> = ({ side, visible }) => {
   const navigate = useNavigate();
-  const [apps, setApps] = useState<IPanelApplicationsLauncherApplication[]>([]);
+  const apps = useResource<IPanelApplicationsLauncherFrontendModule[]>(() => coreCSI.getJson("/core/panel/applications"), []) || [];
   const [layout, setLayout] = React.useState<"large-grid" | "small-grid" | "list">("large-grid");
-
-  useEffect(() => {
-    csi.syncGetJson("/core/panel/applications", (data) => {
-      setApps(data);
-    });
-  }, []);
 
   return (
     <div
@@ -52,25 +47,21 @@ const ApplicationLauncher: React.FC<{
           className={styles.logoutButton}
           icon={UKIcon.Logout}
           onClick={() => {
-            csi.logout();
+            coreCSI.logout();
             navigate("/login");
           }}
         />
         <div>
-          <img
-            src={""}
-            alt={""}
-          />
           <IconButton
             accessibleLabel={"Profile"}
             icon={UKIcon.Person}
             aria-label={"User Profile Settings"}
             onClick={() => {
-              navigate("/app/a/settings/profile");
+              navigate(`/instance-profiles/me`);
             }}
           />
         </div>
-        <span>{csi.userDB.get<{ first: string; last: string }>("user:name")?.first || "Unknown First Name"}</span>
+        <span>{coreCSI.userDB.get<{ first: string; last: string }>("user:name")?.first || "Unknown First Name"}</span>
         <IconButton
           accessibleLabel={"Filter small grid"}
           className={"ml-auto"}

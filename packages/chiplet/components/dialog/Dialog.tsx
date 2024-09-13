@@ -16,9 +16,10 @@ export interface IDialog {
   style?: CSSProperties;
   title?: string;
   children?: React.ReactNode;
+  hideCloseButton?: boolean;
 }
 
-const Dialog: React.FC<IDialog> = ({ children, onClose, className, visible, style, title }) => {
+const Dialog: React.FC<IDialog> = ({ children, onClose, className, visible, style, title, hideCloseButton }) => {
   const [initialDragPosition, setInitialDragPosition] = useState(0);
 
   return (
@@ -69,7 +70,14 @@ const Dialog: React.FC<IDialog> = ({ children, onClose, className, visible, styl
         >
           <div />
         </section>
-        <IconButton className={styles.closeButton} data-visible={!!onClose} icon={UKIcon.X} onClick={onClose} />
+        {hideCloseButton !== true && (
+          <IconButton
+            className={styles.closeButton}
+            data-visible={!!onClose}
+            icon={UKIcon.X}
+            onClick={onClose}
+          />
+        )}
         <section className={`${styles.content} ${className}`}>
           <h1 className={`${styles.title} ${(title === "" || title === undefined) && styles.placeholder}`}>{title}</h1>
           {children}

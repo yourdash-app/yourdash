@@ -12,14 +12,14 @@ interface NavigatorExtended extends Navigator {
 }
 
 export default function isMobileDevice(): boolean {
-  const nav: NavigatorExtended = navigator;
+  const nav: NavigatorExtended = window.navigator;
 
   const searchParams = new URLSearchParams(window.location.search);
   if (searchParams.has("ukmobile")) return true;
 
   // Check if UA Client Hints are supported
-  if (nav.userAgentData) {
-    return nav.userAgentData.mobile;
+  if (nav?.userAgentData) {
+    return nav.userAgentData.mobile || false;
   } else {
     const mobileDeviceRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
 

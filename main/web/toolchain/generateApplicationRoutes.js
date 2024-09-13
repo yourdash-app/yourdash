@@ -27,23 +27,19 @@ import { Route, Routes } from "react-router";
 /* region loadable */const AppRouter=()=><Routes>{/* region routes */}</Routes>;export default AppRouter
 `;
 
-let applicationsPathNames = await fs.readdir(path.resolve(process.cwd(), "../../applications/"));
+let applicationsPathIds = await fs.readdir(path.resolve(process.cwd(), "../../applications/"));
 
-applicationsPathNames = applicationsPathNames.filter((name) => name.indexOf(".") === -1);
+applicationsPathIds = applicationsPathIds.filter(
+  (name) => name !== "gulpfile" && name !== "package.json" && name !== "node_modules" && name !== "README.md",
+);
 
 let loadableRegionReplacement = "";
 let routeRegionReplacement = "";
 
-let applicationHasLoaded = false;
-applicationsPathNames.forEach((appName, ind) => {
-  if (existsSync(path.resolve(process.cwd(), `../../applications/${appName}/web/index.tsx`))) {
-    loadableRegionReplacement += `const Application${ind}=loadable(()=>import("@yourdash/applications/${appName}/web/index"));`;
-    if (applicationHasLoaded) {
-      routeRegionReplacement += `<Route path={"${applicationsPathNames[ind]}/*"} element={<Application${ind}/>}/>`;
-    } else {
-      routeRegionReplacement += `<Route path={"${applicationsPathNames[ind]}/*"} element={<Application${ind}/>}/>`;
-    }
-    applicationHasLoaded = true;
+applicationsPathIds.forEach((appId, ind) => {
+  if (existsSync(path.resolve(process.cwd(), `../../applications/${appId}/web/index.tsx`))) {
+    loadableRegionReplacement += `const Application${ind}=loadable(()=>import("@yourdash/applications/${appId}/web/index"));`;
+    routeRegionReplacement += `<Route path={"${applicationsPathIds[ind]}/*"} element={<Application${ind}/>}/>`;
   }
 });
 

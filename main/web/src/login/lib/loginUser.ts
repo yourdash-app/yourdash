@@ -3,17 +3,17 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import csi from "@yourdash/csi/csi.js";
+import coreCSI from "@yourdash/csi/coreCSI";
 
 export default function loginUser(username: string, password: string) {
   return new Promise<void>((resolve, reject) => {
-    csi.postJson(
+    coreCSI.syncPostJson(
       `/login/user/${username}/authenticate`,
       { password: password },
       (response) => {
-        csi.setSessionId(response.sessionId);
-        csi.setUserToken(response.token);
-        csi.setUsername(username);
+        coreCSI.setSessionId(response.sessionId);
+        coreCSI.setUserToken(response.token);
+        coreCSI.setUsername(username);
         resolve();
       },
       () => {

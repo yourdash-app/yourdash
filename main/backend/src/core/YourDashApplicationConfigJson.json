@@ -1,0 +1,269 @@
+{
+  "$ref": "#/definitions/IYourDashApplicationConfigJson",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "IYourDashApplicationConfigJson": {
+      "additionalProperties": false,
+      "properties": {
+        "authors": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "avatarUrl": {
+                "type": "string"
+              },
+              "bio": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "url",
+              "bio",
+              "avatarUrl"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "category": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "displayName": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "license": {
+          "type": "string"
+        },
+        "maintainers": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "avatarUrl": {
+                "type": "string"
+              },
+              "bio": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "url",
+              "bio",
+              "avatarUrl"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "modules": {
+          "additionalProperties": false,
+          "properties": {
+            "backend": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "dependencies": {
+                    "items": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "moduleType": {
+                          "enum": [
+                            "backend",
+                            "frontend",
+                            "officialFrontend"
+                          ],
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "moduleType",
+                        "id"
+                      ],
+                      "type": "object"
+                    },
+                    "type": "array"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "main": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "id",
+                  "main",
+                  "description",
+                  "dependencies"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "frontend": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "dependencies": {
+                    "items": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "moduleType": {
+                          "enum": [
+                            "backend",
+                            "frontend",
+                            "officialFrontend"
+                          ],
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "moduleType",
+                        "id"
+                      ],
+                      "type": "object"
+                    },
+                    "type": "array"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "devUrl": {
+                    "type": "string"
+                  },
+                  "displayName": {
+                    "type": "string"
+                  },
+                  "iconPath": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "url": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "id",
+                  "displayName",
+                  "iconPath",
+                  "url",
+                  "devUrl",
+                  "description",
+                  "dependencies"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "officialFrontend": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "dependencies": {
+                    "items": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "moduleType": {
+                          "enum": [
+                            "backend",
+                            "frontend",
+                            "officialFrontend"
+                          ],
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "moduleType",
+                        "id"
+                      ],
+                      "type": "object"
+                    },
+                    "type": "array"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "displayName": {
+                    "type": "string"
+                  },
+                  "iconPath": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "main": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "id",
+                  "main",
+                  "displayName",
+                  "iconPath",
+                  "description",
+                  "dependencies"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            }
+          },
+          "required": [
+            "backend",
+            "frontend",
+            "officialFrontend"
+          ],
+          "type": "object"
+        },
+        "shouldInstanceRestartOnInstall": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "displayName",
+        "authors",
+        "maintainers",
+        "description",
+        "license",
+        "modules",
+        "shouldInstanceRestartOnInstall"
+      ],
+      "type": "object"
+    }
+  }
+}

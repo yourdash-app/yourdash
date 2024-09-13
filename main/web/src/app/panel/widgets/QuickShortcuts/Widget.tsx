@@ -3,32 +3,25 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import useResource from "@yourdash/csi/useResource";
 import clippy from "@yourdash/shared/web/helpers/clippy";
 import Image from "@yourdash/uikit/components/image/image";
 import IncrementLevel from "@yourdash/uikit/core/incrementLevel";
-import { useLevel, useLevelClass } from "@yourdash/uikit/core/level";
-import { useEffect, useState } from "react";
+import { useLevelClass } from "@yourdash/uikit/core/level";
 import { useNavigate } from "react-router-dom";
-import csi from "@yourdash/csi/csi";
+import coreCSI from "@yourdash/csi/coreCSI";
 import styles from "./Widget.module.scss";
 import React from "react";
+import { EndpointCorePanelQuickShortcuts } from "@yourdash/shared/endpoints/core/panel/quickShortcuts"
 
 const QuickShortcuts: React.FC<{ side: "top" | "right" | "bottom" | "left" }> = ({ side }) => {
   const navigate = useNavigate();
 
-  const [applications, setApplications] = useState<
-    {
-      name: string;
-      icon: string;
-    }[]
-  >([]);
   const [num, setNum] = React.useState<number>(0);
-
-  useEffect(() => {
-    csi.syncGetJson("/core/panel/quick-shortcuts", (data) => {
-      setApplications(data);
-    });
-  }, [num]);
+  const modules =
+    useResource<
+      EndpointCorePanelQuickShortcuts
+    >(() => coreCSI.getJson("/core/panel/quick-shortcuts"), [num]) || [];
 
   // @ts-ignore
   window.__yourdashCorePanelQuickShortcutsReload = () => {
@@ -37,13 +30,15 @@ const QuickShortcuts: React.FC<{ side: "top" | "right" | "bottom" | "left" }> = 
 
   return (
     <>
-      {applications.map((application) => {
+      {modules.map((module) => {
+        if (!module) return <>Invalid Module</>;
+
         return (
-          <IncrementLevel key={application.name}>
+          <IncrementLevel key={module.name}>
             <div
-              key={application.name}
+              key={module.name}
               onClick={() => {
-                navigate(`/app/a/${application.name}`);
+                navigate(module.url);
               }}
               className={clippy(
                 styles.application,
@@ -57,10 +52,10 @@ const QuickShortcuts: React.FC<{ side: "top" | "right" | "bottom" | "left" }> = 
               <Image
                 authenticatedImage
                 className={styles.applicationIcon}
-                src={application.icon}
-                accessibleLabel={application.name}
+                src={module.icon}
+                accessibleLabel={module.name}
               />
-              <span className={styles.applicationLabel}>{application.name}</span>
+              <span className={styles.applicationLabel}>{module.name}</span>
             </div>
           </IncrementLevel>
         );

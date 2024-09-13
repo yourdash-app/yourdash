@@ -9,7 +9,7 @@ import MajorButton from "@yourdash/chiplet/components/majorButton/MajorButton";
 import TextInput from "@yourdash/chiplet/components/textInput/TextInput";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import csi from "@yourdash/csi/csi";
+import coreCSI from "@yourdash/csi/coreCSI";
 import useYourDashLib from "@yourdash/shared/web/helpers/ydsh";
 
 interface IUserLogin {
@@ -35,12 +35,12 @@ const UserLogin: React.FC<IUserLogin> = ({ setUsername, setPassword, password, u
     const SESSION_TOKEN = localStorage.getItem("session_token");
 
     if (SAVED_USERNAME && SESSION_TOKEN) {
-      csi.syncGetJson("/login/is-authenticated", (response) => {
+      coreCSI.syncGetJson("/login/is-authenticated", (response) => {
         if (response.error || response.success === false) {
           return;
         }
 
-        navigate("/app/a/dash");
+        navigate("/app/a/uk-ewsgit-dash-frontend");
       });
     }
   }, []);
@@ -48,7 +48,7 @@ const UserLogin: React.FC<IUserLogin> = ({ setUsername, setPassword, password, u
   useEffect(() => {
     if (username === "") return;
 
-    fetch(`${csi.getInstanceUrl()}/login/user/${username}`, {
+    fetch(`${coreCSI.getInstanceUrl()}/login/user/${username}`, {
       mode: "cors",
       headers: {
         "Access-Control-Allow-Origin": "*",
@@ -62,7 +62,7 @@ const UserLogin: React.FC<IUserLogin> = ({ setUsername, setPassword, password, u
           setIsValidUser(false);
         } else {
           setIsValidUser(true);
-          setAvatar(`${csi.getInstanceUrl()}/login/user/${username}/avatar`);
+          setAvatar(`${coreCSI.getInstanceUrl()}/login/user/${username}/avatar`);
           setFullName(resp.name);
         }
       })
@@ -97,11 +97,7 @@ const UserLogin: React.FC<IUserLogin> = ({ setUsername, setPassword, password, u
   }
 
   return (
-    <div
-      className={
-        "w-full h-full flex items-center justify-center flex-col relative animate__animated animate__fadeIn gap-4"
-      }
-    >
+    <div className={"w-full h-full flex items-center justify-center flex-col relative animate__animated animate__fadeIn gap-4"}>
       <IconButton
         icon={UKIcon.ChevronLeft}
         className={"left-0 top-0 absolute animate__animated animate__fadeInLeft"}
@@ -122,7 +118,7 @@ const UserLogin: React.FC<IUserLogin> = ({ setUsername, setPassword, password, u
       <form className={"flex-col flex items-center gap-4"}>
         <TextInput
           accessibleName="Username input"
-          autoComplete={`yourdash-instance-login username instance-${csi.getInstanceUrl()}`}
+          autoComplete={`yourdash-instance-login username instance-${coreCSI.getInstanceUrl()}`}
           key={"username-input"}
           placeholder={"Username"}
           onChange={(value) => setUsername(value)}
@@ -130,7 +126,7 @@ const UserLogin: React.FC<IUserLogin> = ({ setUsername, setPassword, password, u
         />
         <TextInput
           accessibleName="Password input"
-          autoComplete={`yourdash-instance-login password instance-${csi.getInstanceUrl()}`}
+          autoComplete={`yourdash-instance-login password instance-${coreCSI.getInstanceUrl()}`}
           key={"password-input"}
           placeholder={"Password"}
           type={"password"}
@@ -138,7 +134,7 @@ const UserLogin: React.FC<IUserLogin> = ({ setUsername, setPassword, password, u
           value={password}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
-              csi.postJson(
+              coreCSI.syncPostJson(
                 `/login/user/${username}/authenticate`,
                 { password },
                 (response) => {
@@ -160,7 +156,7 @@ const UserLogin: React.FC<IUserLogin> = ({ setUsername, setPassword, password, u
         />
         <MajorButton
           onClick={() => {
-            csi.postJson(
+            coreCSI.syncPostJson(
               `/login/user/${username}/authenticate`,
               { password },
               (response) => {

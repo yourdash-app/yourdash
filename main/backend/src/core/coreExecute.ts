@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import childProcess from "child_process";
+import childProcess from "node:child_process";
 import { Core } from "./core.js";
 
 export default class CoreExecute {
@@ -15,7 +15,7 @@ export default class CoreExecute {
     return this;
   }
 
-  exec(command: string, cwd?: string) {
-    return childProcess.exec(command, { cwd: cwd || this.core.fs.ROOT_PATH });
+  exec(command: string, cwd: string = this.core.fs.ROOT_PATH) {
+    return childProcess.exec(command, { cwd });
   }
 }

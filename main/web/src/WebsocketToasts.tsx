@@ -17,14 +17,15 @@ enum LOG_TYPE {
 }
 
 const WebsocketToasts: React.FC = () => {
-  const wsc = useWebsocketConnection("/core::log");
+  if (window.location.hostname !== "localhost") return <></>
+
+  const wsc = useWebsocketConnection("/core/log");
   const toast = useToast();
 
   useEffect(() => {
     if (!wsc) return;
 
     wsc.on(LOG_TYPE.INFO.toString(), (data: string[]) => {
-      console.log(data);
       toast.create({ type: "info", content: { title: data[0], body: stripAnsi(data.slice(1).join("\n")).replaceAll("", "") } });
     });
 

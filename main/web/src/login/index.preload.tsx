@@ -3,7 +3,8 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import csi from "@yourdash/csi/csi.js";
+import Dialog from "@yourdash/chiplet/components/dialog/Dialog";
+import coreCSI from "@yourdash/csi/coreCSI";
 import LoginIndexPage from "./index.js";
 import isValidInstance from "./lib/isValidInstance.js";
 import { FC, useState } from "react";
@@ -13,7 +14,7 @@ const LoginIndexPagePreload: FC = () => {
   const navigate = useNavigate();
   const [validInstance, setValidInstance] = useState<boolean | undefined>(undefined);
 
-  isValidInstance(csi.getInstanceUrl()).then((isValid) => {
+  isValidInstance(coreCSI.getInstanceUrl()).then((isValid) => {
     setValidInstance(isValid);
 
     if (!isValid) {
@@ -24,7 +25,12 @@ const LoginIndexPagePreload: FC = () => {
   return (
     <>
       {validInstance === undefined ? (
-        <>checking if instance is valid</>
+        <Dialog
+          title={"Logging in..."}
+          hideCloseButton={true}
+        >
+          checking if instance is valid
+        </Dialog>
       ) : (
         <>
           <LoginIndexPage />

@@ -18,9 +18,10 @@ export class Engine {
   runtime: EngineRuntime;
 
   constructor(engineRuntime: ENGINE_RUNTIMES, containerElement: HTMLElement) {
-    console.debug("OpenGFX engine starting up")
-    console.time("OpenGFX_engine_startup")
-    this.runtime = import.meta.glob("../runtime/**/index.ts")[ engineRuntime ]
+    console.debug("OpenGFX engine starting up");
+    console.time("OpenGFX_engine_startup");
+    // @ts-ignore
+    this.runtime = import.meta.glob("../runtime/**/index.ts")[engineRuntime];
     console.debug("OpenGFX engine started");
 
     this.containerElement = document.createElement("div") as HTMLDivElement;
@@ -28,10 +29,13 @@ export class Engine {
     this.canvasElement = document.createElement("canvas") as HTMLCanvasElement;
     this.containerElement.appendChild(this.canvasElement);
     this.screen = new Screen(this.containerElement, this.canvasElement, this);
-    this.currentScene = new Scene({
-      sessionId: "default_scene",
-      objects: []
-    }, this.screen);
+    this.currentScene = new Scene(
+      {
+        id: "default_scene",
+        objects: [],
+      },
+      this.screen,
+    );
     containerElement.appendChild(this.containerElement);
     this.containerElement.style.backgroundColor = "#333333";
     this.canvasElement.style.outline = "solid #000 0.125rem";
@@ -39,7 +43,7 @@ export class Engine {
     this.containerElement.style.height = "100%";
 
     this.screen.update();
-    console.timeEnd("OpenGFX_engine_startup")
+    console.timeEnd("OpenGFX_engine_startup");
   }
 
   setScene(scene: Scene): this {
@@ -51,7 +55,6 @@ export class Engine {
 
   render(): this {
     // Clear screen
-    this.screen.context
 
     console.debug("rendering scene");
     this.currentScene.render();
@@ -61,6 +64,7 @@ export class Engine {
 }
 
 export default async function initEngine(containerElement: HTMLElement) {
+  // @ts-ignore
   const webGPUAdapter = await navigator.gpu.requestAdapter({ powerPreference: "high-performance" });
 
   if (!webGPUAdapter) {

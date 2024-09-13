@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import { IYourDashSession } from "@yourdash/shared/core/session.js";
+import { IYourDashSession, type YOURDASH_SESSION_TYPE } from "@yourdash/shared/core/session.js";
 import { USER_AVATAR_SIZE } from "@yourdash/shared/core/userAvatarSize.js";
 import path from "path";
 import { Core } from "./core.js";
@@ -20,7 +20,7 @@ export default class CoreUsers {
   private readonly userDatabases: { [username: string]: { db: UserDatabase; changed: boolean } } = {};
   private readonly core: Core;
   private sessions: {
-    [key: string]: IYourDashSession<any>[]; // eslint-disable-line @typescript-eslint/no-explicit-any
+    [key: string]: IYourDashSession<YOURDASH_SESSION_TYPE>[];
   } = {};
 
   constructor(core: Core) {
@@ -34,7 +34,7 @@ export default class CoreUsers {
   }
 
   __internal__startUserDatabaseService() {
-    this.core.scheduler.scheduleTask("core:userdb_write_to_disk", "*/1 * * * *", async () => {
+    this.core.scheduler.scheduleTask("core_userdb_write_to_disk", "*/1 * * * *", async () => {
       Object.keys(this.userDatabases).map(async (username) => {
         if (!this.userDatabases[username].changed) {
           return;
@@ -50,7 +50,7 @@ export default class CoreUsers {
   }
 
   __internal__startUserDeletionService() {
-    this.core.scheduler.scheduleTask("core:users:delete_all_marked_users", "*/5 * * * *" /* every 5 minutes */, async () => {
+    this.core.scheduler.scheduleTask("core_users_delete_all_marked_users", "*/5 * * * *" /* every 5 minutes */, async () => {
       for (const username of this.usersMarkedForDeletion) {
         await this.core.users.forceDelete(username);
       }
@@ -94,6 +94,10 @@ export default class CoreUsers {
     return this;
   }
 
+  doesExist(username: string) {
+    return !!this.userDatabases[username];
+  }
+
   get(username: string) {
     return new YourDashUser(username);
   }
@@ -125,68 +129,22 @@ export default class CoreUsers {
   }
 
   update() {
+    this.core.log.error("users", "Not implemented!");
+
     return this;
   }
 
   read() {
+    this.core.log.error("users", "Not implemented!");
+
     return this;
   }
 
   async getAllUsers(): Promise<string[]> {
-    return await (await this.core.fs.getDirectory("./users")).getChildrenAsBaseName();
+    return await (await this.core.fs.getOrCreateDirectory("./users")).getChildrenAsBaseName();
   }
 
   __internal__loadEndpoints() {
-    this.core.request.get("/core/user/current/avatar/large", async (req, res) => {
-      const { username, sessionid } = req.headers;
-
-      const unreadUser = new YourDashUser(username);
-      const avatarPath = path.join(unreadUser.path, "avatars/large_avatar.avif");
-
-      return res
-        .status(200)
-        .type("text/plain")
-        .send(this.core.image.createAuthenticatedImage(username, sessionid, AUTHENTICATED_IMAGE_TYPE.FILE, avatarPath));
-    });
-
-    this.core.request.get("/core/user/current/avatar/medium", async (req, res) => {
-      const { username, sessionid } = req.headers;
-
-      const unreadUser = new YourDashUser(username);
-      const avatarPath = path.join(unreadUser.path, "avatars/medium_avatar.avif");
-
-      return res
-        .status(200)
-        .type("text/plain")
-        .send(this.core.image.createAuthenticatedImage(username, sessionid, AUTHENTICATED_IMAGE_TYPE.FILE, avatarPath));
-    });
-
-    this.core.request.get("/core/user/current/avatar/small", async (req, res) => {
-      const { username, sessionid } = req.headers;
-
-      const unreadUser = new YourDashUser(username);
-      const avatarPath = path.join(unreadUser.path, "avatars/small_avatar.avif");
-
-      return res
-        .status(200)
-        .type("text/plain")
-        .send(this.core.image.createAuthenticatedImage(username, sessionid, AUTHENTICATED_IMAGE_TYPE.FILE, avatarPath));
-    });
-
-    this.core.request.get("/core/user/current/avatar/original", async (req, res) => {
-      const { username, sessionid } = req.headers;
-
-      const unreadUser = new YourDashUser(username);
-      const avatarPath = path.join(unreadUser.path, "avatars/original.avif");
-
-      return res
-        .status(200)
-        .type("text/plain")
-        .send(this.core.image.createAuthenticatedImage(username, sessionid, AUTHENTICATED_IMAGE_TYPE.FILE, avatarPath));
-    });
-
-    // NEW CSI ENDPOINTS
-
     this.core.request.get(`/core/user/current/avatar/${USER_AVATAR_SIZE.SMALL}`, async (req, res) => {
       const { username, sessionid } = req.headers;
 

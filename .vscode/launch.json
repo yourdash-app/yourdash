@@ -4,14 +4,13 @@
   // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
-    {
-      "type": "node",
-      "request": "attach",
-      "port": 9229,
-      "name": "Attach to Backend in debug mode",
-      "skipFiles": [
-        "<node_internals>/**"
-      ]
-    }
+{
+  "type": "bun",
+  "request": "attach",
+  "name": "Attach to Bun",
+  // The URL of the WebSocket inspector to attach to.
+  // This value can be retrieved by using `bun --inspect`.
+  "url": "ws://localhost:6499/pcol3nqk51n",
+}
   ]
 }

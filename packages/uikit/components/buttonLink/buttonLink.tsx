@@ -5,21 +5,22 @@
 
 import clippy from "@yourdash/shared/web/helpers/clippy.js";
 import Button from "../button/button.js";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styles from "./buttonLink.module.scss";
 import { FC } from "react";
 
 const ButtonLink: FC<{ text: string; to: string; className?: string }> = (props) => {
+  const navigate = useNavigate();
+
   return (
-    <Link to={props.to}>
-      <Button
-        onClick={() => {
-          return 0;
-        }}
-        text={props.text}
-        className={clippy(styles.component, props.className)}
-      />
-    </Link>
+    <Button
+      onClick={() => {
+        navigate(props.to);
+        return 0;
+      }}
+      text={props.text}
+      className={clippy(styles.component, props.className)}
+    />
   );
 };
 

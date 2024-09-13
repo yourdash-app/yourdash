@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
-    "module": "ESNext",
+    "target": "ES2022",
+    "module": "ES2022",
     "useDefineForClassFields": true,
     "lib": [
       "DOM",
@@ -10,11 +10,11 @@
     ],
     "allowJs": false,
     "skipLibCheck": true,
-    "esModuleInterop": false,
+    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "Node",
+    "moduleResolution": "Bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
@@ -23,7 +23,9 @@
   "include": [
     "src/**/*",
     "../applications/**/frontend/**/*",
-    "../shared/**/*"
+    "../packages/shared/**/*",
+    "../packages/csi/**/*",
+    "../packages/uikit/**/*"
   ],
   "references": [
     {

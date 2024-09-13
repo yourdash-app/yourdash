@@ -10,4 +10,6 @@ export default interface GlobalDBCoreLoginNotice {
   author: string;
   // the timestamp of the login notice message's creation.
   timestamp: number;
+  // should the notice be displayed
+  displayType: "onLogin" | "notification";
 }

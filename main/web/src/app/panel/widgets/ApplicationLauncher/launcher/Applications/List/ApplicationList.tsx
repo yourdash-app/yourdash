@@ -7,12 +7,12 @@ import DropdownIconButton from "@yourdash/chiplet/components/dropdownIconButton/
 import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
 import RightClickMenu from "@yourdash/chiplet/components/rightClickMenu/RightClickMenu";
 import React from "react";
-import IPanelApplicationsLauncherApplication from "@yourdash/shared/core/panel/applicationsLauncher/application";
-import csi from "@yourdash/csi/csi";
+import IPanelApplicationsLauncherFrontendModule from "@yourdash/shared/core/panel/applicationsLauncher/application";
+import coreCSI from "@yourdash/csi/coreCSI";
 import styles from "./ApplicationList.module.scss";
 import { useNavigate } from "react-router";
 
-const ApplicationList: React.FC<{ applications: IPanelApplicationsLauncherApplication[] }> = ({ applications }) => {
+const ApplicationList: React.FC<{ applications: IPanelApplicationsLauncherFrontendModule[] }> = ({ applications }) => {
   const navigate = useNavigate();
 
   return (
@@ -23,48 +23,52 @@ const ApplicationList: React.FC<{ applications: IPanelApplicationsLauncherApplic
             items={[
               {
                 label: "Pin To Panel",
-                onClick() {
-                  csi.postJson("/core/panel/quick-shortcuts/create", { name: application.name }, () => {
-                    // @ts-ignore
-                    window.__yourdashCorePanelQuickShortcutsReload?.();
-                    return 0;
-                  });
+                async onClick() {
+                  await coreCSI.postJson("/core/panel/quick-shortcuts/create", { id: application.id, moduleType: application.type });
+                  // @ts-ignore
+                  window.__yourdashCorePanelQuickShortcutsReload?.();
+                  return 0;
                 },
               },
               {
                 label: "Open In New Tab",
                 onClick() {
-                  window.open(`${window.location.origin}${window.location.pathname}/app/a/${application.name}`, "_blank");
+                  window.open(`${window.location.origin}${window.location.pathname}/app/a/${application.id}`, "_blank");
                   return 0;
                 },
               },
             ]}
             className={styles.item}
-            key={application.name}
+            key={application.id}
             onClick={() => {
-              navigate(`/app/a/${application.name}`);
+              navigate(application.url);
             }}
           >
             <div className={styles.itemContent}>
-              <img loading={"lazy"} className={styles.itemIcon} src={`${csi.getInstanceUrl()}${application.icon}`} draggable={false} alt="" />
+              <img
+                loading={"lazy"}
+                className={styles.itemIcon}
+                src={`${coreCSI.getInstanceUrl()}${application.icon}`}
+                draggable={false}
+                alt=""
+              />
               <span className={styles.itemLabel}>{application.displayName}</span>
               <DropdownIconButton
                 className={"ml-auto"}
                 items={[
                   {
                     label: "Pin To Panel",
-                    onClick() {
-                      csi.postJson("/core/panel/quick-shortcuts/create", { name: application.name }, () => {
-                        // @ts-ignore
-                        window.__yourdashCorePanelQuickShortcutsReload?.();
-                        return 0;
-                      });
+                    async onClick() {
+                      await coreCSI.postJson("/core/panel/quick-shortcuts/create", { id: application.id, moduleType: application.type });
+                      // @ts-ignore
+                      window.__yourdashCorePanelQuickShortcutsReload?.();
+                      return 0;
                     },
                   },
                   {
                     label: "Open In New Tab",
                     onClick() {
-                      window.open(`${window.location.origin}${window.location.pathname}/app/a/${application.name}`, "_blank");
+                      window.open(`${window.location.origin}${window.location.pathname}/app/a/${application.id}`, "_blank");
                       return 0;
                     },
                   },

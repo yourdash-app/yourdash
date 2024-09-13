@@ -1,0 +1,15 @@
+{
+  "name": "uk-ewsgit-organisation",
+  "displayName": "Organisation",
+  "description": "Organize your projects and tasks, share them with others and sync them across all your devices.",
+  "category": "productivity",
+  "authors": [
+    {
+      "displayName": "Ewsgit",
+      "avatarUrl": "https://avatars.githubusercontent.com/u/69800526?v=4",
+      "bio": "The creator of YourDash",
+      "site": "https://ewsgit.github.io",
+      "role": "Author"
+    }
+  ]
+}

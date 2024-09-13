@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import csi from "@yourdash/csi/csi.js";
+import coreCSI from "@yourdash/csi/coreCSI";
 import Box from "@yourdash/uikit/components/box/box.js";
 import Button from "@yourdash/uikit/components/button/button.js";
 import Heading from "@yourdash/uikit/components/heading/heading.js";
@@ -26,7 +26,7 @@ const Panel: FC = () => {
       setIsValid(bool);
 
       if (bool) {
-        csi.setInstanceUrl(inputValue);
+        coreCSI.setInstanceUrl(inputValue);
         navigate("/login");
       }
     });

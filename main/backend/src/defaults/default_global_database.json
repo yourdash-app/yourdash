@@ -1,32 +1,33 @@
 {
   "core:administratorDetails": {
-    "name": "Admin istrator",
+    "name": "Admin Istrator",
+    "username": "admin",
     "contactDetails": {
-      "phone": false,
+      "phone": "+44 123-456-7890",
       "email": "admin@example.com",
       "username": "admin"
     }
   },
   "core:installedApplications": [
-    "dash",
-    "settings",
-    "files",
-    "store",
-    "weather",
-    "photos"
+    "../applications/uk-ewsgit-dash",
+    "../applications/uk-ewsgit-settings",
+    "../applications/uk-ewsgit-files",
+    "../applications/uk-ewsgit-store",
+    "../applications/uk-ewsgit-weather",
+    "../applications/uk-ewsgit-photos"
   ],
   "core:defaults": {
     "user": {
       "quickShortcuts": [
-        "dash",
-        "settings",
-        "files",
-        "store",
-        "weather",
-        "photos"
+        "uk-ewsgit-dash",
+        "uk-ewsgit-settings",
+        "uk-ewsgit-files",
+        "uk-ewsgit-store",
+        "uk-ewsgit-weather",
+        "uk-ewsgit-photos"
       ]
     }
   },
-  "core:instance:name": "YourDash Instance",
+  "core:instance:name": "Untitled YourDash Instance",
   "core:instance:message": "Placeholder message. Hey system admin, you should change this!"
 }

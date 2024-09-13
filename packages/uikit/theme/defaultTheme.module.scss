@@ -6,14 +6,23 @@
 @import "./themeValues";
 
 .theme {
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: 100%;
+
+  background: var(#{$theme+$background});
   #{$theme}-author: "Ewsgit";
   #{$theme}-name: "YourDash Classic Dark";
   #{$theme}-version: "0.0.1";
 
-  background: var(#{$theme+$background});
-  height: 100%;
-  overflow-x: hidden;
-  overflow-y: auto;
+  ::-webkit-scrollbar {
+    width: var(#{$theme+$scrollbar+$width});
+    border-radius: 0;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: var(#{$theme+$scrollbar+$radius});
+  }
 }
 
 .level0 {
@@ -28,8 +37,11 @@
   #{$theme+$padding}: 1rem;
   #{$theme+$gap}: 0.5rem;
   #{$theme+$transition}: all 200ms ease-in-out;
+  #{$theme+$transition+$transition}: 200ms ease-in-out;
   #{$theme+$separator+$size}: 0.125rem;
   #{$theme+$separator+$color}: #444444;
+  #{$theme+$scrollbar+$width}: 0.4rem;
+  #{$theme+$scrollbar+$radius}: 0.1rem;
 
   // heading
   #{$theme+$heading+$h1+$weight}: 900;

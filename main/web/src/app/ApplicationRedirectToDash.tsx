@@ -4,7 +4,7 @@
  */
 
 import React, { useEffect } from "react";
-import csi from "@yourdash/csi/csi";
+import coreCSI from "@yourdash/csi/coreCSI";
 import { useNavigate } from "react-router-dom";
 
 const ApplicationRedirectToDash: React.FC = () => {
@@ -13,10 +13,10 @@ const ApplicationRedirectToDash: React.FC = () => {
     if (!localStorage.getItem("instance_url")) {
       navigate("/login");
     } else {
-      csi.syncGetJson(
+      coreCSI.syncGetJson(
         "/login/is-authenticated",
         () => {
-          navigate("/app/a/dash");
+          navigate("/app/a/uk-ewsgit-dash-frontend");
         },
         () => {
           sessionStorage.removeItem("session_token");

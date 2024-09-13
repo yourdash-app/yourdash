@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import csi from "@yourdash/csi/csi";
+import coreCSI from "@yourdash/csi/coreCSI";
 import { USER_AVATAR_SIZE } from "@yourdash/shared/core/userAvatarSize";
 import * as React from "react";
 import styles from "./UserProfileDropdown.module.scss";
@@ -15,7 +15,7 @@ const UserProfileDropdown: React.FC = () => {
   const [userName, setUserName] = useState<string>("unknown");
 
   useEffect(() => {
-    const user = csi.getUser();
+    const user = coreCSI.getUser();
 
     user.getAvatar(USER_AVATAR_SIZE.SMALL).then((res) => {
       setUserAvatar(res);
@@ -23,12 +23,16 @@ const UserProfileDropdown: React.FC = () => {
     user.getFullName().then((res) => {
       setUserFullName(res);
     });
-    setUserName(csi.getUsername());
+    setUserName(coreCSI.getUsername());
   }, []);
 
   return (
     <div className={styles.component}>
-      <img className={styles.avatar} src={userAvatar} alt={""} />
+      <img
+        className={styles.avatar}
+        src={userAvatar}
+        alt={""}
+      />
       <div className={styles.nameContainer}>
         <div className={styles.name}>
           {userFullName.first} {userFullName.last}

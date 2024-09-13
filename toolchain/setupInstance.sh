@@ -4,10 +4,18 @@
 # YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
 #
 
-if [ "$EUID" -ne 0 ]; then
-  echo "Please run as root"
-  exit
+if ! [ "$(id -u)" = 0 ]; then
+   echo "Please run the script as root to continue." >&2
+   exit 1
 fi
+
+if [ "$SUDO_USER" ]; then
+    real_user=$SUDO_USER
+else
+    real_user=$(whoami)
+fi
+
+printf "\nHiya, ..%s.. !\n" "$real_user"
 
 echo "Installing YourDash and dependencies"
 
@@ -15,16 +23,23 @@ echo "Updating system packages"
 apt update -y && apt upgrade -y
 
 echo "Installing NodeJS"
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+sudo -u "$real_user" curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 
 echo "Reloading ~/.bashrc"
 # shellcheck disable=SC1090
 source ~/.bashrc
 
 echo "Installing LTS NodeJS"
-nvm install 21
-nvm alias default 21
-nvm use 21
+sudo -u "$real_user" nvm install --lts
+sudo -u "$real_user" nvm alias default --lts
+sudo -u "$real_user" nvm use --lts
+
+echo "Re-sourcing ~/.bashrc"
+# shellcheck disable=SC1090
+source ~/.bashrc
+
+echo "Installing Bun"
+sudo -u "$real_user" curl -fsSL https://bun.sh/install | bash
 
 echo "Re-sourcing ~/.bashrc"
 # shellcheck disable=SC1090
@@ -51,29 +66,9 @@ echo "Setting YourDash (\"/yourdash\") permissions"
 chmod 777 -R /yourdash
 
 echo "Installing YourDash dependencies"
-npm i -g yarn
+sudo -u "$real_user" npm i -g yarn
 
 echo "IMPORTANT!: if yarn install fails, run this script again"
-yarn install
+sudo -u "$real_user" yarn install
 
-echo "Installing pm2"
-yarn global add pm2
-
-echo "Reloading ~/.bashrc"
-# shellcheck disable=SC1090
-source /root/.bashrc
-
-echo "Setting pm2 as a startup script"
-pm2 startup
-
-echo "Removing YourDash from pm2 (IGNORE IF AN ERROR OCCURS)"
-pm2 delete yourdashBackend
-
-echo "Adding YourDash Backend to pm2"
-pm2 start /yourdash/toolchain/yourdashBackend.sh
-
-echo "Removing YourDash Dev WebClient from pm2 (IGNORE IF AN ERROR OCCURS)"
-pm2 delete yourdashDevWebClient
-
-echo "Adding YourDash Dev WebClient to pm2"
-pm2 start /yourdash/toolchain/yourdashDevWebClient.sh
+echo "YourDash has been installed along with it's dependencies!"

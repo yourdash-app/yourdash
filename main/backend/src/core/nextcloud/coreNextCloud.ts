@@ -11,7 +11,7 @@ export const MIMICED_NEXTCLOUD_VERSION = {
   minor: 0,
   micro: 3,
   string: "28.0.3",
-  edition: "YourDash",
+  edition: "YourDash Cross-Compatability",
   extendedSupport: false,
 };
 
@@ -37,7 +37,7 @@ export default function loadNextCloudSupportEndpoints(core: Core) {
   });
 
   core.request.usePath("/remote.php/dav", async (req, res) => {
-    return res.redirect(`${core.globalDb.get("core:instanceUrl")}/dav/${req.path.replace("/remote.php/dav/", "")}`);
+    return res.redirect(`${req.hostname}/dav/${req.path.replace("/remote.php/dav/", "")}`);
   });
 
   core.request.get("/ocs/v2.php/cloud/capabilities", async (req, res) => {
@@ -60,7 +60,7 @@ export default function loadNextCloudSupportEndpoints(core: Core) {
             },
             capabilities: {
               bruteforce: {
-                delay: 200, // arbitrary value
+                delay: 200, // arbitrary value in milisecconds
                 "allow-listed": false,
               },
               theming: {
@@ -72,12 +72,12 @@ export default function loadNextCloudSupportEndpoints(core: Core) {
                 "color-element": "#00679e",
                 "color-element-bright": "#00679e",
                 "color-element-dark": "#00679e",
-                logo: "https://192.168.1.64/index.php/apps/theming/image/logo?useSvg=1&v=2",
-                background: "https://192.168.1.64/index.php/apps/theming/image/background?v=2",
+                logo: `https://${req.hostname || "localhost:3563"}/index.php/apps/theming/image/logo?useSvg=1&v=2`,
+                background: `https://${req.hostname || "localhost:3563"}/index.php/apps/theming/image/background?v=2`,
                 "background-plain": false,
                 "background-default": false,
-                logoheader: "https://192.168.1.64/index.php/apps/theming/image/logo?useSvg=1&v=2",
-                favicon: "https://192.168.1.64/index.php/apps/theming/image/logo?useSvg=1&v=2",
+                logoheader: `https://${req.hostname || "localhost:3563"}/index.php/apps/theming/image/logo?useSvg=1&v=2`,
+                favicon: `https://${req.hostname || "localhost:3563"}/index.php/apps/theming/image/logo?useSvg=1&v=2`,
               },
             },
           },

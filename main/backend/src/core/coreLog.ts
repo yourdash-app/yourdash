@@ -15,7 +15,7 @@ export enum LOG_TYPE {
   DEBUG,
 }
 
-const LOG_META_MAX_LENGTH = 20;
+const LOG_META_MAX_LENGTH = 28;
 
 export default class CoreLog {
   private readonly core: Core;
@@ -24,7 +24,7 @@ export default class CoreLog {
     level: string;
     message: (string | Uint8Array)[];
   }[] = [];
-  private websocketServer: WebsocketManagerServer;
+  private websocketServer!: WebsocketManagerServer;
 
   constructor(core: Core) {
     this.core = core;
@@ -32,18 +32,35 @@ export default class CoreLog {
     return this;
   }
 
-  private log(type: LOG_TYPE, level: string, ...message: (string | Uint8Array)[]) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private log(type: LOG_TYPE, level: string, ...message: any[]): this {
     if (this.core.isDebugMode) {
       this.logHistory.push({ type: type, level: level, message: message });
 
+      let typeString = "";
+
+      switch (type) {
+        case LOG_TYPE.INFO:
+          typeString = chalk.bold(`${chalk.white("[")}${chalk.blue("INF")}${chalk.white("]")}`);
+          break;
+        case LOG_TYPE.WARNING:
+          typeString = chalk.bold(`${chalk.white("[")}${chalk.yellow("WAR")}${chalk.white("]")}`);
+          break;
+        case LOG_TYPE.ERROR:
+          typeString = chalk.bold(`${chalk.white("[")}${chalk.red("ERR")}${chalk.white("]")}`);
+          break;
+        case LOG_TYPE.SUCCESS:
+          typeString = chalk.bold(`${chalk.white("[")}${chalk.green("SUC")}${chalk.white("]")}`);
+          break;
+        case LOG_TYPE.DEBUG:
+          typeString = chalk.bold(`${chalk.white("[")}${chalk.magenta("DBG")}${chalk.white("]")}`);
+          break;
+      }
+
       console.log(
-        message[0],
-        chalk.bold(
-          `${chalk.white("[")}${chalk.italic.yellow(
-            level.toUpperCase().slice(0, LOG_META_MAX_LENGTH).padEnd(LOG_META_MAX_LENGTH),
-          )}${chalk.white("]")} `,
-        ),
-        message.slice(1).join(" ").toString(),
+        typeString,
+        chalk.bold(`${chalk.yellow(level.toUpperCase().slice(0, LOG_META_MAX_LENGTH).padEnd(LOG_META_MAX_LENGTH))} `),
+        ...message,
       );
 
       this.websocketServer?.emit(type.toString(), level, ...message);
@@ -79,7 +96,7 @@ export default class CoreLog {
       throw new Error("log message is empty");
     }
 
-    return this.log(LOG_TYPE.INFO, level, chalk.bold(`${chalk.white("[")}${chalk.blue("INF")}${chalk.white("]")}`), ...message);
+    return this.log(LOG_TYPE.INFO, level, ...message);
   }
 
   success(level: string, ...message: (string | Uint8Array)[]) {
@@ -91,7 +108,7 @@ export default class CoreLog {
       throw new Error("log message is empty");
     }
 
-    return this.log(LOG_TYPE.SUCCESS, level, chalk.bold(`${chalk.white("[")}${chalk.green("SUC")}${chalk.white("]")}`), ...message);
+    return this.log(LOG_TYPE.SUCCESS, level, ...message);
   }
 
   warning(level: string, ...message: (string | Uint8Array)[]) {
@@ -103,17 +120,20 @@ export default class CoreLog {
       throw new Error("log message is empty");
     }
 
-    return this.log(LOG_TYPE.WARNING, level, chalk.bold(`${chalk.white("[")}${chalk.yellow("WAR")}${chalk.white("]")}`), ...message);
+    return this.log(LOG_TYPE.WARNING, level, ...message);
   }
 
-  error(level: string, ...message: (string | Uint8Array)[]) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  error(level: string, ...message: any[]) {
     if (message.length === 0) {
       this.log(LOG_TYPE.ERROR, "log", new Error("log message is empty").stack);
     }
 
+    this.log(LOG_TYPE.ERROR, level, ...message);
+
     console.log(new Error().stack);
 
-    return this.log(LOG_TYPE.ERROR, level, chalk.bold(`${chalk.white("[")}${chalk.red("ERR")}${chalk.white("]")}`), ...message);
+    return this;
   }
 
   debug(level: string, ...message: (string | Uint8Array)[]) {
@@ -129,11 +149,11 @@ export default class CoreLog {
       throw new Error("log message is empty");
     }
 
-    return this.log(LOG_TYPE.DEBUG, level, chalk.bold(`${chalk.white("[")}${chalk.magenta("DBG")}${chalk.white("]")}`), ...message);
+    return this.log(LOG_TYPE.DEBUG, level, ...message);
   }
 
   __internal__loadEndpoints() {
-    this.websocketServer = this.core.websocketManager.createServer("/core::log");
+    this.websocketServer = this.core.websocketManager.createServer("/core/log");
 
     return this;
   }

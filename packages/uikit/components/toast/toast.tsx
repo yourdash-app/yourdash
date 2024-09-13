@@ -5,6 +5,7 @@
 
 import generateUUID from "@yourdash/shared/web/helpers/uuid";
 import Heading from "../heading/heading";
+import Separator from "../separator/separator";
 import type ToastInterface from "./toast";
 import clippy from "@yourdash/shared/web/helpers/clippy.js";
 import { FC, useState } from "react";
@@ -17,8 +18,10 @@ import * as React from "react";
 // @ts-ignore
 import styles from "./toast.module.scss";
 
+const TOAST_DISPLAY_TIME = 5000;
+
 const Toast: FC<{ children: React.ReactNode | React.ReactNode[] }> = ({ children }) => {
-  const [toasts, setToasts] = useState<(ToastInterface & { uuid: string })[]>([]);
+  const [toasts, setToasts] = useState<(ToastInterface & { uuid: string; animatingOut: boolean })[]>([]);
 
   return (
     <>
@@ -27,12 +30,27 @@ const Toast: FC<{ children: React.ReactNode | React.ReactNode[] }> = ({ children
           showToast: (data: ToastInterface) => {
             const uuid = generateUUID();
 
-            setToasts([...toasts, { ...data, uuid: uuid }]);
+            setToasts((t) => [...t, { ...data, uuid: uuid, animatingOut: false }]);
 
             if (!data.persist) {
               setTimeout(() => {
-                setToasts([...toasts.filter((t) => t.uuid !== uuid)]);
-              }, 5000);
+                setToasts((t) =>
+                  t.map((toast) => {
+                    if (uuid === toast.uuid) {
+                      return {
+                        ...toast,
+                        animatingOut: true,
+                      };
+                    }
+
+                    return toast;
+                  }),
+                );
+              }, TOAST_DISPLAY_TIME - 500);
+
+              setTimeout(() => {
+                setToasts((t) => t.filter((toast) => toast.uuid !== uuid));
+              }, TOAST_DISPLAY_TIME);
             }
           },
         }}
@@ -47,17 +65,27 @@ const Toast: FC<{ children: React.ReactNode | React.ReactNode[] }> = ({ children
                     <IconButton
                       accessibleLabel={"Close toast"}
                       icon={UKIcon.X}
-                      onClick={() => setToasts(toasts.filter((x) => x.uuid !== t.uuid))}
+                      onClick={() => setToasts((toasts) => toasts.filter((x) => x.uuid !== t.uuid))}
                     />
                   ) : null
                 }
-                containerClassName={clippy(styles.component, t.type && styles[t.type])}
+                className={clippy(styles.cardContent, t.type && styles[t.type])}
+                containerClassName={clippy(
+                  styles.component,
+                  t.persist && styles.pointerEvents,
+                  t.animatingOut ? "animate__animated animate__fadeOutRightBig" : "animate__animated animate__fadeInDown",
+                )}
               >
                 <Heading
+                  className={styles.heading}
                   level={3}
                   text={t.content.title}
                 />
-                <Text text={t.content.body} />
+                <Separator direction={"column"} />
+                <Text
+                  className={styles.body}
+                  text={t.content.body}
+                />
               </Card>
             );
           })}

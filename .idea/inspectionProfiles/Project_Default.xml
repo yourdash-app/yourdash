@@ -16,11 +16,12 @@
     <inspection_tool class="HtmlUnknownAttribute" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="myValues">
         <value>
-          <list size="4">
+          <list size="5">
             <item index="0" class="java.lang.String" itemvalue="license" />
             <item index="1" class="java.lang.String" itemvalue="class" />
             <item index="2" class="java.lang.String" itemvalue="className" />
             <item index="3" class="java.lang.String" itemvalue="ref" />
+            <item index="4" class="java.lang.String" itemvalue="closed" />
           </list>
         </value>
       </option>
@@ -58,6 +59,7 @@
       </option>
     </inspection_tool>
     <inspection_tool class="JSUnresolvedReference" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="JsonSchemaCompliance" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="PlatformDetectionJS" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="SpellCheckingInspection" enabled="false" level="TYPO" enabled_by_default="false">
       <option name="processCode" value="true" />

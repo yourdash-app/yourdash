@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="OpenGFX" pattern="file[YourDash]:packages/opengfx-engine//*" />
+</component>
