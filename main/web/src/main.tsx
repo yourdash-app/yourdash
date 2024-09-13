@@ -35,103 +35,101 @@ const ProjectsRouter = loadable(() => import("./root/projects/ProjectsRouter"));
 
 function main() {
   ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-    <ChipletRootIntegration>
-      <UIKitRoot>
-        <WebsocketToasts />
-        <RouterProvider
-          router={createBrowserRouter(
-            createRoutesFromElements(
-              <Route errorElement={<ErrorElement />}>
+    <UIKitRoot>
+      <WebsocketToasts />
+      <RouterProvider
+        router={createBrowserRouter(
+          createRoutesFromElements(
+            <Route errorElement={<ErrorElement />}>
+              <Route
+                path={"/linker-desktop-client-startup"}
+                element={<LinkerDesktopClientStartupPage />}
+              />
+              <Route element={<Navigation />}>
                 <Route
-                  path={"/linker-desktop-client-startup"}
-                  element={<LinkerDesktopClientStartupPage />}
+                  index
+                  element={<Index />}
                 />
-                <Route element={<Navigation />}>
+                <Route
+                  path={"*"}
+                  element={<NotFoundPage />}
+                />
+              </Route>
+              <Route element={<Navigation subtitle={"Docs"} />}>
+                <Route
+                  path={"docs/*"}
+                  element={<DocsLayout />}
+                >
+                  <Route
+                    path={"*"}
+                    element={<DocsRouter />}
+                  />
+                </Route>
+              </Route>
+              <Route element={<Navigation subtitle={"Projects"} />}>
+                <Route
+                  path={"projects"}
+                  index
+                  element={<ProjectsIndexPage />}
+                />
+              </Route>
+              <Route
+                path={"projects/*"}
+                element={<ProjectsRouter />}
+              />
+              <Route
+                path={"project/*"}
+                element={<ProjectsRouter />}
+              />
+              <Route
+                path={"proj/*"}
+                element={<ProjectsRouter />}
+              />
+              <Route path={"login"}>
+                <Route
+                  index
+                  element={<LoginIndexPagePreload />}
+                />
+                <Route
+                  path={"success"}
+                  element={<LoginSuccessPage />}
+                />
+                <Route
+                  path={"signup"}
+                  element={<>TODO: implement me @ewsgit</>}
+                />
+                <Route path={"instance"}>
                   <Route
                     index
-                    element={<Index />}
+                    element={<LoginInstancePage />}
                   />
                   <Route
                     path={"*"}
-                    element={<NotFoundPage />}
+                    element={<LoginRedirect />}
                   />
                 </Route>
-                <Route element={<Navigation subtitle={"Docs"} />}>
-                  <Route
-                    path={"docs/*"}
-                    element={<DocsLayout />}
-                  >
-                    <Route
-                      path={"*"}
-                      element={<DocsRouter />}
-                    />
-                  </Route>
-                </Route>
-                <Route element={<Navigation subtitle={"Projects"} />}>
-                  <Route
-                    path={"projects"}
-                    index
-                    element={<ProjectsIndexPage />}
-                  />
-                </Route>
-                <Route
-                  path={"projects/*"}
-                  element={<ProjectsRouter />}
-                />
-                <Route
-                  path={"project/*"}
-                  element={<ProjectsRouter />}
-                />
-                <Route
-                  path={"proj/*"}
-                  element={<ProjectsRouter />}
-                />
-                <Route path={"login"}>
+              </Route>
+              <Route path={"app"}>
+                <Route element={<AppLayout />}>
                   <Route
                     index
-                    element={<LoginIndexPagePreload />}
+                    element={<ApplicationRedirectToDash />}
                   />
                   <Route
-                    path={"success"}
-                    element={<LoginSuccessPage />}
+                    path={"a/*"}
+                    element={<AppRouter />}
                   />
                   <Route
-                    path={"signup"}
-                    element={<>TODO: implement me @ewsgit</>}
+                    path={"h/*"}
+                    element={<HostedApplicationRouter />}
                   />
-                  <Route path={"instance"}>
-                    <Route
-                      index
-                      element={<LoginInstancePage />}
-                    />
-                    <Route
-                      path={"*"}
-                      element={<LoginRedirect />}
-                    />
-                  </Route>
                 </Route>
-                <Route path={"app"}>
-                  <Route element={<AppLayout />}>
-                    <Route
-                      index
-                      element={<ApplicationRedirectToDash />}
-                    />
-                    <Route
-                      path={"a/*"}
-                      element={<AppRouter />}
-                    />
-                    <Route
-                      path={"h/*"}
-                      element={<HostedApplicationRouter />}
-                    />
-                  </Route>
-                </Route>
-              </Route>,
-            ),
-          )}
-        />
-      </UIKitRoot>
-    </ChipletRootIntegration>,
+              </Route>
+            </Route>,
+          ),
+        )}
+      />
+    </UIKitRoot>,
   );
 }
 

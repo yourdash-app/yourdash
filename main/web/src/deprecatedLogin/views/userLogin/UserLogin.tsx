@@ -134,7 +134,7 @@ const UserLogin: React.FC<IUserLogin> = ({ setUsername, setPassword, password, u
           value={password}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
-              coreCSI.postJson(
+              coreCSI.syncPostJson(
                 `/login/user/${username}/authenticate`,
                 { password },
                 (response) => {
@@ -156,7 +156,7 @@ const UserLogin: React.FC<IUserLogin> = ({ setUsername, setPassword, password, u
         />
         <MajorButton
           onClick={() => {
-            coreCSI.postJson(
+            coreCSI.syncPostJson(
               `/login/user/${username}/authenticate`,
               { password },
               (response) => {

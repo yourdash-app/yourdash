@@ -9,7 +9,7 @@
   },
   "scripts": {
     "dev": "vite --host",
-    "build": "tsc && vite build",
+    "build": "vite build",
     "preview": "vite preview",
     "visualize-bundle": "vite-bundle-visualizer",
     "generate-application-routes": "run-script-os",

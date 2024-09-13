@@ -121,7 +121,7 @@ const ProfileIndexPage: React.FC = () => {
           </>
           <Button
             onClick={() => {
-              coreCSI.postJson(
+              coreCSI.syncPostJson(
                 "/core/user/current",
                 userData as unknown as TJson,
                 () => {

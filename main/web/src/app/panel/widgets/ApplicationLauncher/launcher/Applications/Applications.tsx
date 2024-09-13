@@ -38,13 +38,13 @@ const ApplicationsLauncherApplications: React.FC<{
         className={clippy(styles.searchBar, "top-0 sticky z-10")}
         onEnter={() => {
           if (filteredApplications.length === 1) {
-            navigate(`/app/a/${filteredApplications[0].name}`);
+            navigate(`/app/a/${filteredApplications[0].displayName}`);
           }
         }}
         onChange={(val) => {
           filteredApplications = apps.filter((application) => {
             return (
-              application.name.toLowerCase().includes(val.toLowerCase()) ||
+              application.displayName.toLowerCase().includes(val.toLowerCase()) ||
               application.description.toLowerCase().includes(val.toLowerCase()) ||
               application.displayName.toLowerCase().includes(val.toLowerCase())
             );

@@ -78,11 +78,11 @@ const DashApplication: React.FC = () => {
       ) : (
         <div className={styles.widgetGrid}>
           {widgetPage.widgets.map((widget) => {
-            const Widget = loadable(() => import(`./widgets/${widget.id}/widget.tsx`));
+            const Widget = loadable(() => import(`./widgets/${widget.widgetType}/widget.tsx`));
 
             return (
               <div
-                key={widget.id + JSON.stringify(widget.position)}
+                key={widget.widgetType + JSON.stringify(widget.position)}
                 /*@ts-ignore*/
                 style={{ "--position-x": widget.position.x, "--position-y": widget.position.y }}
                 className={styles.widgetGridWidget}
