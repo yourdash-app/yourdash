@@ -1,1 +1,0 @@
-const T="Diffusion Lab",E={LABEL:"Diffuse"},P={LABEL:"Stop Diffusion"},A={LABEL:"Prompt"},N={LABEL:"Negative Prompt"},o={APPLICATION_NAME:T,GENERATE_BUTTON:E,STOP_BUTTON:P,PROMPT:A,NEGATIVE_PROMPT:N};export{T as APPLICATION_NAME,E as GENERATE_BUTTON,N as NEGATIVE_PROMPT,A as PROMPT,P as STOP_BUTTON,o as default};

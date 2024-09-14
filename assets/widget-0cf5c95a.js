@@ -1,0 +1,1 @@
+import{u as i,j as s,d as n,q as c,n as g}from"./index-ad359391.js";const o="_widget_1q9j4_10",m="_img_1q9j4_16",t={widget:o,img:m},u=({data:e})=>{const a=i();return s.jsxs(n,{className:t.widget,onClick:()=>{a(e.url)},children:[s.jsx(c,{noRounding:!0,className:t.img,src:e.icon,authenticatedImage:!0,accessibleLabel:""}),s.jsx(g,{text:e.name})]})};export{u as default};

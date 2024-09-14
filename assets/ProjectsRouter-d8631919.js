@@ -1,1 +1,0 @@
-import{j as e,R as s,a as t}from"./index-5c94e495.js";const r=()=>e.jsx("div",{children:"UIKIT"}),o=()=>e.jsx(s,{children:e.jsx(t,{path:"uikit",children:e.jsx(t,{index:!0,element:e.jsx(r,{})})})});export{o as default};
