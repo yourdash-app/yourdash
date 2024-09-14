@@ -21,13 +21,16 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-          cache: yarn
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.0.11 # or "latest"
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: bun install
 
       - name: Build website
-        run: (cd ./packages/web && yarn build)
+        run: (cd ./packages/web && bun run build)
 #
 #      - name: Deploy to external repository
 #        uses: cpina/github-action-push-to-another-repository@main
