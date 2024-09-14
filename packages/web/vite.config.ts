@@ -18,4 +18,9 @@ export default defineConfig({
   appType: "spa",
   root: "./",
   base: "./",
+  build: {
+    rollupOptions: {
+      external: ["chart.js"],
+    },
+  },
 });
