@@ -12,4 +12,4 @@
 .turbo
 /.idea/csv-editor.xml
 /.idea/csv-plugin.xml
-/main/backend/.env
+/packages/backend/.env

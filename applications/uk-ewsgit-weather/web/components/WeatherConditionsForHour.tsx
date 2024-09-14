@@ -4,7 +4,6 @@
  */
 
 import { chunk } from "@yourdash/shared/web/helpers/array";
-import useTranslate from "@yourdash/shared/web/helpers/i18n";
 import Card from "@yourdash/chiplet/components/card/Card";
 import React from "react";
 import { IWeatherDataForLocation } from "../../shared/weatherDataForLocation";

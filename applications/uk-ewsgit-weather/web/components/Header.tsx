@@ -4,7 +4,6 @@
  */
 
 import clippy from "@yourdash/shared/web/helpers/clippy";
-import useTranslate from "@yourdash/shared/web/helpers/i18n";
 import Heading from "@yourdash/chiplet/components/heading/Heading";
 import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
 import IconButton from "@yourdash/chiplet/components/iconButton/IconButton";

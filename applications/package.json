@@ -33,7 +33,11 @@
     "undici": "^5.28.3",
     "utf-8-validate": "^6.0.3",
     "web-tree-sitter": "^0.20.8",
-    "xml2js": "^0.6.2"
+    "xml2js": "^0.6.2",
+    "@yourdash/shared": "workspace:*",
+    "@yourdash/web": "workspace:*",
+    "@yourdash/backend": "workspace:*",
+    "@yourdash/uikit": "workspace:*"
   },
   "scripts": {
     "codestudio-install": "run-script-os",

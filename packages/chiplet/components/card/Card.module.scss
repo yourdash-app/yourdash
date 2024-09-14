@@ -14,6 +14,7 @@
   border-radius: var(--container-rounding);
   background-color: rgb(var(--container-bg));
   box-shadow: 0 0 0.5rem #00000044;
+  place-items: center;
 
   &.secondary {
     padding: var(--container-secondary-padding);
@@ -32,14 +33,13 @@
   &:hover {
     transition: var(--transition-fast) !important;
   }
-
-  place-items: center;
 }
 
 .clickable {
   cursor: pointer;
   user-select: none;
   border: solid 0.125rem rgb(var(--container-bg));
+  place-items: center;
 
   &:hover {
     border: solid 0.125rem #ffffff55;
@@ -76,8 +76,6 @@
       border: solid 0.125rem #ffffff33;
     }
   }
-
-  place-items: center;
 }
 
 .border {

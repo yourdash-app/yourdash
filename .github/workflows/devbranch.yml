@@ -27,7 +27,7 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Build website
-        run: (cd ./main/web && yarn build)
+        run: (cd ./packages/web && yarn build)
 #
 #      - name: Deploy to external repository
 #        uses: cpina/github-action-push-to-another-repository@main
