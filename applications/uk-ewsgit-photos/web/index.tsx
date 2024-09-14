@@ -23,10 +23,12 @@ const ApplicationRoutes: FC = () => {
           path={"search"}
           element={<SearchIndexPage />}
         />
-        <Route
-          path={"album"}
-          element={<AlbumPathPage />}
-        />
+        <Route path={"album"}>
+          <Route
+            path={"@/*"}
+            element={<AlbumPathPage />}
+          />
+        </Route>
         <Route
           path={"view"}
           element={<ViewPathPage />}

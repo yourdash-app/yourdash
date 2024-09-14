@@ -6,7 +6,8 @@
   "license": "MIT",
   "private": true,
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "applications"
   ],
   "scripts": {
     "dev-web": "yarn --cwd packages/web dev",
@@ -16,5 +17,11 @@
     "build-production": "yarn --cwd packages/backend compile-all && yarn --cwd ./packages/web build",
     "dev-desktop": "yarn --cwd ./packages/desktop/ start",
     "opengfx:dev": "yarn --cwd ./packages/opengfx-engine dev"
+  },
+  "dependencies": {
+    "eslint": "^9.10.0",
+    "prettier": "^3.3.3",
+    "prettier-eslint": "^16.3.0",
+    "sharp": "^0.33.5"
   }
 }

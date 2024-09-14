@@ -4,12 +4,13 @@
  */
 
 import core from "@yourdash/backend/src/core/core.js";
-import BackendModule, { YourDashModuleArguments } from "@yourdash/backend/src/core/moduleManager/backendModule.js";
 import generateUUID from "@yourdash/shared/web/helpers/uuid.js";
 import * as path from "path";
 import ChatbotsBotApplication from "../shared/application.js";
+import { YourDashBackendModule, YourDashModuleArguments } from "@yourdash/backend/src/core/coreApplicationManager.js";
+import FSError from "@yourdash/backend/src/core/fileSystem/FSError.js";
 
-export default class ChatbotsModule extends BackendModule {
+export default class ChatbotsModule extends YourDashBackendModule {
   loadedBots: {
     id: string;
     ownerTeam: string;
@@ -23,8 +24,8 @@ export default class ChatbotsModule extends BackendModule {
   }
 
   public loadEndpoints() {
-    this.api.request.post("/app/chatbots/integration/discord/authorize-user", async (req, res) => {
-      const user = this.api.getUser(req);
+    core.request.post("/app/chatbots/integration/discord/authorize-user", async (req, res) => {
+      const user = core.users.get(req.username);
 
       try {
         await (
@@ -42,11 +43,11 @@ export default class ChatbotsModule extends BackendModule {
       return res.json({ success: true });
     });
 
-    this.api.request.get("/app/chatbots/authorize/check/discord", (_req, res) => {
+    core.request.get("/app/chatbots/authorize/check/discord", (_req, res) => {
       return res.json({ authorized: false });
     });
 
-    this.api.request.usePath("/app/chatbots/team/:teamId/*", async (req, res, next) => {
+    core.request.usePath("/app/chatbots/team/:teamId/*", async (req, res, next) => {
       const { username } = req.headers;
       const { teamId } = req.params;
 
@@ -63,7 +64,7 @@ export default class ChatbotsModule extends BackendModule {
       return next();
     });
 
-    this.api.request.post("/app/chatbots/team/:teamId/create-bot/", async (req, res) => {
+    core.request.post("/app/chatbots/team/:teamId/create-bot/", async (req, res) => {
       const { teamId } = req.params;
       const botId = generateUUID();
 
@@ -71,9 +72,13 @@ export default class ChatbotsModule extends BackendModule {
       const teamBotsDirectory = await core.fs.getDirectory(path.join(team.getPath(), "apps/chatbots/bots"));
       const botDirectory = await core.fs.createDirectory(path.join(teamBotsDirectory.path, botId));
 
-      await (
-        await core.fs.getFile(path.join(botDirectory.path, "bot.json"))
-      ).write(
+      const botJson = await core.fs.getFile(path.join(botDirectory.path, "bot.json"));
+
+      if (botJson instanceof FSError) {
+        return res.json({ error: true });
+      }
+
+      await botJson.write(
         JSON.stringify({
           value: botId,
           ownerTeam: teamId,
@@ -86,7 +91,7 @@ export default class ChatbotsModule extends BackendModule {
       });
     });
 
-    this.api.request.get("/app/chatbots/team/:teamId/list-bots", async (req, res) => {
+    core.request.get("/app/chatbots/team/:teamId/list-bots", async (req, res) => {
       const { teamId } = req.params;
 
       const team = await core.teams.get(teamId);
@@ -94,14 +99,22 @@ export default class ChatbotsModule extends BackendModule {
 
       const teamBotsDirectory = await core.fs.getDirectory(path.join(team.getPath(), "apps/chatbots/bots"));
 
+      if (teamBotsDirectory instanceof FSError) {
+        return res.json({ bots: [] });
+      }
+
       return res.json({ bots: await teamBotsDirectory.getChildrenAsBaseName() });
     });
 
-    this.api.request.get("/app/chatbots/team/:teamId/list/:botId", async (req, res) => {
+    core.request.get("/app/chatbots/team/:teamId/list/:botId", async (req, res) => {
       const { teamId, botId } = req.params;
 
       const team = await core.teams.get(teamId);
       const teamBotsDirectory = await core.fs.getDirectory(path.join(team.getPath(), "apps/chatbots/bots/", botId));
+
+      if (teamBotsDirectory instanceof FSError) {
+        return res.json({ error: true });
+      }
 
       if (!(await teamBotsDirectory.doesExist())) {
         return res.json({ error: `Invalid bot: ${botId}` });

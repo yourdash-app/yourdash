@@ -9,17 +9,18 @@ import Text from "@yourdash/uikit/components/text/text.js";
 import { FC } from "react";
 import path from "path-browserify";
 import { useNavigate } from "react-router-dom";
+import { useNavigateTo } from "../../../../../meta.yourdash.ts";
 import styles from "./album.module.scss";
 
 const Album: FC<{ album: { path: string; displayName: string } }> = ({ album }) => {
-  const navigate = useNavigate();
+  const navigateTo = useNavigateTo();
 
   return (
     <Card
       containerClassName={styles.album}
       key={album.path}
       onClick={() => {
-        navigate("/app/a/uk-ewsgit-photos/album/?p=" + coreCSI.path.toUnix(album.path));
+        navigateTo("/album/" + coreCSI.path.toUnix(album.path));
       }}
     >
       <Text text={path.basename(coreCSI.path.toUnix(album.path))} />

@@ -9,7 +9,7 @@ import Image from "@yourdash/uikit/components/image/image.js";
 import { FC } from "react";
 import { MediaAlbumLargeGridItem } from "../../../../../shared/types/endpoints/media/album/large-grid.js";
 import { PHOTOS_MEDIA_TYPE } from "../../../../../shared/types/mediaType.js";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styles from "./albumGridMedia.module.scss";
 
 const AlbumGridMedia: FC<{

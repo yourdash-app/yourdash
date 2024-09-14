@@ -93,21 +93,17 @@ yarn run yd:dev-web
 
 ### Installation and setup for development (Windows)
 
-#### Install yarn
+#### Install NPM dependencies with bun
 ```shell
-npm i -g yarn
-```
-#### Install npm dependencies
-```shell
-yarn install
+bun install
 ```
 #### Run YourDash backend in dev mode
 ```shell
-yarn run yd:dev-backend
+bun run yd:dev-backend
 ```
 #### Run YourDash web in dev mode
 ```shell
-yarn run yd:dev-web
+bun run yd:dev-web
 ```
 
 #### Notes

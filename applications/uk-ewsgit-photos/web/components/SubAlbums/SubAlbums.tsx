@@ -11,13 +11,11 @@ import Text from "@yourdash/uikit/components/text/text";
 import InfiniteScroll from "@yourdash/uikit/views/infiniteScroll/infiniteScroll";
 import React, { useEffect, useState } from "react";
 import { EndpointAlbumSubPath } from "../../../shared/types/endpoints/album/sub/path";
-import applicationMeta, { acsi } from "../../meta.yourdash";
+import { acsi, useNavigateTo } from "../../meta.yourdash";
 import styles from "./SubAlbums.module.scss";
-import { useNavigate } from "react-router";
 
 const SubAlbums: React.FC<{ path: string; scrollerClassName?: string }> = ({ path, scrollerClassName }) => {
-  const moduleId = coreCSI.getCurrentModuleId(applicationMeta);
-  const navigate = useNavigate();
+  const navigateTo = useNavigateTo();
   const [albums, setAlbums] = useState<EndpointAlbumSubPath>([]);
   const [hasMorePages, setHasMorePages] = useState(true);
 
@@ -49,7 +47,7 @@ const SubAlbums: React.FC<{ path: string; scrollerClassName?: string }> = ({ pat
             containerClassName={styles.album}
             key={album.path}
             onClick={() => {
-              navigate(`/app/a/${moduleId}/album/?p=` + coreCSI.path.toUnix(album.path));
+              navigateTo(`/album/@/${coreCSI.path.toUnix(album.path)}`);
             }}
           >
             <Image

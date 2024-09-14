@@ -45,8 +45,6 @@ loadingElement.innerText = "Loading YourDash...";
 
 element.appendChild(loadingElement);
 
-console.log(element);
-
 ReactDOM.createRoot(element).render(
   <UIKitRoot>
     <WebsocketToasts />
