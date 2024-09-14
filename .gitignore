@@ -1,7 +1,7 @@
 **/node_modules/
 /fs/
-/main/backend/**/*.js
-/main/backend/**/*.js.map
+/packages/backend/**/*.js
+/packages/backend/**/*.js.map
 /applications/**/*.js
 /applications/**/*.js.map
 /packages/shared/**/*.js
