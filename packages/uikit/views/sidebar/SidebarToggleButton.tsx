@@ -4,9 +4,9 @@
  */
 
 import { FC, useContext } from "react";
-import { UKIcon } from "../../components/icon/iconDictionary";
-import SidebarContext from "./SidebarContext";
-import IconButton from "../../components/iconButton/iconButton";
+import { UKIcon } from "../../components/icon/iconDictionary.ts";
+import SidebarContext from "./SidebarContext.tsx";
+import IconButton from "../../components/iconButton/iconButton.tsx";
 
 const SidebarToggleButton: FC = () => {
   const sidebarContext = useContext(SidebarContext);

@@ -4,7 +4,6 @@
  */
 
 import clippy from "@yourdash/shared/web/helpers/clippy";
-import useTranslate from "@yourdash/shared/web/helpers/i18n";
 import Heading from "@yourdash/chiplet/components/heading/Heading";
 import * as React from "react";
 import { type StorePromotedApplication } from "@yourdash/shared/apps/store/storePromotedApplication";

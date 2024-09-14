@@ -1,6 +1,6 @@
 
 {
-  "extends": "../../../main/backend/tsconfig.json",
+  "extends": "../../../packages/backend/tsconfig.json",
   "include": ["./**/*.ts", "../shared/**/*.ts"],
   "compilerOptions": {
     "rootDir": "../"

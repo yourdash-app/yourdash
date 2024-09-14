@@ -23,7 +23,6 @@ import StoreApplicationDefaultHeaderBackground from "./assets/default_background
 import InstallationPopup from "./components/InstallationPopup";
 import { requestApplication } from "./helpers/requestApplicationData";
 import styles from "./StoreApplicationPage.module.scss";
-import useTranslate from "@yourdash/shared/web/helpers/i18n";
 
 const StoreApplicationPage: React.FC = () => {
   const trans = useTranslate("store");

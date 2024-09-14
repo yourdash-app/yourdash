@@ -1,0 +1,56 @@
+/*!
+ * Copyright ©2023 @Ewsgit and YourDash contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
+@mixin mobileMode {
+  @media (max-width: 840px) {
+    flex-direction: column-reverse;
+  }
+}
+
+.left {
+  flex-direction: row;
+  @include mobileMode;
+}
+
+.right {
+  flex-direction: row-reverse;
+  @include mobileMode;
+}
+
+.top {
+  flex-direction: column;
+  @include mobileMode;
+}
+
+.bottom {
+  flex-direction: column-reverse;
+  @include mobileMode;
+}
+
+.layout {
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
+@keyframes applicationFadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.applicationFrame {
+  container-name: yourdash-application-frame;
+  container-type: inline-size;
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: 100%;
+  width: 100%;
+  transition: var(--transition);
+  animation: applicationFadeIn 0.5s forwards ease-in;
+}

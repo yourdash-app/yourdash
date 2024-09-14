@@ -3,7 +3,6 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import useTranslate from "@yourdash/shared/web/helpers/i18n";
 import Card from "@yourdash/chiplet/components/card/Card";
 import Row from "@yourdash/chiplet/components/row/Row";
 import Spinner from "@yourdash/chiplet/components/spinner/Spinner";

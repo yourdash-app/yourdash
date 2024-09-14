@@ -4,7 +4,7 @@
  */
 
 import styles from "./heading.module.scss";
-import clippy from "@yourdash/shared/web/helpers/clippy";
+import clippy from "@yourdash/shared/web/helpers/clippy.ts";
 import { FC } from "react";
 
 const Heading: FC<{ text: string; level?: 1 | 2 | 3 | 4 | 5 | 6; className?: string }> = (props) => {

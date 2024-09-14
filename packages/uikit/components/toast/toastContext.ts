@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import Toast from "./toast";
+import Toast from "./toast.ts";
 
 const ToastContext = React.createContext({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

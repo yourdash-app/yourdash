@@ -3,10 +3,10 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import coreCSI from "@yourdash/csi/coreCSI";
+import coreCSI from "@yourdash/csi/coreCSI.ts";
 import styles from "./image.module.scss";
 import { FC, useState } from "react";
-import clippy from "@yourdash/shared/web/helpers/clippy";
+import clippy from "@yourdash/shared/web/helpers/clippy.ts";
 
 const Image: FC<{
   src: string;

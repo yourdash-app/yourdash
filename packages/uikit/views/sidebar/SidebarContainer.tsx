@@ -4,14 +4,14 @@
  */
 
 import React, { FC, useState } from "react";
-import SidebarContext from "./SidebarContext";
+import SidebarContext from "./SidebarContext.tsx";
 import styles from "./SidebarContainer.module.scss";
-import clippy from "@yourdash/shared/web/helpers/clippy";
+import clippy from "@yourdash/shared/web/helpers/clippy.ts";
 
 const SidebarContainer: FC<{ children: React.ReactNode | React.ReactNode[]; showSidebarByDefault?: boolean; className?: string }> = ({
   children,
   showSidebarByDefault,
-  className
+  className,
 }) => {
   const [showSidebar, setShowSidebar] = useState<boolean>(showSidebarByDefault || true);
 

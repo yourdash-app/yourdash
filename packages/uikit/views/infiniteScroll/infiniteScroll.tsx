@@ -3,7 +3,7 @@
  *    YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import clippy from "@yourdash/shared/web/helpers/clippy";
+import clippy from "@yourdash/shared/web/helpers/clippy.ts";
 import React, { useEffect, useState } from "react";
 import styles from "./infiniteScroll.module.scss";
 
@@ -61,7 +61,7 @@ const InfiniteScroll: React.FC<{
         ref={endOfItemsRef}
         className={styles.endOfItems}
       >
-        {!dontShowNoMoreItems ?? "No more items to load"}
+        {!dontShowNoMoreItems && "No more items to load"}
       </div>
     </div>
   );

@@ -4,7 +4,7 @@
  */
 
 import { FC } from "react";
-import contextMenuRootContext from "./contextMenuRootContext.js";
+import contextMenuRootContext from "./contextMenuRootContext.tsx";
 
 const ContextMenu: FC<{
   items: { label: string; onClick: () => void }[];

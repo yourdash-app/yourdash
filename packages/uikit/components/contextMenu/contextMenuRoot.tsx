@@ -3,13 +3,13 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import React, { ReactNode } from "react";
+import React from "react";
 import { FC, useEffect, useRef } from "react";
-import Button from "../button/button.js";
-import ContextMenuRootContext from "./contextMenuRootContext.js";
+import Button from "../button/button.tsx";
+import ContextMenuRootContext from "./contextMenuRootContext.tsx";
 import styles from "./contextMenuRoot.module.scss";
 
-const ContextMenuRoot: FC<{ children: ReactNode | ReactNode[] }> = ({ children }) => {
+const ContextMenuRoot: FC<{ children: React.ReactNode | React.ReactNode[] }> = ({ children }) => {
   const [position, setPosition] = React.useState({ x: 0, y: 0 });
   const [visible, setVisible] = React.useState(false);
   const [items, setItems] = React.useState([] as { label: string; onClick: () => void }[]);

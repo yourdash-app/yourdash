@@ -1,0 +1,67 @@
+/*!
+ * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 1rem;
+}
+
+.itemIcon {
+  width: 5.5rem;
+  height: 5.5rem;
+  scale: 0.85;
+  transition: var(--transition);
+}
+
+.itemLabel {
+  text-align: center;
+  max-height: 1.5rem;
+  transition: var(--transition);
+  height: max-content;
+  overflow: hidden;
+}
+
+.item {
+  min-height: 8.5rem;
+  width: 100%;
+}
+
+.itemContent {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0.25rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: var(--transition);
+  height: 8.5rem;
+  min-height: 8.5rem;
+  overflow: hidden;
+
+  &:hover {
+    height: unset;
+    z-index: 20;
+
+    .itemIcon {
+      scale: 1;
+      transition: var(--transition-fast);
+    }
+
+    .itemLabel {
+      max-height: unset;
+    }
+  }
+
+  &:active {
+    .itemIcon {
+      scale: 0.95;
+    }
+  }
+}

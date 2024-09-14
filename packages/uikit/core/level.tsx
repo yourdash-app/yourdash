@@ -4,7 +4,7 @@
  */
 
 import { createContext, useContext } from "react";
-import styles from "./../theme/defaultTheme.module.scss";
+import styles from "../theme/defaultTheme.module.scss";
 
 const LevelContext = createContext(0);
 export default LevelContext;

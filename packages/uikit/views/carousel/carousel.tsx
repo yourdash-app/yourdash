@@ -1,8 +1,8 @@
 import React, { useRef } from "react";
-import Card from "../../components/card/card";
-import Container from "../../components/container/container";
+import Card from "../../components/card/card.tsx";
+import Container from "../../components/container/container.tsx";
 import styles from "./carousel.module.scss";
-import clippy from "@yourdash/shared/web/helpers/clippy";
+import clippy from "@yourdash/shared/web/helpers/clippy.ts";
 
 const Carousel: React.FC<{
   items: { element: React.ReactElement; id: string }[];

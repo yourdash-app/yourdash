@@ -4,7 +4,6 @@
  */
 
 import clippy from "@yourdash/shared/web/helpers/clippy";
-import useTranslate from "@yourdash/shared/web/helpers/i18n";
 import Card from "@yourdash/uikit/components/card/card";
 import TextInput from "@yourdash/uikit/components/textInput/textInput";
 import React, { useEffect, useState } from "react";

@@ -8,6 +8,7 @@
     width: 100%;
     height: 100%;
     gap: calc(var(#{$theme+$gap}) * 2);
+    animation: fadeIn 1s 0s cubic-bezier(0.215, 0.610, 0.355, 1);
 
     @keyframes fadeIn {
         from {
@@ -19,8 +20,6 @@
             opacity: 1;
         }
     }
-
-    animation: fadeIn 1s 0s cubic-bezier(0.215, 0.610, 0.355, 1);
 }
 
 .goBackButton {}

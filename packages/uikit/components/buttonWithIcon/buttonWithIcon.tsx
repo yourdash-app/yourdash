@@ -3,9 +3,9 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import clippy from "@yourdash/shared/web/helpers/clippy.js";
-import Icon from "../icon/icon";
-import { UKIcon } from "../icon/iconDictionary";
+import clippy from "@yourdash/shared/web/helpers/clippy.ts";
+import Icon from "../icon/icon.tsx";
+import { UKIcon } from "../icon/iconDictionary.ts";
 import styles from "./buttonWithIcon.module.scss";
 import { FC } from "react";
 

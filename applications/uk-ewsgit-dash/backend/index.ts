@@ -41,7 +41,7 @@ export default class DashModule extends YourDashBackendModule {
               x: 1,
               y: 0,
             },
-            id: "applicationShortcut",
+            widgetType: "applicationShortcut",
             size: {
               preferred: {
                 width: 2,
@@ -68,7 +68,7 @@ export default class DashModule extends YourDashBackendModule {
               x: 2,
               y: 0,
             },
-            id: "applicationShortcut",
+            widgetType: "applicationShortcut",
             size: {
               preferred: {
                 width: 2,
@@ -90,7 +90,7 @@ export default class DashModule extends YourDashBackendModule {
               x: 0,
               y: 2,
             },
-            id: "applicationShortcut",
+            widgetType: "applicationShortcut",
             size: {
               preferred: {
                 width: 2,
@@ -112,7 +112,7 @@ export default class DashModule extends YourDashBackendModule {
               x: 0,
               y: 4,
             },
-            id: "applicationShortcut",
+            widgetType: "applicationShortcut",
             size: {
               preferred: {
                 width: 2,
@@ -134,7 +134,7 @@ export default class DashModule extends YourDashBackendModule {
               x: 2,
               y: 2,
             },
-            id: "applicationShortcut",
+            widgetType: "applicationShortcut",
             size: {
               preferred: {
                 width: 2,

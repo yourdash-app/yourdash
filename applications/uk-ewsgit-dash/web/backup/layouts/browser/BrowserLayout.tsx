@@ -3,7 +3,6 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import useTranslate from "@yourdash/shared/web/helpers/i18n";
 import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
 import IconButton from "@yourdash/chiplet/components/iconButton/IconButton";
 import React from "react";

@@ -4,8 +4,8 @@
  */
 
 import React from "react";
-import Toast from "../components/toast/toast";
-import ToastContext from "../components/toast/toastContext.js";
+import Toast from "../components/toast/toast.ts";
+import ToastContext from "../components/toast/toastContext.ts";
 
 export default function useToast() {
   const toastCtx = React.useContext(ToastContext);

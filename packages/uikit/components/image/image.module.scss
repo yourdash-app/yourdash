@@ -34,6 +34,7 @@
     }
   }
 
+  & {
   background:
     linear-gradient(to bottom right, transparent 25%, #bbb, #fff 50%, transparent 25%);
   background-repeat: no-repeat;
@@ -41,4 +42,5 @@
   background-position: 100% 100%;
   animation: loading 2s infinite;
   box-shadow: inset 0 0 0.5rem #0003;
+  }
 }

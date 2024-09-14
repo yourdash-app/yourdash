@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { UKIcon } from "./iconDictionary.js";
+import { UKIcon } from "./iconDictionary.ts";
 import styles from "./icon.module.scss";
 import { FC } from "react";
 

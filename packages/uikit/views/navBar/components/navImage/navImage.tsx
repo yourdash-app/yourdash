@@ -1,5 +1,5 @@
 import React from "react";
-import Image from "../../../../components/image/image";
+import Image from "../../../../components/image/image.tsx";
 import styles from "./navImage.module.scss";
 
 const NavImage: React.FC<{ src: string }> = ({ src }) => {

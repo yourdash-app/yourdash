@@ -1,15 +1,15 @@
 import * as React from "react";
-import { UKIcon } from "../../components/icon/iconDictionary";
-import IconButton from "../../components/iconButton/iconButton";
-import Image from "../../components/image/image";
-import Heading from "../../components/heading/heading";
-import Text from "../../components/text/text";
-import ButtonWithIcon from "../../components/buttonWithIcon/buttonWithIcon";
-import Button from "../../components/button/button";
+import { UKIcon } from "../../components/icon/iconDictionary.ts";
+import IconButton from "../../components/iconButton/iconButton.tsx";
+import Image from "../../components/image/image.tsx";
+import Heading from "../../components/heading/heading.tsx";
+import Text from "../../components/text/text.tsx";
+import ButtonWithIcon from "../../components/buttonWithIcon/buttonWithIcon.tsx";
+import Button from "../../components/button/button.tsx";
 import { Outlet } from "react-router";
 import styles from "./onBoarding.module.scss";
-import Flex from "../../components/flex/flex";
-import clippy from "@yourdash/shared/web/helpers/clippy";
+import Flex from "../../components/flex/flex.tsx";
+import clippy from "@yourdash/shared/web/helpers/clippy.ts";
 
 const OnBoarding: React.FC<{
   meta: { id: string };

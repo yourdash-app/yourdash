@@ -3,27 +3,21 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import clippy from "@yourdash/shared/web/helpers/clippy.js";
-import isMobileDevice from "@yourdash/shared/web/helpers/isPhone.js";
-import ContextMenuRoot from "../components/contextMenu/contextMenuRoot.js";
-import Toast from "../components/toast/toast.jsx";
-import LevelContext from "./level.js";
-import styles from "./../theme/defaultTheme.module.scss";
-import * as React from "react";
+import clippy from "@yourdash/shared/web/helpers/clippy.ts";
+import isMobileDevice from "@yourdash/shared/web/helpers/isPhone.ts";
+import ContextMenuRoot from "../components/contextMenu/contextMenuRoot.tsx";
+import Toasts from "../components/toast/toasts.tsx";
+import styles from "../theme/defaultTheme.module.scss";
+import React from "react";
+import LevelContext from "./level.tsx";
 
 const UIKitRoot: React.FC<{ children: React.ReactNode | React.ReactNode[] }> = (props) => {
-  const [isMobile, setIsMobile] = React.useState<boolean>(false);
-
-  React.useEffect(() => {
-    setIsMobile(isMobileDevice());
-  }, []);
-
   return (
-    <div className={clippy(styles.theme, styles.level0, isMobile && styles.mobile)}>
+    <div className={clippy(styles.theme, styles.level0, isMobileDevice() && styles.mobile)}>
       <ContextMenuRoot>
-        <Toast>
+        <Toasts>
           <LevelContext.Provider value={0}>{props.children}</LevelContext.Provider>
-        </Toast>
+        </Toasts>
       </ContextMenuRoot>
     </div>
   );

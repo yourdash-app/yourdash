@@ -1,21 +1,30 @@
 {
   "compilerOptions": {
-    "strict": true,
     "target": "ESNext",
     "module": "ESNext",
-    "moduleResolution": "node",
+    "useDefineForClassFields": true,
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ESNext"
+    ],
+    "allowJs": false,
+    "skipLibCheck": true,
+    "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "jsx": "preserve",
-    "jsxImportSource": "react",
-    "types": ["vite/client"],
-    "noEmit": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
     "isolatedModules": true,
-    "skipLibCheck": true
+    "moduleDetection": "force",
+    "noEmit": true,
+    "jsx": "react-jsx"
   },
   "include": [
     "./**/*",
-    "../applications/**/frontend/**/*",
-    "../shared/**/*"
+    "../shared/**/*",
+    "../web"
   ]
 }

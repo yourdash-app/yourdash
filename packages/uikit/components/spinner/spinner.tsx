@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import clippy from "@yourdash/shared/web/helpers/clippy.js";
+import clippy from "@yourdash/shared/web/helpers/clippy.ts";
 import styles from "./spinner.module.scss";
 import { FC } from "react";
 

@@ -3,7 +3,6 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import useTranslate from "@yourdash/shared/web/helpers/i18n";
 import AutocompletedTextInput from "@yourdash/chiplet/components/autocompletedTextInput/AutocompletedTextInput";
 import Button from "@yourdash/chiplet/components/button/Button";
 import Card from "@yourdash/chiplet/components/card/Card";

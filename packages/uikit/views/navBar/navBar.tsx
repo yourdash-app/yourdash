@@ -1,8 +1,8 @@
 import React from "react";
-import Box from "../../components/box/box";
+import Box from "../../components/box/box.tsx";
 import styles from "./navBar.module.scss";
-import Flex from "../../components/flex/flex";
-import clippy from "@yourdash/shared/web/helpers/clippy";
+import Flex from "../../components/flex/flex.tsx";
+import clippy from "@yourdash/shared/web/helpers/clippy.ts";
 
 const NavBar: React.FC<{
   leftSection?: React.ReactElement | React.ReactElement[];

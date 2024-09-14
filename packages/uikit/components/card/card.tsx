@@ -3,13 +3,13 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import clippy from "@yourdash/shared/web/helpers/clippy.js";
-import IncrementLevel from "../../core/incrementLevel.js";
-import { useLevel, useLevelClass } from "../../core/level.js";
-import Box from "../box/box.js";
+import clippy from "@yourdash/shared/web/helpers/clippy.ts";
+import IncrementLevel from "../../core/incrementLevel.tsx";
+import { useLevel, useLevelClass } from "../../core/level.tsx";
+import Box from "../box/box.tsx";
 import styles from "./card.module.scss";
 import { FC, Ref } from "react";
-import DecrementLevel from "../../core/decrementLevel.jsx";
+import DecrementLevel from "../../core/decrementLevel.tsx";
 
 const Card: FC<{
   level?: 0 | 1 | 2 | 3;
@@ -53,7 +53,7 @@ const Card: FC<{
           {props.header && <Box className={clippy(styles.header, props.headerClassName)}>{props.header}</Box>}
           <div className={clippy(styles.content, props.className)}>{props.children}</div>
           <DecrementLevel>
-          {props.actions && <Box className={clippy(styles.actions, props.actionsClassName)}>{props.actions}</Box>}
+            {props.actions && <Box className={clippy(styles.actions, props.actionsClassName)}>{props.actions}</Box>}
           </DecrementLevel>
         </div>
       </IncrementLevel>

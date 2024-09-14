@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import LevelContext, { useLevel } from "./level";
+import LevelContext, { useLevel } from "./level.tsx";
 import { FC } from "react";
 
 const IncrementLevel: FC<{ children: React.ReactNode | React.ReactNode[] }> = (props) => {

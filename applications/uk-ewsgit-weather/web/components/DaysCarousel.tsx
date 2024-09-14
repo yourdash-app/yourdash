@@ -4,7 +4,6 @@
  */
 
 import clippy from "@yourdash/shared/web/helpers/clippy";
-import useTranslate from "@yourdash/shared/web/helpers/i18n";
 import Card from "@yourdash/chiplet/components/card/Card";
 import Carousel from "@yourdash/chiplet/components/carousel/Carousel";
 import Icon from "@yourdash/chiplet/components/icon/Icon";

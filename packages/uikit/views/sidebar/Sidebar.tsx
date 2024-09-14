@@ -3,12 +3,12 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import clippy from "@yourdash/shared/web/helpers/clippy";
-import Flex from "../../components/flex/flex";
-import IncrementLevel from "../../core/incrementLevel";
-import { useLevel, useLevelClass } from "../../core/level";
+import clippy from "@yourdash/shared/web/helpers/clippy.ts";
+import Flex from "../../components/flex/flex.tsx";
+import IncrementLevel from "../../core/incrementLevel.tsx";
+import { useLevel, useLevelClass } from "../../core/level.tsx";
 import styles from "./Sidebar.module.scss";
-import SidebarContext from "./SidebarContext";
+import SidebarContext from "./SidebarContext.tsx";
 import { FC, useContext } from "react";
 
 const Sidebar: FC<{ children: React.ReactNode | React.ReactNode[] }> = ({ children }) => {
