@@ -8,9 +8,9 @@
     "node": ">=21.0.0"
   },
   "scripts": {
-    "dev": "node_modules/.bin/vite --host",
-    "build": "node_modules/.bin/vite build",
-    "preview": "node_modules/.bin/vite preview",
+    "dev": "vite --host",
+    "build": "vite build",
+    "preview": "vite preview",
     "visualize-bundle": "vite-bundle-visualizer",
     "generate-application-routes": "run-script-os",
     "generate-application-routes:nix": "bun toolchain/generateApplicationRoutes.js",
