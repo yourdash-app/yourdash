@@ -300,7 +300,7 @@ import { Route, Routes } from "react-router";
       let routeRegionReplacement = "";
 
       this.applicationManager.loadedModules.officialFrontend.forEach((mod, ind) => {
-        loadableRegionReplacement += `const Application${ind}=loadable(()=>import("@yourdash/applications/${path.posix.join(path.basename(mod.applicationPath), mod.config.main.replace(".tsx", ""))}"));`;
+        loadableRegionReplacement += `const Application${ind}=loadable(()=>import("../../../../applications/${path.posix.join(path.basename(mod.applicationPath), mod.config.main.replace(".tsx", ""))}"));`;
         routeRegionReplacement += `<Route path={"${mod.config.id}/*"} element={<Application${ind}/>}/>`;
       });
 
@@ -351,7 +351,7 @@ import { Route, Routes } from "react-router";
 
     const viteProcess = childProcess.spawn("yarn", ["run", "start"], { cwd: "../web/", shell: true });
 
-    let portInUse: boolean = false;
+    let portInUse = false;
 
     viteProcess.stdout.on("data", (data) => {
       if (data.toString() === "$ vite --host\n") return;
@@ -584,7 +584,7 @@ import { Route, Routes } from "react-router";
 
       const user = new YourDashUser(username);
 
-      let savedHashedPassword: string = "";
+      let savedHashedPassword = "";
       try {
         savedHashedPassword = await ((await this.fs.getFile(path.join(user.path, "core/password.enc"))) as FSFile).read("string");
       } catch (e) {
@@ -835,7 +835,7 @@ import { Route, Routes } from "react-router";
 
       return res.json(<EndpointResponseCoreLoginNotice>{
         author: notice.author ?? "Instance Administrator",
-        display: notice.displayType === "onLogin" ?? true,
+        display: notice.displayType === "onLogin" && true,
         message: notice.message ?? "Placeholder message. Hey system admin, you should change this!",
         timestamp: notice.timestamp ?? 1,
       });
