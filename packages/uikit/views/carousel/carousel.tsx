@@ -45,17 +45,7 @@ const Carousel: React.FC<{
 
                   const carouselTargetPage = scrollElement.children[index] as HTMLDivElement;
 
-                  console.log("Current Scroll Left: ", scrollElement.scrollLeft);
-                  console.log("Current Page ScrollLeft: ", carouselTargetPage.offsetLeft);
-                  console.log("Current Page Scroll Position: ", carouselTargetPage.offsetLeft + scrollElement.scrollLeft);
-
-                  scrollElement.scrollTo({
-                    behavior: "smooth",
-                    left:
-                      carouselTargetPage.getBoundingClientRect().left -
-                      scrollElement.getBoundingClientRect().left +
-                      carouselTargetPage.scrollLeft,
-                  });
+                  carouselTargetPage.scrollIntoView();
                 }}
               />
             );

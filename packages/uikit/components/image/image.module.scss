@@ -29,18 +29,20 @@
 
 .loading {
   @keyframes loading {
+    from {
+      background-position: calc(var(--background-size) * -1) calc(var(--background-size) * -1);
+    }
+
     to {
-        background-position: 0 0;
+      background-position: var(--background-size) var(--background-size);
     }
   }
 
   & {
-  background:
-    linear-gradient(to bottom right, transparent 25%, #bbb, #fff 50%, transparent 25%);
-  background-repeat: no-repeat;
-  background-size: 16rem 16rem;
-  background-position: 100% 100%;
-  animation: loading 2s infinite;
-  box-shadow: inset 0 0 0.5rem #0003;
+    background: linear-gradient(to bottom right, transparent 25%, #bbbbbb, #ffffff 50%, transparent 25%);
+    background-repeat: no-repeat;
+    background-size: var(--background-size) var(--background-size);
+    animation: loading 1.5s infinite forwards;
+    box-shadow: inset 0 0 0.5rem #0003;
   }
 }
