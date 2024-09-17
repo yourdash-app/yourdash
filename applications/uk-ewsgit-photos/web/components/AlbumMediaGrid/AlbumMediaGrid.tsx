@@ -33,7 +33,7 @@ const AlbumMediaGrid: React.FC<{ path: string; scrollerClassName?: string }> = (
       className={clippy(styles.component, scrollerClassName)}
     >
       {albums.map((album) => {
-        return <AlbumMedia />;
+        return <AlbumMedia albumMedia={album} />;
       })}
     </InfiniteScroll>
   );

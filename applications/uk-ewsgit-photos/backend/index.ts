@@ -528,8 +528,6 @@ export default class PhotosBackend extends YourDashBackendModule {
 
       const output: { displayName: string; path: string; size: number; thumbnail: string }[] = [];
 
-      this.api.core.log.debug("app/photos", `album: ${albumPath} page: ${page} subAlbums: ${await albumEntity.getChildDirectories()}`);
-
       const chunks = chunk(await albumEntity.getChildDirectories(), this.PAGE_SIZE);
 
       if (page >= chunks.length) return res.json([]);
@@ -688,18 +686,27 @@ export default class PhotosBackend extends YourDashBackendModule {
             break;
         }
 
-        const mediaDimensions = await this.api.core.image.getImageDimensions(
-          path.join(this.THUMBNAIL_CACHE_LOCATION, `${albumMedia.path}.raw.webp`),
-        );
+        const mediaDimensions = await this.api.core.image.getImageDimensions(path.join(`${albumMedia.path}`));
+        const doesThumbnailExist = await core.fs.doesExist(path.join(this.THUMBNAIL_CACHE_LOCATION, albumMedia.path));
 
-        output.push(<AlbumMediaPath>{
+        output.push({
           path: albumMedia.path.replace(user.getFsPath(), ""),
           resolution: { width: mediaDimensions.width, height: mediaDimensions.height },
           mediaType: mediaType,
           metadata: {
             people: ["TEST_PERSON1", "TEST_PERSON2"],
           },
-        });
+          thumbnailPath: doesThumbnailExist
+            ? await core.image.createResizedAuthenticatedImage(
+                user.username,
+                req.sessionId,
+                AUTHENTICATED_IMAGE_TYPE.FILE,
+                path.join(this.THUMBNAIL_CACHE_LOCATION, albumMedia.path),
+                400,
+                400,
+              )
+            : null,
+        } satisfies AlbumMediaPath);
       }
 
       res.json(output);

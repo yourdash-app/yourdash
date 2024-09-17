@@ -5,6 +5,7 @@
 
 import clippy from "@yourdash/shared/web/helpers/clippy.ts";
 import React, { useEffect, useState } from "react";
+import Separator from "../../components/separator/separator.tsx";
 import styles from "./infiniteScroll.module.scss";
 
 const InfiniteScroll: React.FC<{
@@ -12,10 +13,9 @@ const InfiniteScroll: React.FC<{
   fetchNextPage: (nextPageNumber: number) => Promise<void>;
   containerClassName?: string;
   className?: string;
-  hasMorePages: boolean;
   resetState?: string;
-  dontShowNoMoreItems?: boolean;
-}> = ({ children, fetchNextPage, containerClassName, className, hasMorePages, resetState, dontShowNoMoreItems }) => {
+  showNoMoreItems?: boolean;
+}> = ({ children, fetchNextPage, containerClassName, className, resetState, showNoMoreItems }) => {
   const endOfItemsRef = React.useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const nextPage = React.useRef<number>(-1);
@@ -26,7 +26,7 @@ const InfiniteScroll: React.FC<{
   }, [resetState]);
 
   const fetchNextPageWrapper = async () => {
-    if (!hasMorePages) return;
+    if (showNoMoreItems) return;
 
     nextPage.current++;
     setLoading(true);
@@ -44,6 +44,7 @@ const InfiniteScroll: React.FC<{
     const observer = new IntersectionObserver((elem) => {
       if (elem[0].isIntersecting) {
         fetchNextPageWrapper();
+        observer.disconnect();
       }
     });
 
@@ -55,13 +56,13 @@ const InfiniteScroll: React.FC<{
   return (
     <div className={clippy(containerClassName, styles.component)}>
       <div className={clippy(className, styles.items)}>{children}</div>
-      {loading && <div>Loading more content</div>}
-      {!hasMorePages && <div>No More Pages Exist</div>}
       <div
         ref={endOfItemsRef}
         className={styles.endOfItems}
       >
-        {!dontShowNoMoreItems && "No more items to load"}
+        {loading && <div>Loading more content</div>}
+        <Separator direction={"column"} />
+        {showNoMoreItems && <div>No more items to load</div>}
       </div>
     </div>
   );
