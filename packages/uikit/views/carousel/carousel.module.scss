@@ -45,11 +45,14 @@
   }
 }
 
-.indicatorContainer {
+.controls {
   position: absolute;
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
+  display: flex;
+  flex-direction: row;
+  gap: var(#{$theme+$gap});
 }
 
 .indicator {
@@ -64,9 +67,11 @@
     padding: 0.5rem;
     border-radius: var(#{$theme+$radius});
     transition: var(#{$theme+$transition});
+    position: relative;
 
     &.selected {
-      padding-left: 2rem;
+      padding-right: 1.5rem;
+      padding-left: 1.5rem;
     }
   }
 }

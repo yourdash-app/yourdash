@@ -36,6 +36,7 @@ export default class StoreModule extends YourDashBackendModule {
           icon: "/assets/productLogos/yourdash.svg",
           id: "com-example-test",
           tags: ["development", "stupidity"],
+          description: "Hello world from application description",
         },
       ] satisfies EndpointStoreHomePromotedApplications);
     });

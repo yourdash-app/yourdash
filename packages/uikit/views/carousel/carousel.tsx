@@ -1,6 +1,9 @@
+import page from "@yourdash/web/src/deprecatedLogin/Page.tsx";
 import React, { useEffect, useRef, useState } from "react";
 import Card from "../../components/card/card.tsx";
 import Container from "../../components/container/container.tsx";
+import { UKIcon } from "../../components/icon/iconDictionary.ts";
+import IconButton from "../../components/iconButton/iconButton.tsx";
 import styles from "./carousel.module.scss";
 import clippy from "@yourdash/shared/web/helpers/clippy.ts";
 
@@ -35,7 +38,7 @@ const Carousel: React.FC<{
             return;
           }
         });
-      }, 10);
+      }, 25);
     };
 
     scrollElement.addEventListener("scroll", listener);
@@ -63,32 +66,71 @@ const Carousel: React.FC<{
           );
         })}
       </div>
-      <Card
-        containerClassName={styles.indicatorContainer}
-        className={styles.indicator}
-      >
-        {items.map((page, index) => {
-          return (
-            <button
-              key={page.id}
-              className={clippy(styles.pageIndicator, index === currentPage && styles.selected)}
-              onClick={() => {
-                const scrollElement = scrollRef.current;
+      <div className={styles.controls}>
+        <IconButton
+          accessibleLabel={"previous page"}
+          icon={UKIcon.ChevronLeft}
+          className={styles.pageControl}
+          onClick={() => {
+            const scrollElement = scrollRef.current;
 
-                if (!scrollElement) {
-                  return;
-                }
+            if (!scrollElement) {
+              return;
+            }
 
-                scrollElement.scrollIntoView({ behavior: "smooth" });
+            const carouselTargetPage = scrollElement.children[currentPage - 1] as HTMLDivElement;
 
-                const carouselTargetPage = scrollElement.children[index] as HTMLDivElement;
+            if (!carouselTargetPage) {
+              return;
+            }
 
-                carouselTargetPage.scrollIntoView({ behavior: "smooth" });
-              }}
-            />
-          );
-        })}
-      </Card>
+            carouselTargetPage.scrollIntoView({ behavior: "smooth" });
+          }}
+        />
+        <Card className={styles.indicator}>
+          {items.map((page, index) => {
+            return (
+              <button
+                key={page.id}
+                className={clippy(styles.pageIndicator, index === currentPage && styles.selected)}
+                onClick={() => {
+                  const scrollElement = scrollRef.current;
+
+                  if (!scrollElement) {
+                    return;
+                  }
+
+                  scrollElement.scrollIntoView({ behavior: "smooth" });
+
+                  const carouselTargetPage = scrollElement.children[index] as HTMLDivElement;
+
+                  carouselTargetPage.scrollIntoView({ behavior: "smooth" });
+                }}
+              />
+            );
+          })}
+        </Card>
+        <IconButton
+          accessibleLabel={"next page"}
+          icon={UKIcon.ChevronRight}
+          className={styles.pageControl}
+          onClick={() => {
+            const scrollElement = scrollRef.current;
+
+            if (!scrollElement) {
+              return;
+            }
+
+            const carouselTargetPage = scrollElement.children[currentPage + 1] as HTMLDivElement;
+
+            if (!carouselTargetPage) {
+              return;
+            }
+
+            carouselTargetPage.scrollIntoView({ behavior: "smooth" });
+          }}
+        />
+      </div>
     </Container>
   );
 };
