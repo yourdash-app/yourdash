@@ -16,21 +16,32 @@ const Carousel: React.FC<{
 
     if (!scrollElement) return;
 
+    console.log(Array.from(scrollElement.children));
+
     let timer: Timer;
-    scrollElement.addEventListener("scroll", function () {
+    let listener = () => {
       clearTimeout(timer);
       timer = setTimeout(function () {
-        console.log("event");
-        [].slice.call(scrollElement.children).forEach(function (ele: HTMLDivElement, index) {
-          if (Math.abs(ele.getBoundingClientRect().left - scrollElement.getBoundingClientRect().left) < 10) {
-            console.log(ele);
+        Array.from(scrollElement.children).forEach((ele: Element, index: number) => {
+          if (
+            Math.abs(
+              ele.getBoundingClientRect().left +
+                ele.getBoundingClientRect().width / 2 -
+                (scrollElement.getBoundingClientRect().left + scrollElement.getBoundingClientRect().width / 2),
+            ) <
+            ele.getBoundingClientRect().width / 2
+          ) {
             setCurrentPage(index);
+            return;
           }
         });
-      }, 100);
-    });
+      }, 10);
+    };
+
+    scrollElement.addEventListener("scroll", listener);
 
     return () => {
+      scrollElement.removeEventListener("scroll", listener);
       clearTimeout(timer);
     };
   }, []);
@@ -51,33 +62,33 @@ const Carousel: React.FC<{
             </div>
           );
         })}
-        <Card
-          containerClassName={styles.indicatorContainer}
-          className={styles.indicator}
-        >
-          {items.map((page, index) => {
-            return (
-              <button
-                key={page.id}
-                className={clippy(styles.pageIndicator, index === currentPage && styles.selected)}
-                onClick={() => {
-                  const scrollElement = scrollRef.current;
-
-                  if (!scrollElement) {
-                    return;
-                  }
-
-                  scrollElement.scrollIntoView({ behavior: "smooth" });
-
-                  const carouselTargetPage = scrollElement.children[index] as HTMLDivElement;
-
-                  carouselTargetPage.scrollIntoView({ behavior: "smooth" });
-                }}
-              />
-            );
-          })}
-        </Card>
       </div>
+      <Card
+        containerClassName={styles.indicatorContainer}
+        className={styles.indicator}
+      >
+        {items.map((page, index) => {
+          return (
+            <button
+              key={page.id}
+              className={clippy(styles.pageIndicator, index === currentPage && styles.selected)}
+              onClick={() => {
+                const scrollElement = scrollRef.current;
+
+                if (!scrollElement) {
+                  return;
+                }
+
+                scrollElement.scrollIntoView({ behavior: "smooth" });
+
+                const carouselTargetPage = scrollElement.children[index] as HTMLDivElement;
+
+                carouselTargetPage.scrollIntoView({ behavior: "smooth" });
+              }}
+            />
+          );
+        })}
+      </Card>
     </Container>
   );
 };

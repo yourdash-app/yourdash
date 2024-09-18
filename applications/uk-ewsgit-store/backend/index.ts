@@ -5,6 +5,7 @@
 
 import core from "@yourdash/backend/src/core/core.js";
 import { YourDashBackendModule, YourDashModuleArguments } from "@yourdash/backend/src/core/coreApplicationManager.js";
+import randomIndexOf from "@yourdash/shared/lib/randomIndexOf.js";
 import EndpointHomeApplicationCategories from "../shared/types/endpoints/home/applicationCategories.js";
 import { EndpointStoreHomePromotedApplications } from "../shared/types/endpoints/home/promotedApplications.js";
 import { EndpointStoreHomeCategoryCategoryId } from "./../shared/types/endpoints/home/category/categoryId.js";
@@ -24,7 +25,7 @@ export default class StoreModule extends YourDashBackendModule {
   public loadEndpoints() {
     super.loadEndpoints();
 
-    core.request.setNamespace(`/app/${this.api.moduleId}`);
+    core.request.setNamespace(`app/${this.api.moduleId}`);
 
     core.request.get("/home/promotedApplications", async (req, res) => {
       return res.json([
@@ -40,22 +41,20 @@ export default class StoreModule extends YourDashBackendModule {
     });
 
     core.request.get("/home/applicationCategories", async (req, res) => {
-      const categories: [string, StoreModule["applicationCategories"]] = Object.entries(this.applicationCategories);
+      const categories = Object.entries(this.applicationCategories);
       // array of random css background images
       const backgrounds: string[] = ["orange"];
 
-      return res.json(
-        categories.map((app) => {
-          return {
-            id: app.id,
-            displayName: app.name,
-            description: app.description,
-            moduleCount: 69,
-            applicationCount: 69,
-            backgroundImage: randomIndexOf(backgrounds),
-          } satisfies EndpointHomeApplicationCategories[0];
-        }) satisfies EndpointHomeApplicationCategories,
-      );
+      return res.json([
+        {
+          id: "categoryId",
+          displayName: "Category Display Name",
+          description: "This is the categoryDescription",
+          moduleCount: 69,
+          applicationCount: 69,
+          backgroundImage: randomIndexOf(backgrounds),
+        },
+      ] satisfies EndpointHomeApplicationCategories);
     });
 
     core.request.get("/home/category/:categoryId", async (req, res) => {

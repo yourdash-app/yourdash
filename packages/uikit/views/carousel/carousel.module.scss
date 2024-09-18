@@ -35,6 +35,14 @@
   background: hotpink;
   flex-shrink: 0;
   scroll-snap-align: center;
+
+  &:first-of-type {
+    margin-left: calc(20% + var(#{$theme+$gap}));
+  }
+
+  &:last-of-type {
+    margin-right: calc(20% + var(#{$theme+$gap}));
+  }
 }
 
 .indicatorContainer {
@@ -55,6 +63,7 @@
     background-color: var(#{$theme+$color});
     padding: 0.5rem;
     border-radius: var(#{$theme+$radius});
+    transition: var(#{$theme+$transition});
 
     &.selected {
       padding-left: 2rem;

@@ -15,7 +15,7 @@ const ApplicationCategories: React.FC = () => {
   return (
     <>
       {categories.map((cat) => {
-        return <Card>This is a sample category {cat.id}</Card>;
+        return <Card key={cat.id}>This is a sample category {cat.id}</Card>;
       })}
     </>
   );

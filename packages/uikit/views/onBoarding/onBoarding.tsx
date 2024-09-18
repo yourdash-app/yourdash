@@ -62,6 +62,7 @@ const OnBoarding: React.FC<{
             return (
               <>
                 <ButtonWithIcon
+                  key={action.label}
                   className={clippy(styles.action, styles.actionWithIcon)}
                   text={action.label}
                   icon={action.icon}
@@ -93,6 +94,7 @@ const OnBoarding: React.FC<{
           return (
             <>
               <Button
+                key={action.icon}
                 className={clippy(styles.action, styles.actionWithoutIcon)}
                 text={action.label}
                 onClick={() => {

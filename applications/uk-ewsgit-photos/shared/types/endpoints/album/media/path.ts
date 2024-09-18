@@ -3,10 +3,11 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import { PHOTOS_MEDIA_TYPE } from "../../../mediaType";
+import { PHOTOS_MEDIA_TYPE } from "../../../mediaType.js";
 
 export type AlbumMediaMetadata = {
   people: string[]; // an array of people IDs
+  location: string;
 };
 
 export type AlbumMediaPath = {

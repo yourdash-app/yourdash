@@ -6,6 +6,8 @@
 // TODO: generate video thumbnails into a subfolder of the thumbnails cache folder and
 //  save a copy of them pre-resized alongside the photos as resizing images is also costly
 
+import core from "@yourdash/backend/src/core/core.js";
+import { YourDashBackendModule, YourDashModuleArguments } from "@yourdash/backend/src/core/coreApplicationManager.js";
 import { AUTHENTICATED_IMAGE_TYPE } from "@yourdash/backend/src/core/coreImage.js";
 import FSError, { FS_ERROR_TYPE } from "@yourdash/backend/src/core/fileSystem/FSError.js";
 import FSFile from "@yourdash/backend/src/core/fileSystem/FSFile.js";
@@ -17,8 +19,6 @@ import sharp from "sharp";
 import EndpointAlbumMediaPath, { AlbumMediaPath } from "../shared/types/endpoints/album/media/path.js";
 import { EndpointAlbumSubPath } from "../shared/types/endpoints/album/sub/path.js";
 import { PHOTOS_MEDIA_TYPE } from "../shared/types/mediaType.js";
-import { YourDashBackendModule, YourDashModuleArguments } from "@yourdash/backend/src/core/coreApplicationManager.js";
-import core from "@yourdash/backend/src/core/core.js";
 
 export default class PhotosBackend extends YourDashBackendModule {
   PAGE_SIZE: number;
@@ -71,7 +71,9 @@ export default class PhotosBackend extends YourDashBackendModule {
         async function getPhotosRecursively(dirPath: string) {
           const dir = await self.api.core.fs.getDirectory(dirPath);
 
-          if (dir instanceof FSError) return;
+          if (dir instanceof FSError) {
+            return;
+          }
 
           for (const p of await dir.getChildFiles()) {
             if (p.getType() === "image") {
@@ -519,7 +521,9 @@ export default class PhotosBackend extends YourDashBackendModule {
 
       if (albumEntity instanceof FSError) {
         // don't send an error, instead send an empty array
-        if (albumPath !== "./photos/") return res.status(404).json({ error: "Not found" });
+        if (albumPath !== "./photos/") {
+          return res.status(404).json({ error: "Not found" });
+        }
 
         await this.api.core.fs.createDirectory(path.join(user.getFsPath(), albumPath));
 
@@ -530,7 +534,9 @@ export default class PhotosBackend extends YourDashBackendModule {
 
       const chunks = chunk(await albumEntity.getChildDirectories(), this.PAGE_SIZE);
 
-      if (page >= chunks.length) return res.json([]);
+      if (page >= chunks.length) {
+        return res.json([]);
+      }
 
       for (const subAlbum of chunks[page]) {
         let headerImagePath = "./instance_logo.avif";
@@ -568,9 +574,8 @@ export default class PhotosBackend extends YourDashBackendModule {
               if (headerImagePath === "./instance_logo.avif") {
                 console.log("Searching for header image", headerImagePath, childDir.path);
                 await fetchHeaderImage(childDir.path);
+                break;
               }
-
-              return;
             }
 
             return;
@@ -651,23 +656,22 @@ export default class PhotosBackend extends YourDashBackendModule {
 
       if (albumEntity instanceof FSError) {
         // don't send an error, instead send an empty array
-        if (albumPath !== "./photos/") return res.json([]);
+        if (albumPath !== "./photos/") {
+          return res.json([]);
+        }
 
         await this.api.core.fs.createDirectory(path.join(user.getFsPath(), albumPath));
 
         return res.json([]);
       }
 
-      const output: {
-        mediaType: PHOTOS_MEDIA_TYPE;
-        path: string;
-        resolution: { width: number; height: number };
-        metadata?: { people?: string[] };
-      }[] = [];
+      const output: AlbumMediaPath[] = [];
 
       const chunks = chunk(await albumEntity.getChildFiles(), this.PAGE_SIZE);
 
-      if (page >= chunks.length) return res.json([]);
+      if (page >= chunks.length) {
+        return res.json([]);
+      }
 
       for (const albumMedia of chunks[page]) {
         await this.generateMediaThumbnails(albumMedia.path);
@@ -695,6 +699,7 @@ export default class PhotosBackend extends YourDashBackendModule {
           mediaType: mediaType,
           metadata: {
             people: ["TEST_PERSON1", "TEST_PERSON2"],
+            location: "Sample location",
           },
           thumbnailPath: doesThumbnailExist
             ? await core.image.createResizedAuthenticatedImage(
@@ -704,9 +709,10 @@ export default class PhotosBackend extends YourDashBackendModule {
                 path.join(this.THUMBNAIL_CACHE_LOCATION, albumMedia.path),
                 400,
                 400,
+                "webp",
               )
             : null,
-        } satisfies AlbumMediaPath);
+        });
       }
 
       res.json(output);
