@@ -111,7 +111,8 @@ export default class PhotosBackend extends YourDashBackendModule {
   }
 
   async generateMediaThumbnails(mediaPath: string): Promise<boolean> {
-    const fileRawThumbnail = await this.api.core.fs.getFile(path.join(this.THUMBNAIL_CACHE_LOCATION, `${mediaPath}.raw.webp`));
+    console.debug({ mediaPath });
+    const fileRawThumbnail = await this.api.core.fs.getFile(mediaPath);
     if (!(fileRawThumbnail instanceof FSFile)) {
       if (fileRawThumbnail.reason === FS_ERROR_TYPE.DOES_NOT_EXIST) {
         const file = await this.api.core.fs.getFile(mediaPath);
@@ -690,8 +691,9 @@ export default class PhotosBackend extends YourDashBackendModule {
             break;
         }
 
-        const mediaDimensions = await this.api.core.image.getImageDimensions(path.join(`${albumMedia.path}`));
-        const doesThumbnailExist = await core.fs.doesExist(path.join(this.THUMBNAIL_CACHE_LOCATION, albumMedia.path));
+        const mediaDimensions = await this.api.core.image.getImageDimensions(
+          path.join(this.THUMBNAIL_CACHE_LOCATION, `${albumMedia.path}.raw.webp`),
+        );
 
         output.push({
           path: albumMedia.path.replace(user.getFsPath(), ""),
@@ -701,17 +703,6 @@ export default class PhotosBackend extends YourDashBackendModule {
             people: ["TEST_PERSON1", "TEST_PERSON2"],
             location: "Sample location",
           },
-          thumbnailPath: doesThumbnailExist
-            ? await core.image.createResizedAuthenticatedImage(
-                user.username,
-                req.sessionId,
-                AUTHENTICATED_IMAGE_TYPE.FILE,
-                path.join(this.THUMBNAIL_CACHE_LOCATION, albumMedia.path),
-                400,
-                400,
-                "webp",
-              )
-            : null,
         });
       }
 

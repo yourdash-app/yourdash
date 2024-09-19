@@ -12,7 +12,6 @@ export type AlbumMediaMetadata = {
 
 export type AlbumMediaPath = {
   path: string;
-  thumbnailPath: string | null;
   resolution: { width: number; height: number };
   mediaType: PHOTOS_MEDIA_TYPE;
   metadata?: AlbumMediaMetadata;
