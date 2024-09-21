@@ -15,7 +15,7 @@ import Subtext from "@yourdash/uikit/components/subtext/subtext.tsx";
 import TextInput from "@yourdash/uikit/components/textInput/textInput.tsx";
 import styles from "./index.cards.module.scss";
 import loginUser from "./lib/loginUser.ts";
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 
 const IndexCardsPage: FC<{ metadata?: EndpointResponseLoginInstanceMetadata }> = (props) => {
@@ -27,6 +27,24 @@ const IndexCardsPage: FC<{ metadata?: EndpointResponseLoginInstanceMetadata }> =
     isValid: false,
   });
   const [password, setPassword] = useState("");
+  const usernameInputRef = useRef<HTMLInputElement>(null);
+  const passwordInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (!usernameInputRef.current) {
+        return;
+      }
+      if (!passwordInputRef.current) {
+        return;
+      }
+
+      if (usernameInputRef.current.value !== "" && passwordInputRef.current.value !== "") {
+        setUsername(usernameInputRef.current.value);
+        setPassword(passwordInputRef.current.value);
+      }
+    }, 1000);
+  }, []);
 
   useEffect(() => {
     if (coreCSI.getUsername() !== "") {
@@ -78,6 +96,7 @@ const IndexCardsPage: FC<{ metadata?: EndpointResponseLoginInstanceMetadata }> =
           />
         )}
         <TextInput
+          ref={usernameInputRef}
           accessibleName={"Username"}
           placeholder={"Username"}
           type={"username"}
@@ -109,6 +128,7 @@ const IndexCardsPage: FC<{ metadata?: EndpointResponseLoginInstanceMetadata }> =
           }}
         />
         <TextInput
+          ref={passwordInputRef}
           accessibleName={"Password"}
           placeholder={"Password"}
           type={"password"}
@@ -116,7 +136,7 @@ const IndexCardsPage: FC<{ metadata?: EndpointResponseLoginInstanceMetadata }> =
             setPassword(val);
           }}
           onEnter={() => {
-            if (!(username === "" || password === "" || !user.isValid))
+            if (!(username === "" || password === "" || !user.isValid)) {
               loginUser(username, password)
                 .then(() => {
                   navigate("/login/success");
@@ -124,6 +144,7 @@ const IndexCardsPage: FC<{ metadata?: EndpointResponseLoginInstanceMetadata }> =
                 .catch(() => {
                   console.log("TODO: implement a toast notification here for a failed login!");
                 });
+            }
           }}
         />
         <Button

@@ -7,11 +7,11 @@ import clippy from "@yourdash/shared/web/helpers/clippy.ts";
 import Icon from "../icon/icon.tsx";
 import { UKIcon } from "../icon/iconDictionary.ts";
 import styles from "./textInput.module.scss";
-import { FC, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 // TODO: maybe remove onEnter for onSubmit
 
-const TextInput: FC<{
+const TextInputComponent: React.ForwardRefExoticComponent<{
   onChange?: (value: string) => void;
   onSubmit?: (value: string) => void;
   placeholder: string;
@@ -22,8 +22,11 @@ const TextInput: FC<{
   accessibleName: string;
   className?: string;
   type?: string;
-}> = (props) => {
+}> = (props, fwrdRef) => {
   const ref = useRef<HTMLInputElement>(null);
+
+  React.useImperativeHandle(fwrdRef, () => ref.current);
+
   const [value, setValue] = useState(props.defaultValue || "");
 
   useEffect(() => {
@@ -75,5 +78,7 @@ const TextInput: FC<{
     </div>
   );
 };
+
+const TextInput = React.forwardRef(TextInputComponent);
 
 export default TextInput;

@@ -38,6 +38,42 @@ export default class StoreModule extends YourDashBackendModule {
           tags: ["development", "stupidity"],
           description: "Hello world from application description",
         },
+        {
+          displayName: "displayName2",
+          bannerBackground: "bannerBackground",
+          developer: "developer inc",
+          icon: "/assets/productLogos/yourdash.svg",
+          id: "com-example-test2",
+          tags: ["development", "stupidity"],
+          description: "Hello world from application description2",
+        },
+        {
+          displayName: "displayName3",
+          bannerBackground: "bannerBackground",
+          developer: "developer inc",
+          icon: "/assets/productLogos/yourdash.svg",
+          id: "com-example-test3",
+          tags: ["development", "stupidity"],
+          description: "Hello world from application description3",
+        },
+        {
+          displayName: "displayName4",
+          bannerBackground: "bannerBackground",
+          developer: "developer inc",
+          icon: "/assets/productLogos/yourdash.svg",
+          id: "com-example-test4",
+          tags: ["development", "stupidity"],
+          description: "Hello world from application description4",
+        },
+        {
+          displayName: "displayName5",
+          bannerBackground: "bannerBackground",
+          developer: "developer inc",
+          icon: "/assets/productLogos/yourdash.svg",
+          id: "com-example-test5",
+          tags: ["development", "stupidity"],
+          description: "Hello world from application description5",
+        },
       ] satisfies EndpointStoreHomePromotedApplications);
     });
 

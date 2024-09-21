@@ -111,8 +111,9 @@ export default class PhotosBackend extends YourDashBackendModule {
   }
 
   async generateMediaThumbnails(mediaPath: string): Promise<boolean> {
-    console.debug({ mediaPath });
-    const fileRawThumbnail = await this.api.core.fs.getFile(mediaPath);
+    const fileRawThumbnail = await this.api.core.fs.getFile(
+      path.join(core.fs.ROOT_PATH, this.THUMBNAIL_CACHE_LOCATION, `${mediaPath}.raw.webp`),
+    );
     if (!(fileRawThumbnail instanceof FSFile)) {
       if (fileRawThumbnail.reason === FS_ERROR_TYPE.DOES_NOT_EXIST) {
         const file = await this.api.core.fs.getFile(mediaPath);
@@ -125,19 +126,36 @@ export default class PhotosBackend extends YourDashBackendModule {
           case "image":
             try {
               await this.api.core.fs.createDirectory(
-                path.join(this.THUMBNAIL_CACHE_LOCATION, mediaPath.replace(path.basename(mediaPath), "")),
+                path.join(this.THUMBNAIL_CACHE_LOCATION, file.path.replace(path.basename(file.path), "")),
               );
 
-              await sharp(file.path)
-                .toFormat("webp")
-                .toFile(path.join(this.THUMBNAIL_CACHE_LOCATION, `${mediaPath}.raw.webp`));
-            } catch (err) {
-              console.log(`ERROR With Output Path: ${path.join(this.THUMBNAIL_CACHE_LOCATION, `${mediaPath}.raw.webp`)}`);
+              try {
+                this.api.log.info(`Generating raw thumbnail for ${mediaPath}`);
+                await sharp(path.join(core.fs.ROOT_PATH, file.path))
+                  .toFormat("webp")
+                  .toFile(path.join(core.fs.ROOT_PATH, this.THUMBNAIL_CACHE_LOCATION, `${mediaPath}.raw.webp`));
+              } catch (error) {
+                if (error instanceof Error) {
+                  this.api.log.error(`Failed to generate raw thumbnail for ${path.join(core.fs.ROOT_PATH, file.path)}, ${error.message}`);
+                } else {
+                  this.api.log.error(`Failed to generate raw thumbnail for ${path.join(core.fs.ROOT_PATH, file.path)}`);
+                }
+
+                return false;
+              }
+            } catch (error) {
+              if (error instanceof Error) {
+                this.api.log.error(`Failed to generate raw thumbnail for ${mediaPath}, ${error.message}`);
+              } else {
+                this.api.log.error(`Failed to generate raw thumbnail for ${mediaPath}`);
+              }
+
+              return false;
             }
 
             break;
           default:
-            console.log(`UNKNOWN TYPE: ${file.getType()}`);
+            console.log(`UNKNOWN TYPE: ${file.getType()}, skipping thumbnail generation.`);
             return false;
         }
       }
@@ -145,32 +163,65 @@ export default class PhotosBackend extends YourDashBackendModule {
       return false;
     }
 
-    // lowres
-    await sharp(fileRawThumbnail.path)
-      .resize({
-        width: 120,
-        height: 100,
-      })
-      .toFormat("webp")
-      .toFile(path.join(this.THUMBNAIL_CACHE_LOCATION, `${mediaPath}.lowres.webp`));
+    try {
+      this.api.log.info(`Generating lowres thumbnail for ${mediaPath}`);
+      // lowres
+      await sharp(fileRawThumbnail.path)
+        .resize({
+          width: 120,
+          height: 100,
+        })
+        .toFormat("webp")
+        .toFile(path.join(core.fs.ROOT_PATH, this.THUMBNAIL_CACHE_LOCATION, `${mediaPath}.lowres.webp`));
+    } catch (error) {
+      if (error instanceof Error) {
+        this.api.log.error(`Failed to generate lowres thumbnail for ${mediaPath}, ${error.message}`);
+      } else {
+        this.api.log.error(`Failed to generate lowres thumbnail for ${mediaPath}`);
+      }
 
-    // medres
-    await sharp(fileRawThumbnail.path)
-      .resize({
-        width: 400,
-        height: 100,
-      })
-      .toFormat("webp")
-      .toFile(path.join(this.THUMBNAIL_CACHE_LOCATION, `${mediaPath}.medres.webp`));
+      return false;
+    }
 
-    // hires
-    await sharp(fileRawThumbnail.path)
-      .resize({
-        width: 512,
-        height: 100,
-      })
-      .toFormat("webp")
-      .toFile(path.join(this.THUMBNAIL_CACHE_LOCATION, `${mediaPath}.hires.webp`));
+    try {
+      this.api.log.info(`Generating medres thumbnail for ${mediaPath}`);
+      // medres
+      await sharp(fileRawThumbnail.path)
+        .resize({
+          width: 400,
+          height: 100,
+        })
+        .toFormat("webp")
+        .toFile(path.join(core.fs.ROOT_PATH, this.THUMBNAIL_CACHE_LOCATION, `${mediaPath}.medres.webp`));
+    } catch (error) {
+      if (error instanceof Error) {
+        this.api.log.error(`Failed to generate medres thumbnail for ${mediaPath}, ${error.message}`);
+      } else {
+        this.api.log.error(`Failed to generate medres thumbnail for ${mediaPath}`);
+      }
+
+      return false;
+    }
+
+    try {
+      this.api.log.info(`Generating hires thumbnail for ${mediaPath}`);
+      // hires
+      await sharp(fileRawThumbnail.path)
+        .resize({
+          width: 512,
+          height: 100,
+        })
+        .toFormat("webp")
+        .toFile(path.join(core.fs.ROOT_PATH, this.THUMBNAIL_CACHE_LOCATION, `${mediaPath}.hires.webp`));
+    } catch (error) {
+      if (error instanceof Error) {
+        this.api.log.error(`Failed to generate hires thumbnail for ${mediaPath}, ${error.message}`);
+      } else {
+        this.api.log.error(`Failed to generate hires thumbnail for ${mediaPath}`);
+      }
+
+      return false;
+    }
 
     return true;
   }
@@ -675,7 +726,14 @@ export default class PhotosBackend extends YourDashBackendModule {
       }
 
       for (const albumMedia of chunks[page]) {
-        await this.generateMediaThumbnails(albumMedia.path);
+        try {
+          if (!(await this.generateMediaThumbnails(albumMedia.path))) {
+            this.api.log.debug(`failed to generate thumbnails for ${albumMedia.path}`);
+            continue;
+          }
+        } catch (error) {
+          this.api.log.warning("Error generating media thumbnails!");
+        }
 
         let mediaType: PHOTOS_MEDIA_TYPE;
 
@@ -706,7 +764,7 @@ export default class PhotosBackend extends YourDashBackendModule {
         });
       }
 
-      res.json(output);
+      return res.json(output);
     });
   }
 }

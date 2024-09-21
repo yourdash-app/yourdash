@@ -11,6 +11,7 @@ import {
 } from "express";
 import timeMethod from "../lib/time.js";
 import { Core } from "./core.js";
+import Bun from "bun";
 
 export type RequestHeaders = { username: string; sessionid: string };
 export type RequestExtras = { headers: RequestHeaders; sessionId: string; username: string };
@@ -95,8 +96,7 @@ export default class CoreRequest {
             await callback({ ...req, sessionId: req.headers.sessionid as string, username: req.headers.username as string } as never, res);
           } catch (err) {
             if (err instanceof Error) {
-              this.core.log.error("request_error", `${req.path}; Request error not caught: ${err.message}`);
-              this.core.log.error(`request_error`, "\t\t\t\t" + new Error().stack);
+              this.core.log.error("request_error", `GET ${req.path}; Request error not caught: ${err.message}`);
             }
           }
         },
