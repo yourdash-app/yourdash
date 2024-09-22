@@ -14,14 +14,15 @@ import { createBrowserRouter } from "react-router-dom";
 import loadable from "@loadable/component";
 import ApplicationRedirectToDash from "./app/ApplicationRedirectToDash.tsx";
 import AppLayout from "./app/AppLayout.tsx";
-import LoginIndexPagePreload from "./login/index.preload.tsx";
-import LoginInstancePage from "./login/instance/index.tsx";
+import LoginIndexPagePreload from "./root/login/index.preload.tsx";
+import LoginInstancePage from "./root/login/instance/index.tsx";
 import Navigation from "./root/components/navigation/navigation.tsx";
 import DocsLayout from "./root/docs/Layout.tsx";
 import ErrorElement from "./ErrorElement.tsx";
 import Index from "./root/index/Index.tsx";
 import LoginRedirect from "./deprecatedLogin/Redirect.tsx";
-import LoginSuccessPage from "./login/success/index.tsx";
+import LoginNextcloudFlowV2Page from "./root/login/nextcloud/flow/v2/index.tsx";
+import LoginSuccessPage from "./root/login/success/index.tsx";
 import NotFoundPage from "./root/notFound/notFound.tsx";
 import ProjectsIndexPage from "./root/projects/Index.tsx";
 import LinkerDesktopClientStartupPage from "./root/linkerDesktopClientStartup/Index.tsx";
@@ -105,6 +106,16 @@ ReactDOM.createRoot(element).render(
                 path={"success"}
                 element={<LoginSuccessPage />}
               />
+              <Route path={"nextcloud"}>
+                <Route path={"flow"}>
+                  <Route path={"v2"}>
+                    <Route
+                      path={":token"}
+                      element={<LoginNextcloudFlowV2Page />}
+                    />
+                  </Route>
+                </Route>
+              </Route>
               <Route
                 path={"signup"}
                 element={<>TODO: implement me @ewsgit</>}

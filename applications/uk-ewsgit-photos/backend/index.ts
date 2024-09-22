@@ -18,6 +18,7 @@ import path from "path";
 import sharp from "sharp";
 import EndpointAlbumMediaPath, { AlbumMediaPath } from "../shared/types/endpoints/album/media/path.js";
 import { EndpointAlbumSubPath } from "../shared/types/endpoints/album/sub/path.js";
+import EndpointMediaThumbnail from "../shared/types/endpoints/media/thumbnail.js";
 import { PHOTOS_MEDIA_TYPE } from "../shared/types/mediaType.js";
 
 export default class PhotosBackend extends YourDashBackendModule {
@@ -114,7 +115,7 @@ export default class PhotosBackend extends YourDashBackendModule {
     const fileRawThumbnail = await this.api.core.fs.getFile(
       path.join(core.fs.ROOT_PATH, this.THUMBNAIL_CACHE_LOCATION, `${mediaPath}.raw.webp`),
     );
-    if (!(fileRawThumbnail instanceof FSFile)) {
+    if (fileRawThumbnail instanceof FSError) {
       if (fileRawThumbnail.reason === FS_ERROR_TYPE.DOES_NOT_EXIST) {
         const file = await this.api.core.fs.getFile(mediaPath);
 
@@ -155,72 +156,80 @@ export default class PhotosBackend extends YourDashBackendModule {
 
             break;
           default:
-            console.log(`UNKNOWN TYPE: ${file.getType()}, skipping thumbnail generation.`);
+            this.api.log.error(`UNKNOWN TYPE: ${file.getType()}, skipping thumbnail generation for ${file.path}.`);
             return false;
         }
-      }
+      } else {
+        this.api.log.error(`FSError generating thumbnail generation for ${fileRawThumbnail.path}.`);
 
-      return false;
+        return false;
+      }
     }
 
-    try {
-      this.api.log.info(`Generating lowres thumbnail for ${mediaPath}`);
-      // lowres
-      await sharp(fileRawThumbnail.path)
-        .resize({
-          width: 120,
-          height: 100,
-        })
-        .toFormat("webp")
-        .toFile(path.join(core.fs.ROOT_PATH, this.THUMBNAIL_CACHE_LOCATION, `${mediaPath}.lowres.webp`));
-    } catch (error) {
-      if (error instanceof Error) {
-        this.api.log.error(`Failed to generate lowres thumbnail for ${mediaPath}, ${error.message}`);
-      } else {
-        this.api.log.error(`Failed to generate lowres thumbnail for ${mediaPath}`);
-      }
+    if (!(await core.fs.doesExist(path.join(this.THUMBNAIL_CACHE_LOCATION, `${mediaPath}.lowres.webp`)))) {
+      try {
+        this.api.log.info(`Generating lowres thumbnail for ${mediaPath}`);
+        // lowres
+        await sharp(fileRawThumbnail.path)
+          .resize({
+            width: 120,
+            height: 100,
+          })
+          .toFormat("webp")
+          .toFile(path.join(core.fs.ROOT_PATH, this.THUMBNAIL_CACHE_LOCATION, `${mediaPath}.lowres.webp`));
+      } catch (error) {
+        if (error instanceof Error) {
+          this.api.log.error(`Failed to generate lowres thumbnail for ${mediaPath}, ${error.message}`);
+        } else {
+          this.api.log.error(`Failed to generate lowres thumbnail for ${mediaPath}`);
+        }
 
-      return false;
+        return false;
+      }
     }
 
-    try {
-      this.api.log.info(`Generating medres thumbnail for ${mediaPath}`);
-      // medres
-      await sharp(fileRawThumbnail.path)
-        .resize({
-          width: 400,
-          height: 100,
-        })
-        .toFormat("webp")
-        .toFile(path.join(core.fs.ROOT_PATH, this.THUMBNAIL_CACHE_LOCATION, `${mediaPath}.medres.webp`));
-    } catch (error) {
-      if (error instanceof Error) {
-        this.api.log.error(`Failed to generate medres thumbnail for ${mediaPath}, ${error.message}`);
-      } else {
-        this.api.log.error(`Failed to generate medres thumbnail for ${mediaPath}`);
-      }
+    if (!(await core.fs.doesExist(path.join(this.THUMBNAIL_CACHE_LOCATION, `${mediaPath}.medres.webp`)))) {
+      try {
+        this.api.log.info(`Generating medres thumbnail for ${mediaPath}`);
+        // medres
+        await sharp(fileRawThumbnail.path)
+          .resize({
+            width: 400,
+            height: 100,
+          })
+          .toFormat("webp")
+          .toFile(path.join(core.fs.ROOT_PATH, this.THUMBNAIL_CACHE_LOCATION, `${mediaPath}.medres.webp`));
+      } catch (error) {
+        if (error instanceof Error) {
+          this.api.log.error(`Failed to generate medres thumbnail for ${mediaPath}, ${error.message}`);
+        } else {
+          this.api.log.error(`Failed to generate medres thumbnail for ${mediaPath}`);
+        }
 
-      return false;
+        return false;
+      }
     }
 
-    try {
-      this.api.log.info(`Generating hires thumbnail for ${mediaPath}`);
-      // hires
-      await sharp(fileRawThumbnail.path)
-        .resize({
-          width: 512,
-          height: 100,
-        })
-        .toFormat("webp")
-        .toFile(path.join(core.fs.ROOT_PATH, this.THUMBNAIL_CACHE_LOCATION, `${mediaPath}.hires.webp`));
-    } catch (error) {
-      if (error instanceof Error) {
-        this.api.log.error(`Failed to generate hires thumbnail for ${mediaPath}, ${error.message}`);
-      } else {
-        this.api.log.error(`Failed to generate hires thumbnail for ${mediaPath}`);
-      }
+    if (!(await core.fs.doesExist(path.join(this.THUMBNAIL_CACHE_LOCATION, `${mediaPath}.hires.webp`)))) {
+      try {
+        this.api.log.info(`Generating hires thumbnail for ${mediaPath}`);
+        // hires
+        await sharp(fileRawThumbnail.path)
+          .resize({
+            width: 512,
+            height: 100,
+          })
+          .toFormat("webp")
+          .toFile(path.join(core.fs.ROOT_PATH, this.THUMBNAIL_CACHE_LOCATION, `${mediaPath}.hires.webp`));
+      } catch (error) {
+        if (error instanceof Error) {
+          this.api.log.error(`Failed to generate hires thumbnail for ${mediaPath}, ${error.message}`);
+        } else {
+          this.api.log.error(`Failed to generate hires thumbnail for ${mediaPath}`);
+        }
 
-      return false;
+        return false;
+      }
     }
 
     return true;
@@ -582,7 +591,7 @@ export default class PhotosBackend extends YourDashBackendModule {
         return res.json([]);
       }
 
-      const output: { displayName: string; path: string; size: number; thumbnail: string }[] = [];
+      const output: EndpointAlbumSubPath = [];
 
       const chunks = chunk(await albumEntity.getChildDirectories(), this.PAGE_SIZE);
 
@@ -657,7 +666,7 @@ export default class PhotosBackend extends YourDashBackendModule {
       res.json(output);
     });
 
-    core.request.get("/media/thumbnail/:res/@/*", async (req, res) => {
+    core.request.get<EndpointMediaThumbnail>("/media/thumbnail/:res/@/*", async (req, res) => {
       const { res: resolution } = req.params;
       const mediaPath = req.params["0"] as string;
 
@@ -666,13 +675,13 @@ export default class PhotosBackend extends YourDashBackendModule {
       // only allow lowres, medres, hires
       switch (resolution) {
         case "lowres":
-          thumbnailPath = path.join(this.THUMBNAIL_CACHE_LOCATION, `${mediaPath}.lowres.webp`);
+          thumbnailPath = path.join(this.THUMBNAIL_CACHE_LOCATION, "users", req.username, "fs", `${mediaPath}.lowres.webp`);
           break;
         case "medres":
-          thumbnailPath = path.join(this.THUMBNAIL_CACHE_LOCATION, `${mediaPath}.medres.webp`);
+          thumbnailPath = path.join(this.THUMBNAIL_CACHE_LOCATION, "users", req.username, "fs", `${mediaPath}.medres.webp`);
           break;
         case "hires":
-          thumbnailPath = path.join(this.THUMBNAIL_CACHE_LOCATION, `${mediaPath}.hires.webp`);
+          thumbnailPath = path.join(this.THUMBNAIL_CACHE_LOCATION, "users", req.username, "fs", `${mediaPath}.hires.webp`);
           break;
         default:
           return res.json({
@@ -689,8 +698,8 @@ export default class PhotosBackend extends YourDashBackendModule {
       }
 
       res.json({
-        image: this.api.core.image.createAuthenticatedImage(req.username, req.sessionId, AUTHENTICATED_IMAGE_TYPE.FILE, thumbnailPath),
-      });
+        thumbnail: this.api.core.image.createAuthenticatedImage(req.username, req.sessionId, AUTHENTICATED_IMAGE_TYPE.FILE, thumbnailPath),
+      } satisfies EndpointMediaThumbnail);
     });
 
     core.request.get("/media/raw/@/*", async (req, res) => {
@@ -745,6 +754,7 @@ export default class PhotosBackend extends YourDashBackendModule {
             mediaType = PHOTOS_MEDIA_TYPE.Video;
             break;
           default:
+            this.api.log.error("Error generating media type!", albumMedia.path);
             mediaType = PHOTOS_MEDIA_TYPE.Unknown;
             break;
         }

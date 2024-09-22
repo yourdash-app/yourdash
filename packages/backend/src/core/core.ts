@@ -410,7 +410,7 @@ import { Route, Routes } from "react-router";
 
   private startRequestLogger(options: { logOptionsRequests?: boolean; logQueryParameters?: boolean }) {
     this.request.use(async (req, _res, next) => {
-      switch (req.method) {
+      switch (req.method.toUpperCase()) {
         case "GET":
           if (req.path.includes("core/auth-img")) return next();
           if (req.path.includes("core/auth-video")) return next();
@@ -512,7 +512,7 @@ import { Route, Routes } from "react-router";
         return res.redirect(`http://localhost:5173/login/http://localhost:3563`);
       }
 
-      return res.redirect(`https://ydsh.pages.dev/login/${this.globalDb.get("core:instanceurl")}`);
+      return res.redirect(`https://yourdash.ewsgit.uk/login/${this.globalDb.get("core:instanceurl")}`);
     });
 
     // Server discovery endpoint
@@ -596,7 +596,7 @@ import { Route, Routes } from "react-router";
           if (result) {
             const session = await createSession(
               username,
-              req.headers?.type === "desktop" ? YOURDASH_SESSION_TYPE.desktop : YOURDASH_SESSION_TYPE.web,
+              req.headers?.type === "desktop" ? YOURDASH_SESSION_TYPE.DESKTOP : YOURDASH_SESSION_TYPE.WEB,
             );
 
             return res.json({

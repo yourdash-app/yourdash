@@ -26,11 +26,7 @@ interface IauthenticatedImage<T extends AUTHENTICATED_IMAGE_TYPE> {
 
 export default class CoreImage {
   private core: Core;
-  // private readonly AUTHENTICATED_IMAGES: {
-  //   [username: string]: {
-  //     [id: string]: IauthenticatedImage<AUTHENTICATED_IMAGE_TYPE>;
-  //   };
-  // };
+  // username - sessionId - imageuuid
   private readonly authenticatedImages: Map<string, Map<string, Map<string, IauthenticatedImage<AUTHENTICATED_IMAGE_TYPE>>>>;
 
   constructor(core: Core) {

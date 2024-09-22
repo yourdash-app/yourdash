@@ -28,7 +28,7 @@ const IndexPageHeroTaglines: React.FC = () => {
           scale: taglineIndex === 0 ? "100%" : "0%",
         }}
       >
-        TAGLINES.0
+        Manage your files with ease
       </span>
       <span
         className={"absolute flex items-end text-end transition-all motion-reduce:transition-none duration-500"}
@@ -38,7 +38,7 @@ const IndexPageHeroTaglines: React.FC = () => {
           scale: taglineIndex === 1 ? "100%" : "0%",
         }}
       >
-        TAGLINES.1
+        Collaborate seamlessly
       </span>
       <span
         className={"absolute flex items-end text-end transition-all motion-reduce:transition-none duration-500"}
@@ -48,7 +48,7 @@ const IndexPageHeroTaglines: React.FC = () => {
           scale: taglineIndex === 2 ? "100%" : "0%",
         }}
       >
-        TAGLINES.2
+        Make it your own
       </span>
     </div>
   );

@@ -33,6 +33,8 @@ export default class coreWebDAV {
   }
 
   __internal__loadEndpoints() {
+    this.core.request.setNamespace("");
+
     this.core.request.usePath("/.well-known/webdav", async (req, res) => {
       return res.redirect("/webdav");
     });
@@ -73,9 +75,7 @@ export default class coreWebDAV {
         return failAuth();
       }
 
-      const [username, password] = Buffer.from(req.headers["authorization"].split(" ")[1], "base64")
-        .toString("utf-8")
-        .split(":");
+      const [username, password] = Buffer.from(req.headers["authorization"].split(" ")[1], "base64").toString("utf-8").split(":");
 
       this.core.log.debug("webdav", "username:", username, "password:", password);
 

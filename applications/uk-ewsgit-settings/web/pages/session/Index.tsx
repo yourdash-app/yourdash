@@ -46,11 +46,11 @@ const SettingsPageSession: React.FC = () => {
                 <Icon
                   className={"aspect-square h-8 m-auto ml-0"}
                   icon={
-                    session.type === YOURDASH_SESSION_TYPE.web
+                    session.type === YOURDASH_SESSION_TYPE.WEB
                       ? UKIcon.Browser
-                      : session.type === YOURDASH_SESSION_TYPE.cli
+                      : session.type === YOURDASH_SESSION_TYPE.CLI
                         ? UKIcon.Terminal
-                        : session.type === YOURDASH_SESSION_TYPE.desktop
+                        : session.type === YOURDASH_SESSION_TYPE.DESKTOP
                           ? UKIcon.DeviceDesktop
                           : UKIcon.Question
                   }
@@ -59,10 +59,10 @@ const SettingsPageSession: React.FC = () => {
               <div className={"w-full bg-container-secondary-bg pl-4 p-3 flex text-container-fg items-center justify-between"}>
                 <div className={"flex flex-col gap-1"}>
                   <div>
-                    Type: {session.type === YOURDASH_SESSION_TYPE.web && "Web"}
-                    {session.type === YOURDASH_SESSION_TYPE.cli && "Cli"}
-                    {session.type === YOURDASH_SESSION_TYPE.desktop && "Desktop"}
-                    {session.type === YOURDASH_SESSION_TYPE.external && "External"}
+                    Type: {session.type === YOURDASH_SESSION_TYPE.WEB && "Web"}
+                    {session.type === YOURDASH_SESSION_TYPE.CLI && "Cli"}
+                    {session.type === YOURDASH_SESSION_TYPE.DESKTOP && "Desktop"}
+                    {session.type === YOURDASH_SESSION_TYPE.UNKNOWN && "External"}
                   </div>
                   <div>Supports PSA: {(!!session.isNodeJS).toString()}</div>
                 </div>

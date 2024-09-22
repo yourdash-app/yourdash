@@ -24,8 +24,6 @@ const SubAlbums: React.FC<{ path: string; scrollerClassName?: string }> = ({ pat
     setAlbums([]);
   }, [path]);
 
-  if (!albums) return null;
-
   return (
     <InfiniteScroll
       hasMorePages={hasMorePages}

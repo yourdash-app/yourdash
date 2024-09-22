@@ -3,24 +3,31 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
+import useResource from "@yourdash/csi/useResource.ts";
+import Box from "@yourdash/uikit/components/box/box.tsx";
+import Card from "@yourdash/uikit/components/card/card.tsx";
+import Icon from "@yourdash/uikit/components/icon/icon.tsx";
+import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary.ts";
 import Image from "@yourdash/uikit/components/image/image.tsx";
+import Text from "@yourdash/uikit/components/text/text.tsx";
 import React from "react";
 import { AlbumMediaPath } from "../../../shared/types/endpoints/album/media/path.ts";
+import EndpointMediaThumbnail from "../../../shared/types/endpoints/media/thumbnail.ts";
+import { acsi } from "../../meta.yourdash.ts";
+import styles from "./AlbumMedia.module.scss";
 
-const AlbumMedia: React.FC<{ albumMedia: AlbumMediaPath }> = ({ albumMedia }) => {
+const AlbumMedia: React.FC<{ albumMedia: AlbumMediaPath; showFilenames?: boolean }> = ({ albumMedia, showFilenames }) => {
+  const thumbnailPath = useResource(() => acsi.getJson<EndpointMediaThumbnail>(`/media/thumbnail/lowres/@/${albumMedia.path}`));
+
   return (
-    <>
-      path: {albumMedia.path}
-      {albumMedia.thumbnail ? (
-        <Image
-          accessibleLabel={""}
-          src={albumMedia.thumbnailPath}
-          authenticatedImage={true}
-        />
-      ) : (
-        <div>MISSING THUMBNAIL ICON</div>
-      )}
-    </>
+    <div className={styles.component}>
+      <Image
+        accessibleLabel={""}
+        src={thumbnailPath?.thumbnail || ""}
+        authenticatedImage={true}
+      />
+      {showFilenames && <Text text={albumMedia.path} />}
+    </div>
   );
 };
 

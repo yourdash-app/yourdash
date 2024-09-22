@@ -24,7 +24,7 @@ const AlbumMediaGrid: React.FC<{ path: string; scrollerClassName?: string }> = (
 
   return (
     <InfiniteScroll
-      hasMorePages={hasMorePages}
+      showNoMoreItems={!hasMorePages}
       resetState={path}
       fetchNextPage={async (nextPageNumber) => {
         const data = await acsi.getJson<EndpointAlbumMediaPath>(`/album/media/${nextPageNumber}/@` + path);

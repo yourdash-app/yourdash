@@ -75,7 +75,7 @@ const Navigation: FC<{ subtitle?: string }> = ({ subtitle }) => {
         <Text text={"YourDash is a pre-alpha project. "} />
         <Link
           to={"/docs/pre-alpha"}
-          text={"Learn more"}
+          text={"learn more."}
         />
       </Box>
       <Outlet />
