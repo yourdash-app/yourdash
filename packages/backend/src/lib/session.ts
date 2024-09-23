@@ -36,8 +36,12 @@ export async function loadSessionsForUser(username: string) {
   }
 }
 
-export async function createSession<T extends YOURDASH_SESSION_TYPE>(username: string, type: T): Promise<IYourDashSession<T>> {
-  const sessionToken = generateRandomStringOfLength(YOURDASH_USER_SESSION_TOKEN_LENGTH);
+export async function createSession<T extends YOURDASH_SESSION_TYPE>(
+  username: string,
+  type: T,
+  useToken?: string,
+): Promise<IYourDashSession<T>> {
+  const sessionToken = useToken || generateRandomStringOfLength(YOURDASH_USER_SESSION_TOKEN_LENGTH);
 
   const user = new YourDashUser(username);
 

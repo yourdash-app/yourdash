@@ -5,13 +5,16 @@
 
 import { INSTANCE_STATUS } from "@yourdash/shared/core/instanceStatus.js";
 import { YOURDASH_SESSION_TYPE } from "@yourdash/shared/core/session.js";
-import { compareHashString } from "../../lib/encryption.js";
+import { USER_AVATAR_SIZE } from "@yourdash/shared/core/userAvatarSize.js";
+import { compareHashString, generateRandomStringOfLength } from "../../lib/encryption.js";
 import { createSession } from "../../lib/session.js";
 import { Core } from "../core.js";
 import FSFile from "../fileSystem/FSFile.js";
 import generateUUID from "../helpers/generateUUID.js";
 import YourDashUser from "../user/index.js";
 import path from "path";
+import { Request as ExpressRequest } from "express";
+import { Database } from "bun:sqlite";
 
 export const MIMICED_NEXTCLOUD_VERSION = {
   major: 28,
@@ -23,6 +26,10 @@ export const MIMICED_NEXTCLOUD_VERSION = {
 };
 
 export default function loadNextCloudSupportEndpoints(core: Core) {
+  const sessionDatabase = new Database(path.join(core.fs.ROOT_PATH, "./nextcloud-sessions.db"), { strict: true, create: true });
+
+  sessionDatabase.run(`CREATE TABLE IF NOT EXISTS Database ( username TEXT, sessionToken TEXT );`);
+
   core.request.setNamespace("");
 
   core.request.get("/status.php", async (req, res) => {
@@ -103,6 +110,55 @@ export default function loadNextCloudSupportEndpoints(core: Core) {
   let nextcloudAuthSessions: { [authSessionToken: string]: { authPollToken: string } } = {};
   let nextcloudAuthorisedSessions: { [authPollToken: string]: { username: string; sessionToken: string } } = {};
 
+  core.request.post("/index.php/login/v2", async (req, res) => {
+    const authSessionPollToken = generateUUID();
+    const authSessionToken = generateUUID();
+
+    console.log({
+      poll: {
+        token: authSessionPollToken,
+        endpoint: `http://${req.hostname}:3563/index.php/login/v2/poll`,
+      },
+      login: `http://localhost:5173/login/nextcloud/flow/v2/${authSessionToken}`,
+    });
+
+    nextcloudAuthSessions[authSessionToken] = { authPollToken: authSessionPollToken };
+
+    // authSessionToken
+    // authSessionPollToken
+    // sessionToken
+
+    return res.json({
+      poll: {
+        token: authSessionPollToken,
+        endpoint: `http://${req.hostname}:3563/index.php/login/v2/poll`,
+      },
+      login: `http://localhost:5173/login/nextcloud/flow/v2/${authSessionToken}`,
+    });
+  });
+
+  core.request.post("/index.php/login/v2/poll", async (req, res) => {
+    const authSessionPollToken = req.body.token;
+    console.log({ authSessionPollToken });
+    const authSession = nextcloudAuthorisedSessions[authSessionPollToken];
+
+    if (!authSession) {
+      console.log("polled and found no session");
+      return res.status(404).send("");
+    }
+
+    console.log("polled and found session", authSession);
+
+    const dbQuery = sessionDatabase.query(`INSERT INTO Database (username, sessionToken) VALUES ($username, $sessionToken)`);
+    dbQuery.run({ username: authSession.username, sessionToken: authSession.sessionToken });
+
+    return res.json({
+      server: `http://${req.hostname}:3563`,
+      loginName: authSession.username,
+      appPassword: authSession.sessionToken,
+    });
+  });
+
   core.request.post("/login/nextcloud/flow/v2/authenticate", async (req, res) => {
     if (!req.body) return res.status(400).json({ error: "Invalid or missing request body" });
 
@@ -130,13 +186,23 @@ export default function loadNextCloudSupportEndpoints(core: Core) {
     return compareHashString(savedHashedPassword, password)
       .then(async (result) => {
         if (result) {
-          const session = await createSession(username, YOURDASH_SESSION_TYPE.NEXTCLOUD_COMPATABILITY);
+          function generateNextcloudBearerToken() {
+            // format: "YWRtaW46NG4uRVU1XidvVTAsbi5VUH1vLFJiL1wxWGZySCtRKyRKcSZmdykpV3FuTjXCrCxHekRSQ09maSpzL01+JmV4eXNxTmZYUUV3OD48WTheU1NnfiV9ZFV8XFp4aE5fZldtSWU2XVRmYEZITTliM0NjPmowUUo4WSFmT1tkdlwwfixY"
+
+            const characters = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890+";
+
+            return Array.from({ length: 180 }, () => characters[Math.floor(Math.random() * characters.length)]).join("");
+          }
+
+          const session = await createSession(username, YOURDASH_SESSION_TYPE.NEXTCLOUD_COMPATABILITY, generateNextcloudBearerToken());
 
           /*
             token: session.sessionToken,
             // only used for the session's management page
             sessionId: session.sessionId,
           */
+
+          console.log({ sessionToken: session.sessionToken });
 
           nextcloudAuthorisedSessions[nextcloudAuthSessions[authToken].authPollToken] = {
             username: username,
@@ -158,45 +224,112 @@ export default function loadNextCloudSupportEndpoints(core: Core) {
       });
   });
 
-  core.request.post("/index.php/login/v2", async (req, res) => {
-    const authSessionPollToken = generateUUID();
-    const authSessionToken = generateUUID();
-
-    nextcloudAuthSessions[authSessionToken] = { authPollToken: authSessionPollToken };
-
-    // authSessionToken
-    // authSessionPollToken
-    // sessionToken
-
-    return res.json({
-      poll: {
-        token: authSessionPollToken,
-        endpoint: `http://${req.hostname}:3563/index.php/login/v2/poll`,
-      },
-      login: `http://localhost:5173/login/nextcloud/flow/v2/${authSessionToken}`,
-    });
-  });
-
-  core.request.post("/index.php/login/v2/poll", async (req, res) => {
-    const authSessionPollToken = req.body.token;
-    const authSession = nextcloudAuthorisedSessions[authSessionPollToken];
-
-    if (!authSession) {
-      return res.status(404).send("");
+  // @ts-ignore
+  function getUserForRequest(req: ExpressRequest): YourDashUser {
+    if (!req.headers.authorization) {
+      console.log("We should not get here!!! getUserForRequest() // nextcloud");
+      // @ts-ignore
+      return;
     }
 
+    const sessionToken = req.headers.authorization.split("Basic ")[1];
+
+    const dbQuery = sessionDatabase.query("SELECT username FROM Database WHERE sessionToken = $sessionToken");
+    const dbResponse = dbQuery.get({ sessionToken: sessionToken });
+
+    console.log({ dbResponse: dbResponse, sessionToken: sessionToken });
+
+    if (!dbResponse) {
+      console.log("Invalid Session Token!");
+      // @ts-ignore
+      return;
+    }
+
+    if (!(dbResponse as { username?: string }).username) {
+      console.log("Invalid Session, no username found!");
+      // @ts-ignore
+      return;
+    }
+
+    return core.users.get((dbResponse as { username: string }).username);
+  }
+
+  core.request.get("/ocs/v1.php/cloud/user", async (req, res) => {
+    const user = getUserForRequest(req);
+    const userFullName = await user.getName();
+
     return res.json({
-      server: `http://${req.hostname}:3563`,
-      loginName: authSession.username,
-      appPassword: authSession.sessionToken,
+      ocs: {
+        meta: {
+          status: "ok",
+          statuscode: 100,
+          message: "OK",
+          totalitems: "",
+          itemsperpage: "",
+        },
+        data: {
+          enabled: true,
+          storageLocation: path.join(core.fs.ROOT_PATH, user.getFsPath()),
+          id: user.username,
+          lastLogin: Date.now(),
+          backend: "Database",
+          subadmin: [],
+          quota: {
+            free: 100,
+            used: 10,
+            total: 1000,
+            relative: 0.03,
+            quota: -3,
+          },
+          manager: "",
+          avatarScope: "v2-federated",
+          email: null,
+          emailScope: "v2-federated",
+          aditional_mail: [],
+          aditional_mailScope: [],
+          displayname: `${userFullName.first} ${userFullName.last}`,
+          "display-name": `${userFullName.first} ${userFullName.last}`,
+          displaynameScope: "v2-federated",
+          phone: "",
+          phoneScope: "v2-local",
+          address: "",
+          addressScope: "v2-local",
+          website: "",
+          websiteScope: "v2-local",
+          twitter: "",
+          twitterScope: "v2-local",
+          fediverse: "",
+          fediverseScope: "v2-local",
+          organisation: "",
+          organisationScope: "v2-local",
+          role: "",
+          roleScope: "v2-local",
+          headline: "",
+          headlineScope: "v2-local",
+          biography: "",
+          biographyScope: "v2-local",
+          profile_enabled: "1",
+          profile_enabledScope: "v2-local",
+          groups: ["admin"],
+          language: "en_GB",
+          locale: "",
+          notify_email: null,
+          backendCapabilities: {
+            setDisplayName: true,
+            setPassword: true,
+          },
+        },
+      },
     });
   });
 
-  core.request.get("/ocs/v1.php/cloud/user", async (req, res) => {
-    return res.json({ status: "ok" });
+  core.request.get("/remote.php/dav/avatars/:username/*", async (req, res) => {
+    const user = core.users.get(req.params.username);
+
+    return res.sendFile(path.resolve(path.join(core.fs.ROOT_PATH, user.getAvatar(USER_AVATAR_SIZE.MEDIUM))));
   });
 
-  /*   // handle nextcloud compatability authentication
+  /*   // handle nextcloud compatability authentication (remember the Bearer)
   core.request.usePath("/remote.php/", async (req, res, next) => {
     return res.contentType("http/xml").send(`<?xml version="1.0" encoding="utf-8"?>
       <d:error xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns">
@@ -213,7 +346,7 @@ More details can be found in the server log.
   }); */
 
   core.request.propfind("/remote.php/dav/files/:username/*", async (req, res) => {
-    console.log({ username: req.params.username, params: Object.values(req.params).join("/") });
+    console.log({ username: req.params.username, params: Object.values(req.params).join("/"), path: req.params["*"] });
     if (req.params["*"] === "/") {
       return res.contentType("http/xml").send(`<?xml version="1.0" encoding="utf-8"?>
       <d:error xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns">
@@ -227,8 +360,24 @@ More details can be found in the server log.
           <s:request-id>ibCxTsPl4KN7sufuReK6</s:request-id>
         </s:technical-details>
       </d:error>`);
-    } else {
-      return res.json({ error: true });
     }
+
+    if (req.params["*"] === undefined) {
+      return res.contentType("http/xml").send(`<?xml version="1.0" encoding="utf-8"?>
+<d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:oc="http://owncloud.org/ns" xmlns:nc="http://nextcloud.org/ns">
+    <d:response>
+        <d:href>${req.path}</d:href>
+        <d:propstat>
+            <d:prop>
+                <oc:size>10000</oc:size>
+            </d:prop>
+            <d:status>HTTP/1.1 200 OK</d:status>
+        </d:propstat>
+    </d:response>
+</d:multistatus>
+`);
+    }
+
+    return res.json({ error: true });
   });
 }
