@@ -3,6 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import Button from "@yourdash/uikit/components/button/button.tsx";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import MajorButton from "@yourdash/chiplet/components/majorButton/MajorButton.tsx";
@@ -31,19 +32,18 @@ const Index: React.FC = () => {
               {"Run a single command and be up-and-running within minutes"}
               <span className={"text-base font-thin text-gray-300"}>*</span>
             </span>
-            <MajorButton
+            <Button
+              text={"Get started"}
               onClick={() => {
                 navigate("/docs/faq");
               }}
-            >
-              {"Get started"}
-            </MajorButton>
+            />
             <span className={"text-xs text-gray-400 absolute top-full mt-2"}>*{" Only on supported devices."}</span>
           </div>
         </section>
       </section>
       {/* Key Points Cards */}
-      <section className={"w-full p-4 pt-0 pb-0 gap-2 xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 grid mb-4"}>
+      <section className={"w-full p-4 pt-0 pb-0 gap-2 xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 grid mb-4 max-w-6xl ml-auto mr-auto"}>
         <KeyPointsCard
           title={"Limitless personalisation"}
           content={"Download and create themes and plugins with ease"}

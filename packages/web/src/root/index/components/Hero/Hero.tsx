@@ -15,7 +15,7 @@ const IndexPageHero: React.FC = () => {
   return (
     <section
       className={clippy(
-        "animate__animated animate__fadeIn w-full h-[30rem] overflow-hidden relative [clip-path:_polygon(0_0,_100%_0%,_100%_85%,_0%_100%);] grid lg:grid-cols-2 grid-cols-1 grid-rows-1 gap-10 pb-4",
+        "animate__animated animate__fadeIn w-full h-[30rem] overflow-hidden relative [clip-path:_polygon(0_0,_100%_0%,_100%_85%,_0%_100%);] grid lg:grid-cols-2 grid-cols-1 grid-rows-1 gap-10 pb-4 drop-shadow-xl",
         styles.component,
       )}
     >

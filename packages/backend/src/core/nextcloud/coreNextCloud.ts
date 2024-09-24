@@ -61,7 +61,7 @@ export default function loadNextCloudSupportEndpoints(core: Core) {
     });
   });
 
-  core.request.get("/ocs/v2.php/cloud/capabilities", async (req, res) => {
+  core.request.get(["/ocs/v2.php/cloud/capabilities", "/ocs/v1.php/cloud/capabilities"], async (req, res) => {
     if (req.query.format === "json") {
       return res.json({
         ocs: {
@@ -160,7 +160,9 @@ export default function loadNextCloudSupportEndpoints(core: Core) {
   });
 
   core.request.post("/login/nextcloud/flow/v2/authenticate", async (req, res) => {
-    if (!req.body) return res.status(400).json({ error: "Invalid or missing request body" });
+    if (!req.body) {
+      return res.status(400).json({ error: "Invalid or missing request body" });
+    }
 
     const username = req.body.username;
     const password = req.body.password;
@@ -232,12 +234,22 @@ export default function loadNextCloudSupportEndpoints(core: Core) {
       return;
     }
 
-    const sessionToken = req.headers.authorization.split("Basic ")[1];
+    // if we are using api v2 then the sessionToken is just the user's password
+    function parseAuthorization(sessionToken: string): { username: string; sessionToken: string } {
+      const tokenString = sessionToken.split("Basic ")[1];
+      const tokenParsed = Buffer.from(tokenString, "base64").toString("utf-8");
+
+      const parsedTokenValues = tokenParsed.split(":");
+
+      const username = parsedTokenValues[0];
+      const userPassword = parsedTokenValues[1];
+      return { username: username, sessionToken: userPassword };
+    }
+
+    const reqAuth = parseAuthorization(req.headers.authorization);
 
     const dbQuery = sessionDatabase.query("SELECT username FROM Database WHERE sessionToken = $sessionToken");
-    const dbResponse = dbQuery.get({ sessionToken: sessionToken });
-
-    console.log({ dbResponse: dbResponse, sessionToken: sessionToken });
+    const dbResponse = dbQuery.get({ sessionToken: reqAuth.sessionToken });
 
     if (!dbResponse) {
       console.log("Invalid Session Token!");
@@ -256,7 +268,7 @@ export default function loadNextCloudSupportEndpoints(core: Core) {
 
   core.request.get("/ocs/v1.php/cloud/user", async (req, res) => {
     const user = getUserForRequest(req);
-    const userFullName = await user.getName();
+    const userFullName = (await user.getName()) || { first: "Unknown", last: "User" };
 
     return res.json({
       ocs: {
