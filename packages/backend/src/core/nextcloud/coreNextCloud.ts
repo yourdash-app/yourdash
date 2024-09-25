@@ -15,6 +15,7 @@ import YourDashUser from "../user/index.js";
 import path from "path";
 import { Request as ExpressRequest } from "express";
 import { Database } from "bun:sqlite";
+import xmlBodyParser from "express-xml-bodyparser";
 
 export const MIMICED_NEXTCLOUD_VERSION = {
   major: 28,
@@ -359,6 +360,24 @@ More details can be found in the server log.
 
   core.request.propfind("/remote.php/dav/files/:username/*", async (req, res) => {
     console.log({ username: req.params.username, params: Object.values(req.params).join("/"), path: req.params["*"] });
+
+    console.log(JSON.stringify(req.body));
+
+    const props: object[] = req.body["d:prop"];
+
+    const filePath = req.params["*"] === undefined ? "/" : req.params["*"];
+
+    let response = ``;
+
+    props.forEach((prop: object) => {
+      console.log(prop);
+
+      switch (prop[0]) {
+        case "d:getlastmodified":
+          response += `<d:getlastmodified>FORMATTED LAST MODIFIED DATE</d:getlastmodified>`;
+      }
+    });
+
     if (req.params["*"] === "/") {
       return res.contentType("http/xml").send(`<?xml version="1.0" encoding="utf-8"?>
       <d:error xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns">

@@ -45,6 +45,7 @@ import loadNextCloudSupportEndpoints from "./nextcloud/coreNextCloud.js";
 import YourDashUser from "./user/index.js";
 import CoreWebDAV from "./webDAV/coreWebDAV.js";
 import CoreWebsocketManager from "./websocketManager/coreWebsocketManager.js";
+import xmlBodyParser from "express-xml-bodyparser";
 
 declare global {
   const globalThis: {
@@ -494,6 +495,7 @@ import { Route, Routes } from "react-router";
 
     this.request.use(async (req, res, next) => cors()(req, res, next));
     this.request.use(async (req, res, next) => express.json({ limit: 50_000_000 })(req, res, next));
+    this.request.use(async (req, res, next) => xmlBodyParser()(req, res, next));
     this.request.use(async (req, res, next) => express.urlencoded({ extended: true })(req, res, next));
 
     this.request.use(async (_req, res, next) => {
