@@ -52,20 +52,20 @@ export default class YourDashUser {
     return await core.users.__internal__getUserDatabase(this.username);
   }
 
-  getAvatar(size: USER_AVATAR_SIZE): string {
+  getAvatar(size: USER_AVATAR_SIZE, fileType: "avif" | "png" = "avif"): string {
     switch (size) {
       case USER_AVATAR_SIZE.LARGE:
-        return path.join(this.path, "avatars/large.avif");
+        return path.join(this.path, `avatars/large${fileType === "avif" ? ".avif" : ".png"}`);
       case USER_AVATAR_SIZE.MEDIUM:
-        return path.join(this.path, "avatars/medium.avif");
+        return path.join(this.path, `avatars/medium${fileType === "avif" ? ".avif" : ".png"}`);
       case USER_AVATAR_SIZE.SMALL:
-        return path.join(this.path, "avatars/small.avif");
+        return path.join(this.path, `avatars/small${fileType === "avif" ? ".avif" : ".png"}`);
       case USER_AVATAR_SIZE.ORIGINAL:
-        return path.join(this.path, "avatars/original.avif");
+        return path.join(this.path, `avatars/original${fileType === "avif" ? ".avif" : ".png"}`);
       case USER_AVATAR_SIZE.EXTRA_LARGE:
-        return path.join(this.path, "avatars/extraLarge.avif");
+        return path.join(this.path, `avatars/extraLarge${fileType === "avif" ? ".avif" : ".png"}`);
       default:
-        return path.join(this.path, "avatars/medium.avif");
+        return path.join(this.path, `avatars/medium${fileType === "avif" ? ".avif" : ".png"}`);
     }
   }
 
@@ -79,7 +79,7 @@ export default class YourDashUser {
   }
 
   async setAvatar(filePath: string) {
-    await core.fs.copy(filePath, path.join(this.path, "avatars/original.avif"));
+    await core.fs.copy(filePath, path.join(this.path, "avatars/original.unknown"));
     const newAvatarFile = await core.fs.getFile(filePath);
 
     if (!newAvatarFile) {
@@ -95,23 +95,61 @@ export default class YourDashUser {
     const newAvatarBuffer = await newAvatarFile.read("buffer");
 
     sharp(newAvatarBuffer)
+      .toFormat("avif")
+      .toFile(path.join(path.join(core.fs.ROOT_PATH, this.path), "avatars/original.avif"))
+      .catch((err: string) => core.log.error("user.set_avatar", err));
+
+    sharp(newAvatarBuffer)
+      .toFormat("png")
+      .toFile(path.join(path.join(core.fs.ROOT_PATH, this.path), "avatars/original.png"))
+      .catch((err: string) => core.log.error("user.set_avatar", err));
+
+    sharp(newAvatarBuffer)
       .resize(32, 32)
+      .toFormat("avif")
       .toFile(path.join(path.join(core.fs.ROOT_PATH, this.path), "avatars/small.avif"))
       .catch((err: string) => core.log.error("user.set_avatar", err));
 
     sharp(newAvatarBuffer)
+      .resize(32, 32)
+      .toFormat("png")
+      .toFile(path.join(path.join(core.fs.ROOT_PATH, this.path), "avatars/small.png"))
+      .catch((err: string) => core.log.error("user.set_avatar", err));
+
+    sharp(newAvatarBuffer)
       .resize(64, 64)
+      .toFormat("avif")
       .toFile(path.join(path.join(core.fs.ROOT_PATH, this.path), "avatars/medium.avif"))
       .catch((err: string) => core.log.error("user.set_avatar", err));
 
     sharp(newAvatarBuffer)
+      .resize(64, 64)
+      .toFormat("png")
+      .toFile(path.join(path.join(core.fs.ROOT_PATH, this.path), "avatars/medium.png"))
+      .catch((err: string) => core.log.error("user.set_avatar", err));
+
+    sharp(newAvatarBuffer)
       .resize(128, 128)
+      .toFormat("avif")
       .toFile(path.join(path.join(core.fs.ROOT_PATH, this.path), "avatars/large.avif"))
       .catch((err: string) => core.log.error("user.set_avatar", err));
 
     sharp(newAvatarBuffer)
+      .resize(128, 128)
+      .toFormat("png")
+      .toFile(path.join(path.join(core.fs.ROOT_PATH, this.path), "avatars/large.png"))
+      .catch((err: string) => core.log.error("user.set_avatar", err));
+
+    sharp(newAvatarBuffer)
       .resize(256, 256)
+      .toFormat("avif")
       .toFile(path.join(path.join(core.fs.ROOT_PATH, this.path), "avatars/extraLarge.avif"))
+      .catch((err: string) => core.log.error("user.set_avatar", err));
+
+    sharp(newAvatarBuffer)
+      .resize(256, 256)
+      .toFormat("png")
+      .toFile(path.join(path.join(core.fs.ROOT_PATH, this.path), "avatars/extraLarge.png"))
       .catch((err: string) => core.log.error("user.set_avatar", err));
   }
 
@@ -340,7 +378,7 @@ export default class YourDashUser {
   }
 
   async getName(): Promise<{ first: string; last: string }> {
-    return (await this.getDatabase()).get("name") || { first: "Unknown", last: "User" };
+    return (await this.getDatabase()).get("user:name") || { first: "Unknown", last: "User" };
   }
 
   async setBio(bio: string) {

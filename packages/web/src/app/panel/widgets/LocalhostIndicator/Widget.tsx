@@ -25,14 +25,8 @@ const LocalhostIndicator: React.FC<{
       )}
     >
       <Text
-        text={"Localhost"}
-        className={clippy(
-          "!text-xs",
-          side === "top" && "rotate-45",
-          side === "bottom" && "-rotate-45",
-          side === "left" && "-rotate-45",
-          side === "right" && "rotate-45",
-        )}
+        text={"</>"}
+        className={"text-pink-300"}
       />
     </div>
   );

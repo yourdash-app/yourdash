@@ -4,9 +4,14 @@
  */
 
 export enum USER_AVATAR_SIZE {
+  // 32x32
   SMALL,
+  // 64x64
   MEDIUM,
+  // 128x128
   LARGE,
+  // 256x256
   EXTRA_LARGE,
+  // ?x?
   ORIGINAL,
 }

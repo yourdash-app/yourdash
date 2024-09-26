@@ -363,52 +363,83 @@ More details can be found in the server log.
 
     console.log(JSON.stringify(req.body));
 
-    const props: object[] = req.body["d:prop"];
+    if (!req.body["d:propfind"]) {
+      console.log("no d:propfind found!", req.body);
+    }
+
+    if (!req.body["d:propfind"]["d:prop"]) {
+      console.log("no d:prop found!", req.body);
+    }
+
+    const props: object[] = req.body["d:propfind"]["d:prop"];
 
     const filePath = req.params["*"] === undefined ? "/" : req.params["*"];
 
-    let response = ``;
+    let response: string[] = [];
 
-    props.forEach((prop: object) => {
-      console.log(prop);
-
-      switch (prop[0]) {
+    Object.keys(props).forEach((prop: string) => {
+      switch (prop) {
         case "d:getlastmodified":
-          response += `<d:getlastmodified>FORMATTED LAST MODIFIED DATE</d:getlastmodified>`;
+          response.push(`<d:getlastmodified>FORMATTED LAST MODIFIED DATE</d:getlastmodified>`);
       }
     });
 
-    if (req.params["*"] === "/") {
-      return res.contentType("http/xml").send(`<?xml version="1.0" encoding="utf-8"?>
-      <d:error xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns">
-        <s:exception>Internal Server Error</s:exception>
-        <s:message>The server was unable to complete your request.
-If this happens again, please send the technical details below to the server administrator.
-More details can be found in the server log.
-        </s:message>
-        <s:technical-details>
-          <s:remote-address>::1</s:remote-address>
-          <s:request-id>ibCxTsPl4KN7sufuReK6</s:request-id>
-        </s:technical-details>
-      </d:error>`);
-    }
-
-    if (req.params["*"] === undefined) {
-      return res.contentType("http/xml").send(`<?xml version="1.0" encoding="utf-8"?>
+    return res.contentType("xml").status(207).send(`<?xml version="1.0"?>
 <d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:oc="http://owncloud.org/ns" xmlns:nc="http://nextcloud.org/ns">
-    <d:response>
-        <d:href>${req.path}</d:href>
-        <d:propstat>
-            <d:prop>
-                <oc:size>10000</oc:size>
-            </d:prop>
-            <d:status>HTTP/1.1 200 OK</d:status>
-        </d:propstat>
-    </d:response>
-</d:multistatus>
-`);
-    }
+<d:response>
+<d:href>${req.path}</d:href>
+<d:propstat>
+${response.map((res) => {
+  return `<d:prop>${res}</d:prop>`;
+})}
+<d:status>HTTP/1.1 200 OK</d:status>
+</d:propstat>
+</d:response>
+</d:multistatus>`);
+    //
+    //     if (req.params["*"] === "/") {
+    //       return res.contentType("xml").send(`<?xml version="1.0" encoding="utf-8"?>
+    //       <d:error xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns">
+    //         <s:exception>Internal Server Error</s:exception>
+    //         <s:message>The server was unable to complete your request.
+    // If this happens again, please send the technical details below to the server administrator.
+    // More details can be found in the server log.
+    //         </s:message>
+    //         <s:technical-details>
+    //           <s:remote-address>::1</s:remote-address>
+    //           <s:request-id>ibCxTsPl4KN7sufuReK6</s:request-id>
+    //         </s:technical-details>
+    //       </d:error>`);
+    //     }
+    //
+    //     if (req.params["*"] === undefined) {
+    //       return res.contentType("http/xml").send(`<?xml version="1.0" encoding="utf-8"?>
+    // <d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:oc="http://owncloud.org/ns" xmlns:nc="http://nextcloud.org/ns">
+    //     <d:response>
+    //         <d:href>${req.path}</d:href>
+    //         <d:propstat>
+    //             <d:prop>
+    //                 <oc:size>10000</oc:size>
+    //             </d:prop>
+    //             <d:status>HTTP/1.1 200 OK</d:status>
+    //         </d:propstat>
+    //     </d:response>
+    // </d:multistatus>
+    // `);
+    //     }
 
     return res.json({ error: true });
+  });
+
+  core.request.get("/remote.php/dav/avatars/:username/:size.png", async (req, res) => {
+    const username = req.params.username;
+
+    const user = core.users.get(username);
+
+    if (!user) {
+      return res.status(401).send("error");
+    }
+
+    return res.sendFile(path.join(this.fs.ROOT_PATH, user.getAvatar(USER_AVATAR_SIZE.SMALL, "png")));
   });
 }

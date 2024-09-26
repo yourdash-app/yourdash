@@ -17,11 +17,12 @@
   position: absolute;
   padding: 0.25rem 0.75rem;
   user-select: none;
-  transition: var(--transition);
+  transition: var(#{$theme+$transition});
   opacity: 0;
-  border: solid 1px rgb(var(--container-border));
-  border-radius: var(--container-rounding);
-  background: rgb(var(--container-bg));
+  border: var(#{$theme+$border});
+  border-radius: var(#{$theme+$radius});
+  background: var(#{$theme+$background});
+  color: var(#{$theme+$color});
   pointer-events: none;
 }
 

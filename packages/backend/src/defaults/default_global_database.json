@@ -19,12 +19,30 @@
   "core:defaults": {
     "user": {
       "quickShortcuts": [
-        "uk-ewsgit-dash",
-        "uk-ewsgit-settings",
-        "uk-ewsgit-files",
-        "uk-ewsgit-store",
-        "uk-ewsgit-weather",
-        "uk-ewsgit-photos"
+        {
+          "id": "uk-ewsgit-dash-frontend",
+          "moduleType": "officialFrontend"
+        },
+        {
+          "id": "uk-ewsgit-settings-frontend",
+          "moduleType": "officialFrontend"
+        },
+        {
+          "id": "uk-ewsgit-store-frontend",
+          "moduleType": "officialFrontend"
+        },
+        {
+          "id": "uk-ewsgit-weather-frontend",
+          "moduleType": "officialFrontend"
+        },
+        {
+          "id": "uk-ewsgit-photos-frontend",
+          "moduleType": "officialFrontend"
+        },
+        {
+          "id": "uk-ewsgit-files-frontend",
+          "moduleType": "officialFrontend"
+        }
       ]
     }
   },
