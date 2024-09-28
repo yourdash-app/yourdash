@@ -17,22 +17,22 @@ import styles from "./SubAlbums.module.scss";
 const SubAlbums: React.FC<{ path: string; scrollerClassName?: string }> = ({ path, scrollerClassName }) => {
   const navigateTo = useNavigateTo();
   const [albums, setAlbums] = useState<EndpointAlbumSubPath>([]);
-  const [hasMorePages, setHasMorePages] = useState(true);
+  const [reachedLastPage, setReachedLastPage] = useState(true);
 
   useEffect(() => {
-    setHasMorePages(true);
+    setReachedLastPage(true);
     setAlbums([]);
   }, [path]);
 
   return (
     <InfiniteScroll
-      hasMorePages={hasMorePages}
+      reachedLastPage={reachedLastPage}
       resetState={path}
       fetchNextPage={async (nextPageNumber) => {
         const data = await acsi.getJson<EndpointAlbumSubPath>(`/album/sub/${nextPageNumber}/@` + path);
 
         if (data?.length === 0) {
-          setHasMorePages(false);
+          setReachedLastPage(false);
         }
 
         setAlbums((previousAlbums) => [...previousAlbums, ...data]);

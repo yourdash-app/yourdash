@@ -15,19 +15,24 @@ import { useNavigate } from "react-router";
 const AlbumMediaGrid: React.FC<{ path: string; scrollerClassName?: string }> = ({ path, scrollerClassName }) => {
   const navigate = useNavigate();
   const [albums, setAlbums] = useState<EndpointAlbumMediaPath>([]);
-  const [hasMorePages, setHasMorePages] = useState(true);
+  const [reachedLastPage, setReachedLastPage] = useState(false);
 
   useEffect(() => {
-    setHasMorePages(true);
+    setReachedLastPage(false);
     setAlbums([]);
   }, [path]);
 
   return (
     <InfiniteScroll
-      showNoMoreItems={!hasMorePages}
+      reachedLastPage={reachedLastPage}
       resetState={path}
       fetchNextPage={async (nextPageNumber) => {
         const data = await acsi.getJson<EndpointAlbumMediaPath>(`/album/media/${nextPageNumber}/@` + path);
+
+        if (data?.length === 0) {
+          setReachedLastPage(true);
+        }
+
         setAlbums((previousAlbums) => [...previousAlbums, ...data]);
       }}
       className={clippy(styles.component, scrollerClassName)}

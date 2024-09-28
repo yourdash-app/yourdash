@@ -16,7 +16,7 @@ import { useNavigateTo } from "../../meta.yourdash";
 
 const AlbumPathPage: FC = () => {
   const navigateTo = useNavigateTo();
-  const albumPath = useParams()["*"];
+  const albumPath = useParams()["*"] || "/";
 
   return (
     <div className={styles.page}>
@@ -41,16 +41,16 @@ const AlbumPathPage: FC = () => {
         <Heading
           className={styles.heading}
           level={1}
-          text={path.basename(albumPath || "") || albumPath || ""}
+          text={path.basename(albumPath) || albumPath}
         />
       </div>
       <SubAlbums
         scrollerClassName={styles.subAlbums}
-        path={albumPath || "/"}
+        path={albumPath}
       />
       <AlbumMediaGrid
         scrollerClassName={styles.mediaGrid}
-        path={albumPath || "/"}
+        path={albumPath}
       />
     </div>
   );

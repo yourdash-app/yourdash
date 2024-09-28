@@ -14,38 +14,44 @@ const InfiniteScroll: React.FC<{
   containerClassName?: string;
   className?: string;
   resetState?: string;
-  showNoMoreItems?: boolean;
-}> = ({ children, fetchNextPage, containerClassName, className, resetState, showNoMoreItems }) => {
+  reachedLastPage?: boolean;
+}> = ({ children, fetchNextPage, containerClassName, className, resetState, reachedLastPage }) => {
   const endOfItemsRef = React.useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const nextPage = React.useRef<number>(-1);
-
-  useEffect(() => {
-    nextPage.current = -1;
-    setLoading(true);
-  }, [resetState]);
+  const isEndVisible = React.useRef<boolean>(false);
 
   const fetchNextPageWrapper = async () => {
-    if (showNoMoreItems) return;
+    if (reachedLastPage) return;
+    if (!isEndVisible.current) return;
+
+    console.log("reachedLastPage", reachedLastPage);
+    console.log("isEndVisible", isEndVisible.current);
 
     nextPage.current++;
     setLoading(true);
     await fetchNextPage(nextPage.current);
     setLoading(false);
+
+    console.log("Calling here ???");
+    await fetchNextPageWrapper();
   };
+
+  useEffect(() => {
+    nextPage.current = -1;
+    isEndVisible.current = true;
+    fetchNextPageWrapper(nextPage);
+  }, [resetState]);
 
   useEffect(() => {
     if (!endOfItemsRef.current) return;
 
-    fetchNextPageWrapper();
-
     const element: HTMLDivElement = endOfItemsRef.current;
 
     const observer = new IntersectionObserver((elem) => {
-      if (elem[0].isIntersecting) {
-        fetchNextPageWrapper();
-        observer.disconnect();
-      }
+      isEndVisible.current = elem[0].isIntersecting;
+
+      fetchNextPageWrapper();
     });
 
     observer.observe(element);
@@ -62,7 +68,7 @@ const InfiniteScroll: React.FC<{
       >
         {loading && <div>Loading more content</div>}
         <Separator direction={"column"} />
-        {showNoMoreItems && <div>No more items to load</div>}
+        {reachedLastPage && <div>No more items to load</div>}
       </div>
     </div>
   );

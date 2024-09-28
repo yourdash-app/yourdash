@@ -4,10 +4,6 @@
  */
 
 import useResource from "@yourdash/csi/useResource.ts";
-import Box from "@yourdash/uikit/components/box/box.tsx";
-import Card from "@yourdash/uikit/components/card/card.tsx";
-import Icon from "@yourdash/uikit/components/icon/icon.tsx";
-import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary.ts";
 import Image from "@yourdash/uikit/components/image/image.tsx";
 import Text from "@yourdash/uikit/components/text/text.tsx";
 import React from "react";
