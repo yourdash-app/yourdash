@@ -40,7 +40,8 @@ const InfiniteScroll: React.FC<{
   useEffect(() => {
     nextPage.current = -1;
     isEndVisible.current = true;
-    fetchNextPageWrapper(nextPage);
+
+    fetchNextPageWrapper();
   }, [resetState]);
 
   useEffect(() => {

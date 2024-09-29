@@ -46,6 +46,7 @@ import YourDashUser from "./user/index.js";
 import CoreWebDAV from "./webDAV/coreWebDAV.js";
 import CoreWebsocketManager from "./websocketManager/coreWebsocketManager.js";
 import xmlBodyParser from "express-xml-bodyparser";
+import { rateLimit } from "express-rate-limit";
 
 declare global {
   const globalThis: {
@@ -98,8 +99,7 @@ export class Core {
     // @ts-ignore
     globalThis.rawConsoleLog = globalThis.console.log;
 
-    this.isDebugMode =
-      // @ts-ignore
+    this.isDebugMode = // @ts-ignore
       typeof global.v8debug === "object" ||
       /--debug|--inspect/.test(process.execArgv.join(" ")) ||
       process.env.NODE_OPTIONS?.includes("javascript-debugger") ||
@@ -228,7 +228,9 @@ export class Core {
     this.log.info("startup", "Welcome to the YourDash Instance backend! created by Ewsgit -> https://ewsgit.uk");
 
     this.fs.doesExist("./global_database.json").then(async (doesGlobalDatabaseFileExist) => {
-      if (doesGlobalDatabaseFileExist) await this.globalDb.loadFromDisk("./global_database.json");
+      if (doesGlobalDatabaseFileExist) {
+        await this.globalDb.loadFromDisk("./global_database.json");
+      }
 
       this.fs.verifyFileSystem.verify().then(async () => {
         this.users.__internal__startUserDatabaseService();
@@ -324,7 +326,12 @@ import { Route, Routes } from "react-router";
 /* region code */
 `;
 
-          const codeRegionReplacement = `import {ClientServerInteraction} from "@yourdash/csi/coreCSI.js";import {useNavigate} from "react-router-dom";const applicationMeta:{$schema:string;id:string;displayName:string;category:string;authors:{name:string;url:string;bio:string;avatarUrl:string}[];maintainers:{name:string;url:string;bio:string;avatarUrl:string}[];description:string;license:string;modules:{backend:{id:string;main:string;description:string;dependencies:{moduleType:"backend"|"frontend"|"officialFrontend";id:string}[];}[];frontend:{id:string;displayName:string;iconPath:string;url:string;devUrl:string;description:string;dependencies:{moduleType:"backend"|"frontend"|"officialFrontend";id:string}[];main:string;}[];officialFrontend:{id:string;main:string;displayName:string;iconPath:string;description:string;dependencies:{moduleType:"backend"|"frontend"|"officialFrontend";id:string}[];}[];};shouldInstanceRestartOnInstall:boolean;__internal__generatedFor:"frontend"|"officialFrontend";}=${JSON.stringify({ ...application.config, __internal__generatedFor: "officialFrontend" })};export default applicationMeta;const acsi=new ClientServerInteraction("/app/${application.config.modules.backend[0].id}");const useNavigateTo=()=>{const navigate=useNavigate();return (path: string)=>navigate("/app/a/${application.config.modules.officialFrontend[0].id}"+path)};const modulePath = "/app/a/${application.config.modules.officialFrontend[0].id}";export{acsi,useNavigateTo,modulePath};`;
+          const codeRegionReplacement = `import {ClientServerInteraction} from "@yourdash/csi/coreCSI.js";import {useNavigate} from "react-router-dom";const applicationMeta:{$schema:string;id:string;displayName:string;category:string;authors:{name:string;url:string;bio:string;avatarUrl:string}[];maintainers:{name:string;url:string;bio:string;avatarUrl:string}[];description:string;license:string;modules:{backend:{id:string;main:string;description:string;dependencies:{moduleType:"backend"|"frontend"|"officialFrontend";id:string}[];}[];frontend:{id:string;displayName:string;iconPath:string;url:string;devUrl:string;description:string;dependencies:{moduleType:"backend"|"frontend"|"officialFrontend";id:string}[];main:string;}[];officialFrontend:{id:string;main:string;displayName:string;iconPath:string;description:string;dependencies:{moduleType:"backend"|"frontend"|"officialFrontend";id:string}[];}[];};shouldInstanceRestartOnInstall:boolean;__internal__generatedFor:"frontend"|"officialFrontend";}=${JSON.stringify(
+            {
+              ...application.config,
+              __internal__generatedFor: "officialFrontend",
+            },
+          )};export default applicationMeta;const acsi=new ClientServerInteraction("/app/${application.config.modules.backend[0].id}");const useNavigateTo=()=>{const navigate=useNavigate();return (path: string)=>navigate("/app/a/${application.config.modules.officialFrontend[0].id}"+path)};const modulePath = "/app/a/${application.config.modules.officialFrontend[0].id}";export{acsi,useNavigateTo,modulePath};`;
 
           fileTemplate = fileTemplate.replace("/* region code */", codeRegionReplacement);
 
@@ -355,10 +362,14 @@ import { Route, Routes } from "react-router";
     let portInUse = false;
 
     viteProcess.stdout.on("data", (data) => {
-      if (data.toString() === "$ vite --host\n") return;
+      if (data.toString() === "$ vite --host\n") {
+        return;
+      }
 
       if (data.toString().includes("is in use, trying another one...")) {
-        if (portInUse) return;
+        if (portInUse) {
+          return;
+        }
 
         portInUse = true;
 
@@ -413,64 +424,54 @@ import { Route, Routes } from "react-router";
     this.request.use(async (req, _res, next) => {
       switch (req.method.toUpperCase()) {
         case "GET":
-          if (req.path.includes("core/auth-img")) return next();
-          if (req.path.includes("core/auth-video")) return next();
+          if (req.path.includes("core/auth-img")) {
+            return next();
+          }
+          if (req.path.includes("core/auth-video")) {
+            return next();
+          }
 
           this.log.info(
             "request",
-            `${chalk.bgBlack(chalk.green(" GET "))} ${chalk.bold(req.path)} ${
-              options.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""
-            }`,
+            `${chalk.bgBlack(chalk.green(" GET "))} ${chalk.bold(req.path)} ${options.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""}`,
           );
           break;
         case "POST":
           this.log.info(
             "request",
-            `${chalk.bgBlack(chalk.blue(" POS "))} ${chalk.bold(req.path)} ${
-              options.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""
-            }`,
+            `${chalk.bgBlack(chalk.blue(" POS "))} ${chalk.bold(req.path)} ${options.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""}`,
           );
           break;
         case "DELETE":
           this.log.info(
             "request",
-            `${chalk.bgBlack(chalk.red(" DEL "))} ${chalk.bold(req.path)} ${
-              options.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""
-            }`,
+            `${chalk.bgBlack(chalk.red(" DEL "))} ${chalk.bold(req.path)} ${options.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""}`,
           );
           break;
         case "OPTIONS":
           if (options.logOptionsRequests) {
             this.log.info(
               "request",
-              `${chalk.bgBlack(chalk.cyan(" OPT "))} ${chalk.bold(req.path)} ${
-                options.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""
-              }`,
+              `${chalk.bgBlack(chalk.cyan(" OPT "))} ${chalk.bold(req.path)} ${options.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""}`,
             );
           }
           break;
         case "PROPFIND":
           this.log.info(
             "request",
-            `${chalk.bgBlack(chalk.cyan(" PFI "))} ${chalk.bold(req.path)} ${
-              options.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""
-            }`,
+            `${chalk.bgBlack(chalk.cyan(" PFI "))} ${chalk.bold(req.path)} ${options.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""}`,
           );
           break;
         case "PROPPATCH":
           this.log.info(
             "request",
-            `${chalk.bgCyan(chalk.cyan(" PPA "))} ${chalk.bold(req.path)} ${
-              options.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""
-            }`,
+            `${chalk.bgCyan(chalk.cyan(" PPA "))} ${chalk.bold(req.path)} ${options.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""}`,
           );
           break;
         default:
           this.log.error(
             "core_requests",
-            `ERROR IN REQUEST LOGGER, UNKNOWN REQUEST TYPE: ${req.method}, ${chalk.bold(req.path)} ${
-              options.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""
-            }`,
+            `ERROR IN REQUEST LOGGER, UNKNOWN REQUEST TYPE: ${req.method}, ${chalk.bold(req.path)} ${options.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""}`,
           );
       }
 
@@ -493,18 +494,26 @@ import { Route, Routes } from "react-router";
       });
     }
 
-    this.request.use(async (req, res, next) => cors()(req, res, next));
-    this.request.use(async (req, res, next) => express.json({ limit: 50_000_000 })(req, res, next));
-    this.request.use(async (req, res, next) => xmlBodyParser()(req, res, next));
-    this.request.use(async (req, res, next) => express.urlencoded({ extended: true })(req, res, next));
-
-    this.request.use(async (_req, res, next) => {
+    this.rawExpressJs.use(async (_req, res, next) => {
       // remove the X-Powered-By header to prevent exploitation from knowing the software powering the request server
       // this is a security measure against exploiters who don't look into the project's source code
       res.removeHeader("X-Powered-By");
 
       return next();
     });
+    this.rawExpressJs.use(cors());
+    this.rawExpressJs.use(
+      rateLimit({
+        limit: 50,
+        windowMs: 60_000,
+        message: (req: any, res: any) => {
+          return res.status(429).json({ error: true, message: "Rate-Limited" });
+        },
+      }),
+    );
+    this.rawExpressJs.use(express.json({ limit: 50_000_000 }));
+    this.rawExpressJs.use(xmlBodyParser());
+    this.rawExpressJs.use(express.urlencoded({ extended: true }));
 
     this.request.use(async (req, res, next) => expressCompression()(req, res, next));
 
@@ -571,7 +580,9 @@ import { Route, Routes } from "react-router";
     });
 
     this.request.post("/login/user/:username/authenticate", async (req, res) => {
-      if (!req.body) return res.status(400).json({ error: "Invalid or missing request body" });
+      if (!req.body) {
+        return res.status(400).json({ error: "Invalid or missing request body" });
+      }
 
       const username = req.params.username;
       const password = req.body.password;
@@ -623,7 +634,9 @@ import { Route, Routes } from "react-router";
         token?: string;
       };
 
-      if (!username || !token) return res.json({ success: false });
+      if (!username || !token) {
+        return res.json({ success: false });
+      }
 
       if (!this.users.__internal__getSessionsDoNotUseOutsideOfCore()[username]) {
         try {
@@ -708,8 +721,9 @@ import { Route, Routes } from "react-router";
 
       const externalApplications: string | string[] = this.processArguments["load-external-application"] || [];
 
-      if (externalApplications.length > 0)
+      if (externalApplications.length > 0) {
         this.log.info("external_modules", "Loading external module(s): ", JSON.stringify(externalApplications, null, 2));
+      }
 
       if (externalApplications) {
         if (typeof externalApplications === "string") {
@@ -920,7 +934,9 @@ import { Route, Routes } from "react-router";
       );
     }
 
-    if (!dontExitProcess) process.exit(0);
+    if (!dontExitProcess) {
+      process.exit(0);
+    }
   }
 
   // gracefully shutdown and restart the YourDash Instance

@@ -35,6 +35,7 @@
     "execa": "^8.0.1",
     "express": "4.19.2",
     "express-list-endpoints": "^7.1.0",
+    "express-rate-limit": "^7.4.0",
     "express-xml-bodyparser": "^0.3.0",
     "ffmpeg": "^0.0.4",
     "file-url": "^4.0.0",
