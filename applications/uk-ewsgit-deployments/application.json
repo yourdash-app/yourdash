@@ -1,0 +1,14 @@
+{
+  "name": "uk-ewsgit-chatbots",
+  "displayName": "Chatbots",
+  "description": "Create customised chatbots for external chat services",
+  "category": "social",
+  "authors": [
+    {
+      "displayName": "Ewsgit",
+      "avatarUrl": "https://avatars.githubusercontent.com/u/69800526?v=4",
+      "bio": "The creator of YourDash",
+      "site": "https://ewsgit.github.io"
+    }
+  ]
+}

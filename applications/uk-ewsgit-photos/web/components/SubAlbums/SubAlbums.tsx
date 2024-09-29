@@ -31,6 +31,8 @@ const SubAlbums: React.FC<{ path: string; scrollerClassName?: string }> = ({ pat
       fetchNextPage={async (nextPageNumber) => {
         const data = await acsi.getJson<EndpointAlbumSubPath>(`/album/sub/${nextPageNumber}/@` + path);
 
+        console.log(data);
+
         if (data?.length === 0) {
           setReachedLastPage(false);
         }

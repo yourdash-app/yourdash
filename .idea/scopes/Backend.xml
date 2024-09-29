@@ -1,3 +1,3 @@
 <component name="DependencyValidationManager">
-  <scope name="Backend" pattern="(file[YourDash]:main/backend//*||file[YourDash]:applications/**/backend//*||file[YourDash]:packages/shared//*)&amp;&amp;!file:**/*.js&amp;&amp;!file:**/*.js.map&amp;&amp;!file:**/*.jsx" />
+  <scope name="Backend" pattern="(file[YourDash]:main/backend//*||file[YourDash]:applications/**/backend//*||file[YourDash]:packages/shared//*)&amp;&amp;!file:**/*.js&amp;&amp;!file:**/*.js.map&amp;&amp;!file:**/*.jsx||file[YourDash]:packages/backend//*" />
 </component>

@@ -25,9 +25,9 @@ export default class CoreCommands {
     this.lastCommandAndArgs = [];
     this.prompt = "> ";
 
-    this.stdin.setRawMode(true);
-    this.stdin.setEncoding("utf8");
-    this.stdin.resume();
+    this.stdin.setRawMode?.(true);
+    this.stdin.setEncoding?.("utf8");
+    this.stdin.resume?.();
 
     let cursorPosition = 0;
 

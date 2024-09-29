@@ -14,14 +14,15 @@ const InfiniteScroll: React.FC<{
   containerClassName?: string;
   className?: string;
   resetState?: string;
-  reachedLastPage?: boolean;
-}> = ({ children, fetchNextPage, containerClassName, className, resetState, reachedLastPage }) => {
+}> = ({ children, fetchNextPage, containerClassName, className, resetState }) => {
   const endOfItemsRef = React.useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const nextPage = React.useRef<number>(-1);
   const isEndVisible = React.useRef<boolean>(false);
+  const [hasReachedLastPage, setHasReachedLastPage] = React.useState<boolean>(false);
 
   const fetchNextPageWrapper = async () => {
+    console.log("has reached last page", reachedLastPage);
     if (reachedLastPage) return;
     if (!isEndVisible.current) return;
 
@@ -50,6 +51,7 @@ const InfiniteScroll: React.FC<{
     const element: HTMLDivElement = endOfItemsRef.current;
 
     const observer = new IntersectionObserver((elem) => {
+      console.log("observer update");
       isEndVisible.current = elem[0].isIntersecting;
 
       fetchNextPageWrapper();

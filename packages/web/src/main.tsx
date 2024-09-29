@@ -7,7 +7,7 @@ import "animate.css";
 import "./tailwindcss.css";
 import "./main.css";
 import UIKitRoot from "@yourdash/uikit/core/root.tsx";
-import React from "react";
+import React, { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import { createRoutesFromElements, Route, RouterProvider } from "react-router";
 import { createBrowserRouter } from "react-router-dom";
@@ -47,109 +47,111 @@ loadingElement.innerText = "Loading YourDash...";
 element.appendChild(loadingElement);
 
 ReactDOM.createRoot(element).render(
-  <UIKitRoot>
-    <WebsocketToasts />
-    <RouterProvider
-      router={createBrowserRouter(
-        createRoutesFromElements(
-          <Route errorElement={<ErrorElement />}>
-            <Route
-              path={"/linker-desktop-client-startup"}
-              element={<LinkerDesktopClientStartupPage />}
-            />
-            <Route element={<Navigation />}>
+  <StrictMode>
+    <UIKitRoot>
+      <WebsocketToasts />
+      <RouterProvider
+        router={createBrowserRouter(
+          createRoutesFromElements(
+            <Route errorElement={<ErrorElement />}>
               <Route
-                index
-                element={<Index />}
+                path={"/linker-desktop-client-startup"}
+                element={<LinkerDesktopClientStartupPage />}
               />
-              <Route
-                path={"*"}
-                element={<NotFoundPage />}
-              />
-            </Route>
-            <Route element={<Navigation subtitle={"Docs"} />}>
-              <Route
-                path={"docs/*"}
-                element={<DocsLayout />}
-              >
+              <Route element={<Navigation />}>
+                <Route
+                  index
+                  element={<Index />}
+                />
                 <Route
                   path={"*"}
-                  element={<DocsRouter />}
+                  element={<NotFoundPage />}
                 />
               </Route>
-            </Route>
-            <Route element={<Navigation subtitle={"Projects"} />}>
-              <Route
-                path={"projects"}
-                index
-                element={<ProjectsIndexPage />}
-              />
-            </Route>
-            <Route
-              path={"projects/*"}
-              element={<ProjectsRouter />}
-            />
-            <Route
-              path={"project/*"}
-              element={<ProjectsRouter />}
-            />
-            <Route
-              path={"proj/*"}
-              element={<ProjectsRouter />}
-            />
-            <Route path={"login"}>
-              <Route
-                index
-                element={<LoginIndexPagePreload />}
-              />
-              <Route
-                path={"success"}
-                element={<LoginSuccessPage />}
-              />
-              <Route path={"nextcloud"}>
-                <Route path={"flow"}>
-                  <Route path={"v2"}>
-                    <Route
-                      path={":token"}
-                      element={<LoginNextcloudFlowV2Page />}
-                    />
-                  </Route>
+              <Route element={<Navigation subtitle={"Docs"} />}>
+                <Route
+                  path={"docs/*"}
+                  element={<DocsLayout />}
+                >
+                  <Route
+                    path={"*"}
+                    element={<DocsRouter />}
+                  />
                 </Route>
               </Route>
+              <Route element={<Navigation subtitle={"Projects"} />}>
+                <Route
+                  path={"projects"}
+                  index
+                  element={<ProjectsIndexPage />}
+                />
+              </Route>
               <Route
-                path={"signup"}
-                element={<>TODO: implement me @ewsgit</>}
+                path={"projects/*"}
+                element={<ProjectsRouter />}
               />
-              <Route path={"instance"}>
+              <Route
+                path={"project/*"}
+                element={<ProjectsRouter />}
+              />
+              <Route
+                path={"proj/*"}
+                element={<ProjectsRouter />}
+              />
+              <Route path={"login"}>
                 <Route
                   index
-                  element={<LoginInstancePage />}
+                  element={<LoginIndexPagePreload />}
                 />
                 <Route
-                  path={"*"}
-                  element={<LoginRedirect />}
+                  path={"success"}
+                  element={<LoginSuccessPage />}
                 />
+                <Route path={"nextcloud"}>
+                  <Route path={"flow"}>
+                    <Route path={"v2"}>
+                      <Route
+                        path={":token"}
+                        element={<LoginNextcloudFlowV2Page />}
+                      />
+                    </Route>
+                  </Route>
+                </Route>
+                <Route
+                  path={"signup"}
+                  element={<>TODO: implement me @ewsgit</>}
+                />
+                <Route path={"instance"}>
+                  <Route
+                    index
+                    element={<LoginInstancePage />}
+                  />
+                  <Route
+                    path={"*"}
+                    element={<LoginRedirect />}
+                  />
+                </Route>
               </Route>
-            </Route>
-            <Route path={"app"}>
-              <Route element={<AppLayout />}>
-                <Route
-                  index
-                  element={<ApplicationRedirectToDash />}
-                />
-                <Route
-                  path={"a/*"}
-                  element={<AppRouter />}
-                />
-                <Route
-                  path={"h/*"}
-                  element={<HostedApplicationRouter />}
-                />
+              <Route path={"app"}>
+                <Route element={<AppLayout />}>
+                  <Route
+                    index
+                    element={<ApplicationRedirectToDash />}
+                  />
+                  <Route
+                    path={"a/*"}
+                    element={<AppRouter />}
+                  />
+                  <Route
+                    path={"h/*"}
+                    element={<HostedApplicationRouter />}
+                  />
+                </Route>
               </Route>
-            </Route>
-          </Route>,
-        ),
-      )}
-    />
-  </UIKitRoot>,
+            </Route>,
+          ),
+        )}
+      />
+    </UIKitRoot>
+  </StrictMode>,
 );

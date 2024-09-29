@@ -29,6 +29,8 @@ const AlbumMediaGrid: React.FC<{ path: string; scrollerClassName?: string }> = (
       fetchNextPage={async (nextPageNumber) => {
         const data = await acsi.getJson<EndpointAlbumMediaPath>(`/album/media/${nextPageNumber}/@` + path);
 
+        console.log(data);
+
         if (data?.length === 0) {
           setReachedLastPage(true);
         }
