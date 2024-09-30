@@ -6,6 +6,7 @@
 import clippy from "@yourdash/shared/web/helpers/clippy.ts";
 import React, { useEffect, useState } from "react";
 import Separator from "../../components/separator/separator.tsx";
+import Text from "../../components/text/text.tsx";
 import styles from "./infiniteScroll.module.scss";
 
 const InfiniteScroll: React.FC<{
@@ -61,9 +62,14 @@ const InfiniteScroll: React.FC<{
         ref={endOfItemsRef}
         className={styles.endOfItems}
       >
-        {isLoading && <div>Loading more content</div>}
+        {isLoading && <Text text={"Loading more content"} />}
         <Separator direction={"column"} />
-        {isLastPage && <div className={styles.endOfItems}>No more items to load</div>}
+        {isLastPage && (
+          <Text
+            text={"No more items to load"}
+            className={styles.endOfItems}
+          />
+        )}
       </div>
     </div>
   );
