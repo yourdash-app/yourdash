@@ -4,8 +4,11 @@
  */
 
 export type EndpointAlbumSubPath = {
-  displayName: string; // name of the subalbum
-  path: string; // path to the subalbum
-  size: number; // number of media in the subalbum
-  thumbnail: string; // the thumbnail of the subalbum
-}[];
+  data: {
+    displayName: string; // name of the subalbum
+    path: string; // path to the subalbum
+    size: number; // number of media in the subalbum
+    thumbnail: string; // the thumbnail of the subalbum
+  }[];
+  hasAnotherPage: boolean;
+};

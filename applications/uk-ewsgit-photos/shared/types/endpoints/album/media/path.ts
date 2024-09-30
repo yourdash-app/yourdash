@@ -17,6 +17,6 @@ export type AlbumMediaPath = {
   metadata?: AlbumMediaMetadata;
 };
 
-type EndpointAlbumMediaPath = AlbumMediaPath[];
+type EndpointAlbumMediaPath = { data: AlbumMediaPath[]; hasAnotherPage: boolean };
 
 export default EndpointAlbumMediaPath;

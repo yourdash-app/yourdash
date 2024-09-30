@@ -10,40 +10,30 @@ import styles from "./infiniteScroll.module.scss";
 
 const InfiniteScroll: React.FC<{
   children: React.ReactNode | React.ReactNode[];
-  fetchNextPage: (nextPageNumber: number) => Promise<void>;
+  fetchNextPage: (nextPageNumber: number) => Promise<{ hasAnotherPage?: boolean }>;
   containerClassName?: string;
   className?: string;
   resetState?: string;
 }> = ({ children, fetchNextPage, containerClassName, className, resetState }) => {
   const endOfItemsRef = React.useRef<HTMLDivElement>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const nextPage = React.useRef<number>(-1);
-  const isEndVisible = React.useRef<boolean>(false);
-  const [hasReachedLastPage, setHasReachedLastPage] = React.useState<boolean>(false);
-
-  const fetchNextPageWrapper = async () => {
-    console.log("has reached last page", reachedLastPage);
-    if (reachedLastPage) return;
-    if (!isEndVisible.current) return;
-
-    console.log("reachedLastPage", reachedLastPage);
-    console.log("isEndVisible", isEndVisible.current);
-
-    nextPage.current++;
-    setLoading(true);
-    await fetchNextPage(nextPage.current);
-    setLoading(false);
-
-    console.log("Calling here ???");
-    await fetchNextPageWrapper();
-  };
+  const lastFetchedPage = React.useRef<number>(-1);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLastPage, setIsLastPage] = useState<boolean>(false);
 
   useEffect(() => {
-    nextPage.current = -1;
-    isEndVisible.current = true;
-
-    fetchNextPageWrapper();
+    lastFetchedPage.current = -1;
+    setIsLoading(false);
+    setIsLastPage(false);
   }, [resetState]);
+
+  async function fetchNextPageWrapper() {
+    if (isLoading) return;
+    setIsLoading(true);
+    const { hasAnotherPage } = await fetchNextPage(lastFetchedPage.current + 1);
+    lastFetchedPage.current++;
+    setIsLoading(false);
+    setIsLastPage(hasAnotherPage || false);
+  }
 
   useEffect(() => {
     if (!endOfItemsRef.current) return;
@@ -52,9 +42,11 @@ const InfiniteScroll: React.FC<{
 
     const observer = new IntersectionObserver((elem) => {
       console.log("observer update");
-      isEndVisible.current = elem[0].isIntersecting;
+      const isVisible = elem[0].isIntersecting;
 
-      fetchNextPageWrapper();
+      console.log({ isVisible });
+
+      if (isVisible) fetchNextPageWrapper();
     });
 
     observer.observe(element);
@@ -69,9 +61,9 @@ const InfiniteScroll: React.FC<{
         ref={endOfItemsRef}
         className={styles.endOfItems}
       >
-        {loading && <div>Loading more content</div>}
+        {isLoading && <div>Loading more content</div>}
         <Separator direction={"column"} />
-        {reachedLastPage && <div>No more items to load</div>}
+        {isLastPage && <div>No more items to load</div>}
       </div>
     </div>
   );

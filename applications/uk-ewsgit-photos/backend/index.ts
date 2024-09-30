@@ -591,12 +591,12 @@ export default class PhotosBackend extends YourDashBackendModule {
         return res.json([]);
       }
 
-      const output: EndpointAlbumSubPath = [];
+      const output: EndpointAlbumSubPath["data"] = [];
 
       const chunks = chunk(await albumEntity.getChildDirectories(), this.PAGE_SIZE);
 
       if (page >= chunks.length) {
-        return res.json([]);
+        return res.json({ data: [] });
       }
 
       for (const subAlbum of chunks[page]) {
@@ -612,12 +612,6 @@ export default class PhotosBackend extends YourDashBackendModule {
             }
 
             const childFiles = await pathDirectory.getChildFiles();
-
-            if (childFiles instanceof FSError) {
-              this.api.core.log.error("app/photos", `Error getting child files: ${childFiles.getReasonString()}`);
-
-              return;
-            }
 
             for (const subAlbumChild of childFiles) {
               console.log("CHILD ITEM", subAlbumChild.path, subAlbumChild.getType());
@@ -663,7 +657,7 @@ export default class PhotosBackend extends YourDashBackendModule {
         });
       }
 
-      res.json(output);
+      res.json({ data: output, hasAnotherPage: page !== chunks.length && !(page > chunks.length) } satisfies EndpointAlbumSubPath);
     });
 
     core.request.get<EndpointMediaThumbnail>("/media/thumbnail/:res/@/*", async (req, res) => {
@@ -731,7 +725,7 @@ export default class PhotosBackend extends YourDashBackendModule {
       const chunks = chunk(await albumEntity.getChildFiles(), this.PAGE_SIZE);
 
       if (page >= chunks.length) {
-        return res.json([]);
+        return res.json({ data: [], hasAnotherPage: false } satisfies EndpointAlbumMediaPath);
       }
 
       for (const albumMedia of chunks[page]) {
@@ -774,7 +768,7 @@ export default class PhotosBackend extends YourDashBackendModule {
         });
       }
 
-      return res.json(output);
+      return res.json({ data: output, hasAnotherPage: page !== chunks.length && !(page > chunks.length) } satisfies EndpointAlbumMediaPath);
     });
   }
 }

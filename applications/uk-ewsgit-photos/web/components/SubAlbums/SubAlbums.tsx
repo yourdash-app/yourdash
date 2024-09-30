@@ -16,7 +16,7 @@ import styles from "./SubAlbums.module.scss";
 
 const SubAlbums: React.FC<{ path: string; scrollerClassName?: string }> = ({ path, scrollerClassName }) => {
   const navigateTo = useNavigateTo();
-  const [albums, setAlbums] = useState<EndpointAlbumSubPath>([]);
+  const [albums, setAlbums] = useState<EndpointAlbumSubPath["data"]>([]);
   const [reachedLastPage, setReachedLastPage] = useState(true);
 
   useEffect(() => {
@@ -26,18 +26,13 @@ const SubAlbums: React.FC<{ path: string; scrollerClassName?: string }> = ({ pat
 
   return (
     <InfiniteScroll
-      reachedLastPage={reachedLastPage}
       resetState={path}
       fetchNextPage={async (nextPageNumber) => {
         const data = await acsi.getJson<EndpointAlbumSubPath>(`/album/sub/${nextPageNumber}/@` + path);
 
-        console.log(data);
+        setAlbums((previousAlbums) => [...previousAlbums, ...data.data]);
 
-        if (data?.length === 0) {
-          setReachedLastPage(false);
-        }
-
-        setAlbums((previousAlbums) => [...previousAlbums, ...data]);
+        return { hasAnotherPage: data.hasAnotherPage };
       }}
       className={clippy(styles.component, scrollerClassName)}
     >

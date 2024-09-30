@@ -424,10 +424,10 @@ import { Route, Routes } from "react-router";
     this.request.use(async (req, _res, next) => {
       switch (req.method.toUpperCase()) {
         case "GET":
-          if (req.path.includes("core/auth-img")) {
+          if (req.path.startsWith("/core/auth-img")) {
             return next();
           }
-          if (req.path.includes("core/auth-video")) {
+          if (req.path.startsWith("/core/auth-video")) {
             return next();
           }
 
@@ -504,10 +504,14 @@ import { Route, Routes } from "react-router";
     this.rawExpressJs.use(cors());
     this.rawExpressJs.use(
       rateLimit({
-        limit: 50,
+        limit: 500,
         windowMs: 60_000,
         message: (req: any, res: any) => {
+          this.log.warning("request", "rate limited request");
           return res.status(429).json({ error: true, message: "Rate-Limited" });
+        },
+        skip: (req, res) => {
+          return req.path.startsWith("/core/auth-img") || req.path.startsWith("/core/auth-video");
         },
       }),
     );
