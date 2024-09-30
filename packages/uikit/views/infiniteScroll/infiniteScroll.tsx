@@ -63,7 +63,7 @@ const InfiniteScroll: React.FC<{
       >
         {isLoading && <div>Loading more content</div>}
         <Separator direction={"column"} />
-        {isLastPage && <div>No more items to load</div>}
+        {isLastPage && <div className={styles.endOfItems}>No more items to load</div>}
       </div>
     </div>
   );
