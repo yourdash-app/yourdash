@@ -12,6 +12,7 @@
   "scripts": {
     "dev-web": "yarn --cwd packages/web dev",
     "dev-backend": "yarn --cwd packages/backend dev",
+    "dev-backend-standalone": "yarn --cwd packages/backend start-standalone",
     "debug-backend": "yarn --cwd packages/backend debug",
     "start-backend": "yarn --cwd packages/backend start --log-requests",
     "build-production": "yarn --cwd packages/backend compile-all && yarn --cwd ./packages/web build",
@@ -19,7 +20,7 @@
     "opengfx:dev": "yarn --cwd ./packages/opengfx-engine dev"
   },
   "dependencies": {
-    "eslint": "^9.10.0",
+    "eslint": "^9.11.1",
     "prettier": "^3.3.3",
     "prettier-eslint": "^16.3.0",
     "sharp": "^0.33.5"
