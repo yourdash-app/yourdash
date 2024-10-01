@@ -70,8 +70,9 @@
   flex-direction: column;
   gap: var(#{$theme+$gap});
   padding: var(#{$theme+$padding});
-  padding-top: var(#{$theme+$gap});
-  padding-bottom: var(#{$theme+$gap});
+  // dont remember why this was here but it might be needed again
+  //padding-top: var(#{$theme+$gap});
+  //padding-bottom: var(#{$theme+$gap});
   height: 100%;
   width: 100%;
 }

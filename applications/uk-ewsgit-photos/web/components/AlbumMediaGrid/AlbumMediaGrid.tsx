@@ -14,10 +14,10 @@ import { useNavigate } from "react-router";
 
 const AlbumMediaGrid: React.FC<{ path: string; scrollerClassName?: string }> = ({ path, scrollerClassName }) => {
   const navigate = useNavigate();
-  const [albums, setAlbums] = useState<EndpointAlbumMediaPath["data"]>([]);
+  const [albumMedia, setAlbumMedia] = useState<EndpointAlbumMediaPath["data"]>([]);
 
   useEffect(() => {
-    setAlbums([]);
+    setAlbumMedia([]);
   }, [path]);
 
   return (
@@ -26,17 +26,18 @@ const AlbumMediaGrid: React.FC<{ path: string; scrollerClassName?: string }> = (
       fetchNextPage={async (nextPageNumber) => {
         const data = await acsi.getJson<EndpointAlbumMediaPath>(`/album/media/${nextPageNumber}/@` + path);
 
-        setAlbums((previousAlbums) => [...previousAlbums, ...data.data]);
+        setAlbumMedia((previousAlbums) => [...previousAlbums, ...data.data]);
 
         return { hasAnotherPage: data.hasAnotherPage };
       }}
       className={clippy(styles.component, scrollerClassName)}
     >
-      {albums.map((album) => {
+      {albumMedia.map((album) => {
         return (
           <AlbumMedia
             key={album.path}
             albumMedia={album}
+            showFilenames={true}
           />
         );
       })}

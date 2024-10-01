@@ -30,7 +30,7 @@ const ApplicationRoutes: FC = () => {
           />
         </Route>
         <Route
-          path={"view"}
+          path={"view/@/*"}
           element={<ViewPathPage />}
         />
       </Route>

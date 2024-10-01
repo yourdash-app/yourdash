@@ -3,26 +3,34 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
+import coreCSI from "@yourdash/csi/coreCSI.ts";
 import useResource from "@yourdash/csi/useResource.ts";
 import Image from "@yourdash/uikit/components/image/image.tsx";
 import Text from "@yourdash/uikit/components/text/text.tsx";
 import React from "react";
 import { AlbumMediaPath } from "../../../shared/types/endpoints/album/media/path.ts";
 import EndpointMediaThumbnail from "../../../shared/types/endpoints/media/thumbnail.ts";
-import { acsi } from "../../meta.yourdash.ts";
+import { acsi, useNavigateTo } from "../../meta.yourdash.ts";
 import styles from "./AlbumMedia.module.scss";
 
 const AlbumMedia: React.FC<{ albumMedia: AlbumMediaPath; showFilenames?: boolean }> = ({ albumMedia, showFilenames }) => {
+  const navigateTo = useNavigateTo();
   const thumbnailPath = useResource(() => acsi.getJson<EndpointMediaThumbnail>(`/media/thumbnail/lowres/@/${albumMedia.path}`));
 
   return (
-    <div className={styles.component}>
+    <div
+      className={styles.component}
+      onClick={() => {
+        navigateTo(`/view/@/${albumMedia.path}`);
+      }}
+    >
       <Image
+        className={styles.image}
         accessibleLabel={""}
         src={thumbnailPath?.thumbnail || ""}
         authenticatedImage={true}
       />
-      {showFilenames && <Text text={albumMedia.path} />}
+      {showFilenames && <Text text={coreCSI.path.basename(albumMedia.path)} />}
     </div>
   );
 };

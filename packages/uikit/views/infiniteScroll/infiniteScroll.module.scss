@@ -3,6 +3,8 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
+@import "@yourdash/uikit/theme/themeValues";
+
 .component {
   display: flex;
   flex-direction: column;
@@ -17,6 +19,8 @@
 }
 
 .endOfItems {
-  width: 100%;
   margin-bottom: -4rem;
+  text-align: center;
+  padding: var(#{$theme+$padding});
+  width: calc(100% - calc(var(#{$theme+$padding}) * 2));
 }

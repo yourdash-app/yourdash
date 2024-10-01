@@ -17,10 +17,8 @@ import styles from "./SubAlbums.module.scss";
 const SubAlbums: React.FC<{ path: string; scrollerClassName?: string }> = ({ path, scrollerClassName }) => {
   const navigateTo = useNavigateTo();
   const [albums, setAlbums] = useState<EndpointAlbumSubPath["data"]>([]);
-  const [reachedLastPage, setReachedLastPage] = useState(true);
 
   useEffect(() => {
-    setReachedLastPage(true);
     setAlbums([]);
   }, [path]);
 
@@ -52,7 +50,10 @@ const SubAlbums: React.FC<{ path: string; scrollerClassName?: string }> = ({ pat
               authenticatedImage={true}
               src={album.thumbnail}
             />
-            <Text text={album.displayName} />
+            <Text
+              text={album.displayName}
+              className={styles.albumTitle}
+            />
           </Card>
         );
       })}

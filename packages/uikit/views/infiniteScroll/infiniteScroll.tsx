@@ -25,6 +25,7 @@ const InfiniteScroll: React.FC<{
     lastFetchedPage.current = -1;
     setIsLoading(false);
     setIsLastPage(false);
+    fetchNextPageWrapper();
   }, [resetState]);
 
   async function fetchNextPageWrapper() {
@@ -44,8 +45,6 @@ const InfiniteScroll: React.FC<{
     const observer = new IntersectionObserver((elem) => {
       console.log("observer update");
       const isVisible = elem[0].isIntersecting;
-
-      console.log({ isVisible });
 
       if (isVisible) fetchNextPageWrapper();
     });

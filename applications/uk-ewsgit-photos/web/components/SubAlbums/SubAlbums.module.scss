@@ -35,3 +35,7 @@
     border-radius: 0.25rem;
   }
 }
+
+.albumTitle {
+  margin-bottom: calc(calc(var(#{$theme+$padding}) * -1) + var(#{$theme+$gap}));
+}

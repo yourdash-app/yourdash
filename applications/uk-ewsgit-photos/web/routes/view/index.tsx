@@ -12,8 +12,9 @@ import IconButton from "@yourdash/uikit/components/iconButton/iconButton";
 import PanAndZoom from "@yourdash/uikit/views/panAndZoom/panAndZoom.js";
 import useResource from "@yourdash/csi/useResource";
 import { FC } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import EndpointMediaRaw from "../../../shared/types/endpoints/media/album/raw.js";
+import { acsi } from "../../meta.yourdash.ts";
 import ViewVideo from "./components/viewVideo/viewVideo.js";
 import styles from "./index.module.scss";
 import ViewImage from "./components/viewImage/viewImage.js";
@@ -21,10 +22,9 @@ import { PHOTOS_MEDIA_TYPE } from "../../../shared/types/mediaType.js";
 import coreCSI from "@yourdash/csi/coreCSI";
 
 const ViewPathPage: FC = () => {
-  const [searchParams] = useSearchParams();
-  const mediaPath = searchParams.get("p") || "";
+  const mediaPath = useParams()["*"] || "/";
   const navigate = useNavigate();
-  const media = useResource<EndpointMediaRaw>(() => coreCSI.getJson(`/app/photos/media/raw/@/${mediaPath}`), [mediaPath]);
+  const media = useResource<EndpointMediaRaw>(() => acsi.getJson(`/media/raw/@/${mediaPath}`), [mediaPath]);
 
   return (
     <div className={clippy(styles.page, media?.type === PHOTOS_MEDIA_TYPE.Video && styles.video)}>
