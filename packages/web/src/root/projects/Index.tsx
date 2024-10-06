@@ -3,8 +3,14 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import Card from "@yourdash/chiplet/components/card/Card.tsx";
+import Card from "@yourdash/uikit/components/card/card.tsx";
+import Heading from "@yourdash/uikit/components/heading/heading.tsx";
+import Image from "@yourdash/uikit/components/image/image.tsx";
+import Text from "@yourdash/uikit/components/text/text.tsx";
+import Header from "@yourdash/uikit/views/header/header.tsx";
 import React from "react";
+import { useNavigate } from "react-router";
+import styles from "./Index.module.scss";
 
 const PROJECTS: {
   name: string;
@@ -21,30 +27,35 @@ const PROJECTS: {
   {
     name: "UIKit",
     icon: "/assets/productLogos/yourdash.svg",
-    link: "https://github.com/yourdash/yourdash/tree/main/packages/uikit",
+    link: "/projects/uikit",
     description: "The YourDash UI toolkit.",
-  },
-  {
-    name: "Object Animator",
-    icon: "/assets/productLogos/yourdash.svg",
-    link: "https://github.com/Ewsgit/OpenCade",
-    description: "A web animation library.",
   },
 ];
 
 const ProjectsIndexPage: React.FC = () => {
+  const navigate = useNavigate();
+
   return (
     <div>
-      <header className={"flex items-center justify-center h-64 bg-bg"}>
-        <h1 className={"text-7xl font-black tracking-wide"}>Projects</h1>
-      </header>
-      <div className={"grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 lg:gap-4 p-4 max-w-7xl ml-auto mr-auto"}>
+      <Header heading={"Projects"} />
+      <div className={styles.projectsGrid}>
         {PROJECTS.map((project) => {
           return (
-            <Card showBorder={true} className={"flex items-center justify-center flex-col gap-2"} onClick={() => window.open(project.link, "_blank")}>
-              <img className={"h-24 aspect-square"} src={project.icon} alt={""} />
-              <span className={"font-semibold text-3xl"}>{project.name}</span>
-              <p>{project.description}</p>
+            <Card
+              className={"flex items-center justify-center flex-col gap-2"}
+              onClick={() => navigate(project.link)}
+            >
+              <Image
+                className={"h-24 aspect-square"}
+                src={project.icon}
+                accessibleLabel={""}
+              />
+              <Heading
+                level={2}
+                className={"font-semibold text-3xl"}
+                text={project.name}
+              />
+              <Text text={project.description} />
             </Card>
           );
         })}

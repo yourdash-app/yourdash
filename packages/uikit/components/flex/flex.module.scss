@@ -17,3 +17,15 @@
 .column {
   flex-direction: column;
 }
+
+.centerHorizontally {
+  justify-content: center;
+}
+
+.centerVertically {
+  align-items: center;
+}
+
+.padding {
+  padding: var(#{$theme+$padding});
+}

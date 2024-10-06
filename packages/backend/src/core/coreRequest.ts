@@ -44,7 +44,7 @@ export default class CoreRequest {
     path: string | string[],
     callback: (
       req: ExpressRequest & RequestExtras,
-      res: ExpressResponse,
+      res: ExpressResponse<TResponse>,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ) => Promise<ExpressResponse<TResponse, Record<string, any>> | void>,
     options?: { debugTimer: boolean },
@@ -67,7 +67,7 @@ export default class CoreRequest {
         if (options?.debugTimer) {
           this.rawExpress.get(
             (this.currentNamespace ? "/" : "") + this.currentNamespace + path,
-            async (req: ExpressRequest, res: ExpressResponse) => {
+            async (req: ExpressRequest, res: ExpressResponse<TResponse>) => {
               try {
                 const time = await timeMethod(() =>
                   callback({ ...req, sessionId: req.headers.sessionid as string, username: req.headers.username as string } as never, res),
@@ -91,7 +91,7 @@ export default class CoreRequest {
 
       this.rawExpress.get(
         (this.currentNamespace ? "/" : "") + this.currentNamespace + path,
-        async (req: ExpressRequest, res: ExpressResponse) => {
+        async (req: ExpressRequest, res: ExpressResponse<TResponse>) => {
           try {
             await callback({ ...req, sessionId: req.headers.sessionid as string, username: req.headers.username as string } as never, res);
           } catch (err) {
@@ -109,12 +109,12 @@ export default class CoreRequest {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   post<TResponse = any>(
     path: string,
-    callback: (req: ExpressRequest & RequestExtras, res: ExpressResponse) => Promise<ExpressResponse<TResponse> | void>,
+    callback: (req: ExpressRequest & RequestExtras, res: ExpressResponse<TResponse>) => Promise<ExpressResponse<TResponse> | void>,
   ): this {
     this.rawExpress.post(
       (this.currentNamespace ? "/" : "") + this.currentNamespace + path,
       // @ts-ignore
-      async (req: ExpressRequest & RequestExtras, res: ExpressResponse) => {
+      async (req: ExpressRequest & RequestExtras, res: ExpressResponse<TResponse>) => {
         try {
           await callback(req, res);
         } catch (err) {
@@ -134,14 +134,14 @@ export default class CoreRequest {
     path: string,
     callback: (
       req: ExpressRequest & RequestExtras,
-      res: ExpressResponse,
+      res: ExpressResponse<TResponse>,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ) => Promise<ExpressResponse<TResponse, Record<string, any>> | void>,
   ): this {
     this.rawExpress.put(
       (this.currentNamespace ? "/" : "") + this.currentNamespace + path,
       // @ts-ignore
-      async (req: ExpressRequest & RequestExtras, res: ExpressResponse) => {
+      async (req: ExpressRequest & RequestExtras, res: ExpressResponse<TResponse>) => {
         try {
           await callback(req, res);
         } catch (err) {
@@ -161,14 +161,14 @@ export default class CoreRequest {
     path: string,
     callback: (
       req: ExpressRequest & RequestExtras,
-      res: ExpressResponse,
+      res: ExpressResponse<TResponse>,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ) => Promise<ExpressResponse<TResponse, Record<string, any>> | void>,
   ): this {
     this.rawExpress.delete(
       (this.currentNamespace ? "/" : "") + this.currentNamespace + path,
       // @ts-ignore
-      async (req: ExpressRequest & RequestExtras, res: ExpressResponse) => {
+      async (req: ExpressRequest & RequestExtras, res: ExpressResponse<TResponse>) => {
         try {
           await callback(req, res);
         } catch (err) {
@@ -188,14 +188,14 @@ export default class CoreRequest {
     path: string,
     callback: (
       req: ExpressRequest & RequestExtras,
-      res: ExpressResponse,
+      res: ExpressResponse<TResponse>,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ) => Promise<ExpressResponse<TResponse, Record<string, any>> | void>,
   ): this {
     this.rawExpress.patch(
       (this.currentNamespace ? "/" : "") + this.currentNamespace + path,
       // @ts-ignore
-      async (req: ExpressRequest & RequestExtras, res: ExpressResponse) => {
+      async (req: ExpressRequest & RequestExtras, res: ExpressResponse<TResponse>) => {
         try {
           await callback(req, res);
         } catch (err) {
@@ -215,14 +215,14 @@ export default class CoreRequest {
     path: string,
     callback: (
       req: ExpressRequest & RequestExtras,
-      res: ExpressResponse,
+      res: ExpressResponse<TResponse>,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ) => Promise<ExpressResponse<TResponse, Record<string, any>> | void>,
   ): this {
     this.rawExpress.options(
       (this.currentNamespace ? "/" : "") + this.currentNamespace + path,
       // @ts-ignore
-      async (req: ExpressRequest & RequestExtras, res: ExpressResponse) => {
+      async (req: ExpressRequest & RequestExtras, res: ExpressResponse<TResponse>) => {
         try {
           await callback(req, res);
         } catch (err) {
@@ -242,7 +242,7 @@ export default class CoreRequest {
     path: string | string[],
     callback: (
       req: ExpressRequest & RequestExtras,
-      res: ExpressResponse,
+      res: ExpressResponse<TResponse>,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ) => Promise<ExpressResponse<TResponse, Record<string, any>> | void>,
     options?: { debugTimer: boolean },
@@ -265,7 +265,7 @@ export default class CoreRequest {
         if (options?.debugTimer) {
           this.rawExpress.propfind(
             (this.currentNamespace ? "/" : "") + this.currentNamespace + path,
-            async (req: ExpressRequest, res: ExpressResponse) => {
+            async (req: ExpressRequest, res: ExpressResponse<TResponse>) => {
               try {
                 const time = await timeMethod(() =>
                   callback({ ...req, sessionId: req.headers.sessionid as string, username: req.headers.username as string } as never, res),
@@ -289,7 +289,7 @@ export default class CoreRequest {
 
       this.rawExpress.propfind(
         (this.currentNamespace ? "/" : "") + this.currentNamespace + path,
-        async (req: ExpressRequest, res: ExpressResponse) => {
+        async (req: ExpressRequest, res: ExpressResponse<TResponse>) => {
           try {
             await callback({ ...req, sessionId: req.headers.sessionid as string, username: req.headers.username as string } as never, res);
           } catch (err) {

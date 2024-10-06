@@ -19,8 +19,8 @@
 }
 
 .endOfItems {
-  margin-bottom: -4rem;
   text-align: center;
   padding: var(#{$theme+$padding});
+  gap: var(#{$theme+$gap});
   width: calc(100% - calc(var(#{$theme+$padding}) * 2));
 }

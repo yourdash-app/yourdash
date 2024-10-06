@@ -3,6 +3,8 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-export default interface EndpointMediaThumbnail {
+type EndpointMediaThumbnail = {
   thumbnail: string;
-}
+};
+
+export default EndpointMediaThumbnail;

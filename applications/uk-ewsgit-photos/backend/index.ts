@@ -596,7 +596,7 @@ export default class PhotosBackend extends YourDashBackendModule {
 
         await this.api.core.fs.createDirectory(path.join(user.getFsPath(), albumPath));
 
-        return res.json([]);
+        return res.json({ data: [], hasAnotherPage: false });
       }
 
       const output: EndpointAlbumSubPath["data"] = [];
@@ -604,7 +604,7 @@ export default class PhotosBackend extends YourDashBackendModule {
       const chunks = chunk(await albumEntity.getChildDirectories(), this.PAGE_SIZE);
 
       if (page >= chunks.length) {
-        return res.json({ data: [] });
+        return res.json({ data: [], hasAnotherPage: false });
       }
 
       for (const subAlbum of chunks[page]) {
@@ -668,7 +668,7 @@ export default class PhotosBackend extends YourDashBackendModule {
       res.json({ data: output, hasAnotherPage: page !== chunks.length && !(page > chunks.length) } satisfies EndpointAlbumSubPath);
     });
 
-    core.request.get<EndpointMediaThumbnail>("/media/thumbnail/:res/@/*", async (req, res) => {
+    core.request.get<EndpointMediaThumbnail | { error: true }>("/media/thumbnail/:res/@/*", async (req, res) => {
       const { res: resolution } = req.params;
       const mediaPath = req.params["0"] as string;
 
@@ -704,7 +704,7 @@ export default class PhotosBackend extends YourDashBackendModule {
       } satisfies EndpointMediaThumbnail);
     });
 
-    core.request.get("/media/raw/@/*", async (req, res) => {
+    core.request.get<{ error: string }>("/media/raw/@/*", async (req, res) => {
       res.json({
         error: "Not implemented",
       });
@@ -720,12 +720,12 @@ export default class PhotosBackend extends YourDashBackendModule {
       if (albumEntity instanceof FSError) {
         // don't send an error, instead send an empty array
         if (albumPath !== "./photos/") {
-          return res.json([]);
+          return res.json({ data: [], hasAnotherPage: false });
         }
 
         await this.api.core.fs.createDirectory(path.join(user.getFsPath(), albumPath));
 
-        return res.json([]);
+        return res.json({ data: [], hasAnotherPage: false });
       }
 
       const output: AlbumMediaPath[] = [];

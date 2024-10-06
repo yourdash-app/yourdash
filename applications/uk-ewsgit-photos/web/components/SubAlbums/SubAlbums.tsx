@@ -28,6 +28,8 @@ const SubAlbums: React.FC<{ path: string; scrollerClassName?: string }> = ({ pat
       fetchNextPage={async (nextPageNumber) => {
         const data = await acsi.getJson<EndpointAlbumSubPath>(`/album/sub/${nextPageNumber}/@` + path);
 
+        console.log({ data: data.data });
+
         setAlbums((previousAlbums) => [...previousAlbums, ...data.data]);
 
         return { hasAnotherPage: data.hasAnotherPage };

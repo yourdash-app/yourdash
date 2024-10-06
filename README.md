@@ -56,7 +56,7 @@ Some of the YourDash projects include
   - [Git](https://git-scm.com/)
 
 ### Automated setup for deployment (Only supports Linux)
-```shell
+```bash
 curl -L https://raw.githubusercontent.com/yourdash/yourdash/main/toolchain/setupInstance.sh | bash
 ```
 
@@ -64,46 +64,56 @@ curl -L https://raw.githubusercontent.com/yourdash/yourdash/main/toolchain/setup
 
 #### Install Node.js with Node Version Manager and Yarn
   - Install Node Version Manager
-    - ```shell
+    - ```bash
       curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
       source ~/.nvm/nvm.sh
       ```
-  - Install Node v21
-    - ```shell
-      nvm install 21
+  - Install Node v22
+    - ```bash
+      nvm install 22
       source ~/.nvm/nvm.sh
       ```
   - Install Yarn
-    - ```shell
+    - ```bash
       npm i -g yarn
       ```
 
 #### Install dependencies
-```shell
-yarn install
+```bash
+# we do this twice because the first time will error but will succeed the seccond time
+bun install && bun install
 ```
 #### Run YourDash backend in dev mode
-```shell
-yarn run yd:dev-backend
+```bash
+bun run dev-backend
 ```
 #### Run YourDash web in dev mode
-```shell
-yarn run yd:dev-web
+```bash
+bun run dev-web
 ```
 
 ### Installation and setup for development (Windows)
 
-#### Install NPM dependencies with bun
-```shell
-bun install
+Prerequisites:
+- Bun - https://bun.sh/
+- NodeJS 22 or higher - https://nodejs.org/
+
+#### Install yarn
+```powershell
+npm i -g yarn
+```
+#### Install npm dependencies
+```powershell
+# we do this twice because the first time will error but will succeed the seccond time
+bun install && bun install
 ```
 #### Run YourDash backend in dev mode
-```shell
-bun run yd:dev-backend
+```powershell
+bun run dev-backend
 ```
 #### Run YourDash web in dev mode
-```shell
-bun run yd:dev-web
+```powershell
+bun run dev-web
 ```
 
 #### Notes
@@ -112,7 +122,7 @@ bun run yd:dev-web
 
 # See more in the docs
 
-https://ydsh.pages.dev/#/docs
+https://yourdash.ewsgit.uk/#/docs
 
 # Credits
 

@@ -5,6 +5,7 @@
 
 import clippy from "@yourdash/shared/web/helpers/clippy.ts";
 import React, { useEffect, useState } from "react";
+import Heading from "../../components/heading/heading.tsx";
 import Separator from "../../components/separator/separator.tsx";
 import Text from "../../components/text/text.tsx";
 import styles from "./infiniteScroll.module.scss";
@@ -56,7 +57,19 @@ const InfiniteScroll: React.FC<{
 
   return (
     <div className={clippy(containerClassName, styles.component)}>
-      <div className={clippy(className, styles.items)}>{children}</div>
+      {/* @ts-ignore */}
+      {children?.length > 0 ? (
+        <div className={clippy(className, styles.items)}>{children}</div>
+      ) : (
+        <div className={"text-center"}>
+          <Heading
+            level={1}
+            text={"Whoops."}
+          />
+          <Separator direction={"column"} />
+          <Text text={"It looks like nothing could be found..."} />
+        </div>
+      )}
       <div
         ref={endOfItemsRef}
         className={styles.endOfItems}
