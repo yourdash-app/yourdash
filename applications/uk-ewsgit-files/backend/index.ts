@@ -65,6 +65,12 @@ export default class FilesModule extends YourDashBackendModule {
       return res.json({
         recentFiles: [],
         sharedFiles: [],
+        commonStorageLocations: [
+          {
+            path: "/",
+            baseName: "Home Directory",
+          },
+        ],
         connections: [
           {
             serviceName: "Google Drive",

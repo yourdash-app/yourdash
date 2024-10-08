@@ -43,3 +43,10 @@ export interface IHomeSharedFile {
   // the shared file's thumbnail as an authenticated image or undefined if no thumbnail exists
   thumbnail?: string;
 }
+
+export interface IHomeCommonStorageLocation {
+  // the leaf of the common storage location's name
+  baseName: string;
+  // the path of the common storage location
+  path: string;
+}

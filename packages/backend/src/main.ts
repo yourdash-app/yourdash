@@ -31,9 +31,9 @@ async function initProcess() {
     if (decodedChunk.includes("oh no: Bun has crashed. This indicates a bug in Bun, not your code.")) {
       yourdashProcess.kill();
 
-      initProcess().then((r) => {
-        console.log("process restarted");
-      });
+      console.log("Bun has crashed :/");
+
+      await initProcess();
     }
 
     process.stdout.write(decodedChunk);
@@ -56,6 +56,9 @@ async function initProcess() {
 
   yourdashProcess.exited.then((processExitCode) => {
     console.log(`YourDash instance process exited with exit code ${processExitCode}`);
+    initProcess().then(() => {
+      console.log("restarted process");
+    });
   });
 }
 

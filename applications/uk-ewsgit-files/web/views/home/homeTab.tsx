@@ -9,6 +9,7 @@ import Connections from "./views/connections/connections";
 import RecentFiles from "./views/recentFiles/recentFiles";
 import SharedFiles from "./views/sharedFiles/sharedFiles";
 import styles from "./homeTab.module.scss";
+import CommonStorageLocations from "./views/commonStorageLocations/commonStorageLocations";
 
 const HomeTabView: React.FC<{ view: IFilesView }> = ({ view }) => {
   const homeTabData = useResource(() => acsi.getJson<EndpointTabViewHome>("/tabView/home"), [view]);
@@ -26,6 +27,7 @@ const HomeTabView: React.FC<{ view: IFilesView }> = ({ view }) => {
   return (
     <Container className={styles.view}>
       <section className={styles.content}>
+        <CommonStorageLocations commonStorageLocations={homeTabData.commonStorageLocations} />
         <RecentFiles />
         <Connections connections={homeTabData.connections} />
         <SharedFiles />
