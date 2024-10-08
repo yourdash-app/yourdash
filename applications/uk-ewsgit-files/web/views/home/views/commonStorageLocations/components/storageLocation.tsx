@@ -7,6 +7,7 @@ import Card from "@yourdash/uikit/components/card/card";
 import Heading from "@yourdash/uikit/components/heading/heading";
 import Icon from "@yourdash/uikit/components/icon/icon.tsx";
 import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary";
+import Text from "@yourdash/uikit/components/text/text.tsx";
 import React from "react";
 import { IHomeCommonStorageLocation } from "../../../../../../shared/types/tabView/home";
 import { useNavigateTo } from "../../../../../meta.yourdash.ts";
@@ -17,6 +18,7 @@ const StorageLocation: React.FC<IHomeCommonStorageLocation> = ({ path, baseName 
 
   return (
     <Card
+      containerClassName={styles.componentCardContainer}
       className={styles.component}
       onClick={() => {
         // TODO: navigate to the correct path
@@ -27,7 +29,7 @@ const StorageLocation: React.FC<IHomeCommonStorageLocation> = ({ path, baseName 
         icon={UKIcon.FileDirectory}
         className={styles.icon}
       />
-      <Heading text={baseName} />
+      <Text text={baseName} />
     </Card>
   );
 };

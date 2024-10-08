@@ -35,6 +35,20 @@ const FilesRouter: React.FC = () => (
                 },
               ],
             },
+            {
+              headerImage: "/assets/productLogos/yourdash.svg",
+              header: "This is Coming soon...",
+              body: "This onBoarding Menu is coming soon...",
+              actions: [
+                {
+                  label: "Continue to application",
+                  changeTo: "completed",
+                  onClick: () => {
+                    // no functionality
+                  },
+                },
+              ],
+            },
           ]}
         />
       }

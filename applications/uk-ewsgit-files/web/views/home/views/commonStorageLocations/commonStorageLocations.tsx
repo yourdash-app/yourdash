@@ -13,7 +13,10 @@ import StorageLocation from "./components/storageLocation";
 const CommonStorageLocations: React.FC<{ commonStorageLocations: IHomeCommonStorageLocation[] }> = ({ commonStorageLocations }) => {
   return (
     <div className={styles.component}>
-      <Heading text={"Connections"} />
+      <Heading
+        level={3}
+        text={"Common Storage Locations"}
+      />
       <div className={styles.connectionContainer}>
         {commonStorageLocations.length > 0 ? (
           commonStorageLocations.map((connection: IHomeCommonStorageLocation) => (
@@ -23,7 +26,7 @@ const CommonStorageLocations: React.FC<{ commonStorageLocations: IHomeCommonStor
             />
           ))
         ) : (
-          <Text text={"You have no connections..."} />
+          <Text text={"You have no common storage locations..."} />
         )}
       </div>
     </div>

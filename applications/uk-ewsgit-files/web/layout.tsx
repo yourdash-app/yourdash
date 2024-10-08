@@ -50,14 +50,24 @@ const ApplicationLayout: React.FC = () => {
           <SidebarToggleButton />
           {tabs.map((tab) => {
             return (
-              <Button
-                className={clippy(styles.tab, activeTabId === tab.id && styles.active)}
-                key={tab.id}
-                text={tab.displayName}
-                onClick={() => {
-                  setActiveTabId(tab.id);
-                }}
-              />
+              <div className={clippy(styles.tab, activeTabId === tab.id && styles.active)}>
+                <Button
+                  className={styles.innerButton}
+                  key={tab.id}
+                  text={tab.displayName}
+                  onClick={() => {
+                    setActiveTabId(tab.id);
+                  }}
+                />
+                <IconButton
+                  onClick={() => {
+                    setTabs((tbs) => tbs.filter((t) => t.id !== tab.id));
+                  }}
+                  accessibleLabel={"close tab"}
+                  icon={UKIcon.X}
+                  className={styles.tabCloseButton}
+                />
+              </div>
             );
           })}
           <IconButton
