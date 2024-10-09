@@ -1,5 +1,6 @@
 import clippy from "@yourdash/shared/web/helpers/clippy";
 import Heading from "@yourdash/uikit/components/heading/heading";
+import Separator from "@yourdash/uikit/components/separator/separator.tsx";
 import Sidebar from "@yourdash/uikit/views/sidebar/Sidebar";
 import SidebarContainer from "@yourdash/uikit/views/sidebar/SidebarContainer";
 import SidebarToggleButton from "@yourdash/uikit/views/sidebar/SidebarToggleButton";
@@ -27,6 +28,9 @@ const homeTab = () => {
 const ApplicationLayout: React.FC = () => {
   const [tabs, setTabs] = useState<IFilesTab[]>([homeTab()]);
   const [activeTabId, setActiveTabId] = useState<string | undefined>(undefined);
+  const [commonStorageLocations, setCommonStorageLocations] = useState<{ path: string; displayName: string }[]>([
+    { path: "/home/t", displayName: "Home T" },
+  ]);
 
   useEffect(() => {
     if ((activeTabId === undefined && tabs.length > 0) || !tabs.find((t) => t.id === activeTabId)) {
@@ -38,12 +42,31 @@ const ApplicationLayout: React.FC = () => {
     <SidebarContainer>
       <Sidebar>
         <Heading text={"Files"} />
-        <Button
-          text={"Hello world"}
-          onClick={() => {
-            return 0;
-          }}
-        />
+        <Separator direction={"column"} />
+        {commonStorageLocations.map((storageLocation) => {
+          return (
+            <Button
+              text={storageLocation.path}
+              onClick={() => {
+                const currentTab = tabs.find((t) => activeTabId === t.id);
+
+                if (!currentTab) return;
+
+                currentTab.path = storageLocation.path;
+
+                setTabs(
+                  tabs.map((t) => {
+                    if (t.id === currentTab.id) {
+                      return currentTab;
+                    } else {
+                      return t;
+                    }
+                  }),
+                );
+              }}
+            />
+          );
+        })}
       </Sidebar>
       <div className={styles.page}>
         <section className={styles.tabBar}>
