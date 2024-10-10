@@ -1,3 +1,8 @@
+/*
+ * Copyright ©2024 Ewsgit <https://ewsgit.uk> and YourDash <https://yourdash.ewsgit.uk> contributors.
+ * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
+ */
+
 import useResource from "@yourdash/csi/useResource";
 import Box from "@yourdash/uikit/components/box/box";
 import Container from "@yourdash/uikit/components/container/container";

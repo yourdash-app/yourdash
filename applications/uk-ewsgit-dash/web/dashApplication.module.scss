@@ -12,10 +12,10 @@
 }
 
 .header {
-  --bottom-padding: 0.5rem;
+  --bottom-padding: 1rem;
   --bottom-padding-value: var(--bottom-padding);
   display: flex;
-  padding: 0.5rem;
+  padding: 1rem;
   padding-bottom: var(--bottom-padding-value);
   justify-content: center;
   align-items: center;
@@ -25,8 +25,8 @@
 }
 
 .tallHeader {
-  padding-top: 4rem;
-  --bottom-padding: 4rem;
+  padding-top: 6rem;
+  --bottom-padding: 6rem;
   --bottom-padding-value: var(--bottom-padding);
 }
 

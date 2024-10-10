@@ -16,6 +16,7 @@ import loadable from "@loadable/component";
 import { acsi } from "./meta.yourdash";
 import Button from "@yourdash/uikit/components/button/button";
 import clippy from "@yourdash/shared/web/helpers/clippy";
+import EditWidgets from "./views/editWidgets/editWidgets.tsx";
 
 const DashApplication: React.FC = () => {
   const { pageCount } = useResource(() => acsi.getJson<{ pageCount: number }>("/widget/pages")) || {
@@ -66,15 +67,7 @@ const DashApplication: React.FC = () => {
         )}
       </Flex>
       {isWidgetEditMode ? (
-        <div className={styles.centeredContent}>
-          <Heading text="Edit widgets" />
-          <Button
-            text="Edit"
-            onClick={() => {
-              console.log("Edit widgets dialog");
-            }}
-          />
-        </div>
+        <EditWidgets />
       ) : (
         <div className={styles.widgetGrid}>
           {widgetPage.widgets.map((widget) => {
