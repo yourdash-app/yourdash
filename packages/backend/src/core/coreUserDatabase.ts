@@ -7,6 +7,7 @@ import path from "path";
 import { Core } from "./core.js";
 import FSError from "./fileSystem/FSError.js";
 import YourDashUser from "./user/index.js";
+import z from "zod";
 
 type JSONValue = boolean | number | string | null | JSONFile;
 
@@ -67,7 +68,7 @@ export default class CoreUserDatabase {
   }
 
   __internal__loadEndpoints() {
-    this.core.request.get("/core/user_db", async (req, res) => {
+    this.core.request.get("/core/user_db", z.unknown(), async (req, res) => {
       const { username } = req.headers;
 
       if (!this.userDatabases.get(username)) {

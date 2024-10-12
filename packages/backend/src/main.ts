@@ -42,7 +42,7 @@ async function initProcess() {
   for await (const chunk of yourdashProcess.stderr) {
     let decodedChunk = stdoutDecoder.decode(chunk);
 
-    process.stderr.write("stderr " + decodedChunk);
+    await process.stderr.write("stderr " + decodedChunk);
   }
 
   process.stdin.on("data", (chunk: any) => {
@@ -56,9 +56,6 @@ async function initProcess() {
 
   yourdashProcess.exited.then((processExitCode) => {
     console.log(`YourDash instance process exited with exit code ${processExitCode}`);
-    initProcess().then(() => {
-      console.log("restarted process");
-    });
   });
 }
 

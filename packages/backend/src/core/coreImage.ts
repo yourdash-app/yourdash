@@ -10,6 +10,7 @@ import pth from "path";
 import { Core } from "./core.js";
 import sharp from "sharp";
 import { USER_PATHS } from "./user/index.js";
+import { z } from "zod";
 
 export enum AUTHENTICATED_IMAGE_TYPE {
   BASE64,
@@ -162,7 +163,7 @@ export default class CoreImage {
   __internal__loadEndpoints() {
     this.core.request.setNamespace("core/auth-img");
 
-    this.core.request.get("/:username/:sessionId/:id", async (req, res) => {
+    this.core.request.get("/:username/:sessionId/:id", z.unknown(), async (req, res) => {
       const { username, sessionId, id } = req.params;
 
       const image = this.authenticatedImages.get(username)?.get(sessionId)?.get(id);

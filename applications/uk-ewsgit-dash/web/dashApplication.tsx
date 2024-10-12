@@ -19,11 +19,11 @@ import clippy from "@yourdash/shared/web/helpers/clippy";
 import EditWidgets from "./views/editWidgets/editWidgets.tsx";
 
 const DashApplication: React.FC = () => {
-  const { pageCount } = useResource(() => acsi.getJson<{ pageCount: number }>("/widget/pages")) || {
+  const { pageCount } = useResource(() => acsi.getJson("/widget/pages")) || {
     pageCount: 0,
   };
   const [currentWidgetPage, setCurrentWidgetPage] = useState<number>(0);
-  const widgetPage = useResource(() => acsi.getJson<IWidgetGrid>(`/widgets/${currentWidgetPage}`), [currentWidgetPage]) || {
+  const widgetPage = useResource(() => acsi.getJson(`/widgets/${currentWidgetPage}`), [currentWidgetPage]) || {
     widgets: [],
   };
   const [isWidgetEditMode, setIsWidgetEditMode] = useState(false);

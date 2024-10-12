@@ -7,6 +7,7 @@ import path from "path";
 import { Core } from "./core.js";
 import YourDashTeam from "./team/team.js";
 import YourDashUser from "./user/index.js";
+import z from "zod";
 
 type JSONValue = boolean | number | string | null | JSONFile;
 
@@ -57,7 +58,7 @@ export default class CoreTeams {
 
   // Load all team related endpoints
   __internal__loadEndpoints() {
-    this.core.request.get("/core/teams/get/current-user", async (req, res) => {
+    this.core.request.get("/core/teams/get/current-user", z.object({}), async (req, res) => {
       const { username } = req.headers;
 
       const user = new YourDashUser(username);
@@ -71,22 +72,21 @@ export default class CoreTeams {
   async saveDatabase(teamName: string) {
     if (!this.teamDatabases.has(teamName)) return false;
 
-    this.teamDatabases.get(teamName).changed = true;
+    this.teamDatabases.get(teamName)!.changed = true;
     return true;
   }
 
   // Save all team databases to disk instantly
   async saveDatabases() {
     Object.keys(this.teamDatabases).map(async (teamName) => {
-      if (!this.teamDatabases[teamName].changed) {
+      if (!this.teamDatabases.get(teamName)?.changed) {
         return;
       }
 
-      this.teamDatabases[teamName].changed = false;
+      this.teamDatabases.get(teamName)!.changed = false;
 
       const user = new YourDashUser(teamName);
-
-      await this.teamDatabases[teamName].db.writeToDisk(path.join(user.path, "core/team_db.json"));
+      // FIXME: no database to write???
     });
   }
 }

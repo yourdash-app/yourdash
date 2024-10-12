@@ -10,6 +10,7 @@ import path from "path";
 import { parseStringPromise } from "xml2js";
 import { compareHashString } from "../../lib/encryption.js";
 import { Core } from "../core.js";
+import z from "zod";
 
 export enum WD_NAMESPACE {
   WEBDAV = "DAV:",
@@ -47,7 +48,7 @@ export default class coreWebDAV {
       return res.redirect("/webdav");
     });
 
-    this.core.request.get("/webdav", async (_req, res) => {
+    this.core.request.get("/webdav", z.string(), async (_req, res) => {
       return res.send(`This is the WebDAV endpoint of YourDash`);
     });
 

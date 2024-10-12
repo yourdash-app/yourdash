@@ -7,6 +7,7 @@ import { YourDashBackendModule, YourDashModuleArguments } from "@yourdash/backen
 import type { IWidgetGrid } from "../shared/types/widgetGrid.js";
 import core from "@yourdash/backend/src/core/core.js";
 import DashWidget from "./widget.js";
+import z from "zod";
 
 export default class DashModule extends YourDashBackendModule {
   widgets: DashWidget<string, object>[];
@@ -24,7 +25,7 @@ export default class DashModule extends YourDashBackendModule {
 
     core.request.setNamespace(`app/${this.api.moduleId}`);
 
-    core.request.get("/user-full-name", async (req, res) => {
+    core.request.get("/user-full-name", z.object({ first: z.string(), last: z.string() }), async (req, res) => {
       res.json(
         (await core.users.get(req.username).getName()) || {
           first: "Unknown",
@@ -155,7 +156,7 @@ export default class DashModule extends YourDashBackendModule {
       },
     ];
 
-    core.request.get("/widget/pages", async (req, res) => {
+    core.request.get("/widget/pages", z.object({ pageCount: z.number() }), async (req, res) => {
       // return the number of widget pages a user has
 
       return res.json({
@@ -163,13 +164,13 @@ export default class DashModule extends YourDashBackendModule {
       });
     });
 
-    core.request.get("/widgets/:page", async (req, res) => {
+    core.request.get("/widgets/:page", z.object({ widgets: z.any().array() }), async (req, res) => {
       const page = req.params.page as string;
 
       return res.json(WIDGET_PAGES[Number(page)] satisfies IWidgetGrid);
     });
 
-    core.request.get("/api-version", async (req, res) => {
+    core.request.get("/api-version", z.object({ version: z.number() }), async (req, res) => {
       return res.json({ version: 1 });
     });
   }

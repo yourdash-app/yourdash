@@ -7,8 +7,8 @@ import clippy from "@yourdash/shared/web/helpers/clippy.ts";
 import styles from "./separator.module.scss";
 import { FC } from "react";
 
-const Separator: FC<{ direction: "column" | "row" }> = (props) => {
-  return <div className={clippy(styles.component, styles[props.direction])} />;
+const Separator: FC<{ direction: "column" | "row"; disableMargin?: boolean }> = (props) => {
+  return <div className={clippy(styles.component, styles[props.direction], props.disableMargin && styles.disableMargin)} />;
 };
 
 export default Separator;

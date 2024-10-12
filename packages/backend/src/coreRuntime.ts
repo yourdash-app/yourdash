@@ -12,8 +12,6 @@
 
 import core from "./core/core.js";
 
-console.log("AHH");
-
 try {
   // Start the YourDash Instance
   core.__internal__startInstance();

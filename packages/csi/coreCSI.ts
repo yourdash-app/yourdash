@@ -5,10 +5,12 @@
 
 // YourDash Client-Server interface Toolkit
 import KeyValueDatabase from "@yourdash/shared/core/database";
+import { KeysStartingWith } from "@yourdash/shared/lib/keysStartingWith";
 import { io as SocketIoClient, Socket as SocketIoSocket } from "socket.io-client";
 import BrowserPath from "./browserPath.js";
 import CSIYourDashTeam from "./team/team";
 import CSIYourDashUser from "./user/user";
+import { paths as OpenAPIPaths } from "./openapi";
 
 type ITJson = boolean | number | string | null | TJson | boolean[] | number[] | string[] | null[] | TJson[];
 
@@ -44,7 +46,7 @@ class __internalClientServerWebsocketConnection {
   }
 }
 
-export class ClientServerInteraction {
+export class ClientServerInteraction<RequestPath extends string> {
   private _internal_baseRequestPath;
 
   constructor(baseRequestPath: string) {
@@ -107,12 +109,12 @@ export class ClientServerInteraction {
     return this;
   }
 
-  async getJson<ResponseType extends object>(
-    endpoint: string,
+  async getJson<Endpoint extends KeysStartingWith<OpenAPIPaths, RequestPath>>(
+    endpoint: Endpoint,
     extraHeaders?: {
       [key: string]: string;
     },
-  ): Promise<ResponseType> {
+  ): Promise<OpenAPIPaths[Endpoint]["get"]["responses"][200]["content"]["application/json"]> {
     const instanceUrl = this.getInstanceUrl();
     const username = this.getUsername();
     const sessionToken = this.getUserSessionToken();
@@ -489,7 +491,7 @@ export class ClientServerInteraction {
   }
 }
 
-class __internalClientServerInteraction extends ClientServerInteraction {
+class __internalClientServerInteraction<ModuleRequestPath extends string> extends ClientServerInteraction<ModuleRequestPath> {
   userDB: UserDatabase;
   path: BrowserPath;
   private user!: CSIYourDashUser;

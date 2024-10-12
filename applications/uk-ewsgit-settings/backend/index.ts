@@ -13,8 +13,9 @@ import EndpointSettingCategorySetting from "../shared/types/endpoints/setting/ca
 import ISetting from "../shared/types/setting.js";
 import SETTING_TYPE from "../shared/types/settingType.js";
 import { YourDashBackendModule, YourDashModuleArguments } from "@yourdash/backend/src/core/coreApplicationManager.js";
-import ISettingsInstalledApplication from "../shared/types/installedApplication.js";
+import ISettingsInstalledApplication, { ISettingsInstalledApplicationModule } from "../shared/types/installedApplication.js";
 import IEndpointSettingsInstalledApplications from "../shared/types/endpoints/installedApplications.js";
+import z from "zod";
 
 /*
  *   Future settings plans
@@ -148,8 +149,8 @@ export default class SettingsModule extends YourDashBackendModule {
 
         // TODO: finish settings default value checks
 
-        if (!this.settingsCategories[ setting.category ]) {
-          this.settingsCategories[ setting.category ] = {
+        if (!this.settingsCategories[setting.category]) {
+          this.settingsCategories[setting.category] = {
             settings: {},
             id: setting.category,
             description: "Settings category descriptions are not yet implemented!",
@@ -157,7 +158,7 @@ export default class SettingsModule extends YourDashBackendModule {
           };
         }
 
-        this.settingsCategories[ setting.category ].settings[ setting.id ] = setting;
+        this.settingsCategories[setting.category].settings[setting.id] = setting;
       });
 
     this.api.core.log.info("app/settings", "Loaded settings from all applications.");
@@ -191,11 +192,13 @@ export default class SettingsModule extends YourDashBackendModule {
       return res.json({ success: true });
     });
 
-    core.request.get("/app/settings/developer/install-all-applications", async (req, res) => {
+    core.request.get("/app/settings/developer/install-all-applications", z.object({ success: z.boolean() }), async (req, res) => {
       this.installableApplications.map(async (app) => {
-        if (core.globalDb.get<string[]>("core:installedApplications")?.includes(app)) return;
+        if (core.globalDb.get<string[]>("core:installedApplications")?.includes(app)) {
+          return;
+        }
 
-        core.globalDb.set("core:installedApplications", [ ...(core.globalDb.get<string[]>("core:installedApplications") || []), app ]);
+        core.globalDb.set("core:installedApplications", [...(core.globalDb.get<string[]>("core:installedApplications") || []), app]);
 
         this.api.core.restartInstance();
       });
@@ -205,22 +208,32 @@ export default class SettingsModule extends YourDashBackendModule {
 
     core.request.setNamespace("app/settings");
 
-    core.request.get("/cat/:categoryid", async (req, res) => {
-      const { categoryid } = req.params;
+    core.request.get(
+      "/cat/:categoryid",
+      z.object({
+        displayName: z.string(),
+        id: z.string(),
+        icon: z.string().optional(),
+        description: z.string().optional(),
+        settings: z.object({}),
+      }),
+      async (req, res) => {
+        const { categoryid } = req.params;
 
-      return res.json(
-        <EndpointSettingsCategory>this.settingsCategories[ categoryid ] || {
-          displayName: "Unknown Category",
-          id: "unknown",
-          // UNUSED but possible future idea
-          icon: "",
-          description: "This category does not exist.",
-          settings: {},
-        },
-      );
-    });
+        return res.json(
+          <EndpointSettingsCategory>this.settingsCategories[categoryid] || {
+            displayName: "Unknown Category",
+            id: "unknown",
+            // UNUSED but possible future idea
+            icon: "",
+            description: "This category does not exist.",
+            settings: {},
+          },
+        );
+      },
+    );
 
-    core.request.get("/setting/:category/:setting", async (req, res) => {
+    core.request.get("/setting/:category/:setting", z.object({ type: z.nativeEnum(SETTING_TYPE), value: z.any() }), async (req, res) => {
       const { category, setting } = req.params;
 
       const settingType: SETTING_TYPE = SETTING_TYPE.BOOLEAN;
@@ -232,19 +245,47 @@ export default class SettingsModule extends YourDashBackendModule {
       });
     });
 
-    core.request.get("/applications/installedApplications", async (req, res) => {
-      const loadedApplications: ISettingsInstalledApplication[] = [];
-      const unloadedApplications: ISettingsInstalledApplication[] = [];
-
-      const loadedApplicationIds = core.applicationManager.loadedApplications;
-
-      return res.json({
-        applications: {
-          loaded: loadedApplications,
-          unloaded: unloadedApplications,
-          length: loadedApplications.length + unloadedApplications.length,
-        },
-      } satisfies IEndpointSettingsInstalledApplications);
-    })
+    // core.request.get(
+    //   "/applications/installedApplications",
+    //   z.object({
+    //     applications: z.object({
+    //       loaded: z
+    //         .object({
+    //           id: z.string(),
+    //           modules: z.object({
+    //             loaded: z.string().array(),
+    //             unloaded: z.string().array(),
+    //             length: z.number(),
+    //           }),
+    //         })
+    //         .array(),
+    //       unloaded: z
+    //         .object({
+    //           id: z.string(),
+    //           modules: z.object({
+    //             loaded: z.string().array(),
+    //             unloaded: z.string().array(),
+    //             length: z.number(),
+    //           }),
+    //         })
+    //         .array(),
+    //       length: z.number(),
+    //     }),
+    //   }),
+    //   async (req, res) => {
+    //     const loadedApplications: ISettingsInstalledApplication[] = [];
+    //     const unloadedApplications: ISettingsInstalledApplication[] = [];
+    //
+    //     const loadedApplicationIds = core.applicationManager.loadedApplications;
+    //
+    //     return res.json({
+    //       applications: {
+    //         loaded: loadedApplications,
+    //         unloaded: unloadedApplications,
+    //         length: loadedApplications.length + unloadedApplications.length,
+    //       },
+    //     });
+    //   },
+    // );
   }
 }

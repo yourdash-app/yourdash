@@ -16,6 +16,7 @@ import path from "path";
 import { Request as ExpressRequest } from "express";
 import { Database } from "bun:sqlite";
 import xmlBodyParser from "express-xml-bodyparser";
+import { z } from "zod";
 
 export const MIMICED_NEXTCLOUD_VERSION = {
   major: 28,
@@ -33,34 +34,47 @@ export default function loadNextCloudSupportEndpoints(core: Core) {
 
   core.request.setNamespace("");
 
-  core.request.get("/status.php", async (req, res) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
+  core.request.get(
+    "/status.php",
+    z.object({
+      installed: z.boolean(),
+      maintenance: z.boolean(),
+      needsDbUpgrade: z.boolean(),
+      version: z.string(),
+      versionstring: z.string(),
+      edition: z.string(),
+      productname: z.string(),
+      extendedSupport: z.boolean(),
+    }),
+    async (req, res) => {
+      res.setHeader("Access-Control-Allow-Origin", "*");
 
-    switch (req.headers["Content-Type"]) {
-      case "application/json":
-        return res.json({
-          installed: true,
-          maintenance: core.instanceStatus === INSTANCE_STATUS.MAINTENANCE,
-          needsDbUpgrade: false,
-          version: "28.0.0.11",
-          versionstring: MIMICED_NEXTCLOUD_VERSION.string,
-          edition: MIMICED_NEXTCLOUD_VERSION.edition,
-          productname: core.globalDb.get("core:instance:name"),
-          extendedSupport: MIMICED_NEXTCLOUD_VERSION.extendedSupport,
-        });
-    }
+      switch (req.headers["Content-Type"]) {
+        case "application/json":
+          return res.json({
+            installed: true,
+            maintenance: core.instanceStatus === INSTANCE_STATUS.MAINTENANCE,
+            needsDbUpgrade: false,
+            version: "28.0.0.11",
+            versionstring: MIMICED_NEXTCLOUD_VERSION.string,
+            edition: MIMICED_NEXTCLOUD_VERSION.edition,
+            productname: core.globalDb.get("core:instance:name") || "YourDash Cross-Compatability",
+            extendedSupport: MIMICED_NEXTCLOUD_VERSION.extendedSupport,
+          });
+      }
 
-    return res.json({
-      installed: true,
-      maintenance: core.instanceStatus === INSTANCE_STATUS.MAINTENANCE,
-      needsDbUpgrade: false,
-      version: "28.0.0.11",
-      versionstring: MIMICED_NEXTCLOUD_VERSION.string,
-      edition: MIMICED_NEXTCLOUD_VERSION.edition,
-      productname: core.globalDb.get("core:instance:name"),
-      extendedSupport: MIMICED_NEXTCLOUD_VERSION.extendedSupport,
-    });
-  });
+      return res.json({
+        installed: true,
+        maintenance: core.instanceStatus === INSTANCE_STATUS.MAINTENANCE,
+        needsDbUpgrade: false,
+        version: "28.0.0.11",
+        versionstring: MIMICED_NEXTCLOUD_VERSION.string,
+        edition: MIMICED_NEXTCLOUD_VERSION.edition,
+        productname: core.globalDb.get("core:instance:name") || "YourDash Cross-Compatability",
+        extendedSupport: MIMICED_NEXTCLOUD_VERSION.extendedSupport,
+      });
+    },
+  );
 
   core.request.get(["/ocs/v2.php/cloud/capabilities", "/ocs/v1.php/cloud/capabilities"], async (req, res) => {
     if (req.query.format === "json") {

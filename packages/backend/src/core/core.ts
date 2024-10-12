@@ -8,7 +8,6 @@ import { LoginLayout } from "@yourdash/shared/core/login/loginLayout.js";
 import { YOURDASH_SESSION_TYPE } from "@yourdash/shared/core/session.js";
 import { USER_AVATAR_SIZE } from "@yourdash/shared/core/userAvatarSize.js";
 import EndpointResponseCoreLoginNotice from "@yourdash/shared/endpoints/core/login/notice.js";
-import EndpointResponseLoginInstanceMetadata from "@yourdash/shared/endpoints/login/instance/metadata.js";
 import chalk from "chalk";
 import childProcess from "child_process";
 import expressCompression from "compression";
@@ -41,12 +40,16 @@ import FSError from "./fileSystem/FSError.js";
 import FSFile from "./fileSystem/FSFile.js";
 import CoreFileSystem from "./fileSystem/coreFS.js";
 import GlobalDBCoreLoginNotice from "./login/loginNotice.js";
-import loadNextCloudSupportEndpoints from "./nextcloud/coreNextCloud.js";
 import YourDashUser from "./user/index.js";
 import CoreWebDAV from "./webDAV/coreWebDAV.js";
 import CoreWebsocketManager from "./websocketManager/coreWebsocketManager.js";
 import xmlBodyParser from "express-xml-bodyparser";
 import { rateLimit } from "express-rate-limit";
+import z from "zod";
+import { extendZodWithOpenApi } from "@asteasolutions/zod-to-openapi";
+import loadNextCloudSupportEndpoints from "./nextcloud/coreNextCloud.js";
+
+extendZodWithOpenApi(z);
 
 declare global {
   const globalThis: {
@@ -131,6 +134,7 @@ export class Core {
     this.request = new CoreRequest(this);
     this.scheduler = new CoreScheduler(this);
     this.users = new CoreUsers(this);
+    // deprecated
     // this.moduleManager = new CoreModuleManager(this);
     this.applicationManager = new CoreApplicationManager(this);
     this.globalDb = new CoreGlobalDb(this);
@@ -331,7 +335,7 @@ import { Route, Routes } from "react-router";
               ...application.config,
               __internal__generatedFor: "officialFrontend",
             },
-          )};export default applicationMeta;const acsi=new ClientServerInteraction("/app/${application.config.modules.backend[0].id}");const useNavigateTo=()=>{const navigate=useNavigate();return (path: string)=>navigate("/app/a/${application.config.modules.officialFrontend[0].id}"+path)};const modulePath = "/app/a/${application.config.modules.officialFrontend[0].id}";export{acsi,useNavigateTo,modulePath};`;
+          )};export default applicationMeta;const acsi=new ClientServerInteraction<"/app/${application.config.modules.backend[0].id}">("/app/${application.config.modules.backend[0].id}");const useNavigateTo=()=>{const navigate=useNavigate();return (path: string)=>navigate("/app/a/${application.config.modules.officialFrontend[0].id}"+path)};const modulePath = "/app/a/${application.config.modules.officialFrontend[0].id}";export{acsi,useNavigateTo,modulePath};`;
 
           fileTemplate = fileTemplate.replace("/* region code */", codeRegionReplacement);
 
@@ -522,7 +526,7 @@ import { Route, Routes } from "react-router";
     this.request.use(async (req, res, next) => expressCompression()(req, res, next));
 
     // INFO: This shouldn't be used for detection of a YourDash Instance, instead use the '/test' endpoint
-    this.request.get("/", async (_req, res) => {
+    this.request.get("/", z.null(), async (_req, res) => {
       if (this.isDevMode) {
         return res.redirect(`http://localhost:5173/login/http://localhost:3563`);
       }
@@ -531,19 +535,19 @@ import { Route, Routes } from "react-router";
     });
 
     // Server discovery endpoint
-    this.request.get("/test", async (_req, res) => {
+    this.request.get("/test", z.object({ status: z.nativeEnum(INSTANCE_STATUS), type: z.string() }), async (_req, res) => {
       return res.status(200).json({
         status: this.instanceStatus,
         type: "yourdash",
       });
     });
 
-    this.request.get("/ping", async (_req, res) => {
+    this.request.get("/ping", z.string(), async (_req, res) => {
       // INFO: This shouldn't be used for detection of a YourDash Instance, instead use the '/test' endpoint
       return res.send("pong");
     });
 
-    this.request.get("/core/test/self-ping", async (_req, res) => {
+    this.request.get("/core/test/self-ping", z.object({ success: z.boolean() }), async (_req, res) => {
       return res.json({ success: true });
     });
 
@@ -563,25 +567,29 @@ import { Route, Routes } from "react-router";
         this.log.error("self_ping_test", "CRITICAL ERROR!, unable to ping self");
       });
 
-    this.request.get("/login/user/:username/avatar", async (req, res) => {
+    this.request.get("/login/user/:username/avatar", z.unknown(), async (req, res) => {
       const user = new YourDashUser(req.params.username);
       return res.sendFile(path.join(this.fs.ROOT_PATH, user.getAvatar(USER_AVATAR_SIZE.EXTRA_LARGE)));
     });
 
-    this.request.get("/login/user/:username", async (req, res) => {
-      const user = new YourDashUser(req.params.username);
-      if (await user.doesExist()) {
-        return res.json({
-          name: (await user.getName()) || {
-            first: "Name Not Found",
-            last: "Or Not Set",
-          },
-        });
-      } else {
-        console.log("Does not exist");
-        return res.json({ error: "Unknown user" });
-      }
-    });
+    this.request.get(
+      "/login/user/:username",
+      z.object({ name: z.object({ first: z.string(), last: z.string() }) }).or(z.object({ error: z.string() })),
+      async (req, res) => {
+        const user = new YourDashUser(req.params.username);
+        if (await user.doesExist()) {
+          return res.json({
+            name: (await user.getName()) || {
+              first: "Name Not Found",
+              last: "Or Not Set",
+            },
+          });
+        } else {
+          console.log("Does not exist");
+          return res.json({ error: "Unknown user" });
+        }
+      },
+    );
 
     this.request.post("/login/user/:username/authenticate", async (req, res) => {
       if (!req.body) {
@@ -632,7 +640,7 @@ import { Route, Routes } from "react-router";
         });
     });
 
-    this.request.get("/login/is-authenticated", async (req, res) => {
+    this.request.get("/login/is-authenticated", z.object({ success: z.boolean() }), async (req, res) => {
       const { username, token } = req.headers as {
         username?: string;
         token?: string;
@@ -649,7 +657,7 @@ import { Route, Routes } from "react-router";
           this.users.__internal__getSessionsDoNotUseOutsideOfCore()[username] = (await user.getAllLoginSessions()) || [];
         } catch (_err) {
           this.log.info("login", `User with username ${username} not found`);
-          return res.json({ error: true });
+          return res.json({ success: false });
         }
       }
 
@@ -660,7 +668,7 @@ import { Route, Routes } from "react-router";
       return res.json({ success: false });
     });
 
-    this.request.get("/core/theme/:username", async (req, res) => {
+    this.request.get("/core/theme/:username", z.unknown().or(z.object({ error: z.string() })), async (req, res) => {
       const username = req.params.username;
       const user = this.users.get(username);
 
@@ -671,15 +679,19 @@ import { Route, Routes } from "react-router";
       return res.sendFile(path.join(this.fs.ROOT_PATH, user.getThemePath()));
     });
 
-    this.request.get("/login/instance/metadata", async (_req, res) => {
-      return res.json(<EndpointResponseLoginInstanceMetadata>{
-        title: this.globalDb.get("core:instance:name") || "Placeholder name",
-        message: this.globalDb.get("core:instance:message") || "Placeholder message. Hey system admin, you should change this!",
-        loginLayout: this.globalDb.get("core:instance:login:layout") || LoginLayout.CARDS,
-      });
-    });
+    this.request.get(
+      "/login/instance/metadata",
+      z.object({ title: z.string(), message: z.string(), loginLayout: z.nativeEnum(LoginLayout) }),
+      async (_req, res) => {
+        return res.json({
+          title: this.globalDb.get("core:instance:name") || "Placeholder name",
+          message: this.globalDb.get("core:instance:message") || "Placeholder message. Hey system admin, you should change this!",
+          loginLayout: this.globalDb.get("core:instance:login:layout") || LoginLayout.CARDS,
+        });
+      },
+    );
 
-    this.request.get("/login/instance/background", async (_req, res) => {
+    this.request.get("/login/instance/background", z.unknown(), async (_req, res) => {
       return res.sendFile(path.resolve(this.fs.ROOT_PATH, "./login_background.avif"));
     });
 
@@ -707,11 +719,12 @@ import { Route, Routes } from "react-router";
       this.log.error("log", "Error caught in log.__internal__loadEndpoints(); ", e);
     }
 
-    try {
-      loadNextCloudSupportEndpoints(this);
-    } catch (e) {
-      this.log.error("nextcloud", "Error caught in loadNextCloudSupportEndpoints", e);
-    }
+    // disabled until zod typings are done
+    // try {
+    //   loadNextCloudSupportEndpoints(this);
+    // } catch (e) {
+    //   this.log.error("nextcloud", "Error caught in loadNextCloudSupportEndpoints", e);
+    // }
 
     try {
       this.websocketManager.__internal__loadEndpoints();
@@ -841,33 +854,42 @@ import { Route, Routes } from "react-router";
       this.log.error("startup", "Failed to load post-auth endpoints for all modules", err);
     }
 
-    this.request.get("/core/login/notice", async (_req, res) => {
-      const notice = this.globalDb.get<GlobalDBCoreLoginNotice>("core:login:notice");
+    this.request.get(
+      "/core/login/notice",
+      z.object({
+        author: z.optional(z.string()),
+        message: z.optional(z.string()),
+        timestamp: z.optional(z.number()),
+        display: z.boolean(),
+      }),
+      async (_req, res) => {
+        const notice = this.globalDb.get<GlobalDBCoreLoginNotice>("core:login:notice");
 
-      if (!notice) {
+        if (!notice) {
+          return res.json(<EndpointResponseCoreLoginNotice>{
+            author: undefined,
+            message: undefined,
+            timestamp: undefined,
+            display: false,
+          });
+        }
+
         return res.json(<EndpointResponseCoreLoginNotice>{
-          author: undefined,
-          message: undefined,
-          timestamp: undefined,
-          display: false,
+          author: notice.author ?? "Instance Administrator",
+          display: notice.displayType === "onLogin" && true,
+          message: notice.message ?? "Placeholder message. Hey system admin, you should change this!",
+          timestamp: notice.timestamp ?? 1,
         });
-      }
+      },
+    );
 
-      return res.json(<EndpointResponseCoreLoginNotice>{
-        author: notice.author ?? "Instance Administrator",
-        display: notice.displayType === "onLogin" && true,
-        message: notice.message ?? "Placeholder message. Hey system admin, you should change this!",
-        timestamp: notice.timestamp ?? 1,
-      });
-    });
-
-    this.request.get("/core/hosted-applications/", async (_req, res) => {
+    this.request.get("/core/hosted-applications/", z.object({ applications: z.array(z.string()) }), async (_req, res) => {
       const hostedApplications = (await this.fs.getDirectory(path.join(process.cwd(), "../../hostedApplications"))) as FSDirectory;
 
       return res.json({ applications: await hostedApplications.getChildrenAsBaseName() });
     });
 
-    this.request.get("/user/sessions", async (req, res) => {
+    this.request.get("/user/sessions", z.object({ sessions: z.object({}) }), async (req, res) => {
       const { username } = req.headers;
 
       const user = this.users.get(username);
@@ -897,6 +919,8 @@ import { Route, Routes } from "react-router";
       this.log.info("request:404", `${chalk.bgRed(chalk.black(" 404 "))} ${req.path} (the path was not answered by the backend)`);
       return res.status(404).json({ error: "this endpoint does not exist!" });
     });
+
+    this.request.__internal_generateOpenAPIDefinitions();
 
     console.timeEnd("core:startup");
   }

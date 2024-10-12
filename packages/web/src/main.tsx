@@ -22,6 +22,7 @@ import ErrorElement from "./ErrorElement.tsx";
 import Index from "./root/index/Index.tsx";
 import LoginRedirect from "./deprecatedLogin/Redirect.tsx";
 import LoginNextcloudFlowV2Page from "./root/login/nextcloud/flow/v2/index.tsx";
+import SignupPage from "./root/login/signup/index.tsx";
 import LoginSuccessPage from "./root/login/success/index.tsx";
 import NotFoundPage from "./root/notFound/notFound.tsx";
 import ProjectsIndexPage from "./root/projects/Index.tsx";
@@ -106,6 +107,12 @@ ReactDOM.createRoot(element).render(
                 path={"success"}
                 element={<LoginSuccessPage />}
               />
+              <Route element={<Navigation subtitle={"Instance"} />}>
+                <Route
+                  path={"signup"}
+                  element={<SignupPage />}
+                />
+              </Route>
               <Route path={"nextcloud"}>
                 <Route path={"flow"}>
                   <Route path={"v2"}>

@@ -1,0 +1,540 @@
+openapi: 3.1.0
+info:
+  version: 1.0.0
+  title: YourDash Backend API
+  description: This is the YourDash Backend API for the current YourDash Instance
+    and it's loaded modules
+servers:
+  - url: http://localhost:3563/
+components:
+  schemas: {}
+  parameters: {}
+paths:
+  /:
+    get:
+      description: Sample description
+      responses:
+        "200":
+          description: Sample description
+          content:
+            application/json:
+              schema:
+                type: "null"
+  /test:
+    get:
+      description: Sample description
+      responses:
+        "200":
+          description: Sample description
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    enum:
+                      - 0
+                      - 1
+                      - 2
+                  type:
+                    type: string
+                required:
+                  - status
+                  - type
+  /ping:
+    get:
+      description: Sample description
+      responses:
+        "200":
+          description: Sample description
+          content:
+            application/json:
+              schema:
+                type: string
+  /core/test/self-ping:
+    get:
+      description: Sample description
+      responses:
+        "200":
+          description: Sample description
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                required:
+                  - success
+  /login/user/:username/avatar:
+    get:
+      description: Sample description
+      responses:
+        "200":
+          description: Sample description
+          content:
+            application/json:
+              schema: {}
+  /login/user/:username:
+    get:
+      description: Sample description
+      responses:
+        "200":
+          description: Sample description
+          content:
+            application/json:
+              schema:
+                anyOf:
+                  - type: object
+                    properties:
+                      name:
+                        type: object
+                        properties:
+                          first:
+                            type: string
+                          last:
+                            type: string
+                        required:
+                          - first
+                          - last
+                    required:
+                      - name
+                  - type: object
+                    properties:
+                      error:
+                        type: string
+                    required:
+                      - error
+  /login/is-authenticated:
+    get:
+      description: Sample description
+      responses:
+        "200":
+          description: Sample description
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                required:
+                  - success
+  /core/theme/:username:
+    get:
+      description: Sample description
+      responses:
+        "200":
+          description: Sample description
+          content:
+            application/json:
+              schema:
+                anyOf:
+                  - {}
+                  - type: object
+                    properties:
+                      error:
+                        type: string
+                    required:
+                      - error
+                  - type: "null"
+  /login/instance/metadata:
+    get:
+      description: Sample description
+      responses:
+        "200":
+          description: Sample description
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  title:
+                    type: string
+                  message:
+                    type: string
+                  loginLayout:
+                    type: integer
+                    enum:
+                      - 0
+                      - 1
+                      - 2
+                required:
+                  - title
+                  - message
+                  - loginLayout
+  /login/instance/background:
+    get:
+      description: Sample description
+      responses:
+        "200":
+          description: Sample description
+          content:
+            application/json:
+              schema: {}
+  /webdav:
+    get:
+      description: Sample description
+      responses:
+        "200":
+          description: Sample description
+          content:
+            application/json:
+              schema:
+                type: string
+  /core/auth-img/:username/:sessionId/:id:
+    get:
+      description: Sample description
+      responses:
+        "200":
+          description: Sample description
+          content:
+            application/json:
+              schema: {}
+  /core/auth-video/:username/:sessionId/:id:
+    get:
+      description: Sample description
+      responses:
+        "200":
+          description: Sample description
+          content:
+            application/json:
+              schema: {}
+  /app/uk-ewsgit-dash-backend/user-full-name:
+    get:
+      description: Sample description
+      responses:
+        "200":
+          description: Sample description
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  first:
+                    type: string
+                  last:
+                    type: string
+                required:
+                  - first
+                  - last
+  /app/uk-ewsgit-dash-backend/widget/pages:
+    get:
+      description: Sample description
+      responses:
+        "200":
+          description: Sample description
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  pageCount:
+                    type: number
+                required:
+                  - pageCount
+  /app/uk-ewsgit-dash-backend/widgets/:page:
+    get:
+      description: Sample description
+      responses:
+        "200":
+          description: Sample description
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  widgets:
+                    type: array
+                    items: {}
+                required:
+                  - widgets
+  /app/uk-ewsgit-dash-backend/api-version:
+    get:
+      description: Sample description
+      responses:
+        "200":
+          description: Sample description
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  version:
+                    type: number
+                required:
+                  - version
+  /core/login/notice:
+    get:
+      description: Sample description
+      responses:
+        "200":
+          description: Sample description
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  author:
+                    type: string
+                  message:
+                    type: string
+                  timestamp:
+                    type: number
+                  display:
+                    type: boolean
+                required:
+                  - display
+  /core/hosted-applications/:
+    get:
+      description: Sample description
+      responses:
+        "200":
+          description: Sample description
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  applications:
+                    type: array
+                    items:
+                      type: string
+                required:
+                  - applications
+  /user/sessions:
+    get:
+      description: Sample description
+      responses:
+        "200":
+          description: Sample description
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sessions:
+                    type: object
+                    properties: {}
+                required:
+                  - sessions
+  /core/user_db:
+    get:
+      description: Sample description
+      responses:
+        "200":
+          description: Sample description
+          content:
+            application/json:
+              schema: {}
+  /core/panel/applications:
+    get:
+      description: Sample description
+      responses:
+        "200":
+          description: Sample description
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    displayName:
+                      type: string
+                    description:
+                      type: string
+                    type:
+                      type: string
+                    url:
+                      type: string
+                    icon:
+                      type: string
+                  required:
+                    - id
+                    - displayName
+                    - description
+                    - type
+                    - icon
+  /core/panel/quick-shortcuts:
+    get:
+      description: Sample description
+      responses:
+        "200":
+          description: Sample description
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    module:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        moduleType:
+                          type: string
+                      required:
+                        - id
+                        - moduleType
+                    icon:
+                      type: string
+                    url:
+                      type: string
+                  required:
+                    - name
+                    - module
+                    - icon
+                    - url
+  /core/panel/position:
+    get:
+      description: Sample description
+      responses:
+        "200":
+          description: Sample description
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  position:
+                    type: integer
+                    enum:
+                      - 0
+                      - 1
+                      - 2
+                      - 3
+                required:
+                  - position
+  /core/panel/launcher-type:
+    get:
+      description: Sample description
+      responses:
+        "200":
+          description: Sample description
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  launcher:
+                    type: integer
+                    enum:
+                      - 0
+                      - 1
+                required:
+                  - launcher
+  /core/panel/logo:
+    get:
+      description: Sample description
+      responses:
+        "200":
+          description: Sample description
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  small:
+                    type: string
+                  medium:
+                    type: string
+                  large:
+                    type: string
+                required:
+                  - small
+                  - medium
+                  - large
+  /core/user/current/avatar/0:
+    get:
+      description: Sample description
+      responses:
+        "200":
+          description: Sample description
+          content:
+            application/json:
+              schema: {}
+  /core/user/current/avatar/1:
+    get:
+      description: Sample description
+      responses:
+        "200":
+          description: Sample description
+          content:
+            application/json:
+              schema: {}
+  /core/user/current/avatar/2:
+    get:
+      description: Sample description
+      responses:
+        "200":
+          description: Sample description
+          content:
+            application/json:
+              schema: {}
+  /core/user/current/avatar/3:
+    get:
+      description: Sample description
+      responses:
+        "200":
+          description: Sample description
+          content:
+            application/json:
+              schema: {}
+  /core/user/current/avatar/4:
+    get:
+      description: Sample description
+      responses:
+        "200":
+          description: Sample description
+          content:
+            application/json:
+              schema: {}
+  /core/user/current/fullname:
+    get:
+      description: Sample description
+      responses:
+        "200":
+          description: Sample description
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  first:
+                    type: string
+                  last:
+                    type: string
+                required:
+                  - first
+                  - last
+  /core/user/current/teams:
+    get:
+      description: Sample description
+      responses:
+        "200":
+          description: Sample description
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+  /core/teams/get/current-user:
+    get:
+      description: Sample description
+      responses:
+        "200":
+          description: Sample description
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+webhooks: {}
