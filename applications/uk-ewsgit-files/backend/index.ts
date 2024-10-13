@@ -8,6 +8,7 @@ import path from "path";
 import { YourDashBackendModule, YourDashModuleArguments } from "@yourdash/backend/src/core/coreApplicationManager.js";
 import core from "@yourdash/backend/src/core/core.js";
 import EndpointTabViewHome from "../shared/types/endpoints/tabView/home.js";
+import { z } from "zod";
 
 export default class FilesModule extends YourDashBackendModule {
   constructor(args: YourDashModuleArguments) {
@@ -19,13 +20,13 @@ export default class FilesModule extends YourDashBackendModule {
 
     core.request.setNamespace(`app/${this.api.moduleId}`);
 
-    core.request.get(`/`, async (req, res) => {
+    core.request.get(`/`, z.object({ message: z.string() }), async (req, res) => {
       return res.json({ message: `Hello world from ${this.api.moduleId}! 👋` });
     });
 
-    core.request.get(`/list/dir/@/`, async (req, res) => {
+    core.request.get([`/list/dir/@/:path`, `/list/dir/@/`], z.object({ contents: z.string().array() }), async (req, res) => {
       // path
-      const p = "/";
+      const p = req.params.path || "/";
 
       const user = core.users.get(req.username);
 
@@ -42,62 +43,66 @@ export default class FilesModule extends YourDashBackendModule {
       }
     });
 
-    core.request.get(`/list/dir/@/:path`, async (req, res) => {
-      // path
-      const p = req.params.path;
-
-      const user = core.users.get(req.username);
-
-      try {
-        const contents = await fs.readdir(path.join(user.path, "fs", p));
-
+    core.request.get(
+      "/tabView/home",
+      z.object({
+        recentFiles: z.object({}).array(),
+        sharedFiles: z.object({}).array(),
+        commonStorageLocations: z
+          .object({
+            path: z.string(),
+            baseName: z.string(),
+          })
+          .array(),
+        connections: z
+          .object({
+            serviceName: z.string(),
+            description: z.string(),
+            url: z.string(),
+            quota: z.object({ max: z.number(), usage: z.number(), unit: z.string() }),
+            id: z.string(),
+            serviceLogo: z.string().or(z.unknown()),
+          })
+          .array(),
+      }),
+      async (req, res) => {
         return res.json({
-          contents: contents,
-        });
-      } catch (_err) {
-        return res.json({
-          contents: [],
-        });
-      }
-    });
-
-    core.request.get("/tabView/home", async (req, res) => {
-      return res.json({
-        recentFiles: [],
-        sharedFiles: [],
-        commonStorageLocations: [
-          {
-            path: "/",
-            baseName: "Home Directory",
-          },
-        ],
-        connections: [
-          {
-            serviceName: "Google Drive",
-            description: "Google cloud storage platform",
-            url: "https://drive.google.com",
-            quota: { max: 5, usage: Math.random() * 5, unit: "GB" },
-            id: "1000",
-            serviceLogo: undefined,
-          },
-          {
-            serviceName: "Google Drive 2",
-            description: "Google cloud storage platform",
-            url: "https://drive.google.com",
-            quota: { max: 5, usage: Math.random() * 5, unit: "GB" },
-            id: "1000",
-            serviceLogo: undefined,
-          },
-          {
-            serviceName: "Google Drive 3",
-            description: "Google cloud storage platform",
-            url: "https://drive.google.com",
-            quota: { max: 5, usage: Math.random() * 5, unit: "GB" },
-            id: "1000",
-            serviceLogo: undefined,
-          },
-        ],
-      } satisfies EndpointTabViewHome);
-    });
+          recentFiles: [],
+          sharedFiles: [],
+          commonStorageLocations: [
+            {
+              path: "/",
+              baseName: "Home Directory",
+            },
+          ],
+          connections: [
+            {
+              serviceName: "Google Drive",
+              description: "Google cloud storage platform",
+              url: "https://drive.google.com",
+              quota: { max: 5, usage: Math.random() * 5, unit: "GB" },
+              id: "1000",
+              serviceLogo: undefined,
+            },
+            {
+              serviceName: "Google Drive 2",
+              description: "Google cloud storage platform",
+              url: "https://drive.google.com",
+              quota: { max: 5, usage: Math.random() * 5, unit: "GB" },
+              id: "1000",
+              serviceLogo: undefined,
+            },
+            {
+              serviceName: "Google Drive 3",
+              description: "Google cloud storage platform",
+              url: "https://drive.google.com",
+              quota: { max: 5, usage: Math.random() * 5, unit: "GB" },
+              id: "1000",
+              serviceLogo: undefined,
+            },
+          ],
+        } satisfies EndpointTabViewHome);
+      },
+    );
   }
 }

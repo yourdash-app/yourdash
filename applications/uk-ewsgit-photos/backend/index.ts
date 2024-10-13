@@ -3,9 +3,6 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-// TODO: generate video thumbnails into a subfolder of the thumbnails cache folder and
-//  save a copy of them pre-resized alongside the photos as resizing images is also costly
-
 import core from "@yourdash/backend/src/core/core.js";
 import { YourDashBackendModule, YourDashModuleArguments } from "@yourdash/backend/src/core/coreApplicationManager.js";
 import { AUTHENTICATED_IMAGE_TYPE } from "@yourdash/backend/src/core/coreImage.js";
@@ -18,11 +15,11 @@ import path from "path";
 import sharp from "sharp";
 import EndpointAlbumMediaPath, { AlbumMediaPath } from "../shared/types/endpoints/album/media/path.js";
 import { EndpointAlbumSubPath } from "../shared/types/endpoints/album/sub/path.js";
-import EndpointMediaRaw from "../shared/types/endpoints/media/album/raw.js";
 import EndpointMediaThumbnail from "../shared/types/endpoints/media/thumbnail.js";
 import { PHOTOS_MEDIA_TYPE } from "../shared/types/mediaType.js";
 import { FILESYSTEM_ENTITY_TYPE } from "@yourdash/backend/src/core/fileSystem/FSEntity.js";
 import { AUTHENTICATED_VIDEO_TYPE } from "@yourdash/backend/src/core/coreVideo.js";
+import z from "zod";
 
 export default class PhotosBackend extends YourDashBackendModule {
   PAGE_SIZE: number;
@@ -241,7 +238,7 @@ export default class PhotosBackend extends YourDashBackendModule {
   public loadEndpoints() {
     super.loadEndpoints();
 
-    core.request.setNamespace(`app/${this.api.moduleId}`);
+    this.api.core.request.setNamespace(`app/${this.api.moduleId}`);
 
     // Deprecated!
     // core.request.get("/media/album/subAlbums/@/*", async (req, res) => {
@@ -507,69 +504,112 @@ export default class PhotosBackend extends YourDashBackendModule {
     //   );
     // });
     //
-    core.request.get("/media/raw/@/*", async (req, res) => {
-      const { sessionid } = req.headers;
-      const itemPath = req.params["0"] as string;
-      const user = core.users.get(req.username);
+    core.request.get(
+      "/media/raw/@/*",
+      z
+        .object({
+          path: z.string(),
+          type: z.literal(PHOTOS_MEDIA_TYPE.Image),
+          metadata: z.object({
+            width: z.number(),
+            height: z.number(),
+            contains: z
+              .object({
+                landmarks: z.string().array(),
+                people: z.string().array(),
+                objects: z.string().array(),
+              })
+              .optional(),
+          }),
+          mediaUrl: z.string(),
+        })
+        .or(
+          z.object({
+            path: z.string(),
+            type: z.literal(PHOTOS_MEDIA_TYPE.Video),
+            metadata: z.object({
+              width: z.number(),
+              height: z.number(),
+              duration: z.number(),
+              contains: z
+                .object({
+                  landmarks: z.string().array(),
+                  people: z.string().array(),
+                  objects: z.string().array(),
+                })
+                .optional(),
+            }),
+            mediaUrl: z.string(),
+          }),
+        )
+        .or(z.object({ error: z.boolean().or(z.string()) })),
+      async (req, res) => {
+        const { sessionid } = req.headers;
+        const itemPath = req.params["0"] as string;
+        const user = core.users.get(req.username);
 
-      const item = await this.api.core.fs.get(path.join(user.getFsPath(), itemPath));
+        const item = await this.api.core.fs.get(path.join(user.getFsPath(), itemPath));
 
-      if (item instanceof FSError || item === null) {
-        return res.json({ error: true });
-      }
-
-      if (!(await item.doesExist())) return res.json({ error: true });
-
-      if (item.entityType !== FILESYSTEM_ENTITY_TYPE.FILE) return res.json({ error: "The path supplied is not a file." });
-
-      let itemType: PHOTOS_MEDIA_TYPE;
-
-      if (item.entityType === FILESYSTEM_ENTITY_TYPE.FILE) {
-        const c = item as unknown as FSFile;
-        switch (c.getType()) {
-          case "image":
-            itemType = PHOTOS_MEDIA_TYPE.Image;
-            break;
-          case "video":
-            itemType = PHOTOS_MEDIA_TYPE.Video;
-            break;
-          default:
-            return res.json({ error: true });
+        if (item instanceof FSError || item === null) {
+          return res.json({ error: true });
         }
-      }
 
-      // @ts-ignore
-      switch (itemType) {
-        case PHOTOS_MEDIA_TYPE.Video: {
-          const dimensions = await core.video.getVideoDimensions(item.path);
+        if (!(await item.doesExist())) return res.json({ error: true });
 
-          return res.json(<EndpointMediaRaw>{
-            type: PHOTOS_MEDIA_TYPE.Video,
-            path: item.path.replace(user.getFsPath(), ""),
-            mediaUrl: this.api.core.video.createAuthenticatedVideo(user.username, sessionid, AUTHENTICATED_VIDEO_TYPE.FILE, item.path),
-            metadata: {
-              width: dimensions.width || 400,
-              height: dimensions.height || 400,
-            },
-          });
+        if (item.entityType !== FILESYSTEM_ENTITY_TYPE.FILE) return res.json({ error: "The path supplied is not a file." });
+
+        let itemType: PHOTOS_MEDIA_TYPE;
+
+        if (item.entityType === FILESYSTEM_ENTITY_TYPE.FILE) {
+          const c = item as unknown as FSFile;
+          switch (c.getType()) {
+            case "image":
+              itemType = PHOTOS_MEDIA_TYPE.Image;
+              break;
+            case "video":
+              itemType = PHOTOS_MEDIA_TYPE.Video;
+              break;
+            default:
+              return res.json({ error: true });
+          }
+        } else {
+          return res.json({ error: true });
         }
-        case PHOTOS_MEDIA_TYPE.Image: {
-          const dimensions = (await core.image.getImageDimensions(item.path)) || { width: 0, height: 0 };
 
-          return res.json(<EndpointMediaRaw>{
-            type: PHOTOS_MEDIA_TYPE.Image,
-            path: item.path.replace(user.getFsPath(), ""),
-            mediaUrl: this.api.core.image.createAuthenticatedImage(user.username, sessionid, AUTHENTICATED_IMAGE_TYPE.FILE, item.path),
-            metadata: {
-              width: dimensions.width || 400,
-              height: dimensions.height || 400,
-            },
-          });
+        switch (itemType) {
+          case PHOTOS_MEDIA_TYPE.Video: {
+            const dimensions = await core.video.getVideoDimensions(item.path);
+
+            return res.json({
+              type: PHOTOS_MEDIA_TYPE.Video,
+              path: item.path.replace(user.getFsPath(), ""),
+              mediaUrl: this.api.core.video.createAuthenticatedVideo(user.username, sessionid, AUTHENTICATED_VIDEO_TYPE.FILE, item.path),
+              metadata: {
+                width: dimensions.width || 400,
+                height: dimensions.height || 400,
+                // FIXME: acutally return the duration
+                duration: -1,
+              },
+            });
+          }
+          case PHOTOS_MEDIA_TYPE.Image: {
+            const dimensions = (await core.image.getImageDimensions(item.path)) || { width: 0, height: 0 };
+
+            return res.json({
+              type: PHOTOS_MEDIA_TYPE.Image,
+              path: item.path.replace(user.getFsPath(), ""),
+              mediaUrl: this.api.core.image.createAuthenticatedImage(user.username, sessionid, AUTHENTICATED_IMAGE_TYPE.FILE, item.path),
+              metadata: {
+                width: dimensions.width || 400,
+                height: dimensions.height || 400,
+              },
+            });
+          }
         }
-      }
-    });
+      },
+    );
 
-    core.request.get("/album/@/*", async (req, res) => {
+    core.request.get("/album/@/*", z.object({ error: z.string() }), async (req, res) => {
       // const sessionId = req.sessionId;
       // const albumPath = req.params["0"] as string;
       // const user = core.users.get(req.username);
@@ -580,203 +620,250 @@ export default class PhotosBackend extends YourDashBackendModule {
     });
 
     // returns the subAlbums of a given album
-    core.request.get<EndpointAlbumSubPath | { error: string }>("/album/sub/:page/@/*", async (req, res) => {
-      const sessionId = req.headers.sessionid;
-      const albumPath = (req.params["0"] as string) || "./photos/";
-      const page = Number(req.params.page || "0");
-      const user = core.users.get(req.username);
+    core.request.get(
+      "/album/sub/:page/@/*",
+      z
+        .object({
+          data: z
+            .object({
+              displayName: z.string(),
+              path: z.string(),
+              size: z.number(),
+              thumbnail: z.string(),
+            })
+            .array(),
+          hasAnotherPage: z.boolean(),
+        })
+        .or(z.object({ error: z.string() })),
+      async (req, res) => {
+        const sessionId = req.headers.sessionid;
+        const albumPath = (req.params["0"] as string) || "./photos/";
+        const page = Number(req.params.page || "0");
+        const user = core.users.get(req.username);
 
-      const albumEntity = await this.api.core.fs.getDirectory(path.join(user.getFsPath(), albumPath));
+        const albumEntity = await this.api.core.fs.getDirectory(path.join(user.getFsPath(), albumPath));
 
-      if (albumEntity instanceof FSError) {
-        // don't send an error, instead send an empty array
-        if (albumPath !== "./photos/") {
-          return res.status(404).json({ error: "Not found" });
+        if (albumEntity instanceof FSError) {
+          // don't send an error, instead send an empty array
+          if (albumPath !== "./photos/") {
+            return res.status(404).json({ error: "Not found" });
+          }
+
+          await this.api.core.fs.createDirectory(path.join(user.getFsPath(), albumPath));
+
+          return res.json({ data: [], hasAnotherPage: false });
         }
 
-        await this.api.core.fs.createDirectory(path.join(user.getFsPath(), albumPath));
+        const output: EndpointAlbumSubPath["data"] = [];
 
-        return res.json({ data: [], hasAnotherPage: false });
-      }
+        const chunks = chunk(await albumEntity.getChildDirectories(), this.PAGE_SIZE);
 
-      const output: EndpointAlbumSubPath["data"] = [];
+        if (page >= chunks.length) {
+          return res.json({ data: [], hasAnotherPage: false });
+        }
 
-      const chunks = chunk(await albumEntity.getChildDirectories(), this.PAGE_SIZE);
+        for (const subAlbum of chunks[page]) {
+          let headerImagePath = "./instance_logo.avif";
 
-      if (page >= chunks.length) {
-        return res.json({ data: [], hasAnotherPage: false });
-      }
+          const fetchHeaderImage = async (path: string) => {
+            try {
+              const pathDirectory = await this.api.core.fs.getDirectory(path);
 
-      for (const subAlbum of chunks[page]) {
-        let headerImagePath = "./instance_logo.avif";
-
-        const fetchHeaderImage = async (path: string) => {
-          try {
-            const pathDirectory = await this.api.core.fs.getDirectory(path);
-
-            if (pathDirectory instanceof FSError) {
-              this.api.core.log.error("app/photos", `Error getting child files: ${pathDirectory.getReasonString()}`);
-              return;
-            }
-
-            const childFiles = await pathDirectory.getChildFiles();
-
-            for (const subAlbumChild of childFiles) {
-              console.log("CHILD ITEM", subAlbumChild.path, subAlbumChild.getType());
-              if (subAlbumChild.getType() === "image") {
-                headerImagePath = subAlbumChild.path;
+              if (pathDirectory instanceof FSError) {
+                this.api.core.log.error("app/photos", `Error getting child files: ${pathDirectory.getReasonString()}`);
                 return;
               }
-            }
 
-            const childDirs = await pathDirectory.getChildDirectories();
+              const childFiles = await pathDirectory.getChildFiles();
 
-            this.api.core.log.debug("app/photos", `thumbnail childDirs: ${childDirs}`);
-
-            for (const childDir of childDirs) {
-              if (headerImagePath === "./instance_logo.avif") {
-                console.log("Searching for header image", headerImagePath, childDir.path);
-                await fetchHeaderImage(childDir.path);
-                break;
+              for (const subAlbumChild of childFiles) {
+                console.log("CHILD ITEM", subAlbumChild.path, subAlbumChild.getType());
+                if (subAlbumChild.getType() === "image") {
+                  headerImagePath = subAlbumChild.path;
+                  return;
+                }
               }
+
+              const childDirs = await pathDirectory.getChildDirectories();
+
+              this.api.core.log.debug("app/photos", `thumbnail childDirs: ${childDirs}`);
+
+              for (const childDir of childDirs) {
+                if (headerImagePath === "./instance_logo.avif") {
+                  console.log("Searching for header image", headerImagePath, childDir.path);
+                  await fetchHeaderImage(childDir.path);
+                  break;
+                }
+              }
+
+              return;
+            } catch (err) {
+              this.api.core.log.error("app/photos", `Error getting child files: ${err}`);
             }
+          };
 
-            return;
-          } catch (err) {
-            this.api.core.log.error("app/photos", `Error getting child files: ${err}`);
-          }
-        };
+          await fetchHeaderImage(subAlbum.path);
 
-        await fetchHeaderImage(subAlbum.path);
+          output.push({
+            displayName: path.basename(subAlbum.path),
+            path: subAlbum.path.replace(`${user.getFsPath()}`, ""),
+            size: (await subAlbum.getChildFiles()).length,
+            thumbnail: await this.api.core.image.createResizedAuthenticatedImage(
+              user.username,
+              sessionId,
+              AUTHENTICATED_IMAGE_TYPE.FILE,
+              headerImagePath,
+              400,
+              400,
+              "webp",
+            ),
+          });
+        }
 
-        output.push({
-          displayName: path.basename(subAlbum.path),
-          path: subAlbum.path.replace(`${user.getFsPath()}`, ""),
-          size: (await subAlbum.getChildFiles()).length,
-          thumbnail: await this.api.core.image.createResizedAuthenticatedImage(
-            user.username,
-            sessionId,
-            AUTHENTICATED_IMAGE_TYPE.FILE,
-            headerImagePath,
-            400,
-            400,
-            "webp",
-          ),
-        });
-      }
+        res.json({ data: output, hasAnotherPage: page !== chunks.length && !(page > chunks.length) } satisfies EndpointAlbumSubPath);
+      },
+    );
 
-      res.json({ data: output, hasAnotherPage: page !== chunks.length && !(page > chunks.length) } satisfies EndpointAlbumSubPath);
-    });
+    core.request.get(
+      "/media/thumbnail/:res/@/*",
+      z.object({ thumbnail: z.string() }).or(z.object({ error: z.boolean() })),
+      async (req, res) => {
+        const { res: resolution } = req.params;
+        const mediaPath = req.params["0"] as string;
 
-    core.request.get<EndpointMediaThumbnail | { error: true }>("/media/thumbnail/:res/@/*", async (req, res) => {
-      const { res: resolution } = req.params;
-      const mediaPath = req.params["0"] as string;
+        let thumbnailPath: string;
 
-      let thumbnailPath: string;
+        // only allow lowres, medres, hires
+        switch (resolution) {
+          case "lowres":
+            thumbnailPath = path.join(this.THUMBNAIL_CACHE_LOCATION, "users", req.username, "fs", `${mediaPath}.lowres.webp`);
+            break;
+          case "medres":
+            thumbnailPath = path.join(this.THUMBNAIL_CACHE_LOCATION, "users", req.username, "fs", `${mediaPath}.medres.webp`);
+            break;
+          case "hires":
+            thumbnailPath = path.join(this.THUMBNAIL_CACHE_LOCATION, "users", req.username, "fs", `${mediaPath}.hires.webp`);
+            break;
+          default:
+            return res.json({
+              error: true,
+            });
+        }
 
-      // only allow lowres, medres, hires
-      switch (resolution) {
-        case "lowres":
-          thumbnailPath = path.join(this.THUMBNAIL_CACHE_LOCATION, "users", req.username, "fs", `${mediaPath}.lowres.webp`);
-          break;
-        case "medres":
-          thumbnailPath = path.join(this.THUMBNAIL_CACHE_LOCATION, "users", req.username, "fs", `${mediaPath}.medres.webp`);
-          break;
-        case "hires":
-          thumbnailPath = path.join(this.THUMBNAIL_CACHE_LOCATION, "users", req.username, "fs", `${mediaPath}.hires.webp`);
-          break;
-        default:
+        const file = await this.api.core.fs.getFile(thumbnailPath);
+
+        if (file instanceof FSError) {
           return res.json({
             error: true,
           });
-      }
+        }
 
-      const file = await this.api.core.fs.getFile(thumbnailPath);
+        res.json({
+          thumbnail: this.api.core.image.createAuthenticatedImage(
+            req.username,
+            req.sessionId,
+            AUTHENTICATED_IMAGE_TYPE.FILE,
+            thumbnailPath,
+          ),
+        } satisfies EndpointMediaThumbnail);
+      },
+    );
 
-      if (file instanceof FSError) {
-        return res.json({
-          error: true,
-        });
-      }
-
-      res.json({
-        thumbnail: this.api.core.image.createAuthenticatedImage(req.username, req.sessionId, AUTHENTICATED_IMAGE_TYPE.FILE, thumbnailPath),
-      } satisfies EndpointMediaThumbnail);
-    });
-
-    core.request.get<{ error: string }>("/media/raw/@/*", async (req, res) => {
+    core.request.get("/media/raw/@/*", z.object({ error: z.string() }), async (req, res) => {
       res.json({
         error: "Not implemented",
       });
     });
 
-    core.request.get<EndpointAlbumMediaPath>("/album/media/:page/@/*", async (req, res) => {
-      const albumPath = (req.params["0"] as string) || "./photos/";
-      const page = Number(req.params.page || "0");
-      const user = core.users.get(req.username);
+    core.request.get(
+      "/album/media/:page/@/*",
+      z.object({
+        data: z
+          .object({
+            path: z.string(),
+            resolution: z.object({ width: z.number(), height: z.number() }),
+            mediaType: z.nativeEnum(PHOTOS_MEDIA_TYPE),
+            metadata: z
+              .object({
+                people: z.string().array(),
+                location: z.string(),
+              })
+              .optional(),
+          })
+          .array(),
+        hasAnotherPage: z.boolean(),
+      }),
+      async (req, res) => {
+        const albumPath = (req.params["0"] as string) || "./photos/";
+        const page = Number(req.params.page || "0");
+        const user = core.users.get(req.username);
 
-      const albumEntity = await this.api.core.fs.getDirectory(path.join(user.getFsPath(), albumPath));
+        const albumEntity = await this.api.core.fs.getDirectory(path.join(user.getFsPath(), albumPath));
 
-      if (albumEntity instanceof FSError) {
-        // don't send an error, instead send an empty array
-        if (albumPath !== "./photos/") {
+        if (albumEntity instanceof FSError) {
+          // don't send an error, instead send an empty array
+          if (albumPath !== "./photos/") {
+            return res.json({ data: [], hasAnotherPage: false });
+          }
+
+          await this.api.core.fs.createDirectory(path.join(user.getFsPath(), albumPath));
+
           return res.json({ data: [], hasAnotherPage: false });
         }
 
-        await this.api.core.fs.createDirectory(path.join(user.getFsPath(), albumPath));
+        const output: AlbumMediaPath[] = [];
 
-        return res.json({ data: [], hasAnotherPage: false });
-      }
+        const chunks = chunk(await albumEntity.getChildFiles(), this.PAGE_SIZE);
 
-      const output: AlbumMediaPath[] = [];
+        if (page >= chunks.length) {
+          return res.json({ data: [], hasAnotherPage: false } satisfies EndpointAlbumMediaPath);
+        }
 
-      const chunks = chunk(await albumEntity.getChildFiles(), this.PAGE_SIZE);
-
-      if (page >= chunks.length) {
-        return res.json({ data: [], hasAnotherPage: false } satisfies EndpointAlbumMediaPath);
-      }
-
-      for (const albumMedia of chunks[page]) {
-        try {
-          if (!(await this.generateMediaThumbnails(albumMedia.path))) {
-            this.api.log.debug(`failed to generate thumbnails for ${albumMedia.path}`);
-            continue;
+        for (const albumMedia of chunks[page]) {
+          try {
+            if (!(await this.generateMediaThumbnails(albumMedia.path))) {
+              this.api.log.debug(`failed to generate thumbnails for ${albumMedia.path}`);
+              continue;
+            }
+          } catch (error) {
+            this.api.log.warning("Error generating media thumbnails!");
           }
-        } catch (error) {
-          this.api.log.warning("Error generating media thumbnails!");
+
+          let mediaType: PHOTOS_MEDIA_TYPE;
+
+          switch (albumMedia.getType()) {
+            case "image":
+              mediaType = PHOTOS_MEDIA_TYPE.Image;
+              break;
+            case "video":
+              mediaType = PHOTOS_MEDIA_TYPE.Video;
+              break;
+            default:
+              this.api.log.error("Error generating media type!", albumMedia.path);
+              mediaType = PHOTOS_MEDIA_TYPE.Unknown;
+              break;
+          }
+
+          const mediaDimensions = await this.api.core.image.getImageDimensions(
+            path.join(this.THUMBNAIL_CACHE_LOCATION, `${albumMedia.path}.raw.webp`),
+          );
+
+          output.push({
+            path: albumMedia.path.replace(user.getFsPath(), ""),
+            resolution: { width: mediaDimensions.width, height: mediaDimensions.height },
+            mediaType: mediaType,
+            metadata: {
+              people: ["TEST_PERSON1", "TEST_PERSON2"],
+              location: "Sample location",
+            },
+          });
         }
 
-        let mediaType: PHOTOS_MEDIA_TYPE;
-
-        switch (albumMedia.getType()) {
-          case "image":
-            mediaType = PHOTOS_MEDIA_TYPE.Image;
-            break;
-          case "video":
-            mediaType = PHOTOS_MEDIA_TYPE.Video;
-            break;
-          default:
-            this.api.log.error("Error generating media type!", albumMedia.path);
-            mediaType = PHOTOS_MEDIA_TYPE.Unknown;
-            break;
-        }
-
-        const mediaDimensions = await this.api.core.image.getImageDimensions(
-          path.join(this.THUMBNAIL_CACHE_LOCATION, `${albumMedia.path}.raw.webp`),
-        );
-
-        output.push({
-          path: albumMedia.path.replace(user.getFsPath(), ""),
-          resolution: { width: mediaDimensions.width, height: mediaDimensions.height },
-          mediaType: mediaType,
-          metadata: {
-            people: ["TEST_PERSON1", "TEST_PERSON2"],
-            location: "Sample location",
-          },
+        return res.json({
+          data: output,
+          hasAnotherPage: page !== chunks.length && !(page > chunks.length),
         });
-      }
-
-      return res.json({ data: output, hasAnotherPage: page !== chunks.length && !(page > chunks.length) } satisfies EndpointAlbumMediaPath);
-    });
+      },
+    );
   }
 }

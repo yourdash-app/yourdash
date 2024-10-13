@@ -103,10 +103,14 @@ export class YourDashBackendModule {
 
   loadEndpoints() {
     this.api.log.info("Loading endpoints...");
+
+    core.request.setNamespace(`app/${this.api.moduleId}`);
   }
 
   loadPreAuthEndpoints() {
     this.api.log.info("Loading pre-authentication endpoints...");
+
+    core.request.setNamespace(`app/${this.api.moduleId}`);
   }
 }
 
@@ -590,6 +594,7 @@ export default class CoreApplicationManager {
             return false;
           }
           // @ts-ignore
+          // noinspection SuspiciousTypeOfGuard
           if (typeof mod.main !== "string") {
             this.core.log.error(
               "application_manager",

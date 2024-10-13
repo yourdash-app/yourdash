@@ -7,7 +7,6 @@
 
 .component {
   display: flex;
-  flex-grow: 1;
   border: var(#{$theme}#{$border});
   border-bottom: none;
   border-radius: var(#{$theme}#{$radius});

@@ -76,51 +76,95 @@ export default function loadNextCloudSupportEndpoints(core: Core) {
     },
   );
 
-  core.request.get(["/ocs/v2.php/cloud/capabilities", "/ocs/v1.php/cloud/capabilities"], async (req, res) => {
-    if (req.query.format === "json") {
-      return res.json({
-        ocs: {
-          meta: {
-            status: "ok",
-            statuscode: 200,
-            message: "OK",
-          },
-          data: {
-            version: {
-              major: MIMICED_NEXTCLOUD_VERSION.major,
-              minor: MIMICED_NEXTCLOUD_VERSION.minor,
-              micro: MIMICED_NEXTCLOUD_VERSION.micro,
-              string: MIMICED_NEXTCLOUD_VERSION.string,
-              edition: MIMICED_NEXTCLOUD_VERSION.edition,
-              extendedSupport: MIMICED_NEXTCLOUD_VERSION.extendedSupport,
+  core.request.get(
+    ["/ocs/v2.php/cloud/capabilities", "/ocs/v1.php/cloud/capabilities"],
+    z.object({
+      ocs: z.object({
+        meta: z.object({
+          status: z.string(),
+          statuscode: z.number(),
+          message: z.string(),
+        }),
+        data: z.object({
+          version: z.object({
+            major: z.number(),
+            minor: z.number(),
+            micro: z.number(),
+            string: z.string(),
+            edition: z.string(),
+            extendedSupport: z.boolean(),
+          }),
+          capabilities: z.object({
+            bruteforce: z.object({
+              delay: z.number(),
+              "allow-listed": z.boolean(),
+            }),
+            theming: z.object({
+              name: z.string(),
+              url: z.string(),
+              slogan: z.string(),
+              color: z.string(),
+              "color-text": z.string(),
+              "color-element": z.string(),
+              "color-element-bright": z.string(),
+              "color-element-dark": z.string(),
+              logo: z.string(),
+              background: z.string(),
+              "background-plain": z.boolean(),
+              "background-default": z.boolean(),
+              logoheader: z.string(),
+              favicon: z.string(),
+            }),
+          }),
+        }),
+      }),
+    }),
+    async (req, res) => {
+      if (req.query.format === "json") {
+        return res.json({
+          ocs: {
+            meta: {
+              status: "ok",
+              statuscode: 200,
+              message: "OK",
             },
-            capabilities: {
-              bruteforce: {
-                delay: 200, // arbitrary value in milisecconds
-                "allow-listed": false,
+            data: {
+              version: {
+                major: MIMICED_NEXTCLOUD_VERSION.major,
+                minor: MIMICED_NEXTCLOUD_VERSION.minor,
+                micro: MIMICED_NEXTCLOUD_VERSION.micro,
+                string: MIMICED_NEXTCLOUD_VERSION.string,
+                edition: MIMICED_NEXTCLOUD_VERSION.edition,
+                extendedSupport: MIMICED_NEXTCLOUD_VERSION.extendedSupport,
               },
-              theming: {
-                name: core.globalDb.get("core:instance:name") || "YourDash",
-                url: core.globalDb.get("core:instanceUrl") || "http://localhost:3563",
-                slogan: core.globalDb.get("core:login:message"),
-                color: "#00679e",
-                "color-text": "#ffffff",
-                "color-element": "#00679e",
-                "color-element-bright": "#00679e",
-                "color-element-dark": "#00679e",
-                logo: `http://${req.hostname || "localhost:3563"}/index.php/apps/theming/image/logo?useSvg=1&v=2`,
-                background: `http://${req.hostname || "localhost:3563"}/index.php/apps/theming/image/background?v=2`,
-                "background-plain": false,
-                "background-default": false,
-                logoheader: `http://${req.hostname || "localhost:3563"}/index.php/apps/theming/image/logo?useSvg=1&v=2`,
-                favicon: `http://${req.hostname || "localhost:3563"}/index.php/apps/theming/image/logo?useSvg=1&v=2`,
+              capabilities: {
+                bruteforce: {
+                  delay: 200, // arbitrary value in milisecconds
+                  "allow-listed": false,
+                },
+                theming: {
+                  name: core.globalDb.get("core:instance:name") || "YourDash",
+                  url: core.globalDb.get("core:instanceUrl") || "http://localhost:3563",
+                  slogan: core.globalDb.get("core:login:message") || "[YourDash Instance Slogan]",
+                  color: "#00679e",
+                  "color-text": "#ffffff",
+                  "color-element": "#00679e",
+                  "color-element-bright": "#00679e",
+                  "color-element-dark": "#00679e",
+                  logo: `http://${req.hostname || "localhost:3563"}/index.php/apps/theming/image/logo?useSvg=1&v=2`,
+                  background: `http://${req.hostname || "localhost:3563"}/index.php/apps/theming/image/background?v=2`,
+                  "background-plain": false,
+                  "background-default": false,
+                  logoheader: `http://${req.hostname || "localhost:3563"}/index.php/apps/theming/image/logo?useSvg=1&v=2`,
+                  favicon: `http://${req.hostname || "localhost:3563"}/index.php/apps/theming/image/logo?useSvg=1&v=2`,
+                },
               },
             },
           },
-        },
-      });
-    }
-  });
+        });
+      }
+    },
+  );
 
   let nextcloudAuthSessions: { [authSessionToken: string]: { authPollToken: string } } = {};
   let nextcloudAuthorisedSessions: { [authPollToken: string]: { username: string; sessionToken: string } } = {};
@@ -281,76 +325,142 @@ export default function loadNextCloudSupportEndpoints(core: Core) {
     return core.users.get((dbResponse as { username: string }).username);
   }
 
-  core.request.get("/ocs/v1.php/cloud/user", async (req, res) => {
-    const user = getUserForRequest(req);
-    const userFullName = (await user.getName()) || { first: "Unknown", last: "User" };
+  core.request.get(
+    "/ocs/v1.php/cloud/user",
+    z.object({
+      ocs: z.object({
+        meta: z.object({
+          status: z.string(),
+          statuscode: z.number(),
+          message: z.string(),
+          totalitems: z.number(),
+          itemsperpage: z.number(),
+        }),
+        data: z.object({
+          enabled: z.boolean(),
+          storageLocation: z.string(),
+          id: z.string(),
+          lastLogin: z.number(),
+          backend: z.string(),
+          subadmin: z.unknown().array(),
+          quota: z.object({
+            free: z.number(),
+            used: z.number(),
+            total: z.number(),
+            relative: z.number(),
+            quota: z.number(),
+          }),
+          manager: z.string(),
+          avatarScope: z.string(),
+          email: z.null(),
+          emailScope: z.string(),
+          aditional_mail: z.string().array(),
+          aditional_mailScope: z.string().array(),
+          displayname: z.string(),
+          "display-name": z.string(),
+          displaynameScope: z.string(),
+          phone: z.string(),
+          phoneScope: z.string(),
+          address: z.string(),
+          addressScope: z.string(),
+          website: z.string(),
+          websiteScope: z.string(),
+          twitter: z.string(),
+          twitterScope: z.string(),
+          fediverse: z.string(),
+          fediverseScope: z.string(),
+          organisation: z.string(),
+          organisationScope: z.string(),
+          role: z.string(),
+          roleScope: z.string(),
+          headline: z.string(),
+          headlineScope: z.string(),
+          biography: z.string(),
+          biographyScope: z.string(),
+          profile_enabled: z.string(),
+          profile_enabledScope: z.string(),
+          groups: z.string().array(),
+          language: z.string(),
+          locale: z.string(),
+          notify_email: z.string().or(z.null()),
+          backendCapabilities: z.object({
+            setDisplayName: z.boolean(),
+            setPassword: z.boolean(),
+          }),
+        }),
+      }),
+    }),
+    async (req, res) => {
+      const user = getUserForRequest(req);
+      const userFullName = (await user.getName()) || { first: "Unknown", last: "User" };
 
-    return res.json({
-      ocs: {
-        meta: {
-          status: "ok",
-          statuscode: 100,
-          message: "OK",
-          totalitems: "",
-          itemsperpage: "",
-        },
-        data: {
-          enabled: true,
-          storageLocation: path.join(core.fs.ROOT_PATH, user.getFsPath()),
-          id: user.username,
-          lastLogin: Date.now(),
-          backend: "Database",
-          subadmin: [],
-          quota: {
-            free: 100,
-            used: 10,
-            total: 1000,
-            relative: 0.03,
-            quota: -3,
+      return res.json({
+        ocs: {
+          meta: {
+            status: "ok",
+            statuscode: 100,
+            message: "OK",
+            totalitems: 0,
+            itemsperpage: 0,
           },
-          manager: "",
-          avatarScope: "v2-federated",
-          email: null,
-          emailScope: "v2-federated",
-          aditional_mail: [],
-          aditional_mailScope: [],
-          displayname: `${userFullName.first} ${userFullName.last}`,
-          "display-name": `${userFullName.first} ${userFullName.last}`,
-          displaynameScope: "v2-federated",
-          phone: "",
-          phoneScope: "v2-local",
-          address: "",
-          addressScope: "v2-local",
-          website: "",
-          websiteScope: "v2-local",
-          twitter: "",
-          twitterScope: "v2-local",
-          fediverse: "",
-          fediverseScope: "v2-local",
-          organisation: "",
-          organisationScope: "v2-local",
-          role: "",
-          roleScope: "v2-local",
-          headline: "",
-          headlineScope: "v2-local",
-          biography: "",
-          biographyScope: "v2-local",
-          profile_enabled: "1",
-          profile_enabledScope: "v2-local",
-          groups: ["admin"],
-          language: "en_GB",
-          locale: "",
-          notify_email: null,
-          backendCapabilities: {
-            setDisplayName: true,
-            setPassword: true,
+          data: {
+            enabled: true,
+            storageLocation: path.join(core.fs.ROOT_PATH, user.getFsPath()),
+            id: user.username,
+            lastLogin: Date.now(),
+            backend: "Database",
+            subadmin: [],
+            quota: {
+              free: 100,
+              used: 10,
+              total: 1000,
+              relative: 0.03,
+              quota: -3,
+            },
+            manager: "",
+            avatarScope: "v2-federated",
+            email: null,
+            emailScope: "v2-federated",
+            aditional_mail: [],
+            aditional_mailScope: [],
+            displayname: `${userFullName.first} ${userFullName.last}`,
+            "display-name": `${userFullName.first} ${userFullName.last}`,
+            displaynameScope: "v2-federated",
+            phone: "",
+            phoneScope: "v2-local",
+            address: "",
+            addressScope: "v2-local",
+            website: "",
+            websiteScope: "v2-local",
+            twitter: "",
+            twitterScope: "v2-local",
+            fediverse: "",
+            fediverseScope: "v2-local",
+            organisation: "",
+            organisationScope: "v2-local",
+            role: "",
+            roleScope: "v2-local",
+            headline: "",
+            headlineScope: "v2-local",
+            biography: "",
+            biographyScope: "v2-local",
+            profile_enabled: "1",
+            profile_enabledScope: "v2-local",
+            groups: ["admin"],
+            language: "en_GB",
+            locale: "",
+            notify_email: null,
+            backendCapabilities: {
+              setDisplayName: true,
+              setPassword: true,
+            },
           },
         },
-      },
-    });
-  });
+      });
+    },
+  );
 
-  core.request.get("/remote.php/dav/avatars/:username/*", async (req, res) => {
+  core.request.get("/remote.php/dav/avatars/:username/*", z.unknown(), async (req, res) => {
     const user = core.users.get(req.params.username);
 
     return res.sendFile(path.resolve(path.join(core.fs.ROOT_PATH, user.getAvatar(USER_AVATAR_SIZE.MEDIUM))));
@@ -445,7 +555,7 @@ ${response.map((res) => {
     return res.json({ error: true });
   });
 
-  core.request.get("/remote.php/dav/avatars/:username/:size.png", async (req, res) => {
+  core.request.get("/remote.php/dav/avatars/:username/:size.png", z.unknown(), async (req, res) => {
     const username = req.params.username;
 
     const user = core.users.get(username);
@@ -454,6 +564,6 @@ ${response.map((res) => {
       return res.status(401).send("error");
     }
 
-    return res.sendFile(path.join(this.fs.ROOT_PATH, user.getAvatar(USER_AVATAR_SIZE.SMALL, "png")));
+    return res.sendFile(path.join(core.fs.ROOT_PATH, user.getAvatar(USER_AVATAR_SIZE.SMALL, "png")));
   });
 }

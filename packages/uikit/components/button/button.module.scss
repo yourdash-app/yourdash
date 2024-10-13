@@ -7,7 +7,6 @@
 
 .component {
   font-family: var(#{$theme}#{$font}#{$family});
-  min-width: 6rem;
   padding: 0 var(#{$theme}#{$button}#{$padding}#{$horizontal});
   color: var(#{$theme}#{$button}#{$color});
   border: var(#{$theme}#{$button}#{$border});

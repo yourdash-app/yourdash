@@ -16,7 +16,22 @@ import styles from "./connection.module.scss";
 
 const Connection: React.FC<IHomeConnection> = ({ description, quota, url, serviceLogo, serviceName }) => {
   return (
-    <Card className={styles.component}>
+    <Card
+      className={styles.component}
+      actions={
+        <>
+          {url && (
+            <IconButton
+              accessibleLabel={"Open service url"}
+              icon={UKIcon.LinkExternal}
+              onClick={() => {
+                window.open(url, "_blank");
+              }}
+            />
+          )}
+        </>
+      }
+    >
       <Image
         className={styles.icon}
         accessibleLabel={""}
@@ -28,15 +43,6 @@ const Connection: React.FC<IHomeConnection> = ({ description, quota, url, servic
         <ProgressBar
           maxValue={quota.max}
           value={quota.usage}
-        />
-      )}
-      {url && (
-        <IconButton
-          accessibleLabel={"Open service url"}
-          icon={UKIcon.LinkExternal}
-          onClick={() => {
-            window.open(url, "_blank");
-          }}
         />
       )}
     </Card>

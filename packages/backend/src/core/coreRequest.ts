@@ -97,6 +97,10 @@ export default class CoreRequest {
       // this.core.log.info("request", "Request created: " + this.endpointFromPath(path));
       // }
 
+      if (!(resBodyType instanceof z.ZodType)) {
+        throw `resBodyType is not a Zod Typing @ ${(this.currentNamespace ? "/" : "") + this.currentNamespace + path}`;
+      }
+
       this.openApiRegistry.registerPath({
         method: "get",
         path: (this.currentNamespace ? "/" : "") + this.currentNamespace + path,

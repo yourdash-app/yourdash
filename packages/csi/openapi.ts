@@ -489,6 +489,373 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/status.php": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Sample description */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Sample description */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            installed: boolean;
+                            maintenance: boolean;
+                            needsDbUpgrade: boolean;
+                            version: string;
+                            versionstring: string;
+                            edition: string;
+                            productname: string;
+                            extendedSupport: boolean;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/ocs/v2.php/cloud/capabilities": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Sample description */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Sample description */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            ocs: {
+                                meta: {
+                                    status: string;
+                                    statuscode: number;
+                                    message: string;
+                                };
+                                data: {
+                                    version: {
+                                        major: number;
+                                        minor: number;
+                                        micro: number;
+                                        string: string;
+                                        edition: string;
+                                        extendedSupport: boolean;
+                                    };
+                                    capabilities: {
+                                        bruteforce: {
+                                            delay: number;
+                                            "allow-listed": boolean;
+                                        };
+                                        theming: {
+                                            name: string;
+                                            url: string;
+                                            slogan: string;
+                                            color: string;
+                                            "color-text": string;
+                                            "color-element": string;
+                                            "color-element-bright": string;
+                                            "color-element-dark": string;
+                                            logo: string;
+                                            background: string;
+                                            "background-plain": boolean;
+                                            "background-default": boolean;
+                                            logoheader: string;
+                                            favicon: string;
+                                        };
+                                    };
+                                };
+                            };
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/ocs/v1.php/cloud/capabilities": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Sample description */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Sample description */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            ocs: {
+                                meta: {
+                                    status: string;
+                                    statuscode: number;
+                                    message: string;
+                                };
+                                data: {
+                                    version: {
+                                        major: number;
+                                        minor: number;
+                                        micro: number;
+                                        string: string;
+                                        edition: string;
+                                        extendedSupport: boolean;
+                                    };
+                                    capabilities: {
+                                        bruteforce: {
+                                            delay: number;
+                                            "allow-listed": boolean;
+                                        };
+                                        theming: {
+                                            name: string;
+                                            url: string;
+                                            slogan: string;
+                                            color: string;
+                                            "color-text": string;
+                                            "color-element": string;
+                                            "color-element-bright": string;
+                                            "color-element-dark": string;
+                                            logo: string;
+                                            background: string;
+                                            "background-plain": boolean;
+                                            "background-default": boolean;
+                                            logoheader: string;
+                                            favicon: string;
+                                        };
+                                    };
+                                };
+                            };
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/ocs/v1.php/cloud/user": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Sample description */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Sample description */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            ocs: {
+                                meta: {
+                                    status: string;
+                                    statuscode: number;
+                                    message: string;
+                                    totalitems: number;
+                                    itemsperpage: number;
+                                };
+                                data: {
+                                    enabled: boolean;
+                                    storageLocation: string;
+                                    id: string;
+                                    lastLogin: number;
+                                    backend: string;
+                                    subadmin: unknown[];
+                                    quota: {
+                                        free: number;
+                                        used: number;
+                                        total: number;
+                                        relative: number;
+                                        quota: number;
+                                    };
+                                    manager: string;
+                                    avatarScope: string;
+                                    email: null;
+                                    emailScope: string;
+                                    aditional_mail: string[];
+                                    aditional_mailScope: string[];
+                                    displayname: string;
+                                    "display-name": string;
+                                    displaynameScope: string;
+                                    phone: string;
+                                    phoneScope: string;
+                                    address: string;
+                                    addressScope: string;
+                                    website: string;
+                                    websiteScope: string;
+                                    twitter: string;
+                                    twitterScope: string;
+                                    fediverse: string;
+                                    fediverseScope: string;
+                                    organisation: string;
+                                    organisationScope: string;
+                                    role: string;
+                                    roleScope: string;
+                                    headline: string;
+                                    headlineScope: string;
+                                    biography: string;
+                                    biographyScope: string;
+                                    profile_enabled: string;
+                                    profile_enabledScope: string;
+                                    groups: string[];
+                                    language: string;
+                                    locale: string;
+                                    notify_email: string | null;
+                                    backendCapabilities: {
+                                        setDisplayName: boolean;
+                                        setPassword: boolean;
+                                    };
+                                };
+                            };
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/remote.php/dav/avatars/:username/*": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Sample description */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Sample description */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": unknown;
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/remote.php/dav/avatars/:username/:size.png": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Sample description */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Sample description */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": unknown;
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/app/uk-ewsgit-dash-backend/user-full-name": {
         parameters: {
             query?: never;
@@ -629,6 +996,558 @@ export interface paths {
                     content: {
                         "application/json": {
                             version: number;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/app/uk-ewsgit-files-backend/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Sample description */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Sample description */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            message: string;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/app/uk-ewsgit-files-backend/list/dir/@/:path": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Sample description */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Sample description */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            contents: string[];
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/app/uk-ewsgit-files-backend/list/dir/@/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Sample description */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Sample description */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            contents: string[];
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/app/uk-ewsgit-files-backend/tabView/home": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Sample description */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Sample description */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            recentFiles: Record<string, never>[];
+                            sharedFiles: Record<string, never>[];
+                            commonStorageLocations: {
+                                path: string;
+                                baseName: string;
+                            }[];
+                            connections: {
+                                serviceName: string;
+                                description: string;
+                                url: string;
+                                quota: {
+                                    max: number;
+                                    usage: number;
+                                    unit: string;
+                                };
+                                id: string;
+                                serviceLogo?: string | unknown | null;
+                            }[];
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/app/uk-ewsgit-store-backend/home/promotedApplications": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Sample description */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Sample description */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            displayName: string;
+                            bannerBackground: string;
+                            developer: string;
+                            icon: string;
+                            id: string;
+                            tags: string[];
+                            description: string;
+                        }[];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/app/uk-ewsgit-store-backend/home/applicationCategories": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Sample description */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Sample description */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            id: string;
+                            displayName: string;
+                            description: string;
+                            moduleCount: number;
+                            applicationCount: number;
+                            backgroundImage: number;
+                        }[];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/app/uk-ewsgit-store-backend/home/category/:categoryId": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Sample description */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Sample description */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            applications: string[];
+                            displayName: string;
+                        } | {
+                            error: string;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/app/uk-ewsgit-store-backend/home/application/:applicationId": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Sample description */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Sample description */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            description: string;
+                            displayName: string;
+                            developer: string;
+                            id: string;
+                            moduleCount: number;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/app/uk-ewsgit-photos-backend/media/raw/@/*": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Sample description */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Sample description */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            error: string;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/app/uk-ewsgit-photos-backend/album/@/*": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Sample description */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Sample description */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            error: string;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/app/uk-ewsgit-photos-backend/album/sub/:page/@/*": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Sample description */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Sample description */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            data: {
+                                displayName: string;
+                                path: string;
+                                size: number;
+                                thumbnail: string;
+                            }[];
+                            hasAnotherPage: boolean;
+                        } | {
+                            error: string;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/app/uk-ewsgit-photos-backend/media/thumbnail/:res/@/*": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Sample description */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Sample description */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            thumbnail: string;
+                        } | {
+                            error: boolean;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/app/uk-ewsgit-photos-backend/album/media/:page/@/*": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Sample description */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Sample description */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            data: {
+                                path: string;
+                                resolution: {
+                                    width: number;
+                                    height: number;
+                                };
+                                /** @enum {integer} */
+                                mediaType: 0 | 1 | 2;
+                                metadata?: {
+                                    people: string[];
+                                    location: string;
+                                };
+                            }[];
+                            hasAnotherPage: boolean;
                         };
                     };
                 };

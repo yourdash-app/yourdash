@@ -10,53 +10,18 @@
  *  - https://ydsh.pages.dev
  */
 
-import Bun from "bun";
+import core from "./core/core.js";
 
-async function initProcess() {
-  console.log("Starting YourDash process...");
-
-  const yourdashProcess = Bun.spawn(["bun", "run", "dev-standalone", ...process.argv.slice(2)], {
-    stdin: "pipe",
-    stderr: "pipe",
-    stdout: "pipe",
-    cwd: process.cwd(),
-  });
-
-  const stdoutDecoder = new TextDecoder();
-  const stdinEncoder = new TextEncoder();
-
-  for await (const chunk of yourdashProcess.stdout) {
-    let decodedChunk = stdoutDecoder.decode(chunk);
-
-    if (decodedChunk.includes("oh no: Bun has crashed. This indicates a bug in Bun, not your code.")) {
-      yourdashProcess.kill();
-
-      console.log("Bun has crashed :/");
-
-      await initProcess();
-    }
-
-    process.stdout.write(decodedChunk);
-  }
-
-  for await (const chunk of yourdashProcess.stderr) {
-    let decodedChunk = stdoutDecoder.decode(chunk);
-
-    await process.stderr.write("stderr " + decodedChunk);
-  }
-
-  process.stdin.on("data", (chunk: any) => {
-    yourdashProcess.stdin.write(stdinEncoder.encode(chunk));
-    yourdashProcess.stdin.flush();
-  });
-
-  process.on("beforeExit", () => {
-    yourdashProcess.kill();
-  });
-
-  yourdashProcess.exited.then((processExitCode) => {
-    console.log(`YourDash instance process exited with exit code ${processExitCode}`);
-  });
+try {
+  // Start the YourDash Instance
+  core.__internal__startInstance();
+} catch (err) {
+  core.log.error("core", `An error occurred with YourDash startup: ${err}`);
 }
 
-initProcess();
+/*
+// if we are not running in development mode, start the check for updates task
+if ( !PROCESS_ARGUMENTS.dev ) {
+  scheduleBackendUpdateChecker();
+}
+*/

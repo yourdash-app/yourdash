@@ -719,12 +719,11 @@ import { Route, Routes } from "react-router";
       this.log.error("log", "Error caught in log.__internal__loadEndpoints(); ", e);
     }
 
-    // disabled until zod typings are done
-    // try {
-    //   loadNextCloudSupportEndpoints(this);
-    // } catch (e) {
-    //   this.log.error("nextcloud", "Error caught in loadNextCloudSupportEndpoints", e);
-    // }
+    try {
+      loadNextCloudSupportEndpoints(this);
+    } catch (e) {
+      this.log.error("nextcloud", "Error caught in loadNextCloudSupportEndpoints", e);
+    }
 
     try {
       this.websocketManager.__internal__loadEndpoints();
@@ -920,6 +919,7 @@ import { Route, Routes } from "react-router";
       return res.status(404).json({ error: "this endpoint does not exist!" });
     });
 
+    // noinspection ES6MissingAwait
     this.request.__internal_generateOpenAPIDefinitions();
 
     console.timeEnd("core:startup");

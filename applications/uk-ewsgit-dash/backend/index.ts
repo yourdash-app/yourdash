@@ -23,8 +23,6 @@ export default class DashModule extends YourDashBackendModule {
   public loadEndpoints() {
     super.loadEndpoints();
 
-    core.request.setNamespace(`app/${this.api.moduleId}`);
-
     core.request.get("/user-full-name", z.object({ first: z.string(), last: z.string() }), async (req, res) => {
       res.json(
         (await core.users.get(req.username).getName()) || {

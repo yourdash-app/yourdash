@@ -138,18 +138,17 @@ export default class CorePanel {
                   module: shortcut,
                   icon: this.core.image.createAuthenticatedImage(username, sessionid, AUTHENTICATED_IMAGE_TYPE.FILE, RESIZED_ICON_PATH),
                   // @ts-ignore
-                  url:
-                    isOfficialFrontend === "officialFrontend"
-                      ? `/app/a/${module.config.id}`
-                      : this.core.isDevMode
-                        ? // @ts-ignore
-                          module?.config?.devUrl! || ""
-                        : // @ts-ignore
-                          module?.config?.url! || "",
+                  url: (isOfficialFrontend === "officialFrontend"
+                    ? `/app/a/${module.config.id}`
+                    : this.core.isDevMode
+                      ? // @ts-ignore
+                        module?.config?.devUrl! || ""
+                      : // @ts-ignore
+                        module?.config?.url! || "") as string,
                 };
               }),
             )
-          ).filter((x) => !!x),
+          ).filter((x) => x !== undefined),
         );
       },
     );
