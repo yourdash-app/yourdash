@@ -8,7 +8,6 @@ import { USER_AVATAR_SIZE } from "@yourdash/shared/core/userAvatarSize.js";
 import chalk from "chalk";
 import path from "path";
 import sharp from "sharp";
-import { hashString } from "../../lib/encryption.js";
 import YourDashSession, { getSessionsForUser } from "../../lib/session.js";
 import core from "../core.js";
 import FSError, { FS_ERROR_TYPE } from "../fileSystem/FSError.js";
@@ -486,7 +485,7 @@ export default class YourDashUser {
   }
 
   async setPassword(password: string) {
-    const hashedPassword = await hashString(password);
+    const hashedPassword = await Bun.password.hash(password);
 
     try {
       const userPasswordFile = await core.fs.getFile(path.join(this.path, "./core/password.enc"));

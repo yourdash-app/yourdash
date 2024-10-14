@@ -8,7 +8,6 @@
 import { promises as fs } from "fs";
 import path from "path";
 import { parseStringPromise } from "xml2js";
-import { compareHashString } from "../../lib/encryption.js";
 import { Core } from "../core.js";
 import z from "zod";
 
@@ -84,7 +83,7 @@ export default class coreWebDAV {
 
       const savedHashedPassword = (await fs.readFile(path.join(user.path, "core/password.enc"))).toString();
 
-      if (!(await compareHashString(savedHashedPassword, password))) {
+      if (!(await Bun.password.verify(password, savedHashedPassword))) {
         this.core.log.error("webdav", "passwords did not match!, password", password);
         return failAuth();
       }

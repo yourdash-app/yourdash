@@ -19,7 +19,6 @@ import killPort from "kill-port";
 import minimist from "minimist";
 import path from "path";
 import { fetch } from "undici";
-import { compareHashString } from "../lib/encryption.js";
 import { createSession, loadSessionsForUser } from "../lib/session.js";
 import CoreApplicationManager from "./coreApplicationManager.js";
 import CoreCommands from "./coreCommands.js";
@@ -616,28 +615,22 @@ import { Route, Routes } from "react-router";
         this.log.error("authentication", "Unable to read password from disk", e);
       }
 
-      return compareHashString(savedHashedPassword, password)
-        .then(async (result) => {
-          if (result) {
-            const session = await createSession(
-              username,
-              req.headers?.type === "desktop" ? YOURDASH_SESSION_TYPE.DESKTOP : YOURDASH_SESSION_TYPE.WEB,
-            );
+      const isThePassword = await Bun.password.verify(password, savedHashedPassword);
 
-            return res.json({
-              token: session.sessionToken,
-              sessionId: session.sessionId,
-            });
-          } else {
-            this.log.info("login", `Incorrect password provided for user ${username}`);
-            return res.json({ error: "Incorrect password" });
-          }
-        })
-        .catch(() => {
-          this.log.error("login", `Hash comparison failed for user ${username}`);
-          res.status(500);
-          return res.json({ error: "Login failure" });
+      if (isThePassword) {
+        const session = await createSession(
+          username,
+          req.headers?.type === "desktop" ? YOURDASH_SESSION_TYPE.DESKTOP : YOURDASH_SESSION_TYPE.WEB,
+        );
+
+        return res.json({
+          token: session.sessionToken,
+          sessionId: session.sessionId,
         });
+      } else {
+        this.log.info("login", `Incorrect password provided for user ${username}`);
+        return res.status(500).json({ error: "Incorrect password" });
+      }
     });
 
     this.request.get("/login/is-authenticated", z.object({ success: z.boolean() }), async (req, res) => {

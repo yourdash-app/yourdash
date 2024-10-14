@@ -23,6 +23,10 @@ const LoginIndexPagePreload: FC = () => {
       if (!isValid) {
         setValidInstance(false);
       }
+
+      if (coreCSI.getInstanceUrl() === "") {
+        navigate("/login/instance");
+      }
     });
   }, [retryCounter]);
 

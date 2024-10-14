@@ -6,7 +6,6 @@
 import { INSTANCE_STATUS } from "@yourdash/shared/core/instanceStatus.js";
 import { YOURDASH_SESSION_TYPE } from "@yourdash/shared/core/session.js";
 import { USER_AVATAR_SIZE } from "@yourdash/shared/core/userAvatarSize.js";
-import { compareHashString, generateRandomStringOfLength } from "../../lib/encryption.js";
 import { createSession } from "../../lib/session.js";
 import { Core } from "../core.js";
 import FSFile from "../fileSystem/FSFile.js";
@@ -244,45 +243,37 @@ export default function loadNextCloudSupportEndpoints(core: Core) {
       core.log.error("authentication", "Unable to read password from disk", e);
     }
 
-    return compareHashString(savedHashedPassword, password)
-      .then(async (result) => {
-        if (result) {
-          function generateNextcloudBearerToken() {
-            // format: "YWRtaW46NG4uRVU1XidvVTAsbi5VUH1vLFJiL1wxWGZySCtRKyRKcSZmdykpV3FuTjXCrCxHekRSQ09maSpzL01+JmV4eXNxTmZYUUV3OD48WTheU1NnfiV9ZFV8XFp4aE5fZldtSWU2XVRmYEZITTliM0NjPmowUUo4WSFmT1tkdlwwfixY"
+    const doesPasswordMatch = await Bun.password.verify(password, savedHashedPassword);
 
-            const characters = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890+";
+    if (doesPasswordMatch) {
+      function generateNextcloudBearerToken() {
+        const characters = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890+";
 
-            return Array.from({ length: 180 }, () => characters[Math.floor(Math.random() * characters.length)]).join("");
-          }
+        return Array.from({ length: 180 }, () => characters[Math.floor(Math.random() * characters.length)]).join("");
+      }
 
-          const session = await createSession(username, YOURDASH_SESSION_TYPE.NEXTCLOUD_COMPATABILITY, generateNextcloudBearerToken());
+      const session = await createSession(username, YOURDASH_SESSION_TYPE.NEXTCLOUD_COMPATABILITY, generateNextcloudBearerToken());
 
-          /*
-            token: session.sessionToken,
-            // only used for the session's management page
-            sessionId: session.sessionId,
-          */
+      /*
+        token: session.sessionToken,
+        // only used for the session's management page
+        sessionId: session.sessionId,
+      */
 
-          console.log({ sessionToken: session.sessionToken });
+      console.log({ sessionToken: session.sessionToken });
 
-          nextcloudAuthorisedSessions[nextcloudAuthSessions[authToken].authPollToken] = {
-            username: username,
-            sessionToken: session.sessionToken,
-          };
+      nextcloudAuthorisedSessions[nextcloudAuthSessions[authToken].authPollToken] = {
+        username: username,
+        sessionToken: session.sessionToken,
+      };
 
-          return res.json({
-            successs: true,
-          });
-        } else {
-          core.log.info("login", `Incorrect password provided for user ${username}`);
-          return res.json({ error: "Incorrect password" });
-        }
-      })
-      .catch(() => {
-        core.log.error("login", `Hash comparison failed for user ${username}`);
-        res.status(500);
-        return res.json({ error: "Login failure" });
+      return res.json({
+        success: true,
       });
+    } else {
+      core.log.info("login", `Incorrect password provided for user ${username}`);
+      return res.json({ error: "Incorrect password" });
+    }
   });
 
   // @ts-ignore
@@ -467,20 +458,20 @@ export default function loadNextCloudSupportEndpoints(core: Core) {
   });
 
   /*   // handle nextcloud compatability authentication (remember the Bearer)
-  core.request.usePath("/remote.php/", async (req, res, next) => {
-    return res.contentType("http/xml").send(`<?xml version="1.0" encoding="utf-8"?>
-      <d:error xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns">
-        <s:exception>Internal Server Error</s:exception>
-        <s:message>The server was unable to complete your request.
+core.request.usePath("/remote.php/", async (req, res, next) => {
+  return res.contentType("http/xml").send(`<?xml version="1.0" encoding="utf-8"?>
+    <d:error xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns">
+      <s:exception>Internal Server Error</s:exception>
+      <s:message>The server was unable to complete your request.
 If this happens again, please send the technical details below to the server administrator.
 More details can be found in the server log.
-        </s:message>
-        <s:technical-details>
-          <s:remote-address>::1</s:remote-address>
-          <s:request-id>ibCxTsPl4KN7sufuReK6</s:request-id>
-        </s:technical-details>
-      </d:error>`);
-  }); */
+      </s:message>
+      <s:technical-details>
+        <s:remote-address>::1</s:remote-address>
+        <s:request-id>ibCxTsPl4KN7sufuReK6</s:request-id>
+      </s:technical-details>
+    </d:error>`);
+}); */
 
   core.request.propfind("/remote.php/dav/files/:username/*", async (req, res) => {
     console.log({ username: req.params.username, params: Object.values(req.params).join("/"), path: req.params["*"] });
