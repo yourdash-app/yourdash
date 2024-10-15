@@ -3,7 +3,6 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import path from "path";
 import { Core } from "./core.js";
 import YourDashTeam from "./team/team.js";
 import YourDashUser from "./user/index.js";

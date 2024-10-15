@@ -59,15 +59,21 @@ export default class CoreRequest {
       servers: [{ url: "http://localhost:3563/" }],
     });
 
-    const yamlDocumentation = yaml.stringify(documentation);
+    const jsonDocumentation = JSON.stringify(documentation, null, 2);
 
     const cwd = process.cwd();
 
-    nodeJsFs.writeFileSync(path.join(cwd, "../../", "openapi.yml"), yamlDocumentation, { encoding: "utf8" });
+    nodeJsFs.writeFileSync(path.join(cwd, "../../", "openapi.json"), jsonDocumentation, { encoding: "utf8" });
 
-    const contents = astToString(await openApiTS(new URL(path.join(cwd, "../../", "openapi.yml"), import.meta.url).toString()));
+    try {
+      const contents = astToString(await openApiTS(new URL(path.join(cwd, "../../", "openapi.json"), import.meta.url).toString(), {}));
 
-    nodeJsFs.writeFileSync(path.join(cwd, "../csi/", "openapi.ts"), contents);
+      nodeJsFs.writeFileSync(path.join(cwd, "../csi/", "openapi.ts"), contents);
+    } catch (e) {
+      this.core.log.error("request", "Failed to create typescript data for openapi.json \n", e);
+
+      return this;
+    }
 
     return this;
   }

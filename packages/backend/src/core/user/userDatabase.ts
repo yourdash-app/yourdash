@@ -3,7 +3,6 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { ResponseType } from "undici";
 import KeyValueDatabase from "../../lib/keyValueDatabase.js";
 import core from "../core.js";
 

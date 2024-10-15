@@ -6,8 +6,6 @@
 // WORK IN PROGRESS APPLICATION
 // https://open-meteo.com/en/docs#***REMOVED***&hourly=temperature_2m,precipitation_probability,weathercode,cloudcover,windspeed_80m&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max,rain_sum,precipitation_hours,windspeed_10m_max,windgusts_10m_max&current_weather=true&windspeed_unit=mph&timezone=Europe%2FLondon
 
-import weatherPredictionEngine from "./endpoints/predictionEngine.js";
-import getWeatherDataForLocationId from "./helpers/getWeatherDataForLocationId.js";
 import geolocationApi from "./geolocationApi.js";
 import { YourDashBackendModule, YourDashModuleArguments } from "@yourdash/backend/src/core/coreApplicationManager.js";
 import core from "@yourdash/backend/src/core/core.js";

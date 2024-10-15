@@ -13,8 +13,6 @@ import EndpointSettingCategorySetting from "../shared/types/endpoints/setting/ca
 import ISetting from "../shared/types/setting.js";
 import SETTING_TYPE from "../shared/types/settingType.js";
 import { YourDashBackendModule, YourDashModuleArguments } from "@yourdash/backend/src/core/coreApplicationManager.js";
-import ISettingsInstalledApplication, { ISettingsInstalledApplicationModule } from "../shared/types/installedApplication.js";
-import IEndpointSettingsInstalledApplications from "../shared/types/endpoints/installedApplications.js";
 import z from "zod";
 
 /*

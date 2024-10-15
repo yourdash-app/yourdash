@@ -16,6 +16,8 @@
   height: var(#{$theme+$input+$height});
   width: max-content;
   cursor: pointer;
+  padding-left: var(#{$theme+$padding});
+  padding-right: var(#{$theme+$padding});
 
   &:hover {
     color: var(#{$theme}#{$button}#{$hover}#{$color});

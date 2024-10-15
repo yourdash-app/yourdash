@@ -14,7 +14,6 @@ import YourDashUser from "../user/index.js";
 import path from "path";
 import { Request as ExpressRequest } from "express";
 import { Database } from "bun:sqlite";
-import xmlBodyParser from "express-xml-bodyparser";
 import { z } from "zod";
 
 export const MIMICED_NEXTCLOUD_VERSION = {
