@@ -863,7 +863,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Sample description */
+        /** @description Get user full name */
         get: {
             parameters: {
                 query?: never;
@@ -873,7 +873,7 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description Sample description */
+                /** @description Get user full name */
                 200: {
                     headers: {
                         [name: string]: unknown;

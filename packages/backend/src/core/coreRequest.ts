@@ -17,6 +17,7 @@ import yaml from "yaml";
 import nodeJsFs from "fs";
 import path from "path";
 import openApiTS, { astToString } from "openapi-typescript/dist/index.js";
+import ts, { SyntaxKind } from "typescript";
 
 export type RequestHeaders = { username: string; sessionid: string };
 export type RequestExtras = { headers: RequestHeaders; sessionId: string; username: string };
@@ -46,6 +47,38 @@ export default class CoreRequest {
     return (this.currentNamespace ? "/" : "") + this.currentNamespace + path;
   }
 
+  // async __internal_generateOpenAPIDefinitions() {
+  //   const generator = new OpenApiGeneratorV31(this.openApiRegistry.definitions);
+  //
+  //   const documentation = generator.generateDocument({
+  //     openapi: "3.1.0",
+  //     info: {
+  //       version: "1.0.0",
+  //       title: "YourDash Backend API",
+  //       description: "This is the YourDash Backend API for the current YourDash Instance and it's loaded modules",
+  //     },
+  //     servers: [{ url: "http://localhost:3563/" }],
+  //   });
+  //
+  //   const jsonDocumentation = JSON.stringify(documentation, null, 2);
+  //
+  //   const cwd = process.cwd();
+  //
+  //   nodeJsFs.writeFileSync(path.join(cwd, "../../", "openapi.json"), jsonDocumentation, { encoding: "utf8" });
+  //
+  //   try {
+  //     const contents = astToString(await openApiTS(path.join(cwd, "../../", "openapi.json").toString()));
+  //
+  //     nodeJsFs.writeFileSync(path.join(cwd, "../csi/", "openapi.ts"), contents);
+  //   } catch (e) {
+  //     this.core.log.error("request", "Failed to create typescript data for openapi.json \n", e);
+  //
+  //     return this;
+  //   }
+  //
+  //   return this;
+  // }
+
   async __internal_generateOpenAPIDefinitions() {
     const generator = new OpenApiGeneratorV31(this.openApiRegistry.definitions);
 
@@ -63,12 +96,29 @@ export default class CoreRequest {
 
     const cwd = process.cwd();
 
-    nodeJsFs.writeFileSync(path.join(cwd, "../../", "openapi.json"), jsonDocumentation, { encoding: "utf8" });
+    nodeJsFs.writeFileSync(path.join(cwd, "../csi/", "openapi.json"), jsonDocumentation, { encoding: "utf8" });
 
     try {
-      const contents = astToString(await openApiTS(new URL(path.join(cwd, "../../", "openapi.json"), import.meta.url).toString(), {}));
+      const contents = await openApiTS(new URL("../../../csi/openapi.json", import.meta.url) as unknown as string);
 
-      nodeJsFs.writeFileSync(path.join(cwd, "../csi/", "openapi.ts"), contents);
+      let propertySignatures: ts.Node[] = [];
+
+      contents[0].forEachChild((c) => {
+        if (c.kind === SyntaxKind.PropertySignature) {
+          propertySignatures.push(c);
+        }
+      });
+
+      let coreRoutes: { [path: string]: c } = {};
+      let applicationRoutes: { [path: string]: c } = {};
+
+      propertySignatures.forEach((c) => {
+        let sigPath = astToString(c).split('": {')[0].slice(1);
+      });
+
+      nodeJsFs.writeFileSync(path.join(cwd, "../csi/", "openapi.breh.ts"), astToString(contents[0]));
+
+      nodeJsFs.writeFileSync(path.join(cwd, "../csi/", "openapi.ts"), astToString(contents));
     } catch (e) {
       this.core.log.error("request", "Failed to create typescript data for openapi.json \n", e);
 
@@ -301,7 +351,7 @@ export default class CoreRequest {
       // this.core.log.info("request", "Request created: " + this.endpointFromPath(path));
       // }
 
-      if (this.core.processArguments)
+      if (this.core.processArguments) {
         if (options?.debugTimer) {
           this.rawExpress.propfind(
             (this.currentNamespace ? "/" : "") + this.currentNamespace + path,
@@ -326,6 +376,7 @@ export default class CoreRequest {
 
           return this;
         }
+      }
 
       this.rawExpress.propfind(
         (this.currentNamespace ? "/" : "") + this.currentNamespace + path,
