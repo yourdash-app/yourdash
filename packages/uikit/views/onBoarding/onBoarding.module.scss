@@ -44,6 +44,8 @@
   flex-direction: column;
   gap: calc(var(#{$theme+$gap}) * 2);
   padding: 2rem;
+  position: relative;
+  transition: var(--transition);
 }
 
 .cardContainer {
@@ -51,6 +53,9 @@
 }
 
 .goBackButton {
+  position: absolute;
+  top: var(#{$theme+$padding});
+  left: var(#{$theme+$padding});
 }
 
 .headerImage {

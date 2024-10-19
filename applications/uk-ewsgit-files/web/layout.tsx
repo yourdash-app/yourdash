@@ -1,6 +1,9 @@
 import clippy from "@yourdash/shared/web/helpers/clippy";
+import Card from "@yourdash/uikit/components/card/card.tsx";
+import Flex from "@yourdash/uikit/components/flex/flex.tsx";
 import Heading from "@yourdash/uikit/components/heading/heading";
 import Separator from "@yourdash/uikit/components/separator/separator.tsx";
+import Text from "@yourdash/uikit/components/text/text.tsx";
 import Sidebar from "@yourdash/uikit/views/sidebar/Sidebar";
 import SidebarContainer from "@yourdash/uikit/views/sidebar/SidebarContainer";
 import SidebarToggleButton from "@yourdash/uikit/views/sidebar/SidebarToggleButton";
@@ -34,7 +37,9 @@ const ApplicationLayout: React.FC = () => {
 
   useEffect(() => {
     if ((activeTabId === undefined && tabs.length > 0) || !tabs.find((t) => t.id === activeTabId)) {
-      setActiveTabId(tabs[0].id);
+      if (tabs.length > 0) {
+        setActiveTabId(tabs[0].id);
+      }
     }
   }, [tabs]);
 
@@ -107,7 +112,29 @@ const ApplicationLayout: React.FC = () => {
             <TabView view={tabs.find((tab) => tab.id === activeTabId)?.view!} />
           </section>
         ) : (
-          <>UNKNOWN VIEW ERROR</>
+          <Flex
+            centerHorizontally
+            centerVertically
+            direction={"column"}
+          >
+            <Card>
+              <Flex
+                direction={"column"}
+                centerHorizontally
+                centerVertically
+              >
+                <Heading text={"You have no tabs!"} />
+                <Separator direction={"column"} />
+                <Text text={"Create a new tab by clicking the button below."} />
+                <Button
+                  onClick={() => {
+                    setTabs([homeTab()]);
+                  }}
+                  text={"Create new tab"}
+                />
+              </Flex>
+            </Card>
+          </Flex>
         )}
       </div>
     </SidebarContainer>

@@ -39,7 +39,7 @@ const OnBoarding: React.FC<{
       >
         {page.allowGoBack && (
           <IconButton
-            className={styles.goBackButton}
+            className={clippy(styles.goBackButton, "animate__animated animate__fadeInDown")}
             accessibleLabel="Go back to the last page"
             icon={UKIcon.ChevronLeft}
             onClick={() => {
@@ -70,7 +70,7 @@ const OnBoarding: React.FC<{
                 <>
                   <ButtonWithIcon
                     key={action.label}
-                    className={clippy(styles.action, styles.actionWithIcon)}
+                    className={clippy(styles.action, styles.actionWithIcon, "animate__animated animate__fadeInUp")}
                     text={action.label}
                     icon={action.icon}
                     onClick={() => {
@@ -102,7 +102,7 @@ const OnBoarding: React.FC<{
               <>
                 <Button
                   key={action.icon}
-                  className={clippy(styles.action, styles.actionWithoutIcon)}
+                  className={clippy(styles.action, styles.actionWithoutIcon, "animate__animated animate__fadeInUp")}
                   text={action.label}
                   onClick={() => {
                     action.onClick();

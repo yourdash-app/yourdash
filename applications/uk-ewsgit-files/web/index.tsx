@@ -39,6 +39,7 @@ const FilesRouter: React.FC = () => (
               headerImage: "/assets/productLogos/yourdash.svg",
               header: "This is Coming soon...",
               body: "This onBoarding Menu is coming soon...",
+              allowGoBack: true,
               actions: [
                 {
                   label: "Continue to application",

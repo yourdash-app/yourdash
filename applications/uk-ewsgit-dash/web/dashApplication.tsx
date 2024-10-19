@@ -23,7 +23,7 @@ const DashApplication: React.FC = () => {
     pageCount: 0,
   };
   const [currentWidgetPage, setCurrentWidgetPage] = useState<number>(0);
-  const widgetPage = useResource(() => acsi.getJson(`/widgets/${currentWidgetPage}`), [currentWidgetPage]) || {
+  const widgetPage = useResource(() => acsi.getJson(`/widgets/:page`, { page: currentWidgetPage.toString() }), [currentWidgetPage]) || {
     widgets: [],
   };
   const [isWidgetEditMode, setIsWidgetEditMode] = useState(false);

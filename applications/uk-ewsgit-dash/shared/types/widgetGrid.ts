@@ -3,8 +3,8 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import { IWidget } from "./widget";
-import type { IApplicationShortcutWidget } from "./widgets/applicationShortcut";
+import { IWidget } from "./widget.js";
+import type { IApplicationShortcutWidget } from "./widgets/applicationShortcut.js";
 
 export interface IWidgetGrid {
   widgets: IWidget<IApplicationShortcutWidget["id"], IApplicationShortcutWidget["data"]>[];

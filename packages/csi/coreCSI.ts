@@ -46,8 +46,38 @@ class __internalClientServerWebsocketConnection {
   }
 }
 
-export class ClientServerInteraction<RequestPath extends string> {
-  private _internal_baseRequestPath;
+export class ClientServerInteraction<
+  OpenApi extends {
+    [path: string]: {
+      parameters: any;
+      /** @description Sample description */
+      get: {
+        parameters: any;
+        requestBody?: never;
+        responses: {
+          /** @description Sample description */
+          200: {
+            headers: {
+              [name: string]: unknown;
+            };
+            content: {
+              "application/json": any;
+            };
+          };
+        };
+      };
+      put?: never;
+      post?: never;
+      delete?: never;
+      options?: never;
+      head?: never;
+      patch?: never;
+      trace?: never;
+      pathParams: { [key: string]: string };
+    };
+  },
+> {
+  private readonly _internal_baseRequestPath;
 
   constructor(baseRequestPath: string) {
     this._internal_baseRequestPath = baseRequestPath;
@@ -109,20 +139,27 @@ export class ClientServerInteraction<RequestPath extends string> {
     return this;
   }
 
-  async getJson<Endpoint extends KeysStartingWith<OpenAPIPaths, RequestPath>>(
-    endpoint: Endpoint,
+  async getJson<OpenApiEndpointPath extends keyof OpenApi>(
+    endpoint: OpenApiEndpointPath,
+    pathParams: OpenApi[OpenApiEndpointPath]["pathParams"] = {},
     extraHeaders?: {
       [key: string]: string;
     },
-  ): Promise<OpenAPIPaths[Endpoint]["get"]["responses"][200]["content"]["application/json"]> {
+  ): Promise<OpenApi[OpenApiEndpointPath]["get"]["responses"][200]["content"]["application/json"]> {
     const instanceUrl = this.getInstanceUrl();
     const username = this.getUsername();
     const sessionToken = this.getUserSessionToken();
     const sessionId = this.getSessionId();
 
+    let endpointPathWithParams: string = endpoint as string;
+
+    for (const [key, value] of Object.entries(pathParams)) {
+      endpointPathWithParams = (<string>(<unknown>endpointPathWithParams)).replace(`:${key}`, <string>value);
+    }
+
     return new Promise<ResponseType>((resolve, reject) => {
-      console.log(`${instanceUrl}${this._internal_baseRequestPath}${endpoint}`);
-      fetch(`${instanceUrl}${this._internal_baseRequestPath}${endpoint}`, {
+      console.log(`${instanceUrl}${this._internal_baseRequestPath}${<string>endpoint}`);
+      fetch(`${instanceUrl}${this._internal_baseRequestPath}${<string>endpoint}`, {
         method: "GET",
         mode: "cors",
         headers: {
@@ -145,18 +182,18 @@ export class ClientServerInteraction<RequestPath extends string> {
           if (resp?.error) {
             reject(resp.error);
             if (resp.error === "authorization fail") {
-              console.error("unauthorized request ", endpoint);
+              console.error("unauthorized request ", <string>endpoint);
               window.location.href = "/";
               return;
             }
-            console.error(`Error fetching from instance: (json) GET ${endpoint}, Error:`, resp.error);
+            console.error(`Error fetching from instance: (json) GET ${<string>endpoint}, Error:`, resp.error);
             return;
           }
 
           resolve(resp);
         })
         .catch((err) => {
-          console.error(`Error parsing result from instance: (json) GET ${endpoint}`, err);
+          console.error(`Error parsing result from instance: (json) GET ${<string>endpoint}`, err);
 
           reject(err);
         });
@@ -491,7 +528,8 @@ export class ClientServerInteraction<RequestPath extends string> {
   }
 }
 
-class __internalClientServerInteraction<ModuleRequestPath extends string> extends ClientServerInteraction<ModuleRequestPath> {
+// @ts-ignore
+class __internalClientServerInteraction extends ClientServerInteraction<OpenAPIPaths> {
   userDB: UserDatabase;
   path: BrowserPath;
   private user!: CSIYourDashUser;

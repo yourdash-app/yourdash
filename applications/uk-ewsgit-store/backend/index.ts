@@ -163,5 +163,41 @@ export default class StoreModule extends YourDashBackendModule {
         });
       },
     );
+
+    core.request.get(
+      "/wallpaper/current",
+      z.object({
+        dimensions: z.object({ width: z.number(), height: z.number() }),
+        path: z.string(),
+        previewThumbnail: z.string(),
+      }),
+      async (req, res) => {
+        return res.json({
+          dimensions: {
+            width: 1920,
+            height: 1080,
+          },
+          path: "wallpaper.png",
+          previewThumbnail: "wallpaper.png",
+        });
+      },
+    );
+
+    core.request.get(
+      "/wallpapers/",
+      z.object({ dimensions: z.object({ width: z.number(), height: z.number() }), path: z.string(), previewThumbnail: z.string() }).array(),
+      async (req, res) => {
+        return res.json([
+          {
+            dimensions: {
+              width: 1920,
+              height: 1080,
+            },
+            path: "wallpaper.png",
+            previewThumbnail: "wallpaper.png",
+          },
+        ]);
+      },
+    );
   }
 }

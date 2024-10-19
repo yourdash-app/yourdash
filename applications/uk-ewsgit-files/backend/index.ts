@@ -7,7 +7,6 @@ import { promises as fs } from "fs";
 import path from "path";
 import { YourDashBackendModule, YourDashModuleArguments } from "@yourdash/backend/src/core/coreApplicationManager.js";
 import core from "@yourdash/backend/src/core/core.js";
-import EndpointTabViewHome from "../shared/types/endpoints/tabView/home.js";
 import { z } from "zod";
 
 export default class FilesModule extends YourDashBackendModule {
@@ -101,7 +100,7 @@ export default class FilesModule extends YourDashBackendModule {
               serviceLogo: undefined,
             },
           ],
-        } satisfies EndpointTabViewHome);
+        });
       },
     );
   }

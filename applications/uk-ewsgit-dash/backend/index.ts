@@ -41,119 +41,16 @@ export default class DashModule extends YourDashBackendModule {
       {
         widgets: [
           {
-            position: {
-              x: 1,
-              y: 0,
-            },
             widgetType: "applicationShortcut",
-            size: {
-              preferred: {
-                width: 2,
-                height: 2,
-              },
-              min: {
-                width: 1,
-                height: 1,
-              },
-              max: {
-                width: 2,
-                height: 3,
-              },
-            },
+            allowedSize: { default: { width: 1, height: 1 }, min: { width: 1, height: 1 }, max: { width: 1, height: 1 } },
+            position: { x: 0, y: 0 },
+            size: { width: 1, height: 1 },
             data: {
               id: "uk-ewsgit-dash-frontend",
-              url: "https://ewsgit.uk",
-              name: "YourDash",
-              icon: "https://ewsgit.uk/favicon.png",
+              name: "Dash",
+              icon: "put authenticated image here",
+              url: "/app/a/uk-ewsgit-dash-frontend",
             },
-          },
-          {
-            position: {
-              x: 2,
-              y: 0,
-            },
-            widgetType: "applicationShortcut",
-            size: {
-              preferred: {
-                width: 2,
-                height: 2,
-              },
-              min: {
-                width: 1,
-                height: 1,
-              },
-              max: {
-                width: 2,
-                height: 3,
-              },
-            },
-            data: {},
-          },
-          {
-            position: {
-              x: 0,
-              y: 2,
-            },
-            widgetType: "applicationShortcut",
-            size: {
-              preferred: {
-                width: 2,
-                height: 2,
-              },
-              min: {
-                width: 1,
-                height: 1,
-              },
-              max: {
-                width: 2,
-                height: 3,
-              },
-            },
-            data: {},
-          },
-          {
-            position: {
-              x: 0,
-              y: 4,
-            },
-            widgetType: "applicationShortcut",
-            size: {
-              preferred: {
-                width: 2,
-                height: 2,
-              },
-              min: {
-                width: 1,
-                height: 1,
-              },
-              max: {
-                width: 2,
-                height: 3,
-              },
-            },
-            data: {},
-          },
-          {
-            position: {
-              x: 2,
-              y: 2,
-            },
-            widgetType: "applicationShortcut",
-            size: {
-              preferred: {
-                width: 2,
-                height: 2,
-              },
-              min: {
-                width: 1,
-                height: 1,
-              },
-              max: {
-                width: 2,
-                height: 3,
-              },
-            },
-            data: {},
           },
         ],
       },
@@ -167,11 +64,29 @@ export default class DashModule extends YourDashBackendModule {
       });
     });
 
-    core.request.get("/widgets/:page", z.object({ widgets: z.any().array() }), async (req, res) => {
-      const page = req.params.page as string;
+    core.request.get(
+      "/widgets/:page",
+      z.object({
+        widgets: z
+          .object({
+            position: z.object({ x: z.number(), y: z.number() }),
+            size: z.object({ width: z.number(), height: z.number() }),
+            widgetType: z.string(),
+            allowedSize: z.object({
+              default: z.object({ width: z.number(), height: z.number() }),
+              min: z.object({ width: z.number(), height: z.number() }),
+              max: z.object({ width: z.number(), height: z.number() }),
+            }),
+            data: z.any(),
+          })
+          .array(),
+      }),
+      async (req, res) => {
+        const page = req.params.page as string;
 
-      return res.json(WIDGET_PAGES[Number(page)] satisfies IWidgetGrid);
-    });
+        return res.json(WIDGET_PAGES[Number(page)]);
+      },
+    );
 
     core.request.get("/api-version", z.object({ version: z.number() }), async (req, res) => {
       return res.json({ version: 1 });
