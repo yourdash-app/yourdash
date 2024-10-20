@@ -11,6 +11,7 @@ import React, { useState, useEffect } from "react";
 import coreCSI from "@yourdash/csi/coreCSI";
 import { type IYourDashSession, YOURDASH_SESSION_TYPE } from "@yourdash/shared/core/session";
 import BasePageLayout from "../../components/BasePageLayout";
+import { acsi } from "../../meta.yourdash";
 
 const SettingsPageSession: React.FC = () => {
   const [reloadNum, setReloadNum] = useState(0);
@@ -20,11 +21,11 @@ const SettingsPageSession: React.FC = () => {
   );
 
   useEffect(() => {
-    coreCSI.syncGetJson("/user/sessions", (data) => {
+    acsi.syncGetJson("/user/sessions", {}, (data) => {
       setSessions(data.sessions);
     });
 
-    coreCSI.syncGetJson("/core/personal-server-accelerator/sessions", (data) => {
+    acsi.syncGetJson("/core/personal-server-accelerator/sessions", {}, (data) => {
       setPersonalServerAcceleration(data.sessions);
     });
   }, [reloadNum]);

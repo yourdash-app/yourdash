@@ -11,9 +11,12 @@ import FSDirectory from "./FSDirectory.js";
 import FSError, { FS_ERROR_TYPE } from "./FSError.js";
 import FSFile from "./FSFile.js";
 import FSLock from "./FSLock.js";
+import sharp from "sharp";
+import path from "path";
 
 export default class coreFS {
   ROOT_PATH: string;
+  THUMBNAIL_PATH = "/cache/photos/thumbnails" as const;
   core: Core;
   readonly verifyFileSystem: coreVerifyFileSystem;
   __internal__fileSystemLocks: Map<string, FSLock[]>;
@@ -203,5 +206,17 @@ export default class coreFS {
       this.core.log.error("filesystem", "Unable to copy file: " + source + " to " + destination);
       return false;
     }
+  }
+
+  async generateThumbnail(fsPath: string, dimensions: { width: number; height: number }) {
+    if (await this.doesExist(path.join(this.ROOT_PATH, this.THUMBNAIL_PATH, fsPath, `${dimensions.width}x${dimensions.height}.webp`)))
+      return path.join(this.ROOT_PATH, this.THUMBNAIL_PATH, fsPath, `${dimensions.width}x${dimensions.height}.webp`);
+
+    await sharp(path.resolve(fsPath))
+      .resize({ width: dimensions.width, height: dimensions.height })
+      .toFormat("webp")
+      .toFile(path.join(this.ROOT_PATH, this.THUMBNAIL_PATH, fsPath, `${dimensions.width}x${dimensions.height}.webp`));
+
+    return path.join(this.ROOT_PATH, this.THUMBNAIL_PATH, fsPath, `${dimensions.width}x${dimensions.height}.webp`);
   }
 }

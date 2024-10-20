@@ -4,16 +4,17 @@
  */
 
 import core from "@yourdash/backend/src/core/core.js";
-import YourDashPanel from "@yourdash/backend/src/core/helpers/panel.js";
+import { YourDashBackendModule, YourDashModuleArguments } from "@yourdash/backend/src/core/coreApplicationManager.js";
+import { AUTHENTICATED_IMAGE_TYPE } from "@yourdash/backend/src/core/coreImage.js";
+import YourDashPanel, { YourDashPanelPosition } from "@yourdash/backend/src/core/helpers/panel.js";
 import { readdirSync, readFileSync } from "fs";
 import path from "path";
+import z from "zod";
 import SettingsCategory from "../shared/types/category.js";
 import EndpointSettingsCategory from "../shared/types/endpoints/setting/category.js";
 import EndpointSettingCategorySetting from "../shared/types/endpoints/setting/category/setting.js";
 import ISetting from "../shared/types/setting.js";
 import SETTING_TYPE from "../shared/types/settingType.js";
-import { YourDashBackendModule, YourDashModuleArguments } from "@yourdash/backend/src/core/coreApplicationManager.js";
-import z from "zod";
 
 /*
  *   Future settings plans
@@ -99,36 +100,31 @@ export default class SettingsModule extends YourDashBackendModule {
           return undefined;
         }
         if (setting.type === SETTING_TYPE.BOOLEAN && typeof setting.value !== "boolean") {
-          this.api.core.log.error(
-            "app/settings",
+          this.api.log.error(
             `Setting '${setting.id}' has the type '${typeof setting.value}' but it's default value is expected to be of type 'boolean'`,
           );
           return undefined;
         }
         if (setting.type === SETTING_TYPE.STRING && typeof setting.value !== "string") {
-          this.api.core.log.error(
-            "app/settings",
+          this.api.log.error(
             `Setting '${setting.id}' has the type '${typeof setting.value}' but it's default value is expected to be of type 'string'`,
           );
           return undefined;
         }
         if (setting.type === SETTING_TYPE.DATE && typeof setting.value !== "number") {
-          this.api.core.log.error(
-            "app/settings",
+          this.api.log.error(
             `Setting '${setting.id}' has the type '${typeof setting.value}' but it's default value is expected to be of type 'number' (unix epoch time)`,
           );
           return undefined;
         }
         if (setting.type === SETTING_TYPE.INT && typeof setting.value !== "number" && !setting.type.toString().includes(".")) {
-          this.api.core.log.error(
-            "app/settings",
+          this.api.log.error(
             `Setting '${setting.id}' has the type '${typeof setting.value}' but it's default value is expected to be of type 'number' (must contain a decimal)`,
           );
           return undefined;
         }
         if (setting.type === SETTING_TYPE.FILE && typeof setting.value !== "string") {
-          this.api.core.log.error(
-            "app/settings",
+          this.api.log.error(
             `Setting '${setting.id}' has the type '${typeof setting.value}' but it's default value is expected to be of type 'string'`,
           );
           return undefined;
@@ -138,8 +134,7 @@ export default class SettingsModule extends YourDashBackendModule {
           typeof setting.value !== "string" &&
           (!setting.type.toString().includes("#") || !(setting.type.toString().includes("rgb(") && setting.type.toString().includes(")")))
         ) {
-          this.api.core.log.error(
-            "app/settings",
+          this.api.log.error(
             `Setting '${setting.id}' has the type '${typeof setting.value}' but it's default value is expected to be of type 'string' (css 'hex', 'rgb' or 'rgba')`,
           );
           return undefined;
@@ -159,38 +154,30 @@ export default class SettingsModule extends YourDashBackendModule {
         this.settingsCategories[setting.category].settings[setting.id] = setting;
       });
 
-    this.api.core.log.info("app/settings", "Loaded settings from all applications.");
+    this.api.log.info("Loaded settings from all applications.");
 
     // legacy endpoints
-    core.request.post("/app/settings/core/panel/position", async (req, res) => {
-      const { username } = req.headers as {
-        username: string;
-      };
-      const { position } = req.body;
+    core.request.post(
+      "/core/panel/position",
+      z.object({ position: z.nativeEnum(YourDashPanelPosition) }),
+      z.object({ success: z.boolean() }),
+      async (req, res) => {
+        const { username } = req.headers as {
+          username: string;
+        };
+        const { position } = req.body;
 
-      const panel = new YourDashPanel(username);
+        const panel = new YourDashPanel(username);
 
-      await panel.setPanelPosition(position);
+        await panel.setPanelPosition(position);
 
-      return res.json({
-        success: true,
-      });
-    });
+        return res.json({
+          success: true,
+        });
+      },
+    );
 
-    core.request.post("/app/settings/core/panel/quick-shortcuts", async (req, res) => {
-      const { username } = req.headers as {
-        username: string;
-      };
-      const { launcher } = req.body;
-
-      const panel = new YourDashPanel(username);
-
-      await panel.setLauncherType(launcher);
-
-      return res.json({ success: true });
-    });
-
-    core.request.get("/app/settings/developer/install-all-applications", z.object({ success: z.boolean() }), async (req, res) => {
+    core.request.get("/developer/install-all-applications", z.object({ success: z.boolean() }), async (req, res) => {
       this.installableApplications.map(async (app) => {
         if (core.globalDb.get<string[]>("core:installedApplications")?.includes(app)) {
           return;
@@ -203,8 +190,6 @@ export default class SettingsModule extends YourDashBackendModule {
 
       return res.json({ success: true });
     });
-
-    core.request.setNamespace("app/settings");
 
     core.request.get(
       "/cat/:categoryid",
@@ -221,8 +206,7 @@ export default class SettingsModule extends YourDashBackendModule {
         return res.json(
           <EndpointSettingsCategory>this.settingsCategories[categoryid] || {
             displayName: "Unknown Category",
-            id: "unknown",
-            // UNUSED but possible future idea
+            id: "unknown", // UNUSED but possible future idea
             icon: "",
             description: "This category does not exist.",
             settings: {},
@@ -285,5 +269,22 @@ export default class SettingsModule extends YourDashBackendModule {
     //     });
     //   },
     // );
+
+    // wallpaper manager
+
+    core.request.get(
+      "/current/wallpaper",
+      z.object({ dimensions: z.object({ width: z.number(), height: z.number() }), thumbnail: z.string() }),
+      async (req, res) => {
+        let wallpaperPath = path.join(core.users.get(req.username).getPath(), "core/wallpaper.avif");
+
+        let thumbnail = await core.fs.generateThumbnail(wallpaperPath, { width: 480, height: 360 });
+
+        return res.json({
+          dimensions: await core.image.getImageDimensions(wallpaperPath),
+          thumbnail: core.image.createAuthenticatedImage(req.username, req.sessionId, AUTHENTICATED_IMAGE_TYPE.FILE, thumbnail),
+        });
+      },
+    );
   }
 }

@@ -188,9 +188,12 @@ export default class CoreApplicationManager {
 
   async loadInstalledApplications() {
     const installedApplications = this.getInstalledApplications();
-    for (const applicationPath of installedApplications) {
-      await this.loadApplication(applicationPath);
-    }
+
+    await Promise.all(
+      installedApplications.map(async (applicationPath) => {
+        return await this.loadApplication(applicationPath);
+      }),
+    );
 
     return this.loadedModules;
   }
@@ -250,6 +253,8 @@ export default class CoreApplicationManager {
 
       this.loadedModules.officialFrontend.push({ config: mod, applicationPath: applicationPath });
     }
+
+    this.core.log.info("application_manager", `Loaded application: ${applicationPath}`);
   }
 
   async verifyApplicationModule(

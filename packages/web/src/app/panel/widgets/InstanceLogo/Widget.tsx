@@ -17,7 +17,7 @@ const InstanceLogoWidget: React.FC = () => {
   });
 
   useEffect(() => {
-    coreCSI.syncGetJson("/core/panel/logo", (data) => {
+    coreCSI.syncGetJson("/core/panel/logo", {}, (data) => {
       setIcons(data);
     });
   }, []);

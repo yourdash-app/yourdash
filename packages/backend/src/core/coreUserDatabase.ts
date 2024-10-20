@@ -78,7 +78,7 @@ export default class CoreUserDatabase {
       return res.json(this.userDatabases.get(username) || {});
     });
 
-    this.core.request.post("/core/user_db", async (req, res) => {
+    this.core.request.post("/core/user_db", z.unknown(), z.unknown(), async (req, res) => {
       const { username } = req.headers;
 
       this.userDatabases.set(username, req.body);

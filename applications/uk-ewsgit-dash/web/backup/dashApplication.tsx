@@ -25,7 +25,7 @@ const DashApplication: React.FC = () => {
   const [layout, setLayout] = React.useState<"browser" | "dashboard">("dashboard");
 
   React.useEffect(() => {
-    coreCSI.syncGetJson("/app/dash/user-full-name", (res) => {
+    coreCSI.syncGetJson("/app/dash/user-full-name", {}, (res) => {
       setUserFullName(res);
     });
 

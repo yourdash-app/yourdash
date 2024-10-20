@@ -167,113 +167,117 @@ export default function loadNextCloudSupportEndpoints(core: Core) {
   let nextcloudAuthSessions: { [authSessionToken: string]: { authPollToken: string } } = {};
   let nextcloudAuthorisedSessions: { [authPollToken: string]: { username: string; sessionToken: string } } = {};
 
-  core.request.post("/index.php/login/v2", async (req, res) => {
-    const authSessionPollToken = generateUUID();
-    const authSessionToken = generateUUID();
+  core.request.post(
+    "/index.php/login/v2",
+    z.unknown(),
+    z.object({ poll: z.object({ token: z.string(), endpoint: z.string() }), login: z.string() }),
+    async (req, res) => {
+      const authSessionPollToken = generateUUID();
+      const authSessionToken = generateUUID();
 
-    console.log({
-      poll: {
-        token: authSessionPollToken,
-        endpoint: `http://${req.hostname}:3563/index.php/login/v2/poll`,
-      },
-      login: `http://localhost:5173/login/nextcloud/flow/v2/${authSessionToken}`,
-    });
-
-    nextcloudAuthSessions[authSessionToken] = { authPollToken: authSessionPollToken };
-
-    // authSessionToken
-    // authSessionPollToken
-    // sessionToken
-
-    return res.json({
-      poll: {
-        token: authSessionPollToken,
-        endpoint: `http://${req.hostname}:3563/index.php/login/v2/poll`,
-      },
-      login: `http://localhost:5173/login/nextcloud/flow/v2/${authSessionToken}`,
-    });
-  });
-
-  core.request.post("/index.php/login/v2/poll", async (req, res) => {
-    const authSessionPollToken = req.body.token;
-    console.log({ authSessionPollToken });
-    const authSession = nextcloudAuthorisedSessions[authSessionPollToken];
-
-    if (!authSession) {
-      console.log("polled and found no session");
-      return res.status(404).send("");
-    }
-
-    console.log("polled and found session", authSession);
-
-    const dbQuery = sessionDatabase.query(`INSERT INTO Database (username, sessionToken) VALUES ($username, $sessionToken)`);
-    dbQuery.run({ username: authSession.username, sessionToken: authSession.sessionToken });
-
-    return res.json({
-      server: `http://${req.hostname}:3563`,
-      loginName: authSession.username,
-      appPassword: authSession.sessionToken,
-    });
-  });
-
-  core.request.post("/login/nextcloud/flow/v2/authenticate", async (req, res) => {
-    if (!req.body) {
-      return res.status(400).json({ error: "Invalid or missing request body" });
-    }
-
-    const username = req.body.username;
-    const password = req.body.password;
-    const authToken = req.body.authtoken;
-
-    if (!username || username === "") {
-      return res.json({ error: "Missing username" });
-    }
-
-    if (!password || password === "") {
-      return res.json({ error: "Missing password" });
-    }
-
-    const user = new YourDashUser(username);
-
-    let savedHashedPassword = "";
-    try {
-      savedHashedPassword = await ((await core.fs.getFile(path.join(user.path, "core/password.enc"))) as FSFile).read("string");
-    } catch (e) {
-      core.log.error("authentication", "Unable to read password from disk", e);
-    }
-
-    const doesPasswordMatch = await Bun.password.verify(password, savedHashedPassword);
-
-    if (doesPasswordMatch) {
-      function generateNextcloudBearerToken() {
-        const characters = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890+";
-
-        return Array.from({ length: 180 }, () => characters[Math.floor(Math.random() * characters.length)]).join("");
-      }
-
-      const session = await createSession(username, YOURDASH_SESSION_TYPE.NEXTCLOUD_COMPATABILITY, generateNextcloudBearerToken());
-
-      /*
-        token: session.sessionToken,
-        // only used for the session's management page
-        sessionId: session.sessionId,
-      */
-
-      console.log({ sessionToken: session.sessionToken });
-
-      nextcloudAuthorisedSessions[nextcloudAuthSessions[authToken].authPollToken] = {
-        username: username,
-        sessionToken: session.sessionToken,
-      };
+      nextcloudAuthSessions[authSessionToken] = { authPollToken: authSessionPollToken };
 
       return res.json({
-        success: true,
+        poll: {
+          token: authSessionPollToken,
+          endpoint: `http://${req.hostname}:3563/index.php/login/v2/poll`,
+        },
+        login: `http://localhost:5173/login/nextcloud/flow/v2/${authSessionToken}`,
       });
-    } else {
-      core.log.info("login", `Incorrect password provided for user ${username}`);
-      return res.json({ error: "Incorrect password" });
-    }
-  });
+    },
+  );
+
+  core.request.post(
+    "/index.php/login/v2/poll",
+    z.object({ token: z.string() }),
+    z.object({ server: z.string(), loginName: z.string(), appPassword: z.string() }),
+    async (req, res) => {
+      const authSessionPollToken = req.body.token;
+      const authSession = nextcloudAuthorisedSessions[authSessionPollToken];
+
+      if (!authSession) {
+        console.log("polled and found no session");
+        return res.status(404).send();
+      }
+
+      const dbQuery = sessionDatabase.query(`INSERT INTO Database (username, sessionToken) VALUES ($username, $sessionToken)`);
+      dbQuery.run({ username: authSession.username, sessionToken: authSession.sessionToken });
+
+      return res.json({
+        server: `http://${req.hostname}:3563`,
+        loginName: authSession.username,
+        appPassword: authSession.sessionToken,
+      });
+    },
+  );
+
+  core.request.post(
+    "/login/nextcloud/flow/v2/authenticate",
+    z.object({
+      username: z.string(),
+      password: z.string(),
+      authtoken: z.string(),
+    }),
+    z
+      .object({
+        error: z.string(),
+      })
+      .or(
+        z.object({
+          success: z.boolean(),
+        }),
+      ),
+    async (req, res) => {
+      if (!req.body) {
+        return res.status(400).json({ error: "Invalid or missing request body" });
+      }
+
+      const username = req.body.username;
+      const password = req.body.password;
+      const authToken = req.body.authtoken;
+
+      if (!username || username === "") {
+        return res.json({ error: "Missing username" });
+      }
+
+      if (!password || password === "") {
+        return res.json({ error: "Missing password" });
+      }
+
+      const user = new YourDashUser(username);
+
+      let savedHashedPassword = "";
+      try {
+        savedHashedPassword = await ((await core.fs.getFile(path.join(user.path, "core/password.enc"))) as FSFile).read("string");
+      } catch (e) {
+        core.log.error("authentication", "Unable to read password from disk", e);
+      }
+
+      const doesPasswordMatch = await Bun.password.verify(password, savedHashedPassword);
+
+      if (doesPasswordMatch) {
+        function generateNextcloudBearerToken() {
+          const characters = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890+";
+
+          return Array.from({ length: 180 }, () => characters[Math.floor(Math.random() * characters.length)]).join("");
+        }
+
+        const session = await createSession(username, YOURDASH_SESSION_TYPE.NEXTCLOUD_COMPATABILITY, generateNextcloudBearerToken());
+
+        nextcloudAuthorisedSessions[nextcloudAuthSessions[authToken].authPollToken] = {
+          username: username,
+          sessionToken: session.sessionToken,
+        };
+
+        return res.json({
+          success: true,
+        });
+      } else {
+        core.log.info("login", `Incorrect password provided for user ${username}`);
+        return res.json({ error: "Incorrect password" });
+      }
+    },
+  );
 
   // @ts-ignore
   function getUserForRequest(req: ExpressRequest): YourDashUser {

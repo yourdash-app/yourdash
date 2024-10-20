@@ -8,8 +8,6 @@ import { YourDashBackendModule, YourDashModuleArguments } from "@yourdash/backen
 import randomIndexOf from "@yourdash/shared/lib/randomIndexOf.js";
 import EndpointHomeApplicationCategories from "../shared/types/endpoints/home/applicationCategories.js";
 import { EndpointStoreHomePromotedApplications } from "../shared/types/endpoints/home/promotedApplications.js";
-import { EndpointStoreHomeCategoryCategoryId } from "./../shared/types/endpoints/home/category/categoryId.js";
-import { EndpointStoreHomeApplicationApplicationId } from "../shared/types/endpoints/home/application/applicationId.js";
 import { z } from "zod";
 
 export default class StoreModule extends YourDashBackendModule {
@@ -25,8 +23,6 @@ export default class StoreModule extends YourDashBackendModule {
 
   public loadEndpoints() {
     super.loadEndpoints();
-
-    core.request.setNamespace(`app/${this.api.moduleId}`);
 
     core.request.get(
       "/home/promotedApplications",

@@ -175,6 +175,68 @@
         }
       }
     },
+    "/login/user/:username/authenticate": {
+      "post": {
+        "description": "Sample description",
+        "responses": {
+          "200": {
+            "description": "Sample description",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "token": {
+                          "type": "string"
+                        },
+                        "sessionId": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "token",
+                        "sessionId"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "error"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/login/is-authenticated": {
       "get": {
         "description": "Sample description",
@@ -740,6 +802,174 @@
         }
       }
     },
+    "/index.php/login/v2": {
+      "post": {
+        "description": "Sample description",
+        "responses": {
+          "200": {
+            "description": "Sample description",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "poll": {
+                      "type": "object",
+                      "properties": {
+                        "token": {
+                          "type": "string"
+                        },
+                        "endpoint": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "token",
+                        "endpoint"
+                      ]
+                    },
+                    "login": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "poll",
+                    "login"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/index.php/login/v2/poll": {
+      "post": {
+        "description": "Sample description",
+        "responses": {
+          "200": {
+            "description": "Sample description",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "server": {
+                      "type": "string"
+                    },
+                    "loginName": {
+                      "type": "string"
+                    },
+                    "appPassword": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "server",
+                    "loginName",
+                    "appPassword"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/login/nextcloud/flow/v2/authenticate": {
+      "post": {
+        "description": "Sample description",
+        "responses": {
+          "200": {
+            "description": "Sample description",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "error"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "success": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "success"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/ocs/v1.php/cloud/user": {
       "get": {
         "description": "Sample description",
@@ -1055,836 +1285,6 @@
         }
       }
     },
-    "/app/uk-ewsgit-dash-backend/user-full-name": {
-      "get": {
-        "description": "Get user full name",
-        "responses": {
-          "200": {
-            "description": "Get user full name",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "first": {
-                      "type": "string"
-                    },
-                    "last": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "first",
-                    "last"
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/app/uk-ewsgit-dash-backend/widget/pages": {
-      "get": {
-        "description": "Sample description",
-        "responses": {
-          "200": {
-            "description": "Sample description",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "pageCount": {
-                      "type": "number"
-                    }
-                  },
-                  "required": [
-                    "pageCount"
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/app/uk-ewsgit-dash-backend/widgets/:page": {
-      "get": {
-        "description": "Sample description",
-        "responses": {
-          "200": {
-            "description": "Sample description",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "widgets": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "position": {
-                            "type": "object",
-                            "properties": {
-                              "x": {
-                                "type": "number"
-                              },
-                              "y": {
-                                "type": "number"
-                              }
-                            },
-                            "required": [
-                              "x",
-                              "y"
-                            ]
-                          },
-                          "size": {
-                            "type": "object",
-                            "properties": {
-                              "width": {
-                                "type": "number"
-                              },
-                              "height": {
-                                "type": "number"
-                              }
-                            },
-                            "required": [
-                              "width",
-                              "height"
-                            ]
-                          },
-                          "widgetType": {
-                            "type": "string"
-                          },
-                          "allowedSize": {
-                            "type": "object",
-                            "properties": {
-                              "default": {
-                                "type": "object",
-                                "properties": {
-                                  "width": {
-                                    "type": "number"
-                                  },
-                                  "height": {
-                                    "type": "number"
-                                  }
-                                },
-                                "required": [
-                                  "width",
-                                  "height"
-                                ]
-                              },
-                              "min": {
-                                "type": "object",
-                                "properties": {
-                                  "width": {
-                                    "type": "number"
-                                  },
-                                  "height": {
-                                    "type": "number"
-                                  }
-                                },
-                                "required": [
-                                  "width",
-                                  "height"
-                                ]
-                              },
-                              "max": {
-                                "type": "object",
-                                "properties": {
-                                  "width": {
-                                    "type": "number"
-                                  },
-                                  "height": {
-                                    "type": "number"
-                                  }
-                                },
-                                "required": [
-                                  "width",
-                                  "height"
-                                ]
-                              }
-                            },
-                            "required": [
-                              "default",
-                              "min",
-                              "max"
-                            ]
-                          },
-                          "data": {}
-                        },
-                        "required": [
-                          "position",
-                          "size",
-                          "widgetType",
-                          "allowedSize"
-                        ]
-                      }
-                    }
-                  },
-                  "required": [
-                    "widgets"
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/app/uk-ewsgit-dash-backend/api-version": {
-      "get": {
-        "description": "Sample description",
-        "responses": {
-          "200": {
-            "description": "Sample description",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "version": {
-                      "type": "number"
-                    }
-                  },
-                  "required": [
-                    "version"
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/app/uk-ewsgit-files-backend/": {
-      "get": {
-        "description": "Sample description",
-        "responses": {
-          "200": {
-            "description": "Sample description",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "message"
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/app/uk-ewsgit-files-backend/list/dir/@/:path": {
-      "get": {
-        "description": "Sample description",
-        "responses": {
-          "200": {
-            "description": "Sample description",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "contents": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    }
-                  },
-                  "required": [
-                    "contents"
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/app/uk-ewsgit-files-backend/list/dir/@/": {
-      "get": {
-        "description": "Sample description",
-        "responses": {
-          "200": {
-            "description": "Sample description",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "contents": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    }
-                  },
-                  "required": [
-                    "contents"
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/app/uk-ewsgit-files-backend/tabView/home": {
-      "get": {
-        "description": "Sample description",
-        "responses": {
-          "200": {
-            "description": "Sample description",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "recentFiles": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {}
-                      }
-                    },
-                    "sharedFiles": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {}
-                      }
-                    },
-                    "commonStorageLocations": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "path": {
-                            "type": "string"
-                          },
-                          "baseName": {
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "path",
-                          "baseName"
-                        ]
-                      }
-                    },
-                    "connections": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "serviceName": {
-                            "type": "string"
-                          },
-                          "description": {
-                            "type": "string"
-                          },
-                          "url": {
-                            "type": "string"
-                          },
-                          "quota": {
-                            "type": "object",
-                            "properties": {
-                              "max": {
-                                "type": "number"
-                              },
-                              "usage": {
-                                "type": "number"
-                              },
-                              "unit": {
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "max",
-                              "usage",
-                              "unit"
-                            ]
-                          },
-                          "id": {
-                            "type": "string"
-                          },
-                          "serviceLogo": {
-                            "anyOf": [
-                              {
-                                "type": "string"
-                              },
-                              {},
-                              {
-                                "type": "null"
-                              }
-                            ]
-                          }
-                        },
-                        "required": [
-                          "serviceName",
-                          "description",
-                          "url",
-                          "quota",
-                          "id"
-                        ]
-                      }
-                    }
-                  },
-                  "required": [
-                    "recentFiles",
-                    "sharedFiles",
-                    "commonStorageLocations",
-                    "connections"
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/app/uk-ewsgit-store-backend/home/promotedApplications": {
-      "get": {
-        "description": "Sample description",
-        "responses": {
-          "200": {
-            "description": "Sample description",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "displayName": {
-                        "type": "string"
-                      },
-                      "bannerBackground": {
-                        "type": "string"
-                      },
-                      "developer": {
-                        "type": "string"
-                      },
-                      "icon": {
-                        "type": "string"
-                      },
-                      "id": {
-                        "type": "string"
-                      },
-                      "tags": {
-                        "type": "array",
-                        "items": {
-                          "type": "string"
-                        }
-                      },
-                      "description": {
-                        "type": "string"
-                      }
-                    },
-                    "required": [
-                      "displayName",
-                      "bannerBackground",
-                      "developer",
-                      "icon",
-                      "id",
-                      "tags",
-                      "description"
-                    ]
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/app/uk-ewsgit-store-backend/home/applicationCategories": {
-      "get": {
-        "description": "Sample description",
-        "responses": {
-          "200": {
-            "description": "Sample description",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "id": {
-                        "type": "string"
-                      },
-                      "displayName": {
-                        "type": "string"
-                      },
-                      "description": {
-                        "type": "string"
-                      },
-                      "moduleCount": {
-                        "type": "number"
-                      },
-                      "applicationCount": {
-                        "type": "number"
-                      },
-                      "backgroundImage": {
-                        "type": "number"
-                      }
-                    },
-                    "required": [
-                      "id",
-                      "displayName",
-                      "description",
-                      "moduleCount",
-                      "applicationCount",
-                      "backgroundImage"
-                    ]
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/app/uk-ewsgit-store-backend/home/category/:categoryId": {
-      "get": {
-        "description": "Sample description",
-        "responses": {
-          "200": {
-            "description": "Sample description",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "anyOf": [
-                    {
-                      "type": "object",
-                      "properties": {
-                        "applications": {
-                          "type": "array",
-                          "items": {
-                            "type": "string"
-                          }
-                        },
-                        "displayName": {
-                          "type": "string"
-                        }
-                      },
-                      "required": [
-                        "applications",
-                        "displayName"
-                      ]
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "error": {
-                          "type": "string"
-                        }
-                      },
-                      "required": [
-                        "error"
-                      ]
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/app/uk-ewsgit-store-backend/home/application/:applicationId": {
-      "get": {
-        "description": "Sample description",
-        "responses": {
-          "200": {
-            "description": "Sample description",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "description": {
-                      "type": "string"
-                    },
-                    "displayName": {
-                      "type": "string"
-                    },
-                    "developer": {
-                      "type": "string"
-                    },
-                    "id": {
-                      "type": "string"
-                    },
-                    "moduleCount": {
-                      "type": "number"
-                    }
-                  },
-                  "required": [
-                    "description",
-                    "displayName",
-                    "developer",
-                    "id",
-                    "moduleCount"
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/app/uk-ewsgit-photos-backend/media/raw/@/*": {
-      "get": {
-        "description": "Sample description",
-        "responses": {
-          "200": {
-            "description": "Sample description",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/app/uk-ewsgit-photos-backend/album/@/*": {
-      "get": {
-        "description": "Sample description",
-        "responses": {
-          "200": {
-            "description": "Sample description",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/app/uk-ewsgit-photos-backend/album/sub/:page/@/*": {
-      "get": {
-        "description": "Sample description",
-        "responses": {
-          "200": {
-            "description": "Sample description",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "anyOf": [
-                    {
-                      "type": "object",
-                      "properties": {
-                        "data": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "properties": {
-                              "displayName": {
-                                "type": "string"
-                              },
-                              "path": {
-                                "type": "string"
-                              },
-                              "size": {
-                                "type": "number"
-                              },
-                              "thumbnail": {
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "displayName",
-                              "path",
-                              "size",
-                              "thumbnail"
-                            ]
-                          }
-                        },
-                        "hasAnotherPage": {
-                          "type": "boolean"
-                        }
-                      },
-                      "required": [
-                        "data",
-                        "hasAnotherPage"
-                      ]
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "error": {
-                          "type": "string"
-                        }
-                      },
-                      "required": [
-                        "error"
-                      ]
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/app/uk-ewsgit-photos-backend/media/thumbnail/:res/@/*": {
-      "get": {
-        "description": "Sample description",
-        "responses": {
-          "200": {
-            "description": "Sample description",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "anyOf": [
-                    {
-                      "type": "object",
-                      "properties": {
-                        "thumbnail": {
-                          "type": "string"
-                        }
-                      },
-                      "required": [
-                        "thumbnail"
-                      ]
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "error": {
-                          "type": "boolean"
-                        }
-                      },
-                      "required": [
-                        "error"
-                      ]
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/app/uk-ewsgit-photos-backend/album/media/:page/@/*": {
-      "get": {
-        "description": "Sample description",
-        "responses": {
-          "200": {
-            "description": "Sample description",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "path": {
-                            "type": "string"
-                          },
-                          "resolution": {
-                            "type": "object",
-                            "properties": {
-                              "width": {
-                                "type": "number"
-                              },
-                              "height": {
-                                "type": "number"
-                              }
-                            },
-                            "required": [
-                              "width",
-                              "height"
-                            ]
-                          },
-                          "mediaType": {
-                            "type": "integer",
-                            "enum": [
-                              0,
-                              1,
-                              2
-                            ]
-                          },
-                          "metadata": {
-                            "type": "object",
-                            "properties": {
-                              "people": {
-                                "type": "array",
-                                "items": {
-                                  "type": "string"
-                                }
-                              },
-                              "location": {
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "people",
-                              "location"
-                            ]
-                          }
-                        },
-                        "required": [
-                          "path",
-                          "resolution",
-                          "mediaType"
-                        ]
-                      }
-                    },
-                    "hasAnotherPage": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "data",
-                    "hasAnotherPage"
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/core/login/notice": {
       "get": {
         "description": "Sample description",
@@ -1973,6 +1373,31 @@
         }
       }
     },
+    "/core/session/:id": {
+      "delete": {
+        "description": "Sample description",
+        "responses": {
+          "200": {
+            "description": "Sample description",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "success"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/core/user_db": {
       "get": {
         "description": "Sample description",
@@ -1982,6 +1407,37 @@
             "content": {
               "application/json": {
                 "schema": {}
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Sample description",
+        "responses": {
+          "200": {
+            "description": "Sample description",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Request error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
               }
             }
           }
@@ -2080,6 +1536,99 @@
                       "url"
                     ]
                   }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/core/panel/quick-shortcuts/:ind": {
+      "delete": {
+        "description": "Sample description",
+        "responses": {
+          "200": {
+            "description": "Sample description",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "success": {
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
+                        }
+                      },
+                      "required": [
+                        "success"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "success": {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        "error": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "success",
+                        "error"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/core/panel/quick-shortcuts/create": {
+      "post": {
+        "description": "Sample description",
+        "responses": {
+          "200": {
+            "description": "Sample description",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "success"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
                 }
               }
             }

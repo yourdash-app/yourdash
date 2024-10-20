@@ -224,6 +224,57 @@ pathParams: {"username": string}},"/login/user/:username":{
     head?: never;
     patch?: never;
     trace?: never;
+pathParams: {"username": string}},"/login/user/:username/authenticate":{
+    parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** @description Sample description */
+    post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Sample description */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        token: string;
+                        sessionId: number;
+                    } | {
+                        error: string;
+                    };
+                };
+            };
+            /** @description Request error */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        error: string;
+                    };
+                };
+            };
+        };
+    };
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
 pathParams: {"username": string}},"/login/is-authenticated":{
     parameters: {
         query?: never;
@@ -672,6 +723,158 @@ pathParams: {}},"/ocs/v1.php/cloud/capabilities":{
     head?: never;
     patch?: never;
     trace?: never;
+pathParams: {}},"/index.php/login/v2":{
+    parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** @description Sample description */
+    post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Sample description */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        poll: {
+                            token: string;
+                            endpoint: string;
+                        };
+                        login: string;
+                    };
+                };
+            };
+            /** @description Request error */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        error: string;
+                    };
+                };
+            };
+        };
+    };
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+pathParams: {}},"/index.php/login/v2/poll":{
+    parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** @description Sample description */
+    post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Sample description */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        server: string;
+                        loginName: string;
+                        appPassword: string;
+                    };
+                };
+            };
+            /** @description Request error */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        error: string;
+                    };
+                };
+            };
+        };
+    };
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+pathParams: {}},"/login/nextcloud/flow/v2/authenticate":{
+    parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** @description Sample description */
+    post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Sample description */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        error: string;
+                    } | {
+                        success: boolean;
+                    };
+                };
+            };
+            /** @description Request error */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        error: string;
+                    };
+                };
+            };
+        };
+    };
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
 pathParams: {}},"/ocs/v1.php/cloud/user":{
     parameters: {
         query?: never;
@@ -953,7 +1156,44 @@ pathParams: {}},"/user/sessions":{
     head?: never;
     patch?: never;
     trace?: never;
-pathParams: {}},"/core/user_db":{
+pathParams: {}},"/core/session/:id":{
+    parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    /** @description Sample description */
+    delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Sample description */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        success: boolean;
+                    };
+                };
+            };
+        };
+    };
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+pathParams: {"id": string}},"/core/user_db":{
     parameters: {
         query?: never;
         header?: never;
@@ -982,7 +1222,38 @@ pathParams: {}},"/core/user_db":{
         };
     };
     put?: never;
-    post?: never;
+    /** @description Sample description */
+    post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Sample description */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Request error */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        error: string;
+                    };
+                };
+            };
+        };
+    };
     delete?: never;
     options?: never;
     head?: never;
@@ -1068,6 +1339,96 @@ pathParams: {}},"/core/panel/quick-shortcuts":{
     };
     put?: never;
     post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+pathParams: {}},"/core/panel/quick-shortcuts/:ind":{
+    parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    /** @description Sample description */
+    delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Sample description */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @enum {boolean} */
+                        success: true;
+                    } | {
+                        /** @enum {boolean} */
+                        success: false;
+                        error: string;
+                    };
+                };
+            };
+        };
+    };
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+pathParams: {"ind": string}},"/core/panel/quick-shortcuts/create":{
+    parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** @description Sample description */
+    post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Sample description */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        success: boolean;
+                    };
+                };
+            };
+            /** @description Request error */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        error: string;
+                    };
+                };
+            };
+        };
+    };
     delete?: never;
     options?: never;
     head?: never;

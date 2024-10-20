@@ -13,7 +13,7 @@ const HostedApplicationRouter: React.FC = () => {
   const [application, setApplication] = useState<string>("");
 
   useEffect(() => {
-    coreCSI.syncGetJson("/core/hosted-applications", (resHostedApplciations) => {
+    coreCSI.syncGetJson("/core/hosted-applications", {}, (resHostedApplciations) => {
       console.log(resHostedApplciations);
       setHostedApplications(resHostedApplciations.applications);
     });

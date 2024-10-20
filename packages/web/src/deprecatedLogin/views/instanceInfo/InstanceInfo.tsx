@@ -17,6 +17,7 @@ const InstanceInfo: React.FC = () => {
   useEffect(() => {
     coreCSI.syncGetJson(
       "/login/instance/metadata",
+      {},
       (json: { title: string; message: string }) => {
         setMetadata(json);
       },

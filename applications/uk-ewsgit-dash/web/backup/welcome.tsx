@@ -18,7 +18,7 @@ const DashApplicationWelcome: React.FC = () => {
   const [step, setStep] = useState(0);
 
   useEffect(() => {
-    coreCSI.syncGetJson("/core/panel/user-full-name", (res) => {
+    coreCSI.syncGetJson("/core/panel/user-full-name", {}, (res) => {
       setUserFullName(res);
     });
   }, []);

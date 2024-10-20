@@ -20,6 +20,8 @@ export default class ChatbotsModule extends YourDashBackendModule {
   constructor(args: YourDashModuleArguments) {
     super(args);
 
+    this.loadedBots = [];
+
     return this;
   }
 

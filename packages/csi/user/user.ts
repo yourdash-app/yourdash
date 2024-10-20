@@ -73,7 +73,7 @@ export default class CSIYourDashUser {
 
   async getActiveStatus(): Promise<USER_ACTIVE_STATUS> {
     return new Promise((resolve) => {
-      coreCSI.syncGetJson(`/core/user/${this.username}/active_status`, (data) => {
+      coreCSI.syncGetJson(`/core/user/:username/active_status`, { username: this.username }, (data) => {
         return resolve(data?.activeStatus || USER_ACTIVE_STATUS.OFFLINE);
       });
     });

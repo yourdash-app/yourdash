@@ -17,52 +17,53 @@ import { useNavigate } from "react-router";
 
 const ListBotsPage: React.FC = () => {
   const navigate = useNavigate();
-  const [visibleBots, setVisibleBots] = useState<unknown[]>([]);
-  const [bots, setBots] = useState<unknown[]>([]);
-  const [searchValue, setSearchValue] = useState<string>("");
-  const [teams, setTeams] = useState<string[]>([]);
-  const [currentTeam, setCurrentTeam] = useState<string>(teams[0]);
-
-  useEffect(() => {
-    coreCSI.getTeams().then((ts) => {
-      console.log(ts.map((t) => t.teamName));
-      setTeams(ts.map((t) => t.teamName));
-      setCurrentTeam(ts.map((t) => t.teamName)[0]);
-    });
-  }, []);
-
-  useEffect(() => {
-    if (searchValue === "") {
-      setVisibleBots(visibleBots);
-    } else {
-      // @ts-ignore
-      setVisibleBots(visibleBots.filter((bot) => bot.displayName.toLowerCase().includes(searchValue.toLowerCase())));
-    }
-  }, [searchValue, bots]);
-
-  useEffect(() => {
-    coreCSI.syncGetJson(
-      `/app/chatbots/team/${currentTeam}/list-bots`,
-      (b: unknown[]) => {
-        b.map((botId) => {
-          coreCSI.syncGetJson(
-            `/app/chatbots/team/${currentTeam}/list/${botId}`,
-            (bot) => {
-              setBots([...bots, bot]);
-            },
-            () => {
-              console.log("failed to fetch data for bot: " + botId);
-              setBots([...bots]);
-            },
-          );
-        });
-        setBots(b);
-      },
-      () => {
-        setBots([]);
-      },
-    );
-  }, [currentTeam]);
+  // const [visibleBots, setVisibleBots] = useState<unknown[]>([]);
+  // const [bots, setBots] = useState<unknown[]>([]);
+  // const [searchValue, setSearchValue] = useState<string>("");
+  // const [teams, setTeams] = useState<string[]>([]);
+  // const [currentTeam, setCurrentTeam] = useState<string>(teams[0]);
+  //
+  // useEffect(() => {
+  //   coreCSI.getTeams().then((ts) => {
+  //     console.log(ts.map((t) => t.teamName));
+  //     setTeams(ts.map((t) => t.teamName));
+  //     setCurrentTeam(ts.map((t) => t.teamName)[0]);
+  //   });
+  // }, []);
+  //
+  // useEffect(() => {
+  //   if (searchValue === "") {
+  //     setVisibleBots(visibleBots);
+  //   } else {
+  //     // @ts-ignore
+  //     setVisibleBots(visibleBots.filter((bot) => bot.displayName.toLowerCase().includes(searchValue.toLowerCase())));
+  //   }
+  // }, [searchValue, bots]);
+  //
+  // useEffect(() => {
+  //   coreCSI.syncGetJson(
+  //     `/app/chatbots/team/`,
+  //     {},
+  //     (b: unknown[]) => {
+  //       b.map((botId) => {
+  //         coreCSI.syncGetJson(
+  //           `/app/chatbots/team/${currentTeam}/list/${botId}`,
+  //           (bot) => {
+  //             setBots([...bots, bot]);
+  //           },
+  //           () => {
+  //             console.log("failed to fetch data for bot: " + botId);
+  //             setBots([...bots]);
+  //           },
+  //         );
+  //       });
+  //       setBots(b);
+  //     },
+  //     () => {
+  //       setBots([]);
+  //     },
+  //   );
+  // }, [currentTeam]);
 
   return (
     <>
@@ -73,26 +74,26 @@ const ListBotsPage: React.FC = () => {
         showUserProfileDropdown
         extras={
           <>
-            <DropdownButton
-              items={teams.map((team) => {
-                return {
-                  label: team,
-                  onClick() {
-                    setCurrentTeam(team);
-                  },
-                };
-              })}
-            >
-              Select Team
-            </DropdownButton>
-            <TextInput
-              accessibleName={"Search Bots"}
-              icon={UKIcon.Search}
-              placeholder={"Search"}
-              onChange={(value) => {
-                setSearchValue(value);
-              }}
-            />
+            {/* <DropdownButton */}
+            {/*   items={teams.map((team) => { */}
+            {/*     return { */}
+            {/*       label: team, */}
+            {/*       onClick() { */}
+            {/*         setCurrentTeam(team); */}
+            {/*       }, */}
+            {/*     }; */}
+            {/*   })} */}
+            {/* > */}
+            {/*   Select Team */}
+            {/* </DropdownButton> */}
+            {/* <TextInput */}
+            {/*   accessibleName={"Search Bots"} */}
+            {/*   icon={UKIcon.Search} */}
+            {/*   placeholder={"Search"} */}
+            {/*   onChange={(value) => { */}
+            {/*     setSearchValue(value); */}
+            {/*   }} */}
+            {/* /> */}
             <IconButton
               icon={UKIcon.Plus}
               onClick={() => {
@@ -103,15 +104,15 @@ const ListBotsPage: React.FC = () => {
         }
       />
       <section className={styles.grid}>
-        {visibleBots.map((bot) => {
-          return <div>Hello World</div>;
-          // return (
-          //   <Card key={bot.userName} onClick={() => navigate(`/bots/${bot.userName}`)} showBorder>
-          //     <Heading level={3}>{bot.displayName}</Heading>
-          //     <p>{bot.userName}</p>
-          //   </Card>
-          // );
-        })}
+        {/* {visibleBots.map((bot) => { */}
+        {/*   return <div>Hello World</div>; */}
+        {/*   // return ( */}
+        {/*   //   <Card key={bot.userName} onClick={() => navigate(`/bots/${bot.userName}`)} showBorder> */}
+        {/*   //     <Heading level={3}>{bot.displayName}</Heading> */}
+        {/*   //     <p>{bot.userName}</p> */}
+        {/*   //   </Card> */}
+        {/*   // ); */}
+        {/* })} */}
       </section>
     </>
   );
