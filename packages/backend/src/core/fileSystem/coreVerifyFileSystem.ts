@@ -4,6 +4,7 @@
  */
 
 import path from "path";
+import { loadSessionsForUser } from "../../lib/session.js";
 import { Core } from "../core.js";
 import generateInstanceLogos from "../helpers/generateInstanceLogos.js";
 import { YOURDASH_USER_PERMISSIONS } from "../user/userPermissions.js";
@@ -24,6 +25,12 @@ export default class coreVerifyFileSystem {
       this.core.users.getAllUsers().then((users) => {
         users.map((user) => {
           this.checkUserDirectory(user);
+
+          if (user === "admin") {
+            if (this.core.isDevMode) {
+              loadSessionsForUser("admin").then(() => this.core.log.success("devmode", "Loaded sessions for admin user"));
+            }
+          }
         });
       });
     });

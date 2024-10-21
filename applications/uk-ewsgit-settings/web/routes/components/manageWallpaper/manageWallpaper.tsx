@@ -9,6 +9,7 @@ import Heading from "@yourdash/uikit/components/heading/heading.tsx";
 import Icon from "@yourdash/uikit/components/icon/icon.tsx";
 import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary.ts";
 import Image from "@yourdash/uikit/components/image/image.tsx";
+import Separator from "@yourdash/uikit/components/separator/separator.tsx";
 import Text from "@yourdash/uikit/components/text/text.tsx";
 import { acsi } from "../../../meta.yourdash.ts";
 import styles from "./manageWallpaper.module.scss";
@@ -20,10 +21,11 @@ const ManageWallpaper: React.FC = () => {
   return (
     <Card>
       <Heading
-        level={3}
-        className={styles.cardHeader}
+        level={2}
+        className={styles.heading}
         text={"Manage Wallpaper"}
       />
+      <Separator direction={"column"} />
       {currentWallpaper ? (
         <Image
           authenticatedImage

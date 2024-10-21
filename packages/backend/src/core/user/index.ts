@@ -213,7 +213,7 @@ export default class YourDashUser {
       // "/core/wallpaper.avif"
       if (!(await core.fs.doesExist(path.join(this.path, "/core/wallpaper.avif")))) {
         // copy the file
-        await core.fs.copy(path.join(core.fs.ROOT_PATH, "/defaults/wallpaper.avif"), path.join(this.path, "/core/wallpaper.avif"));
+        await core.fs.copy("/defaults/wallpaper.avif", path.join(this.path, "/core/wallpaper.avif"));
       }
     } catch (err) {
       core.log.error("user", `username: ${this.username}, failed to copy default wallpaper!`);

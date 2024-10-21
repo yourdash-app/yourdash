@@ -276,9 +276,9 @@ export default class SettingsModule extends YourDashBackendModule {
       "/current/wallpaper",
       z.object({ dimensions: z.object({ width: z.number(), height: z.number() }), thumbnail: z.string() }),
       async (req, res) => {
-        let wallpaperPath = path.join(core.fs.ROOT_PATH, core.users.get(req.username).getPath(), "core/wallpaper.avif");
+        let wallpaperPath = path.join(core.users.get(req.username).getPath(), "core/wallpaper.avif");
 
-        let thumbnail = await core.fs.generateThumbnail(wallpaperPath, { width: 480, height: 360 });
+        let thumbnail = await core.fs.generateThumbnail(wallpaperPath, { width: 480, height: 280 });
 
         return res.json({
           dimensions: await core.image.getImageDimensions(wallpaperPath),

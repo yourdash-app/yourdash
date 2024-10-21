@@ -255,8 +255,8 @@ export class Core {
       this.globalDb.__internal__startGlobalDatabaseService();
       this.teams.__internal__startTeamDatabaseService();
 
-      await this.loadCoreEndpoints();
       await this.__internal__startExpressServer();
+      await this.loadCoreEndpoints();
       await this.__internal__startViteServer();
     });
     return this;
@@ -549,10 +549,6 @@ import { Route, Routes } from "react-router";
   }
 
   private async loadCoreEndpoints() {
-    if (this.isDevMode) {
-      loadSessionsForUser("admin").then(() => this.log.success("devmode", "Loaded sessions for admin user"));
-    }
-
     if (this.processArguments["log-requests"]) {
       this.startRequestLogger({
         logOptionsRequests: !!this.processArguments["log-options-requests"],

@@ -9,8 +9,13 @@
 
 }
 
+.heading {
+  text-align: start;
+}
+
 .currentWallpaper {
   width: 100%;
+  aspect-ratio: 16/9;
 }
 
 .previousWallpapers {
