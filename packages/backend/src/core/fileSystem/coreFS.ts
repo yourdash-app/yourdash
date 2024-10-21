@@ -212,10 +212,14 @@ export default class coreFS {
     if (await this.doesExist(path.join(this.ROOT_PATH, this.THUMBNAIL_PATH, fsPath, `${dimensions.width}x${dimensions.height}.webp`)))
       return path.join(this.ROOT_PATH, this.THUMBNAIL_PATH, fsPath, `${dimensions.width}x${dimensions.height}.webp`);
 
-    await sharp(path.resolve(fsPath))
-      .resize({ width: dimensions.width, height: dimensions.height })
-      .toFormat("webp")
-      .toFile(path.join(this.ROOT_PATH, this.THUMBNAIL_PATH, fsPath, `${dimensions.width}x${dimensions.height}.webp`));
+    try {
+      await sharp(path.resolve(fsPath))
+        .resize({ width: dimensions.width, height: dimensions.height })
+        .toFormat("webp")
+        .toFile(path.resolve(path.join(this.ROOT_PATH, this.THUMBNAIL_PATH, fsPath, `${dimensions.width}x${dimensions.height}.webp`)));
+    } catch (e) {
+      this.core.log.error("fs_thumbnails", "Failed to create thumbnail", path.resolve(fsPath), e);
+    }
 
     return path.join(this.ROOT_PATH, this.THUMBNAIL_PATH, fsPath, `${dimensions.width}x${dimensions.height}.webp`);
   }

@@ -1,4 +1,4 @@
-@import "../../../../theme/themeValues";
+@use "@yourdash/uikit/theme/themeValues" as *;
 
 .component {
     height: calc(var(--nav-height) - var(#{$theme+$padding}));

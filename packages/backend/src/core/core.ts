@@ -249,16 +249,15 @@ export class Core {
         await this.globalDb.loadFromDisk("./global_database.json");
       }
 
-      this.fs.verifyFileSystem.verify().then(async () => {
-        this.users.__internal__startUserDatabaseService();
-        this.users.__internal__startUserDeletionService();
-        this.globalDb.__internal__startGlobalDatabaseService();
-        this.teams.__internal__startTeamDatabaseService();
+      this.fs.verifyFileSystem.verify();
+      this.users.__internal__startUserDatabaseService();
+      this.users.__internal__startUserDeletionService();
+      this.globalDb.__internal__startGlobalDatabaseService();
+      this.teams.__internal__startTeamDatabaseService();
 
-        await this.__internal__startExpressServer();
-        await this.loadCoreEndpoints();
-        await this.__internal__startViteServer();
-      });
+      await this.loadCoreEndpoints();
+      await this.__internal__startExpressServer();
+      await this.__internal__startViteServer();
     });
     return this;
   }
@@ -795,7 +794,7 @@ import { Route, Routes } from "react-router";
 
     try {
       console.time("core_load_modules");
-      this.applicationManager.loadInstalledApplications();
+      await this.applicationManager.loadInstalledApplications();
 
       const externalApplications: string | string[] = this.processArguments["load-external-application"] || [];
 
@@ -807,7 +806,7 @@ import { Route, Routes } from "react-router";
         if (typeof externalApplications === "string") {
           // external Modules is a string
           try {
-            this.applicationManager.loadApplication(externalApplications);
+            await this.applicationManager.loadApplication(externalApplications);
           } catch (err) {
             if (err instanceof Error) {
               this.log.error("startup", `Failed to load external module ${externalApplications}`, err);
@@ -817,7 +816,7 @@ import { Route, Routes } from "react-router";
           // externalApplications must be an array
           for (const externalModule of externalApplications) {
             try {
-              this.applicationManager.loadApplication(externalModule);
+              await this.applicationManager.loadApplication(externalModule);
             } catch (err) {
               if (err instanceof Error) {
                 this.log.error("startup", `Failed to load external module ${externalModule}`, err);
@@ -904,14 +903,17 @@ import { Route, Routes } from "react-router";
     try {
       if (!(this.applicationManager.loadedModules.backend.length > 0)) this.log.warning("startup", "No modules have been loaded!");
 
-      this.applicationManager.loadedModules.backend.map((mod) => {
-        try {
-          mod.module.loadEndpoints();
-          this.log.success("module_manager", `Loaded endpoints for ${mod.config.id}`);
-        } catch (err) {
-          this.log.error("startup", `Failed to load post-auth endpoints for ${mod.config.id}`, err);
-        }
-      });
+      await Promise.all(
+        this.applicationManager.loadedModules.backend.map(async (mod) => {
+          try {
+            // the await is necessary
+            mod.module.loadEndpoints();
+            this.log.success("module_manager", `Loaded endpoints for ${mod.config.id}`);
+          } catch (err) {
+            this.log.error("startup", `Failed to load post-auth endpoints for ${mod.config.id}`, err);
+          }
+        }),
+      );
     } catch (err) {
       this.log.error("startup", "Failed to load post-auth endpoints for all modules", err);
     }

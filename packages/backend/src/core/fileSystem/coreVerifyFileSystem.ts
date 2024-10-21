@@ -19,11 +19,13 @@ export default class coreVerifyFileSystem {
     return this;
   }
 
-  async verify() {
-    await this.checkRootDirectory();
-
-    (await ((await this.core.fs.get("./users")) as FSDirectory)?.getChildrenAsBaseName()).map((user: string) => {
-      this.checkUserDirectory(user);
+  verify() {
+    this.checkRootDirectory().then(() => {
+      this.core.users.getAllUsers().then((users) => {
+        users.map((user) => {
+          this.checkUserDirectory(user);
+        });
+      });
     });
   }
 
@@ -71,6 +73,19 @@ export default class coreVerifyFileSystem {
         await fs.copyFile(path.join(process.cwd(), "./src/defaults/theme.css"), path.join(this.core.fs.ROOT_PATH, "./defaults/theme.css"));
       } catch (e) {
         this.core.log.error("Unable to copy the default theme");
+        console.trace(e);
+      }
+    }
+
+    if (!(await this.core.fs.doesExist("./defaults/wallpaper.avif"))) {
+      // set the instance's default user avatar
+      try {
+        await fs.copyFile(
+          path.join(process.cwd(), "./src/defaults/default_login_background.avif"),
+          path.join(this.core.fs.ROOT_PATH, "./defaults/wallpaper.avif"),
+        );
+      } catch (e) {
+        this.core.log.error("Unable to copy the default wallpaper");
         console.trace(e);
       }
     }

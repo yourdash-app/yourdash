@@ -1,4 +1,4 @@
-@import "@yourdash/uikit/theme/themeValues";
+@use "@yourdash/uikit/theme/themeValues" as *;
 
 .tabBar {
   display: flex;

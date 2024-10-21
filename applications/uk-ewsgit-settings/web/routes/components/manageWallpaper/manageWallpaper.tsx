@@ -15,7 +15,7 @@ import styles from "./manageWallpaper.module.scss";
 import React from "react";
 
 const ManageWallpaper: React.FC = () => {
-  const { currentWallpaper } = useResource(() => acsi.getJson("/current/wallpaper"), []);
+  const currentWallpaper = useResource(() => acsi.getJson("/current/wallpaper"), []);
 
   return (
     <Card>
@@ -24,12 +24,16 @@ const ManageWallpaper: React.FC = () => {
         className={styles.cardHeader}
         text={"Manage Wallpaper"}
       />
-      <Image
-        authenticatedImage
-        src={"wallpaper path"}
-        accessibleLabel={"current wallpaper"}
-        className={styles.currentWallpaper}
-      />
+      {currentWallpaper ? (
+        <Image
+          authenticatedImage
+          src={currentWallpaper.thumbnail}
+          accessibleLabel={"current wallpaper"}
+          className={styles.currentWallpaper}
+        />
+      ) : (
+        <div>no current wallpaper</div>
+      )}
       <div className={styles.previousWallpapers}>
         <Card>Previous Image 1</Card>
         <Card>Previous Image 2</Card>

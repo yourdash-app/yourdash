@@ -210,6 +210,17 @@ export default class YourDashUser {
     }
 
     try {
+      // "/core/wallpaper.avif"
+      if (!(await core.fs.doesExist(path.join(this.path, "/core/wallpaper.avif")))) {
+        // copy the file
+        await core.fs.copy(path.join(core.fs.ROOT_PATH, "/defaults/wallpaper.avif"), path.join(this.path, "/core/wallpaper.avif"));
+      }
+    } catch (err) {
+      core.log.error("user", `username: ${this.username}, failed to copy default wallpaper!`);
+      return;
+    }
+
+    try {
       // "/core/theme.css"
       if (!(await core.fs.doesExist(path.join(this.path, "/core/theme.css")))) {
         await core.fs.copy("./defaults/theme.css", path.join(this.path, "/core/theme.css"));
