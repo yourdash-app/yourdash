@@ -3,6 +3,7 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
+import toAuthImgUrl from "@yourdash/csi/toAuthImgUrl.ts";
 import useResource from "@yourdash/csi/useResource.ts";
 import Card from "@yourdash/uikit/components/card/card.tsx";
 import Heading from "@yourdash/uikit/components/heading/heading.tsx";
@@ -28,18 +29,16 @@ const ManageWallpaper: React.FC = () => {
       <Separator direction={"column"} />
       {currentWallpaper ? (
         <Image
-          authenticatedImage
-          src={currentWallpaper.thumbnail}
+          width={480}
+          src={toAuthImgUrl(currentWallpaper.thumbnail)}
           accessibleLabel={"current wallpaper"}
           className={styles.currentWallpaper}
         />
       ) : (
         <div>no current wallpaper</div>
       )}
+      <Separator direction={"column"} />
       <div className={styles.previousWallpapers}>
-        <Card>Previous Image 1</Card>
-        <Card>Previous Image 2</Card>
-        <Card>Previous Image 2</Card>
         <Card className={styles.newWallpaperButton}>
           <Icon
             className={styles.icon}

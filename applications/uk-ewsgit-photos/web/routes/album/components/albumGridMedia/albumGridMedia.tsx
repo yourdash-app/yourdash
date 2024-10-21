@@ -3,6 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import toAuthImgUrl from "@yourdash/csi/toAuthImgUrl.ts";
 import Icon from "@yourdash/uikit/components/icon/icon.js";
 import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary.js";
 import Image from "@yourdash/uikit/components/image/image.js";
@@ -37,8 +38,7 @@ const AlbumGridMedia: FC<{
           <Image
             className={styles.image}
             accessibleLabel={"User Photo"}
-            src={data.mediaUrl}
-            authenticatedImage
+            src={toAuthImgUrl(data.mediaUrl)}
           />
           {data.type === PHOTOS_MEDIA_TYPE.Video && (
             <div className={styles.videoOverlay}>

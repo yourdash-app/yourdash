@@ -3,6 +3,7 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
+import toAuthImgUrl from "@yourdash/csi/toAuthImgUrl.ts";
 import Card from "@yourdash/uikit/components/card/card";
 import Image from "@yourdash/uikit/components/image/image.js";
 import Text from "@yourdash/uikit/components/text/text";
@@ -18,8 +19,7 @@ const ViewImage: FC<{ mediaUrl: string }> = ({ mediaUrl }) => {
       <PanAndZoom onScaleChange={(s) => setScale(s)}>
         <Image
           className={styles.viewImage}
-          src={mediaUrl}
-          authenticatedImage
+          src={toAuthImgUrl(mediaUrl)}
           accessibleLabel={""}
         />
         <Card className={styles.scale}>

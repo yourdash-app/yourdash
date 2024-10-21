@@ -3,7 +3,6 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import coreCSI from "@yourdash/csi/coreCSI.ts";
 import Icon from "../icon/icon.tsx";
 import { UKIcon } from "../icon/iconDictionary.ts";
 import styles from "./image.module.scss";
@@ -15,9 +14,10 @@ const Image: FC<{
   accessibleLabel: string;
   containerClassName?: string;
   className?: string;
-  authenticatedImage?: boolean;
   disableLazyLoading?: boolean;
   noRounding?: boolean;
+  width?: number;
+  height?: number;
 }> = (props) => {
   const ref = useRef<HTMLDivElement>(null);
   const [src, setSrc] = useState<string>(props.src);
@@ -63,13 +63,15 @@ const Image: FC<{
         <img
           className={clippy(styles.component, props.className, loaded && styles.loaded, props.noRounding && styles.noRounding)}
           draggable={false}
+          width={props.width}
+          height={props.height}
           onError={() => setHasFailed(true)}
           loading={props.disableLazyLoading ? "eager" : "lazy"}
           alt={props.accessibleLabel}
           onLoad={(e) => {
             setLoaded(e.currentTarget.complete);
           }}
-          src={(props.authenticatedImage ? coreCSI.getInstanceUrl() : "") + src}
+          src={src}
         />
       ) : (
         <Icon icon={UKIcon.ServerError} />

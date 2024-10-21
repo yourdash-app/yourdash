@@ -3,6 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import toAuthImgUrl from "@yourdash/csi/toAuthImgUrl.ts";
 import useResource from "@yourdash/csi/useResource.ts";
 import clippy from "@yourdash/shared/web/helpers/clippy.ts";
 import Image from "@yourdash/uikit/components/image/image.tsx";
@@ -47,9 +48,8 @@ const QuickShortcuts: React.FC<{ side: "top" | "right" | "bottom" | "left" }> = 
               )}
             >
               <Image
-                authenticatedImage
                 className={styles.applicationIcon}
-                src={module.icon}
+                src={toAuthImgUrl(module.icon)}
                 accessibleLabel={module.name}
               />
               <span className={styles.applicationLabel}>{module.name}</span>
