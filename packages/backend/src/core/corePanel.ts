@@ -153,32 +153,41 @@ export default class CorePanel {
       },
     );
 
-    this.core.request.delete("/core/panel/quick-shortcuts/:ind", async (req, res) => {
-      res.set("Cache-Control", "");
+    this.core.request.delete(
+      "/core/panel/quick-shortcuts/:ind",
+      z.object({ success: z.literal(true) }).or(z.object({ success: z.literal(false), error: z.string() })),
+      async (req, res) => {
+        res.set("Cache-Control", "");
 
-      const { ind } = req.params;
-      const { username } = req.headers;
+        const { ind } = req.params;
+        const { username } = req.headers;
 
-      const panel = new YourDashPanel(username);
-      try {
-        await panel.removeQuickShortcut(parseInt(ind, 10));
-      } catch (e) {
-        return res.json({ success: false, error: "Unable to remove shortcut" });
-      }
+        const panel = new YourDashPanel(username);
+        try {
+          await panel.removeQuickShortcut(parseInt(ind, 10));
+        } catch (e) {
+          return res.json({ success: false, error: "Unable to remove shortcut" });
+        }
 
-      return res.json({ success: true });
-    });
+        return res.json({ success: true });
+      },
+    );
 
-    this.core.request.post("/core/panel/quick-shortcuts/create", async (req, res) => {
-      const { username } = req.headers;
-      const { id, moduleType } = req.body as { id: string; moduleType: "frontend" | "officialFrontend" };
+    this.core.request.post(
+      "/core/panel/quick-shortcuts/create",
+      z.object({ id: z.string(), moduleType: z.literal("frontend").or(z.literal("officialFrontend")) }),
+      z.object({ success: z.boolean() }),
+      async (req, res) => {
+        const { username } = req.headers;
+        const { id, moduleType } = req.body as { id: string; moduleType: "frontend" | "officialFrontend" };
 
-      const panel = new YourDashPanel(username);
+        const panel = new YourDashPanel(username);
 
-      await panel.createQuickShortcut({ id: id, moduleType: moduleType });
+        await panel.createQuickShortcut({ id: id, moduleType: moduleType });
 
-      return res.json({ success: true });
-    });
+        return res.json({ success: true });
+      },
+    );
 
     this.core.request.get("/core/panel/position", z.object({ position: z.nativeEnum(YourDashPanelPosition) }), async (req, res) => {
       res.set("Cache-Control", "no-store");

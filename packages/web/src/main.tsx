@@ -7,7 +7,7 @@ import "animate.css";
 import "./tailwindcss.css";
 import "./main.css";
 import UIKitRoot from "@yourdash/uikit/core/root.tsx";
-import React, { StrictMode } from "react";
+import React from "react";
 import ReactDOM from "react-dom/client";
 import { createRoutesFromElements, Route, RouterProvider } from "react-router";
 import { createBrowserRouter } from "react-router-dom";

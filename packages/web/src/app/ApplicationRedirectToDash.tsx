@@ -15,6 +15,7 @@ const ApplicationRedirectToDash: React.FC = () => {
     } else {
       coreCSI.syncGetJson(
         "/login/is-authenticated",
+        {},
         () => {
           navigate("/app/a/uk-ewsgit-dash-frontend");
         },

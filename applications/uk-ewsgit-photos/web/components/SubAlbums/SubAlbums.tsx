@@ -4,6 +4,7 @@
  */
 
 import coreCSI from "@yourdash/csi/coreCSI";
+import toAuthImgUrl from "@yourdash/csi/toAuthImgUrl.ts";
 import clippy from "@yourdash/shared/web/helpers/clippy";
 import Card from "@yourdash/uikit/components/card/card";
 import Image from "@yourdash/uikit/components/image/image";
@@ -49,8 +50,7 @@ const SubAlbums: React.FC<{ path: string; scrollerClassName?: string }> = ({ pat
               containerClassName={styles.thumbnailContainer}
               className={styles.thumbnail}
               accessibleLabel={""}
-              authenticatedImage={true}
-              src={album.thumbnail}
+              src={toAuthImgUrl(album.thumbnail)}
             />
             <Text
               text={album.displayName}

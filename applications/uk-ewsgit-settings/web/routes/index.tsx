@@ -11,6 +11,7 @@ import Icon from "@yourdash/uikit/components/icon/icon";
 import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary";
 import SidebarToggleButton from "@yourdash/uikit/views/sidebar/SidebarToggleButton";
 import { FC } from "react";
+import ManageWallpaper from "./components/manageWallpaper/manageWallpaper.tsx";
 import styles from "./index.module.scss";
 import Text from "@yourdash/uikit/components/text/text";
 
@@ -73,18 +74,7 @@ const IndexPage: FC = () => {
           </Card>
         </div>
         <div className={styles.column}>
-          <Card>
-            <Heading
-              level={3}
-              className={styles.cardHeader}
-              text={"Manage Wallpaper"}
-            />
-            <Flex direction={"row"}>
-              <Card>Previous Image 1</Card>
-              <Card>Previous Image 2</Card>
-              <Card>+</Card>
-            </Flex>
-          </Card>
+          <ManageWallpaper />
         </div>
       </div>
     </>

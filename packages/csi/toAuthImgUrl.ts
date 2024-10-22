@@ -1,13 +1,10 @@
-/*!
+/*
  * Copyright ©2024 Ewsgit <https://ewsgit.uk> and YourDash <https://yourdash.ewsgit.uk> contributors.
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-@use "@yourdash/uikit/theme/themeValues" as *;
+import coreCSI from "./coreCSI";
 
-.view {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  width: 100%;
+export default function toAuthImgUrl(authenticatedImageSrc: string) {
+  return coreCSI.getInstanceUrl() + authenticatedImageSrc;
 }

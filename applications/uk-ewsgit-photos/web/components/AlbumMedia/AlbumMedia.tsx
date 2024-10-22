@@ -4,6 +4,7 @@
  */
 
 import coreCSI from "@yourdash/csi/coreCSI.ts";
+import toAuthImgUrl from "@yourdash/csi/toAuthImgUrl.ts";
 import useResource from "@yourdash/csi/useResource.ts";
 import Image from "@yourdash/uikit/components/image/image.tsx";
 import Text from "@yourdash/uikit/components/text/text.tsx";
@@ -27,8 +28,7 @@ const AlbumMedia: React.FC<{ albumMedia: AlbumMediaPath; showFilenames?: boolean
       <Image
         className={styles.image}
         accessibleLabel={""}
-        src={thumbnailPath?.thumbnail || ""}
-        authenticatedImage={true}
+        src={toAuthImgUrl(thumbnailPath?.thumbnail || "")}
       />
       {showFilenames && <Text text={coreCSI.path.basename(albumMedia.path)} />}
     </div>

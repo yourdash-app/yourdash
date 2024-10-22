@@ -5,12 +5,11 @@
 
 // YourDash Client-Server interface Toolkit
 import KeyValueDatabase from "@yourdash/shared/core/database";
-import { KeysStartingWith } from "@yourdash/shared/lib/keysStartingWith";
 import { io as SocketIoClient, Socket as SocketIoSocket } from "socket.io-client";
 import BrowserPath from "./browserPath.js";
-import CSIYourDashTeam from "./team/team";
-import CSIYourDashUser from "./user/user";
-import { paths as OpenAPIPaths } from "./openapi";
+import CSIYourDashTeam from "./team/team.js";
+import CSIYourDashUser from "./user/user.js";
+import OpenAPIPaths from "./openapi.js";
 
 type ITJson = boolean | number | string | null | TJson | boolean[] | number[] | string[] | null[] | TJson[];
 
@@ -50,12 +49,10 @@ export class ClientServerInteraction<
   OpenApi extends {
     [path: string]: {
       parameters: any;
-      /** @description Sample description */
       get: {
         parameters: any;
         requestBody?: never;
         responses: {
-          /** @description Sample description */
           200: {
             headers: {
               [name: string]: unknown;
@@ -200,10 +197,11 @@ export class ClientServerInteraction<
     });
   }
 
-  syncGetJson(
-    endpoint: string,
+  syncGetJson<OpenApiEndpointPath extends keyof OpenApi>(
+    endpoint: OpenApiEndpointPath,
+    pathParams: OpenApi[OpenApiEndpointPath]["pathParams"] = {},
     // eslint-disable-next-line
-    cb: (response: any) => void,
+    cb: (response: OpenApi[OpenApiEndpointPath]["get"]["responses"][200]["content"]["application/json"]) => void,
     error?: (response: string) => void,
     extraHeaders?: {
       [key: string]: string;
@@ -214,7 +212,13 @@ export class ClientServerInteraction<
     const sessionToken = this.getUserSessionToken();
     const sessionId = this.getSessionId();
 
-    fetch(`${instanceUrl}${this._internal_baseRequestPath}${endpoint}`, {
+    let endpointPathWithParams: string = endpoint as string;
+
+    for (const [key, value] of Object.entries(pathParams)) {
+      endpointPathWithParams = (<string>(<unknown>endpointPathWithParams)).replace(`:${key}`, <string>value);
+    }
+
+    fetch(`${instanceUrl}${this._internal_baseRequestPath}${endpointPathWithParams}`, {
       method: "GET",
       mode: "cors",
       headers: {
@@ -241,13 +245,13 @@ export class ClientServerInteraction<
             window.location.href = "/";
             return;
           }
-          console.error(`Error fetching from instance: (json) GET ${endpoint}, Error:`, resp.error);
+          console.error(`Error fetching from instance: (json) GET ${endpointPathWithParams}, Error:`, resp.error);
           return;
         }
         cb(resp);
       })
       .catch((err) => {
-        console.error(`Error parsing result from instance: (json) GET ${endpoint}`, err);
+        console.error(`Error parsing result from instance: (json) GET ${endpointPathWithParams}`, err);
       });
   }
 
@@ -587,7 +591,7 @@ class __internalClientServerInteraction extends ClientServerInteraction<OpenAPIP
   // get the user database for the currently logged-in user
   async getUserDB(): Promise<UserDatabase> {
     return new Promise((resolve) => {
-      this.syncGetJson("/core/user_db", (data) => {
+      this.syncGetJson("/core/user_db", {}, (data) => {
         this.userDB.clear();
         this.userDB.keys = data;
 

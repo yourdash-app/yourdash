@@ -3,6 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import toAuthImgUrl from "@yourdash/csi/toAuthImgUrl.ts";
 import clippy from "@yourdash/shared/web/helpers/clippy";
 import useYourDashLib from "@yourdash/shared/web/helpers/ydsh";
 import Button from "@yourdash/chiplet/components/button/Button";
@@ -81,9 +82,8 @@ const StoreApplicationPage: React.FC = () => {
                 className="sm:h-64 h-32 transition-all bg-cover bg-center flex select-none items-center justify-center flex-row gap-3 animate__animated animate__fadeIn"
               >
                 <Image
-                  authenticatedImage
                   className={"aspect-square drop-shadow-lg sm:w-24 w-0 transition-all"}
-                  src={appData.icon}
+                  src={toAuthImgUrl(appData.icon)}
                   accessibleLabel={"Application icon"}
                 />
                 <Heading className={"drop-shadow-lg"}>{appData.displayName}</Heading>
@@ -94,9 +94,8 @@ const StoreApplicationPage: React.FC = () => {
                 }
               >
                 <Image
-                  authenticatedImage
                   className={"w-24 aspect-square select-none"}
-                  src={appData.icon}
+                  src={toAuthImgUrl(appData.icon)}
                   accessibleLabel={"Application icon"}
                 />
                 <Heading

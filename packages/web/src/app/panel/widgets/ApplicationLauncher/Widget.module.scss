@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-@import "@yourdash/uikit/theme/themeValues";
+@use "@yourdash/uikit/theme/themeValues" as *;
 
 .launcherButton {
   width: 100%;

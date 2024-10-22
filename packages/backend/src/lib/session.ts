@@ -6,6 +6,7 @@
 import path from "path";
 import core from "../core/core.js";
 import { YOURDASH_USER_SESSION_TOKEN_LENGTH } from "../core/coreUsers.js";
+import FSError from "../core/fileSystem/FSError.js";
 import YourDashUser from "../core/user/index.js";
 import { IYourDashSession, YOURDASH_SESSION_TYPE } from "@yourdash/shared/core/session.js";
 import { generateRandomStringOfLength } from "./encryption.js";
@@ -28,9 +29,13 @@ export async function loadSessionsForUser(username: string) {
   try {
     console.log(`loading user sessions from ${path.join(user.path, "core/sessions.json")}`);
 
-    core.users.__internal__getSessionsDoNotUseOutsideOfCore()[username] = (await (
-      await core.fs.getFile(path.join(user.path, "core/sessions.json"))
-    ).read("json")) as [];
+    const sessionsFile = await core.fs.getFile(path.join(user.path, "core/sessions.json"));
+
+    if (sessionsFile instanceof FSError) {
+      return;
+    }
+
+    core.users.__internal__getSessionsDoNotUseOutsideOfCore()[username] = (await sessionsFile.read("json")) as [];
   } catch (err) {
     core.log.error("create_session", `unable to read /users/${username}/core/sessions.json`, err);
   }

@@ -1,4 +1,4 @@
-@import "../../theme/themeValues";
+@use "@yourdash/uikit/theme/themeValues" as *;
 
 .page {
   display: flex;

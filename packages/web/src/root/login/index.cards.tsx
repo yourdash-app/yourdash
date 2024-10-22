@@ -4,6 +4,7 @@
  */
 
 import coreCSI from "@yourdash/csi/coreCSI.ts";
+import toAuthImgUrl from "@yourdash/csi/toAuthImgUrl.ts";
 import EndpointResponseLoginInstanceMetadata from "@yourdash/shared/endpoints/login/instance/metadata.ts";
 import clippy from "@yourdash/shared/web/helpers/clippy.ts";
 import Button from "@yourdash/uikit/components/button/button.tsx";
@@ -80,8 +81,7 @@ const IndexCardsPage: FC<{ metadata?: EndpointResponseLoginInstanceMetadata }> =
           <>
             <Image
               className={styles.avatar}
-              authenticatedImage
-              src={user.avatar}
+              src={toAuthImgUrl(user.avatar)}
               accessibleLabel={"Your Avatar"}
             />
             <Heading
@@ -170,8 +170,7 @@ const IndexCardsPage: FC<{ metadata?: EndpointResponseLoginInstanceMetadata }> =
         <Image
           containerClassName={styles.backgroundImageContainer}
           className={styles.backgroundImage}
-          src={"/login/instance/background"}
-          authenticatedImage
+          src={toAuthImgUrl("/login/instance/background")}
           accessibleLabel={""}
         />
         <Flex

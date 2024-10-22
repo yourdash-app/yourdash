@@ -3,6 +3,7 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
+import toAuthImgUrl from "@yourdash/csi/toAuthImgUrl.ts";
 import Card from "@yourdash/uikit/components/card/card";
 import Image from "@yourdash/uikit/components/image/image";
 import Text from "@yourdash/uikit/components/text/text";
@@ -24,8 +25,7 @@ const Widget: React.FC<{ data: IApplicationShortcutWidget["data"] }> = ({ data }
       <Image
         noRounding={true}
         className={styles.img}
-        src={data.icon}
-        authenticatedImage={true}
+        src={toAuthImgUrl(data.icon)}
         accessibleLabel={""}
       />
       <Text text={data.name} />

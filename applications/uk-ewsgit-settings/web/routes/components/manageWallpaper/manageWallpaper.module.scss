@@ -5,12 +5,36 @@
 
 @use "@yourdash/uikit/theme/themeValues" as *;
 
-.view {
+.component {
+
+}
+
+.heading {
+  text-align: start;
+}
+
+.currentWallpaper {
   width: 100%;
+  aspect-ratio: 16/9;
+}
+
+.previousWallpapers {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: var(#{$theme+$gap});
+}
+
+.newWallpaperButton {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(#{$theme+$padding});
-  padding-top: calc(var(#{$theme+$padding}) * 4);
-  padding-bottom: calc(var(#{$theme+$padding}) * 4);
+
+  .icon {
+    --size: 2rem;
+  }
+}
+
+.wallpaper {
+
 }
