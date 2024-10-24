@@ -8,13 +8,21 @@ import styles from "./progressBar.module.scss";
 import { FC } from "react";
 
 // TODO: rewrite this component to use the HTML progress bar
-const ProgressBar: FC<{ maxValue?: number; value: number; className?: string }> = ({ maxValue, value, className }) => {
+const ProgressBar: FC<{ maxValue?: number; value: number; className?: string; indeterminate?: boolean }> = ({
+  maxValue,
+  value,
+  className,
+  indeterminate,
+}) => {
   return (
-    <progress
-      max={maxValue}
-      value={value}
-      className={className}
-    />
+    <>
+      <progress
+        max={maxValue}
+        value={value}
+        className={className}
+      />
+      {indeterminate && "This should be indeterminate"}
+    </>
   );
 };
 

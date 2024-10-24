@@ -9,7 +9,7 @@ import { UKIcon } from "../icon/iconDictionary.ts";
 import styles from "./link.module.scss";
 import { FC } from "react";
 
-const Link: FC<{ text: string; to: string; className?: string; hideLinkIcon: boolean }> = (props) => {
+const Link: FC<{ text: string; to: string; className?: string; hideLinkIcon?: boolean }> = (props) => {
   return (
     <a
       href={props.to}
