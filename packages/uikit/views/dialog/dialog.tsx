@@ -8,7 +8,11 @@ import Card from "../../components/card/card.tsx";
 import styles from "./dialog.module.scss";
 
 const Dialog: React.FC<{ children: React.ReactNode | React.ReactNode[] }> = ({ children }) => {
-  return <Card containerClassName={styles.view}>{children}</Card>;
+  return (
+    <div className={styles.background}>
+      <Card containerClassName={styles.view}>{children}</Card>
+    </div>
+  );
 };
 
 export default Dialog;
