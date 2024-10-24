@@ -7,10 +7,15 @@ import React from "react";
 import Card from "../../components/card/card.tsx";
 import styles from "./dialog.module.scss";
 
-const Dialog: React.FC<{ children: React.ReactNode | React.ReactNode[] }> = ({ children }) => {
+const Dialog: React.FC<{ children: React.ReactNode | React.ReactNode[]; className?: string }> = ({ children, className }) => {
   return (
     <div className={styles.background}>
-      <Card containerClassName={styles.view}>{children}</Card>
+      <Card
+        containerClassName={styles.view}
+        className={className}
+      >
+        {children}
+      </Card>
     </div>
   );
 };
