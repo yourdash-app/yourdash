@@ -11,7 +11,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 // TODO: maybe remove onEnter for onSubmit
 
-const TextInputComponent: React.ForwardRefExoticComponent<{
+const TextInputComponent: React.FC<{
   onChange?: (value: string) => void;
   onSubmit?: (value: string) => void;
   placeholder: string;
@@ -22,10 +22,8 @@ const TextInputComponent: React.ForwardRefExoticComponent<{
   accessibleName: string;
   className?: string;
   type?: string;
-}> = (props, fwrdRef) => {
+}> = (props) => {
   const ref = useRef<HTMLInputElement>(null);
-
-  React.useImperativeHandle(fwrdRef, () => ref.current);
 
   const [value, setValue] = useState(props.defaultValue || "");
 
@@ -45,7 +43,7 @@ const TextInputComponent: React.ForwardRefExoticComponent<{
         ref.current?.onkeyup?.({ currentTarget: ref.current } as unknown as KeyboardEvent);
         ref.current?.onchange?.({ currentTarget: ref.current } as unknown as Event);
       }
-    }, 500);
+    }, 200);
   }, []);
 
   return (
@@ -79,6 +77,6 @@ const TextInputComponent: React.ForwardRefExoticComponent<{
   );
 };
 
-const TextInput = React.forwardRef(TextInputComponent);
+const TextInput = TextInputComponent;
 
 export default TextInput;
