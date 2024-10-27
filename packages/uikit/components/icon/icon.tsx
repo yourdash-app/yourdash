@@ -18,7 +18,7 @@ const Icon: FC<{
     <div
       className={`${styles.component} ${props.className} ${props.preserveColor ? styles.preserveColor : ""}`}
       style={{
-        "--icon": `url(${props.icon})`,
+        "--icon": `url("${props.icon}")`,
         ...(!props.preserveColor ? { "--color": props.color } : {}),
         // @ts-ignore
         "--size": props.size,
