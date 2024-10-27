@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { UKIcon, UKIconType } from "./iconDictionary.ts";
+import { UKIconType } from "./iconDictionary.ts";
 import styles from "./icon.module.scss";
 import { FC, useEffect, useState } from "react";
 import ServerErrorIcon from "./icons/server-error.svg";
@@ -30,7 +30,7 @@ const Icon: FC<{
     <div
       className={`${styles.component} ${props.className} ${props.preserveColor ? styles.preserveColor : ""}`}
       style={{
-        "--icon": `url("${props.icon}")`,
+        "--icon": `url("${icon}")`,
         ...(!props.preserveColor ? { "--color": props.color } : {}),
         // @ts-ignore
         "--size": props.size,
