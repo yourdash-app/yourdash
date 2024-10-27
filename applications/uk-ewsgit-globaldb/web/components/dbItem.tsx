@@ -4,7 +4,7 @@
  */
 
 import Card from "@yourdash/chiplet/components/card/Card";
-import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
+import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary";
 import IconButton from "@yourdash/chiplet/components/iconButton/IconButton";
 import TextBox from "@yourdash/chiplet/components/textBox/TextBox";
 import TextInput from "@yourdash/chiplet/components/textInput/TextInput";
@@ -31,7 +31,10 @@ const DbItem: React.FC<IdbItem> = ({ currentItem, setCurrentItemData, items, set
   }, [currentItem]);
 
   return (
-    <Card showBorder className={"bg-container-bg text-container-fg flex gap-2 !p-2 rounded-xl"}>
+    <Card
+      showBorder
+      className={"bg-container-bg text-container-fg flex gap-2 !p-2 rounded-xl"}
+    >
       {active ? (
         <>
           <div className={"flex flex-col gap-2 mb-auto"}>
@@ -47,7 +50,11 @@ const DbItem: React.FC<IdbItem> = ({ currentItem, setCurrentItemData, items, set
               className={"flex-shrink-0"}
             />
             <div className={"flex flex-row gap-2 w-full child:flex-grow"}>
-              <IconButton icon={UKIcon.X} onClick={() => setActive(false)} className={"flex-shrink-0"} />
+              <IconButton
+                icon={UKIcon.X}
+                onClick={() => setActive(false)}
+                className={"flex-shrink-0"}
+              />
               <IconButton
                 icon={UKIcon.Check}
                 onClick={() => {
@@ -98,7 +105,11 @@ const DbItem: React.FC<IdbItem> = ({ currentItem, setCurrentItemData, items, set
       ) : (
         <>
           <div className={"flex flex-col gap-2"}>
-            <IconButton icon={active ? UKIcon.ChevronUp : UKIcon.ChevronDown} onClick={() => setActive(!active)} className={"flex-shrink-0"} />
+            <IconButton
+              icon={active ? UKIcon.ChevronUp : UKIcon.ChevronDown}
+              onClick={() => setActive(!active)}
+              className={"flex-shrink-0"}
+            />
           </div>
           <span className={"mt-auto mb-auto"}>{key}</span>
         </>

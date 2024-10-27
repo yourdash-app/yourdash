@@ -5,10 +5,10 @@
 
 import Button from "@yourdash/chiplet/components/button/Button.tsx";
 import Card from "@yourdash/chiplet/components/card/Card.tsx";
-import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary.ts";
 import IconButton from "@yourdash/chiplet/components/iconButton/IconButton.tsx";
 import MajorButton from "@yourdash/chiplet/components/majorButton/MajorButton.tsx";
 import TextInput from "@yourdash/chiplet/components/textInput/TextInput.tsx";
+import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 

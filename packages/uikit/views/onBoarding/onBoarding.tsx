@@ -1,6 +1,6 @@
 import * as React from "react";
 import Card from "../../components/card/card.tsx";
-import { UKIcon } from "../../components/icon/iconDictionary.ts";
+import { UKIcon, UKIconType } from "../../components/icon/iconDictionary.ts";
 import IconButton from "../../components/iconButton/iconButton.tsx";
 import Image from "../../components/image/image.tsx";
 import Heading from "../../components/heading/heading.tsx";
@@ -18,7 +18,12 @@ const OnBoarding: React.FC<{
     headerImage: string;
     header: string;
     body: string;
-    actions: { label: string; icon?: UKIcon; onClick: () => void; changeTo?: "next" | "previous" | "remain" | "completed" }[];
+    actions: {
+      label: string;
+      icon?: UKIconType;
+      onClick: () => void;
+      changeTo?: "next" | "previous" | "remain" | "completed";
+    }[];
     allowGoBack?: boolean;
   }[];
 }> = ({ pages, meta }) => {

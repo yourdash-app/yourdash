@@ -6,11 +6,11 @@
 import useYourDashLib from "@yourdash/shared/web/helpers/ydsh";
 import Button from "@yourdash/chiplet/components/button/Button";
 import Card from "@yourdash/chiplet/components/card/Card";
-import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
 import IconButton from "@yourdash/chiplet/components/iconButton/IconButton";
 import Row from "@yourdash/chiplet/components/row/Row";
 import TextBox from "@yourdash/chiplet/components/textBox/TextBox";
 import TextInput from "@yourdash/chiplet/components/textInput/TextInput";
+import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary.ts";
 import React, { useEffect } from "react";
 import coreCSI, { TJson } from "@yourdash/csi/coreCSI";
 import BasePageLayout from "../../components/BasePageLayout";

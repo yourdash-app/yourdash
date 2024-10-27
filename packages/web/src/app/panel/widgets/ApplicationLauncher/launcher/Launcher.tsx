@@ -20,7 +20,7 @@ const ApplicationLauncher: React.FC<{
   visible: boolean;
 }> = ({ side, visible }) => {
   const navigate = useNavigate();
-  const apps = useResource<IPanelApplicationsLauncherFrontendModule[]>(() => coreCSI.getJson("/core/panel/applications"), []) || [];
+  const apps = useResource(() => coreCSI.getJson("/core/panel/applications"), []) || [];
   const [layout, setLayout] = React.useState<"large-grid" | "small-grid" | "list">("large-grid");
 
   return (
@@ -37,7 +37,8 @@ const ApplicationLauncher: React.FC<{
     >
       <Box className={styles.content}>
         <ApplicationsLauncherApplications
-          apps={apps}
+          // @ts-ignore
+          apps={apps || []}
           layout={layout}
         />
       </Box>

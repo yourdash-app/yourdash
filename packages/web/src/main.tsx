@@ -148,7 +148,12 @@ ReactDOM.createRoot(element).render(
                 />
                 <Route
                   path={"a/*"}
-                  element={<AppRouter />}
+                  errorElement={<ErrorElement />}
+                  element={
+                    <>
+                      <AppRouter />
+                    </>
+                  }
                 />
                 <Route
                   path={"h/*"}

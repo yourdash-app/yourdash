@@ -50,5 +50,5 @@
 
 .icon {
   margin-left: calc(var(#{$theme}#{$button}#{$padding}#{$horizontal}) / 2);
-  margin-right: calc(var(#{$theme}#{$button}#{$padding}#{$horizontal}) / 4);
+  margin-right: var(#{$theme}#{$button}#{$padding}#{$horizontal});
 }

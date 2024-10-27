@@ -10,7 +10,7 @@ import styles from "./iconButton.module.scss";
 import { FC } from "react";
 
 const IconButton: FC<{
-  icon: UKIcon;
+  icon: (typeof UKIcon)[keyof typeof UKIcon];
   accessibleLabel: string;
   onClick: () => void;
   className?: string;

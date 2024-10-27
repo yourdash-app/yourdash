@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
+import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary";
 import IconButton from "@yourdash/chiplet/components/iconButton/IconButton";
 import Row from "@yourdash/chiplet/components/row/Row";
 import TextInput from "@yourdash/chiplet/components/textInput/TextInput";
@@ -14,7 +14,10 @@ const UserLinkEditor: React.FC<{
   setLinks: (links: { url: string; label: string }[]) => void;
 }> = ({ link, links, setLinks }) => {
   return (
-    <Row className={"child:flex-grow"} key={link.url + link.label}>
+    <Row
+      className={"child:flex-grow"}
+      key={link.url + link.label}
+    >
       <TextInput
         onChange={(value) => {
           link.label = value;

@@ -4,7 +4,7 @@
  */
 
 import Card from "@yourdash/chiplet/components/card/Card";
-import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
+import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary";
 import IconButton from "@yourdash/chiplet/components/iconButton/IconButton";
 import TextInput from "@yourdash/chiplet/components/textInput/TextInput";
 import React from "react";
@@ -16,7 +16,10 @@ const StoreHeader: React.FC<{ showBackButton?: number }> = ({ showBackButton }) 
   const navigate = useNavigate();
 
   return (
-    <Card showBorder className={styles.component}>
+    <Card
+      showBorder
+      className={styles.component}
+    >
       {showBackButton && (
         <IconButton
           icon={UKIcon.ChevronLeft}
@@ -29,7 +32,11 @@ const StoreHeader: React.FC<{ showBackButton?: number }> = ({ showBackButton }) 
           }}
         />
       )}
-      <img alt={"YourDash Store Application Logo"} className={styles.applicationLogo} src={STORE_APPLICATION_LOGO} />
+      <img
+        alt={"YourDash Store Application Logo"}
+        className={styles.applicationLogo}
+        src={STORE_APPLICATION_LOGO}
+      />
       <div className={styles.brand}>
         <span className={styles.productName}>YourDash Store</span>
       </div>

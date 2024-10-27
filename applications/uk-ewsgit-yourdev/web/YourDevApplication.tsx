@@ -3,10 +3,13 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
-import SideBar, { SIDEBAR_ITEM_TYPE, SIDEBAR_STATE } from "@yourdash/chiplet/components/sideBar/SideBar";
+import Button from "@yourdash/uikit/components/button/button.tsx";
+import ButtonWithIcon from "@yourdash/uikit/components/buttonWithIcon/buttonWithIcon.tsx";
+import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary.ts";
+import Sidebar from "@yourdash/uikit/views/sidebar/Sidebar.tsx";
+import SidebarContainer from "@yourdash/uikit/views/sidebar/SidebarContainer.tsx";
 import React from "react";
-import GlobalDbApplication from "../../global_db/web/globalDbApplication";
+import GlobalDbApplication from "../../uk-ewsgit-globaldb/web/globalDbApplication.tsx";
 import HomeView from "./views/home/HomeView";
 
 const YourDevApplication: React.FC = () => {
@@ -14,39 +17,34 @@ const YourDevApplication: React.FC = () => {
 
   return (
     <main className={"h-full grid grid-cols-[auto,1fr] overflow-hidden gap-4 p-4 bg-bg"}>
-      <SideBar
-        title={"YourDev"}
-        defaultState={SIDEBAR_STATE.FloatingMinimised}
-        items={[
-          {
-            type: SIDEBAR_ITEM_TYPE.Button,
-            label: "Home",
-            icon: UKIcon.Home,
-            onClick: () => {
+      <SidebarContainer>
+        <Sidebar>
+          <ButtonWithIcon
+            onClick={() => {
               setPage("home");
-            },
-          },
-          {
-            type: SIDEBAR_ITEM_TYPE.Button,
-            label: "Global DB",
-            icon: UKIcon.Database,
-            onClick: () => {
+            }}
+            icon={UKIcon.Home}
+            text={"Home"}
+          />
+          <ButtonWithIcon
+            onClick={() => {
               setPage("global_db");
-            },
-          },
-          {
-            type: SIDEBAR_ITEM_TYPE.Button,
-            label: "User DB",
-            icon: UKIcon.Person,
-            onClick: () => {
+            }}
+            icon={UKIcon.Database}
+            text={"Global DB"}
+          />
+          <ButtonWithIcon
+            onClick={() => {
               setPage("user_db");
-            },
-          },
-        ]}
-      />
-      {page === "home" && <HomeView />}
-      {page === "global_db" && <GlobalDbApplication />}
-      {page === "user_db" && null}
+            }}
+            icon={UKIcon.Person}
+            text={"User DB"}
+          />
+        </Sidebar>
+        {page === "home" && <HomeView />}
+        {page === "global_db" && <GlobalDbApplication />}
+        {page === "user_db" && null}
+      </SidebarContainer>
     </main>
   );
 };

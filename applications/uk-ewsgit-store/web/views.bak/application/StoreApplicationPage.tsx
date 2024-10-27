@@ -11,7 +11,7 @@ import Card from "@yourdash/chiplet/components/card/Card";
 import Carousel from "@yourdash/chiplet/components/carousel/Carousel";
 import Heading from "@yourdash/chiplet/components/heading/Heading";
 import Icon from "@yourdash/chiplet/components/icon/Icon";
-import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
+import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary";
 import MajorButton from "@yourdash/chiplet/components/majorButton/MajorButton";
 import Spinner from "@yourdash/chiplet/components/spinner/Spinner";
 import Image from "@yourdash/uikit/components/image/image";

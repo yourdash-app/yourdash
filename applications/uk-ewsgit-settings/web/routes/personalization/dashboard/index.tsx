@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
+import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary";
 import * as React from "react";
 import BasePageLayout from "../../../components/BasePageLayout";
 import BooleanSettingComponent from "../../../components/BooleanSettingComponent";

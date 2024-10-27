@@ -5,30 +5,19 @@
 
 import Card from "@yourdash/chiplet/components/card/Card";
 import Icon from "@yourdash/chiplet/components/icon/Icon";
-import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
+import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary";
 import IconButton from "@yourdash/chiplet/components/iconButton/IconButton";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import coreCSI from "@yourdash/csi/coreCSI";
 import { type IYourDashSession, YOURDASH_SESSION_TYPE } from "@yourdash/shared/core/session";
 import BasePageLayout from "../../components/BasePageLayout";
-import { acsi } from "../../meta.yourdash";
 
 const SettingsPageSession: React.FC = () => {
   const [reloadNum, setReloadNum] = useState(0);
   const [sessions, setSessions] = useState<IYourDashSession[]>([]);
-  const [personalServerAccelerationSessions, setPersonalServerAcceleration] = useState<IYourDashSession<YOURDASH_SESSION_TYPE.desktop>[]>(
+  const [personalServerAccelerationSessions, setPersonalServerAcceleration] = useState<IYourDashSession<YOURDASH_SESSION_TYPE.DESKTOP>[]>(
     [],
   );
-
-  useEffect(() => {
-    acsi.syncGetJson("/user/sessions", {}, (data) => {
-      setSessions(data.sessions);
-    });
-
-    acsi.syncGetJson("/core/personal-server-accelerator/sessions", {}, (data) => {
-      setPersonalServerAcceleration(data.sessions);
-    });
-  }, [reloadNum]);
 
   return (
     <BasePageLayout
