@@ -3,10 +3,10 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import { UKIcon } from "../icon/iconDictionary.ts";
+import { UKIconType } from "../icon/iconDictionary.ts";
 
 export default interface IToastAction {
   label: string;
-  icon?: UKIcon;
+  icon?: UKIconType;
   onClick: () => void;
 }

@@ -5,7 +5,7 @@
 
 import clippy from "@yourdash/shared/web/helpers/clippy.ts";
 import Icon from "../icon/icon.tsx";
-import { UKIcon } from "../icon/iconDictionary.ts";
+import { UKIconType } from "../icon/iconDictionary.ts";
 import styles from "./textInput.module.scss";
 import React, { useEffect, useRef, useState } from "react";
 
@@ -15,7 +15,7 @@ const TextInputComponent: React.FC<{
   onChange?: (value: string) => void;
   onSubmit?: (value: string) => void;
   placeholder: string;
-  icon?: UKIcon;
+  icon?: UKIconType;
   onEnter?: (value: string) => void;
   defaultValue?: string;
   value?: string;
