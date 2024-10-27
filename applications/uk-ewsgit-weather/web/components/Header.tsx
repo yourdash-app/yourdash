@@ -5,7 +5,7 @@
 
 import clippy from "@yourdash/shared/web/helpers/clippy";
 import Heading from "@yourdash/chiplet/components/heading/Heading";
-import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
+import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary";
 import IconButton from "@yourdash/chiplet/components/iconButton/IconButton";
 import React from "react";
 import { IWeatherDataForLocation } from "../../shared/weatherDataForLocation";

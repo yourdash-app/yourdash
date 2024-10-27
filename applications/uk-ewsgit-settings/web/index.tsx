@@ -50,12 +50,12 @@ const SettingsRouter: React.FC = () => (
           index
           element={<IndexPage />}
         />
-        <Route path={"cat"}>
+        {/* <Route path={"cat"}>
           <Route
             index
             element={<Redirect to={`${modulePath}/`} />}
           />
-          {/* Category Name */}
+          Category Name
           <Route path={":categoryName"}>
             <Route
               index
@@ -111,7 +111,7 @@ const SettingsRouter: React.FC = () => (
             index
             element={<DeveloperToolsIndexPage />}
           />
-        </Route>
+        </Route> */}
       </Route>
     </Route>
   </Routes>

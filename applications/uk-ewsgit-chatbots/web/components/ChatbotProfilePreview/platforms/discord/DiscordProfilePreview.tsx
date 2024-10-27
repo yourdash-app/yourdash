@@ -4,7 +4,7 @@
  */
 
 import Icon from "@yourdash/chiplet/components/icon/Icon";
-import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
+import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary";
 import React from "react";
 import styles from "./DiscordProfilePreview.module.scss";
 
@@ -32,7 +32,11 @@ const DiscordProfilePreview: React.FC<IDiscordProfilePreviewProps> = ({
       <div className={styles.header}>
         <div className={styles.coloredSegment}></div>
         <div className={styles.avatarContainer}>
-          <img alt={""} className={styles.avatar} src={avatarUrl === "internal://ServerError" ? "/assets/productLogos/yourdash.svg" : avatarUrl} />
+          <img
+            alt={""}
+            className={styles.avatar}
+            src={avatarUrl === "internal://ServerError" ? "/assets/productLogos/yourdash.svg" : avatarUrl}
+          />
           <div className={styles.status} />
         </div>
         <div className={styles.badges}>
@@ -47,7 +51,10 @@ const DiscordProfilePreview: React.FC<IDiscordProfilePreviewProps> = ({
             {username || "unknown"}
             {discriminator && `#${discriminator}`}
             <div className={styles.usernameBadge}>
-              <Icon icon={UKIcon.Check} className={styles.usernameBadgeIcon} />
+              <Icon
+                icon={UKIcon.Check}
+                className={styles.usernameBadgeIcon}
+              />
               BOT
             </div>
           </span>
@@ -55,7 +62,10 @@ const DiscordProfilePreview: React.FC<IDiscordProfilePreviewProps> = ({
         <div className={styles.separator}></div>
         {showAddApplicationButton && (
           <button className={styles.addAppButton}>
-            <Icon icon={UKIcon.PlusCircle} className={styles.addAppIcon} />
+            <Icon
+              icon={UKIcon.PlusCircle}
+              className={styles.addAppIcon}
+            />
             Add App
           </button>
         )}
@@ -70,7 +80,10 @@ const DiscordProfilePreview: React.FC<IDiscordProfilePreviewProps> = ({
         <section className={styles.tryMyCommands}>
           {tryMyCommands.map((tag) => {
             return (
-              <div className={styles.command} key={tag}>
+              <div
+                className={styles.command}
+                key={tag}
+              >
                 /{tag}
               </div>
             );
@@ -80,7 +93,11 @@ const DiscordProfilePreview: React.FC<IDiscordProfilePreviewProps> = ({
         <div className={styles.clickToAddNote}>
           <span className={styles.text}>Click to add a note</span>
         </div>
-        <input className={styles.message} type={"text"} placeholder={`Message @${username}`} />
+        <input
+          className={styles.message}
+          type={"text"}
+          placeholder={`Message @${username}`}
+        />
       </div>
     </div>
   );

@@ -3,7 +3,6 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary.ts";
 import IconButton from "@yourdash/chiplet/components/iconButton/IconButton.tsx";
 import MajorButton from "@yourdash/chiplet/components/majorButton/MajorButton.tsx";
 import TextInput from "@yourdash/chiplet/components/textInput/TextInput.tsx";
@@ -11,6 +10,7 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import coreCSI from "@yourdash/csi/coreCSI.ts";
 import useYourDashLib from "@yourdash/shared/web/helpers/ydsh.ts";
+import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary";
 
 interface IUserLogin {
   setUsername: React.Dispatch<React.SetStateAction<string>>;

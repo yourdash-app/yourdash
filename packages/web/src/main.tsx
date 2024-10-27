@@ -7,6 +7,8 @@ import "animate.css";
 import "./tailwindcss.css";
 import "./main.css";
 import UIKitRoot from "@yourdash/uikit/core/root.tsx";
+import Dialog from "@yourdash/uikit/views/dialog/dialog.tsx";
+import Text from "@yourdash/uikit/components/text/text.tsx";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createRoutesFromElements, Route, RouterProvider } from "react-router";
@@ -146,13 +148,29 @@ ReactDOM.createRoot(element).render(
                 />
                 <Route
                   path={"a/*"}
-                  element={<AppRouter />}
+                  errorElement={<ErrorElement />}
+                  element={
+                    <>
+                      <AppRouter />
+                    </>
+                  }
                 />
                 <Route
                   path={"h/*"}
                   element={<HostedApplicationRouter />}
                 />
               </Route>
+            </Route>
+            <Route path={"uikit-testing"}>
+              <Route
+                path={"dialog"}
+                element={
+                  <>
+                    <Dialog>sa</Dialog>
+                    <Text text={"Hello world"} />
+                  </>
+                }
+              />
             </Route>
           </Route>,
         ),

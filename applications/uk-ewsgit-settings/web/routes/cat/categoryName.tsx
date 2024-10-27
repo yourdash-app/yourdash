@@ -3,22 +3,21 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import coreCSI from "@yourdash/csi/coreCSI";
 import Heading from "@yourdash/uikit/components/heading/heading";
 import Spinner from "@yourdash/uikit/components/spinner/spinner";
 import SidebarToggleButton from "@yourdash/uikit/views/sidebar/SidebarToggleButton";
 import useResource from "@yourdash/csi/useResource";
 import React from "react";
 import { useParams } from "react-router";
-import EndpointSettingsCategory from "../../../shared/types/endpoints/setting/category";
 import SETTING_TYPE from "../../../shared/types/settingType";
 import BooleanSetting from "../../components/setting/BooleanSetting";
 import StringSetting from "../../components/setting/StringSetting";
+import { acsi } from "../../meta.yourdash.ts";
 
 const CategoryNamePage: React.FC = () => {
   const { categoryName } = useParams();
 
-  const categoryData = useResource(() => coreCSI.getJson<EndpointSettingsCategory>(`/app/settings/cat/${categoryName}`), [categoryName]);
+  const categoryData = useResource(() => acsi.getJson(`/cat/:categoryid`, { categoryid: categoryName || "" }), [categoryName]);
 
   return (
     <div>

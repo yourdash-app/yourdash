@@ -1968,195 +1968,6 @@
         }
       }
     },
-    "/app/uk-ewsgit-settings-backend/core/panel/position": {
-      "post": {
-        "description": "Sample description",
-        "responses": {
-          "200": {
-            "description": "Sample description",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "success"
-                  ]
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Request error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/app/uk-ewsgit-settings-backend/developer/install-all-applications": {
-      "get": {
-        "description": "Sample description",
-        "responses": {
-          "200": {
-            "description": "Sample description",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "success"
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/app/uk-ewsgit-settings-backend/cat/:categoryid": {
-      "get": {
-        "description": "Sample description",
-        "responses": {
-          "200": {
-            "description": "Sample description",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "displayName": {
-                      "type": "string"
-                    },
-                    "id": {
-                      "type": "string"
-                    },
-                    "icon": {
-                      "type": "string"
-                    },
-                    "description": {
-                      "type": "string"
-                    },
-                    "settings": {
-                      "type": "object",
-                      "properties": {}
-                    }
-                  },
-                  "required": [
-                    "displayName",
-                    "id",
-                    "settings"
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/app/uk-ewsgit-settings-backend/setting/:category/:setting": {
-      "get": {
-        "description": "Sample description",
-        "responses": {
-          "200": {
-            "description": "Sample description",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "type": {
-                      "type": "string",
-                      "enum": [
-                        "string",
-                        "int",
-                        "float",
-                        "directory",
-                        "file",
-                        "fileOfType",
-                        "color",
-                        "date",
-                        "time",
-                        "boolean",
-                        "selection",
-                        "multipleSelection"
-                      ]
-                    },
-                    "value": {}
-                  },
-                  "required": [
-                    "type"
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/app/uk-ewsgit-settings-backend/current/wallpaper": {
-      "get": {
-        "description": "Sample description",
-        "responses": {
-          "200": {
-            "description": "Sample description",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "dimensions": {
-                      "type": "object",
-                      "properties": {
-                        "width": {
-                          "type": "number"
-                        },
-                        "height": {
-                          "type": "number"
-                        }
-                      },
-                      "required": [
-                        "width",
-                        "height"
-                      ]
-                    },
-                    "thumbnail": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "dimensions",
-                    "thumbnail"
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/app/uk-ewsgit-photos-backend/media/raw/@/*": {
       "get": {
         "description": "Sample description",
@@ -2389,6 +2200,195 @@
                   "required": [
                     "data",
                     "hasAnotherPage"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/app/uk-ewsgit-settings-backend/core/panel/position": {
+      "post": {
+        "description": "Sample description",
+        "responses": {
+          "200": {
+            "description": "Sample description",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "success"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/app/uk-ewsgit-settings-backend/developer/install-all-applications": {
+      "get": {
+        "description": "Sample description",
+        "responses": {
+          "200": {
+            "description": "Sample description",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "success"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/app/uk-ewsgit-settings-backend/cat/:categoryid": {
+      "get": {
+        "description": "Sample description",
+        "responses": {
+          "200": {
+            "description": "Sample description",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "displayName": {
+                      "type": "string"
+                    },
+                    "id": {
+                      "type": "string"
+                    },
+                    "icon": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "settings": {
+                      "type": "object",
+                      "properties": {}
+                    }
+                  },
+                  "required": [
+                    "displayName",
+                    "id",
+                    "settings"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/app/uk-ewsgit-settings-backend/setting/:category/:setting": {
+      "get": {
+        "description": "Sample description",
+        "responses": {
+          "200": {
+            "description": "Sample description",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "string",
+                        "int",
+                        "float",
+                        "directory",
+                        "file",
+                        "fileOfType",
+                        "color",
+                        "date",
+                        "time",
+                        "boolean",
+                        "selection",
+                        "multipleSelection"
+                      ]
+                    },
+                    "value": {}
+                  },
+                  "required": [
+                    "type"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/app/uk-ewsgit-settings-backend/current/wallpaper": {
+      "get": {
+        "description": "Sample description",
+        "responses": {
+          "200": {
+            "description": "Sample description",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "dimensions": {
+                      "type": "object",
+                      "properties": {
+                        "width": {
+                          "type": "number"
+                        },
+                        "height": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "width",
+                        "height"
+                      ]
+                    },
+                    "thumbnail": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "dimensions",
+                    "thumbnail"
                   ]
                 }
               }

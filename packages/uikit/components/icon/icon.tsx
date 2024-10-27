@@ -3,17 +3,29 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { UKIcon } from "./iconDictionary.ts";
+import { UKIcon, UKIconType } from "./iconDictionary.ts";
 import styles from "./icon.module.scss";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
+import ServerErrorIcon from "./icons/server-error.svg";
 
 const Icon: FC<{
-  icon: UKIcon;
+  // noinspection TypeScriptDuplicateUnionOrIntersectionType
+  icon: UKIconType;
   size?: string;
   color?: string;
   preserveColor?: boolean;
   className?: string;
 }> = (props) => {
+  const [icon, setIcon] = useState(ServerErrorIcon);
+
+  useEffect(() => {
+    if (typeof props.icon === "function") {
+      props.icon().then((val) => {
+        setIcon(val.default);
+      });
+    }
+  }, [props.icon]);
+
   return (
     <div
       className={`${styles.component} ${props.className} ${props.preserveColor ? styles.preserveColor : ""}`}

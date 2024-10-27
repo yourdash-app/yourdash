@@ -4,7 +4,7 @@
  */
 
 import Icon from "@yourdash/chiplet/components/icon/Icon";
-import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
+import { UKIcon, UKIconType } from "@yourdash/uikit/components/icon/iconDictionary.ts";
 import React from "react";
 import BaseSettingComponent from "./BaseSettingComponent";
 import { useNavigate } from "react-router-dom";
@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 export interface IBaseSettingComponent {
   title: string;
   description: string;
-  icon: UKIcon;
+  icon: UKIconType;
   href: string;
   external?: boolean;
 }
@@ -33,7 +33,10 @@ const SettingCategory: React.FC<IBaseSettingComponent> = ({ title, description, 
       title={title}
       description={description}
     >
-      <Icon className={"aspect-square h-8"} icon={!external ? UKIcon.ChevronRight : UKIcon.Link} />
+      <Icon
+        className={"aspect-square h-8"}
+        icon={!external ? UKIcon.ChevronRight : UKIcon.Link}
+      />
     </BaseSettingComponent>
   );
 };

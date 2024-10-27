@@ -3,13 +3,13 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
-import IconButton from "@yourdash/chiplet/components/iconButton/IconButton";
+import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary.ts";
+import IconButton from "@yourdash/uikit/components/iconButton/iconButton.tsx";
 import * as React from "react";
 import coreCSI from "@yourdash/csi/coreCSI";
 import loadable from "@loadable/component";
 import { useNavigate } from "react-router-dom";
-import { modulePath } from "../meta.yourdash";
+import { acsi, modulePath } from "../meta.yourdash";
 
 const DashboardLayout = loadable(() => import("./layouts/dashboard/DashboardLayout"));
 // TODO: recreate the browserLayout
@@ -25,7 +25,7 @@ const DashApplication: React.FC = () => {
   const [layout, setLayout] = React.useState<"browser" | "dashboard">("dashboard");
 
   React.useEffect(() => {
-    coreCSI.syncGetJson("/app/dash/user-full-name", {}, (res) => {
+    acsi.syncGetJson("/user-full-name", {}, (res) => {
       setUserFullName(res);
     });
 
@@ -52,6 +52,7 @@ const DashApplication: React.FC = () => {
       ) : (
         <>
           <IconButton
+            accessibleLabel={"Hello world"}
             icon={UKIcon.Gear}
             onClick={() => {
               navigate(`${modulePath}/personalization/dashboard`);

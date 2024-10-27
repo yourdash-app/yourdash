@@ -74,6 +74,7 @@ const Navigation: FC<{ subtitle?: string }> = ({ subtitle }) => {
       >
         <Text text={"YourDash is a pre-alpha project. "} />
         <Link
+          hideLinkIcon={true}
           to={"/docs/pre-alpha"}
           text={"learn more."}
         />
@@ -124,6 +125,7 @@ const Navigation: FC<{ subtitle?: string }> = ({ subtitle }) => {
         >
           <Text text={"©2022-2024 Ewsgit and YourDash Contributors."} />
           <Link
+            hideLinkIcon={true}
             to={"https://ewsgit.mit-license.org"}
             text={"Licensed under the MIT License"}
           />

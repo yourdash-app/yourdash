@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-export enum UKIcon {
+export enum ChipletIcon {
   Accessibility = "/assets/icons/accessibility-16.svg",
   AccessibilityInset = "/assets/icons/accessibility-inset-16.svg",
   Alert = "/assets/icons/alert-16.svg",

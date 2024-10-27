@@ -8,7 +8,7 @@ import Button from "@yourdash/chiplet/components/button/Button";
 import Card from "@yourdash/chiplet/components/card/Card";
 import DropdownButton from "@yourdash/chiplet/components/dropdownButton/DropdownButton";
 import Icon from "@yourdash/chiplet/components/icon/Icon";
-import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
+import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary";
 import TextBox from "@yourdash/chiplet/components/textBox/TextBox";
 import React, { useState, useEffect } from "react";
 import coreCSI from "@yourdash/csi/coreCSI";

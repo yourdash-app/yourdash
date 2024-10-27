@@ -4,9 +4,7 @@
  */
 
 import Card from "@yourdash/uikit/components/card/card";
-import Heading from "@yourdash/uikit/components/heading/heading";
 import Icon from "@yourdash/uikit/components/icon/icon.tsx";
-import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary";
 import Text from "@yourdash/uikit/components/text/text.tsx";
 import React from "react";
 import { IHomeCommonStorageLocation } from "../../../../../../shared/types/tabView/home";
@@ -26,7 +24,7 @@ const StorageLocation: React.FC<IHomeCommonStorageLocation> = ({ path, baseName 
       }}
     >
       <Icon
-        icon={UKIcon.FileDirectory}
+        icon={"FileDirectory"}
         className={styles.icon}
       />
       <Text text={baseName} />

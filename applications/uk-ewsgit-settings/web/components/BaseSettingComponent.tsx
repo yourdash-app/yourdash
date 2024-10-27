@@ -5,7 +5,7 @@
 
 import Card from "@yourdash/chiplet/components/card/Card";
 import Icon from "@yourdash/chiplet/components/icon/Icon";
-import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
+import { UKIconType } from "@yourdash/uikit/components/icon/iconDictionary.ts";
 import * as React from "react";
 import styles from "./BaseSettingComponent.module.scss";
 
@@ -13,13 +13,19 @@ export interface IBaseSettingComponent {
   children: React.ReactNode;
   title: string;
   description: string;
-  icon: UKIcon;
+  icon: UKIconType;
   onClick?: () => void;
 }
 
 const BaseSettingComponent: React.FC<IBaseSettingComponent> = ({ children, title, description, icon, onClick }) => (
-  <Card onClick={onClick} className={styles.component}>
-    <Icon className={"aspect-square h-10"} icon={icon} />
+  <Card
+    onClick={onClick}
+    className={styles.component}
+  >
+    <Icon
+      className={"aspect-square h-10"}
+      icon={icon}
+    />
     <div className={styles.textContainer}>
       <h2 className={styles.title}>{title}</h2>
       <span className={styles.description}>{description}</span>

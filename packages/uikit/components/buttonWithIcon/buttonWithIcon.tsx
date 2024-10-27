@@ -5,12 +5,12 @@
 
 import clippy from "@yourdash/shared/web/helpers/clippy.ts";
 import Icon from "../icon/icon.tsx";
-import { UKIcon } from "../icon/iconDictionary.ts";
+import { UKIcon, UKIconType } from "../icon/iconDictionary.ts";
 import styles from "./buttonWithIcon.module.scss";
 import { FC } from "react";
 
 const ButtonWithIcon: FC<{
-  icon: UKIcon;
+  icon: UKIconType;
   onClick: () => void;
   text: string;
   className?: string;
