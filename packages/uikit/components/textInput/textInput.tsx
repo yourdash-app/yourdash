@@ -9,14 +9,11 @@ import { UKIconType } from "../icon/iconDictionary.ts";
 import styles from "./textInput.module.scss";
 import React, { useEffect, useRef, useState } from "react";
 
-// TODO: maybe remove onEnter for onSubmit
-
 const TextInputComponent: React.FC<{
-  onChange?: (value: string) => void;
+  getValue?: React.Dispatch<React.SetStateAction<string>>;
   onSubmit?: (value: string) => void;
   placeholder: string;
   icon?: UKIconType;
-  onEnter?: (value: string) => void;
   defaultValue?: string;
   value?: string;
   accessibleName: string;
@@ -25,25 +22,21 @@ const TextInputComponent: React.FC<{
 }> = (props) => {
   const ref = useRef<HTMLInputElement>(null);
 
-  const [value, setValue] = useState(props.defaultValue || "");
-
   useEffect(() => {
-    if (props.value) setValue(props.value);
+    if (!ref.current) return;
+
+    if (props.value) ref.current.value = props.value;
   }, [props.value]);
 
   useEffect(() => {
     if (!ref.current) return;
 
-    ref.current.value = value;
-  }, [value]);
+    ref.current.onchange = () => {
+      if (!ref.current) return;
+      if (!props.getValue) return;
 
-  useEffect(() => {
-    setTimeout(() => {
-      if (ref.current?.value !== props.defaultValue) {
-        ref.current?.onkeyup?.({ currentTarget: ref.current } as unknown as KeyboardEvent);
-        ref.current?.onchange?.({ currentTarget: ref.current } as unknown as Event);
-      }
-    }, 200);
+      props.getValue(ref.current.value);
+    };
   }, []);
 
   return (
@@ -58,20 +51,9 @@ const TextInputComponent: React.FC<{
         ref={ref}
         type={props.type || "text"}
         aria-label={props.accessibleName}
+        defaultValue={props.defaultValue}
         className={clippy(styles.input, !props.icon && styles.noIcon)}
         placeholder={props.placeholder}
-        onKeyUp={(e) => {
-          setValue(e.currentTarget.value);
-          props.onChange?.(e.currentTarget.value);
-        }}
-        onChange={(e) => props.onSubmit?.(e.currentTarget.value)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") {
-            e.preventDefault();
-
-            props.onEnter?.(e.currentTarget.value);
-          }
-        }}
       />
     </div>
   );
