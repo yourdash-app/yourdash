@@ -11,6 +11,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 const TextInputComponent: React.FC<{
   getValue?: React.Dispatch<React.SetStateAction<string>>;
+  getLiveValue?: React.Dispatch<React.SetStateAction<string>>;
   onSubmit?: (value: string) => void;
   placeholder: string;
   icon?: UKIconType;
@@ -36,6 +37,19 @@ const TextInputComponent: React.FC<{
       if (!props.getValue) return;
 
       props.getValue(ref.current.value);
+    };
+
+    ref.current.onkeyup = (event) => {
+      if (!ref.current) return;
+      if (!props.onSubmit) return;
+
+      if (props.getLiveValue) {
+        props.getLiveValue(ref.current.value);
+      }
+
+      if (event.key === "Enter") {
+        props.onSubmit(ref.current.value);
+      }
     };
   }, []);
 

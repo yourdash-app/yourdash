@@ -22,13 +22,23 @@ const ApplicationsLauncherApplications: React.FC<{
 }> = ({ apps, layout }) => {
   const navigate = useNavigate();
   const [applications, setApplications] = React.useState<IPanelApplicationsLauncherFrontendModule[]>(apps);
+  const [searchQuery, setSearchQuery] = React.useState<string>("");
 
   useEffect(() => {
-    setApplications(apps);
+    setApplications(
+      apps.filter((application) => {
+        return (
+          application.displayName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          application.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          application.displayName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          application.id.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+      }),
+    );
 
     // for development purposes only
     // setLayout( "list" )
-  }, [apps]);
+  }, [apps, searchQuery]);
 
   return (
     <>
@@ -36,22 +46,12 @@ const ApplicationsLauncherApplications: React.FC<{
         accessibleName={"Search Applications"}
         placeholder={"Search Applications"}
         className={clippy(styles.searchBar, "top-0 sticky z-10")}
-        onEnter={() => {
+        onSubmit={() => {
           if (filteredApplications.length === 1) {
-            navigate(`/app/a/${filteredApplications[0].displayName}`);
+            navigate(`/app/a/${filteredApplications[0].id}`);
           }
         }}
-        onChange={(val) => {
-          filteredApplications = apps.filter((application) => {
-            return (
-              application.displayName.toLowerCase().includes(val.toLowerCase()) ||
-              application.description.toLowerCase().includes(val.toLowerCase()) ||
-              application.displayName.toLowerCase().includes(val.toLowerCase())
-            );
-          });
-
-          setApplications(filteredApplications);
-        }}
+        getLiveValue={setSearchQuery}
         icon={UKIcon.Search}
       />
 

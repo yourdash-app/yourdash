@@ -209,7 +209,46 @@ pathParams: {"res": string}},"/album/media/:page/@/*":{
     head?: never;
     patch?: never;
     trace?: never;
-pathParams: {"page": string}},};
+pathParams: {"page": string}},"/media/search/:query":{
+    parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+    };
+    /** @description Sample description */
+    get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Sample description */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        fileName: string;
+                        timestamp: string;
+                        path: string;
+                    }[];
+                };
+            };
+        };
+    };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+pathParams: {"query": string}},};
       type openapi = OpenApiApplicationRouteData;
       export default openapi;
       

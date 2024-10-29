@@ -6,6 +6,8 @@
 import core from "@yourdash/backend/src/core/core.js";
 import { YourDashBackendModule, YourDashModuleArguments } from "@yourdash/backend/src/core/coreApplicationManager.js";
 import { AUTHENTICATED_IMAGE_TYPE } from "@yourdash/backend/src/core/coreImage.js";
+import { AUTHENTICATED_VIDEO_TYPE } from "@yourdash/backend/src/core/coreVideo.js";
+import { FILESYSTEM_ENTITY_TYPE } from "@yourdash/backend/src/core/fileSystem/FSEntity.js";
 import FSError, { FS_ERROR_TYPE } from "@yourdash/backend/src/core/fileSystem/FSError.js";
 import FSFile from "@yourdash/backend/src/core/fileSystem/FSFile.js";
 import { chunk } from "@yourdash/shared/web/helpers/array.js";
@@ -13,13 +15,11 @@ import * as console from "node:console";
 import path from "path";
 // @ts-ignore
 import sharp from "sharp";
+import z from "zod";
 import EndpointAlbumMediaPath, { AlbumMediaPath } from "../shared/types/endpoints/album/media/path.js";
 import { EndpointAlbumSubPath } from "../shared/types/endpoints/album/sub/path.js";
 import EndpointMediaThumbnail from "../shared/types/endpoints/media/thumbnail.js";
 import { PHOTOS_MEDIA_TYPE } from "../shared/types/mediaType.js";
-import { FILESYSTEM_ENTITY_TYPE } from "@yourdash/backend/src/core/fileSystem/FSEntity.js";
-import { AUTHENTICATED_VIDEO_TYPE } from "@yourdash/backend/src/core/coreVideo.js";
-import z from "zod";
 
 export default class PhotosBackend extends YourDashBackendModule {
   PAGE_SIZE: number;
@@ -554,9 +554,13 @@ export default class PhotosBackend extends YourDashBackendModule {
           return res.json({ error: true });
         }
 
-        if (!(await item.doesExist())) return res.json({ error: true });
+        if (!(await item.doesExist())) {
+          return res.json({ error: true });
+        }
 
-        if (item.entityType !== FILESYSTEM_ENTITY_TYPE.FILE) return res.json({ error: "The path supplied is not a file." });
+        if (item.entityType !== FILESYSTEM_ENTITY_TYPE.FILE) {
+          return res.json({ error: "The path supplied is not a file." });
+        }
 
         let itemType: PHOTOS_MEDIA_TYPE;
 
@@ -586,8 +590,7 @@ export default class PhotosBackend extends YourDashBackendModule {
               mediaUrl: this.api.core.video.createAuthenticatedVideo(user.username, sessionid, AUTHENTICATED_VIDEO_TYPE.FILE, item.path),
               metadata: {
                 width: dimensions.width || 400,
-                height: dimensions.height || 400,
-                // FIXME: acutally return the duration
+                height: dimensions.height || 400, // FIXME: acutally return the duration
                 duration: -1,
               },
             });
@@ -863,6 +866,20 @@ export default class PhotosBackend extends YourDashBackendModule {
           data: output,
           hasAnotherPage: page !== chunks.length && !(page > chunks.length),
         });
+      },
+    );
+
+    core.request.get(
+      "/media/search/:query",
+      z
+        .object({
+          fileName: z.string(),
+          timestamp: z.string(),
+          path: z.string(),
+        })
+        .array(),
+      async (req, res) => {
+        return res.json([]);
       },
     );
   }

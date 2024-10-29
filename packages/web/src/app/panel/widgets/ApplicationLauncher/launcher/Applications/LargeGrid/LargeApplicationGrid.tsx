@@ -34,7 +34,7 @@ const LargeApplicationGrid: React.FC<{
               {
                 label: "Open In New Tab",
                 onClick() {
-                  window.open(`${window.location.origin}${window.location.pathname}/app/a/${module.id}`, "_blank");
+                  window.open(`${window.location.origin}/app/a/${module.id}`, "_blank");
                   return 0;
                 },
               },

@@ -28,24 +28,6 @@ const IndexCardsPage: FC<{ metadata?: EndpointResponseLoginInstanceMetadata }> =
     isValid: false,
   });
   const [password, setPassword] = useState("");
-  const usernameInputRef = useRef<HTMLInputElement>(null);
-  const passwordInputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    setTimeout(() => {
-      if (!usernameInputRef.current) {
-        return;
-      }
-      if (!passwordInputRef.current) {
-        return;
-      }
-
-      if (usernameInputRef.current.value !== "" && passwordInputRef.current.value !== "") {
-        setUsername(usernameInputRef.current.value);
-        setPassword(passwordInputRef.current.value);
-      }
-    }, 1000);
-  }, []);
 
   useEffect(() => {
     if (coreCSI.getUsername() !== "") {
@@ -96,12 +78,12 @@ const IndexCardsPage: FC<{ metadata?: EndpointResponseLoginInstanceMetadata }> =
           />
         )}
         <TextInput
-          ref={usernameInputRef}
           accessibleName={"Username"}
           placeholder={"Username"}
           type={"username"}
           defaultValue={coreCSI.getUsername() || ""}
-          onChange={(val) => {
+          getValue={setUsername}
+          onSubmit={(val) => {
             fetch(`${coreCSI.getInstanceUrl()}/login/user/${val}`, {
               mode: "cors",
               headers: {
@@ -128,14 +110,11 @@ const IndexCardsPage: FC<{ metadata?: EndpointResponseLoginInstanceMetadata }> =
           }}
         />
         <TextInput
-          ref={passwordInputRef}
           accessibleName={"Password"}
           placeholder={"Password"}
           type={"password"}
-          onChange={(val) => {
-            setPassword(val);
-          }}
-          onEnter={() => {
+          getValue={setPassword}
+          onSubmit={() => {
             if (!(username === "" || password === "" || !user.isValid)) {
               loginUser(username, password)
                 .then(() => {

@@ -5,6 +5,7 @@
 
 import DropdownIconButton from "@yourdash/chiplet/components/dropdownIconButton/DropdownIconButton.tsx";
 import RightClickMenu from "@yourdash/chiplet/components/rightClickMenu/RightClickMenu.tsx";
+import Card from "@yourdash/uikit/components/card/card.tsx";
 import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary.ts";
 import React from "react";
 import IPanelApplicationsLauncherFrontendModule from "@yourdash/shared/core/panel/applicationsLauncher/application.ts";
@@ -44,7 +45,7 @@ const ApplicationList: React.FC<{ applications: IPanelApplicationsLauncherFronte
               navigate(application.url);
             }}
           >
-            <div className={styles.itemContent}>
+            <Card className={styles.itemContent}>
               <img
                 loading={"lazy"}
                 className={styles.itemIcon}
@@ -75,7 +76,7 @@ const ApplicationList: React.FC<{ applications: IPanelApplicationsLauncherFronte
                 ]}
                 icon={UKIcon.ThreeBars}
               />
-            </div>
+            </Card>
           </RightClickMenu>
         );
       })}

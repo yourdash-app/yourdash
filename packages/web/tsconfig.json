@@ -3,11 +3,7 @@
     "target": "ES2022",
     "module": "ES2022",
     "useDefineForClassFields": true,
-    "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "ESNext"
-    ],
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "allowJs": false,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -23,13 +19,7 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": [
-    "src/**/*",
-    "../applications/**/frontend/**/*",
-    "../packages/shared/**/*",
-    "../packages/csi/**/*",
-    "../packages/uikit/**/*"
-  ],
+  "include": ["src/**/*", "../applications/**/frontend/**/*"],
   "references": [
     {
       "path": "./tsconfig.node.json"

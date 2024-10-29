@@ -6,7 +6,7 @@
 import Card from "@yourdash/chiplet/components/card/Card";
 import Chip from "@yourdash/chiplet/components/chip/Chip";
 import Icon from "@yourdash/chiplet/components/icon/Icon";
-import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary";
+import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary";
 import IconButton from "@yourdash/chiplet/components/iconButton/IconButton";
 import Row from "@yourdash/chiplet/components/row/Row";
 import * as React from "react";
@@ -28,13 +28,13 @@ const DashboardLayout: React.FC<IDashboard> = ({ username, fullName }) => {
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
   const [widgets, setWidgets] = useState<React.FC[]>([WeatherHourlyConditionsWidget]);
   const navigate = useNavigate();
-  const trans = useTranslate("dash");
+
   return (
     <main className={"flex flex-col w-full min-h-full h-full overflow-y-auto"}>
       <header className={"p-6 pl-8 pr-8 flex flex-col from-container-bg to-transparent bg-gradient-to-b"}>
         <Row>
           <span className={"text-5xl font-bold [text-shadow:#242424bb_0_0_0.75rem,_#24242488_0_0_0.5rem,_#24242444_0_0_0.25rem]"}>
-            {trans("LOCALISED_GREETING", [fullName.first, fullName.last])}
+            {fullName.first} {fullName.last}
           </span>
           <IconButton
             className={"ml-auto"}

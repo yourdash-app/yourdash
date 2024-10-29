@@ -41,13 +41,9 @@
   gap: 0.25rem;
   cursor: pointer;
   padding: 0.25rem 0.25rem 0.25rem 0.3rem;
-  border-radius: var(--container-secondary-rounding);
-  background: rgb(var(--button-bg));
   transition: var(--transition);
   height: 100%;
   overflow: hidden;
-  outline-color: rgb(var(--container-bg));
-  outline-style: solid;
 
   &:hover {
     transition: var(--transition-fast);
