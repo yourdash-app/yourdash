@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import Heading from "@yourdash/uikit/components/heading/heading";
+import Heading from "@yourdash/uikit/src/components/heading/heading";
 import React from "react";
 import FileList from "../../../fileList/fileList";
 

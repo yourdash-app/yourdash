@@ -3,11 +3,11 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary.js";
-import IconButton from "@yourdash/uikit/components/iconButton/iconButton.js";
-import NavImage from "@yourdash/uikit/views/navBar/components/navImage/navImage.tsx";
-import NavTitle from "@yourdash/uikit/views/navBar/components/navTitle/navTitle.tsx";
-import NavBar from "@yourdash/uikit/views/navBar/navBar.tsx";
+import { UKIcon } from "@yourdash/uikit/src/components/icon/iconDictionary.js";
+import IconButton from "@yourdash/uikit/src/components/iconButton/iconButton.js";
+import NavImage from "@yourdash/uikit/src/views/navBar/components/navImage/navImage.tsx";
+import NavTitle from "@yourdash/uikit/src/views/navBar/components/navTitle/navTitle.tsx";
+import NavBar from "@yourdash/uikit/src/views/navBar/navBar.tsx";
 import { FC } from "react";
 import { Outlet } from "react-router";
 import PHOTOS_LOGO from "../icon.avif";

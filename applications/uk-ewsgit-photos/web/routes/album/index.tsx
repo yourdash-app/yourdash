@@ -3,9 +3,9 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import Heading from "@yourdash/uikit/components/heading/heading.js";
-import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary.js";
-import IconButton from "@yourdash/uikit/components/iconButton/iconButton.js";
+import Heading from "@yourdash/uikit/src/components/heading/heading.js";
+import { UKIcon } from "@yourdash/uikit/src/components/icon/iconDictionary.js";
+import IconButton from "@yourdash/uikit/src/components/iconButton/iconButton.js";
 import { FC } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import path from "path-browserify";

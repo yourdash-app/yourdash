@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import IncrementLevel from "@yourdash/uikit/core/incrementLevel";
+import IncrementLevel from "@yourdash/uikit/src/core/incrementLevel";
 import React from "react";
 import FileListFile from "./components/fileListFile/fileListFile";
 import styles from "./fileList.module.scss";

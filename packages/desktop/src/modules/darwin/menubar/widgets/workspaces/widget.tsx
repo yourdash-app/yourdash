@@ -4,8 +4,8 @@
  */
 
 import clippy from "@yourdash/shared/web/helpers/clippy";
-import Icon from "@yourdash/uikit/components/icon/icon";
-import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary";
+import Icon from "@yourdash/uikit/src/components/icon/icon";
+import { UKIcon } from "@yourdash/uikit/src/components/icon/iconDictionary";
 import { useEffect, useState } from "react";
 import styles from "./widget.module.scss";
 

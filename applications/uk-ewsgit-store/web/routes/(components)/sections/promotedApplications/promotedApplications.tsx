@@ -1,5 +1,5 @@
 import generateUUID from "@yourdash/shared/web/helpers/uuid";
-import Carousel from "@yourdash/uikit/views/carousel/carousel";
+import Carousel from "@yourdash/uikit/src/views/carousel/carousel";
 import React from "react";
 import useResource from "@yourdash/csi/useResource.js";
 import { acsi } from "../../../../meta.yourdash";

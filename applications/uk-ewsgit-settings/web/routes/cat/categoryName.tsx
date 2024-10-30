@@ -3,9 +3,9 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import Heading from "@yourdash/uikit/components/heading/heading";
-import Spinner from "@yourdash/uikit/components/spinner/spinner";
-import SidebarToggleButton from "@yourdash/uikit/views/sidebar/SidebarToggleButton";
+import Heading from "@yourdash/uikit/src/components/heading/heading";
+import Spinner from "@yourdash/uikit/src/components/spinner/spinner";
+import SidebarToggleButton from "@yourdash/uikit/src/views/sidebar/SidebarToggleButton";
 import useResource from "@yourdash/csi/useResource";
 import React from "react";
 import { useParams } from "react-router";

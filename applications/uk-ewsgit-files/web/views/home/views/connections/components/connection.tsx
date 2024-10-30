@@ -3,13 +3,13 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import Card from "@yourdash/uikit/components/card/card";
-import Heading from "@yourdash/uikit/components/heading/heading";
-import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary";
-import IconButton from "@yourdash/uikit/components/iconButton/iconButton";
-import Image from "@yourdash/uikit/components/image/image";
-import ProgressBar from "@yourdash/uikit/components/progressBar/progressBar";
-import Text from "@yourdash/uikit/components/text/text";
+import Card from "@yourdash/uikit/src/components/card/card";
+import Heading from "@yourdash/uikit/src/components/heading/heading";
+import { UKIcon } from "@yourdash/uikit/src/components/icon/iconDictionary";
+import IconButton from "@yourdash/uikit/src/components/iconButton/iconButton";
+import Image from "@yourdash/uikit/src/components/image/image";
+import ProgressBar from "@yourdash/uikit/src/components/progressBar/progressBar";
+import Text from "@yourdash/uikit/src/components/text/text";
 import React from "react";
 import { IHomeConnection } from "../../../../../../shared/types/tabView/home";
 import styles from "./connection.module.scss";

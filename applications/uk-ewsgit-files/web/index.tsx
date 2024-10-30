@@ -6,7 +6,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import applicationMeta from "./meta.yourdash";
-import OnBoarding from "@yourdash/uikit/views/onBoarding/onBoarding";
+import OnBoarding from "@yourdash/uikit/src/views/onBoarding/onBoarding";
 import ApplicationLayout from "./layout";
 
 const FilesRouter: React.FC = () => (

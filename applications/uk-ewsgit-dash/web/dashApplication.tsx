@@ -5,16 +5,16 @@
 
 import coreCSI from "@yourdash/csi/coreCSI";
 import useResource from "@yourdash/csi/useResource";
-import ButtonWithIcon from "@yourdash/uikit/components/buttonWithIcon/buttonWithIcon";
-import Flex from "@yourdash/uikit/components/flex/flex";
-import Heading from "@yourdash/uikit/components/heading/heading";
-import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary";
+import ButtonWithIcon from "@yourdash/uikit/src/components/buttonWithIcon/buttonWithIcon";
+import Flex from "@yourdash/uikit/src/components/flex/flex";
+import Heading from "@yourdash/uikit/src/components/heading/heading";
+import { UKIcon } from "@yourdash/uikit/src/components/icon/iconDictionary";
 import React, { useState } from "react";
 import styles from "./dashApplication.module.scss";
 import { IWidgetGrid } from "../shared/types/widgetGrid";
 import loadable from "@loadable/component";
 import { acsi } from "./meta.yourdash";
-import Button from "@yourdash/uikit/components/button/button";
+import Button from "@yourdash/uikit/src/components/button/button";
 import clippy from "@yourdash/shared/web/helpers/clippy";
 import EditWidgets from "./views/editWidgets/editWidgets.tsx";
 

@@ -3,8 +3,8 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import Redirect from "@yourdash/uikit/components/redirect/redirect";
-import OnBoarding from "@yourdash/uikit/views/onBoarding/onBoarding";
+import Redirect from "@yourdash/uikit/src/components/redirect/redirect";
+import OnBoarding from "@yourdash/uikit/src/views/onBoarding/onBoarding";
 import React from "react";
 import { Routes, Route } from "react-router";
 import applicationMeta, { modulePath } from "./meta.yourdash";

@@ -1,21 +1,21 @@
 import clippy from "@yourdash/shared/web/helpers/clippy";
-import Card from "@yourdash/uikit/components/card/card.tsx";
-import Flex from "@yourdash/uikit/components/flex/flex.tsx";
-import Heading from "@yourdash/uikit/components/heading/heading";
-import Separator from "@yourdash/uikit/components/separator/separator.tsx";
-import Text from "@yourdash/uikit/components/text/text.tsx";
-import Sidebar from "@yourdash/uikit/views/sidebar/Sidebar";
-import SidebarContainer from "@yourdash/uikit/views/sidebar/SidebarContainer";
-import SidebarToggleButton from "@yourdash/uikit/views/sidebar/SidebarToggleButton";
+import Card from "@yourdash/uikit/src/components/card/card.tsx";
+import Flex from "@yourdash/uikit/src/components/flex/flex.tsx";
+import Heading from "@yourdash/uikit/src/components/heading/heading";
+import Separator from "@yourdash/uikit/src/components/separator/separator.tsx";
+import Text from "@yourdash/uikit/src/components/text/text.tsx";
+import Sidebar from "@yourdash/uikit/src/views/sidebar/Sidebar";
+import SidebarContainer from "@yourdash/uikit/src/views/sidebar/SidebarContainer";
+import SidebarToggleButton from "@yourdash/uikit/src/views/sidebar/SidebarToggleButton";
 import React, { useEffect, useState } from "react";
-import Button from "@yourdash/uikit/components/button/button";
+import Button from "@yourdash/uikit/src/components/button/button";
 import TabView from "./views/tab/tabView";
 import { IFilesView } from "./views/view";
 import FILES_VIEW_TYPE from "./views/viewType";
 import styles from "./layout.module.scss";
 import generateUUID from "@yourdash/shared/web/helpers/uuid";
-import IconButton from "@yourdash/uikit/components/iconButton/iconButton";
-import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary";
+import IconButton from "@yourdash/uikit/src/components/iconButton/iconButton";
+import { UKIcon } from "@yourdash/uikit/src/components/icon/iconDictionary";
 
 export interface IFilesTab {
   id: string;

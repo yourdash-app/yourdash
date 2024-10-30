@@ -4,7 +4,7 @@
  */
 
 import Card from "@yourdash/chiplet/components/card/Card";
-import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary";
+import { UKIcon } from "@yourdash/uikit/src/components/icon/iconDictionary";
 import IconButton from "@yourdash/chiplet/components/iconButton/IconButton";
 import TextInput from "@yourdash/chiplet/components/textInput/TextInput";
 import React from "react";

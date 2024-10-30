@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary";
+import { UKIcon } from "@yourdash/uikit/src/components/icon/iconDictionary";
 import React, { useEffect, useState } from "react";
 import Indicator from "./components/indicator/Indicator";
 import coreCSI from "@yourdash/csi/coreCSI";

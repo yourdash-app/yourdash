@@ -6,8 +6,8 @@
 import coreCSI from "@yourdash/csi/coreCSI.ts";
 import toAuthImgUrl from "@yourdash/csi/toAuthImgUrl.ts";
 import useResource from "@yourdash/csi/useResource.ts";
-import Image from "@yourdash/uikit/components/image/image.tsx";
-import Text from "@yourdash/uikit/components/text/text.tsx";
+import Image from "@yourdash/uikit/src/components/image/image.tsx";
+import Text from "@yourdash/uikit/src/components/text/text.tsx";
 import React from "react";
 import { AlbumMediaPath } from "../../../shared/types/endpoints/album/media/path.ts";
 import EndpointMediaThumbnail from "../../../shared/types/endpoints/media/thumbnail.ts";

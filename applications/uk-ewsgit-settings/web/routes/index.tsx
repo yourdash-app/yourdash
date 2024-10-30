@@ -3,13 +3,13 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import Button from "@yourdash/uikit/components/button/button";
+import Button from "@yourdash/uikit/src/components/button/button";
 import Card from "@yourdash/uikit/components/card/card";
 import Flex from "@yourdash/uikit/components/flex/flex";
 import Heading from "@yourdash/uikit/components/heading/heading";
 import Icon from "@yourdash/uikit/components/icon/icon";
 import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary";
-import SidebarToggleButton from "@yourdash/uikit/views/sidebar/SidebarToggleButton";
+import SidebarToggleButton from "@yourdash/uikit/src/views/sidebar/SidebarToggleButton";
 import { FC } from "react";
 import ManageWallpaper from "./components/manageWallpaper/manageWallpaper.tsx";
 import styles from "./index.module.scss";

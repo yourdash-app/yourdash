@@ -4,9 +4,9 @@
  */
 
 import toAuthImgUrl from "@yourdash/csi/toAuthImgUrl.ts";
-import Icon from "@yourdash/uikit/components/icon/icon.js";
-import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary.js";
-import Image from "@yourdash/uikit/components/image/image.js";
+import Icon from "@yourdash/uikit/src/components/icon/icon.js";
+import { UKIcon } from "@yourdash/uikit/src/components/icon/iconDictionary.js";
+import Image from "@yourdash/uikit/src/components/image/image.js";
 import { FC } from "react";
 import { MediaAlbumLargeGridItem } from "../../../../../shared/types/endpoints/media/album/large-grid.js";
 import { PHOTOS_MEDIA_TYPE } from "../../../../../shared/types/mediaType.js";

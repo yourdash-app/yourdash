@@ -1,4 +1,4 @@
-import Heading from "@yourdash/uikit/components/heading/heading";
+import Heading from "@yourdash/uikit/src/components/heading/heading";
 import HomeTabView from "../home/homeTab";
 import { IFilesView } from "../view";
 import ViewType from "../viewType";

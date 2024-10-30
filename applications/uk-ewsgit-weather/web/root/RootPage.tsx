@@ -5,9 +5,9 @@
 
 import Heading from "@yourdash/uikit/components/heading/heading.tsx";
 import TextInput from "@yourdash/uikit/components/textInput/textInput.tsx";
-import NavImage from "@yourdash/uikit/views/navBar/components/navImage/navImage.tsx";
-import NavTitle from "@yourdash/uikit/views/navBar/components/navTitle/navTitle.tsx";
-import NavBar from "@yourdash/uikit/views/navBar/navBar.tsx";
+import NavImage from "@yourdash/uikit/src/views/navBar/components/navImage/navImage.tsx";
+import NavTitle from "@yourdash/uikit/src/views/navBar/components/navTitle/navTitle.tsx";
+import NavBar from "@yourdash/uikit/src/views/navBar/navBar.tsx";
 import React from "react";
 import APPLICATION_ICON from "./../../icon.avif";
 

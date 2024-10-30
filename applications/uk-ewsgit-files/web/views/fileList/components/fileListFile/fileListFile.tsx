@@ -4,7 +4,7 @@
  */
 
 import clippy from "@yourdash/shared/web/helpers/clippy";
-import Text from "@yourdash/uikit/components/text/text";
+import Text from "@yourdash/uikit/src/components/text/text";
 import React from "react";
 import styles from "./fileListFile.module.scss";
 

@@ -4,7 +4,7 @@
  */
 
 import clippy from "@yourdash/shared/web/helpers/clippy";
-import InfiniteScroll from "@yourdash/uikit/views/infiniteScroll/infiniteScroll";
+import InfiniteScroll from "@yourdash/uikit/src/views/infiniteScroll/infiniteScroll";
 import React, { useEffect, useState } from "react";
 import EndpointAlbumMediaPath from "../../../shared/types/endpoints/album/media/path";
 import { acsi } from "../../meta.yourdash";

@@ -5,7 +5,7 @@
 
 import * as React from "react";
 import { Routes, Route } from "react-router";
-import OnBoarding from "@yourdash/uikit/views/onBoarding/onBoarding";
+import OnBoarding from "@yourdash/uikit/src/views/onBoarding/onBoarding";
 import applicationMeta from "./meta.yourdash";
 import STORE_ICON from "./../icon.avif";
 import ApplicationIndexPage from "./routes/index";
