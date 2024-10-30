@@ -1,4 +1,4 @@
-@use "../../../../../node_modules/@yourdash/uikit/theme/themeValues" as *;
+@use "@yourdash/uikit/theme/themeValues" as *;
 
 .component {
     --nav-height: calc(2rem + var(#{$theme+$padding}));
