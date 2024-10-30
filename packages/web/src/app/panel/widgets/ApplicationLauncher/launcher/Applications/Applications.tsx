@@ -4,8 +4,8 @@
  */
 
 import clippy from "@yourdash/shared/web/helpers/clippy.ts";
-import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary.ts";
-import TextInput from "@yourdash/uikit/components/textInput/textInput.tsx";
+import { UKIcon } from "@yourdash/uikit/src/components/icon/iconDictionary.ts";
+import TextInput from "@yourdash/uikit/src/components/textInput/textInput.tsx";
 import React, { useEffect } from "react";
 import IPanelApplicationsLauncherFrontendModule from "@yourdash/shared/core/panel/applicationsLauncher/application.ts";
 import LargeApplicationGrid from "./LargeGrid/LargeApplicationGrid.tsx";

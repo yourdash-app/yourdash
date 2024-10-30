@@ -4,7 +4,7 @@
  */
 
 import clippy from "@yourdash/shared/web/helpers/clippy.ts";
-import Separator from "@yourdash/uikit/components/separator/separator.tsx";
+import Separator from "@yourdash/uikit/src/components/separator/separator.tsx";
 import React from "react";
 import styles from "./Widget.module.scss";
 

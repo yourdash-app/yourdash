@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import Button from "@yourdash/uikit/components/button/button.tsx";
+import Button from "@yourdash/uikit/src/components/button/button.tsx";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import MajorButton from "@yourdash/chiplet/components/majorButton/MajorButton.tsx";

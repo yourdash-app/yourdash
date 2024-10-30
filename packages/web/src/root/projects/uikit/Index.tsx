@@ -3,16 +3,16 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import Flex from "@yourdash/uikit/components/flex/flex.tsx";
-import Heading from "@yourdash/uikit/components/heading/heading.tsx";
-import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary.ts";
-import IconButton from "@yourdash/uikit/components/iconButton/iconButton.tsx";
-import Separator from "@yourdash/uikit/components/separator/separator.tsx";
-import Text from "@yourdash/uikit/components/text/text.tsx";
-import Header from "@yourdash/uikit/views/header/header.tsx";
-import NavImage from "@yourdash/uikit/views/navBar/components/navImage/navImage.tsx";
-import NavTitle from "@yourdash/uikit/views/navBar/components/navTitle/navTitle.tsx";
-import NavBar from "@yourdash/uikit/views/navBar/navBar.tsx";
+import Flex from "@yourdash/uikit/src/components/flex/flex.tsx";
+import Heading from "@yourdash/uikit/src/components/heading/heading.tsx";
+import { UKIcon } from "@yourdash/uikit/src/components/icon/iconDictionary.ts";
+import IconButton from "@yourdash/uikit/src/components/iconButton/iconButton.tsx";
+import Separator from "@yourdash/uikit/src/components/separator/separator.tsx";
+import Text from "@yourdash/uikit/src/components/text/text.tsx";
+import Header from "@yourdash/uikit/src/views/header/header.tsx";
+import NavImage from "@yourdash/uikit/src/views/navBar/components/navImage/navImage.tsx";
+import NavTitle from "@yourdash/uikit/src/views/navBar/components/navTitle/navTitle.tsx";
+import NavBar from "@yourdash/uikit/src/views/navBar/navBar.tsx";
 import { useNavigate } from "react-router";
 
 const ProjectUiKitIndexPage: React.FC = () => {

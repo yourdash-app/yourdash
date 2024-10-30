@@ -3,10 +3,10 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import Button from "@yourdash/uikit/components/button/button.tsx";
-import Card from "@yourdash/uikit/components/card/card.tsx";
-import Heading from "@yourdash/uikit/components/heading/heading.tsx";
-import Text from "@yourdash/uikit/components/text/text.tsx";
+import Button from "@yourdash/uikit/src/components/button/button.tsx";
+import Card from "@yourdash/uikit/src/components/card/card.tsx";
+import Heading from "@yourdash/uikit/src/components/heading/heading.tsx";
+import Text from "@yourdash/uikit/src/components/text/text.tsx";
 
 interface IKeyPointsCard {
   title: string;

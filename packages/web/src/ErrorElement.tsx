@@ -3,9 +3,9 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import Card from "@yourdash/uikit/components/card/card.tsx";
-import Heading from "@yourdash/uikit/components/heading/heading.tsx";
-import Text from "@yourdash/uikit/components/text/text.tsx";
+import Card from "@yourdash/uikit/src/components/card/card.tsx";
+import Heading from "@yourdash/uikit/src/components/heading/heading.tsx";
+import Text from "@yourdash/uikit/src/components/text/text.tsx";
 import React from "react";
 import { useRouteError } from "react-router-dom";
 import styles from "./ErrorElement.module.scss";

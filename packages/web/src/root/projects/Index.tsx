@@ -3,11 +3,11 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import Card from "@yourdash/uikit/components/card/card.tsx";
-import Heading from "@yourdash/uikit/components/heading/heading.tsx";
-import Image from "@yourdash/uikit/components/image/image.tsx";
-import Text from "@yourdash/uikit/components/text/text.tsx";
-import Header from "@yourdash/uikit/views/header/header.tsx";
+import Card from "@yourdash/uikit/src/components/card/card.tsx";
+import Heading from "@yourdash/uikit/src/components/heading/heading.tsx";
+import Image from "@yourdash/uikit/src/components/image/image.tsx";
+import Text from "@yourdash/uikit/src/components/text/text.tsx";
+import Header from "@yourdash/uikit/src/views/header/header.tsx";
 import React from "react";
 import { useNavigate } from "react-router";
 import styles from "./Index.module.scss";

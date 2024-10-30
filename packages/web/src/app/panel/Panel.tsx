@@ -4,7 +4,7 @@
  */
 
 import clippy from "@yourdash/shared/web/helpers/clippy.ts";
-import Box from "@yourdash/uikit/components/box/box.tsx";
+import Box from "@yourdash/uikit/src/components/box/box.tsx";
 import styles from "./Panel.module.scss";
 import React, { memo, useEffect, useState } from "react";
 import loadable from "@loadable/component";

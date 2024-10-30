@@ -3,9 +3,9 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import Heading from "@yourdash/uikit/components/heading/heading.tsx";
-import Separator from "@yourdash/uikit/components/separator/separator.tsx";
-import Subtext from "@yourdash/uikit/components/subtext/subtext.tsx";
+import Heading from "@yourdash/uikit/src/components/heading/heading.tsx";
+import Separator from "@yourdash/uikit/src/components/separator/separator.tsx";
+import Subtext from "@yourdash/uikit/src/components/subtext/subtext.tsx";
 import React from "react";
 
 const NotFoundPage: React.FC = () => {

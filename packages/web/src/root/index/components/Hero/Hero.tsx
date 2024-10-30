@@ -4,8 +4,8 @@
  */
 
 import clippy from "@yourdash/shared/web/helpers/clippy.ts";
-import ButtonLink from "@yourdash/uikit/components/buttonLink/buttonLink.tsx";
-import Heading from "@yourdash/uikit/components/heading/heading.tsx";
+import ButtonLink from "@yourdash/uikit/src/components/buttonLink/buttonLink.tsx";
+import Heading from "@yourdash/uikit/src/components/heading/heading.tsx";
 import React from "react";
 import FloatingApplications from "./FloatingApplications/FloatingApplications.tsx";
 import IndexPageHeroTaglines from "./Taglines.tsx";

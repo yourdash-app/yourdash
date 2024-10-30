@@ -5,8 +5,8 @@
 
 import DropdownIconButton from "@yourdash/chiplet/components/dropdownIconButton/DropdownIconButton.tsx";
 import RightClickMenu from "@yourdash/chiplet/components/rightClickMenu/RightClickMenu.tsx";
-import Card from "@yourdash/uikit/components/card/card.tsx";
-import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary.ts";
+import Card from "@yourdash/uikit/src/components/card/card.tsx";
+import { UKIcon } from "@yourdash/uikit/src/components/icon/iconDictionary.ts";
 import React from "react";
 import IPanelApplicationsLauncherFrontendModule from "@yourdash/shared/core/panel/applicationsLauncher/application.ts";
 import coreCSI from "@yourdash/csi/coreCSI.ts";

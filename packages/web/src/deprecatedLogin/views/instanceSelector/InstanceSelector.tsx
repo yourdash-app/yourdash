@@ -6,7 +6,7 @@
 import IconButton from "@yourdash/chiplet/components/iconButton/IconButton.tsx";
 import MajorButton from "@yourdash/chiplet/components/majorButton/MajorButton.tsx";
 import TextInput from "@yourdash/chiplet/components/textInput/TextInput.tsx";
-import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary";
+import { UKIcon } from "@yourdash/uikit/src/components/icon/iconDictionary";
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
 
@@ -57,7 +57,9 @@ const InstanceSelector: React.FC<IInstanceSelector> = ({ setInstanceUrl }) => {
                 alert("This is not a valid YourDash instance");
               });
           }}
-          mustMatchRegex={/^(?:https?:\/\/)?(?:\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(?::\d+)?|localhost(?::\d+)?|(?!.*\.$)[\w.-]+\.[a-z]{2,})(?::\d+)?$/}
+          mustMatchRegex={
+            /^(?:https?:\/\/)?(?:\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(?::\d+)?|localhost(?::\d+)?|(?!.*\.$)[\w.-]+\.[a-z]{2,})(?::\d+)?$/
+          }
           placeholder={"https://example.com"}
         />
         <MajorButton

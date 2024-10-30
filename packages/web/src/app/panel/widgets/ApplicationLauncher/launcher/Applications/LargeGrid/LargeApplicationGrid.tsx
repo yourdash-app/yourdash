@@ -3,8 +3,8 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import Card from "@yourdash/uikit/components/card/card.tsx";
-import ContextMenu from "@yourdash/uikit/components/contextMenu/contextMenu.tsx";
+import Card from "@yourdash/uikit/src/components/card/card.tsx";
+import ContextMenu from "@yourdash/uikit/src/components/contextMenu/contextMenu.tsx";
 import React from "react";
 import IPanelApplicationsLauncherFrontendModule from "@yourdash/shared/core/panel/applicationsLauncher/application.ts";
 import coreCSI from "@yourdash/csi/coreCSI.ts";

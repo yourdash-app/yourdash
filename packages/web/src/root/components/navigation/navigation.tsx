@@ -4,16 +4,16 @@
  */
 
 import clippy from "@yourdash/shared/web/helpers/clippy.ts";
-import Box from "@yourdash/uikit/components/box/box.tsx";
-import Flex from "@yourdash/uikit/components/flex/flex.tsx";
-import Heading from "@yourdash/uikit/components/heading/heading.tsx";
-import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary.ts";
-import IconButton from "@yourdash/uikit/components/iconButton/iconButton.tsx";
-import Image from "@yourdash/uikit/components/image/image.tsx";
-import Link from "@yourdash/uikit/components/link/link.tsx";
-import Separator from "@yourdash/uikit/components/separator/separator.tsx";
-import Text from "@yourdash/uikit/components/text/text.tsx";
-import TextButton from "@yourdash/uikit/components/textButton/textButton.tsx";
+import Box from "@yourdash/uikit/src/components/box/box.tsx";
+import Flex from "@yourdash/uikit/src/components/flex/flex.tsx";
+import Heading from "@yourdash/uikit/src/components/heading/heading.tsx";
+import { UKIcon } from "@yourdash/uikit/src/components/icon/iconDictionary.ts";
+import IconButton from "@yourdash/uikit/src/components/iconButton/iconButton.tsx";
+import Image from "@yourdash/uikit/src/components/image/image.tsx";
+import Link from "@yourdash/uikit/src/components/link/link.tsx";
+import Separator from "@yourdash/uikit/src/components/separator/separator.tsx";
+import Text from "@yourdash/uikit/src/components/text/text.tsx";
+import TextButton from "@yourdash/uikit/src/components/textButton/textButton.tsx";
 import styles from "./navigation.module.scss";
 import { FC } from "react";
 import { Outlet, useNavigate } from "react-router";

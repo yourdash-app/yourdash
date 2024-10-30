@@ -6,9 +6,9 @@
 import toAuthImgUrl from "@yourdash/csi/toAuthImgUrl.ts";
 import useResource from "@yourdash/csi/useResource.ts";
 import clippy from "@yourdash/shared/web/helpers/clippy.ts";
-import Image from "@yourdash/uikit/components/image/image.tsx";
-import IncrementLevel from "@yourdash/uikit/core/incrementLevel.tsx";
-import { useLevelClass } from "@yourdash/uikit/core/level.tsx";
+import Image from "@yourdash/uikit/src/components/image/image.tsx";
+import IncrementLevel from "@yourdash/uikit/src/core/incrementLevel.tsx";
+import { useLevelClass } from "@yourdash/uikit/src/core/level.tsx";
 import { useNavigate } from "react-router-dom";
 import coreCSI from "@yourdash/csi/coreCSI.ts";
 import styles from "./Widget.module.scss";

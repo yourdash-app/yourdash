@@ -6,9 +6,9 @@
 import "animate.css";
 import "./tailwindcss.css";
 import "./main.css";
-import UIKitRoot from "@yourdash/uikit/core/root.tsx";
-import Dialog from "@yourdash/uikit/views/dialog/dialog.tsx";
-import Text from "@yourdash/uikit/components/text/text.tsx";
+import UIKitRoot from "@yourdash/uikit/src/core/root.tsx";
+import Dialog from "@yourdash/uikit/src/views/dialog/dialog.tsx";
+import Text from "@yourdash/uikit/src/components/text/text.tsx";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createRoutesFromElements, Route, RouterProvider } from "react-router";
