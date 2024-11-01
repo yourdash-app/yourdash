@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import Heading from "@yourdash/uikit/components/heading/heading.tsx";
+import Heading from "@yourdash/uikit/src/components/heading/heading.tsx";
 import styles from "./index.module.scss";
 import Panel from "./components/panel/panel.tsx";
 import { FC } from "react";

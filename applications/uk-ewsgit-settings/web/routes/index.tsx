@@ -4,16 +4,16 @@
  */
 
 import Button from "@yourdash/uikit/src/components/button/button";
-import Card from "@yourdash/uikit/components/card/card";
-import Flex from "@yourdash/uikit/components/flex/flex";
-import Heading from "@yourdash/uikit/components/heading/heading";
-import Icon from "@yourdash/uikit/components/icon/icon";
-import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary";
+import Card from "@yourdash/uikit/src/components/card/card";
+import Flex from "@yourdash/uikit/src/components/flex/flex";
+import Heading from "@yourdash/uikit/src/components/heading/heading";
+import Icon from "@yourdash/uikit/src/components/icon/icon";
+import { UKIcon } from "@yourdash/uikit/src/components/icon/iconDictionary";
 import SidebarToggleButton from "@yourdash/uikit/src/views/sidebar/SidebarToggleButton";
 import { FC } from "react";
 import ManageWallpaper from "./components/manageWallpaper/manageWallpaper.tsx";
 import styles from "./index.module.scss";
-import Text from "@yourdash/uikit/components/text/text";
+import Text from "@yourdash/uikit/src/components/text/text";
 
 const IndexPage: FC = () => {
   return (

@@ -3,8 +3,8 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import Button from "@yourdash/uikit/components/button/button.tsx";
-import Heading from "@yourdash/uikit/components/heading/heading.tsx";
+import Button from "@yourdash/uikit/src/components/button/button.tsx";
+import Heading from "@yourdash/uikit/src/components/heading/heading.tsx";
 
 const EditWidgets: React.FC = () => {
   return (

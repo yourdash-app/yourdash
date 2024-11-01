@@ -3,9 +3,9 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import Card from "@yourdash/uikit/components/card/card";
-import Icon from "@yourdash/uikit/components/icon/icon.tsx";
-import Text from "@yourdash/uikit/components/text/text.tsx";
+import Card from "@yourdash/uikit/src/components/card/card";
+import Icon from "@yourdash/uikit/src/components/icon/icon.tsx";
+import Text from "@yourdash/uikit/src/components/text/text.tsx";
 import React from "react";
 import { IHomeCommonStorageLocation } from "../../../../../../shared/types/tabView/home";
 import { useNavigateTo } from "../../../../../meta.yourdash.ts";

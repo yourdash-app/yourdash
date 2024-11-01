@@ -3,11 +3,10 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import Button from "@yourdash/uikit/components/button/button.tsx";
-import Card from "@yourdash/uikit/components/card/card.tsx";
-import Flex from "@yourdash/uikit/components/flex/flex.tsx";
-import Heading from "@yourdash/uikit/components/heading/heading.tsx";
-import Separator from "@yourdash/uikit/components/separator/separator.tsx";
+import Button from "@yourdash/uikit/src/components/button/button.tsx";
+import Flex from "@yourdash/uikit/src/components/flex/flex.tsx";
+import Heading from "@yourdash/uikit/src/components/heading/heading.tsx";
+import Separator from "@yourdash/uikit/src/components/separator/separator.tsx";
 
 const SignupPage = () => {
   return (

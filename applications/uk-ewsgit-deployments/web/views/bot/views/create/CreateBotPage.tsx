@@ -7,7 +7,7 @@ import Button from "@yourdash/chiplet/components/button/Button";
 import Card from "@yourdash/chiplet/components/card/Card";
 import DropdownButton from "@yourdash/chiplet/components/dropdownButton/DropdownButton";
 import Heading from "@yourdash/chiplet/components/heading/Heading";
-import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary";
+import { UKIcon } from "@yourdash/uikit/src/components/icon/iconDictionary";
 import IconButton from "@yourdash/chiplet/components/iconButton/IconButton";
 import MajorButton from "@yourdash/chiplet/components/majorButton/MajorButton";
 import TextBox from "@yourdash/chiplet/components/textBox/TextBox";

@@ -5,13 +5,13 @@
 
 import toAuthImgUrl from "@yourdash/csi/toAuthImgUrl.ts";
 import useResource from "@yourdash/csi/useResource.ts";
-import Card from "@yourdash/uikit/components/card/card.tsx";
-import Heading from "@yourdash/uikit/components/heading/heading.tsx";
-import Icon from "@yourdash/uikit/components/icon/icon.tsx";
-import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary.ts";
-import Image from "@yourdash/uikit/components/image/image.tsx";
-import Separator from "@yourdash/uikit/components/separator/separator.tsx";
-import Text from "@yourdash/uikit/components/text/text.tsx";
+import Card from "@yourdash/uikit/src/components/card/card.tsx";
+import Heading from "@yourdash/uikit/src/components/heading/heading.tsx";
+import Icon from "@yourdash/uikit/src/components/icon/icon.tsx";
+import { UKIcon } from "@yourdash/uikit/src/components/icon/iconDictionary.ts";
+import Image from "@yourdash/uikit/src/components/image/image.tsx";
+import Separator from "@yourdash/uikit/src/components/separator/separator.tsx";
+import Text from "@yourdash/uikit/src/components/text/text.tsx";
 import { acsi } from "../../../meta.yourdash.ts";
 import styles from "./manageWallpaper.module.scss";
 import React from "react";

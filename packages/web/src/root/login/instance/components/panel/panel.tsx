@@ -4,15 +4,15 @@
  */
 
 import coreCSI from "@yourdash/csi/coreCSI.ts";
-import Box from "@yourdash/uikit/components/box/box.tsx";
-import Button from "@yourdash/uikit/components/button/button.tsx";
-import Heading from "@yourdash/uikit/components/heading/heading.tsx";
-import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary.ts";
-import Subtext from "@yourdash/uikit/components/subtext/subtext.tsx";
-import TextInput from "@yourdash/uikit/components/textInput/textInput.tsx";
+import Box from "@yourdash/uikit/src/components/box/box.tsx";
+import Button from "@yourdash/uikit/src/components/button/button.tsx";
+import Heading from "@yourdash/uikit/src/components/heading/heading.tsx";
+import { UKIcon } from "@yourdash/uikit/src/components/icon/iconDictionary.ts";
+import Subtext from "@yourdash/uikit/src/components/subtext/subtext.tsx";
+import TextInput from "@yourdash/uikit/src/components/textInput/textInput.tsx";
 import styles from "./panel.module.scss";
 import isValidInstance from "../../../lib/isValidInstance.ts";
-import IconButton from "@yourdash/uikit/components/iconButton/iconButton.tsx";
+import IconButton from "@yourdash/uikit/src/components/iconButton/iconButton.tsx";
 import { FC, useState } from "react";
 import { useNavigate } from "react-router";
 

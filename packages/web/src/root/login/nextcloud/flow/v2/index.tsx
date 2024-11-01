@@ -4,12 +4,12 @@
  */
 
 import coreCSI from "@yourdash/csi/coreCSI.ts";
-import Button from "@yourdash/uikit/components/button/button.tsx";
-import Card from "@yourdash/uikit/components/card/card.tsx";
-import Heading from "@yourdash/uikit/components/heading/heading.tsx";
-import Separator from "@yourdash/uikit/components/separator/separator.tsx";
-import Text from "@yourdash/uikit/components/text/text.tsx";
-import TextInput from "@yourdash/uikit/components/textInput/textInput.tsx";
+import Button from "@yourdash/uikit/src/components/button/button.tsx";
+import Card from "@yourdash/uikit/src/components/card/card.tsx";
+import Heading from "@yourdash/uikit/src/components/heading/heading.tsx";
+import Separator from "@yourdash/uikit/src/components/separator/separator.tsx";
+import Text from "@yourdash/uikit/src/components/text/text.tsx";
+import TextInput from "@yourdash/uikit/src/components/textInput/textInput.tsx";
 import { useRef, useState } from "react";
 import { useParams } from "react-router";
 

@@ -5,13 +5,13 @@
 
 import coreCSI from "@yourdash/csi/coreCSI.ts";
 import EndpointResponseCoreLoginNotice from "@yourdash/shared/endpoints/core/login/notice.ts";
-import Box from "@yourdash/uikit/components/box/box.tsx";
-import Button from "@yourdash/uikit/components/button/button.tsx";
-import Card from "@yourdash/uikit/components/card/card.tsx";
-import Heading from "@yourdash/uikit/components/heading/heading.tsx";
-import Redirect from "@yourdash/uikit/components/redirect/redirect.tsx";
-import Subtext from "@yourdash/uikit/components/subtext/subtext.tsx";
-import Text from "@yourdash/uikit/components/text/text.tsx";
+import Box from "@yourdash/uikit/src/components/box/box.tsx";
+import Button from "@yourdash/uikit/src/components/button/button.tsx";
+import Card from "@yourdash/uikit/src/components/card/card.tsx";
+import Heading from "@yourdash/uikit/src/components/heading/heading.tsx";
+import Redirect from "@yourdash/uikit/src/components/redirect/redirect.tsx";
+import Subtext from "@yourdash/uikit/src/components/subtext/subtext.tsx";
+import Text from "@yourdash/uikit/src/components/text/text.tsx";
 import useResource from "@yourdash/csi/useResource.ts";
 import styles from "./index.module.scss";
 import { FC } from "react";
