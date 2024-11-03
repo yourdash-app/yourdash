@@ -32,13 +32,13 @@
   #{$theme+$subcolor}: #bbbbbb;
   #{$theme+$background}: #222222;
   #{$theme+$accent}: #768ce7;
-  #{$theme+$border}: 0.125rem solid #444444;
+  #{$theme+$border}: 1px solid #555555;
   #{$theme+$radius}: 1rem;
   #{$theme+$padding}: 1rem;
   #{$theme+$gap}: 0.5rem;
   #{$theme+$transition}: all 200ms ease-in-out;
   #{$theme+$transition+$transition}: 200ms ease-in-out;
-  #{$theme+$separator+$size}: 0.125rem;
+  #{$theme+$separator+$size}: 1px;
   #{$theme+$separator+$color}: #444444;
   #{$theme+$scrollbar+$width}: 0.4rem;
   #{$theme+$scrollbar+$radius}: 0.1rem;
@@ -60,7 +60,7 @@
   // input
   #{$theme+$input+$color}: #ffffff;
   #{$theme+$input+$background}: #222222;
-  #{$theme+$input+$border}: 0.125rem solid #444444;
+  #{$theme+$input+$border}: 1px solid #444444;
   #{$theme+$input+$radius}: 0.5rem;
   #{$theme+$input+$height}: 2rem;
   #{$theme+$input+$padding+$horizontal}: 0.5rem;
@@ -68,12 +68,12 @@
   // focus
   #{$theme}#{$input}#{$focus}#{$color}: #ffffff;
   #{$theme}#{$input}#{$focus}#{$background}: #333333;
-  #{$theme}#{$input}#{$focus}#{$border}: 0.125rem solid #555555;
+  #{$theme}#{$input}#{$focus}#{$border}: 1px solid #666666;
 
   // button
   #{$theme}#{$button}#{$color}: #ffffff;
   #{$theme}#{$button}#{$background}: #444444;
-  #{$theme}#{$button}#{$border}: 0.125rem solid #555555;
+  #{$theme}#{$button}#{$border}: 1px solid #666666;
   #{$theme}#{$button}#{$font}#{$size}: 0.9rem;
   #{$theme}#{$button}#{$font}#{$weight}: 400;
   #{$theme}#{$button}#{$radius}: 0.5rem;
@@ -82,13 +82,13 @@
   // hover
   #{$theme}#{$button}#{$hover}#{$color}: #ffffff;
   #{$theme}#{$button}#{$hover}#{$background}: #555555;
-  #{$theme}#{$button}#{$hover}#{$border}: 0.125rem solid #666666;
+  #{$theme}#{$button}#{$hover}#{$border}: 1px solid #666666;
   #{$theme}#{$button}#{$hover}#{$radius}: 0.5rem;
   #{$theme}#{$button}#{$hover}#{$transition}: all 50ms ease-in-out;
   // active
   #{$theme}#{$button}#{$active}#{$color}: #000000;
   #{$theme}#{$button}#{$active}#{$background}: #666666;
-  #{$theme}#{$button}#{$active}#{$border}: 0.125rem solid #777777;
+  #{$theme}#{$button}#{$active}#{$border}: 1px solid #777777;
   #{$theme}#{$button}#{$active}#{$radius}: 0.5rem;
   #{$theme}#{$button}#{$active}#{$transition}: all 50ms ease-in-out;
 
@@ -114,7 +114,7 @@
 
   #{$theme}#{$color}: #ffffff;
   #{$theme}#{$background}: #333333;
-  #{$theme}#{$border}: 0.125rem solid #555555;
+  #{$theme}#{$border}: 1px solid #666666;
   #{$theme}#{$accent}: #768ce7;
   #{$theme}#{$radius}: 0.5rem;
   #{$theme}#{$font}#{$family}: Inter;
@@ -123,7 +123,7 @@
   #{$theme}#{$padding}: 0.75rem;
   #{$theme}#{$gap}: 0.5rem;
   #{$theme}#{$transition}: all 200ms ease-in-out;
-  #{$theme}#{$separator}#{$size}: 0.125rem;
+  #{$theme}#{$separator}#{$size}: 1px;
   #{$theme}#{$separator}#{$color}: #555555;
 
   // heading
@@ -143,7 +143,7 @@
   // input
   #{$theme}#{$input}#{$color}: #ffffff;
   #{$theme}#{$input}#{$background}: #222222;
-  #{$theme}#{$input}#{$border}: 0.125rem solid #444444;
+  #{$theme}#{$input}#{$border}: 1px solid #444444;
   #{$theme}#{$input}#{$radius}: 0.5rem;
   #{$theme}#{$input}#{$height}: 2rem;
   #{$theme}#{$input}#{$padding}#{$horizontal}: 0.5rem;
@@ -151,12 +151,12 @@
   // focus
   #{$theme}#{$input}#{$focus}#{$color}: #ffffff;
   #{$theme}#{$input}#{$focus}#{$background}: #333333;
-  #{$theme}#{$input}#{$focus}#{$border}: 0.125rem solid #555555;
+  #{$theme}#{$input}#{$focus}#{$border}: 1px solid #666666;
 
   // button
   #{$theme}#{$button}#{$color}: #ffffff;
   #{$theme}#{$button}#{$background}: #444444;
-  #{$theme}#{$button}#{$border}: 0.125rem solid #444444;
+  #{$theme}#{$button}#{$border}: 1px solid #444444;
   #{$theme}#{$button}#{$font}#{$size}: 0.9rem;
   #{$theme}#{$button}#{$font}#{$weight}: 400;
   #{$theme}#{$button}#{$radius}: 0.5rem;
@@ -165,13 +165,13 @@
   // hover
   #{$theme}#{$button}#{$hover}#{$color}: #ffffff;
   #{$theme}#{$button}#{$hover}#{$background}: #555555;
-  #{$theme}#{$button}#{$hover}#{$border}: 0.125rem solid #555555;
+  #{$theme}#{$button}#{$hover}#{$border}: 1px solid #666666;
   #{$theme}#{$button}#{$hover}#{$radius}: 0.5rem;
   #{$theme}#{$button}#{$hover}#{$transition}: all 50ms ease-in-out;
   // active
   #{$theme}#{$button}#{$active}#{$color}: #000000;
   #{$theme}#{$button}#{$active}#{$background}: #666666;
-  #{$theme}#{$button}#{$active}#{$border}: 0.125rem solid #555555;
+  #{$theme}#{$button}#{$active}#{$border}: 1px solid #666666;
   #{$theme}#{$button}#{$active}#{$radius}: 0.5rem;
 
   // header
@@ -188,13 +188,13 @@
 
   #{$theme}#{$color}: #ffffff;
   #{$theme}#{$background}: #444444;
-  #{$theme}#{$border}: 0.125rem solid #555555;
+  #{$theme}#{$border}: 1px solid #666666;
   #{$theme}#{$accent}: #768ce7;
   #{$theme}#{$radius}: 0.25rem;
   #{$theme}#{$padding}: 0.5rem;
   #{$theme}#{$gap}: 0.75rem;
   #{$theme}#{$transition}: all 200ms ease-in-out;
-  #{$theme}#{$separator}#{$size}: 0.125rem;
+  #{$theme}#{$separator}#{$size}: 1px;
   #{$theme}#{$separator}#{$color}: #555555;
 
   // heading
@@ -222,7 +222,7 @@
   // input
   #{$theme}#{$input}#{$color}: #ffffff;
   #{$theme}#{$input}#{$background}: #222222;
-  #{$theme}#{$input}#{$border}: 0.125rem solid #444444;
+  #{$theme}#{$input}#{$border}: 1px solid #444444;
   #{$theme}#{$input}#{$radius}: 0.5rem;
   #{$theme}#{$input}#{$height}: 2rem;
   #{$theme}#{$input}#{$padding}#{$horizontal}: 0.5rem;
@@ -230,12 +230,12 @@
   // focus
   #{$theme}#{$input}#{$focus}#{$color}: #ffffff;
   #{$theme}#{$input}#{$focus}#{$background}: #333333;
-  #{$theme}#{$input}#{$focus}#{$border}: 0.125rem solid #555555;
+  #{$theme}#{$input}#{$focus}#{$border}: 1px solid #666666;
 
   // button
   #{$theme}#{$button}#{$color}: #ffffff;
   #{$theme}#{$button}#{$background}: #555555;
-  #{$theme}#{$button}#{$border}: 0.125rem solid #555555;
+  #{$theme}#{$button}#{$border}: 1px solid #666666;
   #{$theme}#{$button}#{$font}#{$family}: Inter;
   #{$theme}#{$button}#{$font}#{$size}: 0.9rem;
   #{$theme}#{$button}#{$font}#{$weight}: 400;
@@ -245,13 +245,13 @@
   // hover
   #{$theme}#{$button}#{$hover}#{$color}: #ffffff;
   #{$theme}#{$button}#{$hover}#{$background}: #666666;
-  #{$theme}#{$button}#{$hover}#{$border}: 0.125rem solid #666666;
+  #{$theme}#{$button}#{$hover}#{$border}: 1px solid #666666;
   #{$theme}#{$button}#{$hover}#{$radius}: 0.25rem;
   #{$theme}#{$button}#{$hover}#{$transition}: all 50ms ease-in-out;
   // active
   #{$theme}#{$button}#{$active}#{$color}: #000000;
   #{$theme}#{$button}#{$active}#{$background}bg: #666666;
-  #{$theme}#{$button}#{$active}#{$border}: 0.125rem solid #666666;
+  #{$theme}#{$button}#{$active}#{$border}: 1px solid #666666;
   #{$theme}#{$button}#{$active}#{$radius}: 0.25rem;
 
   // header
@@ -268,13 +268,13 @@
 
   #{$theme}#{$color}: #ffffff;
   #{$theme}#{$background}: #555555;
-  #{$theme}#{$border}: 0.125rem solid #666666;
+  #{$theme}#{$border}: 1px solid #666666;
   #{$theme}#{$accent}: #768ce7;
-  #{$theme}#{$radius}: 0.125rem;
+  #{$theme}#{$radius}: 1px;
   #{$theme}#{$padding}: 0.5rem;
   #{$theme}#{$gap}: 1rem;
   #{$theme}#{$transition}: all 200ms ease-in-out;
-  #{$theme}#{$separator}#{$size}: 0.125rem;
+  #{$theme}#{$separator}#{$size}: 1px;
   #{$theme}#{$separator}#{$color}: #555555;
 
   // heading
@@ -302,7 +302,7 @@
   // input
   #{$theme}#{$input}#{$color}: #ffffff;
   #{$theme}#{$input}#{$background}: #222222;
-  #{$theme}#{$input}#{$border}: 0.125rem solid #444444;
+  #{$theme}#{$input}#{$border}: 1px solid #444444;
   #{$theme}#{$input}#{$radius}: 0.5rem;
   #{$theme}#{$input}#{$height}: 2rem;
   #{$theme}#{$input}#{$padding}#{$horizontal}: 0.5rem;
@@ -310,12 +310,12 @@
   // focus
   #{$theme}#{$input}#{$focus}#{$color}: #ffffff;
   #{$theme}#{$input}#{$focus}#{$background}: #333333;
-  #{$theme}#{$input}#{$focus}#{$border}: 0.125rem solid #555555;
+  #{$theme}#{$input}#{$focus}#{$border}: 1px solid #666666;
 
   // button
   #{$theme}#{$button}#{$color}: #ffffff;
   #{$theme}#{$button}#{$background}: #666666;
-  #{$theme}#{$button}#{$border}: 0.125rem solid #666666;
+  #{$theme}#{$button}#{$border}: 1px solid #666666;
   #{$theme}#{$button}#{$font}#{$family}: Inter;
   #{$theme}#{$button}#{$font}#{$size}: 0.9rem;
   #{$theme}#{$button}#{$font}#{$weight}: 400;
@@ -324,13 +324,13 @@
   // hover
   #{$theme}#{$button}#{$hover}#{$color}: #ffffff;
   #{$theme}#{$button}#{$hover}#{$background}: #777777;
-  #{$theme}#{$button}#{$hover}#{$border}: 0.125rem solid #777777;
+  #{$theme}#{$button}#{$hover}#{$border}: 1px solid #777777;
   #{$theme}#{$button}#{$hover}#{$radius}: 0.25rem;
   #{$theme}#{$button}#{$hover}#{$transition}: all 50ms ease-in-out;
   // active
   #{$theme}#{$button}#{$active}#{$color}: #000000;
   #{$theme}#{$button}#{$active}#{$background}: #777777;
-  #{$theme}#{$button}#{$active}#{$border}: 0.125rem solid #777777;
+  #{$theme}#{$button}#{$active}#{$border}: 1px solid #777777;
   #{$theme}#{$button}#{$active}#{$radius}: 0.25rem;
 
   // header

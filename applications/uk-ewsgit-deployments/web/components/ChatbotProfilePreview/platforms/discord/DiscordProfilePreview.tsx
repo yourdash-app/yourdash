@@ -4,7 +4,7 @@
  */
 
 import Icon from "@yourdash/chiplet/components/icon/Icon";
-import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary";
+import { UKIcon } from "@yourdash/uikit/src/components/icon/iconDictionary";
 import React from "react";
 import styles from "./DiscordProfilePreview.module.scss";
 

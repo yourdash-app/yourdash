@@ -4,7 +4,7 @@
  */
 
 import Icon from "@yourdash/chiplet/components/icon/Icon";
-import { UKIcon, UKIconType } from "@yourdash/uikit/components/icon/iconDictionary.ts";
+import { UKIcon, UKIconType } from "@yourdash/uikit/src/components/icon/iconDictionary.ts";
 import React from "react";
 import BaseSettingComponent from "./BaseSettingComponent";
 import { useNavigate } from "react-router-dom";

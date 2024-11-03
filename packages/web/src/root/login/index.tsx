@@ -5,7 +5,7 @@
 
 import coreCSI from "@yourdash/csi/coreCSI.ts";
 import { LoginLayout } from "@yourdash/shared/core/login/loginLayout.ts";
-import Spinner from "@yourdash/uikit/components/spinner/spinner.tsx";
+import Spinner from "@yourdash/uikit/src/components/spinner/spinner.tsx";
 import useResource from "@yourdash/csi/useResource.ts";
 import IndexCardsPage from "./index.cards.tsx";
 import styles from "./index.module.scss";

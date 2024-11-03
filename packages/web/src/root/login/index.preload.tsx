@@ -5,7 +5,7 @@
 
 import Dialog from "@yourdash/chiplet/components/dialog/Dialog.tsx";
 import coreCSI from "@yourdash/csi/coreCSI.ts";
-import Button from "@yourdash/uikit/components/button/button.tsx";
+import Button from "@yourdash/uikit/src/components/button/button.tsx";
 import LoginIndexPage from "./index.tsx";
 import isValidInstance from "./lib/isValidInstance.ts";
 import { FC, useEffect, useState } from "react";

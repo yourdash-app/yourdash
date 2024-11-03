@@ -3,8 +3,8 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import Heading from "@yourdash/uikit/components/heading/heading";
-import Text from "@yourdash/uikit/components/text/text";
+import Heading from "@yourdash/uikit/src/components/heading/heading";
+import Text from "@yourdash/uikit/src/components/text/text";
 import React from "react";
 import { IHomeCommonStorageLocation, IHomeConnection } from "../../../../../shared/types/tabView/home";
 import styles from "./commonStorageLocations.module.scss";

@@ -5,9 +5,9 @@
 
 import Row from "@yourdash/chiplet/components/row/Row.tsx";
 import useResource from "@yourdash/csi/useResource.ts";
-import Card from "@yourdash/uikit/components/card/card.tsx";
-import Heading from "@yourdash/uikit/components/heading/heading.tsx";
-import Text from "@yourdash/uikit/components/text/text.tsx";
+import Card from "@yourdash/uikit/src/components/card/card.tsx";
+import Heading from "@yourdash/uikit/src/components/heading/heading.tsx";
+import Text from "@yourdash/uikit/src/components/text/text.tsx";
 import React from "react";
 import EndpointHomeApplicationCategories from "../../../../../shared/types/endpoints/home/applicationCategories.ts";
 import { acsi } from "../../../../meta.yourdash.ts";
