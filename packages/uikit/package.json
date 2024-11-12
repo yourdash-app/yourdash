@@ -3,6 +3,8 @@
   "version": "1.0.24",
   "license": "MIT",
   "type": "module",
+  "private": false,
+  "packageManager": "yarn",
   "engines": {
     "node": ">=21.0.0"
   },

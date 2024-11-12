@@ -1873,6 +1873,282 @@
         }
       }
     },
+    "/app/uk-ewsgit-photos-backend/media/raw/@/*": {
+      "get": {
+        "description": "Sample description",
+        "responses": {
+          "200": {
+            "description": "Sample description",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/app/uk-ewsgit-photos-backend/album/@/*": {
+      "get": {
+        "description": "Sample description",
+        "responses": {
+          "200": {
+            "description": "Sample description",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/app/uk-ewsgit-photos-backend/album/sub/:page/@/*": {
+      "get": {
+        "description": "Sample description",
+        "responses": {
+          "200": {
+            "description": "Sample description",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "displayName": {
+                                "type": "string"
+                              },
+                              "path": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "number"
+                              },
+                              "thumbnail": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "displayName",
+                              "path",
+                              "size",
+                              "thumbnail"
+                            ]
+                          }
+                        },
+                        "hasAnotherPage": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "data",
+                        "hasAnotherPage"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "error"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/app/uk-ewsgit-photos-backend/media/thumbnail/:res/@/*": {
+      "get": {
+        "description": "Sample description",
+        "responses": {
+          "200": {
+            "description": "Sample description",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "thumbnail": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "thumbnail"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "error"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/app/uk-ewsgit-photos-backend/album/media/:page/@/*": {
+      "get": {
+        "description": "Sample description",
+        "responses": {
+          "200": {
+            "description": "Sample description",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "path": {
+                            "type": "string"
+                          },
+                          "resolution": {
+                            "type": "object",
+                            "properties": {
+                              "width": {
+                                "type": "number"
+                              },
+                              "height": {
+                                "type": "number"
+                              }
+                            },
+                            "required": [
+                              "width",
+                              "height"
+                            ]
+                          },
+                          "mediaType": {
+                            "type": "integer",
+                            "enum": [
+                              0,
+                              1,
+                              2
+                            ]
+                          },
+                          "metadata": {
+                            "type": "object",
+                            "properties": {
+                              "people": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "location": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "people",
+                              "location"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "path",
+                          "resolution",
+                          "mediaType"
+                        ]
+                      }
+                    },
+                    "hasAnotherPage": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "hasAnotherPage"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/app/uk-ewsgit-photos-backend/media/search/:query": {
+      "get": {
+        "description": "Sample description",
+        "responses": {
+          "200": {
+            "description": "Sample description",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "fileName": {
+                        "type": "string"
+                      },
+                      "timestamp": {
+                        "type": "string"
+                      },
+                      "path": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "fileName",
+                      "timestamp",
+                      "path"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/app/uk-ewsgit-store-backend/home/promotedApplications": {
       "get": {
         "description": "Sample description",
@@ -2148,282 +2424,6 @@
                       "dimensions",
                       "path",
                       "previewThumbnail"
-                    ]
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/app/uk-ewsgit-photos-backend/media/raw/@/*": {
-      "get": {
-        "description": "Sample description",
-        "responses": {
-          "200": {
-            "description": "Sample description",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/app/uk-ewsgit-photos-backend/album/@/*": {
-      "get": {
-        "description": "Sample description",
-        "responses": {
-          "200": {
-            "description": "Sample description",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/app/uk-ewsgit-photos-backend/album/sub/:page/@/*": {
-      "get": {
-        "description": "Sample description",
-        "responses": {
-          "200": {
-            "description": "Sample description",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "anyOf": [
-                    {
-                      "type": "object",
-                      "properties": {
-                        "data": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "properties": {
-                              "displayName": {
-                                "type": "string"
-                              },
-                              "path": {
-                                "type": "string"
-                              },
-                              "size": {
-                                "type": "number"
-                              },
-                              "thumbnail": {
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "displayName",
-                              "path",
-                              "size",
-                              "thumbnail"
-                            ]
-                          }
-                        },
-                        "hasAnotherPage": {
-                          "type": "boolean"
-                        }
-                      },
-                      "required": [
-                        "data",
-                        "hasAnotherPage"
-                      ]
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "error": {
-                          "type": "string"
-                        }
-                      },
-                      "required": [
-                        "error"
-                      ]
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/app/uk-ewsgit-photos-backend/media/thumbnail/:res/@/*": {
-      "get": {
-        "description": "Sample description",
-        "responses": {
-          "200": {
-            "description": "Sample description",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "anyOf": [
-                    {
-                      "type": "object",
-                      "properties": {
-                        "thumbnail": {
-                          "type": "string"
-                        }
-                      },
-                      "required": [
-                        "thumbnail"
-                      ]
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "error": {
-                          "type": "boolean"
-                        }
-                      },
-                      "required": [
-                        "error"
-                      ]
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/app/uk-ewsgit-photos-backend/album/media/:page/@/*": {
-      "get": {
-        "description": "Sample description",
-        "responses": {
-          "200": {
-            "description": "Sample description",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "path": {
-                            "type": "string"
-                          },
-                          "resolution": {
-                            "type": "object",
-                            "properties": {
-                              "width": {
-                                "type": "number"
-                              },
-                              "height": {
-                                "type": "number"
-                              }
-                            },
-                            "required": [
-                              "width",
-                              "height"
-                            ]
-                          },
-                          "mediaType": {
-                            "type": "integer",
-                            "enum": [
-                              0,
-                              1,
-                              2
-                            ]
-                          },
-                          "metadata": {
-                            "type": "object",
-                            "properties": {
-                              "people": {
-                                "type": "array",
-                                "items": {
-                                  "type": "string"
-                                }
-                              },
-                              "location": {
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "people",
-                              "location"
-                            ]
-                          }
-                        },
-                        "required": [
-                          "path",
-                          "resolution",
-                          "mediaType"
-                        ]
-                      }
-                    },
-                    "hasAnotherPage": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "data",
-                    "hasAnotherPage"
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/app/uk-ewsgit-photos-backend/media/search/:query": {
-      "get": {
-        "description": "Sample description",
-        "responses": {
-          "200": {
-            "description": "Sample description",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "fileName": {
-                        "type": "string"
-                      },
-                      "timestamp": {
-                        "type": "string"
-                      },
-                      "path": {
-                        "type": "string"
-                      }
-                    },
-                    "required": [
-                      "fileName",
-                      "timestamp",
-                      "path"
                     ]
                   }
                 }
