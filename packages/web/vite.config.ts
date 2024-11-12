@@ -23,4 +23,11 @@ export default defineConfig({
       external: ["chart.js"],
     },
   },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        api: "modern-compiler", // or "modern"
+      },
+    },
+  },
 });

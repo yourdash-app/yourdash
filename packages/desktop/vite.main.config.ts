@@ -29,6 +29,13 @@ export default defineConfig((env) => {
       // Load the Node.js entry.
       mainFields: ["module", "jsnext:main", "jsnext"],
     },
+    css: {
+      preprocessorOptions: {
+        scss: {
+          api: "modern-compiler", // or "modern"
+        },
+      },
+    },
   };
 
   return mergeConfig(getBuildConfig(forgeEnv), config);
