@@ -1,0 +1,3 @@
+[submodule "UIKit"]
+	path = packages/uikit
+	url = https://github.com/yourdash/uikit

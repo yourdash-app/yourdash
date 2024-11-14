@@ -50,13 +50,13 @@ cd / || exit
 # does /yourdash exist?
 if [ ! -d /yourdash ]; then
   echo "Cloning YourDash"
-  git clone https://github.com/yourdash/yourdash.git -b dev
+  git clone https://github.com/yourdash/yourdash.git -b dev --recurse
   cd yourdash || exit
 else
   echo "Updating YourDash"
   cd yourdash || exit
   git stash
-  git pull
+  git pull --recurse
 fi
 
 echo "Adding YourDash as a safe directory for git"
