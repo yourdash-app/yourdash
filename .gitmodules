@@ -1,3 +1,4 @@
 [submodule "packages/uikit"]
 	path = packages/uikit
 	url = git@github.com:yourdash/uikit
+	branch = master
