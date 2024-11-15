@@ -47,6 +47,6 @@
     "vite-plugin-dynamic-import": "^1.5.0",
     "wallpaper": "^7.2.1",
     "win32-api": "^20.4.1",
-    "@yourdash/shared": "workspace:*"
+    "@yourdash/shared": "*"
   }
 }

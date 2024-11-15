@@ -23,7 +23,7 @@
     "@types/source-map-support": "^0.5.7",
     "@types/tsc-watch": "^4.2.1",
     "@types/xml2js": "^0.4.14",
-    "@yourdash/shared": "workspace:*",
+    "@yourdash/shared": "*",
     "array-includes": "^3.1.7",
     "chalk": "^5.2.0",
     "compression": "^1.7.4",
