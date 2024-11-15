@@ -6,7 +6,6 @@
 /applications/**/*.js.map
 /packages/shared/**/*.js
 /packages/shared/**/*.js.map
-/packages/uikit/
 /.idea/webServers.xml
 /.idea/deployment.xml
 /bun.lockb
