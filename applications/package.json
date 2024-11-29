@@ -36,22 +36,22 @@
     "type-fest": "^4.14.0",
     "undici": "^5.28.3",
     "utf-8-validate": "^6.0.3",
-    "web-tree-sitter": "^0.20.8",
+    "web-tree-sitter": "^0.24.4",
     "xml2js": "^0.6.2",
     "zod": "^3.23.8"
   },
   "scripts": {
     "codestudio-install": "run-script-os",
-    "codestudio-install:nix": "pnpm run gulp",
-    "codestudio-install:win32": "pnpm run gulp"
+    "codestudio-install:nix": "yarn run gulp",
+    "codestudio-install:win32": "yarn run gulp"
   },
   "optionalDependencies": {
-    "tree-sitter-css": "^0.20.0",
-    "tree-sitter-html": "^0.20.0",
-    "tree-sitter-javascript": "^0.20.1",
-    "tree-sitter-json": "^0.20.1",
+    "tree-sitter-css": "^0.23.1",
+    "tree-sitter-html": "^0.23.2",
+    "tree-sitter-javascript": "^0.23.1",
+    "tree-sitter-json": "^0.24.8",
     "tree-sitter-python": "^0.20.4",
-    "tree-sitter-scss": "https://github.com/serenadeai/tree-sitter-scss",
+    "tree-sitter-scss": "^1.0.0",
     "tree-sitter-typescript": "^0.20.3",
     "tree-sitter-yaml": "^0.5.0"
   }
