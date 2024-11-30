@@ -5,7 +5,7 @@
 
 import Heading from "@yourdash/uikit/src/components/heading/heading";
 import Spinner from "@yourdash/uikit/src/components/spinner/spinner";
-import SidebarToggleButton from "@yourdash/uikit/src/views/sidebar/SidebarToggleButton";
+import SidebarToggleButton from "@yourdash/uikit/src/views/sidebar/sidebarToggleButton.tsx";
 import useResource from "@yourdash/csi/useResource";
 import React from "react";
 import { useParams } from "react-router";

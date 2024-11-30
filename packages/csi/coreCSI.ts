@@ -593,6 +593,7 @@ class __internalClientServerInteraction extends ClientServerInteraction<OpenAPIP
     return new Promise((resolve) => {
       this.syncGetJson("/core/user_db", {}, (data) => {
         this.userDB.clear();
+        // @ts-ignore
         this.userDB.keys = data;
 
         resolve(this.userDB);

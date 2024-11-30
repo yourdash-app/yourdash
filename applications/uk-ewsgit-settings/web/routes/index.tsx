@@ -9,7 +9,7 @@ import Flex from "@yourdash/uikit/src/components/flex/flex";
 import Heading from "@yourdash/uikit/src/components/heading/heading";
 import Icon from "@yourdash/uikit/src/components/icon/icon";
 import { UKIcon } from "@yourdash/uikit/src/components/icon/iconDictionary";
-import SidebarToggleButton from "@yourdash/uikit/src/views/sidebar/SidebarToggleButton";
+import SidebarToggleButton from "@yourdash/uikit/src/views/sidebar/sidebarToggleButton.tsx";
 import { FC } from "react";
 import ManageWallpaper from "./components/manageWallpaper/manageWallpaper.tsx";
 import styles from "./index.module.scss";

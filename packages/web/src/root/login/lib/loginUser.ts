@@ -17,8 +17,8 @@ export default function loginUser(username: string, password: string) {
         resolve();
       },
       () => {
-        // FIXME: show a toast if the login failed
-        // csi.createClientNotification.toast.error("Login Error", "Invalid password");
+        // FIXME: show a toasts if the login failed
+        // csi.createClientNotification.toasts.error("Login Error", "Invalid password");
         reject();
       },
       {

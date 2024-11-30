@@ -36,10 +36,8 @@ export default class CSIYourDashTeam {
 
     return new Promise((resolve, reject) => {
       coreCSI.syncGetJson(
-        `/core/team/${this.teamName}/displayName`,
-        (data) => {
-          this.cached.displayName = data;
-
+        `/core/teams/get/current-user`,
+        () => {
           return resolve(this.cached.displayName || "Unknown User");
         },
         () => {

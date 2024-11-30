@@ -6,8 +6,8 @@
 import Button from "@yourdash/uikit/src/components/button/button.tsx";
 import ButtonWithIcon from "@yourdash/uikit/src/components/buttonWithIcon/buttonWithIcon.tsx";
 import { UKIcon } from "@yourdash/uikit/src/components/icon/iconDictionary.ts";
-import Sidebar from "@yourdash/uikit/src/views/sidebar/Sidebar.tsx";
-import SidebarContainer from "@yourdash/uikit/src/views/sidebar/SidebarContainer.tsx";
+import Sidebar from "@yourdash/uikit/src/views/sidebar/sidebar.tsx";
+import SidebarContainer from "@yourdash/uikit/src/views/sidebar/sidebarContainer.tsx";
 import React from "react";
 import GlobalDbApplication from "../../uk-ewsgit-globaldb/web/globalDbApplication.tsx";
 import HomeView from "./views/home/HomeView";

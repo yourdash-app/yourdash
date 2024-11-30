@@ -4,7 +4,7 @@
  */
 
 import useWebsocketConnection from "@yourdash/csi/useWebsocketConnection.ts";
-import useToast from "@yourdash/uikit/src/core/toast.ts";
+import useToast from "packages/uikit/src/core/useToast.ts";
 import React, { useEffect } from "react";
 import stripAnsi from "strip-ansi";
 

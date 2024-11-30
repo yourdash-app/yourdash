@@ -121,7 +121,7 @@ const IndexCardsPage: FC<{ metadata?: EndpointResponseLoginInstanceMetadata }> =
                   navigate("/login/success");
                 })
                 .catch(() => {
-                  console.log("TODO: implement a toast notification here for a failed login!");
+                  console.log("TODO: implement a toasts notification here for a failed login!");
                 });
             }
           }}
@@ -136,7 +136,7 @@ const IndexCardsPage: FC<{ metadata?: EndpointResponseLoginInstanceMetadata }> =
                 navigate("/login/success");
               })
               .catch(() => {
-                console.log("TODO: implement a toast notification here for a failed login!");
+                console.log("TODO: implement a toasts notification here for a failed login!");
               });
           }}
         />

@@ -6,8 +6,8 @@
 import Button from "@yourdash/uikit/src/components/button/button";
 import Heading from "@yourdash/uikit/src/components/heading/heading";
 import Separator from "@yourdash/uikit/src/components/separator/separator";
-import Sidebar from "@yourdash/uikit/src/views/sidebar/Sidebar";
-import SidebarContainer from "@yourdash/uikit/src/views/sidebar/SidebarContainer";
+import Sidebar from "@yourdash/uikit/src/views/sidebar/sidebar.tsx";
+import SidebarContainer from "@yourdash/uikit/src/views/sidebar/sidebarContainer.tsx";
 import * as React from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { modulePath } from "./meta.yourdash";
