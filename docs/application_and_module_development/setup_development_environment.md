@@ -1,4 +1,4 @@
-# Setup YourDash Development Environment
+# Setup YourDash Development Environment (outdated)
 
 ## 1. Install required dependencies
 

@@ -8,13 +8,7 @@ import YourDashServiceStartupType from "../../core/serviceManager/serviceStartup
 
 export default class ApplicationService extends YourDashService {
   constructor() {
-    super(
-      "dev.pages.yourdash.applicationservice",
-      "Application Service",
-      "Ewsgit",
-      [],
-      YourDashServiceStartupType.default,
-    );
+    super("uk.ewsgit.yourdash.applicationservice", "Application Service", "Ewsgit", [], YourDashServiceStartupType.default);
 
     return this;
   }

@@ -57,14 +57,6 @@ declare global {
   };
 }
 
-/**
- *  # YourDash Planned Changes
- *
- *   - implement flagForRestart (requestingApplicationName: string, reason: string)
- *       This will prompt the admin user with a notification to restart the instance, the notification will provide the administrator with
- *       the reason for the restart along with the application which has requested it.
- * */
-
 export class Core {
   // core apis
   readonly request: CoreRequest;
@@ -988,6 +980,15 @@ import { Route, Routes } from "react-router";
     this.request.__internal_generateOpenAPIDefinitions();
 
     console.timeEnd("core:startup");
+  }
+
+  // flag the instance as needing a restart,
+  // This will prompt the admin user with a notification to restart the instance, the notification will provide the administrator with
+  // the reason for the restart along with the application which has requested it.
+  flagForRestart(requestingApplicationName: string, reason: string): boolean {
+    // TODO: notify the admin group
+
+    return false;
   }
 }
 
