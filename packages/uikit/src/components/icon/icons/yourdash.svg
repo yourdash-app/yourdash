@@ -1,0 +1,61 @@
+
+
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g clip-path="url(#clip0_745_38)">
+        <g filter="url(#filter0_f_745_38)">
+            <foreignObject x="-23" y="-23" width="256" height="256">
+                <div xmlns="http://www.w3.org/1999/xhtml" class="gradient"></div>
+            </foreignObject>
+            <style>
+                div.gradient {
+                height: 100%;
+                width: 100%;
+                background-image: conic-gradient(
+                from 180deg,
+                #FD0000 0deg 60deg,
+                #FC8B00 60deg 120deg,
+                #FEE400 120deg 180deg,
+                #119E0B 180deg 240deg,
+                #0644B2 240deg 300deg,
+                #C12EDB 300deg 360deg
+                );
+                }
+            </style>
+        </g>
+    </g>
+    <g clip-path="url(#clip1_745_38)">
+        <g filter="url(#filter1_bdf_745_38)">
+            <path d="M23 23H279V279H23V23Z" fill="#E0E0E0" fill-opacity="0.75" shape-rendering="crispEdges"/>
+        </g>
+    </g>
+    <defs>
+        <filter id="filter0_f_745_38" x="-87" y="-87" width="384" height="384" filterUnits="userSpaceOnUse"
+                color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+            <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+            <feGaussianBlur stdDeviation="32" result="effect1_foregroundBlur_745_38"/>
+        </filter>
+        <filter id="filter1_bdf_745_38" x="7" y="7" width="288" height="288" filterUnits="userSpaceOnUse"
+                color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+            <feGaussianBlur in="BackgroundImageFix" stdDeviation="4"/>
+            <feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_745_38"/>
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                           result="hardAlpha"/>
+            <feOffset dy="8"/>
+            <feGaussianBlur stdDeviation="4"/>
+            <feComposite in2="hardAlpha" operator="out"/>
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+            <feBlend mode="normal" in2="effect1_backgroundBlur_745_38" result="effect2_dropShadow_745_38"/>
+            <feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow_745_38" result="shape"/>
+            <feGaussianBlur stdDeviation="8" result="effect3_foregroundBlur_745_38"/>
+        </filter>
+        <clipPath id="clip0_745_38">
+            <rect x="5" y="5" width="200" height="200" rx="56" fill="white"/>
+        </clipPath>
+        <clipPath id="clip1_745_38">
+            <path d="M51 107C51 76.0721 76.0721 51 107 51H195C225.928 51 251 76.0721 251 107V195C251 225.928 225.928 251 195 251H107C76.0721 251 51 225.928 51 195V107Z"
+                  fill="white"/>
+        </clipPath>
+    </defs>
+</svg>

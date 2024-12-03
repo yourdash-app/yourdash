@@ -13,3 +13,4 @@
 /.idea/csv-editor.xml
 /.idea/csv-plugin.xml
 /packages/backend/.env
+/packages/uikit/dist/
