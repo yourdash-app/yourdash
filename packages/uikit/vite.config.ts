@@ -23,12 +23,13 @@ export default defineConfig({
       },
     },
   },
+  publicDir: "./src/theme/",
   build: {
     lib: {
       entry: resolve(__dirname, "src/uikit.ts"),
       formats: ["es"],
     },
-    copyPublicDir: false,
+    copyPublicDir: true,
     rollupOptions: {
       external: ["react", "react/jsx-runtime"],
       input: Object.fromEntries(
