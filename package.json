@@ -10,17 +10,16 @@
     "applications"
   ],
   "scripts": {
-    "dev-web": "yarn --cwd packages/web dev",
-    "dev-backend": "yarn --cwd packages/backend dev",
-    "dev-backend-standalone": "yarn --cwd packages/backend start-standalone",
-    "debug-backend": "yarn --cwd packages/backend debug",
-    "start-backend": "yarn --cwd packages/backend start --log-requests",
-    "build-production": "yarn --cwd packages/backend compile-all && yarn --cwd ./packages/web build",
-    "dev-desktop": "yarn --cwd ./packages/desktop/ start",
-    "opengfx:dev": "yarn --cwd ./packages/opengfx-engine dev"
+    "dev-web": "bun run --cwd=packages/web dev",
+    "dev-backend": "bun run --cwd=packages/backend dev",
+    "dev-backend-standalone": "bun run --cwd=packages/backend start-standalone",
+    "debug-backend": "bun run --cwd=packages/backend debug",
+    "start-backend": "bun run --cwd=packages/backend start --log-requests",
+    "build-production": "bun run --cwd=packages/backend compile-all && bun run --cwd=./packages/web build",
+    "dev-desktop": "bun run --cwd=./packages/desktop/ start",
+    "opengfx:dev": "bun run --cwd=./packages/opengfx-engine dev"
   },
   "dependencies": {
-    "eslint": "^9.11.1",
     "prettier": "^3.3.3",
     "prettier-eslint": "^16.3.0",
     "sharp": "^0.33.5"

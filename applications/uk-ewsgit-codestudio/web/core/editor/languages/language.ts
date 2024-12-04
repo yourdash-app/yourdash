@@ -12,8 +12,7 @@ export default class CodeStudioLanguage {
   treesitterLanguage: string;
 
   constructor(treesitterLanguagePath: string) {
-    this.treesitterLanguage =
-      treesitterLanguagePath || PLAINTEXT_TREESITTER_LANGUAGE;
+    this.treesitterLanguage = treesitterLanguagePath || PLAINTEXT_TREESITTER_LANGUAGE;
 
     return this;
   }

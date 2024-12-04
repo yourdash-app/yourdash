@@ -33,7 +33,10 @@ const WeatherApplicationLocationPage: React.FC<IWeatherApplicationLocationPage> 
         scrollContainerRef={scrollContainerRef}
         weatherData={weatherData}
       />
-      <div ref={scrollContainerRef} className={"overflow-x-hidden overflow-y-auto"}>
+      <div
+        ref={scrollContainerRef}
+        className={"overflow-x-hidden overflow-y-auto"}
+      >
         <div className={"h-full grid lg:grid-cols-[auto,auto,auto] grid-cols-[1fr] p-4 relative gap-2"}>
           <section className={"h-full pr-2 flex flex-col gap-2 w-full max-w-sm flex-wrap"}>
             {chunk(weatherData.hourly.time, 24)[selectedDay].map((hourDate, ind) => {
@@ -69,7 +72,13 @@ const WeatherApplicationLocationPage: React.FC<IWeatherApplicationLocationPage> 
             })}
           </section>
           <section className={"w-full h-full grid grid-cols-3 gap-2 grid-rows-[auto,1fr]"}>
-            {<WeatherConditionsForHour selectedHour={selectedHour as number | undefined} selectedDay={selectedDay} weatherData={weatherData} />}
+            {
+              <WeatherConditionsForHour
+                selectedHour={selectedHour as number | undefined}
+                selectedDay={selectedDay}
+                weatherData={weatherData}
+              />
+            }
             <div className={"relative w-full hidden lg:block h-96"}>{/* TODO: create a graphing library for UIKit */}</div>
           </section>
         </div>

@@ -23,7 +23,7 @@ import minimist from "minimist";
 import path from "path";
 import { fetch } from "undici";
 import z from "zod";
-import { createSession, loadSessionsForUser } from "../lib/session.js";
+import { createSession } from "../lib/session.js";
 import CoreApplicationManager from "./coreApplicationManager.js";
 import CoreCommands from "./coreCommands.js";
 import CoreExecute from "./coreExecute.js";

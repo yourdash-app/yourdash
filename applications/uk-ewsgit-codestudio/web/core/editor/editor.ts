@@ -26,11 +26,7 @@ export default class CodeStudioEditor {
     return this;
   }
 
-  async loadRawCode(
-    fileName: string,
-    fileType: keyof typeof CodeStudioLanguages,
-    rawCode: string,
-  ) {
+  async loadRawCode(fileName: string, fileType: keyof typeof CodeStudioLanguages, rawCode: string) {
     await TreeSitterParser.init({
       locateFile() {
         return TREESITTER_WASM;
@@ -39,39 +35,23 @@ export default class CodeStudioEditor {
     const parser = new TreeSitterParser();
     const language = CodeStudioLanguages[fileType];
 
-    console.log(
-      "Loading parser for fileType:",
-      fileType,
-      `(${language.language})`,
-    );
+    console.log("Loading parser for fileType:", fileType, `(${language.language})`);
 
-    parser.setLanguage(
-      await TreeSitterParser.Language.load(
-        (await language.parser)?.treesitterLanguage ||
-          TREESITTER_PLAINTEXT_WASM,
-      ),
-    );
+    parser.setLanguage(await TreeSitterParser.Language.load((await language.parser)?.treesitterLanguage || TREESITTER_PLAINTEXT_WASM));
 
     return this.renderParsedString(parser.parse(rawCode), language);
   }
 
-  async renderParsedString(
-    parser: TreeSitterParser.Tree,
-    language: { language: string; parser: Promise<CodeStudioLanguage | null> },
-  ) {
+  async renderParsedString(parser: TreeSitterParser.Tree, language: { language: string; parser: Promise<CodeStudioLanguage | null> }) {
     if (this.isDevMode) {
-      this.htmlContainer.innerHTML =
-        "<div>Using Parser: " + language.language + "</div>";
+      this.htmlContainer.innerHTML = "<div>Using Parser: " + language.language + "</div>";
     } else {
       this.htmlContainer.innerHTML = "";
     }
 
-    this.htmlContainer.innerHTML +=
-      '<pre><code id="cs-text-output"></code></pre>';
+    this.htmlContainer.innerHTML += '<pre><code id="cs-text-output"></code></pre>';
 
-    const codeElement = document.getElementById(
-      "cs-text-output",
-    ) as HTMLDivElement;
+    const codeElement = document.getElementById("cs-text-output") as HTMLDivElement;
     codeElement.classList.add(styles.editor);
 
     const rendered_items: TreeSitterParser.SyntaxNode[] = [];
@@ -82,10 +62,7 @@ export default class CodeStudioEditor {
       return parser;
     }
 
-    async function renderToken(
-      parentElement: HTMLDivElement | HTMLSpanElement,
-      syntaxNode: TreeSitterParser.SyntaxNode,
-    ) {
+    async function renderToken(parentElement: HTMLDivElement | HTMLSpanElement, syntaxNode: TreeSitterParser.SyntaxNode) {
       if (rendered_items.indexOf(syntaxNode) !== -1) {
         console.error("CIRCULAR REFERENCE");
       }
@@ -105,15 +82,10 @@ export default class CodeStudioEditor {
 
       const languageParserTokens = (await language.parser)?.tokens;
 
-      const token = new Token(
-        syntaxNode.text,
-        (languageParserTokens?.[syntaxNode.type] as TokenType) ||
-          syntaxNode.type,
-        {
-          col: syntaxNode.startPosition.column,
-          row: syntaxNode.startPosition.row,
-        },
-      );
+      const token = new Token(syntaxNode.text, (languageParserTokens?.[syntaxNode.type] as TokenType) || syntaxNode.type, {
+        col: syntaxNode.startPosition.column,
+        row: syntaxNode.startPosition.row,
+      });
 
       parentElement.innerHTML += token.render();
     }

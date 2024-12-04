@@ -36,9 +36,7 @@ export default class YourDashCoreServiceManager {
 
     const depCheck = dependsOn.map((dep) => {
       if (!this.activeServices.has(dep)) {
-        throw new Error(
-          `Service ${service.__serviceInternals.id} depends on ${dep} which does not exist or is not yet registered.`,
-        );
+        throw new Error(`Service ${service.__serviceInternals.id} depends on ${dep} which does not exist or is not yet registered.`);
       }
 
       const registeredDep = this.activeServices.get(dep);

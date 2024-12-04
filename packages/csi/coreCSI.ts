@@ -8,7 +8,6 @@ import KeyValueDatabase from "@yourdash/shared/core/database";
 import { io as SocketIoClient, Socket as SocketIoSocket } from "socket.io-client";
 import BrowserPath from "./browserPath.js";
 import CSIYourDashTeam from "./team/team.js";
-import CSIYourDashUser from "./user/user.js";
 import OpenAPIPaths from "./openapi.js";
 
 type ITJson = boolean | number | string | null | TJson | boolean[] | number[] | string[] | null[] | TJson[];
@@ -536,7 +535,6 @@ export class ClientServerInteraction<
 class __internalClientServerInteraction extends ClientServerInteraction<OpenAPIPaths> {
   userDB: UserDatabase;
   path: BrowserPath;
-  private user!: CSIYourDashUser;
 
   constructor() {
     super("");
@@ -622,11 +620,6 @@ class __internalClientServerInteraction extends ClientServerInteraction<OpenAPIP
     });
   }
 
-  // get the currently logged-in user
-  getUser() {
-    return this.user;
-  }
-
   // returns a list of teams that the current user is a part of
   getTeams(): Promise<CSIYourDashTeam[]> {
     return new Promise((resolve, reject) => {
@@ -703,6 +696,3 @@ export default coreCSI;
 
 // @ts-ignore
 window.csi = coreCSI;
-
-// @ts-ignore
-coreCSI.user = new CSIYourDashUser();

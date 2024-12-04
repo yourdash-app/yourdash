@@ -5,7 +5,6 @@
 
 import coreCSI from "@yourdash/csi/coreCSI.ts";
 import EndpointResponseCoreLoginNotice from "@yourdash/shared/endpoints/core/login/notice.ts";
-import Box from "@yourdash/uikit/src/components/box/box.tsx";
 import Button from "@yourdash/uikit/src/components/button/button.tsx";
 import Card from "@yourdash/uikit/src/components/card/card.tsx";
 import Heading from "@yourdash/uikit/src/components/heading/heading.tsx";

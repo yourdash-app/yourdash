@@ -15,11 +15,7 @@ export default class Screen {
   preferedFormat: GPUTextureFormat;
   context: GPUCanvasContext;
 
-  constructor(
-    screenContainer: HTMLElement,
-    screenElement: HTMLCanvasElement,
-    engine: Engine,
-  ) {
+  constructor(screenContainer: HTMLElement, screenElement: HTMLCanvasElement, engine: Engine) {
     this.screenContainer = screenContainer;
     this.screenElement = screenElement;
     this.engine = engine;
