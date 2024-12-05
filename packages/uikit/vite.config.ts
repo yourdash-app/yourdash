@@ -24,6 +24,11 @@ export default defineConfig({
     },
   },
   publicDir: "./src/theme/",
+  resolve: {
+    alias: {
+      "~": resolve(__dirname, "./src/"),
+    },
+  },
   build: {
     lib: {
       entry: resolve(__dirname, "src/uikit.ts"),
