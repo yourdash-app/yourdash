@@ -5,7 +5,7 @@
 
 import Flex from "@yourdash/uikit/src/components/flex/flex.tsx";
 import Heading from "@yourdash/uikit/src/components/heading/heading.tsx";
-import { UKIcon } from "@yourdash/uikit/src/components/icon/iconDictionary.ts";
+import { UKIcon } from "packages/uikit/src/core/iconDictionary.ts";
 import IconButton from "@yourdash/uikit/src/components/iconButton/iconButton.tsx";
 import Separator from "@yourdash/uikit/src/components/separator/separator.tsx";
 import Text from "@yourdash/uikit/src/components/text/text.tsx";

@@ -8,7 +8,7 @@ import useResource from "@yourdash/csi/useResource.ts";
 import Card from "@yourdash/uikit/src/components/card/card.tsx";
 import Heading from "@yourdash/uikit/src/components/heading/heading.tsx";
 import Icon from "@yourdash/uikit/src/components/icon/icon.tsx";
-import { UKIcon } from "@yourdash/uikit/src/components/icon/iconDictionary.ts";
+import { UKIcon } from "packages/uikit/src/core/iconDictionary.ts";
 import Image from "@yourdash/uikit/src/components/image/image.tsx";
 import Separator from "@yourdash/uikit/src/components/separator/separator.tsx";
 import Text from "@yourdash/uikit/src/components/text/text.tsx";

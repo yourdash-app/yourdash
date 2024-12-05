@@ -1,6 +1,6 @@
 import * as React from "react";
 import Card from "../../components/card/card.tsx";
-import { UKIcon, UKIconType } from "../../components/icon/iconDictionary.ts";
+import { UKIcon, UKIconType } from "../../core/iconDictionary.ts";
 import IconButton from "../../components/iconButton/iconButton.tsx";
 import Image from "../../components/image/image.tsx";
 import Heading from "../../components/heading/heading.tsx";

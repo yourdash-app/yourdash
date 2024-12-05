@@ -5,7 +5,7 @@
 
 import clippy from "@yourdash/shared/web/helpers/clippy.ts";
 import Icon from "../icon/icon.tsx";
-import { UKIconType } from "../icon/iconDictionary.ts";
+import { UKIconType } from "../../core/iconDictionary.ts";
 import styles from "./textInput.module.scss";
 import React, { useEffect, useRef, useState } from "react";
 

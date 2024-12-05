@@ -4,7 +4,7 @@
  */
 
 import Icon from "../icon/icon.tsx";
-import { UKIcon } from "../icon/iconDictionary.ts";
+import { UKIcon } from "../../core/iconDictionary.ts";
 import styles from "./image.module.scss";
 import { FC, useEffect, useRef, useState } from "react";
 import clippy from "@yourdash/shared/web/helpers/clippy.ts";

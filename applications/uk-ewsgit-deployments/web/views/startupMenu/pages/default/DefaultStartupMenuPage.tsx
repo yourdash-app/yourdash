@@ -7,7 +7,7 @@ import clippy from "@yourdash/shared/web/helpers/clippy";
 import Button from "@yourdash/chiplet/components/button/Button";
 import Heading from "@yourdash/chiplet/components/heading/Heading";
 import Icon from "@yourdash/chiplet/components/icon/Icon";
-import { UKIcon } from "@yourdash/uikit/src/components/icon/iconDictionary";
+import { UKIcon } from "packages/uikit/src/core/iconDictionary.ts";
 import MajorButton from "@yourdash/chiplet/components/majorButton/MajorButton";
 import React, { useState } from "react";
 import { CHATBOTS_STARTUP_MENU_PAGE, IStartupMenuPageProps } from "../../StartupMenu";

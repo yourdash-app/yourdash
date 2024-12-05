@@ -5,7 +5,7 @@
 
 import Card from "@yourdash/uikit/src/components/card/card";
 import Heading from "@yourdash/uikit/src/components/heading/heading";
-import { UKIcon } from "@yourdash/uikit/src/components/icon/iconDictionary";
+import { UKIcon } from "packages/uikit/src/core/iconDictionary.ts";
 import IconButton from "@yourdash/uikit/src/components/iconButton/iconButton";
 import Image from "@yourdash/uikit/src/components/image/image";
 import ProgressBar from "@yourdash/uikit/src/components/progressBar/progressBar";

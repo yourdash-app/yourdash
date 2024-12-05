@@ -1,6 +1,6 @@
 {
   "name": "@yourdash/uikit",
-  "version": "1.0.37",
+  "version": "1.0.38",
   "license": "MIT",
   "type": "module",
   "private": false,
@@ -13,9 +13,7 @@
   ],
   "main": "./dist/main.js",
   "types": "./dist/main.d.ts",
-  "exports": {
-    ".": "./dist/main.js"
-  },
+  "exports": "./dist/main.js",
   "scripts": {
     "build": "vite build"
   },

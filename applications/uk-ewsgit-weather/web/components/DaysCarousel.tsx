@@ -7,7 +7,7 @@ import clippy from "@yourdash/shared/web/helpers/clippy";
 import Card from "@yourdash/chiplet/components/card/Card";
 import Carousel from "@yourdash/chiplet/components/carousel/Carousel";
 import Icon from "@yourdash/chiplet/components/icon/Icon";
-import { UKIcon } from "@yourdash/uikit/src/components/icon/iconDictionary";
+import { UKIcon } from "packages/uikit/src/core/iconDictionary.ts";
 import { IWeatherDataForLocation } from "../../shared/weatherDataForLocation";
 import React from "react";
 import getDayNameForNumericDay from "../helpers/getDayNameForNumericDay";

@@ -4,7 +4,7 @@
  */
 
 import { FC, useContext } from "react";
-import { UKIcon } from "../../components/icon/iconDictionary.ts";
+import { UKIcon } from "../../core/iconDictionary.ts";
 import SidebarContext from "./sidebarContext.tsx";
 import IconButton from "../../components/iconButton/iconButton.tsx";
 

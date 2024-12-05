@@ -5,7 +5,7 @@
 
 import ButtonWithIcon from "@yourdash/uikit/src/components/buttonWithIcon/buttonWithIcon.tsx";
 import Heading from "@yourdash/uikit/src/components/heading/heading.tsx";
-import { UKIcon } from "@yourdash/uikit/src/components/icon/iconDictionary.ts";
+import { UKIcon } from "packages/uikit/src/core/iconDictionary.ts";
 import Sidebar from "@yourdash/uikit/src/views/sidebar/sidebar.tsx";
 import SidebarContainer from "@yourdash/uikit/src/views/sidebar/sidebarContainer.tsx";
 import React from "react";

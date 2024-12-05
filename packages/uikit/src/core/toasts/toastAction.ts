@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import { UKIconType } from "../../components/icon/iconDictionary.ts";
+import { UKIconType } from "../iconDictionary.ts";
 
 export default interface IToastAction {
   label: string;

@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { UKIcon } from "@yourdash/uikit/src/components/icon/iconDictionary";
+import { UKIcon } from "packages/uikit/src/core/iconDictionary.ts";
 import IconButton from "@yourdash/chiplet/components/iconButton/IconButton";
 import React from "react";
 

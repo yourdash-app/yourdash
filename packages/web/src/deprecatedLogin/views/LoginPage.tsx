@@ -8,7 +8,7 @@ import Card from "@yourdash/chiplet/components/card/Card.tsx";
 import IconButton from "@yourdash/chiplet/components/iconButton/IconButton.tsx";
 import MajorButton from "@yourdash/chiplet/components/majorButton/MajorButton.tsx";
 import TextInput from "@yourdash/chiplet/components/textInput/TextInput.tsx";
-import { UKIcon } from "@yourdash/uikit/src/components/icon/iconDictionary";
+import { UKIcon } from "packages/uikit/src/core/iconDictionary.ts";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 

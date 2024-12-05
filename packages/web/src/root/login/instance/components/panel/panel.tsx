@@ -7,7 +7,7 @@ import coreCSI from "@yourdash/csi/coreCSI.ts";
 import Box from "@yourdash/uikit/src/components/box/box.tsx";
 import Button from "@yourdash/uikit/src/components/button/button.tsx";
 import Heading from "@yourdash/uikit/src/components/heading/heading.tsx";
-import { UKIcon } from "@yourdash/uikit/src/components/icon/iconDictionary.ts";
+import { UKIcon } from "packages/uikit/src/core/iconDictionary.ts";
 import Subtext from "@yourdash/uikit/src/components/subtext/subtext.tsx";
 import TextInput from "@yourdash/uikit/src/components/textInput/textInput.tsx";
 import styles from "./panel.module.scss";

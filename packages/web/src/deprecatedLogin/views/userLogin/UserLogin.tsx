@@ -10,7 +10,7 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import coreCSI from "@yourdash/csi/coreCSI.ts";
 import useYourDashLib from "@yourdash/shared/web/helpers/ydsh.ts";
-import { UKIcon } from "@yourdash/uikit/src/components/icon/iconDictionary";
+import { UKIcon } from "packages/uikit/src/core/iconDictionary.ts";
 
 interface IUserLogin {
   setUsername: React.Dispatch<React.SetStateAction<string>>;

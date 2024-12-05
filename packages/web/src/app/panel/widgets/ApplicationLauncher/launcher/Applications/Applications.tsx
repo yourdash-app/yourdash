@@ -4,7 +4,7 @@
  */
 
 import clippy from "@yourdash/shared/web/helpers/clippy.ts";
-import { UKIcon } from "@yourdash/uikit/src/components/icon/iconDictionary.ts";
+import { UKIcon } from "packages/uikit/src/core/iconDictionary.ts";
 import TextInput from "@yourdash/uikit/src/components/textInput/textInput.tsx";
 import React, { useEffect } from "react";
 import IPanelApplicationsLauncherFrontendModule from "@yourdash/shared/core/panel/applicationsLauncher/application.ts";

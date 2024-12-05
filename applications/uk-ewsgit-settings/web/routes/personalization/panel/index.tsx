@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { UKIcon } from "@yourdash/uikit/src/components/icon/iconDictionary";
+import { UKIcon } from "packages/uikit/src/core/iconDictionary.ts";
 import React, { useState } from "react";
 import BasePageLayout from "../../../components/BasePageLayout";
 import coreCSI from "@yourdash/csi/coreCSI";

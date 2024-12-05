@@ -4,7 +4,7 @@
  */
 
 import Icon from "@yourdash/uikit/src/components/icon/icon.tsx";
-import { UKIcon } from "@yourdash/uikit/src/components/icon/iconDictionary.ts";
+import { UKIcon } from "packages/uikit/src/core/iconDictionary.ts";
 import DecrementLevel from "@yourdash/uikit/src/core/decrementLevel.tsx";
 import React, { useEffect } from "react";
 import styles from "./Widget.module.scss";

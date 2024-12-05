@@ -7,3 +7,4 @@ export { default as UIKitRoot } from "./root.tsx";
 export { default as IncrementLevel } from "./incrementLevel.tsx";
 export { default as DecrementLevel } from "./decrementLevel.tsx";
 export { default as useToast } from "./toasts/useToast.ts";
+export { UKIcon as Icons, type UKIconType } from "./iconDictionary.ts";

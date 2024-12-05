@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Card from "../../components/card/card.tsx";
 import Container from "../../components/container/container.tsx";
-import { UKIcon } from "../../components/icon/iconDictionary.ts";
+import { UKIcon } from "../../core/iconDictionary.ts";
 import IconButton from "../../components/iconButton/iconButton.tsx";
 import styles from "./carousel.module.scss";
 import clippy from "@yourdash/shared/web/helpers/clippy.ts";

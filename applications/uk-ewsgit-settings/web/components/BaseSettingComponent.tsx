@@ -5,7 +5,7 @@
 
 import Card from "@yourdash/chiplet/components/card/Card";
 import Icon from "@yourdash/chiplet/components/icon/Icon";
-import { UKIconType } from "@yourdash/uikit/src/components/icon/iconDictionary.ts";
+import { UKIconType } from "packages/uikit/src/core/iconDictionary.ts";
 import * as React from "react";
 import styles from "./BaseSettingComponent.module.scss";
 

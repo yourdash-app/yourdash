@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { UKIcon } from "@yourdash/uikit/src/components/icon/iconDictionary.js";
+import { UKIcon } from "packages/uikit/src/core/iconDictionary.ts";
 import IconButton from "@yourdash/uikit/src/components/iconButton/iconButton.js";
 import NavImage from "@yourdash/uikit/src/views/navBar/components/navImage/navImage.tsx";
 import NavTitle from "@yourdash/uikit/src/views/navBar/components/navTitle/navTitle.tsx";

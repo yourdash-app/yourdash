@@ -5,7 +5,7 @@
 
 import useResource from "@yourdash/csi/useResource.ts";
 import clippy from "@yourdash/shared/web/helpers/clippy.ts";
-import { UKIcon } from "@yourdash/uikit/src/components/icon/iconDictionary.ts";
+import { UKIcon } from "packages/uikit/src/core/iconDictionary.ts";
 import IconButton from "@yourdash/uikit/src/components/iconButton/iconButton.tsx";
 import Box from "@yourdash/uikit/src/components/box/box.tsx";
 import { useNavigate } from "react-router-dom";

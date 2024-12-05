@@ -5,7 +5,7 @@
 
 import clippy from "@yourdash/shared/web/helpers/clippy.ts";
 import Icon from "../icon/icon.tsx";
-import { UKIcon } from "../icon/iconDictionary.ts";
+import { UKIcon } from "../../core/iconDictionary.ts";
 import styles from "./iconButton.module.scss";
 import { FC } from "react";
 

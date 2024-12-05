@@ -5,7 +5,7 @@
 
 import Heading from "@yourdash/chiplet/components/heading/Heading";
 import IconButton from "@yourdash/chiplet/components/iconButton/IconButton";
-import { UKIcon } from "@yourdash/uikit/src/components/icon/iconDictionary.ts";
+import { UKIcon } from "packages/uikit/src/core/iconDictionary.ts";
 import React from "react";
 
 export interface IBasePageLayout {

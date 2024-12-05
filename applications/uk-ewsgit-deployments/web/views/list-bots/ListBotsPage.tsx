@@ -7,7 +7,7 @@ import coreCSI from "@yourdash/csi/coreCSI";
 import Card from "@yourdash/chiplet/components/card/Card";
 import DropdownButton from "@yourdash/chiplet/components/dropdownButton/DropdownButton";
 import Heading from "@yourdash/chiplet/components/heading/Heading";
-import { UKIcon } from "@yourdash/uikit/src/components/icon/iconDictionary";
+import { UKIcon } from "packages/uikit/src/core/iconDictionary.ts";
 import IconButton from "@yourdash/chiplet/components/iconButton/IconButton";
 import NavBar from "@yourdash/chiplet/components/navBar/NavBar";
 import TextInput from "@yourdash/chiplet/components/textInput/TextInput";

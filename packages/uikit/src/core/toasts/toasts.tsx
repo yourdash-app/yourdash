@@ -10,7 +10,7 @@ import type ToastInterface from "./toast.ts";
 import clippy from "@yourdash/shared/web/helpers/clippy.ts";
 import { FC, useState } from "react";
 import Card from "../../components/card/card.tsx";
-import { UKIcon } from "../../components/icon/iconDictionary.ts";
+import { UKIcon } from "../iconDictionary.ts";
 import IconButton from "../../components/iconButton/iconButton.tsx";
 import Text from "../../components/text/text.tsx";
 import ToastContext from "./toastContext.ts";

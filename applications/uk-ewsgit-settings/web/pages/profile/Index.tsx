@@ -10,7 +10,7 @@ import IconButton from "@yourdash/chiplet/components/iconButton/IconButton";
 import Row from "@yourdash/chiplet/components/row/Row";
 import TextBox from "@yourdash/chiplet/components/textBox/TextBox";
 import TextInput from "@yourdash/chiplet/components/textInput/TextInput";
-import { UKIcon } from "@yourdash/uikit/src/components/icon/iconDictionary.ts";
+import { UKIcon } from "packages/uikit/src/core/iconDictionary.ts";
 import React, { useEffect } from "react";
 import coreCSI, { TJson } from "@yourdash/csi/coreCSI";
 import BasePageLayout from "../../components/BasePageLayout";

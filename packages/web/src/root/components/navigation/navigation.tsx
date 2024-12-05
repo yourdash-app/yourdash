@@ -7,7 +7,7 @@ import clippy from "@yourdash/shared/web/helpers/clippy.ts";
 import Box from "@yourdash/uikit/src/components/box/box.tsx";
 import Flex from "@yourdash/uikit/src/components/flex/flex.tsx";
 import Heading from "@yourdash/uikit/src/components/heading/heading.tsx";
-import { UKIcon } from "@yourdash/uikit/src/components/icon/iconDictionary.ts";
+import { UKIcon } from "packages/uikit/src/core/iconDictionary.ts";
 import IconButton from "@yourdash/uikit/src/components/iconButton/iconButton.tsx";
 import Image from "@yourdash/uikit/src/components/image/image.tsx";
 import Link from "@yourdash/uikit/src/components/link/link.tsx";

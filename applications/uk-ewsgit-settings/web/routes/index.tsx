@@ -8,7 +8,7 @@ import Card from "@yourdash/uikit/src/components/card/card";
 import Flex from "@yourdash/uikit/src/components/flex/flex";
 import Heading from "@yourdash/uikit/src/components/heading/heading";
 import Icon from "@yourdash/uikit/src/components/icon/icon";
-import { UKIcon } from "@yourdash/uikit/src/components/icon/iconDictionary";
+import { UKIcon } from "packages/uikit/src/core/iconDictionary.ts";
 import SidebarToggleButton from "@yourdash/uikit/src/views/sidebar/sidebarToggleButton.tsx";
 import { FC } from "react";
 import ManageWallpaper from "./components/manageWallpaper/manageWallpaper.tsx";

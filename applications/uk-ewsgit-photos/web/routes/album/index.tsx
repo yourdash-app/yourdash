@@ -4,7 +4,7 @@
  */
 
 import Heading from "@yourdash/uikit/src/components/heading/heading.js";
-import { UKIcon } from "@yourdash/uikit/src/components/icon/iconDictionary.js";
+import { UKIcon } from "packages/uikit/src/core/iconDictionary.ts";
 import IconButton from "@yourdash/uikit/src/components/iconButton/iconButton.js";
 import { FC } from "react";
 import { useParams, useSearchParams } from "react-router-dom";

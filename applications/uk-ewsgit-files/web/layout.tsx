@@ -15,7 +15,7 @@ import FILES_VIEW_TYPE from "./views/viewType";
 import styles from "./layout.module.scss";
 import generateUUID from "@yourdash/shared/web/helpers/uuid";
 import IconButton from "@yourdash/uikit/src/components/iconButton/iconButton";
-import { UKIcon } from "@yourdash/uikit/src/components/icon/iconDictionary";
+import { UKIcon } from "packages/uikit/src/core/iconDictionary.ts";
 
 export interface IFilesTab {
   id: string;
