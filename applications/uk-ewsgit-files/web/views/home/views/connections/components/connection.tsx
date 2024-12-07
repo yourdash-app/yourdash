@@ -3,27 +3,26 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import Card from "@yourdash/uikit/src/components/card/card";
-import Heading from "@yourdash/uikit/src/components/heading/heading";
-import { UKIcon } from "packages/uikit/src/core/iconDictionary.ts";
-import IconButton from "@yourdash/uikit/src/components/iconButton/iconButton";
-import Image from "@yourdash/uikit/src/components/image/image";
-import ProgressBar from "@yourdash/uikit/src/components/progressBar/progressBar";
-import Text from "@yourdash/uikit/src/components/text/text";
 import React from "react";
-import { IHomeConnection } from "../../../../../../shared/types/tabView/home";
 import styles from "./connection.module.scss";
+import { Components, Core } from "@yourdash/uikit";
 
-const Connection: React.FC<IHomeConnection> = ({ description, quota, url, serviceLogo, serviceName }) => {
+const Connection: React.FC<{
+  description: string;
+  quota: { usage: number; max: number };
+  url: string;
+  serviceLogo: string;
+  serviceName: string;
+}> = ({ description, quota, url, serviceLogo, serviceName }) => {
   return (
-    <Card
+    <Components.Card
       className={styles.component}
       actions={
         <>
           {url && (
-            <IconButton
+            <Components.IconButton
               accessibleLabel={"Open service url"}
-              icon={UKIcon.LinkExternal}
+              icon={Core.Icons.LinkExternal}
               onClick={() => {
                 window.open(url, "_blank");
               }}
@@ -32,20 +31,20 @@ const Connection: React.FC<IHomeConnection> = ({ description, quota, url, servic
         </>
       }
     >
-      <Image
+      <Components.Image
         className={styles.icon}
         accessibleLabel={""}
         src={serviceLogo || "/assets/productLogos/yourdash.svg"}
       />
-      <Heading text={serviceName} />
-      {description && <Text text={description} />}
+      <Components.Heading text={serviceName} />
+      {description && <Components.Text text={description} />}
       {quota && (
-        <ProgressBar
+        <Components.ProgressBar
           maxValue={quota.max}
           value={quota.usage}
         />
       )}
-    </Card>
+    </Components.Card>
   );
 };
 

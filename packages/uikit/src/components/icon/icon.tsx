@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { UKIconType } from "../../core/iconDictionary.ts";
+import { type UKIconType } from "../../core/index.ts";
 import styles from "./icon.module.scss";
 import { FC, useEffect, useState } from "react";
 import ServerErrorIcon from "../../core/icons/server-error.svg";

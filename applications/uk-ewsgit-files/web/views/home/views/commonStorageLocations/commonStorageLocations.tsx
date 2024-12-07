@@ -3,30 +3,28 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import Heading from "@yourdash/uikit/src/components/heading/heading";
-import Text from "@yourdash/uikit/src/components/text/text";
 import React from "react";
-import { IHomeCommonStorageLocation, IHomeConnection } from "../../../../../shared/types/tabView/home";
 import styles from "./commonStorageLocations.module.scss";
 import StorageLocation from "./components/storageLocation";
+import UK from "@yourdash/uikit";
 
-const CommonStorageLocations: React.FC<{ commonStorageLocations: IHomeCommonStorageLocation[] }> = ({ commonStorageLocations }) => {
+const CommonStorageLocations: React.FC<{ commonStorageLocations: { path: string }[] }> = ({ commonStorageLocations }) => {
   return (
     <div className={styles.component}>
-      <Heading
+      <UK.Components.Heading
         level={3}
         text={"Common Storage Locations"}
       />
       <div className={styles.connectionContainer}>
         {commonStorageLocations.length > 0 ? (
-          commonStorageLocations.map((connection: IHomeCommonStorageLocation) => (
+          commonStorageLocations.map((connection) => (
             <StorageLocation
               key={connection.path}
               {...connection}
             />
           ))
         ) : (
-          <Text text={"You have no common storage locations..."} />
+          <UK.Components.Text text={"You have no common storage locations..."} />
         )}
       </div>
     </div>

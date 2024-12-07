@@ -3,19 +3,16 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import Card from "@yourdash/uikit/src/components/card/card";
-import Icon from "@yourdash/uikit/src/components/icon/icon.tsx";
-import Text from "@yourdash/uikit/src/components/text/text.tsx";
 import React from "react";
-import { IHomeCommonStorageLocation } from "../../../../../../shared/types/tabView/home";
 import { useNavigateTo } from "../../../../../meta.yourdash.ts";
 import styles from "./storageLocation.module.scss";
+import { Components } from "@yourdash/uikit";
 
-const StorageLocation: React.FC<IHomeCommonStorageLocation> = ({ path, baseName }) => {
+const StorageLocation: React.FC<{ path: string; baseName: string }> = ({ path, baseName }) => {
   const navigateTo = useNavigateTo();
 
   return (
-    <Card
+    <Components.Card
       containerClassName={styles.componentCardContainer}
       className={styles.component}
       onClick={() => {
@@ -23,12 +20,12 @@ const StorageLocation: React.FC<IHomeCommonStorageLocation> = ({ path, baseName 
         navigateTo(path);
       }}
     >
-      <Icon
+      <Components.Icon
         icon={"FileDirectory"}
         className={styles.icon}
       />
-      <Text text={baseName} />
-    </Card>
+      <Components.Text text={baseName} />
+    </Components.Card>
   );
 };
 

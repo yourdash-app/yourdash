@@ -4,9 +4,9 @@
  */
 
 import clippy from "@yourdash/shared/web/helpers/clippy";
-import Text from "@yourdash/uikit/src/components/text/text";
 import React from "react";
 import styles from "./fileListFile.module.scss";
+import { Components } from "@yourdash/uikit";
 
 const FileListFile: React.FC<{
   displayName: string;
@@ -17,8 +17,8 @@ const FileListFile: React.FC<{
 }> = ({ displayName, path, isOddIndex }) => {
   return (
     <div className={clippy(styles.component, isOddIndex ? styles.odd : styles.even)}>
-      <Text text={displayName} />
-      <Text text={path} />
+      <Components.Text text={displayName} />
+      <Components.Text text={path} />
     </div>
   );
 };

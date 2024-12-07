@@ -3,27 +3,34 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import Heading from "@yourdash/uikit/src/components/heading/heading";
-import Text from "@yourdash/uikit/src/components/text/text";
 import React from "react";
-import { IHomeConnection } from "../../../../../shared/types/tabView/home";
 import Connection from "./components/connection";
 import styles from "./connections.module.scss";
+import UK from "@yourdash/uikit";
 
-const Connections: React.FC<{ connections: IHomeConnection[] }> = ({ connections }) => {
+const Connections: React.FC<{
+  connections: {
+    description: string;
+    quota: { usage: number; max: number };
+    url: string;
+    serviceLogo: string;
+    serviceName: string;
+    id: string;
+  }[];
+}> = ({ connections }) => {
   return (
     <div className={styles.component}>
-      <Heading text={"Connections"} />
+      <UK.Components.Heading text={"Connections"} />
       <div className={styles.connectionContainer}>
         {connections.length > 0 ? (
-          connections.map((connection: IHomeConnection) => (
+          connections.map((connection) => (
             <Connection
               key={connection.id}
               {...connection}
             />
           ))
         ) : (
-          <Text text={"You have no connections..."} />
+          <UK.Components.Text text={"You have no connections..."} />
         )}
       </div>
     </div>
