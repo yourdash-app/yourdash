@@ -3,52 +3,49 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import Button from "@yourdash/uikit/src/components/button/button.tsx";
-import Flex from "@yourdash/uikit/src/components/flex/flex.tsx";
-import Heading from "@yourdash/uikit/src/components/heading/heading.tsx";
-import Separator from "@yourdash/uikit/src/components/separator/separator.tsx";
+import { UKC } from "@yourdash/uikit";
 
 const SignupPage = () => {
   return (
     <>
-      <Heading
+      <UKC.Heading
         level={1}
         text={"Signup with a YourDash Instance"}
       />
-      <Separator direction={"column"} />
-      <Flex
+      <UKC.Separator direction={"column"} />
+      <UKC.Flex
         direction={"row"}
         centerHorizontally={true}
       >
-        <Flex direction={"column"}>
-          <Heading
+        <UKC.Flex direction={"column"}>
+          <UKC.Heading
             level={2}
             text={"Signup with a public instance"}
           />
-          <Button
+          <UKC.Button
             text={"Signup"}
             onClick={() => {
               return 0;
             }}
           />
-        </Flex>
-        <Separator
+        </UKC.Flex>
+        <UKC.Separator
           direction={"row"}
           disableMargin={true}
         />
-        <Flex direction={"column"}>
-          <Heading
+        <UKC.Flex direction={"column"}>
+          <UKC.Heading
             level={2}
             text={"Signup with a private instance"}
           />
-          <Button
+          <UKC.Button
             text={"Signup"}
             onClick={() => {
               return 0;
             }}
           />
-        </Flex>
-      </Flex>
+        </UKC.Flex>
+      </UKC.Flex>
     </>
   );
 };

@@ -8,7 +8,7 @@
     "node": ">=21.0.0"
   },
   "scripts": {
-    "dev": "bun run --bun vite --host",
+    "dev": "bun run --bun bunx --bun vite --host",
     "build": "bun run --bun vite build",
     "preview": "bun run --bun vite preview",
     "visualize-bundle": "bun run --bun vite-bundle-visualizer",

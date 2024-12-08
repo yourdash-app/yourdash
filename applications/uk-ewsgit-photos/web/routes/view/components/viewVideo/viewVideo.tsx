@@ -5,8 +5,8 @@
 
 import coreCSI from "@yourdash/csi/coreCSI";
 import { UKIcon } from "packages/uikit/src/core/iconDictionary.ts";
-import IconButton from "@yourdash/uikit/src/components/iconButton/iconButton";
-import ProgressBar from "@yourdash/uikit/src/components/progressBar/progressBar";
+import IconButton from "@yourdash/uikit/components/iconButton/iconButton";
+import ProgressBar from "@yourdash/uikit/components/progressBar/progressBar";
 import PanAndZoom from "@yourdash/uikit/src/views/panAndZoom/panAndZoom";
 import { FC, useRef, useState } from "react";
 import styles from "./viewVideo.module.scss";

@@ -3,12 +3,11 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import Button from "@yourdash/uikit/src/components/button/button.tsx";
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import MajorButton from "@yourdash/chiplet/components/majorButton/MajorButton.tsx";
 import KeyPointsCard from "./components/content/KeyPointsCard.tsx";
 import IndexPageHero from "./components/Hero/Hero.tsx";
+import { UKC } from "@yourdash/uikit";
 
 const Index: React.FC = () => {
   const navigate = useNavigate();
@@ -32,7 +31,7 @@ const Index: React.FC = () => {
               {"Run a single command and be up-and-running within minutes"}
               <span className={"text-base font-thin text-gray-300"}>*</span>
             </span>
-            <Button
+            <UKC.Button
               text={"Get started"}
               onClick={() => {
                 navigate("/docs/faq");

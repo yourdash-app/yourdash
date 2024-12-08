@@ -3,9 +3,7 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import Heading from "@yourdash/uikit/src/components/heading/heading.tsx";
-import Separator from "@yourdash/uikit/src/components/separator/separator.tsx";
-import Subtext from "@yourdash/uikit/src/components/subtext/subtext.tsx";
+import { UKC } from "@yourdash/uikit";
 import React from "react";
 
 const NotFoundPage: React.FC = () => {
@@ -13,13 +11,13 @@ const NotFoundPage: React.FC = () => {
     <div
       className={"text-center flex items-center justify-center flex-col h-max pt-20 pb-20 pr-10 pl-10 animate__animated animate__fadeIn"}
     >
-      <Heading
+      <UKC.Heading
         className={"!text-7xl pb-4 animate__animated animate__jackInTheBox"}
         level={1}
         text={"404"}
       />
-      <Separator direction={"column"} />
-      <Subtext
+      <UKC.Separator direction={"column"} />
+      <UKC.Subtext
         className={"animate__animated animate__fadeInUp"}
         text={"This page could not be found!"}
       />

@@ -4,7 +4,7 @@
  */
 
 import { UKIcon } from "packages/uikit/src/core/iconDictionary.ts";
-import TextInput from "@yourdash/uikit/src/components/textInput/textInput.js";
+import TextInput from "@yourdash/uikit/components/textInput/textInput.js";
 import useResource from "@yourdash/csi/useResource";
 import React, { FC } from "react";
 import AlbumMediaGrid from "../../components/AlbumMediaGrid/AlbumMediaGrid";

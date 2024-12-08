@@ -4,9 +4,9 @@
  */
 
 import useResource from "@yourdash/csi/useResource";
-import Box from "@yourdash/uikit/src/components/box/box";
-import Container from "@yourdash/uikit/src/components/container/container";
-import Heading from "@yourdash/uikit/src/components/heading/heading";
+import Box from "@yourdash/uikit/components/box/box";
+import Container from "@yourdash/uikit/components/container/container";
+import Heading from "@yourdash/uikit/components/heading/heading";
 import EndpointTabViewHome from "../../../shared/types/endpoints/tabView/home";
 import { acsi } from "../../meta.yourdash";
 import { IFilesView } from "../view";

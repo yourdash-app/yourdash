@@ -3,13 +3,12 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import Card from "@yourdash/uikit/src/components/card/card.tsx";
-import ContextMenu from "@yourdash/uikit/src/components/contextMenu/contextMenu.tsx";
 import React from "react";
 import IPanelApplicationsLauncherFrontendModule from "@yourdash/shared/core/panel/applicationsLauncher/application.ts";
 import coreCSI from "@yourdash/csi/coreCSI.ts";
 import styles from "./LargeApplicationGrid.module.scss";
 import { useNavigate } from "react-router";
+import { UKC } from "@yourdash/uikit";
 
 const LargeApplicationGrid: React.FC<{
   modules: IPanelApplicationsLauncherFrontendModule[];
@@ -20,7 +19,7 @@ const LargeApplicationGrid: React.FC<{
     <section className={styles.grid}>
       {modules.map((module) => {
         return (
-          <ContextMenu
+          <UKC.ContextMenu
             items={[
               {
                 label: "Pin To Panel",
@@ -42,7 +41,7 @@ const LargeApplicationGrid: React.FC<{
             className={styles.item}
             key={module.id}
           >
-            <Card
+            <UKC.Card
               onClick={() => {
                 navigate(module.url);
               }}
@@ -56,8 +55,8 @@ const LargeApplicationGrid: React.FC<{
                 alt=""
               />
               <span className={styles.itemLabel}>{module.displayName}</span>
-            </Card>
-          </ContextMenu>
+            </UKC.Card>
+          </UKC.ContextMenu>
         );
       })}
     </section>

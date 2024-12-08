@@ -5,7 +5,7 @@
 
 import clippy from "@yourdash/shared/web/helpers/clippy.ts";
 import Button from "../button/button.tsx";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import styles from "./buttonLink.module.scss";
 import { FC } from "react";
 

@@ -3,63 +3,74 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import React from "react";
+import ApplicationPanelContext from "@yourdash/web/src/app/panel/ApplicationPanelContext.tsx";
+import React, { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import applicationMeta from "./meta.yourdash";
-import OnBoarding from "@yourdash/uikit/src/views/onBoarding/onBoarding";
 import ApplicationLayout from "./layout";
+import { UKV } from "@yourdash/uikit";
+import FILES_ICON from "../icon.avif";
 
-const FilesRouter: React.FC = () => (
-  <Routes>
-    <Route
-      element={
-        <OnBoarding
-          meta={applicationMeta}
-          pages={[
-            {
-              headerImage: "/assets/productLogos/yourdash.svg",
-              header: "YourDash Files",
-              body: "Create and manage your files with ease.",
-              actions: [
-                {
-                  label: "Continue",
-                  changeTo: "next",
-                  onClick: () => {},
-                },
-                {
-                  label: "Skip and use defaults",
-                  changeTo: "completed",
-                  onClick: () => {
-                    // set default options
-                  },
-                },
-              ],
-            },
-            {
-              headerImage: "/assets/productLogos/yourdash.svg",
-              header: "This is Coming soon...",
-              body: "This onBoarding Menu is coming soon...",
-              allowGoBack: true,
-              actions: [
-                {
-                  label: "Continue to application",
-                  changeTo: "completed",
-                  onClick: () => {
-                    // no functionality
-                  },
-                },
-              ],
-            },
-          ]}
-        />
-      }
-    >
+const FilesRouter: React.FC = () => {
+  const applicationPanelContext = React.useContext(ApplicationPanelContext);
+
+  useEffect(() => {
+    applicationPanelContext.setApplicationDisplayName("Files");
+    applicationPanelContext.setApplicationIcon(FILES_ICON);
+    applicationPanelContext.setOnBackButton(() => {});
+    applicationPanelContext.setShowBackButton(false);
+    applicationPanelContext.setControls([]);
+  }, []);
+
+  return (
+    <Routes>
       <Route
-        index
-        element={<ApplicationLayout />}
-      />
-    </Route>
-  </Routes>
-);
+        element={
+          <UKV.OnBoarding
+            meta={applicationMeta}
+            pages={[
+              {
+                headerImage: FILES_ICON,
+                header: "YourDash Files",
+                body: "Create and manage your files with ease.",
+                actions: [
+                  {
+                    label: "Continue",
+                    changeTo: "next",
+                    onClick: () => {},
+                  },
+                  {
+                    label: "Skip and use defaults",
+                    changeTo: "completed",
+                  },
+                ],
+              },
+              {
+                headerImage: "/assets/productLogos/yourdash.svg",
+                header: "This is Coming soon...",
+                body: "This onBoarding Menu is coming soon...",
+                allowGoBack: true,
+                actions: [
+                  {
+                    label: "Continue to application",
+                    changeTo: "completed",
+                    onClick: () => {
+                      // no functionality
+                    },
+                  },
+                ],
+              },
+            ]}
+          />
+        }
+      >
+        <Route
+          index
+          element={<ApplicationLayout />}
+        />
+      </Route>
+    </Routes>
+  );
+};
 
 export default FilesRouter;

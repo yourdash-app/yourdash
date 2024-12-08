@@ -4,11 +4,11 @@
  */
 
 import clippy from "@yourdash/shared/web/helpers/clippy";
-import Box from "@yourdash/uikit/src/components/box/box.js";
-import ButtonWithIcon from "@yourdash/uikit/src/components/buttonWithIcon/buttonWithIcon";
-import Heading from "@yourdash/uikit/src/components/heading/heading.js";
+import Box from "@yourdash/uikit/components/box/box.js";
+import ButtonWithIcon from "@yourdash/uikit/components/buttonWithIcon/buttonWithIcon";
+import Heading from "@yourdash/uikit/components/heading/heading.js";
 import { UKIcon } from "packages/uikit/src/core/iconDictionary.ts";
-import IconButton from "@yourdash/uikit/src/components/iconButton/iconButton";
+import IconButton from "@yourdash/uikit/components/iconButton/iconButton";
 import PanAndZoom from "@yourdash/uikit/src/views/panAndZoom/panAndZoom.js";
 import useResource from "@yourdash/csi/useResource";
 import { FC } from "react";

@@ -6,9 +6,9 @@
 import coreCSI from "@yourdash/csi/coreCSI";
 import toAuthImgUrl from "@yourdash/csi/toAuthImgUrl.ts";
 import clippy from "@yourdash/shared/web/helpers/clippy";
-import Card from "@yourdash/uikit/src/components/card/card";
-import Image from "@yourdash/uikit/src/components/image/image";
-import Text from "@yourdash/uikit/src/components/text/text";
+import Card from "@yourdash/uikit/components/card/card";
+import Image from "@yourdash/uikit/components/image/image";
+import Text from "@yourdash/uikit/components/text/text";
 import InfiniteScroll from "@yourdash/uikit/src/views/infiniteScroll/infiniteScroll";
 import React, { useEffect, useState } from "react";
 import { EndpointAlbumSubPath } from "../../../shared/types/endpoints/album/sub/path";

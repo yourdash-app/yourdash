@@ -3,54 +3,55 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import Redirect from "@yourdash/uikit/src/components/redirect/redirect";
-import OnBoarding from "@yourdash/uikit/src/views/onBoarding/onBoarding";
-import React from "react";
+import ApplicationPanelContext from "@yourdash/web/src/app/panel/ApplicationPanelContext.tsx";
+import React, { useEffect } from "react";
 import { Routes, Route } from "react-router";
-import applicationMeta, { modulePath } from "./meta.yourdash";
-import CategoryNamePage from "./routes/cat/categoryName";
-import SingleSettingPage from "./routes/cat/singleSettingPage";
+import applicationMeta from "./meta.yourdash";
 import IndexPage from "./routes/index";
-import SessionIndexPage from "./pages/session/Index";
 import SettingsLayout from "./settingsLayout";
-import PersonalizationIndexPage from "./routes/personalization/index";
-import AdminToolsIndexPage from "./pages/admin/Index";
-import DashboardPersonalizationIndexPage from "./routes/personalization/dashboard/index";
-import PanelPersonalizationIndexPage from "./routes/personalization/panel/index";
-import ProfileIndexPage from "./pages/profile/Index";
-import DeveloperToolsIndexPage from "./pages/developer/Index";
-import AccessibilityIndexPage from "./pages/accessibility/Index";
 import SETTINGS_ICON from "./../icon.avif";
+import OnBoarding from "@yourdash/uikit/views/onBoarding/onBoarding.js";
 
-const SettingsRouter: React.FC = () => (
-  <Routes>
-    <Route
-      element={
-        <OnBoarding
-          meta={applicationMeta}
-          pages={[
-            {
-              headerImage: SETTINGS_ICON,
-              header: "YourDash Settings",
-              body: "Configure YourDash and it's applications",
-              actions: [
-                {
-                  label: "Continue",
-                  onClick: () => {},
-                  changeTo: "next",
-                },
-              ],
-            },
-          ]}
-        />
-      }
-    >
-      <Route element={<SettingsLayout />}>
-        <Route
-          index
-          element={<IndexPage />}
-        />
-        {/* <Route path={"cat"}>
+const SettingsRouter: React.FC = () => {
+  const applicationPanelContext = React.useContext(ApplicationPanelContext);
+
+  useEffect(() => {
+    applicationPanelContext.setApplicationDisplayName("Settings");
+    applicationPanelContext.setApplicationIcon(SETTINGS_ICON);
+    applicationPanelContext.setOnBackButton(() => {});
+    applicationPanelContext.setShowBackButton(false);
+    applicationPanelContext.setControls([]);
+  }, []);
+
+  return (
+    <Routes>
+      <Route
+        element={
+          <OnBoarding
+            meta={applicationMeta}
+            pages={[
+              {
+                headerImage: SETTINGS_ICON,
+                header: "YourDash Settings",
+                body: "Configure YourDash and it's applications",
+                actions: [
+                  {
+                    label: "Continue",
+                    onClick: () => {},
+                    changeTo: "next",
+                  },
+                ],
+              },
+            ]}
+          />
+        }
+      >
+        <Route element={<SettingsLayout />}>
+          <Route
+            index
+            element={<IndexPage />}
+          />
+          {/* <Route path={"cat"}>
           <Route
             index
             element={<Redirect to={`${modulePath}/`} />}
@@ -112,9 +113,10 @@ const SettingsRouter: React.FC = () => (
             element={<DeveloperToolsIndexPage />}
           />
         </Route> */}
+        </Route>
       </Route>
-    </Route>
-  </Routes>
-);
+    </Routes>
+  );
+};
 
 export default SettingsRouter;

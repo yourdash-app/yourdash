@@ -3,8 +3,8 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import Heading from "@yourdash/uikit/src/components/heading/heading.tsx";
-import TextInput from "@yourdash/uikit/src/components/textInput/textInput.tsx";
+import Heading from "@yourdash/uikit/components/heading/heading.tsx";
+import TextInput from "@yourdash/uikit/components/textInput/textInput.tsx";
 import NavImage from "@yourdash/uikit/src/views/navBar/components/navImage/navImage.tsx";
 import NavTitle from "@yourdash/uikit/src/views/navBar/components/navTitle/navTitle.tsx";
 import NavBar from "@yourdash/uikit/src/views/navBar/navBar.tsx";

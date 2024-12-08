@@ -4,17 +4,11 @@
  */
 
 import coreCSI from "@yourdash/csi/coreCSI.ts";
-import Box from "@yourdash/uikit/src/components/box/box.tsx";
-import Button from "@yourdash/uikit/src/components/button/button.tsx";
-import Heading from "@yourdash/uikit/src/components/heading/heading.tsx";
-import { UKIcon } from "packages/uikit/src/core/iconDictionary.ts";
-import Subtext from "@yourdash/uikit/src/components/subtext/subtext.tsx";
-import TextInput from "@yourdash/uikit/src/components/textInput/textInput.tsx";
 import styles from "./panel.module.scss";
 import isValidInstance from "../../../lib/isValidInstance.ts";
-import IconButton from "@yourdash/uikit/src/components/iconButton/iconButton.tsx";
 import { FC, useState } from "react";
 import { useNavigate } from "react-router";
+import UK, { UKC } from "@yourdash/uikit";
 
 const Panel: FC = () => {
   const navigate = useNavigate();
@@ -33,43 +27,40 @@ const Panel: FC = () => {
   }
 
   return (
-    <Box className={styles.component}>
-      <IconButton
-        icon={UKIcon.ChevronLeft}
+    <UKC.Box className={styles.component}>
+      <UKC.IconButton
+        icon={UK.Core.Icons.ChevronLeft}
         onClick={() => {
           navigate("/");
         }}
         className={styles.backButton}
         accessibleLabel={"Go Back"}
       />
-      <Heading
+      <UKC.Heading
         level={3}
         text={"Instance's Url"}
       />
-      <TextInput
+      <UKC.TextInput
         accessibleName={"Instance url"}
         placeholder={"https:// or http://"}
-        onChange={(val) => {
-          setInputValue(val);
-        }}
-        onEnter={(val) => {
-          setInputValue(val);
+        getValue={setInputValue}
+        onSubmit={() => {
           checkUrl();
         }}
-        icon={UKIcon.Link}
+        icon={UK.Core.Icons.Link}
       />
       {isValid === false && (
         <>
-          <Subtext text={"Invalid instance!"} />
+          <UKC.Subtext text={"Invalid instance!"} />
         </>
       )}
-      <Button
+      <UKC.Button
         text={"Check url"}
         onClick={() => {
           checkUrl();
         }}
       />
-    </Box>
+    </UKC.Box>
   );
 };
 

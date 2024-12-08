@@ -1285,201 +1285,6 @@
         }
       }
     },
-    "/app/uk-ewsgit-files-backend/": {
-      "get": {
-        "description": "Sample description",
-        "responses": {
-          "200": {
-            "description": "Sample description",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "message"
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/app/uk-ewsgit-files-backend/list/dir/@/:path": {
-      "get": {
-        "description": "Sample description",
-        "responses": {
-          "200": {
-            "description": "Sample description",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "contents": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    }
-                  },
-                  "required": [
-                    "contents"
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/app/uk-ewsgit-files-backend/list/dir/@/": {
-      "get": {
-        "description": "Sample description",
-        "responses": {
-          "200": {
-            "description": "Sample description",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "contents": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    }
-                  },
-                  "required": [
-                    "contents"
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/app/uk-ewsgit-files-backend/tabView/home": {
-      "get": {
-        "description": "Sample description",
-        "responses": {
-          "200": {
-            "description": "Sample description",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "recentFiles": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {}
-                      }
-                    },
-                    "sharedFiles": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {}
-                      }
-                    },
-                    "commonStorageLocations": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "path": {
-                            "type": "string"
-                          },
-                          "baseName": {
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "path",
-                          "baseName"
-                        ]
-                      }
-                    },
-                    "connections": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "serviceName": {
-                            "type": "string"
-                          },
-                          "description": {
-                            "type": "string"
-                          },
-                          "url": {
-                            "type": "string"
-                          },
-                          "quota": {
-                            "type": "object",
-                            "properties": {
-                              "max": {
-                                "type": "number"
-                              },
-                              "usage": {
-                                "type": "number"
-                              },
-                              "unit": {
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "max",
-                              "usage",
-                              "unit"
-                            ]
-                          },
-                          "id": {
-                            "type": "string"
-                          },
-                          "serviceLogo": {
-                            "anyOf": [
-                              {
-                                "type": "string"
-                              },
-                              {},
-                              {
-                                "type": "null"
-                              }
-                            ]
-                          }
-                        },
-                        "required": [
-                          "serviceName",
-                          "description",
-                          "url",
-                          "quota",
-                          "id"
-                        ]
-                      }
-                    }
-                  },
-                  "required": [
-                    "recentFiles",
-                    "sharedFiles",
-                    "commonStorageLocations",
-                    "connections"
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/app/uk-ewsgit-dash-backend/user-full-name": {
       "get": {
         "description": "Get user full name",
@@ -1676,6 +1481,390 @@
                   },
                   "required": [
                     "version"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/app/uk-ewsgit-files-backend/": {
+      "get": {
+        "description": "Sample description",
+        "responses": {
+          "200": {
+            "description": "Sample description",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/app/uk-ewsgit-files-backend/list/dir/@/:path": {
+      "get": {
+        "description": "Sample description",
+        "responses": {
+          "200": {
+            "description": "Sample description",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "contents": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "required": [
+                    "contents"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/app/uk-ewsgit-files-backend/list/dir/@/": {
+      "get": {
+        "description": "Sample description",
+        "responses": {
+          "200": {
+            "description": "Sample description",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "contents": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "required": [
+                    "contents"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/app/uk-ewsgit-files-backend/tabView/home": {
+      "get": {
+        "description": "Sample description",
+        "responses": {
+          "200": {
+            "description": "Sample description",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "recentFiles": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {}
+                      }
+                    },
+                    "sharedFiles": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {}
+                      }
+                    },
+                    "commonStorageLocations": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "path": {
+                            "type": "string"
+                          },
+                          "baseName": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "path",
+                          "baseName"
+                        ]
+                      }
+                    },
+                    "connections": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "serviceName": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "type": "string"
+                          },
+                          "url": {
+                            "type": "string"
+                          },
+                          "quota": {
+                            "type": "object",
+                            "properties": {
+                              "max": {
+                                "type": "number"
+                              },
+                              "usage": {
+                                "type": "number"
+                              },
+                              "unit": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "max",
+                              "usage",
+                              "unit"
+                            ]
+                          },
+                          "id": {
+                            "type": "string"
+                          },
+                          "serviceLogo": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {},
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          }
+                        },
+                        "required": [
+                          "serviceName",
+                          "description",
+                          "url",
+                          "quota",
+                          "id"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "recentFiles",
+                    "sharedFiles",
+                    "commonStorageLocations",
+                    "connections"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/app/uk-ewsgit-settings-backend/core/panel/position": {
+      "post": {
+        "description": "Sample description",
+        "responses": {
+          "200": {
+            "description": "Sample description",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "success"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/app/uk-ewsgit-settings-backend/developer/install-all-applications": {
+      "get": {
+        "description": "Sample description",
+        "responses": {
+          "200": {
+            "description": "Sample description",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "success"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/app/uk-ewsgit-settings-backend/cat/:categoryid": {
+      "get": {
+        "description": "Sample description",
+        "responses": {
+          "200": {
+            "description": "Sample description",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "displayName": {
+                      "type": "string"
+                    },
+                    "id": {
+                      "type": "string"
+                    },
+                    "icon": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "settings": {
+                      "type": "object",
+                      "properties": {}
+                    }
+                  },
+                  "required": [
+                    "displayName",
+                    "id",
+                    "settings"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/app/uk-ewsgit-settings-backend/setting/:category/:setting": {
+      "get": {
+        "description": "Sample description",
+        "responses": {
+          "200": {
+            "description": "Sample description",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "string",
+                        "int",
+                        "float",
+                        "directory",
+                        "file",
+                        "fileOfType",
+                        "color",
+                        "date",
+                        "time",
+                        "boolean",
+                        "selection",
+                        "multipleSelection"
+                      ]
+                    },
+                    "value": {}
+                  },
+                  "required": [
+                    "type"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/app/uk-ewsgit-settings-backend/current/wallpaper": {
+      "get": {
+        "description": "Sample description",
+        "responses": {
+          "200": {
+            "description": "Sample description",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "dimensions": {
+                      "type": "object",
+                      "properties": {
+                        "width": {
+                          "type": "number"
+                        },
+                        "height": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "width",
+                        "height"
+                      ]
+                    },
+                    "thumbnail": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "dimensions",
+                    "thumbnail"
                   ]
                 }
               }
@@ -1961,195 +2150,6 @@
                       "previewThumbnail"
                     ]
                   }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/app/uk-ewsgit-settings-backend/core/panel/position": {
-      "post": {
-        "description": "Sample description",
-        "responses": {
-          "200": {
-            "description": "Sample description",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "success"
-                  ]
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Request error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/app/uk-ewsgit-settings-backend/developer/install-all-applications": {
-      "get": {
-        "description": "Sample description",
-        "responses": {
-          "200": {
-            "description": "Sample description",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "success"
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/app/uk-ewsgit-settings-backend/cat/:categoryid": {
-      "get": {
-        "description": "Sample description",
-        "responses": {
-          "200": {
-            "description": "Sample description",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "displayName": {
-                      "type": "string"
-                    },
-                    "id": {
-                      "type": "string"
-                    },
-                    "icon": {
-                      "type": "string"
-                    },
-                    "description": {
-                      "type": "string"
-                    },
-                    "settings": {
-                      "type": "object",
-                      "properties": {}
-                    }
-                  },
-                  "required": [
-                    "displayName",
-                    "id",
-                    "settings"
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/app/uk-ewsgit-settings-backend/setting/:category/:setting": {
-      "get": {
-        "description": "Sample description",
-        "responses": {
-          "200": {
-            "description": "Sample description",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "type": {
-                      "type": "string",
-                      "enum": [
-                        "string",
-                        "int",
-                        "float",
-                        "directory",
-                        "file",
-                        "fileOfType",
-                        "color",
-                        "date",
-                        "time",
-                        "boolean",
-                        "selection",
-                        "multipleSelection"
-                      ]
-                    },
-                    "value": {}
-                  },
-                  "required": [
-                    "type"
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/app/uk-ewsgit-settings-backend/current/wallpaper": {
-      "get": {
-        "description": "Sample description",
-        "responses": {
-          "200": {
-            "description": "Sample description",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "dimensions": {
-                      "type": "object",
-                      "properties": {
-                        "width": {
-                          "type": "number"
-                        },
-                        "height": {
-                          "type": "number"
-                        }
-                      },
-                      "required": [
-                        "width",
-                        "height"
-                      ]
-                    },
-                    "thumbnail": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "dimensions",
-                    "thumbnail"
-                  ]
                 }
               }
             }

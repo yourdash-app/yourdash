@@ -5,13 +5,12 @@
 
 import DropdownIconButton from "@yourdash/chiplet/components/dropdownIconButton/DropdownIconButton.tsx";
 import RightClickMenu from "@yourdash/chiplet/components/rightClickMenu/RightClickMenu.tsx";
-import Card from "@yourdash/uikit/src/components/card/card.tsx";
-import { UKIcon } from "packages/uikit/src/core/iconDictionary.ts";
 import React from "react";
 import IPanelApplicationsLauncherFrontendModule from "@yourdash/shared/core/panel/applicationsLauncher/application.ts";
 import coreCSI from "@yourdash/csi/coreCSI.ts";
 import styles from "./ApplicationList.module.scss";
 import { useNavigate } from "react-router";
+import UK, { UKC } from "@yourdash/uikit";
 
 const ApplicationList: React.FC<{ applications: IPanelApplicationsLauncherFrontendModule[] }> = ({ applications }) => {
   const navigate = useNavigate();
@@ -45,7 +44,7 @@ const ApplicationList: React.FC<{ applications: IPanelApplicationsLauncherFronte
               navigate(application.url);
             }}
           >
-            <Card className={styles.itemContent}>
+            <UKC.Card className={styles.itemContent}>
               <img
                 loading={"lazy"}
                 className={styles.itemIcon}
@@ -74,9 +73,9 @@ const ApplicationList: React.FC<{ applications: IPanelApplicationsLauncherFronte
                     },
                   },
                 ]}
-                icon={UKIcon.ThreeBars}
+                icon={UK.Core.Icons.ThreeBars}
               />
-            </Card>
+            </UKC.Card>
           </RightClickMenu>
         );
       })}

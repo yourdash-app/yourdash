@@ -11,6 +11,7 @@ import { Outlet } from "react-router";
 import styles from "./onBoarding.module.scss";
 import Flex from "../../components/flex/flex.tsx";
 import clippy from "@yourdash/shared/web/helpers/clippy.ts";
+import Separator from "../../components/separator/separator.tsx";
 
 const OnBoarding: React.FC<{
   meta: { id: string };
@@ -21,7 +22,7 @@ const OnBoarding: React.FC<{
     actions: {
       label: string;
       icon?: UKIconType;
-      onClick: () => void;
+      onClick?: () => void;
       changeTo?: "next" | "previous" | "remain" | "completed";
     }[];
     allowGoBack?: boolean;
@@ -44,6 +45,7 @@ const OnBoarding: React.FC<{
       >
         {page.allowGoBack && (
           <IconButton
+            key={"GoBackButton"}
             className={clippy(styles.goBackButton, "animate__animated animate__fadeInDown")}
             accessibleLabel="Go back to the last page"
             icon={UKIcon.ChevronLeft}
@@ -61,6 +63,7 @@ const OnBoarding: React.FC<{
           className={styles.header}
           text={page.header}
         />
+        <Separator direction={"column"} />
         <Text
           className={styles.body}
           text={page.body}
@@ -79,7 +82,7 @@ const OnBoarding: React.FC<{
                     text={action.label}
                     icon={action.icon}
                     onClick={() => {
-                      action.onClick();
+                      action.onClick?.();
                       if (action.changeTo) {
                         switch (action.changeTo) {
                           case "next":
@@ -106,11 +109,11 @@ const OnBoarding: React.FC<{
             return (
               <>
                 <Button
-                  key={action.icon}
+                  key={action.label}
                   className={clippy(styles.action, styles.actionWithoutIcon, "animate__animated animate__fadeInUp")}
                   text={action.label}
                   onClick={() => {
-                    action.onClick();
+                    action.onClick?.();
 
                     if (action.changeTo) {
                       switch (action.changeTo) {

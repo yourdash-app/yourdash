@@ -2,7 +2,7 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import SidebarContainer from "@yourdash/uikit/src/views/sidebar/sidebarContainer.tsx";
 import Sidebar from "@yourdash/uikit/src/views/sidebar/sidebar.tsx";
-import Button from "@yourdash/uikit/src/components/button/button";
+import Button from "@yourdash/uikit/components/button/button";
 import { useNavigateTo } from "../meta.yourdash";
 import NavBar from "@yourdash/uikit/src/views/navBar/navBar";
 import STORE_ICON from "../../icon.avif";

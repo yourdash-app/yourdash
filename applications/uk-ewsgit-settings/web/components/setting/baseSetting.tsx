@@ -3,11 +3,11 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import Card from "@yourdash/uikit/src/components/card/card";
-import Flex from "@yourdash/uikit/src/components/flex/flex";
-import Heading from "@yourdash/uikit/src/components/heading/heading";
-import Subtext from "@yourdash/uikit/src/components/subtext/subtext";
-import Text from "@yourdash/uikit/src/components/text/text";
+import Card from "@yourdash/uikit/components/card/card";
+import Flex from "@yourdash/uikit/components/flex/flex";
+import Heading from "@yourdash/uikit/components/heading/heading";
+import Subtext from "@yourdash/uikit/components/subtext/subtext";
+import Text from "@yourdash/uikit/components/text/text";
 import React from "react";
 import ISetting from "../../../shared/types/setting";
 import SETTING_TYPE from "../../../shared/types/settingType";

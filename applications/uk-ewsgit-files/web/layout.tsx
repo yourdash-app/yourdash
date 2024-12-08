@@ -1,21 +1,11 @@
 import clippy from "@yourdash/shared/web/helpers/clippy";
-import Card from "@yourdash/uikit/src/components/card/card.tsx";
-import Flex from "@yourdash/uikit/src/components/flex/flex.tsx";
-import Heading from "@yourdash/uikit/src/components/heading/heading";
-import Separator from "@yourdash/uikit/src/components/separator/separator.tsx";
-import Text from "@yourdash/uikit/src/components/text/text.tsx";
-import Sidebar from "@yourdash/uikit/src/views/sidebar/sidebar.tsx";
-import SidebarContainer from "@yourdash/uikit/src/views/sidebar/sidebarContainer.tsx";
-import SidebarToggleButton from "@yourdash/uikit/src/views/sidebar/sidebarToggleButton.tsx";
 import React, { useEffect, useState } from "react";
-import Button from "@yourdash/uikit/src/components/button/button";
 import TabView from "./views/tab/tabView";
 import { IFilesView } from "./views/view";
 import FILES_VIEW_TYPE from "./views/viewType";
 import styles from "./layout.module.scss";
 import generateUUID from "@yourdash/shared/web/helpers/uuid";
-import IconButton from "@yourdash/uikit/src/components/iconButton/iconButton";
-import { UKIcon } from "packages/uikit/src/core/iconDictionary.ts";
+import UK, { UKC, UKV } from "@yourdash/uikit";
 
 export interface IFilesTab {
   id: string;
@@ -44,13 +34,13 @@ const ApplicationLayout: React.FC = () => {
   }, [tabs]);
 
   return (
-    <SidebarContainer>
-      <Sidebar>
-        <Heading text={"Files"} />
-        <Separator direction={"column"} />
+    <UKV.SidebarContainer>
+      <UKV.Sidebar>
+        <UKC.Heading text={"Files"} />
+        <UKC.Separator direction={"column"} />
         {commonStorageLocations.map((storageLocation) => {
           return (
-            <Button
+            <UKC.Button
               text={storageLocation.path}
               onClick={() => {
                 const currentTab = tabs.find((t) => activeTabId === t.id);
@@ -72,14 +62,14 @@ const ApplicationLayout: React.FC = () => {
             />
           );
         })}
-      </Sidebar>
+      </UKV.Sidebar>
       <div className={styles.page}>
         <section className={styles.tabBar}>
-          <SidebarToggleButton />
+          <UKV.SidebarToggleButton />
           {tabs.map((tab) => {
             return (
               <div className={clippy(styles.tab, activeTabId === tab.id && styles.active)}>
-                <Button
+                <UKC.Button
                   className={styles.innerButton}
                   key={tab.id}
                   text={tab.displayName}
@@ -87,19 +77,19 @@ const ApplicationLayout: React.FC = () => {
                     setActiveTabId(tab.id);
                   }}
                 />
-                <IconButton
+                <UKC.IconButton
                   onClick={() => {
                     setTabs((tbs) => tbs.filter((t) => t.id !== tab.id));
                   }}
                   accessibleLabel={"close tab"}
-                  icon={UKIcon.X}
+                  icon={UK.Core.Icons.X}
                   className={styles.tabCloseButton}
                 />
               </div>
             );
           })}
-          <IconButton
-            icon={UKIcon.Plus}
+          <UKC.IconButton
+            icon={UK.Core.Icons.Plus}
             onClick={() => {
               setTabs([...tabs, homeTab()]);
             }}
@@ -112,32 +102,32 @@ const ApplicationLayout: React.FC = () => {
             <TabView view={tabs.find((tab) => tab.id === activeTabId)?.view!} />
           </section>
         ) : (
-          <Flex
+          <UKC.Flex
             centerHorizontally
             centerVertically
             direction={"column"}
           >
-            <Card>
-              <Flex
+            <UKC.Card>
+              <UKC.Flex
                 direction={"column"}
                 centerHorizontally
                 centerVertically
               >
-                <Heading text={"You have no tabs!"} />
-                <Separator direction={"column"} />
-                <Text text={"Create a new tab by clicking the button below."} />
-                <Button
+                <UKC.Heading text={"You have no tabs!"} />
+                <UKC.Separator direction={"column"} />
+                <UKC.Text text={"Create a new tab by clicking the button below."} />
+                <UKC.Button
                   onClick={() => {
                     setTabs([homeTab()]);
                   }}
                   text={"Create new tab"}
                 />
-              </Flex>
-            </Card>
-          </Flex>
+              </UKC.Flex>
+            </UKC.Card>
+          </UKC.Flex>
         )}
       </div>
-    </SidebarContainer>
+    </UKV.SidebarContainer>
   );
 };
 

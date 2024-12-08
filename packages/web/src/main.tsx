@@ -6,9 +6,6 @@
 import "animate.css";
 import "./tailwindcss.css";
 import "./main.css";
-import UIKitRoot from "@yourdash/uikit/src/core/root.tsx";
-import Dialog from "@yourdash/uikit/src/views/dialog/dialog.tsx";
-import Text from "@yourdash/uikit/src/components/text/text.tsx";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createRoutesFromElements, Route, RouterProvider } from "react-router";
@@ -31,6 +28,7 @@ import ProjectsIndexPage from "./root/projects/Index.tsx";
 import LinkerDesktopClientStartupPage from "./root/linkerDesktopClientStartup/Index.tsx";
 import HostedApplicationRouter from "./app/HostedApplicationRouter.tsx";
 import WebsocketToasts from "./WebsocketToasts.tsx";
+import UK, { UKC, UKV } from "@yourdash/uikit";
 
 const AppRouter = loadable(() => import("./app/AppRouter.tsx"));
 const DocsRouter = loadable(() => import("./root/docs/DocsRouter.tsx"));
@@ -50,9 +48,12 @@ loadingElement.innerText = "Loading YourDash...";
 element.appendChild(loadingElement);
 
 ReactDOM.createRoot(element).render(
-  <UIKitRoot>
+  <UK.Core.UIKitRoot>
     <WebsocketToasts />
     <RouterProvider
+      future={{
+        v7_startTransition: true,
+      }}
       router={createBrowserRouter(
         createRoutesFromElements(
           <Route errorElement={<ErrorElement />}>
@@ -166,15 +167,24 @@ ReactDOM.createRoot(element).render(
                 path={"dialog"}
                 element={
                   <>
-                    <Dialog>sa</Dialog>
-                    <Text text={"Hello world"} />
+                    <UKV.Dialog>sa</UKV.Dialog>
+                    <UKC.Text text={"Hello world"} />
                   </>
                 }
               />
             </Route>
           </Route>,
         ),
+        {
+          future: {
+            v7_fetcherPersist: true,
+            v7_normalizeFormMethod: true,
+            v7_partialHydration: true,
+            v7_relativeSplatPath: true,
+            v7_skipActionErrorRevalidation: true,
+          },
+        },
       )}
     />
-  </UIKitRoot>,
+  </UK.Core.UIKitRoot>,
 );

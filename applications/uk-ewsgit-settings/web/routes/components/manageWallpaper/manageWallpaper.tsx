@@ -5,30 +5,24 @@
 
 import toAuthImgUrl from "@yourdash/csi/toAuthImgUrl.ts";
 import useResource from "@yourdash/csi/useResource.ts";
-import Card from "@yourdash/uikit/src/components/card/card.tsx";
-import Heading from "@yourdash/uikit/src/components/heading/heading.tsx";
-import Icon from "@yourdash/uikit/src/components/icon/icon.tsx";
-import { UKIcon } from "packages/uikit/src/core/iconDictionary.ts";
-import Image from "@yourdash/uikit/src/components/image/image.tsx";
-import Separator from "@yourdash/uikit/src/components/separator/separator.tsx";
-import Text from "@yourdash/uikit/src/components/text/text.tsx";
 import { acsi } from "../../../meta.yourdash.ts";
 import styles from "./manageWallpaper.module.scss";
 import React from "react";
+import UK, { UKC } from "@yourdash/uikit";
 
 const ManageWallpaper: React.FC = () => {
   const currentWallpaper = useResource(() => acsi.getJson("/current/wallpaper"), []);
 
   return (
-    <Card>
-      <Heading
+    <UKC.Card>
+      <UKC.Heading
         level={2}
         className={styles.heading}
         text={"Manage Wallpaper"}
       />
-      <Separator direction={"column"} />
+      <UKC.Separator direction={"column"} />
       {currentWallpaper ? (
-        <Image
+        <UKC.Image
           width={480}
           src={toAuthImgUrl(currentWallpaper.thumbnail)}
           accessibleLabel={"current wallpaper"}
@@ -37,17 +31,17 @@ const ManageWallpaper: React.FC = () => {
       ) : (
         <div>no current wallpaper</div>
       )}
-      <Separator direction={"column"} />
+      <UKC.Separator direction={"column"} />
       <div className={styles.previousWallpapers}>
-        <Card className={styles.newWallpaperButton}>
-          <Icon
+        <UKC.Card className={styles.newWallpaperButton}>
+          <UKC.Icon
             className={styles.icon}
-            icon={UKIcon.Plus}
+            icon={UK.Core.Icons.Plus}
           />
-          <Text text={"Add new wallpaper"} />
-        </Card>
+          <UKC.Text text={"Add new wallpaper"} />
+        </UKC.Card>
       </div>
-    </Card>
+    </UKC.Card>
   );
 };
 

@@ -3,8 +3,8 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import Button from "@yourdash/uikit/src/components/button/button.tsx";
-import ButtonWithIcon from "@yourdash/uikit/src/components/buttonWithIcon/buttonWithIcon.tsx";
+import Button from "@yourdash/uikit/components/button/button.tsx";
+import ButtonWithIcon from "@yourdash/uikit/components/buttonWithIcon/buttonWithIcon.tsx";
 import { UKIcon } from "packages/uikit/src/core/iconDictionary.ts";
 import Sidebar from "@yourdash/uikit/src/views/sidebar/sidebar.tsx";
 import SidebarContainer from "@yourdash/uikit/src/views/sidebar/sidebarContainer.tsx";

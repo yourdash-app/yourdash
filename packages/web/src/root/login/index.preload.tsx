@@ -3,13 +3,12 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import Dialog from "@yourdash/chiplet/components/dialog/Dialog.tsx";
 import coreCSI from "@yourdash/csi/coreCSI.ts";
-import Button from "@yourdash/uikit/src/components/button/button.tsx";
 import LoginIndexPage from "./index.tsx";
 import isValidInstance from "./lib/isValidInstance.ts";
 import { FC, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import { UKC, UKV } from "@yourdash/uikit";
 
 const LoginIndexPagePreload: FC = () => {
   const navigate = useNavigate();
@@ -32,25 +31,30 @@ const LoginIndexPagePreload: FC = () => {
 
   return (
     <>
-      {validInstance === undefined || validInstance === false ? (
-        <Dialog
-          title={"Logging in..."}
-          hideCloseButton={true}
-        >
-          checking if instance is valid
-          <Button
-            text={"Retry"}
-            onClick={() => {
-              setRetryCounter(retryCounter + 1);
-            }}
-          />
-          <Button
-            text={"Select new instance"}
-            onClick={() => {
-              navigate("/login/instance");
-            }}
-          />
-        </Dialog>
+      {validInstance === undefined || !validInstance ? (
+        <UKV.Dialog>
+          <UKC.Flex
+            padding
+            direction={"column"}
+          >
+            <UKC.Heading text={"Logging in..."} />
+            <UKC.Text text={"Checking if the instance is valid and online"} />
+            <UKC.Flex direction={"row"}>
+              <UKC.Button
+                text={"Retry"}
+                onClick={() => {
+                  setRetryCounter(retryCounter + 1);
+                }}
+              />
+              <UKC.Button
+                text={"Select new instance"}
+                onClick={() => {
+                  navigate("/login/instance");
+                }}
+              />
+            </UKC.Flex>
+          </UKC.Flex>
+        </UKV.Dialog>
       ) : (
         <>
           <LoginIndexPage />

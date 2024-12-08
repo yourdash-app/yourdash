@@ -20,6 +20,7 @@ const TextInputComponent: React.FC<{
   accessibleName: string;
   className?: string;
   type?: string;
+  autoComplete?: string;
 }> = (props) => {
   const ref = useRef<HTMLInputElement>(null);
 
@@ -62,6 +63,7 @@ const TextInputComponent: React.FC<{
         />
       )}
       <input
+        autoComplete={props.autoComplete}
         ref={ref}
         type={props.type || "text"}
         aria-label={props.accessibleName}

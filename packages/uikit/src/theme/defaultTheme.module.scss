@@ -73,7 +73,7 @@
   // button
   #{$theme}#{$button}#{$color}: #ffffff;
   #{$theme}#{$button}#{$background}: #444444;
-  #{$theme}#{$button}#{$border}: 1px solid #666666;
+  #{$theme}#{$button}#{$border}: 0px solid #666666;
   #{$theme}#{$button}#{$font}#{$size}: 0.9rem;
   #{$theme}#{$button}#{$font}#{$weight}: 400;
   #{$theme}#{$button}#{$radius}: 0.5rem;
@@ -82,13 +82,13 @@
   // hover
   #{$theme}#{$button}#{$hover}#{$color}: #ffffff;
   #{$theme}#{$button}#{$hover}#{$background}: #555555;
-  #{$theme}#{$button}#{$hover}#{$border}: 1px solid #666666;
+  #{$theme}#{$button}#{$hover}#{$border}: 0px solid #666666;
   #{$theme}#{$button}#{$hover}#{$radius}: 0.5rem;
   #{$theme}#{$button}#{$hover}#{$transition}: all 50ms ease-in-out;
   // active
   #{$theme}#{$button}#{$active}#{$color}: #000000;
   #{$theme}#{$button}#{$active}#{$background}: #666666;
-  #{$theme}#{$button}#{$active}#{$border}: 1px solid #777777;
+  #{$theme}#{$button}#{$active}#{$border}: 0px solid #777777;
   #{$theme}#{$button}#{$active}#{$radius}: 0.5rem;
   #{$theme}#{$button}#{$active}#{$transition}: all 50ms ease-in-out;
 
@@ -156,7 +156,7 @@
   // button
   #{$theme}#{$button}#{$color}: #ffffff;
   #{$theme}#{$button}#{$background}: #444444;
-  #{$theme}#{$button}#{$border}: 1px solid #444444;
+  #{$theme}#{$button}#{$border}: 0px solid #444444;
   #{$theme}#{$button}#{$font}#{$size}: 0.9rem;
   #{$theme}#{$button}#{$font}#{$weight}: 400;
   #{$theme}#{$button}#{$radius}: 0.5rem;
@@ -165,13 +165,13 @@
   // hover
   #{$theme}#{$button}#{$hover}#{$color}: #ffffff;
   #{$theme}#{$button}#{$hover}#{$background}: #555555;
-  #{$theme}#{$button}#{$hover}#{$border}: 1px solid #666666;
+  #{$theme}#{$button}#{$hover}#{$border}: 0px solid #666666;
   #{$theme}#{$button}#{$hover}#{$radius}: 0.5rem;
   #{$theme}#{$button}#{$hover}#{$transition}: all 50ms ease-in-out;
   // active
   #{$theme}#{$button}#{$active}#{$color}: #000000;
   #{$theme}#{$button}#{$active}#{$background}: #666666;
-  #{$theme}#{$button}#{$active}#{$border}: 1px solid #666666;
+  #{$theme}#{$button}#{$active}#{$border}: 0px solid #666666;
   #{$theme}#{$button}#{$active}#{$radius}: 0.5rem;
 
   // header
@@ -235,7 +235,7 @@
   // button
   #{$theme}#{$button}#{$color}: #ffffff;
   #{$theme}#{$button}#{$background}: #555555;
-  #{$theme}#{$button}#{$border}: 1px solid #666666;
+  #{$theme}#{$button}#{$border}: 0px solid #666666;
   #{$theme}#{$button}#{$font}#{$family}: Inter;
   #{$theme}#{$button}#{$font}#{$size}: 0.9rem;
   #{$theme}#{$button}#{$font}#{$weight}: 400;
@@ -245,13 +245,13 @@
   // hover
   #{$theme}#{$button}#{$hover}#{$color}: #ffffff;
   #{$theme}#{$button}#{$hover}#{$background}: #666666;
-  #{$theme}#{$button}#{$hover}#{$border}: 1px solid #666666;
+  #{$theme}#{$button}#{$hover}#{$border}: 0px solid #666666;
   #{$theme}#{$button}#{$hover}#{$radius}: 0.25rem;
   #{$theme}#{$button}#{$hover}#{$transition}: all 50ms ease-in-out;
   // active
   #{$theme}#{$button}#{$active}#{$color}: #000000;
   #{$theme}#{$button}#{$active}#{$background}bg: #666666;
-  #{$theme}#{$button}#{$active}#{$border}: 1px solid #666666;
+  #{$theme}#{$button}#{$active}#{$border}: 0px solid #666666;
   #{$theme}#{$button}#{$active}#{$radius}: 0.25rem;
 
   // header
@@ -315,7 +315,7 @@
   // button
   #{$theme}#{$button}#{$color}: #ffffff;
   #{$theme}#{$button}#{$background}: #666666;
-  #{$theme}#{$button}#{$border}: 1px solid #666666;
+  #{$theme}#{$button}#{$border}: 0px solid #666666;
   #{$theme}#{$button}#{$font}#{$family}: Inter;
   #{$theme}#{$button}#{$font}#{$size}: 0.9rem;
   #{$theme}#{$button}#{$font}#{$weight}: 400;
@@ -324,13 +324,13 @@
   // hover
   #{$theme}#{$button}#{$hover}#{$color}: #ffffff;
   #{$theme}#{$button}#{$hover}#{$background}: #777777;
-  #{$theme}#{$button}#{$hover}#{$border}: 1px solid #777777;
+  #{$theme}#{$button}#{$hover}#{$border}: 0px solid #777777;
   #{$theme}#{$button}#{$hover}#{$radius}: 0.25rem;
   #{$theme}#{$button}#{$hover}#{$transition}: all 50ms ease-in-out;
   // active
   #{$theme}#{$button}#{$active}#{$color}: #000000;
   #{$theme}#{$button}#{$active}#{$background}: #777777;
-  #{$theme}#{$button}#{$active}#{$border}: 1px solid #777777;
+  #{$theme}#{$button}#{$active}#{$border}: 0px solid #777777;
   #{$theme}#{$button}#{$active}#{$radius}: 0.25rem;
 
   // header

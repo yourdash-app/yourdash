@@ -4,9 +4,9 @@
  */
 
 import toAuthImgUrl from "@yourdash/csi/toAuthImgUrl.ts";
-import Card from "@yourdash/uikit/src/components/card/card";
-import Image from "@yourdash/uikit/src/components/image/image.js";
-import Text from "@yourdash/uikit/src/components/text/text";
+import Card from "@yourdash/uikit/components/card/card";
+import Image from "@yourdash/uikit/components/image/image.js";
+import Text from "@yourdash/uikit/components/text/text";
 import { FC, useState } from "react";
 import styles from "./viewImage.module.scss";
 import PanAndZoom from "@yourdash/uikit/src/views/panAndZoom/panAndZoom";

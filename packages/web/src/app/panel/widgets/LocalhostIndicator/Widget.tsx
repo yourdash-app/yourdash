@@ -4,8 +4,8 @@
  */
 
 import clippy from "@yourdash/shared/web/helpers/clippy.ts";
+import { UKC } from "@yourdash/uikit";
 import React from "react";
-import Text from "@yourdash/uikit/src/components/text/text.tsx";
 
 const LocalhostIndicator: React.FC<{
   side: "top" | "right" | "bottom" | "left";
@@ -24,7 +24,7 @@ const LocalhostIndicator: React.FC<{
         side === "right" && "mt-auto",
       )}
     >
-      <Text
+      <UKC.Text
         text={"</>"}
         className={"text-pink-300"}
       />

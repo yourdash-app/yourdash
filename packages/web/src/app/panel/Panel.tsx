@@ -4,11 +4,11 @@
  */
 
 import clippy from "@yourdash/shared/web/helpers/clippy.ts";
-import Box from "@yourdash/uikit/src/components/box/box.tsx";
 import styles from "./Panel.module.scss";
 import React, { memo, useEffect, useState } from "react";
 import loadable from "@loadable/component";
 import coreCSI from "@yourdash/csi/coreCSI.ts";
+import { UKC } from "@yourdash/uikit";
 
 const Panel: React.FC<{
   side: "top" | "right" | "bottom" | "left";
@@ -20,6 +20,7 @@ const Panel: React.FC<{
     "Separator",
     "QuickShortcuts",
     "LocalhostIndicator",
+    "UserProfile",
   ]);
   const [panelSize, setPanelSize] = useState<"small" | "medium" | "large" | undefined>(undefined);
   const [num, setNum] = useState<number>(0);
@@ -39,7 +40,7 @@ const Panel: React.FC<{
   }
 
   return (
-    <Box
+    <UKC.Box
       className={clippy(
         styles.panel,
         side === "top" && styles.top,
@@ -61,7 +62,7 @@ const Panel: React.FC<{
           />
         );
       })}
-    </Box>
+    </UKC.Box>
   );
 };
 

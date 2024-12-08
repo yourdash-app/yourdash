@@ -3,12 +3,10 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import Card from "@yourdash/uikit/src/components/card/card.tsx";
-import Heading from "@yourdash/uikit/src/components/heading/heading.tsx";
-import Text from "@yourdash/uikit/src/components/text/text.tsx";
 import React from "react";
 import { useRouteError } from "react-router-dom";
 import styles from "./ErrorElement.module.scss";
+import { UKC } from "@yourdash/uikit";
 
 const ErrorElement: React.FC = () => {
   // @ts-ignore
@@ -16,19 +14,19 @@ const ErrorElement: React.FC = () => {
 
   return (
     <div className={styles.page}>
-      <Card containerClassName={styles.error}>
-        <Heading
+      <UKC.Card containerClassName={styles.error}>
+        <UKC.Heading
           level={1}
           text={"An error has occurred"}
         />
         {error.message && (
-          <Heading
+          <UKC.Heading
             level={3}
             text={error.message}
           />
         )}
-        {error.stack && <Text text={error.stack} />}
-      </Card>
+        {error.stack && <UKC.Text text={error.stack} />}
+      </UKC.Card>
     </div>
   );
 };

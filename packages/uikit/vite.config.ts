@@ -23,7 +23,6 @@ export default defineConfig({
       },
     },
   },
-  publicDir: "./src/theme/",
   resolve: {
     alias: {
       "~": resolve(__dirname, "./src/"),
@@ -34,9 +33,9 @@ export default defineConfig({
       entry: resolve(__dirname, "src/uikit.ts"),
       formats: ["es"],
     },
-    copyPublicDir: true,
+    copyPublicDir: false,
     rollupOptions: {
-      external: ["react", "react/jsx-runtime"],
+      external: ["react", "react/jsx-runtime", "react-router", "react-router-dom"],
       input: Object.fromEntries(
         glob
           .sync("src/**/*.{ts,tsx}", {

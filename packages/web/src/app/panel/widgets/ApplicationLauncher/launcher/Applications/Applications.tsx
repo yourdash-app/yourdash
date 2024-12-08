@@ -4,8 +4,6 @@
  */
 
 import clippy from "@yourdash/shared/web/helpers/clippy.ts";
-import { UKIcon } from "packages/uikit/src/core/iconDictionary.ts";
-import TextInput from "@yourdash/uikit/src/components/textInput/textInput.tsx";
 import React, { useEffect } from "react";
 import IPanelApplicationsLauncherFrontendModule from "@yourdash/shared/core/panel/applicationsLauncher/application.ts";
 import LargeApplicationGrid from "./LargeGrid/LargeApplicationGrid.tsx";
@@ -13,6 +11,7 @@ import styles from "./Applications.module.scss";
 import { useNavigate } from "react-router";
 import SmallApplicationGrid from "./SmallGrid/SmallApplicationGrid.tsx";
 import ApplicationList from "./List/ApplicationList.tsx";
+import UK, { UKC } from "@yourdash/uikit";
 
 let filteredApplications: IPanelApplicationsLauncherFrontendModule[] = [];
 
@@ -42,7 +41,7 @@ const ApplicationsLauncherApplications: React.FC<{
 
   return (
     <>
-      <TextInput
+      <UKC.TextInput
         accessibleName={"Search Applications"}
         placeholder={"Search Applications"}
         className={clippy(styles.searchBar, "top-0 sticky z-10")}
@@ -52,7 +51,7 @@ const ApplicationsLauncherApplications: React.FC<{
           }
         }}
         getLiveValue={setSearchQuery}
-        icon={UKIcon.Search}
+        icon={UK.Core.Icons.Search}
       />
 
       {layout === "large-grid" && <LargeApplicationGrid modules={applications} />}

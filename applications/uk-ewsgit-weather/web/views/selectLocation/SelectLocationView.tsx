@@ -4,8 +4,8 @@
  */
 
 import clippy from "@yourdash/shared/web/helpers/clippy";
-import Card from "@yourdash/uikit/src/components/card/card";
-import TextInput from "@yourdash/uikit/src/components/textInput/textInput";
+import Card from "@yourdash/uikit/components/card/card";
+import TextInput from "@yourdash/uikit/components/textInput/textInput";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import coreCSI from "@yourdash/csi/coreCSI";

@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import TextInput from "@yourdash/uikit/src/components/textInput/textInput";
+import TextInput from "@yourdash/uikit/components/textInput/textInput";
 import React from "react";
 import ISetting from "../../../shared/types/setting";
 import SETTING_TYPE from "../../../shared/types/settingType";

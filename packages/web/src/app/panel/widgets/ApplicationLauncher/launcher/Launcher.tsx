@@ -5,15 +5,12 @@
 
 import useResource from "@yourdash/csi/useResource.ts";
 import clippy from "@yourdash/shared/web/helpers/clippy.ts";
-import { UKIcon } from "packages/uikit/src/core/iconDictionary.ts";
-import IconButton from "@yourdash/uikit/src/components/iconButton/iconButton.tsx";
-import Box from "@yourdash/uikit/src/components/box/box.tsx";
 import { useNavigate } from "react-router-dom";
 import styles from "./Launcher.module.scss";
 import React, { memo } from "react";
 import ApplicationsLauncherApplications from "./Applications/Applications.tsx";
-import IPanelApplicationsLauncherFrontendModule from "@yourdash/shared/core/panel/applicationsLauncher/application.ts";
 import coreCSI from "@yourdash/csi/coreCSI.ts";
+import UK, { UKC } from "@yourdash/uikit";
 
 const ApplicationLauncher: React.FC<{
   side: "top" | "right" | "bottom" | "left";
@@ -35,27 +32,27 @@ const ApplicationLauncher: React.FC<{
         !visible && styles.invisible,
       )}
     >
-      <Box className={styles.content}>
+      <UKC.Box className={styles.content}>
         <ApplicationsLauncherApplications
           // @ts-ignore
           apps={apps || []}
           layout={layout}
         />
-      </Box>
-      <Box className={styles.footer}>
-        <IconButton
+      </UKC.Box>
+      <UKC.Box className={styles.footer}>
+        <UKC.IconButton
           accessibleLabel={"Logout"}
           className={styles.logoutButton}
-          icon={UKIcon.Logout}
+          icon={UK.Core.Icons.Logout}
           onClick={() => {
             coreCSI.logout();
             navigate("/login");
           }}
         />
         <div>
-          <IconButton
+          <UKC.IconButton
             accessibleLabel={"Profile"}
-            icon={UKIcon.Person}
+            icon={UK.Core.Icons.Person}
             aria-label={"User Profile Settings"}
             onClick={() => {
               navigate(`/instance-profiles/me`);
@@ -63,29 +60,29 @@ const ApplicationLauncher: React.FC<{
           />
         </div>
         <span>{coreCSI.userDB.get<{ first: string; last: string }>("user:name")?.first || "Unknown First Name"}</span>
-        <IconButton
+        <UKC.IconButton
           accessibleLabel={"Filter small grid"}
           className={"ml-auto"}
-          icon={UKIcon.Filter}
+          icon={UK.Core.Icons.Filter}
           onClick={() => {
             setLayout("small-grid");
           }}
         />
-        <IconButton
+        <UKC.IconButton
           accessibleLabel={"Filter large grid"}
-          icon={UKIcon.Filter}
+          icon={UK.Core.Icons.Filter}
           onClick={() => {
             setLayout("large-grid");
           }}
         />
-        <IconButton
+        <UKC.IconButton
           accessibleLabel={"Filter list"}
-          icon={UKIcon.Filter}
+          icon={UK.Core.Icons.Filter}
           onClick={() => {
             setLayout("list");
           }}
         />
-      </Box>
+      </UKC.Box>
     </div>
   );
 };

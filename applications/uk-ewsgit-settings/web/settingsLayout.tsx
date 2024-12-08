@@ -3,62 +3,61 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import Button from "@yourdash/uikit/src/components/button/button";
-import Heading from "@yourdash/uikit/src/components/heading/heading";
-import Separator from "@yourdash/uikit/src/components/separator/separator";
-import Sidebar from "@yourdash/uikit/src/views/sidebar/sidebar.tsx";
-import SidebarContainer from "@yourdash/uikit/src/views/sidebar/sidebarContainer.tsx";
 import * as React from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { modulePath } from "./meta.yourdash";
+import { UKC, UKV } from "@yourdash/uikit";
+import styles from "./settingsLayout.module.scss";
 
 const SettingsLayout: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <SidebarContainer showSidebarByDefault>
-      <Sidebar>
-        <Heading
-          level={2}
+    <UKV.SidebarContainer showSidebarByDefault>
+      <UKV.Sidebar>
+        <UKC.Heading
+          className={styles.alignLeft}
+          level={3}
           text={"Settings"}
         />
-        <Separator direction={"column"} />
-        <Button
+        <UKC.Separator direction={"column"} />
+        <UKC.Button
           text={"Home"}
           onClick={() => navigate(`${modulePath}/`)}
         />
-        <Button
+        <UKC.Button
           text={"Personalisation"}
           onClick={() => navigate(`${modulePath}/personalization`)}
         />
-        <Button
+        <UKC.Button
           text={"Login Sessions"}
           onClick={() => navigate(`${modulePath}/session`)}
         />
-        <Button
+        <UKC.Button
           text={"Administrator Tools"}
           onClick={() => navigate(`${modulePath}/admin`)}
         />
-        <Button
+        <UKC.Button
           text={"Developer Tools"}
           onClick={() => navigate(`${modulePath}/developer`)}
         />
-        <Separator direction={"column"} />
-        <Heading
+        <UKC.Separator direction={"column"} />
+        <UKC.Heading
+          className={styles.alignLeft}
           text={"Dev"}
           level={4}
         />
-        <Button
+        <UKC.Button
           text={"Test Category"}
           onClick={() => navigate(`${modulePath}/cat/test`)}
         />
-        <Button
+        <UKC.Button
           text={"Test Solo Setting"}
           onClick={() => navigate(`${modulePath}/cat/test/test-setting`)}
         />
-      </Sidebar>
+      </UKV.Sidebar>
       <Outlet />
-    </SidebarContainer>
+    </UKV.SidebarContainer>
   );
 };
 

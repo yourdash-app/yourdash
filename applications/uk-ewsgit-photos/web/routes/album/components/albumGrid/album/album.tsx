@@ -4,8 +4,8 @@
  */
 
 import coreCSI from "@yourdash/csi/coreCSI";
-import Card from "@yourdash/uikit/src/components/card/card.js";
-import Text from "@yourdash/uikit/src/components/text/text.js";
+import Card from "@yourdash/uikit/components/card/card.js";
+import Text from "@yourdash/uikit/components/text/text.js";
 import { FC } from "react";
 import path from "path-browserify";
 import { useNavigate } from "react-router-dom";

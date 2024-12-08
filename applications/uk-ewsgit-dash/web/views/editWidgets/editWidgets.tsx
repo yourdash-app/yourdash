@@ -3,14 +3,14 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import Button from "@yourdash/uikit/src/components/button/button.tsx";
-import Heading from "@yourdash/uikit/src/components/heading/heading.tsx";
+import { UKC } from "@yourdash/uikit";
+import React from "react";
 
 const EditWidgets: React.FC = () => {
   return (
     <div>
-      <Heading text="Edit widgets" />
-      <Button
+      <UKC.Heading text="Edit widgets" />
+      <UKC.Button
         text="Edit"
         onClick={() => {
           console.log("Edit widgets dialog");

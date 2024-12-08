@@ -3,22 +3,22 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import Heading from "@yourdash/uikit/src/components/heading/heading.tsx";
 import styles from "./index.module.scss";
 import Panel from "./components/panel/panel.tsx";
 import { FC } from "react";
+import { UKC } from "@yourdash/uikit";
 
 const LoginInstancePage: FC = () => {
   return (
     <div className={styles.page}>
       <Panel />
       <div className={styles.info}>
-        <Heading
+        <UKC.Heading
           className={styles.title}
           level={1}
           text={"Welcome to YourDash!"}
         />
-        <Heading
+        <UKC.Heading
           className={styles.subtitle}
           level={2}
           text={"The following are the steps required to get started"}

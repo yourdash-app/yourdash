@@ -3,9 +3,9 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import Heading from "@yourdash/uikit/src/components/heading/heading.tsx";
-import Image from "@yourdash/uikit/src/components/image/image.tsx";
-import Text from "@yourdash/uikit/src/components/text/text.tsx";
+import Heading from "@yourdash/uikit/components/heading/heading.tsx";
+import Image from "@yourdash/uikit/components/image/image.tsx";
+import Text from "@yourdash/uikit/components/text/text.tsx";
 import styles from "./promotedApplication.module.scss";
 import { EndpointStoreHomePromotedApplications } from "../../../../../shared/types/endpoints/home/promotedApplications.ts";
 

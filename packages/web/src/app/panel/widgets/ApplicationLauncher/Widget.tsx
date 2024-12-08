@@ -3,13 +3,11 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import Icon from "@yourdash/uikit/src/components/icon/icon.tsx";
-import { UKIcon } from "packages/uikit/src/core/iconDictionary.ts";
-import DecrementLevel from "@yourdash/uikit/src/core/decrementLevel.tsx";
 import React, { useEffect } from "react";
 import styles from "./Widget.module.scss";
 import ApplicationLauncher from "./launcher/Launcher.tsx";
 import { useLocation } from "react-router";
+import UK, { UKC } from "@yourdash/uikit";
 
 const ApplicationLauncherWidget: React.FC<{ side: "top" | "right" | "bottom" | "left" }> = ({ side }) => {
   const [launcherVisible, setLauncherVisible] = React.useState<boolean>(false);
@@ -20,15 +18,15 @@ const ApplicationLauncherWidget: React.FC<{ side: "top" | "right" | "bottom" | "
   }, [location]);
 
   return (
-    <DecrementLevel>
+    <UK.Core.DecrementLevel>
       <div className={styles.widgetContainer}>
         <button
           aria-label={"Application Launcher"}
           className={styles.launcherButton}
           onClick={() => setLauncherVisible(!launcherVisible)}
         >
-          <Icon
-            icon={UKIcon.AppLauncher}
+          <UKC.Icon
+            icon={UK.Core.Icons.AppLauncher}
             className={styles.launcherButtonIcon}
           />
         </button>
@@ -37,7 +35,7 @@ const ApplicationLauncherWidget: React.FC<{ side: "top" | "right" | "bottom" | "
           visible={launcherVisible}
         />
       </div>
-    </DecrementLevel>
+    </UK.Core.DecrementLevel>
   );
 };
 

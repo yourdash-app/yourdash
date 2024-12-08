@@ -6,14 +6,12 @@
 import toAuthImgUrl from "@yourdash/csi/toAuthImgUrl.ts";
 import useResource from "@yourdash/csi/useResource.ts";
 import clippy from "@yourdash/shared/web/helpers/clippy.ts";
-import Image from "@yourdash/uikit/src/components/image/image.tsx";
-import IncrementLevel from "@yourdash/uikit/src/core/incrementLevel.tsx";
-import { useLevelClass } from "@yourdash/uikit/src/core/level.tsx";
 import { useNavigate } from "react-router-dom";
 import coreCSI from "@yourdash/csi/coreCSI.ts";
 import styles from "./Widget.module.scss";
 import React from "react";
 import { EndpointCorePanelQuickShortcuts } from "@yourdash/shared/endpoints/core/panel/quickShortcuts.ts";
+import UK, { UKC } from "@yourdash/uikit";
 
 const QuickShortcuts: React.FC<{ side: "top" | "right" | "bottom" | "left" }> = ({ side }) => {
   const navigate = useNavigate();
@@ -32,7 +30,7 @@ const QuickShortcuts: React.FC<{ side: "top" | "right" | "bottom" | "left" }> = 
         if (!module) return <>Invalid Module</>;
 
         return (
-          <IncrementLevel key={module.name}>
+          <UK.Core.IncrementLevel key={module.name}>
             <div
               key={module.name}
               onClick={() => {
@@ -44,17 +42,17 @@ const QuickShortcuts: React.FC<{ side: "top" | "right" | "bottom" | "left" }> = 
                 side === "right" && styles.right,
                 side === "bottom" && styles.bottom,
                 side === "left" && styles.left,
-                useLevelClass(1),
+                UK.Core.useLevelClass(1),
               )}
             >
-              <Image
+              <UKC.Image
                 className={styles.applicationIcon}
                 src={toAuthImgUrl(module.icon)}
                 accessibleLabel={module.name}
               />
               <span className={styles.applicationLabel}>{module.name}</span>
             </div>
-          </IncrementLevel>
+          </UK.Core.IncrementLevel>
         );
       })}
     </>

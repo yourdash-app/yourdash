@@ -5,22 +5,22 @@
 
 import coreCSI from "@yourdash/csi/coreCSI.ts";
 import { LoginLayout } from "@yourdash/shared/core/login/loginLayout.ts";
-import Spinner from "@yourdash/uikit/src/components/spinner/spinner.tsx";
 import useResource from "@yourdash/csi/useResource.ts";
 import IndexCardsPage from "./index.cards.tsx";
 import styles from "./index.module.scss";
 import { FC, Suspense } from "react";
+import { UKC } from "@yourdash/uikit";
 
 const LoginIndexPage: FC = () => {
   const instanceMetadata = useResource(() =>
-    coreCSI.getJson<{ title: string; message?: string; loginLayout: LoginLayout }>("/login/instance/metadata"),
+    coreCSI.getJson("/login/instance/metadata"),
   );
 
   return (
     <Suspense
       fallback={
         <div className={styles.spinner}>
-          <Spinner />
+          <UKC.Spinner />
         </div>
       }
     >

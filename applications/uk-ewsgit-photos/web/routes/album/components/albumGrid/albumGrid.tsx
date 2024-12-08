@@ -3,8 +3,8 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import Separator from "@yourdash/uikit/src/components/separator/separator.js";
-import Spinner from "@yourdash/uikit/src/components/spinner/spinner";
+import Separator from "@yourdash/uikit/components/separator/separator.js";
+import Spinner from "@yourdash/uikit/components/spinner/spinner";
 import { FC, useEffect, useRef, useState } from "react";
 import { MediaAlbumLargeGridItem } from "../../../../../shared/types/endpoints/media/album/large-grid";
 import { EndpointMediaAlbumSubAlbums } from "../../../../../shared/types/endpoints/media/album/subAlbums";

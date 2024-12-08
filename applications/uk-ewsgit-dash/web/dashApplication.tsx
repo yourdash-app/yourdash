@@ -5,18 +5,13 @@
 
 import coreCSI from "@yourdash/csi/coreCSI";
 import useResource from "@yourdash/csi/useResource";
-import ButtonWithIcon from "@yourdash/uikit/src/components/buttonWithIcon/buttonWithIcon";
-import Flex from "@yourdash/uikit/src/components/flex/flex";
-import Heading from "@yourdash/uikit/src/components/heading/heading";
-import { UKIcon } from "packages/uikit/src/core/iconDictionary.ts";
 import React, { useState } from "react";
 import styles from "./dashApplication.module.scss";
-import { IWidgetGrid } from "../shared/types/widgetGrid";
 import loadable from "@loadable/component";
 import { acsi } from "./meta.yourdash";
-import Button from "@yourdash/uikit/src/components/button/button";
 import clippy from "@yourdash/shared/web/helpers/clippy";
 import EditWidgets from "./views/editWidgets/editWidgets.tsx";
+import UK, { UKC } from "@yourdash/uikit";
 
 const DashApplication: React.FC = () => {
   const { pageCount } = useResource(() => acsi.getJson("/widget/pages")) || {
@@ -31,41 +26,41 @@ const DashApplication: React.FC = () => {
 
   return (
     <div className={styles.page}>
-      <Flex
+      <UKC.Flex
         className={clippy(styles.header, tallHeader && styles.tallHeader, isWidgetEditMode && styles.headerEditMode)}
         direction={"row"}
       >
-        <Heading
+        <UKC.Heading
           text={`Hiya, ${coreCSI.userDB.get<{ first: string; last: string }>("user:name")?.first}`}
           level={1}
         />
         {isWidgetEditMode && (
           <>
-            <Flex
+            <UKC.Flex
               direction="row"
               className={styles.headerActions}
             >
               {tallHeader ? (
-                <ButtonWithIcon
+                <UKC.ButtonWithIcon
                   text="Use small header"
-                  icon={UKIcon.SidebarCollapse}
+                  icon={UK.Core.Icons.SidebarCollapse}
                   onClick={() => {
                     setTallHeader(false);
                   }}
                 />
               ) : (
-                <ButtonWithIcon
+                <UKC.ButtonWithIcon
                   text="Use tall header"
-                  icon={UKIcon.SidebarExpand}
+                  icon={UK.Core.Icons.SidebarExpand}
                   onClick={() => {
                     setTallHeader(true);
                   }}
                 />
               )}
-            </Flex>
+            </UKC.Flex>
           </>
         )}
-      </Flex>
+      </UKC.Flex>
       {isWidgetEditMode ? (
         <EditWidgets />
       ) : (
@@ -86,7 +81,7 @@ const DashApplication: React.FC = () => {
           })}
         </div>
       )}
-      <Flex
+      <UKC.Flex
         className={styles.footer}
         direction={"row"}
       >
@@ -106,9 +101,9 @@ const DashApplication: React.FC = () => {
         <div className={styles.actions}>
           {isWidgetEditMode ? (
             <>
-              <ButtonWithIcon
+              <UKC.ButtonWithIcon
                 text={"Confirm edits"}
-                icon={UKIcon.Check}
+                icon={UK.Core.Icons.Check}
                 onClick={() => {
                   setIsWidgetEditMode(false);
                 }}
@@ -116,9 +111,9 @@ const DashApplication: React.FC = () => {
             </>
           ) : (
             <>
-              <ButtonWithIcon
+              <UKC.ButtonWithIcon
                 text={"Edit"}
-                icon={UKIcon.Pencil}
+                icon={UK.Core.Icons.Pencil}
                 onClick={() => {
                   setIsWidgetEditMode(true);
                 }}
@@ -126,7 +121,7 @@ const DashApplication: React.FC = () => {
             </>
           )}
         </div>
-      </Flex>
+      </UKC.Flex>
     </div>
   );
 };

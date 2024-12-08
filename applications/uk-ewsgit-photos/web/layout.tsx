@@ -4,7 +4,7 @@
  */
 
 import { UKIcon } from "packages/uikit/src/core/iconDictionary.ts";
-import IconButton from "@yourdash/uikit/src/components/iconButton/iconButton.js";
+import IconButton from "@yourdash/uikit/components/iconButton/iconButton.js";
 import NavImage from "@yourdash/uikit/src/views/navBar/components/navImage/navImage.tsx";
 import NavTitle from "@yourdash/uikit/src/views/navBar/components/navTitle/navTitle.tsx";
 import NavBar from "@yourdash/uikit/src/views/navBar/navBar.tsx";

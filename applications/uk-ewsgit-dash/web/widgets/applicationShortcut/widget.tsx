@@ -4,9 +4,9 @@
  */
 
 import toAuthImgUrl from "@yourdash/csi/toAuthImgUrl.ts";
-import Card from "@yourdash/uikit/src/components/card/card";
-import Image from "@yourdash/uikit/src/components/image/image";
-import Text from "@yourdash/uikit/src/components/text/text";
+import Card from "@yourdash/uikit/components/card/card";
+import Image from "@yourdash/uikit/components/image/image";
+import Text from "@yourdash/uikit/components/text/text";
 import React from "react";
 import { IApplicationShortcutWidget } from "../../../shared/types/widgets/applicationShortcut";
 import styles from "./widget.module.scss";

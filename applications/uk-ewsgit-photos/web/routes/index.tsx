@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import Separator from "@yourdash/uikit/src/components/separator/separator.tsx";
+import Separator from "@yourdash/uikit/components/separator/separator.tsx";
 import { FC } from "react";
 import AlbumMediaGrid from "../components/AlbumMediaGrid/AlbumMediaGrid";
 import SubAlbums from "../components/SubAlbums/SubAlbums";

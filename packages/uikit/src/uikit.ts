@@ -4,7 +4,9 @@
  */
 
 export * as Components from "./components/index.ts";
+export * as UKC from "./components/index.ts";
 export * as Views from "./views/index.ts";
+export * as UKV from "./views/index.ts";
 export * as Core from "./core/index.ts";
 export * as UtilityComponent from "./utilityComponent/index.ts";
 
