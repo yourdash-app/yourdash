@@ -3,6 +3,8 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
+@use "@yourdash/uikit/src/theme/themeValues" as *;
+
 .component {
   position: relative;
   display: flex;
@@ -10,7 +12,27 @@
   justify-content: center;
 
   .label {
-    transition: var(--transition);
+    position: absolute;
+    padding: 0.25rem 0.75rem;
+    user-select: none;
+    transition: var(#{$theme+$transition});
+    opacity: 0;
+    border: var(#{$theme+$border});
+    border-radius: var(#{$theme+$radius});
+    background: var(#{$theme+$background});
+    color: var(#{$theme+$color});
+    pointer-events: none;
+    left: calc(var(--app-panel-size));
+    width: max-content;
   }
 
+  &:hover {
+    cursor: pointer;
+
+    .label {
+      transition: var(--transition-fast);
+      pointer-events: all;
+      opacity: 1;
+    }
+  }
 }
