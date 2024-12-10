@@ -4,12 +4,12 @@
  */
 
 import toAuthImgUrl from "@yourdash/csi/toAuthImgUrl.ts";
-import Card from "@yourdash/uikit/components/card/card";
 import Image from "@yourdash/uikit/components/image/image.js";
-import Text from "@yourdash/uikit/components/text/text";
+import { Card } from "@yourdash/uikit/components/index";
+import { PanAndZoom } from "@yourdash/uikit/views/index";
 import { FC, useState } from "react";
 import styles from "./viewImage.module.scss";
-import PanAndZoom from "@yourdash/uikit/src/views/panAndZoom/panAndZoom";
+import { UKC } from "@yourdash/uikit";
 
 const ViewImage: FC<{ mediaUrl: string }> = ({ mediaUrl }) => {
   const [scale, setScale] = useState(1);
@@ -23,7 +23,7 @@ const ViewImage: FC<{ mediaUrl: string }> = ({ mediaUrl }) => {
           accessibleLabel={""}
         />
         <Card className={styles.scale}>
-          <Text text={`${scale * 100}% scale`} />
+          <UKC.Text text={`${scale * 100}% scale`} />
         </Card>
       </PanAndZoom>
     </>

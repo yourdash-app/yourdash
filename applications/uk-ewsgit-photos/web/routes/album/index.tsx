@@ -3,11 +3,11 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import UK from "@yourdash/uikit";
 import Heading from "@yourdash/uikit/components/heading/heading.js";
-import { UKIcon } from "packages/uikit/src/core/iconDictionary.ts";
 import IconButton from "@yourdash/uikit/components/iconButton/iconButton.js";
 import { FC } from "react";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import path from "path-browserify";
 import AlbumMediaGrid from "../../components/AlbumMediaGrid/AlbumMediaGrid";
 import SubAlbums from "../../components/SubAlbums/SubAlbums";
@@ -23,7 +23,7 @@ const AlbumPathPage: FC = () => {
       <div className={styles.header}>
         <IconButton
           accessibleLabel={"Go back"}
-          icon={UKIcon.ChevronLeft}
+          icon={UK.Core.Icons.ChevronLeft}
           onClick={() => {
             if (!albumPath) return;
 

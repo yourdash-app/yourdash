@@ -1,14 +1,9 @@
+import { Button } from "@yourdash/uikit/components/index";
+import { NavBar, NavImage, NavTitle, Sidebar, SidebarContainer, SidebarToggleButton } from "@yourdash/uikit/views/index";
 import React from "react";
 import { Outlet } from "react-router-dom";
-import SidebarContainer from "@yourdash/uikit/src/views/sidebar/sidebarContainer.tsx";
-import Sidebar from "@yourdash/uikit/src/views/sidebar/sidebar.tsx";
-import Button from "@yourdash/uikit/components/button/button";
 import { useNavigateTo } from "../meta.yourdash";
-import NavBar from "@yourdash/uikit/src/views/navBar/navBar";
 import STORE_ICON from "../../icon.avif";
-import NavImage from "@yourdash/uikit/src/views/navBar/components/navImage/navImage";
-import NavTitle from "@yourdash/uikit/src/views/navBar/components/navTitle/navTitle";
-import SidebarToggleButton from "@yourdash/uikit/src/views/sidebar/sidebarToggleButton.tsx";
 import styles from "./layout.module.scss";
 
 const ApplicationLayout: React.FC = () => {

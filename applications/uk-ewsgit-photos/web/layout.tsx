@@ -3,11 +3,9 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { UKIcon } from "packages/uikit/src/core/iconDictionary.ts";
+import UK from "@yourdash/uikit";
 import IconButton from "@yourdash/uikit/components/iconButton/iconButton.js";
-import NavImage from "@yourdash/uikit/src/views/navBar/components/navImage/navImage.tsx";
-import NavTitle from "@yourdash/uikit/src/views/navBar/components/navTitle/navTitle.tsx";
-import NavBar from "@yourdash/uikit/src/views/navBar/navBar.tsx";
+import { NavBar, NavImage, NavTitle } from "@yourdash/uikit/views/index";
 import { FC } from "react";
 import { Outlet } from "react-router";
 import PHOTOS_LOGO from "../icon.avif";
@@ -31,21 +29,21 @@ const Layout: FC = () => {
             <>
               <IconButton
                 accessibleLabel={"Home"}
-                icon={UKIcon.Home}
+                icon={UK.Core.Icons.Home}
                 onClick={() => {
                   navigateTo(`/`);
                 }}
               />
               <IconButton
                 accessibleLabel={"Search"}
-                icon={UKIcon.Search}
+                icon={UK.Core.Icons.Search}
                 onClick={() => {
                   navigateTo(`/search/`);
                 }}
               />
               <IconButton
                 accessibleLabel={"Profile"}
-                icon={UKIcon.Person}
+                icon={UK.Core.Icons.Person}
                 onClick={() => {
                   navigateTo(`/profile/`);
                 }}

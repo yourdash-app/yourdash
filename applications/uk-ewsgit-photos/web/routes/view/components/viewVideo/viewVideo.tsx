@@ -4,12 +4,11 @@
  */
 
 import coreCSI from "@yourdash/csi/coreCSI";
-import { UKIcon } from "packages/uikit/src/core/iconDictionary.ts";
-import IconButton from "@yourdash/uikit/components/iconButton/iconButton";
-import ProgressBar from "@yourdash/uikit/components/progressBar/progressBar";
-import PanAndZoom from "@yourdash/uikit/src/views/panAndZoom/panAndZoom";
+import { IconButton, ProgressBar } from "@yourdash/uikit/components/index";
+import { PanAndZoom } from "@yourdash/uikit/views/index";
 import { FC, useRef, useState } from "react";
 import styles from "./viewVideo.module.scss";
+import UK from "@yourdash/uikit";
 
 const ViewVideo: FC<{ mediaUrl: string }> = ({ mediaUrl }) => {
   const ref = useRef<HTMLVideoElement>(null!);
@@ -50,21 +49,21 @@ const ViewVideo: FC<{ mediaUrl: string }> = ({ mediaUrl }) => {
             <div className={styles.controls}>
               <IconButton
                 accessibleLabel={"Rewind"}
-                icon={UKIcon.ArrowLeft}
+                icon={UK.Core.Icons.ArrowLeft}
                 onClick={() => {
                   ref.current.currentTime -= 2;
                 }}
               />
               <IconButton
                 accessibleLabel={"Play / Pause"}
-                icon={isPlaying ? UKIcon.Stop : UKIcon.Play}
+                icon={isPlaying ? UK.Core.Icons.Stop : UK.Core.Icons.Play}
                 onClick={() => {
                   isPlaying ? ref.current.pause() : ref.current.play();
                 }}
               />
               <IconButton
                 accessibleLabel={"Fast Forward"}
-                icon={UKIcon.ArrowRight}
+                icon={UK.Core.Icons.ArrowRight}
                 onClick={() => {
                   ref.current.currentTime += 2;
                 }}
@@ -72,7 +71,7 @@ const ViewVideo: FC<{ mediaUrl: string }> = ({ mediaUrl }) => {
               <ProgressBar value={currentTime / duration} />
               <IconButton
                 accessibleLabel={"Loop"}
-                icon={shouldLoop ? UKIcon.CrossReference : UKIcon.FeedMerged}
+                icon={shouldLoop ? UK.Core.Icons.CrossReference : UK.Core.Icons.FeedMerged}
                 onClick={() => {
                   setShouldLoop(!shouldLoop);
                 }}

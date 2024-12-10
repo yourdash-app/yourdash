@@ -138,9 +138,11 @@ export class ClientServerInteraction<
   async getJson<OpenApiEndpointPath extends keyof OpenApi>(
     endpoint: OpenApiEndpointPath,
     pathParams: OpenApi[OpenApiEndpointPath]["pathParams"] = {},
-    extraHeaders?: {
-      [key: string]: string;
-    },
+    extraHeaders?: Extract<OpenApiEndpointPath, `${string}*`> extends ""
+      ? { [key: string]: string; "*": string }
+      : {
+          [key: string]: string;
+        },
   ): Promise<OpenApi[OpenApiEndpointPath]["get"]["responses"][200]["content"]["application/json"]> {
     const instanceUrl = this.getInstanceUrl();
     const username = this.getUsername();

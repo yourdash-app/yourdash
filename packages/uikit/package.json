@@ -17,11 +17,14 @@
   "exports": {
     ".": "./dist/uikit.js",
     "./src/theme/*": "./src/theme/",
+    "./components/index": "./dist/components/index.js",
+    "./views/index": "./dist/views/index.js",
     "./components/*": "./dist/components/*",
     "./views/*": "./dist/views/*"
   },
   "scripts": {
-    "build": "bunx --bun vite build"
+    "build": "bunx --bun vite build",
+    "postinstall": "bun --bun run build"
   },
   "author": "Ewsgit <ewsgit@duck.com>",
   "peerDependencies": {

@@ -4,15 +4,10 @@
  */
 
 import clippy from "@yourdash/shared/web/helpers/clippy";
-import Box from "@yourdash/uikit/components/box/box.js";
-import ButtonWithIcon from "@yourdash/uikit/components/buttonWithIcon/buttonWithIcon";
-import Heading from "@yourdash/uikit/components/heading/heading.js";
-import { UKIcon } from "packages/uikit/src/core/iconDictionary.ts";
-import IconButton from "@yourdash/uikit/components/iconButton/iconButton";
-import PanAndZoom from "@yourdash/uikit/src/views/panAndZoom/panAndZoom.js";
 import useResource from "@yourdash/csi/useResource";
+import { ButtonWithIcon } from "@yourdash/uikit/components/index";
 import { FC } from "react";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import EndpointMediaRaw from "../../../shared/types/endpoints/media/album/raw.js";
 import { acsi } from "../../meta.yourdash.ts";
 import ViewVideo from "./components/viewVideo/viewVideo.js";
@@ -20,6 +15,7 @@ import styles from "./index.module.scss";
 import ViewImage from "./components/viewImage/viewImage.js";
 import { PHOTOS_MEDIA_TYPE } from "../../../shared/types/mediaType.js";
 import coreCSI from "@yourdash/csi/coreCSI";
+import UK from "@yourdash/uikit";
 
 const ViewPathPage: FC = () => {
   const mediaPath = useParams()["*"] || "/";
@@ -31,7 +27,7 @@ const ViewPathPage: FC = () => {
       <div className={styles.header}>
         <ButtonWithIcon
           text={"Go Back"}
-          icon={UKIcon.ChevronLeft}
+          icon={UK.Core.Icons.ChevronLeft}
           onClick={() => {
             navigate(-1);
           }}
@@ -39,7 +35,7 @@ const ViewPathPage: FC = () => {
         <div className={styles.spacer} />
         <ButtonWithIcon
           text={"Download"}
-          icon={UKIcon.Download}
+          icon={UK.Core.Icons.Download}
           onClick={() => {
             window.open(`${coreCSI.getInstanceUrl()}${media?.mediaUrl}`, "_blank");
           }}
