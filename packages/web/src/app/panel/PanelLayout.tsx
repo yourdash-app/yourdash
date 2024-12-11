@@ -90,6 +90,7 @@ const PanelLayout: React.FC<{
                 text={applicationDisplayName}
                 className={styles.applicationDisplayName}
               />
+              {controls}
             </div>
             <div
               key={1}

@@ -129,20 +129,12 @@ export class ClientServerInteraction<
     return sessionStorage.getItem("session_token") || "";
   }
 
-  setUserToken(token: string) {
-    sessionStorage.setItem("session_token", token);
-
-    return this;
-  }
-
   async getJson<OpenApiEndpointPath extends keyof OpenApi>(
-    endpoint: OpenApiEndpointPath,
-    pathParams: OpenApi[OpenApiEndpointPath]["pathParams"] = {},
-    extraHeaders?: Extract<OpenApiEndpointPath, `${string}*`> extends ""
-      ? { [key: string]: string; "*": string }
-      : {
-          [key: string]: string;
-        },
+    endpointTemplate: OpenApiEndpointPath,
+    endpoint: string,
+    extraHeaders?: {
+      [key: string]: string;
+    },
   ): Promise<OpenApi[OpenApiEndpointPath]["get"]["responses"][200]["content"]["application/json"]> {
     const instanceUrl = this.getInstanceUrl();
     const username = this.getUsername();
@@ -150,10 +142,6 @@ export class ClientServerInteraction<
     const sessionId = this.getSessionId();
 
     let endpointPathWithParams: string = endpoint as string;
-
-    for (const [key, value] of Object.entries(pathParams)) {
-      endpointPathWithParams = (<string>(<unknown>endpointPathWithParams)).replace(`:${key}`, <string>value);
-    }
 
     return new Promise<ResponseType>((resolve, reject) => {
       console.log(`${instanceUrl}${this._internal_baseRequestPath}${<string>endpoint}`);
@@ -196,6 +184,12 @@ export class ClientServerInteraction<
           reject(err);
         });
     });
+  }
+
+  setUserToken(token: string) {
+    sessionStorage.setItem("session_token", token);
+
+    return this;
   }
 
   syncGetJson<OpenApiEndpointPath extends keyof OpenApi>(

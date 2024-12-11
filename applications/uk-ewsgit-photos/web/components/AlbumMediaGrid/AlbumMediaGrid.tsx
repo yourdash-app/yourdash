@@ -4,7 +4,7 @@
  */
 
 import clippy from "@yourdash/shared/web/helpers/clippy";
-import InfiniteScroll from "@yourdash/uikit/src/views/infiniteScroll/infiniteScroll";
+import { InfiniteScroll } from "@yourdash/uikit/views/index";
 import React, { useEffect, useState } from "react";
 import EndpointAlbumMediaPath from "../../../shared/types/endpoints/album/media/path";
 import { acsi } from "../../meta.yourdash";
@@ -24,7 +24,7 @@ const AlbumMediaGrid: React.FC<{ path: string; scrollerClassName?: string }> = (
     <InfiniteScroll
       resetState={path}
       fetchNextPage={async (nextPageNumber) => {
-        const data = await acsi.getJson<EndpointAlbumMediaPath>(`/album/media/${nextPageNumber}/@` + path);
+        const data = await acsi.getJson(`/album/media/:page/@/` + path, { page: nextPageNumber });
 
         setAlbumMedia((previousAlbums) => [...previousAlbums, ...data.data]);
 

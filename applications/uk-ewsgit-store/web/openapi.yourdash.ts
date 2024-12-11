@@ -73,7 +73,7 @@ pathParams: {}},"/home/applicationCategories":{
                         description: string;
                         moduleCount: number;
                         applicationCount: number;
-                        backgroundImage: number;
+                        backgroundImage: string;
                     }[];
                 };
             };

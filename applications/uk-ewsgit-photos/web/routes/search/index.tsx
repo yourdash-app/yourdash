@@ -3,9 +3,9 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { UKIcon } from "packages/uikit/src/core/iconDictionary.ts";
-import TextInput from "@yourdash/uikit/components/textInput/textInput.js";
 import useResource from "@yourdash/csi/useResource";
+import UK from "@yourdash/uikit";
+import { TextInput } from "@yourdash/uikit/components/index";
 import React, { FC } from "react";
 import AlbumMediaGrid from "../../components/AlbumMediaGrid/AlbumMediaGrid";
 import SubAlbums from "../../components/SubAlbums/SubAlbums";
@@ -24,7 +24,7 @@ const SearchIndexPage: FC = () => {
         accessibleName={"Search Media"}
         getValue={setQuery}
         placeholder={"Search Media..."}
-        icon={UKIcon.Search}
+        icon={UK.Core.Icons.Search}
       />
       {searchResults && <SearchPageResults results={searchResults} />}
       <SubAlbums

@@ -3,15 +3,54 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import UK from "@yourdash/uikit";
+import { IconButton } from "@yourdash/uikit/components/index";
+import ApplicationPanelContext from "@yourdash/web/src/app/panel/ApplicationPanelContext.tsx";
 import { Routes, Route } from "react-router";
 import Layout from "./layout.js";
-import { FC } from "react";
+import { FC, useEffect } from "react";
+import { useNavigateTo } from "./meta.yourdash.ts";
 import AlbumPathPage from "./routes/album/index.js";
 import IndexPage from "./routes/index.js";
 import SearchIndexPage from "./routes/search/index.js";
 import ViewPathPage from "./routes/view/index";
+import React from "react";
+import PHOTOS_ICON from "./../icon.avif";
 
 const ApplicationRoutes: FC = () => {
+  const navigateTo = useNavigateTo();
+  const applicationPanelContext = React.useContext(ApplicationPanelContext);
+
+  useEffect(() => {
+    applicationPanelContext.setApplicationDisplayName("YourDash Photos");
+    applicationPanelContext.setApplicationIcon(PHOTOS_ICON);
+    applicationPanelContext.setOnBackButton(() => {});
+    applicationPanelContext.setShowBackButton(false);
+    applicationPanelContext.setControls([
+      <IconButton
+        accessibleLabel={"Home"}
+        icon={UK.Core.Icons.Home}
+        onClick={() => {
+          navigateTo(`/`);
+        }}
+      />,
+      <IconButton
+        accessibleLabel={"Search"}
+        icon={UK.Core.Icons.Search}
+        onClick={() => {
+          navigateTo(`/search/`);
+        }}
+      />,
+      <IconButton
+        accessibleLabel={"Profile"}
+        icon={UK.Core.Icons.Person}
+        onClick={() => {
+          navigateTo(`/profile/`);
+        }}
+      />,
+    ]);
+  }, []);
+
   return (
     <Routes>
       <Route element={<Layout />}>

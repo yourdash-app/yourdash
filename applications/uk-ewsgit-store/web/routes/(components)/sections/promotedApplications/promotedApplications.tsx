@@ -1,5 +1,4 @@
-import generateUUID from "@yourdash/shared/web/helpers/uuid";
-import Carousel from "@yourdash/uikit/src/views/carousel/carousel";
+import { Carousel } from "@yourdash/uikit/views/index";
 import React from "react";
 import useResource from "@yourdash/csi/useResource.js";
 import { acsi } from "../../../../meta.yourdash";
@@ -7,7 +6,7 @@ import { EndpointStoreHomePromotedApplications } from "../../../../../shared/typ
 import PromotedApplication from "./promotedApplication.tsx";
 
 const PromotedApplications: React.FC = () => {
-  const promotedApplications = useResource(() => acsi.getJson<EndpointStoreHomePromotedApplications>("/home/promotedApplications")) || [];
+  const promotedApplications = useResource(() => acsi.getJson("/home/promotedApplications")) || [];
 
   return (
     <Carousel

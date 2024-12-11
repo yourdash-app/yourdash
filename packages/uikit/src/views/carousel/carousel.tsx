@@ -37,7 +37,7 @@ const Carousel: React.FC<{
             return;
           }
         });
-      }, 25) as unknown as number;
+      }, 16) as unknown as number;
     };
 
     scrollElement.addEventListener("scroll", listener);

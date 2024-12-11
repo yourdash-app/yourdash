@@ -97,7 +97,7 @@ export default class StoreModule extends YourDashBackendModule {
           description: z.string(),
           moduleCount: z.number(),
           applicationCount: z.number(),
-          backgroundImage: z.number(),
+          backgroundImage: z.string(),
         })
         .array(),
       async (req, res) => {

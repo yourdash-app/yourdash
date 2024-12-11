@@ -5,16 +5,14 @@
 
 import Row from "@yourdash/chiplet/components/row/Row.tsx";
 import useResource from "@yourdash/csi/useResource.ts";
-import Card from "@yourdash/uikit/components/card/card.tsx";
-import Heading from "@yourdash/uikit/components/heading/heading.tsx";
-import Text from "@yourdash/uikit/components/text/text.tsx";
+import { Card, Heading } from "@yourdash/uikit/components/index";
 import React from "react";
-import EndpointHomeApplicationCategories from "../../../../../shared/types/endpoints/home/applicationCategories.ts";
 import { acsi } from "../../../../meta.yourdash.ts";
 import styles from "./applicationCategories.module.scss";
+import { UKC } from "@yourdash/uikit";
 
 const ApplicationCategories: React.FC = () => {
-  const categories = useResource(() => acsi.getJson<EndpointHomeApplicationCategories>("/home/applicationCategories")) || [];
+  const categories = useResource(() => acsi.getJson("/home/applicationCategories")) || [];
 
   return (
     <div className={styles.component}>
@@ -25,10 +23,10 @@ const ApplicationCategories: React.FC = () => {
             style={{ backgroundImage: cat.backgroundImage }}
           >
             <Heading text={cat.displayName} />
-            <Text text={cat.description} />
+            <UKC.Text text={cat.description} />
             <Row>
-              <Text text={cat.applicationCount.toString()} />
-              <Text text={cat.moduleCount.toString()} />
+              <UKC.Text text={cat.applicationCount.toString()} />
+              <UKC.Text text={cat.moduleCount.toString()} />
             </Row>
           </Card>
         );

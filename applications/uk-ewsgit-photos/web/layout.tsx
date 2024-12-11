@@ -13,44 +13,9 @@ import styles from "./layout.module.scss";
 import { useNavigateTo } from "./meta.yourdash";
 
 const Layout: FC = () => {
-  const navigateTo = useNavigateTo();
-
   return (
     <>
       <div className={styles.applicationFrame}>
-        <NavBar
-          leftSection={
-            <>
-              <NavImage src={PHOTOS_LOGO} />
-              <NavTitle title={"YourDash Photos"} />
-            </>
-          }
-          rightSection={
-            <>
-              <IconButton
-                accessibleLabel={"Home"}
-                icon={UK.Core.Icons.Home}
-                onClick={() => {
-                  navigateTo(`/`);
-                }}
-              />
-              <IconButton
-                accessibleLabel={"Search"}
-                icon={UK.Core.Icons.Search}
-                onClick={() => {
-                  navigateTo(`/search/`);
-                }}
-              />
-              <IconButton
-                accessibleLabel={"Profile"}
-                icon={UK.Core.Icons.Person}
-                onClick={() => {
-                  navigateTo(`/profile/`);
-                }}
-              />
-            </>
-          }
-        />
         <div className={styles.applicationView}>
           <Outlet />
         </div>

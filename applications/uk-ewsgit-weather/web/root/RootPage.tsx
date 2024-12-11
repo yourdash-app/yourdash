@@ -3,25 +3,12 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import Heading from "@yourdash/uikit/components/heading/heading.tsx";
-import TextInput from "@yourdash/uikit/components/textInput/textInput.tsx";
-import NavImage from "@yourdash/uikit/src/views/navBar/components/navImage/navImage.tsx";
-import NavTitle from "@yourdash/uikit/src/views/navBar/components/navTitle/navTitle.tsx";
-import NavBar from "@yourdash/uikit/src/views/navBar/navBar.tsx";
+import { Heading, TextInput } from "@yourdash/uikit/components/index";
 import React from "react";
-import APPLICATION_ICON from "./../../icon.avif";
 
 const RootPage: React.FC = () => {
   return (
     <>
-      <NavBar
-        leftSection={
-          <>
-            <NavImage src={APPLICATION_ICON} />
-            <NavTitle title={"YourDash Weather"} />
-          </>
-        }
-      />
       {/* Header */}
       <div>
         <Heading
@@ -37,7 +24,7 @@ const RootPage: React.FC = () => {
         level={2}
         text={"Popular locations"}
       />
-      <div></div>
+      <div>DIV HERE?</div>
     </>
   );
 };
