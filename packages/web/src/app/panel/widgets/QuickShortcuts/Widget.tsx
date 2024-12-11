@@ -16,7 +16,7 @@ const QuickShortcuts: React.FC<{ side: "top" | "right" | "bottom" | "left" }> = 
   const navigate = useNavigate();
 
   const [num, setNum] = React.useState<number>(0);
-  const modules = useResource(() => coreCSI.getJson("/core/panel/quick-shortcuts"), [num]) || [];
+  const modules = useResource(() => coreCSI.getJson("/core/panel/quick-shortcuts", "/core/panel/quick-shortcuts"), [num]) || [];
 
   // @ts-ignore
   window.__yourdashCorePanelQuickShortcutsReload = () => {

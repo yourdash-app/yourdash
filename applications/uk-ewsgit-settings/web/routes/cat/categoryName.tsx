@@ -17,7 +17,7 @@ import { acsi } from "../../meta.yourdash.ts";
 const CategoryNamePage: React.FC = () => {
   const { categoryName } = useParams();
 
-  const categoryData = useResource(() => acsi.getJson(`/cat/:categoryid`, { categoryid: categoryName || "" }), [categoryName]);
+  const categoryData = useResource(() => acsi.getJson(`/cat/:categoryid`, `/cat/${categoryName || ""}`), [categoryName]);
 
   return (
     <div>

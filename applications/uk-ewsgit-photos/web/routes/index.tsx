@@ -4,18 +4,39 @@
  */
 
 import { FC } from "react";
-import AlbumMediaGrid from "../components/AlbumMediaGrid/AlbumMediaGrid";
-import SubAlbums from "../components/SubAlbums/SubAlbums";
+import { PHOTOS_MEDIA_TYPE } from "../../shared/types/mediaType.ts";
+import PhotoGrid from "../components/PhotoGrid/PhotoGrid.tsx";
 import styles from "./index.module.scss";
-import { Separator } from "@yourdash/uikit/components/index";
+import { Heading, Separator } from "@yourdash/uikit/components/index";
+import YOURDASH_LOGO from "../../icon.avif";
 
 const IndexPage: FC = () => {
   return (
     <>
       <div className={styles.page}>
-        <SubAlbums path={"/photos"} />
+        <Heading
+          level={1}
+          text={"All Photos"}
+        />
         <Separator direction={"column"} />
-        <AlbumMediaGrid path={"/photos"} />
+        <PhotoGrid
+          items={Array(64)
+            .keys()
+            .toArray()
+            .map(() => {
+              return {
+                mediaType: PHOTOS_MEDIA_TYPE.Image,
+                imageSrc: YOURDASH_LOGO,
+                onClick: () => {
+                  return 0;
+                },
+                accessibleLabel: "Accessible Label",
+              };
+            })}
+          onFetchNewPage={() => {
+            return 0;
+          }}
+        />
       </div>
     </>
   );

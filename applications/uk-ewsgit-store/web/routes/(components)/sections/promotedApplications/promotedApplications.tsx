@@ -6,7 +6,7 @@ import { EndpointStoreHomePromotedApplications } from "../../../../../shared/typ
 import PromotedApplication from "./promotedApplication.tsx";
 
 const PromotedApplications: React.FC = () => {
-  const promotedApplications = useResource(() => acsi.getJson("/home/promotedApplications")) || [];
+  const promotedApplications = useResource(() => acsi.getJson("/home/promotedApplications", "/home/promotedApplications")) || [];
 
   return (
     <Carousel

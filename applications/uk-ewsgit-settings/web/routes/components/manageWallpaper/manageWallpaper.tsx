@@ -11,7 +11,7 @@ import React from "react";
 import UK, { UKC } from "@yourdash/uikit";
 
 const ManageWallpaper: React.FC = () => {
-  const currentWallpaper = useResource(() => acsi.getJson("/current/wallpaper"), []);
+  const currentWallpaper = useResource(() => acsi.getJson("/current/wallpaper", "/current/wallpaper"), []);
 
   return (
     <UKC.Card>

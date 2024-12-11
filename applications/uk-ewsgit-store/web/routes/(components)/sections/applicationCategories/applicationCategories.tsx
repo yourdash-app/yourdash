@@ -12,7 +12,7 @@ import styles from "./applicationCategories.module.scss";
 import { UKC } from "@yourdash/uikit";
 
 const ApplicationCategories: React.FC = () => {
-  const categories = useResource(() => acsi.getJson("/home/applicationCategories")) || [];
+  const categories = useResource(() => acsi.getJson("/home/applicationCategories", "/home/applicationCategories")) || [];
 
   return (
     <div className={styles.component}>

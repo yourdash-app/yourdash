@@ -12,9 +12,7 @@ import { FC, Suspense } from "react";
 import { UKC } from "@yourdash/uikit";
 
 const LoginIndexPage: FC = () => {
-  const instanceMetadata = useResource(() =>
-    coreCSI.getJson("/login/instance/metadata"),
-  );
+  const instanceMetadata = useResource(() => coreCSI.getJson("/login/instance/metadata", "/login/instance/metadata"));
 
   return (
     <Suspense

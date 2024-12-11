@@ -14,11 +14,11 @@ import EditWidgets from "./views/editWidgets/editWidgets.tsx";
 import UK, { UKC } from "@yourdash/uikit";
 
 const DashApplication: React.FC = () => {
-  const { pageCount } = useResource(() => acsi.getJson("/widget/pages")) || {
+  const { pageCount } = useResource(() => acsi.getJson("/widget/pages", "/widget/pages")) || {
     pageCount: 0,
   };
   const [currentWidgetPage, setCurrentWidgetPage] = useState<number>(0);
-  const widgetPage = useResource(() => acsi.getJson(`/widgets/:page`, { page: currentWidgetPage.toString() }), [currentWidgetPage]) || {
+  const widgetPage = useResource(() => acsi.getJson(`/widgets/:page`, `/widgets/${currentWidgetPage.toString()}`), [currentWidgetPage]) || {
     widgets: [],
   };
   const [isWidgetEditMode, setIsWidgetEditMode] = useState(false);

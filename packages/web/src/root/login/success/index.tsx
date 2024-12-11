@@ -12,7 +12,7 @@ import { UKC } from "@yourdash/uikit";
 
 const LoginSuccessPage: FC = () => {
   const navigate = useNavigate();
-  const notice = useResource(() => coreCSI.getJson("/core/login/notice"));
+  const notice = useResource(() => coreCSI.getJson("/core/login/notice", "/core/login/notice"));
 
   return (
     <div className={styles.page}>

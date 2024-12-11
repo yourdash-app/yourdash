@@ -15,7 +15,7 @@ export default class KeyValueDatabase {
   get<ResponseType = unknown>(key: string): ResponseType | undefined {
     const resp = this.keys[key];
 
-    if (!resp) console.warn(`Key "${key}" not found in database`);
+    // if (!resp) console.warn(`Key "${key}" not found in database`);
 
     return resp || undefined;
   }

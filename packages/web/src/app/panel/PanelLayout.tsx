@@ -57,11 +57,32 @@ const PanelLayout: React.FC<{
             side={"top"}
             setLayoutReloadNumber={(num) => setReloadNumber(num)}
           />
-          <div
-            key={1}
-            className={styles.applicationFrame}
-          >
-            <Outlet key={1} />
+          <div className={styles.applicationPanelFrame}>
+            <div className={styles.applicationPanel}>
+              {showBackButton && (
+                <UKC.IconButton
+                  icon={UK.Core.Icons.ChevronLeft}
+                  accessibleLabel={"Go Back"}
+                  onClick={onBackButton}
+                />
+              )}
+              <UKC.Image
+                className={styles.applicationIcon}
+                src={applicationIcon}
+                accessibleLabel={""}
+              />
+              <UKC.Text
+                text={applicationDisplayName}
+                className={styles.applicationDisplayName}
+              />
+              <React.Fragment>{controls}</React.Fragment>
+            </div>
+            <div
+              key={1}
+              className={styles.applicationFrame}
+            >
+              <Outlet key={1} />
+            </div>
           </div>
         </div>
       );
@@ -90,7 +111,7 @@ const PanelLayout: React.FC<{
                 text={applicationDisplayName}
                 className={styles.applicationDisplayName}
               />
-              {controls}
+              <React.Fragment>{controls}</React.Fragment>
             </div>
             <div
               key={1}
@@ -104,11 +125,32 @@ const PanelLayout: React.FC<{
     case "bottom":
       return (
         <div className={clippy(styles.layout, styles.bottom)}>
-          <div
-            key={1}
-            className={styles.applicationFrame}
-          >
-            <Outlet key={1} />
+          <div className={styles.applicationPanelFrame}>
+            <div className={styles.applicationPanel}>
+              {showBackButton && (
+                <UKC.IconButton
+                  icon={UK.Core.Icons.ChevronLeft}
+                  accessibleLabel={"Go Back"}
+                  onClick={onBackButton}
+                />
+              )}
+              <UKC.Image
+                className={styles.applicationIcon}
+                src={applicationIcon}
+                accessibleLabel={""}
+              />
+              <UKC.Text
+                text={applicationDisplayName}
+                className={styles.applicationDisplayName}
+              />
+              <React.Fragment>{controls}</React.Fragment>
+            </div>
+            <div
+              key={1}
+              className={styles.applicationFrame}
+            >
+              <Outlet key={1} />
+            </div>
           </div>
           <Panel
             side={"bottom"}
@@ -119,11 +161,32 @@ const PanelLayout: React.FC<{
     case "right":
       return (
         <div className={clippy(styles.layout, styles.right)}>
-          <div
-            key={1}
-            className={styles.applicationFrame}
-          >
-            <Outlet key={1} />
+          <div className={styles.applicationPanelFrame}>
+            <div className={styles.applicationPanel}>
+              {showBackButton && (
+                <UKC.IconButton
+                  icon={UK.Core.Icons.ChevronLeft}
+                  accessibleLabel={"Go Back"}
+                  onClick={onBackButton}
+                />
+              )}
+              <UKC.Image
+                className={styles.applicationIcon}
+                src={applicationIcon}
+                accessibleLabel={""}
+              />
+              <UKC.Text
+                text={applicationDisplayName}
+                className={styles.applicationDisplayName}
+              />
+              <React.Fragment>{controls}</React.Fragment>
+            </div>
+            <div
+              key={1}
+              className={styles.applicationFrame}
+            >
+              <Outlet key={1} />
+            </div>
           </div>
           <Panel
             side={"right"}

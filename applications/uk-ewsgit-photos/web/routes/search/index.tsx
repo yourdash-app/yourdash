@@ -15,7 +15,7 @@ import styles from "./index.module.scss";
 
 const SearchIndexPage: FC = () => {
   const [query, setQuery] = React.useState<string>("");
-  const searchResults = useResource(() => acsi.getJson(`/media/search/:query`), [query]);
+  const searchResults = useResource(() => acsi.getJson(`/media/search/:query`, `/media/search/${query}`), [query]);
 
   return (
     <div className={styles.page}>

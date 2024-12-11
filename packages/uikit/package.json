@@ -19,6 +19,7 @@
     "./src/theme/*": "./src/theme/",
     "./components/index": "./dist/components/index.js",
     "./views/index": "./dist/views/index.js",
+    "./core/index": "./dist/core/index.js",
     "./components/*": "./dist/components/*",
     "./views/*": "./dist/views/*"
   },

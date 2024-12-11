@@ -8,4 +8,4 @@ export { default as IncrementLevel } from "./incrementLevel.tsx";
 export { default as DecrementLevel } from "./decrementLevel.tsx";
 export { default as useToast } from "./toasts/useToast.ts";
 export { useLevelClass, useLevel, default as LevelContext } from "./level.tsx";
-export { UKIcon as Icons, type UKIconType } from "./iconDictionary.ts";
+export { UKIcon as Icons, UKIcon, type UKIconType } from "./iconDictionary.ts";

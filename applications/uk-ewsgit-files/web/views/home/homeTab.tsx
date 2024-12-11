@@ -17,7 +17,7 @@ import styles from "./homeTab.module.scss";
 import CommonStorageLocations from "./views/commonStorageLocations/commonStorageLocations";
 
 const HomeTabView: React.FC<{ view: IFilesView }> = ({ view }) => {
-  const homeTabData = useResource(() => acsi.getJson<EndpointTabViewHome>("/tabView/home"), [view]);
+  const homeTabData = useResource(() => acsi.getJson("/tabView/home", "/tabView/home"), [view]);
 
   if (!homeTabData) {
     return (

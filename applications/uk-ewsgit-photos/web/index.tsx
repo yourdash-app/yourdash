@@ -28,6 +28,7 @@ const ApplicationRoutes: FC = () => {
     applicationPanelContext.setShowBackButton(false);
     applicationPanelContext.setControls([
       <IconButton
+        key={"home"}
         accessibleLabel={"Home"}
         icon={UK.Core.Icons.Home}
         onClick={() => {
@@ -35,6 +36,7 @@ const ApplicationRoutes: FC = () => {
         }}
       />,
       <IconButton
+        key={"search"}
         accessibleLabel={"Search"}
         icon={UK.Core.Icons.Search}
         onClick={() => {
@@ -42,6 +44,7 @@ const ApplicationRoutes: FC = () => {
         }}
       />,
       <IconButton
+        key={"profile"}
         accessibleLabel={"Profile"}
         icon={UK.Core.Icons.Person}
         onClick={() => {
