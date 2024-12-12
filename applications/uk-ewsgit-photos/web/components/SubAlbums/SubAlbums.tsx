@@ -26,9 +26,11 @@ const SubAlbums: React.FC<{ path: string; scrollerClassName?: string }> = ({ pat
     <InfiniteScroll
       resetState={path}
       fetchNextPage={async (nextPageNumber) => {
-        const data = await acsi.getJson(`/album/sub/:page/@/*`, { page: nextPageNumber.toString(), "*": path });
+        const data = await acsi.getJson(`/album/sub/:page/@/*`, `/album/sub/${nextPageNumber}/@/${path}`);
 
-        console.log({ data: data.data });
+        if (!data.data) {
+          return { hasAnotherPage: false };
+        }
 
         setAlbums((previousAlbums) => [...previousAlbums, ...data.data]);
 
