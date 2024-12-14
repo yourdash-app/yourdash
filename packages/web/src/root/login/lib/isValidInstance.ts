@@ -25,7 +25,7 @@ export default function isValidInstance(instanceUrl: string): Promise<boolean> {
         resolve(false);
       })
       .then((jsonResponse) => {
-        if (jsonResponse.type === "yourdash" && jsonResponse.status === INSTANCE_STATUS.OK) {
+        if (jsonResponse.type === "YourDash" && jsonResponse.status === INSTANCE_STATUS.OK) {
           resolve(true);
           return;
         }

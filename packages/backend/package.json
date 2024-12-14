@@ -9,6 +9,9 @@
   },
   "dependencies": {
     "@asteasolutions/zod-to-openapi": "^7.2.0",
+    "@fastify/cors": "^10.0.1",
+    "@fastify/swagger": "^9.4.0",
+    "@fastify/swagger-ui": "^5.2.0",
     "@types/bcrypt": "^5.0.0",
     "@types/bcryptjs": "^2.4.6",
     "@types/bun": "^1.1.6",
@@ -37,6 +40,8 @@
     "express-list-endpoints": "^7.1.0",
     "express-rate-limit": "^7.4.0",
     "express-xml-bodyparser": "^0.3.0",
+    "fastify": "^5.1.0",
+    "fastify-type-provider-zod": "^4.0.2",
     "ffmpeg": "^0.0.4",
     "file-url": "^4.0.0",
     "fkill": "^8.1.0",
@@ -73,6 +78,7 @@
   "scripts": {
     "start": "bun src/main.ts --color=full --log-requests",
     "dev": "bun src/main.ts --dev --color=full --log-requests",
+    "resrc-dev": "bun --watch resrc/main.ts --dev --color=full --log-requests",
     "dev-standalone": "bun src/main.ts --dev --color=full --log-requests",
     "debug": "bun --inspect-brk src/main.ts --dev --color=full --log-requests",
     "generate-json-schema": "ts-json-schema-generator",

@@ -21,6 +21,7 @@
   },
   "include": [
     "./src/**/*.ts",
+    "./resrc/**/*.ts",
     "../../packages/shared/**/*.ts",
     "../../applications/**/backend/**/*.ts"
   ],
