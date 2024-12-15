@@ -15,17 +15,17 @@ const FloatingApplication: React.FC<{
     <div className={clippy(styles.container)}>
       <div
         className={clippy(
+          "animate__animated animate__pulse animate__infinite",
           styles.floatContainer,
-          position === 0
-            ? styles.first
-            : position === 1
-              ? styles.second
-              : position === 2
-                ? styles.third
-                : styles.fourth,
+          position === 0 ? styles.first : position === 1 ? styles.second : position === 2 ? styles.third : styles.fourth,
         )}
       >
-        <img className={clippy(styles.floatingApplication)} src={src} alt={""} draggable={false} />
+        <img
+          className={clippy(styles.floatingApplication)}
+          src={src}
+          alt={""}
+          draggable={false}
+        />
       </div>
     </div>
   );

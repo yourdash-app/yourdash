@@ -5,13 +5,20 @@
 
 import Log from "./log.js";
 import RequestManager from "./requestManager.js";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 class Instance {
   flags: {
-    isDebugMode: boolean;
+    isDebugmode: boolean;
     logQueryParameters: boolean;
     logOptionsRequests: boolean;
-    isDevMode: boolean;
+    isDevmode: boolean;
+    port: number;
+    postgresPassword: string;
+    postgresPort: number;
+    postgresUser: string;
   };
   log: Log;
   requestManager: RequestManager;
@@ -19,20 +26,26 @@ class Instance {
   constructor() {
     // FLAGS FOR DEVELOPMENT FEATURES
     this.flags = {
-      isDebugMode: false,
-      logOptionsRequests: false,
-      logQueryParameters: false,
-      isDevMode: true,
+      isDebugmode: process.env.IS_DEBUGMODE === "true" || false,
+      logOptionsRequests: process.env.LOG_OPTIONS_REQUESTS === "true" || false,
+      logQueryParameters: process.env.LOG_QUERY_PARAMETERS === "true" || false,
+      isDevmode: process.env.IS_DEVMODE === "true" || false,
+      port: Number(process.env.PORT) || 3563,
+      postgresPassword: process.env.POSTGRES_PASSWORD || "",
+      postgresPort: Number(process.env.POSTGRES_PORT) || 5432,
+      postgresUser: process.env.POSTGRES_USER || "",
     };
 
-    this.log = new Log();
-    this.requestManager = new RequestManager();
+    this.log = new Log(this);
+    this.requestManager = new RequestManager(this);
   }
 
   startup() {
     this.log.info("startup", "YourDash Instance Startup Complete");
   }
 }
+
+export { type Instance };
 
 const instance = new Instance();
 

@@ -4,7 +4,7 @@
  */
 
 import chalk from "chalk";
-import instance from "./main.js";
+import { type Instance } from "./main.js";
 
 export enum LOG_TYPE {
   INFO,
@@ -17,13 +17,15 @@ export enum LOG_TYPE {
 const LOG_META_MAX_LENGTH = 28;
 
 export default class Log {
+  instance: Instance;
   logHistory: {
     type: LOG_TYPE;
     level: string;
     message: (string | Uint8Array)[];
   }[] = [];
 
-  constructor() {
+  constructor(instance: Instance) {
+    this.instance = instance;
     let stdoutWidth = process.stdout.getWindowSize()[0];
     let titleString = "----- YourDash Instance -----";
 
@@ -124,13 +126,11 @@ export default class Log {
 
     this.log(LOG_TYPE.ERROR, level, ...message);
 
-    console.log(new Error());
-
     return this;
   }
 
   debug(level: string, ...message: (string | Uint8Array)[]) {
-    if (!instance.flags.isDebugMode) {
+    if (!this.instance.flags.isDebugmode) {
       return this;
     }
 

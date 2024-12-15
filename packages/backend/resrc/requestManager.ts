@@ -3,21 +3,33 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
+import cors from "@fastify/cors";
 import fastifySwagger from "@fastify/swagger";
 import fastifySwaggerUI from "@fastify/swagger-ui";
-import cors from "@fastify/cors";
 import { INSTANCE_STATUS } from "@yourdash/shared/core/instanceStatus.js";
 import chalk from "chalk";
 import Fastify, { FastifyInstance } from "fastify";
-import { z } from "zod";
 import { jsonSchemaTransform, serializerCompiler, validatorCompiler, ZodTypeProvider } from "fastify-type-provider-zod";
-import instance from "./main.js";
-import path = require("path");
+import path from "path";
+import pg from "pg";
+import { fetch } from "undici";
+import { z } from "zod";
+import { type Instance } from "./main.js";
 
 class RequestManager {
+  private instance: Instance;
   rawApp: FastifyInstance;
+  logDatabase: pg.Client;
 
-  constructor() {
+  constructor(instance: Instance) {
+    this.instance = instance;
+    this.logDatabase = new pg.Client({
+      password: this.instance.flags.postgresPassword,
+      port: this.instance.flags.postgresPort,
+      user: this.instance.flags.postgresUser,
+      database: "yourdash",
+    });
+
     this.rawApp = Fastify({
       logger: {
         msgPrefix: "YourDash Backend -> ",
@@ -26,11 +38,28 @@ class RequestManager {
     }).withTypeProvider<ZodTypeProvider>();
 
     this.startup().then(() => {
-      instance.log.info("startup", "YourDash RequestManager Startup Complete!");
+      this.instance.log.info("startup", "YourDash RequestManager Startup Complete!");
     });
+
+    return this;
   }
 
   private async startup() {
+    await this.logDatabase.connect();
+
+    try {
+      await this.logDatabase.query(`CREATE TABLE IF NOT EXISTS RequestManagerLog
+                                     (
+                                       requestId serial primary key,
+                                       requestTimestamp bigint NOT NULL,
+                                       requestMethod text NOT NULL,
+                                       requestPath text   NOT NULL,
+                                       requestBody text
+                                     )`);
+    } catch (err) {
+      console.error(err);
+    }
+
     this.rawApp.setValidatorCompiler(validatorCompiler);
     this.rawApp.setSerializerCompiler(serializerCompiler);
 
@@ -1841,6 +1870,11 @@ class RequestManager {
     });
 
     this.rawApp.addHook("onRequest", async (req, res) => {
+      await this.logDatabase.query(
+        "INSERT INTO RequestManagerLog (requestTimestamp, requestMethod, requestPath, requestBody) VALUES ($1, $2, $3, $4)",
+        [Date.now(), req.method, req.url, req.body],
+      );
+
       switch (req.method.toUpperCase()) {
         case "GET":
           if (req.url.startsWith("/core/auth-img")) {
@@ -1850,60 +1884,61 @@ class RequestManager {
             return;
           }
 
-          instance.log.info(
+          this.instance.log.info(
             "request",
-            `${chalk.bgBlack(chalk.green(" GET "))} ${chalk.bold(req.url)} ${instance.flags.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""}`,
+            `${chalk.bgBlack(chalk.green(" GET "))} ${chalk.bold(req.url)} ${this.instance.flags.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""}`,
           );
           break;
         case "POST":
-          instance.log.info(
+          this.instance.log.info(
             "request",
-            `${chalk.bgBlack(chalk.blue(" POS "))} ${chalk.bold(req.url)} ${instance.flags.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""}`,
+            `${chalk.bgBlack(chalk.blue(" POS "))} ${chalk.bold(req.url)} ${this.instance.flags.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""}`,
           );
           break;
         case "DELETE":
-          instance.log.info(
+          this.instance.log.info(
             "request",
-            `${chalk.bgBlack(chalk.red(" DEL "))} ${chalk.bold(req.url)} ${instance.flags.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""}`,
+            `${chalk.bgBlack(chalk.red(" DEL "))} ${chalk.bold(req.url)} ${this.instance.flags.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""}`,
           );
           break;
         case "OPTIONS":
-          if (instance.flags.logOptionsRequests) {
-            instance.log.info(
+          if (this.instance.flags.logOptionsRequests) {
+            this.instance.log.info(
               "request",
-              `${chalk.bgBlack(chalk.cyan(" OPT "))} ${chalk.bold(req.url)} ${instance.flags.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""}`,
+              `${chalk.bgBlack(chalk.cyan(" OPT "))} ${chalk.bold(req.url)} ${this.instance.flags.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""}`,
             );
           }
           break;
         case "PROPFIND":
-          instance.log.info(
+          this.instance.log.info(
             "request",
-            `${chalk.bgBlack(chalk.cyan(" PFI "))} ${chalk.bold(req.url)} ${instance.flags.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""}`,
+            `${chalk.bgBlack(chalk.cyan(" PFI "))} ${chalk.bold(req.url)} ${this.instance.flags.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""}`,
           );
           break;
         case "PROPPATCH":
-          instance.log.info(
+          this.instance.log.info(
             "request",
-            `${chalk.bgCyan(chalk.cyan(" PPA "))} ${chalk.bold(req.url)} ${instance.flags.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""}`,
+            `${chalk.bgCyan(chalk.cyan(" PPA "))} ${chalk.bold(req.url)} ${this.instance.flags.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""}`,
           );
           break;
         default:
-          instance.log.error(
+          this.instance.log.error(
             "core_requests",
-            `ERROR IN REQUEST LOGGER, UNKNOWN REQUEST TYPE: ${req.method}, ${chalk.bold(req.url)} ${instance.flags.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""}`,
+            `ERROR IN REQUEST LOGGER, UNKNOWN REQUEST TYPE: ${req.method}, ${chalk.bold(req.url)} ${this.instance.flags.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""}`,
           );
       }
 
       return;
     });
 
+    const self = this;
     this.rawApp.after(() => {
       this.rawApp.get("/", async function handler(req, res) {
-        if (instance.flags.isDevMode) {
+        if (self.instance.flags.isDevmode) {
           return res.redirect(`http://localhost:5173/login/http://localhost:3563`);
         }
 
-        return res.redirect(`https://yourdash.ewsgit.uk/login/${/* this.globalDb.get("core:instanceurl") */ "FIXME: implement this"}`);
+        return res.redirect(`https://yourdash.ewsgit.uk/login/${/* this.globalDb.get("core:this.instanceurl") */ "FIXME: implement this"}`);
       });
 
       this.rawApp.get(
@@ -1923,14 +1958,39 @@ class RequestManager {
           return { version: { major: 0, minor: 1 }, type: "YourDash" as const, status: INSTANCE_STATUS.OK };
         },
       );
+
+      this.rawApp.get("/ping", { schema: { response: { 200: z.string() } } }, async () => {
+        // INFO: This shouldn't be used for detection of a YourDash Instance, instead use the '/test' endpoint
+        return "pong";
+      });
+
+      this.rawApp.get("/core/test/self-ping", { schema: { response: { 200: z.object({ success: z.boolean() }) } } }, async () => {
+        return { success: true };
+      });
     });
 
     try {
       await this.rawApp.ready();
-      await this.rawApp.listen({ port: 3563 });
-      instance.log.info("request_manager", "YourDash ReSrc Instance Backend Online & listening at port '3563'");
+      await this.rawApp.listen({ port: this.instance.flags.port });
+      this.instance.log.info("request_manager", `YourDash ReSrc Instance Backend Online & listening at port '${this.instance.flags.port}'`);
+
+      this.instance.log.info("request_manager", `Attempting to ping self`);
+      fetch(`http://localhost:${this.instance.flags.port}/core/test/self-ping`)
+        .then((res) => res.json())
+        // @ts-ignore
+        .then((data: { success?: boolean }) => {
+          if (data?.success) {
+            return this.instance.log.success("self_ping_test", "self ping successful - The server is receiving requests");
+          }
+
+          console.log(data);
+          this.instance.log.error("request_manager", "CRITICAL ERROR!, unable to ping self");
+        })
+        .catch(() => {
+          this.instance.log.error("request_manager", "CRITICAL ERROR!, unable to ping self");
+        });
     } catch (err) {
-      instance.log.error("request_manager", err);
+      this.instance.log.error("request_manager", err);
       console.error(err);
       process.exit(1);
     }
