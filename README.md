@@ -59,6 +59,8 @@ curl -L https://raw.githubusercontent.com/yourdash/yourdash/main/toolchain/setup
     - (Chocolately install method is prefered for windows)
 - Version Control
   - [Git](https://git-scm.com/)
+- PostgreSQL
+  - [PostgreSQL](https://www.postgresql.org/)
 
 ### Installation and setup for development (Linux)
 
