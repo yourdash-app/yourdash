@@ -19,16 +19,9 @@ import { type Instance } from "./main.js";
 class RequestManager {
   private instance: Instance;
   rawApp: FastifyInstance;
-  logDatabase: pg.Client;
 
   constructor(instance: Instance) {
     this.instance = instance;
-    this.logDatabase = new pg.Client({
-      password: this.instance.flags.postgresPassword,
-      port: this.instance.flags.postgresPort,
-      user: this.instance.flags.postgresUser,
-      database: "yourdash",
-    });
 
     this.rawApp = Fastify({
       logger: {
@@ -37,24 +30,18 @@ class RequestManager {
       },
     }).withTypeProvider<ZodTypeProvider>();
 
-    this.startup().then(() => {
-      this.instance.log.info("startup", "YourDash RequestManager Startup Complete!");
-    });
-
     return this;
   }
 
-  private async startup() {
-    await this.logDatabase.connect();
-
+  async __internal_startup() {
     try {
-      await this.logDatabase.query(`CREATE TABLE IF NOT EXISTS RequestManagerLog
+      await this.instance.database.query(`CREATE TABLE IF NOT EXISTS public.request_manager_log
                                      (
-                                       requestId serial primary key,
-                                       requestTimestamp bigint NOT NULL,
-                                       requestMethod text NOT NULL,
-                                       requestPath text   NOT NULL,
-                                       requestBody text
+                                       request_id serial primary key,
+                                       request_timestamp bigint NOT NULL,
+                                       request_method text NOT NULL,
+                                       request_path text   NOT NULL,
+                                       request_body text
                                      )`);
     } catch (err) {
       console.error(err);
@@ -1870,8 +1857,8 @@ class RequestManager {
     });
 
     this.rawApp.addHook("onRequest", async (req, res) => {
-      await this.logDatabase.query(
-        "INSERT INTO RequestManagerLog (requestTimestamp, requestMethod, requestPath, requestBody) VALUES ($1, $2, $3, $4)",
+      await this.instance.database.query(
+        "INSERT INTO public.request_manager_log (request_timestamp, request_method, request_path, request_body) VALUES ($1, $2, $3, $4)",
         [Date.now(), req.method, req.url, req.body],
       );
 
@@ -1930,6 +1917,8 @@ class RequestManager {
 
       return;
     });
+
+    await this.instance.authorization.__internal_authHook();
 
     const self = this;
     this.rawApp.after(() => {

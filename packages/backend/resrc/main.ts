@@ -3,6 +3,8 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
+import pg from "pg";
+import Authorization from "./authorization.js";
 import Log from "./log.js";
 import RequestManager from "./requestManager.js";
 import dotenv from "dotenv";
@@ -22,6 +24,8 @@ class Instance {
   };
   log: Log;
   requestManager: RequestManager;
+  authorization: Authorization;
+  database: pg.Client;
 
   constructor() {
     // FLAGS FOR DEVELOPMENT FEATURES
@@ -36,11 +40,27 @@ class Instance {
       postgresUser: process.env.POSTGRES_USER || "",
     };
 
+    this.database = new pg.Client({
+      password: this.flags.postgresPassword,
+      port: this.flags.postgresPort,
+      user: this.flags.postgresUser,
+      database: "yourdash",
+    });
     this.log = new Log(this);
+    this.authorization = new Authorization(this);
     this.requestManager = new RequestManager(this);
+
+    this.startup().then(() => {
+      return 0;
+    });
   }
 
-  startup() {
+  async startup() {
+    this.log.info("startup", "Connecting to PostgreSQL Database");
+    await this.database.connect();
+    this.log.info("startup", "Connected to PostgreSQL Database");
+    await this.requestManager.__internal_startup();
+    this.log.info("startup", "YourDash RequestManager Startup Complete!");
     this.log.info("startup", "YourDash Instance Startup Complete");
   }
 }
