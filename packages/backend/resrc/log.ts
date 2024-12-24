@@ -26,24 +26,24 @@ export default class Log {
 
   constructor(instance: Instance) {
     this.instance = instance;
-    let stdoutWidth = process.stdout.getWindowSize()[0];
-    let titleString = "----- YourDash Instance -----";
+    let stdoutWidth = process.stdout.getWindowSize?.()[0] || 80;
+    let titleString = " YourDash Instance ReSrc Pre-Alpha ";
 
-    process.stdout.cursorTo(0, 0);
-    process.stdout.clearScreenDown();
+    process.stdout.cursorTo?.(0, 0);
+    process.stdout.clearScreenDown?.();
     process.stdout.write(
-      `${"-".repeat((stdoutWidth - titleString.length) / 2)}${titleString}${"-".repeat((stdoutWidth - titleString.length) / 2)}`,
+      `${"-".repeat((stdoutWidth - titleString.length) / 2)}${titleString}${"-".repeat((stdoutWidth - titleString.length) / 2)}\n\n`,
     );
-    process.stdout.cursorTo(0, 1);
+    process.stdout.cursorTo?.(0, 1);
 
     process.stdout.on("resize", () => {
       stdoutWidth = process.stdout.getWindowSize()[0];
-      process.stdout.cursorTo(0, 0);
+      process.stdout.cursorTo?.(0, 0);
       process.stdout.clearScreenDown();
       process.stdout.write(
-        `${"-".repeat((stdoutWidth - titleString.length) / 2)}${titleString}${"-".repeat((stdoutWidth - titleString.length) / 2)}`,
+        `${"-".repeat((stdoutWidth - titleString.length) / 2)}${titleString}${"-".repeat((stdoutWidth - titleString.length) / 2)}\n\n`,
       );
-      process.stdout.cursorTo(0, 1);
+      process.stdout.cursorTo?.(0, 1);
     });
 
     return this;

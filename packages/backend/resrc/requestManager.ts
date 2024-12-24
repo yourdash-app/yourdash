@@ -6,12 +6,11 @@
 import cors from "@fastify/cors";
 import fastifySwagger from "@fastify/swagger";
 import fastifySwaggerUI from "@fastify/swagger-ui";
-import { INSTANCE_STATUS } from "@yourdash/shared/core/instanceStatus.js";
+import { INSTANCE_STATUS } from "./types/instanceStatus.js";
 import chalk from "chalk";
 import Fastify, { FastifyInstance } from "fastify";
 import { jsonSchemaTransform, serializerCompiler, validatorCompiler, ZodTypeProvider } from "fastify-type-provider-zod";
 import path from "path";
-import pg from "pg";
 import { fetch } from "undici";
 import { z } from "zod";
 import { type Instance } from "./main.js";
@@ -1857,10 +1856,12 @@ class RequestManager {
     });
 
     this.rawApp.addHook("onRequest", async (req, res) => {
-      await this.instance.database.query(
-        "INSERT INTO public.request_manager_log (request_timestamp, request_method, request_path, request_body) VALUES ($1, $2, $3, $4)",
+      let queryResult = await this.instance.database.query(
+        "INSERT INTO public.request_manager_log (request_timestamp, request_method, request_path, request_body) VALUES ($1, $2, $3, $4) RETURNING request_id;",
         [Date.now(), req.method, req.url, req.body],
       );
+
+      res.header("request-id", JSON.stringify(queryResult.rows[0].request_id));
 
       switch (req.method.toUpperCase()) {
         case "GET":
@@ -1944,12 +1945,15 @@ class RequestManager {
           },
         },
         async () => {
-          return { version: { major: 0, minor: 1 }, type: "YourDash" as const, status: INSTANCE_STATUS.OK };
+          return { version: { major: 0, minor: 1 }, type: "YourDash" as const, status: INSTANCE_STATUS.NON_FUNCTIONAL };
         },
       );
 
+      this.rawApp.get("/418", { schema: { response: { 200: z.string() } } }, async () => {
+        return "This is a yourdash instance, not a coffee pot. This server does not implement the Hyper Text Coffee Pot Control Protocol";
+      });
+
       this.rawApp.get("/ping", { schema: { response: { 200: z.string() } } }, async () => {
-        // INFO: This shouldn't be used for detection of a YourDash Instance, instead use the '/test' endpoint
         return "pong";
       });
 

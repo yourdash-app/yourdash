@@ -12,7 +12,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 class Instance {
-  flags: {
+  flags!: {
     isDebugmode: boolean;
     logQueryParameters: boolean;
     logOptionsRequests: boolean;
@@ -22,12 +22,19 @@ class Instance {
     postgresPort: number;
     postgresUser: string;
   };
-  log: Log;
-  requestManager: RequestManager;
-  authorization: Authorization;
-  database: pg.Client;
+  log!: Log;
+  requestManager!: RequestManager;
+  authorization!: Authorization;
+  database!: pg.Client;
 
   constructor() {
+    this.__internal__init().then(() => {
+      return 0;
+    });
+    return this;
+  }
+
+  async __internal__init() {
     // FLAGS FOR DEVELOPMENT FEATURES
     this.flags = {
       isDebugmode: process.env.IS_DEBUGMODE === "true" || false,
@@ -35,10 +42,23 @@ class Instance {
       logQueryParameters: process.env.LOG_QUERY_PARAMETERS === "true" || false,
       isDevmode: process.env.IS_DEVMODE === "true" || false,
       port: Number(process.env.PORT) || 3563,
-      postgresPassword: process.env.POSTGRES_PASSWORD || "",
+      postgresPassword: process.env.POSTGRES_PASSWORD || "postgres",
       postgresPort: Number(process.env.POSTGRES_PORT) || 5432,
-      postgresUser: process.env.POSTGRES_USER || "",
+      postgresUser: process.env.POSTGRES_USER || "postgres",
     };
+
+    let tempDatabaseClient: pg.Client = new pg.Client({
+      password: this.flags.postgresPassword,
+      user: this.flags.postgresUser,
+      database: "postgres",
+    });
+
+    await tempDatabaseClient.connect();
+
+    // create the yourdash database if it doesn't already exist
+    try {
+      await tempDatabaseClient.query("CREATE DATABASE yourdash");
+    } catch (e) {}
 
     this.database = new pg.Client({
       password: this.flags.postgresPassword,
@@ -72,16 +92,27 @@ const instance = new Instance();
 export default instance;
 
 /*
- *https://fastify-vite.dev/guide/getting-started
- *https://github.com/fastify/fastify-schedule
- *https://github.com/fastify/session
- *https://github.com/fastify/fastify-websocket
- *https://github.com/turkerdev/fastify-type-provider-zod
- *https://github.com/fastify/fastify-cors
- *https://github.com/fastify/fastify-cookie
- *https://github.com/fastify/fastify-express
- *https://node-postgres.com/
- *https://github.com/fastify/fastify-auth
- *https://fastify.dev/docs/latest/Reference/Hooks/#hooks
- *http://localhost:3563/swagger
+ * https://fastify-vite.dev/guide/getting-started
+ *
+ * https://github.com/fastify/fastify-schedule
+ *
+ * https://github.com/fastify/session
+ *
+ * https://github.com/fastify/fastify-websocket
+ *
+ * https://github.com/turkerdev/fastify-type-provider-zod
+ *
+ * https://github.com/fastify/fastify-cors
+ *
+ * https://github.com/fastify/fastify-cookie
+ *
+ * https://github.com/fastify/fastify-express
+ *
+ * https://node-postgres.com/
+ *
+ * https://github.com/fastify/fastify-auth
+ *
+ * https://fastify.dev/docs/latest/Reference/Hooks/#hooks
+ *
+ * http://localhost:3563/swagger
  */
