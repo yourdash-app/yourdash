@@ -3,7 +3,6 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import pg from "pg";
 import { type Instance } from "./main.js";
 
 class Authorization {
@@ -22,12 +21,16 @@ class Authorization {
     }
   }
 
-  async authorizeUser(username: string, sessionToken: string) {
-    return { unimplemented: true };
+  // check the sessionToken is valid for the user
+  async authorizeUser(username: string, sessionToken: string): Promise<boolean> {
+    return false;
   }
 
-  async authenticateUser(username: string, password: string) {
-    return { unimplemented: true };
+  // generate a sessionToken if the username and password are valid, else return null
+  async authenticateUser(username: string, password: string): Promise<string | null> {
+    if (this) return "";
+
+    return null;
   }
 }
 
