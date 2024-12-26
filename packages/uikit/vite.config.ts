@@ -28,16 +28,19 @@ export default defineConfig({
       "~": resolve(__dirname, "./src/"),
     },
   },
+  publicDir: "./src/theme",
   build: {
     lib: {
-      entry: resolve(__dirname, "src/uikit.ts"),
       formats: ["es"],
+      entry: glob.sync("src/**/*.{ts,tsx}", {
+        ignore: ["src/**/*.d.ts"],
+      }),
     },
-    copyPublicDir: false,
+    copyPublicDir: true,
     rollupOptions: {
       external: ["react", "react/jsx-runtime", "react-router", "react-router-dom"],
-      input: Object.fromEntries(
-        glob
+      input: Object.fromEntries([
+        ...glob
           .sync("src/**/*.{ts,tsx}", {
             ignore: ["src/**/*.d.ts"],
           })
@@ -50,9 +53,9 @@ export default defineConfig({
             // @ts-ignore
             fileURLToPath(new URL(file, import.meta.url)),
           ]),
-      ),
+      ]),
       output: {
-        assetFileNames: "assets/[name][extname]",
+        assetFileNames: "[name][extname]",
         entryFileNames: "[name].js",
       },
     },

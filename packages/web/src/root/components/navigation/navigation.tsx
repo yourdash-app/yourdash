@@ -4,124 +4,133 @@
  */
 
 import clippy from "@yourdash/shared/web/helpers/clippy.ts";
+import UKFlex from "@yourdash/uikit/components/flex/UKFlex.js";
+import UKIconButton from "@yourdash/uikit/components/iconButton/UKIconButton.js";
+import UKLink from "@yourdash/uikit/components/link/UKLink.js";
+import UKSeparator from "@yourdash/uikit/components/separator/UKSeparator.js";
+import UKText from "@yourdash/uikit/components/text/UKText.js";
+import UKTextButton from "@yourdash/uikit/components/textButton/UKTextButton.js";
+import { UKIcons } from "@yourdash/uikit/core/iconDictionary.js";
 import styles from "./navigation.module.scss";
-import { FC } from "react";
+import React, { FC } from "react";
 import { Outlet, useNavigate } from "react-router";
-import UK, { UKC } from "@yourdash/uikit";
+import UKImage from "@yourdash/uikit/components/image/UKImage.js";
+import UKHeading from "@yourdash/uikit/components/heading/UKHeading.js";
+import UKBox from "@yourdash/uikit/components/box/UKBox.js";
 
 const Navigation: FC<{ subtitle?: string }> = ({ subtitle }) => {
   const navigate = useNavigate();
 
   return (
     <>
-      <UKC.Box className={styles.navigationBar}>
-        <UKC.Image
+      <UKBox className={styles.navigationBar}>
+        <UKImage
           src={"/assets/branding/yourdash.svg"}
           accessibleLabel={"YourDash Logo"}
           className={styles.logo}
         />
-        <UKC.Heading
+        <UKHeading
           level={2}
           className={styles.title}
           text={"YourDash"}
         />
-        <UKC.Heading
+        <UKHeading
           level={2}
           className={styles.subtitle}
           text={subtitle ? `/ ${subtitle}` : ""}
         />
-        <UKC.TextButton
+        <UKTextButton
           className={styles.link}
           text={"Home"}
           onClick={() => {
             navigate("/");
           }}
         />
-        <UKC.TextButton
+        <UKTextButton
           className={styles.link}
           text={"Docs"}
           onClick={() => {
             navigate("/docs");
           }}
         />
-        <UKC.TextButton
+        <UKTextButton
           className={clippy(styles.link, styles.source)}
           text={"Source"}
           onClick={() => {
             window.location.href = "https://github.com/yourdash/yourdash";
           }}
         />
-        <UKC.TextButton
+        <UKTextButton
           className={styles.link}
           text={"Login"}
           onClick={() => {
             navigate("/login");
           }}
         />
-      </UKC.Box>
-      <UKC.Box
+      </UKBox>
+      <UKBox
         level={1}
         className={styles.notice}
       >
-        <UKC.Text text={"YourDash is a pre-alpha project. "} />
-        <UKC.Link
+        <UKText text={"YourDash is a pre-alpha project. "} />
+        <UKLink
           hideLinkIcon={true}
           to={"/docs/pre-alpha"}
           text={"learn more."}
         />
-      </UKC.Box>
+      </UKBox>
       <Outlet />
-      <UKC.Box className={styles.footer}>
-        <UKC.Flex
+      <UKBox className={styles.footer}>
+        <UKFlex
           className={styles.brand}
           direction={"row"}
         >
-          <UKC.Image
+          <UKImage
             src={"/assets/branding/yourdash.svg"}
             accessibleLabel={"YourDash Logo"}
             className={styles.logo}
           />
-          <UKC.Heading
+          <UKHeading
             level={2}
             className={styles.name}
             text={"YourDash"}
           />
-          <UKC.Flex
+          <UKFlex
             direction={"row"}
             className={styles.socials}
           >
-            <UKC.IconButton
+            <UKIconButton
               className={styles.icon}
               preserveColor
               accessibleLabel={"Ewsgit on GitHub"}
-              icon={UK.Core.Icons.Ewsgit}
+              icon={UKIcons.Ewsgit}
               onClick={() => {
                 navigate("https://github.com/ewsgit");
               }}
             />
-            <UKC.IconButton
+            <UKIconButton
               accessibleLabel={"YourDash on GitHub"}
               className={styles.icon}
-              icon={UK.Core.Icons.LinkExternal}
+              icon={UKIcons.LinkExternal}
               onClick={() => {
                 navigate("");
               }}
             />
-          </UKC.Flex>
-        </UKC.Flex>
-        <UKC.Separator direction={"column"} />
-        <UKC.Flex
+          </UKFlex>
+        </UKFlex>
+        <UKSeparator direction={"column"} />
+        <UKFlex
           direction={"row"}
           className={styles.license}
         >
-          <UKC.Text text={"©2022-2024 Ewsgit and YourDash Contributors."} />
-          <UKC.Link
+          <UKText text={"©2022-2024 Ewsgit and YourDash Contributors."} />
+          <UKLink
             hideLinkIcon={true}
             to={"https://ewsgit.mit-license.org"}
             text={"Licensed under the MIT License"}
           />
-        </UKC.Flex>
-      </UKC.Box>
+        </UKFlex>
+      </UKBox>
     </>
   );
 };

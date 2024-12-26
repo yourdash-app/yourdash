@@ -17,12 +17,12 @@ const LoginSuccessPage: FC = () => {
   return (
     <div className={styles.page}>
       {notice ? (
-        <UKC.Card
+        <UKCard
           containerClassName={styles.notice}
           headerClassName={styles.noticeHeader}
           actions={
             <>
-              <UKC.Button
+              <UKButton
                 onClick={() => {
                   navigate("/app");
                 }}
@@ -32,27 +32,27 @@ const LoginSuccessPage: FC = () => {
           }
           header={
             <>
-              <UKC.Heading
+              <UKHeading
                 className={styles.heading}
                 level={1}
                 text={"Notice"}
               />
-              <UKC.Subtext text={"authored: " + new Date(notice?.timestamp || 0).toLocaleDateString()} />
+              <UKSubtext text={"authored: " + new Date(notice?.timestamp || 0).toLocaleDateString()} />
             </>
           }
         >
-          <UKC.Text
+          <UKText
             className={styles.message}
             text={notice?.message || "No message..."}
           />
-          <UKC.Subtext
+          <UKSubtext
             className={styles.author}
             text={`- ${notice?.author || "Unknown author"}`}
           />
-        </UKC.Card>
+        </UKCard>
       ) : (
         // @ts-ignore
-        <>{notice?.display === false && <UKC.Redirect to="/app" />}</>
+        <>{notice?.display === false && <UKRedirect to="/app" />}</>
       )}
     </div>
   );

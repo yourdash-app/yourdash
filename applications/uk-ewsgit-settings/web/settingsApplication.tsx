@@ -19,37 +19,37 @@ const SettingsApplication: React.FC = () => {
         href={`${modulePath}/profile`}
         description={"Manage your user profile"}
         title={"Profile"}
-        icon={UKIcon.Person}
+        icon={UKIcons.Person}
       />
       <SettingCategoryComponent
         href={`${modulePath}/personalization`}
         description={`Customize your experience`}
         title={`Personalization`}
-        icon={UKIcon.Paintbrush}
+        icon={UKIcons.Paintbrush}
       />
       <SettingCategoryComponent
         href={`${modulePath}/session`}
         description={`Manage your login sessions`}
         title={`Login sessions`}
-        icon={UKIcon.Login}
+        icon={UKIcons.Login}
       />
       <SettingCategoryComponent
         href={`${modulePath}/accessibility`}
         description={`Toggle QOL features`}
         title={`Accessibility`}
-        icon={UKIcon.Accessibility}
+        icon={UKIcons.Accessibility}
       />
       <SettingCategoryComponent
         href={`${modulePath}/admin`}
         description={`Hiya, Admin 👋`}
         title={`Admin tools`}
-        icon={UKIcon.Tools}
+        icon={UKIcons.Tools}
       />
       <SettingCategoryComponent
         href={`${modulePath}/developer`}
         description={`For development purposes only`}
         title={`Developer tools`}
-        icon={UKIcon.Tools}
+        icon={UKIcons.Tools}
       />
     </BasePageLayout>
   );

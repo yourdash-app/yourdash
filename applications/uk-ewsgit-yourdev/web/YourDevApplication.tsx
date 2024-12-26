@@ -6,8 +6,8 @@
 import Button from "@yourdash/uikit/components/button/button.tsx";
 import ButtonWithIcon from "@yourdash/uikit/components/buttonWithIcon/buttonWithIcon.tsx";
 import { UKIcon } from "packages/uikit/src/core/iconDictionary.ts";
-import Sidebar from "@yourdash/uikit/src/views/sidebar/sidebar.tsx";
-import SidebarContainer from "@yourdash/uikit/src/views/sidebar/sidebarContainer.tsx";
+import UKSidebar from "@yourdash/uikit/src/views/sidebar/sidebar.tsx";
+import UKSidebarContainer from "@yourdash/uikit/theme/src/views/sidebar/UKSidebarContainer.tsx";
 import React from "react";
 import GlobalDbApplication from "../../uk-ewsgit-globaldb/web/globalDbApplication.tsx";
 import HomeView from "./views/home/HomeView";
@@ -17,34 +17,34 @@ const YourDevApplication: React.FC = () => {
 
   return (
     <main className={"h-full grid grid-cols-[auto,1fr] overflow-hidden gap-4 p-4 bg-bg"}>
-      <SidebarContainer>
+      <UKSidebarContainer>
         <Sidebar>
           <ButtonWithIcon
             onClick={() => {
               setPage("home");
             }}
-            icon={UKIcon.Home}
+            icon={UKIcons.Home}
             text={"Home"}
           />
           <ButtonWithIcon
             onClick={() => {
               setPage("global_db");
             }}
-            icon={UKIcon.Database}
+            icon={UKIcons.Database}
             text={"Global DB"}
           />
           <ButtonWithIcon
             onClick={() => {
               setPage("user_db");
             }}
-            icon={UKIcon.Person}
+            icon={UKIcons.Person}
             text={"User DB"}
           />
         </Sidebar>
         {page === "home" && <HomeView />}
         {page === "global_db" && <GlobalDbApplication />}
         {page === "user_db" && null}
-      </SidebarContainer>
+      </UKSidebarContainer>
     </main>
   );
 };

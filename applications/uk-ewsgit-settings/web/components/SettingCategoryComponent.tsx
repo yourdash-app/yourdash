@@ -35,7 +35,7 @@ const SettingCategory: React.FC<IBaseSettingComponent> = ({ title, description, 
     >
       <Icon
         className={"aspect-square h-8"}
-        icon={!external ? UKIcon.ChevronRight : UKIcon.Link}
+        icon={!external ? UKIcons.ChevronRight : UKIcons.Link}
       />
     </BaseSettingComponent>
   );

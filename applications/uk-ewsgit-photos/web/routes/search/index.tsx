@@ -24,7 +24,7 @@ const SearchIndexPage: FC = () => {
         accessibleName={"Search Media"}
         getValue={setQuery}
         placeholder={"Search Media..."}
-        icon={UK.Core.Icons.Search}
+        icon={UKIcons.Search}
       />
       {searchResults && <SearchPageResults results={searchResults} />}
       <SubAlbums

@@ -47,13 +47,13 @@ const SubAlbums: React.FC<{ path: string; scrollerClassName?: string }> = ({ pat
               navigateTo(`/album/@/${coreCSI.path.toUnix(album.path)}`);
             }}
           >
-            <UKC.Image
+            <UKImage
               containerClassName={styles.thumbnailContainer}
               className={styles.thumbnail}
               accessibleLabel={""}
               src={toAuthImgUrl(album.thumbnail)}
             />
-            <UKC.Text
+            <UKText
               text={album.displayName}
               className={styles.albumTitle}
             />

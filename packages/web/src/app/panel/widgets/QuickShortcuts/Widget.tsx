@@ -44,7 +44,7 @@ const QuickShortcuts: React.FC<{ side: "top" | "right" | "bottom" | "left" }> = 
                 UK.Core.useLevelClass(1),
               )}
             >
-              <UKC.Image
+              <UKImage
                 className={styles.applicationIcon}
                 src={toAuthImgUrl(module.icon)}
                 accessibleLabel={module.name}

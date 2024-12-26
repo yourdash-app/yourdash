@@ -14,7 +14,7 @@ const PromotedApplications: React.FC<{ application: EndpointStoreHomePromotedApp
   return (
     <div className={styles.component}>
       <div className={styles.center}>
-        <UKC.Image
+        <UKImage
           className={styles.icon}
           accessibleLabel={""}
           src={application.icon}
@@ -31,14 +31,14 @@ const PromotedApplications: React.FC<{ application: EndpointStoreHomePromotedApp
         className={styles.description}
       />
       <div className={styles.footer}>
-        <UKC.Text
+        <UKText
           text={application.developer}
           className={styles.developer}
         />
         <div className={styles.tags}>
           {application.tags.map((tag) => (
             <div className={styles.tag}>
-              <UKC.Text text={tag} />
+              <UKText text={tag} />
             </div>
           ))}
         </div>

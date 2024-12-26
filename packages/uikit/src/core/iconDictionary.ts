@@ -3,10 +3,10 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-export type UKIconType = (typeof UKIcon)[keyof typeof UKIcon] | string;
+export type UKIconType = (typeof UKIcons)[keyof typeof UKIcons] | string;
 
 // Number types are used as the correct string type throws a ts error
-export const UKIcon = {
+export const UKIcons = {
   Accessibility: () => import("./icons/accessibility-16.svg"),
   AccessibilityInset: () => import("./icons/accessibility-inset-16.svg"),
   Alert: () => import("./icons/alert-16.svg"),

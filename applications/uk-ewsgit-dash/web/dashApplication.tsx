@@ -26,41 +26,41 @@ const DashApplication: React.FC = () => {
 
   return (
     <div className={styles.page}>
-      <UKC.Flex
+      <UKFlex
         className={clippy(styles.header, tallHeader && styles.tallHeader, isWidgetEditMode && styles.headerEditMode)}
         direction={"row"}
       >
-        <UKC.Heading
+        <UKHeading
           text={`Hiya, ${coreCSI.userDB.get<{ first: string; last: string }>("user:name")?.first}`}
           level={1}
         />
         {isWidgetEditMode && (
           <>
-            <UKC.Flex
+            <UKFlex
               direction="row"
               className={styles.headerActions}
             >
               {tallHeader ? (
-                <UKC.ButtonWithIcon
+                <UKButtonWithIcon
                   text="Use small header"
-                  icon={UK.Core.Icons.SidebarCollapse}
+                  icon={UKIcons.SidebarCollapse}
                   onClick={() => {
                     setTallHeader(false);
                   }}
                 />
               ) : (
-                <UKC.ButtonWithIcon
+                <UKButtonWithIcon
                   text="Use tall header"
-                  icon={UK.Core.Icons.SidebarExpand}
+                  icon={UKIcons.SidebarExpand}
                   onClick={() => {
                     setTallHeader(true);
                   }}
                 />
               )}
-            </UKC.Flex>
+            </UKFlex>
           </>
         )}
-      </UKC.Flex>
+      </UKFlex>
       {isWidgetEditMode ? (
         <EditWidgets />
       ) : (
@@ -81,7 +81,7 @@ const DashApplication: React.FC = () => {
           })}
         </div>
       )}
-      <UKC.Flex
+      <UKFlex
         className={styles.footer}
         direction={"row"}
       >
@@ -101,9 +101,9 @@ const DashApplication: React.FC = () => {
         <div className={styles.actions}>
           {isWidgetEditMode ? (
             <>
-              <UKC.ButtonWithIcon
+              <UKButtonWithIcon
                 text={"Confirm edits"}
-                icon={UK.Core.Icons.Check}
+                icon={UKIcons.Check}
                 onClick={() => {
                   setIsWidgetEditMode(false);
                 }}
@@ -111,9 +111,9 @@ const DashApplication: React.FC = () => {
             </>
           ) : (
             <>
-              <UKC.ButtonWithIcon
+              <UKButtonWithIcon
                 text={"Edit"}
-                icon={UK.Core.Icons.Pencil}
+                icon={UKIcons.Pencil}
                 onClick={() => {
                   setIsWidgetEditMode(true);
                 }}
@@ -121,7 +121,7 @@ const DashApplication: React.FC = () => {
             </>
           )}
         </div>
-      </UKC.Flex>
+      </UKFlex>
     </div>
   );
 };

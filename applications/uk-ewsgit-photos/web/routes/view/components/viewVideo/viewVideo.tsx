@@ -49,21 +49,21 @@ const ViewVideo: FC<{ mediaUrl: string }> = ({ mediaUrl }) => {
             <div className={styles.controls}>
               <IconButton
                 accessibleLabel={"Rewind"}
-                icon={UK.Core.Icons.ArrowLeft}
+                icon={UKIcons.ArrowLeft}
                 onClick={() => {
                   ref.current.currentTime -= 2;
                 }}
               />
               <IconButton
                 accessibleLabel={"Play / Pause"}
-                icon={isPlaying ? UK.Core.Icons.Stop : UK.Core.Icons.Play}
+                icon={isPlaying ? UKIcons.Stop : UKIcons.Play}
                 onClick={() => {
                   isPlaying ? ref.current.pause() : ref.current.play();
                 }}
               />
               <IconButton
                 accessibleLabel={"Fast Forward"}
-                icon={UK.Core.Icons.ArrowRight}
+                icon={UKIcons.ArrowRight}
                 onClick={() => {
                   ref.current.currentTime += 2;
                 }}
@@ -71,7 +71,7 @@ const ViewVideo: FC<{ mediaUrl: string }> = ({ mediaUrl }) => {
               <ProgressBar value={currentTime / duration} />
               <IconButton
                 accessibleLabel={"Loop"}
-                icon={shouldLoop ? UK.Core.Icons.CrossReference : UK.Core.Icons.FeedMerged}
+                icon={shouldLoop ? UKIcons.CrossReference : UKIcons.FeedMerged}
                 onClick={() => {
                   setShouldLoop(!shouldLoop);
                 }}

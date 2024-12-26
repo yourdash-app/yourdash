@@ -23,7 +23,7 @@ const DefaultStartupMenuPage: React.FC<IStartupMenuPageProps> = ({ setMenuPage }
     <main className={"animate__animated animate__fadeIn"}>
       <Icon
         className={clippy(styles.logo, "animate__animated animate__fadeInUp animate__duration_1000ms")}
-        icon={UKIcon.YourDashLogo}
+        icon={UKIcons.YourDashLogo}
         preserveColor={true}
       />
       <Heading

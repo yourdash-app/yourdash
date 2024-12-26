@@ -3,10 +3,14 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import UKCard from "@yourdash/uikit/components/card/UKCard.js";
+import UKHeading from "@yourdash/uikit/components/heading/UKHeading.js";
+import UKImage from "@yourdash/uikit/components/image/UKImage.js";
+import UKText from "@yourdash/uikit/components/text/UKText.js";
+import UKPageHeader from "@yourdash/uikit/views/header/UKPageHeader.js";
 import React from "react";
 import { useNavigate } from "react-router";
 import styles from "./Index.module.scss";
-import { UKC, UKV } from "@yourdash/uikit";
 
 const PROJECTS: {
   name: string;
@@ -33,26 +37,26 @@ const ProjectsIndexPage: React.FC = () => {
 
   return (
     <div>
-      <UKV.Header heading={"Projects"} />
+      <UKPageHeader heading={"Projects"} />
       <div className={styles.projectsGrid}>
         {PROJECTS.map((project) => {
           return (
-            <UKC.Card
+            <UKCard
               className={"flex items-center justify-center flex-col gap-2"}
               onClick={() => navigate(project.link)}
             >
-              <UKC.Image
+              <UKImage
                 className={"h-24 aspect-square"}
                 src={project.icon}
                 accessibleLabel={""}
               />
-              <UKC.Heading
+              <UKHeading
                 level={2}
                 className={"font-semibold text-3xl"}
                 text={project.name}
               />
-              <UKC.Text text={project.description} />
-            </UKC.Card>
+              <UKText text={project.description} />
+            </UKCard>
           );
         })}
       </div>

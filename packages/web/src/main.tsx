@@ -6,6 +6,9 @@
 import "animate.css";
 import "./tailwindcss.css";
 import "./main.css";
+import UKText from "@yourdash/uikit/components/text/UKText.js";
+import UIKitRoot from "@yourdash/uikit/core/root.js";
+import UKDialog from "@yourdash/uikit/views/dialog/UKDialog.js";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createRoutesFromElements, Route, RouterProvider } from "react-router";
@@ -28,7 +31,6 @@ import ProjectsIndexPage from "./root/projects/Index.tsx";
 import LinkerDesktopClientStartupPage from "./root/linkerDesktopClientStartup/Index.tsx";
 import HostedApplicationRouter from "./app/HostedApplicationRouter.tsx";
 import WebsocketToasts from "./WebsocketToasts.tsx";
-import UK, { UKC, UKV } from "@yourdash/uikit";
 
 const AppRouter = loadable(() => import("./app/AppRouter.tsx"));
 const DocsRouter = loadable(() => import("./root/docs/DocsRouter.tsx"));
@@ -48,7 +50,7 @@ loadingElement.innerText = "Loading YourDash...";
 element.appendChild(loadingElement);
 
 ReactDOM.createRoot(element).render(
-  <UK.Core.UIKitRoot>
+  <UIKitRoot>
     <WebsocketToasts />
     <RouterProvider
       future={{
@@ -167,8 +169,8 @@ ReactDOM.createRoot(element).render(
                 path={"dialog"}
                 element={
                   <>
-                    <UKV.Dialog>sa</UKV.Dialog>
-                    <UKC.Text text={"Hello world"} />
+                    <UKDialog>sa</UKDialog>
+                    <UKText text={"Hello world"} />
                   </>
                 }
               />
@@ -186,5 +188,5 @@ ReactDOM.createRoot(element).render(
         },
       )}
     />
-  </UK.Core.UIKitRoot>,
+  </UIKitRoot>,
 );

@@ -3,7 +3,11 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { UKC } from "@yourdash/uikit";
+import UKButton from "@yourdash/uikit/components/button/UKButton.js";
+import UKCard from "@yourdash/uikit/components/card/UKCard.js";
+import UKHeading from "@yourdash/uikit/components/heading/UKHeading.js";
+import UKText from "@yourdash/uikit/components/text/UKText.js";
+import React from "react";
 
 interface IKeyPointsCard {
   title: string;
@@ -17,26 +21,26 @@ interface IKeyPointsCard {
 
 const KeyPointsCard: React.FC<IKeyPointsCard> = ({ title, content, action }) => {
   return (
-    <UKC.Card
+    <UKCard
       actions={
         <>
-          <UKC.Button
+          <UKButton
             onClick={action.onClick}
             text={action.label}
           />
         </>
       }
     >
-      <UKC.Heading
+      <UKHeading
         level={2}
         text={title}
         className={"!text-4xl font-semibold !text-start pt-4"}
       />
-      <UKC.Text
+      <UKText
         className={"text-start"}
         text={content}
       />
-    </UKC.Card>
+    </UKCard>
   );
 };
 

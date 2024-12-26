@@ -16,7 +16,7 @@ const UserProfileWidget: React.FC = () => {
         accessibleLabel={"User profile"}
       />
       <span className={styles.label}>
-        <UKC.Text text={"User profile"} />
+        <UKText text={"User profile"} />
       </span>
     </div>
   );

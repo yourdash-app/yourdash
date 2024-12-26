@@ -11,13 +11,13 @@ const NotFoundPage: React.FC = () => {
     <div
       className={"text-center flex items-center justify-center flex-col h-max pt-20 pb-20 pr-10 pl-10 animate__animated animate__fadeIn"}
     >
-      <UKC.Heading
+      <UKHeading
         className={"!text-7xl pb-4 animate__animated animate__jackInTheBox"}
         level={1}
         text={"404"}
       />
-      <UKC.Separator direction={"column"} />
-      <UKC.Subtext
+      <UKSeparator direction={"column"} />
+      <UKSubtext
         className={"animate__animated animate__fadeInUp"}
         text={"This page could not be found!"}
       />

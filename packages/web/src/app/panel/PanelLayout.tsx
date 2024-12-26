@@ -60,18 +60,18 @@ const PanelLayout: React.FC<{
           <div className={styles.applicationPanelFrame}>
             <div className={styles.applicationPanel}>
               {showBackButton && (
-                <UKC.IconButton
-                  icon={UK.Core.Icons.ChevronLeft}
+                <UKIconButton
+                  icon={UKIcons.ChevronLeft}
                   accessibleLabel={"Go Back"}
                   onClick={onBackButton}
                 />
               )}
-              <UKC.Image
+              <UKImage
                 className={styles.applicationIcon}
                 src={applicationIcon}
                 accessibleLabel={""}
               />
-              <UKC.Text
+              <UKText
                 text={applicationDisplayName}
                 className={styles.applicationDisplayName}
               />
@@ -96,18 +96,18 @@ const PanelLayout: React.FC<{
           <div className={styles.applicationPanelFrame}>
             <div className={styles.applicationPanel}>
               {showBackButton && (
-                <UKC.IconButton
-                  icon={UK.Core.Icons.ChevronLeft}
+                <UKIconButton
+                  icon={UKIcons.ChevronLeft}
                   accessibleLabel={"Go Back"}
                   onClick={onBackButton}
                 />
               )}
-              <UKC.Image
+              <UKImage
                 className={styles.applicationIcon}
                 src={applicationIcon}
                 accessibleLabel={""}
               />
-              <UKC.Text
+              <UKText
                 text={applicationDisplayName}
                 className={styles.applicationDisplayName}
               />
@@ -128,18 +128,18 @@ const PanelLayout: React.FC<{
           <div className={styles.applicationPanelFrame}>
             <div className={styles.applicationPanel}>
               {showBackButton && (
-                <UKC.IconButton
-                  icon={UK.Core.Icons.ChevronLeft}
+                <UKIconButton
+                  icon={UKIcons.ChevronLeft}
                   accessibleLabel={"Go Back"}
                   onClick={onBackButton}
                 />
               )}
-              <UKC.Image
+              <UKImage
                 className={styles.applicationIcon}
                 src={applicationIcon}
                 accessibleLabel={""}
               />
-              <UKC.Text
+              <UKText
                 text={applicationDisplayName}
                 className={styles.applicationDisplayName}
               />
@@ -164,18 +164,18 @@ const PanelLayout: React.FC<{
           <div className={styles.applicationPanelFrame}>
             <div className={styles.applicationPanel}>
               {showBackButton && (
-                <UKC.IconButton
-                  icon={UK.Core.Icons.ChevronLeft}
+                <UKIconButton
+                  icon={UKIcons.ChevronLeft}
                   accessibleLabel={"Go Back"}
                   onClick={onBackButton}
                 />
               )}
-              <UKC.Image
+              <UKImage
                 className={styles.applicationIcon}
                 src={applicationIcon}
                 accessibleLabel={""}
               />
-              <UKC.Text
+              <UKText
                 text={applicationDisplayName}
                 className={styles.applicationDisplayName}
               />

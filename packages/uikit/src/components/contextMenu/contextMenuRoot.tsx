@@ -5,7 +5,7 @@
 
 import React from "react";
 import { FC, useEffect, useRef } from "react";
-import Button from "../button/button.tsx";
+import UKButton from "../button/UKButton.tsx";
 import ContextMenuRootContext from "./contextMenuRootContext.tsx";
 import styles from "./contextMenuRoot.module.scss";
 
@@ -66,7 +66,7 @@ const ContextMenuRoot: FC<{ children: React.ReactNode | React.ReactNode[] }> = (
       >
         {items.map((item) => {
           return (
-            <Button
+            <UKButton
               className={styles.button}
               text={item.label}
               onClick={item.onClick}

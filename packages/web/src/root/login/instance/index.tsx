@@ -5,20 +5,20 @@
 
 import styles from "./index.module.scss";
 import Panel from "./components/panel/panel.tsx";
-import { FC } from "react";
-import { UKC } from "@yourdash/uikit";
+import React, { FC } from "react";
+import UKHeading from "@yourdash/uikit/components/heading/UKHeading.js";
 
 const LoginInstancePage: FC = () => {
   return (
     <div className={styles.page}>
       <Panel />
       <div className={styles.info}>
-        <UKC.Heading
+        <UKHeading
           className={styles.title}
           level={1}
           text={"Welcome to YourDash!"}
         />
-        <UKC.Heading
+        <UKHeading
           className={styles.subtitle}
           level={2}
           text={"The following are the steps required to get started"}

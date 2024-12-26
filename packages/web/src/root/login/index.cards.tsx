@@ -76,26 +76,26 @@ const IndexCardsPage: FC<{ metadata?: EndpointResponseLoginInstanceMetadata }> =
 
   return (
     <div className={styles.page}>
-      <UKC.Card className={clippy(styles.formCard)}>
+      <UKCard className={clippy(styles.formCard)}>
         {user.isValid ? (
           <>
-            <UKC.Image
+            <UKImage
               className={styles.avatar}
               src={toAuthImgUrl(user.avatar)}
               accessibleLabel={"Your Avatar"}
             />
-            <UKC.Heading
+            <UKHeading
               level={2}
               text={`${user.fullName.first} ${user.fullName.last}`}
             />
           </>
         ) : (
-          <UKC.Heading
+          <UKHeading
             level={3}
             text={"Login"}
           />
         )}
-        <UKC.TextInput
+        <UKTextInput
           accessibleName={"Username"}
           placeholder={"Username"}
           type={"username"}
@@ -103,7 +103,7 @@ const IndexCardsPage: FC<{ metadata?: EndpointResponseLoginInstanceMetadata }> =
           getValue={setUsername}
           autoComplete={`yourdash-instance-login username instance-${coreCSI.getInstanceUrl()}`}
         />
-        <UKC.TextInput
+        <UKTextInput
           accessibleName={"Password"}
           placeholder={"Password"}
           type={"password"}
@@ -121,7 +121,7 @@ const IndexCardsPage: FC<{ metadata?: EndpointResponseLoginInstanceMetadata }> =
             }
           }}
         />
-        <UKC.Button
+        <UKButton
           className={styles.button}
           text={"Login"}
           disabled={username === "" || password === "" || !user.isValid}
@@ -135,35 +135,35 @@ const IndexCardsPage: FC<{ metadata?: EndpointResponseLoginInstanceMetadata }> =
               });
           }}
         />
-        <UKC.Subtext
+        <UKSubtext
           className={styles.instanceUrl}
           text={coreCSI.getInstanceUrl()}
         />
-      </UKC.Card>
-      <UKC.Card className={styles.metadataCard}>
-        <UKC.Image
+      </UKCard>
+      <UKCard className={styles.metadataCard}>
+        <UKImage
           containerClassName={styles.backgroundImageContainer}
           className={styles.backgroundImage}
           src={toAuthImgUrl("/login/instance/background")}
           accessibleLabel={""}
         />
-        <UKC.Flex
+        <UKFlex
           direction={"column"}
           className={styles.metadata}
         >
-          <UKC.Heading
+          <UKHeading
             level={1}
             text={props.metadata?.title || "Unknown instance title"}
             className={styles.title}
           />
           {props.metadata?.message && (
-            <UKC.Subtext
+            <UKSubtext
               className={styles.message}
               text={props.metadata.message}
             />
           )}
-        </UKC.Flex>
-      </UKC.Card>
+        </UKFlex>
+      </UKCard>
     </div>
   );
 };

@@ -52,30 +52,30 @@ const AppLayout: React.FC = () => {
         <div className={"w-full h-full flex items-center justify-center flex-col gap-4"}>
           {!didTakeTooLong && (
             <>
-              <UKC.Spinner />
-              <UKC.Card className={"flex items-center justify-center"}>
+              <UKSpinner />
+              <UKCard className={"flex items-center justify-center"}>
                 <h1 className={"text-5xl font-bold pl-4 pr-4"}>Loading YourDash</h1>
-              </UKC.Card>
+              </UKCard>
             </>
           )}
-          <UKC.Card className={clippy("text-center animate__animated animate__fadeInUp", didTakeTooLong ? "" : "fixed bottom-4")}>
+          <UKCard className={clippy("text-center animate__animated animate__fadeInUp", didTakeTooLong ? "" : "fixed bottom-4")}>
             <div className={"pl-2 pr-2"}>
               {didTakeTooLong ? (
                 <div className={"flex gap-2 flex-col -ml-2 -mr-2 items-center justify-center"}>
                   <div className={"flex items-center justify-center"}>
-                    <UKC.Heading
+                    <UKHeading
                       level={3}
                       text={"Your instance took too long to load"}
                     />
                   </div>
                   <div className={"flex gap-2"}>
-                    <UKC.Button
+                    <UKButton
                       onClick={() => {
                         window.location.reload();
                       }}
                       text={"Retry"}
                     />
-                    <UKC.Button
+                    <UKButton
                       onClick={() => {
                         localStorage.clear();
                         navigate("/login");
@@ -88,7 +88,7 @@ const AppLayout: React.FC = () => {
                 <>This should not take longer than 5 seconds</>
               )}
             </div>
-          </UKC.Card>
+          </UKCard>
         </div>
       </>
     );

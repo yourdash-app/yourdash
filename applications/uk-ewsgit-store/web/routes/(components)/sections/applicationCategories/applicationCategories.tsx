@@ -23,10 +23,10 @@ const ApplicationCategories: React.FC = () => {
             style={{ backgroundImage: cat.backgroundImage }}
           >
             <Heading text={cat.displayName} />
-            <UKC.Text text={cat.description} />
+            <UKText text={cat.description} />
             <Row>
-              <UKC.Text text={cat.applicationCount.toString()} />
-              <UKC.Text text={cat.moduleCount.toString()} />
+              <UKText text={cat.applicationCount.toString()} />
+              <UKText text={cat.moduleCount.toString()} />
             </Row>
           </Card>
         );

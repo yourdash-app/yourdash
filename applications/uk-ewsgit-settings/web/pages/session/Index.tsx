@@ -37,12 +37,12 @@ const SettingsPageSession: React.FC = () => {
                   className={"aspect-square h-8 m-auto ml-0"}
                   icon={
                     session.type === YOURDASH_SESSION_TYPE.WEB
-                      ? UKIcon.Browser
+                      ? UKIcons.Browser
                       : session.type === YOURDASH_SESSION_TYPE.CLI
-                        ? UKIcon.Terminal
+                        ? UKIcons.Terminal
                         : session.type === YOURDASH_SESSION_TYPE.DESKTOP
-                          ? UKIcon.DeviceDesktop
-                          : UKIcon.Question
+                          ? UKIcons.DeviceDesktop
+                          : UKIcons.Question
                   }
                 />
               </div>
@@ -57,7 +57,7 @@ const SettingsPageSession: React.FC = () => {
                   <div>Supports PSA: {(!!session.isNodeJS).toString()}</div>
                 </div>
                 <IconButton
-                  icon={UKIcon.X}
+                  icon={UKIcons.X}
                   onClick={() => {
                     coreCSI.deleteJson(`/core/session/${session.sessionId}`, () => {
                       setReloadNum(reloadNum + 1);

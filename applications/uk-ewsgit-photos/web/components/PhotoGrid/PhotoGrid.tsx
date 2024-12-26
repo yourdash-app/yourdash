@@ -24,7 +24,7 @@ const PhotoGrid: React.FC<{
               src={i.imageSrc}
               noRounding={true}
             />
-            {i.mediaType === PHOTOS_MEDIA_TYPE.Video && <Icon icon={UKIcon.Video} />}
+            {i.mediaType === PHOTOS_MEDIA_TYPE.Video && <Icon icon={UKIcons.Video} />}
           </div>
         );
       })}

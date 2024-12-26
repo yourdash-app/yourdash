@@ -40,7 +40,7 @@ const Panel: React.FC<{
   }
 
   return (
-    <UKC.Box
+    <UKBox
       className={clippy(
         styles.panel,
         side === "top" && styles.top,
@@ -62,7 +62,7 @@ const Panel: React.FC<{
           />
         );
       })}
-    </UKC.Box>
+    </UKBox>
   );
 };
 

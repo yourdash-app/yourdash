@@ -4,7 +4,7 @@
  */
 
 import useWebsocketConnection from "@yourdash/csi/useWebsocketConnection.ts";
-import { Core } from "@yourdash/uikit";
+import useToast from "@yourdash/uikit/core/toasts/useToast.js";
 import React, { useEffect } from "react";
 import stripAnsi from "strip-ansi";
 
@@ -20,7 +20,7 @@ const WebsocketToasts: React.FC = () => {
   if (window.location.hostname !== "localhost") return <></>;
 
   const wsc = useWebsocketConnection("/core/log");
-  const toast = Core.useToast();
+  const toast = useToast();
 
   useEffect(() => {
     if (!wsc) return;

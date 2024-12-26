@@ -20,7 +20,7 @@ const HomeView: React.FC = () => {
           >
             <Icon
               className={"aspect-square h-12"}
-              icon={UKIcon.YourDashLogo}
+              icon={UKIcons.YourDashLogo}
               preserveColor
             />
             <h1 className={"text-3xl font-bold tracking-wide"}>{"YourDash Dev"}</h1>

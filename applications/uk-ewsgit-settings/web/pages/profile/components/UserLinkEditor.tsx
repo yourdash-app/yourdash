@@ -38,7 +38,7 @@ const UserLinkEditor: React.FC<{
       />
       <IconButton
         className={"aspect-square"}
-        icon={UKIcon.Dash}
+        icon={UKIcons.Dash}
         onClick={() => {
           setLinks(links?.filter((l) => l !== link));
         }}

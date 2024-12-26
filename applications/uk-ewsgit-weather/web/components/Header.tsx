@@ -70,7 +70,7 @@ const WeatherApplicationLocationPageHeader: React.FC<WeatherApplicationLocationP
       >
         <section className={"flex gap-2"}>
           <IconButton
-            icon={UKIcon.ChevronLeft}
+            icon={UKIcons.ChevronLeft}
             onClick={() => {
               navigate("/app/a/uk-ewsgit-weather");
             }}
@@ -84,9 +84,9 @@ const WeatherApplicationLocationPageHeader: React.FC<WeatherApplicationLocationP
           </div>
         </section>
         <section className={"gap-2 flex"}>
-          <IconButton icon={UKIcon.Bookmark} />
+          <IconButton icon={UKIcons.Bookmark} />
           <IconButton
-            icon={isStuck ? UKIcon.ChevronDown : UKIcon.ChevronUp}
+            icon={isStuck ? UKIcons.ChevronDown : UKIcons.ChevronUp}
             onClick={() => {
               setIsStuck(!isStuck);
             }}

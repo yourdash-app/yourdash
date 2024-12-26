@@ -23,7 +23,7 @@ const AlbumPathPage: FC = () => {
       <div className={styles.header}>
         <IconButton
           accessibleLabel={"Go back"}
-          icon={UK.Core.Icons.ChevronLeft}
+          icon={UKIcons.ChevronLeft}
           onClick={() => {
             if (!albumPath) return;
 

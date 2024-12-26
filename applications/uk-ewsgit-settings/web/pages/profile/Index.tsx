@@ -90,7 +90,7 @@ const ProfileIndexPage: React.FC = () => {
           <div className={"-mb-2 flex justify-between items-center"}>
             <h2 className={"font-semibold text-2xl"}>Links</h2>
             <IconButton
-              icon={UKIcon.Plus}
+              icon={UKIcons.Plus}
               onClick={() => {
                 setUserData({
                   ...userData,

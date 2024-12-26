@@ -14,10 +14,12 @@
 
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
+    "allowArbitraryExtensions": true,
     "isolatedModules": true,
     "moduleDetection": "force",
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "traceResolution": true
   },
   "include": ["src/**/*", "../applications/**/frontend/**/*"],
   "references": [

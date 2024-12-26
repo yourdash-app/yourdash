@@ -27,12 +27,12 @@ const AlbumMedia: React.FC<{ albumMedia: AlbumMediaPath; showFilenames?: boolean
         navigateTo(`/view/@/${albumMedia.path}`);
       }}
     >
-      <UKC.Image
+      <UKImage
         className={styles.image}
         accessibleLabel={""}
         src={toAuthImgUrl(thumbnailPath?.thumbnail || "")}
       />
-      {showFilenames && <UKC.Text text={coreCSI.path.basename(albumMedia.path)} />}
+      {showFilenames && <UKText text={coreCSI.path.basename(albumMedia.path)} />}
     </div>
   );
 };

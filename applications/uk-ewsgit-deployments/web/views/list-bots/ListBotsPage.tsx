@@ -87,14 +87,14 @@ const ListBotsPage: React.FC = () => {
             </DropdownButton>
             <TextInput
               accessibleName={"Search Bots"}
-              icon={UKIcon.Search}
+              icon={UKIcons.Search}
               placeholder={"Search"}
               onChange={(value) => {
                 setSearchValue(value);
               }}
             />
             <IconButton
-              icon={UKIcon.Plus}
+              icon={UKIcons.Plus}
               onClick={() => {
                 navigate("/app/a/uk-ewsgit-chatbots/create-bot");
               }}

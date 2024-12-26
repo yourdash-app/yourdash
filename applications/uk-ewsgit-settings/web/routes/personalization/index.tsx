@@ -15,13 +15,13 @@ const Index: React.FC = () => (
       href={`${modulePath}/personalization/panel`}
       description={"Customize your panel"}
       title={"Panel"}
-      icon={UKIcon.Paintbrush}
+      icon={UKIcons.Paintbrush}
     />
     <SettingCategoryComponent
       href={`${modulePath}/personalization/theme`}
       description={"Customize the look of YourDash"}
       title={"Theme"}
-      icon={UKIcon.Accessibility}
+      icon={UKIcons.Accessibility}
     />
   </BasePageLayout>
 );

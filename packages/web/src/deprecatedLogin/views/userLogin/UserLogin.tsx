@@ -73,16 +73,16 @@ const UserLogin: React.FC<IUserLogin> = ({ setUsername, setPassword, password, u
   if (!isValidUser) {
     return (
       <div className={"w-full h-full flex items-center justify-center flex-col relative"}>
-        <UKC.IconButton
+        <UKIconButton
           accessibleLabel={"Go back"}
-          icon={UK.Core.Icons.ChevronLeft}
+          icon={UKIcons.ChevronLeft}
           className={"left-0 top-0 absolute animate__animated animate__fadeInLeft"}
           onClick={() => {
             setInstanceHostname("");
           }}
         />
         <span className={"animate__animated animate__fadeIn text-4xl font-semibold pb-4"}>Welcome Back</span>
-        <UKC.TextInput
+        <UKTextInput
           accessibleName="Username input"
           key={"username-input"}
           className={"animate__animated animate__fadeIn"}
@@ -96,9 +96,9 @@ const UserLogin: React.FC<IUserLogin> = ({ setUsername, setPassword, password, u
 
   return (
     <div className={"w-full h-full flex items-center justify-center flex-col relative animate__animated animate__fadeIn gap-4"}>
-      <UKC.IconButton
+      <UKIconButton
         accessibleLabel={"Go back"}
-        icon={UK.Core.Icons.ChevronLeft}
+        icon={UKIcons.ChevronLeft}
         className={"left-0 top-0 absolute animate__animated animate__fadeInLeft"}
         onClick={() => {
           setIsValidUser(false);
@@ -116,7 +116,7 @@ const UserLogin: React.FC<IUserLogin> = ({ setUsername, setPassword, password, u
         {fullName.first} {fullName.last}
       </span>
       <form className={"flex-col flex items-center gap-4"}>
-        <UKC.TextInput
+        <UKTextInput
           accessibleName="Username input"
           autoComplete={`yourdash-instance-login username instance-${coreCSI.getInstanceUrl()}`}
           key={"username-input"}
@@ -124,7 +124,7 @@ const UserLogin: React.FC<IUserLogin> = ({ setUsername, setPassword, password, u
           getValue={setUsername}
           value={username}
         />
-        <UKC.TextInput
+        <UKTextInput
           accessibleName="Password input"
           autoComplete={`yourdash-instance-login password instance-${coreCSI.getInstanceUrl()}`}
           key={"password-input"}
@@ -152,7 +152,7 @@ const UserLogin: React.FC<IUserLogin> = ({ setUsername, setPassword, password, u
             );
           }}
         />
-        <UKC.Button
+        <UKButton
           onClick={() => {
             coreCSI.syncPostJson(
               `/login/user/${username}/authenticate`,

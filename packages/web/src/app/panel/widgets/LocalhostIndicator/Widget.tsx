@@ -24,7 +24,7 @@ const LocalhostIndicator: React.FC<{
         side === "right" && "mt-auto",
       )}
     >
-      <UKC.Text
+      <UKText
         text={"</>"}
         className={"text-pink-300"}
       />

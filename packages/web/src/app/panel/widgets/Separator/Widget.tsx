@@ -11,7 +11,7 @@ const SeparatorWidget: React.FC<{ side: "top" | "right" | "bottom" | "left" }> =
     // <div
     //   className={clippy(styles.separator, side === "top" || side === "bottom" ? styles.horizontal : styles.vertical)}
     // ></div>
-    <UKC.Separator direction={side === "top" || side === "bottom" ? "row" : "column"} />
+    <UKSeparator direction={side === "top" || side === "bottom" ? "row" : "column"} />
   );
 };
 

@@ -60,31 +60,31 @@ const StatusIndicators: React.FC = () => {
   return (
     <div className={"ml-auto flex gap-2 items-center"}>
       <Indicator
-        icon={UKIcon.Info}
+        icon={UKIcons.Info}
         color={"#32b3ff"}
         displayName={"Info Logs"}
         value={infoLogs}
       />
       <Indicator
-        icon={UKIcon.Plug}
+        icon={UKIcons.Plug}
         color={"#ffffff"}
         displayName={"Websocket Connections"}
         value={webSocketConnections}
       />
       <Indicator
-        icon={UKIcon.Alert}
+        icon={UKIcons.Alert}
         color={"#eab842"}
         displayName={"Warning Logs"}
         value={warningLogs}
       />
       <Indicator
-        icon={UKIcon.XCircle}
+        icon={UKIcons.XCircle}
         color={"#ff6633"}
         displayName={"Error Logs"}
         value={errorLogs}
       />
       <Indicator
-        icon={UKIcon.Bug}
+        icon={UKIcons.Bug}
         color={"#0ac700"}
         displayName={"Debug Logs"}
         value={debugLogs}

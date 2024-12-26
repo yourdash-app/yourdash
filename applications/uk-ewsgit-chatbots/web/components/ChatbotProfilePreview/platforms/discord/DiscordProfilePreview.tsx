@@ -52,7 +52,7 @@ const DiscordProfilePreview: React.FC<IDiscordProfilePreviewProps> = ({
             {discriminator && `#${discriminator}`}
             <div className={styles.usernameBadge}>
               <Icon
-                icon={UKIcon.Check}
+                icon={UKIcons.Check}
                 className={styles.usernameBadgeIcon}
               />
               BOT
@@ -63,7 +63,7 @@ const DiscordProfilePreview: React.FC<IDiscordProfilePreviewProps> = ({
         {showAddApplicationButton && (
           <button className={styles.addAppButton}>
             <Icon
-              icon={UKIcon.PlusCircle}
+              icon={UKIcons.PlusCircle}
               className={styles.addAppIcon}
             />
             Add App

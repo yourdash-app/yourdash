@@ -16,7 +16,7 @@ const Index: React.FC = () => {
     <BasePageLayout title={"Dashboard personalization"}>
       <BooleanSettingComponent
         title={"Use browser layout"}
-        icon={UKIcon.Browser}
+        icon={UKIcons.Browser}
         description={'Use the "browser" layout instead of the "dashboard" layout'}
         value={useBrowserLayout}
         setValue={(val) => {

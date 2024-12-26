@@ -9,19 +9,10 @@
     "node": ">=21.0.0"
   },
   "files": [
-    "dist/",
-    "src/theme"
+    "dist/"
   ],
-  "main": "./dist/uikit.js",
-  "types": "./dist/uikit.d.ts",
   "exports": {
-    ".": "./dist/uikit.js",
-    "./src/theme/*": "./src/theme/",
-    "./components/index": "./dist/components/index.js",
-    "./views/index": "./dist/views/index.js",
-    "./core/index": "./dist/core/index.js",
-    "./components/*": "./dist/components/*",
-    "./views/*": "./dist/views/*"
+    "./*": "./dist/*"
   },
   "scripts": {
     "build": "bunx --bun vite build",

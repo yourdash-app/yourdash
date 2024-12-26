@@ -3,49 +3,53 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import UK, { UKC, UKV } from "@yourdash/uikit";
+import UKButtonWithIcon from "@yourdash/uikit/components/buttonWithIcon/UKButtonWithIcon.js";
+import UKHeading from "@yourdash/uikit/components/heading/UKHeading.js";
+import { UKIcons } from "@yourdash/uikit/core/iconDictionary.js";
+import UKSidebar from "@yourdash/uikit/views/sidebar/UKSidebar.js";
+import UKSidebarContainer from "@yourdash/uikit/views/sidebar/UKSidebarContainer.js";
 import React from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 
 const DocsLayout: React.FC = () => {
   const navigate = useNavigate();
   return (
-    <UKV.SidebarContainer>
+    <UKSidebarContainer>
       <div className={"col-span-2 w-full h-max flex items-center justify-center p-2 bg-red-400 text-black"}>
-        <UKC.Heading
+        <UKHeading
           level={2}
           text={"YourDash Docs are mid-refactor and are incomplete."}
         />
       </div>
-      <UKV.Sidebar>
-        <UKC.Heading
+      <UKSidebar>
+        <UKHeading
           level={2}
           text={"Docs"}
         />
-        <UKC.ButtonWithIcon
-          icon={UK.Core.Icons.Home}
+        <UKButtonWithIcon
+          icon={UKIcons.Home}
           text={"Home"}
           onClick={() => {
             navigate("/docs/");
           }}
         />
-        <UKC.ButtonWithIcon
-          icon={UK.Core.Icons.Info}
+        <UKButtonWithIcon
+          icon={UKIcons.Info}
           text={"Get Started"}
           onClick={() => {
             navigate("/docs/get-started");
           }}
         />
-        <UKC.ButtonWithIcon
-          icon={UK.Core.Icons.Accessibility}
+        <UKButtonWithIcon
+          icon={UKIcons.Accessibility}
           text={"Translation"}
           onClick={() => {
             navigate("/docs/translation");
           }}
         />
-      </UKV.Sidebar>
+      </UKSidebar>
       <Outlet />
-    </UKV.SidebarContainer>
+    </UKSidebarContainer>
   );
 };
 

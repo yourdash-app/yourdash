@@ -22,7 +22,7 @@ const StoreHeader: React.FC<{ showBackButton?: number }> = ({ showBackButton }) 
     >
       {showBackButton && (
         <IconButton
-          icon={UKIcon.ChevronLeft}
+          icon={UKIcons.ChevronLeft}
           onClick={() => {
             let navigatePath = "";
             for (let i = 0; i < showBackButton; i++) {
@@ -48,16 +48,16 @@ const StoreHeader: React.FC<{ showBackButton?: number }> = ({ showBackButton }) 
           }}
           placeholder={"Search Applications"}
           className={styles.searchInput}
-          icon={UKIcon.Search}
+          icon={UKIcons.Search}
         />
         <IconButton
-          icon={UKIcon.Database}
+          icon={UKIcons.Database}
           onClick={() => {
             console.log("Implement me!");
           }}
         />
         <IconButton
-          icon={UKIcon.Download}
+          icon={UKIcons.Download}
           onClick={() => {
             console.log("Implement me!");
           }}

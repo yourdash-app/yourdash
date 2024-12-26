@@ -4,11 +4,17 @@
  */
 
 import coreCSI from "@yourdash/csi/coreCSI.ts";
+import UKBox from "@yourdash/uikit/components/box/UKBox.js";
+import UKButton from "@yourdash/uikit/components/button/UKButton.js";
+import UKHeading from "@yourdash/uikit/components/heading/UKHeading.js";
+import UKSubtext from "@yourdash/uikit/components/subtext/UKSubtext.js";
+import UKTextInput from "@yourdash/uikit/components/textInput/UKTextInput.js";
+import { UKIcons } from "@yourdash/uikit/core/iconDictionary.js";
 import styles from "./panel.module.scss";
 import isValidInstance from "../../../lib/isValidInstance.ts";
 import { FC, useState } from "react";
 import { useNavigate } from "react-router";
-import UK, { UKC } from "@yourdash/uikit";
+import UKIconButton from "@yourdash/uikit/components/iconButton/UKIconButton.js";
 
 const Panel: FC = () => {
   const navigate = useNavigate();
@@ -27,40 +33,40 @@ const Panel: FC = () => {
   }
 
   return (
-    <UKC.Box className={styles.component}>
-      <UKC.IconButton
-        icon={UK.Core.Icons.ChevronLeft}
+    <UKBox className={styles.component}>
+      <UKIconButton
+        icon={UKIcons.ChevronLeft}
         onClick={() => {
           navigate("/");
         }}
         className={styles.backButton}
         accessibleLabel={"Go Back"}
       />
-      <UKC.Heading
+      <UKHeading
         level={3}
         text={"Instance's Url"}
       />
-      <UKC.TextInput
+      <UKTextInput
         accessibleName={"Instance url"}
         placeholder={"https:// or http://"}
         getValue={setInputValue}
         onSubmit={() => {
           checkUrl();
         }}
-        icon={UK.Core.Icons.Link}
+        icon={UKIcons.Link}
       />
       {isValid === false && (
         <>
-          <UKC.Subtext text={"Invalid instance!"} />
+          <UKSubtext text={"Invalid instance!"} />
         </>
       )}
-      <UKC.Button
+      <UKButton
         text={"Check url"}
         onClick={() => {
           checkUrl();
         }}
       />
-    </UKC.Box>
+    </UKBox>
   );
 };
 

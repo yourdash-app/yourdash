@@ -41,7 +41,7 @@ const ApplicationsLauncherApplications: React.FC<{
 
   return (
     <>
-      <UKC.TextInput
+      <UKTextInput
         accessibleName={"Search Applications"}
         placeholder={"Search Applications"}
         className={clippy(styles.searchBar, "top-0 sticky z-10")}
@@ -51,7 +51,7 @@ const ApplicationsLauncherApplications: React.FC<{
           }
         }}
         getLiveValue={setSearchQuery}
-        icon={UK.Core.Icons.Search}
+        icon={UKIcons.Search}
       />
 
       {layout === "large-grid" && <LargeApplicationGrid modules={applications} />}

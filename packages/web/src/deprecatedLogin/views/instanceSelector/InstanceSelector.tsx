@@ -23,7 +23,7 @@ const InstanceSelector: React.FC<IInstanceSelector> = ({ setInstanceUrl }) => {
     <section className={"w-full h-full flex items-center justify-center flex-col gap-4 relative"}>
       <IconButton
         className={"absolute left-0 top-0"}
-        icon={UKIcon.ChevronLeft}
+        icon={UKIcons.ChevronLeft}
         onClick={() => {
           navigate("/");
         }}

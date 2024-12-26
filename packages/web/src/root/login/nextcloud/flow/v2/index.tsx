@@ -19,30 +19,30 @@ const LoginNextcloudFlowV2Page: React.FC = () => {
   if (successful) {
     return (
       <>
-        <UKC.Heading text={"Successfully authenticated!"} />
-        <UKC.Text text={"You may now safely close the tab."} />
+        <UKHeading text={"Successfully authenticated!"} />
+        <UKText text={"You may now safely close the tab."} />
       </>
     );
   }
 
   return (
-    <UKC.Card>
-      <UKC.Heading text={"Nextcloud Compatability login flow"} />
-      <UKC.Separator direction={"column"} />
-      <UKC.TextInput
+    <UKCard>
+      <UKHeading text={"Nextcloud Compatability login flow"} />
+      <UKSeparator direction={"column"} />
+      <UKTextInput
         accessibleName={""}
         placeholder={"username"}
         type="username"
         getValue={setUsername}
       />
-      <UKC.TextInput
+      <UKTextInput
         accessibleName={""}
         placeholder={"password"}
         type="password"
         getValue={setPassword}
       />
-      <UKC.Separator direction={"column"} />
-      <UKC.Button
+      <UKSeparator direction={"column"} />
+      <UKButton
         text="Login"
         onClick={() => {
           coreCSI
@@ -59,7 +59,7 @@ const LoginNextcloudFlowV2Page: React.FC = () => {
             });
         }}
       />
-    </UKC.Card>
+    </UKCard>
   );
 };
 

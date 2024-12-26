@@ -4,11 +4,15 @@
  */
 
 import coreCSI from "@yourdash/csi/coreCSI.ts";
+import UKButton from "@yourdash/uikit/components/button/UKButton.js";
+import UKFlex from "@yourdash/uikit/components/flex/UKFlex.js";
+import UKHeading from "@yourdash/uikit/components/heading/UKHeading.js";
+import UKText from "@yourdash/uikit/components/text/UKText.js";
+import UKDialog from "@yourdash/uikit/views/dialog/UKDialog.js";
 import LoginIndexPage from "./index.tsx";
 import isValidInstance from "./lib/isValidInstance.ts";
 import { FC, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { UKC, UKV } from "@yourdash/uikit";
 
 const LoginIndexPagePreload: FC = () => {
   const navigate = useNavigate();
@@ -32,29 +36,29 @@ const LoginIndexPagePreload: FC = () => {
   return (
     <>
       {validInstance === undefined || !validInstance ? (
-        <UKV.Dialog>
-          <UKC.Flex
+        <UKDialog>
+          <UKFlex
             padding
             direction={"column"}
           >
-            <UKC.Heading text={"Logging in..."} />
-            <UKC.Text text={"Checking if the instance is valid and online"} />
-            <UKC.Flex direction={"row"}>
-              <UKC.Button
+            <UKHeading text={"Logging in..."} />
+            <UKText text={"Checking if the instance is valid and online"} />
+            <UKFlex direction={"row"}>
+              <UKButton
                 text={"Retry"}
                 onClick={() => {
                   setRetryCounter(retryCounter + 1);
                 }}
               />
-              <UKC.Button
+              <UKButton
                 text={"Select new instance"}
                 onClick={() => {
                   navigate("/login/instance");
                 }}
               />
-            </UKC.Flex>
-          </UKC.Flex>
-        </UKV.Dialog>
+            </UKFlex>
+          </UKFlex>
+        </UKDialog>
       ) : (
         <>
           <LoginIndexPage />

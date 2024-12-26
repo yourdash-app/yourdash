@@ -45,7 +45,7 @@ const UserPreview: React.FC<IUserPreview> = ({ name, username, avatar, bio, link
             >
               <Icon
                 className={styles.icon}
-                icon={UKIcon.Link}
+                icon={UKIcons.Link}
               />
               {link.label}
             </a>

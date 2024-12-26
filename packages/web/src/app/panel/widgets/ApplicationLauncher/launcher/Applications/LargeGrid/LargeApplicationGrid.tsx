@@ -19,7 +19,7 @@ const LargeApplicationGrid: React.FC<{
     <section className={styles.grid}>
       {modules.map((module) => {
         return (
-          <UKC.ContextMenu
+          <UKContextMenu
             items={[
               {
                 label: "Pin To Panel",
@@ -41,7 +41,7 @@ const LargeApplicationGrid: React.FC<{
             className={styles.item}
             key={module.id}
           >
-            <UKC.Card
+            <UKCard
               onClick={() => {
                 navigate(module.url);
               }}
@@ -55,8 +55,8 @@ const LargeApplicationGrid: React.FC<{
                 alt=""
               />
               <span className={styles.itemLabel}>{module.displayName}</span>
-            </UKC.Card>
-          </UKC.ContextMenu>
+            </UKCard>
+          </UKContextMenu>
         );
       })}
     </section>

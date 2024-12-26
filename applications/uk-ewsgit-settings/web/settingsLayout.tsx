@@ -15,43 +15,43 @@ const SettingsLayout: React.FC = () => {
   return (
     <UKV.SidebarContainer showSidebarByDefault>
       <UKV.Sidebar>
-        <UKC.Heading
+        <UKHeading
           className={styles.alignLeft}
           level={3}
           text={"Settings"}
         />
-        <UKC.Separator direction={"column"} />
-        <UKC.Button
+        <UKSeparator direction={"column"} />
+        <UKButton
           text={"Home"}
           onClick={() => navigate(`${modulePath}/`)}
         />
-        <UKC.Button
+        <UKButton
           text={"Personalisation"}
           onClick={() => navigate(`${modulePath}/personalization`)}
         />
-        <UKC.Button
+        <UKButton
           text={"Login Sessions"}
           onClick={() => navigate(`${modulePath}/session`)}
         />
-        <UKC.Button
+        <UKButton
           text={"Administrator Tools"}
           onClick={() => navigate(`${modulePath}/admin`)}
         />
-        <UKC.Button
+        <UKButton
           text={"Developer Tools"}
           onClick={() => navigate(`${modulePath}/developer`)}
         />
-        <UKC.Separator direction={"column"} />
-        <UKC.Heading
+        <UKSeparator direction={"column"} />
+        <UKHeading
           className={styles.alignLeft}
           text={"Dev"}
           level={4}
         />
-        <UKC.Button
+        <UKButton
           text={"Test Category"}
           onClick={() => navigate(`${modulePath}/cat/test`)}
         />
-        <UKC.Button
+        <UKButton
           text={"Test Solo Setting"}
           onClick={() => navigate(`${modulePath}/cat/test/test-setting`)}
         />

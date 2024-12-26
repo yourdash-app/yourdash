@@ -36,11 +36,11 @@ const ApplicationLayout: React.FC = () => {
   return (
     <UKV.SidebarContainer>
       <UKV.Sidebar>
-        <UKC.Heading text={"Files"} />
-        <UKC.Separator direction={"column"} />
+        <UKHeading text={"Files"} />
+        <UKSeparator direction={"column"} />
         {commonStorageLocations.map((storageLocation) => {
           return (
-            <UKC.Button
+            <UKButton
               text={storageLocation.path}
               onClick={() => {
                 const currentTab = tabs.find((t) => activeTabId === t.id);
@@ -69,7 +69,7 @@ const ApplicationLayout: React.FC = () => {
           {tabs.map((tab) => {
             return (
               <div className={clippy(styles.tab, activeTabId === tab.id && styles.active)}>
-                <UKC.Button
+                <UKButton
                   className={styles.innerButton}
                   key={tab.id}
                   text={tab.displayName}
@@ -77,19 +77,19 @@ const ApplicationLayout: React.FC = () => {
                     setActiveTabId(tab.id);
                   }}
                 />
-                <UKC.IconButton
+                <UKIconButton
                   onClick={() => {
                     setTabs((tbs) => tbs.filter((t) => t.id !== tab.id));
                   }}
                   accessibleLabel={"close tab"}
-                  icon={UK.Core.Icons.X}
+                  icon={UKIcons.X}
                   className={styles.tabCloseButton}
                 />
               </div>
             );
           })}
-          <UKC.IconButton
-            icon={UK.Core.Icons.Plus}
+          <UKIconButton
+            icon={UKIcons.Plus}
             onClick={() => {
               setTabs([...tabs, homeTab()]);
             }}
@@ -102,29 +102,29 @@ const ApplicationLayout: React.FC = () => {
             <TabView view={tabs.find((tab) => tab.id === activeTabId)?.view!} />
           </section>
         ) : (
-          <UKC.Flex
+          <UKFlex
             centerHorizontally
             centerVertically
             direction={"column"}
           >
-            <UKC.Card>
-              <UKC.Flex
+            <UKCard>
+              <UKFlex
                 direction={"column"}
                 centerHorizontally
                 centerVertically
               >
-                <UKC.Heading text={"You have no tabs!"} />
-                <UKC.Separator direction={"column"} />
-                <UKC.Text text={"Create a new tab by clicking the button below."} />
-                <UKC.Button
+                <UKHeading text={"You have no tabs!"} />
+                <UKSeparator direction={"column"} />
+                <UKText text={"Create a new tab by clicking the button below."} />
+                <UKButton
                   onClick={() => {
                     setTabs([homeTab()]);
                   }}
                   text={"Create new tab"}
                 />
-              </UKC.Flex>
-            </UKC.Card>
-          </UKC.Flex>
+              </UKFlex>
+            </UKCard>
+          </UKFlex>
         )}
       </div>
     </UKV.SidebarContainer>

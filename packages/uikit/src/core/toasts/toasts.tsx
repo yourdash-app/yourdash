@@ -4,15 +4,15 @@
  */
 
 import generateUUID from "@yourdash/shared/web/helpers/uuid.ts";
-import Heading from "../../components/heading/heading.tsx";
-import Separator from "../../components/separator/separator.tsx";
+import UKHeading from "../../components/heading/UKHeading.tsx";
+import UKSeparator from "../../components/separator/UKSeparator.tsx";
 import type ToastInterface from "./toast.ts";
 import clippy from "@yourdash/shared/web/helpers/clippy.ts";
 import { FC, useState } from "react";
-import Card from "../../components/card/card.tsx";
-import { UKIcon } from "../iconDictionary.ts";
-import IconButton from "../../components/iconButton/iconButton.tsx";
-import Text from "../../components/text/text.tsx";
+import UKCard from "../../components/card/UKCard.tsx";
+import { UKIcons } from "../iconDictionary.ts";
+import UKIconButton from "../../components/iconButton/UKIconButton.tsx";
+import UKText from "../../components/text/UKText.tsx";
 import ToastContext from "./toastContext.ts";
 import * as React from "react";
 import styles from "./toast.module.scss";
@@ -56,13 +56,13 @@ const Toasts: FC<{ children: React.ReactNode | React.ReactNode[] }> = ({ childre
       <div className={styles.container}>
         {toasts.map((t) => {
           return (
-            <Card
+            <UKCard
               key={t.uuid}
               actions={
                 t.persist ? (
-                  <IconButton
+                  <UKIconButton
                     accessibleLabel={"Close toasts"}
-                    icon={UKIcon.X}
+                    icon={UKIcons.X}
                     onClick={() => setToasts((toasts) => toasts.filter((x) => x.uuid !== t.uuid))}
                   />
                 ) : null
@@ -74,17 +74,17 @@ const Toasts: FC<{ children: React.ReactNode | React.ReactNode[] }> = ({ childre
                 t.animatingOut ? "animate__animated animate__fadeOutRightBig" : "animate__animated animate__fadeInDown",
               )}
             >
-              <Heading
+              <UKHeading
                 className={styles.heading}
                 level={3}
                 text={t.content.title}
               />
-              <Separator direction={"column"} />
-              <Text
+              <UKSeparator direction={"column"} />
+              <UKText
                 className={styles.body}
                 text={t.content.body}
               />
-            </Card>
+            </UKCard>
           );
         })}
       </div>

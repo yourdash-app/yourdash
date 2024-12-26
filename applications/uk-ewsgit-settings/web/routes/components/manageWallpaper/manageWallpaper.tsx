@@ -14,15 +14,15 @@ const ManageWallpaper: React.FC = () => {
   const currentWallpaper = useResource(() => acsi.getJson("/current/wallpaper", "/current/wallpaper"), []);
 
   return (
-    <UKC.Card>
-      <UKC.Heading
+    <UKCard>
+      <UKHeading
         level={2}
         className={styles.heading}
         text={"Manage Wallpaper"}
       />
-      <UKC.Separator direction={"column"} />
+      <UKSeparator direction={"column"} />
       {currentWallpaper ? (
-        <UKC.Image
+        <UKImage
           width={480}
           src={toAuthImgUrl(currentWallpaper.thumbnail)}
           accessibleLabel={"current wallpaper"}
@@ -31,17 +31,17 @@ const ManageWallpaper: React.FC = () => {
       ) : (
         <div>no current wallpaper</div>
       )}
-      <UKC.Separator direction={"column"} />
+      <UKSeparator direction={"column"} />
       <div className={styles.previousWallpapers}>
-        <UKC.Card className={styles.newWallpaperButton}>
-          <UKC.Icon
+        <UKCard className={styles.newWallpaperButton}>
+          <UKIcon
             className={styles.icon}
-            icon={UK.Core.Icons.Plus}
+            icon={UKIcons.Plus}
           />
-          <UKC.Text text={"Add new wallpaper"} />
-        </UKC.Card>
+          <UKText text={"Add new wallpaper"} />
+        </UKCard>
       </div>
-    </UKC.Card>
+    </UKCard>
   );
 };
 

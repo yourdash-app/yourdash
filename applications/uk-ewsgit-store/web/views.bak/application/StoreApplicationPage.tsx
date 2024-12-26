@@ -167,7 +167,7 @@ const StoreApplicationPage: React.FC = () => {
                 >
                   <Icon
                     className={"h-5"}
-                    icon={UKIcon.Link}
+                    icon={UKIcons.Link}
                   />
                   <span>{"View Source"}</span>
                 </Card>

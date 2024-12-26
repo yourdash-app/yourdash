@@ -25,8 +25,8 @@ const ApplicationLauncherWidget: React.FC<{ side: "top" | "right" | "bottom" | "
           className={styles.launcherButton}
           onClick={() => setLauncherVisible(!launcherVisible)}
         >
-          <UKC.Icon
-            icon={UK.Core.Icons.AppLauncher}
+          <UKIcon
+            icon={UKIcons.AppLauncher}
             className={styles.launcherButtonIcon}
           />
         </button>

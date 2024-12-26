@@ -18,7 +18,7 @@ const LoginIndexPage: FC = () => {
     <Suspense
       fallback={
         <div className={styles.spinner}>
-          <UKC.Spinner />
+          <UKSpinner />
         </div>
       }
     >

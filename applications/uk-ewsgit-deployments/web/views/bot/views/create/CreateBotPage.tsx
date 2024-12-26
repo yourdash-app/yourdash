@@ -29,7 +29,7 @@ const CreateBotPage: React.FC = () => {
   const [activityStatus, setActivityStatus] = useState<"offline" | "online" | "idle" | "dnd">("online");
   const [activityStatusLabel, setActivityStatusLabel] = useState<string>("");
   const [status, setStatus] = useState<string>("");
-  const [avatarUrl, setAvatarUrl] = useState<string>(UKIcon.ServerError);
+  const [avatarUrl, setAvatarUrl] = useState<string>(UKIcons.ServerError);
 
   useEffect(() => {
     coreCSI.getTeams().then(async (t) => {
@@ -48,7 +48,7 @@ const CreateBotPage: React.FC = () => {
     <main className={styles.page}>
       <header className={styles.header}>
         <IconButton
-          icon={UKIcon.ChevronLeft}
+          icon={UKIcons.ChevronLeft}
           onClick={() => {
             window.history.back();
           }}

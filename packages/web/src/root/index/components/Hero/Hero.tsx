@@ -4,11 +4,12 @@
  */
 
 import clippy from "@yourdash/shared/web/helpers/clippy.ts";
+import UKButtonLink from "@yourdash/uikit/components/buttonLink/UKButtonLink.js";
+import UKHeading from "@yourdash/uikit/components/heading/UKHeading.js";
 import React from "react";
 import FloatingApplications from "./FloatingApplications/FloatingApplications.tsx";
 import IndexPageHeroTaglines from "./Taglines.tsx";
 import styles from "./Hero.module.scss";
-import { UKC } from "@yourdash/uikit";
 
 const IndexPageHero: React.FC = () => {
   return (
@@ -19,7 +20,7 @@ const IndexPageHero: React.FC = () => {
       )}
     >
       <div className={"flex flex-col items-end justify-center overflow-hidden lg:ml-0 lg:mr-0 ml-auto mr-auto"}>
-        <UKC.Heading
+        <UKHeading
           level={1}
           className={clippy("animate__jackInTheBox animate__animated animate__250ms", styles.brandName)}
           text={"YourDash"}
@@ -27,11 +28,11 @@ const IndexPageHero: React.FC = () => {
         {/* Taglines scroller */}
         <IndexPageHeroTaglines />
         <div className={"flex gap-2 pt-7 justify-end animate__animated animate__fadeIn animate__750ms"}>
-          <UKC.ButtonLink
+          <UKButtonLink
             to={"/login"}
             text={"Login"}
           />
-          <UKC.ButtonLink
+          <UKButtonLink
             to={"/login/signup"}
             text={"Signup"}
           />

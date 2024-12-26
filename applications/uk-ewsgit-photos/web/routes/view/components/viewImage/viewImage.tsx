@@ -23,7 +23,7 @@ const ViewImage: FC<{ mediaUrl: string }> = ({ mediaUrl }) => {
           accessibleLabel={""}
         />
         <Card className={styles.scale}>
-          <UKC.Text text={`${scale * 100}% scale`} />
+          <UKText text={`${scale * 100}% scale`} />
         </Card>
       </PanAndZoom>
     </>

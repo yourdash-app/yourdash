@@ -30,7 +30,7 @@ const ApplicationRoutes: FC = () => {
       <IconButton
         key={"home"}
         accessibleLabel={"Home"}
-        icon={UK.Core.Icons.Home}
+        icon={UKIcons.Home}
         onClick={() => {
           navigateTo(`/`);
         }}
@@ -38,7 +38,7 @@ const ApplicationRoutes: FC = () => {
       <IconButton
         key={"search"}
         accessibleLabel={"Search"}
-        icon={UK.Core.Icons.Search}
+        icon={UKIcons.Search}
         onClick={() => {
           navigateTo(`/search/`);
         }}
@@ -46,7 +46,7 @@ const ApplicationRoutes: FC = () => {
       <IconButton
         key={"profile"}
         accessibleLabel={"Profile"}
-        icon={UK.Core.Icons.Person}
+        icon={UKIcons.Person}
         onClick={() => {
           navigateTo(`/profile/`);
         }}

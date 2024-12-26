@@ -66,7 +66,7 @@ const LoginPage: React.FC = () => {
       </Card>
       <header className={"absolute top-0 left-0 w-full h-16 flex items-center justify-center gap-2"}>
         <IconButton
-          icon={UKIcon.ChevronLeft}
+          icon={UKIcons.ChevronLeft}
           className={"mr-auto ml-3.5"}
         />
       </header>

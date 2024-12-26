@@ -9,8 +9,8 @@ import React from "react";
 const EditWidgets: React.FC = () => {
   return (
     <div>
-      <UKC.Heading text="Edit widgets" />
-      <UKC.Button
+      <UKHeading text="Edit widgets" />
+      <UKButton
         text="Edit"
         onClick={() => {
           console.log("Edit widgets dialog");

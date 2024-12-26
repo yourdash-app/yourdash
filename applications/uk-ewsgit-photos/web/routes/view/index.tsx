@@ -27,7 +27,7 @@ const ViewPathPage: FC = () => {
       <div className={styles.header}>
         <ButtonWithIcon
           text={"Go Back"}
-          icon={UK.Core.Icons.ChevronLeft}
+          icon={UKIcons.ChevronLeft}
           onClick={() => {
             navigate(-1);
           }}
@@ -35,7 +35,7 @@ const ViewPathPage: FC = () => {
         <div className={styles.spacer} />
         <ButtonWithIcon
           text={"Download"}
-          icon={UK.Core.Icons.Download}
+          icon={UKIcons.Download}
           onClick={() => {
             window.open(`${coreCSI.getInstanceUrl()}${media?.mediaUrl}`, "_blank");
           }}

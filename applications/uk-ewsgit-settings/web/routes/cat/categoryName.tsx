@@ -5,7 +5,7 @@
 
 import Heading from "@yourdash/uikit/components/heading/heading";
 import Spinner from "@yourdash/uikit/components/spinner/spinner";
-import SidebarToggleButton from "@yourdash/uikit/src/views/sidebar/sidebarToggleButton.tsx";
+import UKSidebarToggleButton from "@yourdash/uikit/theme/src/views/sidebar/UKSidebarToggleButton.tsx";
 import useResource from "@yourdash/csi/useResource";
 import React from "react";
 import { useParams } from "react-router";
@@ -21,7 +21,7 @@ const CategoryNamePage: React.FC = () => {
 
   return (
     <div>
-      <SidebarToggleButton />
+      <UKSidebarToggleButton />
       <Heading text={categoryData?.id || categoryName || "Invalid category name"} />
       {!categoryData ? (
         <Spinner />

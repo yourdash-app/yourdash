@@ -23,7 +23,7 @@ const BasePageLayout: React.FC<IBasePageLayout> = ({ children, title, noBack }) 
             onClick={() => {
               window.history.back();
             }}
-            icon={UKIcon.ChevronLeft}
+            icon={UKIcons.ChevronLeft}
           />
         )}
         <Heading level={2}>{title}</Heading>

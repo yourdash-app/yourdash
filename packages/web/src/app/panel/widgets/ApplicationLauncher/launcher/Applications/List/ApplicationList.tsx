@@ -44,7 +44,7 @@ const ApplicationList: React.FC<{ applications: IPanelApplicationsLauncherFronte
               navigate(application.url);
             }}
           >
-            <UKC.Card className={styles.itemContent}>
+            <UKCard className={styles.itemContent}>
               <img
                 loading={"lazy"}
                 className={styles.itemIcon}
@@ -73,9 +73,9 @@ const ApplicationList: React.FC<{ applications: IPanelApplicationsLauncherFronte
                     },
                   },
                 ]}
-                icon={UK.Core.Icons.ThreeBars}
+                icon={UKIcons.ThreeBars}
               />
-            </UKC.Card>
+            </UKCard>
           </RightClickMenu>
         );
       })}

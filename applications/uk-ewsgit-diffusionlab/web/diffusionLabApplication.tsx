@@ -82,7 +82,7 @@ const DiffusionLabApplication: React.FC = () => {
             <Icon
               className={"h-9 aspect-square"}
               preserveColor
-              icon={UKIcon.YourDashLogo}
+              icon={UKIcons.YourDashLogo}
             />
             <h2 className={"text-3xl font-semibold tracking-wide"}>{trans("APPLICATION_NAME")}</h2>
           </div>

@@ -43,7 +43,7 @@ const AlbumGridMedia: FC<{
           {data.type === PHOTOS_MEDIA_TYPE.Video && (
             <div className={styles.videoOverlay}>
               <Icon
-                icon={UKIcon.Video}
+                icon={UKIcons.Video}
                 className={styles.videoIcon}
               />
             </div>

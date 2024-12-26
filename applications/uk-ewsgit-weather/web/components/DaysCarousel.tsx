@@ -62,7 +62,7 @@ const WeatherApplicationDaysCarousel: React.FC<{
             <div className={"-mt-2"}>
               <div className={"font-black text-3xl flex gap-1 items-center"}>
                 <Icon
-                  icon={UKIcon.ChevronUp}
+                  icon={UKIcons.ChevronUp}
                   className={"h-4"}
                   color={"#43aa8b"}
                 />
@@ -71,7 +71,7 @@ const WeatherApplicationDaysCarousel: React.FC<{
               </div>
               <div className={"text-xl flex gap-1 items-center"}>
                 <Icon
-                  icon={UKIcon.ChevronDown}
+                  icon={UKIcons.ChevronDown}
                   className={"h-4"}
                   color={"#f94144"}
                 />

@@ -51,12 +51,12 @@ const DbItem: React.FC<IdbItem> = ({ currentItem, setCurrentItemData, items, set
             />
             <div className={"flex flex-row gap-2 w-full child:flex-grow"}>
               <IconButton
-                icon={UKIcon.X}
+                icon={UKIcons.X}
                 onClick={() => setActive(false)}
                 className={"flex-shrink-0"}
               />
               <IconButton
-                icon={UKIcon.Check}
+                icon={UKIcons.Check}
                 onClick={() => {
                   if (key === "" || content === "") {
                     return;
@@ -82,7 +82,7 @@ const DbItem: React.FC<IdbItem> = ({ currentItem, setCurrentItemData, items, set
                 className={"flex-shrink-0"}
               />
               <IconButton
-                icon={UKIcon.Trash}
+                icon={UKIcons.Trash}
                 onClick={() => {
                   // remove key from items
                   const newItems = items;
@@ -106,7 +106,7 @@ const DbItem: React.FC<IdbItem> = ({ currentItem, setCurrentItemData, items, set
         <>
           <div className={"flex flex-col gap-2"}>
             <IconButton
-              icon={active ? UKIcon.ChevronUp : UKIcon.ChevronDown}
+              icon={active ? UKIcons.ChevronUp : UKIcons.ChevronDown}
               onClick={() => setActive(!active)}
               className={"flex-shrink-0"}
             />

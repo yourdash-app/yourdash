@@ -32,27 +32,27 @@ const ApplicationLauncher: React.FC<{
         !visible && styles.invisible,
       )}
     >
-      <UKC.Box className={styles.content}>
+      <UKBox className={styles.content}>
         <ApplicationsLauncherApplications
           // @ts-ignore
           apps={apps || []}
           layout={layout}
         />
-      </UKC.Box>
-      <UKC.Box className={styles.footer}>
-        <UKC.IconButton
+      </UKBox>
+      <UKBox className={styles.footer}>
+        <UKIconButton
           accessibleLabel={"Logout"}
           className={styles.logoutButton}
-          icon={UK.Core.Icons.Logout}
+          icon={UKIcons.Logout}
           onClick={() => {
             coreCSI.logout();
             navigate("/login");
           }}
         />
         <div>
-          <UKC.IconButton
+          <UKIconButton
             accessibleLabel={"Profile"}
-            icon={UK.Core.Icons.Person}
+            icon={UKIcons.Person}
             aria-label={"User Profile Settings"}
             onClick={() => {
               navigate(`/instance-profiles/me`);
@@ -60,29 +60,29 @@ const ApplicationLauncher: React.FC<{
           />
         </div>
         <span>{coreCSI.userDB.get<{ first: string; last: string }>("user:name")?.first || "Unknown First Name"}</span>
-        <UKC.IconButton
+        <UKIconButton
           accessibleLabel={"Filter small grid"}
           className={"ml-auto"}
-          icon={UK.Core.Icons.Filter}
+          icon={UKIcons.Filter}
           onClick={() => {
             setLayout("small-grid");
           }}
         />
-        <UKC.IconButton
+        <UKIconButton
           accessibleLabel={"Filter large grid"}
-          icon={UK.Core.Icons.Filter}
+          icon={UKIcons.Filter}
           onClick={() => {
             setLayout("large-grid");
           }}
         />
-        <UKC.IconButton
+        <UKIconButton
           accessibleLabel={"Filter list"}
-          icon={UK.Core.Icons.Filter}
+          icon={UKIcons.Filter}
           onClick={() => {
             setLayout("list");
           }}
         />
-      </UKC.Box>
+      </UKBox>
     </div>
   );
 };

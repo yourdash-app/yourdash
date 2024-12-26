@@ -8,44 +8,44 @@ import { UKC } from "@yourdash/uikit";
 const SignupPage = () => {
   return (
     <>
-      <UKC.Heading
+      <UKHeading
         level={1}
         text={"Signup with a YourDash Instance"}
       />
-      <UKC.Separator direction={"column"} />
-      <UKC.Flex
+      <UKSeparator direction={"column"} />
+      <UKFlex
         direction={"row"}
         centerHorizontally={true}
       >
-        <UKC.Flex direction={"column"}>
-          <UKC.Heading
+        <UKFlex direction={"column"}>
+          <UKHeading
             level={2}
             text={"Signup with a public instance"}
           />
-          <UKC.Button
+          <UKButton
             text={"Signup"}
             onClick={() => {
               return 0;
             }}
           />
-        </UKC.Flex>
-        <UKC.Separator
+        </UKFlex>
+        <UKSeparator
           direction={"row"}
           disableMargin={true}
         />
-        <UKC.Flex direction={"column"}>
-          <UKC.Heading
+        <UKFlex direction={"column"}>
+          <UKHeading
             level={2}
             text={"Signup with a private instance"}
           />
-          <UKC.Button
+          <UKButton
             text={"Signup"}
             onClick={() => {
               return 0;
             }}
           />
-        </UKC.Flex>
-      </UKC.Flex>
+        </UKFlex>
+      </UKFlex>
     </>
   );
 };

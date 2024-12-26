@@ -3,9 +3,16 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { Flex, Heading, IconButton, Separator, UKText } from "@yourdash/uikit/components/index";
-import { UKIcon } from "@yourdash/uikit/core/index";
-import { Header, NavBar, NavImage, NavTitle } from "@yourdash/uikit/views/index";
+import UKFlex from "@yourdash/uikit/components/flex/UKFlex.js";
+import UKHeading from "@yourdash/uikit/components/heading/UKHeading.js";
+import UKIconButton from "@yourdash/uikit/components/iconButton/UKIconButton.js";
+import UKSeparator from "@yourdash/uikit/components/separator/UKSeparator.js";
+import UKText from "@yourdash/uikit/components/text/UKText.js";
+import { UKIcons } from "@yourdash/uikit/core/iconDictionary.js";
+import UKPageHeader from "@yourdash/uikit/views/header/UKPageHeader.js";
+import UKNavbarNavImage from "@yourdash/uikit/views/navBar/components/navImage/UKNavbarNavImage.js";
+import UKNavbarNavTitle from "@yourdash/uikit/views/navBar/components/navTitle/UKNavbarNavTitle.js";
+import UKNavBar from "@yourdash/uikit/views/navBar/UKNavBar.js";
 import React from "react";
 import { useNavigate } from "react-router";
 
@@ -14,30 +21,30 @@ const ProjectUiKitIndexPage: React.FC = () => {
 
   return (
     <div>
-      <NavBar
+      <UKNavBar
         leftSection={
           <>
-            <IconButton
+            <UKIconButton
               accessibleLabel={"Go Back to YourDash"}
-              icon={UKIcon.YourDashLogo}
+              icon={UKIcons.YourDashLogo}
               preserveColor={true}
               onClick={() => {
                 navigate("/");
               }}
             />
-            <Separator direction={"row"} />
-            <NavImage src={"/assets/productLogos/yourdash.svg"} />
-            <NavTitle title={"UIKit"} />
+            <UKSeparator direction={"row"} />
+            <UKNavbarNavImage src={"/assets/productLogos/yourdash.svg"} />
+            <UKNavbarNavTitle title={"UIKit"} />
           </>
         }
       />
-      <Header heading={"UIKit"} />
-      <Flex
+      <UKPageHeader heading={"UIKit"} />
+      <UKFlex
         direction={"column"}
         padding={true}
         centerHorizontally={true}
       >
-        <Heading
+        <UKHeading
           level={2}
           text={"What is UIKit?"}
         />
@@ -46,7 +53,7 @@ const ProjectUiKitIndexPage: React.FC = () => {
             "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab at culpa explicabo fugit hic inventore iusto minima, temporibus ut vero."
           }
         />
-        <Heading
+        <UKHeading
           level={2}
           text={"What is UIKit?"}
         />
@@ -55,7 +62,7 @@ const ProjectUiKitIndexPage: React.FC = () => {
             "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab at culpa explicabo fugit hic inventore iusto minima, temporibus ut vero."
           }
         />
-        <Heading
+        <UKHeading
           level={2}
           text={"What is UIKit?"}
         />
@@ -64,7 +71,7 @@ const ProjectUiKitIndexPage: React.FC = () => {
             "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab at culpa explicabo fugit hic inventore iusto minima, temporibus ut vero."
           }
         />
-      </Flex>
+      </UKFlex>
     </div>
   );
 };

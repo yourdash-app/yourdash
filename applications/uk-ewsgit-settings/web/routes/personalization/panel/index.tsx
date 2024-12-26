@@ -17,7 +17,7 @@ const Index: React.FC = () => {
     <BasePageLayout title={"Panel"}>
       <DropdownSettingComponent
         title={"Panel Size"}
-        icon={UKIcon.Gear}
+        icon={UKIcons.Gear}
         description={"Set the size of the panel and it's widgets"}
         options={[
           {
@@ -43,7 +43,7 @@ const Index: React.FC = () => {
       />
       <DropdownSettingComponent
         title={"Panel Side"}
-        icon={UKIcon.Gear}
+        icon={UKIcons.Gear}
         description={"Set the side that the panel is on the screen"}
         options={[
           {
