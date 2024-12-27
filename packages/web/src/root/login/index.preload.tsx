@@ -13,6 +13,7 @@ import LoginIndexPage from "./index.tsx";
 import isValidInstance from "./lib/isValidInstance.ts";
 import { FC, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import styles from "./index.preload.module.scss";
 
 const LoginIndexPagePreload: FC = () => {
   const navigate = useNavigate();
@@ -36,14 +37,19 @@ const LoginIndexPagePreload: FC = () => {
   return (
     <>
       {validInstance === undefined || !validInstance ? (
-        <UKDialog>
-          <UKFlex
-            padding
-            direction={"column"}
-          >
-            <UKHeading text={"Logging in..."} />
-            <UKText text={"Checking if the instance is valid and online"} />
-            <UKFlex direction={"row"}>
+        <UKDialog
+          header={[
+            <UKHeading
+              key={"Heading"}
+              className={styles.dialogHeading}
+              text={"Logging in..."}
+            />,
+          ]}
+          actions={[
+            <UKFlex
+              direction={"row"}
+              key={"flex"}
+            >
               <UKButton
                 text={"Retry"}
                 onClick={() => {
@@ -56,8 +62,10 @@ const LoginIndexPagePreload: FC = () => {
                   navigate("/login/instance");
                 }}
               />
-            </UKFlex>
-          </UKFlex>
+            </UKFlex>,
+          ]}
+        >
+          <UKText text={"Checking if the instance is valid and online"} />
         </UKDialog>
       ) : (
         <>

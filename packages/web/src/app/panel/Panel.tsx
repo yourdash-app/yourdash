@@ -8,7 +8,6 @@ import styles from "./Panel.module.scss";
 import React, { memo, useEffect, useState } from "react";
 import loadable from "@loadable/component";
 import coreCSI from "@yourdash/csi/coreCSI.ts";
-import { UKC } from "@yourdash/uikit";
 
 const Panel: React.FC<{
   side: "top" | "right" | "bottom" | "left";

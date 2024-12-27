@@ -10,7 +10,6 @@ import clippy from "@yourdash/shared/web/helpers/clippy.ts";
 import PanelLayout from "./panel/PanelLayout.tsx";
 import React, { useEffect, useState } from "react";
 import styles from "./AppLayout.module.scss";
-import { UKC } from "@yourdash/uikit";
 import ApplicationPanelContext from "./panel/ApplicationPanelContext.tsx";
 
 const AppLayout: React.FC = () => {

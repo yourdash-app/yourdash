@@ -3,10 +3,9 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import { Heading } from "@yourdash/uikit/components/index";
+import React from "react";
 import styles from "./promotedApplication.module.scss";
 import { EndpointStoreHomePromotedApplications } from "../../../../../shared/types/endpoints/home/promotedApplications.ts";
-import { UKC } from "@yourdash/uikit";
 
 const PromotedApplications: React.FC<{ application: EndpointStoreHomePromotedApplications[number] }> = ({ application }) => {
   console.log(application);

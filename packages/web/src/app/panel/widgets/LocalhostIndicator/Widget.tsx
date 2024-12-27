@@ -4,7 +4,6 @@
  */
 
 import clippy from "@yourdash/shared/web/helpers/clippy.ts";
-import { UKC } from "@yourdash/uikit";
 import React from "react";
 
 const LocalhostIndicator: React.FC<{

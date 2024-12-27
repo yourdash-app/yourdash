@@ -11,7 +11,6 @@ import styles from "./Applications.module.scss";
 import { useNavigate } from "react-router";
 import SmallApplicationGrid from "./SmallGrid/SmallApplicationGrid.tsx";
 import ApplicationList from "./List/ApplicationList.tsx";
-import UK, { UKC } from "@yourdash/uikit";
 
 let filteredApplications: IPanelApplicationsLauncherFrontendModule[] = [];
 

@@ -66,6 +66,14 @@ const Panel: FC = () => {
           checkUrl();
         }}
       />
+      <UKButton
+        onClick={() => {
+          setInputValue("http://localhost");
+          checkUrl();
+        }}
+        className={styles.useDevServer}
+        text={"Use Local Development Server"}
+      />
     </UKBox>
   );
 };

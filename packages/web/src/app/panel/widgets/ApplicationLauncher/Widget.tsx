@@ -7,7 +7,6 @@ import React, { useEffect } from "react";
 import styles from "./Widget.module.scss";
 import ApplicationLauncher from "./launcher/Launcher.tsx";
 import { useLocation } from "react-router";
-import UK, { UKC } from "@yourdash/uikit";
 
 const ApplicationLauncherWidget: React.FC<{ side: "top" | "right" | "bottom" | "left" }> = ({ side }) => {
   const [launcherVisible, setLauncherVisible] = React.useState<boolean>(false);

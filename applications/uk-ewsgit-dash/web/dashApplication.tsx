@@ -11,7 +11,6 @@ import loadable from "@loadable/component";
 import { acsi } from "./meta.yourdash";
 import clippy from "@yourdash/shared/web/helpers/clippy";
 import EditWidgets from "./views/editWidgets/editWidgets.tsx";
-import UK, { UKC } from "@yourdash/uikit";
 
 const DashApplication: React.FC = () => {
   const { pageCount } = useResource(() => acsi.getJson("/widget/pages", "/widget/pages")) || {

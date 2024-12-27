@@ -7,7 +7,6 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import coreCSI from "@yourdash/csi/coreCSI.ts";
 import useYourDashLib from "@yourdash/shared/web/helpers/ydsh.ts";
-import UK, { UKC } from "@yourdash/uikit";
 
 interface IUserLogin {
   setUsername: React.Dispatch<React.SetStateAction<string>>;

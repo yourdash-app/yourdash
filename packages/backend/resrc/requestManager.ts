@@ -6,6 +6,7 @@
 import cors from "@fastify/cors";
 import fastifySwagger from "@fastify/swagger";
 import fastifySwaggerUI from "@fastify/swagger-ui";
+import { LoginLayout } from "@yourdash/shared/core/login/loginLayout.js";
 import { INSTANCE_STATUS } from "./types/instanceStatus.js";
 import chalk from "chalk";
 import Fastify, { FastifyInstance } from "fastify";
@@ -1945,7 +1946,11 @@ class RequestManager {
           },
         },
         async () => {
-          return { version: { major: 0, minor: 1 }, type: "YourDash" as const, status: INSTANCE_STATUS.NON_FUNCTIONAL };
+          return {
+            version: { major: 0, minor: 1 },
+            type: "YourDash" as const,
+            status: this.instance.getStatus() || INSTANCE_STATUS.NON_FUNCTIONAL,
+          };
         },
       );
 
@@ -1962,10 +1967,25 @@ class RequestManager {
       });
     });
 
+    this.rawApp.get(
+      "/login/instance/metadata",
+      { schema: { response: { 200: z.object({ title: z.string(), message: z.string(), loginLayout: z.nativeEnum(LoginLayout) }) } } },
+      () => {
+        return {
+          title: "Placeholder name",
+          message: "Placeholder message. Hey system admin, you should change this!",
+          loginLayout: LoginLayout.CARDS,
+        };
+      },
+    );
+
     try {
       await this.rawApp.ready();
       await this.rawApp.listen({ port: this.instance.flags.port });
-      this.instance.log.info("request_manager", `YourDash ReSrc Instance Backend Online & listening at port '${this.instance.flags.port}'`);
+      this.instance.log.info(
+        "request_manager",
+        `YourDash ReSrc Instance Backend Online & listening at ${this.instance.log.addEmphasisToString(`port "${this.instance.flags.port}"`)}`,
+      );
 
       this.instance.log.info("request_manager", `Attempting to ping self`);
       fetch(`http://localhost:${this.instance.flags.port}/core/test/self-ping`)

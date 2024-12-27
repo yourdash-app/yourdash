@@ -10,7 +10,6 @@ import IPanelApplicationsLauncherFrontendModule from "@yourdash/shared/core/pane
 import coreCSI from "@yourdash/csi/coreCSI.ts";
 import styles from "./ApplicationList.module.scss";
 import { useNavigate } from "react-router";
-import UK, { UKC } from "@yourdash/uikit";
 
 const ApplicationList: React.FC<{ applications: IPanelApplicationsLauncherFrontendModule[] }> = ({ applications }) => {
   const navigate = useNavigate();

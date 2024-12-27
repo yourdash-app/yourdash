@@ -4,7 +4,6 @@
  */
 
 import coreCSI from "@yourdash/csi/coreCSI.ts";
-import { UKC } from "@yourdash/uikit";
 import React, { useState } from "react";
 import { useParams } from "react-router";
 

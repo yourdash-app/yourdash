@@ -7,13 +7,19 @@ import coreCSI from "@yourdash/csi/coreCSI.ts";
 import toAuthImgUrl from "@yourdash/csi/toAuthImgUrl.ts";
 import EndpointResponseLoginInstanceMetadata from "@yourdash/shared/endpoints/login/instance/metadata.ts";
 import clippy from "@yourdash/shared/web/helpers/clippy.ts";
+import UKButton from "@yourdash/uikit/components/button/UKButton.js";
+import UKCard from "@yourdash/uikit/components/card/UKCard.js";
+import UKFlex from "@yourdash/uikit/components/flex/UKFlex.js";
+import UKHeading from "@yourdash/uikit/components/heading/UKHeading.js";
+import UKImage from "@yourdash/uikit/components/image/UKImage.js";
+import UKSubtext from "@yourdash/uikit/components/subtext/UKSubtext.js";
+import UKTextInput from "@yourdash/uikit/components/textInput/UKTextInput.js";
 import styles from "./index.cards.module.scss";
 import loginUser from "./lib/loginUser.ts";
 import { FC, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { UKC } from "@yourdash/uikit";
 
-const IndexCardsPage: FC<{ metadata?: EndpointResponseLoginInstanceMetadata }> = (props) => {
+const IndexCardsPage: FC<{ metadata: EndpointResponseLoginInstanceMetadata | null }> = (props) => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");

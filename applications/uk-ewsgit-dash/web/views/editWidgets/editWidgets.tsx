@@ -3,7 +3,6 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import { UKC } from "@yourdash/uikit";
 import React from "react";
 
 const EditWidgets: React.FC = () => {

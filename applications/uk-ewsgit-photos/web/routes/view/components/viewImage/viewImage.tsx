@@ -9,7 +9,6 @@ import { Card } from "@yourdash/uikit/components/index";
 import { PanAndZoom } from "@yourdash/uikit/views/index";
 import { FC, useState } from "react";
 import styles from "./viewImage.module.scss";
-import { UKC } from "@yourdash/uikit";
 
 const ViewImage: FC<{ mediaUrl: string }> = ({ mediaUrl }) => {
   const [scale, setScale] = useState(1);

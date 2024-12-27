@@ -10,7 +10,6 @@ import styles from "./Launcher.module.scss";
 import React, { memo } from "react";
 import ApplicationsLauncherApplications from "./Applications/Applications.tsx";
 import coreCSI from "@yourdash/csi/coreCSI.ts";
-import UK, { UKC } from "@yourdash/uikit";
 
 const ApplicationLauncher: React.FC<{
   side: "top" | "right" | "bottom" | "left";

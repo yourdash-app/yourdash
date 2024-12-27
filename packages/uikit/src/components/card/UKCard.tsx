@@ -8,7 +8,7 @@ import IncrementLevel from "../../core/incrementLevel.tsx";
 import { useLevel, useLevelClass } from "../../core/level.tsx";
 import UKBox from "../box/UKBox.tsx";
 import styles from "./card.module.scss";
-import { FC, Ref } from "react";
+import React, { FC, Ref } from "react";
 import DecrementLevel from "../../core/decrementLevel.tsx";
 
 const UKCard: FC<{

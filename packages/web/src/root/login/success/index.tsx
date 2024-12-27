@@ -8,7 +8,6 @@ import useResource from "@yourdash/csi/useResource.ts";
 import styles from "./index.module.scss";
 import { FC } from "react";
 import { useNavigate } from "react-router";
-import { UKC } from "@yourdash/uikit";
 
 const LoginSuccessPage: FC = () => {
   const navigate = useNavigate();

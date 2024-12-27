@@ -9,7 +9,6 @@ import { Card, Heading } from "@yourdash/uikit/components/index";
 import React from "react";
 import { acsi } from "../../../../meta.yourdash.ts";
 import styles from "./applicationCategories.module.scss";
-import { UKC } from "@yourdash/uikit";
 
 const ApplicationCategories: React.FC = () => {
   const categories = useResource(() => acsi.getJson("/home/applicationCategories", "/home/applicationCategories")) || [];

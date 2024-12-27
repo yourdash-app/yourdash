@@ -8,7 +8,6 @@ import IPanelApplicationsLauncherFrontendModule from "@yourdash/shared/core/pane
 import coreCSI from "@yourdash/csi/coreCSI.ts";
 import styles from "./LargeApplicationGrid.module.scss";
 import { useNavigate } from "react-router";
-import { UKC } from "@yourdash/uikit";
 
 const LargeApplicationGrid: React.FC<{
   modules: IPanelApplicationsLauncherFrontendModule[];

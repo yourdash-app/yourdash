@@ -3,11 +3,13 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
+import chalk from "chalk";
+import dotenv from "dotenv";
 import pg from "pg";
 import Authorization from "./authorization.js";
 import Log from "./log.js";
 import RequestManager from "./requestManager.js";
-import dotenv from "dotenv";
+import { INSTANCE_STATUS } from "./types/instanceStatus.js";
 
 dotenv.config();
 
@@ -26,6 +28,7 @@ class Instance {
   requestManager!: RequestManager;
   authorization!: Authorization;
   database!: pg.Client;
+  private status: INSTANCE_STATUS = INSTANCE_STATUS.UNKNOWN;
 
   constructor() {
     this.__internal__init().then(() => {
@@ -70,9 +73,15 @@ class Instance {
     this.authorization = new Authorization(this);
     this.requestManager = new RequestManager(this);
 
-    this.startup().then(() => {
-      return 0;
-    });
+    this.startup()
+      .then(() => {
+        this.setStatus(INSTANCE_STATUS.OK);
+
+        return 0;
+      })
+      .catch(() => {
+        this.setStatus(INSTANCE_STATUS.NON_FUNCTIONAL);
+      });
   }
 
   async startup() {
@@ -82,6 +91,20 @@ class Instance {
     await this.requestManager.__internal_startup();
     this.log.info("startup", "YourDash RequestManager Startup Complete!");
     this.log.info("startup", "YourDash Instance Startup Complete");
+  }
+
+  getStatus(): INSTANCE_STATUS {
+    return this.status;
+  }
+
+  setStatus(status: INSTANCE_STATUS): this {
+    this.status = status;
+    this.log.info(
+      "instance",
+      `Instance status has been set to ${this.log.addEmphasisToString(`'INSTANCE_STATUS.${INSTANCE_STATUS[status]}'`)}`,
+    );
+
+    return this;
   }
 }
 

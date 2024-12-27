@@ -9,7 +9,6 @@ import Panel from "./Panel.tsx";
 import clippy from "@yourdash/shared/web/helpers/clippy.ts";
 import styles from "./PanelLayout.module.scss";
 import coreCSI from "@yourdash/csi/coreCSI.ts";
-import UK, { UKC } from "@yourdash/uikit";
 
 const PanelLayout: React.FC<{
   showBackButton: boolean;

@@ -8,7 +8,6 @@ import useResource from "@yourdash/csi/useResource.ts";
 import { acsi } from "../../../meta.yourdash.ts";
 import styles from "./manageWallpaper.module.scss";
 import React from "react";
-import UK, { UKC } from "@yourdash/uikit";
 
 const ManageWallpaper: React.FC = () => {
   const currentWallpaper = useResource(() => acsi.getJson("/current/wallpaper", "/current/wallpaper"), []);

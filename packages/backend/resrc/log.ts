@@ -144,4 +144,8 @@ export default class Log {
 
     return this.log(LOG_TYPE.DEBUG, level, ...message);
   }
+
+  addEmphasisToString(string: string): string {
+    return chalk.bold.blueBright.italic(string);
+  }
 }

@@ -12,7 +12,6 @@ import React, { useEffect, useState } from "react";
 import { EndpointAlbumSubPath } from "../../../shared/types/endpoints/album/sub/path";
 import { acsi, useNavigateTo } from "../../meta.yourdash";
 import styles from "./SubAlbums.module.scss";
-import { UKC } from "@yourdash/uikit";
 
 const SubAlbums: React.FC<{ path: string; scrollerClassName?: string }> = ({ path, scrollerClassName }) => {
   const navigateTo = useNavigateTo();

@@ -10,7 +10,6 @@ import { useNavigate } from "react-router-dom";
 import coreCSI from "@yourdash/csi/coreCSI.ts";
 import styles from "./Widget.module.scss";
 import React from "react";
-import UK, { UKC } from "@yourdash/uikit";
 
 const QuickShortcuts: React.FC<{ side: "top" | "right" | "bottom" | "left" }> = ({ side }) => {
   const navigate = useNavigate();

@@ -6,7 +6,6 @@
 import Image from "@yourdash/uikit/components/image/image.js";
 import React from "react";
 import styles from "./Widget.module.scss";
-import { UKC } from "@yourdash/uikit";
 
 const UserProfileWidget: React.FC = () => {
   return (

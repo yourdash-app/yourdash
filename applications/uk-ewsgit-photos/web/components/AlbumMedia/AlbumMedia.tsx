@@ -10,7 +10,6 @@ import React from "react";
 import { AlbumMediaPath } from "../../../shared/types/endpoints/album/media/path.ts";
 import { acsi, useNavigateTo } from "../../meta.yourdash.ts";
 import styles from "./AlbumMedia.module.scss";
-import { UKC } from "@yourdash/uikit";
 
 const AlbumMedia: React.FC<{ albumMedia: AlbumMediaPath; showFilenames?: boolean }> = ({ albumMedia, showFilenames }) => {
   const navigateTo = useNavigateTo();
