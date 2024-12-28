@@ -33,6 +33,7 @@
     "@types/xml2js": "^0.4.14",
     "@yourdash/shared": "*",
     "array-includes": "^3.1.7",
+    "bcrypt": "^5.1.1",
     "chalk": "^5.2.0",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.6",

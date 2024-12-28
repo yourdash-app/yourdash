@@ -50,32 +50,44 @@ class Instance {
       postgresUser: process.env.POSTGRES_USER || "postgres",
     };
 
-    let tempDatabaseClient: pg.Client = new pg.Client({
-      password: this.flags.postgresPassword,
-      user: this.flags.postgresUser,
-      database: "postgres",
-    });
-
-    await tempDatabaseClient.connect();
-
-    // create the yourdash database if it doesn't already exist
     try {
-      await tempDatabaseClient.query("CREATE DATABASE yourdash");
-    } catch (e) {}
+      let tempDatabaseClient: pg.Client = new pg.Client({
+        password: this.flags.postgresPassword,
+        user: this.flags.postgresUser,
+        database: "postgres",
+      });
 
-    this.database = new pg.Client({
-      password: this.flags.postgresPassword,
-      port: this.flags.postgresPort,
-      user: this.flags.postgresUser,
-      database: "yourdash",
-    });
+      await tempDatabaseClient.connect();
+
+      // create the yourdash database if it doesn't already exist
+      try {
+        await tempDatabaseClient.query("CREATE DATABASE yourdash");
+      } catch (e) {}
+    } catch (e) {
+      console.error("database", "Failed to setup pre-startup connection to PostgreSQL Database");
+    }
+
+    try {
+      this.database = new pg.Client({
+        password: this.flags.postgresPassword,
+        port: this.flags.postgresPort,
+        user: this.flags.postgresUser,
+        database: "yourdash",
+      });
+    } catch (e) {
+      this.log.error("database", "Failed to setup connection to PostgreSQL Database");
+    }
     this.log = new Log(this);
     this.authorization = new Authorization(this);
     this.requestManager = new RequestManager(this);
 
     this.startup()
-      .then(() => {
-        this.setStatus(INSTANCE_STATUS.OK);
+      .then((status: boolean) => {
+        if (status) {
+          this.setStatus(INSTANCE_STATUS.OK);
+        } else {
+          process.exit(1);
+        }
 
         return 0;
       })
@@ -84,13 +96,21 @@ class Instance {
       });
   }
 
-  async startup() {
+  async startup(): Promise<boolean> {
     this.log.info("startup", "Connecting to PostgreSQL Database");
-    await this.database.connect();
-    this.log.info("startup", "Connected to PostgreSQL Database");
+    try {
+      await this.database.connect();
+      this.log.info("startup", "Connected to PostgreSQL Database");
+    } catch (e) {
+      this.log.error("database", "Failed to connect to PostgreSQL Database");
+      this.log.error("instance", "Instance will now quit due to startup failure");
+      return false;
+    }
     await this.requestManager.__internal_startup();
     this.log.info("startup", "YourDash RequestManager Startup Complete!");
     this.log.info("startup", "YourDash Instance Startup Complete");
+
+    return true;
   }
 
   getStatus(): INSTANCE_STATUS {
