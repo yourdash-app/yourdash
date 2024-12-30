@@ -14,6 +14,7 @@ import UKHeading from "@yourdash/uikit/components/heading/UKHeading.js";
 import UKImage from "@yourdash/uikit/components/image/UKImage.js";
 import UKSubtext from "@yourdash/uikit/components/subtext/UKSubtext.js";
 import UKTextInput from "@yourdash/uikit/components/textInput/UKTextInput.js";
+import UKSeparator from "@yourdash/uikit/components/separator/UKSeparator.js";
 import styles from "./index.cards.module.scss";
 import loginUser from "./lib/loginUser.ts";
 import { FC, useEffect, useState } from "react";
@@ -101,6 +102,7 @@ const IndexCardsPage: FC<{ metadata: EndpointResponseLoginInstanceMetadata | nul
             text={"Login"}
           />
         )}
+        <UKSeparator direction={"column"} />
         <UKTextInput
           accessibleName={"Username"}
           placeholder={"Username"}
@@ -127,6 +129,7 @@ const IndexCardsPage: FC<{ metadata: EndpointResponseLoginInstanceMetadata | nul
             }
           }}
         />
+        <UKSeparator direction={"column"} />
         <UKButton
           className={styles.button}
           text={"Login"}

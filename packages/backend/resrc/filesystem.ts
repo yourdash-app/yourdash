@@ -35,45 +35,93 @@ class Filesystem {
 
   async __internal_startup() {
     if (!(await this.doesPathExist(this.commonPaths.rootDirectory()))) {
-      this.instance.log.info("filesystem", `Created ${this.instance.log.addEmphasisToString(this.commonPaths.rootDirectory())} directory.`);
-      await fs.mkdir(this.commonPaths.rootDirectory());
+      try {
+        await fs.mkdir(this.commonPaths.rootDirectory());
+        this.instance.log.info(
+          "filesystem",
+          `Created ${this.instance.log.addEmphasisToString(this.commonPaths.rootDirectory())} directory.`,
+        );
+      } catch (e) {
+        console.error(e);
+        this.instance.log.error(
+          "filesystem",
+          `Failed to create ${this.instance.log.addEmphasisToString(this.commonPaths.rootDirectory())} directory.`,
+        );
+      }
     }
 
     if (!(await this.doesPathExist(this.commonPaths.globalCacheDirectory()))) {
-      this.instance.log.info(
-        "filesystem",
-        `Created ${this.instance.log.addEmphasisToString(this.commonPaths.globalCacheDirectory())} directory.`,
-      );
-      await fs.mkdir(this.commonPaths.globalCacheDirectory());
+      try {
+        await fs.mkdir(this.commonPaths.globalCacheDirectory());
+        this.instance.log.info(
+          "filesystem",
+          `Created ${this.instance.log.addEmphasisToString(this.commonPaths.globalCacheDirectory())} directory.`,
+        );
+      } catch (e) {
+        console.error(e);
+        this.instance.log.error(
+          "filesystem",
+          `Failed to create ${this.instance.log.addEmphasisToString(this.commonPaths.globalCacheDirectory())} directory.`,
+        );
+      }
     }
 
     if (!(await this.doesPathExist(this.commonPaths.teamsDirectory()))) {
-      this.instance.log.info(
-        "filesystem",
-        `Created ${this.instance.log.addEmphasisToString(this.commonPaths.teamsDirectory())} directory.`,
-      );
-      await fs.mkdir(this.commonPaths.teamsDirectory());
+      try {
+        await fs.mkdir(this.commonPaths.teamsDirectory());
+        this.instance.log.info(
+          "filesystem",
+          `Created ${this.instance.log.addEmphasisToString(this.commonPaths.teamsDirectory())} directory.`,
+        );
+      } catch (e) {
+        console.error(e);
+        this.instance.log.error(
+          "filesystem",
+          `Failed to create ${this.instance.log.addEmphasisToString(this.commonPaths.teamsDirectory())} directory.`,
+        );
+      }
     }
 
     if (!(await this.doesPathExist(this.commonPaths.usersDirectory()))) {
-      this.instance.log.info(
-        "filesystem",
-        `Created ${this.instance.log.addEmphasisToString(this.commonPaths.usersDirectory())} directory.`,
-      );
-      await fs.mkdir(this.commonPaths.usersDirectory());
+      try {
+        await fs.mkdir(this.commonPaths.usersDirectory());
+        this.instance.log.info(
+          "filesystem",
+          `Created ${this.instance.log.addEmphasisToString(this.commonPaths.usersDirectory())} directory.`,
+        );
+      } catch (e) {
+        console.error(e);
+        this.instance.log.error(
+          "filesystem",
+          `Failed to create ${this.instance.log.addEmphasisToString(this.commonPaths.usersDirectory())} directory.`,
+        );
+      }
     }
 
     if (!(await this.doesPathExist(this.commonPaths.defaultsDirectory()))) {
-      this.instance.log.info(
-        "filesystem",
-        `Created ${this.instance.log.addEmphasisToString(this.commonPaths.defaultsDirectory())} directory.`,
-      );
-      await fs.mkdir(this.commonPaths.defaultsDirectory());
+      try {
+        await fs.mkdir(this.commonPaths.defaultsDirectory());
+        this.instance.log.info(
+          "filesystem",
+          `Created ${this.instance.log.addEmphasisToString(this.commonPaths.defaultsDirectory())} directory.`,
+        );
+      } catch (e) {
+        console.error(e);
+        this.instance.log.error(
+          "filesystem",
+          `Failed to create ${this.instance.log.addEmphasisToString(this.commonPaths.defaultsDirectory())} directory.`,
+        );
+      }
     }
 
     if (!(await this.doesPathExist(path.join(this.commonPaths.defaultsDirectory(), "userAvatar.png")))) {
-      this.instance.log.info("filesystem", `Coppied default asset ${this.instance.log.addEmphasisToString("userAvatar.png")}.`);
-      await fs.cp(path.join(process.cwd(), "defaults/userAvatar.png"), path.join(this.commonPaths.defaultsDirectory(), "userAvatar.png"));
+      try {
+        await fs.cp(path.join(process.cwd(), "defaults/userAvatar.png"), path.join(this.commonPaths.defaultsDirectory(), "userAvatar.png"));
+        this.instance.log.info("filesystem", `Coppied default asset ${this.instance.log.addEmphasisToString("userAvatar.png")}.`);
+      } catch (e) {
+        console.error(e);
+        this.instance.log.error("filesystem", `Coppied default asset ${this.instance.log.addEmphasisToString("userAvatar.png")}.`);
+      }
     }
 
     return this;

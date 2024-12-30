@@ -150,6 +150,7 @@ class Instance {
     }
 
     const users = await this.database.query("SELECT username FROM users");
+
     for (const user of users.rows) {
       await repairUser(user.username);
     }

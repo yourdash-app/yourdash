@@ -17,27 +17,21 @@ class User {
   }
 
   async doesExist() {
-    const usersWithUsername = await instance.database.query({ text: "SELECT username FROM users WHERE username = $1;", rowMode: "array" }, [
-      this.username,
-    ]);
+    const usersWithUsername = await instance.database.query("SELECT username FROM users WHERE username = $1;", [this.username]);
 
     return (usersWithUsername.rows[0] as unknown as { username: string })?.username === this.username;
   }
 
   async getForename() {
-    const forename = await instance.database.query({ text: "SELECT forename FROM users WHERE username = $1;", rowMode: "array" }, [
-      this.username,
-    ]);
+    const forename = await instance.database.query("SELECT forename FROM users WHERE username = $1;", [this.username]);
 
-    return forename.rows[0][0] || "MISSING FORENAME";
+    return forename.rows[0].forename || "MISSING FORENAME";
   }
 
   async getSurname() {
-    const surname = await instance.database.query({ text: "SELECT surname FROM users WHERE username = $1;", rowMode: "array" }, [
-      this.username,
-    ]);
+    const surname = await instance.database.query("SELECT surname FROM users WHERE username = $1;", [this.username]);
 
-    return surname.rows[0][0] || "MISSING SURNAME";
+    return surname.rows[0].surname || "MISSING SURNAME";
   }
 
   async getFullname() {
