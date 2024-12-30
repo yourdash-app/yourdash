@@ -3,13 +3,14 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import chalk from "chalk";
 import dotenv from "dotenv";
 import pg from "pg";
 import Authorization from "./authorization.js";
+import Filesystem from "./filesystem.js";
 import Log from "./log.js";
 import RequestManager from "./requestManager.js";
 import { INSTANCE_STATUS } from "./types/instanceStatus.js";
+import User, { createUser, repairUser } from "./user.js";
 
 dotenv.config();
 
@@ -23,11 +24,14 @@ class Instance {
     postgresPassword: string;
     postgresPort: number;
     postgresUser: string;
+    cookieSecret: string;
   };
   log!: Log;
   requestManager!: RequestManager;
+  request!: RequestManager["app"];
   authorization!: Authorization;
   database!: pg.Client;
+  filesystem!: Filesystem;
   private status: INSTANCE_STATUS = INSTANCE_STATUS.UNKNOWN;
 
   constructor() {
@@ -48,6 +52,7 @@ class Instance {
       postgresPassword: process.env.POSTGRES_PASSWORD || "postgres",
       postgresPort: Number(process.env.POSTGRES_PORT) || 5432,
       postgresUser: process.env.POSTGRES_USER || "postgres",
+      cookieSecret: "this should be a random and unknown string to ensure security",
     };
 
     try {
@@ -64,8 +69,13 @@ class Instance {
         await tempDatabaseClient.query("CREATE DATABASE yourdash");
       } catch (e) {}
     } catch (e) {
-      console.error("database", "Failed to setup pre-startup connection to PostgreSQL Database");
+      console.error(
+        "database",
+        "Failed to setup pre-startup connection to PostgreSQL Database,\nplease ensure that you have PostgreSQL installed, and the default 'postgres' database exists.",
+      );
     }
+
+    this.log = new Log(this);
 
     try {
       this.database = new pg.Client({
@@ -77,9 +87,39 @@ class Instance {
     } catch (e) {
       this.log.error("database", "Failed to setup connection to PostgreSQL Database");
     }
-    this.log = new Log(this);
+
+    this.log.info("startup", "Connecting to PostgreSQL Database");
+    try {
+      await this.database.connect();
+      this.log.info("startup", "Connected to PostgreSQL Database");
+    } catch (e) {
+      this.log.error("database", "Failed to connect to PostgreSQL Database");
+      this.log.error("instance", "Instance will now quit due to startup failure");
+      return false;
+    }
+
+    try {
+      await this.database.query(
+        `CREATE TABLE IF NOT EXISTS users(user_id SERIAL PRIMARY KEY, username TEXT, forename TEXT, surname TEXT, bio TEXT, storage_quota BIGINT, permissions TEXT[] )`,
+      );
+      this.log.info("database", `Table ${this.log.addEmphasisToString("users")} has been created if it did not already exist.`);
+    } catch (e) {
+      this.log.error("database", `Failed to create table ${this.log.addEmphasisToString("users")}!`);
+    }
+
+    try {
+      await this.database.query(
+        `CREATE TABLE IF NOT EXISTS teams(team_id SERIAL PRIMARY KEY, teamname TEXT, owner_username TEXT, members TEXT[], bio TEXT )`,
+      );
+      this.log.info("database", `Table ${this.log.addEmphasisToString("teams")} has been created if it did not already exist.`);
+    } catch (e) {
+      this.log.error("database", `Failed to create table ${this.log.addEmphasisToString("teams")}!`);
+    }
+
     this.authorization = new Authorization(this);
+    this.filesystem = new Filesystem(this);
     this.requestManager = new RequestManager(this);
+    this.request = this.requestManager.app;
 
     this.startup()
       .then((status: boolean) => {
@@ -97,17 +137,23 @@ class Instance {
   }
 
   async startup(): Promise<boolean> {
-    this.log.info("startup", "Connecting to PostgreSQL Database");
-    try {
-      await this.database.connect();
-      this.log.info("startup", "Connected to PostgreSQL Database");
-    } catch (e) {
-      this.log.error("database", "Failed to connect to PostgreSQL Database");
-      this.log.error("instance", "Instance will now quit due to startup failure");
-      return false;
-    }
+    await this.filesystem.__internal_startup();
     await this.requestManager.__internal_startup();
     this.log.info("startup", "YourDash RequestManager Startup Complete!");
+
+    const adminUser = new User("admin");
+
+    console.log({ doesAdminExist: await adminUser.doesExist() });
+
+    if (!(await adminUser.doesExist())) {
+      await createUser("admin");
+    }
+
+    const users = await this.database.query("SELECT username FROM users");
+    for (const user of users.rows) {
+      await repairUser(user.username);
+    }
+
     this.log.info("startup", "YourDash Instance Startup Complete");
 
     return true;

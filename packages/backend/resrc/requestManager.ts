@@ -3,27 +3,32 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
+import fastifyCookie from "@fastify/cookie";
 import cors from "@fastify/cors";
 import fastifySwagger from "@fastify/swagger";
 import fastifySwaggerUI from "@fastify/swagger-ui";
 import { LoginLayout } from "@yourdash/shared/core/login/loginLayout.js";
-import { INSTANCE_STATUS } from "./types/instanceStatus.js";
 import chalk from "chalk";
-import Fastify, { FastifyInstance } from "fastify";
+import Fastify, { FastifyInstance, FastifyReply } from "fastify";
 import { jsonSchemaTransform, serializerCompiler, validatorCompiler, ZodTypeProvider } from "fastify-type-provider-zod";
+import { createReadStream } from "fs";
 import path from "path";
 import { fetch } from "undici";
 import { z } from "zod";
 import { type Instance } from "./main.js";
+import { INSTANCE_STATUS } from "./types/instanceStatus.js";
+import User from "./user.js";
 
 class RequestManager {
   private instance: Instance;
-  rawApp: FastifyInstance;
+  app: FastifyInstance;
+  publicRoutes: string[];
 
   constructor(instance: Instance) {
     this.instance = instance;
+    this.publicRoutes = [];
 
-    this.rawApp = Fastify({
+    this.app = Fastify({
       logger: {
         msgPrefix: "YourDash Backend -> ",
         enabled: false,
@@ -31,6 +36,12 @@ class RequestManager {
     }).withTypeProvider<ZodTypeProvider>();
 
     return this;
+  }
+
+  sendFile(res: FastifyReply, filePath: string, mimeType: string) {
+    const stream = createReadStream(path.resolve(filePath));
+
+    return res.type(mimeType).send(stream);
   }
 
   async __internal_startup() {
@@ -47,14 +58,20 @@ class RequestManager {
       console.error(err);
     }
 
-    this.rawApp.setValidatorCompiler(validatorCompiler);
-    this.rawApp.setSerializerCompiler(serializerCompiler);
+    this.app.setValidatorCompiler(validatorCompiler);
+    this.app.setSerializerCompiler(serializerCompiler);
 
-    await this.rawApp.register(cors, {
+    await this.app.register(cors, {
       // put your options here
     });
 
-    this.rawApp.register(fastifySwagger, {
+    this.app.register(fastifyCookie, {
+      secret: this.instance.flags.cookieSecret,
+      hook: "onRequest",
+      parseOptions: {}, // options for parsing cookies
+    });
+
+    this.app.register(fastifySwagger, {
       openapi: {
         info: {
           title: "YourDash Backend",
@@ -72,7 +89,7 @@ class RequestManager {
       transform: jsonSchemaTransform,
     });
 
-    this.rawApp.register(fastifySwaggerUI, {
+    this.app.register(fastifySwaggerUI, {
       routePrefix: "/swagger",
       uiConfig: {},
       logo: {
@@ -1856,7 +1873,7 @@ class RequestManager {
       },
     });
 
-    this.rawApp.addHook("onRequest", async (req, res) => {
+    this.app.addHook("onRequest", async (req, res) => {
       let queryResult = await this.instance.database.query(
         "INSERT INTO public.request_manager_log (request_timestamp, request_method, request_path, request_body) VALUES ($1, $2, $3, $4) RETURNING request_id;",
         [Date.now(), req.method, req.url, req.body],
@@ -1923,8 +1940,9 @@ class RequestManager {
     await this.instance.authorization.__internal_authHook();
 
     const self = this;
-    this.rawApp.after(() => {
-      this.rawApp.get("/", async function handler(req, res) {
+    this.app.after(() => {
+      this.publicRoutes.push("/");
+      this.app.get("/", async function handler(req, res) {
         if (self.instance.flags.isDevmode) {
           return res.redirect(`http://localhost:5173/login/http://localhost:3563`);
         }
@@ -1932,7 +1950,8 @@ class RequestManager {
         return res.redirect(`https://yourdash.ewsgit.uk/login/${/* this.globalDb.get("core:this.instanceurl") */ "FIXME: implement this"}`);
       });
 
-      this.rawApp.get(
+      this.publicRoutes.push("/test");
+      this.app.get(
         "/test",
         {
           schema: {
@@ -1954,20 +1973,24 @@ class RequestManager {
         },
       );
 
-      this.rawApp.get("/418", { schema: { response: { 200: z.string() } } }, async () => {
+      this.publicRoutes.push("/418");
+      this.app.get("/418", { schema: { response: { 200: z.string() } } }, async () => {
         return "This is a yourdash instance, not a coffee pot. This server does not implement the Hyper Text Coffee Pot Control Protocol";
       });
 
-      this.rawApp.get("/ping", { schema: { response: { 200: z.string() } } }, async () => {
+      this.publicRoutes.push("/ping");
+      this.app.get("/ping", { schema: { response: { 200: z.string() } } }, async () => {
         return "pong";
       });
 
-      this.rawApp.get("/core/test/self-ping", { schema: { response: { 200: z.object({ success: z.boolean() }) } } }, async () => {
+      this.publicRoutes.push("/core/test/self-ping");
+      this.app.get("/core/test/self-ping", { schema: { response: { 200: z.object({ success: z.boolean() }) } } }, async () => {
         return { success: true };
       });
     });
 
-    this.rawApp.get(
+    this.publicRoutes.push("/login/instance/metadata");
+    this.app.get(
       "/login/instance/metadata",
       { schema: { response: { 200: z.object({ title: z.string(), message: z.string(), loginLayout: z.nativeEnum(LoginLayout) }) } } },
       () => {
@@ -1979,9 +2002,55 @@ class RequestManager {
       },
     );
 
+    this.publicRoutes.push("/login/instance/background");
+    this.app.get("/login/instance/background", (req, res) => {
+      const imagePath = path.resolve(path.join(this.instance.filesystem.commonPaths.rootDirectory(), "login_background.avif"));
+
+      return this.sendFile(res, imagePath, "image/avif");
+    });
+
+    this.publicRoutes.push("/login/user/");
+    this.app.get(
+      "/login/user/:username",
+      {
+        schema: {
+          response: { 200: z.object({ name: z.object({ first: z.string(), last: z.string() }) }), 404: z.object({ error: z.string() }) },
+        },
+      },
+      async (req, res) => {
+        const user = new User((req.params as unknown as { username: string }).username);
+        if (await user.doesExist()) {
+          res.status(200);
+          return {
+            name: {
+              first: await user.getForename(),
+              last: await user.getSurname(),
+            },
+          };
+        } else {
+          res.status(404);
+          return { error: "Unknown user" };
+        }
+      },
+    );
+
+    this.app.get("/login/user/:username/avatar", async (req, res) => {
+      const user = new User((req.params as unknown as { username: string }).username);
+      if (await user.doesExist()) {
+        res.status(200);
+        return this.instance.requestManager.sendFile(
+          res,
+          path.join(this.instance.filesystem.commonPaths.homeDirectory(user.username), ""),
+          "image/webp",
+        );
+      } else {
+        return res.status(404);
+      }
+    });
+
     try {
-      await this.rawApp.ready();
-      await this.rawApp.listen({ port: this.instance.flags.port });
+      await this.app.ready();
+      await this.app.listen({ port: this.instance.flags.port });
       this.instance.log.info(
         "request_manager",
         `YourDash ReSrc Instance Backend Online & listening at ${this.instance.log.addEmphasisToString(`port "${this.instance.flags.port}"`)}`,
@@ -1993,6 +2062,7 @@ class RequestManager {
         // @ts-ignore
         .then((data: { success?: boolean }) => {
           if (data?.success) {
+            this.instance.setStatus(INSTANCE_STATUS.OK);
             return this.instance.log.success("self_ping_test", "self ping successful - The server is receiving requests");
           }
 

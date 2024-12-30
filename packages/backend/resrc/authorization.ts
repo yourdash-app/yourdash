@@ -16,6 +16,20 @@ class Authorization {
 
   async __internal_authHook() {
     try {
+      // @ts-ignore
+      this.instance.requestManager.app.addHook("onRequest", async (req, res) => {
+        for (const route of this.instance.requestManager.publicRoutes) {
+          if (req.originalUrl.startsWith(route)) return;
+        }
+
+        const authorization = req.cookies["authorization"];
+
+        if (!authorization) return res.status(401).send({ unauthorized: true });
+
+        const [username, sessionToken] = authorization.split(" ");
+
+        if (!(await this.authorizeUser(username, sessionToken))) return res.status(401).send({ unauthorized: true });
+      });
     } catch (err) {
       console.error(err);
     }
