@@ -34,6 +34,22 @@ class User {
     return surname.rows[0].surname || "MISSING SURNAME";
   }
 
+  async setForename(forename: string) {
+    instance.log.info("user", `Set user ${this.username}'s forename to "${forename}"`);
+
+    await instance.database.query("UPDATE users SET forename = $2 WHERE username = $1;", [this.username, forename]);
+
+    return this;
+  }
+
+  async setSurname(surname: string) {
+    instance.log.info("user", `Set user ${this.username}'s surname to "${surname}"`);
+
+    await instance.database.query("UPDATE users SET surname = $2 WHERE username = $1;", [this.username, surname]);
+
+    return this;
+  }
+
   async getFullname() {
     const surname = await this.getSurname();
     const forename = await this.getForename();
@@ -150,6 +166,7 @@ async function repairUser(username: string) {
 }
 
 async function createUser(username: string) {
+  instance.log.info("user", `Creating user ${username}`);
   const user = new User(username);
 
   const userPath = instance.filesystem.commonPaths.homeDirectory(username);

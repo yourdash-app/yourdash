@@ -8,8 +8,8 @@ import coreCSI from "@yourdash/csi/coreCSI.ts";
 export default function loginUser(username: string, password: string) {
   return new Promise<void>((resolve, reject) => {
     coreCSI.syncPostJson(
-      `/login/user/${username}/authenticate`,
-      { password: password },
+      `/login/user/authenticate`,
+      { username: username, password: password },
       (response) => {
         coreCSI.setSessionId(response.sessionId);
         coreCSI.setUserToken(response.token);

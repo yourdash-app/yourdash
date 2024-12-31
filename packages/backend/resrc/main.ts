@@ -100,7 +100,7 @@ class Instance {
 
     try {
       await this.database.query(
-        `CREATE TABLE IF NOT EXISTS users(user_id SERIAL PRIMARY KEY, username TEXT, forename TEXT, surname TEXT, bio TEXT, storage_quota BIGINT, permissions TEXT[] )`,
+        `CREATE TABLE IF NOT EXISTS users(user_id SERIAL PRIMARY KEY, username TEXT, forename TEXT, surname TEXT, bio TEXT, storage_quota BIGINT, permissions TEXT[], session_tokens TEXT[] )`,
       );
       this.log.info("database", `Table ${this.log.addEmphasisToString("users")} has been created if it did not already exist.`);
     } catch (e) {
@@ -146,7 +146,9 @@ class Instance {
     console.log({ doesAdminExist: await adminUser.doesExist() });
 
     if (!(await adminUser.doesExist())) {
-      await createUser("admin");
+      const adminUser = await createUser("admin");
+      await adminUser.setForename("Admin");
+      await adminUser.setSurname("Istrator");
     }
 
     const users = await this.database.query("SELECT username FROM users");

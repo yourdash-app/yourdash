@@ -15,6 +15,7 @@ import UKImage from "@yourdash/uikit/components/image/UKImage.js";
 import UKSubtext from "@yourdash/uikit/components/subtext/UKSubtext.js";
 import UKTextInput from "@yourdash/uikit/components/textInput/UKTextInput.js";
 import UKSeparator from "@yourdash/uikit/components/separator/UKSeparator.js";
+import useToast from "@yourdash/uikit/core/toasts/useToast.js";
 import styles from "./index.cards.module.scss";
 import loginUser from "./lib/loginUser.ts";
 import { FC, useEffect, useState } from "react";
@@ -22,6 +23,7 @@ import { useNavigate } from "react-router";
 
 const IndexCardsPage: FC<{ metadata: EndpointResponseLoginInstanceMetadata | null }> = (props) => {
   const navigate = useNavigate();
+  const toast = useToast();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState<{ avatar: string; fullName: { first: string; last: string }; isValid: boolean }>({
@@ -140,7 +142,10 @@ const IndexCardsPage: FC<{ metadata: EndpointResponseLoginInstanceMetadata | nul
                 navigate("/login/success");
               })
               .catch(() => {
-                console.log("TODO: implement a toasts notification here for a failed login!");
+                toast.create({
+                  type: "error",
+                  content: { title: "Login Failure", body: "You login attempt failed, please try again. The password may be incorrect!" },
+                });
               });
           }}
         />
@@ -149,7 +154,10 @@ const IndexCardsPage: FC<{ metadata: EndpointResponseLoginInstanceMetadata | nul
           text={coreCSI.getInstanceUrl()}
         />
       </UKCard>
-      <UKCard className={styles.metadataCard}>
+      <UKCard
+        className={styles.metadataCard}
+        containerClassName={styles.metadataCardContainer}
+      >
         <UKImage
           containerClassName={styles.backgroundImageContainer}
           className={styles.backgroundImage}

@@ -13,6 +13,7 @@ class Filesystem {
   commonPaths = {
     rootDirectory: () => `${this.FS_ROOT}/`,
     defaultsDirectory: () => `${this.FS_ROOT}/Defaults`,
+    systemDirectory: () => `${this.FS_ROOT}/System`,
     usersDirectory: () => `${this.FS_ROOT}/Users/`,
     globalCacheDirectory: () => `${this.FS_ROOT}/Cache/`,
     teamsDirectory: () => `${this.FS_ROOT}/Teams/`,
@@ -48,6 +49,11 @@ class Filesystem {
           `Failed to create ${this.instance.log.addEmphasisToString(this.commonPaths.rootDirectory())} directory.`,
         );
       }
+    } else {
+      this.instance.log.info(
+        "filesystem",
+        `Verified ${this.instance.log.addEmphasisToString(this.commonPaths.rootDirectory())} directory.`,
+      );
     }
 
     if (!(await this.doesPathExist(this.commonPaths.globalCacheDirectory()))) {
@@ -64,6 +70,11 @@ class Filesystem {
           `Failed to create ${this.instance.log.addEmphasisToString(this.commonPaths.globalCacheDirectory())} directory.`,
         );
       }
+    } else {
+      this.instance.log.info(
+        "filesystem",
+        `Verified ${this.instance.log.addEmphasisToString(this.commonPaths.globalCacheDirectory())} directory.`,
+      );
     }
 
     if (!(await this.doesPathExist(this.commonPaths.teamsDirectory()))) {
@@ -80,6 +91,11 @@ class Filesystem {
           `Failed to create ${this.instance.log.addEmphasisToString(this.commonPaths.teamsDirectory())} directory.`,
         );
       }
+    } else {
+      this.instance.log.info(
+        "filesystem",
+        `Verified ${this.instance.log.addEmphasisToString(this.commonPaths.teamsDirectory())} directory.`,
+      );
     }
 
     if (!(await this.doesPathExist(this.commonPaths.usersDirectory()))) {
@@ -96,6 +112,11 @@ class Filesystem {
           `Failed to create ${this.instance.log.addEmphasisToString(this.commonPaths.usersDirectory())} directory.`,
         );
       }
+    } else {
+      this.instance.log.info(
+        "filesystem",
+        `Verified ${this.instance.log.addEmphasisToString(this.commonPaths.usersDirectory())} directory.`,
+      );
     }
 
     if (!(await this.doesPathExist(this.commonPaths.defaultsDirectory()))) {
@@ -112,6 +133,32 @@ class Filesystem {
           `Failed to create ${this.instance.log.addEmphasisToString(this.commonPaths.defaultsDirectory())} directory.`,
         );
       }
+    } else {
+      this.instance.log.info(
+        "filesystem",
+        `Verified ${this.instance.log.addEmphasisToString(this.commonPaths.defaultsDirectory())} directory.`,
+      );
+    }
+
+    if (!(await this.doesPathExist(this.commonPaths.systemDirectory()))) {
+      try {
+        await fs.mkdir(this.commonPaths.systemDirectory());
+        this.instance.log.info(
+          "filesystem",
+          `Created ${this.instance.log.addEmphasisToString(this.commonPaths.systemDirectory())} directory.`,
+        );
+      } catch (e) {
+        console.error(e);
+        this.instance.log.error(
+          "filesystem",
+          `Failed to create ${this.instance.log.addEmphasisToString(this.commonPaths.systemDirectory())} directory.`,
+        );
+      }
+    } else {
+      this.instance.log.info(
+        "filesystem",
+        `Verified ${this.instance.log.addEmphasisToString(this.commonPaths.systemDirectory())} directory.`,
+      );
     }
 
     if (!(await this.doesPathExist(path.join(this.commonPaths.defaultsDirectory(), "userAvatar.png")))) {
@@ -120,9 +167,31 @@ class Filesystem {
         this.instance.log.info("filesystem", `Coppied default asset ${this.instance.log.addEmphasisToString("userAvatar.png")}.`);
       } catch (e) {
         console.error(e);
-        this.instance.log.error("filesystem", `Coppied default asset ${this.instance.log.addEmphasisToString("userAvatar.png")}.`);
+        this.instance.log.error("filesystem", `Failed to copy default asset ${this.instance.log.addEmphasisToString("userAvatar.png")}.`);
       }
+    } else {
+      this.instance.log.info("filesystem", `Verified ${path.join(this.commonPaths.defaultsDirectory(), "userAvatar.png")} exists.`);
     }
+
+    if (!(await this.doesPathExist(path.join(this.commonPaths.systemDirectory(), "login_background.avif")))) {
+      try {
+        await fs.cp(
+          path.join(process.cwd(), "defaults/default_login_background.avif"),
+          path.join(this.commonPaths.systemDirectory(), "login_background.avif"),
+        );
+        this.instance.log.info("filesystem", `Coppied system asset ${this.instance.log.addEmphasisToString("login_background.avif")}.`);
+      } catch (e) {
+        console.error(e);
+        this.instance.log.error(
+          "filesystem",
+          `Failed to copy system asset ${this.instance.log.addEmphasisToString("login_background.avif")}.`,
+        );
+      }
+    } else {
+      this.instance.log.info("filesystem", `Verified ${path.join(this.commonPaths.systemDirectory(), "login_background.avif")} exists.`);
+    }
+
+    this.instance.log.info("filesystem", "Verified filesystem structure!");
 
     return this;
   }

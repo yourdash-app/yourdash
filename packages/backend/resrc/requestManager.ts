@@ -1995,19 +1995,12 @@ class RequestManager {
       { schema: { response: { 200: z.object({ title: z.string(), message: z.string(), loginLayout: z.nativeEnum(LoginLayout) }) } } },
       () => {
         return {
-          title: "Placeholder name",
+          title: "YourDash Instance",
           message: "Placeholder message. Hey system admin, you should change this!",
           loginLayout: LoginLayout.CARDS,
         };
       },
     );
-
-    this.publicRoutes.push("/login/instance/background");
-    this.app.get("/login/instance/background", (req, res) => {
-      const imagePath = path.resolve(path.join(this.instance.filesystem.commonPaths.rootDirectory(), "login_background.avif"));
-
-      return this.sendFile(res, imagePath, "image/avif");
-    });
 
     this.publicRoutes.push("/login/user/");
     this.app.get(
@@ -2040,12 +2033,39 @@ class RequestManager {
         res.status(200);
         return this.instance.requestManager.sendFile(
           res,
-          path.join(this.instance.filesystem.commonPaths.homeDirectory(user.username), ""),
+          path.join(this.instance.filesystem.commonPaths.userSystemDirectory(user.username), "avatar128.webp"),
           "image/webp",
         );
       } else {
         return res.status(404);
       }
+    });
+
+    this.app.post(
+      "/login/user/authenticate",
+      { schema: { body: z.object({ username: z.string(), password: z.string() }) } },
+      async (req, res) => {
+        const body = req.body as { username: string; password: string };
+        const user = new User(body.username);
+        if (await user.doesExist()) {
+          res.status(200);
+
+          // do auth
+          await this.instance.authorization.authenticateUser(body.username, body.password);
+        } else {
+          return res.status(404);
+        }
+      },
+    );
+
+    this.publicRoutes.push("/login/instance/background");
+    this.app.get("/login/instance/background", async (req, res) => {
+      res.status(200);
+      return this.instance.requestManager.sendFile(
+        res,
+        path.join(this.instance.filesystem.commonPaths.systemDirectory(), "login_background.avif"),
+        "image/avif",
+      );
     });
 
     try {
