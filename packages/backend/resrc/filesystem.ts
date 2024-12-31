@@ -12,17 +12,17 @@ class Filesystem {
   FS_ROOT: string;
   commonPaths = {
     rootDirectory: () => `${this.FS_ROOT}/`,
-    defaultsDirectory: () => `${this.FS_ROOT}/Defaults`,
-    systemDirectory: () => `${this.FS_ROOT}/System`,
+    defaultsDirectory: () => `${this.FS_ROOT}/Defaults/`,
+    systemDirectory: () => `${this.FS_ROOT}/System/`,
     usersDirectory: () => `${this.FS_ROOT}/Users/`,
     globalCacheDirectory: () => `${this.FS_ROOT}/Cache/`,
     teamsDirectory: () => `${this.FS_ROOT}/Teams/`,
     homeDirectory: (username: string) => `${this.FS_ROOT}/Users/${username}/`,
-    userDocumentsDirectory: (username: string) => `${this.FS_ROOT}/Users/${username}/Documents`,
-    userDownloadsDirectory: (username: string) => `${this.FS_ROOT}/Users/${username}/Downloads`,
-    userPicturesDirectory: (username: string) => `${this.FS_ROOT}/Users/${username}/Pictures`,
-    userVideosDirectory: (username: string) => `${this.FS_ROOT}/Users/${username}/Videos`,
-    userSystemDirectory: (username: string) => `${this.FS_ROOT}/Users/${username}/System`,
+    userDocumentsDirectory: (username: string) => `${this.FS_ROOT}/Users/${username}/Documents/`,
+    userDownloadsDirectory: (username: string) => `${this.FS_ROOT}/Users/${username}/Downloads/`,
+    userPicturesDirectory: (username: string) => `${this.FS_ROOT}/Users/${username}/Pictures/`,
+    userVideosDirectory: (username: string) => `${this.FS_ROOT}/Users/${username}/Videos/`,
+    userSystemDirectory: (username: string) => `${this.FS_ROOT}/Users/${username}/System/`,
   };
 
   constructor(instance: Instance) {

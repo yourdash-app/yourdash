@@ -2068,6 +2068,7 @@ class RequestManager {
       );
     });
 
+    // start listening for requests
     try {
       await this.app.ready();
       await this.app.listen({ port: this.instance.flags.port });
