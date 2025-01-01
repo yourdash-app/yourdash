@@ -5,6 +5,12 @@
 
 import coreCSI from "@yourdash/csi/coreCSI.ts";
 import useResource from "@yourdash/csi/useResource.ts";
+import UKButton from "@yourdash/uikit/components/button/UKButton.js";
+import UKCard from "@yourdash/uikit/components/card/UKCard.js";
+import UKHeading from "@yourdash/uikit/components/heading/UKHeading.js";
+import UKRedirect from "@yourdash/uikit/components/redirect/UKRedirect.js";
+import UKSubtext from "@yourdash/uikit/components/subtext/UKSubtext.js";
+import UKText from "@yourdash/uikit/components/text/UKText.js";
 import styles from "./index.module.scss";
 import { FC } from "react";
 import { useNavigate } from "react-router";

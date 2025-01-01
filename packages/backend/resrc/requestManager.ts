@@ -15,6 +15,7 @@ import { createReadStream } from "fs";
 import path from "path";
 import { fetch } from "undici";
 import { z } from "zod";
+import { YourDashSessionType } from "./authorization.js";
 import { type Instance } from "./main.js";
 import { INSTANCE_STATUS } from "./types/instanceStatus.js";
 import User from "./user.js";
@@ -2047,11 +2048,20 @@ class RequestManager {
       async (req, res) => {
         const body = req.body as { username: string; password: string };
         const user = new User(body.username);
+
         if (await user.doesExist()) {
           res.status(200);
 
-          // do auth
-          await this.instance.authorization.authenticateUser(body.username, body.password);
+          // perform authorization
+          let sessionToken = await this.instance.authorization.authenticateUser(body.username, body.password, YourDashSessionType.WEB);
+
+          if (sessionToken === null) {
+            res.status(401);
+            return { error: "Password did not match." };
+          }
+
+          res.cookie("authorization", sessionToken);
+          return { success: true };
         } else {
           return res.status(404);
         }
@@ -2067,6 +2077,19 @@ class RequestManager {
         "image/avif",
       );
     });
+
+    this.app.get(
+      "/core/login/notice",
+      { schema: { response: { 200: z.object({ author: z.string(), message: z.string(), timestamp: z.number(), display: z.boolean() }) } } },
+      async (req, res) => {
+        return {
+          author: "System",
+          message: "This is a sample notice message",
+          timestamp: Date.now(),
+          display: true,
+        };
+      },
+    );
 
     // start listening for requests
     try {

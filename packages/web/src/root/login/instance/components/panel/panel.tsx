@@ -68,8 +68,14 @@ const Panel: FC = () => {
       />
       <UKButton
         onClick={() => {
-          setInputValue("http://localhost");
-          checkUrl();
+          isValidInstance("http://localhost").then((bool) => {
+            setIsValid(bool);
+
+            if (bool) {
+              coreCSI.setInstanceUrl("http://localhost");
+              navigate("/login");
+            }
+          });
         }}
         className={styles.useDevServer}
         text={"Use Local Development Server"}

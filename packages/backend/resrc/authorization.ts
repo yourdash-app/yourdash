@@ -33,7 +33,7 @@ class Authorization {
 
         const [username, sessionToken] = authorization.split(" ");
 
-        if (!(await this.authorizeUser(username, sessionToken))) return res.status(401).send({ unauthorized: true });
+        if (!(await this.authorizeUser(username, `${username} ${sessionToken}`))) return res.status(401).send({ unauthorized: true });
       });
     } catch (err) {
       console.error(err);
@@ -73,10 +73,10 @@ class Authorization {
 
     switch (sessionType) {
       case YourDashSessionType.WEB:
-        sessionToken = `WEB_${generateStringOfLength(128)}_YOURDASH_SESSION`;
+        sessionToken = `${username} WEB_${generateStringOfLength(128)}_YOURDASH_SESSION`;
         break;
       case YourDashSessionType.NEXTCLOUD_COMPATIBILITY:
-        sessionToken = `unimplemented session token generation!`;
+        sessionToken = `${username} unimplemented session token generation!`;
         break;
     }
 
@@ -88,20 +88,33 @@ class Authorization {
     return sessionToken;
   }
 
-  // TODO: implement me
   // check the sessionToken is valid for the user
   async authorizeUser(username: string, sessionToken: string): Promise<boolean> {
-    return false;
+    let sessionTokens = await this.instance.database.query("SELECT session_tokens FROM users WHERE username = $1", [username]);
+
+    return !!sessionTokens.rows[0].session_tokens.includes(sessionToken);
   }
 
-  // TODO: implement me
   // generate a sessionToken if the username and password are valid, else return null
-  async authenticateUser(username: string, password: string): Promise<string | null> {
-    this.__internal_generateSessionToken(username, YourDashSessionType.WEB);
+  async authenticateUser(username: string, password: string, sessionType: YourDashSessionType): Promise<string | null> {
+    let postgresPasswordHash = (await this.instance.database.query("SELECT password_hash FROM users WHERE username = $1;", [username]))
+      .rows[0].password_hash;
 
-    if (this) return "";
+    if (!(await Bun.password.verify(password, postgresPasswordHash))) {
+      return null;
+    }
 
-    return null;
+    return this.__internal_generateSessionToken(username, sessionType);
+  }
+
+  async setUserPassword(username: string, password: string) {
+    let passwordHash = await Bun.password.hash(password);
+
+    this.instance.database.query("UPDATE users SET password_hash = $1 WHERE username = $2;", [passwordHash, username]);
+
+    this.instance.log.info("authorization", `password was changed for user ${username}`);
+
+    return true;
   }
 }
 
