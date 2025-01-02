@@ -3,10 +3,10 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
+import { promises as fs } from "fs";
 import path from "path";
 import { resizeImage } from "./image.js";
 import instance from "./main.js";
-import { promises as fs } from "fs";
 
 class User {
   readonly username: string;
