@@ -148,6 +148,7 @@ export class ClientServerInteraction<
       fetch(`${instanceUrl}${this._internal_baseRequestPath}${<string>endpoint}`, {
         method: "GET",
         mode: "cors",
+        credentials: "include",
         headers: {
           "Access-Control-Allow-Origin": "*",
           "Content-Type": "application/json",
@@ -216,6 +217,7 @@ export class ClientServerInteraction<
     fetch(`${instanceUrl}${this._internal_baseRequestPath}${endpointPathWithParams}`, {
       method: "GET",
       mode: "cors",
+      credentials: "include",
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Content-Type": "application/json",
@@ -266,6 +268,7 @@ export class ClientServerInteraction<
       fetch(`${instanceUrl}${this._internal_baseRequestPath}${endpoint}`, {
         method: "POST",
         mode: "cors",
+        credentials: "include",
         body: JSON.stringify(body),
         headers: {
           "Access-Control-Allow-Origin": "*",
@@ -324,6 +327,7 @@ export class ClientServerInteraction<
     fetch(`${instanceUrl}${this._internal_baseRequestPath}${endpoint}`, {
       method: "POST",
       mode: "cors",
+      credentials: "include",
       body: JSON.stringify(body),
       headers: {
         "Access-Control-Allow-Origin": "*",
@@ -377,6 +381,7 @@ export class ClientServerInteraction<
     fetch(`${instanceUrl}${this._internal_baseRequestPath}${endpoint}`, {
       method: "DELETE",
       mode: "cors",
+      credentials: "include",
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Content-Type": "application/json",
@@ -428,6 +433,7 @@ export class ClientServerInteraction<
     fetch(`${instanceUrl}${this._internal_baseRequestPath}${endpoint}`, {
       method: "GET",
       mode: "cors",
+      credentials: "include",
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Content-Type": "text/plain",
@@ -466,6 +472,7 @@ export class ClientServerInteraction<
     fetch(`${instanceUrl}${this._internal_baseRequestPath}${endpoint}`, {
       method: "POST",
       mode: "cors",
+      credentials: "include",
       body: JSON.stringify(body),
       headers: {
         "Access-Control-Allow-Origin": "*",
@@ -502,6 +509,7 @@ export class ClientServerInteraction<
     fetch(`${instanceUrl}${this._internal_baseRequestPath}${endpoint}`, {
       method: "DELETE",
       mode: "cors",
+      credentials: "include",
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Content-Type": "text/plain",

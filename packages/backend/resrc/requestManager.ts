@@ -63,7 +63,9 @@ class RequestManager {
     this.app.setSerializerCompiler(serializerCompiler);
 
     await this.app.register(cors, {
-      // put your options here
+      methods: "*",
+      origin: "http://localhost:5173",
+      credentials: true,
     });
 
     this.app.register(fastifyCookie, {
@@ -2163,7 +2165,14 @@ class RequestManager {
             return { error: "Password did not match." };
           }
 
-          res.cookie("authorization", sessionToken);
+          res.cookie("authorization", sessionToken, {
+            httpOnly: true,
+            maxAge: 7 * 86400,
+            path: "/",
+            sameSite: "none",
+            secure: true,
+          });
+
           return { success: true };
         } else {
           return res.status(404);
