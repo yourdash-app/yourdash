@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -69,16 +69,9 @@ export default function generateWeatherDescriptionFromData(
   currentWeatherData: IWeatherDataForLocation["currentWeather"],
   isMetric = false,
 ) {
-  const weatherState = getWeatherConditionFromState(
-    currentWeatherData.weatherState,
-  );
+  const weatherState = getWeatherConditionFromState(currentWeatherData.weatherState);
   const temperature = Math.round(currentWeatherData.temperature);
-  const windDescription = describeWind(
-    currentWeatherData.windDirection,
-    currentWeatherData.windSpeed,
-  );
+  const windDescription = describeWind(currentWeatherData.windDirection, currentWeatherData.windSpeed);
 
-  return `Currently ${trans(
-    weatherState,
-  )} at ${temperature}°C with a ${windDescription}`;
+  return `Currently ${trans(weatherState)} at ${temperature}°C with a ${windDescription}`;
 }

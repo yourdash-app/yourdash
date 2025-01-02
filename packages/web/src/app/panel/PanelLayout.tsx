@@ -1,14 +1,18 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2025 @Ewsgit and YourDash contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import UKImage from "@yourdash/uikit/components/image/UKImage.js";
+import UKText from "@yourdash/uikit/components/text/UKText.js";
+import { UKIcons } from "@yourdash/uikit/core/iconDictionary.js";
 import React, { useEffect } from "react";
 import { Outlet } from "react-router";
 import Panel from "./Panel.tsx";
 import clippy from "@yourdash/shared/web/helpers/clippy.ts";
 import styles from "./PanelLayout.module.scss";
 import coreCSI from "@yourdash/csi/coreCSI.ts";
+import UKIconButton from "@yourdash/uikit/components/iconButton/UKIconButton.js";
 
 const PanelLayout: React.FC<{
   showBackButton: boolean;

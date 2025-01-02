@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 Ewsgit <https://ewsgit.uk> and YourDash <https://yourdash.ewsgit.uk> contributors.
+ * Copyright ©2025 Ewsgit <https://ewsgit.uk> and YourDash <https://yourdash.ewsgit.uk> contributors.
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
@@ -173,22 +173,34 @@ class Filesystem {
       this.instance.log.info("filesystem", `Verified ${path.join(this.commonPaths.defaultsDirectory(), "userAvatar.png")} exists.`);
     }
 
-    if (!(await this.doesPathExist(path.join(this.commonPaths.systemDirectory(), "login_background.avif")))) {
+    if (!(await this.doesPathExist(path.join(this.commonPaths.systemDirectory(), "loginBackground.avif")))) {
       try {
         await fs.cp(
           path.join(process.cwd(), "defaults/default_login_background.avif"),
-          path.join(this.commonPaths.systemDirectory(), "login_background.avif"),
+          path.join(this.commonPaths.systemDirectory(), "loginBackground.avif"),
         );
-        this.instance.log.info("filesystem", `Coppied system asset ${this.instance.log.addEmphasisToString("login_background.avif")}.`);
+        this.instance.log.info("filesystem", `Coppied system asset ${this.instance.log.addEmphasisToString("loginBackground.avif")}.`);
       } catch (e) {
         console.error(e);
         this.instance.log.error(
           "filesystem",
-          `Failed to copy system asset ${this.instance.log.addEmphasisToString("login_background.avif")}.`,
+          `Failed to copy system asset ${this.instance.log.addEmphasisToString("loginBackground.avif")}.`,
         );
       }
     } else {
-      this.instance.log.info("filesystem", `Verified ${path.join(this.commonPaths.systemDirectory(), "login_background.avif")} exists.`);
+      this.instance.log.info("filesystem", `Verified ${path.join(this.commonPaths.systemDirectory(), "loginBackground.avif")} exists.`);
+    }
+
+    if (!(await this.doesPathExist(path.join(this.commonPaths.systemDirectory(), "instanceLogo.png")))) {
+      try {
+        await fs.cp(path.join(process.cwd(), "defaults/yourdash.png"), path.join(this.commonPaths.systemDirectory(), "instanceLogo.png"));
+        this.instance.log.info("filesystem", `Coppied system asset ${this.instance.log.addEmphasisToString("instanceLogo.png")}.`);
+      } catch (e) {
+        console.error(e);
+        this.instance.log.error("filesystem", `Failed to copy system asset ${this.instance.log.addEmphasisToString("instanceLogo.png")}.`);
+      }
+    } else {
+      this.instance.log.info("filesystem", `Verified ${path.join(this.commonPaths.systemDirectory(), "instanceLogo.png")} exists.`);
     }
 
     this.instance.log.info("filesystem", "Verified filesystem structure!");

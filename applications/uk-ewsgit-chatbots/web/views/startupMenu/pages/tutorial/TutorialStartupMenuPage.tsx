@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -12,11 +12,16 @@ import styles from "./TutorialStartupMenuPage.module.scss";
 const TutorialStartupMenuPage: React.FC<IStartupMenuPageProps> = ({ setMenuPage }) => {
   return (
     <div>
-      <Heading className={styles.heading} level={1}>
+      <Heading
+        className={styles.heading}
+        level={1}
+      >
         Welcome to YourDash Chatbots
       </Heading>
 
-      <p className={styles.description}>YourDash Chatbots is an application for creating and managing chatbots across multiple social platforms.</p>
+      <p className={styles.description}>
+        YourDash Chatbots is an application for creating and managing chatbots across multiple social platforms.
+      </p>
 
       <div className={styles.options}>
         <MajorButton

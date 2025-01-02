@@ -1,43 +1,43 @@
 /*
- * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import React from "react"
+import React from "react";
 import User from "./components/User";
 
 const UsersView: React.FC = () => {
-  const [users, setUsers] = React.useState<{username: string, avatar: string, name: { first: string, last: string }}[]>( [] )
+  const [users, setUsers] = React.useState<{ username: string; avatar: string; name: { first: string; last: string } }[]>([]);
 
-  React.useEffect( () => {
-    setUsers( [
+  React.useEffect(() => {
+    setUsers([
       {
         avatar: "",
         name: { first: "John", last: "Doe" },
-        username: "johnd"
+        username: "johnd",
       },
       {
         avatar: "",
         name: { first: "Jane", last: "Doe" },
-        username: "janed"
-      }
-    ] )
-  } )
+        username: "janed",
+      },
+    ]);
+  });
 
   return (
     <>
-      {
-        users.map( u => {
-          return <User
+      {users.map((u) => {
+        return (
+          <User
             username={u.username}
             avatar={u.avatar}
             key={u.username}
             name={u.name}
           />
-        } )
-      }
+        );
+      })}
     </>
-  )
-}
+  );
+};
 
-export default UsersView
+export default UsersView;

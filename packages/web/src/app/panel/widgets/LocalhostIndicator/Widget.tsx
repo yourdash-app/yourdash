@@ -1,9 +1,10 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2025 @Ewsgit and YourDash contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 import clippy from "@yourdash/shared/web/helpers/clippy.ts";
+import UKText from "@yourdash/uikit/components/text/UKText.js";
 import React from "react";
 
 const LocalhostIndicator: React.FC<{

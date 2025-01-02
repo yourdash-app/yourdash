@@ -1,16 +1,17 @@
 /*
- * Copyright ©2024 Ewsgit <https://ewsgit.uk> and YourDash <https://yourdash.ewsgit.uk> contributors.
+ * Copyright ©2025 Ewsgit <https://ewsgit.uk> and YourDash <https://yourdash.ewsgit.uk> contributors.
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import Image from "@yourdash/uikit/components/image/image.js";
+import UKImage from "@yourdash/uikit/components/image/UKImage.js";
 import React from "react";
 import styles from "./Widget.module.scss";
+import UKText from "@yourdash/uikit/components/text/UKText.js";
 
 const UserProfileWidget: React.FC = () => {
   return (
     <div className={styles.component}>
-      <Image
+      <UKImage
         src={"/favicon.png"}
         accessibleLabel={"User profile"}
       />

@@ -1,9 +1,10 @@
 /*
- * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 import clippy from "@yourdash/shared/web/helpers/clippy.ts";
+import UKBox from "@yourdash/uikit/components/box/UKBox.js";
 import styles from "./Panel.module.scss";
 import React, { memo, useEffect, useState } from "react";
 import loadable from "@loadable/component";
@@ -58,6 +59,7 @@ const Panel: React.FC<{
           <LoadableWidget
             key={widget}
             side={side}
+            panelSize={panelSize}
           />
         );
       })}

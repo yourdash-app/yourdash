@@ -1,8 +1,11 @@
 /*
- * Copyright ©2024 Ewsgit <https://ewsgit.uk> and YourDash <https://yourdash.ewsgit.uk> contributors.
+ * Copyright ©2025 Ewsgit <https://ewsgit.uk> and YourDash <https://yourdash.ewsgit.uk> contributors.
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
+import UKHeading from "@yourdash/uikit/components/heading/UKHeading.js";
+import UKSeparator from "@yourdash/uikit/components/separator/UKSeparator.js";
+import UKSubtext from "@yourdash/uikit/components/subtext/UKSubtext.js";
 import React from "react";
 
 const NotFoundPage: React.FC = () => {

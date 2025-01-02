@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -32,12 +32,7 @@ export default class Token {
     background: string;
   };
 
-  constructor(
-    content: Token["content"],
-    type: Token["type"],
-    position: Token["position"],
-    overrides?: Token["overrides"],
-  ) {
+  constructor(content: Token["content"], type: Token["type"], position: Token["position"], overrides?: Token["overrides"]) {
     this.content = content;
     this.type = type;
     this.position = position;
@@ -105,8 +100,7 @@ export default class Token {
     domNode.classList.add(styles.token);
     domNode.innerText += this.content;
 
-    if (this.overrides?.background)
-      domNode.style.backgroundColor = this.overrides.background;
+    if (this.overrides?.background) domNode.style.backgroundColor = this.overrides.background;
 
     if (this.overrides?.color) domNode.style.color = this.overrides.color;
 

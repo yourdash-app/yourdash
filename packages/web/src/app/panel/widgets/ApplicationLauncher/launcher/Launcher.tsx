@@ -1,15 +1,18 @@
 /*
- * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 import useResource from "@yourdash/csi/useResource.ts";
 import clippy from "@yourdash/shared/web/helpers/clippy.ts";
+import UKIconButton from "@yourdash/uikit/components/iconButton/UKIconButton.js";
 import { useNavigate } from "react-router-dom";
 import styles from "./Launcher.module.scss";
 import React, { memo } from "react";
 import ApplicationsLauncherApplications from "./Applications/Applications.tsx";
 import coreCSI from "@yourdash/csi/coreCSI.ts";
+import UKBox from "@yourdash/uikit/components/box/UKBox.js";
+import { UKIcons } from "@yourdash/uikit/core/iconDictionary.js";
 
 const ApplicationLauncher: React.FC<{
   side: "top" | "right" | "bottom" | "left";

@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -20,7 +20,7 @@ const ApplicationRedirectToDash: React.FC = () => {
           navigate("/app/a/uk-ewsgit-dash-frontend");
         },
         () => {
-          sessionStorage.removeItem("session_token");
+          console.warn("User was not authenticated!");
           navigate("/login");
         },
       );

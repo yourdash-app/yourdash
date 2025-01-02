@@ -1,8 +1,11 @@
 /*
- * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import UKIcon from "@yourdash/uikit/components/icon/UKIcon.js";
+import DecrementLevel from "@yourdash/uikit/core/decrementLevel.js";
+import { UKIcons } from "@yourdash/uikit/core/iconDictionary.js";
 import React, { useEffect } from "react";
 import styles from "./Widget.module.scss";
 import ApplicationLauncher from "./launcher/Launcher.tsx";
@@ -17,7 +20,7 @@ const ApplicationLauncherWidget: React.FC<{ side: "top" | "right" | "bottom" | "
   }, [location]);
 
   return (
-    <UK.Core.DecrementLevel>
+    <DecrementLevel>
       <div className={styles.widgetContainer}>
         <button
           aria-label={"Application Launcher"}
@@ -34,7 +37,7 @@ const ApplicationLauncherWidget: React.FC<{ side: "top" | "right" | "bottom" | "
           visible={launcherVisible}
         />
       </div>
-    </UK.Core.DecrementLevel>
+    </DecrementLevel>
   );
 };
 

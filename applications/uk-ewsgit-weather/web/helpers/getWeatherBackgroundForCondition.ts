@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -29,9 +29,9 @@ export const backgroundImages: string[] = [
   BACKGROUND_IMAGE_RAIN1,
   BACKGROUND_IMAGE_RAIN2,
   BACKGROUND_IMAGE_RAIN3,
-  BACKGROUND_IMAGE_THUNDER
+  BACKGROUND_IMAGE_THUNDER,
 ];
 
-export default function getWeatherBackgroundForCondition( weatherState: WEATHER_STATES ): string {
+export default function getWeatherBackgroundForCondition(weatherState: WEATHER_STATES): string {
   return backgroundImages[weatherState];
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -11,6 +11,8 @@ import styles from "./Applications.module.scss";
 import { useNavigate } from "react-router";
 import SmallApplicationGrid from "./SmallGrid/SmallApplicationGrid.tsx";
 import ApplicationList from "./List/ApplicationList.tsx";
+import UKTextInput from "@yourdash/uikit/components/textInput/UKTextInput.js";
+import { UKIcons } from "@yourdash/uikit/core/iconDictionary.js";
 
 let filteredApplications: IPanelApplicationsLauncherFrontendModule[] = [];
 

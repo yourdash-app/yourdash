@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 Ewsgit <https://ewsgit.uk> and YourDash <https://yourdash.ewsgit.uk> contributors.
+ * Copyright ©2025 Ewsgit <https://ewsgit.uk> and YourDash <https://yourdash.ewsgit.uk> contributors.
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
@@ -1874,6 +1874,109 @@ class RequestManager {
       },
     });
 
+    this.app.addHook("onResponse", async (req, res) => {
+      if (res.statusCode.toString()[0] === "4") {
+        switch (req.method.toUpperCase()) {
+          case "GET":
+            if (req.url.startsWith("/core/auth-img")) {
+              return;
+            }
+            if (req.url.startsWith("/core/auth-video")) {
+              return;
+            }
+
+            this.instance.log.info(
+              "response",
+              `${chalk.bgBlack(chalk.green(" GET "))} ${chalk.bgBlack(chalk.red(` ${res.statusCode} `))} ${chalk.bold(req.url)} ${this.instance.flags.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""}`,
+            );
+            break;
+          case "POST":
+            this.instance.log.info(
+              "response",
+              `${chalk.bgBlack(chalk.blue(" POS "))} ${chalk.bgBlack(chalk.red(` ${res.statusCode} `))} ${chalk.bold(req.url)} ${this.instance.flags.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""}`,
+            );
+            break;
+          case "DELETE":
+            this.instance.log.info(
+              "response",
+              `${chalk.bgBlack(chalk.red(" DEL "))} ${chalk.bgBlack(chalk.red(` ${res.statusCode} `))} ${chalk.bold(req.url)} ${this.instance.flags.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""}`,
+            );
+            break;
+          case "OPTIONS":
+            if (this.instance.flags.logOptionsRequests) {
+              this.instance.log.info(
+                "response",
+                `${chalk.bgBlack(chalk.cyan(" OPT "))} ${chalk.bgBlack(chalk.red(` ${res.statusCode} `))} ${chalk.bold(req.url)} ${this.instance.flags.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""}`,
+              );
+            }
+            break;
+          case "PROPFIND":
+            this.instance.log.info(
+              "response",
+              `${chalk.bgBlack(chalk.cyan(" PFI "))} ${chalk.bgBlack(chalk.red(` ${res.statusCode} `))} ${chalk.bold(req.url)} ${this.instance.flags.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""}`,
+            );
+            break;
+          case "PROPPATCH":
+            this.instance.log.info(
+              "response",
+              `${chalk.bgCyan(chalk.cyan(" PPA "))} ${chalk.bgBlack(chalk.red(` ${res.statusCode} `))} ${chalk.bgBlack(chalk.red(` ${res.statusCode} `))} ${chalk.bold(req.url)} ${this.instance.flags.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""}`,
+            );
+            break;
+          default:
+        }
+      }
+      if (res.statusCode.toString()[0] === "5") {
+        switch (req.method.toUpperCase()) {
+          case "GET":
+            if (req.url.startsWith("/core/auth-img")) {
+              return;
+            }
+            if (req.url.startsWith("/core/auth-video")) {
+              return;
+            }
+
+            this.instance.log.info(
+              "response",
+              `${chalk.bgBlack(chalk.green(" GET "))} ${chalk.bgBlack(chalk.red(` ${res.statusCode} `))} ${chalk.bold(req.url)} ${this.instance.flags.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""}`,
+            );
+            break;
+          case "POST":
+            this.instance.log.info(
+              "response",
+              `${chalk.bgBlack(chalk.blue(" POS "))} ${chalk.bgBlack(chalk.red(` ${res.statusCode} `))} ${chalk.bold(req.url)} ${this.instance.flags.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""}`,
+            );
+            break;
+          case "DELETE":
+            this.instance.log.info(
+              "response",
+              `${chalk.bgBlack(chalk.red(" DEL "))} ${chalk.bgBlack(chalk.red(` ${res.statusCode} `))} ${chalk.bold(req.url)} ${this.instance.flags.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""}`,
+            );
+            break;
+          case "OPTIONS":
+            if (this.instance.flags.logOptionsRequests) {
+              this.instance.log.info(
+                "response",
+                `${chalk.bgBlack(chalk.cyan(" OPT "))} ${chalk.bgBlack(chalk.red(` ${res.statusCode} `))} ${chalk.bold(req.url)} ${this.instance.flags.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""}`,
+              );
+            }
+            break;
+          case "PROPFIND":
+            this.instance.log.info(
+              "response",
+              `${chalk.bgBlack(chalk.cyan(" PFI "))} ${chalk.bgBlack(chalk.red(` ${res.statusCode} `))} ${chalk.bold(req.url)} ${this.instance.flags.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""}`,
+            );
+            break;
+          case "PROPPATCH":
+            this.instance.log.info(
+              "response",
+              `${chalk.bgCyan(chalk.cyan(" PPA "))} ${chalk.bgBlack(chalk.red(` ${res.statusCode} `))} ${chalk.bold(req.url)} ${this.instance.flags.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""}`,
+            );
+            break;
+          default:
+        }
+      }
+    });
+
     this.app.addHook("onRequest", async (req, res) => {
       let queryResult = await this.instance.database.query(
         "INSERT INTO public.request_manager_log (request_timestamp, request_method, request_path, request_body) VALUES ($1, $2, $3, $4) RETURNING request_id;",
@@ -2073,7 +2176,7 @@ class RequestManager {
       res.status(200);
       return this.instance.requestManager.sendFile(
         res,
-        path.join(this.instance.filesystem.commonPaths.systemDirectory(), "login_background.avif"),
+        path.join(this.instance.filesystem.commonPaths.systemDirectory(), "loginBackground.avif"),
         "image/avif",
       );
     });
@@ -2090,6 +2193,31 @@ class RequestManager {
         };
       },
     );
+
+    this.publicRoutes.push("/login/instance/background");
+    this.app.get("/login/is-authenticated", async (req, res) => {
+      const authorization = req.cookies["authorization"];
+
+      if (!authorization) return res.status(401);
+
+      const [username, sessionToken] = authorization.split(" ");
+
+      if (!(await this.instance.authorization.authorizeUser(username, `${username} ${sessionToken}`))) return res.status(401);
+
+      return res.status(200);
+    });
+
+    this.app.get("/panel/logo/small", async (req, res) => {
+      return this.sendFile(res, path.join(this.instance.filesystem.commonPaths.systemDirectory(), "instanceLogo.32webp"), "image/webp");
+    });
+
+    this.app.get("/panel/logo/medium", async (req, res) => {
+      return this.sendFile(res, path.join(this.instance.filesystem.commonPaths.systemDirectory(), "instanceLogo40.webp"), "image/webp");
+    });
+
+    this.app.get("/panel/logo/large", async (req, res) => {
+      return this.sendFile(res, path.join(this.instance.filesystem.commonPaths.systemDirectory(), "instanceLogo128.webp"), "image/webp");
+    });
 
     // start listening for requests
     try {

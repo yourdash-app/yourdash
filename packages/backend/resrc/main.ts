@@ -1,16 +1,20 @@
 /*
- * Copyright ©2024 Ewsgit <https://ewsgit.uk> and YourDash <https://yourdash.ewsgit.uk> contributors.
+ * Copyright ©2025 Ewsgit <https://ewsgit.uk> and YourDash <https://yourdash.ewsgit.uk> contributors.
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
 import dotenv from "dotenv";
 import pg from "pg";
+import Applications from "./applications.js";
 import Authorization from "./authorization.js";
+import Events from "./event.js";
 import Filesystem from "./filesystem.js";
+import { resizeImage } from "./image.js";
 import Log from "./log.js";
 import RequestManager from "./requestManager.js";
 import { INSTANCE_STATUS } from "./types/instanceStatus.js";
 import User, { createUser, repairUser } from "./user.js";
+import path from "path";
 
 dotenv.config();
 
@@ -32,6 +36,8 @@ class Instance {
   authorization!: Authorization;
   database!: pg.Client;
   filesystem!: Filesystem;
+  events!: Events;
+  applications!: Applications;
   private status: INSTANCE_STATUS = INSTANCE_STATUS.UNKNOWN;
 
   constructor() {
@@ -99,27 +105,65 @@ class Instance {
     }
 
     try {
-      await this.database.query(
-        `CREATE TABLE IF NOT EXISTS users(user_id SERIAL PRIMARY KEY, username TEXT, forename TEXT, surname TEXT, bio TEXT, storage_quota BIGINT, permissions TEXT[], session_tokens TEXT[], password_hash TEXT )`,
-      );
+      await this.database.query(`CREATE TABLE IF NOT EXISTS users
+                                  (
+                                    user_id        serial primary key,
+                                    username       text,
+                                    forename       text,
+                                    surname        text,
+                                    bio            text DEFAULT 'I''m new here, say hello!.',
+                                    storage_quota  bigint,
+                                    permissions    text[],
+                                    session_tokens text[],
+                                    password_hash  text
+                                  )`);
       this.log.info("database", `Table ${this.log.addEmphasisToString("users")} has been created if it did not already exist.`);
     } catch (e) {
+      console.error(e);
       this.log.error("database", `Failed to create table ${this.log.addEmphasisToString("users")}!`);
     }
 
     try {
-      await this.database.query(
-        `CREATE TABLE IF NOT EXISTS teams(team_id SERIAL PRIMARY KEY, teamname TEXT, owner_username TEXT, members TEXT[], bio TEXT )`,
-      );
+      await this.database.query(`CREATE TABLE IF NOT EXISTS teams
+                                  (
+                                    team_id        serial primary key,
+                                    teamname       text,
+                                    owner_username text,
+                                    members        text[],
+                                    bio            text
+                                  )`);
       this.log.info("database", `Table ${this.log.addEmphasisToString("teams")} has been created if it did not already exist.`);
     } catch (e) {
+      console.error(e);
       this.log.error("database", `Failed to create table ${this.log.addEmphasisToString("teams")}!`);
+    }
+
+    try {
+      await this.database.query(`CREATE TABLE IF NOT EXISTS configuration
+                                  (
+                                    config_version              serial primary key,
+                                    creation_date               bigint,
+                                    administrator_username      text   DEFAULT 'admin',
+                                    display_name                text   DEFAULT 'YourDash Instance',
+                                    description                 text   DEFAULT 'This is the default instance description. Hey Admin, this can be changed in the system settings!.',
+                                    administrator_contact_email text,
+                                    installed_applications      text[] DEFAULT '{ "../../../applications/uk-ewsgit-dash", "../../../applications/uk-ewsgit-files", "../../../applications/uk-ewsgit-photos", "../../../applications/uk-ewsgit-weather", "../../../applications/uk-ewsgit-store", "../../../applications/uk-ewsgit-settings" }',
+                                    default_pinned_applications text[] DEFAULT '{ "uk-ewsgit-dash", "uk-ewsgit-files", "uk-ewsgit-store", "uk-ewsgit-weather" }'
+                                  )`);
+      this.log.info("database", `Table ${this.log.addEmphasisToString("config")} has been created if it did not already exist.`);
+
+      await this.database.query("INSERT INTO configuration(creation_date) VALUES ($1);", [Date.now()]);
+    } catch (e) {
+      console.error(e);
+      this.log.error("database", `Failed to create table ${this.log.addEmphasisToString("config")}!`);
     }
 
     this.authorization = new Authorization(this);
     this.filesystem = new Filesystem(this);
     this.requestManager = new RequestManager(this);
     this.request = this.requestManager.app;
+    this.events = new Events(this);
+    this.applications = new Applications(this);
 
     this.startup()
       .then((status: boolean) => {
@@ -139,11 +183,10 @@ class Instance {
   async startup(): Promise<boolean> {
     await this.filesystem.__internal_startup();
     await this.requestManager.__internal_startup();
+    await this.__internal_generateInstanceLogos();
     this.log.info("startup", "YourDash RequestManager Startup Complete!");
 
     const adminUser = new User("admin");
-
-    console.log({ doesAdminExist: await adminUser.doesExist() });
 
     if (!(await adminUser.doesExist())) {
       const adminUser = await createUser("admin");
@@ -160,6 +203,17 @@ class Instance {
 
     this.log.info("startup", "YourDash Instance Startup Complete");
 
+    this.log.info("startup", "Loading applications...");
+
+    const applications = await this.applications.getInstalledApplications();
+
+    for (const app of applications) {
+      await this.applications.loadApplication(app);
+      this.log.info("application", `Application ${app} loaded successfully!`);
+    }
+
+    this.log.info("application", `All applications have loaded!`);
+
     return true;
   }
 
@@ -175,6 +229,33 @@ class Instance {
     );
 
     return this;
+  }
+
+  async __internal_generateInstanceLogos() {
+    let instanceLogoPath = path.join(this.filesystem.commonPaths.systemDirectory(), "instanceLogo.png");
+
+    const requiredDimensions = [32, 40, 64, 128, 256, 512, 768, 1024];
+
+    for (const dimension of requiredDimensions) {
+      if (
+        await this.filesystem.doesPathExist(
+          path.join(path.join(this.filesystem.commonPaths.systemDirectory(), `instanceLogo${dimension}.webp`)),
+        )
+      ) {
+        this.log.info("instance", `instanceLogo @ ${dimension} already exists. Not generating new logo`);
+        continue;
+      }
+
+      await resizeImage(
+        instanceLogoPath,
+        dimension,
+        dimension,
+        path.join(path.join(this.filesystem.commonPaths.systemDirectory(), `instanceLogo${dimension}.webp`)),
+        "webp",
+      );
+
+      this.log.info("instance", `Genertated instanceLogo @ ${dimension}.`);
+    }
   }
 }
 

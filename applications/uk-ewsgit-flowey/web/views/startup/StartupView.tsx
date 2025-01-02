@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -14,7 +14,11 @@ const StartupView: React.FC = () => {
         style={{ backgroundImage: "url(/assets/background.jpg)" }}
       >
         <div className={"flex flex-col gap-1"}>
-          <h1 className={"text-6xl font-black tracking-wide [text-shadow:#242424bb_0_0_0.75rem,_#24242488_0_0_0.5rem,_#24242444_0_0_0.25rem]"}>Flowey</h1>
+          <h1
+            className={"text-6xl font-black tracking-wide [text-shadow:#242424bb_0_0_0.75rem,_#24242488_0_0_0.5rem,_#24242444_0_0_0.25rem]"}
+          >
+            Flowey
+          </h1>
           <span className={"[text-shadow:#242424bb_0_0_0.75rem,_#24242488_0_0_0.5rem,_#24242444_0_0_0.25rem] font-semibold tracking-wide"}>
             Flowchart and block-out tool
           </span>
@@ -39,7 +43,10 @@ const StartupView: React.FC = () => {
           Open Flow
         </Card>
       </div>
-      <Card showBorder className={"flex flex-col col-span-1 mr-4"}>
+      <Card
+        showBorder
+        className={"flex flex-col col-span-1 mr-4"}
+      >
         <h2>Recent Flows</h2>
         <div>Flow1</div>
         <div>Flow2</div>
