@@ -2274,6 +2274,11 @@ class RequestManager {
       return this.sendFile(res, path.join(app?.__internal_initializedPath, "./icon.avif"), "image/avif");
     });
 
+    this.app.get("/core/panel/quick-shortcuts", (req, res) => {
+      // TODO: implement this
+      return [];
+    });
+
     // start listening for requests
     try {
       await this.app.ready();

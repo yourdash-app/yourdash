@@ -48,7 +48,11 @@ const LargeApplicationGrid: React.FC<{
           >
             <UKCard
               onClick={() => {
-                navigate(module.url);
+                if (module.type === "frontend") {
+                  navigate(`${module.endpoint}`);
+                } else {
+                  navigate(`${module.url}`);
+                }
               }}
               className={styles.itemContent}
             >

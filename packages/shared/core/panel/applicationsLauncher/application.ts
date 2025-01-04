@@ -8,6 +8,7 @@ export default interface IPanelApplicationsLauncherFrontendModule {
   displayName: string;
   icon: string;
   description: string;
-  url: string;
-  type: "frontend" | "officialFrontend";
+  endpoint?: string;
+  url?: string;
+  type: "frontend" | "externalFrontend";
 }

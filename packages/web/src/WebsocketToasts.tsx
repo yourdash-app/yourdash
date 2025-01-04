@@ -17,6 +17,9 @@ enum LOG_TYPE {
 }
 
 const WebsocketToasts: React.FC = () => {
+  // TEMPORARY
+  return <></>;
+
   if (window.location.hostname !== "localhost") return <></>;
 
   const wsc = useWebsocketConnection("/core/log");
