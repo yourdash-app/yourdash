@@ -3,11 +3,13 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
+import path from "path";
 import { Instance } from "./main.js";
 
 interface IYourDashApplicationConfigV1 {
   id: string;
   displayName: string;
+  description: string;
   version: {
     minor: number;
     major: number;
@@ -26,12 +28,13 @@ interface IYourDashApplicationConfigV1 {
     url: string;
   };
 }
-
 class YourDashApplication {
   __internal_params: IYourDashApplicationConfigV1;
+  __internal_initializedPath!: string;
 
   constructor(applicationParams: IYourDashApplicationConfigV1) {
     this.__internal_params = applicationParams;
+    this.__internal_initializedPath = "NOT YET LOADED!!!!";
 
     return this;
   }
@@ -73,8 +76,9 @@ class Applications {
     this.instance.log.info("application", `Loading application @ ${applicationPath}.`);
     try {
       // import index.ts at applicationPath
-      let applicationImport = await import(applicationPath + "/backend/index.ts");
+      let applicationImport = await import(path.join("../", applicationPath, "/backend/index.ts"));
       let application = new applicationImport.default();
+      application.__internal_initializedPath = applicationPath;
       this.loadedApplications.push(application);
       return application;
     } catch (e) {

@@ -111,6 +111,7 @@ export default class Application extends YourDashApplication {
         entryPoint: "../web/index.tsx",
       },
       displayName: "Dash",
+      description: "The YourDash dashboard application.",
       id: "uk-ewsgit-dash",
     });
   }

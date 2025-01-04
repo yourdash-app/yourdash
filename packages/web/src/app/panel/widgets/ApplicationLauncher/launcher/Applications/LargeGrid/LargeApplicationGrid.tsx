@@ -3,6 +3,8 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import UKCard from "@yourdash/uikit/components/card/UKCard.js";
+import UKContextMenu from "@yourdash/uikit/components/contextMenu/UKContextMenu.js";
 import React from "react";
 import IPanelApplicationsLauncherFrontendModule from "@yourdash/shared/core/panel/applicationsLauncher/application.ts";
 import coreCSI from "@yourdash/csi/coreCSI.ts";
@@ -32,7 +34,11 @@ const LargeApplicationGrid: React.FC<{
               {
                 label: "Open In New Tab",
                 onClick() {
-                  window.open(`${window.location.origin}/app/a/${module.id}`, "_blank");
+                  if (module.type === "frontend") {
+                    window.open(`${window.location.origin}${module.endpoint}`, "_blank");
+                  } else {
+                    window.open(`${module.url}`, "_blank");
+                  }
                   return 0;
                 },
               },
@@ -48,7 +54,7 @@ const LargeApplicationGrid: React.FC<{
             >
               <img
                 className={styles.itemIcon}
-                src={`${coreCSI.getInstanceUrl()}${module.icon}`}
+                src={`${coreCSI.getInstanceUrl()}/core/panel/applications/app/largeGrid/${module.id}`}
                 draggable={false}
                 loading={"lazy"}
                 alt=""

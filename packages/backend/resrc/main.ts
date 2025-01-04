@@ -147,7 +147,7 @@ class Instance {
                                     display_name                text   DEFAULT 'YourDash Instance',
                                     description                 text   DEFAULT 'This is the default instance description. Hey Admin, this can be changed in the system settings!.',
                                     administrator_contact_email text,
-                                    installed_applications      text[] DEFAULT '{ "../../../applications/uk-ewsgit-dash", "../../../applications/uk-ewsgit-files", "../../../applications/uk-ewsgit-photos", "../../../applications/uk-ewsgit-weather", "../../../applications/uk-ewsgit-store", "../../../applications/uk-ewsgit-settings" }',
+                                    installed_applications      text[] DEFAULT '{ "../../applications/uk-ewsgit-dash", "../../applications/uk-ewsgit-files", "../../applications/uk-ewsgit-photos", "../../applications/uk-ewsgit-weather", "../../applications/uk-ewsgit-store", "../../applications/uk-ewsgit-settings" }',
                                     default_pinned_applications text[] DEFAULT '{ "uk-ewsgit-dash", "uk-ewsgit-files", "uk-ewsgit-store", "uk-ewsgit-weather" }'
                                   )`);
       this.log.info("database", `Table ${this.log.addEmphasisToString("config")} has been created if it did not already exist.`);

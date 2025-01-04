@@ -87,7 +87,7 @@ class RequestManager {
             description: "Local development server",
           },
         ],
-        openapi: "3.0.0",
+        openapi: "3.1.0",
       },
       transform: jsonSchemaTransform,
     });
@@ -101,6 +101,7 @@ class RequestManager {
         href: "/swagger",
         target: "_blank",
       },
+      staticCSP: true,
       theme: {
         favicon: [
           {
@@ -2203,7 +2204,7 @@ class RequestManager {
       },
     );
 
-    this.publicRoutes.push("/login/instance/background");
+    this.publicRoutes.push("/login/is-authenticated");
     this.app.get("/login/is-authenticated", async (req, res) => {
       const authorization = req.cookies["authorization"];
 
@@ -2217,7 +2218,7 @@ class RequestManager {
     });
 
     this.app.get("/panel/logo/small", async (req, res) => {
-      return this.sendFile(res, path.join(this.instance.filesystem.commonPaths.systemDirectory(), "instanceLogo.32webp"), "image/webp");
+      return this.sendFile(res, path.join(this.instance.filesystem.commonPaths.systemDirectory(), "instanceLogo32.webp"), "image/webp");
     });
 
     this.app.get("/panel/logo/medium", async (req, res) => {
@@ -2226,6 +2227,51 @@ class RequestManager {
 
     this.app.get("/panel/logo/large", async (req, res) => {
       return this.sendFile(res, path.join(this.instance.filesystem.commonPaths.systemDirectory(), "instanceLogo128.webp"), "image/webp");
+    });
+
+    this.app.get(
+      "/core/panel/applications",
+      {
+        schema: {
+          response: {
+            200: z
+              .object({
+                id: z.string(),
+                displayName: z.string(),
+                description: z.string(),
+                type: z.literal("frontend").or(z.literal("externalFrontend")),
+                endpoint: z.string().optional(),
+                url: z.string().optional(),
+              })
+              .array(),
+          },
+        },
+      },
+      async (req, res) => {
+        const applications = this.instance.applications.loadedApplications;
+
+        return applications.map((app) => {
+          return {
+            id: app.__internal_params.id,
+            displayName: app.__internal_params.displayName,
+            description: app.__internal_params.description,
+            type: "frontend",
+            endpoint: `/app/a/${app.__internal_params.id}/`,
+          };
+        });
+      },
+    );
+
+    this.app.get("/core/panel/applications/app/largeGrid/:applicationId", (req, res) => {
+      const applicationId = (req.params as { applicationId: string }).applicationId;
+
+      const app = this.instance.applications.loadedApplications.find((a) => a.__internal_params.id === applicationId);
+
+      if (!app) return res.status(404);
+
+      console.log(path.join(app?.__internal_initializedPath));
+
+      return this.sendFile(res, path.join(app?.__internal_initializedPath, "./icon.avif"), "image/avif");
     });
 
     // start listening for requests
