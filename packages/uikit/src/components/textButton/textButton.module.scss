@@ -1,9 +1,9 @@
+@use "~/theme/themeValues.scss" as *;
+
 /*!
  * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
-
-@use "~/theme/themeValues" as *;
 
 .component {
   font-family: var(#{$theme}#{$font}#{$family});

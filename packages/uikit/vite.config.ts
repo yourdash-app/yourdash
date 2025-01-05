@@ -9,13 +9,12 @@ import { defineConfig } from "vite";
 import { extname, relative, resolve } from "path";
 import dynamicImport from "vite-plugin-dynamic-import";
 import dts from "vite-plugin-dts";
-import { libInjectCss } from "vite-plugin-lib-inject-css";
 import { fileURLToPath } from "url";
 
 // ViteJS docs: https://vitejs.dev/config/
 export default defineConfig({
   // @ts-ignore
-  plugins: [react(), dynamicImport(), dts({ include: ["src"] }), libInjectCss()],
+  plugins: [react(), dynamicImport(), dts({ include: ["src"] })],
   css: {
     preprocessorOptions: {
       scss: {

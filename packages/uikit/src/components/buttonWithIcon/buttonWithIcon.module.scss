@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-@use "~/theme/themeValues" as *;
+@use "~/theme/themeValues.scss" as *;
 
 .component {
   display: flex;
@@ -49,6 +49,6 @@
 }
 
 .icon {
-  margin-left: calc(var(#{$theme}#{$button}#{$padding}#{$horizontal}) / 2);
+  margin-left: var(#{$theme}#{$button}#{$padding}#{$horizontal});
   margin-right: var(#{$theme}#{$button}#{$padding}#{$horizontal});
 }
