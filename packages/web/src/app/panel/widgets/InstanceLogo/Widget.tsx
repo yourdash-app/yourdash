@@ -24,7 +24,7 @@ const InstanceLogoWidget: React.FC<{ panelSize: "small" | "medium" | "large" }> 
       draggable={false}
       className={styles.icon}
       onClick={() => {
-        navigate("/app/a/uk-ewsgit-dash-frontend");
+        navigate("/app/a/uk-ewsgit-dash");
       }}
     />
   );

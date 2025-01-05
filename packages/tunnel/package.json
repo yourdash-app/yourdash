@@ -13,6 +13,7 @@
   "exports": {
     "./*": "./dist/*"
   },
+  "main": "./dist/index.js",
   "scripts": {
     "build": "bunx --bun vite build",
     "postinstall": "bun --bun run build"

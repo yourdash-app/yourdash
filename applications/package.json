@@ -21,6 +21,7 @@
     "@yourdash/shared": "*",
     "@yourdash/uikit": "*",
     "@yourdash/web": "*",
+    "@yourdash/tunnel": "*",
     "bufferutil": "^4.0.8",
     "chart.js": "^4.4.0",
     "discord.js": "^14.14.1",

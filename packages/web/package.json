@@ -8,8 +8,8 @@
     "node": ">=21.0.0"
   },
   "scripts": {
-    "dev": "bun run --bun bunx --bun vite --host",
-    "build": "bun run --bun vite build",
+    "dev": "bun run --cwd \"../tunnel\" build && bun run --cwd \"../uikit\" build && bun run --bun bunx --bun vite --host",
+    "build": "bun run --cwd \"../tunnel\" build && bun run --cwd \"../uikit\" build && bun run --bun vite build",
     "preview": "bun run --bun vite preview",
     "visualize-bundle": "bun run --bun vite-bundle-visualizer",
     "generate-application-routes": "bun toolchain/generateApplicationRoutes.js"
@@ -57,6 +57,7 @@
     "@vitejs/plugin-react": "^4.3.1",
     "@yourdash/shared": "*",
     "@yourdash/uikit": "*",
-    "@yourdash/csi": "*"
+    "@yourdash/csi": "*",
+    "@yourdash/tunnel": "*"
   }
 }
