@@ -90,6 +90,6 @@
     "dev-standalone": "bun src/main.ts --dev --color=full --log-requests",
     "debug": "bun --inspect-brk src/main.ts --dev --color=full --log-requests",
     "generate-json-schema": "ts-json-schema-generator",
-    "postinstall": "bun install bcrypt sharp"
+    "postinstall": "bun install bcrypt sharp && bun install bcrypt sharp"
   }
 }

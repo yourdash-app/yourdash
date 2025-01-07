@@ -179,6 +179,8 @@ class Instance {
       .catch(() => {
         this.setStatus(INSTANCE_STATUS.NON_FUNCTIONAL);
       });
+
+    return this;
   }
 
   async startup(): Promise<boolean> {

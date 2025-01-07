@@ -1,4 +1,4 @@
-@use "~/theme/themeValues.scss" as *;
+@use "../../../../theme/themeValues.scss" as *;
 
 .component {
     height: calc(var(--nav-height) - var(#{$theme+$padding}));

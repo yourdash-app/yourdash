@@ -15,17 +15,14 @@ import { fileURLToPath } from "url";
 export default defineConfig({
   // @ts-ignore
   plugins: [react(), dynamicImport(), dts({ include: ["src"] })],
-  css: {
-    preprocessorOptions: {
-      scss: {
-        api: "modern-compiler", // or "modern"
-      },
-    },
-  },
   resolve: {
     alias: {
       "~": resolve(__dirname, "./src/"),
     },
+  },
+  css: {
+    preprocessorMaxWorkers: true,
+    devSourcemap: true,
   },
   publicDir: "./src/theme",
   build: {
