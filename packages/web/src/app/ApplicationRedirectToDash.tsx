@@ -29,8 +29,9 @@ const ApplicationRedirectToDash: React.FC = () => {
       navigate("/login");
     } else {
       tun
-        .get("/login/is-authenticated", "json")
+        .get("/login/is-authenticated", "text")
         .then(() => {
+          console.log("Should navigate");
           navigate("/app/a/uk-ewsgit-dash");
         })
         .catch(() => {
@@ -39,6 +40,7 @@ const ApplicationRedirectToDash: React.FC = () => {
         });
     }
   }, []);
+
   return (
     <UKFlex
       padding

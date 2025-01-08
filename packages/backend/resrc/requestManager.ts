@@ -19,6 +19,8 @@ import { YourDashSessionType } from "./authorization.js";
 import { type Instance } from "./main.js";
 import { INSTANCE_STATUS } from "./types/instanceStatus.js";
 import User from "./user.js";
+import { resizeImage } from "./image.js";
+import { mkdir } from "fs/promises";
 
 class RequestManager {
   private instance: Instance;
@@ -2208,13 +2210,13 @@ class RequestManager {
     this.app.get("/login/is-authenticated", async (req, res) => {
       const authorization = req.cookies["authorization"];
 
-      if (!authorization) return res.status(401);
+      if (!authorization) return res.status(401).send();
 
       const [username, sessionToken] = authorization.split(" ");
 
-      if (!(await this.instance.authorization.authorizeUser(username, `${username} ${sessionToken}`))) return res.status(401);
+      if (!(await this.instance.authorization.authorizeUser(username, `${username} ${sessionToken}`))) return res.status(401).send();
 
-      return res.status(200);
+      return res.status(200).send();
     });
 
     this.app.get("/panel/logo/small", async (req, res) => {
@@ -2262,16 +2264,63 @@ class RequestManager {
       },
     );
 
-    this.app.get("/core/panel/applications/app/largeGrid/:applicationId", (req, res) => {
+    this.app.get("/core/panel/applications/app/largeGrid/:applicationId", async (req, res) => {
       const applicationId = (req.params as { applicationId: string }).applicationId;
 
       const app = this.instance.applications.loadedApplications.find((a) => a.__internal_params.id === applicationId);
 
       if (!app) return res.status(404);
 
-      console.log(path.join(app?.__internal_initializedPath));
+      if (
+        await this.instance.filesystem.doesPathExist(
+          path.join(
+            this.instance.filesystem.commonPaths.globalCacheDirectory(),
+            "panel/applications",
+            app.__internal_params.id,
+            "largeGridIcon.webp",
+          ),
+        )
+      ) {
+        // return this.sendFile(res, path.join(app?.__internal_initializedPath, "./icon.avif"), "image/avif");
+        return this.sendFile(
+          res,
+          path.join(
+            this.instance.filesystem.commonPaths.globalCacheDirectory(),
+            "panel/applications",
+            app.__internal_params.id,
+            "largeGridIcon.webp",
+          ),
+          "image/webp",
+        );
+      }
 
-      return this.sendFile(res, path.join(app?.__internal_initializedPath, "./icon.avif"), "image/avif");
+      await mkdir(path.join(this.instance.filesystem.commonPaths.globalCacheDirectory(), "panel/applications", app.__internal_params.id), {
+        recursive: true,
+      });
+
+      await resizeImage(
+        path.join(app?.__internal_initializedPath, "./icon.avif"),
+        88,
+        88,
+        path.join(
+          this.instance.filesystem.commonPaths.globalCacheDirectory(),
+          "panel/applications",
+          app.__internal_params.id,
+          "largeGridIcon.webp",
+        ),
+        "webp",
+      );
+
+      return this.sendFile(
+        res,
+        path.join(
+          this.instance.filesystem.commonPaths.globalCacheDirectory(),
+          "panel/applications",
+          app.__internal_params.id,
+          "largeGridIcon.webp",
+        ),
+        "image/webp",
+      );
     });
 
     this.app.get("/core/panel/quick-shortcuts", (req, res) => {

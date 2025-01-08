@@ -3,9 +3,11 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import Row from "@yourdash/chiplet/components/row/Row.tsx";
 import useResource from "@yourdash/csi/useResource.ts";
-import { Card, Heading } from "@yourdash/uikit/components/index";
+import UKFlex from "@yourdash/uikit/components/flex/UKFlex.js";
+import UKText from "@yourdash/uikit/components/text/UKText.js";
+import UKCard from "@yourdash/uikit/components/card/UKCard.js";
+import UKHeading from "@yourdash/uikit/components/heading/UKHeading.js";
 import React from "react";
 import { acsi } from "../../../../meta.yourdash.ts";
 import styles from "./applicationCategories.module.scss";
@@ -17,17 +19,17 @@ const ApplicationCategories: React.FC = () => {
     <div className={styles.component}>
       {categories.map((cat) => {
         return (
-          <Card
+          <UKCard
             key={cat.id}
             style={{ backgroundImage: cat.backgroundImage }}
           >
-            <Heading text={cat.displayName} />
+            <UKHeading text={cat.displayName} />
             <UKText text={cat.description} />
-            <Row>
+            <UKFlex direction={"row"}>
               <UKText text={cat.applicationCount.toString()} />
               <UKText text={cat.moduleCount.toString()} />
-            </Row>
-          </Card>
+            </UKFlex>
+          </UKCard>
         );
       })}
     </div>

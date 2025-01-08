@@ -203,6 +203,27 @@ class Filesystem {
       this.instance.log.info("filesystem", `Verified ${path.join(this.commonPaths.systemDirectory(), "instanceLogo.png")} exists.`);
     }
 
+    if (!(await this.doesPathExist(path.join(this.instance.filesystem.commonPaths.globalCacheDirectory(), "panel/applications")))) {
+      try {
+        await fs.mkdir(path.join(this.instance.filesystem.commonPaths.globalCacheDirectory(), "panel/applications"));
+        this.instance.log.info(
+          "filesystem",
+          `Created ${this.instance.log.addEmphasisToString(path.join(this.instance.filesystem.commonPaths.globalCacheDirectory(), "panel/applications"))} directory.`,
+        );
+      } catch (e) {
+        console.error(e);
+        this.instance.log.error(
+          "filesystem",
+          `Failed to create ${this.instance.log.addEmphasisToString(path.join(this.instance.filesystem.commonPaths.globalCacheDirectory(), "panel/applications"))} directory.`,
+        );
+      }
+    } else {
+      this.instance.log.info(
+        "filesystem",
+        `Verified ${this.instance.log.addEmphasisToString(path.join(this.instance.filesystem.commonPaths.globalCacheDirectory(), "panel/applications"))} directory.`,
+      );
+    }
+
     this.instance.log.info("filesystem", "Verified filesystem structure!");
 
     return this;
