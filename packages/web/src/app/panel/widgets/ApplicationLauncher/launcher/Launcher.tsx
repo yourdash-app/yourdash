@@ -51,17 +51,16 @@ const ApplicationLauncher: React.FC<{
             navigate("/login");
           }}
         />
-        <div>
-          <UKIconButton
-            accessibleLabel={"Profile"}
-            icon={UKIcons.Person}
-            aria-label={"User Profile Settings"}
-            onClick={() => {
-              navigate(`/instance-profiles/me`);
-            }}
-          />
-        </div>
-        <span>{coreCSI.userDB.get<{ first: string; last: string }>("user:name")?.first || "Unknown First Name"}</span>
+        {/* TODO: replace with a custom button with the user's avatar */}
+        <UKIconButton
+          accessibleLabel={"Profile"}
+          icon={UKIcons.Person}
+          aria-label={"User Profile Settings"}
+          onClick={() => {
+            navigate(`/profile/me`);
+          }}
+        />
+        <span>{"Unknown First Name"}</span>
         <UKIconButton
           accessibleLabel={"Filter small grid"}
           className={"ml-auto"}

@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import coreCSI from "@yourdash/csi/coreCSI.ts";
+import tun from "@yourdash/tunnel/index.js";
 import UKBox from "@yourdash/uikit/components/box/UKBox.js";
 import UKButton from "@yourdash/uikit/components/button/UKButton.js";
 import UKHeading from "@yourdash/uikit/components/heading/UKHeading.js";
@@ -21,12 +21,27 @@ const Panel: FC = () => {
   const [inputValue, setInputValue] = useState<string>("");
   const [isValid, setIsValid] = useState<boolean | undefined>(undefined);
 
+  function setInstanceUrl(url: string) {
+    let newInstanceUrl = url;
+
+    if (newInstanceUrl.endsWith("/")) {
+      newInstanceUrl = newInstanceUrl.slice(0, -1);
+    }
+
+    if (!new RegExp(":\\d{1,5}$").test(newInstanceUrl)) {
+      newInstanceUrl = newInstanceUrl + ":3563";
+    }
+
+    localStorage.setItem("instance_url", newInstanceUrl || "ERROR");
+    tun.__internal_connectTo(newInstanceUrl);
+  }
+
   function checkUrl() {
     isValidInstance(inputValue).then((bool) => {
       setIsValid(bool);
 
       if (bool) {
-        coreCSI.setInstanceUrl(inputValue);
+        setInstanceUrl(inputValue);
         navigate("/login");
       }
     });
@@ -72,7 +87,7 @@ const Panel: FC = () => {
             setIsValid(bool);
 
             if (bool) {
-              coreCSI.setInstanceUrl("http://localhost");
+              setInstanceUrl("http://localhost");
               navigate("/login");
             }
           });

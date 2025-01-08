@@ -29,7 +29,7 @@ const ApplicationRedirectToDash: React.FC = () => {
       navigate("/login");
     } else {
       tun
-        .getJson("/login/is-authenticated")
+        .get("/login/is-authenticated", "json")
         .then(() => {
           navigate("/app/a/uk-ewsgit-dash");
         })

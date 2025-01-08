@@ -10,6 +10,8 @@ import IPanelApplicationsLauncherFrontendModule from "@yourdash/shared/core/pane
 import coreCSI from "@yourdash/csi/coreCSI.ts";
 import styles from "./ApplicationList.module.scss";
 import { useNavigate } from "react-router";
+import UKCard from "@yourdash/uikit/components/card/UKCard.js";
+import { UKIcons } from "@yourdash/uikit/core/iconDictionary.js";
 
 const ApplicationList: React.FC<{ applications: IPanelApplicationsLauncherFrontendModule[] }> = ({ applications }) => {
   const navigate = useNavigate();
@@ -40,7 +42,14 @@ const ApplicationList: React.FC<{ applications: IPanelApplicationsLauncherFronte
             className={styles.item}
             key={application.id}
             onClick={() => {
-              navigate(application.url);
+              switch (application.type) {
+                case "frontend":
+                  navigate(application.endpoint!);
+                  break;
+                case "externalFrontend":
+                  window.location.href = application.url!;
+                  break;
+              }
             }}
           >
             <UKCard className={styles.itemContent}>
