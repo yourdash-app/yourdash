@@ -11,7 +11,8 @@
     "dist/"
   ],
   "exports": {
-    "./*": "./dist/*"
+    "./*": "./dist/*",
+    "./src/*": "./dist/*"
   },
   "scripts": {
     "build": "bunx --bun vite build",

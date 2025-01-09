@@ -3,10 +3,11 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
+import UKHeading from "@yourdash/uikit/src/components/heading/UKHeading.js";
+import UKText from "@yourdash/uikit/src/components/text/UKText.js";
 import React from "react";
 import Connection from "./components/connection";
 import styles from "./connections.module.scss";
-import UK from "@yourdash/uikit";
 
 const Connections: React.FC<{
   connections: {
@@ -20,7 +21,7 @@ const Connections: React.FC<{
 }> = ({ connections }) => {
   return (
     <div className={styles.component}>
-      <UK.Components.Heading text={"Connections"} />
+      <UKHeading text={"Connections"} />
       <div className={styles.connectionContainer}>
         {connections.length > 0 ? (
           connections.map((connection) => (
@@ -30,7 +31,7 @@ const Connections: React.FC<{
             />
           ))
         ) : (
-          <UK.Components.Text text={"You have no connections..."} />
+          <UKText text={"You have no connections..."} />
         )}
       </div>
     </div>

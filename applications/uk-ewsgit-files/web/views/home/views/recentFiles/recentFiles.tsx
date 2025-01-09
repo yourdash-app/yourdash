@@ -3,14 +3,14 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import Heading from "@yourdash/uikit/components/heading/heading";
+import UKHeading from "@yourdash/uikit/src/components/heading/UKHeading.js";
 import React from "react";
 import FileList from "../../../fileList/fileList";
 
 const RecentFiles: React.FC = () => {
   return (
     <div>
-      <Heading text={"Recent Files"} />
+      <UKHeading text={"Recent Files"} />
       <FileList
         files={[
           {

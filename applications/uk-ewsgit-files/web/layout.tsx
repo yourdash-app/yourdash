@@ -1,11 +1,21 @@
 import clippy from "@yourdash/shared/web/helpers/clippy";
+import UKButton from "@yourdash/uikit/src/components/button/UKButton.js";
+import UKCard from "@yourdash/uikit/src/components/card/UKCard.js";
+import UKFlex from "@yourdash/uikit/src/components/flex/UKFlex.js";
+import UKHeading from "@yourdash/uikit/src/components/heading/UKHeading.js";
+import UKIconButton from "@yourdash/uikit/src/components/iconButton/UKIconButton.js";
+import UKSeparator from "@yourdash/uikit/src/components/separator/UKSeparator.js";
+import UKText from "@yourdash/uikit/src/components/text/UKText.js";
+import { UKIcons } from "@yourdash/uikit/src/core/iconDictionary.js";
+import UKSidebar from "@yourdash/uikit/src/views/sidebar/UKSidebar.js";
+import UKSidebarContainer from "@yourdash/uikit/src/views/sidebar/UKSidebarContainer.js";
+import UKSidebarToggleButton from "@yourdash/uikit/src/views/sidebar/UKSidebarToggleButton.js";
 import React, { useEffect, useState } from "react";
 import TabView from "./views/tab/tabView";
 import { IFilesView } from "./views/view";
 import FILES_VIEW_TYPE from "./views/viewType";
 import styles from "./layout.module.scss";
 import generateUUID from "@yourdash/shared/web/helpers/uuid";
-import UK, { UKC, UKV } from "@yourdash/uikit";
 
 export interface IFilesTab {
   id: string;
@@ -34,8 +44,8 @@ const ApplicationLayout: React.FC = () => {
   }, [tabs]);
 
   return (
-    <UKV.SidebarContainer>
-      <UKV.Sidebar>
+    <UKSidebarContainer>
+      <UKSidebar>
         <UKHeading text={"Files"} />
         <UKSeparator direction={"column"} />
         {commonStorageLocations.map((storageLocation) => {
@@ -62,10 +72,10 @@ const ApplicationLayout: React.FC = () => {
             />
           );
         })}
-      </UKV.Sidebar>
+      </UKSidebar>
       <div className={styles.page}>
         <section className={styles.tabBar}>
-          <UKV.SidebarToggleButton />
+          <UKSidebarToggleButton />
           {tabs.map((tab) => {
             return (
               <div className={clippy(styles.tab, activeTabId === tab.id && styles.active)}>
@@ -127,7 +137,7 @@ const ApplicationLayout: React.FC = () => {
           </UKFlex>
         )}
       </div>
-    </UKV.SidebarContainer>
+    </UKSidebarContainer>
   );
 };
 

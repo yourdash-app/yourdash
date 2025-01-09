@@ -3,9 +3,15 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
+import UKCard from "@yourdash/uikit/src/components/card/UKCard.js";
+import UKHeading from "@yourdash/uikit/src/components/heading/UKHeading.js";
+import UKIconButton from "@yourdash/uikit/src/components/iconButton/UKIconButton.js";
+import UKImage from "@yourdash/uikit/src/components/image/UKImage.js";
+import UKProgressBar from "@yourdash/uikit/src/components/progressBar/UKProgressBar.js";
+import UKText from "@yourdash/uikit/src/components/text/UKText.js";
+import { UKIcons } from "@yourdash/uikit/src/core/iconDictionary.js";
 import React from "react";
 import styles from "./connection.module.scss";
-import { Components, Core } from "@yourdash/uikit";
 
 const Connection: React.FC<{
   description: string;
@@ -15,14 +21,14 @@ const Connection: React.FC<{
   serviceName: string;
 }> = ({ description, quota, url, serviceLogo, serviceName }) => {
   return (
-    <Components.Card
+    <UKCard
       className={styles.component}
       actions={
         <>
           {url && (
-            <Components.IconButton
+            <UKIconButton
               accessibleLabel={"Open service url"}
-              icon={Core.Icons.LinkExternal}
+              icon={UKIcons.LinkExternal}
               onClick={() => {
                 window.open(url, "_blank");
               }}
@@ -31,20 +37,20 @@ const Connection: React.FC<{
         </>
       }
     >
-      <Components.Image
+      <UKImage
         className={styles.icon}
         accessibleLabel={""}
         src={serviceLogo || "/assets/productLogos/yourdash.svg"}
       />
-      <Components.Heading text={serviceName} />
-      {description && <Components.Text text={description} />}
+      <UKHeading text={serviceName} />
+      {description && <UKText text={description} />}
       {quota && (
-        <Components.ProgressBar
+        <UKProgressBar
           maxValue={quota.max}
           value={quota.usage}
         />
       )}
-    </Components.Card>
+    </UKCard>
   );
 };
 

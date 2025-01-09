@@ -3,15 +3,16 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
+import UKHeading from "@yourdash/uikit/src/components/heading/UKHeading.js";
+import UKText from "@yourdash/uikit/src/components/text/UKText.js";
 import React from "react";
 import styles from "./commonStorageLocations.module.scss";
 import StorageLocation from "./components/storageLocation";
-import UK from "@yourdash/uikit";
 
 const CommonStorageLocations: React.FC<{ commonStorageLocations: { path: string }[] }> = ({ commonStorageLocations }) => {
   return (
     <div className={styles.component}>
-      <UK.Components.Heading
+      <UKHeading
         level={3}
         text={"Common Storage Locations"}
       />
@@ -19,12 +20,13 @@ const CommonStorageLocations: React.FC<{ commonStorageLocations: { path: string 
         {commonStorageLocations.length > 0 ? (
           commonStorageLocations.map((connection) => (
             <StorageLocation
+              baseName={"/"}
               key={connection.path}
               {...connection}
             />
           ))
         ) : (
-          <UK.Components.Text text={"You have no common storage locations..."} />
+          <UKText text={"You have no common storage locations..."} />
         )}
       </div>
     </div>

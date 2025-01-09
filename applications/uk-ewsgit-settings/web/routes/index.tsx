@@ -6,7 +6,14 @@
 import { FC } from "react";
 import ManageWallpaper from "./components/manageWallpaper/manageWallpaper.tsx";
 import styles from "./index.module.scss";
-import UK, { UKC, UKV } from "@yourdash/uikit";
+import UKFlex from "@yourdash/uikit/components/flex/UKFlex.js";
+import UKHeading from "@yourdash/uikit/components/heading/UKHeading.js";
+import UKSidebarToggleButton from "@yourdash/uikit/views/sidebar/UKSidebarToggleButton.js";
+import UKCard from "@yourdash/uikit/components/card/UKCard.js";
+import { UKIcons } from "@yourdash/uikit/core/iconDictionary.js";
+import UKIcon from "@yourdash/uikit/components/icon/UKIcon.js";
+import UKText from "@yourdash/uikit/components/text/UKText.js";
+import UKButton from "@yourdash/uikit/components/button/UKButton.js";
 
 const IndexPage: FC = () => {
   return (
@@ -16,7 +23,7 @@ const IndexPage: FC = () => {
           direction={"row"}
           className={styles.titleContainer}
         >
-          <UKV.SidebarToggleButton />
+          <UKSidebarToggleButton />
           <UKHeading
             className={styles.title}
             level={1}

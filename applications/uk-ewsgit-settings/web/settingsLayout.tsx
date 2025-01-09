@@ -6,15 +6,19 @@
 import * as React from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { modulePath } from "./meta.yourdash";
-import { UKC, UKV } from "@yourdash/uikit";
 import styles from "./settingsLayout.module.scss";
+import UKSidebar from "@yourdash/uikit/views/sidebar/UKSidebar.js";
+import UKSidebarContainer from "@yourdash/uikit/views/sidebar/UKSidebarContainer.js";
+import UKHeading from "@yourdash/uikit/components/heading/UKHeading.js";
+import UKButton from "@yourdash/uikit/components/button/UKButton.js";
+import UKSeparator from "@yourdash/uikit/components/separator/UKSeparator.js";
 
 const SettingsLayout: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <UKV.SidebarContainer showSidebarByDefault>
-      <UKV.Sidebar>
+    <UKSidebarContainer showSidebarByDefault>
+      <UKSidebar>
         <UKHeading
           className={styles.alignLeft}
           level={3}
@@ -55,9 +59,9 @@ const SettingsLayout: React.FC = () => {
           text={"Test Solo Setting"}
           onClick={() => navigate(`${modulePath}/cat/test/test-setting`)}
         />
-      </UKV.Sidebar>
+      </UKSidebar>
       <Outlet />
-    </UKV.SidebarContainer>
+    </UKSidebarContainer>
   );
 };
 

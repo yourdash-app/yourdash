@@ -3,12 +3,12 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import UKOnBoarding from "@yourdash/uikit/src/views/onBoarding/UKOnBoarding.js";
 import ApplicationPanelContext from "@yourdash/web/src/app/panel/ApplicationPanelContext.tsx";
 import React, { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import applicationMeta from "./meta.yourdash";
 import ApplicationLayout from "./layout";
-import { UKV } from "@yourdash/uikit";
 import FILES_ICON from "../icon.avif";
 
 const FilesRouter: React.FC = () => {
@@ -26,7 +26,7 @@ const FilesRouter: React.FC = () => {
     <Routes>
       <Route
         element={
-          <UKV.OnBoarding
+          <UKOnBoarding
             meta={applicationMeta}
             pages={[
               {

@@ -3,16 +3,18 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
+import UKCard from "@yourdash/uikit/src/components/card/UKCard.js";
+import UKIcon from "@yourdash/uikit/src/components/icon/UKIcon.js";
+import UKText from "@yourdash/uikit/src/components/text/UKText.js";
 import React from "react";
 import { useNavigateTo } from "../../../../../meta.yourdash.ts";
 import styles from "./storageLocation.module.scss";
-import { Components } from "@yourdash/uikit";
 
 const StorageLocation: React.FC<{ path: string; baseName: string }> = ({ path, baseName }) => {
   const navigateTo = useNavigateTo();
 
   return (
-    <Components.Card
+    <UKCard
       containerClassName={styles.componentCardContainer}
       className={styles.component}
       onClick={() => {
@@ -20,12 +22,12 @@ const StorageLocation: React.FC<{ path: string; baseName: string }> = ({ path, b
         navigateTo(path);
       }}
     >
-      <Components.Icon
+      <UKIcon
         icon={"FileDirectory"}
         className={styles.icon}
       />
-      <Components.Text text={baseName} />
-    </Components.Card>
+      <UKText text={baseName} />
+    </UKCard>
   );
 };
 
