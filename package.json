@@ -10,19 +10,14 @@
     "applications"
   ],
   "scripts": {
-    "dev-web": "bun run --cwd=packages/web dev",
-    "dev-backend": "bun run --cwd=packages/backend dev",
-    "dev-backend-standalone": "bun run --cwd=packages/backend start-standalone",
-    "debug-backend": "bun run --cwd=packages/backend debug",
-    "start-backend": "bun run --cwd=packages/backend start --log-requests",
-    "build-production": "bun run --cwd=packages/backend compile-all && bun run --cwd=./packages/web build",
-    "dev-desktop": "bun run --cwd=./packages/desktop/ start",
-    "opengfx:dev": "bun run --cwd=./packages/opengfx-engine dev"
+    "web": "bun run --cwd=packages/web dev",
+    "backend": "bun run --cwd=packages/backend dev",
+    "legacy-backend": "bun run --cwd=packages/backend legacy-dev",
+    "production-backend": "bun run --cwd=packages/backend production"
   },
   "dependencies": {
     "prettier": "^3.3.3",
     "prettier-eslint": "^16.3.0",
     "sharp": "^0.33.5"
-  },
-  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
+  }
 }

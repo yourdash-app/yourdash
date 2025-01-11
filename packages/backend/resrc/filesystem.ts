@@ -205,7 +205,7 @@ class Filesystem {
 
     if (!(await this.doesPathExist(path.join(this.instance.filesystem.commonPaths.globalCacheDirectory(), "panel/applications")))) {
       try {
-        await fs.mkdir(path.join(this.instance.filesystem.commonPaths.globalCacheDirectory(), "panel/applications"));
+        await fs.mkdir(path.join(this.instance.filesystem.commonPaths.globalCacheDirectory(), "panel/applications"), { recursive: true });
         this.instance.log.info(
           "filesystem",
           `Created ${this.instance.log.addEmphasisToString(path.join(this.instance.filesystem.commonPaths.globalCacheDirectory(), "panel/applications"))} directory.`,

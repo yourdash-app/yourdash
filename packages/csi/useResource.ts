@@ -4,6 +4,7 @@
  */
 
 import { useEffect, useState } from "react";
+import { ZodType } from "zod";
 
 export default function useResource<T>(resource: () => Promise<T>, deps: unknown[] = []) {
   const [data, setData] = useState<T | null>(null);

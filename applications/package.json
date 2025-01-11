@@ -19,9 +19,9 @@
     "@types/react": "^18.2.21",
     "@yourdash/backend": "*",
     "@yourdash/shared": "*",
+    "@yourdash/tunnel": "*",
     "@yourdash/uikit": "*",
     "@yourdash/web": "*",
-    "@yourdash/tunnel": "*",
     "bufferutil": "^4.0.8",
     "chart.js": "^4.4.0",
     "discord.js": "^14.14.1",
@@ -39,7 +39,7 @@
     "utf-8-validate": "^6.0.3",
     "web-tree-sitter": "^0.24.4",
     "xml2js": "^0.6.2",
-    "zod": "^3.23.8"
+    "zod": "^3.24.1"
   },
   "scripts": {
     "codestudio-install": "run-script-os",

@@ -5,7 +5,6 @@
 
 import * as React from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import { modulePath } from "./meta.yourdash";
 import styles from "./settingsLayout.module.scss";
 import UKSidebar from "@yourdash/uikit/views/sidebar/UKSidebar.js";
 import UKSidebarContainer from "@yourdash/uikit/views/sidebar/UKSidebarContainer.js";
@@ -27,23 +26,23 @@ const SettingsLayout: React.FC = () => {
         <UKSeparator direction={"column"} />
         <UKButton
           text={"Home"}
-          onClick={() => navigate(`${modulePath}/`)}
+          onClick={() => navigate(`/app/a/uk-ewsgit-settings/`)}
         />
         <UKButton
           text={"Personalisation"}
-          onClick={() => navigate(`${modulePath}/personalization`)}
+          onClick={() => navigate(`/app/a/uk-ewsgit-settings/personalization`)}
         />
         <UKButton
           text={"Login Sessions"}
-          onClick={() => navigate(`${modulePath}/session`)}
+          onClick={() => navigate(`/app/a/uk-ewsgit-settings/session`)}
         />
         <UKButton
           text={"Administrator Tools"}
-          onClick={() => navigate(`${modulePath}/admin`)}
+          onClick={() => navigate(`/app/a/uk-ewsgit-settings/admin`)}
         />
         <UKButton
           text={"Developer Tools"}
-          onClick={() => navigate(`${modulePath}/developer`)}
+          onClick={() => navigate(`/app/a/uk-ewsgit-settings/developer`)}
         />
         <UKSeparator direction={"column"} />
         <UKHeading
@@ -53,11 +52,11 @@ const SettingsLayout: React.FC = () => {
         />
         <UKButton
           text={"Test Category"}
-          onClick={() => navigate(`${modulePath}/cat/test`)}
+          onClick={() => navigate(`/app/a/uk-ewsgit-settings/cat/test`)}
         />
         <UKButton
           text={"Test Solo Setting"}
-          onClick={() => navigate(`${modulePath}/cat/test/test-setting`)}
+          onClick={() => navigate(`/app/a/uk-ewsgit-settings/cat/test/test-setting`)}
         />
       </UKSidebar>
       <Outlet />

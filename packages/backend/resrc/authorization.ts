@@ -3,6 +3,7 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
+import { FastifyInstance } from "fastify";
 import { type Instance } from "./main.js";
 
 export enum YourDashSessionType {
@@ -19,25 +20,30 @@ class Authorization {
     return;
   }
 
-  async __internal_authHook() {
-    try {
-      // @ts-ignore
-      this.instance.requestManager.app.addHook("onRequest", async (req, res) => {
+  async __internal_authHook(app: FastifyInstance) {
+    app.addHook("onRequest", async (req, res) => {
+      try {
         for (const route of this.instance.requestManager.publicRoutes) {
-          if (req.originalUrl.startsWith(route)) return;
+          if (req.originalUrl.match(route)) return;
         }
 
         const authorization = req.cookies["authorization"];
 
-        if (!authorization) return res.status(401).send({ unauthorized: true });
+        if (!authorization || authorization === "") return res.status(401).send({ unauthorized: true });
 
         const [username, sessionToken] = authorization.split(" ");
 
-        if (!(await this.authorizeUser(username, `${username} ${sessionToken}`))) return res.status(401).send({ unauthorized: true });
-      });
-    } catch (err) {
-      console.error(err);
-    }
+        if (!(await this.authorizeUser(username, `${username} ${sessionToken}`))) {
+          return res.status(401).send({ unauthorized: true });
+        }
+
+        // @ts-ignore
+        req.requestContext.set("username", username);
+      } catch (err) {
+        console.error("requestAuthError", err);
+        return res.status(500).send({ unauthorized: true });
+      }
+    });
   }
 
   private __internal_generateSessionToken(username: string, sessionType: YourDashSessionType) {

@@ -10,11 +10,13 @@ import fastifySwaggerUI from "@fastify/swagger-ui";
 import { LoginLayout } from "@yourdash/shared/core/login/loginLayout.js";
 import chalk from "chalk";
 import Fastify, { FastifyInstance, FastifyReply } from "fastify";
+import { fastifyRequestContext, requestContext } from "@fastify/request-context";
 import { jsonSchemaTransform, serializerCompiler, validatorCompiler, ZodTypeProvider } from "fastify-type-provider-zod";
 import { createReadStream } from "fs";
 import path from "path";
 import { fetch } from "undici";
 import { z } from "zod";
+import { YourDashApplication } from "./applications.js";
 import { YourDashSessionType } from "./authorization.js";
 import { type Instance } from "./main.js";
 import { INSTANCE_STATUS } from "./types/instanceStatus.js";
@@ -25,7 +27,7 @@ import { mkdir } from "fs/promises";
 class RequestManager {
   private instance: Instance;
   app: FastifyInstance;
-  publicRoutes: string[];
+  publicRoutes: RegExp[];
 
   constructor(instance: Instance) {
     this.instance = instance;
@@ -1879,6 +1881,8 @@ class RequestManager {
       },
     });
 
+    this.app.register(fastifyRequestContext);
+
     this.app.addHook("onResponse", async (req, res) => {
       if (res.statusCode.toString()[0] === "4") {
         switch (req.method.toUpperCase()) {
@@ -2046,11 +2050,11 @@ class RequestManager {
       return;
     });
 
-    await this.instance.authorization.__internal_authHook();
+    await this.instance.authorization.__internal_authHook(this.app);
 
     const self = this;
     this.app.after(() => {
-      this.publicRoutes.push("/");
+      this.publicRoutes.push(/(\/)$/);
       this.app.get("/", async function handler(req, res) {
         if (self.instance.flags.isDevmode) {
           return res.redirect(`http://localhost:5173/login/http://localhost:3563`);
@@ -2059,7 +2063,7 @@ class RequestManager {
         return res.redirect(`https://yourdash.ewsgit.uk/login/${/* this.globalDb.get("core:this.instanceurl") */ "FIXME: implement this"}`);
       });
 
-      this.publicRoutes.push("/test");
+      this.publicRoutes.push(/(\/test)$/);
       this.app.get(
         "/test",
         {
@@ -2082,23 +2086,23 @@ class RequestManager {
         },
       );
 
-      this.publicRoutes.push("/418");
+      this.publicRoutes.push(/(\/418)$/);
       this.app.get("/418", { schema: { response: { 200: z.string() } } }, async () => {
         return "This is a yourdash instance, not a coffee pot. This server does not implement the Hyper Text Coffee Pot Control Protocol";
       });
 
-      this.publicRoutes.push("/ping");
+      this.publicRoutes.push(/(\/ping)$/);
       this.app.get("/ping", { schema: { response: { 200: z.string() } } }, async () => {
         return "pong";
       });
 
-      this.publicRoutes.push("/core/test/self-ping");
+      this.publicRoutes.push(/(\/core\/test\/self-ping)$/);
       this.app.get("/core/test/self-ping", { schema: { response: { 200: z.object({ success: z.boolean() }) } } }, async () => {
         return { success: true };
       });
     });
 
-    this.publicRoutes.push("/login/instance/metadata");
+    this.publicRoutes.push(/(\/login\/instance\/metadata)$/);
     this.app.get(
       "/login/instance/metadata",
       { schema: { response: { 200: z.object({ title: z.string(), message: z.string(), loginLayout: z.nativeEnum(LoginLayout) }) } } },
@@ -2111,7 +2115,7 @@ class RequestManager {
       },
     );
 
-    this.publicRoutes.push("/login/user/");
+    this.publicRoutes.push(/(\/login\/user\/)[a-zA-z]*/);
     this.app.get(
       "/login/user/:username",
       {
@@ -2136,6 +2140,7 @@ class RequestManager {
       },
     );
 
+    this.publicRoutes.push(/(\/login\/user\/)[a-zA-Z](\/avatar)$/);
     this.app.get("/login/user/:username/avatar", async (req, res) => {
       const user = new User((req.params as unknown as { username: string }).username);
       if (await user.doesExist()) {
@@ -2150,6 +2155,7 @@ class RequestManager {
       }
     });
 
+    this.publicRoutes.push(/(\/login\/user\/authenticate)$/);
     this.app.post(
       "/login/user/authenticate",
       { schema: { body: z.object({ username: z.string(), password: z.string() }) } },
@@ -2183,7 +2189,7 @@ class RequestManager {
       },
     );
 
-    this.publicRoutes.push("/login/instance/background");
+    this.publicRoutes.push(/(\/login\/instance\/background)$/);
     this.app.get("/login/instance/background", async (req, res) => {
       res.status(200);
       return this.instance.requestManager.sendFile(
@@ -2206,7 +2212,7 @@ class RequestManager {
       },
     );
 
-    this.publicRoutes.push("/login/is-authenticated");
+    this.publicRoutes.push(/(\/login\/is-authenticated)$/);
     this.app.get("/login/is-authenticated", async (req, res) => {
       const authorization = req.cookies["authorization"];
 
@@ -2323,9 +2329,169 @@ class RequestManager {
       );
     });
 
-    this.app.get("/core/panel/quick-shortcuts", (req, res) => {
-      // TODO: implement this
-      return [];
+    /*
+      async (req, res) => {
+        res.set("Cache-Control", "no-store");
+
+        const { username, sessionid } = req.headers;
+
+        const panel = new YourDashPanel(username);
+
+        return res.json(
+          (
+            await Promise.all(
+              (await panel.getQuickShortcuts()).map(async (shortcut) => {
+                const module = this.core.applicationManager.loadedModules[shortcut.moduleType]?.find(
+                  (mod) => mod.config.id === shortcut.id,
+                );
+
+                if (!module) {
+                  return;
+                }
+
+                const RESIZED_ICON_PATH = path.join("cache/modules/icons", `${module.config.id}`, "64.png");
+
+                if (!(await this.core.fs.doesExist(RESIZED_ICON_PATH))) {
+                  this.core.log.info("core:panel", `Generating 64x64 icon for ${module.config.id}`);
+
+                  await this.core.fs.createDirectory(path.dirname(RESIZED_ICON_PATH));
+
+                  const resizedIconPath = await this.core.image.resizeTo(
+                    this.core.applicationManager.getModuleIcon(shortcut.moduleType, shortcut.id),
+                    64,
+                    64,
+                    "webp",
+                  );
+
+                  await this.core.fs.copy(resizedIconPath, RESIZED_ICON_PATH);
+                  await this.core.fs.removePath(resizedIconPath);
+                }
+
+                let isOfficialFrontend: "frontend" | "officialFrontend" = "officialFrontend";
+
+                // @ts-ignore
+                if (module.config.url || module.config.devUrl) {
+                  isOfficialFrontend = "frontend";
+                }
+
+                return {
+                  name: module?.config.displayName || "Undefined name",
+                  module: shortcut,
+                  icon: this.core.image.createAuthenticatedImage(username, sessionid, AUTHENTICATED_IMAGE_TYPE.FILE, RESIZED_ICON_PATH),
+                  // @ts-ignore
+                  url: (isOfficialFrontend === "officialFrontend"
+                    ? `/app/a/${module.config.id}`
+                    : this.core.isDevMode
+                      ? // @ts-ignore
+                        module?.config?.devUrl! || ""
+                      : // @ts-ignore
+                        module?.config?.url! || "") as string,
+                };
+              }),
+            )
+          ).filter((x) => x !== undefined),
+        );
+      },
+    );
+    */
+
+    this.app.get(
+      "/core/panel/quick-shortcuts",
+      {
+        schema: {
+          response: {
+            200: z.object({ displayName: z.string(), id: z.string(), endpoint: z.string().optional(), url: z.string().optional() }).array(),
+          },
+        },
+      },
+      async (req, res) => {
+        const username = this.getRequestUsername();
+        const query = await this.instance.database.query("SELECT pinned_applications FROM panel_configuration WHERE username = $1", [
+          username,
+        ]);
+
+        const pinnedApplications: YourDashApplication[] = query.rows[0].pinned_applications.map((a: string) =>
+          this.instance.applications.loadedApplications.find((i) => i.__internal_params.id === a),
+        );
+
+        console.log(pinnedApplications);
+
+        // TODO: implement this
+        return pinnedApplications.map((app) => {
+          if (app.__internal_params.frontend) {
+            return {
+              displayName: app.__internal_params.displayName,
+              id: app.__internal_params.id,
+              endpoint: `/app/a/${app.__internal_params.id}`,
+            };
+          }
+
+          return {
+            displayName: app.__internal_params.displayName,
+            id: app.__internal_params.id,
+            url: app.__internal_params.externalFrontend?.url || "example.com",
+          };
+        });
+      },
+    );
+
+    this.app.get("/core/panel/quick-shortcut/icon/:applicationId", async (req, res) => {
+      const applicationId = (req.params as { applicationId: string }).applicationId;
+
+      const app = this.instance.applications.loadedApplications.find((a) => a.__internal_params.id === applicationId);
+
+      if (!app) return res.status(404);
+
+      if (
+        await this.instance.filesystem.doesPathExist(
+          path.join(
+            this.instance.filesystem.commonPaths.globalCacheDirectory(),
+            "panel/applications",
+            app.__internal_params.id,
+            "quickShortcut.webp",
+          ),
+        )
+      ) {
+        // return this.sendFile(res, path.join(app?.__internal_initializedPath, "./icon.avif"), "image/avif");
+        return this.sendFile(
+          res,
+          path.join(
+            this.instance.filesystem.commonPaths.globalCacheDirectory(),
+            "panel/applications",
+            app.__internal_params.id,
+            "quickShortcut.webp",
+          ),
+          "image/webp",
+        );
+      }
+
+      await mkdir(path.join(this.instance.filesystem.commonPaths.globalCacheDirectory(), "panel/applications", app.__internal_params.id), {
+        recursive: true,
+      });
+
+      await resizeImage(
+        path.join(app?.__internal_initializedPath, "./icon.avif"),
+        88,
+        88,
+        path.join(
+          this.instance.filesystem.commonPaths.globalCacheDirectory(),
+          "panel/applications",
+          app.__internal_params.id,
+          "quickShortcut.webp",
+        ),
+        "webp",
+      );
+
+      return this.sendFile(
+        res,
+        path.join(
+          this.instance.filesystem.commonPaths.globalCacheDirectory(),
+          "panel/applications",
+          app.__internal_params.id,
+          "quickShortcut.webp",
+        ),
+        "image/webp",
+      );
     });
 
     // start listening for requests
@@ -2358,6 +2524,11 @@ class RequestManager {
       console.error(err);
       process.exit(1);
     }
+  }
+
+  getRequestUsername() {
+    // @ts-ignore
+    return requestContext.get("username") as string;
   }
 }
 

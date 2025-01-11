@@ -184,6 +184,8 @@ async function createUser(username: string) {
     "Hello, I am using YourDash! 👋",
   ]);
 
+  await instance.database.query("INSERT INTO panel_configuration (username) VALUES ($1)", [username]);
+
   await repairUser(username);
 
   return user;

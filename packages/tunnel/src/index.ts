@@ -3,9 +3,11 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
+import { ZodType } from "zod";
+
 type TunnelResponseType = "text" | "json" | "uint8" | "bytes";
 
-async function ftch(
+async function ftch<ReponseDataType>(
   basePath: string,
   path: string,
   method: string,
@@ -21,12 +23,12 @@ async function ftch(
   }
   switch (responseType) {
     case "json":
-      return { data: await response.json(), status: response.status, error: false, response };
+      return { data: (await response.json()) as ReponseDataType, status: response.status, error: false, response };
     case "text":
-      return { data: await response.text(), status: response.status, error: false, response };
+      return { data: (await response.text()) as ReponseDataType, status: response.status, error: false, response };
     case "bytes":
     case "uint8":
-      return { data: await response.bytes(), status: response.status, error: false, response };
+      return { data: (await response.bytes()) as ReponseDataType, status: response.status, error: false, response };
   }
 }
 
@@ -47,20 +49,58 @@ class Tunnel {
     return this;
   }
 
-  async get(path: string, responseType: TunnelResponseType) {
-    return await ftch(this.baseUrl, path, "GET", responseType);
+  async get<S extends ZodType>(
+    path: string,
+    responseType: TunnelResponseType,
+    responseSchema: S,
+  ): Promise<{
+    data: S["_output"];
+    status: number;
+    error: boolean;
+    response: Response;
+  }> {
+    return await ftch<S>(this.baseUrl, path, "GET", responseType);
   }
 
-  async post(path: string, body: string, responseType: TunnelResponseType) {
-    return await ftch(this.baseUrl, path, "POST", responseType, {}, body);
+  async post<S extends ZodType>(
+    path: string,
+    body: string,
+    responseType: TunnelResponseType,
+    responseSchema: S,
+  ): Promise<{
+    data: S["_output"];
+    status: number;
+    error: boolean;
+    response: Response;
+  }> {
+    return await ftch<S>(this.baseUrl, path, "POST", responseType, {}, body);
   }
 
-  async put(path: string, body: string, responseType: TunnelResponseType) {
-    return await ftch(this.baseUrl, path, "PUT", responseType, {}, body);
+  async put<S extends ZodType>(
+    path: string,
+    body: string,
+    responseType: TunnelResponseType,
+    responseSchema: S,
+  ): Promise<{
+    data: S["_output"];
+    status: number;
+    error: boolean;
+    response: Response;
+  }> {
+    return await ftch<S>(this.baseUrl, path, "PUT", responseType, {}, body);
   }
 
-  async delete(path: string, responseType: TunnelResponseType) {
-    return await ftch(this.baseUrl, path, "DELETE", responseType, {});
+  async delete<S extends ZodType>(
+    path: string,
+    responseType: TunnelResponseType,
+    responseSchema: S,
+  ): Promise<{
+    data: S["_output"];
+    status: number;
+    error: boolean;
+    response: Response;
+  }> {
+    return await ftch<S>(this.baseUrl, path, "DELETE", responseType, {});
   }
 }
 

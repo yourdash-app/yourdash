@@ -6,16 +6,28 @@
 import toAuthImgUrl from "@yourdash/csi/toAuthImgUrl.ts";
 import useResource from "@yourdash/csi/useResource.ts";
 import clippy from "@yourdash/shared/web/helpers/clippy.ts";
+import tun from "@yourdash/tunnel/index.js";
+import UKImage from "@yourdash/uikit/components/image/UKImage.js";
+import IncrementLevel from "@yourdash/uikit/core/incrementLevel.js";
+import { useLevelClass } from "@yourdash/uikit/core/level.js";
 import { useNavigate } from "react-router-dom";
-import coreCSI from "@yourdash/csi/coreCSI.ts";
 import styles from "./Widget.module.scss";
 import React from "react";
+import z from "zod";
 
 const QuickShortcuts: React.FC<{ side: "top" | "right" | "bottom" | "left" }> = ({ side }) => {
   const navigate = useNavigate();
 
   const [num, setNum] = React.useState<number>(0);
-  const modules = useResource(() => coreCSI.getJson("/core/panel/quick-shortcuts", "/core/panel/quick-shortcuts"), [num]) || [];
+  const quickShortcutApplications = useResource(
+    () =>
+      tun.get(
+        "/core/panel/quick-shortcuts",
+        "json",
+        z.object({ displayName: z.string(), id: z.string(), endpoint: z.string().optional(), url: z.string().optional() }).array(),
+      ),
+    [num],
+  );
 
   // @ts-ignore
   window.__yourdashCorePanelQuickShortcutsReload = () => {
@@ -24,15 +36,19 @@ const QuickShortcuts: React.FC<{ side: "top" | "right" | "bottom" | "left" }> = 
 
   return (
     <>
-      {modules.map((module) => {
-        if (!module) return <>Invalid Module</>;
+      {quickShortcutApplications?.data.map((application) => {
+        if (!application) return <>Invalid Module</>;
 
         return (
-          <UK.Core.IncrementLevel key={module.name}>
+          <IncrementLevel key={application.id}>
             <div
-              key={module.name}
+              key={application.id}
               onClick={() => {
-                navigate(module.url);
+                if (application?.endpoint) {
+                  navigate(application.endpoint);
+                } else if (application?.url) {
+                  window.location.href = application.url;
+                }
               }}
               className={clippy(
                 styles.application,
@@ -40,17 +56,17 @@ const QuickShortcuts: React.FC<{ side: "top" | "right" | "bottom" | "left" }> = 
                 side === "right" && styles.right,
                 side === "bottom" && styles.bottom,
                 side === "left" && styles.left,
-                UK.Core.useLevelClass(1),
+                useLevelClass(1),
               )}
             >
               <UKImage
                 className={styles.applicationIcon}
-                src={toAuthImgUrl(module.icon)}
-                accessibleLabel={module.name}
+                src={tun.baseUrl + `/core/panel/quick-shortcut/icon/${application.id}`}
+                accessibleLabel={application.displayName}
               />
-              <span className={styles.applicationLabel}>{module.name}</span>
+              <span className={styles.applicationLabel}>{application.displayName}</span>
             </div>
-          </UK.Core.IncrementLevel>
+          </IncrementLevel>
         );
       })}
     </>

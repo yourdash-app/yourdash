@@ -186,6 +186,25 @@ class Instance {
   async startup(): Promise<boolean> {
     await this.filesystem.__internal_startup();
     await this.requestManager.__internal_startup();
+
+    try {
+      await this.database.query(`CREATE TABLE IF NOT EXISTS panel_configuration
+                                  (
+                                    config_version              serial primary key,
+                                    username                    text   NOT NULL,
+                                    pinned_applications         text[]  DEFAULT '{ "uk-ewsgit-dash", "uk-ewsgit-files", "uk-ewsgit-store", "uk-ewsgit-weather" }',
+                                    side                  text DEFAULT 'left',
+                                    size                 text DEFAULT 'medium'
+                                  )`);
+      this.log.info(
+        "database",
+        `Table ${this.log.addEmphasisToString("panel_configuration")} has been created if it did not already exist.`,
+      );
+    } catch (e) {
+      console.error(e);
+      this.log.error("database", `Failed to create table ${this.log.addEmphasisToString("panel_configuration")}!`);
+    }
+
     await this.__internal_generateInstanceLogos();
     this.log.info("startup", "YourDash RequestManager Startup Complete!");
 
@@ -228,6 +247,7 @@ class Instance {
 import loadable from "@loadable/component";
 import React from "react";
 import { Route, Routes } from "react-router";
+
 
 /* region loadable */const AppRouter=()=><Routes>{/* region routes */}</Routes>;export default AppRouter
 `;

@@ -95,6 +95,7 @@
 // }
 
 import { YourDashApplication } from "@yourdash/backend/resrc/applications.js";
+import instance from "@yourdash/backend/resrc/main.js";
 
 export default class Application extends YourDashApplication {
   constructor() {
@@ -117,6 +118,8 @@ export default class Application extends YourDashApplication {
   }
 
   public onLoad(): this {
+    instance.request.get("/app/uk-ewsgit-dash/");
+
     return super.onLoad();
   }
 }
