@@ -92,7 +92,7 @@ export default class DashWidget<WidgetId extends string, WidgetData extends { [k
     return this;
   }
 
-  toIWidget(widgetSaveData: {
+  serialize(widgetSaveData: {
     size: IWidget<WidgetId, WidgetData>["size"];
     position: IWidget<WidgetId, WidgetData>["position"];
     data: IWidget<WidgetId, WidgetData>["data"];

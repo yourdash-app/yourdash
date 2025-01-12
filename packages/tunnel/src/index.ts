@@ -16,7 +16,12 @@ async function ftch<ReponseDataType>(
   body?: string,
 ) {
   console.log(`${method} ${path}`, body || "");
-  const response = await fetch(basePath + path, { method: method, body: body, headers: headers, credentials: "include" });
+  const response = await fetch(basePath + path, {
+    method: method,
+    body: body,
+    headers: { ...headers, "Content-Type": "application/json" },
+    credentials: "include",
+  });
 
   if (response.status !== 200 && response.status !== 201 && response.status !== 202 && response.status !== 204) {
     throw { status: response.status, error: true, response };
@@ -64,7 +69,7 @@ class Tunnel {
 
   async post<S extends ZodType>(
     path: string,
-    body: string,
+    body: object,
     responseType: TunnelResponseType,
     responseSchema: S,
   ): Promise<{
@@ -73,7 +78,7 @@ class Tunnel {
     error: boolean;
     response: Response;
   }> {
-    return await ftch<S>(this.baseUrl, path, "POST", responseType, {}, body);
+    return await ftch<S>(this.baseUrl, path, "POST", responseType, {}, JSON.stringify(body));
   }
 
   async put<S extends ZodType>(

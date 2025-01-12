@@ -9,7 +9,7 @@ import fastifySwagger from "@fastify/swagger";
 import fastifySwaggerUI from "@fastify/swagger-ui";
 import { LoginLayout } from "@yourdash/shared/core/login/loginLayout.js";
 import chalk from "chalk";
-import Fastify, { FastifyInstance, FastifyReply } from "fastify";
+import Fastify, { fastify, FastifyInstance, FastifyReply } from "fastify";
 import { fastifyRequestContext, requestContext } from "@fastify/request-context";
 import { jsonSchemaTransform, serializerCompiler, validatorCompiler, ZodTypeProvider } from "fastify-type-provider-zod";
 import { createReadStream } from "fs";
@@ -2414,9 +2414,6 @@ class RequestManager {
           this.instance.applications.loadedApplications.find((i) => i.__internal_params.id === a),
         );
 
-        console.log(pinnedApplications);
-
-        // TODO: implement this
         return pinnedApplications.map((app) => {
           if (app.__internal_params.frontend) {
             return {
@@ -2493,6 +2490,47 @@ class RequestManager {
         "image/webp",
       );
     });
+
+    this.app.post(
+      "/core/panel/quick-shortcuts/create",
+      {
+        schema: {
+          body: z.object({
+            id: z.string(),
+          }),
+          response: {
+            200: z.object({
+              success: z.boolean(),
+            }),
+          },
+        },
+      },
+      async (req, res) => {
+        const applicationId = (req.body as { id: string }).id;
+        const username = this.getRequestUsername();
+
+        if (this.instance.applications.loadedApplications.find((i) => i.__internal_params.id === applicationId)) {
+          try {
+            const previousPins = await this.instance.database.query(
+              "SELECT pinned_applications FROM panel_configuration WHERE username = $1;",
+              [username],
+            );
+
+            if (previousPins.rows[0].pinned_applications.includes(applicationId)) return { success: false };
+
+            const newPins = [...previousPins.rows[0].pinned_applications, applicationId];
+
+            await this.instance.database.query("UPDATE panel_configuration SET pinned_applications = $2 WHERE username = $1;", [
+              username,
+              newPins,
+            ]);
+            return { success: true };
+          } catch (error) {
+            return { success: false };
+          }
+        }
+      },
+    );
 
     // start listening for requests
     try {

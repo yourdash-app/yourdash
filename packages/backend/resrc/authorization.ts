@@ -98,7 +98,7 @@ class Authorization {
   async authorizeUser(username: string, sessionToken: string): Promise<boolean> {
     let sessionTokens = await this.instance.database.query("SELECT session_tokens FROM users WHERE username = $1", [username]);
 
-    return !!sessionTokens.rows[0].session_tokens.includes(sessionToken);
+    return !!sessionTokens.rows?.[0]?.session_tokens?.includes(sessionToken) || false;
   }
 
   // generate a sessionToken if the username and password are valid, else return null

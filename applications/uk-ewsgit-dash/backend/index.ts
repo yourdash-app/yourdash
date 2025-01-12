@@ -96,6 +96,7 @@
 
 import { YourDashApplication } from "@yourdash/backend/resrc/applications.js";
 import instance from "@yourdash/backend/resrc/main.js";
+import { z } from "zod";
 
 export default class Application extends YourDashApplication {
   constructor() {
@@ -115,10 +116,117 @@ export default class Application extends YourDashApplication {
       description: "The YourDash dashboard application.",
       id: "uk-ewsgit-dash",
     });
+
+    instance.database.query(`CREATE TABLE IF NOT EXISTS uk_ewsgit_dash_dashboard
+                              (
+                                  username                  text,
+                                  header_welcome_message    text  default 'Hiya, %username%',
+                                  header_size               text  default 'medium',
+                                  header_style              text  default 'floating',
+                                  header_background_blur    float default 0.25,
+                                  header_background_opacity float default 0.75,
+                                  background_type text default 'image',
+                                  background_value text,
+                                  background_path text,
+                                  content_background_blur    float default 0.25,
+                                  content_background_opacity float default 0.75,
+                                  content_pages json[] default array[]::json[]
+                              );`);
+
+    return this;
   }
 
   public onLoad(): this {
-    instance.request.get("/app/uk-ewsgit-dash/");
+    instance.request.get(
+      "/app/uk-ewsgit-dash/dashboard",
+      {
+        schema: {
+          response: {
+            200: z.object({
+              header: z.object({
+                welcomeMessage: z.string(),
+                size: z.union([z.literal("small"), z.literal("medium"), z.literal("large")]),
+                style: z.union([z.literal("floating"), z.literal("docked")]),
+                background: z.object({
+                  blur: z.number(),
+                  opacity: z.number(),
+                }),
+              }),
+              background: z.union([
+                z.object({
+                  type: z.literal("image"),
+                  path: z.string(),
+                }),
+                z.object({
+                  type: z.literal("color"),
+                  value: z.string(),
+                }),
+                z.object({
+                  type: z.literal("linearGradient"),
+                  value: z.string(),
+                }),
+                z.object({
+                  type: z.literal("radialGradient"),
+                  value: z.string(),
+                }),
+              ]),
+              content: z.object({
+                background: z.object({
+                  blur: z.number(),
+                  opacity: z.number(),
+                }),
+                pages: z
+                  .object({
+                    id: z.string(),
+                    data: z.any(),
+                    dimensions: z.object({
+                      width: z.number(),
+                      height: z.number(),
+                    }),
+                    position: z.object({
+                      x: z.number(),
+                      y: z.number(),
+                    }),
+                  })
+                  .array(),
+              }),
+              user: z.object({
+                username: z.string(),
+                forename: z.string(),
+                surname: z.string(),
+              }),
+            }),
+          },
+        },
+      },
+      async (req, res) => {
+        const username = instance.requestManager.getRequestUsername();
+        const userData = await instance.database.query("SELECT forename, surname FROM users WHERE username = $1", [username]);
+
+        console.log(userData.rows);
+
+        return {
+          header: {
+            welcomeMessage: `Hiya, %username%`,
+            size: "medium",
+            style: "floating",
+          },
+          content: {
+            background: {
+              // percentage from 0rem to 4rem
+              blur: 0.5, // percentage from 0% to 100%
+              opacity: 0.5,
+            },
+            pages: [],
+          },
+          user: {
+            username: username,
+            forename: userData.rows[0].forename,
+            surname: userData.rows[0].surname,
+          },
+        };
+      },
+    );
 
     return super.onLoad();
   }

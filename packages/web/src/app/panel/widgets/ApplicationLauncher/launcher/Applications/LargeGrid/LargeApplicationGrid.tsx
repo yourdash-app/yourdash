@@ -3,18 +3,22 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import tun from "@yourdash/tunnel/src/index.js";
 import UKCard from "@yourdash/uikit/components/card/UKCard.js";
 import UKContextMenu from "@yourdash/uikit/components/contextMenu/UKContextMenu.js";
+import useToast from "@yourdash/uikit/src/core/toasts/useToast.js";
 import React from "react";
 import IPanelApplicationsLauncherFrontendModule from "@yourdash/shared/core/panel/applicationsLauncher/application.ts";
 import coreCSI from "@yourdash/csi/coreCSI.ts";
 import styles from "./LargeApplicationGrid.module.scss";
 import { useNavigate } from "react-router";
+import { z } from "zod";
 
 const LargeApplicationGrid: React.FC<{
   modules: IPanelApplicationsLauncherFrontendModule[];
 }> = ({ modules }) => {
   const navigate = useNavigate();
+  const toast = useToast();
 
   return (
     <section className={styles.grid}>
@@ -25,9 +29,29 @@ const LargeApplicationGrid: React.FC<{
               {
                 label: "Pin To Panel",
                 async onClick() {
-                  await coreCSI.postJson("/core/panel/quick-shortcuts/create", { id: module.id, moduleType: module.type });
-                  // @ts-ignore
-                  window.__yourdashCorePanelQuickShortcutsReload?.();
+                  let success = await tun.post(
+                    "/core/panel/quick-shortcuts/create",
+                    { id: module.id },
+                    "json",
+                    z.object({
+                      success: z.boolean(),
+                    }),
+                  );
+
+                  if (success.data.success) {
+                    // @ts-ignore
+                    window.__yourdashCorePanelQuickShortcutsReload?.();
+                    toast.create({
+                      type: "success",
+                      content: { title: "Application pinned successfully", body: "" },
+                    });
+                  } else {
+                    toast.create({
+                      type: "error",
+                      content: { body: "Failed to pin application", title: "An application must only be pinned once to the panel." },
+                    });
+                  }
+
                   return 0;
                 },
               },
