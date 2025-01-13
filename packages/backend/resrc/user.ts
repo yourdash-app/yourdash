@@ -163,6 +163,8 @@ async function repairUser(username: string) {
       );
     }
   }
+
+  instance.events.triggerEvent("yourdash_user_repair", username);
 }
 
 async function createUser(username: string) {
@@ -186,7 +188,11 @@ async function createUser(username: string) {
 
   await instance.database.query("INSERT INTO panel_configuration (username) VALUES ($1)", [username]);
 
-  await repairUser(username);
+  try {
+    await repairUser(username);
+  } catch (e) {
+    instance.log.error("user", `Failed to repair user ${username}!`);
+  }
 
   return user;
 }

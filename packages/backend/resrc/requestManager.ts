@@ -9,13 +9,13 @@ import fastifySwagger from "@fastify/swagger";
 import fastifySwaggerUI from "@fastify/swagger-ui";
 import { LoginLayout } from "@yourdash/shared/core/login/loginLayout.js";
 import chalk from "chalk";
-import Fastify, { fastify, FastifyInstance, FastifyReply } from "fastify";
+import Fastify, { fastify, FastifyError, FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import { fastifyRequestContext, requestContext } from "@fastify/request-context";
 import { jsonSchemaTransform, serializerCompiler, validatorCompiler, ZodTypeProvider } from "fastify-type-provider-zod";
 import { createReadStream } from "fs";
 import path from "path";
 import { fetch } from "undici";
-import { z } from "zod";
+import { z, ZodError } from "zod";
 import { YourDashApplication } from "./applications.js";
 import { YourDashSessionType } from "./authorization.js";
 import { type Instance } from "./main.js";
@@ -23,6 +23,12 @@ import { INSTANCE_STATUS } from "./types/instanceStatus.js";
 import User from "./user.js";
 import { resizeImage } from "./image.js";
 import { mkdir } from "fs/promises";
+
+declare module "zod" {
+  interface ZodError {
+    httpPart?: string;
+  }
+}
 
 class RequestManager {
   private instance: Instance;
@@ -65,6 +71,24 @@ class RequestManager {
 
     this.app.setValidatorCompiler(validatorCompiler);
     this.app.setSerializerCompiler(serializerCompiler);
+
+    this.app.setErrorHandler((error: FastifyError, _: FastifyRequest, reply: FastifyReply) => {
+      const cause: { name: string; issues: { code: string; expected: string; recieved: string; path: string[]; message: string }[] } =
+        error.cause as any;
+
+      // noinspection SuspiciousTypeOfGuard
+      if (cause.name === "ZodError") {
+        reply.status(400).send({
+          statusCode: 400,
+          error: "Bad Request",
+          // @ts-ignore
+          httpPart: error.httpPart!,
+          issues: cause.issues,
+        });
+      }
+
+      reply.send(error);
+    });
 
     await this.app.register(cors, {
       methods: "*",
@@ -2531,8 +2555,11 @@ class RequestManager {
         }
       },
     );
+  }
 
-    // start listening for requests
+  // start listening for requests
+  // once called, no more routes may be defined
+  async __internal_beginListening() {
     try {
       await this.app.ready();
       await this.app.listen({ port: this.instance.flags.port });

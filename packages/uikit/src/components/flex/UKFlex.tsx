@@ -11,12 +11,14 @@ const UKFlex: FC<{
   direction: "row" | "column";
   className?: string;
   children: ReactNode | ReactNode[];
+  style?: React.CSSProperties;
   centerHorizontally?: boolean;
   centerVertically?: boolean;
   padding?: boolean;
 }> = (props) => {
   return (
     <div
+      style={props.style}
       className={clippy(
         styles.component,
         styles[props.direction],

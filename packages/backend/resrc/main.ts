@@ -159,11 +159,13 @@ class Instance {
       this.log.error("database", `Failed to create table ${this.log.addEmphasisToString("config")}!`);
     }
 
+    this.events = new Events(this);
+    instance.events.createEvent("yourdash_user_repair");
+
     this.authorization = new Authorization(this);
     this.filesystem = new Filesystem(this);
     this.requestManager = new RequestManager(this);
     this.request = this.requestManager.app;
-    this.events = new Events(this);
     this.applications = new Applications(this);
 
     this.startup()
@@ -208,6 +210,17 @@ class Instance {
     await this.__internal_generateInstanceLogos();
     this.log.info("startup", "YourDash RequestManager Startup Complete!");
 
+    this.log.info("startup", "Loading applications...");
+
+    const applications = await this.applications.getInstalledApplications();
+
+    for (const app of applications) {
+      await this.applications.loadApplication(app);
+      this.log.info("application", `Application ${app} loaded successfully!`);
+    }
+
+    this.log.info("application", `All applications have loaded!`);
+
     const adminUser = new User("admin");
 
     if (!(await adminUser.doesExist())) {
@@ -222,21 +235,8 @@ class Instance {
     for (const user of users.rows) {
       await repairUser(user.username);
     }
-
+    await this.requestManager.__internal_beginListening();
     this.log.info("startup", "YourDash Instance Startup Complete");
-
-    this.log.info("startup", "Loading applications...");
-
-    const applications = await this.applications.getInstalledApplications();
-
-    for (const app of applications) {
-      await this.applications.loadApplication(app);
-      this.log.info("application", `Application ${app} loaded successfully!`);
-    }
-
-    this.log.info("application", `All applications have loaded!`);
-
-    this.log.info("application", `Loading application frontends`);
 
     // generate the appRouter
     await (async () => {

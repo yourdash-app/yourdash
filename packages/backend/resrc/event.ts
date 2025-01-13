@@ -5,7 +5,7 @@
 
 import instance, { Instance } from "./main.js";
 
-class YourDashHook {
+class EventHook {
   eventId: string;
   callback: (data: any) => void;
 
@@ -36,7 +36,7 @@ class YourDashHook {
 
 class Events {
   instance: Instance;
-  __internal_events: { [eventId: string]: { hooks: YourDashHook[] } };
+  __internal_events: { [eventId: string]: { hooks: EventHook[] } };
 
   constructor(instance: Instance) {
     this.instance = instance;
@@ -59,6 +59,14 @@ class Events {
     this.__internal_events[eventId].hooks.forEach((h) => {
       h.__internal_triggerHook(data);
     });
+
+    return this;
+  }
+
+  on(eventId: string, callback: (data: any) => void) {
+    const eventHook = new EventHook(eventId);
+    eventHook.on(callback);
+    this.__internal_events[eventId].hooks.push(eventHook);
 
     return this;
   }

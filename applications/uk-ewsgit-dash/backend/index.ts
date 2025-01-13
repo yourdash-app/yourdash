@@ -97,6 +97,7 @@
 import { YourDashApplication } from "@yourdash/backend/resrc/applications.js";
 import instance from "@yourdash/backend/resrc/main.js";
 import { z } from "zod";
+import path from "path";
 
 export default class Application extends YourDashApplication {
   constructor() {
@@ -119,19 +120,28 @@ export default class Application extends YourDashApplication {
 
     instance.database.query(`CREATE TABLE IF NOT EXISTS uk_ewsgit_dash_dashboard
                               (
-                                  username                  text,
-                                  header_welcome_message    text  default 'Hiya, %username%',
-                                  header_size               text  default 'medium',
-                                  header_style              text  default 'floating',
-                                  header_background_blur    float default 0.25,
-                                  header_background_opacity float default 0.75,
-                                  background_type text default 'image',
-                                  background_value text,
-                                  background_path text,
-                                  content_background_blur    float default 0.25,
-                                  content_background_opacity float default 0.75,
-                                  content_pages json[] default array[]::json[]
+                                  username                   text,
+                                  header_welcome_message     text   default 'Hiya, %username%',
+                                  header_size                text   default 'medium',
+                                  header_style               text   default 'floating',
+                                  header_background_blur     float  default 0.25,
+                                  header_background_opacity  float  default 0.75,
+                                  background_type            text   default 'image',
+                                  background_value           text,
+                                  background_path            text,
+                                  content_background_blur    float  default 0.25,
+                                  content_background_opacity float  default 0.75,
+                                  content_pages              json[] default array []::json[]
                               );`);
+
+    instance.events.on("yourdash_user_repair", (username: string) => {
+      instance.database.query(
+        `INSERT INTO uk_ewsgit_dash_dashboard (username)
+                                SELECT $1
+                                WHERE NOT EXISTS (SELECT 1 FROM uk_ewsgit_dash_dashboard WHERE username = $1)`,
+        [username],
+      );
+    });
 
     return this;
   }
@@ -202,22 +212,31 @@ export default class Application extends YourDashApplication {
       async (req, res) => {
         const username = instance.requestManager.getRequestUsername();
         const userData = await instance.database.query("SELECT forename, surname FROM users WHERE username = $1", [username]);
+        const dashboardData = await instance.database.query("SELECT * FROM uk_ewsgit_dash_dashboard WHERE username = $1", [username]);
 
-        console.log(userData.rows);
+        const data = dashboardData.rows[0];
 
         return {
           header: {
-            welcomeMessage: `Hiya, %username%`,
-            size: "medium",
-            style: "floating",
+            welcomeMessage: data.header_welcome_message,
+            size: data.header_size,
+            style: data.header_style,
+            background: {
+              blur: data.header_background_blur, // percentage from 0% to 100%
+              opacity: data.header_background_opacity,
+            },
           },
           content: {
             background: {
               // percentage from 0rem to 4rem
-              blur: 0.5, // percentage from 0% to 100%
-              opacity: 0.5,
+              blur: data.content_background_blur, // percentage from 0% to 100%
+              opacity: data.content_background_opacity,
             },
-            pages: [],
+            pages: data.content_pages || [],
+          },
+          background: {
+            type: data.background_type,
+            path: `#f00`,
           },
           user: {
             username: username,
@@ -227,6 +246,15 @@ export default class Application extends YourDashApplication {
         };
       },
     );
+
+    // /app/uk-ewsgit-dash/backgroundImage
+    instance.request.get("/app/uk-ewsgit-dash/backgroundImage", async (req, res) => {
+      return instance.requestManager.sendFile(
+        res,
+        path.join(instance.filesystem.commonPaths.systemDirectory(), "loginBackground.avif"),
+        "image/avif",
+      );
+    });
 
     return super.onLoad();
   }
