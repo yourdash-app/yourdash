@@ -82,15 +82,14 @@ const DashApplication: React.FC = () => {
   if (!dashboard) return <>LOADING...</>;
 
   return (
-    <UKFlex
-      direction={"column"}
+    <div
       className={styles.page}
       style={
         dashboard.background.type === "color"
           ? { backgroundColor: dashboard.background.value }
           : dashboard.background.type === "linearGradient"
-            ? { background: `linear-gradient(${dashboard.background.value})` }
-            : { background: `url(${tun.baseUrl + "/app/uk-ewsgit-dash/backgroundImage"})` }
+            ? { backgroundImage: `linear-gradient(${dashboard.background.value})` }
+            : { backgroundImage: `url(${tun.baseUrl + "/app/uk-ewsgit-dash/backgroundImage"})` }
       }
     >
       <UKFlex
@@ -108,7 +107,10 @@ const DashApplication: React.FC = () => {
           text={dashboard.header.welcomeMessage.replace(`%username%`, `${dashboard.user.forename} ${dashboard.user.surname}`)}
         />
       </UKFlex>
-      <UKFlex direction={"row"}>
+      <UKFlex
+        direction={"row"}
+        className={styles.widgetsCarouselContainer}
+      >
         <UKCarousel
           items={[
             {
@@ -252,7 +254,7 @@ const DashApplication: React.FC = () => {
       {/*     )} */}
       {/*   </div> */}
       {/* </UKFlex> *!/ */}
-    </UKFlex>
+    </div>
   );
 };
 export default DashApplication;

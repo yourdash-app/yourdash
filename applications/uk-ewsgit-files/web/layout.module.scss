@@ -26,8 +26,8 @@
   border: none;
   border-right: solid 0.125rem var(--separator-color);
   border-radius: 0;
-  color: var(#{$theme+$button+$color});
-  background-color: var(#{$theme+$button+$background});
+  color: rgb(var(#{$theme+$button+$color}));
+  background-color: rgb(var(#{$theme+$button+$background}));
   transition: var(#{$theme+$transition}), border-bottom 0s linear;
   height: max-content;
 
@@ -50,7 +50,7 @@
   }
 
   &.active {
-    background-color: var(#{$theme+$button+$active+$background});
+    background-color: rgb(var(#{$theme+$button+$active+$background}));
     border-radius: var(#{$theme+$button+$radius});
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;

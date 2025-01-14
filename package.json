@@ -12,6 +12,7 @@
   "scripts": {
     "web": "bun run --cwd=packages/web dev",
     "backend": "bun run --cwd=packages/backend dev",
+    "build-deps": "bun run --cwd=packages/uikit build && bun run --cwd=packages/tunnel build",
     "legacy-backend": "bun run --cwd=packages/backend legacy-dev",
     "production-backend": "bun run --cwd=packages/backend production"
   },
