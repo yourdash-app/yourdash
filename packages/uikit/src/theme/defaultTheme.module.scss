@@ -10,7 +10,7 @@
   overflow-y: auto;
   height: 100%;
 
-  background: var(#{$theme+$background});
+  background: rgb(var(#{$theme+$background}));
   #{$theme}-author: "Ewsgit";
   #{$theme}-name: "YourDash Classic Dark";
   #{$theme}-version: "0.0.1";
@@ -26,7 +26,7 @@
 }
 
 .level0 {
-  color: var(#{$theme+$color});
+  color: rgb(var(#{$theme+$color}));
 
   #{$theme+$color}: 255, 255, 255;
   #{$theme+$subcolor}: 187, 187, 187;
@@ -110,7 +110,7 @@
 }
 
 .level1 {
-  color: var(#{$theme+$color});
+  color: rgb(var(#{$theme+$color}));
 
   #{$theme+$color}: 255, 255, 255;
   #{$theme+$background}: 51, 51, 51;
@@ -184,7 +184,7 @@
 }
 
 .level2 {
-  color: var(#{$theme+$color});
+  color: rgb(var(#{$theme+$color}));
 
   #{$theme+$color}: 255, 255, 255;
   #{$theme+$background}: 68, 68, 68;
@@ -264,12 +264,12 @@
 }
 
 .level3 {
-  color: var(#{$theme+$color});
+  color: rgb(var(#{$theme+$color}));
 
   #{$theme+$color}: 255, 255, 255;
   #{$theme+$background}: 85, 85, 85;
   #{$theme+$border}: 1px solid #666666;
-  #{$theme+$accent}: #768ce7;
+  #{$theme+$accent}: 118, 140, 231;
   #{$theme+$radius}: 1px;
   #{$theme+$padding}: 0.5rem;
   #{$theme+$gap}: 1rem;
@@ -329,7 +329,7 @@
   #{$theme+$button+$hover+$transition}: all 50ms ease-in-out;
   // active
   #{$theme+$button+$active+$color}: 0, 0, 0;
-  #{$theme+$button+$active+$background}: #777777;
+  #{$theme+$button+$active+$background}: 119, 119, 119;
   #{$theme+$button+$active+$border}: 0px solid #777777;
   #{$theme+$button+$active+$radius}: 0.25rem;
 

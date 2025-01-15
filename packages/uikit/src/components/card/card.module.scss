@@ -12,8 +12,8 @@
   font-weight: var(#{$theme+$font+$weight});
   font-size: var(#{$theme+$font+$size});
   font-family: var(#{$theme+$font+$family});
-  background: var(#{$theme+$background});
-  color: var(#{$theme+$color});
+  background: rgb(var(#{$theme+$background}));
+  color: rgb(var(#{$theme+$color}));
   border: var(#{$theme+$border});
   padding: 0;
   border-radius: var(#{$theme+$radius});
@@ -25,8 +25,8 @@
   width: 100%;
   cursor: pointer;
 
-  color: var(#{$theme+$button+$color});
-  background: var(#{$theme+$button+$background});
+  color: rgb(var(#{$theme+$button+$color}));
+  background: rgb(var(#{$theme+$button+$background}));
   border: var(#{$theme+$button+$border});
   font-size: var(#{$theme+$button+$font+$size});
   font-weight: var(#{$theme+$button+$font+$weight});
@@ -34,16 +34,16 @@
   transition:  var(#{$theme+$button+$transition});
 
   &:hover {
-    color: var(#{$theme+$button+$hover+$color});
-    background: var(#{$theme+$button+$hover+$background});
+    color: rgb(var(#{$theme+$button+$hover+$color}));
+    background: rgb(var(#{$theme+$button+$hover+$background}));
     border: var(#{$theme+$button+$hover+$border});
     border-radius: var(#{$theme+$button+$hover+$radius});
     transition: var(#{$theme+$button+$hover+$transition});
   }
 
   &:active {
-    color: var(#{$theme+$button+$active+$color});
-    background: var(#{$theme+$button+$active+$background});
+    color: rgb(var(#{$theme+$button+$active+$color}));
+    background: rgb(var(#{$theme+$button+$active+$background}));
     border: var(#{$theme+$button+$active+$border});
     border-radius: var(#{$theme+$button+$active+$radius});
     transition: var(#{$theme+$button+$active+$transition});

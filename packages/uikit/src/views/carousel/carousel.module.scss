@@ -63,7 +63,7 @@
   border-radius: var(#{$theme+$radius});
 
   .pageIndicator {
-    background-color: var(#{$theme+$color});
+    background-color: rgb(var(#{$theme+$color}));
     padding: 0.5rem;
     border-radius: var(#{$theme+$radius});
     transition: var(#{$theme+$transition});

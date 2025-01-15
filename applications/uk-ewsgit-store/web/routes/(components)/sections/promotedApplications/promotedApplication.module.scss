@@ -14,7 +14,7 @@
   width: 100%;
   height: 100%;
   padding: var(#{$theme+$padding});
-  color: var(#{$theme+$color});
+  color: rgb(var(#{$theme+$color}));
   border: var(#{$theme+$border});
   border-radius: var(#{$theme+$radius});
   background: linear-gradient(-45deg, #ff8093aa, #ffd264aa);
@@ -60,10 +60,10 @@
 
       .tag {
         padding: 0.125rem 0.75rem;
-        color: var(#{$theme+$color});
+        color: rgb(var(#{$theme+$color}));
         border: var(#{$theme+$border});
         border-radius: var(#{$theme+$radius});
-        background: var(#{$theme+$background});
+        background: rgb(var(#{$theme+$background}));
       }
     }
   }

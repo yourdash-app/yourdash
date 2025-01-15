@@ -101,7 +101,7 @@
   padding-top: 10rem;
   padding-bottom: 10rem;
   width: calc(100% - $UKPadding * 2);
-  background-color: $UKBackground;
+  background-color: rgb($UKBackground, var(--opacity));
   border-radius: $UKRadius;
   margin: $UKPadding;
 }

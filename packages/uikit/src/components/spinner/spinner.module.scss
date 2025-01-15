@@ -4,7 +4,7 @@
   padding: var(#{$theme+$padding});
   border: var(#{$theme+$border});
   border-radius: var(#{$theme+$radius});
-  background-color: var(#{$theme+$background});
+  background-color: rgb(var(#{$theme+$background}));
   user-select: none;
   position: relative;
   width: 8rem;
@@ -39,7 +39,7 @@
   height: 3.5rem;
   aspect-ratio: 1 / 1;
   border-radius: 100rem;
-  background: var(#{$theme+$accent});
+  background: rgb(var(#{$theme+$accent}));
 }
 
 .spinnerCutoutContainer {
@@ -56,7 +56,7 @@
   position: absolute;
   height: 1.75rem;
   aspect-ratio: 1 / 1;
-  background: var(#{$theme+$background});
+  background: rgb(var(#{$theme+$background}));
 }
 
 .spinnerCutoutOne {

@@ -9,7 +9,7 @@
   padding: var(#{$theme+$padding});
   border: var(#{$theme+$border});
   border-radius: var(#{$theme+$radius});
-  background-color: var(#{$theme+$background});
+  background-color: rgb(var(#{$theme+$background}));
   user-select: none;
   width: 100%;
   display: flex;
@@ -18,7 +18,7 @@
 }
 
 .bar {
-  background: var(#{$theme+$accent});
+  background: rgb(var(#{$theme+$accent}));
   width: var(--ukcomp-progress);
   height: 1rem;
   transition: var(#{$theme+$transition});

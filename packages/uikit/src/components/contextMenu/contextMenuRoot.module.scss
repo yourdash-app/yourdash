@@ -17,8 +17,8 @@
   font-weight: var(#{$theme+$font+$weight});
   font-size: var(#{$theme+$font+$size});
   font-family: var(#{$theme+$font+$family});
-  background: var(#{$theme+$background});
-  color: var(#{$theme+$color});
+  background: rgb(var(#{$theme+$background}));
+  color: rgb(var(#{$theme+$color}));
   border: var(#{$theme+$border});
   border-radius: var(#{$theme+$radius});
   gap: calc(var(#{$theme+$gap}) / 2);

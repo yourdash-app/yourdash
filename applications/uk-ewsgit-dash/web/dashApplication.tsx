@@ -98,7 +98,8 @@ const DashApplication: React.FC = () => {
         centerHorizontally
         centerVertically
         style={{
-          opacity: `${dashboard.header.background.opacity}`,
+          // @ts-ignore
+          "--opacity": `${dashboard.header.background.opacity}`,
           backdropFilter: `blur(${4 * dashboard.header.background.blur}rem)`,
         }}
       >

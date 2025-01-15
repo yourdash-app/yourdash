@@ -10,7 +10,7 @@
   max-height: 100%;
   transition: var(--transition);
   aspect-ratio: 1 / 1;
-  background: var(#{$theme+$background});
+  background: rgb(var(#{$theme+$background}));
 }
 
 .applicationLabel {
@@ -21,8 +21,8 @@
   opacity: 0;
   border: var(#{$theme+$border});
   border-radius: var(#{$theme+$radius});
-  background: var(#{$theme+$background});
-  color: var(#{$theme+$color});
+  background: rgb(var(#{$theme+$background}));
+  color: rgb(var(#{$theme+$color}));
   pointer-events: none;
 }
 

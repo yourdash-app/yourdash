@@ -4,7 +4,7 @@
   display: flex;
   padding: calc(var(#{$theme+$padding}) / 2);
   padding-bottom: 0;
-  background: var(#{$theme+$background});
+  background: rgb(var(#{$theme+$background}));
   border-bottom: var(#{$theme+$border});
   box-sizing: content-box;
 }
@@ -54,7 +54,7 @@
     border-radius: var(#{$theme+$button+$radius});
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
-    border-bottom: solid 0.25rem var(#{$theme+$accent});
+    border-bottom: solid 0.25rem rgb(var(#{$theme+$accent}));
     margin-left: calc(var(#{$theme+$gap}) / 2);
     margin-right: calc(var(#{$theme+$gap}) / 2);
     border-right: 0 solid var(--separator-color);
