@@ -17,7 +17,7 @@ import UKIconButton from "@yourdash/uikit/components/iconButton/UKIconButton.js"
 const PanelLayout: React.FC<{
   showBackButton: boolean;
   onBackButton: () => void;
-  controls: React.ReactNode[];
+  controls: React.ReactNode;
   applicationDisplayName: string;
   applicationIcon: string;
 }> = ({ showBackButton, onBackButton, controls, applicationDisplayName, applicationIcon }) => {
@@ -78,7 +78,7 @@ const PanelLayout: React.FC<{
                 text={applicationDisplayName}
                 className={styles.applicationDisplayName}
               />
-              <React.Fragment>{controls}</React.Fragment>
+              <div key={"controls"}>{controls}</div>
             </div>
             <div
               key={1}

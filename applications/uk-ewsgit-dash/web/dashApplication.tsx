@@ -5,15 +5,19 @@
 
 import useResource from "@yourdash/csi/useResource";
 import tun from "@yourdash/tunnel/src/index.js";
+import UKIconButton from "@yourdash/uikit/components/iconButton/UKIconButton.js";
+import { UKIcons } from "@yourdash/uikit/core/iconDictionary.js";
 import UKCard from "@yourdash/uikit/src/components/card/UKCard.js";
 import UKFlex from "@yourdash/uikit/src/components/flex/UKFlex.js";
 import UKHeading from "@yourdash/uikit/src/components/heading/UKHeading.js";
 import UKCarousel from "@yourdash/uikit/src/views/carousel/UKCarousel.js";
-import React, { useState } from "react";
+import ApplicationPanelContext from "@yourdash/web/src/app/panel/ApplicationPanelContext.js";
+import React, { useEffect, useState } from "react";
 import styles from "./dashApplication.module.scss";
 import { z } from "zod";
 
 const DashApplication: React.FC = () => {
+  const applicationPanelContext = React.useContext(ApplicationPanelContext);
   const [currentWidgetPage, setCurrentWidgetPage] = useState<number>(0);
   const dashboard = useResource(
     () =>
@@ -79,6 +83,32 @@ const DashApplication: React.FC = () => {
   )?.data;
   const [isWidgetEditMode, setIsWidgetEditMode] = useState(false);
 
+  useEffect(() => {
+    applicationPanelContext.setControls(
+      <>
+        <UKIconButton
+          icon={UKIcons.Pencil}
+          key={"dash-icon-button"}
+          onClick={() => {}}
+          accessibleLabel={"Edit"}
+        />
+      </>,
+    );
+  }, []);
+
+  function headerPaddingLevelToValue(paddingLevel: "large" | "medium" | "small") {
+    switch (paddingLevel) {
+      case "small":
+        return "5rem";
+      case "medium":
+        return "10rem";
+      case "large":
+        return "16rem";
+      default:
+        return "2rem";
+    }
+  }
+
   if (!dashboard) return <>LOADING...</>;
 
   return (
@@ -101,6 +131,8 @@ const DashApplication: React.FC = () => {
           // @ts-ignore
           "--opacity": `${dashboard.header.background.opacity}`,
           backdropFilter: `blur(${4 * dashboard.header.background.blur}rem)`,
+          paddingTop: headerPaddingLevelToValue(dashboard.header.size),
+          paddingBottom: headerPaddingLevelToValue(dashboard.header.size),
         }}
       >
         <UKHeading
@@ -159,7 +191,7 @@ const DashApplication: React.FC = () => {
           ]}
         />
       </UKFlex>
-
+      {/* Backup of old code */}
       {/* /!* <UKFlex */}
       {/*   className={clippy(styles.header, tallHeader && styles.tallHeader, isWidgetEditMode && styles.headerEditMode)} */}
       {/*   direction={"row"} */}

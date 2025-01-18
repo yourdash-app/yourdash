@@ -35,7 +35,7 @@ const HomeTabView: React.FC<{ view: IFilesView }> = ({ view }) => {
         <CommonStorageLocations commonStorageLocations={homeTabData.commonStorageLocations || []} />
         <RecentFiles />
         {/* @ts-ignore */}
-        <Connections connections={homeTabData.connections} />
+        <Connections connections={homeTabData?.connections || []} />
         <SharedFiles />
       </section>
     </UKContainer>

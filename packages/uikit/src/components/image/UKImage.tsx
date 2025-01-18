@@ -24,6 +24,7 @@ const UKImage: FC<{
   const [loaded, setLoaded] = useState<boolean>(false);
   const [hasFailed, setHasFailed] = useState<boolean>(false);
   const [backgroundSize, setBackgroundSize] = useState<number>(0);
+  const attempts = useRef<number>(0);
 
   useEffect(() => {
     const rc = ref.current;
@@ -65,11 +66,21 @@ const UKImage: FC<{
           draggable={false}
           width={props.width}
           height={props.height}
-          onError={() => setHasFailed(true)}
+          onError={() => {
+            setHasFailed(true);
+            attempts.current++;
+
+            setTimeout(() => {
+              if (attempts.current && attempts.current <= 3) {
+                setSrc((old) => `${old}?refresh=${Date.now()}`);
+              }
+            }, 500);
+          }}
           loading={props.disableLazyLoading ? "eager" : "lazy"}
           alt={props.accessibleLabel}
           onLoad={(e) => {
             setLoaded(e.currentTarget.complete);
+            attempts.current = 0;
           }}
           src={src}
         />

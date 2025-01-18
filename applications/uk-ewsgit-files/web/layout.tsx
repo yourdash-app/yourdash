@@ -36,7 +36,7 @@ const ApplicationLayout: React.FC = () => {
   ]);
 
   useEffect(() => {
-    if ((activeTabId === undefined && tabs.length > 0) || !tabs.find((t) => t.id === activeTabId)) {
+    if ((activeTabId === undefined && tabs?.length > 0) || !tabs.find((t) => t.id === activeTabId)) {
       if (tabs.length > 0) {
         setActiveTabId(tabs[0].id);
       }
@@ -51,6 +51,7 @@ const ApplicationLayout: React.FC = () => {
         {commonStorageLocations.map((storageLocation) => {
           return (
             <UKButton
+              key={storageLocation.path}
               text={storageLocation.path}
               onClick={() => {
                 const currentTab = tabs.find((t) => activeTabId === t.id);
@@ -78,10 +79,12 @@ const ApplicationLayout: React.FC = () => {
           <UKSidebarToggleButton />
           {tabs.map((tab) => {
             return (
-              <div className={clippy(styles.tab, activeTabId === tab.id && styles.active)}>
+              <div
+                key={tab.id}
+                className={clippy(styles.tab, activeTabId === tab.id && styles.active)}
+              >
                 <UKButton
                   className={styles.innerButton}
-                  key={tab.id}
                   text={tab.displayName}
                   onClick={() => {
                     setActiveTabId(tab.id);

@@ -24,7 +24,7 @@ const ApplicationPanelContext = React.createContext({
 } as {
   setShowBackButton: (value: boolean) => void;
   setOnBackButton: (cb: () => void) => void;
-  setControls: (controls: React.ReactNode[]) => void;
+  setControls: (controls: React.ReactNode) => void;
   setApplicationDisplayName: (displayName: string) => void;
   setApplicationIcon: (displayName: string) => void;
 });

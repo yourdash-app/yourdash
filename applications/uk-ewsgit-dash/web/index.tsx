@@ -17,7 +17,6 @@ const DashRouter: React.FC = () => {
     applicationPanelContext.setApplicationIcon(DASH_ICON);
     applicationPanelContext.setOnBackButton(() => {});
     applicationPanelContext.setShowBackButton(false);
-    applicationPanelContext.setControls([]);
   }, []);
 
   return (
@@ -25,6 +24,10 @@ const DashRouter: React.FC = () => {
       <Route
         index
         element={<DashApplication />}
+      />
+      <Route
+        path="settings"
+        element={<div>Settings Page</div>}
       />
     </Routes>
   );

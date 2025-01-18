@@ -17,6 +17,7 @@ const FileList: React.FC<{
         {files.map((file, index) => {
           return (
             <FileListFile
+              key={file.path}
               displayName={file.displayName}
               path={file.path}
               thumbnail={file.thumbnail}

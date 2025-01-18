@@ -15,7 +15,7 @@ const AppLayout: React.FC = () => {
 
   const [applicationDisplayName, setApplicationDisplayName] = useState<string>("");
   const [applicationIcon, setApplicationIcon] = useState<string>("");
-  const [controls, setControls] = useState<React.ReactNode[]>([]);
+  const [controls, setControls] = useState<React.ReactNode>(<></>);
   const [onBackButton, setOnBackButton] = useState<() => void>(() => {});
   const [showBackButton, setShowBackButton] = useState<boolean>(false);
 

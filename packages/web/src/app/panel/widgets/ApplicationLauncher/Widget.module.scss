@@ -14,7 +14,7 @@
   color: rgb(var(#{$theme}#{$button}#{$color}));
   border: var(#{$theme}#{$button}#{$border});
   border-radius: var(#{$theme}#{$button}#{$radius});
-  background: rgb(var(#{$theme}#{$button}#{$background}));
+  background: rgb(#{$UKButtonBackground});
   transition: var(#{$theme}#{$button}#{$transition});
   display: flex;
   align-items: center;
