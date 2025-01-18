@@ -9,11 +9,13 @@ import IncrementLevel from "../../core/incrementLevel.tsx";
 import { useLevel, useLevelClass } from "../../core/level.tsx";
 import styles from "./container.module.scss";
 
-const UKContainer: FC<{ className?: string; level?: 0 | 1 | 2 | 3; children: ReactNode | ReactNode[] }> = (props) => {
+const UKContainer: FC<{ className?: string; level?: 0 | 1 | 2 | 3; children: ReactNode | ReactNode[]; disableRounding?: boolean }> = (
+  props,
+) => {
   const level = props.level || useLevel();
 
   return (
-    <div className={clippy(styles.component, props.className, useLevelClass(level))}>
+    <div className={clippy(styles.component, props.className, props.disableRounding && styles.disableRounding, useLevelClass(level))}>
       <IncrementLevel>{props.children}</IncrementLevel>
     </div>
   );

@@ -5,7 +5,11 @@
 
 import useResource from "@yourdash/csi/useResource";
 import tun from "@yourdash/tunnel/src/index.js";
+import UKButton from "@yourdash/uikit/components/button/UKButton.js";
+import UKContainer from "@yourdash/uikit/components/container/UKContainer.js";
 import UKIconButton from "@yourdash/uikit/components/iconButton/UKIconButton.js";
+import UKSeparator from "@yourdash/uikit/components/separator/UKSeparator.js";
+import UKTextInput from "@yourdash/uikit/components/textInput/UKTextInput.js";
 import { UKIcons } from "@yourdash/uikit/core/iconDictionary.js";
 import UKCard from "@yourdash/uikit/src/components/card/UKCard.js";
 import UKFlex from "@yourdash/uikit/src/components/flex/UKFlex.js";
@@ -18,7 +22,6 @@ import { z } from "zod";
 
 const DashApplication: React.FC = () => {
   const applicationPanelContext = React.useContext(ApplicationPanelContext);
-  const [currentWidgetPage, setCurrentWidgetPage] = useState<number>(0);
   const dashboard = useResource(
     () =>
       tun.get(
@@ -33,11 +36,15 @@ const DashApplication: React.FC = () => {
               blur: z.number(),
               opacity: z.number(),
             }),
+            font: z.object({
+              family: z.string().optional(),
+              weight: z.number(),
+              size: z.number(),
+            }),
           }),
           background: z.union([
             z.object({
               type: z.literal("image"),
-              path: z.string(),
             }),
             z.object({
               type: z.literal("color"),
@@ -79,7 +86,7 @@ const DashApplication: React.FC = () => {
           }),
         }),
       ),
-    [currentWidgetPage],
+    [],
   )?.data;
   const [isWidgetEditMode, setIsWidgetEditMode] = useState(false);
 
@@ -89,7 +96,9 @@ const DashApplication: React.FC = () => {
         <UKIconButton
           icon={UKIcons.Pencil}
           key={"dash-icon-button"}
-          onClick={() => {}}
+          onClick={() => {
+            setIsWidgetEditMode((wem) => !wem);
+          }}
           accessibleLabel={"Edit"}
         />
       </>,
@@ -136,61 +145,155 @@ const DashApplication: React.FC = () => {
         }}
       >
         <UKHeading
+          style={{
+            fontFamily: dashboard.header.font.family,
+            fontWeight: dashboard.header.font.weight,
+            fontSize: `${dashboard.header.font.size}rem`,
+          }}
           level={1}
           text={dashboard.header.welcomeMessage.replace(`%username%`, `${dashboard.user.forename} ${dashboard.user.surname}`)}
         />
       </UKFlex>
-      <UKFlex
-        direction={"row"}
-        className={styles.widgetsCarouselContainer}
-      >
-        <UKCarousel
-          items={[
-            {
-              element: (
-                <UKFlex direction={"column"}>
-                  <UKFlex direction={"row"}>
-                    <UKCard>Item</UKCard>
-                    <UKCard>Item</UKCard>
-                    <UKCard>Item</UKCard>
-                    <UKCard>Item</UKCard>
-                    <UKCard>Item</UKCard>
-                  </UKFlex>
-                  <UKFlex direction={"row"}>
-                    <UKCard>Item</UKCard>
-                    <UKCard>Item</UKCard>
-                    <UKCard>Item</UKCard>
-                    <UKCard>Item</UKCard>
-                    <UKCard>Item</UKCard>
-                  </UKFlex>
+      {isWidgetEditMode ? (
+        <>
+          <UKCard
+            containerClassName={styles.editModeCardContainer}
+            className={styles.editModeCard}
+            actions={
+              <>
+                <UKSeparator direction={"column"} />
+                <UKFlex direction={"row"}>
+                  <UKButton
+                    text={"Cancel"}
+                    onClick={() => {
+                      setIsWidgetEditMode(false);
+                    }}
+                  />
+                  <UKButton
+                    text={"Submit"}
+                    onClick={() => {
+                      return 0;
+                    }}
+                  />
                 </UKFlex>
-              ),
-              id: "page1",
-            },
-            {
-              element: (
-                <UKFlex direction={"column"}>
-                  <UKFlex direction={"row"}>
+              </>
+            }
+          >
+            <UKHeading
+              text={"Content"}
+              style={{ textAlign: "start" }}
+            />
+            <UKSeparator direction={"column"} />
+            <UKFlex direction={"row"}>
+              <UKContainer>
+                <UKHeading
+                  style={{ textAlign: "start" }}
+                  text={"Header font size"}
+                  level={4}
+                />
+                <UKTextInput
+                  getValue={() => {}}
+                  placeholder={"4rem"}
+                  accessibleName={"Header font size"}
+                />
+              </UKContainer>
+              <UKContainer>
+                <UKHeading
+                  style={{ textAlign: "start" }}
+                  text={"Header font family"}
+                  level={4}
+                />
+                <UKTextInput
+                  getValue={() => {}}
+                  placeholder={"Inter"}
+                  accessibleName={"Header font family"}
+                />
+              </UKContainer>
+              <UKContainer>
+                <UKHeading
+                  style={{ textAlign: "start" }}
+                  text={"Header font weight"}
+                  level={4}
+                />
+                <UKTextInput
+                  getValue={() => {}}
+                  placeholder={"900"}
+                  accessibleName={"Header font weight"}
+                />
+              </UKContainer>
+              <UKContainer>
+                <UKHeading
+                  style={{ textAlign: "start" }}
+                  text={"Header background opacity (%)"}
+                  level={4}
+                />
+                <UKTextInput
+                  getValue={() => {}}
+                  placeholder={"0.75 (75%)"}
+                  accessibleName={"Header background opacity"}
+                />
+              </UKContainer>
+              <UKContainer>
+                <UKHeading
+                  style={{ textAlign: "start" }}
+                  text={"Header background blur (%)"}
+                  level={4}
+                />
+                <UKTextInput
+                  getValue={() => {}}
+                  placeholder={"0.75 (75%)"}
+                  accessibleName={"Header background blur"}
+                />
+              </UKContainer>
+            </UKFlex>
+          </UKCard>
+        </>
+      ) : (
+        <UKFlex
+          direction={"row"}
+          className={styles.widgetsCarouselContainer}
+        >
+          <UKCarousel
+            className={styles.carousel}
+            items={[
+              {
+                element: (
+                  <div className={styles.widgetGrid}>
                     <UKCard>Item</UKCard>
                     <UKCard>Item</UKCard>
                     <UKCard>Item</UKCard>
                     <UKCard>Item</UKCard>
                     <UKCard>Item</UKCard>
-                  </UKFlex>
-                  <UKFlex direction={"row"}>
                     <UKCard>Item</UKCard>
                     <UKCard>Item</UKCard>
                     <UKCard>Item</UKCard>
                     <UKCard>Item</UKCard>
                     <UKCard>Item</UKCard>
-                  </UKFlex>
-                </UKFlex>
-              ),
-              id: "page2",
-            },
-          ]}
-        />
-      </UKFlex>
+                  </div>
+                ),
+                id: "page1",
+              },
+              {
+                element: (
+                  <div className={styles.widgetGrid}>
+                    <UKCard>Item</UKCard>
+                    <UKCard>Item</UKCard>
+                    <UKCard>Item</UKCard>
+                    <UKCard>Item</UKCard>
+                    <UKCard>Item</UKCard>
+                    <UKCard>Item</UKCard>
+                    <UKCard>Item</UKCard>
+                    <UKCard>Item</UKCard>
+                    <UKCard>Item</UKCard>
+                    <UKCard>Item</UKCard>
+                  </div>
+                ),
+                id: "page2",
+              },
+            ]}
+          />
+        </UKFlex>
+      )}
       {/* Backup of old code */}
       {/* /!* <UKFlex */}
       {/*   className={clippy(styles.header, tallHeader && styles.tallHeader, isWidgetEditMode && styles.headerEditMode)} */}

@@ -93,6 +93,7 @@
   background-size: cover;
   width: 100%;
   height: 100%;
+  max-height: max-content;
   display: grid;
   grid-template-rows: auto 1fr;
 }
@@ -105,6 +106,40 @@
 }
 
 .widgetsCarouselContainer {
-  margin-left: auto;
-  margin-right: auto;
+  margin-left: $UKPadding;
+  margin-right: $UKPadding;
+  margin-bottom: $UKPadding;
+  display: flex;
+  align-items: start;
+  justify-content: center;
+}
+
+.editModeCardContainer {
+  margin-left: $UKPadding;
+  margin-right: $UKPadding;
+  margin-bottom: $UKPadding;
+  width: calc(100% - calc($UKPadding * 2));
+}
+
+.editModeCard {
+
+}
+
+.carousel {
+  background: transparent;
+  height: 100%;
+  width: 100%;
+  max-width: 64rem;
+  max-height: 32rem;
+
+  > div[data-pages] {
+    height: 100%;
+    width: 100%;
+  }
+}
+
+.widgetGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  width: 100%;
 }

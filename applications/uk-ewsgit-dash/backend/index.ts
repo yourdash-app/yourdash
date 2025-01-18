@@ -123,12 +123,14 @@ export default class Application extends YourDashApplication {
                                   username                   text,
                                   header_welcome_message     text   default 'Hiya, %username%',
                                   header_size                text   default 'medium',
+                                  header_font_size           float  default  4.0,
+                                  header_font_weight         int    default  900,
+                                  header_font_family         text,
                                   header_style               text   default 'floating',
                                   header_background_blur     float  default 0.25,
                                   header_background_opacity  float  default 0.75,
                                   background_type            text   default 'image',
                                   background_value           text,
-                                  background_path            text,
                                   content_background_blur    float  default 0.25,
                                   content_background_opacity float  default 0.75,
                                   content_pages              json[] default array []::json[]
@@ -161,11 +163,15 @@ export default class Application extends YourDashApplication {
                   blur: z.number(),
                   opacity: z.number(),
                 }),
+                font: z.object({
+                  family: z.string().optional(),
+                  weight: z.number(),
+                  size: z.number(),
+                }),
               }),
               background: z.union([
                 z.object({
                   type: z.literal("image"),
-                  path: z.string(),
                 }),
                 z.object({
                   type: z.literal("color"),
@@ -225,6 +231,11 @@ export default class Application extends YourDashApplication {
               blur: data.header_background_blur, // percentage from 0% to 100%
               opacity: data.header_background_opacity,
             },
+            font: {
+              family: data.header_font_family || undefined,
+              size: data.header_font_size,
+              weight: data.header_font_weight,
+            },
           },
           content: {
             background: {
@@ -236,7 +247,7 @@ export default class Application extends YourDashApplication {
           },
           background: {
             type: data.background_type,
-            path: `#f00`,
+            value: data.background_type !== "image" ? data.background_value : undefined,
           },
           user: {
             username: username,

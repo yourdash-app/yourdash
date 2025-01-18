@@ -76,7 +76,7 @@ class Applications {
     this.instance.log.info("application", `Loading application @ ${applicationPath}.`);
     try {
       // import index.ts at applicationPath
-      let applicationImport = await import(path.join("../", applicationPath, "/backend/index.ts"));
+      let applicationImport = await import("@yourdash/applications/" + path.posix.join(applicationPath, "/backend/index.ts"));
       let application = new applicationImport.default();
       application.__internal_initializedPath = applicationPath;
       this.loadedApplications.push(application);

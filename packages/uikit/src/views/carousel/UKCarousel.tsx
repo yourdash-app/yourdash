@@ -52,6 +52,7 @@ const UKCarousel: React.FC<{
     <UKContainer className={clippy(styles.containerComponent, className)}>
       <div
         className={styles.component}
+        data-pages={true}
         ref={scrollRef}
       >
         {items.map((child) => {

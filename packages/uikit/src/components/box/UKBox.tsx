@@ -4,16 +4,21 @@
  */
 
 import clippy from "@yourdash/shared/web/helpers/clippy.ts";
-import { FC, ReactNode } from "react";
+import React, { FC, ReactNode } from "react";
 import IncrementLevel from "../../core/incrementLevel.tsx";
 import { useLevel, useLevelClass } from "../../core/level.tsx";
 import styles from "./box.module.scss";
 
-const UKBox: FC<{ className?: string; level?: 0 | 1 | 2 | 3; children: ReactNode | ReactNode[] }> = (props) => {
+const UKBox: FC<{ className?: string; level?: 0 | 1 | 2 | 3; children: ReactNode | ReactNode[]; style?: React.CSSProperties }> = (
+  props,
+) => {
   const level = props.level || useLevel();
 
   return (
-    <div className={clippy(styles.component, props.className, useLevelClass(level))}>
+    <div
+      className={clippy(styles.component, props.className, useLevelClass(level))}
+      style={props.style}
+    >
       <IncrementLevel>{props.children}</IncrementLevel>
     </div>
   );

@@ -5,7 +5,7 @@
 
 import clippy from "@yourdash/shared/web/helpers/clippy.ts";
 import styles from "./flex.module.scss";
-import { FC, ReactNode } from "react";
+import React, { FC, ReactNode } from "react";
 
 const UKFlex: FC<{
   direction: "row" | "column";
