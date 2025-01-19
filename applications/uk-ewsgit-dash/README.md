@@ -1,4 +1,4 @@
-# YourDash Dash "dash"
+# YourDash Dash "uk-ewsgit-dash"
 
 The homepage for YourDash
 

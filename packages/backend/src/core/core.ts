@@ -4,7 +4,7 @@
  */
 
 import { extendZodWithOpenApi } from "@asteasolutions/zod-to-openapi";
-import { INSTANCE_STATUS } from "@yourdash/shared/core/instanceStatus.js";
+import { INSTANCE_STATUS } from "@yourdash/backend/resrc/types/instanceStatus.js";
 import { LoginLayout } from "@yourdash/shared/core/login/loginLayout.js";
 import { YOURDASH_SESSION_TYPE } from "@yourdash/shared/core/session.js";
 import { USER_AVATAR_SIZE } from "@yourdash/shared/core/userAvatarSize.js";

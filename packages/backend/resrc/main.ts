@@ -116,6 +116,7 @@ class Instance {
                                     storage_quota  bigint,
                                     permissions    text[],
                                     session_tokens text[],
+                                    nextcloud_session_tokens text[],
                                     password_hash  text
                                   )`);
       this.log.info("database", `Table ${this.log.addEmphasisToString("users")} has been created if it did not already exist.`);
@@ -146,6 +147,7 @@ class Instance {
                                     creation_date               bigint,
                                     administrator_username      text   DEFAULT 'admin',
                                     display_name                text   DEFAULT 'YourDash Instance',
+                                    external_url                text   DEFAULT 'http://localhost:3563',
                                     description                 text   DEFAULT 'This is the default instance description. Hey Admin, this can be changed in the system settings!.',
                                     administrator_contact_email text,
                                     installed_applications      text[] DEFAULT '{ "uk-ewsgit-dash", "uk-ewsgit-files", "uk-ewsgit-photos", "uk-ewsgit-weather", "uk-ewsgit-store", "uk-ewsgit-settings" }',

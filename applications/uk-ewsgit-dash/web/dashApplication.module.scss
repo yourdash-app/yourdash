@@ -129,8 +129,8 @@
   background: transparent;
   height: 100%;
   width: 100%;
-  max-width: 64rem;
-  max-height: 32rem;
+  max-width: 72rem;
+  max-height: 48rem;
 
   > div[data-pages] {
     height: 100%;
@@ -140,6 +140,7 @@
 
 .widgetGrid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
   width: 100%;
+  gap: $UKGap;
 }

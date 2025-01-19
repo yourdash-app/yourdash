@@ -269,6 +269,8 @@ const DashApplication: React.FC = () => {
                     <UKCard>Item</UKCard>
                     <UKCard>Item</UKCard>
                     <UKCard>Item</UKCard>
+                    <UKCard>Item</UKCard>
+                    <UKCard>Item</UKCard>
                   </div>
                 ),
                 id: "page1",
@@ -276,6 +278,8 @@ const DashApplication: React.FC = () => {
               {
                 element: (
                   <div className={styles.widgetGrid}>
+                    <UKCard>Item</UKCard>
+                    <UKCard>Item</UKCard>
                     <UKCard>Item</UKCard>
                     <UKCard>Item</UKCard>
                     <UKCard>Item</UKCard>
