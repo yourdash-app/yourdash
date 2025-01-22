@@ -32,7 +32,7 @@ export default class Application extends YourDashApplication {
       },
       configVersion: 1,
       credits: {
-        authors: [{ name: "Ewsgit", site: "https://ewsgit.uk" }],
+        authors: [ { name: "Ewsgit", site: "https://ewsgit.uk" } ],
       },
       frontend: {
         entryPoint: "../web/index.tsx",
@@ -67,9 +67,9 @@ export default class Application extends YourDashApplication {
       async (req, res) => {
         res.header("Access-Control-Allow-Origin", "*");
 
-        const query = (await instance.database.query("SELECT display_name FROM configuration ORDER BY config_version ASC LIMIT 1")).rows[0];
+        const query = (await instance.database.query("SELECT display_name FROM configuration ORDER BY config_version ASC LIMIT 1")).rows[ 0 ];
 
-        switch (req.headers["Content-Type"]) {
+        switch (req.headers[ "Content-Type" ]) {
           case "application/json":
           default:
             return {
@@ -140,9 +140,9 @@ export default class Application extends YourDashApplication {
           await instance.database.query(
             "SELECT display_name, external_url, description FROM configuration ORDER BY config_version ASC LIMIT 1",
           )
-        ).rows[0];
+        ).rows[ 0 ];
 
-        switch (req.headers["Content-Type"]) {
+        switch (req.headers[ "Content-Type" ]) {
           case "application/json":
           default:
             return {
@@ -190,17 +190,16 @@ export default class Application extends YourDashApplication {
       },
     );
 
-    let nextcloudAuthSessions: { [authSessionToken: string]: { authPollToken: string } } = {};
+    let nextcloudAuthSessions: { [ authSessionToken: string ]: { authPollToken: string } } = {};
 
     instance.request.post(
       "/index.php/login/v2",
-      { schema: { response: { 200: z.unknown() } } },
-      z.object({ poll: z.object({ token: z.string(), endpoint: z.string() }), login: z.string() }),
+      { schema: { response: { 200: z.object({ poll: z.object({ token: z.string(), endpoint: z.string() }), login: z.string() }) } } },
       async (req, res) => {
         const authSessionPollToken = generateUUID();
         const authSessionToken = generateUUID();
 
-        nextcloudAuthSessions[authSessionToken] = { authPollToken: authSessionPollToken };
+        nextcloudAuthSessions[ authSessionToken ] = { authPollToken: authSessionPollToken };
 
         return {
           poll: {
@@ -222,7 +221,7 @@ export default class Application extends YourDashApplication {
       },
       async (req, res) => {
         const authSessionPollToken = (req.body as { token: string }).token;
-        const authSession = nextcloudAuthorisedSessions[authSessionPollToken];
+        const authSession = nextcloudAuthorisedSessions[ authSessionPollToken ];
 
         if (!authSession) {
           console.log("polled and found no session");
@@ -244,44 +243,51 @@ export default class Application extends YourDashApplication {
 
     instance.request.post(
       "/login/nextcloud/flow/v2/authenticate",
-      z.object({
-        username: z.string(),
-        password: z.string(),
-        authtoken: z.string(),
-      }),
-      z
-        .object({
-          error: z.string(),
-        })
-        .or(
-          z.object({
-            success: z.boolean(),
+      {
+        schema: {
+          body: z.object({
+            username: z.string(),
+            password: z.string(),
+            authtoken: z.string(),
           }),
-        ),
+          response: {
+            200:
+              z
+                .object({
+                  error: z.string(),
+                })
+                .or(
+                  z.object({
+                    success: z.boolean(),
+                  }),
+                )
+          }
+        }
+      },
       async (req, res) => {
         if (!req.body) {
-          return res.status(400).json({ error: "Invalid or missing request body" });
+          return res.status(400).send({ error: "Invalid or missing request body" });
         }
 
-        const username = req.body.username;
-        const password = req.body.password;
-        const authToken = req.body.authtoken;
+        const username = (req.body as { username: string }).username;
+        const password = (req.body as { password: string }).password;
+        const authToken = (req.body as { authtoken: string }).authtoken;
 
         if (!username || username === "") {
-          return res.json({ error: "Missing username" });
+          return res.send({ error: "Missing username" });
         }
 
         if (!password || password === "") {
-          return res.json({ error: "Missing password" });
+          return res.send({ error: "Missing password" });
         }
 
-        const user = new YourDashUser(username);
+        const user = new User(username);
 
         let savedHashedPassword = "";
         try {
           savedHashedPassword = await ((await core.fs.getFile(path.join(user.path, "core/password.enc"))) as FSFile).read("string");
         } catch (e) {
-          core.log.error("authentication", "Unable to read password from disk", e);
+          instance.log.error("authentication", "Unable to read password from disk", e);
         }
 
         const doesPasswordMatch = await Bun.password.verify(password, savedHashedPassword);
@@ -290,22 +296,22 @@ export default class Application extends YourDashApplication {
           function generateNextcloudBearerToken() {
             const characters = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890+";
 
-            return Array.from({ length: 180 }, () => characters[Math.floor(Math.random() * characters.length)]).join("");
+            return Array.from({ length: 180 }, () => characters[ Math.floor(Math.random() * characters.length) ]).join("");
           }
 
           const session = await createSession(username, YOURDASH_SESSION_TYPE.NEXTCLOUD_COMPATABILITY, generateNextcloudBearerToken());
 
-          nextcloudAuthorisedSessions[nextcloudAuthSessions[authToken].authPollToken] = {
+          nextcloudAuthorisedSessions[ nextcloudAuthSessions[ authToken ].authPollToken ] = {
             username: username,
             sessionToken: session.sessionToken,
           };
 
-          return res.json({
+          return res.send({
             success: true,
           });
         } else {
-          core.log.info("login", `Incorrect password provided for user ${username}`);
-          return res.json({ error: "Incorrect password" });
+          instance.log.info("login", `Incorrect password provided for user ${username}`);
+          return res.send({ error: "Incorrect password" });
         }
       },
     );
@@ -320,13 +326,13 @@ export default class Application extends YourDashApplication {
 
       // if we are using api v2 then the sessionToken is just the user's password
       function parseAuthorization(sessionToken: string): { username: string; sessionToken: string } {
-        const tokenString = sessionToken.split("Basic ")[1];
+        const tokenString = sessionToken.split("Basic ")[ 1 ];
         const tokenParsed = Buffer.from(tokenString, "base64").toString("utf-8");
 
         const parsedTokenValues = tokenParsed.split(":");
 
-        const username = parsedTokenValues[0];
-        const userPassword = parsedTokenValues[1];
+        const username = parsedTokenValues[ 0 ];
+        const userPassword = parsedTokenValues[ 1 ];
         return { username: username, sessionToken: userPassword };
       }
 
@@ -436,7 +442,7 @@ export default class Application extends YourDashApplication {
             },
             data: {
               enabled: true,
-              storageLocation: path.join(core.fs.ROOT_PATH, user.getFsPath()),
+              storageLocation: path.join(instance.filesystem.commonPaths.homeDirectory(user.username)),
               id: user.username,
               lastLogin: Date.now(),
               backend: "Database",
@@ -477,7 +483,7 @@ export default class Application extends YourDashApplication {
               biographyScope: "v2-local",
               profile_enabled: "1",
               profile_enabledScope: "v2-local",
-              groups: ["admin"],
+              groups: [ "admin" ],
               language: "en_GB",
               locale: "",
               notify_email: null,
@@ -527,21 +533,21 @@ export default class Application extends YourDashApplication {
       async (req, res) => {
         const params = req.params as { username: string; "*": string };
 
-        console.log({ username: params.username, params: Object.values(params).join("/"), path: params["*"] });
+        console.log({ username: params.username, params: Object.values(params).join("/"), path: params[ "*" ] });
 
         console.log(JSON.stringify(req.body));
 
-        if (!req.body["d:propfind"]) {
+        if (!(req.body as { "d:propfind"?: object })[ "d:propfind" ]) {
           console.log("no d:propfind found!", req.body);
         }
 
-        if (!req.body["d:propfind"]["d:prop"]) {
+        if (!(req.body as { "d:propfind"?: { "d:prop"?: object[] } })[ "d:propfind" ]?.[ "d:prop" ]) {
           console.log("no d:prop found!", req.body);
         }
 
-        const props: object[] = req.body["d:propfind"]["d:prop"];
+        const props: object[] = (req.body as { "d:propfind": { "d:prop": object[] } })[ "d:propfind" ][ "d:prop" ];
 
-        const filePath = params["*"] === undefined ? "/" : params["*"];
+        const filePath = params[ "*" ] === undefined ? "/" : params[ "*" ];
 
         let response: string[] = [];
 
@@ -552,14 +558,14 @@ export default class Application extends YourDashApplication {
           }
         });
 
-        return res.contentType("xml").status(207).send(`<?xml version="1.0"?>
+        return res.type("xml").status(207).send(`<?xml version="1.0"?>
 <d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:oc="http://owncloud.org/ns" xmlns:nc="http://nextcloud.org/ns">
 <d:response>
 <d:href>${req.url}</d:href>
 <d:propstat>
 ${response.map((res) => {
-  return `<d:prop>${res}</d:prop>`;
-})}
+          return `<d:prop>${res}</d:prop>`;
+        })}
 <d:status>HTTP/1.1 200 OK</d:status>
 </d:propstat>
 </d:response>
