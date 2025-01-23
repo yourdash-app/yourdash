@@ -1,0 +1,12 @@
+@charset "UTF-8";
+/*!
+ * Copyright ©2025 Ewsgit <https://ewsgit.uk> and YourDash <https://yourdash.ewsgit.uk> contributors.
+ * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
+ */
+.component {
+  height: calc(var(--nav-height) - var(--utpdn));
+  aspect-ratio: 1/1;
+  border-radius: 0;
+}
+
+/*# sourceMappingURL=navImage.module.css.map */

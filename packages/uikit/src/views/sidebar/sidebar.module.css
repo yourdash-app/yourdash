@@ -1,0 +1,54 @@
+@charset "UTF-8";
+/*!
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+/*!
+ * Copyright ©2025 Ewsgit <https://ewsgit.uk> and YourDash <https://yourdash.ewsgit.uk> contributors.
+ * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
+ */
+.component {
+  height: 100%;
+  background: var(--utbgn);
+  pointer-events: none;
+  opacity: 0;
+  border: var(--utbrd);
+  border-top: 0;
+  border-bottom: 0;
+  border-left: 0;
+  flex-direction: column;
+  max-height: 100%;
+  max-width: 0;
+  transition: transform var(--uttranstrans), max-height var(--uttranstrans);
+  transform: translateX(-100%);
+  visibility: hidden;
+  padding: 0;
+}
+@media (max-width: 768px) {
+  .component {
+    max-width: 100%;
+    max-height: 0;
+    height: max-content;
+    border-right: 0;
+    border-bottom: unset;
+  }
+}
+.component > *[type=button] {
+  min-width: 100%;
+}
+
+.open {
+  pointer-events: all;
+  opacity: 1;
+  transform: translateX(0);
+  visibility: visible;
+  max-width: 32rem;
+  padding: var(--utpdn);
+}
+@media (max-width: 768px) {
+  .open {
+    height: max-content;
+  }
+}
+
+/*# sourceMappingURL=sidebar.module.css.map */

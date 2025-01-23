@@ -1,0 +1,76 @@
+@charset "UTF-8";
+/*!
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+/*!
+ * Copyright ©2025 Ewsgit <https://ewsgit.uk> and YourDash <https://yourdash.ewsgit.uk> contributors.
+ * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
+ */
+.component {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  font-weight: var(--utfontwgt);
+  font-size: var(--utfontsize);
+  font-family: var(--utfontfam);
+  background: var(--utbgn);
+  color: var(--utcol);
+  border: var(--utbrd);
+  padding: 0;
+  border-radius: var(--utrad);
+  overflow: hidden;
+}
+
+.clickable {
+  display: flex;
+  width: 100%;
+  cursor: pointer;
+  color: var(--utbtncol);
+  background: var(--utbtnbgn);
+  border: var(--utbtnbrd);
+  font-size: var(--utbtnfontsize);
+  font-weight: var(--utbtnfontwgt);
+  border-radius: var(--utbtnrad);
+  transition: var(--utbtntrans);
+}
+.clickable:hover {
+  color: var(--utbtnhvrcol);
+  background: var(--utbtnhvrbgn);
+  border: var(--utbtnhvrbrd);
+  border-radius: var(--utbtnhvrrad);
+  transition: var(--utbtnhvrtrans);
+}
+.clickable:active {
+  color: var(--utbtnatvcol);
+  background: var(--utbtnatvbgn);
+  border: var(--utbtnatvbrd);
+  border-radius: var(--utbtnatvrad);
+  transition: var(--utbtnatvtrans);
+}
+
+.header {
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  width: 100%;
+}
+
+.actions {
+  border: none;
+  display: flex;
+  align-items: flex-end;
+  width: 100%;
+  background: transparent;
+}
+
+.content {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--utgap);
+  padding: var(--utpdn);
+  height: 100%;
+}
+
+/*# sourceMappingURL=card.module.css.map */

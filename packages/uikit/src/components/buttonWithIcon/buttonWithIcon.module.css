@@ -1,0 +1,54 @@
+@charset "UTF-8";
+/*!
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+/*!
+ * Copyright ©2025 Ewsgit <https://ewsgit.uk> and YourDash <https://yourdash.ewsgit.uk> contributors.
+ * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
+ */
+.component {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--utfontfam);
+  text-align: center;
+  padding: 0 var(--utbtnpdnhoriz) 0 0;
+  color: var(--utbtncol);
+  border: var(--utbtnbrd);
+  border-radius: var(--utbtnrad);
+  background: var(--utbtnbgn);
+  transition: var(--utbtntrans);
+  height: var(--utinphei);
+  width: max-content;
+  cursor: pointer;
+}
+.component:hover {
+  color: var(--utbtnhvrcol);
+  border: var(--utbtnhvrbrd);
+  border-radius: var(--utbtnhvrrad);
+  background: var(--utbtnhvrbgn);
+  transition: var(--utbtnhvrtrans);
+}
+.component:active {
+  color: var(--utbtnatvcol);
+  border: var(--utbtnatvbrd);
+  border-radius: var(--utbtnatvrad);
+  background: var(--utbtnatvbgn);
+  transition: var(--utbtnatvtrans);
+}
+.component:disabled {
+  opacity: 0.8;
+  color: var(--utbtncol);
+  border: var(--utbtnbrd);
+  border-radius: var(--utbtnrad);
+  background: var(--utbtnbgn);
+  cursor: not-allowed;
+}
+
+.icon {
+  margin-left: var(--utbtnpdnhoriz);
+  margin-right: var(--utbtnpdnhoriz);
+}
+
+/*# sourceMappingURL=buttonWithIcon.module.css.map */

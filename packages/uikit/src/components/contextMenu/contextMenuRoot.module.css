@@ -1,0 +1,34 @@
+@charset "UTF-8";
+/*!
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+/*!
+ * Copyright ©2025 Ewsgit <https://ewsgit.uk> and YourDash <https://yourdash.ewsgit.uk> contributors.
+ * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
+ */
+.component {
+  position: fixed;
+  z-index: 10000000;
+  overflow: hidden;
+  flex-direction: column;
+  width: 200px;
+  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.5333333333);
+  box-sizing: border-box;
+  display: flex;
+  font-weight: var(--utfontwgt);
+  font-size: var(--utfontsize);
+  font-family: var(--utfontfam);
+  background: var(--utbgn);
+  color: var(--utcol);
+  border: var(--utbrd);
+  border-radius: var(--utrad);
+  gap: calc(var(--utgap) / 2);
+  padding: 0.5rem;
+}
+.component .button {
+  min-width: 100%;
+  text-align: start;
+}
+
+/*# sourceMappingURL=contextMenuRoot.module.css.map */

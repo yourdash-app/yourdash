@@ -1,0 +1,29 @@
+@charset "UTF-8";
+/*!
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+/*!
+ * Copyright ©2025 Ewsgit <https://ewsgit.uk> and YourDash <https://yourdash.ewsgit.uk> contributors.
+ * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
+ */
+.component {
+  padding: var(--utpdn);
+  border: var(--utbrd);
+  border-radius: var(--utrad);
+  background-color: var(--utbgn);
+  user-select: none;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.bar {
+  background: var(--utacn);
+  width: var(--ukcomp-progress);
+  height: 1rem;
+  transition: var(--uttrans);
+}
+
+/*# sourceMappingURL=progressBar.module.css.map */

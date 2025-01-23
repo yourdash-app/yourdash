@@ -32,7 +32,7 @@ export default class Application extends YourDashApplication {
       },
       configVersion: 1,
       credits: {
-        authors: [ { name: "Ewsgit", site: "https://ewsgit.uk" } ],
+        authors: [{ name: "Ewsgit", site: "https://ewsgit.uk" }],
       },
       frontend: {
         entryPoint: "../web/index.tsx",
@@ -41,6 +41,11 @@ export default class Application extends YourDashApplication {
       description: "The YourDash Nextcloud integration.",
       id: "uk-ewsgit-nextcloud",
     });
+
+    instance.database.query(`CREATE TABLE IF NOT EXISTS uk_ewsgit_nextcloud_sessions(
+    username                   text,
+    session_tokens             text[]
+    );`);
 
     return this;
   }
@@ -67,9 +72,9 @@ export default class Application extends YourDashApplication {
       async (req, res) => {
         res.header("Access-Control-Allow-Origin", "*");
 
-        const query = (await instance.database.query("SELECT display_name FROM configuration ORDER BY config_version ASC LIMIT 1")).rows[ 0 ];
+        const query = (await instance.database.query("SELECT display_name FROM configuration ORDER BY config_version ASC LIMIT 1")).rows[0];
 
-        switch (req.headers[ "Content-Type" ]) {
+        switch (req.headers["Content-Type"]) {
           case "application/json":
           default:
             return {
@@ -140,9 +145,9 @@ export default class Application extends YourDashApplication {
           await instance.database.query(
             "SELECT display_name, external_url, description FROM configuration ORDER BY config_version ASC LIMIT 1",
           )
-        ).rows[ 0 ];
+        ).rows[0];
 
-        switch (req.headers[ "Content-Type" ]) {
+        switch (req.headers["Content-Type"]) {
           case "application/json":
           default:
             return {
@@ -190,7 +195,7 @@ export default class Application extends YourDashApplication {
       },
     );
 
-    let nextcloudAuthSessions: { [ authSessionToken: string ]: { authPollToken: string } } = {};
+    let nextcloudAuthSessions: { [authSessionPollToken: string]: { authSessionToken: string } } = {};
 
     instance.request.post(
       "/index.php/login/v2",
@@ -199,20 +204,19 @@ export default class Application extends YourDashApplication {
         const authSessionPollToken = generateUUID();
         const authSessionToken = generateUUID();
 
-        nextcloudAuthSessions[ authSessionToken ] = { authPollToken: authSessionPollToken };
+        nextcloudAuthSessions[authSessionPollToken] = { authSessionToken: authSessionToken };
 
         return {
           poll: {
             token: authSessionPollToken,
             endpoint: `http://${req.hostname}:3563/index.php/login/v2/poll`,
           },
-          login: `http://localhost:5173/login/nextcloud/flow/v2/${authSessionToken}`,
+          login: `http://localhost:5173/login/nextcloud/flow/v2/${authSessionPollToken}`,
         };
       },
     );
 
     instance.request.post(
-      "/index.php/login/v2/poll",
       {
         schema: {
           response: { 200: z.object({ server: z.string(), loginName: z.string(), appPassword: z.string() }) },
@@ -221,14 +225,14 @@ export default class Application extends YourDashApplication {
       },
       async (req, res) => {
         const authSessionPollToken = (req.body as { token: string }).token;
-        const authSession = nextcloudAuthorisedSessions[ authSessionPollToken ];
+        const authSession = nextcloudAuthSessions[authSessionPollToken];
 
         if (!authSession) {
           console.log("polled and found no session");
           return res.status(404).send();
         }
 
-        await instance.database.query(`UPDATE users SET nextcloud_session_tokens = $1 WHERE username = $2;`, [
+        await instance.database.query(`UPDATE uk_ewsgit_nextcloud_sessions SET session_tokens = $1 WHERE username = $2;`, [
           authSession.sessionToken,
           authSession.username,
         ]);
@@ -251,18 +255,17 @@ export default class Application extends YourDashApplication {
             authtoken: z.string(),
           }),
           response: {
-            200:
-              z
-                .object({
-                  error: z.string(),
-                })
-                .or(
-                  z.object({
-                    success: z.boolean(),
-                  }),
-                )
-          }
-        }
+            200: z
+              .object({
+                error: z.string(),
+              })
+              .or(
+                z.object({
+                  success: z.boolean(),
+                }),
+              ),
+          },
+        },
       },
       async (req, res) => {
         if (!req.body) {
@@ -296,15 +299,16 @@ export default class Application extends YourDashApplication {
           function generateNextcloudBearerToken() {
             const characters = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890+";
 
-            return Array.from({ length: 180 }, () => characters[ Math.floor(Math.random() * characters.length) ]).join("");
+            return Array.from({ length: 180 }, () => characters[Math.floor(Math.random() * characters.length)]).join("");
           }
 
           const session = await createSession(username, YOURDASH_SESSION_TYPE.NEXTCLOUD_COMPATABILITY, generateNextcloudBearerToken());
 
-          nextcloudAuthorisedSessions[ nextcloudAuthSessions[ authToken ].authPollToken ] = {
-            username: username,
-            sessionToken: session.sessionToken,
-          };
+          // TODO: Move to using Databases for this
+          // nextcloudAuthSessions[authToken] = {
+          //   username: username,
+          //   sessionToken: session.sessionToken,
+          // };
 
           return res.send({
             success: true,
@@ -326,13 +330,13 @@ export default class Application extends YourDashApplication {
 
       // if we are using api v2 then the sessionToken is just the user's password
       function parseAuthorization(sessionToken: string): { username: string; sessionToken: string } {
-        const tokenString = sessionToken.split("Basic ")[ 1 ];
+        const tokenString = sessionToken.split("Basic ")[1];
         const tokenParsed = Buffer.from(tokenString, "base64").toString("utf-8");
 
         const parsedTokenValues = tokenParsed.split(":");
 
-        const username = parsedTokenValues[ 0 ];
-        const userPassword = parsedTokenValues[ 1 ];
+        const username = parsedTokenValues[0];
+        const userPassword = parsedTokenValues[1];
         return { username: username, sessionToken: userPassword };
       }
 
@@ -483,7 +487,7 @@ export default class Application extends YourDashApplication {
               biographyScope: "v2-local",
               profile_enabled: "1",
               profile_enabledScope: "v2-local",
-              groups: [ "admin" ],
+              groups: ["admin"],
               language: "en_GB",
               locale: "",
               notify_email: null,
@@ -533,21 +537,21 @@ export default class Application extends YourDashApplication {
       async (req, res) => {
         const params = req.params as { username: string; "*": string };
 
-        console.log({ username: params.username, params: Object.values(params).join("/"), path: params[ "*" ] });
+        console.log({ username: params.username, params: Object.values(params).join("/"), path: params["*"] });
 
         console.log(JSON.stringify(req.body));
 
-        if (!(req.body as { "d:propfind"?: object })[ "d:propfind" ]) {
+        if (!(req.body as { "d:propfind"?: object })["d:propfind"]) {
           console.log("no d:propfind found!", req.body);
         }
 
-        if (!(req.body as { "d:propfind"?: { "d:prop"?: object[] } })[ "d:propfind" ]?.[ "d:prop" ]) {
+        if (!(req.body as { "d:propfind"?: { "d:prop"?: object[] } })["d:propfind"]?.["d:prop"]) {
           console.log("no d:prop found!", req.body);
         }
 
-        const props: object[] = (req.body as { "d:propfind": { "d:prop": object[] } })[ "d:propfind" ][ "d:prop" ];
+        const props: object[] = (req.body as { "d:propfind": { "d:prop": object[] } })["d:propfind"]["d:prop"];
 
-        const filePath = params[ "*" ] === undefined ? "/" : params[ "*" ];
+        const filePath = params["*"] === undefined ? "/" : params["*"];
 
         let response: string[] = [];
 
@@ -564,8 +568,8 @@ export default class Application extends YourDashApplication {
 <d:href>${req.url}</d:href>
 <d:propstat>
 ${response.map((res) => {
-          return `<d:prop>${res}</d:prop>`;
-        })}
+  return `<d:prop>${res}</d:prop>`;
+})}
 <d:status>HTTP/1.1 200 OK</d:status>
 </d:propstat>
 </d:response>

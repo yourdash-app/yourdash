@@ -1,0 +1,93 @@
+@charset "UTF-8";
+/*!
+ * Copyright ©2025 Ewsgit <https://ewsgit.uk> and YourDash <https://yourdash.ewsgit.uk> contributors.
+ * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
+ */
+.component {
+  padding: var(--utpdn);
+  border: var(--utbrd);
+  border-radius: var(--utrad);
+  background-color: var(--utbgn);
+  user-select: none;
+  position: relative;
+  width: 8rem;
+  aspect-ratio: 1/1;
+}
+
+.container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1/1;
+  rotate: 135deg;
+  animation: 1.1s infinite ease-in-out infiniteSpin;
+}
+
+.spinnerBack {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 3rem;
+  aspect-ratio: 1/1;
+  border-radius: 100rem;
+  background: rgba(0, 0, 0, 0.4666666667);
+}
+
+.spinnerBorder {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 3.5rem;
+  aspect-ratio: 1/1;
+  border-radius: 100rem;
+  background: var(--utacn);
+}
+
+.spinnerCutoutContainer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 3.5rem;
+  aspect-ratio: 1/1;
+  border-radius: 100rem;
+}
+
+.spinnerCutout {
+  position: absolute;
+  height: 1.75rem;
+  aspect-ratio: 1/1;
+  background: var(--utbgn);
+}
+
+.spinnerCutoutOne {
+  top: 0;
+  left: 0;
+}
+
+.spinnerCutoutTwo {
+  bottom: 0;
+  right: 0;
+}
+
+@keyframes infiniteSpin {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(200deg);
+  }
+  70% {
+    transform: rotate(175deg);
+  }
+  80% {
+    transform: rotate(180deg);
+  }
+  100% {
+    transform: rotate(180deg);
+  }
+}
+
+/*# sourceMappingURL=spinner.module.css.map */

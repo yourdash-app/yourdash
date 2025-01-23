@@ -1,0 +1,68 @@
+@charset "UTF-8";
+/*!
+ * Copyright ©2025 Ewsgit<https://ewsgit.uk> and YourDash<https://yourdash.ewsgit.uk> contributors.
+ * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
+ */
+.container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 10000;
+  text-align: start;
+  opacity: 0.75;
+  overflow: hidden;
+  pointer-events: none;
+  gap: 0.25rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.component {
+  border-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  pointer-events: none;
+  backdrop-filter: blur(1rem);
+  max-width: 32rem;
+  margin-right: 0.5rem;
+}
+.component:first-child {
+  margin-top: 0.5rem;
+}
+
+.cardContent {
+  gap: 0;
+  padding: 0.25rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  margin-right: -0.5rem;
+}
+
+.success {
+  border-right: 0.5rem solid #2ea967;
+}
+
+.error {
+  border-right: 0.5rem solid #ff4500;
+}
+
+.warning {
+  border-right: 0.5rem solid #daa520;
+}
+
+.info {
+  border-right: 0.5rem solid #00b8ff;
+}
+
+.heading {
+  text-align: left;
+  line-height: 1;
+  padding-top: 0.25rem;
+}
+
+.pointerEvents {
+  pointer-events: all;
+}
+
+/*# sourceMappingURL=toast.module.css.map */

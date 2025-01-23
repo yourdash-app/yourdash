@@ -1,0 +1,74 @@
+@charset "UTF-8";
+/*!
+ * Copyright ©2025 Ewsgit <https://ewsgit.uk> and YourDash <https://yourdash.ewsgit.uk> contributors.
+ * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
+ */
+.page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  animation: fadeIn 1s 0s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+.page::before {
+  content: "";
+  background-image: url("/assets/productLogos/yourdash.svg");
+  background-size: 20rem;
+  background-repeat: repeat;
+  width: 1000rem;
+  height: 1000rem;
+  position: absolute;
+  filter: blur(0.25rem) grayscale(1);
+  opacity: 0.1;
+  transform: rotate(-45deg);
+  z-index: -1;
+}
+@keyframes fadeIn {
+  from {
+    transform: translateY(2.5rem);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: calc(var(--utgap) * 2);
+  padding: 2rem;
+  position: relative;
+  transition: var(--transition);
+}
+
+.cardContainer {
+  box-shadow: rgba(0, 0, 0, 0.5333333333) 0 0 4rem;
+}
+
+.goBackButton {
+  position: absolute;
+  top: var(--utpdn);
+  left: var(--utpdn);
+}
+
+.headerImage {
+  height: 16rem;
+}
+
+.header {
+  line-height: 1;
+  text-align: center;
+}
+
+.body {
+  text-align: center;
+}
+
+/*# sourceMappingURL=onBoarding.module.css.map */

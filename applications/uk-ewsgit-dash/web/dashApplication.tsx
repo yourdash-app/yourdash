@@ -204,7 +204,7 @@ const DashApplication: React.FC = () => {
                   level={4}
                 />
                 <UKTextInput
-                  getValue={() => {}}
+                  getValue={() => { }}
                   placeholder={"Inter"}
                   accessibleName={"Header font family"}
                 />
