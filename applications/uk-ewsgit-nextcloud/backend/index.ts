@@ -195,28 +195,141 @@ export default class Application extends YourDashApplication {
       },
     );
 
-    let nextcloudAuthSessions: { [authSessionPollToken: string]: { authSessionToken: string } } = {};
+    instance.request.get(
+      "/ocs/v1.php/cloud/capabilities",
+      {
+        schema: {
+          response: {
+            200: z.object({
+              ocs: z.object({
+                meta: z.object({
+                  status: z.string(),
+                  statuscode: z.number(),
+                  message: z.string(),
+                }),
+                data: z.object({
+                  version: z.object({
+                    major: z.number(),
+                    minor: z.number(),
+                    micro: z.number(),
+                    string: z.string(),
+                    edition: z.string(),
+                    extendedSupport: z.boolean(),
+                  }),
+                  capabilities: z.object({
+                    bruteforce: z.object({
+                      delay: z.number(),
+                      "allow-listed": z.boolean(),
+                    }),
+                    theming: z.object({
+                      name: z.string(),
+                      url: z.string(),
+                      slogan: z.string(),
+                      color: z.string(),
+                      "color-text": z.string(),
+                      "color-element": z.string(),
+                      "color-element-bright": z.string(),
+                      "color-element-dark": z.string(),
+                      logo: z.string(),
+                      background: z.string(),
+                      "background-plain": z.boolean(),
+                      "background-default": z.boolean(),
+                      logoheader: z.string(),
+                      favicon: z.string(),
+                    }),
+                  }),
+                }),
+              }),
+            }),
+          },
+        },
+      },
+      async (req, res) => {
+        const query = (
+          await instance.database.query(
+            "SELECT display_name, external_url, description FROM configuration ORDER BY config_version ASC LIMIT 1",
+          )
+        ).rows[0];
+
+        switch (req.headers["Content-Type"]) {
+          case "application/json":
+          default:
+            return {
+              ocs: {
+                meta: {
+                  status: "ok",
+                  statuscode: 200,
+                  message: "OK",
+                },
+                data: {
+                  version: {
+                    major: MIMICED_NEXTCLOUD_VERSION.major,
+                    minor: MIMICED_NEXTCLOUD_VERSION.minor,
+                    micro: MIMICED_NEXTCLOUD_VERSION.micro,
+                    string: MIMICED_NEXTCLOUD_VERSION.string,
+                    edition: MIMICED_NEXTCLOUD_VERSION.edition,
+                    extendedSupport: MIMICED_NEXTCLOUD_VERSION.extendedSupport,
+                  },
+                  capabilities: {
+                    bruteforce: {
+                      delay: 200, // arbitrary value in milisecconds
+                      "allow-listed": false,
+                    },
+                    theming: {
+                      name: query.display_name || "YourDash",
+                      url: query.external_url || "http://localhost:3563",
+                      slogan: query.description || "[YourDash Instance Description (Nextcloud slogan)]",
+                      color: "#00679e",
+                      "color-text": "#ffffff",
+                      "color-element": "#00679e",
+                      "color-element-bright": "#00679e",
+                      "color-element-dark": "#00679e",
+                      logo: `http://${req.hostname || "localhost:3563"}/index.php/apps/theming/image/logo?useSvg=1&v=2`,
+                      background: `http://${req.hostname || "localhost:3563"}/index.php/apps/theming/image/background?v=2`,
+                      "background-plain": false,
+                      "background-default": false,
+                      logoheader: `http://${req.hostname || "localhost:3563"}/index.php/apps/theming/image/logo?useSvg=1&v=2`,
+                      favicon: `http://${req.hostname || "localhost:3563"}/index.php/apps/theming/image/logo?useSvg=1&v=2`,
+                    },
+                  },
+                },
+              },
+            };
+        }
+      },
+    );
+
+    // request for a session at /index.php/login/v2
+    // create an authFlowSession
+    // poll token is generated and used as the id for an authFlowSession
+    // user must login at a url to the gui
+    // the application begins to poll /index.php/login/v2/poll
+    // if the login was successful, generate a sessionToken and add it to the postgreSQL batabase
+    // remove the authFlowSession
+
+    let authFlowSessions: { [pollToken: string]: { pollToken: string; sessionToken?: string } } = {};
 
     instance.request.post(
       "/index.php/login/v2",
       { schema: { response: { 200: z.object({ poll: z.object({ token: z.string(), endpoint: z.string() }), login: z.string() }) } } },
       async (req, res) => {
-        const authSessionPollToken = generateUUID();
-        const authSessionToken = generateUUID();
+        const pollToken = generateUUID();
 
-        nextcloudAuthSessions[authSessionPollToken] = { authSessionToken: authSessionToken };
+        authFlowSessions[pollToken] = { pollToken: pollToken };
 
         return {
           poll: {
-            token: authSessionPollToken,
+            token: pollToken,
             endpoint: `http://${req.hostname}:3563/index.php/login/v2/poll`,
           },
-          login: `http://localhost:5173/login/nextcloud/flow/v2/${authSessionPollToken}`,
+          // TODO: replace localhost with the instance's web url
+          login: `http://localhost:5173/app/a/uk-ewsgit-nextcloud/login/v2/${pollToken}`,
         };
       },
     );
 
     instance.request.post(
+      "/index.php/login/v2/poll",
       {
         schema: {
           response: { 200: z.object({ server: z.string(), loginName: z.string(), appPassword: z.string() }) },
@@ -233,7 +346,7 @@ export default class Application extends YourDashApplication {
         }
 
         await instance.database.query(`UPDATE uk_ewsgit_nextcloud_sessions SET session_tokens = $1 WHERE username = $2;`, [
-          authSession.sessionToken,
+          authSession.authSessionToken,
           authSession.username,
         ]);
 
@@ -252,7 +365,7 @@ export default class Application extends YourDashApplication {
           body: z.object({
             username: z.string(),
             password: z.string(),
-            authtoken: z.string(),
+            pollToken: z.string(),
           }),
           response: {
             200: z

@@ -102,6 +102,10 @@ class Instance {
     } catch (e) {
       this.log.error("database", "Failed to connect to PostgreSQL Database");
       this.log.error("instance", "Instance will now quit due to startup failure");
+      this.log.error(
+        "instance",
+        "Please ensure that PostgreSQL is installed, has the default \"postgres\" database and the values for 'postgresPassword', 'postgresPort' & 'postgresUser' are correct.",
+      );
       return false;
     }
 
