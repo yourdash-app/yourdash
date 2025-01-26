@@ -90,6 +90,9 @@ class RequestManager {
       reply.send(error);
     });
 
+    this.app.addHttpMethod("propfind", { hasBody: true });
+    this.app.addHttpMethod("proppatch", { hasBody: true });
+
     await this.app.register(cors, {
       methods: "*",
       origin: "http://localhost:5173",

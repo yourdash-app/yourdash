@@ -15,8 +15,7 @@
     "./src/*": "./dist/*"
   },
   "scripts": {
-    "build": "bunx --bun vite build",
-    "postinstall": "bun --bun run build"
+    "build": "bun exec \"vite build\""
   },
   "author": "Ewsgit <ewsgit@duck.com>",
   "peerDependencies": {

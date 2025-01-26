@@ -225,8 +225,6 @@ class Filesystem {
     }
 
     this.instance.log.info("filesystem", "Verified filesystem structure!");
-
-    return this;
   }
 
   async doesPathExist(path: string): Promise<boolean> {

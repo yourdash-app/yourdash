@@ -16,6 +16,7 @@ import { INSTANCE_STATUS } from "./types/instanceStatus.js";
 import User, { createUser, repairUser } from "./user.js";
 import path from "path";
 import fs from "fs";
+import timeTaken from "./timer.js";
 
 dotenv.config();
 
@@ -192,8 +193,8 @@ class Instance {
   }
 
   async startup(): Promise<boolean> {
-    await this.filesystem.__internal_startup();
-    await this.requestManager.__internal_startup();
+    await timeTaken("filesystem_startup", async () => await this.filesystem.__internal_startup());
+    await timeTaken("request_manager_startup", async () => await this.requestManager.__internal_startup());
 
     try {
       await this.database.query(`CREATE TABLE IF NOT EXISTS panel_configuration

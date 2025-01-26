@@ -22,10 +22,9 @@ const WeatherRouter: React.FC = () => {
 
   return (
     <Routes>
-      <Route
-        index
-        element={<RootPage />}
-      />
+      {/*<Route*/}
+      {/*element={<RootPage />}*/}
+      {/*/>*/}
       {/* <Route */}
       {/*   path={":id"} */}
       {/*   element={<WeatherApplicationDataLoader />} */}

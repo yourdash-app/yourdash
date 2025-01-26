@@ -16,8 +16,7 @@
   },
   "main": "./dist/index.js",
   "scripts": {
-    "build": "bunx --bun vite build",
-    "postinstall": "bun --bun run build"
+    "build": "bun exec \"vite build\""
   },
   "author": "Ewsgit <ewsgit@duck.com>",
   "peerDependencies": {
@@ -29,6 +28,7 @@
     "react-router-dom": "^6.26.2"
   },
   "dependencies": {
+    "vite-plugin-lib-inject-css": "^2.2.1",
     "zod": "^3.24.1"
   }
 }

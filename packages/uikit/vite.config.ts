@@ -26,6 +26,7 @@ export default defineConfig({
   },
   publicDir: "./src/theme",
   build: {
+    sourcemap: true,
     lib: {
       formats: ["es"],
       entry: glob.sync("src/**/*.{ts,tsx}", {
