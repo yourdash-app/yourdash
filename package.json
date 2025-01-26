@@ -6,8 +6,7 @@
   "license": "MIT",
   "private": true,
   "workspaces": [
-    "packages/*",
-    "applications"
+    "packages/*"
   ],
   "scripts": {
     "web": "bun run --cwd=packages/web dev",

@@ -64,7 +64,7 @@ class Applications {
   }
 
   async getInstalledApplications(): Promise<string[]> {
-    let query = await this.instance.database.query("SELECT installed_applications FROM configuration ORDER BY config_version ASC LIMIT 1;");
+    let query = await this.instance.database.query("SELECT installed_applications FROM configuration ORDER BY config_version DESC LIMIT 1;");
 
     let val: string[] = query.rows[0].installed_applications;
 

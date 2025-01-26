@@ -90,9 +90,6 @@ class RequestManager {
       reply.send(error);
     });
 
-    this.app.addHttpMethod("propfind", { hasBody: true });
-    this.app.addHttpMethod("proppatch", { hasBody: true });
-
     await this.app.register(cors, {
       methods: "*",
       origin: "http://localhost:5173",
@@ -2330,6 +2327,18 @@ class RequestManager {
       await mkdir(path.join(this.instance.filesystem.commonPaths.globalCacheDirectory(), "panel/applications", app.__internal_params.id), {
         recursive: true,
       });
+
+      if (!await this.instance.filesystem.doesPathExist(path.join(app?.__internal_initializedPath, "./icon.avif"))) {
+        return this.sendFile(
+          res,
+          path.join(
+            this.instance.filesystem.commonPaths.globalCacheDirectory(),
+            "panel",
+            "invalidIcon.webp"
+          ),
+          "image/webp",
+        );
+      }
 
       await resizeImage(
         path.join(app?.__internal_initializedPath, "./icon.avif"),

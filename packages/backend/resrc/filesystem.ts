@@ -224,7 +224,21 @@ class Filesystem {
       );
     }
 
+    if (!(await this.doesPathExist(path.join(this.instance.filesystem.commonPaths.globalCacheDirectory(), "panel", "invalidIcon.webp")))) {
+      try {
+        await fs.cp(path.join(process.cwd(), "defaults/yourdash.png"), path.join(this.instance.filesystem.commonPaths.globalCacheDirectory(), "panel", "invalidIcon.webp"));
+        this.instance.log.info("filesystem", `Coppied system asset ${this.instance.log.addEmphasisToString("invalidIcon.webp")}.`);
+      } catch (e) {
+        console.error(e);
+        this.instance.log.error("filesystem", `Failed to copy system asset ${this.instance.log.addEmphasisToString("invalidIcon.webp")}.`);
+      }
+    } else {
+      this.instance.log.info("filesystem", `Verified ${path.join(this.instance.filesystem.commonPaths.globalCacheDirectory(), "panel", "invalidIcon.webp")} exists.`);
+    }
+
     this.instance.log.info("filesystem", "Verified filesystem structure!");
+
+    return
   }
 
   async doesPathExist(path: string): Promise<boolean> {

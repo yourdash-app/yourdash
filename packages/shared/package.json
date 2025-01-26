@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "license": "MIT",
   "type": "module",
+  "private": true,
   "author": "Ewsgit <ewsgit@duck.com>",
   "engines": {
     "node": ">=21.0.0"

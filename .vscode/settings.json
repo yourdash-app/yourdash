@@ -7,5 +7,6 @@
     "undici",
     "ydsh",
     "YOURDASH"
-  ]
+  ],
+  "typescript.tsdk": "node_modules\\typescript\\lib"
 }

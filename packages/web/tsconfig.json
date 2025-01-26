@@ -21,10 +21,16 @@
     "jsx": "react-jsx",
     "traceResolution": true
   },
-  "include": ["src/**/*", "../applications/**/frontend/**/*"],
+  "include": [
+    "src/**/*",
+    "../applications/**/frontend/**/*"
+  ],
   "references": [
     {
       "path": "./tsconfig.node.json"
+    },
+    {
+      "path": "../uikit/tsconfig.json"
     }
   ]
 }

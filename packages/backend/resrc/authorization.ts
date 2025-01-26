@@ -24,7 +24,9 @@ class Authorization {
     app.addHook("onRequest", async (req, res) => {
       try {
         for (const route of this.instance.requestManager.publicRoutes) {
-          if (req.originalUrl.match(route)) return;
+          if (req.originalUrl.match(route)) {
+            return;
+          }
         }
 
         const authorization = req.cookies["authorization"];

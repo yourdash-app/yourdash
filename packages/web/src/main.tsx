@@ -24,7 +24,6 @@ import DocsLayout from "./root/docs/Layout.tsx";
 import ErrorElement from "./ErrorElement.tsx";
 import Index from "./root/index/Index.tsx";
 import LoginRedirect from "./deprecatedLogin/Redirect.tsx";
-import LoginNextcloudFlowV2Page from "./root/login/nextcloud/flow/v2/index.tsx";
 import SignupPage from "./root/login/signup/index.tsx";
 import LoginSuccessPage from "./root/login/success/index.tsx";
 import NotFoundPage from "./root/notFound/notFound.tsx";
@@ -118,16 +117,6 @@ ReactDOM.createRoot(element).render(
                   path={"signup"}
                   element={<SignupPage />}
                 />
-              </Route>
-              <Route path={"nextcloud"}>
-                <Route path={"flow"}>
-                  <Route path={"v2"}>
-                    <Route
-                      path={":token"}
-                      element={<LoginNextcloudFlowV2Page />}
-                    />
-                  </Route>
-                </Route>
               </Route>
               <Route
                 path={"signup"}

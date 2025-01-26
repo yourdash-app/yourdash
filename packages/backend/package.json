@@ -4,6 +4,7 @@
   "main": "index.js",
   "author": "Ewsgit <ewsgit@duck.com>",
   "license": "MIT",
+  "private": true,
   "engines": {
     "node": ">=21.0.0"
   },
@@ -33,7 +34,7 @@
     "@types/tsc-watch": "^4.2.1",
     "@types/xml2js": "^0.4.14",
     "@yourdash/applications": "workspace:*",
-    "@yourdash/shared": "*",
+    "@yourdash/shared": "workspace:*",
     "array-includes": "^3.1.7",
     "bcrypt": "^5.1.1",
     "chalk": "^5.2.0",
@@ -90,6 +91,6 @@
     "legacy-dev": "bun src/main.ts --dev --color=full --log-requests",
     "legacy-dev-debug": "bun --inspect-brk src/main.ts --dev --color=full --log-requests",
     "production": "bun src/main.ts --color=full --log-requests",
-    "postinstall": "bun install bcrypt sharp"
+    "postinstall": "bun add bcrypt sharp"
   }
 }

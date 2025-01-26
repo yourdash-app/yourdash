@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "license": "MIT",
   "type": "module",
+  "private": true,
   "engines": {
     "node": ">=21.0.0"
   },
@@ -46,7 +47,6 @@
     "vite": "^4.4.9",
     "vite-plugin-dynamic-import": "^1.5.0",
     "web-tree-sitter": "^0.20.8",
-    "xml2js": "^0.6.2",
-    "yarn": "^1.22.19"
+    "xml2js": "^0.6.2"
   }
 }
