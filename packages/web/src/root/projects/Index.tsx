@@ -3,11 +3,11 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import UKCard from "@yourdash/uikit/components/card/UKCard.js";
-import UKHeading from "@yourdash/uikit/components/heading/UKHeading.js";
-import UKImage from "@yourdash/uikit/components/image/UKImage.js";
-import UKText from "@yourdash/uikit/components/text/UKText.js";
-import UKPageHeader from "@yourdash/uikit/views/header/UKPageHeader.js";
+import UKCard from "@yourdash/uikit/src/components/card/UKCard.js";
+import UKHeading from "@yourdash/uikit/src/components/heading/UKHeading.js";
+import UKImage from "@yourdash/uikit/src/components/image/UKImage.js";
+import UKText from "@yourdash/uikit/src/components/text/UKText.js";
+import UKPageHeader from "@yourdash/uikit/src/views/header/UKPageHeader.js";
 import React from "react";
 import { useNavigate } from "react-router";
 import styles from "./Index.module.scss";

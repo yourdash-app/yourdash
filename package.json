@@ -11,10 +11,8 @@
   "scripts": {
     "web": "bun run --cwd=packages/web dev",
     "backend": "bun run --cwd=packages/backend dev",
-    "build-deps": "bun run --cwd=packages/uikit build && bun run --cwd=packages/tunnel build",
     "legacy-backend": "bun run --cwd=packages/backend legacy-dev",
-    "production-backend": "bun run --cwd=packages/backend production",
-    "postinstall": "bun run build-deps"
+    "production-backend": "bun run --cwd=packages/backend production"
   },
   "dependencies": {
     "prettier": "^3.3.3",

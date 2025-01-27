@@ -3,9 +3,9 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import UKCard from "@yourdash/uikit/components/card/UKCard.js";
-import UKHeading from "@yourdash/uikit/components/heading/UKHeading.js";
-import UKText from "@yourdash/uikit/components/text/UKText.js";
+import UKCard from "@yourdash/uikit/src/components/card/UKCard.js";
+import UKHeading from "@yourdash/uikit/src/components/heading/UKHeading.js";
+import UKText from "@yourdash/uikit/src/components/text/UKText.js";
 import React from "react";
 import { useRouteError } from "react-router-dom";
 import styles from "./ErrorElement.module.scss";

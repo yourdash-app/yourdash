@@ -3,18 +3,18 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import tun from "@yourdash/tunnel/index.js";
-import UKBox from "@yourdash/uikit/components/box/UKBox.js";
-import UKButton from "@yourdash/uikit/components/button/UKButton.js";
-import UKHeading from "@yourdash/uikit/components/heading/UKHeading.js";
-import UKSubtext from "@yourdash/uikit/components/subtext/UKSubtext.js";
-import UKTextInput from "@yourdash/uikit/components/textInput/UKTextInput.js";
-import { UKIcons } from "@yourdash/uikit/core/iconDictionary.js";
+import tun from "@yourdash/tunnel/src/index.js";
+import UKBox from "@yourdash/uikit/src/components/box/UKBox.js";
+import UKButton from "@yourdash/uikit/src/components/button/UKButton.js";
+import UKHeading from "@yourdash/uikit/src/components/heading/UKHeading.js";
+import UKSubtext from "@yourdash/uikit/src/components/subtext/UKSubtext.js";
+import UKTextInput from "@yourdash/uikit/src/components/textInput/UKTextInput.js";
+import { UKIcons } from "@yourdash/uikit/src/core/iconDictionary.js";
 import styles from "./panel.module.scss";
 import isValidInstance from "../../../lib/isValidInstance.ts";
 import { FC, useState } from "react";
 import { useNavigate } from "react-router";
-import UKIconButton from "@yourdash/uikit/components/iconButton/UKIconButton.js";
+import UKIconButton from "@yourdash/uikit/src/components/iconButton/UKIconButton.js";
 
 const Panel: FC = () => {
   const navigate = useNavigate();

@@ -5,12 +5,12 @@
 
 import useResource from "@yourdash/csi/useResource";
 import tun from "@yourdash/tunnel/src/index.js";
-import UKButton from "@yourdash/uikit/components/button/UKButton.js";
-import UKContainer from "@yourdash/uikit/components/container/UKContainer.js";
-import UKIconButton from "@yourdash/uikit/components/iconButton/UKIconButton.js";
-import UKSeparator from "@yourdash/uikit/components/separator/UKSeparator.js";
-import UKTextInput from "@yourdash/uikit/components/textInput/UKTextInput.js";
-import { UKIcons } from "@yourdash/uikit/core/iconDictionary.js";
+import UKButton from "@yourdash/uikit/src/components/button/UKButton.js";
+import UKContainer from "@yourdash/uikit/src/components/container/UKContainer.js";
+import UKIconButton from "@yourdash/uikit/src/components/iconButton/UKIconButton.js";
+import UKSeparator from "@yourdash/uikit/src/components/separator/UKSeparator.js";
+import UKTextInput from "@yourdash/uikit/src/components/textInput/UKTextInput.js";
+import { UKIcons } from "@yourdash/uikit/src/core/iconDictionary.js";
 import UKCard from "@yourdash/uikit/src/components/card/UKCard.js";
 import UKFlex from "@yourdash/uikit/src/components/flex/UKFlex.js";
 import UKHeading from "@yourdash/uikit/src/components/heading/UKHeading.js";
@@ -128,7 +128,7 @@ const DashApplication: React.FC = () => {
           ? { backgroundColor: dashboard.background.value }
           : dashboard.background.type === "linearGradient"
             ? { backgroundImage: `linear-gradient(${dashboard.background.value})` }
-            : { backgroundImage: `url(${tun.baseUrl + "/app/uk-ewsgit-dash/backgroundImage"})` }
+            : { backgroundImage: `url(${tun.baseUrl + "/uk-ewsgit-dash/backgroundImage"})` }
       }
     >
       <UKFlex

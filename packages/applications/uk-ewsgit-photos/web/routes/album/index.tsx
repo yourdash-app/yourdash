@@ -4,8 +4,8 @@
  */
 
 import UK from "@yourdash/uikit";
-import Heading from "@yourdash/uikit/components/heading/heading.js";
-import IconButton from "@yourdash/uikit/components/iconButton/iconButton.js";
+import Heading from "@yourdash/uikit/src/components/heading/heading.js";
+import IconButton from "@yourdash/uikit/src/components/iconButton/iconButton.js";
 import { FC } from "react";
 import { useParams } from "react-router-dom";
 import path from "path-browserify";

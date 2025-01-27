@@ -3,9 +3,9 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import UKIcon from "@yourdash/uikit/components/icon/UKIcon.js";
-import DecrementLevel from "@yourdash/uikit/core/decrementLevel.js";
-import { UKIcons } from "@yourdash/uikit/core/iconDictionary.js";
+import UKIcon from "@yourdash/uikit/src/components/icon/UKIcon.js";
+import DecrementLevel from "@yourdash/uikit/src/core/decrementLevel.js";
+import { UKIcons } from "@yourdash/uikit/src/core/iconDictionary.js";
 import React, { useEffect } from "react";
 import styles from "./Widget.module.scss";
 import ApplicationLauncher from "./launcher/Launcher.tsx";

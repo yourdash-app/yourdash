@@ -6,14 +6,14 @@
 import { FC } from "react";
 import ManageWallpaper from "./components/manageWallpaper/manageWallpaper.tsx";
 import styles from "./index.module.scss";
-import UKFlex from "@yourdash/uikit/components/flex/UKFlex.js";
-import UKHeading from "@yourdash/uikit/components/heading/UKHeading.js";
-import UKSidebarToggleButton from "@yourdash/uikit/views/sidebar/UKSidebarToggleButton.js";
-import UKCard from "@yourdash/uikit/components/card/UKCard.js";
-import { UKIcons } from "@yourdash/uikit/core/iconDictionary.js";
-import UKIcon from "@yourdash/uikit/components/icon/UKIcon.js";
-import UKText from "@yourdash/uikit/components/text/UKText.js";
-import UKButton from "@yourdash/uikit/components/button/UKButton.js";
+import UKFlex from "@yourdash/uikit/src/components/flex/UKFlex.js";
+import UKHeading from "@yourdash/uikit/src/components/heading/UKHeading.js";
+import UKSidebarToggleButton from "@yourdash/uikit/src/views/sidebar/UKSidebarToggleButton.js";
+import UKCard from "@yourdash/uikit/src/components/card/UKCard.js";
+import { UKIcons } from "@yourdash/uikit/src/core/iconDictionary.js";
+import UKIcon from "@yourdash/uikit/src/components/icon/UKIcon.js";
+import UKText from "@yourdash/uikit/src/components/text/UKText.js";
+import UKButton from "@yourdash/uikit/src/components/button/UKButton.js";
 
 const IndexPage: FC = () => {
   return (

@@ -150,7 +150,7 @@ export default class Application extends YourDashApplication {
 
   public onLoad(): this {
     instance.request.get(
-      "/app/uk-ewsgit-dash/dashboard",
+      "/uk-ewsgit-dash/dashboard",
       {
         schema: {
           response: {
@@ -259,7 +259,7 @@ export default class Application extends YourDashApplication {
     );
 
     instance.request.post(
-      "/app/uk-ewsgit-dash/dashboard",
+      "/uk-ewsgit-dash/dashboard",
       {
         schema: {
           body: z.object({
@@ -396,8 +396,7 @@ export default class Application extends YourDashApplication {
       },
     );
 
-    // /app/uk-ewsgit-dash/backgroundImage
-    instance.request.get("/app/uk-ewsgit-dash/backgroundImage", async (req, res) => {
+    instance.request.get("/uk-ewsgit-dash/backgroundImage", async (req, res) => {
       return instance.requestManager.sendFile(
         res,
         path.join(instance.filesystem.commonPaths.systemDirectory(), "loginBackground.avif"),

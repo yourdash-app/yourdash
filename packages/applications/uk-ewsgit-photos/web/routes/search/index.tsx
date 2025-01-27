@@ -5,7 +5,7 @@
 
 import useResource from "@yourdash/csi/useResource";
 import UK from "@yourdash/uikit";
-import { TextInput } from "@yourdash/uikit/components/index";
+import { TextInput } from "@yourdash/uikit/src/components/index";
 import React, { FC } from "react";
 import AlbumMediaGrid from "../../components/AlbumMediaGrid/AlbumMediaGrid";
 import SubAlbums from "../../components/SubAlbums/SubAlbums";

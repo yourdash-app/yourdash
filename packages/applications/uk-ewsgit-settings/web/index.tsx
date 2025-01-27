@@ -10,7 +10,7 @@ import applicationMeta from "./meta.yourdash";
 import IndexPage from "./routes/index";
 import SettingsLayout from "./settingsLayout";
 import SETTINGS_ICON from "./../icon.avif";
-import UKOnBoarding from "@yourdash/uikit/views/onBoarding/UKOnBoarding.js";
+import UKOnBoarding from "@yourdash/uikit/src/views/onBoarding/UKOnBoarding.js";
 
 const SettingsRouter: React.FC = () => {
   const applicationPanelContext = React.useContext(ApplicationPanelContext);

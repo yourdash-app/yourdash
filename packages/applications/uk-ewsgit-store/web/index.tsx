@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import UKOnBoarding from "@yourdash/uikit/views/onBoarding/UKOnBoarding.js";
+import UKOnBoarding from "@yourdash/uikit/src/views/onBoarding/UKOnBoarding.js";
 import ApplicationPanelContext from "@yourdash/web/src/app/panel/ApplicationPanelContext.tsx";
 import * as React from "react";
 import { Routes, Route } from "react-router";

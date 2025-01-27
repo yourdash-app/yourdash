@@ -14,7 +14,7 @@ import Icon from "@yourdash/chiplet/components/icon/Icon";
 import { UKIcon } from "packages/uikit/src/core/iconDictionary.ts";
 import MajorButton from "@yourdash/chiplet/components/majorButton/MajorButton";
 import Spinner from "@yourdash/chiplet/components/spinner/Spinner";
-import Image from "@yourdash/uikit/components/image/image";
+import Image from "@yourdash/uikit/src/components/image/image";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { type IYourDashStoreApplication } from "@yourdash/shared/apps/store/storeApplication";

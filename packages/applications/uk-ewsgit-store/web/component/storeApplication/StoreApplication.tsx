@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import Card from "@yourdash/uikit/components/card/card.js";
+import Card from "@yourdash/uikit/src/components/card/card.js";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import coreCSI from "@yourdash/csi/coreCSI";

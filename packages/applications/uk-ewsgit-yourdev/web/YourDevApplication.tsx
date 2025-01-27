@@ -3,11 +3,11 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import Button from "@yourdash/uikit/components/button/button.tsx";
-import ButtonWithIcon from "@yourdash/uikit/components/buttonWithIcon/buttonWithIcon.tsx";
+import Button from "@yourdash/uikit/src/components/button/button.tsx";
+import ButtonWithIcon from "@yourdash/uikit/src/components/buttonWithIcon/buttonWithIcon.tsx";
 import { UKIcon } from "packages/uikit/src/core/iconDictionary.ts";
 import UKSidebar from "@yourdash/uikit/src/views/sidebar/sidebar.tsx";
-import UKSidebarContainer from "@yourdash/uikit/theme/src/views/sidebar/UKSidebarContainer.tsx";
+import UKSidebarContainer from "@yourdash/uikit/src/views/sidebar/UKSidebarContainer.tsx";
 import React from "react";
 import GlobalDbApplication from "../../uk-ewsgit-globaldb/web/globalDbApplication.tsx";
 import HomeView from "./views/home/HomeView";

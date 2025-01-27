@@ -6,7 +6,7 @@
 import styles from "./index.module.scss";
 import Panel from "./components/panel/panel.tsx";
 import React, { FC } from "react";
-import UKHeading from "@yourdash/uikit/components/heading/UKHeading.js";
+import UKHeading from "@yourdash/uikit/src/components/heading/UKHeading.js";
 
 const LoginInstancePage: FC = () => {
   return (

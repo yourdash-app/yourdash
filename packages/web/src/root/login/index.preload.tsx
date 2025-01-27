@@ -4,11 +4,11 @@
  */
 
 import coreCSI from "@yourdash/csi/coreCSI.ts";
-import UKButton from "@yourdash/uikit/components/button/UKButton.js";
-import UKFlex from "@yourdash/uikit/components/flex/UKFlex.js";
-import UKHeading from "@yourdash/uikit/components/heading/UKHeading.js";
-import UKText from "@yourdash/uikit/components/text/UKText.js";
-import UKDialog from "@yourdash/uikit/views/dialog/UKDialog.js";
+import UKButton from "@yourdash/uikit/src/components/button/UKButton.js";
+import UKFlex from "@yourdash/uikit/src/components/flex/UKFlex.js";
+import UKHeading from "@yourdash/uikit/src/components/heading/UKHeading.js";
+import UKText from "@yourdash/uikit/src/components/text/UKText.js";
+import UKDialog from "@yourdash/uikit/src/views/dialog/UKDialog.js";
 import LoginIndexPage from "./index.tsx";
 import isValidInstance from "./lib/isValidInstance.ts";
 import { FC, useEffect, useState } from "react";

@@ -3,13 +3,13 @@ import { Outlet } from "react-router-dom";
 import { useNavigateTo } from "../meta.yourdash";
 import STORE_ICON from "../../icon.avif";
 import styles from "./layout.module.scss";
-import UKNavImage from "@yourdash/uikit/views/navBar/components/navImage/UKNavbarNavImage.js";
-import UKNavTitle from "@yourdash/uikit/views/navBar/components/navTitle/UKNavbarNavTitle.js";
-import UKNavBar from "@yourdash/uikit/views/navBar/UKNavBar.js";
-import UKButton from "@yourdash/uikit/components/button/UKButton.js";
-import UKSidebar from "@yourdash/uikit/views/sidebar/UKSidebar.js";
-import UKSidebarContainer from "@yourdash/uikit/views/sidebar/UKSidebarContainer.js";
-import UKSidebarToggleButton from "@yourdash/uikit/views/sidebar/UKSidebarToggleButton.js";
+import UKNavImage from "@yourdash/uikit/src/views/navBar/components/navImage/UKNavbarNavImage.js";
+import UKNavTitle from "@yourdash/uikit/src/views/navBar/components/navTitle/UKNavbarNavTitle.js";
+import UKNavBar from "@yourdash/uikit/src/views/navBar/UKNavBar.js";
+import UKButton from "@yourdash/uikit/src/components/button/UKButton.js";
+import UKSidebar from "@yourdash/uikit/src/views/sidebar/UKSidebar.js";
+import UKSidebarContainer from "@yourdash/uikit/src/views/sidebar/UKSidebarContainer.js";
+import UKSidebarToggleButton from "@yourdash/uikit/src/views/sidebar/UKSidebarToggleButton.js";
 
 const ApplicationLayout: React.FC = () => {
   const navigateTo = useNavigateTo();

@@ -3,8 +3,8 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import UKButton from "@yourdash/uikit/components/button/UKButton.js";
-import UKHeading from "@yourdash/uikit/components/heading/UKHeading.js";
+import UKButton from "@yourdash/uikit/src/components/button/UKButton.js";
+import UKHeading from "@yourdash/uikit/src/components/heading/UKHeading.js";
 import React from "react";
 
 const EditWidgets: React.FC = () => {

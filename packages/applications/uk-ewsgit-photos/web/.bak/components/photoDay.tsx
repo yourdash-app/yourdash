@@ -5,7 +5,7 @@
 
 import Card from "@yourdash/chiplet/components/card/Card.js";
 import Icon from "@yourdash/chiplet/components/icon/Icon.js";
-import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary.js";
+import { UKIcon } from "@yourdash/uikit/src/components/icon/iconDictionary.js";
 import React, { useState } from "react";
 
 const PhotoDay: React.FC<{

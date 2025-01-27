@@ -44,7 +44,8 @@ class RequestManager {
         msgPrefix: "YourDash Backend -> ",
         enabled: false,
       },
-    }).withTypeProvider<ZodTypeProvider>();
+    })
+      .addHttpMethod("propfind", { hasBody: true }).addHttpMethod("proppatch", { hasBody: true }).addHttpMethod("propput", { hasBody: true }).withTypeProvider<ZodTypeProvider>()
 
     return this;
   }
@@ -1908,7 +1909,7 @@ class RequestManager {
     this.app.register(fastifyRequestContext);
 
     this.app.addHook("onResponse", async (req, res) => {
-      if (res.statusCode.toString()[0] === "4") {
+      if (res.statusCode.toString()[ 0 ] === "4") {
         switch (req.method.toUpperCase()) {
           case "GET":
             if (req.url.startsWith("/core/auth-img")) {
@@ -1958,7 +1959,7 @@ class RequestManager {
           default:
         }
       }
-      if (res.statusCode.toString()[0] === "5") {
+      if (res.statusCode.toString()[ 0 ] === "5") {
         switch (req.method.toUpperCase()) {
           case "GET":
             if (req.url.startsWith("/core/auth-img")) {
@@ -2013,10 +2014,10 @@ class RequestManager {
     this.app.addHook("onRequest", async (req, res) => {
       let queryResult = await this.instance.database.query(
         "INSERT INTO public.request_manager_log (request_timestamp, request_method, request_path, request_body) VALUES ($1, $2, $3, $4) RETURNING request_id;",
-        [Date.now(), req.method, req.url, req.body],
+        [ Date.now(), req.method, req.url, req.body ],
       );
 
-      res.header("request-id", JSON.stringify(queryResult.rows[0].request_id));
+      res.header("request-id", JSON.stringify(queryResult.rows[ 0 ].request_id));
 
       switch (req.method.toUpperCase()) {
         case "GET":
@@ -2238,11 +2239,11 @@ class RequestManager {
 
     this.publicRoutes.push(/(\/login\/is-authenticated)$/);
     this.app.get("/login/is-authenticated", async (req, res) => {
-      const authorization = req.cookies["authorization"];
+      const authorization = req.cookies[ "authorization" ];
 
       if (!authorization) return res.status(401).send();
 
-      const [username, sessionToken] = authorization.split(" ");
+      const [ username, sessionToken ] = authorization.split(" ");
 
       if (!(await this.instance.authorization.authorizeUser(username, `${username} ${sessionToken}`))) return res.status(401).send();
 
@@ -2446,7 +2447,7 @@ class RequestManager {
           username,
         ]);
 
-        const pinnedApplications: YourDashApplication[] = query.rows[0].pinned_applications.map((a: string) =>
+        const pinnedApplications: YourDashApplication[] = query.rows[ 0 ].pinned_applications.map((a: string) =>
           this.instance.applications.loadedApplications.find((i) => i.__internal_params.id === a),
         );
 
@@ -2549,12 +2550,12 @@ class RequestManager {
           try {
             const previousPins = await this.instance.database.query(
               "SELECT pinned_applications FROM panel_configuration WHERE username = $1;",
-              [username],
+              [ username ],
             );
 
-            if (previousPins.rows[0].pinned_applications.includes(applicationId)) return { success: false };
+            if (previousPins.rows[ 0 ].pinned_applications.includes(applicationId)) return { success: false };
 
-            const newPins = [...previousPins.rows[0].pinned_applications, applicationId];
+            const newPins = [ ...previousPins.rows[ 0 ].pinned_applications, applicationId ];
 
             await this.instance.database.query("UPDATE panel_configuration SET pinned_applications = $2 WHERE username = $1;", [
               username,

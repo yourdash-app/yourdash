@@ -5,14 +5,14 @@
 
 import useResource from "@yourdash/csi/useResource.ts";
 import clippy from "@yourdash/shared/web/helpers/clippy.ts";
-import UKIconButton from "@yourdash/uikit/components/iconButton/UKIconButton.js";
+import UKIconButton from "@yourdash/uikit/src/components/iconButton/UKIconButton.js";
 import { useNavigate } from "react-router-dom";
 import styles from "./Launcher.module.scss";
 import React, { memo } from "react";
 import ApplicationsLauncherApplications from "./Applications/Applications.tsx";
 import coreCSI from "@yourdash/csi/coreCSI.ts";
-import UKBox from "@yourdash/uikit/components/box/UKBox.js";
-import { UKIcons } from "@yourdash/uikit/core/iconDictionary.js";
+import UKBox from "@yourdash/uikit/src/components/box/UKBox.js";
+import { UKIcons } from "@yourdash/uikit/src/core/iconDictionary.js";
 
 const ApplicationLauncher: React.FC<{
   side: "top" | "right" | "bottom" | "left";

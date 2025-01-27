@@ -6,10 +6,9 @@
 import "animate.css";
 import "./tailwindcss.css";
 import "./main.css";
-import "@yourdash/uikit/uikit.css";
-import UKText from "@yourdash/uikit/components/text/UKText.js";
-import UIKitRoot from "@yourdash/uikit/core/root.js";
-import UKDialog from "@yourdash/uikit/views/dialog/UKDialog.js";
+import UKText from "@yourdash/uikit/src/components/text/UKText.js";
+import UIKitRoot from "@yourdash/uikit/src/core/root.js";
+import UKDialog from "@yourdash/uikit/src/views/dialog/UKDialog.js";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createRoutesFromElements, Route, RouterProvider } from "react-router";

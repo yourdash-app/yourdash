@@ -3,10 +3,10 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import UKButton from "@yourdash/uikit/components/button/UKButton.js";
-import UKFlex from "@yourdash/uikit/components/flex/UKFlex.js";
-import UKHeading from "@yourdash/uikit/components/heading/UKHeading.js";
-import UKSeparator from "@yourdash/uikit/components/separator/UKSeparator.js";
+import UKButton from "@yourdash/uikit/src/components/button/UKButton.js";
+import UKFlex from "@yourdash/uikit/src/components/flex/UKFlex.js";
+import UKHeading from "@yourdash/uikit/src/components/heading/UKHeading.js";
+import UKSeparator from "@yourdash/uikit/src/components/separator/UKSeparator.js";
 
 const SignupPage = () => {
   return (

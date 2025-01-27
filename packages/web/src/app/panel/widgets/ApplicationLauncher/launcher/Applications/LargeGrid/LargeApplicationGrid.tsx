@@ -4,8 +4,8 @@
  */
 
 import tun from "@yourdash/tunnel/src/index.js";
-import UKCard from "@yourdash/uikit/components/card/UKCard.js";
-import UKContextMenu from "@yourdash/uikit/components/contextMenu/UKContextMenu.js";
+import UKCard from "@yourdash/uikit/src/components/card/UKCard.js";
+import UKContextMenu from "@yourdash/uikit/src/components/contextMenu/UKContextMenu.js";
 import useToast from "@yourdash/uikit/src/core/toasts/useToast.js";
 import React from "react";
 import IPanelApplicationsLauncherFrontendModule from "@yourdash/shared/core/panel/applicationsLauncher/application.ts";

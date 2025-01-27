@@ -4,8 +4,8 @@
  */
 
 import coreCSI from "@yourdash/csi/coreCSI";
-import { IconButton, ProgressBar } from "@yourdash/uikit/components/index";
-import { PanAndZoom } from "@yourdash/uikit/views/index";
+import { IconButton, ProgressBar } from "@yourdash/uikit/src/components/index";
+import { PanAndZoom } from "@yourdash/uikit/src/views/index";
 import { FC, useRef, useState } from "react";
 import styles from "./viewVideo.module.scss";
 import UK from "@yourdash/uikit";

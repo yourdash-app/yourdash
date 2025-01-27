@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import { Heading, TextInput } from "@yourdash/uikit/components/index";
+import { Heading, TextInput } from "@yourdash/uikit/src/components/index";
 import React from "react";
 
 const RootPage: React.FC = () => {

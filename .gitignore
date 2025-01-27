@@ -14,3 +14,8 @@
 /.idea/csv-plugin.xml
 /packages/backend/.env
 /packages/uikit/dist/
+
+
+
+.nx/cache
+.nx/workspace-data

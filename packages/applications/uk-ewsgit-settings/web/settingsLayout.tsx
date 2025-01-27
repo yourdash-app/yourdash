@@ -6,11 +6,11 @@
 import * as React from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import styles from "./settingsLayout.module.scss";
-import UKSidebar from "@yourdash/uikit/views/sidebar/UKSidebar.js";
-import UKSidebarContainer from "@yourdash/uikit/views/sidebar/UKSidebarContainer.js";
-import UKHeading from "@yourdash/uikit/components/heading/UKHeading.js";
-import UKButton from "@yourdash/uikit/components/button/UKButton.js";
-import UKSeparator from "@yourdash/uikit/components/separator/UKSeparator.js";
+import UKSidebar from "@yourdash/uikit/src/views/sidebar/UKSidebar.js";
+import UKSidebarContainer from "@yourdash/uikit/src/views/sidebar/UKSidebarContainer.js";
+import UKHeading from "@yourdash/uikit/src/components/heading/UKHeading.js";
+import UKButton from "@yourdash/uikit/src/components/button/UKButton.js";
+import UKSeparator from "@yourdash/uikit/src/components/separator/UKSeparator.js";
 
 const SettingsLayout: React.FC = () => {
   const navigate = useNavigate();

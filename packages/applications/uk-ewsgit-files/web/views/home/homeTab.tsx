@@ -4,7 +4,7 @@
  */
 
 import useResource from "@yourdash/csi/useResource";
-import tun from "@yourdash/tunnel/index.js";
+import tun from "@yourdash/tunnel/src/index.js";
 import UKBox from "@yourdash/uikit/src/components/box/UKBox.js";
 import UKContainer from "@yourdash/uikit/src/components/container/UKContainer.js";
 import UKHeading from "@yourdash/uikit/src/components/heading/UKHeading.js";

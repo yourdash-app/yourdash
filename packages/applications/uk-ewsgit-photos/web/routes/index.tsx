@@ -7,7 +7,7 @@ import { FC } from "react";
 import { PHOTOS_MEDIA_TYPE } from "../../shared/types/mediaType.ts";
 import PhotoGrid from "../components/PhotoGrid/PhotoGrid.tsx";
 import styles from "./index.module.scss";
-import { Heading, Separator } from "@yourdash/uikit/components/index";
+import { Heading, Separator } from "@yourdash/uikit/src/components/index";
 import YOURDASH_LOGO from "../../icon.avif";
 
 const IndexPage: FC = () => {

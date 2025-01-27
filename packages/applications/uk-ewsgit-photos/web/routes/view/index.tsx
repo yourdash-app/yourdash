@@ -5,7 +5,7 @@
 
 import clippy from "@yourdash/shared/web/helpers/clippy";
 import useResource from "@yourdash/csi/useResource";
-import { ButtonWithIcon } from "@yourdash/uikit/components/index";
+import { ButtonWithIcon } from "@yourdash/uikit/src/components/index";
 import { FC } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import EndpointMediaRaw from "../../../shared/types/endpoints/media/album/raw.js";

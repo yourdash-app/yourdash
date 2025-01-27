@@ -3,8 +3,8 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary.ts";
-import IconButton from "@yourdash/uikit/components/iconButton/iconButton.tsx";
+import { UKIcon } from "@yourdash/uikit/src/components/icon/iconDictionary.ts";
+import IconButton from "@yourdash/uikit/src/components/iconButton/iconButton.tsx";
 import * as React from "react";
 import coreCSI from "@yourdash/csi/coreCSI";
 import loadable from "@loadable/component";

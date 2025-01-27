@@ -4,10 +4,10 @@
  */
 
 import useResource from "@yourdash/csi/useResource.ts";
-import UKFlex from "@yourdash/uikit/components/flex/UKFlex.js";
-import UKText from "@yourdash/uikit/components/text/UKText.js";
-import UKCard from "@yourdash/uikit/components/card/UKCard.js";
-import UKHeading from "@yourdash/uikit/components/heading/UKHeading.js";
+import UKFlex from "@yourdash/uikit/src/components/flex/UKFlex.js";
+import UKText from "@yourdash/uikit/src/components/text/UKText.js";
+import UKCard from "@yourdash/uikit/src/components/card/UKCard.js";
+import UKHeading from "@yourdash/uikit/src/components/heading/UKHeading.js";
 import React from "react";
 import { acsi } from "../../../../meta.yourdash.ts";
 import styles from "./applicationCategories.module.scss";

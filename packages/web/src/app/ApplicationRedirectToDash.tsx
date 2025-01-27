@@ -3,14 +3,14 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import tun from "@yourdash/tunnel/index.js";
-import UKFlex from "@yourdash/uikit/components/flex/UKFlex.js";
+import tun from "@yourdash/tunnel/src/index.js";
+import UKFlex from "@yourdash/uikit/src/components/flex/UKFlex.js";
 import React, { useEffect } from "react";
-import coreCSI from "@yourdash/csi/coreCSI.ts";
 import { useNavigate } from "react-router-dom";
-import UKHeading from "@yourdash/uikit/components/heading/UKHeading.js";
-import DASH_ICON from "../../../../applications/uk-ewsgit-dash/icon.avif";
+import UKHeading from "@yourdash/uikit/src/components/heading/UKHeading.js";
+import DASH_ICON from "@yourdash/applications/uk-ewsgit-dash/icon.avif";
 import ApplicationPanelContext from "./panel/ApplicationPanelContext.js";
+import { z } from "zod";
 
 const ApplicationRedirectToDash: React.FC = () => {
   const navigate = useNavigate();
@@ -29,7 +29,7 @@ const ApplicationRedirectToDash: React.FC = () => {
       navigate("/login");
     } else {
       tun
-        .get("/login/is-authenticated", "text")
+        .get("/login/is-authenticated", "text", z.string())
         .then(() => {
           console.log("Should navigate");
           navigate("/app/a/uk-ewsgit-dash");

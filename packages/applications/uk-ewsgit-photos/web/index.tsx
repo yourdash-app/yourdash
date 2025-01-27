@@ -14,8 +14,8 @@ import SearchIndexPage from "./routes/search/index.js";
 import ViewPathPage from "./routes/view/index";
 import React from "react";
 import PHOTOS_ICON from "./../icon.avif";
-import UKIconButton from "@yourdash/uikit/components/iconButton/UKIconButton.js";
-import { UKIcons } from "@yourdash/uikit/core/iconDictionary.js";
+import UKIconButton from "@yourdash/uikit/src/components/iconButton/UKIconButton.js";
+import { UKIcons } from "@yourdash/uikit/src/core/iconDictionary.js";
 
 const ApplicationRoutes: FC = () => {
   const navigateTo = useNavigateTo();

@@ -7,17 +7,6 @@
   "engines": {
     "node": ">=21.0.0"
   },
-  "files": [
-    "dist/",
-    "src/"
-  ],
-  "exports": {
-    "./*": "./dist/*",
-    "./src/*": "./dist/*"
-  },
-  "scripts": {
-    "build": "bun exec \"vite build\""
-  },
   "author": "Ewsgit <ewsgit@duck.com>",
   "peerDependencies": {
     "@types/react": "^18.3.5",

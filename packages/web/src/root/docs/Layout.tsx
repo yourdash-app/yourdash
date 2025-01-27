@@ -3,11 +3,11 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import UKButtonWithIcon from "@yourdash/uikit/components/buttonWithIcon/UKButtonWithIcon.js";
-import UKHeading from "@yourdash/uikit/components/heading/UKHeading.js";
-import { UKIcons } from "@yourdash/uikit/core/iconDictionary.js";
-import UKSidebar from "@yourdash/uikit/views/sidebar/UKSidebar.js";
-import UKSidebarContainer from "@yourdash/uikit/views/sidebar/UKSidebarContainer.js";
+import UKButtonWithIcon from "@yourdash/uikit/src/components/buttonWithIcon/UKButtonWithIcon.js";
+import UKHeading from "@yourdash/uikit/src/components/heading/UKHeading.js";
+import { UKIcons } from "@yourdash/uikit/src/core/iconDictionary.js";
+import UKSidebar from "@yourdash/uikit/src/views/sidebar/UKSidebar.js";
+import UKSidebarContainer from "@yourdash/uikit/src/views/sidebar/UKSidebarContainer.js";
 import React from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 

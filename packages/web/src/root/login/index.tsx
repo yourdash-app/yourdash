@@ -6,9 +6,9 @@
 import coreCSI from "@yourdash/csi/coreCSI.ts";
 import { LoginLayout } from "@yourdash/shared/core/login/loginLayout.ts";
 import useResource from "@yourdash/csi/useResource.ts";
-import UKFlex from "@yourdash/uikit/components/flex/UKFlex.js";
-import UKHeading from "@yourdash/uikit/components/heading/UKHeading.js";
-import UKSpinner from "@yourdash/uikit/components/spinner/UKSpinner.js";
+import UKFlex from "@yourdash/uikit/src/components/flex/UKFlex.js";
+import UKHeading from "@yourdash/uikit/src/components/heading/UKHeading.js";
+import UKSpinner from "@yourdash/uikit/src/components/spinner/UKSpinner.js";
 import IndexCardsPage from "./index.cards.tsx";
 import styles from "./index.module.scss";
 import React, { FC, Suspense } from "react";

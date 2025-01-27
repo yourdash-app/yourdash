@@ -4,19 +4,19 @@
  */
 
 import clippy from "@yourdash/shared/web/helpers/clippy.ts";
-import UKFlex from "@yourdash/uikit/components/flex/UKFlex.js";
-import UKIconButton from "@yourdash/uikit/components/iconButton/UKIconButton.js";
-import UKLink from "@yourdash/uikit/components/link/UKLink.js";
-import UKSeparator from "@yourdash/uikit/components/separator/UKSeparator.js";
-import UKText from "@yourdash/uikit/components/text/UKText.js";
-import UKTextButton from "@yourdash/uikit/components/textButton/UKTextButton.js";
-import { UKIcons } from "@yourdash/uikit/core/iconDictionary.js";
+import UKFlex from "@yourdash/uikit/src/components/flex/UKFlex.js";
+import UKIconButton from "@yourdash/uikit/src/components/iconButton/UKIconButton.js";
+import UKLink from "@yourdash/uikit/src/components/link/UKLink.js";
+import UKSeparator from "@yourdash/uikit/src/components/separator/UKSeparator.js";
+import UKText from "@yourdash/uikit/src/components/text/UKText.js";
+import UKTextButton from "@yourdash/uikit/src/components/textButton/UKTextButton.js";
+import { UKIcons } from "@yourdash/uikit/src/core/iconDictionary.js";
 import styles from "./navigation.module.scss";
 import React, { FC } from "react";
 import { Outlet, useNavigate } from "react-router";
-import UKImage from "@yourdash/uikit/components/image/UKImage.js";
-import UKHeading from "@yourdash/uikit/components/heading/UKHeading.js";
-import UKBox from "@yourdash/uikit/components/box/UKBox.js";
+import UKImage from "@yourdash/uikit/src/components/image/UKImage.js";
+import UKHeading from "@yourdash/uikit/src/components/heading/UKHeading.js";
+import UKBox from "@yourdash/uikit/src/components/box/UKBox.js";
 
 const Navigation: FC<{ subtitle?: string }> = ({ subtitle }) => {
   const navigate = useNavigate();

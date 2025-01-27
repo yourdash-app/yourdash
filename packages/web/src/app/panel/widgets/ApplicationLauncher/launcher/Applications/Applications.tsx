@@ -11,8 +11,8 @@ import styles from "./Applications.module.scss";
 import { useNavigate } from "react-router";
 import SmallApplicationGrid from "./SmallGrid/SmallApplicationGrid.tsx";
 import ApplicationList from "./List/ApplicationList.tsx";
-import UKTextInput from "@yourdash/uikit/components/textInput/UKTextInput.js";
-import { UKIcons } from "@yourdash/uikit/core/iconDictionary.js";
+import UKTextInput from "@yourdash/uikit/src/components/textInput/UKTextInput.js";
+import { UKIcons } from "@yourdash/uikit/src/core/iconDictionary.js";
 
 let filteredApplications: IPanelApplicationsLauncherFrontendModule[] = [];
 

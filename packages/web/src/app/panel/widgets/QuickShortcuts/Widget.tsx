@@ -6,10 +6,10 @@
 import toAuthImgUrl from "@yourdash/csi/toAuthImgUrl.ts";
 import useResource from "@yourdash/csi/useResource.ts";
 import clippy from "@yourdash/shared/web/helpers/clippy.ts";
-import tun from "@yourdash/tunnel/index.js";
-import UKImage from "@yourdash/uikit/components/image/UKImage.js";
-import IncrementLevel from "@yourdash/uikit/core/incrementLevel.js";
-import { useLevelClass } from "@yourdash/uikit/core/level.js";
+import tun from "@yourdash/tunnel/src/index.js";
+import UKImage from "@yourdash/uikit/src/components/image/UKImage.js";
+import IncrementLevel from "@yourdash/uikit/src/core/incrementLevel.js";
+import { useLevelClass } from "@yourdash/uikit/src/core/level.js";
 import { useNavigate } from "react-router-dom";
 import styles from "./Widget.module.scss";
 import React from "react";

@@ -7,7 +7,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import KeyPointsCard from "./components/content/KeyPointsCard.tsx";
 import IndexPageHero from "./components/Hero/Hero.tsx";
-import UKButton from "@yourdash/uikit/components/button/UKButton.js";
+import UKButton from "@yourdash/uikit/src/components/button/UKButton.js";
 
 const Index: React.FC = () => {
   const navigate = useNavigate();

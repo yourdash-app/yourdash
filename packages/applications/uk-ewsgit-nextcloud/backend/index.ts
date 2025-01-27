@@ -49,9 +49,9 @@ export default class Application extends YourDashApplication {
   }
 
   public onLoad(): this {
-    instance.requestManager.publicRoutes.push(/(\/status.php)$/)
+    instance.requestManager.publicRoutes.push(/(\/uk-ewsgit-nextcloud\/status.php)$/)
     instance.request.get(
-      "/status.php",
+      "/uk-ewsgit-nextcloud/status.php",
       {
         schema: {
           response: {
@@ -90,9 +90,9 @@ export default class Application extends YourDashApplication {
       },
     );
 
-    instance.requestManager.publicRoutes.push(/(\/ocs\/v2.php\/cloud\/capabilities)$/)
+    instance.requestManager.publicRoutes.push(/(\/uk-ewsgit-nextcloud\/ocs\/v2.php\/cloud\/capabilities)$/)
     instance.request.get(
-      "/ocs/v2.php/cloud/capabilities",
+      "/uk-ewsgit-nextcloud/ocs/v2.php/cloud/capabilities",
       {
         schema: {
           response: {
@@ -195,9 +195,9 @@ export default class Application extends YourDashApplication {
       },
     );
 
-    instance.requestManager.publicRoutes.push(/(\/ocs\/v1.php\/cloud\/capabilities)$/)
+    instance.requestManager.publicRoutes.push(/(\/uk-ewsgit-nextcloud\/ocs\/v1.php\/cloud\/capabilities)$/)
     instance.request.get(
-      "/ocs/v1.php/cloud/capabilities",
+      "/uk-ewsgit-nextcloud/ocs/v1.php/cloud/capabilities",
       {
         schema: {
           response: {
@@ -310,9 +310,9 @@ export default class Application extends YourDashApplication {
 
     let authFlowSessions: { [ pollToken: string ]: { pollToken: string; sessionToken?: string; username: string } } = {};
 
-    instance.requestManager.publicRoutes.push(/(\/index.php\/login\/v2)$/)
+    instance.requestManager.publicRoutes.push(/(\/uk-ewsgit-nextcloud\/index.php\/login\/v2)$/)
     instance.request.post(
-      "/index.php/login/v2",
+      "/uk-ewsgit-nextcloud/index.php/login/v2",
       { schema: { response: { 200: z.object({ poll: z.object({ token: z.string(), endpoint: z.string() }), login: z.string() }) } } },
       async (req, res) => {
         const pollToken = generateUUID();
@@ -327,14 +327,14 @@ export default class Application extends YourDashApplication {
             endpoint: `http://${req.hostname}:3563/index.php/login/v2/poll`,
           },
           // TODO: replace localhost with the instance's web url
-          login: `http://localhost:5173/app/a/uk-ewsgit-nextcloud/login/v2/${pollToken}`,
+          login: `http://localhost:5173/app/a/uk-ewsgit-nextcloud/flow/v2/${pollToken}`,
         };
       },
     );
 
-    instance.requestManager.publicRoutes.push(/(\/index.php\/login\/v2\/poll)$/)
+    instance.requestManager.publicRoutes.push(/(\/uk-ewsgit-nextcloud\/index.php\/login\/v2\/poll)$/)
     instance.request.post(
-      "/index.php/login/v2/poll",
+      "/uk-ewsgit-nextcloud/index.php/login/v2/poll",
       {
         schema: {
           response: { 200: z.object({ server: z.string(), loginName: z.string(), appPassword: z.string() }) },
@@ -365,9 +365,9 @@ export default class Application extends YourDashApplication {
       },
     );
 
-    instance.requestManager.publicRoutes.push(/(\/login\/nextcloud\/flow\/v2\/authenticate)$/)
+    instance.requestManager.publicRoutes.push(/(\/uk-ewsgit-nextcloud\/login\/nextcloud\/flow\/v2\/authenticate)$/)
     instance.request.post(
-      "/login/nextcloud/flow/v2/authenticate",
+      "/uk-ewsgit-nextcloud/login/nextcloud/flow/v2/authenticate",
       {
         schema: {
           body: z.object({
@@ -462,9 +462,9 @@ export default class Application extends YourDashApplication {
       return (dbQuery.rows[ 0 ].username);
     }
 
-    instance.requestManager.publicRoutes.push(/(\/ocs\/v1.php\/cloud\/user)$/)
+    instance.requestManager.publicRoutes.push(/(\/uk-ewsgit-nextcloud\/ocs\/v1.php\/cloud\/user)$/)
     instance.request.get(
-      "/ocs/v1.php/cloud/user",
+      "/uk-ewsgit-nextcloud/ocs/v1.php/cloud/user",
       {
         schema: {
           response: {
@@ -604,8 +604,8 @@ export default class Application extends YourDashApplication {
       },
     );
 
-    instance.requestManager.publicRoutes.push(/(\/remote.php\/dav\/avatars\/)[a-zA-Z](\/)*$/)
-    instance.request.get("/remote.php/dav/avatars/:username/*", { schema: { response: { 200: z.unknown() } } }, async (req, res) => {
+    instance.requestManager.publicRoutes.push(/(\/uk-ewsgit-nextcloud\/remote.php\/dav\/avatars\/)[a-zA-Z](\/)*$/)
+    instance.request.get("/uk-ewsgit-nextcloud/remote.php/dav/avatars/:username/*", { schema: { response: { 200: z.unknown() } } }, async (req, res) => {
       const user = new User((req.params as unknown as { username: string }).username);
       if (await user.doesExist()) {
         res.status(200);
@@ -635,39 +635,42 @@ export default class Application extends YourDashApplication {
       </d:error>`);
   }); */
 
-    instance.requestManager.publicRoutes.push(/(\/remote.php\/dav\/files\/)[a-zA-Z](\/)*$/)
-    instance.request.propfind(
-      "/remote.php/dav/files/:username/*",
-      { schema: { response: { 200: z.object({ error: z.boolean() }) } } },
-      async (req, res) => {
-        const params = req.params as { username: string; "*": string };
+    instance.requestManager.publicRoutes.push(/(\/uk-ewsgit-nextcloud\/remote.php\/dav\/files\/)[a-zA-Z](\/)*$/)
+    instance.request.route(
+      {
+        url: "/uk-ewsgit-nextcloud/remote.php/dav/files/:username/*",
+        method: "PROPFIND",
+        schema: { response: { 200: z.object({ error: z.boolean() }) } },
+        handler:
+          async (req, res) => {
+            const params = req.params as { username: string; "*": string };
 
-        console.log({ username: params.username, params: Object.values(params).join("/"), path: params["*"] });
+            console.log({ username: params.username, params: Object.values(params).join("/"), path: params[ "*" ] });
 
-        console.log(JSON.stringify(req.body));
+            console.log(JSON.stringify(req.body));
 
-        if (!(req.body as { "d:propfind"?: object })["d:propfind"]) {
-          console.log("no d:propfind found!", req.body);
-        }
+            if (!(req.body as { "d:propfind"?: object })[ "d:propfind" ]) {
+              console.log("no d:propfind found!", req.body);
+            }
 
-        if (!(req.body as { "d:propfind"?: { "d:prop"?: object[] } })["d:propfind"]?.["d:prop"]) {
-          console.log("no d:prop found!", req.body);
-        }
+            if (!(req.body as { "d:propfind"?: { "d:prop"?: object[] } })[ "d:propfind" ]?.[ "d:prop" ]) {
+              console.log("no d:prop found!", req.body);
+            }
 
-        const props: object[] = (req.body as { "d:propfind": { "d:prop": object[] } })["d:propfind"]["d:prop"];
+            const props: object[] = (req.body as { "d:propfind": { "d:prop": object[] } })[ "d:propfind" ][ "d:prop" ];
 
-        const filePath = params["*"] === undefined ? "/" : params["*"];
+            const filePath = params[ "*" ] === undefined ? "/" : params[ "*" ];
 
-        let response: string[] = [];
+            let response: string[] = [];
 
-        Object.keys(props).forEach((prop: string) => {
-          switch (prop) {
-            case "d:getlastmodified":
-              response.push(`<d:getlastmodified>FORMATTED LAST MODIFIED DATE</d:getlastmodified>`);
-          }
-        });
+            Object.keys(props).forEach((prop: string) => {
+              switch (prop) {
+                case "d:getlastmodified":
+                  response.push(`<d:getlastmodified>FORMATTED LAST MODIFIED DATE</d:getlastmodified>`);
+              }
+            });
 
-        return res.type("xml").status(207).send(`<?xml version="1.0"?>
+            return res.type("xml").status(207).send(`<?xml version="1.0"?>
 <d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:oc="http://owncloud.org/ns" xmlns:nc="http://nextcloud.org/ns">
 <d:response>
 <d:href>${req.url}</d:href>
@@ -679,45 +682,46 @@ ${response.map((res) => {
 </d:propstat>
 </d:response>
 </d:multistatus>`);
-        //
-        //     if (params["*"] === "/") {
-        //       return res.contentType("xml").send(`<?xml version="1.0" encoding="utf-8"?>
-        //       <d:error xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns">
-        //         <s:exception>Internal Server Error</s:exception>
-        //         <s:message>The server was unable to complete your request.
-        // If this happens again, please send the technical details below to the server administrator.
-        // More details can be found in the server log.
-        //         </s:message>
-        //         <s:technical-details>
-        //           <s:remote-address>::1</s:remote-address>
-        //           <s:request-id>ibCxTsPl4KN7sufuReK6</s:request-id>
-        //         </s:technical-details>
-        //       </d:error>`);
-        //     }
-        //
-        //     if (params["*"] === undefined) {
-        //       return res.contentType("http/xml").send(`<?xml version="1.0" encoding="utf-8"?>
-        // <d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:oc="http://owncloud.org/ns" xmlns:nc="http://nextcloud.org/ns">
-        //     <d:response>
-        //         <d:href>${req.path}</d:href>
-        //         <d:propstat>
-        //             <d:prop>
-        //                 <oc:size>10000</oc:size>
-        //             </d:prop>
-        //             <d:status>HTTP/1.1 200 OK</d:status>
-        //         </d:propstat>
-        //     </d:response>
-        // </d:multistatus>
-        // `);
-        //     }
+            //
+            //     if (params["*"] === "/") {
+            //       return res.contentType("xml").send(`<?xml version="1.0" encoding="utf-8"?>
+            //       <d:error xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns">
+            //         <s:exception>Internal Server Error</s:exception>
+            //         <s:message>The server was unable to complete your request.
+            // If this happens again, please send the technical details below to the server administrator.
+            // More details can be found in the server log.
+            //         </s:message>
+            //         <s:technical-details>
+            //           <s:remote-address>::1</s:remote-address>
+            //           <s:request-id>ibCxTsPl4KN7sufuReK6</s:request-id>
+            //         </s:technical-details>
+            //       </d:error>`);
+            //     }
+            //
+            //     if (params["*"] === undefined) {
+            //       return res.contentType("http/xml").send(`<?xml version="1.0" encoding="utf-8"?>
+            // <d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:oc="http://owncloud.org/ns" xmlns:nc="http://nextcloud.org/ns">
+            //     <d:response>
+            //         <d:href>${req.path}</d:href>
+            //         <d:propstat>
+            //             <d:prop>
+            //                 <oc:size>10000</oc:size>
+            //             </d:prop>
+            //             <d:status>HTTP/1.1 200 OK</d:status>
+            //         </d:propstat>
+            //     </d:response>
+            // </d:multistatus>
+            // `);
+            //     }
 
-        return { error: true };
-      },
+            return { error: true };
+          },
+      }
     );
 
-    instance.requestManager.publicRoutes.push(/(\/remote.php\/dav\/avatars\/)[a-zA-Z](\/)[0-9](.png)$/)
+    instance.requestManager.publicRoutes.push(/(\/uk-ewsgit-nextcloud\/remote.php\/dav\/avatars\/)[a-zA-Z](\/)[0-9](.png)$/)
     instance.request.get(
-      "/remote.php/dav/avatars/:username/:size.png",
+      "/uk-ewsgit-nextcloud/remote.php/dav/avatars/:username/:size.png",
       { schema: { response: { 200: z.unknown() } } },
       async (req, res) => {
         const user = new User((req.params as unknown as { username: string }).username);

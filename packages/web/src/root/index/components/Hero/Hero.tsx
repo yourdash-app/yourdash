@@ -4,8 +4,8 @@
  */
 
 import clippy from "@yourdash/shared/web/helpers/clippy.ts";
-import UKButtonLink from "@yourdash/uikit/components/buttonLink/UKButtonLink.js";
-import UKHeading from "@yourdash/uikit/components/heading/UKHeading.js";
+import UKButtonLink from "@yourdash/uikit/src/components/buttonLink/UKButtonLink.js";
+import UKHeading from "@yourdash/uikit/src/components/heading/UKHeading.js";
 import React from "react";
 import FloatingApplications from "./FloatingApplications/FloatingApplications.tsx";
 import IndexPageHeroTaglines from "./Taglines.tsx";

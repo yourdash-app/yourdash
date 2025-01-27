@@ -3,8 +3,8 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import UKHeading from "@yourdash/uikit/components/heading/UKHeading.js";
-import UKSubtext from "@yourdash/uikit/components/subtext/UKSubtext.js";
+import UKHeading from "@yourdash/uikit/src/components/heading/UKHeading.js";
+import UKSubtext from "@yourdash/uikit/src/components/subtext/UKSubtext.js";
 import React from "react";
 
 const PreAlphaDocsPage: React.FC = () => (

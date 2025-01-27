@@ -6,7 +6,7 @@
 import Card from "@yourdash/chiplet/components/card/Card";
 import Chip from "@yourdash/chiplet/components/chip/Chip";
 import Icon from "@yourdash/chiplet/components/icon/Icon";
-import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary";
+import { UKIcon } from "@yourdash/uikit/src/components/icon/iconDictionary";
 import IconButton from "@yourdash/chiplet/components/iconButton/IconButton";
 import Row from "@yourdash/chiplet/components/row/Row";
 import * as React from "react";

@@ -3,7 +3,7 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import UKSeparator from "@yourdash/uikit/components/separator/UKSeparator.js";
+import UKSeparator from "@yourdash/uikit/src/components/separator/UKSeparator.js";
 import React from "react";
 
 const SeparatorWidget: React.FC<{ side: "top" | "right" | "bottom" | "left" }> = ({ side }) => {

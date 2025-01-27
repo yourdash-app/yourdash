@@ -1,4 +1,4 @@
-import Button from "@yourdash/uikit/components/button/button";
+import Button from "@yourdash/uikit/src/components/button/button";
 import React, { useContext } from "react";
 import pathContext from "../../pathContext";
 

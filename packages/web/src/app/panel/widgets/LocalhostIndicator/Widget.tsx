@@ -4,7 +4,7 @@
  */
 
 import clippy from "@yourdash/shared/web/helpers/clippy.ts";
-import UKText from "@yourdash/uikit/components/text/UKText.js";
+import UKText from "@yourdash/uikit/src/components/text/UKText.js";
 import React from "react";
 
 const LocalhostIndicator: React.FC<{

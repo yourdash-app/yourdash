@@ -3,10 +3,10 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import UKImage from "@yourdash/uikit/components/image/UKImage.js";
+import UKImage from "@yourdash/uikit/src/components/image/UKImage.js";
 import React from "react";
 import styles from "./Widget.module.scss";
-import UKText from "@yourdash/uikit/components/text/UKText.js";
+import UKText from "@yourdash/uikit/src/components/text/UKText.js";
 
 const UserProfileWidget: React.FC = () => {
   return (

@@ -6,7 +6,7 @@
 import * as React from "react";
 import SettingCategoryComponent from "./components/SettingCategoryComponent";
 import BasePageLayout from "./components/BasePageLayout";
-import { UKIcons } from "@yourdash/uikit/core/iconDictionary.js";
+import { UKIcons } from "@yourdash/uikit/src/core/iconDictionary.js";
 
 const SettingsApplication: React.FC = () => {
   return (

@@ -3,8 +3,8 @@
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import { Icon, UKImage } from "@yourdash/uikit/components/index";
-import { UKIcon } from "@yourdash/uikit/core/index";
+import { Icon, UKImage } from "@yourdash/uikit/src/components/index";
+import { UKIcon } from "@yourdash/uikit/src/core/index";
 import React from "react";
 import { PHOTOS_MEDIA_TYPE } from "../../../shared/types/mediaType.ts";
 import styles from "./PhotoGrid.module.scss";
