@@ -1,0 +1,20 @@
+/*!
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
+@use "@yourdash/uikit/src/theme/themeValues" as *;
+
+.heading {
+  text-align: start;
+}
+
+.album {
+  display: flex;
+  cursor: pointer;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  flex-basis: 16rem;
+  flex-grow: 1;
+  flex-shrink: 1;
+}

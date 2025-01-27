@@ -1,0 +1,32 @@
+@charset "UTF-8";
+/*!
+ * Copyright ©2025 Ewsgit <https://ewsgit.uk> and YourDash <https://yourdash.ewsgit.uk> contributors.
+ * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
+ */
+/*!
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+.component {
+  font-family: var(--utfontfam);
+  text-align: center;
+  color: var(--utbtncol);
+  transition: var(--utbtntrans);
+  width: max-content;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  font-weight: var(--uttxbfontwgt);
+}
+.component:hover {
+  color: var(--utacn);
+  opacity: 0.8;
+  transition: var(--utbtnhvrtrans);
+}
+.component:active {
+  color: var(--utacn);
+  opacity: 1;
+  transition: var(--utbtnatvtrans);
+}
+
+/*# sourceMappingURL=textButton.module.css.map */

@@ -1,9 +1,9 @@
 /*!
- * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-@import "../../../../../node_modules/@yourdash/uikit/theme/themeValues";
+@use "@yourdash/uikit/src/theme/themeValues" as *;
 
 .panel {
   display: flex;
@@ -12,7 +12,7 @@
   position: relative;
   z-index: 50;
   user-select: none;
-  border: none;
+  border: none !important;
 
   > * {
     animation: panelFadeIn 0.25s 0.5s forwards ease-in-out;
@@ -72,7 +72,6 @@
 .top {
   @include horizontal;
   & {
-    border-bottom: var(#{$theme+$border});
     padding-bottom: calc(var(--app-panel-padding) + 1px);
   }
 }
@@ -80,7 +79,6 @@
 .right {
   @include vertical;
   & {
-    border-left: var(#{$theme+$border});
     padding-left: calc(var(--app-panel-padding) + 1px);
   }
 }
@@ -89,7 +87,6 @@
   @include horizontal;
 
   & {
-    border-top: var(#{$theme+$border});
     padding-top: calc(var(--app-panel-padding) + 1px);
   }
 }
@@ -97,7 +94,6 @@
 .left {
   @include vertical;
   & {
-  border-right: var(#{$theme+$border});
   padding-right: calc(var(--app-panel-padding) + 1px);
   }
 }

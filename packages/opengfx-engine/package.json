@@ -1,5 +1,5 @@
 {
-  "name": "opengfx",
+  "name": "@yourdash/opengfx",
   "private": false,
   "version": "0.0.1",
   "type": "module",
@@ -9,7 +9,7 @@
   },
   "scripts": {
     "dev": "yarn dev:2d:gfxts-one",
-    "dev:2d:gfxts-one": "yarn --cwd src/demo/2d/gfxts-one dev .",
+    "dev:2d:gfxts-one": "bun run --cwd=src/demo/2d/gfxts-one dev .",
     "build": "tsc && vite build",
     "preview": "vite preview"
   },

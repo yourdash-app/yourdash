@@ -1,0 +1,22 @@
+@use "../../theme/themeValues.scss" as *;
+
+.component {
+    --nav-height: calc(2rem + var(#{$theme+$padding}));
+
+    width: 100%;
+    height: calc(var(--nav-height) + calc(var(#{$theme+$padding}) * 2));
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    padding: var(#{$theme+$padding});
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    justify-content: center;
+    align-items: center;
+}
+
+.segment {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

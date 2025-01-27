@@ -1,0 +1,25 @@
+/*!
+ * Copyright ©2025 Ewsgit<https://ewsgit.uk> and YourDash<https://yourdash.ewsgit.uk> contributors.
+ * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
+ */
+
+@use "@yourdash/uikit/src/theme/themeValues" as *;
+
+.widget {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  &:hover {
+    & > .img {
+      transition: scale 50ms ease-in-out;
+      scale: 1.2;
+    }
+  }
+}
+
+.img {
+  transition: scale 250ms ease-in-out;
+  aspect-ratio: 1 / 1;
+}

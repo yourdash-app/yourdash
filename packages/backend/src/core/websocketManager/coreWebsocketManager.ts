@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -20,7 +20,7 @@ export default class coreWebsocketManager {
   _selfDestruct() {
     Object.keys(this.servers).map(async (path) => {
       if ((await this.servers[path].server.fetchSockets()).length === 0) {
-        this.servers[path].server.close();
+        await this.servers[path].server.close();
         delete this.servers[path];
         this.core.log.info("websocket_manager", `${path} was closed as it has no clients connected.`);
       } else {

@@ -1,0 +1,36 @@
+/*!
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
+@use "../../theme/themeValues.scss" as *;
+
+.component {
+  display: inline-block;
+  cursor: pointer;
+    text-decoration: underline;
+
+  font-weight: var(#{$theme+$font+$weight});
+  font-size: var(#{$theme+$font+$size});
+  font-family: var(#{$theme+$font+$family});
+  color: rgb(var(#{$theme+$accent}));
+  transition: var(#{$theme+$button+$transition});
+
+  &:hover {
+    text-decoration: none;
+    color: rgb(var(#{$theme+$accent}));
+    opacity: 0.8;
+    transition: var(#{$theme+$button+$hover+$transition});
+  }
+
+  &:active {
+    text-decoration: none;
+    color: rgb(var(#{$theme+$accent}));
+    opacity: 1;
+    transition: var(#{$theme+$button+$active+$transition});
+  }
+}
+
+.icon {
+
+}

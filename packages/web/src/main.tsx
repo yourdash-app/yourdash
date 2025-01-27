@@ -1,12 +1,14 @@
 /*
- * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 import "animate.css";
 import "./tailwindcss.css";
 import "./main.css";
-import UIKitRoot from "@yourdash/uikit/core/root.tsx";
+import UKText from "@yourdash/uikit/src/components/text/UKText.js";
+import UIKitRoot from "@yourdash/uikit/src/core/root.js";
+import UKDialog from "@yourdash/uikit/src/views/dialog/UKDialog.js";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createRoutesFromElements, Route, RouterProvider } from "react-router";
@@ -14,14 +16,15 @@ import { createBrowserRouter } from "react-router-dom";
 import loadable from "@loadable/component";
 import ApplicationRedirectToDash from "./app/ApplicationRedirectToDash.tsx";
 import AppLayout from "./app/AppLayout.tsx";
-import LoginIndexPagePreload from "./login/index.preload.tsx";
-import LoginInstancePage from "./login/instance/index.tsx";
+import LoginIndexPagePreload from "./root/login/index.preload.tsx";
+import LoginInstancePage from "./root/login/instance/index.tsx";
 import Navigation from "./root/components/navigation/navigation.tsx";
 import DocsLayout from "./root/docs/Layout.tsx";
 import ErrorElement from "./ErrorElement.tsx";
 import Index from "./root/index/Index.tsx";
 import LoginRedirect from "./deprecatedLogin/Redirect.tsx";
-import LoginSuccessPage from "./login/success/index.tsx";
+import SignupPage from "./root/login/signup/index.tsx";
+import LoginSuccessPage from "./root/login/success/index.tsx";
 import NotFoundPage from "./root/notFound/notFound.tsx";
 import ProjectsIndexPage from "./root/projects/Index.tsx";
 import LinkerDesktopClientStartupPage from "./root/linkerDesktopClientStartup/Index.tsx";
@@ -45,12 +48,13 @@ loadingElement.innerText = "Loading YourDash...";
 
 element.appendChild(loadingElement);
 
-console.log(element);
-
 ReactDOM.createRoot(element).render(
   <UIKitRoot>
     <WebsocketToasts />
     <RouterProvider
+      future={{
+        v7_startTransition: true,
+      }}
       router={createBrowserRouter(
         createRoutesFromElements(
           <Route errorElement={<ErrorElement />}>
@@ -107,6 +111,12 @@ ReactDOM.createRoot(element).render(
                 path={"success"}
                 element={<LoginSuccessPage />}
               />
+              <Route element={<Navigation subtitle={"Instance"} />}>
+                <Route
+                  path={"signup"}
+                  element={<SignupPage />}
+                />
+              </Route>
               <Route
                 path={"signup"}
                 element={<>TODO: implement me @ewsgit</>}
@@ -130,7 +140,12 @@ ReactDOM.createRoot(element).render(
                 />
                 <Route
                   path={"a/*"}
-                  element={<AppRouter />}
+                  errorElement={<ErrorElement />}
+                  element={
+                    <>
+                      <AppRouter />
+                    </>
+                  }
                 />
                 <Route
                   path={"h/*"}
@@ -138,8 +153,28 @@ ReactDOM.createRoot(element).render(
                 />
               </Route>
             </Route>
+            <Route path={"uikit-testing"}>
+              <Route
+                path={"dialog"}
+                element={
+                  <>
+                    <UKDialog>sa</UKDialog>
+                    <UKText text={"Hello world"} />
+                  </>
+                }
+              />
+            </Route>
           </Route>,
         ),
+        {
+          future: {
+            v7_fetcherPersist: true,
+            v7_normalizeFormMethod: true,
+            v7_partialHydration: true,
+            v7_relativeSplatPath: true,
+            v7_skipActionErrorRevalidation: true,
+          },
+        },
       )}
     />
   </UIKitRoot>,

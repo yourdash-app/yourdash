@@ -1,0 +1,153 @@
+/*!
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
+.token {
+  display: inline;
+  font-size: var(--codestudio-theme-editor-token-font-size);
+  line-height: var(--codestudio-theme-editor-token-line-height);
+
+  // PLACEHOLDER THEME VALUES FOR JETBRAINS DARCULA THEME
+
+  --codestudio-theme-editor-token-keyword-color: #cf8e6d;
+  --codestudio-theme-editor-token-keyword-background: #0000;
+
+  --codestudio-theme-editor-token-string-color: #5caa66;
+  --codestudio-theme-editor-token-string-background: #0000;
+
+  --codestudio-theme-editor-token-number-color: #cf8e6d;
+  --codestudio-theme-editor-token-number-background: #0000;
+
+  --codestudio-theme-editor-token-punctuation-color: #bcbec4;
+  --codestudio-theme-editor-token-punctuation-background: #0000;
+
+  --codestudio-theme-editor-token-operator-color: #bcbec4;
+  --codestudio-theme-editor-token-operator-background: #0000;
+
+  --codestudio-theme-editor-token-comment-color: #6b7d74;
+  --codestudio-theme-editor-token-comment-background: #0000;
+
+  --codestudio-theme-editor-token-parameter-color: #bcbec4;
+  --codestudio-theme-editor-token-parameter-background: #0000;
+
+  --codestudio-theme-editor-token-variable-color: #bcbec4;
+  --codestudio-theme-editor-token-variable-background: #0000;
+
+  --codestudio-theme-editor-token-function-color: #cf8e6d;
+  --codestudio-theme-editor-token-function-background: #0000;
+
+  --codestudio-theme-editor-token-type-color: #cf8e6d;
+  --codestudio-theme-editor-token-type-background: #0000;
+
+  --codestudio-theme-editor-token-other-color: #bcbec4;
+  --codestudio-theme-editor-token-other-background: #0000;
+
+  --codestudio-theme-editor-token-xml-tag-color: #d4b66b;
+  --codestudio-theme-editor-token-xml-tag-background: #0000;
+
+  --codestudio-theme-editor-token-xml-attribute-key-color: #bcbec4;
+  --codestudio-theme-editor-token-xml-attribute-key-background: #0000;
+
+  --codestudio-theme-editor-token-xml-attribute-value-color: #5caa66;
+  --codestudio-theme-editor-token-xml-attribute-value-background: #0000;
+}
+
+.other {
+  color: var(--codestudio-theme-editor-token-other-color);
+  background: var(--codestudio-theme-editor-token-other-background);
+}
+
+.function {
+  color: var(--codestudio-theme-editor-token-function-color);
+  background: var(--codestudio-theme-editor-token-function-background);
+}
+
+.parameter {
+  color: var(--codestudio-theme-editor-token-parameter-color);
+  background: var(--codestudio-theme-editor-token-parameter-background);
+}
+
+.type {
+  color: var(--codestudio-theme-editor-token-type-color);
+  background: var(--codestudio-theme-editor-token-type-background);
+}
+
+.variable {
+  color: var(--codestudio-theme-editor-token-variable-color);
+  background: var(--codestudio-theme-editor-token-variable-background);
+}
+
+.string {
+  color: var(--codestudio-theme-editor-token-string-color);
+  background: var(--codestudio-theme-editor-token-string-background);
+}
+
+.number {
+  color: var(--codestudio-theme-editor-token-number-color);
+  background: var(--codestudio-theme-editor-token-number-background);
+}
+
+.punctuation {
+  color: var(--codestudio-theme-editor-token-punctuation-color);
+  background: var(--codestudio-theme-editor-token-punctuation-background);
+}
+
+.comment {
+  color: var(--codestudio-theme-editor-token-comment-color);
+  background: var(--codestudio-theme-editor-token-comment-background);
+}
+
+.keyword {
+  color: var(--codestudio-theme-editor-token-keyword-color);
+  background: var(--codestudio-theme-editor-token-keyword-background);
+}
+
+.operator {
+  color: var(--codestudio-theme-editor-token-operator-color);
+  background: var(--codestudio-theme-editor-token-operator-background);
+}
+
+.xmlTag {
+  color: var(--codestudio-theme-editor-token-xml-tag-color);
+  background: var(--codestudio-theme-editor-token-xml-tag-background);
+}
+
+.xmlAttributeKey {
+  color: var(--codestudio-theme-editor-token-xml-attribute-key-color);
+  background: var(--codestudio-theme-editor-token-xml-attribute-key-background);
+}
+
+.xmlAttributeValue {
+  color: var(--codestudio-theme-editor-token-xml-attribute-value-color);
+  background: var(--codestudio-theme-editor-token-xml-attribute-value-background);
+}
+
+.parseFailure {
+  @keyframes tokenParseFailure {
+    0% {
+      opacity: 1;
+      background-position-x: 0;
+    }
+    50% {
+      opacity: 0.5;
+      background-position-x: 100%;
+    }
+  }
+
+  color: white;
+  animation: tokenParseFailure 1s infinite ease-in-out;
+  border-radius: 0.25rem;
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+  margin-left: 0.125rem;
+  margin-right: 0.125rem;
+  background: linear-gradient(
+      to right,
+      #f8be34,
+      #f86c6c
+  );
+  background-size: 100%;
+  background-position-y: 50%;
+  background-position-x: 0%;
+}

@@ -1,0 +1,58 @@
+/*!
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
+@use "@yourdash/uikit/src/theme/themeValues" as *;
+
+.component {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  overflow: hidden;
+  border-radius: var(#{$theme+$button+$radius});
+  border: 1px solid rgb(var(--container-border));
+  width: 100%;
+  outline: var(#{$theme+$accent}) solid 0;
+  transition: var(--transition);
+  position: relative;
+
+  &:hover {
+    transition: var(--transition-fast);
+    border-color: rgb(var(--theme-400));
+    outline: var(#{$theme+$accent}) solid 0.25rem;
+  }
+
+  .image {
+    max-height: 400px;
+    height: 100%;
+    border-radius: 0;
+  }
+}
+
+.videoOverlay {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.25rem;
+  padding: 0.125rem 0.25rem;
+  background: rgb(var(#{$theme+$background}));
+  border-radius: 0.25rem;
+  border: var(#{$theme+$border});
+
+  .videoIcon {
+    width: 1.25rem;
+  }
+}
+
+.dimensionOverlay {
+  position: absolute;
+  bottom: 0.25rem;
+  left: 0.25rem;
+  padding: 0.125rem 0.25rem;
+  background: rgb(var(#{$theme+$background}));
+  border-radius: 0.25rem;
+  border: var(#{$theme+$border});
+  font-size: 0.75rem;
+}

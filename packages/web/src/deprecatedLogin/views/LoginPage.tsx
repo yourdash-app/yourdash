@@ -1,14 +1,14 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2025 @Ewsgit and YourDash contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 import Button from "@yourdash/chiplet/components/button/Button.tsx";
 import Card from "@yourdash/chiplet/components/card/Card.tsx";
-import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary.ts";
 import IconButton from "@yourdash/chiplet/components/iconButton/IconButton.tsx";
 import MajorButton from "@yourdash/chiplet/components/majorButton/MajorButton.tsx";
 import TextInput from "@yourdash/chiplet/components/textInput/TextInput.tsx";
+import { UKIcon } from "packages/uikit/src/core/iconDictionary.ts";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -38,7 +38,9 @@ const LoginPage: React.FC = () => {
               setInstanceUrl(`${value}:3563`);
             }
           }}
-          mustMatchRegex={/^(?:https?:\/\/)?(?:\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(?::\d+)?|localhost(?::\d+)?|(?!.*\.$)[\w.-]+\.[a-z]{2,})(?::\d+)?$/}
+          mustMatchRegex={
+            /^(?:https?:\/\/)?(?:\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(?::\d+)?|localhost(?::\d+)?|(?!.*\.$)[\w.-]+\.[a-z]{2,})(?::\d+)?$/
+          }
           accessibleName={"Instance URL"}
         />
         <MajorButton
@@ -63,10 +65,17 @@ const LoginPage: React.FC = () => {
         </MajorButton>
       </Card>
       <header className={"absolute top-0 left-0 w-full h-16 flex items-center justify-center gap-2"}>
-        <IconButton icon={UKIcon.ChevronLeft} className={"mr-auto ml-3.5"} />
+        <IconButton
+          icon={UKIcons.ChevronLeft}
+          className={"mr-auto ml-3.5"}
+        />
       </header>
       <footer className={"absolute bottom-0 left-0 w-full h-16 flex items-center gap-2 pl-3 bg-container-bg"}>
-        <img src={"/assets/productLogos/yourdash.svg"} className={"h-full pt-3 pb-3"} alt={""} />
+        <img
+          src={"/assets/productLogos/yourdash.svg"}
+          className={"h-full pt-3 pb-3"}
+          alt={""}
+        />
         <h3 className={"font-bold text-3xl"}>{"YourDash"}</h3>
         <Button
           className={"ml-auto"}

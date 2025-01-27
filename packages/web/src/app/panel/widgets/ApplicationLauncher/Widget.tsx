@@ -1,11 +1,11 @@
 /*
- * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import Icon from "@yourdash/uikit/components/icon/icon.tsx";
-import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary.ts";
-import DecrementLevel from "@yourdash/uikit/core/decrementLevel.tsx";
+import UKIcon from "@yourdash/uikit/src/components/icon/UKIcon.js";
+import DecrementLevel from "@yourdash/uikit/src/core/decrementLevel.js";
+import { UKIcons } from "@yourdash/uikit/src/core/iconDictionary.js";
 import React, { useEffect } from "react";
 import styles from "./Widget.module.scss";
 import ApplicationLauncher from "./launcher/Launcher.tsx";
@@ -27,8 +27,8 @@ const ApplicationLauncherWidget: React.FC<{ side: "top" | "right" | "bottom" | "
           className={styles.launcherButton}
           onClick={() => setLauncherVisible(!launcherVisible)}
         >
-          <Icon
-            icon={UKIcon.AppLauncher}
+          <UKIcon
+            icon={UKIcons.AppLauncher}
             className={styles.launcherButtonIcon}
           />
         </button>

@@ -1,0 +1,145 @@
+/*!
+ * Copyright ©2025 Ewsgit<https://ewsgit.uk> and YourDash<https://yourdash.ewsgit.uk> contributors.
+ * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
+ */
+
+@use "@yourdash/uikit/src/theme/themeValues" as *;
+
+//.page {
+//  display: grid;
+//  grid-template-rows: auto 1fr auto;
+//  height: 100%;
+//}
+//
+//.header {
+//  --bottom-padding: 1rem;
+//  --bottom-padding-value: var(--bottom-padding);
+//  display: flex;
+//  padding: 1rem;
+//  padding-bottom: var(--bottom-padding-value);
+//  justify-content: center;
+//  align-items: center;
+//  background: linear-gradient(-45deg, #ff8093aa, #ffd264aa);
+//  transition: var(#{$theme+$transition});
+//  position: relative;
+//}
+//
+//.tallHeader {
+//  padding-top: 6rem;
+//  --bottom-padding: 6rem;
+//  --bottom-padding-value: var(--bottom-padding);
+//}
+//
+//.headerEditMode {
+//  --bottom-padding-value: calc(var(--bottom-padding) + 2rem)
+//}
+//
+//.headerActions {
+//  position: absolute;
+//  bottom: 0;
+//  right: 0;
+//  padding: var(#{$theme+$padding});
+//}
+//
+//.widgetGrid {
+//  width: 100%;
+//  height: 100%;
+//  display: grid;
+//  gap: 0.5rem;
+//  padding: 1rem;
+//  max-width: 64rem;
+//  margin: auto;
+//  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+//  grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+//}
+//
+//.widgetGridWidget {
+//  display: flex;
+//  flex-direction: column;
+//  gap: 0.5rem;
+//}
+//
+//.actions {
+//  position: absolute;
+//  right: 0;
+//  bottom: 0;
+//  padding: 0.5rem;
+//  gap: 0.25rem;
+//  display: flex;
+//  flex-direction: row;
+//  justify-content: center;
+//}
+//
+//.footer {
+//  position: relative;
+//  padding: var(#{$theme+$padding});
+//  justify-content: center;
+//  align-items: center;
+//  gap: var(#{$theme+$gap});
+//}
+//
+//.centeredContent {
+//  display: flex;
+//  align-items: center;
+//  justify-content: center;
+//  flex-direction: column;
+//  gap: var(#{$theme+$padding});
+//}
+
+.page {
+  padding: 0;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+  max-height: max-content;
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+.header {
+  width: calc(100% - $UKPadding * 2);
+  background-color: rgb($UKBackground, var(--opacity));
+  border-radius: $UKRadius;
+  margin: $UKPadding;
+}
+
+.widgetsCarouselContainer {
+  margin-left: $UKPadding;
+  margin-right: $UKPadding;
+  margin-bottom: $UKPadding;
+  display: flex;
+  align-items: start;
+  justify-content: center;
+}
+
+.editModeCardContainer {
+  margin-left: $UKPadding;
+  margin-right: $UKPadding;
+  margin-bottom: $UKPadding;
+  width: calc(100% - calc($UKPadding * 2));
+}
+
+.editModeCard {
+}
+
+.carousel {
+  background: transparent;
+  height: 100%;
+  width: 100%;
+  max-width: 72rem;
+  max-height: 48rem;
+
+  > div[data-pages] {
+    height: 100%;
+    width: 100%;
+  }
+}
+
+.widgetGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  width: 100%;
+  gap: $UKGap;
+}

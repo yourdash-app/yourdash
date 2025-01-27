@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 Ewsgit<https://ewsgit.uk> and YourDash<https://yourdash.ewsgit.uk> contributors.
+ * Copyright ©2025 Ewsgit<https://ewsgit.uk> and YourDash<https://yourdash.ewsgit.uk> contributors.
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
@@ -10,6 +10,7 @@ import pth from "path";
 import { Core } from "./core.js";
 import sharp from "sharp";
 import { USER_PATHS } from "./user/index.js";
+import { z } from "zod";
 
 export enum AUTHENTICATED_IMAGE_TYPE {
   BASE64,
@@ -26,11 +27,7 @@ interface IauthenticatedImage<T extends AUTHENTICATED_IMAGE_TYPE> {
 
 export default class CoreImage {
   private core: Core;
-  // private readonly AUTHENTICATED_IMAGES: {
-  //   [username: string]: {
-  //     [id: string]: IauthenticatedImage<AUTHENTICATED_IMAGE_TYPE>;
-  //   };
-  // };
+  // username - sessionId - imageuuid
   private readonly authenticatedImages: Map<string, Map<string, Map<string, IauthenticatedImage<AUTHENTICATED_IMAGE_TYPE>>>>;
 
   constructor(core: Core) {
@@ -166,7 +163,7 @@ export default class CoreImage {
   __internal__loadEndpoints() {
     this.core.request.setNamespace("core/auth-img");
 
-    this.core.request.get("/:username/:sessionId/:id", async (req, res) => {
+    this.core.request.get("/:username/:sessionId/:id", z.unknown(), async (req, res) => {
       const { username, sessionId, id } = req.params;
 
       const image = this.authenticatedImages.get(username)?.get(sessionId)?.get(id);

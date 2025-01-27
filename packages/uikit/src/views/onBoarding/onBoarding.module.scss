@@ -1,0 +1,84 @@
+@use "../../theme/themeValues.scss" as *;
+
+.page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  animation: fadeIn 1s 0s cubic-bezier(0.215, 0.610, 0.355, 1);
+
+  &::before {
+    content: "";
+    //noinspection CssUnknownTarget
+    background-image: url("/assets/productLogos/yourdash.svg");
+    background-size: 20rem;
+    background-repeat: repeat;
+    width: 1000rem;
+    height: 1000rem;
+    position: absolute;
+    filter: blur(0.25rem) grayscale(1);
+    opacity: 0.1;
+    transform: rotate(-45deg);
+    z-index: -1;
+  }
+
+  @keyframes fadeIn {
+    from {
+      transform: translateY(2.5rem);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: calc(var(#{$theme+$gap}) * 2);
+  padding: 2rem;
+  position: relative;
+  transition: var(--transition);
+}
+
+.cardContainer {
+  box-shadow: #00000088 0 0 4rem;
+}
+
+.goBackButton {
+  position: absolute;
+  top: var(#{$theme+$padding});
+  left: var(#{$theme+$padding});
+}
+
+.headerImage {
+  height: 16rem;
+}
+
+.header {
+  line-height: 1;
+  text-align: center;
+}
+
+.body {
+  text-align: center;
+}
+
+.actions {
+}
+
+.action {
+}
+
+.actionWithoutIcon {
+}
+
+.actionWithIcon {
+}

@@ -1,0 +1,361 @@
+@use "themeValues" as *;
+
+/*!
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
+.theme {
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: 100%;
+
+  background: rgb(var(#{$theme+$background}));
+  #{$theme}-author: "Ewsgit";
+  #{$theme}-name: "YourDash Classic Dark";
+  #{$theme}-version: "0.0.1";
+
+  ::-webkit-scrollbar {
+    width: var(#{$theme+$scrollbar+$width});
+    border-radius: 0;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: var(#{$theme+$scrollbar+$radius});
+  }
+}
+
+.level0 {
+  color: rgb(var(#{$theme+$color}));
+
+  #{$theme+$color}: 255, 255, 255;
+  #{$theme+$subcolor}: 187, 187, 187;
+  #{$theme+$background}: 34, 34, 34;
+  #{$theme+$accent}: 118, 140, 231;
+  #{$theme+$border}: 1px solid #555555;
+  #{$theme+$radius}: 1rem;
+  #{$theme+$padding}: 1rem;
+  #{$theme+$gap}: 0.5rem;
+  #{$theme+$transition}: all 200ms ease-in-out;
+  #{$theme+$transition+$transition}: 200ms ease-in-out;
+  #{$theme+$separator+$size}: 1px;
+  #{$theme+$separator+$color}: 68, 68, 68;
+  #{$theme+$scrollbar+$width}: 0.4rem;
+  #{$theme+$scrollbar+$radius}: 0.1rem;
+
+  // heading
+  #{$theme+$heading+$h1+$weight}: 900;
+  #{$theme+$heading+$h1+$size}: 3rem;
+  #{$theme+$heading+$h2+$weight}: 700;
+  #{$theme+$heading+$h2+$size}: 2rem;
+  #{$theme+$heading+$h3+$weight}: 600;
+  #{$theme+$heading+$h3+$size}: 1.5rem;
+  #{$theme+$heading+$h4+$weight}: 500;
+  #{$theme+$heading+$h4+$size}: 1.25rem;
+  #{$theme+$heading+$h5+$weight}: 500;
+  #{$theme+$heading+$h5+$size}: 1rem;
+  #{$theme+$heading+$h6+$weight}: 500;
+  #{$theme+$heading+$h6+$size}: 0.875rem;
+
+  // input
+  #{$theme+$input+$color}: 255, 255, 255;
+  #{$theme+$input+$background}: 34, 34, 34;
+  #{$theme+$input+$border}: 1px solid #444444;
+  #{$theme+$input+$radius}: 0.5rem;
+  #{$theme+$input+$height}: 2rem;
+  #{$theme+$input+$padding+$horizontal}: 0.5rem;
+  #{$theme+$input+$transition}: all 0.2s ease-in-out;
+  // focus
+  #{$theme+$input+$focus+$color}: 255, 255, 255;
+  #{$theme+$input+$focus+$background}: 51, 51, 51;
+  #{$theme+$input+$focus+$border}: 1px solid #666666;
+
+  // button
+  #{$theme+$button+$color}: 255, 255, 255;
+  #{$theme+$button+$background}: 68, 68, 68;
+  #{$theme+$button+$border}: 0px solid #666666;
+  #{$theme+$button+$font+$size}: 0.9rem;
+  #{$theme+$button+$font+$weight}: 400;
+  #{$theme+$button+$radius}: 0.5rem;
+  #{$theme+$button+$padding+$horizontal}: 0.5rem;
+  #{$theme+$button+$transition}: all 0.2s ease-in-out;
+  // hover
+  #{$theme+$button+$hover+$color}: 255, 255, 255;
+  #{$theme+$button+$hover+$background}: 85, 85, 85;
+  #{$theme+$button+$hover+$border}: 0px solid #666666;
+  #{$theme+$button+$hover+$radius}: 0.5rem;
+  #{$theme+$button+$hover+$transition}: all 50ms ease-in-out;
+  // active
+  #{$theme+$button+$active+$color}: 0, 0, 0;
+  #{$theme+$button+$active+$background}: 102, 102, 102;
+  #{$theme+$button+$active+$border}: 0px solid #777777;
+  #{$theme+$button+$active+$radius}: 0.5rem;
+  #{$theme+$button+$active+$transition}: all 50ms ease-in-out;
+
+  // text button
+  #{$theme+$textbutton+$font+$weight}: 700;
+
+  // font
+  #{$theme+$font+$family}: Inter;
+  #{$theme+$font+$size}: 0.9rem;
+  #{$theme+$font+$weight}: 400;
+
+  // header
+  #{$theme+$header+$color}: 255, 255, 255;
+  #{$theme+$header+$font+$family}: Inter;
+  #{$theme+$header+$font+$size}: 1.2rem;
+  #{$theme+$header+$font+$weight}: 700;
+  #{$theme+$header+$padding+$vertical}: 1rem;
+  #{$theme+$header+$padding+$horizontal}: 0.5rem;
+}
+
+.level1 {
+  color: rgb(var(#{$theme+$color}));
+
+  #{$theme+$color}: 255, 255, 255;
+  #{$theme+$background}: 51, 51, 51;
+  #{$theme+$border}: 1px solid #666666;
+  #{$theme+$accent}: 118, 140, 231;
+  #{$theme+$radius}: 0.5rem;
+  #{$theme+$font+$family}: Inter;
+  #{$theme+$font+$radius}: 0.9rem;
+  #{$theme+$font+$weight}: 400;
+  #{$theme+$padding}: 0.75rem;
+  #{$theme+$gap}: 0.5rem;
+  #{$theme+$transition}: all 200ms ease-in-out;
+  #{$theme+$separator+$size}: 1px;
+  #{$theme+$separator+$color}: 85, 85, 85;
+
+  // heading
+  #{$theme+$heading+$h1+$weight}: 800;
+  #{$theme+$heading+$h1+$size}: 3rem;
+  #{$theme+$heading+$h2+$weight}: 700;
+  #{$theme+$heading+$h2+$size}: 2.5rem;
+  #{$theme+$heading+$h3+$weight}: 600;
+  #{$theme+$heading+$h3+$size}: 2rem;
+  #{$theme+$heading+$h4+$weight}: 500;
+  #{$theme+$heading+$h4+$size}: 1.5rem;
+  #{$theme+$heading+$h5+$weight}: 500;
+  #{$theme+$heading+$h5+$size}: 1rem;
+  #{$theme+$heading+$h6+$weight}: 500;
+  #{$theme+$heading+$h6+$size}: 0.875rem;
+
+  // input
+  #{$theme+$input+$color}: 255, 255, 255;
+  #{$theme+$input+$background}: 34, 34, 34;
+  #{$theme+$input+$border}: 1px solid #444444;
+  #{$theme+$input+$radius}: 0.5rem;
+  #{$theme+$input+$height}: 2rem;
+  #{$theme+$input+$padding+$horizontal}: 0.5rem;
+  #{$theme+$input+$transition}: all 0.2s ease-in-out;
+  // focus
+  #{$theme+$input+$focus+$color}: 255, 255, 255;
+  #{$theme+$input+$focus+$background}: 51, 51, 51;
+  #{$theme+$input+$focus+$border}: 1px solid #666666;
+
+  // button
+  #{$theme+$button+$color}: 255, 255, 255;
+  #{$theme+$button+$background}: 68, 68, 68;
+  #{$theme+$button+$border}: 0px solid #444444;
+  #{$theme+$button+$font+$size}: 0.9rem;
+  #{$theme+$button+$font+$weight}: 400;
+  #{$theme+$button+$radius}: 0.5rem;
+  #{$theme+$button+$padding+$horizontal}: 0.5rem;
+  #{$theme+$button+$transition}: all 0.2s ease-in-out;
+  // hover
+  #{$theme+$button+$hover+$color}: 255, 255, 255;
+  #{$theme+$button+$hover+$background}: 85, 85, 85;
+  #{$theme+$button+$hover+$border}: 0px solid #666666;
+  #{$theme+$button+$hover+$radius}: 0.5rem;
+  #{$theme+$button+$hover+$transition}: all 50ms ease-in-out;
+  // active
+  #{$theme+$button+$active+$color}: 0, 0, 0;
+  #{$theme+$button+$active+$background}: 102, 102, 102;
+  #{$theme+$button+$active+$border}: 0px solid #666666;
+  #{$theme+$button+$active+$radius}: 0.5rem;
+
+  // header
+  #{$theme+$header+$color}: 255, 255, 255;
+  #{$theme+$header+$font+$family}: Inter;
+  #{$theme+$header+$font+$size}: 1.2rem;
+  #{$theme+$header+$font+$weight}: 700;
+  #{$theme+$header+$padding+$vertical}: 0.5rem;
+  #{$theme+$header+$padding+$horizontal}: 0.25rem;
+}
+
+.level2 {
+  color: rgb(var(#{$theme+$color}));
+
+  #{$theme+$color}: 255, 255, 255;
+  #{$theme+$background}: 68, 68, 68;
+  #{$theme+$border}: 1px solid #666666;
+  #{$theme+$accent}: 118, 140, 231;
+  #{$theme+$radius}: 0.25rem;
+  #{$theme+$padding}: 0.5rem;
+  #{$theme+$gap}: 0.75rem;
+  #{$theme+$transition}: all 200ms ease-in-out;
+  #{$theme+$separator+$size}: 1px;
+  #{$theme+$separator+$color}: 85, 85, 85;
+
+  // heading
+  #{$theme+$heading+$h1+$weight}: 900;
+  #{$theme+$heading+$h1+$size}: 3rem;
+  #{$theme+$heading+$h2+$weight}: 700;
+  #{$theme+$heading+$h2+$size}: 2rem;
+  #{$theme+$heading+$h3+$weight}: 600;
+  #{$theme+$heading+$h3+$size}: 1.5rem;
+  #{$theme+$heading+$h4+$weight}: 500;
+  #{$theme+$heading+$h4+$size}: 1.25rem;
+  #{$theme+$heading+$h5+$weight}: 500;
+  #{$theme+$heading+$h5+$size}: 1rem;
+  #{$theme+$heading+$h6+$weight}: 500;
+  #{$theme+$heading+$h6+$size}: 0.875rem;
+
+  // text button
+  #{$theme+$textbutton+$font+$weight}: 700;
+
+  // font
+  #{$theme+$font+$family}: Inter;
+  #{$theme+$font+$size}: 0.9rem;
+  #{$theme+$font+$weight}: 400;
+
+  // input
+  #{$theme+$input+$color}: 255, 255, 255;
+  #{$theme+$input+$background}: 34, 34, 34;
+  #{$theme+$input+$border}: 1px solid #444444;
+  #{$theme+$input+$radius}: 0.5rem;
+  #{$theme+$input+$height}: 2rem;
+  #{$theme+$input+$padding+$horizontal}: 0.5rem;
+  #{$theme+$input+$transition}: all 0.2s ease-in-out;
+  // focus
+  #{$theme+$input+$focus+$color}: 255, 255, 255;
+  #{$theme+$input+$focus+$background}: 51, 51, 51;
+  #{$theme+$input+$focus+$border}: 1px solid #666666;
+
+  // button
+  #{$theme+$button+$color}: 255, 255, 255;
+  #{$theme+$button+$background}: 85, 85, 85;
+  #{$theme+$button+$border}: 0px solid #666666;
+  #{$theme+$button+$font+$family}: Inter;
+  #{$theme+$button+$font+$size}: 0.9rem;
+  #{$theme+$button+$font+$weight}: 400;
+  #{$theme+$button+$radius}: 0.25rem;
+  #{$theme+$button+$padding+$horizontal}: 0.5rem;
+  #{$theme+$button+$transition}: all 0.2s ease-in-out;
+  // hover
+  #{$theme+$button+$hover+$color}: 255, 255, 255;
+  #{$theme+$button+$hover+$background}: 102, 102, 102;
+  #{$theme+$button+$hover+$border}: 0px solid #666666;
+  #{$theme+$button+$hover+$radius}: 0.25rem;
+  #{$theme+$button+$hover+$transition}: all 50ms ease-in-out;
+  // active
+  #{$theme+$button+$active+$color}: 0, 0, 0;
+  #{$theme+$button+$active+$background}: 102, 102, 102;
+  #{$theme+$button+$active+$border}: 0px solid #666666;
+  #{$theme+$button+$active+$radius}: 0.25rem;
+
+  // header
+  #{$theme+$header+$color}: 255, 255, 255;
+  #{$theme+$header+$font+$family}: Inter;
+  #{$theme+$header+$font+$size}: 1.2rem;
+  #{$theme+$header+$font+$weight}: 700;
+  #{$theme+$header+$padding+$vertical}: 0.5rem;
+  #{$theme+$header+$padding+$horizontal}: 0.25rem;
+}
+
+.level3 {
+  color: rgb(var(#{$theme+$color}));
+
+  #{$theme+$color}: 255, 255, 255;
+  #{$theme+$background}: 85, 85, 85;
+  #{$theme+$border}: 1px solid #666666;
+  #{$theme+$accent}: 118, 140, 231;
+  #{$theme+$radius}: 1px;
+  #{$theme+$padding}: 0.5rem;
+  #{$theme+$gap}: 1rem;
+  #{$theme+$transition}: all 200ms ease-in-out;
+  #{$theme+$separator+$size}: 1px;
+  #{$theme+$separator+$color}: 85, 85, 85;
+
+  // heading
+  #{$theme+$heading+$h1+$weight}: 900;
+  #{$theme+$heading+$h1+$size}: 3rem;
+  #{$theme+$heading+$h2+$weight}: 700;
+  #{$theme+$heading+$h2+$size}: 2rem;
+  #{$theme+$heading+$h3+$weight}: 600;
+  #{$theme+$heading+$h3+$size}: 1.5rem;
+  #{$theme+$heading+$h4+$weight}: 500;
+  #{$theme+$heading+$h4+$size}: 1.25rem;
+  #{$theme+$heading+$h5+$weight}: 500;
+  #{$theme+$heading+$h5+$size}: 1rem;
+  #{$theme+$heading+$h6+$weight}: 500;
+  #{$theme+$heading+$h6+$size}: 0.875rem;
+
+  // text button
+  #{$theme+$textbutton+$font+$weight}: 700;
+
+  // font
+  #{$theme+$family}: Inter;
+  #{$theme+$size}: 0.9rem;
+  #{$theme+$weight}: 400;
+
+  // input
+  #{$theme+$input+$color}: 255, 255, 255;
+  #{$theme+$input+$background}: 34, 34, 34;
+  #{$theme+$input+$border}: 1px solid #444444;
+  #{$theme+$input+$radius}: 0.5rem;
+  #{$theme+$input+$height}: 2rem;
+  #{$theme+$input+$padding+$horizontal}: 0.5rem;
+  #{$theme+$input+$transition}: all 0.2s ease-in-out;
+  // focus
+  #{$theme+$input+$focus+$color}: 255, 255, 255;
+  #{$theme+$input+$focus+$background}: 51, 51, 51;
+  #{$theme+$input+$focus+$border}: 1px solid #666666;
+
+  // button
+  #{$theme+$button+$color}: 255, 255, 255;
+  #{$theme+$button+$background}: 102, 102, 102;
+  #{$theme+$button+$border}: 0px solid #666666;
+  #{$theme+$button+$font+$family}: Inter;
+  #{$theme+$button+$font+$size}: 0.9rem;
+  #{$theme+$button+$font+$weight}: 400;
+  #{$theme+$button+$radius}: 0.25rem;
+  #{$theme+$button+$padding+$horizontal}: 0.5rem;
+  // hover
+  #{$theme+$button+$hover+$color}: 255, 255, 255;
+  #{$theme+$button+$hover+$background}: 119, 119, 119;
+  #{$theme+$button+$hover+$border}: 0px solid #777777;
+  #{$theme+$button+$hover+$radius}: 0.25rem;
+  #{$theme+$button+$hover+$transition}: all 50ms ease-in-out;
+  // active
+  #{$theme+$button+$active+$color}: 0, 0, 0;
+  #{$theme+$button+$active+$background}: 119, 119, 119;
+  #{$theme+$button+$active+$border}: 0px solid #777777;
+  #{$theme+$button+$active+$radius}: 0.25rem;
+
+  // header
+  #{$theme+$header+$color}: 255, 255, 255;
+  #{$theme+$header+$font+$family}: Inter;
+  #{$theme+$header+$font+$size}: 1.2rem;
+  #{$theme+$header+$font+$weight}: 700;
+  #{$theme+$header+$padding+$vertical}: 0.5rem;
+  #{$theme+$header+$padding+$horizontal}: 0.25rem;
+}
+
+.mobile {
+  .level0 {
+    #{$theme+$input+$height}: 2.5rem;
+  }
+
+  .level1 {
+    #{$theme+$input+$height}: 2.5rem;
+  }
+
+  .level2 {
+    #{$theme+$input+$height}: 2.5rem;
+  }
+
+  .level3 {
+    #{$theme+$input+$height}: 2.5rem;
+  }
+}

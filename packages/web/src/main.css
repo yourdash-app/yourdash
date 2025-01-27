@@ -38,7 +38,8 @@
   --transition: all 100ms ease-in-out;
   --transition-fast: all 25ms ease-in-out;
 
-  /* uses the rgb color method without alpha values */
+/*deprecated chipletui variables*/
+/*  !* uses the rgb color method without alpha values *!
   --theme-50: 238 242 255;
   --theme-100: 224 231 255;
   --theme-200: 199 210 254;
@@ -50,7 +51,7 @@
   --theme-800: 55 48 163;
   --theme-900: 49 46 129;
 
-  /* uses the rgb color method without alpha values */
+  !* uses the rgb color method without alpha values *!
   --base-50: 249 250 251;
   --base-100: 243 244 246;
   --base-200: 229 231 235;
@@ -63,7 +64,7 @@
   --base-900: 17 24 39;
   --base-950: 2 6 23;
 
-  /*
+  !*
       Default theme variables
 
       - input focus (outline)
@@ -72,11 +73,11 @@
       - separator
       - handle
       - success and failure, normal, hover and active
-  */
+  *!
 
   --bg: var(--base-800);
 
-  /* font weights */
+  !* font weights *!
   --weight-light: 300;
   --weight-regular: 400;
   --weight-medium: 500;
@@ -107,7 +108,7 @@
   --container-tertiary-padding: 0.5rem;
   --container-tertiary-rounding: 0.25rem;
 
-  /*--button-rounding: 0;*/
+  !*--button-rounding: 0;*!
   --button-rounding: 0.5rem;
   --button-bg: var(--base-600);
   --button-fg: var(--base-200);
@@ -116,14 +117,14 @@
   --button-active-bg: var(--base-400);
   --button-active-fg: var(--base-900);
 
-  /*--input-rounding: 0;*/
+  !*--input-rounding: 0;*!
   --input-rounding: 0.5rem;
   --input-bg: var(--base-600);
   --input-fg: var(--base-200);
   --input-hover-bg: var(--base-500);
   --input-hover-fg: var(--base-50);
   --input-active-bg: var(--base-400);
-  --input-active-fg: var(--base-900);
+  --input-active-fg: var(--base-900);*/
 }
 
 ::-webkit-scrollbar {
@@ -165,11 +166,6 @@
 /*    --base-50: 17 24 39;*/
 /*  }*/
 /*}*/
-
-/*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
- * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
- */
 
 @font-face {
   font-family: Inter;

@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 Ewsgit<https://ewsgit.uk> and YourDash<https://yourdash.ewsgit.uk> contributors.
+ * Copyright ©2025 Ewsgit<https://ewsgit.uk> and YourDash<https://yourdash.ewsgit.uk> contributors.
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
@@ -10,6 +10,7 @@ import { Core } from "./core.js";
 import { AUTHENTICATED_IMAGE_TYPE } from "./coreImage.js";
 import YourDashUser from "./user/index.js";
 import UserDatabase from "./user/userDatabase.js";
+import z from "zod";
 
 // increase for drastically better security but slightly slower performance for high quantities of user sessions
 const YOURDASH_USER_SESSION_TOKEN_LENGTH = 128;
@@ -145,7 +146,7 @@ export default class CoreUsers {
   }
 
   __internal__loadEndpoints() {
-    this.core.request.get(`/core/user/current/avatar/${USER_AVATAR_SIZE.SMALL}`, async (req, res) => {
+    this.core.request.get(`/core/user/current/avatar/${USER_AVATAR_SIZE.SMALL}`, z.unknown(), async (req, res) => {
       const { username, sessionid } = req.headers;
 
       const avatarPath = new YourDashUser(username).getAvatar(USER_AVATAR_SIZE.LARGE);
@@ -156,7 +157,7 @@ export default class CoreUsers {
         .send(this.core.image.createAuthenticatedImage(username, sessionid, AUTHENTICATED_IMAGE_TYPE.FILE, path.resolve(avatarPath)));
     });
 
-    this.core.request.get(`/core/user/current/avatar/${USER_AVATAR_SIZE.MEDIUM}`, async (req, res) => {
+    this.core.request.get(`/core/user/current/avatar/${USER_AVATAR_SIZE.MEDIUM}`, z.unknown(), async (req, res) => {
       const { username, sessionid } = req.headers;
 
       const avatarPath = new YourDashUser(username).getAvatar(USER_AVATAR_SIZE.MEDIUM);
@@ -167,7 +168,7 @@ export default class CoreUsers {
         .send(this.core.image.createAuthenticatedImage(username, sessionid, AUTHENTICATED_IMAGE_TYPE.FILE, path.resolve(avatarPath)));
     });
 
-    this.core.request.get(`/core/user/current/avatar/${USER_AVATAR_SIZE.LARGE}`, async (req, res) => {
+    this.core.request.get(`/core/user/current/avatar/${USER_AVATAR_SIZE.LARGE}`, z.unknown(), async (req, res) => {
       const { username, sessionid } = req.headers;
 
       const avatarPath = new YourDashUser(username).getAvatar(USER_AVATAR_SIZE.LARGE);
@@ -178,7 +179,7 @@ export default class CoreUsers {
         .send(this.core.image.createAuthenticatedImage(username, sessionid, AUTHENTICATED_IMAGE_TYPE.FILE, path.resolve(avatarPath)));
     });
 
-    this.core.request.get(`/core/user/current/avatar/${USER_AVATAR_SIZE.EXTRA_LARGE}`, async (req, res) => {
+    this.core.request.get(`/core/user/current/avatar/${USER_AVATAR_SIZE.EXTRA_LARGE}`, z.unknown(), async (req, res) => {
       const { username, sessionid } = req.headers;
 
       const avatarPath = new YourDashUser(username).getAvatar(USER_AVATAR_SIZE.EXTRA_LARGE);
@@ -189,7 +190,7 @@ export default class CoreUsers {
         .send(this.core.image.createAuthenticatedImage(username, sessionid, AUTHENTICATED_IMAGE_TYPE.FILE, path.resolve(avatarPath)));
     });
 
-    this.core.request.get(`/core/user/current/avatar/${USER_AVATAR_SIZE.ORIGINAL}`, async (req, res) => {
+    this.core.request.get(`/core/user/current/avatar/${USER_AVATAR_SIZE.ORIGINAL}`, z.unknown(), async (req, res) => {
       const { username, sessionid } = req.headers;
 
       const avatarPath = new YourDashUser(username).getAvatar(USER_AVATAR_SIZE.ORIGINAL);
@@ -200,7 +201,7 @@ export default class CoreUsers {
         .send(this.core.image.createAuthenticatedImage(username, sessionid, AUTHENTICATED_IMAGE_TYPE.FILE, path.resolve(avatarPath)));
     });
 
-    this.core.request.get(`/core/user/current/fullname`, async (req, res) => {
+    this.core.request.get(`/core/user/current/fullname`, z.object({ first: z.string(), last: z.string() }), async (req, res) => {
       const { username } = req.headers;
 
       const user = new YourDashUser(username);
@@ -211,7 +212,7 @@ export default class CoreUsers {
       return res.status(200).json(await user.getName());
     });
 
-    this.core.request.get("/core/user/current/teams", async (req, res) => {
+    this.core.request.get("/core/user/current/teams", z.object({}), async (req, res) => {
       const { username } = req.headers;
 
       const user = new YourDashUser(username);

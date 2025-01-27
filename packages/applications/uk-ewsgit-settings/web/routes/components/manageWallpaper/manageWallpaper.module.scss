@@ -1,0 +1,40 @@
+/*!
+ * Copyright ©2025 Ewsgit <https://ewsgit.uk> and YourDash <https://yourdash.ewsgit.uk> contributors.
+ * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
+ */
+
+@use "@yourdash/uikit/src/theme/themeValues" as *;
+
+.component {
+
+}
+
+.heading {
+  text-align: start;
+}
+
+.currentWallpaper {
+  width: 100%;
+  aspect-ratio: 16/9;
+}
+
+.previousWallpapers {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: var(#{$theme+$gap});
+}
+
+.newWallpaperButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .icon {
+    --size: 2rem;
+  }
+}
+
+.wallpaper {
+
+}

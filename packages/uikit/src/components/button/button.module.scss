@@ -1,0 +1,47 @@
+/*!
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
+@use "../../theme/themeValues.scss" as *;
+
+.component {
+  font-family: var(#{$theme}#{$font}#{$family});
+  padding: 0 var(#{$theme}#{$button}#{$padding}#{$horizontal});
+  color: rgb(var(#{$theme}#{$button}#{$color}));
+  border: var(#{$theme}#{$button}#{$border});
+  border-radius: var(#{$theme}#{$button}#{$radius});
+  background: rgb(var(#{$theme}#{$button}#{$background}));
+  transition: var(#{$theme}#{$button}#{$transition});
+  height: var(#{$theme+$input+$height});
+  width: max-content;
+  cursor: pointer;
+  padding-left: var(#{$theme+$padding});
+  padding-right: var(#{$theme+$padding});
+
+  &:hover {
+    color: rgb(var(#{$theme}#{$button}#{$hover}#{$color}));
+    border: var(#{$theme}#{$button}#{$hover}#{$border});
+    border-radius: var(#{$theme}#{$button}#{$hover}#{$radius});
+    background: rgb(var(#{$theme}#{$button}#{$hover}#{$background}));
+    transition: var(#{$theme}#{$button}#{$hover}#{$transition});
+  }
+
+  &:active {
+    color: rgb(var(#{$theme}#{$button}#{$active}#{$color}));
+    border: var(#{$theme}#{$button}#{$active}#{$border});
+    border-radius: var(#{$theme}#{$button}#{$active}#{$radius});
+    background: rgb(var(#{$theme}#{$button}#{$active}#{$background}));
+    transition: var(#{$theme}#{$button}#{$active}#{$transition});
+  }
+
+  &:disabled {
+    opacity: 0.8;
+
+    color: rgb(var(#{$theme}#{$button}#{$color}));
+    border: var(#{$theme}#{$button}#{$border});
+    border-radius: var(#{$theme}#{$button}#{$radius});
+    background: rgb(var(#{$theme}#{$button}#{$background}));
+    cursor: not-allowed;
+  }
+}

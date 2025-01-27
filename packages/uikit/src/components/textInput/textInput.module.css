@@ -1,0 +1,51 @@
+@charset "UTF-8";
+/*!
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+/*!
+ * Copyright ©2025 Ewsgit <https://ewsgit.uk> and YourDash <https://yourdash.ewsgit.uk> contributors.
+ * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
+ */
+.component {
+  display: flex;
+  position: relative;
+  box-sizing: border-box;
+  color: var(--utinpcol);
+  background: var(--utinpbgn);
+  border: var(--utinpbrd);
+  border-radius: var(--utinprad);
+  transition: var(--utinptrans);
+  padding: 0;
+  height: var(--utinphei);
+}
+.component:focus, .component:focus-within {
+  color: var(--utinpfoccol);
+  background: var(--utinpfocbgn);
+  border: var(--utinpfocbrd);
+}
+
+.icon {
+  height: calc(var(--utinphei) - 0.75rem);
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-left: calc(var(--utinppdnhoriz));
+}
+
+.input {
+  background: transparent;
+  color: var(--utinpcol);
+  padding-left: calc(var(--utinppdnhoriz) + var(--utinphei) - 0.5rem);
+  width: 100%;
+  margin: 0;
+  border: none;
+}
+.input.noIcon {
+  padding-left: var(--utinppdnhoriz);
+}
+.input:focus, .input:focus-within {
+  outline: none;
+}
+
+/*# sourceMappingURL=textInput.module.css.map */

@@ -1,0 +1,25 @@
+/*!
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
+@use "@yourdash/uikit/src/theme/themeValues" as *;
+
+.component {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 0.25rem;
+  container-type: inline-size;
+  padding: 0.5rem;
+  height: 100%;
+}
+
+.albumContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  justify-content: center;
+  width: 100%;
+  gap: var(#{$theme}#{$gap});
+}

@@ -1,16 +1,17 @@
 /*
- * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 import DropdownIconButton from "@yourdash/chiplet/components/dropdownIconButton/DropdownIconButton.tsx";
-import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary.ts";
 import RightClickMenu from "@yourdash/chiplet/components/rightClickMenu/RightClickMenu.tsx";
 import React from "react";
 import IPanelApplicationsLauncherFrontendModule from "@yourdash/shared/core/panel/applicationsLauncher/application.ts";
 import coreCSI from "@yourdash/csi/coreCSI.ts";
 import styles from "./ApplicationList.module.scss";
 import { useNavigate } from "react-router";
+import UKCard from "@yourdash/uikit/src/components/card/UKCard.js";
+import { UKIcons } from "@yourdash/uikit/src/core/iconDictionary.js";
 
 const ApplicationList: React.FC<{ applications: IPanelApplicationsLauncherFrontendModule[] }> = ({ applications }) => {
   const navigate = useNavigate();
@@ -41,10 +42,17 @@ const ApplicationList: React.FC<{ applications: IPanelApplicationsLauncherFronte
             className={styles.item}
             key={application.id}
             onClick={() => {
-              navigate(application.url);
+              switch (application.type) {
+                case "frontend":
+                  navigate(application.endpoint!);
+                  break;
+                case "externalFrontend":
+                  window.location.href = application.url!;
+                  break;
+              }
             }}
           >
-            <div className={styles.itemContent}>
+            <UKCard className={styles.itemContent}>
               <img
                 loading={"lazy"}
                 className={styles.itemIcon}
@@ -73,9 +81,9 @@ const ApplicationList: React.FC<{ applications: IPanelApplicationsLauncherFronte
                     },
                   },
                 ]}
-                icon={UKIcon.ThreeBars}
+                icon={UKIcons.ThreeBars}
               />
-            </div>
+            </UKCard>
           </RightClickMenu>
         );
       })}

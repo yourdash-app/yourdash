@@ -1,10 +1,10 @@
 /*
- * Copyright ©2024 Ewsgit<https://ewsgit.uk> and YourDash<https://yourdash.ewsgit.uk> contributors.
+ * Copyright ©2025 Ewsgit<https://ewsgit.uk> and YourDash<https://yourdash.ewsgit.uk> contributors.
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
 import useWebsocketConnection from "@yourdash/csi/useWebsocketConnection.ts";
-import useToast from "@yourdash/uikit/core/toast.ts";
+import useToast from "@yourdash/uikit/src/core/toasts/useToast.js";
 import React, { useEffect } from "react";
 import stripAnsi from "strip-ansi";
 
@@ -17,6 +17,9 @@ enum LOG_TYPE {
 }
 
 const WebsocketToasts: React.FC = () => {
+  // TEMPORARY
+  return <></>;
+
   if (window.location.hostname !== "localhost") return <></>;
 
   const wsc = useWebsocketConnection("/core/log");

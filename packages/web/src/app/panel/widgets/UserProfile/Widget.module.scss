@@ -1,0 +1,38 @@
+/*!
+ * Copyright ©2025 Ewsgit <https://ewsgit.uk> and YourDash <https://yourdash.ewsgit.uk> contributors.
+ * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
+ */
+
+@use "@yourdash/uikit/src/theme/themeValues" as *;
+
+.component {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .label {
+    position: absolute;
+    padding: 0.25rem 0.75rem;
+    user-select: none;
+    transition: var(#{$theme+$transition});
+    opacity: 0;
+    border: var(#{$theme+$border});
+    border-radius: var(#{$theme+$radius});
+    background: rgb(var(#{$theme+$background}));
+    color: rgb(var(#{$theme+$color}));
+    pointer-events: none;
+    left: calc(var(--app-panel-size));
+    width: max-content;
+  }
+
+  &:hover {
+    cursor: pointer;
+
+    .label {
+      transition: var(--transition-fast);
+      pointer-events: all;
+      opacity: 1;
+    }
+  }
+}

@@ -1,0 +1,55 @@
+/*!
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
+.searchBar {
+  .inputElement {
+    font-size: 1.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: var(--input-rounding) var(--input-rounding) 0 0;
+  }
+}
+
+.componentLabel {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 2rem;
+  height: 2.5rem;
+  padding-bottom: 0.5rem;
+  transition: var(--transition-slow);
+}
+
+.component {
+  &:not(&:has(> .results)) {
+    .inputElement {
+      border-radius: var(--input-rounding);
+    }
+
+    .componentLabel {
+      height: 0;
+      padding-bottom: 0;
+    }
+  }
+}
+
+.results {
+  display: grid;
+  padding: 1rem;
+  border-radius: 0 0 calc(var(--container-rounding) * 2) calc(var(--container-rounding) * 2);
+  background: rgb(var(--container-bg));
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 0.5rem;
+
+  @media (max-width: 1200px) {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+}

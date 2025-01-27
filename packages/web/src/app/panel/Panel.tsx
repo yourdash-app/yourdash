@@ -1,10 +1,10 @@
 /*
- * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 import clippy from "@yourdash/shared/web/helpers/clippy.ts";
-import Box from "@yourdash/uikit/components/box/box.tsx";
+import UKBox from "@yourdash/uikit/src/components/box/UKBox.js";
 import styles from "./Panel.module.scss";
 import React, { memo, useEffect, useState } from "react";
 import loadable from "@loadable/component";
@@ -20,6 +20,7 @@ const Panel: React.FC<{
     "Separator",
     "QuickShortcuts",
     "LocalhostIndicator",
+    "UserProfile",
   ]);
   const [panelSize, setPanelSize] = useState<"small" | "medium" | "large" | undefined>(undefined);
   const [num, setNum] = useState<number>(0);
@@ -39,7 +40,7 @@ const Panel: React.FC<{
   }
 
   return (
-    <Box
+    <UKBox
       className={clippy(
         styles.panel,
         side === "top" && styles.top,
@@ -58,10 +59,11 @@ const Panel: React.FC<{
           <LoadableWidget
             key={widget}
             side={side}
+            panelSize={panelSize}
           />
         );
       })}
-    </Box>
+    </UKBox>
   );
 };
 

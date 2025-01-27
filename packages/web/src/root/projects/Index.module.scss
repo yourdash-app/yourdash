@@ -1,0 +1,16 @@
+/*!
+ * Copyright ©2025 Ewsgit <https://ewsgit.uk> and YourDash <https://yourdash.ewsgit.uk> contributors.
+ * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
+ */
+
+@use "@yourdash/uikit/src/theme/themeValues" as *;
+
+.projectsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(#{$theme+$padding});
+  padding: var(#{$theme+$padding});
+  max-width: #{$sizeLargeTablet};
+  margin-left: auto;
+  margin-right: auto;
+}

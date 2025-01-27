@@ -5,7 +5,6 @@
 
 # YourDash
 
-
 ## Links
   - Website: https://ydsh.ewsgit.uk or https://yourdash.ewsgit.uk
   - Discord: https://discord.gg/aY5CjDZTpG
@@ -33,90 +32,112 @@ Some of the YourDash projects include
 
 - [Docs](https://ydsh.ewsgit.uk/docs)
 
+### Automated Deployment (Only Supports Linux)
+```bash
+# This has not been verified since September 2024
+curl -L https://raw.githubusercontent.com/yourdash/yourdash/main/toolchain/setupInstance.sh | bash
+```
+
 ## Development Setup
 
 ### Requirements
 
 - Personal IDE / Text Editor of Choice
-    (Webstorm or VSCode is recommended)
+    (Webstorm is recommended but VSCode should work but is unverified)
     - [Webstorm](https://www.jetbrains.com/webstorm/)
     - [VSCode](https://code.visualstudio.com/)
 - Linting And Formatting
   - [Prettier](https://prettier.io/)
   - [ESLint](https://eslint.org/)
 - Package Manager
-  - [Yarn](https://yarnpkg.com/) (Windows)
+  - [Yarn](https://yarnpkg.com/)
 - Runtimes
   - [NodeJS](https://nodejs.org/)
   - [Bun](https://bun.sh/)
   - [Python 3.11.7](https://www.python.org/downloads/release/python-3117/)
-  - [Emscripten](https://emscripten.org/docs/getting_started/downloads.html)
+  - [Emscripten](https://emscripten.org/docs/getting_started/downloads.html) (for CodeStudio builtin application)
     - (Chocolately install method is prefered for windows)
 - Version Control
   - [Git](https://git-scm.com/)
-
-### Automated setup for deployment (Only supports Linux)
-```shell
-curl -L https://raw.githubusercontent.com/yourdash/yourdash/main/toolchain/setupInstance.sh | bash
-```
+- PostgreSQL
+  - [PostgreSQL](https://www.postgresql.org/)
 
 ### Installation and setup for development (Linux)
 
+#### Download Source Code
+```bash
+git clone git@github.com:yourdash/yourdash -b dev --recurse
+```
+
 #### Install Node.js with Node Version Manager and Yarn
   - Install Node Version Manager
-    - ```shell
+    - ```bash
       curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
       source ~/.nvm/nvm.sh
       ```
-  - Install Node v21
-    - ```shell
-      nvm install 21
+  - Install Node v22
+    - ```bash
+      nvm install 22
       source ~/.nvm/nvm.sh
       ```
   - Install Yarn
-    - ```shell
+    - ```bash
       npm i -g yarn
       ```
 
 #### Install dependencies
-```shell
-yarn install
+```bash
+# we do this twice because the first time will error but will succeed the seccond time
+bun install && bun install
 ```
 #### Run YourDash backend in dev mode
-```shell
-yarn run yd:dev-backend
+```bash
+bun run dev-backend
 ```
 #### Run YourDash web in dev mode
-```shell
-yarn run yd:dev-web
+```bash
+bun run dev-web
 ```
 
 ### Installation and setup for development (Windows)
+
+Prerequisites:
+- Bun - https://bun.sh/
+- Git - https://git-scm.com/
+- Node.js 22 or higher - https://nodejs.org/
+
+#### Download Source Code
+```shell
+git clone git@github.com:yourdash/yourdash -b dev --recurse
+```
 
 #### Install yarn
 ```shell
 npm i -g yarn
 ```
+
 #### Install npm dependencies
 ```shell
-yarn install
+# we do this twice because in some cases, the first time will error but will succeed the seccond time
+yarn install && yarn install
 ```
+
+> [!NOTE]
+> Ensure Python 3.11.x is the default for installing yarn packages as 3.11.x+ will cause node-gyp errors during `bun install`
+
 #### Run YourDash backend in dev mode
 ```shell
-yarn run yd:dev-backend
+bun run dev-backend
 ```
+
 #### Run YourDash web in dev mode
 ```shell
-yarn run yd:dev-web
+bun run dev-web
 ```
-
-#### Notes
-
-- Ensure Python 3.11.x is the default for installing yarn packages as 3.11.x+ will cause node-gyp errors during `bun install`
 
 # See more in the docs
 
-https://ydsh.pages.dev/#/docs
+https://yourdash.ewsgit.uk/docs
 
 # Credits
 
@@ -124,5 +145,6 @@ https://ydsh.pages.dev/#/docs
 
 ## Top contributors
 
-TODO: create a GH action to fetch top contributors and edit this list
-%%__top_contributors_list__%%
+<a href="https://github.com/yourdash/yourdash/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=yourdash/yourdash" />
+</a>

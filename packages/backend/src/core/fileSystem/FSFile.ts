@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 Ewsgit<https://ewsgit.uk> and YourDash<https://yourdash.ewsgit.uk> contributors.
+ * Copyright ©2025 Ewsgit<https://ewsgit.uk> and YourDash<https://yourdash.ewsgit.uk> contributors.
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
@@ -35,7 +35,7 @@ export default class FSFile extends FSEntity {
     }
   }
 
-  getType(): "image" | "video" | "audio" | "link" | "unknown" {
+  getType(): "image" | "video" | "audio" | "link" | "unknown" | "typescript" | "javascript" {
     switch (this.getExtension()) {
       case ".avif":
       case ".png":
@@ -67,6 +67,12 @@ export default class FSFile extends FSEntity {
         return "audio";
       case ".lnk":
         return "link";
+      case ".ts":
+      case ".tsx":
+        return "typescript";
+      case ".js":
+      case ".jsx":
+        return "typescript";
       default:
         return "unknown";
     }

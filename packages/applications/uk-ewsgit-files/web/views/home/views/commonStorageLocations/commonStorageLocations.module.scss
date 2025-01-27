@@ -1,0 +1,18 @@
+/*!
+ * Copyright ©2025 Ewsgit <https://ewsgit.uk> and YourDash <https://yourdash.ewsgit.uk> contributors.
+ * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
+ */
+
+.component {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.connectionContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  width: 100%;
+}

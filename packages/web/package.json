@@ -8,13 +8,11 @@
     "node": ">=21.0.0"
   },
   "scripts": {
-    "dev": "vite --host",
-    "build": "vite build",
-    "preview": "vite preview",
-    "visualize-bundle": "vite-bundle-visualizer",
-    "generate-application-routes": "run-script-os",
-    "generate-application-routes:nix": "bun toolchain/generateApplicationRoutes.js",
-    "generate-application-routes:win32": "bun toolchain/generateApplicationRoutes.js"
+    "dev": "bun run --bun bunx --bun vite --host",
+    "build": "bun run --bun vite build",
+    "preview": "bun run --bun vite preview",
+    "visualize-bundle": "bun run --bun vite-bundle-visualizer",
+    "generate-application-routes": "bun toolchain/generateApplicationRoutes.js"
   },
   "dependencies": {
     "@loadable/component": "^5.15.3",
@@ -29,7 +27,14 @@
     "@types/strip-ansi": "^5.2.1",
     "@typescript-eslint/eslint-plugin": "^5.59.11",
     "@typescript-eslint/parser": "^5.59.11",
+    "@vitejs/plugin-react": "^4.3.1",
     "@vitejs/plugin-react-swc": "^3.3.2",
+    "@yourdash/backend": "workspace:*",
+    "@yourdash/csi": "workspace:*",
+    "@yourdash/shared": "workspace:*",
+    "@yourdash/tunnel": "workspace:*",
+    "@yourdash/uikit": "workspace:*",
+    "@yourdash/applications": "workspace:*",
     "animate.css": "^4.1.1",
     "autoprefixer": "^10.4.15",
     "clsx": "^2.0.0",
@@ -56,8 +61,6 @@
     "vite-plugin-dynamic-import": "^1.5.0",
     "web-tree-sitter": "^0.20.8",
     "xml2js": "^0.6.2",
-    "@vitejs/plugin-react": "^4.3.1",
-    "@yourdash/shared": "workspace:*",
-    "@yourdash/uikit": "workspace:*"
+    "zod": "^3.24.1"
   }
 }

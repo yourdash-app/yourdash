@@ -7,7 +7,7 @@ import React, { CSSProperties, useState } from "react";
 import Card from "../card/Card";
 import IconButton from "../iconButton/IconButton";
 import styles from "./Dialog.module.scss";
-import { UKIcon } from "../icon/iconDictionary";
+import { UKIcon } from "@yourdash/uikit/src/components/icon/iconDictionary";
 
 export interface IDialog {
   onClose?: () => void;

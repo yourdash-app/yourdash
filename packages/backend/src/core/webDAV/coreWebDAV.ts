@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -8,8 +8,8 @@
 import { promises as fs } from "fs";
 import path from "path";
 import { parseStringPromise } from "xml2js";
-import { compareHashString } from "../../lib/encryption.js";
 import { Core } from "../core.js";
+import z from "zod";
 
 export enum WD_NAMESPACE {
   WEBDAV = "DAV:",
@@ -33,6 +33,8 @@ export default class coreWebDAV {
   }
 
   __internal__loadEndpoints() {
+    this.core.request.setNamespace("");
+
     this.core.request.usePath("/.well-known/webdav", async (req, res) => {
       return res.redirect("/webdav");
     });
@@ -45,7 +47,7 @@ export default class coreWebDAV {
       return res.redirect("/webdav");
     });
 
-    this.core.request.get("/webdav", async (_req, res) => {
+    this.core.request.get("/webdav", z.string(), async (_req, res) => {
       return res.send(`This is the WebDAV endpoint of YourDash`);
     });
 
@@ -73,9 +75,7 @@ export default class coreWebDAV {
         return failAuth();
       }
 
-      const [username, password] = Buffer.from(req.headers["authorization"].split(" ")[1], "base64")
-        .toString("utf-8")
-        .split(":");
+      const [username, password] = Buffer.from(req.headers["authorization"].split(" ")[1], "base64").toString("utf-8").split(":");
 
       this.core.log.debug("webdav", "username:", username, "password:", password);
 
@@ -83,7 +83,7 @@ export default class coreWebDAV {
 
       const savedHashedPassword = (await fs.readFile(path.join(user.path, "core/password.enc"))).toString();
 
-      if (!(await compareHashString(savedHashedPassword, password))) {
+      if (!(await Bun.password.verify(password, savedHashedPassword))) {
         this.core.log.error("webdav", "passwords did not match!, password", password);
         return failAuth();
       }

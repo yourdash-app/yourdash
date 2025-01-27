@@ -1,0 +1,22 @@
+/*!
+ * Copyright ©2025 Ewsgit <https://ewsgit.uk> and YourDash <https://yourdash.ewsgit.uk> contributors.
+ * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
+ */
+
+.componentCardContainer {
+  width: max-content;
+}
+
+.component {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  width: max-content;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+.icon {
+  height: 4rem;
+  width: 4rem;
+}

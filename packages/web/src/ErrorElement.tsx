@@ -1,11 +1,11 @@
 /*
- * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import Card from "@yourdash/uikit/components/card/card.tsx";
-import Heading from "@yourdash/uikit/components/heading/heading.tsx";
-import Text from "@yourdash/uikit/components/text/text.tsx";
+import UKCard from "@yourdash/uikit/src/components/card/UKCard.js";
+import UKHeading from "@yourdash/uikit/src/components/heading/UKHeading.js";
+import UKText from "@yourdash/uikit/src/components/text/UKText.js";
 import React from "react";
 import { useRouteError } from "react-router-dom";
 import styles from "./ErrorElement.module.scss";
@@ -16,19 +16,19 @@ const ErrorElement: React.FC = () => {
 
   return (
     <div className={styles.page}>
-      <Card containerClassName={styles.error}>
-        <Heading
+      <UKCard containerClassName={styles.error}>
+        <UKHeading
           level={1}
           text={"An error has occurred"}
         />
         {error.message && (
-          <Heading
+          <UKHeading
             level={3}
             text={error.message}
           />
         )}
-        {error.stack && <Text text={error.stack} />}
-      </Card>
+        {error.stack && <UKText text={error.stack} />}
+      </UKCard>
     </div>
   );
 };

@@ -1,0 +1,27 @@
+/*!
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
+.component {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  width: 100%;
+  height: max-content;
+}
+
+.title {
+  font-weight: 700;
+  color: rgb(var(--container-fg));
+  font-size: 1.75rem;
+  margin-bottom: -0.25rem;
+}
+
+.description {
+  // font-light text-container-tertiary-fg text-sm
+}
+
+.textContainer {
+  margin-right: auto;
+}

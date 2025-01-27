@@ -5,13 +5,28 @@
 
 
 .floatContainer {
-  animation: float 3s var(--animation-delay) ease-in-out infinite;
-
   &:hover {
     > .floatingApplication {
       transition: var(--transition-fast);
     }
   }
+
+  .first {
+    --animate-delay: 0s;
+  }
+
+  .second {
+    --animate-delay: 0.25s;
+  }
+
+  .third {
+    --animate-delay: 0.5s;
+  }
+
+  .fourth {
+    --animate-delay: 0.75s;
+  }
+
 }
 
 .floatingApplication {
@@ -41,48 +56,5 @@
       --scale: calc(var(--original-scale) + 15%);
       --vertical-offset: calc(var(--original-vertical-offset) - 5);
     }
-  }
-}
-
-.first {
-  --animation-delay: 0s;
-}
-
-.second {
-  --animation-delay: 0.25s;
-}
-
-.third {
-  --animation-delay: 0.5s;
-}
-
-.fourth {
-  --animation-delay: 0.75s;
-}
-
-@keyframes float {
-  0% {
-    height: 6rem;
-  }
-  50% {
-    height: 10rem;
-  }
-  80% {
-    height: 6rem;
-  }
-  100% {
-    height: 6rem;
-  }
-}
-
-@keyframes scale {
-  0% {
-    scale: 0.85;
-  }
-  50% {
-    scale: 0.95;
-  }
-  100% {
-    scale: 0.85;
   }
 }

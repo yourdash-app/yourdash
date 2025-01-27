@@ -1,0 +1,129 @@
+/*!
+ * Copyright ©2025 Ewsgit <https://ewsgit.uk> and YourDash <https://yourdash.ewsgit.uk> contributors.
+ * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
+ */
+
+$theme: "--ut";
+$button: "btn";
+$hover: "hvr";
+$active: "atv";
+$padding: "pdn";
+$border: "brd";
+$radius: "rad";
+$accent: "acn";
+$subcolor: "scl";
+$color: "col";
+$background: "bgn";
+$gap: "gap";
+$transition: "trans";
+$font: "font";
+$size: "size";
+$weight: "wgt";
+$family: "fam";
+$vertical: "vert";
+$horizontal: "horiz";
+$header: "hed";
+$separator: "sep";
+$height: "hei";
+$width: "wid";
+$heading: "hed";
+$input: "inp";
+$focus: "foc";
+$textbutton: "txb";
+$h1: "he1";
+$h2: "he2";
+$h3: "he3";
+$h4: "he4";
+$h5: "he5";
+$h6: "he6";
+$scrollbar: "scrlbr";
+
+// General
+$UKColor: var(#{$theme+$color});
+$UKSubColor: var(#{$theme+$subcolor});
+$UKBackground: var(#{$theme+$background});
+$UKAccent: var(#{$theme+$accent});
+$UKBorder: var(#{$theme+$border});
+$UKRadius: var(#{$theme+$radius});
+$UKPadding: var(#{$theme+$padding});
+$UKGap: var(#{$theme+$gap});
+$UKTransition: var(#{$theme+$transition});
+$UKRawTransition: var(#{$theme+$transition+$transition});
+$UKSeparatorSize: var(#{$theme+$separator+$size});
+$UKSeparatorColor: var(#{$theme+$separator+$color});
+$UKScrollbarWidth: var(#{$theme+$scrollbar+$width});
+$UKScrollbarRadius: var(#{$theme+$scrollbar+$radius});
+
+// Heading
+$UKHeadingH1Weight: var(#{$theme+$heading+$h1+$weight});
+$UKHeadingH1Size: var(#{$theme+$heading+$h1+$size});
+$UKHeadingH2Weight: var(#{$theme+$heading+$h2+$weight});
+$UKHeadingH2Size: var(#{$theme+$heading+$h2+$size});
+$UKHeadingH3Weight: var(#{$theme+$heading+$h3+$weight});
+$UKHeadingH3Size: var(#{$theme+$heading+$h3+$size});
+$UKHeadingH4Weight: var(#{$theme+$heading+$h4+$weight});
+$UKHeadingH4Size: var(#{$theme+$heading+$h4+$size});
+$UKHeadingH5Weight: var(#{$theme+$heading+$h5+$weight});
+$UKHeadingH5Size: var(#{$theme+$heading+$h5+$size});
+$UKHeadingH6Weight: var(#{$theme+$heading+$h6+$weight});
+$UKHeadingH6Size: var(#{$theme+$heading+$h6+$size});
+
+// Input
+$UKInputColor: var(#{$theme+$input+$color});
+$UKInputBackground: var(#{$theme+$input+$background});
+$UKInputBorder: var(#{$theme+$input+$border});
+$UKInputRadius: var(#{$theme+$input+$radius});
+$UKInputHeight: var(#{$theme+$input+$height});
+$UKInputPaddingHorizontal: var(#{$theme+$input+$padding+$horizontal});
+$UKInputTransition: var(#{$theme+$input+$transition});
+// Input:Focus
+$UKInputFocusColor: var(#{$theme+$input+$focus+$color});
+$UKInputFocusBackground: var(#{$theme+$input+$focus+$background});
+$UKInputFocusBorder: var(#{$theme+$input+$focus+$border});
+
+// Button
+$UKButtonColor: var(#{$theme+$button+$color});
+$UKButtonBackground: var(#{$theme+$button+$background});
+$UKButtonBorder: var(#{$theme+$button+$border});
+$UKButtonFontSize: var(#{$theme+$button+$font+$size});
+$UKButtonFontWeight: var(#{$theme+$button+$font+$weight});
+$UKButtonRadius: var(#{$theme+$button+$radius});
+$UKButtonPaddingHorizontal: var(#{$theme+$button+$padding+$horizontal});
+$UKButtonTransition: var(#{$theme+$button+$transition});
+// Button:Hover
+$UKButtonHoverColor: var(#{$theme+$button+$hover+$color});
+$UKButtonHoverBackground: var(#{$theme+$button+$hover+$background});
+$UKButtonHoverBorder: var(#{$theme+$button+$hover+$border});
+$UKButtonHoverRadius: var(#{$theme+$button+$hover+$radius});
+$UKButtonHoverTransition: var(#{$theme+$button+$hover+$transition});
+// Button:Active
+$UKButtonActiveColor: var(#{$theme+$button+$active+$color});
+$UKButtonActiveBackground: var(#{$theme+$button+$active+$background});
+$UKButtonActiveBorder: var(#{$theme+$button+$active+$border});
+$UKButtonActiveRadius: var(#{$theme+$button+$active+$radius});
+$UKButtonActiveTransition: var(#{$theme+$button+$active+$transition});
+
+// TextButton
+$UKTextButtonFontWeight: var(#{$theme+$textbutton+$font+$weight});
+
+// Font
+$UKFontFamily: var(#{$theme+$font+$family});
+$UKFontSize: var(#{$theme+$font+$size});
+$UKFontWeight: var(#{$theme+$font+$weight});
+
+// Header
+$UKHeaderColor: var(#{$theme+$header+$color});
+$UKHeaderFontFamily: var(#{$theme+$header+$font+$family});
+$UKHeaderFontSize: var(#{$theme+$header+$font+$size});
+$UKHeaderFontWeight: var(#{$theme+$header+$font+$weight});
+$UKHeaderPaddingVertial: var(#{$theme+$header+$padding+$vertical});
+$UKHeaderPaddingHorizontal: var(#{$theme+$header+$padding+$horizontal});
+
+$sizeMobile: 440px;
+$sizeLargeMobile: 560px;
+$sizeTablet: 768px;
+$sizeLargeTablet: 960px;
+$sizeSmallDesktop: 1200px;
+$sizeMediumDesktop: 1440px;
+$sizeLargeDesktop: 1920px;
+$sizeWideDesktop: 2560px;

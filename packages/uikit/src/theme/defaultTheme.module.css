@@ -1,0 +1,297 @@
+@charset "UTF-8";
+/*!
+ * Copyright ©2025 Ewsgit <https://ewsgit.uk> and YourDash <https://yourdash.ewsgit.uk> contributors.
+ * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
+ */
+/*!
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+.theme {
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: 100%;
+  background: var(--utbgn);
+  --ut-author: "Ewsgit";
+  --ut-name: "YourDash Classic Dark";
+  --ut-version: "0.0.1";
+}
+.theme ::-webkit-scrollbar {
+  width: var(--utscrlbrwid);
+  border-radius: 0;
+}
+.theme ::-webkit-scrollbar-thumb {
+  border-radius: var(--utscrlbrrad);
+}
+
+.level0 {
+  color: var(--utcol);
+  --utcol: #ffffff;
+  --utscl: #bbbbbb;
+  --utbgn: #222222;
+  --utacn: #768ce7;
+  --utbrd: 1px solid #555555;
+  --utrad: 1rem;
+  --utpdn: 1rem;
+  --utgap: 0.5rem;
+  --uttrans: all 200ms ease-in-out;
+  --uttranstrans: 200ms ease-in-out;
+  --utsepsize: 1px;
+  --utsepcol: #444444;
+  --utscrlbrwid: 0.4rem;
+  --utscrlbrrad: 0.1rem;
+  --uthedhe1wgt: 900;
+  --uthedhe1size: 3rem;
+  --uthedhe2wgt: 700;
+  --uthedhe2size: 2rem;
+  --uthedhe3wgt: 600;
+  --uthedhe3size: 1.5rem;
+  --uthedhe4wgt: 500;
+  --uthedhe4size: 1.25rem;
+  --uthedhe5wgt: 500;
+  --uthedhe5size: 1rem;
+  --uthedhe6wgt: 500;
+  --uthedhe6size: 0.875rem;
+  --utinpcol: #ffffff;
+  --utinpbgn: #222222;
+  --utinpbrd: 1px solid #444444;
+  --utinprad: 0.5rem;
+  --utinphei: 2rem;
+  --utinppdnhoriz: 0.5rem;
+  --utinptrans: all 0.2s ease-in-out;
+  --utinpfoccol: #ffffff;
+  --utinpfocbgn: #333333;
+  --utinpfocbrd: 1px solid #666666;
+  --utbtncol: #ffffff;
+  --utbtnbgn: #444444;
+  --utbtnbrd: 0px solid #666666;
+  --utbtnfontsize: 0.9rem;
+  --utbtnfontwgt: 400;
+  --utbtnrad: 0.5rem;
+  --utbtnpdnhoriz: 0.5rem;
+  --utbtntrans: all 0.2s ease-in-out;
+  --utbtnhvrcol: #ffffff;
+  --utbtnhvrbgn: #555555;
+  --utbtnhvrbrd: 0px solid #666666;
+  --utbtnhvrrad: 0.5rem;
+  --utbtnhvrtrans: all 50ms ease-in-out;
+  --utbtnatvcol: #000000;
+  --utbtnatvbgn: #666666;
+  --utbtnatvbrd: 0px solid #777777;
+  --utbtnatvrad: 0.5rem;
+  --utbtnatvtrans: all 50ms ease-in-out;
+  --uttxbfontwgt: 700;
+  --utfontfam: Inter;
+  --utfontsize: 0.9rem;
+  --utfontwgt: 400;
+  --uthedcol: #ffffff;
+  --uthedfontfam: Inter;
+  --uthedfontsize: 1.2rem;
+  --uthedfontwgt: 700;
+  --uthedpdnvert: 1rem;
+  --uthedpdnhoriz: 0.5rem;
+}
+
+.level1 {
+  color: var(--utcol);
+  --utcol: #ffffff;
+  --utbgn: #333333;
+  --utbrd: 1px solid #666666;
+  --utacn: #768ce7;
+  --utrad: 0.5rem;
+  --utfontfam: Inter;
+  --utfontrad: 0.9rem;
+  --utfontwgt: 400;
+  --utpdn: 0.75rem;
+  --utgap: 0.5rem;
+  --uttrans: all 200ms ease-in-out;
+  --utsepsize: 1px;
+  --utsepcol: #555555;
+  --uthedhe1wgt: 800;
+  --uthedhe1size: 3rem;
+  --uthedhe2wgt: 700;
+  --uthedhe2size: 2.5rem;
+  --uthedhe3wgt: 600;
+  --uthedhe3size: 2rem;
+  --uthedhe4wgt: 500;
+  --uthedhe4size: 1.5rem;
+  --uthedhe5wgt: 500;
+  --uthedhe5size: 1rem;
+  --uthedhe6wgt: 500;
+  --uthedhe6size: 0.875rem;
+  --utinpcol: #ffffff;
+  --utinpbgn: #222222;
+  --utinpbrd: 1px solid #444444;
+  --utinprad: 0.5rem;
+  --utinphei: 2rem;
+  --utinppdnhoriz: 0.5rem;
+  --utinptrans: all 0.2s ease-in-out;
+  --utinpfoccol: #ffffff;
+  --utinpfocbgn: #333333;
+  --utinpfocbrd: 1px solid #666666;
+  --utbtncol: #ffffff;
+  --utbtnbgn: #444444;
+  --utbtnbrd: 0px solid #444444;
+  --utbtnfontsize: 0.9rem;
+  --utbtnfontwgt: 400;
+  --utbtnrad: 0.5rem;
+  --utbtnpdnhoriz: 0.5rem;
+  --utbtntrans: all 0.2s ease-in-out;
+  --utbtnhvrcol: #ffffff;
+  --utbtnhvrbgn: #555555;
+  --utbtnhvrbrd: 0px solid #666666;
+  --utbtnhvrrad: 0.5rem;
+  --utbtnhvrtrans: all 50ms ease-in-out;
+  --utbtnatvcol: #000000;
+  --utbtnatvbgn: #666666;
+  --utbtnatvbrd: 0px solid #666666;
+  --utbtnatvrad: 0.5rem;
+  --uthedcol: #ffffff;
+  --uthedfontfam: Inter;
+  --uthedfontsize: 1.2rem;
+  --uthedfontwgt: 700;
+  --uthedpdnvert: 0.5rem;
+  --uthedpdnhoriz: 0.25rem;
+}
+
+.level2 {
+  color: var(--utcol);
+  --utcol: #ffffff;
+  --utbgn: #444444;
+  --utbrd: 1px solid #666666;
+  --utacn: #768ce7;
+  --utrad: 0.25rem;
+  --utpdn: 0.5rem;
+  --utgap: 0.75rem;
+  --uttrans: all 200ms ease-in-out;
+  --utsepsize: 1px;
+  --utsepcol: #555555;
+  --uthedhe1wgt: 900;
+  --uthedhe1size: 3rem;
+  --uthedhe2wgt: 700;
+  --uthedhe2size: 2rem;
+  --uthedhe3wgt: 600;
+  --uthedhe3size: 1.5rem;
+  --uthedhe4wgt: 500;
+  --uthedhe4size: 1.25rem;
+  --uthedhe5wgt: 500;
+  --uthedhe5size: 1rem;
+  --uthedhe6wgt: 500;
+  --uthedhe6size: 0.875rem;
+  --uttxbfontwgt: 700;
+  --utfontfam: Inter;
+  --utfontsize: 0.9rem;
+  --utfontwgt: 400;
+  --utinpcol: #ffffff;
+  --utinpbgn: #222222;
+  --utinpbrd: 1px solid #444444;
+  --utinprad: 0.5rem;
+  --utinphei: 2rem;
+  --utinppdnhoriz: 0.5rem;
+  --utinptrans: all 0.2s ease-in-out;
+  --utinpfoccol: #ffffff;
+  --utinpfocbgn: #333333;
+  --utinpfocbrd: 1px solid #666666;
+  --utbtncol: #ffffff;
+  --utbtnbgn: #555555;
+  --utbtnbrd: 0px solid #666666;
+  --utbtnfontfam: Inter;
+  --utbtnfontsize: 0.9rem;
+  --utbtnfontwgt: 400;
+  --utbtnrad: 0.25rem;
+  --utbtnpdnhoriz: 0.5rem;
+  --utbtntrans: all 0.2s ease-in-out;
+  --utbtnhvrcol: #ffffff;
+  --utbtnhvrbgn: #666666;
+  --utbtnhvrbrd: 0px solid #666666;
+  --utbtnhvrrad: 0.25rem;
+  --utbtnhvrtrans: all 50ms ease-in-out;
+  --utbtnatvcol: #000000;
+  --utbtnatvbgnbg: #666666;
+  --utbtnatvbrd: 0px solid #666666;
+  --utbtnatvrad: 0.25rem;
+  --uthedcol: #ffffff;
+  --uthedfontfam: Inter;
+  --uthedfontsize: 1.2rem;
+  --uthedfontwgt: 700;
+  --uthedpdnvert: 0.5rem;
+  --uthedpdnhoriz: 0.25rem;
+}
+
+.level3 {
+  color: var(--utcol);
+  --utcol: #ffffff;
+  --utbgn: #555555;
+  --utbrd: 1px solid #666666;
+  --utacn: #768ce7;
+  --utrad: 1px;
+  --utpdn: 0.5rem;
+  --utgap: 1rem;
+  --uttrans: all 200ms ease-in-out;
+  --utsepsize: 1px;
+  --utsepcol: #555555;
+  --uthedhe1wgt: 900;
+  --uthedhe1size: 3rem;
+  --uthedhe2wgt: 700;
+  --uthedhe2size: 2rem;
+  --uthedhe3wgt: 600;
+  --uthedhe3size: 1.5rem;
+  --uthedhe4wgt: 500;
+  --uthedhe4size: 1.25rem;
+  --uthedhe5wgt: 500;
+  --uthedhe5size: 1rem;
+  --uthedhe6wgt: 500;
+  --uthedhe6size: 0.875rem;
+  --uttxbfontwgt: 700;
+  --utfam: Inter;
+  --utsize: 0.9rem;
+  --utwgt: 400;
+  --utinpcol: #ffffff;
+  --utinpbgn: #222222;
+  --utinpbrd: 1px solid #444444;
+  --utinprad: 0.5rem;
+  --utinphei: 2rem;
+  --utinppdnhoriz: 0.5rem;
+  --utinptrans: all 0.2s ease-in-out;
+  --utinpfoccol: #ffffff;
+  --utinpfocbgn: #333333;
+  --utinpfocbrd: 1px solid #666666;
+  --utbtncol: #ffffff;
+  --utbtnbgn: #666666;
+  --utbtnbrd: 0px solid #666666;
+  --utbtnfontfam: Inter;
+  --utbtnfontsize: 0.9rem;
+  --utbtnfontwgt: 400;
+  --utbtnrad: 0.25rem;
+  --utbtnpdnhoriz: 0.5rem;
+  --utbtnhvrcol: #ffffff;
+  --utbtnhvrbgn: #777777;
+  --utbtnhvrbrd: 0px solid #777777;
+  --utbtnhvrrad: 0.25rem;
+  --utbtnhvrtrans: all 50ms ease-in-out;
+  --utbtnatvcol: #000000;
+  --utbtnatvbgn: #777777;
+  --utbtnatvbrd: 0px solid #777777;
+  --utbtnatvrad: 0.25rem;
+  --uthedcol: #ffffff;
+  --uthedfontfam: Inter;
+  --uthedfontsize: 1.2rem;
+  --uthedfontwgt: 700;
+  --uthedpdnvert: 0.5rem;
+  --uthedpdnhoriz: 0.25rem;
+}
+
+.mobile .level0 {
+  --utinphei: 2.5rem;
+}
+.mobile .level1 {
+  --utinphei: 2.5rem;
+}
+.mobile .level2 {
+  --utinphei: 2.5rem;
+}
+.mobile .level3 {
+  --utinphei: 2.5rem;
+}
+
+/*# sourceMappingURL=defaultTheme.module.css.map */

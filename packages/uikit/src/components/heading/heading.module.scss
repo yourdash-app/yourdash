@@ -1,0 +1,43 @@
+/*!
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
+@use "../../theme/themeValues.scss" as *;
+
+.component {
+  display: inline-block;
+  text-align: center;
+  margin: 0;
+  line-height: 1;
+}
+
+.h1component {
+  font-size: var(#{$theme}#{$heading}#{$h1}#{$size});
+  font-weight: var(#{$theme}#{$heading}#{$h1}#{$weight});
+}
+
+.h2component {
+  font-size: var(#{$theme}#{$heading}#{$h2}#{$size});
+  font-weight: var(#{$theme}#{$heading}#{$h2}#{$weight});
+}
+
+.h3component {
+  font-size: var(#{$theme}#{$heading}#{$h3}#{$size});
+  font-weight: var(#{$theme}#{$heading}#{$h3}#{$weight});
+}
+
+.h4component {
+  font-size: var(#{$theme}#{$heading}#{$h4}#{$size});
+  font-weight: var(#{$theme}#{$heading}#{$h4}#{$weight});
+}
+
+.h5component {
+  font-size: var(#{$theme}#{$heading}#{$h5}#{$size});
+  font-weight: var(#{$theme}#{$heading}#{$h5}#{$weight});
+}
+
+.h6component {
+  font-size: var(#{$theme}#{$heading}#{$h6}#{$size});
+  font-weight: var(#{$theme}#{$heading}#{$h6}#{$weight});
+}

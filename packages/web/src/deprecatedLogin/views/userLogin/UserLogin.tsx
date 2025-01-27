@@ -1,12 +1,8 @@
 /*
- * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import { UKIcon } from "@yourdash/chiplet/components/icon/iconDictionary.ts";
-import IconButton from "@yourdash/chiplet/components/iconButton/IconButton.tsx";
-import MajorButton from "@yourdash/chiplet/components/majorButton/MajorButton.tsx";
-import TextInput from "@yourdash/chiplet/components/textInput/TextInput.tsx";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import coreCSI from "@yourdash/csi/coreCSI.ts";
@@ -35,12 +31,12 @@ const UserLogin: React.FC<IUserLogin> = ({ setUsername, setPassword, password, u
     const SESSION_TOKEN = localStorage.getItem("session_token");
 
     if (SAVED_USERNAME && SESSION_TOKEN) {
-      coreCSI.syncGetJson("/login/is-authenticated", (response) => {
-        if (response.error || response.success === false) {
+      coreCSI.syncGetJson("/login/is-authenticated", {}, (response) => {
+        if (!response.success) {
           return;
         }
 
-        navigate("/app/a/uk-ewsgit-dash-frontend");
+        navigate("/app/a/uk-ewsgit-dash");
       });
     }
   }, []);
@@ -76,20 +72,21 @@ const UserLogin: React.FC<IUserLogin> = ({ setUsername, setPassword, password, u
   if (!isValidUser) {
     return (
       <div className={"w-full h-full flex items-center justify-center flex-col relative"}>
-        <IconButton
-          icon={UKIcon.ChevronLeft}
+        <UKIconButton
+          accessibleLabel={"Go back"}
+          icon={UKIcons.ChevronLeft}
           className={"left-0 top-0 absolute animate__animated animate__fadeInLeft"}
           onClick={() => {
             setInstanceHostname("");
           }}
         />
         <span className={"animate__animated animate__fadeIn text-4xl font-semibold pb-4"}>Welcome Back</span>
-        <TextInput
+        <UKTextInput
           accessibleName="Username input"
           key={"username-input"}
           className={"animate__animated animate__fadeIn"}
           placeholder={"Username"}
-          onChange={(value) => setUsername(value)}
+          getValue={setUsername}
           value={username}
         />
       </div>
@@ -98,8 +95,9 @@ const UserLogin: React.FC<IUserLogin> = ({ setUsername, setPassword, password, u
 
   return (
     <div className={"w-full h-full flex items-center justify-center flex-col relative animate__animated animate__fadeIn gap-4"}>
-      <IconButton
-        icon={UKIcon.ChevronLeft}
+      <UKIconButton
+        accessibleLabel={"Go back"}
+        icon={UKIcons.ChevronLeft}
         className={"left-0 top-0 absolute animate__animated animate__fadeInLeft"}
         onClick={() => {
           setIsValidUser(false);
@@ -109,6 +107,7 @@ const UserLogin: React.FC<IUserLogin> = ({ setUsername, setPassword, password, u
         }}
       />
       <img
+        alt={""}
         src={avatar}
         className={"w-64 aspect-square rounded-3xl"}
       />
@@ -116,45 +115,43 @@ const UserLogin: React.FC<IUserLogin> = ({ setUsername, setPassword, password, u
         {fullName.first} {fullName.last}
       </span>
       <form className={"flex-col flex items-center gap-4"}>
-        <TextInput
+        <UKTextInput
           accessibleName="Username input"
           autoComplete={`yourdash-instance-login username instance-${coreCSI.getInstanceUrl()}`}
           key={"username-input"}
           placeholder={"Username"}
-          onChange={(value) => setUsername(value)}
+          getValue={setUsername}
           value={username}
         />
-        <TextInput
+        <UKTextInput
           accessibleName="Password input"
           autoComplete={`yourdash-instance-login password instance-${coreCSI.getInstanceUrl()}`}
           key={"password-input"}
           placeholder={"Password"}
           type={"password"}
-          onChange={(value) => setPassword(value)}
+          getValue={setPassword}
           value={password}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              coreCSI.syncPostJson(
-                `/login/user/${username}/authenticate`,
-                { password },
-                (response) => {
-                  // WARNING: USE NEW CSI NAMES!!!
-                  localStorage.setItem("session_id", response.sessionId);
-                  localStorage.setItem("session_token", response.token);
-                  localStorage.setItem("username", username);
-                  navigate("/app");
-                },
-                () => {
-                  ydsh.toast.error("Login Error", "Invalid password");
-                },
-                {
-                  type: localStorage.getItem("desktop_mode") ? "desktop" : "web",
-                },
-              );
-            }
+          onSubmit={() => {
+            coreCSI.syncPostJson(
+              `/login/user/${username}/authenticate`,
+              { password },
+              (response) => {
+                // WARNING: USE NEW CSI NAMES!!!
+                localStorage.setItem("session_id", response.sessionId);
+                localStorage.setItem("session_token", response.token);
+                localStorage.setItem("username", username);
+                navigate("/app");
+              },
+              () => {
+                ydsh.toast.error("Login Error", "Invalid password");
+              },
+              {
+                type: localStorage.getItem("desktop_mode") ? "desktop" : "web",
+              },
+            );
           }}
         />
-        <MajorButton
+        <UKButton
           onClick={() => {
             coreCSI.syncPostJson(
               `/login/user/${username}/authenticate`,
@@ -174,9 +171,8 @@ const UserLogin: React.FC<IUserLogin> = ({ setUsername, setPassword, password, u
               },
             );
           }}
-        >
-          Continue
-        </MajorButton>
+          text={"Continue"}
+        />
       </form>
     </div>
   );

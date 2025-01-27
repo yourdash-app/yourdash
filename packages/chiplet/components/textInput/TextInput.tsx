@@ -6,7 +6,7 @@
 import clippy from "@yourdash/shared/web/helpers/clippy";
 import React, { useState, FocusEventHandler, KeyboardEventHandler } from "react";
 import Icon from "../icon/Icon";
-import { UKIcon } from "../icon/iconDictionary";
+import { UKIcon } from "@yourdash/uikit/src/components/icon/iconDictionary";
 
 // @ts-ignore
 export interface ITextInput extends React.HTMLProps<HTMLInputElement> {
@@ -21,7 +21,7 @@ export interface ITextInput extends React.HTMLProps<HTMLInputElement> {
   onValid?: (value: string) => void;
   autoComplete?: string;
   inputClassName?: string;
-  icon?: UKIcon;
+  icon?: typeof UKIcon;
   accessibleName: string;
   preceedingInlay?: React.ReactNode;
   followingInlay?: React.ReactNode;

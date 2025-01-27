@@ -1,24 +1,33 @@
 /*
- * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import toAuthImgUrl from "@yourdash/csi/toAuthImgUrl.ts";
 import useResource from "@yourdash/csi/useResource.ts";
 import clippy from "@yourdash/shared/web/helpers/clippy.ts";
-import Image from "@yourdash/uikit/components/image/image.tsx";
-import IncrementLevel from "@yourdash/uikit/core/incrementLevel.tsx";
-import { useLevelClass } from "@yourdash/uikit/core/level.tsx";
+import tun from "@yourdash/tunnel/src/index.js";
+import UKImage from "@yourdash/uikit/src/components/image/UKImage.js";
+import IncrementLevel from "@yourdash/uikit/src/core/incrementLevel.js";
+import { useLevelClass } from "@yourdash/uikit/src/core/level.js";
 import { useNavigate } from "react-router-dom";
-import coreCSI from "@yourdash/csi/coreCSI.ts";
 import styles from "./Widget.module.scss";
 import React from "react";
-import { EndpointCorePanelQuickShortcuts } from "@yourdash/shared/endpoints/core/panel/quickShortcuts.ts";
+import z from "zod";
 
 const QuickShortcuts: React.FC<{ side: "top" | "right" | "bottom" | "left" }> = ({ side }) => {
   const navigate = useNavigate();
 
   const [num, setNum] = React.useState<number>(0);
-  const modules = useResource<EndpointCorePanelQuickShortcuts>(() => coreCSI.getJson("/core/panel/quick-shortcuts"), [num]) || [];
+  const quickShortcutApplications = useResource(
+    () =>
+      tun.get(
+        "/core/panel/quick-shortcuts",
+        "json",
+        z.object({ displayName: z.string(), id: z.string(), endpoint: z.string().optional(), url: z.string().optional() }).array(),
+      ),
+    [num],
+  );
 
   // @ts-ignore
   window.__yourdashCorePanelQuickShortcutsReload = () => {
@@ -27,15 +36,19 @@ const QuickShortcuts: React.FC<{ side: "top" | "right" | "bottom" | "left" }> = 
 
   return (
     <>
-      {modules.map((module) => {
-        if (!module) return <>Invalid Module</>;
+      {quickShortcutApplications?.data.map((application) => {
+        if (!application) return <>Invalid Module</>;
 
         return (
-          <IncrementLevel key={module.name}>
+          <IncrementLevel key={application.id}>
             <div
-              key={module.name}
+              key={application.id}
               onClick={() => {
-                navigate(module.url);
+                if (application?.endpoint) {
+                  navigate(application.endpoint);
+                } else if (application?.url) {
+                  window.location.href = application.url;
+                }
               }}
               className={clippy(
                 styles.application,
@@ -46,13 +59,12 @@ const QuickShortcuts: React.FC<{ side: "top" | "right" | "bottom" | "left" }> = 
                 useLevelClass(1),
               )}
             >
-              <Image
-                authenticatedImage
+              <UKImage
                 className={styles.applicationIcon}
-                src={module.icon}
-                accessibleLabel={module.name}
+                src={tun.baseUrl + `/core/panel/quick-shortcut/icon/${application.id}`}
+                accessibleLabel={application.displayName}
               />
-              <span className={styles.applicationLabel}>{module.name}</span>
+              <span className={styles.applicationLabel}>{application.displayName}</span>
             </div>
           </IncrementLevel>
         );

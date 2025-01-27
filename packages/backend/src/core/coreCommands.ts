@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -25,9 +25,9 @@ export default class CoreCommands {
     this.lastCommandAndArgs = [];
     this.prompt = "> ";
 
-    this.stdin.setRawMode(true);
-    this.stdin.setEncoding("utf8");
-    this.stdin.resume();
+    this.stdin.setRawMode?.(true);
+    this.stdin.setEncoding?.("utf8");
+    this.stdin.resume?.();
 
     let cursorPosition = 0;
 

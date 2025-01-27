@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -36,9 +36,7 @@ export default class YourDashCoreServiceManager {
 
     const depCheck = dependsOn.map((dep) => {
       if (!this.activeServices.has(dep)) {
-        throw new Error(
-          `Service ${service.__serviceInternals.id} depends on ${dep} which does not exist or is not yet registered.`,
-        );
+        throw new Error(`Service ${service.__serviceInternals.id} depends on ${dep} which does not exist or is not yet registered.`);
       }
 
       const registeredDep = this.activeServices.get(dep);

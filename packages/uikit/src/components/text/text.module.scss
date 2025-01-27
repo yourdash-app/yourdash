@@ -1,0 +1,13 @@
+/*!
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
+@use "../../theme/themeValues.scss" as *;
+
+.component {
+  display: inline-block;
+  font-weight: var(#{$theme+$font+$weight});
+  font-size: var(#{$theme+$font+$size});
+  font-family: var(#{$theme+$font+$family});
+}

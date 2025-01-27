@@ -3,25 +3,26 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-@import "../../../../../../../node_modules/@yourdash/uikit/theme/themeValues";
+@use "@yourdash/uikit/src/theme/themeValues" as *;
 
 .applicationIcon {
   max-width: 100%;
   max-height: 100%;
   transition: var(--transition);
   aspect-ratio: 1 / 1;
-  background: var(#{$theme+$background});
+  background: rgb(var(#{$theme+$background}));
 }
 
 .applicationLabel {
   position: absolute;
   padding: 0.25rem 0.75rem;
   user-select: none;
-  transition: var(--transition);
+  transition: var(#{$theme+$transition});
   opacity: 0;
-  border: solid 1px rgb(var(--container-border));
-  border-radius: var(--container-rounding);
-  background: rgb(var(--container-bg));
+  border: var(#{$theme+$border});
+  border-radius: var(#{$theme+$radius});
+  background: rgb(var(#{$theme+$background}));
+  color: rgb(var(#{$theme+$color}));
   pointer-events: none;
 }
 

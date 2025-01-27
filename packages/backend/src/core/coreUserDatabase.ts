@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -7,6 +7,7 @@ import path from "path";
 import { Core } from "./core.js";
 import FSError from "./fileSystem/FSError.js";
 import YourDashUser from "./user/index.js";
+import z from "zod";
 
 type JSONValue = boolean | number | string | null | JSONFile;
 
@@ -67,7 +68,7 @@ export default class CoreUserDatabase {
   }
 
   __internal__loadEndpoints() {
-    this.core.request.get("/core/user_db", async (req, res) => {
+    this.core.request.get("/core/user_db", z.unknown(), async (req, res) => {
       const { username } = req.headers;
 
       if (!this.userDatabases.get(username)) {
@@ -77,7 +78,7 @@ export default class CoreUserDatabase {
       return res.json(this.userDatabases.get(username) || {});
     });
 
-    this.core.request.post("/core/user_db", async (req, res) => {
+    this.core.request.post("/core/user_db", z.unknown(), z.unknown(), async (req, res) => {
       const { username } = req.headers;
 
       this.userDatabases.set(username, req.body);

@@ -3,6 +3,8 @@
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+@use "@yourdash/uikit/src/theme/themeValues" as *;
+
 .layout {
   display: flex;
   height: 100%;
@@ -22,12 +24,14 @@
 .applicationFrame {
   container-name: yourdash-application-frame;
   container-type: inline-size;
-
   overflow: hidden;
   height: 100%;
   width: 100%;
   transition: var(--transition);
   animation: applicationFadeIn 0.25s forwards ease-in;
+  border-top-left-radius: var(#{$theme+$radius});
+  border-top: var(#{$theme+$border});
+  border-left: var(#{$theme+$border});
 }
 
 .top {
@@ -44,4 +48,41 @@
 
 .left {
   flex-direction: row;
+}
+
+.applicationPanelFrame {
+  grid-template-rows: auto 1fr;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.applicationPanel {
+  width: 100%;
+  height: 3.5rem;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: var(#{$theme+$gap});
+  padding: var(#{$theme+$padding});
+
+  .applicationIcon {
+    border-radius: 0;
+    height: 1.5rem;
+  }
+
+  .applicationDisplayName {
+    margin-right: auto;
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+
+  .applicationBackButton {
+
+  }
+
+  .applicationControls {
+
+  }
 }

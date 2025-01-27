@@ -7,8 +7,8 @@
         <option value="--log-requests" />
       </list>
     </option>
-    <option name="program" value="src/main.ts" />
-    <option name="workingDirectory" value="$PROJECT_DIR$/main/backend" />
+    <option name="program" value="resrc/main.ts" />
+    <option name="workingDirectory" value="$PROJECT_DIR$/packages/backend" />
     <method v="2" />
   </configuration>
 </component>

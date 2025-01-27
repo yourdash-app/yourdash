@@ -1,27 +1,29 @@
 /*
- * Copyright ©2024 Ewsgit<https://ewsgit.uk> and YourDash<https://yourdash.ewsgit.uk> contributors.
+ * Copyright ©2025 Ewsgit<https://ewsgit.uk> and YourDash<https://yourdash.ewsgit.uk> contributors.
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
-import { INSTANCE_STATUS } from "@yourdash/shared/core/instanceStatus.js";
+import { extendZodWithOpenApi } from "@asteasolutions/zod-to-openapi";
+import { INSTANCE_STATUS } from "@yourdash/backend/resrc/types/instanceStatus.js";
 import { LoginLayout } from "@yourdash/shared/core/login/loginLayout.js";
 import { YOURDASH_SESSION_TYPE } from "@yourdash/shared/core/session.js";
 import { USER_AVATAR_SIZE } from "@yourdash/shared/core/userAvatarSize.js";
 import EndpointResponseCoreLoginNotice from "@yourdash/shared/endpoints/core/login/notice.js";
-import EndpointResponseLoginInstanceMetadata from "@yourdash/shared/endpoints/login/instance/metadata.js";
 import chalk from "chalk";
 import childProcess from "child_process";
 import expressCompression from "compression";
 import cors from "cors";
 import express, { Application as ExpressApplication } from "express";
+import { rateLimit } from "express-rate-limit";
+import xmlBodyParser from "express-xml-bodyparser";
 import { promises as fs, readdirSync as fsReaddirSync, writeFile as fsWriteFile } from "fs";
 import http from "http";
 import killPort from "kill-port";
 import minimist from "minimist";
 import path from "path";
 import { fetch } from "undici";
-import { compareHashString } from "../lib/encryption.js";
-import { createSession, loadSessionsForUser } from "../lib/session.js";
+import z from "zod";
+import { createSession } from "../lib/session.js";
 import CoreApplicationManager from "./coreApplicationManager.js";
 import CoreCommands from "./coreCommands.js";
 import CoreExecute from "./coreExecute.js";
@@ -36,15 +38,17 @@ import CoreTeams from "./coreTeams.js";
 import CoreUserDatabase from "./coreUserDatabase.js";
 import CoreUsers from "./coreUsers.js";
 import CoreVideo from "./coreVideo.js";
+import CoreFileSystem from "./fileSystem/coreFS.js";
 import FSDirectory from "./fileSystem/FSDirectory.js";
 import FSError from "./fileSystem/FSError.js";
 import FSFile from "./fileSystem/FSFile.js";
-import CoreFileSystem from "./fileSystem/coreFS.js";
 import GlobalDBCoreLoginNotice from "./login/loginNotice.js";
 import loadNextCloudSupportEndpoints from "./nextcloud/coreNextCloud.js";
 import YourDashUser from "./user/index.js";
 import CoreWebDAV from "./webDAV/coreWebDAV.js";
 import CoreWebsocketManager from "./websocketManager/coreWebsocketManager.js";
+
+extendZodWithOpenApi(z);
 
 declare global {
   const globalThis: {
@@ -52,14 +56,6 @@ declare global {
     rawConsoleLog: (message?: any, ...optionalParams: any[]) => void;
   };
 }
-
-/**
- *  # YourDash Planned Changes
- *
- *   - implement flagForRestart (requestingApplicationName: string, reason: string)
- *       This will prompt the admin user with a notification to restart the instance, the notification will provide the administrator with
- *       the reason for the restart along with the application which has requested it.
- * */
 
 export class Core {
   // core apis
@@ -97,8 +93,7 @@ export class Core {
     // @ts-ignore
     globalThis.rawConsoleLog = globalThis.console.log;
 
-    this.isDebugMode =
-      // @ts-ignore
+    this.isDebugMode = // @ts-ignore
       typeof global.v8debug === "object" ||
       /--debug|--inspect/.test(process.execArgv.join(" ")) ||
       process.env.NODE_OPTIONS?.includes("javascript-debugger") ||
@@ -130,6 +125,7 @@ export class Core {
     this.request = new CoreRequest(this);
     this.scheduler = new CoreScheduler(this);
     this.users = new CoreUsers(this);
+    // deprecated
     // this.moduleManager = new CoreModuleManager(this);
     this.applicationManager = new CoreApplicationManager(this);
     this.globalDb = new CoreGlobalDb(this);
@@ -175,7 +171,21 @@ export class Core {
     });
 
     this.commands.registerCommand("list_endpoints", () => {
-      this.log.success("list_endpoints", JSON.stringify(this.request.endpoints));
+      this.log.success(
+        "list_endpoints",
+        JSON.stringify(
+          this.request.openApiRegistry.definitions.map((r) => {
+            return {
+              // @ts-ignore
+              method: r.route.method, // @ts-ignore
+              path: r.route.path, // @ts-ignore
+              description: r.route.description,
+            };
+          }),
+          null,
+          2,
+        ),
+      );
     });
 
     this.commands.registerCommand("gdb", (args) => {
@@ -227,18 +237,19 @@ export class Core {
     this.log.info("startup", "Welcome to the YourDash Instance backend! created by Ewsgit -> https://ewsgit.uk");
 
     this.fs.doesExist("./global_database.json").then(async (doesGlobalDatabaseFileExist) => {
-      if (doesGlobalDatabaseFileExist) await this.globalDb.loadFromDisk("./global_database.json");
+      if (doesGlobalDatabaseFileExist) {
+        await this.globalDb.loadFromDisk("./global_database.json");
+      }
 
-      this.fs.verifyFileSystem.verify().then(async () => {
-        this.users.__internal__startUserDatabaseService();
-        this.users.__internal__startUserDeletionService();
-        this.globalDb.__internal__startGlobalDatabaseService();
-        this.teams.__internal__startTeamDatabaseService();
+      this.fs.verifyFileSystem.verify();
+      this.users.__internal__startUserDatabaseService();
+      this.users.__internal__startUserDeletionService();
+      this.globalDb.__internal__startGlobalDatabaseService();
+      this.teams.__internal__startTeamDatabaseService();
 
-        await this.__internal__startExpressServer();
-        await this.loadCoreEndpoints();
-        await this.__internal__startViteServer();
-      });
+      await this.__internal__startExpressServer();
+      await this.loadCoreEndpoints();
+      await this.__internal__startViteServer();
     });
     return this;
   }
@@ -308,7 +319,7 @@ import { Route, Routes } from "react-router";
       fileTemplate = fileTemplate.replace("{/* region routes */}", routeRegionReplacement);
 
       fs.writeFile(path.resolve(process.cwd(), "../web/src/app/AppRouter.tsx"), fileTemplate).then(() => {
-        console.log("Generated AppRouter.tsx Successfully");
+        this.log.info("core/startup", "Generated AppRouter.tsx Successfully");
       });
     })();
 
@@ -318,12 +329,17 @@ import { Route, Routes } from "react-router";
       for (const mod of application.config.modules.officialFrontend) {
         await (async () => {
           let fileTemplate = `/**
- * This file is auto-generated by backend/src/core.ts during vite server startup don't edit this file for any reason
+ * This file is auto-generated by backend/src/core.ts during express server startup don't edit this file for any reason
 */
 /* region code */
 `;
 
-          const codeRegionReplacement = `import {ClientServerInteraction} from "@yourdash/csi/coreCSI.js";import {useNavigate} from "react-router-dom";const applicationMeta:{$schema:string;id:string;displayName:string;category:string;authors:{name:string;url:string;bio:string;avatarUrl:string}[];maintainers:{name:string;url:string;bio:string;avatarUrl:string}[];description:string;license:string;modules:{backend:{id:string;main:string;description:string;dependencies:{moduleType:"backend"|"frontend"|"officialFrontend";id:string}[];}[];frontend:{id:string;displayName:string;iconPath:string;url:string;devUrl:string;description:string;dependencies:{moduleType:"backend"|"frontend"|"officialFrontend";id:string}[];main:string;}[];officialFrontend:{id:string;main:string;displayName:string;iconPath:string;description:string;dependencies:{moduleType:"backend"|"frontend"|"officialFrontend";id:string}[];}[];};shouldInstanceRestartOnInstall:boolean;__internal__generatedFor:"frontend"|"officialFrontend";}=${JSON.stringify({ ...application.config, __internal__generatedFor: "officialFrontend" })};export default applicationMeta;const acsi=new ClientServerInteraction("/app/${application.config.modules.backend[0].id}");const useNavigateTo=()=>{const navigate=useNavigate();return (path: string)=>navigate("/app/a/${application.config.modules.officialFrontend[0].id}"+path)};const modulePath = "/app/a/${application.config.modules.officialFrontend[0].id}";export{acsi,useNavigateTo,modulePath};`;
+          const codeRegionReplacement = `import openApi from "./openapi.yourdash.ts";import {ClientServerInteraction} from "@yourdash/csi/coreCSI.js";import {useNavigate} from "react-router-dom";const applicationMeta:{$schema:string;id:string;displayName:string;category:string;authors:{name:string;url:string;bio:string;avatarUrl:string}[];maintainers:{name:string;url:string;bio:string;avatarUrl:string}[];description:string;license:string;modules:{backend:{id:string;main:string;description:string;dependencies:{moduleType:"backend"|"frontend"|"officialFrontend";id:string}[];}[];frontend:{id:string;displayName:string;iconPath:string;url:string;devUrl:string;description:string;dependencies:{moduleType:"backend"|"frontend"|"officialFrontend";id:string}[];main:string;}[];officialFrontend:{id:string;main:string;displayName:string;iconPath:string;description:string;dependencies:{moduleType:"backend"|"frontend"|"officialFrontend";id:string}[];}[];};shouldInstanceRestartOnInstall:boolean;__internal__generatedFor:"frontend"|"officialFrontend";}=${JSON.stringify(
+            {
+              ...application.config,
+              __internal__generatedFor: "officialFrontend",
+            },
+          )};export default applicationMeta;const acsi=new ClientServerInteraction<openApi>("/app/${application.config.modules.backend[0].id}");const useNavigateTo=()=>{const navigate=useNavigate();return (path: string)=>navigate("/app/a/${application.config.modules.officialFrontend[0].id}"+path)};const modulePath = "/app/a/${application.config.modules.officialFrontend[0].id}";export{acsi,useNavigateTo,modulePath};`;
 
           fileTemplate = fileTemplate.replace("/* region code */", codeRegionReplacement);
 
@@ -354,10 +370,14 @@ import { Route, Routes } from "react-router";
     let portInUse = false;
 
     viteProcess.stdout.on("data", (data) => {
-      if (data.toString() === "$ vite --host\n") return;
+      if (data.toString() === "$ vite --host\n") {
+        return;
+      }
 
       if (data.toString().includes("is in use, trying another one...")) {
-        if (portInUse) return;
+        if (portInUse) {
+          return;
+        }
 
         portInUse = true;
 
@@ -408,68 +428,108 @@ import { Route, Routes } from "react-router";
     return this;
   }
 
+  // gracefully shutdown the YourDash Instance, optionally keep the process running
+  shutdownInstance(dontExitProcess = false) {
+    this.log.info("core", "Shutting down...");
+
+    fsReaddirSync(path.resolve(this.fs.ROOT_PATH, "./users")).forEach(async (username) => {
+      await this.users.__internal__saveUserDatabaseInstantly(username);
+    });
+
+    this.scheduler.__internal__onShutdown();
+
+    this.httpServer.close(() => {
+      this.log.info("core", "HTTP Server closed");
+    });
+
+    const LOG_OUTPUT = this.log.logHistory
+      .map((hist) => {
+        return `${hist.type}: ${hist.message}`;
+      })
+      .join("\n");
+
+    fsWriteFile(path.join(this.fs.ROOT_PATH, "./log.log"), LOG_OUTPUT, (err) => {
+      if (err) {
+        this.log.error("core", `Failed to save log file; ${err}`);
+      }
+    });
+
+    try {
+      this.globalDb.__internal__doNotUseOnlyIntendedForShutdownSequenceWriteToDisk(path.join("./global_database.json")).then(() => {
+        this.log.info("global_db", "Successfully saved global database");
+      });
+    } catch (e) {
+      this.log.error(
+        "global_db",
+        "[EXTREME SEVERITY] Shutdown Error! failed to save global database. User data will have been lost! (approx <= past 5 minutes)",
+      );
+    }
+
+    if (!dontExitProcess) {
+      process.exit(0);
+    }
+  }
+
+  // gracefully shutdown and restart the YourDash Instance
+  restartInstance() {
+    this.shutdownInstance(true);
+    this.__internal__startInstance();
+
+    return this;
+  }
+
   private startRequestLogger(options: { logOptionsRequests?: boolean; logQueryParameters?: boolean }) {
     this.request.use(async (req, _res, next) => {
-      switch (req.method) {
+      switch (req.method.toUpperCase()) {
         case "GET":
-          if (req.path.includes("core/auth-img")) return next();
-          if (req.path.includes("core/auth-video")) return next();
+          if (req.path.startsWith("/core/auth-img")) {
+            return next();
+          }
+          if (req.path.startsWith("/core/auth-video")) {
+            return next();
+          }
 
           this.log.info(
             "request",
-            `${chalk.bgBlack(chalk.green(" GET "))} ${chalk.bold(req.path)} ${
-              options.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""
-            }`,
+            `${chalk.bgBlack(chalk.green(" GET "))} ${chalk.bold(req.path)} ${options.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""}`,
           );
           break;
         case "POST":
           this.log.info(
             "request",
-            `${chalk.bgBlack(chalk.blue(" POS "))} ${chalk.bold(req.path)} ${
-              options.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""
-            }`,
+            `${chalk.bgBlack(chalk.blue(" POS "))} ${chalk.bold(req.path)} ${options.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""}`,
           );
           break;
         case "DELETE":
           this.log.info(
             "request",
-            `${chalk.bgBlack(chalk.red(" DEL "))} ${chalk.bold(req.path)} ${
-              options.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""
-            }`,
+            `${chalk.bgBlack(chalk.red(" DEL "))} ${chalk.bold(req.path)} ${options.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""}`,
           );
           break;
         case "OPTIONS":
           if (options.logOptionsRequests) {
             this.log.info(
               "request",
-              `${chalk.bgBlack(chalk.cyan(" OPT "))} ${chalk.bold(req.path)} ${
-                options.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""
-              }`,
+              `${chalk.bgBlack(chalk.cyan(" OPT "))} ${chalk.bold(req.path)} ${options.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""}`,
             );
           }
           break;
         case "PROPFIND":
           this.log.info(
             "request",
-            `${chalk.bgBlack(chalk.cyan(" PFI "))} ${chalk.bold(req.path)} ${
-              options.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""
-            }`,
+            `${chalk.bgBlack(chalk.cyan(" PFI "))} ${chalk.bold(req.path)} ${options.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""}`,
           );
           break;
         case "PROPPATCH":
           this.log.info(
             "request",
-            `${chalk.bgCyan(chalk.cyan(" PPA "))} ${chalk.bold(req.path)} ${
-              options.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""
-            }`,
+            `${chalk.bgCyan(chalk.cyan(" PPA "))} ${chalk.bold(req.path)} ${options.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""}`,
           );
           break;
         default:
           this.log.error(
             "core_requests",
-            `ERROR IN REQUEST LOGGER, UNKNOWN REQUEST TYPE: ${req.method}, ${chalk.bold(req.path)} ${
-              options.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""
-            }`,
+            `ERROR IN REQUEST LOGGER, UNKNOWN REQUEST TYPE: ${req.method}, ${chalk.bold(req.path)} ${options.logQueryParameters ? JSON.stringify(req.query) !== "{}" && JSON.stringify(req.query) : ""}`,
           );
       }
 
@@ -481,10 +541,6 @@ import { Route, Routes } from "react-router";
   }
 
   private async loadCoreEndpoints() {
-    if (this.isDevMode) {
-      loadSessionsForUser("admin").then(() => this.log.success("devmode", "Loaded sessions for admin user"));
-    }
-
     if (this.processArguments["log-requests"]) {
       this.startRequestLogger({
         logOptionsRequests: !!this.processArguments["log-options-requests"],
@@ -492,43 +548,56 @@ import { Route, Routes } from "react-router";
       });
     }
 
-    this.request.use(async (req, res, next) => cors()(req, res, next));
-    this.request.use(async (req, res, next) => express.json({ limit: 50_000_000 })(req, res, next));
-    this.request.use(async (req, res, next) => express.urlencoded({ extended: true })(req, res, next));
-
-    this.request.use(async (_req, res, next) => {
+    this.rawExpressJs.use(async (_req, res, next) => {
       // remove the X-Powered-By header to prevent exploitation from knowing the software powering the request server
       // this is a security measure against exploiters who don't look into the project's source code
       res.removeHeader("X-Powered-By");
 
       return next();
     });
+    this.rawExpressJs.use(cors());
+    this.rawExpressJs.use(
+      rateLimit({
+        limit: 500,
+        windowMs: 60_000,
+        message: (req: any, res: any) => {
+          this.log.warning("request", "rate limited request");
+          return res.status(429).json({ error: true, message: "Rate-Limited" });
+        },
+        skip: (req) => {
+          return req.path.startsWith("/core/auth-img") || req.path.startsWith("/core/auth-video");
+        },
+      }),
+    );
+    this.rawExpressJs.use(express.json({ limit: 50_000_000 }));
+    this.rawExpressJs.use(xmlBodyParser());
+    this.rawExpressJs.use(express.urlencoded({ extended: true }));
 
     this.request.use(async (req, res, next) => expressCompression()(req, res, next));
 
     // INFO: This shouldn't be used for detection of a YourDash Instance, instead use the '/test' endpoint
-    this.request.get("/", async (_req, res) => {
+    this.request.get("/", z.null(), async (_req, res) => {
       if (this.isDevMode) {
         return res.redirect(`http://localhost:5173/login/http://localhost:3563`);
       }
 
-      return res.redirect(`https://ydsh.pages.dev/login/${this.globalDb.get("core:instanceurl")}`);
+      return res.redirect(`https://yourdash.ewsgit.uk/login/${this.globalDb.get("core:instanceurl")}`);
     });
 
     // Server discovery endpoint
-    this.request.get("/test", async (_req, res) => {
+    this.request.get("/test", z.object({ status: z.nativeEnum(INSTANCE_STATUS), type: z.string() }), async (_req, res) => {
       return res.status(200).json({
         status: this.instanceStatus,
         type: "yourdash",
       });
     });
 
-    this.request.get("/ping", async (_req, res) => {
+    this.request.get("/ping", z.string(), async (_req, res) => {
       // INFO: This shouldn't be used for detection of a YourDash Instance, instead use the '/test' endpoint
       return res.send("pong");
     });
 
-    this.request.get("/core/test/self-ping", async (_req, res) => {
+    this.request.get("/core/test/self-ping", z.object({ success: z.boolean() }), async (_req, res) => {
       return res.json({ success: true });
     });
 
@@ -548,80 +617,87 @@ import { Route, Routes } from "react-router";
         this.log.error("self_ping_test", "CRITICAL ERROR!, unable to ping self");
       });
 
-    this.request.get("/login/user/:username/avatar", async (req, res) => {
+    this.request.get("/login/user/:username/avatar", z.unknown(), async (req, res) => {
       const user = new YourDashUser(req.params.username);
       return res.sendFile(path.join(this.fs.ROOT_PATH, user.getAvatar(USER_AVATAR_SIZE.EXTRA_LARGE)));
     });
 
-    this.request.get("/login/user/:username", async (req, res) => {
-      const user = new YourDashUser(req.params.username);
-      if (await user.doesExist()) {
-        return res.json({
-          name: (await user.getName()) || {
-            first: "Name Not Found",
-            last: "Or Not Set",
-          },
-        });
-      } else {
-        console.log("Does not exist");
-        return res.json({ error: "Unknown user" });
-      }
-    });
+    this.request.get(
+      "/login/user/:username",
+      z.object({ name: z.object({ first: z.string(), last: z.string() }) }).or(z.object({ error: z.string() })),
+      async (req, res) => {
+        const user = new YourDashUser(req.params.username);
+        if (await user.doesExist()) {
+          return res.json({
+            name: (await user.getName()) || {
+              first: "Name Not Found",
+              last: "Or Not Set",
+            },
+          });
+        } else {
+          console.log("Does not exist");
+          return res.json({ error: "Unknown user" });
+        }
+      },
+    );
 
-    this.request.post("/login/user/:username/authenticate", async (req, res) => {
-      if (!req.body) return res.status(400).json({ error: "Invalid or missing request body" });
+    this.request.post(
+      "/login/user/:username/authenticate",
+      z.object({ password: z.string() }),
+      z.object({ token: z.string(), sessionId: z.number() }).or(z.object({ error: z.string() })),
+      async (req, res) => {
+        if (!req.body) {
+          return res.status(400).json({ error: "Invalid or missing request body" });
+        }
 
-      const username = req.params.username;
-      const password = req.body.password;
+        const username = req.params.username;
+        const password = req.body.password;
 
-      if (!username || username === "") {
-        return res.json({ error: "Missing username" });
-      }
+        if (!username || username === "") {
+          return res.json({ error: "Missing username" });
+        }
 
-      if (!password || password === "") {
-        return res.json({ error: "Missing password" });
-      }
+        if (!password || password === "") {
+          return res.json({ error: "Missing password" });
+        }
 
-      const user = new YourDashUser(username);
+        const user = new YourDashUser(username);
 
-      let savedHashedPassword = "";
-      try {
-        savedHashedPassword = await ((await this.fs.getFile(path.join(user.path, "core/password.enc"))) as FSFile).read("string");
-      } catch (e) {
-        this.log.error("authentication", "Unable to read password from disk", e);
-      }
+        let savedHashedPassword = "";
+        try {
+          savedHashedPassword = await ((await this.fs.getFile(path.join(user.path, "core/password.enc"))) as FSFile).read("string");
+        } catch (e) {
+          this.log.error("authentication", "Unable to read password from disk", e);
+        }
 
-      return compareHashString(savedHashedPassword, password)
-        .then(async (result) => {
-          if (result) {
-            const session = await createSession(
-              username,
-              req.headers?.type === "desktop" ? YOURDASH_SESSION_TYPE.desktop : YOURDASH_SESSION_TYPE.web,
-            );
+        const isThePassword = await Bun.password.verify(password, savedHashedPassword);
 
-            return res.json({
-              token: session.sessionToken,
-              sessionId: session.sessionId,
-            });
-          } else {
-            this.log.info("login", `Incorrect password provided for user ${username}`);
-            return res.json({ error: "Incorrect password" });
-          }
-        })
-        .catch(() => {
-          this.log.error("login", `Hash comparison failed for user ${username}`);
-          res.status(500);
-          return res.json({ error: "Login failure" });
-        });
-    });
+        if (isThePassword) {
+          const session = await createSession(
+            username,
+            req.headers?.type === "desktop" ? YOURDASH_SESSION_TYPE.DESKTOP : YOURDASH_SESSION_TYPE.WEB,
+          );
 
-    this.request.get("/login/is-authenticated", async (req, res) => {
+          return res.json({
+            token: session.sessionToken,
+            sessionId: session.sessionId,
+          });
+        } else {
+          this.log.info("login", `Incorrect password provided for user ${username}`);
+          return res.status(500).json({ error: "Incorrect password" });
+        }
+      },
+    );
+
+    this.request.get("/login/is-authenticated", z.object({ success: z.boolean() }), async (req, res) => {
       const { username, token } = req.headers as {
         username?: string;
         token?: string;
       };
 
-      if (!username || !token) return res.json({ success: false });
+      if (!username || !token) {
+        return res.json({ success: false });
+      }
 
       if (!this.users.__internal__getSessionsDoNotUseOutsideOfCore()[username]) {
         try {
@@ -630,7 +706,7 @@ import { Route, Routes } from "react-router";
           this.users.__internal__getSessionsDoNotUseOutsideOfCore()[username] = (await user.getAllLoginSessions()) || [];
         } catch (_err) {
           this.log.info("login", `User with username ${username} not found`);
-          return res.json({ error: true });
+          return res.json({ success: false });
         }
       }
 
@@ -641,7 +717,7 @@ import { Route, Routes } from "react-router";
       return res.json({ success: false });
     });
 
-    this.request.get("/core/theme/:username", async (req, res) => {
+    this.request.get("/core/theme/:username", z.unknown().or(z.object({ error: z.string() })), async (req, res) => {
       const username = req.params.username;
       const user = this.users.get(username);
 
@@ -652,15 +728,19 @@ import { Route, Routes } from "react-router";
       return res.sendFile(path.join(this.fs.ROOT_PATH, user.getThemePath()));
     });
 
-    this.request.get("/login/instance/metadata", async (_req, res) => {
-      return res.json(<EndpointResponseLoginInstanceMetadata>{
-        title: this.globalDb.get("core:instance:name") || "Placeholder name",
-        message: this.globalDb.get("core:instance:message") || "Placeholder message. Hey system admin, you should change this!",
-        loginLayout: this.globalDb.get("core:instance:login:layout") || LoginLayout.CARDS,
-      });
-    });
+    this.request.get(
+      "/login/instance/metadata",
+      z.object({ title: z.string(), message: z.string(), loginLayout: z.nativeEnum(LoginLayout) }),
+      async (_req, res) => {
+        return res.json({
+          title: this.globalDb.get("core:instance:name") || "Placeholder name",
+          message: this.globalDb.get("core:instance:message") || "Placeholder message. Hey system admin, you should change this!",
+          loginLayout: this.globalDb.get("core:instance:login:layout") || LoginLayout.CARDS,
+        });
+      },
+    );
 
-    this.request.get("/login/instance/background", async (_req, res) => {
+    this.request.get("/login/instance/background", z.unknown(), async (_req, res) => {
       return res.sendFile(path.resolve(this.fs.ROOT_PATH, "./login_background.avif"));
     });
 
@@ -706,8 +786,9 @@ import { Route, Routes } from "react-router";
 
       const externalApplications: string | string[] = this.processArguments["load-external-application"] || [];
 
-      if (externalApplications.length > 0)
+      if (externalApplications.length > 0) {
         this.log.info("external_modules", "Loading external module(s): ", JSON.stringify(externalApplications, null, 2));
+      }
 
       if (externalApplications) {
         if (typeof externalApplications === "string") {
@@ -733,7 +814,6 @@ import { Route, Routes } from "react-router";
         }
       }
 
-      console.timeEnd("core:load_modules");
       this.log.info("startup", "All modules loaded successfully");
     } catch (err) {
       this.log.error("startup", err);
@@ -805,49 +885,67 @@ import { Route, Routes } from "react-router";
       return failAuth();
     });
 
+    console.log("core:load_modules starting");
     console.time("core:load_modules");
 
     try {
-      this.applicationManager.loadedModules.backend.map((mod) => {
-        try {
-          mod.module.loadEndpoints();
-          this.request.setNamespace("");
-          this.log.success("module_manager", `Loaded endpoints for ${mod.config.id}`);
-        } catch (err) {
-          this.log.error("startup", `Failed to load post-auth endpoints for ${mod.config.id}`, err);
-        }
-      });
+      if (!(this.applicationManager.loadedModules.backend.length > 0)) this.log.warning("startup", "No modules have been loaded!");
+
+      await Promise.all(
+        this.applicationManager.loadedModules.backend.map(async (mod) => {
+          try {
+            // the await is necessary
+            mod.module.loadEndpoints();
+            this.log.success("module_manager", `Loaded endpoints for ${mod.config.id}`);
+          } catch (err) {
+            this.log.error("startup", `Failed to load post-auth endpoints for ${mod.config.id}`, err);
+          }
+        }),
+      );
     } catch (err) {
       this.log.error("startup", "Failed to load post-auth endpoints for all modules", err);
     }
 
-    this.request.get("/core/login/notice", async (_req, res) => {
-      const notice = this.globalDb.get<GlobalDBCoreLoginNotice>("core:login:notice");
+    console.timeEnd("core:load_modules");
 
-      if (!notice) {
+    this.request.setNamespace("");
+
+    this.request.get(
+      "/core/login/notice",
+      z.object({
+        author: z.optional(z.string()),
+        message: z.optional(z.string()),
+        timestamp: z.optional(z.number()),
+        display: z.boolean(),
+      }),
+      async (_req, res) => {
+        const notice = this.globalDb.get<GlobalDBCoreLoginNotice>("core:login:notice");
+
+        if (!notice) {
+          return res.json(<EndpointResponseCoreLoginNotice>{
+            author: undefined,
+            message: undefined,
+            timestamp: undefined,
+            display: false,
+          });
+        }
+
         return res.json(<EndpointResponseCoreLoginNotice>{
-          author: undefined,
-          message: undefined,
-          timestamp: undefined,
-          display: false,
+          author: notice.author ?? "Instance Administrator",
+          display: notice.displayType === "onLogin" && true,
+          message: notice.message ?? "Placeholder message. Hey system admin, you should change this!",
+          timestamp: notice.timestamp ?? 1,
         });
-      }
+      },
+    );
 
-      return res.json(<EndpointResponseCoreLoginNotice>{
-        author: notice.author ?? "Instance Administrator",
-        display: notice.displayType === "onLogin" && true,
-        message: notice.message ?? "Placeholder message. Hey system admin, you should change this!",
-        timestamp: notice.timestamp ?? 1,
-      });
-    });
-
-    this.request.get("/core/hosted-applications/", async (_req, res) => {
+    this.request.get("/core/hosted-applications/", z.object({ applications: z.array(z.string()) }), async (_req, res) => {
       const hostedApplications = (await this.fs.getDirectory(path.join(process.cwd(), "../../hostedApplications"))) as FSDirectory;
 
       return res.json({ applications: await hostedApplications.getChildrenAsBaseName() });
     });
 
-    this.request.get("/user/sessions", async (req, res) => {
+    this.request.get("/user/sessions", z.object({ sessions: z.object({}) }), async (req, res) => {
       const { username } = req.headers;
 
       const user = this.users.get(username);
@@ -855,7 +953,7 @@ import { Route, Routes } from "react-router";
       return res.json({ sessions: await user.getAllLoginSessions() });
     });
 
-    this.request.delete("/core/session/:id", async (req, res) => {
+    this.request.delete("/core/session/:id", z.object({ success: z.boolean() }), async (req, res) => {
       const { username } = req.headers;
       const { id: sessionId } = req.params;
 
@@ -878,55 +976,19 @@ import { Route, Routes } from "react-router";
       return res.status(404).json({ error: "this endpoint does not exist!" });
     });
 
+    // noinspection ES6MissingAwait
+    this.request.__internal_generateOpenAPIDefinitions();
+
     console.timeEnd("core:startup");
   }
 
-  // gracefully shutdown the YourDash Instance, optionally keep the process running
-  shutdownInstance(dontExitProcess = false) {
-    this.log.info("core", "Shutting down...");
+  // flag the instance as needing a restart,
+  // This will prompt the admin user with a notification to restart the instance, the notification will provide the administrator with
+  // the reason for the restart along with the application which has requested it.
+  flagForRestart(requestingApplicationName: string, reason: string): boolean {
+    // TODO: notify the admin group
 
-    fsReaddirSync(path.resolve(this.fs.ROOT_PATH, "./users")).forEach(async (username) => {
-      await this.users.__internal__saveUserDatabaseInstantly(username);
-    });
-
-    this.scheduler.__internal__onShutdown();
-
-    this.httpServer.close(() => {
-      this.log.info("core", "HTTP Server closed");
-    });
-
-    const LOG_OUTPUT = this.log.logHistory
-      .map((hist) => {
-        return `${hist.type}: ${hist.message}`;
-      })
-      .join("\n");
-
-    fsWriteFile(path.join(this.fs.ROOT_PATH, "./log.log"), LOG_OUTPUT, (err) => {
-      if (err) {
-        this.log.error("core", `Failed to save log file; ${err}`);
-      }
-    });
-
-    try {
-      this.globalDb.__internal__doNotUseOnlyIntendedForShutdownSequenceWriteToDisk(path.join("./global_database.json")).then(() => {
-        this.log.info("global_db", "Successfully saved global database");
-      });
-    } catch (e) {
-      this.log.error(
-        "global_db",
-        "[EXTREME SEVERITY] Shutdown Error! failed to save global database. User data will have been lost! (approx <= past 5 minutes)",
-      );
-    }
-
-    if (!dontExitProcess) process.exit(0);
-  }
-
-  // gracefully shutdown and restart the YourDash Instance
-  restartInstance() {
-    this.shutdownInstance(true);
-    this.__internal__startInstance();
-
-    return this;
+    return false;
   }
 }
 

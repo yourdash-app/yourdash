@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -46,24 +46,21 @@ export default class YourDashTeam {
     }
 
     try {
-      if (!(await core.fs.doesExist(path.join(this.getPath(), "core"))))
-        await core.fs.createDirectory(path.join(this.getPath(), "core"));
+      if (!(await core.fs.doesExist(path.join(this.getPath(), "core")))) await core.fs.createDirectory(path.join(this.getPath(), "core"));
     } catch (err) {
       core.log.error("teams", `Unable to create /core directory for ${this.teamName}`);
       return this;
     }
 
     try {
-      if (!(await core.fs.doesExist(path.join(this.getPath(), "cache"))))
-        await core.fs.createDirectory(path.join(this.getPath(), "cache"));
+      if (!(await core.fs.doesExist(path.join(this.getPath(), "cache")))) await core.fs.createDirectory(path.join(this.getPath(), "cache"));
     } catch (err) {
       core.log.error("teams", `Unable to create /cache directory for ${this.teamName}`);
       return this;
     }
 
     try {
-      if (!(await core.fs.doesExist(path.join(this.getPath(), "apps"))))
-        await core.fs.createDirectory(path.join(this.getPath(), "apps"));
+      if (!(await core.fs.doesExist(path.join(this.getPath(), "apps")))) await core.fs.createDirectory(path.join(this.getPath(), "apps"));
     } catch (err) {
       core.log.error("teams", `Unable to create /apps directory for ${this.teamName}`);
       return this;
@@ -85,7 +82,7 @@ export default class YourDashTeam {
   }
 
   addMember(userName: string, permissions: YourDashTeamPermission[]) {
-    this.db.set("members", [...(this.db.get("members") || []), { userName: userName, permissions: permissions }]);
+    this.db.set("members", [...(this.db.get<string[]>("members") || []), { userName: userName, permissions: permissions }]);
 
     return this;
   }
@@ -93,13 +90,13 @@ export default class YourDashTeam {
   removeMember(userName: string) {
     this.db.set(
       "members",
-      this.db.get("members").filter((member: { userName: string }) => member.userName !== userName),
+      this.db.get<string[]>("members")?.filter((member) => member !== userName),
     );
 
     return this;
   }
 
   containsMember(userName: string): boolean {
-    return this.db.get("members")?.some((member: { userName: string }) => member.userName === userName);
+    return this.db.get<string[]>("members")?.some((member) => member === userName) || false;
   }
 }

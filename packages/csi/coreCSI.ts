@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -7,8 +7,8 @@
 import KeyValueDatabase from "@yourdash/shared/core/database";
 import { io as SocketIoClient, Socket as SocketIoSocket } from "socket.io-client";
 import BrowserPath from "./browserPath.js";
-import CSIYourDashTeam from "./team/team";
-import CSIYourDashUser from "./user/user";
+import CSIYourDashTeam from "./team/team.js";
+import OpenAPIPaths from "./openapi.js";
 
 type ITJson = boolean | number | string | null | TJson | boolean[] | number[] | string[] | null[] | TJson[];
 
@@ -44,8 +44,36 @@ class __internalClientServerWebsocketConnection {
   }
 }
 
-export class ClientServerInteraction {
-  private _internal_baseRequestPath;
+export class ClientServerInteraction<
+  OpenApi extends {
+    [path: string]: {
+      parameters: any;
+      get: {
+        parameters: any;
+        requestBody?: never;
+        responses: {
+          200: {
+            headers: {
+              [name: string]: unknown;
+            };
+            content: {
+              "application/json": any;
+            };
+          };
+        };
+      };
+      put?: never;
+      post?: never;
+      delete?: never;
+      options?: never;
+      head?: never;
+      patch?: never;
+      trace?: never;
+      pathParams: { [key: string]: string };
+    };
+  },
+> {
+  private readonly _internal_baseRequestPath;
 
   constructor(baseRequestPath: string) {
     this._internal_baseRequestPath = baseRequestPath;
@@ -101,28 +129,26 @@ export class ClientServerInteraction {
     return sessionStorage.getItem("session_token") || "";
   }
 
-  setUserToken(token: string) {
-    sessionStorage.setItem("session_token", token);
-
-    return this;
-  }
-
-  async getJson<ResponseType extends object>(
+  async getJson<OpenApiEndpointPath extends keyof OpenApi>(
+    endpointTemplate: OpenApiEndpointPath,
     endpoint: string,
     extraHeaders?: {
       [key: string]: string;
     },
-  ): Promise<ResponseType> {
+  ): Promise<OpenApi[OpenApiEndpointPath]["get"]["responses"][200]["content"]["application/json"]> {
     const instanceUrl = this.getInstanceUrl();
     const username = this.getUsername();
     const sessionToken = this.getUserSessionToken();
     const sessionId = this.getSessionId();
 
+    let endpointPathWithParams: string = endpoint as string;
+
     return new Promise<ResponseType>((resolve, reject) => {
-      console.log(`${instanceUrl}${this._internal_baseRequestPath}${endpoint}`);
-      fetch(`${instanceUrl}${this._internal_baseRequestPath}${endpoint}`, {
+      console.log(`${instanceUrl}${this._internal_baseRequestPath}${<string>endpoint}`);
+      fetch(`${instanceUrl}${this._internal_baseRequestPath}${<string>endpoint}`, {
         method: "GET",
         mode: "cors",
+        credentials: "include",
         headers: {
           "Access-Control-Allow-Origin": "*",
           "Content-Type": "application/json",
@@ -143,28 +169,35 @@ export class ClientServerInteraction {
           if (resp?.error) {
             reject(resp.error);
             if (resp.error === "authorization fail") {
-              console.error("unauthorized request ", endpoint);
+              console.error("unauthorized request ", <string>endpoint);
               window.location.href = "/";
               return;
             }
-            console.error(`Error fetching from instance: (json) GET ${endpoint}, Error:`, resp.error);
+            console.error(`Error fetching from instance: (json) GET ${<string>endpoint}, Error:`, resp.error);
             return;
           }
 
           resolve(resp);
         })
         .catch((err) => {
-          console.error(`Error parsing result from instance: (json) GET ${endpoint}`, err);
+          console.error(`Error parsing result from instance: (json) GET ${<string>endpoint}`, err);
 
           reject(err);
         });
     });
   }
 
-  syncGetJson(
-    endpoint: string,
+  setUserToken(token: string) {
+    sessionStorage.setItem("session_token", token);
+
+    return this;
+  }
+
+  syncGetJson<OpenApiEndpointPath extends keyof OpenApi>(
+    endpoint: OpenApiEndpointPath,
+    pathParams: OpenApi[OpenApiEndpointPath]["pathParams"] = {},
     // eslint-disable-next-line
-    cb: (response: any) => void,
+    cb: (response: OpenApi[OpenApiEndpointPath]["get"]["responses"][200]["content"]["application/json"]) => void,
     error?: (response: string) => void,
     extraHeaders?: {
       [key: string]: string;
@@ -175,9 +208,16 @@ export class ClientServerInteraction {
     const sessionToken = this.getUserSessionToken();
     const sessionId = this.getSessionId();
 
-    fetch(`${instanceUrl}${this._internal_baseRequestPath}${endpoint}`, {
+    let endpointPathWithParams: string = endpoint as string;
+
+    for (const [key, value] of Object.entries(pathParams)) {
+      endpointPathWithParams = (<string>(<unknown>endpointPathWithParams)).replace(`:${key}`, <string>value);
+    }
+
+    fetch(`${instanceUrl}${this._internal_baseRequestPath}${endpointPathWithParams}`, {
       method: "GET",
       mode: "cors",
+      credentials: "include",
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Content-Type": "application/json",
@@ -202,13 +242,13 @@ export class ClientServerInteraction {
             window.location.href = "/";
             return;
           }
-          console.error(`Error fetching from instance: (json) GET ${endpoint}, Error:`, resp.error);
+          console.error(`Error fetching from instance: (json) GET ${endpointPathWithParams}, Error:`, resp.error);
           return;
         }
         cb(resp);
       })
       .catch((err) => {
-        console.error(`Error parsing result from instance: (json) GET ${endpoint}`, err);
+        console.error(`Error parsing result from instance: (json) GET ${endpointPathWithParams}`, err);
       });
   }
 
@@ -228,6 +268,7 @@ export class ClientServerInteraction {
       fetch(`${instanceUrl}${this._internal_baseRequestPath}${endpoint}`, {
         method: "POST",
         mode: "cors",
+        credentials: "include",
         body: JSON.stringify(body),
         headers: {
           "Access-Control-Allow-Origin": "*",
@@ -286,6 +327,7 @@ export class ClientServerInteraction {
     fetch(`${instanceUrl}${this._internal_baseRequestPath}${endpoint}`, {
       method: "POST",
       mode: "cors",
+      credentials: "include",
       body: JSON.stringify(body),
       headers: {
         "Access-Control-Allow-Origin": "*",
@@ -339,6 +381,7 @@ export class ClientServerInteraction {
     fetch(`${instanceUrl}${this._internal_baseRequestPath}${endpoint}`, {
       method: "DELETE",
       mode: "cors",
+      credentials: "include",
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Content-Type": "application/json",
@@ -390,6 +433,7 @@ export class ClientServerInteraction {
     fetch(`${instanceUrl}${this._internal_baseRequestPath}${endpoint}`, {
       method: "GET",
       mode: "cors",
+      credentials: "include",
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Content-Type": "text/plain",
@@ -428,6 +472,7 @@ export class ClientServerInteraction {
     fetch(`${instanceUrl}${this._internal_baseRequestPath}${endpoint}`, {
       method: "POST",
       mode: "cors",
+      credentials: "include",
       body: JSON.stringify(body),
       headers: {
         "Access-Control-Allow-Origin": "*",
@@ -464,6 +509,7 @@ export class ClientServerInteraction {
     fetch(`${instanceUrl}${this._internal_baseRequestPath}${endpoint}`, {
       method: "DELETE",
       mode: "cors",
+      credentials: "include",
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Content-Type": "text/plain",
@@ -489,10 +535,10 @@ export class ClientServerInteraction {
   }
 }
 
-class __internalClientServerInteraction extends ClientServerInteraction {
+// @ts-ignore
+class __internalClientServerInteraction extends ClientServerInteraction<OpenAPIPaths> {
   userDB: UserDatabase;
   path: BrowserPath;
-  private user!: CSIYourDashUser;
 
   constructor() {
     super("");
@@ -547,8 +593,9 @@ class __internalClientServerInteraction extends ClientServerInteraction {
   // get the user database for the currently logged-in user
   async getUserDB(): Promise<UserDatabase> {
     return new Promise((resolve) => {
-      this.syncGetJson("/core/user_db", (data) => {
+      this.syncGetJson("/core/user_db", {}, (data) => {
         this.userDB.clear();
+        // @ts-ignore
         this.userDB.keys = data;
 
         resolve(this.userDB);
@@ -575,11 +622,6 @@ class __internalClientServerInteraction extends ClientServerInteraction {
         },
       );
     });
-  }
-
-  // get the currently logged-in user
-  getUser() {
-    return this.user;
   }
 
   // returns a list of teams that the current user is a part of
@@ -658,6 +700,3 @@ export default coreCSI;
 
 // @ts-ignore
 window.csi = coreCSI;
-
-// @ts-ignore
-coreCSI.user = new CSIYourDashUser();

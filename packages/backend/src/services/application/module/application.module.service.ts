@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -9,10 +9,10 @@ import YourDashServiceStartupType from "../../../core/serviceManager/serviceStar
 export default class ApplicationModuleService extends YourDashService {
   constructor() {
     super(
-      "dev.pages.yourdash.applicationservice.module",
+      "uk.ewsgit.yourdash.applicationservice.module",
       "Application module service",
       "Ewsgit",
-      ["dev.pages.yourdash.applicationservice"],
+      ["uk.ewsgit.yourdash.applicationservice"],
       YourDashServiceStartupType.default,
     );
 

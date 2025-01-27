@@ -4,15 +4,16 @@
  */
 
 export interface IYourDashSession<T extends YOURDASH_SESSION_TYPE = YOURDASH_SESSION_TYPE> {
-  sessionId: number,
-  type: T,
-  sessionToken: string,
-  isNodeJS?: boolean
+  sessionId: number;
+  type: T;
+  sessionToken: string;
+  isNodeJS?: boolean;
 }
 
 export enum YOURDASH_SESSION_TYPE {
-  web,
-  desktop,
-  cli,
-  external
+  WEB,
+  DESKTOP,
+  CLI,
+  UNKNOWN,
+  NEXTCLOUD_COMPATABILITY,
 }

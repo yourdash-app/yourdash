@@ -1,16 +1,26 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2025 @Ewsgit and YourDash contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
+import UKImage from "@yourdash/uikit/src/components/image/UKImage.js";
+import UKText from "@yourdash/uikit/src/components/text/UKText.js";
+import { UKIcons } from "@yourdash/uikit/src/core/iconDictionary.js";
 import React, { useEffect } from "react";
 import { Outlet } from "react-router";
 import Panel from "./Panel.tsx";
 import clippy from "@yourdash/shared/web/helpers/clippy.ts";
 import styles from "./PanelLayout.module.scss";
 import coreCSI from "@yourdash/csi/coreCSI.ts";
+import UKIconButton from "@yourdash/uikit/src/components/iconButton/UKIconButton.js";
 
-const PanelLayout: React.FC = () => {
+const PanelLayout: React.FC<{
+  showBackButton: boolean;
+  onBackButton: () => void;
+  controls: React.ReactNode;
+  applicationDisplayName: string;
+  applicationIcon: string;
+}> = ({ showBackButton, onBackButton, controls, applicationDisplayName, applicationIcon }) => {
   const [panelSide, setPanelSide] = React.useState<"top" | "right" | "bottom" | "left" | undefined>(undefined);
   const [reloadNumber, setReloadNumber] = React.useState<number>(0);
 
@@ -50,11 +60,32 @@ const PanelLayout: React.FC = () => {
             side={"top"}
             setLayoutReloadNumber={(num) => setReloadNumber(num)}
           />
-          <div
-            key={1}
-            className={styles.applicationFrame}
-          >
-            <Outlet key={1} />
+          <div className={styles.applicationPanelFrame}>
+            <div className={styles.applicationPanel}>
+              {showBackButton && (
+                <UKIconButton
+                  icon={UKIcons.ChevronLeft}
+                  accessibleLabel={"Go Back"}
+                  onClick={onBackButton}
+                />
+              )}
+              <UKImage
+                className={styles.applicationIcon}
+                src={applicationIcon}
+                accessibleLabel={""}
+              />
+              <UKText
+                text={applicationDisplayName}
+                className={styles.applicationDisplayName}
+              />
+              <div key={"controls"}>{controls}</div>
+            </div>
+            <div
+              key={1}
+              className={styles.applicationFrame}
+            >
+              <Outlet key={1} />
+            </div>
           </div>
         </div>
       );
@@ -65,22 +96,64 @@ const PanelLayout: React.FC = () => {
             side={"left"}
             setLayoutReloadNumber={(num) => setReloadNumber(num)}
           />
-          <div
-            key={1}
-            className={styles.applicationFrame}
-          >
-            <Outlet key={1} />
+          <div className={styles.applicationPanelFrame}>
+            <div className={styles.applicationPanel}>
+              {showBackButton && (
+                <UKIconButton
+                  icon={UKIcons.ChevronLeft}
+                  accessibleLabel={"Go Back"}
+                  onClick={onBackButton}
+                />
+              )}
+              <UKImage
+                className={styles.applicationIcon}
+                src={applicationIcon}
+                accessibleLabel={""}
+              />
+              <UKText
+                text={applicationDisplayName}
+                className={styles.applicationDisplayName}
+              />
+              <React.Fragment>{controls}</React.Fragment>
+            </div>
+            <div
+              key={1}
+              className={styles.applicationFrame}
+            >
+              <Outlet key={1} />
+            </div>
           </div>
         </div>
       );
     case "bottom":
       return (
         <div className={clippy(styles.layout, styles.bottom)}>
-          <div
-            key={1}
-            className={styles.applicationFrame}
-          >
-            <Outlet key={1} />
+          <div className={styles.applicationPanelFrame}>
+            <div className={styles.applicationPanel}>
+              {showBackButton && (
+                <UKIconButton
+                  icon={UKIcons.ChevronLeft}
+                  accessibleLabel={"Go Back"}
+                  onClick={onBackButton}
+                />
+              )}
+              <UKImage
+                className={styles.applicationIcon}
+                src={applicationIcon}
+                accessibleLabel={""}
+              />
+              <UKText
+                text={applicationDisplayName}
+                className={styles.applicationDisplayName}
+              />
+              <React.Fragment>{controls}</React.Fragment>
+            </div>
+            <div
+              key={1}
+              className={styles.applicationFrame}
+            >
+              <Outlet key={1} />
+            </div>
           </div>
           <Panel
             side={"bottom"}
@@ -91,11 +164,32 @@ const PanelLayout: React.FC = () => {
     case "right":
       return (
         <div className={clippy(styles.layout, styles.right)}>
-          <div
-            key={1}
-            className={styles.applicationFrame}
-          >
-            <Outlet key={1} />
+          <div className={styles.applicationPanelFrame}>
+            <div className={styles.applicationPanel}>
+              {showBackButton && (
+                <UKIconButton
+                  icon={UKIcons.ChevronLeft}
+                  accessibleLabel={"Go Back"}
+                  onClick={onBackButton}
+                />
+              )}
+              <UKImage
+                className={styles.applicationIcon}
+                src={applicationIcon}
+                accessibleLabel={""}
+              />
+              <UKText
+                text={applicationDisplayName}
+                className={styles.applicationDisplayName}
+              />
+              <React.Fragment>{controls}</React.Fragment>
+            </div>
+            <div
+              key={1}
+              className={styles.applicationFrame}
+            >
+              <Outlet key={1} />
+            </div>
           </div>
           <Panel
             side={"right"}

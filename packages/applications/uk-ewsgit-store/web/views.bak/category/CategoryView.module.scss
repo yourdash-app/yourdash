@@ -1,0 +1,16 @@
+/*!
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
+.main {
+  padding: 1rem;
+  transition: var(--transition-slow);
+  gap: 1rem;
+  display: flex;
+  flex-direction: column;
+
+  @container yourdash-application-frame (width < 768px) {
+    padding: 0.5rem;
+  }
+}

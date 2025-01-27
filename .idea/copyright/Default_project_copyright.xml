@@ -1,5 +1,6 @@
 <component name="CopyrightManager">
   <copyright>
+    <option name="allowReplaceRegexp" value="Ewsgit &lt;https://ewsgit.uk&gt; and YourDash &lt;https://yourdash.ewsgit.uk&gt; contributors." />
     <option name="notice" value="Copyright ©&amp;#36;originalComment.match(&quot;Copyright \(c\) (\d+)&quot;, 1, &quot;-&quot;, &quot;&amp;#36;today.year&quot;)&amp;#36;today.year Ewsgit &lt;https://ewsgit.uk&gt; and YourDash &lt;https://yourdash.ewsgit.uk&gt; contributors.&#10;YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)" />
     <option name="myName" value="Default project copyright" />
   </copyright>

@@ -1,0 +1,29 @@
+{
+	"folders": [
+		{
+			"path": "packages/applications"
+		},
+		{
+			"path": "packages/web"
+		},
+		{
+			"path": "packages/backend"
+		},
+		{
+			"path": "packages/shared"
+		},
+		{
+			"path": "packages/tunnel"
+		},
+		{
+			"path": "packages/uikit"
+		},
+		{
+			"path": "docs"
+		},
+		{
+			"path": "fs"
+		}
+	],
+	"settings": {}
+}

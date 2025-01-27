@@ -1,0 +1,40 @@
+@charset "UTF-8";
+/*!
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+/*!
+ * Copyright ©2025 Ewsgit <https://ewsgit.uk> and YourDash <https://yourdash.ewsgit.uk> contributors.
+ * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
+ */
+.component {
+  display: flex;
+  border: var(--utbrd);
+  border-radius: var(--utrad);
+}
+
+.row {
+  width: 0;
+  height: calc(100% - (var(--utgap)) * 2);
+  margin: var(--utgap);
+  border-left: none;
+}
+.row.disableMargin {
+  height: 100%;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.column {
+  width: calc(100% - (var(--utgap)) * 2);
+  height: 0;
+  margin: var(--utgap);
+  border-bottom: none;
+}
+.column.disableMargin {
+  width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/*# sourceMappingURL=separator.module.css.map */

@@ -1,9 +1,10 @@
 /*
- * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 import path from "path";
+import { loadSessionsForUser } from "../../lib/session.js";
 import { Core } from "../core.js";
 import generateInstanceLogos from "../helpers/generateInstanceLogos.js";
 import { YOURDASH_USER_PERMISSIONS } from "../user/userPermissions.js";
@@ -19,11 +20,19 @@ export default class coreVerifyFileSystem {
     return this;
   }
 
-  async verify() {
-    await this.checkRootDirectory();
+  verify() {
+    this.checkRootDirectory().then(() => {
+      this.core.users.getAllUsers().then((users) => {
+        users.map((user) => {
+          this.checkUserDirectory(user);
 
-    (await ((await this.core.fs.get("./users")) as FSDirectory)?.getChildrenAsBaseName()).map((user: string) => {
-      this.checkUserDirectory(user);
+          if (user === "admin") {
+            if (this.core.isDevMode) {
+              loadSessionsForUser("admin").then(() => this.core.log.success("devmode", "Loaded sessions for admin user"));
+            }
+          }
+        });
+      });
     });
   }
 
@@ -71,6 +80,19 @@ export default class coreVerifyFileSystem {
         await fs.copyFile(path.join(process.cwd(), "./src/defaults/theme.css"), path.join(this.core.fs.ROOT_PATH, "./defaults/theme.css"));
       } catch (e) {
         this.core.log.error("Unable to copy the default theme");
+        console.trace(e);
+      }
+    }
+
+    if (!(await this.core.fs.doesExist("./defaults/wallpaper.avif"))) {
+      // set the instance's default user avatar
+      try {
+        await fs.copyFile(
+          path.join(process.cwd(), "./src/defaults/default_login_background.avif"),
+          path.join(this.core.fs.ROOT_PATH, "./defaults/wallpaper.avif"),
+        );
+      } catch (e) {
+        this.core.log.error("Unable to copy the default wallpaper");
         console.trace(e);
       }
     }

@@ -1,0 +1,96 @@
+@use "@yourdash/uikit/src/theme/themeValues" as *;
+
+.tabBar {
+  display: flex;
+  padding: calc(var(#{$theme+$padding}) / 2);
+  padding-bottom: 0;
+  background: rgb(var(#{$theme+$background}));
+  border-bottom: var(#{$theme+$border});
+  box-sizing: content-box;
+}
+
+.tabViewContainer {
+  height: 100%;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  background: orange;
+}
+
+.tab {
+  --separator-color: #e5e7eb55;
+
+  display: flex;
+  flex-direction: row;
+  border: none;
+  border-right: solid 0.125rem var(--separator-color);
+  border-radius: 0;
+  color: rgb(var(#{$theme+$button+$color}));
+  background-color: rgb(var(#{$theme+$button+$background}));
+  transition: var(#{$theme+$transition}), border-bottom 0s linear;
+  height: max-content;
+
+  .innerButton {
+    border-radius: 0;
+    flex-grow: 1;
+    background: transparent;
+    border: none;
+    text-align: start;
+  }
+
+  &:first-of-type {
+    border-top-left-radius: var(#{$theme+$button+$radius});
+    border-bottom-left-radius: var(#{$theme+$button+$radius});
+  }
+
+  &:last-of-type {
+    border-top-right-radius: var(#{$theme+$button+$radius});
+    border-bottom-right-radius: var(#{$theme+$button+$radius});
+  }
+
+  &.active {
+    background-color: rgb(var(#{$theme+$button+$active+$background}));
+    border-radius: var(#{$theme+$button+$radius});
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom: solid 0.25rem rgb(var(#{$theme+$accent}));
+    margin-left: calc(var(#{$theme+$gap}) / 2);
+    margin-right: calc(var(#{$theme+$gap}) / 2);
+    border-right: 0 solid var(--separator-color);
+
+    & + * {
+      border-top-left-radius: var(#{$theme+$button+$radius});
+      border-bottom-left-radius: var(#{$theme+$button+$radius});
+    }
+  }
+
+  &:has(+ .active) {
+    border-top-right-radius: var(#{$theme+$button+$radius});
+    border-bottom-right-radius: var(#{$theme+$button+$radius});
+    border-right: 0 solid var(--separator-color);
+  }
+
+  &:first-of-type {
+    margin-left: var(#{$theme+$gap});
+  }
+
+  &:last-of-type {
+    border-right: 0 solid var(--separator-color);
+    margin-right: var(#{$theme+$gap});
+  }
+}
+
+.tabCloseButton {
+  height: var(#{$theme+$input+$height});
+  width: var(#{$theme+$input+$height});
+  border: solid 0 transparent;
+  background-color: transparent;
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}

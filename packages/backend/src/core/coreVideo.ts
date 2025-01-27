@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -10,6 +10,7 @@ import { Core } from "./core.js";
 import ffmpeg from "fluent-ffmpeg";
 import timeMethod from "../lib/time.js";
 import { $ } from "bun";
+import { z } from "zod";
 
 export enum AUTHENTICATED_VIDEO_TYPE {
   FILE,
@@ -144,7 +145,7 @@ export default class CoreVideo {
   __internal__loadEndpoints() {
     this.core.request.setNamespace("core/auth-video");
 
-    this.core.request.get("/:username/:sessionId/:id", async (req, res) => {
+    this.core.request.get("/:username/:sessionId/:id", z.unknown(), async (req, res) => {
       const { username, sessionId, id } = req.params;
 
       const video = this.authenticatedVideos.get(username)?.get(sessionId)?.get(id);

@@ -1,12 +1,13 @@
 /*
- * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-import Button from "@yourdash/uikit/components/button/button.tsx";
-import Card from "@yourdash/uikit/components/card/card.tsx";
-import Heading from "@yourdash/uikit/components/heading/heading.tsx";
-import Text from "@yourdash/uikit/components/text/text.tsx";
+import UKButton from "@yourdash/uikit/src/components/button/UKButton.js";
+import UKCard from "@yourdash/uikit/src/components/card/UKCard.js";
+import UKHeading from "@yourdash/uikit/src/components/heading/UKHeading.js";
+import UKText from "@yourdash/uikit/src/components/text/UKText.js";
+import React from "react";
 
 interface IKeyPointsCard {
   title: string;
@@ -20,26 +21,26 @@ interface IKeyPointsCard {
 
 const KeyPointsCard: React.FC<IKeyPointsCard> = ({ title, content, action }) => {
   return (
-    <Card
+    <UKCard
       actions={
         <>
-          <Button
+          <UKButton
             onClick={action.onClick}
             text={action.label}
           />
         </>
       }
     >
-      <Heading
+      <UKHeading
         level={2}
         text={title}
-        className={"!text-4xl font-semibold !text-start font-semibold pt-4"}
+        className={"!text-4xl font-semibold !text-start pt-4"}
       />
-      <Text
+      <UKText
         className={"text-start"}
         text={content}
       />
-    </Card>
+    </UKCard>
   );
 };
 

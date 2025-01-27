@@ -1,0 +1,78 @@
+/*!
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
+ */
+
+@use "../../theme/themeValues.scss" as *;
+
+.component {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  font-weight: var(#{$theme+$font+$weight});
+  font-size: var(#{$theme+$font+$size});
+  font-family: var(#{$theme+$font+$family});
+  background: rgb(var(#{$theme+$background}));
+  color: rgb(var(#{$theme+$color}));
+  border: var(#{$theme+$border});
+  padding: 0;
+  border-radius: var(#{$theme+$radius});
+  overflow: hidden;
+}
+
+.clickable {
+  display: flex;
+  width: 100%;
+  cursor: pointer;
+
+  color: rgb(var(#{$theme+$button+$color}));
+  background: rgb(var(#{$theme+$button+$background}));
+  border: var(#{$theme+$button+$border});
+  font-size: var(#{$theme+$button+$font+$size});
+  font-weight: var(#{$theme+$button+$font+$weight});
+  border-radius: var(#{$theme+$button+$radius});
+  transition:  var(#{$theme+$button+$transition});
+
+  &:hover {
+    color: rgb(var(#{$theme+$button+$hover+$color}));
+    background: rgb(var(#{$theme+$button+$hover+$background}));
+    border: var(#{$theme+$button+$hover+$border});
+    border-radius: var(#{$theme+$button+$hover+$radius});
+    transition: var(#{$theme+$button+$hover+$transition});
+  }
+
+  &:active {
+    color: rgb(var(#{$theme+$button+$active+$color}));
+    background: rgb(var(#{$theme+$button+$active+$background}));
+    border: var(#{$theme+$button+$active+$border});
+    border-radius: var(#{$theme+$button+$active+$radius});
+    transition: var(#{$theme+$button+$active+$transition});
+  }
+}
+
+.header {
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  width: 100%;
+}
+
+.actions {
+  border: none;
+  display: flex;
+  align-items: flex-end;
+  width: 100%;
+  background: transparent;
+}
+
+.content {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(#{$theme+$gap});
+  padding: var(#{$theme+$padding});
+  // dont remember why this was here but it might be needed again
+  //padding-top: var(#{$theme+$gap});
+  //padding-bottom: var(#{$theme+$gap});
+  height: 100%;
+}

@@ -12,6 +12,11 @@
       <excludeFolder url="file://$MODULE_DIR$/backup/electron/node_modules" />
       <excludeFolder url="file://$MODULE_DIR$/packages/application-generator" />
       <excludeFolder url="file://$MODULE_DIR$/packages/desktop-client/out" />
+      <excludeFolder url="file://$MODULE_DIR$/.idea" />
+      <excludeFolder url="file://$MODULE_DIR$/.vscode" />
+      <excludeFolder url="file://$MODULE_DIR$/applications/uk-ewsgit-dash/web/backup" />
+      <excludeFolder url="file://$MODULE_DIR$/applications/uk-ewsgit-photos/web/.bak" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/chiplet" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

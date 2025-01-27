@@ -1,9 +1,9 @@
 /*!
- * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
-@import "../../../../../../../../node_modules/@yourdash/uikit/theme/themeValues";
+@use "@yourdash/uikit/src/theme/themeValues" as *;
 
 .applicationLauncher {
   position: fixed;
@@ -76,7 +76,6 @@
 
   & {
     top: var(--app-panel-size);
-    border-top: none;
     border-left: none;
     border-radius: 0 0 var(--container-rounding) 0;
   }
@@ -88,9 +87,7 @@
   & {
     right: var(--app-panel-size);
     border-top: none;
-    border-right: none;
     border-radius: 0 0 0 var(--container-rounding);
-
   }
 }
 
@@ -99,7 +96,6 @@
 
   & {
     bottom: var(--app-panel-size);
-    border-bottom: none;
     border-left: none;
     border-radius: 0 var(--container-rounding) 0 0;
   }
@@ -111,7 +107,6 @@
   & {
     left: var(--app-panel-size);
     border-top: none;
-    border-left: none;
     border-radius: 0 0 var(--container-rounding) 0;
   }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -15,7 +15,7 @@ export default class KeyValueDatabase {
   get<ResponseType = unknown>(key: string): ResponseType | undefined {
     const resp = this.keys[key];
 
-    if (!resp) console.warn(`Key "${key}" not found in database`);
+    // if (!resp) console.warn(`Key "${key}" not found in database`);
 
     return resp || undefined;
   }

@@ -1,0 +1,30 @@
+@charset "UTF-8";
+/*!
+ * Copyright ©2025 Ewsgit<https://ewsgit.uk> and YourDash<https://yourdash.ewsgit.uk> contributors.
+ * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
+ */
+/*!
+ * Copyright ©2025 Ewsgit <https://ewsgit.uk> and YourDash <https://yourdash.ewsgit.uk> contributors.
+ * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
+ */
+.component {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  gap: 1rem;
+  align-items: center;
+}
+
+.items {
+  height: 100%;
+}
+
+.endOfItems {
+  text-align: center;
+  padding: var(--utpdn);
+  gap: var(--utgap);
+  width: calc(100% - var(--utpdn) * 2);
+}
+
+/*# sourceMappingURL=infiniteScroll.module.css.map */

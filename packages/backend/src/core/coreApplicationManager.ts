@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 Ewsgit<https://ewsgit.uk> and YourDash<https://yourdash.ewsgit.uk> contributors.
+ * Copyright ©2025 Ewsgit<https://ewsgit.uk> and YourDash<https://yourdash.ewsgit.uk> contributors.
  * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
  */
 
@@ -103,10 +103,14 @@ export class YourDashBackendModule {
 
   loadEndpoints() {
     this.api.log.info("Loading endpoints...");
+
+    core.request.setNamespace(`app/${this.api.moduleId}`);
   }
 
   loadPreAuthEndpoints() {
     this.api.log.info("Loading pre-authentication endpoints...");
+
+    core.request.setNamespace(`app/${this.api.moduleId}`);
   }
 }
 
@@ -184,9 +188,12 @@ export default class CoreApplicationManager {
 
   async loadInstalledApplications() {
     const installedApplications = this.getInstalledApplications();
-    for (const applicationPath of installedApplications) {
-      await this.loadApplication(applicationPath);
-    }
+
+    await Promise.all(
+      installedApplications.map(async (applicationPath) => {
+        return await this.loadApplication(applicationPath);
+      }),
+    );
 
     return this.loadedModules;
   }
@@ -246,6 +253,8 @@ export default class CoreApplicationManager {
 
       this.loadedModules.officialFrontend.push({ config: mod, applicationPath: applicationPath });
     }
+
+    this.core.log.info("application_manager", `Loaded application: ${applicationPath}`);
   }
 
   async verifyApplicationModule(
@@ -590,6 +599,7 @@ export default class CoreApplicationManager {
             return false;
           }
           // @ts-ignore
+          // noinspection SuspiciousTypeOfGuard
           if (typeof mod.main !== "string") {
             this.core.log.error(
               "application_manager",

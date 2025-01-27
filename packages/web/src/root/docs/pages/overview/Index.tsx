@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2025 @Ewsgit and YourDash contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -38,7 +38,10 @@ const OverviewPage: React.FC = () => {
           ] as { name: string; link: string }[]
         ).map((obj) => {
           return (
-            <Card key={obj.name} onClick={() => navigate(obj.link)}>
+            <Card
+              key={obj.name}
+              onClick={() => navigate(obj.link)}
+            >
               {obj.name}
             </Card>
           );

@@ -1,0 +1,21 @@
+/*!
+ * Copyright ©2025 Ewsgit <https://ewsgit.uk> and YourDash <https://yourdash.ewsgit.uk> contributors.
+ * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
+ */
+
+@use "@yourdash/uikit/src/theme/themeValues" as *;
+
+.component {
+  display: flex;
+  padding: 0.25rem;
+  background: hotpink;
+  border-radius: calc(var(#{$theme+$radius}) / 2);
+}
+
+.odd {
+  background: #555555;
+}
+
+.even {
+  background: #333333;
+}

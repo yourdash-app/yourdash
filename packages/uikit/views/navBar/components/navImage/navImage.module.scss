@@ -1,7 +1,0 @@
-@import "../../../../theme/themeValues";
-
-.component {
-    height: calc(var(--nav-height) - var(#{$theme+$padding}));
-    aspect-ratio: 1 / 1;
-    border-radius: 0;
-}

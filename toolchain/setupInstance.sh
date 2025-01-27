@@ -23,16 +23,16 @@ echo "Updating system packages"
 apt update -y && apt upgrade -y
 
 echo "Installing NodeJS"
-sudo -u "$real_user" curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+sudo -u "$real_user" curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
 
 echo "Reloading ~/.bashrc"
 # shellcheck disable=SC1090
 source ~/.bashrc
 
-echo "Installing LTS NodeJS"
-sudo -u "$real_user" nvm install --lts
-sudo -u "$real_user" nvm alias default --lts
-sudo -u "$real_user" nvm use --lts
+echo "Installing NodeJS v22.xx"
+sudo -u "$real_user" nvm install 22
+sudo -u "$real_user" nvm alias default 22
+sudo -u "$real_user" nvm use 22
 
 echo "Re-sourcing ~/.bashrc"
 # shellcheck disable=SC1090
@@ -50,13 +50,13 @@ cd / || exit
 # does /yourdash exist?
 if [ ! -d /yourdash ]; then
   echo "Cloning YourDash"
-  git clone https://github.com/yourdash/yourdash.git -b dev
+  git clone https://github.com/yourdash/yourdash.git -b dev --recurse
   cd yourdash || exit
 else
   echo "Updating YourDash"
   cd yourdash || exit
   git stash
-  git pull
+  git pull --recurse
 fi
 
 echo "Adding YourDash as a safe directory for git"

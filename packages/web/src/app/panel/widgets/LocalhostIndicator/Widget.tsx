@@ -1,11 +1,11 @@
 /*
- * Copyright ©2024 @Ewsgit and YourDash contributors.
+ * Copyright ©2025 @Ewsgit and YourDash contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 import clippy from "@yourdash/shared/web/helpers/clippy.ts";
+import UKText from "@yourdash/uikit/src/components/text/UKText.js";
 import React from "react";
-import Text from "@yourdash/uikit/components/text/text.tsx";
 
 const LocalhostIndicator: React.FC<{
   side: "top" | "right" | "bottom" | "left";
@@ -24,15 +24,9 @@ const LocalhostIndicator: React.FC<{
         side === "right" && "mt-auto",
       )}
     >
-      <Text
-        text={"Localhost"}
-        className={clippy(
-          "!text-xs",
-          side === "top" && "rotate-45",
-          side === "bottom" && "-rotate-45",
-          side === "left" && "-rotate-45",
-          side === "right" && "rotate-45",
-        )}
+      <UKText
+        text={"</>"}
+        className={"text-pink-300"}
       />
     </div>
   );

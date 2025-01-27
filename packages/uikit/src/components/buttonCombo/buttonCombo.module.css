@@ -1,0 +1,22 @@
+@charset "UTF-8";
+/*!
+ * Copyright ©2025 Ewsgit <https://ewsgit.uk> and YourDash <https://yourdash.ewsgit.uk> contributors.
+ * YourDash is licensed under the MIT License. (https://mit.ewsgit.uk)
+ */
+.component {
+  display: flex;
+  flex-direction: row;
+}
+.component > *:not(:first-child):not(:last-child) {
+  border-radius: 0 !important;
+}
+.component > *:first-child {
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+.component > *:last-child {
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+}
+
+/*# sourceMappingURL=buttonCombo.module.css.map */

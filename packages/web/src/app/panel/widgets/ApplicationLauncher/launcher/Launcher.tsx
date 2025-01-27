@@ -1,26 +1,25 @@
 /*
- * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
 import useResource from "@yourdash/csi/useResource.ts";
 import clippy from "@yourdash/shared/web/helpers/clippy.ts";
-import { UKIcon } from "@yourdash/uikit/components/icon/iconDictionary.ts";
-import IconButton from "@yourdash/uikit/components/iconButton/iconButton.tsx";
-import Box from "@yourdash/uikit/components/box/box.tsx";
+import UKIconButton from "@yourdash/uikit/src/components/iconButton/UKIconButton.js";
 import { useNavigate } from "react-router-dom";
 import styles from "./Launcher.module.scss";
 import React, { memo } from "react";
 import ApplicationsLauncherApplications from "./Applications/Applications.tsx";
-import IPanelApplicationsLauncherFrontendModule from "@yourdash/shared/core/panel/applicationsLauncher/application.ts";
 import coreCSI from "@yourdash/csi/coreCSI.ts";
+import UKBox from "@yourdash/uikit/src/components/box/UKBox.js";
+import { UKIcons } from "@yourdash/uikit/src/core/iconDictionary.js";
 
 const ApplicationLauncher: React.FC<{
   side: "top" | "right" | "bottom" | "left";
   visible: boolean;
 }> = ({ side, visible }) => {
   const navigate = useNavigate();
-  const apps = useResource<IPanelApplicationsLauncherFrontendModule[]>(() => coreCSI.getJson("/core/panel/applications"), []) || [];
+  const apps = useResource(() => coreCSI.getJson("/core/panel/applications", "/core/panel/applications"), []) || [];
   const [layout, setLayout] = React.useState<"large-grid" | "small-grid" | "list">("large-grid");
 
   return (
@@ -35,56 +34,56 @@ const ApplicationLauncher: React.FC<{
         !visible && styles.invisible,
       )}
     >
-      <Box className={styles.content}>
+      <UKBox className={styles.content}>
         <ApplicationsLauncherApplications
-          apps={apps}
+          // @ts-ignore
+          apps={apps || []}
           layout={layout}
         />
-      </Box>
-      <Box className={styles.footer}>
-        <IconButton
+      </UKBox>
+      <UKBox className={styles.footer}>
+        <UKIconButton
           accessibleLabel={"Logout"}
           className={styles.logoutButton}
-          icon={UKIcon.Logout}
+          icon={UKIcons.Logout}
           onClick={() => {
             coreCSI.logout();
             navigate("/login");
           }}
         />
-        <div>
-          <IconButton
-            accessibleLabel={"Profile"}
-            icon={UKIcon.Person}
-            aria-label={"User Profile Settings"}
-            onClick={() => {
-              navigate(`/instance-profiles/me`);
-            }}
-          />
-        </div>
-        <span>{coreCSI.userDB.get<{ first: string; last: string }>("user:name")?.first || "Unknown First Name"}</span>
-        <IconButton
+        {/* TODO: replace with a custom button with the user's avatar */}
+        <UKIconButton
+          accessibleLabel={"Profile"}
+          icon={UKIcons.Person}
+          aria-label={"User Profile Settings"}
+          onClick={() => {
+            navigate(`/profile/me`);
+          }}
+        />
+        <span>{"Unknown First Name"}</span>
+        <UKIconButton
           accessibleLabel={"Filter small grid"}
           className={"ml-auto"}
-          icon={UKIcon.Filter}
+          icon={UKIcons.Filter}
           onClick={() => {
             setLayout("small-grid");
           }}
         />
-        <IconButton
+        <UKIconButton
           accessibleLabel={"Filter large grid"}
-          icon={UKIcon.Filter}
+          icon={UKIcons.Filter}
           onClick={() => {
             setLayout("large-grid");
           }}
         />
-        <IconButton
+        <UKIconButton
           accessibleLabel={"Filter list"}
-          icon={UKIcon.Filter}
+          icon={UKIcons.Filter}
           onClick={() => {
             setLayout("list");
           }}
         />
-      </Box>
+      </UKBox>
     </div>
   );
 };

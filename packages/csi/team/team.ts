@@ -1,5 +1,5 @@
 /*
- * Copyright ©2024 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
+ * Copyright ©2025 Ewsgit<https://github.com/ewsgit> and YourDash<https://github.com/yourdash> contributors.
  * YourDash is licensed under the MIT License. (https://ewsgit.mit-license.org)
  */
 
@@ -36,10 +36,8 @@ export default class CSIYourDashTeam {
 
     return new Promise((resolve, reject) => {
       coreCSI.syncGetJson(
-        `/core/team/${this.teamName}/displayName`,
-        (data) => {
-          this.cached.displayName = data;
-
+        `/core/teams/get/current-user`,
+        () => {
           return resolve(this.cached.displayName || "Unknown User");
         },
         () => {
